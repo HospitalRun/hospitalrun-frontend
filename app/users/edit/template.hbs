@@ -1,0 +1,10 @@
+<label>User name</label>{{input value=name}}
+<label>Password</label>{{input type='password' value=password}}
+<label>Email</label>{{input value=email}}
+<label>Roles</label>{{view Ember.Select viewName="select"
+                    contentBinding="people"
+                    optionLabelPath="model.fullName"
+                    optionValuePath="model.id"
+                    prompt="Pick a person:"
+                    selectionBinding="selectedPerson"}}
+<button {{action 'createUser'}}>New User</button>

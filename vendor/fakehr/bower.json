@@ -1,0 +1,11 @@
+{
+  "name": "fakehr",
+  "version": "0.1.0",
+  "main": [
+    "./fakehr.js"
+  ],
+  "dependencies": {
+    "FakeXMLHttpRequest": "*"
+  }
+}
+

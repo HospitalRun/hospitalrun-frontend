@@ -1,0 +1,29 @@
+{
+	"predef": [
+		"exports"
+	],
+
+	"bitwise": true,
+	"camelcase": true,
+	"curly": true,
+	"eqeqeq": true,
+	"forin": true,
+	"immed": true,
+	"latedef": false,
+	"newcap": true,
+	"noarg": true,
+	"noempty": true,
+	"nonew": true,
+	"plusplus": false,
+	"quotmark": "double",
+	"undef": true,
+	"unused": true,
+	"trailing": true,
+
+	"proto": true,
+	"sub": true,
+
+	"browser": true,
+
+	"onevar": true
+}

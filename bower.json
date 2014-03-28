@@ -1,0 +1,17 @@
+{
+  "name": "hospitalrun",
+  "dependencies": {
+    "handlebars": "~1.3.0",
+    "jquery": "~1.9.1",
+    "qunit": "~1.12.0",
+    "ember": "1.5.0-beta.4",
+    "ember-data": "1.0.0-beta.7",
+    "ember-resolver": "git://github.com/stefanpenner/ember-jj-abrams-resolver.git#master",
+    "ic-ajax": "~0.3.0",
+    "ember-testing-httpRespond": "~0.1.2",
+    "ember-pouchdb-adapter": "https://github.com/aexmachina/ember-pouchdb-adapter.git",
+    "pouchdb-nightly.js": "http://download.pouchdb.com/pouchdb-nightly.js",
+    "ember-simple-auth": "https://github.com/simplabs/ember-simple-auth-component.git",
+    "ember-couchdb-kit": "https://github.com/roundscope/ember-couchdb-kit.git"
+  }
+}

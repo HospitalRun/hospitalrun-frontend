@@ -1,0 +1,13 @@
+{
+  "name": "ember-testing-httpRespond",
+  "version": "0.1.2",
+  "main": [
+    "./httpRespond-1.1.js"
+  ],
+  "dependencies": {
+    "FakeXMLHttpRequest": "*",
+    "fakehr": "*"
+  }
+}
+
+

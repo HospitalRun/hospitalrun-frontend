@@ -1,0 +1,17 @@
+{
+  "name": "FakeXMLHttpRequest",
+  "version": "0.0.1",
+  "main": [
+    "./fake_xml_http_request.js"
+  ],
+  "homepage": "https://github.com/trek/FakeXMLHttpRequest",
+  "_release": "0.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.1",
+    "commit": "56dfd67e486d73ff6b86dd01518b893b8e3b9f25"
+  },
+  "_source": "git://github.com/trek/FakeXMLHttpRequest.git",
+  "_target": "*",
+  "_originalSource": "FakeXMLHttpRequest"
+}

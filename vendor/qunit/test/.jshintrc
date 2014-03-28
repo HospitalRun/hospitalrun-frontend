@@ -1,0 +1,34 @@
+{
+	"predef": [
+		"QUnit",
+		"module",
+		"test",
+		"asyncTest",
+		"expect",
+		"start",
+		"stop",
+
+		"raises"
+	],
+
+	"bitwise": true,
+	"camelcase": true,
+	"curly": true,
+	"eqeqeq": true,
+	"forin": true,
+	"immed": true,
+	"latedef": false,
+	"newcap": true,
+	"noarg": true,
+	"noempty": true,
+	"nonew": true,
+	"plusplus": false,
+	"quotmark": false,
+	"undef": true,
+	"unused": true,
+	"trailing": true,
+
+	"browser": true,
+
+	"onevar": false
+}
