@@ -19,9 +19,20 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
     @return {Ember.RSVP.Promise} A promise that resolves when an access token is successfully acquired from the server and rejects otherwise
   */
     authenticate: function(credentials) {
-        var data = { name: credentials.identification, password: credentials.password };
-        //POST is used to authenticate.
-        return this.getPromise('POST', data);
+        var _this = this;
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            var data = { name: credentials.identification, password: credentials.password };
+            _this.makeRequest('POST', data).then(function(response) {
+                Ember.run(function() {
+                    var expiresAt = _this.absolutizeExpirationTime(600);
+                    resolve(Ember.$.extend(response, { expires_at: expiresAt }));
+                });
+            }, function(xhr, status, error) {
+                Ember.run(function() {
+                    reject(xhr.responseJSON || xhr.responseText);
+                });
+            });
+        }); 
     },
     
     serverEndpoint: 'http://0.0.0.0:5984/_session',
@@ -57,6 +68,29 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
                 });
             });
         });
-    }
+    },
     
+    restore: function(data) {
+        var _this = this;
+        return new Ember.RSVP.Promise(function(resolve, reject) {            
+            var now = (new Date()).getTime();
+            if (!Ember.isEmpty(data.expires_at) && data.expires_at < now) {
+                reject();
+            } else {
+                resolve(data);
+            }
+        });        
+    },
+    
+    
+  /**
+    @method absolutizeExpirationTime
+    @private
+  */
+    absolutizeExpirationTime: function(expiresIn) {
+        if (!Ember.isEmpty(expiresIn)) {
+            return new Date((new Date().getTime()) + (expiresIn - 5) * 1000).getTime();
+        }
+    }
+        
 });
