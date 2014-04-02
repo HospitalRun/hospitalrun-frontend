@@ -9,8 +9,7 @@ var User = DS.Model.extend({
     password_sha: DS.attr('string'),
     rev: DS.attr('string'),
     roles: DS.attr(),
-    salt: DS.attr('string'),
-    
+    salt: DS.attr('string')
 });
 
 export default User;
