@@ -91,12 +91,18 @@ define("ember/resolver",
 
   function logLookup(found, parsedName, moduleName) {
     if (Ember.ENV.LOG_MODULE_RESOLVER) {
-      var symbol;
+      var symbol, padding;
 
       if (found) { symbol = '[✓]'; }
       else       { symbol = '[ ]'; }
 
-      Ember.Logger.info(symbol, parsedName.fullName, new Array(40 - parsedName.fullName.length).join('.'), moduleName);
+      if (parsedName.fullName.length > 60) {
+        padding = '.';
+      } else {
+        padding = new Array(60 - parsedName.fullName.length).join('.');
+      }
+
+      Ember.Logger.info(symbol, parsedName.fullName, padding, moduleName);
     }
   }
 
