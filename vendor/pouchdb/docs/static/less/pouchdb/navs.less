@@ -1,0 +1,36 @@
+@import "../../../../bower_components/bootstrap/less/navs.less";
+
+.nav-header {
+  float: right;
+  > li { min-width: 100px; }
+}
+.nav-silent {
+  > li > a {
+    padding: .1em 0;
+    color: @text-color;
+  }
+}
+
+/**
+ * Sidebar navigation used in learn.html
+ **/
+.nav-sidebar {
+  > li.active > a,
+  > li > a:hover {
+    color: darken(@brand-primary, 10%);
+    border-right: 2px solid lighten(@brand-primary, 10%);
+    padding-right: 10px;
+  }
+}
+
+@media (max-width: @navs-breakpoint) {
+  .nav {
+      float: none;
+      > li {
+        width: 100%;
+      }
+  }
+}
+@media (max-width: @screen-sm-min) {
+  .nav-sidebar { margin-bottom: 25px; }
+}

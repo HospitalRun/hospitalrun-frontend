@@ -1,0 +1,31 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "newcap": true,
+  "noarg": true,
+  "sub": true,
+  "undef": true,
+  "unused": "vars",
+  "eqnull": true,
+  "browser": true,
+  "node": true,
+  "strict": true,
+  "trailing": true,
+  "globalstrict": true,
+  "globals": {
+    "PouchDB": true
+  },
+  "white": true,
+  "indent": 2,
+  "forin": true,
+  "predef": [
+    "describe",
+    "it",
+    "beforeEach",
+    "afterEach",
+    "testUtils",
+    "should",
+    "emit"
+  ]
+}
