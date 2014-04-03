@@ -19,10 +19,15 @@ App.initializer({
         application.register('serializer:couchdb', CouchSerializer);
         Ember.SimpleAuth.setup(container, application);
         application.deferReadiness();
-        PouchDB.replicate(document.location.href+'/db/config','config', {
+        var remoteDB = document.location.protocol+'//'+document.location.host+'/db/config';
+        PouchDB.replicate(remoteDB,'config', {
             complete: function() {
                 application.advanceReadiness();
             }
+        }, function(err) {
+            console.log("On ERROR callback:");
+            console.dir(err);
+            application.advanceReadiness();
         });
     }
 });
