@@ -1,5 +1,5 @@
 export default DS.RESTAdapter.extend({
-    endpoint: 'http://0.0.0.0:5984/_users/',
+    endpoint: '/db/_users/',
         
     defaultSerializer:  'couchdb',
     

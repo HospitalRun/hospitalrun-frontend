@@ -35,7 +35,7 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
         }); 
     },
     
-    serverEndpoint: 'http://0.0.0.0:5984/_session',
+    serverEndpoint: '/db/_session',
 
     makeRequest: function(type, data) {
         return Ember.$.ajax({
@@ -71,6 +71,10 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
     },
     
     restore: function(data) {
+        //console.dir(Hospitalrun);
+        //var model = Hospitalrun.__container.lookup('router:index').model();
+        //console.log("model is:");
+        //console.dir(model);
         var _this = this;
         return new Ember.RSVP.Promise(function(resolve, reject) {            
             var now = (new Date()).getTime();
