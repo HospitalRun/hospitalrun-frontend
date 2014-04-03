@@ -71,9 +71,9 @@ module.exports = function (broccoli) {
       'ic-ajax/main.js',
       'ember-data.js',
       'ember-resolver.js',
+      'pouchdb-nightly.js',
       'pouchdb_adapter.js',
-      'ember-simple-auth.js',
-      'pouchdb-nightly.js/index.js'      
+      'ember-simple-auth.js'            
     ],
 
     wrapInEval: env !== 'production',

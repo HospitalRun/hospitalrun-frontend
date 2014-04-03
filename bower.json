@@ -10,8 +10,7 @@
     "ic-ajax": "~0.3.0",
     "ember-testing-httpRespond": "~0.1.2",
     "ember-pouchdb-adapter": "https://github.com/aexmachina/ember-pouchdb-adapter.git",
-    "pouchdb-nightly.js": "http://download.pouchdb.com/pouchdb-nightly.js",
     "ember-simple-auth": "https://github.com/simplabs/ember-simple-auth-component.git",
-    "ember-couchdb-kit": "https://github.com/roundscope/ember-couchdb-kit.git"
+    "pouchdb": "~2.1.0"
   }
 }
