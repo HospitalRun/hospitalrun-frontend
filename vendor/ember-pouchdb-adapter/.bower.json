@@ -14,14 +14,14 @@
     "test",
     "tests"
   ],
-  "homepage": "https://github.com/chlu/ember-pouchdb-adapter",
+  "homepage": "https://github.com/aexmachina/ember-pouchdb-adapter",
   "_release": "0.1.4",
   "_resolution": {
     "type": "version",
     "tag": "v0.1.4",
     "commit": "3336a40909ff6206f3fc200c34fa5d7dc2408f27"
   },
-  "_source": "git://github.com/chlu/ember-pouchdb-adapter.git",
+  "_source": "https://github.com/aexmachina/ember-pouchdb-adapter.git",
   "_target": "*",
-  "_originalSource": "ember-pouchdb-adapter"
+  "_originalSource": "https://github.com/aexmachina/ember-pouchdb-adapter.git"
 }

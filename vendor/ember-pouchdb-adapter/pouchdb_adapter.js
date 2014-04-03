@@ -69,7 +69,7 @@
       var db = this._getDb(),
           hash = this.serialize(record, { includeId: true, includeType: true });
       // Store the type in the value so that we can index it on read
-      hash['emberDataType'] = type.toString();
+      hash['emberDataType'] = type.typeKey;
       return new Ember.RSVP.Promise(function(resolve, reject) {
         db.put(hash, function(err, response) {
           if (!err) {
@@ -93,7 +93,7 @@
       var db = this._getDb(),
           hash = this.serialize(record, { includeId: true, includeType: true });
       // Store the type in the value so that we can index it on read
-      hash['emberDataType'] = type.toString();
+      hash['emberDataType'] = type.typeKey;
       return new Ember.RSVP.Promise(function(resolve, reject) {
         db.put(hash, function(err, response) {
           if (err) {
@@ -163,7 +163,7 @@
           if (doc['emberDataType']) {
             emit(doc['emberDataType'], null);
           }
-        }}, {reduce: false, key: type.toString(), include_docs: true}, function(err, response) {
+        }}, {reduce: false, key: type.typeKey, include_docs: true}, function(err, response) {
           if (err) {
             reject(err);
           } else {
@@ -203,7 +203,7 @@
             '}',
             options = {
               reduce: false,
-              key: [].concat(type.toString(), queryKeys),
+              key: [].concat(type.typeKey, queryKeys),
               include_docs: true
             };
 
