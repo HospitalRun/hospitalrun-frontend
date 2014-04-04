@@ -1,3 +1,4 @@
 export default DS.PouchDBAdapter.extend({
-	namespace: 'hospitalrun'
+	namespace: 'hospitalrun-config',
+    databaseName: 'config'
 });
