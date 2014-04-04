@@ -1,5 +1,4 @@
-var LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin,
- {
+var LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
      authenticatorFactory: 'authenticators:custom',
 
      actions: {
