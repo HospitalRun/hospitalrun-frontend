@@ -1,5 +1,5 @@
 import Resolver from 'ember/resolver';
-import CouchAuth from "hospitalrun/utils/couch-auth";
+import CustomAuth from "hospitalrun/utils/custom-auth";
 import CouchSerializer from "hospitalrun/utils/couch-serializer";
 
 var App = Ember.Application.extend({
@@ -15,7 +15,7 @@ var App = Ember.Application.extend({
 App.initializer({
     name: 'authentication',
     initialize: function(container, application) {
-        container.register('authenticators:custom', CouchAuth);
+        container.register('authenticators:custom', CustomAuth);
         application.register('serializer:couchdb', CouchSerializer);
         Ember.SimpleAuth.setup(container, application);
         application.deferReadiness();

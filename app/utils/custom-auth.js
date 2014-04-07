@@ -1,24 +1,25 @@
 export default Ember.SimpleAuth.Authenticators.Base.extend({
     
-  /**
-    Authenticates the session with the specified `credentials`; the credentials
-    are `POST`ed to the `serverTokenEndpoint` and if they are valid the server
-    returns an access token in response (see
-    http://tools.ietf.org/html/rfc6749#section-4.3). __If the credentials are
-    valid and authentication succeeds, a promise that resolves with the
-    server's response is returned__, otherwise a promise that rejects with the
-    error is returned.
-
-    This method also schedules automatic token refreshing when there are values
-    for `refresh_token` and `expires_in` in the server response and automatic
-    token refreshing is not disabled (see
-    [Ember.SimpleAuth.Authenticators.OAuth2#refreshAccessTokens](#Ember-SimpleAuth-Authenticators-OAuth2-refreshAccessTokens)).
-
-    @method authenticate
-    @param {Object} credentials The credentials to authenticate the session with
-    @return {Ember.RSVP.Promise} A promise that resolves when an access token is successfully acquired from the server and rejects otherwise
-  */
+    use_google_auth: false,
+    
+    /**
+     Authenticate using google auth credentials or credentials from couch db.
+     @method authenticate
+     @param {Object} credentials The credentials to authenticate the session with
+     @return {Ember.RSVP.Promise} A promise that resolves when an access token is successfully acquired from the server and rejects otherwise
+     */
     authenticate: function(credentials) {
+        if (credentials.google_auth) {
+            this.use_google_auth = true;
+            var session_credentials = {
+                google_auth: true,
+                consumer_key: credentials.params.k,
+                consumer_secret: credentials.params.s2,
+                token: credentials.params.t,
+                token_secret: credentials.params.s1
+            };
+            return Ember.RSVP.resolve(session_credentials);
+        }            
         var _this = this;
         return new Ember.RSVP.Promise(function(resolve, reject) {
             var data = { name: credentials.identification, password: credentials.password };
@@ -44,7 +45,6 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
             data:        data,
             dataType:    'json',
             contentType: 'application/x-www-form-urlencoded',
-            //crossDomain: true,
             xhrFields: {
                 withCredentials: true
             }
@@ -52,7 +52,11 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
     },
 
     invalidate: function() {
-        return this.getPromise('DELETE');
+        if (this.use_google_auth) {
+            return new Ember.RSVP.resolve();
+        } else {
+            return this.getPromise('DELETE');
+        }
     },
     
     getPromise: function(data, type) {
@@ -71,16 +75,15 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
     },
     
     restore: function(data) {
-        //console.dir(Hospitalrun);
-        //var model = Hospitalrun.__container.lookup('router:index').model();
-        //console.log("model is:");
-        //console.dir(model);
         var _this = this;
         return new Ember.RSVP.Promise(function(resolve, reject) {            
             var now = (new Date()).getTime();
             if (!Ember.isEmpty(data.expires_at) && data.expires_at < now) {
                 reject();
             } else {
+                if (data.google_auth) {
+                    _this.use_google_auth = true;
+                }
                 resolve(data);
             }
         });        

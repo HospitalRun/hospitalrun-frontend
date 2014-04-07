@@ -1,26 +1,32 @@
 var ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
+    use_google_auth: false,
+
     actions: {
         authenticateSession: function() {
-            console.log("in authsession, currently this:");
-            console.dir(this);            
-            if (document.location.href.indexOf("?") > 0) {
-                console.log("HEY SOMEONE SENT US A GIFT:"+document.location.href);                
-                this.get('session').authenticate('app:authenticators:custom', {query:document.location.search});
+            if (this.use_google_auth) {
+                window.location.replace('/auth/google');
             } else {
-                this.store.find('config','use_google_auth').then(function(record) {
-                    console.log("Found value:");
-                    console.log(record.get('value'));
-                    if (record.get('value')) {
-                        console.log("go use google auth");
-                        //Redirect to the google auth login
+                this._super();
+            }
+        }
+    },
 
-                    } else {
-                        console.log("use traditional auth");
-                        this._super();
-                    }
-
-                    window.location.replace('/auth/google');
-                });
+    model: function(params, transition) {
+        if (params.queryParams.k && params.queryParams.s1 && params.queryParams.s2 && params.queryParams.t) {
+            this.get('session').authenticate('authenticators:custom', {
+                google_auth: true,
+                params: params.queryParams
+            });
+        } else {
+            return this.store.find('config');
+        }
+    },
+    
+    afterModel: function(resolvedModel) {
+        if (resolvedModel) {
+            var use_google_auth = resolvedModel.findBy('id','use_google_auth');
+            if (use_google_auth) {
+                this.use_google_auth = use_google_auth.get('value');
             }
         }
     }
