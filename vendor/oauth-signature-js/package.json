@@ -1,0 +1,60 @@
+{
+  "name": "oauth-signature",
+  "description": "OAuth 1.0a signature generator",
+  "version": "1.1.3",
+  "author": "Marco Bettiolo <marco@bettiolo.it> (https://github.com/bettiolo)",
+  "homepage": "https://github.com/bettiolo/oauth-signature-js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bettiolo/oauth-signature-js"
+  },
+  "bugs": {
+    "url": "http://github.com/bettiolo/oauth-signature-js/issues"
+  },
+  "license": "BSD-3-Clause",
+  "main": "src/app/oauth-signature",
+  "scripts": {
+    "prepublish": "grunt build",
+    "test": "grunt test-build"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "keywords": [
+    "oauth",
+    "hmac-sha1"
+  ],
+  "devDependencies": {
+    "karma-qunit": "~0.1.1",
+    "karma": "~0.10.9",
+    "grunt": "~0.4.2",
+    "grunt-contrib-requirejs": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-uglify": "~0.3.2",
+    "grunt-contrib-watch": "~0.5.3",
+    "karma-script-launcher": "~0.1.0",
+    "karma-jasmine": "~0.1.5",
+    "karma-phantomjs-launcher": "~0.1.2",
+    "grunt-karma": "~0.6.2",
+    "grunt-cli": "~0.1.13",
+    "mocha": "~1.17.1",
+    "grunt-mocha-test": "~0.9.3",
+    "chai": "~1.9.0"
+  },
+  "volo": {
+    "baseUrl": "src/lib",
+    "dependencies": {
+      "url.min": "github:websanova/js-url/v1.8.6#url.min.js",
+      "cryptojs/hmac-sha1": "https://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha1.js",
+      "cryptojs/enc-base64-min": "https://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/enc-base64-min.js",
+      "../lib-dev/qunit": "github:jquery/qunit/v1.14.0#qunit",
+      "../lib-dev/mocha": "github:visionmedia/mocha/1.17.1",
+      "../lib-dev/chai": "github:chaijs/chai/1.9.0"
+    }
+  },
+  "dependencies": {
+    "crypto-js": "~3.1.2-2"
+  }
+}

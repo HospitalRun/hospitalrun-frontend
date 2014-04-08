@@ -1,0 +1,14 @@
+{
+  "name": "oauth-signature-js",
+  "homepage": "https://github.com/bettiolo/oauth-signature-js",
+  "_release": "ffb4330e0d",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "ffb4330e0d5cddb106b7e096c2f673866d024ee5"
+  },
+  "_source": "git://github.com/bettiolo/oauth-signature-js.git",
+  "_target": "*",
+  "_originalSource": "oauth-signature-js",
+  "_direct": true
+}
