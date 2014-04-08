@@ -11,6 +11,7 @@
     "ember-testing-httpRespond": "~0.1.2",
     "ember-pouchdb-adapter": "https://github.com/aexmachina/ember-pouchdb-adapter.git",
     "ember-simple-auth": "https://github.com/simplabs/ember-simple-auth-component.git",
-    "pouchdb": "~2.1.0"
+    "pouchdb": "~2.1.0",
+    "oauth-signature-js": "*"
   }
 }

@@ -1,5 +1,6 @@
 import Resolver from 'ember/resolver';
 import CustomAuth from "hospitalrun/utils/custom-auth";
+import CustomAuthorizer from "hospitalrun/utils/custom-authorizer";
 import CouchSerializer from "hospitalrun/utils/couch-serializer";
 
 var App = Ember.Application.extend({
@@ -17,7 +18,9 @@ App.initializer({
     initialize: function(container, application) {
         container.register('authenticators:custom', CustomAuth);
         application.register('serializer:couchdb', CouchSerializer);
-        Ember.SimpleAuth.setup(container, application);
+        Ember.SimpleAuth.setup(container, application, {
+            authorizer: CustomAuthorizer
+        });
         application.deferReadiness();
         var remoteDB = document.location.protocol+'//'+document.location.host+'/db/config';
         PouchDB.replicate(remoteDB,'config', {

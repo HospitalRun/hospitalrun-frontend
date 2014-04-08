@@ -14,9 +14,9 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
             var session_credentials = {
                 google_auth: true,
                 consumer_key: credentials.params.k,
-                consumer_secret: credentials.params.s2,
+                consumer_secret: credentials.params.s1,
                 token: credentials.params.t,
-                token_secret: credentials.params.s1
+                token_secret: credentials.params.s2
             };
             return Ember.RSVP.resolve(session_credentials);
         }            
