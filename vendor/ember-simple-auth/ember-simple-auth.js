@@ -138,7 +138,7 @@ define("ember-simple-auth/authenticators/base",
       Ember.Application.initializer({
         name: 'authentication',
         initialize: function(container, application) {
-          container.register('app:authenticators:custom', CustomAuthenticator);
+          container.register('authenticators:custom', CustomAuthenticator);
           Ember.SimpleAuth.setup(container, application);
         }
       });
@@ -152,7 +152,7 @@ define("ember-simple-auth/authenticators/base",
     var Base = Ember.Object.extend(Ember.Evented, {
       /**
         Restores the session from a set of properties. __This method is invoked by
-        the session either after the applciation starts up and session data was
+        the session either after the application starts up and session data was
         restored from the store__ or when properties in the store have changed due
         to external events (e.g. in another tab).
 
@@ -458,7 +458,7 @@ define("ember-simple-auth/authorizers/base",
       The base for all authorizers. __This serves as a starting point for
       implementing custom authorizers and must not be used directly.__
 
-      __The authorizer preprocesses all XHR requests__ (expect ones to 3rd party
+      __The authorizer preprocesses all XHR requests__ (except ones to 3rd party
       origins, see [Ember.SimpleAuth.setup](#Ember-SimpleAuth-setup)) and makes
       sure they have the required data attached that allows the server to identify
       the user making the request. This data might be a specific header, data in
@@ -757,7 +757,7 @@ define("ember-simple-auth/mixins/application_route_mixin",
           App.ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
             actions: {
               authenticateSession: function() {
-                this.get('session').authenticate('app:authenticators:custom', {});
+                this.get('session').authenticate('authenticators:custom', {});
               }
             }
           });
@@ -957,7 +957,7 @@ define("ember-simple-auth/mixins/authentication_controller_mixin",
           This action will authenticate the session with the configured
           [Ember.SimpleAuth.AuthenticationControllerMixin#authenticatorFactory](#Ember-SimpleAuth-AuthenticationControllerMixin-authenticatorFactory)
           (see
-          Ember.SimpleAuth.Session#authenticate](#Ember-SimpleAuth-Session-authenticate)).
+          [Ember.SimpleAuth.Session#authenticate](#Ember-SimpleAuth-Session-authenticate)).
 
           If authentication succeeds, this method triggers the
           `sessionAuthenticationSucceeded` action (see
@@ -1040,10 +1040,8 @@ define("ember-simple-auth/mixins/login_controller_mixin",
         */
         authenticate: function() {
           var data = this.getProperties('identification', 'password');
-          if (!Ember.isEmpty(data.identification) && !Ember.isEmpty(data.password)) {
-            this.set('password', null);
-            this._super(data);
-          }
+          this.set('password', null);
+          this._super(data);
         }
       }
     });

@@ -122,6 +122,7 @@
     },
 
     find: function(store, type, id) {
+        console.log("in pouch db find");
       var db = this._getDb();
       return new Ember.RSVP.Promise(function(resolve, reject) {
         db.get(id, function(err, doc) {
@@ -156,6 +157,7 @@
     },
 
     findAll: function(store, type, sinceToken) {
+        console.log("in find all");
       var db = this._getDb(),
           data = [];
       return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -171,6 +173,8 @@
               response.rows.forEach(function(row) {
                 data.push(row.doc);
               });
+                console.log("resolving with data");
+                console.dir(data);
               resolve(data);
             }
           }

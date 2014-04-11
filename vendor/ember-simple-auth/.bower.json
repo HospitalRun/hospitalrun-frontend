@@ -1,15 +1,15 @@
 {
   "name": "ember-simple-auth",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": [
     "./ember-simple-auth.js"
   ],
   "homepage": "https://github.com/simplabs/ember-simple-auth-component",
-  "_release": "0.2.0",
+  "_release": "0.2.1",
   "_resolution": {
     "type": "version",
-    "tag": "0.2.0",
-    "commit": "9cec7ec630f9127363bc624aa71e961f9f8f05fb"
+    "tag": "0.2.1",
+    "commit": "994145dcdf454ae5fe0de36e104253c390f72fcf"
   },
   "_source": "https://github.com/simplabs/ember-simple-auth-component.git",
   "_target": "*",

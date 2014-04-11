@@ -74,7 +74,9 @@ module.exports = function (broccoli) {
       'pouchdb-nightly.js',
       'pouchdb_adapter.js',
       'ember-simple-auth.js',
-      'oauth-signature-js/dist/oauth-signature.js'
+      'oauth-signature-js/dist/oauth-signature.js',
+      'ios-imagefile-megapixel/src/megapix-image.js'
+
     ],
 
     wrapInEval: env !== 'production',

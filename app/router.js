@@ -8,6 +8,11 @@ Router.map(function() {
     this.resource('users', { path: '/users' }, function() {
         // additional child routes    
     });
+    
+    this.resource('inventory', { path: '/inventory' }, function() {
+        // additional child routes    
+    });
+    
 });
 
 export default Router;

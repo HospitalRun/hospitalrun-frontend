@@ -1,11 +1,11 @@
 {
   "name": "ember",
-  "version": "1.5.0-beta.4",
+  "version": "1.5.0",
   "main": [
     "./ember.js"
   ],
   "dependencies": {
-    "jquery": ">= 1.7 <= 2.1",
+    "jquery": ">= 1.7.0 <= 2.1.0",
     "handlebars": ">= 1.0.0 < 2.0.0"
   }
 }

@@ -13,6 +13,6 @@
     "commit": "aee640f36519f019998ef144bd43346c65738d85"
   },
   "_source": "git://github.com/components/ember-data.git",
-  "_target": "1.0.0-beta.7",
+  "_target": "~1.0.0-beta.7",
   "_originalSource": "ember-data"
 }
