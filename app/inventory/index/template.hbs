@@ -1,0 +1,37 @@
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Roles</th>
+        <th>Actions</th>
+    </tr>
+    {{#each itemController='inventory/item-controller'}}    
+    <tr>
+        {{#if isEditing}}
+            <td>{{id}}</td>
+            <td>{{name}}</td>
+            <td>{{input value=email}}</td>
+            <td>{{input type='password' value=password}}</td>
+            <td>
+                {{role-select optionValuePath="content.roles" optionLabelPath="content.name" value=roles}}
+            </td>
+            <td>
+                <button {{action 'cancelUpdate'}}>Cancel</button>
+                <button {{action 'updateInventory'}}>Update</button>
+            </td>
+        {{else}}
+            <td>{{id}}</td>
+            <td>{{name}}</td>
+            <td>{{email}}</td>
+            <td></td>
+            <td>{{roles}}</td>
+            <td>
+                <button {{action 'editInventory'}}>Edit</button>
+                <button {{action 'deleteInventory'}}>Delete</button>
+            </td>        
+        {{/if}}
+    </tr>
+    {{/each}}
+</table>

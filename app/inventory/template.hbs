@@ -1,0 +1,17 @@
+<section>
+    <header id='header'>
+        <h1>Inventory</h1>
+        <label>Name</label>{{input type='text' value=newName}}<br/>
+        <label>Description</label>{{input type='password' value=newDesc}}<br/>
+        <label>Quantity</label>{{input type='text' value=newQuantity}}<br/>
+        <label>Scan Code</label>{{file-scan type='file' accept='image/*;capture=camera' code=newScan}}<br/>
+        <label>SCANNED VALUE:</label>{{newScan}}<br/>
+        <br/>
+        <button {{action 'newInventoryItem'}}>Add</button>
+        <br/>
+        <img src="about:blank" alt="" id="scannedpic">
+    </header>
+</section>
+<section id='main'>
+    {{outlet}}
+</section>
