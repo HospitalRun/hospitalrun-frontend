@@ -1,4 +1,6 @@
 export default Ember.ArrayController.extend({
+    
+    searchText: '',
     actions: {
         newInventoryItem: function() {
             var newName = this.get('newName');
@@ -14,6 +16,10 @@ export default Ember.ArrayController.extend({
                 description: newDescription
             });
             inventory.save();
+        },
+        
+        search: function() {
+            console.log("In search, search text:"+this.searchText);
         }
     }
 });
