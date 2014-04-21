@@ -1,4 +1,6 @@
-var IndexRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+    afterModel: function() {
+        this.controllerFor('navigation').set('allowSearch',false);
+    }
 });
 
-export default IndexRoute;

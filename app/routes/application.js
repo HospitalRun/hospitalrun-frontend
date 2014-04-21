@@ -23,6 +23,7 @@ var ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin
     },
     
     afterModel: function(resolvedModel) {
+        this.controllerFor('navigation').set('allowSearch',false);
         if (resolvedModel) {
             var use_google_auth = resolvedModel.findBy('id','use_google_auth');
             if (use_google_auth) {
