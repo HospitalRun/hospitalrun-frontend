@@ -1,0 +1,39 @@
+{
+  "name": "ember-autofocus",
+  "version": "0.0.3",
+  "homepage": "https://github.com/AndreasPizsa/ember-autofocus",
+  "description": "Automatically focus on an input field upon page load in Ember",
+  "main": "dist/ember-autofocus.min.js",
+  "keywords": [
+    "ember",
+    "emberjs",
+    "focus",
+    "input",
+    "autofocus",
+    "pageload"
+  ],
+  "authors": [
+    "Andreas Pizsa (https://github.com/AndreasPizsa)"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ember": "1.2.0"
+  },
+  "_release": "0.0.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.3",
+    "commit": "1cdfe45c30e3a51b037b9eb7dc74704df6400591"
+  },
+  "_source": "git://github.com/AndreasPizsa/ember-autofocus.git",
+  "_target": "~0.0.3",
+  "_originalSource": "ember-autofocus",
+  "_direct": true
+}
