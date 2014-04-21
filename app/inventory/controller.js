@@ -1,25 +1,26 @@
-export default Ember.ArrayController.extend({
+export default Ember.ArrayController.extend(Ember.Validations.Mixin, {
+    validations: {
+        name: {
+            presence: true,
+            length: { minimum: 5 }
+        },
+        quantity: {
+            numericality: true
+        }
+    },
     
-    searchText: '',
     actions: {
         newInventoryItem: function() {
-            var newName = this.get('newName');
-            if (newName && !newName.trim()) {
-                this.set('newName', '');
-                return;
+            if (this.get('isValid')) {
+                var inventory = this.store.createRecord('inventory', {
+                    //id: this.get('newId'),
+                    name: this.get('name'),
+                    description: this.get('description')
+                });
+                inventory.save();
+            } else {
+                console.log("RECORD IS INVALID");
             }
-            var newDesc = this.get('newDesc');
-
-            var inventory = this.store.createRecord('inventory', {
-                id: 'org.couchdb.user:'+newUser,
-                name: newName,
-                description: newDescription
-            });
-            inventory.save();
-        },
-        
-        search: function() {
-            console.log("In search, search text:"+this.searchText);
         }
     }
 });
