@@ -73,10 +73,13 @@ module.exports = function (broccoli) {
       'ember-resolver.js',
       'pouchdb-nightly.js',
       'pouchdb_adapter.js',
+      'ember-autofocus.min.js',
       'ember-simple-auth.js',
+      'ember-easyForm-latest.js',
+      'ember-validations-latest.js',
       'oauth-signature-js/dist/oauth-signature.js',
-      'ios-imagefile-megapixel/src/megapix-image.js'
-
+      'uuid.js',
+      'bootstrap.js'
     ],
 
     wrapInEval: env !== 'production',
