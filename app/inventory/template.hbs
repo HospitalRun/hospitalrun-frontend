@@ -1,17 +1,27 @@
-<section>
-    <header id='header'>
-        <h1>Inventory</h1>
-        <label>Name</label>{{input type='text' value=newName}}<br/>
-        <label>Description</label>{{input type='password' value=newDesc}}<br/>
-        <label>Quantity</label>{{input type='text' value=newQuantity}}<br/>
-        <label>SCANNED VALUE:</label>{{newScan}}<br/>
-        <br/>
-        <button {{action 'newInventoryItem'}}>Add</button>
-        <br/>
-        <label>Search</label>
-        {{text-search valueBinding="searchText"}}
-    </header>
-</section>
-<section id='main'>
-    {{outlet}}
-</section>
+<div class="panel panel-primary">
+    <div class="panel-heading">New Inventory</div>    
+    {{#form-for controller role="form"}}
+        <fieldset>
+        <div class="form-group">
+            {{label-field id}}
+            {{input-field id class="form-control" }}
+        </div>
+        <div class="form-group">
+            {{label-field name}}
+            {{input-field name class="form-control" }}
+        </div>
+        <div class="form-group">
+            {{label-field description}}
+            {{input-field description as="text" class="form-control" rows="3"}}
+        </div>
+        <div class="form-group">
+            {{label-field quantity}}
+            {{input-field quantity class="form-control"}}    
+        </div>
+        <button {{action 'newInventoryItem'}} class="btn btn-primary">Add</button>    
+        </fieldset>
+    {{/form-for}}
+    
+</div>
+{{outlet}}
+
