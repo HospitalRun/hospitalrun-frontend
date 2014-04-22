@@ -10,7 +10,8 @@ Router.map(function() {
     });
     
     this.resource('inventory', { path: '/inventory' }, function() {
-        this.route('search', {path: '/search'});
+        this.route('search');
+        this.route('new');
     });
     
 });

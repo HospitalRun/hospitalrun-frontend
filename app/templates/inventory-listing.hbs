@@ -1,3 +1,4 @@
+{{#if model}}
 <table class="table">
     <tr>
         <th>ID</th>
@@ -27,3 +28,8 @@
     </tr>
     {{/each}}
 </table>
+{{else}}
+    <div class="alert alert-info">
+        <em>No items found.  Create a new record?</em> <button class="btn btn-primary" {{action 'newInventory'}}>New Item</button>
+    </div>
+{{/if}}

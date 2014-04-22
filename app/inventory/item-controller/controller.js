@@ -1,4 +1,4 @@
-export default Ember.ObjectController.extend({
+export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     
     needs: ['inventory'],
     
@@ -15,9 +15,11 @@ export default Ember.ObjectController.extend({
             inventory.deleteRecord();      
             inventory.save();    
         },
+        
         editInventory: function () {
             this.set('isEditing', true);
         },
+
         updateInventory: function() {
             this.set('isEditing', false);
             this.get('model').save();

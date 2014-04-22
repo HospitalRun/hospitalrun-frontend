@@ -2,3 +2,6 @@
     <div class="panel-heading">Search Results</div>
     {{partial "inventory-listing"}}
 </div>
+{{#if model}}
+    <button class="btn btn-primary" {{action 'newInventory'}}>New Item</button>
+{{/if}}

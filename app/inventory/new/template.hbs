@@ -1,0 +1,18 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">New Inventory</div>    
+    {{#form-for controller role="form"}}
+        <fieldset>
+            {{input name}}            
+            {{input description as="text"}}
+            {{input quantity}}    
+            {{input crossrefid}}    
+        </div>
+        <button {{action 'newInventoryItem'}} class="btn btn-primary">Add</button>    
+        </fieldset>
+    {{/form-for}}    
+    {{#unless isValidRecord}}
+        <div class="alert alert-danger">
+            <em>Please fix the errors before creating a new inventory item.</em>
+        </div>
+    {{/unless}}
+</div>
