@@ -462,17 +462,14 @@ Ember.EasyForm.Input = Ember.EasyForm.BaseView.extend({
     return options;
   }.property(),
   focusOut: function() {
-      console.log("Focus out fired:");
     this.set('hasFocusedOut', true);
     this.showValidationError();
   },
   showValidationError: function() {      
     if (this.get('hasFocusedOut')) {
       if (Ember.isEmpty(this.get('formForModel.errors.' + this.property))) {
-          console.log("CANNOT nShowValidationError FOR: "+this.property);
         this.set('canShowValidationError', false);
       } else {
-          console.log("Can ShowValidationError");
         this.set('canShowValidationError', true);
       }
     }
