@@ -4,6 +4,7 @@
         <th>ID</th>
         <th>Name</th>
         <th>Description</th>
+        <th>Quantity</th>
         <th>Actions</th>
     </tr>
     {{#each itemController='inventory/item-controller'}}    
@@ -12,6 +13,7 @@
             <td>{{id}}</td>
             <td>{{input value=name}}</td>
             <td>{{input value=description}}</td>
+            <td>{{input value=quantity}}</td>
             <td>
                 <button {{action 'cancelUpdate'}}>Cancel</button>
                 <button {{action 'updateInventory'}}>Update</button>
@@ -20,6 +22,7 @@
             <td>{{id}}</td>
             <td>{{name}}</td>
             <td>{{description}}</td>
+            <td>{{quantity}}</td>
             <td>
                 <button {{action 'editInventory'}}>Edit</button>
                 <button {{action 'deleteInventory'}}>Delete</button>

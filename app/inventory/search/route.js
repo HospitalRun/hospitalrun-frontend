@@ -13,7 +13,6 @@ export default Ember.Route.extend({
     },
     
     model: function(params) {
-        console.log("in search params are:", params);
         var queryParams = {
             keys: [
                 '_id',

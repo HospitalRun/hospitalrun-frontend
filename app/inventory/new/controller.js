@@ -11,7 +11,7 @@ export default Ember.ArrayController.extend(Ember.SimpleAuth.AuthenticatedRouteM
     isValidRecord: true,
     
     actions: {
-        newInventoryItem: function() {
+        submit: function() {
             if (this.get('isValid')) {
                 this.set('isValidRecord',true);
                 var newId = this.generateId();
@@ -23,8 +23,8 @@ export default Ember.ArrayController.extend(Ember.SimpleAuth.AuthenticatedRouteM
                     quantity: this.get('quantity'),
                 });
                 var controller = this;
-                inventory.save().then(function(){                    
-                    controller.transitionToRoute('inventory/search',  {
+                inventory.save().then(function(){ 
+                    controller.transitionToRoute('inventory.search', {
                         queryParams: {
                             searchText: newId
                         }

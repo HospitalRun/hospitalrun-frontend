@@ -1,18 +1,19 @@
 <div class="panel panel-primary">
-    <div class="panel-heading">New Inventory</div>    
-    {{#form-for controller role="form"}}
-        <fieldset>
-            {{input name}}            
+    <div class="panel-heading">New Inventory</div>
+    <div class="panel-body">
+        {{#form-for controller role="form" wrapper="twitter-bootstrap"}}
+            {{input name}}
             {{input description as="text"}}
             {{input quantity}}    
             {{input crossrefid}}    
-        </div>
-        <button {{action 'newInventoryItem'}} class="btn btn-primary">Add</button>    
-        </fieldset>
-    {{/form-for}}    
+            {{submit "Add" class="btn btn-primary" value="Add" name="Add" as="button"}}
+        {{/form-for}}
+    </div>
     {{#unless isValidRecord}}
-        <div class="alert alert-danger">
-            <em>Please fix the errors before creating a new inventory item.</em>
+        <div class="panel-footer">
+            <div class="alert alert-danger">
+                <em>Please fix the errors before creating a new inventory item.</em>
+            </div>
         </div>
     {{/unless}}
 </div>
