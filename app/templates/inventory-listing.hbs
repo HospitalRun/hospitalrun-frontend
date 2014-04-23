@@ -4,6 +4,7 @@
         <th>ID</th>
         <th>Name</th>
         <th>Description</th>
+        <th>Type</th>
         <th>Quantity</th>
         <th>Actions</th>
     </tr>
@@ -13,6 +14,7 @@
             <td>{{id}}</td>
             <td>{{input value=name}}</td>
             <td>{{input value=description}}</td>
+            <td>{{type}}</td>
             <td>{{input value=quantity}}</td>
             <td>
                 <button {{action 'cancelUpdate'}}>Cancel</button>
@@ -22,6 +24,7 @@
             <td>{{id}}</td>
             <td>{{name}}</td>
             <td>{{description}}</td>
+            <td>{{type}}</td>
             <td>{{quantity}}</td>
             <td>
                 <button {{action 'editInventory'}}>Edit</button>

@@ -3,7 +3,8 @@ var Inventory = DS.Model.extend({
     keywords: DS.attr(),
     name: DS.attr('string'),
     quantity: DS.attr('number'),
-    crossreference: DS.attr('string')
+    crossReference: DS.attr('string'),
+    type: DS.attr('string')
 });
 
 export default Inventory;

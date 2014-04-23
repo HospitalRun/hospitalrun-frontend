@@ -1,4 +1,10 @@
 export default Ember.ArrayController.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, Ember.Validations.Mixin, {
+    inventoryTypes: [
+        'Asset',
+        'Medication',
+        'Supply'
+    ],
+    
     validations: {
         name: {
             presence: true,
@@ -19,7 +25,8 @@ export default Ember.ArrayController.extend(Ember.SimpleAuth.AuthenticatedRouteM
                     id: newId,
                     name: this.get('name'),
                     description: this.get('description'),
-                    crossreference: this.get('crossreference'),
+                    crossReference: this.get('crossReference'),
+                    type: this.get('inventoryType'),
                     quantity: this.get('quantity'),
                 });
                 var controller = this;
