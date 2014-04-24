@@ -1,6 +1,6 @@
 {
   "name": "ember",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "main": [
     "./ember.js"
   ],
@@ -9,11 +9,11 @@
     "handlebars": ">= 1.0.0 < 2.0.0"
   },
   "homepage": "https://github.com/components/ember",
-  "_release": "1.5.0",
+  "_release": "1.5.1",
   "_resolution": {
     "type": "version",
-    "tag": "1.5.0",
-    "commit": "43f78cf31b5eb6c8d799a3489c58aac756624bed"
+    "tag": "1.5.1",
+    "commit": "a99cd4130c00d7b9e2d9292d00162a1c8bd37e7b"
   },
   "_source": "git://github.com/components/ember.git",
   "_target": "~1.5.0",
