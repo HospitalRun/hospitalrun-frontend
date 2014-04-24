@@ -363,7 +363,6 @@
         self._getDb().then(function(db){
           try {
             db.allDocs(queryParams, function(err, response){
-                console.log("POUCH DB ADAPTER in db allDOCS:, response:",response);
               if (err) {
                 _pouchError(reject)(err);
               } else {
@@ -689,7 +688,6 @@
 
       var promise = new Ember.RSVP.Promise(function(resolve, reject){
         if (!self.db) {
-            console.log("Getting pouchdb for:",self.databaseName);
           new PouchDB(self.databaseName || 'ember-application-db', function(err, db){
             if(err){
               Ember.run(null, reject, err);
