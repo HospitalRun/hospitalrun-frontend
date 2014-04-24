@@ -12,6 +12,7 @@
     "pouchdb": "~2.1.0",
     "oauth-signature-js": "*",
     "ember-autofocus": "~0.0.3",
-    "bootstrap": "~3.1.1"
+    "bootstrap": "~3.1.1",
+    "ember-pouchdb-adapter": "kulpae/ember-pouchdb-adapter#~v1.0.0-beta.7"
   }
 }
