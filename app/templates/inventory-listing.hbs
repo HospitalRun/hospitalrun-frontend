@@ -27,8 +27,28 @@
             <td>{{type}}</td>
             <td>{{quantity}}</td>
             <td>
-                <button {{action 'editInventory'}}>Edit</button>
-                <button {{action 'deleteInventory'}}>Delete</button>
+                {{#if showAdd}}
+                    {{#if isAdding}}
+                        <label>Amount: </label>{{input value=addAmount}}
+                        <button {{action 'addInventory'}}>Add</button>
+                        <button {{action 'cancelUpdate'}}>Cancel</button>
+                    {{else}}
+                        <button {{action 'addInventory'}}>Add</button>
+                    {{/if}}
+                {{/if}}
+                {{#if showDecrease}}
+                    {{#if isDecreasing}}
+                        <label>Amount: </label>{{input value=decreaseAmount}}
+                        <button {{action 'decreaseInventory'}}>Decrease</button>
+                        <button {{action 'cancelUpdate'}}>Cancel</button>
+                    {{else}}
+                        <button {{action 'decreaseInventory'}}>Decrease</button>
+                    {{/if}}
+                {{/if}}
+                {{#if showEdit}}
+                    <button {{action 'editInventory'}}>Edit</button>
+                    <button {{action 'deleteInventory'}}>Delete</button>
+                {{/if}}
             </td>        
         {{/if}}
     </tr>
