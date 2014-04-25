@@ -1,0 +1,39 @@
+{{#if model}}
+<table class="table">
+    <tr>
+        <th>Patient</th>
+        <th>Prescription</th>
+        <th>Medication</th>
+        <th>Quantity</th>        
+        <th>Status</th>        
+        <th>Actions</th>
+    </tr>
+    {{#each itemController='medication/item-controller'}}    
+    <tr>
+        {{#if isEditing}}
+            <td>{{patientId}}</td>
+            <td>{{medicationId}}</td>
+            <td>{{input value=quantity}}</td>
+            <td>{{staus}}</td>
+            <td>
+                <button {{action 'cancelUpdate'}}>Cancel</button>
+                <button {{action 'updateInventory'}}>Update</button>
+            </td>
+        {{else}}
+            <td>{{patientId}}</td>
+            <td>{{medicationId}}</td>
+            <td>{{quantity}}</td>
+            <td>{{staus}}</td>
+            <td>
+                <button {{action 'editInventory'}}>Edit</button>
+                <button {{action 'deleteInventory'}}>Delete</button>
+            </td>        
+        {{/if}}
+    </tr>
+    {{/each}}
+</table>
+{{else}}
+    <div class="alert alert-info">
+        <em>No items found.  Create a new record?</em> <button class="btn btn-primary" {{action 'newMedication'}}>New Request</button>
+    </div>
+{{/if}}

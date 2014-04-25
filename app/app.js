@@ -3,6 +3,7 @@ import CustomAuth from "hospitalrun/utils/custom-auth";
 import CustomAuthorizer from "hospitalrun/utils/custom-authorizer";
 import CouchSerializer from "hospitalrun/utils/couch-serializer";
 import easyFormBootstrap from "hospitalrun/utils/easyform-bootstrap";
+import SmartPrescription from "hospitalrun/components/smart-prescription";
 
 var App = Ember.Application.extend({
     LOG_ACTIVE_GENERATION: true,
@@ -18,6 +19,7 @@ App.initializer({
     name: 'authentication',
     initialize: function(container, application) {
         easyFormBootstrap();
+        Ember.EasyForm.Config.registerInputType('smart-prescription', SmartPrescription);
         container.register('authenticators:custom', CustomAuth);
         application.register('serializer:couchdb', CouchSerializer);
         Ember.SimpleAuth.setup(container, application, {

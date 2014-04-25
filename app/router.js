@@ -14,6 +14,12 @@ Router.map(function() {
         this.route('new');
     });
     
+    this.resource('medication', { path: '/medication' }, function() {
+        this.route('search');
+        this.route('new');
+    });
+    
+    
 });
 
 export default Router;
