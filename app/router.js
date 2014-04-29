@@ -1,6 +1,8 @@
-var Router = Ember.Router.extend(); // ensure we don't share routes between all Router instances
+var Router = Ember.Router.extend({
+  location: 'auto'
+});
 
-Router.map(function() {    
+Router.map(function() {
     this.route('index', { path: '/' });
     this.route('protected');
     this.route('login');
@@ -18,8 +20,6 @@ Router.map(function() {
         this.route('search');
         this.route('new');
     });
-    
-    
 });
 
 export default Router;

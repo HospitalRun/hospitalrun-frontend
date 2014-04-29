@@ -8,7 +8,15 @@ var ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin
             } else {
                 this._super();
             }
-        }
+        },
+        
+        sessionAuthenticationSucceeded: function() {
+            console.log("in SessionAuthenticationSucceeded:");
+            var route = this;
+            this._syncMainDB().then(function() {
+                route._super();
+            });
+        },
     },
 
     model: function(params, transition) {
@@ -30,7 +38,26 @@ var ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin
                 this.use_google_auth = use_google_auth.get('value');
             }
         }
+    },
+    
+    _syncMainDB: function() {
+        return new Ember.RSVP.Promise(function(resolve, reject){
+            var dbUrl =  document.location.protocol+'//'+document.location.host+'/db/main';
+            var remoteDB = dbUrl + 'config';
+            console.log("syncing main");
+            PouchDB.sync(dbUrl,'main', {
+                complete: function() {
+                    console.log("done syncing main both ways");
+                    Ember.run(null, resolve, {success:true});
+                }
+            }, function(err) {
+                console.log("ERROR syncing main both ways", err);
+                Ember.run(null, resolve, {                        
+                    error: err, 
+                    success:false
+                });
+            });
+        });
     }
 });
-
 export default ApplicationRoute;

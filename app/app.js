@@ -1,42 +1,13 @@
 import Resolver from 'ember/resolver';
-import CustomAuth from "hospitalrun/utils/custom-auth";
-import CustomAuthorizer from "hospitalrun/utils/custom-authorizer";
-import CouchSerializer from "hospitalrun/utils/couch-serializer";
-import easyFormBootstrap from "hospitalrun/utils/easyform-bootstrap";
-import SmartPrescription from "hospitalrun/components/smart-prescription";
+import loadInitializers from 'ember/load-initializers';
+
+Ember.MODEL_FACTORY_INJECTIONS = true;
 
 var App = Ember.Application.extend({
-    LOG_ACTIVE_GENERATION: true,
-    LOG_MODULE_RESOLVER: true,
-    LOG_TRANSITIONS: true,
-    LOG_TRANSITIONS_INTERNAL: true,
-    LOG_VIEW_LOOKUPS: true,
-    modulePrefix: 'hospitalrun', // TODO: loaded via config
-    Resolver: Resolver['default']
+  modulePrefix: 'hospitalrun', // TODO: loaded via config
+  Resolver: Resolver
 });
 
-App.initializer({
-    name: 'authentication',
-    initialize: function(container, application) {
-        easyFormBootstrap();
-        Ember.EasyForm.Config.registerInputType('smart-prescription', SmartPrescription);
-        container.register('authenticators:custom', CustomAuth);
-        application.register('serializer:couchdb', CouchSerializer);
-        Ember.SimpleAuth.setup(container, application, {
-            authorizer: CustomAuthorizer
-        });
-        application.deferReadiness();
-        var remoteDB = document.location.protocol+'//'+document.location.host+'/db/config';
-        PouchDB.replicate(remoteDB,'config', {
-            complete: function() {
-                application.advanceReadiness();
-            }
-        }, function(err) {
-            console.log("On ERROR callback:");
-            console.dir(err);
-            application.advanceReadiness();
-        });
-    }
-});
+loadInitializers(App, 'hospitalrun');
 
 export default App;

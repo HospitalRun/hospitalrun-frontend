@@ -1,7 +1,7 @@
 export default DS.Model.extend({
+    medicationId: DS.attr('string'),
     patientId: DS.attr('string'),
-    medicationId: DS.attr('string'),    
-    quantity: DS.attr('number'),
     prescription: DS.attr('string'),
+    quantity: DS.attr('number'),    
     status: DS.attr('string')
 });
