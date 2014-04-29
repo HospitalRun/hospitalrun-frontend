@@ -1,6 +1,8 @@
 ic-ajax
 =======
 
+[![Build Status](https://travis-ci.org/instructure/ic-ajax.png)](https://travis-ci.org/instructure/ic-ajax)
+
 Ember-friendly `jQuery.ajax` wrapper.
 
 - returns RSVP promises
@@ -16,14 +18,15 @@ Installation
 
 `npm install ic-ajax`
 
-... or download `main.js` and include it into your app however you want.
-
 Module Support
 --------------
 
+Note the `dist` directory has multiple module formats, use whatever
+works best for you.
+
 - AMD
 
-  `define(['bower_components/ic-ajax'], function(ajax) {});`
+  `define(['ic-ajax'], function(ajax) {});`
 
 - Node.JS (CJS)
 
@@ -38,21 +41,22 @@ Module Support
 API
 ---
 
-Ajax simply wraps `jQuery.ajax` with two exceptions:
+This lib simply wraps `jQuery.ajax` with two exceptions:
 
 - success and error callbacks are not supported
 - does not resolve three arguments like $.ajax (real promises only
-  resolve a single value). `ic.ajax` only resolves the response data
-  from the request, while ic.ajax.raw resolves an object with the three
+  resolve a single value). `request` only resolves the response data
+  from the request, while `raw` resolves an object with the three
   "arguments" as keys if you need them.
 
-Other than that, use it exactly like `$.ajax`.
+Other than that, use `request` exactly like `$.ajax`.
 
 ```js
 var ajax = ic.ajax;
+
 App.ApplicationRoute = Ember.Route.extend({
   model: function() {
-    return ajax('/foo');
+    return ajax.request('/foo');
   }
 }
 
@@ -64,8 +68,23 @@ ajax.raw('/foo').then(function(result) {
 });
 ```
 
+Ember Data
+------------------
+
+By default, if Ember Data is on the page, ic-ajax will override the
+`RESTAdapter`'s `ajax` method to use ic-ajax instead of jQuery's ajax.
+
+To opt out of the behavior, you can set `ic.ajax.request.OVERRIDE_REST_ADAPTER = false`
+after loading ic-ajax.
+
 Simplified Testing
 ------------------
+
+In order to test newly added code you must rebuild the distribution.
+
+```bash
+broccoli build dist
+```
 
 Adding fixtures with `defineFixture` tells ic-ajax to resolve the promise
 with the fixture matching a url instead of making a request. This allows
@@ -80,10 +99,13 @@ ic.ajax.defineFixture('api/v1/courses', {
   textStatus: 'success'
 });
 
-ic.ajax('api/v1/courses').then(function(result) {
+ic.ajax.request('api/v1/courses').then(function(result) {
   deepEqual(result, ic.ajax.lookupFixture('api/v1/courses').response);
 });
 ```
+
+To test failure paths, set the `textStatus` to anything but `success`.
+
 
 Contributing
 ------------
@@ -91,9 +113,14 @@ Contributing
 Install dependencies and run tests with the following:
 
 ```sh
-bower install
 npm install
 npm test
+```
+
+For those of you with release privileges:
+
+```sh
+npm run-script release
 ```
 
 Special Thanks
@@ -106,7 +133,7 @@ License and Copyright
 
 MIT Style license
 
-(c) 2013 Instructure, Inc.
+(c) 2014 Instructure, Inc.
 
 
   [1]:https://github.com/discourse/discourse/blob/master/app/assets/javascripts/discourse/mixins/ajax.js#L19

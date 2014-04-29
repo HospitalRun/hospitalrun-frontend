@@ -1,7 +1,0 @@
-{
-  "name": "FakeXMLHttpRequest",
-  "version": "0.0.1",
-  "main": [
-    "./fake_xml_http_request.js"
-  ]
-}
