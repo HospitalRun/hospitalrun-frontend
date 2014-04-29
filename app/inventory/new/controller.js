@@ -12,35 +12,27 @@ export default Ember.ArrayController.extend(Ember.SimpleAuth.AuthenticatedRouteM
         quantity: {
             numericality: true
         }
-    },
-    
-    isValidRecord: true,
+    },    
     
     actions: {
         submit: function() {
-            if (this.get('isValid')) {
-                this.set('isValidRecord',true);
-                var newId = this.generateId();
-                var inventory = this.store.createRecord('inventory', {
-                    id: newId,
-                    name: this.get('name'),
-                    description: this.get('description'),
-                    crossReference: this.get('crossReference'),
-                    type: this.get('inventoryType'),
-                    quantity: this.get('quantity'),
+            var newId = this.generateId();
+            var inventory = this.store.createRecord('inventory', {
+                id: newId,
+                name: this.get('name'),
+                description: this.get('description'),
+                crossReference: this.get('crossReference'),
+                type: this.get('inventoryType'),
+                quantity: this.get('quantity'),
+            });
+            var controller = this;
+            inventory.save().then(function(){ 
+                controller.transitionToRoute('inventory.search', {
+                    queryParams: {
+                        searchText: newId
+                    }
                 });
-                var controller = this;
-                inventory.save().then(function(){ 
-                    controller.transitionToRoute('inventory.search', {
-                        queryParams: {
-                            searchText: newId
-                        }
-                    });
-                });                
-            } else {
-                this.set('isValidRecord',false);
-                console.log("RECORD IS INVALID");
-            }
+            });                
         }
     },
         
