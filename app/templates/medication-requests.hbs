@@ -12,21 +12,23 @@
     <tr>
         {{#if isEditing}}
             <td>{{patientId}}</td>
+            <td>{{prescription}}</td>
             <td>{{medicationId}}</td>
             <td>{{input value=quantity}}</td>
-            <td>{{staus}}</td>
+            <td>{{status}}</td>
             <td>
                 <button {{action 'cancelUpdate'}}>Cancel</button>
-                <button {{action 'updateInventory'}}>Update</button>
+                <button {{action 'updateRequest'}}>Update</button>
             </td>
         {{else}}
             <td>{{patientId}}</td>
+            <td>{{prescription}}</td>
             <td>{{medicationId}}</td>
             <td>{{quantity}}</td>
-            <td>{{staus}}</td>
+            <td>{{status}}</td>
             <td>
-                <button {{action 'editInventory'}}>Edit</button>
-                <button {{action 'deleteInventory'}}>Delete</button>
+                <button {{action 'editRequest'}}>Edit</button>
+                <button {{action 'deleteRequest'}}>Delete</button>
             </td>        
         {{/if}}
     </tr>
