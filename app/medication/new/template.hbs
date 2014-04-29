@@ -4,19 +4,13 @@
         {{#form-for controller role="form" wrapper="twitter-bootstrap"}}
             {{input patientId}}            
             {{input prescription as="smart-prescription"}}
-
+            <div class="row">
+                {{input quantity class="col-xs-2"}}
+            </div>            
             <div class="form-group">
-            <label>Medication:</label>
-            {{#each availableMeds}}                
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="medicationId" value="{{id}}">
-                        {{name}}
-                    </label>
-                </div>            
-            {{/each}}                
-            </div>    
-
+                <label>Medication:</label>
+                {{ext-radio name=medicationId content=availableMeds value=selectedMed}}
+            </div>
             {{submit "Add" class="btn btn-primary" value="Add" name="Add" as="button"}}
         {{/form-for}}
     </div>

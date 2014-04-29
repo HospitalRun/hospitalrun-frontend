@@ -1,7 +1,11 @@
 export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, Ember.Validations.Mixin, {    
-    availableMeds: null,
+    availableMeds: false,
+    medicationId: null,
     validations: {
-        name: {
+        patientId: {
+            presence: true,
+        },
+        prescription: {
             presence: true,
         },
         quantity: {
@@ -19,15 +23,30 @@ export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRoute
             if (!this.searching &&  searchValue !== '') {
                 this.searching = true;
                 var queryParams = {
-                    keys: [
-                        'description',
-                        'name'
-                    ],                
-                    containsValue: searchValue
+                    containsValue: {
+                        value: searchValue,
+                        keys: [
+                            'description',
+                            'name'
+                        ]
+                    },
+                    keyValues: {
+                        type: 'Medication'
+                    }
                 };
                 this.store.find('inventory', queryParams).then(function(inventory) {
                     if (inventory !== undefined) {
-                        controller.set('availableMeds', inventory.get('content'));                        
+                        controller.set('selectedMed', false);
+                        var medication = inventory.map(function(rec) {
+                            if (!controller.get('medicationId')) {
+                                controller.set('medicationId', rec.get('id'));
+                            }
+                            return {
+                                label: rec.get('name'),
+                                value: rec.get('id')
+                            };
+                        });
+                        controller.set('availableMeds', medication);
                     }
                     controller.searching = false;
                 });    
@@ -38,18 +57,18 @@ export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRoute
         },
         
         submit: function() {
-            var request = this.store.createRecord('medication', {
-                name: this.get('name'),
-                description: this.get('description'),
-                crossReference: this.get('crossReference'),
-                status: 'Requested',
+            var request = this.store.createRecord('medication', {                 
+                medicationId: this.get('medicationId'),
+                patientId: this.get('patientId'),
+                prescription: this.get('prescription'),
                 quantity: this.get('quantity'),
+                status: 'Requested'
             });
             var controller = this;
             request.save().then(function(){ 
                 controller.transitionToRoute('medication.search', {
                     queryParams: {
-                        searchText: '????'
+                        searchText: request.get('id')
                     }
                 });
             });                
