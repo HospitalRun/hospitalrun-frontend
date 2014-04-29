@@ -14,13 +14,14 @@ export default Ember.Route.extend({
     
     model: function(params) {
         var queryParams = {
-            keys: [
+            containsValue: {
+                value: params.queryParams.searchText,
+                keys: [
                 '_id',
                 'description',
                 'name',    
                 'crossreference'
-            ],                
-            containsValue: params.queryParams.searchText
+            ]},                            
         };
         return this.store.find('inventory', queryParams);
     }

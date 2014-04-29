@@ -14,13 +14,15 @@ export default Ember.Route.extend({
     
     model: function(params) {
         var queryParams = {
-            keys: [
-                '_id',
-                'description',
-                'name',    
-                'crossreference'
-            ],                
-            containsValue: params.queryParams.searchText
+            containsValue: {
+                value: params.queryParams.searchText,
+                keys: [
+                    '_id',
+                    'description',
+                    'name',    
+                    'crossreference'
+                ]
+            }
         };
         return this.store.find('medication', queryParams);
     }
