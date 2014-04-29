@@ -2,22 +2,32 @@ export default DS.PouchDBAdapter.extend({
     namespace: 'hospitalrun-inventory',
     databaseName: 'main',
 
-    _createMapFunction: function(type, query) {
+    _createMapFunction: function(type, query, keys) {
         return function(doc, emit) {
             var found_doc = false,
                 doctype, 
+                queryValue,
                 uidx;
+            
             if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
                 try {
                     doctype = doc._id.substring(0, uidx);
                     if(doctype === type.typeKey) {
-                        query.keys.forEach(function(key) {
-                            if (doc[key] && doc[key].toLowerCase().indexOf(query.containsValue.toLowerCase()) >= 0) {
+                        queryValue = query.containsValue.value.toLowerCase();
+                        query.containsValue.keys.forEach(function(key) {
+                            if (doc[key] && doc[key].toLowerCase().indexOf(queryValue) >= 0) {
                                 found_doc = true;
                             }
                         });
                         if (found_doc === true) {
-                            emit(doc._id, null);
+                            if (query.keyValues) {
+                                var emitKeys = Ember.ArrayPolyfills.map.call(keys, function(key, idx) {                                        
+                                    return doc[key];
+                                });
+                                emit(emitKeys);
+                            } else {
+                                emit(doc._id, null);
+                            }
                         }
                     }
                 } catch (e) {}
@@ -25,6 +35,11 @@ export default DS.PouchDBAdapter.extend({
         };
     },
     
+    _idToPouchId: function(id, type){
+        type = type.typeKey || type;
+        return [type, id].join("_");
+    },
+
     _pouchError: function(reject){
         return function(err){
             var errmsg = [  err["status"], 
@@ -37,11 +52,34 @@ export default DS.PouchDBAdapter.extend({
 
     findQuery: function(store, type, query, options) {
         var self = this,
-            mapFn = this._createMapFunction(type, query),
+            keys = [],
+            mapFn = null,
+            queryKeys = [],
             queryParams = {
                 reduce: false,
                 include_docs: true
             };
+        
+        if (query.keyValues) {
+            for (var key in query.keyValues) {                
+                if (query.keyValues.hasOwnProperty(key)) {
+                    keys.push(key);                    
+                }
+            }
+            queryKeys = Ember.ArrayPolyfills.map.call(keys, function(key) {
+                if(key.substring(key.length - 3) === "_id" || 
+                   key.substring(key.length - 4) === "_ids" || 
+                   key === "id") {
+                    return this._idToPouchId(query.keyValues[key], type);
+                }
+                return query.keyValues[key];
+            });
+        }
+        
+        if(!Ember.isEmpty(queryKeys)){
+            queryParams["key"] = [].concat(queryKeys);
+        }
+        mapFn = this._createMapFunction(type, query, keys);
 
         return new Ember.RSVP.Promise(function(resolve, reject){
             self._getDb().then(function(db){
