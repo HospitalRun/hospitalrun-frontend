@@ -9,10 +9,11 @@
     "DS": true,
     "PouchDB": true,
     "oauthSignature": true,
+    "XMLHttpRequest": true,
     "$": true
   },
   "node" : true,
-  "browser" : false,
+  "browser" : true,
   "boss" : true,
   "curly": false,
   "debug": true,

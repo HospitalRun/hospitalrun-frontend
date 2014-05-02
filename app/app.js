@@ -10,4 +10,21 @@ var App = Ember.Application.extend({
 
 loadInitializers(App, 'hospitalrun');
 
+window.onerror = function(errorMsg, url, lineNumber, colno, error) {
+    var errorMessage = "Error Occurred: "+errorMsg;
+    if (url) {
+        errorMessage += "; url:"+url;
+    }
+    if (lineNumber) {
+        errorMessage += "; line:"+lineNumber;
+    }
+    if (colno) {
+        errorMessage += "; colno:"+colno;
+    }
+    if (error && error.stack) {
+        errorMessage += "; stack:"+error.stack;
+    }
+    console.log("Error: "+errorMessage);
+};
+
 export default App;

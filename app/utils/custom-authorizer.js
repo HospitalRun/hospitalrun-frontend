@@ -1,3 +1,5 @@
+import couchOauthSign from "hospitalrun/utils/couch-oauth-sign";
+
 export default Ember.SimpleAuth.Authorizers.Base.extend({
     _decodeParameters: function(param_string) {
         var return_params = {},
@@ -13,12 +15,9 @@ export default Ember.SimpleAuth.Authorizers.Base.extend({
     
     authorize: function(jqXHR, requestOptions) {
         if (this.get('session.google_auth') && requestOptions.url.indexOf('/db/') === 0) {
-            //Signature url is different because it gets proxied server side.
-            var signature_url = requestOptions.url.replace('/db/', 'http://localhost:5984/'),            
-            consumerSecret = this.get('session.consumer_secret'),
-            params = {},
-            tokenSecret = this.get('session.token_secret');            
-                
+            var signature_url = requestOptions.url.replace('/db/', 'http://localhost:5984/'),
+                params = {};
+
             if (requestOptions.type === 'POST' || requestOptions.type === 'GET') {                
                 params = this._decodeParameters(requestOptions.data);
             } else {
@@ -27,12 +26,16 @@ export default Ember.SimpleAuth.Authorizers.Base.extend({
                     params = this._decodeParameters(url_params[1]);
                 }
             }
-            
-            params.oauth_consumer_key = this.get('session.consumer_key');
-            params.oauth_token = this.get('session.token');
-            params.oauth_signature_method = 'HMAC-SHA1';
-            params.oauth_version = '1.0';            
-            params.oauth_signature = oauthSignature.generate(requestOptions.type, signature_url, params, consumerSecret, tokenSecret);
+
+            params = couchOauthSign(requestOptions.url, {
+                consumerKey: this.get('session.consumer_key'),
+                consumerSecret: this.get('session.consumer_secret'),
+                token: this.get('session.token'),
+                tokenSecret: this.get('session.token_secret'),
+                type: requestOptions.type,
+                requestParams: params
+            });
+
             if (requestOptions.type === 'POST' || requestOptions.type === 'GET') {                
                 requestOptions.data = decodeURIComponent($.param( params ));
             } else {

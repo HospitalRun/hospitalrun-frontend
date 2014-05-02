@@ -1,5 +1,5 @@
 var Router = Ember.Router.extend({
-  location: 'auto'
+  //location: 'auto' //Auto incompatible with google login right now
 });
 
 Router.map(function() {
