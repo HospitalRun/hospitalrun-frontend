@@ -1,4 +1,6 @@
-export default DS.PouchDBAdapter.extend({
+import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
+
+export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
     namespace: 'hospitalrun-inventory',
     databaseName: 'main',
 
@@ -35,21 +37,6 @@ export default DS.PouchDBAdapter.extend({
         };
     },
     
-    _idToPouchId: function(id, type){
-        type = type.typeKey || type;
-        return [type, id].join("_");
-    },
-
-    _pouchError: function(reject){
-        return function(err){
-            var errmsg = [  err["status"], 
-                (err["name"] || err["error"])+":",
-                (err["message"] || err["reason"])
-               ].join(" ");
-            Ember.run(null, reject, errmsg);
-        };
-    },        
-
     findQuery: function(store, type, query, options) {
         var self = this,
             keys = [],
