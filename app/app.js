@@ -24,7 +24,7 @@ window.onerror = function(errorMsg, url, lineNumber, colno, error) {
     if (error && error.stack) {
         errorMessage += "; stack:"+error.stack;
     }
-    console.log("Error: "+errorMessage);
+    console.log("UNCAUGHT ERROR IN APPLICATION: "+errorMessage);
 };
 
 export default App;
