@@ -24,6 +24,8 @@ export default function(configs) {
             this.internalXHR.abort();        
         },
 
+        oauth: configs,
+
         getAllResponseHeaders: function() {
             return this.internalXHR.getAllResponseHeaders();
         },
@@ -121,10 +123,10 @@ export default function(configs) {
             }
 
             params = couchOauthSign(signature_url, {
-                    consumerKey: configs.config_consumer_key,
-                    consumerSecret:  configs.config_consumer_secret,
-                    token: configs.config_oauth_token,
-                    tokenSecret: configs.config_token_secret,
+                    consumerKey: this.oauth.config_consumer_key,
+                    consumerSecret:  this.oauth.config_consumer_secret,
+                    token: this.oauth.config_oauth_token,
+                    tokenSecret: this.oauth.config_token_secret,
                     type: this.method,
                     requestParams: params
             });
