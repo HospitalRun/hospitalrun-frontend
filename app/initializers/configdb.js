@@ -1,4 +1,3 @@
-import couchOauthSign from "hospitalrun/utils/couch-oauth-sign";
 import createPouchOauthXHR from "hospitalrun/utils/pouch-oauth-xhr";
 
 export default {
@@ -64,8 +63,6 @@ export default {
                             },
                             function(err, db){
                                 if (err) {
-                                    console.log("Got err",err);
-                                    console.log("error stack"+err.stack);
                                     Ember.run(null, resolve, {success:false, error: err});
                                 } else {
                                     db.replicate.sync('main', {
