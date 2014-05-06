@@ -10,8 +10,12 @@
  * -- type of request (eg POST, GET, etc)
  */
 export default function(requestUrl, requestOptions) {
-    var signature_url = requestUrl.replace('/db/', 'http://localhost:5984/'),
-        params = requestOptions.requestParams || {};            
+    var signature_url = requestUrl,
+        dblocation = signature_url.indexOf('/db/'),
+        params = requestOptions.requestParams || {};
+    if (dblocation > -1) {
+        signature_url = 'http://localhost:5984/' + signature_url.substring(dblocation+4);
+    }
     params.oauth_consumer_key = requestOptions.consumerKey;
     params.oauth_token = requestOptions.token;
     params.oauth_signature_method = 'HMAC-SHA1';
