@@ -1,6 +1,5 @@
 export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, Ember.Validations.Mixin, {    
     availableMeds: false,
-    medicationId: null,
     validations: {
         patientId: {
             presence: true,
@@ -36,9 +35,9 @@ export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRoute
                 };
                 this.store.find('inventory', queryParams).then(function(inventory) {
                     if (inventory !== undefined) {
-                        controller.set('selectedMed', false);
+                        controller.set('medicationId', false);
                         var medication = inventory.map(function(rec) {
-                            if (!controller.get('medicationId')) {
+                            if (!controller.get('medicationId')) { //Set the first radio button
                                 controller.set('medicationId', rec.get('id'));
                             }
                             return {
