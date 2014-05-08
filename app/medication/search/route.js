@@ -1,4 +1,6 @@
-export default Ember.Route.extend({
+import MedicationRouter from 'hospitalrun/medication/route';
+
+export default MedicationRouter.extend({
     queryParams: {        
         searchText: {
             refreshModel: true
@@ -17,12 +19,12 @@ export default Ember.Route.extend({
             containsValue: {
                 value: params.queryParams.searchText,
                 keys: [
-                    '_id',
-                    'description',
-                    'name',    
-                    'crossreference'
+                    'prescription',
+                    'patientId'
                 ]
-            }
+            },
+            mapResults: this._mapViewResults,
+            fieldMapping: this.fieldMapping
         };
         return this.store.find('medication', queryParams);
     }
