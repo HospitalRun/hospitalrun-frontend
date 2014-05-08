@@ -6,7 +6,7 @@ export default Ember.Controller.extend({
             if (this.allowSearch && this.searchRoute) {
                 this.transitionToRoute(this.searchRoute,  {
                     queryParams: {
-                        searchText: this.searchText
+                        searchText: this.get('searchText')
                     }
                 });
             }

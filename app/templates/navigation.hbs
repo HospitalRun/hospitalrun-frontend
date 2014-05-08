@@ -20,12 +20,12 @@
             </ul>
             {{#if allowSearch}}
                 
-                <form class="navbar-form navbar-left" role="search">                    
+                <div class="navbar-form navbar-left" role="search">                    
                     <div class="form-group">
                         {{text-search valueBinding="searchText" autofocus="true" placeholder="Search" class="form-control"}}                        
                     </div>
                     <button type="button" class="btn btn-default">Search</button>
-                </form>
+                </div>
             {{/if}}
             <ul class="nav navbar-nav navbar-right">
                 {{#if session.isAuthenticated}}
