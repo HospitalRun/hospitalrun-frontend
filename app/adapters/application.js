@@ -74,7 +74,7 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
                     if(key.substring(key.length - 3) === "_id" || 
                        key.substring(key.length - 4) === "_ids" || 
                        key === "id") {
-                        return this._idToPouchId(query.keyValues[key], type);
+                        return self._idToPouchId(query.keyValues[key], type);
                     }
                     return query.keyValues[key];
                 });
