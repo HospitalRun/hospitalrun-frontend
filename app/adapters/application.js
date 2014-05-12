@@ -1,9 +1,21 @@
 import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 
 export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
+    _specialQueries: [
+        'containsValue',
+        'fieldMapping',
+        'idToFind',
+        'keyValues',
+        'mapReduce',
+        'mapResults'     
+    ],
+    
     databaseName: 'main',
     
     _createMapFunction: function(type, query, keys) {
+        if (query.idToFind) {
+            query.idToFind = this._idToPouchId(query.idToFind, type);
+        }
         return function(doc, emit) {
             var found_doc = false,
                 doctype, 
@@ -21,6 +33,10 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
                                     found_doc = true;
                                 }
                             });
+                        } else if (query.idToFind) {
+                            if (query.idToFind === doc._id) {
+                                found_doc = true;
+                            }
                         } else {
                             found_doc = true;
                         }
@@ -46,13 +62,22 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
                             }
                         }
                     }
-                } catch (e) {}
+                } catch (e) {
+                    console.log("Got exception:",e);
+                }
             }
         };
     },    
 
     findQuery: function(store, type, query, options) {
-        if (!query.mapReduce && !query.containsValue && !query.keyValues && !query.mapResults && !query.fieldMapping) {
+        var specialQuery = false;
+        for (var i=0;i< this._specialQueries.length; i++) {
+            if (query[this._specialQueries[i]]) {
+                specialQuery = true;
+                break;
+            }
+        }
+        if (!specialQuery) {
             return this._super(store, type, query, options);
         } else {
             var self = this,
