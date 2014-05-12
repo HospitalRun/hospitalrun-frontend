@@ -4,6 +4,9 @@ export default MedicationRouter.extend({
     queryParams: {        
         searchText: {
             refreshModel: true
+        },
+        idToFind:  {
+            refreshModel: true
         }
     },
     
@@ -16,16 +19,21 @@ export default MedicationRouter.extend({
     
     model: function(params) {
         var queryParams = {
-            containsValue: {
+            mapResults: this._mapViewResults,
+            fieldMapping: this.fieldMapping
+        };
+        if (params.queryParams.searchText) {
+            queryParams['containsValue'] = {
                 value: params.queryParams.searchText,
                 keys: [
                     'prescription',
                     'patientId'
                 ]
-            },
-            mapResults: this._mapViewResults,
-            fieldMapping: this.fieldMapping
-        };
+            };
+        } else if (params.queryParams.idToFind) {
+            queryParams['idToFind'] = params.queryParams.idToFind;
+        }
+
         return this.store.find('medication', queryParams);
     }
     

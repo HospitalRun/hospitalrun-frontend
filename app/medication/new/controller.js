@@ -67,7 +67,7 @@ export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRoute
             request.save().then(function(){ 
                 controller.transitionToRoute('medication.search', {
                     queryParams: {
-                        searchText: request.get('id')
+                        idToFind: request.get('id')
                     }
                 });
             });                
