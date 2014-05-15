@@ -1,6 +1,3 @@
-// models/user.js
-var Config = DS.Model.extend({
+export default DS.Model.extend({
     value: DS.attr('')    
 });
-
-export default Config;
