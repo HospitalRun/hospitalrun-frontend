@@ -1,4 +1,6 @@
-export default DS.Model.extend({
+import AbstractModel from "hospitalrun/models/abstract";
+
+export default AbstractModel.extend({
     medicationId: DS.attr('string'),
     medicationName: DS.attr('string'),
     patientId: DS.attr('string'),

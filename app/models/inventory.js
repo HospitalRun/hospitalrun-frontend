@@ -1,4 +1,6 @@
-var Inventory = DS.Model.extend({
+import AbstractModel from "hospitalrun/models/abstract";
+
+export default AbstractModel.extend({
     description: DS.attr('string'),
     keywords: DS.attr(),
     name: DS.attr('string'),
@@ -6,5 +8,3 @@ var Inventory = DS.Model.extend({
     crossReference: DS.attr('string'),
     type: DS.attr('string')
 });
-
-export default Inventory;

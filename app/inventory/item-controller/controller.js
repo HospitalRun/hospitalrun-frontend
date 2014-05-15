@@ -73,6 +73,9 @@ export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRoute
         var controller = this;
         this.get('model').save().then(function() {
             controller.resetButtons();
+        }, function(err) {
+            console.log("ERROR SAVING INVENTORY:",err);
+            throw err;
         });
     }
 });
