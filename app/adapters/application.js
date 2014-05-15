@@ -26,7 +26,7 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
                 try {
                     doctype = doc._id.substring(0, uidx);
                     if(doctype === type.typeKey) {
-                        if (query.containsValue) {
+                        if (query.containsValue && query.containsValue.value) {
                             queryValue = query.containsValue.value.toLowerCase();
                             query.containsValue.keys.forEach(function(key) {
                                 if (doc[key] && doc[key].toLowerCase().indexOf(queryValue) >= 0) {
