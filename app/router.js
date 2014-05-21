@@ -14,6 +14,7 @@ Router.map(function() {
     this.resource('inventory', { path: '/inventory' }, function() {
         this.route('search');
         this.route('new');
+        this.route('barcode', { path: "/barcode/:inventory_id" });
     });
     
     this.resource('medication', { path: '/medication' }, function() {

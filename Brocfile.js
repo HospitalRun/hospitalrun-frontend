@@ -22,7 +22,10 @@ var app = new EmberApp({
     'ember-validations-latest.js',
     'oauth-signature-js/dist/oauth-signature.js',
     'uuid.js',
-    'bootstrap.js'
+    'bootstrap.js',
+    'CODE128.js',
+	'JsBarcode.js',
+    'DYMO.Label.Framework.1.2.6.js'
   ],
 
   // AKA whitelisted modules

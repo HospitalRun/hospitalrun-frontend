@@ -6,5 +6,16 @@ export default AbstractModel.extend({
     name: DS.attr('string'),
     quantity: DS.attr('number'),
     crossReference: DS.attr('string'),
-    type: DS.attr('string')
+    type: DS.attr('string'),
+    barcodeUri: function() {
+        var id = this.get('id'),
+            name = this.get('name');
+        return Ember.$(document).JsBarcode(id,{
+            width:1,
+            height:20,
+            fontSize: 10,         
+            displayValue: name,
+            returnUri: true
+        });
+    }.property('id', 'name')    
 });

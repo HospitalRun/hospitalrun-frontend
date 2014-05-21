@@ -9,8 +9,8 @@
     "DS": true,
     "PouchDB": true,
     "oauthSignature": true,
-    "XMLHttpRequest": true,
-    "$": true
+    "$": true,
+    "dymo": true
   },
   "node" : true,
   "browser" : true,

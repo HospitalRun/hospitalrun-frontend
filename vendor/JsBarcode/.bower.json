@@ -1,0 +1,13 @@
+{
+  "name": "JsBarcode",
+  "homepage": "https://github.com/HospitalRun/JsBarcode",
+  "_release": "3bcfe16d72",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "3bcfe16d729ec8c1e16260f774106515ecc6c08a"
+  },
+  "_source": "git://github.com/HospitalRun/JsBarcode.git",
+  "_target": "master",
+  "_originalSource": "HospitalRun/JsBarcode"
+}
