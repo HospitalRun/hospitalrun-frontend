@@ -3,7 +3,7 @@ import SmartPrescription from "hospitalrun/components/smart-prescription";
 export default {
     name: 'easyform',
     
-    initialize: function(container, application) {
+    initialize: function() {
         Ember.EasyForm.Config.registerWrapper('twitter-bootstrap', {
             // Define the custom template
             inputTemplate: 'bootstrap-input',

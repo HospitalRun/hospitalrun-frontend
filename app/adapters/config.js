@@ -14,8 +14,6 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
             return this._super(store, type, query, options);
         } else {
             var self = this,
-            keys = [],
-            queryKeys = [],
             queryParams = {
                 reduce: false,
                 include_docs: true

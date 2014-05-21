@@ -27,7 +27,7 @@ var couchSerializer = DS.RESTSerializer.extend({
     @param {Object} payload
     @return {Object} json The deserialized payload
     */
-    extractSave:  function(store, primaryType, payload, recordId, requestType) {
+    extractSave:  function(store, primaryType, payload) {
         if (payload.ok) {            
             var record =  store.getById('user', payload.id);
             var data = {};
@@ -43,11 +43,11 @@ var couchSerializer = DS.RESTSerializer.extend({
     @param {DS.Store} store
     @param {subclass of DS.Model} type
     @param {Object} payload
-    @param {String} id
-    @param {'find'|'createRecord'|'updateRecord'|'deleteRecord'} requestType
+    @param {String} id //unused
+    @param {'find'|'createRecord'|'updateRecord'|'deleteRecord'} requestType //unused
     @returns {Object} the primary response to the original request          
     */
-    extractSingle: function(store, primaryType, payload, recordId, requestType) {
+    extractSingle: function(store, primaryType, payload) {
         return this.normalizeRow(payload);
     },
     

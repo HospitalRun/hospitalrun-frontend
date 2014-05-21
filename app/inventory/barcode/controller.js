@@ -4,7 +4,6 @@ export default Ember.ObjectController.extend({
     }.property(),
     
     havePrinters: function() {
-        return true;
         var printers = this.get('printers');
         if (printers.length > 0) {
             return true;
@@ -14,7 +13,6 @@ export default Ember.ObjectController.extend({
     }.property('printers'),
     
     singlePrinter: function() {
-        return false;
         var printers = this.get('printers');
         if (printers.length === 1) {
             return true;

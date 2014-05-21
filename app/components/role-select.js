@@ -1,5 +1,4 @@
-var set = Ember.set,
-    get = Ember.get;
+var get = Ember.get;
 
 export default Ember.Select.extend({
     content: [

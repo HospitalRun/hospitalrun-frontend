@@ -10,14 +10,16 @@
     "PouchDB": true,
     "oauthSignature": true,
     "$": true,
+    "ENV": true,
+    "module": true,
     "dymo": true
   },
   "node" : true,
   "browser" : true,
   "boss" : true,
   "curly": false,
-  "debug": true,
-  "devel": true,
+  "debug": false,
+  "devel": false,
   "eqeqeq": true,
   "evil": true,
   "forin": false,
@@ -36,5 +38,6 @@
   "strict": false,
   "white": false,
   "eqnull": true,
-  "esnext": true
+  "esnext": true,
+  "unused": true
 }

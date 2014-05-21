@@ -28,7 +28,7 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
                     var expiresAt = _this.absolutizeExpirationTime(600);
                     resolve(Ember.$.extend(response, { expires_at: expiresAt }));
                 });
-            }, function(xhr, status, error) {
+            }, function(xhr) {
                 Ember.run(function() {
                     reject(xhr.responseJSON || xhr.responseText);
                 });
@@ -62,11 +62,11 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
     getPromise: function(data, type) {
         var _this = this;
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            _this.makeRequest(data, type).then(function(response, status, xhr) {
+            _this.makeRequest(data, type).then(function(response) {
                 Ember.run(function() {
                     resolve(response);
                 });
-            }, function(xhr, status, error) {
+            }, function(xhr) {
                 Ember.run(function() {
                     reject(xhr.responseJSON || xhr.responseText);
                 });

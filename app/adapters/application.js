@@ -42,7 +42,7 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
                         }
                         if (found_doc === true) {
                             if (query.keyValues) {
-                                var emitKeys = Ember.ArrayPolyfills.map.call(keys, function(key, idx) {                                        
+                                var emitKeys = Ember.ArrayPolyfills.map.call(keys, function(key) {                                        
                                     return doc[key];
                                 });
                                 emit(emitKeys);

@@ -9,7 +9,7 @@
 
     {{BASE_TAG}}
 
-    <link rel="stylesheet" href="assets/app.css">
+    <link rel="stylesheet" href="assets/hospitalrun.css">
     <link rel="stylesheet" href="assets/qunit.css">
     <style>
       #ember-testing-container {
@@ -32,11 +32,13 @@
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
 
-    <script src="assets/qunit.js"></script>
-    <script src="assets/app.js"></script>
-    <script src="testem.js"></script>
     <script>
       window.ENV = {{ENV}};
+    </script>
+    <script src="assets/qunit.js"></script>
+    <script src="assets/hospitalrun.js"></script>
+    <script src="testem.js"></script>
+    <script>
       require('hospitalrun/tests/test-helper');
       require('hospitalrun/tests/test-loader');
     </script>

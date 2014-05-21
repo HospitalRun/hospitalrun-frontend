@@ -7,17 +7,16 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <base href="/" />
+    
 
-    <link rel="stylesheet" href="assets/app.css">
-    <link rel="stylesheet" href="assets/bootstrap.css">
-    <link rel="stylesheet" href="assets/bootstrap-theme.css">
+    <link rel="stylesheet" href="assets/hospitalrun.css">
+    <link rel="stylesheet" href="assets/vendor.css">
 
   </head>
   <body>
-    <script src="assets/app.js"></script>
+    <script src="assets/hospitalrun.js"></script>
     <script>
-      window.ENV = {"baseURL":"/","FEATURES":{},"APP":{"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_MODULE_RESOLVER":true,"LOG_VIEW_LOOKUPS":true}};
+      window.ENV = {"baseURL":"/","locationType":"hash","FEATURES":{},"APP":{"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_MODULE_RESOLVER":true,"LOG_VIEW_LOOKUPS":true},"LOG_MODULE_RESOLVER":true};
       window.Hospitalrun = require('hospitalrun/app')['default'].create(ENV.APP);
     </script>
   </body>

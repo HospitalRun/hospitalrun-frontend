@@ -7,9 +7,9 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <base href="/" />
+    
 
-    <link rel="stylesheet" href="assets/app.css">
+    <link rel="stylesheet" href="assets/hospitalrun.css">
     <link rel="stylesheet" href="assets/qunit.css">
     <style>
       #ember-testing-container {
@@ -32,11 +32,13 @@
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
 
+    <script>
+      window.ENV = {"baseURL":"/","locationType":"hash","FEATURES":{},"APP":{"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_MODULE_RESOLVER":true,"LOG_VIEW_LOOKUPS":true},"LOG_MODULE_RESOLVER":true};
+    </script>
     <script src="assets/qunit.js"></script>
-    <script src="assets/app.js"></script>
+    <script src="assets/hospitalrun.js"></script>
     <script src="testem.js"></script>
     <script>
-      window.ENV = {"baseURL":"/","FEATURES":{},"APP":{"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_MODULE_RESOLVER":true,"LOG_VIEW_LOOKUPS":true}};
       require('hospitalrun/tests/test-helper');
       require('hospitalrun/tests/test-loader');
     </script>

@@ -1,5 +1,5 @@
 export default Ember.TextField.extend(Ember.TargetActionSupport, {
-    change: function(event) {
+    change: function() {
         this.triggerAction({
             action: 'search'
         });

@@ -14,7 +14,7 @@ export default {
                     } else {
                         var dbUrl =  document.location.protocol+'//'+document.location.host+'/db/';
                         var remoteDB = dbUrl + 'config';
-                        configDB.replicate.from(remoteDB, {
+                        db.replicate.from(remoteDB, {
                             complete: function() {
                                 Ember.run(null, resolve, {success:true});                    
                             }
@@ -54,45 +54,41 @@ export default {
 
                         var pouchOauthXHR = createPouchOauthXHR(configs);
                         var dbUrl =  document.location.protocol+'//'+document.location.host+'/db/main';
-                        
-                                                
-                        var mainDB = new PouchDB(dbUrl, {
-                                ajax: {
-                                    xhr: pouchOauthXHR
-                                },
+                        new PouchDB(dbUrl, {
+                            ajax: {
+                                xhr: pouchOauthXHR
                             },
-                            function(err, db){
-                                
-                                db.changes({
-                                    conflicts: true,
-                                    since: 'now',
-                                    continuous: true,
-                                    onChange: function() {
-                                        console.log("DB Change",arguments);
-                                    }
-                                }, function(err, response) {
-                                    console.log("changes complete, err")  ;
-                                    console.dir(err);
-                                    console.log(response);
-                                });
-                                
-                                
-                                if (err) {
-                                    console.log("Error creating main pouchDB",err);
-                                    throw err;
-                                } else {
-                                    db.replicate.sync('main', {
-                                        live: true,
-                                        onChange: function(arg1,arg2,arg3) {
-                                            console.log("got sync change",arguments);
-                                        },
-                                        complete: function(arg1,arg2,arg3) {
-                                            console.log("Got sync complete",arguments);
-                                        }
-                                    });
+                        },
+                        function(err, db){                                
+                            db.changes({
+                                conflicts: true,
+                                since: 'now',
+                                continuous: true,
+                                onChange: function() {
+                                    console.log("DB Change",arguments);
                                 }
+                            }, function(err, response) {
+                                console.log("changes complete, err")  ;
+                                console.dir(err);
+                                console.log(response);
+                            });
+
+
+                            if (err) {
+                                console.log("Error creating main pouchDB",err);
+                                throw err;
+                            } else {
+                                db.replicate.sync('main', {
+                                    live: true,
+                                    onChange: function() {
+                                        console.log("got sync change",arguments);
+                                    },
+                                    complete: function() {
+                                        console.log("Got sync complete",arguments);
+                                    }
+                                });
                             }
-                        );
+                        });
                         Ember.run(null, resolve, {success:true});
                     }
                 });

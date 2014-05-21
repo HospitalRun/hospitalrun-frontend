@@ -7,7 +7,7 @@ export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRoute
         cancelUpdate: function() {
             this.set('isEditing', false);
             var medicationRequest = this.get('model');
-            this.get('model').rollback();            
+            medicationRequest.rollback();            
         },
 
         deleteRequest: function() {

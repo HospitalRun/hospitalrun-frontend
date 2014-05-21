@@ -9,8 +9,7 @@ var ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin
     ],
 
     _get_oauth_configs: function() {
-        var configRecords = {},
-            route = this,
+        var route = this,
             store = this.store;            
         return new Ember.RSVP.Promise(function(resolve, reject){
             store.find('config',{exactKeys: route.oauth_config_keys}).then(function(records) {
@@ -74,7 +73,7 @@ var ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin
         }        
     },
 
-    model: function(params, transition) {
+    model: function(params) {
         if (params.queryParams.k && params.queryParams.s1 && params.queryParams.s2 && params.queryParams.t) {
             this.get('session').authenticate('authenticators:custom', {
                 google_auth: true,

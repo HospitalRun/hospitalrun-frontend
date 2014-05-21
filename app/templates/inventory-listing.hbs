@@ -17,8 +17,8 @@
             <td>{{type}}</td>
             <td>{{input value=quantity}}</td>
             <td>
-                <button class="btn" {{action 'cancelUpdate'}}>Cancel</button>
-                <button class="btn" {{action 'updateInventory'}}>Update</button>
+                <button class="btn btn-default" {{action 'cancelUpdate'}}>Cancel</button>
+                <button class="btn btn-default" {{action 'updateInventory'}}>Update</button>
             </td>
         {{else}}
             <td>{{id}}</td>
@@ -30,24 +30,24 @@
                 {{#if showAdd}}
                     {{#if isAdding}}
                         <label>Amount: </label>{{input value=addAmount}}
-                        <button class="btn" {{action 'addInventory'}}>Add</button>
-                        <button class="btn" {{action 'cancelUpdate'}}>Cancel</button>
+                        <button class="btn btn-default" {{action 'addInventory'}}>Add</button>
+                        <button class="btn btn-default" {{action 'cancelUpdate'}}>Cancel</button>
                     {{else}}
-                        <button class="btn" {{action 'addInventory'}}>Add</button>
+                        <button class="btn btn-default" {{action 'addInventory'}}>Add</button>
                     {{/if}}
                 {{/if}}
                 {{#if showDecrease}}
                     {{#if isDecreasing}}
                         <label>Amount: </label>{{input value=decreaseAmount}}
-                        <button class="btn" {{action 'decreaseInventory'}}>Decrease</button>
-                        <button class="btn" {{action 'cancelUpdate'}}>Cancel</button>
+                        <button class="btn btn-default" {{action 'decreaseInventory'}}>Decrease</button>
+                        <button class="btn btn-default" {{action 'cancelUpdate'}}>Cancel</button>
                     {{else}}
-                        <button class="btn" {{action 'decreaseInventory'}}>Decrease</button>
+                        <button class="btn btn-default" {{action 'decreaseInventory'}}>Decrease</button>
                     {{/if}}
                 {{/if}}
                 {{#if showEdit}}
-                    <button class="btn" {{action 'editInventory'}}>Edit</button>
-                    <button class="btn" {{action 'deleteInventory'}}>Delete</button>
+                    <button class="btn btn-default" {{action 'editInventory'}}>Edit</button>
+                    <button class="btn btn-default" {{action 'deleteInventory'}}>Delete</button>
                 {{/if}}
                 {{#link-to 'inventory.barcode' id class="btn btn-default"}}Barcode{{/link-to}}
             </td>        

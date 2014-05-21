@@ -3,7 +3,7 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         'medicationId': 'inventory'
     },
     _mapViewResults: function(data) {        
-        var row, previousRow, mappedRows=[];
+        var previousRow, mappedRows=[];
         data.forEach(function (row) {
             if (row) {
                 if (row.type && row.type === 'Medication') { 

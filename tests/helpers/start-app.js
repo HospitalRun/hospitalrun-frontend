@@ -1,3 +1,5 @@
+/* global require */
+
 var Application = require('hospitalrun/app')['default'];
 var Router = require('hospitalrun/router')['default'];
 

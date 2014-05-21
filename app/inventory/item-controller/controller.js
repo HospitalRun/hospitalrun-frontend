@@ -24,8 +24,8 @@ export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRoute
         },
 
         cancelUpdate: function() {
-            var inventoryItem = this.get('model');
-            this.get('model').rollback();
+            var inventory = this.get('model');
+            inventory.rollback();
             this.resetButtons();
         },
 

@@ -1,2 +1,18 @@
-node_modules
-tmp
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/tmp
+
+# dependencies
+/node_modules
+
+
+# misc
+/.sass-cache
+/connect.lock
+/libpeerconnection.log
+.DS_Store
+Thumbs.db
+/coverage/*
+npm-debug.log
+testem.log

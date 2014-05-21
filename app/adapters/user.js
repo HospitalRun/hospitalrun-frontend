@@ -124,12 +124,12 @@ export default DS.RESTAdapter.extend({
 
     @private
     @method findAll
-    @param {DS.Store} store
-    @param {subclass of DS.Model} type
-    @param {String} sinceToken
+    @param {DS.Store} store //currently unused
+    @param {subclass of DS.Model} type //currently unused
+    @param {String} sinceToken //currently unused
     @returns {Promise} promise
     */
-    findAll: function(store, type, sinceToken) {
+    findAll: function() {
         var ajaxData = {
             data: {
                 include_docs: true,
