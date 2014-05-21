@@ -1,5 +1,7 @@
-<div>
+<div class="panel panel-default">
+  <div class="panel-body">
     <img {{bind-attr src=barcodeUri}}></img>
+  </div>
 </div>
 
 {{#if havePrinters}}
@@ -8,13 +10,13 @@
         <h3 class="panel-title">Print Barcode</h3>
     </div>    
     <div class="panel-body">
-        <div class="form-group">
-            <label for="printerSelect">Printer</label>
+        <div class="form-group">            
             {{#unless singlePrinter}}    
+                <label for="printerSelect">Printer</label>
                 {{view Ember.Select viewName="select" content=printers optionLabelPath="content.name" optionValuePath="content.name" value=selectedPrinter id="printerSelect"}}
             {{/unless}}
         </div>
-        <button class="btn btn-primary glyphicon glyphicon-print" {{action 'print'}}>Print</button>
+        <button class="btn btn-primary" {{action 'print'}}><span class=" glyphicon glyphicon-print"></span> Print</button>
     </div>
 </div>
 {{/if}}
