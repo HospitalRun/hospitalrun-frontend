@@ -30,6 +30,7 @@ $(object).JsBarcode(string,options);
 	height:	100, //Height of barcode
 	quiet: 10, //Barcode quiet zone
 	format:	"CODE128" //Barcode format
+    returnUri: false //If true, return URI value vs setting uri on passed in image
 }
 ````
 

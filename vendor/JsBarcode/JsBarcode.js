@@ -78,8 +78,12 @@
         //Grab the dataUri from the canvas
         uri = canvas.toDataURL('image/png');
 
-        //Put the data uri into the image
-        return $(this).attr("src",uri);
+        if (options.returnUri) {
+            return uri;
+        } else {
+            //Put the data uri into the image
+            return $(this).attr("src",uri);
+        }
 
     };
 
