@@ -19,5 +19,5 @@ To run the app, you will need the following:
     methods = GET, PUT, POST, HEAD, DELETE
     ```
   2. Go to Futon (http://0.0.0.0:5984/_utils/) and create an Admin user
-4. In the frontend root directory, run ember server
+4. Start the server so you can view the repo in your browser by running `ember server` from the `frontend` directory.
 5. Go to http://0.0.0.0:4200/ in a browser and login with your couchdb admin user
