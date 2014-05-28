@@ -38,7 +38,8 @@ export default {
                         'config_consumer_key',
                         'config_consumer_secret',
                         'config_oauth_token',
-                        'config_token_secret'
+                        'config_token_secret',
+                        'config_use_google_auth'
                     ]
                 };
                 
@@ -46,20 +47,20 @@ export default {
                     if (err) {
                         Ember.run(null, reject, err);
                     } else {
-                        var configs = {};
+                        var configs = {},
+                            pouchOptions = {};
                         for (var i=0;i<response.rows.length;i++) {
                             if (!response.rows[i].error) {
                                 configs[response.rows[i].id] = response.rows[i].doc.value;
                             }
                         }
-
-                        var pouchOauthXHR = createPouchOauthXHR(configs);
+                        if (configs.config_use_google_auth) {
+                            pouchOptions.ajax = {
+                                xhr: createPouchOauthXHR(configs)
+                            };
+                        }
                         var dbUrl =  document.location.protocol+'//'+document.location.host+'/db/main';
-                        new PouchDB(dbUrl, {
-                            ajax: {
-                                xhr: pouchOauthXHR
-                            },
-                        },
+                        new PouchDB(dbUrl, pouchOptions,
                         function(err, db){                                
                             db.changes({
                                 conflicts: true,
