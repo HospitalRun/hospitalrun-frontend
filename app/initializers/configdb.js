@@ -1,6 +1,7 @@
 import createPouchOauthXHR from "hospitalrun/utils/pouch-oauth-xhr";
 
 export default {
+    after: 'authentication',
     name: 'configdb',    
     
     initialize: function(container, application) {
