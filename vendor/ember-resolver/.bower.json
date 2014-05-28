@@ -29,11 +29,11 @@
     "ember": " > 1.5.0-beta.3"
   },
   "homepage": "https://github.com/stefanpenner/ember-jj-abrams-resolver",
-  "_release": "181251821c",
+  "_release": "b64ccdb788",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "181251821cf513bb58d3e192faa13245a816f75e"
+    "commit": "b64ccdb788a83fbbde0e39f163591075e6200d72"
   },
   "_source": "git://github.com/stefanpenner/ember-jj-abrams-resolver.git",
   "_target": "master",
