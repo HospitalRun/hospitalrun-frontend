@@ -1,4 +1,4 @@
-{{#if model}}
+{{#if this}}
 <table class="table">
     <tr>
         <th>ID</th>
@@ -49,7 +49,7 @@
                     <button class="btn btn-default" {{action 'editInventory'}}>Edit</button>
                     <button class="btn btn-default" {{action 'deleteInventory'}}>Delete</button>
                 {{/if}}
-                {{#link-to 'inventory.barcode' id class="btn btn-default"}}Barcode{{/link-to}}
+                {{#link-to 'inventory.barcode' this class="btn btn-default"}}Barcode{{/link-to}}
             </td>        
         {{/if}}
     </tr>
