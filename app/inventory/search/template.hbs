@@ -1,7 +1,9 @@
 <div class="panel panel-primary">
-    <div class="panel-heading">Search Results</div>
+    <div class="panel-heading">Search Results for <i>{{this.searchText}}</i></div>
     {{partial "inventory-listing"}}
+    </div>
 </div>
-{{#if model}}
+{{#if this}}
     <button class="btn btn-primary" {{action 'newInventory'}}>New Item</button>
 {{/if}}
+{{#link-to 'inventory' class="btn btn-primary"}}All Inventory{{/link-to}}

@@ -1,21 +1,10 @@
-export default Ember.Route.extend({
-    queryParams: {        
-        searchText: {
-            refreshModel: true
-        }
-    },
-    
-    actions: {
-        queryParamsDidChange: function() {
-            // opt into full refresh
-            this.refresh();
-        }
-    },
-    
+export default Ember.Route.extend({    
+    searchText: null,
     model: function(params) {
+        this.set('searchText', params.search_text);
         var queryParams = {
             containsValue: {
-                value: params.queryParams.searchText,
+                value: params.search_text,
                 keys: [
                 '_id',
                 'description',
@@ -24,6 +13,11 @@ export default Ember.Route.extend({
             ]},                            
         };
         return this.store.find('inventory', queryParams);
+    },
+    
+    setupController: function(controller, model) {
+        controller.set('model', model);
+        controller.set('searchText', this.get('searchText'));
     }
     
 });
