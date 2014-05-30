@@ -6,6 +6,8 @@
         <th>Description</th>
         <th>Type</th>
         <th>Quantity</th>
+        <th>Price</th>
+        <th>XRef</th>
         <th>Actions</th>
     </tr>
     {{#each itemController='inventory/item-controller'}}    
@@ -16,6 +18,8 @@
             <td>{{input value=description}}</td>
             <td>{{type}}</td>
             <td>{{input value=quantity}}</td>
+            <td>{{input value=price}}</td>
+            <td>{{input value=crossReference}}</td>
             <td>
                 <button class="btn btn-default" {{action 'cancelUpdate'}}>Cancel</button>
                 <button class="btn btn-default" {{action 'updateInventory'}}>Update</button>
@@ -26,6 +30,8 @@
             <td>{{description}}</td>
             <td>{{type}}</td>
             <td>{{quantity}}</td>
+            <td>{{price}}</td>
+            <td>{{crossReference}}</td>        
             <td>
                 {{#if showAdd}}
                     {{#if isAdding}}
@@ -46,7 +52,7 @@
                     {{/if}}
                 {{/if}}
                 {{#if showEdit}}
-                    <button class="btn btn-default" {{action 'editInventory'}}>Edit</button>
+                    <button class="btn btn-default" {{action 'editInventory' this}}>Edit</button>
                     <button class="btn btn-default" {{action 'deleteInventory'}}>Delete</button>
                 {{/if}}
                 {{#link-to 'inventory.barcode' this class="btn btn-default"}}Barcode{{/link-to}}
