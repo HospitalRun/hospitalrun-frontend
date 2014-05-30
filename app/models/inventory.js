@@ -7,5 +7,18 @@ export default AbstractModel.extend({
     quantity: DS.attr('number'),
     crossReference: DS.attr('string'),
     type: DS.attr('string'),
-    price: DS.attr('number')
+    price: DS.attr('number'),
+    validations: {
+        name: {
+            presence: true,
+        },
+        quantity: {
+            numericality: true
+        },
+        price: {
+            numericality: {
+                allowBlank: true
+            }
+        }
+    }
 });
