@@ -1,1 +1,6 @@
 {{outlet}}
+<div class="panel panel-primary">
+    <div class="panel-heading">Inventory Listing</div>
+    {{partial "inventory-listing"}}
+</div>
+{{#link-to 'inventory.new' class="btn btn-primary"}}New Item{{/link-to}}
