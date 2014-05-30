@@ -1,4 +1,11 @@
-export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, Ember.Validations.Mixin, {
+export default Ember.Controller.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, Ember.Validations.Mixin, {
+    name: null,
+    description: null,
+    crossReference: null,
+    type: null,
+    quantity: null,
+    price: null,
+
     inventoryTypes: [
         'Asset',
         'Medication',
@@ -22,22 +29,14 @@ export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRoute
     actions: {
         submit: function() {
             var newId = this.generateId();
-            var inventory = this.store.createRecord('inventory', {
-                id: newId,
-                name: this.get('name'),
-                description: this.get('description'),
-                crossReference: this.get('crossReference'),
-                type: this.get('inventoryType'),
-                quantity: this.get('quantity'),
-                price: this.get('price')
-            });
+            var data = this.getProperties('name', 'description','crossReference','type', 'quantity', 'price');
+            data.id = newId;
+            var inventory = this.store.createRecord('inventory', data);
+            this.setProperties({name: null, description: null, crossReference: null, type: null, quantity: null, price: null});
             var controller = this;
-            inventory.save().then(function(){ 
-                controller.transitionToRoute('inventory.search', {
-                    queryParams: {
-                        searchText: newId
-                    }
-                });
+            inventory.save().then(function(){                 
+                controller.send('closeModal');
+                controller.transitionToRoute('/inventory/search/'+newId);                                    
             });                
         }
     },
