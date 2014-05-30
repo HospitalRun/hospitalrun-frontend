@@ -8,10 +8,12 @@
                 <label for="inventoryType">Type</label>
                 {{view Ember.Select content=inventoryTypes class="form-control" value=inventoryType id="inventoryType"}}
             </div>
-
             <div class="row">
                 {{input quantity class="col-xs-2"}}
             </div>
+            <div class="row">
+                {{input price class="col-xs-2"}}
+            </div>        
             {{input crossReference}}
             {{submit "Add" class="btn btn-primary" value="Add" name="Add" as="button"}}
         {{/form-for}}

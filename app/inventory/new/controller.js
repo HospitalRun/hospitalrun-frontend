@@ -1,4 +1,4 @@
-export default Ember.ArrayController.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, Ember.Validations.Mixin, {
+export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, Ember.Validations.Mixin, {
     inventoryTypes: [
         'Asset',
         'Medication',
@@ -11,6 +11,11 @@ export default Ember.ArrayController.extend(Ember.SimpleAuth.AuthenticatedRouteM
         },
         quantity: {
             numericality: true
+        },
+        price: {
+            numericality: {
+                allowBlank: true
+            }
         }
     },    
     
@@ -24,6 +29,7 @@ export default Ember.ArrayController.extend(Ember.SimpleAuth.AuthenticatedRouteM
                 crossReference: this.get('crossReference'),
                 type: this.get('inventoryType'),
                 quantity: this.get('quantity'),
+                price: this.get('price')
             });
             var controller = this;
             inventory.save().then(function(){ 
