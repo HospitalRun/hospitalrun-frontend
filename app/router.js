@@ -12,8 +12,9 @@ Router.map(function() {
     });
     
     this.resource('inventory', { path: '/inventory' }, function() {
-        this.route('search');
-        this.resource('inventory.new',{ path: "/new" });
+        this.route('search', { path: "/search/:search_text" });
+        this.route('new');
+        this.route('edit', { path: "/edit/:inventory_id" });
         this.route('barcode', { path: "/barcode/:inventory_id" });
     });
     
