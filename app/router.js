@@ -22,6 +22,11 @@ Router.map(function() {
         this.route('search');
         this.route('new');
     });
+    
+    this.resource('patients', function() {
+        this.route('search', { path: "/search/:search_text" });
+    });
+    
 });
 
 export default Router;

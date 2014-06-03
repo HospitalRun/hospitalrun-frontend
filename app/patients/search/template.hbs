@@ -1,0 +1,9 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">Search Results for <i>{{this.searchText}}</i></div>
+    {{partial "patients/patient-listing"}}
+    </div>
+</div>
+{{#if this}}
+    <button class="btn btn-primary" {{action 'newPatient'}}>New Patient</button>
+{{/if}}
+<button class="btn btn-primary" {{action 'allPatients'}}>All Patients</button>
