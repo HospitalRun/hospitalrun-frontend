@@ -27,6 +27,7 @@ app.import('vendor/bootstrap/dist/js/bootstrap.js');
 app.import('vendor/JsBarcode/CODE128.js');
 app.import('vendor/JsBarcode/JsBarcode.js');
 app.import('vendor/dymo/DYMO.Label.Framework.1.2.6.js');
+app.import('vendor/ember-forms/dist/ember_forms.js');
 
 // If the library that you are including contains AMD or ES6 modules that
 // you would like to import into your application please specify an

@@ -1,0 +1,25 @@
+<h3>Checkbox</h3>
+
+Checkboxes let a user select or deselect an option.
+
+<h2>Markup</h2>
+<div class="well line-example">
+    <pre><code class="handlebars">
+        \{{em-checkbox label="Active?" property="active"}}
+    </code></pre>
+</div>
+
+<h2>Result</h2>
+<div class="well line-example">
+    {{#em-form submit_button=false}}
+        {{em-checkbox label="Active?" property="active"}}
+    {{/em-form}}
+</div>
+
+<h2>Parameters</h2>
+<table class="table table-striped">
+    <tr><th>Param name</th><th>Description</th><th>Default</th></tr>
+    <tr><td>label</td><td>The label of the input</td><td>A humanized form of the property name</td></tr>
+    <tr><td>property</td><td>The property name in the model instance bound to the form</td><td>none, value is required.</td></tr>
+</table>
+

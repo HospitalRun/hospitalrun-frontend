@@ -1,0 +1,121 @@
+.navbar-brand {
+    background: url("./img/ember_logo.png") left center no-repeat;
+    background-size: 50px;
+    padding-left: 100px;
+    margin-left: 0 !important;
+}
+
+@media screen and (max-width: 750px) {
+    .sidebar {
+        position: static;
+        margin-top: 65px;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 970px) {
+    #socials {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 750px) {
+    .sidebar {
+        position: fixed;
+        top: 65px;
+        width: 170px;
+    }
+
+    .page {
+        top: 65px;
+    }
+
+}
+
+@media screen and (min-width: 970px) {
+    .sidebar {
+        width: 220px;
+    }
+}
+
+.sidebar > .nav > li > a {
+    padding: 5px 15px 5px 5px;
+    font-size: 1.2em;
+}
+
+.sidebar > .nav > li > .nav > li > a {
+    padding: 5px 15px 5px 15px;
+    font-size: .9em;
+}
+
+.sidebar li.active > a {
+    color: #2a6496;
+    font-weight: bold;
+}
+
+@media screen and (min-width: 750px) {
+    .sidebar > .nav > li > .nav {
+        height: 0;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        -webkit-transition: max-height 0.5s ease-in, opacity 0.3s ease-out;
+    }
+
+    .sidebar > .nav > li.active > .nav {
+        display: block;
+        height: auto;
+        max-height: 400px;
+        opacity: 1;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .sidebar > .nav > li > .nav {
+        display: none;
+    }
+}
+
+
+/* overwrite ugly google-prettify style */
+pre.prettyprint {
+    padding: 10px !important;
+    border: 1px solid #cccccc !important;
+}
+
+.line-example {
+    min-height: 75px;
+}
+
+
+.jsbin {
+    margin: 5px;
+}
+
+
+/*
+ * Social buttons
+ *
+ * Twitter and GitHub social action buttons (for homepage and footer).
+ */
+
+.socials {
+    margin-top: 10px;
+    text-align: center;
+}
+.bs-social-buttons {
+    display: inline-block;
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style: none;
+}
+.bs-social-buttons li {
+    display: inline-block;
+    line-height: 1;
+    padding: 5px 8px;
+}
+/* Style the GitHub buttons via CSS instead of inline attributes */
+.github-btn {
+    border: 0;
+    overflow: hidden;
+}

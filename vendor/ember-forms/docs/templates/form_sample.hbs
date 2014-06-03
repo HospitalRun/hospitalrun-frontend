@@ -1,0 +1,13 @@
+<div class="btn-group">
+    <button type="button" class="btn btn-default" {{action 'layout' 'default'}}>Default</button>
+    <button type="button" class="btn btn-default" {{action 'layout' 'horizontal'}}>Horizontal</button>
+    <button type="button" class="btn btn-default" {{action 'layout' 'inline'}}>Inline</button>
+</div>
+<hr/>
+{{#em-form model=model form_layout=layout}}
+    {{em-input property="name" label="Full Name" placeholder="Enter a name..."}}
+    {{em-input property="password" label="Password" placeholder="And password..." type="password" disabled=nameHasValue}}
+    {{em-text property="comment" label="Coment" placeholder="Comment please.." rows=4}}
+    {{em-select property="gender" label="Gender" prompt="-select-" content=genderOptions optionValuePath="content.id" optionLabelPath="content.name"}}
+    {{em-checkbox property="active" label="Active?"}}
+{{/em-form}}

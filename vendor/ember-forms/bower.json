@@ -1,0 +1,54 @@
+{
+  "name": "ember-forms",
+  "version": "0.0.1",
+  "description": "Intuitive, Smart and Beautiful Forms for Ember.js",
+  "homepage": "http://ember-addons.github.io/ember-forms",
+  "authors": [
+    "Asaf Shakarchi <asaf000@gmail.com>"
+  ],
+  "keywords": [
+      "ember",
+      "emberjs",
+      "bootstap",
+      "twitter-bootstrap",
+      "forms",
+      "coffee",
+      "ui",
+      "html",
+      "js",
+      "javascript",
+      "css3",
+      "css"
+  ],
+  "ignore": [
+    "**/.*",
+    "!dist",
+    "!LICENSE",
+    "!README.md",
+    "!bower.json",
+    "!dist/",
+    "!dist/*",
+    "!dist/*/*",
+    "!dist/*/*/*"
+  ],
+  "license": "Apache2",
+  "ignore": [
+    "CHANGELOG.txt",
+    "Gruntfile.coffee",
+    "LICENSE",
+    "README.md",
+    "package.json",
+    "node_modules",
+    "src",
+    "test"
+  ],
+  "devDependencies": {
+    "jquery": "~2.1.0",
+    "bootstrap": "~3.1.1",
+    "ember": "~1.5.1",
+    "font-awesome": "~4.0.3",
+    "highlightjs": "~8.0.0",
+    "ember-qunit": "~0.1.8",
+    "ember-model": "~0.0.11"
+  }
+}

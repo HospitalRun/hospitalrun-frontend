@@ -1,0 +1,14 @@
+{
+    "framework": "qunit",
+    "port" : 7359,
+    "src_files": [
+      "bower_components/jquery/dist/jquery.js",
+      "bower_components/handlebars/handlebars.js",
+      "bower_components/ember/ember.js",
+      "dist/ember_forms.js",
+      "bower_components/ember-qunit/dist/globals/main.js",
+      "build/tests/**/*.js"
+    ],
+    "launch_in_dev": ["PhantomJS"],
+    "launch_in_ci": ["PhantomJS"]
+}
