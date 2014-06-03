@@ -1,4 +1,4 @@
-export default DS.Model.extend({
+export default DS.Model.extend(Ember.Validations.Mixin, {
     lastModified: DS.attr('date'),
     modifiedBy: DS.attr(),
     modifiedFields: DS.attr(),
