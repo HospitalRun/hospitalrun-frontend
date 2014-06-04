@@ -1,4 +1,4 @@
-export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+export default Ember.ObjectController.extend({
     
     needs: ['inventory'],
     

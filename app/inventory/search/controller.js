@@ -1,4 +1,3 @@
-import InventoryController from 'hospitalrun/inventory/controller';
-export default InventoryController.extend({
+export default Ember.ArrayController.extend({
     searchText: null
 });

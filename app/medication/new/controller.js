@@ -1,16 +1,5 @@
-export default Ember.ObjectController.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, Ember.Validations.Mixin, {    
+export default Ember.ObjectController.extend({    
     availableMeds: false,
-    validations: {
-        patientId: {
-            presence: true,
-        },
-        prescription: {
-            presence: true,
-        },
-        quantity: {
-            numericality: true
-        }
-    },
     
     searching: false,
     

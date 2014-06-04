@@ -1,4 +1,4 @@
-export default Ember.Controller.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, Ember.Validations.Mixin, {
+export default Ember.Controller.extend({
     inventoryTypes: [
         'Asset',
         'Medication',

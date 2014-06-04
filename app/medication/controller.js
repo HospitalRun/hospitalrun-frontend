@@ -1,4 +1,4 @@
-export default Ember.ArrayController.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {    
+export default Ember.ArrayController.extend({    
     actions: {
         newMedication: function() {
             this.transitionToRoute('medication.new');
