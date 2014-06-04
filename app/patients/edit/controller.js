@@ -1,39 +1,16 @@
 import GenderList from 'hospitalrun/mixins/gender-list';    
+import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
 
-export default Ember.ObjectController.extend(GenderList, Ember.SimpleAuth.AuthenticatedRouteMixin, Ember.Validations.Mixin, {
-    isUpdateDisabled: function() {
-        if (!Ember.isNone(this.get('isValid'))) {
-            return !this.get('isValid');
-        } else {
-            return false;
-        }
-    }.property('isValid'),
-    
-    
-    buttonText: function() {
+export default AbstractEditController.extend(GenderList, {
+    title: function() {
         if (this.get('isNew')) {
-            return 'Add';
+            return 'New Patient';
         } else {
-            return 'Update';
+            return 'Edit Patient';
         }
     }.property('isNew'),
-    
-    actions: {
-        cancel: function() {
-            var cancelledItem = this.get('model');
-            if (this.get('isNew')) {
-                cancelledItem.deleteRecord();
-            } else {
-                cancelledItem.rollback();
-            }
-            this.send('closeModal');
-        },
-        
-        update: function() {            
-            this.get('model').save().then(function(record) {
-                this.send('closeModal');
-                this.transitionToRoute('/patients/search/'+record.get('id'));
-            }.bind(this));                
-        }
+
+    afterUpdate: function(record) {
+        this.transitionToRoute('/patients/search/'+record.get('id'));
     }
 });
