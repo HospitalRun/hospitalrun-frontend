@@ -2,6 +2,13 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     searchKeys: null,    
     searchModel: null,
     searchText: null,
+    
+    actions: {
+        allItems: function() {
+            this.transitionTo(this.get('moduleName')+'.index');
+        }
+    },
+    
     model: function(params) {
         this.set('searchText', params.search_text);
         var queryParams = {
@@ -11,7 +18,7 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             }
         };
         return this.store.find(this.searchModel, queryParams);
-    },    
+    },
     
     setupController: function(controller, model) {
         controller.set('model', model);
