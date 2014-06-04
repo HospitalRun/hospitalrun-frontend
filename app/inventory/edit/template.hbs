@@ -1,31 +1,16 @@
-{{#form-for model role="form" wrapper="twitter-bootstrap"}}
-<div class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Edit Item</h4>
-            </div>
-            <div class="modal-body">
-                    {{input name}}
-                    {{input description as="text"}}
-                    <div class="form-group">
-                        <label for="inventoryType">Type</label>
-                        {{this.type}}
-                    </div>
-                    <div class="row">
-                        {{input quantity class="col-xs-2"}}
-                    </div>
-                    <div class="row">
-                        {{input price class="col-xs-2"}}
-                    </div>        
-                    {{input crossReference}}                    
-
-            </div>
-            <div class="modal-footer">
-                {{#submit "Update" class="btn btn-primary" value="Update" name="Update" as="button"}}Update{{/submit}}
-            </div>
-        </div>
+{{#em-form model=this submit_button=false}}
+    {{em-input property="name" label="Name"}}
+    {{em-text label="Description" property="description" rows=3}}
+    {{em-select label="Type" property="type" 
+        content=inventoryTypes 
+        optionValuePath="content" 
+        optionLabelPath="content"
+    }}
+    <div class="row">
+        {{em-input property="quantity" label="Quantity" class="col-xs-3"}}
     </div>
-</div>
-{{/form-for}}
+    <div class="row">
+        {{em-input property="price" label="Price" class="col-xs-2"}}
+    </div>
+    {{em-input property="crossReference" label="Cross Reference"}}
+{{/em-form}}

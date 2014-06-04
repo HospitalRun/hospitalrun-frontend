@@ -1,5 +1,55 @@
-<div class="panel panel-primary">
-    <div class="panel-heading">Inventory Listing</div>
-    {{partial "inventory-listing"}}
-</div>
-<button class="btn btn-primary" {{action 'newInventory'}}>New Item</button>
+{{#if this}}
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>XRef</th>
+            <th>Actions</th>
+        </tr>
+        {{#each itemController='inventory/item-controller'}}
+        <tr>
+                <td>{{id}}</td>
+                <td>{{name}}</td>
+                <td>{{description}}</td>
+                <td>{{type}}</td>
+                <td>{{quantity}}</td>
+                <td>{{price}}</td>
+                <td>{{crossReference}}</td>
+                <td>
+                    {{#if showAdd}}
+                        {{#if isAdding}}
+                            <label>Amount: </label>{{input value=addAmount}}
+                            <button class="btn btn-default" {{action 'addInventory'}}>Add</button>
+                            <button class="btn btn-default" {{action 'cancelUpdate'}}>Cancel</button>
+                        {{else}}
+                            <button class="btn btn-default" {{action 'addInventory'}}>Add</button>
+                        {{/if}}
+                    {{/if}}
+                    {{#if showDecrease}}
+                        {{#if isDecreasing}}
+                            <label>Amount: </label>{{input value=decreaseAmount}}
+                            <button class="btn btn-default" {{action 'decreaseInventory'}}>Decrease</button>
+                            <button class="btn btn-default" {{action 'cancelUpdate'}}>Cancel</button>
+                        {{else}}
+                            <button class="btn btn-default" {{action 'decreaseInventory'}}>Decrease</button>
+                        {{/if}}
+                    {{/if}}
+                    {{#if showEdit}}
+                        <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
+                        <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
+                    {{/if}}
+                    {{#link-to 'inventory.barcode' this class="btn btn-default"}}Barcode{{/link-to}}
+                </td>        
+
+        </tr>
+        {{/each}}
+    </table>
+{{else}}
+    <div class="alert alert-info">
+        <em>No items found.  Create a new record?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Item</button>
+    </div>
+{{/if}}

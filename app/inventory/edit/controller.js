@@ -1,19 +1,16 @@
-export default Ember.Controller.extend({
-    inventoryTypes: [
-        'Asset',
-        'Medication',
-        'Supply'
-    ],
+import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';    
+import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
 
-    actions: {
-        submit: function() {
-            var controller = this;
-            this.get('model').save().then(function() {
-                controller.send('closeModal');
-                controller.transitionToRoute('inventory.search', {
-                    searchText: controller.get('id')                    
-                });
-            });                
+export default AbstractEditController.extend(InventoryTypeList, {
+    title: function() {
+        if (this.get('isNew')) {
+            return 'New Item';
+        } else {
+            return 'Edit Item';
         }
+    }.property('isNew'),
+
+    afterUpdate: function(record) {
+        this.transitionToRoute('/inventory/search/'+record.get('id'));
     }
 });

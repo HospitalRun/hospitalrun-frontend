@@ -19,6 +19,10 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
 
     
     actions: {
+        allItems: function() {
+            this.transitionTo(this.get('moduleName')+'.index');
+        },        
+        
         closeModal: function() {
             this.disconnectOutlet({
                 parentView: 'application',
