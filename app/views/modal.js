@@ -1,4 +1,6 @@
 export default Ember.View.extend({
+    layoutName: 'modal',
+    
     didInsertElement: function() {
         var $modal = this.$('.modal').modal();
 
