@@ -3,11 +3,5 @@ export default Ember.TextField.extend(Ember.TargetActionSupport, {
         this.triggerAction({
             action: 'search'
         });
-    },
-    
-    insertNewline: function() {
-        this.triggerAction({
-            action: 'search'
-        });
     }
 });
