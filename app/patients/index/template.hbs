@@ -1,5 +1,29 @@
-<div class="panel panel-primary">
-    <div class="panel-heading">Patient Listing</div>
-    {{partial "patients/patient-listing"}}
-</div>
-<button class="btn btn-primary" {{action 'newPatient'}}>New Patient</button>
+{{#if this}}
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Gender</th>
+            <th>Actions</th>
+        </tr>
+        {{#each}}
+            {{#unless isNew}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{firstName}}</td>
+                    <td>{{lastName}}</td>
+                    <td>{{gender}}</td>
+                    <td>
+                        <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
+                        <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
+                    </td>        
+                </tr>
+            {{/unless}}
+        {{/each}}
+    </table>
+{{else}}
+    <div class="alert alert-info">
+        <em>No patients found.  Create a new patient record?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Patient</button>
+    </div>
+{{/if}}
