@@ -7,8 +7,9 @@ export default Ember.ObjectController.extend({
         }
     }.property('isValid'),
     
+    updateButtonAction: 'update',
     
-    buttonText: function() {
+    updateButtonText: function() {
         if (this.get('isNew')) {
             return 'Add';
         } else {
