@@ -7,13 +7,18 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         return module + '.edit';
     }.property('moduleName'),
     
+    deletePath: function() {
+        var module = this.get('moduleName');
+        return module + '.delete';        
+    }.property('moduleName'),
+    
     searchRoute: function() {
         var module = this.get('moduleName');
         return '/'+module + '/search';
     }.property('moduleName'),
 
     
-    actions: {                
+    actions: {
         closeModal: function() {
             this.disconnectOutlet({
                 parentView: 'application',
@@ -22,16 +27,17 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         },
         newItem: function() {
             var item = this.get('store').createRecord(this.get('modelName'));
-            this.controllerFor(this.get('editPath')).set('model', item);
-            this.renderEditModal();
+            this.send('editItem', item);
         },
-        deleteItem: function(item) {            
-            item.deleteRecord();      
-            item.save();    
+        deleteItem: function(item) {
+            var deletePath = this.get('deletePath');
+            this.controllerFor(deletePath).set('model', item);
+            this.renderModal(deletePath);
         },        
         editItem: function(item) {
-            this.controllerFor(this.get('editPath')).set('model',item);
-            this.renderEditModal();     
+            var editPath = this.get('editPath');
+            this.controllerFor(editPath).set('model',item);
+            this.renderModal(editPath);     
         }
     },
     
@@ -39,16 +45,17 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         return this.store.find(this.get('modelName'));
     },
     
-    renderEditModal: function() {
-        this.render(this.get('editPath'), {
+    renderModal: function(template) {
+        this.render(template, {
             into: 'application',
             outlet: 'modal'
         });            
     },
     
     setupController: function(controller, model) { 
-        this.controllerFor('navigation').set('allowSearch',true);
-        this.controllerFor('navigation').set('searchRoute',this.get('searchRoute'));
+        var navigationController = this.controllerFor('navigation');
+        navigationController.set('allowSearch',true);
+        navigationController.set('searchRoute',this.get('searchRoute'));
         this._super(controller, model);
     }
 });
