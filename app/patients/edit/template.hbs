@@ -1,33 +1,8 @@
-<div class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                {{#if isNew }}
-                    <h4 class="modal-title">New Patient</h4>
-                {{else}}
-                    <h4 class="modal-title">Edit Patient</h4>
-                {{/if}}
-            </div>
-            <div class="modal-body">
-                {{#em-form model=this submit_button=false}}
-                    {{em-input property="firstName" label="First Name"}}
-                    {{em-input property="lastName" label="Last Name"}}
-                    <div class="form-group">
-                        <label>Gender:</label>
-                        {{ext-radio name=gender content=genderList value=gender}}
-                    </div>
-                {{/em-form}}
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" {{action "update"}} {{bind-attr disabled=isSendDisabled}}>
-                    {{#if isNew }}
-                        Add
-                    {{else}}
-                        Update
-                    {{/if}}
-                </button>
-                <button class="btn btn-default" {{action "cancel"}}>Cancel</button>            
-        </div>
+{{#em-form model=this submit_button=false}}
+    {{em-input property="firstName" label="First Name"}}
+    {{em-input property="lastName" label="Last Name"}}
+    <div class="form-group">
+        <label>Gender:</label>
+        {{ext-radio name=gender content=genderList value=gender}}
     </div>
-</div>
+{{/em-form}}
