@@ -30,7 +30,12 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             });
         },
         newItem: function() {
-            var item = this.get('store').createRecord(this.get('modelName'));
+            var newId = this.generateId();
+            var data = {};
+            if (newId) {
+                data.id = newId;
+            }
+            var item = this.get('store').createRecord(this.get('modelName'), data);
             this.send('editItem', item);
         },
         deleteItem: function(item) {
@@ -43,6 +48,15 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             this.controllerFor(editPath).set('model',item);
             this.renderModal(editPath);     
         }
+    },
+    
+    /**
+     * Override this function to generate an id for a new record
+     * @return a generated id;default is null which means that an
+     * id will be automatically generated via Ember data.
+     */
+    generateId: function() {
+        return null;                
     },
     
     model: function() {
