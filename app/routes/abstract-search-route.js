@@ -4,13 +4,24 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     searchText: null,    
     model: function(params) {
         this.set('searchText', params.search_text);
-        var queryParams = {
+        var queryParams = this.getQueryParams(params.search_text);
+        return this.store.find(this.searchModel, queryParams);
+    },
+    
+    /**
+     * Get the query params to run against the store find function.
+     * By default this function will return a query that does a "contains"
+     * search against all of the searchKeys defined for this route.
+     * You can override this function if you need additional/different parameters.
+     * @param searchText string containing text to search for.
+     */
+    getQueryParams: function(searchText) {
+        return {
             containsValue: {
-                value: params.search_text,
+                value: searchText,
                 keys: this.searchKeys                            
             }
-        };
-        return this.store.find(this.searchModel, queryParams);
+        };        
     },
     
     setupController: function(controller, model) {

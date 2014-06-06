@@ -19,7 +19,6 @@ app.import('vendor/pouchdb/dist/pouchdb-nightly.js');
 app.import('vendor/ember-pouchdb-adapter/pouchdb_adapter.js');
 app.import('vendor/ember-autofocus/dist/ember-autofocus.min.js');
 app.import('vendor/ember-simple-auth/ember-simple-auth.js');
-app.import('vendor/ember-easyForm/ember-easyForm-latest.js');
 app.import('vendor/ember-validations/ember-validations-latest.js');
 app.import('vendor/oauth-signature-js/dist/oauth-signature.js');
 app.import('vendor/node-uuid/uuid.js');

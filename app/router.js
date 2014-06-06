@@ -19,11 +19,11 @@ Router.map(function() {
     });
     
     this.resource('medication', { path: '/medication' }, function() {
-        this.route('search');
+        this.route('search', { path: "/search/:search_text" });
         this.route('new');
     });
     
-    this.resource('patients', function() {
+    this.resource('patients', { path: '/patients' }, function() {
         this.route('search', { path: "/search/:search_text" });
     });
     

@@ -1,6 +1,31 @@
-<div class="panel panel-primary">
-    <div class="panel-heading">Medication Requests</div>
-    {{partial "medication-requests"}}
-</div>
-<button class="btn btn-primary" {{action 'newMedication'}}>New Request</button>
-
+{{#if model}}
+    <table class="table">
+        <tr>
+            <th>Patient</th>
+            <th>Prescription</th>
+            <th>Medication</th>
+            <th>Quantity</th>        
+            <th>Status</th>        
+            <th>Actions</th>
+        </tr>
+        {{#each}}
+            {{#unless isNew}}
+            <tr>
+                <td>{{patientId}}</td>
+                <td>{{prescription}}</td>
+                <td>{{medicationName}}</td>
+                <td>{{quantity}}</td>
+                <td>{{status}}</td>
+                <td>
+                    <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
+                    <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
+                </td>        
+            </tr>
+            {{/unless}}
+        {{/each}}
+    </table>
+{{else}}
+    <div class="alert alert-info">
+        <em>No items found.  Create a new record?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Request</button>
+    </div>
+{{/if}}

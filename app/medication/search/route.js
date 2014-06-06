@@ -1,40 +1,23 @@
-import MedicationRouter from 'hospitalrun/medication/route';
-
-export default MedicationRouter.extend({
-    queryParams: {        
-        searchText: {
-            refreshModel: true
-        },
-        idToFind:  {
-            refreshModel: true
-        }
-    },
+import AbstractSearchRoute from 'hospitalrun/routes/abstract-search-route';
+import MedicationMapping from 'hospitalrun/mixins/medication-mapping';
+export default AbstractSearchRoute.extend(MedicationMapping, {
+    searchKeys: [
+        'prescription',
+        'patientId'
+    ],
+    searchModel: 'medication',
     
-    actions: {
-        queryParamsDidChange: function() {
-            // opt into full refresh
-            this.refresh();
-        }
-    },
-    
-    model: function(params) {
-        var queryParams = {
-            mapResults: this._mapViewResults,
-            fieldMapping: this.fieldMapping
-        };
-        if (params.queryParams.searchText) {
-            queryParams['containsValue'] = {
-                value: params.queryParams.searchText,
-                keys: [
-                    'prescription',
-                    'patientId'
-                ]
-            };
-        } else if (params.queryParams.idToFind) {
-            queryParams['idToFind'] = params.queryParams.idToFind;
-        }
-
-        return this.store.find('medication', queryParams);
+    /**
+     * Get the query params to run against the store find function.
+     * By default this function will return a query that does a "contains"
+     * search against all of the searchKeys defined for this route.
+     * You can override this function if you need additional/different parameters.
+     * @param searchText string containing text to search for.     
+     */
+    getQueryParams: function(searchText) {
+        var queryParams = this._super(searchText);
+        queryParams.mapResults = this._mapViewResults;
+        queryParams.fieldMapping = this.fieldMapping;
+        return queryParams;
     }
-    
 });
