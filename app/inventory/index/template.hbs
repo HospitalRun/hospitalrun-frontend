@@ -11,41 +11,42 @@
             <th>Actions</th>
         </tr>
         {{#each itemController='inventory/item-controller'}}
-        <tr>
-                <td>{{id}}</td>
-                <td>{{name}}</td>
-                <td>{{description}}</td>
-                <td>{{type}}</td>
-                <td>{{quantity}}</td>
-                <td>{{price}}</td>
-                <td>{{crossReference}}</td>
-                <td>
-                    {{#if showAdd}}
-                        {{#if isAdding}}
-                            <label>Amount: </label>{{input value=addAmount}}
-                            <button class="btn btn-default" {{action 'addInventory'}}>Add</button>
-                            <button class="btn btn-default" {{action 'cancelUpdate'}}>Cancel</button>
-                        {{else}}
-                            <button class="btn btn-default" {{action 'addInventory'}}>Add</button>
+            {{#unless isNew}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{name}}</td>
+                    <td>{{description}}</td>
+                    <td>{{type}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{price}}</td>
+                    <td>{{crossReference}}</td>
+                    <td>
+                        {{#if showAdd}}
+                            {{#if isAdding}}
+                                <label>Amount: </label>{{input value=addAmount}}
+                                <button class="btn btn-default" {{action 'addInventory'}}>Add</button>
+                                <button class="btn btn-default" {{action 'cancelUpdate'}}>Cancel</button>
+                            {{else}}
+                                <button class="btn btn-default" {{action 'addInventory'}}>Add</button>
+                            {{/if}}
                         {{/if}}
-                    {{/if}}
-                    {{#if showDecrease}}
-                        {{#if isDecreasing}}
-                            <label>Amount: </label>{{input value=decreaseAmount}}
-                            <button class="btn btn-default" {{action 'decreaseInventory'}}>Decrease</button>
-                            <button class="btn btn-default" {{action 'cancelUpdate'}}>Cancel</button>
-                        {{else}}
-                            <button class="btn btn-default" {{action 'decreaseInventory'}}>Decrease</button>
+                        {{#if showDecrease}}
+                            {{#if isDecreasing}}
+                                <label>Amount: </label>{{input value=decreaseAmount}}
+                                <button class="btn btn-default" {{action 'decreaseInventory'}}>Decrease</button>
+                                <button class="btn btn-default" {{action 'cancelUpdate'}}>Cancel</button>
+                            {{else}}
+                                <button class="btn btn-default" {{action 'decreaseInventory'}}>Decrease</button>
+                            {{/if}}
                         {{/if}}
-                    {{/if}}
-                    {{#if showEdit}}
-                        <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
-                        <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
-                    {{/if}}
-                    {{#link-to 'inventory.barcode' this class="btn btn-default"}}Barcode{{/link-to}}
-                </td>        
-
-        </tr>
+                        {{#if showEdit}}
+                            <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
+                            <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
+                        {{/if}}
+                        {{#link-to 'inventory.barcode' this class="btn btn-default"}}Barcode{{/link-to}}
+                    </td>
+                </tr>
+            {{/unless}}
         {{/each}}
     </table>
 {{else}}
