@@ -12,7 +12,8 @@
     "$": true,
     "ENV": true,
     "module": true,
-    "dymo": true
+    "dymo": true,
+    "uuid": true
   },
   "node" : true,
   "browser" : true,

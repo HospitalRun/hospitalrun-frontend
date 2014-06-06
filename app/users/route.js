@@ -1,7 +1,5 @@
-var UsersRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
-    model: function() {
-        return this.store.find('user');
-    }
+import AbstractItemRoute from 'hospitalrun/routes/abstract-item-route';
+export default AbstractItemRoute.extend({
+    modelName: 'user',
+    moduleName: 'users'
 });
-
-export default UsersRoute;

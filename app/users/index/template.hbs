@@ -1,37 +1,29 @@
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Password</th>
-        <th>Roles</th>
-        <th>Actions</th>
-    </tr>
-    {{#each itemController='users/item-controller'}}    
-    <tr>
-        {{#if isEditing}}
-            <td>{{id}}</td>
-            <td>{{name}}</td>
-            <td>{{input value=email}}</td>
-            <td>{{input type='password' value=password}}</td>
-            <td>
-                {{role-select optionValuePath="content.roles" optionLabelPath="content.name" value=roles}}
-            </td>
-            <td>
-                <button {{action 'cancelUpdate'}}>Cancel</button>
-                <button {{action 'updateUser'}}>Update</button>
-            </td>
-        {{else}}
-            <td>{{id}}</td>
-            <td>{{name}}</td>
-            <td>{{email}}</td>
-            <td></td>
-            <td>{{roles}}</td>
-            <td>
-                <button {{action 'editUser'}}>Edit</button>
-                <button {{action 'deleteUser'}}>Delete</button>
-            </td>        
-        {{/if}}
-    </tr>
-    {{/each}}
-</table>
+{{#if this}}
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+        {{#each itemController='users/item-controller'}}        
+            {{#unless isNew}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{name}}</td>
+                    <td>{{email}}</td>
+                    <td>{{displayRole}}</td>
+                    <td>
+                        <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
+                        <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
+                    </td>
+                </tr>
+            {{/unless}}
+        {{/each}}
+    </table>
+{{else}}
+    <div class="alert alert-info">
+        <em>No users found.  Create a new user?</em> <button class="btn btn-primary" {{action 'newItem'}}>New User</button>
+    </div>
+{{/if}}

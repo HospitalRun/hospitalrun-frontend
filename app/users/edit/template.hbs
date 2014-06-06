@@ -1,0 +1,16 @@
+{{#em-form model=this submit_button=false}}
+    {{#unless isNew}}
+        <div class="form-group has-success">
+            <label class="control-label">Username</label>
+            <div class="form-control">
+                {{name}}
+            </div>
+        </div>
+    {{/unless}}
+    {{em-input property="email" type="email" label="Email"}}
+    {{em-input property="password" type="password" label="Password"}}
+    <div class="form-group has-success">
+        <label class="control-label">Role</label>
+        {{role-select value=roles class="form-control" content=userRoles}}
+    </div>
+{{/em-form}}
