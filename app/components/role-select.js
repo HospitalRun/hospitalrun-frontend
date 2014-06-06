@@ -1,20 +1,6 @@
 var get = Ember.get;
 
 export default Ember.Select.extend({
-    content: [
-        {name: 'Admin', roles: ['admin', 'user']},
-        {name: 'Business Office', roles: ['business_office', 'user']},
-        {name: 'Data Entry', roles: ['data_entry', 'user']},
-        {name: 'Doctor', roles: ['doctor', 'user']},
-        {name: 'Hospital Manager', roles: ['hospital_manager', 'user']},
-        {name: 'Imaging Technician', roles: ['imaging_tech', 'user']},
-        {name: 'Lab Technician', roles: ['lab_tech', 'user']},
-        {name: 'Medical Records Officer', roles: ['medrec_officer', 'user']},
-        {name: 'Nurse', roles: ['nurse', 'user']},
-        {name: 'Patient Administration', roles: ['patient_admin', 'user']},
-        {name: 'Pharmacist', roles: ['pharmacist', 'user']},
-    ],
-        
     optionValuePath: 'content.roles',
     optionLabelPath: 'content.name',
     
