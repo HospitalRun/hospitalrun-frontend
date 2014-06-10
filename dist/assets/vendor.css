@@ -5840,22 +5840,35 @@ button.close {
   border-color: #dbdbdb;
 }
 .btn-primary {
-  background-image: -webkit-linear-gradient(top, #428bca 0%, #2d6ca2 100%);
-  background-image:         linear-gradient(to bottom, #428bca 0%, #2d6ca2 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff428bca', endColorstr='#ff2d6ca2', GradientType=0);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-  background-repeat: repeat-x;
-  border-color: #2b669a;
+    background-color: #00bd9c;
 }
 .btn-primary:hover,
 .btn-primary:focus {
-  background-color: #2d6ca2;
-  background-position: 0 -15px;
+  background-color: #00c4a2;    
+  border-color: #2b669a;
 }
 .btn-primary:active,
 .btn-primary.active {
-  background-color: #2d6ca2;
-  border-color: #2b669a;
+  background-color: #00cca8;
+}
+
+.btn-primary.disabled,
+.btn-primary[disabled],
+fieldset[disabled] .btn-primary,
+.btn-primary.disabled:hover,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary:hover,
+.btn-primary.disabled:focus,
+.btn-primary[disabled]:focus,
+fieldset[disabled] .btn-primary:focus,
+.btn-primary.disabled:active,
+.btn-primary[disabled]:active,
+fieldset[disabled] .btn-primary:active,
+.btn-primary.disabled.active,
+.btn-primary[disabled].active,
+fieldset[disabled] .btn-primary.active {
+  background-color: #00bd9c;  
+  color: #a5a5a5;
 }
 .btn-success {
   background-image: -webkit-linear-gradient(top, #5cb85c 0%, #419641 100%);
@@ -5951,28 +5964,44 @@ button.close {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff428bca', endColorstr='#ff357ebd', GradientType=0);
   background-repeat: repeat-x;
 }
+
+.navbar {
+    margin: 0;
+}
+
 .navbar-default {
-  background-image: -webkit-linear-gradient(top, #fff 0%, #f8f8f8 100%);
-  background-image:         linear-gradient(to bottom, #fff 0%, #f8f8f8 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff8f8f8', GradientType=0);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-  background-repeat: repeat-x;
-  border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
+    background-color: #253649;
+    border: 0;
+    border-radius: 0;
 }
 .navbar-default .navbar-nav > .active > a {
-  background-image: -webkit-linear-gradient(top, #ebebeb 0%, #f3f3f3 100%);
-  background-image:         linear-gradient(to bottom, #ebebeb 0%, #f3f3f3 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffebebeb', endColorstr='#fff3f3f3', GradientType=0);
-  background-repeat: repeat-x;
-  -webkit-box-shadow: inset 0 3px 9px rgba(0, 0, 0, .075);
-          box-shadow: inset 0 3px 9px rgba(0, 0, 0, .075);
+    color: #fff;
+    background-color: #3b5268;
 }
-.navbar-brand,
+
+.navbar-default .navbar-brand,  .navbar-default .navbar-brand:hover {
+    color: #fff;    
+},
+
+.navbar-brand span {
+    color: #00bd9c;
+}
+
 .navbar-nav > li > a {
-  text-shadow: 0 1px 0 rgba(255, 255, 255, .25);
+    color: #00bd9c;
+    margin-right: 10px;
 }
+
+.navbar-default .navbar-nav > li > a {
+  color: #00bd9c;
+    
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: #fff;
+    background-color: #3b5268;
+}
+
 .navbar-inverse {
   background-image: -webkit-linear-gradient(top, #3c3c3c 0%, #222 100%);
   background-image:         linear-gradient(to bottom, #3c3c3c 0%, #222 100%);
@@ -6085,12 +6114,22 @@ button.close {
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
           box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
 }
-.panel-default > .panel-heading {
-  background-image: -webkit-linear-gradient(top, #f5f5f5 0%, #e8e8e8 100%);
-  background-image:         linear-gradient(to bottom, #f5f5f5 0%, #e8e8e8 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#ffe8e8e8', GradientType=0);
-  background-repeat: repeat-x;
+
+.panel-default, .panel-default > .panel-heading {
+    border: 0;
+    border-radius: 0;
+    background-color: #2e4359; 
 }
+
+.panel-default > .panel-heading {
+    color: #fff;
+    padding: 0 15px;
+}
+
+.panel-default > .panel-body {
+    padding-top: 0;
+}
+
 .panel-primary > .panel-heading {
   background-image: -webkit-linear-gradient(top, #428bca 0%, #357ebd 100%);
   background-image:         linear-gradient(to bottom, #428bca 0%, #357ebd 100%);
