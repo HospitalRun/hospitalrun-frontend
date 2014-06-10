@@ -1,6 +1,7 @@
 import AbstractSearchRoute from 'hospitalrun/routes/abstract-search-route';
 import MedicationMapping from 'hospitalrun/mixins/medication-mapping';
 export default AbstractSearchRoute.extend(MedicationMapping, {
+	moduleName: 'medication',
     searchKeys: [
         'prescription',
         'patientId'

@@ -27,6 +27,9 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     setupController: function(controller, model) {
         controller.set('model', model);
         controller.set('searchText', this.get('searchText'));
+        var parentController = this.controllerFor(this.get('moduleName'));
+        var searchTitle = 'Search Results for <i>'+this.get('searchText')+'</i>';
+        parentController.set('currentScreenTitle', searchTitle.htmlSafe());
     }    
     
 });

@@ -1,6 +1,12 @@
 export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+    allowSearch: true,
+    currentScreenTitle: null,
+    editTitle: null,    
     modelName: null,
     moduleName: null,
+    newButtonText: null,
+    newTitle: null,
+    sectionTitle:null, 
     
     editPath: function() {
         var module = this.get('moduleName');
@@ -20,6 +26,7 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     
     actions: {
         allItems: function() {
+            this.setPageTitle(this.get('currentScreenTitle'));
             this.transitionTo(this.get('moduleName')+'.index');
         },        
         
@@ -35,8 +42,10 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             if (newId) {
                 data.id = newId;
             }
-            var item = this.get('store').createRecord(this.get('modelName'), data);
-            this.send('editItem', item);
+            var item = this.get('store').createRecord(this.get('modelName'), data);            
+            this.transitionTo(this.get('editPath'), item);
+            this.setPageTitle(this.get('newTitle'));
+            
         },
         deleteItem: function(item) {
             var deletePath = this.get('deletePath');
@@ -44,9 +53,8 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             this.renderModal(deletePath);
         },        
         editItem: function(item) {
-            var editPath = this.get('editPath');
-            this.controllerFor(editPath).set('model',item);
-            this.renderModal(editPath);     
+            this.transitionTo(this.get('editPath'), item);
+            this.setPageTitle(this.get('editTitle'));
         }
     },
     
@@ -70,10 +78,24 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         });            
     },
     
+    renderTemplate: function() {
+        this.render('section');
+    },
+    
+    setPageTitle: function(title) {
+        var currentController = this.controllerFor(this.get('moduleName'));
+        currentController.set('currentScreenTitle', title);        
+    },
+    
     setupController: function(controller, model) { 
         var navigationController = this.controllerFor('navigation');
-        navigationController.set('allowSearch',true);
-        navigationController.set('searchRoute',this.get('searchRoute'));
+        if (this.get('allowSearch') === true) {
+            navigationController.set('allowSearch',true);
+            navigationController.set('searchRoute',this.get('searchRoute'));
+        }
+        var currentController = this.controllerFor(this.get('moduleName'));
+        var propsToSet = this.getProperties('currentScreenTitle','newButtonText','sectionTitle');        
+        currentController.setProperties(propsToSet);        
         this._super(controller, model);
     }
 });

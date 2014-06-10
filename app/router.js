@@ -8,22 +8,22 @@ Router.map(function() {
     this.route('login');
     
     this.resource('users', { path: '/users' }, function() {
-        // additional child routes    
+        this.route('edit', { path: "/edit/:user_id" });
     });
     
     this.resource('inventory', { path: '/inventory' }, function() {
-        this.route('search', { path: "/search/:search_text" });
-        this.route('new');
-        this.route('edit', { path: "/edit/:inventory_id" });
         this.route('barcode', { path: "/barcode/:inventory_id" });
+        this.route('edit', { path: "/edit/:inventory_id" });
+        this.route('search', { path: "/search/:search_text" });
     });
     
     this.resource('medication', { path: '/medication' }, function() {
+        this.route('edit', { path: "/edit/:medication_id" });
         this.route('search', { path: "/search/:search_text" });
-        this.route('new');
     });
     
     this.resource('patients', { path: '/patients' }, function() {
+        this.route('edit', { path: "/edit/:patient_id" });
         this.route('search', { path: "/search/:search_text" });
     });
     

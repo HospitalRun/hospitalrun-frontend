@@ -1,8 +1,39 @@
-/* Put your CSS here */
-html, body {
+@keyframes domChanged { 
+    from { 
+        margin-left: 100%;
+        width: 300%;
+    } 
+    to {
+        margin-left: 0%;
+        width: 100%;        
+    }
+}
+@-webkit-keyframes domChanged {
+    from { 
+        margin-left: 100%;
+        width: 300%;
+    } 
+    to {
+        margin-left: 0%;
+        width: 100%;        
+    }
+}
+/*.ember-view { animation: domChanged 1s; -webkit-animation: domChanged 1s; }*/
+
+.panel-primary { animation: domChanged 1s; -webkit-animation: domChanged 1s; }
+
+.navbar-brand span {
+    color: #00bd9c;
+}
+
+.screen-button, .screen-title {
     margin: 20px;
 }
 
-@keyframes domChanged { from { background: yellow; } }
-@-webkit-keyframes domChanged { from { background: yellow; } }
-.ember-view { animation: domChanged 1s; -webkit-animation: domChanged 1s; }
+.table-header {
+    background-color: #e9f3ff;
+    color: #8794a4;
+}
+
+
+

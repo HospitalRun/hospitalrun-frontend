@@ -1,2 +1,2 @@
-import ModalView from 'hospitalrun/views/modal';
-export default ModalView.extend();
+import PanelView from 'hospitalrun/views/panel';
+export default PanelView.extend();

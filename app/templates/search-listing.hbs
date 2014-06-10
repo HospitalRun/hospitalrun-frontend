@@ -1,10 +1,7 @@
 <div class="panel panel-primary">
-    <div class="panel-heading">Search Results for <i>{{this.searchText}}</i></div>
-    {{yield}}
+    <div class="panel-body">    
+        {{yield}}
     </div>
 </div>
-{{#if this}}
-    <button class="btn btn-primary" {{action 'newItem'}}>{{view.newButtonText}}</button>
-{{/if}}
 <button class="btn btn-primary" {{action 'allItems'}}>{{view.allButtonText}}</button>
 

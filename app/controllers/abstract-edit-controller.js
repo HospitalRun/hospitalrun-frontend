@@ -25,12 +25,11 @@ export default Ember.ObjectController.extend({
             } else {
                 cancelledItem.rollback();
             }
-            this.send('closeModal');
+            this.send('allItems');
         },
         
         update: function() {            
             this.get('model').save().then(function(record) {
-                this.send('closeModal');
                 this.afterUpdate(record);
             }.bind(this));                
         }

@@ -1,14 +1,6 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
 
 export default AbstractEditController.extend({
-    title: function() {
-        if (this.get('isNew')) {
-            return 'New Request';
-        } else {
-            return 'Edit Request';
-        }
-    }.property('isNew'),
-
     actions: {
         search: function(searchfield) {
             var searchValue = searchfield.get('value').trim();
@@ -43,7 +35,7 @@ export default AbstractEditController.extend({
                     this.searching = false;
                 }.bind(this));    
             } else if (searchValue === '') {
-                this.set('availableMeds', null);                
+                this.set('availableMeds', null);
             }            
         }        
     },
