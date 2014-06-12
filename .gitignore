@@ -16,3 +16,7 @@ Thumbs.db
 /coverage/*
 npm-debug.log
 testem.log
+/nbproject/private/
+nbproject/project.properties
+
+nbproject/project.xml
