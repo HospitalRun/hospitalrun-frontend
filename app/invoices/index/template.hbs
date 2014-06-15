@@ -1,0 +1,31 @@
+{{#if this}}
+    <table class="table">
+        <tr class="table-header">
+            <th>Number</th>
+            <th>Patient</th>
+            <th>Price</th>
+            <th>Publish Status</th>
+            <th>Create Date</th>
+            <th>Actions</th>
+        </tr>
+        {{#each}}
+            {{#unless isNew}}
+                <tr>
+                    <td>{{invoiceNumber}}</td>
+                    <td>{{patientName}}<br>{{patient.primaryDiagnosis}}</td>
+                    <td>{{totalPrice}}</td>
+                    <td>{{publishStatus}}</td>
+                    <td>{{createDate}}</td>
+                    <td>
+                        <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
+                        <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
+                    </td>        
+                </tr>
+            {{/unless}}
+        {{/each}}
+    </table>
+{{else}}
+    <div class="alert alert-info">
+        <em>No invoices found.  Create an adhoc invoice?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Invoice</button>
+    </div>
+{{/if}}

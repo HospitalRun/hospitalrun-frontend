@@ -17,6 +17,11 @@ Router.map(function() {
         this.route('search', { path: "/search/:search_text" });
     });
     
+    this.resource('invoices', { path: '/invoice' }, function() {
+        this.route('edit', { path: "/edit/:invoice_id" });
+        this.route('search', { path: "/search/:search_text" });
+    });
+    
     this.resource('medication', { path: '/medication' }, function() {
         this.route('edit', { path: "/edit/:medication_id" });
         this.route('search', { path: "/search/:search_text" });
@@ -26,7 +31,11 @@ Router.map(function() {
         this.route('edit', { path: "/edit/:patient_id" });
         this.route('search', { path: "/search/:search_text" });
     });
-    
+
+    this.resource('appointments', { path: '/appointments' }, function() {
+        this.route('edit', { path: "/edit/:appointment_id" });
+        this.route('search', { path: "/search/:search_text" });
+    });    
 });
 
 export default Router;

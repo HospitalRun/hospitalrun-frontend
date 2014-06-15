@@ -1,0 +1,29 @@
+{{#if this}}
+    <table class="table">
+        <tr class="table-header">
+            <th>Date</th>
+            <th>Location</th>
+            <th>Patient</th>
+            <th>With?</th>
+            <th>Actions</th>
+        </tr>
+        {{#each}}
+            {{#unless isNew}}
+                <tr>
+                    <td>{{appointmentDate}}</td>
+                    <td>{{locationName}}</td>
+                    <td>{{patientName}}</td>
+                    <td>{{staffName}}</td>
+                    <td>
+                        <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
+                        <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
+                    </td>        
+                </tr>
+            {{/unless}}
+        {{/each}}
+    </table>
+{{else}}
+    <div class="alert alert-info">
+        <em>No appointments found.  Create a new appointment?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Appointment</button>
+    </div>
+{{/if}}
