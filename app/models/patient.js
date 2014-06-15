@@ -13,7 +13,7 @@ export default AbstractModel.extend({
     lastName:  DS.attr('string'),
     parent: DS.attr('string'),
     phone:  DS.attr('string'),
-    primaryDiagnois: DS.attr('string'),
+    primaryDiagnosis: DS.attr('string'),
     
     validations: {
         firstName: {
