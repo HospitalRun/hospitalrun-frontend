@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>ember-date-picker</title>
+        <meta charset="UTF-8">
+        <meta name="author" content="Bill Dami" />
+        <link rel="stylesheet" href="../bower_components/ember-spin-box/dist/ember-spin-box.css" media="all">
+        <link rel="stylesheet" href="../dist/ember-date-picker.css" media="all">
+        <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css" media="all">
+        <style type="text/css">
+            #ember-testing {
+                height: 480px;
+                margin-top: 20px;
+                padding: 10px;
+                overflow: auto;
+                background: #fff;
+                border: 1px solid #ccc;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="qunit"></div>
+        <div id="ember-testing"></div>
+    
+        <script type="text/x-handlebars">
+            {{date-picker-input controls="my-datepicker" value="May 15, 2014" dateFormat="MMMM D, YYYY"}}
+            {{date-picker-controls id="my-datepicker"}}
+        </script>
+
+        <script src="../bower_components/jquery/jquery.js"></script>
+        <script src="../bower_components/handlebars/handlebars.js"></script>
+        <script src="../bower_components/ember/ember.js"></script>
+        <script src="../bower_components/momentjs/min/moment.min.js"></script>
+        <script src="../bower_components/ember-spin-box/dist/ember-spin-box.js"></script>
+        <script src="../bower_components/qunit/qunit/qunit.js"></script>
+        <script src="../dist/ember-date-picker.js"></script>
+        <script src="./app.js"></script>
+        <script src="./tests.js"></script>
+    </body>
+</html>

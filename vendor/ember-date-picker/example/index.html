@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>ember-date-picker example</title>
+        <meta charset="UTF-8">
+        <meta name="author" content="Bill Dami" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="HandheldFriendly" content="True">
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" media="all">
+        <link rel="stylesheet" href="../bower_components/ember-spin-box/dist/ember-spin-box.css" media="all">
+        <link rel="stylesheet" href="../dist/ember-date-picker.min.css" media="all">
+        <link rel="stylesheet" href="example.css" media="all">
+    </head>
+    <body>
+        <div class="container">
+            <div id="demo"></div>
+        </div>
+
+        <script type="text/x-handlebars">
+            {{date-picker-input controls="demo-datepicker" value=date1 onUpdate="dateUpdated" class="form-control" placeholder="input #1" minYear=false maxYear=false dateFormat="M/D/YYYY"}}<br />
+            {{date-picker-input controls="demo-datepicker" value=date2 onUpdate="dateUpdated" class="form-control" placeholder="input #2" minYear="-5" dateFormat="MMMM Do, YYYY"}}<br />
+            {{date-picker-controls id="demo-datepicker" maxYear="+50" minYear="-10"}}
+        </script>
+
+        <script src="../bower_components/jquery/jquery.js"></script>
+        <script src="../bower_components/handlebars/handlebars.js"></script>
+        <script src="../bower_components/ember/ember.js"></script>
+        <script src="../bower_components/momentjs/min/moment.min.js"></script>
+        <script src="../bower_components/ember-spin-box/dist/ember-spin-box.min.js"></script>
+        <script src="../dist/ember-date-picker.min.js"></script>
+        <script src="example.js"></script>
+    </body>
+</html>

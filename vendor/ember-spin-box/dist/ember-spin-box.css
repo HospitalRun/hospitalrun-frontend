@@ -1,0 +1,60 @@
+/**
+ * required structural css
+ */
+.spinbox {
+  overflow: hidden;
+  position: relative;
+}
+.spinbox-rows {
+  position: absolute;
+  width: 100%;
+}
+.spinbox-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.spinbox-selection-window {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+}
+/**
+ * customizable presentational css
+ */
+.spinbox {
+  width: 150px;
+  border: 1px solid #ddd;
+}
+.spinbox:focus {
+  border-color: #bbb;
+  outline: none;
+}
+.spinbox-rows {
+  z-index: 2;
+}
+.spinbox-row {
+  background: transparent;
+  padding: 4px 6px;
+  height: 28px;
+  color: #999;
+}
+.spinbox-row.selected {
+  font-weight: bold;
+  color: #555;
+}
+.spinbox-selection-window {
+  height: 28px;
+  z-index: 1;
+  background: #f7f7f7;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
