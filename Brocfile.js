@@ -1,4 +1,4 @@
-/* global require, module */
+ /* global require, module */
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
@@ -27,6 +27,10 @@ app.import('vendor/JsBarcode/CODE128.js');
 app.import('vendor/JsBarcode/JsBarcode.js');
 app.import('vendor/dymo/DYMO.Label.Framework.1.2.6.js');
 app.import('vendor/ember-forms/dist/ember_forms.js');
+app.import('vendor/ember-spin-box/dist/ember-spin-box.js');
+app.import('vendor/ember-date-picker/dist/ember-date-picker.js');
+app.import('vendor/momentjs/moment.js');
+app.import('vendor/typeahead.js/dist/typeahead.bundle.js');
 
 // If the library that you are including contains AMD or ES6 modules that
 // you would like to import into your application please specify an
@@ -44,5 +48,8 @@ app.import('vendor/ic-ajax/dist/named-amd/main.js', {
       
 app.import('vendor/bootstrap/dist/css/bootstrap.css');
 app.import('app/styles/bootstrap-theme.css');
+app.import('vendor/ember-spin-box/dist/ember-spin-box.css');
+app.import('vendor/ember-date-picker/dist/ember-date-picker.css');
+
 
 module.exports = app.toTree();
