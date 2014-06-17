@@ -1,7 +1,14 @@
-<form {{action authenticate on='submit'}}>
-  <label for="identification">Login</label>
-  {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login'}}
-  <label for="password">Password</label>
-  {{view Ember.TextField id='password' type='password' valueBinding='password' placeholder='Enter Password'}}
-  <button type="submit">Login</button>
-</form>
+<div class="container">
+    <form class="form-signin" role="form" {{action authenticate on='submit'}}>
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <div class="form-group">
+            <label for="identification">Login</label>
+            {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Enter Login' class="form-control"}}
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            {{view Ember.TextField id='password' type='password' valueBinding='password' placeholder='Enter Password' class="form-control"}}
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+</div> <!-- /container -->

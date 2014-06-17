@@ -1,4 +1,5 @@
 export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+    additionalModels: null,
     allowSearch: true,
     currentScreenTitle: null,
     editTitle: null,    
@@ -67,8 +68,32 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         return null;                
     },
     
-    model: function() {
-        return this.store.find(this.get('modelName'));
+    model: function() {        
+        if (!Ember.isEmpty(this.additionalModels)) {
+            return new Ember.RSVP.Promise(function(resolve, reject){
+                var promises = this.additionalModels.map(function(modelMap) {
+                    return this.store.find.apply(this.store, modelMap.findArgs);
+                }.bind(this));                
+                promises.push(this.store.find(this.get('modelName')));
+                Ember.RSVP.allSettled(promises,'All Settled additional Models for'+this.get('modelName')).then(function(array){
+                    array.forEach(function(item, index) {
+                        if (index < this.additionalModels.length) {
+                            if (item.state === 'fulfilled') {
+                                this.set(this.additionalModels[index].name, item.value);
+                            }
+                        } else {
+                            if (item.state === 'fulfilled') {
+                                Ember.run(null, resolve, item.value);
+                            } else {
+                                Ember.run(null, reject, item.reason);
+                            }
+                        }
+                    }.bind(this));
+                }.bind(this));
+            }.bind(this),'Additional Models for'+this.get('modelName'));
+        } else {
+             return this.store.find(this.get('modelName'));
+        }        
     },
     
     renderModal: function(template) {
@@ -95,7 +120,13 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         }
         var currentController = this.controllerFor(this.get('moduleName'));
         var propsToSet = this.getProperties('currentScreenTitle','newButtonText','sectionTitle');        
-        currentController.setProperties(propsToSet);        
+        currentController.setProperties(propsToSet);
+        if (!Ember.isEmpty(this.additionalModels)) {
+            this.additionalModels.forEach(function(item) {
+                controller.set(item.name, this.get(item.name));
+            }.bind(this));
+        }        
         this._super(controller, model);
     }
+    
 });
