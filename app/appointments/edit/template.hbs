@@ -1,8 +1,14 @@
-{{#em-form model=this submit_button=false}}
-    {{em-input property="appointmentDate" label="Date"}}
-    {{em-input property="patientId" label="Patient"}}
-    {{em-input property="staffId" label="With"}}
-    {{em-input property="locationId" label="At Location"}}
-    {{em-input property="appointmentType" label="Type"}}
-    {{em-input property="note" label="Notes"}}
-{{/em-form}}
+<div class="container-fluid">    
+    {{#em-form model=this submit_button=false}}
+    
+        <div class="form-group">
+            <label>Date:</label>
+            {{date-picker-input controls="my-datepicker" value=appointmentDate class="form-control"}}
+        </div>
+        {{em-input property="patientId" label="Patient"}}
+        {{em-input property="providerId" label="With"}}
+        {{em-input property="locationId" label="At Location"}}
+        {{em-input property="appointmentType" label="Type"}}
+        {{em-input property="note" label="Notes"}}
+    {{/em-form}}
+</div>
