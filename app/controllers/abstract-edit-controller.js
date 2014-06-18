@@ -69,23 +69,25 @@ export default Ember.ObjectController.extend({
             lookupLists.forEach(function(list) {
                 var propertyValue = this.get(list.property),
                     lookupList = this.get(list.name);
-                if (lookupList) {
-                    var lookupListValues = lookupList.get('value');
-                    if (!lookupListValues.contains(propertyValue)) {
-                        lookupListValues.push(propertyValue);
-                        lookupListValues.sort();
-                        lookupList.set('value', lookupListValues);
+                if (!Ember.isEmpty(propertyValue)) {
+                    if (lookupList) {
+                        var lookupListValues = lookupList.get('value');
+                        if (!lookupListValues.contains(propertyValue)) {
+                            lookupListValues.push(propertyValue);
+                            lookupListValues.sort();
+                            lookupList.set('value', lookupListValues);
+                            lookupList.save();
+                            this.set(list.name, lookupList);
+                        }
+                    } else {
+                        lookupList = this.get('store').push('lookup',{
+                            id: list.id,
+                            value: [propertyValue]
+                        });
                         lookupList.save();
                         this.set(list.name, lookupList);
                     }
-                } else {
-                    lookupList = this.get('store').push('lookup',{
-                        id: list.id,
-                        value: [propertyValue]
-                    });
-                    lookupList.save();
-                    this.set(list.name, lookupList);
-                }                
+                }
             }.bind(this));
         }
     }

@@ -3,7 +3,10 @@ export default Em.Forms.FormInputComponent.extend({
     mappedContent: function() {
         var content = this.get('content');
         if (content) {
-            var mapped =  content.map(function(item) {
+            var mapped = content.filter(function(item) {
+                return !Ember.isEmpty(item);
+            });
+            mapped = mapped.map(function(item) {
                 var returnObj = {};
                 returnObj[this.get('displayKey')] = item;
                 return returnObj;
@@ -22,7 +25,6 @@ export default Em.Forms.FormInputComponent.extend({
     selectedItem: false,
     inputElement: null,
     typeAhead: null,
-    
 
     _getSource: function() {
         var typeAheadBloodhound = new Bloodhound( {
