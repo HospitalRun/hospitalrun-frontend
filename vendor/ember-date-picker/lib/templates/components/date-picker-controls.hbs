@@ -1,0 +1,20 @@
+<div class="datepicker-controls-inner">
+    <div class="datepicker-toolbar datepicker-clearfix">
+        <button class="btn btn-default datepicker-btn datepicker-btn-today datepicker-left" {{action "today"}}>{{i18n.today}}</button>
+        <button class="btn btn-primary datepicker-btn datepicker-btn-done datepicker-right" {{action "done"}}>{{i18n.done}}</button>
+        <button class="btn btn-default datepicker-btn datepicker-btn-clear datepicker-right" {{action "clear"}}>{{i18n.clear}}</button>
+    </div>
+    <div class="datepicker-cols-ct">
+        <div class="datepicker-cols datepicker-clearfix">
+            <div class="datepicker-col datepicker-col-month">
+                {{spin-box content=months value=_currentMonth onUpdate="spinBoxUpdate" rowHeight=32 tabindex=1}}
+            </div>
+            <div class="datepicker-col datepicker-col-day">
+                {{spin-box content=days value=_currentDay onUpdate="spinBoxUpdate" rowHeight=32 tabindex=2}}
+            </div>
+            <div class="datepicker-col datepicker-col-year">
+                {{spin-box range=years value=_currentYear onUpdate="spinBoxUpdate" rowHeight=32 tabindex=3}}
+            </div>
+        </div>
+    </div>
+</div>

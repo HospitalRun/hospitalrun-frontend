@@ -5,6 +5,7 @@
             <th>First Name</th>
             <th>Last Name</th>
             <th>Gender</th>
+            <th>DOB</th>
             <th>Actions</th>
         </tr>
         {{#each}}
@@ -14,6 +15,7 @@
                     <td>{{firstName}}</td>
                     <td>{{lastName}}</td>
                     <td>{{gender}}</td>
+                    <td>{{dateOfBirth}}</td>
                     <td>
                         <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
                         <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>

@@ -19,6 +19,8 @@
     "ember-pouchdb-adapter": "kulpae/ember-pouchdb-adapter#~v1.0.0-beta.7",
     "ember-simple-auth": "0.2.1",
     "JsBarcode": "HospitalRun/JsBarcode#master",
-    "ember-forms": "*"
+    "ember-forms": "*",
+    "ember-date-picker": "~0.0.4",
+    "typeahead.js": "~0.10.2"
   }
 }

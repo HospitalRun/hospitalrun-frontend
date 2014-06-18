@@ -4,6 +4,7 @@
     "window": true,
     "location": true,
     "setTimeout": true,
+    "Bloodhound": true,
     "Ember": true,
     "Em": true,
     "DS": true,
@@ -13,7 +14,8 @@
     "ENV": true,
     "module": true,
     "dymo": true,
-    "uuid": true
+    "uuid": true,
+    "moment": true
   },
   "node" : true,
   "browser" : true,
