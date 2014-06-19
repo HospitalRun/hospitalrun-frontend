@@ -30,13 +30,20 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             this.setPageTitle(this.get('currentScreenTitle'));
             this.transitionTo(this.get('moduleName')+'.index');
         },        
-        
         closeModal: function() {
             this.disconnectOutlet({
                 parentView: 'application',
                 outlet: 'modal'
             });
         },
+        deleteItem: function(item) {            
+            var deletePath = this.get('deletePath');
+            this.send('openModal', deletePath, item);
+        },        
+        editItem: function(item) {
+            this.transitionTo(this.get('editPath'), item);
+            this.setPageTitle(this.get('editTitle'));
+        },        
         newItem: function() {
             var newId = this.generateId();
             var data = {};
@@ -47,15 +54,17 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             this.transitionTo(this.get('editPath'), item);
             this.setPageTitle(this.get('newTitle'));
             
-        },
-        deleteItem: function(item) {
-            var deletePath = this.get('deletePath');
-            this.controllerFor(deletePath).set('model', item);
-            this.renderModal(deletePath);
         },        
-        editItem: function(item) {
-            this.transitionTo(this.get('editPath'), item);
-            this.setPageTitle(this.get('editTitle'));
+        /**
+         * Render a modal using the specifed path and optionally set a model.
+         * @param modalPath the path to use for the controller and template.
+         * @param model (optional) the model to set on the controller for the modal.
+         */
+        openModal: function(modalPath, model) {
+            if (model) {
+                this.controllerFor(modalPath).set('model', model);
+            }
+            this.renderModal(modalPath);
         }
     },
     
