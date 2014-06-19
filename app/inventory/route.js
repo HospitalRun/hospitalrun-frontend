@@ -1,8 +1,5 @@
 import AbstractItemRoute from 'hospitalrun/routes/abstract-item-route';
 export default AbstractItemRoute.extend({
-    currentScreenTitle: 'Inventory Listing',
-    editTitle: 'Edit Item',    
-    newTitle: 'New Item',
     modelName: 'inventory',
     moduleName: 'inventory',
     newButtonText: '+ new item',

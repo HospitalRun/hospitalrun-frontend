@@ -2,11 +2,9 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     additionalModels: null,
     allowSearch: true,
     currentScreenTitle: null,
-    editTitle: null,    
     modelName: null,
     moduleName: null,
     newButtonText: null,
-    newTitle: null,
     sectionTitle:null, 
     
     editPath: function() {
@@ -27,7 +25,6 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     
     actions: {
         allItems: function() {
-            this.setPageTitle(this.get('currentScreenTitle'));
             this.transitionTo(this.get('moduleName')+'.index');
         },        
         closeModal: function() {
@@ -42,7 +39,6 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         },        
         editItem: function(item) {
             this.transitionTo(this.get('editPath'), item);
-            this.setPageTitle(this.get('editTitle'));
         },        
         newItem: function() {
             var newId = this.generateId();
@@ -52,8 +48,6 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             }
             var item = this.get('store').createRecord(this.get('modelName'), data);            
             this.transitionTo(this.get('editPath'), item);
-            this.setPageTitle(this.get('newTitle'));
-            
         },        
         /**
          * Render a modal using the specifed path and optionally set a model.
@@ -65,6 +59,14 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
                 this.controllerFor(modalPath).set('model', model);
             }
             this.renderModal(modalPath);
+        },
+        
+        /**
+         * Action to set the current page title.
+         * @param title the title to display.
+         */
+        setPageTitle: function(title) {
+            this.setPageTitle(title);
         }
     },
     
