@@ -1,4 +1,5 @@
-export default Ember.ObjectController.extend({
+import IsUpdateDisabled from "hospitalrun/mixins/is-update-disabled";
+export default Ember.ObjectController.extend(IsUpdateDisabled, {
     /**
      *  Lookup lists that should be updated when the model has a new value to add to the lookup list.
      *  lookupListsToUpdate: [{
@@ -38,11 +39,18 @@ export default Ember.ObjectController.extend({
             this.send('allItems');
         },
         
-        update: function() {
+        /**
+         * Update the model and perform the before update and after update
+         * @param skipAfterUpdate boolean (optional) indicating whether or not 
+         * to skip the afterUpdate call.
+         */
+        update: function(skipAfterUpdate) {
             this.beforeUpdate();
             this.get('model').save().then(function(record) {
                 this.updateLookupLists();
-                this.afterUpdate(record);
+                if (!skipAfterUpdate) {
+                    this.afterUpdate(record);
+                }
             }.bind(this));                
         }
     },
