@@ -10,6 +10,7 @@ var User = DS.Model.extend(Ember.Validations.Mixin, {
     rev: DS.attr('string'),
     roles: DS.attr(),
     salt: DS.attr('string'),
+    userPrefix: DS.attr('string'),
     validations: {
         email: {
             format: { 
