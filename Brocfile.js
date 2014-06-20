@@ -45,11 +45,8 @@ app.import('vendor/ic-ajax/dist/named-amd/main.js', {
     'request',
   ]
 });
-      
-app.import('vendor/bootstrap/dist/css/bootstrap.css');
-app.import('app/styles/bootstrap-theme.css');
+
 app.import('vendor/ember-spin-box/dist/ember-spin-box.css');
 app.import('vendor/ember-date-picker/dist/ember-date-picker.css');
-
 
 module.exports = app.toTree();
