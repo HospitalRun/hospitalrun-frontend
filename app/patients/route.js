@@ -7,10 +7,6 @@ export default AbstractItemRoute.extend({
         name: 'countryList',
         findArgs: ['lookup','country_list']
     }],
-        
-    currentScreenTitle: 'Patient Listing',
-    editTitle: 'Edit Patient',    
-    newTitle: 'New Patient',
     modelName: 'patient',
     moduleName: 'patients',
     newButtonText: '+ new patient',

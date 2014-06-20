@@ -13,7 +13,14 @@ export default DS.Model.extend(Ember.Validations.Mixin, {
             changedAttributes = this.changedAttributes(),
             modifiedDate = new Date(),
             modifiedFields = this.get('modifiedFields'),
-            self = this;
+            session = this.get('session');
+        
+        if (!session || !session.isAuthenticated) {
+            return new Ember.RSVP.Promise(function(resolve, reject){
+                Ember.run(null, reject, "ERROR you must be logged in to save");
+            });
+        }
+
         if (this.get('isDirty') && !this.get('isDeleted')) {
             if (Ember.isEmpty(modifiedFields)) {
                 modifiedFields = {};
@@ -23,10 +30,13 @@ export default DS.Model.extend(Ember.Validations.Mixin, {
                 modifiedFields[attribute] = modifiedDate;
             }
             this.set('modifiedFields', modifiedFields);
+
+            var sessionVars = session.store.restore();
+            this.set('modifiedBy', sessionVars.name);
         }
         
         return new Ember.RSVP.Promise(function(resolve, reject){
-            self._super().then(function(results) {
+            this._super().then(function(results) {
                 Ember.run(null, resolve, results);
             }, function(error) {
                 if (retry) {
@@ -35,8 +45,8 @@ export default DS.Model.extend(Ember.Validations.Mixin, {
                 } else {
                     if (error.indexOf('conflict') > -1) {
                         //Conflict encountered, so rollback, reload and then save the record with the changed attributes.
-                        self.rollback();
-                        self.reload().then(function(record) {
+                        this.rollback();
+                        this.reload().then(function(record) {
                             for (var attribute in changedAttributes) {
                                 record.set(attribute, changedAttributes[attribute][1]);
                             }
@@ -53,7 +63,7 @@ export default DS.Model.extend(Ember.Validations.Mixin, {
                         Ember.run(null, reject, error);
                     }
                 }
-            });
-        });
+            }.bind(this));
+        }.bind(this));
     }
 });

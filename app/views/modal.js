@@ -11,7 +11,8 @@ export default Ember.View.extend({
 
     willDestroyElement: function() {
         this.$('.modal').modal('hide');
-        //jquery fix
+        //jquery fixes
+        $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
     }
 });

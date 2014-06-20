@@ -1,6 +1,7 @@
 import AbstractModel from "hospitalrun/models/abstract";
+import DiagnosisValidation from "hospitalrun/mixins/diagnosis-validation";
 
-export default AbstractModel.extend({
+export default AbstractModel.extend(DiagnosisValidation, {
     address: DS.attr(),
     clinic: DS.attr('string'),
     country: DS.attr('string'),
@@ -15,7 +16,7 @@ export default AbstractModel.extend({
     phone:  DS.attr('string'),
     primaryDiagnosis: DS.attr('string'),
     primaryDiagnosisId: DS.attr('string'),
-    addtionalDiagnosis: DS.attr(),
+    additionalDiagnoses: DS.attr(), //Yes, the plural of diagnosis is diagnoses!
     
     validations: {
         firstName: {
@@ -23,31 +24,15 @@ export default AbstractModel.extend({
         },
         lastName: {
             presence: true
-        },
-
-        primaryDiagnosis: {
-            acceptance: {
-                /***
-                 * Hack to get validation to fire if primaryDiagnosis is not empty 
-                 * but a corresponding diagnosisId has not been set meaning the user
-                 * didn't select a valid diagnosis
-                 */
-                accept: true,
-                if: function(object) {
-                    var primaryDiagnosis = object.get('primaryDiagnosis'),
-                        primaryDiagnosisId = object.get('primaryDiagnosisId');                                      
-                    if (!Ember.isEmpty(primaryDiagnosis) && Ember.isEmpty(primaryDiagnosisId)) {
-                        //force validation to fail
-                        return true;
-                    } else {
-                        //Diagnosis is properly set; don't do any further validation
-                        return false;
-                    }
-                }, 
-                message: 'Please select a valid diagnosis'                                    
-            }
         }
-        
+    },
+    
+    init: function() {
+        //Setup primaryDiagnosis validation here because we are using a mixin for it.
+        this.validations.primaryDiagnosis = {
+            acceptance: this.diagnosisValidation
+        };
+        this._super();
     }
 
 });
