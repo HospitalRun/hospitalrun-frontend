@@ -17,7 +17,8 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
                 consumer_secret: credentials.params.s1,
                 token: credentials.params.t,
                 token_secret: credentials.params.s2,
-                name: credentials.params.i
+                name: credentials.params.i,
+                prefix: credentials.params.p
             };
             return Ember.RSVP.resolve(session_credentials);
         }            
