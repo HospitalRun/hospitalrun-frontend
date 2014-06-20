@@ -1,4 +1,4 @@
-// models/user.js
+import EmailValidation from "hospitalrun/utils/email-validation";
 var User = DS.Model.extend(Ember.Validations.Mixin, {
     derived_key: DS.attr('string'),
     email: DS.attr('string'),
@@ -10,11 +10,11 @@ var User = DS.Model.extend(Ember.Validations.Mixin, {
     rev: DS.attr('string'),
     roles: DS.attr(),
     salt: DS.attr('string'),
-     validations: {
+    userPrefix: DS.attr('string'),
+    validations: {
         email: {
             format: { 
-                with: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 
-                allowBlank: false, 
+                with: EmailValidation.emailRegex,               
                 message: 'please enter a valid email address'
             }
         }

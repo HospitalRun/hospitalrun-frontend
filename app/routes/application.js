@@ -80,9 +80,8 @@ var ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin
                 params: params.queryParams,
             });
             this._save_oauth_config(params.queryParams);
-        } else {
-            return this.store.find('config');
-        }
+        } 
+        return this.store.find('config');        
     },
     
     afterModel: function(resolvedModel) {
