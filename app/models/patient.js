@@ -1,5 +1,6 @@
 import AbstractModel from "hospitalrun/models/abstract";
-import DiagnosisValidation from "hospitalrun/mixins/diagnosis-validation";
+import DiagnosisValidation from "hospitalrun/utils/diagnosis-validation";
+import EmailValidation from "hospitalrun/utils/email-validation";
 
 export default AbstractModel.extend(DiagnosisValidation, {
     address: DS.attr(),
@@ -19,20 +20,21 @@ export default AbstractModel.extend(DiagnosisValidation, {
     additionalDiagnoses: DS.attr(), //Yes, the plural of diagnosis is diagnoses!
     
     validations: {
+        email: {
+            format: { 
+                with: EmailValidation.emailRegex, 
+                allowBlank: true, 
+                message: 'please enter a valid email address'
+            }
+        },
         firstName: {
             presence: true
         },
         lastName: {
             presence: true
-        }
-    },
-    
-    init: function() {
-        //Setup primaryDiagnosis validation here because we are using a mixin for it.
-        this.validations.primaryDiagnosis = {
-            acceptance: this.diagnosisValidation
-        };
-        this._super();
+        },
+        
+        primaryDiagnosis: DiagnosisValidation.diagnosisValidation
     }
 
 });
