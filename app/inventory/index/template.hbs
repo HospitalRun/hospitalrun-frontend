@@ -22,13 +22,7 @@
                     <td>{{crossReference}}</td>
                     <td>
                         {{#if showAdd}}
-                            {{#if isAdding}}
-                                <label>Amount: </label>{{input value=addAmount}}
-                                <button class="btn btn-default" {{action 'addInventory'}}>Add</button>
-                                <button class="btn btn-default" {{action 'cancelUpdate'}}>Cancel</button>
-                            {{else}}
-                                <button class="btn btn-default" {{action 'addInventory'}}>Add</button>
-                            {{/if}}
+                            <button class="btn btn-default" {{action 'showAddBatch' this}}>Add</button>
                         {{/if}}
                         {{#if showDecrease}}
                             {{#if isDecreasing}}

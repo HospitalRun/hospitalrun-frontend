@@ -2,27 +2,12 @@ export default Ember.ObjectController.extend({
     
     needs: ['inventory'],
     
-    isAdding: false,
-    isEditing: false,
-    isDecreasing: false,
-    
+    isDecreasing: false,    
     showAdd: true,
     showEdit: true,
     showDecrease:true,
 
     actions: {
-        addInventory: function() {
-            if (this.get('isAdding')) {
-                var quantity = this.get('quantity') + parseInt(this.get('addAmount'));
-                this.set('quantity', quantity);
-                this.saveModel();
-            } else {
-                this.set('isAdding', true);
-                this.set('showDecrease', false);
-                this.set('showEdit', false);
-            }
-        },
-
         cancelUpdate: function() {
             var inventory = this.get('model');
             inventory.rollback();
@@ -44,16 +29,6 @@ export default Ember.ObjectController.extend({
                 this.set('showEdit', false);
             }
         },
-        
-        deleteInventory: function() {
-            var inventory = this.get('model'); 
-            inventory.deleteRecord();      
-            inventory.save();    
-        },
-        
-        editInventory: function () {
-            this.set('isEditing', true);
-        },
 
         updateInventory: function() {
             this.saveModel();
@@ -61,9 +36,7 @@ export default Ember.ObjectController.extend({
     }, 
 
     resetButtons: function() {
-        this.set('isAdding', false);
         this.set('isDecreasing', false);
-        this.set('isEditing', false);
         this.set('showAdd', true);
         this.set('showDecrease', true);
         this.set('showEdit', true);

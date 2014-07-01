@@ -1,0 +1,28 @@
+{{#em-form model=this submit_button=false}}    
+    <div class="row">
+        <div class="col-sm-4">
+            {{#if canEditQuantity}}
+                {{em-input property="originalQuantity" label="Quantity"}}
+            {{else}}
+                <div class="form-group">
+                    <label>Quantity</label>
+                    {{input class="form-control" value=originalQuantity type="text" disabled=true}}                    
+                </div>
+            {{/if}}
+        </div>
+        <div class="col-sm-4">
+            {{em-input property="batchCost" label="Batch Cost"}}
+        </div>
+        <div class="col-sm-4">
+            {{em-input property="batchNo" label="Batch Number"}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-4">
+            <label>Expiration Date</label>
+            {{date-picker-input controls="my-datepicker" value=expirationDate class="form-control" dateFormat="l"}}
+            {{date-picker-controls id="my-datepicker" minYear="+0" maxYear="+100"}}        
+        </div>
+    </div>
+    {{em-input property="vendor" label="Vendor"}}
+{{/em-form}}

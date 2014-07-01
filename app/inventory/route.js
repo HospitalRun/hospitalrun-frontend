@@ -1,9 +1,28 @@
 import AbstractItemRoute from 'hospitalrun/routes/abstract-item-route';
 export default AbstractItemRoute.extend({
+    currentItem: null,
     modelName: 'inventory',
     moduleName: 'inventory',
     newButtonText: '+ new item',
     sectionTitle: 'Inventory',
+    
+    actions: {
+        addBatch: function(newBatch) {
+            var currentItem = this.get('currentItem'),
+                batches = currentItem.get('batches'),
+                quantity = newBatch.get('originalQuantity');
+            batches.addObject(newBatch);
+            currentItem.incrementProperty('quantity', quantity);
+            currentItem.save();
+            this.send('closeModal');
+        },
+        
+        showAddBatch: function(inventoryItem) {
+            var newBatch = this.get('store').createRecord('inv-batch', {});            
+            this.set('currentItem', inventoryItem);
+            this.send('openModal', 'inventory.batch.edit', newBatch);
+        }                
+    },
     
     /**
      * Calculate a new id based on time stamp and randomized number
