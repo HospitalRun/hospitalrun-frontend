@@ -9,10 +9,9 @@ export default AbstractItemRoute.extend({
     actions: {
         addBatch: function(newBatch) {
             var currentItem = this.get('currentItem'),
-                batches = currentItem.get('batches'),
-                quantity = newBatch.get('originalQuantity');
+                batches = currentItem.get('batches');
             batches.addObject(newBatch);
-            currentItem.incrementProperty('quantity', quantity);
+            currentItem.updateQuantity();
             currentItem.save();
             this.send('closeModal');
         },
@@ -34,6 +33,17 @@ export default AbstractItemRoute.extend({
             part1 = new Date().getTime(),
             part2 = Math.floor(Math.random() * (max - min + 1)) + min;
         return part1.toString(36) +'_' + part2.toString(36);
-    }
+    },
+    
+    /**
+     * Define what data a new inventory item should be instantiated with.  
+     * The only default is to set the type to asset; at some point this may be driven by subsection of inventory you are in.
+     * @return the default properties for a new inventory item.
+     */    
+    getNewData: function() {
+        return  {
+            type: 'Asset'
+        };
+    },
 
 });

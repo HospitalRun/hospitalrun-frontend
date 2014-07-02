@@ -1,16 +1,6 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
 
-export default AbstractEditController.extend({
-        
-    calculatedCostPerUnit: function() {
-        var batchCost = this.get('batchCost'),
-            quantity = parseInt(this.get('originalQuantity'));
-        if (Ember.isEmpty(batchCost) || Ember.isEmpty(quantity)) {
-            return 0;
-        }
-        return (batchCost/quantity).toFixed(2);
-    }.property('batchCost', 'originalQuantity'),
-    
+export default AbstractEditController.extend({    
     canEditQuantity: function() {
         var originalQuantity = this.get('originalQuantity'),
             currentQuantity = this.get('currentQuantity');
@@ -22,7 +12,7 @@ export default AbstractEditController.extend({
     
     newBatch: false,
     
-    updateQuantity: 0,
+    updateQuantity: false,
 
     title: function() {
         var isNew = this.get('isNew');
@@ -50,10 +40,9 @@ export default AbstractEditController.extend({
         if (changedAttributes.originalQuantity) {
             this.set('currentQuantity',this.get('originalQuantity'));
             if (!isNew) {
-                this.set('updateQuantity', (changedAttributes.originalQuantity[1] - changedAttributes.originalQuantity[0]));                
+                this.set('updateQuantity', true);                
             }
         }
-        this.set('costPerUnit', this.get('calculatedCostPerUnit'));
         if (isNew) {
             this.set('newBatch', true);
             this.set('dateAdded', new Date());            
@@ -64,7 +53,7 @@ export default AbstractEditController.extend({
         if (this.get('newBatch')) {            
             this.send('addBatch', record);
         } else {
-            this.send('updateBatch', record, this.get('updateQuantity'));
+            this.send('updateBatch', record, true);
         }
     }
 });

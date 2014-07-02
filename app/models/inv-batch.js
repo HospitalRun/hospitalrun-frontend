@@ -9,7 +9,14 @@ var InventoryBatchItem = AbstractModel.extend({
     batchCost: DS.attr('number'), 
     batchNo: DS.attr('string'),
     dateAdded: DS.attr('date'),
-    costPerUnit: DS.attr('number'),
+    costPerUnit: function() {
+        var batchCost = this.get('batchCost'),
+            quantity = parseInt(this.get('originalQuantity'));
+        if (Ember.isEmpty(batchCost) || Ember.isEmpty(quantity)) {
+            return 0;
+        }
+        return (batchCost/quantity).toFixed(2);
+    }.property('batchCost', 'originalQuantity'),
     originalQuantity: DS.attr('number'),
     currentQuantity: DS.attr('number'),
     expirationDate: DS.attr(),

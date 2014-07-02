@@ -23,20 +23,9 @@
                     <td>
                         {{#if showAdd}}
                             <button class="btn btn-default" {{action 'showAddBatch' this}}>Add</button>
-                        {{/if}}
-                        {{#if showDecrease}}
-                            {{#if isDecreasing}}
-                                <label>Amount: </label>{{input value=decreaseAmount}}
-                                <button class="btn btn-default" {{action 'decreaseInventory'}}>Decrease</button>
-                                <button class="btn btn-default" {{action 'cancelUpdate'}}>Cancel</button>
-                            {{else}}
-                                <button class="btn btn-default" {{action 'decreaseInventory'}}>Decrease</button>
-                            {{/if}}
-                        {{/if}}
-                        {{#if showEdit}}
-                            <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
-                            <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
-                        {{/if}}
+                        {{/if}}                        
+                        <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
+                        <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>                        
                         {{#link-to 'inventory.barcode' this class="btn btn-default"}}Barcode{{/link-to}}
                     </td>
                 </tr>
