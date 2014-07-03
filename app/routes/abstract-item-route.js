@@ -1,4 +1,5 @@
 export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+    additionalButtons: null,
     additionalModels: null,
     allowSearch: true,
     currentScreenTitle: null,
@@ -138,7 +139,7 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             navigationController.set('searchRoute',this.get('searchRoute'));
         }
         var currentController = this.controllerFor(this.get('moduleName'));
-        var propsToSet = this.getProperties('currentScreenTitle','newButtonText','sectionTitle');        
+        var propsToSet = this.getProperties('currentScreenTitle','newButtonText','sectionTitle', 'additionalButtons');        
         currentController.setProperties(propsToSet);
         if (!Ember.isEmpty(this.additionalModels)) {
             this.additionalModels.forEach(function(item) {

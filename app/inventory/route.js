@@ -5,6 +5,10 @@ export default AbstractItemRoute.extend({
     moduleName: 'inventory',
     newButtonText: '+ new item',
     sectionTitle: 'Inventory',
+    additionalButtons: [{
+        text: 'requests',
+        linkTo: 'inventory-queue'
+    }],
     
     actions: {
         addBatch: function(newBatch) {
