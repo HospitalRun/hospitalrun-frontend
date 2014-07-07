@@ -1,28 +1,26 @@
 import AbstractModel from "hospitalrun/models/abstract";
-import DiagnosisValidation from "hospitalrun/mixins/diagnosis-validation";
+import DiagnosisValidation from "hospitalrun/utils/diagnosis-validation";
 
 export default AbstractModel.extend(DiagnosisValidation, {
-    address: DS.attr(),
+    patientId: DS.attr('string'),
+    staffId: DS.attr('string'),
+    locationId: DS.attr('string'),
+    visitType: DS.attr(),        
     clinic: DS.attr('string'),
-    country: DS.attr('string'),
-    bloodType: DS.attr('string'),
-    dateOfBirth: DS.attr('string'),
-    email: DS.attr('string'),
-    firstName: DS.attr('string'),
-    gender:  DS.attr('string'),
+    startDate:  DS.attr('date'),
+    endDate:  DS.attr('date'),  //if visit type is outpatient, startDate and endDate are equal 
     history: DS.attr('string'),
-    lastName:  DS.attr('string'),
-    parent: DS.attr('string'),
-    phone:  DS.attr('string'),
-    primaryDiagnosis: DS.attr('string'),
-    primaryDiagnosisId: DS.attr('string'),
-    additionalDiagnoses: DS.attr(), //Yes, the plural of diagnosis is diagnoses!
-    
+    notes: DS.attr('string'),
+    charts: DS.attr(),
+    procedures: DS.attr(),
     validations: {
-        firstName: {
+        patientId: {
             presence: true
         },
-        lastName: {
+        startDate: {
+            presence: true
+        },
+        visitType: {
             presence: true
         }
     },
