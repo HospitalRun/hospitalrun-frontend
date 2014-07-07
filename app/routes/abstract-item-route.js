@@ -1,4 +1,5 @@
 export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+    additionalButtons: null,
     additionalModels: null,
     allowSearch: true,
     currentScreenTitle: null,
@@ -42,7 +43,7 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         },        
         newItem: function() {
             var newId = this.generateId();
-            var data = {};
+            var data = this.getNewData();
             if (newId) {
                 data.id = newId;
             }
@@ -77,6 +78,14 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
      */
     generateId: function() {
         return null;                
+    },
+
+    /**
+     * Override this function to define what data a new model should be instantiated with.
+     * Defaults to empty object
+     */    
+    getNewData: function() {
+        return {};
     },
     
     model: function() {        
@@ -130,7 +139,7 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             navigationController.set('searchRoute',this.get('searchRoute'));
         }
         var currentController = this.controllerFor(this.get('moduleName'));
-        var propsToSet = this.getProperties('currentScreenTitle','newButtonText','sectionTitle');        
+        var propsToSet = this.getProperties('currentScreenTitle','newButtonText','sectionTitle', 'additionalButtons');        
         currentController.setProperties(propsToSet);
         if (!Ember.isEmpty(this.additionalModels)) {
             this.additionalModels.forEach(function(item) {

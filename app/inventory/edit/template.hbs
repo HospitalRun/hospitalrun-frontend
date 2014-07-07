@@ -6,11 +6,74 @@
         optionValuePath="content" 
         optionLabelPath="content"
     }}
-    <div class="row">
-        {{em-input property="quantity" label="Quantity" class="col-xs-3"}}
-    </div>
-    <div class="row">
-        {{em-input property="price" label="Price" class="col-xs-2"}}
-    </div>
     {{em-input property="crossReference" label="Cross Reference"}}
+    <div class="row">
+        {{em-input property="price" label="Price Per Unit" class="col-sm-3"}}
+    </div>
+    {{#if showNewBatch}}
+        <h3>Batch information</h3>
+    {{/if}}
+    <div class="row">
+        {{#if canEditQuantity}}
+            {{em-input property="quantity" label="Quantity" class="col-sm-3"}}
+        {{else}}
+            <div class="form-group col-sm-3">
+                <label>Quantity</label>
+                {{input class="form-control" value=quantity type="text" disabled=true}}
+            </div>
+        {{/if}}
+        {{#if showNewBatch}}
+            {{em-input property="batchCost" label="Batch Cost" class="col-sm-3"}}
+            {{em-input property="batchNo" label="Batch Number" class="col-sm-3"}}
+            <div class="form-group col-sm-3">
+                <label>Expiration Date</label>        
+                {{date-picker-input controls="my-datepicker" value=expirationDate class="form-control" dateFormat="l"}}
+                {{date-picker-controls id="my-datepicker" minYear="+0" maxYear="+100"}}        
+            </div>
+        {{/if}}
+    </div>
+    {{#if showNewBatch}}
+        {{em-input property="vendor" label="Vendor"}}
+    {{else}}
+        {{#if showBatches}}
+            <h3>Batches <button class="btn btn-primary" {{action "showAddBatch" this}}>Add Batch</button></h3>    
+            <table class="table">
+                <tr class="table-header">
+                    <th>Date Added</th>
+                    <th>Batch Cost</th>
+                    <th>Cost Per Unit</th>
+                    <th>Original Quantity</th>
+                    <th>Current Quantity</th>
+                    <th>Batch Number</th>
+                    <th>Expiration Date</th>
+                    <th>Vendor</th>
+                    <th>Action</th>
+                </tr>
+                {{#each batches itemController='inventory/batch/item-controller'}}                
+                    <tr {{bind-attr class="rowClass"}}>
+                        <td>{{date-format dateAdded}}</td>
+                        <td>{{batchCost}}</td>
+                        <td>{{costPerUnit}}</td>
+                        <td>{{originalQuantity}}</td>
+                        <td>{{currentQuantity}}</td>
+                        <td>{{batchNo}}</td>                
+                        <td>{{date-format expirationDate}}</td>
+                        <td>{{vendor}}</td>
+                        <td>
+                            {{#if expired}}
+                                <strong>Expired</strong>
+                            {{else}}
+                                <button class="btn btn-primary" {{action "showEditBatch" this}}>Edit Batch</button>
+                                {{#if canDelete}}
+                                    <button class="btn btn-default" {{action "showDeleteBatch" this}}>Delete</button>
+                                {{else}}
+                                    <button class="btn btn-default" {{action "showExpireBatch" this}}>Expire</button>                    
+                                {{/if}}
+                            {{/if}}
+                        </td>
+                    </tr>
+                {{/each}}
+            </table>
+        {{/if}}
+    {{/if}}
 {{/em-form}}
