@@ -3,12 +3,9 @@ export default AbstractItemRoute.extend({
     currentItem: null,
     modelName: 'inventory',
     moduleName: 'inventory',
-    newButtonText: '+ new item',
+    newButtonAction: 'newDelivery',
+    newButtonText: '+ new delivery',
     sectionTitle: 'Inventory',
-    additionalButtons: [{
-        text: 'requests',
-        linkTo: 'inventory-queue'
-    }],
     
     actions: {
         addBatch: function(newBatch) {
@@ -18,6 +15,11 @@ export default AbstractItemRoute.extend({
             currentItem.updateQuantity();
             currentItem.save();
             this.send('closeModal');
+        },
+
+        newDelivery: function() {
+            var item = this.get('store').createRecord('inv-request', {});            
+            this.transitionTo('inventory.delivery', item);
         },
         
         showAddBatch: function(inventoryItem) {

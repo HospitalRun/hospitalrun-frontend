@@ -1,11 +1,8 @@
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
         <h1 class="pull-left">{{sectionTitle}}</h1>
-        <div class="pull-right screen-button">
-            <button class="btn btn-primary" {{action 'newItem'}}>{{newButtonText}}</button>
-            {{#each additionalButtons}}
-            {{#link-to linkTo class="btn btn-default"}}{{text}}{{/link-to}}
-            {{/each}}
+        <div class="pull-right screen-button">       
+            <button class="btn btn-primary" {{action newButtonAction}}>{{newButtonText}}</button>
         </div>
         <div class="pull-right screen-title">
             <h4>{{currentScreenTitle}}</h4>

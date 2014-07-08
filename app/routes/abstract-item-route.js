@@ -1,10 +1,10 @@
 export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
-    additionalButtons: null,
     additionalModels: null,
     allowSearch: true,
     currentScreenTitle: null,
     modelName: null,
     moduleName: null,
+    newButtonAction: 'newItem',
     newButtonText: null,
     sectionTitle:null, 
     
@@ -60,7 +60,7 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
                 this.controllerFor(modalPath).set('model', model);
             }
             this.renderModal(modalPath);
-        },
+        },        
         
         /**
          * Action to set the current page title.
@@ -139,7 +139,7 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             navigationController.set('searchRoute',this.get('searchRoute'));
         }
         var currentController = this.controllerFor(this.get('moduleName'));
-        var propsToSet = this.getProperties('currentScreenTitle','newButtonText','sectionTitle', 'additionalButtons');        
+        var propsToSet = this.getProperties('currentScreenTitle','newButtonAction','newButtonText','sectionTitle');        
         currentController.setProperties(propsToSet);
         if (!Ember.isEmpty(this.additionalModels)) {
             this.additionalModels.forEach(function(item) {

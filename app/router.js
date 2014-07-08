@@ -13,13 +13,11 @@ Router.map(function() {
     
     this.resource('inventory', { path: '/inventory' }, function() {
         this.route('barcode', { path: "/barcode/:inventory_id" });
+        this.route('completed');
+        this.route('delivery', { path: "/delivery/:inv-request_id" });
         this.route('edit', { path: "/edit/:inventory_id" });
-        this.route('search', { path: "/search/:search_text" });
-        this.resource('inventory-queue', { path: '/queue' }, function() {
-            this.route('edit', { path: "/edit/:inv_request_id" });
-            this.resource('completed'); 
-            this.resource('pending');            
-        });
+        this.route('listing');
+        this.route('search', { path: "/search/:search_text" });        
     });
     
     this.resource('medication', { path: '/medication' }, function() {

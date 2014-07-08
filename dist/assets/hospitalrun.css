@@ -25,7 +25,7 @@
   color: #00bd9c; }
 
 .screen-button, .screen-title {
-  margin: 20px; }
+  margin: 20px 0 10px 20px; }
 
 .table-header {
   background-color: #e9f3ff;

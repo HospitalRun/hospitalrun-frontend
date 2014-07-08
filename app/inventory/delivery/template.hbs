@@ -1,0 +1,6 @@
+{{#em-form model=this submit_button=false}}
+    {{inventory-typeahead property="inventoryItemTypeAhead" label="Name" content=inventoryList selection=inventoryItem}}
+    <div class="row">
+        {{em-input property="quantity" label="Quantity" class="col-sm-3"}}
+    </div>
+{{/em-form}}

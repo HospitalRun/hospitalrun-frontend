@@ -12,8 +12,25 @@ var InventoryRequest = AbstractModel.extend({
     costPerUnit: DS.attr('number'),  
     quantityAtFulfillment: DS.attr('number'),    
     validations: {
-        inventoryItem: {
-            presence: true
+        inventoryItemTypeAhead: {
+            acceptance: {
+                accept: true,
+                if: function(object) {
+                        var item = object.get('inventoryItem'),
+                            itemTypeAhead = object.get('inventoryItemTypeAhead');
+                
+                        if (Ember.isEmpty(item) || Ember.isEmpty(itemTypeAhead)) {
+                            //force validation to fail
+                            return true;
+                        } else if ('%@ (%@ available)'.fmt(item.get('name'), item.get('quantity')) !== itemTypeAhead) {
+                            return true;
+                        } else {
+                            //Diagnosis is properly set; don't do any further validation
+                            return false;
+                        }
+                }, 
+                message: 'Please select a valid inventory item'
+            }
         },
         quantity: {
             numericality: true

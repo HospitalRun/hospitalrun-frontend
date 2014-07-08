@@ -9,6 +9,7 @@ export default AbstractModel.extend({
     crossReference: DS.attr('string'),
     type: DS.attr('string'),
     price: DS.attr('number'),
+    reorderPoint: DS.attr('number'),
     validations: {
         batchCost: {
             numericality: {
@@ -25,6 +26,11 @@ export default AbstractModel.extend({
             numericality: true
         },
         price: {
+            numericality: {
+                allowBlank: true
+            }
+        },
+        reorderPoint: {
             numericality: {
                 allowBlank: true
             }

@@ -24,7 +24,12 @@
             {{/if}}
             <ul class="nav navbar-nav navbar-right">
                 <li>{{#link-to 'users'}}Users{{/link-to}}</li>
-                <li>{{#link-to 'inventory'}}Inventory{{/link-to}}</li>
+                <li class="dropdown">{{#link-to 'inventory' class="dropdown-toggle" data-toggle="dropdown"}}Inventory <span class="caret"></span>{{/link-to}}                
+                    <ul class="dropdown-menu" role="menu">
+                        <li>{{#link-to 'inventory'}}Inventory Requests{{/link-to}}</li>
+                        <li>{{#link-to 'inventory.listing'}}Inventory Listing{{/link-to}}</li>
+                    </ul>
+                </li>
                 <li>{{#link-to 'medication'}}Medication{{/link-to}}</li>
                 <li>{{#link-to 'patients'}}Patients{{/link-to}}</li>
                 {{#if session.isAuthenticated}}
