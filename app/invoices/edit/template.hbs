@@ -1,0 +1,8 @@
+{{#em-form model=this submit_button=false}}
+    {{em-input property="invoiceNumber" label="Invoice #"}}
+    {{em-input property="patientId" label="Last Name"}}
+    <div class="form-group">
+        <label>Gender:</label>
+        {{ext-radio name=gender content=genderList value=gender}}
+    </div>
+{{/em-form}}

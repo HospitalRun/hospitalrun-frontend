@@ -1,0 +1,58 @@
+<div class="container-fluid">    
+    {{#em-form model=this submit_button=false}}
+            <div class="col-xs-12 col-sm-6">
+                {{em-input property="firstName" label="First Name"}}
+                {{em-input property="lastName" label="Last Name"}}
+                <div class="form-group">
+                    <label>Gender:</label>
+                    {{ext-radio name=gender content=genderList value=gender}}
+                </div>
+                <div class="form-group">
+                    <label>DOB:</label>
+                    {{date-picker-input controls="my-datepicker" value=dateOfBirth class="form-control" dateFormat="l"}}
+                    {{date-picker-controls id="my-datepicker" maxYear="+0" minYear="-100"}}
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Age</label>
+                    <p class="form-control-static">{{dobInDays}}</p>
+                </div>
+                {{em-select
+                    label="Blood Type"
+                    property="bloodType"
+                    content=bloodTypes
+                    optionValuePath="content"
+                    optionLabelPath="content"
+                }}
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                {{em-text label="Address" property="address" rows=3}}
+                {{type-ahead property="country" label="Country" content=countryList.value selection=country}}
+                {{em-input property="phone" label="Phone Contact"}}
+                {{em-input property="email" type="email" label="Email"}}
+                {{em-input property="parent" label="Parent/Guardian"}}
+                {{type-ahead property="clinic" label="Default Clinic" content=clinicList.value selection=clinic}}
+            </div>        
+            <div class="form-group col-xs-12">
+                {{icd10-typeahead property="primaryDiagnosis" label="Primary Diagnosis" selection=primaryDiagnosisId}}
+                {{em-text label="Patient History" property="history" rows=3}}
+            </div>
+    {{/em-form}}
+    <h3>Additional Diagnoses <button class="btn btn-primary" {{action "showAddDiagnosis"}}>New Diagnosis</button></h3>
+    
+    <table class="table">
+        <tr class="table-header">
+            <th>Date</th>
+            <th>Diagnosis</th>
+            <th>Delete</th>
+        </tr>
+        {{#each additionalDiagnoses}}
+        <tr>
+            <td>{{date-format date}}</td>
+            <td>{{description}}</td>
+            <td>
+                <button class="btn btn-primary" {{action "deleteDiagnosis" this}}>Delete</button>
+            </td>
+        </tr>
+        {{/each}}
+    </table>
+</div>
