@@ -4,7 +4,6 @@ export default Ember.Mixin.create({
     },
     _mapViewResults: function(data) {        
         var previousRow, mappedRows=[];
-        debugger;
         data.forEach(function (row) {
             if (row) {
                 if (row.type && row.type === 'Invoice') { 
