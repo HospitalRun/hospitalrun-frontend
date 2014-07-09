@@ -1,3 +1,6 @@
+/**
+ * Abstract route for top level modules (eg patients, inventory, users)
+ */
 export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     additionalModels: null,
     allowSearch: true,
@@ -63,11 +66,16 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         },        
         
         /**
-         * Action to set the current page title.
-         * @param title the title to display.
+         * Action to set items in the section header.
+         * @param details an object containing details to set on the section header.
+         * The following parameters are supported:
+         * - currentScreenTitle - The current screen title.
+         * - newButtonText - The text to display for the "new" button.
+         * - newButtonAction - The action to fire for the "new" button.
          */
-        setPageTitle: function(title) {
-            this.setPageTitle(title);
+        setSectionHeader: function(details) {
+            var currentController = this.controllerFor(this.get('moduleName'));        
+            currentController.setProperties(details);
         }
     },
     
@@ -125,11 +133,6 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     
     renderTemplate: function() {
         this.render('section');
-    },
-    
-    setPageTitle: function(title) {
-        var currentController = this.controllerFor(this.get('moduleName'));
-        currentController.set('currentScreenTitle', title);        
     },
     
     setupController: function(controller, model) { 

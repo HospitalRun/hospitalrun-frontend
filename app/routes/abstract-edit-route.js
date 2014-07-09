@@ -1,12 +1,14 @@
 export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     editTitle: null,
     newTitle: null,
-    setupController: function(controller, model) { 
-        if (model.get('isNew')) {                        
-            this.send('setPageTitle', this.get('newTitle'));
+    setupController: function(controller, model) {
+        var sectionDetails = {};
+        if (model.get('isNew')) {
+            sectionDetails.currentScreenTitle = this.get('newTitle');
         } else {
-            this.send('setPageTitle', this.get('editTitle'));
+            sectionDetails.currentScreenTitle = this.get('editTitle');
         }
+        this.send('setSectionHeader', sectionDetails);
         this._super(controller, model);
     }
 });

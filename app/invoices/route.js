@@ -1,7 +1,7 @@
-import AbstractItemRoute from 'hospitalrun/routes/abstract-item-route';
+import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import InvoiceMapping from 'hospitalrun/mixins/invoice-mapping';
 
-export default AbstractItemRoute.extend(InvoiceMapping, {
+export default AbstractModuleRoute.extend(InvoiceMapping, {
     currentScreenTitle: 'Invoices',
     editTitle: 'Edit Invoice',    
     newTitle: 'New Invoice',

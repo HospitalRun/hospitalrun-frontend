@@ -1,6 +1,6 @@
-import AbstractItemRoute from 'hospitalrun/routes/abstract-item-route';
+import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import MedicationMapping from 'hospitalrun/mixins/medication-mapping';
-export default AbstractItemRoute.extend(MedicationMapping, {
+export default AbstractModuleRoute.extend(MedicationMapping, {
     modelName: 'medication',
     moduleName: 'medication',
     newButtonText: '+ new request',

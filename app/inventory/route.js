@@ -1,5 +1,5 @@
-import AbstractItemRoute from 'hospitalrun/routes/abstract-item-route';
-export default AbstractItemRoute.extend({
+import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
+export default AbstractModuleRoute.extend({
     currentItem: null,
     modelName: 'inventory',
     moduleName: 'inventory',
