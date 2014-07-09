@@ -1,17 +1,17 @@
-{{#if this}}
+{{#if hasRecords}}
     <table class="table">
-        <tr class="table-header">            
+        <tr class="table-header">
             <th>Name</th>
-            <th>Status</th>
             <th>Quantity</th>
+            <th>Requested On</th>
             <th>Requested By</th>
             <th>Actions</th>
         </tr>
         {{#each}}
             <tr>
                 <td>{{inventoryItem.name}}</td>
-                <td>{{status}}</td>
                 <td>{{quantity}}</td>
+                <td>{{date-format dateRequested}}</td>
                 <td>{{requestedBy}}</td>
                 <td>            
                     <button class="btn btn-primary" {{action 'fulfill' this}}>Fulfill</button>
@@ -21,6 +21,6 @@
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No requests found.  Create a new request?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Request</button>
+        <em>No requests found.  Create a new delivery?</em> <button class="btn btn-primary" {{action 'newDelivery'}}>New Delivery</button>
     </div>
 {{/if}}

@@ -4,6 +4,7 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     pageTitle: null,
     
     setupController: function(controller, model) {
+        controller.set('hasRecords', (model.get('length') > 0));
         var sectionDetails = {
             currentScreenTitle: this.get('pageTitle')
         };
