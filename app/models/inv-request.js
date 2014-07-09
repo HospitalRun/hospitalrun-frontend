@@ -6,9 +6,10 @@ var InventoryRequest = AbstractModel.extend({
     inventoryItem: DS.belongsTo('inventory'),
     status: DS.attr('string'),
     quantity: DS.attr('number'),
+    dateFulfilled: DS.attr('date'),
     dateRequested: DS.attr('date'),
     requestedBy: DS.attr('string'),
-    batch: DS.belongsTo('inv-batch'),
+    batches: DS.hasMany('inv-batch'),
     costPerUnit: DS.attr('number'),  
     quantityAtFulfillment: DS.attr('number'),    
     validations: {
