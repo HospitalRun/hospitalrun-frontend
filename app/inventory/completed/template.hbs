@@ -1,0 +1,30 @@
+{{#if hasRecords}}
+    <table class="table">
+        <tr class="table-header">
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Requested On</th>
+            <th>Requested By</th>
+            <th>Fulfilled On</th>
+            <th>Fulfilled By</th>
+            <th>Cost Per Unit</th>
+            <th>Quantity At Fulfillment</th>            
+        </tr>
+        {{#each}}
+            <tr>
+                <td>{{inventoryItem.name}}</td>
+                <td>{{quantity}}</td>
+                <td>{{date-format dateRequested}}</td>
+                <td>{{requestedBy}}</td>
+                <td>{{date-format dateFulfilled}}</td>                
+                <td>{{fulfilledBy}}</td>
+                <td>{{costPerUnit}}</td>
+                <td>{{quantityAtFulfillment}}</td>
+            </tr>            
+        {{/each}}
+    </table>
+{{else}}
+    <div class="alert alert-info">
+        <em>No requests found.  Create a new delivery?</em> <button class="btn btn-primary" {{action 'newDelivery'}}>New Delivery</button>
+    </div>
+{{/if}}

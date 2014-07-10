@@ -1,4 +1,5 @@
-export default DS.Model.extend(Ember.Validations.Mixin, {
+import GetUserName from "hospitalrun/mixins/get-user-name";
+export default DS.Model.extend(GetUserName, Ember.Validations.Mixin, {
     lastModified: DS.attr('date'),
     modifiedBy: DS.attr(),
     modifiedFields: DS.attr(),
@@ -30,9 +31,7 @@ export default DS.Model.extend(Ember.Validations.Mixin, {
                 modifiedFields[attribute] = modifiedDate;
             }
             this.set('modifiedFields', modifiedFields);
-
-            var sessionVars = session.store.restore();
-            this.set('modifiedBy', sessionVars.name);
+            this.set('modifiedBy', this.getUserName());
         }
         
         return new Ember.RSVP.Promise(function(resolve, reject){

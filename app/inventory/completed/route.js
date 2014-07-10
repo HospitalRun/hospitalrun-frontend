@@ -1,13 +1,17 @@
-export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
-    fulfilled: function(item) {
-        return item.get('status') === 'Fulfilled';
+import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
+export default AbstractIndexRoute.extend({
+    queryParams: {
+        id: {
+            refreshModel: true
+        }
     },
     
-    model: function() {                
-        return this.store.filter('inv-request', this.fulfilled);
-    },
-    
-    renderTemplate: function(controller){
-        this.render('inventory.index', {controller: controller});
+    pageTitle: 'Completed Requests',
+    model: function(params) {
+        if (!Ember.isEmpty(params.queryParams.id)) {
+            return this.store.find('inv-request', {id: params.queryParams.id});
+        } else {
+            return this.store.find('inv-request', {status: 'Fulfilled'});
+        }
     }
 });

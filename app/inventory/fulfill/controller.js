@@ -1,7 +1,11 @@
 export default Ember.ObjectController.extend({
+    title: 'Fulfill Request',
     updateButtonText: 'Fulfill',
     updateButtonAction: 'fulfill',
-    isUpdateDisabled: false,
+    isUpdateDisabled: function() {
+        var item = this.get('inventoryItem');
+        return (this.get('quantity') > item.get('quantity'));
+    }.property('inventoryItem'),
     
     actions: {
         cancel: function() {
@@ -9,10 +13,7 @@ export default Ember.ObjectController.extend({
         },
         
         fulfill: function() {
-            this.set('status','Fulfilled');
-            this.get('model').save().then(function() {
-                this.send('closeModal');
-            }.bind(this));                
+            this.send('fulfillRequest', this.get('model'), 'closeModal');           
         }
     }
 });

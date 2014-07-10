@@ -27,6 +27,16 @@
 .screen-button, .screen-title {
   margin: 20px 0 10px 20px; }
 
+.panel-heading .nav {
+  margin-top: 20px;
+  margin-left: 20px; }
+
+.nav-pills > li > a {
+  color: #00bd9c; }
+
+.nav-pills > li.active > a {
+  background-color: transparent; }
+
 .table-header {
   background-color: #e9f3ff;
   color: #8794a4; }

@@ -9,7 +9,8 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     moduleName: null,
     newButtonAction: 'newItem',
     newButtonText: null,
-    sectionTitle:null, 
+    sectionTitle:null,
+    subActions: null,
     
     editPath: function() {
         var module = this.get('moduleName');
@@ -142,7 +143,7 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             navigationController.set('searchRoute',this.get('searchRoute'));
         }
         var currentController = this.controllerFor(this.get('moduleName'));
-        var propsToSet = this.getProperties('currentScreenTitle','newButtonAction','newButtonText','sectionTitle');        
+        var propsToSet = this.getProperties('currentScreenTitle','newButtonAction','newButtonText','sectionTitle','subActions');        
         currentController.setProperties(propsToSet);
         if (!Ember.isEmpty(this.additionalModels)) {
             this.additionalModels.forEach(function(item) {

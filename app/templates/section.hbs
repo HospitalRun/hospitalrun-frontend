@@ -4,6 +4,11 @@
         <div class="pull-right screen-button">       
             <button class="btn btn-primary" {{action newButtonAction}}>{{newButtonText}}</button>
         </div>
+        <ul class="nav nav-pills navbar-right">
+            {{#each subActions}}
+                <li>{{#link-to linkTo}}{{text}}{{/link-to}}</li>
+            {{/each}}            
+        </ul>
         <div class="pull-right screen-title">
             <h4>{{currentScreenTitle}}</h4>
         </div>

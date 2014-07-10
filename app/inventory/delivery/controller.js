@@ -1,6 +1,7 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
+import GetUserName from "hospitalrun/mixins/get-user-name";
 
-export default AbstractEditController.extend({
+export default AbstractEditController.extend(GetUserName, {
     needs: 'inventory',
     
     inventoryList: Ember.computed.alias('controllers.inventory.model'),
@@ -11,11 +12,12 @@ export default AbstractEditController.extend({
         });
     }.observes('inventoryItem'),
     
-    beforeUpdate: function() {
-        if (this.get('isNew')) {
-            var sessionVars = this.get('session').store.restore();
-            this.set('requestedBy', sessionVars.name);
-            this.set('status', 'Fulfilled');
-        }
-    },
+    afterUpdate: function() {      
+        this.send('fulfillRequest', this.get('model'), 'showDelivered');
+    },    
+    
+    beforeUpdate: function() {        
+        this.set('dateRequested', new Date());
+        this.set('requestedBy', this.getUserName());
+    }
 });

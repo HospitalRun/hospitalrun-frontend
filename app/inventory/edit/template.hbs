@@ -29,7 +29,7 @@
             <div class="form-group col-sm-3">
                 <label>Expiration Date</label>        
                 {{date-picker-input controls="my-datepicker" value=expirationDate class="form-control" dateFormat="l"}}
-                {{date-picker-controls id="my-datepicker" minYear="+0" maxYear="+100"}}        
+                {{date-picker-controls id="my-datepicker" minYear="+0" maxYear="+100" dateFormat="l"}}        
             </div>
         {{/if}}
     </div>
@@ -58,7 +58,7 @@
                         <td>{{originalQuantity}}</td>
                         <td>{{currentQuantity}}</td>
                         <td>{{batchNo}}</td>                
-                        <td>{{date-format expirationDate}}</td>
+                        <td>{{expirationDate}}</td>
                         <td>{{vendor}}</td>
                         <td>
                             {{#if expired}}

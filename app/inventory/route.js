@@ -5,6 +5,16 @@ export default AbstractModuleRoute.extend({
     moduleName: 'inventory',
     newButtonAction: 'newDelivery',
     newButtonText: '+ new delivery',
+    subActions: [{
+        text: 'Requests',
+        linkTo: 'inventory.index'
+    }, {
+        text: 'Items',
+        linkTo: 'inventory.listing'
+    }, {
+        text: 'History',
+        linkTo: 'inventory.completed'
+    }],
     sectionTitle: 'Inventory',
     
     actions: {
@@ -16,6 +26,22 @@ export default AbstractModuleRoute.extend({
             currentItem.save();
             this.send('closeModal');
         },
+        
+        fulfillRequest: function(request, afterAction) {
+            if (request.fulfillRequest()) {
+                var inventoryItem = request.get('inventoryItem'),
+                    promises = [],
+                    requestBatches = request.get('batches');
+                requestBatches.forEach(function(batch) {
+                    promises.push(batch.save());
+                });
+                promises.push(inventoryItem.save());
+                promises.push(request.save());
+                Ember.RSVP.all(promises,'All saving done for inventory fulfillment').then(function(){
+                    this.send(afterAction, request);
+                }.bind(this));
+            }
+        },
 
         newDelivery: function() {
             var item = this.get('store').createRecord('inv-request', {});            
@@ -26,7 +52,12 @@ export default AbstractModuleRoute.extend({
             var newBatch = this.get('store').createRecord('inv-batch', {});            
             this.set('currentItem', inventoryItem);
             this.send('openModal', 'inventory.batch.edit', newBatch);
-        }                
+        },
+        
+        showDelivered: function(request) {
+            this.transitionTo('inventory.completed', {queryParams: {id: request.get('id')}});
+        }        
+
     },
     
     /**
