@@ -25,8 +25,9 @@
 /*.ember-view { animation: domChanged 1s; -webkit-animation: domChanged 1s; }*/
 
 .panel-primary {
-    animation: domChanged 1s;
-    -webkit-animation: domChanged 1s;
+    // commenting out until we can sort out best flow for transition
+    // animation: domChanged 1s;
+    // -webkit-animation: domChanged 1s;
 }
 
 .navbar-brand span {
