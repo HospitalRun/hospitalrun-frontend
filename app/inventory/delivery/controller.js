@@ -3,8 +3,12 @@ import GetUserName from "hospitalrun/mixins/get-user-name";
 
 export default AbstractEditController.extend(GetUserName, {
     needs: 'inventory',
+        
+    inventoryItems: Ember.computed.alias('controllers.inventory.model'),
     
-    inventoryList: Ember.computed.alias('controllers.inventory.model'),
+    inventoryList: Ember.computed.filter('inventoryItems', function(item) {
+        return item.get('type') !== 'Asset';
+    }),
     
     inventoryItemChanged: function() {
         Ember.run.once(this, function(){
@@ -14,9 +18,11 @@ export default AbstractEditController.extend(GetUserName, {
     
     actions: {
         update: function() {
-            this.set('dateRequested', new Date());
-            this.set('requestedBy', this.getUserName());
-            this.send('fulfillRequest', this.get('model'));
+            if (this.get('isNew')) {
+                this.set('dateRequested', new Date());
+                this.set('requestedBy', this.getUserName());
+                this.send('fulfillRequest', this.get('model'));
+            }
         }
     }
 });

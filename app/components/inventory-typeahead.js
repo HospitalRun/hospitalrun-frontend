@@ -7,14 +7,12 @@ export default TypeAhead.extend({
         var content = this.get('content'),
             mapped;
         if (content) {
-            if (content instanceof DS.RecordArray) {
-                mapped = content.map(function(item) {
-                    var returnObj = {};
-                    returnObj.name = '%@ (%@ available)'.fmt(item.get('name'), item.get('quantity'));
-                    returnObj[this.get('selectionKey')] = item;
-                    return returnObj;
-                }.bind(this));                
-            }
+            mapped = content.map(function(item) {
+                var returnObj = {};
+                returnObj.name = '%@ (%@ available)'.fmt(item.get('name'), item.get('quantity'));
+                returnObj[this.get('selectionKey')] = item;
+                return returnObj;
+            }.bind(this));
             return mapped;
         } else {
             return [];
