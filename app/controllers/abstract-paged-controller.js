@@ -1,10 +1,7 @@
 export default Ember.ArrayController.extend({
     offset: 0,
     limit: 10,
-    sortProperties: ['dateFulfilled'],
-    // Sort in descending order
-    sortAscending: false,
-    
+
     arrangedContent: function() {
         var arrangedContent = this._super();
         var limit = this.get('limit'),
@@ -22,6 +19,12 @@ export default Ember.ArrayController.extend({
         offset = this.get('offset');
         return ((offset+limit) >= length);
     }.property('offset','limit','model.length'),
+    
+    showPagination: function() {
+        var length = this.get('model.length'),
+            limit = this.get('limit');
+        return (length > limit);            
+    }.property('model.length'),
 
     actions: {
         nextPage: function() {
