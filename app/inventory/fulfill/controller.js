@@ -13,7 +13,7 @@ export default Ember.ObjectController.extend({
         },
         
         fulfill: function() {
-            this.send('fulfillRequest', this.get('model'), 'closeModal');           
+            this.send('fulfillRequest', this.get('model'), true);           
         }
     }
 });

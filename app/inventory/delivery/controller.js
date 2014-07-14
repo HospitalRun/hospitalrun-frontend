@@ -12,12 +12,11 @@ export default AbstractEditController.extend(GetUserName, {
         });
     }.observes('inventoryItem'),
     
-    afterUpdate: function() {      
-        this.send('fulfillRequest', this.get('model'), 'showDelivered');
-    },    
-    
-    beforeUpdate: function() {        
-        this.set('dateRequested', new Date());
-        this.set('requestedBy', this.getUserName());
+    actions: {
+        update: function() {
+            this.set('dateRequested', new Date());
+            this.set('requestedBy', this.getUserName());
+            this.send('fulfillRequest', this.get('model'));
+        }
     }
 });

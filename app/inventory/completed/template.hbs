@@ -1,23 +1,31 @@
 {{#if hasRecords}}
+    <div class="btn-group pull-right">
+        <button class="btn btn-default" {{action 'previousPage'}}{{bind-attr disabled=disablePreviousPage}}>
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </button>
+        <button class="btn btn-default" {{action 'nextPage'}}{{bind-attr disabled=disableNextPage}}>
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </button>
+    </div>
     <table class="table">
         <tr class="table-header">
+            <th>Fulfilled On</th>            
             <th>Name</th>
             <th>Quantity</th>
+            <th>Fulfilled By</th>            
             <th>Requested On</th>
             <th>Requested By</th>
-            <th>Fulfilled On</th>
-            <th>Fulfilled By</th>
             <th>Cost Per Unit</th>
             <th>Quantity At Fulfillment</th>            
         </tr>
         {{#each}}
             <tr>
+                <td>{{date-format dateFulfilled}}</td>
                 <td>{{inventoryItem.name}}</td>
                 <td>{{quantity}}</td>
+                <td>{{fulfilledBy}}</td>                
                 <td>{{date-format dateRequested}}</td>
                 <td>{{requestedBy}}</td>
-                <td>{{date-format dateFulfilled}}</td>                
-                <td>{{fulfilledBy}}</td>
                 <td>{{costPerUnit}}</td>
                 <td>{{quantityAtFulfillment}}</td>
             </tr>            
