@@ -27,6 +27,10 @@ export default AbstractModuleRoute.extend({
             this.send('closeModal');
         },
         
+        allItems: function() {
+            this.transitionTo('inventory.listing');
+        },     
+        
         fulfillRequest: function(request, closeModal) {
             request.fulfillRequest().then(function() {
                 var inventoryItem = request.get('inventoryItem'),
