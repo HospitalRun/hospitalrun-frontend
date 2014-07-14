@@ -18,6 +18,9 @@ var InventoryRequest = AbstractModel.extend({
             acceptance: {
                 accept: true,
                 if: function(object) {
+                    if (!object.get('isDirty')) {
+                        return false;
+                    }
                     var itemName = object.get('inventoryItem.name'),
                         itemTypeAhead = object.get('inventoryItemTypeAhead');
                     if (Ember.isEmpty(itemName) || Ember.isEmpty(itemTypeAhead)) {
