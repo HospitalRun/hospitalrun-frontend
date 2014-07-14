@@ -6,11 +6,13 @@
         optionValuePath="content" 
         optionLabelPath="content"
     }}
-    {{em-input property="crossReference" label="Cross Reference"}}    
-    <div class="row">
-        {{em-input property="reorderPoint" label="Reorder Point" class="col-sm-3"}}
-        {{em-input property="price" label="Price Per Unit" class="col-sm-3"}}
-    </div>
+    {{em-input property="crossReference" label="Cross Reference"}}
+    {{#if showBatches}}
+        <div class="row">
+            {{em-input property="reorderPoint" label="Reorder Point" class="col-sm-3"}}
+            {{em-input property="price" label="Price Per Unit" class="col-sm-3"}}
+        </div>
+    {{/if}}
     {{#if showNewBatch}}
         <h3>Batch information</h3>
     {{/if}}
