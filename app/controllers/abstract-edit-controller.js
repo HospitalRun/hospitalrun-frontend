@@ -9,15 +9,6 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
      *  }
      */
     lookupListsToUpdate: null,
-    
-    isUpdateDisabled: function() {
-        if (!Ember.isNone(this.get('isValid'))) {
-            return !this.get('isValid');
-        } else {
-            return false;
-        }
-    }.property('isValid'),
-    
     updateButtonAction: 'update',
     
     updateButtonText: function() {
