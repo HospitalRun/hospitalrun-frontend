@@ -30,10 +30,6 @@
     // -webkit-animation: domChanged 1s;
 }
 
-.navbar-brand span {
-    color: #00bd9c;
-}
-
 .screen-button, .screen-title {
     margin: 20px 0 10px 20px;
 }
@@ -117,6 +113,16 @@
 
 body {
     background-color: #2e4359;
+    color: #fff;
+}
+.logo-svg {
+  width: 186px;
+}
+.navbar-brand {
+  padding: 13px 0;
+}
+.jumbotron {
+  background-color: #2e4359;
 }
 
 // end temp style tweaks ------------/
