@@ -1,11 +1,10 @@
 import BloodTypes from 'hospitalrun/mixins/blood-types';
 import DOBDays from 'hospitalrun/mixins/dob-days';    
-import GenderList from 'hospitalrun/mixins/gender-list';    
-import ICD10 from 'hospitalrun/mixins/icd10';    
+import GenderList from 'hospitalrun/mixins/gender-list';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
 import AddDiagnosisModel from 'hospitalrun/models/add-diagnosis';    
 
-export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, ICD10, {
+export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
     primaryDiagnosisIdChanged: function() {
         this.get('model').validate();
     }.observes('primaryDiagnosisId'),
