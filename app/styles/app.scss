@@ -25,12 +25,9 @@
 /*.ember-view { animation: domChanged 1s; -webkit-animation: domChanged 1s; }*/
 
 .panel-primary {
-    animation: domChanged 1s;
-    -webkit-animation: domChanged 1s;
-}
-
-.navbar-brand span {
-    color: #00bd9c;
+    // commenting out until we can sort out best flow for transition
+    // animation: domChanged 1s;
+    // -webkit-animation: domChanged 1s;
 }
 
 .screen-button, .screen-title {
@@ -109,3 +106,22 @@
 
 @import "bootstrap";
 @import "bootstrap-theme";
+
+// jglovier's temporary style tweaks
+// -------------------------------------------/
+
+body {
+    background-color: #2e4359;
+    color: #fff;
+}
+.logo-svg {
+  width: 186px;
+}
+.navbar-brand {
+  padding: 13px 0;
+}
+.jumbotron {
+  background-color: #2e4359;
+}
+
+// end temp style tweaks ------------/
