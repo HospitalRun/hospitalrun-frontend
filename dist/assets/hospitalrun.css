@@ -17,12 +17,6 @@
     width: 100%; } }
 
 /*.ember-view { animation: domChanged 1s; -webkit-animation: domChanged 1s; }*/
-.panel-primary {
-  animation: domChanged 1s;
-  -webkit-animation: domChanged 1s; }
-
-.navbar-brand span {
-  color: #00bd9c; }
 
 .screen-button, .screen-title {
   margin: 20px 0 10px 20px; }
@@ -4171,9 +4165,7 @@ a.list-group-item-danger {
   margin-bottom: 20px;
   background-color: #fff;
   border: 1px solid transparent;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); }
+  border-radius: 4px; }
 
 .panel-body {
   padding: 15px; }
@@ -5278,9 +5270,6 @@ fieldset[disabled] .btn-primary.active {
     background-repeat: repeat-x;
     border-color: #3278b3; }
 
-.panel {
-  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); }
 
 .panel-default {
   border: 0;
@@ -5333,3 +5322,15 @@ fieldset[disabled] .btn-primary.active {
   border-color: #dcdcdc;
   -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1); }
+
+body {
+  background-color: #2e4359; }
+
+.logo-svg {
+  width: 186px; }
+
+.navbar-brand {
+  padding: 13px 0; }
+
+.jumbotron {
+  background-color: #2e4359; }
