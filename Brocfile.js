@@ -31,6 +31,7 @@ app.import('vendor/ember-spin-box/dist/ember-spin-box.js');
 app.import('vendor/ember-date-picker/dist/ember-date-picker.js');
 app.import('vendor/momentjs/moment.js');
 app.import('vendor/typeahead.js/dist/typeahead.bundle.js');
+app.import('vendor/pikaday/pikaday.js');
 
 // If the library that you are including contains AMD or ES6 modules that
 // you would like to import into your application please specify an
@@ -48,5 +49,6 @@ app.import('vendor/ic-ajax/dist/named-amd/main.js', {
 
 app.import('vendor/ember-spin-box/dist/ember-spin-box.css');
 app.import('vendor/ember-date-picker/dist/ember-date-picker.css');
+app.import('vendor/pikaday/css/pikaday.css');
 
 module.exports = app.toTree();

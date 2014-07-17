@@ -12,7 +12,10 @@ var InventoryRequest = AbstractModel.extend({
     requestedBy: DS.attr('string'),
     batches: DS.hasMany('inv-batch', { async: true }),
     costPerUnit: DS.attr('number'),  
-    quantityAtFulfillment: DS.attr('number'),    
+    quantityAtFulfillment: DS.attr('number'),
+    fulfillmentType: DS.attr('string'),
+    deliveryLocation: DS.attr('string'),
+    expenseAccount: DS.attr('string'),
     validations: {
         inventoryItemTypeAhead: {
             acceptance: {

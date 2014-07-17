@@ -15,7 +15,8 @@
     "module": true,
     "dymo": true,
     "uuid": true,
-    "moment": true
+    "moment": true,
+    "Pikaday": true
   },
   "node" : true,
   "browser" : true,

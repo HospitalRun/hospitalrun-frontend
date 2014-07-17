@@ -1,0 +1,29 @@
+{{#unless firstQuantity}}
+    <div class="row">
+        <div class="col-xs-5">
+            <div class="form-group">
+                <label>What does 1 {{unitName}} contain?</label>
+            </div>
+        </div>
+    </div>
+{{/unless}}
+<div class="row">
+    <div class="col-xs-3">
+        <div class="form-group">
+            {{#if firstQuantity}}
+                <label>Quantity</label>
+            {{/if}}
+            {{input type="text" value=quantity class="form-control"}}
+        </div>
+    </div>
+    <div class="col-xs-3">
+        <div class="form-group">
+            {{#if firstQuantity}}
+                <label>Unit</label>
+            {{/if}}            
+            {{view Ember.Select viewName="select" class="form-control" content=unitList optionLabelPath="content.name"
+                    optionValuePath="content.unit"
+                    value=unit}}
+        </div>
+    </div>
+</div>

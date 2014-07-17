@@ -5,7 +5,7 @@ export default AbstractSearchRoute.extend({
         '_id',
         'description',
         'name',
-        'crossreference'
+        'crossReference'
     ],
     searchModel: 'inventory'
 });

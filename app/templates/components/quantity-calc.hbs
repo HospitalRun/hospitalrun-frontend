@@ -1,0 +1,12 @@
+{{#each quantityGroups}}
+    {{quantity-conv unit=this.unit firstQuantity=this.firstQuantity unitName=this.unitName index=this.index quantity=this.quantity}}
+{{/each}}
+{{#if showTotal}}
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label for="exampleInputPassword1">Total: {{calculated}} {{targetUnitName}}</label>
+            </div>
+        </div>
+    </div>
+{{/if}}

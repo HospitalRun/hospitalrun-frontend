@@ -1,5 +1,13 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 export default AbstractModuleRoute.extend({
+    additionalModels: [{ 
+        name: 'aisleLocationList',
+        findArgs: ['lookup','aisle_location_list']
+    },  {
+        name: 'warehouseList',
+        findArgs: ['lookup','warehouse_list']
+    }],
+    
     currentItem: null,
     modelName: 'inventory',
     moduleName: 'inventory',

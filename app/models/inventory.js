@@ -10,6 +10,7 @@ export default AbstractModel.extend({
     type: DS.attr('string'),
     price: DS.attr('number'),
     reorderPoint: DS.attr('number'),
+    unitOfDistribution: DS.attr('string'),
     validations: {
         batchCost: {
             numericality: {

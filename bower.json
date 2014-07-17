@@ -21,6 +21,7 @@
     "JsBarcode": "HospitalRun/JsBarcode#master",
     "ember-forms": "*",
     "ember-date-picker": "~0.0.4",
-    "typeahead.js": "~0.10.2"
+    "typeahead.js": "~0.10.2",
+    "pikaday": "~1.2.0"
   }
 }

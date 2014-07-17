@@ -21,7 +21,11 @@ var InventoryBatchItem = AbstractModel.extend({
     currentQuantity: DS.attr('number'),
     expirationDate: DS.attr(),
     expired: DS.attr('boolean'),
-    vendor: DS.attr('string'),    
+    location: DS.attr('string'),
+    aisleLocation: DS.attr('string'),
+    giftInKind: DS.attr('boolean'),
+    vendor: DS.attr('string'),
+    vendorItemNo: DS.attr('string'),
     validations: {
         batchCost: {
             numericality: true
