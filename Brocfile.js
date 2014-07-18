@@ -27,9 +27,7 @@ app.import('vendor/JsBarcode/CODE128.js');
 app.import('vendor/JsBarcode/JsBarcode.js');
 app.import('vendor/dymo/DYMO.Label.Framework.1.2.6.js');
 app.import('vendor/ember-forms/dist/ember_forms.js');
-app.import('vendor/ember-spin-box/dist/ember-spin-box.js');
-app.import('vendor/ember-date-picker/dist/ember-date-picker.js');
-app.import('vendor/momentjs/moment.js');
+app.import('vendor/moment/moment.js');
 app.import('vendor/typeahead.js/dist/typeahead.bundle.js');
 app.import('vendor/pikaday/pikaday.js');
 
@@ -47,8 +45,6 @@ app.import('vendor/ic-ajax/dist/named-amd/main.js', {
   ]
 });
 
-app.import('vendor/ember-spin-box/dist/ember-spin-box.css');
-app.import('vendor/ember-date-picker/dist/ember-date-picker.css');
 app.import('vendor/pikaday/css/pikaday.css');
 
 module.exports = app.toTree();

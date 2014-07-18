@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    {{#em-form model=this submit_button=false}}
+    {{#em-form model=this submit_button=false }}
         <div class="row">
             <div class="col-xs-12 col-sm-6">
                 <div class="form-group has-success">
@@ -12,13 +12,9 @@
                 {{em-input property="lastName" label="Last Name"}}
                 <div class="form-group">
                     <label>Gender:</label>
-                    {{ext-radio name=gender content=genderList value=gender}}
+                    {{ext-radio name=gender content=genderList value=gender }}
                 </div>
-                <div class="form-group">
-                    <label>DOB:</label>
-                    {{date-picker-input controls="my-datepicker" value=dateOfBirth class="form-control" dateFormat="l"}}
-                    {{date-picker-controls id="my-datepicker" maxYear="+0" minYear="-100"}}
-                </div>
+                {{date-picker property="dateOfBirth" label="DOB" maxDate="now"}}
                 <div class="form-group">
                     <label class="control-label">Age</label>
                     <p class="form-control-static">{{dobInDays}}</p>
@@ -32,18 +28,18 @@
                 }}
             </div>
             <div class="col-xs-12 col-sm-6">
-                {{em-text label="Address" property="address" rows=3}}
-                {{type-ahead property="country" label="Country" content=countryList.value selection=country}}
+                {{em-text label="Address" property="address" rows=3 }}
+                {{type-ahead property="country" label="Country" content=countryList.value selection=country }}
                 {{em-input property="phone" label="Phone Contact"}}
                 {{em-input property="email" type="email" label="Email"}}
                 {{em-input property="parent" label="Parent/Guardian"}}
-                {{type-ahead property="clinic" label="Clinic Site" content=clinicList.value selection=clinic}}
+                {{type-ahead property="clinic" label="Clinic Site" content=clinicList.value selection=clinic }}
             </div>
         </div>
         <div class="row">
             <div class="form-group col-xs-12">
-                {{icd10-typeahead property="primaryDiagnosis" label="Primary Diagnosis" selection=primaryDiagnosisId}}
-                {{em-text label="Patient History" property="history" rows=3}}
+                {{icd10-typeahead property="primaryDiagnosis" label="Primary Diagnosis" selection=primaryDiagnosisId }}
+                {{em-text label="Patient History" property="history" rows=3 }}
             </div>
         </div>
     {{/em-form}}

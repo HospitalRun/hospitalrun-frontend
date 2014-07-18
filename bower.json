@@ -20,8 +20,8 @@
     "ember-simple-auth": "0.2.1",
     "JsBarcode": "HospitalRun/JsBarcode#master",
     "ember-forms": "*",
-    "ember-date-picker": "~0.0.4",
     "typeahead.js": "~0.10.2",
-    "pikaday": "~1.2.0"
+    "pikaday": "~1.2.0",
+    "moment": "~2.7.0"
   }
 }

@@ -1,4 +1,4 @@
-//Dervicd from http://spin.atomicobject.com/2013/10/29/ember-js-date-picker/
+//Dervied from http://spin.atomicobject.com/2013/10/29/ember-js-date-picker/
 export default Em.Forms.FormInputComponent.extend({
     minDate: null,
     maxDate: null,
@@ -20,9 +20,15 @@ export default Em.Forms.FormInputComponent.extend({
             props = this.getProperties('format','yearRange');
         if (!Ember.isEmpty(this.get('minDate'))) {
             props.minDate = this.get('minDate');
+            if (props.minDate === 'now') {
+                props.minDate = new Date();
+            }            
         }
         if (!Ember.isEmpty(this.get('maxDate'))) {
             props.maxDate = this.get('maxDate');
+            if (props.maxDate === 'now') {
+                props.maxDate = new Date();
+            }            
         }        
         props.field = $input[0];
         picker = new Pikaday(props);

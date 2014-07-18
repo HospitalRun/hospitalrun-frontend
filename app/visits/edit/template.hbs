@@ -7,11 +7,7 @@
                     <label>Gender:</label>
                     {{ext-radio name=gender content=genderList value=gender}}
                 </div>
-                <div class="form-group">
-                    <label>DOB:</label>
-                    {{date-picker-input controls="my-datepicker" value=dateOfBirth class="form-control" dateFormat="l"}}
-                    {{date-picker-controls id="my-datepicker" maxYear="+0" minYear="-100"}}
-                </div>
+                {{date-picker property="dateOfBirth" label="DOB" maxDate="now"}}
                 <div class="form-group">
                     <label class="control-label">Age</label>
                     <p class="form-control-static">{{dobInDays}}</p>

@@ -36,9 +36,7 @@
             {{em-input property="batchCost" label="Batch Cost" class="col-sm-3"}}
             {{em-input property="batchNo" label="Batch Number" class="col-sm-3"}}
             <div class="form-group col-sm-3">
-                <label>Expiration Date</label>        
-                {{date-picker-input controls="my-datepicker" value=expirationDate class="form-control" dateFormat="l"}}
-                {{date-picker-controls id="my-datepicker" minYear="+0" maxYear="+100" dateFormat="l"}}        
+                {{date-picker property="expirationDate" label="Expiration Date" minDate="now"}}
             </div>
         {{/if}}
     </div>

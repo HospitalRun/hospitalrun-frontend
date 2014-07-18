@@ -18,8 +18,7 @@
     <div class="row">
         <div class="form-group col-sm-4">
             <label>Expiration Date</label>
-            {{date-picker-input controls="my-datepicker" value=expirationDate class="form-control" dateFormat="l"}}
-            {{date-picker-controls id="my-datepicker" minYear="+0" maxYear="+100"}}        
+            {{date-picker property="expirationDate" label="Expiration Date" minDate="now"}}
         </div>
     </div>
     <div class="row">
