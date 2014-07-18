@@ -11,6 +11,13 @@
         <div class="row">
             {{em-input property="reorderPoint" label="Reorder Point" class="col-sm-3"}}
             {{em-input property="price" label="Price Per Unit" class="col-sm-3"}}
+            {{em-select label="Distribution Unit" class="col-sm-3" 
+                property="distributionUnit" 
+                content=unitList 
+                optionLabelPath="content"
+                optionValuePath="content"
+            
+            }}
         </div>
     {{/if}}
     {{#if showNewBatch}}

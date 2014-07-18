@@ -64,7 +64,9 @@ export default AbstractModuleRoute.extend({
         },
         
         showAddBatch: function(inventoryItem) {
-            var newBatch = this.get('store').createRecord('inv-batch', {});            
+            var newBatch = this.get('store').createRecord('inv-batch', {
+                distributionUnit: inventoryItem.get('distributionUnit')
+            });            
             this.set('currentItem', inventoryItem);
             this.send('openModal', 'inventory.batch.edit', newBatch);
         }        

@@ -1,4 +1,4 @@
-import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
+import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 
 export default AbstractEditController.extend({
     needs: 'inventory',
@@ -13,15 +13,6 @@ export default AbstractEditController.extend({
     
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
-    
-    unitTypeList: [
-        'Pallet',
-        'Case',
-        'Box',
-        'Container',
-        'Blister Pack',
-        'Pill',
-    ],
     
     lookupListsToUpdate: [{
         name: 'aisleLocationList', //Name of property containing lookup list

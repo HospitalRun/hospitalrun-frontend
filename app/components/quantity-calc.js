@@ -1,19 +1,29 @@
 export default Ember.Component.extend({
-    quantityGroups: [],
+    quantityGroups: null,
     calculated: null,
     currentUnit: null,
     targetUnit: null,
-    targetUnitName: null,
-    showTotal: false,
-    _setup: function() {
-        var targetUnit = this.get('targetUnit'),
+    showTotal: function() {
+        var calculated = this.get('calculated'),
             quantityGroups = this.get('quantityGroups');
-        quantityGroups.clear();
-        quantityGroups.addObject(Ember.Object.create({
-            index: 0,
-            unit: String(targetUnit),
-            firstQuantity: true
-        }));        
+        if (quantityGroups.length > 1 && !Ember.isEmpty(calculated) && !isNaN(calculated)) {
+            return true;
+        }
+        return false;
+    }.property('calculated'),
+    _setup: function() {
+        var calculated = this.get('calculated'),
+            targetUnit = this.get('targetUnit'),
+            quantityGroups = this.get('quantityGroups');
+        if (Ember.isEmpty(quantityGroups)) {
+            quantityGroups = new Array({
+                index: 0,
+                unit: targetUnit,
+                firstQuantity: true,
+                quantity: calculated
+            });
+            this.set('quantityGroups',quantityGroups);
+        }
     }.on('init'), 
     
     calculateTotal: function() {
@@ -22,17 +32,16 @@ export default Ember.Component.extend({
             lastObject = quantityGroups.get('lastObject'),
             targetUnit = this.get('targetUnit');
         haveQuantities = quantityGroups.every(function(item) {
-            var quantity = item.get('quantity');
+            var quantity = item.quantity;
             return (!Ember.isEmpty(quantity) && !isNaN(quantity));
         });
-        if (haveQuantities && lastObject.get('unit') === targetUnit) {
+        if (haveQuantities && lastObject.unit === targetUnit) {
             var newValue = quantityGroups.reduce(function(previousValue, item) {
-                return previousValue * parseInt(item.get('quantity'));                            
+                return previousValue * parseInt(item.quantity);  
             }, 1);
-            this.set('calculated', newValue);
-            this.set('showTotal', true);
+            this.set('calculated', newValue);            
         } else {
-            this.set('showTotal', false);
+            this.set('calculated');            
         }
     },
 
@@ -47,13 +56,13 @@ export default Ember.Component.extend({
             }
         } else {
             if (index === (groupLength - 1)) {
-                quantityGroups.addObject(Ember.Object.create({
-                    unitName: String(selectedUnit),
-                    unit: String(targetUnit),
+                quantityGroups.addObject({
+                    unitName: selectedUnit,
+                    unit: targetUnit,
                     index: quantityGroups.length
-                }));
-            } else {                
-                quantityGroups.objectAt(index+1).set('unitName', selectedUnit);
+                });
+            } else {
+                Ember.set(quantityGroups.objectAt(index+1), 'unitName',selectedUnit);
             }
         }
         Ember.run.once(this, this.calculateTotal);

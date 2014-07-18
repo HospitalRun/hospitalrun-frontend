@@ -26,6 +26,8 @@ var InventoryBatchItem = AbstractModel.extend({
     giftInKind: DS.attr('boolean'),
     vendor: DS.attr('string'),
     vendorItemNo: DS.attr('string'),
+    distributionUnit: DS.attr('string'),
+    quantityGroups: DS.attr(),
     validations: {
         batchCost: {
             numericality: true

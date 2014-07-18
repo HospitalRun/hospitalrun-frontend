@@ -1,7 +1,8 @@
-import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';    
+import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
+import UnitTypes from "hospitalrun/mixins/unit-types";
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
 
-export default AbstractEditController.extend(InventoryTypeList, {
+export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
     canEditQuantity: function() {
         return (this.get('isNew') || !this.get('showBatches'));
     }.property('isNew', 'showBatches'),
