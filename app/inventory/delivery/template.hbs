@@ -1,15 +1,17 @@
-{{#em-form model=this submit_button=false}}
-    {{inventory-typeahead property="inventoryItemTypeAhead" label="Name" content=inventoryList selection=inventoryItem}}
+{{#em-form model=this submit_button=false }}
+    {{inventory-typeahead property="inventoryItemTypeAhead" label="Inventory Item" content=inventoryList selection=inventoryItem }}
     <div class="row">
         {{em-input property="quantity" label="Quantity" class="col-sm-3"}}
     </div>
-    {{date-picker property="dateFulfilled" label="Date Fulfilled"}}
+    <div class="row">
+        {{date-picker property="dateFulfilled" label="Date Fulfilled" class="col-sm-4"}}
+    </div>
     {{em-select
             label="Fulfillment Type"
             property="fulfillmentType"
             content=fulfillmentTypeList
             optionValuePath="content"
             optionLabelPath="content"}}
-    {{type-ahead property="deliveryLocation" label="Delivery Location" content=deliveryLocationList.value selection=deliveryLocation}}
-    {{type-ahead property="expenseAccount" label="Bill To" content=expenseAccountList.value selection=expenseAccount}}
+    {{type-ahead property="deliveryLocation" label="Delivery Location" content=deliveryLocationList.value selection=deliveryLocation }}
+    {{type-ahead property="expenseAccount" label="Bill To" content=expenseAccountList.value selection=expenseAccount }}
 {{/em-form}}

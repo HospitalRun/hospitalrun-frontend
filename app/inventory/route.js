@@ -3,10 +3,17 @@ export default AbstractModuleRoute.extend({
     additionalModels: [{ 
         name: 'aisleLocationList',
         findArgs: ['lookup','aisle_location_list']
-    },  {
+    }, {
+        name: 'deliveryLocationList',
+        findArgs: ['lookup','delivery_location_list']
+    }, {
+        name: 'expenseAccountList',
+        findArgs: ['lookup','expense_account_list']
+    }, {
         name: 'warehouseList',
         findArgs: ['lookup','warehouse_list']
-    }],
+    }
+  ],
     
     currentItem: null,
     modelName: 'inventory',
@@ -59,7 +66,10 @@ export default AbstractModuleRoute.extend({
         },
 
         newDelivery: function() {
-            var item = this.get('store').createRecord('inv-request', {});            
+            var item = this.get('store').createRecord('inv-request', {
+                dateFulfilled: new Date(),
+                fulfillmentType: 'Delivery'
+            });            
             this.transitionTo('inventory.delivery', item);
         },
         

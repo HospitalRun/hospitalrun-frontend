@@ -5,11 +5,15 @@ export default AbstractEditController.extend(GetUserName, {
     needs: 'inventory',
     
     fulfillmentTypeList: [
+        'Adjustment',
         'Delivery',
-        'Reconcilliation'
+        'Write Off'
     ],
     
-        
+    deliveryLocationList: Ember.computed.alias('controllers.inventory.deliveryLocationList'),
+    
+    expenseAccountList: Ember.computed.alias('controllers.inventory.expenseAccountList'),
+   
     inventoryItems: Ember.computed.alias('controllers.inventory.model'),
     
     inventoryList: Ember.computed.filter('inventoryItems', function(item) {
