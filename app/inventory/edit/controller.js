@@ -3,6 +3,21 @@ import UnitTypes from "hospitalrun/mixins/unit-types";
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
 
 export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
+    needs: 'inventory',
+    
+    warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
+    aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
+    
+    lookupListsToUpdate: [{
+        name: 'aisleLocationList', //Name of property containing lookup list
+        property: 'aisleLocation', //Corresponding property on model that potentially contains a new value to add to the list
+        id: 'aisle_location_list' //Id of the lookup list to update
+    }, {
+        name: 'warehouseList', //Name of property containing lookup list
+        property: 'location', //Corresponding property on model that potentially contains a new value to add to the list
+        id: 'warehouse_list' //Id of the lookup list to update
+    }],
+    
     canEditQuantity: function() {
         return (this.get('isNew') || !this.get('showBatches'));
     }.property('isNew', 'showBatches'),
@@ -14,6 +29,11 @@ export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
     showBatches: function() {
         return (this.get('type') !== 'Asset');
     }.property('type'),
+    
+    originalQuantityUpdated: function() {
+        var quantity = this.get('originalQuantity');
+        this.set('quantity', quantity);
+    }.observes('originalQuantity'),
     
     actions: {
         deleteBatch: function(batch, expire) {
@@ -54,7 +74,9 @@ export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
     
     beforeUpdate: function() {
         if (this.get('isNew')) {
-            var newBatch = this.getProperties('batchCost', 'batchNo', 'expirationDate', 'vendor');
+            var newBatch = this.getProperties('aisleLocation', 'batchCost', 
+                'batchNo', 'expirationDate', 'giftInKind', 'location', 'vendor',
+                'vendorItemNo');
             newBatch.dateAdded = new Date();
             newBatch.originalQuantity = this.get('quantity');
             newBatch.currentQuantity = newBatch.originalQuantity;

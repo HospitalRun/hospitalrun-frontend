@@ -22,27 +22,18 @@
     {{/if}}
     {{#if showNewBatch}}
         <h3>Batch information</h3>
-    {{/if}}
-    <div class="row">
-        {{#if canEditQuantity}}
-            {{em-input property="quantity" label="Quantity" class="col-sm-3"}}
-        {{else}}
-            <div class="form-group col-sm-3">
-                <label>Quantity</label>
-                {{input class="form-control" value=quantity type="text" disabled=true}}
-            </div>
-        {{/if}}
-        {{#if showNewBatch}}
-            {{em-input property="batchCost" label="Batch Cost" class="col-sm-3"}}
-            {{em-input property="batchNo" label="Batch Number" class="col-sm-3"}}
-            <div class="form-group col-sm-3">
-                {{date-picker property="expirationDate" label="Expiration Date" minDate="now"}}
-            </div>
-        {{/if}}
-    </div>
-    {{#if showNewBatch}}
-        {{em-input property="vendor" label="Vendor"}}
+        {{partial 'inventory/batch'}}
     {{else}}
+        <div class="row">
+            {{#if canEditQuantity}}
+                {{em-input property="quantity" label="Quantity" class="col-sm-3"}}
+            {{else}}
+                <div class="form-group col-sm-3">
+                    <label>Quantity</label>
+                    {{input class="form-control" value=quantity type="text" disabled=true }}
+                </div>
+            {{/if}}
+        </div>
         {{#if showBatches}}
             <h3>Batches <button class="btn btn-primary" {{action "showAddBatch" this}}>Add Batch</button></h3>    
             <table class="table">

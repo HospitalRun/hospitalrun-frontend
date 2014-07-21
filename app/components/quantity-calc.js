@@ -3,6 +3,7 @@ export default Ember.Component.extend({
     calculated: null,
     currentUnit: null,
     targetUnit: null,
+    
     showTotal: function() {
         var calculated = this.get('calculated'),
             quantityGroups = this.get('quantityGroups');
@@ -11,6 +12,12 @@ export default Ember.Component.extend({
         }
         return false;
     }.property('calculated'),
+    
+    targetUnitChanged: function() {
+        var selectedUnit = this.get('quantityGroups.firstObject.unit');
+        this.updateCurrentUnit(selectedUnit, 0);
+    }.observes('targetUnit'),
+    
     _setup: function() {
         var calculated = this.get('calculated'),
             targetUnit = this.get('targetUnit'),
@@ -45,26 +52,28 @@ export default Ember.Component.extend({
         }
     },
 
-    updateCurrentUnit: function(selectedUnit, index) {      
+    updateCurrentUnit: function(selectedUnit, index) {
         var targetUnit = this.get('targetUnit'),            
             quantityGroups = this.get('quantityGroups'),
             groupLength = quantityGroups.length;
-        if (selectedUnit === targetUnit) {
-            //Done
-            if (index < (groupLength - 1)) {
-                quantityGroups.removeAt((index+1), (groupLength-1) - index);
-            }
-        } else {
-            if (index === (groupLength - 1)) {
-                quantityGroups.addObject({
-                    unitName: selectedUnit,
-                    unit: targetUnit,
-                    index: quantityGroups.length
-                });
+        if (!Ember.isEmpty(targetUnit)) {
+            if (selectedUnit === targetUnit) {
+                //Done
+                if (index < (groupLength - 1)) {
+                    quantityGroups.removeAt((index+1), (groupLength-1) - index);
+                }
             } else {
-                Ember.set(quantityGroups.objectAt(index+1), 'unitName',selectedUnit);
+                if (index === (groupLength - 1)) {
+                    quantityGroups.addObject({
+                        unitName: selectedUnit,
+                        unit: targetUnit,
+                        index: quantityGroups.length
+                    });
+                } else {
+                    Ember.set(quantityGroups.objectAt(index+1), 'unitName',selectedUnit);
+                }
             }
+            Ember.run.once(this, this.calculateTotal);
         }
-        Ember.run.once(this, this.calculateTotal);
     }
 });
