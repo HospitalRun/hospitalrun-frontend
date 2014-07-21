@@ -19,7 +19,7 @@ var InventoryBatchItem = AbstractModel.extend({
     }.property('batchCost', 'originalQuantity'),
     originalQuantity: DS.attr('number'),
     currentQuantity: DS.attr('number'),
-    expirationDate: DS.attr(),
+    expirationDate: DS.attr('date'),
     expired: DS.attr('boolean'),
     location: DS.attr('string'),
     aisleLocation: DS.attr('string'),
