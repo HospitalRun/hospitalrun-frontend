@@ -7,17 +7,23 @@ export default Em.Forms.FormInputComponent.extend({
     
     _picker: null,
 
+    currentDate: function() {
+        return this.get('model').get(this.get('propertyName'));
+    }.property('model', 'propertyName'),
+    
     modelChangedValue: function(){
         var picker = this.get("_picker");
         if (picker){
-            picker.setDate(this.get("value"));
+            picker.setDate(this.get("currentDate"));
         }
-    }.observes("value"),
+    }.observes("currentDate"),
  
     didInsertElement: function(){
-        var $input = this.$('input'),
+        var currentDate = this.get('currentDate'),
+            $input = this.$('input'),
             picker = null,
             props = this.getProperties('format','yearRange');
+    
         if (!Ember.isEmpty(this.get('minDate'))) {
             props.minDate = this.get('minDate');
             if (props.minDate === 'now') {
@@ -29,9 +35,12 @@ export default Em.Forms.FormInputComponent.extend({
             if (props.maxDate === 'now') {
                 props.maxDate = new Date();
             }            
-        }        
+        }
+        //Temporarily set the date to a formatted string so it looks correct in the pikaday input.
+        this.get('model').set(this.get('propertyName'), moment(currentDate).format('l'));
         props.field = $input[0];
         picker = new Pikaday(props);
+        
         this.set("_picker", picker);
     },
  
