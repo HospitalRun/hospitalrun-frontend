@@ -1,6 +1,12 @@
-{{#em-form model=this submit_button=false}}
+{{#em-form model=this submit_button=false }}
+    {{#unless isNew}}
+        <div class="form-group">
+            <label>ID</label>
+            {{input class="form-control" value=friendlyId type="text" disabled=true }}
+        </div>
+    {{/unless}}
     {{em-input property="name" label="Name"}}
-    {{em-text label="Description" property="description" rows=3}}
+    {{em-text label="Description" property="description" rows=3 }}
     {{em-select label="Type" property="type" 
         content=inventoryTypes 
         optionValuePath="content" 

@@ -60,7 +60,8 @@ export default AbstractEditController.extend({
         if (isNew) {
             this.set('newBatch', true);
             this.set('dateAdded', new Date());            
-        }        
+        }
+        Ember.RSVP.Promise.resolve();
     },
     
     afterUpdate: function(record) {

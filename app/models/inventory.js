@@ -3,6 +3,7 @@ import AbstractModel from "hospitalrun/models/abstract";
 export default AbstractModel.extend({
     batches: DS.hasMany('inv-batch'),
     description: DS.attr('string'),
+    friendlyId: DS.attr('string'),
     keywords: DS.attr(),
     name: DS.attr('string'),
     quantity: DS.attr('number'),

@@ -72,8 +72,12 @@ export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
         },
     },
     
-    beforeUpdate: function() {
-        if (this.get('isNew')) {
+    _completeBeforeUpdate: function(sequence, resolve, reject) {
+        var sequenceValue = null,
+            friendlyId = sequence.get('prefix'),
+            promises = [];
+        
+        if (this.get('showBatches')) {
             var newBatch = this.getProperties('aisleLocation', 'batchCost', 
                 'batchNo', 'expirationDate', 'giftInKind', 'location', 'vendor',
                 'vendorItemNo');
@@ -81,11 +85,44 @@ export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
             newBatch.originalQuantity = this.get('quantity');
             newBatch.currentQuantity = newBatch.originalQuantity;
             var batch = this.get('store').createRecord('inv-batch', newBatch);
-            batch.save();
+            promises.push(batch.save());
             this.get('batches').addObject(batch);
-        }        
+        }
+        sequence.incrementProperty('value',1);
+        sequenceValue = sequence.get('value');
+        if (sequenceValue < 100000) {
+            friendlyId += String('00000' + sequenceValue).slice(-5);
+        } else {
+            friendlyId += sequenceValue;
+        }
+        this.set('friendlyId', friendlyId);
+        promises.push(sequence.save());
+        Ember.RSVP.all(promises,'All before update done for inventory item').then(function(){
+            resolve();
+        }, function(error) {
+            reject(error);
+        });
     },
-
+    
+    beforeUpdate: function() {
+        if (this.get('isNew')) {
+            var type = this.get('type');
+            return new Ember.RSVP.Promise(function(resolve, reject){
+                this.store.find('sequence', 'inventory_'+type).then(function(sequence) {
+                    this._completeBeforeUpdate(sequence, resolve, reject);
+                }.bind(this), function() {
+                    var newSequence = this.get('store').push('sequence',{
+                        id: 'inventory_'+type,
+                        prefix: type.toLowerCase().substr(0,1),
+                        value: 0
+                    });
+                    this._completeBeforeUpdate(newSequence, resolve, reject);
+                }.bind(this));
+            }.bind(this));
+        } else {
+            Ember.RSVP.Promise.resolve();
+        }
+    },
     
     afterUpdate: function(record) {
         this.transitionToRoute('/inventory/search/'+record.get('id'));
