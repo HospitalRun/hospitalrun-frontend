@@ -7,7 +7,7 @@ export default Ember.Mixin.create({
         
         if (birthDate) {
             if (birthDate.getFullYear === undefined) {
-                birthDate = moment(birthDate, 'MM/DD/YYYY').toDate();
+                birthDate = moment(birthDate, 'l').toDate();
             }            
             if (birthDate.getFullYear !== undefined) {
                 years=today.getFullYear()-birthDate.getFullYear();
