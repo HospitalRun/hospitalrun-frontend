@@ -25,7 +25,7 @@ export default Em.Forms.FormInputComponent.extend({
     currentDateChangedValue: function(){
         var currentDate = this.get('currentDate'),
             picker = this.get('_picker');
-        if (picker && picker.getDate().getTime() !== currentDate.getTime() ){
+        if (picker && (Ember.isEmpty(picker.getDate()) || picker.getDate().getTime() !== currentDate.getTime())){
             picker.setDate(currentDate);
         }
     }.observes('currentDate'),
@@ -33,7 +33,7 @@ export default Em.Forms.FormInputComponent.extend({
     dateSet: function() {
         var currentDate = this.get('currentDate'),
             picker = this.get('_picker');
-        if (picker && picker.getDate().getTime() !== currentDate.getTime() ){
+        if (picker && (Ember.isEmpty(currentDate) || picker.getDate().getTime() !== currentDate.getTime())){
             this.set('currentDate', picker.getDate());
         }
     },
