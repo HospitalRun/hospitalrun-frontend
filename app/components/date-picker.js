@@ -1,28 +1,50 @@
 //Dervied from http://spin.atomicobject.com/2013/10/29/ember-js-date-picker/
 export default Em.Forms.FormInputComponent.extend({
+    currentDate: null,
+    dateProperty: null,
     minDate: null,
     maxDate: null,
     format: 'l',
     yearRange: 10,
     
     _picker: null,
-
-    currentDate: function() {
-        return this.get('model').get(this.get('propertyName'));
-    }.property('model', 'propertyName'),
     
-    modelChangedValue: function(){
-        var picker = this.get("_picker");
-        if (picker){
-            picker.setDate(this.get("currentDate"));
+    /**
+     * Map the propertyName to a "displayPropertyName" so that
+     * we can maintain a display date (used by pikadate) and
+     * also bind to the date property specified to the component.
+     */
+    _setup: function() {
+        var dateProperty = this.get('propertyName');
+        this.set('propertyName','display_'+dateProperty);
+        this.set('dateProperty', dateProperty);
+        Ember.Binding.from("model." + dateProperty).to('currentDate').connect(this);
+    }.on('init'),
+    
+        
+    currentDateChangedValue: function(){
+        var currentDate = this.get('currentDate'),
+            picker = this.get('_picker');
+        if (picker && picker.getDate().getTime() !== currentDate.getTime() ){
+            picker.setDate(currentDate);
         }
-    }.observes("currentDate"),
- 
+    }.observes('currentDate'),
+
+    dateSet: function() {
+        var currentDate = this.get('currentDate'),
+            picker = this.get('_picker');
+        if (picker && picker.getDate().getTime() !== currentDate.getTime() ){
+            this.set('currentDate', picker.getDate());
+        }
+    },
+
     didInsertElement: function(){
         var currentDate = this.get('currentDate'),
             $input = this.$('input'),
             picker = null,
             props = this.getProperties('format','yearRange');
+        
+        props.onSelect = this.dateSet.bind(this);
     
         if (!Ember.isEmpty(this.get('minDate'))) {
             props.minDate = this.get('minDate');
@@ -36,10 +58,9 @@ export default Em.Forms.FormInputComponent.extend({
                 props.maxDate = new Date();
             }            
         }
-        //Temporarily set the date to a formatted string so it looks correct in the pikaday input.
-        this.get('model').set(this.get('propertyName'), moment(currentDate).format('l'));
         props.field = $input[0];
         picker = new Pikaday(props);
+        picker.setDate(currentDate);
         
         this.set("_picker", picker);
     },
