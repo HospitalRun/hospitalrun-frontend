@@ -1,4 +1,5 @@
 export default Ember.ObjectController.extend({
+    afterDeleteAction: 'closeModal',
     updateButtonText: 'Delete',
     updateButtonAction: 'delete',
     isUpdateDisabled: false,
@@ -10,7 +11,7 @@ export default Ember.ObjectController.extend({
         
         delete: function() {            
             this.get('model').destroyRecord().then(function() {
-                this.send('closeModal');
+                this.send(this.get('afterDeleteAction'));
             }.bind(this));                
         }
     }
