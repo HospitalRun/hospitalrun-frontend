@@ -6583,7 +6583,7 @@ define("ember-data/lib/system/model/model",
       hasManyDidChange: function(key) {
         var hasMany = this._relationships[key];
 
-        if (hasMany) {
+        if (hasMany && !hasMany.isDestroyed) {
           var records = this._data[key] || [];
 
           set(hasMany, 'content', Ember.A(records));
