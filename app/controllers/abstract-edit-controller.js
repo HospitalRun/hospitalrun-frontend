@@ -1,5 +1,6 @@
 import IsUpdateDisabled from "hospitalrun/mixins/is-update-disabled";
 export default Ember.ObjectController.extend(IsUpdateDisabled, {
+    cancelAction: 'allItems',
     /**
      *  Lookup lists that should be updated when the model has a new value to add to the lookup list.
      *  lookupListsToUpdate: [{
@@ -27,7 +28,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
             } else {
                 cancelledItem.rollback();
             }
-            this.send('allItems');
+            this.send(this.get('cancelAction'));
         },
         
         /**
@@ -68,7 +69,8 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
      * Update any new values added to a lookup list
      */
     updateLookupLists: function() {
-        var lookupLists = this.get('lookupListsToUpdate');        
+        var lookupLists = this.get('lookupListsToUpdate'),
+            listsToUpdate = Ember.A();
         if (!Ember.isEmpty(lookupLists)) {            
             lookupLists.forEach(function(list) {
                 var propertyValue = this.get(list.property),
@@ -80,7 +82,9 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
                             lookupListValues.push(propertyValue);
                             lookupListValues.sort();
                             lookupList.set('value', lookupListValues);
-                            lookupList.save();
+                            if (!listsToUpdate.contains(lookupList)) {
+                                listsToUpdate.push(lookupList);
+                            }
                             this.set(list.name, lookupList);
                         }
                     } else {
@@ -88,11 +92,16 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
                             id: list.id,
                             value: [propertyValue]
                         });
-                        lookupList.save();
+                        if (!listsToUpdate.contains(lookupList)) {
+                            listsToUpdate.push(lookupList);
+                        }
                         this.set(list.name, lookupList);
                     }
                 }
             }.bind(this));
+            listsToUpdate.forEach(function(list) {
+                list.save();
+            });
         }
     }
 
