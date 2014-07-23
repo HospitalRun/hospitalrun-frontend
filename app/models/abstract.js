@@ -42,7 +42,7 @@ export default DS.Model.extend(GetUserName, Ember.Validations.Mixin, {
                     //We failed on the second attempt to save the record, so reject the save.
                     Ember.run(null, reject, error);
                 } else {
-                    if (error.indexOf('conflict') > -1) {
+                    if (error.indexOf && error.indexOf('conflict') > -1) {
                         //Conflict encountered, so rollback, reload and then save the record with the changed attributes.
                         this.rollback();
                         this.reload().then(function(record) {
