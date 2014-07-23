@@ -2,6 +2,8 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 
 export default AbstractEditController.extend({
     needs: 'inventory',
+    cancelAction: 'closeModal',
+    
     canEditQuantity: function() {
         var originalQuantity = this.get('originalQuantity'),
             currentQuantity = this.get('currentQuantity');
@@ -35,18 +37,6 @@ export default AbstractEditController.extend({
         }
         return 'Edit Batch';
 	}.property('isNew'),
-    
-    actions: {
-        cancel: function() {
-            var cancelledItem = this.get('model');
-            if (this.get('isNew')) {
-                cancelledItem.deleteRecord();
-            } else {
-                cancelledItem.rollback();
-            }
-            this.send('closeModal');
-        },
-    },
     
     beforeUpdate: function() {
         var isNew = this.get('isNew'),

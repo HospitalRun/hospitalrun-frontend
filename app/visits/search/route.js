@@ -1,10 +1,10 @@
 import AbstractSearchRoute from 'hospitalrun/routes/abstract-search-route';
 export default AbstractSearchRoute.extend({
-    moduleName: 'patients',
+    moduleName: 'visits',
     searchKeys: [
          '_id',
         'firstName',
         'lastName'
     ],
-    searchModel: 'patient'
+    searchModel: 'visit'
 });

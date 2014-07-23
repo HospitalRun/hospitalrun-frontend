@@ -1,0 +1,21 @@
+{{#em-form model=this submit_button=false }}
+    <div class="row">
+        {{date-picker property="dateRecorded" label="Date Recorded" class="col-sm-6" format="l h:mm A"}}
+    </div>
+    <div class="row">        
+        {{em-input class="col-sm-3" property="temperature" label=temperatureLabel }}
+    </div>
+    <div class="row">
+        {{em-input class="col-sm-3" property="weight" label="Weight"}}
+        {{em-input class="col-sm-3" property="height" label="Height"}}
+        
+    </div>
+    <div class="row">
+        {{em-input class="col-sm-3" property="sbp" label="SBP"}}
+        {{em-input class="col-sm-3" property="dbp" label="DBP"}}
+    </div>
+    <div class="row">
+        {{em-input class="col-sm-3" property="heartRate" label="Heart Rate"}}
+        {{em-input class="col-sm-3" property="respiratoryRate" label="Respiratory Rate"}}
+    </div>
+{{/em-form}}

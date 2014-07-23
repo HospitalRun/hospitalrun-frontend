@@ -7,7 +7,7 @@ export default AbstractModel.extend(DiagnosisValidation, {
     clinic: DS.attr('string'),
     country: DS.attr('string'),
     bloodType: DS.attr('string'),
-    dateOfBirth: DS.attr('string'),
+    dateOfBirth: DS.attr('date'),
     email: DS.attr('string'),
     firstName: DS.attr('string'),
     gender:  DS.attr('string'),
@@ -18,6 +18,7 @@ export default AbstractModel.extend(DiagnosisValidation, {
     primaryDiagnosis: DS.attr('string'),
     primaryDiagnosisId: DS.attr('string'),
     additionalDiagnoses: DS.attr(), //Yes, the plural of diagnosis is diagnoses!
+    visits: DS.hasMany('visit', {async: true}),
     
     validations: {
         email: {

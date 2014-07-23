@@ -1,54 +1,115 @@
-<div class="container-fluid">    
-    {{#em-form model=this submit_button=false}}
-            <div class="col-xs-12 col-sm-6">
-                {{em-input property="firstName" label="First Name"}}
-                {{em-input property="lastName" label="Last Name"}}
-                <div class="form-group">
-                    <label>Gender:</label>
-                    {{ext-radio name=gender content=genderList value=gender}}
-                </div>
-                {{date-picker property="dateOfBirth" label="DOB" maxDate="now"}}
-                <div class="form-group">
-                    <label class="control-label">Age</label>
-                    <p class="form-control-static">{{dobInDays}}</p>
-                </div>
-                {{em-select
-                    label="Blood Type"
-                    property="bloodType"
-                    content=bloodTypes
-                    optionValuePath="content"
-                    optionLabelPath="content"
-                }}
+<div class="panel-group" id="visit-accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-info">
+                    Visit Information
+                </a>
+            </h3>
+        </div>
+        <div id="visit-info" class="panel-collapse collapse in">
+            <div class="panel-body">
+                {{#em-form model=this submit_button=false }}
+                    <div class="row">
+                        {{date-picker property="startDate" label="Start Date" class="col-sm-3"}}
+                        {{date-picker property="endDate" label="End Date" class="col-sm-3"}}
+                    </div>
+                    <div class="row">
+                        {{em-select class="col-sm-6" label="Visit Type" 
+                            property="visitType" content=visitTypes
+                            optionValuePath="content" optionLabelPath="content"
+                        }}
+                        {{type-ahead class="col-sm-6" property="examiner" 
+                            label="Examiner" content=physicianList.value 
+                            selection=examiner
+                        }}
+                    </div>
+                    <div class="row">
+                        {{type-ahead class="col-sm-6" property="location"
+                            label="Location" content=locationList.value
+                            selection=location
+                        }}
+                        {{type-ahead class="col-sm-6" property="clinic" 
+                            label="Clinic" content=clinicList.value 
+                            selection=clinic
+                        }}
+                    </div>
+                    {{em-text label="History since last seen" property="history" rows=3 }}
+                    {{em-text label="Notes" property="notes" rows=3 }}
+                {{/em-form}}
             </div>
-            <div class="col-xs-12 col-sm-6">
-                {{em-text label="Address" property="address" rows=3}}
-                {{type-ahead property="country" label="Country" content=countryList.value selection=country}}
-                {{em-input property="phone" label="Phone Contact"}}
-                {{em-input property="email" type="email" label="Email"}}
-                {{em-input property="parent" label="Parent/Guardian"}}
-                {{type-ahead property="clinic" label="Default Clinic" content=clinicList.value selection=clinic}}
-            </div>        
-            <div class="form-group col-xs-12">
-                {{icd10-typeahead property="primaryDiagnosis" label="Primary Diagnosis" selection=primaryDiagnosisId}}
-                {{em-text label="Patient History" property="history" rows=3}}
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-vitals">
+                    Vitals <button class="btn btn-primary" {{action "showAddVitals" bubbles=false }}>New Vitals</button>
+                </a>
+            </h3>
+        </div>
+        <div id="visit-vitals" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <table class="table">
+                    <tr class="table-header">
+                        <th>Date</th>
+                        <th>Temperature</th>
+                        <th>Weight</th>
+                        <th>Height</th>
+                        <th>SBP</th>
+                        <th>DBP</th>
+                        <th>Heart Rate</th>
+                        <th>Respiratory Rate</th>
+                        <th>Delete</th>
+                    </tr>
+                    {{#each vitals}}
+                        <tr>
+                            <td>{{date-format dateRecorded format="l h:mm A"}}</td>
+                            <td>{{temperature}}</td>
+                            <td>{{weight}}</td>
+                            <td>{{height}}</td>
+                            <td>{{sbp}}</td>
+                            <td>{{dbp}}</td>
+                            <td>{{heartRate}}</td>
+                            <td>{{respiratoryRate}}</td>
+                            <td>
+                                <button class="btn btn-primary" {{action "showEditVitals" this}}>Edit</button>
+                                <button class="btn btn-primary" {{action "showDeleteVitals" this}}>Delete</button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </table>
             </div>
-    {{/em-form}}
-    <h3>Additional Diagnoses <button class="btn btn-primary" {{action "showAddDiagnosis"}}>New Diagnosis</button></h3>
-    
-    <table class="table">
-        <tr class="table-header">
-            <th>Date</th>
-            <th>Diagnosis</th>
-            <th>Delete</th>
-        </tr>
-        {{#each additionalDiagnoses}}
-        <tr>
-            <td>{{date-format date}}</td>
-            <td>{{description}}</td>
-            <td>
-                <button class="btn btn-primary" {{action "deleteDiagnosis" this}}>Delete</button>
-            </td>
-        </tr>
-        {{/each}}
-    </table>
+        </div>
+    </div>    
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-procedures">
+                    Procedures <button class="btn btn-primary" {{action "showAddProcedure" bubbles=false }}>New Procedure</button>
+                </a>
+            </h3>
+        </div>
+        <div id="visit-procedures" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <table class="table">
+                    <tr class="table-header">
+                        <th>Date</th>
+                        <th>Procedure</th>
+                        <th>Actions</th>
+                    </tr>
+                    {{#each procedures}}
+                    <tr>
+                        <td>{{date-format procedureDate}}</td>
+                        <td>{{description}}</td>
+                        <td>                            
+                            <button class="btn btn-primary" {{action "showEditProcedure" this}}>Edit</button>
+                            <button class="btn btn-default" {{action "showDeleteProcedure" this}}>Delete</button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </table>
+            </div>
+        </div>
+    </div>    
 </div>

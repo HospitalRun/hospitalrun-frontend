@@ -1,0 +1,17 @@
+{{#em-form model=this submit_button=false }}
+    {{icd10-pcs-typeahead property="description" label="Procedure" selection=billingId }}
+    <div class="row">
+        {{date-picker property="procedureDate" label="Procedure Date" class="col-sm-6"}}
+    </div>
+    <div class="row">
+        {{type-ahead class="col-sm-6" property="physician" 
+            label="Physician" content=physicianList.value 
+            selection=physician
+        }}
+        {{type-ahead class="col-sm-6" property="assistant" 
+            label="Assistant" content=physicianList.value 
+            selection=assistant
+        }}
+    </div>
+    {{em-text label="Notes" property="notes" rows=6 }}
+{{/em-form}}

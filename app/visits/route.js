@@ -1,15 +1,18 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 export default AbstractModuleRoute.extend({
-    additionalModels: [{ 
+    additionalModels: [{
         name: 'clinicList',
         findArgs: ['lookup','clinic_list']
+    }, { 
+        name: 'physicianList',
+        findArgs: ['lookup','physician_list']
     },  {
-        name: 'countryList',
-        findArgs: ['lookup','country_list']
+        name: 'locationList',
+        findArgs: ['lookup','location_list']
     }],
-    modelName: 'patient',
-    moduleName: 'patients',
-    newButtonText: '+ new patient',
-    sectionTitle: 'Patients'    
+    modelName: 'visit',
+    moduleName: 'visits',
+    newButtonText: '+ new visit',
+    sectionTitle: 'Visits'
    
 });

@@ -7,11 +7,11 @@ Router.map(function() {
     this.route('protected');
     this.route('login');
     
-    this.resource('users', { path: '/users' }, function() {
+    this.resource('users', function() {
         this.route('edit', { path: "/edit/:user_id" });
     });
     
-    this.resource('inventory', { path: '/inventory' }, function() {
+    this.resource('inventory', function() {
         this.route('barcode', { path: "/barcode/:inventory_id" });
         this.route('completed');
         this.route('delivery', { path: "/delivery/:inv-request_id" });
@@ -25,20 +25,24 @@ Router.map(function() {
         this.route('search', { path: "/search/:search_text" });
     });
     
-    this.resource('medication', { path: '/medication' }, function() {
+    this.resource('medication', function() {
         this.route('edit', { path: "/edit/:medication_id" });
         this.route('search', { path: "/search/:search_text" });
     });
     
-    this.resource('patients', { path: '/patients' }, function() {
+    this.resource('patients', function() {
         this.route('edit', { path: "/edit/:patient_id" });
         this.route('search', { path: "/search/:search_text" });
     });
 
-    this.resource('appointments', { path: '/appointments' }, function() {
+    this.resource('appointments', function() {
         this.route('edit', { path: "/edit/:appointment_id" });
         this.route('search', { path: "/search/:search_text" });
-    });    
+    });
+    
+    this.resource('visits', function() {
+        this.route('edit', { path: "/edit/:visit_id" });
+    });
 });
 
 export default Router;

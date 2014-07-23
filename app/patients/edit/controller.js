@@ -48,8 +48,24 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
             this.send('update', true);
         },
         
+        editVisit: function(visit) {
+            this.transitionToRoute('visits.edit', visit);
+        },
+        
+        newVisit: function() {
+            var newVisit = this.get('store').createRecord('visit', {
+                startDate: new Date(),
+                patient: this.get('model')
+            });            
+            this.transitionToRoute('visits.edit', newVisit);
+        },     
+        
         showAddDiagnosis: function() {
             this.send('openModal', 'patients.add-diagnosis', AddDiagnosisModel.create());
+        },
+        
+        showDeleteVisit: function(visit) {
+            this.send('openModal', 'visits.delete', visit);
         }
         
     },
