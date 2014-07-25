@@ -1,11 +1,10 @@
 {
   "name": "pouchdb",
-  "version": "2.1.2",
+  "version": "2.2.3-prerelease",
   "description": "PouchDB is a pocket-sized database.",
-  "release": "nightly",
   "main": "./lib/index.js",
-  "homepage": "https://github.com/daleharvey/pouchdb",
-  "repository": "https://github.com/daleharvey/pouchdb",
+  "homepage": "http://pouchdb.com/",
+  "repository": "https://github.com/pouchdb/pouchdb",
   "keywords": [
     "db",
     "couchdb",
@@ -17,19 +16,27 @@
     "pouchdb"
   ],
   "dependencies": {
-    "bluebird": "~1.0.0",
+    "argsarray": "0.0.1",
+    "bluebird": "^1.2.4",
     "inherits": "~2.0.1",
-    "level-js": "~2.0.0",
+    "level-js": "^2.1.3",
     "level-sublevel": "~5.2.0",
     "leveldown": "~0.10.2",
     "levelup": "~0.18.2",
     "lie": "^2.6.0",
-    "pouchdb-mapreduce": "1.0.0",
-    "request": "~2.28.0"
+    "localstorage-down": "^0.4.4",
+    "pouchdb-mapreduce": "~2.2.4",
+    "request": "~2.28.0",
+    "md5-jkmyers": "0.0.1",
+    "through2": "^0.4.1",
+    "es3ify": "^0.1.3",
+    "memdown": "^0.8.0",
+    "pouchdb-extend": "^0.1.0"
   },
   "devDependencies": {
+    "pouchdb-server": "^0.2.1",
     "commander": "~2.1.0",
-    "watchify": "~0.4.1",
+    "watchify": "~0.8.2",
     "uglify-js": "~2.4.6",
     "jshint": "~2.3.0",
     "http-proxy": "~0.10.3",
@@ -38,37 +45,58 @@
     "browserify": "~3.24.13",
     "wd": "~0.2.8",
     "tin": "~0.4.0",
-    "mocha": "~1.17.1",
-    "chai": "~1.9.0",
-    "istanbul": "~0.2.4",
     "ncp": "~0.5.0",
     "sauce-connect-launcher": "0.2.2",
     "less": "~1.7.0",
-    "bower": "~1.2.8"
+    "tape": "~2.12.2",
+    "glob": "~3.2.9",
+    "watch-glob": "~0.1.1",
+    "mkdirp": "~0.4.2",
+    "exec-sync": "~0.1.6",
+    "ua-parser-js": "^0.6.2",
+    "chai": "^1.9.1",
+    "mocha": "^1.18.2",
+    "istanbul": "^0.2.7",
+    "cordova": "~3.4.1-0.1.0",
+    "replace": "^0.2.9",
+    "es5-shim": "^3.1.1",
+    "phantomjs": "^1.9.7-5"
   },
   "scripts": {
-    "jshint": "jshint -c .jshintrc bin/ lib/ tests/*.js",
-    "build-js": "browserify . -s PouchDB > dist/pouchdb-nightly.js",
+    "build-js": "npm run build-main-js && npm run min && npm run build-plugins",
+    "build-main-js": "browserify . -s PouchDB > dist/pouchdb-nightly.js",
     "min": "uglifyjs dist/pouchdb-nightly.js -mc > dist/pouchdb-nightly.min.js",
-    "build": "mkdir -p dist && npm run build-js && npm run min",
+    "build-plugins": "./bin/build-all-plugins.sh",
+    "build": "npm run version && mkdirp dist && npm run build-js",
+    "version": "node ./bin/get-version.js",
     "test-node": "./bin/run-mocha.sh",
-    "test-browser": "mkdir -p dist && npm run build-js && ./bin/test-browser.js",
-    "dev": "./bin/dev-server.js",
-    "test": "npm run jshint && ./bin/run-test.sh",
-    "publish": "./bin/publish.sh",
+    "test-browser": "mkdirp dist && npm run build-js && node ./bin/test-browser.js",
+    "cordova": "npm run build && ./bin/run-cordova.sh",
+    "jshint": "jshint -c .jshintrc bin/ lib/ tests/ tests/performance/",
+    "dev": "npm run version && node ./bin/dev-server.js",
+    "test": "npm run version && npm run jshint && ./bin/run-test.sh",
+    "release": "./bin/release.sh",
     "publish-site": "./bin/publish-site.sh",
-    "build-site": "./bin/build-site.sh",
+    "build-site": "node ./bin/build-site.js",
     "shell": "./bin/repl.js",
-    "report-coverage": "./bin/run-coverage.js"
+    "report-coverage": "node ./bin/run-coverage.js",
+    "build-perf": "browserify tests/performance/*.js > dist/performance-bundle.js"
   },
   "browser": {
     "./deps/buffer": false,
     "request": false,
-    "level-sublevel": false,
-    "levelup": false,
     "crypto": false,
     "./adapters/leveldb": false,
     "./adapters/levelalt": false,
-    "bluebird": "lie"
+    "./lib/deps/ajax.js": "./lib/deps/ajax-browser.js",
+    "./lib/version.js": "./lib/version-browser.js",
+    "./lib/adapters/preferredAdapters.js": "./lib/adapters/preferredAdapters-browser.js",
+    "bluebird": "lie",
+    "leveldown": "level-js"
+  },
+  "browserify": {
+    "transform": [
+      "es3ify"
+    ]
   }
 }

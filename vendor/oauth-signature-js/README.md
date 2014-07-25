@@ -6,6 +6,27 @@
 
 [![NPM](https://nodei.co/npm/oauth-signature.png?mini=true)](https://nodei.co/npm/oauth-signature/)
 
+## Installation
+
+#### Install with `npm`:
+
+```shell
+npm install oauth-signature
+```
+
+#### Install with `bower`:
+
+```shell
+bower install oauth-signature
+```
+
+Add a `<script>` to your `index.html`:
+
+```html
+<script src="/bower_components/oauth-signature/dist/oauth-signature.js"></script>
+```
+
+
 ## Usage
 
 To generate the OAuth signature call the following method:

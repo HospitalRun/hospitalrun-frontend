@@ -1,10 +1,32 @@
-<div class="container-fluid">    
-    {{#em-form model=this submit_button=false }}    
-        {{date-picker property="appointmentDate" label="Date"}}
-        {{em-input property="patientId" label="Patient"}}
-        {{em-input property="providerId" label="With"}}
-        {{em-input property="locationId" label="At Location"}}
-        {{em-input property="appointmentType" label="Type"}}
-        {{em-input property="note" label="Notes"}}
-    {{/em-form}}
-</div>
+{{#em-form model=this submit_button=false }}
+    {{#if selectPatient}}
+        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=patient }}
+    {{else}}
+            <div class="form-group">
+                <label>Patient</label>
+                <p class="form-control-static">{{patient.displayName}}</p>
+            </div>
+    {{/if}}
+    <div class="row">
+        {{date-picker property="startDate" label="Start Date" showTime=showTime format=dateFormat class="col-sm-4"}}
+        {{date-picker property="endDate" label="End Date" showTime=showTime format=dateFormat class="col-sm-4"}}
+        {{em-checkbox label="All Day" property="allDay"  class="col-sm-4"}}
+    </div>
+    <div class="row">
+        {{em-select class="col-sm-6" label="Type" 
+            property="appointmentType" content=visitTypes
+            optionValuePath="content" optionLabelPath="content"
+        }}
+        {{type-ahead class="col-sm-6" property="provider" 
+            label="With" content=physicianList.value 
+            selection=provider
+        }}
+    </div>
+    <div class="row">
+        {{type-ahead class="col-sm-6" property="location"
+            label="Location" content=locationList.value
+            selection=location
+        }}
+    </div>
+    {{em-text label="Notes" property="notes" rows=3 }}    
+{{/em-form}}

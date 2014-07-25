@@ -4,7 +4,7 @@ var _ref;
 
 Ember.Forms = Ember.Namespace.create();
 
-Ember.Forms.VERSION = '0.0.1';
+Ember.Forms.VERSION = '0.0.2';
 
 if ((_ref = Ember.libraries) != null) {
   _ref.register('Ember Forms', Ember.Forms.VERSION);
@@ -258,16 +258,14 @@ function program3(depth0,data) {
 Ember.TEMPLATES["components/form"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
+  var buffer = '', stack1, self=this;
 
 function program1(depth0,data) {
   
-  var buffer = '', helper, options;
+  var buffer = '', stack1;
   data.buffer.push("\n    ");
-  data.buffer.push(escapeExpression((helper = helpers['em-form-submit'] || (depth0 && depth0['em-form-submit']),options={hash:{
-    'text': ("submit_button_text"),
-    'class': ("submit_button_class")
-  },hashTypes:{'text': "ID",'class': "ID"},hashContexts:{'text': depth0,'class': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "em-form-submit", options))));
+  stack1 = helpers._triageMustache.call(depth0, "em-form-submit", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n");
   return buffer;
   }
@@ -524,8 +522,6 @@ Syntax:
     action="some_action"
     //if true a submit button will be rendered
     submit_button=true|false
-    //the submit button text
-    submit_button_text="Add"
     //if true validation icons will be rendered
     v_icons=true|false
 }}
@@ -552,8 +548,6 @@ Ember.Forms.FormComponent = Ember.Component.extend({
   model: void 0,
   form_layout: 'form',
   submit_button: true,
-  submit_button_text: "Submit",
-  submit_button_class: void 0,
   v_icons: true,
 
   /*
@@ -773,8 +767,11 @@ Syntax:
  */
 Em.Forms.FormInputComponent = Em.Forms.FormGroupComponent.extend({
   controlView: Em.TextField.extend(Em.Forms.ControlMixin, {
-    attributeBindings: ['placeholder'],
+    attributeBindings: ['placeholder', 'required', 'autofocus', 'disabled'],
     placeholder: Em.computed.alias('parentView.placeholder'),
+    required: Em.computed.alias('parentView.required'),
+    autofocus: Em.computed.alias('parentView.autofocus'),
+    disabled: Em.computed.alias('parentView.disabled'),
     type: Em.computed.alias('parentView.type'),
     model: Em.computed.alias('parentView.model'),
     propertyName: Em.computed.alias('parentView.propertyName')
@@ -782,6 +779,9 @@ Em.Forms.FormInputComponent = Em.Forms.FormGroupComponent.extend({
   property: void 0,
   label: void 0,
   placeholder: void 0,
+  required: void 0,
+  autofocus: void 0,
+  disabled: void 0,
   controlWrapper: (function() {
     if (this.get('form.form_layout') === 'horizontal') {
       return 'col-sm-10';

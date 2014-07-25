@@ -30,7 +30,7 @@ adapters.forEach(function (adapter) {
       testUtils.cleanup([dbs.name], done);
     });
 
-    afterEach(function (done) {
+    after(function (done) {
       testUtils.cleanup([dbs.name], done);
     });
 
@@ -269,7 +269,7 @@ adapters.forEach(function (adapter) {
         });
       });
     });
-    
+
     it('656 regression in handling deleted docs', function (done) {
       var db = new PouchDB(dbs.name);
       db.bulkDocs({
@@ -302,6 +302,101 @@ adapters.forEach(function (adapter) {
       var db = new PouchDB(dbs.name);
       db.bulkDocs({ docs: [] }, function (err, res) {
         done(err);
+      });
+    });
+
+    it('handles simultaneous writes', function (done) {
+      var db1 = new PouchDB(dbs.name);
+      var db2 = new PouchDB(dbs.name);
+      var id = 'fooId';
+      var errorNames = [];
+      var ids = [];
+      var numDone = 0;
+      function callback(err, res) {
+        should.not.exist(err);
+        if (res[0].error) {
+          errorNames.push(res[0].name);
+        } else {
+          ids.push(res[0].id);
+        }
+        if (++numDone === 2) {
+          errorNames.should.deep.equal(['conflict']);
+          ids.should.deep.equal([id]);
+          done();
+        }
+      }
+      db1.bulkDocs({docs : [{_id : id}]}, callback);
+      db2.bulkDocs({docs : [{_id : id}]}, callback);
+    });
+
+    it('bulk docs input by array', function (done) {
+      var db = new PouchDB(dbs.name);
+      var docs = makeDocs(5);
+      db.bulkDocs(docs, function (err, results) {
+        results.should.have.length(5, 'results length matches');
+        for (var i = 0; i < 5; i++) {
+          results[i].id.should.equal(docs[i]._id, 'id matches');
+          should.exist(results[i].rev, 'rev is set');
+          // Update the doc
+          docs[i]._rev = results[i].rev;
+          docs[i].string = docs[i].string + '.00';
+        }
+        db.bulkDocs(docs, function (err, results) {
+          results.should.have.length(5, 'results length matches');
+          for (i = 0; i < 5; i++) {
+            results[i].id.should.equal(i.toString(), 'id matches again');
+            // set the delete flag to delete the docs in the next step
+            docs[i]._rev = results[i].rev;
+            docs[i]._deleted = true;
+          }
+          db.put(docs[0], function (err, doc) {
+            db.bulkDocs(docs, function (err, results) {
+              results[0].name.should.equal(
+                'conflict', 'First doc should be in conflict');
+              should.not.exist(results[0].rev, 'no rev in conflict');
+              for (i = 1; i < 5; i++) {
+                results[i].id.should.equal(i.toString());
+                should.exist(results[i].rev);
+              }
+              done();
+            });
+          });
+        });
+      });
+    });
+
+    it('Bulk empty list', function (done) {
+      var db = new PouchDB(dbs.name);
+      db.bulkDocs([], function (err, res) {
+        done(err);
+      });
+    });
+
+    it('Bulk docs not an array', function (done) {
+      var db = new PouchDB(dbs.name);
+      db.bulkDocs({ docs: 'foo' }, function (err, res) {
+        should.exist(err, 'error reported');
+        err.status.should.equal(400);
+        err.name.should.equal('bad_request');
+        err.message.should.equal('Missing JSON list of \'docs\'');
+        done();
+      });
+    });
+
+    it('Bulk docs not an object', function (done) {
+      var db = new PouchDB(dbs.name);
+      db.bulkDocs({ docs: ['foo'] }, function (err, res) {
+        should.exist(err, 'error reported');
+        err.status.should.equal(400);
+        err.name.should.equal('bad_request');
+        err.message.should.equal('Document must be a JSON object');
+      });
+      db.bulkDocs({ docs: [[]] }, function (err, res) {
+        should.exist(err, 'error reported');
+        err.status.should.equal(400);
+        err.name.should.equal('bad_request');
+        err.message.should.equal('Document must be a JSON object');
+        done();
       });
     });
 

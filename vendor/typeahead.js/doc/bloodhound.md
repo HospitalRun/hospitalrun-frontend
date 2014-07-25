@@ -41,8 +41,8 @@ var engine = new Bloodhound({
   name: 'animals',
   local: [{ val: 'dog' }, { val: 'pig' }, { val: 'moose' }],
   remote: 'http://example.com/animals?q=%QUERY',
-  datumTokenizer: function(d) { 
-      return Bloodhound.tokenizers.whitespace(d.val); 
+  datumTokenizer: function(d) {
+    return Bloodhound.tokenizers.whitespace(d.val);
   },
   queryTokenizer: Bloodhound.tokenizers.whitespace
 });
@@ -159,7 +159,7 @@ options you can configure.
 
 * `limit` – The max number of suggestions to return from `Bloodhound#get`. If 
   not reached, the data source will attempt to backfill the suggestions from 
-  `remote`.
+  `remote`. Defaults to `5`.
 
 * `dupDetector` – If set, this is expected to be a function with the signature 
   `(remoteMatch, localMatch)` that returns `true` if the datums are duplicates or 
@@ -187,6 +187,11 @@ Prefetched data is fetched and processed on initialization. If the browser
 supports local storage, the processed data will be cached there to 
 prevent additional network requests on subsequent page loads.
 
+**WARNING:** While it's possible to get away with it for smaller data sets, 
+prefetched data isn't meant to contain entire data sets. Rather, it should act 
+as a first-level cache for suggestions. If don't keep this warning in mind, 
+you run the risk of hitting [local storage limits].
+
 When configuring `prefetch`, the following options are available.
 
 * `url` – A URL to a JSON file containing an array of datums. **Required.**
@@ -208,6 +213,7 @@ When configuring `prefetch`, the following options are available.
 
 <!-- section links -->
 
+[local storage limits]: http://stackoverflow.com/a/2989317
 [ajax settings object]:http://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings
 
 ### Remote
@@ -246,7 +252,7 @@ When configuring `remote`, the following options are available.
 
 ### Datums
 
-Datums are JavaScript objects the hydrate the pool of possible suggestions.
+Datums are JavaScript objects that hydrate the pool of possible suggestions.
 Bloodhound doesn't expect datums to contain any specific properties as any
 operations performed on datums are done using functions defined by the user i.e.
 `datumTokenizer`, `dupDetector`, and `sorter`.

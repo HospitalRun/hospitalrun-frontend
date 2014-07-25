@@ -1,19 +1,31 @@
 /*jshint strict: false */
 /*global chrome */
-
+var crypto = require('crypto');
+var md5 = require('md5-jkmyers');
 var merge = require('./merge');
-exports.extend = require('./deps/extend');
+exports.extend = require('pouchdb-extend');
 exports.ajax = require('./deps/ajax');
 exports.createBlob = require('./deps/blob');
-var uuid = require('./deps/uuid');
-exports.Crypto = require('./deps/md5.js');
+exports.uuid = require('./deps/uuid');
+exports.getArguments = require('argsarray');
 var buffer = require('./deps/buffer');
 var errors = require('./deps/errors');
 var EventEmitter = require('events').EventEmitter;
-var Promise = typeof global.Promise === 'function' ? global.Promise : require('bluebird');
 
+if (typeof global.Promise === 'function') {
+  exports.Promise = global.Promise;
+} else {
+  exports.Promise = require('bluebird');
+}
+var Promise = exports.Promise;
+
+function toObject(array) {
+  var obj = {};
+  array.forEach(function (item) { obj[item] = true; });
+  return obj;
+}
 // List of top level reserved words for doc
-var reservedWords = [
+var reservedWords = toObject([
   '_id',
   '_rev',
   '_attachments',
@@ -24,29 +36,14 @@ var reservedWords = [
   '_deleted_conflicts',
   '_local_seq',
   '_rev_tree'
-];
+]);
+exports.clone = function (obj) {
+  return exports.extend(true, {}, obj);
+};
 exports.inherits = require('inherits');
-exports.uuids = function (count, options) {
-
-  if (typeof(options) !== 'object') {
-    options = {};
-  }
-
-  var length = options.length;
-  var radix = options.radix;
-  var uuids = [];
-
-  while (uuids.push(uuid(length, radix)) < count) { }
-
-  return uuids;
-};
-
-// Give back one UUID
-exports.uuid = function (options) {
-  return exports.uuids(1, options)[0];
-};
 // Determine id an ID is valid
-//   - invalid IDs begin with an underescore that does not begin '_design' or '_local'
+//   - invalid IDs begin with an underescore that does not begin '_design' or 
+//     '_local'
 //   - any other string value is a valid id
 // Returns the specific error object for each case
 exports.invalidIdError = function (id) {
@@ -65,17 +62,6 @@ function isChromeApp() {
           typeof chrome.storage.local !== "undefined");
 }
 
-exports.getArguments = function (fun) {
-  return function () {
-    var len = arguments.length;
-    var args = new Array(len);
-    var i = -1;
-    while (++i < len) {
-      args[i] = arguments[i];
-    }
-    return fun.call(this, args);
-  };
-};
 // Pretty dumb name for a function, just wraps callback calls so we dont
 // to if (callback) callback() everywhere
 exports.call = exports.getArguments(function (args) {
@@ -99,11 +85,13 @@ exports.isDeleted = function (metadata, rev) {
   if (!rev) {
     rev = merge.winningRev(metadata);
   }
-  if (rev.indexOf('-') >= 0) {
-    rev = rev.split('-')[1];
+  var dashIndex = rev.indexOf('-');
+  if (dashIndex !== -1) {
+    rev = rev.substring(dashIndex + 1);
   }
   var deleted = false;
-  merge.traverseRevTree(metadata.rev_tree, function (isLeaf, pos, id, acc, opts) {
+  merge.traverseRevTree(metadata.rev_tree,
+  function (isLeaf, pos, id, acc, opts) {
     if (id === rev) {
       deleted = !!opts.deleted;
     }
@@ -137,26 +125,9 @@ exports.filterChange = function (opts) {
   };
 };
 
-exports.processChanges = function (opts, changes, last_seq) {
-  // TODO: we should try to filter and limit as soon as possible
-  changes = changes.filter(exports.filterChange(opts));
-  if (opts.limit) {
-    if (opts.limit < changes.length) {
-      changes.length = opts.limit;
-    }
-  }
-  changes.forEach(function (change) {
-    exports.call(opts.onChange, change);
-  });
-  if (!opts.continuous) {
-    exports.call(opts.complete, null, {results: changes, last_seq: last_seq});
-  }
-};
-
 // Preprocess documents, parse their revisions, assign an id and a
 // revision for new writes that are missing them, etc
 exports.parseDoc = function (doc, newEdits) {
-  var error = null;
   var nRevNum;
   var newRevId;
   var revInfo;
@@ -169,7 +140,7 @@ exports.parseDoc = function (doc, newEdits) {
     if (!doc._id) {
       doc._id = exports.uuid();
     }
-    newRevId = exports.uuid({length: 32, radix: 16}).toLowerCase();
+    newRevId = exports.uuid(32, 16).toLowerCase();
     if (doc._rev) {
       revInfo = /^(\d+)-(.+)$/.exec(doc._rev);
       if (!revInfo) {
@@ -216,30 +187,30 @@ exports.parseDoc = function (doc, newEdits) {
     }
   }
 
-  error = exports.invalidIdError(doc._id);
-
-  for (var key in doc) {
-    if (doc.hasOwnProperty(key) && key[0] === '_' && reservedWords.indexOf(key) === -1) {
-      error = exports.extend({}, errors.DOC_VALIDATION);
-      error.reason += ': ' + key;
-    }
+  var error = exports.invalidIdError(doc._id);
+  if (error) {
+    return error;
   }
 
   doc._id = decodeURIComponent(doc._id);
   doc._rev = [nRevNum, newRevId].join('-');
 
-  if (error) {
-    return error;
-  }
-
-  return Object.keys(doc).reduce(function (acc, key) {
-    if (/^_/.test(key) && key !== '_attachments') {
-      acc.metadata[key.slice(1)] = doc[key];
-    } else {
-      acc.data[key] = doc[key];
+  var result = {metadata : {}, data : {}};
+  for (var key in doc) {
+    if (doc.hasOwnProperty(key)) {
+      var specialKey = key[0] === '_';
+      if (specialKey && !reservedWords[key]) {
+        error = errors.error(errors.DOC_VALIDATION);
+        error.reason += ': ' + key;
+        return error;
+      } else if (specialKey && key !== '_attachments') {
+        result.metadata[key.slice(1)] = doc[key];
+      } else {
+        result.data[key] = doc[key];
+      }
     }
-    return acc;
-  }, {metadata : {}, data : {}});
+  }
+  return result;
 };
 
 exports.isCordova = function () {
@@ -258,87 +229,89 @@ exports.hasLocalStorage = function () {
     return false;
   }
 };
-exports.Changes = function () {
-
-  var api = {};
-  var eventEmitter = new EventEmitter();
-  var isChrome = isChromeApp();
-  var listeners = {};
-  var hasLocal = false;
-  if (!isChrome) {
-    hasLocal = exports.hasLocalStorage();
+exports.Changes = Changes;
+exports.inherits(Changes, EventEmitter);
+function Changes() {
+  if (!(this instanceof Changes)) {
+    return new Changes();
   }
-  if (isChrome) {
+  var self = this;
+  EventEmitter.call(this);
+  this.isChrome = isChromeApp();
+  this.listeners = {};
+  this.hasLocal = false;
+  if (!this.isChrome) {
+    this.hasLocal = exports.hasLocalStorage();
+  }
+  if (this.isChrome) {
     chrome.storage.onChanged.addListener(function (e) {
       // make sure it's event addressed to us
       if (e.db_name != null) {
-        eventEmitter.emit(e.dbName.newValue);//object only has oldValue, newValue members
+        //object only has oldValue, newValue members
+        self.emit(e.dbName.newValue);
       }
     });
-  } else if (hasLocal) {
+  } else if (this.hasLocal) {
     if (global.addEventListener) {
       global.addEventListener("storage", function (e) {
-        eventEmitter.emit(e.key);
+        self.emit(e.key);
       });
     } else {
       global.attachEvent("storage", function (e) {
-        eventEmitter.emit(e.key);
+        self.emit(e.key);
       });
     }
   }
 
-  api.addListener = function (dbName, id, db, opts) {
-    if (listeners[id]) {
-      return;
-    }
-    function eventFunction() {
-      db.changes({
-        include_docs: opts.include_docs,
-        conflicts: opts.conflicts,
-        continuous: false,
-        descending: false,
-        filter: opts.filter,
-        view: opts.view,
-        since: opts.since,
-        query_params: opts.query_params,
-        onChange: function (c) {
-          if (c.seq > opts.since && !opts.cancelled) {
-            opts.since = c.seq;
-            exports.call(opts.onChange, c);
-          }
+}
+Changes.prototype.addListener = function (dbName, id, db, opts) {
+  if (this.listeners[id]) {
+    return;
+  }
+  function eventFunction() {
+    db.changes({
+      include_docs: opts.include_docs,
+      conflicts: opts.conflicts,
+      continuous: false,
+      descending: false,
+      filter: opts.filter,
+      view: opts.view,
+      since: opts.since,
+      query_params: opts.query_params,
+      onChange: function (c) {
+        if (c.seq > opts.since && !opts.cancelled) {
+          opts.since = c.seq;
+          exports.call(opts.onChange, c);
         }
-      });
-    }
-    listeners[id] = eventFunction;
-    eventEmitter.on(dbName, eventFunction);
-  };
+      }
+    });
+  }
+  this.listeners[id] = eventFunction;
+  this.on(dbName, eventFunction);
+};
 
-  api.removeListener = function (dbName, id) {
-    if (!(id in listeners)) {
-      return;
-    }
-    eventEmitter.removeListener(dbName, listeners[id]);
-  };
+Changes.prototype.removeListener = function (dbName, id) {
+  if (!(id in this.listeners)) {
+    return;
+  }
+  EventEmitter.prototype.removeListener.call(this, dbName,
+    this.listeners[id]);
+};
 
-  api.clearListeners = function (dbName) {
-    eventEmitter.removeAllListeners(dbName);
-  };
 
-  api.notifyLocalWindows = function (dbName) {
-    //do a useless change on a storage thing
-    //in order to get other windows's listeners to activate
-    if (isChrome) {
-      chrome.storage.local.set({dbName: dbName});
-    } else if (hasLocal) {
-      localStorage[dbName] = (localStorage[dbName] === "a") ? "b" : "a";
-    }
-  };
+Changes.prototype.notifyLocalWindows = function (dbName) {
+  //do a useless change on a storage thing
+  //in order to get other windows's listeners to activate
+  if (this.isChrome) {
+    chrome.storage.local.set({dbName: dbName});
+  } else if (this.hasLocal) {
+    localStorage[dbName] = (localStorage[dbName] === "a") ? "b" : "a";
+  }
+};
 
-  api.notify = function (dbName) {
-    eventEmitter.emit(dbName);
-  };
-
-  return api;
+Changes.prototype.notify = function (dbName) {
+  this.emit(dbName);
+  this.notifyLocalWindows(dbName);
 };
 
 if (!process.browser || !('atob' in global)) {
@@ -367,7 +340,8 @@ if (!process.browser || !('btoa' in global)) {
   };
 }
 
-// From http://stackoverflow.com/questions/14967647/encode-decode-image-with-base64-breaks-image (2013-04-21)
+// From http://stackoverflow.com/questions/14967647/ (continues on next line)
+// encode-decode-image-with-base64-breaks-image (2013-04-21)
 exports.fixBinary = function (bin) {
   if (!process.browser) {
     // don't need to do this in Node
@@ -387,7 +361,9 @@ exports.once = function (fun) {
   var called = false;
   return exports.getArguments(function (args) {
     if (called) {
-      console.trace();
+      if (typeof console.trace === 'function') {
+        console.trace();
+      }
       throw new Error('once called  more than once');
     } else {
       called = true;
@@ -400,7 +376,8 @@ exports.toPromise = function (func) {
   //create the function we will be returning
   return exports.getArguments(function (args) {
     var self = this;
-    var tempCB = (typeof args[args.length - 1] === 'function') ? args.pop() : false;
+    var tempCB =
+      (typeof args[args.length - 1] === 'function') ? args.pop() : false;
     // if the last argument is a function, assume its a callback
     var usedCB;
     if (tempCB) {
@@ -413,6 +390,7 @@ exports.toPromise = function (func) {
       };
     }
     var promise = new Promise(function (fulfill, reject) {
+      var resp;
       try {
         var callback = exports.once(function (err, mesg) {
           if (err) {
@@ -424,7 +402,10 @@ exports.toPromise = function (func) {
         // create a callback for this invocation
         // apply the function in the orig context
         args.push(callback);
-        func.apply(self, args);
+        resp = func.apply(self, args);
+        if (resp && typeof resp.then === 'function') {
+          fulfill(resp);
+        }
       } catch (e) {
         reject(e);
       }
@@ -444,15 +425,27 @@ exports.toPromise = function (func) {
 
 exports.adapterFun = function (name, callback) {
   return exports.toPromise(exports.getArguments(function (args) {
-    if (!this.taskqueue.isReady) {
-      this.taskqueue.addTask(name, args);
-      return;
+    if (this._closed) {
+      return Promise.reject(new Error('database is closed'));
     }
-    callback.apply(this, args);
+    var self = this;
+    if (!this.taskqueue.isReady) {
+      return new exports.Promise(function (fulfill, reject) {
+        self.taskqueue.addTask(function (failed) {
+          if (failed) {
+            reject(failed);
+          } else {
+            fulfill(self[name].apply(self, args));
+          }
+        });
+      });
+    }
+    return callback.apply(this, args);
   }));
 };
 //Can't find original post, but this is close
-//http://stackoverflow.com/questions/6965107/converting-between-strings-and-arraybuffers
+//http://stackoverflow.com/questions/6965107/ (continues on next line)
+//converting-between-strings-and-arraybuffers
 exports.arrayBufferToBinaryString = function (buffer) {
   var binary = "";
   var bytes = new Uint8Array(buffer);
@@ -465,10 +458,40 @@ exports.arrayBufferToBinaryString = function (buffer) {
 
 exports.cancellableFun = function (fun, self, opts) {
 
-  opts = opts ? exports.extend(true, {}, opts) : {};
-  opts.complete = opts.complete || function () { };
-  var complete = exports.once(opts.complete);
+  opts = opts ? exports.clone(true, {}, opts) : {};
 
+  var emitter = new EventEmitter();
+  var oldComplete = opts.complete || function () { };
+  var complete = opts.complete = exports.once(function (err, resp) {
+    if (err) {
+      oldComplete(err);
+    } else {
+      emitter.emit('end', resp);
+      oldComplete(null, resp);
+    }
+    emitter.removeAllListeners();
+  });
+  var oldOnChange = opts.onChange || function () {};
+  var lastChange = 0;
+  self.on('destroyed', function () {
+    emitter.removeAllListeners();
+  });
+  opts.onChange = function (change) {
+    oldOnChange(change);
+    if (change.seq <= lastChange) {
+      return;
+    }
+    lastChange = change.seq;
+    emitter.emit('change', change);
+    if (change.deleted) {
+      emitter.emit('delete', change);
+    } else if (change.changes.length === 1 &&
+      change.changes[0].rev.slice(0, 1) === '1-') {
+      emitter.emit('create', change);
+    } else {
+      emitter.emit('update', change);
+    }
+  };
   var promise = new Promise(function (fulfill, reject) {
     opts.complete = function (err, res) {
       if (err) {
@@ -500,9 +523,24 @@ exports.cancellableFun = function (fun, self, opts) {
         fun(self, opts, promise);
       }
     });
-    return promise;
   } else {
     fun(self, opts, promise);
-    return promise;
+  }
+  promise.on = emitter.on.bind(emitter);
+  promise.once = emitter.once.bind(emitter);
+  promise.addListener = emitter.addListener.bind(emitter);
+  promise.removeListener = emitter.removeListener.bind(emitter);
+  promise.removeAllListeners = emitter.removeAllListeners.bind(emitter);
+  promise.setMaxListeners = emitter.setMaxListeners.bind(emitter);
+  promise.listeners = emitter.listeners.bind(emitter);
+  promise.emit = emitter.emit.bind(emitter);
+  return promise;
+};
+exports.Crypto = {};
+exports.MD5 = exports.Crypto.MD5 = function (string) {
+  if (!process.browser) {
+    return crypto.createHash('md5').update(string).digest('hex');
+  } else {
+    return md5(string);
   }
 };

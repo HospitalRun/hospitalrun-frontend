@@ -1,25 +1,25 @@
 {{#if hasRecords}}
     <table class="table">
         <tr class="table-header">
-            <th>Date</th>
+            <th>Start Date</th>
+            <th>End Date</th>
             <th>Location</th>
             <th>Patient</th>
             <th>With?</th>
             <th>Actions</th>
         </tr>
         {{#each}}
-            {{#unless isNew}}
-                <tr>
-                    <td>{{appointmentDate}}</td>
-                    <td>{{locationName}}</td>
-                    <td>{{patientName}}</td>
-                    <td>{{providerName}}</td>
-                    <td>
-                        <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
-                        <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
-                    </td>        
-                </tr>
-            {{/unless}}
+            <tr>
+                <td>{{date-format startDate}}</td>
+                <td>{{date-format endDate}}</td>
+                <td>{{location}}</td>
+                <td>{{patient.displayName}}</td>
+                <td>{{provider}}</td>
+                <td>
+                    <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
+                    <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
+                </td>        
+            </tr>
         {{/each}}
     </table>
 {{else}}

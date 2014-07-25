@@ -19,6 +19,22 @@ export default AbstractModel.extend(DiagnosisValidation, {
     primaryDiagnosisId: DS.attr('string'),
     additionalDiagnoses: DS.attr(), //Yes, the plural of diagnosis is diagnoses!
     visits: DS.hasMany('visit', {async: true}),
+    appointments: DS.hasMany('appointment', {async: true}),
+    displayName: function() {
+        var firstName = this.get('firstName'),
+            lastName = this.get('lastName'),
+            returnName = '';
+        if (!Ember.isEmpty(firstName)) {
+            returnName += firstName;
+        }
+        if (!Ember.isEmpty(returnName) && !Ember.isEmpty(lastName)) {
+            returnName += ' ';
+        }
+        if (!Ember.isEmpty(lastName)) {
+            returnName += lastName;
+        }        
+        return returnName;
+    }.property('firstName', 'lastName'),
     
     validations: {
         email: {

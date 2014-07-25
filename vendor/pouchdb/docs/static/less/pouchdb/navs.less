@@ -1,4 +1,4 @@
-@import "../../../../bower_components/bootstrap/less/navs.less";
+@import "@{bootstrap}/navs.less";
 
 .nav-header {
   float: right;
@@ -32,5 +32,7 @@
   }
 }
 @media (max-width: @screen-sm-min) {
-  .nav-sidebar { margin-bottom: 25px; }
+  .nav.nav-sidebar { margin-bottom: 25px; }
+  .nav-head,
+  .nav { text-align: center; }
 }

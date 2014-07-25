@@ -1,0 +1,20 @@
+hash: Object
+_id: "visit_F27F36C3-366D-8368-BF59-AC886737AE27"
+_rev: "1-19b2c2ba1b89c156dec754bbd47db2ec"
+clinic: null
+endDate: null
+examiner: null
+history: null
+lastModified: "Fri, 25 Jul 2014 17:10:25 GMT"
+location: null
+modifiedBy: "john.kleinschmidt@cureinternational.org"
+modifiedFields: Object
+startDate: Fri Jul 25 2014 13:10:25 GMT-0400 (EDT)
+visitType: Fri Jul 25 2014 13:10:25 GMT-0400 (EDT)
+__proto__: Object
+notes: null
+patient: null
+procedures: Array[0]
+startDate: "Fri, 25 Jul 2014 04:00:00 GMT"
+visitType: "Clinic"
+vitals: Array[0]

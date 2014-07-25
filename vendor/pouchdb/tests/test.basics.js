@@ -12,7 +12,7 @@ adapters.forEach(function (adapter) {
       testUtils.cleanup([dbs.name], done);
     });
 
-    afterEach(function (done) {
+    after(function (done) {
       testUtils.cleanup([dbs.name], done);
     });
 
@@ -41,8 +41,10 @@ adapters.forEach(function (adapter) {
 
     it('Remove a pouch', function (done) {
       new PouchDB(dbs.name, function (err, db) {
-        PouchDB.destroy(dbs, function (err, db) {
+        PouchDB.destroy(dbs, function (err, info) {
           should.not.exist(err);
+          should.exist(info);
+          info.ok.should.equal(true);
           done();
         });
       });
@@ -50,7 +52,9 @@ adapters.forEach(function (adapter) {
 
     it('Remove a pouch, with a promise', function (done) {
       new PouchDB(dbs.name, function (err, db) {
-        PouchDB.destroy(dbs).then(function () {
+        PouchDB.destroy(dbs).then(function (info) {
+          should.exist(info);
+          info.ok.should.equal(true);
           done();
         }, done);
       });
@@ -58,8 +62,10 @@ adapters.forEach(function (adapter) {
 
     it('destroy a pouch', function (done) {
       new PouchDB(dbs.name, function (err, db) {
-        db.destroy(function (err) {
+        db.destroy(function (err, info) {
           should.not.exist(err);
+          should.exist(info);
+          info.ok.should.equal(true);
           done();
         });
       });
@@ -67,7 +73,9 @@ adapters.forEach(function (adapter) {
 
     it('destroy a pouch, with a promise', function (done) {
       new PouchDB(dbs.name, function (err, db) {
-        db.destroy().then(function () {
+        db.destroy().then(function (info) {
+          should.exist(info);
+          info.ok.should.equal(true);
           done();
         }, done);
       });
@@ -120,7 +128,8 @@ adapters.forEach(function (adapter) {
     it('Modify a doc with sugar syntax and omit the _id', function (done) {
       var db = new PouchDB(dbs.name);
       db.post({test: 'somestuff'}, function (err, info) {
-        db.put({another: 'test', _id: info.id}, info.rev, function (err, info2) {
+        db.put({another: 'test', _id: info.id}, info.rev,
+          function (err, info2) {
           info.rev.should.not.equal(info2.rev);
           db.put({yet_another: 'test'}, 'yet_another', function (err, info3) {
             info3.id.should.equal('yet_another');
@@ -232,6 +241,35 @@ adapters.forEach(function (adapter) {
             done();
           });
         });
+      });
+    });
+
+    it('Remove doc with new syntax', function (done) {
+      var db = new PouchDB(dbs.name);
+      db.post({ test: 'somestuff' }, function (err, info) {
+        db.remove(info.id, info.rev, function (err) {
+          should.not.exist(err);
+          db.get(info.id, function (err) {
+            should.exist(err);
+            done();
+          });
+        });
+      });
+    });
+
+    it('Remove doc with new syntax and a promise', function (done) {
+      var db = new PouchDB(dbs.name);
+      var id;
+      db.post({test: 'someotherstuff'}).then(function (info) {
+        id = info.id;
+        return db.remove(info.id, info.rev);
+      }).then(function () {
+        return db.get(id);
+      }).then(function (doc) {
+        done(true);
+      }, function (err) {
+        should.exist(err.error);
+        done();
       });
     });
 
@@ -592,6 +630,27 @@ adapters.forEach(function (adapter) {
         info.db_name.should.equal('test_basics');
         done();
       });
+    });
+
+    it('db.info should give correct doc_count', function (done) {
+      new PouchDB(dbs.name).then(function (db) {
+        db.info().then(function (info) {
+          info.doc_count.should.equal(0);
+          return db.bulkDocs({docs : [{_id : '1'}, {_id : '2'}, {_id : '3'}]});
+        }).then(function () {
+          return db.info();
+        }).then(function (info) {
+          info.doc_count.should.equal(3);
+          return db.get('1');
+        }).then(function (doc) {
+          return db.remove(doc);
+        }).then(function () {
+          return db.info();
+        }).then(function (info) {
+          info.doc_count.should.equal(2);
+          done();
+        }, done);
+      }, done);
     });
 
     if (adapter === 'local') {

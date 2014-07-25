@@ -1,4 +1,4 @@
-{
+{ "maxlen": 80,
   "curly": true,
   "eqeqeq": true,
   "immed": true,
@@ -14,7 +14,8 @@
   "trailing": true,
   "globalstrict": true,
   "globals": {
-    "PouchDB": true
+    "PouchDB": true,
+     "should": true
   },
   "white": true,
   "indent": 2,
@@ -22,10 +23,10 @@
   "predef": [
     "describe",
     "it",
+    "after",
     "beforeEach",
     "afterEach",
     "testUtils",
-    "should",
     "emit"
   ]
 }

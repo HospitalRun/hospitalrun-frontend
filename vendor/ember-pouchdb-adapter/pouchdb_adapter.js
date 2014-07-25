@@ -161,6 +161,8 @@
    */
   DS.PouchDBAdapter = DS.Adapter.extend({
     defaultSerializer: "_pouchdb",
+    MAX_DOC_LIMIT: 500,
+
 
     /**
      Hook used by the store to generate client-side IDs. This simplifies
@@ -343,7 +345,11 @@
           start = type.typeKey,
           end = start + '~~',
           data = Ember.A(),
-          queryParams = {};
+          queryParams = {},
+          limit = Number.MAX_VALUE,
+          skip = 0,
+          totalRows = 0,
+          MAX_DOC_LIMIT = self.get("MAX_DOC_LIMIT");
 
       if(!options) options = {};
       if(Ember.typeOf(options) != 'object') options = {since: options};
@@ -353,34 +359,67 @@
       queryParams['startkey'] = start;
       queryParams['endkey'] = end;
       if(options.limit){
-        queryParams['limit'] = options.limit;
+        limit = options.limit;
       }
       if(options.skip){
-        queryParams['skip'] = options.skip;
+        skip = options.skip;
+        queryParams['skip'] = skip;
       }
+
 
       return new Ember.RSVP.Promise(function(resolve, reject){
         self._getDb().then(function(db){
           try {
-            db.allDocs(queryParams, function(err, response){
-              if (err) {
-                _pouchError(reject)(err);
+            var deferred = Ember.RSVP.resolve(false);
+            var finishDefer = Ember.RSVP.defer();
+
+            var responseFunc = function(response){
+              var nextDeferred = Ember.RSVP.defer();
+              var stepLimit;
+              if(limit >= 0){
+                stepLimit = Math.min(limit, MAX_DOC_LIMIT);
               } else {
-                if (response.rows) {
-                  forEach.call(response.rows, function(row) {
-                    if(!row["error"]){
-                      data.push(row.doc);
-                    } else {
-                      console.log('cannot find', row.key +":", row.error);
-                    }
-                  });
-                }
-                Ember.run(function(){
-                  self._resolveRelationships(store, type, data, options).then(function(data){
-                    Ember.run(null, resolve, data);
-                  });
+                stepLimit = MAX_DOC_LIMIT;
+              }
+              queryParams['limit'] = stepLimit;
+
+              if (response && response.rows) {
+                forEach.call(response.rows, function(row) {
+                  if(!row["error"]){
+                    data.push(row.doc);
+                  } else {
+                    console.log('cannot find', row.key +":", row.error);
+                  }
                 });
               }
+              
+              //on first call and then as long as data looks to be cut by limit
+              if(!response || (response && response.rows.length >= stepLimit) && limit > 0){
+                db.allDocs(queryParams, function(err, data){
+                  if(data && data.rows && data.rows.length > 0){
+                    queryParams['skip'] = 1;
+                    queryParams['startkey'] = data.rows[data.rows.length - 1].key;
+                  }
+                  limit -= stepLimit;
+                  if(err) {
+                    Ember.run(nextDeferred, "reject", err);
+                  } else {
+                    Ember.run(nextDeferred, "resolve", data);
+                  }
+                });
+                nextDeferred.promise.then(responseFunc, _pouchError(reject));
+              } else {
+                finishDefer.resolve(data);
+              }
+            };
+            deferred.then(responseFunc);
+            
+            finishDefer.promise.then(function(response){
+              Ember.run(function(){
+                self._resolveRelationships(store, type, data, options).then(function(data){
+                  Ember.run(null, resolve, data);
+                });
+              });
             });
           } catch (err){
             _pouchError(reject)(err);
@@ -392,10 +431,12 @@
     findQuery: function(store, type, query, options) {
       var self = this,
           queryParams = {},
+          queryFunc = null,
           metaKeys = {_limit: 'limit', _skip: 'skip'},
           metaAllKeys = ['_limit', '_skip'],
           keys = [],
-          useFindAll = true;
+          useFindAll = true,
+          view = null;
 
       if(!options) options = {};
       if(Ember.isArray(options)) options = {array: options};
@@ -412,6 +453,9 @@
             } else {
               options[metaKeys[key]] = query[key];
             }
+          } else if(key == "_view"){
+            view = query[key];
+            useFindAll = false;
           } else {
             keys.push(key);
             useFindAll = false;
@@ -453,10 +497,16 @@
       queryParams["include_docs"] = true;
       queryParams["reduce"] = false;
 
+      if(Ember.isEmpty(view)){
+        queryFunc = {map: mapFn};
+      } else {
+        queryFunc = view;
+      }
+
       return new Ember.RSVP.Promise(function(resolve, reject){
         self._getDb().then(function(db){
           try {
-            db.query({map: mapFn}, queryParams, function(err, response) {
+            db.query(queryFunc, queryParams, function(err, response) {
               if (err) {
                 _pouchError(reject)(err);
               } else {

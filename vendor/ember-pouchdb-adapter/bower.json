@@ -1,10 +1,10 @@
 {
   "name": "ember-pouchdb-adapter",
-  "version": "1.0.0-beta.6",
+  "version": "1.0.0-beta.7b",
   "dependencies": {
     "ember": "~1",
-    "ember-data": "~1.0.0",
-    "pouchdb": "~2.1.0"
+    "ember-data": "1.0.0-beta.7",
+    "pouchdb": "2.2.3"
   },
   "ignore": [
     "**/.*",

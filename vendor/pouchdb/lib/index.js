@@ -1,18 +1,15 @@
 "use strict";
 
-require('./deps/es5_shims');
-
 var PouchDB = require('./setup');
 
 module.exports = PouchDB;
 
 PouchDB.ajax = require('./deps/ajax');
-PouchDB.extend = require('./deps/extend');
+PouchDB.extend = require('pouchdb-extend');
 PouchDB.utils = require('./utils');
 PouchDB.Errors = require('./deps/errors');
-var replicate = require('./replicate');
-PouchDB.replicate = replicate.replicate;
-PouchDB.sync = replicate.sync;
+PouchDB.replicate = require('./replicate').replicate;
+PouchDB.sync = require('./sync');
 PouchDB.version = require('./version');
 var httpAdapter = require('./adapters/http');
 PouchDB.adapter('http', httpAdapter);

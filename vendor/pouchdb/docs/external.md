@@ -56,3 +56,16 @@ A tool drawing revision tree of a couchdb document. You can see what is a confli
 
 [Website](http://neojski.github.io/visualizeRevTree)
 [Github](https://github.com/neojski/visualizeRevTree)
+
+### Pouch Stream
+
+A plugin to let PouchDB talk streams.
+
+[Github](https://github.com/calvinmetcalf/PouchStream)
+
+### Python-PouchDB
+A Python interface to PouchDB, with both a synchronous and an asynchronous API. Uses QtWebKit internally (via either PySide, PyQt4 or PyQt5). The geopouch, GQL, search, validation, show and list PouchDB plugins are also wrapped.
+
+[Website](http://python-pouchdb.marten-de-vries.nl/)
+[Documentation](http://pythonhosted.org/Python-PouchDB/)
+[Launchpad](https://launchpad.net/python-pouchdb)

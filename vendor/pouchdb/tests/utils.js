@@ -4,9 +4,37 @@
 
 var testUtils = {};
 
+function uniq(list) {
+  var map = {};
+  list.forEach(function (item) {
+    map[item] = true;
+  });
+  return Object.keys(map);
+}
+
+testUtils.params = function () {
+  if (typeof module !== 'undefined' && module.exports) {
+    return process.env;
+  }
+  var paramStr = document.location.search.slice(1);
+  return paramStr.split('&').reduce(function (acc, val) {
+    if (!val) {
+      return acc;
+    }
+    var tmp = val.split('=');
+    acc[tmp[0]] = tmp[1] || true;
+    return acc;
+  }, {});
+};
+
 testUtils.couchHost = function () {
   if (typeof module !== 'undefined' && module.exports) {
     return process.env.COUCH_HOST || 'http://localhost:5984';
+  } else if (window && window.COUCH_HOST) {
+    return window.COUCH_HOST;
+  } else if (window && window.cordova) {
+    // magic route to localhost on android emulator
+    return 'http://10.0.2.2:2020';
   }
   // In the browser we default to the CORS server, in future will change
   return 'http://localhost:2020';
@@ -66,6 +94,8 @@ testUtils.adapterUrl = function (adapter, name) {
 // Delete specified databases
 testUtils.cleanup = function (dbs, done) {
 
+  dbs = uniq(dbs);
+
   var deleted = 0;
   var num = dbs.length;
   var errors = [];
@@ -89,14 +119,6 @@ testUtils.cleanup = function (dbs, done) {
   dbs.forEach(function (db) {
     PouchDB.destroy(db, dbDeleted);
   });
-
-  try {
-    if (global.localStorage) {
-      global.localStorage.clear();
-    }
-  } catch (e) {
-    // firefox chrome environment, ignore
-  }
 };
 
 // Put doc after prevRev (so that doc is a child of prevDoc

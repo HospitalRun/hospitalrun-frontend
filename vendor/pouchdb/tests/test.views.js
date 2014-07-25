@@ -16,7 +16,7 @@ adapters.forEach(function (adapters) {
       testUtils.cleanup([dbs.name, dbs.remote], done);
     });
 
-    afterEach(function (done) {
+    after(function (done) {
       testUtils.cleanup([dbs.name, dbs.remote], done);
     });
 
@@ -181,7 +181,8 @@ adapters.forEach(function (adapters) {
       values.push(3);
       values.push(4);
       // then text, case sensitive
-      // currently chrome uses ascii ordering and so wont handle capitals properly
+      // currently chrome uses ascii ordering and so wont handle 
+      // capitals properly
       values.push('a');
       //values.push("A");
       values.push('aa');
@@ -261,7 +262,9 @@ adapters.forEach(function (adapters) {
               done(err);
             }
             res.rows.forEach(function (x, i) {
-              x.key.should.deep.equal(values[values.length - 1 - i], 'keys collate descending');
+              x.key.should.deep
+                .equal(values[values.length - 1 - i],
+                       'keys collate descending');
             });
             done();
           });
@@ -470,8 +473,10 @@ adapters.forEach(function (adapters) {
               res._conflicts.should.exist;
               db.query(queryFun, function (err, res) {
                 res.rows.should.have.length(1, 'One doc with conflicts');
-                res.rows[0].key.should.equal('1', 'Correct document with conflicts.');
-                res.rows[0].value.should.deep.equal([looser], 'Correct conflicts included.');
+                res.rows[0].key.should
+                  .equal('1', 'Correct document with conflicts.');
+                res.rows[0].value.should.deep
+                  .equal([looser], 'Correct conflicts included.');
                 done();
               });
             });
@@ -505,7 +510,10 @@ adapters.forEach(function (adapters) {
       var db = new PouchDB(dbs.name);
       var doc = {
         _id: '_design/barbar',
-        views: { scores: { map: 'function (doc) { if (doc.score) { emit(null, doc.score); } }' } }
+        views:
+          { scores:
+            { map: 'function (doc) { if (doc.score) ' +
+                   '{ emit(null, doc.score); } }' } }
       };
       db.post(doc, function (err, info) {
         db.query('barbar/dontExist', { key: 'bar' }, function (err, res) {
@@ -513,8 +521,8 @@ adapters.forEach(function (adapters) {
             err.name = err.error;
             err.message = err.reason;
           }
-          err.name.should.equal('not_found');
-          err.message.should.equal('missing_named_view');
+          err.name.should.be.a('string');
+          err.message.should.be.a('string');
           done();
         });
       });
@@ -644,6 +652,33 @@ adapters.forEach(function (adapters) {
         });
       });
     });
-
+    if (typeof process !== 'undefined' && !process.browser) {
+      var fs = require('fs');
+      it("destroy using prototype", function () {
+        return new PouchDB(dbs.name + 1).then(function (db) {
+          var doc = {
+            _id: '_design/barbar',
+            views: {
+              scores: {
+                map: function (doc) {
+                  if (doc.score) {
+                    emit(null, doc.score);
+                  }
+                }.toString(),
+                reduce: '_sum'
+              },
+            }
+          };
+          return db.bulkDocs([doc, {score: 3}, {score: 5}]).then(function () {
+            return db.query('barbar/scores');
+          }).then(function (a) {
+            a.rows[0].value.should.equal(8);
+            return db.destroy();
+          }).then(function (a) {
+            fs.readdirSync('./tmp').should.have.length(0);
+          });
+        });
+      });
+    }
   });
 });

@@ -3,21 +3,19 @@
   <head>
     <meta charset="utf-8">
     <title>Mocha</title>
-    <script src="../node_modules/mocha/mocha.js"></script>
-    <script src="../node_modules/chai/chai.js"></script>
     <link rel="stylesheet" type="text/css" href="../node_modules/mocha/mocha.css">
   </head>
   <body>
     <div id="mocha"></div>
-    <script src="../vendor/bluebird.js"></script>
     <script>
-      if (location.search.search('noBluebird') > -1) {
-        Promise.noConflict();
-      } else {
-        Promise.onPossiblyUnhandledRejection(function (e, promise) {
-            throw e;
-        });
+      var val = window.location.search.match(/[&\?]es5shims?=([^&\?]+)/);
+      if (val && val[1] === 'true') {
+        document.write('<script src="../node_modules/es5-shim/es5-shim.js"></' + 'script>');
       }
+    </script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>
       mocha.setup({
         timeout:100000,
         ui: 'bdd'
@@ -26,6 +24,7 @@
     </script>
     <script src='deps/pouchdb-1.1.0-postfixed.js'></script>
     <script src='deps/pouchdb-2.0.0-postfixed.js'></script>
+    <script src='deps/pouchdb-2.2.0-postfixed.js'></script>
     <script src='utils.js'></script>
     <script src='test.aa.setup.js'></script>
     <script src='test.basics.js'></script>
@@ -37,6 +36,7 @@
     <script src='test.conflicts.js'></script>
     <script src='test.revs_diff.js'></script>
     <script src='test.replication.js'></script>
+    <script src='test.sync.js'></script>
     <script src='test.views.js'></script>
     <script src='test.taskqueue.js'></script>
     <script src='test.design_docs.js'></script>

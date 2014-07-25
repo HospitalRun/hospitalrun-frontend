@@ -6,5 +6,16 @@ export default AbstractModuleRoute.extend({
     modelName: 'appointment',
     moduleName: 'appointments',
     newButtonText: '+ new appointment',
-    sectionTitle: 'Appointments'
+    sectionTitle: 'Appointments',
+    
+    additionalModels: [{ 
+        name: 'physicianList',
+        findArgs: ['lookup','physician_list']
+    },  {
+        name: 'locationList',
+        findArgs: ['lookup','location_list']
+    }, {
+        name: 'patientList',
+        findArgs: ['patient']
+    }],
 });

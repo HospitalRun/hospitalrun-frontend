@@ -5,9 +5,18 @@ export default Em.Forms.FormInputComponent.extend({
     minDate: null,
     maxDate: null,
     format: 'l',
+    showTime: false,
     yearRange: 10,
     
     _picker: null,
+    
+    showTimeChanged: function() {
+        var picker = this.get('_picker');
+        if (picker) {
+            picker.destroy();
+            this.didInsertElement();
+        }
+    }.observes('showTime'),
     
     /**
      * Map the propertyName to a "displayPropertyName" so that
@@ -19,8 +28,7 @@ export default Em.Forms.FormInputComponent.extend({
         this.set('propertyName','display_'+dateProperty);
         this.set('dateProperty', dateProperty);
         Ember.Binding.from("model." + dateProperty).to('currentDate').connect(this);
-    }.on('init'),
-    
+    }.on('init'),        
         
     currentDateChangedValue: function(){
         var currentDate = this.get('currentDate'),
@@ -45,7 +53,7 @@ export default Em.Forms.FormInputComponent.extend({
         var currentDate = this.get('currentDate'),
             $input = this.$('input'),
             picker = null,
-            props = this.getProperties('format','yearRange');
+            props = this.getProperties('format','yearRange','showTime');
         
         props.onSelect = this.dateSet.bind(this);
     
@@ -64,7 +72,6 @@ export default Em.Forms.FormInputComponent.extend({
         props.field = $input[0];
         picker = new Pikaday(props);
         picker.setDate(currentDate);
-        
         this.set("_picker", picker);
     },
  

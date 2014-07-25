@@ -62,7 +62,7 @@ test("the default ContainerDebugAdapter catalogs controller entries", function()
 (function() {
 /*globals define registry requirejs */
 
-var Resolver, resolver;
+var Resolver, resolver, logCalls, originalLog;
 
 function lookupResolver() {
   return requirejs.entries['ember/resolver'];
@@ -225,6 +225,42 @@ test("can lookup templates via Ember.TEMPLATES", function() {
   ok(template, 'template should resolve');
 });
 
+module("Logging", {
+  setup: function() {
+    originalLog = Ember.Logger.info;
+    logCalls = [];
+    Ember.Logger.info = function(arg) { logCalls.push(arg); };
+  },
+
+  teardown: function() {
+    Ember.Logger.info = originalLog;
+  }
+});
+
+test("logs lookups when logging is enabled", function() {
+  define('appkit/fruits/orange', [], function(){
+    return 'is logged';
+  });
+
+  Ember.ENV.LOG_MODULE_RESOLVER = true;
+
+  resolver.resolve('fruit:orange');
+
+  ok(logCalls.length, "should log lookup");
+});
+
+test("doesn't log lookups if disabled", function() {
+  define('appkit/fruits/orange', [], function(){
+    return 'is not logged';
+  });
+
+  Ember.ENV.LOG_MODULE_RESOLVER = false;
+
+  resolver.resolve('fruit:orange');
+
+  equal(logCalls.length, 0, "should not log lookup");
+});
+
 module("custom prefixes by type", {
   teardown: resetRegistry
 });
@@ -325,5 +361,69 @@ test("will not use custom type prefix when using POD format", function() {
 
   resolver.resolve('controller:foo');
 });
+
+test("will lookup a components template without being rooted in `components/`", function() {
+  define('appkit/components/foo-bar/template', [], function(){
+    ok(false, 'appkit/components was used');
+    return 'whatever';
+  });
+
+  define('appkit/foo-bar/template', [], function(){
+    ok(true, 'appkit/foo-bar/template was used');
+    return 'whatever';
+  });
+
+  resolver.resolve('template:components/foo-bar');
+});
+
+test("will use pods format to lookup components in components/", function() {
+  expect(2);
+
+  define('appkit/components/foo-bar/template', [], function(){
+    ok(true, 'appkit/components was used');
+    return 'whatever';
+  });
+
+  define('appkit/components/foo-bar/component', [], function(){
+    ok(true, 'appkit/components was used');
+    return 'whatever';
+  });
+
+  resolver.resolve('template:components/foo-bar');
+  resolver.resolve('component:foo-bar');
+});
+
+test("will not lookup routes in components/", function() {
+  expect(1);
+
+  define('appkit/components/foo-bar/route', [], function(){
+    ok(false, 'appkit/components was used');
+    return 'whatever';
+  });
+
+  define('appkit/routes/foo-bar', [], function(){
+    ok(true, 'appkit/routes was used');
+    return 'whatever';
+  });
+
+  resolver.resolve('route:foo-bar');
+});
+
+test("will not lookup non component templates in components/", function() {
+  expect(1);
+
+  define('appkit/components/foo-bar/template', [], function(){
+    ok(false, 'appkit/components was used');
+    return 'whatever';
+  });
+
+  define('appkit/templates/foo-bar', [], function(){
+    ok(true, 'appkit/templates was used');
+    return 'whatever';
+  });
+
+  resolver.resolve('template:foo-bar');
+});
+
 })();
 

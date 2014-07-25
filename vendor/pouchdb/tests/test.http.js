@@ -1,7 +1,5 @@
 'use strict';
 
-var node = (typeof module !== 'undefined' && module.exports);
-
 describe('test.http.js', function () {
 
   var dbs = {};
@@ -11,7 +9,7 @@ describe('test.http.js', function () {
     testUtils.cleanup([dbs.name], done);
   });
 
-  afterEach(function (done) {
+  after(function (done) {
     testUtils.cleanup([dbs.name], done);
   });
 
@@ -58,17 +56,5 @@ describe('test.http.js', function () {
       });
     });
   });
-
-  if (node) {
-    it('nonce option', function () {
-      var cache = PouchDB.ajax({ url: '/' }, function () { });
-      cache.uri.query.slice(0, 6).should.equal('_nonce', 'should have a nonce');
-      var noCache = PouchDB.ajax({
-        url: '/',
-        cache: true
-      }, function () { });
-      should.not.exist(noCache.uri.query, 'should not have a nonce');
-    });
-  }
 
 });

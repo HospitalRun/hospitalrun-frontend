@@ -48,9 +48,23 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
             this.send('update', true);
         },
         
+        editAppointment: function(appointment) {
+            this.transitionToRoute('appointments.edit', appointment);
+        },        
+        
         editVisit: function(visit) {
             this.transitionToRoute('visits.edit', visit);
         },
+        
+        newAppointment: function() {
+            var now = moment().hours(8).minutes(0).seconds(0).toDate();
+            var newAppointment = this.get('store').createRecord('appointment', {
+                patient: this.get('model'),
+                startDate: now,
+                endDate: now
+            });            
+            this.transitionToRoute('appointments.edit', newAppointment);
+        },             
         
         newVisit: function() {
             var newVisit = this.get('store').createRecord('visit', {
@@ -64,6 +78,10 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
             this.send('openModal', 'patients.add-diagnosis', AddDiagnosisModel.create());
         },
         
+        showDeleteAppointment: function(appointment) {
+            this.send('openModal', 'appointments.delete', appointment);
+        },
+
         showDeleteVisit: function(visit) {
             this.send('openModal', 'visits.delete', visit);
         }

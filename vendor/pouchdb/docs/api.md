@@ -12,13 +12,13 @@ Additionally, any method that only returns a single thing (e.g. `db.get`) also r
   [lie]: https://github.com/calvinmetcalf/lie
   [bluebird]: https://github.com/petkaantonov/bluebird
 
-{% include anchor.html title="Create a database" hash="create_database"%}
+{% include anchor.html title="Create a database" hash="create_database" %}
 
 {% highlight js %}
 new PouchDB([name], [options])
 {% endhighlight %}
 
-This method creates a database or opens an existing one. If you use a URL like `http://domain.com/dbname` then PouchDB will work as a client to an online CouchDB instance.  Otherwise it will create a local database using whatever backend is present (i.e. IndexedDB, WebSQL, or LevelDB). 
+This method creates a database or opens an existing one. If you use a URL like `'http://domain.com/dbname'` then PouchDB will work as a client to an online CouchDB instance.  Otherwise it will create a local database using whatever backend is present (i.e. IndexedDB, WebSQL, or LevelDB). 
 
 ### Options
 
@@ -84,7 +84,7 @@ PouchDB.destroy('dbname', function(err, info) { });
 
 ### Using db.put()
 {% highlight js %}
-db.put(doc, [_id], [_rev], [options], [callback])
+db.put(doc, [docId], [docRev], [options], [callback])
 {% endhighlight %}
 
 Create a new document or update an existing document. If the document already exists, you must specify its revision `_rev`, otherwise a conflict will occur.
@@ -170,15 +170,15 @@ db.post({
 }
 {% endhighlight %}
 
-**Put vs. post**: The basic rule of thumb is: put new documents with an `_id`, post new documents without an `_id`.
+**Put vs. post**: The basic rule of thumb is: `put()` new documents with an `_id`, `post()` new documents without an `_id`.
 
 {% include anchor.html title="Fetch a document" hash="fetch_document"%}
 
 {% highlight js %}
-db.get(docid, [options], [callback])
+db.get(docId, [options], [callback])
 {% endhighlight %}
 
-Retrieves a document, specified by `docid`.
+Retrieves a document, specified by `docId`.
 
 ### Options
 
@@ -196,6 +196,7 @@ All options default to `false` unless otherwise specified.
 
 
 #### Example Usage:
+
 {% highlight js %}
 db.get('mydoc', function(err, doc) { });
 {% endhighlight %}
@@ -215,12 +216,21 @@ db.get('mydoc', function(err, doc) { });
 db.remove(doc, [options], [callback])
 {% endhighlight %}
 
+Or:
+
+{% highlight js %}
+db.remove(docId, docRev, [options], [callback])
+{% endhighlight %}
+
+
 Deletes the document. `doc` is required to be a document with at least an `_id` and a `_rev` property. Sending the full document will work as well.
 
 #### Example Usage:
 {% highlight js %}
 db.get('mydoc', function(err, doc) {
   db.remove(doc, function(err, response) { });
+  // or:
+  db.remove(doc._id, doc._rev, function(err, response) { });
 });
 {% endhighlight %}
 
@@ -242,22 +252,25 @@ db.get('mydoc').then(function(doc) {
 }
 {% endhighlight %}
 
-{% include anchor.html title="Create a batch of documents" hash="batch_create" %}
+{% include anchor.html title="Create/update a batch of documents" hash="batch_create" %}
 
 {% highlight js %}
 db.bulkDocs(docs, [options], [callback])
 {% endhighlight %}
 
-Modify, create or delete multiple documents. The `docs` argument is an object with property `docs` which is an array of documents. You can also specify a `new_edits` property on the `docs` object that when set to `false` allows you to post [existing documents](http://wiki.apache.org/couchdb/HTTP_Bulk_Document_API#Posting_Existing_Revisions).
+Create, update or delete multiple documents. The `docs` argument is an array of documents, or an object with property `docs` which is the array of documents.
 
 If you omit an `_id` parameter on a given document, the database will create a new document and assign the ID for you. To update a document, you must include both an `_id` parameter and a `_rev` parameter, which should match the ID and revision of the document on which to base your updates. Finally, to delete a document, include a `_deleted` parameter with the value `true`.
 
 #### Example Usage:
+
+Post some new docs and auto-generate the `_id`s:
+
 {% highlight js %}
-db.bulkDocs({docs: [
+db.bulkDocs([
   {title : 'Lisa Says'},
   {title : 'Space Oddity'}
-]}, function(err, response) { });
+], function(err, response) { });
 {% endhighlight %}
 
 #### Example Response:
@@ -276,6 +289,47 @@ db.bulkDocs({docs: [
 ]
 {% endhighlight %}
 
+#### Bulk update/delete:
+
+Then you can update those same docs:
+
+{% highlight js %}
+db.bulkDocs([
+  {
+    title  : 'Lisa Says', 
+    artist : 'Velvet Underground',
+    _id    : "06F1740A-8E8A-4645-A2E9-0D8A8C0C983A", 
+    _rev   : "1-84abc2a942007bee7cf55007cba56198"
+  },
+  {
+    title  : 'Space Oddity',
+	artist : 'David Bowie',
+    _id    : "6244FB45-91DB-41E5-94FF-58C540E91844", 
+    _rev   : "1-7b80fc50b6af7a905f368670429a757e"
+  }
+], function(err, response) { });
+{% endhighlight %}
+
+Or delete them:
+
+{% highlight js %}
+db.bulkDocs([
+  {
+    title    : 'Lisa Says', 
+    _deleted : true,
+    _id      : "06F1740A-8E8A-4645-A2E9-0D8A8C0C983A", 
+    _rev     : "1-84abc2a942007bee7cf55007cba56198"
+  },
+  {
+    title    : 'Space Oddity',
+	_deleted : true,
+    _id      : "6244FB45-91DB-41E5-94FF-58C540E91844", 
+    _rev     : "1-7b80fc50b6af7a905f368670429a757e"
+  }
+], function(err, response) { });
+{% endhighlight %}
+
+**Note:** You can also specify a `new_edits` property on the `docs` object that when set to `false` allows you to post and overwrite [existing documents](http://wiki.apache.org/couchdb/HTTP_Bulk_Document_API#Posting_Existing_Revisions). Normally only the replication algorithm needs to do this.
 
 {% include anchor.html title="Fetch a batch of documents" hash="batch_fetch" %}
 
@@ -292,9 +346,12 @@ All options default to `false` unless otherwise specified.
 * `options.include_docs`: Include the document itself in each row in the `doc` field. Otherwise by default you only get the `_id` and `_rev` properties.
     - `options.conflicts`: Include conflict information in the `_conflicts` field of a doc.
   - `options.attachments`: Include attachment data.
-* `options.startkey` & `options.endkey`: Get documents with keys in a certain range (inclusive/inclusive).
+* `options.startkey` & `options.endkey`: Get documents with IDs in a certain range (inclusive/inclusive).
+* `options.inclusive_end`: Include documents having an ID equal to the given `options.endkey`. Default: `true`.
+* `options.limit`: Maximum number of documents to return.
+* `options.skip`: Number of docs to skip before returning (warning: poor performance on IndexedDB/LevelDB!).
 * `options.descending`: Reverse the order of the output documents.
-* `options.key`: Only return rows matching this string key.
+* `options.key`: Only return documents with IDs matching this string key.
 * `options.keys`: Array of string keys to fetch in a single shot.
     - Neither `startkey` nor `endkey` can be specified with this option.
     - The rows are returned in the same order as the supplied `keys` array.
@@ -302,7 +359,7 @@ All options default to `false` unless otherwise specified.
     - The row for a nonexistent document will just contain an `"error"` property with the value `"not_found"`.
     - For details, see the [CouchDB query options documentation](http://wiki.apache.org/couchdb/HTTP_view_API#Querying_Options).
 
-**Notes:** For pagination, `options.limit` and `options.skip` are also available, but the same performance concerns as in CouchDB apply. Use the [startkey/endkey pattern](http://docs.couchdb.org/en/latest/couchapp/views/pagination.html) instead.
+**Notes:** For pagination, `options.limit` and `options.skip` are also available, but the same performance concerns as in CouchDB apply. Use the [startkey/endkey pattern](http://docs.couchdb.org/en/latest/couchapp/views/pagination.html) instead. `total_rows` is the total number of documents in the database.
 
 #### Example Usage:
 {% highlight js %}
@@ -312,6 +369,7 @@ db.allDocs({include_docs: true}, function(err, response) { });
 #### Example Response:
 {% highlight js %}
 {
+  "offset": 0,
   "total_rows": 1,
   "rows": [{
     "doc": {
@@ -335,10 +393,9 @@ db.changes(options)
 {% endhighlight %}
 
 A list of changes made to documents in the database, in the order they were made.
-It returns an object with one method `cancel`, which you call if you don't want to listen to new changes anymore. 
-`options.onChange` will be be called for each change that is encountered. 
+It returns an object with the method `cancel()`, which you call if you don't want to listen to new changes anymore. 
 
-**Note** the 'live' option was formally called 'continuous', you can still use 'continuous' if you can spell it.
+It is an [event emitter][event emitter] and will emit a `'change'` event on each document change, a `'complete'` event when all the changes have been processed, and an `'error'` event when an error occurs. In addition to the `'change'` event, any change will also emit a `'create'`, `'update'`, or `'delete'` event.
 
 ### Options
 
@@ -349,18 +406,19 @@ All options default to `false` unless otherwise specified.
   * `options.attachments`: Include attachments.
 * `options.descending`: Reverse the order of the output documents.
 * `options.filter`: Reference a filter function from a design document to selectively get updates.
-* `options.since`: Start the results from the change immediately after the given sequence number.
-* `options.complete`: Function called when all changes have been processed.
+* `options.since`: Start the results from the change immediately after the given sequence number, you can also pass 'now' if you want only new changes.
 * `options.live`: Use _longpoll_ feed. 
-* `options.onChange`: Function called on each change after deduplication (only sends the most recent for each document). Not called as a callback but called as `onChange(change)`. Can also be used with the `live` flag.
+* `options.limit`: Limit the number of results to this number.
+* `options.style`: Specifies how many revisions are returned in the changes array. The default, main_only, will only return the current "winning" revision; all_docs will return all leaf revisions (including conflicts and deleted former conflicts).
+* `options.view`: Specify a view function to act as a filter. Documents counted as "passed" for a view filter if a map function emits at least one record for them.
+* `options.returnDocs`: Is available for non http databases and defaults to true, passing `false` prevents the changes feed from keeping all the documents in memory, in other words complete always has an empty results array, and the `change` event is the only way to get the event. Useful for large change sets where otherwise you would run out of memory.
 
 #### Example Usage:
 {% highlight js %}
 var changes = db.changes({
   since: 20,
-  live: true,
-  onChange: function(change) { }
-});
+  live: true
+}).on('change', function(change) { });
 
 changes.cancel();
 {% endhighlight %}
@@ -383,7 +441,9 @@ changes.cancel();
 
 #### Example Usage:
 {% highlight js %}
-db.changes({complete: function(err, response) { }});
+db.changes()
+  .on('error', function (err) {})
+  .on('complete', function (resp) {});
 {% endhighlight %}
 
 #### Example Response:
@@ -417,15 +477,20 @@ db.changes({complete: function(err, response) { }});
 }
 {% endhighlight %}
 
+**Note:**
+
+* The `changes()` method was not an event emitter before PouchDB 2.2.0, and instead of the `'change'` and `'complete'` events it took `complete` and `onChange` function options. This is deprecated and could be removed in PouchDB version 3.
+* The `'since'`option formally took 'latest' but has been changed to 'now' to keep consistency with CouchDB, 'latest' is deprecated but will still work to ensure backwards compatibility.
+
 {% include anchor.html title="Replicate a database" hash="replication" %}
 
 {% highlight js %}
 PouchDB.replicate(source, target, [options])
 {% endhighlight %}
 
-Replicate data from `source` to `target`.  Both the `source` and `target` can be a string representing a CouchDB database url or the name a local PouchDB database. If `options.live` is `true`, then this will track future changes and also replicate them automatically.
+Replicate data from `source` to `target`.  Both the `source` and `target` can be a PouchDB instance or a string representing a CouchDB database url or the name a local PouchDB database. If `options.live` is `true`, then this will track future changes and also replicate them automatically.
 
-If you want to sync data in both directions, you can call this twice, reversing the `source` and `target` arguments. Additionally, you can use PouchDB.sync().
+Replication is an event emiter like `changes()` and emits the `'complete'`, `'uptodate'`, `'change'` and `'error'` events.
 
 ### Options
 
@@ -434,19 +499,25 @@ All options default to `false` unless otherwise specified.
 * `options.filter`: Reference a filter function from a design document to selectively get updates.
 * `options.query_params`: Query params sent to the filter function.
 * `options.doc_ids`: Only replicate docs with these ids.
-* `options.complete`: Function called when all changes have been processed.
-* `options.onChange`: Function called on each change processed.
 * `options.live`: If `true`, starts subscribing to future changes in the `source` database and continue replicating them.
 * `options.since`: Replicate changes after the given sequence number.
 * `options.server`: Initialize the replication on the server. The response is the CouchDB `POST _replicate` response and is different from the PouchDB replication response. Also, `options.onChange` is not supported on server replications.
 * `options.create_target`: Create target database if it does not exist. Only for server replications.
+* `options.batch_size`: Number of documents to process at a time. Defaults to 100. This affects the number of docs held in memory and the number sent at a time to the target server. You may need to adjust downward if targeting devices with low amounts of memory (e.g. phones) or if the documents are large in size (e.g. with attachments). If your documents are small in size, then increasing this number will probably speed replication up.
+* `options.batches_limit`: Number of batches to process at a time. Defaults to 10. This (along wtih `batch_size`) controls how many docs are kept in memory at a time, so the maximum docs in memory at once would equal `batch_size` &times; `batches_limit`.
 
 #### Example Usage:
 {% highlight js %}
-PouchDB.replicate('mydb', 'http://localhost:5984/mydb', {
-  onChange: onChange,
-  complete: onComplete
-});;
+PouchDB.replicate('mydb', 'http://localhost:5984/mydb')
+  .on('change', function (info) {
+    // handle change
+  }).on('complete', function (info) {
+    // handle complete
+  }).on('uptodate', function (info) {
+    // handle up-to-date
+  }).on('error', function (err) {
+    // handle error
+  });
 {% endhighlight %}
 
 There are also shorthands for replication given existing PouchDB objects. These behave the same as `PouchDB.replicate()`:
@@ -457,20 +528,48 @@ db.replicate.to(remoteDB, [options]);
 db.replicate.from(remoteDB, [options]);
 {% endhighlight %}
 
+**Notes:**
+
+* The `'complete'` event only fires when you aren't doing live replication, or when live replication fails.
+* The `'uptodate'` event fires during live replication, when the target database is up-to-date and just idling, waiting for new changes.
+
 #### Example Response:
+
+Example response in the `'change'` listener:
+
 {% highlight js %}
 {
-  'ok': true,
-  'docs_read': 2,
-  'docs_written': 2,
-  'start_time': "Sun Sep 23 2012 08:14:45 GMT-0500 (CDT)",
-  'end_time': "Sun Sep 23 2012 08:14:45 GMT-0500 (CDT)",
-  'status': 'complete',
-  'errors': []
+  "doc_write_failures": 0, 
+  "docs_read": 1, 
+  "docs_written": 1, 
+  "errors": [], 
+  "last_seq": 1, 
+  "ok": true, 
+  "start_time": "Fri May 16 2014 18:23:12 GMT-0700 (PDT)"
 }
 {% endhighlight %}
 
-Note that the response for server replications (via `options.server`) is slightly different. See the [CouchDB replication documentation](http://wiki.apache.org/couchdb/Replication) for details.
+Example response in the `'complete'` listener:
+
+{% highlight js %}
+{
+  "doc_write_failures": 0, 
+  "docs_read": 2, 
+  "docs_written": 2, 
+  "end_time": "Fri May 16 2014 18:26:00 GMT-0700 (PDT)", 
+  "errors": [], 
+  "last_seq": 2, 
+  "ok": true, 
+  "start_time": "Fri May 16 2014 18:26:00 GMT-0700 (PDT)", 
+  "status": "complete"
+}
+{% endhighlight %}
+
+**Notes:**
+
+* The response for server replications (via `options.server`) is slightly different. See the [CouchDB replication documentation](http://wiki.apache.org/couchdb/Replication) for details.
+* The `'live'` option was formerly called `'continuous'`. You can still use `'continuous'` if you can spell it.
+* The replicate() method was not an event emitter before PouchDB 2.2.0, and instead of the `'change'` and `'complete'` events it took `complete` and `onChange` function options. This is deprecated and could be removed in PouchDB version 3.
 
 {% include anchor.html title="Sync a database" hash="sync" %}
 
@@ -486,10 +585,10 @@ Please refer to [Replication](api.html#replication) for documention on options, 
 
 #### Example Usage:
 {% highlight js %}
-PouchDB.sync('http://localhost:5984/mydb', {
-  onChange: onChange,
-  complete: onComplete
-});;
+PouchDB.sync('http://localhost:5984/mydb')
+  .on('change', onChange)
+  .on('complete', onComplete)
+  .on('error', onError);
 {% endhighlight %}
 
 There is also a shorthand for syncing given existing PouchDB objects. This behaves the same as `PouchDB.sync()`:
@@ -523,19 +622,13 @@ db.putAttachment('a', 'text', rev, doc, 'text/plain', function(err, res) {})
 }
 {% endhighlight %}
 
-PouchDB also offers a `createBlob` function, which will work around browser inconsistencies:
-
-{% highlight js %}
-var doc = PouchDB.utils.createBlob(["It's a God awful small affair"]);
-{% endhighlight %}
-
-Within Node, you must use a `Buffer`:
+Within Node, you must use a `Buffer` instead of a `Blob`:
 
 {% highlight js %}
 var doc = new Buffer("It's a God awful small affair");
 {% endhighlight %}
 
-For details, see the [Mozilla docs on `Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or the [Node docs on `Buffer`](http://nodejs.org/api/buffer.html).
+For details, see the [Mozilla docs on `Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) or the [Node docs on `Buffer`](http://nodejs.org/api/buffer.html).  If you need a shim for older browsers that don't support the `Blob` constructor, you can use [this one](https://gist.github.com/nolanlawson/10340255).
 
 ### Save an inline attachment
 
@@ -608,33 +701,49 @@ db.removeAttachment('otherdoc',
 db.query(fun, [options], [callback])
 {% endhighlight %}
 
-Retrieve a view, which allows you to perform more complex queries on PouchDB. The [CouchDB documentation for map reduce](http://docs.couchdb.org/en/latest/couchapp/views/intro.html) applies to PouchDB.
+Retrieves a view, which allows you to perform more complex queries on PouchDB. The [CouchDB documentation for map/reduce](http://docs.couchdb.org/en/latest/couchapp/views/intro.html) applies to PouchDB.
+
+Since views perform a full scan of all documents, this method may be slow, unless you first save your view in a design document.
 
 ### Options
 
 All options default to `false` unless otherwise specified.
 
-* `fun`: Name of an existing view, the map function itself, or a full CouchDB-style mapreduce object: `{map : ..., reduce: ...}`.
+* `fun`: Map/reduce function, which can be one of the following: 
+  * A map function by itself (no reduce).
+  * A full CouchDB-style map/reduce object: `{map : ..., reduce: ...}`.
+  * The name of a view in an existing design document (e.g. `'myview'` or `'mydesigndoc/myview'`).
 * `options.reduce`: Reduce function, or the string name of a built-in function: `'_sum'`, `'_count'`, or `'_stats'`.  Defaults to `false` (no reduce).
     * Tip: if you're not using a built-in, [you're probably doing it wrong](http://youtu.be/BKQ9kXKoHS8?t=865s).
+    * On local databases, `rereduce` will always be `false` (since it's single-node).
 * `options.include_docs`: Include the document in each row in the `doc` field.
     - `options.conflicts`: Include conflicts in the `_conflicts` field of a doc.
   - `options.attachments`: Include attachment data.
-* `options.startkey` & `options.endkey`: Get documents with keys in a certain range (inclusive/inclusive).
-* `options.descending`: Reverse the order of the output documents.
-* `options.key`: Only return rows matching this string key.
-* `options.keys`: Array of string keys to fetch in a single shot.
+* `options.startkey` & `options.endkey`: Get rows with keys in a certain range (inclusive/inclusive).
+* `options.inclusive_end`: Include rows having a key equal to the given `options.endkey`. Default: `true`.
+* `options.limit`: Maximum number of rows to return.
+* `options.skip`: Number of rows to skip before returning (warning: poor performance on IndexedDB/LevelDB!).
+* `options.descending`: Reverse the order of the output rows.
+* `options.key`: Only return rows matching this key.
+* `options.keys`: Array of keys to fetch in a single shot.
     - Neither `startkey` nor `endkey` can be specified with this option.
     - The rows are returned in the same order as the supplied `keys` array.
     - The row for a deleted document will have the revision ID of the deletion, and an extra key `"deleted":true` in the `value` property.
     - The row for a nonexistent document will just contain an `"error"` property with the value `"not_found"`.
-    - For details, see the [CouchDB query options documentation](http://wiki.apache.org/couchdb/HTTP_view_API#Querying_Options).
+* `options.group`: True if you want the reduce function to group results by keys, rather than returning a single result. Defaults to `false`. 
+* `options.group_level`: Number of elements in a key to group by, assuming the keys are arrays. Defaults to the full length of the array.
+* `options.stale`: One of `'ok'` or `'update_after'`.  Only applies to saved views. Can be one of:
+    * unspecified (default): Returns the latest results, waiting for the view to build if necessary.
+    * `'ok'`: Returns results immediately, even if they're out-of-date.
+    * `'update_after'`: Returns results immediately, but kicks off a build afterwards.
+
+For details, see the [CouchDB query options documentation](http://wiki.apache.org/couchdb/HTTP_view_API#Querying_Options).
 
 #### Example Usage:
 {% highlight js %}
 function map(doc) {
-  if(doc.title) {
-    emit(doc.title, null);
+  if (doc.title) {
+    emit(doc.title);
   }
 }
 
@@ -644,6 +753,7 @@ db.query({map: map}, {reduce: false}, function(err, response) { });
 #### Example Response:
 {% highlight js %}
 {
+  "offset" : 0,
   "rows": [{
     "id": "0B3358C1-BA4B-4186-8795-9024203EB7DD",
     "key": "Cony Island Baby",
@@ -660,11 +770,127 @@ db.query({map: map}, {reduce: false}, function(err, response) { });
     "id": "mydoc",
     "key": "Rock and Roll Heart",
     "value": null
-  }]
+  }],
+  "total_rows" : 4
 }
 {% endhighlight %}
 
-If u pass a function to `db.query` and give it the `emit` function as the second argument, then you can use a closure. (Otherwise we have to use `eval()` to bind `emit`.)
+**Note:** `total_rows` is the total number of possible results in the view.
+
+#### Complex keys
+
+You can also use [complex keys](https://wiki.apache.org/couchdb/Introduction_to_CouchDB_views#Complex_Keys) for fancy ordering:
+
+{% highlight js %}
+function map(doc) {
+  // sort by last name, first name, and age
+  emit([doc.lastName, doc.firstName, doc.age]);
+}
+db.query(map, function (err, response) {});
+{% endhighlight %}
+
+#### Example Response:
+{% highlight js %}
+{
+  "offset": 0,
+  "rows": [{
+      "id"  : "bowie",
+      "key" : ["Bowie", "David", 67]
+    }, {
+      "id"  : "dylan",
+      "key" : ["Dylan", "Bob", 72]
+    }, {
+      "id"  : "younger_dylan",
+      "key" : ["Dylan", "Jakob", 44]
+    }, {
+      "id"  : "hank_the_third",
+      "key" : ["Williams", "Hank", 41]
+    }, {
+      "id"  : "hank",
+      "key" : ["Williams", "Hank", 91]
+    }],
+  "total_rows": 5
+}
+{% endhighlight %}
+
+**Tips:** 
+
+* CouchDB sorts objects last, so `{startkey: ['Williams'], endkey: ['Williams', {}]}` would return all people with the last name `'Williams'`.
+* `group_level` can be very helpful when working with complex keys.  In the example above, you can use `{group_level: 1}` to group by last name, or `{group_level: 2}` to group by last and first name.
+
+#### Linked documents
+
+PouchDB fully supports [linked documents](https://wiki.apache.org/couchdb/Introduction_to_CouchDB_views#Linked_documents). Use them to join two types of documents together, by simply adding an `_id` to the emitted value:
+
+{% highlight js %}
+function map(doc) {
+  // join artist data to albums
+  if (doc.type === 'album') {
+    emit(doc.name, {_id : doc.artistId, albumYear : doc.year});
+  }
+}
+db.query(map, {include_docs : true}, function (err, response) {});
+{% endhighlight %}
+
+#### Example response:
+
+{% highlight js %}
+{
+    "offset": 0,
+    "rows": [
+        {
+            "doc": {
+                "_id": "bowie",
+                "_rev": "1-fdb234b78904a5c8293f2acf4be70d44",
+                "age": 67,
+                "firstName": "David",
+                "lastName": "Bowie"
+            },
+            "id": "album_hunkydory",
+            "key": "Hunky Dory",
+            "value": {
+                "_id": "album_hunkydory",
+                "albumYear": 1971
+            }
+        },
+        {
+            "doc": {
+                "_id": "bowie",
+                "_rev": "1-fdb234b78904a5c8293f2acf4be70d44",
+                "age": 67,
+                "firstName": "David",
+                "lastName": "Bowie"
+            },
+            "id": "album_low",
+            "key": "Low",
+            "value": {
+                "_id": "album_low",
+                "albumYear": 1977
+            }
+        },
+        {
+            "doc": {
+                "_id": "bowie",
+                "_rev": "1-fdb234b78904a5c8293f2acf4be70d44",
+                "age": 67,
+                "firstName": "David",
+                "lastName": "Bowie"
+            },
+            "id": "album_spaceoddity",
+            "key": "Space Oddity",
+            "value": {
+                "_id": "album_spaceoddity",
+                "albumYear": 1969
+            }
+        }
+    ],
+    "total_rows": 3
+}
+{% endhighlight %}
+
+#### Closures
+
+If you pass a function to `db.query` and give it the `emit` function as the second argument, then you can use a closure. (Otherwise we have to use `eval()` to bind `emit`.)
 
 {% highlight js %}
 // BAD! will throw error
@@ -693,12 +919,32 @@ db.query(function(thisIs, awesome) {
   }
 }, function(err, results) { /* ... */ });
 {% endhighlight %}
-**Notes:**
 
-1. Local databases do not currently support view caching; everything is a live view.
-2. [Linked documents](https://wiki.apache.org/couchdb/Introduction_to_CouchDB_views#Linked_documents) (aka joins) are supported.  
-3. [Complex keys](https://wiki.apache.org/couchdb/Introduction_to_CouchDB_views#Complex_Keys) are supported.  Use them for fancy ordering (e.g. `[firstName, lastName, isFemale]`).
-4. Closures are only supported by local databases. CouchDB still requires self-contained map/reduce functions.
+Note that closures are only supported by local databases with temporary views.
+
+{% include anchor.html title="View cleanup" hash="view_cleanup" %}
+
+{% highlight js %}
+db.viewCleanup([options], [callback])
+{% endhighlight %}
+
+Cleans up any stale map/reduce indexes.
+
+As design docs are deleted or modified, their associated index files (in CouchDB) or companion databases (in local PouchDBs) continue to take up space on disk. `viewCleanup()` removes these unnecessary index files.
+
+See [the CouchDB documentation on view cleanup](http://couchdb.readthedocs.org/en/latest/maintenance/compaction.html#views-cleanup) for details.
+
+#### Example Usage:
+{% highlight js %}
+db.viewCleanup([options], [callback])
+{% endhighlight %}
+
+#### Example Response:
+{% highlight js %}
+{
+  "ok" : "true"
+}
+{% endhighlight %}
 
 {% include anchor.html title="Get database information" hash="database_information" %}
 
@@ -721,6 +967,12 @@ db.info(function(err, info) { })
   "update_seq": 5
 }
 {% endhighlight %}
+
+**Response object:**
+
+* `db_name` is the name of the database you gave when you called `new PouchDB()`, and also the unique identifier for the database.
+* `doc_count` is the total number of non-deleted documents in the database.
+* `update_seq` is the sequence number of the database.  It starts at 0 and gets incremented every time a document is added or modified.
 
 {% include anchor.html title="Compact the database" hash="compaction" %}
 
@@ -762,7 +1014,7 @@ db.revsDiff({
 
 {% include anchor.html title="Events" hash="events"%}
 
-PouchDB is an [event emiter](http://nodejs.org/api/events.html#events_class_events_eventemitter) and will emit a `'created'` event when a database is created. A `'destroy'` event is emited when a database is destroyed.
+PouchDB is an [event emitter][event emitter] and will emit a `'created'` event when a database is created. A `'destroyed'` event is emitted when a database is destroyed.
 
 {% highlight js %}
 PouchDB.on('created', function (dbName) {
@@ -780,11 +1032,12 @@ Writing a plugin is easy! The API is:
 {% highlight js %}
 PouchDB.plugin({
   methodName: myFunction
-  }
 });
 {% endhighlight %}
 
 This will add the function as a method of all databases with the given method name.  It will always be called in context, so that `this` always refers to the database object.
+
+We also offer a [PouchDB Plugin Seed project](https://github.com/pouchdb/plugin-seed), which is the fastest way to get started writing, building and testing your very own plugin.
 
 #### Example Usage:
 {% highlight js %}
@@ -797,3 +1050,5 @@ PouchDB.plugin({
 });
 new PouchDB('foobar').sayMyName(); // prints "My name is foobar"
 {% endhighlight %}
+
+[event emitter]: http://nodejs.org/api/events.html#events_class_events_eventemitter

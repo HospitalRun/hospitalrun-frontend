@@ -28,7 +28,7 @@ It's also a good idea to open your browser's console so you can see any errors o
 Open `index.html` and include PouchDB in the app by adding a script tag:
 
 {% highlight html %}
-<script src="http://download.pouchdb.com/pouchdb-nightly.js"></script>
+<script src="//cdn.jsdelivr.net/pouchdb/{{site.version}}/pouchdb.min.js"></script>
 <script src="js/base.js"></script>
 <script src="js/app.js"></script>
 {% endhighlight %}
@@ -95,9 +95,8 @@ var remoteCouch = false;
 db.info(function(err, info) {
   db.changes({
     since: info.update_seq,
-    live: true,
-    onChange: showTodos
-  });
+    live: true
+  }).on('change', showTodos);
 });
 
 // We have to create a new todo document and enter it in the database
@@ -183,13 +182,13 @@ Then we can implement the sync function like so:
 {% highlight js %}
 function sync() {
   syncDom.setAttribute('data-sync-state', 'syncing');
-  var opts = {live: true, complete: syncError};
-  db.replicate.to(remoteCouch, opts);
-  db.replicate.from(remoteCouch, opts);
+  var opts = {live: true};
+  db.replicate.to(remoteCouch, opts, syncError);
+  db.replicate.from(remoteCouch, opts, syncError);
 }
 {% endhighlight %}
 
-`db.replicate()` tells PouchDB to transfer all the documents `to` or `from` the `remoteCouch`. This can either be a string identifier or a PouchDB object. We call this twice: once to receive remote updates, and once to push local changes. Again, the `live` flag is used to tell PouchDB to carry on doing this indefinitely. The `complete` callback will be called whenever this finishes. For live replication, this will mean an error has occured, like losing your connection.
+`db.replicate()` tells PouchDB to transfer all the documents `to` or `from` the `remoteCouch`. This can either be a string identifier or a PouchDB object. We call this twice: once to receive remote updates, and once to push local changes. Again, the `live` flag is used to tell PouchDB to carry on doing this indefinitely. The callback will be called whenever this finishes. For live replication, this will mean an error has occured, like losing your connection or you canceled the replication.
 
 You should be able to open [the todo app](http://127.0.0.1:8000) in another browser and see that the two lists stay in sync with any changes you make to them. You may also want to look at your CouchDB's Futon administration page and see the populated database.
 
