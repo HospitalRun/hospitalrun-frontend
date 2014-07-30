@@ -21,9 +21,6 @@
 .screen-button, .screen-title {
   margin: 20px 0 10px 20px; }
 
-.panel-body {
-  background-color: #fff; }
-
 .panel-heading .nav {
   margin-top: 20px;
   margin-left: 20px; }
@@ -5328,6 +5325,97 @@ fieldset[disabled] .btn-primary.active {
   border-color: #dcdcdc;
   -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1); }
+
+/* The majority of these selectors + properties are required.
+   However, you can customize them as you wish. */
+.ember-calendar {
+  background: #fff;
+  border: 1px solid #ddd;
+  font-family: 'myriad-pro', 'Myriad Pro', 'Calibri', 'Helvetica', 'Trebuchet MS', 'Verdana', sans-serif;
+  height: '100%';
+  width: '100%'; }
+
+.ember-calendar-head {
+  background: #ddd;
+  color: #666;
+  height: 25px;
+  font-size: 14px; }
+
+.ember-calendar-container {
+  height: 475px; }
+
+.ember-calendar-body {
+  height: 1000px; }
+
+.ember-calendar-head-previous {
+  width: 50px;
+  /* A */ }
+
+.ember-calendar-head-next {
+  width: 25px;
+  /* B */ }
+
+.ember-calendar-head-dates {
+  margin-left: 50px;
+  /* A */
+  margin-right: 25px;
+  /* B */
+  padding: 5px 0px; }
+
+.ember-calendar-head-times {
+  border-right: 1px solid #f6f6f6;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: right;
+  padding-right: 5px;
+  width: 50px;
+  /* A */ }
+
+.ember-calendar-head-time {
+  color: #999;
+  font-size: 13px; }
+
+.ember-calendar-days {
+  margin-left: 50px;
+  margin-right: 25px; }
+
+.ember-calendar-event {
+  background-color: #8b9dc1;
+  border: 1px solid #7b8db1;
+  color: #fff;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 5px;
+  overflow: hidden; }
+
+.ember-calendar-event-name {
+  color: #fff;
+  font-size: 14px;
+  line-height: 16px; }
+
+.ember-calendar-event-time, .ember-calendar-event-location {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  line-height: 14px;
+  margin-bottom: 2px; }
+
+.ember-calendar-buttons {
+  background: #fff;
+  text-align: right;
+  width: '100%'; }
+  .ember-calendar-buttons > button {
+    background: none;
+    border: none;
+    box-shadow: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 12px;
+    margin: 0px;
+    margin-left: 5px;
+    outline: none;
+    padding: 5px 10px 4px; }
+    .ember-calendar-buttons > button.ember-calendar-button-active {
+      background: #ddd; }
 
 body {
   background-color: #2e4359; }

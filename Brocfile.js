@@ -30,6 +30,7 @@ app.import('vendor/ember-forms/dist/ember_forms.js');
 app.import('vendor/moment/moment.js');
 app.import('vendor/typeahead.js/dist/typeahead.bundle.js');
 app.import('vendor/pikaday/pikaday.js');
+app.import('vendor/ember-calendar/dist/ember-calendar.js');
 
 // If the library that you are including contains AMD or ES6 modules that
 // you would like to import into your application please specify an
@@ -46,5 +47,6 @@ app.import('vendor/ic-ajax/dist/named-amd/main.js', {
 });
 
 app.import('vendor/pikaday/css/pikaday.css');
+app.import('vendor/ember-calendar/dist/ember-calendar.css');
 
 module.exports = app.toTree();

@@ -191,3 +191,66 @@ http://nicolasgallagher.com/micro-clearfix-hack/
 .pika-time {
     margin: 7px auto 7px;
 }
+
+/* ember-calendar 1.0.0 (https://github.com/joinspoton/ember-calendar) | (c) 2013 SpotOn (https://spoton.it) | http://www.opensource.org/licenses/MIT */
+/* All of these selectors + properties are required.
+   You shouldn't have to customize any of them. */
+
+.ember-calendar-head {
+  position: relative;
+}
+.ember-calendar-head-previous {
+  left: 0px;
+  position: absolute;
+  text-align: right;
+  top: 0px;
+}
+.ember-calendar-head-next {
+  right: 0px;
+  position: absolute;
+  text-align: left;
+  top: 0px;
+}
+.ember-calendar-head-date {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  vertical-align: top;
+}
+.ember-calendar-container {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.ember-calendar-body {
+  position: relative;
+}
+.ember-calendar-head-times {
+  height: 100%;
+  left: 0px;
+  position: absolute;
+  top: 0px;
+}
+.ember-calendar-head-time {
+  height: 4.16666666666%;
+}
+.ember-calendar-days {
+  height: 100%;
+}
+.ember-calendar-day {
+  display: inline-block;
+  height: 100%;
+  position: relative;
+  text-align: center;
+  width: 100%;
+  vertical-align: top;
+}
+.ember-calendar-event {
+  position: absolute;
+  width: 100%;
+}
+.ember-calendar-head-week-date {
+  width: 14.2857142857%;
+}
+.ember-calendar-week-day {
+  width: 14.2857142857%;
+}

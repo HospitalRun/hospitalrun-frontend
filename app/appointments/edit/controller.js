@@ -5,13 +5,13 @@ export default AbstractEditController.extend(VisitTypes, {
     needs: 'appointments',
 
     cancelAction: function() {
-        var selectPatient = this.get('selectPatient');
-        if (selectPatient) {
-            return 'allItems';
-        } else {
+        var returnToPatient = this.get('returnToPatient');
+        if (returnToPatient) {
             return 'returnToPatient';
+        } else {
+            return 'allItems';
         }                
-    }.property('selectPatient'),
+    }.property('returnToPatient'),
     
     patientList: Ember.computed.alias('controllers.appointments.patientList'),
     physicianList: Ember.computed.alias('controllers.appointments.physicianList'),
@@ -27,7 +27,6 @@ export default AbstractEditController.extend(VisitTypes, {
     }],
     
     dateFormat: 'l h:mm A',
-    selectPatient: false,
     showTime: true,
     
     patient: Ember.computed.alias('model.patient'),
@@ -60,12 +59,8 @@ export default AbstractEditController.extend(VisitTypes, {
         }                
     },
 
-    afterUpdate: function(record) {
-        if(this.get('selectPatient')) {
-            this.transitionToRoute('/appointments/search/'+record.get('id'));
-        } else {
-            this.send('returnToPatient');            
-        }        
+    afterUpdate: function() {
+        this.send(this.get('cancelAction'));
     },
     
     beforeUpdate: function() {
