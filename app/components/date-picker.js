@@ -28,14 +28,19 @@ export default Em.Forms.FormInputComponent.extend({
         this.set('propertyName','display_'+dateProperty);
         this.set('dateProperty', dateProperty);
         Ember.Binding.from("model." + dateProperty).to('currentDate').connect(this);
-    }.on('init'),        
+    }.on('init'),
+    
+    _shouldSetDate: function(currentDate, picker) {
+        return (picker && (Ember.isEmpty(currentDate) || 
+                       Ember.isEmpty(picker.getDate()) || 
+                       picker.getDate().getTime() !== currentDate.getTime()));
+        
+    },
         
     currentDateChangedValue: function(){
         var currentDate = this.get('currentDate'),
             picker = this.get('_picker');
-        if (picker && (Ember.isEmpty(currentDate) || 
-                       Ember.isEmpty(picker.getDate()) || 
-                       picker.getDate().getTime() !== currentDate.getTime())){
+        if (this._shouldSetDate(currentDate, picker)){
             picker.setDate(currentDate);
         }
     }.observes('currentDate'),
@@ -43,8 +48,7 @@ export default Em.Forms.FormInputComponent.extend({
     dateSet: function() {
         var currentDate = this.get('currentDate'),
             picker = this.get('_picker');
-        if (picker && (Ember.isEmpty(currentDate) || 
-                       picker.getDate().getTime() !== currentDate.getTime())){
+        if (this._shouldSetDate(currentDate, picker)){
             this.set('currentDate', picker.getDate());
         }
     },
@@ -72,6 +76,9 @@ export default Em.Forms.FormInputComponent.extend({
         props.field = $input[0];
         picker = new Pikaday(props);
         picker.setDate(currentDate);
+        if (!props.showTime) {
+            picker.setTime(0,0,0);
+        }        
         this.set("_picker", picker);
     },
  
