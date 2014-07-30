@@ -5,6 +5,7 @@ export default function(configs) {
         this.internalXHR = new XMLHttpRequest(objParameters);
         this.requestHeaders = {
         };
+        this.upload = this.internalXHR.upload;
     }
 
     PouchOauthXHR.prototype = {
@@ -90,10 +91,6 @@ export default function(configs) {
             if (this.ontimeout  !== undefined) {
                 this.internalXHR.ontimeout = this.ontimeout;
             }
-
-            if (this.upload  !== undefined) {
-                this.internalXHR.upload = this.upload;
-            }        
 
             if (this.onreadystatechange !== undefined) {
                 var xhrwrapper = this;
