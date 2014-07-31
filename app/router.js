@@ -36,6 +36,7 @@ Router.map(function() {
     });
 
     this.resource('appointments', function() {
+        this.route('calendar');
         this.route('edit', { path: "/edit/:appointment_id" });
         this.route('search', { path: "/search/:search_text" });
     });

@@ -45,6 +45,10 @@ export default AbstractEditController.extend(VisitTypes, {
     allDayChanged: function() {
         var allDay = this.get('allDay');
         if (allDay) {
+            var endDate = this.get('endDate'),
+                startDate = this.get('startDate');
+            this.set('startDate', moment(startDate).startOf('day').toDate());
+            this.set('endDate', moment(endDate).endOf('day').toDate());
             this.set('dateFormat', 'l');
             this.set('showTime', false);
         } else {

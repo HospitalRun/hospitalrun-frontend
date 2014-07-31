@@ -17,16 +17,20 @@ export default Ember.Calendar.CalendarController.extend({
     states: ['day', 'week'], 
     initialState: 'week', 
     content: function () {
-        console.log("in appointment content");
         var parentModel = this.get('parentModel');
         return parentModel.map(function(appointment) {
-            return {
+            var event = {
                 name: appointment.get('patient.displayName'),
-                start: moment(appointment.get('startDate')),
-                end: moment(appointment.get('endDate')),
                 appointment: appointment
             };
+            if (appointment.get('allDay')) {
+                event.start = moment(appointment.get('startDate')).hour(8);
+                event.end = moment(appointment.get('startDate')).hour(9);
+            } else {
+                event.start = moment(appointment.get('startDate'));
+                event.end = moment(appointment.get('endDate'));
+            }
+            return event;
         });
-    }.property('controllers.appointments/index.model.@each.startDate', 
-               'controllers.appointments/index.model.@each.endDate')
+    }.property('controllers.appointments/index.model.@each.lastModified')
 });

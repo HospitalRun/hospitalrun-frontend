@@ -1,1 +1,54 @@
-{{view Ember.Calendar.CalendarView controllerBinding='controllers.appointment-calendar'}}
+<div class="panel-group" id="appointment-accordion">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#appointment-accordion" href="#appointments-today">
+                    Today's Appointments
+                </a>
+            </h3>
+        </div>
+        <div id="appointments-today" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <table class="table">
+                    <tr class="table-header">
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Location</th>
+                        <th>Provider</th>
+                        <th>Actions</th>
+                    </tr>
+                    {{#each todaysAppointments itemController='appointments/item'}}
+                        {{partial 'appointments/item'}}
+                    {{/each}}
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#appointment-accordion" href="#appointments-week">
+                    This Week's Appointments
+                </a>
+            </h3>
+        </div>
+        <div id="appointments-week" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <table class="table">
+                    <tr class="table-header">
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Location</th>
+                        <th>Provider</th>
+                        <th>Actions</th>
+                    </tr>
+                    {{#each thisWeeksAppointments itemController='appointments/item'}}
+                        {{partial 'appointments/item'}}
+                    {{/each}}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

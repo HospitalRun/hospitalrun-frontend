@@ -4,5 +4,9 @@
     </button>
 </div>
 <div class='ember-calendar-event-time'>
-    {{view.timeString}}
+    {{#if view.event.appointment.allDay}}
+        (All Day)
+    {{else}}
+        {{view.timeString}}
+    {{/if}}
 </div>

@@ -76,9 +76,6 @@ export default Em.Forms.FormInputComponent.extend({
         props.field = $input[0];
         picker = new Pikaday(props);
         picker.setDate(currentDate);
-        if (!props.showTime) {
-            picker.setTime(0,0,0);
-        }        
         this.set("_picker", picker);
     },
  
