@@ -49,6 +49,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
         },
         
         editAppointment: function(appointment) {
+            appointment.set('returnToPatient', true);
             this.transitionToRoute('appointments.edit', appointment);
         },        
         
@@ -62,7 +63,8 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
                 patient: this.get('model'),
                 startDate: now,
                 endDate: now
-            });            
+            });
+            newAppointment.set('returnToPatient', true);
             this.transitionToRoute('appointments.edit', newAppointment);
         },             
         

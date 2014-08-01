@@ -17,5 +17,11 @@ export default AbstractModuleRoute.extend({
     }, {
         name: 'patientList',
         findArgs: ['patient']
-    }],
+    }],    
+    
+    getNewData: function() {
+        return {
+            selectPatient: true
+        };
+    }
 });

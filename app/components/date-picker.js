@@ -28,14 +28,19 @@ export default Em.Forms.FormInputComponent.extend({
         this.set('propertyName','display_'+dateProperty);
         this.set('dateProperty', dateProperty);
         Ember.Binding.from("model." + dateProperty).to('currentDate').connect(this);
-    }.on('init'),        
+    }.on('init'),
+    
+    _shouldSetDate: function(currentDate, picker) {
+        return (picker && (Ember.isEmpty(currentDate) || 
+                       Ember.isEmpty(picker.getDate()) || 
+                       picker.getDate().getTime() !== currentDate.getTime()));
+        
+    },
         
     currentDateChangedValue: function(){
         var currentDate = this.get('currentDate'),
             picker = this.get('_picker');
-        if (picker && (Ember.isEmpty(currentDate) || 
-                       Ember.isEmpty(picker.getDate()) || 
-                       picker.getDate().getTime() !== currentDate.getTime())){
+        if (this._shouldSetDate(currentDate, picker)){
             picker.setDate(currentDate);
         }
     }.observes('currentDate'),
@@ -43,8 +48,7 @@ export default Em.Forms.FormInputComponent.extend({
     dateSet: function() {
         var currentDate = this.get('currentDate'),
             picker = this.get('_picker');
-        if (picker && (Ember.isEmpty(currentDate) || 
-                       picker.getDate().getTime() !== currentDate.getTime())){
+        if (this._shouldSetDate(currentDate, picker)){
             this.set('currentDate', picker.getDate());
         }
     },
