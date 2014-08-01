@@ -1,9 +1,9 @@
 /**
- * This is dummy file that exists for the sole purpose 
+ * This is dummy file that exists for the sole purpose
  * of allowing tests to run directly in the browser as
  * well as by Testem.
  *
- * Testem is configured to run tests directly against 
+ * Testem is configured to run tests directly against
  * the test build of index.html, which requires a
  * snippet to load the testem.js file:
  *   <script src="/testem.js"></script>

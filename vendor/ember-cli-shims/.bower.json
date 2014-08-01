@@ -4,7 +4,7 @@
     "app-shims.js",
     "test-shims.js"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/stefanpenner/ember-cli-shims",
   "authors": [
     "Stefan Penner <stefan.penner@gmail.com>",
@@ -20,13 +20,13 @@
   "dependencies": {
     "ember": ">=1.4 <2"
   },
-  "_release": "0.0.1",
+  "_release": "0.0.2",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.1",
-    "commit": "dfbf4e0b40ee1c85d5b24b892932e8bec0585fde"
+    "tag": "0.0.2",
+    "commit": "5265989bf429eec0f51bf512cbb1b621f492b534"
   },
   "_source": "git://github.com/stefanpenner/ember-cli-shims.git",
-  "_target": "0.0.1",
+  "_target": "0.0.2",
   "_originalSource": "stefanpenner/ember-cli-shims"
 }

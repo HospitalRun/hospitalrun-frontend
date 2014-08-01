@@ -3,7 +3,7 @@
  * @copyright Copyright 2011-2014 Tilde Inc. and contributors.
  *            Portions Copyright 2011 LivingSocial Inc.
  * @license   Licensed under MIT license (see license.js)
- * @version   1.0.0-beta.7+canary.488b93dc
+ * @version   1.0.0-beta.7+canary.b45e23ba
  */
 (function(global) {
 var define, requireModule, require, requirejs;
@@ -60,36 +60,43 @@ var define, requireModule, require, requirejs;
   };
 })();
 
-define("activemodel-adapter/lib/main", 
-  ["./system","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var ActiveModelAdapter = __dependency1__.ActiveModelAdapter;
-    var ActiveModelSerializer = __dependency1__.ActiveModelSerializer;
-    var EmbeddedRecordsMixin = __dependency1__.EmbeddedRecordsMixin;
-
-    __exports__.ActiveModelAdapter = ActiveModelAdapter;
-    __exports__.ActiveModelSerializer = ActiveModelSerializer;
-    __exports__.EmbeddedRecordsMixin = EmbeddedRecordsMixin;
-  });
-define("activemodel-adapter/lib/setup-container", 
-  ["../../ember-data/lib/system/container_proxy","./system/active_model_serializer","./system/active_model_adapter","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
+define("activemodel-adapter/lib/initializers", 
+  ["../../ember-data/lib/system/container_proxy","./system/active_model_serializer","./system/active_model_adapter"],
+  function(__dependency1__, __dependency2__, __dependency3__) {
     "use strict";
     var ContainerProxy = __dependency1__["default"];
     var ActiveModelSerializer = __dependency2__["default"];
     var ActiveModelAdapter = __dependency3__["default"];
 
-    __exports__["default"] = function setupActiveModelAdapter(container, application){
-      var proxy = new ContainerProxy(container);
-      proxy.registerDeprecations([
-        {deprecated: 'serializer:_ams',  valid: 'serializer:-active-model'},
-        {deprecated: 'adapter:_ams',     valid: 'adapter:-active-model'}
-      ]);
+    Ember.onLoad('Ember.Application', function(Application) {
+      Application.initializer({
+        name: "activeModelAdapter",
 
-      container.register('serializer:-active-model', ActiveModelSerializer);
-      container.register('adapter:-active-model', ActiveModelAdapter);
-    };
+        initialize: function(container, application) {
+          var proxy = new ContainerProxy(container);
+          proxy.registerDeprecations([
+            {deprecated: 'serializer:_ams',  valid: 'serializer:-active-model'},
+            {deprecated: 'adapter:_ams',     valid: 'adapter:-active-model'}
+          ]);
+
+          application.register('serializer:-active-model', ActiveModelSerializer);
+          application.register('adapter:-active-model', ActiveModelAdapter);
+        }
+      });
+    });
+  });
+define("activemodel-adapter/lib/main", 
+  ["./system","./initializers","exports"],
+  function(__dependency1__, __dependency2__, __exports__) {
+    "use strict";
+    var ActiveModelAdapter = __dependency1__.ActiveModelAdapter;
+    var ActiveModelSerializer = __dependency1__.ActiveModelSerializer;
+    var EmbeddedRecordsMixin = __dependency1__.EmbeddedRecordsMixin;
+
+
+    __exports__.ActiveModelAdapter = ActiveModelAdapter;
+    __exports__.ActiveModelSerializer = ActiveModelSerializer;
+    __exports__.EmbeddedRecordsMixin = EmbeddedRecordsMixin;
   });
 define("activemodel-adapter/lib/system", 
   ["./system/embedded_records_mixin","./system/active_model_adapter","./system/active_model_serializer","exports"],
@@ -123,11 +130,10 @@ define("activemodel-adapter/lib/system/active_model_adapter",
 
     /**
       The ActiveModelAdapter is a subclass of the RESTAdapter designed to integrate
-      with a JSON API that uses an underscored naming convention instead of camelCasing.
+      with a JSON API that uses an underscored naming convention instead of camelcasing.
       It has been designed to work out of the box with the
       [active_model_serializers](http://github.com/rails-api/active_model_serializers)
-      Ruby gem. This Adapter expects specific settings using ActiveModel::Serializers,
-      `embed :ids, include: true` which sideloads the records.
+      Ruby gem.
 
       This adapter extends the DS.RESTAdapter by making consistent use of the camelization,
       decamelization and pluralization methods to normalize the serialized JSON into a
@@ -168,7 +174,7 @@ define("activemodel-adapter/lib/system/active_model_adapter",
       @class ActiveModelAdapter
       @constructor
       @namespace DS
-      @extends DS.RESTAdapter
+      @extends DS.Adapter
     **/
 
     var ActiveModelAdapter = RESTAdapter.extend({
@@ -184,7 +190,7 @@ define("activemodel-adapter/lib/system/active_model_adapter",
 
         @method pathForType
         @param {String} type
-        @return String
+        @returns String
       */
       pathForType: function(type) {
         var decamelized = decamelize(type);
@@ -206,7 +212,7 @@ define("activemodel-adapter/lib/system/active_model_adapter",
 
         @method ajaxError
         @param jqXHR
-        @return error
+        @returns error
       */
       ajaxError: function(jqXHR) {
         var error = this._super(jqXHR);
@@ -253,11 +259,11 @@ define("activemodel-adapter/lib/system/active_model_serializer",
       // SERIALIZE
 
       /**
-        Converts camelCased attributes to underscored when serializing.
+        Converts camelcased attributes to underscored when serializing.
 
         @method keyForAttribute
         @param {String} attribute
-        @return String
+        @returns String
       */
       keyForAttribute: function(attr) {
         return decamelize(attr);
@@ -270,7 +276,7 @@ define("activemodel-adapter/lib/system/active_model_serializer",
         @method keyForRelationship
         @param {String} key
         @param {String} kind
-        @return String
+        @returns String
       */
       keyForRelationship: function(key, kind) {
         key = decamelize(key);
@@ -283,7 +289,7 @@ define("activemodel-adapter/lib/system/active_model_serializer",
         }
       },
 
-      /*
+      /**
         Does not serialize hasMany relationships by default.
       */
       serializeHasMany: Ember.K,
@@ -313,11 +319,8 @@ define("activemodel-adapter/lib/system/active_model_serializer",
       serializePolymorphicType: function(record, json, relationship) {
         var key = relationship.key,
             belongsTo = get(record, key);
-
-        if (belongsTo) {
-          key = this.keyForAttribute(key);
-          json[key + "_type"] = capitalize(camelize(belongsTo.constructor.typeKey));
-        }
+        key = this.keyForAttribute(key);
+        json[key + "_type"] = capitalize(camelize(belongsTo.constructor.typeKey));
       },
 
       // EXTRACT
@@ -327,7 +330,7 @@ define("activemodel-adapter/lib/system/active_model_serializer",
 
         @method typeForRoot
         @param {String} root
-        @return String the model's typeKey
+        @returns String the model's typeKey
       */
       typeForRoot: function(root) {
         var camelized = camelize(root);
@@ -335,9 +338,10 @@ define("activemodel-adapter/lib/system/active_model_serializer",
       },
 
       /**
-        Add extra step to `DS.RESTSerializer.normalize` so links are normalized.
+        Add extra step to `DS.RESTSerializer.normalize` so links are
+        normalized.
 
-        If your payload looks like:
+        If your payload looks like this
 
         ```js
         {
@@ -348,7 +352,6 @@ define("activemodel-adapter/lib/system/active_model_serializer",
           }
         }
         ```
-
         The normalized version would look like this
 
         ```js
@@ -365,7 +368,7 @@ define("activemodel-adapter/lib/system/active_model_serializer",
         @param {subclass of DS.Model} type
         @param {Object} hash
         @param {String} prop
-        @return Object
+        @returns Object
       */
 
       normalize: function(type, hash, prop) {
@@ -457,33 +460,24 @@ define("activemodel-adapter/lib/system/embedded_records_mixin",
     "use strict";
     var get = Ember.get;
     var forEach = Ember.EnumerableUtils.forEach;
-    var camelize = Ember.String.camelize;
 
     var pluralize = __dependency1__.pluralize;
 
     /**
-      DS.EmbeddedRecordsMixin supports serializing embedded records.
-
-      To set up embedded records, include the mixin into a serializer then define
-      embedded (model) relationships.
-
-      Below is an example of a per type serializer (post type).
+      The EmbeddedRecordsMixin allows you to add embedded record support to your
+      serializers.
+      To set up embedded records, you include the mixin into the serializer and then
+      define your embedded relations.
 
       ```js
       App.PostSerializer = DS.ActiveModelSerializer.extend(DS.EmbeddedRecordsMixin, {
         attrs: {
-          author: {embedded: 'always'},
-          comments: {serialize: 'ids'}
+          comments: {embedded: 'always'}
         }
       })
       ```
 
-      The `attrs` option for a resource `{embedded: 'always'}` is shorthand for:
-      `{serialize: 'records', deserialize: 'records'}`. Embedded records are extracted
-      from a nested document, so the default option for `deserialize` is `records`.
-
-      When serializing, a resource's `attrs` option may be set to use `ids` or `records`
-      for the `serialize` setting.
+      Currently only `{embedded: 'always'}` records are supported.
 
       @class EmbeddedRecordsMixin
       @namespace DS
@@ -491,456 +485,102 @@ define("activemodel-adapter/lib/system/embedded_records_mixin",
     var EmbeddedRecordsMixin = Ember.Mixin.create({
 
       /**
-        Serialize `belongsTo` relationship when it is configured as an embedded object.
-
-        This example of an author model belongs to a post model:
-
-        ```js
-        Post = DS.Model.extend({
-          title:    DS.attr('string'),
-          body:     DS.attr('string'),
-          author:   DS.belongsTo('author')
-        });
-
-        Author = DS.Model.extend({
-          name:     DS.attr('string'),
-          post:     DS.belongsTo('post')
-        });
-        ```
-
-        Use a custom (type) serializer for the post model to configure embedded author
-
-        ```js
-        App.PostSerializer = DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
-          attrs: {
-            author: {embedded: 'always'}
-          }
-        })
-        ```
-
-        A payload with an attribute configured for embedded records can serialize
-        the records together under the root attribute's payload:
-
-        ```js
-        {
-          "post": {
-            "id": "1"
-            "title": "Rails is omakase",
-            "author": {
-              "id": "2"
-              "name": "dhh"
-            }
-          }
-        }
-        ```
-
-        @method serializeBelongsTo
-        @param {DS.Model} record
-        @param {Object} json
-        @param {Object} relationship
-      */
-      serializeBelongsTo: function(record, json, relationship) {
-        var attr = relationship.key;
-        var attrs = this.get('attrs');
-
-        var includeIds = hasSerializeIdsOption(attrs, attr) || noSerializeOptionSpecified(attrs, attr);
-        var includeRecords = hasSerializeRecordsOption(attrs, attr);
-
-        var embeddedRecord = record.get(attr);
-        if (includeIds) {
-          key = this.keyForRelationship(attr, relationship.kind);
-          if (!embeddedRecord) {
-            json[key] = null;
-          } else {
-            json[key] = get(embeddedRecord, 'id');
-          }
-        } else if (includeRecords) {
-          var key = this.keyForRelationship(attr);
-          if (!embeddedRecord) {
-            json[key] = null;
-          } else {
-            json[key] = embeddedRecord.serialize({includeId: true});
-            this.removeEmbeddedForeignKey(record, embeddedRecord, relationship, json[key]);
-          }
-        }
-      },
-      
-      /**
-        Serialize `hasMany` relationship when it is configured as embedded objects.
-
-        This example of a post model has many comments:
-
-        ```js
-        Post = DS.Model.extend({
-          title:    DS.attr('string'),
-          body:     DS.attr('string'),
-          comments: DS.hasMany('comment')
-        });
-
-        Comment = DS.Model.extend({
-          body:     DS.attr('string'),
-          post:     DS.belongsTo('post')
-        });
-        ```
-
-        Use a custom (type) serializer for the post model to configure embedded comments
-
-        ```js
-        App.PostSerializer = DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
-          attrs: {
-            comments: {embedded: 'always'}
-          }
-        })
-        ```
-
-        A payload with an attribute configured for embedded records can serialize
-        the records together under the root attribute's payload:
-
-        ```js
-        {
-          "post": {
-            "id": "1"
-            "title": "Rails is omakase",
-            "body": "I want this for my ORM, I want that for my template language..."
-            "comments": [{
-              "id": "1",
-              "body": "Rails is unagi"
-            }, {
-              "id": "2",
-              "body": "Omakase O_o"
-            }]
-          }
-        }
-        ```
-
-        The attrs options object can use more specific instruction for extracting and
-        serializing. When serializing, an option to embed `ids` or `records` can be set.
-        When extracting the only option is `records`.
-
-        So `{embedded: 'always'}` is shorthand for:
-        `{serialize: 'records', deserialize: 'records'}`
-
-        To embed the `ids` for a related object (using a hasMany relationship):
-
-        ```js
-        App.PostSerializer = DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
-          attrs: {
-            comments: {serialize: 'ids', deserialize: 'records'}
-          }
-        })
-        ```
-
-        ```js
-        {
-          "post": {
-            "id": "1"
-            "title": "Rails is omakase",
-            "body": "I want this for my ORM, I want that for my template language..."
-            "comments": ["1", "2"]
-          }
-        }
-        ```
+        Serialize has-may relationship when it is configured as embedded objects.
 
         @method serializeHasMany
-        @param {DS.Model} record
-        @param {Object} json
-        @param {Object} relationship
       */
       serializeHasMany: function(record, json, relationship) {
-        var attr = relationship.key;
-        var attrs = this.get('attrs');
-        var includeIds = hasSerializeIdsOption(attrs, attr);
-        var includeRecords = hasSerializeRecordsOption(attrs, attr);
-        var key;
+        var key   = relationship.key,
+            attrs = get(this, 'attrs'),
+            embed = attrs && attrs[key] && attrs[key].embedded === 'always';
 
-        if (includeIds) {
-          key = this.keyForRelationship(attr, relationship.kind);
-          json[key] = get(record, attr).mapBy('id');
-        } else if (includeRecords) {
-          key = this.keyForAttribute(attr);
-          json[key] = get(record, attr).map(function(embeddedRecord) {
-            var serializedEmbeddedRecord = embeddedRecord.serialize({includeId: true});
-            this.removeEmbeddedForeignKey(record, embeddedRecord, relationship, serializedEmbeddedRecord);
-            return serializedEmbeddedRecord;
+        if (embed) {
+          json[this.keyForAttribute(key)] = get(record, key).map(function(relation) {
+            var data = relation.serialize(),
+                primaryKey = get(this, 'primaryKey');
+
+            data[primaryKey] = get(relation, primaryKey);
+
+            return data;
           }, this);
         }
       },
 
-      /*
-        When serializing an embedded record, modify the property (in the json payload)
-        that refers to the parent record (foreign key for relationship).
-
-        Serializing a `belongsTo` relationship removes the property that refers to the
-        parent record
-
-        Serializing a `hasMany` relationship does not remove the property that refers to
-        the parent record.
-
-        @method removeEmbeddedForeignKey
-        @param {DS.Model} record
-        @param {DS.Model} embeddedRecord
-        @param {Object} relationship
-        @param {Object} json
-      */
-      removeEmbeddedForeignKey: function (record, embeddedRecord, relationship, json) {
-        if (relationship.kind === 'hasMany') {
-          return;
-        } else if (relationship.kind === 'belongsTo') {
-          var parentRecord = record.constructor.inverseFor(relationship.key);
-          if (parentRecord) {
-            var name = parentRecord.name;
-            var embeddedSerializer = this.store.serializerFor(embeddedRecord.constructor);
-            var parentKey = embeddedSerializer.keyForRelationship(name, parentRecord.kind);
-            if (parentKey) {
-              delete json[parentKey];
-            }
-          }
-        }
-      },
-
       /**
-        Extract an embedded object from the payload for a single object
-        and add the object in the compound document (side-loaded) format instead.
-
-        A payload with an attribute configured for embedded records needs to be extracted:
-
-        ```js
-        {
-          "post": {
-            "id": 1
-            "title": "Rails is omakase",
-            "author": {
-              "id": 2
-              "name": "dhh"
-            }
-            "comments": []
-          }
-        }
-        ```
-
-        Ember Data is expecting a payload with a compound document (side-loaded) like:
-
-        ```js
-        {
-          "post": {
-            "id": "1"
-            "title": "Rails is omakase",
-            "author": "2"
-            "comments": []
-          },
-          "authors": [{
-            "id": "2"
-            "post": "1"
-            "name": "dhh"
-          }]
-          "comments": []
-        }
-        ```
-
-        The payload's `author` attribute represents an object with a `belongsTo` relationship.
-        The `post` attribute under `author` is the foreign key with the id for the post
+        Extract embedded objects out of the payload for a single object
+        and add them as sideloaded objects instead.
 
         @method extractSingle
-        @param {DS.Store} store
-        @param {subclass of DS.Model} primaryType
-        @param {Object} payload
-        @param {String} recordId
-        @param {'find'|'createRecord'|'updateRecord'|'deleteRecord'} requestType
-        @return Object the primary response to the original request
       */
-      extractSingle: function(store, primaryType, payload, recordId) {
+      extractSingle: function(store, primaryType, payload, recordId, requestType) {
         var root = this.keyForAttribute(primaryType.typeKey),
             partial = payload[root];
 
-        updatePayloadWithEmbedded(this, store, primaryType, payload, partial);
+        updatePayloadWithEmbedded(store, this, primaryType, partial, payload);
 
-        return this._super(store, primaryType, payload, recordId);
+        return this._super(store, primaryType, payload, recordId, requestType);
       },
 
       /**
-        Extract embedded objects in an array when an attr is configured for embedded,
-        and add them as side-loaded objects instead.
-
-        A payload with an attr configured for embedded records needs to be extracted:
-
-        ```js
-        {
-          "post": {
-            "id": "1"
-            "title": "Rails is omakase",
-            "comments": [{
-              "id": "1",
-              "body": "Rails is unagi"
-            }, {
-              "id": "2",
-              "body": "Omakase O_o"
-            }]
-          }
-        }
-        ```
-
-        Ember Data is expecting a payload with compound document (side-loaded) like:
-
-        ```js
-        {
-          "post": {
-            "id": "1"
-            "title": "Rails is omakase",
-            "comments": ["1", "2"]
-          },
-          "comments": [{
-            "id": "1",
-            "body": "Rails is unagi"
-          }, {
-            "id": "2",
-            "body": "Omakase O_o"
-          }]
-        }
-        ```
-
-        The payload's `comments` attribute represents records in a `hasMany` relationship
+        Extract embedded objects out of a standard payload
+        and add them as sideloaded objects instead.
 
         @method extractArray
-        @param {DS.Store} store
-        @param {subclass of DS.Model} primaryType
-        @param {Object} payload
-        @return {Array<Object>} The primary array that was returned in response
-          to the original query.
       */
-      extractArray: function(store, primaryType, payload) {
-        var root = this.keyForAttribute(primaryType.typeKey),
+      extractArray: function(store, type, payload) {
+        var root = this.keyForAttribute(type.typeKey),
             partials = payload[pluralize(root)];
 
         forEach(partials, function(partial) {
-          updatePayloadWithEmbedded(this, store, primaryType, payload, partial);
+          updatePayloadWithEmbedded(store, this, type, partial, payload);
         }, this);
 
-        return this._super(store, primaryType, payload);
+        return this._super(store, type, payload);
       }
     });
 
-    // checks config for attrs option to embedded (always) - serialize and deserialize
-    function hasEmbeddedAlwaysOption(attrs, attr) {
-      var option = attrsOption(attrs, attr);
-      return option && option.embedded === 'always';
-    }
-
-    // checks config for attrs option to serialize ids
-    function hasSerializeRecordsOption(attrs, attr) {
-      var alwaysEmbed = hasEmbeddedAlwaysOption(attrs, attr);
-      var option = attrsOption(attrs, attr);
-      return alwaysEmbed || (option && (option.serialize === 'records'));
-    }
-
-    // checks config for attrs option to serialize records
-    function hasSerializeIdsOption(attrs, attr) {
-      var option = attrsOption(attrs, attr);
-      return option && (option.serialize === 'ids' || option.serialize === 'id');
-    }
-
-    // checks config for attrs option to serialize records
-    function noSerializeOptionSpecified(attrs, attr) {
-      var option = attrsOption(attrs, attr);
-      var serializeRecords = hasSerializeRecordsOption(attrs, attr);
-      var serializeIds = hasSerializeIdsOption(attrs, attr);
-      return !(option && (option.serialize || option.embedded));
-    }
-
-    // checks config for attrs option to deserialize records
-    // a defined option object for a resource is treated the same as
-    // `deserialize: 'records'`
-    function hasDeserializeRecordsOption(attrs, attr) {
-      var alwaysEmbed = hasEmbeddedAlwaysOption(attrs, attr);
-      var option = attrsOption(attrs, attr);
-      var hasSerializingOption = option && (option.deserialize || option.serialize);
-      return alwaysEmbed || hasSerializingOption /* option.deserialize === 'records' */;
-    }
-
-    function attrsOption(attrs, attr) {
-      return attrs && (attrs[Ember.String.camelize(attr)] || attrs[attr]);
-    }
-
-    // chooses a relationship kind to branch which function is used to update payload
-    // does not change payload if attr is not embedded
-    function updatePayloadWithEmbedded(serializer, store, type, payload, partial) {
+    function updatePayloadWithEmbedded(store, serializer, type, partial, payload) {
       var attrs = get(serializer, 'attrs');
 
       if (!attrs) {
         return;
       }
+
       type.eachRelationship(function(key, relationship) {
-        if (hasDeserializeRecordsOption(attrs, key)) {
-          if (relationship.kind === "hasMany") {
-            updatePayloadWithEmbeddedHasMany(serializer, store, key, relationship, payload, partial);
-          }
-          if (relationship.kind === "belongsTo") {
-            updatePayloadWithEmbeddedBelongsTo(serializer, store, key, relationship, payload, partial);
-          }
+        var expandedKey, embeddedTypeKey, attribute, ids,
+            config = attrs[key],
+            serializer = store.serializerFor(relationship.type.typeKey),
+            primaryKey = get(serializer, "primaryKey");
+
+        if (relationship.kind !== "hasMany") {
+          return;
         }
-      });
-    }
 
-    // handles embedding for `hasMany` relationship
-    function updatePayloadWithEmbeddedHasMany(serializer, store, primaryType, relationship, payload, partial) {
-      var embeddedSerializer = store.serializerFor(relationship.type.typeKey);
-      var primaryKey = get(serializer, 'primaryKey');
-      var attr = relationship.type.typeKey;
-      // underscore forces the embedded records to be side loaded.
-      // it is needed when main type === relationship.type
-      var embeddedTypeKey = '_' + serializer.typeForRoot(relationship.type.typeKey);
-      var expandedKey = serializer.keyForRelationship(primaryType, relationship.kind);
-      var attribute  = serializer.keyForAttribute(primaryType);
-      var ids = [];
+        if (config && (config.embedded === 'always' || config.embedded === 'load')) {
+          // underscore forces the embedded records to be side loaded.
+          // it is needed when main type === relationship.type
+          embeddedTypeKey = '_' + Ember.String.pluralize(relationship.type.typeKey);
+          expandedKey = this.keyForRelationship(key, relationship.kind);
+          attribute  = this.keyForAttribute(key);
+          ids = [];
 
-      if (!partial[attribute]) {
-        return;
-      }
+          if (!partial[attribute]) {
+            return;
+          }
 
-      payload[embeddedTypeKey] = payload[embeddedTypeKey] || [];
+          payload[embeddedTypeKey] = payload[embeddedTypeKey] || [];
 
-      forEach(partial[attribute], function(data) {
-        var embeddedType = store.modelFor(attr);
-        updatePayloadWithEmbedded(embeddedSerializer, store, embeddedType, payload, data);
-        ids.push(data[primaryKey]);
-        payload[embeddedTypeKey].push(data);
-      });
+          forEach(partial[attribute], function(data) {
+            var embeddedType = store.modelFor(relationship.type.typeKey);
+            updatePayloadWithEmbedded(store, serializer, embeddedType, data, payload);
+            ids.push(data[primaryKey]);
+            payload[embeddedTypeKey].push(data);
+          });
 
-      partial[expandedKey] = ids;
-      delete partial[attribute];
-    }
-
-    // handles embedding for `belongsTo` relationship
-    function updatePayloadWithEmbeddedBelongsTo(serializer, store, primaryType, relationship, payload, partial) {
-      var attrs = serializer.get('attrs');
-
-      if (!attrs ||
-        !(hasDeserializeRecordsOption(attrs, Ember.String.camelize(primaryType)) ||
-          hasDeserializeRecordsOption(attrs, primaryType))) {
-        return;
-      }
-      var attr = relationship.type.typeKey;
-      var _serializer = store.serializerFor(relationship.type.typeKey);
-      var primaryKey = get(_serializer, 'primaryKey');
-      var embeddedTypeKey = Ember.String.pluralize(attr); // TODO don't use pluralize
-      var expandedKey = _serializer.keyForRelationship(primaryType, relationship.kind);
-      var attribute = _serializer.keyForAttribute(primaryType);
-
-      if (!partial[attribute]) {
-        return;
-      }
-      payload[embeddedTypeKey] = payload[embeddedTypeKey] || [];
-      var embeddedType = store.modelFor(relationship.type.typeKey);
-      for (var key in partial) {
-        if (partial.hasOwnProperty(key) && camelize(key) === attr) {
-          updatePayloadWithEmbedded(_serializer, store, embeddedType, payload, partial[key]);
+          partial[expandedKey] = ids;
+          delete partial[attribute];
         }
-      }
-      partial[expandedKey] = partial[attribute].id;
-      // Need to move an embedded `belongsTo` object into a pluralized collection
-      payload[embeddedTypeKey].push(partial[attribute]);
-      // Need a reference to the parent so relationship works between both `belongsTo` records
-      partial[attribute][relationship.parentType.typeKey + '_id'] = partial.id;
-      delete partial[attribute];
+      }, serializer);
     }
 
     __exports__["default"] = EmbeddedRecordsMixin;
@@ -976,11 +616,11 @@ define("ember-data/lib/adapters/fixture_adapter",
 
     /**
       `DS.FixtureAdapter` is an adapter that loads records from memory.
-      It's primarily used for development and testing. You can also use
+      Its primarily used for development and testing. You can also use
       `DS.FixtureAdapter` while working on the API but are not ready to
       integrate yet. It is a fully functioning adapter. All CRUD methods
       are implemented. You can also implement query logic that a remote
-      system would do. It's possible to develop your entire application
+      system would do. Its possible to do develop your entire application
       with `DS.FixtureAdapter`.
 
       For information on how to use the `FixtureAdapter` in your
@@ -1399,10 +1039,8 @@ define("ember-data/lib/adapters/rest_adapter",
 
       ### Headers customization
 
-      Some APIs require HTTP headers, e.g. to provide an API key. Arbitrary
-      headers can be set as key/value pairs on the `RESTAdapter`'s `headers`
-      object and Ember Data will send them along with each ajax request.
-
+      Some APIs require HTTP headers, e.g. to provide an API key. An array of
+      headers can be added to the adapter which are passed with every request:
 
       ```js
       DS.RESTAdapter.reopen({
@@ -1410,20 +1048,6 @@ define("ember-data/lib/adapters/rest_adapter",
           "API_KEY": "secret key",
           "ANOTHER_HEADER": "Some header value"
         }
-      });
-      ```
-
-      `headers` can also be used as a computed property to support dynamic
-      headers.
-
-      ```js
-      App.ApplicationAdapter = DS.RESTAdapter.extend({
-        headers: function() {
-          return {
-            "API_KEY": this.get("session.authToken"),
-            "ANOTHER_HEADER": "Some header value"
-          };
-        }.property("session.authToken")
       });
       ```
 
@@ -1466,9 +1090,8 @@ define("ember-data/lib/adapters/rest_adapter",
       */
 
       /**
-        Some APIs require HTTP headers, e.g. to provide an API key. Arbitrary
-        headers can be set as key/value pairs on the `RESTAdapter`'s `headers`
-        object and Ember Data will send them along with each ajax request.
+        Some APIs require HTTP headers, e.g. to provide an API key. An array of
+        headers can be added to the adapter which are passed with every request:
 
         ```javascript
         DS.RESTAdapter.reopen({
@@ -1496,7 +1119,7 @@ define("ember-data/lib/adapters/rest_adapter",
         @param {DS.Store} store
         @param {subclass of DS.Model} type
         @param {String} id
-        @return {Promise} promise
+        @returns {Promise} promise
       */
       find: function(store, type, id) {
         return this.ajax(this.buildURL(type.typeKey, id), 'GET');
@@ -1514,7 +1137,7 @@ define("ember-data/lib/adapters/rest_adapter",
         @param {DS.Store} store
         @param {subclass of DS.Model} type
         @param {String} sinceToken
-        @return {Promise} promise
+        @returns {Promise} promise
       */
       findAll: function(store, type, sinceToken) {
         var query;
@@ -1541,7 +1164,7 @@ define("ember-data/lib/adapters/rest_adapter",
         @param {DS.Store} store
         @param {subclass of DS.Model} type
         @param {Object} query
-        @return {Promise} promise
+        @returns {Promise} promise
       */
       findQuery: function(store, type, query) {
         return this.ajax(this.buildURL(type.typeKey), 'GET', { data: query });
@@ -1579,7 +1202,7 @@ define("ember-data/lib/adapters/rest_adapter",
         @param {DS.Store} store
         @param {subclass of DS.Model} type
         @param {Array} ids
-        @return {Promise} promise
+        @returns {Promise} promise
       */
       findMany: function(store, type, ids) {
         return this.ajax(this.buildURL(type.typeKey), 'GET', { data: { ids: ids } });
@@ -1612,7 +1235,7 @@ define("ember-data/lib/adapters/rest_adapter",
         @param {DS.Store} store
         @param {DS.Model} record
         @param {String} url
-        @return {Promise} promise
+        @returns {Promise} promise
       */
       findHasMany: function(store, record, url) {
         var host = get(this, 'host'),
@@ -1651,7 +1274,7 @@ define("ember-data/lib/adapters/rest_adapter",
         @param {DS.Store} store
         @param {DS.Model} record
         @param {String} url
-        @return {Promise} promise
+        @returns {Promise} promise
       */
       findBelongsTo: function(store, record, url) {
         var id   = get(record, 'id'),
@@ -1674,7 +1297,7 @@ define("ember-data/lib/adapters/rest_adapter",
         @param {DS.Store} store
         @param {subclass of DS.Model} type
         @param {DS.Model} record
-        @return {Promise} promise
+        @returns {Promise} promise
       */
       createRecord: function(store, type, record) {
         var data = {};
@@ -1699,7 +1322,7 @@ define("ember-data/lib/adapters/rest_adapter",
         @param {DS.Store} store
         @param {subclass of DS.Model} type
         @param {DS.Model} record
-        @return {Promise} promise
+        @returns {Promise} promise
       */
       updateRecord: function(store, type, record) {
         var data = {};
@@ -1721,7 +1344,7 @@ define("ember-data/lib/adapters/rest_adapter",
         @param {DS.Store} store
         @param {subclass of DS.Model} type
         @param {DS.Model} record
-        @return {Promise} promise
+        @returns {Promise} promise
       */
       deleteRecord: function(store, type, record) {
         var id = get(record, 'id');
@@ -1742,7 +1365,7 @@ define("ember-data/lib/adapters/rest_adapter",
         @method buildURL
         @param {String} type
         @param {String} id
-        @return {String} url
+        @returns {String} url
       */
       buildURL: function(type, id) {
         var url = [],
@@ -1807,17 +1430,17 @@ define("ember-data/lib/adapters/rest_adapter",
         endpoint of "/line_items/".
 
         ```js
-        App.ApplicationAdapter = DS.RESTAdapter.extend({
+        DS.RESTAdapter.reopen({
           pathForType: function(type) {
             var decamelized = Ember.String.decamelize(type);
             return Ember.String.pluralize(decamelized);
-          }
+          };
         });
         ```
 
         @method pathForType
         @param {String} type
-        @return {String} path
+        @returns {String} path
       **/
       pathForType: function(type) {
         var camelized = Ember.String.camelize(type);
@@ -1859,7 +1482,7 @@ define("ember-data/lib/adapters/rest_adapter",
         @return {Object} jqXHR
       */
       ajaxError: function(jqXHR) {
-        if (jqXHR && typeof jqXHR === 'object') {
+        if (jqXHR) {
           jqXHR.then = null;
         }
 
@@ -1928,8 +1551,8 @@ define("ember-data/lib/adapters/rest_adapter",
           hash.data = JSON.stringify(hash.data);
         }
 
-        var headers = get(this, 'headers');
-        if (headers !== undefined) {
+        if (this.headers !== undefined) {
+          var headers = this.headers;
           hash.beforeSend = function (xhr) {
             forEach.call(Ember.keys(headers), function(key) {
               xhr.setRequestHeader(key, headers[key]);
@@ -1964,12 +1587,16 @@ define("ember-data/lib/core",
       /**
         @property VERSION
         @type String
-        @default '1.0.0-beta.7+canary.488b93dc'
+        @default '1.0.0-beta.7+canary.b45e23ba'
         @static
       */
       DS = Ember.Namespace.create({
-        VERSION: '1.0.0-beta.7+canary.488b93dc'
+        VERSION: '1.0.0-beta.7+canary.b45e23ba'
       });
+
+      if ('undefined' !== typeof window) {
+        window.DS = DS;
+      }
 
       if (Ember.libraries) {
         Ember.libraries.registerCoreLibrary('Ember Data', DS.VERSION);
@@ -1977,60 +1604,6 @@ define("ember-data/lib/core",
     }
 
     __exports__["default"] = DS;
-  });
-define("ember-data/lib/ember-initializer", 
-  ["./setup-container"],
-  function(__dependency1__) {
-    "use strict";
-    var setupContainer = __dependency1__["default"];
-
-    var K = Ember.K;
-
-    /**
-      @module ember-data
-
-      This code initializes Ember-Data onto an Ember application.
-    */
-
-    Ember.onLoad('Ember.Application', function(Application) {
-
-      Application.initializer({
-        name:       "ember-data",
-        initialize: setupContainer
-      });
-
-      // Deprecated initializers to satisfy old code that depended on them
-
-      Application.initializer({
-        name:       "store",
-        after:      "ember-data",
-        initialize: K
-      });
-
-      Application.initializer({
-        name:       "activeModelAdapter",
-        before:     "store",
-        initialize: K
-      });
-
-      Application.initializer({
-        name:       "transforms",
-        before:     "store",
-        initialize: K
-      });
-
-      Application.initializer({
-        name:       "data-adapter",
-        before:     "store",
-        initialize: K
-      });
-
-      Application.initializer({
-        name:       "injectStore",
-        before:     "store",
-        initialize: K
-      });
-    });
   });
 define("ember-data/lib/ext/date", 
   [],
@@ -2097,110 +1670,122 @@ define("ember-data/lib/ext/date",
       Date.parse = Ember.Date.parse;
     }
   });
-define("ember-data/lib/initializers/data_adapter", 
-  ["../system/debug/debug_adapter","exports"],
-  function(__dependency1__, __exports__) {
+define("ember-data/lib/initializers", 
+  ["./system/store","./serializers","./adapters","./system/debug/debug_adapter","./system/container_proxy","./transforms"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__) {
     "use strict";
-    var DebugAdapter = __dependency1__["default"];
+    var Store = __dependency1__["default"];
+    var JSONSerializer = __dependency2__.JSONSerializer;
+    var RESTSerializer = __dependency2__.RESTSerializer;
+    var RESTAdapter = __dependency3__.RESTAdapter;
+    var DebugAdapter = __dependency4__["default"];
+    var ContainerProxy = __dependency5__["default"];
+    var BooleanTransform = __dependency6__.BooleanTransform;
+    var DateTransform = __dependency6__.DateTransform;
+    var StringTransform = __dependency6__.StringTransform;
+    var NumberTransform = __dependency6__.NumberTransform;
 
     /**
-      Configures a container with injections on Ember applications
-      for the Ember-Data store. Accepts an optional namespace argument.
-
-      @method initializeStoreInjections
-      @param {Ember.Container} container
+      @module ember-data
     */
-    __exports__["default"] = function initializeDebugAdapter(container){
-      container.register('data-adapter:main', DebugAdapter);
-    };
-  });
-define("ember-data/lib/initializers/store", 
-  ["../serializers","../adapters","../system/container_proxy","../system/store","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __exports__) {
-    "use strict";
-    var JSONSerializer = __dependency1__.JSONSerializer;
-    var RESTSerializer = __dependency1__.RESTSerializer;
-    var RESTAdapter = __dependency2__.RESTAdapter;
-    var ContainerProxy = __dependency3__["default"];
-    var Store = __dependency4__["default"];
 
-    /**
-      Configures a container for use with an Ember-Data
-      store. Accepts an optional namespace argument.
+    var set = Ember.set;
 
-      @method initializeStore
-      @param {Ember.Container} container
-      @param {Object} [application] an application namespace
+    /*
+      This code registers an injection for Ember.Application.
+
+      If an Ember.js developer defines a subclass of DS.Store on their application,
+      this code will automatically instantiate it and make it available on the
+      router.
+
+      Additionally, after an application's controllers have been injected, they will
+      each have the store made available to them.
+
+      For example, imagine an Ember.js application with the following classes:
+
+      App.Store = DS.Store.extend({
+        adapter: 'custom'
+      });
+
+      App.PostsController = Ember.ArrayController.extend({
+        // ...
+      });
+
+      When the application is initialized, `App.Store` will automatically be
+      instantiated, and the instance of `App.PostsController` will have its `store`
+      property set to that instance.
+
+      Note that this code will only be run if the `ember-application` package is
+      loaded. If Ember Data is being used in an environment other than a
+      typical application (e.g., node.js where only `ember-runtime` is available),
+      this code will be ignored.
     */
-    __exports__["default"] = function initializeStore(container, application){
-      Ember.deprecate('Specifying a custom Store for Ember Data on your global namespace as `App.Store` ' +
-                      'has been deprecated. Please use `App.ApplicationStore` instead.', !(application && application.Store));
 
-      container.register('store:main', container.lookupFactory('store:application') || (application && application.Store) || Store);
+    Ember.onLoad('Ember.Application', function(Application) {
+      Application.initializer({
+        name: "store",
 
-      // allow older names to be looked up
+        initialize: function(container, application) {
+          application.register('store:main', application.Store || Store);
 
-      var proxy = new ContainerProxy(container);
-      proxy.registerDeprecations([
-        {deprecated: 'serializer:_default',  valid: 'serializer:-default'},
-        {deprecated: 'serializer:_rest',     valid: 'serializer:-rest'},
-        {deprecated: 'adapter:_rest',        valid: 'adapter:-rest'}
-      ]);
+          // allow older names to be looked up
 
-      // new go forward paths
-      container.register('serializer:-default', JSONSerializer);
-      container.register('serializer:-rest', RESTSerializer);
-      container.register('adapter:-rest', RESTAdapter);
+          var proxy = new ContainerProxy(container);
+          proxy.registerDeprecations([
+            {deprecated: 'serializer:_default',  valid: 'serializer:-default'},
+            {deprecated: 'serializer:_rest',     valid: 'serializer:-rest'},
+            {deprecated: 'adapter:_rest',        valid: 'adapter:-rest'}
+          ]);
 
-      // Eagerly generate the store so defaultStore is populated.
-      // TODO: Do this in a finisher hook
-      container.lookup('store:main');
-    };
-  });
-define("ember-data/lib/initializers/store_injections", 
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    /**
-      Configures a container with injections on Ember applications
-      for the Ember-Data store. Accepts an optional namespace argument.
+          // new go forward paths
+          application.register('serializer:-default', JSONSerializer);
+          application.register('serializer:-rest', RESTSerializer);
+          application.register('adapter:-rest', RESTAdapter);
 
-      @method initializeStoreInjections
-      @param {Ember.Container} container
-    */
-    __exports__["default"] = function initializeStoreInjections(container){
-      container.injection('controller',   'store', 'store:main');
-      container.injection('route',        'store', 'store:main');
-      container.injection('serializer',   'store', 'store:main');
-      container.injection('data-adapter', 'store', 'store:main');
-    };
-  });
-define("ember-data/lib/initializers/transforms", 
-  ["../transforms","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var BooleanTransform = __dependency1__.BooleanTransform;
-    var DateTransform = __dependency1__.DateTransform;
-    var StringTransform = __dependency1__.StringTransform;
-    var NumberTransform = __dependency1__.NumberTransform;
+          // Eagerly generate the store so defaultStore is populated.
+          // TODO: Do this in a finisher hook
+          container.lookup('store:main');
+        }
+      });
 
-    /**
-      Configures a container for use with Ember-Data
-      transforms.
+      Application.initializer({
+        name: "transforms",
+        before: "store",
 
-      @method initializeTransforms
-      @param {Ember.Container} container
-    */
-    __exports__["default"] = function initializeTransforms(container){
-      container.register('transform:boolean', BooleanTransform);
-      container.register('transform:date',    DateTransform);
-      container.register('transform:number',  NumberTransform);
-      container.register('transform:string',  StringTransform);
-    };
+        initialize: function(container, application) {
+          application.register('transform:boolean', BooleanTransform);
+          application.register('transform:date', DateTransform);
+          application.register('transform:number', NumberTransform);
+          application.register('transform:string', StringTransform);
+        }
+      });
+
+      Application.initializer({
+        name: "data-adapter",
+        before: "store",
+
+        initialize: function(container, application) {
+          application.register('data-adapter:main', DebugAdapter);
+        }
+      });
+
+      Application.initializer({
+        name: "injectStore",
+        before: "store",
+
+        initialize: function(container, application) {
+          application.inject('controller', 'store', 'store:main');
+          application.inject('route', 'store', 'store:main');
+          application.inject('serializer', 'store', 'store:main');
+          application.inject('data-adapter', 'store', 'store:main');
+        }
+      });
+
+    });
   });
 define("ember-data/lib/main", 
-  ["./core","./ext/date","./system/store","./system/model","./system/changes","./system/adapter","./system/debug","./system/record_arrays","./system/record_array_manager","./adapters","./serializers/json_serializer","./serializers/rest_serializer","../../ember-inflector/lib/main","../../activemodel-adapter/lib/main","./transforms","./system/relationships","./ember-initializer","./setup-container","./system/container_proxy","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __dependency9__, __dependency10__, __dependency11__, __dependency12__, __dependency13__, __dependency14__, __dependency15__, __dependency16__, __dependency17__, __dependency18__, __dependency19__, __exports__) {
+  ["./core","./ext/date","./system/store","./system/model","./system/changes","./system/adapter","./system/debug","./system/record_arrays","./system/record_array_manager","./adapters","./serializers/json_serializer","./serializers/rest_serializer","../../ember-inflector/lib/main","../../activemodel-adapter/lib/main","./transforms","./system/relationships","./initializers","./system/container_proxy","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __dependency9__, __dependency10__, __dependency11__, __dependency12__, __dependency13__, __dependency14__, __dependency15__, __dependency16__, __dependency17__, __dependency18__, __exports__) {
     "use strict";
     /**
       Ember Data
@@ -2253,9 +1838,8 @@ define("ember-data/lib/main",
 
     var hasMany = __dependency16__.hasMany;
     var belongsTo = __dependency16__.belongsTo;
-    var setupContainer = __dependency18__["default"];
 
-    var ContainerProxy = __dependency19__["default"];
+    var ContainerProxy = __dependency18__["default"];
 
     DS.Store         = Store;
     DS.PromiseArray  = PromiseArray;
@@ -2307,10 +1891,6 @@ define("ember-data/lib/main",
 
     DS.ContainerProxy = ContainerProxy;
 
-    DS._setupContainer = setupContainer;
-
-    Ember.lookup.DS = DS;
-
     __exports__["default"] = DS;
   });
 define("ember-data/lib/serializers", 
@@ -2324,10 +1904,9 @@ define("ember-data/lib/serializers",
     __exports__.RESTSerializer = RESTSerializer;
   });
 define("ember-data/lib/serializers/json_serializer", 
-  ["../system/changes","exports"],
-  function(__dependency1__, __exports__) {
+  ["exports"],
+  function(__exports__) {
     "use strict";
-    var RelationshipChange = __dependency1__.RelationshipChange;
     var get = Ember.get, set = Ember.set, isNone = Ember.isNone;
 
     /**
@@ -2606,7 +2185,7 @@ define("ember-data/lib/serializers/json_serializer",
        `serializeAttribute` can be used to customize how `DS.attr`
        properties are serialized
 
-       For example if you wanted to ensure all your attributes were always
+       For example if you wanted to ensure all you attributes were always
        serialized as properties on an `attributes` object you could
        write:
 
@@ -2711,7 +2290,7 @@ define("ember-data/lib/serializers/json_serializer",
       serializeHasMany: function(record, json, relationship) {
         var key = relationship.key;
 
-        var relationshipType = RelationshipChange.determineRelationshipType(record.constructor, relationship);
+        var relationshipType = DS.RelationshipChange.determineRelationshipType(record.constructor, relationship);
 
         if (relationshipType === 'manyToNone' || relationshipType === 'manyToMany') {
           json[key] = get(record, key).mapBy('id');
@@ -3240,7 +2819,7 @@ define("ember-data/lib/serializers/rest_serializer",
         @param {subclass of DS.Model} type
         @param {Object} hash
         @param {String} prop
-        @return {Object}
+        @returns {Object}
       */
       normalize: function(type, hash, prop) {
         this.normalizeId(hash);
@@ -3274,8 +2853,8 @@ define("ember-data/lib/serializers/rest_serializer",
 
         @method normalizePayload
         @param {subclass of DS.Model} type
-        @param {Object} payload
-        @return {Object} the normalized payload
+        @param {Object} hash
+        @returns {Object} the normalized payload
       */
       normalizePayload: function(type, payload) {
         return payload;
@@ -3387,12 +2966,12 @@ define("ember-data/lib/serializers/rest_serializer",
         ```js
         App.PostSerializer = DS.RESTSerializer.extend({
           // First, restructure the top-level so it's organized by type
-          extractSingle: function(store, type, payload, id) {
+          extractSingle: function(store, type, payload, id, requestType) {
             var comments = payload._embedded.comment;
             delete payload._embedded;
 
             payload = { comments: comments, post: payload };
-            return this._super(store, type, payload, id);
+            return this._super(store, type, payload, id, requestType);
           },
 
           normalizeHash: {
@@ -3422,12 +3001,13 @@ define("ember-data/lib/serializers/rest_serializer",
 
         @method extractSingle
         @param {DS.Store} store
-        @param {subclass of DS.Model} primaryType
+        @param {subclass of DS.Model} type
         @param {Object} payload
-        @param {String} recordId
-        @return {Object} the primary response to the original request
+        @param {String} id
+        @param {'find'|'createRecord'|'updateRecord'|'deleteRecord'} requestType
+        @returns {Object} the primary response to the original request
       */
-      extractSingle: function(store, primaryType, payload, recordId) {
+      extractSingle: function(store, primaryType, payload, recordId, requestType) {
         payload = this.normalizePayload(primaryType, payload);
 
         var primaryTypeName = primaryType.typeKey,
@@ -3515,7 +3095,7 @@ define("ember-data/lib/serializers/rest_serializer",
         App.PostSerializer = DS.RESTSerializer.extend({
           // First, restructure the top-level so it's organized by type
           // and the comments are listed under a post's `comments` key.
-          extractArray: function(store, type, payload) {
+          extractArray: function(store, type, payload, id, requestType) {
             var posts = payload._embedded.post;
             var comments = [];
             var postCache = {};
@@ -3533,7 +3113,7 @@ define("ember-data/lib/serializers/rest_serializer",
 
             payload = { comments: comments, posts: payload };
 
-            return this._super(store, type, payload);
+            return this._super(store, type, payload, id, requestType);
           },
 
           normalizeHash: {
@@ -3567,9 +3147,10 @@ define("ember-data/lib/serializers/rest_serializer",
 
         @method extractArray
         @param {DS.Store} store
-        @param {subclass of DS.Model} primaryType
+        @param {subclass of DS.Model} type
         @param {Object} payload
-        @return {Array} The primary array that was returned in response
+        @param {'findAll'|'findMany'|'findHasMany'|'findQuery'} requestType
+        @returns {Array} The primary array that was returned in response
           to the original query.
       */
       extractArray: function(store, primaryType, payload) {
@@ -3643,12 +3224,11 @@ define("ember-data/lib/serializers/rest_serializer",
 
         for (var prop in payload) {
           var typeName = this.typeForRoot(prop),
-              type = store.modelFor(typeName),
-              typeSerializer = store.serializerFor(type);
+              type = store.modelFor(typeName);
 
           /*jshint loopfunc:true*/
           var normalizedArray = map.call(Ember.makeArray(payload[prop]), function(hash) {
-            return typeSerializer.normalize(type, hash, prop);
+            return this.normalize(type, hash, prop);
           }, this);
 
           store.pushMany(typeName, normalizedArray);
@@ -3673,7 +3253,7 @@ define("ember-data/lib/serializers/rest_serializer",
 
         @method typeForRoot
         @param {String} root
-        @return {String} the model's typeKey
+        @returns {String} the model's typeKey
       */
       typeForRoot: function(root) {
         return Ember.String.singularize(root);
@@ -3872,61 +3452,6 @@ define("ember-data/lib/serializers/rest_serializer",
 
     __exports__["default"] = RESTSerializer;
   });
-define("ember-data/lib/setup-container", 
-  ["./initializers/store","./initializers/transforms","./initializers/store_injections","./initializers/data_adapter","../../../activemodel-adapter/lib/setup-container","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __exports__) {
-    "use strict";
-    var initializeStore = __dependency1__["default"];
-    var initializeTransforms = __dependency2__["default"];
-    var initializeStoreInjections = __dependency3__["default"];
-    var initializeDataAdapter = __dependency4__["default"];
-    var setupActiveModelContainer = __dependency5__["default"];
-
-    /**
-      @module ember-data
-
-      This code registers an injection for Ember.Application.
-
-      If an Ember.js developer defines a subclass of DS.Store on their application,
-      as `App.ApplicationStore` (or via a module system that resolves to `store:application`)
-      this code will automatically instantiate it and make it available on the
-      router.
-
-      Additionally, after an application's controllers have been injected, they will
-      each have the store made available to them.
-
-      For example, imagine an Ember.js application with the following classes:
-
-      App.ApplicationStore = DS.Store.extend({
-        adapter: 'custom'
-      });
-
-      App.PostsController = Ember.ArrayController.extend({
-        // ...
-      });
-
-      When the application is initialized, `App.ApplicationStore` will automatically be
-      instantiated, and the instance of `App.PostsController` will have its `store`
-      property set to that instance.
-
-      Note that this code will only be run if the `ember-application` package is
-      loaded. If Ember Data is being used in an environment other than a
-      typical application (e.g., node.js where only `ember-runtime` is available),
-      this code will be ignored.
-    */
-
-    __exports__["default"] = function setupContainer(container, application){
-      // application is not a required argument. This ensures
-      // testing setups can setup a container without booting an
-      // entire ember application.
-
-      initializeDataAdapter(container, application);
-      initializeTransforms(container, application);
-      initializeStoreInjections(container, application);
-      initializeStore(container, application);
-      setupActiveModelContainer(container, application);
-    };
-  });
 define("ember-data/lib/system/adapter", 
   ["exports"],
   function(__exports__) {
@@ -3965,11 +3490,11 @@ define("ember-data/lib/system/adapter",
         }
       });
       ```
-
+      
       The `DS.InvalidError` must be constructed with a single object whose
       keys are the invalid model properties, and whose values are the
       corresponding error messages. For example:
-
+      
       ```javascript
       return new DS.InvalidError({
         length: 'Must be less than 15',
@@ -4000,26 +3525,20 @@ define("ember-data/lib/system/adapter",
 
       ### Creating an Adapter
 
-      Create a new subclass of `DS.Adapter`, then assign
-      it to the `ApplicationAdapter` property of the application.
+      First, create a new subclass of `DS.Adapter`:
 
       ```javascript
-      var MyAdapter = DS.Adapter.extend({
+      App.MyAdapter = DS.Adapter.extend({
         // ...your code here
       });
-
-      App.ApplicationAdapter = MyAdapter;
       ```
 
-      Model-specific adapters can be created by assigning your adapter
-      class to the `ModelName` + `Adapter` property of the application.
+      To tell your store which adapter to use, set its `adapter` property:
 
       ```javascript
-      var MyPostAdapter = DS.Adapter.extend({
-        // ...Post-specific adapter code goes here
+      App.store = DS.Store.create({
+        adapter: 'MyAdapter'
       });
-
-      App.PostAdapter = MyPostAdapter;
       ```
 
       `DS.Adapter` is an abstract base class that you should override in your
@@ -5440,8 +4959,6 @@ define("ember-data/lib/system/model/attributes",
       `boolean` and `date`. You can define your own transforms by subclassing
       [DS.Transform](/api/data/classes/DS.Transform.html).
 
-      Note that you cannot use `attr` to define an attribute of `id`.
-
       `DS.attr` takes an optional hash as a second parameter, currently
       supported options are:
 
@@ -5523,65 +5040,6 @@ define("ember-data/lib/system/model/errors",
     /**
       Holds validation errors for a given record organized by attribute names.
 
-      Every DS.Model has an `errors` property that is an instance of
-      `DS.Errors`. This can be used to display validation error
-      messages returned from the server when a `record.save()` rejects.
-
-      For Example, if you had an `User` model that looked like this:
-
-      ```javascript
-      App.User = DS.Model.extend({
-        username: attr('string'),
-        email: attr('string')
-      });
-      ```
-      And you attempted to save a record that did not validate on the backend.
-
-      ```javascript
-      var user = store.createRecord('user', {
-        username: 'tomster',
-        email: 'invalidEmail'
-      });
-      user.save();
-      ```
-
-      Your backend data store might return a response that looks like
-      this. This response will be used to populate the error object.
-
-      ```javascript
-      {
-        "errors": {
-          "username": ["This username is already taken!"],
-          "email": ["Doesn't look like a valid email."]
-        }
-      }
-      ```
-
-      Errors can be displayed to the user by accessing their property name
-      or using the `messages` property to get an array of all errors.
-
-      ```handlebars
-      {{#each errors.messages}}
-        <div class="error">
-          {{message}}
-        </div>
-      {{/each}}
-
-      <label>Username: {{input value=username}} </label>
-      {{#each errors.username}}
-        <div class="error">
-          {{message}}
-        </div>
-      {{/each}}
-
-      <label>Email: {{input value=email}} </label>
-      {{#each errors.email}}
-        <div class="error">
-          {{message}}
-        </div>
-      {{/each}}
-      ```
-
       @class Errors
       @namespace DS
       @extends Ember.Object
@@ -5632,38 +5090,15 @@ define("ember-data/lib/system/model/errors",
       /**
         Returns errors for a given attribute
 
-        ```javascript
-        var user = store.createRecord('user', {
-          username: 'tomster',
-          email: 'invalidEmail'
-        });
-        user.save().catch(function(){
-          user.get('errors').errorsFor('email'); // ["Doesn't look like a valid email."]
-        });
-        ```
-
         @method errorsFor
         @param {String} attribute
-        @return {Array}
+        @returns {Array}
       */
       errorsFor: function(attribute) {
         return get(this, 'errorsByAttributeName').get(attribute);
       },
 
       /**
-        An array containing all of the error messages for this
-        record. This is useful for displaying all errors to the user.
-
-        ```handlebars
-        {{#each errors.messages}}
-          <div class="error">
-            {{message}}
-          </div>
-        {{/each}}
-        ```
-
-        @property messages
-        @type {Array}
       */
       messages: Ember.computed.mapBy('content', 'message'),
 
@@ -5714,14 +5149,6 @@ define("ember-data/lib/system/model/errors",
         Adds error messages to a given attribute and sends
         `becameInvalid` event to the record.
 
-        Example:
-
-        ```javascript
-        if (!user.get('username') {
-          user.get('errors').add('username', 'This field is required');
-        }
-        ```
-
         @method add
         @param {String} attribute
         @param {Array|String} messages
@@ -5759,27 +5186,6 @@ define("ember-data/lib/system/model/errors",
         Removes all error messages from the given attribute and sends
         `becameValid` event to the record if there no more errors left.
 
-        Example:
-
-        ```javascript
-        App.User = DS.Model.extend({
-          email: DS.attr('string'),
-          twoFactorAuth: DS.attr('boolean'),
-          phone: DS.attr('string')
-        });
-
-        App.UserEditRoute = Ember.Route.extend({
-          actions: {
-            save: function(user) {
-               if (!user.get('twoFactorAuth')) {
-                 user.get('errors').remove('phone');
-               }
-               user.save();
-             }
-          }
-        });
-        ```
-
         @method remove
         @param {String} attribute
       */
@@ -5801,19 +5207,6 @@ define("ember-data/lib/system/model/errors",
         Removes all error messages and sends `becameValid` event
         to the record.
 
-        Example:
-
-        ```javascript
-        App.UserEditRoute = Ember.Route.extend({
-          actions: {
-            retrySave: function(user) {
-               user.get('errors').clear();
-               user.save();
-             }
-          }
-        });
-        ```
-
         @method clear
       */
       clear: function() {
@@ -5828,22 +5221,9 @@ define("ember-data/lib/system/model/errors",
       /**
         Checks if there is error messages for the given attribute.
 
-        ```javascript
-        App.UserEditRoute = Ember.Route.extend({
-          actions: {
-            save: function(user) {
-               if (user.get('errors').has('email')) {
-                 return alert('Please update your email before attempting to save.');
-               }
-               user.save();
-             }
-          }
-        });
-        ```
-
         @method has
         @param {String} attribute
-        @return {Boolean} true if there some errors on given attribute
+        @returns {Boolean} true if there some errors on given attribute
       */
       has: function(attribute) {
         return !isEmpty(this.errorsFor(attribute));
@@ -5853,12 +5233,11 @@ define("ember-data/lib/system/model/errors",
     __exports__["default"] = Errors;
   });
 define("ember-data/lib/system/model/model", 
-  ["./states","./errors","../store","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
+  ["./states","./errors","exports"],
+  function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var RootState = __dependency1__["default"];
     var Errors = __dependency2__["default"];
-    var PromiseObject = __dependency3__.PromiseObject;
     /**
       @module ember-data
     */
@@ -5867,7 +5246,6 @@ define("ember-data/lib/system/model/model",
         merge = Ember.merge,
         Promise = Ember.RSVP.Promise;
 
-    var JSONSerializer;
     var retrieveFromCurrentState = Ember.computed('currentState', function(key, value) {
       return get(get(this, 'currentState'), key);
     }).readOnly();
@@ -5919,7 +5297,7 @@ define("ember-data/lib/system/model/model",
         Example
 
         ```javascript
-        var record = store.createRecord('model');
+        var record = store.createRecord(App.Model);
         record.get('isLoaded'); // true
 
         store.find('model', 1).then(function(model) {
@@ -5941,13 +5319,13 @@ define("ember-data/lib/system/model/model",
         Example
 
         ```javascript
-        var record = store.createRecord('model');
+        var record = store.createRecord(App.Model);
         record.get('isDirty'); // true
 
         store.find('model', 1).then(function(model) {
           model.get('isDirty'); // false
           model.set('foo', 'some value');
-          model.get('isDirty'); // true
+          model.set('isDirty'); // true
         });
         ```
 
@@ -5965,7 +5343,7 @@ define("ember-data/lib/system/model/model",
         Example
 
         ```javascript
-        var record = store.createRecord('model');
+        var record = store.createRecord(App.Model);
         record.get('isSaving'); // false
         var promise = record.save();
         record.get('isSaving'); // true
@@ -5990,26 +5368,10 @@ define("ember-data/lib/system/model/model",
         Example
 
         ```javascript
-        var record = store.createRecord('model');
-        record.get('isDeleted');    // false
+        var record = store.createRecord(App.Model);
+        record.get('isDeleted'); // false
         record.deleteRecord();
-
-        // Locally deleted
-        record.get('isDeleted');    // true
-        record.get('isDirty');      // true
-        record.get('isSaving');     // false
-
-        // Persisting the deletion
-        var promise = record.save();
-        record.get('isDeleted');    // true
-        record.get('isSaving');     // true
-
-        // Deletion Persisted
-        promise.then(function() {
-          record.get('isDeleted');  // true
-          record.get('isSaving');   // false
-          record.get('isDirty');    // false
-        });
+        record.get('isDeleted'); // true
         ```
 
         @property isDeleted
@@ -6026,7 +5388,7 @@ define("ember-data/lib/system/model/model",
         Example
 
         ```javascript
-        var record = store.createRecord('model');
+        var record = store.createRecord(App.Model);
         record.get('isNew'); // true
 
         record.save().then(function(model) {
@@ -6040,9 +5402,9 @@ define("ember-data/lib/system/model/model",
       */
       isNew: retrieveFromCurrentState,
       /**
-        If this property is `true` the record is in the `valid` state.
-
-        A record will be in the `valid` state when the adapter did not report any
+        If this property is `true` the record is in the `valid` state. A
+        record will be in the `valid` state when no client-side
+        validations have failed and the adapter did not report any
         server-side validation failures.
 
         @property isValid
@@ -6062,7 +5424,7 @@ define("ember-data/lib/system/model/model",
         Example
 
         ```javascript
-        var record = store.createRecord('model');
+        var record = store.createRecord(App.Model);
         record.get('dirtyType'); // 'created'
         ```
 
@@ -6074,14 +5436,15 @@ define("ember-data/lib/system/model/model",
 
       /**
         If `true` the adapter reported that it was unable to save local
-        changes to the backend for any reason other than a server-side
-        validation error.
+        changes to the backend. This may also result in the record having
+        its `isValid` property become false if the adapter reported that
+        server-side validations failed.
 
         Example
 
         ```javascript
         record.get('isError'); // false
-        record.set('foo', 'valid value');
+        record.set('foo', 'invalid value');
         record.save().then(null, function() {
           record.get('isError'); // true
         });
@@ -6128,7 +5491,7 @@ define("ember-data/lib/system/model/model",
         attribute.
 
         ```javascript
-        var record = store.createRecord('model');
+        var record = store.createRecord(App.Model);
         record.get('id'); // null
 
         store.find('model', 1).then(function(model) {
@@ -6163,7 +5526,7 @@ define("ember-data/lib/system/model/model",
         ```
 
         @property errors
-        @type {DS.Errors}
+        @type {Object}
       */
       errors: Ember.computed(function() {
         var errors = Errors.create();
@@ -6189,7 +5552,7 @@ define("ember-data/lib/system/model/model",
 
         @method serialize
         @param {Object} options
-        @return {Object} an object whose values are primitive JSON values only
+        @returns {Object} an object whose values are primitive JSON values only
       */
       serialize: function(options) {
         var store = get(this, 'store');
@@ -6208,12 +5571,11 @@ define("ember-data/lib/system/model/model",
 
         @method toJSON
         @param {Object} options
-        @return {Object} A JSON representation of the object.
+        @returns {Object} A JSON representation of the object.
       */
       toJSON: function(options) {
-        if (!JSONSerializer) { JSONSerializer = requireModule("ember-data/lib/serializers/json_serializer")["default"]; }
         // container is for lazy transform lookups
-        var serializer = JSONSerializer.create({ container: this.container });
+        var serializer = DS.JSONSerializer.create({ container: this.container });
         return serializer.serialize(this, options);
       },
 
@@ -6583,7 +5945,7 @@ define("ember-data/lib/system/model/model",
       hasManyDidChange: function(key) {
         var hasMany = this._relationships[key];
 
-        if (hasMany && !hasMany.isDestroyed) {
+        if (hasMany) {
           var records = this._data[key] || [];
 
           set(hasMany, 'content', Ember.A(records));
@@ -6764,7 +6126,7 @@ define("ember-data/lib/system/model/model",
         this._inFlightAttributes = this._attributes;
         this._attributes = {};
 
-        return PromiseObject.create({ promise: resolver.promise });
+        return DS.PromiseObject.create({ promise: resolver.promise });
       },
 
       /**
@@ -6808,7 +6170,7 @@ define("ember-data/lib/system/model/model",
           throw reason;
         }, "DS: Model#reload complete, update flags");
 
-        return PromiseObject.create({ promise: promise });
+        return DS.PromiseObject.create({ promise: promise });
       },
 
       // FOR USE DURING COMMIT PROCESS
@@ -7143,8 +6505,8 @@ define("ember-data/lib/system/model/states",
     //   adapter reported that server-side validations failed.
     // * isNew: The record was created on the client and the adapter
     //   did not yet report that it was successfully saved.
-    // * isValid: The adapter did not report any server-side validation
-    //   failures.
+    // * isValid: No client-side validations have failed and the
+    //   adapter did not report any server-side validation failures.
 
     // The dirty state is a abstract state whose functionality is
     // shared between the `created` and `updated` states.
@@ -7249,7 +6611,8 @@ define("ember-data/lib/system/model/states",
         }
       },
 
-      // A record is in the `invalid` if the adapter has indicated
+      // A record is in the `invalid` state when its client-side
+      // invalidations have failed, or if the adapter has indicated
       // the the record failed server-side invalidations.
       invalid: {
         // FLAGS
@@ -7279,10 +6642,6 @@ define("ember-data/lib/system/model/states",
 
         invokeLifecycleCallbacks: function(record) {
           record.triggerLater('becameInvalid', record);
-        },
-
-        exit: function(record) {
-          record._inFlightAttributes = {};
         }
       }
     };
@@ -7649,9 +7008,6 @@ define("ember-data/lib/system/record_array_manager",
       @module ember-data
     */
 
-    var RecordArray = __dependency1__.RecordArray;
-    var FilteredRecordArray = __dependency1__.FilteredRecordArray;
-    var AdapterPopulatedRecordArray = __dependency1__.AdapterPopulatedRecordArray;
     var ManyArray = __dependency1__.ManyArray;
     var get = Ember.get, set = Ember.set;
     var forEach = Ember.EnumerableUtils.forEach;
@@ -7827,7 +7183,7 @@ define("ember-data/lib/system/record_array_manager",
         @return {DS.RecordArray}
       */
       createRecordArray: function(type) {
-        var array = RecordArray.create({
+        var array = DS.RecordArray.create({
           type: type,
           content: Ember.A(),
           store: this.store,
@@ -7845,12 +7201,10 @@ define("ember-data/lib/system/record_array_manager",
         @method createFilteredRecordArray
         @param {Class} type
         @param {Function} filter
-        @param {Object} query (optional
         @return {DS.FilteredRecordArray}
       */
-      createFilteredRecordArray: function(type, filter, query) {
-        var array = FilteredRecordArray.create({
-          query: query,
+      createFilteredRecordArray: function(type, filter) {
+        var array = DS.FilteredRecordArray.create({
           type: type,
           content: Ember.A(),
           store: this.store,
@@ -7872,12 +7226,11 @@ define("ember-data/lib/system/record_array_manager",
         @return {DS.AdapterPopulatedRecordArray}
       */
       createAdapterPopulatedRecordArray: function(type, query) {
-        var array = AdapterPopulatedRecordArray.create({
+        var array = DS.AdapterPopulatedRecordArray.create({
           type: type,
           query: query,
           content: Ember.A(),
-          store: this.store,
-          manager: this
+          store: this.store
         });
 
         this._adapterPopulatedRecordArrays.push(array);
@@ -8014,10 +7367,6 @@ define("ember-data/lib/system/record_arrays/adapter_populated_record_array",
           meta: meta
         });
 
-        records.forEach(function(record) {
-          this.manager.recordArraysForRecord(record).add(this);
-        }, this);
-
         // TODO: should triggering didLoad event be the last action of the runLoop?
         Ember.run.once(this, 'trigger', 'didLoad');
       }
@@ -8086,13 +7435,9 @@ define("ember-data/lib/system/record_arrays/filtered_record_array",
         @method updateFilter
         @private
       */
-      _updateFilter: function() {
+      updateFilter: Ember.observer(function() {
         var manager = get(this, 'manager');
         manager.updateFilter(this, get(this, 'type'), get(this, 'filterFunction'));
-      },
-
-      updateFilter: Ember.observer(function() {
-        Ember.run.once(this, this._updateFilter);
       }, 'filterFunction')
     });
 
@@ -8389,7 +7734,7 @@ define("ember-data/lib/system/record_arrays/record_array",
         Example
 
         ```javascript
-        var people = store.all('person');
+        var people = store.all(App.Person);
         people.get('isLoaded'); // true
         ```
 
@@ -8403,7 +7748,7 @@ define("ember-data/lib/system/record_arrays/record_array",
         Example
 
         ```javascript
-        var people = store.all('person');
+        var people = store.all(App.Person);
         people.get('isUpdating'); // false
         people.update();
         people.get('isUpdating'); // true
@@ -8444,7 +7789,7 @@ define("ember-data/lib/system/record_arrays/record_array",
         Example
 
         ```javascript
-        var people = store.all('person');
+        var people = store.all(App.Person);
         people.get('isUpdating'); // false
         people.update();
         people.get('isUpdating'); // true
@@ -8489,7 +7834,7 @@ define("ember-data/lib/system/record_arrays/record_array",
         Example
 
         ```javascript
-        var messages = store.all('message');
+        var messages = store.all(App.Message);
         messages.forEach(function(message) {
           message.set('hasBeenSeen', true);
         });
@@ -8544,8 +7889,8 @@ define("ember-data/lib/system/relationships",
     __exports__.hasMany = hasMany;
   });
 define("ember-data/lib/system/relationships/belongs_to", 
-  ["../model","../store","../changes","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __exports__) {
+  ["../model","exports"],
+  function(__dependency1__, __exports__) {
     "use strict";
     var get = Ember.get, set = Ember.set,
         isNone = Ember.isNone;
@@ -8553,8 +7898,6 @@ define("ember-data/lib/system/relationships/belongs_to",
     var Promise = Ember.RSVP.Promise;
 
     var Model = __dependency1__.Model;
-    var PromiseObject = __dependency2__.PromiseObject;
-    var RelationshipChange = __dependency3__.RelationshipChange;
 
     /**
       @module ember-data
@@ -8569,7 +7912,7 @@ define("ember-data/lib/system/relationships/belongs_to",
 
         if (arguments.length === 2) {
           Ember.assert("You can only add a '" + type + "' record to this relationship", !value || value instanceof store.modelFor(type));
-          return value === undefined ? null : PromiseObject.create({
+          return value === undefined ? null : DS.PromiseObject.create({
             promise: Promise.cast(value, promiseLabel)
           });
         }
@@ -8579,12 +7922,12 @@ define("ember-data/lib/system/relationships/belongs_to",
 
         if(!isNone(belongsTo)) {
           promise = store.fetchRecord(belongsTo) || Promise.cast(belongsTo, promiseLabel);
-          return PromiseObject.create({
+          return DS.PromiseObject.create({
             promise: promise
           });
         } else if (link) {
           promise = store.findBelongsTo(this, link, meta);
-          return PromiseObject.create({
+          return DS.PromiseObject.create({
             promise: promise
           });
         } else {
@@ -8645,7 +7988,7 @@ define("ember-data/lib/system/relationships/belongs_to",
         options = type;
         type = undefined;
       } else {
-        Ember.assert("The first argument DS.belongsTo must be a model type or string, like DS.belongsTo(App.Person)", !!type && (typeof type === 'string' || Model.detect(type)));
+        Ember.assert("The first argument DS.belongsTo must be a model type or string, like DS.belongsTo(App.Person)", !!type && (typeof type === 'string' || DS.Model.detect(type)));
       }
 
       options = options || {};
@@ -8708,7 +8051,7 @@ define("ember-data/lib/system/relationships/belongs_to",
 
           if (oldParent) {
             var store = get(record, 'store'),
-                change = RelationshipChange.createChange(record, oldParent, store, { key: key, kind: "belongsTo", changeType: "remove" });
+                change = DS.RelationshipChange.createChange(record, oldParent, store, { key: key, kind: "belongsTo", changeType: "remove" });
 
             change.sync();
             this._changesToSync[key] = change;
@@ -8729,7 +8072,7 @@ define("ember-data/lib/system/relationships/belongs_to",
 
           if (newParent) {
             var store = get(record, 'store'),
-                change = RelationshipChange.createChange(record, newParent, store, { key: key, kind: "belongsTo", changeType: "add" });
+                change = DS.RelationshipChange.createChange(record, newParent, store, { key: key, kind: "belongsTo", changeType: "add" });
 
             change.sync();
           }
@@ -9209,14 +8552,13 @@ define("ember-data/lib/system/relationships/ext",
     });
   });
 define("ember-data/lib/system/relationships/has_many", 
-  ["../store","exports"],
-  function(__dependency1__, __exports__) {
+  ["exports"],
+  function(__exports__) {
     "use strict";
     /**
       @module ember-data
     */
 
-    var PromiseArray = __dependency1__.PromiseArray;
     var get = Ember.get, set = Ember.set, setProperties = Ember.setProperties;
 
     function asyncHasMany(type, options, meta) {
@@ -9246,7 +8588,7 @@ define("ember-data/lib/system/relationships/has_many",
           return relationship;
         }, null, "DS: Async hasMany records received");
 
-        return PromiseArray.create({
+        return DS.PromiseArray.create({
           promise: promise
         });
       }).meta(meta).readOnly();
@@ -9381,8 +8723,8 @@ define("ember-data/lib/system/relationships/has_many",
     __exports__["default"] = hasMany;
   });
 define("ember-data/lib/system/store", 
-  ["./adapter","exports"],
-  function(__dependency1__, __exports__) {
+  ["exports"],
+  function(__exports__) {
     "use strict";
     /*globals Ember*/
     /*jshint eqnull:true*/
@@ -9391,8 +8733,6 @@ define("ember-data/lib/system/store",
       @module ember-data
     */
 
-    var InvalidError = __dependency1__.InvalidError;
-    var Adapter = __dependency1__.Adapter;
     var get = Ember.get, set = Ember.set;
     var once = Ember.run.once;
     var isNone = Ember.isNone;
@@ -9401,7 +8741,7 @@ define("ember-data/lib/system/store",
     var map = Ember.EnumerableUtils.map;
     var Promise = Ember.RSVP.Promise;
     var copy = Ember.copy;
-    var Store, PromiseObject, PromiseArray, RecordArrayManager, Model;
+    var Store, PromiseObject, PromiseArray;
 
     // Implementors Note:
     //
@@ -9454,7 +8794,7 @@ define("ember-data/lib/system/store",
       specify which store should be used:
 
       ```javascript
-      var person = store.find('person', 123);
+      var person = store.find(App.Person, 123);
       ```
 
       By default, the store will talk to your backend using a standard
@@ -9470,39 +8810,6 @@ define("ember-data/lib/system/store",
       You can learn more about writing a custom adapter by reading the `DS.Adapter`
       documentation.
 
-      ### Store createRecord() vs. push() vs. pushPayload() vs. update()
-
-      The store provides multiple ways to create new records object. They have
-      some subtle differences in their use which are detailed below:
-
-      [createRecord](#method_createRecord) is used for creating new
-      records on the client side. This will return a new record in the
-      `created.uncommitted` state. In order to persist this record to the
-      backend you will need to call `record.save()`.
-
-      [push](#method_push) is used to notify Ember Data's store of new or
-      updated records that exist in the backend. This will return a record
-      in the `loaded.saved` state. The primary use-case for `store#push` is
-      to notify Ember Data about record updates that happen
-      outside of the normal adapter methods (for example
-      [SSE](http://dev.w3.org/html5/eventsource/) or [Web
-      Sockets](http://www.w3.org/TR/2009/WD-websockets-20091222/)).
-
-      [pushPayload](#method_pushPayload) is a convenience wrapper for
-      `store#push` that will deserialize payloads if the model's
-      Serializer implements a `pushPayload` method.
-
-      [update](#method_update) works like `push`, except it can handle
-      partial attributes without overwriting the existing record
-      properties.
-
-      Note: When creating a new record using any of the above methods
-      Ember Data will update `DS.RecordArray`s such as those returned by
-      `store#all()`, `store#findAll()` or `store#filter()`. This means any
-      data bindings or computed properties that depend on the RecordArray
-      will automatically be synced to include the new or updated record
-      values.
-
       @class Store
       @namespace DS
       @extends Ember.Object
@@ -9515,9 +8822,8 @@ define("ember-data/lib/system/store",
       */
       init: function() {
         // internal bookkeeping; not observable
-        if (!RecordArrayManager) { RecordArrayManager = requireModule("ember-data/lib/system/record_array_manager")["default"]; }
         this.typeMaps = {};
-        this.recordArrayManager = RecordArrayManager.create({
+        this.recordArrayManager = DS.RecordArrayManager.create({
           store: this
         });
         this._relationshipChanges = {};
@@ -9572,12 +8878,12 @@ define("ember-data/lib/system/store",
 
         @property defaultAdapter
         @private
-        @return DS.Adapter
+        @returns DS.Adapter
       */
       defaultAdapter: Ember.computed('adapter', function() {
         var adapter = get(this, 'adapter');
 
-        Ember.assert('You tried to set `adapter` property to an instance of `DS.Adapter`, where it should be a name or a factory', !(adapter instanceof Adapter));
+        Ember.assert('You tried to set `adapter` property to an instance of `DS.Adapter`, where it should be a name or a factory', !(adapter instanceof DS.Adapter));
 
         if (typeof adapter === 'string') {
           adapter = this.container.lookup('adapter:' + adapter) || this.container.lookup('adapter:application') || this.container.lookup('adapter:-rest');
@@ -9612,7 +8918,7 @@ define("ember-data/lib/system/store",
         @param {String} type
         @param {Object} properties a hash of properties to set on the
           newly created record.
-        @return {DS.Model} record
+        @returns {DS.Model} record
       */
       createRecord: function(type, properties) {
         type = this.modelFor(type);
@@ -9650,7 +8956,7 @@ define("ember-data/lib/system/store",
         @method _generateId
         @private
         @param {String} type
-        @return {String} if the adapter can generate one, an ID
+        @returns {String} if the adapter can generate one, an ID
       */
       _generateId: function(type) {
         var adapter = this.adapterFor(type);
@@ -9747,7 +9053,7 @@ define("ember-data/lib/system/store",
         parameter:
 
         ```javascript
-        store.find('person', { page: 1 });
+        store.find(App.Person, { page: 1 });
         ```
 
         This will ask the adapter's `findQuery` method to find the records for
@@ -9801,7 +9107,7 @@ define("ember-data/lib/system/store",
         @method findByIds
         @param {String} type
         @param {Array} ids
-        @return {Promise} promise
+        @returns {Promise} promise
       */
       findByIds: function(type, ids) {
         var store = this;
@@ -9819,7 +9125,7 @@ define("ember-data/lib/system/store",
         @method fetchRecord
         @private
         @param {DS.Model} record
-        @return {Promise} promise
+        @returns {Promise} promise
       */
       fetchRecord: function(record) {
         if (isNone(record)) { return null; }
@@ -9937,7 +9243,7 @@ define("ember-data/lib/system/store",
         @method hasRecordForId
         @param {String or subclass of DS.Model} type
         @param {String|Integer} id
-        @return {Boolean}
+        @returns {Boolean}
       */
       hasRecordForId: function(type, id) {
         id = coerceId(id);
@@ -9953,7 +9259,7 @@ define("ember-data/lib/system/store",
         @private
         @param {String or subclass of DS.Model} type
         @param {String|Integer} id
-        @return {DS.Model} record
+        @returns {DS.Model} record
       */
       recordForId: function(type, id) {
         type = this.modelFor(type);
@@ -10105,7 +9411,7 @@ define("ember-data/lib/system/store",
         @private
         @param {DS.Model} type
         @param {DS.RecordArray} array
-        @return {Promise} promise
+        @returns {Promise} promise
       */
       fetchAll: function(type, array) {
         var adapter = this.adapterFor(type),
@@ -10141,7 +9447,7 @@ define("ember-data/lib/system/store",
         Example
 
         ```javascript
-        var localPosts = store.all('post');
+        var local_posts = store.all(App.Post);
         ```
 
         @method all
@@ -10167,7 +9473,7 @@ define("ember-data/lib/system/store",
         This method unloads all of the known records for a given type.
 
         ```javascript
-        store.unloadAll('post');
+        store.unloadAll(App.Post);
         ```
 
         @method unloadAll
@@ -10211,7 +9517,7 @@ define("ember-data/lib/system/store",
         Example
 
         ```javascript
-        store.filter('post', {unread: true}, function(post) {
+        store.filter(App.Post, {unread: true}, function(post) {
           return post.get('unread');
         }).then(function(unreadPosts) {
           unreadPosts.get('length'); // 5
@@ -10229,12 +9535,9 @@ define("ember-data/lib/system/store",
       */
       filter: function(type, query, filter) {
         var promise;
-        var length = arguments.length;
-        var array;
-        var hasQuery = length === 3;
 
         // allow an optional server query
-        if (hasQuery) {
+        if (arguments.length === 3) {
           promise = this.findQuery(type, query);
         } else if (arguments.length === 2) {
           filter = query;
@@ -10242,14 +9545,9 @@ define("ember-data/lib/system/store",
 
         type = this.modelFor(type);
 
-        if (hasQuery) {
-          array = this.recordArrayManager.createFilteredRecordArray(type, filter, query);
-        } else {
-          array = this.recordArrayManager.createFilteredRecordArray(type, filter);
-        }
-
+        var array = this.recordArrayManager
+          .createFilteredRecordArray(type, filter);
         promise = promise || Promise.cast(array);
-
 
         return promiseArray(promise.then(function() {
           return array;
@@ -10264,9 +9562,9 @@ define("ember-data/lib/system/store",
          Example
 
         ```javascript
-        store.recordIsLoaded('post', 1); // false
-        store.find('post', 1).then(function() {
-          store.recordIsLoaded('post', 1); // true
+        store.recordIsLoaded(App.Post, 1); // false
+        store.find(App.Post, 1).then(function() {
+          store.recordIsLoaded(App.Post, 1); // true
         });
         ```
 
@@ -10494,7 +9792,7 @@ define("ember-data/lib/system/store",
 
         @method modelFor
         @param {String or subclass of DS.Model} key
-        @return {subclass of DS.Model}
+        @returns {subclass of DS.Model}
       */
       modelFor: function(key) {
         var factory;
@@ -10573,7 +9871,7 @@ define("ember-data/lib/system/store",
         @method push
         @param {String or subclass of DS.Model} type
         @param {Object} data
-        @return {DS.Model} the record that was created or
+        @returns {DS.Model} the record that was created or
           updated.
       */
       push: function(type, data, _partial) {
@@ -10637,38 +9935,6 @@ define("ember-data/lib/system/store",
         serializer.pushPayload(this, payload);
       },
 
-      /**
-        Update existing records in the store. Unlike [push](#method_push),
-        update will merge the new data properties with the existing
-        properties. This makes it safe to use with a subset of record
-        attributes. This method expects normalized data.
-
-        `update` is useful if you app broadcasts partial updates to
-        records.
-
-        ```js
-        App.Person = DS.Model.extend({
-          firstName: DS.attr('string'),
-          lastName: DS.attr('string')
-        });
-
-        store.get('person', 1).then(function(tom) {
-          tom.get('firstName'); // Tom
-          tom.get('lastName'); // Dale
-
-          var updateEvent = {id: 1, firstName: "TomHuda"};
-          store.update('person', updateEvent);
-
-          tom.get('firstName'); // TomHuda
-          tom.get('lastName'); // Dale
-        });
-        ```
-
-        @method update
-        @param {String} type
-        @param {Object} data
-        @return {DS.Model} the record that was updated.
-      */
       update: function(type, data) {
         Ember.assert("You must include an `id` in a hash passed to `update`", data.id != null);
 
@@ -10714,7 +9980,7 @@ define("ember-data/lib/system/store",
         @param {subclass of DS.Model} type
         @param {String} id
         @param {Object} data
-        @return {DS.Model} record
+        @returns {DS.Model} record
       */
       buildRecord: function(type, id, data) {
         var typeMap = this.typeMapFor(type),
@@ -10834,7 +10100,7 @@ define("ember-data/lib/system/store",
         @method adapterFor
         @private
         @param {subclass of DS.Model} type
-        @return DS.Adapter
+        @returns DS.Adapter
       */
       adapterFor: function(type) {
         var container = this.container, adapter;
@@ -10916,8 +10182,7 @@ define("ember-data/lib/system/store",
     }
 
     function deserializeRecordId(store, data, key, relationship, id) {
-      if (!Model) { Model = requireModule("ember-data/lib/system/model")["Model"]; }
-      if (isNone(id) || id instanceof Model) {
+      if (isNone(id) || id instanceof DS.Model) {
         return;
       }
 
@@ -10957,7 +10222,7 @@ define("ember-data/lib/system/store",
     // Delegation to the adapter and promise management
     /**
       A `PromiseArray` is an object that acts like both an `Ember.Array`
-      and a promise. When the promise is resolved the resulting value
+      and a promise. When the promise is resolved the the resulting value
       will be set to the `PromiseArray`'s `content` property. This makes
       it easy to create data bindings with the `PromiseArray` that will be
       updated when the promise resolves.
@@ -11173,7 +10438,7 @@ define("ember-data/lib/system/store",
         store.didSaveRecord(record, payload);
         return record;
       }, function(reason) {
-        if (reason instanceof InvalidError) {
+        if (reason instanceof DS.InvalidError) {
           store.recordWasInvalid(record, reason.errors);
         } else {
           store.recordWasError(record, reason);
@@ -11218,13 +10483,12 @@ define("ember-data/lib/transforms/base",
       Example
 
       ```javascript
-      // Converts centigrade in the JSON to fahrenheit in the app
-      App.TemperatureTransform = DS.Transform.extend({
+      App.RawTransform = DS.Transform.extend({
         deserialize: function(serialized) {
-          return (serialized *  1.8) + 32;
+          return serialized;
         },
         serialize: function(deserialized) {
-          return (deserialized - 32) / 1.8;
+          return deserialized;
         }
       });
       ```
@@ -11524,11 +10788,11 @@ define("ember-inflector/lib/main",
   function(__dependency1__, __dependency2__, __exports__) {
     "use strict";
     var Inflector = __dependency1__.Inflector;
-    var defaultRules = __dependency1__.defaultRules;
+    var inflections = __dependency1__.inflections;
     var pluralize = __dependency1__.pluralize;
     var singularize = __dependency1__.singularize;
 
-    Inflector.defaultRules = defaultRules;
+    Inflector.defaultRules = inflections;
     Ember.Inflector        = Inflector;
 
     Ember.String.pluralize   = pluralize;
@@ -11685,8 +10949,8 @@ define("ember-inflector/lib/system/inflector",
       ```js
       var inflector = new Ember.Inflector(Ember.Inflector.defaultRules);
 
-      inflector.pluralize('cow'); //=> 'kine'
-      inflector.singularize('kine'); //=> 'cow'
+      inflector.pluralize('cow') //=> 'kine'
+      inflector.singularize('kine') //=> 'cow'
       ```
 
       Creating an inflector and adding rules later.
@@ -11694,13 +10958,13 @@ define("ember-inflector/lib/system/inflector",
       ```javascript
       var inflector = Ember.Inflector.inflector;
 
-      inflector.pluralize('advice'); // => 'advices'
+      inflector.pluralize('advice') // => 'advices'
       inflector.uncountable('advice');
-      inflector.pluralize('advice'); // => 'advice'
+      inflector.pluralize('advice') // => 'advice'
 
-      inflector.pluralize('formula'); // => 'formulas'
+      inflector.pluralize('formula') // => 'formulas'
       inflector.irregular('formula', 'formulae');
-      inflector.pluralize('formula'); // => 'formulae'
+      inflector.pluralize('formula') // => 'formulae'
 
       // you would not need to add these as they are the default rules
       inflector.plural(/$/, 's');
@@ -11865,4 +11129,4 @@ define("ember-inflector/lib/system/string",
     __exports__.singularize = singularize;
   });
 global.DS = requireModule('ember-data/lib/main')['default'];
-}(Ember.lookup));
+}(window));

@@ -24,6 +24,6 @@
     "commit": "6b0fa56ee841e8e52cb9f67a9dc2f712e2b02548"
   },
   "_source": "git://github.com/rpflorence/ember-qunit.git",
-  "_target": "~0.1.5",
+  "_target": "~0.1.8",
   "_originalSource": "ember-qunit"
 }

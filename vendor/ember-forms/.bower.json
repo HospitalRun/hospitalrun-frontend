@@ -39,11 +39,11 @@
     "ember-qunit": "~0.1.8",
     "ember-model": "~0.0.11"
   },
-  "_release": "de7a4bb603",
+  "_release": "c5a9574aed",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "de7a4bb6033d7c7e2e78c9c7d967ac72dde4c529"
+    "commit": "c5a9574aed56699fe1c9aa9a1495c57937ff801a"
   },
   "_source": "git://github.com/ember-addons/ember-forms.git",
   "_target": "*",

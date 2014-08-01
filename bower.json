@@ -4,14 +4,14 @@
     "handlebars": "~1.3.0",
     "jquery": "^1.11.1",
     "qunit": "~1.12.0",
-    "ember-qunit": "~0.1.5",
+    "ember-qunit": "~0.1.8",
     "ember": "~1.5.1",
-    "ember-data": "~1.0.0-beta.7",
-    "ember-resolver": "stefanpenner/ember-jj-abrams-resolver#master",
-    "ic-ajax": "~1.x",
+    "ember-resolver": "~0.1.5",
     "loader": "stefanpenner/loader.js#1.0.0",
-    "ember-cli-shims": "stefanpenner/ember-cli-shims#0.0.1",
-    "ember-load-initializers": "stefanpenner/ember-load-initializers#0.0.1",
+    "ember-cli-shims": "stefanpenner/ember-cli-shims#0.0.2",
+    "ember-load-initializers": "stefanpenner/ember-load-initializers#0.0.2",
+    "ember-qunit-notifications": "^0.0.3",
+    "ember-cli-test-loader": "rjackson/ember-cli-test-loader#0.0.2",
     "pouchdb": "~2.2.3",
     "oauth-signature-js": "*",
     "ember-autofocus": "~0.0.3",
@@ -24,10 +24,5 @@
     "pikaday": "owenmead/Pikaday#master",
     "moment": "~2.7.0",
     "ember-calendar": "~1.0.0"
-  },
-  "resolutions": {
-    "moment": "~2.7.0",
-    "ember": "~1.5.1",
-    "jquery": "^1.11.1"
   }
 }

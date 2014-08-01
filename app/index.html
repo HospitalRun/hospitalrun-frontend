@@ -9,15 +9,18 @@
 
     {{BASE_TAG}}
 
-    <link rel="stylesheet" href="assets/hospitalrun.css">
     <link rel="stylesheet" href="assets/vendor.css">
-
+    <link rel="stylesheet" href="assets/hospitalrun.css">
   </head>
   <body>
+    <script>
+      window.HospitalrunENV = {{ENV}};
+      window.EmberENV = window.HospitalrunENV.EmberENV;
+    </script>
+    <script src="assets/vendor.js"></script>
     <script src="assets/hospitalrun.js"></script>
     <script>
-      window.ENV = {{ENV}};
-      window.Hospitalrun = require('hospitalrun/app')['default'].create(ENV.APP);
+      window.Hospitalrun = require('hospitalrun/app')['default'].create(HospitalrunENV.APP);
     </script>
   </body>
 </html>

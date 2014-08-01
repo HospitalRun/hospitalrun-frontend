@@ -7,4 +7,12 @@ define('ember', [], function() {
     'default': Ember
   };
 });
+
+define('ember-data', [], function() {
+  "use strict";
+
+  return {
+    'default': DS
+  };
+});
 })();

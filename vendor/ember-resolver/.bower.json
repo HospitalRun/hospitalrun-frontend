@@ -1,5 +1,6 @@
 {
   "name": "ember-jj-abrams-resolver",
+  "version": "0.1.7",
   "main": [
     "dist/ember-resolver.js",
     "dist/ember-resolver.prod.js",
@@ -29,13 +30,13 @@
     "ember": " > 1.5.0-beta.3"
   },
   "homepage": "https://github.com/stefanpenner/ember-jj-abrams-resolver",
-  "_release": "75c044bb7a",
+  "_release": "0.1.7",
   "_resolution": {
-    "type": "branch",
-    "branch": "master",
+    "type": "version",
+    "tag": "v0.1.7",
     "commit": "75c044bb7a46b030121d691d313662de8c11aa73"
   },
   "_source": "git://github.com/stefanpenner/ember-jj-abrams-resolver.git",
-  "_target": "master",
-  "_originalSource": "stefanpenner/ember-jj-abrams-resolver"
+  "_target": "~0.1.5",
+  "_originalSource": "ember-resolver"
 }

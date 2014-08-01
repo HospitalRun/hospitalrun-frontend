@@ -1,0 +1,27 @@
+{
+  "name": "y",
+  "main": "index.js",
+  "version": "0.0.2",
+  "homepage": "https://github.com/dockyard/qunit-notifications",
+  "authors": [
+    "Brian Cardarella <bcardarella@gmail.com>"
+  ],
+  "description": "Web Notification support for QUnit in-brower test suites",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.2",
+    "commit": "0f36109b53a74108fd39451a6488ada048874796"
+  },
+  "_source": "git://github.com/dockyard/qunit-notifications.git",
+  "_target": "~0.0.2",
+  "_originalSource": "qunit-notifications"
+}

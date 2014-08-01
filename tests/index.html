@@ -9,8 +9,9 @@
 
     {{BASE_TAG}}
 
+    <link rel="stylesheet" href="assets/vendor.css">
     <link rel="stylesheet" href="assets/hospitalrun.css">
-    <link rel="stylesheet" href="assets/qunit.css">
+    <link rel="stylesheet" href="assets/test-support.css">
     <style>
       #ember-testing-container {
         position: absolute;
@@ -33,14 +34,16 @@
     <div id="qunit-fixture"></div>
 
     <script>
-      window.ENV = {{ENV}};
+      window.HospitalrunENV = {{ENV}};
+      window.EmberENV = window.HospitalrunENV.EmberENV;
     </script>
-    <script src="assets/qunit.js"></script>
+    <script src="assets/test-support.js"></script>
+    <script src="assets/vendor.js"></script>
     <script src="assets/hospitalrun.js"></script>
     <script src="testem.js"></script>
     <script>
       require('hospitalrun/tests/test-helper');
-      require('hospitalrun/tests/test-loader');
     </script>
+    <script src="assets/test-loader.js"></script>
   </body>
 </html>

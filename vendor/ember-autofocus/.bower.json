@@ -34,6 +34,5 @@
   },
   "_source": "git://github.com/AndreasPizsa/ember-autofocus.git",
   "_target": "~0.0.3",
-  "_originalSource": "ember-autofocus",
-  "_direct": true
+  "_originalSource": "ember-autofocus"
 }

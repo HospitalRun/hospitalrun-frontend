@@ -2,6 +2,7 @@
 
 var Application = require('hospitalrun/app')['default'];
 var Router = require('hospitalrun/router')['default'];
+import Ember from 'ember';
 
 export default function startApp(attrs) {
   var App;

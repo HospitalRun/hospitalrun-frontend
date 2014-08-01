@@ -37,6 +37,5 @@
   },
   "_source": "git://github.com/joinspoton/ember-calendar.git",
   "_target": "~1.0.0",
-  "_originalSource": "ember-calendar",
-  "_direct": true
+  "_originalSource": "ember-calendar"
 }

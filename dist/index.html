@@ -9,15 +9,18 @@
 
     
 
-    <link rel="stylesheet" href="assets/hospitalrun.css">
     <link rel="stylesheet" href="assets/vendor.css">
-
+    <link rel="stylesheet" href="assets/hospitalrun.css">
   </head>
   <body>
+    <script>
+      window.HospitalrunENV = {"environment":"development","baseURL":"/","locationType":"hash","EmberENV":{"FEATURES":{}},"APP":{"LOG_ACTIVE_GENERATION":true,"LOG_VIEW_LOOKUPS":true}};
+      window.EmberENV = window.HospitalrunENV.EmberENV;
+    </script>
+    <script src="assets/vendor.js"></script>
     <script src="assets/hospitalrun.js"></script>
     <script>
-      window.ENV = {"baseURL":"/","locationType":"hash","FEATURES":{},"APP":{"LOG_RESOLVER":true,"LOG_ACTIVE_GENERATION":true,"LOG_MODULE_RESOLVER":true,"LOG_VIEW_LOOKUPS":true},"LOG_MODULE_RESOLVER":true};
-      window.Hospitalrun = require('hospitalrun/app')['default'].create(ENV.APP);
+      window.Hospitalrun = require('hospitalrun/app')['default'].create(HospitalrunENV.APP);
     </script>
   </body>
 </html>
