@@ -1,0 +1,5 @@
+@mixin vertically_centered {
+  position: relative;
+  top: 50%;
+  margin-top: -50%;
+}
