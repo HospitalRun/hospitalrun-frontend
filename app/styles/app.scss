@@ -1,3 +1,10 @@
+@import "mixins";
+@import "variables";
+@import "bootstrap";
+@import "bootstrap-theme";
+@import "typography";
+@import "ember-calendar";
+
 @keyframes domChanged {
     from {
         margin-left: 100%;
@@ -108,27 +115,52 @@ h3.panel-title {
     }
 }
 
-@import "bootstrap";
-@import "bootstrap-theme";
-@import "typography";
-@import "ember-calendar";
-
 // jglovier's temporary style tweaks
 // -------------------------------------------/
 
 body {
-    background-color: #2e4359;
+    background-color: $navy;
     //JK commenting out this right now because text on white backgrounds is invisible with this.
     //color: #fff;
 }
-.logo-svg {
-  width: 186px;
-}
+
 .navbar-brand {
-  padding: 13px 0;
+    display: block;
+    height: 85px;
+    padding: 0 25px;
+
+    .logo-svg {
+        width: 186px;
+        @include vertically_centered; }
+
 }
+
+.navbar-nav {
+
+    > li {
+
+        > a {
+            padding: 0 15px;
+            line-height: 85px; }
+
+    }
+
+}
+
 .jumbotron {
-  background-color: #2e4359;
+    background-color: #2e4359;
+}
+
+.container {
+
+    label { font-weight: 300; }
+
+}
+
+.panel-primary {
+    color: $navy;
+    background-color: white;
+    border: none;
 }
 
 // end temp style tweaks ------------/

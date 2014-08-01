@@ -296,8 +296,8 @@ body {
     font-family: "lato-webfont", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 1.42857143;
-    color: #333;
-    background-color: #fff;
+    color: white;
+    background-color: $navy;
 }
 
 input, button, select, textarea {
@@ -4157,6 +4157,8 @@ select[multiple].input-group-sm > {
     padding-left: 0;
     margin-bottom: 0;
     list-style: none;
+    font-weight: 300;
+    font-size: 16px;
     > li {
         position: relative;
         display: block;
@@ -4382,7 +4384,7 @@ select[multiple].input-group-sm > {
 
 .navbar {
     position: relative;
-    min-height: 50px;
+    min-height: 85px;
     margin-bottom: 20px;
     border: 1px solid transparent;
 }
@@ -5826,7 +5828,7 @@ a.list-group-item-danger {
 }
 
 .panel-primary {
-    border-color: #428bca;
+
     > {
         .panel-heading {
             color: #fff;
