@@ -23,7 +23,6 @@ export default AbstractEditController.extend(VisitTypes, {
     }],
     patient: Ember.computed.alias('model.patient'),
     patientId: Ember.computed.alias('patient.id'),
-    patientVisits: Ember.computed.alias('patient.visits'),
     
     patientIdChanged: function() {
         var patientId = this.get('patientId');
@@ -41,10 +40,14 @@ export default AbstractEditController.extend(VisitTypes, {
     beforeUpdate: function() {
         if (this.get('isNew')) {
             return new Ember.RSVP.Promise(function(resolve){
-                this.get('patientVisits').then(function(patientVisits){
-                    var visit = this.get('model');
+                var patient = this.get('patient'),
+                    promises = [];
+                promises.push(patient.get('appointments'));
+                promises.push(patient.get('visits'));
+                Ember.RSVP.all(promises,'All done getting async relationships for patient').then(function(array){
+                    var visit = this.get('model'),
+                        patientVisits = array[1];
                     patientVisits.addObject(visit);
-                    var patient = this.get('patient');
                     patient.save().then(resolve);
                 }.bind(this));
             }.bind(this));
