@@ -5,55 +5,24 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
-.btn-default, .btn-primary, .btn-success, .btn-info, .btn-warning, .btn-danger {
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
-}
-
-.btn-default:active, .btn-primary:active, .btn-success:active, .btn-info:active, .btn-warning:active, .btn-danger:active, .btn-default.active, .btn-primary.active, .btn-success.active, .btn-info.active, .btn-warning.active, .btn-danger.active {
-    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-}
-
-.btn {
-    &:active, &.active {
-        background-image: none;
-    }
-}
-
 .btn-default {
     text-shadow: 0 1px 0 #fff;
-    background-image: -webkit-linear-gradient(top, white 0%, #e0e0e0 100%);
-    background-image: linear-gradient(to bottom, white 0%, #e0e0e0 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe0e0e0', GradientType=0);
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-    background-repeat: repeat-x;
-    border-color: #dbdbdb;
-    border-color: #ccc;
-    &:hover, &:focus {
-        background-color: #e0e0e0;
-        background-position: 0 -15px;
-    }
-    &:active, &.active {
-        background-color: #e0e0e0;
-        border-color: #dbdbdb;
-    }
+    background-color: $green;
+    border: none;
+    border-radius: 3px;
+
+    &:hover, &:focus { background-color: $green_light; }
+
 }
 
 .btn-primary {
     background-color: #00bd9c;
-    &:hover, &:focus {
-        background-color: #00c4a2;
-        border-color: #2b669a;
-    }
-    &:active, &.active {
-        background-color: #00cca8;
-    }
-    &.disabled, &[disabled] {
-        background-color: #00bd9c;
-        color: #a5a5a5;
-    }
+    &:hover,
+    &:focus { background-color: #00c4a2; }
+    &:active,
+    &.active { background-color: #00cca8; }
+    &.disabled,
+    &[disabled] { background-color: #00bd9c; color: #a5a5a5; }
 }
 
 fieldset[disabled] .btn-primary {
