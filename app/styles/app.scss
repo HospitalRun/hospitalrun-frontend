@@ -163,4 +163,18 @@ body {
     border: none;
 }
 
+.form-signin {
+    max-width: 400px;
+    margin: 40px auto 0;
+
+    .form-signin-heading {
+        font-weight: 300;
+        //text-transform: uppercase;
+        text-align: center;
+        border-bottom: 4px solid $navy_drk;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+}
+
 // end temp style tweaks ------------/

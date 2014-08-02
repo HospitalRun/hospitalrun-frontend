@@ -5478,4 +5478,14 @@ body {
   background-color: white;
   border: none; }
 
+.form-signin {
+  max-width: 400px;
+  margin: 40px auto 0; }
+  .form-signin .form-signin-heading {
+    font-weight: 300;
+    text-align: center;
+    border-bottom: 4px solid #253649;
+    padding-bottom: 20px;
+    margin-bottom: 20px; }
+
 /*# sourceMappingURL=hospitalrun.css.map */
