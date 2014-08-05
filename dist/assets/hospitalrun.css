@@ -5447,6 +5447,12 @@ body {
 
 .jumbotron {
   background-color: #2e4359; }
+  .jumbotron h1 {
+    font-weight: 100;
+    text-align: center;
+    letter-spacing: -3px;
+    word-spacing: 8px;
+    margin: 20px 0; }
 
 .container label {
   font-weight: 300; }
@@ -5470,5 +5476,9 @@ body {
     border-bottom: 2px solid #253649;
     padding-bottom: 20px;
     margin-bottom: 26px; }
+
+h1.pull-left {
+  font-weight: 300;
+  letter-spacing: -1px; }
 
 /*# sourceMappingURL=hospitalrun.css.map */
