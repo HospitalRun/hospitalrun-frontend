@@ -1,6 +1,5 @@
 {
   "name": "ember-pouchdb-adapter",
-  "version": "1.0.0-beta.7c",
   "dependencies": {
     "ember": "~1",
     "ember-data": "1.0.0-beta.7",
@@ -18,13 +17,13 @@
     "mockjs": "*"
   },
   "homepage": "https://github.com/HospitalRun/ember-pouchdb-adapter",
-  "_release": "1.0.0-beta.7c",
+  "_release": "4daefa7334",
   "_resolution": {
-    "type": "version",
-    "tag": "v1.0.0-beta.7c",
-    "commit": "7bac7c307d73f0d4f48e9c7999e4b92d50cb2f20"
+    "type": "branch",
+    "branch": "master",
+    "commit": "4daefa73345a1f0e0d795c3c30c5573e15a96a70"
   },
   "_source": "git://github.com/HospitalRun/ember-pouchdb-adapter.git",
-  "_target": "~v1.0.0-beta.7",
+  "_target": "master",
   "_originalSource": "HospitalRun/ember-pouchdb-adapter"
 }
