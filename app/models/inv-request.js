@@ -10,7 +10,7 @@ var InventoryRequest = AbstractModel.extend({
     dateFulfilled: DS.attr('date'),
     dateRequested: DS.attr('date'),
     requestedBy: DS.attr('string'),
-    batches: DS.hasMany('inv-batch', { async: true }),
+    purchases: DS.hasMany('inv-purchase', { async: true }),
     costPerUnit: DS.attr('number'),  
     quantityAtFulfillment: DS.attr('number'),
     fulfillmentType: DS.attr('string'),
@@ -63,7 +63,7 @@ var InventoryRequest = AbstractModel.extend({
     },
 
     /**
-     * Fulfill the request, decrementing from the batches available on the inventory item
+     * Fulfill the request, decrementing from the purchases available on the inventory item
      * This function doesn't save anything, it just updates the objects in memory, so 
      * a route will need to ensure that the models affected here get updated.
      * @returns true if the request is fulfilled; false if it cannot be fulfilled due to a lack
@@ -72,16 +72,16 @@ var InventoryRequest = AbstractModel.extend({
     fulfillRequest: function() {
         return new Ember.RSVP.Promise(function(resolve, reject){
             var item = this.get('inventoryItem'),
-                batches = item.get('batches'),
+                purchases = item.get('purchases'),
                 promises = [],
                 quantityOnHand = item.get('quantity'),
                 quantityRequested = this.get('quantity'),
-                requestBatches = this.get('batches');
+                requestPurchases = this.get('purchases');
             
             if (quantityOnHand >= quantityRequested) {
-                promises.push(item, requestBatches);
+                promises.push(item, requestPurchases);
                 Ember.RSVP.all(promises,'All fetching done for inventory fulfillment').then(function(){
-                    var findResult = this.findQuantity(batches, item, requestBatches);
+                    var findResult = this.findQuantity(purchases, item, requestPurchases);
                     if (findResult === true) {
                         resolve();
                     } else {
@@ -94,7 +94,7 @@ var InventoryRequest = AbstractModel.extend({
         }.bind(this));
     },
 
-    findQuantity: function(batches, item, requestBatches) {
+    findQuantity: function(purchases, item, requestPurchases) {
         var currentQuantity,
             costPerUnit,
             quantityOnHand = item.get('quantity'),
@@ -102,12 +102,12 @@ var InventoryRequest = AbstractModel.extend({
             quantityNeeded = quantityRequested,
             totalCost = 0;
         
-        var foundQuantity = batches.any(function(batch) {
-            currentQuantity = batch.get('currentQuantity');
-            if (batch.get('expired') || currentQuantity <= 0) {
+        var foundQuantity = purchases.any(function(purchase) {
+            currentQuantity = purchase.get('currentQuantity');
+            if (purchase.get('expired') || currentQuantity <= 0) {
                 return false;
             }
-            costPerUnit = batch.get('costPerUnit');
+            costPerUnit = purchase.get('costPerUnit');
             if (quantityNeeded > currentQuantity) {
                 totalCost += (costPerUnit * currentQuantity);
                 quantityNeeded = quantityNeeded - currentQuantity;
@@ -117,12 +117,12 @@ var InventoryRequest = AbstractModel.extend({
                 currentQuantity = currentQuantity - quantityNeeded;
                 quantityNeeded = 0;
             }
-            batch.set('currentQuantity',currentQuantity);
-            requestBatches.addObject(batch);
+            purchase.set('currentQuantity',currentQuantity);
+            requestPurchases.addObject(purchase);
             return (quantityNeeded === 0);
         });
         if (!foundQuantity) {
-            return 'Could not find any batches that had the required quantity:'+quantityRequested;
+            return 'Could not find any purchases that had the required quantity:'+quantityRequested;
         }
         this.set('costPerUnit', (totalCost/quantityRequested).toFixed(2));
         this.set('quantityAtFulfillment', quantityOnHand);

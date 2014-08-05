@@ -5456,6 +5456,9 @@ body {
   background-color: white;
   border: none; }
 
+.modal-dialog {
+  color: #2e4359; }
+
 .form-signin {
   max-width: 300px;
   margin: 0 auto 0; }

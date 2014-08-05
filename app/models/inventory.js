@@ -1,7 +1,8 @@
 import AbstractModel from "hospitalrun/models/abstract";
 
 export default AbstractModel.extend({
-    batches: DS.hasMany('inv-batch'),
+    purchases: DS.hasMany('inv-purchase'),
+    locations: DS.hasMany('inv-location'),
     description: DS.attr('string'),
     friendlyId: DS.attr('string'),
     keywords: DS.attr(),
@@ -13,7 +14,7 @@ export default AbstractModel.extend({
     reorderPoint: DS.attr('number'),
     distributionUnit: DS.attr('string'),
     validations: {
-        batchCost: {
+        purchaseCost: {
             numericality: {
                 if: function(object) {
                     //Only validate on new items that are not assets
@@ -44,8 +45,8 @@ export default AbstractModel.extend({
             //Asset quantity is edited directly
             return;
         }
-        var batches = this.get('batches');
-        var newQuantity = batches.reduce(function(previousItem, currentItem) {
+        var purchases = this.get('purchases');
+        var newQuantity = purchases.reduce(function(previousItem, currentItem) {
             var currentQuantity = 0;
             if (!currentItem.get('expired')) {
                 currentQuantity = currentItem.get('currentQuantity');

@@ -1,8 +1,9 @@
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import UnitTypes from "hospitalrun/mixins/unit-types";
+import UpdateInventoryLocations from "hospitalrun/mixins/update-inventory-locations";
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
 
-export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
+export default AbstractEditController.extend(InventoryTypeList, UnitTypes, UpdateInventoryLocations, {
     needs: 'inventory',
     
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
@@ -19,51 +20,70 @@ export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
     }],
     
     canEditQuantity: function() {
-        return (this.get('isNew') || !this.get('showBatches'));
-    }.property('isNew', 'showBatches'),
+        return (this.get('isNew') || !this.get('showPurchases'));
+    }.property('isNew', 'showPurchases'),
 
-    showNewBatch: function() {
-        return (this.get('isNew') && this.get('showBatches'));
-    }.property('isNew', 'showBatches'),
+    showNewPurchase: function() {
+        return (this.get('isNew') && this.get('showPurchases'));
+    }.property('isNew', 'showPurchases'),
     
-    showBatches: function() {
+    showPurchases: function() {
         return (this.get('type') !== 'Asset');
     }.property('type'),
     
-    originalQuantityUpdated: function() {
-        var quantity = this.get('originalQuantity');
-        this.set('quantity', quantity);
-    }.observes('originalQuantity'),
+    showLocations: function() {
+        return (!this.get('isNew') && this.get('type') !== 'Asset');
+    }.property('isNew', 'type'),    
     
+    originalQuantityUpdated: function() {
+        var isNew = this.get('isNew'),
+            quantity = this.get('originalQuantity');
+        if (isNew && !Ember.isEmpty(quantity)) {
+            this.set('quantity', quantity);
+        }
+    }.observes('originalQuantity'),
+
     actions: {
-        deleteBatch: function(batch, expire) {
-            var batches = this.get('batches');
+        deletePurchase: function(purchase, expire) {
+            var purchases = this.get('purchases');
             if (expire) {
-                batch.set('expired', true);
-                batch.save();
+                purchase.set('expired', true);
+                purchase.save();
             } else {
-                batches.removeObject(batch);
-                batch.destroyRecord();
+                purchases.removeObject(purchase);
+                purchase.destroyRecord();
             }
             this.get('model').updateQuantity();
             this.send('update',true);
             this.send('closeModal');        
         },
 
-        showDeleteBatch: function(batch) {
-            this.send('openModal', 'inventory.batch.delete', batch);
+        showDeletePurchase: function(purchase) {
+            this.send('openModal', 'inventory.purchase.delete', purchase);
         },
         
-        showEditBatch: function(batch) {
-            this.send('openModal', 'inventory.batch.edit', batch);
+        showEditPurchase: function(purchase) {
+            this.send('openModal', 'inventory.purchase.edit', purchase);
         },
         
-        showExpireBatch: function(batch) {
-            batch.set('expire', true);
-            this.send('openModal', 'inventory.batch.delete', batch);
+        showExpirePurchase: function(purchase) {
+            purchase.set('expire', true);
+            this.send('openModal', 'inventory.purchase.delete', purchase);
         },
         
-        updateBatch: function(batch, updateQuantity) {
+        showTransfer: function(inventoryLocation) {
+            inventoryLocation.set('transferItem', this.get('model'));
+            this.send('openModal', 'inventory.transfer', inventoryLocation);
+        },
+        
+        transferItems: function(inventoryLocation) {
+            var inventoryItem = this.get('model');
+            this.transferToLocation(inventoryItem, inventoryLocation);
+            this.send('update',true);
+            this.send('closeModal');
+        },
+        
+        updatePurchase: function(purchase, updateQuantity) {
             if (updateQuantity) {
                 this.get('model').updateQuantity();
                 this.send('update',true);
@@ -77,16 +97,17 @@ export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
             friendlyId = sequence.get('prefix'),
             promises = [];
         
-        if (this.get('showBatches')) {
-            var newBatch = this.getProperties('aisleLocation', 'batchCost', 
-                'batchNo', 'expirationDate', 'giftInKind', 'location', 'vendor',
+        if (this.get('showPurchases')) {
+            var newPurchase = this.getProperties('aisleLocation', 'purchaseCost', 
+                'lotNumber', 'expirationDate', 'giftInKind', 'location', 'vendor',
                 'vendorItemNo');
-            newBatch.dateAdded = new Date();
-            newBatch.originalQuantity = this.get('quantity');
-            newBatch.currentQuantity = newBatch.originalQuantity;
-            var batch = this.get('store').createRecord('inv-batch', newBatch);
-            promises.push(batch.save());
-            this.get('batches').addObject(batch);
+            newPurchase.dateAdded = new Date();
+            newPurchase.originalQuantity = this.get('quantity');
+            newPurchase.currentQuantity = newPurchase.originalQuantity;
+            var purchase = this.get('store').createRecord('inv-purchase', newPurchase);
+            promises.push(purchase.save());
+            this.get('purchases').addObject(purchase);
+            this.newPurchaseAdded(this.get('model'), purchase);
         }
         sequence.incrementProperty('value',1);
         sequenceValue = sequence.get('value');
@@ -120,7 +141,7 @@ export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
                 }.bind(this));
             }.bind(this));
         } else {
-            Ember.RSVP.Promise.resolve();
+            return Ember.RSVP.Promise.resolve();
         }
     },
     

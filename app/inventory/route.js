@@ -1,5 +1,6 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
-export default AbstractModuleRoute.extend({
+import UpdateInventoryLocations from "hospitalrun/mixins/update-inventory-locations";
+export default AbstractModuleRoute.extend(UpdateInventoryLocations, {
     additionalModels: [{ 
         name: 'aisleLocationList',
         findArgs: ['lookup','aisle_location_list']
@@ -33,10 +34,11 @@ export default AbstractModuleRoute.extend({
     sectionTitle: 'Inventory',
     
     actions: {
-        addBatch: function(newBatch) {
+        addPurchase: function(newPurchase) {
             var currentItem = this.get('currentItem'),
-                batches = currentItem.get('batches');
-            batches.addObject(newBatch);
+                purchases = currentItem.get('purchases');
+            purchases.addObject(newPurchase);
+            this.newPurchaseAdded(currentItem, newPurchase); 
             currentItem.updateQuantity();
             currentItem.save();
             this.send('closeModal');
@@ -50,9 +52,9 @@ export default AbstractModuleRoute.extend({
             request.fulfillRequest().then(function() {
                 var inventoryItem = request.get('inventoryItem'),
                     promises = [],
-                    requestBatches = request.get('batches');
-                requestBatches.forEach(function(batch) {
-                    promises.push(batch.save());
+                    requestPurchases = request.get('purchases');
+                requestPurchases.forEach(function(purchase) {
+                    promises.push(purchase.save());
                 });
                 promises.push(inventoryItem.get('content').save());
                 promises.push(request.save());
@@ -73,12 +75,12 @@ export default AbstractModuleRoute.extend({
             this.transitionTo('inventory.delivery', item);
         },
         
-        showAddBatch: function(inventoryItem) {
-            var newBatch = this.get('store').createRecord('inv-batch', {
+        showAddPurchase: function(inventoryItem) {
+            var newPurchase = this.get('store').createRecord('inv-purchase', {
                 distributionUnit: inventoryItem.get('distributionUnit')
             });            
             this.set('currentItem', inventoryItem);
-            this.send('openModal', 'inventory.batch.edit', newBatch);
+            this.send('openModal', 'inventory.purchase.edit', newPurchase);
         }        
 
     },
