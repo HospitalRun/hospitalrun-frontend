@@ -5474,4 +5474,8 @@ body {
     padding-bottom: 20px;
     margin-bottom: 26px; }
 
+h1.pull-left {
+  font-weight: 300;
+  letter-spacing: -1px; }
+
 /*# sourceMappingURL=hospitalrun.css.map */

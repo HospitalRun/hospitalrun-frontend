@@ -186,4 +186,12 @@ body {
     }
 }
 
+h1 {
+
+    &.pull-left {
+        font-weight: 300;
+        letter-spacing: -1px;
+    }
+}
+
 // end temp style tweaks ------------/
