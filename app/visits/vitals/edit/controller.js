@@ -23,7 +23,7 @@ export default AbstractEditController.extend({
         if (this.get('isNew')) {
             this.set('newVitals', true);         
         }
-        Ember.RSVP.Promise.resolve();
+        return Ember.RSVP.Promise.resolve();
     },
     
     afterUpdate: function(vitals) {

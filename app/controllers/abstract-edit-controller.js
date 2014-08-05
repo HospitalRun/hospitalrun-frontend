@@ -37,15 +37,14 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
          * to skip the afterUpdate call.
          */
         update: function(skipAfterUpdate) {
-            var promises = [];
-            promises.push(this.beforeUpdate());
-            promises.push(this.get('model').save());
-            Ember.RSVP.all(promises,'All saving done for item').then(function(array){
-                this.updateLookupLists();
-                if (!skipAfterUpdate) {
-                    this.afterUpdate(array[1]);
-                }
-                
+            this.beforeUpdate().then(function() {
+                this.get('model').save().then(function(record){
+                    this.updateLookupLists();
+                    if (!skipAfterUpdate) {
+                        this.afterUpdate(record);
+                    }
+
+                }.bind(this));
             }.bind(this));
         }
     },
@@ -62,7 +61,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
      * @returns {Promise} Promise that resolves after before update is done.
      */
     beforeUpdate: function() {
-        Ember.RSVP.Promise.resolve();
+        return Ember.RSVP.Promise.resolve();
     },
     
     /**
