@@ -149,6 +149,14 @@ body {
 
 .jumbotron {
     background-color: #2e4359;
+
+    h1 {
+        font-weight: 100;
+        text-align: center;
+        letter-spacing: -3px;
+        word-spacing: 8px;
+        margin: 20px 0;
+    }
 }
 
 .container {
