@@ -29,8 +29,8 @@ export default AbstractEditController.extend(VisitTypes, {
     dateFormat: 'l h:mm A',
     showTime: true,
     
-    patient: Ember.computed.alias('model.patient'),
     patientId: Ember.computed.alias('patient.id'),
+    patientAppointments: Ember.computed.alias('patient.appointments'),
     
     patientIdChanged: function() {
         var patientId = this.get('patientId');
@@ -38,6 +38,15 @@ export default AbstractEditController.extend(VisitTypes, {
             this.set('returnPatientId', patientId);
         }
     }.observes('patientId').on('init'),
+    
+    patientChanged: function() {
+        var patient = this.get('patient');
+        if (!Ember.isEmpty(patient)) {
+            //Make sure all the async relationships are resolved    
+            patient.get('appointments');
+            patient.get('visits');
+        }
+    }.observes('patient'),
     
     returnPatientId: null,
 
@@ -63,26 +72,24 @@ export default AbstractEditController.extend(VisitTypes, {
     },
 
     afterUpdate: function() {
-        this.send(this.get('cancelAction'));
+        if (this.get('newAppointment')) {
+            var appointment = this.get('model'),                
+                appointments = this.get('patientAppointments'),
+                patient = this.get('patient');
+                appointments.addObject(appointment);
+                patient.save().then(function() {
+                    this.send(this.get('cancelAction'));            
+                }.bind(this));            
+        } else {
+            this.send(this.get('cancelAction'));
+        }
     },
     
     beforeUpdate: function() {
         if (this.get('isNew')) {
-            return new Ember.RSVP.Promise(function(resolve){
-                var patient = this.get('patient'),
-                    promises = [];
-                promises.push(patient.get('appointments'));
-                promises.push(patient.get('visits'));
-                Ember.RSVP.all(promises,'All done getting async relationships for patient add appointment').then(function(array){
-                    var appointment = this.get('model'),
-                        patientAppointments = array[1];
-                    patientAppointments.addObject(appointment);
-                    patient.save().then(resolve);
-                }.bind(this));
-            }.bind(this));
-        } else {
-            Ember.RSVP.resolve();
+            this.set('newAppointment', true);
         }
+        return Ember.RSVP.resolve();
     }    
 
 });
