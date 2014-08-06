@@ -2,3 +2,12 @@
     <span class="glyphicon glyphicon-warning-sign"></span>    
     Are you sure you wish to {{#if expire}}expire{{else}}delete{{/if}} this purchase?
 </div>
+{{#em-form model=this submit_button=false }}
+    {{#if showLocations}}
+        {{em-select label="Remove From Location"
+            prompt="Do Not Remove From A Location"
+            property="deleteLocation" content=deleteLocations
+            optionValuePath="content.location" optionLabelPath="content.name"
+        }}
+    {{/if}}
+{{/em-form}}

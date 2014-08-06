@@ -1,9 +1,9 @@
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import UnitTypes from "hospitalrun/mixins/unit-types";
-import UpdateInventoryLocations from "hospitalrun/mixins/update-inventory-locations";
+import InventoryLocations from "hospitalrun/mixins/inventory-locations";
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
 
-export default AbstractEditController.extend(InventoryTypeList, UnitTypes, UpdateInventoryLocations, {
+export default AbstractEditController.extend(InventoryLocations, InventoryTypeList, UnitTypes, {
     needs: 'inventory',
     
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
@@ -79,6 +79,11 @@ export default AbstractEditController.extend(InventoryTypeList, UnitTypes, Updat
         transferItems: function(inventoryLocation) {
             var inventoryItem = this.get('model');
             this.transferToLocation(inventoryItem, inventoryLocation);
+            inventoryLocation.setProperties({                
+                transferLocation: null,
+                transferAisleLocation: null,
+                transferQuantity: null
+            });
             this.send('update',true);
             this.send('closeModal');
         },

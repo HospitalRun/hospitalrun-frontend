@@ -1,16 +1,18 @@
 export default Ember.Mixin.create({
     aisleToFind: null,
     locationToFind: null,
-    quantityToIncrementBy: null,
     
     _addQuantityToLocation: function(inventoryItem, quantity, location, aisle) {
         var foundLocation = false,
             locations = inventoryItem.get('locations');
         this.set('aisleToFind', aisle);
         this.set('locationToFind', location);
-        this.set('quantityToIncrementBy', quantity);
-        foundLocation = locations.any(this._findLocation, this);
-        if (!foundLocation) {
+        
+        foundLocation = locations.find(this.findLocation, this);
+        if (foundLocation) {
+            foundLocation.incrementProperty('quantity', quantity);
+            foundLocation.save();
+        } else {
             var locationRecord = this.get('store').createRecord('inv-location', {
                 aisleLocation: aisle,
                 location: location,
@@ -21,15 +23,14 @@ export default Ember.Mixin.create({
         }        
     },
     
-    _findLocation: function(inventoryLocation) {
+    findLocation: function(inventoryLocation) {
         var aisleLocation = inventoryLocation.get('aisleLocation'),
             aisleToFind = this.get('aisleToFind'),
             itemLocation = inventoryLocation.get('location'),
-            locationToFind = this.get('locationToFind'),
-            quantityToIncrementBy = this.get('quantityToIncrementBy');
-        if (aisleLocation === aisleToFind && itemLocation === locationToFind) {
-            inventoryLocation.incrementProperty('quantity', quantityToIncrementBy);
-            inventoryLocation.save();
+            locationToFind = this.get('locationToFind');
+        if ((Ember.isEmpty(aisleLocation) && Ember.isEmpty(aisleToFind) || aisleLocation === aisleToFind) && 
+                (Ember.isEmpty(itemLocation) && Ember.isEmpty(locationToFind) || itemLocation === locationToFind)) {            
+            return true;
         }
     },
     
@@ -40,7 +41,7 @@ export default Ember.Mixin.create({
     newPurchaseAdded: function(inventoryItem, newPurchase) {
         var aisle = newPurchase.get('aisleLocation'),
             location = newPurchase.get('location'),
-            quantity = newPurchase.get('originalQuantity');        
+            quantity = parseInt(newPurchase.get('originalQuantity'));
         this._addQuantityToLocation(inventoryItem, quantity, location, aisle);
     },
     
@@ -53,9 +54,15 @@ export default Ember.Mixin.create({
     transferToLocation: function(inventoryItem, transferLocation) {
         var aisle = transferLocation.get('transferAisleLocation'),
             location = transferLocation.get('transferLocation'),
-            quantity = transferLocation.get('transferQuantity');
+            quantity = parseInt(transferLocation.get('transferQuantity'));
         this._addQuantityToLocation(inventoryItem, quantity, location, aisle);
         transferLocation.decrementProperty('quantity', quantity);
-        transferLocation.save();
+        if (transferLocation.get('quantity') === 0) {
+            var locations = inventoryItem.get('locations');
+            locations.removeObject(transferLocation);
+            transferLocation.destroyRecord();
+        } else {
+            transferLocation.save();
+        }
     }
 });

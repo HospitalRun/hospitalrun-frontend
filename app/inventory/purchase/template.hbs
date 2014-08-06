@@ -26,7 +26,9 @@
             {{em-input property="vendorItemNo" label="Vendor Item Number"}}
         </div>
     </div>
-    {{type-ahead property="location" label="Location" content=warehouseList.value selection=location }}
-    {{type-ahead property="aisleLocation" label="Aisle Location" content=aisleLocationList.value selection=aisleLocation }}
+    {{#if isNew}}
+        {{type-ahead property="location" label="Location" content=warehouseList.value selection=location }}
+        {{type-ahead property="aisleLocation" label="Aisle Location" content=aisleLocationList.value selection=aisleLocation }}
+    {{/if}}
     {{em-checkbox label="Gift In Kind" property="giftInKind"}}
 {{/em-form}}

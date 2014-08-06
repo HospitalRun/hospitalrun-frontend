@@ -1,6 +1,6 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
-import UpdateInventoryLocations from "hospitalrun/mixins/update-inventory-locations";
-export default AbstractModuleRoute.extend(UpdateInventoryLocations, {
+import InventoryLocations from "hospitalrun/mixins/inventory-locations";
+export default AbstractModuleRoute.extend(InventoryLocations, {
     additionalModels: [{ 
         name: 'aisleLocationList',
         findArgs: ['lookup','aisle_location_list']
