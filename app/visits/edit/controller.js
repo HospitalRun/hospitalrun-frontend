@@ -52,7 +52,7 @@ export default AbstractEditController.extend(VisitTypes, {
                 }.bind(this));
             }.bind(this));
         } else {
-            Ember.RSVP.resolve();
+            return Ember.RSVP.resolve();
         }
     },
     
