@@ -2,36 +2,37 @@ import InventoryLocations from "hospitalrun/mixins/inventory-locations";
 export default Ember.ObjectController.extend(InventoryLocations, {
     needs: 'inventory/edit',
     
-    locations: Ember.computed.alias('controllers.inventory/edit.locations'),
-    
-    deleteLocation: Ember.computed.defaultTo('defaultLocation'),
+    locations: Ember.computed.alias('controllers.inventory/edit.locations'),    
     
     deleteLocations: Ember.computed.map('filteredLocations', function(location) {
         return {
-            name: location.get('locationName'),
+            name: '%@ (%@ available)'.fmt(location.get('locationName'), location.get('quantity')),
             location: location
         };
     }),
     
-    defaultLocation: function() {
+    locationChanged: function() {
         var originalAisle = this.get('aisleLocation'),
             originalLocation = this.get('location'),
             locations = this.get('locations');        
         this.set('locationToFind', originalLocation);
         this.set('aisleToFind', originalAisle);
         var defaultLocation = locations.find(this.findLocation, this);
-        return defaultLocation;
-    }.property('locations'),
+        this.set('deleteFromLocation', defaultLocation);
+    }.observes('aisleLocation', 'location'),
     
-    filteredLocations: Ember.computed.filter('locations', function(location) {
+    filteredLocations: function() {
         var currentQuantity = this.get('currentQuantity'),
-            locationQuantity = location.get('quantity');
-        return (locationQuantity >= currentQuantity);
-    }),
+            locations = this.get('locations');
+        return locations.filter(function(location) {
+            var locationQuantity = location.get('quantity');
+            return (locationQuantity >= currentQuantity);
+        });
+    }.property('locations','currentQuantity'),
     
     showLocations: function() {
         var locations = this.get('locations');
-        return (locations.get('length') > 1);
+        return (locations.get('length') > 0);
     }.property('locations'),
 
     updateButtonText: function() {
@@ -58,11 +59,12 @@ export default Ember.ObjectController.extend(InventoryLocations, {
         },
         
         delete: function() {
-            var expire = this.get('expire');
+            var deleteFromLocation = this.get('deleteFromLocation'),
+                expire = this.get('expire');
             if (!Ember.isEmpty(expire) && expire === true) {
-                this.send('expirePurchase', this.get('model'));
+                this.send('expirePurchase', this.get('model'), deleteFromLocation);
             } else{
-                this.send('deletePurchase', this.get('model'));
+                this.send('deletePurchase', this.get('model'), deleteFromLocation);
             }
         }
     }

@@ -44,14 +44,23 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     }.observes('originalQuantity'),
 
     actions: {
-        deletePurchase: function(purchase, expire) {
-            var purchases = this.get('purchases');
+        deletePurchase: function(purchase, deleteFromLocation, expire) {
+            var purchases = this.get('purchases'),
+                quantityDeleted = purchase.get('currentQuantity');
             if (expire) {
                 purchase.set('expired', true);
                 purchase.save();
             } else {
                 purchases.removeObject(purchase);
                 purchase.destroyRecord();
+            }
+            if (!Ember.isEmpty(deleteFromLocation)) {
+                deleteFromLocation.decrementProperty('quantity', quantityDeleted);
+                if (deleteFromLocation.get('quantity') === 0) {
+                    deleteFromLocation.destroyRecord();
+                } else {
+                    deleteFromLocation.save();
+                }
             }
             this.get('model').updateQuantity();
             this.send('update',true);
