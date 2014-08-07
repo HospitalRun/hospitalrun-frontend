@@ -95,7 +95,7 @@
         </div>
         <div id="patient-visits" class="panel-collapse collapse in">
             <div class="panel-body">
-                <table class="table">
+                <table class="table" >
                     <tr class="table-header">
                         <th>Start Date</th>
                         <th>End Date</th>
@@ -105,15 +105,15 @@
                         <th>Actions</th>
                     </tr>
                     {{#each visits}}
-                        <tr>
+                        <tr {{action "editVisit" this}}>
                             <td>{{date-format startDate}}</td>
                             <td>{{date-format endDate}}</td>
                             <td>{{examiner}}</td>
                             <td>{{location}}</td>
-                            <td>{{appointmentType}}</td>
+                            <td>{{visitType}}</td>
                             <td>
                                 <button class="btn btn-primary" {{action "editVisit" this}}>Edit</button>
-                                <button class="btn btn-default" {{action "showDeleteVisit" this}}>Delete</button>
+                                <button class="btn btn-default" {{action "showDeleteVisit" this bubbles=false }}>Delete</button>
                             </td>
                         </tr>
                     {{/each}}
@@ -133,23 +133,21 @@
             <div class="panel-body">
                 <table class="table">
                     <tr class="table-header">
-                        <th>Start Date</th>
-                        <th>End Date</th>
+                        <th>Date</th>
                         <th>Examiner</th>
                         <th>Location</th>
                         <th>Type</th>
                         <th>Actions</th>
                     </tr>
-                    {{#each appointments}}
-                        <tr>
-                            <td>{{date-format startDate}}</td>
-                            <td>{{date-format endDate}}</td>
-                            <td>{{examiner}}</td>
+                    {{#each appointments itemController='appointments/item'}}
+                        <tr {{action "editAppointment" this}}>
+                            <td>{{appointmentDate}}</td>
+                            <td>{{provider}}</td>
                             <td>{{location}}</td>
-                            <td>{{visitType}}</td>
+                            <td>{{appointmentType}}</td>
                             <td>
                                 <button class="btn btn-primary" {{action "editAppointment" this}}>Edit</button>
-                                <button class="btn btn-default" {{action "showDeleteAppointment" this}}>Delete</button>
+                                <button class="btn btn-default" {{action "showDeleteAppointment" this  bubbles=false }}>Delete</button>
                             </td>
                         </tr>
                     {{/each}}
