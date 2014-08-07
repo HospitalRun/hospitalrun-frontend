@@ -9,6 +9,10 @@
         </div>
         <div id="visit-info" class="panel-collapse collapse in">
             <div class="panel-body">
+                <div class="form-group">
+                    <label>Patient</label>
+                    <p class="form-control-static">{{patient.displayName}}</p>
+                </div>                
                 {{#em-form model=this submit_button=false }}
                     <div class="row">
                         {{date-picker property="startDate" label="Start Date" class="col-sm-3"}}

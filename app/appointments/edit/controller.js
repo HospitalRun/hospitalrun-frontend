@@ -27,6 +27,7 @@ export default AbstractEditController.extend(VisitTypes, {
     }],
     
     dateFormat: 'l h:mm A',
+    newAppointment: false,
     showTime: true,
     
     patientId: Ember.computed.alias('patient.id'),
@@ -71,15 +72,14 @@ export default AbstractEditController.extend(VisitTypes, {
         }                
     },
 
-    afterUpdate: function() {
+    afterUpdate: function(appointment) {
         if (this.get('newAppointment')) {
-            var appointment = this.get('model'),                
-                appointments = this.get('patientAppointments'),
+            var appointments = this.get('patientAppointments'),
                 patient = this.get('patient');
-                appointments.addObject(appointment);
-                patient.save().then(function() {
-                    this.send(this.get('cancelAction'));            
-                }.bind(this));            
+            appointments.addObject(appointment);
+            patient.save().then(function() {
+                this.send(this.get('cancelAction'));            
+            }.bind(this));            
         } else {
             this.send(this.get('cancelAction'));
         }
