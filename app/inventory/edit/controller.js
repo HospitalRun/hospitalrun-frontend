@@ -22,6 +22,20 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     canEditQuantity: function() {
         return (this.get('isNew') || !this.get('showPurchases'));
     }.property('isNew', 'showPurchases'),
+    
+    locationQuantityTotal: function() {
+        var locations = this.get('locations');
+        var total = locations.reduce(function(previousValue, location) {
+            return previousValue + parseInt(location.get('quantity'));
+        }, 0);
+        return total;
+    }.property('locations'),
+    
+    quantityDifferential: function() {
+        var locationQuantityTotal = this.get('locationQuantityTotal'), 
+            quantity = this.get('quantity');
+        return (locationQuantityTotal !== quantity);
+    }.property('locationQuantityTotal', 'quantity'),
 
     showNewPurchase: function() {
         return (this.get('isNew') && this.get('showPurchases'));

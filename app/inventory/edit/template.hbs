@@ -23,7 +23,7 @@
                 optionLabelPath="content"
                 optionValuePath="content"
             
-            }}
+            }}            
         </div>
     {{/if}}
     {{#if showNewPurchase}}
@@ -36,11 +36,21 @@
             {{else}}
                 <div class="form-group col-sm-3">
                     <label>Quantity</label>
-                    {{input class="form-control" value=quantity type="text" disabled=true }}
+                    <p class="form-control-static">{{quantity}}</p>                    
                 </div>
             {{/if}}
         </div>
         {{#if showPurchases}}
+            {{#if quantityDifferential}}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <p>
+                        <span class="glyphicon glyphicon-warning-sign"></span>
+                        The total quantity <strong>({{quantity}})</strong>, does not match the total quantity in the locations <strong>({{locationQuantityTotal}})</strong>.
+                    </p>
+                    <p>Please adjust the quantities on the appropriate location(s).</p>
+                </div>
+            {{/if}}
             <h3>Purchases <button class="btn btn-primary" {{action "showAddPurchase" this}}>Add Purchase</button></h3>    
             <table class="table">
                 <tr class="table-header">
