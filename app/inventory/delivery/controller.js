@@ -3,13 +3,7 @@ import GetUserName from "hospitalrun/mixins/get-user-name";
 
 export default AbstractEditController.extend(GetUserName, {    
     needs: 'inventory',
-    
-    fulfillmentTypeList: [
-        'Adjustment',
-        'Delivery',
-        'Write Off'
-    ],
-    
+
     deliveryLocationList: Ember.computed.alias('controllers.inventory.deliveryLocationList'),
     
     expenseAccountList: Ember.computed.alias('controllers.inventory.expenseAccountList'),
