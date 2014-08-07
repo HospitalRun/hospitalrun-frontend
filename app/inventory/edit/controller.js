@@ -31,11 +31,25 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         return total;
     }.property('locations'),
     
-    quantityDifferential: function() {
+    /**
+     * Check to see if the total quantity by location matches the quantity calculated on the item
+     * @return {boolean} true if there is a discrepency;otherwise false.
+     */
+    quantityDiscrepency: function() {
         var locationQuantityTotal = this.get('locationQuantityTotal'), 
             quantity = this.get('quantity');
         return (locationQuantityTotal !== quantity);
     }.property('locationQuantityTotal', 'quantity'),
+    
+    /**
+     * Get the difference in quantity between the total quantity by location and the quantity on the item.
+     * @return {int} the difference.
+     */
+    quantityDifferential: function() {
+        var locationQuantityTotal = this.get('locationQuantityTotal'), 
+            quantity = this.get('quantity');
+        return Math.abs(locationQuantityTotal - quantity);
+    }.property('locationQuantityTotal', 'quantity'),    
 
     showNewPurchase: function() {
         return (this.get('isNew') && this.get('showPurchases'));
@@ -58,6 +72,37 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     }.observes('originalQuantity'),
 
     actions: {
+        adjustItems: function(inventoryLocation) {
+            var adjustPurchases = inventoryLocation.get('adjustPurchases'),
+                adjustmentQuantity = parseInt(inventoryLocation.get('adjustmentQuantity')),
+                inventoryItem = this.get('model'),                
+                transactionType = inventoryLocation.get('transactionType');
+            this.adjustLocation(inventoryItem, inventoryLocation);
+            inventoryLocation.setProperties({                
+                adjustmentQuantity: null,
+                adjustPurchases: true,
+                transactionType: 'Adjustment (Add)'
+            });            
+            if (adjustPurchases) {
+                var increment = false,
+                    request = this.get('store').createRecord('inv-request', {
+                        inventoryItem: inventoryItem,
+                        quantity: adjustmentQuantity,
+                        transactionType: transactionType        
+                    });
+                if (transactionType === 'Adjustment (Add)') {
+                    increment = true;
+                }                
+                //Make sure inventory item is resolved first.
+                request.get('inventoryItem').then(function() {
+                    this.send('fulfillRequest', request, true, increment, true);
+                }.bind(this));
+            } else {
+                this.send('update',true);
+                this.send('closeModal');
+            }
+        },        
+        
         deletePurchase: function(purchase, deleteFromLocation, expire) {
             var purchases = this.get('purchases'),
                 quantityDeleted = purchase.get('currentQuantity');
@@ -70,15 +115,16 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             }
             if (!Ember.isEmpty(deleteFromLocation)) {
                 deleteFromLocation.decrementProperty('quantity', quantityDeleted);
-                if (deleteFromLocation.get('quantity') === 0) {
-                    deleteFromLocation.destroyRecord();
-                } else {
-                    deleteFromLocation.save();
-                }
+                this.saveLocation(deleteFromLocation, this.get('model'));
             }
             this.get('model').updateQuantity();
             this.send('update',true);
             this.send('closeModal');        
+        },
+        
+        showAdjustment: function(inventoryLocation) {
+            inventoryLocation.set('adjustmentItem', this.get('model'));
+            this.send('openModal', 'inventory.adjust', inventoryLocation);
         },
 
         showDeletePurchase: function(purchase) {

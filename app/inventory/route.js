@@ -46,10 +46,10 @@ export default AbstractModuleRoute.extend(InventoryLocations, {
         
         allItems: function() {
             this.transitionTo('inventory.listing');
-        },     
-        
-        fulfillRequest: function(request, closeModal) {
-            request.fulfillRequest().then(function() {
+        },
+                
+        fulfillRequest: function(request, closeModal, increment, skipTransition) {
+            request.fulfillRequest(increment).then(function() {
                 var inventoryItem = request.get('inventoryItem'),
                     promises = [],
                     requestPurchases = request.get('purchases');
@@ -62,15 +62,17 @@ export default AbstractModuleRoute.extend(InventoryLocations, {
                     if (closeModal) {
                         this.send('closeModal');
                     }
-                    this.transitionTo('inventory.completed');
+                    if (!skipTransition) {
+                        this.transitionTo('inventory.completed');
+                    }
                 }.bind(this));
             }.bind(this));
         },
 
         newDelivery: function() {
             var item = this.get('store').createRecord('inv-request', {
-                dateFulfilled: new Date(),
-                fulfillmentType: 'Delivery'
+                dateCompleted: new Date(),
+                transactionType: 'Delivery'
             });            
             this.transitionTo('inventory.delivery', item);
         },

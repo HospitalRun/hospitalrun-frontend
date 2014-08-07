@@ -1,7 +1,6 @@
 import AbstractPagedController from 'hospitalrun/controllers/abstract-paged-controller';
 export default AbstractPagedController.extend({
-    sortProperties: ['dateFulfilled'],
+    sortProperties: ['dateCompleted'],
     // Sort in descending order
-    sortAscending: false,
-    
+    sortAscending: false
 });

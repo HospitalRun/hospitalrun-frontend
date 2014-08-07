@@ -12,7 +12,7 @@
         </tr>
         {{#each itemController='inventory/item-controller'}}
             {{#unless isNew}}
-                <tr>
+                <tr {{action 'editItem' this}}>
                     <td>{{friendlyId}}</td>
                     <td>{{name}}</td>
                     <td>{{description}}</td>
@@ -22,11 +22,11 @@
                     <td>{{crossReference}}</td>
                     <td>
                         {{#if showAdd}}
-                            <button class="btn btn-default" {{action 'showAddPurchase' this}}>Add</button>
+                            <button class="btn btn-default" {{action 'showAddPurchase' this bubbles=false }}>Add</button>
                         {{/if}}                        
-                        <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
-                        <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>                        
-                        {{#link-to 'inventory.barcode' this class="btn btn-default"}}Barcode{{/link-to}}
+                        <button class="btn btn-default" {{action 'editItem' this bubbles=false }}>Edit</button>
+                        <button class="btn btn-default" {{action 'deleteItem' this bubbles=false }}>Delete</button>                        
+                        {{#link-to 'inventory.barcode' this class="btn btn-default" bubbles=false }}Barcode{{/link-to}}
                     </td>
                 </tr>
             {{/unless}}

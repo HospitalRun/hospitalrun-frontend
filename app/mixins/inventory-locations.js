@@ -23,6 +23,17 @@ export default Ember.Mixin.create({
         }        
     },
     
+    adjustLocation: function(inventoryItem, inventoryLocation) {
+        var adjustmentType = inventoryLocation.get('adjustmentType'),
+            adjustmentQuantity = parseInt(inventoryLocation.get('adjustmentQuantity'));
+        if (adjustmentType === 'Adjustment (Add)') {
+            inventoryLocation.incrementProperty('quantity', adjustmentQuantity);
+        } else if (adjustmentType === 'Adjustment (Remove)') {
+            inventoryLocation.decrementProperty('quantity', adjustmentQuantity);
+        }
+        this.saveLocation(inventoryLocation, inventoryItem);
+    },
+    
     findLocation: function(inventoryLocation) {
         var aisleLocation = inventoryLocation.get('aisleLocation'),
             aisleToFind = this.get('aisleToFind'),
@@ -46,6 +57,21 @@ export default Ember.Mixin.create({
     },
     
     /**
+     * Save the location if the quantity is greater than zero, otherwise remove the empty location.
+     * @param {Object} location the location to update or remove.
+     * @param {Object} inventoryItem the inventory item the location belongs to.
+     */
+    saveLocation: function(location, inventoryItem) {
+        if (location.get('quantity') === 0) {
+            var locations = inventoryItem.get('locations');
+            locations.removeObject(location);
+            location.destroyRecord();
+        } else {
+            location.save();
+        }        
+    },        
+    
+    /**
      * Transfer items from the current location to the specified location.
      * @param {Object} inventoryItem the inventory item that items are being transferred from
      * @param {Object} transferLocation the inventory location to transfer from (also includes
@@ -57,12 +83,6 @@ export default Ember.Mixin.create({
             quantity = parseInt(transferLocation.get('transferQuantity'));
         this._addQuantityToLocation(inventoryItem, quantity, location, aisle);
         transferLocation.decrementProperty('quantity', quantity);
-        if (transferLocation.get('quantity') === 0) {
-            var locations = inventoryItem.get('locations');
-            locations.removeObject(transferLocation);
-            transferLocation.destroyRecord();
-        } else {
-            transferLocation.save();
-        }
+        this.saveLocation(transferLocation, inventoryItem);
     }
 });

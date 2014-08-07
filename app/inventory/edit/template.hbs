@@ -41,14 +41,14 @@
             {{/if}}
         </div>
         {{#if showPurchases}}
-            {{#if quantityDifferential}}
+            {{#if quantityDiscrepency}}
                 <div class="alert alert-danger alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <p>
                         <span class="glyphicon glyphicon-warning-sign"></span>
                         The total quantity <strong>({{quantity}})</strong>, does not match the total quantity in the locations <strong>({{locationQuantityTotal}})</strong>.
                     </p>
-                    <p>Please adjust the quantities on the appropriate location(s).</p>
+                    <p>Please adjust the quantities on the appropriate location(s) to account for the difference of {{quantityDifferential}}.</p>
                 </div>
             {{/if}}
             <h3>Purchases <button class="btn btn-primary" {{action "showAddPurchase" this}}>Add Purchase</button></h3>    
@@ -106,6 +106,7 @@
                     <td>{{aisleLocation}}</td>
                     <td>{{quantity}}</td>
                     <td>                    
+                        <button class="btn btn-primary" {{action "showAdjustment" this}}>Adjust</button>
                         <button class="btn btn-primary" {{action "showTransfer" this}}>Transfer</button>
                     </td>                    
                 </tr>

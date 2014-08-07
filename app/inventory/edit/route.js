@@ -4,6 +4,10 @@ export default AbstractEditRoute.extend({
     newTitle: 'New Item',
     
     actions: {        
+        adjustItems: function(inventoryLocation) {
+            this.controller.send('adjustItems',inventoryLocation);
+        },
+        
         deletePurchase: function(purchase, deleteFromLocation) {
             this.controller.send('deletePurchase', purchase, deleteFromLocation);
         },

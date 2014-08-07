@@ -27,6 +27,33 @@ var InventoryLocation = AbstractModel.extend({
     }.property('location', 'aisleLocation'),
     
     validations: {
+        adjustmentQuantity: {
+            acceptance: {
+                /***
+                 * Validate that the adjustment quantity is a number and that if a deduction there are enough items to deduct
+                 */
+                accept: true,
+                if: function(object) {
+                    var adjustmentItem = object.get('adjustmentItem'),
+                        adjustmentQuantity = object.get('adjustmentQuantity'),
+                        adjustmentType = object.get('adjustmentQuantity'),
+                        locationQuantity = object.get('quantity');
+                    
+                    //If we don't have a transfer item, then a transfer is not occurring.
+                    if (!Ember.isEmpty(adjustmentItem)) {
+                        if (Ember.isEmpty(adjustmentQuantity)|| isNaN(adjustmentQuantity)) { 
+                            return true;
+                        }
+                        if (adjustmentType === 'Add' && adjustmentQuantity > locationQuantity) {
+                            return true;            
+                        }
+                    }
+                    return false;
+                },
+                message: 'Invalid quantity'         
+            }
+        },        
+        
         transferLocation: {
             acceptance: {
                 /***
@@ -58,7 +85,7 @@ var InventoryLocation = AbstractModel.extend({
                     locationQuantity = object.get('quantity'),
                     transferItem = object.get('transferItem');
                     //If we don't have a transfer item, then a transfer is not occurring.
-                    if (!Ember.isEmpty(transferItem) && (Ember.isEmpty(transferQuantity) || transferQuantity > locationQuantity)) {
+                    if (!Ember.isEmpty(transferItem) && (Ember.isEmpty(transferQuantity) || isNaN(transferQuantity) || transferQuantity > locationQuantity)) {
                         return true;
                     }
                     return false;

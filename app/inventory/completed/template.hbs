@@ -12,14 +12,14 @@
         </tr>
         {{#each}}
             <tr>
-                <td>{{date-format dateFulfilled}}</td>
+                <td>{{date-format dateCompleted}}</td>
                 <td>{{inventoryItem.name}}</td>
                 <td>{{quantity}}</td>
-                <td>{{fulfilledBy}}</td>                
+                <td>{{completedBy}}</td>                
                 <td>{{date-format dateRequested}}</td>
                 <td>{{requestedBy}}</td>
                 <td>{{costPerUnit}}</td>
-                <td>{{quantityAtFulfillment}}</td>
+                <td>{{quantityAtCompletion}}</td>
             </tr>            
         {{/each}}
     </table>

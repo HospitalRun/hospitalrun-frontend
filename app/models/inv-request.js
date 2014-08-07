@@ -6,14 +6,14 @@ var InventoryRequest = AbstractModel.extend({
     inventoryItem: DS.belongsTo('inventory', { async: true }),
     status: DS.attr('string'),
     quantity: DS.attr('number'),
-    fulfilledBy: DS.attr('string'),
-    dateFulfilled: DS.attr('date'),
+    completedBy: DS.attr('string'),
+    dateCompleted: DS.attr('date'),
     dateRequested: DS.attr('date'),
     requestedBy: DS.attr('string'),
     purchases: DS.hasMany('inv-purchase', { async: true }),
     costPerUnit: DS.attr('number'),  
-    quantityAtFulfillment: DS.attr('number'),
-    fulfillmentType: DS.attr('string'),
+    quantityAtCompletion: DS.attr('number'),
+    transactionType: DS.attr('string'),
     deliveryLocation: DS.attr('string'),
     expenseAccount: DS.attr('string'),
     validations: {
@@ -66,10 +66,11 @@ var InventoryRequest = AbstractModel.extend({
      * Fulfill the request, decrementing from the purchases available on the inventory item
      * This function doesn't save anything, it just updates the objects in memory, so 
      * a route will need to ensure that the models affected here get updated.
+     * @param {boolean} increment if the request should increment, not decrement
      * @returns true if the request is fulfilled; false if it cannot be fulfilled due to a lack
      * of stock.
      */
-    fulfillRequest: function() {
+    fulfillRequest: function(increment) {
         return new Ember.RSVP.Promise(function(resolve, reject){
             var item = this.get('inventoryItem'),
                 purchases = item.get('purchases'),
@@ -78,10 +79,10 @@ var InventoryRequest = AbstractModel.extend({
                 quantityRequested = this.get('quantity'),
                 requestPurchases = this.get('purchases');
             
-            if (quantityOnHand >= quantityRequested) {
+            if (increment || quantityOnHand >= quantityRequested) {
                 promises.push(item, requestPurchases);
                 Ember.RSVP.all(promises,'All fetching done for inventory fulfillment').then(function(){
-                    var findResult = this.findQuantity(purchases, item, requestPurchases);
+                    var findResult = this.findQuantity(purchases, item, requestPurchases, increment);
                     if (findResult === true) {
                         resolve();
                     } else {
@@ -94,7 +95,7 @@ var InventoryRequest = AbstractModel.extend({
         }.bind(this));
     },
 
-    findQuantity: function(purchases, item, requestPurchases) {
+    findQuantity: function(purchases, item, requestPurchases, increment) {
         var currentQuantity,
             costPerUnit,
             quantityOnHand = item.get('quantity'),
@@ -108,27 +109,32 @@ var InventoryRequest = AbstractModel.extend({
                 return false;
             }
             costPerUnit = purchase.get('costPerUnit');
-            if (quantityNeeded > currentQuantity) {
+            if (increment) {
+                purchase.incrementProperty('currentQuantity', quantityRequested);
                 totalCost += (costPerUnit * currentQuantity);
-                quantityNeeded = quantityNeeded - currentQuantity;
-                currentQuantity = 0;
+                return true;
             } else {
-                totalCost += (costPerUnit * quantityNeeded);
-                currentQuantity = currentQuantity - quantityNeeded;
-                quantityNeeded = 0;
+                if (quantityNeeded > currentQuantity) {
+                    totalCost += (costPerUnit * currentQuantity);
+                    quantityNeeded = quantityNeeded - currentQuantity;
+                    currentQuantity = 0;
+                } else {
+                    totalCost += (costPerUnit * quantityNeeded);
+                    currentQuantity = currentQuantity - quantityNeeded;
+                    quantityNeeded = 0;
+                }
+                purchase.set('currentQuantity',currentQuantity);
+                requestPurchases.addObject(purchase);
+                return (quantityNeeded === 0);
             }
-            purchase.set('currentQuantity',currentQuantity);
-            requestPurchases.addObject(purchase);
-            return (quantityNeeded === 0);
         });
         if (!foundQuantity) {
             return 'Could not find any purchases that had the required quantity:'+quantityRequested;
         }
         this.set('costPerUnit', (totalCost/quantityRequested).toFixed(2));
-        this.set('quantityAtFulfillment', quantityOnHand);
-        this.set('status','Fulfilled');
-        this.set('dateFulfilled', new Date());
-        this.set('fulfilledBy', this.getUserName());
+        this.set('quantityAtCompletion', quantityOnHand);
+        this.set('status','Completed');
+        this.set('completedBy', this.getUserName());
         item.get('content').updateQuantity();
         return true;
     }

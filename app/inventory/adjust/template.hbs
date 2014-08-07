@@ -1,0 +1,23 @@
+{{#em-form model=this submit_button=false }}
+    <div class="form-group">
+        <label class="control-label">Item</label>
+        <p class="form-control-static">{{adjustmentItem.name}}</p>        
+    </div>
+    <div class="form-group">
+        <label class="control-label">Adjustment For</label>
+        <p class="form-control-static">{{locationName}}</p>        
+    </div>
+    <div class="form-group">
+        <label class="control-label">Current Quantity</label>
+        <p class="form-control-static">{{quantity}}</p>
+    </div>
+    <div class="row">
+        {{em-select class="col-sm-3" label="Adjustment Type"
+            property="adjustmentType" content=adjustmentTypes
+            optionValuePath="content.type" optionLabelPath="content.name"
+        }}
+        {{em-input property="adjustmentQuantity" label="Quantity" class="col-sm-3"}}
+    </div>
+    {{em-checkbox label="Adjust Purchases" property="adjustPurchases"}}
+
+{{/em-form}}
