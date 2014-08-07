@@ -1,7 +1,9 @@
-<div class="alert alert-danger">
-    <span class="glyphicon glyphicon-warning-sign"></span>    
-    Are you sure you wish to {{#if expire}}expire{{else}}delete{{/if}} this purchase?
-    Doing so will remove {{currentQuantity}} items from {{location}} - {{aisleLocation}}
+<div class="alert alert-danger">    
+    <p>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        Are you sure you wish to {{#if expire}}expire{{else}}delete{{/if}} this purchase?
+    </p>
+    <p>Doing so will {{#if expire}}expire{{else}}remove{{/if}} {{currentQuantity}} items.</p>
 </div>
 {{#em-form model=this submit_button=false }}
     {{#if showLocations}}
