@@ -14,6 +14,9 @@
     {{type-ahead property="transferLocation" label="Transfer To Location" content=warehouseList.value selection=transferLocation }}
     {{type-ahead property="transferAisleLocation" label="Transfer To Aisle Location" content=aisleLocationList.value selection=transferAisleLocation }}
     <div class="row">
-        {{em-input property="transferQuantity" label="Quantity" class="col-sm-3"}}        
+        {{em-input property="adjustmentQuantity" label="Quantity" class="col-sm-3"}}        
+    </div>
+    <div class="row">
+        {{date-picker property="dateCompleted" label="Date Transferred" class="col-sm-4"}}
     </div>
 {{/em-form}}

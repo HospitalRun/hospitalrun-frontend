@@ -76,31 +76,31 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             var adjustPurchases = inventoryLocation.get('adjustPurchases'),
                 adjustmentQuantity = parseInt(inventoryLocation.get('adjustmentQuantity')),
                 inventoryItem = this.get('model'),                
-                transactionType = inventoryLocation.get('transactionType');
-            this.adjustLocation(inventoryItem, inventoryLocation);
-            inventoryLocation.setProperties({                
-                adjustmentQuantity: null,
-                adjustPurchases: true,
-                transactionType: 'Adjustment (Add)'
-            });            
-            if (adjustPurchases) {
-                var increment = false,
-                    request = this.get('store').createRecord('inv-request', {
-                        inventoryItem: inventoryItem,
-                        quantity: adjustmentQuantity,
-                        transactionType: transactionType        
-                    });
-                if (transactionType === 'Adjustment (Add)') {
-                    increment = true;
-                }                
-                //Make sure inventory item is resolved first.
-                request.get('inventoryItem').then(function() {
-                    this.send('fulfillRequest', request, true, increment, true);
-                }.bind(this));
-            } else {
-                this.send('update',true);
-                this.send('closeModal');
-            }
+                transactionType = inventoryLocation.get('transactionType'),
+                request = this.get('store').createRecord('inv-request', {
+                    dateCompleted: inventoryLocation.get('dateCompleted'),
+                    inventoryItem: inventoryItem,
+                    quantity: adjustmentQuantity,
+                    transactionType: transactionType,
+                    reason: inventoryLocation.get('reason')
+                });
+            request.get('inventoryLocations').then(function(inventoryLocations) {
+                inventoryLocations.addObject(inventoryLocation);
+                if (adjustPurchases) {
+                    var increment = false;
+                    if (transactionType === 'Adjustment (Add)') {
+                        increment = true;
+                    }
+                    request.set('markAsConsumed',true);
+                    //Make sure inventory item is resolved first.
+                    request.get('inventoryItem').then(function() {
+                        this.send('fulfillRequest', request, true, increment, true);
+                    }.bind(this));
+                } else {
+                    this.adjustLocation(inventoryItem, inventoryLocation);
+                    this._saveRequest(request);
+                }
+            }.bind(this));
         },        
         
         deletePurchase: function(purchase, deleteFromLocation, expire) {
@@ -123,6 +123,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         },
         
         showAdjustment: function(inventoryLocation) {
+            inventoryLocation.set('dateCompleted', new Date());
             inventoryLocation.set('adjustmentItem', this.get('model'));
             this.send('openModal', 'inventory.adjust', inventoryLocation);
         },
@@ -142,19 +143,31 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         
         showTransfer: function(inventoryLocation) {
             inventoryLocation.set('transferItem', this.get('model'));
+            inventoryLocation.set('dateCompleted', new Date());
             this.send('openModal', 'inventory.transfer', inventoryLocation);
         },
         
         transferItems: function(inventoryLocation) {
-            var inventoryItem = this.get('model');
-            this.transferToLocation(inventoryItem, inventoryLocation);
-            inventoryLocation.setProperties({                
+            var inventoryItem = this.get('model'),
+                request = this.get('store').createRecord('inv-request', {
+                    dateCompleted: inventoryLocation.get('dateCompleted'),
+                    inventoryItem: inventoryItem,
+                    quantity: inventoryLocation.get('adjustmentQuantity'),
+                    deliveryAisle: inventoryLocation.get('transferAisleLocation'),
+                    deliveryLocation: inventoryLocation.get('transferLocation'),
+                    transactionType: 'Transfer'
+                });
+            this.transferToLocation(inventoryItem, inventoryLocation);            
+            inventoryLocation.setProperties({
+                transferItem: null,
                 transferLocation: null,
                 transferAisleLocation: null,
-                transferQuantity: null
+                adjustmentQuantity: null
             });
-            this.send('update',true);
-            this.send('closeModal');
+            request.get('inventoryLocations').then(function(inventoryLocations) {
+                inventoryLocations.addObject(inventoryLocation);
+                this._saveRequest(request);
+            }.bind(this));
         },
         
         updatePurchase: function(purchase, updateQuantity) {
@@ -197,6 +210,18 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         }, function(error) {
             reject(error);
         });
+    },
+    
+    /**
+     * Saves the specified request, then updates the inventory item and closes the modal.
+     */
+    _saveRequest: function(request) {
+        request.set('status', 'Completed');
+        request.set('completedBy',request.getUserName());
+        request.save().then(function() {
+            this.send('update',true);
+            this.send('closeModal');                    
+        }.bind(this));
     },
     
     beforeUpdate: function() {

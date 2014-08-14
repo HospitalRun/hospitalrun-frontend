@@ -1,20 +1,22 @@
 {{#if hasRecords}}
     <table class="table">
         <tr class="table-header">
-            <th>Fulfilled On</th>            
+            <th>Date Completed</th>            
             <th>Name</th>
             <th>Quantity</th>
-            <th>Fulfilled By</th>            
+            <th>Transaction</th>
+            <th>Completed By</th>            
             <th>Requested On</th>
             <th>Requested By</th>
             <th>Cost Per Unit</th>
-            <th>Quantity At Fulfillment</th>            
+            <th>Quantity At Completion</th>            
         </tr>
         {{#each}}
             <tr>
                 <td>{{date-format dateCompleted}}</td>
                 <td>{{inventoryItem.name}}</td>
                 <td>{{quantity}}</td>
+                <td>{{transactionType}}</td>
                 <td>{{completedBy}}</td>                
                 <td>{{date-format dateRequested}}</td>
                 <td>{{requestedBy}}</td>

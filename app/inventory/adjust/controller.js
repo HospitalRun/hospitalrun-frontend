@@ -12,12 +12,15 @@ export default AbstractEditController.extend({
     }, {
         name: 'Remove',
         type: 'Adjustment (Remove)'
+    }, {
+        name: 'Write Off',
+        type: 'Write Off'
     }],
 
     title: 'Adjustment',
     updateButtonText: function() {
-        return this.get('adjustmentType');
-    }.property('adjustmentType'),
+        return this.get('transactionType');
+    }.property('transactionType'),
     
     updateButtonAction: 'adjust',
     
@@ -27,7 +30,13 @@ export default AbstractEditController.extend({
         },
         
         adjust: function() {
-            this.send('adjustItems', this.get('model'), true);           
+            this.send('adjustItems', this.get('model'), true);
+            this.setProperties({
+                adjustmentItem: null,
+                adjustmentQuantity: null,
+                adjustPurchases: true,
+                transactionType: 'Adjustment (Add)'
+            });
         }
     }
 });

@@ -22,31 +22,36 @@ var InventoryLocation = AbstractModel.extend({
         }
         if (!Ember.isEmpty(aisleLocation)) {
             locationName += aisleLocation;
-        }        
+        }
+        if (Ember.isEmpty(locationName)) {
+            locationName = "No Location";
+        }
         return locationName;
     }.property('location', 'aisleLocation'),
     
+    
+    locationNameWithQuantity: function() {
+        var quantity = this.get('quantity'),
+            locationName = this.get('locationName');
+        return '%@ (%@ available)'.fmt(locationName, quantity);
+    }.property('locationName'),
+    
     validations: {
-        adjustmentQuantity: {
+        adjustmentQuantity: {            
             acceptance: {
                 /***
                  * Validate that the adjustment quantity is a number and that if a deduction there are enough items to deduct
                  */
                 accept: true,
                 if: function(object) {
-                    var adjustmentItem = object.get('adjustmentItem'),
-                        adjustmentQuantity = object.get('adjustmentQuantity'),
-                        adjustmentType = object.get('adjustmentQuantity'),
+                    var adjustmentQuantity = object.get('adjustmentQuantity'),
+                        transactionType = object.get('transactionType'),
                         locationQuantity = object.get('quantity');
-                    
-                    //If we don't have a transfer item, then a transfer is not occurring.
-                    if (!Ember.isEmpty(adjustmentItem)) {
-                        if (Ember.isEmpty(adjustmentQuantity)|| isNaN(adjustmentQuantity)) { 
-                            return true;
-                        }
-                        if (adjustmentType === 'Add' && adjustmentQuantity > locationQuantity) {
-                            return true;            
-                        }
+                    if (Ember.isEmpty(adjustmentQuantity)|| isNaN(adjustmentQuantity)) { 
+                        return true;
+                    }
+                    if (transactionType !== 'Adjustment (Add)' && adjustmentQuantity > locationQuantity) {
+                        return true;            
                     }
                     return false;
                 },
@@ -71,26 +76,6 @@ var InventoryLocation = AbstractModel.extend({
                     return false;
                 },
                 message: 'Please select a location to transfer to'         
-            }
-        },
-        transferQuantity: {
-            acceptance: {
-                /***
-                 * Validate that a procedure has been specified and that it
-                 * is a valid procedure.
-                 */
-                accept: true,
-                if: function(object) {
-                    var transferQuantity = object.get('transferQuantity'),
-                    locationQuantity = object.get('quantity'),
-                    transferItem = object.get('transferItem');
-                    //If we don't have a transfer item, then a transfer is not occurring.
-                    if (!Ember.isEmpty(transferItem) && (Ember.isEmpty(transferQuantity) || isNaN(transferQuantity) || transferQuantity > locationQuantity)) {
-                        return true;
-                    }
-                    return false;
-                },
-                message: 'Please select a quantity less than or equal to the number available for transfer'         
             }
         }
     }

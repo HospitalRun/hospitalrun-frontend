@@ -3,8 +3,8 @@ export default Ember.Component.extend({
     label: null,
     locationPickers: null,
     locationList: null,    
-    quantityRequested: null,
-    
+    quantityRequested: null,    
+
     locationChange: function() {    
         var doingSetup = this.get('doingSetup'),
             locationList = this.get('locationList'),
@@ -41,6 +41,11 @@ export default Ember.Component.extend({
         var locationList = this.get('locationList'),
             locationPickers = [],
             quantityRequested = this.get('quantityRequested');
+        Ember.Binding.from('locationPickers.@each.selectedLocation').to('selectedLocations').connect(this);
+        if (Ember.isEmpty(locationList) || Ember.isEmpty(quantityRequested)) {
+            //We need both a locationList and a quantityRequested
+            return;
+        }
         this.set('doingSetup', true);
         locationList.reduce(function(previousValue, location) {
             if (previousValue < quantityRequested) {
@@ -51,8 +56,7 @@ export default Ember.Component.extend({
         this._setupLocationPickers(locationPickers, locationList, true);
         this.set('locationPickers', locationPickers);
         this.set('doingSetup', false);
-    }.on('init'), 
-
+    }.on('init'),
     
     _setupLocationPickers: function(locationPickers, locationList, setInitialLocation) {
         locationPickers.reduce(function(previousValue, item) {
@@ -67,5 +71,9 @@ export default Ember.Component.extend({
             });
         }, locationList);
         locationPickers.get('firstObject').set('label', this.get('label'));        
-    }
+    },
+    
+    resetLocationParameters: function() {
+        this._setup();
+    }.observes('locationList', 'quantityRequested')
 });

@@ -24,11 +24,11 @@ export default Ember.Mixin.create({
     },
     
     adjustLocation: function(inventoryItem, inventoryLocation) {
-        var adjustmentType = inventoryLocation.get('adjustmentType'),
+        var transactionType = inventoryLocation.get('transactionType'),
             adjustmentQuantity = parseInt(inventoryLocation.get('adjustmentQuantity'));
-        if (adjustmentType === 'Adjustment (Add)') {
+        if (transactionType === 'Adjustment (Add)') {
             inventoryLocation.incrementProperty('quantity', adjustmentQuantity);
-        } else if (adjustmentType === 'Adjustment (Remove)') {
+        } else if (transactionType === 'Adjustment (Remove)') {
             inventoryLocation.decrementProperty('quantity', adjustmentQuantity);
         }
         this.saveLocation(inventoryLocation, inventoryItem);
@@ -80,7 +80,7 @@ export default Ember.Mixin.create({
     transferToLocation: function(inventoryItem, transferLocation) {
         var aisle = transferLocation.get('transferAisleLocation'),
             location = transferLocation.get('transferLocation'),
-            quantity = parseInt(transferLocation.get('transferQuantity'));
+            quantity = parseInt(transferLocation.get('adjustmentQuantity'));
         this._addQuantityToLocation(inventoryItem, quantity, location, aisle);
         transferLocation.decrementProperty('quantity', quantity);
         this.saveLocation(transferLocation, inventoryItem);

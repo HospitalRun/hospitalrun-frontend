@@ -13,10 +13,14 @@
     </div>
     <div class="row">
         {{em-select class="col-sm-3" label="Adjustment Type"
-            property="adjustmentType" content=adjustmentTypes
+            property="transactionType" content=adjustmentTypes
             optionValuePath="content.type" optionLabelPath="content.name"
         }}
         {{em-input property="adjustmentQuantity" label="Quantity" class="col-sm-3"}}
+    </div>
+    {{em-text label="Reason" property="reason" rows=3 }}
+    <div class="row">
+        {{date-picker property="dateCompleted" label="Adjustment Date" class="col-sm-4"}}
     </div>
     {{em-checkbox label="Adjust Purchases" property="adjustPurchases"}}
 
