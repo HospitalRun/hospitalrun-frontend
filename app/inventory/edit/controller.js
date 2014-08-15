@@ -82,7 +82,9 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                     inventoryItem: inventoryItem,
                     quantity: adjustmentQuantity,
                     transactionType: transactionType,
-                    reason: inventoryLocation.get('reason')
+                    reason: inventoryLocation.get('reason'),
+                    deliveryAisle: inventoryLocation.get('aisleLocation'),
+                    deliveryLocation: inventoryLocation.get('location')
                 });
             request.get('inventoryLocations').then(function(inventoryLocations) {
                 inventoryLocations.addObject(inventoryLocation);
