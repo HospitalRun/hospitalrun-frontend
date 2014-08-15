@@ -22,3 +22,4 @@ nbproject/project.properties
 nbproject/project.xml
 
 *.sublime-workspace
+*.css.map
