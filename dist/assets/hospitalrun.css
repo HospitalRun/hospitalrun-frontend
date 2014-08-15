@@ -5441,6 +5441,30 @@ body {
     top: 50%;
     margin-top: -50%; }
 
+.site-search-form {
+  margin: 17px 0; }
+  .site-search-form .form-group {
+    float: left; }
+  .site-search-form input {
+    height: 50px;
+    border-radius: 5px 0 0 5px;
+    padding: 6px 22px;
+    font-size: 18px;
+    font-weight: 300; }
+  .site-search-form .btn {
+    background-color: #d2dae3;
+    border-radius: 0 5px 5px 0;
+    font-size: 22px;
+    width: 56px;
+    height: 50px;
+    text-shadow: none;
+    transition: opacity 0.2s ease; }
+    .site-search-form .btn:hover {
+      opacity: 0.8; }
+    .site-search-form .btn .glyphicon {
+      top: 2px;
+      right: 1px; }
+
 .navbar-nav > li > a {
   padding: 0 15px;
   line-height: 85px; }

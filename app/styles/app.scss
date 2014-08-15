@@ -134,6 +134,41 @@ body {
 
 }
 
+.site-search-form {
+    margin: 17px 0;
+
+    .form-group {
+        float: left;
+    }
+
+    input {
+        height: 50px;
+        border-radius: 5px 0 0 5px;
+        padding: 6px 22px;
+        font-size: 18px;
+        font-weight: 300;
+    }
+
+    .btn {
+        background-color: #d2dae3;
+        border-radius: 0 5px 5px 0;
+        font-size: 22px;
+        width: 56px;
+        height: 50px;
+        text-shadow: none;
+        @include transition(opacity);
+
+        &:hover {
+            opacity: .8;
+        }
+
+        .glyphicon {
+            top: 2px;
+            right: 1px;
+        }
+    }
+}
+
 .navbar-nav {
 
     > li {
