@@ -20,3 +20,5 @@ testem.log
 nbproject/project.properties
 
 nbproject/project.xml
+
+*.sublime-workspace
