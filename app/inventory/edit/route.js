@@ -4,16 +4,24 @@ export default AbstractEditRoute.extend({
     newTitle: 'New Item',
     
     actions: {        
-        deleteBatch: function(batch) {
-            this.controller.send('deleteBatch', batch);
+        adjustItems: function(inventoryLocation) {
+            this.controller.send('adjustItems',inventoryLocation);
         },
         
-        expireBatch: function(batch) {
-            this.controller.send('deleteBatch', batch, true);
+        deletePurchase: function(purchase, deleteFromLocation) {
+            this.controller.send('deletePurchase', purchase, deleteFromLocation);
         },
         
-        updateBatch: function(batch, updateQuantity) {
-            this.controller.send('updateBatch', batch, updateQuantity);
-        }
+        expirePurchase: function(purchase, deleteFromLocation) {
+            this.controller.send('deletePurchase', purchase, deleteFromLocation, true);
+        },
+        
+        transferItems: function(inventoryLocation) {
+            this.controller.send('transferItems',inventoryLocation);
+        },        
+        
+        updatePurchase: function(purchase, updateQuantity) {
+            this.controller.send('updatePurchase', purchase, updateQuantity);
+        }                        
     }
 });

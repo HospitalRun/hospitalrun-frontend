@@ -2,20 +2,25 @@ import AbstractModel from "hospitalrun/models/abstract";
 /**
  * Model to represent a request for inventory items.
  */ 
-var InventoryRequest = AbstractModel.extend({
-    inventoryItem: DS.belongsTo('inventory', { async: true }),
-    status: DS.attr('string'),
-    quantity: DS.attr('number'),
-    fulfilledBy: DS.attr('string'),
-    dateFulfilled: DS.attr('date'),
+var InventoryRequest = AbstractModel.extend({        
+    completedBy: DS.attr('string'),
+    costPerUnit: DS.attr('number'),
+    dateCompleted: DS.attr('date'),
     dateRequested: DS.attr('date'),
-    requestedBy: DS.attr('string'),
-    batches: DS.hasMany('inv-batch', { async: true }),
-    costPerUnit: DS.attr('number'),  
-    quantityAtFulfillment: DS.attr('number'),
-    fulfillmentType: DS.attr('string'),
+    deliveryAisle: DS.attr('string'),
     deliveryLocation: DS.attr('string'),
     expenseAccount: DS.attr('string'),
+    inventoryItem: DS.belongsTo('inventory', { async: true }),
+    purchases: DS.hasMany('inv-purchase', { async: true }),
+    inventoryLocations: DS.hasMany('inv-location', { async: true }),
+    markAsConsumed: DS.attr('boolean'),
+    quantity: DS.attr('number'),
+    quantityAtCompletion: DS.attr('number'),
+    reason: DS.attr('string'),
+    requestedBy: DS.attr('string'),
+    status: DS.attr('string'),
+    transactionType: DS.attr('string'),
+    
     validations: {
         inventoryItemTypeAhead: {
             acceptance: {
@@ -25,7 +30,12 @@ var InventoryRequest = AbstractModel.extend({
                         return false;
                     }
                     var itemName = object.get('inventoryItem.name'),
-                        itemTypeAhead = object.get('inventoryItemTypeAhead');
+                        itemTypeAhead = object.get('inventoryItemTypeAhead'),
+                        status = object.get('status');
+                    if (status === 'Requested') {
+                        //Requested items don't show the type ahead and therefore don't need validation.
+                        return false;
+                    }
                     if (Ember.isEmpty(itemName) || Ember.isEmpty(itemTypeAhead)) {
                         //force validation to fail
                         return true;
@@ -47,9 +57,16 @@ var InventoryRequest = AbstractModel.extend({
             acceptance: {
                 accept: true,
                 if: function(object) {
-                        var itemQuantity = object.get('inventoryItem.quantity'),
-                            requestQuantity = parseInt(object.get('quantity'));
-                        if ( requestQuantity > itemQuantity) {
+                        var isNew = object.get('isNew'),
+                            requestQuantity = parseInt(object.get('quantity')),
+                            transactionType = object.get('transactionType'),
+                            quantityToCompare = null;
+                        if (isNew && transactionType === 'Request') {
+                            quantityToCompare = object.get('inventoryItem.quantity');
+                        } else { 
+                            quantityToCompare = object.get('inventoryLocation.quantity');
+                        }
+                        if ( requestQuantity > quantityToCompare) {
                             //force validation to fail
                             return true;
                         } else {
@@ -60,77 +77,6 @@ var InventoryRequest = AbstractModel.extend({
                 message: 'The quantity must be less than or equal to the number of available items.'
             }
         }
-    },
-
-    /**
-     * Fulfill the request, decrementing from the batches available on the inventory item
-     * This function doesn't save anything, it just updates the objects in memory, so 
-     * a route will need to ensure that the models affected here get updated.
-     * @returns true if the request is fulfilled; false if it cannot be fulfilled due to a lack
-     * of stock.
-     */
-    fulfillRequest: function() {
-        return new Ember.RSVP.Promise(function(resolve, reject){
-            var item = this.get('inventoryItem'),
-                batches = item.get('batches'),
-                promises = [],
-                quantityOnHand = item.get('quantity'),
-                quantityRequested = this.get('quantity'),
-                requestBatches = this.get('batches');
-            
-            if (quantityOnHand >= quantityRequested) {
-                promises.push(item, requestBatches);
-                Ember.RSVP.all(promises,'All fetching done for inventory fulfillment').then(function(){
-                    var findResult = this.findQuantity(batches, item, requestBatches);
-                    if (findResult === true) {
-                        resolve();
-                    } else {
-                        reject(findResult);
-                    }
-                }.bind(this));
-            } else {
-                reject('The quantity on hand, %@ is less than the requested quantity of %@.'.fmt(quantityOnHand,quantityRequested));
-            }
-        }.bind(this));
-    },
-
-    findQuantity: function(batches, item, requestBatches) {
-        var currentQuantity,
-            costPerUnit,
-            quantityOnHand = item.get('quantity'),
-            quantityRequested = this.get('quantity'),
-            quantityNeeded = quantityRequested,
-            totalCost = 0;
-        
-        var foundQuantity = batches.any(function(batch) {
-            currentQuantity = batch.get('currentQuantity');
-            if (batch.get('expired') || currentQuantity <= 0) {
-                return false;
-            }
-            costPerUnit = batch.get('costPerUnit');
-            if (quantityNeeded > currentQuantity) {
-                totalCost += (costPerUnit * currentQuantity);
-                quantityNeeded = quantityNeeded - currentQuantity;
-                currentQuantity = 0;
-            } else {
-                totalCost += (costPerUnit * quantityNeeded);
-                currentQuantity = currentQuantity - quantityNeeded;
-                quantityNeeded = 0;
-            }
-            batch.set('currentQuantity',currentQuantity);
-            requestBatches.addObject(batch);
-            return (quantityNeeded === 0);
-        });
-        if (!foundQuantity) {
-            return 'Could not find any batches that had the required quantity:'+quantityRequested;
-        }
-        this.set('costPerUnit', (totalCost/quantityRequested).toFixed(2));
-        this.set('quantityAtFulfillment', quantityOnHand);
-        this.set('status','Fulfilled');
-        this.set('dateFulfilled', new Date());
-        this.set('fulfilledBy', this.getUserName());
-        item.get('content').updateQuantity();
-        return true;
     }
 });
 

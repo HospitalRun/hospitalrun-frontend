@@ -1,0 +1,34 @@
+{{#em-form model=this submit_button=false }}    
+    {{#if canEditQuantity }}
+        {{quantity-calc calculated=originalQuantity targetUnit=distributionUnit quantityGroups=quantityGroups }}
+    {{else}}
+        <div class="form-group">
+            <label>Quantity</label>
+            {{input class="form-control" value=originalQuantity type="text" disabled=true }}                    
+        </div>
+    {{/if}}
+    <div class="row">
+        <div class="col-sm-4">
+            {{em-input property="purchaseCost" label="Purchase Cost"}}
+        </div>
+        <div class="col-sm-4">
+            {{em-input property="lotNumber" label="Lot Number"}}
+        </div>
+    </div>
+    <div class="row">
+        {{date-picker property="expirationDate" label="Expiration Date" minDate="now" class="col-sm-4"}}
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            {{em-input property="vendor" label="Vendor"}}
+        </div>
+        <div class="col-sm-6">
+            {{em-input property="vendorItemNo" label="Vendor Item Number"}}
+        </div>
+    </div>
+    {{#if isNew}}
+        {{type-ahead property="location" label="Location" content=warehouseList.value selection=location }}
+        {{type-ahead property="aisleLocation" label="Aisle Location" content=aisleLocationList.value selection=aisleLocation }}
+    {{/if}}
+    {{em-checkbox label="Gift In Kind" property="giftInKind"}}
+{{/em-form}}

@@ -271,7 +271,7 @@
                     hash._rev = response.rev;
                     Ember.run.begin();
                     self._updateRelationships(id, type, oldHash, {}).then(function(){
-                      Ember.run(null, resolve, hash);
+                      Ember.run(null, resolve);
                     });
                     Ember.run.end();
                   }

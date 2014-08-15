@@ -19,7 +19,8 @@ Router.map(function() {
         this.route('delivery', { path: "/delivery/:inv-request_id" });
         this.route('edit', { path: "/edit/:inventory_id" });
         this.route('listing');
-        this.route('search', { path: "/search/:search_text" });        
+        this.route('request', { path: "/request/:inv-request_id" });
+        this.route('search', { path: "/search/:search_text" });
     });
     
     this.resource('invoices', { path: '/invoice' }, function() {

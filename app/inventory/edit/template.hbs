@@ -13,7 +13,7 @@
         optionLabelPath="content"
     }}
     {{em-input property="crossReference" label="Cross Reference"}}
-    {{#if showBatches}}
+    {{#if showPurchases}}
         <div class="row">
             {{em-input property="reorderPoint" label="Reorder Point" class="col-sm-3"}}
             {{em-input property="price" label="Price Per Unit" class="col-sm-3"}}
@@ -23,12 +23,12 @@
                 optionLabelPath="content"
                 optionValuePath="content"
             
-            }}
+            }}            
         </div>
     {{/if}}
-    {{#if showNewBatch}}
-        <h3>Batch information</h3>
-        {{partial 'inventory/batch'}}
+    {{#if showNewPurchase}}
+        <h3>Purchase information</h3>
+        {{partial 'inventory/purchase'}}
     {{else}}
         <div class="row">
             {{#if canEditQuantity}}
@@ -36,43 +36,51 @@
             {{else}}
                 <div class="form-group col-sm-3">
                     <label>Quantity</label>
-                    {{input class="form-control" value=quantity type="text" disabled=true }}
+                    <p class="form-control-static">{{quantity}}</p>                    
                 </div>
             {{/if}}
         </div>
-        {{#if showBatches}}
-            <h3>Batches <button class="btn btn-primary" {{action "showAddBatch" this}}>Add Batch</button></h3>    
+        {{#if showPurchases}}
+            {{#if quantityDiscrepency}}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <p>
+                        <span class="glyphicon glyphicon-warning-sign"></span>
+                        The total quantity <strong>({{quantity}})</strong>, does not match the total quantity in the locations <strong>({{locationQuantityTotal}})</strong>.
+                    </p>
+                    <p>Please adjust the quantities on the appropriate location(s) to account for the difference of {{quantityDifferential}}.</p>
+                </div>
+            {{/if}}
+            <h3>Purchases <button class="btn btn-primary" {{action "showAddPurchase" this}}>Add Purchase</button></h3>    
             <table class="table">
                 <tr class="table-header">
                     <th>Date Added</th>
-                    <th>Batch Cost</th>
+                    <th>Purchase Cost</th>
                     <th>Cost Per Unit</th>
                     <th>Original Quantity</th>
                     <th>Current Quantity</th>
-                    <th>Batch Number</th>
+                    <th>Lot Number</th>
                     <th>Expiration Date</th>
                     <th>Vendor</th>
                     <th>Action</th>
                 </tr>
-                {{#each batches itemController='inventory/batch/item-controller'}}                
+                {{#each purchases itemController='inventory/purchase/item-controller'}}                
                     <tr {{bind-attr class="rowClass"}}>
                         <td>{{date-format dateAdded}}</td>
-                        <td>{{batchCost}}</td>
+                        <td>{{purchaseCost}}</td>
                         <td>{{costPerUnit}}</td>
                         <td>{{originalQuantity}}</td>
                         <td>{{currentQuantity}}</td>
-                        <td>{{batchNo}}</td>                
+                        <td>{{lotNumber}}</td>                
                         <td>{{date-format expirationDate}}</td>
                         <td>{{vendor}}</td>
                         <td>
                             {{#if expired}}
                                 <strong>Expired</strong>
                             {{else}}
-                                <button class="btn btn-primary" {{action "showEditBatch" this}}>Edit Batch</button>
+                                <button class="btn btn-primary" {{action "showEditPurchase" this}}>Edit Purchase</button>
                                 {{#if canDelete}}
-                                    <button class="btn btn-default" {{action "showDeleteBatch" this}}>Delete</button>
-                                {{else}}
-                                    <button class="btn btn-default" {{action "showExpireBatch" this}}>Expire</button>                    
+                                    <button class="btn btn-default" {{action "showDeletePurchase" this}}>Delete</button>
                                 {{/if}}
                             {{/if}}
                         </td>
@@ -80,5 +88,27 @@
                 {{/each}}
             </table>
         {{/if}}
+    {{/if}}
+    {{#if showLocations}}
+        <h3>Locations</h3>    
+        <table class="table">
+            <tr class="table-header">
+                <th>Location</th>
+                <th>Aisle Location</th>
+                <th>Quantity</th>
+                <th>Action</th>
+            </tr>
+            {{#each locations}}                
+                <tr>
+                    <td>{{location}}</td>
+                    <td>{{aisleLocation}}</td>
+                    <td>{{quantity}}</td>
+                    <td>                    
+                        <button class="btn btn-primary" {{action "showAdjustment" this}}>Adjust</button>
+                        <button class="btn btn-primary" {{action "showTransfer" this}}>Transfer</button>
+                    </td>                    
+                </tr>
+            {{/each}}
+        </table>
     {{/if}}
 {{/em-form}}

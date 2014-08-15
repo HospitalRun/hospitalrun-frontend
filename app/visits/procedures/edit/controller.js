@@ -36,7 +36,7 @@ export default AbstractEditController.extend({
         if (this.get('isNew')) {
             this.set('newProcedure', true);         
         }
-        Ember.RSVP.Promise.resolve();
+        return Ember.RSVP.Promise.resolve();
     },
     
     afterUpdate: function(procedure) {

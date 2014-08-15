@@ -21,8 +21,20 @@ export default AbstractEditController.extend(VisitTypes, {
         property: 'location',
         id: 'location_list'
     }],
-    patient: Ember.computed.alias('model.patient'),
+    
+    newVisit: false,
+    
     patientId: Ember.computed.alias('patient.id'),
+    patientVisits: Ember.computed.alias('patient.visits'),
+    
+    patientChanged: function() {
+        var patient = this.get('patient');
+        if (!Ember.isEmpty(patient)) {
+            //Make sure all the async relationships are resolved    
+            patient.get('appointments');
+            patient.get('visits');
+        }
+    }.observes('patient'),    
     
     patientIdChanged: function() {
         var patientId = this.get('patientId');
@@ -33,27 +45,24 @@ export default AbstractEditController.extend(VisitTypes, {
     
     returnPatientId: null,
 
-    afterUpdate: function() {
-        this.send('returnToPatient');
-    },
-    
-    beforeUpdate: function() {
-        if (this.get('isNew')) {
-            return new Ember.RSVP.Promise(function(resolve){
-                var patient = this.get('patient'),
-                    promises = [];
-                promises.push(patient.get('appointments'));
-                promises.push(patient.get('visits'));
-                Ember.RSVP.all(promises,'All done getting async relationships for patient').then(function(array){
-                    var visit = this.get('model'),
-                        patientVisits = array[1];
-                    patientVisits.addObject(visit);
-                    patient.save().then(resolve);
-                }.bind(this));
+    afterUpdate: function(visit) {
+        if (this.get('newVisit')) {
+            var visits = this.get('patientVisits'),
+                patient = this.get('patient');
+            visits.addObject(visit);
+            patient.save().then(function() {
+                this.send('returnToPatient');
             }.bind(this));
         } else {
-            Ember.RSVP.resolve();
+            this.send('returnToPatient');
         }
+    },
+    
+    beforeUpdate: function() {        
+        if (this.get('isNew')) {
+            this.set('newVisit', true);
+        }
+        return Ember.RSVP.resolve();
     },
     
     /**

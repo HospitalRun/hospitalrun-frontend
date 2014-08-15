@@ -1,8 +1,9 @@
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import UnitTypes from "hospitalrun/mixins/unit-types";
+import InventoryLocations from "hospitalrun/mixins/inventory-locations";
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
 
-export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
+export default AbstractEditController.extend(InventoryLocations, InventoryTypeList, UnitTypes, {
     needs: 'inventory',
     
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
@@ -19,51 +20,157 @@ export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
     }],
     
     canEditQuantity: function() {
-        return (this.get('isNew') || !this.get('showBatches'));
-    }.property('isNew', 'showBatches'),
-
-    showNewBatch: function() {
-        return (this.get('isNew') && this.get('showBatches'));
-    }.property('isNew', 'showBatches'),
+        return (this.get('isNew') || !this.get('showPurchases'));
+    }.property('isNew', 'showPurchases'),
     
-    showBatches: function() {
+    locationQuantityTotal: function() {
+        var locations = this.get('locations');
+        var total = locations.reduce(function(previousValue, location) {
+            return previousValue + parseInt(location.get('quantity'));
+        }, 0);
+        return total;
+    }.property('locations'),
+    
+    /**
+     * Check to see if the total quantity by location matches the quantity calculated on the item
+     * @return {boolean} true if there is a discrepency;otherwise false.
+     */
+    quantityDiscrepency: function() {
+        var locationQuantityTotal = this.get('locationQuantityTotal'), 
+            quantity = this.get('quantity');
+        return (locationQuantityTotal !== quantity);
+    }.property('locationQuantityTotal', 'quantity'),
+    
+    /**
+     * Get the difference in quantity between the total quantity by location and the quantity on the item.
+     * @return {int} the difference.
+     */
+    quantityDifferential: function() {
+        var locationQuantityTotal = this.get('locationQuantityTotal'), 
+            quantity = this.get('quantity');
+        return Math.abs(locationQuantityTotal - quantity);
+    }.property('locationQuantityTotal', 'quantity'),    
+
+    showNewPurchase: function() {
+        return (this.get('isNew') && this.get('showPurchases'));
+    }.property('isNew', 'showPurchases'),
+    
+    showPurchases: function() {
         return (this.get('type') !== 'Asset');
     }.property('type'),
     
-    originalQuantityUpdated: function() {
-        var quantity = this.get('originalQuantity');
-        this.set('quantity', quantity);
-    }.observes('originalQuantity'),
+    showLocations: function() {
+        return (!this.get('isNew') && this.get('type') !== 'Asset');
+    }.property('isNew', 'type'),    
     
+    originalQuantityUpdated: function() {
+        var isNew = this.get('isNew'),
+            quantity = this.get('originalQuantity');
+        if (isNew && !Ember.isEmpty(quantity)) {
+            this.set('quantity', quantity);
+        }
+    }.observes('originalQuantity'),
+
     actions: {
-        deleteBatch: function(batch, expire) {
-            var batches = this.get('batches');
+        adjustItems: function(inventoryLocation) {
+            var adjustPurchases = inventoryLocation.get('adjustPurchases'),
+                adjustmentQuantity = parseInt(inventoryLocation.get('adjustmentQuantity')),
+                inventoryItem = this.get('model'),                
+                transactionType = inventoryLocation.get('transactionType'),
+                request = this.get('store').createRecord('inv-request', {
+                    dateCompleted: inventoryLocation.get('dateCompleted'),
+                    inventoryItem: inventoryItem,
+                    quantity: adjustmentQuantity,
+                    transactionType: transactionType,
+                    reason: inventoryLocation.get('reason')
+                });
+            request.get('inventoryLocations').then(function(inventoryLocations) {
+                inventoryLocations.addObject(inventoryLocation);
+                if (adjustPurchases) {
+                    var increment = false;
+                    if (transactionType === 'Adjustment (Add)') {
+                        increment = true;
+                    }
+                    request.set('markAsConsumed',true);
+                    //Make sure inventory item is resolved first.
+                    request.get('inventoryItem').then(function() {
+                        this.send('fulfillRequest', request, true, increment, true);
+                    }.bind(this));
+                } else {
+                    this.adjustLocation(inventoryItem, inventoryLocation);
+                    this._saveRequest(request);
+                }
+            }.bind(this));
+        },        
+        
+        deletePurchase: function(purchase, deleteFromLocation, expire) {
+            var purchases = this.get('purchases'),
+                quantityDeleted = purchase.get('currentQuantity');
             if (expire) {
-                batch.set('expired', true);
-                batch.save();
+                purchase.set('expired', true);
+                purchase.save();
             } else {
-                batches.removeObject(batch);
-                batch.destroyRecord();
+                purchases.removeObject(purchase);
+                purchase.destroyRecord();
+            }
+            if (!Ember.isEmpty(deleteFromLocation)) {
+                deleteFromLocation.decrementProperty('quantity', quantityDeleted);
+                this.saveLocation(deleteFromLocation, this.get('model'));
             }
             this.get('model').updateQuantity();
             this.send('update',true);
             this.send('closeModal');        
         },
+        
+        showAdjustment: function(inventoryLocation) {
+            inventoryLocation.set('dateCompleted', new Date());
+            inventoryLocation.set('adjustmentItem', this.get('model'));
+            this.send('openModal', 'inventory.adjust', inventoryLocation);
+        },
 
-        showDeleteBatch: function(batch) {
-            this.send('openModal', 'inventory.batch.delete', batch);
+        showDeletePurchase: function(purchase) {
+            this.send('openModal', 'inventory.purchase.delete', purchase);
         },
         
-        showEditBatch: function(batch) {
-            this.send('openModal', 'inventory.batch.edit', batch);
+        showEditPurchase: function(purchase) {
+            this.send('openModal', 'inventory.purchase.edit', purchase);
         },
         
-        showExpireBatch: function(batch) {
-            batch.set('expire', true);
-            this.send('openModal', 'inventory.batch.delete', batch);
+        showExpirePurchase: function(purchase) {
+            purchase.set('expire', true);
+            this.send('openModal', 'inventory.purchase.delete', purchase);
         },
         
-        updateBatch: function(batch, updateQuantity) {
+        showTransfer: function(inventoryLocation) {
+            inventoryLocation.set('transferItem', this.get('model'));
+            inventoryLocation.set('dateCompleted', new Date());
+            this.send('openModal', 'inventory.transfer', inventoryLocation);
+        },
+        
+        transferItems: function(inventoryLocation) {
+            var inventoryItem = this.get('model'),
+                request = this.get('store').createRecord('inv-request', {
+                    dateCompleted: inventoryLocation.get('dateCompleted'),
+                    inventoryItem: inventoryItem,
+                    quantity: inventoryLocation.get('adjustmentQuantity'),
+                    deliveryAisle: inventoryLocation.get('transferAisleLocation'),
+                    deliveryLocation: inventoryLocation.get('transferLocation'),
+                    transactionType: 'Transfer'
+                });
+            this.transferToLocation(inventoryItem, inventoryLocation);            
+            inventoryLocation.setProperties({
+                transferItem: null,
+                transferLocation: null,
+                transferAisleLocation: null,
+                adjustmentQuantity: null
+            });
+            request.get('inventoryLocations').then(function(inventoryLocations) {
+                inventoryLocations.addObject(inventoryLocation);
+                this._saveRequest(request);
+            }.bind(this));
+        },
+        
+        updatePurchase: function(purchase, updateQuantity) {
             if (updateQuantity) {
                 this.get('model').updateQuantity();
                 this.send('update',true);
@@ -77,16 +184,17 @@ export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
             friendlyId = sequence.get('prefix'),
             promises = [];
         
-        if (this.get('showBatches')) {
-            var newBatch = this.getProperties('aisleLocation', 'batchCost', 
-                'batchNo', 'expirationDate', 'giftInKind', 'location', 'vendor',
+        if (this.get('showPurchases')) {
+            var newPurchase = this.getProperties('aisleLocation', 'purchaseCost', 
+                'lotNumber', 'expirationDate', 'giftInKind', 'location', 'vendor',
                 'vendorItemNo');
-            newBatch.dateAdded = new Date();
-            newBatch.originalQuantity = this.get('quantity');
-            newBatch.currentQuantity = newBatch.originalQuantity;
-            var batch = this.get('store').createRecord('inv-batch', newBatch);
-            promises.push(batch.save());
-            this.get('batches').addObject(batch);
+            newPurchase.dateAdded = new Date();
+            newPurchase.originalQuantity = this.get('quantity');
+            newPurchase.currentQuantity = newPurchase.originalQuantity;
+            var purchase = this.get('store').createRecord('inv-purchase', newPurchase);
+            promises.push(purchase.save());
+            this.get('purchases').addObject(purchase);
+            this.newPurchaseAdded(this.get('model'), purchase);
         }
         sequence.incrementProperty('value',1);
         sequenceValue = sequence.get('value');
@@ -102,6 +210,18 @@ export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
         }, function(error) {
             reject(error);
         });
+    },
+    
+    /**
+     * Saves the specified request, then updates the inventory item and closes the modal.
+     */
+    _saveRequest: function(request) {
+        request.set('status', 'Completed');
+        request.set('completedBy',request.getUserName());
+        request.save().then(function() {
+            this.send('update',true);
+            this.send('closeModal');                    
+        }.bind(this));
     },
     
     beforeUpdate: function() {
@@ -120,7 +240,7 @@ export default AbstractEditController.extend(InventoryTypeList, UnitTypes, {
                 }.bind(this));
             }.bind(this));
         } else {
-            Ember.RSVP.Promise.resolve();
+            return Ember.RSVP.Promise.resolve();
         }
     },
     

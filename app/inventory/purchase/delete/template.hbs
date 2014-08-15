@@ -1,0 +1,16 @@
+<div class="alert alert-danger">    
+    <p>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        Are you sure you wish to {{#if expire}}expire{{else}}delete{{/if}} this purchase?
+    </p>
+    <p>Doing so will {{#if expire}}expire{{else}}remove{{/if}} {{currentQuantity}} items.</p>
+</div>
+{{#em-form model=this submit_button=false }}
+    {{#if showLocations}}
+        {{em-select label="Remove From Location"
+            prompt="Do Not Remove From A Location"
+            property="deleteFromLocation" content=deleteLocations
+            optionValuePath="content.location" optionLabelPath="content.name"
+        }}
+    {{/if}}
+{{/em-form}}
