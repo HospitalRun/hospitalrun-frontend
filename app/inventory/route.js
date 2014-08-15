@@ -64,12 +64,16 @@ export default AbstractModuleRoute.extend(InventoryLocations, {
             var markAsConsumed = request.get('markAsConsumed');
             
             if (markAsConsumed) {
-                request.set('transactionType', 'Fulfillment');
+                if (Ember.isEmpty(request.get('transactionType'))) {
+                    request.set('transactionType', 'Fulfillment');
+                }
                 this.performFulfillment(request, increment).then(function() {
                     this.finishFulfillRequest(request, closeModal, increment, skipTransition);
                 }.bind(this));
             } else {
-                request.set('transactionType', 'Transfer');
+                if (Ember.isEmpty(request.get('transactionType'))) {
+                    request.set('transactionType', 'Transfer');
+                }
                 this.finishFulfillRequest(request, closeModal, increment, skipTransition);
             }
         },
