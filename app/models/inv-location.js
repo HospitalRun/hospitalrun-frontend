@@ -1,11 +1,12 @@
 import AbstractModel from "hospitalrun/models/abstract";
+import LocationName from "hospitalrun/mixins/location-name";
 /**
  * Model to represent the location(s) of inventory items.
  * File/model name is inv-location because using inv-location will cause location
  * items to be shown as inventory items since the pouchdb adapter does a 
  * retrieve for keys starting with 'inventory' to fetch inventory items.
  */ 
-var InventoryLocation = AbstractModel.extend({
+var InventoryLocation = AbstractModel.extend(LocationName, {
     quantity: DS.attr('number'),
     location: DS.attr('string'),
     aisleLocation: DS.attr('string'),
@@ -13,23 +14,13 @@ var InventoryLocation = AbstractModel.extend({
     locationName: function() {
         var aisleLocation =  this.get('aisleLocation'),
             location = this.get('location'),
-            locationName = '';
-        if (!Ember.isEmpty(location)) {
-            locationName += location;
-            if (!Ember.isEmpty(aisleLocation)) {
-                locationName += " : ";
-            }
-        }
-        if (!Ember.isEmpty(aisleLocation)) {
-            locationName += aisleLocation;
-        }
+            locationName = this.formatLocationName(location, aisleLocation);
         if (Ember.isEmpty(locationName)) {
-            locationName = "No Location";
+            locationName = 'No Location';
         }
         return locationName;
     }.property('location', 'aisleLocation'),
-    
-    
+
     locationNameWithQuantity: function() {
         var quantity = this.get('quantity'),
             locationName = this.get('locationName');

@@ -5,28 +5,43 @@
             <th>Name</th>
             <th>Quantity</th>
             <th>Transaction</th>
-            <th>Completed By</th>            
-            <th>Requested On</th>
-            <th>Requested By</th>
-            <th>Cost Per Unit</th>
-            <th>Quantity At Completion</th>            
+            <th>Details</th>
         </tr>
-        {{#each}}
+        {{#each itemController='inventory/completed-items'}}
             <tr>
                 <td>{{date-format dateCompleted}}</td>
                 <td>{{inventoryItem.name}}</td>
                 <td>{{quantity}}</td>
                 <td>{{transactionType}}</td>
-                <td>{{completedBy}}</td>                
-                <td>{{date-format dateRequested}}</td>
-                <td>{{requestedBy}}</td>
-                <td>{{costPerUnit}}</td>
-                <td>{{quantityAtCompletion}}</td>
+                <td>
+                    {{#if isAdjustment}}
+                        {{#if haveReason}}
+                            <strong>Reason:</strong> {{reason}}<br/>
+                        {{/if}}
+                        <strong>Location Adjusted:</strong> {{deliveryDetails}}
+                    {{/if}}
+                    {{#if isFulfillment}}
+                        <strong>Cost Per Unit:</strong> {{costPerUnit}}<br/>
+                        <strong>Quantity At Completion:</strong> {{quantityAtCompletion}}<br/>
+                        <strong>Pulled From:</strong>
+                        {{#each inventoryLocations}}
+                            {{locationName}}<br/>
+                        {{/each}}
+                        <strong>Delivered To: </strong> {{deliveryDetails}}
+                    {{/if}}
+                    {{#if isTransfer}}
+                        <strong>Transferred From:</strong>
+                        {{#each inventoryLocations}}
+                            {{locationName}}<br/>
+                        {{/each}}
+                        <strong>Transferred To: </strong> {{deliveryDetails}}
+                    {{/if}}
+                </td>
             </tr>            
         {{/each}}
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No requests found.  Create a new delivery?</em> <button class="btn btn-primary" {{action 'newDelivery'}}>New Delivery</button>
+        <em>No requests found.  Create a new request?</em> <button class="btn btn-primary" {{action 'newRequest'}}>New Request</button>
     </div>
 {{/if}}
