@@ -1,0 +1,24 @@
+// Variables
+// -------------------------------------------/
+
+$green:                  #00bd9c;
+$green_light:            #13d8b6;
+$navy:                   #2e4359;
+$navy_drk:               #253649;
+
+// end variables ------------/
+
+
+// Mixins
+// -------------------------------------------/
+
+@mixin vertically_centered {
+  position: relative;
+  top: 50%;
+  margin-top: -50%;
+}
+
+@mixin transition($value) {
+  transition: $value .2s ease;
+}
+// end mixins ------------/
