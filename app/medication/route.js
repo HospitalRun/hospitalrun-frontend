@@ -1,16 +1,22 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
-import MedicationMapping from 'hospitalrun/mixins/medication-mapping';
-export default AbstractModuleRoute.extend(MedicationMapping, {
-    modelName: 'medication',
+export default AbstractModuleRoute.extend({
+    modelName: 'med-request',
     moduleName: 'medication',
     newButtonText: '+ new request',
     sectionTitle: 'Medication',
 
-    model: function() {
-        return this.store.find('medication', {
-            mapResults: this._mapViewResults,
-            fieldMapping: this.fieldMapping
-        });
+    additionalModels: [{ 
+        name: 'medicationList',
+        findArgs: ['inventory',{type: 'Medication'}]
+    },  {
+        name: 'patientList',
+        findArgs: ['patient']
+    }],     
+
+    getNewData: function() {
+        return {
+            selectPatient: true
+        };
     }
 });
 

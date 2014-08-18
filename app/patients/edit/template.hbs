@@ -84,6 +84,40 @@
                 </table>
             </div>
         </div>
+    </div>
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-medication">
+                    Medication <button class="btn btn-primary" {{action "newMedication" bubbles=false }}>New Medication</button>
+                </a>
+            </h3>
+        </div>
+        <div id="patient-medication" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <table class="table">
+                    <tr class="table-header">
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Prescription</th>
+                        <th>Actions</th>
+                    </tr>
+                    {{#each medication }}
+                        <tr {{action "editMedication" this}}>
+                            <td>{{datePrescribed}}</td>
+                            <td>{{inventoryItem.name}}</td>
+                            <td>{{status}}</td>
+                            <td>{{prescription}}</td>
+                            <td>
+                                <button class="btn btn-primary" {{action "editMedication" this}}>Edit</button>
+                                <button class="btn btn-default" {{action "showDeleteMedication" this  bubbles=false }}>Delete</button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </table>
+            </div>
+        </div>
     </div>    
     <div class="panel">
         <div class="panel-heading">

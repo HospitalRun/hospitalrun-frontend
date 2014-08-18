@@ -1,21 +1,13 @@
-import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
+import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-export default AbstractEditController.extend(VisitTypes, {
+export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
     needs: 'appointments',
 
-    cancelAction: function() {
-        var returnToPatient = this.get('returnToPatient');
-        if (returnToPatient) {
-            return 'returnToPatient';
-        } else {
-            return 'allItems';
-        }                
-    }.property('returnToPatient'),
-    
-    patientList: Ember.computed.alias('controllers.appointments.patientList'),
-    physicianList: Ember.computed.alias('controllers.appointments.physicianList'),
+    dateFormat: 'l h:mm A',
     locationList: Ember.computed.alias('controllers.appointments.locationList'),
+
     lookupListsToUpdate: [{
         name: 'physicianList',
         property: 'provider',
@@ -26,30 +18,24 @@ export default AbstractEditController.extend(VisitTypes, {
         id: 'location_list'
     }],
     
-    dateFormat: 'l h:mm A',
     newAppointment: false,
-    showTime: true,
-    
-    patientId: Ember.computed.alias('patient.id'),
     patientAppointments: Ember.computed.alias('patient.appointments'),
-    
-    patientIdChanged: function() {
-        var patientId = this.get('patientId');
-        if (!Ember.isEmpty(patientId)) {
-            this.set('returnPatientId', patientId);
+    patientList: Ember.computed.alias('controllers.appointments.patientList'),
+    physicianList: Ember.computed.alias('controllers.appointments.physicianList'),
+    showTime: true,
+
+    afterUpdate: function(appointment) {
+        if (this.get('newAppointment')) {
+            var appointments = this.get('patientAppointments'),
+                patient = this.get('patient');
+            appointments.addObject(appointment);
+            patient.save().then(function() {
+                this.send(this.get('cancelAction'));            
+            }.bind(this));            
+        } else {
+            this.send(this.get('cancelAction'));
         }
-    }.observes('patientId').on('init'),
-    
-    patientChanged: function() {
-        var patient = this.get('patient');
-        if (!Ember.isEmpty(patient)) {
-            //Make sure all the async relationships are resolved    
-            patient.get('appointments');
-            patient.get('visits');
-        }
-    }.observes('patient'),
-    
-    returnPatientId: null,
+    },
 
     allDayChanged: function() {
         var allDay = this.get('allDay');
@@ -65,31 +51,12 @@ export default AbstractEditController.extend(VisitTypes, {
             this.set('showTime', true);
         }
     }.observes('allDay'),
-    
-    actions: {
-        returnToPatient: function() {
-            this.transitionToRoute('patients.edit', this.get('returnPatientId'));
-        }                
-    },
 
-    afterUpdate: function(appointment) {
-        if (this.get('newAppointment')) {
-            var appointments = this.get('patientAppointments'),
-                patient = this.get('patient');
-            appointments.addObject(appointment);
-            patient.save().then(function() {
-                this.send(this.get('cancelAction'));            
-            }.bind(this));            
-        } else {
-            this.send(this.get('cancelAction'));
-        }
-    },
-    
     beforeUpdate: function() {
         if (this.get('isNew')) {
             this.set('newAppointment', true);
         }
         return Ember.RSVP.resolve();
-    }    
+    } 
 
 });

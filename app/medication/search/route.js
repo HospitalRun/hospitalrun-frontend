@@ -1,12 +1,10 @@
 import AbstractSearchRoute from 'hospitalrun/routes/abstract-search-route';
-import MedicationMapping from 'hospitalrun/mixins/medication-mapping';
-export default AbstractSearchRoute.extend(MedicationMapping, {
+export default AbstractSearchRoute.extend({
 	moduleName: 'medication',
     searchKeys: [
-        'prescription',
-        'patientId'
+        'prescription'
     ],
-    searchModel: 'medication',
+    searchModel: 'med-request',
     
     /**
      * Get the query params to run against the store find function.

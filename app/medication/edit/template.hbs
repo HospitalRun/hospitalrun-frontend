@@ -1,14 +1,27 @@
-{{#em-form model=this submit_button=false}}
-    {{em-input property="patientId" label="Patient"}}
-    <div class="form-group">
-        <label>Prescription:</label>
-        {{smart-prescription value=prescription rows="3" class="form-control"}}
+{{#em-form model=this submit_button=false }}
+    {{#if selectPatient}}
+        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=patient }}
+    {{else}}
+            <div class="form-group">
+                <label>Patient</label>
+                <p class="form-control-static">{{patient.displayName}}</p>
+            </div>
+    {{/if}}
+    {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=inventoryItem }}        
+    <div class="row">
+        {{em-input property="dose" label="Dose" class="col-xs-3"}}
+        {{em-input property="frequency" label="Frequency" class="col-xs-3"}}
+    </div>        
+    <div class="row">
+        {{em-input property="duration" label="Duration" class="col-xs-3"}}
+        {{em-select class="col-xs-3" label=" " 
+            property="durationType" content=durationTypes
+            optionValuePath="content" optionLabelPath="content"
+        }}
     </div>
     <div class="row">
-        {{em-input property="quantity" label="Quantity" class="col-xs-3"}}
+        {{em-input property="quantity" label="Quantity Requested" class="col-xs-3"}}          
+        {{em-input property="refills" label="Refills" class="col-xs-3"}}
     </div>
-    <div class="form-group">
-        <label>Medication:</label>
-        {{ext-radio name=medicationId content=availableMeds value=medicationId}}
-    </div>
+    {{em-text property="notes" label="Prescription Notes" rows="3"}}
 {{/em-form}}

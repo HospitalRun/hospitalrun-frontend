@@ -66,7 +66,15 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
             });
             newAppointment.set('returnToPatient', true);
             this.transitionToRoute('appointments.edit', newAppointment);
-        },             
+        },
+        
+        newMedication: function() {
+            var newMedication = this.get('store').createRecord('med-request', {
+                prescriptionDate: new Date(),
+                patient: this.get('model')
+            });            
+            this.transitionToRoute('medication.edit', newMedication);
+        },
         
         newVisit: function() {
             var newVisit = this.get('store').createRecord('visit', {

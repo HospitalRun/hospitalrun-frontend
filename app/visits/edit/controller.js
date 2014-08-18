@@ -1,7 +1,8 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-export default AbstractEditController.extend(VisitTypes, {
+export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
     needs: 'visits',
     
     cancelAction: 'returnToPatient',
@@ -23,27 +24,8 @@ export default AbstractEditController.extend(VisitTypes, {
     }],
     
     newVisit: false,
-    
-    patientId: Ember.computed.alias('patient.id'),
+
     patientVisits: Ember.computed.alias('patient.visits'),
-    
-    patientChanged: function() {
-        var patient = this.get('patient');
-        if (!Ember.isEmpty(patient)) {
-            //Make sure all the async relationships are resolved    
-            patient.get('appointments');
-            patient.get('visits');
-        }
-    }.observes('patient'),    
-    
-    patientIdChanged: function() {
-        var patientId = this.get('patientId');
-        if (!Ember.isEmpty(patientId)) {
-            this.set('returnPatientId', patientId);
-        }
-    }.observes('patientId').on('init'),
-    
-    returnPatientId: null,
 
     afterUpdate: function(visit) {
         if (this.get('newVisit')) {
@@ -109,10 +91,6 @@ export default AbstractEditController.extend(VisitTypes, {
         
         deleteVitals: function(vitals) {
             this.updateList('vitals', vitals, true);
-        },
-        
-        returnToPatient: function() {
-            this.transitionToRoute('patients.edit', this.get('returnPatientId'));
         },
         
         showAddVitals: function() {

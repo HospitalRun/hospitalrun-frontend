@@ -1,45 +1,36 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
+import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
-export default AbstractEditController.extend({
-    actions: {
-        search: function(searchfield) {
-            var searchValue = searchfield.get('value').trim();
-            if (!this.searching &&  searchValue !== '') {
-                this.searching = true;
-                var queryParams = {
-                    containsValue: {
-                        value: searchValue,
-                        keys: [
-                            'description',
-                            'name'
-                        ]
-                    },
-                    keyValues: {
-                        type: 'Medication'
-                    }
-                };
-                this.store.find('inventory', queryParams).then(function(inventory) {
-                    if (inventory !== undefined) {
-                        this.set('medicationId', false);
-                        var medication = inventory.map(function(rec) {
-                            if (!this.get('medicationId')) { //Set the first radio button
-                                this.set('medicationId', rec.get('id'));
-                            }
-                            return {
-                                label: rec.get('name'),
-                                value: rec.get('id')
-                            };
-                        }.bind(this));
-                        this.set('availableMeds', medication);
-                    }
-                    this.searching = false;
-                }.bind(this));    
-            } else if (searchValue === '') {
-                this.set('availableMeds', null);
-            }            
-        }        
+export default AbstractEditController.extend(PatientSubmodule, {
+    needs: 'medication',
+
+    durationTypes: [
+        'Days',
+        'Weeks'
+    ],
+    
+    medicationList: Ember.computed.alias('controllers.medication.medicationList'),
+    patientList: Ember.computed.alias('controllers.medication.patientList'),
+    patientMedication: Ember.computed.alias('patient.medication'),
+
+    afterUpdate: function(medication) {
+        if (this.get('newMedication')) {
+            var medications = this.get('patientMedication'),
+                patient = this.get('patient');
+            medications.addObject(medication);
+            patient.save().then(function() {
+                this.send(this.get('cancelAction'));            
+            }.bind(this));            
+        } else {
+            this.send(this.get('cancelAction'));
+        }
     },
-    afterUpdate: function(record) {
-        this.transitionToRoute('/medication/search/'+record.get('id'));
-    }
+    
+    beforeUpdate: function() {
+        if (this.get('isNew')) {
+            this.set('newMedication', true);
+        }
+        return Ember.RSVP.resolve();
+    } 
+
 });
