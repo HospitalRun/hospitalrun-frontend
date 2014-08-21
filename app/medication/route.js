@@ -15,7 +15,8 @@ export default AbstractModuleRoute.extend({
 
     getNewData: function() {
         return {
-            selectPatient: true
+            selectPatient: true,
+            prescriptionDate: new Date()
         };
     }
 });

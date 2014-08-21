@@ -1,7 +1,6 @@
 import AbstractModel from "hospitalrun/models/abstract";
 
-export default AbstractModel.extend({    
-    datePrescribed: DS.attr('date'),
+export default AbstractModel.extend({
     dose: DS.attr('string'),
     duration: DS.attr('number'),
     durationType: DS.attr('string'),
@@ -9,6 +8,7 @@ export default AbstractModel.extend({
     inventoryItem: DS.belongsTo('inventory'),
     notes: DS.attr('string'),
     patient: DS.belongsTo('patient'),
+    prescriptionDate: DS.attr('date'),
     quantity: DS.attr('number'),
     refills: DS.attr('number'),
     status: DS.attr('string'),

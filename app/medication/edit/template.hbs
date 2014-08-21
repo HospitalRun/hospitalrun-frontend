@@ -7,7 +7,14 @@
                 <p class="form-control-static">{{patient.displayName}}</p>
             </div>
     {{/if}}
-    {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=inventoryItem }}        
+    {{#if isRequested}}
+        <div class="form-group">
+            <label class="control-label">Medication</label>
+            <p class="form-control-static">{{inventoryItem.name}}</p>        
+        </div>
+    {{else}}
+        {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=inventoryItem }}
+    {{/if}}
     <div class="row">
         {{em-input property="dose" label="Dose" class="col-xs-3"}}
         {{em-input property="frequency" label="Frequency" class="col-xs-3"}}
@@ -20,8 +27,23 @@
         }}
     </div>
     <div class="row">
+        {{date-picker property="prescriptionDate" label="Prescription Date" class="col-sm-4"}}
+    </div>
+    <div class="row">
         {{em-input property="quantity" label="Quantity Requested" class="col-xs-3"}}          
         {{em-input property="refills" label="Refills" class="col-xs-3"}}
     </div>
     {{em-text property="notes" label="Prescription Notes" rows="3"}}
+    {{#if isNew}}
+        <div class="form-group">            
+            <label class="control-label">Fulfill Request</label>
+         </div>
+        {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
+    {{/if}}
+    {{#if isFulfilling}}
+        {{inventory-location-picker label="Pull From" quantityRequested=quantity
+            locationList=inventoryItem.locations 
+            selectedLocations=fulfillmentLocations
+        }}
+    {{/if}}
 {{/em-form}}

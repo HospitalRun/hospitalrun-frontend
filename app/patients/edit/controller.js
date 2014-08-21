@@ -51,7 +51,11 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
         editAppointment: function(appointment) {
             appointment.set('returnToPatient', true);
             this.transitionToRoute('appointments.edit', appointment);
-        },        
+        },
+        
+        editMedication: function(medication) {
+            this.transitionToRoute('medication.edit', medication);
+        },    
         
         editVisit: function(visit) {
             this.transitionToRoute('visits.edit', visit);
@@ -91,6 +95,11 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
         showDeleteAppointment: function(appointment) {
             this.send('openModal', 'appointments.delete', appointment);
         },
+        
+        
+        showDeleteMedication: function(medication) {
+            this.send('openModal', 'medication.delete', medication);
+        },    
 
         showDeleteVisit: function(visit) {
             this.send('openModal', 'visits.delete', visit);
