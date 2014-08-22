@@ -102,7 +102,7 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
         
         newMedication: function() {
             var newMedication = this.get('store').createRecord('medication', {
-                prescriptionDate: new Date(),
+                prescriptionDate: moment().startOf('day').toDate(),
                 patient: this.get('patient'),
                 visit: this.get('model')
             });            

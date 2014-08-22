@@ -40,8 +40,7 @@ export default Ember.Component.extend({
     _setup: function() {
         var locationList = this.get('locationList'),
             locationPickers = [],
-            quantityRequested = this.get('quantityRequested');
-        Ember.Binding.from('locationPickers.@each.selectedLocation').to('selectedLocations').connect(this);
+            quantityRequested = this.get('quantityRequested');        
         if (Ember.isEmpty(locationList) || Ember.isEmpty(quantityRequested)) {
             //We need both a locationList and a quantityRequested
             return;
@@ -70,8 +69,17 @@ export default Ember.Component.extend({
                 return (item.get('selectedLocation.id') !== location.get('id'));
             });
         }, locationList);
-        locationPickers.get('firstObject').set('label', this.get('label'));        
+        locationPickers.get('firstObject').set('label', this.get('label'));
     },
+    
+    _selectedLocationChange: function() {
+        var locationPickers = this.get('locationPickers'),
+            selectedLocations = [];
+        locationPickers.forEach(function(locationPicker) {
+            selectedLocations.addObject(locationPicker.get('selectedLocation'));
+        });
+        this.set('selectedLocations', selectedLocations);
+    }.observes('locationPickers.@each.selectedLocation'),
     
     resetLocationParameters: function() {
         this._setup();

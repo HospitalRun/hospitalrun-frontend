@@ -8,8 +8,8 @@ export default AbstractDeleteController.extend({
                 medications = visit.get('medication');
             medications.removeObject(this.get('model'));
             visit.save().then(function() {
-                this.get('model').destroyRecord().then(function() {
-                    this.send('modalClose');
+                this.get('model').destroyRecord().then(function() {                    
+                    this.send('closeModal');
                 }.bind(this));
             }.bind(this));
         }

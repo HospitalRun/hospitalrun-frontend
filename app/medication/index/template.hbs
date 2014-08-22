@@ -1,6 +1,7 @@
 {{#if model}}
     <table class="table">
         <tr class="table-header">
+            <th>Date</th>
             <th>Patient</th>
             <th>Medication</th>
             <th>Quantity</th>        
@@ -10,13 +11,13 @@
         {{#each}}
 
             <tr>
+                <td>{{date-format prescriptionDate}}</td>
                 <td>{{patient.displayName}}</td>
                 <td>{{inventoryItem.name}}</td>
                 <td>{{quantity}}</td>
                 <td>{{status}}</td>
                 <td>
-                    <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
-                    <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
+                    <button class="btn btn-default" {{action 'editItem' this}}>Fulfill</button>
                 </td>        
             </tr>
         {{/each}}

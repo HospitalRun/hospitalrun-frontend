@@ -84,7 +84,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
         
         newMedication: function() {
             var newMedication = this.get('store').createRecord('medication', {
-                prescriptionDate: new Date(),
+                prescriptionDate: moment().startOf('day').toDate(),
                 patient: this.get('model')
             });
             newMedication.set('returnToPatient', true);

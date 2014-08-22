@@ -9,7 +9,7 @@
             </div>
         {{/if}}
         {{em-select class="col-xs-3" label="Visit" 
-            property="visit" content=patient.visits
+            property="visit" content=patientVisits
             optionValuePath="content" optionLabelPath="content.visitDate"
             prompt="--Add New Visit--"
         }}        
@@ -24,7 +24,7 @@
     {{/if}}
     <div class="row">
         {{em-input property="dose" label="Dose" class="col-xs-3"}}
-        {{em-input property="frequency" label="Frequency" class="col-xs-3"}}
+        {{type-ahead property="frequency" label="Frequency" class="col-xs-3" content=medicationFrequencyList.value selection=frequency }}
     </div>        
     <div class="row">
         {{em-input property="duration" label="Duration" class="col-xs-3"}}

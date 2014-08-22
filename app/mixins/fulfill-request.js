@@ -1,3 +1,4 @@
+//NOTE!!! inventory-locations mixin is needed for fulfill-request mixin!
 export default Ember.Mixin.create({
     actions: {
         fulfillRequest: function(request, closeModal, increment, skipTransition) {
