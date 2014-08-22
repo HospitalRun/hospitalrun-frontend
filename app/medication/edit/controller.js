@@ -19,30 +19,60 @@ export default AbstractEditController.extend(PatientSubmodule, {
         var status = this.get('status');
         return (status === 'Requested');
     }.property('status'),
-    
+
     medicationList: Ember.computed.alias('controllers.medication.medicationList'),
     patientList: Ember.computed.alias('controllers.medication.patientList'),
-    patientMedication: Ember.computed.alias('patient.medication'),
+    visitMedication: Ember.computed.alias('visit.medication'),
 
     afterUpdate: function(medication) {
         if (this.get('newMedication')) {
-            var medications = this.get('patientMedication'),
-                patient = this.get('patient');
-            medications.addObject(medication);
-            patient.save().then(function() {
+            var visit = this.get('visit'),
+                visitMedications = this.get('visitMedication');
+            visitMedications.addObject(medication);
+            visit.save().then(function(){
                 this.send(this.get('cancelAction'));            
-            }.bind(this));            
+            }.bind(this));
         } else {
             this.send(this.get('cancelAction'));
         }
     },
     
     beforeUpdate: function() {
-        if (this.get('isNew')) {
+        var isFulfilling = this.get('isFulfilling'),
+            isNew = this.get('isNew');
+        if (isNew) {
             this.set('newMedication', true);
             this.set('status', 'Requested');
         }
-        return Ember.RSVP.resolve();
-    } 
+        if (isFulfilling) {
+            return new Ember.RSVP.Promise(function(resolve){
+                var fulfillmentLocations = this.get('fulfillmentLocations'),
+                    inventoryRequest = this.get('store').createRecord('inv-request', {
+                        dateCompleted: new Date(),
+                        inventoryItem: this.get('inventoryItem'),
+                        quantity: this.get('quantity'),
+                        transactionType: 'Fulfillment',
+                        patient: this.get('patient')                
+                    });
+                inventoryRequest.get('inventoryLocations').then(function(inventoryLocations) {
+                    inventoryLocations.addObjects(fulfillmentLocations);
+                });
+                this.send('fulfillRequest', inventoryRequest, false, false, true);
+                resolve();
+            }.bind(this));
+        } else {
+            return Ember.RSVP.resolve();                                           
+        }        
+    },
+    
+    updateButtonText: function() {
+        if (this.get('isFulfilling')) {
+            return 'Fulfill';
+        } else if (this.get('isNew')) {
+            return 'Add';
+        } else {
+            return 'Update';
+        }
+    }.property('isNew', 'isFulfilling'),
 
 });

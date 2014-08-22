@@ -100,12 +100,25 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
             this.send('openModal', 'visits.vitals.edit', newVitals);
         },
         
+        newMedication: function() {
+            var newMedication = this.get('store').createRecord('medication', {
+                prescriptionDate: new Date(),
+                patient: this.get('patient'),
+                visit: this.get('model')
+            });            
+            this.transitionToRoute('medication.edit', newMedication);
+        },
+        
         showAddProcedure: function() {
             var newProcedure = this.get('store').createRecord('procedure', {
                 dateRecorded: new Date()
             });
             this.send('openModal', 'visits.procedures.edit', newProcedure);
         },
+        
+        showDeleteMedication: function(medication) {
+            this.send('openModal', 'medication.delete', medication);
+        },    
         
         showDeleteProcedure: function(procedure) {
             this.send('openModal', 'visits.procedures.delete', procedure);

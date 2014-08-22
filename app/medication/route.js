@@ -1,6 +1,6 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 export default AbstractModuleRoute.extend({
-    modelName: 'med-request',
+    modelName: 'medication',
     moduleName: 'medication',
     newButtonText: '+ new request',
     sectionTitle: 'Medication',
@@ -16,7 +16,7 @@ export default AbstractModuleRoute.extend({
     getNewData: function() {
         return {
             selectPatient: true,
-            prescriptionDate: new Date()
+            prescriptionDate: moment().startOf('day').toDate()
         };
     }
 });

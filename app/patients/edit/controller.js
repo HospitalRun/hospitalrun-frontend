@@ -12,8 +12,8 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
     needs: 'patients',
 
     clinicList: Ember.computed.alias('controllers.patients.clinicList'),
-    countryList: Ember.computed.alias('controllers.patients.countryList'),
-    
+    countryList: Ember.computed.alias('controllers.patients.countryList'),    
+
     lookupListsToUpdate: [{
         name: 'countryList',
         property: 'country',
@@ -28,6 +28,16 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
         var dob = this.get('dateOfBirth');
         return this.convertDOBToText(dob);
     }.property('dateOfBirth'),
+    
+    patientMedications: function() {
+        var returnMedications = [],
+            visits = this.get('visits');
+        visits.forEach(function(visit) {
+            returnMedications.addObjects(visit.get('medication'));
+        });
+        return returnMedications;
+        
+    }.property('visits.@each.medication'),
 
     actions: {
         addDiagnosis: function(newDiagnosis) {
@@ -73,10 +83,11 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
         },
         
         newMedication: function() {
-            var newMedication = this.get('store').createRecord('med-request', {
+            var newMedication = this.get('store').createRecord('medication', {
                 prescriptionDate: new Date(),
                 patient: this.get('model')
-            });            
+            });
+            newMedication.set('returnToPatient', true);
             this.transitionToRoute('medication.edit', newMedication);
         },
         

@@ -4,7 +4,7 @@ export default AbstractSearchRoute.extend({
     searchKeys: [
         'prescription'
     ],
-    searchModel: 'med-request',
+    searchModel: 'medication',
     
     /**
      * Get the query params to run against the store find function.

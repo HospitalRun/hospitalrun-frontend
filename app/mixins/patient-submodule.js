@@ -19,7 +19,6 @@ export default Ember.Mixin.create({
         if (!Ember.isEmpty(patient)) {
             //Make sure all the async relationships are resolved    
             patient.get('appointments');
-            patient.get('medication');
             patient.get('visits');
         }
     }.observes('patient'),

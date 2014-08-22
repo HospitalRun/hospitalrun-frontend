@@ -103,7 +103,7 @@
                         <th>Prescription</th>
                         <th>Actions</th>
                     </tr>
-                    {{#each medication }}
+                    {{#each patientMedications }}
                         <tr {{action "editMedication" this}}>
                             <td>{{date-format prescriptionDate}}</td>
                             <td>{{inventoryItem.name}}</td>

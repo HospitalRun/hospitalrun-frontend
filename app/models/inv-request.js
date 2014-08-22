@@ -11,15 +11,17 @@ var InventoryRequest = AbstractModel.extend({
     deliveryLocation: DS.attr('string'),
     expenseAccount: DS.attr('string'),
     inventoryItem: DS.belongsTo('inventory', { async: true }),
-    purchases: DS.hasMany('inv-purchase', { async: true }),
     inventoryLocations: DS.hasMany('inv-location', { async: true }),
     markAsConsumed: DS.attr('boolean'),
+    patient: DS.belongsTo('patient'),
+    purchases: DS.hasMany('inv-purchase', { async: true }),
     quantity: DS.attr('number'),
     quantityAtCompletion: DS.attr('number'),
     reason: DS.attr('string'),
     requestedBy: DS.attr('string'),
     status: DS.attr('string'),
     transactionType: DS.attr('string'),
+    visit: DS.belongsTo('visit'),
     
     validations: {
         inventoryItemTypeAhead: {

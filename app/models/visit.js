@@ -1,17 +1,29 @@
 import AbstractModel from "hospitalrun/models/abstract";
 
 export default AbstractModel.extend({
-    patient: DS.belongsTo('patient'),
-    examiner: DS.attr('string'),
-    location: DS.attr('string'),
-    visitType: DS.attr(),        
     clinic: DS.attr('string'),
-    startDate:  DS.attr('date'),
     endDate:  DS.attr('date'),  //if visit type is outpatient, startDate and endDate are equal 
+    examiner: DS.attr('string'),
     history: DS.attr('string'),
+    location: DS.attr('string'),
+    medication: DS.hasMany('medication'),
     notes: DS.attr('string'),
-    vitals: DS.hasMany('vital'),
+    patient: DS.belongsTo('patient'),
     procedures: DS.hasMany('procedure'),
+    startDate:  DS.attr('date'),
+    visitType: DS.attr(),        
+    vitals: DS.hasMany('vital'),
+    
+    visitDate: function() {
+        var endDate = moment(this.get('endDate')),
+            startDate = moment(this.get('startDate')),
+            visitDate = startDate.format('l');
+        if (!startDate.isSame(endDate, 'day')) {
+            visitDate += ' - ' + endDate.format('l');                                                
+        }
+        return visitDate;
+    }.property('startDate', 'endDate'),
+    
     validations: {
         startDate: {
             presence: true
