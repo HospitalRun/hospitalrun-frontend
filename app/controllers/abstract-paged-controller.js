@@ -7,7 +7,7 @@ export default Ember.ArrayController.extend({
         var limit = this.get('limit'),
             offset = this.get('offset');
         return arrangedContent.slice(offset, offset+limit);
-    }.property('model', 'offset', 'limit'),
+    }.property('content.[]', 'sortProperties.@each', 'offset', 'limit'),
     
     disablePreviousPage: function() {
         return (this.get('offset') === 0);
