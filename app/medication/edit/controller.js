@@ -84,7 +84,8 @@ export default AbstractEditController.extend(PatientSubmodule, {
                     inventoryItem: this.get('inventoryItem'),
                     quantity: this.get('quantity'),
                     transactionType: 'Fulfillment',
-                    patient: this.get('patient')                
+                    patient: this.get('patient'),
+                    markAsConsumed: true
                 });
             inventoryRequest.get('inventoryLocations').then(function(inventoryLocations) {
                 inventoryLocations.addObjects(fulfillmentLocations);
