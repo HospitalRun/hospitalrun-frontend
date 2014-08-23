@@ -1,11 +1,16 @@
 import LocationName from "hospitalrun/mixins/location-name";
 export default Ember.ObjectController.extend(LocationName, {
     deliveryDetails: function() {
-        var  aisle = this.get('deliveryAisle'), 
-             location = this.get('deliveryLocation'),
-             locationName = this.formatLocationName(location, aisle);
-        return locationName;
-    }.property('deliveryAisle', 'deliveryLocation'),
+        var aisle = this.get('deliveryAisle'), 
+            location = this.get('deliveryLocation'),
+            locationName = this.formatLocationName(location, aisle),
+            patient = this.get('patient');
+        if (Ember.isEmpty(patient)) {    
+            return locationName;
+        } else {
+            return patient.get('displayName');
+        }
+    }.property('deliveryAisle', 'deliveryLocation','patient'),
     
     haveReason: function() {
         return !Ember.isEmpty(this.get('reason'));
