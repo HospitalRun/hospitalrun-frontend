@@ -31,12 +31,6 @@ export default AbstractEditController.extend({
         
         adjust: function() {
             this.send('adjustItems', this.get('model'), true);
-            this.setProperties({
-                adjustmentItem: null,
-                adjustmentQuantity: null,
-                adjustPurchases: true,
-                transactionType: 'Adjustment (Add)'
-            });
         }
     }
 });
