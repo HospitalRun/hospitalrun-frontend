@@ -59,15 +59,16 @@ export default Ember.Mixin.create({
     /**
      * Save the location if the quantity is greater than zero, otherwise remove the empty location.
      * @param {Object} location the location to update or remove.
-     * @param {Object} inventoryItem the inventory item the location belongs to.
+     * @param {Object} inventoryItem the inventory item the location belongs to. 
+     * @return {Promise} promise for save or remove
      */
     saveLocation: function(location, inventoryItem) {
         if (location.get('quantity') === 0) {
             var locations = inventoryItem.get('locations');
             locations.removeObject(location);
-            location.destroyRecord();
+            return location.destroyRecord();
         } else {
-            location.save();
+            return location.save();
         }        
     },        
     
