@@ -33,10 +33,11 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
         var returnMedications = [],
             visits = this.get('visits');
         visits.forEach(function(visit) {
-            returnMedications.addObjects(visit.get('medication'));
+            visit.get('medication').then(function(medications) {
+                returnMedications.addObjects(medications);
+            });
         });
-        return returnMedications;
-        
+        return returnMedications;        
     }.property('visits.@each.medication'),
 
     actions: {
@@ -64,6 +65,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
         },
         
         editMedication: function(medication) {
+            medication.set('returnToPatient', true);
             this.transitionToRoute('medication.edit', medication);
         },    
         

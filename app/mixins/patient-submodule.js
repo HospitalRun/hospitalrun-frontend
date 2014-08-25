@@ -2,17 +2,23 @@ export default Ember.Mixin.create({
     actions: {
         returnToPatient: function() {
             this.transitionToRoute('patients.edit', this.get('returnPatientId'));
-        }                
+        },        
+        returnToVisit: function() {
+            this.transitionToRoute('visits.edit', this.get('returnVisitId'));
+        }
     },
 
     cancelAction: function() {
-        var returnToPatient = this.get('returnToPatient');
-        if (returnToPatient) {
+        var returnToPatient = this.get('returnToPatient'),
+            returnToVisit = this.get('returnToVisit');
+        if (returnToVisit) {
+            return 'returnToVisit';
+        } else if (returnToPatient) {
             return 'returnToPatient';
         } else {
             return 'allItems';
-        }                
-    }.property('returnToPatient'),   
+        }
+    }.property('returnToPatient', 'returnToVisit'),
 
     patientChanged: function() {
         var patient = this.get('patient');
@@ -33,5 +39,14 @@ export default Ember.Mixin.create({
     }.observes('patientId').on('init'),
     
     returnPatientId: null,
-    
+    returnVisitId: null,
+
+    visitIdChanged: function() {
+        var visitId = this.get('visitId');
+        if (!Ember.isEmpty(visitId)) {
+            this.set('returnVisitId', visitId);
+        }
+    }.observes('visitId').on('init'),
+
+    visitId: Ember.computed.alias('visit.id'),
 });

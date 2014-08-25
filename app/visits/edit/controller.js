@@ -93,6 +93,11 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
             this.updateList('vitals', vitals, true);
         },
         
+        editMedication: function(medication) {
+            medication.set('returnToVisit', true);
+            this.transitionToRoute('medication.edit', medication);
+        },
+        
         showAddVitals: function() {
             var newVitals = this.get('store').createRecord('vital', {
                 dateRecorded: new Date()
@@ -104,7 +109,8 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
             var newMedication = this.get('store').createRecord('medication', {
                 prescriptionDate: moment().startOf('day').toDate(),
                 patient: this.get('patient'),
-                visit: this.get('model')
+                visit: this.get('model'),
+                returnToVisit: true
             });            
             this.transitionToRoute('medication.edit', newMedication);
         },
