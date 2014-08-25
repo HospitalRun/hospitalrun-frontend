@@ -60,6 +60,7 @@
                         <th>Name</th>
                         <th>Status</th>
                         <th>Prescription</th>
+                        <th>Requested By</th>
                         <th>Actions</th>
                     </tr>
                     {{#each medication }}
@@ -68,6 +69,7 @@
                             <td>{{inventoryItem.name}}</td>
                             <td>{{status}}</td>
                             <td>{{prescription}}</td>
+                            <td>{{requestedBy}}</td>
                             <td>
                                 <button class="btn btn-primary" {{action "editMedication" this}}>Edit</button>
                                 <button class="btn btn-default" {{action "showDeleteMedication" this  bubbles=false }}>Delete</button>
