@@ -2,17 +2,20 @@
 export default Ember.Mixin.create({
     actions: {
         fulfillRequest: function(request, closeModal, increment, skipTransition) {
-            var markAsConsumed = request.get('markAsConsumed');
-            
+            var markAsConsumed = request.get('markAsConsumed'),
+                transactionType = request.get('transactionType');
+            if (transactionType === 'Request') {
+                transactionType = null; //reset the transaction type so that it gets set below.
+            }
             if (markAsConsumed) {
-                if (Ember.isEmpty(request.get('transactionType'))) {
+                if (Ember.isEmpty(transactionType)) {
                     request.set('transactionType', 'Fulfillment');
                 }
                 this.performFulfillment(request, increment).then(function() {
                     this.finishFulfillRequest(request, closeModal, increment, skipTransition);
                 }.bind(this));
             } else {
-                if (Ember.isEmpty(request.get('transactionType'))) {
+                if (Ember.isEmpty(transactionType)) {
                     request.set('transactionType', 'Transfer');
                 }
                 this.finishFulfillRequest(request, closeModal, increment, skipTransition);
