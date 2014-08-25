@@ -29,7 +29,7 @@ export default AbstractEditController.extend(PatientSubmodule, {
     medicationList: Ember.computed.alias('controllers.medication.medicationList'),
     medicationFrequencyList: Ember.computed.alias('controllers.medication.medicationFrequencyList'),
     patientList: Ember.computed.alias('controllers.medication.patientList'),
-    patientVisits: Ember.computed.alias('patient.visits'),        
+    patientVisits: Ember.computed.alias('patient.visits'),
 
     afterUpdate: function() {
         this.send(this.get('cancelAction'));
@@ -40,14 +40,15 @@ export default AbstractEditController.extend(PatientSubmodule, {
             isNew = this.get('isNew');
         if (isNew || isFulfilling) {
             return new Ember.RSVP.Promise(function(resolve, reject){
-                var visit = this.get('visit'),
-                    visitMedications,
+                var medication = this.get('model'),
+                    visit = this.get('visit'),
                     patient = this.get('patient'),
                     patientVisits = this.get('patientVisits'),
                     promises = [];
                 if (isNew) {
                     this.set('newMedication', true);
                     this.set('status', 'Requested');
+                    this.set('requestedBy', medication.getUserName());
                     if (Ember.isEmpty(visit)) {
                         visit = this.get('store').createRecord('visit', {
                             startDate: new Date(),
@@ -59,21 +60,20 @@ export default AbstractEditController.extend(PatientSubmodule, {
                         patientVisits.addObject(visit);
                         promises.push(patient.save());
                     }
-                    visitMedications = visit.get('medication');
-                    visitMedications.addObject(this.get('model'));
-                    promises.push(visit.save());
-                }
-                if(!Ember.isEmpty(promises)) {
-                    Ember.RSVP.all(promises, 'All updates done for medication visit before medication save').then(function() {        
-                       this.finishBeforeUpdate(isFulfilling,  resolve);
-                    }.bind(this), reject);
+                    visit.get('medication').then(function(visitMedications) {
+                        visitMedications.addObject(medication);
+                        promises.push(visit.save());
+                        Ember.RSVP.all(promises, 'All updates done for medication visit before medication save').then(function() {        
+                            this.finishBeforeUpdate(isFulfilling,  resolve);
+                        }.bind(this), reject);
+                    }.bind(this));                    
                 } else {
                     this.finishBeforeUpdate(isFulfilling,  resolve);
                 }
-            }.bind(this));                
+            }.bind(this));
         } else {
-            return Ember.RSVP.resolve();                                           
-        }        
+            return Ember.RSVP.resolve();
+        }
     },
     
     finishBeforeUpdate: function(isFulfilling, resolve) {

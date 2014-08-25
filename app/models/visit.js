@@ -6,13 +6,13 @@ export default AbstractModel.extend({
     examiner: DS.attr('string'),
     history: DS.attr('string'),
     location: DS.attr('string'),
-    medication: DS.hasMany('medication'),
+    medication: DS.hasMany('medication', {async: true}),
     notes: DS.attr('string'),
     patient: DS.belongsTo('patient'),
-    procedures: DS.hasMany('procedure'),
+    procedures: DS.hasMany('procedure', {async: true}),
     startDate:  DS.attr('date'),
     visitType: DS.attr(),        
-    vitals: DS.hasMany('vital'),
+    vitals: DS.hasMany('vital', {async: true}),
     
     visitDate: function() {
         var endDate = moment(this.get('endDate')),
