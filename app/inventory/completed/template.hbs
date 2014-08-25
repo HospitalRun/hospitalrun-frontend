@@ -27,7 +27,11 @@
                         {{#each inventoryLocations}}
                             {{locationName}}<br/>
                         {{/each}}
-                        <strong>Delivered To: </strong> {{deliveryDetails}}
+                        {{#if patient}}
+                            <strong>Prescription For: </strong> {{deliveryDetails}}
+                        {{else}}
+                            <strong>Delivered To: </strong> {{deliveryDetails}}
+                        {{/if}}
                     {{/if}}
                     {{#if isTransfer}}
                         <strong>Transferred From:</strong>
