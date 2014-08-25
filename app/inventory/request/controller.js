@@ -118,7 +118,7 @@ export default AbstractEditController.extend(GetUserName, {
         }
         if (this.get('isNew')) {
             this.set('dateRequested', new Date());
-            this.set('requestedBy', this.getUserName());
+            this.set('requestedBy', this.get('model').getUserName());
             if (!this.get('isFulfilling')) {
                 this.set('status', 'Requested');
             }
