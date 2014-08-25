@@ -11,6 +11,7 @@ export default AbstractModel.extend({
     prescriptionDate: DS.attr('date'),
     quantity: DS.attr('number'),
     refills: DS.attr('number'),
+    requestedBy: DS.attr('string'),
     status: DS.attr('string'),
     visit: DS.belongsTo('visit'),
     
