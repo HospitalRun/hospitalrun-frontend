@@ -29,6 +29,17 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
         return this.convertDOBToText(dob);
     }.property('dateOfBirth'),
     
+    patientLabs: function() {
+        var returnLabs = [],
+            visits = this.get('visits');
+        visits.forEach(function(visit) {
+            visit.get('labs').then(function(labs) {
+                returnLabs.addObjects(labs);
+            });
+        });
+        return returnLabs;        
+    }.property('visits.@each.labs'),
+    
     patientMedications: function() {
         var returnMedications = [],
             visits = this.get('visits');
@@ -64,6 +75,14 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
             this.transitionToRoute('appointments.edit', appointment);
         },
         
+        editLab: function(lab) {
+            lab.setProperties({
+                'isCompleting': false,
+                'returnToPatient': true
+            });
+            this.transitionToRoute('labs.edit', lab);
+        },        
+        
         editMedication: function(medication) {
             medication.set('returnToPatient', true);
             this.transitionToRoute('medication.edit', medication);
@@ -84,12 +103,21 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
             this.transitionToRoute('appointments.edit', newAppointment);
         },
         
+        newLab: function() {
+            var newLab = this.get('store').createRecord('lab', {
+                isCompleting: false,
+                patient: this.get('patient'),
+                returnToPatient: true
+            });            
+            this.transitionToRoute('labs.edit', newLab);
+        },
+        
         newMedication: function() {
             var newMedication = this.get('store').createRecord('medication', {
                 prescriptionDate: moment().startOf('day').toDate(),
-                patient: this.get('model')
+                patient: this.get('model'),
+                returnToPatient: true
             });
-            newMedication.set('returnToPatient', true);
             this.transitionToRoute('medication.edit', newMedication);
         },
         
@@ -109,6 +137,9 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
             this.send('openModal', 'appointments.delete', appointment);
         },
         
+        showDeleteLab: function(labs) {
+            this.send('openModal', 'labs.delete', labs);
+        },
         
         showDeleteMedication: function(medication) {
             this.send('openModal', 'medication.delete', medication);

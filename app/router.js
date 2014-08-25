@@ -28,6 +28,11 @@ Router.map(function() {
         this.route('search', { path: "/search/:search_text" });
     });
     
+    this.resource('labs', function() {
+        this.route('completed');
+        this.route('edit', { path: "/edit/:lab_id" });
+    });    
+    
     this.resource('medication', function() {
         this.route('completed');
         this.route('edit', { path: "/edit/:medication_id" });

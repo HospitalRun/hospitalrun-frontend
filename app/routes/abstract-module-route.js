@@ -141,6 +141,8 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         if (this.get('allowSearch') === true) {
             navigationController.set('allowSearch',true);
             navigationController.set('searchRoute',this.get('searchRoute'));
+        } else {
+            navigationController.set('allowSearch',false);
         }
         var currentController = this.controllerFor(this.get('moduleName'));
         var propsToSet = this.getProperties('currentScreenTitle','newButtonAction','newButtonText','sectionTitle','subActions');        

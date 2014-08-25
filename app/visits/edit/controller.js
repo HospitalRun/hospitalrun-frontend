@@ -93,6 +93,14 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
             this.updateList('vitals', vitals, true);
         },
         
+        editLab: function(lab) {
+            lab.setProperties({
+                'isCompleting': false,
+                'returnToVisit': true
+            });
+            this.transitionToRoute('labs.edit', lab);
+        },
+        
         editMedication: function(medication) {
             medication.set('returnToVisit', true);
             this.transitionToRoute('medication.edit', medication);
@@ -105,6 +113,16 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
             this.send('openModal', 'visits.vitals.edit', newVitals);
         },
         
+        newLab: function() {
+            var newLab = this.get('store').createRecord('lab', {
+                isCompleting: false,
+                patient: this.get('patient'),
+                visit: this.get('model'),
+                returnToVisit: true
+            });            
+            this.transitionToRoute('labs.edit', newLab);
+        },        
+
         newMedication: function() {
             var newMedication = this.get('store').createRecord('medication', {
                 prescriptionDate: moment().startOf('day').toDate(),
@@ -120,6 +138,10 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
                 dateRecorded: new Date()
             });
             this.send('openModal', 'visits.procedures.edit', newProcedure);
+        },
+        
+        showDeleteLab: function(labs) {
+            this.send('openModal', 'labs.delete', labs);
         },
         
         showDeleteMedication: function(medication) {

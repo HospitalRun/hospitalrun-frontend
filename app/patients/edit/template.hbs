@@ -120,6 +120,44 @@
                 </table>
             </div>
         </div>
+    </div>
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-labs">
+                    Labs <button class="btn btn-primary" {{action "newLab" bubbles=false }}>New Lab</button>
+                </a>
+            </h3>
+        </div>
+        <div id="patient-labs" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <table class="table">
+                    <tr class="table-header">
+                        <th>Date Requested</th>
+                        <th>Lab Type</th>
+                        <th>Status</th>
+                        <th>Date Processed</th>
+                        <th>Result</th>
+                        <th>Requested By</th>
+                        <th>Actions</th>
+                    </tr>
+                    {{#each patientLabs }}
+                        <tr {{action "editLab" this}}>
+                            <td>{{date-format dateRequested}}</td>
+                            <td>{{labType}}</td>
+                            <td>{{status}}</td>
+                            <td>{{date-format labDate}}</td>
+                            <td>{{result}}</td>
+                            <td>{{requestedBy}}</td>
+                            <td>
+                                <button class="btn btn-primary" {{action "editLab" this}}>Edit</button>
+                                <button class="btn btn-default" {{action "showDeleteLab" this  bubbles=false }}>Delete</button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </table>
+            </div>
+        </div>
     </div>    
     <div class="panel">
         <div class="panel-heading">
