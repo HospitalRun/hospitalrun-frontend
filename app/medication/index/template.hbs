@@ -6,21 +6,26 @@
             <th>Medication</th>
             <th>Quantity</th>        
             <th>Status</th>
-            <th>Actions</th>
+            {{#if showActions}}
+                <th>Actions</th>
+            {{/if}}
         </tr>
-        {{#each}}
-
-            <tr>
-                <td>{{date-format prescriptionDate}}</td>
-                <td>{{patient.displayName}}</td>
-                <td>{{inventoryItem.name}}</td>
-                <td>{{quantity}}</td>
-                <td>{{status}}</td>
-                <td>
-                    <button class="btn btn-default" {{action 'editItem' this}}>Fulfill</button>
-                </td>        
-            </tr>
-        {{/each}}
+        {{#with showActions as showActions}}
+            {{#each}}
+                <tr>
+                    <td>{{date-format prescriptionDate}}</td>
+                    <td>{{patient.displayName}}</td>
+                    <td>{{inventoryItem.name}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{status}}</td>
+                    {{#if showActions}}
+                        <td>
+                            <button class="btn btn-default" {{action 'editItem' this}}>Fulfill</button>
+                        </td>
+                    {{/if}}
+                </tr>
+            {{/each}}
+        {{/with}}
     </table>
 {{else}}
     <div class="alert alert-info">

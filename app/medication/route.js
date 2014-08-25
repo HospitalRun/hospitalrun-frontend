@@ -14,7 +14,15 @@ export default AbstractModuleRoute.extend({
     }, {
         name: 'medicationFrequencyList',
         findArgs: ['lookup','medication_frequency']
-    }], 
+    }],
+    
+    subActions: [{
+        text: 'Requests',
+        linkTo: 'medication.index'
+    }, {
+        text: 'Completed',
+        linkTo: 'medication.completed'
+    }],
 
     getNewData: function() {
         return {
