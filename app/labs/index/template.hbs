@@ -4,15 +4,15 @@
             <th>Date Requested</th>
             <th>Patient</th>
             <th>Lab Type</th>
-            <th>Status</th>
+            <th>Notes</th>
             <th>Actions</th>
         </tr>
             {{#each}}
                 <tr>
-                    <td>{{date-format dateRequested}}</td>
+                    <td>{{date-format requestedDate}}</td>
                     <td>{{patient.displayName}}</td>
                     <td>{{labType}}</td>
-                    <td>{{status}}</td>
+                    <td>{{notes}}</td>
                     <td>
                         <button class="btn btn-default" {{action 'completeItem' this}}>Complete</button>
                     </td>

@@ -106,7 +106,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
         newLab: function() {
             var newLab = this.get('store').createRecord('lab', {
                 isCompleting: false,
-                patient: this.get('patient'),
+                patient: this.get('model'),
                 returnToPatient: true
             });            
             this.transitionToRoute('labs.edit', newLab);

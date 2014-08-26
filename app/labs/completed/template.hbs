@@ -1,0 +1,26 @@
+{{#if model}}
+    <table class="table">
+        <tr class="table-header">
+            <th>Date Requested</th>
+            <th>Date Completed</th>
+            <th>Patient</th>
+            <th>Lab Type</th>
+            <th>Results</th>
+            <th>Notes</th>            
+        </tr>
+            {{#each}}
+                <tr>
+                    <td>{{date-format requestedDate}}</td>
+                    <td>{{date-format labDate}}</td>
+                    <td>{{patient.displayName}}</td>
+                    <td>{{labType}}</td>
+                    <td>{{result}}</td>
+                    <td>{{notes}}</td>
+                </tr>
+            {{/each}}        
+    </table>
+{{else}}
+    <div class="alert alert-info">
+        <em>No items found.  Create a new record?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Lab</button>
+    </div>
+{{/if}}

@@ -63,7 +63,7 @@
                         <th>Requested By</th>
                         <th>Actions</th>
                     </tr>
-                    {{#each medication }}
+                    {{#each medication itemController="medication/item-controller"}}
                         <tr {{action "editMedication" this}}>
                             <td>{{date-format prescriptionDate}}</td>
                             <td>{{inventoryItem.name}}</td>
@@ -71,8 +71,10 @@
                             <td>{{prescription}}</td>
                             <td>{{requestedBy}}</td>
                             <td>
-                                <button class="btn btn-primary" {{action "editMedication" this}}>Edit</button>
-                                <button class="btn btn-default" {{action "showDeleteMedication" this  bubbles=false }}>Delete</button>
+                                {{#if canEdit}}
+                                    <button class="btn btn-primary" {{action "editMedication" this}}>Edit</button>
+                                    <button class="btn btn-default" {{action "showDeleteMedication" this  bubbles=false }}>Delete</button>
+                                {{/if}}
                             </td>
                         </tr>
                     {{/each}}
@@ -97,20 +99,24 @@
                         <th>Status</th>
                         <th>Date Processed</th>
                         <th>Result</th>
+                        <th>Notes</th>
                         <th>Requested By</th>
                         <th>Actions</th>
                     </tr>
-                    {{#each labs }}
+                    {{#each labs itemController="labs/item-controller"}}
                         <tr {{action "editLab" this}}>
-                            <td>{{date-format dateRequested}}</td>
+                            <td>{{date-format requestedDate}}</td>
                             <td>{{labType}}</td>
                             <td>{{status}}</td>
                             <td>{{date-format labDate}}</td>
                             <td>{{result}}</td>
+                            <td>{{notes}}</td>
                             <td>{{requestedBy}}</td>
                             <td>
-                                <button class="btn btn-primary" {{action "editLab" this}}>Edit</button>
-                                <button class="btn btn-default" {{action "showDeleteLab" this  bubbles=false }}>Delete</button>
+                                {{#if canEdit}}
+                                    <button class="btn btn-primary" {{action "editLab" this}}>Edit</button>
+                                    <button class="btn btn-default" {{action "showDeleteLab" this  bubbles=false }}>Delete</button>
+                                {{/if}}
                             </td>
                         </tr>
                     {{/each}}

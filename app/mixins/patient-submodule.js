@@ -40,6 +40,17 @@ export default Ember.Mixin.create({
     
     returnPatientId: null,
     returnVisitId: null,
+    
+    visitChanged: function() {
+        var visit = this.get('visit');
+        if (!Ember.isEmpty(visit)) {
+            //Make sure all the async relationships are resolved    
+            visit.get('labs');
+            visit.get('medication');
+            visit.get('procedures');
+            visit.get('vitals');            
+        }
+    }.observes('visit'),    
 
     visitIdChanged: function() {
         var visitId = this.get('visitId');
