@@ -1,0 +1,26 @@
+{{#if model}}
+    <table class="table">
+        <tr class="table-header">
+            <th>Date Requested</th>
+            <th>Patient</th>
+            <th>Imaging Type</th>
+            <th>Notes</th>
+            <th>Actions</th>
+        </tr>
+            {{#each}}
+                <tr>
+                    <td>{{date-format requestedDate}}</td>
+                    <td>{{patient.displayName}}</td>
+                    <td>{{imagingType}}</td>
+                    <td>{{notes}}</td>
+                    <td>
+                        <button class="btn btn-default" {{action 'completeItem' this}}>Complete</button>
+                    </td>
+                </tr>
+            {{/each}}        
+    </table>
+{{else}}
+    <div class="alert alert-info">
+        <em>No items found.  Create a new record?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Imaging</button>
+    </div>
+{{/if}}
