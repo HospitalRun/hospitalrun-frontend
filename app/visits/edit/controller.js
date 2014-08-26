@@ -93,6 +93,14 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
             this.updateList('vitals', vitals, true);
         },
         
+        editImaging: function(imaging) {
+            imaging.setProperties({
+                'isCompleting': false,
+                'returnToVisit': true
+            });
+            this.transitionToRoute('imaging.edit', imaging);
+        },        
+        
         editLab: function(lab) {
             lab.setProperties({
                 'isCompleting': false,
@@ -113,6 +121,16 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
             this.send('openModal', 'visits.vitals.edit', newVitals);
         },
         
+        newImaging: function() {
+            var newImaging = this.get('store').createRecord('imaging', {
+                isCompleting: false,
+                patient: this.get('patient'),
+                visit: this.get('model'),
+                returnToVisit: true
+            });            
+            this.transitionToRoute('imaging.edit', newImaging);
+        },
+
         newLab: function() {
             var newLab = this.get('store').createRecord('lab', {
                 isCompleting: false,
@@ -139,9 +157,13 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
             });
             this.send('openModal', 'visits.procedures.edit', newProcedure);
         },
-        
-        showDeleteLab: function(labs) {
-            this.send('openModal', 'labs.delete', labs);
+
+        showDeleteImaging: function(imaging) {
+            this.send('openModal', 'imaging.delete', imaging);
+        },
+
+        showDeleteLab: function(lab) {
+            this.send('openModal', 'labs.delete', lab);
         },
         
         showDeleteMedication: function(medication) {

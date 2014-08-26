@@ -5,6 +5,7 @@ export default AbstractModel.extend({
     endDate:  DS.attr('date'),  //if visit type is outpatient, startDate and endDate are equal 
     examiner: DS.attr('string'),
     history: DS.attr('string'),
+    imaging: DS.hasMany('imaging', {async: true}),
     labs: DS.hasMany('lab', {async: true}),
     location: DS.attr('string'),
     medication: DS.hasMany('medication', {async: true}),

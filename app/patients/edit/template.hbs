@@ -164,6 +164,48 @@
                 </table>
             </div>
         </div>
+    </div>
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-imaging">
+                    Imaging <button class="btn btn-primary" {{action "newImaging" bubbles=false }}>New Imaging</button>
+                </a>
+            </h3>
+        </div>
+        <div id="patient-imaging" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <table class="table">
+                    <tr class="table-header">
+                        <th>Date Requested</th>
+                        <th>Imaging Type</th>
+                        <th>Status</th>
+                        <th>Date Processed</th>
+                        <th>Result</th>
+                        <th>Notes</th>
+                        <th>Requested By</th>
+                        <th>Actions</th>
+                    </tr>
+                    {{#each patientImaging itemController="imaging/item-controller"}}
+                        <tr {{action "editImaging" this}}>
+                            <td>{{date-format requestedDate}}</td>
+                            <td>{{imagingType}}</td>
+                            <td>{{status}}</td>
+                            <td>{{date-format imagingDate}}</td>
+                            <td>{{result}}</td>
+                            <td>{{notes}}</td>
+                            <td>{{requestedBy}}</td>
+                            <td>
+                                {{#if canEdit}}
+                                    <button class="btn btn-primary" {{action "editImaging" this}}>Edit</button>
+                                    <button class="btn btn-default" {{action "showDeleteImaging" this  bubbles=false }}>Delete</button>
+                                {{/if}}
+                            </td>
+                        </tr>
+                    {{/each}}
+                </table>
+            </div>
+        </div>
     </div>    
     <div class="panel">
         <div class="panel-heading">

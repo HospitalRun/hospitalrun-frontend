@@ -12,6 +12,11 @@ Router.map(function() {
     this.resource('users', function() {
         this.route('edit', { path: "/edit/:user_id" });
     });
+
+    this.resource('imaging', function() {
+        this.route('completed');
+        this.route('edit', { path: "/edit/:imaging_id" });
+    });   
     
     this.resource('inventory', function() {
         this.route('barcode', { path: "/barcode/:inventory_id" });

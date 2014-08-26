@@ -27,8 +27,6 @@
             <ul class="nav navbar-nav navbar-right">
                 <li>{{#link-to 'users'}}Users{{/link-to}}</li>
                 <li>{{#link-to 'inventory'}}Inventory{{/link-to}}</li>
-                <li>{{#link-to 'appointments'}}Appointments{{/link-to}}</li>
-                <li>{{#link-to 'medication'}}Medication{{/link-to}}</li>
                 <li>{{#link-to 'patients'}}Patients{{/link-to}}</li>
                 {{#if session.isAuthenticated}}
                     <li><a {{ action 'invalidateSession' }}>Logout</a></li>

@@ -1,8 +1,8 @@
 export default Ember.ObjectController.extend({
     actions: {
-        editImaging: function() {
+        editImaging: function(imaging) {
             if (this.get('canEdit')) {
-                this.parentController.send('editImaging');
+                this.parentController.send('editImaging', imaging);
             }
         }
     },

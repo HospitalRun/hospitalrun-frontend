@@ -45,6 +45,7 @@ export default Ember.Mixin.create({
         var visit = this.get('visit');
         if (!Ember.isEmpty(visit)) {
             //Make sure all the async relationships are resolved    
+            visit.get('imaging');
             visit.get('labs');
             visit.get('medication');
             visit.get('procedures');

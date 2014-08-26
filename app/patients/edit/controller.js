@@ -29,26 +29,16 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
         return this.convertDOBToText(dob);
     }.property('dateOfBirth'),
     
+    patientImaging: function() {
+        return this._getVisitCollection('imaging');
+    }.property('visits.@each.imaging'),    
+    
     patientLabs: function() {
-        var returnLabs = [],
-            visits = this.get('visits');
-        visits.forEach(function(visit) {
-            visit.get('labs').then(function(labs) {
-                returnLabs.addObjects(labs);
-            });
-        });
-        return returnLabs;        
+        return this._getVisitCollection('labs');
     }.property('visits.@each.labs'),
     
     patientMedications: function() {
-        var returnMedications = [],
-            visits = this.get('visits');
-        visits.forEach(function(visit) {
-            visit.get('medication').then(function(medications) {
-                returnMedications.addObjects(medications);
-            });
-        });
-        return returnMedications;        
+        return this._getVisitCollection('medication');
     }.property('visits.@each.medication'),
 
     actions: {
@@ -74,6 +64,14 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
             appointment.set('returnToPatient', true);
             this.transitionToRoute('appointments.edit', appointment);
         },
+
+        editImaging: function(imaging) {
+            imaging.setProperties({
+                'isCompleting': false,
+                'returnToPatient': true
+            });
+            this.transitionToRoute('imaging.edit', imaging);
+        },        
         
         editLab: function(lab) {
             lab.setProperties({
@@ -101,6 +99,15 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
             });
             newAppointment.set('returnToPatient', true);
             this.transitionToRoute('appointments.edit', newAppointment);
+        },
+
+        newImaging: function() {
+            var newImaging = this.get('store').createRecord('imaging', {
+                isCompleting: false,
+                patient: this.get('model'),
+                returnToPatient: true
+            });            
+            this.transitionToRoute('imaging.edit', newImaging);
         },
         
         newLab: function() {
@@ -137,10 +144,14 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
             this.send('openModal', 'appointments.delete', appointment);
         },
         
-        showDeleteLab: function(labs) {
-            this.send('openModal', 'labs.delete', labs);
+        showDeleteImaging: function(imaging) {
+            this.send('openModal', 'imaging.delete', imaging);
         },
         
+        showDeleteLab: function(lab) {
+            this.send('openModal', 'labs.delete', lab);
+        },
+
         showDeleteMedication: function(medication) {
             this.send('openModal', 'medication.delete', medication);
         },    
@@ -149,6 +160,17 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
             this.send('openModal', 'visits.delete', visit);
         }
         
+    },
+    
+    _getVisitCollection: function(name) {
+        var returnList = [],
+            visits = this.get('visits');
+        visits.forEach(function(visit) {
+            visit.get(name).then(function(items) {
+                returnList.addObjects(items);
+            });
+        });
+        return returnList;        
     },
     
     afterUpdate: function(record) {
