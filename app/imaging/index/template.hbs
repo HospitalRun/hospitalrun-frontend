@@ -4,23 +4,32 @@
             <th>Date Requested</th>
             <th>Patient</th>
             <th>Imaging Type</th>
-            <th>Notes</th>
-            <th>Actions</th>
+            <th>Notes</th>            
+            {{#if userCanComplete}}
+                <th>Actions</th>
+            {{/if}}
         </tr>
+        {{#with userCanComplete as userCanComplete}}
             {{#each}}
                 <tr>
                     <td>{{date-format requestedDate}}</td>
                     <td>{{patient.displayName}}</td>
                     <td>{{imagingType}}</td>
                     <td>{{notes}}</td>
-                    <td>
-                        <button class="btn btn-default" {{action 'completeItem' this}}>Complete</button>
-                    </td>
+                    {{#if userCanComplete}}
+                        <td>
+                            <button class="btn btn-default" {{action 'completeItem' this}}>Complete</button>
+                        </td>
+                    {{/if}}
                 </tr>
-            {{/each}}        
+            {{/each}}
+        {{/with}}
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No items found.  Create a new record?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Imaging</button>
-    </div>
+        <em>No items found.  Create a new record?</em> 
+        {{#if canAdd}}
+            <button class="btn btn-primary" {{action 'newItem'}}>New Imaging</button>
+        {{/if}}
+    </div>    
 {{/if}}

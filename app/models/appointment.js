@@ -14,6 +14,9 @@ export default AbstractModel.extend({
             acceptance: {
                 accept: true,
                 if: function(object) {
+                    if (!object.get('selectPatient')) {
+                        return false;
+                    }
                     if (!object.get('isDirty')) {
                         return false;
                     }

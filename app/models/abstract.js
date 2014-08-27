@@ -1,5 +1,5 @@
-import GetUserName from "hospitalrun/mixins/get-user-name";
-export default DS.Model.extend(GetUserName, Ember.Validations.Mixin, {
+import UserSession from "hospitalrun/mixins/user-session";
+export default DS.Model.extend(UserSession, Ember.Validations.Mixin, {
     lastModified: DS.attr('date'),
     modifiedBy: DS.attr(),
     modifiedFields: DS.attr(),

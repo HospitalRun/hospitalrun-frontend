@@ -23,6 +23,12 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
     patientList: Ember.computed.alias('controllers.appointments.patientList'),
     physicianList: Ember.computed.alias('controllers.appointments.physicianList'),
     showTime: true,
+    
+    dateChanged: function() {
+        Ember.run.once(this, function(){
+            this.get('model').validate();
+        });
+    }.observes('startDate','endDate'),
 
     afterUpdate: function(appointment) {
         if (this.get('newAppointment')) {

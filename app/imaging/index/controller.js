@@ -1,2 +1,12 @@
 import AbstractPagedController from 'hospitalrun/controllers/abstract-paged-controller';
-export default AbstractPagedController.extend();
+import UserSession from "hospitalrun/mixins/user-session";
+export default AbstractPagedController.extend(UserSession, {
+    canAdd: function() {
+        return this.currentUserCan('add_imaging');
+    }.property(),
+    
+    canComplete: function() {
+        return this.currentUserCan('complete_imaging');
+    }.property()
+
+});

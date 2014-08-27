@@ -1,9 +1,6 @@
 <div class="jumbotron">
     <h1>Welcome to HospitalRun</h1>
-    <p>{{#link-to 'appointments' class="btn btn-primary"}}Appointments{{/link-to}}</p>
-    <p>{{#link-to 'labs'  class="btn btn-primary"}}Labs{{/link-to}}</p>
-    <p>{{#link-to 'imaging'  class="btn btn-primary"}}Imaging{{/link-to}}</p>
-    <p>{{#link-to 'medication'  class="btn btn-primary"}}Medication{{/link-to}}</p>
-    <p>{{#link-to 'users' class="btn btn-primary"}}Users{{/link-to}}</p>
-    <p>{{#link-to 'inventory' class="btn btn-primary" }}Inventory{{/link-to}}</p>
+    {{#each activeLinks}}
+        {{#link-to action class="btn btn-primary btn-lg"}}{{text}}{{/link-to}}
+    {{/each}}
 </div>

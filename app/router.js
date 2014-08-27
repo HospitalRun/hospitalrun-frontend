@@ -5,14 +5,14 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-    this.route('index', { path: '/' });
-    this.route('protected');
-    this.route('login');
-    
-    this.resource('users', function() {
-        this.route('edit', { path: "/edit/:user_id" });
+    this.resource('appointments', function() {
+        this.route('calendar');
+        this.route('edit', { path: "/edit/:appointment_id" });
+        this.route('search', { path: "/search/:search_text" });
     });
-
+    
+    this.route('index', { path: '/' });
+    
     this.resource('imaging', function() {
         this.route('completed');
         this.route('edit', { path: "/edit/:imaging_id" });
@@ -38,6 +38,8 @@ Router.map(function() {
         this.route('edit', { path: "/edit/:lab_id" });
     });    
     
+    this.route('login');
+
     this.resource('medication', function() {
         this.route('completed');
         this.route('edit', { path: "/edit/:medication_id" });
@@ -49,12 +51,10 @@ Router.map(function() {
         this.route('search', { path: "/search/:search_text" });
     });
 
-    this.resource('appointments', function() {
-        this.route('calendar');
-        this.route('edit', { path: "/edit/:appointment_id" });
-        this.route('search', { path: "/search/:search_text" });
+    this.resource('users', function() {
+        this.route('edit', { path: "/edit/:user_id" });
     });
-    
+        
     this.resource('visits', function() {
         this.route('edit', { path: "/edit/:visit_id" });
     });

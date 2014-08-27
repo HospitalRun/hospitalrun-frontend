@@ -1,6 +1,13 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-export default AbstractIndexRoute.extend({
-    newButtonAction: 'newRequest',
+import UserSession from "hospitalrun/mixins/user-session";
+export default AbstractIndexRoute.extend(UserSession, {
+    newButtonAction: function() {
+        if (this.currentUserCan('add_inventory_request')) {
+            return 'newRequest';
+        } else {
+            return null;
+        }
+    }.property(),
     newButtonText: '+ new request',
     pageTitle: 'Requests',
 

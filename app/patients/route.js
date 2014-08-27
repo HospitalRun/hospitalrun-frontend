@@ -1,6 +1,5 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
-import GetUserName from "hospitalrun/mixins/get-user-name";
-export default AbstractModuleRoute.extend(GetUserName, {
+export default AbstractModuleRoute.extend({
     additionalModels: [{ 
         name: 'clinicList',
         findArgs: ['lookup','clinic_list']

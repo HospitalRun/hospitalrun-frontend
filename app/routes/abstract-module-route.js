@@ -1,7 +1,8 @@
+import UserSession from "hospitalrun/mixins/user-session";
 /**
  * Abstract route for top level modules (eg patients, inventory, users)
  */
-export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRouteMixin, {
     additionalModels: null,
     allowSearch: true,
     currentScreenTitle: null,
@@ -77,6 +78,19 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         setSectionHeader: function(details) {
             var currentController = this.controllerFor(this.get('moduleName'));        
             currentController.setProperties(details);
+        }
+    },
+    
+    /**
+     * Make sure the user has permissions to the module; if not reroute to index.
+     */
+    beforeModel: function(transition) {
+        var moduleName = this.get('moduleName');
+        if (this.currentUserCan(moduleName)) {
+            return this._super(transition);
+        } else {
+            this.transitionTo('index');
+            return Ember.RSVP.reject('Not available');
         }
     },
     

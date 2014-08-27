@@ -1,5 +1,6 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
-export default AbstractModuleRoute.extend({
+import UserSession from "hospitalrun/mixins/user-session";
+export default AbstractModuleRoute.extend(UserSession,{
     currentScreenTitle: 'Appointment List',
     editTitle: 'Edit Appointment',    
     newTitle: 'New Appointment',
@@ -7,6 +8,14 @@ export default AbstractModuleRoute.extend({
     moduleName: 'appointments',
     newButtonText: '+ new appointment',
     sectionTitle: 'Appointments',
+    
+    newButtonAction: function() {
+        if (this.currentUserCan('add_appointment')) {
+            return 'newItem';
+        } else {
+            return null;
+        }
+    }.property(),
     
     additionalModels: [{ 
         name: 'physicianList',

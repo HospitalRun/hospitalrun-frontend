@@ -25,9 +25,15 @@
                 </div>
             {{/if}}
             <ul class="nav navbar-nav navbar-right">
-                <li>{{#link-to 'users'}}Users{{/link-to}}</li>
-                <li>{{#link-to 'inventory'}}Inventory{{/link-to}}</li>
-                <li>{{#link-to 'patients'}}Patients{{/link-to}}</li>
+                {{#if showUsers}}
+                    <li>{{#link-to 'users'}}Users{{/link-to}}</li>
+                {{/if}}
+                {{#if showInventory}}
+                    <li>{{#link-to 'inventory'}}Inventory{{/link-to}}</li>
+                {{/if}}
+                {{#if showPatients}}
+                    <li>{{#link-to 'patients'}}Patients{{/link-to}}</li>
+                {{/if}}
                 {{#if session.isAuthenticated}}
                     <li><a {{ action 'invalidateSession' }}>Logout</a></li>
                 {{else}}

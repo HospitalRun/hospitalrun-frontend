@@ -1,7 +1,6 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
-import GetUserName from "hospitalrun/mixins/get-user-name";
 
-export default AbstractEditController.extend(GetUserName, {    
+export default AbstractEditController.extend({    
     needs: 'inventory',
     
     cancelAction: 'allRequests',
