@@ -51,7 +51,12 @@
                     <p>Please adjust the quantities on the appropriate location(s) to account for the difference of {{quantityDifferential}}.</p>
                 </div>
             {{/if}}
-            <h3>Purchases <button class="btn btn-primary" {{action "showAddPurchase" this}}>Add Purchase</button></h3>    
+            <h3>
+                Purchases 
+                {{#if canAddPurchase}}
+                    <button class="btn btn-primary" {{action "showAddPurchase" this}}>Add Purchase</button>
+                {{/if}}
+            </h3>
             <table class="table">
                 <tr class="table-header">
                     <th>Date Added</th>
@@ -78,7 +83,9 @@
                             {{#if expired}}
                                 <strong>Expired</strong>
                             {{else}}
-                                <button class="btn btn-primary" {{action "showEditPurchase" this}}>Edit Purchase</button>
+                                {{#if canEdit}}
+                                    <button class="btn btn-primary" {{action "showEditPurchase" this}}>Edit Purchase</button>
+                                {{/if}}
                                 {{#if canDelete}}
                                     <button class="btn btn-default" {{action "showDeletePurchase" this}}>Delete</button>
                                 {{/if}}
@@ -96,19 +103,25 @@
                 <th>Location</th>
                 <th>Aisle Location</th>
                 <th>Quantity</th>
-                <th>Action</th>
+                {{#if canAdjustLocation}}
+                    <th>Action</th>
+                {{/if}}
             </tr>
-            {{#each locations}}                
-                <tr>
-                    <td>{{location}}</td>
-                    <td>{{aisleLocation}}</td>
-                    <td>{{quantity}}</td>
-                    <td>                    
-                        <button class="btn btn-primary" {{action "showAdjustment" this}}>Adjust</button>
-                        <button class="btn btn-primary" {{action "showTransfer" this}}>Transfer</button>
-                    </td>                    
-                </tr>
-            {{/each}}
+            {{#with canAdjustLocation as canAdjustLocation}}
+                {{#each locations}}                
+                    <tr>
+                        <td>{{location}}</td>
+                        <td>{{aisleLocation}}</td>
+                        <td>{{quantity}}</td>
+                        {{#if canAdjustLocation}}
+                            <td>
+                                <button class="btn btn-primary" {{action "showAdjustment" this}}>Adjust</button>
+                                <button class="btn btn-primary" {{action "showTransfer" this}}>Transfer</button>
+                            </td>
+                        {{/if}}
+                    </tr>
+                {{/each}}
+            {{/with}}
         </table>
     {{/if}}
 {{/em-form}}

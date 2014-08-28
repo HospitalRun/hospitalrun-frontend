@@ -76,6 +76,8 @@ export default AbstractEditController.extend({
         }
     }.property('isNew', 'isFulfilling'),
     
+    updateCapability: 'add_inventory_request',
+    
     actions: {
         allRequests: function() {
             this.transitionToRoute('inventory.index');

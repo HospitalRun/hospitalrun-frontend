@@ -3,6 +3,7 @@ import UserSession from "hospitalrun/mixins/user-session";
  * Abstract route for top level modules (eg patients, inventory, users)
  */
 export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRouteMixin, {
+    addCapability: null,
     additionalModels: null,
     allowSearch: true,
     currentScreenTitle: null,
@@ -47,13 +48,15 @@ export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRou
             this.transitionTo(this.get('editPath'), item);
         },        
         newItem: function() {
-            var newId = this.generateId();
-            var data = this.getNewData();
-            if (newId) {
-                data.id = newId;
+            if (this.currentUserCan(this.get('addCapability'))) {            
+                var newId = this.generateId();
+                var data = this.getNewData();
+                if (newId) {
+                    data.id = newId;
+                }
+                var item = this.get('store').createRecord(this.get('modelName'), data);            
+                this.transitionTo(this.get('editPath'), item);
             }
-            var item = this.get('store').createRecord(this.get('modelName'), data);            
-            this.transitionTo(this.get('editPath'), item);
         },        
         /**
          * Render a modal using the specifed path and optionally set a model.

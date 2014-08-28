@@ -48,9 +48,12 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-medication">
-                    Medication <button class="btn btn-primary" {{action "newMedication" bubbles=false }}>New Medication</button>
+                    Medication 
+                    {{#if canAddMedication}}
+                        <button class="btn btn-primary" {{action "newMedication" bubbles=false }}>New Medication</button>
+                    {{/if}}
                 </a>
-            </h3>
+            </h3>        
         </div>
         <div id="patient-medication" class="panel-collapse collapse in">
             <div class="panel-body">
@@ -72,8 +75,12 @@
                             <td>{{requestedBy}}</td>
                             <td>
                                 {{#if canEdit}}
-                                    <button class="btn btn-primary" {{action "editMedication" this}}>Edit</button>
-                                    <button class="btn btn-default" {{action "showDeleteMedication" this  bubbles=false }}>Delete</button>
+                                    {{#if parentController.canAddMedication}}
+                                        <button class="btn btn-primary" {{action "editMedication" this}}>Edit</button>
+                                    {{/if}}
+                                    {{#if parentController.canDelete}}
+                                        <button class="btn btn-default" {{action "showDeleteMedication" this  bubbles=false }}>Delete</button>
+                                    {{/if}}
                                 {{/if}}
                             </td>
                         </tr>
@@ -86,7 +93,10 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-labs">
-                    Labs <button class="btn btn-primary" {{action "newLab" bubbles=false }}>New Lab</button>
+                    Labs 
+                    {{#if canAddLab}}
+                        <button class="btn btn-primary" {{action "newLab" bubbles=false }}>New Lab</button>
+                    {{/if}}
                 </a>
             </h3>
         </div>
@@ -114,8 +124,12 @@
                             <td>{{requestedBy}}</td>
                             <td>
                                 {{#if canEdit}}
-                                    <button class="btn btn-primary" {{action "editLab" this}}>Edit</button>
-                                    <button class="btn btn-default" {{action "showDeleteLab" this  bubbles=false }}>Delete</button>
+                                    {{#if parentController.canAddLab}}
+                                        <button class="btn btn-primary" {{action "editLab" this}}>Edit</button>
+                                    {{/if}}
+                                    {{#if parentController.canDeleteLab}}
+                                        <button class="btn btn-default" {{action "showDeleteLab" this  bubbles=false }}>Delete</button>
+                                    {{/if}}
                                 {{/if}}
                             </td>
                         </tr>
@@ -128,7 +142,10 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-imaging">
-                    Imaging <button class="btn btn-primary" {{action "newImaging" bubbles=false }}>New Imaging</button>
+                    Imaging 
+                    {{#if canAddImaging}}
+                        <button class="btn btn-primary" {{action "newImaging" bubbles=false }}>New Imaging</button>
+                    {{/if}}
                 </a>
             </h3>
         </div>
@@ -156,8 +173,12 @@
                             <td>{{requestedBy}}</td>
                             <td>
                                 {{#if canEdit}}
-                                    <button class="btn btn-primary" {{action "editImaging" this}}>Edit</button>
-                                    <button class="btn btn-default" {{action "showDeleteImaging" this  bubbles=false }}>Delete</button>
+                                    {{#if parentController.canAddImaging}}
+                                        <button class="btn btn-primary" {{action "editImaging" this}}>Edit</button>
+                                    {{/if}}
+                                    {{#if parentController.canDeleteImaging}}
+                                        <button class="btn btn-default" {{action "showDeleteImaging" this  bubbles=false }}>Delete</button>
+                                    {{/if}}
                                 {{/if}}
                             </td>
                         </tr>
@@ -170,7 +191,10 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-vitals">
-                    Vitals <button class="btn btn-primary" {{action "showAddVitals" bubbles=false }}>New Vitals</button>
+                    Vitals 
+                    {{#if canAddVitals}}
+                        <button class="btn btn-primary" {{action "showAddVitals" bubbles=false }}>New Vitals</button>
+                    {{/if}}
                 </a>
             </h3>
         </div>
@@ -188,22 +212,28 @@
                         <th>Respiratory Rate</th>
                         <th>Delete</th>
                     </tr>
-                    {{#each vitals}}
-                        <tr>
-                            <td>{{date-format dateRecorded format="l h:mm A"}}</td>
-                            <td>{{temperature}}</td>
-                            <td>{{weight}}</td>
-                            <td>{{height}}</td>
-                            <td>{{sbp}}</td>
-                            <td>{{dbp}}</td>
-                            <td>{{heartRate}}</td>
-                            <td>{{respiratoryRate}}</td>
-                            <td>
-                                <button class="btn btn-primary" {{action "showEditVitals" this}}>Edit</button>
-                                <button class="btn btn-primary" {{action "showDeleteVitals" this}}>Delete</button>
-                            </td>
-                        </tr>
-                    {{/each}}
+                    {{#with this as parentController}}
+                        {{#each vitals}}
+                            <tr>
+                                <td>{{date-format dateRecorded format="l h:mm A"}}</td>
+                                <td>{{temperature}}</td>
+                                <td>{{weight}}</td>
+                                <td>{{height}}</td>
+                                <td>{{sbp}}</td>
+                                <td>{{dbp}}</td>
+                                <td>{{heartRate}}</td>
+                                <td>{{respiratoryRate}}</td>
+                                <td>
+                                    {{#if parentController.canAddVitals}}
+                                        <button class="btn btn-primary" {{action "showEditVitals" this}}>Edit</button>
+                                    {{/if}}
+                                    {{#if parentController.canDeleteVitals}}
+                                        <button class="btn btn-primary" {{action "showDeleteVitals" this}}>Delete</button>
+                                    {{/if}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                    {{/with}}
                 </table>
             </div>
         </div>
@@ -212,7 +242,10 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-procedures">
-                    Procedures <button class="btn btn-primary" {{action "showAddProcedure" bubbles=false }}>New Procedure</button>
+                    Procedures 
+                    {{#if canAddProcedure}}
+                        <button class="btn btn-primary" {{action "showAddProcedure" bubbles=false }}>New Procedure</button>
+                    {{/if}}
                 </a>
             </h3>
         </div>
@@ -224,16 +257,22 @@
                         <th>Procedure</th>
                         <th>Actions</th>
                     </tr>
-                    {{#each procedures}}
-                    <tr>
-                        <td>{{date-format procedureDate}}</td>
-                        <td>{{description}}</td>
-                        <td>                            
-                            <button class="btn btn-primary" {{action "showEditProcedure" this}}>Edit</button>
-                            <button class="btn btn-default" {{action "showDeleteProcedure" this}}>Delete</button>
-                        </td>
-                    </tr>
-                    {{/each}}
+                    {{#with this as parentController}}
+                        {{#each procedures}}
+                        <tr>
+                            <td>{{date-format procedureDate}}</td>
+                            <td>{{description}}</td>
+                            <td>
+                                {{#if parentController.canAddProcedure}}
+                                    <button class="btn btn-primary" {{action "showEditProcedure" this}}>Edit</button>
+                                {{/if}}
+                                {{#if parentController.canDeleteProcedure}}
+                                    <button class="btn btn-default" {{action "showDeleteProcedure" this}}>Delete</button>
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    {{/with}}
                 </table>
             </div>
         </div>

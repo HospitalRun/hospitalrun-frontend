@@ -60,7 +60,10 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-diagnosis">
-                    Additional Diagnoses <button class="btn btn-primary" {{action "showAddDiagnosis" bubbles=false }}>New Diagnosis</button>
+                    Additional Diagnoses 
+                    {{#if canAddDiagnosis}}
+                        <button class="btn btn-primary" {{action "showAddDiagnosis" bubbles=false }}>New Diagnosis</button>
+                    {{/if}}
                 </a>
             </h3>
         </div>
@@ -72,15 +75,17 @@
                         <th>Diagnosis</th>
                         <th>Delete</th>
                     </tr>
-                    {{#each additionalDiagnoses}}
-                    <tr>
-                        <td>{{date-format date}}</td>
-                        <td>{{description}}</td>
-                        <td>
-                            <button class="btn btn-primary" {{action "deleteDiagnosis" this}}>Delete</button>
-                        </td>
-                    </tr>
-                    {{/each}}
+                    {{#with canDeleteDiagnosis as canDeleteDiagnosis}}
+                        {{#each additionalDiagnoses}}
+                        <tr>
+                            <td>{{date-format date}}</td>
+                            <td>{{description}}</td>
+                            <td>
+                                <button class="btn btn-primary" {{action "deleteDiagnosis" this}}>Delete</button>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    {{/with}}
                 </table>
             </div>
         </div>
@@ -89,7 +94,10 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-medication">
-                    Medication <button class="btn btn-primary" {{action "newMedication" bubbles=false }}>New Medication</button>
+                    Medication 
+                    {{#if canAddMedication}}
+                        <button class="btn btn-primary" {{action "newMedication" bubbles=false }}>New Medication</button>
+                    {{/if}}
                 </a>
             </h3>
         </div>
@@ -113,8 +121,12 @@
                             <td>{{requestedBy}}</td>
                             <td>
                                 {{#if canEdit}}
-                                    <button class="btn btn-primary" {{action "editMedication" this}}>Edit</button>
-                                    <button class="btn btn-default" {{action "showDeleteMedication" this  bubbles=false }}>Delete</button>
+                                    {{#if parentController.canAddMedication}}
+                                        <button class="btn btn-primary" {{action "editMedication" this}}>Edit</button>
+                                    {{/if}}
+                                    {{#if parentController.canDelete}}
+                                        <button class="btn btn-default" {{action "showDeleteMedication" this  bubbles=false }}>Delete</button>
+                                    {{/if}}
                                 {{/if}}
                             </td>
                         </tr>
@@ -127,7 +139,10 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-labs">
-                    Labs <button class="btn btn-primary" {{action "newLab" bubbles=false }}>New Lab</button>
+                    Labs 
+                    {{#if canAddLab}}
+                        <button class="btn btn-primary" {{action "newLab" bubbles=false }}>New Lab</button>
+                    {{/if}}
                 </a>
             </h3>
         </div>
@@ -155,8 +170,12 @@
                             <td>{{requestedBy}}</td>
                             <td>
                                 {{#if canEdit}}
-                                    <button class="btn btn-primary" {{action "editLab" this}}>Edit</button>
-                                    <button class="btn btn-default" {{action "showDeleteLab" this  bubbles=false }}>Delete</button>
+                                    {{#if parentController.canAddLab}}
+                                        <button class="btn btn-primary" {{action "editLab" this}}>Edit</button>
+                                    {{/if}}
+                                    {{#if parentController.canDeleteLab}}
+                                        <button class="btn btn-default" {{action "showDeleteLab" this  bubbles=false }}>Delete</button>
+                                    {{/if}}
                                 {{/if}}
                             </td>
                         </tr>
@@ -169,7 +188,10 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-imaging">
-                    Imaging <button class="btn btn-primary" {{action "newImaging" bubbles=false }}>New Imaging</button>
+                    Imaging 
+                    {{#if canAddImaging}}
+                        <button class="btn btn-primary" {{action "newImaging" bubbles=false }}>New Imaging</button>
+                    {{/if}}
                 </a>
             </h3>
         </div>
@@ -185,7 +207,7 @@
                         <th>Notes</th>
                         <th>Requested By</th>
                         <th>Actions</th>
-                    </tr>
+                    </tr>                    
                     {{#each patientImaging itemController="imaging/item-controller"}}
                         <tr {{action "editImaging" this}}>
                             <td>{{date-format requestedDate}}</td>
@@ -197,8 +219,12 @@
                             <td>{{requestedBy}}</td>
                             <td>
                                 {{#if canEdit}}
-                                    <button class="btn btn-primary" {{action "editImaging" this}}>Edit</button>
-                                    <button class="btn btn-default" {{action "showDeleteImaging" this  bubbles=false }}>Delete</button>
+                                    {{#if parentController.canAddImaging}}
+                                        <button class="btn btn-primary" {{action "editImaging" this}}>Edit</button>
+                                    {{/if}}
+                                    {{#if parentController.canDeleteImaging}}
+                                        <button class="btn btn-default" {{action "showDeleteImaging" this  bubbles=false }}>Delete</button>
+                                    {{/if}}
                                 {{/if}}
                             </td>
                         </tr>
@@ -211,7 +237,10 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-visits">
-                    Visits <button class="btn btn-primary" {{action "newVisit" bubbles=false }}>New Visit</button>
+                    Visits 
+                    {{#if canAddVisit}}
+                        <button class="btn btn-primary" {{action "newVisit" bubbles=false }}>New Visit</button>
+                    {{/if}}
                 </a>
             </h3>
         </div>
@@ -226,19 +255,25 @@
                         <th>Type</th>
                         <th>Actions</th>
                     </tr>
-                    {{#each visits}}
-                        <tr {{action "editVisit" this}}>
-                            <td>{{date-format startDate}}</td>
-                            <td>{{date-format endDate}}</td>
-                            <td>{{examiner}}</td>
-                            <td>{{location}}</td>
-                            <td>{{visitType}}</td>
-                            <td>
-                                <button class="btn btn-primary" {{action "editVisit" this}}>Edit</button>
-                                <button class="btn btn-default" {{action "showDeleteVisit" this bubbles=false }}>Delete</button>
-                            </td>
-                        </tr>
-                    {{/each}}
+                    {{#with this as patientController}}
+                        {{#each visits}}
+                            <tr {{action "editVisit" this}}>
+                                <td>{{date-format startDate}}</td>
+                                <td>{{date-format endDate}}</td>
+                                <td>{{examiner}}</td>
+                                <td>{{location}}</td>
+                                <td>{{visitType}}</td>
+                                <td>
+                                    {{#if patientController.canAddVisit}}
+                                        <button class="btn btn-primary" {{action "editVisit" this}}>Edit</button>
+                                    {{/if}}
+                                    {{#if patientController.canDeleteVisit}}
+                                        <button class="btn btn-default" {{action "showDeleteVisit" this bubbles=false }}>Delete</button>
+                                    {{/if}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                    {{/with}}
                 </table>
             </div>
         </div>
@@ -247,7 +282,10 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-appointments">
-                    Appointments <button class="btn btn-primary" {{action "newAppointment" bubbles=false }}>New Appointment</button>
+                    Appointments 
+                    {{#if canAddVisit}}
+                        <button class="btn btn-primary" {{action "newAppointment" bubbles=false }}>New Appointment</button>
+                    {{/if}}
                 </a>
             </h3>
         </div>
@@ -261,18 +299,24 @@
                         <th>Type</th>
                         <th>Actions</th>
                     </tr>
-                    {{#each appointments itemController='appointments/item'}}
-                        <tr {{action "editAppointment" this}}>
-                            <td>{{appointmentDate}}</td>
-                            <td>{{provider}}</td>
-                            <td>{{location}}</td>
-                            <td>{{appointmentType}}</td>
-                            <td>
-                                <button class="btn btn-primary" {{action "editAppointment" this}}>Edit</button>
-                                <button class="btn btn-default" {{action "showDeleteAppointment" this  bubbles=false }}>Delete</button>
-                            </td>
-                        </tr>
-                    {{/each}}
+                    {{#with this as patientController}}
+                        {{#each appointments itemController='appointments/item'}}
+                            <tr {{action "editAppointment" this}}>
+                                <td>{{appointmentDate}}</td>
+                                <td>{{provider}}</td>
+                                <td>{{location}}</td>
+                                <td>{{appointmentType}}</td>
+                                <td>
+                                    {{#if patientController.canAddAppointment}}
+                                        <button class="btn btn-primary" {{action "editAppointment" this}}>Edit</button>
+                                    {{/if}}
+                                    {{#if patientController.canDeleteAppointment}}
+                                        <button class="btn btn-default" {{action "showDeleteAppointment" this  bubbles=false }}>Delete</button>
+                                    {{/if}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                    {{/with}}
                 </table>
             </div>
         </div>

@@ -32,6 +32,8 @@ export default AbstractEditController.extend({
         this.get('model').validate();
     }.observes('billingId'),
     
+    updateCapability: 'add_procedure',
+    
     beforeUpdate: function() {
         if (this.get('isNew')) {
             this.set('newProcedure', true);         

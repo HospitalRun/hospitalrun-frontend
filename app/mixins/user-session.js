@@ -6,8 +6,14 @@ export default Ember.Mixin.create({
         add_appointment: [
             'Patient Administration', 'System Administrator'
         ],
+        add_diagnosis: [
+            'Doctor', 'Patient Administration', 'System Administrator'
+        ],
         add_medication: [
             'Doctor', 'System Administrator'
+        ],
+        add_patient: [
+            'Patient Administration', 'System Administrator'
         ],
         add_lab: [
             'Doctor', 'System Administrator'
@@ -21,26 +27,74 @@ export default Ember.Mixin.create({
         add_inventory_item: [
             'Inventory Manager', 'System Administrator'
         ],
+        add_inventory_purchase: [
+            'Inventory Manager', 'System Administrator'
+        ],
+        add_invoice: [
+            'Business Office', 'System Administrator'
+        ],
+        add_procedure: [
+            'Doctor', 'Nurse', 'Patient Administration', 'System Administrator'
+        ],
+        add_user: [
+            'System Administrator'
+        ],
         add_visit: [
             'Doctor', 'Nurse', 'Patient Administration', 'System Administrator'
         ],        
         add_vitals: [
             'Doctor', 'Nurse', 'System Administrator'
-        ],
+        ],        
+        adjust_inventory_location: [
+            'Inventory Manager', 'System Administrator'
+        ],        
         complete_imaging: [
             'Imaging Technician', 'System Administrator'
         ],
-        complete_labs: [
+        complete_lab: [
             'Lab Technician', 'System Administrator'
-        ],
-        complete_medication: [
-            'Pharmacist', 'System Administrator'
         ],
         delete_appointment: [
             'Patient Administration', 'System Administrator'
         ],
+        delete_diagnosis: [
+            'Doctor', 'Patient Administration', 'System Administrator'
+        ],        
+        delete_inventory_item: [
+            'Inventory Manager', 'System Administrator'
+        ],
+        delete_inventory_purchase: [
+            'Inventory Manager', 'System Administrator'
+        ],
+        delete_imaging: [
+            'Doctor', 'System Administrator'
+        ],
+        delete_lab: [
+            'Doctor', 'System Administrator'
+        ],
+        delete_medication: [
+            'Doctor', 'System Administrator'
+        ],
+        delete_patient: [
+            'Patient Administration', 'System Administrator'
+        ],
+        delete_procedure: [
+            'Doctor', 'Nurse', 'Patient Administration', 'System Administrator'
+        ],
+        delete_vitals: [
+            'Doctor', 'Nurse', 'System Administrator'
+        ],
+        delete_visit: [
+            'Doctor', 'Nurse', 'Patient Administration', 'System Administrator'
+        ],
+        delete_user: [
+            'System Administrator'
+        ],
         fulfill_inventory: [
             'Inventory Manager', 'System Administrator'
+        ],
+        fulfill_medication: [
+            'Pharmacist', 'System Administrator'
         ],
         imaging: [
             'Imaging Technician', 'System Administrator'
@@ -57,7 +111,7 @@ export default Ember.Mixin.create({
         patients: [
             'Doctor', 'Nurse', 'Patient Administration', 'System Administrator'
         ],
-        visit: [
+        visits: [
             'Doctor', 'Nurse', 'Patient Administration', 'System Administrator'
         ],
         users: [

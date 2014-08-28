@@ -29,6 +29,8 @@ export default AbstractEditController.extend({
     newPurchase: false,
     
     updateQuantity: false,
+    
+    updateCapability: 'add_inventory_purchase',
 
     title: function() {
         var isNew = this.get('isNew');

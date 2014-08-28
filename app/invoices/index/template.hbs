@@ -10,7 +10,7 @@
         </tr>
         {{#each}}
             {{#unless isNew}}
-                <tr>
+                <tr {{action 'editItem' this}}>
                     <td>{{invoiceNumber}}</td>
                     <td>{{patientName}}<br>{{patient.primaryDiagnosis}}</td>
                     <td>{{totalPrice}}</td>

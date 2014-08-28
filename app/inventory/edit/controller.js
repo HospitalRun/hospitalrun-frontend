@@ -1,10 +1,23 @@
+import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
+import InventoryLocations from "hospitalrun/mixins/inventory-locations";
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import UnitTypes from "hospitalrun/mixins/unit-types";
-import InventoryLocations from "hospitalrun/mixins/inventory-locations";
-import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
+import UserSession from "hospitalrun/mixins/user-session";
 
-export default AbstractEditController.extend(InventoryLocations, InventoryTypeList, UnitTypes, {
+export default AbstractEditController.extend(InventoryLocations, InventoryTypeList, UnitTypes, UserSession, {
     needs: 'inventory',
+
+    canAddPurchase: function() {        
+        return this.currentUserCan('add_inventory_purchase');
+    }.property(),
+    
+    canAdjustLocation: function() {
+        return this.currentUserCan('adjust_inventory_location');
+    },    
+
+    canDeletePurchase: function() {        
+        return this.currentUserCan('delete_inventory_purchase');
+    }.property(),    
     
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
@@ -70,6 +83,8 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             this.set('quantity', quantity);
         }
     }.observes('originalQuantity'),
+    
+    updateCapability: 'add_inventory_item',
 
     actions: {
         adjustItems: function(inventoryLocation) {

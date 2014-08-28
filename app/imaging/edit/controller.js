@@ -13,6 +13,8 @@ export default AbstractEditController.extend(PatientSubmodule, {
     imagingTypesList: Ember.computed.alias('controllers.imaging.imagingTypesList'),
     patientList: Ember.computed.alias('controllers.imaging.patientList'),
     patientVisits: Ember.computed.alias('patient.visits'),
+    
+    updateCapability: 'add_imaging',
 
     afterUpdate: function() {
         this.send(this.get('cancelAction'));

@@ -10,6 +10,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
     title: 'Add Diagnosis',
     updateButtonText: 'Add',
     updateButtonAction: 'add',
+    showUpdateButton: true,
     
     actions: {
         cancel: function() {

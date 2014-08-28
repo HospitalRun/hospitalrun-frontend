@@ -1,10 +1,58 @@
+import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import AddDiagnosisModel from 'hospitalrun/models/add-diagnosis';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
-import DOBDays from 'hospitalrun/mixins/dob-days';    
+import DOBDays from 'hospitalrun/mixins/dob-days';
 import GenderList from 'hospitalrun/mixins/gender-list';
-import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
-import AddDiagnosisModel from 'hospitalrun/models/add-diagnosis';    
+import UserSession from "hospitalrun/mixins/user-session";
+export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, UserSession, {
+    canAddAppointment: function() {        
+        return this.currentUserCan('add_appointment');
+    }.property(),    
 
-export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
+    canAddDiagnosis: function() {        
+        return this.currentUserCan('add_diagnosis');
+    }.property(),    
+
+    canAddImaging: function() {
+        return this.currentUserCan('add_imaging');
+    }.property(),    
+
+    canAddLab: function() {        
+        return this.currentUserCan('add_lab');
+    }.property(),    
+    
+    canAddMedication: function() {        
+        return this.currentUserCan('add_medication');
+    }.property(),    
+    
+    canAddVisit: function() {        
+        return this.currentUserCan('add_visit');
+    }.property(),
+
+    canDeleteAppointment: function() {        
+        return this.currentUserCan('delete_appointment');
+    }.property(), 
+    
+    canDeleteDiagnosis: function() {        
+        return this.currentUserCan('delete_diagnosis');
+    }.property(),
+    
+    canDeleteImaging: function() {
+        return this.currentUserCan('delete_imaging');
+    }.property(),        
+    
+    canDeleteLab: function() {        
+        return this.currentUserCan('delete_lab');
+    }.property(),        
+    
+    canDeleteMedication: function() {        
+        return this.currentUserCan('delete_medication');
+    }.property(),
+    
+    canDeleteVisit: function() {        
+        return this.currentUserCan('delete_visit');
+    }.property(),
+    
     primaryDiagnosisIdChanged: function() {
         this.get('model').validate();
     }.observes('primaryDiagnosisId'),
@@ -40,6 +88,8 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, {
     patientMedications: function() {
         return this._getVisitCollection('medication');
     }.property('visits.@each.medication'),
+    
+    updateCapability: 'add_patient',
 
     actions: {
         addDiagnosis: function(newDiagnosis) {

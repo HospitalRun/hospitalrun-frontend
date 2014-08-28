@@ -44,6 +44,7 @@ export default Ember.ObjectController.extend(InventoryLocations, {
     }.property('expire'),
     updateButtonAction: 'delete',
     isUpdateDisabled: false,
+    showUpdateButton: true,
     title:  function() {
         var expire = this.get('expire');
         if (!Ember.isEmpty(expire) && expire === true) {

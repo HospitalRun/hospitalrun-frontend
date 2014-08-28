@@ -1,5 +1,6 @@
 import IsUpdateDisabled from "hospitalrun/mixins/is-update-disabled";
-export default Ember.ObjectController.extend(IsUpdateDisabled, {
+import UserSession from "hospitalrun/mixins/user-session";
+export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
     cancelAction: 'allItems',
     /**
      *  Lookup lists that should be updated when the model has a new value to add to the lookup list.
@@ -10,8 +11,13 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
      *  }
      */
     lookupListsToUpdate: null,
-    updateButtonAction: 'update',
     
+    showUpdateButton: function() {
+        var updateButtonCapability = this.get('updateCapability');
+        return this.currentUserCan(updateButtonCapability);
+    }.property('updateCapability'),
+    
+    updateButtonAction: 'update',    
     updateButtonText: function() {
         if (this.get('isNew')) {
             return 'Add';
@@ -19,6 +25,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
             return 'Update';
         }
     }.property('isNew'),
+    updateCapability: null,
     
     actions: {
         cancel: function() {

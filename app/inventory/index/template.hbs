@@ -5,22 +5,32 @@
             <th>Quantity</th>
             <th>Requested On</th>
             <th>Requested By</th>
-            <th>Actions</th>
+            {{#if canFulfill}}
+                <th>Actions</th>
+            {{/if}}
         </tr>
-        {{#each}}
-            <tr>
-                <td>{{inventoryItem.name}}</td>
-                <td>{{quantity}}</td>
-                <td>{{date-format dateRequested}}</td>
-                <td>{{requestedBy}}</td>
-                <td>            
-                    <button class="btn btn-primary" {{action 'fulfill' this}}>Fulfill</button>
-                </td>
-            </tr>            
-        {{/each}}
+        {{#with canFulfill as canFulfill}}
+            {{#each}}
+                <tr>
+                    <td>{{inventoryItem.name}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{date-format dateRequested}}</td>
+                    <td>{{requestedBy}}</td>
+                    {{#if canFulfill}}
+                        <td>
+                            <button class="btn btn-primary" {{action 'fulfill' this}}>Fulfill</button>
+                        </td>
+                    {{/if}}
+                </tr>
+            {{/each}}
+        {{/with}}
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No requests found.  Create a new request?</em> <button class="btn btn-primary" {{action 'newRequest'}}>New Request</button>
+        <em>No requests found.</em> 
+        {{#if canAdd}}
+            <em>Create a new request?</em> 
+            <button class="btn btn-primary" {{action 'newRequest'}}>New Request</button>
+        {{/if}}
     </div>
 {{/if}}

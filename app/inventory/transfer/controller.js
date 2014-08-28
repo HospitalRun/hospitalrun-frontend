@@ -18,6 +18,7 @@ export default AbstractEditController.extend({
     title: 'Transfer Items',
     updateButtonText: 'Transfer',
     updateButtonAction: 'transfer',
+    updateCapability: 'adjust_inventory_location',
     
     actions: {
         cancel: function() {

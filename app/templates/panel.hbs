@@ -3,7 +3,9 @@
         {{yield}}
     </div>
     <div class="panel-footer">
-        <button class="btn btn-primary" {{action updateButtonAction}} {{bind-attr disabled=isUpdateDisabled }}>{{updateButtonText}}</button>
+        {{#if showUpdateButton}}
+            <button class="btn btn-primary" {{action updateButtonAction}} {{bind-attr disabled=isUpdateDisabled }}>{{updateButtonText}}</button>
+        {{/if}}
         <button class="btn btn-default" {{action "cancel"}}>Return</button>
     </div>
 </div>

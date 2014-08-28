@@ -2,6 +2,8 @@ import UserRoles from 'hospitalrun/mixins/user-roles';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
 
 export default AbstractEditController.extend(UserRoles, {
+    updateCapability: 'add_user',
+
     actions: {
         update: function() {
             var updateModel = this.get('model'),

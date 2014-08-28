@@ -1,9 +1,51 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
+import UserSession from "hospitalrun/mixins/user-session";
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
+export default AbstractEditController.extend(PatientSubmodule, UserSession, VisitTypes, {
     needs: 'visits',
+    
+    canAddImaging: function() {
+        return this.currentUserCan('add_imaging');
+    }.property(),    
+
+    canAddLab: function() {        
+        return this.currentUserCan('add_lab');
+    }.property(),    
+    
+    canAddMedication: function() {        
+        return this.currentUserCan('add_medication');
+    }.property(),
+
+    canAddProcedure: function() {        
+        return this.currentUserCan('add_procedure');
+    }.property(),
+    
+    canAddVitals: function() {        
+        return this.currentUserCan('add_vitals');
+    }.property(),    
+    
+    canDeleteImaging: function() {
+        return this.currentUserCan('delete_imaging');
+    }.property(),        
+    
+    canDeleteLab: function() {        
+        return this.currentUserCan('delete_lab');
+    }.property(),        
+    
+    canDeleteMedication: function() {        
+        return this.currentUserCan('delete_medication');
+    }.property(),
+
+    canDeleteProcedure: function() {        
+        return this.currentUserCan('delete_procedure');
+    }.property(),
+    
+    canDeleteVitals: function() {        
+        return this.currentUserCan('delete_vitals');
+    }.property(),
+    
     
     cancelAction: 'returnToPatient',
     clinicList: Ember.computed.alias('controllers.visits.clinicList'),
@@ -26,6 +68,7 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
     newVisit: false,
 
     patientVisits: Ember.computed.alias('patient.visits'),
+    updateCapability: 'add_visit',
 
     afterUpdate: function(visit) {
         if (this.get('newVisit')) {

@@ -30,6 +30,7 @@ export default AbstractEditController.extend(PatientSubmodule, {
     medicationFrequencyList: Ember.computed.alias('controllers.medication.medicationFrequencyList'),
     patientList: Ember.computed.alias('controllers.medication.patientList'),
     patientVisits: Ember.computed.alias('patient.visits'),
+    updateCapability: 'add_medication',
 
     afterUpdate: function() {
         this.send(this.get('cancelAction'));

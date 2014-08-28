@@ -2,6 +2,7 @@ import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import FulfillRequest from "hospitalrun/mixins/fulfill-request";
 import InventoryLocations from "hospitalrun/mixins/inventory-locations"; //inventory-locations mixin is needed for fulfill-request mixin!
 export default AbstractModuleRoute.extend(FulfillRequest, InventoryLocations, {
+    addCapability: 'add_inventory_item',
     additionalModels: [{ 
         name: 'aisleLocationList',
         findArgs: ['lookup','aisle_location_list']

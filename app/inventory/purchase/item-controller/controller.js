@@ -3,6 +3,10 @@ export default Ember.ObjectController.extend({
      * Purchase can only be deleted if no items have been consumed from the purchase.
      */
     canDelete: function() {
+        var canDeletePurchase = this.parentController.get('canDeletePurchase');
+        if (!canDeletePurchase) {
+            return false;
+        }
         var currentQuantity = this.get('currentQuantity'),
             originalQuantity = this.get('originalQuantity');
         if (currentQuantity === originalQuantity) {
@@ -11,6 +15,10 @@ export default Ember.ObjectController.extend({
             return false;
         }
     }.property('originalQuantity', 'currentQuantity'),
+    
+    canEdit: function() {
+        return this.parentController.get('canAddPurchase');
+    }.property(),
     
     rowClass: function() {
         var expired = this.get('expired');

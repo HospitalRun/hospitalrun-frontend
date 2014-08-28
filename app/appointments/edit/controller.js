@@ -29,6 +29,8 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
             this.get('model').validate();
         });
     }.observes('startDate','endDate'),
+    
+    updateCapability: 'add_appointment',
 
     afterUpdate: function(appointment) {
         if (this.get('newAppointment')) {

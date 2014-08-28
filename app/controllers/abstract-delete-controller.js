@@ -1,7 +1,9 @@
 export default Ember.ObjectController.extend({
     afterDeleteAction: 'closeModal',
+    showUpdateButton: true,
     updateButtonText: 'Delete',
     updateButtonAction: 'delete',
+    
     isUpdateDisabled: false,
     
     actions: {

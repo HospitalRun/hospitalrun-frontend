@@ -24,6 +24,8 @@ export default AbstractEditController.extend({
     
     updateButtonAction: 'adjust',
     
+    updateCapability: 'adjust_inventory_location',
+    
     actions: {
         cancel: function() {
             this.send('closeModal');

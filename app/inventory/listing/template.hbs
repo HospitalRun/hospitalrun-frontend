@@ -23,9 +23,13 @@
                     <td>
                         {{#if showAdd}}
                             <button class="btn btn-default" {{action 'showAddPurchase' this bubbles=false }}>Add</button>
-                        {{/if}}                        
-                        <button class="btn btn-default" {{action 'editItem' this bubbles=false }}>Edit</button>
-                        <button class="btn btn-default" {{action 'deleteItem' this bubbles=false }}>Delete</button>                        
+                        {{/if}}
+                        {{#if canEdit}}
+                            <button class="btn btn-default" {{action 'editItem' this bubbles=false }}>Edit</button>
+                        {{/if}}
+                        {{#if canDelete}}
+                            <button class="btn btn-default" {{action 'deleteItem' this bubbles=false }}>Delete</button>                        
+                        {{/if}}
                         {{#link-to 'inventory.barcode' this class="btn btn-default" bubbles=false }}Barcode{{/link-to}}
                     </td>
                 </tr>
@@ -34,6 +38,10 @@
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No items found.  Create a new record?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Item</button>
+        <em>No items found.</em>  
+        {{#if canAddItem}}
+            <em>Create a new record?</em>
+            <button class="btn btn-primary" {{action 'newItem'}}>New Item</button>
+        {{/if}}
     </div>
 {{/if}}

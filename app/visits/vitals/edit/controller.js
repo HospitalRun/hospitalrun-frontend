@@ -19,6 +19,8 @@ export default AbstractEditController.extend({
         return 'Edit Vitals';
 	}.property('isNew'),
     
+    updateCapability: 'add_vitals',
+    
     beforeUpdate: function() {
         if (this.get('isNew')) {
             this.set('newVitals', true);         

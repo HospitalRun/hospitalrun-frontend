@@ -5,22 +5,32 @@
             <th>Patient</th>
             <th>Lab Type</th>
             <th>Notes</th>
-            <th>Actions</th>
+            {{#if canComplete}}
+                <th>Actions</th>
+            {{/if}}
         </tr>
-            {{#each}}
-                <tr>
-                    <td>{{date-format requestedDate}}</td>
-                    <td>{{patient.displayName}}</td>
-                    <td>{{labType}}</td>
-                    <td>{{notes}}</td>
-                    <td>
-                        <button class="btn btn-default" {{action 'completeItem' this}}>Complete</button>
-                    </td>
-                </tr>
-            {{/each}}        
+            {{#with canComplete as canComplete}}
+                {{#each}}
+                    <tr>
+                        <td>{{date-format requestedDate}}</td>
+                        <td>{{patient.displayName}}</td>
+                        <td>{{labType}}</td>
+                        <td>{{notes}}</td>
+                        {{#if canComplete}}
+                            <td>
+                                <button class="btn btn-default" {{action 'completeItem' this}}>Complete</button>
+                            </td>
+                        {{/if}}
+                    </tr>
+                {{/each}}
+            {{/with}}
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No items found.  Create a new record?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Lab</button>
+        <em>No labs found.</em>
+        {{#if canAdd}}
+            <em>Create a new record?</em> 
+            <button class="btn btn-primary" {{action 'newItem'}}>New Lab</button>
+        {{/if}}
     </div>
 {{/if}}

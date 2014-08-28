@@ -6,26 +6,38 @@
             <th>Last Name</th>
             <th>Gender</th>
             <th>DOB</th>
-            <th>Actions</th>
+            {{#if showActions}}
+                <th>Actions</th>
+            {{/if}}
         </tr>
-        {{#each}}
-            {{#unless isNew}}
-                <tr>
+        {{#with this as parentController}}
+            {{#each}}
+                <tr {{action 'editItem' this}}>
                     <td>{{id}}</td>
                     <td>{{firstName}}</td>
                     <td>{{lastName}}</td>
                     <td>{{gender}}</td>
                     <td>{{date-format dateOfBirth}}</td>
-                    <td>
-                        <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
-                        <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
-                    </td>        
+                    {{#if parentController.showActions}}
+                        <td>
+                            {{#if parentController.canAdd}}
+                                <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
+                            {{/if}}
+                            {{#if parentController.canDelete}}
+                                <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
+                            {{/if}}
+                        </td>
+                    {{/if}}                    
                 </tr>
-            {{/unless}}
-        {{/each}}
+            {{/each}}
+        {{/with}}
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No patients found.  Create a new patient record?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Patient</button>
+        <em>No patients found.</em> 
+        {{#if canAdd}}
+            <em>Create a new patient record?</em> 
+            <button class="btn btn-primary" {{action 'newItem'}}>New Patient</button>
+        {{/if}}
     </div>
 {{/if}}

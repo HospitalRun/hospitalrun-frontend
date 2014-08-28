@@ -1,5 +1,6 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 export default AbstractModuleRoute.extend({
+    addCapability: 'add_patient',
     additionalModels: [{ 
         name: 'clinicList',
         findArgs: ['lookup','clinic_list']
