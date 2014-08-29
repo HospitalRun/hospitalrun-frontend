@@ -1,22 +1,22 @@
-{{#if model}}
+{{#if hasRecords}}
     <table class="table">
         <tr class="table-header">
             <th>Date Requested</th>
             <th>Patient</th>
             <th>Imaging Type</th>
             <th>Notes</th>            
-            {{#if userCanComplete}}
+            {{#if canComplete}}
                 <th>Actions</th>
             {{/if}}
         </tr>
-        {{#with userCanComplete as userCanComplete}}
+        {{#with canComplete as canComplete}}
             {{#each}}
                 <tr>
                     <td>{{date-format requestedDate}}</td>
                     <td>{{patient.displayName}}</td>
                     <td>{{imagingType}}</td>
                     <td>{{notes}}</td>
-                    {{#if userCanComplete}}
+                    {{#if canComplete}}
                         <td>
                             <button class="btn btn-default" {{action 'completeItem' this}}>Complete</button>
                         </td>

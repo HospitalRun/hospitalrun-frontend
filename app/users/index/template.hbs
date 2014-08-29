@@ -1,17 +1,17 @@
 {{#if hasRecords}}
     <table class="table">
         <tr class="table-header">
-            <th>ID</th>
             <th>Name</th>
+            <th>Username</th>
             <th>Email</th>
-            <th>Roles</th>
+            <th>Role</th>
             {{#if showActions}}
                 <th>Actions</th>
             {{/if}}
         </tr>
         {{#each itemController='users/item-controller'}}
             <tr {{action 'editItem' this}}>
-                <td>{{id}}</td>
+                <td>{{displayName}}</td>                
                 <td>{{name}}</td>
                 <td>{{email}}</td>
                 <td>{{displayRole}}</td>

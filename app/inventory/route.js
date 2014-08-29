@@ -21,7 +21,7 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryLocations, {
     currentItem: null,
     modelName: 'inventory',
     moduleName: 'inventory',
-    newButtonAction: 'newRequest',
+    
     newButtonText: '+ new request',
     subActions: [{
         text: 'Requests',

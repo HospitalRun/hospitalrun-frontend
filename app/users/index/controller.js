@@ -11,6 +11,8 @@ export default AbstractPagedController.extend(UserSession, {
     
     showActions: function() {
         return (this.get('canAdd') || this.get('canDelete'));
-    }.property('canAdd', 'canDelete')
+    }.property('canAdd', 'canDelete'),
+    
+    sortProperties: ['displayName'],
 
 });

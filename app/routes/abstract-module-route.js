@@ -9,7 +9,6 @@ export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRou
     currentScreenTitle: null,
     modelName: null,
     moduleName: null,
-    newButtonAction: 'newItem',
     newButtonText: null,
     sectionTitle:null,
     subActions: null,
@@ -23,7 +22,15 @@ export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRou
         var module = this.get('moduleName');
         return module + '.delete';        
     }.property('moduleName'),
-    
+
+    newButtonAction: function() {
+        if (this.currentUserCan(this.get('addCapability'))) {
+            return 'newItem';
+        } else {
+            return null;
+        }
+    }.property(),
+
     searchRoute: function() {
         var module = this.get('moduleName');
         return '/'+module + '/search';

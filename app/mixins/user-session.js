@@ -1,118 +1,118 @@
 export default Ember.Mixin.create({
     defaultCapabilities: {
         appointments: [
-            'Patient Administration', 'System Administrator'
+            'Patient Administration', 'Social Worker'
         ],
         add_appointment: [
-            'Patient Administration', 'System Administrator'
+            'Patient Administration',  'Social Worker'
         ],
         add_diagnosis: [
-            'Doctor', 'Patient Administration', 'System Administrator'
+            'Doctor', 'Patient Administration'
         ],
         add_medication: [
-            'Doctor', 'System Administrator'
+            'Doctor', 'Pharmacist'
         ],
         add_patient: [
-            'Patient Administration', 'System Administrator'
+            'Patient Administration', 'Social Worker', 'Doctor'
         ],
         add_lab: [
-            'Doctor', 'System Administrator'
+            'Doctor', 'Lab Technician'
         ],
         add_imaging: [
-            'Doctor', 'System Administrator'
+            'Doctor', 'Imaging Technician'
         ],
         add_inventory_request: [
-            'Inventory Manager', 'System Administrator'
+            'Inventory Manager', 'Nurse Manager'
         ],        
         add_inventory_item: [
-            'Inventory Manager', 'System Administrator'
+            'Inventory Manager',
         ],
         add_inventory_purchase: [
-            'Inventory Manager', 'System Administrator'
+            'Inventory Manager'
         ],
         add_invoice: [
-            'Business Office', 'System Administrator'
+            'Business Office' 
         ],
         add_procedure: [
-            'Doctor', 'Nurse', 'Patient Administration', 'System Administrator'
+            'Doctor', 'Nurse', 'Nurse Manager', 'Patient Administration'
         ],
         add_user: [
             'System Administrator'
         ],
         add_visit: [
-            'Doctor', 'Nurse', 'Patient Administration', 'System Administrator'
+            'Doctor', 'Nurse', 'Nurse Manager', 'Patient Administration'
         ],        
         add_vitals: [
-            'Doctor', 'Nurse', 'System Administrator'
+            'Doctor', 'Nurse', 'Nurse Manager'
         ],        
         adjust_inventory_location: [
-            'Inventory Manager', 'System Administrator'
+            'Inventory Manager'
         ],        
         complete_imaging: [
-            'Imaging Technician', 'System Administrator'
+            'Imaging Technician'
         ],
         complete_lab: [
-            'Lab Technician', 'System Administrator'
+            'Lab Technician'
         ],
         delete_appointment: [
-            'Patient Administration', 'System Administrator'
+            'Patient Administration', 'Social Worker'
         ],
         delete_diagnosis: [
-            'Doctor', 'Patient Administration', 'System Administrator'
+            'Doctor', 'Patient Administration'
         ],        
         delete_inventory_item: [
-            'Inventory Manager', 'System Administrator'
+            'Inventory Manager'
         ],
         delete_inventory_purchase: [
-            'Inventory Manager', 'System Administrator'
+            'Inventory Manager'
         ],
         delete_imaging: [
-            'Doctor', 'System Administrator'
+            'Doctor'
         ],
         delete_lab: [
-            'Doctor', 'System Administrator'
+            'Doctor'
         ],
         delete_medication: [
-            'Doctor', 'System Administrator'
+            'Doctor'
         ],
         delete_patient: [
-            'Patient Administration', 'System Administrator'
+            'Patient Administration'
         ],
         delete_procedure: [
-            'Doctor', 'Nurse', 'Patient Administration', 'System Administrator'
+            'Doctor', 'Nurse', 'Nurse Manager', 'Patient Administration'
         ],
         delete_vitals: [
-            'Doctor', 'Nurse', 'System Administrator'
+            'Doctor', 'Nurse', 'Nurse Manager'
         ],
         delete_visit: [
-            'Doctor', 'Nurse', 'Patient Administration', 'System Administrator'
+            'Doctor', 'Nurse', 'Nurse Manager', 'Patient Administration'
         ],
         delete_user: [
             'System Administrator'
         ],
         fulfill_inventory: [
-            'Inventory Manager', 'System Administrator'
+            'Inventory Manager'
         ],
         fulfill_medication: [
-            'Pharmacist', 'System Administrator'
+            'Pharmacist'
         ],
         imaging: [
-            'Imaging Technician', 'System Administrator'
+            'Imaging Technician', 'Doctor'
         ],
         labs: [
-            'Lab Technician', 'System Administrator'
+            'Lab Technician', 'Doctor'
         ],
         medication: [
-            'Pharmacist', 'System Administrator'
+            'Pharmacist', 'Doctor'
         ],
         inventory: [
-            'Inventory Manager', 'System Administrator'
+            'Inventory Manager', , 'Nurse Manager'
         ],
         patients: [
-            'Doctor', 'Nurse', 'Patient Administration', 'System Administrator'
+            'Doctor', 'Nurse', 'Nurse Manager', 'Patient Administration', 'Social Worker'
         ],
         visits: [
-            'Doctor', 'Nurse', 'Patient Administration', 'System Administrator'
+            'Doctor', 'Nurse',  'Nurse Manager', 'Patient Administration'
         ],
         users: [
             'System Administrator'

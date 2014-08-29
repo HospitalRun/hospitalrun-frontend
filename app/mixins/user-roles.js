@@ -9,8 +9,10 @@ export default Ember.Mixin.create({
         {name: 'Lab Technician', roles: ['Lab Technician', 'user']},
         {name: 'Medical Records Officer', roles: ['Medical Records Officer', 'user']},
         {name: 'Nurse', roles: ['Nurse', 'user']},
+        {name: 'Nurse Manager', roles: ['Nurse Manager', 'user']},
         {name: 'Patient Administration', roles: ['Patient Administration', 'user']},
         {name: 'Pharmacist', roles: ['Pharmacist', 'user']},
+        {name: 'Social Worker', roles: ['Social Worker', 'user']},
         {name: 'System Administrator', roles: ['System Administrator','admin','user']}
     ]
 });

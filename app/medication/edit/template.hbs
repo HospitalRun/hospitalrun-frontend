@@ -43,10 +43,12 @@
     </div>
     {{em-text property="notes" label="Prescription Notes" rows="3"}}
     {{#if isNew}}
-        <div class="form-group">            
-            <label class="control-label">Fulfill Request</label>
-         </div>
-        {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
+        {{#if canFulfill}}
+            <div class="form-group">            
+                <label class="control-label">Fulfill Request</label>
+             </div>
+            {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
+        {{/if}}
     {{/if}}
     {{#if isFulfilling}}
         {{inventory-location-picker label="Pull From" quantityRequested=quantity

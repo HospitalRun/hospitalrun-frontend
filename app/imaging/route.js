@@ -15,14 +15,6 @@ export default AbstractModuleRoute.extend(UserSession, {
         name: 'imagingTypesList',
         findArgs: ['lookup','imaging_types']
     }],
-
-    newButtonAction: function() {
-        if (this.currentUserCan('add_imaging')) {
-            return 'newItem';
-        } else {
-            return null;
-        }
-    }.property(),
     
     subActions: [{
         text: 'Requests',

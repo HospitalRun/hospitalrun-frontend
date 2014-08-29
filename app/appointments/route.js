@@ -10,14 +10,6 @@ export default AbstractModuleRoute.extend(UserSession,{
     newButtonText: '+ new appointment',
     sectionTitle: 'Appointments',
     
-    newButtonAction: function() {
-        if (this.currentUserCan('add_appointment')) {
-            return 'newItem';
-        } else {
-            return null;
-        }
-    }.property(),
-    
     additionalModels: [{ 
         name: 'physicianList',
         findArgs: ['lookup','physician_list']

@@ -81,7 +81,9 @@
                             <td>{{date-format date}}</td>
                             <td>{{description}}</td>
                             <td>
-                                <button class="btn btn-primary" {{action "deleteDiagnosis" this}}>Delete</button>
+                                {{#if canDeleteDiagnosis}}
+                                    <button class="btn btn-primary" {{action "deleteDiagnosis" this}}>Delete</button>
+                                {{/if}}
                             </td>
                         </tr>
                         {{/each}}
@@ -124,7 +126,7 @@
                                     {{#if parentController.canAddMedication}}
                                         <button class="btn btn-primary" {{action "editMedication" this}}>Edit</button>
                                     {{/if}}
-                                    {{#if parentController.canDelete}}
+                                    {{#if parentController.canDeleteMedication}}
                                         <button class="btn btn-default" {{action "showDeleteMedication" this  bubbles=false }}>Delete</button>
                                     {{/if}}
                                 {{/if}}
@@ -283,7 +285,7 @@
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-appointments">
                     Appointments 
-                    {{#if canAddVisit}}
+                    {{#if canAddAppointment}}
                         <button class="btn btn-primary" {{action "newAppointment" bubbles=false }}>New Appointment</button>
                     {{/if}}
                 </a>

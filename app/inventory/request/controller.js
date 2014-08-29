@@ -40,11 +40,16 @@ export default AbstractEditController.extend({
         property: 'deliveryLocation', //Corresponding property on model that potentially contains a new value to add to the list
         id: 'warehouse_list' //Id of the lookup list to update
     }],
+    
+    canFulfill: function() {
+        return this.currentUserCan('fulfill_inventory');
+    }.property(),
 
     isFulfilling: function() {
-        var isRequested = this.get('isRequested'),
+        var canFulfill = this.get('canFulfill'),
+            isRequested = this.get('isRequested'),
             fulfillRequest = this.get('shouldFulfillRequest');
-        return isRequested || fulfillRequest;
+        return (canFulfill && (isRequested || fulfillRequest));
     }.property('isRequested', 'shouldFulfillRequest'),
 
     isRequested: function() {

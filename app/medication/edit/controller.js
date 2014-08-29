@@ -1,8 +1,13 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
+import UserSession from "hospitalrun/mixins/user-session";
 
-export default AbstractEditController.extend(PatientSubmodule, {
+export default AbstractEditController.extend(PatientSubmodule, UserSession, {    
     needs: 'medication',
+
+    canFulfill: function() {
+        return this.currentUserCan('fulfill_medication');
+    }.property(),
 
     durationTypes: [
         'Days',
@@ -10,10 +15,11 @@ export default AbstractEditController.extend(PatientSubmodule, {
     ],
     
     isFulfilling: function() {
-        var isRequested = this.get('isRequested'),
+        var canFulfill = this.get('canFulfill'),
+            isRequested = this.get('isRequested'),
             fulfillRequest = this.get('shouldFulfillRequest');
-        return isRequested || fulfillRequest;
-    }.property('isRequested', 'shouldFulfillRequest'),
+        return canFulfill && (isRequested || fulfillRequest);
+    }.property('canFulfill','isRequested', 'shouldFulfillRequest'),
 
     isRequested: function() {
         var status = this.get('status');

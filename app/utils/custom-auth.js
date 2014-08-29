@@ -21,12 +21,12 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
                 user.displayName = response.displayName;
                 user.role = response.role;
                 user.prefix = response.prefix;
-                console.log("USER HAS BEEN RESOLVED TO:", user);
                 resolve(user);
             });
-        }, function(xhr) {
+        }, function() {
             Ember.run(function() {
-                reject(xhr.responseJSON || xhr.responseText);
+                //If chkuser fails, user is probably offline; resolve with currently stored credentials
+                resolve(user);
             });
         });               
     },
