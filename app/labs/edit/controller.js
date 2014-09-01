@@ -12,7 +12,6 @@ export default AbstractEditController.extend(PatientSubmodule, {
 
     labTypesList: Ember.computed.alias('controllers.labs.labTypesList'),
     patientList: Ember.computed.alias('controllers.labs.patientList'),
-    patientVisits: Ember.computed.alias('patient.visits'),    
     updateCapability: 'add_lab',
 
     afterUpdate: function() {
@@ -21,35 +20,11 @@ export default AbstractEditController.extend(PatientSubmodule, {
     
     beforeUpdate: function() {
         if (this.get('isNew')) {
-            this.set('dateRequested', new Date());
-            return new Ember.RSVP.Promise(function(resolve, reject){
-                var lab = this.get('model'),
-                    visit = this.get('visit'),
-                    patient = this.get('patient'),
-                    patientVisits = this.get('patientVisits'),
-                    promises = [];
-                this.set('status', 'Requested');
-                this.set('requestedBy', lab.getUserName());
-                this.set('requestedDate', new Date());
-                if (Ember.isEmpty(visit)) {
-                    visit = this.get('store').createRecord('visit', {
-                        startDate: new Date(),
-                        endDate: new Date(),
-                        patient: patient,
-                        visitType: 'Lab'
-                    });
-                    this.set('visit', visit);
-                    patientVisits.addObject(visit);
-                    promises.push(patient.save());
-                }
-                visit.get('labs').then(function(visitLabs) {
-                    visitLabs.addObject(lab);
-                    promises.push(visit.save());
-                    Ember.RSVP.all(promises, 'All updates done for lab visit before lab save').then(function() {        
-                        resolve();
-                    }.bind(this), reject);
-                }.bind(this));                    
-            }.bind(this));            
+            var newLab = this.get('model');
+            this.set('status', 'Requested');
+            this.set('requestedBy', newLab.getUserName());
+            this.set('requestedDate', new Date());
+            return this.addChildToVisit(newLab, 'labs', 'Lab');            
         } else {
             if (this.get('isCompleting')) {
                 this.set('labDate', new Date());

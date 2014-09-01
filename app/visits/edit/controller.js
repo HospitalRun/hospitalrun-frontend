@@ -67,7 +67,6 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
     
     newVisit: false,
 
-    patientVisits: Ember.computed.alias('patient.visits'),
     updateCapability: 'add_visit',
 
     afterUpdate: function(visit) {
@@ -86,8 +85,11 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
     beforeUpdate: function() {        
         if (this.get('isNew')) {
             this.set('newVisit', true);
+            var promises = this.resolvePatientChildren();
+            return Ember.RSVP.all(promises, 'Resolved patient children before adding new visit');
+        } else {
+            return Ember.RSVP.resolve();
         }
-        return Ember.RSVP.resolve();
     },
     
     /**

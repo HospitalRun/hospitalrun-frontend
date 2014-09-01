@@ -35,7 +35,6 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, {
     medicationList: Ember.computed.alias('controllers.medication.medicationList'),
     medicationFrequencyList: Ember.computed.alias('controllers.medication.medicationFrequencyList'),
     patientList: Ember.computed.alias('controllers.medication.patientList'),
-    patientVisits: Ember.computed.alias('patient.visits'),
     updateCapability: 'add_medication',
 
     afterUpdate: function() {
@@ -47,33 +46,14 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, {
             isNew = this.get('isNew');
         if (isNew || isFulfilling) {
             return new Ember.RSVP.Promise(function(resolve, reject){
-                var medication = this.get('model'),
-                    visit = this.get('visit'),
-                    patient = this.get('patient'),
-                    patientVisits = this.get('patientVisits'),
-                    promises = [];
+                var newMedication = this.get('model');
                 if (isNew) {
                     this.set('newMedication', true);
                     this.set('status', 'Requested');
-                    this.set('requestedBy', medication.getUserName());
-                    if (Ember.isEmpty(visit)) {
-                        visit = this.get('store').createRecord('visit', {
-                            startDate: new Date(),
-                            endDate: new Date(),
-                            patient: patient,
-                            visitType: 'Pharmacy'
-                        });
-                        this.set('visit', visit);
-                        patientVisits.addObject(visit);
-                        promises.push(patient.save());
-                    }
-                    visit.get('medication').then(function(visitMedications) {
-                        visitMedications.addObject(medication);
-                        promises.push(visit.save());
-                        Ember.RSVP.all(promises, 'All updates done for medication visit before medication save').then(function() {        
-                            this.finishBeforeUpdate(isFulfilling,  resolve);
-                        }.bind(this), reject);
-                    }.bind(this));                    
+                    this.set('requestedBy', newMedication.getUserName());
+                    this.addChildToVisit(newMedication, 'medication', 'Pharmacy').then(function() {        
+                        this.finishBeforeUpdate(isFulfilling,  resolve);
+                    }.bind(this), reject);
                 } else {
                     this.finishBeforeUpdate(isFulfilling,  resolve);
                 }

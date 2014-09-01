@@ -12,7 +12,6 @@ export default AbstractEditController.extend(PatientSubmodule, {
 
     imagingTypesList: Ember.computed.alias('controllers.imaging.imagingTypesList'),
     patientList: Ember.computed.alias('controllers.imaging.patientList'),
-    patientVisits: Ember.computed.alias('patient.visits'),
     
     updateCapability: 'add_imaging',
 
@@ -22,35 +21,11 @@ export default AbstractEditController.extend(PatientSubmodule, {
     
     beforeUpdate: function() {
         if (this.get('isNew')) {
-            this.set('dateRequested', new Date());
-            return new Ember.RSVP.Promise(function(resolve, reject){
-                var imaging = this.get('model'),
-                    visit = this.get('visit'),
-                    patient = this.get('patient'),
-                    patientVisits = this.get('patientVisits'),
-                    promises = [];
-                this.set('status', 'Requested');
-                this.set('requestedBy', imaging.getUserName());
-                this.set('requestedDate', new Date());
-                if (Ember.isEmpty(visit)) {
-                    visit = this.get('store').createRecord('visit', {
-                        startDate: new Date(),
-                        endDate: new Date(),
-                        patient: patient,
-                        visitType: 'Imaging'
-                    });
-                    this.set('visit', visit);
-                    patientVisits.addObject(visit);
-                    promises.push(patient.save());
-                }
-                visit.get('imaging').then(function(visitImaging) {
-                    visitImaging.addObject(imaging);
-                    promises.push(visit.save());
-                    Ember.RSVP.all(promises, 'All updates done for imaging visit before imaging save').then(function() {        
-                        resolve();
-                    }.bind(this), reject);
-                }.bind(this));                    
-            }.bind(this));            
+            var newImaging = this.get('model');
+            this.set('status', 'Requested');
+            this.set('requestedBy', newImaging.getUserName());
+            this.set('requestedDate', new Date());
+            return this.addChildToVisit(newImaging, 'imaging', 'Imaging');    
         } else {
             if (this.get('isCompleting')) {
                 this.set('imagingDate', new Date());

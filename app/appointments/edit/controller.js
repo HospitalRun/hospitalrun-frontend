@@ -63,8 +63,14 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
     beforeUpdate: function() {
         if (this.get('isNew')) {
             this.set('newAppointment', true);
+            return new Ember.RSVP.Promise(function(resolve, reject){
+                var promises = this.resolveVisitChildren();
+                Ember.RSVP.all(promises, 'Resolved visit children before adding new appointment').then(function() {        
+                    resolve();
+                }.bind(this), reject);
+            }.bind(this));
+        } else {
+            Ember.RSVP.resolve();
         }
-        return Ember.RSVP.resolve();
-    } 
-
+    }
 });
