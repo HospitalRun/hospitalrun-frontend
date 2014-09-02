@@ -70,7 +70,7 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
                 }.bind(this), reject);
             }.bind(this));
         } else {
-            Ember.RSVP.resolve();
+            return Ember.RSVP.resolve();
         }
     }
 });
