@@ -101,14 +101,15 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
      * otherwise add the specified object to the list.
      */
     updateList: function(listName, listObject, removeObject) {
-        var list = this.get(listName);
-        if (removeObject) {
-            list.removeObject(listObject);
-        } else {
-            list.addObject(listObject);
-        }
-        this.send('update', true);
-        this.send('closeModal');
+        this.get(listName).then(function(list) {
+            if (removeObject) {
+                list.removeObject(listObject);
+            } else {
+                list.addObject(listObject);
+            }
+            this.send('update', true);
+            this.send('closeModal');
+        }.bind(this));
     },
     
     actions: {
