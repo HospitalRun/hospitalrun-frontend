@@ -262,6 +262,6 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     },
     
     afterUpdate: function(record) {
-        this.transitionToRoute('/inventory/search/'+record.get('id'));
+        this.transitionToRoute('/inventory/search/'+record.get('friendlyId'));
     }
 });

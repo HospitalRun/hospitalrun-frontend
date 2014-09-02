@@ -3,9 +3,10 @@ export default AbstractSearchRoute.extend({
     moduleName: 'inventory',
     searchKeys: [
         '_id',
+        'crossReference',
         'description',
-        'name',
-        'crossReference'
+        'friendlyId',
+        'name'
     ],
     searchModel: 'inventory'
 });
