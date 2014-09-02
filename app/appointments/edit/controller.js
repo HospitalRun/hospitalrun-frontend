@@ -24,6 +24,15 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
     physicianList: Ember.computed.alias('controllers.appointments.physicianList'),
     showTime: true,
     
+    cancelAction: function() {
+        var returnTo = this.get('returnTo');
+        if (Ember.isEmpty(returnTo)) {
+            return 'allItems';
+        } else {
+            return 'returnTo';
+        }
+    }.property('returnTo'),
+    
     dateChanged: function() {
         Ember.run.once(this, function(){
             this.get('model').validate();
@@ -43,6 +52,18 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
         } else {
             this.send(this.get('cancelAction'));
         }
+    },
+    
+    actions: {
+        returnTo: function() {
+            var cancelledItem = this.get('model');
+            if (this.get('isNew')) {
+                cancelledItem.deleteRecord();
+            } else {
+                cancelledItem.rollback();
+            }
+            this.transitionToRoute(this.get('returnTo'));
+        },
     },
 
     allDayChanged: function() {

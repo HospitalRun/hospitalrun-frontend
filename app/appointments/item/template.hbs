@@ -1,4 +1,4 @@
-<tr {{action 'editItem' this}}>
+<tr {{action 'editAppointment' this}}>
     <td>
         {{appointmentDate}}
     </td>
@@ -8,13 +8,13 @@
     <td>{{provider}}</td>
     <td>
         {{#if parentController.canAddVisit}}
-            <button class="btn btn-default" {{action 'createVisit' this}}>Add Visit</button>
+            <button class="btn btn-default" {{action 'createVisit' this bubbles=false }}>Add Visit</button>
         {{/if}}
         {{#if parentController.canEdit}}
-            <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
+            <button class="btn btn-default" {{action 'editAppointment' this bubbles=false }}>Edit</button>
         {{/if}}
         {{#if parentController.canDelete}}
-            <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
+            <button class="btn btn-default" {{action 'deleteItem' this bubbles=false }}>Delete</button>
         {{/if}}
     </td>        
 </tr>

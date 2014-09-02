@@ -1,3 +1,22 @@
-{{#view "search-listing" newButtonText="New Appointment" allButtonText="All Appointments"}}
-    {{partial 'appointments/index'}}
-{{/view}}
+<div class="panel panel-info">    
+    <div class="panel-body">
+        {{#em-form model=this submit_button=false }}
+            <div class="row">        
+                {{date-picker property="startingDate" label="Show Appointments On Or After" class="col-sm-4"}}
+            </div>
+        {{/em-form}}
+    </div>
+</div>
+<table class="table">
+    <tr class="table-header">
+        <th>Date</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Location</th>
+        <th>Provider</th>
+        <th>Actions</th>
+    </tr>
+    {{#each matchingAppointments itemController='appointments/item'}}
+        {{partial 'appointments/item'}}
+    {{/each}}
+</table>
