@@ -4,7 +4,16 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var mergeTrees = require('broccoli-merge-trees');
 var writeManifest = require('broccoli-manifest');
 
-var app = new EmberApp();
+var app = new EmberApp({
+    sassOptions: {
+        sourceMap: false    
+    }    
+});
+  
+//If we are not in the production environment, produce sourcemaps (the default if not specified)
+if (app.env !== 'production') {
+    app = new EmberApp();
+}
 
 // Use `app.import` to add additional libraries to the generated
 // output files.
