@@ -1,6 +1,8 @@
  /* global require, module */
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
+var mergeTrees = require('broccoli-merge-trees');
+var writeManifest = require('broccoli-manifest');
 
 var app = new EmberApp();
 
@@ -34,8 +36,8 @@ app.import('vendor/moment/moment.js');
 app.import('vendor/typeahead.js/dist/typeahead.bundle.js');
 app.import('vendor/pikaday/pikaday.js');
 app.import('vendor/ember-calendar/dist/ember-calendar.js');
-
 app.import('vendor/pikaday/css/pikaday.css');
 app.import('vendor/ember-calendar/dist/ember-calendar.css');
 
-module.exports = app.toTree();
+var completeTree = app.toTree();
+module.exports = mergeTrees([completeTree, writeManifest(completeTree)]);

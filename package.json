@@ -30,5 +30,9 @@
     "glob": "^3.2.9",
     "originate": "0.1.5",
     "request": "2.36.0"
+  },
+  "dependencies": {
+    "broccoli-manifest": "0.0.1",
+    "broccoli-merge-trees": "^0.1.4"
   }
 }
