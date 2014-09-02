@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html manifest="manifest.appcache">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hospital Run</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+
+    <link rel="stylesheet" href="assets/vendor-14bc8903bbe5613873e1835a487fae4f.css">
+    <link rel="stylesheet" href="assets/hospitalrun-92f4e56a8ec92240374ce73e6aac23e3.css">
+  </head>
+  <body>
+    <script>
+        window.addEventListener('load',function(e){window.applicationCache.addEventListener('updateready', function(e){if (window.applicationCache.status==window.applicationCache.UPDATEREADY){window.applicationCache.swapCache();window.location.reload();}},false);},false);
+      window.HospitalrunENV = {"environment":"production","baseURL":"/","locationType":"hash","EmberENV":{"FEATURES":{}},"APP":{}};
+      window.EmberENV = window.HospitalrunENV.EmberENV;
+    </script>
+    <script src="assets/vendor-4c9160511af0acd493b12aa4b132041b.js"></script>
+    <script src="assets/hospitalrun-bb576bed91883aeb7dd0e3dcd57a5928.js"></script>
+    <script>
+      window.Hospitalrun = require('hospitalrun/app')['default'].create(HospitalrunENV.APP);
+    </script>
+  </body>
+</html>
