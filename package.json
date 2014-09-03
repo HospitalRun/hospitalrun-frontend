@@ -25,7 +25,7 @@
     "ember-cli": "0.0.40",
     "ember-cli-ember-data": "0.1.0",
     "ember-cli-ic-ajax": "0.1.1",
-    "ember-cli-sass": "^1.0.1",
+    "ember-cli-sass": "^1.0.2",
     "express": "^4.1.1",
     "glob": "^3.2.9",
     "originate": "0.1.5",
