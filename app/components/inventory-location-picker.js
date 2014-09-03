@@ -69,7 +69,10 @@ export default Ember.Component.extend({
                 return (item.get('selectedLocation.id') !== location.get('id'));
             });
         }, locationList);
-        locationPickers.get('firstObject').set('label', this.get('label'));
+        var firstPicker = locationPickers.get('firstObject');
+        if (!Ember.isEmpty(firstPicker)) {
+            firstPicker.set('label', this.get('label'));
+        }
     },
     
     _selectedLocationChange: function() {
