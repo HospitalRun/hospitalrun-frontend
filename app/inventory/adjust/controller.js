@@ -18,6 +18,13 @@ export default AbstractEditController.extend({
     }],
 
     title: 'Adjustment',
+    
+    transactionTypeChanged: function() {
+        Ember.run.once(this, function(){
+            this.get('model').validate();
+        });
+    }.observes('transactionType'),
+    
     updateButtonText: function() {
         return this.get('transactionType');
     }.property('transactionType'),

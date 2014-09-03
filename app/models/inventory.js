@@ -13,6 +13,14 @@ export default AbstractModel.extend({
     price: DS.attr('number'),
     reorderPoint: DS.attr('number'),
     distributionUnit: DS.attr('string'),
+    
+    availableLocations: function() {
+        var locations = this.get('locations').filter(function(location) {
+            return location.get('quantity') > 0;
+        });
+        return locations;
+    }.property('locations@each.lastModified'),
+    
     validations: {
         purchaseCost: {
             numericality: {

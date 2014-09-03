@@ -52,7 +52,7 @@
     {{/if}}
     {{#if isFulfilling}}
         {{inventory-location-picker label="Pull From" quantityRequested=quantity
-            locationList=inventoryItem.locations 
+            locationList=inventoryItem.availableLocations
             selectedLocations=fulfillmentLocations
         }}
     {{/if}}

@@ -34,7 +34,7 @@
             {{date-picker property="dateCompleted" label="Date Completed" class="col-sm-4"}}
         </div>
         {{inventory-location-picker label="Pull From" quantityRequested=quantity
-            locationList=inventoryItem.locations 
+            locationList=inventoryItem.availableLocations 
             selectedLocations=fulfillmentLocations
         }}
          <div class="form-group">            

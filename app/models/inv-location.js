@@ -28,7 +28,10 @@ var InventoryLocation = AbstractModel.extend(LocationName, {
     }.property('locationName'),
     
     validations: {
-        adjustmentQuantity: {            
+        adjustmentQuantity: {
+            numericality: {
+                greaterThan: 0
+            },            
             acceptance: {
                 /***
                  * Validate that the adjustment quantity is a number and that if a deduction there are enough items to deduct

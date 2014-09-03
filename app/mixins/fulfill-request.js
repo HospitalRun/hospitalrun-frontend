@@ -40,6 +40,7 @@ export default Ember.Mixin.create({
             if (increment) {
                 purchase.incrementProperty('currentQuantity', quantityRequested);
                 totalCost += (costPerUnit * currentQuantity);
+                requestPurchases.addObject(purchase);
                 return true;
             } else {
                 if (quantityNeeded > currentQuantity) {
@@ -60,7 +61,7 @@ export default Ember.Mixin.create({
             return 'Could not find any purchases that had the required quantity:'+quantityRequested;
         }
         request.set('costPerUnit', (totalCost/quantityRequested).toFixed(2));
-        request.set('quantityAtCompletion', quantityOnHand);        
+        request.set('quantityAtCompletion', quantityOnHand);
         item.get('content').updateQuantity();
         return true;
     },
@@ -73,7 +74,9 @@ export default Ember.Mixin.create({
             requestPurchases = request.get('purchases');
         request.get('inventoryLocations').then(function(inventoryLocations) {
             if (increment) {
-                inventoryLocations.get('firstObject').incrementProperty('quantity', quantity);
+                var locationToIncrement = inventoryLocations.get('firstObject');
+                locationToIncrement.incrementProperty('quantity', quantity);
+                promises.push(locationToIncrement.save());
             } else {
                 inventoryLocations.reduce(function(quantityNeeded, location) {
                     var deliveryLocation = request.get('deliveryLocation'),
@@ -86,8 +89,8 @@ export default Ember.Mixin.create({
                         }
                         if (locationQuantity >= quantityNeeded) {                        
                             if (markAsConsumed) {
-                                location.decrementProperty('quantity', quantityNeeded);
-                                promises.push(this.saveLocation(location, inventoryItem));
+                                location.decrementProperty('quantity', quantityNeeded);                                
+                                promises.push(location.save());
                             } else {
                                 location.set('adjustmentQuantity', quantityNeeded);
                                 this.transferToLocation(inventoryItem, location);                            
@@ -95,8 +98,8 @@ export default Ember.Mixin.create({
                             return 0;
                         } else {                                
                             if (markAsConsumed) {                            
-                                location.decrementProperty('quantity', locationQuantity);
-                                promises.push(this.saveLocation(location, inventoryItem));
+                                location.decrementProperty('quantity', locationQuantity);                                
+                                promises.push(location.save());
                             } else {
                                 location.set('adjustmentQuantity', locationQuantity);
                                 this.transferToLocation(inventoryItem, location);                            

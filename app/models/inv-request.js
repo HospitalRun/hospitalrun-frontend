@@ -55,7 +55,9 @@ var InventoryRequest = AbstractModel.extend({
             }
         },
         quantity: {
-            numericality: true,
+            numericality: {
+                greaterThan: 0,
+            },
             acceptance: {
                 accept: true,
                 if: function(object) {

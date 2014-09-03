@@ -132,7 +132,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             }
             if (!Ember.isEmpty(deleteFromLocation)) {
                 deleteFromLocation.decrementProperty('quantity', quantityDeleted);
-                this.saveLocation(deleteFromLocation, this.get('model'));
+                deleteFromLocation.save();
             }
             this.get('model').updateQuantity();
             this.send('update',true);
@@ -140,8 +140,15 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         },
         
         showAdjustment: function(inventoryLocation) {
-            inventoryLocation.set('dateCompleted', new Date());
-            inventoryLocation.set('adjustmentItem', this.get('model'));
+            inventoryLocation.setProperties({
+                adjustPurchases: true,
+                dateCompleted: new Date(),
+                adjustmentItem: this.get('model'),
+                adjustmentQuantity: '',
+                reason: '',
+                transferItem: null,
+                transactionType: 'Adjustment (Add)'
+            });
             this.send('openModal', 'inventory.adjust', inventoryLocation);
         },
 
@@ -159,8 +166,9 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         },
         
         showTransfer: function(inventoryLocation) {
+            inventoryLocation.set('adjustmentQuantity');
             inventoryLocation.set('transferItem', this.get('model'));
-            inventoryLocation.set('dateCompleted', new Date());
+            inventoryLocation.set('dateCompleted', new Date());            
             this.send('openModal', 'inventory.transfer', inventoryLocation);
         },
         

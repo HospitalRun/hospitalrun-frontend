@@ -31,7 +31,7 @@ export default Ember.Mixin.create({
         } else if (transactionType === 'Adjustment (Remove)') {
             inventoryLocation.decrementProperty('quantity', adjustmentQuantity);
         }
-        this.saveLocation(inventoryLocation, inventoryItem);
+        inventoryLocation.save();
     },
     
     findLocation: function(inventoryLocation) {
@@ -84,6 +84,6 @@ export default Ember.Mixin.create({
             quantity = parseInt(transferLocation.get('adjustmentQuantity'));
         this._addQuantityToLocation(inventoryItem, quantity, location, aisle);
         transferLocation.decrementProperty('quantity', quantity);
-        this.saveLocation(transferLocation, inventoryItem);
+        transferLocation.save();
     }
 });

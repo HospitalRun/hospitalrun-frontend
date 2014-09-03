@@ -69,7 +69,7 @@
                     <th>Vendor</th>
                     <th>Action</th>
                 </tr>
-                {{#each purchases itemController='inventory/purchase/item-controller'}}                
+                {{#each purchases itemController='inventory/purchase/item-controller'}}
                     <tr {{bind-attr class="rowClass"}}>
                         <td>{{date-format dateAdded}}</td>
                         <td>{{purchaseCost}}</td>
@@ -107,21 +107,21 @@
                     <th>Action</th>
                 {{/if}}
             </tr>
-            {{#with canAdjustLocation as canAdjustLocation}}
-                {{#each locations}}                
+            {{#each locations itemController='inventory/location-item'}}
+                {{#if haveItems}}
                     <tr>
                         <td>{{location}}</td>
                         <td>{{aisleLocation}}</td>
                         <td>{{quantity}}</td>
-                        {{#if canAdjustLocation}}
+                        {{#if parentController.canAdjustLocation}}
                             <td>
                                 <button class="btn btn-primary" {{action "showAdjustment" this}}>Adjust</button>
                                 <button class="btn btn-primary" {{action "showTransfer" this}}>Transfer</button>
                             </td>
                         {{/if}}
                     </tr>
-                {{/each}}
-            {{/with}}
+                {{/if}}
+            {{/each}}
         </table>
     {{/if}}
 {{/em-form}}
