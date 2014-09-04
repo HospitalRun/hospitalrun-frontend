@@ -5,15 +5,15 @@ export default Ember.Controller.extend(UserSession,{
 
     showInventory: function() {
         return this.currentUserCan('inventory');
-    }.property(),
+    }.property('session.isAuthenticated'),
 
     showPatients: function() {
         return this.currentUserCan('patients');
-    }.property(),
+    }.property('session.isAuthenticated'),
 
     showUsers: function() {
         return this.currentUserCan('users');
-    }.property(),
+    }.property('session.isAuthenticated'),
     
     actions: {
         search: function() {
