@@ -123,28 +123,32 @@ body {
     //color: #fff;
 }
 
+.navbar {
+    min-height: 64px;
+}
+
 .navbar-brand {
     display: block;
-    height: 85px;
+    height: 60px;
     padding: 0 25px;
 
     .logo-svg {
-        width: 186px;
+        width: 150px;
         @include vertically_centered; }
 
 }
 
 .site-search-form {
-    margin: 17px 0;
+    margin: 11px 0;
 
     .form-group {
         float: left;
     }
 
     input {
-        height: 50px;
+        height: 42px;
         border-radius: 5px 0 0 5px;
-        padding: 6px 22px;
+        padding: 6px 12px;
         font-size: 18px;
         font-weight: 300;
     }
@@ -152,9 +156,9 @@ body {
     .btn {
         background-color: #d2dae3;
         border-radius: 0 5px 5px 0;
-        font-size: 22px;
-        width: 56px;
-        height: 50px;
+        font-size: 18px;
+        width: 46px;
+        height: 42px;
         text-shadow: none;
         @include transition(opacity);
 
@@ -175,7 +179,7 @@ body {
 
         > a {
             padding: 0 15px;
-            line-height: 85px; }
+            line-height: 64px; }
 
     }
 

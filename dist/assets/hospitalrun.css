@@ -3154,7 +3154,6 @@ select[multiple].input-group-sm > .form-control, select[multiple].input-group-sm
 
 .navbar {
   position: relative;
-  min-height: 85px;
   margin-bottom: 20px;
   border: 1px solid transparent; }
 
@@ -5431,22 +5430,25 @@ h3.panel-title {
 body {
   background-color: #2e4359; }
 
+.navbar {
+  min-height: 64px; }
+
 .navbar-brand {
   display: block;
-  height: 85px;
+  height: 60px;
   padding: 0 25px; }
   .navbar-brand .logo-svg {
-    width: 186px;
+    width: 150px;
     position: relative;
     top: 50%;
     margin-top: -50%; }
 
 .site-search-form {
-  margin: 17px 0; }
+  margin: 11px 0; }
   .site-search-form .form-group {
     float: left; }
   .site-search-form input {
-    height: 50px;
+    height: 42px;
     border-radius: 5px 0 0 5px;
     padding: 6px 22px;
     font-size: 18px;
@@ -5454,9 +5456,9 @@ body {
   .site-search-form .btn {
     background-color: #d2dae3;
     border-radius: 0 5px 5px 0;
-    font-size: 22px;
-    width: 56px;
-    height: 50px;
+    font-size: 18px;
+    width: 46px;
+    height: 42px;
     text-shadow: none;
     transition: opacity 0.2s ease; }
     .site-search-form .btn:hover {
@@ -5467,7 +5469,7 @@ body {
 
 .navbar-nav > li > a {
   padding: 0 15px;
-  line-height: 85px; }
+  line-height: 64px; }
 
 .jumbotron {
   background-color: #2e4359; }
