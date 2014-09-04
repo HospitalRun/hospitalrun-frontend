@@ -33,7 +33,9 @@ export default Ember.Mixin.create({
         ],
         add_inventory_request: [
             'Data Entry',
-            'Inventory Manager', 'Nurse Manager', 'System Administrator'
+            'Inventory Manager', 'Nurse Manager',
+            'Pharmacist',
+            'System Administrator'
         ],        
         add_inventory_item: [
             'Data Entry',
@@ -127,7 +129,9 @@ export default Ember.Mixin.create({
         ],
         inventory: [
             'Data Entry',
-            'Inventory Manager', 'Nurse Manager', 'System Administrator'
+            'Inventory Manager', 'Nurse Manager', 
+            'Pharmacist',
+            'System Administrator'
         ],
         patients: [
             'Data Entry',
