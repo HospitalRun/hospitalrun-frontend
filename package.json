@@ -28,6 +28,7 @@
     "ember-cli-sass": "^1.0.2",
     "express": "^4.1.1",
     "glob": "^3.2.9",
+    "nano": "^5.11.0",
     "originate": "0.1.5",
     "request": "2.36.0"
   },
