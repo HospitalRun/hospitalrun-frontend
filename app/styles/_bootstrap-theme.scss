@@ -207,9 +207,9 @@ fieldset[disabled] .btn-primary.active {
 }
 
 .navbar-default .navbar-nav > li > a {
-    color: #00bd9c;
+    color: #fff;
     &:hover, &:focus {
-        color: #fff;
+        color: #00bd9c;
         background-color: #3b5268;
     }
 }
