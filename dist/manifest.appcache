@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# created 2014-09-04T14:30:04.981Z
+# created 2014-09-04T20:08:45.976Z
 
 CACHE:
 assets/failed.png
@@ -37,6 +37,10 @@ fonts/lato-regular-webfont.eot
 fonts/lato-regular-webfont.svg
 fonts/lato-regular-webfont.ttf
 fonts/lato-regular-webfont.woff
+fonts/octicons.eot
+fonts/octicons.svg
+fonts/octicons.ttf
+fonts/octicons.woff
 index.html
 testem.js
 tests/index.html

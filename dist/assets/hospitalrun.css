@@ -5053,9 +5053,9 @@ fieldset[disabled] .btn-primary.active {
   margin-right: 10px; }
 
 .navbar-default .navbar-nav > li > a {
-  color: #00bd9c; }
+  color: #fff; }
   .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
-    color: #fff;
+    color: #00bd9c;
     background-color: #3b5268; }
 
 .navbar-inverse {
