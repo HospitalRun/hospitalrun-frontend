@@ -1,6 +1,37 @@
-<div class="jumbotron">
-    <h1>Welcome to HospitalRun</h1>
-    {{#each activeLinks}}
-        {{#link-to action class="btn btn-primary btn-lg"}}{{text}}{{/link-to}}
-    {{/each}}
+<div class="splash-nav">
+
+
+    <div class="nav-category">
+      <header class="category-header">
+        <h2 class="primary-section">
+          <span class="mega-octicon octicon-package"></span>
+          Inventory
+        </h2>
+        <div class="panel-options">
+          <span class="mega-octicon octicon-gear"></span>
+        </div>
+      </header>
+      <ul class="category-links">
+        <li class="sub-section">
+          <a href="#" class="sub-section-link">Patient listing</a>
+        </li>
+        <li class="sub-section">
+          <a href="#" class="sub-section-link">Assessments</a>
+        </li>
+        <li class="sub-section">
+          <a href="#" class="sub-section-link">Visits</a>
+        </li>
+        <li class="sub-section">
+          <a href="#" class="sub-section-link">Proceedures</a>
+        </li>
+      </ul>
+    </div>
+
+</div>
+
+
+<div>
+  {{#each activeLinks}}
+  {{#link-to action class="btn btn-primary btn-lg"}}{{text}}{{/link-to}}
+  {{/each}}
 </div>
