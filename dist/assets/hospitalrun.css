@@ -5450,7 +5450,7 @@ body {
   .site-search-form input {
     height: 42px;
     border-radius: 5px 0 0 5px;
-    padding: 6px 22px;
+    padding: 6px 12px;
     font-size: 18px;
     font-weight: 300; }
   .site-search-form .btn {

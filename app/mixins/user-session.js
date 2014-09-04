@@ -1,48 +1,65 @@
 export default Ember.Mixin.create({
     defaultCapabilities: {
         appointments: [
-            'Patient Administration', 'Social Worker', 'System Administrator'
+            'Data Entry',
+            'Hospital Manager',
+            'Patient Administration', 
+            'Social Worker', 
+            'System Administrator'
         ],
         add_appointment: [
+            'Data Entry',
             'Patient Administration',  'Social Worker', 'System Administrator'
         ],
         add_diagnosis: [
+            'Data Entry',
             'Doctor', 'Patient Administration', 'System Administrator'
         ],
         add_medication: [
+            'Data Entry',
             'Doctor', 'Pharmacist', 'System Administrator'
         ],
         add_patient: [
+            'Data Entry',
             'Patient Administration', 'Social Worker', 'Doctor', 'System Administrator'
         ],
         add_lab: [
+            'Data Entry',
             'Doctor', 'Lab Technician', 'System Administrator'
         ],
         add_imaging: [
+            'Data Entry',
             'Doctor', 'Imaging Technician', 'System Administrator'
         ],
         add_inventory_request: [
+            'Data Entry',
             'Inventory Manager', 'Nurse Manager', 'System Administrator'
         ],        
         add_inventory_item: [
+            'Data Entry',
             'Inventory Manager', 'System Administrator'
         ],
         add_inventory_purchase: [
+            'Data Entry',
             'Inventory Manager', 'System Administrator'
         ],
         add_invoice: [
+            'Data Entry',
             'Business Office', 'System Administrator' 
         ],
         add_procedure: [
+            'Data Entry',
             'Doctor', 'Nurse', 'Nurse Manager', 'Patient Administration', 'System Administrator'
         ],
         add_user: [
             'System Administrator'
         ],
         add_visit: [
+            'Data Entry',
             'Doctor', 'Nurse', 'Nurse Manager', 'Patient Administration', 'System Administrator'
         ],        
         add_vitals: [
+            'Data Entry',
             'Doctor', 'Nurse', 'Nurse Manager', 'System Administrator'
         ],        
         adjust_inventory_location: [
@@ -97,21 +114,27 @@ export default Ember.Mixin.create({
             'Pharmacist', 'System Administrator'
         ],
         imaging: [
+            'Data Entry',
             'Imaging Technician', 'Doctor', 'System Administrator'
         ],
         labs: [
+            'Data Entry',
             'Lab Technician', 'Doctor', 'System Administrator'
         ],
         medication: [
+            'Data Entry',
             'Pharmacist', 'Doctor', 'System Administrator'
         ],
         inventory: [
+            'Data Entry',
             'Inventory Manager', 'Nurse Manager', 'System Administrator'
         ],
         patients: [
+            'Data Entry',
             'Doctor', 'Nurse', 'Nurse Manager', 'Patient Administration', 'Social Worker', 'System Administrator'
         ],
         visits: [
+            'Data Entry',
             'Doctor', 'Nurse',  'Nurse Manager', 'Patient Administration', 'System Administrator'
         ],
         users: [
