@@ -23,7 +23,8 @@
     "typeahead.js": "~0.10.2",
     "pikaday": "owenmead/Pikaday#master",
     "moment": "~2.7.0",
-    "ember-calendar": "~1.0.0"
+    "ember-calendar": "~1.0.0",
+    "octicons": "~2.1.2"
   },
   "resolutions": {
     "moment": "~2.7.0",

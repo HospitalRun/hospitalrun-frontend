@@ -38,6 +38,7 @@ app.import('vendor/pikaday/pikaday.js');
 app.import('vendor/ember-calendar/dist/ember-calendar.js');
 app.import('vendor/pikaday/css/pikaday.css');
 app.import('vendor/ember-calendar/dist/ember-calendar.css');
+app.import('vendor/octicons/octicons/octicons.css');
 
 var completeTree = app.toTree();
 module.exports = mergeTrees([completeTree, writeManifest(completeTree)]);
