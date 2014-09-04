@@ -23,3 +23,5 @@ nbproject/project.xml
 
 *.sublime-workspace
 *.css.map
+
+server/config.js
