@@ -23,3 +23,6 @@ nbproject/project.xml
 
 *.sublime-workspace
 *.css.map
+
+dist/manifest.appcache
+dist/assets/hospitalrun.css.map
