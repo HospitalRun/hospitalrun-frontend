@@ -3325,7 +3325,6 @@ select[multiple].input-group-sm > .form-control, select[multiple].input-group-sm
     vertical-align: middle; }
   .navbar-form .form-control {
     display: inline-block;
-    width: auto;
     vertical-align: middle; }
   .navbar-form .input-group > .form-control {
     width: 100%; }
@@ -5053,9 +5052,9 @@ fieldset[disabled] .btn-primary.active {
   margin-right: 10px; }
 
 .navbar-default .navbar-nav > li > a {
-  color: #00bd9c; }
+  color: #fff; }
   .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
-    color: #fff;
+    color: #00bd9c;
     background-color: #3b5268; }
 
 .navbar-inverse {
@@ -5444,21 +5443,25 @@ body {
     margin-top: -50%; }
 
 .site-search-form {
-  margin: 11px 0; }
+  margin: 13px 0; }
   .site-search-form .form-group {
     float: left; }
   .site-search-form input {
-    height: 42px;
+    height: 38px;
     border-radius: 5px 0 0 5px;
     padding: 6px 12px;
     font-size: 18px;
-    font-weight: 300; }
+    font-weight: 300;
+    width: 78px;
+    transition: width 0.2s ease; }
+    .site-search-form input:focus {
+      width: 214px; }
   .site-search-form .btn {
     background-color: #d2dae3;
     border-radius: 0 5px 5px 0;
     font-size: 18px;
     width: 46px;
-    height: 42px;
+    height: 38px;
     text-shadow: none;
     transition: opacity 0.2s ease; }
     .site-search-form .btn:hover {
@@ -5506,5 +5509,121 @@ body {
 h1.pull-left {
   font-weight: 300;
   letter-spacing: -1px; }
+
+.index .view-title {
+  text-align: center;
+  color: #97afc8;
+  font-weight: 300;
+  margin: 0;
+  padding: 30px 0;
+  line-height: 1;
+  background: #3A4D63; }
+.index .splash-nav {
+  padding: 16px 32px 32px; }
+
+.nav-category {
+  background: #253649;
+  padding: 14px 14px 10px;
+  color: white;
+  border-radius: 8px;
+  float: left;
+  width: 248px;
+  position: relative;
+  margin-right: 16px;
+  margin-bottom: 16px; }
+  .nav-category .primary-section {
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 1;
+    margin: 0;
+    padding-bottom: 14px; }
+  .nav-category .primary-section-link {
+    color: white;
+    text-decoration: none; }
+    .nav-category .primary-section-link .mega-octicon {
+      font-size: 24px;
+      color: #546a83;
+      line-height: 27px;
+      margin-right: 5px; }
+    .nav-category .primary-section-link:hover {
+      color: #00bd9c; }
+  .nav-category .panel-options {
+    position: absolute;
+    top: 18px;
+    right: 14px;
+    z-index: 10; }
+    .nav-category .panel-options .hidden-link-list-trigger:hover .mega-octicon, .nav-category .panel-options .hidden-link-list-trigger.active .mega-octicon {
+      color: #00bd9c; }
+    .nav-category .panel-options .mega-octicon {
+      font-size: 16px;
+      color: #546a83; }
+  .nav-category .hidden-link-list {
+    position: absolute;
+    display: none;
+    width: 160px;
+    background: white;
+    right: -7px;
+    top: 22px;
+    border-radius: 4px;
+    box-shadow: 0 1px 8px rgba(37, 54, 73, 0.8);
+    padding: 4px 6px; }
+    .nav-category .hidden-link-list.show {
+      display: block; }
+    .nav-category .hidden-link-list:before {
+      content: " ";
+      display: block;
+      width: 0;
+      height: 0;
+      border-bottom: 6px solid white;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      position: absolute;
+      top: -6px;
+      right: 8px; }
+    .nav-category .hidden-link-list > h4 {
+      font-weight: 300;
+      font-size: 14px;
+      color: #97afc8;
+      padding-bottom: 5px;
+      margin: 3px 0 8px;
+      text-align: center;
+      line-height: 1;
+      background: rgba(219, 235, 255, 0.6);
+      padding: 3px;
+      border-radius: 3px; }
+    .nav-category .hidden-link-list > a {
+      display: block;
+      font-size: 13px;
+      margin: 4px 0; }
+  .nav-category .category-links {
+    height: 254px;
+    overflow: scroll; }
+  .nav-category .sub-section-link {
+    display: block;
+    background: #3A4D63;
+    border-radius: 6px;
+    color: #97afc8;
+    font-weight: 300;
+    padding: 10px 14px;
+    margin-top: 10px;
+    font-size: 16px;
+    position: relative; }
+    .nav-category .sub-section-link:first-child {
+      margin-top: 0; }
+    .nav-category .sub-section-link .octicon {
+      border-left: 1px solid rgba(37, 54, 73, 0.6);
+      padding: 15px 16px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 44px;
+      text-align: center;
+      color: #97afc8; }
+    .nav-category .sub-section-link:hover {
+      text-decoration: none;
+      background: rgba(58, 77, 99, 0.8);
+      color: #00bd9c; }
+      .nav-category .sub-section-link:hover .octicon {
+        color: #00bd9c; }
 
 /*# sourceMappingURL=hospitalrun.css.map */
