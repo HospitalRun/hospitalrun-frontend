@@ -241,3 +241,163 @@ h1 {
 }
 
 // end temp style tweaks ------------/
+
+// Index (dashboard) styles
+// -------------------------------------------/
+
+.index {
+
+    .view-title {
+        text-align: center;
+        color: $navy_text;
+        font-weight: 300;
+        border-bottom: 2px solid $navy_drk;
+        margin: 0;
+        padding: 30px 0;
+        line-height: 1;
+    }
+
+    .splash-nav {
+        padding: 16px 32px 32px;
+    }
+
+}
+
+.nav-category {
+    background: $navy_drk;
+    padding: 14px;
+    color: white;
+    border-radius: 8px;
+    float: left;
+    width: 248px;
+    // min-height: 266px;
+    position: relative;
+    margin-right: 16px;
+    margin-bottom: 16px;
+
+    .primary-section {
+        font-weight: 300;
+        font-size: 24px;
+        line-height: 1;
+        margin: 0;
+        padding-bottom: 14px;
+    }
+
+    .primary-section-link {
+        color: white;
+        text-decoration: none;
+
+        .mega-octicon {
+            font-size: 24px;
+            color: $navy_mid;
+            line-height: 27px;
+            margin-right: 5px;
+        }
+
+        &:hover { color: $green; }
+    }
+
+    .panel-options {
+        position: absolute;
+        top: 18px;
+        right: 14px;
+        z-index: 10;
+
+        .hidden-link-list-trigger {
+
+            &:hover,
+            &.active {
+
+                .mega-octicon { color: $green; }
+            }
+        }
+
+        .mega-octicon {
+            font-size: 16px;
+            color: $navy_mid;
+        }
+    }
+
+    .hidden-link-list {
+        position: absolute;
+        display: none;
+        width: 160px;
+        background: white;
+        right: -7px;
+        top: 22px;
+        border-radius: 4px;
+        box-shadow: 0 1px 8px rgba($navy_drk, .8);
+        padding: 4px 6px;
+
+        &.show { display: block; }
+
+        &:before {
+            content: " ";
+            display: block;
+            width: 0;
+            height: 0;
+            border-bottom: 6px solid white;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            position: absolute;
+            top: -6px;
+            right: 8px;
+        }
+
+
+        > h4 {
+            font-weight: 300;
+            font-size: 14px;
+            color: $navy_text;
+            padding-bottom: 5px;
+            margin: 3px 0 8px;
+            text-align: center;
+            line-height: 1;
+            background: rgba($blue_light,.6);
+            padding: 3px;
+            border-radius: 3px;
+        }
+
+        > a {
+            display: block;
+            font-size: 13px;
+            margin: 4px 0;
+        }
+    }
+
+    .sub-section-link {
+        display: block;
+        background: $navy_mid2;
+        border-radius: 6px;
+        color: $navy_text;
+        font-weight: 300;
+        padding: 10px 14px;
+        margin-top: 10px;
+        font-size: 16px;
+        position: relative;
+
+        &:first-child { margin-top: 0; }
+
+        .octicon {
+            border-left: 1px solid rgba($navy_drk,.6);
+            padding: 15px 16px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 44px;
+            text-align: center;
+            color: $navy_text;
+        }
+
+        &:hover {
+            text-decoration: none;
+            background: rgba($navy_mid2,.8);
+            color: $green;
+
+            .octicon { color: $green; }
+        }
+    }
+}
+
+
+// end Group ------------/
