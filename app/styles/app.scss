@@ -139,18 +139,22 @@ body {
 }
 
 .site-search-form {
-    margin: 11px 0;
+    margin: 13px 0;
 
     .form-group {
         float: left;
     }
 
     input {
-        height: 42px;
+        height: 38px;
         border-radius: 5px 0 0 5px;
         padding: 6px 12px;
         font-size: 18px;
         font-weight: 300;
+        width: 78px;
+        @include transition(width);
+
+        &:focus { width: 214px; }
     }
 
     .btn {
@@ -158,7 +162,7 @@ body {
         border-radius: 0 5px 5px 0;
         font-size: 18px;
         width: 46px;
-        height: 42px;
+        height: 38px;
         text-shadow: none;
         @include transition(opacity);
 
