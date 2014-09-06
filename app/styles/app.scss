@@ -251,10 +251,10 @@ h1 {
         text-align: center;
         color: $navy_text;
         font-weight: 300;
-        border-bottom: 2px solid $navy_drk;
         margin: 0;
         padding: 30px 0;
         line-height: 1;
+        background: $navy_mid2;
     }
 
     .splash-nav {
@@ -265,7 +265,7 @@ h1 {
 
 .nav-category {
     background: $navy_drk;
-    padding: 14px;
+    padding: 14px 14px 10px;
     color: white;
     border-radius: 8px;
     float: left;
@@ -363,6 +363,11 @@ h1 {
             font-size: 13px;
             margin: 4px 0;
         }
+    }
+
+    .category-links {
+        height: 254px;
+        overflow: scroll;
     }
 
     .sub-section-link {
