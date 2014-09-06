@@ -1,5 +1,9 @@
 CACHE MANIFEST
+<<<<<<< HEAD
 # created 2014-09-06T15:01:09.000Z
+=======
+# created 2014-09-05T03:37:29.850Z
+>>>>>>> FETCH_HEAD
 
 CACHE:
 assets/failed.png
@@ -37,6 +41,10 @@ fonts/lato-regular-webfont.eot
 fonts/lato-regular-webfont.svg
 fonts/lato-regular-webfont.ttf
 fonts/lato-regular-webfont.woff
+fonts/octicons.eot
+fonts/octicons.svg
+fonts/octicons.ttf
+fonts/octicons.woff
 index.html
 testem.js
 tests/index.html
