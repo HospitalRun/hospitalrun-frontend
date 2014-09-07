@@ -4,8 +4,8 @@
     </div>
     <div class="panel-footer">
         {{#if showUpdateButton}}
-            <button class="btn btn-primary" {{action updateButtonAction}} {{bind-attr disabled=isUpdateDisabled }}>{{updateButtonText}}</button>
+            <button class="btn btn-primary on-white" {{action updateButtonAction}} {{bind-attr disabled=isUpdateDisabled }}>{{updateButtonText}}</button>
         {{/if}}
-        <button class="btn btn-default" {{action "cancel"}}>Return</button>
+        <button class="btn btn-default warning" {{action "cancel"}}>Cancel</button>
     </div>
 </div>

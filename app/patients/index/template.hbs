@@ -21,23 +21,23 @@
                     {{#if parentController.showActions}}
                         <td>
                             {{#if parentController.canAdd}}
-                                <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
+                                <button class="btn btn-default neutral" {{action 'editItem' this}}>Edit</button>
                             {{/if}}
                             {{#if parentController.canDelete}}
-                                <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
+                                <button class="btn btn-default warning" {{action 'deleteItem' this}}><span class="octicon octicon-x"></span> Delete</button>
                             {{/if}}
                         </td>
-                    {{/if}}                    
+                    {{/if}}
                 </tr>
             {{/each}}
         {{/with}}
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No patients found.</em> 
+        <em>No patients found.</em>
         {{#if canAdd}}
-            <em>Create a new patient record?</em> 
-            <button class="btn btn-primary" {{action 'newItem'}}>New Patient</button>
+            <em>Create a new patient record?</em>
+            <button class="btn btn-primary on-white" {{action 'newItem'}}>New Patient</button>
         {{/if}}
     </div>
 {{/if}}

@@ -4896,8 +4896,29 @@ button.close {
  * Copyright 2011-2014 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+.btn.on-white {
+  background-color: #dbebff;
+  color: #2e4359; }
+.btn.warning {
+  background-color: rgba(255, 109, 111, 0.3);
+  color: #ff6d6f; }
+  .btn.warning:hover, .btn.warning:focus {
+    background-color: #ff6d6f;
+    color: white; }
+.btn.neutral {
+  background-color: #d9d9d9;
+  color: rgba(46, 67, 89, 0.65); }
+  .btn.neutral:hover, .btn.neutral:focus {
+    opacity: 0.8; }
+.btn .octicon {
+  position: relative;
+  left: -3px; }
+.btn.align-right {
+  float: right; }
+.btn.align-left {
+  float: left; }
+
 .btn-default {
-  text-shadow: 0 1px 0 #fff;
   background-color: #00bd9c;
   border: none;
   border-radius: 3px; }

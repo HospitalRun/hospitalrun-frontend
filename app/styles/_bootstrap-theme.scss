@@ -5,8 +5,43 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
+.btn {
+
+    &.on-white {
+        background-color: $blue_light;
+        color: $navy;
+    }
+
+    &.warning {
+        background-color: $red_light;
+        color: $red;
+
+        &:hover,
+        &:focus {
+            background-color: $red;
+            color: white;
+        }
+    }
+
+    &.neutral {
+        background-color: $gray_light;
+        color: $gray;
+
+        &:hover,
+        &:focus { opacity: .8 }
+    }
+
+    .octicon {
+        position: relative;
+        left: -3px;
+    }
+
+    &.align-right { float: right; }
+    &.align-left { float: left; }
+
+}
+
 .btn-default {
-    text-shadow: 0 1px 0 #fff;
     background-color: $green;
     border: none;
     border-radius: 3px;

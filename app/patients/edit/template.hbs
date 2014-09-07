@@ -17,7 +17,7 @@
                                 <div class="form-control">
                                     {{id}}
                                 </div>
-                            </div>            
+                            </div>
                             {{em-input property="firstName" label="First Name"}}
                             {{em-input property="lastName" label="Last Name"}}
                             <div class="form-group">
@@ -60,9 +60,9 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-diagnosis">
-                    Additional Diagnoses 
+                    Additional Diagnoses
                     {{#if canAddDiagnosis}}
-                        <button class="btn btn-primary" {{action "showAddDiagnosis" bubbles=false }}>New Diagnosis</button>
+                        <button class="btn btn-primary align-right" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> New Diagnosis</button>
                     {{/if}}
                 </a>
             </h3>
@@ -82,7 +82,7 @@
                             <td>{{description}}</td>
                             <td>
                                 {{#if canDeleteDiagnosis}}
-                                    <button class="btn btn-primary" {{action "deleteDiagnosis" this}}>Delete</button>
+                                    <button class="btn btn-defaul warning" {{action "deleteDiagnosis" this}}><span class="octicon octicon-x"></span> Delete</button>
                                 {{/if}}
                             </td>
                         </tr>
@@ -96,9 +96,9 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-medication">
-                    Medication 
+                    Medication
                     {{#if canAddMedication}}
-                        <button class="btn btn-primary" {{action "newMedication" bubbles=false }}>New Medication</button>
+                        <button class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span>New Medication</button>
                     {{/if}}
                 </a>
             </h3>
@@ -124,10 +124,10 @@
                             <td>
                                 {{#if canEdit}}
                                     {{#if parentController.canAddMedication}}
-                                        <button class="btn btn-primary" {{action "editMedication" this}}>Edit</button>
+                                        <button class="btn btn-default neutral" {{action "editMedication" this}}>Edit</button>
                                     {{/if}}
                                     {{#if parentController.canDeleteMedication}}
-                                        <button class="btn btn-default" {{action "showDeleteMedication" this  bubbles=false }}>Delete</button>
+                                        <button class="btn btn-default warning" {{action "showDeleteMedication" this  bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
                                     {{/if}}
                                 {{/if}}
                             </td>
@@ -141,9 +141,9 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-labs">
-                    Labs 
+                    Labs
                     {{#if canAddLab}}
-                        <button class="btn btn-primary" {{action "newLab" bubbles=false }}>New Lab</button>
+                        <button class="btn btn-primary align-right" {{action "newLab" bubbles=false }}><span class="octicon octicon-plus"></span> New Lab</button>
                     {{/if}}
                 </a>
             </h3>
@@ -173,10 +173,10 @@
                             <td>
                                 {{#if canEdit}}
                                     {{#if parentController.canAddLab}}
-                                        <button class="btn btn-primary" {{action "editLab" this}}>Edit</button>
+                                        <button class="btn btn-default neutral" {{action "editLab" this}}>Edit</button>
                                     {{/if}}
                                     {{#if parentController.canDeleteLab}}
-                                        <button class="btn btn-default" {{action "showDeleteLab" this  bubbles=false }}>Delete</button>
+                                        <button class="btn btn-default warning" {{action "showDeleteLab" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                     {{/if}}
                                 {{/if}}
                             </td>
@@ -190,9 +190,9 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-imaging">
-                    Imaging 
+                    Imaging
                     {{#if canAddImaging}}
-                        <button class="btn btn-primary" {{action "newImaging" bubbles=false }}>New Imaging</button>
+                        <button class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}><span class="octicon octicon-plus"></span> New Imaging</button>
                     {{/if}}
                 </a>
             </h3>
@@ -209,7 +209,7 @@
                         <th>Notes</th>
                         <th>Requested By</th>
                         <th>Actions</th>
-                    </tr>                    
+                    </tr>
                     {{#each patientImaging itemController="imaging/item-controller"}}
                         <tr {{action "editImaging" this}}>
                             <td>{{date-format requestedDate}}</td>
@@ -222,10 +222,10 @@
                             <td>
                                 {{#if canEdit}}
                                     {{#if parentController.canAddImaging}}
-                                        <button class="btn btn-primary" {{action "editImaging" this}}>Edit</button>
+                                        <button class="btn btn-default neutral" {{action "editImaging" this}}>Edit</button>
                                     {{/if}}
                                     {{#if parentController.canDeleteImaging}}
-                                        <button class="btn btn-default" {{action "showDeleteImaging" this  bubbles=false }}>Delete</button>
+                                        <button class="btn btn-default warning" {{action "showDeleteImaging" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                     {{/if}}
                                 {{/if}}
                             </td>
@@ -234,14 +234,14 @@
                 </table>
             </div>
         </div>
-    </div>    
+    </div>
     <div class="panel">
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-visits">
-                    Visits 
+                    Visits
                     {{#if canAddVisit}}
-                        <button class="btn btn-primary" {{action "newVisit" bubbles=false }}>New Visit</button>
+                        <button class="btn btn-primary align-right" {{action "newVisit" bubbles=false }}><span class="octicon octicon-plus"></span> New Visit</button>
                     {{/if}}
                 </a>
             </h3>
@@ -267,10 +267,10 @@
                                 <td>{{visitType}}</td>
                                 <td>
                                     {{#if patientController.canAddVisit}}
-                                        <button class="btn btn-primary" {{action "editVisit" this}}>Edit</button>
+                                        <button class="btn btn-default neutral" {{action "editVisit" this}}>Edit</button>
                                     {{/if}}
                                     {{#if patientController.canDeleteVisit}}
-                                        <button class="btn btn-default" {{action "showDeleteVisit" this bubbles=false }}>Delete</button>
+                                        <button class="btn btn-default warning" {{action "showDeleteVisit" this bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                     {{/if}}
                                 </td>
                             </tr>
@@ -284,9 +284,9 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-appointments">
-                    Appointments 
+                    Appointments
                     {{#if canAddAppointment}}
-                        <button class="btn btn-primary" {{action "newAppointment" bubbles=false }}>New Appointment</button>
+                        <button class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}><span class="octicon octicon-plus"></span> New Appointment</button>
                     {{/if}}
                 </a>
             </h3>
@@ -310,10 +310,10 @@
                                 <td>{{appointmentType}}</td>
                                 <td>
                                     {{#if patientController.canAddAppointment}}
-                                        <button class="btn btn-primary" {{action "editAppointment" this}}>Edit</button>
+                                        <button class="btn btn-default neutral" {{action "editAppointment" this}}>Edit</button>
                                     {{/if}}
                                     {{#if patientController.canDeleteAppointment}}
-                                        <button class="btn btn-default" {{action "showDeleteAppointment" this  bubbles=false }}>Delete</button>
+                                        <button class="btn btn-default warning" {{action "showDeleteAppointment" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                     {{/if}}
                                 </td>
                             </tr>
@@ -323,5 +323,5 @@
             </div>
         </div>
     </div>
-    
+
 </div>
