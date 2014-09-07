@@ -5679,12 +5679,18 @@ a.list-group-item-danger {
 }
 
 .panel-heading {
+    background-color: $blue_light2;
+    color: $navy;
     padding: 10px 15px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+    border-radius: 3px;
+
     > .dropdown .dropdown-toggle {
         color: inherit;
+    }
+
+    .btn {
+        position: relative;
+        top: -2px;
     }
 }
 
@@ -5796,7 +5802,7 @@ a.list-group-item-danger {
     .panel-heading {
         border-bottom: 0;
         + .panel-collapse .panel-body {
-            border-top: 1px solid #ddd;
+            // border-top: 1px solid #ddd;
         }
     }
     .panel-footer {

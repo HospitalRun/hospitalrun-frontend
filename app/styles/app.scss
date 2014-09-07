@@ -211,6 +211,12 @@ body {
     color: $navy;
     background-color: white;
     border: none;
+
+    input,
+    textarea,
+    select {
+        background: rgba($blue_light,.2);
+    }
 }
 
 .modal-dialog {
@@ -238,6 +244,12 @@ h1 {
         font-weight: 300;
         letter-spacing: -1px;
     }
+}
+
+.not-editable {
+    background-color: rgba($gray_light,.5);
+    opacity: .5;
+    cursor: default;
 }
 
 // end temp style tweaks ------------/
@@ -405,4 +417,24 @@ h1 {
 }
 
 
-// end Group ------------/
+// end index styles ------------/
+
+// layout styles
+// -------------------------------------------/
+
+.detail-section-content {
+    padding: 15px 0;
+
+    .table { margin-top: -15px; }
+}
+
+.table-header {
+    background-color: transparent;
+
+    > th {
+        border-top: none !important;
+        font-weight: 300;
+    }
+}
+
+// end layout styles ------------/

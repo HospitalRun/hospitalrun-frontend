@@ -1,5 +1,5 @@
 <div class="panel-group" id="patient-accordion">
-    <div class="panel">
+    <div class="panel detail-section">
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-demo">
@@ -8,13 +8,13 @@
             </h3>
         </div>
         <div id="patient-demo" class="panel-collapse collapse in">
-            <div class="panel-body">
+            <div class="panel-body detail-section-content detail-section-content">
                 {{#em-form model=this submit_button=false }}
                     <div class="row">
                         <div class="col-xs-12 col-sm-6">
                             <div class="form-group has-success">
                                 <label class="control-label0">Record Number</label>
-                                <div class="form-control">
+                                <div class="form-control not-editable">
                                     {{id}}
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
             </h3>
         </div>
         <div id="patient-diagnosis" class="panel-collapse collapse in">
-            <div class="panel-body">
+            <div class="panel-body detail-section-content">
                 <table class="table">
                     <tr class="table-header">
                         <th>Date</th>
@@ -104,7 +104,7 @@
             </h3>
         </div>
         <div id="patient-medication" class="panel-collapse collapse in">
-            <div class="panel-body">
+            <div class="panel-body detail-section-content">
                 <table class="table">
                     <tr class="table-header">
                         <th>Date</th>
@@ -149,7 +149,7 @@
             </h3>
         </div>
         <div id="patient-labs" class="panel-collapse collapse in">
-            <div class="panel-body">
+            <div class="panel-body detail-section-content">
                 <table class="table">
                     <tr class="table-header">
                         <th>Date Requested</th>
@@ -198,7 +198,7 @@
             </h3>
         </div>
         <div id="patient-imaging" class="panel-collapse collapse in">
-            <div class="panel-body">
+            <div class="panel-body detail-section-content">
                 <table class="table">
                     <tr class="table-header">
                         <th>Date Requested</th>
@@ -247,7 +247,7 @@
             </h3>
         </div>
         <div id="patient-visits" class="panel-collapse collapse in">
-            <div class="panel-body">
+            <div class="panel-body detail-section-content">
                 <table class="table" >
                     <tr class="table-header">
                         <th>Start Date</th>
@@ -292,7 +292,7 @@
             </h3>
         </div>
         <div id="patient-appointments" class="panel-collapse collapse in">
-            <div class="panel-body">
+            <div class="panel-body detail-section-content">
                 <table class="table">
                     <tr class="table-header">
                         <th>Date</th>
