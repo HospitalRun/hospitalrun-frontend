@@ -1,7 +1,8 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import FulfillRequest from "hospitalrun/mixins/fulfill-request";
+import InventoryId from "hospitalrun/mixins/inventory-id";
 import InventoryLocations from "hospitalrun/mixins/inventory-locations"; //inventory-locations mixin is needed for fulfill-request mixin!
-export default AbstractModuleRoute.extend(FulfillRequest, InventoryLocations, {
+export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, InventoryLocations, {
     addCapability: 'add_inventory_item',
     additionalModels: [{ 
         name: 'aisleLocationList',
@@ -85,11 +86,7 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryLocations, {
      * @return a generated id in base 36 so that its a shorter barcode.
      */
     generateId: function() {
-        var min = 1,
-            max = 999,
-            part1 = new Date().getTime(),
-            part2 = Math.floor(Math.random() * (max - min + 1)) + min;
-        return part1.toString(36) +'_' + part2.toString(36);
+        return this.generateInventoryId();
     },
     
     /**
