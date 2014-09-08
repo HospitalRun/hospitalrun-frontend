@@ -1,51 +1,60 @@
 <section class="view index">
 
-  <h1 class="view-title">What would you like to do?</h1>
+    <h1 class="view-title">What would you like to do?</h1>
 
-  <div class="splash-nav">
-
-      <div class="nav-category">
-        <header class="category-header">
-          <h2 class="primary-section">
-            <a href="#" class="primary-section-link">
-              <span class="mega-octicon octicon-package"></span>
-              Inventory
-            </a>
-          </h2>
-          <div class="panel-options">
-            <a href="#" class="hidden-link-list-trigger">
-              <span class="mega-octicon octicon-gear"></span>
-            </a>
-            <nav class="hidden-link-list">
-              <h4>More options</h4>
-              <a href="#" class="setting-link">Pin to Nav</a>
-              <a href="#" class="setting-link">Set as default view</a>
-            </nav>
-          </div>
-        </header>
-        <nav class="category-links">
-          <a href="#" class="sub-section-link">
-            Requests
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            Items
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            History
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            New Item
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            New request
-            <span class="octicon octicon-plus"></span>
-          </a>
-        </nav>
-      </div>
+    <div class="splash-nav">
+        {{#if userCan_inventory}}
+            <div class="nav-category">
+                <header class="category-header">
+                    <h2 class="primary-section">
+                        {{#link-to 'inventory' class="primary-section-link" }}
+                            <span class="mega-octicon octicon-package"></span>
+                            Inventory
+                        {{/link-to}}
+                    </h2>
+                    <div class="panel-options">
+                        <a href="#" class="hidden-link-list-trigger">
+                            <span class="mega-octicon octicon-gear"></span>
+                        </a>
+                        <nav class="hidden-link-list">
+                            <h4>More options</h4>
+                            <a href="#" class="setting-link">Pin to Nav</a>
+                            <a href="#" class="setting-link">Set as default view</a>
+                        </nav>
+                    </div>
+                </header>
+                <nav class="category-links">
+                    {{#if userCan_add_inventory_request}}            
+                        {{#link-to 'inventory.index' class="sub-section-link"}}
+                            Requests
+                            <span class="octicon octicon-chevron-right"></span>
+                        {{/link-to}}
+                    {{/if}}
+                    {{#if userCan_inventory}}
+                        {{#link-to 'inventory.listing' class="sub-section-link"}}
+                            Items
+                            <span class="octicon octicon-chevron-right"></span>
+                        {{/link-to}}
+                        {{#link-to 'inventory.completed' class="sub-section-link"}}
+                            History
+                            <span class="octicon octicon-chevron-right"></span>
+                        {{/link-to}}
+                    {{/if}}
+                    {{#if userCan_add_inventory_item}}
+                        {{#link-to 'inventory.edit' 'new' class="sub-section-link"}}
+                            New Item
+                            <span class="octicon octicon-plus"></span>
+                        {{/link-to}}
+                    {{/if}}
+                    {{#if userCan_add_inventory_request}}
+                        <a href="#" class="sub-section-link"  {{action 'newRequest'}}>
+                            New request
+                            <span class="octicon octicon-plus"></span>
+                        </a>
+                    {{/if}}
+                </nav>
+            </div>
+        {{/if}}
 
       <div class="nav-category">
         <header class="category-header">
