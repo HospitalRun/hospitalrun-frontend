@@ -4089,12 +4089,15 @@ a.list-group-item-danger {
   padding: 15px; }
 
 .panel-heading {
+  background-color: #e9f3ff;
+  color: #2e4359;
   padding: 10px 15px;
-  border-bottom: 1px solid transparent;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px; }
+  border-radius: 3px; }
   .panel-heading > .dropdown .dropdown-toggle {
     color: inherit; }
+  .panel-heading .btn {
+    position: relative;
+    top: -2px; }
 
 .panel-title {
   margin-top: 0;
@@ -4172,8 +4175,6 @@ a.list-group-item-danger {
       margin-top: 5px; }
   .panel-group .panel-heading {
     border-bottom: 0; }
-    .panel-group .panel-heading + .panel-collapse .panel-body {
-      border-top: 1px solid #ddd; }
   .panel-group .panel-footer {
     border-top: 0; }
     .panel-group .panel-footer + .panel-collapse .panel-body {
@@ -5511,6 +5512,8 @@ body {
   color: #2e4359;
   background-color: white;
   border: none; }
+  .panel-primary input, .panel-primary textarea, .panel-primary select {
+    background: rgba(219, 235, 255, 0.2); }
 
 .modal-dialog {
   color: #2e4359; }
@@ -5530,6 +5533,11 @@ body {
 h1.pull-left {
   font-weight: 300;
   letter-spacing: -1px; }
+
+.not-editable {
+  background-color: rgba(217, 217, 217, 0.5);
+  opacity: 0.5;
+  cursor: default; }
 
 .index .view-title {
   text-align: center;
@@ -5617,8 +5625,7 @@ h1.pull-left {
       font-size: 13px;
       margin: 4px 0; }
   .nav-category .category-links {
-    height: 254px;
-    overflow: scroll; }
+    height: 254px; }
   .nav-category .sub-section-link {
     display: block;
     background: #3A4D63;
@@ -5646,5 +5653,16 @@ h1.pull-left {
       color: #00bd9c; }
       .nav-category .sub-section-link:hover .octicon {
         color: #00bd9c; }
+
+.detail-section-content {
+  padding: 15px 0; }
+  .detail-section-content .table {
+    margin-top: -15px; }
+
+.table-header {
+  background-color: transparent; }
+  .table-header > th {
+    border-top: none !important;
+    font-weight: 300; }
 
 /*# sourceMappingURL=hospitalrun.css.map */
