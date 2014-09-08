@@ -11,5 +11,6 @@ export default {
         Ember.SimpleAuth.setup(container, application, {
             authorizer: CustomAuthorizer
         });
+        container.injection('adapter:user', 'session', 'ember-simple-auth:session:current');
     }    
 };

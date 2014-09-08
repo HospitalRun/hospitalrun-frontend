@@ -278,11 +278,19 @@ export default Ember.Mixin.create({
         return false;
     },
     
-    getUserName: function() {
+    /**
+     * Returns the display name of the user or the username if
+     * the display name is not set or if the username is explictly requested.
+     * @param {boolean} returnUserName if true, always return the username instead
+     * of the display name even if the display name is set.
+     */
+    getUserName: function(returnUserName) {
         var returnName,
             sessionVars = this._getUserSessionVars();
         if (!Ember.isEmpty(sessionVars)) {
-            if (!Ember.isEmpty(sessionVars.displayName)) {
+            if (returnUserName) {
+                returnName = sessionVars.name;
+            } else if (!Ember.isEmpty(sessionVars.displayName)) {
                 returnName = sessionVars.displayName;
             } else if (!Ember.isEmpty(sessionVars.name)) {
                 returnName = sessionVars.name;

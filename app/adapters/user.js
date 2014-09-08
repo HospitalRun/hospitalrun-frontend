@@ -1,4 +1,5 @@
-export default DS.RESTAdapter.extend({
+import UserSession from "hospitalrun/mixins/user-session";
+export default DS.RESTAdapter.extend(UserSession, {
     endpoint: '/db/_users/',
         
     defaultSerializer:  'couchdb',
@@ -59,9 +60,12 @@ export default DS.RESTAdapter.extend({
     @param {DS.Model} record
     @returns {Promise} promise
     */
-    deleteRecord: function(store, type, record) {        
-        var deleteURL = this._getItemUrl(record);
-        return this.ajax(deleteURL, 'DELETE');
+    deleteRecord: function(store, type, record) {
+        var ajaxData = {
+            data: record.getProperties('id', 'rev')
+        };
+        ajaxData.data.name = this.getUserName(true);
+        return this.ajax('/deleteuser', 'POST', ajaxData);
     },
     
     /**
@@ -80,8 +84,13 @@ export default DS.RESTAdapter.extend({
     @returns {Promise} promise
     */
     find: function(store, type, id) {
-        var findUrl = this.endpoint + id;
-        return this.ajax(findUrl, 'GET');
+        var ajaxData = {
+            data: {
+                id: id,
+                name: this.getUserName(true)
+            }
+        };
+        return this.ajax('/getuser', 'POST', ajaxData);
     },    
 
     /**
@@ -106,13 +115,24 @@ export default DS.RESTAdapter.extend({
         serializer.serializeIntoHash(data, type, record, { includeId: true });
         data = data.user;
         data.type = 'user';
+        var idToUpdate = data.id,
+            revToUpdate = data.rev;
         delete data.id;
         delete data.rev;
         data = this._cleanPasswordAttrs(data);
-        var putURL = this._getItemUrl(record);
-        return this.ajax(putURL, 'PUT', {
-            data: data
-        });
+        var ajaxData = {
+            data: {
+                data: data,
+                updateParams: {
+                    doc_name: idToUpdate
+                },
+                name: this.getUserName(true)
+            }
+        };
+        if (!Ember.isEmpty(revToUpdate)) {
+            ajaxData.data.updateParams.rev = revToUpdate;
+        }
+        return this.ajax('/updateuser', 'POST', ajaxData); 
     },
 
     /**
@@ -132,12 +152,11 @@ export default DS.RESTAdapter.extend({
     findAll: function() {
         var ajaxData = {
             data: {
-                include_docs: true,
-                startkey: '"org.couchdb.user"'
+                name: this.getUserName(true)
             }
         };
-        var allURL = this.endpoint+'_all_docs';
-        return this.ajax(allURL, 'GET', ajaxData);
+        var allURL = '/allusers';
+        return this.ajax(allURL, 'POST', ajaxData);
     },
     
     /**
