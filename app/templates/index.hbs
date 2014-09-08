@@ -46,7 +46,7 @@
                             <span class="octicon octicon-plus"></span>
                         {{/link-to}}
                     {{/if}}
-                    {{#if userCan_add_inventory_request}}
+                    {{#if userCan_NEEDS_IMPLEMENTATION}}
                         <a href="#" class="sub-section-link"  {{action 'newRequest'}}>
                             New request
                             <span class="octicon octicon-plus"></span>
@@ -55,225 +55,241 @@
                 </nav>
             </div>
         {{/if}}
-
-      <div class="nav-category">
-        <header class="category-header">
-          <h2 class="primary-section">
-            <a href="#" class="primary-section-link">
-              <span class="mega-octicon octicon-organization"></span>
-              Patients
-            </a>
-          </h2>
-          <div class="panel-options">
-            <a href="#" class="hidden-link-list-trigger">
-              <span class="mega-octicon octicon-gear"></span>
-            </a>
-            <nav class="hidden-link-list">
-              <h4>More options</h4>
-              <a href="#" class="setting-link">Pin to Nav</a>
-              <a href="#" class="setting-link">Set as default view</a>
-            </nav>
-          </div>
-        </header>
-        <nav class="category-links">
-          <a href="#" class="sub-section-link">
-            Patient listing
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            Assessments
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            Visits
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            Proceedures
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            New patient
-            <span class="octicon octicon-plus"></span>
-          </a>
-        </nav>
-      </div>
-
-      <div class="nav-category">
-        <header class="category-header">
-          <h2 class="primary-section">
-            <a href="#" class="primary-section-link">
-              <span class="mega-octicon octicon-calendar"></span>
-              Appointments
-            </a>
-          </h2>
-          <div class="panel-options">
-            <a href="#" class="hidden-link-list-trigger">
-              <span class="mega-octicon octicon-gear"></span>
-            </a>
-            <nav class="hidden-link-list">
-              <h4>More options</h4>
-              <a href="#" class="setting-link">Pin to Nav</a>
-              <a href="#" class="setting-link">Set as default view</a>
-            </nav>
-          </div>
-        </header>
-        <nav class="category-links">
-          <a href="#" class="sub-section-link">
-            This week
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            Today
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            Search
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            New appointment
-            <span class="octicon octicon-plus"></span>
-          </a>
-        </nav>
-      </div>
-
-      <div class="nav-category">
-        <header class="category-header">
-          <h2 class="primary-section">
-            <a href="#" class="primary-section-link">
-              <span class="mega-octicon octicon-microscope"></span>
-              Labs
-            </a>
-          </h2>
-          <div class="panel-options">
-            <a href="#" class="hidden-link-list-trigger">
-              <span class="mega-octicon octicon-gear"></span>
-            </a>
-            <nav class="hidden-link-list">
-              <h4>More options</h4>
-              <a href="#" class="setting-link">Pin to Nav</a>
-              <a href="#" class="setting-link">Set as default view</a>
-            </nav>
-          </div>
-        </header>
-        <nav class="category-links">
-          <a href="#" class="sub-section-link">
-            Requests
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            Completed
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            New lab
-            <span class="octicon octicon-plus"></span>
-          </a>
-        </nav>
-      </div>
-
-      <div class="nav-category">
-        <header class="category-header">
-          <h2 class="primary-section">
-            <a href="#" class="primary-section-link">
-              <span class="mega-octicon octicon-device-camera"></span>
-              Imaging
-            </a>
-          </h2>
-          <div class="panel-options">
-            <a href="#" class="hidden-link-list-trigger">
-              <span class="mega-octicon octicon-gear"></span>
-            </a>
-            <nav class="hidden-link-list">
-              <h4>More options</h4>
-              <a href="#" class="setting-link">Pin to Nav</a>
-              <a href="#" class="setting-link">Set as default view</a>
-            </nav>
-          </div>
-        </header>
-        <nav class="category-links">
-          <a href="#" class="sub-section-link">
-            Requests
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            Completed
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            New imaging
-            <span class="octicon octicon-plus"></span>
-          </a>
-        </nav>
-      </div>
-
-      <div class="nav-category">
-        <header class="category-header">
-          <h2 class="primary-section">
-            <a href="#" class="primary-section-link">
-              <span class="mega-octicon octicon-file-text"></span>
-              Medication
-            </a>
-          </h2>
-          <div class="panel-options">
-            <a href="#" class="hidden-link-list-trigger">
-              <span class="mega-octicon octicon-gear"></span>
-            </a>
-            <nav class="hidden-link-list">
-              <h4>More options</h4>
-              <a href="#" class="setting-link">Pin to Nav</a>
-              <a href="#" class="setting-link">Set as default view</a>
-            </nav>
-          </div>
-        </header>
-        <nav class="category-links">
-          <a href="#" class="sub-section-link">
-            Requests
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            Completed
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            New request
-            <span class="octicon octicon-plus"></span>
-          </a>
-        </nav>
-      </div>
-
-      <div class="nav-category">
-        <header class="category-header">
-          <h2 class="primary-section">
-            <a href="#" class="primary-section-link">
-              <span class="mega-octicon octicon-person"></span>
-              Users
-            </a>
-          </h2>
-          <div class="panel-options">
-            <a href="#" class="hidden-link-list-trigger">
-              <span class="mega-octicon octicon-gear"></span>
-            </a>
-            <nav class="hidden-link-list">
-              <h4>More options</h4>
-              <a href="#" class="setting-link">Pin to Nav</a>
-              <a href="#" class="setting-link">Set as default view</a>
-            </nav>
-          </div>
-        </header>
-        <nav class="category-links">
-          <a href="#" class="sub-section-link">
-            User listing
-            <span class="octicon octicon-chevron-right"></span>
-          </a>
-          <a href="#" class="sub-section-link">
-            New user
-            <span class="octicon octicon-plus"></span>
-          </a>
-        </nav>
-      </div>
-
-  </div>
-
+        {{#if userCan_patients}}
+            <div class="nav-category">
+                <header class="category-header">
+                    <h2 class="primary-section">
+                        {{#link-to 'patients' class="primary-section-link" }}
+                            <span class="mega-octicon octicon-organization"></span>
+                            Patients
+                        {{/link-to}}
+                    </h2>
+                    <div class="panel-options">
+                        <a href="#" class="hidden-link-list-trigger">
+                            <span class="mega-octicon octicon-gear"></span>
+                        </a>
+                        <nav class="hidden-link-list">
+                            <h4>More options</h4>
+                            <a href="#" class="setting-link">Pin to Nav</a>
+                            <a href="#" class="setting-link">Set as default view</a>
+                        </nav>
+                    </div>
+                </header>
+                <nav class="category-links">
+                    {{#link-to 'patients' class="sub-section-link" }}
+                        Patient listing
+                        <span class="octicon octicon-chevron-right"></span>
+                    {{/link-to}}
+                    {{#if userCan_patients_NEEDS_IMPLEMENTATION}}  
+                        <a href="#" class="sub-section-link">
+                            Assessments
+                        <span class="octicon octicon-chevron-right"></span>
+                        </a>
+                        <a href="#" class="sub-section-link">
+                            Visits
+                            <span class="octicon octicon-chevron-right"></span>
+                        </a>
+                        <a href="#" class="sub-section-link">
+                                Proceedures
+                            <span class="octicon octicon-chevron-right"></span>
+                        </a>
+                        <a href="#" class="sub-section-link">
+                            New patient
+                            <span class="octicon octicon-plus"></span>
+                        </a>
+                    {{/if}}
+                </nav>
+            </div>
+        {{/if}}
+        {{#if userCan_appointments}}
+            <div class="nav-category">
+                <header class="category-header">
+                    <h2 class="primary-section">
+                        {{#link-to 'appointments.index' class="primary-section-link"}}
+                            <span class="mega-octicon octicon-calendar"></span>
+                            Appointments
+                        {{/link-to}}
+                    </h2>
+                    <div class="panel-options">
+                        <a href="#" class="hidden-link-list-trigger">
+                            <span class="mega-octicon octicon-gear"></span>
+                        </a>
+                        <nav class="hidden-link-list">
+                            <h4>More options</h4>
+                            <a href="#" class="setting-link">Pin to Nav</a>
+                            <a href="#" class="setting-link">Set as default view</a>
+                        </nav>
+                    </div>
+                </header>
+                <nav class="category-links">
+                    {{#link-to 'appointments.index' class="sub-section-link"}}
+                        This week
+                        <span class="octicon octicon-chevron-right"></span>
+                    {{/link-to}}
+                    {{#link-to 'appointments.today' class="sub-section-link"}}
+                        Today
+                        <span class="octicon octicon-chevron-right"></span>
+                    {{/link-to}}
+                    {{#link-to 'appointments.search' class="sub-section-link"}}
+                        Search
+                        <span class="octicon octicon-chevron-right"></span>
+                    {{/link-to}}
+                    {{#if userCan_NEEDS_IMPLEMENTATION}}
+                        <a href="#" class="sub-section-link">
+                            New appointment
+                            <span class="octicon octicon-plus"></span>
+                        </a>
+                    {{/if}}
+                </nav>
+            </div>
+        {{/if}}
+        {{#if userCan_labs}}
+            <div class="nav-category">
+                <header class="category-header">
+                    <h2 class="primary-section">
+                        {{#link-to 'labs.index' class="primary-section-link"}}
+                            <span class="mega-octicon octicon-microscope"></span>
+                            Labs
+                        {{/link-to}}
+                    </h2>
+                    <div class="panel-options">
+                        <a href="#" class="hidden-link-list-trigger">
+                            <span class="mega-octicon octicon-gear"></span>
+                        </a>
+                        <nav class="hidden-link-list">
+                            <h4>More options</h4>
+                            <a href="#" class="setting-link">Pin to Nav</a>
+                            <a href="#" class="setting-link">Set as default view</a>
+                        </nav>
+                    </div>
+                </header>
+                <nav class="category-links">
+                    {{#link-to 'labs.index' class="sub-section-link"}}
+                        Requests
+                        <span class="octicon octicon-chevron-right"></span>
+                    {{/link-to}}
+                    {{#link-to 'labs.completed' class="sub-section-link"}}
+                        Completed
+                        <span class="octicon octicon-chevron-right"></span>
+                    {{/link-to}}
+                    {{#if userCan_NEEDS_IMPLEMENTATION}}
+                        <a href="#" class="sub-section-link">
+                            New lab
+                            <span class="octicon octicon-plus"></span>
+                        </a>
+                    {{/if}}
+                </nav>
+            </div>
+        {{/if}}
+        {{#if userCan_imaging}}
+            <div class="nav-category">
+                <header class="category-header">
+                    <h2 class="primary-section">
+                        {{#link-to 'imaging.index' class="primary-section-link"}}
+                            <span class="mega-octicon octicon-device-camera"></span>
+                            Imaging
+                        {{/link-to}}
+                    </h2>
+                    <div class="panel-options">
+                        <a href="#" class="hidden-link-list-trigger">
+                            <span class="mega-octicon octicon-gear"></span>
+                        </a>
+                        <nav class="hidden-link-list">
+                            <h4>More options</h4>
+                            <a href="#" class="setting-link">Pin to Nav</a>
+                            <a href="#" class="setting-link">Set as default view</a>
+                        </nav>
+                    </div>
+                </header>
+                <nav class="category-links">
+                    {{#link-to 'imaging.index' class="sub-section-link"}}
+                        Requests
+                        <span class="octicon octicon-chevron-right"></span>
+                    {{/link-to}}
+                    {{#link-to 'imaging.completed' class="sub-section-link"}}
+                        Completed
+                        <span class="octicon octicon-chevron-right"></span>
+                    {{/link-to}}
+                    {{#if userCan_NEEDS_IMPLEMENTATION}}
+                        <a href="#" class="sub-section-link">
+                            New imaging
+                            <span class="octicon octicon-plus"></span>
+                        </a>
+                    {{/if}}
+                </nav>
+            </div>
+        {{/if}}
+        {{#if userCan_imaging}}
+            <div class="nav-category">
+                <header class="category-header">
+                    <h2 class="primary-section">
+                        {{#link-to 'medication.index' class="primary-section-link"}}
+                            <span class="mega-octicon octicon-file-text"></span>
+                            Medication
+                        {{/link-to}}
+                    </h2>
+                    <div class="panel-options">
+                        <a href="#" class="hidden-link-list-trigger">
+                            <span class="mega-octicon octicon-gear"></span>
+                        </a>
+                        <nav class="hidden-link-list">
+                            <h4>More options</h4>
+                            <a href="#" class="setting-link">Pin to Nav</a>
+                            <a href="#" class="setting-link">Set as default view</a>
+                        </nav>
+                    </div>
+                </header>
+                <nav class="category-links">
+                    {{#link-to 'medication.index' class="sub-section-link"}}
+                        Requests
+                        <span class="octicon octicon-chevron-right"></span>
+                    {{/link-to}}
+                    {{#link-to 'medication.completed' class="sub-section-link"}}
+                        Completed
+                        <span class="octicon octicon-chevron-right"></span>
+                    {{/link-to}}
+                    {{#if userCan_NEEDS_IMPLEMENTATION}}
+                        <a href="#" class="sub-section-link">
+                            New request
+                            <span class="octicon octicon-plus"></span>
+                        </a>
+                    {{/if}}
+                </nav>
+            </div>
+        {{/if}}
+        {{#if userCan_users}}
+            <div class="nav-category">
+                <header class="category-header">
+                    <h2 class="primary-section">
+                        {{#link-to 'users.index' class="primary-section-link"}}
+                            <span class="mega-octicon octicon-person"></span>
+                            Users
+                        {{/link-to}}
+                    </h2>
+                    <div class="panel-options">
+                        <a href="#" class="hidden-link-list-trigger">
+                            <span class="mega-octicon octicon-gear"></span>
+                        </a>
+                        <nav class="hidden-link-list">
+                            <h4>More options</h4>
+                            <a href="#" class="setting-link">Pin to Nav</a>
+                            <a href="#" class="setting-link">Set as default view</a>
+                        </nav>
+                    </div>
+                </header>
+                <nav class="category-links">
+                    {{#link-to 'users.index' class="sub-section-link"}}
+                        User listing
+                        <span class="octicon octicon-chevron-right"></span>
+                    {{/link-to}}
+                    {{#if userCan_NEEDS_IMPLEMENTATION}}
+                        <a href="#" class="sub-section-link">
+                            New user
+                            <span class="octicon octicon-plus"></span>
+                        </a>
+                    {{/if}}
+                </nav>
+            </div>
+        {{/if}}
+    </div>
 </section>
