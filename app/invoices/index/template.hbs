@@ -17,8 +17,8 @@
                     <td>{{publishStatus}}</td>
                     <td>{{createDate}}</td>
                     <td>
-                        <button class="btn btn-default" {{action 'editItem' this}}>Edit</button>
-                        <button class="btn btn-default" {{action 'deleteItem' this}}>Delete</button>
+                        <button class="btn btn-default" {{action 'editItem' this bubbles=false }}>Edit</button>
+                        <button class="btn btn-default" {{action 'deleteItem' this bubbles=false }}>Delete</button>
                     </td>        
                 </tr>
             {{/unless}}

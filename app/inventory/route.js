@@ -81,13 +81,7 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
 
     },
     
-    /**
-     * Calculate a new id based on time stamp and randomized number
-     * @return a generated id in base 36 so that its a shorter barcode.
-     */
-    generateId: function() {
-        return this.generateInventoryId();
-    },
+
     
     /**
      * Define what data a new inventory item should be instantiated with.  

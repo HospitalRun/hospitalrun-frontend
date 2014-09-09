@@ -3,7 +3,11 @@ export default Ember.Mixin.create({
      * Calculate a new id based on time stamp and randomized number
      * @return a generated id in base 36 so that its a shorter barcode.
      */
-    generateInventoryId: function() {
+        /**
+     * Calculate a new id based on time stamp and randomized number
+     * @return a generated id in base 36 so that its a shorter barcode.
+     */
+    generateId: function() {
         var min = 1,
             max = 999,
             part1 = new Date().getTime(),

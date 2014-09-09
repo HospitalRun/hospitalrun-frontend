@@ -21,10 +21,10 @@
                     {{#if parentController.showActions}}
                         <td>
                             {{#if parentController.canAdd}}
-                                <button class="btn btn-default neutral" {{action 'editItem' this}}>Edit</button>
+                                <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
                             {{/if}}
                             {{#if parentController.canDelete}}
-                                <button class="btn btn-default warning" {{action 'deleteItem' this}}><span class="octicon octicon-x"></span> Delete</button>
+                                <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                             {{/if}}
                         </td>
                     {{/if}}

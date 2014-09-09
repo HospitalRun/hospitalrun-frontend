@@ -23,13 +23,13 @@ export default AbstractEditController.extend(UserRoles, {
             
             if (Ember.isEmpty(this.get('userPrefix'))) {
                 var counter = 1,
-                    prefix = updateModel.get('name').toLowerCase().substr(0,3),
-                    userPrefix = prefix,
+                    prefix = 'p',
+                    userPrefix = prefix + 0,
                     usedPrefix = users.findBy('userPrefix', prefix);
                 
                 while (!Ember.isEmpty(usedPrefix)) {
                     prefix = userPrefix + counter++;
-                    usedPrefix =users.findBy('userPrefix', prefix);
+                    usedPrefix = users.findBy('userPrefix', prefix);
                 }
                 this.set('userPrefix', prefix);                
             }            

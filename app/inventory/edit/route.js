@@ -1,7 +1,8 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import InventoryId from "hospitalrun/mixins/inventory-id";
 export default AbstractEditRoute.extend(InventoryId, {
-    editTitle: 'Edit Item',    
+    editTitle: 'Edit Item',
+    modelName: 'inventory',
     newTitle: 'New Item',
     
     actions: {        
@@ -26,15 +27,9 @@ export default AbstractEditRoute.extend(InventoryId, {
         }                        
     },
     
-    model: function(params) {
-        if (params.inventory_id === 'new') {
-            var data = {
-                id: this.generateInventoryId(),
-                type: 'Asset'
-            };
-            return this.get('store').createRecord('inventory', data);    
-        } else {
-            return this._super(params);
-        }
+    getNewData: function() {
+        return {
+            type: 'Asset'
+        };
     }
 });

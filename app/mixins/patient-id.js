@@ -1,18 +1,4 @@
-import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
-export default AbstractModuleRoute.extend({
-    addCapability: 'add_patient',
-    additionalModels: [{ 
-        name: 'clinicList',
-        findArgs: ['lookup','clinic_list']
-    },  {
-        name: 'countryList',
-        findArgs: ['lookup','country_list']
-    }],
-    modelName: 'patient',
-    moduleName: 'patients',
-    newButtonText: '+ new patient',
-    sectionTitle: 'Patients',
-    
+export default Ember.Mixin.create({
     _createId: function(idPrefix, patientSequence) {
         var newId;
         if (patientSequence < 100000) {
@@ -23,10 +9,6 @@ export default AbstractModuleRoute.extend({
         return newId;
     },
     
-    afterModel: function() {
-        this.set('configs', this.modelFor('application'));
-    },
-    
     /**
      * Override this function to generate an id for a new record
      * @return a generated id;default is null which means that an
@@ -34,7 +16,7 @@ export default AbstractModuleRoute.extend({
      */
     generateId: function() {
         var existingRecord = true,
-            configs = this.get('configs'),
+            configs = this.modelFor('application'),
             sessionVars = this.get('session').store.restore(),
             idPrefix = sessionVars.prefix+'_',
             newId,
@@ -57,6 +39,5 @@ export default AbstractModuleRoute.extend({
         patientSequenceRecord.set('value', patientSequence);
         patientSequenceRecord.save();
         return newId;
-    },
-
+    }
 });

@@ -12,7 +12,7 @@
         </tr>
         {{#with showActions as showActions}}
             {{#each}}
-                <tr>
+                <tr {{action 'editItem' this}}>
                     <td>{{date-format prescriptionDate}}</td>
                     <td>{{patient.displayName}}</td>
                     <td>{{inventoryItem.name}}</td>
@@ -20,7 +20,7 @@
                     <td>{{status}}</td>
                     {{#if showActions}}
                         <td>
-                            <button class="btn btn-default" {{action 'editItem' this}}>Fulfill</button>
+                            <button class="btn btn-default" {{action 'editItem' this bubbles=false }}>Fulfill</button>
                         </td>
                     {{/if}}
                 </tr>

@@ -46,11 +46,11 @@
                             <span class="octicon octicon-plus"></span>
                         {{/link-to}}
                     {{/if}}
-                    {{#if userCan_NEEDS_IMPLEMENTATION}}
-                        <a href="#" class="sub-section-link"  {{action 'newRequest'}}>
+                    {{#if userCan_add_inventory_request}}
+                        {{#link-to 'inventory.request' 'new' class="sub-section-link"}}
                             New request
                             <span class="octicon octicon-plus"></span>
-                        </a>
+                        {{/link-to}}
                     {{/if}}
                 </nav>
             </div>
@@ -80,23 +80,11 @@
                         Patient listing
                         <span class="octicon octicon-chevron-right"></span>
                     {{/link-to}}
-                    {{#if userCan_patients_NEEDS_IMPLEMENTATION}}  
-                        <a href="#" class="sub-section-link">
-                            Assessments
-                        <span class="octicon octicon-chevron-right"></span>
-                        </a>
-                        <a href="#" class="sub-section-link">
-                            Visits
-                            <span class="octicon octicon-chevron-right"></span>
-                        </a>
-                        <a href="#" class="sub-section-link">
-                                Proceedures
-                            <span class="octicon octicon-chevron-right"></span>
-                        </a>
-                        <a href="#" class="sub-section-link">
+                    {{#if userCan_add_patient}}
+                        {{#link-to 'patients.edit' 'new' class="sub-section-link"}}
                             New patient
                             <span class="octicon octicon-plus"></span>
-                        </a>
+                        {{/link-to}}
                     {{/if}}
                 </nav>
             </div>
@@ -134,11 +122,11 @@
                         Search
                         <span class="octicon octicon-chevron-right"></span>
                     {{/link-to}}
-                    {{#if userCan_NEEDS_IMPLEMENTATION}}
-                        <a href="#" class="sub-section-link">
+                    {{#if userCan_add_appointment}}
+                        {{#link-to 'appointments.edit' 'new' class="sub-section-link"}}
                             New appointment
                             <span class="octicon octicon-plus"></span>
-                        </a>
+                        {{/link-to}}
                     {{/if}}
                 </nav>
             </div>
@@ -172,11 +160,11 @@
                         Completed
                         <span class="octicon octicon-chevron-right"></span>
                     {{/link-to}}
-                    {{#if userCan_NEEDS_IMPLEMENTATION}}
-                        <a href="#" class="sub-section-link">
+                    {{#if userCan_add_lab}}
+                        {{#link-to 'labs.edit' 'new' class="sub-section-link"}}
                             New lab
                             <span class="octicon octicon-plus"></span>
-                        </a>
+                        {{/link-to}}
                     {{/if}}
                 </nav>
             </div>
@@ -210,16 +198,16 @@
                         Completed
                         <span class="octicon octicon-chevron-right"></span>
                     {{/link-to}}
-                    {{#if userCan_NEEDS_IMPLEMENTATION}}
-                        <a href="#" class="sub-section-link">
+                    {{#if userCan_add_imaging}}
+                        {{#link-to 'imaging.edit' 'new' class="sub-section-link"}}
                             New imaging
                             <span class="octicon octicon-plus"></span>
-                        </a>
+                        {{/link-to}}
                     {{/if}}
                 </nav>
             </div>
         {{/if}}
-        {{#if userCan_imaging}}
+        {{#if userCan_medication}}
             <div class="nav-category">
                 <header class="category-header">
                     <h2 class="primary-section">
@@ -248,11 +236,11 @@
                         Completed
                         <span class="octicon octicon-chevron-right"></span>
                     {{/link-to}}
-                    {{#if userCan_NEEDS_IMPLEMENTATION}}
-                        <a href="#" class="sub-section-link">
+                    {{#if userCan_add_medication}}
+                        {{#link-to 'medication.edit' 'new' class="sub-section-link"}}
                             New request
                             <span class="octicon octicon-plus"></span>
-                        </a>
+                        {{/link-to}}
                     {{/if}}
                 </nav>
             </div>
@@ -282,11 +270,11 @@
                         User listing
                         <span class="octicon octicon-chevron-right"></span>
                     {{/link-to}}
-                    {{#if userCan_NEEDS_IMPLEMENTATION}}
-                        <a href="#" class="sub-section-link">
+                    {{#if userCan_add_user}}
+                        {{#link-to 'users.edit' 'new' class="sub-section-link"}}
                             New user
                             <span class="octicon octicon-plus"></span>
-                        </a>
+                        {{/link-to}}
                     {{/if}}
                 </nav>
             </div>
