@@ -2,7 +2,7 @@ export default Ember.Mixin.create({
     defaultCapabilities: {
         appointments: [
             'Data Entry',
-            'Hospital Manager',
+            'Hospital Administrator',
             'Medical Records Officer',
             'Patient Administration', 
             'Social Worker', 
@@ -202,7 +202,7 @@ export default Ember.Mixin.create({
         imaging: [
             'Data Entry',
             'Doctor', 
-            'Hospital Manager',
+            'Hospital Administrator',
             'Imaging Technician', 
             'Medical Records Officer',
             'System Administrator'
@@ -210,7 +210,7 @@ export default Ember.Mixin.create({
         labs: [
             'Data Entry',
             'Doctor', 
-            'Hospital Manager',
+            'Hospital Administrator',
             'Lab Technician',
             'Medical Records Officer',
             'System Administrator'
@@ -218,14 +218,14 @@ export default Ember.Mixin.create({
         medication: [
             'Data Entry',
             'Doctor', 
-            'Hospital Manager',
+            'Hospital Administrator',
             'Medical Records Officer',
             'Pharmacist', 
             'System Administrator'
         ],
         inventory: [
             'Data Entry',
-            'Hospital Manager',
+            'Hospital Administrator',
             'Inventory Manager',
             'Medical Records Officer',
             'Nurse Manager', 
@@ -235,7 +235,7 @@ export default Ember.Mixin.create({
         patients: [
             'Data Entry',
             'Doctor', 
-            'Hospital Manager',
+            'Hospital Administrator',
             'Medical Records Officer',
             'Nurse', 
             'Nurse Manager', 
@@ -246,7 +246,7 @@ export default Ember.Mixin.create({
         visits: [
             'Data Entry',
             'Doctor', 
-            'Hospital Manager',
+            'Hospital Administrator',
             'Medical Records Officer',
             'Nurse Manager', 
             'Nurse',  
