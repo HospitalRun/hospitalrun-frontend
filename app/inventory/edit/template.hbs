@@ -54,7 +54,7 @@
             <h3>
                 Purchases 
                 {{#if canAddPurchase}}
-                    <button class="btn btn-primary" {{action "showAddPurchase" this}}>Add Purchase</button>
+                    <button class="btn btn-primary align-right" {{action "showAddPurchase" this}}><span class="octicon octicon-plus"></span> Add Purchase</button>
                 {{/if}}
             </h3>
             <table class="table">
@@ -84,10 +84,10 @@
                                 <strong>Expired</strong>
                             {{else}}
                                 {{#if canEdit}}
-                                    <button class="btn btn-primary" {{action "showEditPurchase" this}}>Edit Purchase</button>
+                                    <button class="btn btn-default neutral" {{action "showEditPurchase" this}}>Edit Purchase</button>
                                 {{/if}}
                                 {{#if canDelete}}
-                                    <button class="btn btn-default" {{action "showDeletePurchase" this}}>Delete</button>
+                                    <button class="btn btn-default warning" {{action "showDeletePurchase" this}}><span class="octicon octicon-x"></span> Delete</button>
                                 {{/if}}
                             {{/if}}
                         </td>
@@ -115,8 +115,8 @@
                         <td>{{quantity}}</td>
                         {{#if parentController.canAdjustLocation}}
                             <td>
-                                <button class="btn btn-primary" {{action "showAdjustment" this}}>Adjust</button>
-                                <button class="btn btn-primary" {{action "showTransfer" this}}>Transfer</button>
+                                <button class="btn btn-primary neutral" {{action "showAdjustment" this}}>Adjust</button>
+                                <button class="btn btn-primary neutral" {{action "showTransfer" this}}>Transfer</button>
                             </td>
                         {{/if}}
                     </tr>

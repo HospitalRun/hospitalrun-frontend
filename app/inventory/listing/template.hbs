@@ -25,12 +25,12 @@
                             <button class="btn btn-default" {{action 'showAddPurchase' this bubbles=false }}>Add</button>
                         {{/if}}
                         {{#if canEdit}}
-                            <button class="btn btn-default" {{action 'editItem' this bubbles=false }}>Edit</button>
+                            <button class="btn btn-default neutral" {{action 'editItem' this bubbles=false }}>Edit</button>
                         {{/if}}
                         {{#if canDelete}}
-                            <button class="btn btn-default" {{action 'deleteItem' this bubbles=false }}>Delete</button>                        
+                            <button class="btn btn-default warning" {{action 'deleteItem' this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
                         {{/if}}
-                        {{#link-to 'inventory.barcode' this class="btn btn-default" bubbles=false }}Barcode{{/link-to}}
+                        {{#link-to 'inventory.barcode' this class="btn btn-default neutral" bubbles=false }}Barcode{{/link-to}}
                     </td>
                 </tr>
             {{/unless}}

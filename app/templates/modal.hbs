@@ -9,8 +9,8 @@
                 {{yield}}
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" {{action updateButtonAction}} {{bind-attr disabled=isUpdateDisabled }}>{{ updateButtonText }}</button>
-                <button class="btn btn-default" {{action "cancel"}}>Cancel</button>
+                <button class="btn btn-primary on-white" {{action updateButtonAction}} {{bind-attr disabled=isUpdateDisabled }}>{{ updateButtonText }}</button>
+                <button class="btn btn-default warning" {{action "cancel"}}>Cancel</button>
             </div>
         </div>
     </div>
