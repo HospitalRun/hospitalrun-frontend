@@ -4,9 +4,9 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
         this.get('model').validate();
     }.observes('diagnosisId'),
     
-    needs: 'patients/edit',
+    needs: 'visits/edit',
     
-    editController: Ember.computed.alias('controllers.patients/edit'),    
+    editController: Ember.computed.alias('controllers.visits/edit'),    
     title: 'Add Diagnosis',
     updateButtonText: 'Add',
     updateButtonAction: 'add',

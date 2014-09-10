@@ -1,4 +1,5 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import AddDiagnosisModel from 'hospitalrun/models/add-diagnosis';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from "hospitalrun/mixins/user-session";
 import VisitTypes from 'hospitalrun/mixins/visit-types';
@@ -17,6 +18,10 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
     canAddMedication: function() {        
         return this.currentUserCan('add_medication');
     }.property(),
+    
+    canAddDiagnosis: function() {        
+        return this.currentUserCan('add_diagnosis');
+    }.property(),    
 
     canAddProcedure: function() {        
         return this.currentUserCan('add_procedure');
@@ -24,7 +29,11 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
     
     canAddVitals: function() {        
         return this.currentUserCan('add_vitals');
-    }.property(),    
+    }.property(),
+    
+    canDeleteDiagnosis: function() {        
+        return this.currentUserCan('delete_diagnosis');
+    }.property(),
     
     canDeleteImaging: function() {
         return this.currentUserCan('delete_imaging');
@@ -68,6 +77,10 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
     newVisit: false,
 
     updateCapability: 'add_visit',
+
+    primaryDiagnosisIdChanged: function() {
+        this.get('model').validate();
+    }.observes('primaryDiagnosisId'),
 
     afterUpdate: function(visit) {
         if (this.get('newVisit')) {
@@ -113,6 +126,24 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
     },
     
     actions: {
+        addDiagnosis: function(newDiagnosis) {
+            var additionalDiagnoses = this.get('additionalDiagnoses');
+            if (!Ember.isArray(additionalDiagnoses)) {
+                additionalDiagnoses = [];
+            }
+            additionalDiagnoses.addObject(newDiagnosis);
+            this.set('additionalDiagnoses', additionalDiagnoses);
+            this.send('update', true);
+            this.send('closeModal');
+        },
+        
+        deleteDiagnosis: function(diagnosis) {
+            var additionalDiagnoses = this.get('additionalDiagnoses');
+            additionalDiagnoses.removeObject(diagnosis);
+            this.set('additionalDiagnoses', additionalDiagnoses);
+            this.send('update', true);
+        },        
+        
         addProcedure: function(newProcedure) {
             this.updateList('procedures', newProcedure);
         },
@@ -195,6 +226,10 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
                 returnToVisit: true
             });            
             this.transitionToRoute('medication.edit', newMedication);
+        },
+        
+        showAddDiagnosis: function() {
+            this.send('openModal', 'patients.add-diagnosis', AddDiagnosisModel.create());
         },
         
         showAddProcedure: function() {

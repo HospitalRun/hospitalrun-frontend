@@ -3,7 +3,7 @@
  */
 import DiagnosisValidation from "hospitalrun/utils/diagnosis-validation";
 
-export default Ember.Object.extend(Ember.Validations.Mixin, DiagnosisValidation, {
+export default Ember.Object.extend(Ember.Validations.Mixin, {
     diagnosis: null,
     diagnosisId: null,
     validations: {

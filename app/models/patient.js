@@ -1,9 +1,7 @@
 import AbstractModel from "hospitalrun/models/abstract";
-import DiagnosisValidation from "hospitalrun/utils/diagnosis-validation";
 import EmailValidation from "hospitalrun/utils/email-validation";
 
-export default AbstractModel.extend(DiagnosisValidation, {
-    additionalDiagnoses: DS.attr(), //Yes, the plural of diagnosis is diagnoses!
+export default AbstractModel.extend({
     address: DS.attr(),
     appointments: DS.hasMany('appointment', {async: true}),
     bloodType: DS.attr('string'),
@@ -50,9 +48,7 @@ export default AbstractModel.extend(DiagnosisValidation, {
         },
         lastName: {
             presence: true
-        },
-        
-        primaryDiagnosis: DiagnosisValidation.diagnosisValidation
+        }
     }
 
 });

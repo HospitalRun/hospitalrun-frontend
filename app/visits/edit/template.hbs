@@ -38,9 +38,51 @@
                             selection=clinic
                         }}
                     </div>
+                    <div class="row">
+                        <div class="form-group col-xs-12">
+                            {{icd10-typeahead property="primaryDiagnosis" label="Primary Diagnosis" selection=primaryDiagnosisId }}
+                            {{em-text label="Patient History" property="history" rows=3 }}
+                        </div>
+                    </div>
                     {{em-text label="History since last seen" property="history" rows=3 }}
                     {{em-text label="Notes" property="notes" rows=3 }}
                 {{/em-form}}
+            </div>
+        </div>
+    </div>
+        <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-diagnosis">
+                    Additional Diagnoses
+                    {{#if canAddDiagnosis}}
+                        <button class="btn btn-primary align-right" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> New Diagnosis</button>
+                    {{/if}}
+                </a>
+            </h3>
+        </div>
+        <div id="patient-diagnosis" class="panel-collapse collapse in">
+            <div class="panel-body detail-section-content">
+                <table class="table">
+                    <tr class="table-header">
+                        <th>Date</th>
+                        <th>Diagnosis</th>
+                        <th>Delete</th>
+                    </tr>
+                    {{#with canDeleteDiagnosis as canDeleteDiagnosis}}
+                        {{#each additionalDiagnoses}}
+                        <tr>
+                            <td>{{date-format date}}</td>
+                            <td>{{description}}</td>
+                            <td>
+                                {{#if canDeleteDiagnosis}}
+                                    <button class="btn btn-default warning" {{action "deleteDiagnosis" this}}><span class="octicon octicon-x"></span> Delete</button>
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    {{/with}}
+                </table>
             </div>
         </div>
     </div>

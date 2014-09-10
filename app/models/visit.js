@@ -1,6 +1,8 @@
 import AbstractModel from "hospitalrun/models/abstract";
+import DiagnosisValidation from "hospitalrun/utils/diagnosis-validation";
 
 export default AbstractModel.extend({
+    additionalDiagnoses: DS.attr(), //Yes, the plural of diagnosis is diagnoses!
     clinic: DS.attr('string'),
     endDate:  DS.attr('date'),  //if visit type is outpatient, startDate and endDate are equal 
     examiner: DS.attr('string'),
@@ -11,6 +13,8 @@ export default AbstractModel.extend({
     medication: DS.hasMany('medication', {async: true}),
     notes: DS.attr('string'),
     patient: DS.belongsTo('patient'),
+    primaryDiagnosis: DS.attr('string'),
+    primaryDiagnosisId: DS.attr('string'),
     procedures: DS.hasMany('procedure', {async: true}),
     startDate:  DS.attr('date'),
     visitType: DS.attr(),        
@@ -31,6 +35,11 @@ export default AbstractModel.extend({
             presence: true
         },
         visitType: {
+            presence: true
+        },
+        
+        primaryDiagnosis: {
+            acceptance: DiagnosisValidation.diagnosisValidation.acceptance,
             presence: true
         }
     }
