@@ -96,11 +96,7 @@ export default Em.Forms.FormInputComponent.extend({
                                     event.target.value = suggestions[0][this.get('displayKey')];
                                     this.get('model').set(this.get('propertyName'), event.target.value);
                                 }
-                            } else {
-                                this.set('selection');
                             }
-                        }.bind(this), function() {
-                            this.set('selection');
                         }.bind(this));
                     }                
                 }
