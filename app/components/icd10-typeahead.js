@@ -2,7 +2,7 @@ import TypeAhead from "hospitalrun/components/type-ahead";
 export default TypeAhead.extend({
     minlength: 2,
     selectionKey: 'id', 
-    setOnBlur: true,
+    setOnBlur: false,
     
     _getSource: function() {
         return this.bloodhound.ttAdapter();

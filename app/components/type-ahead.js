@@ -34,7 +34,7 @@ export default Em.Forms.FormInputComponent.extend({
     selectedItem: false,
     inputElement: null,
     typeAhead: null,
-    setOnBlur: true,
+    setOnBlur: false,
 
     _getSource: function() {
         var typeAheadBloodhound = new Bloodhound( {
