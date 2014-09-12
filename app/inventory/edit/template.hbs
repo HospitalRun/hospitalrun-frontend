@@ -59,7 +59,7 @@
             </h3>
             <table class="table">
                 <tr class="table-header">
-                    <th>Date Added</th>
+                    <th>Date Received</th>
                     <th>Purchase Cost</th>
                     <th>Cost Per Unit</th>
                     <th>Original Quantity</th>
@@ -67,7 +67,6 @@
                     <th>Lot Number</th>
                     <th>Expiration Date</th>
                     <th>Vendor</th>
-                    <th>Action</th>
                 </tr>
                 {{#each purchases itemController='inventory/purchase/item-controller'}}
                     <tr {{bind-attr class="rowClass"}}>
@@ -79,18 +78,6 @@
                         <td>{{lotNumber}}</td>                
                         <td>{{date-format expirationDate}}</td>
                         <td>{{vendor}}</td>
-                        <td>
-                            {{#if expired}}
-                                <strong>Expired</strong>
-                            {{else}}
-                                {{#if canEdit}}
-                                    <button class="btn btn-default neutral" {{action "showEditPurchase" this}}>Edit Purchase</button>
-                                {{/if}}
-                                {{#if canDelete}}
-                                    <button class="btn btn-default warning" {{action "showDeletePurchase" this}}><span class="octicon octicon-x"></span> Delete</button>
-                                {{/if}}
-                            {{/if}}
-                        </td>
                     </tr>
                 {{/each}}
             </table>
