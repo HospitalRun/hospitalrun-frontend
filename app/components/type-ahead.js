@@ -34,7 +34,7 @@ export default Em.Forms.FormInputComponent.extend({
     selectedItem: false,
     inputElement: null,
     typeAhead: null,
-    setOnBlur: false,
+    setOnBlur: true,
 
     _getSource: function() {
         var typeAheadBloodhound = new Bloodhound( {
@@ -96,6 +96,8 @@ export default Em.Forms.FormInputComponent.extend({
                                     event.target.value = suggestions[0][this.get('displayKey')];
                                     this.get('model').set(this.get('propertyName'), event.target.value);
                                 }
+                            } else if (event.target.value !== this.get('selection')) {
+                                this.set('selection');
                             }
                         }.bind(this));
                     }                
