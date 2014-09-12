@@ -15,8 +15,6 @@ export default AbstractModel.extend({
     lastName:  DS.attr('string'),    
     parent: DS.attr('string'),
     phone:  DS.attr('string'),
-    primaryDiagnosis: DS.attr('string'),
-    primaryDiagnosisId: DS.attr('string'),
     visits: DS.hasMany('visit', {async: true}),
 
     displayName: function() {
