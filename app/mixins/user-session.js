@@ -254,6 +254,7 @@ export default Ember.Mixin.create({
             'System Administrator'
         ],
         users: [
+            'User Administrator',
             'System Administrator'
         ]
     },    
