@@ -87,6 +87,7 @@ export default Ember.Mixin.create({
             'System Administrator'
         ],
         add_user: [
+            'User Administrator',
             'System Administrator'
         ],
         add_visit: [
