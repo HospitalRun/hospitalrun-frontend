@@ -188,6 +188,7 @@ export default Ember.Mixin.create({
             'System Administrator'
         ],
         delete_user: [
+            'User Administrator',
             'System Administrator'
         ],
         fulfill_inventory: [
