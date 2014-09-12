@@ -61,14 +61,6 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
         
         allItems: function() {
             this.transitionTo('inventory.listing');
-        },                
-
-        newDelivery: function() {
-            var item = this.get('store').createRecord('inv-request', {
-                dateCompleted: new Date(),
-                transactionType: 'Delivery'
-            });            
-            this.transitionTo('inventory.delivery', item);
         },
         
         showAddPurchase: function(inventoryItem) {
