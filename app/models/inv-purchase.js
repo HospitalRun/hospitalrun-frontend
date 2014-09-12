@@ -8,7 +8,7 @@ import AbstractModel from "hospitalrun/models/abstract";
 var InventoryPurchaseItem = AbstractModel.extend({
     purchaseCost: DS.attr('number'), 
     lotNumber: DS.attr('string'),
-    dateAdded: DS.attr('date'),
+    dateReceived: DS.attr('date'),
     costPerUnit: function() {
         var purchaseCost = this.get('purchaseCost'),
             quantity = parseInt(this.get('originalQuantity'));

@@ -93,6 +93,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                 inventoryItem = this.get('model'),                
                 transactionType = inventoryLocation.get('transactionType'),
                 request = this.get('store').createRecord('inv-request', {
+                    adjustPurchases: adjustPurchases,
                     dateCompleted: inventoryLocation.get('dateCompleted'),
                     inventoryItem: inventoryItem,
                     quantity: adjustmentQuantity,
@@ -175,6 +176,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         transferItems: function(inventoryLocation) {
             var inventoryItem = this.get('model'),
                 request = this.get('store').createRecord('inv-request', {
+                    adjustPurchases: false,
                     dateCompleted: inventoryLocation.get('dateCompleted'),
                     inventoryItem: inventoryItem,
                     quantity: inventoryLocation.get('adjustmentQuantity'),
@@ -213,7 +215,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             var newPurchase = this.getProperties('aisleLocation', 'purchaseCost', 
                 'lotNumber', 'expirationDate', 'giftInKind', 'location', 'vendor',
                 'vendorItemNo');
-            newPurchase.dateAdded = new Date();
+            newPurchase.dateReceived = new Date();
             newPurchase.originalQuantity = this.get('quantity');
             newPurchase.currentQuantity = newPurchase.originalQuantity;
             var purchase = this.get('store').createRecord('inv-purchase', newPurchase);

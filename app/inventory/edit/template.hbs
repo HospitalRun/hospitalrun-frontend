@@ -71,7 +71,7 @@
                 </tr>
                 {{#each purchases itemController='inventory/purchase/item-controller'}}
                     <tr {{bind-attr class="rowClass"}}>
-                        <td>{{date-format dateAdded}}</td>
+                        <td>{{date-format dateReceived}}</td>
                         <td>{{purchaseCost}}</td>
                         <td>{{costPerUnit}}</td>
                         <td>{{originalQuantity}}</td>

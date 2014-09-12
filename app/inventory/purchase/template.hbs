@@ -1,4 +1,7 @@
-{{#em-form model=this submit_button=false }}    
+{{#em-form model=this submit_button=false }}
+    <div class="row">
+        {{date-picker property="dateReceived" label="Date Received" class="col-sm-4"}}
+    </div>
     {{#if canEditQuantity }}
         {{quantity-calc calculated=originalQuantity targetUnit=distributionUnit quantityGroups=quantityGroups }}
     {{else}}

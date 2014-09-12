@@ -8,6 +8,7 @@ export default Ember.Mixin.create({
                 transactionType = null; //reset the transaction type so that it gets set below.
             }
             if (markAsConsumed) {
+                request.set('adjustPurchases', true);
                 if (Ember.isEmpty(transactionType)) {
                     request.set('transactionType', 'Fulfillment');
                 }
@@ -15,6 +16,7 @@ export default Ember.Mixin.create({
                     this.finishFulfillRequest(request, closeModal, increment, skipTransition);
                 }.bind(this));
             } else {
+                request.set('adjustPurchases', false);
                 if (Ember.isEmpty(transactionType)) {
                     request.set('transactionType', 'Transfer');
                 }

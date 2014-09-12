@@ -2,7 +2,8 @@ import AbstractModel from "hospitalrun/models/abstract";
 /**
  * Model to represent a request for inventory items.
  */ 
-var InventoryRequest = AbstractModel.extend({        
+var InventoryRequest = AbstractModel.extend({
+    adjustPurchases: DS.attr('boolean'),
     completedBy: DS.attr('string'),
     costPerUnit: DS.attr('number'),
     dateCompleted: DS.attr('date'),
