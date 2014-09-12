@@ -40,7 +40,10 @@ export default AbstractModel.extend({
         
         primaryDiagnosis: {
             acceptance: DiagnosisValidation.diagnosisValidation.acceptance,
-            presence: true
+            presence: true,
+            length: { 
+                minimum: 3
+            }
         }
     }
 

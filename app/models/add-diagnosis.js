@@ -7,6 +7,12 @@ export default Ember.Object.extend(Ember.Validations.Mixin, {
     diagnosis: null,
     diagnosisId: null,
     validations: {
-        diagnosis: DiagnosisValidation.diagnosisValidation
+        diagnosis: {
+            acceptance: DiagnosisValidation.diagnosisValidation.acceptance,
+            length: { 
+                minimum: 3,
+                allowBlank: true
+            }
+        }
     }
 });
