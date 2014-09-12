@@ -15,7 +15,7 @@ var InventoryRequest = AbstractModel.extend({
     inventoryLocations: DS.hasMany('inv-location', { async: true }),
     markAsConsumed: DS.attr('boolean'),
     patient: DS.belongsTo('patient'),
-    purchases: DS.hasMany('inv-purchase', { async: true }),
+    purchasesAffected: DS.attr(),
     quantity: DS.attr('number'),
     quantityAtCompletion: DS.attr('number'),
     reason: DS.attr('string'),

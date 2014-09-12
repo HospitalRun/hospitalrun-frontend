@@ -25,12 +25,14 @@ export default Ember.Mixin.create({
         }
     },
     
-    findQuantity: function(request, purchases, item, requestPurchases, increment) {
+    findQuantity: function(request, purchases, item, increment) {
         var currentQuantity,
             costPerUnit,
+            requestPurchases = [],
             quantityOnHand = item.get('quantity'),
             quantityRequested = request.get('quantity'),
             quantityNeeded = quantityRequested,
+            purchaseInfo = [],
             totalCost = 0;
         
         var foundQuantity = purchases.any(function(purchase) {
@@ -41,17 +43,30 @@ export default Ember.Mixin.create({
             costPerUnit = purchase.get('costPerUnit');
             if (increment) {
                 purchase.incrementProperty('currentQuantity', quantityRequested);
-                totalCost += (costPerUnit * currentQuantity);
+                totalCost += (costPerUnit * quantityNeeded);
+                purchaseInfo.push({
+                    id: purchase.get('id'),
+                    quantityAffected: quantityRequested
+                });
                 requestPurchases.addObject(purchase);
                 return true;
             } else {
                 if (quantityNeeded > currentQuantity) {
                     totalCost += (costPerUnit * currentQuantity);
                     quantityNeeded = quantityNeeded - currentQuantity;
+                    purchaseInfo.push({
+                        id: purchase.get('id'),
+                        quantityAffected: parseInt(currentQuantity)
+                    });
                     currentQuantity = 0;
+
                 } else {
                     totalCost += (costPerUnit * quantityNeeded);
                     currentQuantity = currentQuantity - quantityNeeded;
+                    purchaseInfo.push({
+                        id: purchase.get('id'),
+                        quantityAffected: parseInt(quantityNeeded)
+                    });
                     quantityNeeded = 0;
                 }
                 purchase.set('currentQuantity',currentQuantity);
@@ -64,6 +79,8 @@ export default Ember.Mixin.create({
         }
         request.set('costPerUnit', (totalCost/quantityRequested).toFixed(2));
         request.set('quantityAtCompletion', quantityOnHand);
+        request.set('purchasesAffected', purchaseInfo);
+        request.set('purchases', requestPurchases); //Not saved permanently, just set here so that purchases get saved later.
         item.get('content').updateQuantity();
         return true;
     },
@@ -146,14 +163,13 @@ export default Ember.Mixin.create({
                 quantityOnHand = item.get('quantity'),
                 quantityRequested = request.get('quantity');
             if (increment || (quantityOnHand >= quantityRequested)) {
-                request.get('purchases').then(function(requestPurchases){
-                    var findResult = this.findQuantity(request, purchases, item, requestPurchases, increment);
+                    var findResult = this.findQuantity(request, purchases, item, increment);
                     if (findResult === true) {
                         resolve();
                     } else {
                         reject(findResult);
                     }
-                }.bind(this));
+
             } else {
                 reject('The quantity on hand, %@ is less than the requested quantity of %@.'.fmt(quantityOnHand,quantityRequested));
             }
