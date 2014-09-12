@@ -41377,7 +41377,7 @@ export default function() {
     return icd10Array.map(function(entry) {
         return {
             id: entry[0],
-            value: entry[1] + ' ('+ entry[0] + ')'
+            value: entry[1] + ' - '+ entry[0]
         };
     });
 }

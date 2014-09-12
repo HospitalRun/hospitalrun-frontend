@@ -9,7 +9,7 @@ export default TypeAhead.extend({
         if (content) {
             mapped = content.map(function(item) {
                 var returnObj = {};
-                returnObj.name = '%@ (%@)'.fmt(item.get('displayName'), item.get('id'));
+                returnObj.name = '%@ - %@'.fmt(item.get('displayName'), item.get('id'));
                 returnObj[this.get('selectionKey')] = item;
                 return returnObj;
             }.bind(this));
