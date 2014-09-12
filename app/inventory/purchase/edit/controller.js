@@ -50,8 +50,7 @@ export default AbstractEditController.extend({
             }
         }
         if (isNew) {
-            this.set('newPurchase', true);
-            this.set('dateReceived', new Date());            
+            this.set('newPurchase', true);         
         }
         return Ember.RSVP.Promise.resolve();
     },

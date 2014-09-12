@@ -65,6 +65,7 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
         
         showAddPurchase: function(inventoryItem) {
             var newPurchase = this.get('store').createRecord('inv-purchase', {
+                dateReceived: new Date(),
                 distributionUnit: inventoryItem.get('distributionUnit')
             });            
             this.set('currentItem', inventoryItem);
