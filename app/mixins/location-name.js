@@ -11,5 +11,15 @@ export default Ember.Mixin.create({
             locationName += aisleLocation;
         }
         return locationName;
-    }
+    },
+    
+    locationName: function() {
+        var aisleLocation =  this.get('aisleLocation'),
+            location = this.get('location'),
+            locationName = this.formatLocationName(location, aisleLocation);
+        if (Ember.isEmpty(locationName)) {
+            locationName = 'No Location';
+        }
+        return locationName;
+    }.property('location', 'aisleLocation'),
 });

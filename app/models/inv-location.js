@@ -10,16 +10,6 @@ var InventoryLocation = AbstractModel.extend(LocationName, {
     quantity: DS.attr('number'),
     location: DS.attr('string'),
     aisleLocation: DS.attr('string'),
-    
-    locationName: function() {
-        var aisleLocation =  this.get('aisleLocation'),
-            location = this.get('location'),
-            locationName = this.formatLocationName(location, aisleLocation);
-        if (Ember.isEmpty(locationName)) {
-            locationName = 'No Location';
-        }
-        return locationName;
-    }.property('location', 'aisleLocation'),
 
     locationNameWithQuantity: function() {
         var quantity = this.get('quantity'),

@@ -1,11 +1,12 @@
 import AbstractModel from "hospitalrun/models/abstract";
+import LocationName from "hospitalrun/mixins/location-name";
 /**
  * Model to represent a purchase within an inventory item.
  * File/model name is inv-purchase because using inventory-purchase will cause purchase 
  * items to be shown as inventory items since the pouchdb adapter does a 
  * retrieve for keys starting with 'inventory' to fetch inventory items.
  */ 
-var InventoryPurchaseItem = AbstractModel.extend({
+var InventoryPurchaseItem = AbstractModel.extend(LocationName, {
     purchaseCost: DS.attr('number'), 
     lotNumber: DS.attr('string'),
     dateReceived: DS.attr('date'),
