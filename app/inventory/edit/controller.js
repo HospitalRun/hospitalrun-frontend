@@ -102,23 +102,21 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                     deliveryAisle: inventoryLocation.get('aisleLocation'),
                     deliveryLocation: inventoryLocation.get('location')
                 });
-            request.get('inventoryLocations').then(function(inventoryLocations) {
-                inventoryLocations.addObject(inventoryLocation);
-                if (adjustPurchases) {
-                    var increment = false;
-                    if (transactionType === 'Adjustment (Add)') {
-                        increment = true;
-                    }
-                    request.set('markAsConsumed',true);
-                    //Make sure inventory item is resolved first.
-                    request.get('inventoryItem').then(function() {
-                        this.send('fulfillRequest', request, true, increment, true);
-                    }.bind(this));
-                } else {
-                    this.adjustLocation(inventoryItem, inventoryLocation);
-                    this._saveRequest(request);
+            request.set('inventoryLocations',[inventoryLocation]);
+            if (adjustPurchases) {
+                var increment = false;
+                if (transactionType === 'Adjustment (Add)') {
+                    increment = true;
                 }
-            }.bind(this));
+                request.set('markAsConsumed',true);
+                //Make sure inventory item is resolved first.
+                request.get('inventoryItem').then(function() {
+                    this.send('fulfillRequest', request, true, increment, true);
+                }.bind(this));
+            } else {
+                this.adjustLocation(inventoryItem, inventoryLocation);
+                this._saveRequest(request);
+            }            
         },        
         
         deletePurchase: function(purchase, deleteFromLocation, expire) {
@@ -191,10 +189,11 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                 transferAisleLocation: null,
                 adjustmentQuantity: null
             });
-            request.get('inventoryLocations').then(function(inventoryLocations) {
-                inventoryLocations.addObject(inventoryLocation);
-                this._saveRequest(request);
-            }.bind(this));
+            request.set('locationsAffected',[{
+                name: inventoryLocation.get('locationName'),
+                quantity: request.get('quantity')
+            }]);
+            this._saveRequest(request);
         },
         
         updatePurchase: function(purchase, updateQuantity) {
@@ -215,7 +214,6 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             var newPurchase = this.getProperties('aisleLocation', 'purchaseCost', 
                 'lotNumber', 'expirationDate', 'giftInKind', 'location', 'vendor',
                 'vendorItemNo');
-            newPurchase.dateReceived = new Date();
             newPurchase.originalQuantity = this.get('quantity');
             newPurchase.currentQuantity = newPurchase.originalQuantity;
             var purchase = this.get('store').createRecord('inv-purchase', newPurchase);

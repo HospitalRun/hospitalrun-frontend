@@ -65,21 +65,19 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, {
     
     finishBeforeUpdate: function(isFulfilling, resolve) {
         if (isFulfilling) {
-            var fulfillmentLocations = this.get('fulfillmentLocations'),
+            var inventoryLocations = this.get('inventoryLocations'),
                 inventoryRequest = this.get('store').createRecord('inv-request', {
                     dateCompleted: new Date(),
                     inventoryItem: this.get('inventoryItem'),
+                    inventoryLocations: inventoryLocations,
                     quantity: this.get('quantity'),
                     transactionType: 'Fulfillment',
                     patient: this.get('patient'),
                     markAsConsumed: true
-                });
-            inventoryRequest.get('inventoryLocations').then(function(inventoryLocations) {
-                inventoryLocations.addObjects(fulfillmentLocations);
-                this.send('fulfillRequest', inventoryRequest, false, false, true);
-                this.set('status','Fulfilled');
-                resolve();
-            }.bind(this));            
+                });            
+            this.send('fulfillRequest', inventoryRequest, false, false, true);
+            this.set('status','Fulfilled');
+            resolve();            
         } else {
             resolve();
         }

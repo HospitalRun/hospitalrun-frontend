@@ -4,8 +4,6 @@ export default AbstractEditController.extend({
     needs: 'inventory',
     
     cancelAction: 'allRequests',
-    
-    fulfillmentLocations: null,    
    
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
@@ -129,17 +127,6 @@ export default AbstractEditController.extend({
                 this.set('status', 'Requested');
             }
         }
-        var fulfillmentLocations = this.get('fulfillmentLocations');            
-        if (!Ember.isEmpty(fulfillmentLocations)) {
-            return new Ember.RSVP.Promise(function(resolve){
-                this.get('inventoryLocations').then(function(inventoryLocations) {
-                    inventoryLocations.clear();
-                    inventoryLocations.addObjects(fulfillmentLocations);
-                });
-                resolve();
-            }.bind(this));
-        } else {
-            return Ember.RSVP.resolve();
-        }
+        return Ember.RSVP.resolve();        
     }
 });

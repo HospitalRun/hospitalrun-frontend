@@ -24,8 +24,8 @@
                         <strong>Cost Per Unit:</strong> {{costPerUnit}}<br/>
                         <strong>Quantity At Completion:</strong> {{quantityAtCompletion}}<br/>
                         <strong>Pulled From:</strong>
-                        {{#each inventoryLocations}}
-                            {{locationName}}<br/>
+                        {{#each locationsAffected}}
+                            {{name}}<br/>
                         {{/each}}
                         {{#if patient}}
                             <strong>Prescription For: </strong> {{deliveryDetails}}
@@ -35,8 +35,8 @@
                     {{/if}}
                     {{#if isTransfer}}
                         <strong>Transferred From:</strong>
-                        {{#each inventoryLocations}}
-                            {{locationName}}<br/>
+                        {{#each locationsAffected}}
+                            {{name}}<br/>
                         {{/each}}
                         <strong>Transferred To: </strong> {{deliveryDetails}}
                     {{/if}}
