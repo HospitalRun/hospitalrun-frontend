@@ -12,7 +12,7 @@ var InventoryRequest = AbstractModel.extend({
     deliveryLocation: DS.attr('string'),
     expenseAccount: DS.attr('string'),
     inventoryItem: DS.belongsTo('inventory', { async: true }),
-    inventoryLocations: DS.hasMany('inv-location', { async: true }),
+    locationsAffected: DS.attr(),
     markAsConsumed: DS.attr('boolean'),
     patient: DS.belongsTo('patient'),
     purchasesAffected: DS.attr(),
