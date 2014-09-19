@@ -33,6 +33,9 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
     }, {
         text: 'History',
         linkTo: 'inventory.completed'
+    }, {
+        text: 'Reports',
+        linkTo: 'inventory.reports'
     }],
     sectionTitle: 'Inventory',
     
@@ -83,7 +86,8 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
      */    
     getNewData: function() {
         return  {
-            type: 'Asset'
+            type: 'Asset',
+            dateReceived: new Date()
         };
     }
 });
