@@ -1,0 +1,62 @@
+<div class="panel panel-primary">
+    <div class="panel-body">
+        {{#em-form model=this submit_button=false }}
+            <div class="row">        
+                {{date-picker property="effectiveDate" label="Report Effective Date" class="col-sm-4"}}
+            </div>
+            <h3>Fields to Include</h3>
+            <div class="row">
+                <div class="col-xs-1"></div>
+                {{em-checkbox label=reportColumns.id.label property="reportColumns.id.include" class="col-xs-2"}}
+                {{em-checkbox label=reportColumns.name.label property="reportColumns.name.include" class="col-xs-2"}}
+                {{em-checkbox label=reportColumns.description.label property="reportColumns.description.include" class="col-xs-2"}}
+                {{em-checkbox label=reportColumns.type.label property="reportColumns.type.include" class="col-xs-2"}}    
+                {{em-checkbox label=reportColumns.xref.label property="reportColumns.xref.include" class="col-xs-2"}}
+            </div>
+            <div class="row">
+                <div class="col-xs-1"></div>                
+                {{em-checkbox label=reportColumns.reorder.label property="reportColumns.reorder.include" class="col-xs-2"}}
+                {{em-checkbox label=reportColumns.price.label property="reportColumns.price.include" class="col-xs-2"}}
+                {{em-checkbox label=reportColumns.unit.label property="reportColumns.unit.include" class="col-xs-2"}}
+                {{em-checkbox label=reportColumns.quantity.label property="reportColumns.quantity.include" class="col-xs-2"}}
+                {{em-checkbox label=reportColumns.gift.label property="reportColumns.gift.include" class="col-xs-2"}}
+            </div>
+            <div class="row">
+                <div class="col-xs-1"></div>
+                {{em-checkbox label=reportColumns.locations.label property="reportColumns.locations.include" class="col-xs-2"}}
+            </div>
+        {{/em-form}}
+    </div>
+    <div class="panel-footer">
+        <button class="btn btn-default" {{action 'generateReport'}}>Generate Report</button>
+    </div>
+</div>
+{{#if showReportResults}}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Inventory Report effective {{date-format effectiveDate}}</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+                <tr class="table-header">
+                    {{#each reportHeaders}}
+                        <th>
+                            {{this}}
+                        </th>
+                    {{/each}}
+                </tr>
+                {{#each reportRows}}
+                    <tr>
+                        {{#each this}}
+                            <td>{{this}}</td>
+                        {{/each}}
+                    </tr>
+                {{/each}}
+            </table>
+        </div>
+        <div class="panel-footer">
+            <a {{bind-attr href="csvExport"}} target="_blank" download="report.csv" class="btn btn-default">Export Report</a>
+
+        </div>    
+    </div>
+{{/if}}
