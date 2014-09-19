@@ -39,6 +39,10 @@
                             History
                             <span class="octicon octicon-chevron-right"></span>
                         {{/link-to}}
+                        {{#link-to 'inventory.reports' class="sub-section-link"}}
+                            Reports
+                            <span class="octicon octicon-chevron-right"></span>
+                        {{/link-to}}
                     {{/if}}
                     {{#if userCan_add_inventory_item}}
                         {{#link-to 'inventory.edit' 'new' class="sub-section-link"}}
