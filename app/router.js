@@ -25,6 +25,7 @@ Router.map(function() {
         this.route('delivery', { path: "/delivery/:inv-request_id" });
         this.route('edit', { path: "/edit/:inventory_id" });
         this.route('listing');
+        this.route('reports');
         this.route('request', { path: "/request/:inv-request_id" });
         this.route('search', { path: "/search/:search_text" });
     });
