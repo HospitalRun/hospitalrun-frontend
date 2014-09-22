@@ -65,7 +65,8 @@ export default Ember.ArrayController.extend(LocationName, {
     showReportResults: false,
     
     _addReportRow: function(row) {
-        var locations,
+        var locations, 
+            locationDetails = '',
             reportColumns = this.get('reportColumns'),
             reportRows = this.get('reportRows'),
             reportRow = [];
@@ -73,9 +74,14 @@ export default Ember.ArrayController.extend(LocationName, {
             if (reportColumns[column].include) {
                 if (reportColumns[column].property === 'locations') {
                     locations = Ember.get(row,'locations');
+                    
                     for (var i=0; i< locations.length; i++) {                        
-                        reportRow.push('%@ (%@ available)'.fmt(locations[i].name, locations[i].quantity));    
+                        if (i > 0) {
+                            locationDetails += '; ';
+                        }
+                        locationDetails += '%@ (%@ available)'.fmt(locations[i].name, locations[i].quantity);
                     }
+                    reportRow.push(locationDetails);
                 } else {
                     reportRow.push(Ember.get(row,reportColumns[column].property));
                 }
@@ -162,6 +168,10 @@ export default Ember.ArrayController.extend(LocationName, {
                 reportRows = this.get('reportRows'),
                 requestPromises = [];
             reportRows.clear();
+            inventoryItems.forEach(function(item) {
+                //Clear out requests from last time report was run.
+                item.set('requests', []);
+            });                
             if (!Ember.isEmpty(inventoryRequests)) {
                 //SORT REQUESTS
                 inventoryRequests.sort(function(firstRequest, secondRequest) {
@@ -174,7 +184,7 @@ export default Ember.ArrayController.extend(LocationName, {
                         request.get('inventoryItem').then(function(inventoryItem) {
                             var requestItem = inventoryItems.findBy('id', inventoryItem.get('id'));
                             if (!Ember.isEmpty(requestItem)) {
-                                var itemRequests = requestItem.getWithDefault('requests', []);
+                                var itemRequests = requestItem.get('requests');
                                 itemRequests.push(request);
                                 inventoryItem.set('requests', itemRequests);
                             }                        
@@ -263,11 +273,10 @@ export default Ember.ArrayController.extend(LocationName, {
                     this._addReportRow(row);
                 }.bind(this));
                 this._generateExport();
-            }.bind(this), function(err) {
-                console.log("ERROR resolving promises:",err);
-            });
+            }.bind(this));
             this.set('showReportResults', true);
             this._setReportHeaders();
+            this.set('reportEffectiveDate', effectiveDate);
         }
     },
 
