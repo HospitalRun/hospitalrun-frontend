@@ -15,14 +15,16 @@
             </div>
             <div class="row">
                 <div class="col-xs-1"></div>                
-                {{em-checkbox label=reportColumns.reorder.label property="reportColumns.reorder.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.price.label property="reportColumns.price.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.unit.label property="reportColumns.unit.include" class="col-xs-2"}}
                 {{em-checkbox label=reportColumns.quantity.label property="reportColumns.quantity.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.gift.label property="reportColumns.gift.include" class="col-xs-2"}}
+                {{em-checkbox label=reportColumns.unit.label property="reportColumns.unit.include" class="col-xs-2"}}
+                {{em-checkbox label=reportColumns.total.label property="reportColumns.total.include" class="col-xs-2"}}
+                {{em-checkbox label=reportColumns.unitcost.label property="reportColumns.unit.include" class="col-xs-2"}}
+                {{em-checkbox label=reportColumns.price.label property="reportColumns.price.include" class="col-xs-2"}}
             </div>
             <div class="row">
                 <div class="col-xs-1"></div>
+                {{em-checkbox label=reportColumns.reorder.label property="reportColumns.reorder.include" class="col-xs-2"}}
+                {{em-checkbox label=reportColumns.gift.label property="reportColumns.gift.include" class="col-xs-2"}}
                 {{em-checkbox label=reportColumns.locations.label property="reportColumns.locations.include" class="col-xs-2"}}
             </div>
         {{/em-form}}

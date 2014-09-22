@@ -49,6 +49,16 @@ export default Ember.ArrayController.extend(LocationName, {
             include: true,
             property: 'quantityInStock'
         },
+        unitcost: {
+            label: 'Unit Cost',
+            include: true,
+            property: 'unitCost'
+        },
+        total: {
+            label: 'Total Cost',
+            include: true,
+            property: 'totalCost'
+        },         
         gift: {
             label: 'Gift In Kind',
             include: true,
@@ -269,6 +279,7 @@ export default Ember.ArrayController.extend(LocationName, {
                         row.quantityInStock += purchase.get('calculatedQuantity');
                         row.totalCost += (quantity * costPerUnit);
                     });
+                    row.totalCost = row.totalCost.toFixed(2);
                     row.unitCost = (row.totalCost/row.quantityInStock).toFixed(2);
                     this._addReportRow(row);
                 }.bind(this));
