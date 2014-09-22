@@ -193,7 +193,10 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                 name: inventoryLocation.get('locationName'),
                 quantity: request.get('quantity')
             }]);
-            this._saveRequest(request);
+            request.get('inventoryItem').then(function() {
+                //Make sure relationships are resolved before saving
+                this._saveRequest(request);                
+            }.bind(this));
         },
         
         updatePurchase: function(purchase, updateQuantity) {
