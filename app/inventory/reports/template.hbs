@@ -1,32 +1,41 @@
 <div class="panel panel-primary">
     <div class="panel-body">
         {{#em-form model=this submit_button=false }}
-            <div class="row">        
-                {{date-picker property="effectiveDate" label="Report Effective Date" class="col-sm-4"}}
-            </div>
-            <h3>Fields to Include</h3>
             <div class="row">
-                <div class="col-xs-1"></div>
-                {{em-checkbox label=reportColumns.id.label property="reportColumns.id.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.name.label property="reportColumns.name.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.description.label property="reportColumns.description.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.type.label property="reportColumns.type.include" class="col-xs-2"}}    
-                {{em-checkbox label=reportColumns.xref.label property="reportColumns.xref.include" class="col-xs-2"}}
+                {{em-select class="col-xs-3" label="Report Type" 
+                    property="reportType" content=reportTypes
+                    optionValuePath="content.value" optionLabelPath="content.name"
+                    selected=reportType
+                }}
             </div>
-            <div class="row">
-                <div class="col-xs-1"></div>                
-                {{em-checkbox label=reportColumns.quantity.label property="reportColumns.quantity.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.unit.label property="reportColumns.unit.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.total.label property="reportColumns.total.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.unitcost.label property="reportColumns.unit.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.price.label property="reportColumns.price.include" class="col-xs-2"}}
-            </div>
-            <div class="row">
-                <div class="col-xs-1"></div>
-                {{em-checkbox label=reportColumns.reorder.label property="reportColumns.reorder.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.gift.label property="reportColumns.gift.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.locations.label property="reportColumns.locations.include" class="col-xs-2"}}
-            </div>
+            {{#if isValuationReport}}
+                <div class="row">        
+                    {{date-picker property="effectiveDate" label="Report Effective Date" class="col-sm-4"}}
+                </div>
+                <h3>Fields to Include</h3>
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    {{em-checkbox label=reportColumns.id.label property="reportColumns.id.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.name.label property="reportColumns.name.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.description.label property="reportColumns.description.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.type.label property="reportColumns.type.include" class="col-xs-2"}}    
+                    {{em-checkbox label=reportColumns.xref.label property="reportColumns.xref.include" class="col-xs-2"}}
+                </div>
+                <div class="row">
+                    <div class="col-xs-1"></div>                
+                    {{em-checkbox label=reportColumns.quantity.label property="reportColumns.quantity.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.unit.label property="reportColumns.unit.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.total.label property="reportColumns.total.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.unitcost.label property="reportColumns.unit.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.price.label property="reportColumns.price.include" class="col-xs-2"}}
+                </div>
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    {{em-checkbox label=reportColumns.reorder.label property="reportColumns.reorder.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.gift.label property="reportColumns.gift.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.locations.label property="reportColumns.locations.include" class="col-xs-2"}}
+                </div>
+            {{/if}}
         {{/em-form}}
     </div>
     <div class="panel-footer">
@@ -36,7 +45,7 @@
 {{#if showReportResults}}
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title">Inventory Report effective {{date-format reportEffectiveDate}}</h3>
+            <h3 class="panel-title">{{reportTitle}}</h3>
         </div>
         <div class="panel-body">
             <table class="table">

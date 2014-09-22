@@ -2,7 +2,8 @@ import DateSort from 'hospitalrun/utils/date-sort';
 import LocationName from "hospitalrun/mixins/location-name";
 export default Ember.ArrayController.extend(LocationName, {
     needs: ['inventory'],
-    reportRows: [],
+    effectiveDate: null,
+    inventoryItems: Ember.computed.alias('controllers.inventory.model'),
     reportColumns: {
         id: {
             label: 'Id',
@@ -70,9 +71,24 @@ export default Ember.ArrayController.extend(LocationName, {
             property: 'locations'
         }
     },
+    reportRows: [],
+    reportTitle: null,
+    reportType: null,
+    reportTypes: [{
+        name: 'Inventory valuation',
+        value: 'valuation'
+    }, {
+        name: 'Expiration date',
+        value: 'expiration'
+    }],
+
     
-    inventoryItems: Ember.computed.alias('controllers.inventory.model'),
     showReportResults: false,
+    
+    isValuationReport: function() {
+        var reportType = this.get('reportType');
+        return (reportType === 'valuation');
+    }.property('reportType'),
     
     _addReportRow: function(row) {
         var locations, 
@@ -143,6 +159,32 @@ export default Ember.ArrayController.extend(LocationName, {
         }        
     },
     
+    _generateExpirationReport: function() {
+        var inventoryItems = this.get('inventoryItems'),            
+            reportRows = this.get('reportRows');
+        reportRows.clear();        
+        inventoryItems.forEach(function(inventoryItem) {
+            var inventoryPurchases = inventoryItem.get('purchases');
+            inventoryPurchases.forEach(function(purchase) {
+                var currentQuantity = purchase.get('currentQuantity'),
+                    expirationDate = purchase.get('expirationDate');
+                if (currentQuantity > 0 && !Ember.isEmpty('expirationDate')) {
+                    reportRows.push([
+                        inventoryItem.get('friendlyId'),
+                        inventoryItem.get('name'),
+                        currentQuantity,
+                        inventoryItem.get('distributionUnit'),
+                        moment(expirationDate).format('l')                        
+                    ]);
+                }
+            }.bind(this));
+        }.bind(this));
+        this.set('showReportResults', true);
+        this.set('reportHeaders', ['Id','Name','Current Quantity','Distribution Unit','Expiration Date']);
+        this._generateExport();
+        this.set('reportTitle', 'Inventory Expiration Date Report');
+    },        
+    
     _generateExport: function() {
         var csvRows = [],
             reportHeaders = this.get('reportHeaders'),
@@ -155,6 +197,128 @@ export default Ember.ArrayController.extend(LocationName, {
         var uriContent = "data:application/csv;charset=utf-8," + encodeURIComponent(csvString);
         this.set('csvExport', uriContent);
     },
+    
+    _generateValuationReport: function() {
+        var effectiveDate = this.getWithDefault('effectiveDate', new Date()),
+            inventoryItems = this.get('inventoryItems'),
+            inventoryRequests = this.get('model').filter(function(item) {
+                var dateCompleted = moment(item.get('dateCompleted'));
+                return (dateCompleted.isSame(effectiveDate, 'day') || dateCompleted.isBefore(effectiveDate, 'day'));
+            }),
+            reportRows = this.get('reportRows'),
+            requestPromises = [];
+        reportRows.clear();
+        inventoryItems.forEach(function(item) {
+            //Clear out requests from last time report was run.
+            item.set('requests', []);
+        });                
+        if (!Ember.isEmpty(inventoryRequests)) {
+            //SORT REQUESTS
+            inventoryRequests.sort(function(firstRequest, secondRequest) {
+                return DateSort.sortByDate(firstRequest, secondRequest, 'dateCompleted');
+            }.bind(this));
+
+            //Link inventory requests to inventory items
+            inventoryRequests.forEach(function(request) {
+                requestPromises.push(new Ember.RSVP.Promise(function(resolve, reject){
+                    request.get('inventoryItem').then(function(inventoryItem) {
+                        var requestItem = inventoryItems.findBy('id', inventoryItem.get('id'));
+                        if (!Ember.isEmpty(requestItem)) {
+                            var itemRequests = requestItem.get('requests');
+                            itemRequests.push(request);
+                            inventoryItem.set('requests', itemRequests);
+                        }                        
+                        resolve();
+                    }, reject);
+                }));
+            });
+        }
+        Ember.RSVP.all(requestPromises,'All inventory requests matched to inventory items').then(function(){
+            //Loop through each itinerary item, looking at the requests and purchases to determine
+            //state of inventory at effective date
+            inventoryItems.forEach(function(item) {
+                var inventoryPurchases = item.get('purchases'),
+                    inventoryRequests = item.get('requests'),
+                    row = {
+                        giftInKind: 'N',
+                        inventoryItem: item,
+                        quantityInStock: 0,
+                        unitCost: 0,
+                        totalCost: 0,
+                        locations: [
+                        ]
+                    };
+
+                inventoryPurchases = inventoryPurchases.filter(function(purchase) {
+                    var dateReceived = moment(purchase.get('dateReceived'));
+                    return (dateReceived.isSame(effectiveDate, 'day') || dateReceived.isBefore(effectiveDate, 'day'));
+                });
+                if (Ember.isEmpty(inventoryPurchases)) {
+                    //If there are no purchases applicable then skip this inventory item.
+                    return;
+                }
+                //Setup intial locations for an inventory item
+                inventoryPurchases.forEach(function(purchase) {
+                    var locationName = purchase.get('locationName'),
+                        purchaseQuantity = purchase.get('originalQuantity');
+                    purchase.set('calculatedQuantity', purchaseQuantity);
+                    if (purchase.get('giftInKind') === true) {
+                        row.giftInKind = 'Y';
+                    }
+                    this._adjustLocation(row.locations, locationName, purchaseQuantity, true);
+                }.bind(this));
+
+                if(!Ember.isEmpty(inventoryRequests)) {
+                    inventoryRequests.forEach(function(request) {
+                        var adjustPurchases = request.get('adjustPurchases'),                                
+                            increment = false,
+                            locations = request.get('locationsAffected'),
+                            purchases = request.get('purchasesAffected'),
+                            transactionType = request.get('transactionType');
+
+
+                        increment = (transactionType === 'Adjustment (Add)');
+                        if (adjustPurchases) {
+                            if (!Ember.isEmpty(purchases)) {
+                                //Loop through purchase(s) on request and adjust corresponding inventory purchases
+                                purchases.forEach(function(purchaseInfo) {
+                                    this._adjustPurchase(inventoryPurchases, purchaseInfo.id, purchaseInfo.quantity, increment);
+                                }.bind(this));
+                            }
+                        } else if (transactionType === 'Transfer') {
+                            //Increment the delivery location
+                            var aisle = request.get('deliveryAisle'), 
+                                location = request.get('deliveryLocation'), 
+                                locationName = this.formatLocationName(location, aisle);
+                                if (Ember.isEmpty(locationName)) {
+                                    locationName = 'No Location';
+                                }
+                            this._adjustLocation(row.locations,  locationName, request.get('quantity'), true);
+                        }
+                        //Loop through locations to adjust location quantity
+                        locations.forEach(function(locationInfo){
+                            this._adjustLocation(row.locations,  locationInfo.name, locationInfo.quantity, increment);
+                        }.bind(this));
+                    }.bind(this));
+                }
+
+                //Calculate quantity and cost per unit for the row
+                inventoryPurchases.forEach(function(purchase) {
+                    var costPerUnit = purchase.get('costPerUnit'),
+                        quantity = purchase.get('calculatedQuantity');                                    
+                    row.quantityInStock += purchase.get('calculatedQuantity');
+                    row.totalCost += (quantity * costPerUnit);
+                });
+                row.totalCost = row.totalCost.toFixed(2);
+                row.unitCost = (row.totalCost/row.quantityInStock).toFixed(2);
+                this._addReportRow(row);
+            }.bind(this));
+            this._generateExport();
+        }.bind(this));
+        this.set('showReportResults', true);
+        this._setReportHeaders();
+        this.set('reportTitle', 'Inventory Report Effective '+moment(effectiveDate).format('l'));
+    },    
         
     _setReportHeaders: function() {
         var reportColumns = this.get('reportColumns'),
@@ -169,133 +333,29 @@ export default Ember.ArrayController.extend(LocationName, {
     
     actions: {
         generateReport: function() {
-            var effectiveDate = this.getWithDefault('effectiveDate', new Date()),
-                inventoryItems = this.get('inventoryItems'),
-                inventoryRequests = this.get('model').filter(function(item) {
-                    var dateCompleted = moment(item.get('dateCompleted'));
-                    return (dateCompleted.isSame(effectiveDate, 'day') || dateCompleted.isBefore(effectiveDate, 'day'));
-                }),
-                reportRows = this.get('reportRows'),
-                requestPromises = [];
-            reportRows.clear();
-            inventoryItems.forEach(function(item) {
-                //Clear out requests from last time report was run.
-                item.set('requests', []);
-            });                
-            if (!Ember.isEmpty(inventoryRequests)) {
-                //SORT REQUESTS
-                inventoryRequests.sort(function(firstRequest, secondRequest) {
-                    return DateSort.sortByDate(firstRequest, secondRequest, 'dateCompleted');
-                }.bind(this));
-
-                //Link inventory requests to inventory items
-                inventoryRequests.forEach(function(request) {
-                    requestPromises.push(new Ember.RSVP.Promise(function(resolve, reject){
-                        request.get('inventoryItem').then(function(inventoryItem) {
-                            var requestItem = inventoryItems.findBy('id', inventoryItem.get('id'));
-                            if (!Ember.isEmpty(requestItem)) {
-                                var itemRequests = requestItem.get('requests');
-                                itemRequests.push(request);
-                                inventoryItem.set('requests', itemRequests);
-                            }                        
-                            resolve();
-                        }, reject);
-                    }));
-                });
+            var reportType = this.get('reportType');
+            switch (reportType) {
+                case 'valuation': {
+                    this._generateValuationReport();
+                    break;
+                }
+                case 'expiration': {
+                    this._generateExpirationReport();
+                    break;                    
+                }
             }
-            Ember.RSVP.all(requestPromises,'All inventory requests matched to inventory items').then(function(){
-                //Loop through each itinerary item, looking at the requests and purchases to determine
-                //state of inventory at effective date
-                inventoryItems.forEach(function(item) {
-                    var inventoryPurchases = item.get('purchases'),
-                        inventoryRequests = item.get('requests'),
-                        row = {
-                            giftInKind: 'N',
-                            inventoryItem: item,
-                            quantityInStock: 0,
-                            unitCost: 0,
-                            totalCost: 0,
-                            locations: [
-                            ]
-                        };
-
-                    inventoryPurchases = inventoryPurchases.filter(function(purchase) {
-                        var dateReceived = moment(purchase.get('dateReceived'));
-                        return (dateReceived.isSame(effectiveDate, 'day') || dateReceived.isBefore(effectiveDate, 'day'));
-                    });
-                    if (Ember.isEmpty(inventoryPurchases)) {
-                        //If there are no purchases applicable then skip this inventory item.
-                        return;
-                    }
-                    //Setup intial locations for an inventory item
-                    inventoryPurchases.forEach(function(purchase) {
-                        var locationName = purchase.get('locationName'),
-                            purchaseQuantity = purchase.get('originalQuantity');
-                        purchase.set('calculatedQuantity', purchaseQuantity);
-                        if (purchase.get('giftInKind') === true) {
-                            row.giftInKind = 'Y';
-                        }
-                        this._adjustLocation(row.locations, locationName, purchaseQuantity, true);
-                    }.bind(this));
-
-                    if(!Ember.isEmpty(inventoryRequests)) {
-                        inventoryRequests.forEach(function(request) {
-                            var adjustPurchases = request.get('adjustPurchases'),                                
-                                increment = false,
-                                locations = request.get('locationsAffected'),
-                                purchases = request.get('purchasesAffected'),
-                                transactionType = request.get('transactionType');
-
-
-                            increment = (transactionType === 'Adjustment (Add)');
-                            if (adjustPurchases) {
-                                if (!Ember.isEmpty(purchases)) {
-                                    //Loop through purchase(s) on request and adjust corresponding inventory purchases
-                                    purchases.forEach(function(purchaseInfo) {
-                                        this._adjustPurchase(inventoryPurchases, purchaseInfo.id, purchaseInfo.quantity, increment);
-                                    }.bind(this));
-                                }
-                            } else if (transactionType === 'Transfer') {
-                                //Increment the delivery location
-                                var aisle = request.get('deliveryAisle'), 
-                                    location = request.get('deliveryLocation'), 
-                                    locationName = this.formatLocationName(location, aisle);
-                                    if (Ember.isEmpty(locationName)) {
-                                        locationName = 'No Location';
-                                    }
-                                this._adjustLocation(row.locations,  locationName, request.get('quantity'), true);
-                            }
-                            //Loop through locations to adjust location quantity
-                            locations.forEach(function(locationInfo){
-                                this._adjustLocation(row.locations,  locationInfo.name, locationInfo.quantity, increment);
-                            }.bind(this));
-                        }.bind(this));
-                    }
-
-                    //Calculate quantity and cost per unit for the row
-                    inventoryPurchases.forEach(function(purchase) {
-                        var costPerUnit = purchase.get('costPerUnit'),
-                            quantity = purchase.get('calculatedQuantity');                                    
-                        row.quantityInStock += purchase.get('calculatedQuantity');
-                        row.totalCost += (quantity * costPerUnit);
-                    });
-                    row.totalCost = row.totalCost.toFixed(2);
-                    row.unitCost = (row.totalCost/row.quantityInStock).toFixed(2);
-                    this._addReportRow(row);
-                }.bind(this));
-                this._generateExport();
-            }.bind(this));
-            this.set('showReportResults', true);
-            this._setReportHeaders();
-            this.set('reportEffectiveDate', effectiveDate);
         }
     },
 
     
     setup: function() {
-        var effectiveDate = this.get('effectiveDate');
+        var effectiveDate = this.get('effectiveDate'),
+            reportType = this.get('reportType');
         if (Ember.isEmpty(effectiveDate)) {
             this.set('effectiveDate', new Date());
         }
+        if (Ember.isEmpty(reportType)) {
+            this.set('reportType', 'valuation');
+        }        
     }.on('init')
 });
