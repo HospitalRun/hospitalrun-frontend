@@ -48,7 +48,7 @@ export default Ember.ArrayController.extend(LocationName, {
         quantity: {
             label: 'Quantity', 
             include: true,
-            property: 'quantityInStock'
+            property: 'quantity'
         },
         unitcost: {
             label: 'Unit Cost',
@@ -75,11 +75,29 @@ export default Ember.ArrayController.extend(LocationName, {
     reportTitle: null,
     reportType: null,
     reportTypes: [{
-        name: 'Inventory valuation',
-        value: 'valuation'
+        name: 'Detailed Stock Usage',
+        value: 'detailedUsage'
     }, {
+        name: 'Summary Stock Usage',
+        value: 'summaryUsage'
+    }, {
+        name: 'Detailed Purchase',
+        value: 'detailedPurchase'
+    }, {
+        name: 'Summary Purchase',
+        value: 'summaryPurchase'
+    }, {
+        name: 'Detailed Stock Transfer',
+        value: 'detailedTransfer'
+    }, {
+        name: 'Summary Stock Transfer',
+        value: 'summaryTransfer'
+    }, {        
         name: 'Expiration date',
         value: 'expiration'
+    }, {
+        name: 'Inventory valuation',
+        value: 'valuation'
     }],
 
     
@@ -105,7 +123,11 @@ export default Ember.ArrayController.extend(LocationName, {
                         if (i > 0) {
                             locationDetails += '; ';
                         }
-                        locationDetails += '%@ (%@ available)'.fmt(locations[i].name, locations[i].quantity);
+                        if (!Ember.isEmpty(locations[i].quantity)) {
+                            locationDetails += '%@ (%@ available)'.fmt(locations[i].name, locations[i].quantity);
+                        } else {
+                            locationDetails += locations[i].name;
+                        }
                     }
                     reportRow.push(locationDetails);
                 } else {
@@ -222,8 +244,9 @@ export default Ember.ArrayController.extend(LocationName, {
                 var dateCompleted = moment(item.get('dateCompleted'));
                 return (dateCompleted.isSame(effectiveDate, 'day') || dateCompleted.isBefore(effectiveDate, 'day'));
             }),
+            requestPromises = [],            
             reportRows = this.get('reportRows'),
-            requestPromises = [];
+            reportType = this.get('reportType');
         reportRows.clear();
         inventoryItems.forEach(function(item) {
             //Clear out requests from last time report was run.
@@ -259,7 +282,7 @@ export default Ember.ArrayController.extend(LocationName, {
                     row = {
                         giftInKind: 'N',
                         inventoryItem: item,
-                        quantityInStock: 0,
+                        quantity: 0,
                         unitCost: 0,
                         totalCost: 0,
                         locations: [
@@ -319,16 +342,90 @@ export default Ember.ArrayController.extend(LocationName, {
                     }.bind(this));
                 }
 
-                //Calculate quantity and cost per unit for the row
-                inventoryPurchases.forEach(function(purchase) {
-                    var costPerUnit = purchase.get('costPerUnit'),
-                        quantity = purchase.get('calculatedQuantity');                                    
-                    row.quantityInStock += purchase.get('calculatedQuantity');
-                    row.totalCost += (quantity * costPerUnit);
-                });
-                row.totalCost = row.totalCost.toFixed(2);
-                row.unitCost = (row.totalCost/row.quantityInStock).toFixed(2);
-                this._addReportRow(row);
+                var summaryCost = 0,
+                    summaryQuantity = 0;
+                    
+                switch(reportType) {
+                    case 'detailedUsage': {
+                        inventoryRequests.forEach(function(request) {
+                            summaryQuantity += request.get('quantity');
+                            this._addReportRow({
+                                giftInKind: row.giftInKind,
+                                inventoryItem: row.inventoryItem,
+                                quantity: request.get('quantity'),
+                                type: request.get('transactionType'),
+                                locations: row.locations
+                            });
+                        });
+                        this._addReportRow({
+                            quantity: 'Total: '+summaryQuantity
+                        });
+                        break;
+                    }
+                    case 'summaryUsage': {
+                        row.quantity = inventoryRequests.reduce(function(previousValue, request) {
+                            return previousValue += request.get('quantity');
+                        }, 0);
+                        this._addReportRow(row);
+                        break;
+                    }
+                    case 'detailedPurchase': {
+                        inventoryPurchases.forEach(function(purchase) {
+                            var giftInKind = 'N';
+                            if (purchase.get('giftInKind') === true) {
+                                giftInKind = 'Y';
+                            }
+                            this._addReportRow({
+                                giftInKind: giftInKind,
+                                inventoryItem: row.inventoryItem,
+                                quantity: purchase.get('originalQuantity'),
+                                unitCost: purchase.get('costPerUnit'),
+                                totalCost: purchase.get('purchaseCost'),
+                                locations: [{
+                                    name: purchase.get('locationName')                                
+                                }]
+                            });
+                            summaryCost += purchase.get('purchaseCost');
+                            summaryQuantity += purchase.get('originalQuantity');
+                        });
+                        this._addReportRow({
+                            totalCost: 'Total:'+summaryCost.toFixed(2),
+                            quantity: 'Total: '+summaryQuantity,
+                            unitCost: (summaryCost/summaryQuantity).toFixed(2)
+                        });                            
+                        break;
+                    }
+                    case 'summaryPurchase': {
+                        row.quantity = inventoryPurchases.reduce(function(previousValue, purchase) {                            
+                            summaryCost += purchase.get('purchaseCost');
+                            return previousValue += purchase.get('originalQuantity');
+                        }, 0);
+                        row.unitCost = (summaryCost/row.quantity).toFixed(2);
+                        row.totalCost = summaryCost.toFixed(2);
+                        
+                        this._addReportRow(row);
+                        break;
+                    }
+                    case 'detailedTransfer': {
+                        break;
+                    }
+                    case 'summaryTransfer': {
+                        break;
+                    }
+                    case 'valuation': {
+                        //Calculate quantity and cost per unit for the row
+                        inventoryPurchases.forEach(function(purchase) {
+                            var costPerUnit = purchase.get('costPerUnit'),
+                                quantity = purchase.get('calculatedQuantity');                                    
+                            row.quantity += purchase.get('calculatedQuantity');
+                            row.totalCost += (quantity * costPerUnit);
+                        });
+                        row.totalCost = row.totalCost.toFixed(2);
+                        row.unitCost = (row.totalCost/row.quantity).toFixed(2);
+                        this._addReportRow(row);
+                        break;                        
+                    }
+                }
             }.bind(this));
             this._generateExport();
         }.bind(this));
@@ -352,13 +449,13 @@ export default Ember.ArrayController.extend(LocationName, {
         generateReport: function() {
             var reportType = this.get('reportType');
             switch (reportType) {
-                case 'valuation': {
-                    this._generateValuationReport();
-                    break;
-                }
                 case 'expiration': {
                     this._generateExpirationReport();
                     break;                    
+                }
+                default: {
+                    this._generateValuationReport();
+                    break;
                 }
             }
         }
