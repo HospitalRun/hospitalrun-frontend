@@ -160,16 +160,27 @@ export default Ember.ArrayController.extend(LocationName, {
     },
     
     _generateExpirationReport: function() {
-        var inventoryItems = this.get('inventoryItems'),            
-            reportRows = this.get('reportRows');
-        reportRows.clear();        
+        var endDate = this.get('endDate'),
+            inventoryItems = this.get('inventoryItems'),            
+            reportRows = this.get('reportRows'),
+            startDate = this.get('startDate');
+        if (Ember.isEmpty(startDate)) {
+            return;
+        }
+        reportRows.clear();
         inventoryItems.forEach(function(inventoryItem) {
-            var inventoryPurchases = inventoryItem.get('purchases');
+            var inventoryPurchases = inventoryItem.get('purchases').filter(function(purchase) {
+                var expirationDate = moment(purchase.get('expirationDate'));
+                return ((Ember.isEmpty(endDate) || expirationDate.isSame(endDate, 'day') || 
+                         expirationDate.isBefore(endDate, 'day')) && 
+                        (expirationDate.isSame(startDate, 'day') || expirationDate.isAfter(startDate, 'day')));
+            });
+
             inventoryPurchases.forEach(function(purchase) {
                 var currentQuantity = purchase.get('currentQuantity'),
                     expirationDate = purchase.get('expirationDate');
                 if (currentQuantity > 0 && !Ember.isEmpty('expirationDate')) {
-                    reportRows.push([
+                    reportRows.addObject([
                         inventoryItem.get('friendlyId'),
                         inventoryItem.get('name'),
                         currentQuantity,
@@ -182,7 +193,13 @@ export default Ember.ArrayController.extend(LocationName, {
         this.set('showReportResults', true);
         this.set('reportHeaders', ['Id','Name','Current Quantity','Distribution Unit','Expiration Date']);
         this._generateExport();
-        this.set('reportTitle', 'Inventory Expiration Date Report');
+        var formattedEndDate = '',
+            formattedStartDate = moment(startDate).format('l');            
+        if (!Ember.isEmpty(endDate)) {
+            formattedEndDate = moment(endDate).format('l');
+        }
+        this.set('reportTitle', 'Inventory Expiration Date Report %@ - %@'.fmt(formattedStartDate, formattedEndDate));
+        
     },        
     
     _generateExport: function() {
@@ -350,12 +367,16 @@ export default Ember.ArrayController.extend(LocationName, {
     
     setup: function() {
         var effectiveDate = this.get('effectiveDate'),
-            reportType = this.get('reportType');
+            reportType = this.get('reportType'),
+            startDate = this.get('startDate');
         if (Ember.isEmpty(effectiveDate)) {
             this.set('effectiveDate', new Date());
         }
         if (Ember.isEmpty(reportType)) {
             this.set('reportType', 'valuation');
+        }
+        if (Ember.isEmpty(startDate)) {
+            this.set('startDate', new Date());
         }        
     }.on('init')
 });
