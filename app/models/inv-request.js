@@ -1,8 +1,9 @@
 import AbstractModel from "hospitalrun/models/abstract";
+import LocationName from "hospitalrun/mixins/location-name";
 /**
  * Model to represent a request for inventory items.
  */ 
-var InventoryRequest = AbstractModel.extend({
+var InventoryRequest = AbstractModel.extend(LocationName, {
     adjustPurchases: DS.attr('boolean'),
     completedBy: DS.attr('string'),
     costPerUnit: DS.attr('number'),
@@ -23,6 +24,12 @@ var InventoryRequest = AbstractModel.extend({
     status: DS.attr('string'),
     transactionType: DS.attr('string'),
     visit: DS.belongsTo('visit'),
+    
+    deliveryLocationName: function() {
+        var aisle = this.get('deliveryAisle'), 
+            location = this.get('deliveryLocation');
+        return this.formatLocationName(location, aisle);
+    }.property('deliveryAisle', 'deliveryLocation'),
     
     validations: {
         inventoryItemTypeAhead: {
