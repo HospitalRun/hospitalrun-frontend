@@ -27,3 +27,9 @@ nbproject/project.xml
 dist/manifest.appcache
 dist/assets/hospitalrun.css.map
 server/config.js
+
+dist/assets/hospitalrun.css
+
+dist/assets/hospitalrun.css.map
+
+dist/manifest.appcache
