@@ -131,7 +131,12 @@ export default Ember.ArrayController.extend({
 
     isValuationReport: function() {
         var reportType = this.get('reportType');
-        return (reportType === 'valuation');        
+        if (reportType === 'valuation') {
+            this.set('startDate', null);
+            return true;
+        } else {
+            return false;
+        }
     }.property('reportType'),
     
     showReportResults: false,
@@ -174,12 +179,12 @@ export default Ember.ArrayController.extend({
         reportRows.addObject(reportRow);
     },
     
-    _addTotalsRow: function(summaryCost, summaryQuantity) {
+    _addTotalsRow: function(label, summaryCost, summaryQuantity) {
         if (summaryQuantity > 0) {
             this._addReportRow({
-                totalCost: 'Total: '+summaryCost.toFixed(2),
-                quantity: 'Total: '+summaryQuantity,
-                unitCost: 'Total: '+(summaryCost/summaryQuantity).toFixed(2)
+                totalCost: label + summaryCost.toFixed(2),
+                quantity: label + summaryQuantity,
+                unitCost: label + (summaryCost/summaryQuantity).toFixed(2)
             });
         }        
     },
@@ -244,8 +249,10 @@ export default Ember.ArrayController.extend({
     },
     
     _generateExpirationReport: function() {
-        var inventoryItems = this.get('inventoryItems'),            
+        var grandQuantity = 0,
+            inventoryItems = this.get('inventoryItems'),            
             reportRows = this.get('reportRows');
+        
         inventoryItems.forEach(function(inventoryItem) {
             var inventoryPurchases = this._filterByDate(inventoryItem.get('purchases'), 'expirationDate');
 
@@ -260,9 +267,13 @@ export default Ember.ArrayController.extend({
                         inventoryItem.get('distributionUnit'),
                         moment(expirationDate).format('l')                        
                     ]);
+                    grandQuantity += currentQuantity;
                 }
             }.bind(this));
         }.bind(this));
+        reportRows.addObject([
+            '','','Total: ' + grandQuantity, '', ''
+        ]);
         this.set('showReportResults', true);
         this.set('reportHeaders', ['Id','Name','Current Quantity','Distribution Unit','Expiration Date']);
         this._generateExport();
@@ -315,6 +326,8 @@ export default Ember.ArrayController.extend({
         Ember.RSVP.all(requestPromises,'All inventory requests matched to inventory items').then(function(){
             //Loop through each itinerary item, looking at the requests and purchases to determine
             //state of inventory at effective date
+            var grandCost = 0,
+                grandQuantity = 0;
             inventoryItems.forEach(function(item) {
                 var inventoryPurchases = item.get('purchases'),
                     inventoryRequests = item.get('requests'),
@@ -414,7 +427,9 @@ export default Ember.ArrayController.extend({
                                 summaryCost += totalCost;
                             }
                         }.bind(this));
-                        this._addTotalsRow(summaryCost, summaryQuantity);
+                        this._addTotalsRow('Subtotal: ', summaryCost, summaryQuantity);
+                        grandCost +=summaryCost;
+                        grandQuantity += summaryQuantity;
                         break;
                     }
                     case 'summaryTransfer':
@@ -433,6 +448,8 @@ export default Ember.ArrayController.extend({
                             row.totalCost = summaryCost.toFixed(2);                        
                             row.unitCost = (summaryCost/row.quantity).toFixed(2);
                             this._addReportRow(row);
+                            grandCost += summaryCost;
+                            grandQuantity += row.quantity;
                         }
                         break;
                     }
@@ -456,7 +473,9 @@ export default Ember.ArrayController.extend({
                             summaryCost += purchase.get('purchaseCost');
                             summaryQuantity += purchase.get('originalQuantity');
                         }.bind(this));
-                        this._addTotalsRow(summaryCost, summaryQuantity);                        
+                        this._addTotalsRow('Subtotal: ',summaryCost, summaryQuantity);
+                        grandCost +=summaryCost;
+                        grandQuantity += summaryQuantity;                        
                         break;
                     }
                     case 'summaryPurchase': {
@@ -470,8 +489,9 @@ export default Ember.ArrayController.extend({
                         }, 0);
                         row.unitCost = (summaryCost/row.quantity).toFixed(2);
                         row.totalCost = summaryCost.toFixed(2);
-                        
                         this._addReportRow(row);
+                        grandCost += summaryCost;
+                        grandQuantity += row.quantity;                        
                         break;
                     }                                        
                     case 'valuation': {
@@ -482,6 +502,8 @@ export default Ember.ArrayController.extend({
                             row.quantity += purchase.get('calculatedQuantity');
                             row.totalCost += (quantity * costPerUnit);
                         });
+                        grandCost += row.totalCost;
+                        grandQuantity += row.quantity;                        
                         row.totalCost = row.totalCost.toFixed(2);
                         row.unitCost = (row.totalCost/row.quantity).toFixed(2);
                         this._addReportRow(row);
@@ -489,6 +511,7 @@ export default Ember.ArrayController.extend({
                     }
                 }
             }.bind(this));
+            this._addTotalsRow('Total: ', grandCost, grandQuantity);
             this._generateExport();
         }.bind(this));
         this.set('showReportResults', true);
@@ -510,14 +533,20 @@ export default Ember.ArrayController.extend({
     _setReportTitle: function() {
         var endDate = this.get('endDate'),
             formattedEndDate = '',
-            formattedStartDate = moment(this.get('startDate')).format('l'),
+            formattedStartDate = '',
             reportType = this.get('reportType'),
-            reportTypes = this.get('reportTypes');
+            reportTypes = this.get('reportTypes'),
+            startDate = this.get('startDate');
         if (!Ember.isEmpty(endDate)) {
             formattedEndDate = moment(endDate).format('l');
         }
+        
         var reportDesc = reportTypes.findBy('value', reportType);
-        this.set('reportTitle', '%@ Report %@ - %@'.fmt(reportDesc.name, formattedStartDate, formattedEndDate));        
+        if (Ember.isEmpty(startDate)) {
+            this.set('reportTitle', '%@ Report %@'.fmt(reportDesc.name, formattedEndDate));
+        } else {
+            this.set('reportTitle', '%@ Report %@ - %@'.fmt(reportDesc.name, formattedStartDate, formattedEndDate));
+        }
     },
     
     actions: {
