@@ -378,7 +378,8 @@ h1 {
     }
 
     .category-links {
-        height: 254px;
+        height: 236px;
+        overflow: scroll;
     }
 
     .sub-section-link {
@@ -392,7 +393,7 @@ h1 {
         font-size: 16px;
         position: relative;
 
-        &:first-child { margin-top: 0; }
+        &:first-of-type { margin-top: 0; }
 
         .octicon {
             border-left: 1px solid rgba($navy_drk,.6);
