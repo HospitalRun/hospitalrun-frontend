@@ -13,33 +13,22 @@
             </a>
         </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            {{#if allowSearch}}
+        {{#if allowSearch}}
+        <div class="navbar-form navbar-left site-search-form" role="search">
+            <div class="form-group">
+                {{text-search valueBinding="searchText" autofocus="true" placeholder="Search" class="form-control"}}
+            </div>
+            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+        </div>
+        {{/if}}
 
-                <div class="navbar-form navbar-left site-search-form" role="search">
-                    <div class="form-group">
-                        {{text-search valueBinding="searchText" autofocus="true" placeholder="Search" class="form-control"}}
-                    </div>
-                    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-                </div>
-            {{/if}}
-            <ul class="nav navbar-nav navbar-right">
-                {{#if showUsers}}
-                    <li>{{#link-to 'users'}}Users{{/link-to}}</li>
-                {{/if}}
-                {{#if showInventory}}
-                    <li>{{#link-to 'inventory'}}Inventory{{/link-to}}</li>
-                {{/if}}
-                {{#if showPatients}}
-                    <li>{{#link-to 'patients'}}Patients{{/link-to}}</li>
-                {{/if}}
-                {{#if session.isAuthenticated}}
-                    <li><a {{ action 'invalidateSession' }}>Logout</a></li>
-                {{else}}
-                    <li>{{#link-to 'login'}}Login{{/link-to}}</li>
-                {{/if}}
-            </ul>
-        </div><!-- /.navbar-collapse -->
+        <nav class="header-nav">
+        {{#if session.isAuthenticated}}
+            <a href="#" class="logout" {{ action 'invalidateSession' }}>Logout</a>
+        {{else}}
+            {{#link-to 'login'}}Login{{/link-to}}
+        {{/if}}
+            <a class="menu-link" href="/#">{{partial "components/menu-svg"}}</a>
+        </nav>
     </div><!-- /.container-fluid -->
 </nav>

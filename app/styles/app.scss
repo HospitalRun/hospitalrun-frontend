@@ -123,6 +123,28 @@ body {
     //color: #fff;
 }
 
+.header-nav {
+    > a {
+        display: block;
+        float: right;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 64px;
+        padding: 0 16px;
+        text-decoration: none;
+
+        &:hover { color: $green; }
+    }
+
+    .menu-link {
+        position: relative;
+        top: 5px;
+
+        &:hover path { fill: $green; }
+    }
+}
+
 .navbar {
     min-height: 64px;
 }
