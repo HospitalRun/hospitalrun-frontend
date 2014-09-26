@@ -33,3 +33,5 @@ dist/assets/hospitalrun.css
 dist/assets/hospitalrun.css.map
 
 dist/manifest.appcache
+
+dist/assets/hospitalrun.js
