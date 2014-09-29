@@ -1,5 +1,6 @@
 import DateSort from 'hospitalrun/utils/date-sort';
-export default Ember.ArrayController.extend({
+import NumberFormat from 'hospitalrun/mixins/number-format';
+export default Ember.ArrayController.extend(NumberFormat, {
     needs: ['inventory'],
     effectiveDate: null,
     inventoryItems: Ember.computed.alias('controllers.inventory.model'),
@@ -37,17 +38,30 @@ export default Ember.ArrayController.extend({
         reorder: {
             label: 'Reorder Point',
             include: false,
-            property: 'inventoryItem.reorderPoint'
+            property: 'inventoryItem.reorderPoint',
+            numberFormat: true
         }, 
         price: {
             label: 'Price Per Unit',
             include: false,
-            property: 'inventoryItem.price'
+            property: 'inventoryItem.price',
+            numberFormat: true
         }, 
         quantity: {
             label: 'Quantity', 
             include: true,
-            property: 'quantity'
+            property: 'quantity',
+            numberFormat: true
+        },
+        consumedPerDay: {
+            label: 'Consumption Rate', 
+            include: false,
+            property: 'consumedPerDay'            
+        },
+        daysLeft: {
+            label: 'Days Left', 
+            include: false,
+            property: 'daysLeft'
         },
         unit: {
             label: 'Distribution Unit', 
@@ -57,12 +71,14 @@ export default Ember.ArrayController.extend({
         unitcost: {
             label: 'Unit Cost',
             include: true,
-            property: 'unitCost'
+            property: 'unitCost',
+            numberFormat: true
         },
         total: {
             label: 'Total Cost',
             include: true,
-            property: 'totalCost'
+            property: 'totalCost',
+            numberFormat: true
         },         
         gift: {
             label: 'Gift In Kind',
@@ -78,7 +94,10 @@ export default Ember.ArrayController.extend({
     reportRows: [],
     reportTitle: null,
     reportType: null,
-    reportTypes: [{
+    reportTypes: [        {
+        name: 'Days Supply Left In Stock',
+        value: 'daysLeft'
+    }, {
         name: 'Detailed Stock Usage',
         value: 'detailedUsage'
     }, {
@@ -116,9 +135,23 @@ export default Ember.ArrayController.extend({
         
     }.property('reportType'),
     
+    includeDaysLeft: function() {
+        var reportType = this.get('reportType');
+        if (reportType === 'daysLeft') {
+            this.set('reportColumns.consumedPerDay.include', true);
+            this.set('reportColumns.daysLeft.include', true);
+            return true;
+        } else {
+            this.set('reportColumns.consumedPerDay.include', false);
+            this.set('reportColumns.daysLeft.include', false);
+            return false;
+        }
+        
+    }.property('reportType'),    
+    
     includeCostFields: function() {
         var reportType = this.get('reportType');
-        if (reportType === 'detailedTransfer' || reportType === 'summaryTransfer') {
+        if (reportType === 'detailedTransfer' || reportType === 'summaryTransfer' || reportType === 'daysLeft') {
             this.set('reportColumns.total.include', false);
             this.set('reportColumns.unitcost.include', false);
             return false;
@@ -146,7 +179,12 @@ export default Ember.ArrayController.extend({
         return (reportType !== 'expiration');
     }.property('reportType'),
     
-    _addReportRow: function(row) {
+    /**
+     * Add a row to the report using the selected columns to add the row.
+     * @param {Array} row the row to add
+     * @param {boolean} skipNumberFormatting true if number columns should not be formatted.
+     */
+    _addReportRow: function(row, skipNumberFormatting) {
         var columnValue,
             locations, 
             locationDetails = '',
@@ -165,12 +203,15 @@ export default Ember.ArrayController.extend({
                             locationDetails += '; ';
                         }
                         if (!Ember.isEmpty(locations[i].quantity)) {
-                            locationDetails += '%@ (%@ available)'.fmt(locations[i].name, locations[i].quantity);
+                            locationDetails += '%@ (%@ available)'.fmt(locations[i].name, 
+                                               this.numberFormat(locations[i].quantity));
                         } else {
                             locationDetails += locations[i].name;
                         }
                     }
                     reportRow.push(locationDetails);
+                } else if (reportColumns[column].numberFormat && !skipNumberFormatting) {
+                    reportRow.push(this.numberFormat(columnValue));
                 } else {
                     reportRow.push(columnValue);
                 }
@@ -182,10 +223,10 @@ export default Ember.ArrayController.extend({
     _addTotalsRow: function(label, summaryCost, summaryQuantity) {
         if (summaryQuantity > 0) {
             this._addReportRow({
-                totalCost: label + summaryCost.toFixed(2),
-                quantity: label + summaryQuantity,
-                unitCost: label + (summaryCost/summaryQuantity).toFixed(2)
-            });
+                totalCost: label +  this.numberFormat(summaryCost),
+                quantity: label + this.numberFormat(summaryQuantity),
+                unitCost: label + this.numberFormat(summaryCost/summaryQuantity)
+            }, true);
         }        
     },
     
@@ -286,7 +327,7 @@ export default Ember.ArrayController.extend({
             dataArray = [reportHeaders];
         dataArray.addObjects(this.get('reportRows'));
         dataArray.forEach(function(row) { 
-            csvRows.push(row.join(','));   // unquoted CSV row
+            csvRows.push('"'+row.join('","')+'"');
         });
         var csvString = csvRows.join('\r\n');
         var uriContent = "data:application/csv;charset=utf-8," + encodeURIComponent(csvString);
@@ -294,14 +335,24 @@ export default Ember.ArrayController.extend({
     },
     
     _generateValuationReport: function() {
-        var inventoryItems = this.get('inventoryItems'),
+        var dateDiff,
+            inventoryItems = this.get('inventoryItems'),
             inventoryRequests =  this._filterByDate(this.get('model'), 'dateCompleted'),
             requestPromises = [],
             reportType = this.get('reportType');
+        if (reportType === 'daysLeft') {
+            var endDate = this.get('endDate'),
+                startDate = this.get('startDate');
+            if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
+                return;
+            } else {
+                dateDiff = moment(endDate).diff(startDate, 'days');
+            }
+        }
         inventoryItems.forEach(function(item) {
             //Clear out requests from last time report was run.
             item.set('requests', []);
-        });                
+        });
         if (!Ember.isEmpty(inventoryRequests)) {
             //SORT REQUESTS
             inventoryRequests.sort(function(firstRequest, secondRequest) {
@@ -393,6 +444,25 @@ export default Ember.ArrayController.extend({
                     summaryQuantity = 0;
                     
                 switch(reportType) {
+                    case 'daysLeft': {
+                        var consumedQuantity = inventoryRequests.reduce(function(previousValue, request) {
+                            if (request.get('transactionType') === 'Fulfillment') {
+                                return previousValue += request.get('quantity');
+                            } else {
+                                return previousValue;
+                            }
+                        }, 0);
+                        row.quantity = item.get('quantity');
+                        if (consumedQuantity > 0) {
+                            row.consumedPerDay = this.numberFormat(consumedQuantity/dateDiff);
+                            row.daysLeft = this.numberFormat(row.quantity/row.consumedPerDay);
+                        } else {
+                            row.consumedPerDay = '?';
+                            row.daysLeft = '?';                            
+                        }
+                        this._addReportRow(row);
+                        break;
+                    }                        
                     case 'detailedTransfer':
                     case 'detailedUsage': {
                         inventoryRequests.forEach(function(request) {
@@ -421,7 +491,7 @@ export default Ember.ArrayController.extend({
                                     type: request.get('transactionType'),
                                     locations: locations,
                                     unitCost: request.get('costPerUnit'),
-                                    totalCost: totalCost.toFixed(2)
+                                    totalCost: totalCost
                                 });
                                 summaryQuantity += request.get('quantity');
                                 summaryCost += totalCost;
@@ -445,8 +515,8 @@ export default Ember.ArrayController.extend({
                             }
                         }, 0);
                         if (row.quantity > 0) {
-                            row.totalCost = summaryCost.toFixed(2);                        
-                            row.unitCost = (summaryCost/row.quantity).toFixed(2);
+                            row.totalCost = summaryCost;
+                            row.unitCost = (summaryCost/row.quantity);
                             this._addReportRow(row);
                             grandCost += summaryCost;
                             grandQuantity += row.quantity;
@@ -487,8 +557,8 @@ export default Ember.ArrayController.extend({
                             });
                             return previousValue += purchase.get('originalQuantity');
                         }, 0);
-                        row.unitCost = (summaryCost/row.quantity).toFixed(2);
-                        row.totalCost = summaryCost.toFixed(2);
+                        row.unitCost = (summaryCost/row.quantity);
+                        row.totalCost = summaryCost;
                         this._addReportRow(row);
                         grandCost += summaryCost;
                         grandQuantity += row.quantity;                        
@@ -504,8 +574,8 @@ export default Ember.ArrayController.extend({
                         });
                         grandCost += row.totalCost;
                         grandQuantity += row.quantity;                        
-                        row.totalCost = row.totalCost.toFixed(2);
-                        row.unitCost = (row.totalCost/row.quantity).toFixed(2);
+                        row.totalCost = row.totalCost;
+                        row.unitCost = (row.totalCost/row.quantity);
                         this._addReportRow(row);
                         break;                        
                     }

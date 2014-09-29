@@ -36,6 +36,10 @@
                         {{em-checkbox label=reportColumns.total.label property="reportColumns.total.include" class="col-xs-2"}}
                         {{em-checkbox label=reportColumns.unitcost.label property="reportColumns.unitcost.include" class="col-xs-2"}}
                     {{/if}}
+                    {{#if includeDaysLeft}}
+                        {{em-checkbox label=reportColumns.consumedPerDay.label property="reportColumns.consumedPerDay.include" class="col-xs-2"}}
+                        {{em-checkbox label=reportColumns.daysLeft.label property="reportColumns.daysLeft.include" class="col-xs-2"}}                    
+                    {{/if}}
                     {{em-checkbox label=reportColumns.price.label property="reportColumns.price.include" class="col-xs-2"}}
                 </div>
                 <div class="row">
