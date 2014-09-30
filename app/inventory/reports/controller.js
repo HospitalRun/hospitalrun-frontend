@@ -610,8 +610,28 @@ export default Ember.ArrayController.extend(NumberFormat, {
                 }
             }.bind(this));
             if (reportType === 'byLocation') {
+                var currentLocation = '',
+                    parentLocation = '',
+                    parentCount = 0,
+                    subLocation = false;
                 locationSummary = locationSummary.sortBy('name');
                 locationSummary.forEach(function(location) {
+                    if (location.name.indexOf(':') > -1) {
+                        parentLocation = location.name.split(':')[0];
+                        subLocation = true;
+                    } else {
+                        parentLocation = location.name;
+                        subLocation = false;                        
+                    }
+                    if (currentLocation !== parentLocation) {
+                        if (parentCount > 0) {
+                            this._addReportRow({
+                                quantity: 'Total for %@: %@'.fmt(currentLocation, this.numberFormat(parentCount))
+                            }, true);                            
+                        }
+                        parentCount = 0;
+                        currentLocation = parentLocation;
+                    }
                     for (var id in location.items) {
                         this._addReportRow({
                             giftInKind: location.items[id].giftInKind,
@@ -621,11 +641,19 @@ export default Ember.ArrayController.extend(NumberFormat, {
                                 name: location.name
                             }]
                         });
+                        parentCount += location.items[id].quantity;                        
                     }
-                    this._addReportRow({
-                        quantity: 'Total for %@: %@'.fmt(location.name, this.numberFormat(location.quantity))
-                    }, true);
+                    if (subLocation) {
+                        this._addReportRow({
+                            quantity: 'Subtotal for %@: %@'.fmt(location.name, this.numberFormat(location.quantity))
+                        }, true);
+                    }
                 }.bind(this));
+                if (parentCount > 0) {
+                    this._addReportRow({
+                        quantity: 'Total for %@: %@'.fmt(parentLocation, this.numberFormat(parentCount))
+                    }, true);                            
+                }                
             } else {
                 this._addTotalsRow('Total: ', grandCost, grandQuantity);
             }
