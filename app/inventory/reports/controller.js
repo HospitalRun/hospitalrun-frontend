@@ -94,38 +94,41 @@ export default Ember.ArrayController.extend(NumberFormat, {
     reportRows: [],
     reportTitle: null,
     reportType: null,
-    reportTypes: [        {
+    reportTypes: [{
         name: 'Days Supply Left In Stock',
         value: 'daysLeft'
-    }, {
-        name: 'Detailed Stock Usage',
-        value: 'detailedUsage'
-    }, {
-        name: 'Summary Stock Usage',
-        value: 'summaryUsage'
     }, {
         name: 'Detailed Purchase',
         value: 'detailedPurchase'
     }, {
-        name: 'Summary Purchase',
-        value: 'summaryPurchase'
+        name: 'Detailed Stock Usage',
+        value: 'detailedUsage'
     }, {
         name: 'Detailed Stock Transfer',
         value: 'detailedTransfer'
-    }, {
-        name: 'Summary Stock Transfer',
-        value: 'summaryTransfer'
     }, {        
         name: 'Expiration Date',
         value: 'expiration'
     }, {
+        name: 'Inventory By Location',
+        value: 'byLocation'
+    }, {
         name: 'Inventory Valuation',
         value: 'valuation'
+    }, {
+        name: 'Summary Purchase',
+        value: 'summaryPurchase'
+    }, {
+        name: 'Summary Stock Usage',
+        value: 'summaryUsage'
+    }, {
+        name: 'Summary Stock Transfer',
+        value: 'summaryTransfer'
     }],
 
     includeDate: function() {
         var reportType = this.get('reportType');
-        if (reportType.indexOf('detailed') ===0) {
+        if (!Ember.isEmpty(reportType) && reportType.indexOf('detailed') ===0) {
             this.set('reportColumns.date.include', true);                     
             return true;
         } else {
@@ -151,7 +154,7 @@ export default Ember.ArrayController.extend(NumberFormat, {
     
     includeCostFields: function() {
         var reportType = this.get('reportType');
-        if (reportType === 'detailedTransfer' || reportType === 'summaryTransfer' || reportType === 'daysLeft') {
+        if (reportType === 'detailedTransfer' || reportType === 'summaryTransfer' || reportType === 'daysLeft' || reportType === 'byLocation') {
             this.set('reportColumns.total.include', false);
             this.set('reportColumns.unitcost.include', false);
             return false;
@@ -162,12 +165,18 @@ export default Ember.ArrayController.extend(NumberFormat, {
         }
     }.property('reportType'),
 
-    isValuationReport: function() {
+    showEffectiveDate: function() {
         var reportType = this.get('reportType');
-        if (reportType === 'valuation') {
+        if (reportType === 'valuation' || reportType === 'byLocation') {
             this.set('startDate', null);
+            if (Ember.isEmpty(this.get('endDate'))) {
+                this.set('endDate', new Date());
+            }
             return true;
         } else {
+            if (Ember.isEmpty(this.get('startDate'))) {
+                this.set('startDate', new Date());
+            }    
             return false;
         }
     }.property('reportType'),
@@ -334,10 +343,11 @@ export default Ember.ArrayController.extend(NumberFormat, {
         this.set('csvExport', uriContent);
     },
     
-    _generateValuationReport: function() {
+    _generateInventoryReport: function() {
         var dateDiff,
             inventoryItems = this.get('inventoryItems'),
             inventoryRequests =  this._filterByDate(this.get('model'), 'dateCompleted'),
+            locationSummary = [],
             requestPromises = [],
             reportType = this.get('reportType');
         if (reportType === 'daysLeft') {
@@ -444,6 +454,24 @@ export default Ember.ArrayController.extend(NumberFormat, {
                     summaryQuantity = 0;
                     
                 switch(reportType) {
+                    case 'byLocation': {
+                        row.locations.forEach(function(location) {
+                            var locationToUpdate = locationSummary.findBy('name', location.name);
+                            if (Ember.isEmpty(locationToUpdate)) {
+                                locationToUpdate = Ember.copy(location);
+                                locationToUpdate.items = {};
+                                locationSummary.push(locationToUpdate);
+                            } else {
+                                locationToUpdate.quantity += location.quantity;
+                            }
+                            locationToUpdate.items[item.id] = {
+                                item: item,
+                                quantity: location.quantity,
+                                giftInKind: row.giftInKind
+                            };
+                        });
+                        break;
+                    }
                     case 'daysLeft': {
                         var consumedQuantity = inventoryRequests.reduce(function(previousValue, request) {
                             if (request.get('transactionType') === 'Fulfillment') {
@@ -581,7 +609,26 @@ export default Ember.ArrayController.extend(NumberFormat, {
                     }
                 }
             }.bind(this));
-            this._addTotalsRow('Total: ', grandCost, grandQuantity);
+            if (reportType === 'byLocation') {
+                locationSummary = locationSummary.sortBy('name');
+                locationSummary.forEach(function(location) {
+                    for (var id in location.items) {
+                        this._addReportRow({
+                            giftInKind: location.items[id].giftInKind,
+                            inventoryItem: location.items[id].item,
+                            quantity: location.items[id].quantity,
+                            locations: [{
+                                name: location.name
+                            }]
+                        });
+                    }
+                    this._addReportRow({
+                        quantity: 'Total for %@: %@'.fmt(location.name, this.numberFormat(location.quantity))
+                    }, true);
+                }.bind(this));
+            } else {
+                this._addTotalsRow('Total: ', grandCost, grandQuantity);
+            }
             this._generateExport();
         }.bind(this));
         this.set('showReportResults', true);
@@ -635,26 +682,10 @@ export default Ember.ArrayController.extend(NumberFormat, {
                     break;                    
                 }
                 default: {
-                    this._generateValuationReport();
+                    this._generateInventoryReport();
                     break;
                 }
             }
         }
-    },
-
-    
-    setup: function() {
-        var effectiveDate = this.get('effectiveDate'),
-            reportType = this.get('reportType'),
-            startDate = this.get('startDate');
-        if (Ember.isEmpty(effectiveDate)) {
-            this.set('effectiveDate', new Date());
-        }
-        if (Ember.isEmpty(reportType)) {
-            this.set('reportType', 'valuation');
-        }
-        if (Ember.isEmpty(startDate)) {
-            this.set('startDate', new Date());
-        }        
-    }.on('init')
+    }
 });

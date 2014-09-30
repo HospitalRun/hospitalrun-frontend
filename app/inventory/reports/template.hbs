@@ -9,7 +9,7 @@
                 }}
             </div>
             <div class="row">
-                {{#if isValuationReport}}
+                {{#if showEffectiveDate}}
                     {{date-picker property="endDate" label="Effective Date" class="col-sm-4"}}
                 {{else}}
                     {{date-picker property="startDate" label="Start Date" class="col-sm-4"}}
