@@ -41,6 +41,8 @@ Router.map(function() {
     });    
     
     this.route('login');
+    
+    this.route('lookup');
 
     this.resource('medication', function() {
         this.route('completed');

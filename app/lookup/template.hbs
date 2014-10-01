@@ -1,0 +1,33 @@
+<div class="panel panel-primary">
+    <div class="panel-body">
+        {{#em-form model=this submit_button=false }}
+            <div class="row">
+                {{em-select class="col-xs-3" label="Lookup Type" 
+                    property="reportType" content=lookupTypes
+                    optionValuePath="content.value" optionLabelPath="content.name"
+                    selected=lookupType
+                }}
+            </div>        
+        {{/em-form}}
+    </div>
+    <div class="panel-footer">
+        <button class="btn btn-default" {{action 'generateReport'}}>Generate Report</button>
+    </div>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-body">
+        <table class="table">
+            <tr class="table-header">
+                <th>Value</th>
+                <th>Actions</th>
+            </tr>
+            {{#each lookupTypeValues}}
+                <tr>
+
+                    <td>{{this}}</td>
+                    <td>Delete</td>
+                </tr>
+            {{/each}}
+        </table>
+    </div>
+</div>
