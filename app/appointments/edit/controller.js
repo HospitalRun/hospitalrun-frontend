@@ -15,7 +15,7 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
     }, {
         name: 'locationList',
         property: 'location',
-        id: 'location_list'
+        id: 'visit_location_list'
     }],
     
     newAppointment: false,

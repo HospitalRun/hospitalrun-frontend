@@ -9,7 +9,7 @@ export default AbstractModuleRoute.extend({
         findArgs: ['lookup','physician_list']
     },  {
         name: 'locationList',
-        findArgs: ['lookup','location_list']
+        findArgs: ['lookup','visit_location_list']
     }],
     modelName: 'visit',
     moduleName: 'visits',

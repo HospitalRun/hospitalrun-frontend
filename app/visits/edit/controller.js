@@ -71,7 +71,7 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
     }, {
         name: 'locationList',
         property: 'location',
-        id: 'location_list'
+        id: 'visit_location_list'
     }],
     
     newVisit: false,
