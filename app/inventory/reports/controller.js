@@ -154,7 +154,7 @@ export default Ember.ArrayController.extend(NumberFormat, {
     
     includeCostFields: function() {
         var reportType = this.get('reportType');
-        if (reportType === 'detailedTransfer' || reportType === 'summaryTransfer' || reportType === 'daysLeft' || reportType === 'byLocation') {
+        if (reportType === 'detailedTransfer' || reportType === 'summaryTransfer' || reportType === 'daysLeft') {
             this.set('reportColumns.total.include', false);
             this.set('reportColumns.unitcost.include', false);
             return false;
@@ -280,6 +280,18 @@ export default Ember.ArrayController.extend(NumberFormat, {
             }
             purchaseToAdjust.set('calculatedQuantity',calculatedQuantity);
         }        
+    },
+    
+    _calculateCosts: function(inventoryPurchases, row) {
+        //Calculate quantity and cost per unit for the row
+        inventoryPurchases.forEach(function(purchase) {
+            var costPerUnit = purchase.get('costPerUnit'),
+                quantity = purchase.get('calculatedQuantity');                                    
+            row.quantity += purchase.get('calculatedQuantity');
+            row.totalCost += (quantity * costPerUnit);
+        });
+        row.unitCost = (row.totalCost/row.quantity);
+        return row;
     },
     
     /**
@@ -464,12 +476,18 @@ export default Ember.ArrayController.extend(NumberFormat, {
                             } else {
                                 locationToUpdate.quantity += location.quantity;
                             }
+                            var costData = this._calculateCosts(inventoryPurchases, {
+                                quantity: 0,
+                                totalCost: 0
+                            });
                             locationToUpdate.items[item.id] = {
                                 item: item,
                                 quantity: location.quantity,
-                                giftInKind: row.giftInKind
+                                giftInKind: row.giftInKind,                                
+                                totalCost: (costData.unitCost * location.quantity),
+                                unitCost: costData.unitCost
                             };
-                        });
+                        }.bind(this));
                         break;
                     }
                     case 'daysLeft': {
@@ -593,17 +611,9 @@ export default Ember.ArrayController.extend(NumberFormat, {
                         break;
                     }                                        
                     case 'valuation': {
-                        //Calculate quantity and cost per unit for the row
-                        inventoryPurchases.forEach(function(purchase) {
-                            var costPerUnit = purchase.get('costPerUnit'),
-                                quantity = purchase.get('calculatedQuantity');                                    
-                            row.quantity += purchase.get('calculatedQuantity');
-                            row.totalCost += (quantity * costPerUnit);
-                        });
+                        this._calculateCosts(inventoryPurchases, row);
                         grandCost += row.totalCost;
                         grandQuantity += row.quantity;                        
-                        row.totalCost = row.totalCost;
-                        row.unitCost = (row.totalCost/row.quantity);
                         this._addReportRow(row);
                         break;                        
                     }
@@ -611,6 +621,7 @@ export default Ember.ArrayController.extend(NumberFormat, {
             }.bind(this));
             if (reportType === 'byLocation') {
                 var currentLocation = '',
+                    locationCost = 0,
                     parentLocation = '',
                     parentCount = 0,
                     subLocation = false;
@@ -624,14 +635,12 @@ export default Ember.ArrayController.extend(NumberFormat, {
                         subLocation = false;                        
                     }
                     if (currentLocation !== parentLocation) {
-                        if (parentCount > 0) {
-                            this._addReportRow({
-                                quantity: 'Total for %@: %@'.fmt(currentLocation, this.numberFormat(parentCount))
-                            }, true);                            
-                        }
+                        this._addTotalsRow('Total for %@: '.fmt(currentLocation), locationCost, parentCount);
                         parentCount = 0;
+                        locationCost = 0;
                         currentLocation = parentLocation;
                     }
+                    var subLocationCost = 0;
                     for (var id in location.items) {
                         this._addReportRow({
                             giftInKind: location.items[id].giftInKind,
@@ -639,24 +648,23 @@ export default Ember.ArrayController.extend(NumberFormat, {
                             quantity: location.items[id].quantity,
                             locations: [{
                                 name: location.name
-                            }]
+                            }], 
+                            totalCost: location.items[id].totalCost,
+                            unitCost: location.items[id].unitCost
                         });
-                        parentCount += location.items[id].quantity;                        
+                        parentCount += location.items[id].quantity;
+                        locationCost += location.items[id].totalCost;
+                        subLocationCost += location.items[id].totalCost;
+                        grandCost += location.items[id].totalCost;
+                        grandQuantity += location.items[id].quantity;
                     }
                     if (subLocation) {
-                        this._addReportRow({
-                            quantity: 'Subtotal for %@: %@'.fmt(location.name, this.numberFormat(location.quantity))
-                        }, true);
+                        this._addTotalsRow('Subtotal for %@: %@: '.fmt(location.name), subLocationCost, location.quantity);
                     }
                 }.bind(this));
-                if (parentCount > 0) {
-                    this._addReportRow({
-                        quantity: 'Total for %@: %@'.fmt(parentLocation, this.numberFormat(parentCount))
-                    }, true);                            
-                }                
-            } else {
-                this._addTotalsRow('Total: ', grandCost, grandQuantity);
-            }
+                this._addTotalsRow('Total for %@: '.fmt(parentLocation), locationCost, parentCount);
+            } 
+            this._addTotalsRow('Total: ', grandCost, grandQuantity);            
             this._generateExport();
         }.bind(this));
         this.set('showReportResults', true);
@@ -690,6 +698,7 @@ export default Ember.ArrayController.extend(NumberFormat, {
         if (Ember.isEmpty(startDate)) {
             this.set('reportTitle', '%@ Report %@'.fmt(reportDesc.name, formattedEndDate));
         } else {
+            formattedStartDate = moment(startDate).format('l');
             this.set('reportTitle', '%@ Report %@ - %@'.fmt(reportDesc.name, formattedStartDate, formattedEndDate));
         }
     },
