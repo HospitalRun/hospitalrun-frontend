@@ -1,4 +1,5 @@
 export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+    hideNewButton: false,
     newButtonAction: null,
     newButtonText: null,
     pageTitle: null,
@@ -8,7 +9,9 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         var sectionDetails = {
             currentScreenTitle: this.get('pageTitle')
         };
-        if (!Ember.isEmpty(this.get('newButtonAction'))) {
+        if (this.get('hideNewButton')) {
+            sectionDetails.newButtonAction = null;
+        } else if (!Ember.isEmpty(this.get('newButtonAction'))) {
             sectionDetails.newButtonAction = this.get('newButtonAction');
         }
         if (!Ember.isEmpty(this.get('newButtonText'))) {

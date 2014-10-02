@@ -55,14 +55,8 @@ export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRou
             this.transitionTo(this.get('editPath'), item);
         },        
         newItem: function() {
-            if (this.currentUserCan(this.get('addCapability'))) {            
-                var newId = this.generateId();
-                var data = this.getNewData();
-                if (newId) {
-                    data.id = newId;
-                }
-                var item = this.get('store').createRecord(this.get('modelName'), data);            
-                this.transitionTo(this.get('editPath'), item);
+            if (this.currentUserCan(this.get('addCapability'))) {
+                this.transitionTo(this.get('editPath'), 'new');
             }
         },        
         /**

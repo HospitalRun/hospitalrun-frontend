@@ -5,6 +5,13 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+    this.resource('admin', function() {
+        this.route('lookup', { path: '/' });
+        this.resource('users', function() {
+            this.route('edit', { path: "/edit/:user_id" });
+        });        
+    });
+    
     this.resource('appointments', function() {
         this.route('calendar');
         this.route('edit', { path: "/edit/:appointment_id" });
@@ -41,8 +48,6 @@ Router.map(function() {
     });    
     
     this.route('login');
-    
-    this.route('lookup');
 
     this.resource('medication', function() {
         this.route('completed');
@@ -53,10 +58,6 @@ Router.map(function() {
     this.resource('patients', function() {
         this.route('edit', { path: "/edit/:patient_id" });
         this.route('search', { path: "/search/:search_text" });
-    });
-
-    this.resource('users', function() {
-        this.route('edit', { path: "/edit/:user_id" });
     });
         
     this.resource('visits', function() {

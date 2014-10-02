@@ -1,3 +1,4 @@
 export default DS.Model.extend({
-    value: DS.attr('')    
+    value: DS.attr(''),
+    userCanAdd: DS.attr('boolean')
 });

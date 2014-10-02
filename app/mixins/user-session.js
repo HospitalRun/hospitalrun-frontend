@@ -1,5 +1,9 @@
 export default Ember.Mixin.create({
     defaultCapabilities: {
+        admin: [
+            'User Administrator',
+            'System Administrator'
+        ],
         appointments: [
             'Data Entry',
             'Hospital Administrator',

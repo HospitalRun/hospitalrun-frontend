@@ -237,13 +237,13 @@
                 </nav>
             </div>
         {{/if}}
-        {{#if userCan_users}}
+        {{#if userCan_admin}}
             <div class="nav-category">
                 <header class="category-header">
                     <h2 class="primary-section">
-                        {{#link-to 'users.index' class="primary-section-link"}}
+                        {{#link-to 'admin.lookup' class="primary-section-link"}}
                             <span class="mega-octicon octicon-person"></span>
-                            Users
+                            Admin
                         {{/link-to}}
                     </h2>
                     <div class="panel-options">
@@ -258,15 +258,21 @@
                     </div>
                 </header>
                 <nav class="category-links">
-                    {{#link-to 'users.index' class="sub-section-link"}}
-                        User listing
-                        <span class="octicon octicon-chevron-right"></span>
-                    {{/link-to}}
-                    {{#if userCan_add_user}}
-                        {{#link-to 'users.edit' 'new' class="sub-section-link"}}
-                            New user
-                            <span class="octicon octicon-plus"></span>
+                    {{#if userCan_users}}
+                        {{#link-to 'admin.lookup' class="sub-section-link"}}
+                            Lookup Lists
+                            <span class="octicon octicon-chevron-right"></span>
+                        {{/link-to}}                    
+                        {{#link-to 'users.index' class="sub-section-link"}}
+                            User listing
+                            <span class="octicon octicon-chevron-right"></span>
                         {{/link-to}}
+                        {{#if userCan_add_user}}
+                            {{#link-to 'users.edit' 'new' class="sub-section-link"}}
+                                New user
+                                <span class="octicon octicon-plus"></span>
+                            {{/link-to}}
+                        {{/if}}
                     {{/if}}
                 </nav>
             </div>
