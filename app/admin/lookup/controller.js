@@ -47,12 +47,15 @@ export default Ember.ArrayController.extend({
     lookupTypeList: function() {
         var lookupType = this.get('lookupType'),
             lookupItem = this.get('model').findBy('id', lookupType);
-        if (!Ember.isEmpty(lookupItem)) {            
-            if (Ember.isEmpty(lookupItem.get('userCanAdd'))) {
-                lookupItem.set('userCanAdd', true);                
-            }
-            return lookupItem;
+        if (Ember.isEmpty(lookupItem)) {
+            lookupItem = this.get('store').createRecord('lookup', {
+                id: lookupType
+            });          
         }
+        if (Ember.isEmpty(lookupItem.get('userCanAdd'))) {
+            lookupItem.set('userCanAdd', true);                
+        }
+        return lookupItem;        
     }.property('lookupType'),
     
     lookupTypeValues: Ember.computed.alias('lookupTypeList.value'),
