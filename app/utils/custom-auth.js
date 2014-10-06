@@ -16,11 +16,13 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
         this._makeRequest('POST', {name: user.name}, '/chkuser').then(function(response) {
             Ember.run(function() {
                 if(response.error) {
+                    console.log("CHECKUSER FAILED", response);
                     reject(response);
                 }
                 user.displayName = response.displayName;
                 user.role = response.role;
                 user.prefix = response.prefix;
+                console.log("CHECKUSER SUCCESS", user);
                 resolve(user);
             });
         }, function() {
