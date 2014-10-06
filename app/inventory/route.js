@@ -8,9 +8,6 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
         name: 'aisleLocationList',
         findArgs: ['lookup','aisle_location_list']
     }, {
-        name: 'deliveryLocationList',
-        findArgs: ['lookup','delivery_location_list']
-    }, {
         name: 'expenseAccountList',
         findArgs: ['lookup','expense_account_list']
     }, {
