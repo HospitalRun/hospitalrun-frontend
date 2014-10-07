@@ -11,8 +11,8 @@
         <label class="control-label">Quantity Available</label>
         <p class="form-control-static">{{quantity}}</p>
     </div>
-    {{type-ahead property="transferLocation" label="Transfer To Location" content=warehouseList.value selection=transferLocation }}
-    {{type-ahead property="transferAisleLocation" label="Transfer To Aisle Location" content=aisleLocationList.value selection=transferAisleLocation }}
+    {{select-or-typeahead property="transferLocation" label="Transfer To Location" list=warehouseList selection=transferLocation }}
+    {{select-or-typeahead property="transferAisleLocation" label="Transfer To Aisle Location" list=aisleLocationList selection=transferAisleLocation }}
     <div class="row">
         {{em-input property="adjustmentQuantity" label="Quantity" class="col-sm-3"}}        
     </div>

@@ -40,11 +40,11 @@
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             {{em-text label="Address" property="address" rows=3 }}
-                            {{type-ahead property="country" label="Country" content=countryList.value selection=country }}
+                            {{select-or-typeahead property="country" label="Country" list=countryList selection=country }}
                             {{em-input property="phone" label="Phone Contact"}}
                             {{em-input property="email" type="email" label="Email"}}
                             {{em-input property="parent" label="Parent/Guardian"}}
-                            {{type-ahead property="clinic" label="Clinic Site" content=clinicList.value selection=clinic }}
+                            {{select-or-typeahead property="clinic" label="Clinic Site" list=clinicList selection=clinic }}
                         </div>
                     </div>
                 {{/em-form}}

@@ -30,8 +30,8 @@
         </div>
     </div>
     {{#if isNew}}
-        {{type-ahead property="location" label="Location" content=warehouseList.value selection=location }}
-        {{type-ahead property="aisleLocation" label="Aisle Location" content=aisleLocationList.value selection=aisleLocation }}
+        {{select-or-typeahead property="location" label="Location" list=warehouseList selection=location }}
+        {{select-or-typeahead property="aisleLocation" label="Aisle Location" list=aisleLocationList selection=aisleLocation }}
     {{/if}}
     {{em-checkbox label="Gift In Kind" property="giftInKind"}}
 {{/em-form}}

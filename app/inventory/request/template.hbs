@@ -25,9 +25,9 @@
         {{/if}}
     {{/if}}
 
-    {{type-ahead property="deliveryLocation" label="Delivery Location" content=warehouseList.value selection=deliveryLocation }}
-    {{type-ahead property="deliveryAisle" label="Delivery Aisle" content=aisleLocationList.value selection=deliveryAisle }}
-    {{type-ahead property="expenseAccount" label="Bill To" content=expenseAccountList.value selection=expenseAccount }}
+    {{select-or-typeahead property="deliveryLocation" label="Delivery Location" list=warehouseList selection=deliveryLocation }}
+    {{select-or-typeahead property="deliveryAisle" label="Delivery Aisle" list=aisleLocationList selection=deliveryAisle }}
+    {{select-or-typeahead property="expenseAccount" label="Bill To" list=expenseAccountList selection=expenseAccount }}
 
     {{#if isFulfilling}}
         <div class="row">

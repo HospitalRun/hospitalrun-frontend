@@ -4,12 +4,12 @@
         {{date-picker property="procedureDate" label="Procedure Date" class="col-sm-6"}}
     </div>
     <div class="row">
-        {{type-ahead class="col-sm-6" property="physician" 
-            label="Physician" content=physicianList.value 
+        {{select-or-typeahead class="col-sm-6" property="physician" 
+            label="Physician" list=physicianList
             selection=physician
         }}
-        {{type-ahead class="col-sm-6" property="assistant" 
-            label="Assistant" content=physicianList.value 
+        {{select-or-typeahead class="col-sm-6" property="assistant" 
+            label="Assistant" list=physicianList 
             selection=assistant
         }}
     </div>
