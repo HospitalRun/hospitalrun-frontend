@@ -136,7 +136,15 @@ export default Ember.ArrayController.extend({
         },
         updateList: function() {
             var lookupTypeList = this.get('lookupTypeList');
-            lookupTypeList.save();
+            lookupTypeList.save().then(function() {
+                this.send('openModal', 'dialog', Ember.Object.create({
+                    title: 'List Saved',
+                    message: 'The lookup list has been saved',
+                    hideCancelButton: true,
+                    updateButtonAction: 'ok',
+                    updateButtonText: 'Ok'
+                }));
+            }.bind(this));
         },        
         updateValue: function(valueObject) {
              var updateList = false,
