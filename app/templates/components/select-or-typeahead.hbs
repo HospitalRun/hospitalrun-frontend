@@ -1,0 +1,12 @@
+{{#if userCanAdd}}
+    {{type-ahead class=class property=property 
+        label=label content=content
+        selection=selection
+    }}
+{{else}}
+    {{em-select class=class label=label
+        property=property content=content
+        optionValuePath="content" optionLabelPath="content"
+        selected=selection
+    }}
+{{/if}}

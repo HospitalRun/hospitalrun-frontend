@@ -29,7 +29,7 @@
         </div>
         {{em-input property="result" label="Result"}}
     {{else}}    
-        {{type-ahead property="labType" label="Lab Type" content=labTypesList.value selection=labType }}
+        {{select-or-typeahead property="labType" label="Lab Type" list=labTypesList selection=labType }}
     {{/if}}
     {{em-text property="notes" label="Notes" rows=3 }}
 {{/em-form}}

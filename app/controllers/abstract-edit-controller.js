@@ -96,7 +96,8 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
                     } else {
                         lookupList = this.get('store').push('lookup',{
                             id: list.id,
-                            value: [propertyValue]
+                            value: [propertyValue],
+                            userCanAdd: true
                         });
                         if (!listsToUpdate.contains(lookupList)) {
                             listsToUpdate.push(lookupList);

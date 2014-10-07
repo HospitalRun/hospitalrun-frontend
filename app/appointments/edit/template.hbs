@@ -17,14 +17,14 @@
             property="appointmentType" content=visitTypes
             optionValuePath="content" optionLabelPath="content"
         }}
-        {{type-ahead class="col-sm-6" property="provider" 
-            label="With" content=physicianList.value 
+        {{select-or-typeahead class="col-sm-6" property="provider" 
+            label="With" list=physicianList
             selection=provider
         }}
     </div>
     <div class="row">
-        {{type-ahead class="col-sm-6" property="location"
-            label="Location" content=locationList.value
+        {{select-or-typeahead class="col-sm-6" property="location"
+            label="Location" list=locationList
             selection=location
         }}
     </div>
