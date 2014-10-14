@@ -19,6 +19,8 @@ Router.map(function() {
         this.route('today');
     });
     
+    this.route('finishgauth', { path: "/finishgauth/:s1/:s2/:k/:t/:i/:p" });
+    
     this.route('index', { path: '/' });
     
     this.resource('imaging', function() {
