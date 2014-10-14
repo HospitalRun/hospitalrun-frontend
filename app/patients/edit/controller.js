@@ -1,5 +1,4 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import AddDiagnosisModel from 'hospitalrun/models/add-diagnosis';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
 import DOBDays from 'hospitalrun/mixins/dob-days';
 import GenderList from 'hospitalrun/mixins/gender-list';
@@ -185,10 +184,10 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
             });            
             this.transitionToRoute('visits.edit', newVisit);
         },     
-        
-        showAddDiagnosis: function() {
-            this.send('openModal', 'patients.add-diagnosis', AddDiagnosisModel.create());
-        },
+                
+        showAddPhoto: function() {
+            this.send('openModal', 'patients.add-photo', {});
+        },        
         
         showDeleteAppointment: function(appointment) {
             this.send('openModal', 'appointments.delete', appointment);

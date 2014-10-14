@@ -11,6 +11,7 @@
     "oauthSignature": true,
     "$": true,
     "HospitalrunENV": true,
+    "MediaStreamTrack": true,
     "dymo": true,
     "uuid": true,
     "moment": true,
