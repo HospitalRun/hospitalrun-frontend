@@ -1,0 +1,5 @@
+{
+  "name": "filer.js",
+  "version": "0.4.3",
+  "main": "./src/filer.min.js"
+}

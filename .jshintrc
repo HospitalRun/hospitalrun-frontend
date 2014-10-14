@@ -5,6 +5,7 @@
     "Bloodhound": true,
     "Ember": true,
     "Em": true,
+    "Filer": true,
     "DS": true,
     "PouchDB": true,
     "oauthSignature": true,

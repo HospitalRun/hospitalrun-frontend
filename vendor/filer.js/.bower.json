@@ -1,0 +1,16 @@
+{
+  "name": "filer.js",
+  "version": "0.4.3",
+  "main": "./src/filer.min.js",
+  "homepage": "https://github.com/ebidel/filer.js",
+  "_release": "0.4.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.4.3",
+    "commit": "c6e22c95dcca9ad979d13016c75e3f3cd35bb0e6"
+  },
+  "_source": "git://github.com/ebidel/filer.js.git",
+  "_target": "~0.4.3",
+  "_originalSource": "filer.js",
+  "_direct": true
+}

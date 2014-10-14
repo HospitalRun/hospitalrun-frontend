@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!--
+Copyright 2013 - Eric Bidelman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ebidel@gmail.com)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<title>HTML5 Filesystem Playground</title>
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans" type="text/css" />
+<link rel="stylesheet" href="css/app.css" type="text/css" />
+<link rel="shortcut icon" href="images/icons/favicon.png" />
+</head>
+<body>
+
+<!--
+HTML5 tech used:
+- Filesystem API
+- DnD: File drag-in and out, folder drag in (DataTransferItem.webkitGetAsEntry()).
+- <input type="file" webkitdirectory>
+- a[download] attribute
+- contenteditable
+- input placeholder
+- <audio> ( to play audio files )
+- Element.[dataset|classList], querySelector[All]()
+- CSS3: gradients, transforms, transitions, rounded corners, multiple bgs, webfonts,
+        text-overflow: ellipsis;, box shadow, text shadow, columns, -webkit-any(),
+        new flexbox, :not(), :empty, :disabled, styled scrollbars
+- <script defer>
+Other:
+- Chrome Frame
+-->
+
+<div id="container" class="offscreen">
+<header>
+  <div><img src="images/icons/favicon.png" alt="HTML5 Filesystem Playground" title="HTML5 Filesystem Playground"></div>
+  <h1>HTML5 <a href="http://www.html5rocks.com/tutorials/file/filesystem/" target="_blank">Filesystem</a> Playground</h1>
+  <div>
+    <span><input type="checkbox" onclick="toggleLog()" id="toggle-log"><label for="toggle-log">Show log</label></span>
+    <span>Display as: <a href="javascript:" data-display-type="list" onclick="display(this, 'list')">list</a> / <a href="javascript:" data-display-type="icons" onclick="display(this, 'large')" class="active">icons</a></span>
+    <span>
+      <input type="file" class="button" webkitdirectory mozdirectory disabled alt="Import directory into the current folder" title="Import directory into the current folder">
+    </span>
+    <span>
+      <input type="text" id="entry-name" placeholder="test.txt / foldername"/>
+      <select id="entry-type" title="Select to create a folder or file">
+        <option value="dir">Directory</option>
+        <option value="file">File</option>
+      </select>
+      <button id="createButton" onclick="createNewEntry()" title="Create a new folder or empty file" disabled>Create</button>
+    </span>
+  </div>
+</header>
+<section>
+  <div id="errors" class="error"></div>
+  <div style="display:-webkit-flex;margin: 25px 0 15px 0;">
+    <div style="-webkit-flex: 1 0 55%;">
+      <input type="text" id="cwd" disabled alt="Current directory path" title="Current directory path">
+      <button id="openFsButton" onclick="refreshFolder()" alt="Refresh view" title="Refresh view">Open file system</button>
+    </div>
+    <div id="ticker" style="-webkit-flex: 1 0 45%;text-align:right;color:#999">
+    </div>
+  </div>
+  <div id="usage">Used : <span id="byteUsed"></span> Free : <span id="byteFree"></span> Capacity : <span id="byteCap"></span></div>
+  <div id="files" class="large"><ul></ul></div>
+  <div id="file-info"></div>
+</section>
+<section style="clear:both">
+  <div id="log">
+    <button onclick="logger.clear()">Clear</button>
+    <div></div>
+  </div>
+</section>
+<footer></footer>
+</div>
+<script src="../src/filer.min.js?2013-06-12" defer></script>
+<script src="js/logger.js" defer></script>
+<script src="js/dnd.js" defer></script>
+<script src="js/app.js?2013-06-12" onload="openFS()" defer></script>
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-22014378-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>

@@ -36,6 +36,7 @@ app.import('vendor/moment/moment.js');
 app.import('vendor/typeahead.js/dist/typeahead.bundle.js');
 app.import('vendor/pikaday/pikaday.js');
 app.import('vendor/ember-calendar/dist/ember-calendar.js');
+app.import('vendor/filer.js/src/filer.js');
 app.import('vendor/pikaday/css/pikaday.css');
 app.import('vendor/ember-calendar/dist/ember-calendar.css');
 app.import('vendor/octicons/octicons/octicons.css');
