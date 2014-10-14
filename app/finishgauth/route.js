@@ -6,14 +6,23 @@ export default Ember.Route.extend({
         'token_secret'
     ],
     
-    _save_oauth_config: function(queryParams) {        
-        var store = this.store,
-            route = this,
-            configRecord,
-            configValue;
-        
+    _get_oauth_configs: function() {
+        return new Ember.RSVP.Promise(function(resolve, reject){
+            var configKeys = this.get('oauth_config_keys');
+            this.store.find('config',{exactKeys: configKeys}).then(function(records) {
+                Ember.run(null, resolve, records);
+            },function(error){
+                Ember.run(null, reject, error);
+            });
+        }.bind(this));
+    },
+    
+    _save_oauth_config: function(queryParams) {                        
         this._get_oauth_configs().then(function(records) {
-            route.oauth_config_keys.forEach(function(key) {
+            var configKeys = this.get('oauth_config_keys');
+            configKeys.forEach(function(key) {
+                var configRecord,
+                    configValue;
                 switch (key) {
                     case 'consumer_key': {
                         configValue = queryParams.k;
@@ -35,18 +44,16 @@ export default Ember.Route.extend({
 
                 configRecord = records.findBy('id', key);
                 if (!configRecord) {
-                    configRecord = store.createRecord('config', {
+                    configRecord = this.store.createRecord('config', {
                         id: key,
                         value: configValue
                     });
                 } else {
                     configRecord.set('value', configValue);
                 }
-
-                configRecord.save();                            
-
-            });
-        });
+                configRecord.save();
+            }.bind(this));
+        }.bind(this));
     },    
 
     model: function(params) {
