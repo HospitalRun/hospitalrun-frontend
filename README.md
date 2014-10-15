@@ -5,7 +5,7 @@ Ember front end for HospitalRun
 
 To run the app, you will need the following:
 
-1. Install [ember-cli](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli`
+1. Install [ember-cli v0.0.40](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@0.0.40`
 2. Go to `frontend` directory, and run `npm-install` to install needed node modules.
 3. Install/configure [couchdb](http://couchdb.apache.org/)
   1. Download and install couchdb from http://couchdb.apache.org/#download
