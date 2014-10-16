@@ -1,18 +1,19 @@
-  <div class="form-group">
-    <label for="cameraSelect">Camera</label>
-    {{view Ember.Select id="cameraSelect" 
-        content=videoSources 
-        optionValuePath="content.id"
-        optionLabelPath="content.label"
-        selection=selectedCamera
-    }}
-  </div>
+{{#if canCaptureVideo}}
+    {{#if showCameraSelect}}
+        {{em-select 
+            label="Camera" 
+            property="selectedCamera"
+            content=videoSources 
+            optionValuePath="content.id"
+            optionLabelPath="content.label"
+        }}
+    {{/if}}
+    <h2>Preview</h2>
+    <video></video>
+    <div class="row">
+        <button class="btn btn-default neutral" {{action 'takePhoto'}}>Take photo</button>
+    </div>
 
-<h2>Preview</h2>
-<video></video>
-<div class="row">
-    <button class="btn btn-default neutral" {{action 'takePhoto'}}>Take photo</button>
-</div>
-
-<h2>Photo</h2>
-<canvas id="canvas"></canvas>
+    <h2>Photo</h2>
+    <canvas id="canvas"></canvas>
+{{/if}}
