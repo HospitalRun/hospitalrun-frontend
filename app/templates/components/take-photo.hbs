@@ -1,4 +1,11 @@
 {{#if canCaptureVideo}}
+    {{em-select 
+        label="How Do You Want To Add A Photo?" 
+        property="photoSource"
+        content=photoSources 
+        optionValuePath="content"
+        optionLabelPath="content"
+    }}
     {{#if showCameraSelect}}
         {{em-select 
             label="Camera" 
@@ -8,12 +15,26 @@
             optionLabelPath="content.label"
         }}
     {{/if}}
-    <h2>Preview</h2>
-    <video></video>
-    <div class="row">
-        <button class="btn btn-default neutral" {{action 'takePhoto'}}>Take photo</button>
-    </div>
-
-    <h2>Photo</h2>
-    <canvas id="canvas"></canvas>
+    {{#if showCamera}}
+        <div class="row">
+            <div class="col-sm-4">
+                <h2>Preview</h2>
+                <video></video>
+            </div>
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-4">
+                <h2>Photo</h2>
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn btn-default neutral" {{action 'takePhoto'}}>Take photo</button>
+        </div>
+    {{else}}
+        <h2>Upload Photo</h2>
+        {{file-upload label="Upload File" property="fileName" selectedFile=photoFile }}
+    {{/if}}
+{{else}}
+    {{file-upload label="Upload File" property="fileName" selectedFile=photoFile }}
 {{/if}}

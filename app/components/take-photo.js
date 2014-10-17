@@ -6,19 +6,26 @@ export default Ember.Component.extend({
     canvas: null,
     video: null, 
     photo: null,
+    photoFile: null,
     width: 200,
     height: 0,
     selectedCamera: Ember.computed.alias('parentView.model.selectedCamera'),
     videoSources: null,
+    photoSource: Ember.computed.alias('parentView.model.photoSource'),
+    photoSources: [
+        'Take a Picture',
+        'Upload a File'
+    ],
     
     /***
      * Setup the specified camera
      */
     _cameraChange: function() {
-        var video = this.get('video');
-        if (!!window.stream) {
+        var stream = this.get('stream'),
+            video = this.get('video');
+        if (!Ember.isEmpty(stream)) {
             video.src = null;
-            window.stream.stop();
+            stream.stop();
         }        
         var videoSource = this.get('selectedCamera');
         var constraints = {
@@ -30,6 +37,10 @@ export default Ember.Component.extend({
         navigator.getUserMedia(constraints, this._gotStream.bind(this), this._errorCallback);
         this._setupVideo();
     }.observes('parentView.model.selectedCamera'),    
+
+    _errorCallback: function(error){
+        console.log("navigator.getUserMedia error: ", error);
+    },    
         
     /***
      * Callback for MediaStreamTrack.getSources
@@ -58,8 +69,7 @@ export default Ember.Component.extend({
                 this.set('showCameraSelect', false);
             } else {
                 this.set('showCameraSelect', true);
-            }
-            this._cameraChange();
+            }            
         }
     },
 
@@ -87,14 +97,15 @@ export default Ember.Component.extend({
      */
     _gotStream: function(stream) {
         var video = this.get('video');
-        window.stream = stream; // make stream available to console
+        this.set('stream', stream); // make stream available to object
         video.src = window.URL.createObjectURL(stream);
         video.play();
     },
-
-    _errorCallback: function(error){
-        console.log("navigator.getUserMedia error: ", error);
-    },
+    
+    showCamera: function() {
+        var photoSource = this.get('photoSource');
+        return (photoSource !== 'Upload a File');
+    }.property('parentView.model.photoSource'),
                                       
     actions: {
         takePhoto: function () {
@@ -131,11 +142,19 @@ export default Ember.Component.extend({
             this.set('showCameraSelect', false);
             if (navigator.getUserMedia) {
                 navigator.getUserMedia({audio: false,video: true}, this._gotStream.bind(this), this._errorCallback);
+                video.addEventListener('canplay', this._setupVideo.bind(this), false);
             }
         } else {
-          MediaStreamTrack.getSources(this._gotSources.bind(this));
-        }
-        video.addEventListener('canplay', this._setupVideo.bind(this), false);
+            MediaStreamTrack.getSources(this._gotSources.bind(this));
+            video.addEventListener('canplay', this._setupVideo.bind(this), false);
+        }        
     
+    },
+    
+    willDestroyElement: function(){
+        var stream = this.get('stream');
+        if (!Ember.isEmpty(stream)) {
+            stream.stop();
+        }
     }
 });
