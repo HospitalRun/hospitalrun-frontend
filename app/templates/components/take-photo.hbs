@@ -15,7 +15,7 @@
             optionLabelPath="content.label"
         }}
     {{/if}}
-    {{#if showCamera}}
+    <div class="camera">
         <div class="row">
             <div class="col-sm-4">
                 <h2>Preview</h2>
@@ -31,10 +31,9 @@
         <div class="row">
             <button class="btn btn-default neutral" {{action 'takePhoto'}}>Take photo</button>
         </div>
-    {{else}}
-        <h2>Upload Photo</h2>
-        {{file-upload label="Upload File" property="fileName" selectedFile=photoFile }}
-    {{/if}}
-{{else}}
-    {{file-upload label="Upload File" property="fileName" selectedFile=photoFile }}
+    </div>
 {{/if}}
+<div class="fileupload">
+    <h2>Upload Photo</h2>
+    {{image-upload label="Upload File" property="fileName" selectedFile=photoFile }}
+</div>

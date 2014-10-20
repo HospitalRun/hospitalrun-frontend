@@ -16,6 +16,7 @@ export default Ember.Component.extend({
         'Take a Picture',
         'Upload a File'
     ],
+    setupCamera: false,
     
     /***
      * Setup the specified camera
@@ -40,7 +41,7 @@ export default Ember.Component.extend({
 
     _errorCallback: function(error){
         console.log("navigator.getUserMedia error: ", error);
-    },    
+    },        
         
     /***
      * Callback for MediaStreamTrack.getSources
@@ -72,6 +73,57 @@ export default Ember.Component.extend({
             }            
         }
     },
+    
+    /***
+     * Callback handler for getUserMedia.
+     */
+    _gotStream: function(stream) {
+        var video = this.get('video');
+        this.set('stream', stream); // make stream available to object
+        video.src = window.URL.createObjectURL(stream);
+        video.play();
+    },
+    
+    _photoSourceChanged: function() {
+        var camera = this.$('.camera'),
+            fileUpload = this.$('.fileupload'),
+            photoSource = this.get('photoSource'),
+            setupCamera = this.get('setupCamera');
+        if (photoSource === 'Upload a File') {
+            fileUpload.show();
+            camera.hide();
+        } else {
+            fileUpload.hide();
+            camera.show();            
+            if (!setupCamera) {
+                var canvas = this.$('canvas')[0],
+                    photo = this.$('img')[0],
+                    video = this.$('video')[0];    
+                this.setProperties({
+                    canvas: canvas,
+                    photo: photo,
+                    video: video
+                });
+                if (typeof MediaStreamTrack === 'undefined' || MediaStreamTrack.getSources === 'undefined' ){
+                    this.set('showCameraSelect', false);
+                    if (navigator.getUserMedia) {
+                        navigator.getUserMedia({audio: false,video: true}, this._gotStream.bind(this), this._errorCallback);
+                        this._setupCanPlayListener(video);
+                    }
+                } else {
+                    MediaStreamTrack.getSources(this._gotSources.bind(this));
+                    this._setupCanPlayListener(video);
+                }
+                this.set('setupCamera', true);                         
+            }
+        }
+    }.observes('parentView.model.photoSource'),
+    
+    _setupCanPlayListener: function(video) {
+        //Remove listener if it was already added before.
+        video.removeEventListener('canplay', this._setupVideo.bind(this), false);
+        video.addEventListener('canplay', this._setupVideo.bind(this), false);
+    },
 
     /***
      * Setup the dimensions for the video preview and picture elements.
@@ -92,20 +144,12 @@ export default Ember.Component.extend({
         });
     },
     
-    /***
-     * Callback handler for getUserMedia.
-     */
-    _gotStream: function(stream) {
-        var video = this.get('video');
-        this.set('stream', stream); // make stream available to object
-        video.src = window.URL.createObjectURL(stream);
-        video.play();
+    _stopStream: function() {
+        var stream = this.get('stream');
+        if (!Ember.isEmpty(stream)) {
+            stream.stop();
+        }
     },
-    
-    showCamera: function() {
-        var photoSource = this.get('photoSource');
-        return (photoSource !== 'Upload a File');
-    }.property('parentView.model.photoSource'),
                                       
     actions: {
         takePhoto: function () {
@@ -116,7 +160,13 @@ export default Ember.Component.extend({
             canvas.width = width;
             canvas.height = height;
             canvas.getContext('2d').drawImage(video, 0, 0, width, height);
-            //var data = canvas.toDataURL('image/png');            
+            var data = canvas.toDataURL('image/png');
+            var binary = atob(data.split(',')[1]);
+            var array = [];
+            for(var i = 0; i < binary.length; i++) {
+                array.push(binary.charCodeAt(i));
+            }
+            this.set('photoFile', new Blob([new Uint8Array(array)], {type: 'image/png'}));            
         }
     },
                             
@@ -129,32 +179,14 @@ export default Ember.Component.extend({
     }.property(),
     
     didInsertElement: function() {
-        var canvas = this.$('canvas')[0],
-            photo = this.$('img')[0],
-            video = this.$('video')[0];
-    
-        this.setProperties({
-            canvas: canvas,
-            photo: photo,
-            video: video
-        });
-        if (typeof MediaStreamTrack === 'undefined' || MediaStreamTrack.getSources === 'undefined' ){
-            this.set('showCameraSelect', false);
-            if (navigator.getUserMedia) {
-                navigator.getUserMedia({audio: false,video: true}, this._gotStream.bind(this), this._errorCallback);
-                video.addEventListener('canplay', this._setupVideo.bind(this), false);
-            }
-        } else {
-            MediaStreamTrack.getSources(this._gotSources.bind(this));
-            video.addEventListener('canplay', this._setupVideo.bind(this), false);
-        }        
-    
+        var camera = this.$('.camera'),
+            fileUpload = this.$('.fileUpload');
+        if (camera.length === 1) {            
+            fileUpload.hide();
+        }
     },
     
     willDestroyElement: function(){
-        var stream = this.get('stream');
-        if (!Ember.isEmpty(stream)) {
-            stream.stop();
-        }
+        this._stopStream();
     }
 });

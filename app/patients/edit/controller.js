@@ -56,10 +56,11 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
         this.get('model').validate();
     }.observes('primaryDiagnosisId'),
     
-    needs: 'patients',
+    needs: ['filesystem','patients'],
 
     clinicList: Ember.computed.alias('controllers.patients.clinicList'),
-    countryList: Ember.computed.alias('controllers.patients.countryList'),    
+    countryList: Ember.computed.alias('controllers.patients.countryList'),
+    fileSystem: Ember.computed.alias('controllers.filesystem'),
 
     lookupListsToUpdate: [{
         name: 'countryList',
@@ -100,6 +101,33 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
             this.set('additionalDiagnoses', additionalDiagnoses);
             this.send('update', true);
             this.send('closeModal');
+        },
+        
+        addPhoto: function(photoFile, title, coverImage) {
+            var dirToSaveTo = this.get('id') + '/photos/',
+                fileSystem = this.get('fileSystem');
+            fileSystem.addFile(photoFile, dirToSaveTo).then(function(fileEntry) {
+                fileSystem.fileToDataURL(photoFile).then(function(photoDataUrl) {                        
+                    var dataUrlParts = photoDataUrl.split(','),
+                        newPatientPhoto = this.get('store').createRecord('photo', {
+                            patient: this.get('model'),
+                            fileName: fileEntry.fullPath,
+                            localFile: true,
+                            photoTitle: title,
+                            coverImage: coverImage,
+                            url: fileEntry.toURL(),
+                            _attachments: {
+                                file: {
+                                    content_type: photoFile.type,
+                                    data: dataUrlParts[1]
+                                }
+                            }                    
+                        });
+                    newPatientPhoto.save().then(function() {
+                        this.send('closeModal');
+                    }.bind(this));
+                }.bind(this));            
+            }.bind(this));            
         },
         
         deleteDiagnosis: function(diagnosis) {
