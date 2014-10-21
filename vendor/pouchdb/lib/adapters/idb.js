@@ -3,6 +3,7 @@
 var utils = require('../utils');
 var merge = require('../merge');
 var errors = require('../deps/errors');
+var vuvuzela = require('vuvuzela');
 
 var cachedDBs = {};
 var taskQueue = {
@@ -65,6 +66,35 @@ function isModernIdb() {
   return result;
 }
 
+// Unfortunately, the metadata has to be stringified
+// when it is put into the database, because otherwise
+// IndexedDB can throw errors for deeply-nested objects.
+// Originally we just used JSON.parse/JSON.stringify; now
+// we use this custom vuvuzela library that avoids recursion.
+// If we could do it all over again, we'd probably use a
+// format for the revision trees other than JSON.
+function encodeMetadata(metadata, winningRev, deleted) {
+  var storedObject = {data: vuvuzela.stringify(metadata)};
+  storedObject.winningRev = winningRev;
+  storedObject.deletedOrLocal = deleted ? '1' : '0';
+  storedObject.id = metadata.id;
+  return storedObject;
+}
+
+function decodeMetadata(storedObject) {
+  if (!storedObject) {
+    return null;
+  }
+  if (!storedObject.data) {
+    // old format, when we didn't store it stringified
+    return storedObject;
+  }
+  var metadata = vuvuzela.parse(storedObject.data);
+  metadata.winningRev = storedObject.winningRev;
+  metadata.deletedOrLocal = storedObject.deletedOrLocal === '1';
+  return metadata;
+}
+
 function IdbPouch(opts, callback) {
   var api = this;
 
@@ -81,7 +111,7 @@ function init(api, opts, callback) {
 
   // IndexedDB requires a versioned database structure, so we use the
   // version here to manage migrations.
-  var ADAPTER_VERSION = 2;
+  var ADAPTER_VERSION = 3;
 
   // The object stores created for each database
   // DOC_STORE stores the document meta data, its revision history and state
@@ -95,6 +125,8 @@ function init(api, opts, callback) {
   // Where we store database-wide meta data in a single record
   // keyed by id: META_STORE
   var META_STORE = 'meta-store';
+  // Where we store local documents
+  var LOCAL_STORE = 'local-store';
   // Where we detect blob support
   var DETECT_BLOB_SUPPORT_STORE = 'detect-blob-support';
 
@@ -116,21 +148,76 @@ function init(api, opts, callback) {
     db.createObjectStore(DETECT_BLOB_SUPPORT_STORE);
   }
 
-  function addDeletedOrLocalIndex(e) {
-    var docStore = e.currentTarget.transaction.objectStore(DOC_STORE);
+  // migration to version 2
+  // unfortunately "deletedOrLocal" is a misnomer now that we no longer
+  // store local docs in the main doc-store, but whaddyagonnado
+  function addDeletedOrLocalIndex(e, callback) {
+    var transaction = e.currentTarget.transaction;
+    var docStore = transaction.objectStore(DOC_STORE);
+    docStore.createIndex('deletedOrLocal', 'deletedOrLocal', {unique : false});
 
     docStore.openCursor().onsuccess = function (event) {
       var cursor = event.target.result;
       if (cursor) {
         var metadata = cursor.value;
         var deleted = utils.isDeleted(metadata);
-        var local = utils.isLocalId(metadata.id);
-        metadata.deletedOrLocal = (deleted || local) ? "1" : "0";
+        metadata.deletedOrLocal = deleted ? "1" : "0";
         docStore.put(metadata);
         cursor.continue();
       } else {
-        docStore.createIndex('deletedOrLocal',
-                             'deletedOrLocal', {unique : false});
+        callback(transaction);
+      }
+    };
+  }
+
+  // migrations to get to version 3
+
+  function createLocalStoreSchema(db) {
+    db.createObjectStore(LOCAL_STORE, {keyPath: '_id'})
+      .createIndex('_doc_id_rev', '_doc_id_rev', {unique: true});
+  }
+
+  function migrateLocalStore(e, tx) {
+    tx = tx || e.currentTarget.transaction;
+    var localStore = tx.objectStore(LOCAL_STORE);
+    var docStore = tx.objectStore(DOC_STORE);
+    var seqStore = tx.objectStore(BY_SEQ_STORE);
+
+    var cursor = docStore.openCursor();
+    cursor.onsuccess = function (event) {
+      var cursor = event.target.result;
+      if (cursor) {
+        var metadata = cursor.value;
+        var docId = metadata.id;
+        var local = utils.isLocalId(docId);
+        var rev = merge.winningRev(metadata);
+        if (local) {
+          var docIdRev = docId + "::" + rev;
+          // remove all seq entries
+          // associated with this docId
+          var start = docId + "::";
+          var end = docId + "::~";
+          var index = seqStore.index('_doc_id_rev');
+          var range = global.IDBKeyRange.bound(start, end, false, false);
+          var seqCursor = index.openCursor(range);
+          seqCursor.onsuccess = function (e) {
+            seqCursor = e.target.result;
+            if (!seqCursor) {
+              // done
+              docStore.delete(cursor.primaryKey);
+              cursor.continue();
+            } else {
+              var data = seqCursor.value;
+              if (data._doc_id_rev === docIdRev) {
+                localStore.put(data);
+              }
+              seqStore.delete(seqCursor.primaryKey);
+              seqCursor.continue();
+            }
+          };
+        } else {
+          cursor.continue();
+        }
       }
     };
   }
@@ -148,6 +235,9 @@ function init(api, opts, callback) {
     var userDocs = req.docs;
     // Parse the docs, give them a sequence number for the result
     var docInfos = userDocs.map(function (doc, i) {
+      if (doc._id && utils.isLocalId(doc._id)) {
+        return doc;
+      }
       var newDoc = utils.parseDoc(doc, newEdits);
       newDoc._bulk_seq = i;
       return newDoc;
@@ -160,61 +250,128 @@ function init(api, opts, callback) {
       return callback(docInfoErrors[0]);
     }
 
-    var results = [];
-    var fetchedDocs = {};
-    var docsWritten = 0;
+    var results = new Array(docInfos.length);
+    var fetchedDocs = new utils.Map();
+    var updateSeq = 0;
+    var numDocsWritten = 0;
 
     function writeMetaData(e) {
       var meta = e.target.result;
-      meta.updateSeq = (meta.updateSeq || 0) + docsWritten;
+      meta.updateSeq = (meta.updateSeq || 0) + updateSeq;
       txn.objectStore(META_STORE).put(meta);
+    }
+
+    function checkDoneWritingDocs() {
+      if (++numDocsWritten === docInfos.length) {
+        txn.objectStore(META_STORE).get(META_STORE).onsuccess = writeMetaData;
+      }
     }
 
     function processDocs() {
       if (!docInfos.length) {
-        txn.objectStore(META_STORE).get(META_STORE).onsuccess = writeMetaData;
         return;
       }
-      var currentDoc = docInfos.shift();
-      var id = currentDoc.metadata.id;
 
-      if (id in fetchedDocs) {
-        // if newEdits=false, can re-use the same id from this batch
-        return updateDoc(fetchedDocs[id], currentDoc);
-      }
+      var idsToDocs = new utils.Map();
 
-      var req = txn.objectStore(DOC_STORE).get(id);
-      req.onsuccess = function process_docRead(event) {
-        var oldDoc = event.target.result;
-        if (!oldDoc) {
-          insertDoc(currentDoc);
-        } else {
-          updateDoc(oldDoc, currentDoc);
-        }
-      };
-    }
-
-    function complete(event) {
-      var aresults = [];
-      results.sort(sortByBulkSeq);
-      results.forEach(function (result) {
-        delete result._bulk_seq;
-        if (result.error) {
-          aresults.push(result);
+      docInfos.forEach(function (currentDoc, resultsIdx) {
+        if (currentDoc._id && utils.isLocalId(currentDoc._id)) {
+          api[currentDoc._deleted ? '_removeLocal' : '_putLocal'](
+              currentDoc, {ctx: txn}, function (err, resp) {
+            if (err) {
+              results[resultsIdx] = err;
+            } else {
+              results[resultsIdx] = {};
+            }
+            checkDoneWritingDocs();
+          });
           return;
         }
+
+        var id = currentDoc.metadata.id;
+        if (idsToDocs.has(id)) {
+          idsToDocs.get(id).push([currentDoc, resultsIdx]);
+        } else {
+          idsToDocs.set(id, [[currentDoc, resultsIdx]]);
+        }
+      });
+
+      // in the case of new_edits, the user can provide multiple docs
+      // with the same id. these need to be processed sequentially
+      idsToDocs.forEach(function (docs, id) {
+        var numDone = 0;
+
+        function docWritten() {
+          checkDoneWritingDocs();
+          if (++numDone < docs.length) {
+            nextDoc();
+          }
+        }
+        function nextDoc() {
+          var value = docs[numDone];
+          var currentDoc = value[0];
+          var resultsIdx = value[1];
+
+          if (fetchedDocs.has(id)) {
+            updateDoc(fetchedDocs.get(id), currentDoc, resultsIdx, docWritten);
+          } else {
+            insertDoc(currentDoc, resultsIdx, docWritten);
+          }
+        }
+        nextDoc();
+      });
+    }
+
+    function fetchExistingDocs(callback) {
+      if (!docInfos.length) {
+        return callback();
+      }
+
+      var numFetched = 0;
+
+      function checkDone() {
+        if (++numFetched === docInfos.length) {
+          callback();
+        }
+      }
+
+      docInfos.forEach(function (docInfo) {
+        if (docInfo._id && utils.isLocalId(docInfo._id)) {
+          return checkDone(); // skip local docs
+        }
+        var id = docInfo.metadata.id;
+        var req = txn.objectStore(DOC_STORE).get(id);
+        req.onsuccess = function process_docRead(event) {
+          var metadata = decodeMetadata(event.target.result);
+          if (metadata) {
+            fetchedDocs.set(id, metadata);
+          }
+          checkDone();
+        };
+      });
+    }
+
+    function complete() {
+      var aresults = results.map(function (result) {
+        if (result._bulk_seq) {
+          delete result._bulk_seq;
+        } else if (!Object.keys(result).length) {
+          return {
+            ok: true
+          };
+        }
+        if (result.error) {
+          return result;
+        }
+
         var metadata = result.metadata;
         var rev = merge.winningRev(metadata);
 
-        aresults.push({
+        return {
           ok: true,
           id: metadata.id,
           rev: rev
-        });
-
-        if (utils.isLocalId(metadata.id)) {
-          return;
-        }
+        };
       });
       IdbPouch.Changes.notify(name);
       docCount = -1; // invalidate
@@ -234,22 +391,27 @@ function init(api, opts, callback) {
                                 "Attachments need to be base64 encoded");
           return callback(err);
         }
-        att.digest = 'md5-' + utils.MD5(data);
         if (blobSupport) {
           var type = att.content_type;
           data = utils.fixBinary(data);
           att.data = utils.createBlob([data], {type: type});
         }
-        return finish();
+        utils.MD5(data).then(function (result) {
+          att.digest = 'md5-' + result;
+          finish();
+        });
+        return;
       }
       var reader = new FileReader();
       reader.onloadend = function (e) {
-        var binary = utils.arrayBufferToBinaryString(this.result);
-        att.digest = 'md5-' + utils.MD5(binary);
+        var binary = utils.arrayBufferToBinaryString(this.result || '');
         if (!blobSupport) {
           att.data = btoa(binary);
         }
-        finish();
+        utils.MD5(binary).then(function (result) {
+          att.digest = 'md5-' + result;
+          finish();
+        });
       };
       reader.readAsArrayBuffer(att.data);
     }
@@ -292,13 +454,11 @@ function init(api, opts, callback) {
       }
     }
 
-    function writeDoc(docInfo, winningRev, deleted, callback) {
+    function writeDoc(docInfo, winningRev, deleted, callback, resultsIdx) {
       var err = null;
       var recv = 0;
       docInfo.data._id = docInfo.metadata.id;
       docInfo.data._rev = docInfo.metadata.rev;
-
-      docsWritten++;
 
       if (deleted) {
         docInfo.data._deleted = true;
@@ -336,32 +496,39 @@ function init(api, opts, callback) {
       }
 
       function finish() {
-
+        updateSeq++;
         docInfo.data._doc_id_rev = docInfo.data._id + "::" + docInfo.data._rev;
-        var index = txn.objectStore(BY_SEQ_STORE).index('_doc_id_rev');
+        var seqStore = txn.objectStore(BY_SEQ_STORE);
+        var index = seqStore.index('_doc_id_rev');
 
-        index.getKey(docInfo.data._doc_id_rev).onsuccess = function (e) {
+        function afterPut(e) {
+          var metadata = docInfo.metadata;
+          metadata.seq = e.target.result;
+          // Current _rev is calculated from _rev_tree on read
+          delete metadata.rev;
+          var metadataToStore = encodeMetadata(metadata, winningRev, deleted);
+          var metaDataReq = txn.objectStore(DOC_STORE).put(metadataToStore);
+          metaDataReq.onsuccess = function () {
+            delete metadata.deletedOrLocal;
+            delete metadata.winningRev;
+            results[resultsIdx] = docInfo;
+            fetchedDocs.set(docInfo.metadata.id, docInfo.metadata);
+            utils.call(callback);
+          };
+        }
 
-          var dataReq = e.target.result ?
-            txn.objectStore(BY_SEQ_STORE).put(docInfo.data, e.target.result) :
-            txn.objectStore(BY_SEQ_STORE).put(docInfo.data);
+        var putReq = seqStore.put(docInfo.data);
 
-          dataReq.onsuccess = function (e) {
-            var metadata = docInfo.metadata;
-            metadata.seq = e.target.result;
-            // Current _rev is calculated from _rev_tree on read
-            delete metadata.rev;
-            var local = utils.isLocalId(metadata.id);
-            metadata.deletedOrLocal = (deleted || local) ? "1" : "0";
-            metadata.winningRev = winningRev;
-            var metaDataReq = txn.objectStore(DOC_STORE).put(metadata);
-            metaDataReq.onsuccess = function () {
-              delete metadata.deletedOrLocal;
-              delete metadata.winningRev;
-              results.push(docInfo);
-              fetchedDocs[docInfo.metadata.id] = docInfo.metadata;
-              utils.call(callback);
-            };
+        putReq.onsuccess = afterPut;
+        putReq.onerror = function (e) {
+          // ConstraintError, need to update, not put (see #1638 for details)
+          e.preventDefault(); // avoid transaction abort
+          e.stopPropagation(); // avoid transaction onerror
+          var getKeyReq = index.getKey(docInfo.data._doc_id_rev);
+          getKeyReq.onsuccess = function (e) {
+            var putReq = seqStore.put(docInfo.data, e.target.result);
+            updateSeq--; // discount, since it's an update, not a new seq
+            putReq.onsuccess = afterPut;
           };
         };
       }
@@ -371,7 +538,7 @@ function init(api, opts, callback) {
       }
     }
 
-    function updateDoc(oldDoc, docInfo) {
+    function updateDoc(oldDoc, docInfo, resultsIdx, callback) {
       var merged =
         merge.merge(oldDoc.rev_tree, docInfo.metadata.rev_tree[0], 1000);
       var wasPreviouslyDeleted = utils.isDeleted(oldDoc);
@@ -380,8 +547,8 @@ function init(api, opts, callback) {
         (!wasPreviouslyDeleted && newEdits && merged.conflicts !== 'new_leaf');
 
       if (inConflict) {
-        results.push(makeErr(errors.REV_CONFLICT, docInfo._bulk_seq));
-        return processDocs();
+        results[resultsIdx] = makeErr(errors.REV_CONFLICT, docInfo._bulk_seq);
+        return callback();
       }
 
       docInfo.metadata.rev_tree = merged.tree;
@@ -390,19 +557,19 @@ function init(api, opts, callback) {
       var winningRev = merge.winningRev(docInfo.metadata);
       deleted = utils.isDeleted(docInfo.metadata, winningRev);
 
-      writeDoc(docInfo, winningRev, deleted, processDocs);
+      writeDoc(docInfo, winningRev, deleted, callback, resultsIdx);
     }
 
-    function insertDoc(docInfo) {
+    function insertDoc(docInfo, resultsIdx, callback) {
       var winningRev = merge.winningRev(docInfo.metadata);
       var deleted = utils.isDeleted(docInfo.metadata, winningRev);
       // Cant insert new deleted documents
       if ('was_delete' in opts && deleted) {
-        results.push(errors.MISSING_DOC);
-        return processDocs();
+        results[resultsIdx] = errors.MISSING_DOC;
+        return callback();
       }
 
-      writeDoc(docInfo, winningRev, deleted, processDocs);
+      writeDoc(docInfo, winningRev, deleted, callback, resultsIdx);
     }
 
     // Insert sequence number into the error so we can sort later
@@ -430,19 +597,16 @@ function init(api, opts, callback) {
 
     var txn;
     preprocessAttachments(function () {
-      txn = idb.transaction([DOC_STORE, BY_SEQ_STORE, ATTACH_STORE, META_STORE],
-                            'readwrite');
+      var stores = [DOC_STORE, BY_SEQ_STORE, ATTACH_STORE, META_STORE,
+        LOCAL_STORE];
+      txn = idb.transaction(stores, 'readwrite');
       txn.onerror = idbError(callback);
       txn.ontimeout = idbError(callback);
       txn.oncomplete = complete;
 
-      processDocs();
+      fetchExistingDocs(processDocs);
     });
   };
-
-  function sortByBulkSeq(a, b) {
-    return a._bulk_seq - b._bulk_seq;
-  }
 
   // First we look up the metadata in the ids database, then we fetch the
   // current revision(s) from the by sequence store
@@ -464,7 +628,7 @@ function init(api, opts, callback) {
     }
 
     txn.objectStore(DOC_STORE).get(id).onsuccess = function (e) {
-      metadata = e.target.result;
+      metadata = decodeMetadata(e.target.result);
       // we can determine the result here if:
       // 1. there is no such document
       // 2. the document is deleted and we don't ask about specific rev
@@ -499,7 +663,6 @@ function init(api, opts, callback) {
   };
 
   api._getAttachment = function (attachment, opts, callback) {
-    var result;
     var txn;
     opts = utils.clone(opts);
     if (opts.ctx) {
@@ -514,26 +677,27 @@ function init(api, opts, callback) {
     txn.objectStore(ATTACH_STORE).get(digest).onsuccess = function (e) {
       var data = e.target.result.body;
       if (opts.encode) {
-        if (blobSupport) {
+        if (!data) {
+          callback(null, '');
+        } else if (typeof data !== 'string') { // we have blob support
           var reader = new FileReader();
           reader.onloadend = function (e) {
-            var binary = utils.arrayBufferToBinaryString(this.result);
-            result = btoa(binary);
-            callback(null, result);
+            var binary = utils.arrayBufferToBinaryString(this.result || '');
+            callback(null, btoa(binary));
           };
           reader.readAsArrayBuffer(data);
-        } else {
-          result = data;
-          callback(null, result);
+        } else { // no blob support
+          callback(null, data);
         }
       } else {
-        if (blobSupport) {
-          result = data;
-        } else {
+        if (!data) {
+          callback(null, utils.createBlob([''], {type: type}));
+        } else if (typeof data !== 'string') { // we have blob support
+          callback(null, data);
+        } else { // no blob support
           data = utils.fixBinary(atob(data));
-          result = utils.createBlob([data], {type: type});
+          callback(null, utils.createBlob([data], {type: type}));
         }
-        callback(null, result);
       }
     };
   };
@@ -606,14 +770,11 @@ function init(api, opts, callback) {
         return;
       }
       var cursor = e.target.result;
-      var metadata = cursor.value;
+      var metadata = decodeMetadata(cursor.value);
       // metadata.winningRev added later, some dbs might be missing it
       var winningRev = metadata.winningRev || merge.winningRev(metadata);
 
       function allDocsInner(metadata, data) {
-        if (utils.isLocalId(metadata.id)) {
-          return cursor.continue();
-        }
         var doc = {
           id: metadata.id,
           key: metadata.id,
@@ -666,7 +827,7 @@ function init(api, opts, callback) {
         var index = transaction.objectStore(BY_SEQ_STORE).index('_doc_id_rev');
         var key = metadata.id + "::" + winningRev;
         index.get(key).onsuccess = function (event) {
-          allDocsInner(cursor.value, event.target.result);
+          allDocsInner(decodeMetadata(cursor.value), event.target.result);
         };
       }
     };
@@ -728,7 +889,6 @@ function init(api, opts, callback) {
 
       txn.oncomplete = function () {
         callback(null, {
-          db_name: name,
           doc_count: count,
           update_seq: updateSeq
         });
@@ -774,7 +934,7 @@ function init(api, opts, callback) {
     var txn;
 
     function fetchChanges() {
-      txn = idb.transaction([DOC_STORE, BY_SEQ_STORE]);
+      txn = idb.transaction([DOC_STORE, BY_SEQ_STORE], 'readonly');
       txn.oncomplete = onTxnComplete;
 
       var req;
@@ -803,14 +963,13 @@ function init(api, opts, callback) {
 
       var doc = cursor.value;
 
-      if (utils.isLocalId(doc._id) ||
-          (opts.doc_ids && opts.doc_ids.indexOf(doc._id) === -1)) {
+      if (opts.doc_ids && opts.doc_ids.indexOf(doc._id) === -1) {
         return cursor.continue();
       }
 
       var index = txn.objectStore(DOC_STORE);
       index.get(doc._id).onsuccess = function (event) {
-        var metadata = event.target.result;
+        var metadata = decodeMetadata(event.target.result);
 
         if (lastSeq < metadata.seq) {
           lastSeq = metadata.seq;
@@ -865,7 +1024,7 @@ function init(api, opts, callback) {
     var txn = idb.transaction([DOC_STORE], 'readonly');
     var req = txn.objectStore(DOC_STORE).get(docId);
     req.onsuccess = function (event) {
-      var doc = event.target.result;
+      var doc = decodeMetadata(event.target.result);
       if (!doc) {
         callback(errors.MISSING_DOC);
       } else {
@@ -882,7 +1041,7 @@ function init(api, opts, callback) {
 
     var index = txn.objectStore(DOC_STORE);
     index.get(docId).onsuccess = function (event) {
-      var metadata = event.target.result;
+      var metadata = decodeMetadata(event.target.result);
       metadata.rev_tree = rev_tree;
 
       var count = revs.length;
@@ -894,17 +1053,134 @@ function init(api, opts, callback) {
           if (!seq) {
             return;
           }
-          txn.objectStore(BY_SEQ_STORE)['delete'](seq);
+          txn.objectStore(BY_SEQ_STORE).delete(seq);
 
           count--;
           if (!count) {
-            txn.objectStore(DOC_STORE).put(metadata);
+            // winningRev is not guaranteed to be there, since it's
+            // not formally migrated. deletedOrLocal is a
+            // now-unfortunate name that really just means "deleted"
+            var winningRev = metadata.winningRev ||
+              merge.winningRev(metadata);
+            var deleted = metadata.deletedOrLocal;
+            txn.objectStore(DOC_STORE).put(
+              encodeMetadata(metadata, winningRev, deleted));
           }
         };
       });
     };
     txn.oncomplete = function () {
       utils.call(callback);
+    };
+  };
+
+
+  api._getLocal = function (id, callback) {
+    var tx = idb.transaction([LOCAL_STORE], 'readonly');
+    var req = tx.objectStore(LOCAL_STORE).get(id);
+
+    req.onerror = idbError(callback);
+    req.onsuccess = function (e) {
+      var doc = e.target.result;
+      if (!doc) {
+        callback(errors.MISSING_DOC);
+      } else {
+        delete doc['_doc_id_rev'];
+        callback(null, doc);
+      }
+    };
+  };
+
+  api._putLocal = function (doc, opts, callback) {
+    if (typeof opts === 'function') {
+      callback = opts;
+      opts = {};
+    }
+    delete doc._revisions; // ignore this, trust the rev
+    var oldRev = doc._rev;
+    var id = doc._id;
+    if (!oldRev) {
+      doc._rev = '0-1';
+    } else {
+      doc._rev = '0-' + (parseInt(oldRev.split('-')[1], 10) + 1);
+    }
+    doc._doc_id_rev = id + '::' + doc._rev;
+
+    var tx = opts.ctx;
+    var ret;
+    if (!tx) {
+      tx = idb.transaction([LOCAL_STORE], 'readwrite');
+      tx.onerror = idbError(callback);
+      tx.oncomplete = function () {
+        if (ret) {
+          callback(null, ret);
+        }
+      };
+    }
+
+    var oStore = tx.objectStore(LOCAL_STORE);
+    var req;
+    if (oldRev) {
+      var index = oStore.index('_doc_id_rev');
+      var docIdRev = id + '::' + oldRev;
+      req = index.get(docIdRev);
+      req.onsuccess = function (e) {
+        if (!e.target.result) {
+          callback(errors.REV_CONFLICT);
+        } else { // update
+          var req = oStore.put(doc);
+          req.onsuccess = function () {
+            ret = {ok: true, id: doc._id, rev: doc._rev};
+            if (opts.ctx) { // retuthis.immediately
+              callback(null, ret);
+            }
+          };
+        }
+      };
+    } else { // new doc
+      req = oStore.get(id);
+      req.onsuccess = function (e) {
+        if (e.target.result) { // already exists
+          callback(errors.REV_CONFLICT);
+        } else { // insert
+          var req = oStore.put(doc);
+          req.onsuccess = function () {
+            ret = {ok: true, id: doc._id, rev: doc._rev};
+            if (opts.ctx) { // return immediately
+              callback(null, ret);
+            }
+          };
+        }
+      };
+    }
+  };
+
+  api._removeLocal = function (doc, callback) {
+    var tx = idb.transaction([LOCAL_STORE], 'readwrite');
+    var ret;
+    tx.oncomplete = function () {
+      if (ret) {
+        callback(null, ret);
+      }
+    };
+    var docIdRev = doc._id + '::' + doc._rev;
+    var oStore = tx.objectStore(LOCAL_STORE);
+    var index = oStore.index('_doc_id_rev');
+    var req = index.get(docIdRev);
+
+    req.onerror = idbError(callback);
+    req.onsuccess = function (e) {
+      var doc = e.target.result;
+      if (!doc) {
+        callback(errors.MISSING_DOC);
+      } else {
+        var req = index.getKey(docIdRev);
+        req.onsuccess = function (e) {
+          var key = e.target.result;
+          oStore.delete(key);
+          ret = {ok: true, id: doc._id, rev: '0-0'};
+        };
+      }
     };
   };
 
@@ -934,9 +1210,16 @@ function init(api, opts, callback) {
       // initial schema
       createSchema(db);
     }
-    if (e.oldVersion < 2) {
-      // version 2 adds the deletedOrLocal index
-      addDeletedOrLocalIndex(e);
+    if (e.oldVersion < 3) {
+      createLocalStoreSchema(db);
+      if (e.oldVersion < 2) {
+        // version 2 adds the deletedOrLocal index
+        addDeletedOrLocalIndex(e, function (transaction) {
+          migrateLocalStore(e, transaction);
+        });
+      } else {
+        migrateLocalStore(e);
+      }
     }
   };
 
@@ -989,14 +1272,40 @@ function init(api, opts, callback) {
         };
       }
 
-      // detect blob support
+      // Detect blob support. Chrome didn't support it until version 38.
+      // in version 37 they had a broken version where PNGs (and possibly
+      // other binary types) aren't stored correctly.
       try {
-        txn.objectStore(DETECT_BLOB_SUPPORT_STORE).put(utils.createBlob(),
-          "key");
-        blobSupport = true;
+        var blob = utils.createBlob([''], {type: 'image/png'});
+        txn.objectStore(DETECT_BLOB_SUPPORT_STORE).put(blob, 'key');
+        txn.oncomplete = function () {
+          // have to do it in a separate transaction, else the correct
+          // content type is always returned
+          txn = idb.transaction([META_STORE, DETECT_BLOB_SUPPORT_STORE],
+            'readwrite');
+          var getBlobReq = txn.objectStore(
+            DETECT_BLOB_SUPPORT_STORE).get('key');
+          getBlobReq.onsuccess = function (e) {
+            var storedBlob = e.target.result;
+            var url = URL.createObjectURL(storedBlob);
+            utils.ajax({
+              url: url,
+              cache: true,
+              binary: true
+            }, function (err, res) {
+              if (err && err.status === 405) {
+                // firefox won't let us do that. but firefox doesn't
+                // have the blob type bug that Chrome does, so that's ok
+                blobSupport = true;
+              } else {
+                blobSupport = !!(res && res.type === 'image/png');
+              }
+              checkSetupComplete();
+            });
+          };
+        };
       } catch (err) {
         blobSupport = false;
-      } finally {
         checkSetupComplete();
       }
     };
@@ -1007,7 +1316,13 @@ function init(api, opts, callback) {
 }
 
 IdbPouch.valid = function () {
-  return global.indexedDB && isModernIdb();
+  // Issue #2533, we finally gave up on doing bug
+  // detection instead of browser sniffing. Safari brought us
+  // to our knees.
+  var isSafari = typeof openDatabase !== 'undefined' &&
+    /Safari/.test(navigator.userAgent) &&
+    !/Chrome/.test(navigator.userAgent);
+  return !isSafari && global.indexedDB && isModernIdb();
 };
 
 function destroy(name, opts, callback) {
@@ -1027,7 +1342,7 @@ function destroy(name, opts, callback) {
     if (IdbPouch.openReqList[name]) {
       IdbPouch.openReqList[name] = null;
     }
-    if (utils.hasLocalStorage()) {
+    if (utils.hasLocalStorage() && (name in global.localStorage)) {
       delete global.localStorage[name];
     }
     delete cachedDBs[name];

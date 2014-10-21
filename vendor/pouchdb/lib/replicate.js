@@ -1,8 +1,9 @@
 'use strict';
 
 var utils = require('./utils');
-var Pouch = require('./index');
 var EE = require('events').EventEmitter;
+
+var MAX_SIMULTANEOUS_REVS = 50;
 
 // We create a basic promise so the caller can cancel the replication possibly
 // before we have actually started listening to changes etc
@@ -39,7 +40,6 @@ Replication.prototype.ready = function (src, target) {
   src.once('destroyed', onDestroy);
   target.once('destroyed', onDestroy);
   function cleanup() {
-    self.removeAllListeners();
     src.removeListener('destroyed', onDestroy);
     target.removeListener('destroyed', onDestroy);
   }
@@ -55,28 +55,38 @@ function genReplicationId(src, target, opts) {
     return target.id().then(function (target_id) {
       var queryData = src_id + target_id + filterFun +
         JSON.stringify(opts.query_params) + opts.doc_ids;
-      return '_local/' + utils.MD5(queryData);
+      return utils.MD5(queryData).then(function (md5) {
+        // can't use straight-up md5 alphabet, because
+        // the char '/' is interpreted as being for attachments,
+        // and + is also not url-safe
+        md5 = md5.replace(/\//g, '.').replace(/\+/g, '_');
+        return '_local/' + md5;
+      });
     });
   });
 }
 
 
-function updateCheckpoint(db, id, checkpoint) {
+function updateCheckpoint(db, id, checkpoint, returnValue) {
     return db.get(id).catch(function (err) {
       if (err.status === 404) {
         return {_id: id};
       }
       throw err;
     }).then(function (doc) {
+      if (returnValue.cancelled) {
+        return;
+      }
       doc.last_seq = checkpoint;
       return db.put(doc);
     });
   }
 
-function Checkpointer(src, target, id) {
+function Checkpointer(src, target, id, returnValue) {
   this.src = src;
   this.target = target;
   this.id = id;
+  this.returnValue = returnValue;
 }
 
 Checkpointer.prototype.writeCheckpoint = function (checkpoint) {
@@ -86,15 +96,18 @@ Checkpointer.prototype.writeCheckpoint = function (checkpoint) {
   });
 };
 Checkpointer.prototype.updateTarget = function (checkpoint) {
-  return updateCheckpoint(this.target, this.id, checkpoint);
+  return updateCheckpoint(this.target, this.id, checkpoint, this.returnValue);
 };
 Checkpointer.prototype.updateSource = function (checkpoint) {
   var self = this;
   if (this.readOnlySource) {
     return utils.Promise.resolve(true);
   }
-  return updateCheckpoint(this.src, this.id, checkpoint).catch(function (err) {
-    if (err.status === 401) {
+  return updateCheckpoint(this.src, this.id, checkpoint, this.returnValue)
+    .catch(function (err) {
+    var isForbidden = typeof err.status === 'number' &&
+      Math.floor(err.status / 100) === 4;
+    if (isForbidden) {
       self.readOnlySource = true;
       return true;
     }
@@ -149,9 +162,8 @@ function replicate(repId, src, target, opts, returnValue) {
   var batch_size = opts.batch_size || 100;
   var batches_limit = opts.batches_limit || 10;
   var changesPending = false;     // true while src.changes is running
-  var changesCount = 0; // number of changes received since calling src.changes
   var doc_ids = opts.doc_ids;
-  var checkpointer = new Checkpointer(src, target, repId);
+  var checkpointer = new Checkpointer(src, target, repId, returnValue);
   var result = {
     ok: true,
     start_time: new Date(),
@@ -180,12 +192,19 @@ function replicate(repId, src, target, opts, returnValue) {
       }
       var errors = [];
       res.forEach(function (res) {
-        if (!res.ok) {
+        if (res.error) {
           result.doc_write_failures++;
-          errors.push(new Error(res.reason || res.message || 'Unknown reason'));
+          var error = new Error(res.reason || res.message || 'Unknown reason');
+          error.name = res.name || res.error;
+          errors.push(error);
         }
       });
-      if (errors.length > 0) {
+      result.errors = result.errors.concat(errors);
+      result.docs_written += currentBatch.docs.length - errors.length;
+      var non403s = errors.filter(function (error) {
+        return error.name !== 'unauthorized' && error.name !== 'forbidden';
+      });
+      if (non403s.length > 0) {
         var error = new Error('bulkDocs error');
         error.other_errors = errors;
         abortReplication('target.bulkDocs failed to write docs', error);
@@ -201,23 +220,31 @@ function replicate(repId, src, target, opts, returnValue) {
   function getNextDoc() {
     var diffs = currentBatch.diffs;
     var id = Object.keys(diffs)[0];
-    var revs = diffs[id].missing;
-    return src.get(id, {revs: true, open_revs: revs, attachments: true})
-    .then(function (docs) {
-      docs.forEach(function (doc) {
-        if (returnValue.cancelled) {
-          return completeReplication();
-        }
-        if (doc.ok) {
-          result.docs_read++;
-          currentBatch.pendingRevs++;
-          currentBatch.docs.push(doc.ok);
-          delete diffs[doc.ok._id];
-        }
-      });
-    });
-  }
+    var allMissing = diffs[id].missing;
+    // avoid url too long error by batching
+    var missingBatches = [];
+    for (var i = 0; i < allMissing.length; i += MAX_SIMULTANEOUS_REVS) {
+      missingBatches.push(allMissing.slice(i, Math.min(allMissing.length,
+        i + MAX_SIMULTANEOUS_REVS)));
+    }
 
+    return utils.Promise.all(missingBatches.map(function (missing) {
+      return src.get(id, {revs: true, open_revs: missing, attachments: true})
+        .then(function (docs) {
+          docs.forEach(function (doc) {
+            if (returnValue.cancelled) {
+              return completeReplication();
+            }
+            if (doc.ok) {
+              result.docs_read++;
+              currentBatch.pendingRevs++;
+              currentBatch.docs.push(doc.ok);
+              delete diffs[doc.ok._id];
+            }
+          });
+        });
+    }));
+  }
 
   function getAllDocs() {
     if (Object.keys(currentBatch.diffs).length > 0) {
@@ -243,7 +270,7 @@ function replicate(repId, src, target, opts, returnValue) {
         completeReplication();
         throw (new Error('cancelled'));
       }
-      res.rows.forEach(function (row, i) {
+      res.rows.forEach(function (row) {
         if (row.doc && !row.deleted &&
           row.value.rev.slice(0, 2) === '1-' && (
             !row.doc._attachments ||
@@ -261,11 +288,7 @@ function replicate(repId, src, target, opts, returnValue) {
 
 
   function getDocs() {
-    if (src.type() === 'http') {
-      return getRevisionOneDocs().then(getAllDocs);
-    } else {
-      return getAllDocs();
-    }
+    return getRevisionOneDocs().then(getAllDocs);
   }
 
 
@@ -280,7 +303,6 @@ function replicate(repId, src, target, opts, returnValue) {
         throw new Error('cancelled');
       }
       result.last_seq = last_seq = currentBatch.seq;
-      result.docs_written += currentBatch.docs.length;
       returnValue.emit('change', utils.clone(result));
       currentBatch = undefined;
       getChanges();
@@ -365,7 +387,6 @@ function replicate(repId, src, target, opts, returnValue) {
     }
     result.ok = false;
     result.status = 'aborted';
-    err.message = reason;
     result.errors.push(err);
     batches = [];
     pendingBatch = {
@@ -391,7 +412,10 @@ function replicate(repId, src, target, opts, returnValue) {
     result.end_time = new Date();
     result.last_seq = last_seq;
     replicationCompleted = returnValue.cancelled = true;
-    if (result.errors.length > 0) {
+    var non403s = result.errors.filter(function (error) {
+      return error.name !== 'unauthorized' && error.name !== 'forbidden';
+    });
+    if (non403s.length > 0) {
       var error = result.errors.pop();
       if (result.errors.length > 0) {
         error.other_errors = result.errors;
@@ -401,6 +425,7 @@ function replicate(repId, src, target, opts, returnValue) {
     } else {
       returnValue.emit('complete', result);
     }
+    returnValue.removeAllListeners();
   }
 
 
@@ -408,7 +433,6 @@ function replicate(repId, src, target, opts, returnValue) {
     if (returnValue.cancelled) {
       return completeReplication();
     }
-    changesCount++;
     if (
       pendingBatch.changes.length === 0 &&
       batches.length === 0 &&
@@ -427,7 +451,7 @@ function replicate(repId, src, target, opts, returnValue) {
     if (returnValue.cancelled) {
       return completeReplication();
     }
-    if (changesCount > 0) {
+    if (changesOpts.since < changes.last_seq) {
       changesOpts.since = changes.last_seq;
       getChanges();
     } else {
@@ -452,18 +476,26 @@ function replicate(repId, src, target, opts, returnValue) {
 
 
   function getChanges() {
-    if (
+    if (!(
       !changesPending &&
       !changesCompleted &&
       batches.length < batches_limit
-    ) {
-      changesPending = true;
-      changesCount = 0;
-      src.changes(changesOpts)
-      .on('change', onChange)
-      .then(onChangesComplete)
-      .catch(onChangesError);
+    )) {
+      return;
     }
+    changesPending = true;
+    function abortChanges() {
+      changes.cancel();
+    }
+    function removeListener() {
+      returnValue.removeListener('cancel', abortChanges);
+    }
+    returnValue.once('cancel', abortChanges);
+    var changes = src.changes(changesOpts)
+    .on('change', onChange);
+    changes.then(removeListener, removeListener);
+    changes.then(onChangesComplete)
+    .catch(onChangesError);
   }
 
 
@@ -473,6 +505,7 @@ function replicate(repId, src, target, opts, returnValue) {
       changesOpts = {
         since: last_seq,
         limit: batch_size,
+        batch_size: batch_size,
         style: 'all_docs',
         doc_ids: doc_ids,
         returnDocs: false
@@ -523,10 +556,11 @@ function replicate(repId, src, target, opts, returnValue) {
   }
 }
 
-
-function toPouch(db) {
+exports.toPouch = toPouch;
+function toPouch(db, opts) {
+  var PouchConstructor = opts.PouchConstructor;
   if (typeof db === 'string') {
-    return new Pouch(db);
+    return new PouchConstructor(db);
   } else if (db.then) {
     return db;
   } else {
@@ -535,6 +569,7 @@ function toPouch(db) {
 }
 
 
+exports.replicate = replicateWrapper;
 function replicateWrapper(src, target, opts, callback) {
   if (typeof opts === 'function') {
     callback = opts;
@@ -548,28 +583,14 @@ function replicateWrapper(src, target, opts, callback) {
   }
   opts = utils.clone(opts);
   opts.continuous = opts.continuous || opts.live;
+  /*jshint validthis:true */
+  opts.PouchConstructor = opts.PouchConstructor || this;
   var replicateRet = new Replication(opts);
-  toPouch(src).then(function (src) {
-    return toPouch(target).then(function (target) {
-      if (opts.server) {
-        if (typeof src.replicateOnServer !== 'function') {
-          throw new TypeError(
-            'Server replication not supported for ' + src.type() + ' adapter'
-          );
-        }
-        if (src.type() !== target.type()) {
-          throw new TypeError('Server replication' +
-              ' for different adapter types (' +
-            src.type() + ' and ' + target.type() + ') is not supported'
-          );
-        }
-        src.replicateOnServer(target, opts, replicateRet);
-      } else {
-        return genReplicationId(src, target, opts).then(function (repId) {
-          replicateRet.emit('id', repId);
-          replicate(repId, src, target, opts, replicateRet);
-        });
-      }
+  toPouch(src, opts).then(function (src) {
+    return toPouch(target, opts).then(function (target) {
+      return genReplicationId(src, target, opts).then(function (repId) {
+        replicate(repId, src, target, opts, replicateRet);
+      });
     });
   }).catch(function (err) {
     replicateRet.emit('error', err);
@@ -577,5 +598,3 @@ function replicateWrapper(src, target, opts, callback) {
   });
   return replicateRet;
 }
-
-exports.replicate = replicateWrapper;

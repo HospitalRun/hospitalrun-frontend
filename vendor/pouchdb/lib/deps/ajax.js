@@ -74,6 +74,11 @@ function ajax(options, adapterCallback) {
 
   function onError(err, cb) {
     var errParsed, errObj, errType, key;
+    if (err.code && err.status) {
+      var err2 = new Error(err.message || err.code);
+      err2.status = err.status;
+      return cb(err2);
+    }
     try {
       errParsed = JSON.parse(err.responseText);
       //would prefer not to have a try/catch clause
@@ -140,7 +145,7 @@ function ajax(options, adapterCallback) {
     }
     var error;
     var content_type = response.headers['content-type'];
-    var data = (body || '');
+    var data = (body || new Buffer(''));
 
     // CouchDB doesn't always return the right content-type for JSON data, so
     // we check for ^{ and }$ (ignoring leading/trailing whitespace)

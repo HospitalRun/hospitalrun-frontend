@@ -1,15 +1,12 @@
 'use strict';
 var utils = require('./utils');
-var replicate = require('./replicate').replicate;
+var replication = require('./replicate');
+var replicate = replication.replicate;
 var EE = require('events').EventEmitter;
 
-module.exports = Sync;
 utils.inherits(Sync, EE);
-function Sync(src, target, opts, callback) {
-  if (!(this instanceof Sync)) {
-    return new Sync(src, target, opts, callback);
-  }
-  var self = this;
+module.exports = sync;
+function sync(src, target, opts, callback) {
   if (typeof opts === 'function') {
     callback = opts;
     opts = {};
@@ -17,8 +14,17 @@ function Sync(src, target, opts, callback) {
   if (typeof opts === 'undefined') {
     opts = {};
   }
-  this.canceled = false;
   opts = utils.clone(opts);
+  /*jshint validthis:true */
+  opts.PouchConstructor = opts.PouchConstructor || this;
+  src = replication.toPouch(src, opts);
+  target = replication.toPouch(target, opts);
+  return new Sync(src, target, opts, callback);
+}
+function Sync(src, target, opts, callback) {
+  var self = this;
+  this.canceled = false;
+  
   var onChange, complete;
   if ('onChange' in opts) {
     onChange = opts.onChange;
@@ -30,6 +36,7 @@ function Sync(src, target, opts, callback) {
     complete = opts.complete;
     delete opts.complete;
   }
+
   this.push = replicate(src, target, opts);
 
   this.pull = replicate(target, src, opts);
@@ -55,17 +62,25 @@ function Sync(src, target, opts, callback) {
   }
   var listeners = {};
 
-  function removal(event, func) {
-    if (event === 'change' &&
-      (func === pullChange ||
-      func === pushChange)) {
-      self.removeAllListeners('change');
-    } else if (event === 'cancel' &&
-      func === onCancel) {
-      self.removeAllListeners('cancel');
-    } else if (event in listeners && func === listeners[event]) {
-      self.removeAllListeners(event);
-    }
+  var removed = {};
+  function removeAll(type) { // type is 'push' or 'pull'
+    return function (event, func) {
+      var isChange = event === 'change' &&
+        (func === pullChange || func === pushChange);
+      var isCancel = event === 'cancel' && func === onCancel;
+      var isOtherEvent = event in listeners && func === listeners[event];
+
+      if (isChange || isCancel || isOtherEvent) {
+        if (!(event in removed)) {
+          removed[event] = {};
+        }
+        removed[event][type] = true;
+        if (Object.keys(removed[event]).length === 2) {
+          // both push and pull have asked to be removed
+          self.removeAllListeners(event);
+        }
+      }
+    };
   }
 
   this.on('newListener', function (event) {
@@ -76,6 +91,7 @@ function Sync(src, target, opts, callback) {
       self.pull.on('cancel', onCancel);
       self.push.on('cancel', onCancel);
     } else if (event !== 'error' &&
+      event !== 'removeListener' &&
       event !== 'complete' && !(event in listeners)) {
       listeners[event] = function (e) {
         self.emit(event, e);
@@ -101,8 +117,8 @@ function Sync(src, target, opts, callback) {
     }
   });
 
-  this.pull.on('removeListener', removal);
-  this.push.on('removeListener', removal);
+  this.pull.on('removeListener', removeAll('pull'));
+  this.push.on('removeListener', removeAll('push'));
 
   var promise = utils.Promise.all([
     this.push,

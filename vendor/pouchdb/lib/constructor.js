@@ -24,7 +24,7 @@ function PouchDB(name, opts, callback) {
     opts = {};
   }
 
-  if (typeof name === 'object') {
+  if (name && typeof name === 'object') {
     opts = name;
     name = undefined;
   }
@@ -62,8 +62,13 @@ function PouchDB(name, opts, callback) {
         
         opts.originalName = originalName;
         opts.name = backend.name;
+        if (opts.prefix && backend.adapter !== 'http' &&
+            backend.adapter !== 'https') {
+          opts.name = opts.prefix + opts.name;
+        }
         opts.adapter = opts.adapter || backend.adapter;
         self._adapter = opts.adapter;
+        self._db_name = originalName;
         if (!PouchDB.adapters[opts.adapter]) {
           error = new Error('Adapter is missing');
           error.code = 404;
@@ -93,15 +98,15 @@ function PouchDB(name, opts, callback) {
     self.replicate = {};
 
     self.replicate.from = function (url, opts, callback) {
-      return PouchDB.replicate(url, self, opts, callback);
+      return self.constructor.replicate(url, self, opts, callback);
     };
 
     self.replicate.to = function (url, opts, callback) {
-      return PouchDB.replicate(self, url, opts, callback);
+      return self.constructor.replicate(self, url, opts, callback);
     };
 
     self.sync = function (dbName, opts, callback) {
-      return PouchDB.sync(self, dbName, opts, callback);
+      return self.constructor.sync(self, dbName, opts, callback);
     };
 
     self.replicate.sync = self.sync;
@@ -112,7 +117,7 @@ function PouchDB(name, opts, callback) {
         if (err) {
           return callback(err);
         }
-        PouchDB.destroy(info.db_name, callback);
+        self.constructor.destroy(info.db_name, callback);
       });
     });
 
@@ -127,10 +132,10 @@ function PouchDB(name, opts, callback) {
       function destructionListener(event) {
         if (event === 'destroyed') {
           self.emit('destroyed');
-          PouchDB.removeListener(opts.name, destructionListener);
+          PouchDB.removeListener(originalName, destructionListener);
         }
       }
-      PouchDB.on(opts.name, destructionListener);
+      PouchDB.on(originalName, destructionListener);
       self.emit('created', self);
       PouchDB.emit('created', opts.originalName);
       self.taskqueue.ready(self);

@@ -12,7 +12,7 @@
     "ember-load-initializers": "stefanpenner/ember-load-initializers#0.0.2",
     "ember-qunit-notifications": "^0.0.3",
     "ember-cli-test-loader": "rjackson/ember-cli-test-loader#0.0.2",
-    "pouchdb": "~2.2.3",
+    "pouchdb": "~3.0.6",
     "oauth-signature-js": "*",
     "ember-autofocus": "~0.0.3",
     "bootstrap": "~3.1.1",
@@ -29,6 +29,7 @@
   "resolutions": {
     "moment": "~2.7.0",
     "jquery": "^1.11.1",
-    "ember": "~1.5.1"
+    "ember": "~1.5.1",
+    "pouchdb": "~3.0.6"
   }
 }

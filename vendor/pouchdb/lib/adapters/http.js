@@ -1,5 +1,7 @@
 "use strict";
 
+var CHANGES_BATCH_SIZE = 25;
+
 var utils = require('../utils');
 var errors = require('../deps/errors');
 // parseUri 1.2.2
@@ -30,6 +32,31 @@ function encodeDocId(id) {
     return id;
   }
   return encodeURIComponent(id);
+}
+
+function preprocessAttachments(doc) {
+  if (!doc._attachments || !Object.keys(doc._attachments)) {
+    return utils.Promise.resolve();
+  }
+
+  return utils.Promise.all(Object.keys(doc._attachments).map(function (key) {
+    var attachment = doc._attachments[key];
+    if (attachment.data && typeof attachment.data !== 'string') {
+      if (typeof process === undefined || process.browser) {
+        return new utils.Promise(function (resolve) {
+          var reader = new FileReader();
+          reader.onloadend = function (e) {
+            attachment.data = utils.btoa(
+              utils.arrayBufferToBinaryString(e.target.result));
+            resolve();
+          };
+          reader.readAsArrayBuffer(attachment.data);
+        });
+      } else {
+        attachment.data = attachment.data.toString('base64');
+      }
+    }
+  }));
 }
 
 parseUri.options = {
@@ -131,6 +158,7 @@ function HttpPouch(opts, callback) {
   var dbUrl = genDBUrl(host, '');
 
   api.getUrl = function () {return dbUrl; };
+  api.getHeaders = function () {return utils.clone(host.headers); };
 
   var ajaxOpts = opts.ajax || {};
   opts = utils.clone(opts);
@@ -362,24 +390,37 @@ function HttpPouch(opts, callback) {
   });
 
   // Delete the document given by doc from the database given by host.
-  api.remove = utils.adapterFun('remove', function (doc, opts, callback) {
-    // If no options were given, set the callback to be the second parameter
-    if (typeof opts === 'function') {
-      callback = opts;
-      opts = {};
-    }  else if (typeof opts === 'string') {
+  api.remove = utils.adapterFun('remove', function (docOrId, optsOrRev, opts, callback) {
+    var doc;
+    if (typeof optsOrRev === 'string') {
+      // id, rev, opts, callback style
       doc = {
-        _id: doc,
-        _rev: opts
+        _id: docOrId,
+        _rev: optsOrRev
       };
-    } else if (opts === undefined) {
-      opts = {};
+      if (typeof opts === 'function') {
+        callback = opts;
+        opts = {};
+      }
+    } else {
+      // doc, opts, callback style
+      doc = docOrId;
+      if (typeof optsOrRev === 'function') {
+        callback = optsOrRev;
+        opts = {};
+      } else {
+        callback = opts;
+        opts = optsOrRev;
+      }
     }
+
+    var rev = (doc._rev || opts.rev);
+
     // Delete the document
     ajax({
       headers: host.headers,
       method: 'DELETE',
-      url: genDBUrl(host, encodeDocId(doc._id)) + '?rev=' + doc._rev
+      url: genDBUrl(host, encodeDocId(doc._id)) + '?rev=' + rev
     }, callback);
   });
 
@@ -438,7 +479,7 @@ function HttpPouch(opts, callback) {
     }
 
     var opts = {
-      headers: host.headers,
+      headers: utils.clone(host.headers),
       method: 'PUT',
       url: url,
       processData: false,
@@ -453,60 +494,69 @@ function HttpPouch(opts, callback) {
   // Add the document given by doc (in JSON string format) to the database
   // given by host. This fails if the doc has no _id field.
   api.put = utils.adapterFun('put', utils.getArguments(function (args) {
-    var temp, temptype, opts, callback;
+    var temp, temptype, opts;
     var doc = args.shift();
     var id = '_id' in doc;
+    var callback = args.pop();
     if (typeof doc !== 'object' || Array.isArray(doc)) {
-      callback = args.pop();
       return callback(errors.NOT_AN_OBJECT);
     }
+
     doc = utils.clone(doc);
-    while (true) {
-      temp = args.shift();
-      temptype = typeof temp;
-      if (temptype === "string" && !id) {
-        doc._id = temp;
-        id = true;
-      } else if (temptype === "string" && id && !('_rev' in doc)) {
-        doc._rev = temp;
-      } else if (temptype === "object") {
-        opts = utils.clone(temp);
-      } else if (temptype === "function") {
-        callback = temp;
+
+    preprocessAttachments(doc).then(function () {
+      while (true) {
+        temp = args.shift();
+        temptype = typeof temp;
+        if (temptype === "string" && !id) {
+          doc._id = temp;
+          id = true;
+        } else if (temptype === "string" && id && !('_rev' in doc)) {
+          doc._rev = temp;
+        } else if (temptype === "object") {
+          opts = utils.clone(temp);
+        }
+        if (!args.length) {
+          break;
+        }
       }
-      if (!args.length) {
-        break;
+      opts = opts || {};
+      var error = utils.invalidIdError(doc._id);
+      if (error) {
+        throw error;
       }
-    }
-    opts = opts || {};
-    var error = utils.invalidIdError(doc._id);
-    if (error) {
-      return callback(error);
-    }
 
-    // List of parameter to add to the PUT request
-    var params = [];
+      // List of parameter to add to the PUT request
+      var params = [];
 
-    // If it exists, add the opts.new_edits value to the list of parameters.
-    // If new_edits = false then the database will NOT assign this document a
-    // new revision number
-    if (opts && typeof opts.new_edits !== 'undefined') {
-      params.push('new_edits=' + opts.new_edits);
-    }
+      // If it exists, add the opts.new_edits value to the list of parameters.
+      // If new_edits = false then the database will NOT assign this document a
+      // new revision number
+      if (opts && typeof opts.new_edits !== 'undefined') {
+        params.push('new_edits=' + opts.new_edits);
+      }
 
-    // Format the list of parameters into a valid URI query string
-    params = params.join('&');
-    if (params !== '') {
-      params = '?' + params;
-    }
+      // Format the list of parameters into a valid URI query string
+      params = params.join('&');
+      if (params !== '') {
+        params = '?' + params;
+      }
 
-    // Add the document
-    ajax({
-      headers: host.headers,
-      method: 'PUT',
-      url: genDBUrl(host, encodeDocId(doc._id)) + params,
-      body: doc
-    }, callback);
+      // Add the document
+      ajax({
+        headers: host.headers,
+        method: 'PUT',
+        url: genDBUrl(host, encodeDocId(doc._id)) + params,
+        body: doc
+      }, function (err, res) {
+        if (err) {
+          return callback(err);
+        }
+        res.ok = true;
+        callback(null, res);
+      });
+    }).catch(callback);
+
   }));
 
   // Add the document given by doc (in JSON string format) to the database
@@ -525,8 +575,13 @@ function HttpPouch(opts, callback) {
     if (! ("_id" in doc)) {
       doc._id = utils.uuid();
     }
-    api.put(doc, opts, callback);
-    
+    api.put(doc, opts, function (err, res) {
+      if (err) {
+        return callback(err);
+      }
+      res.ok = true;
+      callback(null, res);
+    });
   });
 
   // Update/create multiple documents given by req in the database
@@ -541,13 +596,23 @@ function HttpPouch(opts, callback) {
       req.new_edits = opts.new_edits;
     }
 
-    // Update/create the documents
-    ajax({
-      headers: host.headers,
-      method: 'POST',
-      url: genDBUrl(host, '_bulk_docs'),
-      body: req
-    }, callback);
+    utils.Promise.all(req.docs.map(preprocessAttachments)).then(function () {
+      // Update/create the documents
+      ajax({
+        headers: host.headers,
+        method: 'POST',
+        url: genDBUrl(host, '_bulk_docs'),
+        body: req
+      }, function (err, results) {
+        if (err) {
+          return callback(err);
+        }
+        results.forEach(function (result) {
+          result.ok = true; // smooths out cloudant not adding this
+        });
+        callback(null, results);
+      });
+    }).catch(callback);
   };
 
   // Get a listing of the documents in the database given
@@ -660,7 +725,7 @@ function HttpPouch(opts, callback) {
     // if there is a large set of changes to be returned we can start
     // processing them quicker instead of waiting on the entire
     // set of changes to return and attempting to process them at once
-    var CHANGES_LIMIT = 25;
+    var batchSize = 'batch_size' in opts ? opts.batch_size : CHANGES_BATCH_SIZE;
 
     opts = utils.clone(opts);
     opts.timeout = opts.timeout || 30 * 1000;
@@ -735,8 +800,8 @@ function HttpPouch(opts, callback) {
           params.limit = leftToFetch;
         }
       } else {
-        params.limit = (!limit || leftToFetch > CHANGES_LIMIT) ?
-          CHANGES_LIMIT : leftToFetch;
+        params.limit = (!limit || leftToFetch > batchSize) ?
+          batchSize : leftToFetch;
       }
 
       var paramStr = '?' + Object.keys(params).map(function (k) {
@@ -807,7 +872,7 @@ function HttpPouch(opts, callback) {
       }
 
       var finished = (limit && leftToFetch <= 0) ||
-        (res && raw_results_length < CHANGES_LIMIT) ||
+        (res && raw_results_length < batchSize) ||
         (opts.descending);
 
       if ((opts.continuous && !(limit && leftToFetch <= 0)) || !finished) {
@@ -850,7 +915,7 @@ function HttpPouch(opts, callback) {
   // Given a set of document/revision IDs (given by req), tets the subset of
   // those that do NOT correspond to revisions stored in the database.
   // See http://wiki.apache.org/couchdb/HttpPostRevsDiff
-  api.revsDiff = utils.adapterFun('revsDif', function (req, opts, callback) {
+  api.revsDiff = utils.adapterFun('revsDiff', function (req, opts, callback) {
     // If no options were given, set the callback to be the second parameter
     if (typeof opts === 'function') {
       callback = opts;
@@ -862,108 +927,14 @@ function HttpPouch(opts, callback) {
       headers: host.headers,
       method: 'POST',
       url: genDBUrl(host, '_revs_diff'),
-      body: req
-    }, function (err, res) {
-      callback(err, res);
-    });
+      body: JSON.stringify(req)
+    }, callback);
   });
 
   api._close = function (callback) {
     callback();
   };
 
-  function replicateOnServer(target, opts, promise, targetHostUrl) {
-    opts = utils.clone(opts);
-    var targetHost = api.getHost(targetHostUrl);
-    var params = {
-      source: host.db,
-      target: targetHost.protocol === host.protocol &&
-        targetHost.authority ===
-          host.authority ? targetHost.db : targetHost.source
-    };
-
-    if (opts.continuous) {
-      params.continuous = true;
-    }
-
-    if (opts.create_target) {
-      params.create_target = true;
-    }
-
-    if (opts.doc_ids) {
-      params.doc_ids = opts.doc_ids;
-    }
-
-    if (opts.filter && typeof opts.filter === 'string') {
-      params.filter = opts.filter;
-    }
-
-    if (opts.query_params) {
-      params.query_params = opts.query_params;
-    }
-
-    var result = {};
-    var repOpts = {
-      headers: host.headers,
-      method: 'POST',
-      url: genUrl(host, '_replicate'),
-      body: params
-    };
-
-    var xhr;
-    promise.cancel = function () {
-      this.cancelled = true;
-      if (xhr && !result.ok) {
-        xhr.abort();
-      }
-      if (result._local_id) {
-        repOpts.body = {
-          replication_id: result._local_id
-        };
-      }
-      repOpts.body.cancel = true;
-      ajax(repOpts, function (err, resp, xhr) {
-        // If the replication cancel request fails, send an error to the
-        // callback
-        if (err) {
-          return callback(err);
-        }
-        // Send the replication cancel result to the complete callback
-        utils.call(opts.complete, null, result, xhr);
-      });
-    };
-
-    if (promise.cancelled) {
-      return;
-    }
-
-    xhr = ajax(repOpts, function (err, resp, xhr) {
-      // If the replication fails, send an error to the callback
-      if (err) {
-        return callback(err);
-      }
-
-      result.ok = true;
-
-      // Provided by CouchDB from 1.2.0 onward to cancel replication
-      if (resp._local_id) {
-        result._local_id = resp._local_id;
-      }
-
-      // Send the replication result to the complete callback
-      utils.call(opts.complete, null, resp, xhr);
-    });
-  }
-
-  api.replicateOnServer = function (target, opts, promise) {
-    if (!api.taskqueue.isReady) {
-      api.taskqueue.addTask('replicateOnServer', [target, opts, promise]);
-      return promise;
-    }
-    target.info(function (err, info) {
-      replicateOnServer(target, opts, promise, info.host);
-    });
-  };
   api.destroy = utils.adapterFun('destroy', function (callback) {
     ajax({
       url: genDBUrl(host, ''),

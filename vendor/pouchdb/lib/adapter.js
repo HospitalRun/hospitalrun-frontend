@@ -101,7 +101,8 @@ function AbstractPouchDB() {
   var self = this;
   EventEmitter.call(this);
   self.autoCompact = function (callback) {
-    if (!self.auto_compaction) {
+    // http doesn't have auto-compaction
+    if (!self.auto_compaction || self.type() === 'http') {
       return callback;
     }
     return function (err, res) {
@@ -115,8 +116,11 @@ function AbstractPouchDB() {
             callback(null, res);
           }
         };
+        if (!res.length) {
+          return callback(null, res);
+        }
         res.forEach(function (doc) {
-          if (doc.ok) {
+          if (doc.ok && doc.id) { // if no id, then it was a local doc
             // TODO: we need better error handling
             self.compactDocument(doc.id, 1, decCount);
           } else {
@@ -220,6 +224,13 @@ AbstractPouchDB.prototype.put =
   if (error) {
     return callback(error);
   }
+  if (utils.isLocalId(doc._id) && typeof this._putLocal === 'function') {
+    if (doc._deleted) {
+      return this._removeLocal(doc, callback);
+    } else {
+      return this._putLocal(doc, callback);
+    }
+  }
   this.bulkDocs({docs: [doc]}, opts,
       this.autoCompact(yankError(callback)));
 }));
@@ -290,22 +301,36 @@ AbstractPouchDB.prototype.removeAttachment =
 });
 
 AbstractPouchDB.prototype.remove =
-  utils.adapterFun('remove', function (doc, opts, callback) {
-  if (typeof opts === 'function') {
-    callback = opts;
-    opts = {};
-  } else if (typeof opts === 'string') {
+  utils.adapterFun('remove', function (docOrId, optsOrRev, opts, callback) {
+  var doc;
+  if (typeof optsOrRev === 'string') {
+    // id, rev, opts, callback style
     doc = {
-      _id: doc,
-      _rev: opts
+      _id: docOrId,
+      _rev: optsOrRev
     };
-  } else if (opts === undefined) {
-    opts = {};
+    if (typeof opts === 'function') {
+      callback = opts;
+      opts = {};
+    }
+  } else {
+    // doc, opts, callback style
+    doc = docOrId;
+    if (typeof optsOrRev === 'function') {
+      callback = optsOrRev;
+      opts = {};
+    } else {
+      callback = opts;
+      opts = optsOrRev;
+    }
   }
-  opts = utils.clone(opts);
+  opts = utils.clone(opts || {});
   opts.was_delete = true;
-  var newDoc = {_id: doc._id, _rev: doc._rev};
+  var newDoc = {_id: doc._id, _rev: (doc._rev || opts.rev)};
   newDoc._deleted = true;
+  if (utils.isLocalId(newDoc._id) && typeof this._removeLocal === 'function') {
+    return this._removeLocal(doc, callback);
+  }
   this.bulkDocs({docs: [newDoc]}, opts, yankError(callback));
 });
 
@@ -317,14 +342,19 @@ AbstractPouchDB.prototype.revsDiff =
   }
   opts = utils.clone(opts);
   var ids = Object.keys(req);
+
+  if (!ids.length) {
+    return callback(null, {});
+  }
+
   var count = 0;
-  var missing = {};
+  var missing = new utils.Map();
 
   function addToMissing(id, revId) {
-    if (!missing[id]) {
-      missing[id] = {missing: []};
+    if (!missing.has(id)) {
+      missing.set(id, {missing: []});
     }
-    missing[id].missing.push(revId);
+    missing.get(id).missing.push(revId);
   }
 
   function processDoc(id, rev_tree) {
@@ -353,8 +383,8 @@ AbstractPouchDB.prototype.revsDiff =
 
   ids.map(function (id) {
     this._getRevisionTree(id, function (err, rev_tree) {
-      if (err && err.name === 'not_found' && err.message === 'missing') {
-        missing[id] = {missing: req[id]};
+      if (err && err.status === 404 && err.message === 'missing') {
+        missing.set(id, {missing: req[id]});
       } else if (err) {
         return callback(err);
       } else {
@@ -362,7 +392,12 @@ AbstractPouchDB.prototype.revsDiff =
       }
 
       if (++count === ids.length) {
-        return callback(null, missing);
+        // convert LazyMap to object
+        var missingObj = {};
+        missing.forEach(function (value, key) {
+          missingObj[key] = value;
+        });
+        return callback(null, missingObj);
       }
     });
   }, this);
@@ -372,7 +407,7 @@ AbstractPouchDB.prototype.revsDiff =
 // by compacting we mean removing all revisions which
 // are further from the leaf in revision tree than max_height
 AbstractPouchDB.prototype.compactDocument =
-  function (docId, max_height, callback) {
+  utils.adapterFun('compactDocument', function (docId, max_height, callback) {
   var self = this;
   this._getRevisionTree(docId, function (err, rev_tree) {
     if (err) {
@@ -396,7 +431,7 @@ AbstractPouchDB.prototype.compactDocument =
     });
     self._doCompaction(docId, rev_tree, revs, callback);
   });
-};
+});
 
 // compact the whole database using single document
 // compaction
@@ -407,27 +442,61 @@ AbstractPouchDB.prototype.compact =
     opts = {};
   }
   var self = this;
-  this.changes({complete: function (err, res) {
-    if (err) {
-      callback(); // TODO: silently fail
-      return;
-    }
-    var count = res.results.length;
-    if (!count) {
-      callback();
-      return;
-    }
-    res.results.forEach(function (row) {
-      self.compactDocument(row.id, 0, function () {
-        count--;
-        if (!count) {
-          callback();
-        }
-      });
-    });
-  }});
-});
 
+  opts = utils.clone(opts || {});
+
+  self.get('_local/compaction').catch(function () {
+    return false;
+  }).then(function (doc) {
+    if (typeof self._compact === 'function') {
+      if (doc && doc.last_seq) {
+        opts.last_seq = doc.last_seq;
+      }
+      return self._compact(opts, callback);
+    }
+
+  });
+});
+AbstractPouchDB.prototype._compact = function (opts, callback) {
+  var done = false;
+  var started = 0;
+  var copts = {
+    returnDocs: false
+  };
+  var self = this;
+  var lastSeq;
+  function finish() {
+    self.get('_local/compaction').catch(function () {
+      return false;
+    }).then(function (doc) {
+      doc = doc || {_id: '_local/compaction'};
+      doc.last_seq = lastSeq;
+      return self.put(doc);
+    }).then(function () {
+      callback();
+    }, callback);
+  }
+  if (opts.last_seq) {
+    copts.since = opts.last_seq;
+  }
+  function afterCompact() {
+    started--;
+    if (!started && done) {
+      finish();
+    }
+  }
+  function onChange(row) {
+    started++;
+    self.compactDocument(row.id, 0).then(afterCompact, callback);
+  }
+  self.changes(copts).on('change', onChange).on('complete', function (resp) {
+    done = true;
+    lastSeq = resp.last_seq;
+    if (!started) {
+      finish();
+    }
+  }).on('error', callback);
+};
 /* Begin api wrappers. Specific functionality to storage belongs in the 
    _[method] */
 AbstractPouchDB.prototype.get =
@@ -438,6 +507,9 @@ AbstractPouchDB.prototype.get =
   }
   if (typeof id !== 'string') {
     return callback(errors.INVALID_ID);
+  }
+  if (utils.isLocalId(id) && typeof this._getLocal === 'function') {
+    return this._getLocal(id, callback);
   }
   var leaves = [], self = this;
   function finishOpenRevs() {
@@ -564,7 +636,9 @@ AbstractPouchDB.prototype.get =
       Object.keys(attachments).forEach(function (key) {
         this._getAttachment(attachments[key],
                             {encode: true, ctx: ctx}, function (err, data) {
-          doc._attachments[key].data = data;
+          var att = doc._attachments[key];
+          att.data = data;
+          delete att.stub;
           if (!--count) {
             callback(null, doc);
           }
@@ -656,11 +730,9 @@ AbstractPouchDB.prototype.info = utils.adapterFun('info', function (callback) {
     if (err) {
       return callback(err);
     }
-    var len = self.prefix.length;
-    if (info.db_name.length > len &&
-        info.db_name.slice(0, len) === self.prefix) {
-      info.db_name = info.db_name.slice(len);
-    }
+    // assume we know better than the adapter, unless it informs us
+    info.db_name = info.db_name || self._db_name;
+    info.auto_compaction = !!(self._auto_compaction && self.type() !== 'http');
     callback(null, info);
   });
 });

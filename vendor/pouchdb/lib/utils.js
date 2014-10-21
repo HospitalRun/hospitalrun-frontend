@@ -1,7 +1,5 @@
 /*jshint strict: false */
 /*global chrome */
-var crypto = require('crypto');
-var md5 = require('md5-jkmyers');
 var merge = require('./merge');
 exports.extend = require('pouchdb-extend');
 exports.ajax = require('./deps/ajax');
@@ -11,6 +9,9 @@ exports.getArguments = require('argsarray');
 var buffer = require('./deps/buffer');
 var errors = require('./deps/errors');
 var EventEmitter = require('events').EventEmitter;
+var collections = require('./deps/collections');
+exports.Map = collections.Map;
+exports.Set = collections.Set;
 
 if (typeof global.Promise === 'function') {
   exports.Promise = global.Promise;
@@ -35,24 +36,49 @@ var reservedWords = toObject([
   '_conflicts',
   '_deleted_conflicts',
   '_local_seq',
-  '_rev_tree'
+  '_rev_tree',
+  //replication documents
+  '_replication_id',
+  '_replication_state',
+  '_replication_state_time',
+  '_replication_state_reason',
+  '_replication_stats'
 ]);
+
+// List of reserved words that should end up the document
+var dataWords = toObject([
+  '_attachments',
+  //replication documents
+  '_replication_id',
+  '_replication_state',
+  '_replication_state_time',
+  '_replication_state_reason',
+  '_replication_stats'
+]);
+
 exports.clone = function (obj) {
   return exports.extend(true, {}, obj);
 };
 exports.inherits = require('inherits');
 // Determine id an ID is valid
-//   - invalid IDs begin with an underescore that does not begin '_design' or 
+//   - invalid IDs begin with an underescore that does not begin '_design' or
 //     '_local'
 //   - any other string value is a valid id
 // Returns the specific error object for each case
 exports.invalidIdError = function (id) {
+  var err;
   if (!id) {
-    return errors.MISSING_ID;
+    err = new TypeError(errors.MISSING_ID.message);
+    err.status = 412;
   } else if (typeof id !== 'string') {
-    return errors.INVALID_ID;
+    err = new TypeError(errors.INVALID_ID.message);
+    err.status = 400;
   } else if (/^_/.test(id) && !(/^_(design|local)/).test(id)) {
-    return errors.RESERVED_ID;
+    err = new TypeError(errors.RESERVED_ID.message);
+    err.status = 400;
+  }
+  if (err) {
+    throw err;
   }
 };
 
@@ -131,6 +157,7 @@ exports.parseDoc = function (doc, newEdits) {
   var nRevNum;
   var newRevId;
   var revInfo;
+  var error;
   var opts = {status: 'available'};
   if (doc._deleted) {
     opts.deleted = true;
@@ -144,7 +171,8 @@ exports.parseDoc = function (doc, newEdits) {
     if (doc._rev) {
       revInfo = /^(\d+)-(.+)$/.exec(doc._rev);
       if (!revInfo) {
-        throw "invalid value for property '_rev'";
+        var err = new TypeError("invalid value for property '_rev'");
+        err.status = 400;
       }
       doc._rev_tree = [{
         pos: parseInt(revInfo[1], 10),
@@ -176,7 +204,9 @@ exports.parseDoc = function (doc, newEdits) {
     if (!doc._rev_tree) {
       revInfo = /^(\d+)-(.+)$/.exec(doc._rev);
       if (!revInfo) {
-        return errors.BAD_ARG;
+        error = new TypeError(errors.BAD_ARG.message);
+        error.status = errors.BAD_ARG.status;
+        throw error;
       }
       nRevNum = parseInt(revInfo[1], 10);
       newRevId = revInfo[2];
@@ -187,12 +217,8 @@ exports.parseDoc = function (doc, newEdits) {
     }
   }
 
-  var error = exports.invalidIdError(doc._id);
-  if (error) {
-    return error;
-  }
+  exports.invalidIdError(doc._id);
 
-  doc._id = decodeURIComponent(doc._id);
   doc._rev = [nRevNum, newRevId].join('-');
 
   var result = {metadata : {}, data : {}};
@@ -200,10 +226,10 @@ exports.parseDoc = function (doc, newEdits) {
     if (doc.hasOwnProperty(key)) {
       var specialKey = key[0] === '_';
       if (specialKey && !reservedWords[key]) {
-        error = errors.error(errors.DOC_VALIDATION);
-        error.reason += ': ' + key;
-        return error;
-      } else if (specialKey && key !== '_attachments') {
+        error = new Error(errors.DOC_VALIDATION.message + ': ' + key);
+        error.status = errors.DOC_VALIDATION.status;
+        throw error;
+      } else if (specialKey && !dataWords[key]) {
         result.metadata[key.slice(1)] = doc[key];
       } else {
         result.data[key] = doc[key];
@@ -536,11 +562,5 @@ exports.cancellableFun = function (fun, self, opts) {
   promise.emit = emitter.emit.bind(emitter);
   return promise;
 };
-exports.Crypto = {};
-exports.MD5 = exports.Crypto.MD5 = function (string) {
-  if (!process.browser) {
-    return crypto.createHash('md5').update(string).digest('hex');
-  } else {
-    return md5(string);
-  }
-};
+
+exports.MD5 = exports.toPromise(require('./deps/md5'));

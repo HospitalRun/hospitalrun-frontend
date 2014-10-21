@@ -1,7 +1,7 @@
 'use strict';
 
 var levelup = require('levelup');
-var leveldown = require('leveldown');
+var originalLeveldown = require('leveldown');
 var sublevel = require('level-sublevel');
 var through = require('through2').obj;
 
@@ -9,21 +9,34 @@ var errors = require('../deps/errors');
 var merge = require('../merge');
 var utils = require('../utils');
 var migrate = require('../deps/migrate');
+var vuvuzela = require('vuvuzela');
 
 var DOC_STORE = 'document-store';
 var BY_SEQ_STORE = 'by-sequence';
 var ATTACHMENT_STORE = 'attach-store';
 var BINARY_STORE = 'attach-binary-store';
+var LOCAL_STORE = 'local-store';
+var META_STORE = 'meta-store';
+var BATCH_SIZE = 50;
 
 // leveldb barks if we try to open a db multiple times
 // so we cache opened connections here for initstore()
-var dbStore = {};
+var dbStores = new utils.Map();
 
 // store the value of update_seq in the by-sequence store the key name will
 // never conflict, since the keys in the by-sequence store are integers
 var UPDATE_SEQ_KEY = '_local_last_update_seq';
 var DOC_COUNT_KEY = '_local_doc_count';
 var UUID_KEY = '_local_uuid';
+
+var MD5_PREFIX = 'md5-';
+
+var vuvuEncoding = {
+  encode: vuvuzela.stringify,
+  decode: vuvuzela.parse,
+  buffer: false,
+  type: 'cheap-json'
+};
 
 function LevelPouch(opts, callback) {
   opts = utils.clone(opts);
@@ -36,24 +49,28 @@ function LevelPouch(opts, callback) {
     opts.createIfMissing = true;
   }
 
-  if (process.browser) {
-    leveldown = opts.db || leveldown;
-  }
+  var leveldown = opts.db || originalLeveldown;
   if (typeof leveldown.destroy !== 'function') {
     leveldown.destroy = function (name, cb) { cb(); };
   }
-
-  if (dbStore[name]) {
-    db = dbStore[name];
+  var dbStore;
+  if (dbStores.has(leveldown.name)) {
+    dbStore = dbStores.get(leveldown.name);
+  } else {
+    dbStore = new utils.Map();
+    dbStores.set(leveldown.name, dbStore);
+  }
+  if (dbStore.has(name)) {
+    db = dbStore.get(name);
     afterDBCreated();
   } else {
-    dbStore[name] = sublevel(levelup(name, opts, function (err) {
+    dbStore.set(name, sublevel(levelup(name, opts, function (err) {
       if (err) {
-        delete dbStore[name];
+        dbStore.delete(name);
         return callback(err);
       }
-      db = dbStore[name];
-      db._locks = db._locks || {};
+      db = dbStore.get(name);
+      db._locks = db._locks || new utils.Set();
       db._docCountQueue = {
         queue : [],
         running : false,
@@ -62,32 +79,36 @@ function LevelPouch(opts, callback) {
       if (opts.db || opts.noMigrate) {
         afterDBCreated();
       } else {
-        migrate(name, db, afterDBCreated);
+        migrate.toSublevel(name, db, afterDBCreated);
       }
-    }));
+    })));
   }
 
   function afterDBCreated() {
-    stores.docStore = db.sublevel(DOC_STORE, {valueEncoding: 'json'});
+    stores.docStore = db.sublevel(DOC_STORE, {valueEncoding: vuvuEncoding});
     stores.bySeqStore = db.sublevel(BY_SEQ_STORE, {valueEncoding: 'json'});
     stores.attachmentStore =
       db.sublevel(ATTACHMENT_STORE, {valueEncoding: 'json'});
     stores.binaryStore = db.sublevel(BINARY_STORE, {valueEncoding: 'binary'});
-    stores.bySeqStore.get(UPDATE_SEQ_KEY, function (err, value) {
-      if (typeof db._updateSeq === 'undefined') {
-        db._updateSeq = value || 0;
-      }
-      stores.bySeqStore.get(DOC_COUNT_KEY, function (err, value) {
-        db._docCountQueue.docCount = !err ? value : 0;
-        countDocs(function (err) { // notify queue that the docCount is ready
-          if (err) {
-            api.emit('error', err);
-          }
-          stores.bySeqStore.get(UUID_KEY, function (err, value) {
-            instanceId = !err ? value : utils.uuid();
-            stores.bySeqStore.put(UUID_KEY, instanceId, function (err, value) {
-              process.nextTick(function () {
-                callback(null, api);
+    stores.localStore = db.sublevel(LOCAL_STORE, {valueEncoding: 'json'});
+    stores.metaStore = db.sublevel(META_STORE, {valueEncoding: 'json'});
+    migrate.localAndMetaStores(db, stores, function () {
+      stores.metaStore.get(UPDATE_SEQ_KEY, function (err, value) {
+        if (typeof db._updateSeq === 'undefined') {
+          db._updateSeq = value || 0;
+        }
+        stores.metaStore.get(DOC_COUNT_KEY, function (err, value) {
+          db._docCountQueue.docCount = !err ? value : 0;
+          countDocs(function (err) { // notify queue that the docCount is ready
+            if (err) {
+              api.emit('error', err);
+            }
+            stores.metaStore.get(UUID_KEY, function (err, value) {
+              instanceId = !err ? value : utils.uuid();
+              stores.metaStore.put(UUID_KEY, instanceId, function (err, value) {
+                process.nextTick(function () {
+                  callback(null, api);
+                });
               });
             });
           });
@@ -114,7 +135,7 @@ function LevelPouch(opts, callback) {
     if (db.isClosed()) {
       return item.callback(new Error('database is closed'));
     }
-    stores.bySeqStore.get(DOC_COUNT_KEY, function (err, docCount) {
+    stores.metaStore.get(DOC_COUNT_KEY, function (err, docCount) {
       docCount = !err ? docCount : 0;
 
       function complete(err) {
@@ -127,7 +148,7 @@ function LevelPouch(opts, callback) {
       if (item.delta === 0) {
         complete();
       } else {
-        stores.bySeqStore.put(DOC_COUNT_KEY, docCount + item.delta, complete);
+        stores.metaStore.put(DOC_COUNT_KEY, docCount + item.delta, complete);
       }
     });
   }
@@ -150,13 +171,12 @@ function LevelPouch(opts, callback) {
       if (err) {
         return callback(err);
       }
-      stores.bySeqStore.get(UPDATE_SEQ_KEY, function (err, otherUpdateSeq) {
+      stores.metaStore.get(UPDATE_SEQ_KEY, function (err, otherUpdateSeq) {
         if (err) {
           otherUpdateSeq = db._updateSeq;
         }
 
         return callback(null, {
-          db_name: opts.name,
           doc_count: docCount,
           update_seq: otherUpdateSeq
         });
@@ -198,7 +218,7 @@ function LevelPouch(opts, callback) {
 
     stores.docStore.get(id, function (err, metadata) {
       db.removeListener('pouchdb-id-' + id, didDocChange);
-      
+
       if (err || !metadata) {
         return callback(errors.MISSING_DOC);
       }
@@ -279,9 +299,9 @@ function LevelPouch(opts, callback) {
 
       if (process.browser) {
         if (opts.encode) {
-          data = utils.btoa(global.unescape(attach));
+          data = utils.btoa(attach);
         } else {
-          data = utils.createBlob([utils.fixBinary(global.unescape(attach))],
+          data = utils.createBlob([utils.fixBinary(attach)],
             {type: attachment.content_type});
         }
       } else {
@@ -292,27 +312,32 @@ function LevelPouch(opts, callback) {
   };
 
   api.lock = function (id) {
-    if (id in db._locks) {
+    if (db._locks.has(id)) {
       return false;
     } else {
-      db._locks[id] = true;
+      db._locks.add(id);
       return true;
     }
   };
 
   api.unlock = function (id) {
-    delete db._locks[id];
-    return true;
+    if (db._locks.has(id)) {
+      db._locks.delete(id);
+      return true;
+    }
+    return false;
   };
 
   api._bulkDocs = function (req, opts, callback) {
     var newEdits = opts.new_edits;
-    var info = [];
-    var results = [];
+    var results = new Array(req.docs.length);
 
     // parse the docs and give each a sequence number
     var userDocs = req.docs;
-    info = userDocs.map(function (doc, i) {
+    var info = userDocs.map(function (doc, i) {
+      if (doc._id && utils.isLocalId(doc._id)) {
+        return doc;
+      }
       var newDoc = utils.parseDoc(doc, newEdits);
       newDoc._bulk_seq = i;
 
@@ -322,7 +347,7 @@ function LevelPouch(opts, callback) {
 
       return newDoc;
     });
-
+    var current = 0;
     var infoErrors = info.filter(function (doc) {
       return doc.error;
     });
@@ -330,57 +355,90 @@ function LevelPouch(opts, callback) {
     if (infoErrors.length) {
       return callback(infoErrors[0]);
     }
-
+    var inProgress = 0;
     function processDocs() {
-      if (info.length === 0) {
-        return complete();
+      var index = current;
+      if (inProgress > BATCH_SIZE) {
+        return;
       }
-      var currentDoc = info.shift();
-      stores.docStore.get(currentDoc.metadata.id, function (err, oldDoc) {
-        if (!api.lock(currentDoc.metadata.id)) {
-          results.push(makeErr(errors.REV_CONFLICT,
-            'someobody else is accessing this'));
-          return processDocs();
+      if (index >= info.length) {
+        if (inProgress === 0) {
+          return complete();
+        } else {
+          return;
         }
+      }
+      var currentDoc = info[index];
+      current++;
+      inProgress++;
+      if (currentDoc._id && utils.isLocalId(currentDoc._id)) {
+        api[currentDoc._deleted ? '_removeLocal' : '_putLocal'](
+            currentDoc, function (err, resp) {
+          if (err) {
+            results[index] = err;
+          } else {
+            results[index] = {};
+          }
+          inProgress--;
+          processDocs();
+        });
+        return;
+      }
+
+      if (!api.lock(currentDoc.metadata.id)) {
+        results[index] = makeErr(errors.REV_CONFLICT,
+                                 'someobody else is accessing this');
+        inProgress--;
+        return processDocs();
+      }
+
+      stores.docStore.get(currentDoc.metadata.id, function (err, oldDoc) {
         if (err) {
           if (err.name === 'NotFoundError') {
-            insertDoc(currentDoc, function () {
+            insertDoc(currentDoc, index, function () {
               api.unlock(currentDoc.metadata.id);
+              inProgress--;
               processDocs();
             });
           } else {
             err.error = true;
-            results.push(err);
+            results[index] = err;
             api.unlock(currentDoc.metadata.id);
+            inProgress--;
             processDocs();
           }
         } else {
-          updateDoc(oldDoc, currentDoc, function () {
+          updateDoc(oldDoc, currentDoc, index, function () {
             api.unlock(currentDoc.metadata.id);
+            inProgress--;
             processDocs();
           });
         }
       });
+
+      if (newEdits) {
+        processDocs();
+      }
     }
 
-    function insertDoc(doc, callback) {
+    function insertDoc(doc, index, callback) {
       // Can't insert new deleted documents
       if ('was_delete' in opts && utils.isDeleted(doc.metadata)) {
-        results.push(makeErr(errors.MISSING_DOC, doc._bulk_seq));
+        results[index] = makeErr(errors.MISSING_DOC, doc._bulk_seq);
         return callback();
       }
-      writeDoc(doc, function (err) {
+      writeDoc(doc, index, function (err) {
         if (err) {
           return callback(err);
         }
-        if (utils.isDeleted(doc.metadata) || utils.isLocalId(doc.metadata.id)) {
+        if (utils.isDeleted(doc.metadata)) {
           return callback();
         }
         incrementDocCount(1, callback);
       });
     }
 
-    function updateDoc(oldDoc, docInfo, callback) {
+    function updateDoc(oldDoc, docInfo, index, callback) {
       var merged =
         merge.merge(oldDoc.rev_tree, docInfo.metadata.rev_tree[0], 1000);
 
@@ -392,28 +450,26 @@ function LevelPouch(opts, callback) {
 
 
       if (conflict) {
-        results.push(makeErr(errors.REV_CONFLICT, docInfo._bulk_seq));
+        results[index] = makeErr(errors.REV_CONFLICT, docInfo._bulk_seq);
         return callback();
       }
       docInfo.metadata.rev_tree = merged.tree;
       docInfo.metadata.rev_map = oldDoc.rev_map;
       var delta = 0;
-      if (!utils.isLocalId(docInfo.metadata.id)) {
-        var oldDeleted = utils.isDeleted(oldDoc);
-        var newDeleted = utils.isDeleted(docInfo.metadata);
-        delta = (oldDeleted === newDeleted) ? 0 :
-          oldDeleted < newDeleted ? -1 : 1;
-      }
+      var oldDeleted = utils.isDeleted(oldDoc);
+      var newDeleted = utils.isDeleted(docInfo.metadata);
+      delta = (oldDeleted === newDeleted) ? 0 :
+        oldDeleted < newDeleted ? -1 : 1;
       incrementDocCount(delta, function (err) {
         if (err) {
           return callback(err);
         }
-        writeDoc(docInfo, callback);
+        writeDoc(docInfo, index, callback);
       });
 
     }
 
-    function writeDoc(doc, callback2) {
+    function writeDoc(doc, index, callback2) {
       var err = null;
       var recv = 0;
 
@@ -444,11 +500,19 @@ function LevelPouch(opts, callback) {
         collectResults(err);
       }
 
-      function onLoadEnd(e) {
-        var myData = global.escape(
-          utils.arrayBufferToBinaryString(e.target.result));
-        var myDigest = 'md5-' + utils.MD5(myData);
-        saveAttachment(doc, myDigest, key, myData, attachmentSaved);
+      function onMD5Load(doc, key, data, attachmentSaved) {
+        return function (result) {
+          saveAttachment(doc, MD5_PREFIX + result, key, data, attachmentSaved);
+        };
+      }
+
+      function onLoadEnd(doc, key, attachmentSaved) {
+        return function (e) {
+          var data = utils.arrayBufferToBinaryString(e.target.result);
+          utils.MD5(data).then(
+            onMD5Load(doc, key, data, attachmentSaved)
+          );
+        };
       }
 
       for (var i = 0; i < attachments.length; i++) {
@@ -460,41 +524,41 @@ function LevelPouch(opts, callback) {
           continue;
         }
         var att = doc.data._attachments[key];
-        var digest;
         var data;
         if (typeof att.data === 'string') {
           try {
             data = utils.atob(att.data);
-            if (process.browser) {
-              data = global.escape(data);
-            }
           } catch (e) {
             callback(utils.extend({}, errors.BAD_ARG,
               {reason: "Attachments need to be base64 encoded"}));
             return;
           }
-          digest = (process.browser ? 'md5-' : '') + utils.MD5(data || '');
         } else if (!process.browser) {
           data = att.data;
-          digest = utils.MD5(data || '');
         } else { // browser
           var reader = new FileReader();
-          reader.onloadend = onLoadEnd;
+          reader.onloadend = onLoadEnd(doc, key, attachmentSaved);
           reader.readAsArrayBuffer(att.data);
-          return;
+          continue;
         }
-        saveAttachment(doc, digest, key, data, attachmentSaved);
+        utils.MD5(data).then(
+          onMD5Load(doc, key, data, attachmentSaved)
+        );
       }
 
       function finish() {
-        db._updateSeq++;
-        doc.metadata.seq = doc.metadata.seq || db._updateSeq;
-        doc.metadata.rev_map[doc.metadata.rev] = doc.metadata.seq;
-        var seq = formatSeq(doc.metadata.seq);
+        var seq = doc.metadata.rev_map[doc.metadata.rev];
+        if (!seq) {
+          // check that there aren't any existing revisions with the same
+          // reivision id, else we shouldn't increment updateSeq
+          seq = ++db._updateSeq;
+        }
+        doc.metadata.rev_map[doc.metadata.rev] = doc.metadata.seq = seq;
+        var seqKey = formatSeq(seq);
         db.emit('pouchdb-id-' + doc.metadata.id, doc);
-        db.emit('pouchdb-' + seq, doc);
+        db.emit('pouchdb-' + seqKey, doc);
         db.batch([{
-          key: seq,
+          key: seqKey,
           value: doc.data,
           prefix: stores.bySeqStore,
           type: 'put',
@@ -504,18 +568,18 @@ function LevelPouch(opts, callback) {
           value: doc.metadata,
           prefix: stores.docStore,
           type: 'put',
-          valueEncoding: 'json'
+          valueEncoding: vuvuEncoding
         }], function (err) {
           if (!err) {
             db.emit('pouchdb-id-' + doc.metadata.id, doc);
-            db.emit('pouchdb-' + seq, doc);
+            db.emit('pouchdb-' + seqKey, doc);
           }
-          return stores.bySeqStore.put(UPDATE_SEQ_KEY, db._updateSeq,
+          return stores.metaStore.put(UPDATE_SEQ_KEY, db._updateSeq,
             function (err) {
             if (err) {
-              results.push(err);
+              results[index] = err;
             } else {
-              results.push(doc);
+              results[index] = doc;
             }
             return callback2();
           });
@@ -565,26 +629,27 @@ function LevelPouch(opts, callback) {
     }
 
     function complete() {
-      var aresults = [];
       results.sort(function (a, b) { return a._bulk_seq - b._bulk_seq; });
-
-      results.forEach(function (result) {
-        delete result._bulk_seq;
-        if (result.error) {
-          return aresults.push(result);
+      var aresults = results.map(function (result) {
+        if (result._bulk_seq) {
+          delete result._bulk_seq;
+        } else if (!Object.keys(result).length) {
+          return {
+            ok: true
+          };
         }
+        if (result.error) {
+          return result;
+        }
+
         var metadata = result.metadata;
         var rev = merge.winningRev(metadata);
 
-        aresults.push({
+        return {
           ok: true,
           id: metadata.id,
           rev: rev
-        });
-
-        if (utils.isLocalId(metadata.id)) {
-          return;
-        }
+        };
       });
       LevelPouch.Changes.notify(name);
       process.nextTick(function () { callback(null, aresults); });
@@ -597,7 +662,6 @@ function LevelPouch(opts, callback) {
 
     processDocs();
   };
-
   api._allDocs = function (opts, callback) {
     opts = utils.clone(opts);
     countDocs(function (err, docCount) {
@@ -659,10 +723,6 @@ function LevelPouch(opts, callback) {
           return;
         }
         function allDocsInner(metadata, data) {
-          if (utils.isLocalId(metadata.id)) {
-            next();
-            return;
-          }
           var doc = {
             id: metadata.id,
             key: metadata.id,
@@ -717,7 +777,7 @@ function LevelPouch(opts, callback) {
       });
 
       docstream.on('error', callback);
-      
+
       docstream.pipe(throughStream);
     });
   };
@@ -780,9 +840,6 @@ function LevelPouch(opts, callback) {
       if (opts.cancelled || opts.done) {
         return next();
       }
-      if (utils.isLocalId(data.key)) {
-        return next();
-      }
 
       stores.docStore.get(data.value._id, function (err, metadata) {
         if (opts.cancelled || opts.done || db.isClosed() ||
@@ -843,7 +900,7 @@ function LevelPouch(opts, callback) {
       if (err) {
         callback(err);
       } else {
-        delete dbStore[name];
+        dbStore.delete(name);
         callback();
       }
     });
@@ -867,14 +924,14 @@ function LevelPouch(opts, callback) {
       var seqs = metadata.rev_map; // map from rev to seq
       metadata.rev_tree = rev_tree;
       if (!revs.length) {
-        callback();
+        return callback();
       }
       var batch = [];
       batch.push({
         key: metadata.id,
         value: metadata,
         type: 'put',
-        valueEncoding: 'json',
+        valueEncoding: vuvuEncoding,
         prefix: stores.docStore
       });
       revs.forEach(function (rev) {
@@ -891,6 +948,62 @@ function LevelPouch(opts, callback) {
       db.batch(batch, callback);
     });
   };
+
+  api._getLocal = function (id, callback) {
+    stores.localStore.get(id, function (err, doc) {
+      if (err) {
+        callback(errors.MISSING_DOC);
+      } else {
+        callback(null, doc);
+      }
+    });
+  };
+
+  api._putLocal = function (doc, callback) {
+    delete doc._revisions; // ignore this, trust the rev
+    var oldRev = doc._rev;
+    var id = doc._id;
+    stores.localStore.get(id, function (err, resp) {
+      if (err) {
+        if (oldRev) {
+          return callback(errors.REV_CONFLICT);
+        }
+      }
+      if (resp && resp._rev !== oldRev) {
+        return callback(errors.REV_CONFLICT);
+      }
+      if (!oldRev) {
+        doc._rev = '0-1';
+      } else {
+        doc._rev = '0-' + (parseInt(oldRev.split('-')[1], 10) + 1);
+      }
+      stores.localStore.put(id, doc, function (err) {
+        if (err) {
+          return callback(err);
+        }
+        var ret = {ok: true, id: doc._id, rev: doc._rev};
+        callback(null, ret);
+      });
+    });
+  };
+
+  api._removeLocal = function (doc, callback) {
+    stores.localStore.get(doc._id, function (err, resp) {
+      if (err) {
+        return callback(err);
+      }
+      if (resp._rev !== doc._rev) {
+        return callback(errors.REV_CONFLICT);
+      }
+      stores.localStore.del(doc._id, function (err) {
+        if (err) {
+          return callback(err);
+        }
+        var ret = {ok: true, id: doc._id, rev: '0-0'};
+        callback(null, ret);
+      });
+    });
+  };
 }
 
 LevelPouch.valid = function () {
@@ -901,19 +1014,32 @@ LevelPouch.valid = function () {
 LevelPouch.destroy = utils.toPromise(function (name, opts, callback) {
   opts = utils.clone(opts);
 
-  if (process.browser) {
-    leveldown = opts.db || leveldown;
+  var leveldown = opts.db || originalLeveldown;
+  function callDestroy(name, cb) {
+    if (typeof leveldown.destroy === 'function') {
+      leveldown.destroy(name, cb);
+    } else {
+      process.nextTick(callback);
+    }
   }
-  if (dbStore[name]) {
+
+  var dbStore;
+  if (dbStores.has(leveldown.name)) {
+    dbStore = dbStores.get(leveldown.name);
+  } else {
+    return callDestroy(name, callback);
+  }
+
+  if (dbStore.has(name)) {
 
     LevelPouch.Changes.removeAllListeners(name);
 
-    dbStore[name].close(function () {
-      delete dbStore[name];
-      leveldown.destroy(name, callback);
+    dbStore.get(name).close(function () {
+      dbStore.delete(name);
+      callDestroy(name, callback);
     });
   } else {
-    leveldown.destroy(name, callback);
+    callDestroy(name, callback);
   }
 });
 
