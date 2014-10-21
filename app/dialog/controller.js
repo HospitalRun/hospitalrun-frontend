@@ -8,7 +8,8 @@ export default Ember.ObjectController.extend({
         },
         
         confirm: function() {
-            this.send('confirm');
+            var confirmAction = this.getWithDefault('confirmAction', 'confirm');
+            this.send(confirmAction, this.get('model'));
             this.send('closeModal');
         }, 
         

@@ -33,6 +33,13 @@ export default Ember.Mixin.create({
             'Pharmacist', 
             'System Administrator'
         ],
+        add_photo: [
+            'Data Entry',
+            'Medical Records Officer',
+            'Patient Administration',  
+            'Social Worker', 
+            'System Administrator'
+        ],        
         add_patient: [
             'Data Entry',
             'Doctor', 
@@ -161,6 +168,13 @@ export default Ember.Mixin.create({
         delete_medication: [
             'Doctor', 
             'Medical Records Officer',
+            'System Administrator'
+        ],
+        delete_photo: [
+            'Data Entry',
+            'Medical Records Officer',
+            'Patient Administration',  
+            'Social Worker', 
             'System Administrator'
         ],
         delete_patient: [

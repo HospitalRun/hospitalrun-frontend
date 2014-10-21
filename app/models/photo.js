@@ -6,7 +6,7 @@ export default AbstractModel.extend({
     fileName: DS.attr('string'),
     localFile: DS.attr('boolean'),
     patient: DS.belongsTo('patient'),
-    photoTitle: DS.attr('string'),
+    caption: DS.attr('string'),
     serverUrl: DS.attr('string'),
     url: DS.attr('string'),
         

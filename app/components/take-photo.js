@@ -78,10 +78,14 @@ export default Ember.Component.extend({
      * Callback handler for getUserMedia.
      */
     _gotStream: function(stream) {
-        var video = this.get('video');
-        this.set('stream', stream); // make stream available to object
-        video.src = window.URL.createObjectURL(stream);
-        video.play();
+        if (this.isDestroyed) {
+            stream.stop();
+        } else {
+            var video = this.get('video');
+            this.set('stream', stream); // make stream available to object
+            video.src = window.URL.createObjectURL(stream);
+            video.play();
+        }
     },
     
     _photoSourceChanged: function() {
@@ -186,7 +190,7 @@ export default Ember.Component.extend({
         }
     },
     
-    willDestroyElement: function(){
+    willDestroyElement: function(){        
         this._stopStream();
     }
 });

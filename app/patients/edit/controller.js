@@ -22,7 +22,12 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
     
     canAddMedication: function() {        
         return this.currentUserCan('add_medication');
-    }.property(),    
+    }.property(),
+    
+    canAddPhoto: function() {
+        var isFileSystemEnabled = this.get('isFileSystemEnabled');
+        return (this.currentUserCan('add_photo') && isFileSystemEnabled);
+    }.property(),
     
     canAddVisit: function() {        
         return this.currentUserCan('add_visit');
@@ -48,6 +53,10 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
         return this.currentUserCan('delete_medication');
     }.property(),
     
+    canDeletePhoto: function() {        
+        return this.currentUserCan('delete_photo');
+    }.property(),    
+
     canDeleteVisit: function() {        
         return this.currentUserCan('delete_visit');
     }.property(),
@@ -61,6 +70,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
     clinicList: Ember.computed.alias('controllers.patients.clinicList'),
     countryList: Ember.computed.alias('controllers.patients.countryList'),
     fileSystem: Ember.computed.alias('controllers.filesystem'),
+    isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
 
     lookupListsToUpdate: [{
         name: 'countryList',
@@ -88,7 +98,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
     patientMedications: function() {
         return this._getVisitCollection('medication');
     }.property('visits.@each.medication'),
-    
+
     updateCapability: 'add_patient',
 
     actions: {
@@ -103,9 +113,16 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
             this.send('closeModal');
         },
         
-        addPhoto: function(photoFile, title, coverImage) {
+        /**
+         * Add the specified photo to the patient's record.
+         * @param {File} photoFile the photo file to add.
+         * @param {String} caption the caption to store with the photo.
+         * @param {boolean} coverImage flag indicating if image should be marked as the cover image (currently unused).
+         */
+        addPhoto: function(photoFile, caption, coverImage) {
             var dirToSaveTo = this.get('id') + '/photos/',
-                fileSystem = this.get('fileSystem');
+                fileSystem = this.get('fileSystem'),
+                photos = this.get('photos');
             fileSystem.addFile(photoFile, dirToSaveTo).then(function(fileEntry) {
                 fileSystem.fileToDataURL(photoFile).then(function(photoDataUrl) {                        
                     var dataUrlParts = photoDataUrl.split(','),
@@ -113,7 +130,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
                             patient: this.get('model'),
                             fileName: fileEntry.fullPath,
                             localFile: true,
-                            photoTitle: title,
+                            caption: caption,
                             coverImage: coverImage,
                             url: fileEntry.toURL(),
                             _attachments: {
@@ -124,6 +141,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
                             }                    
                         });
                     newPatientPhoto.save().then(function() {
+                        photos.addObject(newPatientPhoto);
                         this.send('closeModal');
                     }.bind(this));
                 }.bind(this));            
@@ -135,6 +153,21 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
             additionalDiagnoses.removeObject(diagnosis);
             this.set('additionalDiagnoses', additionalDiagnoses);
             this.send('update', true);
+        },
+        
+        deletePhoto: function(model) {
+            var photo = model.get('photoToDelete'),
+                photos = this.get('photos'),
+                filePath = photo.get('fileName');
+            photos.removeObject(photo);
+            photo.destroyRecord().then(function() {
+                var fileSystem = this.get('fileSystem'),
+                    isFileSystemEnabled = this.get('isFileSystemEnabled');
+                if (isFileSystemEnabled) {
+                    fileSystem.deleteFile(filePath);
+                }
+            }.bind(this));
+            this.set('photoToDelete');            
         },
         
         editAppointment: function(appointment) {
@@ -162,6 +195,10 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
             medication.set('returnToPatient', true);
             this.transitionToRoute('medication.edit', medication);
         },    
+        
+        editPhoto: function(photo) {        
+            this.send('openModal', 'patients.photo', photo);
+        },
         
         editVisit: function(visit) {
             this.transitionToRoute('visits.edit', visit);
@@ -214,7 +251,9 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
         },     
                 
         showAddPhoto: function() {
-            this.send('openModal', 'patients.add-photo', {});
+            this.send('openModal', 'patients.photo', {
+                isNew: true
+            });
         },        
         
         showDeleteAppointment: function(appointment) {
@@ -231,10 +270,28 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
 
         showDeleteMedication: function(medication) {
             this.send('openModal', 'medication.delete', medication);
-        },    
+        },
+        
+        showDeletePhoto: function(photo) {
+            this.send('openModal', 'dialog', Ember.Object.create({
+                confirmAction: 'deletePhoto',
+                title: 'Delete Photo',
+                message: 'Are you sure you want to delete this photo?',
+                photoToDelete: photo,
+                updateButtonAction: 'confirm',
+                updateButtonText: 'Ok'
+            }));        
+            
+        },
 
         showDeleteVisit: function(visit) {
             this.send('openModal', 'visits.delete', visit);
+        },
+        
+        updatePhoto: function(photo) {
+            photo.save().then(function() {
+                this.send('closeModal');
+            }.bind(this));            
         }
         
     },

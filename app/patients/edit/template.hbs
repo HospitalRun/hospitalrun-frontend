@@ -4,7 +4,6 @@
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-demo">
                     General Information
-                    <button class="btn btn-primary align-right" {{action "showAddPhoto" bubbles=false }}><span class="octicon octicon-plus"></span>New Photo</button>
                 </a>
             </h3>
         </div>
@@ -52,6 +51,44 @@
             </div>
         </div>
     </div>
+    <div class="panel">    
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-photos">
+                    Photos
+                    {{#if canAddPhoto}}
+                        <button class="btn btn-primary align-right" {{action "showAddPhoto" bubbles=false }}><span class="octicon octicon-plus"></span>New Photo</button>
+                    {{/if}}
+                </a>
+            </h3>
+        </div>
+        <div id="patient-photos" class="panel-collapse collapse in">
+            <div class="panel-body detail-section-content detail-section-content">
+                <div class="row">
+                    {{#with this as patientController}}
+                        {{#each photos}}
+                            <div class="col-sm-4 col-md-3">                                
+                                 <div {{action "editPhoto" this}} class="thumbnail">
+                                    <img {{bind-attr alt="caption" src="url"}} class="img-responsive" >
+                                    <div class="caption">
+                                        {{caption}}
+                                        <p>
+                                            {{#if patientController.canAddPhoto}}
+                                                <button class="btn btn-default neutral" {{action "editPhoto" this}}>Edit</button>
+                                            {{/if}}
+                                            {{#if patientController.canDeletePhoto}}
+                                                <button class="btn btn-default warning" {{action "showDeletePhoto" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                            {{/if}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    {{/with}}
+                </div>
+            </div>
+        </div>
+    </div>    
     <div class="panel">
         <div class="panel-heading">
             <h3 class="panel-title">
