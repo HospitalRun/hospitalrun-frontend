@@ -7,17 +7,16 @@ export default AbstractModel.extend({
     localFile: DS.attr('boolean'),
     patient: DS.belongsTo('patient'),
     caption: DS.attr('string'),
-    serverUrl: DS.attr('string'),
     url: DS.attr('string'),
         
     downloadImageFromServer: function(imageRecord) {
         var me = this,
-            serverUrl = imageRecord.get('serverUrl'),
+            url = imageRecord.get('url'),
             xhr = new XMLHttpRequest();
-        if (!Ember.isEmpty(serverUrl)) {
+        if (!Ember.isEmpty(url)) {
             //Make sure directory exists or is created before downloading.
             this.getPatientDirectory(imageRecord.get('patientId'));            
-            xhr.open('GET', serverUrl, true);
+            xhr.open('GET', url, true);
             xhr.responseType = 'blob';
             xhr.onload = function() {  
                 var file = new Blob([xhr.response]);
