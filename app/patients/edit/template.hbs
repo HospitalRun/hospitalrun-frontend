@@ -65,26 +65,24 @@
         <div id="patient-photos" class="panel-collapse collapse in">
             <div class="panel-body detail-section-content detail-section-content">
                 <div class="row">
-                    {{#with this as patientController}}
-                        {{#each photos}}
-                            <div class="col-sm-4 col-md-3">                                
-                                 <div {{action "editPhoto" this}} class="thumbnail">
-                                    <img {{bind-attr alt="caption" src="url"}} class="img-responsive" >
-                                    <div class="caption">
-                                        {{caption}}
-                                        <p>
-                                            {{#if patientController.canAddPhoto}}
-                                                <button class="btn btn-default neutral" {{action "editPhoto" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if patientController.canDeletePhoto}}
-                                                <button class="btn btn-default warning" {{action "showDeletePhoto" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                                            {{/if}}
-                                        </p>
-                                    </div>
+                    {{#each photos itemController="patients/photo-item"}}
+                        <div class="col-sm-4 col-md-3">                                
+                             <div {{action "editPhoto" this}} class="thumbnail">
+                                <img {{bind-attr alt="caption" src="photoUrl"}} class="img-responsive" >
+                                <div class="caption">
+                                    {{caption}}
+                                    <p>
+                                        {{#if parentController.canAddPhoto}}
+                                            <button class="btn btn-default neutral" {{action "editPhoto" this}}>Edit</button>
+                                        {{/if}}
+                                        {{#if parentController.canDeletePhoto}}
+                                            <button class="btn btn-default warning" {{action "showDeletePhoto" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                        {{/if}}
+                                    </p>
                                 </div>
                             </div>
-                        {{/each}}
-                    {{/with}}
+                        </div>
+                    {{/each}}
                 </div>
             </div>
         </div>

@@ -58,7 +58,7 @@ export default Ember.Controller.extend({
     /**
      * Convert specified file to a data url
      * @param {File} file to convert
-     * @return {String} the data url for the file
+     * @returns {String} the data url for the file
      */
     fileToDataURL: function(file) {
         return new Ember.RSVP.Promise(function(resolve){
@@ -70,8 +70,29 @@ export default Ember.Controller.extend({
         });        
     },
     
+    /**
+     * Property to to determine if file system API is available.
+     */
     isFileSystemEnabled: function() {
         var filer = this.get('filer');
         return !(Ember.isEmpty(filer));
-    }.property('filer')
+    }.property('filer'),
+    
+    
+    /**
+     * Get filesystem url from specified path.
+     * @param {String} the path of the file to get the url for.
+     * @returns {String} the file system url or null if the file doesn't exist.
+     */
+    pathToFileSystemURL: function(path) {
+        return new Ember.RSVP.Promise(function(resolve){
+            var filer = this.get('filer');
+            filer.fs.root.getFile(path, {}, function(fileEntry) {
+                resolve(fileEntry.toURL());
+            }, function() {
+                //if ls errs, just return empty, file doesn't exist.
+                resolve();
+            });        
+        }.bind(this));
+    }
 });
