@@ -1,21 +1,35 @@
 export default Ember.Controller.extend({
+    needs: 'pouchdb',
+    pouchdb: Ember.computed.alias('controllers.pouchdb'),
     filer: null, //Injected via initializer
+    fileSystemSize: (1024*1024*1024*8), //8GB max size for local filesystem;chrome only,
+    
     _onError: function(e) {
         console.log('Filer filesystem error: '+e);
+    },
+    
+    setup: function() {
+        var size = this.get('fileSystemSize'),
+            filer = new Filer();
+        filer.init({persistent: true, size: size}, function() {
+            this.set('filer', filer);
+        }.bind(this));     
     },
 
     /**
      * Add the specified file to the local filesystem
      * @param {File} file the file to save.
      * @param {String} path the file path to save the file to.
+     * @param {String} recordId database id that the file is associated with.
      * @returns {Promise} returns a Promise that resolves once the file is saved.
      */
-    addFile: function(file, path) {
+    addFile: function(file, path, recordId) {
         return new Ember.RSVP.Promise(function(resolve, reject){
             var currentDate = new Date(),
                 filer = this.get('filer'),
                 fileName = file.name || '',
-                newFileName = path+currentDate.getTime()+fileName;
+                newFileName = path+currentDate.getTime()+fileName,
+                pouchdb = this.get('pouchdb');
             if (Ember.isEmpty(filer)) {
                 reject('Local filesystem unavailable, please use Google Chrome browser');
             }
@@ -26,7 +40,8 @@ export default Ember.Controller.extend({
                 }
             }
             filer.mkdir(path, false, function() {
-                filer.write(newFileName, {data: file, type: file.type}, function(fileEntry) {
+                filer.write(newFileName, {data: file, type: file.type}, function(fileEntry) {                    
+                    pouchdb.saveFileLink(newFileName, recordId);
                     resolve(fileEntry);
                 }, function(e) {
                     reject(e);
