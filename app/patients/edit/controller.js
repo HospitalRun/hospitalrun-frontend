@@ -122,24 +122,26 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
         addPhoto: function(photoFile, caption, coverImage) {
             var dirToSaveTo = this.get('id') + '/photos/',
                 fileSystem = this.get('fileSystem'),
-                photos = this.get('photos');
-            fileSystem.addFile(photoFile, dirToSaveTo).then(function(fileEntry) {
+                photos = this.get('photos'),
+                newPatientPhoto = this.get('store').createRecord('photo', {
+                    patient: this.get('model'),                    
+                    localFile: true,
+                    caption: caption,
+                    coverImage: coverImage,
+                });                
+            fileSystem.addFile(photoFile, dirToSaveTo, newPatientPhoto.get('id')).then(function(fileEntry) {
                 fileSystem.fileToDataURL(photoFile).then(function(photoDataUrl) {                        
-                    var dataUrlParts = photoDataUrl.split(','),
-                        newPatientPhoto = this.get('store').createRecord('photo', {
-                            patient: this.get('model'),
-                            fileName: fileEntry.fullPath,
-                            localFile: true,
-                            caption: caption,
-                            coverImage: coverImage,
-                            url: fileEntry.toURL(),
-                            _attachments: {
-                                file: {
-                                    content_type: photoFile.type,
-                                    data: dataUrlParts[1]
-                                }
-                            }                    
-                        });
+                    var dataUrlParts = photoDataUrl.split(',');
+                    newPatientPhoto.setProperties({
+                        fileName: fileEntry.fullPath,
+                        url: fileEntry.toURL(),
+                        _attachments: {
+                            file: {
+                                content_type: photoFile.type,
+                                data: dataUrlParts[1]
+                            }
+                        }                    
+                    });                        
                     newPatientPhoto.save().then(function() {
                         photos.addObject(newPatientPhoto);
                         this.send('closeModal');
