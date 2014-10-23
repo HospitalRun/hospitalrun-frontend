@@ -63,6 +63,13 @@ export default Ember.Route.extend({
                 params: params,
             });
             this._save_oauth_config(params);
+            this.controllerFor('pouchdb').setupMainDB({
+                config_consumer_key: params.k,
+                config_consumer_secret: params.s1,
+                config_oauth_token: params.t,
+                config_token_secret:  params.s2,
+                config_use_google_auth: true
+            });
         } 
     }
 });

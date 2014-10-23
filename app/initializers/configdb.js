@@ -1,5 +1,3 @@
-import createPouchOauthXHR from "hospitalrun/utils/pouch-oauth-xhr";
-
 export default {
     after: 'authentication',
     name: 'configdb',    
@@ -30,78 +28,12 @@ export default {
             });
         }
         
-        function _syncMainDB() {
-            return new Ember.RSVP.Promise(function(resolve, reject){                
-                var options = {
-                    include_docs: true,
-                    keys: [
-                        'config_consumer_key',
-                        'config_consumer_secret',
-                        'config_oauth_token',
-                        'config_token_secret',
-                        'config_use_google_auth'
-                    ]
-                };
-                
-                configDB.allDocs(options, function(err, response) { 
-                    if (err) {
-                        Ember.run(null, reject, err);
-                    } else {
-                        var configs = {},
-                            pouchOptions = {};
-                        for (var i=0;i<response.rows.length;i++) {
-                            if (!response.rows[i].error) {
-                                configs[response.rows[i].id] = response.rows[i].doc.value;
-                            }
-                        }
-                        if (configs.config_use_google_auth) {
-                            pouchOptions.ajax = {
-                                xhr: createPouchOauthXHR(configs)
-                            };
-                        }
-                        var dbUrl =  document.location.protocol+'//'+document.location.host+'/db/main';
-                        new PouchDB(dbUrl, pouchOptions,
-                        function(err, db){                                
-                            db.changes({
-                                conflicts: true,
-                                since: 'now',
-                                continuous: true,
-                                onChange: function() {
-                                    console.log("DB Change",arguments);
-                                }
-                            }, function(err, response) {
-                                console.log("changes complete, err")  ;
-                                console.dir(err);
-                                console.log(response);
-                            });
-
-
-                            if (err) {
-                                console.log("Error creating main pouchDB",err);
-                                throw err;
-                            } else {
-                                db.replicate.sync('main', {
-                                    live: true,
-                                    onChange: function() {
-                                        console.log("got sync change",arguments);
-                                    },
-                                    complete: function() {
-                                        console.log("Got sync complete",arguments);
-                                    }
-                                });
-                            }
-                        });
-                        Ember.run(null, resolve, {success:true});
-                    }
-                });
-            });
-        }
 
         application.deferReadiness();
         _initCouchDB().then(function() {
-            _syncMainDB().then(function() {
-                application.advanceReadiness();
-            });
+            application.register('couchdb:configdb', configDB, {instantiate: false});
+            application.inject('controller:pouchdb', 'configDB', 'couchdb:configdb');
+            application.advanceReadiness();
         });
     }
 };
