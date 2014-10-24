@@ -24,7 +24,8 @@
     "pikaday": "owenmead/Pikaday#master",
     "moment": "~2.7.0",
     "ember-calendar": "~1.0.0",
-    "octicons": "~2.1.2"
+    "octicons": "~2.1.2",
+    "idb.filesystem": "ebidel/idb.filesystem.js"
   },
   "resolutions": {
     "moment": "~2.7.0",

@@ -1,0 +1,13 @@
+{
+  "name": "idb.filesystem",
+  "homepage": "https://github.com/ebidel/idb.filesystem.js",
+  "_release": "df78bcc0cd",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "df78bcc0cd424800c31a1920845684f75a865348"
+  },
+  "_source": "git://github.com/ebidel/idb.filesystem.js.git",
+  "_target": "*",
+  "_originalSource": "ebidel/idb.filesystem.js"
+}
