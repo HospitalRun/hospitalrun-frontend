@@ -44,8 +44,6 @@ export default Ember.Controller.extend({
                 if (isFileSystemEnabled) {
                     filesystem.downloadIfNeeded(info.doc);
                 }
-            } else {
-                console.log("Change got CHANGE",info);
             }
         }        
     },
