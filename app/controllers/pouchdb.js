@@ -3,6 +3,7 @@ export default Ember.Controller.extend({
     needs: 'filesystem',
     
     filesystem: Ember.computed.alias('controllers.filesystem'),
+    isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
     
     backoff: 2, //Factor to increment timeout by each time it fails
     configDB: null, //Initializer will set this up.
@@ -10,48 +11,39 @@ export default Ember.Controller.extend({
     sync: null, //PouchDB sync process
     timeout: 5000, //Timeout to retry sync
     
-    _createChange: function(info) {
-        if (info.id.indexOf('photo_') ===0) {
-            console.log("PHOTO got CREATE",info);
-        } else {            
-            console.log("other got CREATE",info);    
-        }        
+    /**
+     * Get the file link information for the specifed recordId.
+     * @param {String} recordId the id of the record to the find the file link for.
+     * @returns {Promise} returns a Promise that resolves once the file link object is retrieved.  
+     * The promise resolves with the file link object if found;otherwise it resolves with null.     
+     */
+    _getFileLink: function(recordId) {
+        return new Ember.RSVP.Promise(function(resolve){
+            var configDB = this.get('configDB');
+            configDB.get('file-link_'+recordId, function(err, doc){
+                resolve(doc);
+            });
+        }.bind(this));
     },
-    
-    _deleteChange: function(info) {
-        if (info.id.indexOf('photo_') ===0) {
-            console.log("PHOTO got DELETE",info);
-        } else {            
-            console.log("other got DELETE",info);    
-        }
-    },
-    
-    downloadImageFromServer: function(imageRecord) {
-        var me = this,
-            url = imageRecord.get('url'),
-            xhr = new XMLHttpRequest();
-        if (!Ember.isEmpty(url)) {
-            //Make sure directory exists or is created before downloading.
-            this.getPatientDirectory(imageRecord.get('patientId'));            
-            xhr.open('GET', url, true);
-            xhr.responseType = 'blob';
-            xhr.onload = function() {  
-                var file = new Blob([xhr.response]);
-                me.addImageToFileStore(file, null, imageRecord);
-            };
-            xhr.send();
-        }
-    },    
     
     _gotChange: function(info) {
+        var filesystem = this.get('filesystem'),
+            isFileSystemEnabled = this.get('isFileSystemEnabled');
+        
         if (info.deleted) {
-            if (info.id.indexOf('photo_') ===0) {
-                console.log("PHOTO Change got DELETE",info);
-                //Delete from local filesystem if exists.
+            if (info.id.indexOf('photo_') ===0 && isFileSystemEnabled) {
+                this._getFileLink(info.id).then(function(fileLink) {
+                    if (!Ember.isEmpty(fileLink)) {
+                        //Delete from local filesystem if exists.
+                        filesystem.deleteFile(fileLink.fileName, info.id);   
+                    }
+                });                
             }
         } else {            
             if (info.id.indexOf('photo_') ===0) {
-                console.log("PHOTO Change got CHANGE ",info);
+                if (isFileSystemEnabled) {
+                    filesystem.downloadIfNeeded(info.doc);
+                }
             } else {
                 console.log("Change got CHANGE",info);
             }
@@ -77,7 +69,7 @@ export default Ember.Controller.extend({
         timeout *= backoff;
         this.set('timeout',timeout);
         console.log("Retrying sync wait for "+timeout);
-        this._setupSync();        
+        this._setupSync();
     },    
 
     _setupSync: function() {
@@ -94,8 +86,7 @@ export default Ember.Controller.extend({
      * Got sync error, probably offline.
      * Retry after timeout to resync.
      */
-    _syncError: function(err) {
-        console.log("got error on sync", err);        
+    _syncError: function() {
         var sync = this.get('sync'),
             timeout = this.get('timeout');
         sync.cancel();
@@ -107,14 +98,11 @@ export default Ember.Controller.extend({
         this.set('timeout', 5000);
     },
 
-    _updateChange: function(info) {
-
-        if (info.id.indexOf('photo_') ===0) {
-            console.log("PHOTO got UPDATE",info);
-        } else {            
-            console.log("other got UPDATE",info);    
-        }
-        
+    removeFileLink: function(pouchDbId) {
+         var configDB = this.get('configDB');
+        this._getFileLink(pouchDbId).then(function(fileLink) {
+            configDB.remove(fileLink);
+        });
     },
     
     saveFileLink: function(newFileName, recordId) {
@@ -138,17 +126,12 @@ export default Ember.Controller.extend({
                 ]
             };
 
-        
         localMainDB.changes({
-            conflicts: true,
             include_docs: true, 
             live: true,
             since: 'now',
             style: 'all_docs'
         }).on('change', this._gotChange.bind(this));
-            //.on('create', this._createChange.bind(this))
-            //.on('update', this._updateChange.bind(this))
-            //.on('delete', this._deleteChange.bind(this));
 
         configDB.allDocs(options, function(err, response) { 
             if (err) {

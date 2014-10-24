@@ -2,8 +2,9 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import BloodTypes from 'hospitalrun/mixins/blood-types';
 import DOBDays from 'hospitalrun/mixins/dob-days';
 import GenderList from 'hospitalrun/mixins/gender-list';
+import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 import UserSession from "hospitalrun/mixins/user-session";
-export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, UserSession, {
+export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, PouchAdapterUtils, UserSession, {
     canAddAppointment: function() {        
         return this.currentUserCan('add_appointment');
     }.property(),    
@@ -128,8 +129,9 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
                     localFile: true,
                     caption: caption,
                     coverImage: coverImage,
-                });                
-            fileSystem.addFile(photoFile, dirToSaveTo, newPatientPhoto.get('id')).then(function(fileEntry) {
+                });
+            var pouchDbId = this._idToPouchId(newPatientPhoto.get('id'), 'photo');
+            fileSystem.addFile(photoFile, dirToSaveTo, pouchDbId).then(function(fileEntry) {
                 fileSystem.fileToDataURL(photoFile).then(function(photoDataUrl) {                        
                     var dataUrlParts = photoDataUrl.split(',');
                     newPatientPhoto.setProperties({
@@ -159,6 +161,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
         
         deletePhoto: function(model) {
             var photo = model.get('photoToDelete'),
+                photoId = model.get('id'),
                 photos = this.get('photos'),
                 filePath = photo.get('fileName');
             photos.removeObject(photo);
@@ -166,7 +169,8 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Us
                 var fileSystem = this.get('fileSystem'),
                     isFileSystemEnabled = this.get('isFileSystemEnabled');
                 if (isFileSystemEnabled) {
-                    fileSystem.deleteFile(filePath);
+                    var pouchDbId = this._idToPouchId(photoId, 'photo');
+                    fileSystem.deleteFile(filePath, pouchDbId);
                 }
             }.bind(this));
             this.set('photoToDelete');            
