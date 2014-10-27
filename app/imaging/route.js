@@ -14,6 +14,9 @@ export default AbstractModuleRoute.extend(UserSession, {
     }, {
         name: 'imagingTypesList',
         findArgs: ['lookup','imaging_types']
+    }, {
+        name: 'visitList',
+        findArgs: ['visit']
     }],
     
     subActions: [{

@@ -12,6 +12,8 @@ export default AbstractEditController.extend(PatientSubmodule, {
 
     labTypesList: Ember.computed.alias('controllers.labs.labTypesList'),
     patientList: Ember.computed.alias('controllers.labs.patientList'),
+    visitList: Ember.computed.alias('controllers.labs.visitList'),
+
     updateCapability: 'add_lab',
 
     afterUpdate: function() {

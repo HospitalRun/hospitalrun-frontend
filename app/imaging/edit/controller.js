@@ -2,7 +2,7 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(PatientSubmodule, {
-    needs: 'imaging',
+    needs: ['imaging', 'visits'],
 
     lookupListsToUpdate: [{
         name: 'imagingTypesList', //Name of property containing lookup list
@@ -11,7 +11,8 @@ export default AbstractEditController.extend(PatientSubmodule, {
     }],
 
     imagingTypesList: Ember.computed.alias('controllers.imaging.imagingTypesList'),
-    patientList: Ember.computed.alias('controllers.imaging.patientList'),
+    patientList: Ember.computed.alias('controllers.imaging.patientList'),    
+    visitList: Ember.computed.alias('controllers.imaging.visitList'),
     
     updateCapability: 'add_imaging',
 

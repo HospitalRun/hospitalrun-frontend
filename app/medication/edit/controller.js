@@ -3,7 +3,7 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from "hospitalrun/mixins/user-session";
 
 export default AbstractEditController.extend(PatientSubmodule, UserSession, {    
-    needs: 'medication',
+    needs: ['medication', 'visits'],
 
     canFulfill: function() {
         return this.currentUserCan('fulfill_medication');
@@ -35,6 +35,7 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, {
     medicationList: Ember.computed.alias('controllers.medication.medicationList'),
     medicationFrequencyList: Ember.computed.alias('controllers.medication.medicationFrequencyList'),
     patientList: Ember.computed.alias('controllers.medication.patientList'),
+    visitList: Ember.computed.alias('controllers.medication.visitList'),
     updateCapability: 'add_medication',
 
     afterUpdate: function() {

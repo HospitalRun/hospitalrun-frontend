@@ -19,7 +19,6 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
     }],
     
     newAppointment: false,
-    patientAppointments: Ember.computed.alias('patient.appointments'),
     patientList: Ember.computed.alias('controllers.appointments.patientList'),
     physicianList: Ember.computed.alias('controllers.appointments.physicianList'),
     showTime: true,
@@ -27,7 +26,7 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
     cancelAction: function() {
         var returnTo = this.get('returnTo');
         if (Ember.isEmpty(returnTo)) {
-            return 'allItems';
+            return this._super();
         } else {
             return 'returnTo';
         }
@@ -41,17 +40,8 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
     
     updateCapability: 'add_appointment',
 
-    afterUpdate: function(appointment) {
-        if (this.get('newAppointment')) {
-            var appointments = this.get('patientAppointments'),
-                patient = this.get('patient');
-            appointments.addObject(appointment);
-            patient.save().then(function() {
-                this.send(this.get('cancelAction'));            
-            }.bind(this));            
-        } else {
-            this.send(this.get('cancelAction'));
-        }
+    afterUpdate: function() {
+        this.send(this.get('cancelAction'));
     },
     
     actions: {

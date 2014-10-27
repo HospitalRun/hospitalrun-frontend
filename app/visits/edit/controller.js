@@ -82,27 +82,15 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
         this.get('model').validate();
     }.observes('primaryDiagnosisId'),
 
-    afterUpdate: function(visit) {
-        if (this.get('newVisit')) {
-            var visits = this.get('patientVisits'),
-                patient = this.get('patient');
-            visits.addObject(visit);
-            patient.save().then(function() {
-                this.send('returnToPatient');
-            }.bind(this));
-        } else {
-            this.send('returnToPatient');
-        }
+    afterUpdate: function() {
+        this.send('returnToPatient');        
     },
     
     beforeUpdate: function() {        
         if (this.get('isNew')) {
             this.set('newVisit', true);
-            var promises = this.resolvePatientChildren();
-            return Ember.RSVP.all(promises, 'Resolved patient children before adding new visit');
-        } else {
-            return Ember.RSVP.resolve();
         }
+        return Ember.RSVP.resolve();        
     },
     
     /**

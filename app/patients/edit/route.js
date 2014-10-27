@@ -9,24 +9,29 @@ export default AbstractEditRoute.extend(PatientId, {
     actions: {
         deletePhoto: function(model) {
             this.controller.send('deletePhoto', model);
-        },                
+        }
     },
-    
-    afterModel: function(patient) {
-        return new Ember.RSVP.Promise(function(resolve, reject){
-            this.store.find('photo', {
-                patient: 'patient_'+patient.get('id')
-            }).then(function(photos) {
-                this.set('photos', photos);
-                resolve();
-            }.bind(this), function(err) {
-                reject(err);
-            });
-        }.bind(this));
-    },
-    
-    setupController: function(controller, model) {        
+        
+    setupController: function(controller, model) {
         this._super(controller, model);
-        controller.set('photos', this.get('photos'));
+        //Load appointments, photos and visits asynchronously.
+        var promises = [],
+            patientId = 'patient_'+model.get('id');
+
+        promises.push(this.store.find('appointment', {
+            patient: patientId
+        }));            
+        promises.push(this.store.find('photo', {                
+            patient: patientId
+        }));
+        promises.push(this.store.find('visit', {
+            patient: patientId
+        }));
+        Ember.RSVP.all(promises, 'Retrieving patient child objects').then(function(records) {
+            controller.set('appointments', records[0]);
+            controller.set('photos', records[1]);
+            controller.set('visits', records[2]);                
+        });
     }
+    
 });

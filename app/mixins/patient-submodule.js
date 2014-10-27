@@ -7,8 +7,6 @@ export default Ember.Mixin.create({
             this.transitionToRoute('visits.edit', this.get('returnVisitId'));
         }
     },
-    
-    patientVisits: Ember.computed.alias('patient.visits'),
 
     /**
      * Add the specified child to the specified visit.  If a visit
@@ -24,9 +22,7 @@ export default Ember.Mixin.create({
         return new Ember.RSVP.Promise(function(resolve, reject){
             var childPromises = [],
                 patient = this.get('patient'),
-                patientVisits = this.get('patientVisits'),
                 promises = [],
-                savePatient = false,
                 visit = this.get('visit');
             if (Ember.isEmpty(visit)) {
                 visit = this.get('store').createRecord('visit', {
@@ -35,17 +31,11 @@ export default Ember.Mixin.create({
                     patient: patient,
                     visitType: newVisitType
                 });
-                this.set('visit', visit);
-                patientVisits.addObject(visit);
-                childPromises = this.resolvePatientChildren();
-                savePatient = true;
+                this.set('visit', visit);                            
             }
             childPromises.addObjects(this.resolveVisitChildren());
             Ember.RSVP.all(childPromises, 'Resolved visit children before adding new '+childName).then(function() {        
                 visit.get(childName).then(function(visitChildren) {
-                    if (savePatient) {
-                        promises.push(patient.save());
-                    }
                     visitChildren.addObject(objectToAdd);
                     promises.push(visit.save());
                     Ember.RSVP.all(promises, 'All updates done for visit add child object to '+childName).then(function() {        
@@ -77,24 +67,16 @@ export default Ember.Mixin.create({
         }
     }.observes('patientId').on('init'),
     
-    returnPatientId: null,
-    returnVisitId: null,
-    
-    /**
-     * Observer on patients to make sure async relationships are resolved.
-     * @returns {array} of promises which can be used to ensure
-     * all relationships have resolved.
-     */
-    resolvePatientChildren: function() {
-        var patient = this.get('patient'),
-             promises = [];
-        if (!Ember.isEmpty(patient)) {
-            //Make sure all the async relationships are resolved    
-            promises.push(patient.get('appointments'));
-            promises.push(patient.get('visits'));
+    patientVisits: function() {
+        var patientId = this.get('patientId'),
+            visitList = this.get('visitList');    
+        if (!Ember.isEmpty(visitList)) {
+            return visitList.filterBy('patient.id', patientId);
         }
-        return promises;
-    }.observes('patient'),
+    }.property('patientId'),
+    
+    returnPatientId: null,
+    returnVisitId: null,    
     
     /**
      * Observer on visits to make sure async relationships are resolved.
@@ -121,6 +103,7 @@ export default Ember.Mixin.create({
             this.set('returnVisitId', visitId);
         }
     }.observes('visitId').on('init'),
-
+    
     visitId: Ember.computed.alias('visit.id'),
+    visitsController: Ember.computed.alias('controllers.visits')
 });

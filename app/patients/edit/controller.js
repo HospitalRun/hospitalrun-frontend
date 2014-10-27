@@ -305,11 +305,13 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
     _getVisitCollection: function(name) {
         var returnList = [],
             visits = this.get('visits');
-        visits.forEach(function(visit) {
-            visit.get(name).then(function(items) {
-                returnList.addObjects(items);
+        if (!Ember.isEmpty(visits)) {
+            visits.forEach(function(visit) {
+                visit.get(name).then(function(items) {
+                    returnList.addObjects(items);
+                });
             });
-        });
+        }
         return returnList;        
     },
     

@@ -13,6 +13,9 @@ export default AbstractModuleRoute.extend({
     }, {
         name: 'labTypesList',
         findArgs: ['lookup','lab_types']
+    }, {
+        name: 'visitList',
+        findArgs: ['visit']
     }],
     
     subActions: [{

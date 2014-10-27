@@ -15,6 +15,9 @@ export default AbstractModuleRoute.extend({
     }, {
         name: 'medicationFrequencyList',
         findArgs: ['lookup','medication_frequency']
+    }, {
+        name: 'visitList',
+        findArgs: ['visit']
     }],
     
     subActions: [{

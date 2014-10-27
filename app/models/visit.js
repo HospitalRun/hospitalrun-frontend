@@ -19,7 +19,7 @@ export default AbstractModel.extend({
     startDate:  DS.attr('date'),
     visitType: DS.attr(),        
     vitals: DS.hasMany('vital', {async: true}),
-    
+            
     visitDate: function() {
         var endDate = moment(this.get('endDate')),
             startDate = moment(this.get('startDate')),
@@ -29,6 +29,12 @@ export default AbstractModel.extend({
         }
         return visitDate;
     }.property('startDate', 'endDate'),
+    
+    visitDescription: function() {
+        var visitDate = this.get('visitDate'),
+            visitType = this.get('visitType');
+        return '%@ (%@)'.fmt(visitDate, visitType);
+    }.property('visitDate', 'visitType'),
     
     validations: {
         startDate: {

@@ -3,7 +3,6 @@ import EmailValidation from "hospitalrun/utils/email-validation";
 
 export default AbstractModel.extend({
     address: DS.attr(),
-    appointments: DS.hasMany('appointment', {async: true}),
     bloodType: DS.attr('string'),
     clinic: DS.attr('string'),
     country: DS.attr('string'),
@@ -15,7 +14,6 @@ export default AbstractModel.extend({
     lastName:  DS.attr('string'),    
     parent: DS.attr('string'),
     phone:  DS.attr('string'),
-    visits: DS.hasMany('visit', {async: true}),
 
     displayName: function() {
         var firstName = this.get('firstName'),
