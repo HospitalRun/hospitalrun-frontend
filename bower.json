@@ -5,7 +5,7 @@
     "jquery": "^1.11.1",
     "qunit": "~1.12.0",
     "ember-qunit": "~0.1.8",
-    "ember": "~1.5.1",
+    "ember": "~1.7.1",
     "ember-resolver": "~0.1.5",
     "loader": "stefanpenner/loader.js#1.0.0",
     "ember-cli-shims": "stefanpenner/ember-cli-shims#0.0.2",
@@ -25,12 +25,13 @@
     "moment": "~2.7.0",
     "ember-calendar": "~1.0.0",
     "octicons": "~2.1.2",
-    "idb.filesystem": "ebidel/idb.filesystem.js"
+    "idb.filesystem": "ebidel/idb.filesystem.js",
+    "pace": "~1.0.1"
   },
   "resolutions": {
     "moment": "~2.7.0",
     "jquery": "^1.11.1",
-    "ember": "~1.5.1",
-    "pouchdb": "~3.0.6"
+    "pouchdb": "~3.0.6",
+    "ember": "~1.7.1"
   }
 }
