@@ -15,7 +15,11 @@ For more information on semantic versioning, please visit http://semver.org/.
 
 ---
 
-### 0.10.3 July 10, 2014
+### 0.10.5 August 7, 2014
+
+* Increase supported version range for jQuery dependency. [#917]
+
+### 0.10.4 July 13, 2014
 
 **Hotfix**
 
@@ -26,7 +30,7 @@ For more information on semantic versioning, please visit http://semver.org/.
 
 **Bug fixes**
 
-* `Bloodhound#clearPrefecthCache` now works with cache keys that contain regex 
+* `Bloodhound#clearPrefetchCache` now works with cache keys that contain regex 
   characters. [#771]
 * Prevent outdated network requests from being sent. [#809]
 * Add support to object tokenizers for multiple property tokenization. [#811]
@@ -155,6 +159,7 @@ work for them with a custom implementation.
 
 [0.10.0 milestone]: https://github.com/twitter/typeahead.js/issues?milestone=8&page=1&state=closed
 
+[#917]: https://github.com/twitter/typeahead.js/pull/917
 [#899]: https://github.com/twitter/typeahead.js/pull/899
 [#881]: https://github.com/twitter/typeahead.js/pull/881
 [#839]: https://github.com/twitter/typeahead.js/pull/839
