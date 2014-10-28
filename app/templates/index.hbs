@@ -258,11 +258,18 @@
                     </div>
                 </header>
                 <nav class="category-links">
-                    {{#if userCan_users}}
+                    {{#if userCan_update_config}}
+                        {{#link-to 'admin.address' class="sub-section-link"}}
+                            Address Options
+                            <span class="octicon octicon-chevron-right"></span>
+                        {{/link-to}}                    
+                    
                         {{#link-to 'admin.lookup' class="sub-section-link"}}
                             Lookup Lists
                             <span class="octicon octicon-chevron-right"></span>
-                        {{/link-to}}                    
+                        {{/link-to}}
+                    {{/if}}
+                    {{#if userCan_users}}
                         {{#link-to 'users.index' class="sub-section-link"}}
                             User listing
                             <span class="octicon octicon-chevron-right"></span>

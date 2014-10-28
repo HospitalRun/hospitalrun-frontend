@@ -6,6 +6,8 @@
         {{#if showUpdateButton}}
             <button class="btn btn-primary on-white" {{action updateButtonAction}} {{bind-attr disabled=isUpdateDisabled }}>{{updateButtonText}}</button>
         {{/if}}
-        <button class="btn btn-default warning" {{action "cancel"}}>Cancel</button>
+        {{#unless hideCancelButton}}
+            <button class="btn btn-default warning" {{action "cancel"}}>Cancel</button>
+        {{/unless}}
     </div>
 </div>

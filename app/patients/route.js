@@ -3,6 +3,9 @@ import PatientId from 'hospitalrun/mixins/patient-id';
 export default AbstractModuleRoute.extend(PatientId, {
     addCapability: 'add_patient',
     additionalModels: [{ 
+        name: 'addressOptions',
+        findArgs: ['config','address_options']
+    }, { 
         name: 'clinicList',
         findArgs: ['lookup','clinic_list']
     },  {

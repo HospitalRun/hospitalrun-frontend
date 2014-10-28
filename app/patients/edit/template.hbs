@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-6">
                             <div class="form-group has-success">
-                                <label class="control-label0">Record Number</label>
+                                <label class="control-label">Record Number</label>
                                 <div class="form-control not-editable">
                                     {{id}}
                                 </div>
@@ -27,11 +27,14 @@
                                     {{ext-radio name=gender content=genderList value=gender class="col-xs-4"}}
                                 </div>
                             </div>
-                            {{date-picker property="dateOfBirth" label="DOB" maxDate="now"}}
+                            {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now"}}
                             <div class="form-group">
                                 <label class="control-label">Age</label>
                                 <p class="form-control-static">{{dobInDays}}</p>
                             </div>
+                            {{em-input property="placeOfBirth" label="Place of Birth"}}
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
                             {{em-select
                                 prompt=" "
                                 label="Blood Type"
@@ -40,16 +43,34 @@
                                 optionValuePath="content"
                                 optionLabelPath="content"
                             }}
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            {{em-text label="Address" property="address" rows=3 }}
-                            {{select-or-typeahead property="country" label="Country" list=countryList selection=country }}
+                            {{select-or-typeahead property="clinic" label="Clinic Site" list=clinicList selection=clinic }}
+                            {{em-input property="referredBy" label="Referred By"}}
+                            {{em-input property="religion" label="Religion"}}                            
                             {{em-input property="phone" label="Phone Contact"}}
                             {{em-input property="email" type="email" label="Email"}}
-                            {{em-input property="parent" label="Parent/Guardian"}}
-                            {{select-or-typeahead property="clinic" label="Clinic Site" list=clinicList selection=clinic }}
+                            {{em-input property="parent" label="Parent/Guardian"}}                            
                         </div>
                     </div>
+                    <div class="row">                        
+                        {{#if haveAddressOptions}}
+                            {{#if address1Include}}
+                                {{em-text label=address1Label property="address" rows=3 class="col-xs-12 col-sm-6"}}
+                            {{/if}}                                
+                            {{#if address2Include}}
+                                {{em-input label=address2Label property="address2" class="col-xs-12 col-sm-6" }}
+                            {{/if}}
+                            {{#if address3Include}}
+                                {{em-input label=address3Label property="address3" class="col-xs-12 col-sm-6" }}
+                            {{/if}}
+                            {{#if address4Include}}
+                                {{em-input label=address4Label property="address4" class="col-xs-12 col-sm-6" }}
+                            {{/if}}                            
+                        {{else}}
+                            {{em-text label="Address" property="address" rows=3  class="col-xs-12 col-sm-6"}}
+                        {{/if}}
+                        {{select-or-typeahead property="country" label="Country" list=countryList selection=country class="col-xs-12 col-sm-6" }}
+                    </div>
+                        
                 {{/em-form}}
             </div>
         </div>

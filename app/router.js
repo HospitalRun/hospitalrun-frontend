@@ -6,6 +6,7 @@ var Router = Ember.Router.extend({
 
 Router.map(function() {
     this.resource('admin', function() {
+        this.route('address');
         this.route('lookup', { path: '/' });
         this.resource('users', function() {
             this.route('edit', { path: "/edit/:user_id" });

@@ -1,5 +1,6 @@
 export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     editTitle: null,
+    hideNewButton: false,
     modelName: null,
     newTitle: null,
     
@@ -45,6 +46,9 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             sectionDetails.currentScreenTitle = this.get('newTitle');
         } else {
             sectionDetails.currentScreenTitle = this.get('editTitle');
+        }        
+        if (this.get('hideNewButton')) {
+            sectionDetails.newButtonAction = null;
         }
         this.send('setSectionHeader', sectionDetails);
         this._super(controller, model);

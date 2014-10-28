@@ -68,10 +68,25 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
     
     needs: ['filesystem','patients'],
 
+    addressOptions: Ember.computed.alias('controllers.patients.addressOptions'),
+    address1Include: Ember.computed.alias('controllers.patients.addressOptions.value.address1Include'),
+    address1Label: Ember.computed.alias('controllers.patients.addressOptions.value.address1Label'),
+    address2Include: Ember.computed.alias('controllers.patients.addressOptions.value.address2Include'),
+    address2Label: Ember.computed.alias('controllers.patients.addressOptions.value.address2Label'),
+    address3Include: Ember.computed.alias('controllers.patients.addressOptions.value.address3Include'),
+    address3Label: Ember.computed.alias('controllers.patients.addressOptions.value.address3Label'),
+    address4Include: Ember.computed.alias('controllers.patients.addressOptions.value.address4Include'),
+    address4Label: Ember.computed.alias('controllers.patients.addressOptions.value.address4Label'),
+
     clinicList: Ember.computed.alias('controllers.patients.clinicList'),
     countryList: Ember.computed.alias('controllers.patients.countryList'),
     fileSystem: Ember.computed.alias('controllers.filesystem'),
     isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
+    
+    haveAddressOptions: function() {
+        var addressOptions = this.get('addressOptions');
+        return (!Ember.isEmpty(addressOptions));
+    }.property('addressOptions'),
 
     lookupListsToUpdate: [{
         name: 'countryList',

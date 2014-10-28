@@ -6,6 +6,9 @@ export default AbstractModuleRoute.extend({
     moduleName: 'admin',
     sectionTitle: 'Admin',
     subActions: [{
+        text: 'Address Options',
+        linkTo: 'admin.address'        
+    },{
         text: 'Lookup Lists',
         linkTo: 'admin.lookup'
     },{
