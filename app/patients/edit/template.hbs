@@ -21,8 +21,11 @@
                             {{em-input property="firstName" label="First Name"}}
                             {{em-input property="lastName" label="Last Name"}}
                             <div class="form-group">
-                                <label>Gender:</label>
-                                {{ext-radio name=gender content=genderList value=gender }}
+                                <label>Gender:</label>  
+                                <div class="row">
+                                    <div class="col-xs-1"></div>
+                                    {{ext-radio name=gender content=genderList value=gender class="col-xs-4"}}
+                                </div>
                             </div>
                             {{date-picker property="dateOfBirth" label="DOB" maxDate="now"}}
                             <div class="form-group">
@@ -84,6 +87,67 @@
                         </div>
                     {{/each}}
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel">    
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-diagnoses">
+                    Diagnoses
+                </a>
+            </h3>
+        </div>
+        <div id="patient-diagnoses" class="panel-collapse collapse in">
+            <div class="panel-body detail-section-content">
+                <table class="table">
+                    <tr class="table-header">
+                        <th>Date</th>
+                        <th>Diagnosis</th>
+                        <th>Primary Diagnosis</th>
+                    </tr>
+                    {{#each patientDiagnoses}}
+                        <tr>
+                            <td>{{date-format date}}</td>
+                            <td>{{description}}</td>
+                            <td>{{#if primary}}
+                                    Y
+                                {{else}}
+                                    N
+                                {{/if}}                                
+                            </td>
+                        </tr>
+                    {{/each}}
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="panel">    
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-procedures">
+                    Procedures
+                </a>
+            </h3>
+        </div>
+        <div id="patient-procedures" class="panel-collapse collapse in">
+            <div class="panel-body detail-section-content">
+                <table class="table">
+                    <tr class="table-header">
+                        <th>Date</th>
+                        <th>Procedure</th>
+                        <th>Physician</th>
+                        <th>Assistant</th>
+                    </tr>
+                    {{#each patientProcedures}}
+                        <tr>
+                            <td>{{date-format procedureDate}}</td>
+                            <td>{{description}}</td>
+                            <td>{{physician}}</td>
+                            <td>{{assistant}}</td>
+                        </tr>
+                    {{/each}}
+                </table>
             </div>
         </div>
     </div>    

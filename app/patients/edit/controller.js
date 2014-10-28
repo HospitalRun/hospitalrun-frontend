@@ -87,6 +87,27 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
         var dob = this.get('dateOfBirth');
         return this.convertDOBToText(dob);
     }.property('dateOfBirth'),
+
+    patientDiagnoses: function() {
+        var diagnosesList = [],
+            visits = this.get('visits');        
+        if (!Ember.isEmpty(visits)) {
+            visits.forEach(function(visit) {
+                if (!Ember.isEmpty(visit.get('primaryDiagnosisId'))) {
+                    diagnosesList.addObject({
+                        id: visit.get('primaryDiagnosisId'),
+                        date: visit.get('startDate'),
+                        description: visit.get('primaryDiagnosis'),
+                        primary: true
+                    });
+                }
+                if (!Ember.isEmpty(visit.get('additionalDiagnoses'))) {
+                    diagnosesList.addObjects(visit.get('additionalDiagnoses'));
+                }
+            });
+        }
+        return diagnosesList;
+    }.property('visits.@each.imaging'),    
     
     patientImaging: function() {
         return this._getVisitCollection('imaging');
@@ -99,6 +120,10 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
     patientMedications: function() {
         return this._getVisitCollection('medication');
     }.property('visits.@each.medication'),
+    
+    patientProcedures: function() {
+        return this._getVisitCollection('procedures');
+    }.property('visits.@each.procedures'),
 
     updateCapability: 'add_patient',
 
@@ -150,6 +175,12 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
                     }.bind(this));
                 }.bind(this));            
             }.bind(this));            
+        },
+        
+        appointmentDeleted: function(deletedAppointment) {
+            var appointments = this.get('appointments');            
+            appointments.removeObject(deletedAppointment);
+            this.send('closeModal');
         },
         
         deleteDiagnosis: function(diagnosis) {
@@ -263,6 +294,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
         },        
         
         showDeleteAppointment: function(appointment) {
+            appointment.set('deleteFromPatient', true);
             this.send('openModal', 'appointments.delete', appointment);
         },
         
@@ -291,6 +323,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
         },
 
         showDeleteVisit: function(visit) {
+            visit.set('deleteFromPatient', true);
             this.send('openModal', 'visits.delete', visit);
         },
         
@@ -298,6 +331,12 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
             photo.save().then(function() {
                 this.send('closeModal');
             }.bind(this));            
+        },
+        
+        visitDeleted: function(deletedVisit) {
+            var visits = this.get('visits');
+            visits.removeObject(deletedVisit);
+            this.send('closeModal');
         }
         
     },
