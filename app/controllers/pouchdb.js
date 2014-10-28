@@ -66,7 +66,6 @@ export default Ember.Controller.extend({
             timeout = this.get('timeout');
         timeout *= backoff;
         this.set('timeout',timeout);
-        console.log("Retrying sync wait for "+timeout);
         this._setupSync();
     },    
 
