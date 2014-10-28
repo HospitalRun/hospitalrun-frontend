@@ -1,10 +1,11 @@
 {
-  "name": "pikaday",
-  "description": "A refreshing JavaScript Datepicker — lightweight, no dependencies, modular CSS",
+  "name": "pikaday - time",
+  "description": "Time support added to pikaday",
   "keywords": [
     "datepicker",
     "calendar",
-    "date"
+    "date",
+    "time"
   ],
   "main": [
     "./pikaday.js",
@@ -20,16 +21,16 @@
     "BSD",
     "MIT"
   ],
-  "homepage": "http://dbushell.github.io/Pikaday/",
+  "homepage": "https://github.com/owenmead/Pikaday",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dbushell/Pikaday.git"
+    "url": "https://github.com/owenmead/Pikaday.git"
   },
-  "_release": "3dc4fd4b8a",
+  "_release": "27fb63905c",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "3dc4fd4b8ad881cb6ea7e637edcb3d563c24e0a8"
+    "commit": "27fb63905c5d6f6890d52dc28b5915d87d8eee2b"
   },
   "_source": "git://github.com/owenmead/Pikaday.git",
   "_target": "master",

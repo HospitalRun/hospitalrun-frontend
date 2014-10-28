@@ -206,6 +206,9 @@
         // number of years either side, or array of upper/lower range
         yearRange: 10,
 
+        // show week numbers at head of row
+        showWeekNumber: false,
+
         // used internally (don't config outside)
         minYear: 0,
         maxYear: 9999,
@@ -224,7 +227,7 @@
         numberOfMonths: 1,
 
         // time
-        showTime: false,
+        showTime: true,
         showSeconds: false,
         use24hour: false,
 
@@ -232,13 +235,18 @@
         // only used for the first display or when a selected date is not visible
         mainCalendar: 'left',
 
+        // Specify a DOM element to render the calendar in
+        container: undefined,
+
         // internationalization
         i18n: {
             previousMonth : 'Previous Month',
             nextMonth     : 'Next Month',
             months        : ['January','February','March','April','May','June','July','August','September','October','November','December'],
             weekdays      : ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-            weekdaysShort : ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+            weekdaysShort : ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+            midnight      : 'Midnight',
+            noon          : 'Noon'
         },
 
         // callback function
@@ -284,6 +292,13 @@
                '</td>';
     },
 
+    renderWeek = function (d, m, y) {
+        // Lifted from http://javascript.about.com/library/blweekyear.htm, lightly modified.
+        var onejan = new Date(y, 0, 1),
+            weekNum = Math.ceil((((new Date(y, m, d) - onejan) / 86400000) + onejan.getDay()+1)/7);
+        return '<td class="pika-week">' + weekNum + '</td>';
+    },
+
     renderRow = function(days, isRTL)
     {
         return '<tr>' + (isRTL ? days.reverse() : days).join('') + '</tr>';
@@ -297,6 +312,9 @@
     renderHead = function(opts)
     {
         var i, arr = [];
+        if (opts.showWeekNumber) {
+            arr.push('<th></th>');
+        }
         for (i = 0; i < 7; i++) {
             arr.push('<th scope="col"><abbr title="' + renderDayName(opts, i) + '">' + renderDayName(opts, i, true) + '</abbr></th>');
         }
@@ -376,18 +394,18 @@
         return to_return;
     },
 
-    renderTime = function(hh, mm, ss, use24hour, showSeconds)
+    renderTime = function(hh, mm, ss, opts)
     {
         var to_return = '<table cellpadding="0" cellspacing="0" class="pika-time"><tbody><tr>' +
             renderTimePicker(24, hh, 'pika-select-hour', function(i) {
-                if (use24hour) {
+                if (opts.use24hour) {
                     return i;
                 } else {
                     var to_return = (i%12) + (i<12 ? ' AM' : ' PM');
                     if (to_return == '0 AM') {
-                        return 'Midnight'
+                        return opts.i18n.midnight;
                     } else if (to_return == '0 PM') {
-                        return 'Noon'
+                        return opts.i18n.noon;
                     } else {
                         return to_return;
                     }
@@ -396,7 +414,7 @@
             '<td>:</td>' +
             renderTimePicker(60, mm, 'pika-select-minute', function(i) { if (i < 10) return "0" + i; return i });
 
-        if (showSeconds) {
+        if (opts.showSeconds) {
             to_return += '<td>:</td>' +
                 renderTimePicker(60, ss, 'pika-select-second', function(i) { if (i < 10) return "0" + i; return i });
         }
@@ -562,7 +580,9 @@
         addEvent(self.el, 'change', self._onChange);
 
         if (opts.field) {
-            if (opts.bound) {
+            if (opts.container) {
+                opts.container.appendChild(self.el);
+            } else if (opts.bound) {
                 document.body.appendChild(self.el);
             } else {
                 opts.field.parentNode.insertBefore(self.el, opts.field.nextSibling);
@@ -913,8 +933,7 @@
                             this._d ? this._d.getHours() : 0,
                             this._d ? this._d.getMinutes() : 0,
                             this._d ? this._d.getSeconds() : 0,
-                            opts.use24hour,
-                            opts.showSeconds)
+                            opts)
                     + '</div>';
             }
 
@@ -938,6 +957,7 @@
 
         adjustPosition: function()
         {
+            if (this._o.container) return;
             var field = this._o.trigger, pEl = field,
             width = this.el.offsetWidth, height = this.el.offsetHeight,
             viewportWidth = window.innerWidth || document.documentElement.clientWidth,
@@ -1017,6 +1037,9 @@
                 row.push(renderDay(1 + (i - before), month, year, isSelected, isToday, isDisabled, isEmpty));
 
                 if (++r === 7) {
+                    if (opts.showWeekNumber) {
+                        row.unshift(renderWeek(i - before, month, year));
+                    }
                     data.push(renderRow(row, opts.isRTL));
                     row = [];
                     r = 0;
