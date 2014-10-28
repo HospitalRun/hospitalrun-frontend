@@ -2,7 +2,7 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(PatientSubmodule, {
-    needs: ['imaging', 'visits'],
+    needs: 'imaging',
 
     lookupListsToUpdate: [{
         name: 'imagingTypesList', //Name of property containing lookup list

@@ -3,7 +3,7 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from "hospitalrun/mixins/user-session";
 
 export default AbstractEditController.extend(PatientSubmodule, UserSession, {    
-    needs: ['medication', 'visits'],
+    needs: 'medication',
 
     canFulfill: function() {
         return this.currentUserCan('fulfill_medication');
