@@ -35,10 +35,14 @@ e;d++)if(d%4){var g=f.indexOf(b.charAt(d-1))<<2*(d%4),h=f.indexOf(b.charAt(d))>>
 	function OAuthSignature() {
 	}
 
-	OAuthSignature.prototype.generate = function (httpMethod, url, parameters, consumerSecret, tokenSecret) {
+	OAuthSignature.prototype.generate = function (httpMethod, url, parameters, consumerSecret, tokenSecret, options) {
 		var signatureBaseString = new SignatureBaseString(httpMethod, url, parameters).generate();
-		return new HmacSha1Signature(signatureBaseString, consumerSecret, tokenSecret).generate();
-	}
+		var encodeSignature = true;
+		if (options) {
+			encodeSignature = options.encodeSignature;
+		}
+		return new HmacSha1Signature(signatureBaseString, consumerSecret, tokenSecret).generate(encodeSignature);
+	};
 
 	// Specification: http://oauth.net/core/1.0/#anchor14
 	// url: if the scheme is missing, http will be added automatically
@@ -261,8 +265,10 @@ e;d++)if(d%4){var g=f.indexOf(b.charAt(d-1))<<2*(d%4),h=f.indexOf(b.charAt(d))>>
 	}
 
 	HmacSha1Signature.prototype = {
-		generate : function () {
-			return this._rfc3986.encode(this._base64EncodedHash);
+		generate : function (encode) {
+			return encode === false ?
+					this._base64EncodedHash :
+					this._rfc3986.encode(this._base64EncodedHash);
 		}
 	};
 

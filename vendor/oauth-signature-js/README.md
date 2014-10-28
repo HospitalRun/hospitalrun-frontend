@@ -32,9 +32,17 @@ Add a `<script>` to your `index.html`:
 To generate the OAuth signature call the following method:
 
 ```js
-oauthSignature.generate(httpMethod, url, parameters, consumerSecret, tokenSecret)
+oauthSignature.generate(httpMethod, url, parameters, consumerSecret, tokenSecret, options)
 ```
-`tokenSecret` is optional
+- `tokenSecret` is optional
+- `options` is optional
+
+the default `options` parameter is as follows
+```js
+var options = {
+	encodeSignature: true // will encode the signature following the RFC3986 Spec by default
+}
+```
 
 ## Example
 
@@ -57,10 +65,17 @@ var httpMethod = 'GET',
 	},
 	consumerSecret = 'kd94hf93k423kf44',
 	tokenSecret = 'pfkkdhi9sl3r4s00',
-	encodedSignature = oauthSignature.generate(httpMethod, url, parameters, consumerSecret, tokenSecret);
+	// generates a RFC3986 encoded, BASE64 encoded HMAC-SHA1 hash
+	encodedSignature = oauthSignature.generate(httpMethod, url, parameters, consumerSecret, tokenSecret),
+	// generates a BASE64 encode HMAC-SHA1 hash
+	signature = oauthSignature.generate(httpMethod, url, parameters, consumerSecret, tokenSecret, 
+		{ encodeSignature: false}),
+	;
 ```
 
-The `encodedSignature` variable will contain the BASE64 encoded HMAC-SHA1 hash: `tR3%2BTy81lMeYAr%2FFid0kMTYa%2FWM%3D`.
+The `encodedSignature` variable will contain the RFC3986 encoded, BASE64 encoded HMAC-SHA1 hash, ready to be used as a query parameter in a request: `tR3%2BTy81lMeYAr%2FFid0kMTYa%2FWM%3D`.
+
+The `signature` variable will contain the BASE64 HMAC-SHA1 hash, without encoding: `tR3+Ty81lMeYAr/Fid0kMTYa/WM=`.
 
 ## Requesting a protected resource
 
@@ -84,6 +99,29 @@ The tests can be executed in your browser or in node
 
 Open the file [src/test-runner.mocha.html](src/test-runner.mocha.html) or [src/test-runner.qunit.html](src/test-runner.qunit.html) in your browser
 
+You can also run them live: 
+ - [src/test-runner.mocha.html](https://bettiolo.github.io/oauth-signature-js/src/test-runner.mocha.html)
+ - [src/test-runner.qunit.html](https://bettiolo.github.io/oauth-signature-js/src/test-runner.qunit.html)
+
 ### Node
 
 Execute `npm test` in the console
+
+### Live example
+
+If you want to make a working experiment you can use the live version of the OAuth signature page at this url: http://bettiolo.github.io/oauth-reference-page/
+
+And you can hit the echo OAuth endpoints at this url: http://echo.lab.madgex.com/
+
+- url: **http://echo.lab.madgex.com/echo.ashx**
+- consumer key: **key**
+- consumer secret: **secret**
+- token: **accesskey**
+- token secret: **accesssecret**
+- nonce: **IMPORTANT!** generate a new one at EACH request otherwise you will get a 400 Bad Request
+- timestamp: **IMPORTANT!** refresh the timestamp before each call
+- fields: **add a field with name `foo` and value `bar`**
+
+A url similar to this one will be generated: `http://echo.lab.madgex.com/echo.ashx?foo=bar&oauth_consumer_key=key&oauth_nonce=643377115&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1410807318&oauth_token=accesskey&oauth_version=1.0&oauth_signature=zCmKoF9rVlNxAkD8wUCizFUajs4%3D`
+
+Click on the generated link on the right hand side and you will see the echo server returning `foo=bar`
