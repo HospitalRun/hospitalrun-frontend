@@ -18,7 +18,6 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
         id: 'visit_location_list'
     }],
     
-    newAppointment: false,
     patientList: Ember.computed.alias('controllers.appointments.patientList'),
     physicianList: Ember.computed.alias('controllers.appointments.physicianList'),
     showTime: true,
@@ -69,19 +68,5 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
             this.set('dateFormat', 'l h:mm A');
             this.set('showTime', true);
         }
-    }.observes('allDay'),
-
-    beforeUpdate: function() {
-        if (this.get('isNew')) {
-            this.set('newAppointment', true);
-            return new Ember.RSVP.Promise(function(resolve, reject){
-                var promises = this.resolveVisitChildren();
-                Ember.RSVP.all(promises, 'Resolved visit children before adding new appointment').then(function() {        
-                    resolve();
-                }.bind(this), reject);
-            }.bind(this));
-        } else {
-            return Ember.RSVP.resolve();
-        }
-    }
+    }.observes('allDay')
 });
