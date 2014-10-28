@@ -7,8 +7,16 @@ export default AbstractEditRoute.extend(PatientId, {
     photos: null,
     
     actions: {
+        appointmentDeleted: function(model) {
+            this.controller.send('appointmentDeleted', model);
+        },
+        
         deletePhoto: function(model) {
             this.controller.send('deletePhoto', model);
+        },
+        
+        visitDeleted: function(model) {
+            this.controller.send('visitDeleted', model);
         }
     },
         

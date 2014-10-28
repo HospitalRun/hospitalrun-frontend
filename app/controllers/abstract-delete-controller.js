@@ -11,9 +11,10 @@ export default Ember.ObjectController.extend({
             this.send('closeModal');
         },
         
-        delete: function() {            
+        delete: function() {
+            var recordToDelete = this.get('model');
             this.get('model').destroyRecord().then(function() {
-                this.send(this.get('afterDeleteAction'));
+                this.send(this.get('afterDeleteAction'), recordToDelete);
             }.bind(this));                
         }
     }
