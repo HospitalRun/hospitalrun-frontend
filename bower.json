@@ -25,12 +25,10 @@
     "moment": "~2.7.0",
     "ember-calendar": "~1.0.0",
     "octicons": "~2.1.2",
-    "idb.filesystem": "ebidel/idb.filesystem.js",
-    "pace": "~1.0.1"
+    "idb.filesystem": "ebidel/idb.filesystem.js"
   },
   "resolutions": {
     "moment": "~2.7.0",
-    "jquery": "^1.11.1",
     "pouchdb": "~3.0.6",
     "ember": "~1.7.1"
   }
