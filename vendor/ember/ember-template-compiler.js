@@ -1,7 +1,16 @@
+/*!
+ * @overview  Ember - JavaScript Application Framework
+ * @copyright Copyright 2011-2014 Tilde Inc. and contributors
+ *            Portions Copyright 2006-2011 Strobe Inc.
+ *            Portions Copyright 2008-2011 Apple Inc. All rights reserved.
+ * @license   Licensed under MIT license
+ *            See https://raw.github.com/emberjs/ember.js/master/LICENSE
+ * @version   1.6.1
+ */
+
+
 (function() {
 var Ember = { assert: function() {}, FEATURES: { isEnabled: function() {} } };
-/* global Handlebars:true */
-
 /**
 @module ember
 @submodule ember-handlebars-compiler
@@ -10,8 +19,8 @@ var Ember = { assert: function() {}, FEATURES: { isEnabled: function() {} } };
 
 
 // ES6Todo: you'll need to import debugger once debugger is es6'd.
-if (typeof Ember.assert === 'undefined')   { Ember.assert = function(){}; }
-if (typeof Ember.FEATURES === 'undefined') { Ember.FEATURES = { isEnabled: function(){} }; }
+if (typeof Ember.assert === 'undefined')   { Ember.assert = function(){}; };
+if (typeof Ember.FEATURES === 'undefined') { Ember.FEATURES = { isEnabled: function(){} }; };
 
 var objectCreate = Object.create || function(parent) {
   function F() {}
@@ -108,7 +117,7 @@ var EmberHandlebars = Ember.Handlebars = objectCreate(Handlebars);
   @param {String} dependentKeys*
 */
 EmberHandlebars.helper = function(name, value) {
-  if (!View) { View = requireModule('ember-views/views/view')['default']; } // ES6TODO: stupid circular dep
+  if (!View) { View = requireModule('ember-views/views/view')['View']; } // ES6TODO: stupid circular dep
   if (!Component) { Component = requireModule('ember-views/views/component')['default']; } // ES6TODO: stupid circular dep
 
   Ember.assert("You tried to register a component named '" + name + "', but component names must include a '-'", !Component.detect(value) || name.match(/-/));
