@@ -7,11 +7,11 @@ import UserSession from "hospitalrun/mixins/user-session";
 export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, PouchAdapterUtils, UserSession, {
     canAddAppointment: function() {        
         return this.currentUserCan('add_appointment');
-    }.property(),    
+    }.property(),
 
-    canAddDiagnosis: function() {        
-        return this.currentUserCan('add_diagnosis');
-    }.property(),    
+    canAddContact: function() {
+        return this.currentUserCan('add_patient');
+    }.property(),
 
     canAddImaging: function() {
         return this.currentUserCan('add_imaging');
@@ -38,8 +38,8 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
         return this.currentUserCan('delete_appointment');
     }.property(), 
     
-    canDeleteDiagnosis: function() {        
-        return this.currentUserCan('delete_diagnosis');
+    canDeleteContact: function() {        
+        return this.currentUserCan('add_user');
     }.property(),
     
     canDeleteImaging: function() {
@@ -83,10 +83,15 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
     fileSystem: Ember.computed.alias('controllers.filesystem'),
     isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
     
+    haveAdditionalContacts: function() {
+        var additionalContacts = this.get('additionalContacts');
+        return (!Ember.isEmpty(additionalContacts));
+    }.property('additionalContacts'),
+
     haveAddressOptions: function() {
         var addressOptions = this.get('addressOptions');
         return (!Ember.isEmpty(addressOptions));
-    }.property('addressOptions'),
+    }.property('addressOptions'),    
 
     lookupListsToUpdate: [{
         name: 'countryList',
@@ -143,17 +148,14 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
     updateCapability: 'add_patient',
 
     actions: {
-        addDiagnosis: function(newDiagnosis) {
-            var additionalDiagnoses = this.get('additionalDiagnoses');
-            if (!Ember.isArray(additionalDiagnoses)) {
-                additionalDiagnoses = [];
-            }
-            additionalDiagnoses.addObject(newDiagnosis);
-            this.set('additionalDiagnoses', additionalDiagnoses);
+        addContact: function(newContact) {
+            var additionalContacts = this.getWithDefault('additionalContacts', []);
+            additionalContacts.addObject(newContact);
+            this.set('additionalContacts', additionalContacts);
             this.send('update', true);
-            this.send('closeModal');
+            this.send('closeModal');            
         },
-        
+
         /**
          * Add the specified photo to the patient's record.
          * @param {File} photoFile the photo file to add.
@@ -198,10 +200,11 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
             this.send('closeModal');
         },
         
-        deleteDiagnosis: function(diagnosis) {
-            var additionalDiagnoses = this.get('additionalDiagnoses');
-            additionalDiagnoses.removeObject(diagnosis);
-            this.set('additionalDiagnoses', additionalDiagnoses);
+        deleteContact: function(model) {
+            var contact = model.get('contactToDelete');
+            var additionalContacts = this.get('additionalContacts');
+            additionalContacts.removeObject(contact);
+            this.set('additionalContacts', additionalContacts);
             this.send('update', true);
         },
         
@@ -301,7 +304,11 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
             });            
             this.transitionToRoute('visits.edit', newVisit);
         },     
-                
+
+        showAddContact: function() {
+            this.send('openModal', 'patients.add-contact', {});            
+        },
+
         showAddPhoto: function() {
             this.send('openModal', 'patients.photo', {
                 isNew: true
@@ -312,6 +319,17 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
             appointment.set('deleteFromPatient', true);
             this.send('openModal', 'appointments.delete', appointment);
         },
+        
+        showDeleteContact: function(contact) {
+            this.send('openModal', 'dialog', Ember.Object.create({
+                confirmAction: 'deleteContact',
+                title: 'Delete Contact',
+                message: 'Are you sure you want to delete this contact?',
+                contactToDelete: contact,
+                updateButtonAction: 'confirm',
+                updateButtonText: 'Ok'
+            }));                    
+        },        
         
         showDeleteImaging: function(imaging) {
             this.send('openModal', 'imaging.delete', imaging);
@@ -333,8 +351,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
                 photoToDelete: photo,
                 updateButtonAction: 'confirm',
                 updateButtonText: 'Ok'
-            }));        
-            
+            }));
         },
 
         showDeleteVisit: function(visit) {

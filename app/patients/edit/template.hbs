@@ -1,15 +1,15 @@
 <div class="panel-group" id="patient-accordion">
-    <div class="panel detail-section">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-demo">
-                    General Information
-                </a>
-            </h3>
-        </div>
-        <div id="patient-demo" class="panel-collapse collapse in">
-            <div class="panel-body detail-section-content detail-section-content">
-                {{#em-form model=this submit_button=false }}
+    {{#em-form model=this submit_button=false }}
+        <div class="panel detail-section">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-demo">
+                        General Information
+                    </a>
+                </h3>
+            </div>
+            <div id="patient-demo" class="panel-collapse collapse in">
+                <div class="panel-body detail-section-content detail-section-content">
                     <div class="row">
                         <div class="col-xs-12 col-sm-6">
                             <div class="form-group has-success">
@@ -18,8 +18,8 @@
                                     {{id}}
                                 </div>
                             </div>
-                            {{em-input property="firstName" label="First Name"}}
-                            {{em-input property="lastName" label="Last Name"}}
+                            {{em-input property="firstName" label="First Name" class="required"}}
+                            {{em-input property="lastName" label="Last Name" class="required"}}
                             <div class="form-group">
                                 <label>Gender:</label>  
                                 <div class="row">
@@ -32,9 +32,9 @@
                                 <label class="control-label">Age</label>
                                 <p class="form-control-static">{{dobInDays}}</p>
                             </div>
-                            {{em-input property="placeOfBirth" label="Place of Birth"}}
                         </div>
                         <div class="col-xs-12 col-sm-6">
+                            {{em-input property="placeOfBirth" label="Place of Birth"}}                            
                             {{em-select
                                 prompt=" "
                                 label="Blood Type"
@@ -46,12 +46,29 @@
                             {{select-or-typeahead property="clinic" label="Clinic Site" list=clinicList selection=clinic }}
                             {{em-input property="referredBy" label="Referred By"}}
                             {{em-input property="religion" label="Religion"}}                            
-                            {{em-input property="phone" label="Phone Contact"}}
-                            {{em-input property="email" type="email" label="Email"}}
                             {{em-input property="parent" label="Parent/Guardian"}}                            
                         </div>
                     </div>
-                    <div class="row">                        
+                </div>
+            </div>
+        </div>
+        <div class="panel detail-section">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-address">
+                        Address/Contact Information
+                        {{#if canAddContact}}
+                            <button class="btn btn-primary align-right" {{action "showAddContact" bubbles=false }}><span class="octicon octicon-plus"></span>Add Contact</button>
+                        {{/if}}
+                    </a>
+                </h3>
+            </div>
+            <div id="patient-address" class="panel-collapse collapse in">
+                <div class="panel-body detail-section-content detail-section-content">
+                    <div class="row">
+
+                        {{em-input property="phone" label="Phone Contact" class="col-xs-12 col-sm-6"}}
+                        {{em-input property="email" type="email" label="Email" class="col-xs-12 col-sm-6"}}
                         {{#if haveAddressOptions}}
                             {{#if address1Include}}
                                 {{em-text label=address1Label property="address" rows=3 class="col-xs-12 col-sm-6"}}
@@ -69,12 +86,42 @@
                             {{em-text label="Address" property="address" rows=3  class="col-xs-12 col-sm-6"}}
                         {{/if}}
                         {{select-or-typeahead property="country" label="Country" list=countryList selection=country class="col-xs-12 col-sm-6" }}
-                    </div>
                         
-                {{/em-form}}
+                    </div>
+                </div>
+                {{#with this as patientController}}
+                    {{#if haveAdditionalContacts}}
+                        <h4>Additional Contacts</h4>
+                        <table class="table">
+                            <tr class="table-header">
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Relationship</th>
+                                {{#if parentController.canDeleteContact}}
+                                    <th>Action</th>
+                                {{/if}}
+                            </tr>
+                            {{#each additionalContacts}}
+                                <tr>
+                                    <td>{{name}}</td>
+                                    <td>{{phone}}</td>
+                                    <td>{{email}}</td>
+                                    <td>{{relationship}}</td>
+                                    {{#if patientController.canDeleteContact}}
+                                        <td>
+                                            <button class="btn btn-default warning" {{action "showDeleteContact" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                        </td>
+                                    {{/if}}
+                                </tr>
+                            {{/each}}
+                        </table>                
+                    {{/if}}
+                {{/with}}
             </div>
-        </div>
-    </div>
+        </div>    
+    {{/em-form}}
+            
     <div class="panel">    
         <div class="panel-heading">
             <h3 class="panel-title">
