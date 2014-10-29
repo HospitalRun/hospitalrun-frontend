@@ -463,3 +463,9 @@ h1 {
 }
 
 // end layout styles ------------/
+
+// mark input fields as required
+.form-group.required .control-label:after {
+  content:"*";
+  color:red;
+}
