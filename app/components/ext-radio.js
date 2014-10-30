@@ -1,3 +1,7 @@
 export default Ember.Component.extend({     
-     name: "radio",
+    includeOtherOption: false,
+    otherOptionLabel: null,
+    name: "radio",
+    
+    
 });

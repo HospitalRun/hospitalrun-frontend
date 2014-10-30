@@ -1,6 +1,13 @@
 {{#each content}}
     <label class="radio-inline">
-        {{radio-button value=value name=view.name selection=view.value}}
+        {{radio-button value=value name=view.name selection=view.value }}
         {{label}}
     </label>
 {{/each}}
+{{#if includeOtherOption}}
+    <label class="radio-inline">
+        {{radio-button value=otherValue name=name selection=value }}        
+        {{otherOptionLabel}} {{em-input property=otherValue }}
+    </label>
+{{/if}}
+    

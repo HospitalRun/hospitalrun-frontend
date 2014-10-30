@@ -217,7 +217,7 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
         },
         
         showAddDiagnosis: function() {
-            this.send('openModal', 'patients.add-diagnosis', AddDiagnosisModel.create());
+            this.send('openModal', 'visits.add-diagnosis', AddDiagnosisModel.create());
         },
         
         showAddProcedure: function() {

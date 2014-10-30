@@ -1,0 +1,10 @@
+{{#em-form model=this submit_button=false }}
+    {{em-select label="Category" property="category" class="required"
+        content=categoryTypes
+        optionValuePath="content" 
+        optionLabelPath="content"
+        selected=category
+    }}
+    {{em-input label="Sources" property="sources"}}
+    {{em-input label="Cost" property="cost" class="required"}}
+{{/em-form}}

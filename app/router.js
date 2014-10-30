@@ -61,6 +61,7 @@ Router.map(function() {
     this.resource('patients', function() {
         this.route('edit', { path: "/edit/:patient_id" });
         this.route('search', { path: "/search/:search_text" });
+        this.route('socialwork', { path: "/socialwork/:patient_id" });
     });
         
     this.resource('visits', function() {

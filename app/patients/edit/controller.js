@@ -82,6 +82,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
     countryList: Ember.computed.alias('controllers.patients.countryList'),
     fileSystem: Ember.computed.alias('controllers.filesystem'),
     isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
+    patientController: Ember.computed.alias('controllers.patients'),
     
     haveAdditionalContacts: function() {
         var additionalContacts = this.get('additionalContacts');
@@ -144,6 +145,18 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
     patientProcedures: function() {
         return this._getVisitCollection('procedures');
     }.property('visits.@each.procedures'),
+    
+    updateSubActions: function() {
+        var id = this.get('id');
+        if (!Ember.isEmpty(id)) {
+            var patientController = this.get('patientController');
+            patientController.set('subActions', [{
+                linkTo: 'patients.socialwork',
+                linkToContext: id,
+                text: 'Social Services'
+            }]);
+        }        
+    }.observes('id'),
 
     updateCapability: 'add_patient',
 
@@ -222,7 +235,6 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
                     fileSystem.deleteFile(filePath, pouchDbId);
                 }
             }.bind(this));
-            this.set('photoToDelete');            
         },
         
         editAppointment: function(appointment) {
