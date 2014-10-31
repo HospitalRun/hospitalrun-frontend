@@ -109,6 +109,14 @@ export default Ember.Mixin.create({
             'Patient Administration', 
             'System Administrator'
         ],
+        add_socialwork: [
+            'Data Entry',
+            'Hospital Administrator',
+            'Medical Records Officer',
+            'Patient Administration', 
+            'Social Worker', 
+            'System Administrator'            
+        ],
         add_user: [
             'User Administrator',
             'System Administrator'
@@ -215,6 +223,14 @@ export default Ember.Mixin.create({
             'Patient Administration', 
             'System Administrator'
         ],
+        delete_socialwork: [
+            'Data Entry',
+            'Hospital Administrator',
+            'Medical Records Officer',
+            'Patient Administration', 
+            'Social Worker', 
+            'System Administrator'            
+        ],        
         delete_vitals: [
             'Doctor',
             'Hospital Administrator',
