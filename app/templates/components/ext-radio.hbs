@@ -1,13 +1,24 @@
-{{#each content}}
-    <label class="radio-inline">
-        {{radio-button value=value name=view.name selection=view.value }}
-        {{label}}
-    </label>
-{{/each}}
-{{#if includeOtherOption}}
-    <label class="radio-inline">
-        {{radio-button value=otherValue name=name selection=value }}        
-        {{otherOptionLabel}} {{em-input property=otherValue }}
-    </label>
+{{#if view.showInline}}
+    {{#each view.content}}    
+        <label class="radio-inline">
+            {{radio-button content=this name=view.name selection=view.value }}
+        </label>
+    {{/each}}
+{{else}}
+    {{#each view.content}}
+        <div class="radio">
+            <label>
+                {{radio-button content=this name=view.name selection=view.value }}
+            </label>
+        </div>
+    {{/each}}
 {{/if}}
-    
+
+{{#if includeOtherOption}}
+    <div class="radio">
+        <label>
+            {{radio-button value=otherValue name=view.name selection=view.value }}        
+            {{otherOptionLabel}} {{input value=otherValue class="form-control"}}
+        </label>
+    </div>
+{{/if}}
