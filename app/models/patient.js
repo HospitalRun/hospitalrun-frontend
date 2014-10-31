@@ -3,6 +3,7 @@ import EmailValidation from "hospitalrun/utils/email-validation";
 
 export default AbstractModel.extend({
     additionalContacts: DS.attr(),
+    additionalData: DS.attr(), //Additional data will be used to store custom data per install.
     address: DS.attr('string'),
     address2: DS.attr('string'),
     address3: DS.attr('string'),
@@ -11,16 +12,21 @@ export default AbstractModel.extend({
     clinic: DS.attr('string'),
     country: DS.attr('string'),
     dateOfBirth: DS.attr('date'),
+    economicClassification: DS.attr('string'),
     email: DS.attr('string'),
+    expenses: DS.attr(),
+    familyInfo: DS.attr(),
     firstName: DS.attr('string'),
     gender:  DS.attr('string'),
     history: DS.attr('string'),
     lastName:  DS.attr('string'),
+    notes: DS.attr('string'),  
+    otherIncome: DS.attr('string'),
     parent: DS.attr('string'),
     phone:  DS.attr('string'),
     placeOfBirth: DS.attr('string'),
     referredBy: DS.attr('string'),
-    religion: DS.attr('string'),
+    religion: DS.attr('string'),  
 
     displayName: function() {
         var firstName = this.get('firstName'),

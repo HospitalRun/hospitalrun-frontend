@@ -10,9 +10,14 @@ export default Ember.Object.extend(Ember.Validations.Mixin, {
     name: null,
     occupation: null,
     relationship: null,
-    validations: {
+    validations: {        
+        age: {
+            numericality: {
+                allowBlank: true
+            }
+        },        
         name: {
             presence: true
-        },
+        }    
     }
 });

@@ -24,7 +24,7 @@
                                 <label>Gender:</label>  
                                 <div class="row">
                                     <div class="col-xs-1"></div>
-                                    {{ext-radio name=gender content=genderList value=gender class="col-xs-4"}}
+                                    {{ext-radio name=gender content=genderList value=gender showInline=true class="col-xs-4"}}
                                 </div>
                             </div>
                             {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now"}}
@@ -451,6 +451,136 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div>    
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-social">
+                    Social Work Details
+                </a>
+            </h3>
+        </div>
+        <div id="patient-social" class="panel-collapse collapse in">    
+            <h4>
+                Family Information
+                {{#if canAddSocialWork}}
+                    <button class="btn btn-primary align-right" {{ action "showEditFamily" bubbles=false }}><span class="octicon octicon-plus"></span>Add Family Member</button>
+                {{/if}}                
+            </h4>            
+            
+            <table class="table">
+                <tr class="table-header">
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Civil Status</th>
+                    <th>Relation to Patient</th>
+                    <th>Education</th>
+                    <th>Occupation</th>
+                    <th>Income</th>
+                    <th>Insurance</th>
+                    <th>Action</th>
+                </tr>
+                {{#with this as patientController}}
+                    {{#each familyInfo}}
+                        <tr>
+                            <td>{{name}}</td>
+                            <td>{{age}}</td>
+                            <td>{{civilStatus}}</td>
+                            <td>{{relationship}}</td>
+                            <td>{{education}}</td>
+                            <td>{{occupation}}</td>
+                            <td>{{income}}</td>
+                            <td>{{insurance}}</td>
 
+                            <td>
+                                {{#if patientController.canAddSocialWork}}
+                                    <button class="btn btn-default neutral" {{action "showEditFamily" this}}>Edit</button>
+                                {{/if}}
+                                {{#if patientController.canDeleteSocialWork}}
+                                    <button class="btn btn-default warning" {{action "showDeleteFamily" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                {{/if}}
+
+                            </td>
+                        </tr>
+                    {{/each}}
+                {{/with}}
+            </table>         
+            <h4>
+                Expenses
+                {{#if canAddSocialWork}}
+                    <button class="btn btn-primary align-right" {{action "showEditExpense" bubbles=false }}><span class="octicon octicon-plus"></span>Add Expense</button>
+                {{/if}}
+            </h4>
+            <table class="table">
+                <tr class="table-header">
+                    <th>Category</th>
+                    <th>Sources</th>
+                    <th>Monthly Cost</th>
+                </tr>
+                {{#each expenses}}
+                    <tr>
+                        <td>{{category}}</td>
+                        <td>{{sources}}</td>
+                        <td>{{cost}}</td>
+                        <td>
+                            {{#if patientController.canAddSocialWork}}
+                                <button class="btn btn-default neutral" {{action "showEditExpense" this}}>Edit</button>
+                            {{/if}}
+                            {{#if patientController.canDeleteSocialWork}}
+                                <button class="btn btn-default warning" {{action "showDeleteExpense" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                            {{/if}}
+                        </td>
+                    </tr>
+                {{/each}}
+                {{#if showExpenseTotal}}
+                    <tr>
+                        <td colspan="2"><b>Total Monthly Expenses</b></td>
+                        <td>{{totalExpenses}}</td>
+                    </tr>
+                {{/if}}
+            </table>
+            {{em-text label="Other support or income" property="otherIncome"}}
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label>Living Arrangement</label>
+                    {{ext-radio 
+                        name=additionalData.livingArrangement 
+                        content=livingArrangementList 
+                        value=additionalData.livingArrangement 
+                        includeOtherOption=true 
+                        otherOptionLabel="Other" 
+                        radioLabelPath="content"
+                        radioValuePath="content"
+                    }}
+                </div>
+                <div class="form-group col-sm-6">
+                    <label>Family Support System</label>
+                    {{em-checkbox label="Family members are living together" property="additionalData.familySupport1"}}
+                    {{em-checkbox label="Family members listen, care and help one another" property="additionalData.familySupport2"}}
+                    {{em-checkbox label="Spend time together in prayer especially in difficult times" property="additionalData.familySupport3"}}
+                    {{em-checkbox label="Family and closest relatives have open communication" property="additionalData.familySupport4"}}
+                    {{em-checkbox label="Has relatives around who are responsive to families needs" property="additionalData.familySupport5"}}
+                </div>
+            </div>
+            {{em-text label="Family practices" property="additionalData.familyPractices"}}
+            {{em-text label="Family Spiritual Needs" property="additionalData.familySpiritualNeeds"}}
+            <div class="row">
+            
+                {{em-select label="Philhealth" 
+                    property="additionalData.philhealth" content=philhealthTypes
+                    optionValuePath="content" optionLabelPath="content"
+                    selected=additionalData.philhealth
+                    class="col-sm-6"
+                }}
+
+                {{em-select label="Classification" 
+                    property="economicClassification" content=economicClassificationTypes
+                    optionValuePath="content" optionLabelPath="content"
+                    selected=economicClassification
+                    class="col-sm-6"
+                }}
+            </div>
+            {{em-text label="Other Notes" property="notes"}}
+        </div>
+    </div>
 </div>

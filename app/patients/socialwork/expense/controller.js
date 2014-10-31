@@ -1,6 +1,6 @@
 import IsUpdateDisabled from "hospitalrun/mixins/is-update-disabled";
 export default Ember.ObjectController.extend(IsUpdateDisabled, {    
-    needs: 'patients/socialwork',
+    needs: 'patients',
     
     categoryTypes: [
         'Clothing',
@@ -14,7 +14,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
         'Water'
     ],
     
-    editController: Ember.computed.alias('controllers.patients/socialwork'),    
+    editController: Ember.computed.alias('controllers.patients'),
     showUpdateButton: true,
     title: 'Expense',    
     updateButtonAction: 'update',
@@ -31,8 +31,8 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
             this.send('closeModal');
         },
         
-        update: function() {
-            var model = this.get('model');            
+        update: function() {            
+            var model = this.getProperties('isNew','category','sources','cost');
             this.get('editController').send('updateExpense', model);
         }
     }

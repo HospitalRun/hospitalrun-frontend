@@ -1,8 +1,8 @@
 import IsUpdateDisabled from "hospitalrun/mixins/is-update-disabled";
 export default Ember.ObjectController.extend(IsUpdateDisabled, {    
-    needs: 'patients/socialwork',
+    needs: 'patients',
     
-    editController: Ember.computed.alias('controllers.patients/socialwork'),    
+    editController: Ember.computed.alias('controllers.patients'),
     showUpdateButton: true,
     title: 'Family Info',    
     updateButtonAction: 'update',
@@ -20,7 +20,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
         },
         
         update: function() {
-            var model = this.get('model');            
+            var model = this.getProperties('isNew','name','age','civilStatus','relationship','education','occupation','income','insurance');
             this.get('editController').send('updateFamilyInfo', model);
         }
     }

@@ -1,10 +1,14 @@
+
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
 import DOBDays from 'hospitalrun/mixins/dob-days';
+import FamilyInfoModel from 'hospitalrun/models/family-info';
 import GenderList from 'hospitalrun/mixins/gender-list';
 import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
+import SocialExpenseModel from 'hospitalrun/models/social-expense';
 import UserSession from "hospitalrun/mixins/user-session";
 export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, PouchAdapterUtils, UserSession, {
+    
     canAddAppointment: function() {        
         return this.currentUserCan('add_appointment');
     }.property(),
@@ -28,6 +32,10 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
     canAddPhoto: function() {
         var isFileSystemEnabled = this.get('isFileSystemEnabled');
         return (this.currentUserCan('add_photo') && isFileSystemEnabled);
+    }.property(),
+    
+    canAddSocialWork: function() {        
+        return this.currentUserCan('add_socialwork');
     }.property(),
     
     canAddVisit: function() {        
@@ -57,10 +65,41 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
     canDeletePhoto: function() {        
         return this.currentUserCan('delete_photo');
     }.property(),    
+    
+    canDeleteSocialWork: function() {        
+        return this.currentUserCan('delete_socialwork');
+    }.property(),
 
     canDeleteVisit: function() {        
         return this.currentUserCan('delete_visit');
     }.property(),
+    
+    economicClassificationTypes: [
+        'A',
+        'B',
+        'C1',
+        'C2',
+        'C3',
+        'D'
+    ],
+
+    livingArrangementList: [
+        'Homeless',
+        'Institution',
+        'Owned',
+        'Rent',
+        'Shared'
+    ],
+    
+    philhealthTypes: [         
+        'Employed: Government',
+        'Employed: Non Paying Member/Lifetime',
+        'Employed: OWWA/OFW',
+        'Employed: Private',
+        'Employed: Sponsored/Indigent',
+        'Self Employed'      
+    ],    
+    
     
     primaryDiagnosisIdChanged: function() {
         this.get('model').validate();
@@ -146,17 +185,20 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
         return this._getVisitCollection('procedures');
     }.property('visits.@each.procedures'),
     
-    updateSubActions: function() {
-        var id = this.get('id');
-        if (!Ember.isEmpty(id)) {
-            var patientController = this.get('patientController');
-            patientController.set('subActions', [{
-                linkTo: 'patients.socialwork',
-                linkToContext: id,
-                text: 'Social Services'
-            }]);
-        }        
-    }.observes('id'),
+    totalExpenses: function() {
+        var expenses = this.get('expenses');
+        if (!Ember.isEmpty(expenses)) {
+            var total = expenses.map(function(previousValue, expense) {
+                if (!Ember.isEmpty(expense.cost)) {
+                    total += expense.cost;
+                }            
+            }, 0); 
+            this.set('showExpenseTotal', true);
+            return total;
+        } else {
+            this.set('showExpenseTotal', false);
+        }
+    }.property('expenses@each.cost'),    
 
     updateCapability: 'add_patient',
 
@@ -220,7 +262,23 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
             this.set('additionalContacts', additionalContacts);
             this.send('update', true);
         },
-        
+
+        deleteExpense: function(model) {
+            var expense = model.get('expenseToDelete'),
+                expenses = this.get('expenses');
+            expenses.removeObject(expense);
+            this.set('expenses', expenses);
+            this.send('update', true);
+        },
+
+        deleteFamily: function(model) {
+            var family = model.get('familyToDelete'),
+                familyInfo = this.get('familyInfo');
+            familyInfo.removeObject(family);
+            this.set('familyInfo', familyInfo);
+            this.send('update', true);
+        },
+
         deletePhoto: function(model) {
             var photo = model.get('photoToDelete'),
                 photoId = model.get('id'),
@@ -342,7 +400,30 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
                 updateButtonText: 'Ok'
             }));                    
         },        
+    
+        showDeleteExpense: function(expense) {
+            this.send('openModal', 'dialog', Ember.Object.create({
+                confirmAction: 'deleteExpense',
+                title: 'Delete Expense',
+                message: 'Are you sure you want to delete this expense?',
+                expenseToDelete: expense,
+                updateButtonAction: 'confirm',
+                updateButtonText: 'Ok'
+            }));   
+        },
         
+        showDeleteFamily: function(familyInfo) {
+            this.send('openModal', 'dialog', Ember.Object.create({
+                confirmAction: 'deleteFamily',
+                title: 'Delete Family Member',
+                message: 'Are you sure you want to delete this family member?',
+                familyToDelete: familyInfo,
+                updateButtonAction: 'confirm',
+                updateButtonText: 'Ok'
+            }));   
+            
+        },
+
         showDeleteImaging: function(imaging) {
             this.send('openModal', 'imaging.delete', imaging);
         },
@@ -370,7 +451,45 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
             visit.set('deleteFromPatient', true);
             this.send('openModal', 'visits.delete', visit);
         },
+    
+        showEditExpense: function(model) {
+            if (Ember.isEmpty(model)) {
+                model = SocialExpenseModel.create({isNew:true});
+            }
+             this.send('openModal', 'patients.socialwork.expense', model);            
+        },
         
+        showEditFamily: function(model) {
+            if (Ember.isEmpty(model)) {
+                model = FamilyInfoModel.create({isNew:true});
+            }
+            this.send('openModal', 'patients.socialwork.family-info', model);
+        },
+        
+        updateExpense: function(model) {
+            var expenses = this.getWithDefault('expenses', []),
+                isNew = model.isNew;
+            if (isNew) {                
+                delete model.isNew;
+                expenses.addObject(model);
+                this.set('expenses', expenses);
+            }
+            this.send('update', true);
+            this.send('closeModal');
+        },        
+
+        updateFamilyInfo: function(model) {
+            var familyInfo = this.getWithDefault('familyInfo',[]),
+                isNew = model.isNew;
+            if (isNew) {
+                delete model.isNew;
+                familyInfo.addObject(model);
+                this.set('familyInfo', familyInfo);
+            }
+            this.send('update', true);
+            this.send('closeModal');
+        },
+
         updatePhoto: function(photo) {
             photo.save().then(function() {
                 this.send('closeModal');
