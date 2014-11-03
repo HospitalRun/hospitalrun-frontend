@@ -516,26 +516,30 @@
                     <th>Category</th>
                     <th>Sources</th>
                     <th>Monthly Cost</th>
+                    <th>Actions</th>
                 </tr>
-                {{#each expenses}}
-                    <tr>
-                        <td>{{category}}</td>
-                        <td>{{sources}}</td>
-                        <td>{{cost}}</td>
-                        <td>
-                            {{#if patientController.canAddSocialWork}}
-                                <button class="btn btn-default neutral" {{action "showEditExpense" this}}>Edit</button>
-                            {{/if}}
-                            {{#if patientController.canDeleteSocialWork}}
-                                <button class="btn btn-default warning" {{action "showDeleteExpense" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                            {{/if}}
-                        </td>
-                    </tr>
-                {{/each}}
+                {{#with this as patientController}}
+                    {{#each expenses}}
+                        <tr>
+                            <td>{{category}}</td>
+                            <td>{{sources}}</td>
+                            <td>{{cost}}</td>
+                            <td>
+                                {{#if patientController.canAddSocialWork}}
+                                    <button class="btn btn-default neutral" {{action "showEditExpense" this}}>Edit</button>
+                                {{/if}}
+                                {{#if patientController.canDeleteSocialWork}}
+                                    <button class="btn btn-default warning" {{action "showDeleteExpense" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                {{/if}}
+                            </td>
+                        </tr>
+                    {{/each}}
+                {{/with}}
                 {{#if showExpenseTotal}}
                     <tr>
                         <td colspan="2"><b>Total Monthly Expenses</b></td>
                         <td>{{totalExpenses}}</td>
+                        <td></td>
                     </tr>
                 {{/if}}
             </table>

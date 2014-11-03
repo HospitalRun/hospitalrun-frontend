@@ -200,7 +200,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
         } else {
             this.set('showExpenseTotal', false);
         }
-    }.property('expenses@each.cost'),    
+    }.property('expenses'),    
 
     updateCapability: 'add_patient',
 
@@ -473,9 +473,9 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
                 isNew = model.isNew;
             if (isNew) {                
                 delete model.isNew;
-                expenses.addObject(model);
-                this.set('expenses', expenses);
+                expenses.addObject(model);                
             }
+            this.set('expenses', expenses);
             this.send('update', true);
             this.send('closeModal');
         },        
