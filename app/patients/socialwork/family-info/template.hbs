@@ -1,10 +1,18 @@
 {{#em-form model=this submit_button=false }}
-    {{em-input label="Name" property="name" class="required"}}
-    {{em-input label="Age" property="age"}}
-    {{em-input label="Civil Status" property="civilStatus"}}
-    {{em-input label="Relationship To Patient" property="relationship"}}
-    {{em-input label="Education" property="education"}}
-    {{em-input label="Occupation" property="occupation"}}
-    {{em-input label="Income" property="income"}}                                
-    {{em-input label="Insurance" property="insurance"}}
+    <div class="row">
+        {{em-input label="Name" property="name" class="required col-xs-6"}}
+        {{em-input label="Age" property="age" class="col-xs-3"}}
+    </div>
+    <div class="row">
+        {{em-input label="Civil Status" property="civilStatus" class="col-xs-6"}}
+        {{em-input label="Relationship To Patient" property="relationship" class="col-xs-6"}}
+    </div>
+    <div class="row">        
+        {{em-input label="Education" property="education" class="col-xs-6"}}
+        {{em-input label="Occupation" property="occupation" class="col-xs-6"}}
+    </div>
+    <div class="row">        
+        {{em-input label="Income" property="income" class="col-xs-6"}}
+        {{em-input label="Insurance" property="insurance" class="col-xs-6"}}
+    </div>
 {{/em-form}}
