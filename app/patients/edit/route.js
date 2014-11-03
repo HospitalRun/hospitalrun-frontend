@@ -13,6 +13,14 @@ export default AbstractEditRoute.extend(PatientId, {
         
         deleteContact: function(model) {
             this.controller.send('deleteContact', model);
+        },
+        
+        deleteExpense: function(model) {
+            this.controller.send('deleteExpense', model);
+        },         
+        
+        deleteFamily: function(model) {
+            this.controller.send('deleteFamily', model);
         },        
         
         deletePhoto: function(model) {
