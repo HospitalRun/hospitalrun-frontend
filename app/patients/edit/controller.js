@@ -185,13 +185,15 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
         return this._getVisitCollection('procedures');
     }.property('visits.@each.procedures'),
     
+    showExpenseTotal: true,
+    
     totalExpenses: function() {
         var expenses = this.get('expenses');
         if (!Ember.isEmpty(expenses)) {
-            var total = expenses.map(function(previousValue, expense) {
+            var total = expenses.reduce(function(previousValue, expense) {
                 if (!Ember.isEmpty(expense.cost)) {
-                    total += expense.cost;
-                }            
+                    return previousValue +  parseInt(expense.cost);
+                }
             }, 0); 
             this.set('showExpenseTotal', true);
             return total;
