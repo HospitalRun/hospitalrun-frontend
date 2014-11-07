@@ -15,6 +15,9 @@ export default AbstractModuleRoute.extend(PatientId, {
     modelName: 'patient',
     moduleName: 'patients',
     newButtonText: '+ new patient',
-    sectionTitle: 'Patients'
-
+    sectionTitle: 'Patients',
+    subActions: [{
+        text: 'Patient listing',
+        linkTo: 'patients.index'
+    }]
 });

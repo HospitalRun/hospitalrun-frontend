@@ -520,7 +520,13 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
     },
     
     afterUpdate: function(record) {
-        this.transitionToRoute('/patients/search/'+record.get('id'));
+        this.send('openModal', 'dialog', Ember.Object.create({
+            title: 'Patient Saved',
+            message: 'The patient record for %@ has been saved.'.fmt(record.get('displayName')),
+            hideCancelButton: true,
+            updateButtonAction: 'ok',
+            updateButtonText: 'Ok'
+        }));
     }
     
 });
