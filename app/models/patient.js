@@ -15,6 +15,7 @@ export default AbstractModel.extend({
     economicClassification: DS.attr('string'),
     email: DS.attr('string'),
     expenses: DS.attr(),
+    externalPatientId: DS.attr('string'),
     familyInfo: DS.attr(),
     firstName: DS.attr('string'),
     gender:  DS.attr('string'),
@@ -25,7 +26,8 @@ export default AbstractModel.extend({
     parent: DS.attr('string'),
     phone:  DS.attr('string'),
     placeOfBirth: DS.attr('string'),
-    referredBy: DS.attr('string'),
+    referredDate: DS.attr('date'),
+    referredBy: DS.attr('string'),    
     religion: DS.attr('string'),  
 
     displayName: function() {
