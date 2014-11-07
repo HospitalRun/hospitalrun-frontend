@@ -128,7 +128,8 @@ export default Ember.Mixin.create({
             'Medical Records Officer',
             'Nurse', 
             'Nurse Manager', 
-            'Patient Administration', 
+            'Patient Administration',
+            'Social Worker',
             'System Administrator'
         ],        
         add_vitals: [
@@ -246,6 +247,7 @@ export default Ember.Mixin.create({
             'Nurse', 
             'Nurse Manager', 
             'Patient Administration', 
+            'Social Worker',
             'System Administrator'
         ],
         delete_user: [
@@ -315,6 +317,7 @@ export default Ember.Mixin.create({
             'Nurse Manager', 
             'Nurse',  
             'Patient Administration', 
+            'Social Worker',
             'System Administrator'
         ],
         update_config: [
