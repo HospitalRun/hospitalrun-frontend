@@ -2,6 +2,16 @@ import IsUpdateDisabled from "hospitalrun/mixins/is-update-disabled";
 import UserSession from "hospitalrun/mixins/user-session";
 export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
     cancelAction: 'allItems',
+    
+    cancelButtonText: function() {
+        var isDirty = this.get('isDirty');
+        if (isDirty) {
+            return 'Cancel';
+        } else {
+            return 'Return';
+        }
+    }.property('isDirty'),
+
     /**
      *  Lookup lists that should be updated when the model has a new value to add to the lookup list.
      *  lookupListsToUpdate: [{
