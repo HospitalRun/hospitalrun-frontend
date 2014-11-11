@@ -2,7 +2,10 @@ import UserRoles from 'hospitalrun/mixins/user-roles';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
 
 export default AbstractEditController.extend(UserRoles, {
+    needs: 'users/index',
     updateCapability: 'add_user',
+    
+    users: Ember.computed.alias('controllers.users/index.model'),
 
     actions: {
         update: function() {
@@ -34,7 +37,13 @@ export default AbstractEditController.extend(UserRoles, {
                 this.set('userPrefix', prefix);                
             }            
             updateModel.save().then(function() {
-                this.send('closeModal');
+                this.send('openModal', 'dialog', Ember.Object.create({
+                    title: 'User Saved',
+                    message: 'The user has been saved.',
+                    hideCancelButton: true,
+                    updateButtonAction: 'ok',
+                    updateButtonText: 'Ok'
+                }));
             }.bind(this));
         }
     }
