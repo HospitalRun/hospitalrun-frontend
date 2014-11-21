@@ -24,14 +24,5 @@ nbproject/project.xml
 *.sublime-workspace
 *.css.map
 
-dist/manifest.appcache
-dist/assets/hospitalrun.css.map
+dist/
 server/config.js
-
-dist/assets/hospitalrun.css
-
-dist/assets/hospitalrun.css.map
-
-dist/manifest.appcache
-
-dist/assets/hospitalrun.js
