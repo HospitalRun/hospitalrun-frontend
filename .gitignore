@@ -26,3 +26,5 @@ nbproject/project.xml
 
 dist/
 server/config.js
+
+dist/assets/vendor.js
