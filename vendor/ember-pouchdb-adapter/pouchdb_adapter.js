@@ -580,7 +580,7 @@
         });
       });
 
-      return Ember.RSVP.all(promises, '_resolveRelationships in ember-pouchdb-adapter').then(function(results){
+      return Ember.RSVP.allSettled(promises, '_resolveRelationships in ember-pouchdb-adapter').then(function(results){
         return items;
       });
     },
