@@ -13,6 +13,6 @@ export default AppointmentIndexController.extend({
                 startDate = moment(appointment.get('startDate'));
             return startingDate.isSame(endDate, 'day') || startingDate.isSame(startDate, 'day') || endDate.isAfter(startingDate, 'day') || startDate.isAfter(startingDate, 'day');
         });
-    }.property('content.@each', 'startingDate'),
+    }.property('content.@each', 'startingDate', 'arrangedContent.@each'),
     
 });
