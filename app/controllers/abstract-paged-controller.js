@@ -1,9 +1,11 @@
 export default Ember.ArrayController.extend({
+    allArrangedContent: [],
     offset: 0,
     limit: 10,
 
     arrangedContent: function() {
         var arrangedContent = this._super();
+        this.set('allArrangedContent', arrangedContent);
         var limit = this.get('limit'),
             offset = this.get('offset');
         return arrangedContent.slice(offset, offset+limit);

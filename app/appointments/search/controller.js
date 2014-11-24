@@ -5,11 +5,11 @@ export default AppointmentIndexController.extend({
         this.set('startingDate', new Date());
     }.on('init'),
     
-  arrangedContent: function() {
-        var arrangedContent = this.get('matchingAppointments');
+    appointmentList: function() {
+        var matchingAppointments = this.get('matchingAppointments');
         var limit = this.get('limit'),
             offset = this.get('offset');
-        return arrangedContent.slice(offset, offset+limit);
+        return matchingAppointments.slice(offset, offset+limit);
     }.property('matchingAppointments.@each.lastModified', 'offset', 'limit'),
     
     disableNextPage: function() {
@@ -25,16 +25,18 @@ export default AppointmentIndexController.extend({
         return (length > limit);            
     }.property('matchingAppointments.length'),
     
+    startingDateChanged: function() {
+        this.set('offset', 0);
+    }.observes('startingDate'),
     
     matchingAppointments: function() {
-        var content = this.get('content'),
+        var content = this.get('allArrangedContent'),
             startingDate = moment(this.getWithDefault('startingDate', new Date()));
-        this.set('offset', 0);
         return content.filter(function (appointment) {
             var endDate = moment(appointment.get('endDate')),
                 startDate = moment(appointment.get('startDate'));
             return startingDate.isSame(endDate, 'day') || startingDate.isSame(startDate, 'day') || endDate.isAfter(startingDate, 'day') || startDate.isAfter(startingDate, 'day');
         });
-    }.property('content.@each', 'startingDate'),
+    }.property('allArrangedContent.@each', 'startingDate'),
     
 });
