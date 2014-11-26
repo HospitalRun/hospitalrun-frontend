@@ -46,6 +46,16 @@ export default AbstractModel.extend({
         return returnName;
     }.property('firstName', 'lastName'),
     
+    displayPatientId: function() {
+        var externalPatientId = this.get('externalPatientId'),
+            id = this.get('id');
+        if (Ember.isEmpty(externalPatientId)) {
+            return id;
+        } else {
+            return externalPatientId;
+        }
+    }.property('id', 'externalPatientId'),
+    
     validations: {
         email: {
             format: { 
