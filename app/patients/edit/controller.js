@@ -147,27 +147,22 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
         var dob = this.get('dateOfBirth');
         return this.convertDOBToText(dob);
     }.property('dateOfBirth'),
-
-    patientDiagnoses: function() {
-        var diagnosesList = [],
-            visits = this.get('visits');        
-        if (!Ember.isEmpty(visits)) {
-            visits.forEach(function(visit) {
-                if (!Ember.isEmpty(visit.get('primaryDiagnosisId'))) {
-                    diagnosesList.addObject({
-                        id: visit.get('primaryDiagnosisId'),
-                        date: visit.get('startDate'),
-                        description: visit.get('primaryDiagnosis'),
-                        primary: true
-                    });
-                }
-                if (!Ember.isEmpty(visit.get('additionalDiagnoses'))) {
-                    diagnosesList.addObjects(visit.get('additionalDiagnoses'));
-                }
-            });
-        }
-        return diagnosesList;
-    }.property('visits.@each.imaging'),    
+    
+    havePrimaryDiagnoses: function() {
+        var primaryDiagnosesLength = this.get('primaryDiagnoses.length');
+        return (primaryDiagnosesLength > 0);
+    }.property('primaryDiagnoses.length'),
+    
+    haveProcedures: function() {
+        var proceduresLength = this.get('patientProcedures.length');
+        return (proceduresLength > 0);
+    }.property('patientProcedures.length'),
+    
+    haveSecondaryDiagnoses: function() {
+        var secondaryDiagnosesLength = this.get('secondaryDiagnoses.length');
+        return (secondaryDiagnosesLength > 0);
+    }.property('secondaryDiagnoses.length'),
+    
     
     patientImaging: function() {
         return this._getVisitCollection('imaging');
@@ -182,8 +177,53 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
     }.property('visits.@each.medication'),
     
     patientProcedures: function() {
-        return this._getVisitCollection('procedures');
+        var procedureList = this._getVisitCollection('procedures'),
+            firstProcedure = procedureList.get('firstObject');
+        if (!Ember.isEmpty(firstProcedure)) {            
+            firstProcedure.set('first',true);
+        }
+        return procedureList;
     }.property('visits.@each.procedures'),
+
+    primaryDiagnoses: function() {
+        var diagnosesList = [],
+            visits = this.get('visits');        
+        if (!Ember.isEmpty(visits)) {
+            visits.forEach(function(visit) {
+                if (!Ember.isEmpty(visit.get('primaryDiagnosisId'))) {
+                    diagnosesList.addObject({
+                        id: visit.get('primaryDiagnosisId'),
+                        date: visit.get('startDate'),
+                        description: visit.get('primaryDiagnosis')
+                    });
+                }
+            });
+        }
+        var firstDiagnosis = diagnosesList.get('firstObject');
+        if (!Ember.isEmpty(firstDiagnosis)) {
+            firstDiagnosis.first = true;
+        }
+        return diagnosesList;
+    }.property('visits.@each'),
+
+    secondaryDiagnoses: function() {
+        var diagnosesList = [],
+            visits = this.get('visits');        
+        if (!Ember.isEmpty(visits)) {
+            visits.forEach(function(visit) {                
+                if (!Ember.isEmpty(visit.get('additionalDiagnoses'))) {
+                    diagnosesList.addObjects(visit.get('additionalDiagnoses'));
+                }
+            });
+        }
+        
+        var firstDiagnosis = diagnosesList.get('firstObject');
+        if (!Ember.isEmpty(firstDiagnosis)) {
+            firstDiagnosis.first = true;
+        }
+        return diagnosesList;
+    }.property('visits.@each'),    
+
     
     showExpenseTotal: true,
     

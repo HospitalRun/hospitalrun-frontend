@@ -1,15 +1,65 @@
-{{#unless isNew}}
-    <ul class="nav nav-pills" role="tablist">
-        <li role="presentation" class="active" ><a href="#general" role="tab" data-toggle="pill">General</a></li>
-        <li role="presentation"><a href="#photos" role="tab" data-toggle="pill">Photos</a></li>
-        <li role="presentation"><a href="#diagnoses" role="tab" data-toggle="pill">Diagnosis/Procedures</a></li>
-        <li role="presentation"><a href="#medication" role="tab" data-toggle="pill">Medication</a></li>
-        <li role="presentation"><a href="#labs" role="tab" data-toggle="pill">Labs/Imaging</a></li>
-        <li role="presentation"><a href="#visits" role="tab" data-toggle="pill">Visits/Appointments</a></li>
-        <li role="presentation"><a href="#social" role="tab" data-toggle="pill">Social Work</a></li>
-    </ul>
-{{/unless}}
 {{#em-form model=this submit_button=false }}
+    {{#unless isNew}}
+        <div class="panel panel-success">
+            <div class="panel-body">
+                <div class="row">        
+                    <div class="form-group col-sm-3">
+                        <label class="control-label">Id</label> {{displayPatientId}}
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label class="control-label">Name</label> {{displayName}}
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <label class="control-label">Gender</label> {{gender}}
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label class="control-label">Age</label> {{dobInDays}}
+                    </div>
+                </div>
+                {{#if havePrimaryDiagnoses}}
+                    <div class="row">        
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">Primary Diagnoses</label> 
+                            {{#each primaryDiagnoses}}
+                                {{#unless first}}, {{/unless}}
+                                {{description}} (<strong>{{date-format date}}</strong>)
+                            {{/each}}
+                        </div>
+                    </div>
+                {{/if}}
+                {{#if haveSecondaryDiagnoses}}
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">Secondary Diagnoses</label>
+                            {{#each secondaryDiagnoses}}
+                                {{#unless first}}, {{/unless}}
+                                {{description}} (<strong>{{date-format date}}</strong>)
+                            {{/each}}                
+                        </div>
+                    </div>
+                {{/if}}
+                {{#if haveProcedures}}
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label">Procedures</label>
+                            {{#each patientProcedures}}
+                                {{#unless first}}, {{/unless}}
+                                {{description}} (<strong>{{date-format procedureDate}}</strong>)
+                            {{/each}}                
+                        </div>
+                    </div>
+                {{/if}}                
+            </div>
+        </div>
+        <ul class="nav nav-pills" role="tablist">
+            <li role="presentation" class="active" ><a href="#general" role="tab" data-toggle="pill">General</a></li>
+            <li role="presentation"><a href="#photos" role="tab" data-toggle="pill">Photos</a></li>            
+            <li role="presentation"><a href="#medication" role="tab" data-toggle="pill">Medication</a></li>
+            <li role="presentation"><a href="#labs" role="tab" data-toggle="pill">Labs/Imaging</a></li>
+            <li role="presentation"><a href="#visits" role="tab" data-toggle="pill">Visits/Appointments</a></li>
+            <li role="presentation"><a href="#social" role="tab" data-toggle="pill">Social Work</a></li>
+        </ul>
+    {{/unless}}
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="general">        
             <div class="panel detail-section">
@@ -31,8 +81,10 @@
                             {{em-input property="firstName" label="First Name" class="required"}}
                             {{em-input property="lastName" label="Last Name" class="required"}}
                             <div class="form-group">
-                                <label>Gender:</label>  
+                                <label>Gender</label>
+                                <div>
                                     {{ext-radio name=gender content=genderList value=gender showInline=true class="col-xs-4"}}
+                                </div>
                             </div>
                             {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now"}}
                             <div class="form-group">
@@ -159,63 +211,6 @@
                                 </div>
                             {{/each}}
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="diagnoses">
-                <div class="panel">    
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Diagnoses
-                        </h3>
-                    </div>        
-                    <div class="panel-body detail-section-content">
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Date</th>
-                                <th>Diagnosis</th>
-                                <th>Primary Diagnosis</th>
-                            </tr>
-                            {{#each patientDiagnoses}}
-                                <tr>
-                                    <td>{{date-format date}}</td>
-                                    <td>{{description}}</td>
-                                    <td>{{#if primary}}
-                                            Y
-                                        {{else}}
-                                            N
-                                        {{/if}}                                
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </table>
-                    </div>        
-                </div>
-                <div class="panel">    
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-procedures">
-                                Procedures
-                            </a>
-                        </h3>
-                    </div>
-                    <div class="panel-body detail-section-content">
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Date</th>
-                                <th>Procedure</th>
-                                <th>Physician</th>
-                                <th>Assistant</th>
-                            </tr>
-                            {{#each patientProcedures}}
-                                <tr>
-                                    <td>{{date-format procedureDate}}</td>
-                                    <td>{{description}}</td>
-                                    <td>{{physician}}</td>
-                                    <td>{{assistant}}</td>
-                                </tr>
-                            {{/each}}
-                        </table>
                     </div>
                 </div>
             </div>
