@@ -24,7 +24,7 @@
     "ember-cli": "0.0.40",
     "ember-cli-ember-data": "0.1.0",
     "ember-cli-ic-ajax": "0.1.1",
-    "ember-cli-sass": "aexmachina/ember-cli-sass#master",
+    "ember-cli-sass": "3.0.2",
     "express": "^4.1.1",
     "glob": "^3.2.9",
     "nano": "^5.11.0",
