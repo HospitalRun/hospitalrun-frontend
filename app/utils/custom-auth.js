@@ -89,6 +89,7 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
             var data = { name: credentials.identification, password: credentials.password };
             this._makeRequest('POST', data).then(function(response) {
                 Ember.run(function() {
+                    response.name = data.name;
                     response.expires_at = this._absolutizeExpirationTime(600);
                     this._checkUser(response, resolve, reject);
                 }.bind(this));
