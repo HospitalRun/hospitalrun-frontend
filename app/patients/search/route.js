@@ -3,6 +3,7 @@ export default AbstractSearchRoute.extend({
     moduleName: 'patients',
     searchKeys: [
          '_id',
+        'externalPatientId',
         'firstName',
         'lastName'
     ],
