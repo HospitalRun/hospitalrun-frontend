@@ -177,12 +177,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
     }.property('visits.@each.medication'),
     
     patientProcedures: function() {
-        var procedureList = this._getVisitCollection('procedures'),
-            firstProcedure = procedureList.get('firstObject');
-        if (!Ember.isEmpty(firstProcedure)) {            
-            firstProcedure.set('first',true);
-        }
-        return procedureList;
+        return this._getVisitCollection('procedures');
     }.property('visits.@each.procedures'),
 
     primaryDiagnoses: function() {
@@ -553,6 +548,9 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
             visits.forEach(function(visit) {
                 visit.get(name).then(function(items) {
                     returnList.addObjects(items);
+                    if (returnList.length > 0) {
+                        returnList[0].set('first', true);
+                    }                    
                 });
             });
         }
