@@ -35,6 +35,7 @@ export default Em.Forms.FormInputComponent.extend({
     inputElement: null,
     typeAhead: null,
     setOnBlur: true,
+    templates: null,
 
     _getSource: function() {
         var typeAheadBloodhound = new Bloodhound( {
@@ -54,10 +55,11 @@ export default Em.Forms.FormInputComponent.extend({
             autoselect: true,
             hint: this.get('hint'),
             highlight: this.get('highlight'),
-            minLength: this.get('minlength'),
+            minLength: this.get('minlength')
         }, {            
             displayKey: this.get('displayKey'),
-            source: this._getSource()
+            source: this._getSource(),
+            templates: this.get('templates')
         });
         this.set('typeAhead', $typeahead);
         

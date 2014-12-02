@@ -113,6 +113,16 @@ h3.panel-title {
     }
 }
 
+//Scrollable typeahead
+.scrollable-typeahead .tt-dropdown-menu {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.tt-dropdown-menu .query-results {
+    margin-bottom: 0;
+}
+
 // jglovier's temporary style tweaks
 // -------------------------------------------/
 

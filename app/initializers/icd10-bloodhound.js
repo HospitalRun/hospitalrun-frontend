@@ -2,7 +2,8 @@ function createAndRegister(data, name, app) {
     var ICD10Bloodhound = new Bloodhound( {
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        local: data
+        local: data,
+        limit: 100
     });
     ICD10Bloodhound.initialize();
     var bloodhoundName = 'bloodhound:%@'.fmt(name);
