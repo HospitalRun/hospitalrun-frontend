@@ -11,6 +11,12 @@ export default AbstractModuleRoute.extend(PatientId, {
     },  {
         name: 'countryList',
         findArgs: ['lookup','country_list']
+    },  {
+        name: 'locationList',
+        findArgs: ['lookup','visit_location_list']
+    },{
+        name: 'physicianList',
+        findArgs: ['lookup','physician_list']
     }],
     modelName: 'patient',
     moduleName: 'patients',

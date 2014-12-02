@@ -60,6 +60,7 @@ Router.map(function() {
     
     this.resource('patients', function() {
         this.route('edit', { path: "/edit/:patient_id" });
+        this.route('reports');
         this.route('search', { path: "/search/:search_text" });
     });
         

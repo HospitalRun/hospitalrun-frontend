@@ -1,6 +1,7 @@
 import DateSort from 'hospitalrun/utils/date-sort';
-import NumberFormat from 'hospitalrun/mixins/number-format';
-export default Ember.ArrayController.extend(NumberFormat, {
+
+import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
+export default AbstractReportController.extend({
     needs: ['inventory'],
     effectiveDate: null,
     inventoryItems: Ember.computed.alias('controllers.inventory.model'),
@@ -88,12 +89,10 @@ export default Ember.ArrayController.extend(NumberFormat, {
         locations: {
             label: 'Locations',
             include: true,
-            property: 'locations'
+            property: 'locations',
+            specialFormat: '_addLocationColumn'
         }
     },
-    reportRows: [],
-    reportTitle: null,
-    reportType: null,
     reportTypes: [{
         name: 'Days Supply Left In Stock',
         value: 'daysLeft'
@@ -181,52 +180,26 @@ export default Ember.ArrayController.extend(NumberFormat, {
         }
     }.property('reportType'),
     
-    showReportResults: false,
-    
     useFieldPicker: function() {
         var reportType = this.get('reportType');
         return (reportType !== 'expiration');
     }.property('reportType'),
-    
-    /**
-     * Add a row to the report using the selected columns to add the row.
-     * @param {Array} row the row to add
-     * @param {boolean} skipNumberFormatting true if number columns should not be formatted.
-     */
-    _addReportRow: function(row, skipNumberFormatting) {
-        var columnValue,
-            locations, 
-            locationDetails = '',
-            reportColumns = this.get('reportColumns'),
-            reportRows = this.get('reportRows'),
-            reportRow = [];
-        for (var column in reportColumns) {
-            if (reportColumns[column].include) {
-                columnValue = Ember.get(row,reportColumns[column].property);
-                if (Ember.isEmpty(columnValue)) {
-                     reportRow.push('');
-                } else if (reportColumns[column].property === 'locations') {
-                    locations = columnValue;
-                    for (var i=0; i< locations.length; i++) {                        
-                        if (i > 0) {
-                            locationDetails += '; ';
-                        }
-                        if (!Ember.isEmpty(locations[i].quantity)) {
-                            locationDetails += '%@ (%@ available)'.fmt(locations[i].name, 
-                                               this.numberFormat(locations[i].quantity));
-                        } else {
-                            locationDetails += locations[i].name;
-                        }
-                    }
-                    reportRow.push(locationDetails);
-                } else if (reportColumns[column].numberFormat && !skipNumberFormatting) {
-                    reportRow.push(this.numberFormat(columnValue));
-                } else {
-                    reportRow.push(columnValue);
-                }
+
+    _addLocationColumn: function(columnValue, reportRow) {
+        var locations = columnValue,
+            locationDetails = '';
+        for (var i=0; i< locations.length; i++) {                        
+            if (i > 0) {
+                locationDetails += '; ';
+            }
+            if (!Ember.isEmpty(locations[i].quantity)) {
+                locationDetails += '%@ (%@ available)'.fmt(locations[i].name, 
+                                   this.numberFormat(locations[i].quantity));
+            } else {
+                locationDetails += locations[i].name;
             }
         }
-        reportRows.addObject(reportRow);
+        reportRow.push(locationDetails);
     },
     
     _addTotalsRow: function(label, summaryCost, summaryQuantity) {
@@ -341,19 +314,6 @@ export default Ember.ArrayController.extend(NumberFormat, {
         this._generateExport();
         this._setReportTitle();
     },        
-    
-    _generateExport: function() {
-        var csvRows = [],
-            reportHeaders = this.get('reportHeaders'),
-            dataArray = [reportHeaders];
-        dataArray.addObjects(this.get('reportRows'));
-        dataArray.forEach(function(row) { 
-            csvRows.push('"'+row.join('","')+'"');
-        });
-        var csvString = csvRows.join('\r\n');
-        var uriContent = "data:application/csv;charset=utf-8," + encodeURIComponent(csvString);
-        this.set('csvExport', uriContent);
-    },
     
     _generateInventoryReport: function() {
         var dateDiff,
@@ -671,18 +631,7 @@ export default Ember.ArrayController.extend(NumberFormat, {
         this._setReportHeaders();
         this._setReportTitle();
     },    
-        
-    _setReportHeaders: function() {
-        var reportColumns = this.get('reportColumns'),
-            reportHeaders = [];
-        for (var column in reportColumns) {
-            if (reportColumns[column].include) {
-                reportHeaders.push(reportColumns[column].label);
-            }
-        }
-        this.set('reportHeaders', reportHeaders);
-    },
-    
+            
     _setReportTitle: function() {
         var endDate = this.get('endDate'),
             formattedEndDate = '',
