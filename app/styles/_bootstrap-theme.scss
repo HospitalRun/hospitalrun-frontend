@@ -443,6 +443,6 @@ fieldset[disabled] .btn-primary.active {
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.radio input[type="radio"], .radio-inline input[type="radio"] {
+.radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
     margin-left: -18px;
 }
