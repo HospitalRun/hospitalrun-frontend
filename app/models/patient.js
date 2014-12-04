@@ -1,7 +1,8 @@
 import AbstractModel from "hospitalrun/models/abstract";
+import DOBDays from 'hospitalrun/mixins/dob-days';
 import EmailValidation from "hospitalrun/utils/email-validation";
 
-export default AbstractModel.extend({
+export default AbstractModel.extend(DOBDays, {
     additionalContacts: DS.attr(),
     additionalData: DS.attr(), //Additional data will be used to store custom data per install.
     address: DS.attr('string'),
@@ -28,7 +29,12 @@ export default AbstractModel.extend({
     placeOfBirth: DS.attr('string'),
     referredDate: DS.attr('date'),
     referredBy: DS.attr('string'),    
-    religion: DS.attr('string'),  
+    religion: DS.attr('string'),
+    
+    age: function() {
+        var dob = this.get('dateOfBirth');
+        return this.convertDOBToText(dob);
+    }.property('dateOfBirth'),
 
     displayName: function() {
         var firstName = this.get('firstName'),
