@@ -1,5 +1,6 @@
+import DateFormat from 'hospitalrun/mixins/date-format';
 import NumberFormat from 'hospitalrun/mixins/number-format';
-export default Ember.ArrayController.extend(NumberFormat, {
+export default Ember.ArrayController.extend(DateFormat, NumberFormat, {
     reportColumns: null,
     reportRows: [],
     reportTitle: null,
@@ -22,10 +23,14 @@ export default Ember.ArrayController.extend(NumberFormat, {
                 columnValue = Ember.get(row,reportColumns[column].property);
                 if (Ember.isEmpty(columnValue)) {
                      reportRow.push('');
-                } else if (reportColumns[column].specialFormat) {
-                    this[reportColumns[column].specialFormat](columnValue, reportRow);
-                } else if (reportColumns[column].numberFormat && !skipNumberFormatting) {
-                    reportRow.push(this.numberFormat(columnValue));
+                } else if (reportColumns[column].format === '_numberFormat') {
+                    if (skipNumberFormatting) {
+                        reportRow.push(columnValue);
+                    } else {
+                        reportRow.push(this._numberFormat(columnValue));
+                    }
+                } else if (reportColumns[column].format) {
+                    reportRow.push(this[reportColumns[column].format](columnValue));
                 } else {
                     reportRow.push(columnValue);
                 }
@@ -33,8 +38,7 @@ export default Ember.ArrayController.extend(NumberFormat, {
         }
         reportRows.addObject(reportRow);
     },
-    
-    
+
     _generateExport: function() {
         var csvRows = [],
             reportHeaders = this.get('reportHeaders'),

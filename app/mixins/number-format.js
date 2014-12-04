@@ -1,5 +1,5 @@
 export default Ember.Mixin.create({
-    numberFormat: function(value) {
+    _numberFormat: function(value) {
         if (!Ember.isEmpty(value)) {            
             return value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
         }

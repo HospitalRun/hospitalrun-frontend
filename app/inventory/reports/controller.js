@@ -40,19 +40,19 @@ export default AbstractReportController.extend({
             label: 'Reorder Point',
             include: false,
             property: 'inventoryItem.reorderPoint',
-            numberFormat: true
+            format: '_numberFormat'
         }, 
         price: {
             label: 'Price Per Unit',
             include: false,
             property: 'inventoryItem.price',
-            numberFormat: true
+            format: '_numberFormat'
         }, 
         quantity: {
             label: 'Quantity', 
             include: true,
             property: 'quantity',
-            numberFormat: true
+            format: '_numberFormat'
         },
         consumedPerDay: {
             label: 'Consumption Rate', 
@@ -73,13 +73,13 @@ export default AbstractReportController.extend({
             label: 'Unit Cost',
             include: true,
             property: 'unitCost',
-            numberFormat: true
+            format: '_numberFormat'
         },
         total: {
             label: 'Total Cost',
             include: true,
             property: 'totalCost',
-            numberFormat: true
+            format: '_numberFormat'
         },         
         gift: {
             label: 'Gift In Kind',
@@ -90,7 +90,7 @@ export default AbstractReportController.extend({
             label: 'Locations',
             include: true,
             property: 'locations',
-            specialFormat: '_addLocationColumn'
+            format: '_addLocationColumn'
         }
     },
     reportTypes: [{
@@ -185,7 +185,7 @@ export default AbstractReportController.extend({
         return (reportType !== 'expiration');
     }.property('reportType'),
 
-    _addLocationColumn: function(columnValue, reportRow) {
+    _addLocationColumn: function(columnValue) {
         var locations = columnValue,
             locationDetails = '';
         for (var i=0; i< locations.length; i++) {                        
@@ -194,20 +194,20 @@ export default AbstractReportController.extend({
             }
             if (!Ember.isEmpty(locations[i].quantity)) {
                 locationDetails += '%@ (%@ available)'.fmt(locations[i].name, 
-                                   this.numberFormat(locations[i].quantity));
+                                   this._numberFormat(locations[i].quantity));
             } else {
                 locationDetails += locations[i].name;
             }
         }
-        reportRow.push(locationDetails);
+        return locationDetails;
     },
     
     _addTotalsRow: function(label, summaryCost, summaryQuantity) {
         if (summaryQuantity > 0) {
             this._addReportRow({
-                totalCost: label +  this.numberFormat(summaryCost),
-                quantity: label + this.numberFormat(summaryQuantity),
-                unitCost: label + this.numberFormat(summaryCost/summaryQuantity)
+                totalCost: label +  this._numberFormat(summaryCost),
+                quantity: label + this._numberFormat(summaryQuantity),
+                unitCost: label + this._numberFormat(summaryCost/summaryQuantity)
             }, true);
         }        
     },
@@ -460,8 +460,8 @@ export default AbstractReportController.extend({
                         }, 0);
                         row.quantity = item.get('quantity');
                         if (consumedQuantity > 0) {
-                            row.consumedPerDay = this.numberFormat(consumedQuantity/dateDiff);
-                            row.daysLeft = this.numberFormat(row.quantity/row.consumedPerDay);
+                            row.consumedPerDay = this._numberFormat(consumedQuantity/dateDiff);
+                            row.daysLeft = this._numberFormat(row.quantity/row.consumedPerDay);
                         } else {
                             row.consumedPerDay = '?';
                             row.daysLeft = '?';                            
