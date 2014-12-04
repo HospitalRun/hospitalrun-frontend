@@ -13,7 +13,7 @@
                         <label class="control-label">Gender</label> {{gender}}
                     </div>
                     <div class="form-group col-sm-3">
-                        <label class="control-label">Age</label> {{dobInDays}}
+                        <label class="control-label">Age</label> {{age}}
                     </div>
                 </div>
                 {{#if havePrimaryDiagnoses}}
@@ -89,7 +89,7 @@
                             {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now"}}
                             <div class="form-group">
                                 <label class="control-label">Age</label>
-                                <p class="form-control-static">{{dobInDays}}</p>
+                                <p class="form-control-static">{{age}}</p>
                             </div>
                             {{em-input property="placeOfBirth" label="Place of Birth"}}
                         </div>

@@ -1,13 +1,12 @@
 
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
-import DOBDays from 'hospitalrun/mixins/dob-days';
 import FamilyInfoModel from 'hospitalrun/models/family-info';
 import GenderList from 'hospitalrun/mixins/gender-list';
 import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 import SocialExpenseModel from 'hospitalrun/models/social-expense';
 import UserSession from "hospitalrun/mixins/user-session";
-export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, PouchAdapterUtils, UserSession, {
+export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapterUtils, UserSession, {
     
     canAddAppointment: function() {        
         return this.currentUserCan('add_appointment');
@@ -142,12 +141,7 @@ export default AbstractEditController.extend(BloodTypes, DOBDays, GenderList, Po
         property: 'clinic',
         id: 'clinic_list'
     }],
-    
-    dobInDays: function() {
-        var dob = this.get('dateOfBirth');
-        return this.convertDOBToText(dob);
-    }.property('dateOfBirth'),
-    
+
     havePrimaryDiagnoses: function() {
         var primaryDiagnosesLength = this.get('primaryDiagnoses.length');
         return (primaryDiagnosesLength > 0);
