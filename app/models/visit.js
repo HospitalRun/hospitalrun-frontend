@@ -19,13 +19,28 @@ export default AbstractModel.extend({
     startDate:  DS.attr('date'),
     visitType: DS.attr(),        
     vitals: DS.hasMany('vital', {async: true}),
+    
+    diagnosisList: function() {
+        var additionalDiagnosis = this.get('additionalDiagnoses'),
+            diagnosisList = [],
+            primaryDiagnosis = this.get('primaryDiagnosis');
+        if (!Ember.isEmpty(primaryDiagnosis)) {
+            diagnosisList.push(primaryDiagnosis);
+        }
+        if (!Ember.isEmpty(additionalDiagnosis)) {
+            diagnosisList.addObjects(additionalDiagnosis.map(function(diagnosis) {
+                return diagnosis.description;
+            }));
+        }
+        return diagnosisList;
+    }.property('additionalDiagnosis@each','primaryDiagnosis'),
             
     visitDate: function() {
-        var endDate = moment(this.get('endDate')),
+        var endDate = this.get('endDate'),
             startDate = moment(this.get('startDate')),
             visitDate = startDate.format('l');
-        if (!startDate.isSame(endDate, 'day')) {
-            visitDate += ' - ' + endDate.format('l');                                                
+        if (!Ember.isEmpty(endDate) && !startDate.isSame(endDate, 'day')) {
+            visitDate += ' - ' + moment(endDate).format('l');                                                
         }
         return visitDate;
     }.property('startDate', 'endDate'),
