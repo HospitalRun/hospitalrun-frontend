@@ -21,7 +21,8 @@ export default AbstractReportController.extend(VisitTypes, {
         dateOfBirth: {
             label: 'Date Of Birth',
             include: true,
-            property: 'patient.dateOfBirth'
+            property: 'patient.dateOfBirth',
+            format: '_dateFormat'
         },
         examiner: {
             label: 'Examiner',
@@ -61,7 +62,8 @@ export default AbstractReportController.extend(VisitTypes, {
         referredDate: {
             label: 'Referred Date',
             include: false,
-            property: 'patient.referredDate'            
+            property: 'patient.referredDate',
+            format: '_dateFormat'
         },
         secondaryDiagnoses: {
             label: 'Secondary Diagnoses',
@@ -100,19 +102,74 @@ export default AbstractReportController.extend(VisitTypes, {
     },
 
     /**
-     * Filter the records by the specified field and the the specified start and (optional) end dates.
+     * Filter the records by the specified date and the record's start and (optional) end dates.
      * @param {Array} records to filter.
-     * @param {String} field name of the date field in the record to filter by.
+     * @param {Date} the date to filter by.
      */
-    _filterByDate: function(records, field) {
-        var endDate = this.get('endDate'),
-            startDate = this.get('startDate');        
+    _filterByDate: function(records, dateToFilterBy) {
         return records.filter(function(record) {
-            var compareDate = moment(record.get(field));
+            var endDate = record.get('endDate'),
+            startDate = record.get('startDate');        
+            var compareDate = moment(dateToFilterBy);
             return ((Ember.isEmpty(endDate) || compareDate.isSame(endDate, 'day') || 
                      compareDate.isBefore(endDate, 'day')) &&
                     (Ember.isEmpty(startDate) || compareDate.isSame(startDate, 'day') || compareDate.isAfter(startDate, 'day')));
         });
+    },
+    
+    _filterByLike: function(records, field, likeCondition) {
+        return records.filter(function(record) {
+            var fieldValue = record.get('field');
+            if (Ember.isEmpty(fieldValue)) {
+                return false;
+            } else {
+                if (Ember.isArray(fieldValue)) {
+                    var foundValue = fieldValue.find(function(value) {
+                        return this._haveLikeValue(value, likeCondition);
+                    }.bind(this));
+                    return !Ember.isEmpty(foundValue);
+                } else {
+                    return this._haveLikeValue(fieldValue, likeCondition);
+                }
+            }
+        });
+    },
+    
+    _generateVisitReport: function() {
+        var visitFilters = this.getProperties(
+                'examiner','visitDate','visitType','location','clinic',
+                'primaryDiagnosis','secondaryDiagnosis'
+            ),
+            visits = this.get('model');
+        for (var filter in visitFilters) {
+            if (!Ember.isEmpty(visitFilters[filter])) {
+                switch (filter) {
+                    case 'visitDate': {
+                        //filter by visit date
+                        visits = this._filterByDate(visits, visitFilters[filter]);
+                        break;                    
+                    }
+                    case 'diagnosis': {
+                        visits = this._filterByLike(visits, 'diagnosisList',  visitFilters[filter]);
+                        break;
+                    }
+                    default: {
+                        visits = visits.filterBy(filter, visitFilters[filter]);
+                        break;
+                    }
+                }
+            }
+        }
+        visits.forEach(function(visit) {
+            this._addReportRow(visit);
+        }.bind(this));
+        this.set('showReportResults', true);
+        this._setReportHeaders();
+        this._setReportTitle();
+    },
+    
+    _haveLikeValue: function(valueToCompare, likeCondition) {
+         return (valueToCompare.toLowerCase().indexOf(likeCondition.toLowerCase()) > -1);
     },
     
     _setReportTitle: function() {
@@ -137,22 +194,13 @@ export default AbstractReportController.extend(VisitTypes, {
     
     actions: {
         generateReport: function() {
-            var endDate = this.get('endDate'),
-                reportRows = this.get('reportRows'),
-                reportType = this.get('reportType'),
-                startDate = this.get('startDate');
-            if (Ember.isEmpty(startDate) && Ember.isEmpty(endDate)) {
-                return;
-            }
+            var reportRows = this.get('reportRows'),
+                reportType = this.get('reportType');
             reportRows.clear();            
             switch (reportType) {
-                case 'expiration': {
-                    this._generateExpirationReport();
+                case 'visit': {
+                    this._generateVisitReport();
                     break;                    
-                }
-                default: {
-                    this._generateInventoryReport();
-                    break;
                 }
             }
         }
