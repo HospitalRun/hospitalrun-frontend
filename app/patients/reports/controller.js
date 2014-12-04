@@ -16,7 +16,8 @@ export default AbstractReportController.extend(VisitTypes, {
         contacts: {
             label: 'Contacts',
             include: false,
-            property: 'contacts'
+            property: 'patient',
+            format: '_contactListToString'
         },
         dateOfBirth: {
             label: 'Date Of Birth',
@@ -44,15 +45,16 @@ export default AbstractReportController.extend(VisitTypes, {
             include: true,
             property: 'patient.displayName'
         },
-        primaryDiagnoses: {
-            label: 'Primary Diagnoses',
+        primaryDiagnosis: {
+            label: 'Primary Diagnosis',
             include: false,
-            property: 'primaryDiagnoses'
+            property: 'primaryDiagnosis'
         },
         procedures: {
             label: 'Procedures',
             include: false,
-            property: 'procedures'
+            property: 'procedures',
+            format: '_procedureListToString'
         },
         referredBy: {
             label: 'Referred By',
@@ -68,7 +70,8 @@ export default AbstractReportController.extend(VisitTypes, {
         secondaryDiagnoses: {
             label: 'Secondary Diagnoses',
             include: false,
-            property: 'secondaryDiagnoses'
+            property: 'additionalDiagnoses',
+            format: '_diagnosisListToString'
         },
         visitDate: {
             label: 'Visit Date',
@@ -99,6 +102,63 @@ export default AbstractReportController.extend(VisitTypes, {
                 unitCost: label + this.numberFormat(summaryCost/summaryQuantity)
             }, true);
         }        
+    },
+    
+    _contactListToString: function(patient) {
+        var additionalContacts = patient.get('additionalContacts'),
+            contactArray = [],
+            contactDesc,
+            contactList = [],
+            email = patient.get('email'),
+            phone = patient.get('phone');            
+            if (!Ember.isEmpty(email) || !Ember.isEmpty(phone)) {
+                if (!Ember.isEmpty(phone)) {
+                    contactArray.push(phone);
+                }                
+                if (!Ember.isEmpty(email)) {
+                    contactArray.push(email);
+                }
+                contactList.push('Primary: '+contactArray.join(' , '));
+            }
+            if (!Ember.isEmpty(additionalContacts)) {
+                additionalContacts.forEach(function(contact) {
+                    contactArray = [];
+                    contactDesc = '';
+                    if (!Ember.isEmpty(contact.phone)) {
+                        contactArray.push(contact.phone);
+                    }
+                    if (!Ember.isEmpty(contact.email)) {
+                        contactArray.push(contact.email);
+                    }                    
+                    if (!Ember.isEmpty(contact.name) && !Ember.isEmpty(contact.relationship)) {
+                        if (!Ember.isEmpty(contact.name)) {
+                            contactDesc += contact.name;
+                        } 
+                        if (!Ember.isEmpty(contact.relationship)) {
+                            if (!Ember.isEmpty(contactDesc)) {
+                                contactDesc += ' - ';
+                            }
+                            contactDesc += contact.relationship;                            
+                        }
+                        contactDesc += ': ';
+                    }
+                    contactList.push(contactDesc+contactArray.join(' , '));
+                });
+            }
+        return contactList.join(';\n');
+    },
+    
+    _diagnosisListToString: function(diagnoses) {
+        var diagnosisList = '';
+        if (!Ember.isEmpty(diagnoses)) {
+            diagnoses.forEach(function(diagnosis, idx) {
+                if(idx > 0) {
+                    diagnosisList += ', ';
+                }
+                diagnosisList += diagnosis.description + '('+this._dateFormat(diagnosis.date)+')';
+            }.bind(this));
+        }
+        return diagnosisList;
     },
 
     /**
@@ -135,8 +195,18 @@ export default AbstractReportController.extend(VisitTypes, {
         });
     },
     
+    _finishVisitReport: function(visits) {
+        visits.forEach(function(visit) {
+            this._addReportRow(visit);
+        }.bind(this));
+        this.set('showReportResults', true);
+        this._setReportHeaders();
+        this._setReportTitle();
+    },
+    
     _generateVisitReport: function() {
-        var visitFilters = this.getProperties(
+        var reportColumns = this.get('reportColumns'),
+            visitFilters = this.getProperties(
                 'examiner','visitDate','visitType','location','clinic',
                 'primaryDiagnosis','secondaryDiagnosis'
             ),
@@ -160,16 +230,36 @@ export default AbstractReportController.extend(VisitTypes, {
                 }
             }
         }
-        visits.forEach(function(visit) {
-            this._addReportRow(visit);
-        }.bind(this));
-        this.set('showReportResults', true);
-        this._setReportHeaders();
-        this._setReportTitle();
+        
+        if (reportColumns.procedures.include) {
+            var promises = [];
+            visits.forEach(function(visit) {
+                promises.push(visit.get('procedures'));
+            });
+            Ember.RSVP.all(promises).then(function() {
+                this._finishVisitReport(visits);    
+            }.bind(this));
+        } else {
+            this._finishVisitReport(visits);
+        }
+
     },
     
     _haveLikeValue: function(valueToCompare, likeCondition) {
          return (valueToCompare.toLowerCase().indexOf(likeCondition.toLowerCase()) > -1);
+    },
+    
+    _procedureListToString: function(procedures) {
+        var procedureList = '';
+        if (!Ember.isEmpty(procedures)) {
+            procedures.forEach(function(procedure, idx) {
+                if(idx > 0) {
+                    procedureList += ', ';
+                }
+                procedureList += procedure.get('description') + '('+this._dateFormat(procedure.get('procedureDate'))+')';
+            }.bind(this));
+        }
+        return procedureList;        
     },
     
     _setReportTitle: function() {
