@@ -1,0 +1,41 @@
+<div class="panel panel-primary">
+    <div class="panel-body">        
+        {{#em-form model=this submit_button=false }}
+            <div class="row">
+                {{em-select class="col-xs-3" label="Object Type" 
+                    property="objectType" content=objectTypes
+                    optionValuePath="content" optionLabelPath="content"
+                    selected=objectType
+                }}
+            </div>
+            {{em-input label="Field Name" property="fieldName"}}
+            {{em-input label="Query Value" property="queryValue"}}
+        {{/em-form}}
+    </div>
+</div>
+{{#if haveError}}
+    <div class="alert alert-danger" role="alert">{{errorMessage}}</div>
+{{/if}}
+{{#if showQueryResults}}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Query Results</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+                <tr class="table-header">
+                    {{#each headers}}
+                        <th>{{this}}</th>
+                    {{/each}}
+                </tr>
+                {{#each resultRows}}
+                    <tr>
+                        {{#each this }}
+                            <td>{{this}}</td>
+                        {{/each}}
+                    </tr>
+                {{/each}}
+            </table>
+        </div>
+    </div>
+{{/if}}

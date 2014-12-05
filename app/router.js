@@ -10,7 +10,8 @@ Router.map(function() {
         this.route('lookup', { path: '/' });
         this.resource('users', function() {
             this.route('edit', { path: "/edit/:user_id" });
-        });        
+        }); 
+         this.route('query');
     });
     
     this.resource('appointments', function() {
