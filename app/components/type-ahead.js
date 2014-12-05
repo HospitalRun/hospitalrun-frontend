@@ -83,17 +83,19 @@ export default Em.Forms.FormInputComponent.extend({
         
             $input.on('blur', function(event) {
                 var selection = this.get('selection');
+                var targetValue = event.target.value.trim();
                 if (!Ember.isEmpty(selection)) {
-                    this.set('selection', selection.trim());
+                    selection = selection.trim();
+                    this.set('selection', selection);
                 }
                 if (!this.get('selectedItem')) {
                     var lastHint = this.get('lastHint'),
                         exactMatch = false;
                     if (Ember.isEmpty(lastHint)) {
-                        lastHint = event.target.value;
+                        lastHint = targetValue;
                         exactMatch = true;
                     }
-                    if (!Ember.isEmpty(event.target.value) && !Ember.isEmpty(lastHint)) {
+                    if (!Ember.isEmpty(targetValue) && !Ember.isEmpty(lastHint)) {
                         this.get('bloodhound').get(lastHint, function(suggestions) {                        
                             if (suggestions.length > 0) {
                                 if (!exactMatch || lastHint.toLowerCase() === suggestions[0][this.get('displayKey')].toLowerCase()) {
@@ -102,7 +104,7 @@ export default Em.Forms.FormInputComponent.extend({
                                     event.target.value = suggestions[0][this.get('displayKey')];
                                     this.get('model').set(this.get('propertyName'), event.target.value);
                                 }
-                            } else if (event.target.value !== this.get('selection')) {
+                            } else if (targetValue !== selection) {
                                 this.set('selection');
                             }
                         }.bind(this));
