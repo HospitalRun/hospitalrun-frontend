@@ -82,6 +82,10 @@ export default Em.Forms.FormInputComponent.extend({
             }.bind(this));
         
             $input.on('blur', function(event) {
+                var selection = this.get('selection');
+                if (!Ember.isEmpty(selection)) {
+                    this.set('selection', selection.trim());
+                }
                 if (!this.get('selectedItem')) {
                     var lastHint = this.get('lastHint'),
                         exactMatch = false;
