@@ -39,26 +39,30 @@ export default Ember.Controller.extend({
                     this.set('showQueryResults', false);
                 } else {
                     var currentValue,
-                        headers = ['id'],
+                        attributes = ['id'],
                         resultRow,
                         resultRows = [];
                     results.get('firstObject').eachAttribute(function(name) {
-                        headers.push(name);
+                        attributes.push(name);
                     });
                     
                     results.forEach(function(result) {
                         resultRow = [];
-                        resultRow.push(result.get('id'));
-                        headers.forEach(function(column) {
-                            currentValue = result.get(column);
-                            if (Ember.isEmpty(currentValue)) {
-                                currentValue = '';
+                        /*resultRow.push({
+                            name: 'id',
+                            value: result.get('id')
+                        });*/
+                        attributes.forEach(function(attribute) {
+                            currentValue = result.get(attribute);
+                            if (!Ember.isEmpty(currentValue)) {                                
+                                resultRow.push({
+                                    name: attribute,
+                                    value: currentValue
+                                });
                             }
-                            resultRow.push(currentValue);
                         });
                         resultRows.push(resultRow);
-                    });
-                    this.set('headers', headers);
+                    });                    
                     this.set('resultRows', resultRows);
                     this.set('haveError', false);
                     this.set('showQueryResults', true);

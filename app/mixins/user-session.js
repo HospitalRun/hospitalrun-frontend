@@ -298,6 +298,9 @@ export default Ember.Mixin.create({
             'Pharmacist',
             'System Administrator'
         ],
+        query_db: [
+            'System Administrator'
+        ],
         patients: [
             'Data Entry',
             'Doctor', 
