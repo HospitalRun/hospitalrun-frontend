@@ -1,4 +1,5 @@
-export default Ember.ArrayController.extend({
+import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
+export default Ember.ArrayController.extend(InventoryTypeList, {
     lookupType: null,
     lookupTypes: [{
         name: 'Clinic Locations',
@@ -50,6 +51,13 @@ export default Ember.ArrayController.extend({
             ]
         }
     }, {
+        defaultValues: 'defaultInventoryTypes',
+        name: 'Inventory Types',
+        value: 'inventory_types',
+        models: {
+            inventory:  'type'
+        }
+    }, {
         name: 'Lab Types',
         value: 'lab_types',
         models: {
@@ -89,13 +97,19 @@ export default Ember.ArrayController.extend({
     lookupTypeList: function() {
         var lookupType = this.get('lookupType'),
             lookupItem = this.get('model').findBy('id', lookupType);
-        if (Ember.isEmpty(lookupItem)) {
-            lookupItem = this.get('store').createRecord('lookup', {
+        if (Ember.isEmpty(lookupItem) && !Ember.isEmpty(lookupType)) {
+            var defaultValues = [],
+                lookupTypes = this.get('lookupTypes'),
+                lookupDesc = lookupTypes.findBy('value', lookupType);
+            if (!Ember.isEmpty(lookupDesc) && !Ember.isEmpty(lookupDesc.defaultValues)) {
+                defaultValues = this.get('lookupDesc.defaultValues');
+            }
+            lookupItem = this.get('store').push('lookup', {
                 id: lookupType,
-                value: []
+                value: defaultValues
             });          
         }
-        if (Ember.isEmpty(lookupItem.get('userCanAdd'))) {
+        if (!Ember.isEmpty(lookupItem) && Ember.isEmpty(lookupItem.get('userCanAdd'))) {
             lookupItem.set('userCanAdd', true);                
         } 
         return lookupItem;

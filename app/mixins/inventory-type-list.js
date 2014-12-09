@@ -1,5 +1,5 @@
 export default Ember.Mixin.create({
-    inventoryTypes: [
+    defaultInventoryTypes: [
         'Asset',
         'Medication',
         'Supply'

@@ -21,6 +21,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
+    inventoryTypeList: Ember.computed.alias('controllers.inventory.inventoryTypeList'),
     
     lookupListsToUpdate: [{
         name: 'aisleLocationList', //Name of property containing lookup list
@@ -35,6 +36,16 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     canEditQuantity: function() {
         return (this.get('isNew') || !this.get('showPurchases'));
     }.property('isNew', 'showPurchases'),
+    
+    inventoryTypes: function() {
+        var defaultInventoryTypes = this.get('defaultInventoryTypes'),
+            inventoryTypeList = this.get('inventoryTypeList');
+        if (Ember.isEmpty(inventoryTypeList)) {
+            return defaultInventoryTypes;
+        } else {
+            return inventoryTypeList;
+        }
+    }.property('inventoryTypeList', 'defaultInventoryTypes'),
     
     locationQuantityTotal: function() {
         var locations = this.get('locations');
