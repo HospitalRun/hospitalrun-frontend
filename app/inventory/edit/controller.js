@@ -250,6 +250,42 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             reject(error);
         });
     },
+
+    _findSequence: function(type, resolve, reject) {
+        var sequenceFinder = new Ember.RSVP.Promise(function(resolve){
+            this._checkNextSequence(resolve, type, 0);
+        }.bind(this));
+        sequenceFinder.then(function(prefixChars) {
+            var newSequence = this.get('store').push('sequence',{
+                id: 'inventory_'+type,
+                prefix: type.toLowerCase().substr(0,prefixChars),
+                value: 0
+            });
+            this._completeBeforeUpdate(newSequence, resolve, reject);
+        }.bind(this));
+    },
+    
+    _findSequenceByPrefix: function(type, prefixChars) {        
+        return this.store.find('sequence', {
+            keyValues: {
+                prefix: type.toLowerCase().substr(0,prefixChars)
+            }
+        });
+    },    
+    
+    _checkNextSequence: function(resolve, type, prefixChars) {
+        prefixChars++;
+        this._findSequenceByPrefix(type, prefixChars).then(function(records) {
+            if (Ember.isEmpty(records)) {
+                resolve(prefixChars);
+            } else {
+                this._checkNextSequence(resolve, type, prefixChars);
+            }
+        }.bind(this), function() {
+            resolve(prefixChars);
+        });        
+    },
+    
     
     /**
      * Saves the specified request, then updates the inventory item and closes the modal.
@@ -270,12 +306,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                 this.store.find('sequence', 'inventory_'+type).then(function(sequence) {
                     this._completeBeforeUpdate(sequence, resolve, reject);
                 }.bind(this), function() {
-                    var newSequence = this.get('store').push('sequence',{
-                        id: 'inventory_'+type,
-                        prefix: type.toLowerCase().substr(0,1),
-                        value: 0
-                    });
-                    this._completeBeforeUpdate(newSequence, resolve, reject);
+                    this._findSequence(type, resolve, reject);
                 }.bind(this));
             }.bind(this));
         } else {
