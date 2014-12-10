@@ -102,7 +102,7 @@ export default Ember.ArrayController.extend(InventoryTypeList, {
                 lookupTypes = this.get('lookupTypes'),
                 lookupDesc = lookupTypes.findBy('value', lookupType);
             if (!Ember.isEmpty(lookupDesc) && !Ember.isEmpty(lookupDesc.defaultValues)) {
-                defaultValues = this.get('lookupDesc.defaultValues');
+                defaultValues = this.get(lookupDesc.defaultValues);
             }
             lookupItem = this.get('store').push('lookup', {
                 id: lookupType,
@@ -117,7 +117,9 @@ export default Ember.ArrayController.extend(InventoryTypeList, {
     
     lookupTypeValues: function() {
         var values = this.get('lookupTypeList.value');
-        values.sort(this._sortValues);
+        if (!Ember.isEmpty(values)) {
+            values.sort(this._sortValues);
+        }
         return Ember.ArrayProxy.create({content: Ember.A(values)});
     }.property('lookupType'),
     
@@ -134,10 +136,21 @@ export default Ember.ArrayController.extend(InventoryTypeList, {
             }));
         },
         deleteValue: function(value) {
-            var lookupTypeList = this.get('lookupTypeList'),
+            var lookupType = this.get('lookupType'),
+                lookupTypeList = this.get('lookupTypeList'),
                 lookupTypeValues = lookupTypeList.get('value');
-            lookupTypeValues.removeObject(value.toString());        
-            lookupTypeList.save();
+            if (lookupType === 'inventory_types' && value === 'Medication') {
+                this.send('openModal', 'dialog', Ember.Object.create({
+                    title: 'Cannot Delete Medication',
+                    message: 'The Medication inventory type cannot be deleted because it is needed for the Medication module.',
+                    hideCancelButton: true,
+                    updateButtonAction: 'ok',
+                    updateButtonText: 'Ok'
+                }));
+            } else {
+                lookupTypeValues.removeObject(value.toString());        
+                lookupTypeList.save();
+            }
         },
         editValue: function(value) {
             if (!Ember.isEmpty(value)) {

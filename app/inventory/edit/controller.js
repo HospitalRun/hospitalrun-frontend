@@ -21,7 +21,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
-    inventoryTypeList: Ember.computed.alias('controllers.inventory.inventoryTypeList'),
+    inventoryTypeList: Ember.computed.alias('controllers.inventory.inventoryTypeList.value'),
     
     lookupListsToUpdate: [{
         name: 'aisleLocationList', //Name of property containing lookup list
