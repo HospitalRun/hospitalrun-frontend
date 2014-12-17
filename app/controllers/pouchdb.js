@@ -1,4 +1,6 @@
+import Ember from "ember";
 import createPouchOauthXHR from "hospitalrun/utils/pouch-oauth-xhr";
+import createPouchViews from "hospitalrun/utils/pouch-views";
 export default Ember.Controller.extend({
     needs: 'filesystem',
     
@@ -129,6 +131,8 @@ export default Ember.Controller.extend({
             since: 'now',
             style: 'all_docs'
         }).on('change', this._gotChange.bind(this));
+        
+        createPouchViews(localMainDB);
 
         configDB.allDocs(options, function(err, response) { 
             if (err) {
