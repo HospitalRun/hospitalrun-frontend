@@ -1,4 +1,5 @@
 import couchOauthSign from "hospitalrun/utils/couch-oauth-sign";
+import Ember from "ember";
 
 export default Ember.SimpleAuth.Authorizers.Base.extend({
     _decodeParameters: function(param_string) {

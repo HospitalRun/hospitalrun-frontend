@@ -1,3 +1,4 @@
+import Ember from "ember";
 import UserSession from "hospitalrun/mixins/user-session";
 export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRouteMixin, {    
     beforeModel: function() {

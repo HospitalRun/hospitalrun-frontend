@@ -1,4 +1,5 @@
 import DateSort from 'hospitalrun/utils/date-sort';
+import Ember from "ember";
 
 import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
 export default AbstractReportController.extend({

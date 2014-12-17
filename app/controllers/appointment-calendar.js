@@ -1,3 +1,4 @@
+import Ember from "ember";
 import AppointmentEvent from 'hospitalrun/views/appointment-event';
 export default Ember.Calendar.CalendarController.extend({
     init: function() {

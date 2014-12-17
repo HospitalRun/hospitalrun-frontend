@@ -1,3 +1,4 @@
+import Ember from "ember";
 import UserSession from "hospitalrun/mixins/user-session";
 export default DS.RESTAdapter.extend(UserSession, {
     endpoint: '/db/_users/',

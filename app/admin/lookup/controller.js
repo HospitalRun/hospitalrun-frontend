@@ -1,3 +1,4 @@
+import Ember from "ember";
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 export default Ember.ArrayController.extend(InventoryTypeList, {
     lookupType: null,

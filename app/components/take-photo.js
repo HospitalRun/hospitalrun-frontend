@@ -1,3 +1,4 @@
+import Ember from "ember";
 //Derived from https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos and
 //https://github.com/samdutton/simpl/blob/master/getusermedia/sources/js/main.js
 navigator.getUserMedia = navigator.getUserMedia ||  navigator.webkitGetUserMedia || navigator.mozGetUserMedia;

@@ -1,3 +1,4 @@
+import Ember from "ember";
 import UnitTypes from "hospitalrun/mixins/unit-types";
 export default Ember.Component.extend(UnitTypes, {
     firstQuantity: false,

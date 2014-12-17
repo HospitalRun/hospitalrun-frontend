@@ -1,3 +1,4 @@
+import Ember from "ember";
 export default Ember.ObjectController.extend({
     longDateFormat: 'l h:mm A',
     shortDateFormat: 'l',

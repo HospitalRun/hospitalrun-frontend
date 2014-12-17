@@ -1,6 +1,7 @@
 import CustomAuth from "hospitalrun/utils/custom-auth";
 import CustomAuthorizer from "hospitalrun/utils/custom-authorizer";
 import CouchSerializer from "hospitalrun/utils/couch-serializer";
+import Ember from "ember";
 
 export default {
     name: 'authentication',

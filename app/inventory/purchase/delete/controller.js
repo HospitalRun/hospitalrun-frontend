@@ -1,3 +1,4 @@
+import Ember from "ember";
 import InventoryLocations from "hospitalrun/mixins/inventory-locations";
 export default Ember.ObjectController.extend(InventoryLocations, {
     needs: 'inventory/edit',

@@ -1,3 +1,4 @@
+import Ember from "ember";
 export default Ember.ObjectController.extend({
     haveItems: function() {
         var quantity = this.get('quantity');

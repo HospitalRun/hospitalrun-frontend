@@ -1,5 +1,6 @@
-import VisitTypes from 'hospitalrun/mixins/visit-types';
 import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
+import Ember from "ember";
+import VisitTypes from 'hospitalrun/mixins/visit-types';
 export default AbstractReportController.extend(VisitTypes, {
     needs: ['patients'],
     

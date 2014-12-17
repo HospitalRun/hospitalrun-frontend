@@ -1,3 +1,4 @@
+import Ember from "ember";
 export default Ember.ObjectController.extend({
     deliveryDetails: function() {
         var locationName = this.get('deliveryLocationName'),

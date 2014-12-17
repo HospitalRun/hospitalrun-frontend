@@ -1,3 +1,4 @@
+import Ember from "ember";
 import DateFormat from 'hospitalrun/mixins/date-format';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 export default Ember.ArrayController.extend(DateFormat, NumberFormat, {

@@ -1,4 +1,5 @@
 import AbstractModel from "hospitalrun/models/abstract";
+import Ember from "ember";
 import DiagnosisValidation from "hospitalrun/utils/diagnosis-validation";
 
 export default AbstractModel.extend({

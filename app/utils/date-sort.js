@@ -1,3 +1,4 @@
+import Ember from "ember";
 export default {
     sortByDate: function(firstItem, secondItem, compareAttribute) {
         var firstDate = firstItem.get(compareAttribute),

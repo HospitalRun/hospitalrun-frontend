@@ -1,3 +1,4 @@
+import Ember from "ember";
 export default Ember.ObjectController.extend({
     /**
      * Purchase can only be deleted if no items have been consumed from the purchase.

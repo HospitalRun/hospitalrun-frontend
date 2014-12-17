@@ -1,4 +1,5 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
+import Ember from "ember";
 export default AbstractEditRoute.extend({
     hideNewButton: true,
     newTitle: 'Address Options',

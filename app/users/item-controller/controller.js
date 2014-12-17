@@ -1,3 +1,4 @@
+import Ember from "ember";
 import UserRoles from 'hospitalrun/mixins/user-roles';
 export default Ember.ObjectController.extend(UserRoles, {
     displayRole: function() {        

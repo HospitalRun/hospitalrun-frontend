@@ -1,3 +1,4 @@
+import Ember from "ember";
 export default Ember.Mixin.create({
     _idToPouchId: function(id, type){
         type = type.typeKey || type;

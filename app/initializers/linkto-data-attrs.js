@@ -1,3 +1,4 @@
+import Ember from "ember";
 /**
  * Extend link-to to allow data-* attributes.
  */
@@ -10,7 +11,7 @@ export default {
             init: function() {
                 this._super();
                 var self = this;
-                Em.keys(this).forEach(function(key) {
+                Ember.keys(this).forEach(function(key) {
                     if (key.substr(0, 5) === 'data-') {
                         self.get('attributeBindings').pushObject(key);
                     }

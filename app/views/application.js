@@ -1,3 +1,4 @@
+import Ember from "ember";
 export default Ember.View.extend({
   currentPathDidChange: function() {
     Ember.run.next( this, function() {

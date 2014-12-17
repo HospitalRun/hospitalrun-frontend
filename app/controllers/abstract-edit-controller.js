@@ -1,3 +1,4 @@
+import Ember from "ember";
 import IsUpdateDisabled from "hospitalrun/mixins/is-update-disabled";
 import UserSession from "hospitalrun/mixins/user-session";
 export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
