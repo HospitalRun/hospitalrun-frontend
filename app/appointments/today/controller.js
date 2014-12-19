@@ -1,2 +1,4 @@
 import AppointmentIndexController from 'hospitalrun/appointments/index/controller';
-export default AppointmentIndexController.extend();
+export default AppointmentIndexController.extend({
+    startKey: []
+});

@@ -1,21 +1,18 @@
-import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-export default AbstractIndexRoute.extend({
+import AppointmentIndexRoute from 'hospitalrun/appointments/index/route';
+export default AppointmentIndexRoute.extend({
+    editReturn: 'appointments.today',
+    modelName: 'appointment',
     pageTitle: 'Today\'s Appointments',
     
-    actions: {
-        editAppointment: function(appointment) {
-            appointment.set('returnTo', 'appointments.today');
-            this.send('editItem', appointment);
-        },
-    },
-    
-    model: function() {
-        //Filter to only display today's appointments by default
-        return this.store.filter('appointment', function(appointment) {
-            var endDate = appointment.get('endDate'),
-            startDate = appointment.get('startDate'),
-            today = moment();    
-            return today.isSame(endDate, 'day') || today.isSame(startDate, 'day');
-        });
+    _modelQueryParams: function() {
+        var endOfDay = moment().endOf('day').toDate().getTime(),
+            startOfDay= moment().startOf('day').toDate().getTime();
+        return {
+            options: {
+                startkey: [startOfDay,],
+                endkey: [endOfDay, endOfDay,'appointment_\uffff']
+            },
+            mapReduce: 'appointments_by_date'
+        };
     }
 });

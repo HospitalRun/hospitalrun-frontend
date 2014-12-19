@@ -1,15 +1,26 @@
-import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-export default AbstractIndexRoute.extend({
+import AppointmentIndexRoute from 'hospitalrun/appointments/index/route';
+import Ember from 'ember';
+export default AppointmentIndexRoute.extend({
+    editReturn: 'appointments.search',    
+    modelName: 'appointment',
     pageTitle: 'Search Appointments',
     
-    actions: {
-        editAppointment: function(appointment) {
-            appointment.set('returnTo', 'appointments.search');
-            this.send('editItem', appointment);
-        },
-    },
-    
-    model: function() {
-        return this.store.find('appointment');
+    _modelQueryParams: function(params) {
+        var startDate,
+            startKey = params.startKey;
+        if (Ember.isEmpty(startKey)) {
+            startDate = moment();
+        } else {
+            startDate = moment(startKey[0]);
+        }
+        var startOfDay = startDate.startOf('day').toDate().getTime();
+        var endTime = startDate.add(1, 'y').endOf('day').toDate().getTime();
+        return {
+            options: {
+                startkey: [startOfDay,,],
+                endkey: [endTime,endTime,'appointment_\uffff']
+            },
+            mapReduce: 'appointments_by_date'
+        };
     }
 });

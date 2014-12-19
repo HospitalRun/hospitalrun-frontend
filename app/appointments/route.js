@@ -6,7 +6,6 @@ export default AbstractModuleRoute.extend(UserSession,{
     currentScreenTitle: 'Appointment List',
     editTitle: 'Edit Appointment',    
     newTitle: 'New Appointment',
-    modelName: 'appointment',
     moduleName: 'appointments',
     newButtonText: '+ new appointment',
     sectionTitle: 'Appointments',
