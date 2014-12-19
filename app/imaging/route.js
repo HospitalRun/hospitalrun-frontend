@@ -3,7 +3,6 @@ import UserSession from "hospitalrun/mixins/user-session";
 export default AbstractModuleRoute.extend(UserSession, {
     addCapability: 'add_imaging',
     allowSearch: false,
-    modelName: 'imaging',
     moduleName: 'imaging',
     newButtonText: '+ new imaging',
     sectionTitle: 'Imaging',
