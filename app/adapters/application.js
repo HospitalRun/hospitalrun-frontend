@@ -1,21 +1,20 @@
+import Ember from "ember";
 import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 
 export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
     _specialQueries: [
         'containsValue',
         'fieldMapping',
-        'idToFind',
         'keyValues',
         'mapReduce',
-        'mapResults'     
+        'mapResults',
+        'options.startkey',
+        'options.endkey'
     ],
     
     databaseName: 'main',
     
     _createMapFunction: function(type, query, keys) {
-        if (query.idToFind) {
-            query.idToFind = this._idToPouchId(query.idToFind, type);
-        }
         return function(doc, emit) {
             var found_doc = false,
                 doctype, 
@@ -33,10 +32,6 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
                                     found_doc = true;
                                 }
                             });
-                        } else if (query.idToFind) {
-                            if (query.idToFind === doc._id) {
-                                found_doc = true;
-                            }
                         } else {
                             found_doc = true;
                         }
@@ -67,42 +62,62 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
                 }
             }
         };
-    },    
-
+    },
+    
+    _handleQueryResponse: function(resolve, reject, err, response, query) {
+        if (err) {
+            this._pouchError(reject)(err);
+        } else {
+            if (response.rows) {
+                var data = Ember.A(response.rows).mapBy('doc');
+                if (query.mapResults) {
+                    data = query.mapResults(data);
+                }
+                Ember.run(null, resolve, data);
+            }
+        }        
+    },
+    
     findQuery: function(store, type, query, options) {
         var specialQuery = false;
         for (var i=0;i< this._specialQueries.length; i++) {
-            if (query[this._specialQueries[i]]) {
+            if (Ember.get(query,this._specialQueries[i])) {
                 specialQuery = true;
                 break;
             }
         }
         if (!specialQuery) {
-            return this._super(store, type, query, options);
+            if (query.options) {
+                var newQuery = Ember.copy(query);
+                delete newQuery.options;            
+                return this._super(store, type, newQuery, query.options);
+            } else {
+                return this._super(store, type, query, options);
+            }
         } else {
-            var self = this,
-                keys = [],
+            var keys = [],
                 mapReduce = null,
                 queryKeys = [],
-                queryParams = {
-                    reduce: false,
-                    include_docs: true
-                };
-        
+                queryParams = {};
+            if (query.options) {
+                queryParams = Ember.copy(query.options);
+            }
+            queryParams.reduce  = false;
+            queryParams.include_docs = true;
             if (query.keyValues) {
                 for (var key in query.keyValues) {
                     if (query.keyValues.hasOwnProperty(key)) {
                         keys.push(key);
                     }
                 }
-                queryKeys = Ember.ArrayPolyfills.map.call(keys, function(key) {
+                queryKeys = keys.map(function(key) {
                     if(key.substring(key.length - 3) === "_id" || 
                        key.substring(key.length - 4) === "_ids" || 
                        key === "id") {
-                        return self._idToPouchId(query.keyValues[key], type);
+                        return this._idToPouchId(query.keyValues[key], type);
                     }
                     return query.keyValues[key];
-                });
+                }.bind(this));
                 if(!Ember.isEmpty(queryKeys)){
                     queryParams["key"] = [].concat(queryKeys);
                 }
@@ -110,31 +125,28 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
             
             if (query.mapReduce) {
                 mapReduce = query.mapReduce;
-            } else {
+            } else if (query.containsValue ||query.keyValues || query.fieldMapping) {
                 mapReduce = this._createMapFunction(type, query, keys);
             }
 
             return new Ember.RSVP.Promise(function(resolve, reject){
-                self._getDb().then(function(db){
+                this._getDb().then(function(db){
                     try {
-                        db.query(mapReduce, queryParams, function(err, response) {
-                            if (err) {
-                                self._pouchError(reject)(err);
-                            } else {
-                                if (response.rows) {
-                                    var data = Ember.A(response.rows).mapBy('doc');
-                                    if (query.mapResults) {
-                                        data = query.mapResults(data);
-                                    }
-                                    Ember.run(null, resolve, data);
-                                }
-                            }
-                        });
+                        if (mapReduce) {
+                            
+                            db.query(mapReduce, queryParams, function(err, response) {
+                                this._handleQueryResponse(resolve, reject, err, response, query);
+                            }.bind(this));
+                        } else {
+                            db.allDocs(queryParams, function(err, response) {
+                                this._handleQueryResponse(resolve, reject, err, response, query);
+                            }.bind(this));
+                        }
                     } catch (err){
-                        self._pouchError(reject)(err);
+                        this._pouchError(reject)(err);
                     }
-                }, self._pouchError(reject));
-            }, "findQuery in application-pouchdb-adapter");
+                }.bind(this), this._pouchError(reject));
+            }.bind(this), "findQuery in application-pouchdb-adapter");
         }
     }
 });
