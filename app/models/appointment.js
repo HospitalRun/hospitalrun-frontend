@@ -1,4 +1,5 @@
 import AbstractModel from "hospitalrun/models/abstract";
+import Ember from "ember";
 
 export default AbstractModel.extend({
     allDay: DS.attr(),

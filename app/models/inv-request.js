@@ -1,4 +1,5 @@
 import AbstractModel from "hospitalrun/models/abstract";
+import Ember from "ember";
 import LocationName from "hospitalrun/mixins/location-name";
 /**
  * Model to represent a request for inventory items.

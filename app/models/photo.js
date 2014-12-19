@@ -1,4 +1,5 @@
 import AbstractModel from "hospitalrun/models/abstract";
+import Ember from "ember";
 
 export default AbstractModel.extend({
     _attachments: DS.attr(), //Temporarily store file as attachment until it gets uploaded to the server
