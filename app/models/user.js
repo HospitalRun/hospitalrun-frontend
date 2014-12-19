@@ -1,5 +1,6 @@
 import EmailValidation from "hospitalrun/utils/email-validation";
-var User = DS.Model.extend(Ember.Validations.Mixin, {
+import EmberValidations from 'ember-validations';
+var User = DS.Model.extend(EmberValidations, {
     derived_key: DS.attr('string'),
     displayName: DS.attr('string'),
     email: DS.attr('string'),
