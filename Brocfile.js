@@ -1,10 +1,13 @@
- /* global require, module */
+/* global require, module */
 
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var mergeTrees = require('broccoli-merge-trees');
 var writeManifest = require('broccoli-manifest');
+var fileRemover = require('broccoli-file-remover');
 
-var app = new EmberApp();
+var app = new EmberApp({     
+  es3Safe: false
+});
 
 // Use `app.import` to add additional libraries to the generated
 // output files.
@@ -19,26 +22,29 @@ var app = new EmberApp();
 // please specify an object with the list of modules as keys
 // along with the exports of each module as its value.
 
-app.import('vendor/ember-data/ember-data.js');
-app.import('vendor/pouchdb/dist/pouchdb.js');
-app.import('vendor/ember-pouchdb-adapter/pouchdb_adapter.js');
-app.import('vendor/ember-autofocus/dist/ember-autofocus.min.js');
-app.import('vendor/ember-simple-auth/ember-simple-auth.js');
-app.import('vendor/ember-validations/ember-validations-latest.js');
-app.import('vendor/oauth-signature-js/dist/oauth-signature.js');
-app.import('vendor/node-uuid/uuid.js');
-app.import('vendor/bootstrap/dist/js/bootstrap.js');
-app.import('vendor/JsBarcode/CODE128.js');
-app.import('vendor/JsBarcode/JsBarcode.js');
+//app.import('bower_components/ember-data/ember-data.js');
+app.import('bower_components/pouchdb/dist/pouchdb.js');
+app.import('bower_components/ember-pouchdb-adapter/pouchdb_adapter.js');
+app.import('bower_components/ember-autofocus/dist/ember-autofocus.min.js');
+app.import('bower_components/ember-simple-auth/ember-simple-auth.js');
+//app.import('bower_components/ember-validations/ember-validations-latest.js');
+app.import('bower_components/oauth-signature-js/dist/oauth-signature.js');
+app.import('bower_components/node-uuid/uuid.js');
+app.import('bower_components/bootstrap/dist/js/bootstrap.js');
+app.import('bower_components/JsBarcode/CODE128.js');
+app.import('bower_components/JsBarcode/JsBarcode.js');
 app.import('vendor/dymo/DYMO.Label.Framework.1.2.6.js');
-app.import('vendor/ember-forms/dist/ember_forms.js');
-app.import('vendor/moment/moment.js');
-app.import('vendor/typeahead.js/dist/typeahead.bundle.js');
-app.import('vendor/pikaday/pikaday.js');
-app.import('vendor/filer.js/src/filer.js');
-app.import('vendor/idb.filesystem/src/idb.filesystem.js');
-app.import('vendor/pikaday/css/pikaday.css');
+app.import('bower_components/ember-forms/dist/globals/main.js');
+app.import('bower_components/moment/moment.js');
+app.import('bower_components/typeahead.js/dist/typeahead.bundle.js');
+app.import('bower_components/pikaday/pikaday.js');
+app.import('bower_components/filer.js/src/filer.js');
+app.import('bower_components/idb.filesystem/src/idb.filesystem.js');
+app.import('bower_components/pikaday/css/pikaday.css');
 app.import('vendor/octicons/octicons/octicons.css');
 
 var completeTree = app.toTree();
-module.exports = mergeTrees([completeTree, writeManifest(completeTree)]);
+var manifestTree = fileRemover(completeTree, {
+    paths: ['index.html', 'tests/']
+});
+module.exports = mergeTrees([completeTree, writeManifest(manifestTree)]);
