@@ -1,4 +1,5 @@
-export default Em.Forms.FormInputComponent.extend({
+import Ember from "ember";
+export default Ember.Forms.FormInputComponent.extend({
     mappedContent: function() {
         var content = this.get('content');
         if (content) {
@@ -85,7 +86,9 @@ export default Em.Forms.FormInputComponent.extend({
                 var selection = this.get('selection');
                 var targetValue = event.target.value.trim();
                 if (!Ember.isEmpty(selection)) {
-                    selection = selection.trim();
+                    if (selection.trim) {
+                        selection = selection.trim();
+                    }
                     this.set('selection', selection);
                 }
                 if (!this.get('selectedItem')) {
