@@ -10,8 +10,8 @@ export default AbstractIndexRoute.extend({
     _modelQueryParams: function() {
         return {
             options: {
-                startkey: ['Completed',],
-                endkey: ['Completed','inv-request_\uffff']
+                startkey: ['Completed',,],
+                endkey: ['Completed','\uffff','inv-request_\uffff']
             },
             mapReduce: 'inventory_request_by_status'
         };

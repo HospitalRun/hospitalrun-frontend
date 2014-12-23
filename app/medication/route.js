@@ -1,7 +1,6 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 export default AbstractModuleRoute.extend({
-    addCapability: 'add_medication',
-    modelName: 'medication',
+    addCapability: 'add_medication',    
     moduleName: 'medication',
     newButtonText: '+ new request',
     sectionTitle: 'Medication',

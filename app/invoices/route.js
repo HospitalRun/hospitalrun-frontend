@@ -6,7 +6,6 @@ export default AbstractModuleRoute.extend(InvoiceMapping, {
     currentScreenTitle: 'Invoices',
     editTitle: 'Edit Invoice',    
     newTitle: 'New Invoice',
-    modelName: 'invoice',
     moduleName: 'invoices',
     newButtonText: '+ new invoice',
     sectionTitle: 'Invoices',

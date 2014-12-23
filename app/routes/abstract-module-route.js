@@ -1,3 +1,4 @@
+import Ember from "ember";
 import UserSession from "hospitalrun/mixins/user-session";
 /**
  * Abstract route for top level modules (eg patients, inventory, users)
@@ -7,7 +8,6 @@ export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRou
     additionalModels: null,
     allowSearch: true,
     currentScreenTitle: null,
-    modelName: null,
     moduleName: null,
     newButtonText: null,
     sectionTitle:null,
@@ -82,7 +82,17 @@ export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRou
         setSectionHeader: function(details) {
             var currentController = this.controllerFor(this.get('moduleName'));        
             currentController.setProperties(details);
-        }
+        },
+        
+        /**
+         * Update an open modal using the specifed model.
+         * @param modalPath the path to use for the controller and template.
+         * @param model (optional) the model to set on the controller for the modal.
+         */
+        updateModal: function(modalPath, model) {        
+            this.controllerFor(modalPath).set('model', model);    
+        },        
+
     },
     
     /**
@@ -120,26 +130,16 @@ export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRou
             return new Ember.RSVP.Promise(function(resolve, reject){
                 var promises = this.additionalModels.map(function(modelMap) {
                     return this.store.find.apply(this.store, modelMap.findArgs);
-                }.bind(this));                
-                promises.push(this.store.find(this.get('modelName')));
-                Ember.RSVP.allSettled(promises,'All Settled additional Models for'+this.get('modelName')).then(function(array){
-                    array.forEach(function(item, index) {
-                        if (index < this.additionalModels.length) {
-                            if (item.state === 'fulfilled') {
-                                this.set(this.additionalModels[index].name, item.value);
-                            }
-                        } else {
-                            if (item.state === 'fulfilled') {
-                                Ember.run(null, resolve, item.value);
-                            } else {
-                                Ember.run(null, reject, item.reason);
-                            }
-                        }
-                    }.bind(this));
                 }.bind(this));
-            }.bind(this),'Additional Models for'+this.get('modelName'));
+                Ember.RSVP.all(promises,'All additional Models for'+this.get('moduleName')).then(function(array){
+                    array.forEach(function(item, index) {
+                        this.set(this.additionalModels[index].name, item);
+                    }.bind(this));
+                    resolve();
+                }.bind(this), reject);
+            }.bind(this),'Additional Models for'+this.get('moduleName'));
         } else {
-             return this.store.find(this.get('modelName'));
+             return Ember.RSVP.resolve();
         }        
     },
     

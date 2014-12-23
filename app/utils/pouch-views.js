@@ -63,6 +63,24 @@ function inventoryPurchaseByExpirationDate(doc) {
         }   
     }
 }
+function inventoryPurchaseByDateReceived(doc) {
+    var doctype,
+        uidx;
+    if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+        doctype = doc._id.substring(0, uidx);
+        if (doctype === 'inv-purchase') {
+            var dateReceived = doc.dateReceived;
+            if (dateReceived && dateReceived !== '') {
+                dateReceived = new Date(dateReceived);
+                if (dateReceived.getTime) {
+                    dateReceived = dateReceived.getTime();
+                }
+            }
+            emit([dateReceived, doc._id]); 
+        }   
+    }
+}
+
 
 function inventoryRequestByStatus(doc) {
     var doctype,
@@ -70,7 +88,14 @@ function inventoryRequestByStatus(doc) {
     if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
         doctype = doc._id.substring(0, uidx);
         if(doctype === 'inv-request') {
-            emit([doc.status, doc._id]);
+            var dateCompleted = doc.dateCompleted;
+            if (dateCompleted && dateCompleted !== '') {
+                dateCompleted = new Date(dateCompleted);
+                if (dateCompleted.getTime) {
+                    dateCompleted = dateCompleted.getTime();
+                }
+            }
+            emit([doc.status, dateCompleted, doc._id]);
         }
     }    
 }
@@ -81,7 +106,10 @@ var designDocs = [{
 }, {
     name: 'imaging_by_status',
     function: imagingByStatus
-}, {
+}, {    
+    name: 'inventory_purchase_by_date_received',
+    function: inventoryPurchaseByDateReceived
+}, {    
     name: 'inventory_purchase_by_expiration_date',
     function: inventoryPurchaseByExpirationDate
 }, {

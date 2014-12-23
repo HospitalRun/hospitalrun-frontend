@@ -1,6 +1,7 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import UserSession from "hospitalrun/mixins/user-session";
 export default AbstractIndexRoute.extend(UserSession, {
+    modelName: 'inventory',
     newButtonAction: function() {
         if (this.currentUserCan('add_inventory_item')) {
             return 'newItem';

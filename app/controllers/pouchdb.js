@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
     
     filesystem: Ember.computed.alias('controllers.filesystem'),
     isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
+    localMainDB: null,
     
     backoff: 2, //Factor to increment timeout by each time it fails
     configDB: null, //Initializer will set this up.
@@ -96,6 +97,19 @@ export default Ember.Controller.extend({
         //Successfully synced, reset timeout to 5 seconds for retries
         this.set('timeout', 5000);
     },
+    
+    getDocFromMainDB: function(docId) {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            var localMainDB = this.get('localMainDB');
+            localMainDB.get(docId, function(err, doc) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(doc);
+                }                 
+            });
+        }.bind(this));
+    },
 
     removeFileLink: function(pouchDbId) {
          var configDB = this.get('configDB');
@@ -111,6 +125,29 @@ export default Ember.Controller.extend({
         }, 'file-link_'+recordId);
     },
     
+    queryMainDB: function(queryParams, mapReduce) {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            var localMainDB = this.get('localMainDB');
+            if (mapReduce) { 
+                localMainDB.query(mapReduce, queryParams, function(err, response) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(response);
+                    }                
+                });
+            } else {
+                localMainDB.allDocs(queryParams, function(err, response) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(response);
+                    }                
+                });
+            }
+        }.bind(this));
+    },
+    
     setup: function() {
         var configDB = this.get('configDB'),
             localMainDB = new PouchDB('main'),
@@ -124,7 +161,7 @@ export default Ember.Controller.extend({
                     'config_use_google_auth'
                 ]
             };
-
+        this.set('localMainDB', localMainDB);
         localMainDB.changes({
             include_docs: true, 
             live: true,

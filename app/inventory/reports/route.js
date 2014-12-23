@@ -1,15 +1,11 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
+import Ember from 'ember';
 export default AbstractIndexRoute.extend({
     pageTitle: 'Inventory Report',
 
-    afterModel: function() {
-        this.set('inventoryItems', this.modelFor('inventory'));
-    },
-    
+    //No model for reports; data gets retrieved when report is run.
     model: function() {
-        return this.store.find('inv-request', {
-            status: 'Completed'
-        });
-    }
+        return Ember.RSVP.resolve();
+    },
 
 });

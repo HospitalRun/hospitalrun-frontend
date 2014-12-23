@@ -19,8 +19,8 @@ export default AbstractIndexRoute.extend(UserSession, {
     _modelQueryParams: function() {
         return {
             options: {
-                startkey: ['Requested',],
-                endkey: ['Requested','inv-request_\uffff']
+                startkey: ['Requested',,],
+                endkey: ['Requested','\uffff','inv-request_\uffff']
             },
             mapReduce: 'inventory_request_by_status'
         };
