@@ -1,1 +1,9 @@
+{{#if showProgress}}
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" {{bind-attr aria-valuenow="progressBarValue"}}
+             aria-valuemin="0" aria-valuemax="100" {{bind-attr style="progressBarStyle"}}>
+            <span class="sr-only">{{progressBarValue}}% Complete</span>
+        </div>
+    </div>
+{{/if}}
 {{message}}
