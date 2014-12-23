@@ -1,7 +1,19 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 export default AbstractIndexRoute.extend({
+    modelName: 'inv-request',
     pageTitle: 'History',
-    model: function() {
-        return this.store.find('inv-request', {status: 'Completed'});
+    
+    _getStartKeyFromItem: function(item) {
+        return ['Completed', 'inv-request_'+item.get('id')];
+    },
+    
+    _modelQueryParams: function() {
+        return {
+            options: {
+                startkey: ['Completed',],
+                endkey: ['Completed','inv-request_\uffff']
+            },
+            mapReduce: 'inventory_request_by_status'
+        };
     }
 });
