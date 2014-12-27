@@ -4,10 +4,8 @@ import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
     _specialQueries: [
         'containsValue',
-        'fieldMapping',
         'keyValues',
         'mapReduce',
-        'mapResults',
         'options.startkey',
         'options.endkey'
     ],
@@ -41,17 +39,6 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
                                     return doc[key];
                                 });
                                 emit(emitKeys);
-                            } else if (query.fieldMapping) {
-                                emit([doc._id, 0], null);
-                                var i = 0,
-                                    field;
-                                for (field in query.fieldMapping) {
-                                    if (doc[field]) {
-                                        emit([doc._id, ++i], {
-                                            _id: query.fieldMapping[field]+'_'+doc[field]
-                                        });
-                                    }
-                                }                                
                             } else {
                                 emit(doc._id, null);
                             }
@@ -64,18 +51,15 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
         };
     },
     
-    _handleQueryResponse: function(resolve, reject, err, response, query) {
-        if (err) {
-            this._pouchError(reject)(err);
-        } else {
-            if (response.rows) {
-                var data = Ember.A(response.rows).mapBy('doc');
-                if (query.mapResults) {
-                    data = query.mapResults(data);
-                }
-                Ember.run(null, resolve, data);
-            }
-        }        
+    _handleQueryResponse: function(resolve, response, store, type, options) {
+        if (response.rows) {
+            var data = Ember.A(response.rows).mapBy('doc');
+            Ember.run(function(){
+                this._resolveRelationships(store, type, data, options).then(function(data){
+                    Ember.run(null, resolve, data);
+                });
+            }.bind(this));
+        }
     },
     
     findQuery: function(store, type, query, options) {
@@ -125,7 +109,7 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
             
             if (query.mapReduce) {
                 mapReduce = query.mapReduce;
-            } else if (query.containsValue ||query.keyValues || query.fieldMapping) {
+            } else if (query.containsValue ||query.keyValues) {
                 mapReduce = this._createMapFunction(type, query, keys);
             }
 
@@ -135,11 +119,17 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
                         if (mapReduce) {
                             
                             db.query(mapReduce, queryParams, function(err, response) {
-                                this._handleQueryResponse(resolve, reject, err, response, query);
+                                if (err) {
+                                    this._pouchError(reject)(err);
+                                }
+                                this._handleQueryResponse(resolve, response, store, type, options);
                             }.bind(this));
                         } else {
                             db.allDocs(queryParams, function(err, response) {
-                                this._handleQueryResponse(resolve, reject, err, response, query);
+                                if (err) {
+                                    this._pouchError(reject)(err);
+                                }
+                                this._handleQueryResponse(resolve, response, store, type, options);
                             }.bind(this));
                         }
                     } catch (err){
