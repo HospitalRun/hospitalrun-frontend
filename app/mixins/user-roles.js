@@ -3,6 +3,8 @@ export default Ember.Mixin.create({
         {name: 'Business Office', roles: ['Business Office', 'user']},
         {name: 'Data Entry', roles: ['Data Entry', 'user']},
         {name: 'Doctor', roles: ['Doctor', 'user']},
+        {name: 'Finance', roles: ['Finance', 'user']},
+        {name: 'Finance Manager', roles: ['Finance Manager', 'user']},
         {name: 'Hospital Administrator', roles: ['Hospital Administrator', 'user']},
         {name: 'Inventory Manager', roles: ['Inventory Manager', 'user']},
         {name: 'Imaging Technician', roles: ['Imaging Technician', 'user']},
