@@ -1,3 +1,4 @@
+import Ember from "ember";
 export default {
     diagnosisValidation: {
         acceptance: {

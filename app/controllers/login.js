@@ -1,3 +1,4 @@
+import Ember from "ember";
 var LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
      authenticatorFactory: 'authenticators:custom',
 

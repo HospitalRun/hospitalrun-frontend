@@ -1,3 +1,4 @@
+import Ember from "ember";
 export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     actions: {
         allItems: function() {

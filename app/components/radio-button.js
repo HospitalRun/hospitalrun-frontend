@@ -1,4 +1,5 @@
- export default Ember.Component.extend({
+import Ember from "ember";
+export default Ember.Component.extend({
      tagName : "input",
      type : "radio",
      attributeBindings : [ "name", "type", "value", "checked:checked" ],

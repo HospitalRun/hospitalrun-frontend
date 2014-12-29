@@ -1,7 +1,9 @@
 /**
  * Model for social worker family info
  */
-export default Ember.Object.extend(Ember.Validations.Mixin, {
+import Ember from "ember";
+import EmberValidations from 'ember-validations';
+export default Ember.Object.extend(EmberValidations, {
     age: null,
     civilStatus: null,
     education: null,

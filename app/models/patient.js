@@ -1,6 +1,7 @@
 import AbstractModel from "hospitalrun/models/abstract";
 import DOBDays from 'hospitalrun/mixins/dob-days';
 import EmailValidation from "hospitalrun/utils/email-validation";
+import Ember from "ember";
 
 export default AbstractModel.extend(DOBDays, {
     additionalContacts: DS.attr(),

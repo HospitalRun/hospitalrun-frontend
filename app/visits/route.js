@@ -11,7 +11,6 @@ export default AbstractModuleRoute.extend({
         name: 'locationList',
         findArgs: ['lookup','visit_location_list']
     }],
-    modelName: 'visit',
     moduleName: 'visits',
     newButtonText: '+ new visit',
     sectionTitle: 'Visits'

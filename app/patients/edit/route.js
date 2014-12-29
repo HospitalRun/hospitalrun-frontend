@@ -1,4 +1,5 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
+import Ember from "ember";
 import PatientId from 'hospitalrun/mixins/patient-id';
 export default AbstractEditRoute.extend(PatientId, {
     editTitle: 'Edit Patient',

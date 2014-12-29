@@ -1,41 +1,40 @@
+import Ember from "ember";
 export default Ember.ArrayController.extend({
-    allArrangedContent: [],
-    offset: 0,
+    nextStartKey: null,
+    previousStartKey: null,
+    previousStartKeys: [],
+    queryParams: ['startKey'],
     limit: 10,
-
-    arrangedContent: function() {
-        var arrangedContent = this._super();
-        this.set('allArrangedContent', arrangedContent);
-        var limit = this.get('limit'),
-            offset = this.get('offset');
-        return arrangedContent.slice(offset, offset+limit);
-    }.property('content.@each.lastModified', 'sortProperties.@each', 'offset', 'limit'),
     
     disablePreviousPage: function() {
-        return (this.get('offset') === 0);
-    }.property('offset'),
-                                            
+        return (Ember.isEmpty(this.get('previousStartKey')));
+    }.property('previousStartKey'),
+    
     disableNextPage: function() {
-    var limit = this.get('limit'),
-        length = this.get('model.length'),
-        offset = this.get('offset');
-        return ((offset+limit) >= length);
-    }.property('offset','limit','model.length'),
+        return (Ember.isEmpty(this.get('nextStartKey')));
+    }.property('nextStartKey'),
     
     showPagination: function() {
-        var length = this.get('model.length'),
-            limit = this.get('limit');
-        return (length > limit);            
-    }.property('model.length'),
-
+        return (!Ember.isEmpty(this.get('previousStartKey') || !Ember.isEmpty(this.get('nextStartKey'))));
+    }.property('nextStartKey', 'previousStartKey'),
+    
     actions: {
-        nextPage: function() {
-            var limit = this.get('limit');
-            this.incrementProperty('offset', limit);
-        }, 
+        nextPage: function() {            
+            var key = this.get('nextStartKey'),
+                previousStartKeys = this.get('previousStartKeys'),
+                firstKey = this.get('firstKey');
+            this.set('previousStartKey', firstKey);
+            previousStartKeys.push(firstKey);
+            this.set('startKey',key);
+        },
         previousPage: function() {
-            var limit = this.get('limit');
-            this.decrementProperty('offset', limit);    
+            var key = this.get('previousStartKey'),
+                previousStartKeys = this.get('previousStartKeys');
+            previousStartKeys.pop();
+            this.set('startKey',key);
+            this.set('previousStartKey', previousStartKeys.pop());
+            this.set('previousStartKeys', previousStartKeys);
+            
         }
     }
 });

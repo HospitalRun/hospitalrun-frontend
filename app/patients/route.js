@@ -18,7 +18,6 @@ export default AbstractModuleRoute.extend(PatientId, {
         name: 'physicianList',
         findArgs: ['lookup','physician_list']
     }],
-    modelName: 'patient',
     moduleName: 'patients',
     newButtonText: '+ new patient',
     sectionTitle: 'Patients',

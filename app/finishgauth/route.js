@@ -1,3 +1,4 @@
+import Ember from "ember";
 export default Ember.Route.extend({    
     oauth_config_keys: [
         'consumer_key',

@@ -1,4 +1,5 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
+import Ember from "ember";
 import InventoryLocations from "hospitalrun/mixins/inventory-locations";
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import UnitTypes from "hospitalrun/mixins/unit-types";
@@ -230,6 +231,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                 'location', 'vendor', 'vendorItemNo');
             newPurchase.originalQuantity = this.get('quantity');
             newPurchase.currentQuantity = newPurchase.originalQuantity;
+            newPurchase.inventoryItem = 'inventory_'+this.get('model.id');
             var purchase = this.get('store').createRecord('inv-purchase', newPurchase);
             promises.push(purchase.save());
             this.get('purchases').addObject(purchase);
@@ -314,7 +316,13 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         }
     },
     
-    afterUpdate: function(record) {
-        this.transitionToRoute('/inventory/search/'+record.get('friendlyId'));
+    afterUpdate: function() {
+        this.send('openModal', 'dialog', Ember.Object.create({
+            title: 'Inventory Item Saved',
+            message: 'The inventory item has been saved.',
+            hideCancelButton: true,
+            updateButtonAction: 'ok',
+            updateButtonText: 'Ok'
+        }));
     }
 });

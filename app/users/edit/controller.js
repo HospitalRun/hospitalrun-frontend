@@ -1,5 +1,6 @@
-import UserRoles from 'hospitalrun/mixins/user-roles';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
+import Ember from "ember";
+import UserRoles from 'hospitalrun/mixins/user-roles';
 
 export default AbstractEditController.extend(UserRoles, {
     needs: 'users/index',

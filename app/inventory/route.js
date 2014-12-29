@@ -20,7 +20,6 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
   ],
     
     currentItem: null,
-    modelName: 'inventory',
     moduleName: 'inventory',
     
     newButtonText: '+ new request',
@@ -69,7 +68,8 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
         showAddPurchase: function(inventoryItem) {
             var newPurchase = this.get('store').createRecord('inv-purchase', {
                 dateReceived: new Date(),
-                distributionUnit: inventoryItem.get('distributionUnit')
+                distributionUnit: inventoryItem.get('distributionUnit'),
+                inventoryItem: 'inventory_'+inventoryItem.get('id')
             });            
             this.set('currentItem', inventoryItem);
             this.send('openModal', 'inventory.purchase.edit', newPurchase);

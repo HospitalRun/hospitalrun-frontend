@@ -1,3 +1,4 @@
+import Ember from "ember";
 import IsUpdateDisabled from "hospitalrun/mixins/is-update-disabled";
 export default Ember.ObjectController.extend(IsUpdateDisabled, {    
     needs: 'patients',

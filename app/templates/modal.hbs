@@ -9,7 +9,9 @@
                 {{yield}}
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary on-white" {{action updateButtonAction}} {{bind-attr disabled=isUpdateDisabled }}>{{ updateButtonText }}</button>
+                {{#unless hideUpdateButton}}
+                    <button class="btn btn-primary on-white" {{action updateButtonAction}} {{bind-attr disabled=isUpdateDisabled }}>{{ updateButtonText }}</button>
+                {{/unless}}
                 {{#unless hideCancelButton}}
                     <button class="btn btn-default warning" {{action "cancel"}}>Cancel</button>
                 {{/unless}}

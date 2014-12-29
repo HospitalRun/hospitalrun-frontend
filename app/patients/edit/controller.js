@@ -1,6 +1,6 @@
-
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
+import Ember from "ember";
 import FamilyInfoModel from 'hospitalrun/models/family-info';
 import GenderList from 'hospitalrun/mixins/gender-list';
 import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";

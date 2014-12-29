@@ -1,5 +1,6 @@
+import Ember from "ember";
 //Dervied from http://spin.atomicobject.com/2013/10/29/ember-js-date-picker/
-export default Em.Forms.FormInputComponent.extend({
+export default Ember.Forms.FormInputComponent.extend({
     currentDate: null,
     dateProperty: null,
     minDate: null,

@@ -1,4 +1,5 @@
 import AbstractModel from "hospitalrun/models/abstract";
+import Ember from "ember";
 import LocationName from "hospitalrun/mixins/location-name";
 /**
  * Model to represent a purchase within an inventory item.
@@ -25,6 +26,7 @@ var InventoryPurchaseItem = AbstractModel.extend(LocationName, {
     location: DS.attr('string'),
     aisleLocation: DS.attr('string'),
     giftInKind: DS.attr('boolean'),
+    inventoryItem: DS.attr('string'), //Currently just storing id instead of DS.belongsTo('inventory', { async: true }),
     vendor: DS.attr('string'),
     vendorItemNo: DS.attr('string'),
     distributionUnit: DS.attr('string'),

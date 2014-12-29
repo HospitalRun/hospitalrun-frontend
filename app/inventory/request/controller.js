@@ -1,4 +1,5 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
+import Ember from "ember";
 
 export default AbstractEditController.extend({    
     needs: 'inventory',

@@ -1,3 +1,4 @@
+import Ember from "ember";
 export default Ember.Controller.extend({
     needs: ['filesystem','pouchdb'],
     filesystem: Ember.computed.alias('controllers.filesystem'),

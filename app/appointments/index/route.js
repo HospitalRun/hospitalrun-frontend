@@ -1,29 +1,43 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 export default AbstractIndexRoute.extend({
+    editReturn: 'appointments.index',
+    modelName: 'appointment',
     pageTitle: 'Appointments This Week',
-    
-    actions: {
-        createVisit: function(appointment) {
-            var visitProps = appointment.getProperties('startDate', 'endDate', 'location', 'patient'),
-                visit;            
-            visitProps.visitType = appointment.get('appointmentType');
-            visitProps.examiner = appointment.get('provider');
-            visit = this.get('store').createRecord('visit', visitProps);
-            this.transitionTo('visits.edit', visit);
-        },
-        editAppointment: function(appointment) {
-            appointment.set('returnTo', 'appointments.index');
-            this.send('editItem', appointment);
-        },
+
+    _getStartKeyFromItem: function(item) {
+        var endDate = item.get('endDate'),
+            startDate = item.get('startDate');
+        if (endDate && endDate !== '') {
+            endDate = new Date(endDate);
+            if (endDate.getTime) {
+                endDate = endDate.getTime();
+            }
+        }
+        if (startDate && startDate !== '') {
+            startDate = new Date(startDate);
+            if (startDate.getTime) {
+                startDate = startDate.getTime(); 
+            }
+        }
+        return [startDate, endDate, item.get('id')];
+    },
+
+    _modelQueryParams: function() {
+        var endOfWeek = moment().endOf('week').toDate().getTime(),
+            startOfWeek = moment().startOf('week').toDate().getTime();
+        return {
+            options: {
+                startkey: [startOfWeek,,],
+                endkey: [endOfWeek, endOfWeek,'appointment_\uffff']
+            },
+            mapReduce: 'appointments_by_date'
+        };
     },
     
-    model: function() {
-        //Filter to only display this week's appointments by default
-        return this.store.filter('appointment', function(appointment) {
-            var endDate = appointment.get('endDate'),
-            startDate = appointment.get('startDate'),
-            today = moment();    
-            return today.isSame(endDate, 'week') || today.isSame(startDate, 'week');
-        });
+    actions: {
+        editAppointment: function(appointment) {
+            appointment.set('returnTo', this.get('editReturn'));
+            this.send('editItem', appointment);
+        }
     }
 });

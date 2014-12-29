@@ -1,3 +1,4 @@
+import Ember from "ember";
 export default Ember.Mixin.create({
     userRoles: [
         {name: 'Business Office', roles: ['Business Office', 'user']},

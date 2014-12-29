@@ -1,19 +1,20 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
+/dist
 /tmp
 
 # dependencies
 /node_modules
-
+/bower_components
 
 # misc
 /.sass-cache
 /connect.lock
+/coverage/*
 /libpeerconnection.log
 .DS_Store
 Thumbs.db
-/coverage/*
 npm-debug.log
 testem.log
 /nbproject/private/
@@ -22,9 +23,4 @@ nbproject/project.properties
 nbproject/project.xml
 
 *.sublime-workspace
-*.css.map
-
-dist/
 server/config.js
-
-dist/assets/vendor.js

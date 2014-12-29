@@ -1,3 +1,4 @@
+import Ember from "ember";
 export default Ember.Mixin.create({
     /**
      * Calculate a new id based on time stamp and randomized number
