@@ -3,19 +3,32 @@ export default TypeAhead.extend({
     displayKey: 'name', 
     setOnBlur: true,
     
+    _mapInventoryItems: function(item) {
+        var returnObj = {};
+        if (item.quantity) {
+            returnObj.name = '%@ (%@ available)'.fmt(item.name, item.quantity);
+        } else {
+            returnObj.name = item.name;
+        }                
+        returnObj[this.get('selectionKey')] = item;
+        return returnObj;
+    },
+    
     mappedContent: function() {
         var content = this.get('content'),
-            mapped;
+            mapped = [];
         if (content) {
-            mapped = content.map(function(item) {
-                var returnObj = {};
-                returnObj.name = '%@ (%@ available)'.fmt(item.get('name'), item.get('quantity'));
-                returnObj[this.get('selectionKey')] = item;
-                return returnObj;
-            }.bind(this));
-            return mapped;
-        } else {
-            return [];
+            mapped = content.map(this._mapInventoryItems.bind(this));
+        }
+        return mapped;
+    }.property('content'),
+    
+    contentChanged: function() {
+        var bloodhound = this.get('bloodhound'),
+            content = this.get('content');
+        if (bloodhound) {
+            bloodhound.clear();
+            bloodhound.add(content.map(this._mapInventoryItems.bind(this)));
         }        
-    }.property('content')
+    }.observes('content.[]'),
 });
