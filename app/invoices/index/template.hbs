@@ -4,7 +4,7 @@
             <th>Number</th>
             <th>Patient</th>
             <th>Price</th>
-            <th>Publish Status</th>
+            <th>Status</th>
             <th>Create Date</th>
             <th>Actions</th>
         </tr>
@@ -14,7 +14,7 @@
                     <td>{{invoiceNumber}}</td>
                     <td>{{patientName}}<br>{{patient.primaryDiagnosis}}</td>
                     <td>{{totalPrice}}</td>
-                    <td>{{publishStatus}}</td>
+                    <td>{{status}}</td>
                     <td>{{createDate}}</td>
                     <td>
                         <button class="btn btn-default" {{action 'editItem' this bubbles=false }}>Edit</button>
@@ -26,6 +26,6 @@
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No invoices found.  Create an adhoc invoice?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Invoice</button>
+        <em>No invoices found.  Create an invoice?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Invoice</button>
     </div>
 {{/if}}
