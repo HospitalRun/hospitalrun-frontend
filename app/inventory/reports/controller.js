@@ -1,18 +1,12 @@
 import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
 import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
-export default AbstractReportController.extend(LocationName, {
+import ProgressDialog from "hospitalrun/mixins/progress-dialog";
+export default AbstractReportController.extend(LocationName, ProgressDialog, {
     needs: ['pouchdb'],
     effectiveDate: null,
-    modalDialog: {
-        showProgress: true,
-        title: 'Generating Report',
-        hideCancelButton: true,
-        hideUpdateButton: true,
-        message: 'Please wait while your report is generated',    
-        progressBarValue: 10,
-        progressBarStyle: 'width: 10%;'
-    },    
+    progressMessage: 'Please wait while your report is generated.',
+    progressTitle: 'Generating Report',
     pouchdbController: Ember.computed.alias('controllers.pouchdb'),
     reportColumns: {
         date: {
@@ -134,34 +128,6 @@ export default AbstractReportController.extend(LocationName, {
         value: 'summaryTransfer'
     }],
     
-    
-    interval: 500,
-    
-    schedule: function(f) {
-        return Ember.run.later(this, function() {
-            f.apply(this);
-            this.set('timer', this.schedule(f));
-        }, this.get('interval'));
-    },   
-    
-    updateProgressBar: function() {
-        var modalDialog = this.get('modalDialog'),
-            progressBarValue = modalDialog.progressBarValue;
-        progressBarValue += 10;
-        if (progressBarValue > 100) {
-            progressBarValue = 0;
-        }
-        modalDialog.progressBarValue = progressBarValue;
-        modalDialog.progressBarStyle = 'width: '+progressBarValue+'%';
-        this.set('modalDialog', modalDialog);
-        this.send('updateModal','dialog', Ember.Object.create(modalDialog)); 
-    },
-    
-    _closeModal: function() {
-        Ember.run.cancel(this.get('timer'));
-        this.send('closeModal');
-    },
-
     includeDate: function() {
         var reportType = this.get('reportType');
         if (!Ember.isEmpty(reportType) && reportType.indexOf('detailed') ===0) {
@@ -408,7 +374,7 @@ export default AbstractReportController.extend(LocationName, {
                 this.set('reportHeaders', ['Id','Name','Current Quantity','Distribution Unit','Expiration Date']);
                 this._generateExport();
                 this._setReportTitle();
-                this._closeModal();
+                this.closeProgressModal();
             }.bind(this));
         }.bind(this));
         
@@ -423,7 +389,7 @@ export default AbstractReportController.extend(LocationName, {
             var endDate = this.get('endDate'),
                 startDate = this.get('startDate');
             if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
-                this._closeModal();
+                this.closeProgressModal();
                 return;
             } else {
                 dateDiff = moment(endDate).diff(startDate, 'days');
@@ -707,7 +673,7 @@ export default AbstractReportController.extend(LocationName, {
                 this._generateExport();
                 this.set('showReportResults', true);
                 this._setReportTitle();
-                this._closeModal();                
+                this.closeProgressModal();
             }.bind(this));
         }.bind(this));
     },
@@ -783,7 +749,6 @@ export default AbstractReportController.extend(LocationName, {
     actions: {
         generateReport: function() {
             var endDate = this.get('endDate'),
-                modalDialog = this.get('modalDialog'),
                 reportRows = this.get('reportRows'),
                 reportType = this.get('reportType'),
                 startDate = this.get('startDate');
@@ -791,10 +756,7 @@ export default AbstractReportController.extend(LocationName, {
                 return;
             }
             reportRows.clear(); 
-            modalDialog.progressBarValue = 0;
-            modalDialog.progressBarStyle = 'width: 0%;';
-            this.set('timer', this.schedule(this.get('updateProgressBar')));
-            this.send('openModal', 'dialog', Ember.Object.create(modalDialog));
+            this.showProgressModal();
             switch (reportType) {
                 case 'expiration': {
                     this._generateExpirationReport();
