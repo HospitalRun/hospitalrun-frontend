@@ -17,7 +17,12 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
      * @param searchText string containing text to search for.
      */
     getQueryParams: function(searchText) {
+        var searchModel = this.get('searchModel');
         return {
+            options: {
+                startkey: searchModel +'_',
+                endkey: searchModel + '_\uffff'
+            },
             containsValue: {
                 value: searchText,
                 keys: this.searchKeys                            
@@ -29,6 +34,7 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         controller.set('hasRecords', (model.get('length') > 0));
         controller.set('model', model);
         controller.set('searchText', this.get('searchText'));
+        this.controllerFor('navigation').closeProgressModal();
         var parentController = this.controllerFor(this.get('moduleName'));
         var searchTitle = 'Search Results for <i>'+this.get('searchText')+'</i>';
         parentController.set('currentScreenTitle', searchTitle.htmlSafe());
