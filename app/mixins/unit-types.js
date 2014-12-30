@@ -1,18 +1,24 @@
 import Ember from "ember";
 export default Ember.Mixin.create({
     unitList: [
-        'Ampoule',
-        'Bag',
-        'Bottle',
-        'Box',
-        'Capsule',
-        'Case',
-        'Container',
-        'Each',
-        'Pair',
-        'Pallet',
-        'Pill',
-        'Tube',
-        'Vial'
+        'ampoule',
+        'bag',
+        'bottle',
+        'box',
+        'bundle',
+        'capsule',
+        'case',
+        'container',
+        'each',
+        'pack',        
+        'pair',
+        'pallet',
+        'pcs',
+        'pill',
+        'roll',
+        'set',
+        'tray',
+        'tube',
+        'vial'
     ]
 });
