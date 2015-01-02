@@ -33,6 +33,7 @@
   "resolutions": {
     "pouchdb": "~3.2.0",
     "moment": "~2.7.0",
-    "ember": "1.7.1"
+    "ember": "1.7.1",
+    "handlebars": "~1.3.0"
   }
 }
