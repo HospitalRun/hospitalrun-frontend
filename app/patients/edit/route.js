@@ -4,9 +4,10 @@ import PatientId from 'hospitalrun/mixins/patient-id';
 export default AbstractEditRoute.extend(PatientId, {
     editTitle: 'Edit Patient',
     modelName: 'patient',
+    maxValue: '\uffff',
     newTitle: 'New Patient',
     photos: null,
-    
+
     actions: {
         appointmentDeleted: function(model) {
             this.controller.send('appointmentDeleted', model);
@@ -44,22 +45,36 @@ export default AbstractEditRoute.extend(PatientId, {
     setupController: function(controller, model) {
         this._super(controller, model);
         //Load appointments, photos and visits asynchronously.
-        var promises = [],
+        var maxValue = this.get('maxValue'),
+            promises = [],
             patientId = 'patient_'+model.get('id');
-
+        
         promises.push(this.store.find('appointment', {
-            patient: patientId
-        }));            
-        promises.push(this.store.find('photo', {                
-            patient: patientId
+            options: {
+                startkey: [,, patientId, 'appointment_'],
+                endkey: [maxValue, maxValue, patientId, 'appointment_'+maxValue]
+            },
+            mapReduce: 'appointments_by_date'
+        }));
+        promises.push(this.store.find('photo', {
+            options: {
+                startkey: [patientId, 'photo_'],
+                endkey: [patientId, 'photo_'+maxValue]
+            },
+            mapReduce: 'photo_by_patient'
         }));
         promises.push(this.store.find('visit', {
-            patient: patientId
+            options: {
+                startkey: [,,, patientId, 'visit_'],
+                endkey: [maxValue, maxValue, maxValue, patientId, 'visit_'+maxValue]
+            },
+            mapReduce: 'visit_by_patient'
         }));
+        
         Ember.RSVP.all(promises, 'Retrieving patient child objects').then(function(records) {
             controller.set('appointments', records[0]);
             controller.set('photos', records[1]);
-            controller.set('visits', records[2]);                
+            controller.set('visits', records[2]);
         });
     }
     
