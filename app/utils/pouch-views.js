@@ -30,7 +30,7 @@ function appointmentsByDate(doc) {
                     startDate = startDate.getTime(); 
                 }
             }
-            emit([startDate, endDate, doc._id]);
+            emit([startDate, endDate, doc.patient, doc._id]);
         }
     }
 }
@@ -57,6 +57,17 @@ function imagingByStatus(doc) {
             }            
             emit([doc.status, requestedDate, imagingDate, doc._id]);
         }
+    }    
+}
+
+function inventoryByType(doc) {
+    var doctype,
+        uidx;
+    if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+        doctype = doc._id.substring(0, uidx);
+        if (doctype === 'inventory') {
+            emit([doc.type, doc._id]); 
+        }   
     }    
 }
 
@@ -164,12 +175,51 @@ function medicationByStatus(doc) {
     }    
 }
 
+function photoByPatient(doc) {
+    var doctype,
+        uidx;
+    if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+        doctype = doc._id.substring(0, uidx);
+        if (doctype === 'photo') {
+            emit([doc.patient, doc._id]); 
+        }   
+    }
+}
+
+function visitByPatient(doc) {
+    var doctype,
+        uidx;
+    if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+        doctype = doc._id.substring(0, uidx);
+        if(doctype === 'visit') {
+            var endDate = doc.endDate,
+                startDate = doc.startDate;
+            if (endDate && endDate !== '') {
+                endDate = new Date(endDate);
+                if (endDate.getTime) {
+                    endDate = endDate.getTime();
+                }
+            }
+            if (startDate && startDate !== '') {
+                startDate = new Date(startDate);
+                if (startDate.getTime) {
+                    startDate = startDate.getTime(); 
+                }
+            }
+            emit([startDate, endDate, doc.visitType, doc.patient, doc._id]);
+        }
+    }
+}
+    
 var designDocs = [{
     name: 'appointments_by_date',
     function: appointmentsByDate    
 }, {
     name: 'imaging_by_status',
     function: imagingByStatus
+}, {    
+    name: 'inventory_by_type',
+    function: inventoryByType
 }, {    
     name: 'inventory_purchase_by_date_received',
     function: inventoryPurchaseByDateReceived
@@ -185,6 +235,12 @@ var designDocs = [{
 }, {
     name: 'medication_by_status',
     function: medicationByStatus
+}, {
+    name: 'photo_by_patient',
+    function: photoByPatient
+}, {
+    name: 'visit_by_patient',
+    function: visitByPatient
 }];
 
 export default function(db) {
