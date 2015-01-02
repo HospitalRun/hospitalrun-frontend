@@ -18,10 +18,10 @@ export default AppointmentIndexRoute.extend({
         var endTime = startDate.add(1, 'y').endOf('day').toDate().getTime();
         return {
             options: {
-                startkey: [startOfDay,,,'appointment_'],
-                endkey: [endTime, endTime, 'patient_'+maxValue, 'appointment_'+maxValue]
+                startkey: ['patient_',startOfDay,,'appointment_'],
+                endkey: ['patient_'+maxValue, endTime, endTime, 'appointment_'+maxValue]
             },
-            mapReduce: 'appointments_by_date'
+            mapReduce: 'appointments_by_patient'
         };
     }
 });
