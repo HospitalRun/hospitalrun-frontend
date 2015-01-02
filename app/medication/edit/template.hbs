@@ -21,7 +21,7 @@
             <p class="form-control-static">{{inventoryItem.name}}</p>        
         </div>
     {{else}}
-        {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=inventoryItem }}
+        {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem }}
     {{/if}}
     <div class="row">
         {{em-input property="dose" label="Dose" class="col-xs-3"}}

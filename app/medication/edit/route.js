@@ -10,5 +10,20 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, {
             selectPatient: true,
             prescriptionDate: moment().startOf('day').toDate()
         };
+    },
+    
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        var inventoryQuery = {
+            startkey:  ['Medication','inventory_'],
+            endkey: ['Medication','inventory_\uffff'],
+            include_docs: true,
+        };
+        this.controllerFor('pouchdb').queryMainDB(inventoryQuery, 'inventory_by_type').then(function(result) {
+            var medicationList = result.rows.map(function(medication) {
+                return medication.doc;
+            });
+            controller.set('medicationList', medicationList);
+        });        
     }
 });

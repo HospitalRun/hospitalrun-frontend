@@ -4,7 +4,7 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from "hospitalrun/mixins/user-session";
 
 export default AbstractEditController.extend(PatientSubmodule, UserSession, {    
-    needs: 'medication',
+    needs: ['medication','pouchdb'],
 
     canFulfill: function() {
         return this.currentUserCan('fulfill_medication');
@@ -14,6 +14,19 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, {
         'Days',
         'Weeks'
     ],
+    
+    inventoryItemChanged: function() {
+        var selectedInventoryItem = this.get('selectedInventoryItem');
+        if (!Ember.isEmpty(selectedInventoryItem)) {
+            selectedInventoryItem.id = selectedInventoryItem._id.substr(10);
+            this.store.find('inventory', selectedInventoryItem._id.substr(10)).then(function(item) {
+                this.set('inventoryItem', item);
+                Ember.run.once(this, function(){
+                    this.get('model').validate();
+                });
+            }.bind(this));
+        }
+    }.observes('selectedInventoryItem'),
     
     isFulfilling: function() {
         var canFulfill = this.get('canFulfill'),
@@ -33,7 +46,7 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, {
         id: 'medication_frequency' //Id of the lookup list to update
     }],
 
-    medicationList: Ember.computed.alias('controllers.medication.medicationList'),
+    medicationList: [],
     medicationFrequencyList: Ember.computed.alias('controllers.medication.medicationFrequencyList'),
     patientList: Ember.computed.alias('controllers.medication.patientList'),
     visitList: Ember.computed.alias('controllers.medication.visitList'),
