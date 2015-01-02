@@ -50,11 +50,6 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
         },
         
         newRequest: function() {
-            var newId = this.generateId();
-            var data = this.getNewData();
-            if (newId) {
-                data.id = newId;
-            }
             var item = this.get('store').createRecord('inv-request', {
                 transactionType: 'Request'
             });            
