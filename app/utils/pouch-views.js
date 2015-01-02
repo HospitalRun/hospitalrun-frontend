@@ -10,7 +10,7 @@ function createDesignDoc(name, mapFunction) {
 }
 
 
-function appointmentsByDate(doc) {
+function appointmentsByPatient(doc) {
     var doctype,
         uidx;
     if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
@@ -30,7 +30,7 @@ function appointmentsByDate(doc) {
                     startDate = startDate.getTime(); 
                 }
             }
-            emit([startDate, endDate, doc.patient, doc._id]);
+            emit([doc.patient, startDate, endDate,doc._id]);
         }
     }
 }
@@ -206,14 +206,14 @@ function visitByPatient(doc) {
                     startDate = startDate.getTime(); 
                 }
             }
-            emit([startDate, endDate, doc.visitType, doc.patient, doc._id]);
+            emit([doc.patient, startDate, endDate, doc.visitType, doc._id]);
         }
     }
 }
     
 var designDocs = [{
-    name: 'appointments_by_date',
-    function: appointmentsByDate    
+    name: 'appointments_by_patient',
+    function: appointmentsByPatient    
 }, {
     name: 'imaging_by_status',
     function: imagingByStatus
