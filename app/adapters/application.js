@@ -54,6 +54,9 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
     _handleQueryResponse: function(resolve, response, store, type, options) {
         if (response.rows) {
             var data = Ember.A(response.rows).mapBy('doc');
+            if(Ember.isNone(options.embed)) {
+                options.embed = true;
+            }
             Ember.run(function(){
                 this._resolveRelationships(store, type, data, options).then(function(data){
                     Ember.run(null, resolve, data);

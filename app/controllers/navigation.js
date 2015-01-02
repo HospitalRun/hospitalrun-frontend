@@ -1,7 +1,9 @@
 import Ember from "ember";
+import ProgressDialog from "hospitalrun/mixins/progress-dialog";
 import UserSession from "hospitalrun/mixins/user-session";
-export default Ember.Controller.extend(UserSession,{
+export default Ember.Controller.extend(ProgressDialog, UserSession,{
     allowSearch: false,
+    progressTitle: 'Searching',
     searchRoute: null,
 
     showInventory: function() {
@@ -19,8 +21,10 @@ export default Ember.Controller.extend(UserSession,{
     actions: {
         search: function() {
             if (this.allowSearch && this.searchRoute) {
-                var textToFind = this.get('searchText');
-                this.set('searchText','');
+                var textToFind = this.get('searchText');                
+                this.set('searchText','');                
+                this.set('progressMessage','Searching for '+textToFind+'.  Please wait...');
+                this.showProgressModal();
                 this.transitionToRoute(this.searchRoute+"/"+textToFind);
             }
         }

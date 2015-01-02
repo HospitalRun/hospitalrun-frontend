@@ -1,7 +1,5 @@
-import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-export default AbstractIndexRoute.extend({
-    pageTitle: 'Completed',
-    model: function() {
-        return this.store.find('lab', {status: 'Completed'});
-    }
+import LabsIndexRoute from 'hospitalrun/labs/index/route';
+export default LabsIndexRoute.extend({
+    pageTitle: 'Completed Labs',
+    searchStatus: 'Completed'
 });

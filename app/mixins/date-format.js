@@ -7,5 +7,11 @@ export default Ember.Mixin.create({
         if (!Ember.isEmpty(value)) { 
             return moment(value).format(dateFormat); 
         }
+    },
+    
+    dateToTime: function(date) {
+        if (!Ember.isEmpty(date) && date.getTime) {
+            return date.getTime();             
+        }
     }
 });

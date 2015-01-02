@@ -1,7 +1,8 @@
 import AbstractModel from "hospitalrun/models/abstract";
+import DateFormat from "hospitalrun/mixins/date-format";
 import Ember from "ember";
 
-export default AbstractModel.extend({
+export default AbstractModel.extend(DateFormat, {
     dose: DS.attr('string'),
     duration: DS.attr('number'),
     durationType: DS.attr('string'),
@@ -12,10 +13,11 @@ export default AbstractModel.extend({
     prescriptionDate: DS.attr('date'),
     quantity: DS.attr('number'),
     refills: DS.attr('number'),
+    requestedDate: DS.attr('date'),
     requestedBy: DS.attr('string'),
     status: DS.attr('string'),
     visit: DS.belongsTo('visit'),
-    
+        
     prescription: function() {
         var dose = this.get('dose'),
             duration = this.get('duration'),
@@ -23,6 +25,14 @@ export default AbstractModel.extend({
             frequency = this.get('frequency');
         return '%@ %@ for %@ %@'.fmt(dose, frequency, duration, durationType);
     }.property('dose','duration','durationType', 'frequency'),
+    
+    prescriptionDateAsTime: function() {        
+        return this.dateToTime(this.get('prescriptionDate'));
+    }.property('prescriptionDate'),
+    
+    requestedDateAsTime: function() {
+        return this.dateToTime(this.get('requestedDate'));
+    }.property('requestedDate'),
     
     validations: {
         dose: {

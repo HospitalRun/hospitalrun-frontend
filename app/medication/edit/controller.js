@@ -53,6 +53,7 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, {
                     this.set('newMedication', true);
                     this.set('status', 'Requested');
                     this.set('requestedBy', newMedication.getUserName());
+                    this.set('requestedDate', new Date());
                     this.addChildToVisit(newMedication, 'medication', 'Pharmacy').then(function() {        
                         this.finishBeforeUpdate(isFulfilling,  resolve);
                     }.bind(this), reject);

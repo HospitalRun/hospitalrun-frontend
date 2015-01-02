@@ -1,10 +1,15 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-export default AbstractIndexRoute.extend({
+import Ember from 'ember';
+export default AbstractIndexRoute.extend({    
     modelName: 'inv-request',
     pageTitle: 'History',
     
     _getStartKeyFromItem: function(item) {
-        return ['Completed', 'inv-request_'+item.get('id')];
+        var dateCompleted = item.get('dateCompleted');
+        if (!Ember.isEmpty(dateCompleted)) {
+            dateCompleted = new Date(dateCompleted).getTime();
+        }
+        return ['Completed',dateCompleted,'inv-request_'+item.get('id')];
     },
     
     _modelQueryParams: function() {

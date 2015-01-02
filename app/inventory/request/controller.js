@@ -2,29 +2,39 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import Ember from "ember";
 
 export default AbstractEditController.extend({    
-    needs: 'inventory',
+    needs: ['inventory','pouchdb'],
     
     cancelAction: 'allRequests',
    
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
-
     expenseAccountList: Ember.computed.alias('controllers.inventory.expenseAccountList'),
-   
-    inventoryItems: Ember.computed.alias('controllers.inventory.model'),
     
     inventoryList: function() {
         var inventoryItems = this.get('inventoryItems');
-        return inventoryItems.filter(function(item) {
-            return item.get('type') !== 'Asset';
-        });
-    }.property('inventoryItems@each.lastModified'),
+        if (!Ember.isEmpty(inventoryItems)) {
+            var filteredItems = inventoryItems.filter(function(item) {
+                return item.doc.type !== 'Asset';
+            });
+            var mappedItems = filteredItems.map(function(item) {
+                return item.doc;
+            });
+            return mappedItems;
+        }
+    }.property('inventoryItems.[]'),
     
     inventoryItemChanged: function() {
-        Ember.run.once(this, function(){
-            this.get('model').validate();
-        });
-    }.observes('inventoryItem'),
+        var selectedInventoryItem = this.get('selectedInventoryItem');
+        if (!Ember.isEmpty(selectedInventoryItem)) {
+            selectedInventoryItem.id = selectedInventoryItem._id.substr(10);
+            this.store.find('inventory', selectedInventoryItem._id.substr(10)).then(function(item) {
+                this.set('inventoryItem', item);
+                Ember.run.once(this, function(){
+                    this.get('model').validate();
+                });
+            }.bind(this));
+        }
+    }.observes('selectedInventoryItem'),
     
     lookupListsToUpdate: [{
         name: 'expenseAccountList', //Name of property containing lookup list

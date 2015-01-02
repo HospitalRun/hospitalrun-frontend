@@ -37,11 +37,25 @@ function appointmentsByDate(doc) {
 
 function imagingByStatus(doc) {
     var doctype,
-        uidx;    
+        uidx;
     if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
         doctype = doc._id.substring(0, uidx);
         if(doctype === 'imaging') {
-            emit([doc.status, doc._id]);
+            var imagingDate = doc.imagingDate,
+                requestedDate = doc.requestedDate;
+            if (imagingDate && imagingDate !== '') {
+                imagingDate = new Date(imagingDate);
+                if (imagingDate.getTime) {
+                    imagingDate = imagingDate.getTime(); 
+                }
+            }
+            if (requestedDate && requestedDate !== '') {
+                requestedDate = new Date(requestedDate);
+                if (requestedDate.getTime) {
+                    requestedDate = requestedDate.getTime(); 
+                }
+            }            
+            emit([doc.status, requestedDate, imagingDate, doc._id]);
         }
     }    
 }
@@ -100,6 +114,56 @@ function inventoryRequestByStatus(doc) {
     }    
 }
 
+function labByStatus(doc) {
+    var doctype,
+        uidx;
+    if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+        doctype = doc._id.substring(0, uidx);
+        if(doctype === 'lab') {
+            var labDate = doc.labDate,
+                requestedDate = doc.requestedDate;            
+            if (labDate && labDate !== '') {
+                labDate = new Date(labDate);
+                if (labDate.getTime) {
+                    labDate = labDate.getTime(); 
+                }
+            }
+            if (requestedDate && requestedDate !== '') {
+                requestedDate = new Date(requestedDate);
+                if (requestedDate.getTime) {
+                    requestedDate = requestedDate.getTime(); 
+                }
+            }                 
+            emit([doc.status, requestedDate, labDate, doc._id]);
+        }
+    }    
+}
+
+function medicationByStatus(doc) {
+    var doctype,
+        uidx;    
+    if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+        doctype = doc._id.substring(0, uidx);
+        if(doctype === 'medication') {
+            var prescriptionDate = doc.prescriptionDate,
+                requestedDate = doc.requestedDate;
+            if (prescriptionDate && prescriptionDate !== '') {
+                prescriptionDate = new Date(prescriptionDate);
+                if (prescriptionDate.getTime) {
+                    prescriptionDate = prescriptionDate.getTime(); 
+                }
+            }
+            if (requestedDate && requestedDate !== '') {
+                requestedDate = new Date(requestedDate);
+                if (requestedDate.getTime) {
+                    requestedDate = requestedDate.getTime(); 
+                }
+            }              
+            emit([doc.status, requestedDate, prescriptionDate, doc._id]);
+        }
+    }    
+}
+
 var designDocs = [{
     name: 'appointments_by_date',
     function: appointmentsByDate    
@@ -114,7 +178,13 @@ var designDocs = [{
     function: inventoryPurchaseByExpirationDate
 }, {
     name: 'inventory_request_by_status',
-    function: inventoryRequestByStatus
+    function: inventoryRequestByStatus    
+}, {
+    name: 'lab_by_status',
+    function: labByStatus
+}, {
+    name: 'medication_by_status',
+    function: medicationByStatus
 }];
 
 export default function(db) {

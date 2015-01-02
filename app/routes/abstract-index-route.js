@@ -2,12 +2,20 @@ import Ember from "ember";
 export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     firstKey: null,
     hideNewButton: false,
-    itemsPerPage: 2,    
-    modelName: null,    
+    itemsPerPage: 2,
+    maxValue: '\uffff',
+    modelName: null,
     newButtonAction: null,
     newButtonText: null,
     nextStartKey: null,
-    pageTitle: null,    
+    pageTitle: null,
+    
+    keyPrefix: function() {
+        var modelName = this.get('modelName');
+        if (!Ember.isEmpty(modelName)) {
+            return modelName + '_';
+        }
+    }.property('modelName'),
     
     _getStartKeyFromItem: function(item) {
         var modelName = this.get('modelName');
