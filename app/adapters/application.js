@@ -124,15 +124,17 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
                             db.query(mapReduce, queryParams, function(err, response) {
                                 if (err) {
                                     this._pouchError(reject)(err);
+                                } else {
+                                    this._handleQueryResponse(resolve, response, store, type, options);
                                 }
-                                this._handleQueryResponse(resolve, response, store, type, options);
                             }.bind(this));
                         } else {
                             db.allDocs(queryParams, function(err, response) {
                                 if (err) {
                                     this._pouchError(reject)(err);
+                                } else {
+                                    this._handleQueryResponse(resolve, response, store, type, options);
                                 }
-                                this._handleQueryResponse(resolve, response, store, type, options);
                             }.bind(this));
                         }
                     } catch (err){
