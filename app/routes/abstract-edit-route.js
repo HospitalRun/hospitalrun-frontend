@@ -12,11 +12,11 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     
     /**
      * Override this function to generate an id for a new record
-     * @return a generated id;default is null which means that an
+     * @return a promise that will resolved to a generated id;default is null which means that an
      * id will be automatically generated via Ember data.
      */
     generateId: function() {
-        return null;                
+        return Ember.RSVP.resolve(null);
     },
 
     /**
@@ -30,12 +30,20 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     model: function(params) {
         var idParam = this.get('idParam');
         if (!Ember.isEmpty(idParam) && params[idParam] === 'new') {
-            var newId = this.generateId();
-            var data = this.getNewData();
-                if (newId) {
-                    data.id = newId;
-                }
-            return this.get('store').createRecord(this.get('modelName'), data);            
+            return new Ember.RSVP.Promise(function(resolve) {
+                this.generateId().then(function(newId) {
+                    var data = this.getNewData(),
+                        modelName = this.get('modelName');
+                        if (newId) {
+                            data.id = newId;
+                        }
+                    if (newId && this.store.hasRecordForId(modelName, newId)) {
+                        resolve(this.store.push(modelName, data));
+                    } else {
+                        resolve(this.store.createRecord(modelName, data));
+                    }
+                }.bind(this));
+            }.bind(this));
         } else {
             return this._super(params);
         }
