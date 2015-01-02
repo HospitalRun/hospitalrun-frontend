@@ -19,16 +19,17 @@ export default AbstractIndexRoute.extend({
                 startDate = startDate.getTime(); 
             }
         }
-        return [startDate, endDate, item.get('id')];
+        return [startDate, endDate, 'patient_'+item.get('patient.id'), 'appointment_'+item.get('id')];
     },
 
     _modelQueryParams: function() {
         var endOfWeek = moment().endOf('week').toDate().getTime(),
+            maxValue = this.get('maxValue'),
             startOfWeek = moment().startOf('week').toDate().getTime();
         return {
             options: {
-                startkey: [startOfWeek,,],
-                endkey: [endOfWeek, endOfWeek,'appointment_\uffff']
+                startkey: [startOfWeek,,,'appointment_'],
+                endkey: [endOfWeek, endOfWeek, 'patient_'+maxValue, 'appointment_'+maxValue]
             },
             mapReduce: 'appointments_by_date'
         };

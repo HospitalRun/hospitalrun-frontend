@@ -7,6 +7,7 @@ export default AppointmentIndexRoute.extend({
     
     _modelQueryParams: function(params) {
         var startDate,
+            maxValue = this.get('maxValue'),
             startKey = params.startKey;
         if (Ember.isEmpty(startKey)) {
             startDate = moment();
@@ -17,8 +18,8 @@ export default AppointmentIndexRoute.extend({
         var endTime = startDate.add(1, 'y').endOf('day').toDate().getTime();
         return {
             options: {
-                startkey: [startOfDay,,],
-                endkey: [endTime,endTime,'appointment_\uffff']
+                startkey: [startOfDay,,,'appointment_'],
+                endkey: [endTime, endTime, 'patient_'+maxValue, 'appointment_'+maxValue]
             },
             mapReduce: 'appointments_by_date'
         };
