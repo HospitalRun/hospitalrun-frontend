@@ -51,10 +51,10 @@ export default AbstractEditRoute.extend(PatientId, {
         
         promises.push(this.store.find('appointment', {
             options: {
-                startkey: [,, patientId, 'appointment_'],
-                endkey: [maxValue, maxValue, patientId, 'appointment_'+maxValue]
+                startkey: [patientId,,, 'appointment_'],
+                endkey: [patientId, maxValue, maxValue, 'appointment_'+maxValue]
             },
-            mapReduce: 'appointments_by_date'
+            mapReduce: 'appointments_by_patient'
         }));
         promises.push(this.store.find('photo', {
             options: {
@@ -65,8 +65,8 @@ export default AbstractEditRoute.extend(PatientId, {
         }));
         promises.push(this.store.find('visit', {
             options: {
-                startkey: [,,, patientId, 'visit_'],
-                endkey: [maxValue, maxValue, maxValue, patientId, 'visit_'+maxValue]
+                startkey: [patientId,,,,'visit_'],
+                endkey: [patientId, maxValue, maxValue, maxValue, 'visit_'+maxValue]
             },
             mapReduce: 'visit_by_patient'
         }));
