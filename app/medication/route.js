@@ -5,10 +5,7 @@ export default AbstractModuleRoute.extend({
     newButtonText: '+ new request',
     sectionTitle: 'Medication',
 
-    additionalModels: [{ 
-        name: 'medicationList',
-        findArgs: ['inventory',{type: 'Medication'}]
-    },  {
+    additionalModels: [{
         name: 'patientList',
         findArgs: ['patient']
     }, {

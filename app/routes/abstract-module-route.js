@@ -110,11 +110,11 @@ export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRou
     
     /**
      * Override this function to generate an id for a new record
-     * @return a generated id;default is null which means that an
+     * @return a promise that will resolved to a generated id;default is null which means that an
      * id will be automatically generated via Ember data.
      */
     generateId: function() {
-        return null;                
+        return Ember.RSVP.resolve(null);                
     },
 
     /**
