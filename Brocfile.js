@@ -6,7 +6,12 @@ var writeManifest = require('broccoli-manifest');
 var fileRemover = require('broccoli-file-remover');
 
 var app = new EmberApp({     
-  es3Safe: false
+    es3Safe: false,
+    vendorFiles: {
+        'handlebars.js': {
+            production: 'bower_components/handlebars/handlebars.js'
+        }
+    }  
 });
 
 // Use `app.import` to add additional libraries to the generated
