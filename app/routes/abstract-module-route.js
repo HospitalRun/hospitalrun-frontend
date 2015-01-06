@@ -131,9 +131,11 @@ export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRou
                 var promises = this.additionalModels.map(function(modelMap) {
                     return this.store.find.apply(this.store, modelMap.findArgs);
                 }.bind(this));
-                Ember.RSVP.all(promises,'All additional Models for'+this.get('moduleName')).then(function(array){
+                Ember.RSVP.allSettled(promises,'All additional Models for'+this.get('moduleName')).then(function(array){
                     array.forEach(function(item, index) {
-                        this.set(this.additionalModels[index].name, item);
+                        if (item.state === 'fulfilled') {
+                            this.set(this.additionalModels[index].name, item.value);
+                        }
                     }.bind(this));
                     resolve();
                 }.bind(this), reject);
