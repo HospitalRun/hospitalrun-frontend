@@ -10,6 +10,31 @@ function createDesignDoc(name, mapFunction) {
 }
 
 
+function appointmentsByDate(doc) {
+    var doctype,
+        uidx;
+    if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+        doctype = doc._id.substring(0, uidx);
+        if(doctype === 'appointment') {
+            var endDate = doc.endDate,
+                startDate = doc.startDate;
+            if (endDate && endDate !== '') {
+                endDate = new Date(endDate);
+                if (endDate.getTime) {
+                    endDate = endDate.getTime();
+                }
+            }
+            if (startDate && startDate !== '') {
+                startDate = new Date(startDate);
+                if (startDate.getTime) {
+                    startDate = startDate.getTime(); 
+                }
+            }
+            emit([startDate, endDate, doc._id]);
+        }
+    }
+}
+
 function appointmentsByPatient(doc) {
     var doctype,
         uidx;
@@ -212,6 +237,9 @@ function visitByPatient(doc) {
 }
     
 var designDocs = [{
+    name: 'appointments_by_date',
+    function: appointmentsByDate    
+}, {
     name: 'appointments_by_patient',
     function: appointmentsByPatient    
 }, {
