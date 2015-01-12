@@ -2,8 +2,9 @@ import AbstractModel from "hospitalrun/models/abstract";
 import DOBDays from 'hospitalrun/mixins/dob-days';
 import EmailValidation from "hospitalrun/utils/email-validation";
 import Ember from "ember";
+import PatientName from 'hospitalrun/mixins/patient-name';
 
-export default AbstractModel.extend(DOBDays, {
+export default AbstractModel.extend(DOBDays, PatientName, {
     additionalContacts: DS.attr(),
     additionalData: DS.attr(), //Additional data will be used to store custom data per install.
     address: DS.attr('string'),
@@ -38,19 +39,7 @@ export default AbstractModel.extend(DOBDays, {
     }.property('dateOfBirth'),
 
     displayName: function() {
-        var firstName = this.get('firstName'),
-            lastName = this.get('lastName'),
-            returnName = '';
-        if (!Ember.isEmpty(firstName)) {
-            returnName += firstName;
-        }
-        if (!Ember.isEmpty(returnName) && !Ember.isEmpty(lastName)) {
-            returnName += ' ';
-        }
-        if (!Ember.isEmpty(lastName)) {
-            returnName += lastName;
-        }        
-        return returnName;
+        return this.getPatientDisplayName(this);
     }.property('firstName', 'lastName'),
     
     displayPatientId: function() {
