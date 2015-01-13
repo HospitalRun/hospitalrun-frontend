@@ -48,8 +48,6 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, {
 
     medicationList: [],
     medicationFrequencyList: Ember.computed.alias('controllers.medication.medicationFrequencyList'),
-    patientList: Ember.computed.alias('controllers.medication.patientList'),
-    visitList: Ember.computed.alias('controllers.medication.visitList'),
     updateCapability: 'add_medication',
 
     afterUpdate: function() {

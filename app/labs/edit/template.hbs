@@ -1,7 +1,7 @@
 {{#em-form model=this submit_button=false }}
     <div class="row">
         {{#if selectPatient}}
-            {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=patient class="col-xs-3"}}
+            {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-3"}}
         {{else}}
             <div class="form-group col-xs-3">
                 <label>Patient</label>

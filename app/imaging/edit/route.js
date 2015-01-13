@@ -1,5 +1,6 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-export default AbstractEditRoute.extend({
+import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
+export default AbstractEditRoute.extend(PatientListRoute, {
     editTitle: 'Edit Imaging Request',
     modelName: 'imaging',
     newTitle: 'New Imaging Request',

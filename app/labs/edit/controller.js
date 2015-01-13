@@ -3,7 +3,7 @@ import Ember from "ember";
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(PatientSubmodule, {
-    needs: 'labs',
+    needs: ['labs','pouchdb'],
 
     lookupListsToUpdate: [{
         name: 'labTypesList', //Name of property containing lookup list
@@ -12,9 +12,6 @@ export default AbstractEditController.extend(PatientSubmodule, {
     }],
 
     labTypesList: Ember.computed.alias('controllers.labs.labTypesList'),
-    patientList: Ember.computed.alias('controllers.labs.patientList'),
-    visitList: Ember.computed.alias('controllers.labs.visitList'),
-
     updateCapability: 'add_lab',
 
     afterUpdate: function() {

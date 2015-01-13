@@ -7,7 +7,7 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 export default AbstractEditController.extend(PatientSubmodule, UserSession, VisitTypes, {
     needs: 'visits',
-    
+
     canAddImaging: function() {
         return this.currentUserCan('add_imaging');
     }.property(),    
@@ -59,6 +59,7 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
     
     cancelAction: 'returnToPatient',
     clinicList: Ember.computed.alias('controllers.visits.clinicList'),
+    findPatientVisits: false,
     physicianList: Ember.computed.alias('controllers.visits.physicianList'),
     locationList: Ember.computed.alias('controllers.visits.locationList'),
     lookupListsToUpdate: [{

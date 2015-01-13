@@ -3,7 +3,7 @@ import Ember from "ember";
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(PatientSubmodule, {
-    needs: 'imaging',
+    needs: ['imaging','pouchdb'],
 
     lookupListsToUpdate: [{
         name: 'imagingTypesList', //Name of property containing lookup list
@@ -11,10 +11,7 @@ export default AbstractEditController.extend(PatientSubmodule, {
         id: 'imaging_types' //Id of the lookup list to update
     }],
 
-    imagingTypesList: Ember.computed.alias('controllers.imaging.imagingTypesList'),
-    patientList: Ember.computed.alias('controllers.imaging.patientList'),    
-    visitList: Ember.computed.alias('controllers.imaging.visitList'),
-    
+    imagingTypesList: Ember.computed.alias('controllers.imaging.imagingTypesList'),    
     updateCapability: 'add_imaging',
 
     afterUpdate: function() {
