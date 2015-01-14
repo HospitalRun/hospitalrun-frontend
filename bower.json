@@ -4,7 +4,7 @@
     "handlebars": "~1.3.0",
     "jquery": "^1.11.1",
     "ember": "1.7.1",
-    "ember-data": "1.0.0-beta.7",
+    "ember-data": "http://builds.emberjs.com.s3.amazonaws.com/canary/shas/488b93dcb19024a272c9bed3e18425ebc2a47fa8/ember-data.js",
     "ember-resolver": "~0.1.10",
     "loader.js": "stefanpenner/loader.js#1.0.1",
     "ember-cli-shims": "stefanpenner/ember-cli-shims#0.0.3",
@@ -28,11 +28,14 @@
     "octicons": "~2.1.2",
     "idb.filesystem": "https://github.com/ebidel/idb.filesystem.js.git",
     "node-uuid": "https://github.com/broofa/node-uuid.git",
-    "filer.js": "https://github.com/ebidel/filer.js.git#~0.4.3"
+    "filer.js": "https://github.com/ebidel/filer.js.git#~0.4.3",
+    "pouchdb-quick-search": "~1.0.1"
   },
   "resolutions": {
     "pouchdb": "~3.2.0",
     "moment": "~2.7.0",
-    "ember": "1.7.1"
+    "ember": "1.7.1",
+    "ember-data": "1.0.0-beta.7",
+    "handlebars": "~1.3.0"
   }
 }
