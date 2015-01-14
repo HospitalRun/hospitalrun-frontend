@@ -45,7 +45,10 @@ export default AbstractModel.extend({
             numericality: {
                 allowBlank: true
             }
-        }
+        },
+        type: {
+            presence: true,
+        },
     },
 
     updateQuantity: function() {

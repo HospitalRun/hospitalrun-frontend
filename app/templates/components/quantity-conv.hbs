@@ -1,7 +1,7 @@
 {{#unless firstQuantity}}
     <div class="row">
         <div class="col-xs-5">
-            <div {{bind-attr class=":form-group quantityClass"}}>
+            <div {{bind-attr class=":form-group :required quantityClass"}}>
                 <label class="control-label">What does 1 {{unitName}} contain?</label>
             </div>
         </div>
@@ -9,7 +9,7 @@
 {{/unless}}
 <div class="row">
     <div class="col-xs-3">
-        <div {{bind-attr class=":form-group quantityClass"}}>
+        <div {{bind-attr class=":form-group :required quantityClass"}}>
             {{#if firstQuantity}}
                 <label class="control-label">Quantity</label>
             {{/if}}
@@ -20,7 +20,7 @@
     
     
     <div class="col-xs-3">
-        <div {{bind-attr class=":form-group quantityClass"}}>
+        <div {{bind-attr class=":form-group  :required quantityClass"}}>
             {{#if firstQuantity}}
                 <label class="control-label">Unit</label>
             {{/if}}            
