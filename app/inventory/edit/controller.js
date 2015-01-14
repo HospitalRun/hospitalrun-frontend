@@ -6,8 +6,8 @@ import UnitTypes from "hospitalrun/mixins/unit-types";
 import UserSession from "hospitalrun/mixins/user-session";
 
 export default AbstractEditController.extend(InventoryLocations, InventoryTypeList, UnitTypes, UserSession, {
-    needs: 'inventory',
-
+    needs: ['inventory','pouchdb'],
+    
     canAddPurchase: function() {        
         return this.currentUserCan('add_inventory_purchase');
     }.property(),
@@ -23,6 +23,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
     inventoryTypeList: Ember.computed.alias('controllers.inventory.inventoryTypeList.value'),
+    pouchdbController: Ember.computed.alias('controllers.pouchdb'),
     
     lookupListsToUpdate: [{
         name: 'aisleLocationList', //Name of property containing lookup list
@@ -267,18 +268,18 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         }.bind(this));
     },
     
-    _findSequenceByPrefix: function(type, prefixChars) {        
-        return this.store.find('sequence', {
-            keyValues: {
-                prefix: type.toLowerCase().substr(0,prefixChars)
-            }
-        });
+    _findSequenceByPrefix: function(type, prefixChars) {  
+        var pouchdbController = this.get('pouchdbController');
+        var sequenceQuery = {
+            key:  type.toLowerCase().substr(0,prefixChars)            
+        };
+        return pouchdbController.queryMainDB(sequenceQuery, 'sequence_by_prefix');
     },    
     
     _checkNextSequence: function(resolve, type, prefixChars) {
         prefixChars++;
         this._findSequenceByPrefix(type, prefixChars).then(function(records) {
-            if (Ember.isEmpty(records)) {
+            if (Ember.isEmpty(records.rows)) {
                 resolve(prefixChars);
             } else {
                 this._checkNextSequence(resolve, type, prefixChars);
