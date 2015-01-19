@@ -1,10 +1,11 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from "ember";
+import Ember from 'ember';
+import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
-export default AbstractEditController.extend({
+export default AbstractEditController.extend(PatientSubmodule, {
     needs: ['visits','visits/edit'],
-    
-    cancelAction: 'closeModal',
+        
+    cancelAction: 'returnToVisit',
     
     physicianList: Ember.computed.alias('controllers.visits.physicianList'),
     lookupListsToUpdate: [{
@@ -17,7 +18,8 @@ export default AbstractEditController.extend({
         id: 'physician_list'
     }],
     
-    editController: Ember.computed.alias('controllers.visits/edit'),    
+    editController: Ember.computed.alias('controllers.visits/edit'),
+    visitProcedures: Ember.computed.alias('visit.procedures'),
     
     newProcedure: false,
     
@@ -43,10 +45,14 @@ export default AbstractEditController.extend({
     },
     
     afterUpdate: function(procedure) {
-        if (this.get('newProcedure')) {            
-            this.get('editController').send('addProcedure',procedure);
+        if (this.get('newProcedure')) {
+            this.get('visitProcedures').then(function(list) {
+                list.addObject(procedure);
+                this.get('editController').send('update');
+                this.send('returnToVisit');
+            }.bind(this));            
         } else {
-            this.send('closeModal');
+            this.send('returnToVisit');
         }
     }
 });

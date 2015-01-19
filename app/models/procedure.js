@@ -8,6 +8,7 @@ export default AbstractModel.extend({
     physician: DS.attr('string'),
     assistant: DS.attr('string'),
     notes: DS.attr('string'),
+    visit: DS.belongsTo('visit'),
     
     validations: {
         description: {

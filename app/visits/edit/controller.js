@@ -134,10 +134,6 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
             this.send('update', true);
         },        
         
-        addProcedure: function(newProcedure) {
-            this.updateList('procedures', newProcedure);
-        },
-        
         addVitals: function(newVitals) {
             this.updateList('vitals', newVitals);
         },
@@ -224,9 +220,10 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
         
         showAddProcedure: function() {
             var newProcedure = this.get('store').createRecord('procedure', {
-                dateRecorded: new Date()
+                dateRecorded: new Date(),
+                visit: this.get('model'),
             });
-            this.send('openModal', 'visits.procedures.edit', newProcedure);
+            this.transitionToRoute('procedures.edit', newProcedure);
         },
 
         showDeleteImaging: function(imaging) {
@@ -250,7 +247,10 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
         },
 
         showEditProcedure: function(procedure) {
-            this.send('openModal', 'visits.procedures.edit', procedure);
+            if (Ember.isEmpty(procedure.get('visit'))) {
+                procedure.set('visit', this.get('model'));
+            }
+            this.transitionToRoute('procedures.edit', procedure);
         },
         
         showEditVitals: function(vitals) {
