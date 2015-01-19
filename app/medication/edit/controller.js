@@ -1,9 +1,10 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from "ember";
+import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from "hospitalrun/mixins/user-session";
 
-export default AbstractEditController.extend(PatientSubmodule, UserSession, {    
+export default AbstractEditController.extend(InventorySelection, PatientSubmodule, UserSession, {    
     needs: ['medication','pouchdb'],
 
     canFulfill: function() {
@@ -14,19 +15,6 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, {
         'Days',
         'Weeks'
     ],
-    
-    inventoryItemChanged: function() {
-        var selectedInventoryItem = this.get('selectedInventoryItem');
-        if (!Ember.isEmpty(selectedInventoryItem)) {
-            selectedInventoryItem.id = selectedInventoryItem._id.substr(10);
-            this.store.find('inventory', selectedInventoryItem._id.substr(10)).then(function(item) {
-                this.set('inventoryItem', item);
-                Ember.run.once(this, function(){
-                    this.get('model').validate();
-                });
-            }.bind(this));
-        }
-    }.observes('selectedInventoryItem'),
     
     isFulfilling: function() {
         var canFulfill = this.get('canFulfill'),

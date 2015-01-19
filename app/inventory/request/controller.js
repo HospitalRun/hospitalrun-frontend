@@ -1,7 +1,8 @@
-import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
-import Ember from "ember";
+import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import InventorySelection from 'hospitalrun/mixins/inventory-selection';
+import Ember from 'ember';
 
-export default AbstractEditController.extend({    
+export default AbstractEditController.extend(InventorySelection, {    
     needs: ['inventory','pouchdb'],
     
     cancelAction: 'allRequests',
@@ -22,19 +23,6 @@ export default AbstractEditController.extend({
             return mappedItems;
         }
     }.property('inventoryItems.[]'),
-    
-    inventoryItemChanged: function() {
-        var selectedInventoryItem = this.get('selectedInventoryItem');
-        if (!Ember.isEmpty(selectedInventoryItem)) {
-            selectedInventoryItem.id = selectedInventoryItem._id.substr(10);
-            this.store.find('inventory', selectedInventoryItem._id.substr(10)).then(function(item) {
-                this.set('inventoryItem', item);
-                Ember.run.once(this, function(){
-                    this.get('model').validate();
-                });
-            }.bind(this));
-        }
-    }.observes('selectedInventoryItem'),
     
     lookupListsToUpdate: [{
         name: 'expenseAccountList', //Name of property containing lookup list
