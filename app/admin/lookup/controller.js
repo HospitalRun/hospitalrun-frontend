@@ -16,6 +16,12 @@ export default Ember.ArrayController.extend(InventoryTypeList, {
             patient: 'country'
         }
     }, {
+        name: 'Equipment List',
+        value: 'equipment_list',
+        models: {
+            procedure: 'equipmentUsed'
+        }
+    }, {
         name: 'Expense Accounts',
         value: 'expense_account_list',
         models: {
@@ -83,7 +89,11 @@ export default Ember.ArrayController.extend(InventoryTypeList, {
         }
     }, {
         name: 'Visit Locations',
-        value: 'visit_location_list'
+        value: 'visit_location_list',
+        models: {
+            appointment: 'location',
+            visit: 'location',            
+        }
     }],
     
     lookupTitle: function() {
