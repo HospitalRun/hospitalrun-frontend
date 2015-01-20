@@ -9,6 +9,8 @@ export default AbstractModel.extend({
     assistant: DS.attr('string'),
     notes: DS.attr('string'),
     visit: DS.belongsTo('visit'),
+    equipmentUsed: DS.attr(), //Array of items
+    itemsConsumed: DS.hasMany('consumable'),
     
     validations: {
         description: {

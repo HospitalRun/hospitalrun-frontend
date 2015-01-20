@@ -5,6 +5,9 @@ export default AbstractModuleRoute.extend({
         name: 'clinicList',
         findArgs: ['lookup','clinic_list']
     }, { 
+        name: 'equipmentList',
+        findArgs: ['lookup','equipment_list']
+    }, { 
         name: 'physicianList',
         findArgs: ['lookup','physician_list']
     },  {

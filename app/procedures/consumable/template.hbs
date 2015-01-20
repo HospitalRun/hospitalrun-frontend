@@ -1,0 +1,11 @@
+{{#em-form model=this submit_button=false }}
+    {{#if isNew}}
+        {{inventory-typeahead property="inventoryItemTypeAhead" label="Item" content=inventoryList selection=selectedInventoryItem }}
+    {{else}}
+        <div class="form-group">
+        <label class="control-label">Item</label>
+            <p class="form-control-static">{{inventoryItem.name}}</p>
+        </div>
+    {{/if}}    
+    {{em-input label="Quantity" property="quantity"}}
+{{/em-form}}
