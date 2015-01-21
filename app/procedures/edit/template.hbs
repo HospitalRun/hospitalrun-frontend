@@ -1,5 +1,5 @@
 {{#em-form model=this submit_button=false }}
-    {{icd10-pcs-typeahead property="description" label="Procedure" selection=billingId class="required col-sm-6"}}
+    {{icd10-pcs-typeahead property="description" label="Procedure" selection=billingId class="required"}}
     <div class="row">
         {{select-or-typeahead class="col-sm-3" property="location"
             label="Procedure Location" list=procedureLocations
