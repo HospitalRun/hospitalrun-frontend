@@ -3,6 +3,18 @@ import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 export default Ember.ArrayController.extend(InventoryTypeList, {
     lookupType: null,
     lookupTypes: [{
+        name: 'Anesthesia Types',
+        value: 'anesthesia_types',        
+        model: {        
+            procedure: 'anesthesiaType'
+        }
+    }, {
+        name: 'Anesthesiologists',
+        value: 'anesthesiologists',
+        model: {
+            procedure: 'anesthesiologist'
+        }
+    }, {
         name: 'Clinic Locations',
         value: 'clinic_list',
         models: { //Models that use this lookup -- use this later to update models on lookup changes
@@ -86,6 +98,12 @@ export default Ember.ArrayController.extend(InventoryTypeList, {
                 'assistant',
                 'physician'
             ]
+        }
+    }, {
+        name: 'Procedure Locations',
+        value: 'procedure_locations',
+        models: {
+            procedure: 'location'         
         }
     }, {
         name: 'Visit Locations',

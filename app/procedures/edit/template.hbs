@@ -1,16 +1,26 @@
 {{#em-form model=this submit_button=false }}
-    {{icd10-pcs-typeahead property="description" label="Procedure" selection=billingId }}
+    {{icd10-pcs-typeahead property="description" label="Procedure" selection=billingId class="required col-sm-6"}}
     <div class="row">
-        {{date-picker property="procedureDate" label="Procedure Date" class="col-sm-6"}}
+        {{select-or-typeahead class="col-sm-3" property="location"
+            label="Procedure Location" list=procedureLocations
+            selection=location
+        }}  
+        {{date-picker property="procedureDate" label="Procedure Date" class="col-sm-3 required"}}
+        {{em-input property="timeStarted" label="Time Started" class="col-sm-3"}}
+        {{em-input property="timeEnded" label="Time Ended" class="col-sm-3"}}
     </div>
     <div class="row">
-        {{select-or-typeahead class="col-sm-6" property="physician" 
+        {{select-or-typeahead class="col-sm-4 required" property="physician"
             label="Physician" list=physicianList
             selection=physician
         }}
-        {{select-or-typeahead class="col-sm-6" property="assistant" 
-            label="Assistant" list=physicianList 
+        {{select-or-typeahead class="col-sm-4" property="assistant"
+            label="Assistant" list=physicianList
             selection=assistant
+        }}
+        {{select-or-typeahead class="col-sm-4" property="anesthesiologist"
+            label="Anesthesiologist" list=anesthesiologistList
+            selection=anesthesiologist
         }}
     </div>
     {{em-text label="Notes" property="notes" rows=3 }}
@@ -35,7 +45,7 @@
                     <tr>
                         <td>
                             {{model}}
-                        </td>                        
+                        </td>
                         {{#if canDelete}}
                             <td>
                                 <button class="btn btn-default warning" {{action "showDeleteEquipment" model bubbles=false }}>
@@ -57,7 +67,7 @@
                 {{/if}}
             </h3>
         </div>
-        <div class="panel-body detail-section-content">        
+        <div class="panel-body detail-section-content">
             <table class="table">
                 <tr class="table-header">
                     <th>Item</th>

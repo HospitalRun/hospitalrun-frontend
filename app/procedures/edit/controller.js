@@ -10,20 +10,30 @@ export default AbstractEditController.extend(PatientSubmodule, {
         return this.currentUserCan('add_procedure');
     }.property(),
     
-    
+    anesthesiaTypes: Ember.computed.alias('controllers.visits.anesthesiaTypes'),
+    anesthesiologistList: Ember.computed.alias('controllers.visits.anesthesiologistList'),
     physicianList: Ember.computed.alias('controllers.visits.physicianList'),
+    procedureLocations: Ember.computed.alias('controllers.visits.procedureLocations'),
     lookupListsToUpdate: [{
-        name: 'equipmentList',
-        property: 'equipmentUsed',
-        id: 'equipment_list'
-    },{
+        name: 'anesthesiaTypes',
+        property: 'anesthesiaType',
+        id: 'anesthesia_types'
+    }, {
+        name: 'anesthesiologistList',
+        property: 'anesthesiologist',
+        id: 'anesthesiologists'
+    }, {
         name: 'physicianList',
         property: 'assistant',
         id: 'physician_list'
-    },{
+    }, {
         name: 'physicianList',
         property: 'physician',
         id: 'physician_list'
+    }, {
+        name: 'procedureLocations',
+        property: 'location',
+        id: 'procedure_locations'
     }],
     
     editController: Ember.computed.alias('controllers.visits/edit'),
