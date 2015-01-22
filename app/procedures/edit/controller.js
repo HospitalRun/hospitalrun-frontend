@@ -136,14 +136,16 @@ export default AbstractEditController.extend(PatientSubmodule, {
     },
     
     afterUpdate: function(procedure) {
+        var alertTitle = 'Procedure Saved',
+            alertMessage = 'The procedure record has been saved.';
         if (this.get('newProcedure')) {
             this.get('visitProcedures').then(function(list) {
                 list.addObject(procedure);
                 this.get('editController').send('update');
-                this.send('returnToVisit');
+                this.displayAlert(alertTitle, alertMessage);                
             }.bind(this));            
         } else {
-            this.send('returnToVisit');
+            this.displayAlert(alertTitle, alertMessage);
         }
     }
 });

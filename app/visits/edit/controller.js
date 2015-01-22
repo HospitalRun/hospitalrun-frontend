@@ -85,7 +85,7 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
     }.observes('primaryDiagnosisId'),
 
     afterUpdate: function() {
-        this.send('returnToPatient');        
+        this.displayAlert('Visit Saved', 'The visit record has been saved.');
     },
     
     beforeUpdate: function() {        
