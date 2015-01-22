@@ -552,13 +552,8 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
     },
     
     afterUpdate: function(record) {
-        this.send('openModal', 'dialog', Ember.Object.create({
-            title: 'Patient Saved',
-            message: 'The patient record for %@ has been saved.'.fmt(record.get('displayName')),
-            hideCancelButton: true,
-            updateButtonAction: 'ok',
-            updateButtonText: 'Ok'
-        }));
+        var message =  'The patient record for %@ has been saved.'.fmt(record.get('displayName'));
+        this.displayAlert('Patient Saved', message);        
     }
     
 });

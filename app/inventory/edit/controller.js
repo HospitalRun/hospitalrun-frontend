@@ -318,12 +318,6 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     },
     
     afterUpdate: function() {
-        this.send('openModal', 'dialog', Ember.Object.create({
-            title: 'Inventory Item Saved',
-            message: 'The inventory item has been saved.',
-            hideCancelButton: true,
-            updateButtonAction: 'ok',
-            updateButtonText: 'Ok'
-        }));
+        this.displayAlert('Inventory Item Saved','The inventory item has been saved.');
     }
 });

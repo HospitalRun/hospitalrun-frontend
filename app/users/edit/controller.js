@@ -38,13 +38,7 @@ export default AbstractEditController.extend(UserRoles, {
                 this.set('userPrefix', prefix);                
             }            
             updateModel.save().then(function() {
-                this.send('openModal', 'dialog', Ember.Object.create({
-                    title: 'User Saved',
-                    message: 'The user has been saved.',
-                    hideCancelButton: true,
-                    updateButtonAction: 'ok',
-                    updateButtonText: 'Ok'
-                }));
+                this.displayAlert('User Saved', 'The user has been saved.');                
             }.bind(this));
         }
     }
