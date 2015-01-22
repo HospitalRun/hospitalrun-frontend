@@ -11,6 +11,13 @@ export default AbstractEditController.extend(InventorySelection, {
     
     updateCapability: 'add_procedure',
 
+    updateName: function() {
+        var inventoryItem = this.get('inventoryItem');
+        if (!Ember.isEmpty(inventoryItem)) {
+            this.set('name', inventoryItem.get('name'));
+        }
+    }.observes('inventoryItem'),
+    
     title: function() {
         var isNew = this.get('isNew');
         if (isNew) {
