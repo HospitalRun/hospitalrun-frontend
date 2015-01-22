@@ -11,6 +11,8 @@ export default AbstractModel.extend({
     itemsConsumed: DS.hasMany('consumable'),
     location: DS.attr('string'),
     notes: DS.attr('string'),
+    oxygenHours: DS.attr('number'),
+    pacuHours: DS.attr('number'),
     physician: DS.attr('string'),
     procedureDate: DS.attr('date'),
     timeStarted: DS.attr('string'),
@@ -37,6 +39,16 @@ export default AbstractModel.extend({
                         }
                 }, 
                 message: 'Please select a valid procedure'         
+            }
+        },
+        oxygenHours: {
+            numericality: {
+                allowBlank: true
+            }                
+        },
+        pacuHours: {
+            numericality: {
+                allowBlank: true
             }
         },
         physician: {
