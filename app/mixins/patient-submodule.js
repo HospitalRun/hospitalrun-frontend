@@ -1,5 +1,7 @@
 import Ember from "ember";
 export default Ember.Mixin.create({
+    findPatientVisits: true, //Override to false if visits shouldn't be set when patient is selected.
+    
     actions: {
         returnToPatient: function() {
             this.transitionToRoute('patients.edit', this.get('returnPatientId'));
@@ -61,21 +63,39 @@ export default Ember.Mixin.create({
     
     patientId: Ember.computed.alias('patient.id'),
     
+    patientChanged: function() {
+        var maxValue = '\uffff',
+            selectedPatient = this.get('selectedPatient');
+        
+        if (!Ember.isEmpty(selectedPatient)) {
+            this.store.find('patient', selectedPatient.id).then(function(item) {
+                this.set('patient', item);
+                Ember.run.once(this, function(){
+                    this.get('model').validate();
+                });                
+                if (this.get('findPatientVisits')) {
+                    this.store.find('visit', {
+                        options: {
+                            startkey: [selectedPatient._id,,,,'visit_'],
+                            endkey: [selectedPatient._id, maxValue, maxValue, maxValue, 'visit_'+maxValue]
+                        },
+                        mapReduce: 'visit_by_patient'
+                    }).then(function(visits) {
+                        this.set('patientVisits',visits);
+                    }.bind(this));
+                }
+            }.bind(this));
+        }
+    }.observes('selectedPatient'),
+
     patientIdChanged: function() {
         var patientId = this.get('patientId');
         if (!Ember.isEmpty(patientId)) {
             this.set('returnPatientId', patientId);
         }
-    }.observes('patientId').on('init'),
+    }.observes('patientId').on('init'),        
     
-    patientVisits: function() {
-        var patientId = this.get('patientId'),
-            visitList = this.get('visitList');    
-        if (!Ember.isEmpty(visitList)) {
-            return visitList.filterBy('patient.id', patientId);
-        }
-    }.property('patientId'),
-    
+    patientVisits: [],
     returnPatientId: null,
     returnVisitId: null,    
     

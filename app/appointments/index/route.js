@@ -19,7 +19,7 @@ export default AbstractIndexRoute.extend({
                 startDate = startDate.getTime(); 
             }
         }
-        return ['patient_'+item.get('patient.id'), startDate, endDate, 'appointment_'+item.get('id')];
+        return [startDate, endDate, 'appointment_'+item.get('id')];
     },
 
     _modelQueryParams: function() {
@@ -28,10 +28,10 @@ export default AbstractIndexRoute.extend({
             startOfWeek = moment().startOf('week').toDate().getTime();
         return {
             options: {
-                startkey: ['patient_', startOfWeek,,'appointment_'],
-                endkey: ['patient_'+maxValue, endOfWeek, endOfWeek, 'appointment_'+maxValue]
+                startkey: [startOfWeek,,],
+                endkey: [endOfWeek, endOfWeek, 'appointment_'+maxValue]
             },
-            mapReduce: 'appointments_by_patient'
+            mapReduce: 'appointments_by_date'
         };
     },
     

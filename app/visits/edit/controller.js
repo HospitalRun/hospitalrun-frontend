@@ -7,7 +7,7 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 export default AbstractEditController.extend(PatientSubmodule, UserSession, VisitTypes, {
     needs: 'visits',
-    
+
     canAddImaging: function() {
         return this.currentUserCan('add_imaging');
     }.property(),    
@@ -59,6 +59,7 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
     
     cancelAction: 'returnToPatient',
     clinicList: Ember.computed.alias('controllers.visits.clinicList'),
+    findPatientVisits: false,
     physicianList: Ember.computed.alias('controllers.visits.physicianList'),
     locationList: Ember.computed.alias('controllers.visits.locationList'),
     lookupListsToUpdate: [{
@@ -84,7 +85,7 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
     }.observes('primaryDiagnosisId'),
 
     afterUpdate: function() {
-        this.send('returnToPatient');        
+        this.displayAlert('Visit Saved', 'The visit record has been saved.');
     },
     
     beforeUpdate: function() {        
@@ -132,10 +133,6 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
             this.set('additionalDiagnoses', additionalDiagnoses);
             this.send('update', true);
         },        
-        
-        addProcedure: function(newProcedure) {
-            this.updateList('procedures', newProcedure);
-        },
         
         addVitals: function(newVitals) {
             this.updateList('vitals', newVitals);
@@ -223,9 +220,10 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
         
         showAddProcedure: function() {
             var newProcedure = this.get('store').createRecord('procedure', {
-                dateRecorded: new Date()
+                dateRecorded: new Date(),
+                visit: this.get('model'),
             });
-            this.send('openModal', 'visits.procedures.edit', newProcedure);
+            this.transitionToRoute('procedures.edit', newProcedure);
         },
 
         showDeleteImaging: function(imaging) {
@@ -249,7 +247,10 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
         },
 
         showEditProcedure: function(procedure) {
-            this.send('openModal', 'visits.procedures.edit', procedure);
+            if (Ember.isEmpty(procedure.get('visit'))) {
+                procedure.set('visit', this.get('model'));
+            }
+            this.transitionToRoute('procedures.edit', procedure);
         },
         
         showEditVitals: function(vitals) {

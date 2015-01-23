@@ -2,7 +2,7 @@ import Ember from "ember";
 export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     firstKey: null,
     hideNewButton: false,
-    itemsPerPage: 2,
+    itemsPerPage: 25,
     maxValue: '\uffff',
     modelName: null,
     newButtonAction: null,

@@ -68,6 +68,9 @@ Router.map(function() {
         
     this.resource('visits', function() {
         this.route('edit', { path: "/edit/:visit_id" });
+        this.resource('procedures', function() {
+            this.route('edit', { path: "/edit/:procedure_id" });
+        });
     });
 });
 

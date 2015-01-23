@@ -6,7 +6,12 @@ var writeManifest = require('broccoli-manifest');
 var fileRemover = require('broccoli-file-remover');
 
 var app = new EmberApp({     
-  es3Safe: false
+    es3Safe: false,
+    vendorFiles: {
+        'handlebars.js': {
+            production: 'bower_components/handlebars/handlebars.js'
+        }
+    }  
 });
 
 // Use `app.import` to add additional libraries to the generated
@@ -22,8 +27,9 @@ var app = new EmberApp({
 // please specify an object with the list of modules as keys
 // along with the exports of each module as its value.
 
-//app.import('bower_components/ember-data/ember-data.js');
+app.import('bower_components/ember-data/index.js');
 app.import('bower_components/pouchdb/dist/pouchdb.js');
+app.import('bower_components/pouchdb-quick-search/dist/pouchdb.quick-search.js');
 app.import('bower_components/ember-pouchdb-adapter/pouchdb_adapter.js');
 app.import('bower_components/ember-autofocus/dist/ember-autofocus.min.js');
 app.import('bower_components/ember-simple-auth/ember-simple-auth.js');

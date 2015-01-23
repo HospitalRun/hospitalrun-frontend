@@ -4,15 +4,15 @@ import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
     _specialQueries: [
         'containsValue',
-        'keyValues',
         'mapReduce',
         'options.startkey',
-        'options.endkey'
+        'options.endkey',
+        'searchIndex'
     ],
     
     databaseName: 'main',
     
-    _createMapFunction: function(type, query, keys) {
+    _createMapFunction: function(type, query) {
         return function(doc, emit) {
             var found_doc = false,
                 doctype, 
@@ -34,14 +34,7 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
                             found_doc = true;
                         }
                         if (found_doc === true) {
-                            if (query.keyValues) {
-                                var emitKeys = Ember.ArrayPolyfills.map.call(keys, function(key) {                                        
-                                    return doc[key];
-                                });
-                                emit(emitKeys);
-                            } else {
-                                emit(doc._id, null);
-                            }
+                            emit(doc._id, null);
                         }
                     }
                 } catch (e) {
@@ -82,51 +75,40 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
                 return this._super(store, type, query, options);
             }
         } else {
-            var keys = [],
-                mapReduce = null,
-                queryKeys = [],
+            var mapReduce = null,                
                 queryParams = {};
+            if (query.searchIndex) {
+                queryParams = query.searchIndex;
+            }
             if (query.options) {
                 queryParams = Ember.copy(query.options);
             }
             queryParams.reduce  = false;
             queryParams.include_docs = true;
-            if (query.keyValues) {
-                for (var key in query.keyValues) {
-                    if (query.keyValues.hasOwnProperty(key)) {
-                        keys.push(key);
-                    }
-                }
-                queryKeys = keys.map(function(key) {
-                    if(key.substring(key.length - 3) === "_id" || 
-                       key.substring(key.length - 4) === "_ids" || 
-                       key === "id") {
-                        return this._idToPouchId(query.keyValues[key], type);
-                    }
-                    return query.keyValues[key];
-                }.bind(this));
-                if(!Ember.isEmpty(queryKeys)){
-                    queryParams["key"] = [].concat(queryKeys);
-                }
-            }
             
             if (query.mapReduce) {
                 mapReduce = query.mapReduce;
-            } else if (query.containsValue ||query.keyValues) {
-                mapReduce = this._createMapFunction(type, query, keys);
+            } else if (query.containsValue) {
+                mapReduce = this._createMapFunction(type, query);
             }
-
             return new Ember.RSVP.Promise(function(resolve, reject){
                 this._getDb().then(function(db){
                     try {
-                        if (mapReduce) {
-                            
+                        if (mapReduce) {                            
                             db.query(mapReduce, queryParams, function(err, response) {
                                 if (err) {
                                     this._pouchError(reject)(err);
                                 } else {
                                     this._handleQueryResponse(resolve, response, store, type, options);
                                 }
+                            }.bind(this));
+                        } else if (query.searchIndex) {
+                            db.search(queryParams, function(err, response) {
+                                if (err) {
+                                    this._pouchError(reject)(err);
+                                } else {
+                                    this._handleQueryResponse(resolve, response, store, type, options);
+                                }                                
                             }.bind(this));
                         } else {
                             db.allDocs(queryParams, function(err, response) {

@@ -1,6 +1,7 @@
 import AbstractModel from "hospitalrun/models/abstract";
 import DateFormat from "hospitalrun/mixins/date-format";
 import Ember from "ember";
+import PatientValidation from "hospitalrun/utils/patient-validation";
 
 export default AbstractModel.extend(DateFormat, {
     dose: DS.attr('string'),
@@ -71,11 +72,12 @@ export default AbstractModel.extend(DateFormat, {
                     }
                     //Inventory item is properly selected; don't do any further validation
                     return false;
-
                 }, 
                 message: 'Please select a valid medication'
             }
         },
+        
+        patientTypeAhead: PatientValidation.patientTypeAhead,        
         
         patient: {
             presence: true

@@ -1,0 +1,107 @@
+{{#em-form model=this submit_button=false }}
+    {{icd10-pcs-typeahead property="description" label="Procedure" selection=billingId class="required"}}
+    <div class="row">
+        {{select-or-typeahead class="col-sm-3" property="location"
+            label="Procedure Location" list=procedureLocations
+            selection=location
+        }}  
+        {{date-picker property="procedureDate" label="Procedure Date" class="col-sm-3 required"}}
+        {{em-input property="timeStarted" label="Time Started" class="col-sm-3"}}
+        {{em-input property="timeEnded" label="Time Ended" class="col-sm-3"}}
+    </div>
+    <div class="row">
+        {{select-or-typeahead class="col-sm-4 required" property="physician"
+            label="Physician" list=physicianList
+            selection=physician
+        }}
+        {{select-or-typeahead class="col-sm-4" property="assistant"
+            label="Assistant" list=physicianList
+            selection=assistant prompt=" "
+        }}
+        {{select-or-typeahead class="col-sm-4" property="anesthesiologist"
+            label="Anesthesiologist" list=anesthesiologistList
+            selection=anesthesiologist
+        }}
+    </div>
+    <div class="row">
+        {{select-or-typeahead class="col-sm-4" property="anesthesiaType"
+            label="Anesthesia Type" list=anesthesiaTypes
+            selection=anesthesiaTypes
+        }}
+        {{em-input property="oxygenHours" label="Oxygen Hours" class="col-sm-2"}}
+        {{em-input property="pacuHours" label="PACU Hours" class="col-sm-2"}}
+        
+    </div>
+    {{em-text label="Notes" property="notes" rows=3 }}
+    <div class="panel detail-section">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Equipment Used
+                {{#if canAddProcedure}}
+                    <button class="btn btn-primary align-right" {{action "showAddEquipment"}}><span class="octicon octicon-plus"></span>Add Equipment</button>
+                {{/if}}
+            </h3>
+        </div>
+        <div class="panel-body detail-section-content">
+            <table class="table">
+                <tr class="table-header">
+                    <th>Equipment</th>
+                    {{#if canAddProcedure}}
+                        <th>Action</th>
+                    {{/if}}
+                </tr>
+                {{#each equipmentUsed itemController='procedures/equipment-item'}}
+                    <tr>
+                        <td>
+                            {{model}}
+                        </td>
+                        {{#if canDelete}}
+                            <td>
+                                <button class="btn btn-default warning" {{action "showDeleteEquipment" model bubbles=false }}>
+                                    <span class="octicon octicon-x"></span>Delete
+                                </button>
+                            </td>
+                        {{/if}}
+                    </tr>
+                {{/each}}
+            </table>
+        </div>
+    </div>
+    <div class="panel detail-section">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Items Consumed
+                {{#if canAddProcedure}}
+                    <button class="btn btn-primary align-right" {{action "showAddConsumable" bubbles=false }}><span class="octicon octicon-plus"></span>Add Item</button>
+                {{/if}}
+            </h3>
+        </div>
+        <div class="panel-body detail-section-content">
+            <table class="table">
+                <tr class="table-header">
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
+                </tr>
+                {{#with this as procedureController}}
+                    {{#each itemsConsumed}}
+                        <tr>
+                            <td>{{name}}</td>
+                            <td>{{quantity}}</td>
+                            <td>
+                                {{#if procedureController.canAddProcedure}}
+                                    <button class="btn btn-default neutral" {{action "showEditConsumable" this}}>Edit</button>
+                                {{/if}}
+                                {{#if procedureController.canAddProcedure}}
+                                    <button class="btn btn-default warning" {{action "showDeleteConsumable" this bubbles=false }}>
+                                        <span class="octicon octicon-x"></span>Delete
+                                    </button>
+                                {{/if}}
+                            </td>
+                        </tr>
+                    {{/each}}
+                {{/with}}
+            </table>
+        </div>
+    </div>
+{{/em-form}}

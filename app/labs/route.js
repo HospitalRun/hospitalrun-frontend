@@ -7,14 +7,8 @@ export default AbstractModuleRoute.extend({
     sectionTitle: 'Labs',
 
     additionalModels: [{
-        name: 'patientList',
-        findArgs: ['patient']
-    }, {
         name: 'labTypesList',
         findArgs: ['lookup','lab_types']
-    }, {
-        name: 'visitList',
-        findArgs: ['visit']
     }],
     
     subActions: [{

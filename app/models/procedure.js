@@ -2,12 +2,22 @@ import AbstractModel from "hospitalrun/models/abstract";
 import Ember from "ember";
 
 export default AbstractModel.extend({
-    procedureDate: DS.attr('date'),
+    anesthesiaType: DS.attr('string'),
+    anesthesiologist: DS.attr('string'),
+    assistant: DS.attr('string'),
     billingId: DS.attr('string'),
     description: DS.attr('string'),
-    physician: DS.attr('string'),
-    assistant: DS.attr('string'),
+    equipmentUsed: DS.attr(), //Array of items
+    itemsConsumed: DS.hasMany('consumable'),
+    location: DS.attr('string'),
     notes: DS.attr('string'),
+    oxygenHours: DS.attr('number'),
+    pacuHours: DS.attr('number'),
+    physician: DS.attr('string'),
+    procedureDate: DS.attr('date'),
+    timeStarted: DS.attr('string'),
+    timeEnded: DS.attr('string'),
+    visit: DS.belongsTo('visit'),
     
     validations: {
         description: {
@@ -30,6 +40,27 @@ export default AbstractModel.extend({
                 }, 
                 message: 'Please select a valid procedure'         
             }
-        }
+        },
+        oxygenHours: {
+            numericality: {
+                allowBlank: true
+            }                
+        },
+        pacuHours: {
+            numericality: {
+                allowBlank: true
+            }
+        },
+        physician: {
+            presence: true            
+        },
+        procedureDate: {
+            presence: true,
+        },
+        display_procedureDate: {
+            presence: {
+                message: 'Please select a valid date' 
+            }
+        },
     }
 });

@@ -4,9 +4,10 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
-    needs: 'appointments',
+    needs: ['appointments','pouchdb'],
 
     dateFormat: 'l h:mm A',
+    findPatientVisits: false,
     locationList: Ember.computed.alias('controllers.appointments.locationList'),
 
     lookupListsToUpdate: [{
@@ -19,7 +20,6 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
         id: 'visit_location_list'
     }],
     
-    patientList: Ember.computed.alias('controllers.appointments.patientList'),
     physicianList: Ember.computed.alias('controllers.appointments.physicianList'),
     showTime: true,
     

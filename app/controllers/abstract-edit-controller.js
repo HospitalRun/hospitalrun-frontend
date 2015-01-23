@@ -38,6 +38,26 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
     }.property('isNew'),
     updateCapability: null,
     
+    /**
+     * Add the specified value to the lookup list if it doesn't already exist in the list.
+     * @param lookupList array the lookup list to add to.
+     * @param value string the value to add.
+     * @param listsToUpdate array the lookup lists that need to be saved.
+     * @param listsName string name of the list to add the value to.
+     */
+    _addValueToLookupList: function(lookupList, value, listsToUpdate, listName) {
+        var lookupListValues = lookupList.get('value');
+        if (!lookupListValues.contains(value)) {
+            lookupListValues.push(value);
+            lookupListValues.sort();
+            lookupList.set('value', lookupListValues);
+            if (!listsToUpdate.contains(lookupList)) {
+                listsToUpdate.push(lookupList);
+            }
+            this.set(listName, lookupList);
+        }
+    },
+    
     actions: {
         cancel: function() {
             var cancelledItem = this.get('model');
@@ -83,6 +103,21 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
     },
     
     /**
+     * Display a message in a closable modal.
+     * @param title string containing the title to display.
+     * @param message string containing the message to display.
+     */
+    displayAlert: function(title, message) {
+        this.send('openModal', 'dialog', Ember.Object.create({
+            title: title,
+            message: message,
+            hideCancelButton: true,
+            updateButtonAction: 'ok',
+            updateButtonText: 'Ok'
+        }));        
+    },
+    
+    /**
      * Update any new values added to a lookup list
      */
     updateLookupLists: function() {
@@ -93,27 +128,19 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
                 var propertyValue = this.get(list.property),
                     lookupList = this.get(list.name);
                 if (!Ember.isEmpty(propertyValue)) {
-                    if (lookupList) {
-                        var lookupListValues = lookupList.get('value');
-                        if (!lookupListValues.contains(propertyValue)) {
-                            lookupListValues.push(propertyValue);
-                            lookupListValues.sort();
-                            lookupList.set('value', lookupListValues);
-                            if (!listsToUpdate.contains(lookupList)) {
-                                listsToUpdate.push(lookupList);
-                            }
-                            this.set(list.name, lookupList);
-                        }
-                    } else {
+                    if (!lookupList) {
                         lookupList = this.get('store').push('lookup',{
                             id: list.id,
-                            value: [propertyValue],
+                            value: [],
                             userCanAdd: true
-                        });
-                        if (!listsToUpdate.contains(lookupList)) {
-                            listsToUpdate.push(lookupList);
-                        }
-                        this.set(list.name, lookupList);
+                        });                        
+                    }
+                    if (Ember.isArray(propertyValue)) {
+                        propertyValue.forEach(function(value) {
+                            this._addValueToLookupList(lookupList, value, listsToUpdate, list.name);    
+                        }.bind(this));
+                    } else {
+                        this._addValueToLookupList(lookupList, propertyValue, listsToUpdate, list.name);
                     }
                 }
             }.bind(this));
@@ -122,6 +149,8 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
             });
         }
     }
+    
+    
 
 
 });

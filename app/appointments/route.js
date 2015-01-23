@@ -27,9 +27,6 @@ export default AbstractModuleRoute.extend(UserSession,{
     },  {
         name: 'locationList',
         findArgs: ['lookup','visit_location_list']
-    }, {
-        name: 'patientList',
-        findArgs: ['patient']
     }],    
     
     getNewData: function() {

@@ -2,6 +2,7 @@ import Ember from "ember";
 //Dervied from http://spin.atomicobject.com/2013/10/29/ember-js-date-picker/
 export default Ember.Forms.FormInputComponent.extend({
     currentDate: null,
+    currentDisplayDate: null,
     dateProperty: null,
     minDate: null,
     maxDate: null,
@@ -25,10 +26,14 @@ export default Ember.Forms.FormInputComponent.extend({
      * also bind to the date property specified to the component.
      */
     _setup: function() {
-        var dateProperty = this.get('propertyName');
-        this.set('propertyName','display_'+dateProperty);
+        var dateProperty = this.get('propertyName'),
+            displayPropertyName = 'display_'+dateProperty;
+        this.set('doingSetup', true);
+        this.set('propertyName',displayPropertyName);
         this.set('dateProperty', dateProperty);
         Ember.Binding.from("model." + dateProperty).to('currentDate').connect(this);
+        Ember.Binding.from("model." + displayPropertyName).to('currentDisplayDate').connect(this);
+        this.set('doingSetup', false);
     }.on('init'),
     
     _shouldSetDate: function(currentDate, picker) {
@@ -45,6 +50,15 @@ export default Ember.Forms.FormInputComponent.extend({
             picker.setDate(currentDate);
         }
     }.observes('currentDate'),
+    
+    currentDisplayDateChangedValue: function(){
+        if (!this.get('doingSetup')) {
+            var currentDisplayDate = this.get('currentDisplayDate');
+            if (Ember.isEmpty(currentDisplayDate)) {
+                this.set('currentDate');
+            }
+        }
+    }.observes('currentDisplayDate'),
 
     dateSet: function() {
         var currentDate = this.get('currentDate'),
