@@ -7,8 +7,7 @@ export default AbstractModel.extend({
     assistant: DS.attr('string'),
     billingId: DS.attr('string'),
     description: DS.attr('string'),
-    equipmentUsed: DS.attr(), //Array of items
-    itemsConsumed: DS.hasMany('consumable'),
+    charges: DS.hasMany('proc-charge'),
     location: DS.attr('string'),
     notes: DS.attr('string'),
     oxygenHours: DS.attr('number'),

@@ -214,6 +214,17 @@ function photoByPatient(doc) {
     }
 }
 
+function pricingByCategory(doc) {
+    var doctype,
+        uidx;
+    if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+        doctype = doc._id.substring(0, uidx);
+        if (doctype === 'pricing') {
+            emit([doc.category, doc._id]); 
+        }   
+    }
+}
+
 function sequenceByPrefix(doc) {
     var doctype,
         uidx;
@@ -281,6 +292,9 @@ var designDocs = [{
 }, {
     name: 'photo_by_patient',
     function: photoByPatient
+}, {
+    name: 'pricing_by_category',
+    function: pricingByCategory
 }, {
     name: 'sequence_by_prefix',
     function: sequenceByPrefix

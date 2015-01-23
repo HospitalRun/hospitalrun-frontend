@@ -1,6 +1,6 @@
 import Ember from "ember";
 export default Ember.Forms.FormInputComponent.extend({
-    mappedContent: function() {
+    _mapContentItems: function() {
         var content = this.get('content');
         if (content) {
             var mapped = content.filter(function(item) {
@@ -23,7 +23,19 @@ export default Ember.Forms.FormInputComponent.extend({
         } else {
             return [];
         }        
+    },
+    
+    mappedContent: function() {
+        return this._mapContentItems();
     }.property('content'),
+    
+    contentChanged: function() {
+        var bloodhound = this.get('bloodhound');
+        if (bloodhound) {
+            bloodhound.clear();
+            bloodhound.add(this._mapContentItems());
+        }        
+    }.observes('content.[]'),
     
     bloodhound: null,
     displayKey: 'value',

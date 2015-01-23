@@ -10,6 +10,10 @@ export default AbstractEditController.extend(PatientSubmodule, {
         return this.currentUserCan('add_procedure');
     }.property(),
     
+    canAddCharge: function() {        
+        return this.currentUserCan('add_procedure');
+    }.property(),
+    
     anesthesiaTypes: Ember.computed.alias('controllers.visits.anesthesiaTypes'),
     anesthesiologistList: Ember.computed.alias('controllers.visits.anesthesiologistList'),
     physicianList: Ember.computed.alias('controllers.visits.physicianList'),
@@ -39,7 +43,7 @@ export default AbstractEditController.extend(PatientSubmodule, {
     editController: Ember.computed.alias('controllers.visits/edit'),
     visitProcedures: Ember.computed.alias('visit.procedures'),
     
-    inventoryList: null, //This gets filled in by the route
+    pricingList: null, //This gets filled in by the route
     newProcedure: false,
     
     title: function() {
@@ -57,75 +61,43 @@ export default AbstractEditController.extend(PatientSubmodule, {
     updateCapability: 'add_procedure',
     
     actions: {
-        addConsumable: function(consumable) {
-            var itemsConsumed = this.get('itemsConsumed');
-            itemsConsumed.addObject(consumable);
+        addCharge: function(charge) {
+            var charges = this.get('charges');
+            charges.addObject(charge);
             this.send('update', true);
             this.send('closeModal');
         },
         
-        addEquipment: function(equipment) {
-            var equipmentUsed = this.get('equipmentUsed');
-            if (Ember.isEmpty(equipmentUsed)) {
-                equipmentUsed = [];
-                this.set('equipmentUsed', equipmentUsed);
-            }
-            equipmentUsed.addObject(equipment);
-            this.send('update', true);
-            this.send('closeModal');            
-        },
-        
-        deleteConsumable: function(model) {
-            var consumableToDelete = model.get('consumableToDelete'),
-                itemsConsumed = this.get('itemsConsumed');
-            itemsConsumed.removeObject(consumableToDelete);
-            consumableToDelete.destroyRecord();
+        deleteCharge: function(model) {
+            var chargeToDelete = model.get('chargeToDelete'),
+                charges = this.get('charges');
+            charges.removeObject(chargeToDelete);
+            chargeToDelete.destroyRecord();
             this.send('update', true);
             this.send('closeModal');
         },
         
-        deleteEquipment: function(model) {
-            var equipmentToDelete = model.get('equipmentToDelete'),
-                equipmentUsed = this.get('equipmentUsed');
-            equipmentUsed.removeObject(equipmentToDelete);           
-            this.send('update', true);
-            this.send('closeModal');
+        showAddCharge: function() {
+            var newCharge = this.get('store').createRecord('proc-charge',{
+                quantity: 1
+            });
+            this.send('openModal', 'procedures.charge', newCharge);
         },
         
-        showAddEquipment: function() {
-            this.send('openModal', 'procedures.equipment',{});            
+        showEditCharge: function(charge) {
+            this.send('openModal', 'procedures.charge', charge);            
         },
         
-        showAddConsumable: function() {
-            var newConsumable = this.get('store').createRecord('consumable');     
-            this.send('openModal', 'procedures.consumable', newConsumable);            
-        },
-        
-        showEditConsumable: function(consumable) {  
-            this.send('openModal', 'procedures.consumable', consumable);            
-        },
-        
-        showDeleteConsumable: function(consumable) {
+        showDeleteCharge: function(charge) {
             this.send('openModal', 'dialog', Ember.Object.create({
-                confirmAction: 'deleteConsumable',
-                title: 'Delete Item',
-                message: 'Are you sure you want to delete this consumed item?',
-                consumableToDelete: consumable,
+                confirmAction: 'deleteCharge',
+                title: 'Delete Charge Item',
+                message: 'Are you sure you want to delete this charged item?',
+                chargeToDelete: charge,
                 updateButtonAction: 'confirm',
                 updateButtonText: 'Ok'
             }));                 
-        },
-        
-        showDeleteEquipment: function(equipment) {
-            this.send('openModal', 'dialog', Ember.Object.create({
-                confirmAction: 'deleteEquipment',
-                title: 'Remove Equipment',
-                message: 'Are you sure you want to remove this used equipment?',
-                equipmentToDelete: equipment,
-                updateButtonAction: 'confirm',
-                updateButtonText: 'Ok'
-            }));                 
-        }        
+        }
     },
     
     beforeUpdate: function() {

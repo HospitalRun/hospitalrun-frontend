@@ -5,8 +5,8 @@ export default AbstractEditRoute.extend({
     newTitle: 'New Procedure',
     
     actions: {
-        deleteConsumable: function(model) {
-            this.controller.send('deleteConsumable', model);
+        deleteCharge: function(model) {
+            this.controller.send('deleteCharge', model);
         },
         
         deleteEquipment: function(model) {
@@ -16,16 +16,16 @@ export default AbstractEditRoute.extend({
         
     setupController: function(controller, model) {
         this._super(controller, model);
-        var inventoryQuery = {
-            startkey:  'inventory_',
-            endkey: 'inventory_\uffff',
+        var pricingQuery = {
+            startkey:  ['Procedure Charges','pricing_'],
+            endkey: ['Procedure Charges','pricing_\uffff'],
             include_docs: true,
         };        
-        this.controllerFor('pouchdb').queryMainDB(inventoryQuery).then(function(result) {
-            var inventoryList = result.rows.map(function(item) {
+        this.controllerFor('pouchdb').queryMainDB(pricingQuery, 'pricing_by_category').then(function(result) {
+            var pricingList = result.rows.map(function(item) {
                 return item.doc;
             });
-            controller.set('inventoryList', inventoryList);
+            controller.set('pricingList', pricingList);
         });
     }
 });

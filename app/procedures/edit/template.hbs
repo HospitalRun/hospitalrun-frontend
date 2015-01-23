@@ -36,43 +36,9 @@
     <div class="panel detail-section">
         <div class="panel-heading">
             <h3 class="panel-title">
-                Equipment Used
-                {{#if canAddProcedure}}
-                    <button class="btn btn-primary align-right" {{action "showAddEquipment"}}><span class="octicon octicon-plus"></span>Add Equipment</button>
-                {{/if}}
-            </h3>
-        </div>
-        <div class="panel-body detail-section-content">
-            <table class="table">
-                <tr class="table-header">
-                    <th>Equipment</th>
-                    {{#if canAddProcedure}}
-                        <th>Action</th>
-                    {{/if}}
-                </tr>
-                {{#each equipmentUsed itemController='procedures/equipment-item'}}
-                    <tr>
-                        <td>
-                            {{model}}
-                        </td>
-                        {{#if canDelete}}
-                            <td>
-                                <button class="btn btn-default warning" {{action "showDeleteEquipment" model bubbles=false }}>
-                                    <span class="octicon octicon-x"></span>Delete
-                                </button>
-                            </td>
-                        {{/if}}
-                    </tr>
-                {{/each}}
-            </table>
-        </div>
-    </div>
-    <div class="panel detail-section">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                Items Consumed
-                {{#if canAddProcedure}}
-                    <button class="btn btn-primary align-right" {{action "showAddConsumable" bubbles=false }}><span class="octicon octicon-plus"></span>Add Item</button>
+                Charged Items
+                {{#if canAddCharge}}
+                    <button class="btn btn-primary align-right" {{action "showAddCharge" bubbles=false }}><span class="octicon octicon-plus"></span>Add Item</button>
                 {{/if}}
             </h3>
         </div>
@@ -84,16 +50,16 @@
                     <th>Action</th>
                 </tr>
                 {{#with this as procedureController}}
-                    {{#each itemsConsumed}}
+                    {{#each charges}}
                         <tr>
-                            <td>{{name}}</td>
+                            <td>{{pricingItem.name}}</td>
                             <td>{{quantity}}</td>
                             <td>
                                 {{#if procedureController.canAddProcedure}}
-                                    <button class="btn btn-default neutral" {{action "showEditConsumable" this}}>Edit</button>
+                                    <button class="btn btn-default neutral" {{action "showEditCharge" this}}>Edit</button>
                                 {{/if}}
                                 {{#if procedureController.canAddProcedure}}
-                                    <button class="btn btn-default warning" {{action "showDeleteConsumable" this bubbles=false }}>
+                                    <button class="btn btn-default warning" {{action "showDeleteCharge" this bubbles=false }}>
                                         <span class="octicon octicon-x"></span>Delete
                                     </button>
                                 {{/if}}
