@@ -149,10 +149,10 @@ export default Ember.Mixin.create({
             'System Administrator'
         ], 
         billing: [
-            'Hospital Administrator',
+            /*'Hospital Administrator',
             'Finance',
             'Finance Manager',
-            'System Administrator'
+            'System Administrator'*/
         ],
         complete_imaging: [
             'Imaging Technician', 
