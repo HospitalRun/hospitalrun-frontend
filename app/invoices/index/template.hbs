@@ -11,9 +11,9 @@
         {{#each}}
             {{#unless isNew}}
                 <tr {{action 'editItem' this}}>
-                    <td>{{invoiceNumber}}</td>
-                    <td>{{patientName}}<br>{{patient.primaryDiagnosis}}</td>
-                    <td>{{totalPrice}}</td>
+                    <td>{{invoiceNumber}} [{{invoiceId}}]</td>
+                    <td>{{patient.displayName}} [{{patient.displayPatientId}}]<br>{{patient.primaryDiagnosis}}</td>
+                    <td>{{discountPrice}} [{{originalPrice}}]</td>
                     <td>{{status}}</td>
                     <td>{{createDate}}</td>
                     <td>

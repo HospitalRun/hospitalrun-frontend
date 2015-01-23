@@ -3,21 +3,31 @@ import AbstractModel from "hospitalrun/models/abstract";
 export default AbstractModel.extend({
     invoiceId: DS.attr('string'),
     invoiceNumber: DS.attr('number'),
-    patientId: DS.attr('string'),
-    publishStatus: DS.attr('string'),
+    patient: DS.belongsTo('patient'),
+    visit: DS.belongsTo('visit'),
+    status: DS.attr('string'),
     publishDate: DS.attr('date'),
-    priceTotal: DS.attr('number'),
+    originalPrice: DS.attr('number'),
+    discountPrice: DS.attr('number'),
+    /* rolloup stored in the object of the payments */
     paidTotal: DS.attr('number'),
-    paidStatus: DS.attr('boolean', {defaultValue: false}),
-    paymentProfile: DS.attr('string'),
-    payments: [],
-    billableEvents: [],
-    lineItems: [],
+    paidFlag: DS.attr('boolean', {defaultValue: false}),
+    /*what do we overlay on the line items to generate the priceTotal */
+    paymentProfile: DS.attr(),
+    /*payments track the number of payment events attached to an invoice.*/
+    payments: DS.hasMany('payment'),
+    /*the individual line items of the invoice*/
+    lineItems: DS.hasMany('billing-line-item'),
     validations: {
         invoiceNumber: {
             numericality: true
         },
-        priceTotal: {
+        originalPrice: {
+            numericality: {
+                allowBlank: true
+            }
+        },
+        discountPrice: {
             numericality: {
                 allowBlank: true
             }

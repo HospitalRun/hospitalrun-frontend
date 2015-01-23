@@ -288,5 +288,38 @@
                 </nav>
             </div>
         {{/if}}
+        {{#if userCan_billing}}
+            <div class="nav-category">
+                <header class="category-header">
+                    <h2 class="primary-section">
+                        {{#link-to 'invoices.index' class="primary-section-link"}}
+                            <span class="mega-octicon octicon-person"></span>
+                            Billing
+                        {{/link-to}}
+                    </h2>
+                    <div class="panel-options">
+                        <a href="#" class="hidden-link-list-trigger">
+                            <span class="mega-octicon octicon-gear"></span>
+                        </a>
+                        <nav class="hidden-link-list">
+                            <h4>More options</h4>
+                            <a href="#" class="setting-link">Pin to Nav</a>
+                            <a href="#" class="setting-link">Set as default view</a>
+                        </nav>
+                    </div>
+                </header>
+                <nav class="category-links">
+                    {{#link-to 'invoices.index' class="sub-section-link"}}
+                        Invoices
+                        <span class="octicon octicon-chevron-right"></span>
+                    {{/link-to}}                                        
+                    
+                    {{#link-to 'invoices.edit' 'new' class="sub-section-link"}}
+                        New Invoice
+                        <span class="octicon octicon-plus"></span>
+                    {{/link-to}}
+                </nav>
+            </div>
+        {{/if}}        
     </div>
 </section>
