@@ -28,12 +28,6 @@ export default Ember.ArrayController.extend(InventoryTypeList, {
             patient: 'country'
         }
     }, {
-        name: 'Equipment List',
-        value: 'equipment_list',
-        models: {
-            procedure: 'equipmentUsed'
-        }
-    }, {
         name: 'Expense Accounts',
         value: 'expense_account_list',
         models: {
