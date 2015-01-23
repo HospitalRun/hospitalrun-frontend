@@ -92,6 +92,12 @@
                                 <p class="form-control-static">{{age}}</p>
                             </div>
                             {{em-input property="placeOfBirth" label="Place of Birth"}}
+                            <div class="form-group">
+                                <label>Patient Type</label>
+                                <div>
+                                    {{ext-radio name=patientType content=patientTypes value=patientType showInline=true radioLabelPath="content" radioValuePath="content"}}
+                                </div>
+                            </div>                                                   
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             {{em-input property="externalPatientId" label="External Patient Id"}}

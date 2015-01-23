@@ -90,6 +90,11 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         'Shared'
     ],
     
+    patientTypes: [
+        'Charity',
+        'Private'
+    ],
+    
     philhealthTypes: [         
         'Employed: Government',
         'Employed: Non Paying Member/Lifetime',
