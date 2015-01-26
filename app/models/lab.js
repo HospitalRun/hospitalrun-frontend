@@ -3,6 +3,7 @@ import DateFormat from "hospitalrun/mixins/date-format";
 import PatientValidation from "hospitalrun/utils/patient-validation";
 
 export default AbstractModel.extend(DateFormat,{
+    charges: DS.hasMany('proc-charge'),
     labDate: DS.attr('date'),
     labType: DS.attr('string'),
     notes: DS.attr('string'),
