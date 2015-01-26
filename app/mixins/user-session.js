@@ -21,6 +21,13 @@ export default Ember.Mixin.create({
             'Social Worker', 
             'System Administrator'
         ],
+        add_charge: [
+            'Data Entry',
+            'Business Office', 
+            'Hospital Administrator',
+            'Medical Records Officer',
+            'System Administrator'             
+        ],
         add_diagnosis: [
             'Data Entry',
             'Doctor',
@@ -149,10 +156,10 @@ export default Ember.Mixin.create({
             'System Administrator'
         ], 
         billing: [
-            /*'Hospital Administrator',
+            'Hospital Administrator',
             'Finance',
             'Finance Manager',
-            'System Administrator'*/
+            'System Administrator'
         ],
         complete_imaging: [
             'Imaging Technician', 
@@ -292,6 +299,12 @@ export default Ember.Mixin.create({
             'Medical Records Officer',
             'System Administrator'
         ],
+        invoices: [
+            'Hospital Administrator',
+            'Finance',
+            'Finance Manager',
+            'System Administrator'
+        ],        
         labs: [
             'Data Entry',
             'Doctor', 
