@@ -1,8 +1,9 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import ChargeActions from 'hospitalrun/mixins/charge-actions';
 import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
-export default AbstractEditController.extend(PatientSubmodule, {
+export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     needs: ['visits','visits/edit','pouchdb'],
         
     cancelAction: 'returnToVisit',
@@ -11,7 +12,7 @@ export default AbstractEditController.extend(PatientSubmodule, {
     }.property(),
     
     canAddCharge: function() {        
-        return this.currentUserCan('add_procedure');
+        return this.currentUserCan('add_charge');
     }.property(),
     
     anesthesiaTypes: Ember.computed.alias('controllers.visits.anesthesiaTypes'),
@@ -58,47 +59,7 @@ export default AbstractEditController.extend(PatientSubmodule, {
         this.get('model').validate();
     }.observes('billingId'),
     
-    updateCapability: 'add_procedure',
-    
-    actions: {
-        addCharge: function(charge) {
-            var charges = this.get('charges');
-            charges.addObject(charge);
-            this.send('update', true);
-            this.send('closeModal');
-        },
-        
-        deleteCharge: function(model) {
-            var chargeToDelete = model.get('chargeToDelete'),
-                charges = this.get('charges');
-            charges.removeObject(chargeToDelete);
-            chargeToDelete.destroyRecord();
-            this.send('update', true);
-            this.send('closeModal');
-        },
-        
-        showAddCharge: function() {
-            var newCharge = this.get('store').createRecord('proc-charge',{
-                quantity: 1
-            });
-            this.send('openModal', 'procedures.charge', newCharge);
-        },
-        
-        showEditCharge: function(charge) {
-            this.send('openModal', 'procedures.charge', charge);            
-        },
-        
-        showDeleteCharge: function(charge) {
-            this.send('openModal', 'dialog', Ember.Object.create({
-                confirmAction: 'deleteCharge',
-                title: 'Delete Charge Item',
-                message: 'Are you sure you want to delete this charged item?',
-                chargeToDelete: charge,
-                updateButtonAction: 'confirm',
-                updateButtonText: 'Ok'
-            }));                 
-        }
-    },
+    updateCapability: 'add_procedure',    
     
     beforeUpdate: function() {
         if (this.get('isNew')) {

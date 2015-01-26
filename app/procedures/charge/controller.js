@@ -6,16 +6,15 @@ export default AbstractEditController.extend(InventorySelection, {
     needs: ['procedures/edit'],
     cancelAction: 'closeModal',
     newPricingItem: false,
-    procedureController: Ember.computed.alias('controllers.procedures/edit'),
+    requestingController: Ember.computed.alias('controllers.procedures/edit'),
     pricingList: Ember.computed.alias('controllers.procedures/edit.pricingList'),
     
     updateCapability: 'add_procedure',
 
     itemChanged: function() {
         var selectedItem = this.get('selectedItem');
-        if (!Ember.isEmpty(selectedItem)) {
-            selectedItem.id = selectedItem._id.substr(10);
-            this.store.find('pricing', selectedItem._id.substr(10)).then(function(item) {
+        if (!Ember.isEmpty(selectedItem)) {            
+            this.store.find('pricing', selectedItem._id.substr(8)).then(function(item) {
                 this.set('pricingItem', item);
             }.bind(this));
         }
@@ -69,7 +68,7 @@ export default AbstractEditController.extend(InventorySelection, {
     
     afterUpdate: function(record) {
         if (this.get('newCharge')) {            
-            this.get('procedureController').send('addCharge', record);
+            this.get('requestingController').send('addCharge', record);
         } else {
             this.send('closeModal');
         }        

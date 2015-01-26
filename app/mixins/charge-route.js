@@ -1,16 +1,8 @@
-import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-export default AbstractEditRoute.extend({
-    editTitle: 'Edit Procedure', 
-    modelName: 'procedure',
-    newTitle: 'New Procedure',
-    
+import Ember from "ember";
+export default Ember.Mixin.create({
     actions: {
         deleteCharge: function(model) {
             this.controller.send('deleteCharge', model);
-        },
-        
-        deleteEquipment: function(model) {
-            this.controller.send('deleteEquipment', model);
         }
     },
         

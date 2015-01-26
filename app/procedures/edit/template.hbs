@@ -33,41 +33,5 @@
         
     </div>
     {{em-text label="Notes" property="notes" rows=3 }}
-    <div class="panel detail-section">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                Charged Items
-                {{#if canAddCharge}}
-                    <button class="btn btn-primary align-right" {{action "showAddCharge" bubbles=false }}><span class="octicon octicon-plus"></span>Add Item</button>
-                {{/if}}
-            </h3>
-        </div>
-        <div class="panel-body detail-section-content">
-            <table class="table">
-                <tr class="table-header">
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Action</th>
-                </tr>
-                {{#with this as procedureController}}
-                    {{#each charges}}
-                        <tr>
-                            <td>{{pricingItem.name}}</td>
-                            <td>{{quantity}}</td>
-                            <td>
-                                {{#if procedureController.canAddProcedure}}
-                                    <button class="btn btn-default neutral" {{action "showEditCharge" this}}>Edit</button>
-                                {{/if}}
-                                {{#if procedureController.canAddProcedure}}
-                                    <button class="btn btn-default warning" {{action "showDeleteCharge" this bubbles=false }}>
-                                        <span class="octicon octicon-x"></span>Delete
-                                    </button>
-                                {{/if}}
-                            </td>
-                        </tr>
-                    {{/each}}
-                {{/with}}
-            </table>
-        </div>
-    </div>
+    {{partial 'item-charges'}}
 {{/em-form}}
