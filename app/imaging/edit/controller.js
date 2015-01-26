@@ -1,17 +1,24 @@
-import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
-import Ember from "ember";
+import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import ChargeActions from 'hospitalrun/mixins/charge-actions';
+import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
-export default AbstractEditController.extend(PatientSubmodule, {
+export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     needs: ['imaging','pouchdb'],
-
+    chargeRoute: 'imaging.charge',
+    
+    canAddCharge: function() {        
+        return this.currentUserCan('add_charge');
+    }.property(),
+    
     lookupListsToUpdate: [{
         name: 'imagingTypesList', //Name of property containing lookup list
         property: 'imagingType', //Corresponding property on model that potentially contains a new value to add to the list
         id: 'imaging_types' //Id of the lookup list to update
     }],
 
-    imagingTypesList: Ember.computed.alias('controllers.imaging.imagingTypesList'),    
+    imagingTypesList: Ember.computed.alias('controllers.imaging.imagingTypesList'),
+    pricingList: null, //This gets filled in by the route
     updateCapability: 'add_imaging',
 
     afterUpdate: function() {
