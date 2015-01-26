@@ -1,14 +1,15 @@
-import AbstractModel from "hospitalrun/models/abstract";
+import AbstractModel from 'hospitalrun/models/abstract';
+import Ember from 'ember';
+import PatientValidation from 'hospitalrun/utils/patient-validation';
 
 export default AbstractModel.extend({
-    invoiceId: DS.attr('string'),
-    invoiceNumber: DS.attr('number'),
+    externalInvoiceNumber: DS.attr('string'),
     patient: DS.belongsTo('patient'),
     visit: DS.belongsTo('visit'),
     status: DS.attr('string'),
-    publishDate: DS.attr('date'),
-    originalPrice: DS.attr('number'),
-    discountPrice: DS.attr('number'),
+    billDate: DS.attr('date'),
+    originalTotal: DS.attr('number'),
+    discountTotal: DS.attr('number'),
     /* rolloup stored in the object of the payments */
     paidTotal: DS.attr('number'),
     paidFlag: DS.attr('boolean', {defaultValue: false}),
@@ -18,24 +19,26 @@ export default AbstractModel.extend({
     payments: DS.hasMany('payment'),
     /*the individual line items of the invoice*/
     lineItems: DS.hasMany('billing-line-item'),
+    
+    displayInvoiceNumber: function() {
+        var externalInvoiceNumber = this.get('externalInvoiceNumber'),
+            id = this.get('id');
+        if (Ember.isEmpty(externalInvoiceNumber)) {
+            return id;
+        } else {
+            return externalInvoiceNumber;
+        }
+    }.property('externalInvoiceNumber','id'),
+    
     validations: {
-        invoiceNumber: {
-            numericality: true
+        patientTypeAhead: PatientValidation.patientTypeAhead,        
+        
+        patient: {
+            presence: true
         },
-        originalPrice: {
-            numericality: {
-                allowBlank: true
-            }
-        },
-        discountPrice: {
-            numericality: {
-                allowBlank: true
-            }
-        },
-        paidTotal: {
-            numericality: {
-                allowBlank: true
-            }
+        
+        visit: {
+            presence: true
         }
     }
 });

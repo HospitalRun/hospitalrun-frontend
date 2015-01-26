@@ -1,12 +1,8 @@
 import AbstractModel from "hospitalrun/models/abstract";
 
 export default AbstractModel.extend({
-    lineId: DS.attr(),
-    invoice: DS.belongsTo('invoice'),
-    originalName: DS.attr('string'),
-    modifiedName: DS.attr('string'),
-    originalDescription: DS.attr('string'),
-    modifiedDescription: DS.attr('string'),
+    name: DS.attr('string'),
+    description: DS.attr('string'),    
     originalPrice: DS.attr('number'),
     discountPrice: DS.attr('number'),
     /*the individual objects that make up this line item*/

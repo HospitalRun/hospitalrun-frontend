@@ -1,8 +1,69 @@
-{{#em-form model=this submit_button=false}}
-    {{em-input property="invoiceNumber" label="Invoice #"}}
-    {{em-input property="patientId" label="Last Name"}}
-    <div class="form-group">
-        <label>Gender:</label>
-        {{ext-radio name=gender content=genderList value=gender }}
+{{#em-form model=this submit_button=false }}
+    <div class="row">
+        {{#unless isNew}}
+            <div class="form-group col-xs-3">
+                <label>Invoice Id</label>
+                <p class="form-control-static">{{id}}</p>
+            </div>        
+        {{/unless}}
+        {{date-picker property="billDate" label="Bill Date" class="col-xs-3"}}
+        {{#if selectPatient}}
+            {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-3 required"}}
+            {{em-select class="col-xs-3 required" label="Visit" 
+                property="visit" content=patientVisits
+                optionValuePath="content" optionLabelPath="content.visitDescription"            
+                selected=visit
+                prompt='Please select a visit'
+            }}                
+        {{else}}
+            <div class="form-group col-xs-3">
+                <label>Patient</label>
+                <p class="form-control-static">{{patient.displayName}}</p>
+            </div>
+            <div class="form-group col-xs-3">
+                <label>Visit</label>
+                <p class="form-control-static">{{visit.visitDescription}}</p>
+            </div>        
+        {{/if}}
+    </div>
+    <div class="row">
+        {{em-input property="externalInvoiceNumber" label="External Invoice #" class="col-xs-3"}}
+    </div>
+    <div class="panel detail-section">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Line Items
+                {{#if canAddCharge}}
+                    <button class="btn btn-primary align-right" {{action "showAddCharge" bubbles=false }}><span class="octicon octicon-plus"></span>Add Item</button>
+                {{/if}}
+            </h3>
+        </div>
+        <div class="panel-body detail-section-content">
+            <table class="table">
+                <tr class="table-header">
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+                {{#with this as parentController}}
+                    {{#each lineItems}}
+                        <tr>
+                            <td>{{name}}</td>
+                            <td>{{description}}</td>
+                            <td>
+                                {{#if parentController.canAddCharge}}
+                                    <button class="btn btn-default neutral" {{action "showEditCharge" this}}>Edit</button>
+                                {{/if}}
+                                {{#if parentController.canAddCharge}}
+                                    <button class="btn btn-default warning" {{action "showDeleteCharge" this bubbles=false }}>
+                                        <span class="octicon octicon-x"></span>Delete
+                                    </button>
+                                {{/if}}
+                            </td>
+                        </tr>
+                    {{/each}}
+                {{/with}}
+            </table>
+        </div>
     </div>
 {{/em-form}}
