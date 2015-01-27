@@ -92,7 +92,7 @@
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-medication">
                     Medication 
                     {{#if canAddMedication}}
-                        <button class="btn btn-primary" {{action "newMedication" bubbles=false }}>New Medication</button>
+                        <button class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span> New Medication</button>
                     {{/if}}
                 </a>
             </h3>        
@@ -118,10 +118,10 @@
                             <td>
                                 {{#if canEdit}}
                                     {{#if parentController.canAddMedication}}
-                                        <button class="btn btn-primary" {{action "editMedication" this}}>Edit</button>
+                                        <button class="btn btn-default neutral" {{action "editMedication" this}}>Edit</button>
                                     {{/if}}
                                     {{#if parentController.canDelete}}
-                                        <button class="btn btn-default" {{action "showDeleteMedication" this  bubbles=false }}>Delete</button>
+                                        <button class="btn btn-default warning" {{action "showDeleteMedication" this  bubbles=false }}><span class="octicon octicon-x"></span>  Delete</button>
                                     {{/if}}
                                 {{/if}}
                             </td>
@@ -137,7 +137,7 @@
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-labs">
                     Labs 
                     {{#if canAddLab}}
-                        <button class="btn btn-primary" {{action "newLab" bubbles=false }}>New Lab</button>
+                        <button class="btn btn-primary align-right" {{action "newLab" bubbles=false }}><span class="octicon octicon-plus"></span> New Lab</button>
                     {{/if}}
                 </a>
             </h3>
@@ -167,10 +167,10 @@
                             <td>
                                 {{#if canEdit}}
                                     {{#if parentController.canAddLab}}
-                                        <button class="btn btn-primary" {{action "editLab" this}}>Edit</button>
+                                        <button class="btn btn-default neutral" {{action "editLab" this}}>Edit</button>
                                     {{/if}}
                                     {{#if parentController.canDeleteLab}}
-                                        <button class="btn btn-default" {{action "showDeleteLab" this  bubbles=false }}>Delete</button>
+                                        <button class="btn btn-default warning" {{action "showDeleteLab" this  bubbles=false }}><span class="octicon octicon-x"></span>  Delete</button>
                                     {{/if}}
                                 {{/if}}
                             </td>
@@ -186,7 +186,7 @@
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-imaging">
                     Imaging 
                     {{#if canAddImaging}}
-                        <button class="btn btn-primary" {{action "newImaging" bubbles=false }}>New Imaging</button>
+                        <button class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}><span class="octicon octicon-plus"></span> New Imaging</button>
                     {{/if}}
                 </a>
             </h3>
@@ -216,10 +216,10 @@
                             <td>
                                 {{#if canEdit}}
                                     {{#if parentController.canAddImaging}}
-                                        <button class="btn btn-primary" {{action "editImaging" this}}>Edit</button>
+                                        <button class="btn btn-default neutral" {{action "editImaging" this}}>Edit</button>
                                     {{/if}}
                                     {{#if parentController.canDeleteImaging}}
-                                        <button class="btn btn-default" {{action "showDeleteImaging" this  bubbles=false }}>Delete</button>
+                                        <button class="btn btn-default warning" {{action "showDeleteImaging" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                     {{/if}}
                                 {{/if}}
                             </td>
@@ -235,7 +235,7 @@
                 <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-vitals">
                     Vitals 
                     {{#if canAddVitals}}
-                        <button class="btn btn-primary" {{action "showAddVitals" bubbles=false }}>New Vitals</button>
+                        <button class="btn btn-primary align-right" {{action "showAddVitals" bubbles=false }}><span class="octicon octicon-plus"></span> New Vitals</button>
                     {{/if}}
                 </a>
             </h3>
@@ -267,10 +267,10 @@
                                 <td>{{respiratoryRate}}</td>
                                 <td>
                                     {{#if parentController.canAddVitals}}
-                                        <button class="btn btn-primary" {{action "showEditVitals" this}}>Edit</button>
+                                        <button class="btn btn-default neutral" {{action "showEditVitals" this}}>Edit</button>
                                     {{/if}}
                                     {{#if parentController.canDeleteVitals}}
-                                        <button class="btn btn-primary" {{action "showDeleteVitals" this}}>Delete</button>
+                                        <button class="btn btn-default warning" {{action "showDeleteVitals" this}}><span class="octicon octicon-x"></span> Delete</button>
                                     {{/if}}
                                 </td>
                             </tr>
@@ -286,7 +286,7 @@
                 <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-procedures">
                     Procedures 
                     {{#if canAddProcedure}}
-                        <button class="btn btn-primary" {{action "showAddProcedure" bubbles=false }}>New Procedure</button>
+                        <button class="btn btn-primary align-right" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> New Procedure</button>
                     {{/if}}
                 </a>
             </h3>
@@ -306,10 +306,10 @@
                             <td>{{description}}</td>
                             <td>
                                 {{#if parentController.canAddProcedure}}
-                                    <button class="btn btn-primary" {{action "showEditProcedure" this}}>Edit</button>
+                                    <button class="btn btn-default neutral" {{action "showEditProcedure" this}}>Edit</button>
                                 {{/if}}
                                 {{#if parentController.canDeleteProcedure}}
-                                    <button class="btn btn-default" {{action "showDeleteProcedure" this}}>Delete</button>
+                                    <button class="btn btn-default warning" {{action "showDeleteProcedure" this}}><span class="octicon octicon-x"></span> Delete</button>
                                 {{/if}}
                             </td>
                         </tr>
@@ -318,5 +318,6 @@
                 </table>
             </div>
         </div>
-    </div>    
+    </div>
+    {{partial 'item-charges'}}
 </div>

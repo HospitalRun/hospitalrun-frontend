@@ -1,12 +1,17 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import AddDiagnosisModel from 'hospitalrun/models/add-diagnosis';
+import ChargeActions from 'hospitalrun/mixins/charge-actions';
 import Ember from "ember";
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from "hospitalrun/mixins/user-session";
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-export default AbstractEditController.extend(PatientSubmodule, UserSession, VisitTypes, {
+export default AbstractEditController.extend(ChargeActions, PatientSubmodule, UserSession, VisitTypes, {
     needs: 'visits',
+    
+    canAddCharge: function() {        
+        return this.currentUserCan('add_charge');
+    }.property(),
 
     canAddImaging: function() {
         return this.currentUserCan('add_imaging');
@@ -58,8 +63,10 @@ export default AbstractEditController.extend(PatientSubmodule, UserSession, Visi
     
     
     cancelAction: 'returnToPatient',
+    chargeRoute: 'visits.charge',
     clinicList: Ember.computed.alias('controllers.visits.clinicList'),
     findPatientVisits: false,
+    pricingList: null, //This gets filled in by the route
     physicianList: Ember.computed.alias('controllers.visits.physicianList'),
     locationList: Ember.computed.alias('controllers.visits.locationList'),
     lookupListsToUpdate: [{

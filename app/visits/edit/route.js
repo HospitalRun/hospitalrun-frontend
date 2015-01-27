@@ -1,5 +1,6 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-export default AbstractEditRoute.extend({
+import ChargeRoute from 'hospitalrun/mixins/charge-route';
+export default AbstractEditRoute.extend(ChargeRoute, {
     editTitle: 'Edit Visit',
     modelName: 'visit',
     newTitle: 'New Visit'
