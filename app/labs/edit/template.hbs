@@ -28,8 +28,8 @@
             <p class="form-control-static">{{labType}}</p>
         </div>
         {{em-input property="result" label="Result"}}
-    {{else}}    
-        {{select-or-typeahead property="labType" label="Lab Type" list=labTypesList selection=labType }}
+    {{else}}
+        {{pricing-typeahead property="labTypeName" label="Lab Type" content=labTypesList selection=selectedLabType class="required"}} 
     {{/if}}
     {{em-text property="notes" label="Notes" rows=3 }}
     {{partial 'item-charges'}}

@@ -5,7 +5,7 @@ import PatientValidation from "hospitalrun/utils/patient-validation";
 export default AbstractModel.extend(DateFormat,{
     charges: DS.hasMany('proc-charge'),
     labDate: DS.attr('date'),
-    labType: DS.attr('string'),
+    labType: DS.belongsTo('pricing'),
     notes: DS.attr('string'),
     patient: DS.belongsTo('patient'),
     requestedBy: DS.attr('string'),

@@ -71,12 +71,6 @@ export default Ember.ArrayController.extend(InventoryTypeList, {
             inventory:  'type'
         }
     }, {
-        name: 'Lab Types',
-        value: 'lab_types',
-        models: {
-            lab: 'labType'
-        }
-    }, {
         name: 'Medication Frequency',
         value: 'medication_frequency',
         models: {

@@ -10,16 +10,33 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     canAddCharge: function() {        
         return this.currentUserCan('add_charge');
     }.property(),
-    
-    lookupListsToUpdate: [{
-        name: 'labTypesList', //Name of property containing lookup list
-        property: 'labType', //Corresponding property on model that potentially contains a new value to add to the list
-        id: 'lab_types' //Id of the lookup list to update
-    }],
 
-    labTypesList: Ember.computed.alias('controllers.labs.labTypesList'),
+    newLabType: false,
+    labTypesList: null, //This gets filled in by the route
     pricingList: null, //This gets filled in by the route
-    updateCapability: 'add_lab',
+    updateCapability: 'add_lab',    
+    
+    selectedLabTypeChanged: function() {
+        var selectedItem = this.get('selectedLabType');
+        if (!Ember.isEmpty(selectedItem)) {            
+            this.store.find('pricing', selectedItem._id.substr(8)).then(function(item) {
+                this.set('labType', item);
+            }.bind(this));
+        }
+    }.observes('selectedLabType'),
+    
+    labTypeChanged: function() {
+        var labTypeName = this.get('labTypeName'),
+            labType = this.get('labType');
+        if (!Ember.isEmpty(labType)) {
+            this.set('newLabType', false);
+            if (labType.get('name') !== labTypeName) {
+                this.set('labTypeName', labType.get('name'));
+            }
+        } else {
+            this.set('newLabType', true);
+        }
+    }.observes('labType'),    
 
     afterUpdate: function() {
         this.send(this.get('cancelAction'));
@@ -31,7 +48,25 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
             this.set('status', 'Requested');
             this.set('requestedBy', newLab.getUserName());
             this.set('requestedDate', new Date());
-            return this.addChildToVisit(newLab, 'labs', 'Lab');            
+            
+            if (this.get('newPricingItem')) {
+                return new Ember.RSVP.Promise(function(resolve, reject) {
+                    var newPricing = this.store.createRecord('pricing', {
+                        name: this.get('labTypeName'),
+                        category: 'Lab'
+                    });
+                    newPricing.save().then(function() {
+                        this.get('pricingList').addObject({
+                            _id: 'pricing_'+ newPricing.get('id'),
+                            name: newPricing.get('name')
+                        });
+                        this.set('pricingItem', newPricing);
+                        this.addChildToVisit(newLab, 'labs', 'Lab').then(resolve, reject);
+                    }.bind(this), reject);
+                }.bind(this));
+            } else {
+                return this.addChildToVisit(newLab, 'labs', 'Lab');
+            }
         } else {
             if (this.get('isCompleting')) {
                 this.set('labDate', new Date());
