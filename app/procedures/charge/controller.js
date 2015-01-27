@@ -1,15 +1,14 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import InventorySelection from 'hospitalrun/mixins/inventory-selection';
-import Ember from "ember";
+import Ember from 'ember';
 
-export default AbstractEditController.extend(InventorySelection, {
+export default AbstractEditController.extend({
     needs: ['procedures/edit'],
     cancelAction: 'closeModal',
     newPricingItem: false,
     requestingController: Ember.computed.alias('controllers.procedures/edit'),
     pricingList: Ember.computed.alias('controllers.procedures/edit.pricingList'),
     
-    updateCapability: 'add_procedure',
+    updateCapability: 'add_charge',
 
     itemChanged: function() {
         var selectedItem = this.get('selectedItem');

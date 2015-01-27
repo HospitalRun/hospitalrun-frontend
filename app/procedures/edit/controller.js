@@ -59,7 +59,32 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         this.get('model').validate();
     }.observes('billingId'),
     
-    updateCapability: 'add_procedure',    
+    updateCapability: 'add_charge',
+    
+    actions: {
+        showAddMedication: function() {
+            var newCharge = this.get('store').createRecord('proc-charge',{
+                newMedicationCharge: true,
+                quantity: 1
+            });
+            this.send('openModal','procedures.medication', newCharge);
+        },
+        
+        showEditMedication: function(charge) {
+            this.send('openModal','procedures.medication', charge);
+        },
+        
+        showDeleteMedication: function(charge) {
+            this.send('openModal', 'dialog', Ember.Object.create({
+                confirmAction: 'deleteCharge',
+                title: 'Delete Medication Used',
+                message: 'Are you sure you want to delete this medication?',
+                chargeToDelete: charge,
+                updateButtonAction: 'confirm',
+                updateButtonText: 'Ok'
+            }));                 
+        }
+    },
     
     beforeUpdate: function() {
         if (this.get('isNew')) {

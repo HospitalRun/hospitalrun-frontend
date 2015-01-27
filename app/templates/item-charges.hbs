@@ -16,20 +16,22 @@
             </tr>
             {{#with this as parentController}}
                 {{#each charges}}
-                    <tr>
-                        <td>{{pricingItem.name}}</td>
-                        <td>{{quantity}}</td>
-                        <td>
-                            {{#if parentController.canAddCharge}}
-                                <button class="btn btn-default neutral" {{action "showEditCharge" this}}>Edit</button>
-                            {{/if}}
-                            {{#if parentController.canAddCharge}}
-                                <button class="btn btn-default warning" {{action "showDeleteCharge" this bubbles=false }}>
-                                    <span class="octicon octicon-x"></span>Delete
-                                </button>
-                            {{/if}}
-                        </td>
-                    </tr>
+                    {{#unless medicationCharge}}
+                        <tr>
+                            <td>{{pricingItem.name}}</td>
+                            <td>{{quantity}}</td>
+                            <td>
+                                {{#if parentController.canAddCharge}}
+                                    <button class="btn btn-default neutral" {{action "showEditCharge" this}}>Edit</button>
+                                {{/if}}
+                                {{#if parentController.canAddCharge}}
+                                    <button class="btn btn-default warning" {{action "showDeleteCharge" this bubbles=false }}>
+                                        <span class="octicon octicon-x"></span>Delete
+                                    </button>
+                                {{/if}}
+                            </td>
+                        </tr>
+                    {{/unless}}
                 {{/each}}
             {{/with}}
         </table>

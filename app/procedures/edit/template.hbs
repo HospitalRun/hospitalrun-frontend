@@ -34,4 +34,43 @@
     </div>
     {{em-text label="Notes" property="notes" rows=3 }}
     {{partial 'item-charges'}}
+    <div class="panel detail-section">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Medication Used
+                {{#if canAddCharge}}
+                    <button class="btn btn-primary align-right" {{action "showAddMedication" bubbles=false }}><span class="octicon octicon-plus"></span>Add Medication</button>
+                {{/if}}
+            </h3>
+        </div>
+        <div class="panel-body detail-section-content">
+            <table class="table">
+                <tr class="table-header">
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
+                </tr>
+                {{#with this as parentController}}
+                    {{#each charges}}
+                        {{#if medicationCharge}}
+                            <tr>
+                                <td>{{medication.name}}</td>
+                                <td>{{quantity}}</td>
+                                <td>
+                                    {{#if parentController.canAddCharge}}
+                                        <button class="btn btn-default neutral" {{action "showEditMedication" this}}>Edit</button>
+                                    {{/if}}
+                                    {{#if parentController.canAddCharge}}
+                                        <button class="btn btn-default warning" {{action "showDeleteMedication" this bubbles=false }}>
+                                            <span class="octicon octicon-x"></span>Delete
+                                        </button>
+                                    {{/if}}
+                                </td>
+                            </tr>
+                        {{/if}}
+                    {{/each}}
+                {{/with}}
+            </table>
+        </div>
+    </div>
 {{/em-form}}
