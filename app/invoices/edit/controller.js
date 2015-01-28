@@ -18,9 +18,32 @@ export default AbstractEditController.extend(PatientSubmodule, PublishStatuses, 
             lineItems = this.get('lineItems');
         if (!Ember.isEmpty(visit) && Ember.isEmpty(lineItems)) {
             var promises = this.resolveVisitChildren();            
-            Ember.RSVP.all(promises, 'Resolved visit children before generating invoice').then(function() {
-                this._generateLineItems(visit);
-            }.bind(this));
+            Ember.RSVP.allSettled(promises, 'Resolved visit children before generating invoice').then(function(results) {
+                var chargePromises = [];
+                results.forEach(function(result) {
+                    if (!Ember.isEmpty(result.value)) {
+                        result.value.forEach(function(record) {
+                            var charges = record.get('charges');
+                            if (!Ember.isEmpty(charges)) {                            
+                                charges.forEach(function(charge) {
+                                    //Make sure charges are fully resolved (including pricingItem)
+                                    chargePromises.push(charge.reload());
+                                });
+                            }
+                        });
+                    }
+                });
+                if (!Ember.isEmpty(chargePromises)) {
+                    var promiseLabel = 'Reloaded charges before generating invoice';
+                    Ember.RSVP.allSettled(chargePromises, promiseLabel).then(function() {
+                        this._generateLineItems(visit, results);
+                    }.bind(this));
+                } else {
+                    this._generateLineItems(visit, results);
+                }
+            }.bind(this), function(err) {
+                console.log('Error resolving visit children', err);
+            });
         }
     }.observes('visit'),
     
@@ -75,14 +98,15 @@ export default AbstractEditController.extend(PatientSubmodule, PublishStatuses, 
         this.set('id',invoiceId);
         sequence.save().then(resolve, reject);
     },
-    
-    _generateLineItems: function(visit) {
+        
+    _generateLineItems: function(visit, visitChildren) {
         var endDate = visit.get('endDate'),
-            imaging = visit.get('imaging'),
-            labs = visit.get('labs'),
+            imaging = visitChildren[0].value,
+            labs = visitChildren[1].value,
+            lineItem,
             lineItems = this.get('lineItems'),
-            medication = visit.get('medication'),
-            procedures = visit.get('procedures'),
+            medication = visitChildren[2].value,
+            procedures = visitChildren[3].value,
             startDate = visit.get('startDate'),
             visitCharges = visit.get('charges');
         if (!Ember.isEmpty(endDate) && !Ember.isEmpty(startDate)) {
@@ -90,19 +114,19 @@ export default AbstractEditController.extend(PatientSubmodule, PublishStatuses, 
             startDate = moment(startDate);
             var stayDays = endDate.diff(startDate, 'days');
             if (stayDays > 1) {
-                var lineItem = this.store.createRecord('billing-line-item', {
+                lineItem = this.store.createRecord('billing-line-item', {
                     name: 'Room/Accomodation',
                     description: stayDays +' days'
                 });
                 lineItems.addObject(lineItem);
             }
         }
+        
         medication.forEach(function(medicationItem) {
             this._addPharmacyCharge(medicationItem, 'inventoryItem');
         }.bind(this));
  
-        this.set('wardCharges', visitCharges.map(this._mapWardCharge.bind(this)));
-            
+        this.set('wardCharges', visitCharges.map(this._mapWardCharge.bind(this)));            
         
         procedures.forEach(function(procedure) {
             var charges = procedure.get('charges');
@@ -116,16 +140,49 @@ export default AbstractEditController.extend(PatientSubmodule, PublishStatuses, 
         }.bind(this));
         
         labs.forEach(function(lab) {
+            if (!Ember.isEmpty(imaging.get('labType'))) {
+                this._addSupplyCharge(Ember.Object.create({
+                    pricingItem: imaging.get('labType'),
+                    quantity: 1
+                }), 'Lab');
+            }
             lab.get('charges').forEach(function(charge) {                
-                this._createChargeItem(charge, 'Lab', 'supplyTotal');
+                this._addSupplyCharge(charge, 'Lab');
             }.bind(this));
         }.bind(this));
         
         imaging.forEach(function(imaging) {
+            if (!Ember.isEmpty(imaging.get('imagingType'))) {
+                this._addSupplyCharge(Ember.Object.create({
+                    pricingItem: imaging.get('imagingType'),
+                    quantity: 1
+                }), 'Imaging');
+            }
             imaging.get('charges').forEach(function(charge) {
-                this._createChargeItem(charge, 'Imaging', 'supplyTotal');
+                this._addSupplyCharge(charge, 'Imaging');
             }.bind(this));
         }.bind(this));
+        
+        lineItem = this.store.createRecord('billing-line-item', {
+            name: 'Pharmacy',
+            originalPrice: this.get('pharmacyTotal'),
+            details: this.get('pharmacyCharges')
+        });
+        lineItems.addObject(lineItem);
+        
+        lineItem = this.store.createRecord('billing-line-item', {
+            name: 'X-ray/Lab/Supplies',
+            originalPrice: this.get('supplyTotal'),
+            details: this.get('supplyCharges')
+        });
+        lineItems.addObject(lineItem);
+        
+        lineItem = this.store.createRecord('billing-line-item', {
+            name: 'Others/Misc',
+            originalPrice: this.get('wardTotal'),
+            details: this.get('wardCharges')
+        });
+        lineItems.addObject(lineItem);
     },
     
     beforeUpdate: function() {

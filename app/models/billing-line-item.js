@@ -6,5 +6,5 @@ export default AbstractModel.extend({
     originalPrice: DS.attr('number'),
     discountPrice: DS.attr('number'),
     /*the individual objects that make up this line item*/
-    details: []
+    details: DS.attr()
 });

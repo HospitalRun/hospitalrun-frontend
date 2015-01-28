@@ -42,27 +42,35 @@
             <table class="table">
                 <tr class="table-header">
                     <th>Name</th>
-                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Charge</th>
                     <th>Action</th>
                 </tr>
-                {{#with this as parentController}}
-                    {{#each lineItems}}
+                {{#each lineItems itemController='invoices/line-item'}}
+                    <tr>
+                        <td><strong>{{name}}</strong></td>
+                        <td>{{description}}</td>
+                        <td>{{originalPrice}}</td>
+                        <td>
+                            {{#if canAddCharge}}
+                                <button class="btn btn-default neutral" {{action "showEditCharge" this}}>Edit</button>
+                            {{/if}}
+                            {{#if canAddCharge}}
+                                <button class="btn btn-default warning" {{action "showDeleteCharge" this bubbles=false }}>
+                                    <span class="octicon octicon-x"></span>Delete
+                                </button>
+                            {{/if}}
+                        </td>
+                    </tr>
+                    {{#each details}}
                         <tr>
                             <td>{{name}}</td>
-                            <td>{{description}}</td>
-                            <td>
-                                {{#if parentController.canAddCharge}}
-                                    <button class="btn btn-default neutral" {{action "showEditCharge" this}}>Edit</button>
-                                {{/if}}
-                                {{#if parentController.canAddCharge}}
-                                    <button class="btn btn-default warning" {{action "showDeleteCharge" this bubbles=false }}>
-                                        <span class="octicon octicon-x"></span>Delete
-                                    </button>
-                                {{/if}}
-                            </td>
+                            <td>{{quantity}}</td>
+                            <td>{{price}}</td>
+                            <td></td>
                         </tr>
                     {{/each}}
-                {{/with}}
+                {{/each}}
             </table>
         </div>
     </div>

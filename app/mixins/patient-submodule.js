@@ -1,6 +1,6 @@
 import Ember from "ember";
 export default Ember.Mixin.create({
-    findPatientVisits: true, //Override to false if visits shouldn't be set when patient is selected.
+    findPatientVisits: true, //Override to false if visits shouldn't be set when patient is selected.    
     
     actions: {
         returnToPatient: function() {
@@ -65,25 +65,29 @@ export default Ember.Mixin.create({
     
     patientChanged: function() {
         var maxValue = '\uffff',
-            selectedPatient = this.get('selectedPatient');
-        
+            patient = this.get('patient'),
+            patientId = 'patient_'+this.get('patientId');
+        if (!Ember.isEmpty(patient) && this.get('findPatientVisits')) {
+            this.store.find('visit', {
+                options: {
+                    startkey: [patientId,,,,'visit_'],
+                    endkey: [patientId, maxValue, maxValue, maxValue, 'visit_'+maxValue]
+                },
+                mapReduce: 'visit_by_patient'
+            }).then(function(visits) {
+                this.set('patientVisits',visits);
+            }.bind(this));
+        }
+    }.observes('patient'),
+    
+    selectedPatientChanged: function() {
+        var selectedPatient = this.get('selectedPatient');        
         if (!Ember.isEmpty(selectedPatient)) {
             this.store.find('patient', selectedPatient.id).then(function(item) {
                 this.set('patient', item);
                 Ember.run.once(this, function(){
                     this.get('model').validate();
-                });                
-                if (this.get('findPatientVisits')) {
-                    this.store.find('visit', {
-                        options: {
-                            startkey: [selectedPatient._id,,,,'visit_'],
-                            endkey: [selectedPatient._id, maxValue, maxValue, maxValue, 'visit_'+maxValue]
-                        },
-                        mapReduce: 'visit_by_patient'
-                    }).then(function(visits) {
-                        this.set('patientVisits',visits);
-                    }.bind(this));
-                }
+                });
             }.bind(this));
         }
     }.observes('selectedPatient'),
@@ -104,10 +108,11 @@ export default Ember.Mixin.create({
      * @returns {array} of promises which can be used to ensure
      * all relationships have resolved.
      */
-    resolveVisitChildren: function() {
+    resolveVisitChildren: function() {        
         var promises = [],
             visit = this.get('visit');
         if (!Ember.isEmpty(visit)) {
+            console.log("HEY RESOLVING VISIT CHILDREN");
             //Make sure all the async relationships are resolved    
             promises.push(visit.get('imaging'));
             promises.push(visit.get('labs'));
@@ -116,8 +121,12 @@ export default Ember.Mixin.create({
             promises.push(visit.get('vitals'));            
         }
         return promises;
-    }.observes('visit'),    
+    },
 
+    visitChanged: function() {
+        this.resolveVisitChildren();
+    }.observes('visit'),
+    
     visitIdChanged: function() {
         var visitId = this.get('visitId');
         if (!Ember.isEmpty(visitId)) {
