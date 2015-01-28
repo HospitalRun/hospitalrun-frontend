@@ -158,7 +158,7 @@
                     {{#each labs itemController="labs/item-controller"}}
                         <tr {{action "editLab" this}}>
                             <td>{{date-format requestedDate}}</td>
-                            <td>{{labType}}</td>
+                            <td>{{labType.name}}</td>
                             <td>{{status}}</td>
                             <td>{{date-format labDate}}</td>
                             <td>{{result}}</td>
@@ -207,7 +207,7 @@
                     {{#each imaging itemController="imaging/item-controller"}}
                         <tr {{action "editImaging" this}}>
                             <td>{{date-format requestedDate}}</td>
-                            <td>{{imagingType}}</td>
+                            <td>{{imagingType.name}}</td>
                             <td>{{status}}</td>
                             <td>{{date-format imagingDate}}</td>
                             <td>{{result}}</td>
