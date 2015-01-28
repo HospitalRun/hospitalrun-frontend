@@ -14,7 +14,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     newLabType: false,
     labTypesList: null, //This gets filled in by the route
     pricingList: null, //This gets filled in by the route
-    updateCapability: 'add_lab',    
+    updateCapability: 'add_lab',
     
     selectedLabTypeChanged: function() {
         var selectedItem = this.get('selectedLabType');
@@ -49,7 +49,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
             this.set('requestedBy', newLab.getUserName());
             this.set('requestedDate', new Date());
             
-            if (this.get('newPricingItem')) {
+            if (this.get('newLabType')) {
                 return new Ember.RSVP.Promise(function(resolve, reject) {
                     var newPricing = this.store.createRecord('pricing', {
                         name: this.get('labTypeName'),
@@ -60,7 +60,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
                             _id: 'pricing_'+ newPricing.get('id'),
                             name: newPricing.get('name')
                         });
-                        this.set('pricingItem', newPricing);
+                        this.set('labType', newPricing);
                         this.addChildToVisit(newLab, 'labs', 'Lab').then(resolve, reject);
                     }.bind(this), reject);
                 }.bind(this));

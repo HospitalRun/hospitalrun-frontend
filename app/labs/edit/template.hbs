@@ -1,7 +1,7 @@
 {{#em-form model=this submit_button=false }}
     <div class="row">
         {{#if selectPatient}}
-            {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-3"}}
+            {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-3 required"}}
         {{else}}
             <div class="form-group col-xs-3">
                 <label>Patient</label>
@@ -14,7 +14,7 @@
                 <p class="form-control-static">{{visit.visitDate}}</p>
             </div>        
         {{else}}
-            {{em-select class="col-xs-3" label="Visit" 
+            {{em-select class="col-xs-3 required" label="Visit" 
                 property="visit" content=patientVisits
                 optionValuePath="content" optionLabelPath="content.visitDescription"
                 prompt="--Add New Visit--"
@@ -25,7 +25,7 @@
     {{#if isCompleting}}
         <div class="form-group">
             <label>Lab Type</label>
-            <p class="form-control-static">{{labType}}</p>
+            <p class="form-control-static">{{labType.name}}</p>
         </div>
         {{em-input property="result" label="Result"}}
     {{else}}
