@@ -34,12 +34,6 @@ export default Ember.ArrayController.extend(InventoryTypeList, {
             'inv-request':  'expenseAccount'
         }
     }, {
-        name: 'Imaging Types',
-        value: 'imaging_types',
-        models: {
-            imaging: 'imagingType'
-        }
-    }, {
         name: 'Inventory Aisle Locations',
         value: 'aisle_location_list',
         models: {

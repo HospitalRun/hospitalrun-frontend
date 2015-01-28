@@ -10,16 +10,33 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     canAddCharge: function() {        
         return this.currentUserCan('add_charge');
     }.property(),
-    
-    lookupListsToUpdate: [{
-        name: 'imagingTypesList', //Name of property containing lookup list
-        property: 'imagingType', //Corresponding property on model that potentially contains a new value to add to the list
-        id: 'imaging_types' //Id of the lookup list to update
-    }],
 
-    imagingTypesList: Ember.computed.alias('controllers.imaging.imagingTypesList'),
+    newImagingType: false,
+    imagingTypesList: null, //This gets filled in by the route
     pricingList: null, //This gets filled in by the route
     updateCapability: 'add_imaging',
+    
+    selectedImagingTypeChangeds: function() {
+        var selectedItem = this.get('selectedImagingType');
+        if (!Ember.isEmpty(selectedItem)) {            
+            this.store.find('pricing', selectedItem._id.substr(8)).then(function(item) {
+                this.set('imagingType', item);
+            }.bind(this));
+        }
+    }.observes('selectedImagingType'),
+    
+    imagingTypeChanged: function() {
+        var imagingTypeName = this.get('imagingTypeName'),
+            imagingType = this.get('imagingType');
+        if (!Ember.isEmpty(imagingType)) {
+            this.set('newImagingType', false);
+            if (imagingType.get('name') !== imagingTypeName) {
+                this.set('imagingTypeName', imagingType.get('name'));
+            }
+        } else {
+            this.set('newImagingType', true);
+        }
+    }.observes('imagingType'),    
 
     afterUpdate: function() {
         this.send(this.get('cancelAction'));
@@ -30,8 +47,25 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
             var newImaging = this.get('model');
             this.set('status', 'Requested');
             this.set('requestedBy', newImaging.getUserName());
-            this.set('requestedDate', new Date());
-            return this.addChildToVisit(newImaging, 'imaging', 'Imaging');    
+            this.set('requestedDate', new Date());            
+            if (this.get('newImagingType')) {
+                return new Ember.RSVP.Promise(function(resolve, reject) {
+                    var newPricing = this.store.createRecord('pricing', {
+                        name: this.get('imagingTypeName'),
+                        category: 'Imaging'
+                    });
+                    newPricing.save().then(function() {
+                        this.get('pricingList').addObject({
+                            _id: 'pricing_'+ newPricing.get('id'),
+                            name: newPricing.get('name')
+                        });
+                        this.set('imagingType', newPricing);
+                        this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(resolve, reject);
+                    }.bind(this), reject);
+                }.bind(this));
+            } else {
+                return this.addChildToVisit(newImaging, 'imaging', 'Imaging');
+            }
         } else {
             if (this.get('isCompleting')) {
                 this.set('imagingDate', new Date());
