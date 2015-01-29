@@ -112,7 +112,6 @@ export default Ember.Mixin.create({
         var promises = [],
             visit = this.get('visit');
         if (!Ember.isEmpty(visit)) {
-            console.log("HEY RESOLVING VISIT CHILDREN");
             //Make sure all the async relationships are resolved    
             promises.push(visit.get('imaging'));
             promises.push(visit.get('labs'));
