@@ -7,5 +7,11 @@ export default AbstractModuleRoute.extend({
     newTitle: 'New Invoice',
     moduleName: 'invoices',
     newButtonText: '+ new invoice',
-    sectionTitle: 'Invoices'
+    sectionTitle: 'Invoices',
+    
+    additionalModels: [{ 
+        name: 'billingCategoryList',
+        findArgs: ['lookup','billing_categories']
+    }]
+    
 });
