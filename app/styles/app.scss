@@ -480,6 +480,11 @@ h1 {
   color:red;
 }
 
+.input-group-addon {
+    border: 0;
+    background-color: white;
+}
+
 //Loading icon from http://www.bootply.com/128062
 .glyphicon-refresh-animate {
     -animation: spin .7s infinite linear;
