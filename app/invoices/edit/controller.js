@@ -1,9 +1,10 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
+import NumberFormat from "hospitalrun/mixins/number-format";
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PublishStatuses from 'hospitalrun/mixins/publish-statuses';
 
-export default AbstractEditController.extend(PatientSubmodule, PublishStatuses, {
+export default AbstractEditController.extend(NumberFormat, PatientSubmodule, PublishStatuses, {
     needs: ['pouchdb'],
     pharmacyCharges: [],
     pharmacyTotal: 0,
@@ -12,6 +13,66 @@ export default AbstractEditController.extend(PatientSubmodule, PublishStatuses, 
     updateCapability: 'add_invoice',
     wardCharges: [],
     wardTotal: 0,
+    
+    canAddCharge: function() {        
+        return this.currentUserCan('add_charge');
+    }.property(),
+    
+    actions: {
+        addLineItem: function(lineItem) {
+            var lineItems = this.get('lineItems');
+            lineItems.addObject(lineItem);
+            this.send('update', true);
+            this.send('closeModal');            
+        },
+        
+        deleteCharge: function(deleteInfo) {
+            deleteInfo.deleteFrom.removeObject(deleteInfo.itemToDelete);
+            this.send('update', true);
+            this.send('closeModal');
+        },        
+        
+        deleteLineItem: function(deleteInfo) {
+            var lineItems = this.get('lineItems');
+            lineItems.removeObject(deleteInfo.itemToDelete);
+            deleteInfo.itemToDelete.destroyRecord();
+            this.send('update', true);
+            this.send('closeModal');
+        },
+        
+        showAddLineItem: function() {
+            var newLineItem = this.store.createRecord('billing-line-item', {});
+            this.send('openModal','invoices.add-line-item', newLineItem);
+        },
+    },
+    
+    lineItemsByCategory: function() {
+        var lineItems = this.get('lineItems'),
+            byCategory = [];
+        lineItems.forEach(function(lineItem) {
+            var category = lineItem.get('category'),
+                categoryList = byCategory.findBy('category', category);
+            if (Ember.isEmpty(categoryList)) {
+                categoryList = {
+                    amountOwed: 0,
+                    category: category,
+                    discount: 0,
+                    items: [],
+                    nationalInsurance: 0,
+                    privateInsurance: 0,
+                    total: 0
+                };                
+                byCategory.push(categoryList);
+            }
+            categoryList.amountOwed += this._getValidNumber(lineItem.get('amountOwed'));
+            categoryList.discount += this._getValidNumber(lineItem.get('discount'));
+            categoryList.nationalInsurance += this._getValidNumber(lineItem.get('nationalInsurance'));
+            categoryList.privateInsurance += this._getValidNumber(lineItem.get('privateInsurance'));
+            categoryList.total += this._getValidNumber(lineItem.get('total'));
+            categoryList.items.push(lineItem);
+        }.bind(this));
+        return byCategory;        
+    }.property('lineItems.@each.amountOwed'),
     
     visitChanged: function() {
         var visit = this.get('visit'),
@@ -57,8 +118,8 @@ export default AbstractEditController.extend(PatientSubmodule, PublishStatuses, 
                 department: 'Pharmacy'
             };
         pharmacyCharges.addObject(pharmacyCharge);
-        if (pharmacyCharge.price && isNaN(pharmacyCharge.price)) {
-            this.incrementProperty('pharmacyTotal', pharmacyCharge.price);
+        if (pharmacyCharge.price && !isNaN(pharmacyCharge.price)) {
+            this.incrementProperty('pharmacyTotal', (pharmacyCharge.price * pharmacyCharge.quantity));
         }
     },
     
@@ -75,8 +136,8 @@ export default AbstractEditController.extend(PatientSubmodule, PublishStatuses, 
                 price: charge.get('pricingItem.price'),
                 department: department
             };        
-        if (chargeItem.price && isNaN(chargeItem.price)) {
-            this.incrementProperty(totalProperty, chargeItem.price);
+        if (chargeItem.price && !isNaN(chargeItem.price)) {
+            this.incrementProperty(totalProperty, (chargeItem.price * chargeItem.quantity));
         }
         return chargeItem;
     },
@@ -115,9 +176,14 @@ export default AbstractEditController.extend(PatientSubmodule, PublishStatuses, 
             var stayDays = endDate.diff(startDate, 'days');
             if (stayDays > 1) {
                 lineItem = this.store.createRecord('billing-line-item', {
+                    category: 'Hospital Charges',
                     name: 'Room/Accomodation',
-                    description: stayDays +' days'
+                    details: [{
+                        name: 'Days',
+                        quantity: stayDays
+                    }]
                 });
+                lineItem.save();
                 lineItems.addObject(lineItem);
             }
         }
@@ -165,24 +231,31 @@ export default AbstractEditController.extend(PatientSubmodule, PublishStatuses, 
         
         lineItem = this.store.createRecord('billing-line-item', {
             name: 'Pharmacy',
-            originalPrice: this.get('pharmacyTotal'),
+            category: 'Hospital Charges',
+            total: this.get('pharmacyTotal'),
             details: this.get('pharmacyCharges')
         });
+        lineItem.save();
         lineItems.addObject(lineItem);
         
         lineItem = this.store.createRecord('billing-line-item', {
             name: 'X-ray/Lab/Supplies',
-            originalPrice: this.get('supplyTotal'),
+            category: 'Hospital Charges',
+            total: this.get('supplyTotal'),
             details: this.get('supplyCharges')
         });
+        lineItem.save();
         lineItems.addObject(lineItem);
         
         lineItem = this.store.createRecord('billing-line-item', {
             name: 'Others/Misc',
-            originalPrice: this.get('wardTotal'),
+            category: 'Hospital Charges',
+            total: this.get('wardTotal'),
             details: this.get('wardCharges')
         });
+        lineItem.save();
         lineItems.addObject(lineItem);
+        this.send('update', true);
     },
     
     beforeUpdate: function() {

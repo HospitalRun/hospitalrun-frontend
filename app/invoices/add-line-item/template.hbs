@@ -1,0 +1,15 @@
+{{#em-form model=this submit_button=false }}
+    {{em-input property="name" label="Name" class="required"}}
+    {{select-or-typeahead property="category" class="required"
+        label="Category" list=billingCategories
+        selection=category        
+    }}
+    <div class="row">
+        {{em-input property="total" label="Total" class="col-xs-6"}}
+        {{em-input property="discount" label="Discount" class="col-xs-6"}}
+    </div>
+    <div class="row">
+        {{em-input property="nationalInsurance" label="National Insurance" class="col-xs-6"}}
+        {{em-input property="privateInsurance" label="Private Insurance" class="col-xs-6"}}
+    </div>
+{{/em-form}}
