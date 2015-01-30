@@ -1,8 +1,9 @@
 import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
 import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
+import NumberFormat from "hospitalrun/mixins/number-format";
 import ProgressDialog from "hospitalrun/mixins/progress-dialog";
-export default AbstractReportController.extend(LocationName, ProgressDialog, {
+export default AbstractReportController.extend(LocationName, NumberFormat, ProgressDialog, {
     needs: ['pouchdb'],
     effectiveDate: null,
     progressMessage: 'Please wait while your report is generated.',
@@ -711,19 +712,6 @@ export default AbstractReportController.extend(LocationName, ProgressDialog, {
                 resolve(inventoryMap);
             }, reject);
         });
-    },
-    
-    /**
-     * Determine if number passed in is actually a number.  If it is, return the number; otherwise return 0.
-     * @param number the number to valdiate.
-     * @returns number a valid number.
-     */
-    _getValidNumber: function(number) {
-        if (isNaN(number)) {
-            return 0;
-        } else {
-            return number;
-        }
     },
     
     _setReportTitle: function() {
