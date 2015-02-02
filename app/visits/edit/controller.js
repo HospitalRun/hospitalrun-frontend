@@ -84,6 +84,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     }],
     
     newVisit: false,
+    visitStatuses: [
+        'Admitted',
+        'Discharged'
+    ],
 
     updateCapability: 'add_visit',
 

@@ -14,11 +14,13 @@ export default AbstractModel.extend({
     location: DS.attr('string'),
     medication: DS.hasMany('medication', {async: true}),
     notes: DS.attr('string'),
+    outPatient: DS.attr('boolean'),
     patient: DS.belongsTo('patient'),
     primaryDiagnosis: DS.attr('string'),
     primaryDiagnosisId: DS.attr('string'),
     procedures: DS.hasMany('procedure', {async: true}),
     startDate:  DS.attr('date'),
+    status: DS.attr('string'),
     visitType: DS.attr(),        
     vitals: DS.hasMany('vital', {async: true}),
     
