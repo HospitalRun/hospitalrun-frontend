@@ -2,12 +2,9 @@ import AbstractReportController from 'hospitalrun/controllers/abstract-report-co
 import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
 import NumberFormat from "hospitalrun/mixins/number-format";
-import ProgressDialog from "hospitalrun/mixins/progress-dialog";
-export default AbstractReportController.extend(LocationName, NumberFormat, ProgressDialog, {
+export default AbstractReportController.extend(LocationName, NumberFormat, {
     needs: ['pouchdb'],
     effectiveDate: null,
-    progressMessage: 'Please wait while your report is generated.',
-    progressTitle: 'Generating Report',
     pouchdbController: Ember.computed.alias('controllers.pouchdb'),
     reportColumns: {
         date: {

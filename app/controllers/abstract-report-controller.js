@@ -1,7 +1,10 @@
 import Ember from "ember";
 import DateFormat from 'hospitalrun/mixins/date-format';
 import NumberFormat from 'hospitalrun/mixins/number-format';
-export default Ember.ArrayController.extend(DateFormat, NumberFormat, {
+import ProgressDialog from "hospitalrun/mixins/progress-dialog";
+export default Ember.ArrayController.extend(DateFormat, NumberFormat, ProgressDialog, {
+    progressMessage: 'Please wait while your report is generated.',
+    progressTitle: 'Generating Report',
     reportColumns: null,
     reportRows: [],
     reportTitle: null,
