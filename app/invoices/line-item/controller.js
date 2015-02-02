@@ -1,7 +1,6 @@
 import Ember from 'ember';
-export default Ember.ObjectController.extend({
-    showDetails: false,
-    
+import NumberFormat from "hospitalrun/mixins/number-format";
+export default Ember.ObjectController.extend(NumberFormat, {
     canAddCharge: function() {
         return this.parentController.get('canAddCharge');
     }.property(),
@@ -20,7 +19,7 @@ export default Ember.ObjectController.extend({
                     priceTotal += (detail.price * detail.quantity);
                 }
             }.bind(this));
-            this.set('total', priceTotal);
+            this.set('total', this._numberFormat(priceTotal, true));
         }
     },
     

@@ -54,22 +54,19 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
                 categoryList = byCategory.findBy('category', category);
             if (Ember.isEmpty(categoryList)) {
                 categoryList = {
-                    amountOwed: 0,
                     category: category,
-                    discount: 0,
                     items: [],
-                    nationalInsurance: 0,
-                    privateInsurance: 0,
-                    total: 0
                 };                
                 byCategory.push(categoryList);
             }
-            categoryList.amountOwed += this._getValidNumber(lineItem.get('amountOwed'));
-            categoryList.discount += this._getValidNumber(lineItem.get('discount'));
-            categoryList.nationalInsurance += this._getValidNumber(lineItem.get('nationalInsurance'));
-            categoryList.privateInsurance += this._getValidNumber(lineItem.get('privateInsurance'));
-            categoryList.total += this._getValidNumber(lineItem.get('total'));
             categoryList.items.push(lineItem);
+        }.bind(this));
+        byCategory.forEach(function(categoryList) {
+            categoryList.amountOwed = this._calculateTotal(categoryList.items, 'amountOwed');
+            categoryList.discount = this._calculateTotal(categoryList.items, 'discount');
+            categoryList.nationalInsurance = this._calculateTotal(categoryList.items, 'nationalInsurance');
+            categoryList.privateInsurance = this._calculateTotal(categoryList.items, 'privateInsurance');
+            categoryList.total = this._calculateTotal(categoryList.items, 'total');
         }.bind(this));
         return byCategory;        
     }.property('lineItems.@each.amountOwed'),
