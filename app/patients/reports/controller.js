@@ -91,6 +91,25 @@ export default AbstractReportController.extend(VisitTypes, {
         },
     },
     reportTypes: [{
+        name: 'Admissions',
+        value: 'admissions'
+
+    }, {
+        name: 'Average Daily Census',
+        value: 'dailyCensus'
+
+    }, {
+        name: 'Average Length of Stay',
+        value: 'lengthOfStay'
+
+    }, {
+        name: 'Average Length of Stay',
+        value: 'lengthOfStay'
+
+    }, {
+        name: 'Surgeries',
+        value: 'surgeries'
+    }, {
         name: 'Visit',
         value: 'visit'
     }],
@@ -143,26 +162,28 @@ export default AbstractReportController.extend(VisitTypes, {
     },
     
     /**
-     * Filter the records by the specified dates and the record's start and (optional) end dates.
+     * Find visits by the specified dates and the record's start and (optional) end dates.
      * @param {Array} records to filter.
      */
-    _filterByDate: function(records) {
+    _findVisitsByDate: function() {        
         var filterEndDate = this.get('endDate'),
-            filterStartDate = this.get('startDate');
-        if (Ember.isEmpty(filterStartDate)) {
-            return records;
-        }
-        return records.filter(function(record) {
-            var recordEndDate,
-                recordStartDate = moment(record.get('startDate'));
-            if (!Ember.isEmpty(record.get('endDate'))) {
-                recordEndDate = moment(record.get('endDate'));
+            filterStartDate = this.get('startDate'),
+            findParams = {
+                options: {},
+                mapReduce: 'visit_by_date'
+            },
+            maxValue = '\uffff';
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            if (Ember.isEmpty(filterStartDate)) {
+                reject();
             }
-            return (recordStartDate.isSame(filterStartDate, 'day') || 
-                    recordStartDate.isAfter(filterStartDate, 'day')) && 
-                (Ember.isEmpty(recordEndDate) || Ember.isEmpty(filterEndDate) || 
-                 recordEndDate.isSame(filterEndDate, 'day') || recordEndDate.isBefore(filterEndDate, 'day'));
-        });
+            findParams.options.startkey =  [filterStartDate.getTime(),];
+            if (!Ember.isEmpty(filterEndDate)) {
+                findParams.options.endkey =  [filterEndDate.getTime(), maxValue];    
+            }
+            this.store.find('visit', findParams).then(resolve, reject);
+            
+        }.bind(this));
     },
     
     _filterByLike: function(records, field, likeCondition) {
@@ -191,6 +212,7 @@ export default AbstractReportController.extend(VisitTypes, {
         this._setReportHeaders();
         this._setReportTitle();
         this._generateExport();
+        this.closeProgressModal();
     },
     
     _generateVisitReport: function() {
@@ -198,35 +220,36 @@ export default AbstractReportController.extend(VisitTypes, {
             visitFilters = this.getProperties(
                 'examiner','visitDate','visitType','location','clinic',
                 'primaryDiagnosis','secondaryDiagnosis'
-            ),
-            visits = this.get('model');
-        visits = this._filterByDate(visits);
-        for (var filter in visitFilters) {
-            if (!Ember.isEmpty(visitFilters[filter])) {
-                switch (filter) {
-                    case 'diagnosis': {
-                        visits = this._filterByLike(visits, 'diagnosisList',  visitFilters[filter]);
-                        break;
-                    }
-                    default: {
-                        visits = visits.filterBy(filter, visitFilters[filter]);
-                        break;
+            );
+        this._findVisitsByDate().then(function(visits) {
+            for (var filter in visitFilters) {
+                if (!Ember.isEmpty(visitFilters[filter])) {
+                    switch (filter) {
+                        case 'diagnosis': {
+                            visits = this._filterByLike(visits, 'diagnosisList',  visitFilters[filter]);
+                            break;
+                        }
+                        default: {
+                            visits = visits.filterBy(filter, visitFilters[filter]);
+                            break;
+                        }
                     }
                 }
             }
-        }
-        
-        if (reportColumns.procedures.include) {
-            var promises = [];
-            visits.forEach(function(visit) {
-                promises.push(visit.get('procedures'));
-            });
-            Ember.RSVP.all(promises).then(function() {
-                this._finishVisitReport(visits);    
-            }.bind(this));
-        } else {
-            this._finishVisitReport(visits);
-        }
+            if (reportColumns.procedures.include) {
+                var promises = [];
+                visits.forEach(function(visit) {
+                    promises.push(visit.get('procedures'));
+                });
+                Ember.RSVP.all(promises).then(function() {
+                    this._finishVisitReport(visits);    
+                }.bind(this));
+            } else {
+                this._finishVisitReport(visits);
+            }
+        }.bind(this), function() {
+            this.closeProgressModal();
+        }.bind(this));
     },
     
     _haveLikeValue: function(valueToCompare, likeCondition) {
@@ -271,10 +294,11 @@ export default AbstractReportController.extend(VisitTypes, {
         generateReport: function() {
             var reportRows = this.get('reportRows'),
                 reportType = this.get('reportType');
-            reportRows.clear();            
+            reportRows.clear();
+            this.showProgressModal();
             switch (reportType) {
                 case 'visit': {
-                    this._generateVisitReport();
+                    this._generateVisitReport(reportType);
                     break;                    
                 }
             }

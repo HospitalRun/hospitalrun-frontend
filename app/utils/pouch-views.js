@@ -237,6 +237,31 @@ function sequenceByPrefix(doc) {
     
 }
 
+function visitByDate(doc) {
+    var doctype,
+        uidx;
+    if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+        doctype = doc._id.substring(0, uidx);
+        if(doctype === 'visit') {
+            var endDate = doc.endDate,
+                startDate = doc.startDate;
+            if (endDate && endDate !== '') {
+                endDate = new Date(endDate);
+                if (endDate.getTime) {
+                    endDate = endDate.getTime();
+                }
+            }
+            if (startDate && startDate !== '') {
+                startDate = new Date(startDate);
+                if (startDate.getTime) {
+                    startDate = startDate.getTime(); 
+                }
+            }
+            emit([startDate, endDate, doc._id]);
+        }
+    }
+}
+
 function visitByPatient(doc) {
     var doctype,
         uidx;
@@ -298,6 +323,9 @@ var designDocs = [{
 }, {
     name: 'sequence_by_prefix',
     function: sequenceByPrefix
+}, , {
+    name: 'visit_by_date',
+    function: visitByDate
 }, {
     name: 'visit_by_patient',
     function: visitByPatient
