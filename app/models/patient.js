@@ -38,7 +38,21 @@ export default AbstractModel.extend(DOBDays, PatientName, {
         var dob = this.get('dateOfBirth');
         return this.convertDOBToText(dob);
     }.property('dateOfBirth'),
-
+    
+    displayAddress: function() {
+        var addressFields = this.getProperties('address', 'address2', 'address3', 'address4'),
+            displayAddress = '';
+        for (var prop in addressFields) {
+            if (!Ember.isEmpty(addressFields[prop])) {
+                if (!Ember.isEmpty(displayAddress)) {
+                    displayAddress += ', ';
+                }
+                displayAddress += addressFields[prop];
+            }
+        }
+        return displayAddress;
+    }.property('address', 'address2', 'address3', 'address4'),
+    
     displayName: function() {
         return this.getPatientDisplayName(this);
     }.property('firstName', 'lastName'),
