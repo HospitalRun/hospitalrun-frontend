@@ -1,0 +1,131 @@
+<div class="panel panel-primary">
+    <div class="panel-body">
+        <h5 class="text-center">
+            TEBOW CURE HOSPITAL
+        </h5>
+        <p class="text-center">J.P. Laurel Ave. corner Banawe St. Brgy Aquino Davao City, Philippines</p>
+        <p class="text-center">Telephone: (082) 300-5345    Email: info@tebowcure.org</p>
+        <h5 class="text-center">
+            PATIENT'S
+        </h5>
+        <h5 class="text-center">
+            BILLING STATEMENT
+        </h5>
+        <table>
+            <tr>
+                <td colspan="2" class="col-xs-8">
+                    NAME OF PATIENT: {{patient.displayName}}
+                </td>
+                <td class="col-xs-4">
+                    PATIENT #:{{patient.displayPatientId}}
+                </td>
+            </tr>
+            <tr>
+                <td class="col-xs-5">
+                    AGE: {{patient.age}} 
+                </td>
+                <td class="col-xs-3">
+                    ADMITTED: {{date-format visit.startDate}}
+                </td>
+                <td class="col-xs-4"></td>
+            </tr>
+            <tr>
+                <td class="col-xs-5"></td>
+                <td class="col-xs-3">DISCHARGE: {{date-format visit.endDate}}</td>
+                <td class="col-xs-4"></td>
+            </tr>
+            <tr>
+                <td colspan="3" class="col-xs-12">
+                    ADDRESS: {{patient.displayAddress}}
+                </td>
+            </tr>
+        </table>
+        <table class="table">
+            <tr class="table-header">
+                <th>Description</th>
+                <th>Actual Charges</th>
+                <th>Discount</th>
+                <th>PhilHealth</th>
+                <th>HMO/COM</th>
+                <th>Excess</th>
+            </tr>
+            {{#each lineItemsByCategory}} 
+                <tr>
+                    <td colspan="6">
+                        <strong>{{category}}</strong>
+                    </td>
+                </tr>
+                {{#each items itemController='invoices/line-item'}}        
+                    <tr>
+                        <td>
+                            {{name}}
+                        </td>
+                        <td>
+                            {{tota}}                    
+                        </td>
+                        <td>
+                            {{discount}}
+                        </td>
+                        <td>
+                            {{nationalInsurance}}
+                        </td>
+                        <td>
+                            {{privateInsurance}}
+                        </td>
+                        <td>{{amountOwed}}</td>
+                    </tr>
+                {{/each}}
+                <tr>
+                    <td><strong>Total {{category}}</strong></td>
+                    <td><strong>{{total}}</strong></td>
+                    <td><strong>{{discount}}</strong></td>
+                    <td><strong>{{nationalInsurance}}</strong></td>
+                    <td><strong>{{privateInsurance}}</strong></td>
+                    <td><strong>{{amountOwed }}</strong></td>
+                </tr>
+            {{/each}}
+             <tr>
+                <td><strong>Total</strong></td>
+                <td><strong>{{total}}</strong></td>
+                <td><strong>{{discount}}</strong></td>
+                <td><strong>{{nationalInsurance}}</strong></td>
+                <td><strong>{{privateInsurance}}</strong></td>
+                <td><strong>{{amountOwed }}</strong></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td class="col-xs-7">
+                    Remarks: {{visit.dischargeInfo}}
+                </td>
+                <td class="col-xs-5">
+                    I hereby acknowledge PHIC benefits
+                </td>
+            </tr>  
+            <tr>
+                <td class="col-xs-7"></td>
+                <td class="col-xs-5">were deducted during my confinement</td>
+            </tr>
+            <tr>
+                <td class="col-xs-8">Billed by: {{modifiedBy}}</td>
+                <td class="col-xs-4">__________________________________________</td>
+            </tr>
+            <tr>
+                <td class="col-xs-8">Bill Date: {{date-format billDate}}</td>
+                <td class="text-center col-xs-4">Patient-Member</td>
+            </tr>
+            <tr>
+                <td class="col-xs-8"></td>
+                <td class="col-xs-4">__________________________________________</td>
+            </tr>  
+            <tr>
+                <td class="col-xs-8">Certified Correct by: Leron L. Lehman- Executive Director</td>
+                <td class="text-center col-xs-4">Relationship/Contact no.</td>
+            </tr>  
+
+        </table>
+    </div>
+    <div class="panel-footer">
+        {{#link-to 'invoices.edit' this class="btn btn-default warning" }}Return{{/link-to}}
+    </div>
+</div>

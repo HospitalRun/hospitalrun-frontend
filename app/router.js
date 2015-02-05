@@ -65,6 +65,10 @@ Router.map(function() {
         this.route('reports');
         this.route('search', { path: "/search/:search_text" });
     });
+
+    this.resource('print', function() {
+        this.route('invoice', { path: "/invoice/:invoice_id" });
+    });
         
     this.resource('visits', function() {
         this.route('edit', { path: "/edit/:visit_id" });

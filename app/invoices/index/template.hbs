@@ -14,8 +14,8 @@
             {{#each}}
                 <tr {{action 'editItem' this}}>
                     <td>{{displayInvoiceNumber}}</td>
-                    <td>{{patient.displayName}} [{{patient.displayPatientId}}]<br>{{visit.primaryDiagnosis}}</td>
-                    <td>{{discountTotal}} [{{originalTotal}}]</td>
+                    <td>{{patient.displayName}} - {{patient.displayPatientId}} <br>{{visit.primaryDiagnosis}}</td>
+                    <td>{{total}}</td>
                     <td>{{status}}</td>
                     <td>{{date-format billDate}}</td>
                     {{#if parentController.showActions}}
@@ -25,8 +25,9 @@
                             {{/if}}
                             {{#if parentController.canDelete}}
                                 <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                            {{/if}}
+                            {{/if}}                                                   
                         </td>
+                    
                     {{/if}}
                 </tr>            
             {{/each}}

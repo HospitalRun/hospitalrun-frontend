@@ -13,5 +13,13 @@
                 <button class="btn btn-default warning" {{action "cancel"}}>Cancel</button>
             {{/if}}
         {{/unless}}
+        {{#each additionalButtons}}
+            <button {{bind-attr class="class"}} {{action buttonAction}}>
+                {{#if buttonIcon}}
+                    <span {{bind-attr class="buttonIcon"}}></span> 
+                {{/if}}
+                {{buttonText}}
+            </button>
+        {{/each}}
     </div>
 </div>

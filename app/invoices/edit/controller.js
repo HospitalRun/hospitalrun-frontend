@@ -6,6 +6,12 @@ import PublishStatuses from 'hospitalrun/mixins/publish-statuses';
 
 export default AbstractEditController.extend(NumberFormat, PatientSubmodule, PublishStatuses, {
     needs: ['pouchdb'],
+    additionalButtons: [{
+        class: 'btn btn-default neutral',
+        buttonAction: 'printInvoice',
+        buttonIcon: 'glyphicon glyphicon-print',
+        buttonText: 'Print'
+    }],
     pharmacyCharges: [],
     pharmacyTotal: 0,
     supplyCharges: [],
@@ -39,37 +45,16 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
             this.send('update', true);
             this.send('closeModal');
         },
-        
+             
+        printInvoice: function() {        
+            this.transitionToRoute('print.invoice', this.get('model'));
+        },        
+
         showAddLineItem: function() {
             var newLineItem = this.store.createRecord('billing-line-item', {});
             this.send('openModal','invoices.add-line-item', newLineItem);
-        },
+        }
     },
-    
-    lineItemsByCategory: function() {
-        var lineItems = this.get('lineItems'),
-            byCategory = [];
-        lineItems.forEach(function(lineItem) {
-            var category = lineItem.get('category'),
-                categoryList = byCategory.findBy('category', category);
-            if (Ember.isEmpty(categoryList)) {
-                categoryList = {
-                    category: category,
-                    items: [],
-                };                
-                byCategory.push(categoryList);
-            }
-            categoryList.items.push(lineItem);
-        }.bind(this));
-        byCategory.forEach(function(categoryList) {
-            categoryList.amountOwed = this._calculateTotal(categoryList.items, 'amountOwed');
-            categoryList.discount = this._calculateTotal(categoryList.items, 'discount');
-            categoryList.nationalInsurance = this._calculateTotal(categoryList.items, 'nationalInsurance');
-            categoryList.privateInsurance = this._calculateTotal(categoryList.items, 'privateInsurance');
-            categoryList.total = this._calculateTotal(categoryList.items, 'total');
-        }.bind(this));
-        return byCategory;        
-    }.property('lineItems.@each.amountOwed'),
     
     visitChanged: function() {
         var visit = this.get('visit'),

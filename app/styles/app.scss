@@ -500,3 +500,12 @@ h1 {
     from { transform: scale(1) rotate(0deg);}
     to { transform: scale(1) rotate(360deg);}
 }
+
+@media print {
+    body {
+        font-size: 10px;
+    }
+    .panel-footer {
+        display: none;
+    }
+}

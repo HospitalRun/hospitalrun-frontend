@@ -55,12 +55,12 @@
                 {{#each lineItemsByCategory}} 
                     <tr>
                         <td colspan="7">
-                            <h3>{{category}}</h3>
+                            <strong>{{category}}</strong>
                         </td>
                     </tr>
                     {{#each items itemController='invoices/line-item'}}
                         <tr>
-                            <td class="col-xs-3">
+                            <td class="col-xs-5">
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span {{bind-attr class=":input-group-addon :glyphicon showDetails:glyphicon-minus:glyphicon-plus"}} 
@@ -90,7 +90,7 @@
                                 </div>
                             </td>
                             <td class="col-xs-1">{{amountOwed}}</td>
-                            <td class="col-xs-4">
+                            <td class="col-xs-2">
                                 {{#if canAddCharge}}     
                                     <button class="btn btn-default warning" {{action "showDeleteLineItem" this bubbles=false }}>
                                         <span class="octicon octicon-x"></span>Delete

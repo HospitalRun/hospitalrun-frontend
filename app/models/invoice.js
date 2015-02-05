@@ -19,6 +19,10 @@ export default AbstractModel.extend(NumberFormat,{
     /*the individual line items of the invoice*/
     lineItems: DS.hasMany('billing-line-item'),
 
+    amountOwed: function() {
+        return this._calculateTotal('lineItems','amountOwed');
+    }.property('lineItems.@each.amountOwed'),
+    
     discount: function() {
         return this._calculateTotal('lineItems','discount');
     }.property('lineItems.@each.discount'),
@@ -34,7 +38,7 @@ export default AbstractModel.extend(NumberFormat,{
     total: function() {
         return this._calculateTotal('lineItems','total');
     }.property('lineItems.@each.total'),
-    
+        
     displayInvoiceNumber: function() {
         var externalInvoiceNumber = this.get('externalInvoiceNumber'),
             id = this.get('id');
@@ -44,6 +48,31 @@ export default AbstractModel.extend(NumberFormat,{
             return externalInvoiceNumber;
         }
     }.property('externalInvoiceNumber','id'),
+    
+    lineItemsByCategory: function() {
+        var lineItems = this.get('lineItems'),
+            byCategory = [];
+        lineItems.forEach(function(lineItem) {
+            var category = lineItem.get('category'),
+                categoryList = byCategory.findBy('category', category);
+            if (Ember.isEmpty(categoryList)) {
+                categoryList = {
+                    category: category,
+                    items: [],
+                };                
+                byCategory.push(categoryList);
+            }
+            categoryList.items.push(lineItem);
+        }.bind(this));
+        byCategory.forEach(function(categoryList) {
+            categoryList.amountOwed = this._calculateTotal(categoryList.items, 'amountOwed');
+            categoryList.discount = this._calculateTotal(categoryList.items, 'discount');
+            categoryList.nationalInsurance = this._calculateTotal(categoryList.items, 'nationalInsurance');
+            categoryList.privateInsurance = this._calculateTotal(categoryList.items, 'privateInsurance');
+            categoryList.total = this._calculateTotal(categoryList.items, 'total');
+        }.bind(this));
+        return byCategory;        
+    }.property('lineItems.@each.amountOwed'),    
     
     validations: {
         patientTypeAhead: PatientValidation.patientTypeAhead,        
