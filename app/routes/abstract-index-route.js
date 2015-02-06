@@ -1,9 +1,9 @@
 import Ember from "ember";
-export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
+export default Ember.Route.extend(PouchDbMixin, Ember.SimpleAuth.AuthenticatedRouteMixin, {
     firstKey: null,
     hideNewButton: false,
     itemsPerPage: 25,
-    maxValue: '\uffff',
     modelName: null,
     newButtonAction: null,
     newButtonText: null,

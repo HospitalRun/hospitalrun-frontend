@@ -1,10 +1,10 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import Ember from "ember";
+import Ember from 'ember';
 import PatientId from 'hospitalrun/mixins/patient-id';
-export default AbstractEditRoute.extend(PatientId, {
+import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
+export default AbstractEditRoute.extend(PatientId, PouchDbMixin, {
     editTitle: 'Edit Patient',
     modelName: 'patient',
-    maxValue: '\uffff',
     newTitle: 'New Patient',
     photos: null,
 

@@ -13,10 +13,11 @@ export default AbstractIndexRoute.extend({
     },
     
     _modelQueryParams: function() {
+        var maxValue = this.get('maxValue');
         return {
             options: {
                 startkey: ['Completed',,],
-                endkey: ['Completed','\uffff','inv-request_\uffff']
+                endkey: ['Completed',maxValue,maxValue]
             },
             mapReduce: 'inventory_request_by_status'
         };
