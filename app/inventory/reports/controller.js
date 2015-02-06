@@ -667,18 +667,14 @@ export default AbstractReportController.extend(LocationName, NumberFormat, {
                     this._addTotalsRow('Total for %@: '.fmt(parentLocation), locationCost, parentCount);
                 } 
                 this._addTotalsRow('Total: ', grandCost, grandQuantity);
-                this._setReportHeaders();
-                this._generateExport();
-                this.set('showReportResults', true);
-                this._setReportTitle();
-                this.closeProgressModal();
+                this._finishReport();
             }.bind(this));
         }.bind(this));
     },
     
     _getDateQueryParams: function() {
         var endDate = this.get('endDate'),
-            endTime = '\uffff',
+            endTime = this.get('maxValue'),
             startDate = this.get('startDate'),
             startTime;  
         if (!Ember.isEmpty(endDate)) {
@@ -709,26 +705,6 @@ export default AbstractReportController.extend(LocationName, NumberFormat, {
                 resolve(inventoryMap);
             }, reject);
         });
-    },
-    
-    _setReportTitle: function() {
-        var endDate = this.get('endDate'),
-            formattedEndDate = '',
-            formattedStartDate = '',
-            reportType = this.get('reportType'),
-            reportTypes = this.get('reportTypes'),
-            startDate = this.get('startDate');
-        if (!Ember.isEmpty(endDate)) {
-            formattedEndDate = moment(endDate).format('l');
-        }
-        
-        var reportDesc = reportTypes.findBy('value', reportType);
-        if (Ember.isEmpty(startDate)) {
-            this.set('reportTitle', '%@ Report %@'.fmt(reportDesc.name, formattedEndDate));
-        } else {
-            formattedStartDate = moment(startDate).format('l');
-            this.set('reportTitle', '%@ Report %@ - %@'.fmt(reportDesc.name, formattedStartDate, formattedEndDate));
-        }
     },
     
     actions: {
