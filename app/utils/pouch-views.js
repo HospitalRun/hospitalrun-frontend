@@ -225,6 +225,25 @@ function pricingByCategory(doc) {
     }
 }
 
+function procedureByDate(doc) {
+    var doctype,
+        uidx;
+    if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+        doctype = doc._id.substring(0, uidx);
+        if(doctype === 'procedure') {
+            var procedureDate = doc.procedureDate;
+            if (procedureDate && procedureDate !== '') {
+                procedureDate = new Date(procedureDate);
+                if (procedureDate.getTime) {
+                    procedureDate = procedureDate.getTime(); 
+                }
+            }
+            emit([procedureDate, doc._id]);
+        }
+    }
+}
+
+
 function sequenceByPrefix(doc) {
     var doctype,
         uidx;
@@ -317,6 +336,9 @@ var designDocs = [{
 }, {
     name: 'photo_by_patient',
     function: photoByPatient
+}, {
+    name: 'procedure_by_date',
+    function: procedureByDate
 }, {
     name: 'pricing_by_category',
     function: pricingByCategory

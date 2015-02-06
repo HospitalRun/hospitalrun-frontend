@@ -12,61 +12,63 @@
                 {{date-picker property="startDate" label="Start Date" class="col-sm-4"}}
                 {{date-picker property="endDate" label="End Date" class="col-sm-4"}}
             </div>
-            <div class="row">
-                {{em-select class="col-sm-6" label="Visit Type" 
-                    property="visitType" content=visitTypes
-                    optionValuePath="content" optionLabelPath="content"
-                    prompt=" "
-                }}
-                {{em-select class="col-sm-6" label="Examiner" 
-                    property="examiner" content=physicianList.value
-                    optionValuePath="content" optionLabelPath="content"
-                    prompt=" "
-                }}                
-            </div>
-            <div class="row">
-                {{em-select class="col-sm-6" label="Location" 
-                    property="location" content=locationList.value
-                    optionValuePath="content" optionLabelPath="content"
-                    prompt=" "
-                }}
-                {{em-select class="col-sm-6" label="Clinic" 
-                    property="clinic" content=clinicList.value
-                    optionValuePath="content" optionLabelPath="content"
-                    prompt=" "
-                }}
-            </div>
-            <div class="row">
-                <div class="form-group col-xs-12">
-                    {{icd10-typeahead property="diagnosis" label="Diagnosis"}}
+            {{#if isVisitReport}}
+                <div class="row">
+                    {{em-select class="col-sm-6" label="Visit Type" 
+                        property="visitType" content=visitTypes
+                        optionValuePath="content" optionLabelPath="content"
+                        prompt=" "
+                    }}
+                    {{em-select class="col-sm-6" label="Examiner" 
+                        property="examiner" content=physicianList.value
+                        optionValuePath="content" optionLabelPath="content"
+                        prompt=" "
+                    }}                
                 </div>
-            </div>        
+                <div class="row">
+                    {{em-select class="col-sm-6" label="Location" 
+                        property="location" content=locationList.value
+                        optionValuePath="content" optionLabelPath="content"
+                        prompt=" "
+                    }}
+                    {{em-select class="col-sm-6" label="Clinic" 
+                        property="clinic" content=clinicList.value
+                        optionValuePath="content" optionLabelPath="content"
+                        prompt=" "
+                    }}
+                </div>
+                <div class="row">
+                    <div class="form-group col-xs-12">
+                        {{icd10-typeahead property="diagnosis" label="Diagnosis"}}
+                    </div>
+                </div>        
 
-            <h3>Fields to Include</h3>
-            <div class="row">
-                <div class="col-xs-1"></div>
-                {{em-checkbox label=reportColumns.id.label property="reportColumns.id.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.name.label property="reportColumns.name.include" class="col-xs-2"}}                
-                {{em-checkbox label=reportColumns.age.label property="reportColumns.age.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.contacts.label property="reportColumns.contacts.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.dateOfBirth.label property="reportColumns.dateOfBirth.include" class="col-xs-2"}}
-            </div>
-            <div class="row">
-                <div class="col-xs-1"></div>        
-                {{em-checkbox label=reportColumns.examiner.label property="reportColumns.examiner.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.gender.label property="reportColumns.gender.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.primaryDiagnosis.label property="reportColumns.primaryDiagnosis.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.procedures.label property="reportColumns.procedures.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.referredBy.label property="reportColumns.referredBy.include" class="col-xs-2"}}
-            </div>
-            <div class="row">
-                <div class="col-xs-1"></div>
-                {{em-checkbox label=reportColumns.referredDate.label property="reportColumns.referredDate.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.secondaryDiagnoses.label property="reportColumns.secondaryDiagnoses.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.visitDate.label property="reportColumns.visitDate.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.visitLocation.label property="reportColumns.visitLocation.include" class="col-xs-2"}}
-                {{em-checkbox label=reportColumns.visitType.label property="reportColumns.visitType.include" class="col-xs-2"}}
-            </div>
+                <h3>Fields to Include</h3>
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    {{em-checkbox label=reportColumns.id.label property="reportColumns.id.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.name.label property="reportColumns.name.include" class="col-xs-2"}}                
+                    {{em-checkbox label=reportColumns.age.label property="reportColumns.age.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.contacts.label property="reportColumns.contacts.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.dateOfBirth.label property="reportColumns.dateOfBirth.include" class="col-xs-2"}}
+                </div>
+                <div class="row">
+                    <div class="col-xs-1"></div>        
+                    {{em-checkbox label=reportColumns.examiner.label property="reportColumns.examiner.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.gender.label property="reportColumns.gender.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.primaryDiagnosis.label property="reportColumns.primaryDiagnosis.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.procedures.label property="reportColumns.procedures.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.referredBy.label property="reportColumns.referredBy.include" class="col-xs-2"}}
+                </div>
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    {{em-checkbox label=reportColumns.referredDate.label property="reportColumns.referredDate.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.secondaryDiagnoses.label property="reportColumns.secondaryDiagnoses.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.visitDate.label property="reportColumns.visitDate.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.visitLocation.label property="reportColumns.visitLocation.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.visitType.label property="reportColumns.visitType.include" class="col-xs-2"}}
+                </div>
+            {{/if}}
         {{/em-form}}
     </div>
     <div class="panel-footer">
