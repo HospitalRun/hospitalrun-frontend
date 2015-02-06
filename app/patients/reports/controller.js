@@ -318,6 +318,12 @@ export default AbstractReportController.extend(VisitTypes, {
         });
     },
     
+    _filterInPatientVisit: function(visit){
+        var outPatient = visit.get('outPatient'),
+            status = visit.get('status');
+        return !outPatient && !Ember.isEmpty(status); 
+    },
+    
     _finishVisitReport: function(visits) {
         var visitTypes = this._totalByType(visits, 'visitType', 'total');
         visitTypes.forEach(function(visitType) {
@@ -341,6 +347,7 @@ export default AbstractReportController.extend(VisitTypes, {
         var femaleCount = 0,
             maleCount = 0,
             reportColumns = this.get('admissionReportColumns');
+        visits = visits.filter(this._filterInPatientVisit);
         visits.forEach(function (visit) {
             if (reportType !== 'discharges' || !Ember.isEmpty(visit.get('endDate'))) {
                 if (visit.get('patient.gender') === 'F') {
@@ -368,6 +375,7 @@ export default AbstractReportController.extend(VisitTypes, {
     },
     
     _generatePatientDaysReport: function(visits) {
+        visits = visits.filter(this._filterInPatientVisit);
         var reportEndDate = this.get('endDate'),
             reportColumns = {
                 total: {
@@ -384,25 +392,21 @@ export default AbstractReportController.extend(VisitTypes, {
             reportEndDate = moment(reportEndDate).endOf('day');
         }
         var patientDays = visits.reduce(function(previousValue, visit) {
-            if (visit.get('outPatient')) {
-                return previousValue;
+            var calcEndDate = visit.get('endDate'),
+                calcStartDate = moment(visit.get('startDate')).startOf('day');
+            if (Ember.isEmpty(calcEndDate)) {
+                calcEndDate = moment().endOf('day');
             } else {
-                var calcEndDate = visit.get('endDate'),
-                    calcStartDate = moment(visit.get('startDate')).startOf('day');
-                if (Ember.isEmpty(calcEndDate)) {
-                    calcEndDate = moment().endOf('day');
-                } else {
-                    calcEndDate = moment(calcEndDate).endOf('day');
-                }
-                if (calcStartDate.isBefore(reportStartDate)) {
-                    calcStartDate = reportStartDate;
-                }
-                if (calcEndDate.isAfter(reportEndDate)) {
-                    calcEndDate = reportEndDate;
-                }
-                var daysDiff = calcEndDate.diff(calcStartDate, 'days', true);
-                return previousValue += daysDiff;
+                calcEndDate = moment(calcEndDate).endOf('day');
             }
+            if (calcStartDate.isBefore(reportStartDate)) {
+                calcStartDate = reportStartDate;
+            }
+            if (calcEndDate.isAfter(reportEndDate)) {
+                calcEndDate = reportEndDate;
+            }
+            var daysDiff = calcEndDate.diff(calcStartDate, 'days', true);
+            return previousValue += daysDiff;
         },0);
         this._addReportRow({total: patientDays}, false, reportColumns);
         this._finishReport(reportColumns);
