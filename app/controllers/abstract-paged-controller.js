@@ -1,10 +1,30 @@
-import Ember from "ember";
-export default Ember.ArrayController.extend({
+import Ember from 'ember';
+import UserSession from 'hospitalrun/mixins/user-session';
+export default Ember.ArrayController.extend(UserSession, {
+    addPermission: null,
+    deletePermission: null,
     nextStartKey: null,
     previousStartKey: null,
     previousStartKeys: [],
     queryParams: ['startKey'],
     limit: 10,
+    
+    canAdd: function() {        
+        return this.currentUserCan(this.get('addPermission'));
+    }.property(),    
+    
+    canDelete: function() {
+        return this.currentUserCan(this.get('deletePermission'));
+    }.property(),
+    
+    canEdit: function() {
+        //Default to using add permission
+        return this.currentUserCan(this.get('addPermission'));
+    }.property(),    
+    
+    showActions: function() {
+        return (this.get('canAdd') || this.get('canEdit') || this.get('canDelete'));
+    }.property('canAdd', 'canEdit', 'canDelete'),
     
     disablePreviousPage: function() {
         return (Ember.isEmpty(this.get('previousStartKey')));
