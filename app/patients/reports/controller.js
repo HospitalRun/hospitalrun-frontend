@@ -216,7 +216,7 @@ export default AbstractReportController.extend(VisitTypes, {
             if (Ember.isEmpty(filterStartDate)) {
                 reject();
             }
-            findParams.options.startkey =  ['Completed',,filterStartDate.getTime(),];
+            findParams.options.startkey =  ['Completed', null, filterStartDate.getTime(), null];
             
             if (!Ember.isEmpty(filterEndDate)) {
                 filterEndDate = moment(filterEndDate).endOf('day').toDate();
@@ -251,7 +251,7 @@ export default AbstractReportController.extend(VisitTypes, {
             if (Ember.isEmpty(filterStartDate)) {
                 reject();
             }
-            findParams.options.startkey =  [filterStartDate.getTime(),];
+            findParams.options.startkey =  [filterStartDate.getTime(), null];
             
             if (!Ember.isEmpty(filterEndDate)) {
                 filterEndDate = moment(filterEndDate).endOf('day').toDate();
@@ -283,9 +283,9 @@ export default AbstractReportController.extend(VisitTypes, {
                 reject();
             }
             if (reportType === 'discharges') {
-                findParams.options.startkey =  [,filterStartDate.getTime()];
+                findParams.options.startkey =  [null, filterStartDate.getTime()];
             } else {
-                findParams.options.startkey =  [filterStartDate.getTime(),];
+                findParams.options.startkey =  [filterStartDate.getTime(), null];
             }
             if (!Ember.isEmpty(filterEndDate)) {
                 filterEndDate = moment(filterEndDate).endOf('day').toDate();

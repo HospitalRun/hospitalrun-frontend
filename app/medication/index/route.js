@@ -18,7 +18,7 @@ export default AbstractIndexRoute.extend({
             searchStatus = this.get('searchStatus');
         return {
             options: {
-                startkey: [searchStatus, , ,keyPrefix],
+                startkey: [searchStatus, null, null, keyPrefix],
                 endkey: [searchStatus, maxValue, maxValue, keyPrefix+maxValue]
             },
             mapReduce: 'medication_by_status'

@@ -16,7 +16,7 @@ export default AbstractIndexRoute.extend({
         var maxValue = this.get('maxValue');
         return {
             options: {
-                startkey: ['Completed',,],
+                startkey: ['Completed', null, null],
                 endkey: ['Completed',maxValue,maxValue]
             },
             mapReduce: 'inventory_request_by_status'

@@ -10,7 +10,7 @@ export default AppointmentIndexRoute.extend({
             startOfDay= moment().startOf('day').toDate().getTime();
         return {
             options: {
-                startkey: [startOfDay,,'appointment_'],
+                startkey: [startOfDay, null, 'appointment_'],
                 endkey: [endOfDay, endOfDay, 'appointment_'+maxValue]
             },
             mapReduce: 'appointments_by_date'

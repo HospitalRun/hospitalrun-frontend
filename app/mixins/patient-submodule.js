@@ -72,7 +72,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
         if (!Ember.isEmpty(patient) && this.get('findPatientVisits')) {
             this.store.find('visit', {
                 options: {
-                    startkey: [patientId,,,,'visit_'],
+                    startkey: [patientId, null, null, null, 'visit_'],
                     endkey: [patientId, maxValue, maxValue, maxValue, 'visit_'+maxValue]
                 },
                 mapReduce: 'visit_by_patient'

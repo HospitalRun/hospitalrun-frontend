@@ -51,7 +51,7 @@ export default AbstractEditRoute.extend(PatientId, PouchDbMixin, {
         
         promises.push(this.store.find('appointment', {
             options: {
-                startkey: [patientId,,, 'appointment_'],
+                startkey: [patientId, null, null, 'appointment_'],
                 endkey: [patientId, maxValue, maxValue, 'appointment_'+maxValue]
             },
             mapReduce: 'appointments_by_patient'
@@ -65,7 +65,7 @@ export default AbstractEditRoute.extend(PatientId, PouchDbMixin, {
         }));
         promises.push(this.store.find('visit', {
             options: {
-                startkey: [patientId,,,,'visit_'],
+                startkey: [patientId, null, null, null, 'visit_'],
                 endkey: [patientId, maxValue, maxValue, maxValue, 'visit_'+maxValue]
             },
             mapReduce: 'visit_by_patient'

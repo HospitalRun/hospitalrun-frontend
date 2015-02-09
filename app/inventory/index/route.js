@@ -20,8 +20,8 @@ export default AbstractIndexRoute.extend(UserSession, {
         var maxValue = this.get('maxValue');
         return {
             options: {
-                startkey: ['Requested',,],
-                endkey: ['Requested',maxValue,maxValue]
+                startkey: ['Requested', null, null],
+                endkey: ['Requested', maxValue, maxValue]
             },
             mapReduce: 'inventory_request_by_status'
         };

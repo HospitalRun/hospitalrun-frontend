@@ -28,7 +28,7 @@ export default AbstractIndexRoute.extend({
             startOfWeek = moment().startOf('week').toDate().getTime();
         return {
             options: {
-                startkey: [startOfWeek,,],
+                startkey: [startOfWeek, null, null],
                 endkey: [endOfWeek, endOfWeek, 'appointment_'+maxValue]
             },
             mapReduce: 'appointments_by_date'
