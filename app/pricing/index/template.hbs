@@ -1,0 +1,43 @@
+{{#if hasRecords}}
+    <table class="table">
+        <tr class="table-header">
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Expense Account</th>
+            {{#if showActions}}
+                <th>Actions</th>
+            {{/if}}
+        </tr>
+        {{#with this as parentController}}
+            {{#each}}
+                <tr {{action 'editItem' this}}>
+                    <td>{{name}}</td>
+                    <td>{{price}}</td>
+                    <td>{{category}}</td>
+                    <td>{{type}}</td>
+                    <td>{{expenseAccount}}</td>
+                    {{#if parentController.showActions}}
+                        <td>
+                            {{#if parentController.canEdit}}
+                                <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
+                            {{/if}}
+                            {{#if parentController.canDelete}}
+                                <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                            {{/if}}
+                        </td>
+                    {{/if}}
+                </tr>
+            {{/each}}
+        {{/with}}
+    </table>
+{{else}}
+    <div class="alert alert-info">
+        <em>No pricing items found.</em>
+        {{#if canAdd}}
+            <em>Create a new record?</em> 
+            <button class="btn btn-primary" {{action 'newItem'}}>New Pricing Item</button>
+        {{/if}}
+    </div>
+{{/if}}

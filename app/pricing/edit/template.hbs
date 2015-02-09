@@ -1,0 +1,21 @@
+{{#em-form model=this submit_button=false }}
+    {{em-input label="Name" property="name" class="required"}}
+    <div class="row">
+        {{em-input label="Price" property="price" class="required col-xs-2"}}
+        {{select-or-typeahead property="expenseAccount" label="Expense Account" list=expenseAccountList selection=expenseAccount class="col-xs-4"}}
+    </div>
+    <div class="row">
+        {{em-select label="Category" class="required col-xs-4"
+        property="category" content=categories
+        optionValuePath="content" optionLabelPath="content"
+        selected=category }}    
+        {{select-or-typeahead property="type" label="Type" list=pricingTypes selection=type class="col-xs-4"}}
+    </div>
+    <h4>Pricing profile overrides</h4>
+    <table class="table">
+        <tr class="table-header">
+            <th>Pricing Profile</th>
+            <th>Price</th>
+        </tr>
+    </table>
+{{/em-form}}

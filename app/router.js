@@ -65,7 +65,16 @@ Router.map(function() {
         this.route('reports');
         this.route('search', { path: "/search/:search_text" });
     });
-
+    
+    this.resource('pricing', function() {
+        this.route('imaging');
+        this.route('lab');
+        this.route('procedure');
+        this.route('ward');
+        this.route('edit', { path: "/pricing/:pricing_id" });
+        this.route('search', { path: "/search/:search_text" });
+    });
+    
     this.resource('print', function() {
         this.route('invoice', { path: "/invoice/:invoice_id" });
     });

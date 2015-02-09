@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import PatientSearch from 'hospitalrun/utils/patient-search';
+import PricingSearch from 'hospitalrun/utils/pricing-search';
 import InventorySearch from 'hospitalrun/utils/inventory-search';
 /* global emit */
 function createDesignDoc(name, mapFunction) {
@@ -345,7 +346,7 @@ var designDocs = [{
 }, {
     name: 'sequence_by_prefix',
     function: sequenceByPrefix
-}, , {
+}, {
     name: 'visit_by_date',
     function: visitByDate
 }, {
@@ -355,7 +356,8 @@ var designDocs = [{
 
 var searchIndexes = [
     InventorySearch,
-    PatientSearch
+    PatientSearch,
+    PricingSearch
 ];
 
 export default function(db) {
@@ -376,6 +378,8 @@ export default function(db) {
             // design doc created!
             //Update index
             db.query(item.name, {stale: 'update_after'}); 
+        }, function() {
+            //ignored, design doc already exists
         });
     });
 }

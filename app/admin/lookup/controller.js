@@ -39,7 +39,8 @@ export default Ember.ArrayController.extend(BillingCategories, InventoryTypeList
         name: 'Expense Accounts',
         value: 'expense_account_list',
         models: {
-            'inv-request':  'expenseAccount'
+            'inv-request':  'expenseAccount',
+            pricing: 'expenseAccount',
         }
     }, {
         name: 'Inventory Aisle Locations',

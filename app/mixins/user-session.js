@@ -61,6 +61,13 @@ export default Ember.Mixin.create({
             'Social Worker', 
             'System Administrator'
         ],
+        add_pricing: [
+            'Data Entry',
+            'Business Office', 
+            'Hospital Administrator',
+            'Medical Records Officer',
+            'System Administrator'             
+        ],        
         add_lab: [
             'Data Entry',
             'Doctor',
@@ -233,6 +240,13 @@ export default Ember.Mixin.create({
             'Medical Records Officer',
             'Patient Administration', 
             'System Administrator'
+        ],       
+        delete_pricing: [
+            'Data Entry',
+            'Business Office', 
+            'Hospital Administrator',
+            'Medical Records Officer',
+            'System Administrator'             
         ],
         delete_procedure: [
             'Doctor', 
@@ -349,6 +363,13 @@ export default Ember.Mixin.create({
             'Social Worker', 
             'System Administrator'
         ],
+        pricing: [
+            'Data Entry',
+            'Business Office', 
+            'Hospital Administrator',
+            'Medical Records Officer',
+            'System Administrator'             
+        ],        
         visits: [
             'Data Entry',
             'Doctor', 
