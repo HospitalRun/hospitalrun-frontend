@@ -15,7 +15,7 @@ export default Ember.ArrayController.extend(BillingCategories, InventoryTypeList
         model: {
             procedure: 'anesthesiologist'
         }
-    }, , {
+    }, {
         defaultValues: 'defaultBillingCategories',
         name: 'Billing Categories',
         value: 'billing_categories',
@@ -107,31 +107,37 @@ export default Ember.ArrayController.extend(BillingCategories, InventoryTypeList
     lookupTitle: function() {
         var lookupType = this.get('lookupType'),
             lookupTypes = this.get('lookupTypes'),
+            lookupDesc;
+        if (!Ember.isEmpty(lookupType)) {
             lookupDesc = lookupTypes.findBy('value', lookupType);
-        if (!Ember.isEmpty(lookupDesc)) {
-            return lookupDesc.name;
+            if (!Ember.isEmpty(lookupDesc)) {
+                return lookupDesc.name;
+            }
         }            
     }.property('lookupType'),
         
     lookupTypeList: function() {
         var lookupType = this.get('lookupType'),
+            lookupItem;        
+        if (!Ember.isEmpty(lookupType)) {
             lookupItem = this.get('model').findBy('id', lookupType);
-        if (Ember.isEmpty(lookupItem) && !Ember.isEmpty(lookupType)) {
-            var defaultValues = [],
-                lookupTypes = this.get('lookupTypes'),
-                lookupDesc = lookupTypes.findBy('value', lookupType);
-            if (!Ember.isEmpty(lookupDesc) && !Ember.isEmpty(lookupDesc.defaultValues)) {
-                defaultValues = this.get(lookupDesc.defaultValues);
+            if (Ember.isEmpty(lookupItem)) {
+                var defaultValues = [],
+                    lookupTypes = this.get('lookupTypes'),
+                    lookupDesc = lookupTypes.findBy('value', lookupType);
+                if (!Ember.isEmpty(lookupDesc) && !Ember.isEmpty(lookupDesc.defaultValues)) {
+                    defaultValues = this.get(lookupDesc.defaultValues);
+                }
+                lookupItem = this.get('store').push('lookup', {
+                    id: lookupType,
+                    value: defaultValues
+                });          
             }
-            lookupItem = this.get('store').push('lookup', {
-                id: lookupType,
-                value: defaultValues
-            });          
+            if (!Ember.isEmpty(lookupItem) && Ember.isEmpty(lookupItem.get('userCanAdd'))) {
+                lookupItem.set('userCanAdd', true);                
+            } 
+            return lookupItem;
         }
-        if (!Ember.isEmpty(lookupItem) && Ember.isEmpty(lookupItem.get('userCanAdd'))) {
-            lookupItem.set('userCanAdd', true);                
-        } 
-        return lookupItem;
     }.property('lookupType'),
     
     lookupTypeValues: function() {
