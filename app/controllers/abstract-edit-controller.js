@@ -1,7 +1,8 @@
-import Ember from "ember";
-import IsUpdateDisabled from "hospitalrun/mixins/is-update-disabled";
-import UserSession from "hospitalrun/mixins/user-session";
-export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
+import Ember from 'ember';
+import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
+import ModalHelper from 'hospitalrun/mixins/modal-helper';
+import UserSession from 'hospitalrun/mixins/user-session';
+export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, UserSession, {
     cancelAction: 'allItems',
     
     cancelButtonText: function() {
@@ -100,22 +101,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
      */
     beforeUpdate: function() {
         return Ember.RSVP.Promise.resolve();
-    },
-    
-    /**
-     * Display a message in a closable modal.
-     * @param title string containing the title to display.
-     * @param message string containing the message to display.
-     */
-    displayAlert: function(title, message) {
-        this.send('openModal', 'dialog', Ember.Object.create({
-            title: title,
-            message: message,
-            hideCancelButton: true,
-            updateButtonAction: 'ok',
-            updateButtonText: 'Ok'
-        }));        
-    },
+    },    
     
     /**
      * Update any new values added to a lookup list
