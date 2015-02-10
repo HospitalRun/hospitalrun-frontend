@@ -1,7 +1,11 @@
 import Ember from "ember";
 import BillingCategories from 'hospitalrun/mixins/billing-categories';
+import LabPricingTypes from 'hospitalrun/mixins/lab-pricing-types';
+import ModalHelper from 'hospitalrun/mixins/modal-helper';
+import ImagingPricingTypes from 'hospitalrun/mixins/imaging-pricing-types';
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
-export default Ember.ArrayController.extend(BillingCategories, InventoryTypeList, {
+export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes, 
+        ModalHelper, ImagingPricingTypes, InventoryTypeList, {
     lookupType: null,
     lookupTypes: [{
         name: 'Anesthesia Types',
@@ -74,6 +78,20 @@ export default Ember.ArrayController.extend(BillingCategories, InventoryTypeList
             inventory:  'type'
         }
     }, {
+        defaultValues: 'defaultImagingPricingTypes',
+        name: 'Imaging Pricing Types',
+        value: 'imaging_pricing_types',
+        models: {
+            pricing:  'type'
+        }
+    }, {
+        defaultValues: 'defaultLabPricingTypes',
+        name: 'Lab Pricing Types',
+        value: 'Lab_pricing_types',
+        models: {
+            pricing:  'type'
+        }
+    }, {
         name: 'Medication Frequency',
         value: 'medication_frequency',
         models: {
@@ -97,11 +115,23 @@ export default Ember.ArrayController.extend(BillingCategories, InventoryTypeList
             procedure: 'location'         
         }
     }, {
+        name: 'Procedure Pricing Types',
+        value: 'procedure_pricing_types',
+        models: {
+            pricing:  'type'
+        }
+    }, {
         name: 'Visit Locations',
         value: 'visit_location_list',
         models: {
             appointment: 'location',
             visit: 'location',            
+        }
+    }, {
+        name: 'Ward Pricing Types',
+        value: 'ward_pricing_types',
+        models: {
+            pricing:  'type'
         }
     }],
     
@@ -149,6 +179,13 @@ export default Ember.ArrayController.extend(BillingCategories, InventoryTypeList
         return Ember.ArrayProxy.create({content: Ember.A(values)});
     }.property('lookupType'),
     
+    organizeByType: Ember.computed.alias('lookupTypeList.organizeByType'),
+    
+    showOrganizeByType: function() {
+        var lookupType = this.get('lookupType');
+        return (!Ember.isEmpty(lookupType) && lookupType.indexOf('pricing_types') > 0);
+    }.property('lookupType'),
+        
     userCanAdd: Ember.computed.alias('lookupTypeList.userCanAdd'),
     
     _sortValues: function(a, b) {
@@ -166,13 +203,11 @@ export default Ember.ArrayController.extend(BillingCategories, InventoryTypeList
                 lookupTypeList = this.get('lookupTypeList'),
                 lookupTypeValues = lookupTypeList.get('value');
             if (lookupType === 'inventory_types' && value === 'Medication') {
-                this.send('openModal', 'dialog', Ember.Object.create({
-                    title: 'Cannot Delete Medication',
-                    message: 'The Medication inventory type cannot be deleted because it is needed for the Medication module.',
-                    hideCancelButton: true,
-                    updateButtonAction: 'ok',
-                    updateButtonText: 'Ok'
-                }));
+                this.displayAlert('Cannot Delete Medication', 'The Medication inventory type cannot be deleted because it is needed for the Medication module.');
+            } else if (lookupType === 'lab_pricing_types' && value === 'Lab Procedure') {
+                this.displayAlert('Cannot Delete Lab Pricing Type', 'The Lab Procedure pricing type cannot be deleted because it is needed for the Labs module.');
+            } else if (lookupType === 'imaging_pricing_types' && value === 'Imaging Procedure') {
+                this.displayAlert('Cannot Delete Imaging Pricing Type', 'The Imaging Procedure pricing type cannot be deleted because it is needed for the Imaging module.');
             } else {
                 lookupTypeValues.removeObject(value.toString());        
                 lookupTypeList.save();
@@ -190,13 +225,7 @@ export default Ember.ArrayController.extend(BillingCategories, InventoryTypeList
         updateList: function() {
             var lookupTypeList = this.get('lookupTypeList');
             lookupTypeList.save().then(function() {
-                this.send('openModal', 'dialog', Ember.Object.create({
-                    title: 'List Saved',
-                    message: 'The lookup list has been saved',
-                    hideCancelButton: true,
-                    updateButtonAction: 'ok',
-                    updateButtonText: 'Ok'
-                }));
+                this.displayAlert('List Saved', 'The lookup list has been saved');
             }.bind(this));
         },        
         updateValue: function(valueObject) {
