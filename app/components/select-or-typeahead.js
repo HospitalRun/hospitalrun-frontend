@@ -13,11 +13,15 @@ export default Ember.Component.extend({
      * If list is set, pull the value as the content
      * and the userCanAdd flag from the list.
      */
-     _setup: function() {
+    _setup: function() {
+        this.listChanged();
+     }.on('init'),
+    
+    listChanged: function() {
         var list = this.get('list');
         if (!Ember.isEmpty(list)) {
             this.set('content', list.get('value'));
             this.set('userCanAdd', list.get('userCanAdd'));
-        }
-     }.on('init'),
+        }        
+    }.observes('list')
 });
