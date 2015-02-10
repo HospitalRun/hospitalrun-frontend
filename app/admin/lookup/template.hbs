@@ -36,6 +36,9 @@
         <button class="btn btn-default neutral" {{action 'addValue'}}>Add Value</button>
         {{#em-form model=this submit_button=false }}
             {{em-checkbox label="User Can Add New Values" property="userCanAdd"}}
+            {{#if showOrganizeByType}}
+                {{em-checkbox label="Organize Pricing By Type" property="organizeByType"}}
+            {{/if}}
         {{/em-form}}
         <button class="btn btn-default" {{action 'updateList'}}>Update</button>
     </div>
