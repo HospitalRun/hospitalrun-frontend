@@ -5,20 +5,22 @@
             <th>Patient</th>
             <th>Imaging Type</th>
             <th>Notes</th>            
-            {{#if canComplete}}
+            {{#if showActions}}
                 <th>Actions</th>
             {{/if}}
         </tr>
-        {{#with canComplete as canComplete}}
+        {{#with this as parentController}}
             {{#each}}
-                <tr>
+                <tr {{action 'editItem' this}}>
                     <td>{{date-format requestedDate}}</td>
                     <td>{{patient.displayName}}</td>
                     <td>{{imagingType.name}}</td>
-                    <td>{{notes}}</td>
-                    {{#if canComplete}}
+                    <td>{{notes}}</td>                    
+                     {{#if parentController.showActions}}
                         <td>
-                            <button class="btn btn-default" {{action 'completeItem' this}}>Complete</button>
+                            {{#if parentController.canEdit}}
+                                <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
+                            {{/if}}                            
                         </td>
                     {{/if}}
                 </tr>
