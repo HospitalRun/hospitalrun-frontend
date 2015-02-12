@@ -13,10 +13,10 @@ export default Ember.Mixin.create(PouchDbMixin, {
     },
 
     /**
-     * Add the specified child to the specified visit.  If a visit
+     * Add the specified child to the current visit and then save the visit.  If a visit
      * has not been selected, create a new visit and add it to the selected patient.
      * @param {Object} objectToAdd the object to add.
-     * @param {string} the name of the child object on visit to add to.
+     * @param {string} childName the name of the child object on the visit to add to.
      * @param {string} newVisitType if a new visit needs to be created, what type of visit
      * should be created. 
      * @returns {Promise} promise that will resolve or reject depending on whether or
@@ -103,7 +103,28 @@ export default Ember.Mixin.create(PouchDbMixin, {
     
     patientVisits: [],
     returnPatientId: null,
-    returnVisitId: null,    
+    returnVisitId: null,
+    
+    /**
+     * Removes the specified child from the current visit object and then saves the visit.
+     * @param {Object} objectToRemove the object to remove.
+     * @param {string} childName the name of the child object on the visit to remove from.
+     * @returns {Promise} promise that will resolve or reject depending on whether or
+     * not the remove and subsequent save were successful.
+     */    
+    removeChildFromVisit: function(objectToRemove, childName) {
+        return new Ember.RSVP.Promise(function(resolve, reject){
+            var childPromises = [],
+                visit = this.get('visit');
+            childPromises.addObjects(this.resolveVisitChildren());
+            Ember.RSVP.all(childPromises, 'Resolved visit children before removing '+childName).then(function() {
+                visit.get(childName).then(function(visitChildren) {
+                    visitChildren.removeObject(objectToRemove);                    
+                    visit.save().then(resolve, reject);                
+                }.bind(this), reject);
+            }.bind(this), reject);
+        }.bind(this));
+    },
     
     /**
      * Observer on visits to make sure async relationships are resolved.
@@ -123,10 +144,6 @@ export default Ember.Mixin.create(PouchDbMixin, {
         }
         return promises;
     },
-
-    visitChanged: function() {
-        this.resolveVisitChildren();
-    }.observes('visit'),
     
     visitIdChanged: function() {
         var visitId = this.get('visitId');

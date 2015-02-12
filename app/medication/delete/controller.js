@@ -4,13 +4,9 @@ export default AbstractDeleteController.extend({
     
     actions: {
         delete: function() {
-            var visit = this.get('visit');            
-            visit.get('medication').then(function(medications) {
-                medications.removeObject(this.get('model'));
-                visit.save().then(function() {
-                    this.get('model').destroyRecord().then(function() {                    
-                        this.send('closeModal');
-                    }.bind(this));
+            this.removeChildFromVisit(this.get('model'), 'medication').then(function() {
+                this.get('model').destroyRecord().then(function() {                    
+                    this.send('closeModal');
                 }.bind(this));
             }.bind(this));
         }
