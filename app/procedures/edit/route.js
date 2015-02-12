@@ -4,6 +4,7 @@ export default AbstractEditRoute.extend(ChargeRoute, {
     editTitle: 'Edit Procedure', 
     modelName: 'procedure',
     newTitle: 'New Procedure',
+    pricingCategory: 'Procedure',
     
     setupController: function(controller, model) {
         this._super(controller, model);
