@@ -1,0 +1,29 @@
+{{#if showPricingTypeTabs}}
+    <ul class="nav nav-pills" role="tablist">
+        {{#each pricingTypeList itemController='item-charge-controller'}}
+            <li role="presentation"><a {{bind-attr href=tabHref class=activeClass}} role="tab" data-toggle="pill">{{model}} charges</a></li>
+        {{/each}}
+    </ul>
+{{/if}}
+<div class="tab-content">
+    {{#each pricingTypeList itemController='item-charge-controller'}}    
+        <div role="tabpanel" {{bind-attr id=tabId class=":tab-pane activeClass"}}>
+            <div class="panel detail-section">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        {{model}} charged items
+                    </h3>
+                </div>
+                <div class="panel-body detail-section-content">
+                    {{#with this as itemController}}
+                        <div class="row">
+                        {{#each pricingListByType}}                                
+                            {{em-input property=_id label=name class="col-xs-2"}}
+                        {{/each}}
+                        </div>
+                    {{/with}}
+                </div>
+            </div>
+        </div>
+    {{/each}}
+</div>
