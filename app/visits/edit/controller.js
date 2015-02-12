@@ -63,6 +63,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     
     
     cancelAction: 'returnToPatient',
+    chargePricingCategory: 'Ward',
     chargeRoute: 'visits.charge',
     clinicList: Ember.computed.alias('controllers.visits.clinicList'),
     findPatientVisits: false,
