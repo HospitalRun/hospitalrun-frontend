@@ -8,10 +8,6 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, UserSession, VisitTypes, {
     needs: 'visits',
-    
-    canAddCharge: function() {        
-        return this.currentUserCan('add_charge');
-    }.property(),
 
     canAddImaging: function() {
         return this.currentUserCan('add_imaging');

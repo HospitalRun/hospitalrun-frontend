@@ -11,10 +11,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         return this.currentUserCan('add_procedure');
     }.property(),
     
-    canAddCharge: function() {        
-        return this.currentUserCan('add_charge');
-    }.property(),
     chargePricingCategory: 'Procedure',
+    chargeRoute: 'procedures.charge',
     
     anesthesiaTypes: Ember.computed.alias('controllers.visits.anesthesiaTypes'),
     anesthesiologistList: Ember.computed.alias('controllers.visits.anesthesiologistList'),
