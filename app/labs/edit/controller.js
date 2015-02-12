@@ -5,15 +5,13 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     needs: ['labs','pouchdb'],
+    chargePricingCategory: 'Lab',
     chargeRoute: 'labs.charge',
-    
-    canAddCharge: function() {        
-        return this.currentUserCan('add_charge');
-    }.property(),
 
     newLabType: false,
-    labTypesList: null, //This gets filled in by the route
+    
     pricingList: null, //This gets filled in by the route
+    pricingTypeForObjectType: 'Lab Procedure',
     updateCapability: 'add_lab',
     
     selectedLabTypeChanged: function() {
@@ -53,7 +51,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
                 return new Ember.RSVP.Promise(function(resolve, reject) {
                     var newPricing = this.store.createRecord('pricing', {
                         name: this.get('labTypeName'),
-                        category: 'Lab'
+                        category: 'Lab',
+                        type: 'Lab Procedure'
                     });
                     newPricing.save().then(function() {
                         this.get('pricingList').addObject({
