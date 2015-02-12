@@ -23,8 +23,10 @@ export default AbstractModel.extend(DateFormat, {
     }.property('requestedDate'),
     
     validations: {
-        patientTypeAhead: PatientValidation.patientTypeAhead,        
-        
+        imagingType: {
+            presence: true
+        },
+        patientTypeAhead: PatientValidation.patientTypeAhead,
         patient: {
             presence: true
         }
