@@ -1,7 +1,8 @@
-import Ember from "ember";
-import IsUpdateDisabled from "hospitalrun/mixins/is-update-disabled";
+import BillingCategories from 'hospitalrun/mixins/billing-categories';
+import Ember from 'ember';
+import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 
-export default Ember.ObjectController.extend(IsUpdateDisabled, {
+export default Ember.ObjectController.extend(BillingCategories, IsUpdateDisabled, {
     needs: ['invoices','invoices/edit'],
     
     billingCategoryList: Ember.computed.alias('controllers.invoices.billingCategoryList'),
