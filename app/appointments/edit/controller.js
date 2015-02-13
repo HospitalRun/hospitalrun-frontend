@@ -1,9 +1,10 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from "ember";
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
+import ReturnTo from 'hospitalrun/mixins/return-to';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
+export default AbstractEditController.extend(PatientSubmodule, ReturnTo, VisitTypes, {
     needs: ['appointments','pouchdb'],
 
     dateFormat: 'l h:mm A',
@@ -42,18 +43,6 @@ export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
 
     afterUpdate: function() {
         this.send(this.get('cancelAction'));
-    },
-    
-    actions: {
-        returnTo: function() {
-            var cancelledItem = this.get('model');
-            if (this.get('isNew')) {
-                cancelledItem.deleteRecord();
-            } else {
-                cancelledItem.rollback();
-            }
-            this.transitionToRoute(this.get('returnTo'));
-        },
     },
 
     allDayChanged: function() {
