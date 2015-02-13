@@ -87,7 +87,7 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
     }, {
         defaultValues: 'defaultLabPricingTypes',
         name: 'Lab Pricing Types',
-        value: 'Lab_pricing_types',
+        value: 'lab_pricing_types',
         models: {
             pricing:  'type'
         }
