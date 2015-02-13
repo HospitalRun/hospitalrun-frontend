@@ -59,16 +59,25 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
         }
     },
     
+    _cancelUpdate: function() {
+        var cancelledItem = this.get('model');
+        if (this.get('isNew')) {
+            cancelledItem.deleteRecord();
+        } else {
+            cancelledItem.rollback();
+        }
+    },
+    
     actions: {
         cancel: function() {
-            var cancelledItem = this.get('model');
-            if (this.get('isNew')) {
-                cancelledItem.deleteRecord();
-            } else {
-                cancelledItem.rollback();
-            }
+            this._cancelUpdate();
             this.send(this.get('cancelAction'));
         },
+        
+        returnTo: function() {
+            this._cancelUpdate();
+            this.transitionToRoute(this.get('returnTo'));
+        },        
         
         /**
          * Update the model and perform the before update and after update
@@ -82,7 +91,6 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
                     if (!skipAfterUpdate) {
                         this.afterUpdate(record);
                     }
-
                 }.bind(this));
             }.bind(this));
         }
