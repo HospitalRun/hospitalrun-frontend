@@ -1,5 +1,6 @@
 import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-controller';    
-export default AbstractDeleteController.extend({
+import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
+export default AbstractDeleteController.extend(PatientSubmodule, {
     title: 'Delete Request',
     
     actions: {
