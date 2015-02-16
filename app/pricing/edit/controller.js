@@ -2,7 +2,8 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import Ember from 'ember';
 import LabPricingTypes from 'hospitalrun/mixins/lab-pricing-types';
 import ImagingPricingTypes from 'hospitalrun/mixins/imaging-pricing-types';
-export default AbstractEditController.extend(LabPricingTypes, ImagingPricingTypes, {
+import ReturnTo from 'hospitalrun/mixins/return-to';
+export default AbstractEditController.extend(LabPricingTypes, ImagingPricingTypes, ReturnTo, {
     needs: ['pricing'],
     categories: [
         'Imaging',
