@@ -1,8 +1,9 @@
-import AbstractModel from "hospitalrun/models/abstract";
-import DateFormat from "hospitalrun/mixins/date-format";
-import PatientValidation from "hospitalrun/utils/patient-validation";
+import AbstractModel from 'hospitalrun/models/abstract';
+import DateFormat from 'hospitalrun/mixins/date-format';
+import PatientValidation from 'hospitalrun/utils/patient-validation';
+import ResultValidation from 'hospitalrun/mixins/result-validation';
 
-export default AbstractModel.extend(DateFormat,{
+export default AbstractModel.extend(DateFormat, ResultValidation, {
     charges: DS.hasMany('proc-charge'),
     labDate: DS.attr('date'),
     labType: DS.belongsTo('pricing'),
@@ -23,8 +24,10 @@ export default AbstractModel.extend(DateFormat,{
     }.property('requestedDate'),
     
     validations: {
-        patientTypeAhead: PatientValidation.patientTypeAhead,        
-        
+        labTypeName: {
+            presence: true
+        },        
+        patientTypeAhead: PatientValidation.patientTypeAhead,
         patient: {
             presence: true
         }
