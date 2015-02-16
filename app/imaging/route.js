@@ -1,6 +1,5 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
-import UserSession from "hospitalrun/mixins/user-session";
-export default AbstractModuleRoute.extend(UserSession, {
+export default AbstractModuleRoute.extend({
     addCapability: 'add_imaging',
     additionalModels: [{ 
         name: 'imagingPricingTypes',
@@ -10,7 +9,6 @@ export default AbstractModuleRoute.extend(UserSession, {
     moduleName: 'imaging',
     newButtonText: '+ new imaging',
     sectionTitle: 'Imaging',
-    
     subActions: [{
         text: 'Requests',
         linkTo: 'imaging.index'
