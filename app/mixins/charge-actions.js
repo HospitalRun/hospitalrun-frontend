@@ -90,15 +90,18 @@ export default Ember.Mixin.create({
     newObjectType: false,
     
     objectTypeChanged: function(objectTypeNameField, typeField) {
-        var objectTypeName = this.get(objectTypeNameField),
+        var isNew = this.get('isNew'),
+            objectTypeName = this.get(objectTypeNameField),
             objectType = this.get(typeField);
-        if (!Ember.isEmpty(objectType)) {
-            this.set('newObjectType', false);
-            if (objectType.get('name') !== objectTypeName) {
-                this.set(objectTypeNameField, objectType.get('name'));
+        if (isNew) {
+            if (!Ember.isEmpty(objectType)) {
+                this.set('newObjectType', false);
+                if (objectType.get('name') !== objectTypeName) {
+                    this.set(objectTypeNameField, objectType.get('name'));
+                }
+            } else {
+                this.set('newObjectType', true);
             }
-        } else {
-            this.set('newObjectType', true);
         }
     },
 
@@ -122,8 +125,9 @@ export default Ember.Mixin.create({
     }.property('pricingList','pricingTypeForObjectType','pricingTypeValues'),
     
     objectTypeNameChanged: function(objectTypeNameField, selectedField) {
-        var objectTypeName = this.get(objectTypeNameField);
-        if (objectTypeName instanceof Object) {
+        var isNew = this.get('isNew'),
+            objectTypeName = this.get(objectTypeNameField);
+        if (isNew && objectTypeName instanceof Object) {
             this.set(selectedField, objectTypeName);
         }
     },
@@ -162,13 +166,16 @@ export default Ember.Mixin.create({
     },
        
     selectedObjectTypeChanged: function(selectedField, typeField) {
-        var selectedItem = this.get(selectedField);
-        if (!Ember.isEmpty(selectedItem)) {            
-            this.store.find('pricing', selectedItem._id.substr(8)).then(function(item) {
-                this.set(typeField, item);
-            }.bind(this));
-        } else {
-           this.set(typeField);
+        var isNew = this.get('isNew'),
+            selectedItem = this.get(selectedField);
+        if (isNew) {
+            if (!Ember.isEmpty(selectedItem)) {            
+                this.store.find('pricing', selectedItem._id.substr(8)).then(function(item) {
+                    this.set(typeField, item);
+                }.bind(this));
+            } else {
+               this.set(typeField);
+            }
         }
     },
   
