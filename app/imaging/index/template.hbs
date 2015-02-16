@@ -4,7 +4,7 @@
             <th>Date Requested</th>
             <th>Patient</th>
             <th>Imaging Type</th>
-            <th>Notes</th>            
+            <th>Notes</th>
             {{#if showActions}}
                 <th>Actions</th>
             {{/if}}
@@ -15,12 +15,12 @@
                     <td>{{date-format requestedDate}}</td>
                     <td>{{patient.displayName}}</td>
                     <td>{{imagingType.name}}</td>
-                    <td>{{notes}}</td>                    
+                    <td>{{notes}}</td>
                      {{#if parentController.showActions}}
                         <td>
                             {{#if parentController.canEdit}}
                                 <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
-                            {{/if}}                            
+                            {{/if}}
                         </td>
                     {{/if}}
                 </tr>
@@ -29,9 +29,10 @@
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No items found.  Create a new record?</em> 
+        <em>No items found.</em>
         {{#if canAdd}}
+            <em>Create a new record?</em>
             <button class="btn btn-primary" {{action 'newItem'}}>New Imaging</button>
         {{/if}}
-    </div>    
+    </div>
 {{/if}}
