@@ -86,6 +86,21 @@ export default Ember.Mixin.create({
             });
         return chargeForItem;
     },
+    
+    newObjectType: false,
+    
+    objectTypeChanged: function(objectTypeNameField, typeField) {
+        var objectTypeName = this.get(objectTypeNameField),
+            objectType = this.get(typeField);
+        if (!Ember.isEmpty(objectType)) {
+            this.set('newObjectType', false);
+            if (objectType.get('name') !== objectTypeName) {
+                this.set(objectTypeNameField, objectType.get('name'));
+            }
+        } else {
+            this.set('newObjectType', true);
+        }
+    },
 
     /**
      * Returns object types out of the pricing list.
@@ -93,13 +108,26 @@ export default Ember.Mixin.create({
      * directly in the price list.
      */
     objectTypeList: function() {
-        var pricingList = this.get('pricingList'),
-            pricingTypeForObjectType = this.get('pricingTypeForObjectType');
+        var pricingList = this.get('pricingList'),            
+            pricingTypeForObjectType = this.get('pricingTypeForObjectType'),
+            userCanAddPricingTypes = this.get('userCanAddPricingTypes'),
+            returnList = Ember.Object.create({
+                value: [],
+                userCanAdd: userCanAddPricingTypes
+            });        
         if (!Ember.isEmpty(pricingList)) {
-            return pricingList.filterBy('type', pricingTypeForObjectType);
+            returnList.set('value', pricingList.filterBy('type', pricingTypeForObjectType));
         }
-    }.property('pricingList','pricingTypeForObjectType'),
-        
+        return returnList;
+    }.property('pricingList','pricingTypeForObjectType','pricingTypeValues'),
+    
+    objectTypeNameChanged: function(objectTypeNameField, selectedField) {
+        var objectTypeName = this.get(objectTypeNameField);
+        if (objectTypeName instanceof Object) {
+            this.set(selectedField, objectTypeName);
+        }
+    },
+    
     organizeByType: Ember.computed.alias('pricingTypes.organizeByType'),
         
     pricingTypeList: function() {
@@ -131,8 +159,19 @@ export default Ember.Mixin.create({
                 resolve();
             }.bind(this), reject);
         }.bind(this), 'saveNewPricing for: '+pricingName);        
-    },    
-        
+    },
+       
+    selectedObjectTypeChanged: function(selectedField, typeField) {
+        var selectedItem = this.get(selectedField);
+        if (!Ember.isEmpty(selectedItem)) {            
+            this.store.find('pricing', selectedItem._id.substr(8)).then(function(item) {
+                this.set(typeField, item);
+            }.bind(this));
+        } else {
+           this.set(typeField);
+        }
+    },
+  
     showAddCharge: function() {
         var canAddCharge = this.get('canAddCharge'), 
             organizeByType = this.get('organizeByType');
@@ -156,7 +195,9 @@ export default Ember.Mixin.create({
     showPricingTypeTabs: function() {
         var pricingTypeList = this.get('pricingTypeList');
         return (!Ember.isEmpty(pricingTypeList) && pricingTypeList.get('length') > 1);
-    }.property('pricingTypeList'),    
+    }.property('pricingTypeList'),
+    
+    userCanAddPricingTypes: Ember.computed.alias('pricingTypes.userCanAdd'),
     
     /**
      * When using organizeByType charges need to be mapped over from the price lists

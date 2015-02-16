@@ -23,7 +23,14 @@
         {{/if}}
     </div>
     {{#if isNew}}
-        {{pricing-typeahead property="imagingTypeName" label="Imaging Type" content=objectTypeList selection=selectedImagingType class="required"}} 
+        {{select-or-typeahead property="imagingTypeName" 
+            label="Imaging Type" list=objectTypeList
+            selection=selectedImagingType
+            optionLabelPath='content.name'
+            typeAheadType='pricing'
+            class="required"
+            prompt=" "
+        }}
     {{else}}
         <div class="form-group">
             <label>Imaging Type</label>
