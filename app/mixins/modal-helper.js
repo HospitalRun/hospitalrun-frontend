@@ -14,4 +14,16 @@ export default Ember.Mixin.create({
             updateButtonText: 'Ok'
         }));        
     },
+    
+    displayConfirm: function(title, message, confirmAction, model)  {
+        if (Ember.isEmpty(model)) {
+            model = Ember.Object.create();
+        }
+        model.set('confirmAction', confirmAction);
+        model.set('title', title);
+        model.set('message', message);
+        model.set('updateButtonAction', 'confirm');
+        model.set('updateButtonText', 'Ok');            
+        this.send('openModal', 'dialog', model);
+    }
 });
