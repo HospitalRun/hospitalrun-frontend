@@ -14,6 +14,9 @@ export default AbstractModuleRoute.extend({
         name: 'procedurePricingTypes',
         findArgs: ['lookup','procedure_pricing_types']
     }, { 
+        name: 'pricingProfiles',
+        findArgs: ['price-profile']
+    }, { 
         name: 'wardPricingTypes',
         findArgs: ['lookup','ward_pricing_types']
     }],    
@@ -36,6 +39,9 @@ export default AbstractModuleRoute.extend({
     }, {
         text: 'Ward Pricing',
         linkTo: 'pricing.ward'
+    }, {
+        text: 'Pricing Profiles',
+        linkTo: 'pricing.profiles'
     }]
 });
 
