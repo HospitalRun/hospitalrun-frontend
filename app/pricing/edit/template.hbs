@@ -11,11 +11,44 @@
         selected=category }}    
         {{select-or-typeahead property="type" label="Type" list=pricingTypes selection=type class="col-xs-4"}}
     </div>
-    <h4>Pricing profile overrides</h4>
-    <table class="table">
-        <tr class="table-header">
-            <th>Pricing Profile</th>
-            <th>Price</th>
-        </tr>
-    </table>
+
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Pricing profile overrides
+                {{#if showUpdateButton}}
+                    <button class="btn btn-primary align-right" {{action "newOverride" bubbles=false }}><span class="octicon octicon-plus"></span>Add Override</button>
+                {{/if}}
+            </h3>
+        </div>
+        <div class="panel-body detail-section-content">
+            <table class="table">
+                <tbody>
+                    <tr class="table-header">
+                        <th>Pricing Profile</th>
+                        <th>Price</th>
+                        {{#if showUpdateButton}}
+                            <th>Actions</th>
+                        {{/if}}
+                    </tr>
+                    {{#with this as parentController}}
+                        {{#each pricingOverrides}}
+                            <tr>
+                                <td>{{profile.name}}</td>
+                                <td>{{price}}</td>
+                                <td>                                
+                                    {{#if parentController.showUpdateButton}}
+                                        <button class="btn btn-default neutral" {{action "editOverride" this}}>Edit</button>
+                                        <button class="btn btn-default warning" {{action "showDeleteOverride" this  bubbles=false }}>
+                                            <span class="octicon octicon-x"></span>  Delete
+                                        </button>
+                                    {{/if}}                                
+                                </td>                            
+                            </tr>
+                        {{/each}}
+                    {{/with}}
+                </tbody>        
+            </table>
+        </div>
+    </div>
 {{/em-form}}
