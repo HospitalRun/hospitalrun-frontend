@@ -7,7 +7,8 @@ export default Ember.ObjectController.extend({
     pricingListByType: function() {
         var parentController = this.get('parentController'),
             pricingList = this.get('pricingList'),
-            pricingType = this.get('model');
+            pricingType = this.get('model'),
+            rows = [];
         if (!Ember.isEmpty(pricingList)) {
             pricingList = pricingList.filterBy('type', pricingType);
             pricingList = pricingList.map(function(pricingItem) {
@@ -17,8 +18,15 @@ export default Ember.ObjectController.extend({
                 }
                 return pricingItem;
             }.bind(this));
+            var offset = 0,
+                length = pricingList.length;
+            while (offset < length) {
+                rows.push(pricingList.slice(offset, offset+6));
+                offset += 6;
+            }
+            
         }
-        return pricingList;
+        return rows;
     }.property('model','pricingList'),
     
     activeClass: function() {

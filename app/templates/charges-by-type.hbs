@@ -15,13 +15,21 @@
                     </h3>
                 </div>
                 <div class="panel-body detail-section-content">
-                    {{#with this as itemController}}
-                        <div class="row">
-                        {{#each pricingListByType}}                                
-                            {{em-input property=_id label=name class="col-xs-2"}}
-                        {{/each}}
-                        </div>
-                    {{/with}}
+                    <table class="table table-bordered">
+                        <tbody>
+                            {{#with this as itemController}}
+                                {{#each pricingListByType}}
+                                    <tr>
+                                        {{#each this}}
+                                            <td class="col-xs-2">
+                                                {{em-input property=_id label=name}}
+                                            </td>
+                                        {{/each}}
+                                    </tr> 
+                                {{/each}}
+                            {{/with}}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
