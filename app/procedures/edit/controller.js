@@ -44,6 +44,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     visitProcedures: Ember.computed.alias('visit.procedures'),
     
     pricingList: null, //This gets filled in by the route
+    pricingTypes: Ember.computed.alias('controllers.visits.procedurePricingTypes'),
     newProcedure: false,
     
     title: function() {
@@ -86,11 +87,15 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     },
     
     beforeUpdate: function() {
-        if (this.get('isNew')) {
-            return this.addChildToVisit(this.get('model'), 'procedures');
-        } else {
-            return Ember.RSVP.Promise.resolve();
-        }        
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            this.updateCharges().then(function() {
+                if (this.get('isNew')) {
+                    this.addChildToVisit(this.get('model'), 'procedures').then(resolve, reject);
+                } else {
+                    resolve();
+                }
+            }.bind(this), reject);
+        }.bind(this));
     },
     
     afterUpdate: function() {

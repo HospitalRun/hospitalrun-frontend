@@ -329,5 +329,7 @@
             </div>
         </div>
     </div>
-    {{partial 'item-charges'}}
+    {{#em-form model=this submit_button=false }}
+        {{partial 'item-charges'}}
+    {{/em-form}}
 </div>

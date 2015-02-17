@@ -64,6 +64,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     clinicList: Ember.computed.alias('controllers.visits.clinicList'),
     findPatientVisits: false,
     pricingList: null, //This gets filled in by the route
+    pricingTypes: Ember.computed.alias('controllers.visits.wardPricingTypes'),
     physicianList: Ember.computed.alias('controllers.visits.physicianList'),
     locationList: Ember.computed.alias('controllers.visits.locationList'),
     lookupListsToUpdate: [{
@@ -100,7 +101,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         if (this.get('isNew')) {
             this.set('newVisit', true);
         }
-        return Ember.RSVP.resolve();        
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            this.updateCharges().then(resolve, reject);
+        }.bind(this));
     },
     
     /**
