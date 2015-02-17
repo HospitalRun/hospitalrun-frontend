@@ -71,8 +71,9 @@ Router.map(function() {
         this.route('lab');
         this.route('procedure');
         this.route('ward');
-        this.route('edit', { path: "/pricing/:pricing_id" });
+        this.route('edit', { path: "/edit/:pricing_id" });
         this.route('search', { path: "/search/:search_text" });
+        this.route('profiles');
     });
     
     this.resource('print', function() {
