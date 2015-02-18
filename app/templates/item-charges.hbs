@@ -13,6 +13,7 @@
         <div class="panel-body detail-section-content">
             <table class="table">
                 <tr class="table-header">
+                    <th>Date</th>
                     <th>Item</th>
                     <th>Quantity</th>
                     <th>Action</th>
@@ -21,6 +22,7 @@
                     {{#each charges}}
                         {{#unless medicationCharge}}
                             <tr>
+                                <td>{{date-format dateCharged}}</td>
                                 <td>{{pricingItem.name}}</td>
                                 <td>{{quantity}}</td>
                                 <td>

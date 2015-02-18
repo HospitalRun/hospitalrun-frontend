@@ -3,9 +3,10 @@ export default Ember.Mixin.create({
     _createNewChargeRecord: function(quantityCharged, pricingId) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
             this.store.find('pricing', pricingId.substr(8)).then(function(item) {
-                var newCharge = this.store.createRecord('proc-charge', {                                                                           
+                var newCharge = this.store.createRecord('proc-charge', {
+                    dateCharged: new Date(),
                     quantity: quantityCharged,
-                    pricingItem: item                    
+                    pricingItem: item,
                 });
                 newCharge.save().then(function(chargeRecord) {
                     var charges = this.get('charges');
@@ -35,6 +36,7 @@ export default Ember.Mixin.create({
         
         showAddCharge: function() {
             var newCharge = this.get('store').createRecord('proc-charge',{
+                dateCharged: new Date(),
                 quantity: 1,
                 pricingCategory: this.get('chargePricingCategory')
             });

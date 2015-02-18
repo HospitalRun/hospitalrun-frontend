@@ -64,6 +64,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     actions: {
         showAddMedication: function() {
             var newCharge = this.get('store').createRecord('proc-charge',{
+                dateCharged: new Date(),
                 newMedicationCharge: true,
                 quantity: 1
             });
