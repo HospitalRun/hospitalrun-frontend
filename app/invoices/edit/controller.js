@@ -5,7 +5,7 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PublishStatuses from 'hospitalrun/mixins/publish-statuses';
 
 export default AbstractEditController.extend(NumberFormat, PatientSubmodule, PublishStatuses, {
-    needs: ['pouchdb'],
+    needs: ['invoices','pouchdb'],
     additionalButtons: [{
         class: 'btn btn-default neutral',
         buttonAction: 'printInvoice',
@@ -14,6 +14,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     }],
     pharmacyCharges: [],
     pharmacyTotal: 0,
+    pricingProfiles: Ember.computed.alias('controllers.invoices.pricingProfiles'),
     supplyCharges: [],
     supplyTotal: 0,
     updateCapability: 'add_invoice',
@@ -55,6 +56,13 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
             this.send('openModal','invoices.add-line-item', newLineItem);
         }
     },
+    
+    changePaymentProfile: function() {
+        var patient = this.get('patient');
+        if (!Ember.isEmpty(patient)) {
+            this.set('paymentProfile', patient.get('paymentProfile'));
+        }
+    }.observes('patient'),
     
     visitChanged: function() {
         var visit = this.get('visit'),

@@ -113,7 +113,14 @@
                             {{em-input property="referredBy" label="Referred By"}}
                             {{date-picker property="referredDate" label="Referred Date"}}                            
                             {{em-input property="religion" label="Religion"}}                            
-                            {{em-input property="parent" label="Parent/Guardian"}}                            
+                            {{em-input property="parent" label="Parent/Guardian"}}
+                            {{em-select label="Payment Profile"
+                                property="paymentProfile"
+                                content=pricingProfiles
+                                optionValuePath="content"
+                                optionLabelPath="content.name"
+                                prompt=" "
+                            }}                            
                         </div>
                     </div>
                 </div>

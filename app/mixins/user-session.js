@@ -367,8 +367,11 @@ export default Ember.Mixin.create({
             'System Administrator'
         ],
         patients: [
+            'Business Office',
             'Data Entry',
             'Doctor', 
+            'Finance',
+            'Finance Manager',            
             'Hospital Administrator',
             'Medical Records Officer',
             'Nurse', 

@@ -13,7 +13,7 @@ export default AbstractModel.extend(NumberFormat,{
     paidTotal: DS.attr('number'),
     paidFlag: DS.attr('boolean', {defaultValue: false}),
     /*what do we overlay on the line items to generate the priceTotal */
-    paymentProfile: DS.attr(),
+    paymentProfile: DS.belongsTo('price-profile'),
     /*payments track the number of payment events attached to an invoice.*/
     payments: DS.hasMany('payment'),
     /*the individual line items of the invoice*/

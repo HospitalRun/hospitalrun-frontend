@@ -28,6 +28,14 @@
     </div>
     <div class="row">
         {{em-input property="externalInvoiceNumber" label="External Invoice #" class="col-xs-3"}}
+        {{em-select label="Payment Profile"
+            property="paymentProfile"
+            content=pricingProfiles
+            optionValuePath="content"
+            optionLabelPath="content.name"
+            class="col-xs-3"
+            prompt=" "
+        }}
     </div>
 {{/em-form}}
 <form class="form-inline">

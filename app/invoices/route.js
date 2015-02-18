@@ -12,6 +12,9 @@ export default AbstractModuleRoute.extend({
     additionalModels: [{ 
         name: 'billingCategoryList',
         findArgs: ['lookup','billing_categories']
+    }, { 
+        name: 'pricingProfiles',
+        findArgs: ['price-profile']
     }]
     
 });

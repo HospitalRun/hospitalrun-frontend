@@ -126,6 +126,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
     fileSystem: Ember.computed.alias('controllers.filesystem'),
     isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
     patientController: Ember.computed.alias('controllers.patients'),
+    pricingProfiles: Ember.computed.alias('controllers.patients.pricingProfiles'),
     
     haveAdditionalContacts: function() {
         var additionalContacts = this.get('additionalContacts');

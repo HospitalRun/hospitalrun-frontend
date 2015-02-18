@@ -28,6 +28,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     otherIncome: DS.attr('string'),
     patientType: DS.attr('string'),
     parent: DS.attr('string'),
+    paymentProfile: DS.belongsTo('price-profile'),
     phone:  DS.attr('string'),
     placeOfBirth: DS.attr('string'),
     referredDate: DS.attr('date'),
