@@ -25,7 +25,13 @@ export default AbstractModel.extend(DateFormat, ResultValidation, {
     
     validations: {
         labTypeName: {
-            presence: true
+            presence: {
+                'if': function(object) {
+                    if (object.get('isNew')) {
+                        return true;
+                    }
+                }
+            }
         },        
         patientTypeAhead: PatientValidation.patientTypeAhead,
         patient: {
