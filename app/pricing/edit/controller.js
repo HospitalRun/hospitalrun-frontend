@@ -2,28 +2,30 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import Ember from 'ember';
 import LabPricingTypes from 'hospitalrun/mixins/lab-pricing-types';
 import ImagingPricingTypes from 'hospitalrun/mixins/imaging-pricing-types';
-import PricingOverrideModel from 'hospitalrun/models/pricing-override';
 import ReturnTo from 'hospitalrun/mixins/return-to';
 export default AbstractEditController.extend(LabPricingTypes, ImagingPricingTypes, ReturnTo, {
     needs: ['pricing'],
     
-    actions: {        
-        newOverride: function() {
-            this.send('openModal', 'pricing.override', PricingOverrideModel.create({
-                isNew: true
-            }));
-        },
+    actions: {
+        addOverride: function(override) {
+            var pricingOverrides = this.get('pricingOverrides');
+            pricingOverrides.addObject(override);
+            this.send('update', true);
+            this.send('closeModal');         
+        },        
         deleteOverride: function(model) {
             var overrideToDelete = model.overrideToDelete,
-                profiles = this.get('profiles'),
-                profileOverrides = this.get('profileOverrides'),
-                profileOverrideToDelete = profileOverrides.findBy('id', overrideToDelete.get('id'));            
-            profiles.removeObject(overrideToDelete);
-            profileOverrides.removeObject(profileOverrideToDelete);
-            this.send('update', true);
-            this.send('closeModal');            
+                pricingOverrides = this.get('pricingOverrides');
+            pricingOverrides.removeObject(overrideToDelete);            
+            overrideToDelete.destroyRecord().then(function() {
+                this.send('update', true);
+                this.send('closeModal');
+            }.bind(this));
         },
         editOverride: function(overrideToEdit) {
+            if (Ember.isEmpty(overrideToEdit)) {
+                overrideToEdit = this.store.createRecord('override-price');
+            }                              
             this.send('openModal', 'pricing.override', overrideToEdit);
         },
         showDeleteOverride: function(overrideToDelete) {
@@ -33,32 +35,6 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
                 }),
                 title = 'Delete Override';
             this.displayConfirm(title, message, 'deleteOverride', model);
-        },
-        updateOverride: function(override) {
-            var overrideProfile = override.profile,
-                overrideProfileId = overrideProfile.get('id'),
-                profiles = this.get('profiles'),
-                profileOverrides = this.get('profileOverrides'),                
-                exisitingProfile = profiles.findBy('id', overrideProfileId),
-                existingProfileOverride;
-            if (Ember.isEmpty(profileOverrides)) {
-                profileOverrides = [];
-                this.set('profileOverrides', profileOverrides);
-            }
-            existingProfileOverride = profileOverrides.findBy('id', overrideProfileId);
-            if (Ember.isEmpty(exisitingProfile)) {
-                profiles.addObject(overrideProfile);
-            }
-            if (Ember.isEmpty(existingProfileOverride)) {
-                profileOverrides.addObject({
-                    id: overrideProfileId,
-                    price: override.price
-                });
-            } else {
-                existingProfileOverride.price = override.price;
-            }
-            this.send('update', true);
-            this.send('closeModal');         
         }
     },
     

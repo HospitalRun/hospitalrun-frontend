@@ -1,19 +1,25 @@
-import Ember from "ember";
-import IsUpdateDisabled from "hospitalrun/mixins/is-update-disabled";
+import Ember from 'ember';
+import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 
 export default Ember.ObjectController.extend(IsUpdateDisabled, {
     needs: ['pricing','pricing/edit'],        
 
     actions: {
         cancel: function() {
+            this.get('model').rollback();
             this.send('closeModal');
         },
         
         update: function() {
-            if (this.get('isValid')) {
-                var override = this.get('model');
-                this.get('editController').send('updateOverride',override);
-            }
+            var isNew = this.get('isNew'),
+                override = this.get('model');
+            override.save().then(function() {
+                if (isNew) {
+                    this.get('editController').send('addOverride',override);
+                } else {
+                    this.send('closeModal');
+                }
+            }.bind(this));                           
         }
     },
 
