@@ -109,7 +109,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         this.get('model').validate();
     }.observes('primaryDiagnosisId'),
     
-    needs: ['filesystem','patients'],
+    needs: ['filesystem','pouchdb','patients'],
 
     addressOptions: Ember.computed.alias('controllers.patients.addressOptions'),
     address1Include: Ember.computed.alias('controllers.patients.addressOptions.value.address1Include'),

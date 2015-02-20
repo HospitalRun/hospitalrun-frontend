@@ -19,6 +19,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     email: DS.attr('string'),
     expenses: DS.attr(),
     externalPatientId: DS.attr('string'),
+    friendlyId: DS.attr('string'),
     familyInfo: DS.attr(),
     firstName: DS.attr('string'),
     gender:  DS.attr('string'),
@@ -60,13 +61,16 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     
     displayPatientId: function() {
         var externalPatientId = this.get('externalPatientId'),
+            friendlyId = this.get('friendlyId'),
             id = this.get('id');
-        if (Ember.isEmpty(externalPatientId)) {
-            return id;
-        } else {
+        if (!Ember.isEmpty(friendlyId)) {
+            return friendlyId;
+        } else if (!Ember.isEmpty(externalPatientId)) {
             return externalPatientId;
+        } else {
+            return id;
         }
-    }.property('id', 'externalPatientId'),
+    }.property('id', 'externalPatientId', 'friendlyId'),
     
     validations: {
         email: {
@@ -75,6 +79,9 @@ export default AbstractModel.extend(DOBDays, PatientName, {
                 allowBlank: true, 
                 message: 'please enter a valid email address'
             }
+        },
+        friendlyId: {
+            presence: true
         },
         firstName: {
             presence: true

@@ -1,4 +1,5 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
+import Ember from 'ember';
 import PatientId from 'hospitalrun/mixins/patient-id';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 export default AbstractEditRoute.extend(PatientId, PouchDbMixin, {
@@ -40,7 +41,17 @@ export default AbstractEditRoute.extend(PatientId, PouchDbMixin, {
             this.controller.send('visitDeleted', model);
         }
     },
-        
+    
+    getNewData: function() {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            this.generateFriendlyId().then(function(friendlyId) {
+                resolve({
+                    friendlyId: friendlyId
+                });
+            },reject);
+        }.bind(this));
+    },
+    
     setupController: function(controller, model) {
         this._super(controller, model);
         //Load appointments, photos and visits asynchronously.

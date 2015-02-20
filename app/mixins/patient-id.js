@@ -1,5 +1,6 @@
 import Ember from "ember";
-export default Ember.Mixin.create({
+import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
+export default Ember.Mixin.create(PouchDbMixin, {
     idPrefix: null,
     
     _createId: function(patientSequence) {
@@ -13,24 +14,25 @@ export default Ember.Mixin.create({
         return newId;
     },
     
-    _findUnusedId: function(patientSequence, patientSequenceRecord, resolve, reject) {
-        patientSequence++;
-        var newId = this._createId(patientSequence);
-        
-        this.store.find('patient',newId).then(function() {
-            this._findUnusedId(patientSequence, patientSequenceRecord, resolve, reject);
-        }.bind(this), function(err) {
-            console.log("GOT ERR", err);
-            if (Ember.isEmpty(patientSequenceRecord)) {
-                patientSequenceRecord = this.store.createRecord('config', {
-                    id: 'patient_sequence'
-                });
+    _findUnusedId: function(patientSequenceRecord, resolve, reject) {
+        var patientSequence = patientSequenceRecord.incrementProperty('value'),
+            maxValue = this.get('maxValue'),
+            newId = this._createId(patientSequence),
+            queryParams = {
+                startkey: [newId,null],
+                endkey: [newId, maxValue],    
+            },
+            pouchdbController = this.controllerFor('pouchdb');
+        pouchdbController.queryMainDB(queryParams, 'patient_by_display_id').then(function(foundRecord) {
+            if (!Ember.isEmpty(foundRecord.rows)) {
+                this._findUnusedId(patientSequenceRecord, resolve, reject);
+            } else {
+                patientSequenceRecord.set('value', patientSequence);
+                patientSequenceRecord.save().then(function() {
+                    resolve(newId);
+                }, reject);
             }
-            patientSequenceRecord.set('value', patientSequence);
-            patientSequenceRecord.save().then(function() {
-                resolve(newId);
-            }, reject);                    
-        }.bind(this));
+        }.bind(this), reject);
     },
     
     /**
@@ -38,17 +40,25 @@ export default Ember.Mixin.create({
      * @return a generated id;default is null which means that an
      * id will be automatically generated via Ember data.
      */
-    generateId: function() {
+    generateFriendlyId: function() {
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            var configs = this.modelFor('application'),
-                sessionVars = this.get('session').store.restore(),
-                patientSequence = 0,
-                patientSequenceRecord = configs.findBy('id','patient_sequence');
-            this.set('idPrefix', sessionVars.prefix+'_');
-            if (!Ember.isEmpty(patientSequenceRecord)) {
-                patientSequence = patientSequenceRecord.get('value');
+            var configs = this.modelFor('application'),                
+                idPrefix = 'P',
+                idPrefixRecord = configs.findBy('id','patient_id_prefix');
+            if (!Ember.isEmpty(idPrefixRecord)) {
+                idPrefix = idPrefixRecord.get('value');
             }
-            this._findUnusedId(patientSequence, patientSequenceRecord, resolve, reject);
+            this.set('idPrefix', idPrefix);
+            
+            this.store.find('sequence', 'patient').then(function(sequence) {
+                this._findUnusedId(sequence, resolve, reject);
+            }.bind(this), function() {
+                var newSequence = this.get('store').push('sequence',{
+                    id: 'patient',
+                    value: 0
+                });
+                this._findUnusedId(newSequence, resolve, reject);
+            }.bind(this));
         }.bind(this));
     }
 });

@@ -72,12 +72,7 @@
                 <div class="panel-body detail-section-content">
                     <div class="row">
                         <div class="col-xs-12 col-sm-6">
-                            <div class="form-group has-success">
-                                <label class="control-label">Record Number</label>
-                                <div class="form-control not-editable">
-                                    {{id}}
-                                </div>
-                            </div>
+                            {{em-input property="friendlyId" label="Id" class="required"}}
                             {{em-input property="firstName" label="First Name" class="required"}}
                             {{em-input property="lastName" label="Last Name" class="required"}}
                             <div class="form-group">
@@ -571,12 +566,12 @@
                                 selected=additionalData.philhealth
                                 class="col-sm-6"
                             }}
-
                             {{em-select label="Classification" 
                                 property="economicClassification" content=economicClassificationTypes
                                 optionValuePath="content" optionLabelPath="content"
                                 selected=economicClassification
                                 class="col-sm-6"
+                                prompt=" "
                             }}
                         </div>
                         {{em-text label="Other Notes" property="notes"}}
