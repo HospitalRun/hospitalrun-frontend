@@ -27,13 +27,7 @@ export default AbstractModuleRoute.extend(UserSession,{
     },  {
         name: 'locationList',
         findArgs: ['lookup','visit_location_list']
-    }],    
-    
-    getNewData: function() {
-        return {
-            selectPatient: true
-        };
-    },
+    }],
     
     subActions: [{
         text: 'This Week',

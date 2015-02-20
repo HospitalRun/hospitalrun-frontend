@@ -1,7 +1,7 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
-import FulfillRequest from "hospitalrun/mixins/fulfill-request";
-import InventoryId from "hospitalrun/mixins/inventory-id";
-import InventoryLocations from "hospitalrun/mixins/inventory-locations"; //inventory-locations mixin is needed for fulfill-request mixin!
+import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
+import InventoryId from 'hospitalrun/mixins/inventory-id';
+import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; //inventory-locations mixin is needed for fulfill-request mixin!
 export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, InventoryLocations, {
     addCapability: 'add_inventory_item',
     additionalModels: [{ 
@@ -69,20 +69,5 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
             this.set('currentItem', inventoryItem);
             this.send('openModal', 'inventory.purchase.edit', newPurchase);
         }        
-
-    },
-    
-
-    
-    /**
-     * Define what data a new inventory item should be instantiated with.  
-     * The only default is to set the type to asset; at some point this may be driven by subsection of inventory you are in.
-     * @return the default properties for a new inventory item.
-     */    
-    getNewData: function() {
-        return  {
-            type: 'Asset',
-            dateReceived: new Date()
-        };
     }
 });

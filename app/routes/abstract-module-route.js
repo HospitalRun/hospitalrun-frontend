@@ -117,14 +117,6 @@ export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRou
         return Ember.RSVP.resolve(null);                
     },
 
-    /**
-     * Override this function to define what data a new model should be instantiated with.
-     * Defaults to empty object
-     */    
-    getNewData: function() {
-        return {};
-    },
-    
     model: function() {        
         if (!Ember.isEmpty(this.additionalModels)) {
             return new Ember.RSVP.Promise(function(resolve, reject){

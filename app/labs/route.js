@@ -15,13 +15,6 @@ export default AbstractModuleRoute.extend({
     }, {
         text: 'Completed',
         linkTo: 'labs.completed'
-    }],
-
-    getNewData: function() {
-        return {
-            selectPatient: true,
-            requestDate: moment().startOf('day').toDate()
-        };
-    }
+    }]
 });
 

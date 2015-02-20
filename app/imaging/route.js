@@ -17,11 +17,5 @@ export default AbstractModuleRoute.extend({
         linkTo: 'imaging.completed'
     }],
 
-    getNewData: function() {
-        return {
-            selectPatient: true,
-            requestDate: moment().startOf('day').toDate()
-        };
-    }
 });
 

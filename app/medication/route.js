@@ -16,13 +16,6 @@ export default AbstractModuleRoute.extend({
     }, {
         text: 'Completed',
         linkTo: 'medication.completed'
-    }],
-
-    getNewData: function() {
-        return {
-            selectPatient: true,
-            prescriptionDate: moment().startOf('day').toDate()
-        };
-    }
+    }]
 });
 
