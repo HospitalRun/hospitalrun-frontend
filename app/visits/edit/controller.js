@@ -61,7 +61,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     cancelAction: 'returnToPatient',
     chargePricingCategory: 'Ward',
     chargeRoute: 'visits.charge',
-    clinicList: Ember.computed.alias('controllers.visits.clinicList'),
+    clincList: Ember.computed.alias('controllers.visits.clinicList'),
+    diagnosisList: Ember.computed.alias('controllers.visits.diagnosisList'),
     findPatientVisits: false,
     pricingList: null, //This gets filled in by the route
     pricingTypes: Ember.computed.alias('controllers.visits.wardPricingTypes'),
@@ -71,6 +72,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         name: 'clinicList',
         property: 'clinic',
         id: 'clinic_list'
+    }, {
+        name: 'diagnosisList',
+        property: 'primaryDiagnosis',
+        id: 'diagnosis_list'
     }, {
         name: 'physicianList',
         property: 'examiner',

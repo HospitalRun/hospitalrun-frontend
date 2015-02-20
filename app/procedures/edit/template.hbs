@@ -1,5 +1,15 @@
-{{#em-form model=this submit_button=false }}
-    {{icd10-pcs-typeahead property="description" label="Procedure" selection=billingId class="required"}}
+{{#em-form model=this submit_button=false }}    
+    {{select-or-typeahead class="required" property="description"
+        label="Procedure" list=procedureList
+        selection=description
+    }}          
+    <div class="row">
+        {{icd10-pcs-typeahead property="icd10PCS" label="ICD-10-PCS" selection=icd10PCSId class="col-xs-6"}}
+        {{select-or-typeahead class="col-xs-6" property="cptCode"
+            label="CPT Code" list=cptCodeList
+            selection=cptCode
+        }}
+    </div>
     <div class="row">
         {{select-or-typeahead class="col-sm-3" property="location"
             label="Procedure Location" list=procedureLocations
@@ -27,10 +37,7 @@
         {{select-or-typeahead class="col-sm-4" property="anesthesiaType"
             label="Anesthesia Type" list=anesthesiaTypes
             selection=anesthesiaTypes
-        }}
-        {{em-input property="oxygenHours" label="Oxygen Hours" class="col-sm-2"}}
-        {{em-input property="pacuHours" label="PACU Hours" class="col-sm-2"}}
-        
+        }}        
     </div>
     {{em-text label="Notes" property="notes" rows=3 }}
     {{partial 'item-charges'}}

@@ -17,11 +17,11 @@
                             <label>Patient</label>
                             <p class="form-control-static">{{patient.displayName}}</p>
                         </div>       
-                        {{date-picker property="startDate" label="Start Date" class="col-sm-3"}}
+                        {{date-picker property="startDate" label="Start Date" class="col-sm-3 required"}}
                         {{date-picker property="endDate" label="End Date" class="col-sm-3"}}
                     </div>
                     <div class="row">
-                        {{em-select class="col-sm-3" label="Visit Type" 
+                        {{em-select class="col-sm-3 required" label="Visit Type" 
                             property="visitType" content=visitTypes
                             optionValuePath="content" optionLabelPath="content"
                         }}
@@ -49,11 +49,15 @@
                         }}
                     </div>
                     <div class="row">
-                        <div class="form-group col-xs-12">
-                            {{icd10-typeahead property="primaryDiagnosis" label="Primary Diagnosis" selection=primaryDiagnosisId }}
-                            {{em-text label="Patient History" property="history" rows=3 }}
-                        </div>
+                        {{select-or-typeahead class="col-sm-6" property="primaryDiagnosis" 
+                            label="Primary Diagnosis" list=diagnosisList 
+                            selection=primaryDiagnosis
+                        }}                        
+                        {{icd10-typeahead property="primaryBillingDiagnosis" label="Primary Billing Diagnosis" selection=primaryDiagnosisId class="col-xs-6" }}
+                            
+                    
                     </div>
+                    {{em-text label="Patient History" property="history" rows=3 }}
                     {{em-text label="History since last seen" property="history" rows=3 }}
                     {{em-text label="Notes" property="notes" rows=3 }}
                 {{/em-form}}
@@ -64,7 +68,7 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-diagnosis">
-                    Additional Diagnoses
+                    Additional Billing Diagnoses
                     {{#if canAddDiagnosis}}
                         <button class="btn btn-primary align-right" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> New Diagnosis</button>
                     {{/if}}

@@ -16,7 +16,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     
     anesthesiaTypes: Ember.computed.alias('controllers.visits.anesthesiaTypes'),
     anesthesiologistList: Ember.computed.alias('controllers.visits.anesthesiologistList'),
+    cptCodeList: Ember.computed.alias('controllers.visits.cptCodeList'),
     physicianList: Ember.computed.alias('controllers.visits.physicianList'),
+    procedureList: Ember.computed.alias('controllers.visits.procedureList'),
     procedureLocations: Ember.computed.alias('controllers.visits.procedureLocations'),
     lookupListsToUpdate: [{
         name: 'anesthesiaTypes',
@@ -27,6 +29,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         property: 'anesthesiologist',
         id: 'anesthesiologists'
     }, {
+        name: 'cptCodeList',
+        property: 'cptCode',
+        id: 'cpt_code_list'
+    }, {
         name: 'physicianList',
         property: 'assistant',
         id: 'physician_list'
@@ -34,6 +40,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         name: 'physicianList',
         property: 'physician',
         id: 'physician_list'
+    }, {
+        name: 'procedureList',
+        property: 'description',
+        id: 'procedure_list'
     }, {
         name: 'procedureLocations',
         property: 'location',
@@ -55,9 +65,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         return 'Edit Procedure';
 	}.property('isNew'),
     
-    billingIdChanged: function() {
+    icd10PCSIdChanged: function() {
         this.get('model').validate();
-    }.observes('billingId'),
+    }.observes('icd10PCSId'),
     
     updateCapability: 'add_charge',
     

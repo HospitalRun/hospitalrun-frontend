@@ -40,6 +40,18 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
             patient: 'country'
         }
     }, {
+        name: 'Diagnoses',
+        value: 'diagnosis_list',
+        models: {
+            visit: 'primaryDiagnosis'
+        }
+    }, {
+        name: 'CPT Codes',
+        value: 'cpt_code_list',
+        models: {
+            procedure: 'cptCode'
+        }
+    }, {
         name: 'Expense Accounts',
         value: 'expense_account_list',
         models: {
@@ -107,6 +119,12 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
                 'assistant',
                 'physician'
             ]
+        }
+    }, {
+        name: 'Procedures',
+        value: 'procedure_list',
+        models: {
+            procedure: 'description'
         }
     }, {
         name: 'Procedure Locations',

@@ -18,6 +18,7 @@ export default AbstractModel.extend({
     outPatient: DS.attr('boolean'),
     patient: DS.belongsTo('patient'),
     primaryDiagnosis: DS.attr('string'),
+    primaryBillingDiagnosis: DS.attr('string'),
     primaryDiagnosisId: DS.attr('string'),
     procedures: DS.hasMany('procedure', {async: true}),
     startDate:  DS.attr('date'),
@@ -64,7 +65,7 @@ export default AbstractModel.extend({
             presence: true
         },
         
-        primaryDiagnosis: {            
+        primaryBillingDiagnosis: {            
             acceptance: DiagnosisValidation.diagnosisValidation.acceptance,
             length: { 
                 allowBlank: true,
