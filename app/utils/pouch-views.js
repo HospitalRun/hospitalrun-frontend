@@ -3,14 +3,30 @@ import PatientSearch from 'hospitalrun/utils/patient-search';
 import PricingSearch from 'hospitalrun/utils/pricing-search';
 import InventorySearch from 'hospitalrun/utils/inventory-search';
 /* global emit */
-function createDesignDoc(name, mapFunction) {
+function createDesignDoc(item, rev) {
     var ddoc = {
-        _id: '_design/' + name,
+        _id: '_design/' + item.name,
+        version: item.version,
         views: {
         }
     };
-    ddoc.views[name] = { map: mapFunction.toString() };
+    if (rev) {
+        ddoc._rev = rev;
+    }
+    ddoc.views[item.name] = { map: item.function.toString() };
     return ddoc;
+}
+
+function updateDesignDoc(item, db, rev) {
+    var designDoc = createDesignDoc(item, rev);
+    db.put(designDoc).then(function () {
+        // design doc created!
+        //Update index
+        db.query(item.name, {stale: 'update_after'}); 
+    }, function() {
+        //ignored, design doc already exists
+    });
+    
 }
 
 
@@ -238,7 +254,7 @@ function pricingByCategory(doc) {
     if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
         doctype = doc._id.substring(0, uidx);
         if (doctype === 'pricing') {
-            emit([doc.category, doc._id]); 
+            emit([doc.category, doc.name, doc.type, doc._id]); 
         }   
     }
 }
@@ -326,52 +342,68 @@ function visitByPatient(doc) {
     
 var designDocs = [{
     name: 'appointments_by_date',
-    function: appointmentsByDate    
+    function: appointmentsByDate,
+    version: 1
 }, {
     name: 'appointments_by_patient',
-    function: appointmentsByPatient    
+    function: appointmentsByPatient,
+    version: 1
 }, {
     name: 'imaging_by_status',
-    function: imagingByStatus
+    function: imagingByStatus,
+    version: 1
 }, {    
     name: 'inventory_by_type',
-    function: inventoryByType
+    function: inventoryByType,
+    version: 1
 }, {    
     name: 'inventory_purchase_by_date_received',
-    function: inventoryPurchaseByDateReceived
+    function: inventoryPurchaseByDateReceived,
+    version: 1
 }, {    
     name: 'inventory_purchase_by_expiration_date',
-    function: inventoryPurchaseByExpirationDate
+    function: inventoryPurchaseByExpirationDate,
+    version: 1
 }, {
     name: 'inventory_request_by_status',
-    function: inventoryRequestByStatus    
+    function: inventoryRequestByStatus,
+    version: 1
 }, {
     name: 'lab_by_status',
-    function: labByStatus
+    function: labByStatus,
+    version: 1
 }, {
     name: 'medication_by_status',
-    function: medicationByStatus
+    function: medicationByStatus,
+    version: 1
 }, {    
     name: 'patient_by_display_id',
-    function: patientByDisplayId
+    function: patientByDisplayId,
+    version: 1
 }, {
     name: 'photo_by_patient',
-    function: photoByPatient
+    function: photoByPatient,
+    version: 1
 }, {
     name: 'procedure_by_date',
-    function: procedureByDate
+    function: procedureByDate,
+    version: 1
 }, {
     name: 'pricing_by_category',
-    function: pricingByCategory
+    function: pricingByCategory,
+    version: 1
 }, {
     name: 'sequence_by_prefix',
-    function: sequenceByPrefix
+    function: sequenceByPrefix,
+    version: 1
 }, {
     name: 'visit_by_date',
-    function: visitByDate
+    function: visitByDate,
+    version: 1
 }, {
     name: 'visit_by_patient',
-    function: visitByPatient
+    function: visitByPatient,
+    version: 1
 }];
 
 var searchIndexes = [
@@ -384,22 +416,16 @@ export default function(db) {
     searchIndexes.forEach(function(searchIndex) {
         var searchIndexBuild = Ember.copy(searchIndex);
         searchIndexBuild.build = true;
-        db.search(searchIndexBuild).then(function (info) {
-            console.log("Built search idx",info);
-        }).catch(function (err) {
-            console.log("ERROR Build search idx",err);
-        });
+        db.search(searchIndexBuild);
     });
     
-    var designDoc;
     designDocs.forEach(function(item) {
-        designDoc = createDesignDoc(item.name, item.function);
-        db.put(designDoc).then(function () {
-            // design doc created!
-            //Update index
-            db.query(item.name, {stale: 'update_after'}); 
+        db.get('_design/' + item.name).then(function(doc) {
+            if (doc.version !== item.version) {
+                updateDesignDoc(item, db, doc._rev);
+            }
         }, function() {
-            //ignored, design doc already exists
+            updateDesignDoc(item, db);
         });
     });
 }
