@@ -1,5 +1,6 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import InventoryId from "hospitalrun/mixins/inventory-id";
+import Ember from 'ember';
+import InventoryId from 'hospitalrun/mixins/inventory-id';
 export default AbstractEditRoute.extend(InventoryId, {
     editTitle: 'Edit Item',
     modelName: 'inventory',
@@ -28,8 +29,8 @@ export default AbstractEditRoute.extend(InventoryId, {
     },
     
     getNewData: function() {
-        return {
-            type: 'Asset'
-        };
+        return Ember.RSVP.resolve({
+            dateReceived: new Date()
+        });
     }
 });

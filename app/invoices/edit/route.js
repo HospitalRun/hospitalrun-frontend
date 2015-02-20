@@ -1,4 +1,5 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
+import Ember from 'ember';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 export default AbstractEditRoute.extend(PatientListRoute, {
     editTitle: 'Edit Invoice',
@@ -16,9 +17,9 @@ export default AbstractEditRoute.extend(PatientListRoute, {
     },
     
     getNewData: function() {
-        return {
+        return Ember.RSVP.resolve({
             billDate: new Date(),
             selectPatient: true            
-        };
+        });
     }
 });

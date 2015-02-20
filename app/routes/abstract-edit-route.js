@@ -21,10 +21,10 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
 
     /**
      * Override this function to define what data a new model should be instantiated with.
-     * Defaults to empty object
+     * @return a promise that will resolve with the data for a new record; defaults to empty object.
      */    
     getNewData: function() {
-        return {};
+         return Ember.RSVP.resolve({});
     },
     
     model: function(params) {
@@ -32,16 +32,17 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
         if (!Ember.isEmpty(idParam) && params[idParam] === 'new') {
             return new Ember.RSVP.Promise(function(resolve) {
                 this.generateId().then(function(newId) {
-                    var data = this.getNewData(),
-                        modelName = this.get('modelName');
-                        if (newId) {
-                            data.id = newId;
+                    this.getNewData().then(function(data) {
+                            var modelName = this.get('modelName');
+                            if (newId) {
+                                data.id = newId;
+                            }
+                        if (newId && this.store.hasRecordForId(modelName, newId)) {
+                            resolve(this.store.push(modelName, data));
+                        } else {
+                            resolve(this.store.createRecord(modelName, data));
                         }
-                    if (newId && this.store.hasRecordForId(modelName, newId)) {
-                        resolve(this.store.push(modelName, data));
-                    } else {
-                        resolve(this.store.createRecord(modelName, data));
-                    }
+                    }.bind(this));
                 }.bind(this));
             }.bind(this));
         } else {

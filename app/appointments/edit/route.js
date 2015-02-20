@@ -1,4 +1,5 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
+import Ember from 'ember';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 export default AbstractEditRoute.extend(PatientListRoute, {
     editTitle: 'Edit Appointment',
@@ -6,8 +7,8 @@ export default AbstractEditRoute.extend(PatientListRoute, {
     newTitle: 'New Appointment',
     
     getNewData: function() {
-        return {
+        return Ember.RSVP.resolve({
             selectPatient: true
-        };
+        });
     }
 });

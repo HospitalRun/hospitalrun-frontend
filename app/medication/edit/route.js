@@ -8,10 +8,10 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
     modelName: 'medication',
     newTitle: 'New Medication Request',
     getNewData: function() {
-        return {
+        return Ember.RSVP.resolve({
             selectPatient: true,
             prescriptionDate: moment().startOf('day').toDate()
-        };
+        });
     },
     
     afterModel: function(model) {
