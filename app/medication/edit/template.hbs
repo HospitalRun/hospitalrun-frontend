@@ -1,14 +1,14 @@
 {{#em-form model=this submit_button=false }}
     <div class="row">
         {{#if selectPatient}}
-            {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-3"}}
+            {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-3 required"}}
         {{else}}
             <div class="form-group col-xs-3">
                 <label>Patient</label>
                 <p class="form-control-static">{{patient.displayName}}</p>
             </div>
         {{/if}}
-        {{em-select class="col-xs-3" label="Visit" 
+        {{em-select class="col-xs-3 required" label="Visit" 
             property="visit" content=patientVisits
             optionValuePath="content" optionLabelPath="content.visitDescription"
             prompt="--Add New Visit--"
@@ -21,14 +21,14 @@
             <p class="form-control-static">{{inventoryItem.name}}</p>        
         </div>
     {{else}}
-        {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem }}
+        {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required"}}
     {{/if}}
     <div class="row">
-        {{em-input property="dose" label="Dose" class="col-xs-3"}}
-        {{select-or-typeahead property="frequency" label="Frequency" class="col-xs-3" list=medicationFrequencyList selection=frequency }}
+        {{em-input property="dose" label="Dose" class="col-xs-3 required"}}
+        {{select-or-typeahead property="frequency" label="Frequency" class="col-xs-3 required" list=medicationFrequencyList selection=frequency }}
     </div>        
     <div class="row">
-        {{em-input property="duration" label="Duration" class="col-xs-3"}}
+        {{em-input property="duration" label="Duration" class="col-xs-3 required"}}
         {{em-select class="col-xs-3" label=" " 
             property="durationType" content=durationTypes
             optionValuePath="content" optionLabelPath="content"
