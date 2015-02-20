@@ -142,6 +142,7 @@ export default Ember.Mixin.create({
         pricingTypeValues = pricingTypeValues.filter(function(pricingType) {
             return pricingType !== pricingTypeForObjectType;
         });
+        pricingTypeValues = pricingTypeValues.sortBy('name');
         return pricingTypeValues;
     }.property('pricingTypeValues','pricingTypeForObjectType'),
     

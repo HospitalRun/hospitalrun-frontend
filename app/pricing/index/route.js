@@ -7,28 +7,26 @@ export default AbstractIndexRoute.extend({
         
     _getStartKeyFromItem: function(item) {
         var category = this.get('category'),
-            keyPrefix = this.get('keyPrefix');        
-        if (Ember.isEmpty(category)) {
-            return this._super(item);
-        } else {
-            return [category, keyPrefix+item.get('id')];
-        }
+            keyPrefix = this.get('keyPrefix'),
+            name = this.get('name'),
+            type = this.get('type');
+        return [category, name, type, keyPrefix+item.get('id')];        
     },
     
     _modelQueryParams: function() {
         var category = this.get('category'),
             keyPrefix = this.get('keyPrefix'),
-            maxValue = this.get('maxValue');
-        if (Ember.isEmpty(category)) {
-            return this._super();
-        } else {
-            return {
+            maxValue = this.get('maxValue'),
+            queryParams = {
                 options: {
-                    startkey: [category, keyPrefix],
-                    endkey: [category, keyPrefix+maxValue]
+                    startkey: [category, null, null, keyPrefix],
+                    endkey: [category, maxValue, maxValue, keyPrefix+maxValue]
                 },
                 mapReduce: 'pricing_by_category'
             };
+        if (Ember.isEmpty(category)) {
+            queryParams.options.endkey[0] = maxValue;
         }
+        return queryParams;
     }    
 });

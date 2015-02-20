@@ -1,9 +1,11 @@
 {{#if hasRecords}}
     <table class="table">
         <tr class="table-header">
+            {{#if showCategory}}
+                <th>Category</th>
+            {{/if}}
             <th>Name</th>
-            <th>Price</th>
-            <th>Category</th>
+            <th>Price</th>            
             <th>Type</th>
             <th>Expense Account</th>
             {{#if showActions}}
@@ -13,9 +15,11 @@
         {{#with this as parentController}}
             {{#each}}
                 <tr {{action 'editItem' this}}>
+                    {{#if parentController.showCategory}}
+                        <td>{{category}}</td>
+                    {{/if}}
                     <td>{{name}}</td>
-                    <td>{{price}}</td>
-                    <td>{{category}}</td>
+                    <td>{{price}}</td>                    
                     <td>{{type}}</td>
                     <td>{{expenseAccount}}</td>
                     {{#if parentController.showActions}}
