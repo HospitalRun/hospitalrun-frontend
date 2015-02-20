@@ -4,8 +4,8 @@ export default AbstractIndexRoute.extend({
     pageTitle: 'Patient Listing',
     
     _getStartKeyFromItem: function(item) {
-        var displayId =item.get('displayId');
-        return [displayId,'patient_'+item.get('id')];
+        var displayPatientId =item.get('displayPatientId');
+        return [displayPatientId,'patient_'+item.get('id')];
     },
     
     _modelQueryParams: function() {
