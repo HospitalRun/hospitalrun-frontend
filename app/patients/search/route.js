@@ -3,6 +3,7 @@ import PatientSearch from 'hospitalrun/utils/patient-search';
 export default AbstractSearchRoute.extend({
     moduleName: 'patients',
     searchKeys: [
+        'friendlyId',
         'externalPatientId',
         'firstName',
         'lastName'
