@@ -7,7 +7,6 @@ export default Ember.ArrayController.extend(UserSession, {
     previousStartKey: null,
     previousStartKeys: [],
     queryParams: ['startKey'],
-    limit: 10,
     
     canAdd: function() {        
         return this.currentUserCan(this.get('addPermission'));
