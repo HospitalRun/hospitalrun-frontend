@@ -204,6 +204,23 @@ function medicationByStatus(doc) {
     }    
 }
 
+function patientByDisplayId(doc) {
+    var doctype,
+        uidx;
+    if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+        doctype = doc._id.substring(0, uidx);
+        if (doctype === 'patient') {
+            if (doc.friendlyId) {
+                emit([doc.friendlyId, doc._id]);
+            } else if (doc.externalPatientId) {
+                emit([doc.externalPatientId, doc._id]);
+            } else {
+                emit([doc._id, doc._id]);
+            }
+        }   
+    }
+}
+
 function photoByPatient(doc) {
     var doctype,
         uidx;
@@ -334,6 +351,9 @@ var designDocs = [{
 }, {
     name: 'medication_by_status',
     function: medicationByStatus
+}, {    
+    name: 'patient_by_display_id',
+    function: patientByDisplayId
 }, {
     name: 'photo_by_patient',
     function: photoByPatient
