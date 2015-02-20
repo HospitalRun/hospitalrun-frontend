@@ -53,10 +53,15 @@ export default AbstractEditRoute.extend(PatientId, PouchDbMixin, {
     },
     
     setupController: function(controller, model) {
-        this._super(controller, model);
         //Load appointments, photos and visits asynchronously.
-        var maxValue = this.get('maxValue'),            
+        var friendlyId = model.get('friendlyId'),
+            externalId = model.get('externalPatientId'),
+            maxValue = this.get('maxValue'),            
             patientId = 'patient_'+model.get('id');
+        if (Ember.isEmpty(friendlyId) && !Ember.isEmpty(externalId)) {
+            model.set('friendlyId', externalId);
+        }
+        this._super(controller, model);
         this.store.find('visit', {
             options: {
                 startkey: [patientId, null, null, null, 'visit_'],
