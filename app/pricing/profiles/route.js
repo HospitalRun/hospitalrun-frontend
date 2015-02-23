@@ -27,6 +27,10 @@ export default AbstractIndexRoute.extend(ModalHelper, {
         newItem: function() {
             var newItem = this.store.createRecord('price-profile');
             this.send('openModal', 'pricing.profiles.edit', newItem);
-        }        
+        },
+        
+        refreshProfiles: function() {
+            this.refresh();
+        }    
     }
 });

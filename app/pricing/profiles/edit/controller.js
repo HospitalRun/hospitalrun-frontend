@@ -8,6 +8,7 @@ export default AbstractEditController.extend({
     
     afterUpdate: function(record) {
         var message =  'The pricing profile %@ has been saved.'.fmt(record.get('name'));
-        this.displayAlert('Pricing Profile Saved', message);        
+        this.displayAlert('Pricing Profile Saved', message);
+        this.send('refreshProfiles');
     }
 });
