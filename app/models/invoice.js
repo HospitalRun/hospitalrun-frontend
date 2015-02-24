@@ -6,6 +6,7 @@ import PatientValidation from 'hospitalrun/utils/patient-validation';
 export default AbstractModel.extend(NumberFormat,{
     externalInvoiceNumber: DS.attr('string'),
     patient: DS.belongsTo('patient'),
+    patientInfo: DS.attr('string'), //Needed for searching
     visit: DS.belongsTo('visit'),
     status: DS.attr('string'),
     billDate: DS.attr('date'),
@@ -72,7 +73,13 @@ export default AbstractModel.extend(NumberFormat,{
             categoryList.total = this._calculateTotal(categoryList.items, 'total');
         }.bind(this));
         return byCategory;        
-    }.property('lineItems.@each.amountOwed'),    
+    }.property('lineItems.@each.amountOwed'),
+    
+    patientIdChanged: function() {
+        var patientDisplayName = this.get('patient.displayName'),
+            patientDisplayId = this.get('patient.displayPatientId');
+        this.set('patientInfo', '%@ - %@'.fmt(patientDisplayName, patientDisplayId));
+    }.observes('patient.displayName', 'patient.id', 'patient.displayPatientId'),
     
     validations: {
         patientTypeAhead: PatientValidation.patientTypeAhead,        
