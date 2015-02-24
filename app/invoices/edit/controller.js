@@ -64,30 +64,58 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         }
     }.observes('patient'),
     
+    paymentProfileChanged: function() {
+        var discountPercentage = this.get('paymentProfile.discountPercentage'),
+            profileId = this.get('paymentProfile.id');
+        if (this._validNumber(discountPercentage)) {
+            var lineItems = this.get('lineItems');
+            lineItems.forEach(function(lineItem) {
+                var details = lineItem.get('details');
+                details.forEach(function(detail) {
+                    var detailTotal = 0,
+                        pricingOverrides = detail.overrides,
+                        overrodePrice = false;
+                    if (this._validNumber(detail.price) && this._validNumber(detail.quantity)) {
+                        detailTotal = (detail.price * detail.quantity);
+                    }
+                    if (!Ember.isEmpty(pricingOverrides)) {
+                        var pricingOverride = pricingOverrides.findBy('id', profileId);
+                        if (!Ember.isEmpty(pricingOverride)) {
+                            Ember.set(detail, 'discount', (detailTotal - pricingOverride.price));
+                            overrodePrice = true;
+                        }
+                    }
+                    if (!overrodePrice && detailTotal > 0) {
+                        Ember.set(detail, 'discount', (discountPercentage / 100) * (detailTotal));
+                    }
+                }.bind(this));
+            }.bind(this));
+        }
+    }.observes('paymentProfile'),
+    
     visitChanged: function() {
         var visit = this.get('visit'),
             lineItems = this.get('lineItems');
         if (!Ember.isEmpty(visit) && Ember.isEmpty(lineItems)) {
             var promises = this.resolveVisitChildren();            
             Ember.RSVP.allSettled(promises, 'Resolved visit children before generating invoice').then(function(results) {
-                var chargePromises = [];
-                results.forEach(function(result) {
-                    if (!Ember.isEmpty(result.value)) {
-                        result.value.forEach(function(record) {
-                            var charges = record.get('charges');
-                            if (!Ember.isEmpty(charges)) {                            
-                                charges.forEach(function(charge) {
-                                    //Make sure charges are fully resolved (including pricingItem)
-                                    chargePromises.push(charge.reload());
-                                });
-                            }
-                        });
-                    }
-                });
+                var chargePromises = this._resolveVisitDescendents(results, 'charges');
                 if (!Ember.isEmpty(chargePromises)) {
                     var promiseLabel = 'Reloaded charges before generating invoice';
-                    Ember.RSVP.allSettled(chargePromises, promiseLabel).then(function() {
-                        this._generateLineItems(visit, results);
+                    Ember.RSVP.allSettled(chargePromises, promiseLabel).then(function(chargeResults) {
+                        var pricingPromises = [];
+                        chargeResults.forEach(function(result) {
+                            if (!Ember.isEmpty(result.value)) {                                
+                                var pricingItem = result.value.get('pricingItem');
+                                if (!Ember.isEmpty(pricingItem)) {
+                                    pricingPromises.push(pricingItem.reload());
+                                }
+                            }
+                        });
+                        promiseLabel = 'Reloaded pricing items before generating invoice';
+                        Ember.RSVP.allSettled(pricingPromises, promiseLabel).then(function() {
+                            this._generateLineItems(visit, results);
+                        }.bind(this));
                     }.bind(this));
                 } else {
                     this._generateLineItems(visit, results);
@@ -125,7 +153,16 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
                 quantity: charge.get('quantity'),
                 price: charge.get('pricingItem.price'),
                 department: department
-            };        
+            },
+           pricingOverrides = charge.get('pricingItem.pricingOverrides');
+        if (!Ember.isEmpty(pricingOverrides)) {
+            chargeItem.overrides = pricingOverrides.map(function(override) {
+                return {
+                    id: override.get('profile.id'),
+                    price: override.get('price')
+                };
+            });
+        }
         if (chargeItem.price && !isNaN(chargeItem.price)) {
             this.incrementProperty(totalProperty, (chargeItem.price * chargeItem.quantity));
         }
@@ -246,6 +283,24 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         lineItem.save();
         lineItems.addObject(lineItem);
         this.send('update', true);
+    },
+    
+    _resolveVisitDescendents: function(results, childNameToResolve) {
+        var promises = [];        
+        results.forEach(function(result) {
+            if (!Ember.isEmpty(result.value)) {
+                result.value.forEach(function(record) {
+                    var children = record.get(childNameToResolve);
+                    if (!Ember.isEmpty(children)) {
+                        children.forEach(function(child) {
+                            //Make sure children are fully resolved
+                            promises.push(child.reload());
+                        });
+                    }
+                });
+            }
+        });
+        return promises;
     },
     
     beforeUpdate: function() {

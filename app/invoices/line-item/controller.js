@@ -5,23 +5,29 @@ export default Ember.ObjectController.extend(NumberFormat, {
         return this.parentController.get('canAddCharge');
     }.property(),
     
-    _validNumber: function(number) {
-        
-        return (!Ember.isEmpty(number) && !isNaN(number) && number > 0);
-    },
-    
     _calculateItemTotals: function() {
         var details = this.get('details'),
+            discountTotal = 0,
             priceTotal = 0;
         if (!Ember.isEmpty(details)) {
             details.forEach(function(detail) {
                 if (this._validNumber(detail.price) && this._validNumber(detail.quantity)) {
-                    priceTotal += (detail.price * detail.quantity);
+                    Ember.set(detail, 'total', this._numberFormat((detail.price * detail.quantity), true));
+                    priceTotal += detail.total;
+                    if (this._validNumber(detail.discount)) {
+                        discountTotal += Number(detail.discount);
+                        Ember.set(detail, 'total', this._numberFormat((detail.total - detail.discount), true));
+                    }                    
                 }
             }.bind(this));
             this.set('total', this._numberFormat(priceTotal, true));
+            this.set('discount', this._numberFormat(discountTotal, true));
         }
     },
+    
+    detailDiscountChanged: function() {
+        this._calculateItemTotals();
+    }.observes('details.@each.discount'),  
     
     detailQuantityChanged: function() {
         this._calculateItemTotals();
@@ -29,8 +35,8 @@ export default Ember.ObjectController.extend(NumberFormat, {
     
     detailPriceChanged: function() {
         this._calculateItemTotals();
-    }.observes('details.@each.price'),    
-    
+    }.observes('details.@each.price'),
+        
     actions: {
         addCharge: function() {
             var details = this.get('details');
