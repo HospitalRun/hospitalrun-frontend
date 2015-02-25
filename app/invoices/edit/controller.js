@@ -58,8 +58,9 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     },
     
     changePaymentProfile: function() {
-        var patient = this.get('patient');
-        if (!Ember.isEmpty(patient)) {
+        var patient = this.get('patient'),
+            paymentProfile = this.get('paymentProfile');
+        if (!Ember.isEmpty(patient) && Ember.isEmpty(paymentProfile)){
             this.set('paymentProfile', patient.get('paymentProfile'));
         }
     }.observes('patient'),
