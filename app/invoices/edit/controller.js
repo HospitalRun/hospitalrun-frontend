@@ -13,13 +13,10 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         buttonText: 'Print'
     }],
     pharmacyCharges: [],
-    pharmacyTotal: 0,
     pricingProfiles: Ember.computed.alias('controllers.invoices.pricingProfiles'),
     supplyCharges: [],
-    supplyTotal: 0,
     updateCapability: 'add_invoice',
     wardCharges: [],
-    wardTotal: 0,
     
     canAddCharge: function() {        
         return this.currentUserCan('add_charge');
@@ -35,6 +32,9 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         
         deleteCharge: function(deleteInfo) {
             deleteInfo.deleteFrom.removeObject(deleteInfo.itemToDelete);
+            if (!deleteInfo.itemToDelete.get('isNew')) {
+                deleteInfo.itemToDelete.destroyRecord();
+            }
             this.send('update', true);
             this.send('closeModal');
         },        
@@ -42,7 +42,9 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         deleteLineItem: function(deleteInfo) {
             var lineItems = this.get('lineItems');
             lineItems.removeObject(deleteInfo.itemToDelete);
-            deleteInfo.itemToDelete.destroyRecord();
+            if (!deleteInfo.itemToDelete.get('isNew')) {
+                deleteInfo.itemToDelete.destroyRecord();
+            }
             this.send('update', true);
             this.send('closeModal');
         },
@@ -67,30 +69,33 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     
     paymentProfileChanged: function() {
         var discountPercentage = this.get('paymentProfile.discountPercentage'),
+            originalPaymentProfileId = this.get('originalPaymentProfileId'),
             profileId = this.get('paymentProfile.id');
-        if (this._validNumber(discountPercentage)) {
+        if (profileId !== originalPaymentProfileId && this._validNumber(discountPercentage)) {
             var lineItems = this.get('lineItems');
             lineItems.forEach(function(lineItem) {
-                var details = lineItem.get('details');
+                var details = lineItem.get('details'),
+                    lineDiscount = 0;
                 details.forEach(function(detail) {
-                    var detailTotal = 0,
-                        pricingOverrides = detail.overrides,
-                        overrodePrice = false;
-                    if (this._validNumber(detail.price) && this._validNumber(detail.quantity)) {
-                        detailTotal = (detail.price * detail.quantity);
-                    }
+                    var detailTotal = detail.get('total'),
+                        overrodePrice = false,
+                        pricingOverrides = detail.get('pricingItem.pricingOverrides');                        
                     if (!Ember.isEmpty(pricingOverrides)) {
-                        var pricingOverride = pricingOverrides.findBy('id', profileId);
+                        var pricingOverride = pricingOverrides.findBy('profile.id', profileId);
                         if (!Ember.isEmpty(pricingOverride)) {
-                            Ember.set(detail, 'discount', (detailTotal - pricingOverride.price));
+                            Ember.set(detail, 'discount', this._numberFormat((detailTotal - pricingOverride.get('price')),true));
                             overrodePrice = true;
                         }
                     }
                     if (!overrodePrice && detailTotal > 0) {
-                        Ember.set(detail, 'discount', (discountPercentage / 100) * (detailTotal));
+                        Ember.set(detail, 'discountPercentage', (discountPercentage / 100));
+                        Ember.set(detail, 'discount', this._numberFormat((discountPercentage / 100) * (detailTotal), true));
                     }
+                    lineDiscount += this._getValidNumber(Ember.get(detail,'discount'));
                 }.bind(this));
+                lineItem.set('discount', this._numberFormat(lineDiscount,true));
             }.bind(this));
+            this.set('originalPaymentProfileId', profileId);
         }
     }.observes('paymentProfile'),
     
@@ -116,10 +121,12 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
                         promiseLabel = 'Reloaded pricing items before generating invoice';
                         Ember.RSVP.allSettled(pricingPromises, promiseLabel).then(function() {
                             this._generateLineItems(visit, results);
+                            this.paymentProfileChanged();
                         }.bind(this));
                     }.bind(this));
                 } else {
                     this._generateLineItems(visit, results);
+                    this.paymentProfileChanged();
                 }
             }.bind(this), function(err) {
                 console.log('Error resolving visit children', err);
@@ -129,49 +136,37 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     
     _addPharmacyCharge: function(charge, medicationItemName) {
         var medicationItem = charge.get(medicationItemName),
-            pharmacyCharges = this.get('pharmacyCharges'),        
-            pharmacyCharge = {
+            price = medicationItem.get('price'),
+            quantity = charge.get('quantity'),
+            pharmacyCharges = this.get('pharmacyCharges'),
+            pharmacyCharge = this.store.createRecord('line-item-detail', {
                 name: medicationItem.get('name'),
-                quantity: charge.get('quantity'),
-                price: medicationItem.get('price'),
+                quantity: quantity,
+                price: price,
                 department: 'Pharmacy'
-            };
+            });
         pharmacyCharges.addObject(pharmacyCharge);
-        if (pharmacyCharge.price && !isNaN(pharmacyCharge.price)) {
-            this.incrementProperty('pharmacyTotal', (pharmacyCharge.price * pharmacyCharge.quantity));
-        }
     },
     
     _addSupplyCharge: function(charge, department) {
         var supplyCharges = this.get('supplyCharges'),
-            supplyCharge = this._createChargeItem(charge, department, 'supplyTotal');
+            supplyCharge = this._createChargeItem(charge, department);
         supplyCharges.addObject(supplyCharge);
     },
     
-    _createChargeItem: function(charge, department, totalProperty) {
-        var chargeItem = {
+    _createChargeItem: function(charge, department) {
+        var chargeItem = this.store.createRecord('line-item-detail', {
                 name: charge.get('pricingItem.name'),
                 quantity: charge.get('quantity'),
                 price: charge.get('pricingItem.price'),
-                department: department
-            },
-           pricingOverrides = charge.get('pricingItem.pricingOverrides');
-        if (!Ember.isEmpty(pricingOverrides)) {
-            chargeItem.overrides = pricingOverrides.map(function(override) {
-                return {
-                    id: override.get('profile.id'),
-                    price: override.get('price')
-                };
+                department: department,
+                pricingItem: charge.get('pricingItem')
             });
-        }
-        if (chargeItem.price && !isNaN(chargeItem.price)) {
-            this.incrementProperty(totalProperty, (chargeItem.price * chargeItem.quantity));
-        }
         return chargeItem;
     },
     
     _mapWardCharge: function(charge) {
-        return this._createChargeItem(charge, 'Ward', 'wardTotal');
+        return this._createChargeItem(charge, 'Ward');
     },
     
     _completeBeforeUpdate: function(sequence, resolve, reject) {
@@ -192,26 +187,32 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         var endDate = visit.get('endDate'),
             imaging = visitChildren[0].value,
             labs = visitChildren[1].value,
+            lineDetail,
             lineItem,
             lineItems = this.get('lineItems'),
             medication = visitChildren[2].value,
             procedures = visitChildren[3].value,
             startDate = visit.get('startDate'),
             visitCharges = visit.get('charges');
+        this.setProperties({
+            pharmacyCharges: [],
+            supplyCharges: [],
+            wardCharges: []
+        });
         if (!Ember.isEmpty(endDate) && !Ember.isEmpty(startDate)) {
             endDate = moment(endDate);
             startDate = moment(startDate);
             var stayDays = endDate.diff(startDate, 'days');
             if (stayDays > 1) {
+                lineDetail = this.store.createRecord('line-item-detail', {
+                    name: 'Days',
+                    quantity: stayDays                    
+                });
                 lineItem = this.store.createRecord('billing-line-item', {
                     category: 'Hospital Charges',
-                    name: 'Room/Accomodation',
-                    details: [{
-                        name: 'Days',
-                        quantity: stayDays
-                    }]
+                    name: 'Room/Accomodation'
                 });
-                lineItem.save();
+                lineItem.get('details').addObject(lineDetail);
                 lineItems.addObject(lineItem);
             }
         }
@@ -259,29 +260,23 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         
         lineItem = this.store.createRecord('billing-line-item', {
             name: 'Pharmacy',
-            category: 'Hospital Charges',
-            total: this.get('pharmacyTotal'),
-            details: this.get('pharmacyCharges')
+            category: 'Hospital Charges'
         });
-        lineItem.save();
+        lineItem.get('details').addObjects(this.get('pharmacyCharges'));
         lineItems.addObject(lineItem);
         
         lineItem = this.store.createRecord('billing-line-item', {
             name: 'X-ray/Lab/Supplies',
-            category: 'Hospital Charges',
-            total: this.get('supplyTotal'),
-            details: this.get('supplyCharges')
+            category: 'Hospital Charges'
         });
-        lineItem.save();
+        lineItem.get('details').addObjects(this.get('supplyCharges'));
         lineItems.addObject(lineItem);
         
         lineItem = this.store.createRecord('billing-line-item', {
             name: 'Others/Misc',
-            category: 'Hospital Charges',
-            total: this.get('wardTotal'),
-            details: this.get('wardCharges')
+            category: 'Hospital Charges'
         });
-        lineItem.save();
+        lineItem.get('details').addObjects(this.get('wardCharges'));
         lineItems.addObject(lineItem);
         this.send('update', true);
     },
@@ -305,21 +300,31 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     },
     
     beforeUpdate: function() {
-        if (this.get('isNew')) {            
-            return new Ember.RSVP.Promise(function(resolve, reject){
-                this.store.find('sequence', 'invoice').then(function(sequence) {
-                    this._completeBeforeUpdate(sequence, resolve, reject);
-                }.bind(this), function() {
-                    var newSequence = this.get('store').push('sequence',{
-                        id: 'invoice',
-                        value: 0
-                    });
-                    this._completeBeforeUpdate(newSequence, resolve, reject);
+        return new Ember.RSVP.Promise(function(resolve, reject){
+            var lineItems = this.get('lineItems'),
+                savePromises = [];
+            lineItems.forEach(function(lineItem) {
+                lineItem.get('details').forEach(function(detail) {                
+                    savePromises.push(detail.save());
                 }.bind(this));
+                savePromises.push(lineItem.save());
             }.bind(this));
-        } else {
-            return Ember.RSVP.Promise.resolve();
-        }
+            Ember.RSVP.all(savePromises, 'Saved invoice children before saving invoice').then(function() {
+                if (this.get('isNew')) {
+                    this.store.find('sequence', 'invoice').then(function(sequence) {
+                        this._completeBeforeUpdate(sequence, resolve, reject);
+                    }.bind(this), function() {
+                        var newSequence = this.get('store').push('sequence',{
+                            id: 'invoice',
+                            value: 0
+                        });
+                        this._completeBeforeUpdate(newSequence, resolve, reject);
+                    }.bind(this));
+                } else {
+                    resolve();
+                }
+            }.bind(this), reject);
+        }.bind(this));
     },    
 
     afterUpdate: function(record) {

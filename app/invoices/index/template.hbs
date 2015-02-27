@@ -4,7 +4,7 @@
             <th>Number</th>
             <th>Patient</th>
             <th>Total</th>
-            <th>Status</th>
+            <th>Balance Due</th>
             <th>Bill Date</th>
             {{#if showActions}}
                 <th>Actions</th>
@@ -16,7 +16,7 @@
                     <td>{{displayInvoiceNumber}}</td>
                     <td>{{patient.displayName}} - {{patient.displayPatientId}} <br>{{visit.primaryDiagnosis}}</td>
                     <td>{{total}}</td>
-                    <td>{{status}}</td>
+                    <td>{{remainingBalance}}</td>
                     <td>{{date-format billDate}}</td>
                     {{#if parentController.showActions}}
                         <td>                        
