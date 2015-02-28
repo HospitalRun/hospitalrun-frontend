@@ -19,6 +19,13 @@ export default AbstractModel.extend(NumberFormat,{
     /*the individual line items of the invoice*/
     lineItems: DS.hasMany('billing-line-item'),
     
+        
+    addPayment: function(payment) {
+        var payments = this.get('payments');
+        payments.addObject(payment);
+        this.paymentAmountChanged();
+    },
+    
     discount: function() {
         return this._calculateTotal('lineItems','discount');
     }.property('lineItems.@each.discount'),
@@ -30,7 +37,7 @@ export default AbstractModel.extend(NumberFormat,{
     remainingBalance: function() {
         var patientResponsibility = this.get('patientResponsibility'),
             paidTotal = this.get('paidTotal');
-        return patientResponsibility - paidTotal;
+        return this._numberFormat(patientResponsibility - paidTotal);
     }.property('patientResponsibility','paidTotal'),    
     
     privateInsurance: function() {
@@ -76,17 +83,6 @@ export default AbstractModel.extend(NumberFormat,{
         return byCategory;        
     }.property('lineItems.@each.amountOwed'),
     
-    paidTotalChanged: function() {
-        var paidTotal = 0,
-            payments = this.get('payments');
-        if (!Ember.isEmpty(payments)) {
-            paidTotal = payments.reduce(function(previousValue, payment) {
-                return previousValue += this._getValidNumber(payment.get('amount'));
-            }.bind(this));
-        }
-        this.set('paidTotal', paidTotal);
-    }.observes('payments@each.amount'),
-    
     patientIdChanged: function() {
         if (!Ember.isEmpty(this.get('patient'))) {
             var patientDisplayName = this.get('patient.displayName'),
@@ -99,6 +95,18 @@ export default AbstractModel.extend(NumberFormat,{
         var patientResponsibility = this._calculateTotal('lineItems','amountOwed');
         this.set('patientResponsibility', patientResponsibility);
     }.observes('lineItems.@each.amountOwed'),
+    
+    paymentAmountChanged: function() {
+        var payments = this.get('payments'),
+            paidTotal = payments.reduce(function(previousValue, payment) {
+                return previousValue += this._getValidNumber(payment.get('amount'));
+            }.bind(this),0);
+        this.set('paidTotal', this._numberFormat(paidTotal,true));
+        var remainingBalance = this.get('remainingBalance');
+        if (remainingBalance <= 0) {
+            this.set('paidFlag', true);
+        }
+    }.observes('payments.[]','payments.@each.amount'),
         
     validations: {
         patientTypeAhead: PatientValidation.patientTypeAhead,        

@@ -19,7 +19,12 @@
                     <td>{{remainingBalance}}</td>
                     <td>{{date-format billDate}}</td>
                     {{#if parentController.showActions}}
-                        <td>                        
+                        <td> 
+                            {{#if parentController.canAddPayment}}
+                                <button class="btn btn-default neutral" {{action 'showAddPayment' this  bubbles=false }}>
+                                    <span class="octicon octicon-plus"></span> Add Payment
+                                </button>
+                            {{/if}}
                             {{#if parentController.canAdd}}
                                 <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
                             {{/if}}

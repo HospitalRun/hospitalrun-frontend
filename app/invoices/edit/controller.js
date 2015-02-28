@@ -22,12 +22,23 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         return this.currentUserCan('add_charge');
     }.property(),
     
+    canAddPayment: function() {
+        return this.currentUserCan('add_payment');
+    }.property(),
+    
     actions: {
         addLineItem: function(lineItem) {
             var lineItems = this.get('lineItems');
             lineItems.addObject(lineItem);
             this.send('update', true);
             this.send('closeModal');            
+        },
+        
+        deletePayment: function(deleteInfo) {
+            var payments = this.get('payments');
+            payments.removeObject(deleteInfo.itemToDelete);
+            this.send('update', true);
+            this.send('closeModal');
         },
         
         deleteCharge: function(deleteInfo) {
@@ -56,6 +67,16 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         showAddLineItem: function() {
             var newLineItem = this.store.createRecord('billing-line-item', {});
             this.send('openModal','invoices.add-line-item', newLineItem);
+        },
+        
+        showDeletePayment: function(payment) {
+           var message= 'Are you sure you want to delete this payment?',
+                model = Ember.Object.create({
+                    itemToDelete: payment               
+                }),
+                title = 'Delete Payment';
+            this.displayConfirm(title, message, 'deletePayment', model);
+
         }
     },
     

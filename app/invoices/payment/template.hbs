@@ -1,0 +1,10 @@
+{{#em-form model=this submit_button=false }}
+    {{em-input property="amount" label="Amount" class="required"}}
+    {{date-picker property="datePaid" label="Date Paid" maxDate="now" class="required"}}
+    {{em-select property="type"
+        label="Payment Type" content=paymentTypes            
+        optionValuePath="content"
+        optionLabelPath="content"
+    }}
+    {{em-text property="notes" label="Notes"}}
+{{/em-form}}

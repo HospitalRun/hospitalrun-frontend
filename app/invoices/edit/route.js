@@ -14,6 +14,10 @@ export default AbstractEditRoute.extend(PatientListRoute, {
         deleteLineItem: function(model) {
             this.controller.send('deleteLineItem', model);
         },
+        
+        deletePayment: function(model) {
+            this.controller.send('deletePayment', model);
+        },
     },
     
     afterModel: function(model) {
