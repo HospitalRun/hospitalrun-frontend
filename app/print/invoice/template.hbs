@@ -43,11 +43,11 @@
         <table class="table">
             <tr class="table-header">
                 <th>Description</th>
-                <th>Actual Charges</th>
-                <th>Discount</th>
-                <th>PhilHealth</th>
-                <th>HMO/COM</th>
-                <th>Excess</th>
+                <th class="text-right">Actual Charges</th>
+                <th class="text-right">Discount</th>
+                <th class="text-right">PhilHealth</th>
+                <th class="text-right">HMO/COM</th>
+                <th class="text-right">Excess</th>
             </tr>
             {{#each lineItemsByCategory}} 
                 <tr>
@@ -60,37 +60,49 @@
                         <td>
                             {{name}}
                         </td>
-                        <td>
-                            {{tota}}                    
+                        <td class="text-right">
+                            {{number-format total}}                    
                         </td>
-                        <td>
-                            {{discount}}
+                        <td class="text-right">
+                            {{number-format discount}}
                         </td>
-                        <td>
-                            {{nationalInsurance}}
+                        <td class="text-right">
+                            {{number-format nationalInsurance}}
                         </td>
-                        <td>
-                            {{privateInsurance}}
+                        <td class="text-right">
+                            {{number-format privateInsurance}}
                         </td>
-                        <td>{{amountOwed}}</td>
+                        <td class="text-right">{{number-format amountOwed}}</td>
                     </tr>
                 {{/each}}
                 <tr>
                     <td><strong>Total {{category}}</strong></td>
-                    <td><strong>{{total}}</strong></td>
-                    <td><strong>{{discount}}</strong></td>
-                    <td><strong>{{nationalInsurance}}</strong></td>
-                    <td><strong>{{privateInsurance}}</strong></td>
-                    <td><strong>{{amountOwed }}</strong></td>
+                    <td class="text-right"><strong>{{number-format total}}</strong></td>
+                    <td class="text-right"><strong>{{number-format discount}}</strong></td>
+                    <td class="text-right"><strong>{{number-format nationalInsurance}}</strong></td>
+                    <td class="text-right"><strong>{{number-format privateInsurance}}</strong></td>
+                    <td class="text-right"><strong>{{number-format amountOwed}}</strong></td>
                 </tr>
             {{/each}}
              <tr>
                 <td><strong>Total</strong></td>
-                <td><strong>{{total}}</strong></td>
-                <td><strong>{{discount}}</strong></td>
-                <td><strong>{{nationalInsurance}}</strong></td>
-                <td><strong>{{privateInsurance}}</strong></td>
-                <td><strong>{{amountOwed }}</strong></td>
+                <td class="text-right"><strong>{{number-format total}}</strong></td>
+                <td class="text-right"><strong>{{number-format discount}}</strong></td>
+                <td class="text-right"><strong>{{number-format nationalInsurance}}</strong></td>
+                <td class="text-right"><strong>{{number-format privateInsurance}}</strong></td>
+                <td class="text-right"><strong>{{number-format amountOwed}}</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Payments/Deposits</strong></td>
+                <td colspan="4"></td>
+                <td class="text-right">-{{number-format paidTotal}}</td>                            
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>Grand Total</strong></td>
+                <td colspan="4"></td>
+                <td class="text-right"><strong>{{number-format remainingBalance}}</strong></td>                            
+                <td></td>
             </tr>
         </table>
         <table>
