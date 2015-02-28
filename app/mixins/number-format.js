@@ -43,8 +43,11 @@ export default Ember.Mixin.create({
      */
     _numberFormat: function(value, returnAsNumber) {
         var returnValue;
-        if (!Ember.isEmpty(value)) {            
-            returnValue = value.toFixed(2);
+        if (!Ember.isEmpty(value)) {
+            if (isNaN(value)) {
+                return;
+            }
+            returnValue = Number(value).toFixed(2);
             if (returnAsNumber) {
                 return Number(returnValue);
             } else {
