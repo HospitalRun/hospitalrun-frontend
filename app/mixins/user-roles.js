@@ -2,6 +2,7 @@ import Ember from "ember";
 export default Ember.Mixin.create({
     userRoles: [
         {name: 'Business Office', roles: ['Business Office', 'user']},
+        {name: 'Cashier', roles: ['Cashier', 'user']},
         {name: 'Data Entry', roles: ['Data Entry', 'user']},
         {name: 'Doctor', roles: ['Doctor', 'user']},
         {name: 'Finance', roles: ['Finance', 'user']},
