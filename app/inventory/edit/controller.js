@@ -82,11 +82,13 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     }.property('isNew', 'showPurchases'),
     
     showPurchases: function() {
-        return (this.get('type') !== 'Asset');
+        var type = this.get('type');
+        return (Ember.isEmpty(type) || type !== 'Asset');
     }.property('type'),
     
     showLocations: function() {
-        return (!this.get('isNew') && this.get('type') !== 'Asset');
+        var type = this.get('type');
+        return (!this.get('isNew') && (Ember.isEmpty(type) || type !== 'Asset'));
     }.property('isNew', 'type'),    
     
     originalQuantityUpdated: function() {
