@@ -10,6 +10,6 @@ export default Ember.ObjectController.extend({
     
     showAdd: function() {
         var canAddPurchase = this.parentController.get('canAddPurchase');
-        return canAddPurchase && (this.get('type') !== 'Asset');
+        return canAddPurchase;
     }.property('type')
 });

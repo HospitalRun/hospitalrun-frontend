@@ -14,10 +14,7 @@ export default AbstractEditController.extend(InventorySelection, {
     inventoryList: function() {
         var inventoryItems = this.get('inventoryItems');
         if (!Ember.isEmpty(inventoryItems)) {
-            var filteredItems = inventoryItems.filter(function(item) {
-                return item.doc.type !== 'Asset';
-            });
-            var mappedItems = filteredItems.map(function(item) {
+            var mappedItems = inventoryItems.map(function(item) {
                 return item.doc;
             });
             return mappedItems;

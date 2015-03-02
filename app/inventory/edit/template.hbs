@@ -14,34 +14,28 @@
         class="required"
     }}
     {{em-input property="crossReference" label="Cross Reference"}}
-    {{#if showPurchases}}
-        <div class="row">
-            {{em-input property="reorderPoint" label="Reorder Point" class="col-sm-3"}}
-            {{em-input property="price" label="Price Per Unit" class="col-sm-3"}}
-            {{em-select label="Distribution Unit" class="col-sm-3" 
-                property="distributionUnit" 
-                content=unitList 
-                optionLabelPath="content"
-                optionValuePath="content"
-            
-            }}            
-        </div>
-    {{/if}}
-    {{#if showNewPurchase}}
+    <div class="row">
+        {{em-input property="reorderPoint" label="Reorder Point" class="col-sm-3"}}
+        {{em-input property="price" label="Price Per Unit" class="col-sm-3"}}
+        {{em-select label="Distribution Unit" class="col-sm-3" 
+            property="distributionUnit" 
+            content=unitList 
+            optionLabelPath="content"
+            optionValuePath="content"
+
+        }}            
+    </div>
+    {{#if isNew}}
         <h3>Purchase information</h3>
         {{partial 'inventory/purchase'}}
     {{else}}
         <div class="row">
-            {{#if canEditQuantity}}
-                {{em-input property="quantity" label="Quantity" class="col-sm-3 required"}}
-            {{else}}
-                <div class="form-group col-sm-3">
-                    <label>Quantity</label>
-                    <p class="form-control-static">{{quantity}}</p>                    
-                </div>
-            {{/if}}
+            <div class="form-group col-sm-3">
+                <label>Quantity</label>
+                <p class="form-control-static">{{quantity}}</p>                    
+            </div>
         </div>
-        {{#if showPurchases}}
+        
             {{#if quantityDiscrepency}}
                 <div class="alert alert-danger alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -82,9 +76,8 @@
                     </tr>
                 {{/each}}
             </table>
-        {{/if}}
     {{/if}}
-    {{#if showLocations}}
+    {{#unless isNew}}
         <h3>Locations</h3>    
         <table class="table">
             <tr class="table-header">
@@ -111,5 +104,5 @@
                 {{/if}}
             {{/each}}
         </table>
-    {{/if}}
+    {{/unless}}
 {{/em-form}}

@@ -25,8 +25,8 @@ export default AbstractModel.extend({
         purchaseCost: {
             numericality: {
                 if: function(object) {
-                    //Only validate on new items that are not assets
-                    return (object.get('isNew') && object.get('type') !== 'Asset');
+                    //Only validate on new items
+                    return (object.get('isNew'));
                 }
             }
         },
@@ -52,10 +52,6 @@ export default AbstractModel.extend({
     },
 
     updateQuantity: function() {
-        if (this.get('type') === 'Asset') {
-            //Asset quantity is edited directly
-            return;
-        }
         var purchases = this.get('purchases');
         var newQuantity = purchases.reduce(function(previousItem, currentItem) {
             var currentQuantity = 0;

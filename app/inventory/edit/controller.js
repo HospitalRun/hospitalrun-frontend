@@ -35,10 +35,6 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         id: 'warehouse_list' //Id of the lookup list to update
     }],
     
-    canEditQuantity: function() {
-        return (this.get('isNew') || !this.get('showPurchases'));
-    }.property('isNew', 'showPurchases'),
-    
     inventoryTypes: function() {
         var defaultInventoryTypes = this.get('defaultInventoryTypes'),
             inventoryTypeList = this.get('inventoryTypeList');
@@ -64,7 +60,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     quantityDiscrepency: function() {
         var locationQuantityTotal = this.get('locationQuantityTotal'), 
             quantity = this.get('quantity');
-        return (locationQuantityTotal !== quantity);
+        return (!Ember.isEmpty(locationQuantityTotal) && !Ember.isEmpty(quantity) && locationQuantityTotal !== quantity);
     }.property('locationQuantityTotal', 'quantity'),
     
     /**
@@ -75,21 +71,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         var locationQuantityTotal = this.get('locationQuantityTotal'), 
             quantity = this.get('quantity');
         return Math.abs(locationQuantityTotal - quantity);
-    }.property('locationQuantityTotal', 'quantity'),    
-
-    showNewPurchase: function() {
-        return (this.get('isNew') && this.get('showPurchases'));
-    }.property('isNew', 'showPurchases'),
-    
-    showPurchases: function() {
-        var type = this.get('type');
-        return (Ember.isEmpty(type) || type !== 'Asset');
-    }.property('type'),
-    
-    showLocations: function() {
-        var type = this.get('type');
-        return (!this.get('isNew') && (Ember.isEmpty(type) || type !== 'Asset'));
-    }.property('isNew', 'type'),    
+    }.property('locationQuantityTotal', 'quantity'),
     
     originalQuantityUpdated: function() {
         var isNew = this.get('isNew'),
@@ -226,20 +208,18 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     _completeBeforeUpdate: function(sequence, resolve, reject) {
         var sequenceValue = null,
             friendlyId = sequence.get('prefix'),
-            promises = [];
+            promises = [],
+            newPurchase = this.getProperties('aisleLocation', 'dateReceived',
+            'purchaseCost', 'lotNumber', 'expirationDate', 'giftInKind', 
+            'location', 'vendor', 'vendorItemNo');
+        newPurchase.originalQuantity = this.get('quantity');
+        newPurchase.currentQuantity = newPurchase.originalQuantity;
+        newPurchase.inventoryItem = 'inventory_'+this.get('model.id');
+        var purchase = this.get('store').createRecord('inv-purchase', newPurchase);
+        promises.push(purchase.save());
+        this.get('purchases').addObject(purchase);
+        this.newPurchaseAdded(this.get('model'), purchase);
         
-        if (this.get('showPurchases')) {
-            var newPurchase = this.getProperties('aisleLocation', 'dateReceived',
-                'purchaseCost', 'lotNumber', 'expirationDate', 'giftInKind', 
-                'location', 'vendor', 'vendorItemNo');
-            newPurchase.originalQuantity = this.get('quantity');
-            newPurchase.currentQuantity = newPurchase.originalQuantity;
-            newPurchase.inventoryItem = 'inventory_'+this.get('model.id');
-            var purchase = this.get('store').createRecord('inv-purchase', newPurchase);
-            promises.push(purchase.save());
-            this.get('purchases').addObject(purchase);
-            this.newPurchaseAdded(this.get('model'), purchase);
-        }
         sequence.incrementProperty('value',1);
         sequenceValue = sequence.get('value');
         if (sequenceValue < 100000) {
