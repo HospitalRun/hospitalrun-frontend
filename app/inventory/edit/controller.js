@@ -35,6 +35,10 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         id: 'warehouse_list' //Id of the lookup list to update
     }],
     
+    canEditQuantity: function() {		
+        return (this.get('isNew'));		
+    }.property('isNew'),
+    
     inventoryTypes: function() {
         var defaultInventoryTypes = this.get('defaultInventoryTypes'),
             inventoryTypeList = this.get('inventoryTypeList');
