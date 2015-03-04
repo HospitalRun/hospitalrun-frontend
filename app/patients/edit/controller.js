@@ -557,6 +557,13 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         return returnList;        
     },
     
+    beforeUpdate: function() {
+        //Make sure payments async relationship is loaded before saving.
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            this.get('payments').then(resolve, reject);
+        }.bind(this));
+    },
+    
     afterUpdate: function(record) {
         var message =  'The patient record for %@ has been saved.'.fmt(record.get('displayName'));
         this.displayAlert('Patient Saved', message);        

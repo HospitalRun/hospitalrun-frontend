@@ -52,9 +52,7 @@ export default AbstractEditController.extend(PatientSubmodule, {
         this.get('model').save().then(function(record){
             if (this.get('newPayment')) {
                 var patient = this.get('currentPatient');
-                //Make sure patient record is fully loaded before adding payments
-                patient.reload().then(function() {
-                    var payments = patient.get('payments');
+                patient.get('payments').then(function(payments) {                    
                     payments.addObject(record);
                     patient.save().then(function() {
                         if (record.get('type') === 'Deposit') {
