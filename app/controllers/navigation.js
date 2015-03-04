@@ -8,6 +8,7 @@ export default Ember.Controller.extend(ProgressDialog, UserSession,{
     currentRouteName: Ember.computed.alias('controllers.application.currentRouteName'),
     progressTitle: 'Searching',
     searchRoute: null,
+    syncStatus: '',
 
     showInventory: function() {
         return this.currentUserCan('inventory');

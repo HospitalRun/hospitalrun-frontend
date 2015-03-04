@@ -15,7 +15,13 @@
             <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
         </div>
         {{/if}}
-
+        
+        <ul class="nav navbar-nav">
+            <li>
+                <p class="navbar-text">{{syncStatus}}</p>
+            </li>
+        </ul>
+        
         <nav class="header-nav">
         {{#if session.isAuthenticated}}
             <a href="#" class="logout" {{ action 'invalidateSession' }}>Logout</a>

@@ -2,11 +2,12 @@ import Ember from "ember";
 import createPouchOauthXHR from "hospitalrun/utils/pouch-oauth-xhr";
 import createPouchViews from "hospitalrun/utils/pouch-views";
 export default Ember.Controller.extend({
-    needs: 'filesystem',
+    needs: ['filesystem','navigation'],
     
     filesystem: Ember.computed.alias('controllers.filesystem'),
     isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
     localMainDB: null,
+    syncStatus: Ember.computed.alias('controllers.navigation.syncStatus'),
     
     backoff: 2, //Factor to increment timeout by each time it fails
     configDB: null, //Initializer will set this up.
@@ -31,8 +32,8 @@ export default Ember.Controller.extend({
     
     _gotChange: function(info) {
         var filesystem = this.get('filesystem'),
-            isFileSystemEnabled = this.get('isFileSystemEnabled');
-        
+            isFileSystemEnabled = this.get('isFileSystemEnabled');        
+        this.set('syncStatus', 'Syncing '+info.id);
         if (info.deleted) {
             if (info.id.indexOf('photo_') ===0 && isFileSystemEnabled) {
                 this._getFileLink(info.id).then(function(fileLink) {
@@ -76,11 +77,17 @@ export default Ember.Controller.extend({
         var db = this.get('serverMainDB'),
             sync;
         sync = db.sync('main', {live: true})
+            .on('active', this._syncActive.bind(this))
             .on('change', this._syncChange.bind(this))
-            .on('error', this._syncError.bind(this));
-        
+            .on('error', this._syncError.bind(this))
+            .on('paused', this._syncPaused.bind(this));
         this.set('sync', sync);
-    },    
+    },
+    
+    _syncActive: function(info) {
+        this.set('syncStatus', 'Starting sync');
+        console.log("sync active:",info);
+    },
 
     /**
      * Got sync error, probably offline.
@@ -96,6 +103,11 @@ export default Ember.Controller.extend({
     _syncChange: function() {
         //Successfully synced, reset timeout to 5 seconds for retries
         this.set('timeout', 5000);
+    },
+    
+    _syncPaused: function(info) {
+        this.set('syncStatus', 'Up to date');
+        console.log("sync paused:",info);
     },
     
     getDocFromMainDB: function(docId) {
