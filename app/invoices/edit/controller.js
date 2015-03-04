@@ -43,19 +43,17 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         return this.currentUserCan('add_payment');
     }.property(),
     
+    selectPatient: function() {
+        var status = this.get('status');
+        return (status === 'Draft');
+    }.property('status'),
+    
     actions: {
         addLineItem: function(lineItem) {
             var lineItems = this.get('lineItems');
             lineItems.addObject(lineItem);
             this.send('update', true);
             this.send('closeModal');            
-        },
-        
-        deletePayment: function(deleteInfo) {
-            var payments = this.get('payments');
-            payments.removeObject(deleteInfo.itemToDelete);
-            this.send('update', true);
-            this.send('closeModal');
         },
         
         deleteCharge: function(deleteInfo) {
@@ -77,27 +75,48 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
             this.send('closeModal');
         },
         
-        finalizeInvoice: function() {
-            this.set('status', 'Billed');
-            this.send('update');
+        finalizeInvoice: function() {            
+            var invoicePayments = this.get('payments'),
+                paymentsToSave = [];
+            this.get('patient.payments').then(function(patientPayments) {
+                patientPayments.forEach(function(payment) {
+                    var invoice = payment.get('invoice');
+                    if (Ember.isEmpty(invoice)) {
+                        payment.set('invoice', invoice);
+                        paymentsToSave.push(payment);
+                        invoicePayments.addObject(payment);
+                    }
+                }.bind(this));            
+                this.set('status', 'Billed');
+                this.send('update');
+            }.bind(this));
         },
         
         printInvoice: function() {        
             this.transitionToRoute('print.invoice', this.get('model'));
-        },        
+        },
+        
+        removePayment: function(removeInfo) {
+            var payments = this.get('payments'),
+                payment = removeInfo.itemToRemove;
+            payment.set('invoice');
+            payments.removeObject(removeInfo.itemToRemove);
+            this.send('update', true);
+            this.send('closeModal');
+        },
         
         showAddLineItem: function() {
             var newLineItem = this.store.createRecord('billing-line-item', {});
             this.send('openModal','invoices.add-line-item', newLineItem);
         },
         
-        showDeletePayment: function(payment) {
-           var message= 'Are you sure you want to delete this payment?',
+        showRemovePayment: function(payment) {
+           var message= 'Are you sure you want to remove this payment from this invoice?',
                 model = Ember.Object.create({
-                    itemToDelete: payment               
+                    itemToRemove: payment               
                 }),
-                title = 'Delete Payment';
-            this.displayConfirm(title, message, 'deletePayment', model);
+                title = 'Remove Payment';
+            this.displayConfirm(title, message, 'removePayment', model);
         }
     },
     

@@ -14,8 +14,8 @@ export default AbstractEditRoute.extend({
             this.controller.send('deleteLineItem', model);
         },
         
-        deletePayment: function(model) {
-            this.controller.send('deletePayment', model);
+        removePayment: function(model) {
+            this.controller.send('removePayment', model);
         },
     },
     
@@ -41,8 +41,7 @@ export default AbstractEditRoute.extend({
     getNewData: function() {
         return Ember.RSVP.resolve({
             billDate: new Date(),
-            status: 'Draft',
-            selectPatient: true
+            status: 'Draft'            
         });
     },
     

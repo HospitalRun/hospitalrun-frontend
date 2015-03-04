@@ -222,24 +222,24 @@
                 <th>Notes</th>
                 <th>Action</th>
             </tr>
-            {{#with this as parentController}}
-                {{#each payments}}
-                    <tr {{action 'showEditPayment' this}}>
-                        <td>{{date-format datePaid}}</td>
-                        <td>{{amount}}</td>
-                        <td>{{type}}</td>
-                        <td>{{notes}}</td>
-                        {{#if parentController.canAddPayment}}
-                            <td>
-                                <button class="btn btn-default neutral" {{action 'showEditPayment' this  bubbles=false }}>Edit</button>
-                                <button class="btn btn-default warning" {{action "showDeletePayment" this bubbles=false }}>
-                                    <span class="octicon octicon-x"></span>Delete
+            {{#each payments itemController='invoices/payment-item'}}
+                <tr {{action 'showEditPayment' this}}>
+                    <td>{{date-format datePaid}}</td>
+                    <td>{{amount}}</td>
+                    <td>{{type}}</td>
+                    <td>{{notes}}</td>
+                    {{#if parentController.canAddPayment}}
+                        <td>
+                            <button class="btn btn-default neutral" {{action 'showEditPayment' this  bubbles=false }}>Edit</button>
+                            {{#if canRemovePayment}}
+                                <button class="btn btn-default warning" {{action "showRemovePayment" this bubbles=false }}>
+                                    <span class="octicon octicon-x"></span>Remove
                                 </button>
-                            </td>
-                        {{/if}}
-                    </tr>
-                {{/each}}
-            {{/with}}
+                            {{/if}}
+                        </td>
+                    {{/if}}
+                </tr>
+            {{/each}}
         </table>
     </div>
 </div>
