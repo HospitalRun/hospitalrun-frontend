@@ -84,9 +84,11 @@ export default Ember.Controller.extend({
         this.set('sync', sync);
     },
     
-    _syncActive: function(info) {
+    /**
+     * Fires when the replication starts actively processing changes
+     */
+    _syncActive: function() {
         this.set('syncStatus', 'Starting sync');
-        console.log("sync active:",info);
     },
 
     /**
@@ -105,9 +107,12 @@ export default Ember.Controller.extend({
         this.set('timeout', 5000);
     },
     
-    _syncPaused: function(info) {
+    /**
+     * Fires when the replication is paused, either because a live replication 
+     * is waiting for changes, or replication has temporarily failed.
+     */
+    _syncPaused: function() {
         this.set('syncStatus', 'Up to date');
-        console.log("sync paused:",info);
     },
     
     getDocFromMainDB: function(docId) {
