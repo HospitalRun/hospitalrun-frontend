@@ -1,10 +1,15 @@
 {{#em-form model=this submit_button=false }}
+    {{#if isNew}}
+            {{#if selectPatient}}
+                {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
+            {{else}}
+                <div class="form-group">
+                    <label>Patient</label>
+                    <p class="form-control-static">{{invoice.patient.displayName}}</p>
+                </div>
+            {{/if}}
+    {{/if}}
     {{em-input property="amount" label="Amount" class="required"}}
     {{date-picker property="datePaid" label="Date Paid" maxDate="now" class="required"}}
-    {{em-select property="type"
-        label="Payment Type" content=paymentTypes            
-        optionValuePath="content"
-        optionLabelPath="content"
-    }}
     {{em-text property="notes" label="Notes"}}
 {{/em-form}}

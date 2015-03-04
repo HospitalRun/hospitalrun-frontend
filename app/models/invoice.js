@@ -1,9 +1,10 @@
 import AbstractModel from 'hospitalrun/models/abstract';
+import DateFormat from 'hospitalrun/mixins/date-format';
 import Ember from 'ember';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import PatientValidation from 'hospitalrun/utils/patient-validation';
 
-export default AbstractModel.extend(NumberFormat,{
+export default AbstractModel.extend(DateFormat, NumberFormat, {
     externalInvoiceNumber: DS.attr('string'),
     patient: DS.belongsTo('patient'),
     patientInfo: DS.attr('string'), //Needed for searching
@@ -18,13 +19,16 @@ export default AbstractModel.extend(NumberFormat,{
     payments: DS.hasMany('payment'),
     /*the individual line items of the invoice*/
     lineItems: DS.hasMany('billing-line-item'),
-    
         
     addPayment: function(payment) {
         var payments = this.get('payments');
         payments.addObject(payment);
         this.paymentAmountChanged();
     },
+    
+    billDateAsTime: function() {        
+        return this.dateToTime(this.get('billDate'));
+    }.property('billDate'),
     
     discount: function() {
         return this._calculateTotal('lineItems','discount');
@@ -104,7 +108,7 @@ export default AbstractModel.extend(NumberFormat,{
         this.set('paidTotal', this._numberFormat(paidTotal,true));
         var remainingBalance = this.get('remainingBalance');
         if (remainingBalance <= 0) {
-            this.set('paidFlag', true);
+            this.set('status', 'Paid');
         }
     }.observes('payments.[]','payments.@each.amount'),
         

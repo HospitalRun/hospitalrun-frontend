@@ -6,9 +6,21 @@
                 <button class="btn btn-primary" {{action newButtonAction}}>{{newButtonText}}</button>
             </div>
         {{/if}}
+        {{#if additionalButtons}}
+            {{#each additionalButtons}}
+                <div class="pull-right screen-button">
+                    <button {{bind-attr class="class"}} {{action buttonAction}}>{{buttonText}}</button>
+                </div>
+            {{/each}}
+        {{/if}}
+
         <ul class="nav nav-pills navbar-right">
             {{#each subActions}}
-                <li>{{#link-to linkTo}}{{text}}{{/link-to}}</li>
+                {{#if statusQuery}}
+                    <li>{{#link-to linkTo (query-params status=statusQuery)}}{{text}}{{/link-to}}</li>
+                {{else}}
+                    <li>{{#link-to linkTo}}{{text}}{{/link-to}}</li>
+                {{/if}}
             {{/each}}
         </ul>
 

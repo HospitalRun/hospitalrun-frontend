@@ -152,7 +152,6 @@ function inventoryPurchaseByDateReceived(doc) {
     }
 }
 
-
 function inventoryRequestByStatus(doc) {
     var doctype,
         uidx;    
@@ -167,6 +166,24 @@ function inventoryRequestByStatus(doc) {
                 }
             }
             emit([doc.status, dateCompleted, doc._id]);
+        }
+    }    
+}
+
+function invoiceByStatus(doc) {
+    var doctype,
+        uidx;    
+    if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+        doctype = doc._id.substring(0, uidx);
+        if(doctype === 'invoice') {
+            var billDate = doc.billDate;
+            if (billDate && billDate !== '') {
+                billDate= new Date(billDate);
+                if (billDate.getTime) {
+                    billDate = billDate.getTime();
+                }
+            }
+            emit([doc.status, billDate, doc._id]);
         }
     }    
 }
@@ -368,6 +385,10 @@ var designDocs = [{
 }, {
     name: 'inventory_request_by_status',
     function: inventoryRequestByStatus,
+    version: 1
+}, {
+    name: 'invoice_by_status',
+    function: invoiceByStatus,
     version: 1
 }, {
     name: 'lab_by_status',

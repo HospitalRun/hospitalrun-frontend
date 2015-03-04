@@ -6,17 +6,34 @@ import PublishStatuses from 'hospitalrun/mixins/publish-statuses';
 
 export default AbstractEditController.extend(NumberFormat, PatientSubmodule, PublishStatuses, {
     needs: ['invoices','pouchdb'],
-    additionalButtons: [{
-        class: 'btn btn-default neutral',
-        buttonAction: 'printInvoice',
-        buttonIcon: 'glyphicon glyphicon-print',
-        buttonText: 'Print'
-    }],
+    patientList: Ember.computed.alias('controllers.invoices.patientList'),
     pharmacyCharges: [],
     pricingProfiles: Ember.computed.alias('controllers.invoices.pricingProfiles'),
     supplyCharges: [],
     updateCapability: 'add_invoice',
     wardCharges: [],
+        
+    additionalButtons: function() {
+        var buttons = [],
+            isValid = this.get('isValid'),
+            status = this.get('status');
+        if (isValid && status === 'Draft') {
+            buttons.push({
+                class: 'btn btn-default default',
+                buttonAction: 'finalizeInvoice',
+                buttonIcon: 'glyphicon glyphicon-ok',
+                buttonText: 'Invoice Ready'
+            });
+        }
+        buttons.push({
+            class: 'btn btn-default neutral',
+            buttonAction: 'printInvoice',
+            buttonIcon: 'glyphicon glyphicon-print',
+            buttonText: 'Print'
+        });        
+        return buttons;
+        
+    }.property('isValid','status'),
     
     canAddCharge: function() {        
         return this.currentUserCan('add_charge');
@@ -59,11 +76,16 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
             this.send('update', true);
             this.send('closeModal');
         },
-             
+        
+        finalizeInvoice: function() {
+            this.set('status', 'Billed');
+            this.send('update');
+        },
+        
         printInvoice: function() {        
             this.transitionToRoute('print.invoice', this.get('model'));
         },        
-
+        
         showAddLineItem: function() {
             var newLineItem = this.store.createRecord('billing-line-item', {});
             this.send('openModal','invoices.add-line-item', newLineItem);
@@ -76,7 +98,6 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
                 }),
                 title = 'Delete Payment';
             this.displayConfirm(title, message, 'deletePayment', model);
-
         }
     },
     

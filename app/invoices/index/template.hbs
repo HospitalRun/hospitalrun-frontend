@@ -2,41 +2,40 @@
     <table class="table">
         <tr class="table-header">
             <th>Number</th>
+            <th>Bill Date</th>
+            <th>Status</th>
             <th>Patient</th>
             <th>Total</th>
-            <th>Balance Due</th>
-            <th>Bill Date</th>
+            <th>Balance Due</th>            
             {{#if showActions}}
                 <th>Actions</th>
             {{/if}}
         </tr>
-        {{#with this as parentController}}
-            {{#each}}
-                <tr {{action 'editItem' this}}>
-                    <td>{{displayInvoiceNumber}}</td>
-                    <td>{{patient.displayName}} - {{patient.displayPatientId}} <br>{{visit.primaryDiagnosis}}</td>
-                    <td>{{total}}</td>
-                    <td>{{remainingBalance}}</td>
-                    <td>{{date-format billDate}}</td>
-                    {{#if parentController.showActions}}
-                        <td> 
-                            {{#if parentController.canAddPayment}}
-                                <button class="btn btn-default neutral" {{action 'showAddPayment' this  bubbles=false }}>
-                                    <span class="octicon octicon-plus"></span> Add Payment
-                                </button>
-                            {{/if}}
-                            {{#if parentController.canAdd}}
-                                <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
-                            {{/if}}
-                            {{#if parentController.canDelete}}
-                                <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                            {{/if}}                                                   
-                        </td>
-                    
+        {{#each itemController='invoices/invoice-item'}}
+            <tr {{action 'editItem' this}}>
+                <td>{{displayInvoiceNumber}}</td>
+                <td>{{date-format billDate}}</td>
+                <td>{{status}}</td>
+                <td>{{patient.displayName}} - {{patient.displayPatientId}} <br>{{visit.primaryDiagnosis}}</td>
+                <td>{{total}}</td>
+                <td>{{remainingBalance}}</td>
+                <td>
+                    {{#if showActions}} 
+                        {{#if parentController.canAddPayment}}
+                            <button class="btn btn-default neutral" {{action 'showAddPayment' this  bubbles=false }}>
+                                <span class="octicon octicon-plus"></span> Add Payment
+                            </button>
+                        {{/if}}
+                        {{#if parentController.canAdd}}
+                            <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
+                        {{/if}}
+                        {{#if parentController.canDelete}}
+                            <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                        {{/if}}
                     {{/if}}
-                </tr>            
-            {{/each}}
-        {{/with}}
+                </td>
+            </tr>            
+        {{/each}}
     </table>
 {{else}}
     <div class="alert alert-info">

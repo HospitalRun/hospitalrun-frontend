@@ -1,22 +1,43 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
+import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
-export default AbstractEditController.extend({
+export default AbstractEditController.extend(PatientSubmodule, {
     cancelAction: 'closeModal',
+    findPatientVisits: false,
+    needs: ['invoices'],
     
-    paymentTypes: [
-        'Cash',
-        'Credit Card',
-        'Check'
-    ],
-    title: function() {
-        if (this.get('isNew')) {
-            return 'Add Payment';
+    patientList: Ember.computed.alias('controllers.invoices.patientList'),
+    
+    _finishUpdate: function(message, title) {
+        this.send('closeModal');    
+        this.displayAlert(title, message); 
+    },
+    
+    currentPatient: function() {
+        var type = this.get('type');
+        if (type === 'Deposit') {
+            return this.get('patient');
         } else {
-            return 'Edit Payment';
+            return this.get('invoice.patient');
         }
-    }.property('isNew'),
+    }.property('patient', 'type', 'invoice.patient'),
     
+    title: function() {
+        var isNew = this.get('isNew'),
+            type = this.get('type');
+        if (isNew) {    
+            return 'Add %@'.fmt(type);
+        } else {
+            return 'Edit %@'.fmt(type);
+        }
+    }.property('isNew', 'type'),
+    
+    selectPatient: function() {
+        var isNew = this.get('isNew'),
+            type = this.get('type');
+        return (isNew && type === 'Deposit');
+    }.property('isNew', 'type'),    
         
     beforeUpdate: function() {
         if (this.get('isNew')) {
@@ -30,7 +51,25 @@ export default AbstractEditController.extend({
     afterUpdate: function() {
         this.get('model').save().then(function(record){
             if (this.get('newPayment')) {
-                this.send('addPayment',record);
+                var patient = this.get('currentPatient');
+                //Make sure patient record is fully loaded before adding payments
+                patient.reload().then(function() {
+                    var payments = patient.get('payments');
+                    payments.addObject(record);
+                    patient.save().then(function() {
+                        if (record.get('type') === 'Deposit') {
+                            var message = 'A deposit of %@ was added for patient %@'.fmt(record.get('amount'), patient.get('displayName'));
+                            this._finishUpdate(message, 'Deposit Added');
+                        } else {          
+                            var invoice = this.get('invoice');
+                            invoice.addPayment(record);
+                            invoice.save().then(function() {
+                                var message = 'A payment of %@ was added to invoice %@'.fmt(record.get('amount'), invoice.get('id'));
+                                this._finishUpdate(message, 'Payment Added');
+                            }.bind(this));
+                        }
+                    }.bind(this));
+                }.bind(this));
             } else {
                 this.send('closeModal');
             }

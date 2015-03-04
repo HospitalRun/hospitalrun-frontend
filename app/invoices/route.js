@@ -1,7 +1,8 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
+import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 
-export default AbstractModuleRoute.extend(ModalHelper, {
+export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
     addCapability: 'add_invoice',
     currentScreenTitle: 'Invoices',
     editTitle: 'Edit Invoice',    
@@ -9,6 +10,16 @@ export default AbstractModuleRoute.extend(ModalHelper, {
     moduleName: 'invoices',
     newButtonText: '+ new invoice',
     sectionTitle: 'Invoices',
+    
+    additionalButtons: function() {
+        if (this.currentUserCan('add_payment')) {
+            return [{
+                class: 'btn btn-default',
+                buttonText: '+ add deposit',
+                buttonAction: 'showAddDeposit'
+            }];
+        }
+    }.property(),
     
     additionalModels: [{ 
         name: 'billingCategoryList',
@@ -19,20 +30,19 @@ export default AbstractModuleRoute.extend(ModalHelper, {
     }],
     
         
-    actions: {
-        addPayment: function(payment) {
-            var invoice = payment.get('invoice');
-            invoice.addPayment(payment);
-            invoice.save().then(function() {                
-                this.send('closeModal');
-                var message = 'A payment of %@ was added to invoice %@'.fmt(payment.get('amount'), invoice.get('id'));
-                this.displayAlert('Payment added', message); 
-            }.bind(this));            
-        },
+    actions: {        
+        showAddDeposit: function() {
+            var payment = this.store.createRecord('payment', {
+                type: 'Deposit',
+                datePaid: new Date()
+            });
+            this.send('openModal','invoices.payment', payment);            
+        },        
         
         showAddPayment: function(invoice) {
             var payment = this.store.createRecord('payment', {
                 invoice: invoice,
+                type: 'Payment',
                 datePaid: new Date()
             });
             this.send('openModal','invoices.payment', payment);            
@@ -43,6 +53,32 @@ export default AbstractModuleRoute.extend(ModalHelper, {
                 this.send('openModal','invoices.payment', payment);
             }
         },
-    }
+    },
+    
+    subActions: function() {
+        var actions = [{
+            text: 'Billed',
+            linkTo: 'invoices.index',
+            statusQuery: 'Billed'
+        }];
+        if (this.currentUserCan('add_invoice')) {
+            actions.push({
+                text: 'Drafts',
+                linkTo: 'invoices.index',
+                statusQuery: 'Draft'
+            });
+            actions.push({
+                text: 'All Invoices',
+                linkTo: 'invoices.index',
+                statusQuery: 'All'
+            });
+        }
+        actions.push({
+            text: 'Paid',
+            linkTo: 'invoices.index',
+            statusQuery: 'Paid'
+        });
+        return actions;
+    }.property()
     
 });

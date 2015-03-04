@@ -4,5 +4,7 @@ export default AbstractPagedController.extend({
     deletePermission: 'delete_invoice',    
     canAddPayment: function() {
         return this.currentUserCan('add_payment');
-    }.property()
+    }.property(),
+    startKey: [],
+    queryParams: ['startKey','status']
 });

@@ -157,7 +157,7 @@ export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRou
             navigationController.set('allowSearch',false);
         }
         var currentController = this.controllerFor(this.get('moduleName'));
-        var propsToSet = this.getProperties('currentScreenTitle','newButtonAction','newButtonText','sectionTitle','subActions');        
+        var propsToSet = this.getProperties('additionalButtons','currentScreenTitle','newButtonAction','newButtonText','sectionTitle','subActions');        
         currentController.setProperties(propsToSet);
         if (!Ember.isEmpty(this.additionalModels)) {
             this.additionalModels.forEach(function(item) {
