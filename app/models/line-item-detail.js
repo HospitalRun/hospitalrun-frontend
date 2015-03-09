@@ -3,38 +3,52 @@ import Ember from 'ember';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 
 export default AbstractModel.extend(NumberFormat,{
-    name: DS.attr('string'),
-    quantity: DS.attr('number'),
-    price: DS.attr('number'),
+    amountOwed: DS.attr('number'),
     department: DS.attr('string'),
     discount: DS.attr('number'),
     discountPercentage: DS.attr('number'),
+    expenseAccount: DS.attr('string'),
+    name: DS.attr('string'),
+    price: DS.attr('number'),
     pricingItem: DS.belongsTo('pricing'),
+    quantity: DS.attr('number'),
+    total: DS.attr('number'),
     
-    amountOwed: function() {
-        var discount = this.get('discount'),
+    _calculateAmountOwed: function() {
+        var amountOwed,
+            discount = this.get('discount'),
             total = this.get('total');
         if (this._validNumber(total)) {
             if (this._validNumber(discount)) {            
-                return this._numberFormat((total - discount), true);
+                amountOwed = this._numberFormat((total - discount), true);
             } else {
-                return this._numberFormat(total);
+                amountOwed = this._numberFormat(total, true);
             }            
         }
-    }.property('discount', 'total'),
-   
-    total: function() {
+        this.set('amountOwed', amountOwed);
+    },
+    
+    _calculateTotal: function() {
         var discountPercentage = this.get('discountPercentage'),
             price = this.get('price'),
-            quantity = this.get('quantity');
+            quantity = this.get('quantity'),
+            total;
         if (this._validNumber(price) && this._validNumber(quantity)) {
-            var total = this._numberFormat((price * quantity), true);
+            total = this._numberFormat((price * quantity), true);
             if (!Ember.isEmpty(discountPercentage)) {
                 var discount = this._numberFormat((discountPercentage * total), true);
                 this.set('discount', discount);
-            }            
-            return total; 
+            }
         }
-    }.property('price','quantity')
+        this.set('total', total);
+    },
+    
+    amountOwedChanged: function() {
+        Ember.run.debounce(this, this._calculateAmountOwed,150);
+    }.observes('discount', 'total'),
+   
+    totalChanged: function() {
+        Ember.run.debounce(this, this._calculateTotal,300);
+    }.observes('price','quantity')
 
 });

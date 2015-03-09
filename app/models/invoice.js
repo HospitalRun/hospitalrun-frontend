@@ -5,18 +5,21 @@ import NumberFormat from 'hospitalrun/mixins/number-format';
 import PatientValidation from 'hospitalrun/utils/patient-validation';
 
 export default AbstractModel.extend(DateFormat, NumberFormat, {
+    discount: DS.attr('number'),
     externalInvoiceNumber: DS.attr('string'),
     patient: DS.belongsTo('patient'),
     patientInfo: DS.attr('string'), //Needed for searching
     visit: DS.belongsTo('visit'),
     status: DS.attr('string'),
     billDate: DS.attr('date'),
+    nationalInsurance: DS.attr('number'),
     paidTotal: DS.attr('number'),
     paidFlag: DS.attr('boolean', {defaultValue: false}),
     patientResponsibility: DS.attr('number'),
     paymentProfile: DS.belongsTo('price-profile'),
     /*payments track the number of payment events attached to an invoice.*/
     payments: DS.hasMany('payment'),
+    privateInsurance: DS.attr('number'),
     /*the individual line items of the invoice*/
     lineItems: DS.hasMany('billing-line-item'),
         
@@ -30,23 +33,29 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
         return this.dateToTime(this.get('billDate'));
     }.property('billDate'),
     
-    discount: function() {
-        return this._calculateTotal('lineItems','discount');
-    }.property('lineItems.@each.discount'),
+    discountChanged: function() {
+        Ember.run.debounce(this, function() {
+            this.set('discount', this._calculateTotal('lineItems','discount'));
+        }, 300);
+    }.observes('lineItems.@each.discount'),
     
-    nationalInsurance: function() {
-        return this._calculateTotal('lineItems','nationalInsurance');
-    }.property('lineItems.@each.nationalInsurance'),
+    nationalInsuranceChanged: function() {
+        Ember.run.debounce(this, function() {
+            this.set('nationalInsurance', this._calculateTotal('lineItems','nationalInsurance'));
+        }, 300);
+    }.observes('lineItems.@each.nationalInsurance'),
         
     remainingBalance: function() {
         var patientResponsibility = this.get('patientResponsibility'),
             paidTotal = this.get('paidTotal');
-        return this._numberFormat(patientResponsibility - paidTotal);
+        return this._numberFormat((patientResponsibility - paidTotal), true);
     }.property('patientResponsibility','paidTotal'),    
     
-    privateInsurance: function() {
-        return this._calculateTotal('lineItems','privateInsurance');
-    }.property('lineItems.@each.privateInsurance'),
+    privateInsuranceChanged: function() {
+        Ember.run.debounce(this, function() {
+            this.set('privateInsurance', this._calculateTotal('lineItems','privateInsurance'));
+        }, 300);
+    }.observes('lineItems.@each.privateInsurance'),
     
     total: function() {
         return this._calculateTotal('lineItems','total');
