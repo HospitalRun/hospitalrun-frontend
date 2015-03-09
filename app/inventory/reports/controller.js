@@ -400,7 +400,11 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 //state of inventory at effective date
                 var grandCost = 0,
                     grandQuantity = 0;
-                Ember.keys(inventoryMap).forEach(function(key) {                    
+                Ember.keys(inventoryMap).forEach(function(key) {
+                    if (Ember.isEmpty(inventoryMap[key])) {
+                        //If the inventory item has been deleted, ignore it.
+                        return;
+                    }
                     var item = inventoryMap[key],
                         inventoryPurchases = item.purchaseObjects,
                         inventoryRequests = item.requestObjects,
