@@ -46,7 +46,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
     }.property(), 
     
     canDeleteContact: function() {        
-        return this.currentUserCan('add_user');
+        return this.currentUserCan('add_patient');
     }.property(),
     
     canDeleteImaging: function() {
