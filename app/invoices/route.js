@@ -24,6 +24,9 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
     additionalModels: [{ 
         name: 'billingCategoryList',
         findArgs: ['lookup','billing_categories']
+    }, {
+        name: 'expenseAccountList',
+        findArgs: ['lookup','expense_account_list']
     }, { 
         name: 'pricingProfiles',
         findArgs: ['price-profile']

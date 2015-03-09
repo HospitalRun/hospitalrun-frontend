@@ -7,7 +7,8 @@ export default AbstractEditController.extend(PatientSubmodule, {
     findPatientVisits: false,
     needs: ['invoices'],
     
-    patientList: Ember.computed.alias('controllers.invoices.patientList'),
+    expenseAccountList: Ember.computed.alias('controllers.invoices.expenseAccountList'),
+    patientList: Ember.computed.alias('controllers.invoices.patientList'),    
     
     _finishUpdate: function(message, title) {
         this.send('closeModal');    
@@ -45,6 +46,8 @@ export default AbstractEditController.extend(PatientSubmodule, {
         } else {
             this.set('newPayment', false);
         }
+        var patient = this.get('currentPatient');
+        this.set('charityPatient', patient.get('patientType') === 'Charity');
         return Ember.RSVP.resolve();
     },
 
