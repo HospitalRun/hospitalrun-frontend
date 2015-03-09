@@ -6,6 +6,7 @@ import PublishStatuses from 'hospitalrun/mixins/publish-statuses';
 
 export default AbstractEditController.extend(NumberFormat, PatientSubmodule, PublishStatuses, {
     needs: ['invoices','pouchdb'],
+    expenseAccountList: Ember.computed.alias('controllers.invoices.expenseAccountList.value'),
     patientList: Ember.computed.alias('controllers.invoices.patientList'),
     pharmacyCharges: [],
     pricingProfiles: Ember.computed.alias('controllers.invoices.pricingProfiles'),
@@ -43,10 +44,16 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         return this.currentUserCan('add_payment');
     }.property(),
     
-    selectPatient: function() {
-        var status = this.get('status');
-        return (status === 'Draft');
-    }.property('status'),
+        
+    pharmacyExpenseAccount: function() {
+        var expenseAccountList = this.get('expenseAccountList');
+        var account = expenseAccountList.find(function(value) {
+            if (value.toLowerCase().indexOf('pharmacy') > -1) {
+                return true;
+            }
+        });
+        return account;
+    }.property('expenseAccountList.value'),
     
     actions: {
         addLineItem: function(lineItem) {
@@ -129,10 +136,10 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     }.observes('patient'),
     
     paymentProfileChanged: function() {
-        var discountPercentage = this.get('paymentProfile.discountPercentage'),
+        var discountPercentage = this._getValidNumber(this.get('paymentProfile.discountPercentage')),
             originalPaymentProfileId = this.get('originalPaymentProfileId'),
             profileId = this.get('paymentProfile.id');
-        if (profileId !== originalPaymentProfileId && this._validNumber(discountPercentage)) {
+        if (profileId !== originalPaymentProfileId) {
             var lineItems = this.get('lineItems');
             lineItems.forEach(function(lineItem) {
                 var details = lineItem.get('details'),
@@ -164,6 +171,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         var visit = this.get('visit'),
             lineItems = this.get('lineItems');
         if (!Ember.isEmpty(visit) && Ember.isEmpty(lineItems)) {
+            this.set('originalPaymentProfileId');
             var promises = this.resolveVisitChildren();            
             Ember.RSVP.allSettled(promises, 'Resolved visit children before generating invoice').then(function(results) {
                 var chargePromises = this._resolveVisitDescendents(results, 'charges');
@@ -200,11 +208,13 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
             price = medicationItem.get('price'),
             quantity = charge.get('quantity'),
             pharmacyCharges = this.get('pharmacyCharges'),
+            pharmacyExpenseAccount = this.get('pharmacyExpenseAccount'),
             pharmacyCharge = this.store.createRecord('line-item-detail', {
                 name: medicationItem.get('name'),
                 quantity: quantity,
                 price: price,
-                department: 'Pharmacy'
+                department: 'Pharmacy',
+                expenseAccount: pharmacyExpenseAccount
             });
         pharmacyCharges.addObject(pharmacyCharge);
     },
@@ -218,6 +228,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     _createChargeItem: function(charge, department) {
         var chargeItem = this.store.createRecord('line-item-detail', {
                 name: charge.get('pricingItem.name'),
+                expenseAccount: charge.get('pricingItem.expenseAccount'),
                 quantity: charge.get('quantity'),
                 price: charge.get('pricingItem.price'),
                 department: department,

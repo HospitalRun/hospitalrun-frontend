@@ -7,7 +7,7 @@
             </div>        
         {{/unless}}
         {{date-picker property="billDate" label="Bill Date" class="col-xs-2"}}
-        {{#if selectPatient}}
+        {{#if isNew}}
             {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-4 required"}}
             {{em-select class="col-xs-4 required" label="Visit" 
                 property="visit" content=patientVisits
@@ -109,12 +109,12 @@
                         </tr>
                         {{#if showDetails}}                            
                             <tr>
-                                <th></th>
                                 <th>Name</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
                                 <th>Discount</th>
-                                <th>Total</th>
+                                <th>Expense Account</th>
+                                <th class="col-xs-1 text-right">Total</th>
                                 <th>
                                     {{#if canAddCharge}}
                                         <button class="btn btn-primary" {{action "addCharge" this}}>
@@ -125,9 +125,7 @@
                             </tr>
                             {{#each details itemController='invoices/detail-item'}}
                                 <tr>
-                                    <td class="col-xs-1">
-                                    </td>
-                                    <td class="col-xs-2">
+                                    <td class="col-xs-5">
                                         <div class="form-group">
                                             {{input class="form-control" value=name }}
                                         </div>
@@ -145,6 +143,15 @@
                                     <td class="col-xs-1">
                                         <div class="form-group">
                                             {{input class="form-control" value=discount }}
+                                        </div>
+                                    </td>
+                                    <td class="col-xs-1">
+                                        <div class="form-group">
+                                            {{view Ember.Select
+                                                class="form-control"
+                                                content=expenseAccountList
+                                                optionValuePath="content"
+                                                optionLabelPath="content" value=expenseAccount }}
                                         </div>
                                     </td>
                                     <td class="col-xs-1 text-right">
