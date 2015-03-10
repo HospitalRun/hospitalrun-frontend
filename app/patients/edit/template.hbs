@@ -1,4 +1,4 @@
-{{#em-form model=this submit_button=false }}
+{{#em-form model=this submit_button=false bubbles=false}}
     {{#unless isNew}}
         <div class="panel panel-success">
             <div class="panel-body">
@@ -125,7 +125,7 @@
                     <h3 class="panel-title">
                             Address/Contact Information
                             {{#if canAddContact}}
-                                <button class="btn btn-primary align-right" {{action "showAddContact" bubbles=false }}><span class="octicon octicon-plus"></span>Add Contact</button>
+                                <button type="button" class="btn btn-primary align-right" {{action "showAddContact" bubbles=false on="click"}}><span class="octicon octicon-plus"></span>Add Contact</button>
                             {{/if}}
                     </h3>
                 </div>
@@ -176,7 +176,7 @@
                                     <td>{{relationship}}</td>
                                     {{#if patientController.canDeleteContact}}
                                         <td>
-                                            <button class="btn btn-default warning" {{action "showDeleteContact" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                            <button type="button" class="btn btn-default warning" {{action "showDeleteContact" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
                                         </td>
                                     {{/if}}
                                 </tr>
@@ -194,7 +194,7 @@
 
                             Photos
                             {{#if canAddPhoto}}
-                                <button class="btn btn-primary align-right" {{action "showAddPhoto" bubbles=false }}><span class="octicon octicon-plus"></span>New Photo</button>
+                                <button type="button" class="btn btn-primary align-right" {{action "showAddPhoto" bubbles=false }}><span class="octicon octicon-plus"></span>New Photo</button>
                             {{/if}}                
                         </h3>
                     </div>
@@ -208,10 +208,10 @@
                                             {{caption}}
                                             <p>
                                                 {{#if parentController.canAddPhoto}}
-                                                    <button class="btn btn-default neutral" {{action "editPhoto" this}}>Edit</button>
+                                                    <button type="button" class="btn btn-default neutral" {{action "editPhoto" this}}>Edit</button>
                                                 {{/if}}
                                                 {{#if parentController.canDeletePhoto}}
-                                                    <button class="btn btn-default warning" {{action "showDeletePhoto" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                                    <button type="button" class="btn btn-default warning" {{action "showDeletePhoto" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
                                                 {{/if}}
                                             </p>
                                         </div>
@@ -228,7 +228,7 @@
                         <h3 class="panel-title">
                             Medication
                             {{#if canAddMedication}}
-                                <button class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span>New Medication</button>
+                                <button type="button" class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span>New Medication</button>
                             {{/if}}
                         </h3>
                     </div>
@@ -252,10 +252,10 @@
                                     <td>
                                         {{#if canEdit}}
                                             {{#if parentController.canAddMedication}}
-                                                <button class="btn btn-default neutral" {{action "editMedication" this}}>Edit</button>
+                                                <button type="button" class="btn btn-default neutral" {{action "editMedication" this}}>Edit</button>
                                             {{/if}}
                                             {{#if parentController.canDeleteMedication}}
-                                                <button class="btn btn-default warning" {{action "showDeleteMedication" this  bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                                <button type="button" class="btn btn-default warning" {{action "showDeleteMedication" this  bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
                                             {{/if}}
                                         {{/if}}
                                     </td>
@@ -271,7 +271,7 @@
                         <h3 class="panel-title">
                             Labs
                             {{#if canAddLab}}
-                                <button class="btn btn-primary align-right" {{action "newLab" bubbles=false }}><span class="octicon octicon-plus"></span> New Lab</button>
+                                <button type="button" class="btn btn-primary align-right" {{action "newLab" bubbles=false }}><span class="octicon octicon-plus"></span> New Lab</button>
                             {{/if}}
                         </h3>
                     </div>
@@ -300,10 +300,10 @@
                                     <td>
                                         {{#if canEdit}}
                                             {{#if parentController.canAddLab}}
-                                                <button class="btn btn-default neutral" {{action "editLab" this}}>Edit</button>
+                                                <button type="button" class="btn btn-default neutral" {{action "editLab" this}}>Edit</button>
                                             {{/if}}
                                             {{#if parentController.canDeleteLab}}
-                                                <button class="btn btn-default warning" {{action "showDeleteLab" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                                                <button type="button" class="btn btn-default warning" {{action "showDeleteLab" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                             {{/if}}
                                         {{/if}}
                                     </td>
@@ -317,7 +317,7 @@
                         <h3 class="panel-title">
                             Imaging
                             {{#if canAddImaging}}
-                                <button class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}><span class="octicon octicon-plus"></span> New Imaging</button>
+                                <button type="button" class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}><span class="octicon octicon-plus"></span> New Imaging</button>
                             {{/if}}
                         </h3>
                     </div>
@@ -345,10 +345,10 @@
                                     <td>
                                         {{#if canEdit}}
                                             {{#if parentController.canAddImaging}}
-                                                <button class="btn btn-default neutral" {{action "editImaging" this}}>Edit</button>
+                                                <button type="button" class="btn btn-default neutral" {{action "editImaging" this}}>Edit</button>
                                             {{/if}}
                                             {{#if parentController.canDeleteImaging}}
-                                                <button class="btn btn-default warning" {{action "showDeleteImaging" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                                                <button type="button" class="btn btn-default warning" {{action "showDeleteImaging" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                             {{/if}}
                                         {{/if}}
                                     </td>
@@ -364,7 +364,7 @@
                         <h3 class="panel-title">
                             Visits
                             {{#if canAddVisit}}
-                                <button class="btn btn-primary align-right" {{action "newVisit" bubbles=false }}><span class="octicon octicon-plus"></span> New Visit</button>
+                                <button type="button" class="btn btn-primary align-right" {{action "newVisit" bubbles=false }}><span class="octicon octicon-plus"></span> New Visit</button>
                             {{/if}}
                         </h3>
                     </div>
@@ -391,10 +391,10 @@
                                         <td>{{visitType}}</td>
                                         <td>
                                             {{#if patientController.canAddVisit}}
-                                                <button class="btn btn-default neutral" {{action "editVisit" this}}>Edit</button>
+                                                <button type="button" class="btn btn-default neutral" {{action "editVisit" this}}>Edit</button>
                                             {{/if}}
                                             {{#if patientController.canDeleteVisit}}
-                                                <button class="btn btn-default warning" {{action "showDeleteVisit" this bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                                                <button type="button" class="btn btn-default warning" {{action "showDeleteVisit" this bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                             {{/if}}
                                         </td>
                                     </tr>
@@ -408,7 +408,7 @@
                         <h3 class="panel-title">
                             Appointments
                             {{#if canAddAppointment}}
-                                <button class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}><span class="octicon octicon-plus"></span> New Appointment</button>
+                                <button type="button" class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}><span class="octicon octicon-plus"></span> New Appointment</button>
                             {{/if}}
                         </h3>
                     </div>
@@ -430,10 +430,10 @@
                                         <td>{{appointmentType}}</td>
                                         <td>
                                             {{#if patientController.canAddAppointment}}
-                                                <button class="btn btn-default neutral" {{action "editAppointment" this}}>Edit</button>
+                                                <button type="button" class="btn btn-default neutral" {{action "editAppointment" this}}>Edit</button>
                                             {{/if}}
                                             {{#if patientController.canDeleteAppointment}}
-                                                <button class="btn btn-default warning" {{action "showDeleteAppointment" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                                                <button type="button" class="btn btn-default warning" {{action "showDeleteAppointment" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                             {{/if}}
                                         </td>
                                     </tr>
@@ -454,7 +454,7 @@
                         <h4>
                             Family Information
                             {{#if canAddSocialWork}}
-                                <button class="btn btn-primary align-right" {{ action "showEditFamily" bubbles=false }}><span class="octicon octicon-plus"></span>Add Family Member</button>
+                                <button type="button" class="btn btn-primary align-right" {{ action "showEditFamily" bubbles=false }}><span class="octicon octicon-plus"></span>Add Family Member</button>
                             {{/if}}                
                         </h4>            
 
@@ -484,10 +484,10 @@
 
                                         <td>
                                             {{#if patientController.canAddSocialWork}}
-                                                <button class="btn btn-default neutral" {{action "showEditFamily" this}}>Edit</button>
+                                                <button type="button" class="btn btn-default neutral" {{action "showEditFamily" this}}>Edit</button>
                                             {{/if}}
                                             {{#if patientController.canDeleteSocialWork}}
-                                                <button class="btn btn-default warning" {{action "showDeleteFamily" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                                <button type="button" class="btn btn-default warning" {{action "showDeleteFamily" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
                                             {{/if}}
 
                                         </td>
@@ -498,7 +498,7 @@
                         <h4>
                             Expenses
                             {{#if canAddSocialWork}}
-                                <button class="btn btn-primary align-right" {{action "showEditExpense" bubbles=false }}><span class="octicon octicon-plus"></span>Add Expense</button>
+                                <button type="button" class="btn btn-primary align-right" {{action "showEditExpense" bubbles=false }}><span class="octicon octicon-plus"></span>Add Expense</button>
                             {{/if}}
                         </h4>
                         <table class="table">
@@ -516,10 +516,10 @@
                                         <td>{{cost}}</td>
                                         <td>
                                             {{#if patientController.canAddSocialWork}}
-                                                <button class="btn btn-default neutral" {{action "showEditExpense" this}}>Edit</button>
+                                                <button type="button" class="btn btn-default neutral" {{action "showEditExpense" this}}>Edit</button>
                                             {{/if}}
                                             {{#if patientController.canDeleteSocialWork}}
-                                                <button class="btn btn-default warning" {{action "showDeleteExpense" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                                <button type="button" class="btn btn-default warning" {{action "showDeleteExpense" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
                                             {{/if}}
                                         </td>
                                     </tr>
