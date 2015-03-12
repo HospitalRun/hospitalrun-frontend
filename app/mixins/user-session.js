@@ -323,6 +323,7 @@ export default Ember.Mixin.create({
             'Hospital Administrator',
             'Inventory Manager',
             'Medical Records Officer',
+            'Pharmacist',
             'System Administrator'
         ],
         fulfill_medication: [
