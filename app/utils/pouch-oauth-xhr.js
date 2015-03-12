@@ -91,7 +91,7 @@ export default function(configs) {
             if (this.ontimeout  !== undefined) {
                 this.internalXHR.ontimeout = this.ontimeout;
             }
-
+            this.readyState = 0;
             if (this.onreadystatechange !== undefined) {
                 var xhrwrapper = this;
                 this.internalXHR.onreadystatechange = function() {
