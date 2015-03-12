@@ -167,7 +167,6 @@ export default Ember.Controller.extend({
     
     setup: function() {
         var configDB = this.get('configDB'),
-            localMainDB = new PouchDB('main'),
             options = {
                 include_docs: true,
                 keys: [
@@ -178,7 +177,7 @@ export default Ember.Controller.extend({
                     'config_use_google_auth'
                 ]
             };
-        this.set('localMainDB', localMainDB);
+        var localMainDB = this.get('localMainDB');
         localMainDB.changes({
             include_docs: true, 
             live: true,

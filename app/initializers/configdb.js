@@ -34,6 +34,10 @@ export default {
         _initCouchDB().then(function() {
             application.register('couchdb:configdb', configDB, {instantiate: false});
             application.inject('controller:pouchdb', 'configDB', 'couchdb:configdb');
+            var localMainDB = new PouchDB('main',{auto_compaction: true});
+            application.register('pouchdb:maindb', localMainDB, {instantiate: false});
+            application.inject('controller:pouchdb', 'localMainDB', 'pouchdb:maindb');
+            application.inject('adapter:application', 'db', 'pouchdb:maindb');
             application.advanceReadiness();
         });
     }
