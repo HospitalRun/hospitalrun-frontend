@@ -96,7 +96,7 @@ export default function(configs) {
             if (this.onreadystatechange !== undefined) {
                 var xhrwrapper = this;
                 this.internalXHR.onreadystatechange = function() {
-                    if (this.readyState === 4 && status === 0) {
+                    if (this.readyState === 4 && this.status === 0) {
                         console.log("wrapper readystatechange fired with xhr state and status:",this.readyState, this.status);
                         console.log("URL WAS: "+this.url,this);
                     }
