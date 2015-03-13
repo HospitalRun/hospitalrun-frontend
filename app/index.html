@@ -15,6 +15,11 @@
     {{content-for 'head-footer'}}
   </head>
   <body>
+    <div class="jumbotron" id="apploading">
+        <div class="alert alert-warning" role="alert">
+            <h1><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>HospitalRun is Initializing... </h1>
+        </div>
+    </div>
     <script>
         window.addEventListener('load',function(e){window.applicationCache.addEventListener('updateready', function(e){if (window.applicationCache.status==window.applicationCache.UPDATEREADY){window.applicationCache.swapCache();window.location.reload();}},false);},false);
     </script>
