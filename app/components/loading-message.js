@@ -20,7 +20,7 @@ export default Ember.Component.extend({
         var loadingMessages = this.get('loadingMessages'),
             idx = Math.floor(Math.random()*loadingMessages.length);
         this.set('message', loadingMessages[idx]);
-        this.set('timer', Ember.run.later(this, this._setRandomMessage, 300));
+        this.set('timer', Ember.run.later(this, this._setRandomMessage, 500));
     },
     
     didInsertElement: function() {
