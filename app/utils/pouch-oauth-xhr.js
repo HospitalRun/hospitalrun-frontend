@@ -91,10 +91,12 @@ export default function(configs) {
             if (this.ontimeout  !== undefined) {
                 this.internalXHR.ontimeout = this.ontimeout;
             }
-            this.readyState = 0;
+            this.readyState = this.internalXHR.readyState;
+            this.status = this.internalXHR.status;
             if (this.onreadystatechange !== undefined) {
                 var xhrwrapper = this;
                 this.internalXHR.onreadystatechange = function() {
+                    console.log("wrapper readystatechange fired with xhr state and status:",this.readyState, this.status);
                     xhrwrapper.readyState = this.readyState;
                     xhrwrapper.response = this.response;
                     xhrwrapper.responseText = this.responseText;
