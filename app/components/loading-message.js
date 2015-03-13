@@ -13,14 +13,16 @@ export default Ember.Component.extend({
         'The most common phobia in the world is odynophobia which is the fear of pain.',
         'Your body uses 300 muscles to balance itself when you are standing still.',
         'Certain frogs can be frozen solid then thawed, and continue living.', 
-        'Our eyes are always the same size from birth, but our nose and ears never stop growing.'
+        'Our eyes are always the same size from birth, but our nose and ears never stop growing.',
+        'Your tongue is the only muscle in your body that is attached at only one end.',
+        'Camels have three eyelids to protect themselves from blowing sand.'
     ],
     
     _setRandomMessage: function() {
         var loadingMessages = this.get('loadingMessages'),
             idx = Math.floor(Math.random()*loadingMessages.length);
         this.set('message', loadingMessages[idx]);
-        this.set('timer', Ember.run.later(this, this._setRandomMessage, 500));
+        this.set('timer', Ember.run.later(this, this._setRandomMessage, 1000));
     },
     
     didInsertElement: function() {
