@@ -112,7 +112,7 @@ function inventoryByType(doc) {
     if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
         doctype = doc._id.substring(0, uidx);
         if (doctype === 'inventory') {
-            emit([doc.type, doc._id]); 
+            emit(doc.type); 
         }   
     }    
 }
@@ -261,7 +261,7 @@ function photoByPatient(doc) {
     if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
         doctype = doc._id.substring(0, uidx);
         if (doctype === 'photo') {
-            emit([doc.patient, doc._id]); 
+            emit(doc.patient); 
         }   
     }
 }
