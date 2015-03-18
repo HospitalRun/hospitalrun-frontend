@@ -13,7 +13,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
             pricingCategory = this.get('pricingCategory'),
             pricingQuery = {
                 startkey:  [pricingCategory,null,null,'pricing_'],
-                endkey: [pricingCategory,maxValue,maxValue,'pricing_'+maxValue],
+                endkey: [pricingCategory,{},{},'pricing_'+maxValue],
                 include_docs: true,
             };        
         this.controllerFor('pouchdb').queryMainDB(pricingQuery, 'pricing_by_category').then(function(result) {

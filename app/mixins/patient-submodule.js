@@ -73,7 +73,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
             this.store.find('visit', {
                 options: {
                     startkey: [patientId, null, null, null, 'visit_'],
-                    endkey: [patientId, maxValue, maxValue, maxValue, 'visit_'+maxValue]
+                    endkey: [patientId, maxValue, maxValue, maxValue, maxValue]
                 },
                 mapReduce: 'visit_by_patient'
             }).then(function(visits) {

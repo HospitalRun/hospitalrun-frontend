@@ -65,7 +65,7 @@ export default AbstractEditRoute.extend(PatientId, PouchDbMixin, {
         this.store.find('visit', {
             options: {
                 startkey: [patientId, null, null, null, 'visit_'],
-                endkey: [patientId, maxValue, maxValue, maxValue, 'visit_'+maxValue]
+                endkey: [patientId, maxValue, maxValue, maxValue, maxValue]
             },
             mapReduce: 'visit_by_patient'
         }).then(function(visits) {
@@ -74,7 +74,7 @@ export default AbstractEditRoute.extend(PatientId, PouchDbMixin, {
         this.store.find('appointment', {
             options: {
                 startkey: [patientId, null, null, 'appointment_'],
-                endkey: [patientId, maxValue, maxValue, 'appointment_'+maxValue]
+                endkey: [patientId, maxValue, maxValue, maxValue]
             },
             mapReduce: 'appointments_by_patient'
         }).then(function(appointments) {
@@ -82,8 +82,7 @@ export default AbstractEditRoute.extend(PatientId, PouchDbMixin, {
         });
         this.store.find('photo', {
             options: {
-                startkey: [patientId, 'photo_'],
-                endkey: [patientId, 'photo_'+maxValue]
+                key: patientId            
             },
             mapReduce: 'photo_by_patient'
         }).then(function(photos) {
