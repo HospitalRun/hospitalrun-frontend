@@ -30,8 +30,7 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
     setupController: function(controller, model) {
         this._super(controller, model);
         var inventoryQuery = {
-            startkey:  ['Medication','inventory_'],
-            endkey: ['Medication','inventory_\uffff'],
+            key:  'Medication',            
             include_docs: true,
         };
         var inventoryItem = model.get('inventoryItem'),
