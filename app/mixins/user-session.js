@@ -381,6 +381,63 @@ export default Ember.Mixin.create({
             'Social Worker',
             'System Administrator'
         ],
+		incident: [
+            'Data Entry',
+            'Hospital Administrator',
+            'Inventory Manager',
+            'Medical Records Officer',
+            'Nurse Manager', 
+            'Pharmacist',
+            'System Administrator'
+        ],
+		add_incident : [
+			'User Administrator',
+            'System Administrator'
+		],
+		delete_incident: [
+            'User Administrator',
+            'System Administrator'
+        ],
+		add_feedback : [
+			'User Administrator',
+            'System Administrator'
+		],
+		delete_feedback: [
+            'User Administrator',
+            'System Administrator'
+        ],
+		add_investigation_findings : [
+			'User Administrator',
+            'System Administrator'
+		],
+		delete_investigation_findings: [
+            'User Administrator',
+            'System Administrator'
+        ],
+		add_contributing_factors : [
+			'User Administrator',
+            'System Administrator'
+		],
+		delete_contributing_factors: [
+            'User Administrator',
+            'System Administrator'
+        ],
+		add_recommendations : [
+			'User Administrator',
+            'System Administrator'
+		],
+		delete_recommendations: [
+            'User Administrator',
+            'System Administrator'
+        ],
+		add_risk : [
+			'User Administrator',
+            'System Administrator'
+		],
+		delete_risk: [
+            'User Administrator',
+            'System Administrator'
+        ],
         update_config: [
             'System Administrator'
         ],

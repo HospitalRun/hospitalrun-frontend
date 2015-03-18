@@ -1,0 +1,43 @@
+{{#if hasRecords}}
+    <table class="table">
+        <tr class="table-header">
+            <th>Reported By</th>
+            <th>Location of Incident</th>
+            <th>Date of Incident</th>
+            <th>Time of Incident</th>
+            <th>Incident Description</th>
+            {{#if showActions}}
+                <th>Actions</th>
+            {{/if}}
+        </tr>
+        {{#with this as parentController}}
+            {{#each}}
+                <tr {{action 'editItem' this}}>
+                  	<td>{{reportedBy}}</td>
+                    <td>{{locationOfIncident}}</td>
+                    <td>{{date-format dateOfIncident}}</td>
+                    <td>{{timeOfIncident}}</td>
+					<td>{{incidentDescription}}</td>
+                   {{#if parentController.showActions}}
+                        <td>
+                            {{#if parentController.canAdd}}
+                                <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
+                            {{/if}}
+                            {{#if parentController.canDelete}}
+                                <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                            {{/if}}
+                        </td>
+                    {{/if}}
+                </tr>
+            {{/each}}
+        {{/with}}
+    </table>
+{{else}}
+    <div class="alert alert-info">
+        <em>No Incidents found.</em>
+       {{#if canAdd}}
+            <em>Create a new Incident?</em>
+            <button class="btn btn-primary on-white" {{action 'newItem'}}>New Incident</button>
+        {{/if}}
+    </div>
+{{/if}}
