@@ -9,12 +9,7 @@ export default AbstractIndexRoute.extend({
     },
     
     _modelQueryParams: function() {
-        var maxValue = this.get('maxValue');
         return {
-            options: {
-                startkey: [null, null],
-                endkey: [maxValue, maxValue]
-            },
             mapReduce: 'patient_by_display_id'
         };
     },
