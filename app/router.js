@@ -41,6 +41,13 @@ Router.map(function() {
         this.route('request', { path: "/request/:inv-request_id" });
         this.route('search', { path: "/search/:search_text" });
     });
+	
+	this.resource('incident',function() {
+		this.route('completed');
+        this.route('edit', { path: "/edit/:incident_id" });
+        this.route('reports');
+        this.route('search', { path: "/search/:search_text" });
+	});
     
     this.resource('invoices', function() {
         this.route('edit', { path: "/edit/:invoice_id" });
