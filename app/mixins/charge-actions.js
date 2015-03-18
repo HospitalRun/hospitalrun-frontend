@@ -96,13 +96,17 @@ export default Ember.Mixin.create({
             objectTypeName = this.get(objectTypeNameField),
             objectType = this.get(typeField);
         if (isNew) {
-            if (!Ember.isEmpty(objectType)) {
-                this.set('newObjectType', false);
-                if (objectType.get('name') !== objectTypeName) {
-                    this.set(objectTypeNameField, objectType.get('name'));
-                }
+            if(objectTypeName instanceof Object) {
+               this.set('newObjectType', false);
             } else {
-                this.set('newObjectType', true);
+                if (!Ember.isEmpty(objectType)) {
+                    this.set('newObjectType', false);
+                    if (objectType.get('name') !== objectTypeName) {
+                        this.set(objectTypeNameField, objectType.get('name'));
+                    }
+                } else {
+                    this.set('newObjectType', true);
+                }
             }
         }
     },
