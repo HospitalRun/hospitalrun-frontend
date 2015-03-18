@@ -18,14 +18,13 @@ export default AbstractIndexRoute.extend({
             keyPrefix = this.get('keyPrefix'),
             maxValue = this.get('maxValue'),
             queryParams = {
-                options: {
-                    startkey: [category, null, null, keyPrefix],
-                    endkey: [category, maxValue, maxValue, keyPrefix+maxValue]
-                },
                 mapReduce: 'pricing_by_category'
             };
-        if (Ember.isEmpty(category)) {
-            queryParams.options.endkey[0] = maxValue;
+        if (!Ember.isEmpty(category)) {
+            queryParams.options = {
+                startkey: [category, null, null, null],
+                endkey: [category, {}, {}, keyPrefix+maxValue]
+            };
         }
         return queryParams;
     }    
