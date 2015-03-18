@@ -6,12 +6,12 @@ export default Ember.Controller.extend({
     
     filesystem: Ember.computed.alias('controllers.filesystem'),
     isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
-    localMainDB: null,
+    localMainDB: null, //Local DB
+    mainDB: null, //Server DB
     syncStatus: Ember.computed.alias('controllers.navigation.syncStatus'),
     
     backoff: 2, //Factor to increment timeout by each time it fails
     configDB: null, //Initializer will set this up.
-    serverMainDB: null,
     sync: null, //PouchDB sync process
     timeout: 5000, //Timeout to retry sync
     
@@ -60,7 +60,7 @@ export default Ember.Controller.extend({
             console.log("Error creating main pouchDB",err);
             throw err;
         } else {
-            this.set('serverMainDB', db);
+            this.set('mainDB', db);
             this._setupSync();
         }
     },
@@ -74,9 +74,10 @@ export default Ember.Controller.extend({
     },    
 
     _setupSync: function() {
-        var db = this.get('serverMainDB'),
+        var db = this.get('mainDB'),
+            localDB = this.get('localMainDB'),
             sync;
-        sync = db.sync('main', {live: true})
+        sync = db.sync(localDB, {live: true})
             .on('active', this._syncActive.bind(this))
             .on('change', this._syncChange.bind(this))
             .on('error', this._syncError.bind(this))
@@ -117,8 +118,8 @@ export default Ember.Controller.extend({
     
     getDocFromMainDB: function(docId) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            var localMainDB = this.get('localMainDB');
-            localMainDB.get(docId, function(err, doc) {
+            var mainDB = this.get('mainDB');
+            mainDB.get(docId, function(err, doc) {
                 if (err) {
                     reject(err);
                 } else {
@@ -144,9 +145,9 @@ export default Ember.Controller.extend({
     
     queryMainDB: function(queryParams, mapReduce) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            var localMainDB = this.get('localMainDB');
+            var mainDB = this.get('mainDB');
             if (mapReduce) { 
-                localMainDB.query(mapReduce, queryParams, function(err, response) {
+                mainDB.query(mapReduce, queryParams, function(err, response) {
                     if (err) {
                         reject(err);
                     } else {
@@ -154,7 +155,7 @@ export default Ember.Controller.extend({
                     }                
                 });
             } else {
-                localMainDB.allDocs(queryParams, function(err, response) {
+                mainDB.allDocs(queryParams, function(err, response) {
                     if (err) {
                         reject(err);
                     } else {
@@ -165,59 +166,43 @@ export default Ember.Controller.extend({
         }.bind(this));
     },
     
-    setup: function() {
-        var configDB = this.get('configDB'),
-            options = {
-                include_docs: true,
-                keys: [
-                    'config_consumer_key',
-                    'config_consumer_secret',
-                    'config_oauth_token',
-                    'config_token_secret',
-                    'config_use_google_auth'
-                ]
-            };
-        var localMainDB = this.get('localMainDB');
-        localMainDB.changes({
-            include_docs: true, 
-            live: true,
-            since: 'now',
-            style: 'all_docs'
-        }).on('change', this._gotChange.bind(this));
-        
-        createPouchViews(localMainDB);
-
-        configDB.allDocs(options, function(err, response) { 
-            if (err) {
-                console.log('Could not get configDB configs:', err);
-            } else {
-                var configs = {};
-                for (var i=0;i<response.rows.length;i++) {
-                    if (!response.rows[i].error) {
-                        configs[response.rows[i].id] = response.rows[i].doc.value;
-                    }
-                }
-                this.setupMainDB(configs);                
-            }
-        }.bind(this));
-
-    },    
-
     setupMainDB: function(configs) {
-        var pouchOptions = {};
-        if (configs.config_use_google_auth) {
-            //If we don't have the proper credentials don't sync.
-            if (Ember.isEmpty(configs.config_consumer_key) || 
-                Ember.isEmpty(configs.config_consumer_secret) ||
-                Ember.isEmpty(configs.config_oauth_token) || 
-                Ember.isEmpty(configs.config_token_secret)) {
-                return;
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            var localMainDB = new PouchDB('main',{auto_compaction: true});
+            localMainDB.changes({
+                include_docs: true, 
+                live: true,
+                since: 'now',
+                style: 'all_docs'
+            }).on('change', this._gotChange.bind(this));
+			createPouchViews(localMainDB);
+            this.set('localMainDB', localMainDB);            
+            
+            var pouchOptions = {};
+            if (configs.config_use_google_auth) {
+                //If we don't have the proper credentials don't sync.
+                if (Ember.isEmpty(configs.config_consumer_key) || 
+                    Ember.isEmpty(configs.config_consumer_secret) ||
+                    Ember.isEmpty(configs.config_oauth_token) || 
+                    Ember.isEmpty(configs.config_token_secret)) {
+                    return;
+                }
+                pouchOptions.ajax = {
+                    xhr: createPouchOauthXHR(configs)
+                };
             }
-            pouchOptions.ajax = {
-                xhr: createPouchOauthXHR(configs)
-            };
-        }
-        var dbUrl =  document.location.protocol+'//'+document.location.host+'/db/main';
-        new PouchDB(dbUrl, pouchOptions, this._gotServerMainDB.bind(this));
+            var dbUrl =  document.location.protocol+'//'+document.location.host+'/db/main';
+            new PouchDB(dbUrl, pouchOptions, function(err, db) {
+                this._gotServerMainDB(err, db);
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve({
+                        mainDB: db, 
+                        localDB: localMainDB
+                    });
+                }
+            }.bind(this));
+        }.bind(this));
     }
 });

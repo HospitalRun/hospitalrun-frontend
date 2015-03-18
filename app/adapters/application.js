@@ -10,37 +10,36 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
         'searchIndex'
     ],
     
+    localDB: null,
     databaseName: 'main',
     
     _createMapFunction: function(type, query) {
-        return function(doc, emit) {
-            var found_doc = false,
-                doctype, 
-                queryValue,
-                uidx;
-            
-            if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
-                try {
-                    doctype = doc._id.substring(0, uidx);
-                    if(doctype === type.typeKey) {
-                        if (query.containsValue && query.containsValue.value) {
-                            queryValue = query.containsValue.value.toLowerCase();
-                            query.containsValue.keys.forEach(function(key) {
-                                if (doc[key] && doc[key].toLowerCase().indexOf(queryValue) >= 0) {
-                                    found_doc = true;
-                                }
-                            });
-                        } else {
-                            found_doc = true;
-                        }
-                        if (found_doc === true) {
-                            emit(doc._id, null);
-                        }
-                    }
-                } catch (e) {
-                    console.log("Got exception:",e);
+        var mapFunction = 'function(doc) {'+
+        'var found_doc = false,'+
+        '   doctype, '+
+        '   queryValue, '+
+        '   uidx;'+     
+        'if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {'+
+            'doctype = doc._id.substring(0, uidx);'+
+            'if(doctype === "'+type.typeKey+'") {';
+                if (query.containsValue && query.containsValue.value) {
+                    mapFunction += 'queryValue = "'+query.containsValue.value.toLowerCase()+'";';
+                    query.containsValue.keys.forEach(function(key) {                        
+                        mapFunction += 'if (doc["'+key+'"] && doc["'+key+'"].toLowerCase().indexOf(queryValue) >= 0) {'+
+                            'found_doc = true;'+                            
+                        '}';
+                    });
+                } else {
+                    mapFunction += 'found_doc = true;';
                 }
-            }
+                mapFunction += 'if (found_doc === true) {'+
+                    'emit(doc._id, null);'+
+                '}'+
+            '}'+
+        '}'+
+        '}';
+        return {
+            map: mapFunction
         };
     },
     
@@ -50,10 +49,8 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
             if(Ember.isNone(options.embed)) {
                 options.embed = true;
             }
-            Ember.run(function(){
-                this._resolveRelationships(store, type, data, options).then(function(data){
-                    Ember.run(null, resolve, data);
-                });
+            this._resolveRelationships(store, type, data, options).then(function(data){
+                resolve(data);
             }.bind(this));
         }
     },
@@ -103,7 +100,7 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
                                 }
                             }.bind(this));
                         } else if (query.searchIndex) {
-                            db.search(queryParams, function(err, response) {
+                            this.localDB.search(queryParams, function(err, response) {
                                 if (err) {
                                     this._pouchError(reject)(err);
                                 } else {
