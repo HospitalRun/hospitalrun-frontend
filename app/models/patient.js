@@ -6,7 +6,7 @@ import PatientName from 'hospitalrun/mixins/patient-name';
 
 export default AbstractModel.extend(DOBDays, PatientName, {
     additionalContacts: DS.attr(),
-    additionalData: DS.attr(), //Additional data will be used to store custom data per install.
+    additionalData: DS.attr(null,{defaultValue:{}}), //Additional data will be used to store custom data per install.
     address: DS.attr('string'),
     address2: DS.attr('string'),
     address3: DS.attr('string'),
@@ -19,12 +19,19 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     email: DS.attr('string'),
     expenses: DS.attr(),
     externalPatientId: DS.attr('string'),
+    familySupport1: DS.attr('string'),
+    familySupport2: DS.attr('string'),
+    familySupport3: DS.attr('string'),
+    familySupport4: DS.attr('string'),
+    familySupport5: DS.attr('string'),
     friendlyId: DS.attr('string'),
     familyInfo: DS.attr(),
     firstName: DS.attr('string'),
     gender:  DS.attr('string'),
     history: DS.attr('string'),
+    insurance: DS.attr('string'),
     lastName:  DS.attr('string'),
+    livingArrangement: DS.attr('string'),
     notes: DS.attr('string'),  
     otherIncome: DS.attr('string'),
     payments: DS.hasMany('payment', { async: true }),
@@ -36,6 +43,8 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     referredDate: DS.attr('date'),
     referredBy: DS.attr('string'),    
     religion: DS.attr('string'),
+    socialActionTaken: DS.attr('string'),
+    socialRecommendation: DS.attr('string'),
     
     age: function() {
         var dob = this.get('dateOfBirth');
