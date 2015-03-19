@@ -22,11 +22,6 @@ export default Ember.Route.extend(PouchDbMixin, Ember.SimpleAuth.AuthenticatedRo
         return modelName+'_'+item.get('id');
     },
     
-    _getEndKey: function() {
-        var modelName = this.get('modelName');
-        return modelName+'_\uffff';
-    },
-    
     _modelQueryParams: function() {
         return {};
     },
@@ -42,9 +37,6 @@ export default Ember.Route.extend(PouchDbMixin, Ember.SimpleAuth.AuthenticatedRo
             queryParams.options.limit = itemsPerPage + 1;
             if (!Ember.isEmpty(params.startKey)) {
                 queryParams.options.startkey = params.startKey;
-            }
-            if (queryParams.options.startkey && !queryParams.options.endkey) {
-                queryParams.options.endkey = this._getEndKey();
             }
             this.store.find(modelName, queryParams).then(function(model) {
                 if (model.get('length') > 0) {
