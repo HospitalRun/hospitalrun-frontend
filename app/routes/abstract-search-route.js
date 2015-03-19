@@ -57,7 +57,7 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             }, function() {
                 this._findBySearchIndex(searchText).then(resolve, function() {
                     this._findByContains(searchText).then(resolve, function(err) {
-                        resolve();
+                        resolve(new DS.AdapterPopulatedRecordArray());
                         throw new Error(err);
                     }.bind(this));
                 }.bind(this));
@@ -67,7 +67,11 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     
     setupController: function(controller, model) {
         this._super(controller, model);
-        controller.set('hasRecords', (model.get('length') > 0));
+        if (!Ember.isEmpty(model)) {
+            controller.set('hasRecords', (model.get('length') > 0));
+        } else {
+            controller.set('hasRecords', false);
+        }
         controller.set('searchText', this.get('searchText'));
         this.controllerFor('navigation').closeProgressModal();
         var parentController = this.controllerFor(this.get('moduleName'));

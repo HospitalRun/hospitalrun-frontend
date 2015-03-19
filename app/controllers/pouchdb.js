@@ -188,7 +188,8 @@ export default Ember.Controller.extend({
                     return;
                 }
                 pouchOptions.ajax = {
-                    xhr: createPouchOauthXHR(configs)
+                    xhr: createPouchOauthXHR(configs),
+                    timeout: 30000
                 };
             }
             var dbUrl =  document.location.protocol+'//'+document.location.host+'/db/main';
