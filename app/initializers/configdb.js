@@ -64,6 +64,8 @@ export default {
                         application.inject('adapter:application', 'db', 'pouchdb:maindb');
                         application.inject('adapter:application', 'localDB', 'pouchdb:localdb');
                         application.advanceReadiness();
+                    }, function() {
+                        application.advanceReadiness();
                     });                    
                 }
             }.bind(this));                                    

@@ -185,7 +185,7 @@ export default Ember.Controller.extend({
                     Ember.isEmpty(configs.config_consumer_secret) ||
                     Ember.isEmpty(configs.config_oauth_token) || 
                     Ember.isEmpty(configs.config_token_secret)) {
-                    return;
+                    reject();
                 }
                 pouchOptions.ajax = {
                     xhr: createPouchOauthXHR(configs),
