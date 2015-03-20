@@ -25,8 +25,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
     addChildToVisit: function(objectToAdd, childName, newVisitType) {
         return new Ember.RSVP.Promise(function(resolve, reject){
             var childPromises = [],
-                patient = this.get('patient'),
-                promises = [],
+                patient = this.get('patient'),               
                 visit = this.get('visit');
             if (Ember.isEmpty(visit)) {
                 visit = this.get('store').createRecord('visit', {
@@ -42,10 +41,8 @@ export default Ember.Mixin.create(PouchDbMixin, {
             Ember.RSVP.all(childPromises, 'Resolved visit children before adding new '+childName).then(function() {        
                 visit.get(childName).then(function(visitChildren) {
                     visitChildren.addObject(objectToAdd);
-                    promises.push(visit.save());
-                    Ember.RSVP.all(promises, 'All updates done for visit add child object to '+childName).then(function() {        
-                        resolve();
-                    }.bind(this), reject);
+                    this.set('needToUpdateVisit', true);
+                    resolve();
                 }.bind(this), reject);
             }.bind(this), reject);
         }.bind(this));
@@ -144,6 +141,24 @@ export default Ember.Mixin.create(PouchDbMixin, {
         }
         return promises;
     },
+    
+    /**
+     * If visit needs to saved, save it and then display an alert message; otherwise
+     * just display the alert message.
+     * @param alertTitle String the title to use on the alert.
+     * @param alertMessage String the message to display in the alert.
+     */
+    saveVisitIfNeeded: function(alertTitle, alertMessage) {
+        if (this.get('needToUpdateVisit')) {
+            this.get('visit').save().then(function() {
+                this.set('needToUpdateVisit', false);
+                this.displayAlert(alertTitle, alertMessage);    
+            }.bind(this));
+        } else {
+            this.displayAlert(alertTitle, alertMessage);    
+        }
+    }, 
+        
     
     visitIdChanged: function() {
         var visitId = this.get('visitId');

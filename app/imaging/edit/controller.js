@@ -64,11 +64,16 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }.observes('selectedImagingType'),
     
     afterUpdate: function() {
+         var alertTitle,
+            alertMessage;
         if (this.get('status') === 'Completed') {
-            this.displayAlert('Imaging Request Completed','The imaging request has been completed.');
+            alertTitle = 'Imaging Request Completed';
+            alertMessage = 'The imaging request has been completed.';
         } else {
-            this.displayAlert('Imaging Request Saved','The imaging request has been saved.');
+            alertTitle = 'Imaging Request Saved';
+            alertMessage = 'The imaging request has been saved.';
         }
+        this.saveVisitIfNeeded(alertTitle, alertMessage);
     },
     
     beforeUpdate: function() {

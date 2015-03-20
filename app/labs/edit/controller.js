@@ -65,11 +65,16 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }.observes('selectedLabType'),
     
     afterUpdate: function() {
+        var alertMessage,
+            alertTitle;            
         if (this.get('status') === 'Completed') {
-            this.displayAlert('Lab Request Completed','The lab request has been completed.');
+            alertTitle = 'Lab Request Completed';
+            alertMessage = 'The lab request has been completed.';
         } else {
-            this.displayAlert('Lab Request Saved','The lab request has been saved.');
+            alertTitle = 'Lab Request Saved';
+            alertMessage = 'The lab request has been saved.';
         }
+        this.saveVisitIfNeeded(alertTitle, alertMessage);
     },
     
     beforeUpdate: function() {

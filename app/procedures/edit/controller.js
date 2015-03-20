@@ -65,10 +65,6 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         return 'Edit Procedure';
 	}.property('isNew'),
     
-    icd10PCSIdChanged: function() {
-        this.get('model').validate();
-    }.observes('icd10PCSId'),
-    
     updateCapability: 'add_charge',
     
     actions: {
@@ -112,6 +108,6 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     afterUpdate: function() {
         var alertTitle = 'Procedure Saved',
             alertMessage = 'The procedure record has been saved.';
-        this.displayAlert(alertTitle, alertMessage);
+        this.saveVisitIfNeeded(alertTitle, alertMessage);
     }
 });

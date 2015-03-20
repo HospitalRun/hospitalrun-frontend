@@ -39,7 +39,9 @@ export default AbstractEditController.extend(InventorySelection, PatientSubmodul
     updateCapability: 'add_medication',
 
     afterUpdate: function() {
-        this.send(this.get('cancelAction'));
+        var alertTitle = 'Medication Request Saved',
+            alertMessage = 'The medication record has been saved.'; 
+        this.saveVisitIfNeeded(alertTitle, alertMessage);
     },
     
     beforeUpdate: function() {
