@@ -47,7 +47,7 @@ export default function(configs) {
             this.password = password;
             if(url.indexOf("?") > 0) {
                 var url_params = url.split("?");
-                if (this.method === 'POST' || this.method === 'GET') {                
+                if (this.method === 'POST' || this.method === 'GET' || this.method === 'DELETE') {                
                     this.url = url_params[0];
                 }
                 this.params = this._decodeParameters(url_params[1]);            
@@ -57,7 +57,7 @@ export default function(configs) {
         send: function(data) {
             if (this.signOauth !== undefined) {            
                 this.params = this.signOauth(this.params);
-                if (this.method === 'POST' || this.method === 'GET') {
+                if (this.method === 'POST' || this.method === 'GET' || this.method === 'DELETE') {
                     this.url = OAuth.addToURL(this.url, this.params);
                 } else {
                     this.requestHeaders['Authorization'] =  OAuth.getAuthorizationHeader('', this.params);
