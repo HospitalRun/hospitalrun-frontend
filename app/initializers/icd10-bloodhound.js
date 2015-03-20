@@ -12,13 +12,11 @@ function createAndRegister(data, name, app) {
 }
 
 import icd10Generator from 'hospitalrun/utils/icd10';
-import icd10PCSGenerator from 'hospitalrun/utils/icd10-pcs';
 
 export default {
     name: 'icd10-bloodhound',
     
     initialize: function(container, app) {
-        createAndRegister(icd10Generator(), 'icd10', app);
-        createAndRegister(icd10PCSGenerator(), 'icd10-pcs', app);
+        createAndRegister(icd10Generator(), 'icd10', app);       
     }
 };
