@@ -6,10 +6,10 @@ export default AbstractIndexRoute.extend({
     pageTitle: 'All Pricing Items',    
         
     _getStartKeyFromItem: function(item) {
-        var category = this.get('category'),
+        var category = item.get('category'),
             keyPrefix = this.get('keyPrefix'),
-            name = this.get('name'),
-            type = this.get('type');
+            name = item.get('name'),
+            type = item.get('type');
         return [category, name, type, keyPrefix+item.get('id')];        
     },
     
