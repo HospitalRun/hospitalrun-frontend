@@ -193,11 +193,11 @@ export default Ember.Controller.extend({
                 };
             }
             var dbUrl =  document.location.protocol+'//'+document.location.host+'/db/main';
-            new PouchDB(dbUrl, pouchOptions, function(err, db) {
-                this._gotServerMainDB(err, db);
+            new PouchDB(dbUrl, pouchOptions, function(err, db) {                
                 if (err) {
                     reject(err);
                 } else {
+                    this._gotServerMainDB(err, db);
                     resolve({
                         mainDB: db, 
                         localDB: localMainDB
