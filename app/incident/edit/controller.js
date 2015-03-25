@@ -1,24 +1,25 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from "ember";
+import IncidentSubmodule from 'hospitalrun/mixins/incident-submodule';
 import UserSession from "hospitalrun/mixins/user-session";
 
-export default AbstractEditController.extend(UserSession, {
-    needs: 'incident',
+export default AbstractEditController.extend(IncidentSubmodule, UserSession, {
+     needs: 'incident',
     
     canAddFeedback: function() {        
         return this.currentUserCan('add_feedback');
     }.property(),
 
-    canAddInvestigationFindings: function() {
-        return this.currentUserCan('add_investigation_findings');
+    canAddInvestigationFinding: function() {
+        return this.currentUserCan('add_investigation_finding');
     }.property(),    
 
-    canAddContributingFactors: function() {        
-        return this.currentUserCan('add_contributing_factors');
+    canAddContributingFactor: function() {        
+        return this.currentUserCan('add_contributing_factor');
     }.property(),    
     
-    canAddRecommendations: function() {        
-        return this.currentUserCan('add_recommendations');
+    canAddRecommendation: function() {        
+        return this.currentUserCan('add_recommendation');
     }.property(),
     
 	canAddRisk: function() {        
@@ -29,49 +30,41 @@ export default AbstractEditController.extend(UserSession, {
         return this.currentUserCan('delete_feedback');
     }.property(),
     
-    canDeleteInvestigationFindings: function() {
-        return this.currentUserCan('delete_investigation_findings');
+    canDeleteInvestigationFinding: function() {
+        return this.currentUserCan('delete_investigation_finding');
     }.property(),        
     
-    canDeleteContributingFactors: function() {        
-        return this.currentUserCan('delete_contributing_factors');
+    canDeleteContributingFactor: function() {        
+        return this.currentUserCan('delete_contributing_factor');
     }.property(),        
     
-    canDeleteRecommendations: function() {        
-        return this.currentUserCan('delete_recommendations');
+    canDeleteRecommendation: function() {        
+        return this.currentUserCan('delete_recommendation');
     }.property(),
 
     canDeleteRisk: function() {        
         return this.currentUserCan('delete_risk');
     }.property(),
     
-	cancelAction: function() {
+    cancelAction: 'returnToIncident',
+	/*cancelAction: function() {
         var returnTo = this.get('returnTo');
         if (Ember.isEmpty(returnTo)) {
             return this._super();
         } else {
             return 'returnTo';
         }
-    }.property('returnTo'),
+    }.property('returnTo'),*/
 	
     //cancelAction: 'incident.index',
-    /*clinicList: Ember.computed.alias('controllers.visits.clinicList'),
-    pricingList: null, //This gets filled in by the route
-    physicianList: Ember.computed.alias('controllers.visits.physicianList'),
-    locationList: Ember.computed.alias('controllers.visits.locationList'),
+    incidentCategoryNameList: Ember.computed.alias('controllers.incident.incidentCategoryNameList'),
+    //incidentCategoryMainItemList: Ember.computed.alias('controllers.incident.incidentCategoryMainItemList'),
+    
     lookupListsToUpdate: [{
-        name: 'clinicList',
-        property: 'clinic',
-        id: 'clinic_list'
-    }, {
-        name: 'physicianList',
-        property: 'examiner',
-        id: 'physician_list'
-    }, {
-        name: 'locationList',
-        property: 'location',
-        id: 'visit_location_list'
-    }],*/
+        name: 'incidentCategoryNameList',
+        property: 'name',
+        id: 'incidentCategoryName_list'
+    }],
     
     newIncident: false,
     /*visitStatuses: [
@@ -95,6 +88,12 @@ export default AbstractEditController.extend(UserSession, {
         }
         return Ember.RSVP.resolve();        
     },
+
+    setAndGetReportedBy: function(){
+        var incident = this.get('model');
+        this.set('reportedBy', incident.getUserName());
+         return this.get('reportedBy');
+     }.property('reportedBy'),
     
     /**
      * Adds or removes the specified object from the specified list.
@@ -117,23 +116,7 @@ export default AbstractEditController.extend(UserSession, {
     },
     
     actions: {
-        /*addDiagnosis: function(newDiagnosis) {
-            var additionalDiagnoses = this.get('additionalDiagnoses');
-            if (!Ember.isArray(additionalDiagnoses)) {
-                additionalDiagnoses = [];
-            }
-            additionalDiagnoses.addObject(newDiagnosis);
-            this.set('additionalDiagnoses', additionalDiagnoses);
-            this.send('update', true);
-            this.send('closeModal');
-        },
-        
-        deleteDiagnosis: function(diagnosis) {
-            var additionalDiagnoses = this.get('additionalDiagnoses');
-            additionalDiagnoses.removeObject(diagnosis);
-            this.set('additionalDiagnoses', additionalDiagnoses);
-            this.send('update', true);
-        }, */
+
         cancel: function() {
             var cancelledItem = this.get('model');
             if (this.get('isNew')) {
@@ -142,35 +125,90 @@ export default AbstractEditController.extend(UserSession, {
                 cancelledItem.rollback();
             }
             this.send(this.get('cancelAction'));
-        }
-               
-           /*
-        addFeedbacks: function(newFeedbacks) {
-            this.updateList('feedbacks', newFeedbacks);
         },
 
-        showAddFeedbacks: function() {
-            var newFeedbacks = this.get('store').createRecord('inc-feedback', {
-                dateRecorded: new Date()
+        incidentCategoryNameList: [],
+
+       /* newInvestigationFinding: function() {
+            var newInvestigationFinding = this.get('store').createRecord('inc-investigation-finding', {
+                //isCompleting: false,
+                dateRecorded: new Date(),
+                incident: this.get('model'),
+                returnToIncident: true
+            });            
+            this.transitionToRoute('investigation-finding.edit', newInvestigationFinding);
+        },
+
+        editInvestigationFinding: function(lab) {
+            lab.setProperties({
+                'isCompleting': false,
+                'returnToVisit': true
             });
-            this.send('openModal', 'feedbacks.feedbacks.edit', newFeedbacks);
+            this.transitionToRoute('labs.edit', lab);
+        }, */
+
+         /*newFeedback: function() {
+            var newFeedback = this.get('store').createRecord('inc-feedback', {
+                dateRecorded: moment().startOf('day').toDate(),
+                incident: this.get('model')
+                //givenBy: (this.get('model')).getUserName();
+                //returnToVisit: true
+            });            
+            this.transitionToRoute('feedback.edit', newFeedback);
+        },*/
+               
+  
+        addFeedback: function(newFeedback) {
+            this.updateList('feedbacks', newFeedback);
+        },
+
+        showAddFeedback: function() {
+            var newFeedback = this.get('store').createRecord('inc-feedback', {
+                dateRecorded: new Date(),
+                incident: this.get('model')
+            });
+            this.send('openModal', 'incident.feedback.edit', newFeedback);
         },        
 
-        deleteFeedbacks: function(feedbacks) {
-            this.updateList('feedbacks', feedbacks, true);
+        deleteFeedback: function(feedback) {
+            this.updateList('feedbacks', feedback, true);
+        },
+        
+        showDeleteFeedback: function(feedback) {
+            this.send('openModal', 'incident.feedback.delete', feedback);
         },
 
-
-        showDeleteFeedbacks: function(feedbacks) {
-            this.send('openModal', 'feedbacks.feedbacks.delete', feedbacks);
+        showEditFeedback: function(feedback) {
+            this.send('openModal', 'incident.feedback.edit', feedback);
         },
 
-        showEditFeedbacks: function(feedbacks) {
-            this.send('openModal', 'feedbacks.feedbacks.edit', feedbacks);
+        addInvestigationFinding: function(newInvestigationFinding) {
+            this.updateList('investigationFindings', newInvestigationFinding);
         },
 
-     
+        showAddInvestigationFinding: function() {
+            var newInvestigationFinding = this.get('store').createRecord('inc-investigation-finding', {
+                dateRecorded: new Date(),
+                incident: this.get('model')
+            });
+            this.send('openModal', 'incident.investigation-finding.edit', newInvestigationFinding);
+        },        
 
+        deleteInvestigationFinding: function(investigationFinding) {
+            this.updateList('investigationFindings', investigationFinding, true);
+        },
+        
+        showDeleteInvestigationFinding: function(investigationFinding) {
+            this.send('openModal', 'incident.investigation-finding.delete', investigationFinding);
+        },
+
+        showEditInvestigationFinding: function(investigationFinding) {
+            this.send('openModal', 'incident.investigation-finding.edit', investigationFinding);
+        }
+
+
+    /*
+    
         addInvestigationFindings: function(newInvestigationFindings) {
             this.updateList('investigationFindings', newInvestigationFindings);
         },
@@ -268,20 +306,7 @@ export default AbstractEditController.extend(UserSession, {
             });            
             this.transitionToRoute('imaging.edit', newImaging);
         },
-     
-
-        newMedication: function() {
-            var newMedication = this.get('store').createRecord('medication', {
-                prescriptionDate: moment().startOf('day').toDate(),
-                patient: this.get('patient'),
-                visit: this.get('model'),
-                returnToVisit: true
-            });            
-            this.transitionToRoute('medication.edit', newMedication);
-        },
-        
-
-     
+ 
         showDeleteLab: function(lab) {
             this.send('openModal', 'labs.delete', lab);
         },

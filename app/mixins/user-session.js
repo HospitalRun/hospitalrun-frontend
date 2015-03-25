@@ -406,27 +406,27 @@ export default Ember.Mixin.create({
             'User Administrator',
             'System Administrator'
         ],
-		add_investigation_findings : [
+		add_investigation_finding : [
 			'User Administrator',
             'System Administrator'
 		],
-		delete_investigation_findings: [
+		delete_investigation_finding: [
             'User Administrator',
             'System Administrator'
         ],
-		add_contributing_factors : [
+		add_contributing_factor : [
 			'User Administrator',
             'System Administrator'
 		],
-		delete_contributing_factors: [
+		delete_contributing_factor: [
             'User Administrator',
             'System Administrator'
         ],
-		add_recommendations : [
+		add_recommendation : [
 			'User Administrator',
             'System Administrator'
 		],
-		delete_recommendations: [
+		delete_recommendation: [
             'User Administrator',
             'System Administrator'
         ],

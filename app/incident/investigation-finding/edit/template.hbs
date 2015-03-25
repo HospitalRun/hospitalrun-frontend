@@ -1,0 +1,16 @@
+{{#em-form model=this submit_button=false }}
+    <div class="row">
+        {{date-picker property="dateRecorded" label="Date Recorded" class="col-sm-6" format="l h:mm A" showTime=true }}
+    </div>
+      <div class="row">        
+        {{em-input class="col-sm-3" property="typeOfPerson" label="Type of Person Involved" }}
+    </div>
+    <div class="row">
+        {{em-input class="col-sm-3" property="identityDocumentType" label="Identity Document Type"}}
+        {{em-input class="col-sm-3" property="identityNumber" label="Identity Number"}}
+        
+    </div>
+    <div class="row">        
+        {{em-text property="narrativeStatement" label="Narrative Statement" }}
+    </div>
+{{/em-form}}

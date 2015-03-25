@@ -66,6 +66,13 @@ export default Ember.ArrayController.extend(BillingCategories, InventoryTypeList
                  'locationsAffected' //Special use case that we need to handle
             ]
         }
+    },{
+        name: 'Incident Category Names',
+        value: 'incidentCategoryName_list',
+        models: {
+            Incident:  'incidentMedicalCategory',
+            'inc-medical-category': 'name'
+           }
     }, {
         defaultValues: 'defaultInventoryTypes',
         name: 'Inventory Types',
