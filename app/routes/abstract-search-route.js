@@ -51,16 +51,9 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
             var searchText = params.search_text;
             this.controllerFor('navigation').set('currentSearchText', searchText);
             this.set('searchText', searchText);
-            //First search by id
-            this.store.find(this.searchModel, searchText).then(function(results) {
-               resolve([results]);
-            }, function() {
-                this._findBySearchIndex(searchText).then(resolve, function() {
-                    this._findByContains(searchText).then(resolve, function(err) {
-                        resolve(new DS.AdapterPopulatedRecordArray());
-                        throw new Error(err);
-                    }.bind(this));
-                }.bind(this));
+            this._findByContains(searchText).then(resolve, function(err) {
+                resolve(new DS.AdapterPopulatedRecordArray());
+                throw new Error(err);
             }.bind(this));
         }.bind(this));
     },    

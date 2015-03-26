@@ -1,8 +1,3 @@
-import Ember from 'ember';
-import PatientSearch from 'hospitalrun/utils/patient-search';
-import PricingSearch from 'hospitalrun/utils/pricing-search';
-import InventorySearch from 'hospitalrun/utils/inventory-search';
-import InvoiceSearch from 'hospitalrun/utils/invoice-search';
 /* global emit */
 function createDesignDoc(item, rev) {
     var ddoc = {
@@ -392,20 +387,7 @@ var designDocs = [{
     version: 2
 }];
 
-var searchIndexes = [
-    InventorySearch,
-    InvoiceSearch,
-    PatientSearch,
-    PricingSearch
-];
-
 export default function(db) {
-    searchIndexes.forEach(function(searchIndex) {
-        var searchIndexBuild = Ember.copy(searchIndex);
-        searchIndexBuild.build = true;
-        db.search(searchIndexBuild);
-    });
-    
     designDocs.forEach(function(item) {
         db.get('_design/' + item.name).then(function(doc) {
             if (doc.version !== item.version) {
