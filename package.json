@@ -30,7 +30,7 @@
     "ember-export-application-global": "^1.0.0",
     "ember-validations": "~ 2.0.0",
     "express": "^4.8.5",
-    "glob": "^4.0.5",
+    "glob": "~4.3.4",
     "nano": "^5.11.0",
     "request": "2.36.0"
   },
