@@ -1,6 +1,8 @@
 import Ember from "ember";
 import createPouchOauthXHR from "hospitalrun/utils/pouch-oauth-xhr";
-export default Ember.Controller.extend({
+import createPouchViews from "hospitalrun/utils/pouch-views";
+import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
+export default Ember.Controller.extend(PouchAdapterUtils, {
     needs: ['filesystem','navigation'],
     
     filesystem: Ember.computed.alias('controllers.filesystem'),
@@ -41,11 +43,11 @@ export default Ember.Controller.extend({
             var mainDB = this.get('mainDB');
             mainDB.get(docId, function(err, doc) {
                 if (err) {
-                    reject(err);
+                    this._pouchError(reject)(err);
                 } else {
                     resolve(doc);
                 }                 
-            });
+            }.bind(this));
         }.bind(this));
     },
 
@@ -69,19 +71,19 @@ export default Ember.Controller.extend({
             if (mapReduce) { 
                 mainDB.query(mapReduce, queryParams, function(err, response) {
                     if (err) {
-                        reject(err);
+                        this._pouchError(reject)(err);
                     } else {
                         resolve(response);
                     }                
-                });
+                }.bind(this));
             } else {
                 mainDB.allDocs(queryParams, function(err, response) {
                     if (err) {
-                        reject(err);
+                        this._pouchError(reject)(err);
                     } else {
                         resolve(response);
                     }                
-                });
+                }.bind(this));
             }
         }.bind(this));
     },
@@ -107,6 +109,7 @@ export default Ember.Controller.extend({
                 if (err) {
                     reject(err);
                 } else {
+                    createPouchViews(db);
                     this._gotServerMainDB(err, db);
                     resolve({
                         mainDB: db, 
