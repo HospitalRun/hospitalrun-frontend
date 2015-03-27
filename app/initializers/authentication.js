@@ -9,6 +9,6 @@ export default {
         container.register('authenticators:custom', CustomAuth);
         application.register('serializer:couchdb', CouchSerializer);        
         Ember.SimpleAuth.setup(container, application);
-        container.injection('adapter:user', 'session', 'ember-simple-auth:session:current');
+        container.injection('adapter', 'session', 'ember-simple-auth:session:current');
     }    
 };
