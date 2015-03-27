@@ -31,4 +31,5 @@ if (config.server_port) {
 
 config.couch_db_url =  config.get_protocol(config.couch_db_use_ssl) + config.couch_db_server +":"+config.couch_db_port;
 config.couch_auth_db_url =  config.get_protocol(config.couch_db_use_ssl) + config.couch_credentials() + config.couch_db_server + ":"+config.couch_db_port;
+//config.search_url = 'http://localhost:9200'; ELASTIC SEARCH URL (OPTIONAL)
 module.exports = config;
