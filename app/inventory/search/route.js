@@ -3,7 +3,6 @@ import InventorySearch from 'hospitalrun/utils/inventory-search';
 export default AbstractSearchRoute.extend({
     moduleName: 'inventory',
     searchKeys: [        
-        'crossReference',
         'description',
         'friendlyId',
         'name'
