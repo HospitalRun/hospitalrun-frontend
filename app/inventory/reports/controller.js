@@ -245,7 +245,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
      * @param {boolean} increment boolean indicating if the adjustment is an increment; or false if decrement.
      */
     _adjustPurchase: function(purchases, purchaseId, quantity, increment) {
-        var purchaseToAdjust = purchases.findBy('id', purchaseId);
+        var purchaseToAdjust = purchases.findBy('_id', 'inv-purchase_'+purchaseId);
         if (!Ember.isEmpty(purchaseToAdjust)) {
             var calculatedQuantity = purchaseToAdjust.calculatedQuantity;
             if (increment) {
@@ -479,7 +479,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                                     quantity: 0,
                                     totalCost: 0
                                 });
-                                locationToUpdate.items[item.id] = {
+                                locationToUpdate.items[item._id] = {
                                     item: item,
                                     quantity: this._getValidNumber(location.quantity),
                                     giftInKind: row.giftInKind,                                
