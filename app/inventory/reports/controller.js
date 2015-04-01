@@ -93,6 +93,17 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             include: true,
             property: 'locations',
             format: '_addLocationColumn'
+        },
+        aisle: {
+            label: 'Aisle',
+            include: false,
+            property: 'locations',
+            format: '_addAisleColumn'
+        },
+        vendor: {
+            label: 'Vendor',
+            include: false,
+            property: 'vendors'
         }
     },
     reportTypes: [{
@@ -187,21 +198,26 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         return (reportType !== 'expiration');
     }.property('reportType'),
 
-    _addLocationColumn: function(columnValue) {
-        var locations = columnValue,
-            locationDetails = '';
-        for (var i=0; i< locations.length; i++) {                        
-            if (i > 0) {
-                locationDetails += '; ';
-            }
-            if (!Ember.isEmpty(locations[i].quantity)) {
-                locationDetails += '%@ (%@ available)'.fmt(locations[i].name, 
-                                   this._numberFormat(locations[i].quantity));
-            } else {
-                locationDetails += locations[i].name;
-            }
+    _addAisleColumn: function(locations) {
+        if (!Ember.isEmpty(locations)) {
+            return locations.map(function(location) {
+                if (location.name.indexOf(':') > -1) {
+                    return location.name.split(':')[1];
+                }
+            });
         }
-        return locationDetails;
+    },
+    
+    _addLocationColumn: function(locations) {
+        if (!Ember.isEmpty(locations)) {
+            return locations.map(function(location) {
+                if (location.name.indexOf(':') > -1) {
+                    return location.name.split(':')[0];
+                } else {
+                    return location.name;
+                }
+            });
+        }
     },
     
     _addTotalsRow: function(label, summaryCost, summaryQuantity) {
@@ -415,6 +431,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                             unitCost: 0,
                             totalCost: 0,
                             locations: [
+                            ],
+                            vendors: [
                             ]
                         };
                     if (Ember.isEmpty(inventoryPurchases)) {
@@ -428,6 +446,11 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                         purchase.calculatedQuantity = purchaseQuantity;
                         if (purchase.giftInKind === true) {
                             row.giftInKind = 'Y';
+                        }
+                        if (!Ember.isEmpty(purchase.vendor)) {
+                            if (!row.vendors.contains(purchase.vendor)) {
+                                row.vendors.push(purchase.vendor);
+                            }
                         }
                         this._adjustLocation(row.locations, locationName, purchaseQuantity, true);
                     }.bind(this));
@@ -630,16 +653,13 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                     var currentLocation = '',
                         locationCost = 0,
                         parentLocation = '',
-                        parentCount = 0,
-                        subLocation = false;
+                        parentCount = 0;                    
                     locationSummary = locationSummary.sortBy('name');
                     locationSummary.forEach(function(location) {
                         if (location.name.indexOf(':') > -1) {
-                            parentLocation = location.name.split(':')[0];
-                            subLocation = true;
+                            parentLocation = location.name.split(':')[0].trim();
                         } else {
                             parentLocation = location.name;
-                            subLocation = false;                        
                         }
                         if (currentLocation !== parentLocation) {
                             this._addTotalsRow('Total for %@: '.fmt(currentLocation), locationCost, parentCount);
@@ -647,7 +667,6 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                             locationCost = 0;
                             currentLocation = parentLocation;
                         }
-                        var subLocationCost = 0;
                         for (var id in location.items) {
                             this._addReportRow({
                                 giftInKind: location.items[id].giftInKind,
@@ -661,12 +680,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                             });
                             parentCount += this._getValidNumber(location.items[id].quantity);
                             locationCost += this._getValidNumber(location.items[id].totalCost);
-                            subLocationCost += this._getValidNumber(location.items[id].totalCost);
                             grandCost += this._getValidNumber(location.items[id].totalCost);
                             grandQuantity += this._getValidNumber(location.items[id].quantity);
-                        }
-                        if (subLocation) {
-                            this._addTotalsRow('Subtotal for %@: %@: '.fmt(location.name), subLocationCost, location.quantity);
                         }
                     }.bind(this));
                     this._addTotalsRow('Total for %@: '.fmt(parentLocation), locationCost, parentCount);

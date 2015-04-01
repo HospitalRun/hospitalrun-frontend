@@ -47,10 +47,14 @@
                     {{em-checkbox label=reportColumns.reorder.label property="reportColumns.reorder.include" class="col-xs-2"}}
                     {{em-checkbox label=reportColumns.gift.label property="reportColumns.gift.include" class="col-xs-2"}}
                     {{em-checkbox label=reportColumns.locations.label property="reportColumns.locations.include" class="col-xs-2"}}
+                    {{em-checkbox label=reportColumns.aisle.label property="reportColumns.aisle.include" class="col-xs-2"}}
                     {{em-checkbox label=reportColumns.xref.label property="reportColumns.xref.include" class="col-xs-2"}}
+                    
                 </div>
-            {{else}}
-
+                <div class="row">
+                    <div class="col-xs-1"></div>        
+                    {{em-checkbox label=reportColumns.vendor.label property="reportColumns.vendor.include" class="col-xs-2"}}
+                </div>
             {{/if}}
         
         {{/em-form}}
@@ -76,7 +80,7 @@
                 {{#each reportRows}}
                     <tr>
                         {{#each this}}
-                            <td>{{this}}</td>
+                            <td>{{array-display content=this}}</td>
                         {{/each}}
                     </tr>
                 {{/each}}
