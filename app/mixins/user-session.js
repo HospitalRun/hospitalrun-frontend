@@ -398,6 +398,14 @@ export default Ember.Mixin.create({
             'User Administrator',
             'System Administrator'
         ],
+        add_incident_category : [
+            'User Administrator',
+            'System Administrator'
+        ],
+        delete_incident_category: [
+            'User Administrator',
+            'System Administrator'
+        ],
 		add_feedback : [
 			'User Administrator',
             'System Administrator'

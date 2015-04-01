@@ -3,8 +3,8 @@ import AbstractModel from "hospitalrun/models/abstract";
 export default AbstractModel.extend({
 	name: DS.attr('string'),
 	item: DS.attr('string'),
-	other: DS.attr('string'),
-    incident: DS.belongsTo('incident')	
+	other: DS.attr('string')
+    //incident: DS.belongsTo('incident')	
 /*
     availableLocations: function() {
         var locations = this.get('locations').filter(function(location) {

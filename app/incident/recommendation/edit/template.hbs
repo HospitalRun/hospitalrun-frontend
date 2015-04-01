@@ -1,0 +1,20 @@
+{{#em-form model=this submit_button=false }}
+    <div class="row">
+        {{date-picker property="dateRecorded" label="Date Recorded" class="col-sm-6" format="l h:mm A" showTime=true }}
+    </div>
+    <div class="row">        
+        {{em-text property="activity" label="Activity/Plan" }}
+    </div>
+    <div class="row">        
+        {{em-text property="responsibility" label="Responsibility" }}
+    </div>
+    <div class="row">        
+        {{date-picker property="startDate" label="Start Date" class="col-sm-6" format="l h:mm A" showTime=true }}
+    </div>
+    <div class="row">        
+        {{date-picker property="targetDateOfCompletion" label="Target Date Of Completion" class="col-sm-6" format="l h:mm A" showTime=true }}
+    </div>
+    <div class="row">        
+        {{em-input class="col-sm-3" property="status" label="Status"}}
+    </div>
+{{/em-form}}

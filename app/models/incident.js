@@ -4,11 +4,10 @@ import AbstractModel from "hospitalrun/models/abstract";
 export default AbstractModel.extend({
 	feedbacks: DS.hasMany('inc-feedback', {async: true}),
     investigationFindings: DS.hasMany('inc-investigation-finding', {async: true}),
-    contributingFactors: DS.hasMany('inc-contributing-factor',  {async: true}),
     recommendations: DS.hasMany('inc-recommendation',  {async: true}),
     
-    risk: DS.belongsTo('inc-risk'),
-    incidentMedicalCategory: DS.belongsTo('inc-medical-category'),
+    //risk: DS.belongsTo('inc-risk'),
+   
     
     friendlyId: DS.attr('string'),
 	reportedBy: DS.attr('string'),
@@ -17,7 +16,24 @@ export default AbstractModel.extend({
 	dateOfIncident: DS.attr('date'),
 	timeOfIncident: DS.attr('string'),
 	incidentDescription: DS.attr('string'),
+    categoryName: DS.attr('string'),
+    categoryItem: DS.attr('string'),
+    contributingFactors: DS.attr(),
+    harmScore: DS.attr('string'),
+    /*
+    preSeverity: DS.attr('string'),
+    preOccurence: DS.attr('string'),
+    preRiskScore: DS.attr('string'),
+
+    postSeverity: DS.attr('string'),
+    postOccurence: DS.attr('string'),
+    postRiskScore: DS.attr('string'),
+    */
+
+    preIncidentRiskAssesment: DS.belongsTo('inc-risk-assesment'),
+    postIncidentRiskAssesment: DS.belongsTo('inc-risk-assesment'),
     
+
     openFlag: DS.attr('boolean', {defaultValue: true})
     //severity : DS.attr()
     

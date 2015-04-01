@@ -59,19 +59,14 @@
                 </div>
                 <div class="panel-body detail-section-content">
                     <div class="row">
-                        {{em-input property="incidentMedicalCategoryName" label="Category Name" class="col-xs-12 col-sm-6"}}
-                        {{em-input property="incidentMedicalCategoryItem" label="Category Item" class="col-xs-12 col-sm-6"}}
-                        {{em-text  property="incidentMedicalCategoryOther" label="Other" rows=3 class="col-xs-12 col-sm-6"}}
-                        <!--{{em-select
-                            prompt=" "
-                            label="Category Name"
-                            property="incidentMedicalCategoryName"
-                            content=incidentCategoryNameList
-                            optionValuePath="content"
-                            optionLabelPath="content"
-                            class="col-xs-12 col-sm-6"
-                        }}
-                        {{select-or-typeahead property="name" label="Category Name" list=incidentCategoryNameList selection=name }}-->
+                        {{em-select class="col-xs-12 col-sm-6" label="Category" prompt=" "
+                            property="categoryName" content=incidentCategory selected=categoryName
+                            optionValuePath="content.name" optionLabelPath="content.name"}}
+                        
+                        {{em-select class="col-xs-12 col-sm-6" label="Choose an Item" prompt=" "
+                            property="categoryItem" content=itemList
+                             selected=categoryItem optionValuePath="content" optionLabelPath="content"}}
+                             <!--optionValuePath="content" optionLabelPath="content"-->
                     </div>
                 </div>
              </div>
@@ -199,39 +194,17 @@
                         </h3>
                     </div>
                     <div class="panel-body detail-section-content">
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Date Requested</th>
-                                <th>Imaging Type</th>
-                                <th>Status</th>
-                                <th>Date Processed</th>
-                                <th>Result</th>
-                                <th>Notes</th>
-                                <th>Requested By</th>
-                                <th>Actions</th>
-                            </tr>
-                            {{#each patientImaging itemController="imaging/item-controller"}}
-                                <tr {{action "editImaging" this}}>
-                                    <td>{{date-format requestedDate}}</td>
-                                    <td>{{imagingType.name}}</td>
-                                    <td>{{status}}</td>
-                                    <td>{{date-format imagingDate}}</td>
-                                    <td>{{result}}</td>
-                                    <td>{{notes}}</td>
-                                    <td>{{requestedBy}}</td>
-                                    <td>
-                                        {{#if canEdit}}
-                                            {{#if parentController.canAddImaging}}
-                                                <button class="btn btn-default neutral" {{action "editImaging" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if parentController.canDeleteImaging}}
-                                                <button class="btn btn-default warning" {{action "showDeleteImaging" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                                            {{/if}}
-                                        {{/if}}
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </table>
+                        <!--Checkbox
+                        {{em-checkbox label=contributingFactorList.label property="contributingFactors.contributingFactorList.value"}}
+                         -->
+                        <label>Please tick the main Factor</label>
+                            {{em-checkbox label="Patient Factor: E.g. Clinical Condition, Physical factors, Social factors, Psychological/Mental factors" property="contributingFactors.factor1"}}
+                            {{em-checkbox label="Individual / Staff Factor: E.g. Physical issues, Psychological, Social, Domestic, Personality, Cognitive" property="contributingFactors.factor2"}}
+                            {{em-checkbox label="Task Factor: E.g. Guidelines/ Procedures/ Protocols/ Task design" property="contributingFactors.factor3"}}
+                            {{em-checkbox label="Communication Factor: E.g. Verbal, Written, Non-verbal, Handoff" property="contributingFactors.factor4"}}
+                            {{em-checkbox label="Team Factor: E.g. Collaboration, Coordination, Leadership, Support" property="contributingFactors.factor5"}}
+                            {{em-checkbox label="Working Condition factor: E.g. Environment, Staffing, Workload, Working Hours" property="contributingFactors.factor6"}}
+                            {{em-checkbox label="Organizational Factor: E.g. Organizational structure, Policies, Priorities, Safety culture" property="contributingFactors.factor7"}}
                     </div>
                 </div>
         </div>
@@ -240,90 +213,47 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             Harm Score
-                            {{#if canAddLab}}
-                                <button class="btn btn-primary align-right" {{action "newInvestigationFinding" bubbles=false }}><span class="octicon octicon-plus"></span> New Investigation Finding</button>
-                            {{/if}}
                         </h3>
                     </div>
-
-                    <div class="panel-body detail-section-content">
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Date Recorded</th>
-                                <th>Type of Person Involved</th>
-                                <th>Identity Document Type</th>
-                                <th>Identity Number</th>
-                                <th>Narrative Statement</th>
-                                <th>Actions</th>
-                            </tr>
-                            {{#each patientLabs itemController="labs/item-controller"}}
-                                <tr {{action "editLab" this}}>
-                                    <td>{{date-format requestedDate}}</td>
-                                    <td>{{labType.name}}</td>
-                                    <td>{{status}}</td>
-                                    <td>{{date-format labDate}}</td>
-                                    <td>{{result}}</td>
-                                    <td>{{notes}}</td>
-                                    <td>{{requestedBy}}</td>
-                                    <td>
-                                        {{#if canEdit}}
-                                            {{#if parentController.canAddLab}}
-                                                <button class="btn btn-default neutral" {{action "editLab" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if parentController.canDeleteLab}}
-                                                <button class="btn btn-default warning" {{action "showDeleteLab" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                                            {{/if}}
-                                        {{/if}}
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </table>
-                    </div>
+                    {{#if canAddRisk}}
+                        <div class="panel-body detail-section-content">
+                            {{ext-radio name=harmScore content=harmScoreList value=harmScore }}
+                        </div>
+                    {{/if}}
                 </div>
                 <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             Risk Assesment
-                            {{#if canAddImaging}}
-                                <button class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}><span class="octicon octicon-plus"></span> New Imaging</button>
-                            {{/if}}
-                        </h3>
+                       </h3>
                     </div>
+                    {{#if canAddRisk}}
                     <div class="panel-body detail-section-content">
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Date Requested</th>
-                                <th>Imaging Type</th>
-                                <th>Status</th>
-                                <th>Date Processed</th>
-                                <th>Result</th>
-                                <th>Notes</th>
-                                <th>Requested By</th>
-                                <th>Actions</th>
-                            </tr>
-                            {{#each patientImaging itemController="imaging/item-controller"}}
-                                <tr {{action "editImaging" this}}>
-                                    <td>{{date-format requestedDate}}</td>
-                                    <td>{{imagingType.name}}</td>
-                                    <td>{{status}}</td>
-                                    <td>{{date-format imagingDate}}</td>
-                                    <td>{{result}}</td>
-                                    <td>{{notes}}</td>
-                                    <td>{{requestedBy}}</td>
-                                    <td>
-                                        {{#if canEdit}}
-                                            {{#if parentController.canAddImaging}}
-                                                <button class="btn btn-default neutral" {{action "editImaging" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if parentController.canDeleteImaging}}
-                                                <button class="btn btn-default warning" {{action "showDeleteImaging" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                                            {{/if}}
-                                        {{/if}}
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </table>
-                    </div>
+                            <label>Severity</label>
+                            {{ext-radio name=preIncidentRiskAssesment.severity content=severityTypes 
+                                        value=preIncidentRiskAssesment.severity radioLabelPath="content"
+                                        radioValuePath="content"}}
+                            <label>Occurrence</label>
+                            {{ext-radio name=preIncidentRiskAssesment.occurence content=occurrenceTypes 
+                                        value=preIncidentRiskAssesment.occurence radioLabelPath="content"
+                                        radioValuePath="content"}}
+                            <label>RISK SCORE = Severity x Occurrence</label>
+                            {{ext-radio name=preIncidentRiskAssesment.riskScore content=riskScores 
+                                        value=preIncidentRiskAssesment.riskScore radioLabelPath="content"
+                                        radioValuePath="content"}}
+                      </div>
+                      <!--  <div class="panel-body detail-section-content">
+                            <label>Severity</label>
+                            {{ext-radio name=preSeverity content=severityTypes value=preSeverity radioLabelPath="content"
+                                    radioValuePath="content"}}
+                            <label>Occurrence</label>
+                            {{ext-radio name=preOccurence content=occurrenceTypes value=preOccurence radioLabelPath="content"
+                                    radioValuePath="content"}}
+                            <label>RISK SCORE = Severity x Occurrence</label>
+                            {{ext-radio name=preRiskScore content=riskScores value=preRiskScore radioLabelPath="content"
+                                    radioValuePath="content"}}
+                        </div>-->
+                     {{/if}}
                 </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="recommendation">
@@ -331,8 +261,8 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             Recommendations
-                            {{#if canAddVisit}}
-                                <button class="btn btn-primary align-right" {{action "newVisit" bubbles=false }}><span class="octicon octicon-plus"></span> New Visit</button>
+                            {{#if canAddRecommendation}}
+                                <button class="btn btn-primary align-right" {{action "showAddRecommendation" bubbles=false }}><span class="octicon octicon-plus"></span> New Recommendation</button>
                             {{/if}}
                         </h3>
                     </div>
@@ -340,32 +270,28 @@
                     <div class="panel-body detail-section-content">
                         <table class="table" >
                             <tr class="table-header">
+                                <th>Activity/Plan</th>
+                                <th>Responsibility</th>
                                 <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Diagnosis</th>
-                                <th>Provider</th>
-                                <th>Location</th>
-                                <th>Type</th>
+                                <th>Target Date of Completion</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                             {{#with this as patientController}}
-                                {{#each visits}}
-                                    <tr {{action "editVisit" this}}>
+                                {{#each recommendations}}
+                                        <td>{{activity}}</td>
+                                        <td>{{responsibility}}</td>
                                         <td>{{date-format startDate}}</td>
-                                        <td>{{date-format endDate}}</td>
-                                        <td>{{primaryDiagnosis}}</td>
-                                        <td>{{examiner}}</td>
-                                        <td>{{location}}</td>
-                                        <td>{{visitType}}</td>
+                                        <td>{{date-format targetDateOfCompletion}}</td>
+                                        <td>{{status}}</td>
                                         <td>
-                                            {{#if patientController.canAddVisit}}
-                                                <button class="btn btn-default neutral" {{action "editVisit" this}}>Edit</button>
+                                            {{#if patientController.canAddRecommendation}}
+                                                <button class="btn btn-default neutral" {{action "showEditRecommendation" this}}>Edit</button>
                                             {{/if}}
-                                            {{#if patientController.canDeleteVisit}}
-                                                <button class="btn btn-default warning" {{action "showDeleteVisit" this bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                                            {{#if patientController.canDeleteRecommendation}}
+                                                <button class="btn btn-default warning" {{action "showDeleteRecommendation" this bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                             {{/if}}
                                         </td>
-                                    </tr>
                                 {{/each}}
                             {{/with}}
                         </table>

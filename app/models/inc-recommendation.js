@@ -6,8 +6,8 @@ export default AbstractModel.extend({
 	startDate: DS.attr('date'),
 	targetDateOfCompletion: DS.attr('date'),
 	status: DS.attr('boolean'),
-    dateRecorded: DS.attr('date'),
-    incident: DS.belongsTo('incident')	
+    dateRecorded: DS.attr('date')
+    //incident: DS.belongsTo('incident')	
 /*
     availableLocations: function() {
         var locations = this.get('locations').filter(function(location) {

@@ -4,8 +4,8 @@ export default AbstractModel.extend({
 	factorName: DS.attr('string'),
 	factorDescription: DS.attr('string'),
 	other: DS.attr('string'),
-    dateRecorded: DS.attr('date'),
-    incident: DS.belongsTo('incident')
+    dateRecorded: DS.attr('date')
+    //incident: DS.belongsTo('incident')
 	
 /*
     availableLocations: function() {

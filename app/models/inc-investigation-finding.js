@@ -5,8 +5,8 @@ export default AbstractModel.extend({
 	identityDocumentType: DS.attr('string'),
 	identityNumber: DS.attr('number'),
 	narrativeStatement: DS.attr('string'),
-    dateRecorded: DS.attr('date'),
-    incident: DS.belongsTo('incident')
+    dateRecorded: DS.attr('date')
+    //incident: DS.belongsTo('incident')
 /*
     availableLocations: function() {
         var locations = this.get('locations').filter(function(location) {

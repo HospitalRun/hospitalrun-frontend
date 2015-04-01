@@ -3,8 +3,8 @@ import AbstractModel from "hospitalrun/models/abstract";
 export default AbstractModel.extend({
 	harmScore: DS.attr('string'),
 	preIncidentRiskAssesment: DS.belongsTo('inc-risk-assesment'),
-	postIncidentRiskAssesment: DS.belongsTo('inc-risk-assesment'),
-    incident: DS.belongsTo('incident')
+	postIncidentRiskAssesment: DS.belongsTo('inc-risk-assesment')
+    //incident: DS.belongsTo('incident')
     /*
     availableLocations: function() {
         var locations = this.get('locations').filter(function(location) {

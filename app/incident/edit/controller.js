@@ -2,8 +2,12 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import Ember from "ember";
 import IncidentSubmodule from 'hospitalrun/mixins/incident-submodule';
 import UserSession from "hospitalrun/mixins/user-session";
+import IncidentCategoryList from "hospitalrun/mixins/incident-category";
+import IncidentHarmScoreList from "hospitalrun/mixins/incident-harm-score";
+import IncidentContributingFactorList from "hospitalrun/mixins/incident-contributing-factors";
 
-export default AbstractEditController.extend(IncidentSubmodule, UserSession, {
+export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentHarmScoreList,
+IncidentContributingFactorList, UserSession, {
      needs: 'incident',
     
     canAddFeedback: function() {        
@@ -46,6 +50,30 @@ export default AbstractEditController.extend(IncidentSubmodule, UserSession, {
         return this.currentUserCan('delete_risk');
     }.property(),
     
+    severityTypes: [
+        '5 Extreme Death, toxic release off-site with detrimental effect, huge financial loss',
+        '4 High Extensive injuries, loss of production capability, off-site release with no detrimental effects, major financial loss',
+        '3 Moderate Medical treatment required, on-site release contained with outside assistance, high financial loss',
+        '2 Low First aid treatment, on-site release contained, medium financial loss',
+        '1 Minimum No injuries, low financial loss'
+    ],
+
+    occurrenceTypes: [
+        '5  Almost Certain  Is expected to occur in most circumstances (e.g. most weeks or months)',
+        '4  Likely Will probably occur in most circumstances (several times a year)',            
+        '3  Possible Might occur at some time (every 1 to 2 years)',
+        '2  Unlikely Could occur at some time (possibly in the next 2 to 5 years)',
+        '1  Rare May occur only in exceptional circumstances (perhaps every 5 to 30 years)'
+    ],
+    
+    riskScores: [
+        '15-25  : extreme risk; immediate action required',
+        '9-12   : high risk; senior management needed',            
+        '4-8    : moderate risk; management responsibility must be specified',
+        '1-3    : low risk; manage by routine procedures'
+    ],
+
+
     cancelAction: 'returnToIncident',
 	/*cancelAction: function() {
         var returnTo = this.get('returnTo');
@@ -94,6 +122,39 @@ export default AbstractEditController.extend(IncidentSubmodule, UserSession, {
         this.set('reportedBy', incident.getUserName());
          return this.get('reportedBy');
      }.property('reportedBy'),
+
+
+    /*categoryNameChanged: function(){
+        var incidentCategorySelected = this.get('categoryName');
+        console.log("is it getting called and Breaking!!!!!!!"+incidentCategorySelected);
+        //itemList = [];
+        if (!Ember.isEmpty(incidentCategorySelected)) {
+            //itemList = incidentCategoryItem;
+            //this.set('categoryName', incidentCategorySelected.name)   && (Ember.isPresent(incidentCategorySelected.name));
+            //this.set('itemList', incidentCategorySelected.items);
+            this.set('itemList', incidentCategorySelected);
+        }
+    }.observes('categoryName'),*/
+
+
+    categoryNameChanged: function(){
+        var categoryNameSelected = this.get('categoryName');
+        if (!Ember.isEmpty(categoryNameSelected)) {
+            var index = this._findIndexOfProperty(this.incidentCategory,'name',categoryNameSelected);
+            this.set('itemList', this.incidentCategory[index].items);
+        }
+    }.observes('categoryName'),
+
+
+    _findIndexOfProperty: function(arrayObj, property, value) {
+    for(var i = 0; i < arrayObj.length; i += 1) {
+        if(arrayObj[i][property] === value) {
+            return i;
+        }
+    }
+},
+
+
     
     /**
      * Adds or removes the specified object from the specified list.
@@ -129,35 +190,8 @@ export default AbstractEditController.extend(IncidentSubmodule, UserSession, {
 
         incidentCategoryNameList: [],
 
-       /* newInvestigationFinding: function() {
-            var newInvestigationFinding = this.get('store').createRecord('inc-investigation-finding', {
-                //isCompleting: false,
-                dateRecorded: new Date(),
-                incident: this.get('model'),
-                returnToIncident: true
-            });            
-            this.transitionToRoute('investigation-finding.edit', newInvestigationFinding);
-        },
+        //Feedback Functions
 
-        editInvestigationFinding: function(lab) {
-            lab.setProperties({
-                'isCompleting': false,
-                'returnToVisit': true
-            });
-            this.transitionToRoute('labs.edit', lab);
-        }, */
-
-         /*newFeedback: function() {
-            var newFeedback = this.get('store').createRecord('inc-feedback', {
-                dateRecorded: moment().startOf('day').toDate(),
-                incident: this.get('model')
-                //givenBy: (this.get('model')).getUserName();
-                //returnToVisit: true
-            });            
-            this.transitionToRoute('feedback.edit', newFeedback);
-        },*/
-               
-  
         addFeedback: function(newFeedback) {
             this.updateList('feedbacks', newFeedback);
         },
@@ -165,7 +199,7 @@ export default AbstractEditController.extend(IncidentSubmodule, UserSession, {
         showAddFeedback: function() {
             var newFeedback = this.get('store').createRecord('inc-feedback', {
                 dateRecorded: new Date(),
-                incident: this.get('model')
+                //incident: this.get('model')
             });
             this.send('openModal', 'incident.feedback.edit', newFeedback);
         },        
@@ -182,6 +216,8 @@ export default AbstractEditController.extend(IncidentSubmodule, UserSession, {
             this.send('openModal', 'incident.feedback.edit', feedback);
         },
 
+        //Investigating Finding Functions
+
         addInvestigationFinding: function(newInvestigationFinding) {
             this.updateList('investigationFindings', newInvestigationFinding);
         },
@@ -189,7 +225,7 @@ export default AbstractEditController.extend(IncidentSubmodule, UserSession, {
         showAddInvestigationFinding: function() {
             var newInvestigationFinding = this.get('store').createRecord('inc-investigation-finding', {
                 dateRecorded: new Date(),
-                incident: this.get('model')
+                //incident: this.get('model')
             });
             this.send('openModal', 'incident.investigation-finding.edit', newInvestigationFinding);
         },        
@@ -204,119 +240,34 @@ export default AbstractEditController.extend(IncidentSubmodule, UserSession, {
 
         showEditInvestigationFinding: function(investigationFinding) {
             this.send('openModal', 'incident.investigation-finding.edit', investigationFinding);
+        },
+
+        //Recommendation Functions
+
+        addRecommendation: function(newRecommendation) {
+            this.updateList('recommendations', newRecommendation);
+        },
+
+        showAddRecommendation: function() {
+            var newRecommendation = this.get('store').createRecord('inc-recommendation', {
+                dateRecorded: new Date(),
+                //incident: this.get('model')
+            });
+            this.send('openModal', 'incident.recommendation.edit', newRecommendation);
+        },        
+
+        deleteRecommendation: function(recommendation) {
+            this.updateList('recommendations', recommendation, true);
+        },
+        
+        showDeleteRecommendation: function(recommendation) {
+            this.send('openModal', 'incident.recommendation.delete', recommendation);
+        },
+
+        showEditRecommendation: function(recommendation) {
+            this.send('openModal', 'incident.recommendation.edit', recommendation);
         }
 
-
-    /*
-    
-        addInvestigationFindings: function(newInvestigationFindings) {
-            this.updateList('investigationFindings', newInvestigationFindings);
-        },
-
-        showAddInvestigationFindings: function() {
-            var newInvestigationFindings = this.get('store').createRecord('investigation-finding', {
-                dateRecorded: new Date()
-            });
-            this.send('openModal', 'investigationFindings.investigationFindings.edit', newInvestigationFindings);
-        },        
-
-        deleteInvestigationFindings: function(investigationFindings) {
-            this.updateList('investigationFindings', investigationFindings, true);
-        },
-
-
-        showDeleteInvestigationFindings: function(investigationFindings) {
-            this.send('openModal', 'investigationFindings.investigationFindings.delete', investigationFindings);
-        },
-
-        showEditInvestigationFindings: function(investigationFindings) {
-            this.send('openModal', 'investigationFindings.investigationFindings.edit', investigationFindings);
-        },
-
-        addContributingFactors: function(newContributingFactors) {
-            this.updateList('contributingFactors', newContributingFactors);
-        },
-
-        showAddContributingFactors: function() {
-            var newContributingFactors = this.get('store').createRecord('contributing-factor', {
-                dateRecorded: new Date()
-            });
-            this.send('openModal', 'contributingFactors.contributingFactors.edit', newContributingFactors);
-        },        
-
-        deleteContributingFactors: function(contributingFactors) {
-            this.updateList('contributingFactors', contributingFactors, true);
-        },
-
-        showDeleteContributingFactors: function(contributingFactors) {
-            this.send('openModal', 'contributingFactors.contributingFactors.delete', contributingFactors);
-        },
-
-        showEditContributingFactors: function(contributingFactors) {
-            this.send('openModal', 'contributingFactors.contributingFactors.edit', contributingFactors);
-        },
-
-        addRecommendations: function(newRecommendations) {
-            this.updateList('recommendations', newRecommendations);
-        },
-
-        showAddRecommendations: function() {
-            var newRecommendations = this.get('store').createRecord('recommendation', {
-                dateRecorded: new Date(),
-                incident: this.get('model')
-            });
-            this.send('openModal', 'recommendations.recommendations.edit', newRecommendations);
-        },        
-
-        deleteRecommendations: function(recommendations) {
-            this.updateList('recommendations', recommendations, true);
-        },
-
-        showDeleteRecommendations: function(recommendations) {
-            this.send('openModal', 'recommendations.recommendations.delete', recommendations);
-        },
-
-        showEditRecommendations: function(recommendations) {
-            this.send('openModal', 'recommendations.recommendations.edit', recommendations);
-        },      
         
-        editImaging: function(imaging) {
-            imaging.setProperties({
-                'isCompleting': false,
-                'returnToVisit': true
-            });
-            this.transitionToRoute('imaging.edit', imaging);
-        },        
-        
-        showDeleteImaging: function(imaging) {
-            this.send('openModal', 'imaging.delete', imaging);
-        },
-
-        editMedication: function(medication) {
-            medication.set('returnToVisit', true);
-            this.transitionToRoute('medication.edit', medication);
-        },        
-        
-        newImaging: function() {
-            var newImaging = this.get('store').createRecord('imaging', {
-                isCompleting: false,
-                patient: this.get('patient'),
-                visit: this.get('model'),
-                returnToVisit: true
-            });            
-            this.transitionToRoute('imaging.edit', newImaging);
-        },
- 
-        showDeleteLab: function(lab) {
-            this.send('openModal', 'labs.delete', lab);
-        },
-        
-        showDeleteMedication: function(medication) {
-            this.send('openModal', 'medication.delete', medication);
-        },   
-        
-      
-*/
-       
     }
 });
