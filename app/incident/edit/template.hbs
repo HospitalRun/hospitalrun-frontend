@@ -1,12 +1,9 @@
 {{#em-form model=this submit_button=false }}
-        <div class="panel panel-success">
+    <div class="panel panel-success">
             <div class="panel-body">
                 <div class="row">        
                     <div class="form-group col-sm-2">
-                        <label class="control-label">
-                            Incident Id
-                        </label>
-                        {{id}}
+                        <label class="control-label">Incident Id</label>{{id}}
                     </div>                    
                 </div>
             </div>
@@ -43,11 +40,11 @@
                         <div class="col-xs-12 col-sm-6">
                             {{em-input property="locationOfIncident" label="Location of Incident" class="required"}}
                         </div>
-                     </div>
-                     <div class="row">
+                    </div>
+                    <div class="row">
                         {{date-picker property="dateOfIncident" label="Date of Incident" class="col-xs-12 col-sm-6"}}
                         {{em-input property="timeOfIncident" label="Time of Incident" class="col-xs-12 col-sm-6"}}
-                      </div>                        
+                    </div>                        
                     {{em-text label="Incident Description" property="incidentDescription" rows=3}}
                 </div>
             </div>
@@ -66,7 +63,6 @@
                         {{em-select class="col-xs-12 col-sm-6" label="Choose an Item" prompt=" "
                             property="categoryItem" content=itemList
                              selected=categoryItem optionValuePath="content" optionLabelPath="content"}}
-                             <!--optionValuePath="content" optionLabelPath="content"-->
                     </div>
                 </div>
              </div>
@@ -91,16 +87,17 @@
                             </tr>
                             {{#with this as parentController}}
                                 {{#each feedbacks}}
+                                    <tr>
                                         <td>{{date-format dateRecorded}}</td>
                                         <td>{{givenBy}}</td>
                                         <td>{{description}}</td>
                                         <td>
                                             {{#if parentController.canAddFeedback}}
                                                <button class="btn btn-default neutral" {{action "showEditFeedback" this}}>Edit</button>
-                                             {{/if}}
-                                             {{#if parentController.canDeleteFeedback}}
-                                                <button class="btn btn-default warning" {{action "showDeleteFeedback" this  bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                                             {{/if}}
+                                            {{/if}}
+                                            {{#if parentController.canDeleteFeedback}}
+                                               <button class="btn btn-default warning" {{action "showDeleteFeedback" this  bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                            {{/if}}
                                         </td>
                                     </tr>
                                 {{/each}}
@@ -109,40 +106,6 @@
                     </div>
                 </div>
         </div>
-        <!--<div role="tabpanel" class="tab-pane" id="documents">
-                <div class="panel">    
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Photos
-                            {{#if canAddPhoto}}
-                                <button class="btn btn-primary align-right" {{action "showAddPhoto" bubbles=false }}><span class="octicon octicon-plus"></span>New Photo</button>
-                            {{/if}}                
-                        </h3>
-                    </div>
-                    <div class="panel-body detail-section-content">
-                        <div class="row">
-                            {{#each photos itemController="patients/photo-item"}}
-                                <div class="col-sm-4 col-md-3">                                
-                                    <div {{action "editPhoto" this}} class="thumbnail">
-                                        <img {{bind-attr alt="caption" src="photoUrl"}} class="img-responsive" >
-                                        <div class="caption">
-                                            {{caption}}
-                                            <p>
-                                                {{#if parentController.canAddPhoto}}
-                                                    <button class="btn btn-default neutral" {{action "editPhoto" this}}>Edit</button>
-                                                {{/if}}
-                                                {{#if parentController.canDeletePhoto}}
-                                                    <button class="btn btn-default warning" {{action "showDeletePhoto" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                                                {{/if}}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            {{/each}}
-                        </div>
-                    </div>
-                </div>
-        </div>-->
         <div role="tabpanel" class="tab-pane" id="investigate">
                 <div class="panel">
                     <div class="panel-heading">
@@ -153,7 +116,6 @@
                             {{/if}}
                         </h3>
                     </div>
-
                     <div class="panel-body detail-section-content">
                         <table class="table">
                             <tr class="table-header">
@@ -166,6 +128,7 @@
                             </tr>
                             {{#with this as parentController}}
                                 {{#each investigationFindings}}
+                                    <tr>
                                         <td>{{date-format dateRecorded}}</td>
                                         <td>{{typeOfPerson}}</td>
                                         <td>{{identityDocumentType}}</td>
@@ -179,6 +142,7 @@
                                                 <button class="btn btn-default warning" {{action "showDeleteInvestigationFinding" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                             {{/if}}
                                         </td>
+                                    </tr>
                                 {{/each}}
                             {{/with}}
                         </table>
@@ -193,11 +157,10 @@
                             {{/if}}
                         </h3>
                     </div>
-                    <div class="panel-body detail-section-content">
-                        <!--Checkbox
-                        {{em-checkbox label=contributingFactorList.label property="contributingFactors.contributingFactorList.value"}}
-                         -->
-                        <label>Please tick the main Factor</label>
+                    <<div class="panel-body detail-section-content">
+                        <label>
+                            Please tick the main Factor
+                        </label>
                             {{em-checkbox label="Patient Factor: E.g. Clinical Condition, Physical factors, Social factors, Psychological/Mental factors" property="contributingFactors.factor1"}}
                             {{em-checkbox label="Individual / Staff Factor: E.g. Physical issues, Psychological, Social, Domestic, Personality, Cognitive" property="contributingFactors.factor2"}}
                             {{em-checkbox label="Task Factor: E.g. Guidelines/ Procedures/ Protocols/ Task design" property="contributingFactors.factor3"}}
@@ -228,7 +191,7 @@
                        </h3>
                     </div>
                     {{#if canAddRisk}}
-                    <div class="panel-body detail-section-content">
+                        <div class="panel-body detail-section-content">
                             <label>Severity</label>
                             {{ext-radio name=preIncidentRiskAssesment.severity content=severityTypes 
                                         value=preIncidentRiskAssesment.severity radioLabelPath="content"
@@ -241,8 +204,8 @@
                             {{ext-radio name=preIncidentRiskAssesment.riskScore content=riskScores 
                                         value=preIncidentRiskAssesment.riskScore radioLabelPath="content"
                                         radioValuePath="content"}}
-                      </div>
-                      <!--  <div class="panel-body detail-section-content">
+                       </div>
+                       <div class="panel-body detail-section-content">
                             <label>Severity</label>
                             {{ext-radio name=preSeverity content=severityTypes value=preSeverity radioLabelPath="content"
                                     radioValuePath="content"}}
@@ -252,8 +215,8 @@
                             <label>RISK SCORE = Severity x Occurrence</label>
                             {{ext-radio name=preRiskScore content=riskScores value=preRiskScore radioLabelPath="content"
                                     radioValuePath="content"}}
-                        </div>-->
-                     {{/if}}
+                        </div>
+                    {{/if}}
                 </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="recommendation">
@@ -266,7 +229,6 @@
                             {{/if}}
                         </h3>
                     </div>
-
                     <div class="panel-body detail-section-content">
                         <table class="table" >
                             <tr class="table-header">
@@ -279,6 +241,7 @@
                             </tr>
                             {{#with this as patientController}}
                                 {{#each recommendations}}
+                                    <tr>
                                         <td>{{activity}}</td>
                                         <td>{{responsibility}}</td>
                                         <td>{{date-format startDate}}</td>
@@ -292,6 +255,7 @@
                                                 <button class="btn btn-default warning" {{action "showDeleteRecommendation" this bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                             {{/if}}
                                         </td>
+                                    </tr>
                                 {{/each}}
                             {{/with}}
                         </table>
