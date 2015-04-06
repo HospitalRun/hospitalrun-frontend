@@ -192,30 +192,71 @@
                     </div>
                     {{#if canAddRisk}}
                         <div class="panel-body detail-section-content">
-                            <label>Severity</label>
-                            {{ext-radio name=preIncidentRiskAssesment.severity content=severityTypes 
-                                        value=preIncidentRiskAssesment.severity radioLabelPath="content"
-                                        radioValuePath="content"}}
-                            <label>Occurrence</label>
-                            {{ext-radio name=preIncidentRiskAssesment.occurence content=occurrenceTypes 
-                                        value=preIncidentRiskAssesment.occurence radioLabelPath="content"
-                                        radioValuePath="content"}}
-                            <label>RISK SCORE = Severity x Occurrence</label>
-                            {{ext-radio name=preIncidentRiskAssesment.riskScore content=riskScores 
-                                        value=preIncidentRiskAssesment.riskScore radioLabelPath="content"
-                                        radioValuePath="content"}}
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    PRE-Incident Risk Assesment
+                                </h2>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table" >
+                                    <tr class="table-header">
+                                        <th>Severity</th>
+                                        <th>Occurrence</th>
+                                        <th>RISK SCORE = Severity x Occurrence</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ext-radio name=preIncidentRiskAssesment.severity content=severityTypes 
+                                                value=preIncidentRiskAssesment.severity radioLabelPath="content"
+                                                radioValuePath="content"}}
+                                        </td>
+                                        <td>
+                                            {{ext-radio name=preIncidentRiskAssesment.occurence content=occurrenceTypes 
+                                                value=preIncidentRiskAssesment.occurence radioLabelPath="content"
+                                                radioValuePath="content"}}
+                                        </td>
+                                        <td> 
+                                            {{ext-radio name=preIncidentRiskAssesment.riskScore content=riskScores 
+                                                value=preIncidentRiskAssesment.riskScore radioLabelPath="content"
+                                                radioValuePath="content"}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                        </div>
                        <div class="panel-body detail-section-content">
-                            <label>Severity</label>
-                            {{ext-radio name=preSeverity content=severityTypes value=preSeverity radioLabelPath="content"
-                                    radioValuePath="content"}}
-                            <label>Occurrence</label>
-                            {{ext-radio name=preOccurence content=occurrenceTypes value=preOccurence radioLabelPath="content"
-                                    radioValuePath="content"}}
-                            <label>RISK SCORE = Severity x Occurrence</label>
-                            {{ext-radio name=preRiskScore content=riskScores value=preRiskScore radioLabelPath="content"
-                                    radioValuePath="content"}}
-                        </div>
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    POST-Incident Risk Assesment
+                                </h2>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table" >
+                                    <tr class="table-header">
+                                        <th>Severity</th>
+                                        <th>Occurrence</th>
+                                        <th>RISK SCORE = Severity x Occurrence</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ext-radio name=preIncidentRiskAssesment.severity content=severityTypes 
+                                                value=postIncidentRiskAssesment.severity radioLabelPath="content"
+                                                radioValuePath="content"}}
+                                        </td>
+                                        <td>
+                                            {{ext-radio name=preIncidentRiskAssesment.occurence content=occurrenceTypes 
+                                                value=postIncidentRiskAssesment.occurence radioLabelPath="content"
+                                                radioValuePath="content"}}
+                                        </td>
+                                        <td> 
+                                            {{ext-radio name=preIncidentRiskAssesment.riskScore content=riskScores 
+                                                value=postIncidentRiskAssesment.riskScore radioLabelPath="content"
+                                                radioValuePath="content"}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                       </div>
                     {{/if}}
                 </div>
         </div>
@@ -239,7 +280,7 @@
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
-                            {{#with this as patientController}}
+                            {{#with this as parentController}}
                                 {{#each recommendations}}
                                     <tr>
                                         <td>{{activity}}</td>
@@ -248,10 +289,10 @@
                                         <td>{{date-format targetDateOfCompletion}}</td>
                                         <td>{{status}}</td>
                                         <td>
-                                            {{#if patientController.canAddRecommendation}}
+                                            {{#if parentController.canAddRecommendation}}
                                                 <button class="btn btn-default neutral" {{action "showEditRecommendation" this}}>Edit</button>
                                             {{/if}}
-                                            {{#if patientController.canDeleteRecommendation}}
+                                            {{#if parentController.canDeleteRecommendation}}
                                                 <button class="btn btn-default warning" {{action "showDeleteRecommendation" this bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                             {{/if}}
                                         </td>
@@ -279,7 +320,7 @@
                                 <th>Type</th>
                                 <th>Actions</th>
                             </tr>
-                            {{#with this as patientController}}
+                            {{#with this as parentController}}
                                 {{#each appointments itemController='appointments/item'}}
                                     <tr {{action "editAppointment" this}}>
                                         <td>{{appointmentDate}}</td>
@@ -287,10 +328,10 @@
                                         <td>{{location}}</td>
                                         <td>{{appointmentType}}</td>
                                         <td>
-                                            {{#if patientController.canAddAppointment}}
+                                            {{#if parentController.canAddAppointment}}
                                                 <button class="btn btn-default neutral" {{action "editAppointment" this}}>Edit</button>
                                             {{/if}}
-                                            {{#if patientController.canDeleteAppointment}}
+                                            {{#if parentController.canDeleteAppointment}}
                                                 <button class="btn btn-default warning" {{action "showDeleteAppointment" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                             {{/if}}
                                         </td>
