@@ -21,7 +21,7 @@
     "JsBarcode": "https://github.com/HospitalRun/JsBarcode.git",
     "ember-forms": "~0.4.0",
     "typeahead.js": "~0.10.2",
-    "pikaday": "owenmead/Pikaday#master",
+    "pikaday": "owenmead/Pikaday#~1.3.3",
     "moment": "~2.7.0",
     "ember-calendar": "~1.0.0",
     "octicons": "~2.1.2",
