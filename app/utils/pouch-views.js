@@ -160,6 +160,26 @@ var designDocs = [{
     },
     version: 2
 }, {
+    name: 'inventory_request_by_item',
+    function: function(doc) {
+        var doctype,
+            uidx;    
+        if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+            doctype = doc._id.substring(0, uidx);
+            if(doctype === 'inv-request') {
+                var dateCompleted = doc.dateCompleted;
+                if (dateCompleted && dateCompleted !== '') {
+                    dateCompleted = new Date(dateCompleted);
+                    if (dateCompleted.getTime) {
+                        dateCompleted = dateCompleted.getTime();
+                    }
+                }
+                emit([doc.inventoryItem, doc.status, dateCompleted]);
+            }
+        }    
+    },
+    version: 2
+}, {
     name: 'inventory_request_by_status',
     function: function(doc) {
         var doctype,

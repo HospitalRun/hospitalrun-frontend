@@ -11,6 +11,10 @@ export default AbstractEditRoute.extend(InventoryId, {
             this.controller.send('adjustItems',inventoryLocation);
         },
         
+        doneFulfillRequest: function() {
+            this.controller.getTransactions();           
+        },        
+        
         deletePurchase: function(purchase, deleteFromLocation) {
             this.controller.send('deletePurchase', purchase, deleteFromLocation);
         },
@@ -32,5 +36,10 @@ export default AbstractEditRoute.extend(InventoryId, {
         return Ember.RSVP.resolve({
             dateReceived: new Date()
         });
+    },
+    
+    setupController: function(controller, model) {
+        this._super(controller, model);
+        controller.getTransactions();
     }
 });

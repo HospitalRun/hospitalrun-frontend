@@ -40,6 +40,11 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         return (this.get('isNew'));		
     }.property('isNew'),
     
+    haveTransactions: function() {
+        var transactions = this.get('transactions');
+        return transactions !== null;
+    }.property('transactions.@each'),
+    
     inventoryTypes: function() {
         var defaultInventoryTypes = this.get('defaultInventoryTypes'),
             inventoryTypeList = this.get('inventoryTypeList');
@@ -85,6 +90,13 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             this.set('quantity', quantity);
         }
     }.observes('originalQuantity'),
+    
+    showTransactions: function() {
+        var transactions = this.get('transactions');
+        return !Ember.isEmpty(transactions);
+    }.property('transactions.@each'),
+    
+    transactions: null,
     
     updateCapability: 'add_inventory_item',
 
@@ -191,7 +203,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             request.get('inventoryItem').then(function() {
                 //Make sure relationships are resolved before saving
                 this._saveRequest(request);                
-            }.bind(this));
+            }.bind(this));            
         },
         
         updatePurchase: function(purchase, updateQuantity) {
@@ -278,8 +290,24 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         request.set('completedBy',request.getUserName());
         request.save().then(function() {
             this.send('update',true);
-            this.send('closeModal');                    
+            this.send('closeModal');
+            this.getTransactions();
         }.bind(this));
+    },
+    
+    getTransactions: function() {        
+        var inventoryId = 'inventory_'+this.get('id');
+        this.set('transactions',null);
+        this.store.find('inv-request', {
+            options: {
+                endkey: [inventoryId, 'Completed', 0],
+                startkey: [inventoryId, 'Completed', 9999999999999],
+                descending: true                
+            },
+            mapReduce: 'inventory_request_by_item'
+        }).then(function(transactions) {
+            this.set('transactions', transactions);
+        }.bind(this));    
     },
     
     beforeUpdate: function() {

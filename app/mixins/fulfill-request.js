@@ -2,6 +2,10 @@ import Ember from "ember";
 //NOTE!!! inventory-locations mixin is needed for fulfill-request mixin!
 export default Ember.Mixin.create({
     actions: {
+        doneFulfillRequest: function() {
+            //Placeholder function; override if you need to know when fulfillrequest is complete.    
+        },
+        
         fulfillRequest: function(request, closeModal, increment, skipTransition) {
             var markAsConsumed = request.get('markAsConsumed'),
                 transactionType = request.get('transactionType');
@@ -166,6 +170,7 @@ export default Ember.Mixin.create({
         request.set('completedBy', request.getUserName());
         promises.push(request.save());
         Ember.RSVP.all(promises,'All saving done for inventory fulfillment').then(function(){
+            this.send('doneFulfillRequest');
             if (closeModal) {
                 this.send('closeModal');
             }

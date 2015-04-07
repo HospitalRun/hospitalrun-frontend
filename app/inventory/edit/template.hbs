@@ -104,5 +104,57 @@
                 {{/if}}
             {{/each}}
         </table>
+        {{#if showTransactions}}
+            <h3>Transactions</h3>
+            <table class="table">
+                <tr class="table-header">
+                    <th>Date Completed</th>
+                    <th>Quantity</th>
+                    <th>Transaction</th>
+                    <th>Details</th>
+                </tr>
+                {{#if haveTransactions}}
+                    {{#each transactions itemController='inventory/completed-items'}}
+                        <tr>
+                            <td>{{date-format dateCompleted}}</td>                    
+                            <td>{{quantity}}</td>
+                            <td>{{transactionType}}</td>
+                            <td>
+                                {{#if isAdjustment}}
+                                    {{#if haveReason}}
+                                        <strong>Reason:</strong> {{reason}}<br/>
+                                    {{/if}}
+                                    <strong>Location Adjusted:</strong> {{deliveryDetails}}
+                                {{/if}}
+                                {{#if isFulfillment}}
+                                    <strong>Cost Per Unit:</strong> {{costPerUnit}}<br/>
+                                    <strong>Quantity At Completion:</strong> {{quantityAtCompletion}}<br/>
+                                    <strong>Pulled From:</strong>
+                                    {{#each locationsAffected}}
+                                        {{name}}<br/>
+                                    {{/each}}
+                                    {{#if patient}}
+                                        <strong>Prescription For: </strong> {{deliveryDetails}}
+                                    {{else}}
+                                        <strong>Delivered To: </strong> {{deliveryDetails}}
+                                    {{/if}}
+                                {{/if}}
+                                {{#if isTransfer}}
+                                    <strong>Transferred From:</strong>
+                                    {{#each locationsAffected}}
+                                        {{name}}<br/>
+                                    {{/each}}
+                                    <strong>Transferred To: </strong> {{deliveryDetails}}
+                                {{/if}}
+                            </td>
+                        </tr>            
+                    {{/each}}
+                {{else}}
+                    <tr>
+                        <td colspan="4"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading transactions....</td>
+                    </tr>
+                {{/if}}
+            </table>
+        {{/if}}
     {{/unless}}
 {{/em-form}}
