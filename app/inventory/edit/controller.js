@@ -90,12 +90,11 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
 
     actions: {
         adjustItems: function(inventoryLocation) {
-            var adjustPurchases = inventoryLocation.get('adjustPurchases'),
-                adjustmentQuantity = parseInt(inventoryLocation.get('adjustmentQuantity')),
+            var adjustmentQuantity = parseInt(inventoryLocation.get('adjustmentQuantity')),
                 inventoryItem = this.get('model'),                
                 transactionType = inventoryLocation.get('transactionType'),
                 request = this.get('store').createRecord('inv-request', {
-                    adjustPurchases: adjustPurchases,
+                    adjustPurchases: true,
                     dateCompleted: inventoryLocation.get('dateCompleted'),
                     inventoryItem: inventoryItem,
                     quantity: adjustmentQuantity,
@@ -104,21 +103,16 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                     deliveryAisle: inventoryLocation.get('aisleLocation'),
                     deliveryLocation: inventoryLocation.get('location')
                 });
-            request.set('inventoryLocations',[inventoryLocation]);
-            if (adjustPurchases) {
-                var increment = false;
-                if (transactionType === 'Adjustment (Add)') {
-                    increment = true;
-                }
-                request.set('markAsConsumed',true);
-                //Make sure inventory item is resolved first.
-                request.get('inventoryItem').then(function() {
-                    this.send('fulfillRequest', request, true, increment, true);
-                }.bind(this));
-            } else {
-                this.adjustLocation(inventoryItem, inventoryLocation);
-                this._saveRequest(request);
-            }            
+            request.set('inventoryLocations',[inventoryLocation]);            
+            var increment = false;
+            if (transactionType === 'Adjustment (Add)') {
+                increment = true;
+            }
+            request.set('markAsConsumed',true);
+            //Make sure inventory item is resolved first.
+            request.get('inventoryItem').then(function() {
+                this.send('fulfillRequest', request, true, increment, true);
+            }.bind(this));            
         },        
         
         deletePurchase: function(purchase, deleteFromLocation, expire) {
@@ -141,8 +135,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         },
         
         showAdjustment: function(inventoryLocation) {
-            inventoryLocation.setProperties({
-                adjustPurchases: true,
+            inventoryLocation.setProperties({                
                 dateCompleted: new Date(),
                 adjustmentItem: this.get('model'),
                 adjustmentQuantity: '',

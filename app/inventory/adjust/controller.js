@@ -2,10 +2,6 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import Ember from "ember";
 export default AbstractEditController.extend({
     needs: 'inventory',    
-        
-    adjustmentItemSet: function() {
-        this.set('adjustPurchases', true);
-    }.observes('adjustmentItem'),
     
     adjustmentTypes: [{
         name: 'Add',
@@ -13,6 +9,9 @@ export default AbstractEditController.extend({
     }, {
         name: 'Remove',
         type: 'Adjustment (Remove)'
+    }, {
+        name: 'Return To Vendor',
+        type: 'Return To Vendor'
     }, {
         name: 'Write Off',
         type: 'Write Off'
