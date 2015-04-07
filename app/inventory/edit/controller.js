@@ -2,10 +2,11 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import Ember from "ember";
 import InventoryLocations from "hospitalrun/mixins/inventory-locations";
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
+import ReturnTo from 'hospitalrun/mixins/return-to';
 import UnitTypes from "hospitalrun/mixins/unit-types";
 import UserSession from "hospitalrun/mixins/user-session";
 
-export default AbstractEditController.extend(InventoryLocations, InventoryTypeList, UnitTypes, UserSession, {
+export default AbstractEditController.extend(InventoryLocations, InventoryTypeList, ReturnTo, UnitTypes, UserSession, {
     needs: ['inventory','pouchdb'],
     
     canAddPurchase: function() {        

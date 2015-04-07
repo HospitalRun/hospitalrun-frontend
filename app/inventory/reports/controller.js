@@ -220,6 +220,16 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         }
     },
     
+    _addReportRow: function(row, skipNumberFormatting, reportColumns, rowAction) {
+        if (Ember.isEmpty(rowAction) && !Ember.isEmpty(row.inventoryItem)) {
+            rowAction = {
+                action: 'viewInventory',
+                model: row.inventoryItem._id.substr(10)
+            };
+        }
+        this._super(row, skipNumberFormatting, reportColumns, rowAction);
+    },
+    
     _addTotalsRow: function(label, summaryCost, summaryQuantity) {
         if (summaryQuantity > 0) {
             this._addReportRow({
@@ -759,6 +769,13 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                     break;
                 }
             }
+        },
+        
+        viewInventory: function(id) {
+            this.store.find('inventory', id).then(function(item) {
+                item.set('returnTo', 'inventory.reports');                
+                this.transitionToRoute('inventory.edit', item);
+            }.bind(this));
         }
     }
 });

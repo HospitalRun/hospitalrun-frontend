@@ -66,7 +66,7 @@
 {{#if showReportResults}}
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title">{{reportTitle}}</h3>
+            <h3 class="panel-title">{{reportTitle}}{{partial 'paging'}}</h3>
         </div>
         <div class="panel-body">
             <table class="table">
@@ -77,12 +77,20 @@
                         </th>
                     {{/each}}
                 </tr>
-                {{#each reportRows}}
-                    <tr>
-                        {{#each this}}
-                            <td>{{array-display content=this}}</td>
-                        {{/each}}
-                    </tr>
+                {{#each currentReportRows}}
+                    {{#if rowAction}}
+                        <tr {{action rowAction.action rowAction.model}}>
+                            {{#each row}}
+                                <td>{{array-display content=this }}</td>
+                            {{/each}}
+                        </tr>
+                    {{else}}
+                        <tr>
+                            {{#each this}}
+                                <td>{{array-display content=this }}</td>
+                            {{/each}}
+                        </tr>
+                    {{/if}}
                 {{/each}}
             </table>
         </div>
