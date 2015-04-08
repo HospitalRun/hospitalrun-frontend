@@ -1,19 +1,30 @@
 {{#em-form model=this submit_button=false }}
-    {{#unless isNew}}
-        <div class="form-group">
-            <label>ID</label>
-            {{input class="form-control" value=friendlyId type="text" disabled=true }}
-        </div>
-    {{/unless}}
-    {{em-input property="name" label="Name" class="required"}}
-    {{em-text label="Description" property="description" rows=3 }}
-    {{em-select label="Type" property="type" 
-        content=inventoryTypes 
-        optionValuePath="content" 
-        optionLabelPath="content"
-        class="required"
-    }}
-    {{em-input property="crossReference" label="Cross Reference"}}
+    <div class="row">
+        {{#unless isNew}}
+            <div class="form-group col-sm-2">
+                <label>ID</label>
+                {{input class="form-control" value=friendlyId type="text" disabled=true }}
+            </div>
+        {{/unless}}
+        {{em-input property="name" label="Name" class="required  col-sm-8"}}
+        {{#unless isNew}}
+            <div class="form-group col-sm-2">
+                <label>Quantity</label>
+                <p class="form-control-static">{{quantity}}</p>                    
+            </div>
+        {{/unless}}
+
+    </div>
+    {{em-text label="Description" property="description" rows=1 }}
+    <div class="row">
+        {{em-select label="Type" property="type" 
+            content=inventoryTypes 
+            optionValuePath="content" 
+            optionLabelPath="content"
+            class="required col-sm-4"
+        }}
+        {{em-input property="crossReference" label="Cross Reference" class="col-sm-8"}}
+    </div>
     <div class="row">
         {{em-input property="reorderPoint" label="Reorder Point" class="col-sm-3"}}
         {{em-input property="price" label="Price Per Unit" class="col-sm-3"}}
@@ -29,13 +40,6 @@
         <h3>Purchase information</h3>
         {{partial 'inventory/purchase'}}
     {{else}}
-        <div class="row">
-            <div class="form-group col-sm-3">
-                <label>Quantity</label>
-                <p class="form-control-static">{{quantity}}</p>                    
-            </div>
-        </div>
-        
             {{#if quantityDiscrepency}}
                 <div class="alert alert-danger alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
