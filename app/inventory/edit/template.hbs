@@ -115,6 +115,7 @@
                     <th>Date Completed</th>
                     <th>Quantity</th>
                     <th>Transaction</th>
+                    <th>Expense Account</th>
                     <th>Details</th>
                 </tr>
                 {{#if haveTransactions}}
@@ -123,6 +124,7 @@
                             <td>{{date-format dateCompleted}}</td>                    
                             <td>{{quantity}}</td>
                             <td>{{transactionType}}</td>
+                            <td>{{expenseAccount}}</td>
                             <td>
                                 {{#if isAdjustment}}
                                     {{#if haveReason}}

@@ -16,6 +16,8 @@ export default AbstractEditController.extend({
         name: 'Write Off',
         type: 'Write Off'
     }],
+    
+    expenseAccountList: Ember.computed.alias('controllers.inventory.expenseAccountList'),
 
     title: 'Adjustment',
     

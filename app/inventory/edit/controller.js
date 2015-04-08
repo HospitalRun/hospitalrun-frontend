@@ -108,6 +108,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                 request = this.get('store').createRecord('inv-request', {
                     adjustPurchases: true,
                     dateCompleted: inventoryLocation.get('dateCompleted'),
+                    expenseAccount: inventoryLocation.get('expenseAccount'),
                     inventoryItem: inventoryItem,
                     quantity: adjustmentQuantity,
                     transactionType: transactionType,
