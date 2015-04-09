@@ -366,8 +366,8 @@ export default AbstractReportController.extend(VisitTypes, {
     _generateDiagnosticReport: function() {
         this._findDiagnosticsByDate().then(function(diagnostics) {
             var reportColumns = this.get('diagnosticReportColumns');
-            this._totalByType(diagnostics.imaging, 'imagingType.name', 'Total for imaging: ', reportColumns);
-            this._totalByType(diagnostics.labs, 'labType.name', 'Total for labs: ', reportColumns);
+            this._addRowsByType(diagnostics.imaging, 'imagingType.name', 'Total for imaging: ', reportColumns);
+            this._addRowsByType(diagnostics.labs, 'labType.name', 'Total for labs: ', reportColumns);
             this._finishReport(reportColumns);
         }.bind(this), function() {
             this.closeProgressModal();
@@ -415,7 +415,7 @@ export default AbstractReportController.extend(VisitTypes, {
     _generateProcedureReport: function() {
         this._findProceduresByDate().then(function(procedures) {
             var reportColumns = this.get('diagnosticReportColumns');
-            this._totalByType(procedures, 'description', 'Total procedures: ', reportColumns);
+            this._addRowsByType(procedures, 'description', 'Total procedures: ', reportColumns);
             this._finishReport(reportColumns);
         }.bind(this), function() {
             this.closeProgressModal();
