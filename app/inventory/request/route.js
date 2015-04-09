@@ -10,6 +10,12 @@ export default AbstractEditRoute.extend({
         });
     },
     
+    actions: {
+        removeItem: function(model) {
+            this.controller.send('removeItem', model);
+        }
+    },
+    
     /**
      * Lazily load inventory items so that it doesn't impact performance.
      */

@@ -13,10 +13,49 @@
             <p class="form-control-static">{{inventoryItem.quantity}}</p>        
         </div>
     {{else}}
-        {{inventory-typeahead property="inventoryItemTypeAhead" label="Inventory Item" content=inventoryList selection=selectedInventoryItem }}
         <div class="row">
+            {{inventory-typeahead 
+                class="col-sm-8"
+                property="inventoryItemTypeAhead" 
+                label="Inventory Item" 
+                content=inventoryList 
+                selection=selectedInventoryItem 
+            }}
             {{em-input property="quantity" label="Quantity" class="col-sm-3"}}
+            <div class="form-group col-sm-1">
+                <label class="control-label"></label>
+                <h4 class="form-control-static">                    
+                    <span class="glyphicon glyphicon-plus" {{action 'addInventoryItem'}}></span>                    
+                </h4>
+            </div>
         </div>
+        {{#if showRequestedItems}}
+            <h3>Requested Items</h3>
+            <table class="table">
+                <tr class="table-header">
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
+                </tr>
+                {{#each requestedItems}}
+                    <tr>
+                        <td>
+                            {{item.name}}
+                        </td>
+                        <td class="col-xs-1">
+                            <div class="form-group">
+                                {{input class="form-control" value=quantity }}
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-default warning" {{action "showRemoveItem" this bubbles=false }}>
+                                <span class="octicon octicon-x"></span>Remove
+                            </button>
+                        </td>
+                    </tr>
+                {{/each}}
+            </table>
+        {{/if}}
         {{#if canFulfill}}
             <div class="form-group">            
                 <label class="control-label">Fulfill Request</label>

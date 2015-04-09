@@ -36,8 +36,9 @@ export default AbstractEditController.extend(InventorySelection, {
     }],
     
     canFulfill: function() {
-        return this.currentUserCan('fulfill_inventory');
-    }.property(),
+        var requestedItems = this.get('requestedItems');
+        return Ember.isEmpty(requestedItems) && this.currentUserCan('fulfill_inventory');
+    }.property('requestedItems.@each'),
 
     isFulfilling: function() {
         var canFulfill = this.get('canFulfill'),
@@ -50,6 +51,11 @@ export default AbstractEditController.extend(InventorySelection, {
         var status = this.get('status');
         return (status === 'Requested');
     }.property('status'),
+    
+    showRequestedItems: function() {
+        var requestedItems = this.get('requestedItems');
+        return !Ember.isEmpty(requestedItems);
+    }.property('requestedItems.@each'),
     
     updateViaFulfillRequest: false,
     
@@ -78,8 +84,43 @@ export default AbstractEditController.extend(InventorySelection, {
     updateCapability: 'add_inventory_request',
     
     actions: {
+        addInventoryItem: function() {
+            var inventoryItem = this.get('inventoryItem'),
+                model = this.get('model'),
+                requestedItems = this.get('requestedItems'),
+                quantity = this.get('quantity');
+            model.validate();
+            if (this.get('isValid') && !Ember.isEmpty(inventoryItem) && !Ember.isEmpty(quantity)) {
+                var requestedItem = Ember.Object.create({
+                    item: inventoryItem.get('content'),
+                    quantity: quantity
+                });
+                requestedItems.addObject(requestedItem);
+                this.set('inventoryItem');
+                this.set('inventoryItemTypeAhead');
+                this.set('quantity');
+                this.set('selectedInventoryItem');
+            }
+        },
+        
         allRequests: function() {
             this.transitionToRoute('inventory.index');
+        },
+        
+        removeItem: function(removeInfo) {
+            var requestedItems = this.get('requestedItems'),
+                item = removeInfo.itemToRemove;
+            requestedItems.removeObject(item);
+            this.send('closeModal');
+        },        
+        
+        showRemoveItem: function(item) {
+           var message= 'Are you sure you want to remove this item from this request?',
+                model = Ember.Object.create({
+                    itemToRemove: item               
+                }),
+                title = 'Remove Payment';
+            this.displayConfirm(title, message, 'removeItem', model);            
         },
         
         /**
@@ -94,13 +135,48 @@ export default AbstractEditController.extend(InventorySelection, {
                     this.updateLookupLists();
                     this.send('fulfillRequest', this.get('model'));
                 } else {
-                    this.get('model').save().then(function(record){
-                        this.updateLookupLists();
-                        if (!skipAfterUpdate) {
-                            this.afterUpdate(record);
+                    var isNew = this.get('isNew'),
+                        requestedItems = this.get('requestedItems');
+                    if (isNew && !Ember.isEmpty(requestedItems)) {
+                        var baseModel = this.get('model'),
+                            propertiesToCopy = baseModel.getProperties([
+                                'dateRequested',
+                                'deliveryAisle', 
+                                'deliveryLocation', 
+                                'expenseAccount',
+                                'requestedBy',
+                                'status'
+                            ]),
+                            inventoryPromises = [],
+                            newModels = [],
+                            savePromises = [];
+                        if (!Ember.isEmpty(this.get('inventoryItem')) && !Ember.isEmpty(this.get('quantity'))) {
+                            savePromises.push(baseModel.save());
                         }
-
-                    }.bind(this));
+                        requestedItems.forEach(function(requestedItem) {     
+                            propertiesToCopy.inventoryItem = requestedItem.get('item');
+                            propertiesToCopy.quantity = requestedItem.get('quantity');
+                            var modelToSave = this.get('store').createRecord('inv-request', propertiesToCopy);
+                            inventoryPromises.push(modelToSave.get('inventoryItem'));
+                            newModels.push(modelToSave);
+                        }.bind(this));
+                        Ember.RSVP.all(inventoryPromises,'Get inventory items for inventory requests').then(function(){
+                            newModels.forEach(function(newModel) {
+                                savePromises.push(newModel.save());
+                            });
+                            Ember.RSVP.all(savePromises,'Save batch inventory requests').then(function(){
+                                this.updateLookupLists();                            
+                                this.afterUpdate();                            
+                            }.bind(this));
+                        }.bind(this));
+                    } else {
+                        this.get('model').save().then(function(record){
+                            this.updateLookupLists();
+                            if (!skipAfterUpdate) {
+                                this.afterUpdate(record);
+                            }
+                        }.bind(this));
+                    }
                 }
             }.bind(this));
         }

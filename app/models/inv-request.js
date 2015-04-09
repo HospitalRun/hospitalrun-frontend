@@ -42,14 +42,15 @@ var InventoryRequest = AbstractModel.extend(LocationName, {
                     }
                     var itemName = object.get('inventoryItem.name'),
                         itemTypeAhead = object.get('inventoryItemTypeAhead'),
+                        requestedItems = object.get('requestedItems'),
                         status = object.get('status');
                     if (status === 'Requested') {
                         //Requested items don't show the type ahead and therefore don't need validation.
                         return false;
                     }
                     if (Ember.isEmpty(itemName) || Ember.isEmpty(itemTypeAhead)) {
-                        //force validation to fail
-                        return true;
+                        //force validation to fail if fields are empty and requested items are empty
+                        return Ember.isEmpty(requestedItems);
                     } else {
                         var typeAheadName = itemTypeAhead.substr(0, itemName.length);
                         if (itemName !== typeAheadName) {
@@ -66,6 +67,10 @@ var InventoryRequest = AbstractModel.extend(LocationName, {
         quantity: {
             numericality: {
                 greaterThan: 0,
+                if: function(object) {
+                    var requestedItems = object.get('requestedItems');
+                    return (Ember.isEmpty(requestedItems));
+                }
             },
             acceptance: {
                 accept: true,
