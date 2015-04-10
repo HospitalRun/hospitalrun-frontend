@@ -23,6 +23,11 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             include: true,
             property: 'inventoryItem.name'
         }, 
+        transactionType: {
+            label: 'Adjustment Type',
+            include: false,
+            property: 'transactionType'
+        }, 
         description: {
             label: 'Description',
             include: false,
@@ -110,6 +115,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         name: 'Days Supply Left In Stock',
         value: 'daysLeft'
     }, {
+        name: 'Detailed Adjustment',
+        value: 'detailedAdjustment'
+    }, {
         name: 'Detailed Purchase',
         value: 'detailedPurchase'
     }, {
@@ -118,7 +126,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     }, {
         name: 'Detailed Stock Transfer',
         value: 'detailedTransfer'
-    }, {        
+    },  {        
         name: 'Expiration Date',
         value: 'expiration'
     }, {
@@ -175,6 +183,17 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             this.set('reportColumns.unitcost.include', true);            
             return true;
         }
+    }.property('reportType'),
+    
+    includeTransactionType: function() {
+        var reportType = this.get('reportType');
+        if (reportType === 'detailedAdjustment') {
+            this.set('reportColumns.transactionType.include', true);
+            return true;
+        } else {
+            this.set('reportColumns.transactionType.include', false);
+            return false;
+        }        
     }.property('reportType'),
 
     showEffectiveDate: function() {
@@ -542,13 +561,13 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                                 this._addReportRow(row);
                             }
                             break;
-                        }                        
-                        case 'detailedTransfer':
+                        }   
+                        case 'detailedAdjustment': 
+                        case 'detailedTransfer':                            
                         case 'detailedUsage': {
                             if (!Ember.isEmpty(inventoryRequests)) {
-                                inventoryRequests.forEach(function(request) {
-                                    if ((reportType === 'detailedTransfer' && request.transactionType === 'Transfer') || 
-                                        (reportType === 'detailedUsage' && request.transactionType === 'Fulfillment')) {                                
+                                inventoryRequests.forEach(function(request) { 
+                                    if (this._includeTransaction(reportType, request.transactionType)) {
                                         var deliveryLocation = this.getDisplayLocationName(request.deliveryLocation, request.deliveryAisle),
                                             locations = [],
                                             totalCost = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit)); 
@@ -568,7 +587,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                                             giftInKind: row.giftInKind,
                                             inventoryItem: row.inventoryItem,
                                             quantity: request.quantity,
-                                            type: request.transactionType,
+                                            transactionType: request.transactionType,
                                             locations: locations,
                                             unitCost: request.costPerUnit,
                                             totalCost: totalCost
@@ -587,8 +606,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                         case 'summaryUsage': {
                             if (!Ember.isEmpty(inventoryRequests)) {
                                 row.quantity = inventoryRequests.reduce(function(previousValue, request) {
-                                    if ((reportType === 'summaryTransfer' && request.transactionType === 'Transfer') || 
-                                        (reportType === 'summaryUsage' && request.transactionType === 'Fulfillment')) {
+                                    if (this._includeTransaction(reportType, request.transactionType)) {
                                         var totalCost = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit)); 
                                         summaryCost += totalCost;
                                         return previousValue += this._getValidNumber(request.quantity);
@@ -739,6 +757,45 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 resolve(inventoryMap);
             }, reject);
         });
+    },
+    
+    /**
+     * Given a report type and a transaction type determine if the transaction should 
+     * be included in the report.
+     * @param {string} reportType the report type
+     * @param {string} transactionType the transaction type
+     * @return {boolean} true if the transaction should be included.
+     */
+    _includeTransaction: function(reportType, transactionType) {
+        var detailed = (reportType.indexOf('detailed') === 0),
+            includeForReportType;
+        
+        switch (transactionType) {
+            case 'Fulfillment': {
+                if (detailed) {
+                    includeForReportType = 'detailedUsage';
+                } else {
+                    includeForReportType = 'summaryUsage';
+                }
+                break;
+            }
+            case 'Transfer': {
+                if (detailed) {
+                    includeForReportType = 'detailedTransfer';
+                } else {
+                    includeForReportType = 'summaryTransfer';
+                }
+                break;                
+            }
+            default: {
+                if (detailed) {
+                    includeForReportType = 'detailedAdjustment';
+                } else {
+                    includeForReportType = 'summaryAdjustment';
+                }
+            }
+        }
+        return (reportType === includeForReportType);
     },
         
     _notifyReportError: function(errorMessage) {
