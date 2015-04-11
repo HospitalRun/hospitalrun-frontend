@@ -4,10 +4,8 @@ import IncidentSubmodule from 'hospitalrun/mixins/incident-submodule';
 import UserSession from "hospitalrun/mixins/user-session";
 import IncidentCategoryList from "hospitalrun/mixins/incident-category";
 import IncidentHarmScoreList from "hospitalrun/mixins/incident-harm-score";
-import IncidentContributingFactorList from "hospitalrun/mixins/incident-contributing-factors";
 
-export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentHarmScoreList,
-IncidentContributingFactorList, UserSession, {
+export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentHarmScoreList, UserSession, {
      needs: 'incident',
     
     canAddFeedback: function() {        
@@ -49,30 +47,166 @@ IncidentContributingFactorList, UserSession, {
     canDeleteRisk: function() {        
         return this.currentUserCan('delete_risk');
     }.property(),
+
     
     severityTypes: [
-        '5 Extreme Death, toxic release off-site with detrimental effect, huge financial loss',
-        '4 High Extensive injuries, loss of production capability, off-site release with no detrimental effects, major financial loss',
-        '3 Moderate Medical treatment required, on-site release contained with outside assistance, high financial loss',
-        '2 Low First aid treatment, on-site release contained, medium financial loss',
-        '1 Minimum No injuries, low financial loss'
+        { 
+          label: '5 Extreme Death, toxic release off-site with detrimental effect, huge financial loss',
+          value: "Extreme 5"
+        },
+        {
+          label: '4 High Extensive injuries, loss of production capability, off-site release with no detrimental effects, major financial loss',
+          value: "High 4"
+
+        },
+        {
+          label: '3 Moderate Medical treatment required, on-site release contained with outside assistance, high financial loss',
+          value: "Moderate 3"
+
+        },
+        {
+          label: '2 Low First aid treatment, on-site release contained, medium financial loss',
+          value: "Low 2"
+
+        },
+        {
+          label: '1 Minimum No injuries, low financial loss',
+          value: "Minimum 1"
+
+        }
     ],
 
     occurrenceTypes: [
-        '5  Almost Certain  Is expected to occur in most circumstances (e.g. most weeks or months)',
-        '4  Likely Will probably occur in most circumstances (several times a year)',            
-        '3  Possible Might occur at some time (every 1 to 2 years)',
-        '2  Unlikely Could occur at some time (possibly in the next 2 to 5 years)',
-        '1  Rare May occur only in exceptional circumstances (perhaps every 5 to 30 years)'
+        { 
+          label: '5  Almost Certain  Is expected to occur in most circumstances (e.g. most weeks or months)',
+          value: "Almost Certain 5"
+        },
+        {
+          label: '4  Likely Will probably occur in most circumstances (several times a year)',
+          value: "Likely 4"
+
+        },
+        {
+          label: '3  Possible Might occur at some time (every 1 to 2 years)',
+          value: "Possible 3"
+
+        },
+        {
+          label: '2  Unlikely Could occur at some time (possibly in the next 2 to 5 years)',
+          value: "Unlikely 2"
+
+        },
+        {
+          label: '1  Rare May occur only in exceptional circumstances (perhaps every 5 to 30 years)',
+          value: "Rare 1"
+
+        }
     ],
     
     riskScores: [
-        '15-25  : extreme risk; immediate action required',
-        '9-12   : high risk; senior management needed',            
-        '4-8    : moderate risk; management responsibility must be specified',
-        '1-3    : low risk; manage by routine procedures'
+        { 
+          label: '15-25  : extreme risk; immediate action required',
+          value: "extreme risk"
+        },
+        {
+          label: '9-12   : high risk; senior management needed',
+          value: "high risk"
+
+        },
+        {
+          label: '4-8    : moderate risk; management responsibility must be specified',
+          value: "moderate risk"
+
+        },
+        {
+          label: '1-3    : low risk; manage by routine procedures',
+          value: "low risk"
+
+        }
+        
     ],
 
+    preSeverityTypes: [
+        { 
+          label: '5 Extreme Death, toxic release off-site with detrimental effect, huge financial loss',
+          value: "Extreme 5"
+        },
+        {
+          label: '4 High Extensive injuries, loss of production capability, off-site release with no detrimental effects, major financial loss',
+          value: "High 4"
+
+        },
+        {
+          label: '3 Moderate Medical treatment required, on-site release contained with outside assistance, high financial loss',
+          value: "Moderate 3"
+
+        },
+        {
+          label: '2 Low First aid treatment, on-site release contained, medium financial loss',
+          value: "Low 2"
+
+        },
+        {
+          label: '1 Minimum No injuries, low financial loss',
+          value: "Minimum 1"
+
+        }
+    ],
+
+    preOccurrenceTypes:  [
+        { 
+          label: '5  Almost Certain  Is expected to occur in most circumstances (e.g. most weeks or months)',
+          value: "Almost Certain 5"
+        },
+        {
+          label: '4  Likely Will probably occur in most circumstances (several times a year)',
+          value: "Likely 4"
+
+        },
+        {
+          label: '3  Possible Might occur at some time (every 1 to 2 years)',
+          value: "Possible 3"
+
+        },
+        {
+          label: '2  Unlikely Could occur at some time (possibly in the next 2 to 5 years)',
+          value: "Unlikely 2"
+
+        },
+        {
+          label: '1  Rare May occur only in exceptional circumstances (perhaps every 5 to 30 years)',
+          value: "Rare 1"
+
+        }
+    ],
+
+    preRiskScores: [
+        { 
+          label: '15-25  : extreme risk; immediate action required',
+          value: "extreme risk"
+        },
+        {
+          label: '9-12   : high risk; senior management needed',
+          value: "high risk"
+
+        },
+        {
+          label: '4-8    : moderate risk; management responsibility must be specified',
+          value: "moderate risk"
+
+        },
+        {
+          label: '1-3    : low risk; manage by routine procedures',
+          value: "low risk"
+
+        }
+        
+    ],
+
+    
+    //preSeverityTypes: Ember.computed.alias('controllers.incident.severityTypes'),
+    //preOccurrenceTypes: Ember.computed.alias('controllers.incident.occurrenceTypes'),
+    //preRiskScores: Ember.computed.alias('controllers.incident.riskScores'),
 
     cancelAction: 'returnToIncident',
 	/*cancelAction: function() {
@@ -85,26 +219,10 @@ IncidentContributingFactorList, UserSession, {
     }.property('returnTo'),*/
 	
     //cancelAction: 'incident.index',
-    incidentCategoryNameList: Ember.computed.alias('controllers.incident.incidentCategoryNameList'),
-    //incidentCategoryMainItemList: Ember.computed.alias('controllers.incident.incidentCategoryMainItemList'),
-    
-    lookupListsToUpdate: [{
-        name: 'incidentCategoryNameList',
-        property: 'name',
-        id: 'incidentCategoryName_list'
-    }],
     
     newIncident: false,
-    /*visitStatuses: [
-        'Admitted',
-        'Discharged'
-    ],*/
 
     updateCapability: 'add_incident',
-
-   /* primaryDiagnosisIdChanged: function() {
-        this.get('model').validate();
-    }.observes('primaryDiagnosisId'),*/
 
     afterUpdate: function() {
         this.displayAlert('Incident Saved', 'The Incident report has been saved.');
@@ -124,20 +242,7 @@ IncidentContributingFactorList, UserSession, {
      }.property('reportedBy'),
 
 
-    /*categoryNameChanged: function(){
-        var incidentCategorySelected = this.get('categoryName');
-        console.log("is it getting called and Breaking!!!!!!!"+incidentCategorySelected);
-        //itemList = [];
-        if (!Ember.isEmpty(incidentCategorySelected)) {
-            //itemList = incidentCategoryItem;
-            //this.set('categoryName', incidentCategorySelected.name)   && (Ember.isPresent(incidentCategorySelected.name));
-            //this.set('itemList', incidentCategorySelected.items);
-            this.set('itemList', incidentCategorySelected);
-        }
-    }.observes('categoryName'),*/
-
-
-    categoryNameChanged: function(){
+     categoryNameChanged: function(){
         var categoryNameSelected = this.get('categoryName');
         if (!Ember.isEmpty(categoryNameSelected)) {
             var index = this._findIndexOfProperty(this.incidentCategory,'name',categoryNameSelected);
@@ -145,17 +250,14 @@ IncidentContributingFactorList, UserSession, {
         }
     }.observes('categoryName'),
 
-
     _findIndexOfProperty: function(arrayObj, property, value) {
-    for(var i = 0; i < arrayObj.length; i += 1) {
-        if(arrayObj[i][property] === value) {
+        for(var i = 0; i < arrayObj.length; i += 1) {
+            if(arrayObj[i][property] === value) {
             return i;
+            }
         }
-    }
-},
+    },
 
-
-    
     /**
      * Adds or removes the specified object from the specified list.
      * @param {String} listName The name of the list to operate on.
@@ -187,8 +289,6 @@ IncidentContributingFactorList, UserSession, {
             }
             this.send(this.get('cancelAction'));
         },
-
-        incidentCategoryNameList: [],
 
         //Feedback Functions
 

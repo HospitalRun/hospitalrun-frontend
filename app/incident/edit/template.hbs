@@ -1,6 +1,6 @@
 {{#em-form model=this submit_button=false }}
     <div class="panel panel-success">
-            <div class="panel-body">
+            <div>
                 <div class="row">        
                     <div class="form-group col-sm-2">
                         <label class="control-label">Incident Id</label>{{id}}
@@ -11,9 +11,11 @@
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class="active" ><a href="#creation" role="tab" data-toggle="pill">Creation</a></li>
             <li role="presentation"><a href="#feedback" role="tab" data-toggle="pill">Feedback</a></li>    
-            <li role="presentation"><a href="#investigate" role="tab" data-toggle="pill">Investigation/Factors</a></li>
+            <li role="presentation"><a href="#investigate" role="tab" data-toggle="pill">Investigation Findings</a></li>
+            <li role="presentation"><a href="#factors" role="tab" data-toggle="pill">Contributing Factors</a></li>
             <li role="presentation"><a href="#risk" role="tab" data-toggle="pill">Risk Assesment</a></li>
-            <li role="presentation"><a href="#recommendation" role="tab" data-toggle="pill">Recommendations/Summary</a></li>
+            <li role="presentation"><a href="#recommendation" role="tab" data-toggle="pill">Recommendations</a></li>
+            <li role="presentation"><a href="#summary" role="tab" data-toggle="pill">Summary</a></li>
         </ul>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="creation">        
@@ -148,26 +150,25 @@
                         </table>
                     </div>
                 </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="factors">
                 <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             Factors: Factors Contributing to the Incident
-                            {{#if canAddImaging}}
-                                <button class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}><span class="octicon octicon-plus"></span> New Imaging</button>
-                            {{/if}}
                         </h3>
                     </div>
-                    <<div class="panel-body detail-section-content">
+                    <div class="panel-body detail-section-content">
                         <label>
-                            Please tick the main Factor
+                            Please tick the main Factors
                         </label>
-                            {{em-checkbox label="Patient Factor: E.g. Clinical Condition, Physical factors, Social factors, Psychological/Mental factors" property="contributingFactors.factor1"}}
-                            {{em-checkbox label="Individual / Staff Factor: E.g. Physical issues, Psychological, Social, Domestic, Personality, Cognitive" property="contributingFactors.factor2"}}
-                            {{em-checkbox label="Task Factor: E.g. Guidelines/ Procedures/ Protocols/ Task design" property="contributingFactors.factor3"}}
-                            {{em-checkbox label="Communication Factor: E.g. Verbal, Written, Non-verbal, Handoff" property="contributingFactors.factor4"}}
-                            {{em-checkbox label="Team Factor: E.g. Collaboration, Coordination, Leadership, Support" property="contributingFactors.factor5"}}
-                            {{em-checkbox label="Working Condition factor: E.g. Environment, Staffing, Workload, Working Hours" property="contributingFactors.factor6"}}
-                            {{em-checkbox label="Organizational Factor: E.g. Organizational structure, Policies, Priorities, Safety culture" property="contributingFactors.factor7"}}
+                        {{em-checkbox label="Patient Factor: E.g. Clinical Condition, Physical factors, Social factors, Psychological/Mental factors" property="patientContributingFactor"}}
+                        {{em-checkbox label="Individual / Staff Factor:  E.g. Physical issues, Psychological, Social, Domestic, Personality, Cognitive" property="individualContributingFactor"}}
+                        {{em-checkbox label="Task Factor:    E.g. Guidelines/ Procedures/ Protocols/ Task design" property="taskContributingFactor"}}
+                        {{em-checkbox label="Communication Factor:   E.g. Verbal, Written, Non-verbal, Handoff" property="communicationContributingFactor"}}
+                        {{em-checkbox label="Team Factor:    E.g. Collaboration, Coordination, Leadership, Support" property="teamContributingFactor"}}
+                        {{em-checkbox label="Working Condition factor:   E.g. Environment, Staffing, Workload, Working Hours" property="workingConditionContributingFactor"}}
+                        {{em-checkbox label="Organizational Factor:  E.g. Organizational structure, Policies, Priorities, Safety culture" property="organizationalContributingFactor"}}
                     </div>
                 </div>
         </div>
@@ -180,7 +181,8 @@
                     </div>
                     {{#if canAddRisk}}
                         <div class="panel-body detail-section-content">
-                            {{ext-radio name=harmScore content=harmScoreList value=harmScore }}
+                            {{ext-radio name=harmScore content=harmScoreList value=harmScore radioLabelPath="content.label" 
+                              radioValuePath="content.value"}}
                         </div>
                     {{/if}}
                 </div>
@@ -206,19 +208,19 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            {{ext-radio name=preIncidentRiskAssesment.severity content=severityTypes 
-                                                value=preIncidentRiskAssesment.severity radioLabelPath="content"
-                                                radioValuePath="content"}}
-                                        </td>
-                                        <td>
-                                            {{ext-radio name=preIncidentRiskAssesment.occurence content=occurrenceTypes 
-                                                value=preIncidentRiskAssesment.occurence radioLabelPath="content"
-                                                radioValuePath="content"}}
-                                        </td>
-                                        <td> 
-                                            {{ext-radio name=preIncidentRiskAssesment.riskScore content=riskScores 
-                                                value=preIncidentRiskAssesment.riskScore radioLabelPath="content"
-                                                radioValuePath="content"}}
+                                                {{ext-radio name=preSeverity content=preSeverityTypes 
+                                                value=preSeverity radioLabelPath="content.label"
+                                                radioValuePath="content.value"}}
+                                         </td>
+                                         <td>
+                                                {{ext-radio name=preOccurence content=preOccurrenceTypes 
+                                                value=preOccurence radioLabelPath="content.label"
+                                                radioValuePath="content.value"}}
+                                         </td>
+                                         <td> 
+                                                {{ext-radio name=preRiskScore content=preRiskScores 
+                                                value=preRiskScore radioLabelPath="content.label"
+                                                radioValuePath="content.value"}}
                                         </td>
                                     </tr>
                                 </table>
@@ -239,19 +241,19 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            {{ext-radio name=preIncidentRiskAssesment.severity content=severityTypes 
-                                                value=postIncidentRiskAssesment.severity radioLabelPath="content"
-                                                radioValuePath="content"}}
+                                            {{ext-radio name=postSeverity content=severityTypes 
+                                                value=postSeverity radioLabelPath="content.label"
+                                                radioValuePath="content.value"}}
                                         </td>
                                         <td>
-                                            {{ext-radio name=preIncidentRiskAssesment.occurence content=occurrenceTypes 
-                                                value=postIncidentRiskAssesment.occurence radioLabelPath="content"
-                                                radioValuePath="content"}}
+                                            {{ext-radio name=postOccurence content=occurrenceTypes 
+                                                value=postOccurence radioLabelPath="content.label"
+                                                radioValuePath="content.value"}}
                                         </td>
                                         <td> 
-                                            {{ext-radio name=preIncidentRiskAssesment.riskScore content=riskScores 
-                                                value=postIncidentRiskAssesment.riskScore radioLabelPath="content"
-                                                radioValuePath="content"}}
+                                            {{ext-radio name=postRiskScore content=riskScores 
+                                                value=postRiskScore radioLabelPath="content.label"
+                                                radioValuePath="content.value"}}
                                         </td>
                                     </tr>
                                 </table>
@@ -302,6 +304,8 @@
                         </table>
                     </div>
                 </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="summary">
                 <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">
