@@ -5,6 +5,7 @@
             <th>Name</th>
             <th>Quantity</th>
             <th>Transaction</th>
+            <th>Expense Account</th>
             <th>Details</th>
         </tr>
         {{#each itemController='inventory/completed-items'}}
@@ -13,6 +14,7 @@
                 <td>{{inventoryItem.name}}</td>
                 <td>{{quantity}}</td>
                 <td>{{transactionType}}</td>
+                <td>{{expenseAccount}}</td>
                 <td>
                     {{#if isAdjustment}}
                         {{#if haveReason}}

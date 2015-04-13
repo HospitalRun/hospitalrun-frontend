@@ -6,6 +6,11 @@ import NumberFormat from "hospitalrun/mixins/number-format";
 export default AbstractReportController.extend(LocationName, ModalHelper, NumberFormat, {
     needs: ['pouchdb'],
     effectiveDate: null,
+    expenseCategories: ['Inventory Consumed', 'Gift In Kind Usage', 'Inventory Obsolence'],
+    expenseMap: null,
+    grandCost: 0,
+    grandQuantity: 0,
+    locationSummary: null,
     pouchdbController: Ember.computed.alias('controllers.pouchdb'),
     reportColumns: {
         date: {
@@ -27,6 +32,11 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             label: 'Adjustment Type',
             include: false,
             property: 'transactionType'
+        }, 
+        expenseAccount: {
+            label: 'Expense Account',
+            include: false,
+            property: 'expenseAccount'
         }, 
         description: {
             label: 'Description',
@@ -126,6 +136,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     }, {
         name: 'Detailed Stock Transfer',
         value: 'detailedTransfer'
+    }, {        
+        name: 'Detailed Expenses',
+        value: 'detailedExpense'
     },  {        
         name: 'Expiration Date',
         value: 'expiration'
@@ -135,6 +148,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     }, {
         name: 'Inventory Valuation',
         value: 'valuation'
+    }, {        
+        name: 'Summary Expenses',
+        value: 'summaryExpense'
     }, {
         name: 'Summary Purchase',
         value: 'summaryPurchase'
@@ -182,6 +198,25 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             this.set('reportColumns.total.include', true);
             this.set('reportColumns.unitcost.include', true);            
             return true;
+        }
+    }.property('reportType'),
+        
+    includeExpenseAccount: function() {    
+        var reportType = this.get('reportType');
+        switch (reportType) {
+            case 'detailedAdjustment':
+            case 'detailedTransfer':                            
+            case 'detailedUsage': {
+                return true;
+            }
+            case 'detailedExpense': {
+                this.set('reportColumns.expenseAccount.include', true);
+                return true;
+            }        
+            default: {
+                this.set('reportColumns.expenseAccount.include', false);
+                return false;
+            }
         }
     }.property('reportType'),
     
@@ -240,7 +275,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     },
     
     _addReportRow: function(row, skipNumberFormatting, reportColumns, rowAction) {
-        if (Ember.isEmpty(rowAction) && !Ember.isEmpty(row.inventoryItem)) {
+        if (Ember.isEmpty(rowAction) && !Ember.isEmpty(row.inventoryItem) && !Ember.isEmpty(row.inventoryItem._id)) {
             rowAction = {
                 action: 'viewInventory',
                 model: row.inventoryItem._id.substr(10)
@@ -374,7 +409,86 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             include_docs: true,
         }, 'inventory_request_by_status', inventoryMap, 'requestObjects');
     },    
-
+    
+    _finishExpenseReport: function(reportType) {
+        var expenseCategories = this.get('expenseCategories'),
+            expenseMap = this.get('expenseMap');            
+        expenseCategories.forEach(function(category) {
+            var categoryTotal = 0,
+                expenseAccountName,
+                totalLabel;
+            this._addReportRow({
+                inventoryItem: {
+                    name: 'Expenses for: '+category
+                }
+            });
+            expenseMap[category].expenseAccounts.forEach(function(expenseAccount) {
+                if (reportType === 'detailedExpense') {
+                    expenseAccount.reportRows.forEach(function(row) {
+                        this._addReportRow(row);
+                    }.bind(this));
+                }
+                if (Ember.isEmpty(expenseAccount.name)) {
+                    expenseAccountName = '(No Account)';
+                } else {
+                    expenseAccountName = expenseAccount.name;
+                }
+                totalLabel = 'Subtotal for %@: '.fmt(category+' - '+expenseAccountName);
+                this._addReportRow({
+                    totalCost: totalLabel +  this._numberFormat(expenseAccount.total)
+                }, true);
+                categoryTotal += expenseAccount.total;
+            }.bind(this));
+           totalLabel = 'Total for %@: '.fmt(category);
+            this._addReportRow({
+                totalCost: totalLabel +  this._numberFormat(categoryTotal)
+            }, true);
+            this.incrementProperty('grandCost', categoryTotal);
+        }.bind(this));  
+        this._addReportRow({
+            totalCost: 'Total: ' +  this._numberFormat(this.get('grandCost'))
+        }, true);
+    },
+    
+    _finishLocationReport: function() {
+        var currentLocation = '',
+            locationCost = 0,
+            locationSummary = this.get('locationSummary'),
+            parentLocation = '',
+            parentCount = 0;                    
+        locationSummary = locationSummary.sortBy('name');
+        locationSummary.forEach(function(location) {
+            if (location.name.indexOf(':') > -1) {
+                parentLocation = location.name.split(':')[0].trim();
+            } else {
+                parentLocation = location.name;
+            }
+            if (currentLocation !== parentLocation) {
+                this._addTotalsRow('Total for %@: '.fmt(currentLocation), locationCost, parentCount);
+                parentCount = 0;
+                locationCost = 0;
+                currentLocation = parentLocation;
+            }
+            for (var id in location.items) {
+                this._addReportRow({
+                    giftInKind: location.items[id].giftInKind,
+                    inventoryItem: location.items[id].item,
+                    quantity: location.items[id].quantity,
+                    locations: [{
+                        name: location.name
+                    }], 
+                    totalCost: location.items[id].totalCost,
+                    unitCost: location.items[id].unitCost
+                });
+                parentCount += this._getValidNumber(location.items[id].quantity);
+                locationCost += this._getValidNumber(location.items[id].totalCost);
+                this.incrementProperty('grandCost', this._getValidNumber(location.items[id].totalCost));
+                this.incrementProperty('grandQuantity', this._getValidNumber(location.items[id].quantity));
+            }
+        }.bind(this));
+        this._addTotalsRow('Total for %@: '.fmt(parentLocation), locationCost, parentCount);
+    },
+    
     _generateExpirationReport: function() {
         var grandQuantity = 0,
             pouchdbController = this.get('pouchdbController'),
@@ -422,11 +536,14 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             }.bind(this));
         }.bind(this));
         
-    },        
+    },
     
     _generateInventoryReport: function() {
+        this.set('grandCost', 0);
+        this.set('grandQuantity', 0);
+        this.set('locationSummary', []);
         var dateDiff,            
-            locationSummary = [],
+            locationSummary = this.get('locationSummary'),
             reportType = this.get('reportType'),
             reportTimes = this._getDateQueryParams();
         if (reportType === 'daysLeft') {
@@ -443,8 +560,6 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             this._findInventoryItemsByPurchase(reportTimes, inventoryMap).then(function(inventoryMap) {
                 //Loop through each inventory item, looking at the requests and purchases to determine
                 //state of inventory at effective date
-                var grandCost = 0,
-                    grandQuantity = 0;
                 Ember.keys(inventoryMap).forEach(function(key) {
                     if (Ember.isEmpty(inventoryMap[key])) {
                         //If the inventory item has been deleted, ignore it.
@@ -564,7 +679,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                         }   
                         case 'detailedAdjustment': 
                         case 'detailedTransfer':                            
-                        case 'detailedUsage': {
+                        case 'detailedUsage': 
+                        case 'detailedExpense': 
+                        case 'summaryExpense': {
                             if (!Ember.isEmpty(inventoryRequests)) {
                                 inventoryRequests.forEach(function(request) { 
                                     if (this._includeTransaction(reportType, request.transactionType)) {
@@ -582,8 +699,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                                                 };                                        
                                             }
                                         }.bind(this));
-                                        this._addReportRow({
+                                        var reportRow = {                                            
                                             date: moment(new Date(request.dateCompleted)).format('l'),
+                                            expenseAccount: request.expenseAccount,
                                             giftInKind: row.giftInKind,
                                             inventoryItem: row.inventoryItem,
                                             quantity: request.quantity,
@@ -591,14 +709,21 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                                             locations: locations,
                                             unitCost: request.costPerUnit,
                                             totalCost: totalCost
-                                        });
-                                        summaryQuantity += this._getValidNumber(request.quantity);
-                                        summaryCost += this._getValidNumber(totalCost);
+                                        };                                        
+                                        if (reportType === 'detailedExpense' || reportType === 'summaryExpense') {
+                                            this._updateExpenseMap(request, reportRow);
+                                        } else {
+                                            this._addReportRow(reportRow);
+                                            summaryQuantity += this._getValidNumber(request.quantity);
+                                            summaryCost += this._getValidNumber(totalCost);
+                                        }
                                     }
                                 }.bind(this));
-                                this._addTotalsRow('Subtotal: ', summaryCost, summaryQuantity);
-                                grandCost +=summaryCost;
-                                grandQuantity += summaryQuantity;
+                                if (reportType !== 'detailedExpense' && reportType !== 'summaryExpense') {
+                                    this._addTotalsRow('Subtotal: ', summaryCost, summaryQuantity);
+                                    this.incrementProperty('grandCost', summaryCost);
+                                    this.incrementProperty('grandQuantity', summaryQuantity);
+                                }
                             }
                             break;
                         }
@@ -618,8 +743,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                                     row.totalCost = summaryCost;
                                     row.unitCost = (summaryCost/row.quantity);
                                     this._addReportRow(row);
-                                    grandCost += summaryCost;
-                                    grandQuantity += row.quantity;
+                                    this.incrementProperty('grandCost', summaryCost);
+                                    this.incrementProperty('grandQuantity', row.quantity);
                                 }
                             }
                             break;
@@ -645,8 +770,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                                 summaryQuantity += this._getValidNumber(purchase.originalQuantity);
                             }.bind(this));
                             this._addTotalsRow('Subtotal: ',summaryCost, summaryQuantity);
-                            grandCost +=summaryCost;
-                            grandQuantity += summaryQuantity;
+                            this.incrementProperty('grandCost', summaryCost);
+                            this.incrementProperty('grandQuantity', summaryQuantity);
                             break;
                         }
                         case 'summaryPurchase': {
@@ -664,57 +789,34 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                             row.unitCost = (summaryCost/row.quantity);
                             row.totalCost = summaryCost;
                             this._addReportRow(row);
-                            grandCost += summaryCost;
-                            grandQuantity += row.quantity;
+                            this.incrementProperty('grandCost', summaryCost);
+                            this.incrementProperty('grandQuantity', row.quantity);
                             break;
                         }                                        
                         case 'valuation': {
                             this._calculateCosts(inventoryPurchases, row);
-                            grandCost += this._getValidNumber(row.totalCost);
-                            grandQuantity += this._getValidNumber(row.quantity);
+                            this.incrementProperty('grandCost', this._getValidNumber(row.totalCost));
+                            this.incrementProperty('grandQuantity', this._getValidNumber(row.quantity));
                             this._addReportRow(row);
                             break;
                         }
                     }
                 }.bind(this));
-                if (reportType === 'byLocation') {
-                    var currentLocation = '',
-                        locationCost = 0,
-                        parentLocation = '',
-                        parentCount = 0;                    
-                    locationSummary = locationSummary.sortBy('name');
-                    locationSummary.forEach(function(location) {
-                        if (location.name.indexOf(':') > -1) {
-                            parentLocation = location.name.split(':')[0].trim();
-                        } else {
-                            parentLocation = location.name;
-                        }
-                        if (currentLocation !== parentLocation) {
-                            this._addTotalsRow('Total for %@: '.fmt(currentLocation), locationCost, parentCount);
-                            parentCount = 0;
-                            locationCost = 0;
-                            currentLocation = parentLocation;
-                        }
-                        for (var id in location.items) {
-                            this._addReportRow({
-                                giftInKind: location.items[id].giftInKind,
-                                inventoryItem: location.items[id].item,
-                                quantity: location.items[id].quantity,
-                                locations: [{
-                                    name: location.name
-                                }], 
-                                totalCost: location.items[id].totalCost,
-                                unitCost: location.items[id].unitCost
-                            });
-                            parentCount += this._getValidNumber(location.items[id].quantity);
-                            locationCost += this._getValidNumber(location.items[id].totalCost);
-                            grandCost += this._getValidNumber(location.items[id].totalCost);
-                            grandQuantity += this._getValidNumber(location.items[id].quantity);
-                        }
-                    }.bind(this));
-                    this._addTotalsRow('Total for %@: '.fmt(parentLocation), locationCost, parentCount);
-                } 
-                this._addTotalsRow('Total: ', grandCost, grandQuantity);
+                switch (reportType) {                    
+                    case 'detailedExpense': 
+                    case 'summaryExpense': {
+                        this._finishExpenseReport(reportType);
+                        break;
+                    }
+                    case 'byLocation': {
+                        this._finishLocationReport();
+                        this._addTotalsRow('Total: ', this.get('grandCost'), this.get('grandQuantity'));
+                        break;
+                    }
+                    default: {
+                        this._addTotalsRow('Total: ', this.get('grandCost'), this.get('grandQuantity'));
+                    }
+                }                 
                 this._finishReport();
             }.bind(this), function(err) {
                 this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
@@ -769,7 +871,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     _includeTransaction: function(reportType, transactionType) {
         var detailed = (reportType.indexOf('detailed') === 0),
             includeForReportType;
-        
+        if (reportType === 'detailedExpense' || reportType === 'summaryExpense') {
+            return true;
+        }
         switch (transactionType) {
             case 'Fulfillment': {
                 if (detailed) {
@@ -805,6 +909,62 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         throw new Error(errorMessage);
     },
     
+    _updateExpenseMap: function(request, reportRow) {
+        var categoryToUpdate,
+            expenseAccountToUpdate,
+            expenseMap = this.get('expenseMap'),
+            isGiftInKind = (reportRow.giftInKind === 'Y'),
+            increment = true,
+            transactionValue;
+                
+        switch (request.transactionType) {
+            case 'Fulfillment': 
+            case 'Return': {               
+                if (isGiftInKind) {
+                    categoryToUpdate = expenseMap['Gift In Kind Usage'];
+                } else {
+                    categoryToUpdate = expenseMap['Inventory Consumed'];
+                }
+                if (request.transactionType  === 'Return') {
+                    increment = false;
+                }
+                break;
+                
+            }
+            case 'Adjustment (Add)': 
+            case 'Adjustment (Remove)': 
+            case 'Write Off': {     
+                categoryToUpdate = expenseMap['Inventory Obsolence'];
+                if (request.transactionType === 'Adjustment (Add)') {
+                    increment = false;
+                }
+                break;
+            }           
+        }
+        if (!Ember.isEmpty(categoryToUpdate)) {
+            expenseAccountToUpdate = categoryToUpdate.expenseAccounts.findBy('name',request.expenseAccount);
+            if (Ember.isEmpty(expenseAccountToUpdate)) {                
+                expenseAccountToUpdate = {
+                    name: request.expenseAccount,
+                    total: 0,
+                    reportRows: []
+                };
+                categoryToUpdate.expenseAccounts.push(expenseAccountToUpdate);
+            }
+            expenseAccountToUpdate.reportRows.push(reportRow);
+            transactionValue = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit)); 
+            if (increment) {
+                categoryToUpdate.total += transactionValue;                
+                expenseAccountToUpdate.total += transactionValue;                
+            } else {
+                categoryToUpdate.total = categoryToUpdate.total - transactionValue; 
+                expenseAccountToUpdate.total = expenseAccountToUpdate.total - transactionValue;
+            }
+            
+            
+        }
+    },    
+    
     actions: {
         generateReport: function() {
             var endDate = this.get('endDate'),
@@ -819,6 +979,20 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             switch (reportType) {
                 case 'expiration': {
                     this._generateExpirationReport();
+                    break;                    
+                }
+                case 'detailedExpense':
+                case 'summaryExpense': {                    
+                    var expenseCategories = this.get('expenseCategories'),
+                        expenseMap = {};
+                    expenseCategories.forEach(function(category) {
+                        expenseMap[category] = {
+                            total: 0,
+                            expenseAccounts: []
+                        };
+                    });
+                    this.set('expenseMap', expenseMap);                    
+                    this._generateInventoryReport();
                     break;                    
                 }
                 default: {
