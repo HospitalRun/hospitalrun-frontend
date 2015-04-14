@@ -9,13 +9,6 @@ var ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin
             } else {
                 this._super();
             }
-        },
-        sessionAuthenticationSucceeded: function() {
-            this._super();
-            if (!this.use_google_auth) {                
-                //Reload because couchdb cookie unavailable for XHR until reload.
-                window.location.reload();               
-            }
         }
     },
 

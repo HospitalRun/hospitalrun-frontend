@@ -35,8 +35,10 @@ export default {
             application.register('couchdb:configdb', configDB, {instantiate: false});
             application.inject('controller:pouchdb', 'configDB', 'couchdb:configdb');
             var customAuthenticator = container.lookup('authenticators:custom'),
-                pouchDBController = container.lookup('controller:pouchdb');
+                pouchDBController = container.lookup('controller:pouchdb'),
+                applicationAdapter = container.lookup('adapter:application');
             customAuthenticator.set('pouchDBController', pouchDBController);
+            pouchDBController.set('applicationAdapter', applicationAdapter);
             var options = {
                 include_docs: true,
                 keys: [
@@ -58,11 +60,8 @@ export default {
                         if (!response.rows[i].error) {
                             configs[response.rows[i].id] = response.rows[i].doc.value;
                         }
-                    }
-                    
-                    pouchDBController.setupMainDB(configs).then(function(dbInfo) {
-                        application.register('pouchdb:maindb', dbInfo.mainDB, {instantiate: false});
-                        application.inject('adapter:application', 'db', 'pouchdb:maindb');
+                    }                    
+                    pouchDBController.setupMainDB(configs).then(function() {                        
                         application.advanceReadiness();
                     }, function() {
                         application.advanceReadiness();

@@ -111,6 +111,7 @@ export default Ember.Controller.extend(PouchAdapterUtils, {
                 } else {
                     createPouchViews(db);
                     this._gotServerMainDB(err, db);
+                    this.get('applicationAdapter').set('db', db);
                     resolve({
                         mainDB: db, 
                         //localDB: localMainDB
