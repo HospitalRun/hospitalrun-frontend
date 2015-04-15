@@ -244,6 +244,24 @@ function procedureByDate(doc) {
     }
 }
 
+function incidentByDate(doc) {
+        var doctype,
+            uidx;
+        if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+            doctype = doc._id.substring(0, uidx);
+            if(doctype === 'incident') {
+                var dateOfIncident = doc.dateOfIncident;
+                if (dateOfIncident && dateOfIncident !== '') {
+                    dateOfIncident = new Date(dateOfIncident);
+                    if (dateOfIncident.getTime) {
+                        dateOfIncident = dateOfIncident.getTime(); 
+                    }
+                }
+                emit([dateOfIncident, doc._id]);
+            }
+        }
+    }
+
 
 function sequenceByPrefix(doc) {
     var doctype,
@@ -328,7 +346,10 @@ var designDocs = [{
 }, {
     name: 'inventory_request_by_status',
     function: inventoryRequestByStatus    
-}, {
+},{
+    name: 'incident_by_date',
+    function: incidentByDate
+},{
     name: 'lab_by_status',
     function: labByStatus
 }, {
