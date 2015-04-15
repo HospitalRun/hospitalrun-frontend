@@ -40,7 +40,12 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6">
-                            {{em-input property="locationOfIncident" label="Location of Incident" class="required"}}
+                            {{em-select label="Location of Incident" property="locationOfIncident" 
+                                content=incidentLocations 
+                                optionValuePath="content" 
+                                optionLabelPath="content"
+                                class="required"
+                             }}
                         </div>
                     </div>
                     <div class="row">

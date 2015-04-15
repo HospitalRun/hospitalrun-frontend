@@ -1,7 +1,8 @@
 import Ember from "ember";
 import BillingCategories from 'hospitalrun/mixins/billing-categories';
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
-export default Ember.ArrayController.extend(BillingCategories, InventoryTypeList, {
+import IncidentLocationsList from 'hospitalrun/mixins/incident-locations-list';
+export default Ember.ArrayController.extend(BillingCategories, InventoryTypeList, IncidentLocationsList, {
     lookupType: null,
     lookupTypes: [{
         name: 'Anesthesia Types',
@@ -67,13 +68,13 @@ export default Ember.ArrayController.extend(BillingCategories, InventoryTypeList
             ]
         }
     },{
-        name: 'Incident Category Names',
-        value: 'incidentCategoryName_list',
+        defaultValues: 'defaultIncidentLocations',
+        name: 'Department Names',
+        value: 'incident_locations',
         models: {
-            Incident:  'incidentMedicalCategory',
-            'inc-medical-category': 'name'
-           }
-    }, {
+            incident: 'locationOfIncident'
+        }
+    },{
         defaultValues: 'defaultInventoryTypes',
         name: 'Inventory Types',
         value: 'inventory_types',

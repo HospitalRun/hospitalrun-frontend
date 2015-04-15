@@ -4,8 +4,10 @@ import IncidentSubmodule from 'hospitalrun/mixins/incident-submodule';
 import UserSession from "hospitalrun/mixins/user-session";
 import IncidentCategoryList from "hospitalrun/mixins/incident-category";
 import IncidentHarmScoreList from "hospitalrun/mixins/incident-harm-score";
+import IncidentLocationsList from 'hospitalrun/mixins/incident-locations-list';
 
-export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentHarmScoreList, UserSession, {
+export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentHarmScoreList, IncidentLocationsList,
+ UserSession, {
      needs: 'incident',
     
     canAddFeedback: function() {        
@@ -203,10 +205,21 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         
     ],
 
-    
+    incidentLocationsList: Ember.computed.alias('controllers.incident.incidentLocationsList.value'),
     //preSeverityTypes: Ember.computed.alias('controllers.incident.severityTypes'),
     //preOccurrenceTypes: Ember.computed.alias('controllers.incident.occurrenceTypes'),
     //preRiskScores: Ember.computed.alias('controllers.incident.riskScores'),
+
+
+     incidentLocations: function() {
+        var defaultIncidentLocations = this.get('defaultIncidentLocations'),
+            incidentLocationsList = this.get('incidentLocationsList');
+        if (Ember.isEmpty(incidentLocationsList)) {
+            return defaultIncidentLocations;
+        } else {
+            return incidentLocationsList;
+        }
+    }.property('incidentLocationsList', 'defaultIncidentLocations'),
 
     cancelAction: 'returnToIncident',
 	/*cancelAction: function() {
