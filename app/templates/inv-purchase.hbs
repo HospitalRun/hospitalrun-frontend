@@ -1,0 +1,35 @@
+<div class="row">
+    {{date-picker property="dateReceived" label="Date Received" class="col-sm-4"}}
+</div>
+{{#if canEditQuantity }}
+    {{quantity-calc calculated=originalQuantity targetUnit=distributionUnit quantityGroups=quantityGroups }}
+{{else}}
+    <div class="form-group">
+        <label>Quantity</label>
+        {{input class="form-control" value=originalQuantity type="text" disabled=true }}                    
+    </div>
+{{/if}}
+<div class="row">
+    <div class="col-sm-4">
+        {{em-input property="purchaseCost" label="Purchase Cost" class="required"}}
+    </div>
+    <div class="col-sm-4">
+        {{em-input property="lotNumber" label="Serial/Lot Number"}}
+    </div>
+</div>
+<div class="row">
+    {{date-picker property="expirationDate" label="Expiration Date" minDate="now" class="col-sm-4"}}
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        {{em-input property="vendor" label="Vendor"}}
+    </div>
+    <div class="col-sm-6">
+        {{em-input property="vendorItemNo" label="Vendor Item Number"}}
+    </div>
+</div>
+{{#if isNew}}
+    {{select-or-typeahead property="location" label="Location" list=warehouseList selection=location }}
+    {{select-or-typeahead property="aisleLocation" label="Aisle Location" list=aisleLocationList selection=aisleLocation }}
+{{/if}}
+{{em-checkbox label="Gift In Kind" property="giftInKind"}}
