@@ -30,9 +30,6 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
         text: 'Items',
         linkTo: 'inventory.listing'
     }, {
-        text: 'History',
-        linkTo: 'inventory.completed'
-    }, {
         text: 'Reports',
         linkTo: 'inventory.reports'
     }],
