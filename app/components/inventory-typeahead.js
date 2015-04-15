@@ -1,9 +1,10 @@
 import TypeAhead from "hospitalrun/components/type-ahead";
 export default TypeAhead.extend({
-    displayKey: 'name',            
+    displayKey: 'name',   
+    showQuantity: true,
     _mapInventoryItems: function(item) {
         var returnObj = {};
-        if (item.quantity) {
+        if (this.get('showQuantity') && item.quantity) {
             returnObj.name = '%@ - %@ (%@ available)'.fmt(item.name, item.friendlyId, item.quantity);
         } else {
             returnObj.name = '%@ - %@'.fmt(item.name, item.friendlyId);
