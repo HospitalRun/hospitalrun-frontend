@@ -35,6 +35,7 @@ Router.map(function() {
         this.route('barcode', { path: "/barcode/:inventory_id" });
         this.route('delivery', { path: "/delivery/:inv-request_id" });
         this.route('edit', { path: "/edit/:inventory_id" });
+        this.route('invoice', { path: "/invoice/:inventory-invoice_id" });
         this.route('listing');
         this.route('reports');
         this.route('request', { path: "/request/:inv-request_id" });

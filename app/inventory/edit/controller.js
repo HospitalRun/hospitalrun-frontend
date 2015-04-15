@@ -45,16 +45,6 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         return transactions !== null;
     }.property('transactions.@each'),
     
-    inventoryTypes: function() {
-        var defaultInventoryTypes = this.get('defaultInventoryTypes'),
-            inventoryTypeList = this.get('inventoryTypeList');
-        if (Ember.isEmpty(inventoryTypeList)) {
-            return defaultInventoryTypes;
-        } else {
-            return inventoryTypeList;
-        }
-    }.property('inventoryTypeList', 'defaultInventoryTypes'),
-    
     locationQuantityTotal: function() {
         var locations = this.get('locations');
         var total = locations.reduce(function(previousValue, location) {

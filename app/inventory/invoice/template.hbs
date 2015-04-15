@@ -1,0 +1,78 @@
+{{#em-form model=this submit_button=false }}
+<div class="row">
+    <div class="col-sm-6">
+        {{em-input property="vendor" label="Vendor"}}
+    </div>
+    <div class="col-sm-6">
+        {{em-input property="invoiceNo" label="Invoice Number"}}
+    </div>
+</div>
+<div class="row">
+    {{inventory-typeahead 
+        class="col-sm-4 required"
+        property="inventoryItemTypeAhead" 
+        label="Inventory Item" 
+        content=inventoryList 
+        selection=selectedInventoryItem
+        showQuantity=false
+    }}
+    {{em-input property="quantity" label="Quantity" class="col-sm-2 required"}}    
+    {{em-input property="purchaseCost" label="Purchase Cost" class="col-sm-2 required"}}    
+    {{em-input property="vendorItemNo" label="Vendor Item Number" class="col-sm-3"}}
+    <div class="form-group col-sm-1">
+        <label class="control-label"></label>
+        <h4 class="form-control-static">                    
+            <span class="glyphicon glyphicon-plus" {{action 'addInventoryItem'}}></span>                    
+        </h4>
+    </div>
+</div>
+<textarea>
+name
+quantity
+price
+item number
+
+Need for new item type
+Need to new item unit
+</textarea>
+{{#if invoiceItems}}
+    <h3>Invoice Items</h3>
+    <table class="table">
+        <tr class="table-header">
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Cost</th>
+            <th>Item Number</th>
+            <th>Action</th>
+        </tr>
+        {{#each invoiceItems}}
+            <tr>
+                <td class="col-sm-4">
+                    {{item.name}}
+                </td>
+                <td class="col-sm-2">
+                    <div class="form-group">
+                        {{input class="form-control" value=quantity }}
+                    </div>
+                </td>
+                <td class="col-sm-2">
+                    <div class="form-group">
+                        {{input class="form-control" value=purchaseCost }}
+                    </div>
+                </td>
+                <td class="col-sm-3">
+                    <div class="form-group">
+                        {{input class="form-control" value=vendorItemNo }}
+                    </div>
+                </td>
+                <td class="col-sm-1">
+                    <button class="btn btn-default warning" {{action "showRemoveItem" this bubbles=false }}>
+                        <span class="octicon octicon-x"></span>Remove
+                    </button>
+                </td>
+            </tr>
+        {{/each}}
+    </table>
+{{/if}}
+        
+{{/em-form}}
