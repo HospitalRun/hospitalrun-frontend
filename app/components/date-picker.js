@@ -31,8 +31,12 @@ export default Ember.Forms.FormInputComponent.extend({
         this.set('doingSetup', true);
         this.set('propertyName',displayPropertyName);
         this.set('dateProperty', dateProperty);
-        Ember.Binding.from("model." + dateProperty).to('currentDate').connect(this);
-        Ember.Binding.from("model." + displayPropertyName).to('currentDisplayDate').connect(this);
+        if (Ember.isEmpty(this.get('currentDate'))) {
+            Ember.Binding.from("model." + dateProperty).to('currentDate').connect(this);
+        }
+        if (Ember.isEmpty(this.get('currentDisplayDate'))) {
+            Ember.Binding.from("model." + displayPropertyName).to('currentDisplayDate').connect(this);
+        }
         this.set('doingSetup', false);
     }.on('init'),
     
