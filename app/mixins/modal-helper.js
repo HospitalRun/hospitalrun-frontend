@@ -5,10 +5,11 @@ export default Ember.Mixin.create({
      * @param title string containing the title to display.
      * @param message string containing the message to display.
      */
-    displayAlert: function(title, message) {
+    displayAlert: function(title, message, okAction) {
         this.send('openModal', 'dialog', Ember.Object.create({
             title: title,
             message: message,
+            okAction: okAction,
             hideCancelButton: true,
             updateButtonAction: 'ok',
             updateButtonText: 'Ok'
