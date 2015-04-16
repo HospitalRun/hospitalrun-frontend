@@ -1,5 +1,5 @@
-{{#em-form model=this submit_button=false bubbles=false}}
-    {{#unless isNew}}
+{{#em-form model=this submit_button=false bubbles=false }}
+    {{#unless isNewOrDeleted}}
         <div class="panel panel-success">
             <div class="panel-body">
                 <div class="row">        
@@ -187,7 +187,7 @@
                 {{/with}}
             </div>
         </div>
-        {{#unless isNew}}
+        {{#unless isNewOrDeleted}}
             <div role="tabpanel" class="tab-pane" id="photos">
                 <div class="panel">    
                     <div class="panel-heading">
