@@ -6,7 +6,8 @@ export default InventoryRequestRoute.extend({
     newTitle: 'Invoice Received',
     getNewData: function() {
         return Ember.RSVP.resolve({
-            invoiceItems: []
+            invoiceItems: [],
+            dateReceived: new Date()
         });
     },
     

@@ -11,7 +11,10 @@ export default AbstractModel.extend({
         return (Ember.isEmpty(invoiceItems));
     },
     
-    validations: {
+    validations: {        
+        dateReceived: {
+            presence: true
+        },
         inventoryItemTypeAhead: {
             presence: {
                 if: function(object) {

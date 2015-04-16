@@ -1,40 +1,52 @@
 {{#em-form model=this submit_button=false }}
 <div class="row">
-    <div class="col-sm-6">
-        {{em-input property="vendor" label="Vendor"}}
-    </div>
-    <div class="col-sm-6">
-        {{em-input property="invoiceNo" label="Invoice Number"}}
+    {{date-picker property="dateReceived" label="Date Received" class="col-sm-4 required"}}
+    {{em-input property="vendor" label="Vendor" class="col-sm-4"}}    
+    {{em-input property="invoiceNo" label="Invoice Number" class="col-sm-4"}}
+</div>
+<div class="row">    
+    {{select-or-typeahead property="location" label="Location" list=warehouseList selection=location class="col-sm-5"}}
+    {{select-or-typeahead property="aisleLocation" label="Aisle Location" list=aisleLocationList selection=aisleLocation class="col-sm-5"}}
+    <div class="form-group col-sm-2">
+        <label class="control-label">Gift In Kind</label>
+        {{em-checkbox label="Gift In Kind" property="giftInKind"}}
     </div>
 </div>
-<div class="row">
-    {{inventory-typeahead 
-        class="col-sm-4 required"
-        property="inventoryItemTypeAhead" 
-        label="Inventory Item" 
-        content=inventoryList 
-        selection=selectedInventoryItem
-        showQuantity=false
-    }}
-    {{em-input property="quantity" label="Quantity" class="col-sm-2 required"}}    
-    {{em-input property="purchaseCost" label="Purchase Cost" class="col-sm-2 required"}}    
-    {{em-input property="vendorItemNo" label="Vendor Item Number" class="col-sm-3"}}
-    <div class="form-group col-sm-1">
-        <label class="control-label"></label>
-        <h4 class="form-control-static">                    
-            <span class="glyphicon glyphicon-plus" {{action 'addInventoryItem'}}></span>                    
-        </h4>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Invoice Line Item</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            {{inventory-typeahead 
+                class="col-sm-7 required"
+                property="inventoryItemTypeAhead" 
+                label="Inventory Item" 
+                content=inventoryList 
+                selection=selectedInventoryItem
+                showQuantity=false
+            }}
+            {{em-input property="quantity" label="Quantity" class="col-sm-2 required"}}    
+             <div class="form-group col-sm-1">
+                <label class="control-label">Unit</label>
+                <p class="form-control-static">{{inventoryItem.distributionUnit}}</p>                    
+            </div>
+            {{em-input property="purchaseCost" label="Purchase Cost" class="col-sm-2 required"}}
+        </div>
+        <div class="row">
+            {{em-input property="vendorItemNo" label="Vendor Item Number" class="col-sm-4"}}
+            {{date-picker property="expirationDate" label="Expiration Date" minDate="now" class="col-sm-2"}}
+            <div class="form-group col-sm-2">
+                <label class="control-label">&nbsp;</label>
+                <p class="form-control-static">
+                    <button class="btn btn-primary" {{action "addInventoryItem"}}>
+                        <span class="octicon octicon-plus"></span> Add
+                    </button>
+                </p>
+            </div>
+        </div>
     </div>
 </div>
-<textarea>
-name
-quantity
-price
-item number
-
-Need for new item type
-Need to new item unit
-</textarea>
 {{#if invoiceItems}}
     <h3>Invoice Items</h3>
     <table class="table">
@@ -43,16 +55,20 @@ Need to new item unit
             <th>Quantity</th>
             <th>Cost</th>
             <th>Item Number</th>
+            <th>Expiration Date</th>
             <th>Action</th>
         </tr>
         {{#each invoiceItems}}
             <tr>
-                <td class="col-sm-4">
-                    {{item.name}}
+                <td class="col-sm-3">
+                    {{inventoryItem.name}}
                 </td>
                 <td class="col-sm-2">
-                    <div class="form-group">
+                     <div class="input-group">
                         {{input class="form-control" value=quantity }}
+                        <span class="input-group-addon">
+                        {{inventoryItem.distributionUnit}}
+                         </span>
                     </div>
                 </td>
                 <td class="col-sm-2">
@@ -60,10 +76,13 @@ Need to new item unit
                         {{input class="form-control" value=purchaseCost }}
                     </div>
                 </td>
-                <td class="col-sm-3">
+                <td class="col-sm-2">
                     <div class="form-group">
                         {{input class="form-control" value=vendorItemNo }}
                     </div>
+                </td>
+                <td class="col-sm-2">
+                    {{date-picker property="expirationDate" minDate="now" currentDate=expirationDate currentDisplayDate=displayExpirationDate }}
                 </td>
                 <td class="col-sm-1">
                     <button class="btn btn-default warning" {{action "showRemoveItem" this bubbles=false }}>

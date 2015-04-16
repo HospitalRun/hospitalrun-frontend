@@ -1,13 +1,20 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import InventoryLocations from 'hospitalrun/mixins/inventory-locations';
 import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import Ember from 'ember';
 
-export default AbstractEditController.extend(InventorySelection, {    
+export default AbstractEditController.extend(InventoryLocations, InventorySelection, {    
     needs: ['inventory','pouchdb'],
    
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
-    
+    purchaseAttributes: [
+        'expirationDate',
+        'inventoryItem',
+        'purchaseCost',
+        'quantity',
+        'vendorItemNo'
+    ],
     
     inventoryList: function() {
         var inventoryItems = this.get('inventoryItems');
@@ -35,6 +42,8 @@ export default AbstractEditController.extend(InventorySelection, {
         return !Ember.isEmpty(invoiceItems);
     }.property('invoiceItems.@each'),
         
+    updateButtonText: 'Save',
+    
     updateCapability: 'add_inventory_item',
     
     _addNewInventoryItem: function() {        
@@ -46,24 +55,46 @@ export default AbstractEditController.extend(InventorySelection, {
     },
     
     _addInvoiceItem: function() {
-         var inventoryItem = this.get('inventoryItem'),                
-            invoiceItems = this.get('invoiceItems'),            
-            purchaseCost = this.get('purchaseCost'),
-            quantity = this.get('quantity'),
-            vendorItemNo = this.get('vendorItemNo'),
-            invoiceItem = Ember.Object.create({
-                item: inventoryItem,
-                quantity: quantity,
-                purchaseCost: purchaseCost,
-                vendorItemNo: vendorItemNo
-            });
+        var invoiceItems = this.get('invoiceItems'),
+            itemProperties = this.getProperties(this.get('purchaseAttributes')),            
+            invoiceItem = Ember.Object.create(itemProperties);
         invoiceItems.addObject(invoiceItem);
+        this.set('expirationDate');
         this.set('inventoryItem');
         this.set('inventoryItemTypeAhead');
         this.set('purchaseCost');
         this.set('quantity');
         this.set('selectedInventoryItem');
         this.set('vendorItemNo');
+    },
+    
+    _savePurchases: function() {
+        var purchaseDefaults = this.getProperties([
+            'dateReceived',
+            'vendor',
+            'invoiceNo',
+            'location',
+            'aisleLocation',
+            'giftInKind']),
+            invoiceItems = this.get('invoiceItems'),
+            inventoryPurchase,
+            savePromises = [];
+        invoiceItems.forEach(function(invoiceItem) {
+            var inventoryItem = invoiceItem.get('inventoryItem'),
+                purchases = inventoryItem.get('purchases');
+            inventoryPurchase = this.store.createRecord('inv-purchase', purchaseDefaults);
+            inventoryPurchase.setProperties(invoiceItem.getProperties(this.get('purchaseAttributes')));
+            inventoryPurchase.set('inventoryItem', 'inventory_'+inventoryItem.get('id'));
+            inventoryPurchase.save().then(function() {
+                purchases.addObject(inventoryPurchase);
+                this.newPurchaseAdded(inventoryItem, inventoryPurchase); 
+                inventoryItem.updateQuantity();
+                savePromises.push(inventoryItem.save());
+            }.bind(this));
+        }.bind(this));
+        Ember.RSVP.all(savePromises).then(function() {
+            this.displayAlert('Inventory Purchases Saved', 'The inventory purchases have been successfully saved', 'allItems');
+        }.bind(this));
     },
     
     actions: {
@@ -76,6 +107,7 @@ export default AbstractEditController.extend(InventorySelection, {
             if (this.get('isValid') && !Ember.isEmpty(inventoryItemTypeAhead) && !Ember.isEmpty(quantity) && !Ember.isEmpty(purchaseCost)) {
                 if (Ember.isEmpty(this.get('selectedInventoryItem'))) {
                     this._addNewInventoryItem();
+                    return true;
                 } else {                
                     this._addInvoiceItem();
                 }
@@ -86,6 +118,9 @@ export default AbstractEditController.extend(InventorySelection, {
             this.set('inventoryItem', inventoryItem);
             this._addInvoiceItem();
             this.send('closeModal');
+            if (this.get('doingUpdate')) {
+                this._savePurchases();
+            }
         },        
         
         removeItem: function(removeInfo) {
@@ -102,6 +137,17 @@ export default AbstractEditController.extend(InventorySelection, {
                 }),
                 title = 'Remove Item';
             this.displayConfirm(title, message, 'removeItem', model);            
-        },        
+        },
+        
+        /**
+         * Update the model
+         */
+        update: function() {
+            this.set('doingUpdate');
+            var addingNewInventory = this._addInventoryItem();
+            if (!addingNewInventory) {
+                this._savePurchases();
+            }
+        }
     }
 });
