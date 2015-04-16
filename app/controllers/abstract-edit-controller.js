@@ -14,6 +14,17 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
         }
     }.property('isDirty'),
 
+    disabledAction: function() {
+        var isValid = this.get('isValid');
+        if (!isValid) {
+            return 'showDisabledDialog';  
+        }
+    }.property('isValid'),
+    
+    isNewOrDeleted: function() {
+        return this.get('isNew') || this.get('isDeleted');
+    }.property('isNew', 'isDeleted'),
+    
     /**
      *  Lookup lists that should be updated when the model has a new value to add to the lookup list.
      *  lookupListsToUpdate: [{
@@ -77,6 +88,10 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
         returnTo: function() {
             this._cancelUpdate();
             this.transitionToRoute(this.get('returnTo'));
+        },        
+        
+        showDisabledDialog: function() {            
+            this.displayAlert('Warning!!!!','Please fill in required fields (marked with *) and correct the errors before saving.');
         },        
         
         /**

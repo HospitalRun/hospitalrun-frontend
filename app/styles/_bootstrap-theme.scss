@@ -57,6 +57,7 @@
     &:active,
     &.active { background-color: #00cca8; }
     &.disabled,
+    &.disabled-btn,
     &[disabled] { background-color: #00bd9c; color: #a5a5a5; }
 }
 
@@ -66,7 +67,7 @@ fieldset[disabled] .btn-primary {
 }
 
 .btn-primary {
-    &.disabled:hover, &[disabled]:hover {
+    &.disabled-btn, &.disabled:hover, &[disabled]:hover {
         background-color: #00bd9c;
         color: #a5a5a5;
     }
