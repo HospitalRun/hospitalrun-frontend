@@ -31,17 +31,24 @@ export default AbstractReportController.extend(NumberFormat, {
         }
     },
     riskScoresReportColumns: {
-        date: {
+        reportedDate: {
             label: 'Reported Date',
             include: true,
-            property: 'reportedDate'
+            property: 'reportedDate',
+            format: '_dateFormat'
         },
         id: {
             label: 'Id',
             include: true,
             property: 'friendlyId'
         },
-         department: {
+        dateOfIncident: {
+            label: 'Date of Incident',
+            include: true,
+            property: 'dateOfIncident',
+            format: '_dateFormat'
+        },
+        department: {
             label: 'Department',
             include: true,
             property: 'locationOfIncident'
@@ -184,22 +191,13 @@ export default AbstractReportController.extend(NumberFormat, {
     },
 
     _generateRiskReport: function(incidents) {
-        var reportColumns = this.get('riskScoresReportColumns');
-        var incidentLocations = this._totalByType(incidents, 'locationOfIncident', 'total');
-        incidentLocations.forEach(function(incidentLocation) {
-            if (incidentLocation.type === 'total') {
-                this._addReportRow({
-                    visitDate: 'Total incidents: '+incidentLocation.total
-                });
-            } else {
-                incidentLocation.records.forEach(function(visit) {
-                    this._addReportRow(visit);
+        var reportColumns = this.get('riskScoresReportColumns'),
+        totalLabel = 'Total incidents: ' + this._numberFormat(incidents.get('length'));
+
+        incidents.forEach(function(incident) {
+            this._addReportRow(incident,false,reportColumns);
                 }.bind(this));
-                this._addReportRow({
-                    visitDate: 'Total for %@: %@'.fmt(incidentLocation.type,incidentLocation.total)
-                });
-            }
-        }.bind(this));
+        this._addRowDirectly(totalLabel);
         this._finishReport(reportColumns);
     },
        

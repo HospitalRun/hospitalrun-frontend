@@ -58,6 +58,15 @@ export default Ember.ArrayController.extend(DateFormat, NumberFormat, PouchDbMix
             reportRows.addObject(reportRow);
         }
     },
+
+
+    _addRowDirectly: function(valueToPush){
+        var reportRows = this.get('reportRows'),
+            reportRow = [];
+
+            reportRow.push(valueToPush);
+            reportRows.addObject(reportRow);
+    },
     
     /**
      * Finish up the report by setting headers, titles and export.
