@@ -35,7 +35,8 @@ export default AbstractModel.extend({
     postRiskScore: DS.attr('string'),
    
 
-    incidentOpen: DS.attr('boolean', {defaultValue: true})
+    incidentOpen: DS.attr('boolean', {defaultValue: true}),
+    notificationSend: DS.attr('boolean', {defaultValue: false})
     //severity : DS.attr()
     
     //
