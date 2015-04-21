@@ -4,6 +4,12 @@ import InventoryId from 'hospitalrun/mixins/inventory-id';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; //inventory-locations mixin is needed for fulfill-request mixin!
 export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, InventoryLocations, {
     addCapability: 'add_inventory_item',
+    additionalButtons: [{
+        buttonAction: 'newInventoryBatch',
+        buttonText: '+ inventory received',
+        class: 'btn btn-primary'
+    }],
+    
     additionalModels: [{ 
         name: 'aisleLocationList',
         findArgs: ['lookup','aisle_location_list']
@@ -16,8 +22,7 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
     }, {
         name: 'warehouseList',
         findArgs: ['lookup','warehouse_list']
-    }
-  ],
+    }],
     
     currentItem: null,
     moduleName: 'inventory',
@@ -44,6 +49,10 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
             currentItem.updateQuantity();
             currentItem.save();
             this.send('closeModal');
+        },
+        
+        newInventoryBatch: function() {
+            this.transitionTo('inventory.batch', 'new');
         },
         
         newRequest: function() {
