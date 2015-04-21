@@ -29,12 +29,15 @@
             {{em-input property="quantity" label="Quantity" class="col-sm-2 required"}}    
              <div class="form-group col-sm-1">
                 <label class="control-label">Unit</label>
-                <p class="form-control-static">{{inventoryItem.distributionUnit}}</p>                    
+                {{#if showDistributionUnit}}
+                    <p class="form-control-static">{{inventoryItem.distributionUnit}}</p>
+                {{/if}}                 
             </div>
             {{em-input property="purchaseCost" label="Purchase Cost" class="col-sm-2 required"}}
         </div>
         <div class="row">
             {{em-input property="vendorItemNo" label="Vendor Item Number" class="col-sm-4"}}
+            {{em-input property="lotNumber" label="Serial/Lot Number" class="col-sm-4"}}
             {{date-picker property="expirationDate" label="Expiration Date" minDate="now" class="col-sm-2"}}
             <div class="form-group col-sm-2">
                 <label class="control-label">&nbsp;</label>
@@ -55,12 +58,13 @@
             <th>Quantity</th>
             <th>Cost</th>
             <th>Item Number</th>
+            <th>Serial/Lot Number</th>        
             <th>Expiration Date</th>
             <th>Action</th>
         </tr>
         {{#each invoiceItems}}
             <tr>
-                <td class="col-sm-3">
+                <td class="col-sm-2">
                     {{inventoryItem.name}}
                 </td>
                 <td class="col-sm-2">
@@ -82,7 +86,12 @@
                     </div>
                 </td>
                 <td class="col-sm-2">
-                    {{date-picker property="expirationDate" minDate="now" currentDate=expirationDate currentDisplayDate=displayExpirationDate }}
+                    <div class="form-group">
+                        {{input class="form-control" value=lotNumber }}
+                    </div>
+                </td>                
+                <td class="col-sm-2">
+                    {{date-picker property="expirationDate" minDate="now" model=this }}
                 </td>
                 <td class="col-sm-1">
                     <button class="btn btn-default warning" {{action "showRemoveItem" this bubbles=false }}>

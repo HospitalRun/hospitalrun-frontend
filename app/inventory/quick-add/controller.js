@@ -10,6 +10,13 @@ export default InventoryEditController.extend({
         }
     },
     
+    beforeUpdate: function() {        
+        if (this.get('skipSavePurchase')) {
+            this.set('quantity', null);        
+        }
+        return this._super();
+    },
+    
     afterUpdate: function(record) {
         this.send('addedNewInventoryItem', record);
     }
