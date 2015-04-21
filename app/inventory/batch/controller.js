@@ -46,6 +46,21 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
         var invoiceItems = this.get('invoiceItems');
         return !Ember.isEmpty(invoiceItems);
     }.property('invoiceItems.@each'),
+    
+    totalReceived: function() {
+        var invoiceItems = this.get('invoiceItems'),
+            total = 0;
+        if (!Ember.isEmpty('invoiceItems')) {
+            total = invoiceItems.reduce(function(previousValue, item) {
+                return previousValue + Number(item.get('purchaseCost'));
+            }, total);
+        }
+        var purchaseCost = this.get('purchaseCost');
+        if (this.get('isValid') && !Ember.isEmpty(purchaseCost)) {
+            total += Number(purchaseCost);
+        }
+        return total;
+    }.property('invoiceItems@each.purchaseCost', 'isValid', 'purchaseCost'),
         
     updateButtonText: 'Save',
     
