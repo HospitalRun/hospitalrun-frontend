@@ -30,6 +30,7 @@ var InventoryPurchaseItem = AbstractModel.extend(LocationName, {
     vendor: DS.attr('string'),
     vendorItemNo: DS.attr('string'),
     distributionUnit: DS.attr('string'),
+    invoiceNo: DS.attr('string'),
     quantityGroups: DS.attr(),
     validations: {
         purchaseCost: {

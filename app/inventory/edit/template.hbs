@@ -30,6 +30,7 @@
                     <th>Serial/Lot Number</th>
                     <th>Expiration Date</th>
                     <th>Vendor</th>
+                    <th>Invoice Number</th>
                 </tr>
                 {{#each purchases itemController='inventory/purchase/item-controller'}}
                     <tr {{bind-attr class="rowClass"}}>
@@ -41,6 +42,7 @@
                         <td>{{lotNumber}}</td>                
                         <td>{{date-format expirationDate}}</td>
                         <td>{{vendor}}</td>
+                        <td>{{invoiceNo}}</td>
                     </tr>
                 {{/each}}
             </table>
