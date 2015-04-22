@@ -139,6 +139,12 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
             pricing:  'type'
         }
     }, {
+        name: 'Vendor',
+        value: 'vendor_list',
+        models: {
+            'inv-purchase': 'vendor'      
+        }
+    }, {
         name: 'Visit Locations',
         value: 'visit_location_list',
         models: {

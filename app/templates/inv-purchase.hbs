@@ -11,23 +11,15 @@
     </div>
 {{/if}}
 <div class="row">
-    <div class="col-sm-4">
-        {{em-input property="purchaseCost" label="Purchase Cost" class="required"}}
-    </div>
-    <div class="col-sm-4">
-        {{em-input property="lotNumber" label="Serial/Lot Number"}}
-    </div>
+    {{em-input property="purchaseCost" label="Purchase Cost" class="required" class="col-sm-4"}}
+    {{em-input property="lotNumber" label="Serial/Lot Number" class="col-sm-4"}}
 </div>
 <div class="row">
     {{date-picker property="expirationDate" label="Expiration Date" minDate="now" class="col-sm-4"}}
 </div>
-<div class="row">
-    <div class="col-sm-6">
-        {{em-input property="vendor" label="Vendor"}}
-    </div>
-    <div class="col-sm-6">
-        {{em-input property="vendorItemNo" label="Vendor Item Number"}}
-    </div>
+<div class="row">    
+    {{select-or-typeahead property="vendor" label="Vendor" list=vendorList selection=vendor class="col-sm-6"}}
+    {{em-input property="vendorItemNo" label="Vendor Item Number" class="col-sm-6"}}    
 </div>
 {{#if isNew}}
     {{select-or-typeahead property="location" label="Location" list=warehouseList selection=location }}

@@ -1,7 +1,7 @@
 {{#em-form model=this submit_button=false }}
 <div class="row">
     {{date-picker property="dateReceived" label="Date Received" class="col-sm-4 required"}}
-    {{em-input property="vendor" label="Vendor" class="col-sm-4"}}    
+    {{select-or-typeahead property="vendor" label="Vendor" list=vendorList selection=vendor class="col-sm-4"}}
     {{em-input property="invoiceNo" label="Invoice Number" class="col-sm-4"}}
 </div>
 <div class="row">    

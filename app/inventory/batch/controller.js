@@ -9,6 +9,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
    
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
+    vendorList: Ember.computed.alias('controllers.inventory.vendorList'),
     purchaseAttributes: [
         'expirationDate',
         'inventoryItem',
@@ -32,6 +33,10 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
         name: 'aisleLocationList', //Name of property containing lookup list
         property: 'aisleLocation', //Corresponding property on model that potentially contains a new value to add to the list
         id: 'aisle_location_list' //Id of the lookup list to update
+    }, {
+        name: 'vendorList', //Name of property containing lookup list
+        property: 'vendor', //Corresponding property on model that potentially contains a new value to add to the list
+        id: 'vendor_list' //Id of the lookup list to update
     }, {
         name: 'warehouseList', //Name of property containing lookup list
         property: 'location', //Corresponding property on model that potentially contains a new value to add to the list
