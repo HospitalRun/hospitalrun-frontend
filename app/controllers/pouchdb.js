@@ -107,7 +107,10 @@ export default Ember.Controller.extend(PouchAdapterUtils, {
             var dbUrl =  document.location.protocol+'//'+document.location.host+'/db/main';
             new PouchDB(dbUrl, pouchOptions, function(err, db) {                
                 if (err) {
-                    reject(err);
+                    Ember.run.later(this, function() {
+                        this.get('session').invalidate();
+                    });
+                    reject(err);            
                 } else {
                     createPouchViews(db);
                     this._gotServerMainDB(err, db);
