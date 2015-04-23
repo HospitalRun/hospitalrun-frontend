@@ -5,7 +5,10 @@ export default AbstractModuleRoute.extend(IncidentId, {
     additionalModels: [{
         name: 'incidentLocationsList',
         findArgs: ['lookup','incident_locations']
-     }],
+     },{ 
+        name: 'userList',
+        findArgs: ['user']
+    }],
     moduleName: 'incident',
     newButtonText: '+ new incident',
     sectionTitle: 'Incidents',

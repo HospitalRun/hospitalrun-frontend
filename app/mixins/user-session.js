@@ -414,6 +414,14 @@ export default Ember.Mixin.create({
             'User Administrator',
             'System Administrator'
         ],
+        add_reviewer : [
+            'User Administrator',
+            'System Administrator'
+        ],
+        delete_reviewer: [
+            'User Administrator',
+            'System Administrator'
+        ],
 		add_investigation_finding : [
 			'User Administrator',
             'System Administrator'

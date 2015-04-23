@@ -10,6 +10,7 @@
         </div>
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class="active" ><a href="#creation" role="tab" data-toggle="pill">Creation</a></li>
+            <li role="presentation"><a href="#reviewers" role="tab" data-toggle="pill">Add Reviewers</a></li>
             <li role="presentation"><a href="#feedback" role="tab" data-toggle="pill">Feedback</a></li>    
             <li role="presentation"><a href="#investigate" role="tab" data-toggle="pill">Investigation Findings</a></li>
             <li role="presentation"><a href="#factors" role="tab" data-toggle="pill">Contributing Factors</a></li>
@@ -73,6 +74,45 @@
                     </div>
                 </div>
              </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="reviewers">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Add Reviewers
+                            {{#if canAddReviewer}}
+                                <button class="btn btn-primary align-right" {{action "showAddReviewer" bubbles=false }}><span class="octicon octicon-plus"></span>New Reviewer</button>
+                            {{/if}}
+                        </h3>
+                    </div>
+                    <div class="panel-body detail-section-content">
+                        <table class="table">
+                            <tr class="table-header">
+                                <th>Reviewer Email</th>
+                                <th>Added By</th>
+                                <th>Added On</th>
+                                <th>Actions</th>
+                            </tr>
+                            {{#with this as parentController}}
+                                {{#each reviewers}}
+                                    <tr>
+                                        <td>{{reviewerEmail}}</td>
+                                        <td>{{addedBy}}</td>
+                                        <td>{{date-format dateRecorded}}</td>
+                                        <td>
+                                            {{#if parentController.canAddReviewer}}
+                                               <button class="btn btn-default neutral" {{action "showEditReviewer" this}}>Edit</button>
+                                            {{/if}}
+                                            {{#if parentController.canDeleteReviewer}}
+                                               <button class="btn btn-default warning" {{action "showDeleteReviewer" this  bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                            {{/if}}
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                            {{/with}}
+                        </table>
+                    </div>
+                </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="feedback">
                 <div class="panel">

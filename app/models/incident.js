@@ -13,6 +13,7 @@ export default AbstractModel.extend({
     categoryItem: DS.attr('string'),
 
     feedbacks: DS.hasMany('inc-feedback', {async: true}),
+    reviewers: DS.hasMany('inc-reviewer', {async: true}),
     investigationFindings: DS.hasMany('inc-investigation-finding', {async: true}),
     recommendations: DS.hasMany('inc-recommendation',  {async: true}),
     

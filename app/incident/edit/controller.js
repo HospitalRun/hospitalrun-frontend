@@ -14,6 +14,10 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         return this.currentUserCan('add_feedback');
     }.property(),
 
+    canAddReviewer: function() {        
+        return this.currentUserCan('add_reviewer');
+    }.property(),
+
     canAddInvestigationFinding: function() {
         return this.currentUserCan('add_investigation_finding');
     }.property(),    
@@ -26,12 +30,16 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         return this.currentUserCan('add_recommendation');
     }.property(),
     
-	canAddRisk: function() {        
+	  canAddRisk: function() {        
         return this.currentUserCan('add_risk');
     }.property(),    
 	
     canDeleteFeedback: function() {        
         return this.currentUserCan('delete_feedback');
+    }.property(),
+
+    canDeleteReviewer: function() {        
+        return this.currentUserCan('delete_reviewer');
     }.property(),
     
     canDeleteInvestigationFinding: function() {
@@ -206,6 +214,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     ],
 
     incidentLocationsList: Ember.computed.alias('controllers.incident.incidentLocationsList.value'),
+    
     //preSeverityTypes: Ember.computed.alias('controllers.incident.severityTypes'),
     //preOccurrenceTypes: Ember.computed.alias('controllers.incident.occurrenceTypes'),
     //preRiskScores: Ember.computed.alias('controllers.incident.riskScores'),
@@ -311,7 +320,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
 
         showAddFeedback: function() {
             var newFeedback = this.get('store').createRecord('inc-feedback', {
-                dateRecorded: new Date(),
+                dateRecorded: new Date()
                 //incident: this.get('model')
             });
             this.send('openModal', 'incident.feedback.edit', newFeedback);
@@ -329,6 +338,33 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
             this.send('openModal', 'incident.feedback.edit', feedback);
         },
 
+        //Reviewers functions
+
+        addReviewer: function(newReviewer) {
+            this.updateList('reviewers', newReviewer);
+        },
+
+        showAddReviewer: function() {
+            var newReviewer = this.get('store').createRecord('inc-reviewer', {
+                dateRecorded: new Date()
+                //incident: this.get('model')
+            });
+            this.send('openModal', 'incident.reviewer.edit', newReviewer);
+        },        
+
+        deleteReviewer: function(reviewer) {
+            this.updateList('reviewers', reviewer, true);
+        },
+        
+        showDeleteReviewer: function(reviewer) {
+            this.send('openModal', 'incident.reviewer.delete', reviewer);
+        },
+
+        showEditReviewer: function(reviewer) {
+            this.send('openModal', 'incident.reviewer.edit', reviewer);
+        },
+
+
         //Investigating Finding Functions
 
         addInvestigationFinding: function(newInvestigationFinding) {
@@ -337,7 +373,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
 
         showAddInvestigationFinding: function() {
             var newInvestigationFinding = this.get('store').createRecord('inc-investigation-finding', {
-                dateRecorded: new Date(),
+                dateRecorded: new Date()
                 //incident: this.get('model')
             });
             this.send('openModal', 'incident.investigation-finding.edit', newInvestigationFinding);
@@ -363,7 +399,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
 
         showAddRecommendation: function() {
             var newRecommendation = this.get('store').createRecord('inc-recommendation', {
-                dateRecorded: new Date(),
+                dateRecorded: new Date()
                 //incident: this.get('model')
             });
             this.send('openModal', 'incident.recommendation.edit', newRecommendation);

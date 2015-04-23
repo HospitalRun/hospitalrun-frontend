@@ -1,0 +1,7 @@
+{{#em-form model=this submit_button=false }}
+    <div class="row">
+          {{em-select label="Reviewer To Add" 
+            property="reviewerEmail" content=userList
+            optionValuePath="content.email" optionLabelPath="content.displayName" }} 
+    </div>
+{{/em-form}}
