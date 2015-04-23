@@ -1,21 +1,21 @@
 {{#em-form model=this submit_button=false }}
     <div class="panel panel-success">
-            <div>
-                <div class="row">        
-                    <div class="form-group col-sm-2">
+            <div class="row">        
+                    <div class="form-group col-sm-6">
                         <label class="control-label">Incident Id</label>{{id}}
                     </div>                    
-                </div>
-            </div>
+             </div>
         </div>
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class="active" ><a href="#creation" role="tab" data-toggle="pill">Creation</a></li>
-            <li role="presentation"><a href="#reviewers" role="tab" data-toggle="pill">Add Reviewers</a></li>
+            <li role="presentation"><a href="#reviewers" role="tab" data-toggle="pill">+ Reviewers</a></li>
             <li role="presentation"><a href="#feedback" role="tab" data-toggle="pill">Feedback</a></li>    
-            <li role="presentation"><a href="#investigate" role="tab" data-toggle="pill">Investigation Findings</a></li>
-            <li role="presentation"><a href="#factors" role="tab" data-toggle="pill">Contributing Factors</a></li>
-            <li role="presentation"><a href="#risk" role="tab" data-toggle="pill">Risk Assesment</a></li>
+            <li role="presentation"><a href="#investigate" role="tab" data-toggle="pill">Investigations</a></li>
+            <li role="presentation"><a href="#factors" role="tab" data-toggle="pill">Root Cause Analysis</a></li>
+            <li role="presentation"><a href="#harmscore" role="tab" data-toggle="pill">Harm Score</a></li>
+            <li role="presentation"><a href="#prerisk" role="tab" data-toggle="pill">Pre-Incident Asst</a></li>
             <li role="presentation"><a href="#recommendation" role="tab" data-toggle="pill">Recommendations</a></li>
+            <li role="presentation"><a href="#postrisk" role="tab" data-toggle="pill">Post-Incident Asst</a></li>
             <li role="presentation"><a href="#summary" role="tab" data-toggle="pill">Summary</a></li>
         </ul>
     <div class="tab-content">
@@ -217,7 +217,7 @@
                     </div>
                 </div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="risk">
+        <div role="tabpanel" class="tab-pane" id="harmscore">
                 <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">
@@ -231,19 +231,16 @@
                         </div>
                     {{/if}}
                 </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="prerisk">
                 <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            Risk Assesment
+                            PRE-Incident Risk Assesment
                        </h3>
                     </div>
                     {{#if canAddRisk}}
                         <div class="panel-body detail-section-content">
-                            <div class="panel-heading">
-                                <h2 class="panel-title">
-                                    PRE-Incident Risk Assesment
-                                </h2>
-                            </div>
                             <div class="panel-body">
                                 <table class="table" >
                                     <tr class="table-header">
@@ -265,39 +262,6 @@
                                          <td> 
                                                 {{ext-radio name=preRiskScore content=preRiskScores 
                                                 value=preRiskScore radioLabelPath="content.label"
-                                                radioValuePath="content.value"}}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                       </div>
-                       <div class="panel-body detail-section-content">
-                            <div class="panel-heading">
-                                <h2 class="panel-title">
-                                    POST-Incident Risk Assesment
-                                </h2>
-                            </div>
-                            <div class="panel-body">
-                                <table class="table" >
-                                    <tr class="table-header">
-                                        <th>Severity</th>
-                                        <th>Occurrence</th>
-                                        <th>RISK SCORE = Severity x Occurrence</th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            {{ext-radio name=postSeverity content=severityTypes 
-                                                value=postSeverity radioLabelPath="content.label"
-                                                radioValuePath="content.value"}}
-                                        </td>
-                                        <td>
-                                            {{ext-radio name=postOccurence content=occurrenceTypes 
-                                                value=postOccurence radioLabelPath="content.label"
-                                                radioValuePath="content.value"}}
-                                        </td>
-                                        <td> 
-                                            {{ext-radio name=postRiskScore content=riskScores 
-                                                value=postRiskScore radioLabelPath="content.label"
                                                 radioValuePath="content.value"}}
                                         </td>
                                     </tr>
@@ -348,6 +312,45 @@
                             {{/with}}
                         </table>
                     </div>
+                </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="postrisk">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            POST-Incident Risk Assesment
+                       </h3>
+                    </div>
+                    {{#if canAddRisk}}
+                       <div class="panel-body detail-section-content">
+                            <div class="panel-body">
+                                <table class="table" >
+                                    <tr class="table-header">
+                                        <th>Severity</th>
+                                        <th>Occurrence</th>
+                                        <th>RISK SCORE = Severity x Occurrence</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{ext-radio name=postSeverity content=severityTypes 
+                                                value=postSeverity radioLabelPath="content.label"
+                                                radioValuePath="content.value"}}
+                                        </td>
+                                        <td>
+                                            {{ext-radio name=postOccurence content=occurrenceTypes 
+                                                value=postOccurence radioLabelPath="content.label"
+                                                radioValuePath="content.value"}}
+                                        </td>
+                                        <td> 
+                                            {{ext-radio name=postRiskScore content=riskScores 
+                                                value=postRiskScore radioLabelPath="content.label"
+                                                radioValuePath="content.value"}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                       </div>
+                    {{/if}}
                 </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="summary">
