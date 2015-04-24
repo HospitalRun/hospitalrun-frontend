@@ -79,7 +79,10 @@ var InventoryRequest = AbstractModel.extend(LocationName, {
                             requestQuantity = parseInt(object.get('quantity')),
                             transactionType = object.get('transactionType'),
                             quantityToCompare = null;
-                        if (isNew && transactionType === 'Request') {
+                        if (transactionType === 'Return') {
+                            //no validation needed for returns
+                            return false;
+                        } else if (isNew && transactionType === 'Request') {
                             quantityToCompare = object.get('inventoryItem.quantity');
                         } else { 
                             quantityToCompare = object.get('inventoryLocation.quantity');

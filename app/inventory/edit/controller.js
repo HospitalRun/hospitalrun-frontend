@@ -113,7 +113,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                 });
             request.set('inventoryLocations',[inventoryLocation]);            
             var increment = false;
-            if (transactionType === 'Adjustment (Add)') {
+            if (transactionType === 'Adjustment (Add)' || transactionType === 'Return') {
                 increment = true;
             }
             request.set('markAsConsumed',true);
