@@ -40,7 +40,7 @@ export default Ember.Mixin.create({
             costPerUnit,
             requestPurchases = [],
             quantityOnHand = item.get('quantity'),
-            quantityRequested = request.get('quantity'),
+            quantityRequested = parseInt(request.get('quantity')),
             quantityNeeded = quantityRequested,
             purchaseInfo = [],
             totalCost = 0;
