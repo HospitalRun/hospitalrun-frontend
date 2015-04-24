@@ -3,7 +3,13 @@ export default Ember.Mixin.create({
     aisleToFind: null,
     locationToFind: null,
     
-    _addQuantityToLocation: function(inventoryItem, quantity, location, aisle) {
+    _addQuantityToLocation: function(inventoryItem, quantity, location, aisle) {        
+        var foundLocation = this._findOrCreateLocation(inventoryItem, location, aisle);
+        foundLocation.incrementProperty('quantity', quantity);
+        foundLocation.save();
+    },
+    
+    _findOrCreateLocation: function(inventoryItem, location, aisle) {
         var foundLocation = false,
             locations = inventoryItem.get('locations');
         this.set('aisleToFind', aisle);
@@ -11,28 +17,16 @@ export default Ember.Mixin.create({
         
         foundLocation = locations.find(this.findLocation, this);
         if (foundLocation) {
-            foundLocation.incrementProperty('quantity', quantity);
-            foundLocation.save();
+            return foundLocation;
         } else {
             var locationRecord = this.get('store').createRecord('inv-location', {
                 aisleLocation: aisle,
                 location: location,
-                quantity: quantity,
+                quantity: 0,
             });
-            locationRecord.save();
             locations.addObject(locationRecord);
-        }        
-    },
-    
-    adjustLocation: function(inventoryItem, inventoryLocation) {
-        var transactionType = inventoryLocation.get('transactionType'),
-            adjustmentQuantity = parseInt(inventoryLocation.get('adjustmentQuantity'));
-        if (transactionType === 'Adjustment (Add)') {
-            inventoryLocation.incrementProperty('quantity', adjustmentQuantity);
-        } else if (transactionType === 'Adjustment (Remove)') {
-            inventoryLocation.decrementProperty('quantity', adjustmentQuantity);
-        }
-        inventoryLocation.save();
+            return locationRecord;
+        }         
     },
     
     findLocation: function(inventoryLocation) {
