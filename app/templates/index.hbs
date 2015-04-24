@@ -237,7 +237,11 @@
                     {{#if userCan_add_medication}}
                         {{#link-to 'medication.edit' 'new' class="sub-section-link"}}
                             New request
-                            <span class="octicon octicon-plus"></span>
+                            <span class="octicon octicon-plus"></span>                    
+                        {{/link-to}}
+                        {{#link-to 'medication.return' 'new' class="sub-section-link"}}
+                            Return medication
+                            <span class="octicon octicon-mail-reply"></span>
                         {{/link-to}}
                     {{/if}}
                 </nav>

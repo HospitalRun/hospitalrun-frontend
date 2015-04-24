@@ -1,0 +1,29 @@
+{{#em-form model=this submit_button=false }}
+    {{#if showPatientMedicationList}}
+        {{em-select class="required" label="Medication" 
+            property="medication" content=patientMedication
+            optionValuePath="content" optionLabelPath="content.inventoryItem.name"            
+            selected=medication
+        }}        
+    {{else}}
+        {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required" showQuantity=false }}
+    {{/if}}
+    <div class="row">
+        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-6"}}
+        {{em-select class="col-xs-6" label="Visit" 
+            property="visit" content=patientVisits
+            optionValuePath="content" optionLabelPath="content.visitDescription"            
+            selected=visit
+        }}        
+    </div>
+    <div class="row">
+        {{em-input property="quantity" label="Quantity To Return" class="col-xs-3 required"}}
+        {{select-or-typeahead property="deliveryLocation" label="Return Location" list=warehouseList selection=location class="col-xs-4"}}
+        {{select-or-typeahead property="deliveryAisle" label="Return Aisle" list=aisleLocationList selection=aisleLocation class="col-xs-4"}}
+    </div>
+    {{em-text property="reason" label="Return Reason/Notes" rows="3"}}
+    <div class="row">
+        {{date-picker property="dateCompleted" label="Adjustment Date" class="col-sm-4"}}
+        {{select-or-typeahead property="expenseAccount" label="Credit To Account" list=expenseAccountList selection=expenseAccount  class="col-sm-8"}}
+    </div>
+{{/em-form}}

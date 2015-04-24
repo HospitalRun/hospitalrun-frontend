@@ -4,10 +4,29 @@ export default AbstractModuleRoute.extend({
     moduleName: 'medication',
     newButtonText: '+ new request',
     sectionTitle: 'Medication',
+    
+    additionalButtons: function() {
+        if (this.currentUserCan(this.get('addCapability'))) {
+            return [{
+                buttonAction: 'returnMedication',
+                buttonText: '< return medication',
+                class: 'btn btn-primary'
+            }];
+        }
+    }.property(),
 
-    additionalModels: [{
+    additionalModels: [{ 
+        name: 'aisleLocationList',
+        findArgs: ['lookup','aisle_location_list']
+    }, {
+        name: 'expenseAccountList',
+        findArgs: ['lookup','expense_account_list']
+    }, {
         name: 'medicationFrequencyList',
         findArgs: ['lookup','medication_frequency']
+    }, {
+        name: 'warehouseList',
+        findArgs: ['lookup','warehouse_list']
     }],
     
     subActions: [{
@@ -16,6 +35,14 @@ export default AbstractModuleRoute.extend({
     }, {
         text: 'Completed',
         linkTo: 'medication.completed'
-    }]
+    }],
+    
+    actions: {
+        returnMedication: function(){
+            if (this.currentUserCan(this.get('addCapability'))) {
+                this.transitionTo('medication.return', 'new');
+            }
+        }
+    }
 });
 

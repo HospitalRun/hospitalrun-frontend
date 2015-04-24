@@ -57,6 +57,7 @@ Router.map(function() {
     this.resource('medication', function() {
         this.route('completed');
         this.route('edit', { path: "/edit/:medication_id" });
+        this.route('return', { path: "/return/:inv-request_id" });
         this.route('search', { path: "/search/:search_text" });
     });
     
