@@ -1,5 +1,6 @@
-import Ember from "ember";
-export default Ember.ObjectController.extend({
+import AdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
+import Ember from 'ember';
+export default Ember.ObjectController.extend(AdjustmentTypes, {
     deliveryDetails: function() {
         var locationName = this.get('deliveryLocationName'),
             patient = this.get('patient');
@@ -15,10 +16,10 @@ export default Ember.ObjectController.extend({
     }.property('reason'),
 
     isAdjustment: function() {
-        var transactionType = this.get('transactionType');
-        return transactionType === 'Adjustment (Add)' || 
-            transactionType === 'Adjustment (Remove)' ||
-            transactionType === 'Write Off';
+        var adjustmentTypes = this.get('adjustmentTypes'),
+            adjustmentType = adjustmentTypes.findBy('type', transactionType),
+            transactionType = this.get('transactionType');            
+        return !Ember.isEmpty(adjustmentType);
     }.property('transactionType'),
     
     isFulfillment: function() {

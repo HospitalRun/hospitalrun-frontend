@@ -1,25 +1,9 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import AdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
 import Ember from "ember";
-export default AbstractEditController.extend({
+export default AbstractEditController.extend(AdjustmentTypes, {
     needs: 'inventory',    
-    
-    adjustmentTypes: [{
-        name: 'Add',
-        type: 'Adjustment (Add)'
-    }, {
-        name: 'Remove',
-        type: 'Adjustment (Remove)'
-    }, {
-        name: 'Return To Vendor',
-        type: 'Return To Vendor'
-    }, {
-        name: 'Return',
-        type: 'Return'
-    }, {
-        name: 'Write Off',
-        type: 'Write Off'
-    }],
-    
+        
     expenseAccountList: Ember.computed.alias('controllers.inventory.expenseAccountList'),
 
     title: 'Adjustment',
