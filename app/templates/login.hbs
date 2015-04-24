@@ -1,5 +1,5 @@
 <div class="container">
-    <form class="form-signin" role="form" {{action authenticate on='submit'}}>
+    <form class="form-signin" role="form" {{action 'authenticate' on='submit'}}>
         <h2 class="form-signin-heading">Please sign in</h2>
         <div class="form-group">
             {{view Ember.TextField id='identification' valueBinding='identification' placeholder='Username' class="form-control"}}
