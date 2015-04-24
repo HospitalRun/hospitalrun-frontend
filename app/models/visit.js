@@ -20,7 +20,7 @@ export default AbstractModel.extend({
     patient: DS.belongsTo('patient'),
     primaryDiagnosis: DS.attr('string'),
     primaryBillingDiagnosis: DS.attr('string'),
-    primaryDiagnosisId: DS.attr('string'),
+    primaryBillingDiagnosisId: DS.attr('string'),
     procedures: DS.hasMany('procedure', {async: true}),
     startDate:  DS.attr('date'),
     status: DS.attr('string'),
