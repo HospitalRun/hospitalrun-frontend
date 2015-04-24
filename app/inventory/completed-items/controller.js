@@ -17,8 +17,8 @@ export default Ember.ObjectController.extend(AdjustmentTypes, {
 
     isAdjustment: function() {
         var adjustmentTypes = this.get('adjustmentTypes'),
-            adjustmentType = adjustmentTypes.findBy('type', transactionType),
-            transactionType = this.get('transactionType');            
+            transactionType = this.get('transactionType'),
+            adjustmentType = adjustmentTypes.findBy('type', transactionType);            
         return !Ember.isEmpty(adjustmentType);
     }.property('transactionType'),
     
