@@ -2,18 +2,22 @@
     <div class="row">
         {{#if selectPatient}}
             {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-3 required"}}
+            {{em-select class="col-xs-3 required" label="Visit" 
+                property="visit" content=patientVisits
+                optionValuePath="content" optionLabelPath="content.visitDescription"
+                prompt="--Add New Visit--"
+                selected=visit
+            }}        
         {{else}}
             <div class="form-group col-xs-3">
                 <label>Patient</label>
                 <p class="form-control-static">{{patient.displayName}}</p>
             </div>
+            <div class="form-group col-xs-3">
+                <label>Visit</label>
+                <p class="form-control-static">{{visit.visitDescription}}</p>
+            </div>
         {{/if}}
-        {{em-select class="col-xs-3 required" label="Visit" 
-            property="visit" content=patientVisits
-            optionValuePath="content" optionLabelPath="content.visitDescription"
-            prompt="--Add New Visit--"
-            selected=visit
-        }}        
     </div>
     {{#if isRequested}}
         <div class="form-group">
