@@ -339,13 +339,19 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     
     _calculateCosts: function(inventoryPurchases, row) {
         //Calculate quantity and cost per unit for the row
-        inventoryPurchases.forEach(function(purchase) {
-            var costPerUnit = this._calculateCostPerUnit(purchase),
-                quantity = purchase.calculatedQuantity;                                    
-            row.quantity += purchase.calculatedQuantity;
-            row.totalCost += (quantity * costPerUnit);
-        }.bind(this));
-        row.unitCost = (row.totalCost/row.quantity);
+        if (!Ember.isEmpty(inventoryPurchases)) {
+            inventoryPurchases.forEach(function(purchase) {
+                var costPerUnit = this._calculateCostPerUnit(purchase),
+                    quantity = purchase.calculatedQuantity;                                    
+                row.quantity += purchase.calculatedQuantity;
+                row.totalCost += (quantity * costPerUnit);
+            }.bind(this));
+        }
+        if (row.totalCost === 0 || row.quantity === 0) {
+            row.unitCost = 0;
+        } else {
+            row.unitCost = (row.totalCost/row.quantity);
+        }
         return row;
     },
     
@@ -579,25 +585,23 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                             vendors: [
                             ]
                         };
-                    if (Ember.isEmpty(inventoryPurchases)) {
-                        //If there are no purchases applicable then skip this inventory item.
-                        return;
-                    }
-                    //Setup intial locations for an inventory item
-                    inventoryPurchases.forEach(function(purchase) {
-                        var locationName = this.getDisplayLocationName(purchase.location, purchase.aisleLocation),
-                            purchaseQuantity = purchase.originalQuantity;
-                        purchase.calculatedQuantity = purchaseQuantity;
-                        if (purchase.giftInKind === true) {
-                            row.giftInKind = 'Y';
-                        }
-                        if (!Ember.isEmpty(purchase.vendor)) {
-                            if (!row.vendors.contains(purchase.vendor)) {
-                                row.vendors.push(purchase.vendor);
+                    if (!Ember.isEmpty(inventoryPurchases)) {
+                        //Setup intial locations for an inventory item
+                        inventoryPurchases.forEach(function(purchase) {
+                            var locationName = this.getDisplayLocationName(purchase.location, purchase.aisleLocation),
+                                purchaseQuantity = purchase.originalQuantity;
+                            purchase.calculatedQuantity = purchaseQuantity;
+                            if (purchase.giftInKind === true) {
+                                row.giftInKind = 'Y';
                             }
-                        }
-                        this._adjustLocation(row.locations, locationName, purchaseQuantity, true);
-                    }.bind(this));
+                            if (!Ember.isEmpty(purchase.vendor)) {
+                                if (!row.vendors.contains(purchase.vendor)) {
+                                    row.vendors.push(purchase.vendor);
+                                }
+                            }
+                            this._adjustLocation(row.locations, locationName, purchaseQuantity, true);
+                        }.bind(this));
+                    }
 
                     if(!Ember.isEmpty(inventoryRequests)) {
                         inventoryRequests.forEach(function(request) {
@@ -608,9 +612,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                                 transactionType = request.transactionType;
 
 
-                            increment = (transactionType === 'Adjustment (Add)');
+                            increment = (transactionType === 'Adjustment (Add)' || transactionType === 'Return');
                             if (adjustPurchases) {
-                                if (!Ember.isEmpty(purchases)) {
+                                if (!Ember.isEmpty(purchases) && !Ember.isEmpty(inventoryPurchases)) {
                                     //Loop through purchase(s) on request and adjust corresponding inventory purchases
                                     purchases.forEach(function(purchaseInfo) {
                                         this._adjustPurchase(inventoryPurchases, purchaseInfo.id, purchaseInfo.quantity, increment);
@@ -667,11 +671,15 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                                 }.bind(this), 0);
                                 row.quantity = this._getValidNumber(item.quantity);
                                 if (consumedQuantity > 0) {
-                                    row.consumedPerDay = this._numberFormat(consumedQuantity/dateDiff);
+                                    row.consumedPerDay = this._numberFormat((consumedQuantity/dateDiff), true);
                                     row.daysLeft = this._numberFormat(row.quantity/row.consumedPerDay);
                                 } else {
-                                    row.consumedPerDay = '?';
-                                    row.daysLeft = '?';                            
+                                    if (consumedQuantity ===0) {
+                                        row.consumedPerDay = '0';
+                                    } else {
+                                        row.consumedPerDay = '?'+consumedQuantity;                                        
+                                    }
+                                    row.daysLeft = '?';
                                 }
                                 this._addReportRow(row);
                             }
@@ -750,54 +758,60 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                             break;
                         }
                         case 'detailedPurchase': {
-                            inventoryPurchases.forEach(function(purchase) {
-                                var giftInKind = 'N';
-                                if (purchase.giftInKind === true) {
-                                    giftInKind = 'Y';
-                                }
-                                this._addReportRow({
-                                    date: moment(new Date(purchase.dateReceived)).format('l'),
-                                    giftInKind: giftInKind,
-                                    inventoryItem: row.inventoryItem,
-                                    quantity: purchase.originalQuantity,
-                                    unitCost: purchase.costPerUnit,
-                                    totalCost: purchase.purchaseCost,
-                                    locations: [{
-                                        name: this.getDisplayLocationName(purchase.location, purchase.aisleLocation)
-                                    }]
-                                });
-                                summaryCost += this._getValidNumber(purchase.purchaseCost);
-                                summaryQuantity += this._getValidNumber(purchase.originalQuantity);
-                            }.bind(this));
-                            this._addTotalsRow('Subtotal: ',summaryCost, summaryQuantity);
-                            this.incrementProperty('grandCost', summaryCost);
-                            this.incrementProperty('grandQuantity', summaryQuantity);
+                            if (!Ember.isEmpty(inventoryPurchases)) {
+                                inventoryPurchases.forEach(function(purchase) {
+                                    var giftInKind = 'N';
+                                    if (purchase.giftInKind === true) {
+                                        giftInKind = 'Y';
+                                    }
+                                    this._addReportRow({
+                                        date: moment(new Date(purchase.dateReceived)).format('l'),
+                                        giftInKind: giftInKind,
+                                        inventoryItem: row.inventoryItem,
+                                        quantity: purchase.originalQuantity,
+                                        unitCost: purchase.costPerUnit,
+                                        totalCost: purchase.purchaseCost,
+                                        locations: [{
+                                            name: this.getDisplayLocationName(purchase.location, purchase.aisleLocation)
+                                        }]
+                                    });
+                                    summaryCost += this._getValidNumber(purchase.purchaseCost);
+                                    summaryQuantity += this._getValidNumber(purchase.originalQuantity);
+                                }.bind(this));
+                                this._addTotalsRow('Subtotal: ',summaryCost, summaryQuantity);
+                                this.incrementProperty('grandCost', summaryCost);
+                                this.incrementProperty('grandQuantity', summaryQuantity);
+                            }
                             break;
                         }
                         case 'summaryPurchase': {
-                            row.locations = [];
-                            row.quantity = inventoryPurchases.reduce(function(previousValue, purchase) {
-                                summaryCost += this._getValidNumber(purchase.purchaseCost);
-                                var locationName = this.getDisplayLocationName(purchase.location, purchase.aisleLocation);
-                                if (!row.locations.findBy('name', locationName)) {
-                                    row.locations.push({
-                                        name: this.getDisplayLocationName(purchase.location, purchase.aisleLocation)
-                                    });
-                                }
-                                return previousValue += this._getValidNumber(purchase.originalQuantity);
-                            }.bind(this), 0);
-                            row.unitCost = (summaryCost/row.quantity);
-                            row.totalCost = summaryCost;
-                            this._addReportRow(row);
-                            this.incrementProperty('grandCost', summaryCost);
-                            this.incrementProperty('grandQuantity', row.quantity);
+                            if (!Ember.isEmpty(inventoryPurchases)) {
+                                row.locations = [];
+                                row.quantity = inventoryPurchases.reduce(function(previousValue, purchase) {
+                                    summaryCost += this._getValidNumber(purchase.purchaseCost);
+                                    var locationName = this.getDisplayLocationName(purchase.location, purchase.aisleLocation);
+                                    if (!row.locations.findBy('name', locationName)) {
+                                        row.locations.push({
+                                            name: this.getDisplayLocationName(purchase.location, purchase.aisleLocation)
+                                        });
+                                    }
+                                    return previousValue += this._getValidNumber(purchase.originalQuantity);
+                                }.bind(this), 0);
+                                row.unitCost = (summaryCost/row.quantity);
+                                row.totalCost = summaryCost;
+                                this._addReportRow(row);
+                                this.incrementProperty('grandCost', summaryCost);
+                                this.incrementProperty('grandQuantity', row.quantity);
+                            }
                             break;
                         }                                        
                         case 'valuation': {
-                            this._calculateCosts(inventoryPurchases, row);
-                            this.incrementProperty('grandCost', this._getValidNumber(row.totalCost));
-                            this.incrementProperty('grandQuantity', this._getValidNumber(row.quantity));
-                            this._addReportRow(row);
+                            if (!Ember.isEmpty(inventoryPurchases)) {
+                                this._calculateCosts(inventoryPurchases, row);
+                                this.incrementProperty('grandCost', this._getValidNumber(row.totalCost));
+                                this.incrementProperty('grandQuantity', this._getValidNumber(row.quantity));
+                                this._addReportRow(row);
+                            }
                             break;
                         }
                     }
@@ -832,7 +846,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             startDate = this.get('startDate'),
             startTime;  
         if (!Ember.isEmpty(endDate)) {
-            endTime = moment(endDate).startOf('day').toDate().getTime();
+            endTime = moment(endDate).endOf('day').toDate().getTime();
         }
         if (!Ember.isEmpty(startDate)) {
             startTime = moment(startDate).startOf('day').toDate().getTime();
@@ -933,6 +947,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             }
             case 'Adjustment (Add)': 
             case 'Adjustment (Remove)': 
+            case 'Return To Vendor':
             case 'Write Off': {     
                 categoryToUpdate = expenseMap['Inventory Obsolence'];
                 if (request.transactionType === 'Adjustment (Add)') {
