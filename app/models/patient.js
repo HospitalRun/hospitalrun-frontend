@@ -70,16 +70,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     }.property('firstName', 'lastName'),
     
     displayPatientId: function() {
-        var externalPatientId = this.get('externalPatientId'),
-            friendlyId = this.get('friendlyId'),
-            id = this.get('id');
-        if (!Ember.isEmpty(friendlyId)) {
-            return friendlyId;
-        } else if (!Ember.isEmpty(externalPatientId)) {
-            return externalPatientId;
-        } else {
-            return id;
-        }
+        return this.getPatientDisplayId(this);
     }.property('id', 'externalPatientId', 'friendlyId'),
     
     validations: {
