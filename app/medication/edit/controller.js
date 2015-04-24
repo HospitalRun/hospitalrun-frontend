@@ -37,6 +37,13 @@ export default AbstractEditController.extend(InventorySelection, PatientSubmodul
     medicationList: [],
     medicationFrequencyList: Ember.computed.alias('controllers.medication.medicationFrequencyList'),
     updateCapability: 'add_medication',
+    
+    actions: {
+        doneFulfillRequest: function() {
+            var resolve = this.get('resolveAfterFulfillment', resolve);
+            resolve();
+        }
+    },
 
     afterUpdate: function() {
         var alertTitle = 'Medication Request Saved',
@@ -81,7 +88,7 @@ export default AbstractEditController.extend(InventorySelection, PatientSubmodul
                 });            
             this.send('fulfillRequest', inventoryRequest, false, false, true);
             this.set('status','Fulfilled');
-            resolve();            
+            this.set('resolveAfterFulfillment', resolve);
         } else {
             resolve();
         }
