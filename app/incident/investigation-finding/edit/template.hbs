@@ -2,12 +2,22 @@
     <div class="row">
         {{date-picker property="dateRecorded" label="Date Recorded" class="col-sm-6" format="l h:mm A" showTime=true }}
     </div>
-      <div class="row">        
-        {{em-input class="col-sm-3" property="typeOfPerson" label="Type of Person Involved" }}
+      <div class="row">
+        {{em-select label="Type of Person Involved" prompt=" "
+                                property="typeOfPerson" content=typeOfPersonInvolved
+                                optionValuePath="content" optionLabelPath="content"
+                                selected=typeOfPerson
+                                class="col-sm-6"
+                            }}        
     </div>
     <div class="row">
-        {{em-input class="col-sm-3" property="identityDocumentType" label="Identity Document Type"}}
-        {{em-input class="col-sm-3" property="identityNumber" label="Identity Number"}}
+        {{em-select label="Identity Document Type" prompt=" "
+                                property="identityDocumentType" content=identityDocumentTypes
+                                optionValuePath="content" optionLabelPath="content"
+                                selected=identityDocumentType
+                                class="col-sm-6"
+                            }} 
+        {{em-input class="col-sm-6" property="identityNumber" label="Identity Number"}}
         
     </div>
     <div class="row">        

@@ -7,7 +7,7 @@ export default AbstractModel.extend({
 	reportedDate: DS.attr('date'),
 	locationOfIncident: DS.attr('string'),
 	dateOfIncident: DS.attr('date'),
-	timeOfIncident: DS.attr('string'),
+	statusOfIncident: DS.attr('string'),
 	incidentDescription: DS.attr('string'),
     categoryName: DS.attr('string'),
     categoryItem: DS.attr('string'),

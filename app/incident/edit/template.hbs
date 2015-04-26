@@ -41,7 +41,8 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6">
-                            {{em-select label="Location of Incident" property="locationOfIncident" 
+                          {{em-select label="Location of Incident" property="locationOfIncident" 
+                                prompt=" "
                                 content=incidentLocations 
                                 optionValuePath="content" 
                                 optionLabelPath="content"
@@ -50,10 +51,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        {{date-picker property="dateOfIncident" label="Date of Incident" class="col-xs-12 col-sm-6"}}
-                        {{em-input property="timeOfIncident" label="Time of Incident" class="col-xs-12 col-sm-6"}}
+                        {{date-picker property="dateOfIncident" label="Date of Incident" class="col-xs-12 col-sm-6" format="l h:mm A" showTime=true}}
+                        {{em-input property="statusOfIncident" label="Status of Incident" class="col-xs-12 col-sm-6"}}
                     </div>                        
-                    {{em-text label="Incident Description" property="incidentDescription" rows=3}}
+                       {{em-text label="Incident Description" property="incidentDescription" rows=3}}
                 </div>
             </div>
             <div class="panel detail-section">

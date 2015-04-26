@@ -6,7 +6,22 @@ export default AbstractEditController.extend({
     
     cancelAction: 'closeModal',
     
-    editController: Ember.computed.alias('controllers.incident/edit'),    
+    editController: Ember.computed.alias('controllers.incident/edit'),
+
+    typeOfPersonInvolved: [
+        'Patient',
+        'Staff',
+        'Visitor'
+    ],
+
+    identityDocumentTypes: [
+        'Employee Number',
+        'ID Card',
+        'Passport',
+        'Medical Record Number',
+        'Driving License Number',
+        'Mobile Number'
+    ],   
     
     newInvestigationFinding: false,
     
