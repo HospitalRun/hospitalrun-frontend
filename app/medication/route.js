@@ -8,8 +8,9 @@ export default AbstractModuleRoute.extend({
     additionalButtons: function() {
         if (this.currentUserCan(this.get('addCapability'))) {
             return [{
+                buttonIcon: 'octicon octicon-mail-reply',
                 buttonAction: 'returnMedication',
-                buttonText: '< return medication',
+                buttonText: 'return medication',
                 class: 'btn btn-primary'
             }];
         }

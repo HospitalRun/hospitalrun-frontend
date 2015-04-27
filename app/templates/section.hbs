@@ -9,7 +9,11 @@
         {{#if additionalButtons}}
             {{#each additionalButtons}}
                 <div class="pull-right screen-button">
-                    <button {{bind-attr class="class"}} {{action buttonAction}}>{{buttonText}}</button>
+                    <button {{bind-attr class="class"}} {{action buttonAction}}>
+                        {{#if buttonIcon}}
+                            <span {{bind-attr class="buttonIcon"}}></span> 
+                        {{/if}}
+                        {{buttonText}}</button>
                 </div>
             {{/each}}
         {{/if}}
