@@ -974,6 +974,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             } else {
                 categoryToUpdate.total = categoryToUpdate.total - transactionValue; 
                 expenseAccountToUpdate.total = expenseAccountToUpdate.total - transactionValue;
+                reportRow.totalCost = (reportRow.totalCost * -1);
             }
             
             
