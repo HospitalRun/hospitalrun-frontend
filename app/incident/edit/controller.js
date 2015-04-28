@@ -247,6 +247,9 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     updateCapability: 'add_incident',
 
     afterUpdate: function() {
+        if(this.get('statusOfIncident') === 'Opened'){
+          this.set('statusOfIncident','Reported');
+        }
         this.displayAlert('Incident Saved', 'The Incident report has been saved.');
     },
     
@@ -258,10 +261,29 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     },
 
     setAndGetReportedBy: function(){
-        var incident = this.get('model');
-        this.set('reportedBy', incident.getUserName());
+         this.set('reportedBy', this._getCurrentUserName());
          return this.get('reportedBy');
      }.property('reportedBy'),
+
+     _getCurrentUserName: function(){
+        var incident = this.get('model');
+        return incident.getUserName();
+     },
+
+     _changeIncidentStatus: function(){
+        var incidentStatus = this.get('statusOfIncident'),
+            newStatus = null;
+        if(incidentStatus === 'Reported'){
+          newStatus = 'Active';
+        }
+        else if(incidentStatus === 'Active'){
+          newStatus = 'Follow-up';
+        }
+        else if(incidentStatus === 'Follow-up'){
+          newStatus = 'Close';
+        }
+      this.set('statusOfIncident', newStatus);
+     },
 
 
      categoryNameChanged: function(){
@@ -315,12 +337,15 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         //Feedback Functions
 
         addFeedback: function(newFeedback) {
+            
             this.updateList('feedbacks', newFeedback);
         },
 
         showAddFeedback: function() {
             var newFeedback = this.get('store').createRecord('inc-feedback', {
-                dateRecorded: new Date()
+                dateRecorded: new Date(),
+                givenBy: this._getCurrentUserName()
+                
                 //incident: this.get('model')
             });
             this.send('openModal', 'incident.feedback.edit', newFeedback);
@@ -341,13 +366,14 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         //Reviewers functions
 
         addReviewer: function(newReviewer) {
+            this._changeIncidentStatus();
             this.updateList('reviewers', newReviewer);
         },
 
         showAddReviewer: function() {
             var newReviewer = this.get('store').createRecord('inc-reviewer', {
-                dateRecorded: new Date()
-                //incident: this.get('model')
+                dateRecorded: new Date(),
+                addedBy: this._getCurrentUserName()
             });
             this.send('openModal', 'incident.reviewer.edit', newReviewer);
         },        
@@ -374,7 +400,6 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         showAddInvestigationFinding: function() {
             var newInvestigationFinding = this.get('store').createRecord('inc-investigation-finding', {
                 dateRecorded: new Date()
-                //incident: this.get('model')
             });
             this.send('openModal', 'incident.investigation-finding.edit', newInvestigationFinding);
         },        
@@ -394,13 +419,13 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         //Recommendation Functions
 
         addRecommendation: function(newRecommendation) {
+            this._changeIncidentStatus();
             this.updateList('recommendations', newRecommendation);
         },
 
         showAddRecommendation: function() {
             var newRecommendation = this.get('store').createRecord('inc-recommendation', {
                 dateRecorded: new Date()
-                //incident: this.get('model')
             });
             this.send('openModal', 'incident.recommendation.edit', newRecommendation);
         },        

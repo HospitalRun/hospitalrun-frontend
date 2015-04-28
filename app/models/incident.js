@@ -4,18 +4,18 @@ import AbstractModel from "hospitalrun/models/abstract";
 export default AbstractModel.extend({
     friendlyId: DS.attr('string'),
 	reportedBy: DS.attr('string'),
+    reportedTo: DS.attr('string'),
 	reportedDate: DS.attr('date'),
 	locationOfIncident: DS.attr('string'),
 	dateOfIncident: DS.attr('date'),
-	statusOfIncident: DS.attr('string'),
 	incidentDescription: DS.attr('string'),
+    
     categoryName: DS.attr('string'),
     categoryItem: DS.attr('string'),
 
-    feedbacks: DS.hasMany('inc-feedback', {async: true}),
     reviewers: DS.hasMany('inc-reviewer', {async: true}),
+    feedbacks: DS.hasMany('inc-feedback', {async: true}),
     investigationFindings: DS.hasMany('inc-investigation-finding', {async: true}),
-    recommendations: DS.hasMany('inc-recommendation',  {async: true}),
     
     patientContributingFactor: DS.attr('string'),
     individualContributingFactor: DS.attr('string'),
@@ -24,20 +24,25 @@ export default AbstractModel.extend({
     teamContributingFactor: DS.attr('string'),
     workingConditionContributingFactor: DS.attr('string'),
     organizationalContributingFactor: DS.attr('string'),
-    
+
     harmScore: DS.attr('string'),
- 
+
     preSeverity: DS.attr('string'),
     preOccurence: DS.attr('string'),
     preRiskScore: DS.attr('string'),
-
+    
+    recommendations: DS.hasMany('inc-recommendation',  {async: true}),    
+    
     postSeverity: DS.attr('string'),
     postOccurence: DS.attr('string'),
     postRiskScore: DS.attr('string'),
    
 
     incidentOpen: DS.attr('boolean', {defaultValue: true}),
-    notificationSend: DS.attr('boolean', {defaultValue: false})
+    notificationSend: DS.attr('boolean', {defaultValue: false}),
+    statusOfIncident: DS.attr('string',{
+          defaultValue: function() { return 'Opened'; }
+      })
     //severity : DS.attr()
     
     //

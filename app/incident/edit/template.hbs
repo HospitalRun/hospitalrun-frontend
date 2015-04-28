@@ -1,10 +1,13 @@
 {{#em-form model=this submit_button=false }}
     <div class="panel panel-success">
             <div class="row">        
-                    <div class="form-group col-sm-6">
-                        <label class="control-label">Incident Id</label>{{id}}
-                    </div>                    
-             </div>
+                    <div class="col-xs-12 col-md-8">
+                        <p class="text-info">Incident Id: {{id}}</p>
+                    </div>
+                    <div class="col-xs-6 col-md-4">
+                        <p class="text-success pull-right">Status: {{statusOfIncident}}</p>
+                    </div>     
+            </div>
         </div>
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class="active" ><a href="#creation" role="tab" data-toggle="pill">Creation</a></li>
@@ -52,7 +55,7 @@
                     </div>
                     <div class="row">
                         {{date-picker property="dateOfIncident" label="Date of Incident" class="col-xs-12 col-sm-6" format="l h:mm A" showTime=true}}
-                        {{em-input property="statusOfIncident" label="Status of Incident" class="col-xs-12 col-sm-6"}}
+                        {{em-input property="reportedTo" label="Incident Reported To" class="col-xs-12 col-sm-6"}}
                     </div>                        
                        {{em-text label="Incident Description" property="incidentDescription" rows=3}}
                 </div>
@@ -89,6 +92,7 @@
                     <div class="panel-body detail-section-content">
                         <table class="table">
                             <tr class="table-header">
+                                <th>Reviewer Name</th>
                                 <th>Reviewer Email</th>
                                 <th>Added By</th>
                                 <th>Added On</th>
@@ -97,6 +101,7 @@
                             {{#with this as parentController}}
                                 {{#each reviewers}}
                                     <tr>
+                                        <td>{{reviewerName}}</td>
                                         <td>{{reviewerEmail}}</td>
                                         <td>{{addedBy}}</td>
                                         <td>{{date-format dateRecorded}}</td>
