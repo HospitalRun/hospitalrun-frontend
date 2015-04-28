@@ -11,6 +11,18 @@ export default AbstractEditController.extend({
     userList: Ember.computed.alias('controllers.incident.userList'),
 
     newReviewer: false,
+   
+    setReviewerName: function(){
+      var email = this.get('reviewerEmail');
+      if (!Ember.isEmpty(email)) {
+         var userList = this.get('userList'),
+             userObject = userList.findBy('email', email);
+             if(!Ember.isEmpty(userObject)){
+                this.set('reviewerName',userObject.get('displayName'));
+             }
+        }
+    }.observes('reviewerEmail'),
+    
 
     title: function() {
         var isNew = this.get('isNew');
