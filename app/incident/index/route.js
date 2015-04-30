@@ -10,7 +10,7 @@ export default AbstractIndexRoute.extend(UserSession, {
     
     _modelQueryParams: function() {
         var maxValue = this.get('maxValue'),
-            currentUser = this.getCurrentUserName(),
+            currentUser = this.getUserName(true),
             queryParams = {
                 mapReduce: 'incident_by_user'
             };        
@@ -19,14 +19,6 @@ export default AbstractIndexRoute.extend(UserSession, {
             queryParams.endkey = [currentUser,'incident_'+maxValue];            
         }
         return queryParams;
-    },   
-    
-    actions: {
-
-        editIncident: function(incident){
-            console.log("this edit incident"+incident);
-            this.send('editItem',incident);
-        }
     }
 
 });

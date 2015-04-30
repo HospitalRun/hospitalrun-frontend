@@ -1,18 +1,7 @@
 import AbstractPagedController from 'hospitalrun/controllers/abstract-paged-controller';
-import Ember from "ember";
-import UserSession from "hospitalrun/mixins/user-session";
-export default AbstractPagedController.extend(UserSession,{
-    needs: ['incident','incident/edit','pouchdb'],
+export default AbstractPagedController.extend({
     addPermission: 'add_incident',
     deletePermission: 'delete_incident',
-    startKey: [],
-
-    userList: Ember.computed.alias('controllers.incident.userList'),
-
-
-    getCurrentUserName: function(){
-        return this.getUserName(true);
-     }
-
+    startKey: []
 
 });
