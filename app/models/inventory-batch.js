@@ -37,6 +37,9 @@ export default AbstractModel.extend({
                     return object.haveInvoiceItems();
                 }
             }            
+        },
+        vendor: {
+            presence: true
         }
     }
 });

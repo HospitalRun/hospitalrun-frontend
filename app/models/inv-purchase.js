@@ -38,6 +38,9 @@ var InventoryPurchaseItem = AbstractModel.extend(LocationName, {
         },
         originalQuantity: {
             numericality: true
+        },
+        vendor: {
+            presence: true
         }
     }
 });
