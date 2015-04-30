@@ -16,12 +16,12 @@ export default AbstractIndexRoute.extend({
             userObject = userList.findBy('name', currentUser),
             queryParams = {
                 mapReduce: 'incident_by_user'
-            }        
+            };        
         if (!Ember.isEmpty(userObject)){
             var userRoles = userObject.get('roles');
             if(!(userRoles.contains('Quality')) && !(userRoles.contains('admin'))){
                 queryParams.startkey = [currentUser,'incident_'];
-                queryParams.endkey = [currentUser,'incident_\uffff'];
+                queryParams.endkey = [currentUser,'incident_'+maxValue];
             }
         }
         return queryParams;
