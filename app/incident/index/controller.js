@@ -5,7 +5,7 @@ export default AbstractPagedController.extend(UserSession,{
     needs: ['incident','incident/edit','pouchdb'],
     addPermission: 'add_incident',
     deletePermission: 'delete_incident',
-    incidentsList: [],
+    startKey: [],
 
     userList: Ember.computed.alias('controllers.incident.userList'),
 
