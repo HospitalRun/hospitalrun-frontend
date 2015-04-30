@@ -262,6 +262,28 @@ function incidentByDate(doc) {
         }
     }
 
+function incidentByUser(doc) {
+        var doctype,
+            uidx;
+        if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+            doctype = doc._id.substring(0, uidx);
+            if(doctype === 'incident') {
+               emit([doc.reportedBy, doc._id]);
+            }
+        }
+    }
+
+function reviewersByIncident(doc) {
+    var doctype,
+        uidx;
+    if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+        doctype = doc._id.substring(0, uidx);
+        if (doctype === 'inc-reviewer') {
+            emit([doc.incident, doc._id]); 
+        }   
+    }
+}
+
 
 function sequenceByPrefix(doc) {
     var doctype,
@@ -349,6 +371,12 @@ var designDocs = [{
 },{
     name: 'incident_by_date',
     function: incidentByDate
+},{
+    name: 'incident_by_user',
+    function: incidentByUser
+},{
+    name: 'reviewers_by_incident',
+    function: reviewersByIncident
 },{
     name: 'lab_by_status',
     function: labByStatus

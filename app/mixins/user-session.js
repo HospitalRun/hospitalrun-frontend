@@ -388,77 +388,96 @@ export default Ember.Mixin.create({
             'Medical Records Officer',
             'Nurse Manager', 
             'Pharmacist',
+            'Quality',
             'System Administrator'
         ],
 		add_incident : [
 			'User Administrator',
+            'Quality',
             'System Administrator'
 		],
 		delete_incident: [
             'User Administrator',
+            'Quality',
             'System Administrator'
         ],
         add_incident_category : [
             'User Administrator',
+            'Quality',
             'System Administrator'
         ],
         delete_incident_category: [
             'User Administrator',
+            'Quality',
             'System Administrator'
         ],
 		add_feedback : [
 			'User Administrator',
+            'Quality',
             'System Administrator'
 		],
 		delete_feedback: [
             'User Administrator',
+            'Quality',
             'System Administrator'
         ],
         add_reviewer : [
             'User Administrator',
+            'Quality',
             'System Administrator'
         ],
         delete_reviewer: [
             'User Administrator',
+            'Quality',
             'System Administrator'
         ],
 		add_investigation_finding : [
 			'User Administrator',
+            'Quality',
             'System Administrator'
 		],
 		delete_investigation_finding: [
             'User Administrator',
+            'Quality',
             'System Administrator'
         ],
 		add_contributing_factor : [
 			'User Administrator',
+            'Quality',
             'System Administrator'
 		],
 		delete_contributing_factor: [
             'User Administrator',
+            'Quality',
             'System Administrator'
         ],
 		add_recommendation : [
 			'User Administrator',
+            'Quality',
             'System Administrator'
 		],
 		delete_recommendation: [
             'User Administrator',
+            'Quality',
             'System Administrator'
         ],
 		add_risk : [
 			'User Administrator',
+            'Quality',
             'System Administrator'
 		],
 		delete_risk: [
             'User Administrator',
+            'Quality',
             'System Administrator'
         ],
         update_config: [
-            'System Administrator'
+            'System Administrator',
+            'Quality'
         ],
         users: [
             'User Administrator',
+            'Quality',
             'System Administrator'
         ]
         

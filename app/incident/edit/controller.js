@@ -267,7 +267,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
 
      _getCurrentUserName: function(){
         var incident = this.get('model');
-        return incident.getUserName();
+        return incident.getUserName(true);
      },
 
      _changeIncidentStatus: function(){
