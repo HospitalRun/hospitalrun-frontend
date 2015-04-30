@@ -47,6 +47,7 @@ Router.map(function() {
         this.route('edit', { path: "/edit/:incident_id" });
         this.route('reports');
         this.route('search', { path: "/search/:search_text" });
+        this.route('listing');
 	});
     
     this.resource('invoices', function() {

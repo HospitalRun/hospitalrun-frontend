@@ -1,6 +1,7 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import UserSession from "hospitalrun/mixins/user-session";
 export default AbstractIndexRoute.extend(UserSession, {
+    editReturn: 'incident.index',
     modelName: 'incident',
     pageTitle: 'Incidents',
     

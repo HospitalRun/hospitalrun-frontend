@@ -16,6 +16,9 @@ export default AbstractModuleRoute.extend(IncidentId, {
         text: 'Current',
         linkTo: 'incident.index'
     },{
+        text: 'Incidents as Reviewer',
+        linkTo: 'incident.listing'
+    },{
         text: 'History',
         linkTo: 'incident.completed'
     }, {
