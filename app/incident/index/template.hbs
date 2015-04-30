@@ -11,7 +11,7 @@
             {{/if}}
         </tr>
         {{#with this as parentController}}
-            {{#each incident }}
+            {{#each incident in model }}
                 <tr {{action 'editIncident' this}}>
                   	<td>{{incident.reportedBy}}</td>
                     <td>{{incident.locationOfIncident}}</td>
