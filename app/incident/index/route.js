@@ -1,6 +1,6 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-import Ember from "ember";
-export default AbstractIndexRoute.extend({
+import UserSession from "hospitalrun/mixins/user-session";
+export default AbstractIndexRoute.extend(UserSession, {
     modelName: 'incident',
     pageTitle: 'Incidents',
     
@@ -9,20 +9,14 @@ export default AbstractIndexRoute.extend({
     },
     
     _modelQueryParams: function() {
-        var controller = this.controllerFor('incident/index'),
-            maxValue = this.get('maxValue'),
-            currentUser = controller.getCurrentUserName(),
-            userList = controller.get('userList'),            
-            userObject = userList.findBy('name', currentUser),
+        var maxValue = this.get('maxValue'),
+            currentUser = this.getCurrentUserName(),
             queryParams = {
                 mapReduce: 'incident_by_user'
             };        
-        if (!Ember.isEmpty(userObject)){
-            var userRoles = userObject.get('roles');
-            if(!(userRoles.contains('Quality')) && !(userRoles.contains('admin'))){
-                queryParams.startkey = [currentUser,'incident_'];
-                queryParams.endkey = [currentUser,'incident_'+maxValue];
-            }
+        if (!this.currentUserCan('edit_others_incident')) {
+            queryParams.startkey = [currentUser,'incident_'];
+            queryParams.endkey = [currentUser,'incident_'+maxValue];            
         }
         return queryParams;
     },   
