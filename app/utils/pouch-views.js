@@ -1,4 +1,7 @@
 /* global emit */
+/* global req */
+/* global compareStrings */
+
 function createDesignDoc(item, rev) {
     var ddoc = {
         _id: '_design/' + item.name,
@@ -10,7 +13,65 @@ function createDesignDoc(item, rev) {
         ddoc._rev = rev;
     }
     ddoc.views[item.name] = { map: item.function.toString() };
+    if (item.sort) {
+        ddoc.lists = {
+            sort: item.sort
+        };
+    }
     return ddoc;
+}
+
+function generateSortFunction(sortFunction) {
+    return 'function(head, req) {' +
+        'function keysEqual(keyA, keyB) {' +
+            'for (var i= 0; i < keyA.length; i++) {' +
+                'if (keyA[i] !== keyB[i]) {'+
+                    'return false;'+
+                '}'+
+            '}'+
+            'return true;'+
+        '}'+
+        'function compareStrings(aString, bString) {'+
+            'if (!aString) {'+
+                'aString = "";'+
+            '}'+
+            'if (!bString) {'+
+                'bString = "";'+
+            '}'+
+            'if (aString < bString) {'+
+                'return -1;'+
+            '} else if (aString > bString) {'+
+                'return 1;'+
+            '} else {'+
+                'return 0;'+
+            '}'+
+        '}'+
+        'var row,'+
+            'rows=[],'+
+            'startingPosition = 0;'+
+        'while(row = getRow()) {'+
+            'rows.push(row);'+
+        '}'+
+        'rows.sort('+sortFunction+');'+
+        'if (req.query.sortStartKey) {'+
+            'var startKey = JSON.parse(req.query.sortStartKey);'+
+            'for (var i=0; i<rows.length; i++) {'+
+                'if (keysEqual(startKey, rows[i].key)) {'+
+                    'startingPosition = i;'+
+                    'break;'+
+                '}'+
+            '}'+
+        '}'+
+        'if (req.query.sortDesc) {'+
+            'rows = rows.reverse();'+
+        '}'+
+        'if (req.query.sortLimit) {'+
+            'rows = rows.slice(startingPosition, parseInt(req.query.sortLimit)+startingPosition);'+
+        '} else if (startingPosition > 0) {'+
+            'rows = rows.slice(startingPosition);'+
+        '}'+
+        'send(JSON.stringify({"rows" : rows}));'+
+    '}';
 }
 
 function updateDesignDoc(item, db, rev) {
@@ -19,7 +80,8 @@ function updateDesignDoc(item, db, rev) {
         // design doc created!
         //Update index
         db.query(item.name, {stale: 'update_after'}); 
-    }, function() {
+    }, function(err) {
+        console.log("ERR updateDesignDoc:",err);
         //ignored, design doc already exists
     });   
 }
@@ -291,7 +353,34 @@ var designDocs = [{
             }   
         }
     },
-    version: 2
+    sort: generateSortFunction(function(a,b) {
+        function getCompareDate(dateString) {
+            if (!dateString || dateString === '') {
+                return 0;
+            }
+            return new Date(dateString).getTime();
+        }
+        
+        var sortBy = '';
+        if (req.query && req.query.sortKey) {
+            sortBy = req.query.sortKey;
+        }
+        switch(sortBy) {
+            case 'firstName':
+            case 'gender':
+            case 'lastName':
+            case 'status': {
+                return compareStrings(a.doc[sortBy], b.doc[sortBy]);
+            }
+            case 'dateOfBirth': {
+                return getCompareDate(a.doc.dateOfBirth) -getCompareDate(b.doc.dateOfBirth);
+            }
+            default: {
+                return 0; //Don't sort
+            }
+        }
+    }.toString()),
+    version: 3
 }, {
     name: 'photo_by_patient',
     function: function(doc) {

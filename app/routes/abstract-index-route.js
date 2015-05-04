@@ -54,6 +54,8 @@ export default Ember.Route.extend(PouchDbMixin, Ember.SimpleAuth.AuthenticatedRo
     },
     
     queryParams: {
+        sortDesc: {refreshModel: true},
+        sortKey: {refreshModel: true},
         startKey: {refreshModel: true}
     },
     

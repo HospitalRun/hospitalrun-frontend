@@ -86,6 +86,16 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
             }
             if (query.options) {
                 queryParams = Ember.copy(query.options);
+                if (query.sortKey) {
+                    if (query.sortDesc) {
+                        queryParams.sortDesc = query.sortDesc;
+                    }
+                    queryParams.sortKey = query.sortKey;
+                    queryParams.sortLimit = queryParams.limit;
+                    delete queryParams.limit;
+                    queryParams.sortStartKey = JSON.stringify(queryParams.startkey);
+                    delete queryParams.startkey;
+                }
             }
             queryParams.reduce  = false;
             queryParams.include_docs = true;
@@ -98,14 +108,27 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
             return new Ember.RSVP.Promise(function(resolve, reject){
                 this._getDb().then(function(db){
                     try {
-                        if (mapReduce) {                            
-                            db.query(mapReduce, queryParams, function(err, response) {
-                                if (err) {
-                                    this._pouchError(reject)(err);
-                                } else {
-                                    this._handleQueryResponse(resolve, response, store, type, options);
-                                }
-                            }.bind(this));
+                        if (mapReduce) {
+                            if (query.sortKey) {
+                                var listParams = {
+                                    query: queryParams
+                                };
+                                db.list(mapReduce+'/sort/'+mapReduce, listParams, function(err, response) {
+                                    if (err) {
+                                        this._pouchError(reject)(err);
+                                    } else {
+                                        this._handleQueryResponse(resolve, response.json, store, type, options);
+                                    }
+                                }.bind(this));
+                            } else {
+                                db.query(mapReduce, queryParams, function(err, response) {
+                                    if (err) {
+                                        this._pouchError(reject)(err);
+                                    } else {
+                                        this._handleQueryResponse(resolve, response, store, type, options);
+                                    }
+                                }.bind(this));
+                            }
                         } else {
                             db.allDocs(queryParams, function(err, response) {
                                 if (err) {

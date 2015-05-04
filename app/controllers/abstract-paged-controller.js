@@ -6,7 +6,9 @@ export default Ember.ArrayController.extend(UserSession, {
     nextStartKey: null,
     previousStartKey: null,
     previousStartKeys: [],
-    queryParams: ['startKey'],
+    queryParams: ['startKey', 'sortKey', 'sortDesc'],
+    sortDesc: false,
+    sortKey: null,
     
     canAdd: function() {        
         return this.currentUserCan(this.get('addPermission'));
@@ -54,6 +56,15 @@ export default Ember.ArrayController.extend(UserSession, {
             this.set('previousStartKey', previousStartKeys.pop());
             this.set('previousStartKeys', previousStartKeys);
             
+        },
+        sortByKey: function(sortKey, sortDesc) {
+            this.setProperties({
+                previousStartKey: null,
+                previousStartKeys: [],
+                sortDesc: sortDesc,
+                sortKey: sortKey,                
+                startKey: null
+            });
         }
     }
 });

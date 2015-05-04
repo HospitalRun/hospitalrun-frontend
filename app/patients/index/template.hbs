@@ -1,11 +1,12 @@
 {{#if hasRecords}}
     <table class="table">
         <tr class="table-header">
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Gender</th>
-            <th>DOB</th>
+            {{#sortable-column sortBy='id' sortDesc=sortDesc sortKey=sortKey }}ID{{/sortable-column}}
+            {{#sortable-column sortBy='firstName' sortDesc=sortDesc sortKey=sortKey }}First Name{{/sortable-column}}
+            {{#sortable-column sortBy='lastName' sortDesc=sortDesc sortKey=sortKey }}Last Name{{/sortable-column}}
+            {{#sortable-column sortBy='gender' sortDesc=sortDesc sortKey=sortKey }}Gender{{/sortable-column}}
+            {{#sortable-column sortBy='dateOfBirth' sortDesc=sortDesc sortKey=sortKey }}DOB{{/sortable-column}}
+            {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}Status{{/sortable-column}}
             {{#if showActions}}
                 <th>Actions</th>
             {{/if}}
@@ -18,6 +19,7 @@
                     <td>{{lastName}}</td>
                     <td>{{gender}}</td>
                     <td>{{date-format dateOfBirth}}</td>
+                    <td>{{status}}</td>
                     {{#if parentController.showActions}}
                         <td>
                             {{#if parentController.canAdd}}
