@@ -32,6 +32,12 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, Ember.SimpleAuth
             var modelName = this.get('modelName'),
                 itemsPerPage = this.get('itemsPerPage'),
                 queryParams = this._modelQueryParams(params);
+            if (!Ember.isEmpty(params.sortDesc)) {
+                queryParams.sortDesc = params.sortDesc;
+            }
+            if (!Ember.isEmpty(params.sortKey)) {
+                queryParams.sortKey = params.sortKey;
+            }
             if (Ember.isEmpty(queryParams.options)) {
                 queryParams.options = {};
             }
