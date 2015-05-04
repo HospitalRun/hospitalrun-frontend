@@ -1,3 +1,4 @@
+/* global List */
 import Ember from 'ember';
 
 export default {
@@ -9,6 +10,7 @@ export default {
         
         function _initCouchDB() {
             return new Ember.RSVP.Promise(function(resolve, reject){
+                PouchDB.plugin(List);
                 configDB = new PouchDB('config', function(err, db){
                     if(err){
                         Ember.run(null, reject, err);
