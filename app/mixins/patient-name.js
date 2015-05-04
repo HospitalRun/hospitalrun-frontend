@@ -16,16 +16,17 @@ export default Ember.Mixin.create({
     getPatientDisplayName: function(patient) {
         var firstName = Ember.get(patient, 'firstName'),
             lastName = Ember.get(patient, 'lastName'),
-            returnName = '';
+            middleName = Ember.get(patient, 'middleName'),
+            nameArray = [];
         if (!Ember.isEmpty(firstName)) {
-            returnName += firstName;
+            nameArray.push(firstName);
         }
-        if (!Ember.isEmpty(returnName) && !Ember.isEmpty(lastName)) {
-            returnName += ' ';
+        if (!Ember.isEmpty(middleName)) {
+            nameArray.push(middleName);
         }
         if (!Ember.isEmpty(lastName)) {
-            returnName += lastName;
+            nameArray.push(lastName);
         }        
-        return returnName;    
+        return nameArray.join(' ');    
     }
 });
