@@ -14,12 +14,15 @@ export default AbstractModuleRoute.extend(PatientId, {
     },  {
         name: 'locationList',
         findArgs: ['lookup','visit_location_list']
-    },{
+    }, {
         name: 'physicianList',
         findArgs: ['lookup','physician_list']
     }, { 
         name: 'pricingProfiles',
         findArgs: ['price-profile']
+    }, {
+        name: 'statusList',
+        findArgs: ['lookup','patient_status_list']
     }],
     moduleName: 'patients',
     newButtonText: '+ new patient',

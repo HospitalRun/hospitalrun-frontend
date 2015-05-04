@@ -127,6 +127,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
     isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
     patientController: Ember.computed.alias('controllers.patients'),
     pricingProfiles: Ember.computed.alias('controllers.patients.pricingProfiles'),
+    statusList: Ember.computed.alias('controllers.patients.statusList'),
     
     haveAdditionalContacts: function() {
         var additionalContacts = this.get('additionalContacts');
@@ -146,6 +147,10 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         name: 'clinicList',
         property: 'clinic',
         id: 'clinic_list'
+    }, {
+        name: 'statusList',
+        property: 'status',
+        id: 'patient_status_list'
     }],
 
     havePrimaryDiagnoses: function() {
