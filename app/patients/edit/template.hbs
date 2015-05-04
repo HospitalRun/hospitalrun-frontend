@@ -75,6 +75,7 @@
                         <div class="col-xs-12 col-sm-6">
                             {{em-input property="friendlyId" label="Id" class="required"}}
                             {{em-input property="firstName" label="First Name" class="required"}}
+                            {{em-input property="middleName" label="First Name" }}
                             {{em-input property="lastName" label="Last Name" class="required"}}
                             <div class="form-group">
                                 <label>Gender</label>
@@ -93,9 +94,10 @@
                                 <div>
                                     {{ext-radio name=patientType content=patientTypes value=patientType showInline=true radioLabelPath="content" radioValuePath="content"}}
                                 </div>
-                            </div>                                                   
+                            </div>
                         </div>
                         <div class="col-xs-12 col-sm-6">
+                            {{select-or-typeahead property="status" label="Patient Status" list=statusList selection=status }}
                             {{em-input property="externalPatientId" label="External Patient Id"}}
                             {{em-select
                                 prompt=" "

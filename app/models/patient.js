@@ -32,6 +32,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     insurance: DS.attr('string'),
     lastName:  DS.attr('string'),
     livingArrangement: DS.attr('string'),
+    middleName:  DS.attr('string'),
     notes: DS.attr('string'),  
     otherIncome: DS.attr('string'),
     payments: DS.hasMany('payment', { async: true }),
@@ -45,6 +46,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     religion: DS.attr('string'),
     socialActionTaken: DS.attr('string'),
     socialRecommendation: DS.attr('string'),
+    status: DS.attr('string'),
     
     age: function() {
         var dob = this.get('dateOfBirth');
@@ -67,7 +69,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     
     displayName: function() {
         return this.getPatientDisplayName(this);
-    }.property('firstName', 'lastName'),
+    }.property('firstName', 'lastName', 'middleName'),
     
     displayPatientId: function() {
         return this.getPatientDisplayId(this);
