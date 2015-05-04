@@ -1,5 +1,4 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-import Ember from 'ember';
 export default AbstractIndexRoute.extend({
     modelName: 'patient',
     pageTitle: 'Patient Listing',
@@ -9,17 +8,10 @@ export default AbstractIndexRoute.extend({
         return [displayPatientId,'patient_'+item.get('id')];
     },
     
-    _modelQueryParams: function(params) {
-        var queryParams = {
+    _modelQueryParams: function() {
+        return {
             mapReduce: 'patient_by_display_id'
         };
-        if (!Ember.isEmpty(params.sortDesc)) {
-            queryParams.sortDesc = params.sortDesc;
-        }
-        if (!Ember.isEmpty(params.sortKey)) {
-            queryParams.sortKey = params.sortKey;
-        }
-        return queryParams;
     }
 
 });

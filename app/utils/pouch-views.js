@@ -169,6 +169,39 @@ var designDocs = [{
     },
     version: 2
 }, {    
+    name: 'inventory_by_name',
+    function: function(doc) {
+        var doctype,
+            uidx;
+        if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+            doctype = doc._id.substring(0, uidx);
+            if (doctype === 'inventory') {
+                emit([doc.name, doc._id]); 
+            }   
+        }    
+    },
+    sort: generateSortFunction(function(a,b) {
+        var sortBy = '';
+        if (req.query && req.query.sortKey) {
+            sortBy = req.query.sortKey;
+        }
+        switch(sortBy) {
+            case 'crossReference':
+            case 'description':
+            case 'friendlyId':
+            case 'name':
+            case 'price':
+            case 'quantity':
+            case 'type': {
+                return compareStrings(a.doc[sortBy], b.doc[sortBy]);
+            }
+            default: {
+                return 0; //Don't sort
+            }
+        }
+    }.toString()),    
+    version: 1
+}, {    
     name: 'inventory_by_type',
     function: function(doc) {
         var doctype,

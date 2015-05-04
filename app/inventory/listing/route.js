@@ -10,5 +10,16 @@ export default AbstractIndexRoute.extend(UserSession, {
         }
     }.property(),    
     newButtonText: '+ new item',
-    pageTitle: 'Items'
+    pageTitle: 'Items',
+    
+    _modelQueryParams: function() {
+        return {
+            mapReduce: 'inventory_by_name'
+        };
+    },
+    
+    _getStartKeyFromItem: function(item) {
+        return [item.get('name'),'inventory_'+item.get('id')];
+    }
+        
 });

@@ -14,4 +14,5 @@ export default AbstractPagedController.extend(UserSession, {
     }.property(),
     
     sortProperties: ['name', 'type'],
+    startKey: []
 });

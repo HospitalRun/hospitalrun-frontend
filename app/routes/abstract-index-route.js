@@ -1,6 +1,7 @@
 import Ember from "ember";
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
-export default Ember.Route.extend(PouchDbMixin, Ember.SimpleAuth.AuthenticatedRouteMixin, {
+import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
+export default Ember.Route.extend(PouchDbMixin, ProgressDialog, Ember.SimpleAuth.AuthenticatedRouteMixin, {
     firstKey: null,
     hideNewButton: false,
     itemsPerPage: 25,
@@ -77,6 +78,7 @@ export default Ember.Route.extend(PouchDbMixin, Ember.SimpleAuth.AuthenticatedRo
             sectionDetails.newButtonText = this.get('newButtonText');
         }
         this.send('setSectionHeader', sectionDetails);
+        this.closeProgressModal();
         this._super(controller, model);
     }
 });
