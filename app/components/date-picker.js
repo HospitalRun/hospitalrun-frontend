@@ -37,6 +37,8 @@ export default Ember.Forms.FormInputComponent.extend({
         if (Ember.isEmpty(this.get('currentDisplayDate'))) {
             Ember.Binding.from("model." + displayPropertyName).to('currentDisplayDate').connect(this);
         }
+        
+        Ember.Binding.from('model.errors.'+dateProperty).to('model.errors.'+displayPropertyName).connect(this);
         this.set('doingSetup', false);
     }.on('init'),
     
