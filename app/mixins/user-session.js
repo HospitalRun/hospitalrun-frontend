@@ -7,6 +7,7 @@ export default Ember.Mixin.create({
         ],
         appointments: [
             'Data Entry',
+            'Finance',
             'Hospital Administrator',
             'Medical Records Officer',
             'Patient Administration', 
@@ -15,6 +16,7 @@ export default Ember.Mixin.create({
         ],
         add_appointment: [
             'Data Entry',
+            'Finance',
             'Hospital Administrator',
             'Medical Records Officer',
             'Patient Administration',  
