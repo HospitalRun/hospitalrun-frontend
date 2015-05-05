@@ -258,7 +258,40 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         if (this.get('isNew')) {
             this.set('newIncident', true);
         }
-        return Ember.RSVP.resolve();        
+        //We need to return a promise because we need to ensure we have saved the inc-contributing-factor records first.
+        return new Ember.RSVP.Promise(function(resolve, reject) {    
+            var patientFactors = this.get('patientFactors'),
+                savePromises = [];
+            patientFactors.forEach(function(patientFactor) {
+                patientFactor.components.forEach(function(component) {
+                    var checkboxValue = this.get(component.id),
+                        patientContributingFactors = this.get('patientContributingFactors'),
+                        existingFactor = patientContributingFactors.findBy('component', component.name);
+                    if (Ember.isEmpty(checkboxValue)) {
+                        //Checkbox isn't checked, delete from list if in list
+                        if (!Ember.isEmpty(existingFactor)) {
+                            patientContributingFactors.removeObject(existingFactor);
+                            savePromises.push(existingFactor.destroyRecord());
+                        }
+                    } else {                    
+                        if (Ember.isEmpty(existingFactor)) {
+                            //Checkbox is checked, but value isn't stored on the model, so save it
+                            existingFactor = this.store.createRecord('inc-contributing-factor', {
+                                component: component.name,
+                                type: patientFactor.type
+                            });
+                            savePromises.push(existingFactor.save());
+                            patientContributingFactors.addObject(existingFactor);
+                        }
+                    }
+                }.bind(this));
+            }.bind(this));
+            Ember.RSVP.all(savePromises,'Updated contributing factor records before incident update').then(function(){
+                resolve();
+            }, function(error) {
+                reject(error);
+            });
+        }.bind(this));
     },
 
     setAndGetReportedBy: function(){
