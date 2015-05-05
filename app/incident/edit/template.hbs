@@ -124,7 +124,7 @@
                 <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            Feedbacks
+                            Feedback List
                             {{#if canAddFeedback}}
                                 <button class="btn btn-primary align-right" {{action "showAddFeedback" bubbles=false }}><span class="octicon octicon-plus"></span>New Feedback</button>
                             {{/if}}
@@ -211,15 +211,14 @@
                     </div>
                     <div class="panel-body detail-section-content">
                         <label>
-                            Please tick the main Factors
+                            Patient Factors
                         </label>
-                        {{em-checkbox label="Patient Factor: E.g. Clinical Condition, Physical factors, Social factors, Psychological/Mental factors" property="patientContributingFactor"}}
-                        {{em-checkbox label="Individual / Staff Factor:  E.g. Physical issues, Psychological, Social, Domestic, Personality, Cognitive" property="individualContributingFactor"}}
-                        {{em-checkbox label="Task Factor:    E.g. Guidelines/ Procedures/ Protocols/ Task design" property="taskContributingFactor"}}
-                        {{em-checkbox label="Communication Factor:   E.g. Verbal, Written, Non-verbal, Handoff" property="communicationContributingFactor"}}
-                        {{em-checkbox label="Team Factor:    E.g. Collaboration, Coordination, Leadership, Support" property="teamContributingFactor"}}
-                        {{em-checkbox label="Working Condition factor:   E.g. Environment, Staffing, Workload, Working Hours" property="workingConditionContributingFactor"}}
-                        {{em-checkbox label="Organizational Factor:  E.g. Organizational structure, Policies, Priorities, Safety culture" property="organizationalContributingFactor"}}
+                        {{#each patientFactors}}
+                            {{em-checkbox label=type property="type"}}
+                                {{#each components}}
+                                    {{em-checkbox label=this property="component"}}
+                                {{/each}}
+                        {{/each}}
                     </div>
                 </div>
         </div>

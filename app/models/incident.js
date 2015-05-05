@@ -17,13 +17,15 @@ export default AbstractModel.extend({
     feedbacks: DS.hasMany('inc-feedback', {async: true}),
     investigationFindings: DS.hasMany('inc-investigation-finding', {async: true}),
     
-    patientContributingFactor: DS.attr('string'),
-    individualContributingFactor: DS.attr('string'),
-    taskContributingFactor: DS.attr('string'),
-    communicationContributingFactor: DS.attr('string'),
-    teamContributingFactor: DS.attr('string'),
-    workingConditionContributingFactor: DS.attr('string'),
-    organizationalContributingFactor: DS.attr('string'),
+    patientContributingFactors: DS.hasMany('inc-contributing-factor', {async: true}),
+   /* staffContributingFactors: DS.hasMany('inc-staff-factors', {async: true}),
+    taskContributingFactors: DS.hasMany('inc-task-factors', {async: true}),
+    communicationContributingFactors: DS.hasMany('inc-commn-factors', {async: true}),
+    equipmentContributingFactors: DS.hasMany('inc-equip-factors', {async: true}),
+    wrkEnvironmentContributingFactors: DS.hasMany('inc-envr-factors', {async: true}),
+    organizationalContributingFactors: DS.hasMany('inc-org-factors', {async: true}),
+    eduTrainingContributingFactors: DS.hasMany('inc-training-factors', {async: true}),
+    teamContributingFactors: DS.hasMany('inc-team-factors', {async: true}),*/
 
     harmScore: DS.attr('string'),
 

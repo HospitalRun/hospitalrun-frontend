@@ -5,9 +5,10 @@ import UserSession from "hospitalrun/mixins/user-session";
 import IncidentCategoryList from "hospitalrun/mixins/incident-category";
 import IncidentHarmScoreList from "hospitalrun/mixins/incident-harm-score";
 import IncidentLocationsList from 'hospitalrun/mixins/incident-locations-list';
+import IncidentContributingFactors from 'hospitalrun/mixins/incident-contributing-factors-classification';
 
 export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentHarmScoreList, IncidentLocationsList,
- UserSession, {
+ IncidentContributingFactors, UserSession, {
      needs: 'incident',
     
     canAddFeedback: function() {        
