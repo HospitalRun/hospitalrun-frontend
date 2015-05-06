@@ -405,10 +405,14 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         },
         
         newVisit: function() {
-            var newVisit = this.get('store').createRecord('visit', {
-                startDate: new Date(),
-                patient: this.get('model')
-            });            
+            var lastVisit = this.get('visits.lastObject'), 
+                newVisit = this.get('store').createRecord('visit', {
+                    startDate: new Date(),
+                    patient: this.get('model')
+                }); 
+            if (!Ember.isEmpty(lastVisit)) {
+                newVisit.setProperties(lastVisit.getProperties('primaryDiagnosis','primaryBillingDiagnosis'));
+            }
             this.transitionToRoute('visits.edit', newVisit);
         },     
 
