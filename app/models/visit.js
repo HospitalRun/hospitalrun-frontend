@@ -1,6 +1,5 @@
 import AbstractModel from "hospitalrun/models/abstract";
 import Ember from "ember";
-import DiagnosisValidation from "hospitalrun/utils/diagnosis-validation";
 
 export default AbstractModel.extend({
     additionalDiagnoses: DS.attr(), //Yes, the plural of diagnosis is diagnoses!
@@ -18,8 +17,8 @@ export default AbstractModel.extend({
     notes: DS.attr('string'),
     outPatient: DS.attr('boolean'),
     patient: DS.belongsTo('patient'),
-    primaryDiagnosis: DS.attr('string'),
-    primaryBillingDiagnosis: DS.attr('string'),
+    primaryDiagnosis: DS.attr('string'), //AKA admitting diagnosis
+    primaryBillingDiagnosis: DS.attr('string'), //AKA final diagnosis
     primaryBillingDiagnosisId: DS.attr('string'),
     procedures: DS.hasMany('procedure', {async: true}),
     startDate:  DS.attr('date'),
@@ -87,15 +86,8 @@ export default AbstractModel.extend({
         },
         visitType: {
             presence: true
-        },
-        
-        primaryBillingDiagnosis: {            
-            acceptance: DiagnosisValidation.diagnosisValidation.acceptance,
-            length: { 
-                allowBlank: true,
-                minimum: 3
-            }
         }
+        
     }
 
 });

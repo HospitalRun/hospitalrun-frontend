@@ -38,8 +38,10 @@
                     }}
                 </div>
                 <div class="row">
-                    <div class="form-group col-xs-12">
-                        {{icd10-typeahead property="diagnosis" label="Diagnosis"}}
+                    <div class="form-group col-xs-12">                        
+                        {{select-or-typeahead property="diagnosis" 
+                            label="Diagnosis" list=diagnosisList 
+                        }} 
                     </div>
                 </div>        
 

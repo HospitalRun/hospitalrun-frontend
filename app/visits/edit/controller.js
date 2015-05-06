@@ -103,6 +103,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         id: 'clinic_list'
     }, {
         name: 'diagnosisList',
+        property: 'primaryBillingDiagnosis',
+        id: 'diagnosis_list'
+    }, {
+        name: 'diagnosisList',
         property: 'primaryDiagnosis',
         id: 'diagnosis_list'
     }, {

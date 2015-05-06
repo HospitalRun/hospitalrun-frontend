@@ -8,10 +8,13 @@ export default AbstractModuleRoute.extend(PatientId, {
     }, { 
         name: 'clinicList',
         findArgs: ['lookup','clinic_list']
-    },  {
+    }, {
         name: 'countryList',
         findArgs: ['lookup','country_list']
-    },  {
+    }, {
+        name: 'diagnosisList',
+        findArgs: ['lookup','diagnosis_list']
+    }, {
         name: 'locationList',
         findArgs: ['lookup','visit_location_list']
     }, {

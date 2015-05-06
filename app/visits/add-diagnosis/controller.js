@@ -1,14 +1,15 @@
-import Ember from "ember";
-import IsUpdateDisabled from "hospitalrun/mixins/is-update-disabled";
-
-export default Ember.ObjectController.extend(IsUpdateDisabled, {
-    diagnosisChanged: function() {
-        this.get('model').validate();
-    }.observes('diagnosisId'),
+import Ember from 'ember';
+import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+export default AbstractEditController.extend({  
+    diagnosisList: Ember.computed.alias('controllers.visits.diagnosisList'),
     
-    needs: 'visits/edit',
+    needs: ['visits','visits/edit'],
     
-    editController: Ember.computed.alias('controllers.visits/edit'),    
+    editController: Ember.computed.alias('controllers.visits/edit'), 
+    lookupListsToUpdate: [{
+        name: 'diagnosisList',
+        property: 'diagnosis',    
+    }],    
     title: 'Add Diagnosis',
     updateButtonText: 'Add',
     updateButtonAction: 'add',
@@ -20,8 +21,8 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
         },
         
         add: function() {
-            var newDiag = {
-                id: this.get('diagnosisId'),
+            this.updateLookupLists();
+            var newDiag = {                
                 date: new Date(),
                 description: this.get('diagnosis')                
             };
