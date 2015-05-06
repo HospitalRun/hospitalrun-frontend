@@ -213,12 +213,36 @@
                         <label>
                             Patient Factors
                         </label>
-                        {{#each patientFactors}}
-                            {{em-checkbox label=type property="type"}}
-                                {{#each components}}
-                                    {{em-checkbox label=this property="component"}}
-                                {{/each}}
-                        {{/each}}
+                        <table class="table">
+                            <TBODY>
+                                <tr class="table-header">
+                                    <th>Patient Factors</th>
+                                    <th>Components</th>
+                                </tr>
+                                <tr>
+                                    {{#each patientFactors}}
+                                        <tr>
+                                            <td>
+                                                {{type}}
+                                            </td>
+                                            <td>
+                                                <table class="table">
+                                                    
+                                                        {{#each components}}
+                                                            <TBODY>                                             
+                                                                <tr>
+                                                                    {{em-checkbox label=name property=id}}
+                                                                </tr>
+                                                            </TBODY>
+                                                        {{/each}}
+                                                    
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                </tr>
+                            </TBODY>
+                        </table>
                     </div>
                 </div>
         </div>
