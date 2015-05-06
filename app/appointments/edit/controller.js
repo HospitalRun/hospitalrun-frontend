@@ -23,6 +23,7 @@ export default AbstractEditController.extend(PatientSubmodule, ReturnTo, VisitTy
     
     physicianList: Ember.computed.alias('controllers.appointments.physicianList'),
     showTime: true,
+    visitTypesList: Ember.computed.alias('controllers.appointments.visitTypeList'),
     
     cancelAction: function() {
         var returnTo = this.get('returnTo');

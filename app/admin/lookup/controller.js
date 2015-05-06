@@ -4,8 +4,9 @@ import LabPricingTypes from 'hospitalrun/mixins/lab-pricing-types';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import ImagingPricingTypes from 'hospitalrun/mixins/imaging-pricing-types';
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
+import VisitTypes from 'hospitalrun/mixins/visit-types';
 export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes, 
-        ModalHelper, ImagingPricingTypes, InventoryTypeList, {
+        ModalHelper, ImagingPricingTypes, InventoryTypeList, VisitTypes, {
     lookupType: null,
     lookupTypes: [{
         name: 'Anesthesia Types',
@@ -158,6 +159,13 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
             visit: 'location',            
         }
     }, {
+        defaultValues: 'defaultVisitTypes',
+        name: 'Visit Types',
+        value: 'visit_types',
+        models: {
+            visit: 'visitType',            
+        }
+    }, {
         name: 'Ward Pricing Types',
         value: 'ward_pricing_types',
         models: {
@@ -218,6 +226,49 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
         
     userCanAdd: Ember.computed.alias('lookupTypeList.userCanAdd'),
     
+    _canDeleteValue: function(value) {
+        var lookupType = this.get('lookupType');
+        switch (lookupType) {
+            case 'inventory_types': {
+                if (value === 'Medication') {
+                    this.displayAlert('Cannot Delete Medication', 'The Medication inventory type cannot be deleted because it is needed for the Medication module.');
+                    return false;
+                }
+                break;
+            }
+            case 'lab_pricing_types': {
+                if (value === 'Lab Procedure') {
+                    this.displayAlert('Cannot Delete Lab Pricing Type', 'The Lab Procedure pricing type cannot be deleted because it is needed for the Labs module.');
+                    return false;
+                }
+                break;
+            }
+            case 'imaging_pricing_types': {
+                if (value === 'Imaging Procedure') {
+                    this.displayAlert('Cannot Delete Imaging Pricing Type', 'The Imaging Procedure pricing type cannot be deleted because it is needed for the Imaging module.');
+                    return false;
+                }
+                break;
+            }
+            case 'visit_types': {
+                if (value === 'Admission') {
+                    this.displayAlert('Cannot Delete Admmission Visit Type', 'The Admission Visit type cannot be deleted because it is needed for the Visits module.');
+                    return false;                    
+                } else if (value === 'Imaging') {
+                    this.displayAlert('Cannot Delete Imaging Visit Type', 'The Imaging Visit type cannot be deleted because it is needed for the Imaging module.');
+                    return false;
+                } else if (value === 'Lab') {
+                    this.displayAlert('Cannot Delete Lab Visit Type', 'The Lab Visit type cannot be deleted because it is needed for the Lab module.');
+                    return false;
+                } else if (value === 'Pharmacy') {
+                    this.displayAlert('Cannot Delete Pharmacy Visit Type', 'The Lab Visit type cannot be deleted because it is needed for the Medication module.');
+                    return false;
+                }
+            }
+        }
+        return true;        
+    },
+    
     _sortValues: function(a, b) {
         return Ember.compare(a.toLowerCase(), b.toLowerCase());
     },
@@ -229,16 +280,9 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
             }));
         },
         deleteValue: function(value) {
-            var lookupType = this.get('lookupType'),
-                lookupTypeList = this.get('lookupTypeList'),
+            var lookupTypeList = this.get('lookupTypeList'),
                 lookupTypeValues = lookupTypeList.get('value');
-            if (lookupType === 'inventory_types' && value === 'Medication') {
-                this.displayAlert('Cannot Delete Medication', 'The Medication inventory type cannot be deleted because it is needed for the Medication module.');
-            } else if (lookupType === 'lab_pricing_types' && value === 'Lab Procedure') {
-                this.displayAlert('Cannot Delete Lab Pricing Type', 'The Lab Procedure pricing type cannot be deleted because it is needed for the Labs module.');
-            } else if (lookupType === 'imaging_pricing_types' && value === 'Imaging Procedure') {
-                this.displayAlert('Cannot Delete Imaging Pricing Type', 'The Imaging Procedure pricing type cannot be deleted because it is needed for the Imaging module.');
-            } else {
+            if (this._canDeleteValue(value)) {
                 lookupTypeValues.removeObject(value.toString());        
                 lookupTypeList.save();
             }

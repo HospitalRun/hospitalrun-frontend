@@ -23,6 +23,9 @@ export default AbstractModuleRoute.extend(PatientId, {
     }, {
         name: 'statusList',
         findArgs: ['lookup','patient_status_list']
+    }, {
+        name: 'visitTypesList',
+        findArgs: ['lookup','visit_types']
     }],
     moduleName: 'patients',
     newButtonText: '+ new patient',

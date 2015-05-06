@@ -7,6 +7,7 @@ export default AbstractReportController.extend(VisitTypes, {
     clinicList: Ember.computed.alias('controllers.patients.clinicList'),
     physicianList: Ember.computed.alias('controllers.patients.physicianList'),
     locationList: Ember.computed.alias('controllers.patients.locationList'),
+    visitTypesList: Ember.computed.alias('controllers.patients.visitTypeList'),
     
     admissionReportColumns: {
         gender: {
