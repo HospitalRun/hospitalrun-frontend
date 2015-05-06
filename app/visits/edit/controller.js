@@ -57,6 +57,34 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         return this.currentUserCan('delete_vitals');
     }.property(),
     
+    dateFormat: function() {
+        if (this.get('isAdmissionVisit')) {
+            return 'l h:mm A';
+        } else {
+            return 'l';
+        }
+    }.property('isAdmissionVisit'),
+
+    endDateLabel: function() {
+        if (this.get('isAdmissionVisit')) {
+            return 'Discharge Date';
+        } else {
+            return 'End Date';
+        }
+    }.property('isAdmissionVisit'),
+    
+    isAdmissionVisit: function() {
+        var visitType = this.get('visitType');
+        return (visitType === 'Admission');
+    }.property('visitType'),
+    
+    startDateLabel: function() {
+        if (this.get('isAdmissionVisit')) {
+            return 'Admission Date';
+        } else {
+            return 'Start Date';
+        }
+    }.property('isAdmissionVisit'),
     
     cancelAction: 'returnToPatient',
     chargePricingCategory: 'Ward',
@@ -68,6 +96,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     pricingTypes: Ember.computed.alias('controllers.visits.wardPricingTypes'),
     physicianList: Ember.computed.alias('controllers.visits.physicianList'),
     locationList: Ember.computed.alias('controllers.visits.locationList'),
+    visitTypesList: Ember.computed.alias('controllers.visits.visitTypeList'),
     lookupListsToUpdate: [{
         name: 'clinicList',
         property: 'clinic',

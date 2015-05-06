@@ -59,6 +59,29 @@ export default AbstractModel.extend({
     }.property('visitDate', 'visitType'),
     
     validations: {
+        endDate: {
+            acceptance: {
+                accept: true,
+                    if: function(object) {
+                        if (!object.get('isDirty')) {
+                            return false;
+                        }
+                        var startDate = object.get('startDate'),
+                            endDate = object.get('endDate');
+                        if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
+                            //Can't validate if empty
+                            return false;
+                        } else {
+                            if (endDate.getTime() <=  startDate.getTime()) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }, 
+                message: 'Please select an end date later than the start date'
+            }
+        },
+        
         startDate: {
             presence: true
         },

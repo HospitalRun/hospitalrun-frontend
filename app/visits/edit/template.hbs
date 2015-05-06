@@ -17,8 +17,8 @@
                             <label>Patient</label>
                             <p class="form-control-static">{{patient.displayName}}</p>
                         </div>       
-                        {{date-picker property="startDate" label="Start Date" class="col-sm-3 required"}}
-                        {{date-picker property="endDate" label="End Date" class="col-sm-3"}}
+                        {{date-picker property="startDate" label=startDateLabel format=dateFormat showTime=isAdmissionVisit class="col-sm-3 required"}}
+                        {{date-picker property="endDate" label=endDateLabel format=dateFormat showTime=isAdmissionVisit class="col-sm-3"}}
                     </div>
                     <div class="row">
                         {{em-select class="col-sm-3 required" label="Visit Type" 
