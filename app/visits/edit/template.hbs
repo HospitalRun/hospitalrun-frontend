@@ -49,41 +49,48 @@
                         }}
                     </div>
                     <div class="row">
-                        {{select-or-typeahead class="col-sm-6" property="primaryDiagnosis" 
+                        {{select-or-typeahead class="col-sm-5" property="primaryDiagnosis" 
                             label="Admitting Diagnosis" list=diagnosisList 
                             selection=primaryDiagnosis
                         }} 
-                        {{select-or-typeahead class="col-sm-6" property="primaryBillingDiagnosis" 
+                        {{select-or-typeahead class="col-sm-5" property="primaryBillingDiagnosis" 
                             label="Final/Billing Diagnosis" list=diagnosisList 
                             selection=primaryBillingDiagnosis
-                        }}  
-                    </div>
-                    <h4>
-                        Additional Diagnoses
+                        }}
                         {{#if canAddDiagnosis}}
-                            <button class="btn btn-primary" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> New Diagnosis</button>
+                            <div class="form-group col-sm-2">
+                                <label class="control-label">&nbsp;</label>
+                                <p class="form-control-static">                                
+                                    <button class="btn btn-primary" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> Add Diagnosis</button>
+                                </p>
+                            </div>
                         {{/if}}
-                    </h4>    
-                    <table class="table">
-                        <tr class="table-header">
-                            <th>Date</th>
-                            <th>Diagnosis</th>
-                            <th>Delete</th>
-                        </tr>
-                        {{#with canDeleteDiagnosis as canDeleteDiagnosis}}
-                            {{#each additionalDiagnoses}}
-                            <tr>
-                                <td>{{date-format date}}</td>
-                                <td>{{description}}</td>
-                                <td>
-                                    {{#if canDeleteDiagnosis}}
-                                        <button class="btn btn-default warning" {{action "deleteDiagnosis" this}}><span class="octicon octicon-x"></span> Delete</button>
-                                    {{/if}}
-                                </td>
+                    </div>
+                    {{#if haveAdditionalDiagnoses}}
+                        <h4>
+                            Additional Diagnoses
+                        </h4>    
+                        <table class="table">
+                            <tr class="table-header">
+                                <th>Date</th>
+                                <th>Diagnosis</th>
+                                <th>Delete</th>
                             </tr>
-                            {{/each}}
-                        {{/with}}
-                    </table>
+                            {{#with canDeleteDiagnosis as canDeleteDiagnosis}}
+                                {{#each additionalDiagnoses}}
+                                <tr>
+                                    <td>{{date-format date}}</td>
+                                    <td>{{description}}</td>
+                                    <td>
+                                        {{#if canDeleteDiagnosis}}
+                                            <button class="btn btn-default warning" {{action "deleteDiagnosis" this}}><span class="octicon octicon-x"></span> Delete</button>
+                                        {{/if}}
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            {{/with}}
+                        </table>
+                    {{/if}}
                     {{em-text label="Patient History" property="history" rows=3 }}
                     {{em-text label="History since last seen" property="historySince" rows=3 }}
                     {{em-text label="Notes" property="notes" rows=3 }}
