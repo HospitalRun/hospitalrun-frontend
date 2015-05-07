@@ -101,6 +101,45 @@
     <div class="panel">
         <div class="panel-heading">
             <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-procedures">
+                    Procedures 
+                    {{#if canAddProcedure}}
+                        <button class="btn btn-primary align-right" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> New Procedure</button>
+                    {{/if}}
+                </a>
+            </h3>
+        </div>
+        <div id="visit-procedures" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <table class="table">
+                    <tr class="table-header">
+                        <th>Date</th>
+                        <th>Procedure</th>
+                        <th>Actions</th>
+                    </tr>
+                    {{#with this as parentController}}
+                        {{#each procedures}}
+                        <tr>
+                            <td>{{date-format procedureDate}}</td>
+                            <td>{{description}}</td>
+                            <td>
+                                {{#if parentController.canAddProcedure}}
+                                    <button class="btn btn-default neutral" {{action "showEditProcedure" this}}>Edit</button>
+                                {{/if}}
+                                {{#if parentController.canDeleteProcedure}}
+                                    <button class="btn btn-default warning" {{action "showDeleteProcedure" this}}><span class="octicon octicon-x"></span> Delete</button>
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    {{/with}}
+                </table>
+            </div>
+        </div>
+    </div>    
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">
                 <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-medication">
                     Medication 
                     {{#if canAddMedication}}
@@ -286,45 +325,6 @@
                                     {{/if}}
                                 </td>
                             </tr>
-                        {{/each}}
-                    {{/with}}
-                </table>
-            </div>
-        </div>
-    </div>    
-    <div class="panel">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-procedures">
-                    Procedures 
-                    {{#if canAddProcedure}}
-                        <button class="btn btn-primary align-right" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> New Procedure</button>
-                    {{/if}}
-                </a>
-            </h3>
-        </div>
-        <div id="visit-procedures" class="panel-collapse collapse in">
-            <div class="panel-body">
-                <table class="table">
-                    <tr class="table-header">
-                        <th>Date</th>
-                        <th>Procedure</th>
-                        <th>Actions</th>
-                    </tr>
-                    {{#with this as parentController}}
-                        {{#each procedures}}
-                        <tr>
-                            <td>{{date-format procedureDate}}</td>
-                            <td>{{description}}</td>
-                            <td>
-                                {{#if parentController.canAddProcedure}}
-                                    <button class="btn btn-default neutral" {{action "showEditProcedure" this}}>Edit</button>
-                                {{/if}}
-                                {{#if parentController.canDeleteProcedure}}
-                                    <button class="btn btn-default warning" {{action "showDeleteProcedure" this}}><span class="octicon octicon-x"></span> Delete</button>
-                                {{/if}}
-                            </td>
-                        </tr>
                         {{/each}}
                     {{/with}}
                 </table>
