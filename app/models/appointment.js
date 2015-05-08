@@ -12,6 +12,15 @@ export default AbstractModel.extend({
     endDate: DS.attr('date'),
     notes: DS.attr('string'),
     validations: {
+        appointmentDate: {
+            presence: {
+                if: function(object) {
+                    var appointmentType = object.get('appointmentType');
+                    return appointmentType !== 'Admission';
+                }
+            }
+        },
+        
         patientTypeAhead: PatientValidation.patientTypeAhead,        
         
         patient: {

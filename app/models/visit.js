@@ -71,7 +71,7 @@ export default AbstractModel.extend({
                             //Can't validate if empty
                             return false;
                         } else {
-                            if (endDate.getTime() <=  startDate.getTime()) {
+                            if (endDate.getTime() <  startDate.getTime()) {
                                 return true;
                             }
                         }

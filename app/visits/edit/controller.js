@@ -56,40 +56,31 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     canDeleteVitals: function() {        
         return this.currentUserCan('delete_vitals');
     }.property(),
-    
-    dateFormat: function() {
-        if (this.get('isAdmissionVisit')) {
-            return 'l h:mm A';
-        } else {
-            return 'l';
-        }
-    }.property('isAdmissionVisit'),
 
-    endDateLabel: function() {
-        if (this.get('isAdmissionVisit')) {
-            return 'Discharge Date';
-        } else {
-            return 'End Date';
-        }
-    }.property('isAdmissionVisit'),
-    
     isAdmissionVisit: function() {
-        var visitType = this.get('visitType');
-        return (visitType === 'Admission');
+        var visitType = this.get('visitType'),
+            isAdmission = (visitType === 'Admission');
+        if (isAdmission) {
+            this.set('outPatient', false);
+        } else {
+            this.set('outPatient', true);
+        }
+        return isAdmission;
     }.property('visitType'),
     
-    startDateLabel: function() {
-        if (this.get('isAdmissionVisit')) {
-            return 'Admission Date';
-        } else {
-            return 'Start Date';
+    startDateChanged: function() {
+        var isAdmissionVisit = this.get('isAdmissionVisit'), 
+            startDate = this.get('startDate');
+        if (!isAdmissionVisit) {
+            this.set('endDate', startDate);
         }
-    }.property('isAdmissionVisit'),
+    }.observes('isAdmissionVisit', 'startDate'),
     
     cancelAction: 'returnToPatient',
     chargePricingCategory: 'Ward',
     chargeRoute: 'visits.charge',
     clincList: Ember.computed.alias('controllers.visits.clinicList'),
+    dateTimeFormat: 'l h:mm A',
     diagnosisList: Ember.computed.alias('controllers.visits.diagnosisList'),
     findPatientVisits: false,
     pricingList: null, //This gets filled in by the route

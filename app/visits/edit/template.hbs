@@ -16,23 +16,26 @@
                         <div class="form-group col-sm-4">
                             <label>Patient</label>
                             <p class="form-control-static">{{patient.displayName}}</p>
-                        </div>       
-                        {{date-picker property="startDate" label=startDateLabel format=dateFormat showTime=isAdmissionVisit class="col-sm-3 required"}}
-                        {{date-picker property="endDate" label=endDateLabel format=dateFormat showTime=isAdmissionVisit class="col-sm-3"}}
+                        </div>
+                        {{#if isAdmissionVisit}}
+                            {{date-picker property="startDate" label="Admission Date" format=dateTimeFormat showTime=true class="col-sm-3 required"}}
+                            {{date-picker property="endDate" label="Discharge Date" format=dateTimeFormat showTime=true class="col-sm-3"}}
+                        {{else}}
+                            {{date-picker property="startDate" label="Date" class="col-sm-3 required"}}
+                        {{/if}}
                     </div>
                     <div class="row">
                         {{em-select class="col-sm-3 required" label="Visit Type" 
                             property="visitType" content=visitTypes
                             optionValuePath="content" optionLabelPath="content"
                         }}
-                        {{em-checkbox label="Outpatient" property="outPatient" class="col-sm-3"}}
-                        {{#unless outPatient}}
+                        {{#if isAdmissionVisit}}
                             {{em-select class="col-sm-3" label="Visit Status" 
                                 property="status" content=visitStatuses
                                 optionValuePath="content" optionLabelPath="content"
                                 prompt=" "
                             }}
-                        {{/unless}}
+                        {{/if}}
                         {{select-or-typeahead class="col-sm-3" property="examiner" 
                             label="Examiner" list=physicianList 
                             selection=examiner

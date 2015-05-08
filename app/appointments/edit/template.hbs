@@ -1,6 +1,6 @@
 {{#em-form model=this submit_button=false }}
     {{#if selectPatient}}
-        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient }}
+        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
     {{else}}
             <div class="form-group">
                 <label>Patient</label>
@@ -8,12 +8,37 @@
             </div>
     {{/if}}
     <div class="row">
-        {{date-picker property="startDate" label="Start Date" showTime=showTime format=dateFormat class="col-sm-4"}}
-        {{date-picker property="endDate" label="End Date" showTime=showTime format=dateFormat class="col-sm-4"}}
-        {{em-checkbox label="All Day" property="allDay"  class="col-sm-4"}}
+        {{#if isAdmissionAppointment}}    
+            {{date-picker property="startDate" label="Start Date" showTime=showTime format=dateFormat class="col-sm-4 required"}}
+            {{date-picker property="endDate" label="End Date" showTime=showTime format=dateFormat class="col-sm-4 required"}}
+        {{else}}
+            {{date-picker property="appointmentDate" label="Date" class="col-sm-4 required"}}
+            {{#unless allDay}}
+                <div class="form-group col-sm-3 required">            
+                    <label class="control-label" for="startTime">Start Time</label>
+                    <div class="input-group">
+                        {{view Ember.Select viewName="select" content=hourList optionLabelPath="content.name" optionValuePath="content.value" value=startHour id="startTime" class="form-control"}}
+                        <div class="input-group-addon">:</div>
+                        {{view Ember.Select viewName="select" content=minuteList optionLabelPath="content" optionValuePath="content" value=startMinute class="form-control"}}
+                    </div>
+                </div>
+                <div {{bind-attr class=":form-group :col-sm-3 :required :has-feedback endTimeHasError:has-error"}}>            
+                    <label class="control-label" for="endTime">End Time</label>
+                    <div class="input-group">
+                        {{view Ember.Select viewName="select" content=hourList optionLabelPath="content.name" optionValuePath="content.value" value=endHour id="endTime" class="form-control"}}
+                        <div class="input-group-addon">:</div>
+                        {{view Ember.Select viewName="select" content=minuteList optionLabelPath="content" optionValuePath="content" value=endMinute class="form-control"}}
+                    </div>
+                    {{#if endTimeHasError}}
+                        <p class="help-block">Please select an end time later than the start time.</p>
+                    {{/if}}
+                </div>
+            {{/unless}}
+        {{/if}}
+        {{em-checkbox label="All Day" property="allDay"  class="col-sm-2"}}
     </div>
     <div class="row">
-        {{em-select class="col-sm-6" label="Type" 
+        {{em-select class="col-sm-6 required" label="Type" 
             property="appointmentType" content=visitTypes
             optionValuePath="content" optionLabelPath="content"
         }}
@@ -23,7 +48,7 @@
         }}
     </div>
     <div class="row">
-        {{select-or-typeahead class="col-sm-6" property="location"
+        {{select-or-typeahead class="col-sm-6 required" property="location"
             label="Location" list=locationList
             selection=location
         }}
