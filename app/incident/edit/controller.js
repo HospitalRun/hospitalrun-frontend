@@ -262,30 +262,50 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         return new Ember.RSVP.Promise(function(resolve, reject) {    
             var patientFactors = this.get('patientFactors'),
                 savePromises = [];
-            patientFactors.forEach(function(patientFactor) {
-                patientFactor.components.forEach(function(component) {
-                    var checkboxValue = this.get(component.id),
-                        patientContributingFactors = this.get('patientContributingFactors'),
-                        existingFactor = patientContributingFactors.findBy('component', component.name);
-                    if (Ember.isEmpty(checkboxValue)) {
-                        //Checkbox isn't checked, delete from list if in list
-                        if (!Ember.isEmpty(existingFactor)) {
-                            patientContributingFactors.removeObject(existingFactor);
-                            savePromises.push(existingFactor.destroyRecord());
-                        }
-                    } else {                    
-                        if (Ember.isEmpty(existingFactor)) {
-                            //Checkbox is checked, but value isn't stored on the model, so save it
-                            existingFactor = this.store.createRecord('inc-contributing-factor', {
-                                component: component.name,
-                                type: patientFactor.type
-                            });
-                            savePromises.push(existingFactor.save());
-                            patientContributingFactors.addObject(existingFactor);
-                        }
-                    }
-                }.bind(this));
+             this.get('patientContributingFactors').then(function(patientContributingFactors){
+                savePromises = this._addContributingFactors(patientFactors,patientContributingFactors);
             }.bind(this));
+
+            var staffFactors = this.get('staffFactors');
+            this.get('staffContributingFactors').then(function(staffContributingFactors){
+                savePromises = this._addContributingFactors(staffFactors,staffContributingFactors);
+            }.bind(this));
+
+            var taskFactors = this.get('taskFactors');
+            this.get('taskContributingFactors').then(function(taskContributingFactors){
+                savePromises = this._addContributingFactors(taskFactors,taskContributingFactors);
+            }.bind(this));
+
+            var communicationFactors = this.get('communicationFactors');
+            this.get('communicationContributingFactors').then(function(communicationContributingFactors){
+                savePromises = this._addContributingFactors(communicationFactors,communicationContributingFactors);
+            }.bind(this));
+
+            var equipmentFactors = this.get('equipmentFactors');
+            this.get('equipmentContributingFactors').then(function(equipmentContributingFactors){
+                savePromises = this._addContributingFactors(equipmentFactors,equipmentContributingFactors);
+            }.bind(this)); 
+
+            var workEnvFactors = this.get('workEnvFactors');
+            this.get('wrkEnvironmentContributingFactors').then(function(wrkEnvironmentContributingFactors){
+                savePromises = this._addContributingFactors(workEnvFactors,wrkEnvironmentContributingFactors);
+            }.bind(this));
+
+            var organisationalFactors = this.get('organisationalFactors');
+            this.get('organizationalContributingFactors').then(function(organizationalContributingFactors){
+                savePromises = this._addContributingFactors(organisationalFactors,organizationalContributingFactors);
+            }.bind(this));        
+            
+            var educationAndTrainingFactors = this.get('educationAndTrainingFactors');
+            this.get('eduTrainingContributingFactors').then(function(eduTrainingContributingFactors){
+                savePromises = this._addContributingFactors(educationAndTrainingFactors,eduTrainingContributingFactors);
+            }.bind(this));
+
+            var teamFactors = this.get('teamFactors');
+            this.get('teamContributingFactors').then(function(teamContributingFactors){
+                savePromises = this._addContributingFactors(teamFactors,teamContributingFactors);
+            }.bind(this));
+
             Ember.RSVP.all(savePromises,'Updated contributing factor records before incident update').then(function(){
                 resolve();
             }, function(error) {
@@ -335,6 +355,37 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
             }
         }
     },
+
+    _addContributingFactors(factorsList,contributingFactors){
+         var savePromises = [],
+                checkboxValue = null,
+                existingFactor = null;
+        factorsList.forEach(function(factor) {
+                factor.components.forEach(function(component) {
+                        checkboxValue = this.get(component.id);
+                        existingFactor = contributingFactors.findBy('component', component.name);
+                            if (Ember.isEmpty(checkboxValue)) {
+                            //Checkbox isn't checked, delete from list if in list
+                                if (!Ember.isEmpty(existingFactor)) {
+                                contributingFactors.removeObject(existingFactor);
+                                savePromises.push(existingFactor.destroyRecord());
+                                }
+                            } else {                    
+                            if (Ember.isEmpty(existingFactor)) {
+                              //Checkbox is checked, but value isn't stored on the model, so save it
+                              existingFactor = this.store.createRecord('inc-contributing-factor', {
+                                component: component.name,
+                                type: factor.type
+                              });
+                              savePromises.push(existingFactor.save());
+                              contributingFactors.addObject(existingFactor);
+                            } 
+                          }
+                     
+                }.bind(this));                
+            }.bind(this));
+            return savePromises;
+   },
 
     /**
      * Adds or removes the specified object from the specified list.

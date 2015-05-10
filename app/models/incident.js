@@ -18,14 +18,14 @@ export default AbstractModel.extend({
     investigationFindings: DS.hasMany('inc-investigation-finding', {async: true}),
     
     patientContributingFactors: DS.hasMany('inc-contributing-factor', {async: true}),
-   /* staffContributingFactors: DS.hasMany('inc-staff-factors', {async: true}),
-    taskContributingFactors: DS.hasMany('inc-task-factors', {async: true}),
-    communicationContributingFactors: DS.hasMany('inc-commn-factors', {async: true}),
-    equipmentContributingFactors: DS.hasMany('inc-equip-factors', {async: true}),
-    wrkEnvironmentContributingFactors: DS.hasMany('inc-envr-factors', {async: true}),
-    organizationalContributingFactors: DS.hasMany('inc-org-factors', {async: true}),
-    eduTrainingContributingFactors: DS.hasMany('inc-training-factors', {async: true}),
-    teamContributingFactors: DS.hasMany('inc-team-factors', {async: true}),*/
+    staffContributingFactors: DS.hasMany('inc-contributing-factor', {async: true}),
+    taskContributingFactors: DS.hasMany('inc-contributing-factor', {async: true}),
+    communicationContributingFactors: DS.hasMany('inc-contributing-factor', {async: true}),
+    equipmentContributingFactors: DS.hasMany('inc-contributing-factor', {async: true}),
+    wrkEnvironmentContributingFactors: DS.hasMany('inc-contributing-factor', {async: true}),
+    organizationalContributingFactors: DS.hasMany('inc-contributing-factor', {async: true}),
+    eduTrainingContributingFactors: DS.hasMany('inc-contributing-factor', {async: true}),
+    teamContributingFactors: DS.hasMany('inc-contributing-factor', {async: true}),
 
     harmScore: DS.attr('string'),
 

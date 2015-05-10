@@ -206,21 +206,82 @@
                 <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            Factors: Factors Contributing to the Incident
+                            Root Cause Analysis (RCA)
                         </h3>
                     </div>
                     <div class="panel-body detail-section-content">
-                        <label>
-                            Patient Factors
-                        </label>
+                        <div class="panel-heading">
+                            <h2 class="panel-title">
+                                Contributory Factors Classification Framework
+                            </h2>
+                        </div>
                         <table class="table">
-                            <TBODY>
+                            <THEAD>
                                 <tr class="table-header">
                                     <th>Patient Factors</th>
                                     <th>Components</th>
                                 </tr>
-                                <tr>
+                            </THEAD>
+                            <TBODY>
                                     {{#each patientFactors}}
+                                        <tr>
+                                            <td>
+                                                {{type}}
+                                            </td>
+                                            <td>
+                                                <table class="table">
+                                                        {{#each components}}
+                                                            <TBODY>                                             
+                                                                <tr>
+                                                                    {{em-checkbox label=name property=id}}
+                                                                </tr>
+                                                            </TBODY>
+                                                        {{/each}} 
+                                                </table>
+                                            </td>
+                                        </tr>
+                                   {{/each}}
+                            </TBODY>
+                        </table>
+                        <table class="table">
+                                <THEAD>
+                                    <tr class="table-header">
+                                        <th>Staff Factors</th>
+                                        <th>Components</th>
+                                    </tr>
+                                </THEAD>
+                                <TBODY>
+                                    {{#each staffFactors}}
+                                        <tr>
+                                            <td>
+                                                {{type}}
+                                            </td>
+                                            <td>
+                                                <table class="table">
+                                                    
+                                                        {{#each components}}
+                                                            <TBODY>                                             
+                                                                <tr>
+                                                                    {{em-checkbox label=name property=id}}
+                                                                </tr>
+                                                            </TBODY>
+                                                        {{/each}}
+                                                    
+                                                </table>
+                                            </td>
+                                        </tr>
+                                   {{/each}}
+                                </TBODY>
+                        </table>
+                        <table class="table">
+                            <THEAD>
+                                <tr class="table-header">
+                                    <th>Task Factors</th>
+                                    <th>Components</th>
+                                </tr>
+                            </THEAD>
+                            <TBODY>
+                                    {{#each taskFactors}}
                                         <tr>
                                             <td>
                                                 {{type}}
@@ -240,7 +301,186 @@
                                             </td>
                                         </tr>
                                     {{/each}}
+                            </TBODY>
+                        </table>
+                        <table class="table">
+                            <THEAD>
+                                <tr class="table-header">
+                                    <th>Communication Factors</th>
+                                    <th>Components</th>
                                 </tr>
+                            </THEAD>
+                            <TBODY>
+                                    {{#each communicationFactors}}
+                                        <tr>
+                                            <td>
+                                                {{type}}
+                                            </td>
+                                            <td>
+                                                <table class="table">
+                                                    
+                                                        {{#each components}}
+                                                            <TBODY>                                             
+                                                                <tr>
+                                                                    {{em-checkbox label=name property=id}}
+                                                                </tr>
+                                                            </TBODY>
+                                                        {{/each}}
+                                                    
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                            </TBODY>
+                        </table>
+                        <table class="table">
+                            <THEAD>
+                                <tr class="table-header">
+                                    <th>Equipment Factors</th>
+                                    <th>Components</th>
+                                </tr>
+                            </THEAD>
+                            <TBODY>
+                                    {{#each equipmentFactors}}
+                                        <tr>
+                                            <td>
+                                                {{type}}
+                                            </td>
+                                            <td>
+                                                <table class="table">
+                                                    
+                                                        {{#each components}}
+                                                            <TBODY>                                             
+                                                                <tr>
+                                                                    {{em-checkbox label=name property=id}}
+                                                                </tr>
+                                                            </TBODY>
+                                                        {{/each}}
+                                                    
+                                                </table>
+                                            </td>
+                                        </tr>
+                                   {{/each}}
+                            </TBODY>
+                        </table>
+                        <table class="table">
+                            <THEAD>
+                                <tr class="table-header">
+                                    <th>Work Environment Factors</th>
+                                    <th>Components</th>
+                                </tr>
+                            </THEAD>
+                            <TBODY>
+                                    {{#each workEnvFactors}}
+                                        <tr>
+                                            <td>
+                                                {{type}}
+                                            </td>
+                                            <td>
+                                                <table class="table">
+                                                    
+                                                        {{#each components}}
+                                                            <TBODY>                                             
+                                                                <tr>
+                                                                    {{em-checkbox label=name property=id}}
+                                                                </tr>
+                                                            </TBODY>
+                                                        {{/each}}
+                                                    
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                            </TBODY>
+                        </table>
+                        <table class="table">
+                            <THEAD>
+                                <tr class="table-header">
+                                    <th>Organisational Factors</th>
+                                    <th>Components</th>
+                                </tr>
+                            </THEAD>
+                            <TBODY>
+                                    {{#each organisationalFactors}}
+                                        <tr>
+                                            <td>
+                                                {{type}}
+                                            </td>
+                                            <td>
+                                                <table class="table">
+                                                    
+                                                        {{#each components}}
+                                                            <TBODY>                                             
+                                                                <tr>
+                                                                    {{em-checkbox label=name property=id}}
+                                                                </tr>
+                                                            </TBODY>
+                                                        {{/each}}
+                                                    
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                            </TBODY>
+                        </table>
+                        <table class="table">
+                            <THEAD>
+                                <tr class="table-header">
+                                    <th>Education and Training Factors</th>
+                                    <th>Components</th>
+                                </tr>
+                            </THEAD>
+                            <TBODY>
+                                    {{#each educationAndTrainingFactors}}
+                                        <tr>
+                                            <td>
+                                                {{type}}
+                                            </td>
+                                            <td>
+                                                <table class="table">
+                                                    
+                                                        {{#each components}}
+                                                            <TBODY>                                             
+                                                                <tr>
+                                                                    {{em-checkbox label=name property=id}}
+                                                                </tr>
+                                                            </TBODY>
+                                                        {{/each}}
+                                                    
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                            </TBODY>
+                        </table>
+                        <table class="table">
+                            <THEAD>
+                                <tr class="table-header">
+                                    <th>Team Factors Factors</th>
+                                    <th>Components</th>
+                                </tr>
+                            </THEAD>
+                            <TBODY>
+                                    {{#each teamFactors}}
+                                        <tr>
+                                            <td>
+                                                {{type}}
+                                            </td>
+                                            <td>
+                                                <table class="table">
+                                                    
+                                                        {{#each components}}
+                                                            <TBODY>                                             
+                                                                <tr>
+                                                                    {{em-checkbox label=name property=id}}
+                                                                </tr>
+                                                            </TBODY>
+                                                        {{/each}}
+                                                    
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
                             </TBODY>
                         </table>
                     </div>
