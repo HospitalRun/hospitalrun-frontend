@@ -35,11 +35,19 @@
     <div class="panel-footer">
         <button class="btn btn-default neutral" {{action 'addValue'}}>Add Value</button>
         {{#em-form model=this submit_button=false }}
-            {{em-checkbox label="User Can Add New Values" property="userCanAdd"}}
-            {{#if showOrganizeByType}}
-                {{em-checkbox label="Organize Pricing By Type" property="organizeByType"}}
-            {{/if}}
+            <div class="row">
+                <div class="col-sm-4">
+                    {{em-checkbox label="User Can Add New Values" property="userCanAdd"}}
+                    <button class="btn btn-default" {{action 'updateList'}}>Update</button> 
+                </div>
+                {{#if showOrganizeByType}}
+                    {{em-checkbox label="Organize Pricing By Type" property="organizeByType" class="col-sm-4"}}
+                {{/if}}
+                <div class="col-sm-4">
+                    {{file-upload label="Import File" property="importFileName" selectedFile=importFile }}
+                    <button class="btn btn-default" {{action 'importList'}}>Import</button>
+                </div>
+            </div>
         {{/em-form}}
-        <button class="btn btn-default" {{action 'updateList'}}>Update</button>
     </div>
 </div>

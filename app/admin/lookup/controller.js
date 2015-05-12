@@ -7,6 +7,8 @@ import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes, 
         ModalHelper, ImagingPricingTypes, InventoryTypeList, VisitTypes, {
+    needs: 'filesystem',
+    fileSystem: Ember.computed.alias('controllers.filesystem'),
     lookupType: null,
     lookupTypes: [{
         name: 'Anesthesia Types',
@@ -173,6 +175,8 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
         }
     }],
     
+    importFile: Ember.computed.alias('lookupTypeList.importFile'),
+    
     lookupTitle: function() {
         var lookupType = this.get('lookupType'),
             lookupTypes = this.get('lookupTypes'),
@@ -215,7 +219,7 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
             values.sort(this._sortValues);
         }
         return Ember.ArrayProxy.create({content: Ember.A(values)});
-    }.property('lookupType'),
+    }.property('lookupType', 'lookupTypeList.value'),
     
     organizeByType: Ember.computed.alias('lookupTypeList.organizeByType'),
     
@@ -294,6 +298,32 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
                     originalValue: value.toString(),
                     value: value.toString()
                 }));
+            }
+        },
+        importList: function() {
+            var fileSystem = this.get('fileSystem'),
+                fileToImport = this.get('importFile'),
+                lookupTypeList = this.get('lookupTypeList');
+            if (!fileToImport || !fileToImport.type) {
+                this.displayAlert('Select File To Import', 'Please select file to import.');
+            } else {
+                fileSystem.fileToDataURL(fileToImport).then(function(fileDataUrl) {
+                    var dataUrlParts = fileDataUrl.split(',');
+                    lookupTypeList.setProperties({
+                        _attachments: {
+                            file: {
+                                content_type: fileToImport.type,
+                                data: dataUrlParts[1]
+                            }
+                        },
+                        importFile: true
+                    }); 
+                    lookupTypeList.save().then(function() {
+                        this.displayAlert('List Imported', 'The lookup list has been imported.','refreshLookupLists');
+                        this.set('importFile');
+                        this.set('importFileName');
+                    }.bind(this));
+                }.bind(this));
             }
         },
         updateList: function() {
