@@ -471,6 +471,11 @@ export default Ember.Mixin.create({
             'Quality',
             'System Administrator'
         ],
+        add_summary : [
+            'User Administrator',
+            'Quality',
+            'System Administrator'
+        ],
         update_config: [
             'System Administrator',
             'Quality'

@@ -9,6 +9,7 @@ export default AbstractModel.extend({
 	locationOfIncident: DS.attr('string'),
 	dateOfIncident: DS.attr('date'),
 	incidentDescription: DS.attr('string'),
+    witnessList : DS.attr('string'),
     
     categoryName: DS.attr('string'),
     categoryItem: DS.attr('string'),
@@ -37,18 +38,18 @@ export default AbstractModel.extend({
     
     postSeverity: DS.attr('string'),
     postOccurence: DS.attr('string'),
-    postRiskScore: DS.attr('string'),
-   
+    postRiskScore: DS.attr('string'),   
 
     incidentOpen: DS.attr('boolean', {defaultValue: true}),
     notificationSend: DS.attr('boolean', {defaultValue: false}),
+    showSummary: DS.attr('boolean', {defaultValue: false}),
     statusOfIncident: DS.attr('string',{
           defaultValue: function() { return 'Opened'; }
       })
     //severity : DS.attr()
     
     //
-	//witnessList : DS.hasMany('witness', {async: true}),
+	//,
 	//documents : DS.hasMany('document', {async:true}),
 
     /*summary: function() {

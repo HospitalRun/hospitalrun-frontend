@@ -8,7 +8,7 @@
                         <p class="text-success pull-right">Status: {{statusOfIncident}}</p>
                     </div>     
             </div>
-        </div>
+    </div>
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class="active" ><a href="#creation" role="tab" data-toggle="pill">Creation</a></li>
             <li role="presentation"><a href="#reviewers" role="tab" data-toggle="pill">+ Reviewers</a></li>
@@ -58,6 +58,9 @@
                         {{em-input property="reportedTo" label="Incident Reported To" class="col-xs-12 col-sm-6"}}
                     </div>                        
                        {{em-text label="Incident Description" property="incidentDescription" rows=3}}
+                    <div class="row">
+                        {{em-input property="witnessList" label="List of Witnesses" class="col-xs-12 col-sm-12"}}
+                    </div>
                 </div>
             </div>
             <div class="panel detail-section">
@@ -627,41 +630,294 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             Summary
-                            {{#if canAddAppointment}}
-                                <button class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}><span class="octicon octicon-plus"></span> New Appointment</button>
+                            {{#if canAddSummary}}
+                                <button class="btn btn-primary align-right" {{action "generateSummary" bubbles=false }}><span class="octicon octicon-plus"></span>Generate Summary</button>
                             {{/if}}
                         </h3>
                     </div>
                     <div class="panel-body detail-section-content">
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Date</th>
-                                <th>Examiner</th>
-                                <th>Location</th>
-                                <th>Type</th>
-                                <th>Actions</th>
+                    {{#if getShowSummary}}
+                     <table class="table">
+                        <THEAD>
+                            <tr class="table-header success">
+                                <th>Decription</th>
                             </tr>
-                            {{#with this as parentController}}
-                                {{#each appointments itemController='appointments/item'}}
-                                    <tr {{action "editAppointment" this}}>
-                                        <td>{{appointmentDate}}</td>
-                                        <td>{{provider}}</td>
-                                        <td>{{location}}</td>
-                                        <td>{{appointmentType}}</td>
-                                        <td>
-                                            {{#if parentController.canAddAppointment}}
-                                                <button class="btn btn-default neutral" {{action "editAppointment" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if parentController.canDeleteAppointment}}
-                                                <button class="btn btn-default warning" {{action "showDeleteAppointment" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                                            {{/if}}
-                                        </td>
-                                    </tr>
-                                {{/each}}
-                            {{/with}}
-                        </table>
-                    </div>
-                </div>
+                        </THEAD>
+                        <TBODY>
+                           <tr>
+                                <td>{{incidentDescription}}</td>
+                            </tr>
+                        </TBODY>
+                    </table>
+                     <table class="table table-hover">
+                            <THEAD>
+                                <tr class="table-header success">
+                                    <th colspan="3">Details</th>
+                                </tr>
+                            </THEAD>
+                            <TBODY>
+                                <tr>
+                                    <td>Incident Date:</td>
+                                    <td>{{date-format dateOfIncident}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Location of Incident:</td>
+                                    <td>{{locationOfIncident}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Incident Type:</td>
+                                    <td>{{categoryName}}</td>
+                                    <td>{{categoryItem}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Harm Score:</td>
+                                    <td>{{harmScore}}</td>
+                                </tr>
+                            </TBODY>
+                    </table>
+                    <table class="table">
+                        <THEAD>
+                            <tr class="table-header success">
+                                <th colspan="2">Contributory Factors</th>
+                            </tr>
+                        </THEAD>
+                        <TBODY>
+                            {{#if havePatientContributingFactors}}
+                                <tr>
+                                    <td>Patient Factors</td>
+                                    <td>
+                                        <table class="table table-striped">
+                                            {{#with this as parentController}}
+                                                {{#each patientContributingFactors}}
+                                                    <tr>
+                                                        <td>{{type}}</td>
+                                                        <td>{{component}}</td>
+                                                        <td>{{userValue}}</td>
+                                                    </tr>
+                                                {{/each}}   
+                                            {{/with}}
+                                        </table>
+                                    </td>
+                                </tr>
+                            {{/if}}
+                            {{#if haveStaffContributingFactors}}
+                                <tr>
+                                    <td>Staff Factors</td>
+                                    <td>
+                                        <table class="table table-striped">
+                                            {{#with this as parentController}}
+                                                {{#each staffContributingFactors}}
+                                                    <tr>
+                                                        <td>{{type}}</td>
+                                                        <td>{{component}}</td>
+                                                        <td>{{userValue}}</td>
+                                                    </tr>
+                                                {{/each}}
+                                            {{/with}}
+                                        </table>
+                                    </td>
+                                </tr>
+                            {{/if}}
+                            {{#if haveTaskContributingFactors}}
+                                <tr>
+                                    <td>Task Factors</td>
+                                    <td>
+                                        <table class="table table-striped">
+                                            {{#with this as parentController}}
+                                                {{#each taskContributingFactors}}
+                                                    <tr>
+                                                        <td>{{type}}</td>
+                                                        <td>{{component}}</td>
+                                                        <td>{{userValue}}</td>
+                                                    </tr>
+                                                {{/each}}
+                                            {{/with}}
+                                        </table>
+                                    </td>
+                                </tr>
+                            {{/if}}
+                            {{#if haveCommunicationContributingFactors}}
+                                <tr>
+                                    <td>Communication Factors</td>
+                                    <td>
+                                        <table class="table table-striped">
+                                            {{#with this as parentController}}
+                                                {{#each communicationContributingFactors}}
+                                                    <tr>
+                                                        <td>{{type}}</td>
+                                                        <td>{{component}}</td>
+                                                        <td>{{userValue}}</td>
+                                                    </tr>
+                                                {{/each}}
+                                            {{/with}}
+                                        </table>
+                                    </td>
+                                </tr>
+                            {{/if}}
+                            {{#if haveEquipmentContributingFactors}}
+                                <tr>
+                                    <td>Equipment Factors</td>
+                                    <td>
+                                        <table class="table table-striped">
+                                            {{#with this as parentController}}
+                                                {{#each equipmentContributingFactors}}
+                                                    <tr>
+                                                        <td>{{type}}</td>
+                                                        <td>{{component}}</td>
+                                                        <td>{{userValue}}</td>
+                                                    </tr>
+                                                {{/each}}
+                                            {{/with}}
+                                        </table>
+                                    </td>
+                                </tr>
+                            {{/if}}
+                            {{#if haveWorkEnvironmentContributingFactors}}
+                                <tr>
+                                    <td>Work Environment Factors</td>
+                                    <td>
+                                        <table class="table table-striped">
+                                            {{#with this as parentController}}
+                                                {{#each wrkEnvironmentContributingFactors}}
+                                                    <tr>
+                                                        <td>{{type}}</td>
+                                                        <td>{{component}}</td>
+                                                        <td>{{userValue}}</td>
+                                                    </tr>
+                                                {{/each}}
+                                            {{/with}}
+                                        </table>
+                                    </td>
+                                </tr>
+                            {{/if}}
+                            {{#if haveOrganizationalContributingFactors}}
+                                <tr>
+                                    <td>Organizational Factors</td>
+                                    <td>
+                                        <table class="table table-striped">
+                                            {{#with this as parentController}}
+                                                {{#each organizationalContributingFactors}}
+                                                    <tr>
+                                                        <td>{{type}}</td>
+                                                        <td>{{component}}</td>
+                                                        <td>{{userValue}}</td>
+                                                    </tr>
+                                                {{/each}}
+                                            {{/with}}
+                                        </table>
+                                    </td>
+                                </tr>
+                            {{/if}}
+                            {{#if haveEducationTrainingContributingFactors}}
+                                <tr>
+                                    <td>Education and Training Factors</td>
+                                    <td>
+                                        <table class="table table-striped">
+                                            {{#with this as parentController}}
+                                                {{#each eduTrainingContributingFactors}}
+                                                    <tr>
+                                                        <td>{{type}}</td>
+                                                        <td>{{component}}</td>
+                                                        <td>{{userValue}}</td>
+                                                    </tr>
+                                                {{/each}}
+                                            {{/with}}
+                                        </table>
+                                    </td>
+                                </tr>
+                            {{/if}}
+                            {{#if haveTeamContributingFactors}}
+                                <tr>
+                                    <td>Team Factors</td>
+                                    <td>
+                                        <table class="table table-striped">
+                                            {{#with this as parentController}}
+                                                {{#each teamContributingFactors}}
+                                                    <tr>
+                                                        <td>{{type}}</td>
+                                                        <td>{{component}}</td>
+                                                        <td>{{userValue}}</td>
+                                                    </tr>
+                                                {{/each}}
+                                            {{/with}}
+                                        </table>
+                                    </td>
+                                </tr>
+                            {{/if}}
+                        </TBODY>
+                    </table>
+                    <table class="table table-hover">
+                            <THEAD>
+                                <tr class="table-header success">
+                                    <th colspan="2">Pre Incident Risk Assessment</th>
+                                </tr>
+                            </THEAD>
+                            <TBODY>
+                                <tr>
+                                    <td>Severity:</td>
+                                    <td>{{preSeverity}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Occurance:</td>
+                                    <td>{{preOccurence}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Risk Score:</td>
+                                    <td>{{preRiskScore}}</td>
+                                </tr>
+                            </TBODY>
+                    </table>
+                    <table class="table table-hover">
+                            <THEAD>
+                                <tr class="table-header success">
+                                    <th colspan="5">Recommendations</th>
+                                </tr>
+                                <tr class="table-header">
+                                    <th>Activity/Plan</th>
+                                    <th>Responsibility</th>
+                                    <th>Start Date</th>
+                                    <th>Target Date of Completion</th>
+                                    <th>Status</th>
+                                </tr>
+                            </THEAD>
+                            <TBODY>
+                                {{#with this as parentController}}
+                                    {{#each recommendations}}
+                                        <tr>
+                                            <td>{{activity}}</td>
+                                            <td>{{responsibility}}</td>
+                                            <td>{{date-format startDate}}</td>
+                                            <td>{{date-format targetDateOfCompletion}}</td>
+                                            <td>{{status}}</td>
+                                        </tr>
+                                    {{/each}}
+                                {{/with}}  
+                            </TBODY>
+                    </table>
+                    <table class="table table-hover">
+                            <THEAD>
+                                <tr class="table-header success">
+                                    <th colspan="2">Post Incident Risk Assessment</th>
+                                </tr>
+                            </THEAD>
+                            <TBODY>
+                                <tr>
+                                    <td>Severity:</td>
+                                    <td>{{postOccurence}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Occurance:</td>
+                                    <td>{{preOccurence}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Risk Score:</td>
+                                    <td>{{postRiskScore}}</td>
+                                </tr>
+                            </TBODY>
+                    </table>
+                {{/if}}
+            </div>
         </div>
     </div>
+</div>
 {{/em-form}}

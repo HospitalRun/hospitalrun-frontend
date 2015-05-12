@@ -33,6 +33,10 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     
 	  canAddRisk: function() {        
         return this.currentUserCan('add_risk');
+    }.property(),
+
+    canAddSummary: function() {        
+        return this.currentUserCan('add_summary');
     }.property(),    
 	
     canDeleteFeedback: function() {        
@@ -319,6 +323,10 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
          return this.get('reportedBy');
      }.property('reportedBy'),
 
+     getShowSummary: function(){
+        return this.get('showSummary');
+     },
+
      _getCurrentUserName: function(){
         var incident = this.get('model');
         return incident.getUserName(true);
@@ -334,10 +342,55 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
           newStatus = 'Follow-up';
         }
         else if(incidentStatus === 'Follow-up'){
-          newStatus = 'Close';
+          newStatus = 'Closed';
         }
       this.set('statusOfIncident', newStatus);
      },
+
+    havePatientContributingFactors: function() {
+        var patientFactorsLength = this.get('patientContributingFactors.length');
+        return (patientFactorsLength > 0);
+    }.property('patientContributingFactors.length'),
+
+    haveStaffContributingFactors: function() {
+        var staffFactorsLength = this.get('staffContributingFactors.length');
+        return (staffFactorsLength > 0);
+    }.property('staffContributingFactors.length'),
+
+    haveTaskContributingFactors: function() {
+        var taskFactorsLength = this.get('taskContributingFactors.length');
+        return (taskFactorsLength > 0);
+    }.property('taskContributingFactors.length'),
+
+    haveCommunicationContributingFactors: function() {
+        var communicationFactorsLength = this.get('communicationContributingFactors.length');
+        return (communicationFactorsLength > 0);
+    }.property('communicationContributingFactors.length'),
+
+    haveEquipmentContributingFactors: function() {
+        var equipmentFactorsLength = this.get('equipmentContributingFactors.length');
+        return (equipmentFactorsLength > 0);
+    }.property('equipmentContributingFactors.length'),
+
+    haveWorkEnvironmentContributingFactors: function() {
+        var wrkEnvironmentFactorsLength = this.get('wrkEnvironmentContributingFactors.length');
+        return (wrkEnvironmentFactorsLength > 0);
+    }.property('wrkEnvironmentContributingFactors.length'),
+
+    haveOrganizationalContributingFactors: function() {
+        var organizationalFactorsLength = this.get('organizationalContributingFactors.length');
+        return (organizationalFactorsLength > 0);
+    }.property('organizationalContributingFactors.length'),
+
+    haveEducationTrainingContributingFactors: function() {
+        var eduTrainingFactorsLength = this.get('eduTrainingContributingFactors.length');
+        return (eduTrainingFactorsLength > 0);
+    }.property('eduTrainingContributingFactors.length'),
+
+    haveTeamContributingFactors: function() {
+        var teamFactorsLength = this.get('teamContributingFactors.length');
+        return (teamFactorsLength > 0);
+    }.property('teamContributingFactors.length'),
 
 
      categoryNameChanged: function(){
@@ -525,6 +578,11 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
 
         showEditRecommendation: function(recommendation) {
             this.send('openModal', 'incident.recommendation.edit', recommendation);
+        },
+
+        generateSummary: function(){
+          this._changeIncidentStatus();
+          this.set('showSummary', true);
         }
 
         
