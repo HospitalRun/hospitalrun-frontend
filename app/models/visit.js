@@ -3,7 +3,6 @@ import Ember from "ember";
 
 export default AbstractModel.extend({
     additionalDiagnoses: DS.attr(), //Yes, the plural of diagnosis is diagnoses!
-    clinic: DS.attr('string'),
     charges: DS.hasMany('proc-charge'),
     dischargeInfo: DS.attr('string'),
     endDate:  DS.attr('date'),  //if visit type is outpatient, startDate and endDate are equal 

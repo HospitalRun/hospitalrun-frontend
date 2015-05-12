@@ -8,9 +8,6 @@ export default AbstractModuleRoute.extend({
         name: 'anesthesiologistList',
         findArgs: ['lookup','anesthesiologists'],
     }, {
-        name: 'clinicList',
-        findArgs: ['lookup','clinic_list']
-    }, {
         name: 'diagnosisList',
         findArgs: ['lookup','diagnosis_list']
     }, { 

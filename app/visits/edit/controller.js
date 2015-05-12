@@ -79,7 +79,6 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     cancelAction: 'returnToPatient',
     chargePricingCategory: 'Ward',
     chargeRoute: 'visits.charge',
-    clincList: Ember.computed.alias('controllers.visits.clinicList'),
     dateTimeFormat: 'l h:mm A',
     diagnosisList: Ember.computed.alias('controllers.visits.diagnosisList'),
     findPatientVisits: false,
@@ -89,10 +88,6 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     locationList: Ember.computed.alias('controllers.visits.locationList'),
     visitTypesList: Ember.computed.alias('controllers.visits.visitTypeList'),
     lookupListsToUpdate: [{
-        name: 'clinicList',
-        property: 'clinic',
-        id: 'clinic_list'
-    }, {
         name: 'diagnosisList',
         property: 'primaryBillingDiagnosis',
         id: 'diagnosis_list'

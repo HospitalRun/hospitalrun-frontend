@@ -13,7 +13,7 @@
                 {{#em-form model=this submit_button=false }}
                 
                     <div class="row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-3">
                             <label>Patient</label>
                             <p class="form-control-static">{{patient.displayName}}</p>
                         </div>
@@ -23,6 +23,10 @@
                         {{else}}
                             {{date-picker property="startDate" label="Date" class="col-sm-3 required"}}
                         {{/if}}
+                        {{select-or-typeahead class="col-sm-3" property="location"
+                            label="Location" list=locationList
+                            selection=location
+                        }}
                     </div>
                     <div class="row">
                         {{em-select class="col-sm-3 required" label="Visit Type" 
@@ -39,16 +43,6 @@
                         {{select-or-typeahead class="col-sm-3" property="examiner" 
                             label="Examiner" list=physicianList 
                             selection=examiner
-                        }}
-                    </div>
-                    <div class="row">
-                        {{select-or-typeahead class="col-sm-6" property="location"
-                            label="Location" list=locationList
-                            selection=location
-                        }}
-                        {{select-or-typeahead class="col-sm-6" property="clinic" 
-                            label="Clinic" list=clinicList 
-                            selection=clinic
                         }}
                     </div>
                     <div class="row">

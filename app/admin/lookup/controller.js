@@ -33,8 +33,7 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
         name: 'Clinic Locations',
         value: 'clinic_list',
         models: { //Models that use this lookup -- use this later to update models on lookup changes
-            patient: 'clinic',
-            visit: 'clinic'
+            patient: 'clinic'
         }
     }, {
         name: 'Countries',
