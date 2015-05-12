@@ -58,7 +58,9 @@
             <li role="presentation"><a href="#imaging" role="tab" data-toggle="pill">Imaging</a></li>
             <li role="presentation"><a href="#labs" role="tab" data-toggle="pill">Labs</a></li>
             <li role="presentation"><a href="#visits" role="tab" data-toggle="pill">Visits/Appointments</a></li>
-            <li role="presentation"><a href="#social" role="tab" data-toggle="pill">Social Work</a></li>
+            {{#if canAddSocialWork}}
+                <li role="presentation"><a href="#social" role="tab" data-toggle="pill">Social Work</a></li>
+            {{/if}}
         </ul>
     {{/unless}}
     <div class="tab-content">
@@ -448,141 +450,136 @@
                     </div>
                 </div>
             </div>
-            <div role="tabpanel" class="tab-pane" id="social">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">                
-                            Social Work Details                
-                        </h3>
-                    </div>
-                    <div class="panel-body detail-section-content">        
-                        <h4>
-                            Family Information
-                            {{#if canAddSocialWork}}
+            {{#if canAddSocialWork}}
+                <div role="tabpanel" class="tab-pane" id="social">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">                
+                                Social Work Details                
+                            </h3>
+                        </div>
+                        <div class="panel-body detail-section-content">        
+                            <h4>
+                                Family Information              
                                 <button type="button" class="btn btn-primary align-right" {{ action "showEditFamily" bubbles=false }}><span class="octicon octicon-plus"></span>Add Family Member</button>
-                            {{/if}}                
-                        </h4>            
+                            </h4>            
 
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Name</th>
-                                <th>Age</th>
-                                <th>Civil Status</th>
-                                <th>Relation to Patient</th>
-                                <th>Education</th>
-                                <th>Occupation</th>
-                                <th>Income</th>
-                                <th>Insurance</th>
-                                <th>Action</th>
-                            </tr>
-                            {{#with this as patientController}}
-                                {{#each familyInfo}}
-                                    <tr>
-                                        <td>{{name}}</td>
-                                        <td>{{age}}</td>
-                                        <td>{{civilStatus}}</td>
-                                        <td>{{relationship}}</td>
-                                        <td>{{education}}</td>
-                                        <td>{{occupation}}</td>
-                                        <td>{{income}}</td>
-                                        <td>{{insurance}}</td>
-
-                                        <td>
-                                            {{#if patientController.canAddSocialWork}}
-                                                <button type="button" class="btn btn-default neutral" {{action "showEditFamily" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if patientController.canDeleteSocialWork}}
-                                                <button type="button" class="btn btn-default warning" {{action "showDeleteFamily" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                                            {{/if}}
-
-                                        </td>
-                                    </tr>
-                                {{/each}}
-                            {{/with}}
-                        </table>         
-                        <h4>
-                            Expenses
-                            {{#if canAddSocialWork}}
-                                <button type="button" class="btn btn-primary align-right" {{action "showEditExpense" bubbles=false }}><span class="octicon octicon-plus"></span>Add Expense</button>
-                            {{/if}}
-                        </h4>
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Category</th>
-                                <th>Sources</th>
-                                <th>Monthly Cost</th>
-                                <th>Actions</th>
-                            </tr>
-                            {{#with this as patientController}}
-                                {{#each expenses}}
-                                    <tr>
-                                        <td>{{category}}</td>
-                                        <td>{{sources}}</td>
-                                        <td>{{cost}}</td>
-                                        <td>
-                                            {{#if patientController.canAddSocialWork}}
-                                                <button type="button" class="btn btn-default neutral" {{action "showEditExpense" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if patientController.canDeleteSocialWork}}
-                                                <button type="button" class="btn btn-default warning" {{action "showDeleteExpense" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                                            {{/if}}
-                                        </td>
-                                    </tr>
-                                {{/each}}
-                            {{/with}}
-                            {{#if showExpenseTotal}}
-                                <tr>
-                                    <td colspan="2"><b>Total Monthly Expenses</b></td>
-                                    <td>{{totalExpenses}}</td>
-                                    <td></td>
+                            <table class="table">
+                                <tr class="table-header">
+                                    <th>Name</th>
+                                    <th>Age</th>
+                                    <th>Civil Status</th>
+                                    <th>Relation to Patient</th>
+                                    <th>Education</th>
+                                    <th>Occupation</th>
+                                    <th>Income</th>
+                                    <th>Insurance</th>
+                                    <th>Action</th>
                                 </tr>
-                            {{/if}}
-                        </table>
-                        
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                <label>Living Arrangement</label>
-                                {{ext-radio 
-                                    name=livingArrangement 
-                                    content=livingArrangementList 
-                                    value=livingArrangement 
-                                    includeOtherOption=true 
-                                    otherOptionLabel="Other" 
-                                    radioLabelPath="content"
-                                    radioValuePath="content"
+                                {{#with this as patientController}}
+                                    {{#each familyInfo}}
+                                        <tr>
+                                            <td>{{name}}</td>
+                                            <td>{{age}}</td>
+                                            <td>{{civilStatus}}</td>
+                                            <td>{{relationship}}</td>
+                                            <td>{{education}}</td>
+                                            <td>{{occupation}}</td>
+                                            <td>{{income}}</td>
+                                            <td>{{insurance}}</td>
+
+                                            <td>
+                                                
+                                                <button type="button" class="btn btn-default neutral" {{action "showEditFamily" this}}>Edit</button>
+                                                {{#if patientController.canDeleteSocialWork}}
+                                                    <button type="button" class="btn btn-default warning" {{action "showDeleteFamily" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                                {{/if}}
+
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                {{/with}}
+                            </table>         
+                            <h4>
+                                Expenses
+                                <button type="button" class="btn btn-primary align-right" {{action "showEditExpense" bubbles=false }}><span class="octicon octicon-plus"></span>Add Expense</button>
+                            </h4>
+                            <table class="table">
+                                <tr class="table-header">
+                                    <th>Category</th>
+                                    <th>Sources</th>
+                                    <th>Monthly Cost</th>
+                                    <th>Actions</th>
+                                </tr>
+                                {{#with this as patientController}}
+                                    {{#each expenses}}
+                                        <tr>
+                                            <td>{{category}}</td>
+                                            <td>{{sources}}</td>
+                                            <td>{{cost}}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-default neutral" {{action "showEditExpense" this}}>Edit</button>
+                                                {{#if patientController.canDeleteSocialWork}}
+                                                    <button type="button" class="btn btn-default warning" {{action "showDeleteExpense" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                                {{/if}}
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                {{/with}}
+                                {{#if showExpenseTotal}}
+                                    <tr>
+                                        <td colspan="2"><b>Total Monthly Expenses</b></td>
+                                        <td>{{totalExpenses}}</td>
+                                        <td></td>
+                                    </tr>
+                                {{/if}}
+                            </table>
+
+                            <div class="row">
+                                <div class="form-group col-sm-6">
+                                    <label>Living Arrangement</label>
+                                    {{ext-radio 
+                                        name=livingArrangement 
+                                        content=livingArrangementList 
+                                        value=livingArrangement 
+                                        includeOtherOption=true 
+                                        otherOptionLabel="Other" 
+                                        radioLabelPath="content"
+                                        radioValuePath="content"
+                                    }}
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label>Family Support System</label>
+                                    {{em-checkbox label="Family members are living together" property="familySupport1"}}
+                                    {{em-checkbox label="Family members listen, care and help one another" property="familySupport2"}}
+                                    {{em-checkbox label="Spend time together in prayer especially in difficult times" property="familySupport3"}}
+                                    {{em-checkbox label="Family and closest relatives have open communication" property="familySupport4"}}
+                                    {{em-checkbox label="Has relatives around who are responsive to families needs" property="familySupport5"}}
+                                </div>
+                            </div>
+                            {{em-text label="Assessment/Findings" property="notes"}}
+                            {{em-text label="Recommendation" property="socialRecommendation"}}
+                            {{em-text label="Action Taken" property="socialActionTaken"}}
+                            <div class="row">
+
+                                {{em-select label="Philhealth" 
+                                    property="insurance" content=philhealthTypes
+                                    optionValuePath="content" optionLabelPath="content"
+                                    selected=insurance
+                                    class="col-sm-6"
+                                }}
+                                {{em-select label="Classification" 
+                                    property="economicClassification" content=economicClassificationTypes
+                                    optionValuePath="content" optionLabelPath="content"
+                                    selected=economicClassification
+                                    class="col-sm-6"
+                                    prompt=" "
                                 }}
                             </div>
-                            <div class="form-group col-sm-6">
-                                <label>Family Support System</label>
-                                {{em-checkbox label="Family members are living together" property="familySupport1"}}
-                                {{em-checkbox label="Family members listen, care and help one another" property="familySupport2"}}
-                                {{em-checkbox label="Spend time together in prayer especially in difficult times" property="familySupport3"}}
-                                {{em-checkbox label="Family and closest relatives have open communication" property="familySupport4"}}
-                                {{em-checkbox label="Has relatives around who are responsive to families needs" property="familySupport5"}}
-                            </div>
-                        </div>
-                        {{em-text label="Assessment/Findings" property="notes"}}
-                        {{em-text label="Recommendation" property="socialRecommendation"}}
-                        {{em-text label="Action Taken" property="socialActionTaken"}}
-                        <div class="row">
-
-                            {{em-select label="Philhealth" 
-                                property="insurance" content=philhealthTypes
-                                optionValuePath="content" optionLabelPath="content"
-                                selected=insurance
-                                class="col-sm-6"
-                            }}
-                            {{em-select label="Classification" 
-                                property="economicClassification" content=economicClassificationTypes
-                                optionValuePath="content" optionLabelPath="content"
-                                selected=economicClassification
-                                class="col-sm-6"
-                                prompt=" "
-                            }}
                         </div>
                     </div>
                 </div>
-            </div>
+            {{/if}}
         {{/unless}}
     </div>
 {{/em-form}}
