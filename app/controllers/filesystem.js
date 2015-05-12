@@ -42,7 +42,6 @@ export default Ember.Controller.extend({
             filer = new Filer();
         filer.init({persistent: true, size: size}, function() {            
             this.set('filer', filer);
-            this._downloadFiles();
         }.bind(this));     
     },
 
