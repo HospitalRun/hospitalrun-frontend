@@ -95,240 +95,242 @@
             </div>
         </div>
     </div>
-    <div class="panel">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-procedures">
-                    Procedures 
-                    {{#if canAddProcedure}}
-                        <button class="btn btn-primary align-right" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> New Procedure</button>
-                    {{/if}}
-                </a>
-            </h3>
-        </div>
-        <div id="visit-procedures" class="panel-collapse collapse in">
-            <div class="panel-body">
-                <table class="table">
-                    <tr class="table-header">
-                        <th>Date</th>
-                        <th>Procedure</th>
-                        <th>Actions</th>
-                    </tr>
-                    {{#with this as parentController}}
-                        {{#each procedures}}
-                        <tr>
-                            <td>{{date-format procedureDate}}</td>
-                            <td>{{description}}</td>
-                            <td>
-                                {{#if parentController.canAddProcedure}}
-                                    <button class="btn btn-default neutral" {{action "showEditProcedure" this}}>Edit</button>
-                                {{/if}}
-                                {{#if parentController.canDeleteProcedure}}
-                                    <button class="btn btn-default warning" {{action "showDeleteProcedure" this}}><span class="octicon octicon-x"></span> Delete</button>
-                                {{/if}}
-                            </td>
-                        </tr>
-                        {{/each}}
-                    {{/with}}
-                </table>
+    {{#unless isNew}}
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-procedures">
+                        Procedures 
+                        {{#if canAddProcedure}}
+                            <button class="btn btn-primary align-right" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> New Procedure</button>
+                        {{/if}}
+                    </a>
+                </h3>
             </div>
-        </div>
-    </div>    
-    <div class="panel">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-medication">
-                    Medication 
-                    {{#if canAddMedication}}
-                        <button class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span> New Medication</button>
-                    {{/if}}
-                </a>
-            </h3>        
-        </div>
-        <div id="patient-medication" class="panel-collapse collapse in">
-            <div class="panel-body">
-                <table class="table">
-                    <tr class="table-header">
-                        <th>Date</th>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th>Prescription</th>
-                        <th>Requested By</th>
-                        <th>Actions</th>
-                    </tr>
-                    {{#each medication itemController="medication/item-controller"}}
-                        <tr {{action "editMedication" this}}>
-                            <td>{{date-format prescriptionDate}}</td>
-                            <td>{{inventoryItem.name}}</td>
-                            <td>{{status}}</td>
-                            <td>{{prescription}}</td>
-                            <td>{{requestedBy}}</td>
-                            <td>
-                                {{#if canEdit}}
-                                    {{#if parentController.canAddMedication}}
-                                        <button class="btn btn-default neutral" {{action "editMedication" this}}>Edit</button>
-                                    {{/if}}
-                                    {{#if parentController.canDelete}}
-                                        <button class="btn btn-default warning" {{action "showDeleteMedication" this  bubbles=false }}><span class="octicon octicon-x"></span>  Delete</button>
-                                    {{/if}}
-                                {{/if}}
-                            </td>
+            <div id="visit-procedures" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <table class="table">
+                        <tr class="table-header">
+                            <th>Date</th>
+                            <th>Procedure</th>
+                            <th>Actions</th>
                         </tr>
-                    {{/each}}
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="panel">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-labs">
-                    Labs 
-                    {{#if canAddLab}}
-                        <button class="btn btn-primary align-right" {{action "newLab" bubbles=false }}><span class="octicon octicon-plus"></span> New Lab</button>
-                    {{/if}}
-                </a>
-            </h3>
-        </div>
-        <div id="patient-labs" class="panel-collapse collapse in">
-            <div class="panel-body">
-                <table class="table">
-                    <tr class="table-header">
-                        <th>Date Requested</th>
-                        <th>Lab Type</th>
-                        <th>Status</th>
-                        <th>Date Processed</th>
-                        <th>Result</th>
-                        <th>Notes</th>
-                        <th>Requested By</th>
-                        <th>Actions</th>
-                    </tr>
-                    {{#each labs itemController="labs/item-controller"}}
-                        <tr {{action "editLab" this}}>
-                            <td>{{date-format requestedDate}}</td>
-                            <td>{{labType.name}}</td>
-                            <td>{{status}}</td>
-                            <td>{{date-format labDate}}</td>
-                            <td>{{result}}</td>
-                            <td>{{notes}}</td>
-                            <td>{{requestedBy}}</td>
-                            <td>
-                                {{#if canEdit}}
-                                    {{#if parentController.canAddLab}}
-                                        <button class="btn btn-default neutral" {{action "editLab" this}}>Edit</button>
-                                    {{/if}}
-                                    {{#if parentController.canDeleteLab}}
-                                        <button class="btn btn-default warning" {{action "showDeleteLab" this  bubbles=false }}><span class="octicon octicon-x"></span>  Delete</button>
-                                    {{/if}}
-                                {{/if}}
-                            </td>
-                        </tr>
-                    {{/each}}
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="panel">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-imaging">
-                    Imaging 
-                    {{#if canAddImaging}}
-                        <button class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}><span class="octicon octicon-plus"></span> New Imaging</button>
-                    {{/if}}
-                </a>
-            </h3>
-        </div>
-        <div id="patient-imaging" class="panel-collapse collapse in">
-            <div class="panel-body">
-                <table class="table">
-                    <tr class="table-header">
-                        <th>Date Requested</th>
-                        <th>Imaging Type</th>
-                        <th>Status</th>
-                        <th>Date Processed</th>
-                        <th>Result</th>
-                        <th>Notes</th>
-                        <th>Requested By</th>
-                        <th>Actions</th>
-                    </tr>
-                    {{#each imaging itemController="imaging/item-controller"}}
-                        <tr {{action "editImaging" this}}>
-                            <td>{{date-format requestedDate}}</td>
-                            <td>{{imagingType.name}}</td>
-                            <td>{{status}}</td>
-                            <td>{{date-format imagingDate}}</td>
-                            <td>{{result}}</td>
-                            <td>{{notes}}</td>
-                            <td>{{requestedBy}}</td>
-                            <td>
-                                {{#if canEdit}}
-                                    {{#if parentController.canAddImaging}}
-                                        <button class="btn btn-default neutral" {{action "editImaging" this}}>Edit</button>
-                                    {{/if}}
-                                    {{#if parentController.canDeleteImaging}}
-                                        <button class="btn btn-default warning" {{action "showDeleteImaging" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                                    {{/if}}
-                                {{/if}}
-                            </td>
-                        </tr>
-                    {{/each}}
-                </table>
-            </div>
-        </div>
-    </div>    
-    <div class="panel">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-vitals">
-                    Vitals 
-                    {{#if canAddVitals}}
-                        <button class="btn btn-primary align-right" {{action "showAddVitals" bubbles=false }}><span class="octicon octicon-plus"></span> New Vitals</button>
-                    {{/if}}
-                </a>
-            </h3>
-        </div>
-        <div id="visit-vitals" class="panel-collapse collapse in">
-            <div class="panel-body">
-                <table class="table">
-                    <tr class="table-header">
-                        <th>Date</th>
-                        <th>Temperature</th>
-                        <th>Weight</th>
-                        <th>Height</th>
-                        <th>SBP</th>
-                        <th>DBP</th>
-                        <th>Heart Rate</th>
-                        <th>Respiratory Rate</th>
-                        <th>Delete</th>
-                    </tr>
-                    {{#with this as parentController}}
-                        {{#each vitals}}
+                        {{#with this as parentController}}
+                            {{#each procedures}}
                             <tr>
-                                <td>{{date-format dateRecorded format="l h:mm A"}}</td>
-                                <td>{{temperature}}</td>
-                                <td>{{weight}}</td>
-                                <td>{{height}}</td>
-                                <td>{{sbp}}</td>
-                                <td>{{dbp}}</td>
-                                <td>{{heartRate}}</td>
-                                <td>{{respiratoryRate}}</td>
+                                <td>{{date-format procedureDate}}</td>
+                                <td>{{description}}</td>
                                 <td>
-                                    {{#if parentController.canAddVitals}}
-                                        <button class="btn btn-default neutral" {{action "showEditVitals" this}}>Edit</button>
+                                    {{#if parentController.canAddProcedure}}
+                                        <button class="btn btn-default neutral" {{action "showEditProcedure" this}}>Edit</button>
                                     {{/if}}
-                                    {{#if parentController.canDeleteVitals}}
-                                        <button class="btn btn-default warning" {{action "showDeleteVitals" this}}><span class="octicon octicon-x"></span> Delete</button>
+                                    {{#if parentController.canDeleteProcedure}}
+                                        <button class="btn btn-default warning" {{action "showDeleteProcedure" this}}><span class="octicon octicon-x"></span> Delete</button>
+                                    {{/if}}
+                                </td>
+                            </tr>
+                            {{/each}}
+                        {{/with}}
+                    </table>
+                </div>
+            </div>
+        </div>    
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-medication">
+                        Medication 
+                        {{#if canAddMedication}}
+                            <button class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span> New Medication</button>
+                        {{/if}}
+                    </a>
+                </h3>        
+            </div>
+            <div id="patient-medication" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <table class="table">
+                        <tr class="table-header">
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Prescription</th>
+                            <th>Requested By</th>
+                            <th>Actions</th>
+                        </tr>
+                        {{#each medication itemController="medication/item-controller"}}
+                            <tr {{action "editMedication" this}}>
+                                <td>{{date-format prescriptionDate}}</td>
+                                <td>{{inventoryItem.name}}</td>
+                                <td>{{status}}</td>
+                                <td>{{prescription}}</td>
+                                <td>{{requestedBy}}</td>
+                                <td>
+                                    {{#if canEdit}}
+                                        {{#if parentController.canAddMedication}}
+                                            <button class="btn btn-default neutral" {{action "editMedication" this}}>Edit</button>
+                                        {{/if}}
+                                        {{#if parentController.canDelete}}
+                                            <button class="btn btn-default warning" {{action "showDeleteMedication" this  bubbles=false }}><span class="octicon octicon-x"></span>  Delete</button>
+                                        {{/if}}
                                     {{/if}}
                                 </td>
                             </tr>
                         {{/each}}
-                    {{/with}}
-                </table>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    {{#em-form model=this submit_button=false }}
-        {{partial 'item-charges'}}
-    {{/em-form}}
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-labs">
+                        Labs 
+                        {{#if canAddLab}}
+                            <button class="btn btn-primary align-right" {{action "newLab" bubbles=false }}><span class="octicon octicon-plus"></span> New Lab</button>
+                        {{/if}}
+                    </a>
+                </h3>
+            </div>
+            <div id="patient-labs" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <table class="table">
+                        <tr class="table-header">
+                            <th>Date Requested</th>
+                            <th>Lab Type</th>
+                            <th>Status</th>
+                            <th>Date Processed</th>
+                            <th>Result</th>
+                            <th>Notes</th>
+                            <th>Requested By</th>
+                            <th>Actions</th>
+                        </tr>
+                        {{#each labs itemController="labs/item-controller"}}
+                            <tr {{action "editLab" this}}>
+                                <td>{{date-format requestedDate}}</td>
+                                <td>{{labType.name}}</td>
+                                <td>{{status}}</td>
+                                <td>{{date-format labDate}}</td>
+                                <td>{{result}}</td>
+                                <td>{{notes}}</td>
+                                <td>{{requestedBy}}</td>
+                                <td>
+                                    {{#if canEdit}}
+                                        {{#if parentController.canAddLab}}
+                                            <button class="btn btn-default neutral" {{action "editLab" this}}>Edit</button>
+                                        {{/if}}
+                                        {{#if parentController.canDeleteLab}}
+                                            <button class="btn btn-default warning" {{action "showDeleteLab" this  bubbles=false }}><span class="octicon octicon-x"></span>  Delete</button>
+                                        {{/if}}
+                                    {{/if}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-imaging">
+                        Imaging 
+                        {{#if canAddImaging}}
+                            <button class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}><span class="octicon octicon-plus"></span> New Imaging</button>
+                        {{/if}}
+                    </a>
+                </h3>
+            </div>
+            <div id="patient-imaging" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <table class="table">
+                        <tr class="table-header">
+                            <th>Date Requested</th>
+                            <th>Imaging Type</th>
+                            <th>Status</th>
+                            <th>Date Processed</th>
+                            <th>Result</th>
+                            <th>Notes</th>
+                            <th>Requested By</th>
+                            <th>Actions</th>
+                        </tr>
+                        {{#each imaging itemController="imaging/item-controller"}}
+                            <tr {{action "editImaging" this}}>
+                                <td>{{date-format requestedDate}}</td>
+                                <td>{{imagingType.name}}</td>
+                                <td>{{status}}</td>
+                                <td>{{date-format imagingDate}}</td>
+                                <td>{{result}}</td>
+                                <td>{{notes}}</td>
+                                <td>{{requestedBy}}</td>
+                                <td>
+                                    {{#if canEdit}}
+                                        {{#if parentController.canAddImaging}}
+                                            <button class="btn btn-default neutral" {{action "editImaging" this}}>Edit</button>
+                                        {{/if}}
+                                        {{#if parentController.canDeleteImaging}}
+                                            <button class="btn btn-default warning" {{action "showDeleteImaging" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                                        {{/if}}
+                                    {{/if}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </table>
+                </div>
+            </div>
+        </div>    
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-vitals">
+                        Vitals 
+                        {{#if canAddVitals}}
+                            <button class="btn btn-primary align-right" {{action "showAddVitals" bubbles=false }}><span class="octicon octicon-plus"></span> New Vitals</button>
+                        {{/if}}
+                    </a>
+                </h3>
+            </div>
+            <div id="visit-vitals" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <table class="table">
+                        <tr class="table-header">
+                            <th>Date</th>
+                            <th>Temperature</th>
+                            <th>Weight</th>
+                            <th>Height</th>
+                            <th>SBP</th>
+                            <th>DBP</th>
+                            <th>Heart Rate</th>
+                            <th>Respiratory Rate</th>
+                            <th>Delete</th>
+                        </tr>
+                        {{#with this as parentController}}
+                            {{#each vitals}}
+                                <tr>
+                                    <td>{{date-format dateRecorded format="l h:mm A"}}</td>
+                                    <td>{{temperature}}</td>
+                                    <td>{{weight}}</td>
+                                    <td>{{height}}</td>
+                                    <td>{{sbp}}</td>
+                                    <td>{{dbp}}</td>
+                                    <td>{{heartRate}}</td>
+                                    <td>{{respiratoryRate}}</td>
+                                    <td>
+                                        {{#if parentController.canAddVitals}}
+                                            <button class="btn btn-default neutral" {{action "showEditVitals" this}}>Edit</button>
+                                        {{/if}}
+                                        {{#if parentController.canDeleteVitals}}
+                                            <button class="btn btn-default warning" {{action "showDeleteVitals" this}}><span class="octicon octicon-x"></span> Delete</button>
+                                        {{/if}}
+                                    </td>
+                                </tr>
+                            {{/each}}
+                        {{/with}}
+                    </table>
+                </div>
+            </div>
+        </div>
+        {{#em-form model=this submit_button=false }}
+            {{partial 'item-charges'}}
+        {{/em-form}}
+    {{/unless}}
 </div>
