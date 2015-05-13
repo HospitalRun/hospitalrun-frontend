@@ -255,7 +255,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         
         showAddProcedure: function() {
             var newProcedure = this.get('store').createRecord('procedure', {
-                dateRecorded: new Date(),
+                procedureDate: new Date(),
                 visit: this.get('model'),
             });
             this.transitionToRoute('procedures.edit', newProcedure);
