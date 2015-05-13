@@ -407,6 +407,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         newVisit: function() {
             var lastVisit = this.get('visits.lastObject'), 
                 newVisit = this.get('store').createRecord('visit', {
+                    visitType: 'Admission',
                     startDate: new Date(),
                     patient: this.get('model')
                 }); 
