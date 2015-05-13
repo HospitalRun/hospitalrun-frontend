@@ -1,8 +1,9 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import Ember from 'ember';
 import PatientId from 'hospitalrun/mixins/patient-id';
+import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
-export default AbstractEditRoute.extend(PatientId, PouchDbMixin, {
+export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, {
     editTitle: 'Edit Patient',
     modelName: 'patient',
     newTitle: 'New Patient',
@@ -62,13 +63,7 @@ export default AbstractEditRoute.extend(PatientId, PouchDbMixin, {
             model.set('friendlyId', externalId);
         }
         this._super(controller, model);
-        this.store.find('visit', {
-            options: {
-                startkey: [patientId, null, null, null, 'visit_'],
-                endkey: [patientId, maxValue, maxValue, maxValue, maxValue]
-            },
-            mapReduce: 'visit_by_patient'
-        }).then(function(visits) {
+        this.getPatientVisits(model).then(function(visits) {
             controller.set('visits', visits);
         });
         this.store.find('appointment', {

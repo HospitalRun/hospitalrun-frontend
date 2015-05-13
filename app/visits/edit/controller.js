@@ -63,6 +63,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         if (isAdmission) {
             this.set('outPatient', false);
         } else {
+            this.set('status');
             this.set('outPatient', true);
         }
         return isAdmission;
@@ -112,13 +113,36 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     ],
 
     updateCapability: 'add_visit',
+    
+    _finishAfterUpdate: function() {
+        this.displayAlert('Visit Saved', 'The visit record has been saved.');
+    },
 
     haveAdditionalDiagnoses: function() {
         return !Ember.isEmpty(this.get('additionalDiagnoses'));
     }.property('additionalDiagnoses.@each'),
 
     afterUpdate: function() {
-        this.displayAlert('Visit Saved', 'The visit record has been saved.');
+        var patient = this.get('patient'),
+            patientAdmitted = patient.get('admitted'),
+            patientUpdated = false,
+            status = this.get('status');
+        if (status === 'Admitted' && !patientAdmitted) {
+            patient.set('admitted', true);
+            patientUpdated = true;
+        } else if (status === 'Discharged' && patientAdmitted) {
+            this.getPatientVisits(patient).then(function(visits)  {
+                if (Ember.isEmpty(visits.findBy('status', 'Admitted'))) {
+                    patient.set('admitted', false);
+                    patientUpdated = true;
+                }                    
+            }.bind(this));
+        }
+        if (patientUpdated) {
+            patient.save().then(this._finishAfterUpdate.bind(this));
+        } else {
+            this.displayAlert('Visit Saved', 'The visit record has been saved.');
+        }
     },
     
     beforeUpdate: function() {        

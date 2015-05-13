@@ -171,7 +171,18 @@ export default Ember.Mixin.create({
             'Nurse', 
             'Nurse Manager', 
             'System Administrator'
-        ],        
+        ],
+        admit_patient: [
+            'Data Entry',
+            'Doctor',
+            'Hospital Administrator',
+            'Medical Records Officer',
+            'Nurse', 
+            'Nurse Manager', 
+            'Patient Administration',
+            'Social Worker',
+            'System Administrator'
+        ],
         adjust_inventory_location: [
             'Hospital Administrator',
             'Inventory Manager',
@@ -308,6 +319,17 @@ export default Ember.Mixin.create({
         ],
         delete_user: [
             'User Administrator',
+            'System Administrator'
+        ],
+        discharge_patient: [
+            'Data Entry',
+            'Doctor',
+            'Hospital Administrator',
+            'Medical Records Officer',
+            'Nurse', 
+            'Nurse Manager', 
+            'Patient Administration',
+            'Social Worker',
             'System Administrator'
         ],
         edit_invoice: [

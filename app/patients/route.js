@@ -1,4 +1,5 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
+import Ember from 'ember';
 import PatientId from 'hospitalrun/mixins/patient-id';
 export default AbstractModuleRoute.extend(PatientId, {
     addCapability: 'add_patient',
@@ -30,6 +31,22 @@ export default AbstractModuleRoute.extend(PatientId, {
         name: 'visitTypesList',
         findArgs: ['lookup','visit_types']
     }],
+    
+    actions: {
+        createNewVisit: function(patient, visits) {
+            var lastVisit = visits.get('lastObject'), 
+                newVisit = this.get('store').createRecord('visit', {
+                    visitType: 'Admission',
+                    startDate: new Date(),
+                    status: 'Admitted',
+                    patient: patient
+                }); 
+            if (!Ember.isEmpty(lastVisit)) {
+                newVisit.setProperties(lastVisit.getProperties('primaryDiagnosis','primaryBillingDiagnosis'));
+            }
+            this.transitionTo('visits.edit', newVisit);
+        }
+    },
     moduleName: 'patients',
     newButtonText: '+ new patient',
     sectionTitle: 'Patients',

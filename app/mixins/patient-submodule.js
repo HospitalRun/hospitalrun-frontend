@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
-export default Ember.Mixin.create(PouchDbMixin, {
+import PatientVisits from 'hospitalrun/mixins/patient-visits';
+export default Ember.Mixin.create(PatientVisits, {
     findPatientVisits: true, //Override to false if visits shouldn't be set when patient is selected.    
     
     actions: {
@@ -63,17 +63,9 @@ export default Ember.Mixin.create(PouchDbMixin, {
     patientId: Ember.computed.alias('patient.id'),
     
     patientChanged: function() {
-        var maxValue = this.get('maxValue'),
-            patient = this.get('patient'),
-            patientId = 'patient_'+this.get('patientId');
+        var patient = this.get('patient');
         if (!Ember.isEmpty(patient) && this.get('findPatientVisits')) {
-            this.store.find('visit', {
-                options: {
-                    startkey: [patientId, null, null, null, 'visit_'],
-                    endkey: [patientId, maxValue, maxValue, maxValue, maxValue]
-                },
-                mapReduce: 'visit_by_patient'
-            }).then(function(visits) {
+            this.getPatientVisits(patient).then(function(visits) {
                 this.set('patientVisits',visits);
             }.bind(this));
         }

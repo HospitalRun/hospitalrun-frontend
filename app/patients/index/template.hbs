@@ -11,28 +11,33 @@
                 <th>Actions</th>
             {{/if}}
         </tr>
-        {{#with this as parentController}}
-            {{#each}}
-                <tr {{action 'editItem' this}}>
-                    <td>{{displayPatientId}}</td>
-                    <td>{{firstName}}</td>
-                    <td>{{lastName}}</td>
-                    <td>{{gender}}</td>
-                    <td>{{date-format dateOfBirth}}</td>
-                    <td>{{status}}</td>
-                    {{#if parentController.showActions}}
-                        <td>
-                            {{#if parentController.canAdd}}
-                                <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
-                            {{/if}}
-                            {{#if parentController.canDelete}}
-                                <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                            {{/if}}
-                        </td>
-                    {{/if}}
-                </tr>
-            {{/each}}
-        {{/with}}
+        
+        {{#each itemController='patients/patient-controller'}}
+            <tr {{action 'editItem' this}}>
+                <td>{{displayPatientId}}</td>
+                <td>{{firstName}}</td>
+                <td>{{lastName}}</td>
+                <td>{{gender}}</td>
+                <td>{{date-format dateOfBirth}}</td>
+                <td>{{status}}</td>
+                {{#if showActions}}
+                    <td>
+                        {{#if canAdd}}
+                            <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
+                        {{/if}}
+                        {{#if canAdmitPatient}}
+                            <button class="btn btn-default success" {{action 'admitPatient' this  bubbles=false }}><span class="glyphicon glyphicon-log-in"></span> Admit</button>
+                        {{/if}}
+                        {{#if canDischargePatient}}
+                            <button class="btn btn-default info" {{action 'dischargePatient' this  bubbles=false }}><span class="glyphicon glyphicon-log-out"></span> Discharge</button>
+                        {{/if}}                        
+                        {{#if canDelete}}
+                            <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                        {{/if}}
+                    </td>
+                {{/if}}
+            </tr>
+        {{/each}}        
     </table>
 {{else}}
     <div class="alert alert-info">

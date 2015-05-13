@@ -1,6 +1,27 @@
 import AbstractPagedController from 'hospitalrun/controllers/abstract-paged-controller';
-export default AbstractPagedController.extend({
+import PatientVisits from 'hospitalrun/mixins/patient-visits';
+export default AbstractPagedController.extend(PatientVisits, {
     addPermission: 'add_patient',
     deletePermission: 'delete_patient',
-    startKey: []
+    startKey: [],    
+    actions: {
+        admitPatient: function(patient) {
+            console.log("patient is:", patient);
+            this.getPatientVisits(patient).then(function(visits) {
+                this.send('createNewVisit', patient, visits);
+            }.bind(this));
+            
+        },
+        
+        dischargePatient: function(patient) {
+            this.getPatientVisits(patient).then(function(visits) {
+                var visitToDischarge = visits.findBy('status', 'Admitted');                
+                if (visitToDischarge) {
+                    visitToDischarge.set('status', 'Discharged');                
+                    visitToDischarge.set('endDate', new Date());
+                    this.transitionToRoute('visits.edit', visitToDischarge);
+                }
+            }.bind(this));            
+        }
+    }
 });

@@ -5,6 +5,7 @@ import Ember from "ember";
 import PatientName from 'hospitalrun/mixins/patient-name';
 
 export default AbstractModel.extend(DOBDays, PatientName, {
+    admitted: DS.attr('boolean', {defaultValue: false}),
     additionalContacts: DS.attr(),
     additionalData: DS.attr(null,{defaultValue:{}}), //Additional data will be used to store custom data per install.
     address: DS.attr('string'),
