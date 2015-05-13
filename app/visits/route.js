@@ -33,7 +33,7 @@ export default AbstractModuleRoute.extend({
         findArgs: ['lookup','ward_pricing_types']
     }],
     moduleName: 'visits',
-    newButtonText: '+ new visit',
+    newButtonAction: null, //No new button
     sectionTitle: 'Visits'
    
 });
