@@ -22,7 +22,7 @@ export default Ember.Component.extend({
     
     listChanged: function() {
         var list = this.get('list');
-        if (!Ember.isEmpty(list)) {
+        if (!Ember.isEmpty(list) && list.get) {
             this.set('content', list.get('value'));
             this.set('userCanAdd', list.get('userCanAdd'));
         }        
