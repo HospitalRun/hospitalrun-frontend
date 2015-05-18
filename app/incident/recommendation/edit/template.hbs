@@ -15,6 +15,7 @@
         {{date-picker property="targetDateOfCompletion" label="Target Date Of Completion" class="col-sm-6" format="l h:mm A" showTime=true }}
     </div>
     <div class="row">        
-        {{em-input class="col-sm-3" property="status" label="Status"}}
+        {{em-select label="Status" property="status" content=recommendationStatusTypes
+            optionValuePath="content" optionLabelPath="content" selected=status class="col-sm-6"}}
     </div>
 {{/em-form}}

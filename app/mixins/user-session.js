@@ -384,6 +384,7 @@ export default Ember.Mixin.create({
 		incident: [
             'Data Entry',
             'Hospital Administrator',
+            'Doctor',
             'Inventory Manager',
             'Medical Records Officer',
             'Nurse Manager', 
@@ -393,6 +394,7 @@ export default Ember.Mixin.create({
         ],
 		add_incident : [
 			'User Administrator',
+            'Doctor',
             'Quality',
             'System Administrator'
 		],
@@ -403,6 +405,7 @@ export default Ember.Mixin.create({
         ],
         add_incident_category : [
             'User Administrator',
+            'Doctor',
             'Quality',
             'System Administrator'
         ],

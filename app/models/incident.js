@@ -8,9 +8,9 @@ export default AbstractModel.extend({
 	reportedDate: DS.attr('date'),
 	locationOfIncident: DS.attr('string'),
 	dateOfIncident: DS.attr('date'),
+    witnessList: DS.attr('string'),
 	incidentDescription: DS.attr('string'),
-    witnessList : DS.attr('string'),
-    
+        
     categoryName: DS.attr('string'),
     categoryItem: DS.attr('string'),
 
@@ -27,6 +27,7 @@ export default AbstractModel.extend({
     organizationalContributingFactors: DS.hasMany('inc-contributing-factor', {async: true}),
     eduTrainingContributingFactors: DS.hasMany('inc-contributing-factor', {async: true}),
     teamContributingFactors: DS.hasMany('inc-contributing-factor', {async: true}),
+    rcaSummary: DS.attr('string'),
 
     harmScore: DS.attr('string'),
 
@@ -34,7 +35,8 @@ export default AbstractModel.extend({
     preOccurence: DS.attr('string'),
     preRiskScore: DS.attr('string'),
     
-    recommendations: DS.hasMany('inc-recommendation',  {async: true}),    
+    recommendations: DS.hasMany('inc-recommendation',  {async: true}),
+    lessonsLearned: DS.attr('string'),    
     
     postSeverity: DS.attr('string'),
     postOccurence: DS.attr('string'),
