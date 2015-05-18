@@ -10,8 +10,19 @@ import IncidentContributingFactors from 'hospitalrun/mixins/incident-contributin
 export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentHarmScoreList, IncidentLocationsList,
  IncidentContributingFactors, UserSession, {
      needs: 'incident',
-    
-    canAddFeedback: function() {        
+         
+    canAddFeedback: function() {
+        var reviewers = this.get('reviewers'),
+            currentUser = this._getCurrentUserName();
+        reviewers.forEach(function(reviewer) {
+        if(currentUser === reviewer.Email){
+            return true;
+          }
+        });      
+        return this.currentUserCan('add_feedback');
+    }.property(),
+
+    canEditFeedback: function() {
         return this.currentUserCan('add_feedback');
     }.property(),
 
@@ -323,9 +334,9 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
          return this.get('reportedBy');
      }.property('reportedBy'),
 
-     getShowSummary: function(){
+     canShowSummary: function(){
         return this.get('showSummary');
-     },
+     }.property('showSummary'),
 
      _getCurrentUserName: function(){
         var incident = this.get('model');
@@ -504,7 +515,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         //Reviewers functions
 
         addReviewer: function(newReviewer) {
-            this._changeIncidentStatus();
+            this.set('statusOfIncident', 'Active');
             this.updateList('reviewers', newReviewer);
         },
 
@@ -557,7 +568,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         //Recommendation Functions
 
         addRecommendation: function(newRecommendation) {
-            this._changeIncidentStatus();
+            this.set('statusOfIncident', 'Follow-up');
             this.updateList('recommendations', newRecommendation);
         },
 
@@ -581,7 +592,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         },
 
         generateSummary: function(){
-          this._changeIncidentStatus();
+          this.set('statusOfIncident', 'Closed');
           this.set('showSummary', true);
         }
 

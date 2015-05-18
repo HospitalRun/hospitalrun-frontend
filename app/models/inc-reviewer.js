@@ -5,5 +5,6 @@ export default AbstractModel.extend({
 	dateRecorded: DS.attr('date'),
 	reviewerEmail: DS.attr('string'),
 	reviewerName: DS.attr('string'),
-	incident: DS.belongsTo('incident')
+	incident: DS.belongsTo('incident'),
+	notificationSend: DS.attr('boolean', {defaultValue: false})
 });

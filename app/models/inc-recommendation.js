@@ -5,7 +5,7 @@ export default AbstractModel.extend({
 	responsibility: DS.attr('string'),
 	startDate: DS.attr('date'),
 	targetDateOfCompletion: DS.attr('date'),
-	status: DS.attr('boolean'),
+	status: DS.attr('string'),
     dateRecorded: DS.attr('date')
     //incident: DS.belongsTo('incident')	
 /*

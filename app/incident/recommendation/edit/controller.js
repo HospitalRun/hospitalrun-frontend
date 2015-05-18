@@ -9,6 +9,11 @@ export default AbstractEditController.extend({
     editController: Ember.computed.alias('controllers.incident/edit'),    
     
     newRecommendation: false,
+
+    recommendationStatusTypes: [
+       'Inprogress',
+       'Completed'
+    ],
     
     title: function() {
         var isNew = this.get('isNew');
