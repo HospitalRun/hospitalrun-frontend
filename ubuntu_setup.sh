@@ -26,6 +26,8 @@ sudo ln -s /usr/bin/nodejs /usr/bin/node
 cd /var
 sudo mkdir app
 sudo chown administrator:administrator app
+sudo chown administrator:administrator -R ~/tmp
+
 cd app/
 sudo apt-get install git
 git clone https://github.com/OasisHospital/frontend.git
@@ -51,7 +53,18 @@ sh initcouch.sh
 #ember serve
 #ember serve --environment=production
 
-#ember build --environment production --output-path prod
+ember build --environment production --output-path prod
+
+ln -s ../frontend/prod public
+cd ../server
+npm install
+
+sudo npm install -g forever
+sudo cp /var/app/server/utils/hospitalrun.conf /etc/init
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000
+
+sudo reboot
+
 
 #npm install ember-cli-babel --save
 #ember build --environment production --output-path prod
