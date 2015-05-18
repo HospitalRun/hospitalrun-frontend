@@ -10,7 +10,7 @@ import IncidentContributingFactors from 'hospitalrun/mixins/incident-contributin
 export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentHarmScoreList, IncidentLocationsList,
  IncidentContributingFactors, UserSession, {
      needs: 'incident',
-         
+
     canAddFeedback: function() {
         var reviewers = this.get('reviewers'),
             currentUser = this._getCurrentUserName();
@@ -420,7 +420,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         }
     },
 
-    _addContributingFactors(factorsList,contributingFactors){
+    _addContributingFactors: function(factorsList,contributingFactors){
          var savePromises = [],
                 checkboxValue = null,
                 existingFactor = null;
