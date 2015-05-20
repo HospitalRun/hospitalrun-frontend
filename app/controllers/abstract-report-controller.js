@@ -4,6 +4,7 @@ import NumberFormat from 'hospitalrun/mixins/number-format';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from "hospitalrun/mixins/progress-dialog";
 export default Ember.ArrayController.extend(DateFormat, NumberFormat, PouchDbMixin, ProgressDialog, {
+    defaultErrorMessage: 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.',
     offset: 0,
     limit: 25,
     progressMessage: 'Please wait while your report is generated.',
@@ -18,13 +19,13 @@ export default Ember.ArrayController.extend(DateFormat, NumberFormat, PouchDbMix
     /**
      * Add a row to the report using the selected columns to add the row.
      * @param {Array} row the row to add
-     * @param {boolean} skipNumberFormatting true if number columns should not be formatted.
+     * @param {boolean} skipFormatting true if formatting should be skipped.
      * @param reportColumns {Object} the columns to display on the report; 
      * optional, if not set, the property reportColumns on the controller 
      * will be used. 
      * @param reportAction {Object} action to fire on row when row is clicked.     
      */
-    _addReportRow: function(row, skipNumberFormatting, reportColumns, rowAction) {
+    _addReportRow: function(row, skipFormatting, reportColumns, rowAction) {
         var columnValue,
             reportRows = this.get('reportRows'),
             reportRow = [];
@@ -37,12 +38,12 @@ export default Ember.ArrayController.extend(DateFormat, NumberFormat, PouchDbMix
                 if (Ember.isEmpty(columnValue)) {
                      reportRow.push('');
                 } else if (reportColumns[column].format === '_numberFormat') {
-                    if (skipNumberFormatting) {
+                    if (skipFormatting) {
                         reportRow.push(columnValue);
                     } else {
                         reportRow.push(this._numberFormat(columnValue));
                     }
-                } else if (reportColumns[column].format) {
+                } else if (!skipFormatting && reportColumns[column].format) {
                     reportRow.push(this[reportColumns[column].format](columnValue));
                 } else {
                     reportRow.push(columnValue);
