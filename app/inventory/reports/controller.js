@@ -915,13 +915,6 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         }
         return (reportType === includeForReportType);
     },
-        
-    _notifyReportError: function(errorMessage) {
-        var alertMessage = 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.';
-        this.closeProgressModal();
-        this.displayAlert('Error Generating Report', alertMessage);
-        throw new Error(errorMessage);
-    },
     
     _updateExpenseMap: function(request, reportRow) {
         var categoryToUpdate,

@@ -1,9 +1,10 @@
 import Ember from "ember";
 import DateFormat from 'hospitalrun/mixins/date-format';
+import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from "hospitalrun/mixins/progress-dialog";
-export default Ember.ArrayController.extend(DateFormat, NumberFormat, PouchDbMixin, ProgressDialog, {
+export default Ember.ArrayController.extend(DateFormat, ModalHelper, NumberFormat, PouchDbMixin, ProgressDialog, {
     defaultErrorMessage: 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.',
     offset: 0,
     limit: 25,
@@ -90,6 +91,13 @@ export default Ember.ArrayController.extend(DateFormat, NumberFormat, PouchDbMix
         var csvString = csvRows.join('\r\n');
         var uriContent = "data:application/csv;charset=utf-8," + encodeURIComponent(csvString);
         this.set('csvExport', uriContent);
+    },
+    
+    _notifyReportError: function(errorMessage) {
+        var alertMessage = 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.';
+        this.closeProgressModal();
+        this.displayAlert('Error Generating Report', alertMessage);
+        throw new Error(errorMessage);
     },
     
     _setReportHeaders: function(reportColumns) {

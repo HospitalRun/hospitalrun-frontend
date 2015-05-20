@@ -1,8 +1,7 @@
 import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
 import Ember from 'ember';
-import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
-export default AbstractReportController.extend(ModalHelper, VisitTypes, {
+export default AbstractReportController.extend(VisitTypes, {
     needs: ['patients'],
     
     clinicList: Ember.computed.alias('controllers.patients.clinicList'),
@@ -212,7 +211,7 @@ export default AbstractReportController.extend(ModalHelper, VisitTypes, {
     _addRowsByType: function(records, typeField, totalLabel, reportColumns) {
         var types = this._totalByType(records, typeField, totalLabel);
         types.forEach(function(type) {
-            this._addReportRow(type, false, reportColumns);
+            this._addReportRow(type, true, reportColumns);
         }.bind(this));
     },
     
@@ -265,9 +264,6 @@ export default AbstractReportController.extend(ModalHelper, VisitTypes, {
             },
             maxValue = this.get('maxValue');
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            if (Ember.isEmpty(filterStartDate)) {
-                reject();
-            }
             findParams.options.startkey =  ['Completed', null, filterStartDate.getTime(), null];
             
             if (!Ember.isEmpty(filterEndDate)) {
@@ -300,9 +296,6 @@ export default AbstractReportController.extend(ModalHelper, VisitTypes, {
             },
             maxValue = this.get('maxValue');
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            if (Ember.isEmpty(filterStartDate)) {
-                reject();
-            }
             findParams.options.startkey =  [filterStartDate.getTime(), null];
             
             if (!Ember.isEmpty(filterEndDate)) {
@@ -332,10 +325,6 @@ export default AbstractReportController.extend(ModalHelper, VisitTypes, {
          */
         return new Ember.RSVP.Promise(function(resolve, reject) {
             var isDischargeReport = this.get('isDischargeReport');
-            if (Ember.isEmpty(filterStartDate)) {
-                reject('noStartDate');
-                return;
-            }
             if (isDischargeReport) {
                 findParams.options.startkey =  [null, filterStartDate.getTime()];
             } else {
@@ -343,10 +332,6 @@ export default AbstractReportController.extend(ModalHelper, VisitTypes, {
             }
             if (!Ember.isEmpty(filterEndDate)) {
                 filterEndDate = moment(filterEndDate).endOf('day').toDate();
-                if (filterEndDate.getTime() < filterStartDate.getTime()) {
-                    reject('endDateBeforeStartDate');
-                    return;
-                }
                 if (isDischargeReport) {
                     findParams.options.endkey =  [maxValue, filterEndDate.getTime(), maxValue];
                 } else {
@@ -463,8 +448,8 @@ export default AbstractReportController.extend(ModalHelper, VisitTypes, {
             this._addRowsByType(diagnostics.imaging, 'imagingType.name', 'Total for imaging: ', reportColumns);
             this._addRowsByType(diagnostics.labs, 'labType.name', 'Total for labs: ', reportColumns);
             this._finishReport(reportColumns);
-        }.bind(this), function() {
-            this.closeProgressModal();
+        }.bind(this), function(err) {
+            this._notifyReportError('Error in _generateDiagnosticReport:'+err);
         }.bind(this));
     },
     
@@ -511,8 +496,8 @@ export default AbstractReportController.extend(ModalHelper, VisitTypes, {
             var reportColumns = this.get('diagnosticReportColumns');
             this._addRowsByType(procedures, 'description', 'Total procedures: ', reportColumns);
             this._finishReport(reportColumns);
-        }.bind(this), function() {
-            this.closeProgressModal();
+        }.bind(this), function(err) {
+            this._notifyReportError('Error in _generateProcedureReport:'+err);
         }.bind(this));
     },
     
@@ -600,62 +585,69 @@ export default AbstractReportController.extend(ModalHelper, VisitTypes, {
         return this._listToString(procedures, 'description', 'procedureDate');      
     },
     
+    _validateDates: function() {
+        var alertMessage,
+            endDate = this.get('endDate'),
+            isValid = true,
+            startDate = this.get('startDate');
+        if (Ember.isEmpty(startDate)) {
+            alertMessage = 'Please enter a start date.';
+            isValid = false;
+        } else if (!Ember.isEmpty(endDate) && endDate.getTime() < startDate.getTime()) {
+            alertMessage = 'Please enter an end date after the start date.';
+            isValid = false;
+        }
+        if (!isValid) {
+            this.displayAlert('Error Generating Report', alertMessage);
+        }
+        return isValid;
+    },
+    
     actions: {
         generateReport: function() {
-            var reportRows = this.get('reportRows'),
-                reportType = this.get('reportType');
-            reportRows.clear();
-            this.showProgressModal();
-            switch (reportType) {
-                case 'diagnostic': {
-                    this._generateDiagnosticReport();
-                    break;
-                }
-                case 'procedures': {
-                    this._generateProcedureReport();
-                    break;
-                }
-                case 'admissions':
-                case 'discharges':
-                case 'detailedAdmissions':
-                case 'detailedDischarges':                    
-                case 'patientDays':
-                case 'visit': {
-                    this._findVisitsByDate().then(function(visits) {
-                        switch (reportType) {
-                            case 'admissions':
-                            case 'detailedAdmissions':
-                            case 'detailedDischarges':
-                            case 'discharges': {
-                                this._generateAdmissionOrDischargeReport(visits, reportType);
-                                break;
+            if (this._validateDates()) {
+                var reportRows = this.get('reportRows'),
+                    reportType = this.get('reportType');
+                reportRows.clear();            
+                this.showProgressModal();
+                switch (reportType) {
+                    case 'diagnostic': {
+                        this._generateDiagnosticReport();
+                        break;
+                    }
+                    case 'procedures': {
+                        this._generateProcedureReport();
+                        break;
+                    }
+                    case 'admissions':
+                    case 'discharges':
+                    case 'detailedAdmissions':
+                    case 'detailedDischarges':                    
+                    case 'patientDays':
+                    case 'visit': {
+                        this._findVisitsByDate().then(function(visits) {
+                            switch (reportType) {
+                                case 'admissions':
+                                case 'detailedAdmissions':
+                                case 'detailedDischarges':
+                                case 'discharges': {
+                                    this._generateAdmissionOrDischargeReport(visits, reportType);
+                                    break;
+                                }
+                                case 'patientDays': {
+                                    this._generatePatientDaysReport(visits);
+                                    break;
+                                }
+                                case 'visit': {
+                                    this._generateVisitReport(visits);
+                                    break;                    
+                                }
                             }
-                            case 'patientDays': {
-                                this._generatePatientDaysReport(visits);
-                                break;
-                            }
-                            case 'visit': {
-                                this._generateVisitReport(visits);
-                                break;                    
-                            }
-                        }
-                    }.bind(this), function(reason) {
-                        this.closeProgressModal();
-                        var alertMessage = this.get('defaultErrorMessage');
-                        switch (reason) {
-                            case 'endDateBeforeStartDate': {
-                                alertMessage = 'Please enter an end date after the start date.';
-                                break;
-                            }
-                            case 'noStartDate': {
-                                alertMessage = 'Please enter a start date.';
-                                break;
-                            }
-                            
-                        }
-                        this.displayAlert('Error Generating Report', alertMessage);
-                    }.bind(this));
-                    break;
+                        }.bind(this), function(err) {
+                            this._notifyReportError('Error in _findVisitsByDate:'+err);
+                        }.bind(this));
+                        break;
+                    }
                 }
             }
         },
