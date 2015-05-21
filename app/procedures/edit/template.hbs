@@ -1,7 +1,7 @@
 {{#em-form model=this submit_button=false }}    
     {{select-or-typeahead class="required" property="description"
         label="Procedure" list=procedureList
-        selection=description
+        selection=description hint=false
     }}          
     <div class="row">
         {{select-or-typeahead class="col-xs-6" property="cptCode"
