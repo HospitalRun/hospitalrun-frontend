@@ -48,11 +48,11 @@
                     <div class="row">
                         {{select-or-typeahead class="col-sm-5" property="primaryDiagnosis" 
                             label="Admitting Diagnosis" list=diagnosisList 
-                            selection=primaryDiagnosis
+                            selection=primaryDiagnosis hint=false
                         }} 
                         {{select-or-typeahead class="col-sm-5" property="primaryBillingDiagnosis" 
                             label="Final/Billing Diagnosis" list=diagnosisList 
-                            selection=primaryBillingDiagnosis
+                            selection=primaryBillingDiagnosis hint=false
                         }}
                         {{#if canAddDiagnosis}}
                             <div class="form-group col-sm-2">
