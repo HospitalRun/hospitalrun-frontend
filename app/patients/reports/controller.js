@@ -525,6 +525,7 @@ export default AbstractReportController.extend(VisitTypes, {
         if (detailed) {
             reportColumns = this.get('admissionDetailReportColumns');
             reportColumns.patientDays.include = true;
+            reportColumns.dischargeDate.include = true;
         } else {
             reportColumns = {
                 total: {
