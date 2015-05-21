@@ -1,7 +1,7 @@
 import Ember from "ember";
 export default Ember.Mixin.create({
     userRoles: [
-        {name: 'Business Office', roles: ['Business Office', 'user']},
+       /* {name: 'Business Office', roles: ['Business Office', 'user']},
         {name: 'Data Entry', roles: ['Data Entry', 'user']},
         {name: 'Doctor', roles: ['Doctor', 'user']},
         {name: 'Finance', roles: ['Finance', 'user']},
@@ -15,10 +15,11 @@ export default Ember.Mixin.create({
         {name: 'Nurse Manager', roles: ['Nurse Manager', 'user']},
         {name: 'Patient Administration', roles: ['Patient Administration', 'user']},
         {name: 'Pharmacist', roles: ['Pharmacist', 'user']},
-        {name: 'Social Worker', roles: ['Social Worker', 'user']},
+        {name: 'Social Worker', roles: ['Social Worker', 'user']},*/
+        {name: 'Hospital Staff', roles: ['Hospital Staff','user']},
         {name: 'System Administrator', roles: ['System Administrator','admin','user']},
         {name: 'User Administrator', roles: ['User Administrator','admin','user']},
-        {name: 'Quality', roles: ['Quality','user']}
+        {name: 'Quality', roles: ['Quality','admin','user']}
     ]
 });
     

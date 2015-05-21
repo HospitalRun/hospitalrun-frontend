@@ -279,7 +279,7 @@ function incidentByReviewers(doc) {
     if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
         doctype = doc._id.substring(0, uidx);
         if (doctype === 'inc-reviewer') {
-            emit([doc.reviewerName, doc._id],{_id: doc.incident});
+            emit([doc.reviewerEmail, doc._id],{_id: doc.incident});
         }   
     }
 }

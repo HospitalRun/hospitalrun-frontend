@@ -14,10 +14,13 @@ export default AbstractIndexRoute.extend(UserSession, {
             currentUser = this.getUserName(true),
             queryParams = {
                 mapReduce: 'incident_by_user'
-            };        
+            };
         if (!this.currentUserCan('edit_others_incident')) {
-            queryParams.startkey = [currentUser,'incident_'];
-            queryParams.endkey = [currentUser,'incident_'+maxValue];            
+                queryParams.options = 
+                    {
+                        startkey:  [currentUser,'incident_'],
+                        endkey: [currentUser,'incident_'+maxValue]
+                    };             
         }
         return queryParams;
     }
