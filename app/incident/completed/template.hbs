@@ -1,51 +1,40 @@
 {{#if hasRecords}}
     <table class="table">
         <tr class="table-header">
-            <th>Date Completed</th>            
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Transaction</th>
-            <th>Details</th>
+            <th>Reported By</th>
+            <th>Location of Incident</th>
+            <th>Date of Incident</th>
+            <th>Incident Type Category</th>
+            <th>Incident Tye Item</th>
+            {{#if showActions}}
+                <th>Actions</th>
+            {{/if}}
         </tr>
-        {{#each itemController='inventory/completed-items'}}
-            <tr>
-                <td>{{date-format dateCompleted}}</td>
-                <td>{{inventoryItem.name}}</td>
-                <td>{{quantity}}</td>
-                <td>{{transactionType}}</td>
-                <td>
-                    {{#if isAdjustment}}
-                        {{#if haveReason}}
-                            <strong>Reason:</strong> {{reason}}<br/>
+        {{#with this as parentController}}
+            {{#each}}
+                    <tr {{action 'editItem' this}}>
+                        <td>{{reportedBy}}</td>
+                        <td>{{locationOfIncident}}</td>
+                        <td>{{date-format dateOfIncident}}</td>
+                        <td>{{categoryName}}</td>
+                        <td>{{categoryItem}}</td>
+                        {{#if parentController.showActions}}
+                            <td>
+                                {{#if parentController.canAdd}}
+                                    <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
+                                {{/if}}
+                            </td>
                         {{/if}}
-                        <strong>Location Adjusted:</strong> {{deliveryDetails}}
-                    {{/if}}
-                    {{#if isFulfillment}}
-                        <strong>Cost Per Unit:</strong> {{costPerUnit}}<br/>
-                        <strong>Quantity At Completion:</strong> {{quantityAtCompletion}}<br/>
-                        <strong>Pulled From:</strong>
-                        {{#each locationsAffected}}
-                            {{name}}<br/>
-                        {{/each}}
-                        {{#if patient}}
-                            <strong>Prescription For: </strong> {{deliveryDetails}}
-                        {{else}}
-                            <strong>Delivered To: </strong> {{deliveryDetails}}
-                        {{/if}}
-                    {{/if}}
-                    {{#if isTransfer}}
-                        <strong>Transferred From:</strong>
-                        {{#each locationsAffected}}
-                            {{name}}<br/>
-                        {{/each}}
-                        <strong>Transferred To: </strong> {{deliveryDetails}}
-                    {{/if}}
-                </td>
-            </tr>            
-        {{/each}}
+                    </tr>
+            {{/each}}
+        {{/with}}
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No completed requests found.</em>
+        <em>No Incidents found.</em>
+       {{#if canAdd}}
+            <em>Create a new Incident?</em>
+            <button class="btn btn-primary on-white" {{action 'newItem'}}>New Incident</button>
+        {{/if}}
     </div>
 {{/if}}

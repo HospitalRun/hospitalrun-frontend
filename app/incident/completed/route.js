@@ -1,25 +1,28 @@
-import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-import Ember from 'ember';
-export default AbstractIndexRoute.extend({    
-    modelName: 'inv-request',
-    pageTitle: 'History',
-    
-    _getStartKeyFromItem: function(item) {
-        var dateCompleted = item.get('dateCompleted');
-        if (!Ember.isEmpty(dateCompleted)) {
-            dateCompleted = new Date(dateCompleted).getTime();
-        }
-        return ['Completed',dateCompleted,'inv-request_'+item.get('id')];
+import IncidentIndexRoute from 'hospitalrun/incident/index/route';
+import UserSession from "hospitalrun/mixins/user-session";
+export default IncidentIndexRoute.extend(UserSession, {
+    editReturn: 'incident.completed',
+    modelName: 'incident',
+    pageTitle: 'Closed Incidents',
+
+    _getStartKeyFromItem: function(item) {        
+        return [item.get('reportedBy'),'incident_'+item.get('id')];
     },
     
     _modelQueryParams: function() {
-        var maxValue = this.get('maxValue');
-        return {
-            options: {
-                startkey: ['Completed', null, null],
-                endkey: ['Completed',maxValue,maxValue]
-            },
-            mapReduce: 'inventory_request_by_status'
-        };
+        var maxValue = this.get('maxValue'),
+            currentUser = this.getUserName(true),
+            queryParams = {
+                mapReduce: 'closed_incidents_by_user'
+            };
+        if (!this.currentUserCan('edit_others_incident')) {
+                queryParams.options = 
+                    {
+                        startkey:  [currentUser,'incident_'],
+                        endkey: [currentUser,'incident_'+maxValue]
+                    };             
+        }
+        return queryParams;
     }
+
 });

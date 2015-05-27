@@ -262,13 +262,30 @@ function incidentByDate(doc) {
         }
     }
 
-function incidentByUser(doc) {
+function openIncidentsByUser(doc) {
         var doctype,
             uidx;
         if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
             doctype = doc._id.substring(0, uidx);
             if(doctype === 'incident') {
-               emit([doc.reportedBy, doc._id]);
+               var status = doc.statusOfIncident;
+               if(status && status !== 'Closed'){
+                    emit([doc.reportedBy, doc._id]);
+                }
+            }
+        }
+    }
+
+function closedIncidentsByUser(doc) {
+        var doctype,
+            uidx;
+        if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+            doctype = doc._id.substring(0, uidx);
+            if(doctype === 'incident') {
+               var status = doc.statusOfIncident;
+               if(status && status === 'Closed'){
+                    emit([doc.reportedBy, doc._id]);
+                }
             }
         }
     }
@@ -372,8 +389,11 @@ var designDocs = [{
     name: 'incident_by_date',
     function: incidentByDate
 },{
-    name: 'incident_by_user',
-    function: incidentByUser
+    name: 'open_incidents_by_user',
+    function: openIncidentsByUser
+},{
+    name: 'closed_incidents_by_user',
+    function: closedIncidentsByUser
 },{
     name: 'incident_by_reviewers',
     function: incidentByReviewers

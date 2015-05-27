@@ -26,7 +26,7 @@
             <div class="panel detail-section">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        General Information
+                        General Information (All Fields are mandatory)
                     </h3>
                 </div>
                 <div class="panel-body detail-section-content">
@@ -49,16 +49,15 @@
                                 content=incidentLocations 
                                 optionValuePath="content" 
                                 optionLabelPath="content"
-                                class="required"
-                             }}
+                            }}
                         </div>
                     </div>
                     <div class="row">
                         {{date-picker property="dateOfIncident" label="Date of Incident" class="col-xs-12 col-sm-6" format="l h:mm A" showTime=true}}
-                        {{em-input property="reportedTo" label="Incident Reported To" class="col-xs-12 col-sm-6"}}
+                        {{em-input property="reportedTo" label="Incident Reported To (Full Name)" class="col-xs-12 col-sm-6"}}
                     </div>
                     <div class="row">
-                        {{em-input property="witnessList" label="List of Witnesses" class="col-xs-12 col-sm-12"}}
+                        {{em-input property="witnessList" label="Witness (Full Name)" class="col-xs-12 col-sm-12"}}
                     </div>                        
                     {{em-text label="Incident Description" property="incidentDescription" rows=3}}
                 </div>
@@ -212,6 +211,7 @@
                             Root Cause Analysis (RCA)
                         </h3>
                     </div>
+                    {{#if canAddContributingFactor}}
                     <div class="panel-body detail-section-content">
                         <div class="panel-heading">
                             <h2 class="panel-title">
@@ -472,6 +472,7 @@
                         </table>
                         {{em-text label="Root Cause Summary" property="rcaSummary" rows=3}}
                     </div>
+                    {{/if}}
                 </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="harmscore">
@@ -568,7 +569,9 @@
                                 {{/each}}
                             {{/with}}
                         </table>
-                        {{em-text label="Lessons Learned" property="lessonsLearned" rows=3}}
+                        {{#if canAddRecommendation}}
+                            {{em-text label="Lessons Learned" property="lessonsLearned" rows=3}}
+                        {{/if}}
                     </div>
                 </div>
         </div>

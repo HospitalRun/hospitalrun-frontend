@@ -47,25 +47,30 @@ export default AbstractModel.extend({
     showSummary: DS.attr('boolean', {defaultValue: false}),
     statusOfIncident: DS.attr('string',{
           defaultValue: function() { return 'Opened'; }
-      })
-    //severity : DS.attr()
+      }),
+
+    validations: {
     
-    //
-	//,
-	//documents : DS.hasMany('document', {async:true}),
-
-    /*summary: function() {
-        var summaryFields = this.getProperties('reportedBy', 'incidentDescription'),
-            summary = '';
-        for (var prop in summaryFields) {
-            if (!Ember.isEmpty(summaryFields[prop])) {
-                if (!Ember.isEmpty(summary)) {
-                    summary += ', ';
-                }
-                summary += summaryFields[prop];
-            }
-        }
-        return summary;
-    }.property('reportedBy', 'incidentDescription')*/
-
+        locationOfIncident: {
+            presence: true
+        },
+        dateOfIncident: {
+            presence: true
+        },
+        reportedTo: {
+            presence: true
+        },
+        witnessList: {
+            presence: true
+        },
+        incidentDescription: {
+            presence: true
+        },
+        categoryName: {
+            presence: true
+        },
+        categoryItem: {
+            presence: true
+        }    
+    }
 });

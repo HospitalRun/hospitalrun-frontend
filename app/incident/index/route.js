@@ -13,7 +13,7 @@ export default AbstractIndexRoute.extend(UserSession, {
         var maxValue = this.get('maxValue'),
             currentUser = this.getUserName(true),
             queryParams = {
-                mapReduce: 'incident_by_user'
+                mapReduce: 'open_incidents_by_user'
             };
         if (!this.currentUserCan('edit_others_incident')) {
                 queryParams.options = 

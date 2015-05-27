@@ -1,4 +1,4 @@
-import AbstractPagedController from 'hospitalrun/controllers/abstract-paged-controller';
-export default AbstractPagedController.extend({
+import IncidentIndexController from 'hospitalrun/incident/index/controller';
+export default IncidentIndexController.extend({
     startKey: []
 });
