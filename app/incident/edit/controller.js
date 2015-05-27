@@ -76,6 +76,55 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         return this.currentUserCan('delete_risk');
     }.property(),
 
+    patientContributingFactorsChanged: function() {
+      this._reEnableCheckboxOnLoading('patientFactors','patientContributingFactors');
+    }.observes('patientContributingFactors.@each'),
+
+    staffContributingFactorsChanged: function() {
+      this._reEnableCheckboxOnLoading('staffFactors','staffContributingFactors');
+    }.observes('staffContributingFactors.@each'),
+
+    taskContributingFactorsChanged: function() {
+      this._reEnableCheckboxOnLoading('taskFactors','taskContributingFactors');
+    }.observes('taskContributingFactors.@each'),
+
+    communicationContributingFactorsChanged: function() {
+      this._reEnableCheckboxOnLoading('communicationFactors','communicationContributingFactors');
+    }.observes('communicationContributingFactors.@each'),
+
+    equipmentContributingFactorsChanged: function() {
+      this._reEnableCheckboxOnLoading('equipmentFactors','equipmentContributingFactors');
+    }.observes('equipmentContributingFactors.@each'),
+
+    wrkEnvironmentContributingFactorsChanged: function() {
+      this._reEnableCheckboxOnLoading('workEnvFactors','wrkEnvironmentContributingFactors');
+    }.observes('wrkEnvironmentContributingFactors.@each'),
+    
+    organizationalContributingFactorsChanged: function() {
+      this._reEnableCheckboxOnLoading('organisationalFactors','organizationalContributingFactors');
+    }.observes('organizationalContributingFactors.@each'),
+
+    eduTrainingContributingFactorsChanged: function() {
+      this._reEnableCheckboxOnLoading('educationAndTrainingFactors','eduTrainingContributingFactors');
+    }.observes('eduTrainingContributingFactors.@each'),
+
+    teamContributingFactorsChanged: function() {
+      this._reEnableCheckboxOnLoading('teamFactors','teamContributingFactors');
+    }.observes('teamContributingFactors.@each'),
+
+    _reEnableCheckboxOnLoading: function(factorsList,contributingFactorsList){
+      var factors = this.get(factorsList);
+      this.get(contributingFactorsList).then(function(contributingFactors){
+        factors.forEach(function(factor) {
+            factor.components.forEach(function(component) {
+                if (!Ember.isEmpty(contributingFactors.findBy('component', component.name))) {
+                    this.set(component.id, true); //Check the checkbox by setting the checkbox value/property to true.
+                }
+            }.bind(this));
+        }.bind(this));
+      }.bind(this));
+    },
+
     
     severityTypes: [
         { 
