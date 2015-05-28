@@ -9,7 +9,7 @@ import IncidentContributingFactors from 'hospitalrun/mixins/incident-contributin
 
 export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentHarmScoreList, IncidentLocationsList,
  IncidentContributingFactors, UserSession, {
-     needs: 'incident',
+     needs: ['incident','pouchdb'],
 
     canAddFeedback: function() {
          var currentUser = this._getCurrentUserName(),
@@ -281,7 +281,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     ],
 
     incidentLocationsList: Ember.computed.alias('controllers.incident.incidentLocationsList.value'),
-    
+    pouchdbController: Ember.computed.alias('controllers.pouchdb'),
     //preSeverityTypes: Ember.computed.alias('controllers.incident.severityTypes'),
     //preOccurrenceTypes: Ember.computed.alias('controllers.incident.occurrenceTypes'),
     //preRiskScores: Ember.computed.alias('controllers.incident.riskScores'),
@@ -313,6 +313,59 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
 
     updateCapability: 'add_incident',
 
+    _completeBeforeUpdate: function(sequence) {
+        var sequenceValue = null,
+            friendlyId = sequence.get('prefix'),
+            promises = [];
+        sequence.incrementProperty('value',1);
+        sequenceValue = sequence.get('value');
+        if (sequenceValue < 100000) {
+            friendlyId += String('00000' + sequenceValue).slice(-5);
+        } else {
+            friendlyId += sequenceValue;
+        }
+        this.set('friendlyId', friendlyId);
+        promises.push(sequence.save());
+        return promises;
+    },
+
+    _findSequence: function(type) {
+        var promises = [];
+        var sequenceFinder = new Ember.RSVP.Promise(function(resolve){
+            this._checkNextSequence(resolve, type, 0);
+        }.bind(this));
+        sequenceFinder.then(function(prefixChars) {
+            var newSequence = this.get('store').push('sequence',{
+                id: 'incident_'+type,
+                prefix: type.toLowerCase().substr(0,prefixChars),
+                value: 0
+            });
+            promises = this._completeBeforeUpdate(newSequence);
+        }.bind(this));
+        return promises;
+    },
+    
+    _findSequenceByPrefix: function(type, prefixChars) {  
+        var pouchdbController = this.get('pouchdbController');
+        var sequenceQuery = {
+            key:  type.toLowerCase().substr(0,prefixChars)            
+        };
+        return pouchdbController.queryMainDB(sequenceQuery, 'sequence_by_prefix');
+    },    
+    
+    _checkNextSequence: function(resolve, type, prefixChars) {
+        prefixChars++;
+        this._findSequenceByPrefix(type, prefixChars).then(function(records) {
+            if (Ember.isEmpty(records.rows)) {
+                resolve(prefixChars);
+            } else {
+                this._checkNextSequence(resolve, type, prefixChars);
+            }
+        }.bind(this), function() {
+            resolve(prefixChars);
+        });        
+    },
+
     afterUpdate: function() {
         if(this.get('statusOfIncident') === 'Opened'){
           this.set('statusOfIncident','Reported');
@@ -321,13 +374,22 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     },
     
     beforeUpdate: function() {        
-        if (this.get('isNew')) {
-            this.set('newIncident', true);
-        }
+        
         //We need to return a promise because we need to ensure we have saved the inc-contributing-factor records first.
         return new Ember.RSVP.Promise(function(resolve, reject) {    
-            var patientFactors = this.get('patientFactors'),
-                savePromises = [];
+             var patientFactors = this.get('patientFactors'),
+                 savePromises = [];
+
+              if (this.get('isNew')) {
+                  this.set('newIncident', true);
+                  var type = 'incident';
+                  this.store.find('sequence', 'incident_'+type).then(function(sequence) {
+                      savePromises = this._completeBeforeUpdate(sequence, resolve);
+                  }.bind(this), function() {
+                      savePromises = this._findSequence(type);
+                }.bind(this));
+              }
+
              this.get('patientContributingFactors').then(function(patientContributingFactors){
                 savePromises = this._addContributingFactors(patientFactors,patientContributingFactors);
             }.bind(this));
