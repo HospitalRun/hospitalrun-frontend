@@ -1,34 +1,33 @@
-<nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">
-              {{partial "components/logo-svg"}}
-            </a>
-        </div>
+<nav class="sidebar-nav" role="navigation">
 
-        {{#if allowSearch}}
-        <div class="navbar-form navbar-left site-search-form" role="search">
-            <div class="form-group">
-                {{text-search valueBinding="searchText" autofocus="true" placeholder="Search" class="form-control"}}
-            </div>
-            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-        </div>
-        {{/if}}
-        
-        <ul class="nav navbar-nav">
-            <li>
-                <p class="navbar-text">{{syncStatus}}</p>
-            </li>
-        </ul>
-        
-        <nav class="header-nav">
+    <header class="sidebar-nav-header sidebar-nav-section">
+        <a class="sidebar-nav-logo" href="#">
+          {{partial "components/logo-svg"}}
+        </a>
+        <a href="#" class="settings-trigger">
+            <span class="mega-octicon octicon-gear"></span>
+        </a>
+        <nav class="settings-nav">
+            <a href="#">Manage account</a>
+            <a href="#">View notifications</a>
         {{#if session.isAuthenticated}}
             <a href="#" class="logout" {{ action 'invalidateSession' }}>Logout</a>
         {{else}}
             {{#link-to 'login'}}Login{{/link-to}}
         {{/if}}
-            <a class="menu-link" href="/#">{{partial "components/menu-svg"}}</a>
         </nav>
-    </div><!-- /.container-fluid -->
+    </header>
+
+    {{#if allowSearch}}
+    <div class="navbar-form navbar-left site-search-form" role="search">
+        <div class="form-group">
+            {{text-search valueBinding="searchText" autofocus="true" placeholder="Search" class="form-control"}}
+        </div>
+        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+    </div>
+    {{/if}}
+
+    <ul class="nav navbar-nav">
+        <li><p class="navbar-text">{{syncStatus}}</p></li>
+    </ul>
 </nav>

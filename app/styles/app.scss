@@ -126,10 +126,14 @@ h3.panel-title {
 // jglovier's temporary style tweaks
 // -------------------------------------------/
 
-body {
-    background-color: $navy;
-    //JK commenting out this right now because text on white backgrounds is invisible with this.
-    //color: #fff;
+body { background-color: $navy; }
+
+// change to $navy_drk2 once rest of UI elements are styled accordingly
+
+.ember-application {
+    padding-left: 275px; // to accomodate for .sidebar-nav
+}
+
 // Loading notice styles
 // ------------------------------------------
 
@@ -223,55 +227,6 @@ body {
   }
 }
 
-
-
-.header-nav {
-    > a {
-        display: block;
-        float: right;
-        color: #fff;
-        font-size: 14px;
-        font-weight: 300;
-        line-height: 64px;
-        padding: 0 16px;
-        text-decoration: none;
-
-        &:hover { color: $green; }
-    }
-
-    .menu-link {
-        position: relative;
-        top: 5px;
-
-        &:hover path { fill: $green; }
-    }
-}
-
-.navbar {
-    min-height: 64px;
-}
-
-.navbar-header {
-    float: left;
-}
-
-.navbar-brand {
-    display: block;
-    height: 60px;
-    padding: 0 25px;
-
-    .logo-svg {
-        width: 150px;
-        @include vertically_centered; }
-
-}
-
-.navbar-text {
-    line-height: 64px;
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
 .site-search-form {
     margin: 13px 0;
 
@@ -311,18 +266,6 @@ body {
     }
 }
 
-.navbar-nav {
-
-    > li {
-
-        > a {
-            padding: 0 15px;
-            line-height: 64px; }
-
-    }
-
-}
-
 .jumbotron {
     background-color: #2e4359;
 
@@ -336,9 +279,7 @@ body {
 }
 
 .container {
-
     label { font-weight: 300; }
-
 }
 
 .panel-primary {
@@ -387,6 +328,84 @@ h1 {
 }
 
 // end temp style tweaks ------------/
+
+// Sidebar nav
+// -------------------------------------------/
+
+.sidebar-nav {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 275px;
+    display: block;
+    z-index: 1;
+    color: #fff;
+    font-weight: 300;
+    background-color: $navy_drk2;
+    box-shadow: 1px 0 0 $navy_drkest;
+
+    .mega-octicon {
+        font-size: 24px;
+        color: $sidebar_icon;
+    }
+
+    .sidebar-nav-section { height: 55px; }
+
+    .sidebar-nav-header {
+        background-color: $navy_mid2;
+        box-shadow: 0 1px 0 $navy_drkest;
+    }
+
+    .sidebar-nav-logo {
+        display: inline-block;
+        height: 55px;
+        padding: 0 15px;
+
+        .logo-svg {
+            width: 150px;
+            position: relative;
+            top: 15px;
+        }
+    }
+
+    .settings-trigger {
+        float: right;
+        padding: 15px;
+    }
+
+    .settings-nav {
+        background-color: $blue_lightest;
+        border-radius: 5px;
+        position: absolute;
+        top: 48px;
+        right: 10px;
+        z-index: 10;
+        min-width: 130px;
+
+        &:before {
+            content: " ";
+            display: block;
+            position: absolute;
+            border-bottom: 7px solid $blue_lightest;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            top: -7px;
+            right: 10px;
+        }
+
+        > a {
+            border-top: 1px solid $blue_lightest2;
+            padding: 6px 10px;
+            display: block;
+            color: $navy_mid3;
+            font-size: 14px;
+            font-weight: 400;
+
+            &:first-of-type { border-top: none; }
+        }
+    }
+}
 
 // Index (dashboard) styles
 // -------------------------------------------/
@@ -603,10 +622,7 @@ h1 {
 }
 
 @media print {
-    body {
-        font-size: 10px;
-    }
-    .panel-footer {
-        display: none;
-    }
+    body { font-size: 10px; }
+
+    .panel-footer { display: none; }
 }
