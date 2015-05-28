@@ -8,8 +8,6 @@
             <span class="mega-octicon octicon-gear"></span>
         </a>
         <nav class="settings-nav">
-            <a href="#">Manage account</a>
-            <a href="#">View notifications</a>
         {{#if session.isAuthenticated}}
             <a href="#" class="logout" {{ action 'invalidateSession' }}>Logout</a>
         {{else}}
@@ -19,7 +17,7 @@
     </header>
 
     {{#if allowSearch}}
-    <div class="navbar-form navbar-left site-search-form" role="search">
+    <div class="sidebar-nav-search sidebar-nav-section" role="search">
         <div class="form-group">
             {{text-search valueBinding="searchText" autofocus="true" placeholder="Search" class="form-control"}}
         </div>

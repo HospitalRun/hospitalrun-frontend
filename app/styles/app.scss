@@ -227,45 +227,6 @@ body { background-color: $navy; }
   }
 }
 
-.site-search-form {
-    margin: 13px 0;
-
-    .form-group {
-        float: left;
-    }
-
-    input {
-        height: 38px;
-        border-radius: 5px 0 0 5px;
-        padding: 6px 12px;
-        font-size: 18px;
-        font-weight: 300;
-        width: 78px;
-        @include transition(width);
-
-        &:focus { width: 214px; }
-    }
-
-    .btn {
-        background-color: #d2dae3;
-        border-radius: 0 5px 5px 0;
-        font-size: 18px;
-        width: 46px;
-        height: 38px;
-        text-shadow: none;
-        @include transition(opacity);
-
-        &:hover {
-            opacity: .8;
-        }
-
-        .glyphicon {
-            top: 2px;
-            right: 1px;
-        }
-    }
-}
-
 .jumbotron {
     background-color: #2e4359;
 
@@ -294,9 +255,7 @@ body { background-color: $navy; }
     }
 }
 
-.modal-dialog {
-    color: $navy;
-}
+.modal-dialog { color: $navy; }
 
 .form-signin {
     max-width: 300px;
@@ -349,60 +308,113 @@ h1 {
         font-size: 24px;
         color: $sidebar_icon;
     }
+}
 
-    .sidebar-nav-section { height: 55px; }
+.sidebar-nav-section { height: 55px; }
 
-    .sidebar-nav-header {
-        background-color: $navy_mid2;
-        box-shadow: 0 1px 0 $navy_drkest;
+// sidebar header
+
+.sidebar-nav-header {
+    background-color: $navy_mid2;
+    box-shadow: 0 1px 0 $navy_drkest;
+}
+
+.sidebar-nav-logo {
+    display: inline-block;
+    height: 55px;
+    padding: 0 15px;
+
+    .logo-svg {
+        width: 150px;
+        position: relative;
+        top: 15px;
     }
+}
 
-    .sidebar-nav-logo {
-        display: inline-block;
-        height: 55px;
-        padding: 0 15px;
+.settings-nav {
+    background-color: $blue_lightest;
+    border-radius: 5px;
+    position: absolute;
+    top: 48px;
+    right: 10px;
+    z-index: 10;
+    min-width: 130px;
+    display: none;
 
-        .logo-svg {
-            width: 150px;
-            position: relative;
-            top: 15px;
-        }
-    }
-
-    .settings-trigger {
-        float: right;
-        padding: 15px;
-    }
-
-    .settings-nav {
-        background-color: $blue_lightest;
-        border-radius: 5px;
+    &:before {
+        content: " ";
+        display: block;
         position: absolute;
-        top: 48px;
+        border-bottom: 7px solid $blue_lightest;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        top: -7px;
         right: 10px;
-        z-index: 10;
-        min-width: 130px;
+    }
 
-        &:before {
-            content: " ";
-            display: block;
-            position: absolute;
-            border-bottom: 7px solid $blue_lightest;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            top: -7px;
-            right: 10px;
+    > a {
+        border-top: 1px solid $blue_lightest2;
+        padding: 6px 10px;
+        display: block;
+        color: $navy_mid3;
+        font-size: 14px;
+        font-weight: 400;
+
+        &:first-of-type { border-top: none; }
+    }
+}
+
+
+.settings-trigger {
+    float: right;
+    padding: 15px;
+
+    &:hover + .settings-nav {
+        display: block; // temporary styles due to not having script setup yet to trigger
+    }
+}
+
+// sidebar search
+
+.sidebar-nav-search {
+    padding: 10px 15px;
+    height: 58px;
+
+    .form-group { float: left; }
+
+    input {
+        height: 38px;
+        width: 198px;
+        border-radius: 5px 0 0 5px;
+        padding: 6px 12px;
+        font-size: 18px;
+        font-weight: 300;
+        background-color: $navy_mid;
+        color: white;
+
+        &:focus {
+            background-color: white;
+            color: $navy;
+        }
+    }
+
+    .btn {
+        background-color: $sidebar_icon;
+        color: $sidebar_icon_lighter;
+        border-radius: 0 5px 5px 0;
+        font-size: 18px;
+        width: 46px;
+        height: 38px;
+        text-shadow: none;
+        @include transition(opacity);
+
+        &:hover {
+            opacity: .8;
         }
 
-        > a {
-            border-top: 1px solid $blue_lightest2;
-            padding: 6px 10px;
-            display: block;
-            color: $navy_mid3;
-            font-size: 14px;
-            font-weight: 400;
-
-            &:first-of-type { border-top: none; }
+        .glyphicon {
+            top: 2px;
+            right: 1px;
         }
     }
 }
