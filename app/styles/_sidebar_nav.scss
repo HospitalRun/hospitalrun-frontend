@@ -100,12 +100,11 @@
         font-size: 18px;
         font-weight: 300;
         background-color: $navy_mid;
-        color: white;
+        color: $navy;
 
-        &:focus {
-            background-color: white;
-            color: $navy;
-        }
+        &::-webkit-input-placeholder { color: $sidebar_icon; }
+
+        &:focus { background-color: white; }
     }
 
     .btn {
