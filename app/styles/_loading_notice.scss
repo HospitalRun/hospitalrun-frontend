@@ -4,29 +4,28 @@
 .loading-notice {
     text-align: center;
     margin: 0 auto;
+    position: absolute;
+    height: 100%;
+    width: calc(100% - 275px);
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 99;
 
     .wrapper {
         width: 140px;
         border-radius: 10px;
         background-color: $navy_drk2;
         padding: 20px;
-        margin: 20px auto;
+        margin: 0 auto;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
     }
 
     &.apploading {
-        position: absolute;
         width: 100%;
-        height: 100%;
-        top: 0;
         left: 0;
-        bottom: 0;
-        right: 0;
-
-        .wrapper {
-            position: relative;
-            top: 50%;
-            transform: translateY(-50%);
-        }
     }
 
     .loading-text {
