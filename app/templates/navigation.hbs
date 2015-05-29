@@ -1,31 +1,10 @@
 <nav class="sidebar-nav" role="navigation">
 
-    <header class="sidebar-nav-header sidebar-nav-section">
-        <a class="sidebar-nav-logo" href="#">
-          {{partial "components/logo-svg"}}
-        </a>
-        <a href="#" class="settings-trigger">
-            <span class="mega-octicon octicon-gear"></span>
-        </a>
-        <nav class="settings-nav">
-        {{#if session.isAuthenticated}}
-            <a href="#" class="logout" {{ action 'invalidateSession' }}>Logout</a>
-        {{else}}
-            {{#link-to 'login'}}Login{{/link-to}}
-        {{/if}}
-        </nav>
-    </header>
+    {{partial "sidebar_nav/header"}}
 
-    {{#if allowSearch}}
-    <div class="sidebar-nav-search sidebar-nav-section" role="search">
-        <div class="form-group">
-            {{text-search valueBinding="searchText" autofocus="true" placeholder="Search" class="form-control"}}
-        </div>
-        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-    </div>
-    {{/if}}
+    {{partial "sidebar_nav/search"}}
 
-
+    {{partial "sidebar_nav/primary_nav"}}
 
     <p class="sync-status">{{syncStatus}}</p>
 

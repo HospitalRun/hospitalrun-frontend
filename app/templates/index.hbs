@@ -3,52 +3,7 @@
     <h1 class="view-title">What would you like to do?</h1>
 
     <div class="splash-nav">
-        {{#if userCan_inventory}}
-            <div class="nav-category">
-                <header class="category-header">
-                    <h2 class="primary-section">
-                        {{#link-to 'inventory' class="primary-section-link" }}
-                            <span class="mega-octicon octicon-package"></span>
-                            Inventory
-                        {{/link-to}}
-                    </h2>
-                    <div class="panel-options">
-                        <a href="#" class="hidden-link-list-trigger">
-                            <span class="mega-octicon octicon-gear"></span>
-                        </a>
-                        <nav class="hidden-link-list">
-                            <h4>More options</h4>
-                            <a href="#" class="setting-link">Pin to Nav</a>
-                            <a href="#" class="setting-link">Set as default view</a>
-                        </nav>
-                    </div>
-                </header>
-                <nav class="category-links">
-                    {{#if userCan_add_inventory_request}}
-                        {{#link-to 'inventory.index' class="sub-section-link"}}
-                            Requests
-                            <span class="octicon octicon-chevron-right"></span>
-                        {{/link-to}}
-                    {{/if}}
-                    {{#if userCan_inventory}}
-                        {{#link-to 'inventory.listing' class="sub-section-link"}}
-                            Items
-                            <span class="octicon octicon-chevron-right"></span>
-                        {{/link-to}}
-                        {{#if userCan_add_inventory_item}}
-                            {{#link-to 'inventory.batch' 'new' class="sub-section-link"}}
-                                Inventory Received
-                                <span class="octicon octicon-plus"></span>
-                            {{/link-to}}
-                        {{/if}}
-                        {{#link-to 'inventory.reports' class="sub-section-link"}}
-                            Reports
-                            <span class="octicon octicon-chevron-right"></span>
-                        {{/link-to}}
-                    {{/if}}
-                </nav>
-            </div>
-        {{/if}}
+
         {{#if userCan_patients}}
             <div class="nav-category">
                 <header class="category-header">
