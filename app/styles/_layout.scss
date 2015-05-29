@@ -1,0 +1,17 @@
+// layout styles
+// -------------------------------------------/
+
+.detail-section-content {
+    padding: 15px 0;
+
+    .table { margin-top: -15px; }
+}
+
+.table-header {
+    background-color: transparent;
+
+    > th {
+        border-top: none !important;
+        font-weight: 300;
+    }
+}
