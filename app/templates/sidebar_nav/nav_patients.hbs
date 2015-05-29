@@ -1,0 +1,31 @@
+{{#if userCan_patients}}
+<div class="sidebar-nav-section primary-nav-item">
+
+  <div class="category-title">
+    <h2>
+      {{#link-to 'patients' class="primary-section-link" }}
+          <span class="mega-octicon octicon-organization"></span>
+          Patients
+      {{/link-to}}
+    </h2>
+  </div>
+
+  <div class="category-sub-items">
+    {{#link-to 'patients' class="sub-section-link" }}
+        Patient listing
+        <span class="octicon octicon-chevron-right"></span>
+    {{/link-to}}
+    {{#if userCan_add_patient}}
+        {{#link-to 'patients.edit' 'new' class="sub-section-link"}}
+            New patient
+            <span class="octicon octicon-plus"></span>
+        {{/link-to}}
+    {{/if}}
+    {{#link-to 'patients.reports' class="sub-section-link"}}
+        Reports
+        <span class="octicon octicon-chevron-right"></span>
+    {{/link-to}}
+  </div>
+
+</div>
+{{/if}}
