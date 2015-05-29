@@ -1,0 +1,18 @@
+.form-signin {
+    max-width: 300px;
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-165px);
+    left: 50%;
+
+    .form-signin-heading {
+        font-weight: 300;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-align: center;
+        border-bottom: 2px solid $navy_drk;
+        padding-bottom: 20px;
+        margin-bottom: 26px;
+    }
+}
