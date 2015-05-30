@@ -1,0 +1,26 @@
+{{#if userCan_billing}}
+<div class="primary-nav-item">
+
+  <div class="category-title">
+    {{#link-to 'invoices.index' class="primary-section-link nav-link"}}
+      <span class="mega-octicon octicon-person"></span>Billing
+    {{/link-to}}
+  </div>
+
+  <div class="category-sub-items">
+    {{#link-to 'invoices.index' class="category-sub-item nav-link"}}
+      <span class="octicon octicon-chevron-right"></span>Invoices
+    {{/link-to}}
+    {{#link-to 'invoices.edit' 'new' class="category-sub-item nav-link"}}
+      <span class="octicon octicon-plus"></span>New Invoice
+    {{/link-to}}
+    {{#link-to 'pricing.index' class="category-sub-item nav-link"}}
+      <span class="octicon octicon-chevron-right"></span>Price List
+    {{/link-to}}
+    {{#link-to 'pricing.profiles' class="category-sub-item nav-link"}}
+      <span class="octicon octicon-chevron-right"></span>Pricing Profiles
+    {{/link-to}}
+  </div>
+
+</div>
+{{/if}}

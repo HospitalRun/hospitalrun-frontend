@@ -1,0 +1,33 @@
+{{#if userCan_admin}}
+<div class="primary-nav-item">
+
+  <div class="category-title">
+    {{#link-to 'admin.lookup' class="primary-section-link nav-link"}}
+        <span class="mega-octicon octicon-person"></span>Admin
+    {{/link-to}}
+  </div>
+
+  <div class="category-sub-items">
+    {{#if userCan_update_config}}
+      {{#link-to 'admin.address' class="category-sub-item nav-link"}}
+        <span class="octicon octicon-chevron-right"></span>Address Options
+      {{/link-to}}
+
+      {{#link-to 'admin.lookup' class="category-sub-item nav-link"}}
+        <span class="octicon octicon-chevron-right"></span>Lookup Lists
+      {{/link-to}}
+    {{/if}}
+    {{#if userCan_users}}
+      {{#link-to 'users.index' class="category-sub-item nav-link"}}
+        <span class="octicon octicon-chevron-right"></span>User listing
+      {{/link-to}}
+      {{#if userCan_add_user}}
+        {{#link-to 'users.edit' 'new' class="category-sub-item nav-link"}}
+          <span class="octicon octicon-plus"></span>New user
+        {{/link-to}}
+      {{/if}}
+    {{/if}}
+  </div>
+
+</div>
+{{/if}}
