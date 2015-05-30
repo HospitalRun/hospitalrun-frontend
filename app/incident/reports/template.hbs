@@ -1,5 +1,6 @@
 <div class="panel panel-primary">
-    <div class="panel-body">
+   {{#if canGenerateReport}}
+   <div class="panel-body">
         {{#em-form model=this submit_button=false }}
             <div class="row">
                 {{em-select class="col-xs-3" label="Report Type" 
@@ -17,6 +18,7 @@
     <div class="panel-footer">
         <button class="btn btn-default" {{action 'generateReport'}}>Generate Report</button>
     </div>
+    {{/if}}
 </div>
 {{#if showReportResults}}
     <div class="panel panel-primary">

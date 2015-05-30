@@ -39,6 +39,8 @@
                             History
                             <span class="octicon octicon-chevron-right"></span>
                         {{/link-to}}
+                    {{/if}}
+                    {{#if userCan_generate_incident_report}}
                         {{#link-to 'incident.reports' class="sub-section-link"}}
                             Reports
                             <span class="octicon octicon-chevron-right"></span>

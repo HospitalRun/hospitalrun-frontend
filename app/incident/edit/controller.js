@@ -14,13 +14,14 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     canAddFeedback: function() {
          var currentUser = this._getCurrentUserName(),
              status = this.get('statusOfIncident'),
-             canAdd = this.currentUserCan('add_feedback'),
-             reviewers = this.get('reviewers');
-          reviewers.forEach(function(reviewer) {
-              if((currentUser === reviewer.get('reviewerEmail')) && (status !== 'Closed')){
-                canAdd = true;
-              }
-            });    
+             canAdd = this.currentUserCan('add_feedback');
+             this.get('reviewers').then(function(reviewers){
+                reviewers.forEach(function(reviewer) {
+                  if((currentUser === reviewer.get('reviewerEmail')) && (status !== 'Closed')){
+                    canAdd = true;
+                  }
+                });
+              });    
       return canAdd;
     }.property('reviewers.@each'),
 
@@ -313,10 +314,11 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
 
     updateCapability: 'add_incident',
 
-    _completeBeforeUpdate: function(sequence) {
+    _completeBeforeUpdate: function(sequence, resolve, reject) {
         var sequenceValue = null,
             friendlyId = sequence.get('prefix'),
             promises = [];
+        
         sequence.incrementProperty('value',1);
         sequenceValue = sequence.get('value');
         if (sequenceValue < 100000) {
@@ -326,11 +328,14 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         }
         this.set('friendlyId', friendlyId);
         promises.push(sequence.save());
-        return promises;
+        Ember.RSVP.all(promises,'All before update done for Incident item').then(function(){
+            resolve();
+        }, function(error) {
+            reject(error);
+        });
     },
 
-    _findSequence: function(type) {
-        var promises = [];
+    _findSequence: function(type, resolve, reject) {
         var sequenceFinder = new Ember.RSVP.Promise(function(resolve){
             this._checkNextSequence(resolve, type, 0);
         }.bind(this));
@@ -340,9 +345,8 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
                 prefix: type.toLowerCase().substr(0,prefixChars),
                 value: 0
             });
-            promises = this._completeBeforeUpdate(newSequence);
+            this._completeBeforeUpdate(newSequence, resolve, reject);
         }.bind(this));
-        return promises;
     },
     
     _findSequenceByPrefix: function(type, prefixChars) {  
@@ -365,7 +369,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
             resolve(prefixChars);
         });        
     },
-
+    
     afterUpdate: function() {
         if(this.get('statusOfIncident') === 'Opened'){
           this.set('statusOfIncident','Reported');
@@ -373,24 +377,26 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         this.displayAlert('Incident Saved', 'The Incident report has been saved.');
     },
     
-    beforeUpdate: function() {        
-        
-        //We need to return a promise because we need to ensure we have saved the inc-contributing-factor records first.
-        return new Ember.RSVP.Promise(function(resolve, reject) {    
-             var patientFactors = this.get('patientFactors'),
-                 savePromises = [];
-
-              if (this.get('isNew')) {
-                  this.set('newIncident', true);
-                  var type = 'incident';
-                  this.store.find('sequence', 'incident_'+type).then(function(sequence) {
-                      savePromises = this._completeBeforeUpdate(sequence, resolve);
-                  }.bind(this), function() {
-                      savePromises = this._findSequence(type);
+    beforeUpdate: function() {
+        if (this.get('isNew')){
+              this.set('newIncident', true);
+              var type = 'incident';
+              return new Ember.RSVP.Promise(function(resolve, reject){
+                this.store.find('sequence', 'incident_'+type).then(function(sequence) {
+                    this._completeBeforeUpdate(sequence, resolve, reject);
+                }.bind(this), function() {
+                    this._findSequence(type, resolve, reject);
                 }.bind(this));
-              }
+              }.bind(this));
+        }
+        else
+        {
+          //We need to return a promise because we need to ensure we have saved the inc-contributing-factor records first.
+          return new Ember.RSVP.Promise(function(resolve, reject) {    
+            var patientFactors = this.get('patientFactors'),
+                savePromises = [];
 
-             this.get('patientContributingFactors').then(function(patientContributingFactors){
+            this.get('patientContributingFactors').then(function(patientContributingFactors){
                 savePromises = this._addContributingFactors(patientFactors,patientContributingFactors);
             }.bind(this));
 
@@ -439,7 +445,8 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
             }, function(error) {
                 reject(error);
             });
-        }.bind(this));
+          }.bind(this));
+        }
     },
 
     setAndGetReportedBy: function(){
@@ -454,21 +461,6 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
      _getCurrentUserName: function(){
         var incident = this.get('model');
         return incident.getUserName(true);
-     },
-
-     _changeIncidentStatus: function(){
-        var incidentStatus = this.get('statusOfIncident'),
-            newStatus = null;
-        if(incidentStatus === 'Reported'){
-          newStatus = 'Active';
-        }
-        else if(incidentStatus === 'Active'){
-          newStatus = 'Follow-up';
-        }
-        else if(incidentStatus === 'Follow-up'){
-          newStatus = 'Closed';
-        }
-      this.set('statusOfIncident', newStatus);
      },
 
     havePatientContributingFactors: function() {

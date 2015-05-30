@@ -4,6 +4,7 @@ export default Ember.Mixin.create({
         admin: [
             'User Administrator',
             'System Administrator',
+            'Incident System Administrator',
             'Quality'
         ],
         appointments: [
@@ -11,47 +12,47 @@ export default Ember.Mixin.create({
             'Hospital Administrator',
             'Medical Records Officer',
             'Patient Administration', 
-            'Social Worker',
-            'System Administrator'*/ 
+            'Social Worker',*/ 
+            'System Administrator'
         ],
         add_appointment: [
             /*'Data Entry',
             'Hospital Administrator',
             'Medical Records Officer',
             'Patient Administration',  
-            'Social Worker',
-            'System Administrator'*/
+            'Social Worker',*/
+            'System Administrator'
         ],
         add_charge: [
             /*'Data Entry',
             'Business Office', 
             'Hospital Administrator',
-            'Medical Records Officer',
-            'System Administrator' */            
+            'Medical Records Officer', */ 
+            'System Administrator'           
         ],
         add_diagnosis: [
            /* 'Data Entry',
             'Doctor',
             'Hospital Administrator',
             'Medical Records Officer',
-            'Patient Administration', 
-            'System Administrator'*/
+            'Patient Administration',*/ 
+            'System Administrator'
         ],
         add_medication: [
             /*'Data Entry',
             'Doctor',
             'Hospital Administrator',
             'Medical Records Officer',
-            'Pharmacist', 
-            'System Administrator'*/
+            'Pharmacist', */
+            'System Administrator'
         ],
         add_photo: [
            /* 'Data Entry',
             'Hospital Administrator',
             'Medical Records Officer',
             'Patient Administration',  
-            'Social Worker', 
-            'System Administrator'*/
+            'Social Worker', */
+            'System Administrator'
         ],        
         add_patient: [
           /*  'Data Entry',
@@ -59,31 +60,31 @@ export default Ember.Mixin.create({
             'Hospital Administrator',
             'Medical Records Officer',
             'Patient Administration', 
-            'Social Worker', 
-            'System Administrator'*/
+            'Social Worker', */
+            'System Administrator'
         ],
         add_pricing: [
            /* 'Data Entry',
             'Business Office', 
             'Hospital Administrator',
-            'Medical Records Officer',
-            'System Administrator' */            
+            'Medical Records Officer',*/ 
+            'System Administrator'            
         ],        
         add_lab: [
            /* 'Data Entry',
             'Doctor',
             'Hospital Administrator',
             'Medical Records Officer',
-            'Lab Technician', 
-            'System Administrator'*/
+            'Lab Technician', */
+            'System Administrator'
         ],
         add_imaging: [
            /* 'Data Entry',
             'Doctor', 
             'Hospital Administrator',
             'Imaging Technician', 
-            'Medical Records Officer',
-            'System Administrator'*/
+            'Medical Records Officer',*/
+            'System Administrator'
         ],
         add_inventory_request: [
            /* 'Data Entry',
@@ -91,29 +92,29 @@ export default Ember.Mixin.create({
             'Inventory Manager', 
             'Medical Records Officer',
             'Nurse Manager',
-            'Pharmacist',
-            'System Administrator'*/
+            'Pharmacist',*/
+            'System Administrator'
         ],        
         add_inventory_item: [
           /*  'Data Entry',
             'Hospital Administrator',
             'Inventory Manager',
-            'Medical Records Officer',
-            'System Administrator'*/
+            'Medical Records Officer',*/
+            'System Administrator'
         ],
         add_inventory_purchase: [
             /*'Data Entry',
             'Hospital Administrator',
             'Inventory Manager', 
-            'Medical Records Officer',
-            'System Administrator'*/
+            'Medical Records Officer',*/
+            'System Administrator'
         ],
         add_invoice: [
            /* 'Data Entry',
             'Business Office', 
             'Hospital Administrator',
-            'Medical Records Officer',
-            'System Administrator' */
+            'Medical Records Officer',*/
+            'System Administrator' 
         ],
         add_procedure: [
           /*  'Data Entry',
@@ -122,20 +123,21 @@ export default Ember.Mixin.create({
             'Medical Records Officer',
             'Nurse', 
             'Nurse Manager', 
-            'Patient Administration', 
-            'System Administrator'*/
+            'Patient Administration', */
+            'System Administrator'
         ],
         add_socialwork: [
           /*  'Data Entry',
             'Hospital Administrator',
             'Medical Records Officer',
             'Patient Administration', 
-            'Social Worker', 
-            'System Administrator'*/            
+            'Social Worker', */ 
+            'System Administrator'           
         ],
         add_user: [
             'User Administrator',
             'System Administrator',
+            'Incident System Administrator'
         ],
         add_visit: [
           /*  'Data Entry',
@@ -145,8 +147,8 @@ export default Ember.Mixin.create({
             'Nurse', 
             'Nurse Manager', 
             'Patient Administration',
-            'Social Worker',
-            'System Administrator'*/
+            'Social Worker',*/
+            'System Administrator'
         ],        
         add_vitals: [
           /*  'Data Entry',
@@ -154,100 +156,100 @@ export default Ember.Mixin.create({
             'Hospital Administrator',
             'Medical Records Officer',
             'Nurse', 
-            'Nurse Manager', 
-            'System Administrator'*/
+            'Nurse Manager', */
+            'System Administrator'
         ],        
         adjust_inventory_location: [
           /*  'Hospital Administrator',
             'Inventory Manager',
-            'Medical Records Officer',
-            'System Administrator'*/
+            'Medical Records Officer',*/
+            'System Administrator'
         ], 
         billing: [
          /*   'Hospital Administrator',
             'Finance',
-            'Finance Manager',
-            'System Administrator'*/
+            'Finance Manager',*/
+            'System Administrator'
         ],
         complete_imaging: [
           /*  'Imaging Technician', 
-            'Medical Records Officer',
-            'System Administrator'*/
+            'Medical Records Officer',*/
+            'System Administrator'
         ],
         complete_lab: [
             /*'Lab Technician',
-            'Medical Records Officer',
-            'System Administrator'*/
+            'Medical Records Officer',*/
+            'System Administrator'
         ],
         delete_appointment: [
            /* 'Hospital Administrator',
             'Medical Records Officer',
             'Patient Administration', 
-            'Social Worker', 
-            'System Administrator'*/
+            'Social Worker', */
+            'System Administrator'
         ],
         delete_diagnosis: [
            /* 'Doctor',
             'Hospital Administrator',
             'Medical Records Officer',
-            'Patient Administration', 
-            'System Administrator'*/
+            'Patient Administration', */
+            'System Administrator'
         ],        
         delete_inventory_item: [
           /*  'Hospital Administrator',
             'Inventory Manager', 
-            'Medical Records Officer',
-            'System Administrator'*/
+            'Medical Records Officer',*/
+            'System Administrator'
         ],
         delete_inventory_purchase: [
           /*  'Hospital Administrator',
             'Inventory Manager', 
-            'Medical Records Officer',
-            'System Administrator'*/
+            'Medical Records Officer',*/
+            'System Administrator'
         ],
         delete_imaging: [            
           /*  'Doctor', 
             'Hospital Administrator',
-            'Medical Records Officer',
-            'System Administrator'*/
+            'Medical Records Officer',*/
+            'System Administrator'
         ],
         delete_invoice: [
           /*  'Business Office', 
-            'Hospital Administrator',
-            'System Administrator' */
+            'Hospital Administrator',*/
+            'System Administrator' 
         ],        
         delete_lab: [
           /*  'Doctor', 
             'Hospital Administrator',
-            'Medical Records Officer',
-            'System Administrator'*/
+            'Medical Records Officer',*/
+            'System Administrator'
         ],
         delete_medication: [
          /*   'Doctor', 
             'Hospital Administrator',
-            'Medical Records Officer',
-            'System Administrator'*/
+            'Medical Records Officer',*/
+            'System Administrator'
         ],
         delete_photo: [
          /*   'Data Entry',
             'Hospital Administrator',
             'Medical Records Officer',
             'Patient Administration',  
-            'Social Worker', 
-            'System Administrator'*/
+            'Social Worker', */
+            'System Administrator'
         ],
         delete_patient: [
          /*   'Hospital Administrator',
             'Medical Records Officer',
-            'Patient Administration', 
-            'System Administrator'*/
+            'Patient Administration',*/ 
+            'System Administrator'
         ],       
         delete_pricing: [
           /*  'Data Entry',
             'Business Office', 
             'Hospital Administrator',
-            'Medical Records Officer',
-            'System Administrator' */            
+            'Medical Records Officer',*/
+            'System Administrator'             
         ],
         delete_procedure: [
          /*   'Doctor', 
@@ -255,24 +257,24 @@ export default Ember.Mixin.create({
             'Medical Records Officer',
             'Nurse', 
             'Nurse Manager', 
-            'Patient Administration', 
-            'System Administrator'*/
+            'Patient Administration',*/ 
+            'System Administrator'
         ],
         delete_socialwork: [
          /*   'Data Entry',
             'Hospital Administrator',
             'Medical Records Officer',
             'Patient Administration', 
-            'Social Worker', 
-            'System Administrator'*/            
+            'Social Worker', */ 
+            'System Administrator'           
         ],        
         delete_vitals: [
           /*  'Doctor',
             'Hospital Administrator',
             'Medical Records Officer',
             'Nurse', 
-            'Nurse Manager', 
-            'System Administrator'*/
+            'Nurse Manager',*/ 
+            'System Administrator'
         ],
         delete_visit: [
          /*   'Doctor',
@@ -281,60 +283,61 @@ export default Ember.Mixin.create({
             'Nurse', 
             'Nurse Manager', 
             'Patient Administration', 
-            'Social Worker', 
-            'System Administrator'*/
+            'Social Worker', */
+            'System Administrator'
         ],
         delete_user: [
             'User Administrator',
             'System Administrator',
+            'Incident System Administrator'
         ],
         edit_invoice: [
           /*  'Data Entry',
             'Business Office', 
             'Hospital Administrator',
-            'Medical Records Officer',
-            'System Administrator' */
+            'Medical Records Officer',*/
+            'System Administrator' 
         ],
         fulfill_inventory: [
           /*  'Hospital Administrator',
             'Inventory Manager',
-            'Medical Records Officer',
-            'System Administrator'*/
+            'Medical Records Officer',*/
+            'System Administrator'
         ],
         fulfill_medication: [
            /* 'Medical Records Officer',
-            'Pharmacist', 
-            'System Administrator'*/
+            'Pharmacist', */
+            'System Administrator'
         ],
         imaging: [
           /*  'Data Entry',
             'Doctor', 
             'Hospital Administrator',
             'Imaging Technician', 
-            'Medical Records Officer',
-            'System Administrator'*/
+            'Medical Records Officer',*/
+            'System Administrator'
         ],
         invoices: [
           /*  'Hospital Administrator',
             'Finance',
-            'Finance Manager',
-            'System Administrator'*/
+            'Finance Manager',*/
+            'System Administrator'
         ],        
         labs: [
           /*  'Data Entry',
             'Doctor', 
             'Hospital Administrator',
             'Lab Technician',
-            'Medical Records Officer',
-            'System Administrator'*/
+            'Medical Records Officer',*/
+            'System Administrator'
         ],
         medication: [
          /*   'Data Entry',
             'Doctor', 
             'Hospital Administrator',
             'Medical Records Officer',
-            'Pharmacist', 
-            'System Administrator'*/
+            'Pharmacist', */
+            'System Administrator'
         ],
         inventory: [
          /*   'Data Entry',
@@ -342,16 +345,17 @@ export default Ember.Mixin.create({
             'Inventory Manager',
             'Medical Records Officer',
             'Nurse Manager', 
-            'Pharmacist',
-            'System Administrator'*/
+            'Pharmacist',*/
+            'System Administrator'
         ],
         override_invoice: [
          /*   'Business Office', 
-            'Hospital Administrator',
-            'System Administrator' */
+            'Hospital Administrator',*/
+            'System Administrator' 
         ],
         query_db: [
             'System Administrator',
+            'Incident System Administrator'
         ],
         patients: [
           /*  'Data Entry',
@@ -361,15 +365,15 @@ export default Ember.Mixin.create({
             'Nurse', 
             'Nurse Manager', 
             'Patient Administration', 
-            'Social Worker', 
-            'System Administrator'*/
+            'Social Worker', */
+            'System Administrator'
         ],
         pricing: [
          /*   'Data Entry',
             'Business Office', 
             'Hospital Administrator',
-            'Medical Records Officer',
-            'System Administrator' */            
+            'Medical Records Officer',*/
+            'System Administrator'          
         ],        
         visits: [
          /*   'Data Entry',
@@ -379,98 +383,122 @@ export default Ember.Mixin.create({
             'Nurse Manager', 
             'Nurse',  
             'Patient Administration', 
-            'Social Worker',
-            'System Administrator'*/
+            'Social Worker',*/
+            'System Administrator'
         ],
 		incident: [
             'Hospital Staff',
             'User Administrator',
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
         ],
 		add_incident : [
 			'Hospital Staff',
             'User Administrator',
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
 		],
 		delete_incident: [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
+        ],
+        generate_incident_report : [
+            'User Administrator',
+            'Quality',
+            'System Administrator',
+            'Incident System Administrator'
         ],
         add_incident_category : [
             'Hospital Staff',
             'User Administrator',
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
         ],
         delete_incident_category: [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
         ],
 		add_feedback : [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
 		],
 		delete_feedback: [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
         ],
         add_reviewer : [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
         ],
         delete_reviewer: [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
         ],
 		add_investigation_finding : [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
 		],
 		delete_investigation_finding: [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
         ],
 		add_contributing_factor : [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
 		],
 		delete_contributing_factor: [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
         ],
 		add_recommendation : [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
 		],
 		delete_recommendation: [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
         ],
 		add_risk : [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
 		],
 		delete_risk: [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
         ],
         add_summary : [
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
         ],
         edit_others_incident:[
            'Quality'
         ],
         update_config: [
-            'System Administrator',
-            'Quality'
+            'System Administrator'
         ],
         users: [
             'User Administrator',
             'Quality',
-            'System Administrator'
+            'System Administrator',
+            'Incident System Administrator'
         ]
         
     },    

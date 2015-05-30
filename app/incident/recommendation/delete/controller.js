@@ -9,7 +9,9 @@ export default AbstractDeleteController.extend({
     
     actions: {
         notifyRecommendationDelete: function() {
-            this.send('closeModal');
+            this.get('model').destroyRecord().then(function() {                    
+                this.send('closeModal');
+            }.bind(this));
             this.get('editController').send('deleteRecommendation', this.get('model'));
         }
     }

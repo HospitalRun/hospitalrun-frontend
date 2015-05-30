@@ -1,6 +1,7 @@
 {{#if hasRecords}}
     <table class="table">
         <tr class="table-header">
+            <th>Incident ID</th>
             <th>Reported By</th>
             <th>Location of Incident</th>
             <th>Date of Incident</th>
@@ -13,6 +14,7 @@
         {{#with this as parentController}}
             {{#each}}
                     <tr {{action 'editItem' this}}>
+                        <td>{{friendlyId}}
                   	    <td>{{reportedBy}}</td>
                         <td>{{locationOfIncident}}</td>
                         <td>{{date-format dateOfIncident}}</td>
@@ -24,7 +26,7 @@
                                     <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
                                 {{/if}}
                                 {{#if parentController.canDelete}}
-                                    <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                                    <button class="btn btn-default warning" {{action 'showDeleteIncident' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                 {{/if}}
                             </td>
                         {{/if}}

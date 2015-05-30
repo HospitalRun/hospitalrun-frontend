@@ -1,8 +1,13 @@
 import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
 import Ember from 'ember';
+import UserSession from "hospitalrun/mixins/user-session";
 import NumberFormat from "hospitalrun/mixins/number-format";
-export default AbstractReportController.extend(NumberFormat, {
+export default AbstractReportController.extend(UserSession, NumberFormat, {
     needs: ['incident'],
+
+    canGenerateReport: function() {
+        return this.currentUserCan('generate_incident_report');
+    }.property(),
     
     departmentReportColumns: {
         department: {
