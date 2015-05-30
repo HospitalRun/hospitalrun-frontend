@@ -88,8 +88,12 @@
 .sidebar-nav-search {
     padding: 10px 15px;
     height: 58px;
+    border-bottom: 1px solid $navy_drkest;
 
-    .form-group { float: left; }
+    .form-group {
+        float: left;
+        margin-bottom: 0;
+    }
 
     input {
         height: 38px;
