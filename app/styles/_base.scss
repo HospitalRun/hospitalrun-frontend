@@ -1,7 +1,7 @@
-body { background-color: $navy; }
+body {
+  background: $blue_lightest;
 
-// change to $navy_drk2 once rest of UI elements are styled accordingly
-
-.ember-application {
-    padding-left: 275px; // to accomodate for .sidebar-nav
+  &.ember-application {
+      padding-left: 275px; // to accomodate for .sidebar-nav
+  }
 }

@@ -5,6 +5,9 @@
     top: 50%;
     transform: translateY(-165px);
     left: 50%;
+    background: $navy;
+    padding: 20px;
+    border-radius: 10px;
 
     .form-signin-heading {
         font-weight: 300;
@@ -13,6 +16,6 @@
         text-align: center;
         border-bottom: 2px solid $navy_drk;
         padding-bottom: 20px;
-        margin-bottom: 26px;
+        margin: 5px 0 26px;
     }
 }
