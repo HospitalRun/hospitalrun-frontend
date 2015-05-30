@@ -20,13 +20,12 @@
     }
 }
 
-.sidebar-nav-section { height: 55px; }
-
 // sidebar header
 
 .sidebar-nav-header {
     background-color: $navy_mid2;
-    box-shadow: 0 1px 0 $navy_drkest;
+    border-bottom: 1px solid $navy_drkest;
+    height: 55px;
 }
 
 .sidebar-nav-logo {
@@ -126,4 +125,60 @@
             right: 1px;
         }
     }
+}
+
+// primary nav
+
+.primary-nav-item {
+
+    a:hover { text-decoration: none; }
+
+    .category-title {
+        height: 55px;
+        background: $navy_mid2;
+        border-bottom: 1px solid $navy_drkest;
+
+        &:hover { background: $navy_mid; }
+    }
+
+    // main section link
+    .primary-section-link {
+        display: block;
+        color: white;
+        line-height: 55px;
+        font-size: 20px;
+        padding: 0 15px;
+
+        .mega-octicon {
+            width: 24px;
+            margin-right: 12px;
+            float: left;
+            line-height: 55px;
+        }
+    }
+
+    // sub section link
+    .category-sub-item {
+        height: 42px;
+        line-height: 42px;
+        display: block;
+        padding: 0 15px;
+        background: $navy_mid3;
+        border-bottom: 1px solid $navy_drkest;
+        color: $sidebar_sublink_text;
+        font-size: 16px;
+
+        &:hover { background: $navy_mid; }
+
+        .octicon {
+            margin-left: 6px;
+            width: 24px;
+            margin-right: 6px;
+            float: left;
+            line-height: 42px;
+        }
+    }
+
+    .nav-link { font-weight: 300; }
+
 }
