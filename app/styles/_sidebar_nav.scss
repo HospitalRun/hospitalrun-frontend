@@ -20,9 +20,22 @@
     }
 }
 
+.scroll-container {
+    overflow: scroll;
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 55px);
+}
+
 // sidebar header
 
 .sidebar-nav-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     background-color: $navy_mid2;
     border-bottom: 1px solid $navy_drkest;
     height: 55px;

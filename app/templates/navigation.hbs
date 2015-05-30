@@ -2,10 +2,14 @@
 
     {{partial "sidebar_nav/header"}}
 
-    {{partial "sidebar_nav/search"}}
+    <div class="scroll-container">
 
-    {{partial "sidebar_nav/primary_nav"}}
+        {{partial "sidebar_nav/search"}}
 
-    <p class="sync-status">{{syncStatus}}</p>
+        {{partial "sidebar_nav/primary_nav"}}
+
+        <p class="sync-status">{{syncStatus}}</p>
+
+    </div>
 
 </nav>
