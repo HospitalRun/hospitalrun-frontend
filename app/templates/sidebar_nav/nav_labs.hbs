@@ -1,0 +1,25 @@
+{{#if userCan_labs}}
+<div class="primary-nav-item">
+
+  <div class="category-title">
+    {{#link-to 'labs.index' class="primary-section-link nav-link"}}
+        <span class="mega-octicon octicon-microscope"></span>Labs
+    {{/link-to}}
+  </div>
+
+  <div class="category-sub-items">
+    {{#link-to 'labs.index' class="category-sub-item nav-link"}}
+        <span class="octicon octicon-chevron-right"></span>Requests
+    {{/link-to}}
+    {{#link-to 'labs.completed' class="category-sub-item nav-link"}}
+        <span class="octicon octicon-chevron-right"></span>Completed
+    {{/link-to}}
+    {{#if userCan_add_lab}}
+        {{#link-to 'labs.edit' 'new' class="category-sub-item nav-link"}}
+            <span class="octicon octicon-plus"></span>New lab
+        {{/link-to}}
+    {{/if}}
+  </div>
+
+</div>
+{{/if}}

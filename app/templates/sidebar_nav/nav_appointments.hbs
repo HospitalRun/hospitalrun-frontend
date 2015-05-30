@@ -1,0 +1,28 @@
+{{#if userCan_appointments}}
+<div class="primary-nav-item">
+
+  <div class="category-title">
+    {{#link-to 'appointments.index' class="primary-section-link nav-link"}}
+        <span class="mega-octicon octicon-calendar"></span>Appointments
+    {{/link-to}}
+  </div>
+
+  <div class="category-sub-items">
+    {{#link-to 'appointments.index' class="category-sub-item nav-link"}}
+        <span class="octicon octicon-chevron-right"></span>This week
+    {{/link-to}}
+    {{#link-to 'appointments.today' class="category-sub-item nav-link"}}
+        <span class="octicon octicon-chevron-right"></span>Today
+    {{/link-to}}
+    {{#link-to 'appointments.search' class="category-sub-item nav-link"}}
+        <span class="octicon octicon-chevron-right"></span>Search
+    {{/link-to}}
+    {{#if userCan_add_appointment}}
+        {{#link-to 'appointments.edit' 'new' class="category-sub-item nav-link"}}
+            <span class="octicon octicon-plus"></span>New appointment
+        {{/link-to}}
+    {{/if}}
+  </div>
+
+</div>
+{{/if}}
