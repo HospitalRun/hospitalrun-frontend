@@ -5,13 +5,16 @@
 
     .view-title {
         text-align: center;
-        color: $navy_text;
-        font-weight: 300;
+        color: $navy_mid2;
+        font-weight: 600;
+        letter-spacing: -1px;
         margin: 0;
-        padding: 12px 0;
-        line-height: 1;
-        background: $navy_mid2;
+        height: 55px;
+        line-height: 55px;
+        background: white;
+        border-bottom: 1px solid $sidebar_icon_lighter;
         font-size: 28px;
+        padding: 0 15px;
     }
 
     .splash-nav {
