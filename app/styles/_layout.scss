@@ -1,12 +1,9 @@
 // layout styles
 // -------------------------------------------/
 
-.panel-heading {
+.view-top-bar { @include view_main_heading_layout; }
 
-  .view-top-bar { @include view_main_heading_layout; }
-
-  .view-current-title { @include view_main_heading; }
-}
+.view-current-title { @include view_main_heading; }
 
 // ? unsure what below are for...
 

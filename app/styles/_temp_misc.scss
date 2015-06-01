@@ -2,22 +2,23 @@
 .screen-title { margin: 20px 0 10px 20px; }
 
 .panel-heading {
-    .nav {
-        margin-top: 20px;
-        margin-left: 20px;
+
+    .view-sub-nav { margin: 0; }
+
+    .nav-pills {
+        margin: 0;
+
+        a { color: $navy_mid2; }
+
+        li.active > a {
+            background-color: transparent;
+            font-weight: 600;
+        }
     }
 }
 
 h3.panel-title {
     font-size: 24px;
-}
-
-.nav-pills > li > a {
-    color: #00bd9c;
-}
-
-.panel-heading .nav-pills > li.active > a {
-    background-color: #3b5268;;
 }
 
 .table-header {

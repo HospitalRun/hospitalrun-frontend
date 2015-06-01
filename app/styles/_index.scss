@@ -2,9 +2,5 @@
 // -------------------------------------------/
 
 .index {
-
-    .view-current-title {
-        @include view_main_heading;
-        text-align: center;
-    }
+  .view-current-title { text-align: center; }
 }
