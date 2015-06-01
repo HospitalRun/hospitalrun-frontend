@@ -3,9 +3,8 @@
 
 .index {
 
-    .view-title {
+    .view-current-title {
         @include view_main_heading;
-        @include view_main_heading_layout;
         text-align: center;
     }
 }

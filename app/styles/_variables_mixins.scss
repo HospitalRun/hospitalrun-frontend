@@ -48,6 +48,8 @@ $sidebar_sublink_text:  #c2d2e3;
   font-weight: 600;
   letter-spacing: -1px;
   font-size: 28px;
+  line-height: 55px;
+  margin: 0;
 }
 
 // layout
@@ -55,7 +57,6 @@ $sidebar_sublink_text:  #c2d2e3;
 @mixin view_main_heading_layout {
   margin: 0;
   height: 55px;
-  line-height: 55px;
   background: white;
   border-bottom: 1px solid $sidebar_icon_lighter;
   padding: 0 15px;
