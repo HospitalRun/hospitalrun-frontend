@@ -1,18 +1,43 @@
-.screen-button,
-.screen-title { margin: 20px 0 10px 20px; }
-
 .panel-heading {
 
+    .view-sub-bar { padding: 0 15px; }
+
     .view-sub-nav { margin: 0; }
+
+    .view-action-buttons { float: right;
+
+        .btn {
+            margin: 12px 0 10px 15px;
+            font-size: 16px;
+        }
+
+    }
 
     .nav-pills {
         margin: 0;
 
-        a { color: $navy_mid2; }
+        li {
+            font-size: 18px;
+            line-height: 58px;
+            margin-left: 40px;
 
-        li.active > a {
-            background-color: transparent;
-            font-weight: 600;
+            &:first-of-type { margin-left: 0; }
+
+            &.active > a {
+                background-color: transparent;
+                font-weight: 600;
+                color: $navy_mid2;
+            }
+        }
+
+        a {
+            color: $view_sub_nav;
+            padding: 0;
+
+            &:hover {
+                background-color: transparent !important;
+                color: $navy_mid2;
+            }
         }
     }
 }
