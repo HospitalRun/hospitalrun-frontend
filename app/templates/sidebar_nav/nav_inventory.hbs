@@ -2,11 +2,12 @@
 <div class="primary-nav-item">
 
   <div class="category-title">
-    {{#link-to 'inventory' class="primary-section-link nav-link" }}
+    <a href="#" class="primary-section-link nav-link" {{action 'toggleContent' 'inventory'}}>
         <span class="mega-octicon octicon-package"></span>Inventory
-    {{/link-to}}
+    </a>
   </div>
 
+  {{#if isShowingContent}}
   <div class="category-sub-items">
     {{#if userCan_add_inventory_request}}
         {{#link-to 'inventory.index' class="category-sub-item nav-link"}}
@@ -27,6 +28,7 @@
         {{/link-to}}
     {{/if}}
   </div>
+  {{/if}}
 
 </div>
 {{/if}}

@@ -2,11 +2,12 @@
 <div class="primary-nav-item">
 
   <div class="category-title">
-    {{#link-to 'medication.index' class="primary-section-link nav-link"}}
+    <a href="#" class="primary-section-link nav-link" {{action 'toggleContent' 'medication.index'}}>
         <span class="mega-octicon octicon-file-text"></span>Medication
-    {{/link-to}}
+    </a>
   </div>
 
+  {{#if isShowingContent}}
   <div class="category-sub-items">
     {{#link-to 'medication.index' class="category-sub-item nav-link"}}
         <span class="octicon octicon-chevron-right"></span>Requests
@@ -23,6 +24,7 @@
         {{/link-to}}
     {{/if}}
   </div>
+  {{/if}}
 
 </div>
 {{/if}}

@@ -2,11 +2,12 @@
 <div class="primary-nav-item">
 
   <div class="category-title">
-    {{#link-to 'appointments.index' class="primary-section-link nav-link"}}
-        <span class="mega-octicon octicon-calendar"></span>Appointments
-    {{/link-to}}
+    <a href="#" class="primary-section-link nav-link" {{action 'toggleContent' 'appointments.index'}}>
+      <span class="mega-octicon octicon-calendar"></span>Appointments
+    </a>
   </div>
 
+  {{#if isShowingContent}}
   <div class="category-sub-items">
     {{#link-to 'appointments.index' class="category-sub-item nav-link"}}
         <span class="octicon octicon-chevron-right"></span>This week
@@ -23,6 +24,7 @@
         {{/link-to}}
     {{/if}}
   </div>
+  {{/if}}
 
 </div>
 {{/if}}

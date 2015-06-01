@@ -2,11 +2,12 @@
 <div class="primary-nav-item">
 
   <div class="category-title">
-    {{#link-to 'labs.index' class="primary-section-link nav-link"}}
-        <span class="mega-octicon octicon-microscope"></span>Labs
-    {{/link-to}}
+    <a href="#" class="primary-section-link nav-link" {{action 'toggleContent' 'labs.index'}}>
+      <span class="mega-octicon octicon-microscope"></span>Labs
+    </a>
   </div>
 
+  {{#if isShowingContent}}
   <div class="category-sub-items">
     {{#link-to 'labs.index' class="category-sub-item nav-link"}}
         <span class="octicon octicon-chevron-right"></span>Requests
@@ -20,6 +21,7 @@
         {{/link-to}}
     {{/if}}
   </div>
+  {{/if}}
 
 </div>
 {{/if}}

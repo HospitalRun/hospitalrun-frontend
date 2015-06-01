@@ -54,6 +54,11 @@ export default Ember.Controller.extend(ProgressDialog, UserSession,{
                     this.transitionToRoute(this.searchRoute+"/"+textToFind);
                 }
             }
+        },
+
+        toggleContent: function(routeName) {
+             this.toggleProperty('isShowingContent');
+             this.transitionToRoute(routeName);
         }
     }
 });

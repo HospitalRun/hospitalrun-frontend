@@ -148,7 +148,9 @@
 
 .primary-nav-item {
 
-    a:hover { text-decoration: none; }
+    a:hover,
+    a:focus,
+    a:visited { text-decoration: none; }
 
     .category-title {
         height: 55px;

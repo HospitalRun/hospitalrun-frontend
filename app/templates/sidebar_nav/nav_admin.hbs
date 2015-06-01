@@ -2,11 +2,12 @@
 <div class="primary-nav-item">
 
   <div class="category-title">
-    {{#link-to 'admin.lookup' class="primary-section-link nav-link"}}
-        <span class="mega-octicon octicon-person"></span>Admin
-    {{/link-to}}
+    <a href="#" class="primary-section-link nav-link" {{action 'toggleContent' 'admin.lookup'}}>
+      <span class="mega-octicon octicon-person"></span>Admin
+    </a>
   </div>
 
+  {{#if isShowingContent}}
   <div class="category-sub-items">
     {{#if userCan_update_config}}
       {{#link-to 'admin.address' class="category-sub-item nav-link"}}
@@ -28,6 +29,7 @@
       {{/if}}
     {{/if}}
   </div>
+  {{/if}}
 
 </div>
 {{/if}}

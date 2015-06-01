@@ -2,11 +2,12 @@
 <div class="primary-nav-item">
 
   <div class="category-title">
-    {{#link-to 'invoices.index' class="primary-section-link nav-link"}}
+    <a href="#" class="primary-section-link nav-link" {{action 'toggleContent' 'invoices.index'}}>
       <span class="mega-octicon octicon-credit-card"></span>Billing
-    {{/link-to}}
+    </a>
   </div>
 
+  {{#if isShowingContent}}
   <div class="category-sub-items">
     {{#link-to 'invoices.index' class="category-sub-item nav-link"}}
       <span class="octicon octicon-chevron-right"></span>Invoices
@@ -21,6 +22,7 @@
       <span class="octicon octicon-chevron-right"></span>Pricing Profiles
     {{/link-to}}
   </div>
+  {{/if}}
 
 </div>
 {{/if}}

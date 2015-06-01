@@ -2,12 +2,13 @@
 <div class="primary-nav-item">
 
   <div class="category-title">
-    {{#link-to 'patients' class="primary-section-link nav-link" }}
-        <span class="mega-octicon octicon-organization"></span>
+    <a href="#" class="primary-section-link nav-link" {{action 'toggleContent' 'patients'}}>
+      <span class="mega-octicon octicon-organization"></span>
         Patients
-    {{/link-to}}
+    </a>
   </div>
 
+  {{#if isShowingContent}}
   <div class="category-sub-items">
     {{#link-to 'patients' class="category-sub-item nav-link" }}
     <span class="octicon octicon-chevron-right"></span>Patient listing
@@ -21,6 +22,7 @@
     <span class="octicon octicon-chevron-right"></span>Reports
     {{/link-to}}
   </div>
+  {{/if}}
 
 </div>
 {{/if}}
