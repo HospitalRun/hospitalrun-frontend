@@ -56,6 +56,8 @@
 .settings-trigger {
     float: right;
     padding: 15px;
+
+    &.active .mega-octicon { color: $green; }
 }
 
 .settings-nav {

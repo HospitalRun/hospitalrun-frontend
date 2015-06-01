@@ -2,7 +2,7 @@
     <a class="sidebar-nav-logo" href="#">
       {{partial "components/logo-svg"}}
     </a>
-    <a href="#" class="settings-trigger" {{action 'toggleSettings'}}>
+    <a href="#" {{bind-attr class=":settings-trigger isShowingSettings:active"}} {{action 'toggleSettings'}}>
         <span class="mega-octicon octicon-gear"></span>
     </a>
 
