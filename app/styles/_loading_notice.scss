@@ -15,7 +15,7 @@
     .wrapper {
         width: 140px;
         border-radius: 10px;
-        background-color: $navy_drk2;
+        background-color: $blue_light3;
         padding: 20px;
         margin: 0 auto;
         position: relative;
@@ -33,6 +33,7 @@
         font-weight: 300;
         letter-spacing: 2px;
         margin-bottom: 0;
+        color: $navy_drk2;
     }
 
     // adapted from @tobiasahlin's spinkit: http://tobiasahlin.com/spinkit/
