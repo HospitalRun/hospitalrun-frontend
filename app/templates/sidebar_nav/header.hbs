@@ -2,14 +2,18 @@
     <a class="sidebar-nav-logo" href="#">
       {{partial "components/logo-svg"}}
     </a>
-    <a href="#" class="settings-trigger">
+    <a href="#" class="settings-trigger" {{action 'toggleSettings'}}>
         <span class="mega-octicon octicon-gear"></span>
     </a>
-    <nav class="settings-nav">
-    {{#if session.isAuthenticated}}
-        <a href="#" class="logout" {{ action 'invalidateSession' }}>Logout</a>
-    {{else}}
-        {{#link-to 'login'}}Login{{/link-to}}
+
+    {{#if isShowingSettings }}
+        <nav class="settings-nav">
+        {{#if session.isAuthenticated}}
+            <a href="#" class="logout" {{ action 'invalidateSession' }}>Logout</a>
+        {{else}}
+            {{#link-to 'login'}}Login{{/link-to}}
+        {{/if}}
+        </nav>
     {{/if}}
-    </nav>
+
 </header>

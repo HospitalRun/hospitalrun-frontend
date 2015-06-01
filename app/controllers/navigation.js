@@ -59,6 +59,10 @@ export default Ember.Controller.extend(ProgressDialog, UserSession,{
         toggleContent: function(routeName) {
              this.toggleProperty('isShowingContent');
              this.transitionToRoute(routeName);
+        },
+
+        toggleSettings: function() {
+            this.toggleProperty('isShowingSettings');
         }
     }
 });
