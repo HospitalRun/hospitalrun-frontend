@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h1 class="pull-left">{{currentScreenTitle}}</h1>
+        <h1>{{currentScreenTitle}}</h1>
         {{#if newButtonAction}}
             <div class="pull-right screen-button">
                 <button class="btn btn-primary" {{action newButtonAction}}>{{newButtonText}}</button>
@@ -11,7 +11,7 @@
                 <div class="pull-right screen-button">
                     <button {{bind-attr class="class"}} {{action buttonAction}}>
                         {{#if buttonIcon}}
-                            <span {{bind-attr class="buttonIcon"}}></span> 
+                            <span {{bind-attr class="buttonIcon"}}></span>
                         {{/if}}
                         {{buttonText}}</button>
                 </div>

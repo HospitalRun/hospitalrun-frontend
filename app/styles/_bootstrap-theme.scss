@@ -389,13 +389,11 @@ fieldset[disabled] .btn-primary.active {
         .panel-heading {
             border: 0;
             border-radius: 0;
-            background-color: #2e4359;
-            color: #fff;
-            padding: 0 15px;
+            background-color: transparent;
+            color: $navy;
+            padding: 0;
         }
-        .panel-body {
-            padding-top: 0;
-        }
+        .panel-body { padding-top: 0; }
     }
 }
 

@@ -1,6 +1,13 @@
 // layout styles
 // -------------------------------------------/
 
+.panel-heading {
+  h1 {
+    @include view_main_heading;
+    @include view_main_heading_layout;
+  }
+}
+
 // ? unsure what below are for...
 
 .detail-section-content {

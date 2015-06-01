@@ -115,15 +115,6 @@ h3.panel-title {
 
 .modal-dialog { color: $navy; }
 
-
-h1 {
-
-    &.pull-left {
-        font-weight: 300;
-        letter-spacing: -1px;
-    }
-}
-
 .not-editable {
     background-color: rgba($gray_light,.5);
     opacity: .5;

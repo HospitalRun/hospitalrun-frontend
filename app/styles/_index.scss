@@ -4,23 +4,10 @@
 .index {
 
     .view-title {
+        @include view_main_heading;
+        @include view_main_heading_layout;
         text-align: center;
-        color: $navy_mid2;
-        font-weight: 600;
-        letter-spacing: -1px;
-        margin: 0;
-        height: 55px;
-        line-height: 55px;
-        background: white;
-        border-bottom: 1px solid $sidebar_icon_lighter;
-        font-size: 28px;
-        padding: 0 15px;
     }
-
-    .splash-nav {
-        padding: 16px 12px 32px;
-    }
-
 }
 
 .nav-category {

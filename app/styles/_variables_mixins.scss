@@ -13,6 +13,7 @@ $navy_drkest:           #1E2C3A;
 $navy_text:             #97afc8;
 $blue_light:            #dbebff;
 $blue_light2:           #e9f3ff;
+$blue_light3:           #dde5ee;
 $blue_lightest:         #eff2f5;
 $blue_lightest2:        #dee2e7;
 $red:                   #ff6d6f;
@@ -39,4 +40,26 @@ $sidebar_sublink_text:  #c2d2e3;
 @mixin transition($value) {
   transition: $value .2s ease;
 }
+
+// typography
+
+@mixin view_main_heading {
+  color: $navy_mid2;
+  font-weight: 600;
+  letter-spacing: -1px;
+  font-size: 28px;
+}
+
+// layout
+
+@mixin view_main_heading_layout {
+  margin: 0;
+  height: 55px;
+  line-height: 55px;
+  background: white;
+  border-bottom: 1px solid $sidebar_icon_lighter;
+  padding: 0 15px;
+}
+
+
 // end mixins ------------/

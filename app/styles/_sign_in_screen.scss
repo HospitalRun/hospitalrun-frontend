@@ -5,7 +5,7 @@
     top: 50%;
     transform: translateY(-165px);
     left: 50%;
-    background: $navy;
+    background: $blue_light3;
     padding: 20px;
     border-radius: 10px;
 
@@ -14,8 +14,11 @@
         text-transform: uppercase;
         letter-spacing: 2px;
         text-align: center;
-        border-bottom: 2px solid $navy_drk;
+        border-bottom: 2px solid white;
         padding-bottom: 20px;
         margin: 5px 0 26px;
+        color: $navy;
     }
+
+    input { background: white; }
 }
