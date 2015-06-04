@@ -152,7 +152,7 @@ export default AbstractReportController.extend(VisitTypes, {
         procedures: {
             label: 'Procedures',
             include: false,
-            property: 'procedures',
+            property: 'resolvedProcedures',
             format: '_procedureListToString'
         },
         contacts: {
@@ -258,18 +258,20 @@ export default AbstractReportController.extend(VisitTypes, {
                 if (!Ember.isEmpty(procedureTotal.records)) {
                     procedureTotal.records.forEach(function(patientProcedure, index) {
                         var visit = patientProcedure.get('visit');
-                        this._getPatientDetails(visit.get('patient.id')).then(function(patient) {
-                            this._addReportRow({
-                                patient: patient,
-                                procedure: patientProcedure.get('description'),
-                                procedureDate: patientProcedure.get('procedureDate'),
-                            }, false, reportColumns);
-                            if (index+1 === procedureTotal.records.length) {
-                                this._addReportRow({                            
-                                    procedure: 'Total for %@: %@'.fmt(procedureTotal.type, procedureTotal.total)
-                                }, true, reportColumns);
-                            }
-                        }.bind(this), reject);
+                        if (!Ember.isEmpty(visit)) {
+                            this._getPatientDetails(visit.get('patient.id')).then(function(patient) {
+                                this._addReportRow({
+                                    patient: patient,
+                                    procedure: patientProcedure.get('description'),
+                                    procedureDate: patientProcedure.get('procedureDate'),
+                                }, false, reportColumns);
+                                if (index+1 === procedureTotal.records.length) {
+                                    this._addReportRow({                            
+                                        procedure: 'Total for %@: %@'.fmt(procedureTotal.type, procedureTotal.total)
+                                    }, true, reportColumns);
+                                }
+                            }.bind(this), reject);
+                        }
                     }.bind(this));
                 }
             }.bind(this));   
@@ -619,11 +621,14 @@ export default AbstractReportController.extend(VisitTypes, {
             }
         }
         if (reportColumns.procedures.include) {
-            var promises = [];
+            var promisesMap = {};
             visits.forEach(function(visit) {
-                promises.push(visit.get('procedures'));
+                promisesMap[visit.get('id')] = visit.get('procedures');
             });
-            Ember.RSVP.all(promises).then(function() {
+            Ember.RSVP.hash(promisesMap).then(function(resolutionHash) {
+                visits.forEach(function(visit) {
+                    visit.set('resolvedProcedures', resolutionHash[visit.get('id')]);
+                });
                 this._finishVisitReport(visits);    
             }.bind(this));
         } else {

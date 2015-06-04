@@ -527,7 +527,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                             currentQuantity,
                             inventoryItem.distributionUnit,
                             moment(expirationDate).format('l'),
-                            purchase.location + ' '+ purchase.aisleLocation                      
+                            this.formatLocationName(purchase.location, purchase.aisleLocation)
                         ]);                    
                         grandQuantity += currentQuantity;
                     }
