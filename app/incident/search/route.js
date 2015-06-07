@@ -1,13 +1,13 @@
 import AbstractSearchRoute from 'hospitalrun/routes/abstract-search-route';
-import InventorySearch from 'hospitalrun/utils/inventory-search';
+import IncidentSearch from 'hospitalrun/utils/incident-search';
 export default AbstractSearchRoute.extend({
-    moduleName: 'inventory',
+    moduleName: 'incident',
     searchKeys: [        
-        'crossReference',
-        'description',
         'friendlyId',
-        'name'
+        'reportedBy',
+        'locationOfIncident',
+        'categoryName'
     ],
-    searchIndex: InventorySearch,
-    searchModel: 'inventory'
+    searchIndex: IncidentSearch,
+    searchModel: 'incident'
 });

@@ -26,7 +26,7 @@
             <div class="panel detail-section">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        General Information (All Fields are mandatory)
+                        General Information
                     </h3>
                 </div>
                 <div class="panel-body detail-section-content">
@@ -49,17 +49,18 @@
                                 content=incidentLocations 
                                 optionValuePath="content" 
                                 optionLabelPath="content"
+                                class="required"
                             }}
                         </div>
                     </div>
                     <div class="row">
-                        {{date-picker property="dateOfIncident" label="Date of Incident" class="col-xs-12 col-sm-6" format="l h:mm A" showTime=true}}
-                        {{em-input property="reportedTo" label="Incident Reported To (Full Name)" class="col-xs-12 col-sm-6"}}
+                        {{date-picker property="dateOfIncident" label="Date of Incident" class="col-xs-12 col-sm-6 required" format="l h:mm A" showTime=true}}
+                        {{em-input property="reportedTo" label="Incident Reported To (Full Name)" class="col-xs-12 col-sm-6 required"}}
                     </div>
                     <div class="row">
                         {{em-input property="witnessList" label="Witness (Full Name)" class="col-xs-12 col-sm-12"}}
                     </div>                        
-                    {{em-text label="Incident Description" property="incidentDescription" rows=3}}
+                    {{em-text label="Incident Description" property="incidentDescription" class="required" rows=3}}
                 </div>
             </div>
             <div class="panel detail-section">
@@ -70,11 +71,11 @@
                 </div>
                 <div class="panel-body detail-section-content">
                     <div class="row">
-                        {{em-select class="col-xs-12 col-sm-6" label="Category" prompt=" "
+                        {{em-select class="col-xs-12 col-sm-6 required" label="Category" prompt=" "
                             property="categoryName" content=incidentCategory selected=categoryName
                             optionValuePath="content.name" optionLabelPath="content.name"}}
                         
-                        {{em-select class="col-xs-12 col-sm-6" label="Choose an Item" prompt=" "
+                        {{em-select class="col-xs-12 col-sm-6 required" label="Choose an Item" prompt=" "
                             property="categoryItem" content=itemList
                              selected=categoryItem optionValuePath="content" optionLabelPath="content"}}
                     </div>
@@ -220,7 +221,7 @@
                         </div>
                         <table class="table">
                             <THEAD>
-                                <tr class="table-header">
+                                <tr class="table-header success">
                                     <th>Patient Factors</th>
                                     <th>Components</th>
                                 </tr>
@@ -248,7 +249,7 @@
                         </table>
                         <table class="table">
                                 <THEAD>
-                                    <tr class="table-header">
+                                    <tr class="table-header success">
                                         <th>Staff Factors</th>
                                         <th>Components</th>
                                     </tr>
@@ -276,7 +277,7 @@
                         </table>
                         <table class="table">
                             <THEAD>
-                                <tr class="table-header">
+                                <tr class="table-header success">
                                     <th>Task Factors</th>
                                     <th>Components</th>
                                 </tr>
@@ -304,7 +305,7 @@
                         </table>
                         <table class="table">
                             <THEAD>
-                                <tr class="table-header">
+                                <tr class="table-header success">
                                     <th>Communication Factors</th>
                                     <th>Components</th>
                                 </tr>
@@ -332,7 +333,7 @@
                         </table>
                         <table class="table">
                             <THEAD>
-                                <tr class="table-header">
+                                <tr class="table-header success">
                                     <th>Equipment Factors</th>
                                     <th>Components</th>
                                 </tr>
@@ -360,7 +361,7 @@
                         </table>
                         <table class="table">
                             <THEAD>
-                                <tr class="table-header">
+                                <tr class="table-header success">
                                     <th>Work Environment Factors</th>
                                     <th>Components</th>
                                 </tr>
@@ -388,7 +389,7 @@
                         </table>
                         <table class="table">
                             <THEAD>
-                                <tr class="table-header">
+                                <tr class="table-header success">
                                     <th>Organisational Factors</th>
                                     <th>Components</th>
                                 </tr>
@@ -416,7 +417,7 @@
                         </table>
                         <table class="table">
                             <THEAD>
-                                <tr class="table-header">
+                                <tr class="table-header success">
                                     <th>Education and Training Factors</th>
                                     <th>Components</th>
                                 </tr>
@@ -444,7 +445,7 @@
                         </table>
                         <table class="table">
                             <THEAD>
-                                <tr class="table-header">
+                                <tr class="table-header success">
                                     <th>Team Factors Factors</th>
                                     <th>Components</th>
                                 </tr>

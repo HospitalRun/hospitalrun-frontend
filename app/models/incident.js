@@ -60,9 +60,6 @@ export default AbstractModel.extend({
         reportedTo: {
             presence: true
         },
-        witnessList: {
-            presence: true
-        },
         incidentDescription: {
             presence: true
         },

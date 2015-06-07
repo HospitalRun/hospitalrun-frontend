@@ -297,18 +297,6 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
             return incidentLocationsList;
         }
     }.property('incidentLocationsList', 'defaultIncidentLocations'),
-
-    cancelAction: 'returnToIncident',
-	/*cancelAction: function() {
-        var returnTo = this.get('returnTo');
-        if (Ember.isEmpty(returnTo)) {
-            return this._super();
-        } else {
-            return 'returnTo';
-        }
-    }.property('returnTo'),*/
-	
-    //cancelAction: 'incident.index',
     
     newIncident: false,
 
@@ -644,7 +632,6 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
             this.send('openModal', 'incident.reviewer.edit', reviewer);
         },
 
-
         //Investigating Finding Functions
 
         addInvestigationFinding: function(newInvestigationFinding) {
@@ -699,8 +686,6 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         generateSummary: function(){
           this.set('statusOfIncident', 'Closed');
           this.set('showSummary', true);
-        }
-
-        
+        }        
     }
 });
