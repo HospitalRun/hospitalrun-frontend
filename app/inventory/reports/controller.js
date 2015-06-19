@@ -60,7 +60,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             format: '_numberFormat'
         }, 
         price: {
-            label: 'Price Per Unit',
+            label: 'Sale Price Per Unit',
             include: false,
             property: 'inventoryItem.price',
             format: '_numberFormat'
