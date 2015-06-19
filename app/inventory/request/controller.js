@@ -34,7 +34,7 @@ export default AbstractEditController.extend(InventorySelection, {
         property: 'deliveryLocation', //Corresponding property on model that potentially contains a new value to add to the list
         id: 'warehouse_list' //Id of the lookup list to update
     }],
-    
+
     canFulfill: function() {
         var requestedItems = this.get('requestedItems');
         return Ember.isEmpty(requestedItems) && this.currentUserCan('fulfill_inventory');
@@ -51,6 +51,15 @@ export default AbstractEditController.extend(InventorySelection, {
         var status = this.get('status');
         return (status === 'Requested');
     }.property('status'),
+    
+    quantityLabel: function() {
+        var selectedInventoryItem = this.get('selectedInventoryItem');
+        if (Ember.isEmpty(selectedInventoryItem)) {
+            return 'Quantity';
+        } else {
+            return 'Quantity (%@)'.fmt(selectedInventoryItem.distributionUnit);
+        }
+    }.property('selectedInventoryItem'),
     
     showRequestedItems: function() {
         var requestedItems = this.get('requestedItems');

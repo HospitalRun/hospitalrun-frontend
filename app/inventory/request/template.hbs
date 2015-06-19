@@ -21,7 +21,7 @@
                 content=inventoryList 
                 selection=selectedInventoryItem 
             }}
-            {{em-input property="quantity" label="Quantity" class="col-sm-3"}}
+            {{em-input property="quantity" label=quantityLabel class="col-sm-3"}}
             <div class="form-group col-sm-1">
                 <label class="control-label"></label>
                 <h4 class="form-control-static">                    
@@ -43,8 +43,9 @@
                             {{item.name}}
                         </td>
                         <td class="col-xs-1">
-                            <div class="form-group">
+                            <div class="input-group">                            
                                 {{input class="form-control" value=quantity }}
+                                <div class="input-group-addon">{{item.distributionUnit}}</div>
                             </div>
                         </td>
                         <td>
