@@ -310,13 +310,23 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     
     beforeUpdate: function() {
         if (this.get('isNew')) {
-            var type = this.get('type');
+            var model = this.get('model'),
+                type = this.get('type');                
             return new Ember.RSVP.Promise(function(resolve, reject){
-                this.store.find('sequence', 'inventory_'+type).then(function(sequence) {
-                    this._completeBeforeUpdate(sequence, resolve, reject);
-                }.bind(this), function() {
-                    this._findSequence(type, resolve, reject);
-                }.bind(this));
+                model.validate().then(function() {
+                    if (model.get('isValid')) {
+                        this.store.find('sequence', 'inventory_'+type).then(function(sequence) {
+                            this._completeBeforeUpdate(sequence, resolve, reject);
+                        }.bind(this), function() {
+                            this._findSequence(type, resolve, reject);
+                        }.bind(this));                        
+                    } else {
+                        this.send('showDisabledDialog');
+                        reject('invalid model');                        
+                    }
+                }.bind(this)).catch(function() {
+                    this.send('showDisabledDialog');
+                }.bind(this));                
             }.bind(this));
         } else {
             return Ember.RSVP.Promise.resolve();
