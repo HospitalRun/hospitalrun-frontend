@@ -13,6 +13,5 @@ export default AbstractPagedController.extend(UserSession, {
         return this.currentUserCan('delete_inventory_item');
     }.property(),
     
-    sortProperties: ['name', 'type'],
     startKey: []
 });
