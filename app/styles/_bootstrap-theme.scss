@@ -288,11 +288,11 @@ fieldset[disabled] .btn-primary.active {
 }
 
 .alert-info {
-    background-image: -webkit-linear-gradient(top, #d9edf7 0%, #b9def0 100%);
-    background-image: linear-gradient(to bottom, #d9edf7 0%, #b9def0 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd9edf7', endColorstr='#ffb9def0', GradientType=0);
-    background-repeat: repeat-x;
-    border-color: #9acfea;
+    background: $navy_light;
+    box-shadow: none;
+    text-shadow: none;
+    border: none;
+    color: $navy_mid2;
 }
 
 .alert-warning {

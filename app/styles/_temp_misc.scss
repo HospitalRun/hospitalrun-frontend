@@ -47,8 +47,8 @@ h3.panel-title {
 }
 
 .table-header {
-    background-color: #e9f3ff;
-    color: #8794a4;
+    background-color: $navy_light;
+    color: rgba($navy_drk2, .7);
 }
 
 .twitter-typeahead {
@@ -128,7 +128,7 @@ h3.panel-title {
 }
 
 .panel-primary {
-    color: $navy;
+    color: $navy_mid2;
     background-color: white;
     border: none;
 

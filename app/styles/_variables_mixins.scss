@@ -10,6 +10,7 @@ $navy_mid3:             #3A4D63;
 $navy_drk:              #253649;
 $navy_drk2:             #263648;
 $navy_drkest:           #1E2C3A;
+$navy_light:            #d2dae3;
 $navy_text:             #97afc8;
 $blue_light:            #dbebff;
 $blue_light2:           #e9f3ff;
@@ -21,7 +22,7 @@ $red_light:             rgba($red,.3);
 $gray_light:            #d9d9d9;
 $gray:                  rgba($navy,.65);
 $sidebar_icon:          #92a7bc;
-$sidebar_icon_lighter:  #d2dae3;
+$sidebar_icon_lighter:  $navy_light;
 $sidebar_sublink_text:  #c2d2e3;
 $view_sub_nav:          #6784A2;
 
