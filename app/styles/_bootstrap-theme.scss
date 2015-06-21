@@ -288,11 +288,11 @@ fieldset[disabled] .btn-primary.active {
 }
 
 .alert-info {
-    background: $navy_light;
+    background: $alert_yellow;
     box-shadow: none;
     text-shadow: none;
     border: none;
-    color: $navy_mid2;
+    color: $alert_yellow_drk;
 }
 
 .alert-warning {

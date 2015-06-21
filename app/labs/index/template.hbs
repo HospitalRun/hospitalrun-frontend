@@ -29,10 +29,6 @@
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No labs found.</em>
-        {{#if canAdd}}
-            <em>Create a new record?</em>
-            <button class="btn btn-primary" {{action 'newItem'}}>New Lab</button>
-        {{/if}}
+        <p>No labs found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
     </div>
 {{/if}}

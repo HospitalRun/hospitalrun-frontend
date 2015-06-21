@@ -6,7 +6,7 @@
             <th>Status</th>
             <th>Patient</th>
             <th>Total</th>
-            <th>Balance Due</th>            
+            <th>Balance Due</th>
             {{#if showActions}}
                 <th>Actions</th>
             {{/if}}
@@ -20,7 +20,7 @@
                 <td>{{total}}</td>
                 <td>{{remainingBalance}}</td>
                 <td>
-                    {{#if showActions}} 
+                    {{#if showActions}}
                         {{#if parentController.canAddPayment}}
                             <button class="btn btn-default neutral" {{action 'showAddPayment' this  bubbles=false }}>
                                 <span class="octicon octicon-plus"></span> Add Payment
@@ -34,11 +34,11 @@
                         {{/if}}
                     {{/if}}
                 </td>
-            </tr>            
+            </tr>
         {{/each}}
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No invoices found.  Create an invoice?</em> <button class="btn btn-primary" {{action 'newItem'}}>New Invoice</button>
+        <p>No invoices found. <a href="#" {{action 'newItem'}}>Create an invoice?</a></p>
     </div>
 {{/if}}

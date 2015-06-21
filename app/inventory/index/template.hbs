@@ -27,10 +27,6 @@
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No requests found.</em> 
-        {{#if canAdd}}
-            <em>Create a new request?</em> 
-            <button class="btn btn-primary" {{action 'newRequest'}}>New Request</button>
-        {{/if}}
+        <p>No requests found. {{#if canAdd}}<a href="#" {{action 'newRequest'}}>Create a new request?</a>{{/if}}</p>
     </div>
 {{/if}}

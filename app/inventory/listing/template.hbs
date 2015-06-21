@@ -38,10 +38,6 @@
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No items found.</em>  
-        {{#if canAddItem}}
-            <em>Create a new record?</em>
-            <button class="btn btn-primary" {{action 'newItem'}}>New Item</button>
-        {{/if}}
+        <p>No items found. {{#if canAddItem}} <a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
     </div>
 {{/if}}

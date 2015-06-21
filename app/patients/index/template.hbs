@@ -11,7 +11,7 @@
                 <th>Actions</th>
             {{/if}}
         </tr>
-        
+
         {{#each itemController='patients/patient-controller'}}
             <tr {{action 'editItem' this}}>
                 <td>{{displayPatientId}}</td>
@@ -30,21 +30,17 @@
                         {{/if}}
                         {{#if canDischargePatient}}
                             <button class="btn btn-default info" {{action 'dischargePatient' this  bubbles=false }}><span class="glyphicon glyphicon-log-out"></span> Discharge</button>
-                        {{/if}}                        
+                        {{/if}}
                         {{#if canDelete}}
                             <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                         {{/if}}
                     </td>
                 {{/if}}
             </tr>
-        {{/each}}        
+        {{/each}}
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No patients found.</em>
-        {{#if canAdd}}
-            <em>Create a new patient record?</em>
-            <button class="btn btn-primary on-white" {{action 'newItem'}}>New Patient</button>
-        {{/if}}
+        <p>No patients found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new patient record?</a>{{/if}}</p>
     </div>
 {{/if}}
