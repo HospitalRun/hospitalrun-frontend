@@ -1,0 +1,51 @@
+<div class="panel panel-success" {{action 'linkToPatient'}}>    
+    <div class="panel-body">
+        <div class="row">        
+            <div class="form-group col-sm-3">
+                <label class="control-label">Id</label> {{patient.displayPatientId}}
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="control-label">Name</label> {{patient.displayName}}
+            </div>
+            <div class="form-group col-sm-2">
+                <label class="control-label">Gender</label> {{patient.gender}}
+            </div>
+            <div class="form-group col-sm-3">
+                <label class="control-label">Age</label> {{patient.age}}
+            </div>
+        </div>
+        {{#if havePrimaryDiagnoses}}
+            <div class="row">        
+                <div class="form-group col-sm-12">
+                    <label class="control-label">Primary Diagnoses</label> 
+                    {{#each primaryDiagnoses}}
+                        {{#unless first}}, {{/unless}}
+                        {{description}} (<strong>{{date-format date}}</strong>)
+                    {{/each}}
+                </div>
+            </div>
+        {{/if}}
+        {{#if haveSecondaryDiagnoses}}
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    <label class="control-label">Secondary Diagnoses</label>
+                    {{#each secondaryDiagnoses}}
+                        {{#unless first}}, {{/unless}}
+                        {{description}} (<strong>{{date-format date}}</strong>)
+                    {{/each}}                
+                </div>
+            </div>
+        {{/if}}
+        {{#if haveProcedures}}
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    <label class="control-label">Procedures</label>
+                    {{#each patientProcedures}}
+                        {{#unless first}}, {{/unless}}
+                        {{description}} (<strong>{{date-format procedureDate}}</strong>)
+                    {{/each}}                
+                </div>
+            </div>
+        {{/if}}                
+    </div>
+</div>

@@ -1,13 +1,11 @@
 {{#em-form model=this submit_button=false }}
+    
+    {{#if selectPatient}}
+        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
+    {{else}}
+        {{patient-summary patient=patient returnTo='labs.edit' returnToContext=id disablePatientLink=isNew }}
+    {{/if}}
     <div class="row">
-        {{#if selectPatient}}
-            {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-3 required"}}
-        {{else}}
-            <div class="form-group col-xs-3">
-                <label>Patient</label>
-                <p class="form-control-static">{{patient.displayName}}</p>
-            </div>
-        {{/if}}
         {{#if isNew}}
             {{em-select class="col-xs-3 required" label="Visit" 
                 property="visit" content=patientVisits
@@ -21,22 +19,23 @@
                 <p class="form-control-static">{{visit.visitDate}}</p>
             </div>
         {{/if}}
+
+        {{#if isNew}}
+            {{select-or-typeahead property="labTypeName" 
+                label="Lab Type" list=objectTypeList
+                selection=selectedLabType
+                optionLabelPath='content.name'
+                typeAheadType='pricing'
+                class="required col-xs-6"
+                prompt=" "
+            }}
+        {{else}}
+            <div class="form-group col-xs-6">
+                <label>Lab Type</label>
+                <p class="form-control-static">{{labType.name}}</p>
+            </div>
+        {{/if}}
     </div>
-    {{#if isNew}}
-        {{select-or-typeahead property="labTypeName" 
-            label="Lab Type" list=objectTypeList
-            selection=selectedLabType
-            optionLabelPath='content.name'
-            typeAheadType='pricing'
-            class="required"
-            prompt=" "
-        }}
-    {{else}}
-        <div class="form-group">
-            <label>Lab Type</label>
-            <p class="form-control-static">{{labType.name}}</p>
-        </div>
-    {{/if}}
     {{#if canComplete}}
         {{em-input property="result" label="Result"}}
     {{/if}}

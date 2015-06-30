@@ -153,22 +153,6 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         property: 'status',
         id: 'patient_status_list'
     }],
-
-    havePrimaryDiagnoses: function() {
-        var primaryDiagnosesLength = this.get('primaryDiagnoses.length');
-        return (primaryDiagnosesLength > 0);
-    }.property('primaryDiagnoses.length'),
-    
-    haveProcedures: function() {
-        var proceduresLength = this.get('patientProcedures.length');
-        return (proceduresLength > 0);
-    }.property('patientProcedures.length'),
-    
-    haveSecondaryDiagnoses: function() {
-        var secondaryDiagnosesLength = this.get('secondaryDiagnoses.length');
-        return (secondaryDiagnosesLength > 0);
-    }.property('secondaryDiagnoses.length'),
-    
     
     patientImaging: function() {
         return this._getVisitCollection('imaging');
@@ -185,41 +169,6 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
     patientProcedures: function() {
         return this._getVisitCollection('procedures');
     }.property('visits.@each.procedures'),
-
-    primaryDiagnoses: function() {
-        var diagnosesList = [],
-            visits = this.get('visits');        
-        if (!Ember.isEmpty(visits)) {
-            visits.forEach(function(visit) {
-                this._addDiagnosisToList(visit.get('primaryDiagnosis'), diagnosesList, visit);
-                this._addDiagnosisToList(visit.get('primaryBillingDiagnosis'), diagnosesList, visit);
-            }.bind(this));
-        }
-        var firstDiagnosis = diagnosesList.get('firstObject');
-        if (!Ember.isEmpty(firstDiagnosis)) {
-            firstDiagnosis.first = true;
-        }
-        return diagnosesList;
-    }.property('visits.@each'),
-
-    secondaryDiagnoses: function() {
-        var diagnosesList = [],
-            visits = this.get('visits');        
-        if (!Ember.isEmpty(visits)) {
-            visits.forEach(function(visit) {                
-                if (!Ember.isEmpty(visit.get('additionalDiagnoses'))) {
-                    diagnosesList.addObjects(visit.get('additionalDiagnoses'));
-                }
-            });
-        }
-        
-        var firstDiagnosis = diagnosesList.get('firstObject');
-        if (!Ember.isEmpty(firstDiagnosis)) {
-            firstDiagnosis.first = true;
-        }
-        return diagnosesList;
-    }.property('visits.@each'),    
-
     
     showExpenseTotal: true,
     
@@ -538,17 +487,6 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
             this.send('closeModal');
         }
         
-    },
-    
-    _addDiagnosisToList: function(diagnosis, diagnosesList, visit) {
-        if (!Ember.isEmpty(diagnosis)) {            
-            if (Ember.isEmpty(diagnosesList.findBy('description', diagnosis))) {
-                diagnosesList.addObject({
-                    date: visit.get('startDate'),
-                    description: diagnosis
-                });
-            }
-        }
     },
     
     _getVisitCollection: function(name) {
