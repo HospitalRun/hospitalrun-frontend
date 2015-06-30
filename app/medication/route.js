@@ -23,9 +23,6 @@ export default AbstractModuleRoute.extend({
         name: 'expenseAccountList',
         findArgs: ['lookup','expense_account_list']
     }, {
-        name: 'medicationFrequencyList',
-        findArgs: ['lookup','medication_frequency']
-    }, {
         name: 'warehouseList',
         findArgs: ['lookup','warehouse_list']
     }],

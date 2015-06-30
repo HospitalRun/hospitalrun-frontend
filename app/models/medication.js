@@ -4,13 +4,10 @@ import Ember from "ember";
 import PatientValidation from "hospitalrun/utils/patient-validation";
 
 export default AbstractModel.extend(DateFormat, {
-    dose: DS.attr('string'),
-    duration: DS.attr('number'),
-    durationType: DS.attr('string'),
-    frequency: DS.attr('string'),
     inventoryItem: DS.belongsTo('inventory'),
     notes: DS.attr('string'),
     patient: DS.belongsTo('patient'),
+    prescription: DS.attr('string'),
     prescriptionDate: DS.attr('date'),
     quantity: DS.attr('number'),
     refills: DS.attr('number'),
@@ -18,15 +15,12 @@ export default AbstractModel.extend(DateFormat, {
     requestedBy: DS.attr('string'),
     status: DS.attr('string'),
     visit: DS.belongsTo('visit'),
-        
-    prescription: function() {
-        var dose = this.get('dose'),
-            duration = this.get('duration'),
-            durationType = this.get('durationType'),
-            frequency = this.get('frequency');
-        return '%@ %@ for %@ %@'.fmt(dose, frequency, duration, durationType);
-    }.property('dose','duration','durationType', 'frequency'),
     
+    isRequested: function() {
+        var status = this.get('status');
+        return (status === 'Requested');
+    }.property('status'),
+            
     prescriptionDateAsTime: function() {        
         return this.dateToTime(this.get('prescriptionDate'));
     }.property('prescriptionDate'),
@@ -36,22 +30,26 @@ export default AbstractModel.extend(DateFormat, {
     }.property('requestedDate'),
     
     validations: {
-        dose: {
-            presence: true
+        prescription: {
+            acceptance: {
+                accept: true,
+                if: function(object) {
+                    if (!object.get('isDirty')) {
+                        return false;
+                    }
+                    var prescription = object.get('prescription'),
+                        quantity = object.get('quantity');
+                    if (Ember.isEmpty(prescription) && Ember.isEmpty(quantity)) {
+                        //force validation to fail
+                        return true;
+                    } else {
+                        return false;
+                    }                    
+                },
+                message: 'Please enter a prescription or a quantity'
+            }
         },
-        
-        duration: {
-            numericality: true
-        },
-
-        durationType: {
-            presence: true
-        },
-        
-        frequency: {
-            presence: true            
-        },
-        
+                
         inventoryItemTypeAhead: {
             acceptance: {
                 accept: true,
@@ -86,6 +84,12 @@ export default AbstractModel.extend(DateFormat, {
         quantity: {
             numericality: {
                 allowBlank: true
+            },
+            presence: {
+                if: function(object) {
+                    var isFulfilling = object.get('isFulfilling');
+                    return isFulfilling;
+                }
             }
         },
         

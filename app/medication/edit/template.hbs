@@ -28,22 +28,12 @@
     {{else}}
         {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required"}}
     {{/if}}
-    <div class="row">
-        {{em-input property="dose" label="Dose" class="col-xs-3 required"}}
-        {{select-or-typeahead property="frequency" label="Frequency" class="col-xs-3 required" list=medicationFrequencyList selection=frequency }}
-    </div>        
-    <div class="row">
-        {{em-input property="duration" label="Duration" class="col-xs-3 required"}}
-        {{em-select class="col-xs-3" label=" " 
-            property="durationType" content=durationTypes
-            optionValuePath="content" optionLabelPath="content"
-        }}
-    </div>
+    {{em-text property="prescription" label="Prescription" rows="3" class="required"}}
     <div class="row">
         {{date-picker property="prescriptionDate" label="Prescription Date" class="col-sm-4"}}
     </div>
     <div class="row">
-        {{em-input property="quantity" label="Quantity Requested" class="col-xs-3"}}          
+        {{em-input property="quantity" label="Quantity Requested" class=quantityClass }}          
         {{em-input property="refills" label="Refills" class="col-xs-3"}}
     </div>
     {{em-text property="notes" label="Prescription Notes" rows="3"}}
