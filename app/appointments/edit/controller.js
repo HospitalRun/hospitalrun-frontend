@@ -1,10 +1,9 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from "ember";
+import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
-import ReturnTo from 'hospitalrun/mixins/return-to';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-export default AbstractEditController.extend(PatientSubmodule, ReturnTo, VisitTypes, {
+export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
     needs: ['appointments','pouchdb'],
 
     dateFormat: 'l h:mm A',
