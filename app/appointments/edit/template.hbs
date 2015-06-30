@@ -49,6 +49,10 @@
             label="Location" list=locationList
             selection=location
         }}
+        {{em-select class="col-sm-3" property="status"
+            label="Status" content=appointmentStatuses
+            optionValuePath="content" optionLabelPath="content"
+        }}
     </div>
     {{em-text label="Notes" property="notes" rows=3 }}    
 {{/em-form}}

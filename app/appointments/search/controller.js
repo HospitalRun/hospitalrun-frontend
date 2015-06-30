@@ -12,7 +12,7 @@ export default AppointmentIndexController.extend({
         this.set('previousStartKey');
         this.set('previousStartKeys',[]);
         if (!Ember.isEmpty(startingDate)) {        
-            this.set('startKey', [startingDate.getTime(),,]);
+            this.set('startKey', [startingDate.getTime(),null,null]);
         }
     }.observes('startingDate')
 });

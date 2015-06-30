@@ -376,6 +376,7 @@
                                 <th>Examiner</th>
                                 <th>Location</th>
                                 <th>Type</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                             {{#with this as patientController}}
@@ -385,6 +386,7 @@
                                         <td>{{provider}}</td>
                                         <td>{{location}}</td>
                                         <td>{{appointmentType}}</td>
+                                        <td>{{displayStatus}}</td>
                                         <td>
                                             {{#if patientController.canAddAppointment}}
                                                 <button type="button" class="btn btn-default neutral" {{action "editAppointment" this}}>Edit</button>
