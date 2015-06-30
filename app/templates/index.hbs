@@ -80,10 +80,12 @@
                             <span class="octicon octicon-plus"></span>
                         {{/link-to}}
                     {{/if}}
-                    {{#link-to 'patients.reports' class="sub-section-link"}}
-                        Reports
-                        <span class="octicon octicon-chevron-right"></span>
-                    {{/link-to}}
+                    {{#if userCan_patient_reports}}
+                        {{#link-to 'patients.reports' class="sub-section-link"}}
+                            Reports
+                            <span class="octicon octicon-chevron-right"></span>
+                        {{/link-to}}
+                    {{/if}}
                 </nav>
             </div>
         {{/if}}
