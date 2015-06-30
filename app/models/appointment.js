@@ -11,6 +11,12 @@ export default AbstractModel.extend({
     startDate: DS.attr('date'),
     endDate: DS.attr('date'),
     notes: DS.attr('string'),
+    
+    appointmentDate: function() {
+        var startDate = this.get('startDate');
+        return startDate;
+    }.property('startDate'),
+    
     validations: {
         appointmentDate: {
             presence: {
