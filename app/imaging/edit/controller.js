@@ -74,6 +74,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
             alertMessage = 'The imaging request has been saved.';
         }
         this.saveVisitIfNeeded(alertTitle, alertMessage);
+        this.set('selectPatient', false);
     },
     
     beforeUpdate: function() {

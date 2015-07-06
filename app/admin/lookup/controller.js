@@ -106,12 +106,6 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
             pricing:  'type'
         }
     }, {
-        name: 'Medication Frequency',
-        value: 'medication_frequency',
-        models: {
-            medication: 'frequency'
-        }        
-    }, {
         name: 'Patient Status List',
         value: 'patient_status_list', 
         models: {

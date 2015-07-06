@@ -15,8 +15,13 @@ export default Ember.Component.extend({
     }.property('calculated'),
     
     targetUnitChanged: function() {
-        var selectedUnit = this.get('quantityGroups.firstObject.unit');
-        this.updateCurrentUnit(selectedUnit, 0);
+        var targetUnit = this.get('targetUnit'),
+            selectedUnit = this.get('quantityGroups.firstObject.unit');
+        if (Ember.isEmpty(selectedUnit)) {
+            this.set('quantityGroups.firstObject.unit', targetUnit);
+        } else {
+            this.updateCurrentUnit(selectedUnit, 0);
+        }
     }.observes('targetUnit'),
     
     _setup: function() {
@@ -40,8 +45,9 @@ export default Ember.Component.extend({
             lastObject = quantityGroups.get('lastObject'),
             targetUnit = this.get('targetUnit');
         haveQuantities = quantityGroups.every(function(item) {
-            var quantity = item.quantity;
-            return (!Ember.isEmpty(quantity) && !isNaN(quantity));
+            var quantity = item.quantity,
+                unit = item.unit;
+            return (!Ember.isEmpty(quantity) && !Ember.isEmpty(unit) && !isNaN(quantity));
         });
         if (haveQuantities && lastObject.unit === targetUnit) {
             var newValue = quantityGroups.reduce(function(previousValue, item) {

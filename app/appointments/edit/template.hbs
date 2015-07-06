@@ -2,10 +2,7 @@
     {{#if selectPatient}}
         {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
     {{else}}
-            <div class="form-group">
-                <label>Patient</label>
-                <p class="form-control-static">{{patient.displayName}}</p>
-            </div>
+        {{patient-summary patient=patient returnTo='appointments.edit' returnToContext=id disablePatientLink=isNew }}
     {{/if}}
     <div class="row">
         {{#if isAdmissionAppointment}}    
@@ -51,6 +48,10 @@
         {{select-or-typeahead class="col-sm-6 required" property="location"
             label="Location" list=locationList
             selection=location
+        }}
+        {{em-select class="col-sm-3" property="status"
+            label="Status" content=appointmentStatuses
+            optionValuePath="content" optionLabelPath="content"
         }}
     </div>
     {{em-text label="Notes" property="notes" rows=3 }}    

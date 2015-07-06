@@ -10,32 +10,26 @@ export default AbstractEditController.extend(InventorySelection, PatientSubmodul
     canFulfill: function() {
         return this.currentUserCan('fulfill_medication');
     }.property(),
-
-    durationTypes: [
-        'Days',
-        'Weeks'
-    ],
     
     isFulfilling: function() {
         var canFulfill = this.get('canFulfill'),
             isRequested = this.get('isRequested'),
-            fulfillRequest = this.get('shouldFulfillRequest');
-        return canFulfill && (isRequested || fulfillRequest);
+            fulfillRequest = this.get('shouldFulfillRequest'),
+            isFulfilling = canFulfill && (isRequested || fulfillRequest);
+        this.get('model').set('isFulfilling', isFulfilling);
+        return isFulfilling;
     }.property('canFulfill','isRequested', 'shouldFulfillRequest'),
-
-    isRequested: function() {
-        var status = this.get('status');
-        return (status === 'Requested');
-    }.property('status'),
-
-    lookupListsToUpdate: [{
-        name: 'medicationFrequencyList', //Name of property containing lookup list
-        property: 'frequency', //Corresponding property on model that potentially contains a new value to add to the list
-        id: 'medication_frequency' //Id of the lookup list to update
-    }],
+    
+    quantityClass: function() {
+        var returnClass = 'col-xs-3',
+            isFulfilling = this.get('isFulfilling');
+        if (isFulfilling) {
+            returnClass += ' required';
+        }
+        return returnClass;
+    }.property('isFulfilling'),
 
     medicationList: [],
-    medicationFrequencyList: Ember.computed.alias('controllers.medication.medicationFrequencyList'),
     updateCapability: 'add_medication',
 
     afterUpdate: function() {
@@ -50,17 +44,27 @@ export default AbstractEditController.extend(InventorySelection, PatientSubmodul
         if (isNew || isFulfilling) {
             return new Ember.RSVP.Promise(function(resolve, reject){
                 var newMedication = this.get('model');
-                if (isNew) {
-                    this.set('newMedication', true);
-                    this.set('status', 'Requested');
-                    this.set('requestedBy', newMedication.getUserName());
-                    this.set('requestedDate', new Date());
-                    this.addChildToVisit(newMedication, 'medication', 'Pharmacy').then(function() {        
-                        this.finishBeforeUpdate(isFulfilling,  resolve);
-                    }.bind(this), reject);
-                } else {
-                    this.finishBeforeUpdate(isFulfilling,  resolve);
-                }
+                newMedication.validate().then(function() {
+                    if (newMedication.get('isValid')) {
+                        if (isNew) {
+                            this.set('newMedication', true);
+                            this.set('status', 'Requested');
+                            this.set('requestedBy', newMedication.getUserName());
+                            this.set('requestedDate', new Date());
+                            this.addChildToVisit(newMedication, 'medication', 'Pharmacy').then(function() {        
+                                this.finishBeforeUpdate(isFulfilling,  resolve);
+                            }.bind(this), reject);
+                        } else {
+                            this.finishBeforeUpdate(isFulfilling,  resolve);
+                        }                        
+                    } else {
+                        this.send('showDisabledDialog');
+                        reject('invalid model');                        
+                    }
+                }.bind(this)).catch(function() {
+                    this.send('showDisabledDialog');
+                    reject('invalid model');                    
+                }.bind(this));
             }.bind(this));
         } else {
             return Ember.RSVP.resolve();

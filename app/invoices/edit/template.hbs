@@ -1,4 +1,7 @@
 {{#em-form model=this submit_button=false }}
+    {{#unless isNew}}
+        {{patient-summary patient=patient returnTo='invoices.edit' returnToContext=id disablePatientLink=isNew }}
+    {{/unless}}
     <div class="row">
         {{#unless isNew}}
             <div class="form-group col-xs-2">
@@ -16,10 +19,6 @@
                 prompt='Please select a visit'
             }}                
         {{else}}
-            <div class="form-group col-xs-3">
-                <label>Patient</label>
-                <p class="form-control-static">{{patient.displayName}}</p>
-            </div>
             <div class="form-group col-xs-3">
                 <label>Visit</label>
                 <p class="form-control-static">{{visit.visitDescription}}</p>

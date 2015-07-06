@@ -17,10 +17,6 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
         property: 'expenseAccount', //Corresponding property on model that potentially contains a new value to add to the list
         id: 'expense_account_list' //Id of the lookup list to update
     }, {
-        name: 'medicationFrequencyList', //Name of property containing lookup list
-        property: 'frequency', //Corresponding property on model that potentially contains a new value to add to the list
-        id: 'medication_frequency' //Id of the lookup list to update
-    }, {
         name: 'warehouseList', //Name of property containing lookup list
         property: 'location', //Corresponding property on model that potentially contains a new value to add to the list
         id: 'warehouse_list' //Id of the lookup list to update
@@ -28,7 +24,6 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
 
     aisleLocationList: Ember.computed.alias('controllers.medication.aisleLocationList'),
     expenseAccountList: Ember.computed.alias('controllers.medication.expenseAccountList'),
-    medicationFrequencyList: Ember.computed.alias('controllers.medication.medicationFrequencyList'),
     warehouseList: Ember.computed.alias('controllers.medication.warehouseList'), 
     updateCapability: 'add_medication',
     

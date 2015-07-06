@@ -1,56 +1,6 @@
 {{#em-form model=this submit_button=false bubbles=false }}
     {{#unless isNewOrDeleted}}
-        <div class="panel panel-success">
-            <div class="panel-body">
-                <div class="row">        
-                    <div class="form-group col-sm-3">
-                        <label class="control-label">Id</label> {{displayPatientId}}
-                    </div>
-                    <div class="form-group col-sm-4">
-                        <label class="control-label">Name</label> {{displayName}}
-                    </div>
-                    <div class="form-group col-sm-2">
-                        <label class="control-label">Gender</label> {{gender}}
-                    </div>
-                    <div class="form-group col-sm-3">
-                        <label class="control-label">Age</label> {{age}}
-                    </div>
-                </div>
-                {{#if havePrimaryDiagnoses}}
-                    <div class="row">        
-                        <div class="form-group col-sm-12">
-                            <label class="control-label">Primary Diagnoses</label> 
-                            {{#each primaryDiagnoses}}
-                                {{#unless first}}, {{/unless}}
-                                {{description}} (<strong>{{date-format date}}</strong>)
-                            {{/each}}
-                        </div>
-                    </div>
-                {{/if}}
-                {{#if haveSecondaryDiagnoses}}
-                    <div class="row">
-                        <div class="form-group col-sm-12">
-                            <label class="control-label">Secondary Diagnoses</label>
-                            {{#each secondaryDiagnoses}}
-                                {{#unless first}}, {{/unless}}
-                                {{description}} (<strong>{{date-format date}}</strong>)
-                            {{/each}}                
-                        </div>
-                    </div>
-                {{/if}}
-                {{#if haveProcedures}}
-                    <div class="row">
-                        <div class="form-group col-sm-12">
-                            <label class="control-label">Procedures</label>
-                            {{#each patientProcedures}}
-                                {{#unless first}}, {{/unless}}
-                                {{description}} (<strong>{{date-format procedureDate}}</strong>)
-                            {{/each}}                
-                        </div>
-                    </div>
-                {{/if}}                
-            </div>
-        </div>
+        {{patient-summary patient=model visits=visits patientProcedures=patientProcedures disablePatientLink=true }}
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class="active" ><a class="active" href="#general" role="tab" data-toggle="pill">General</a></li>
             <li role="presentation"><a href="#photos" role="tab" data-toggle="pill">Photos</a></li>            
@@ -426,6 +376,7 @@
                                 <th>Examiner</th>
                                 <th>Location</th>
                                 <th>Type</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                             {{#with this as patientController}}
@@ -435,6 +386,7 @@
                                         <td>{{provider}}</td>
                                         <td>{{location}}</td>
                                         <td>{{appointmentType}}</td>
+                                        <td>{{displayStatus}}</td>
                                         <td>
                                             {{#if patientController.canAddAppointment}}
                                                 <button type="button" class="btn btn-default neutral" {{action "editAppointment" this}}>Edit</button>

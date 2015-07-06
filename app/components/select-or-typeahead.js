@@ -9,6 +9,7 @@ export default Ember.Component.extend({
     optionLabelPath: 'content',
     optionValuePath: 'content',
     property: null,
+    prompt: ' ',
     selection: null,
     setOnBlur: true,
     typeAheadType: null,

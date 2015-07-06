@@ -1,12 +1,15 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from "ember";
+import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
-import ReturnTo from 'hospitalrun/mixins/return-to';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-export default AbstractEditController.extend(PatientSubmodule, ReturnTo, VisitTypes, {
+export default AbstractEditController.extend(PatientSubmodule, VisitTypes, {
     needs: ['appointments','pouchdb'],
-
+    
+    appointmentStatuses: [
+        'Scheduled',
+        'Canceled'
+    ],
     dateFormat: 'l h:mm A',
     findPatientVisits: false,
     
@@ -102,6 +105,11 @@ export default AbstractEditController.extend(PatientSubmodule, ReturnTo, VisitTy
         }
     }.observes('allDay'),
     
+    beforeUpdate: function() {
+        this._updateAppointmentDates();
+        return Ember.RSVP.Promise.resolve();
+    },  
+    
     endHourChanged: function() {
         this._updateDate('endHour', 'endDate');
     }.observes('endHour'),
@@ -114,20 +122,7 @@ export default AbstractEditController.extend(PatientSubmodule, ReturnTo, VisitTy
         var endDateError = this.get('errors.endDate');
         return (endDateError.length > 0);
     }.property('errors.endDate'),
-    
-    appointmentDateChanged: function() {
-        var allDay = this.get('allDay'),            
-            isAdmissionAppointment = this.get('isAdmissionAppointment'), 
-            appointmentDate = this.get('appointmentDate');
-        if (!isAdmissionAppointment) {
-            this.set('endDate', appointmentDate);
-            this.set('startDate', appointmentDate);
-            if (!allDay) {
-                this._updateAllTimes();
-            }
-        }
-    }.observes('appointmentType', 'allDay', 'appointmentDate'),
-    
+        
     startHourChanged: function() {
         this._updateDate('startHour', 'startDate');
     }.observes('startHour'),
@@ -141,6 +136,19 @@ export default AbstractEditController.extend(PatientSubmodule, ReturnTo, VisitTy
         this.endMinuteChanged();
         this.startMinuteChanged();
         this.startHourChanged();
+    },
+    
+    _updateAppointmentDates: function() {
+        var allDay = this.get('allDay'),            
+            isAdmissionAppointment = this.get('isAdmissionAppointment'), 
+            appointmentDate = this.get('appointmentDate');
+        if (!isAdmissionAppointment) {
+            this.set('endDate', appointmentDate);
+            this.set('startDate', appointmentDate);
+            if (!allDay) {
+                this._updateAllTimes();
+            }
+        }
     },
     
     _updateDate: function(fieldName, dateFieldName) {

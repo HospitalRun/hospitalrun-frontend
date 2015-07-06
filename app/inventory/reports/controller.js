@@ -60,7 +60,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             format: '_numberFormat'
         }, 
         price: {
-            label: 'Price Per Unit',
+            label: 'Sale Price Per Unit',
             include: false,
             property: 'inventoryItem.price',
             format: '_numberFormat'
@@ -526,7 +526,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                             inventoryItem.name,
                             currentQuantity,
                             inventoryItem.distributionUnit,
-                            moment(expirationDate).format('l')                        
+                            moment(expirationDate).format('l'),
+                            this.formatLocationName(purchase.location, purchase.aisleLocation)
                         ]);                    
                         grandQuantity += currentQuantity;
                     }
@@ -535,7 +536,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                     '','','Total: ' + grandQuantity, '', ''
                 ]);
                 this.set('showReportResults', true);
-                this.set('reportHeaders', ['Id','Name','Current Quantity','Distribution Unit','Expiration Date']);
+                this.set('reportHeaders', ['Id','Name','Current Quantity','Distribution Unit','Expiration Date', 'Location']);
                 this._generateExport();
                 this._setReportTitle();
                 this.closeProgressModal();

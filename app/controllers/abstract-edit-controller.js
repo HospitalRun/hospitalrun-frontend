@@ -86,8 +86,14 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
         },
         
         returnTo: function() {
-            this._cancelUpdate();
-            this.transitionToRoute(this.get('returnTo'));
+            this._cancelUpdate();            
+            var returnTo = this.get('returnTo'),
+                returnToContext = this.get('returnToContext');
+            if (Ember.isEmpty(returnToContext)) {
+                this.transitionToRoute(returnTo);
+            } else {
+                this.transitionToRoute(returnTo, returnToContext);
+            }
         },        
         
         showDisabledDialog: function() {            

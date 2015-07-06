@@ -22,6 +22,9 @@ export default AbstractModel.extend({
     }.property('locations@each.lastModified'),
     
     validations: {
+        distributionUnit: {
+            presence: true,
+        },
         purchaseCost: {
             numericality: {
                 if: function(object) {
@@ -41,6 +44,14 @@ export default AbstractModel.extend({
                 allowBlank: true
             }
         },
+        originalQuantity: {
+            presence: {
+                if: function(object) {
+                    //Only validate on new items
+                    return (object.get('isNew'));
+                }
+            }            
+        },
         reorderPoint: {
             numericality: {
                 allowBlank: true
@@ -49,6 +60,14 @@ export default AbstractModel.extend({
         type: {
             presence: true,
         },
+        vendor: {
+            presence: {
+                if: function(object) {
+                    //Only validate on new items
+                    return (object.get('isNew'));
+                }
+            }          
+        }
     },
 
     updateQuantity: function() {

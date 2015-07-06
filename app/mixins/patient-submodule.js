@@ -4,6 +4,9 @@ export default Ember.Mixin.create(PatientVisits, {
     findPatientVisits: true, //Override to false if visits shouldn't be set when patient is selected.    
     
     actions: {
+        showPatient: function(patient) {
+            this.transitionToRoute('patients.edit', patient);
+        },        
         returnToPatient: function() {
             this.transitionToRoute('patients.edit', this.get('returnPatientId'));
         },        
