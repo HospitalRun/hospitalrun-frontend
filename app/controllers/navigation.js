@@ -1,26 +1,9 @@
 import Ember from "ember";
 import ProgressDialog from "hospitalrun/mixins/progress-dialog";
 import UserSession from "hospitalrun/mixins/user-session";
-export default Ember.Controller.extend(ProgressDialog, UserSession,{
-    indexLinks: [
-        'Appointments',
-        'Labs',
-        'Imaging',
-        'Inventory',
-        'Medication',
-        'Patients',
-        'Users'
-    ],
-
-    setupPermissions: function() {
-        var permissions = this.get('defaultCapabilities');
-        for(var capability in permissions) {
-            if (this.currentUserCan(capability)) {
-                this.set('userCan_'+capability, true);
-            }
-        }
-    }.on('init'),
-
+import Navigation from "hospitalrun/mixins/navigation";
+export default Ember.Controller.extend(ProgressDialog, UserSession, Navigation, {
+    
     needs: 'application',
     allowSearch: false,
     currentSearchText: null,
@@ -28,18 +11,6 @@ export default Ember.Controller.extend(ProgressDialog, UserSession,{
     progressTitle: 'Searching',
     searchRoute: null,
     syncStatus: '',
-
-    showInventory: function() {
-        return this.currentUserCan('inventory');
-    }.property('session.isAuthenticated'),
-
-    showPatients: function() {
-        return this.currentUserCan('patients');
-    }.property('session.isAuthenticated'),
-
-    showUsers: function() {
-        return this.currentUserCan('users');
-    }.property('session.isAuthenticated'),
 
     actions: {
         search: function() {
@@ -56,9 +27,8 @@ export default Ember.Controller.extend(ProgressDialog, UserSession,{
             }
         },
 
-        toggleContent: function(routeName) {
-             this.toggleProperty('isShowingContent');
-             this.transitionToRoute(routeName);
+        navAction: function(nav) {
+            this.transitionToRoute(nav.route);
         },
 
         toggleSettings: function() {

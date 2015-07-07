@@ -1,0 +1,31 @@
+import Ember from 'ember';
+import UserSession from "hospitalrun/mixins/user-session";
+
+export default Ember.Component.extend(UserSession, {
+    tagName: "div",
+    classNames: ["primary-nav-item"],
+    nav: null, 
+    
+    show: function() {
+        return this.currentUserCan(this.get("nav").capability);        
+    }.property("nav"),
+    
+    isShowing: false,
+    
+    _setup: function() {
+        let nav = this.get("nav");
+        nav.subnav.forEach(function(item) { 
+            item.show = this.currentUserCan(item.capability);
+        }.bind(this));        
+    }.on('init'),
+    
+    callNavAction: "navAction",
+    
+    actions: {
+        toggleContent: function() {
+            //debugger;
+            this.set('isShowing', !this.get('isShowing'));
+            this.sendAction('callNavAction', this.nav);
+        }
+    }
+});

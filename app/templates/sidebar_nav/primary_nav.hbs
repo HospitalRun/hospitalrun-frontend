@@ -1,19 +1,7 @@
 <div class="primary-nav">
-
-  {{partial "sidebar_nav/nav_inventory"}}
-
-  {{partial "sidebar_nav/nav_patients"}}
-
-  {{partial "sidebar_nav/nav_appointments"}}
-
-  {{partial "sidebar_nav/nav_labs"}}
-
-  {{partial "sidebar_nav/nav_imaging"}}
-
-  {{partial "sidebar_nav/nav_medication"}}
-
-  {{partial "sidebar_nav/nav_admin"}}
-
-  {{partial "sidebar_nav/nav_billing"}}
-
+{{#with this as parentController}}
+{{#each nav in navItems}}
+    {{nav-menu nav=nav session=parentController.session}}
+{{/each}}
+{{/with}}
 </div>
