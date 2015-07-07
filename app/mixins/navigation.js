@@ -222,21 +222,21 @@ export default Ember.Mixin.create({
             capability: 'admin',
             subnav: [
                 {
-                    title: 'Address Fields',
-                    iconClass: 'octicon-chevron-right',
-                    route: 'admin.address',
-                    capability: 'update_config'                    
-                },
-                {
                     title: 'Lookup Lists',
                     iconClass: 'octicon-chevron-right',
                     route: 'admin.lookup',
                     capability: 'update_config'                    
                 },
                 {
+                    title: 'Address Fields',
+                    iconClass: 'octicon-chevron-right',
+                    route: 'admin.address',
+                    capability: 'update_config'                    
+                },
+                {
                     title: 'Users',
                     iconClass: 'octicon-chevron-right',
-                    route: 'users.index',
+                    route: 'users',
                     capability: 'users'                    
                 },
                 {
