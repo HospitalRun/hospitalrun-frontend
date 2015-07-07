@@ -1,18 +1,55 @@
 import AppointmentIndexController from 'hospitalrun/appointments/index/controller';
+import AppointmentStatuses from 'hospitalrun/mixins/appointment-statuses';
 import Ember from 'ember';
-export default AppointmentIndexController.extend({
+import VisitTypes from 'hospitalrun/mixins/visit-types';
+export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes, {
+    needs: 'appointments',
+    appointmentType: null,
+    physicianList: Ember.computed.alias('controllers.appointments.physicianList'),
+    provider: null,
+    queryParams: ['appointmentType', 'provider', 'status', 'startKey', 'startDate'],
+    searchFields: ['selectedAppointmentType', 'selectedProvider', 'selectedStatus', 'selectedStartDate'],
+    selectedProvider: null,
+    selectedStartingDate: new Date(),
+    selectedStatus: null,
+    sortProperties: null,
     startKey: [],
-    startingDate: null,
-    _setup: function() {    
-        this.set('startingDate', new Date());
-    }.on('init'),
+    status: null,
+    visitTypesList: Ember.computed.alias('controllers.appointments.visitTypeList'),
 
-    startingDateChanged: function() {
-        var startingDate = this.get('startingDate');
-        this.set('previousStartKey');
-        this.set('previousStartKeys',[]);
-        if (!Ember.isEmpty(startingDate)) {        
-            this.set('startKey', [startingDate.getTime(),null,null]);
+    actions: {
+        search: function() {
+            var appointmentType = this.get('selectedAppointmentType'),
+                fieldsToSet = {
+                    startKey: [],
+                    previousStartKey: null,
+                    previousStartKeys: []
+                },
+                provider = this.get('selectedProvider'),
+                status = this.get('selectedStatus'),
+                startDate = this.get('selectedStartingDate');
+            
+            if (Ember.isEmpty(appointmentType)) {
+                fieldsToSet.appointmentType = null;
+            } else {
+                fieldsToSet.appointmentType = appointmentType;
+            }
+            if (Ember.isEmpty(provider)) {
+                fieldsToSet.provider = null;
+            } else {
+                fieldsToSet.provider = provider;
+            }
+            if (Ember.isEmpty(status)) {
+                fieldsToSet.status = null;
+            } else {
+                fieldsToSet.status = status;
+            }
+            if (!Ember.isEmpty(startDate)) {
+                fieldsToSet.startDate = startDate.getTime();
+            }
+            if (!Ember.isEmpty(fieldsToSet)) {
+                this.setProperties(fieldsToSet);
+            }
         }
-    }.observes('startingDate')
+    }
 });

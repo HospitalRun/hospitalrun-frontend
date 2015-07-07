@@ -1,6 +1,7 @@
 /* global emit */
 /* global req */
 /* global compareStrings */
+/* global getCompareDate */
 
 function createDesignDoc(item, rev) {
     var ddoc = {
@@ -21,8 +22,8 @@ function createDesignDoc(item, rev) {
     return ddoc;
 }
 
-function generateSortFunction(sortFunction) {
-    return 'function(head, req) {' +
+function generateSortFunction(sortFunction, includeCompareDate, filterFunction) {
+    var generatedFunction = 'function(head, req) {' +
         'function keysEqual(keyA, keyB) {' +
             'for (var i= 0; i < keyA.length; i++) {' +
                 'if (keyA[i] !== keyB[i]) {'+
@@ -30,8 +31,16 @@ function generateSortFunction(sortFunction) {
                 '}'+
             '}'+
             'return true;'+
-        '}'+
-        'function compareStrings(aString, bString) {'+
+        '}';
+    if (includeCompareDate) {
+        generatedFunction += 'function getCompareDate(dateString) {'+
+            'if (!dateString || dateString === "") {'+
+                'return 0;'+
+            '}'+
+            'return new Date(dateString).getTime();'+
+        '}';
+    }
+    generatedFunction += 'function compareStrings(aString, bString) {'+
             'if (!aString) {'+
                 'aString = "";'+
             '}'+
@@ -51,8 +60,11 @@ function generateSortFunction(sortFunction) {
             'startingPosition = 0;'+
         'while(row = getRow()) {'+
             'rows.push(row);'+
-        '}'+
-        'rows.sort('+sortFunction+');'+
+        '}';
+    if (filterFunction) {
+        generatedFunction += 'rows = rows.filter('+filterFunction+');';
+    }
+    generatedFunction += 'rows.sort('+sortFunction+');'+
         'if (req.query.sortStartKey) {'+
             'var startKey = JSON.parse(req.query.sortStartKey);'+
             'for (var i=0; i<rows.length; i++) {'+
@@ -72,6 +84,7 @@ function generateSortFunction(sortFunction) {
         '}'+
         'send(JSON.stringify({"rows" : rows}));'+
     '}';
+    return generatedFunction;
 }
 
 function updateDesignDoc(item, db, rev) {
@@ -113,7 +126,64 @@ var designDocs = [{
             }
         }
     },
-    version: 2
+    sort: generateSortFunction(function(a,b) {
+        function defaultStatus(value) {
+            if (!value || value === '') {
+                return 'Scheduled';
+            } else {
+                return value;
+            }
+        }
+        var sortBy = '';
+        if (req.query && req.query.sortKey) {
+            sortBy = req.query.sortKey;
+        }
+        switch(sortBy) {
+            case 'appointmentType':
+            case 'location':
+            case 'provider':
+                return compareStrings(a.doc[sortBy], b.doc[sortBy]);
+            case 'date': {
+                var startDiff = getCompareDate(a.doc.startDate) -getCompareDate(b.doc.startDate);
+                if (startDiff === 0) {
+                    return getCompareDate(a.doc.endDate) -getCompareDate(b.doc.endDate);
+                } else {
+                    return startDiff;
+                }
+                break;
+            }
+            case 'status': {
+                var aStatus = defaultStatus(a.doc[sortBy]),
+                    bStatus = defaultStatus(b.doc[sortBy]);
+                return compareStrings(aStatus, bStatus);
+            }
+            default: {
+                return 0; //Don't sort
+            }
+        }
+    }.toString(), true, function(row) {
+        var i, 
+            filterBy = null,
+            includeRow = true;
+        if (req.query && req.query.filterBy) {
+            filterBy = JSON.parse(req.query.filterBy);
+        }
+        if (!filterBy) {
+            return true;
+        }
+        for (i=0; i < filterBy.length; i++) {
+            var currentValue = row.doc[filterBy[i].name];
+            if (filterBy[i].name === 'status' && (!currentValue || currentValue === '')) {
+                currentValue = 'Scheduled';
+            }
+            if (currentValue !== filterBy[i].value) {
+                includeRow = false;
+                break;
+            }
+        }
+        return includeRow;
+    }.toString()),
+    version: 3
 }, {
     name: 'appointments_by_patient',
     function: function(doc) {
@@ -387,13 +457,6 @@ var designDocs = [{
         }
     },
     sort: generateSortFunction(function(a,b) {
-        function getCompareDate(dateString) {
-            if (!dateString || dateString === '') {
-                return 0;
-            }
-            return new Date(dateString).getTime();
-        }
-        
         var sortBy = '';
         if (req.query && req.query.sortKey) {
             sortBy = req.query.sortKey;
@@ -412,7 +475,7 @@ var designDocs = [{
                 return 0; //Don't sort
             }
         }
-    }.toString()),
+    }.toString(), true),
     version: 3
 }, {
     name: 'photo_by_patient',
