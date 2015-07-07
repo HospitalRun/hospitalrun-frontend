@@ -2,6 +2,7 @@ import Ember from "ember";
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 export default Ember.Route.extend(PouchDbMixin, ProgressDialog, Ember.SimpleAuth.AuthenticatedRouteMixin, {
+    filterParams: null,
     firstKey: null,
     hideNewButton: false,
     itemsPerPage: 25,
@@ -18,6 +19,22 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, Ember.SimpleAuth
         }
     }.property('modelName'),
     
+    _getFilterParams: function(params) {
+        var filterByList = [],
+            filterParams = this.get('filterParams');
+        if (!Ember.isEmpty(filterParams)) {
+            filterParams.forEach(function(paramName) {
+                if (!Ember.isEmpty(params[paramName])) {
+                    filterByList.push({
+                        name: paramName,
+                        value: params[paramName]
+                    });                                                
+                }
+            });
+        }
+        return filterByList;
+    },
+    
     _getStartKeyFromItem: function(item) {
         var modelName = this.get('modelName');
         return modelName+'_'+item.get('id');
@@ -29,7 +46,8 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, Ember.SimpleAuth
     
     model: function(params) {
         return new Ember.RSVP.Promise(function(resolve, reject){
-            var modelName = this.get('modelName'),
+            var filterParams = this._getFilterParams(params),
+                modelName = this.get('modelName'),
                 itemsPerPage = this.get('itemsPerPage'),
                 queryParams = this._modelQueryParams(params);
             if (!Ember.isEmpty(params.sortKey)) {
@@ -37,6 +55,9 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, Ember.SimpleAuth
                 if (!Ember.isEmpty(params.sortDesc)) {
                     queryParams.sortDesc = params.sortDesc;
                 }                
+            }
+            if (!Ember.isEmpty(filterParams)) {
+                queryParams.filterBy = filterParams;
             }
             if (Ember.isEmpty(queryParams.options)) {
                 queryParams.options = {};
