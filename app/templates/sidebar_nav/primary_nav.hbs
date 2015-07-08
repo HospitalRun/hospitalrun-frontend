@@ -1,0 +1,7 @@
+<div class="primary-nav">
+{{#with this as parentController}}
+{{#each nav in navItems}}
+    {{nav-menu nav=nav session=parentController.session}}
+{{/each}}
+{{/with}}
+</div>

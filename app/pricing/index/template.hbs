@@ -5,7 +5,7 @@
                 <th>Category</th>
             {{/if}}
             <th>Name</th>
-            <th>Price</th>            
+            <th>Price</th>
             <th>Type</th>
             <th>Expense Account</th>
             {{#if showActions}}
@@ -19,7 +19,7 @@
                         <td>{{category}}</td>
                     {{/if}}
                     <td>{{name}}</td>
-                    <td>{{price}}</td>                    
+                    <td>{{price}}</td>
                     <td>{{type}}</td>
                     <td>{{expenseAccount}}</td>
                     {{#if parentController.showActions}}
@@ -38,10 +38,6 @@
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No pricing items found.</em>
-        {{#if canAdd}}
-            <em>Create a new record?</em> 
-            <button class="btn btn-primary" {{action 'newItem'}}>New Pricing Item</button>
-        {{/if}}
+        <p>No pricing items found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
     </div>
 {{/if}}

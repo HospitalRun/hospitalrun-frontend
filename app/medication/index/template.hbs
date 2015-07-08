@@ -4,7 +4,7 @@
             <th>Date</th>
             <th>Patient</th>
             <th>Medication</th>
-            <th>Quantity</th>        
+            <th>Quantity</th>
             <th>Status</th>
             {{#if showActions}}
                 <th>Actions</th>
@@ -29,10 +29,6 @@
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No items found.</em> 
-        {{#if canAdd}}
-            <em>Create a new medication request?</em> 
-            <button class="btn btn-primary" {{action 'newItem'}}>New Medication Request</button>
-        {{/if}}
+        <p>No items found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new medication request?</a>{{/if}}</p>
     </div>
 {{/if}}

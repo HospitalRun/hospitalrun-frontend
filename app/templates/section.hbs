@@ -1,32 +1,37 @@
 <div class="panel panel-default">
-    <div class="panel-heading clearfix">
-        <h1 class="pull-left">{{currentScreenTitle}}</h1>
-        {{#if newButtonAction}}
-            <div class="pull-right screen-button">
-                <button class="btn btn-primary" {{action newButtonAction}}>{{newButtonText}}</button>
-            </div>
-        {{/if}}
-        {{#if additionalButtons}}
-            {{#each additionalButtons}}
-                <div class="pull-right screen-button">
-                    <button {{bind-attr class="class"}} {{action buttonAction}}>
-                        {{#if buttonIcon}}
-                            <span {{bind-attr class="buttonIcon"}}></span> 
-                        {{/if}}
-                        {{buttonText}}</button>
-                </div>
-            {{/each}}
-        {{/if}}
 
-        <ul class="nav nav-pills navbar-right">
-            {{#each subActions}}
-                {{#if statusQuery}}
-                    <li>{{#link-to linkTo (query-params status=statusQuery)}}{{text}}{{/link-to}}</li>
-                {{else}}
-                    <li>{{#link-to linkTo}}{{text}}{{/link-to}}</li>
+    <div class="panel-heading clearfix">
+
+        <div class="view-top-bar">
+            <h1 class="view-current-title">{{currentScreenTitle}}</h1>
+        </div>
+
+        <div class="view-sub-bar">
+
+            <div class="view-action-buttons">
+                {{#if newButtonAction}}
+                <button class="btn btn-primary" {{action newButtonAction}}>{{newButtonText}}</button>
                 {{/if}}
-            {{/each}}
-        </ul>
+                {{#if additionalButtons}}
+                    {{#each additionalButtons}}
+                    <button {{bind-attr class="class"}} {{action buttonAction}}>
+                        {{#if buttonIcon}}<span {{bind-attr class="buttonIcon"}}></span>{{/if}}
+                        {{buttonText}}</button>
+                    {{/each}}
+                {{/if}}
+            </div>
+
+            <ul class="nav nav-pills view-sub-nav">
+                {{#each subActions}}
+                    {{#if statusQuery}}
+                        <li>{{#link-to linkTo (query-params status=statusQuery)}}{{text}}{{/link-to}}</li>
+                    {{else}}
+                        <li>{{#link-to linkTo}}{{text}}{{/link-to}}</li>
+                    {{/if}}
+                {{/each}}
+            </ul>
+
+        </div>
 
     </div>
     <div class="panel-body">

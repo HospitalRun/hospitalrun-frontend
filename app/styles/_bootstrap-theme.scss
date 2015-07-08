@@ -288,11 +288,11 @@ fieldset[disabled] .btn-primary.active {
 }
 
 .alert-info {
-    background-image: -webkit-linear-gradient(top, #d9edf7 0%, #b9def0 100%);
-    background-image: linear-gradient(to bottom, #d9edf7 0%, #b9def0 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd9edf7', endColorstr='#ffb9def0', GradientType=0);
-    background-repeat: repeat-x;
-    border-color: #9acfea;
+    background: $alert_yellow;
+    box-shadow: none;
+    text-shadow: none;
+    border: none;
+    color: $alert_yellow_drk;
 }
 
 .alert-warning {
@@ -384,18 +384,16 @@ fieldset[disabled] .btn-primary.active {
 .panel-default {
     border: 0;
     border-radius: 0;
-    background-color: #2e4359;
+    background-color: transparent;
     > {
         .panel-heading {
             border: 0;
             border-radius: 0;
-            background-color: #2e4359;
-            color: #fff;
-            padding: 0 15px;
+            background-color: transparent;
+            color: $navy;
+            padding: 0;
         }
-        .panel-body {
-            padding-top: 0;
-        }
+        .panel-body { padding-top: 0; }
     }
 }
 
