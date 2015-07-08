@@ -80,7 +80,7 @@ export default Ember.Mixin.create({
                     capability: 'appointments'                    
                 },
                 {
-                    title: 'Searcj',
+                    title: 'Search',
                     iconClass: 'octicon-chevron-right',
                     route: 'appointments.search',
                     capability: 'appointments'                    
