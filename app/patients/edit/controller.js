@@ -312,6 +312,10 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
             this.send('openModal', 'patients.photo', photo);
         },
         
+        editProcedure: function(procedure) {
+            this.transitionToRoute('procedures.edit', procedure);
+        },
+        
         editVisit: function(visit) {
             this.transitionToRoute('visits.edit', visit);
         },

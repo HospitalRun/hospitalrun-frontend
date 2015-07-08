@@ -5,8 +5,7 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     needs: ['visits','visits/edit','pouchdb'],
-        
-    cancelAction: 'returnToVisit',
+
     canAddProcedure: function() {        
         return this.currentUserCan('add_procedure');
     }.property(),
@@ -51,8 +50,6 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }],
     
     editController: Ember.computed.alias('controllers.visits/edit'),
-    visitProcedures: Ember.computed.alias('visit.procedures'),
-    
     pricingList: null, //This gets filled in by the route
     pricingTypes: Ember.computed.alias('controllers.visits.procedurePricingTypes'),
     newProcedure: false,

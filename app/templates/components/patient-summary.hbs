@@ -41,8 +41,10 @@
                 <div class="form-group col-sm-12">
                     <label class="control-label">Procedures</label>
                     {{#each patientProcedures}}
-                        {{#unless first}}, {{/unless}}
-                        {{description}} (<strong>{{date-format procedureDate}}</strong>)
+                        {{#unless first}}, {{/unless}}                    
+                        <span {{action 'editProcedure' this}}>
+                              {{description}}>{{description}} (<strong>{{date-format procedureDate}}</strong>)
+                        </span>
                     {{/each}}                
                 </div>
             </div>

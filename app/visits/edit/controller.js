@@ -309,6 +309,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
             if (Ember.isEmpty(procedure.get('visit'))) {
                 procedure.set('visit', this.get('model'));
             }
+            procedure.set('returnToVisit', true);
+            procedure.set('returnToPatient', false);            
             this.transitionToRoute('procedures.edit', procedure);
         },
         

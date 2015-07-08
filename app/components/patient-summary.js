@@ -1,6 +1,7 @@
 import Ember from 'ember';
 export default Ember.Component.extend({    
     disablePatientLink: false,
+    editProcedureAction: 'editProcedure',
     patient: null,
     patientProcedures: null,
     showPatientAction: 'showPatient',
@@ -82,6 +83,12 @@ export default Ember.Component.extend({
                 patient.set('returnToContext', returnToContext);
                 this.sendAction('showPatientAction', this.get('patient'));
             }
-        }
+        },        
+        editProcedure: function(procedure) {
+            procedure.set('returnToVisit', false);
+            procedure.set('returnToPatient', true);
+            procedure.set('patient', this.get('patient'));
+            this.sendAction('editProcedureAction', procedure);
+        },
     }
 });
