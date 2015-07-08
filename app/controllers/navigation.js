@@ -11,6 +11,7 @@ export default Ember.Controller.extend(ProgressDialog, UserSession, Navigation, 
     progressTitle: 'Searching',
     searchRoute: null,
     syncStatus: '',
+    currentOpenNav: null,
 
     actions: {
         search: function() {
@@ -28,6 +29,10 @@ export default Ember.Controller.extend(ProgressDialog, UserSession, Navigation, 
         },
 
         navAction: function(nav) {
+            if (this.currentOpenNav) {
+                this.currentOpenNav.closeSubnav();
+            }
+            this.currentOpenNav = nav;
             this.transitionToRoute(nav.route);
         },
 

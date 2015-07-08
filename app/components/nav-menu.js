@@ -14,6 +14,9 @@ export default Ember.Component.extend(UserSession, {
     
     _setup: function() {
         let nav = this.get("nav");
+        nav.closeSubnav = function() {
+            this.set('isShowing', false);
+        }.bind(this);
         nav.subnav.forEach(function(item) { 
             item.show = this.currentUserCan(item.capability);
         }.bind(this));        

@@ -1,9 +1,9 @@
 {{log this}}
 {{#if show}}
-  <div class="category-title">
-    <a href="#" class="primary-section-link nav-link" {{action 'toggleContent'}}>
-        <span {{bind-attr class=":mega-octicon nav.iconClass"}}></span>{{nav.title}}
-    </a>
+  <div class="category-title" {{action 'toggleContent'}}>
+    {{#link-to nav.route class="primary-section-link nav-link"}}
+      <span {{bind-attr class=":mega-octicon nav.iconClass"}}></span>{{nav.title}}
+    {{/link-to}}
   </div>
   {{#if isShowing }}
   <div class="category-sub-items">
