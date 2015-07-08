@@ -148,18 +148,6 @@
     a:focus,
     a:visited { text-decoration: none; }
 
-    .category-title {
-        height: 55px;
-        background: $navy_mid2;
-        border-bottom: 1px solid $navy_drkest;
-
-        &:hover { background: $navy_mid;
-
-            & .mega-octicon { color: white; }
-
-        }
-    }
-
     // main section link
     .primary-section-link {
         display: block;
@@ -167,12 +155,21 @@
         line-height: 55px;
         font-size: 18px;
         padding: 0 15px;
+        height: 55px;
+        background: $navy_mid2;
+        border-bottom: 1px solid $navy_drkest;
 
         .mega-octicon {
             width: 24px;
             margin-right: 12px;
             float: left;
             line-height: 55px;
+        }
+
+        &:hover,
+        &.active { background: $navy_mid;
+
+            & .mega-octicon { color: white; }
         }
     }
 
