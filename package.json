@@ -28,7 +28,7 @@
     "ember-cli-qunit": "0.1.2",
     "ember-cli-sass": "^3.0.3",
     "ember-export-application-global": "^1.0.0",
-    "ember-validations": "~ 2.0.0-alpha.3",
+    "ember-validations": "2.0.0-alpha.3",
     "express": "^4.8.5",
     "glob": "~4.3.4",
     "nano": "^5.11.0",
