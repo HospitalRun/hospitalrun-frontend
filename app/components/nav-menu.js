@@ -23,12 +23,17 @@ export default Ember.Component.extend(UserSession, {
     }.on('init'),
     
     callNavAction: "navAction",
+    callCloseSettings: "closeSettings",
     
     actions: {
         toggleContent: function() {
             //debugger;
             this.set('isShowing', !this.get('isShowing'));
             this.sendAction('callNavAction', this.nav);
+        },
+        
+        resetNav: function() {
+            this.sendAction('callCloseSettings');
         }
     }
 });

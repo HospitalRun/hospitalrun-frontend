@@ -34,10 +34,16 @@ export default Ember.Controller.extend(ProgressDialog, UserSession, Navigation, 
             }
             this.currentOpenNav = nav;
             this.transitionToRoute(nav.route);
+            this.set('isShowingSettings', false);
         },
 
         toggleSettings: function() {
             this.toggleProperty('isShowingSettings');
+        },
+        
+        closeSettings: function() {
+            this.set('isShowingSettings', false);
         }
+
     }
 });

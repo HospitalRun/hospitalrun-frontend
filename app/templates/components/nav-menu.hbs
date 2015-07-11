@@ -9,6 +9,7 @@
   <div class="category-sub-items">
       {{#each nav.subnav}}
         {{#if show}}
+          <div {{action 'resetNav'}}>
           {{#if subroute}}
             {{#link-to route subroute class="category-sub-item nav-link"}}
             <span {{bind-attr class=":octicon iconClass"}}></span>{{title}}
@@ -18,6 +19,7 @@
             <span {{bind-attr class=":octicon iconClass"}}></span>{{title}}
             {{/link-to}}
           {{/if}}
+          </div>
         {{/if}}
       {{/each}}
   </div>
