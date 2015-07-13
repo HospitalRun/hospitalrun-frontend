@@ -2,16 +2,25 @@
     <div class="panel-body">
         {{#em-form model=this submit_button=false }}
             <div class="row">
-                {{em-select class="col-xs-3" label="Report Type" 
+                {{em-select class="col-xs-6" label="Report Type" 
                     property="reportType" content=reportTypes
                     optionValuePath="content.value" optionLabelPath="content.name"
                     selected=reportType
                 }}
             </div>
-            <div class="row">
-                {{date-picker property="startDate" label="Start Date" class="col-sm-4"}}
-                {{date-picker property="endDate" label="End Date" class="col-sm-4"}}
-            </div>
+            {{#if isStatusReport}}
+                {{em-select property="status" label="Patient Status" 
+                    content=statusList.value 
+                    optionValuePath="content" 
+                    optionLabelPath="content" 
+                    prompt=" "
+                }}
+            {{else}}
+                <div class="row">
+                    {{date-picker property="startDate" label="Start Date" class="col-sm-4"}}
+                    {{date-picker property="endDate" label="End Date" class="col-sm-4"}}
+                </div>        
+            {{/if}}
             {{#if isVisitReport}}
                 <div class="row">
                     {{em-select class="col-sm-6" label="Visit Type" 

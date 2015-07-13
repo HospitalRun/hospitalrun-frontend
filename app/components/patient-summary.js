@@ -1,22 +1,12 @@
 import Ember from 'ember';
-export default Ember.Component.extend({    
+import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
+export default Ember.Component.extend(PatientDiagnosis, {    
     disablePatientLink: false,
     editProcedureAction: 'editProcedure',
     patient: null,
     patientProcedures: null,
     showPatientAction: 'showPatient',
     visits: null,
-    
-    _addDiagnosisToList: function(diagnosis, diagnosesList, visit) {
-        if (!Ember.isEmpty(diagnosis)) {            
-            if (Ember.isEmpty(diagnosesList.findBy('description', diagnosis))) {
-                diagnosesList.addObject({
-                    date: visit.get('startDate'),
-                    description: diagnosis
-                });
-            }
-        }
-    },    
     
     havePrimaryDiagnoses: function() {
         var primaryDiagnosesLength = this.get('primaryDiagnoses.length');
@@ -34,37 +24,13 @@ export default Ember.Component.extend({
     }.property('secondaryDiagnoses.length'),    
     
     primaryDiagnoses: function() {
-        var diagnosesList = [],
-            visits = this.get('visits');        
-        if (!Ember.isEmpty(visits)) {
-            visits.forEach(function(visit) {
-                this._addDiagnosisToList(visit.get('primaryDiagnosis'), diagnosesList, visit);
-                this._addDiagnosisToList(visit.get('primaryBillingDiagnosis'), diagnosesList, visit);
-            }.bind(this));
-        }
-        var firstDiagnosis = diagnosesList.get('firstObject');
-        if (!Ember.isEmpty(firstDiagnosis)) {
-            firstDiagnosis.first = true;
-        }
-        return diagnosesList;
+        var visits = this.get('visits');
+        return this.getPrimaryDiagnoses(visits);
     }.property('visits.@each'),
     
     secondaryDiagnoses: function() {
-        var diagnosesList = [],
-            visits = this.get('visits');        
-        if (!Ember.isEmpty(visits)) {
-            visits.forEach(function(visit) {                
-                if (!Ember.isEmpty(visit.get('additionalDiagnoses'))) {
-                    diagnosesList.addObjects(visit.get('additionalDiagnoses'));
-                }
-            });
-        }
-        
-        var firstDiagnosis = diagnosesList.get('firstObject');
-        if (!Ember.isEmpty(firstDiagnosis)) {
-            firstDiagnosis.first = true;
-        }
-        return diagnosesList;
+        var visits = this.get('visits');        
+        return this.getSecondaryDiagnoses(visits);
     }.property('visits.@each'),
     
     shouldLinkToPatient: function() {

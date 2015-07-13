@@ -477,6 +477,19 @@ var designDocs = [{
         }
     }.toString(), true),
     version: 3
+}, {    
+    name: 'patient_by_status',
+    function: function(doc) {
+        var doctype,
+            uidx;
+        if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
+            doctype = doc._id.substring(0, uidx);
+            if (doctype === 'patient') {                
+                emit(doc.status);
+            }
+        }
+    },
+    version: 1
 }, {
     name: 'photo_by_patient',
     function: function(doc) {

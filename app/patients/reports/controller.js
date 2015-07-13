@@ -1,13 +1,16 @@
 import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
 import Ember from 'ember';
+import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
+import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
-export default AbstractReportController.extend(VisitTypes, {
+export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, VisitTypes, {
     needs: ['patients'],
     
     clinicList: Ember.computed.alias('controllers.patients.clinicList'),
     diagnosisList: Ember.computed.alias('controllers.patients.diagnosisList'),
     physicianList: Ember.computed.alias('controllers.patients.physicianList'),
     locationList: Ember.computed.alias('controllers.patients.locationList'),
+    statusList: Ember.computed.alias('controllers.patients.statusList'),
     visitTypesList: Ember.computed.alias('controllers.patients.visitTypeList'),
     patientDetails: {},
     
@@ -173,6 +176,35 @@ export default AbstractReportController.extend(VisitTypes, {
             format: '_dateFormat'
         }
     },
+    statusReportColumns: {
+        id: {
+            label: 'Id',
+            include: true,
+            property: 'patient.displayPatientId'
+        },
+        name: {
+            label: 'Name',
+            include: true,
+            property: 'patient.displayName'
+        },
+        status:  {
+            label: 'Status',
+            include: true,
+            property: 'patient.status'
+        },
+        primaryDiagnosis: {
+            label: 'Primary Diagnoses',
+            include: true,
+            property: 'patient.visits',
+            format: '_formatPrimaryDiagnosis'
+        },
+        secondaryDiagnoses: {
+            label: 'Secondary Diagnoses',
+            include: true,
+            property: 'patient.visits',
+            format: '_formatSecondaryDiagnosis'
+        }
+    },
     reportTypes: [{
         name: 'Admissions Detail',
         value: 'detailedAdmissions'
@@ -195,6 +227,9 @@ export default AbstractReportController.extend(VisitTypes, {
         name: 'Procedures Summary',
         value: 'procedures'
     }, {
+        name: 'Patient Status',
+        value: 'status'
+    }, {
         name: 'Total Patient Days',
         value: 'patientDays'
     }, {
@@ -208,6 +243,11 @@ export default AbstractReportController.extend(VisitTypes, {
     isDischargeReport: function() {
         var reportType = this.get('reportType');
         return (reportType.toLowerCase().indexOf('discharges') > -1);
+    }.property('reportType'),
+    
+    isStatusReport: function() {
+        var reportType = this.get('reportType');
+        return reportType === 'status';
     }.property('reportType'),
     
     isVisitReport: function() {
@@ -348,6 +388,23 @@ export default AbstractReportController.extend(VisitTypes, {
         }.bind(this));
     },
     
+    
+    /**
+     * Find procedures by the specified dates and the record's start and (optional) end dates.
+     */
+    _findPatientsByStatus: function() {        
+        var status = this.get('status'),
+            findParams = {
+                options: {
+                    key: status
+                },
+                mapReduce: 'patient_by_status'
+            };            
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            this.store.find('patient', findParams).then(resolve, reject);
+        }.bind(this));
+    },
+    
     /**
      * Find procedures by the specified dates and the record's start and (optional) end dates.
      */
@@ -448,6 +505,15 @@ export default AbstractReportController.extend(VisitTypes, {
             }
         }.bind(this));
         this._finishReport();
+    },
+    _formatPrimaryDiagnosis: function(visits) {
+        var primaryDiagnoses = this.getPrimaryDiagnoses(visits);
+        return this._diagnosisListToString(primaryDiagnoses);        
+    },
+    
+    _formatSecondaryDiagnosis: function(visits) {
+        var secondaryDiagnoses = this.getSecondaryDiagnoses(visits);
+        return this._diagnosisListToString(secondaryDiagnoses);
     },
     
     _generateAdmissionOrDischargeReport: function(visits, reportType) {
@@ -600,6 +666,23 @@ export default AbstractReportController.extend(VisitTypes, {
         }.bind(this));
     },
     
+    _generateStatusReport: function() {
+        this._findPatientsByStatus().then(function(patients) {
+            var reportColumns = this.get('statusReportColumns'),
+            sortedPatients = patients.sortBy('lastName', 'firstName');
+            this._getPatientVisits(sortedPatients).then(function(resolvedPatients) {
+                resolvedPatients.forEach(function (patient) {
+                    this._addReportRow({patient: patient}, false, reportColumns);
+                }.bind(this));
+                this._finishReport(reportColumns);
+            }.bind(this)).catch(function(err) {
+                this._notifyReportError('Error in _generateStatusReport:'+err); 
+            }.bind(this));
+        }.bind(this)).catch(function(err) {
+            this._notifyReportError('Error in _generateStatusReport:'+err);
+        }.bind(this));
+    },
+    
     _generateVisitReport: function(visits) {
         var reportColumns = this.get('reportColumns'),
             visitFilters = this.getProperties(
@@ -643,6 +726,22 @@ export default AbstractReportController.extend(VisitTypes, {
         } else {
             return this.store.find('patient', patientId);
         }
+    },
+    
+    _getPatientVisits: function(patients) {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            var visitHash = {
+            };
+            patients.forEach(function(patient) {
+                visitHash[patient.get('id')] = this.getPatientVisits(patient);
+            }.bind(this));
+            Ember.RSVP.hash(visitHash).then(function(resolvedHash) {
+                patients.forEach(function(patient) {
+                    patient.set('visits', resolvedHash[patient.get('id')]);
+                });
+                resolve(patients);
+            }, reject);
+        }.bind(this));
     },
     
     _haveLikeValue: function(valueToCompare, likeCondition) {
@@ -700,7 +799,11 @@ export default AbstractReportController.extend(VisitTypes, {
         var alertMessage,
             endDate = this.get('endDate'),
             isValid = true,
+            reportType = this.get('reportType'),
             startDate = this.get('startDate');
+        if (reportType === 'status') {
+            return true;
+        }
         if (Ember.isEmpty(startDate)) {
             alertMessage = 'Please enter a start date.';
             isValid = false;
@@ -760,6 +863,10 @@ export default AbstractReportController.extend(VisitTypes, {
                         }.bind(this), function(err) {
                             this._notifyReportError('Error in _findVisitsByDate:'+err);
                         }.bind(this));
+                        break;
+                    }
+                    case 'status': {
+                        this._generateStatusReport();
                         break;
                     }
                 }
