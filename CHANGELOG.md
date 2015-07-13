@@ -1,5 +1,31 @@
 # Change Log
 
+## [0.8.1](https://github.com/HospitalRun/frontend/tree/0.8.1) (2015-07-13)
+
+[Full Changelog](https://github.com/HospitalRun/frontend/compare/0.8.1...HEAD)
+
+**Implemented enhancements:**
+
+- Click on procedure from patient summary [\#66](https://github.com/HospitalRun/frontend/issues/66)
+
+- Patient candidate report [\#43](https://github.com/HospitalRun/frontend/issues/43)
+
+**Fixed bugs:**
+
+- Layout of navigation needs some fixes [\#122](https://github.com/HospitalRun/frontend/issues/122)
+
+**Closed issues:**
+
+- Settings nav only closes if you click it again [\#136](https://github.com/HospitalRun/frontend/issues/136)
+
+**Merged pull requests:**
+
+- Changed let to var to increase browser compatibility.  Only the lates… [\#138](https://github.com/HospitalRun/frontend/pull/138) ([codecounselor](https://github.com/codecounselor))
+
+- Fix for breaking search button on sidebar nav [\#131](https://github.com/HospitalRun/frontend/pull/131) ([jglovier](https://github.com/jglovier))
+
+- App nav redesign phase 1 [\#108](https://github.com/HospitalRun/frontend/pull/108) ([jglovier](https://github.com/jglovier))
+
 ## [0.8](https://github.com/HospitalRun/frontend/tree/0.8) (2015-07-07)
 
 **Implemented enhancements:**
