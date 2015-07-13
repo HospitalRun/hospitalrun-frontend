@@ -13,7 +13,7 @@ export default Ember.Component.extend(UserSession, {
     isShowing: false,
     
     _setup: function() {
-        let nav = this.get("nav");
+        var nav = this.get("nav");
         nav.closeSubnav = function() {
             this.set('isShowing', false);
         }.bind(this);
