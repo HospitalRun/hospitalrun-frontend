@@ -53,5 +53,8 @@ export default AbstractModuleRoute.extend(PatientId, {
     subActions: [{
         text: 'Patient listing',
         linkTo: 'patients.index'
+    }, {
+        text: 'Reports',
+        linkTo: 'patients.reports'
     }]
 });
