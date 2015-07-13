@@ -48,14 +48,14 @@ export default Ember.Mixin.create({
                 },
                 {
                     title: 'New Patient',
-                    iconClass: 'octicon-chevron-right',
+                    iconClass: 'octicon-plus',
                     route: 'patients.edit',
                     subroute: 'new',
                     capability: 'add_patient'                    
                 },
                 {
                     title: 'Reports',
-                    iconClass: 'octicon-plus',
+                    iconClass: 'octicon-chevron-right',
                     route: 'patients.reports',
                     capability: 'patients'                    
                 }
@@ -81,13 +81,13 @@ export default Ember.Mixin.create({
                 },
                 {
                     title: 'Search',
-                    iconClass: 'octicon-chevron-right',
+                    iconClass: 'octicon-search',
                     route: 'appointments.search',
                     capability: 'appointments'                    
                 },
                 {
                     title: 'Add Appointment',
-                    iconClass: 'octicon-chevron-right',
+                    iconClass: 'octicon-plus',
                     route: 'appointments.edit',
                     subroute: 'new',
                     capability: 'add_appointment'                    
