@@ -1,5 +1,11 @@
 import AbstractModel from "hospitalrun/models/abstract";
-
+var validateIfNewItem = {
+    if: function validateNewItem(object) {
+        var skipSavePurchase = object.get('skipSavePurchase');
+        //Only validate on new items and only if we are saving a purchase.        
+        return (!skipSavePurchase && object.get('isNew'));
+    }
+};
 export default AbstractModel.extend({
     purchases: DS.hasMany('inv-purchase'),
     locations: DS.hasMany('inv-location'),
@@ -26,18 +32,13 @@ export default AbstractModel.extend({
             presence: true,
         },
         purchaseCost: {
-            numericality: {
-                if: function(object) {
-                    //Only validate on new items
-                    return (object.get('isNew'));
-                }
-            }
+            numericality: validateIfNewItem
         },
         name: {
             presence: true,
         },
         quantity: {
-            numericality: true
+            numericality: validateIfNewItem
         },
         price: {
             numericality: {
@@ -45,12 +46,7 @@ export default AbstractModel.extend({
             }
         },
         originalQuantity: {
-            presence: {
-                if: function(object) {
-                    //Only validate on new items
-                    return (object.get('isNew'));
-                }
-            }            
+            presence: validateIfNewItem         
         },
         reorderPoint: {
             numericality: {
@@ -61,12 +57,7 @@ export default AbstractModel.extend({
             presence: true,
         },
         vendor: {
-            presence: {
-                if: function(object) {
-                    //Only validate on new items
-                    return (object.get('isNew'));
-                }
-            }          
+            presence: validateIfNewItem
         }
     },
 
