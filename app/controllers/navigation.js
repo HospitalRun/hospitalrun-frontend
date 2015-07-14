@@ -29,7 +29,7 @@ export default Ember.Controller.extend(ProgressDialog, UserSession, Navigation, 
         },
 
         navAction: function(nav) {
-            if (this.currentOpenNav) {
+            if (this.currentOpenNav && this.currentOpenNav.route !== nav.route) {
                 this.currentOpenNav.closeSubnav();
             }
             this.currentOpenNav = nav;
