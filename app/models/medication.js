@@ -1,7 +1,6 @@
 import AbstractModel from "hospitalrun/models/abstract";
 import DateFormat from "hospitalrun/mixins/date-format";
 import Ember from "ember";
-import PatientValidation from "hospitalrun/utils/patient-validation";
 
 export default AbstractModel.extend(DateFormat, {
     inventoryItem: DS.belongsTo('inventory'),
@@ -54,7 +53,7 @@ export default AbstractModel.extend(DateFormat, {
             acceptance: {
                 accept: true,
                 if: function(object) {
-                    if (!object.get('isDirty')) {
+                    if (!object.get('isDirty') || !object.get('isNew')) {
                         return false;
                     }
                     var itemName = object.get('inventoryItem.name'),
@@ -75,10 +74,12 @@ export default AbstractModel.extend(DateFormat, {
             }
         },
         
-        patientTypeAhead: PatientValidation.patientTypeAhead,        
-        
-        patient: {
-            presence: true
+        patientTypeAhead: {
+            presence: {
+                if: function(object) {
+                    return (object.get('selectPatient'));
+                }
+            }
         },
         
         quantity: {

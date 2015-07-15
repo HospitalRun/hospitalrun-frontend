@@ -4,13 +4,13 @@
     {{/unless}}
     <div class="row">
         {{#if selectPatient}}
-            {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-3 required"}}
+            {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-6 required"}}
         {{/if}}
         {{#if isNew}}
-            {{em-select class="col-xs-3 required" label="Visit" 
+            {{em-select class="col-xs-4 required" label="Visit" 
                 property="visit" content=patientVisits
                 optionValuePath="content" optionLabelPath="content.visitDescription"
-                prompt="--Add New Visit--"
+                prompt="--Add New Outpatient Visit--"
                 selected=visit
             }}        
         {{else}}
