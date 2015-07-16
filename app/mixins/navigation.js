@@ -147,6 +147,13 @@ export default Ember.Mixin.create({
                     capability: 'add_medication'                    
                 },
                 {
+                    title: 'Dispense',
+                    iconClass: 'octicon-checklist',
+                    route: 'medication.edit',
+                    subroute: 'dispense',
+                    capability: 'fulfill_medication'                    
+                },                
+                {
                     title: 'Return Medication',
                     iconClass: 'octicon-mail-reply',
                     route: 'medication.return',

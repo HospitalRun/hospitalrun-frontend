@@ -33,7 +33,7 @@ export default AbstractModel.extend(DateFormat, {
             acceptance: {
                 accept: true,
                 if: function(object) {
-                    if (!object.get('isDirty')) {
+                    if (!object.get('isDirty') || object.get('isFulfilling')) {
                         return false;
                     }
                     var prescription = object.get('prescription'),

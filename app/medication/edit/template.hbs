@@ -38,7 +38,7 @@
             {{static-text label="Refills" class="col-xs-3" value=refills }}
         </div>
     {{else}}
-        {{em-text property="prescription" label="Prescription" rows="3" class="required"}}
+        {{em-text property="prescription" label="Prescription" rows="3" class=prescriptionClass }}
         <div class="row">
             {{date-picker property="prescriptionDate" label="Prescription Date" class="col-sm-4"}}
         </div>
@@ -46,14 +46,16 @@
             {{em-input property="quantity" label=quantityLabel class=quantityClass }}          
             {{em-input property="refills" label="Refills" class="col-xs-3"}}
         </div>
-        {{#if isNew}}
-            {{#if canFulfill}}
-                <div class="form-group">            
-                    <label class="control-label">Fulfill Request</label>
-                 </div>
-                {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
+        {{#unless hideFulfillRequest}}
+            {{#if isNew}}
+                {{#if canFulfill}}
+                    <div class="form-group">            
+                        <label class="control-label">Fulfill Request</label>
+                     </div>
+                    {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
+                {{/if}}
             {{/if}}
-        {{/if}}
+        {{/unless}}
         {{#if isFulfilling}}
             {{inventory-location-picker label="Pull From" quantityRequested=quantity
                 locationList=inventoryItem.availableLocations

@@ -32,19 +32,31 @@ export default AbstractEditController.extend(InventorySelection, PatientId, Pati
         return (this.get('isFulfilled') || this.get('isRequested'));
     }.property('isFulfilled','isRequested'),
     
+    prescriptionClass: function() {
+        var quantity = this.get('quantity');
+        this.get('model').validate();
+        if (Ember.isEmpty(quantity)) {
+            return 'required';
+        }
+    }.property('quantity'),
+    
     quantityClass: function() {
-        var returnClass = 'col-xs-3',
+        var prescription = this.get('prescription'),
+            returnClass = 'col-xs-3',
             isFulfilling = this.get('isFulfilling');
-        if (isFulfilling) {
+        if (isFulfilling || Ember.isEmpty(prescription)) {
             returnClass += ' required';
         }
         return returnClass;
-    }.property('isFulfilling'),
+    }.property('isFulfilling', 'prescription'),
     
     quantityLabel: function() {
         var returnLabel = "Quantity Requested",
-            isFulfilled = this.get('isFulfilled');
-        if (isFulfilled) {
+            isFulfilled = this.get('isFulfilled'),
+            isFulfilling = this.get('isFulfilling');
+        if (isFulfilling) {
+            returnLabel = "Quantity Dispensed";
+        } else if (isFulfilled) {
             returnLabel = "Quantity Distributed";
         }
         return returnLabel;
@@ -60,6 +72,7 @@ export default AbstractEditController.extend(InventorySelection, PatientId, Pati
         if (isFulfilled) {
             alertTitle = 'Medication Request Fulfilled';
             alertMessage = 'The medication request has been fulfilled.';
+            this.set('selectPatient', false);
         } else {
             alertTitle = 'Medication Request Saved';
             alertMessage = 'The medication record has been saved.';
@@ -175,7 +188,9 @@ export default AbstractEditController.extend(InventorySelection, PatientId, Pati
     }.property('updateCapability', 'isFulfilled'),
     
     updateButtonText: function() {
-        if (this.get('isFulfilling')) {
+        if (this.get('hideFulfillRequest')) {
+            return 'Dispense';
+        } else if (this.get('isFulfilling')) {
             return 'Fulfill';
         } else if (this.get('isNew')) {
             return 'Add';

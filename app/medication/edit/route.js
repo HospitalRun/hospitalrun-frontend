@@ -7,11 +7,17 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
     editTitle: 'Edit Medication Request', 
     modelName: 'medication',
     newTitle: 'New Medication Request',
-    getNewData: function() {
-        return Ember.RSVP.resolve({
-            selectPatient: true,
-            prescriptionDate: moment().startOf('day').toDate()
-        });
+    getNewData: function(params) {
+        var idParam = this.get('idParam'),
+            newData = {
+                selectPatient: true,
+                prescriptionDate: moment().startOf('day').toDate()
+            };
+        if (params[idParam] === 'dispense') {
+            newData.shouldFulfillRequest = true;
+            newData.hideFulfillRequest = true;
+        }
+        return Ember.RSVP.resolve(newData);
     },
     
     afterModel: function(model) {
@@ -24,6 +30,15 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
                     resolve();
                 }, reject);                
             }.bind(this));
+        }
+    },
+    
+    model: function(params) {
+        var idParam = this.get('idParam');
+        if (!Ember.isEmpty(idParam) && params[idParam] === 'new' || params[idParam] === 'dispense') {
+            return this._createNewRecord(params);
+        } else {
+            return this._super(params);
         }
     },
     

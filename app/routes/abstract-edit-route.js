@@ -5,6 +5,24 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     modelName: null,
     newTitle: null,
     
+    _createNewRecord: function(params) {
+        return new Ember.RSVP.Promise(function(resolve) {
+            this.generateId().then(function(newId) {
+                this.getNewData(params).then(function(data) {
+                        var modelName = this.get('modelName');
+                        if (newId) {
+                            data.id = newId;
+                        }
+                    if (newId && this.store.hasRecordForId(modelName, newId)) {
+                        resolve(this.store.push(modelName, data));
+                    } else {
+                        resolve(this.store.createRecord(modelName, data));
+                    }
+                }.bind(this));
+            }.bind(this));
+        }.bind(this));        
+    },
+    
     idParam: function() {
         var modelName = this.get('modelName');
         return modelName + '_id';
@@ -30,21 +48,7 @@ export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
     model: function(params) {
         var idParam = this.get('idParam');
         if (!Ember.isEmpty(idParam) && params[idParam] === 'new') {
-            return new Ember.RSVP.Promise(function(resolve) {
-                this.generateId().then(function(newId) {
-                    this.getNewData().then(function(data) {
-                            var modelName = this.get('modelName');
-                            if (newId) {
-                                data.id = newId;
-                            }
-                        if (newId && this.store.hasRecordForId(modelName, newId)) {
-                            resolve(this.store.push(modelName, data));
-                        } else {
-                            resolve(this.store.createRecord(modelName, data));
-                        }
-                    }.bind(this));
-                }.bind(this));
-            }.bind(this));
+            return this._createNewRecord(params);
         } else {
             return this._super(params);
         }
