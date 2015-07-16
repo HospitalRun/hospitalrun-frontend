@@ -83,15 +83,38 @@ export default AbstractModel.extend(DateFormat, {
         },
         
         quantity: {
-            numericality: {
-                allowBlank: true
+            numericality: {                
+                allowBlank: true,
+                greaterThan: 0
             },
             presence: {
                 if: function(object) {
                     var isFulfilling = object.get('isFulfilling');
                     return isFulfilling;
                 }
-            }
+            },
+            acceptance: {
+                accept: true,
+                if: function(object) {
+                        var isFulfilling = object.get('isFulfilling'),
+                            requestQuantity = parseInt(object.get('quantity')),
+                            quantityToCompare = null;
+                        if (!isFulfilling) {
+                            //no validation needed when not fulfilling
+                            return false;
+                        } else {
+                            quantityToCompare = object.get('inventoryItem.quantity');
+                        }
+                        if ( requestQuantity > quantityToCompare) {
+                            //force validation to fail
+                            return true;
+                        } else {
+                            //There is enough quantity on hand.
+                            return false;
+                        }
+                }, 
+                message: 'The quantity must be less than or equal to the number of available medication.'
+            }            
         },
         
         refills: {
