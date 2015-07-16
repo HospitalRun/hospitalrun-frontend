@@ -2,7 +2,7 @@
 
 ## [0.8.3](https://github.com/HospitalRun/frontend/tree/0.8.3) (2015-07-16)
 
-[Full Changelog](https://github.com/HospitalRun/frontend/compare/0.8.3...0.8.3)
+[Full Changelog](https://github.com/HospitalRun/frontend/compare/0.8.2...0.8.3)
 
 **Implemented enhancements:**
 
