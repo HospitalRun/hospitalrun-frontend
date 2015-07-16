@@ -1,8 +1,22 @@
 # Change Log
 
+## [0.8.3](https://github.com/HospitalRun/frontend/tree/0.8.3) (2015-07-16)
+
+[Full Changelog](https://github.com/HospitalRun/frontend/compare/0.8.3...0.8.3)
+
+**Implemented enhancements:**
+
+- Creating new visit from medication/pharmacy [\#88](https://github.com/HospitalRun/frontend/issues/88)
+
+- Need Pharmacy Sale entry \(no patient, just reduce inventory\) [\#87](https://github.com/HospitalRun/frontend/issues/87)
+
+**Fixed bugs:**
+
+- Fulfilling medication requests doesn't enforce quantity limits [\#140](https://github.com/HospitalRun/frontend/issues/140)
+
 ## [0.8.2](https://github.com/HospitalRun/frontend/tree/0.8.2) (2015-07-14)
 
-[Full Changelog](https://github.com/HospitalRun/frontend/compare/0.8.2...HEAD)
+[Full Changelog](https://github.com/HospitalRun/frontend/compare/0.8.1...0.8.2)
 
 **Fixed bugs:**
 
