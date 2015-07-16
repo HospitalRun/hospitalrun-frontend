@@ -14,6 +14,11 @@ export default AbstractEditController.extend(InventorySelection, PatientId, Pati
         return this.currentUserCan('fulfill_medication');
     }.property(),
     
+    isFulfilled: function() {
+        var status = this.get('status');
+        return (status === 'Fulfilled');
+    }.property('status'),
+    
     isFulfilling: function() {
         var canFulfill = this.get('canFulfill'),
             isRequested = this.get('isRequested'),
@@ -23,6 +28,10 @@ export default AbstractEditController.extend(InventorySelection, PatientId, Pati
         return isFulfilling;
     }.property('canFulfill','isRequested', 'shouldFulfillRequest'),
     
+    isFulfilledOrRequested: function() {
+        return (this.get('isFulfilled') || this.get('isRequested'));
+    }.property('isFulfilled','isRequested'),
+    
     quantityClass: function() {
         var returnClass = 'col-xs-3',
             isFulfilling = this.get('isFulfilling');
@@ -31,13 +40,30 @@ export default AbstractEditController.extend(InventorySelection, PatientId, Pati
         }
         return returnClass;
     }.property('isFulfilling'),
+    
+    quantityLabel: function() {
+        var returnLabel = "Quantity Requested",
+            isFulfilled = this.get('isFulfilled');
+        if (isFulfilled) {
+            returnLabel = "Quantity Distributed";
+        }
+        return returnLabel;
+    }.property('isFulfilled'),
 
     medicationList: [],
     updateCapability: 'add_medication',
 
     afterUpdate: function() {
         var alertTitle = 'Medication Request Saved',
-            alertMessage = 'The medication record has been saved.'; 
+            alertMessage = 'The medication record has been saved.',
+            isFulfilled = this.get('isFulfilled');
+        if (isFulfilled) {
+            alertTitle = 'Medication Request Fulfilled';
+            alertMessage = 'The medication request has been fulfilled.';
+        } else {
+            alertTitle = 'Medication Request Saved';
+            alertMessage = 'The medication record has been saved.';
+        }
         this.saveVisitIfNeeded(alertTitle, alertMessage);
     },
     
@@ -54,7 +80,7 @@ export default AbstractEditController.extend(InventorySelection, PatientId, Pati
             if (nameParts.length >= 3) {
                 patientDetails.firstName = nameParts[0];
                 patientDetails.middleName = nameParts[1];            
-                patientDetails.lastName = nameParts.splice(3, nameParts.length).join(' ');
+                patientDetails.lastName = nameParts.splice(2, nameParts.length).join(' ');
             } else if (nameParts.length === 2) {
                 patientDetails.firstName = nameParts[0];
                 patientDetails.lastName = nameParts[1];                        
@@ -138,6 +164,15 @@ export default AbstractEditController.extend(InventorySelection, PatientId, Pati
             resolve();
         }
     },
+    
+    showUpdateButton: function() {        
+        var isFulfilled = this.get('isFulfilled');
+        if (isFulfilled) {
+            return false;
+        } else {
+            return this._super();
+        }
+    }.property('updateCapability', 'isFulfilled'),
     
     updateButtonText: function() {
         if (this.get('isFulfilling')) {

@@ -20,7 +20,7 @@
             </div>
         {{/if}}
     </div>
-    {{#if isRequested}}
+    {{#if isFulfilledOrRequested}}
         <div class="form-group">
             <label class="control-label">Medication</label>
             <p class="form-control-static">{{inventoryItem.name}}</p>        
@@ -28,27 +28,37 @@
     {{else}}
         {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required"}}
     {{/if}}
-    {{em-text property="prescription" label="Prescription" rows="3" class="required"}}
-    <div class="row">
-        {{date-picker property="prescriptionDate" label="Prescription Date" class="col-sm-4"}}
-    </div>
-    <div class="row">
-        {{em-input property="quantity" label="Quantity Requested" class=quantityClass }}          
-        {{em-input property="refills" label="Refills" class="col-xs-3"}}
-    </div>
-    {{em-text property="notes" label="Prescription Notes" rows="3"}}
-    {{#if isNew}}
-        {{#if canFulfill}}
-            <div class="form-group">            
-                <label class="control-label">Fulfill Request</label>
-             </div>
-            {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
+    {{#if isFulfilled}}
+        {{static-text label="Prescription" value=prescription }}
+        <div class="row">
+            {{#static-text label="Prescription Date" class="col-xs-4"}}
+                {{date-format prescriptionDate}}
+            {{/static-text}}
+            {{static-text label=quantityLabel class="col-xs-3" value=quantity }}            
+            {{static-text label="Refills" class="col-xs-3" value=refills }}
+        </div>
+    {{else}}
+        {{em-text property="prescription" label="Prescription" rows="3" class="required"}}
+        <div class="row">
+            {{date-picker property="prescriptionDate" label="Prescription Date" class="col-sm-4"}}
+        </div>
+        <div class="row">
+            {{em-input property="quantity" label=quantityLabel class=quantityClass }}          
+            {{em-input property="refills" label="Refills" class="col-xs-3"}}
+        </div>
+        {{#if isNew}}
+            {{#if canFulfill}}
+                <div class="form-group">            
+                    <label class="control-label">Fulfill Request</label>
+                 </div>
+                {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
+            {{/if}}
         {{/if}}
-    {{/if}}
-    {{#if isFulfilling}}
-        {{inventory-location-picker label="Pull From" quantityRequested=quantity
-            locationList=inventoryItem.availableLocations
-            selectedLocations=inventoryLocations
-        }}
+        {{#if isFulfilling}}
+            {{inventory-location-picker label="Pull From" quantityRequested=quantity
+                locationList=inventoryItem.availableLocations
+                selectedLocations=inventoryLocations
+            }}
+        {{/if}}
     {{/if}}
 {{/em-form}}
