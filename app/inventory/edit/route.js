@@ -19,6 +19,10 @@ export default AbstractEditRoute.extend(InventoryId, {
             this.controller.send('deletePurchase', purchase, deleteFromLocation);
         },
         
+        editNewItem: function() {
+            this.controller.send('editNewItem');
+        },
+        
         expirePurchase: function(purchase, deleteFromLocation) {
             this.controller.send('deletePurchase', purchase, deleteFromLocation, true);
         },

@@ -142,6 +142,10 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             this.send('closeModal');        
         },
         
+        editNewItem: function() {
+            this.send('editItem', this.get('id'));
+        },
+        
         showAdjustment: function(inventoryLocation) {
             inventoryLocation.setProperties({                
                 dateCompleted: new Date(),
@@ -315,6 +319,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             return new Ember.RSVP.Promise(function(resolve, reject){
                 model.validate().then(function() {
                     if (model.get('isValid')) {
+                        this.set('savingNewItem', true);
                         this.store.find('sequence', 'inventory_'+type).then(function(sequence) {
                             this._completeBeforeUpdate(sequence, resolve, reject);
                         }.bind(this), function() {
@@ -334,6 +339,11 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     },
     
     afterUpdate: function() {
-        this.displayAlert('Inventory Item Saved','The inventory item has been saved.');
+        var afterUpdateAction = null;
+        if (this.get('savingNewItem')) {
+            afterUpdateAction = 'editNewItem';
+            this.set('savingNewItem', false);
+        }
+        this.displayAlert('Inventory Item Saved','The inventory item has been saved.',afterUpdateAction);
     }
 });
