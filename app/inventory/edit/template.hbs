@@ -27,6 +27,7 @@
                     <th>Cost Per Unit</th>
                     <th>Original Quantity</th>
                     <th>Current Quantity</th>
+                    <th>Gift In Kind</th>
                     <th>Serial/Lot Number</th>
                     <th>Expiration Date</th>
                     <th>Vendor</th>
@@ -39,6 +40,9 @@
                         <td>{{costPerUnit}}</td>
                         <td>{{originalQuantity}}</td>
                         <td>{{currentQuantity}}</td>
+                        <td>
+                            {{#if giftInKind}}Y{{else}}N{{/if}}
+                        </td>
                         <td>{{lotNumber}}</td>                
                         <td>{{date-format expirationDate}}</td>
                         <td>{{vendor}}</td>
