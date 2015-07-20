@@ -4,6 +4,9 @@ export default AbstractModuleRoute.extend({
     additionalModels: [{ 
         name: 'imagingPricingTypes',
         findArgs: ['lookup','imaging_pricing_types']
+    }, {
+        name: 'radiologistList',
+        findArgs: ['lookup','radiologists'],
     }],
     allowSearch: false,
     moduleName: 'imaging',

@@ -141,6 +141,12 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
             pricing:  'type'
         }
     }, {
+        name: 'Radiologists',
+        value: 'radiologists',
+        model: {
+            imaging: 'radiologist'
+        }
+    }, {
         name: 'Vendor',
         value: 'vendor_list',
         models: {

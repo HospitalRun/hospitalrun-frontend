@@ -35,6 +35,10 @@
         {{/if}}
     </div>
     {{#if canComplete}}
+        {{select-or-typeahead property="radiologist"
+            label="Radiologist" list=radiologistList
+            prompt=" "
+        }}
         {{em-input property="result" label="Result"}}
     {{/if}}
     {{em-text property="notes" label="Notes" rows=3 }}

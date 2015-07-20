@@ -9,6 +9,7 @@ export default AbstractModel.extend(DateFormat, ResultValidation, {
     imagingType: DS.belongsTo('pricing'),
     notes: DS.attr('string'),
     patient: DS.belongsTo('patient'),
+    radiologist: DS.attr('string'),
     requestedBy: DS.attr('string'),
     requestedDate: DS.attr('date'),
     result: DS.attr('string'),

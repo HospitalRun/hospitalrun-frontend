@@ -36,10 +36,18 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         }
     }.property('canComplete', 'isValid'),
     
+    lookupListsToUpdate: [{
+        name: 'radiologistList',
+        property: 'radiologist',
+        id: 'radiologists'
+    }],
+    
     pricingTypeForObjectType: 'Imaging Procedure',
     pricingTypes: Ember.computed.alias('controllers.imaging.imagingPricingTypes'),
     
     pricingList: null, //This gets filled in by the route
+    
+    radiologistList: Ember.computed.alias('controllers.imaging.radiologistList'),
     
     imagingTypeChanged: function() {
         this.objectTypeChanged('imagingTypeName', 'imagingType');
