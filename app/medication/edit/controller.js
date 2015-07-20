@@ -82,6 +82,7 @@ export default AbstractEditController.extend(InventorySelection, PatientId, Pati
     },
     
     _addNewPatient: function() {        
+        this.displayAlert('Please Wait','Creating new patient...Please wait..');
         this._getNewPatientId().then(function(friendlyId) {
             var patientTypeAhead = this.get('patientTypeAhead'),
                 nameParts = patientTypeAhead.split(' '),
