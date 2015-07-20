@@ -47,7 +47,11 @@ export default Ember.Mixin.create({
             if (isNaN(value)) {
                 return;
             }
-            returnValue = Number(value).toFixed(2);
+            if (Math.round(value) === value) {
+                returnValue = Number(value).toString();
+            } else {
+                returnValue = Number(value).toFixed(2);
+            }
             if (returnAsNumber) {
                 return Number(returnValue);
             } else {
