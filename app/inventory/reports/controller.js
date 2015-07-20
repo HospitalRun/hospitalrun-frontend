@@ -476,20 +476,22 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 currentLocation = parentLocation;
             }
             for (var id in location.items) {
-                this._addReportRow({
-                    giftInKind: location.items[id].giftInKind,
-                    inventoryItem: location.items[id].item,
-                    quantity: location.items[id].quantity,
-                    locations: [{
-                        name: location.name
-                    }], 
-                    totalCost: location.items[id].totalCost,
-                    unitCost: location.items[id].unitCost
-                });
-                parentCount += this._getValidNumber(location.items[id].quantity);
-                locationCost += this._getValidNumber(location.items[id].totalCost);
-                this.incrementProperty('grandCost', this._getValidNumber(location.items[id].totalCost));
-                this.incrementProperty('grandQuantity', this._getValidNumber(location.items[id].quantity));
+                if (location.items[id].quantity > 0) {
+                    this._addReportRow({
+                        giftInKind: location.items[id].giftInKind,
+                        inventoryItem: location.items[id].item,
+                        quantity: location.items[id].quantity,
+                        locations: [{
+                            name: location.name
+                        }], 
+                        totalCost: location.items[id].totalCost,
+                        unitCost: location.items[id].unitCost
+                    });
+                    parentCount += this._getValidNumber(location.items[id].quantity);
+                    locationCost += this._getValidNumber(location.items[id].totalCost);
+                    this.incrementProperty('grandCost', this._getValidNumber(location.items[id].totalCost));
+                    this.incrementProperty('grandQuantity', this._getValidNumber(location.items[id].quantity));
+                }
             }
         }.bind(this));
         this._addTotalsRow('Total for %@: '.fmt(parentLocation), locationCost, parentCount);
