@@ -82,11 +82,19 @@ export default Ember.ArrayController.extend(DateFormat, ModalHelper, NumberForma
             dataArray = [reportHeaders];
         dataArray.addObjects(this.get('reportRows'));
         dataArray.forEach(function(reportRow) { 
-            if (reportRow.row) {                
-                csvRows.push('"'+reportRow.row.join('","')+'"');                
+            var rowToAdd;            
+            if (reportRow.row) {
+                rowToAdd = reportRow.row;
+                
             } else {
-                csvRows.push('"'+reportRow.join('","')+'"');
-            }
+                rowToAdd = reportRow;
+                
+            }            
+            rowToAdd = rowToAdd.map(function(column) {
+                return column.replace('"','""');
+                
+            });
+            csvRows.push('"'+rowToAdd.join('","')+'"');
         });
         var csvString = csvRows.join('\r\n');
         var uriContent = "data:application/csv;charset=utf-8," + encodeURIComponent(csvString);
