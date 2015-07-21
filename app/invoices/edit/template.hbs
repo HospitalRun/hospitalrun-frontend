@@ -213,6 +213,16 @@
 <div class="panel detail-section">
     <div class="panel-heading">
         <h3 class="panel-title">
+            Remarks            
+        </h3>
+    </div>
+    <div class="panel-body detail-section-content">
+        {{textarea class="form-control" value=remarks}}
+    </div>
+</div>
+<div class="panel detail-section">
+    <div class="panel-heading">
+        <h3 class="panel-title">
             Payments
             {{#if canAddPayment}}
                 <button class="btn btn-primary align-right" {{action "showAddPayment" this bubbles=false }}><span class="octicon octicon-plus"></span>Add Payment</button>

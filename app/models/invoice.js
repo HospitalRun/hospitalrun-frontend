@@ -11,6 +11,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     patientInfo: DS.attr('string'), //Needed for searching
     visit: DS.belongsTo('visit'),
     status: DS.attr('string'),
+    remarks: DS.attr('string'),
     billDate: DS.attr('date'),
     nationalInsurance: DS.attr('number'),
     paidTotal: DS.attr('number'),
