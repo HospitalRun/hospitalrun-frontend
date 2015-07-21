@@ -4,7 +4,7 @@ import LocationName from 'hospitalrun/mixins/location-name';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import NumberFormat from "hospitalrun/mixins/number-format";
 export default AbstractReportController.extend(LocationName, ModalHelper, NumberFormat, {
-    needs: ['pouchdb'],
+    needs: ['inventory','pouchdb'],
     effectiveDate: null,
     expenseCategories: ['Inventory Consumed', 'Gift In Kind Usage', 'Inventory Obsolence'],
     expenseMap: null,
@@ -12,6 +12,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     grandQuantity: 0,
     locationSummary: null,
     pouchdbController: Ember.computed.alias('controllers.pouchdb'),
+    warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     reportColumns: {
         date: {
             label: 'Date',
@@ -264,13 +265,19 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     
     _addLocationColumn: function(locations) {
         if (!Ember.isEmpty(locations)) {
-            return locations.map(function(location) {
-                if (location.name.indexOf(':') > -1) {
-                    return location.name.split(':')[0];
+            var returnLocations = [];
+            locations.forEach(function(location) {
+                var formattedName;
+                if (location.name.indexOf('From:') === 0) {
+                    formattedName = location.name;
                 } else {
-                    return location.name;
+                    formattedName = this._getWarehouseLocationName(location.name);
                 }
-            });
+                if (!returnLocations.contains(formattedName)) {
+                    returnLocations.push(formattedName);
+                }
+            }.bind(this));
+            return returnLocations;
         }
     },
     
@@ -464,37 +471,37 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             parentCount = 0;                    
         locationSummary = locationSummary.sortBy('name');
         locationSummary.forEach(function(location) {
-            if (location.name.indexOf(':') > -1) {
-                parentLocation = location.name.split(':')[0].trim();
-            } else {
-                parentLocation = location.name;
-            }
+            parentLocation = this._getWarehouseLocationName(location.name);
             if (currentLocation !== parentLocation) {
                 this._addTotalsRow('Total for %@: '.fmt(currentLocation), locationCost, parentCount);
                 parentCount = 0;
                 locationCost = 0;
                 currentLocation = parentLocation;
             }
-            for (var id in location.items) {
-                if (location.items[id].quantity > 0) {
-                    this._addReportRow({
-                        giftInKind: location.items[id].giftInKind,
-                        inventoryItem: location.items[id].item,
-                        quantity: location.items[id].quantity,
-                        locations: [{
-                            name: location.name
-                        }], 
-                        totalCost: location.items[id].totalCost,
-                        unitCost: location.items[id].unitCost
-                    });
-                    parentCount += this._getValidNumber(location.items[id].quantity);
-                    locationCost += this._getValidNumber(location.items[id].totalCost);
-                    this.incrementProperty('grandCost', this._getValidNumber(location.items[id].totalCost));
-                    this.incrementProperty('grandQuantity', this._getValidNumber(location.items[id].quantity));
+            if (this._includeLocation(parentLocation)) {
+                for (var id in location.items) {
+                    if (location.items[id].quantity > 0) {
+                        this._addReportRow({
+                            giftInKind: location.items[id].giftInKind,
+                            inventoryItem: location.items[id].item,
+                            quantity: location.items[id].quantity,
+                            locations: [{
+                                name: location.name
+                            }], 
+                            totalCost: location.items[id].totalCost,
+                            unitCost: location.items[id].unitCost
+                        });
+                        parentCount += this._getValidNumber(location.items[id].quantity);
+                        locationCost += this._getValidNumber(location.items[id].totalCost);
+                        this.incrementProperty('grandCost', this._getValidNumber(location.items[id].totalCost));
+                        this.incrementProperty('grandQuantity', this._getValidNumber(location.items[id].quantity));
+                    }
                 }
             }
         }.bind(this));
-        this._addTotalsRow('Total for %@: '.fmt(parentLocation), locationCost, parentCount);
+        if (parentCount > 0) {
+            this._addTotalsRow('Total for %@: '.fmt(parentLocation), locationCost, parentCount);
+        }
     },
     
     _generateExpirationReport: function() {
@@ -513,8 +520,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             inventoryPurchases.rows.forEach(function(purchase) {
                 if (purchase.doc.currentQuantity > 0 && !Ember.isEmpty(purchase.doc.expirationDate)) {
                     purchaseDocs.push(purchase.doc);
-                    inventoryIds.push(purchase.doc.inventoryItem);
-                    //promises.push(pouchdbController.getDocFromMainDB(purchase.id));
+                    inventoryIds.push(purchase.doc.inventoryItem);                    
                 }
             }.bind(this));
             this._getInventoryItems(inventoryIds).then(function(inventoryMap) {
@@ -522,7 +528,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                     var currentQuantity = purchase.currentQuantity,
                         expirationDate = new Date(purchase.expirationDate),
                         inventoryItem = inventoryMap[purchase.inventoryItem];
-                    if (inventoryItem) {
+                    if (inventoryItem && this._includeLocation(purchase.location)) {
                         reportRows.addObject([
                             inventoryItem.friendlyId,
                             inventoryItem.name,
@@ -664,7 +670,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                             break;
                         }
                         case 'daysLeft': {
-                            if (!Ember.isEmpty(inventoryRequests)) {
+                            if (!Ember.isEmpty(inventoryRequests) && this._hasIncludedLocation(row.locations)) {
                                 var consumedQuantity = inventoryRequests.reduce(function(previousValue, request) {
                                     if (request.transactionType === 'Fulfillment') {
                                         return previousValue += this._getValidNumber(request.quantity);
@@ -695,7 +701,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                         case 'summaryExpense': {
                             if (!Ember.isEmpty(inventoryRequests)) {
                                 inventoryRequests.forEach(function(request) { 
-                                    if (this._includeTransaction(reportType, request.transactionType)) {
+                                    if (this._includeTransaction(reportType, request.transactionType) && this._hasIncludedLocation(request.locationsAffected)) {
                                         var deliveryLocation = this.getDisplayLocationName(request.deliveryLocation, request.deliveryAisle),
                                             locations = [],
                                             totalCost = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit)); 
@@ -740,7 +746,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                         }
                         case 'summaryTransfer':
                         case 'summaryUsage': {
-                            if (!Ember.isEmpty(inventoryRequests)) {
+                            if (!Ember.isEmpty(inventoryRequests) && this._hasIncludedLocation(row.locations)) {
                                 row.quantity = inventoryRequests.reduce(function(previousValue, request) {
                                     if (this._includeTransaction(reportType, request.transactionType)) {
                                         var totalCost = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit)); 
@@ -763,23 +769,25 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                         case 'detailedPurchase': {
                             if (!Ember.isEmpty(inventoryPurchases)) {
                                 inventoryPurchases.forEach(function(purchase) {
-                                    var giftInKind = 'N';
-                                    if (purchase.giftInKind === true) {
-                                        giftInKind = 'Y';
+                                    if (this._includeLocation(purchase.location)) {
+                                        var giftInKind = 'N';
+                                        if (purchase.giftInKind === true) {
+                                            giftInKind = 'Y';
+                                        }
+                                        this._addReportRow({
+                                            date: moment(new Date(purchase.dateReceived)).format('l'),
+                                            giftInKind: giftInKind,
+                                            inventoryItem: row.inventoryItem,
+                                            quantity: purchase.originalQuantity,
+                                            unitCost: purchase.costPerUnit,
+                                            totalCost: purchase.purchaseCost,
+                                            locations: [{
+                                                name: this.getDisplayLocationName(purchase.location, purchase.aisleLocation)
+                                            }]
+                                        });
+                                        summaryCost += this._getValidNumber(purchase.purchaseCost);
+                                        summaryQuantity += this._getValidNumber(purchase.originalQuantity);
                                     }
-                                    this._addReportRow({
-                                        date: moment(new Date(purchase.dateReceived)).format('l'),
-                                        giftInKind: giftInKind,
-                                        inventoryItem: row.inventoryItem,
-                                        quantity: purchase.originalQuantity,
-                                        unitCost: purchase.costPerUnit,
-                                        totalCost: purchase.purchaseCost,
-                                        locations: [{
-                                            name: this.getDisplayLocationName(purchase.location, purchase.aisleLocation)
-                                        }]
-                                    });
-                                    summaryCost += this._getValidNumber(purchase.purchaseCost);
-                                    summaryQuantity += this._getValidNumber(purchase.originalQuantity);
                                 }.bind(this));
                                 this._addTotalsRow('Subtotal: ',summaryCost, summaryQuantity);
                                 this.incrementProperty('grandCost', summaryCost);
@@ -800,16 +808,18 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                                     }
                                     return previousValue += this._getValidNumber(purchase.originalQuantity);
                                 }.bind(this), 0);
-                                row.unitCost = (summaryCost/row.quantity);
-                                row.totalCost = summaryCost;
-                                this._addReportRow(row);
-                                this.incrementProperty('grandCost', summaryCost);
-                                this.incrementProperty('grandQuantity', row.quantity);
+                                if (this._hasIncludedLocation(row.locations)) {
+                                    row.unitCost = (summaryCost/row.quantity);
+                                    row.totalCost = summaryCost;
+                                    this._addReportRow(row);
+                                    this.incrementProperty('grandCost', summaryCost);
+                                    this.incrementProperty('grandQuantity', row.quantity);
+                                }
                             }
                             break;
                         }                                        
                         case 'valuation': {
-                            if (!Ember.isEmpty(inventoryPurchases)) {
+                            if (!Ember.isEmpty(inventoryPurchases) && this._hasIncludedLocation(row.locations)) {
                                 this._calculateCosts(inventoryPurchases, row);
                                 this.incrementProperty('grandCost', this._getValidNumber(row.totalCost));
                                 this.incrementProperty('grandQuantity', this._getValidNumber(row.quantity));
@@ -876,6 +886,48 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 resolve(inventoryMap);
             }, reject);
         });
+    },
+    
+    /**
+     * Pull the warehouse name out of a formatted location name that (may) include the aisle location
+     * @param {string} locationName the formatted location name.
+     * @return {string} the warehouse name.
+     */
+    _getWarehouseLocationName: function(locationName) {
+        var returnLocation = '';
+        if (locationName.indexOf(':') > -1) {
+            returnLocation = locationName.split(':')[0].trim();
+        } else {
+            returnLocation = locationName;
+        }
+        return returnLocation;
+    },
+    
+    /**
+     * Determines if any of the passed in location objects match the currently filtered location
+     * @param {array} locations list of location objects to check.
+     * @return {boolean} true if any of the locations match the filter; otherwise false.
+     */
+    _hasIncludedLocation: function(locations) {
+        var hasIncludedLocation = false;
+        locations.forEach(function(location) {
+            var locationName = this._getWarehouseLocationName(location.name);
+            if (this._includeLocation(locationName)) {
+                hasIncludedLocation = true;
+            }
+        }.bind(this));
+        return hasIncludedLocation;
+    },
+    
+    
+    /**
+     * Determine if the specified location should be included in the report
+     * @param {string} location the location to check for inclusion
+     * @return {boolean} true if the location should be included.
+     */
+    _includeLocation: function(location) {
+        var filterLocation = this.get('filterLocation');
+        return Ember.isEmpty(filterLocation) || location === filterLocation;        
     },
     
     /**

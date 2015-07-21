@@ -2,10 +2,15 @@
     <div class="panel-body">
         {{#em-form model=this submit_button=false }}
             <div class="row">
-                {{em-select class="col-xs-3" label="Report Type" 
+                {{em-select class="col-xs-6" label="Report Type" 
                     property="reportType" content=reportTypes
                     optionValuePath="content.value" optionLabelPath="content.name"
                     selected=reportType
+                }}
+                {{em-select class="col-xs-6" label="Location" 
+                    property="filterLocation" content=warehouseList.value
+                    optionValuePath="content" optionLabelPath="content"
+                    prompt=" "
                 }}
             </div>
             <div class="row">
