@@ -178,6 +178,9 @@ h3.panel-title {
 
 @media print {
     body { font-size: 10px; }
-
+    
+    body.ember-application { padding-left: 0; }
+    
     .panel-footer { display: none; }
+    
 }

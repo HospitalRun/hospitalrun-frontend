@@ -106,14 +106,20 @@
             </tr>
         </table>
         <table>
+            {{#if visit.dischargeInfo}}
             <tr>
-                <td class="col-xs-7">
-                    Remarks: {{visit.dischargeInfo}}
+                <td class="col-xs-12">
+                    Discharge Notes: {{visit.dischargeInfo}}
                 </td>
-                <td class="col-xs-5">
-                    I hereby acknowledge PHIC benefits
+            </tr>              
+            {{/if}}
+            {{#if remarks}}
+            <tr>
+                <td class="col-xs-12">
+                    Remarks: {{remarks}}
                 </td>
-            </tr>  
+            </tr>              
+            {{/if}}
             <tr>
                 <td class="col-xs-7"></td>
                 <td class="col-xs-5">were deducted during my confinement</td>
