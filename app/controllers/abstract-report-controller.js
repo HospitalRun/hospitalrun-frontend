@@ -91,7 +91,13 @@ export default Ember.ArrayController.extend(DateFormat, ModalHelper, NumberForma
                 
             }            
             rowToAdd = rowToAdd.map(function(column) {
-                return column.replace('"','""');
+                if (!column) {
+                    return '';
+                } else if (column.replace) {
+                    return column.replace('"','""');
+                } else {
+                    return column;
+                }
                 
             });
             csvRows.push('"'+rowToAdd.join('","')+'"');
