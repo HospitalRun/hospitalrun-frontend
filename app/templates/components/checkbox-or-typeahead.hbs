@@ -1,0 +1,24 @@
+{{#if userCanAdd}}
+    {{partial 'components/render-typeahead'}}
+{{else}}
+    <div {{bind-attr class=":required errors:has-error"}}>
+        <label class="control-label">{{label}}</label>
+    </div>
+    {{#each checkboxRow in checkboxRows}}
+        <div class="row">
+            <div class="col-xs-1"></div>        
+            {{#each checkbox in checkboxRow}}
+                <div class="checkbox col-xs-2">
+                <label>
+                    {{action-checkbox value=checkbox.value action="checkboxChanged"}}{{checkbox.label}}                    
+                </label>
+                </div>
+            {{/each}}
+        </div>
+    {{/each}}
+    {{#if errors}}
+        <div class="has-error">
+            <span class="help-block">{{errors}}</span>
+        </div>
+    {{/if}}
+{{/if}}
