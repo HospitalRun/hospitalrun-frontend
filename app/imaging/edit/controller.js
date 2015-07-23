@@ -9,8 +9,13 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     chargeRoute: 'imaging.charge',
     
     canComplete: function() {
-        return this.currentUserCan('complete_imaging');
-    }.property(),
+        var imagingTypeName = this.get('selectedImagingType');
+        if (Ember.isArray(imagingTypeName) && imagingTypeName.length >1) {
+            return false;
+        } else {
+            return this.currentUserCan('complete_imaging');
+        }
+    }.property('selectedImagingType.[]'),
     
     actions: {
         completeImaging: function() {
@@ -20,7 +25,42 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
                 this.set('imagingDate', new Date());
                 this.send('update');
             }
-        }
+        },
+
+        /**
+         * Save the imaging request(s), creating multiples when user selects multiple imaging tests.
+         */
+        update: function() {
+            if (this.get('isNew')) {
+                var newImaging = this.get('model'),
+                    selectedImagingType = this.get('selectedImagingType');
+                    if (Ember.isEmpty(this.get('status'))) {
+                        this.set('status', 'Requested');
+                    }
+                    this.set('requestedBy', newImaging.getUserName());
+                    this.set('requestedDate', new Date());
+                if (Ember.isEmpty(selectedImagingType)) {
+                    this.saveNewPricing(this.get('imagingTypeName'), 'Imaging','imagingType').then(function() {
+                        this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(function() {
+                            this.saveModel();
+                        }.bind(this));
+                    }.bind(this));
+                } else {
+                    this.getSelectedPricing('selectedImagingType').then(function(pricingRecords) {
+                        if (Ember.isArray(pricingRecords)) {
+                            this.createMultipleRequests(pricingRecords, 'imagingType','imaging', 'Imaging');
+                        } else {
+                            this.set('imagingType', pricingRecords);
+                            this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(function() {
+                                this.saveModel();
+                            }.bind(this));
+                        }
+                    }.bind(this));
+                }
+            } else {
+               this.saveModel();
+            }
+        } 
     },
     
     additionalButtons: function() {
@@ -49,30 +89,12 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     
     radiologistList: Ember.computed.alias('controllers.imaging.radiologistList'),
     
-    imagingTypeChanged: function() {
-        this.objectTypeChanged('imagingTypeName', 'imagingType');
-    }.observes('imagingType'),
-    
-    imagingTypeNameChanged: function() {
-        this.objectTypeNameChanged('imagingTypeName', 'selectedImagingType');
-    }.observes('imagingTypeName'),
-    
-    showCharges: function() {
-        var imagingType = this.get('imagingType'),
-            patient = this.get('patient'),
-            visit = this.get('visit');
-        return (!Ember.isEmpty(imagingType) && !Ember.isEmpty(patient) && 
-                !Ember.isEmpty(visit));            
-    }.property('imagingType','patient', 'visit'),
-    
     updateCapability: 'add_imaging',    
     
-    selectedImagingTypeChanged: function() {
-        this.selectedObjectTypeChanged('selectedImagingType', 'imagingType'); 
-    }.observes('selectedImagingType'),
-    
-    afterUpdate: function() {
-         var alertTitle,
+    afterUpdate: function(saveResponse, multipleRecords) {
+        this.updateLookupLists();
+        var afterDialogAction,
+            alertTitle,
             alertMessage;
         if (this.get('status') === 'Completed') {
             alertTitle = 'Imaging Request Completed';
@@ -81,33 +103,11 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
             alertTitle = 'Imaging Request Saved';
             alertMessage = 'The imaging request has been saved.';
         }
-        this.saveVisitIfNeeded(alertTitle, alertMessage);
-        this.set('selectPatient', false);
-    },
-    
-    beforeUpdate: function() {
-        if (!this.get('isValid')) {
-            return Ember.RSVP.reject();
+        if (multipleRecords) {
+            afterDialogAction = 'allItems';
         }
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            this.updateCharges().then(function() {
-                if (this.get('isNew')) {
-                    var newImaging = this.get('model');
-                    this.set('status', 'Requested');
-                    this.set('requestedBy', newImaging.getUserName());
-                    this.set('requestedDate', new Date());            
-                    if (this.get('newObjectType')) {                        
-                        this.saveNewPricing(this.get('imagingTypeName'), 'Imaging','imagingType').then(function() {
-                            this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(resolve, reject);
-                        }.bind(this), reject);
-                    } else {
-                        return this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(resolve, reject);
-                    }
-                } else {
-                    resolve();
-                }
-            }.bind(this), reject);
-        }.bind(this), 'beforeUpdate on imaging edit');
+        this.saveVisitIfNeeded(alertTitle, alertMessage, afterDialogAction);
+        this.set('selectPatient', false);
     }
     
 });

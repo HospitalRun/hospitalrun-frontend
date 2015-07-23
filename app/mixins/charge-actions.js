@@ -88,29 +88,6 @@ export default Ember.Mixin.create({
             });
         return chargeForItem;
     },
-    
-    newObjectType: false,
-    
-    objectTypeChanged: function(objectTypeNameField, typeField) {
-        var isNew = this.get('isNew'),
-            objectTypeName = this.get(objectTypeNameField),
-            objectType = this.get(typeField);
-        if (isNew) {
-            if(objectTypeName instanceof Object) {
-               this.set('newObjectType', false);
-            } else {
-                if (!Ember.isEmpty(objectType)) {
-                    this.set('newObjectType', false);
-                    if (objectType.get('name') !== objectTypeName) {
-                        this.set(objectTypeNameField, objectType.get('name'));
-                    }
-                } else {
-                    this.set('newObjectType', true);
-                }
-            }
-        }
-    },
-
     /**
      * Returns object types out of the pricing list.
      * Used for labs and imaging where the labs and imaging types are
@@ -129,15 +106,7 @@ export default Ember.Mixin.create({
         }
         return returnList;
     }.property('pricingList','pricingTypeForObjectType','pricingTypeValues'),
-    
-    objectTypeNameChanged: function(objectTypeNameField, selectedField) {
-        var isNew = this.get('isNew'),
-            objectTypeName = this.get(objectTypeNameField);
-        if (isNew && objectTypeName instanceof Object) {
-            this.set(selectedField, objectTypeName);
-        }
-    },
-    
+
     organizeByType: Ember.computed.alias('pricingTypes.organizeByType'),
         
     pricingTypeList: function() {
@@ -151,6 +120,51 @@ export default Ember.Mixin.create({
     }.property('pricingTypeValues','pricingTypeForObjectType'),
     
     pricingTypeValues: Ember.computed.alias('pricingTypes.value'),
+    
+    /**
+     * Create multiple new request records from the pricing records passed in.  This function 
+     * will also add those new records to the specified visit.
+     * @param {array} pricingRecords the list of pricing records to use to create request records from.
+     * @param {string} pricingField the name of the field on the request record to set the pricing record on.
+     * @param {string} visitChildName the name of the child object on the visit to add to.
+     * @param {string} newVisitType if a new visit needs to be created, what type of visit
+     * should be created. 
+     */
+    createMultipleRequests: function(pricingRecords, pricingField, visitChildName, newVisitType) {
+        var addPromises = [],
+            attributesToSave = {},        
+            baseModel = this.get('model'),
+            modelToSave,
+            patient = this.get('patient'),
+            visit = this.get('visit');
+        
+        if (Ember.isEmpty(visit)) {
+            visit = this.createNewVisit(newVisitType);
+        }
+        baseModel.eachAttribute(function(name) {
+            attributesToSave[name] = baseModel.get(name);
+        });
+        
+        pricingRecords.forEach(function(pricingRecord) {
+            modelToSave = this.store.createRecord(newVisitType.toLowerCase(), attributesToSave); 
+            modelToSave.set(pricingField, pricingRecord);
+            modelToSave.set('patient', patient);
+            modelToSave.set('visit', visit);
+            addPromises.push(this.addChildToVisit(modelToSave, visitChildName, newVisitType));
+        }.bind(this));
+        
+        Ember.RSVP.all(addPromises).then(function(results) {
+            var savePromises = [];
+            results.forEach(function(newObject) {
+                console.log("Results are:", newObject);
+                savePromises.push(newObject.save());
+            });
+            Ember.RSVP.all(savePromises).then(function(saveResponse) {
+                this.set('visit', visit); //Make sure the visit is properly set for saving
+                this.afterUpdate(saveResponse, true);
+            }.bind(this));
+        }.bind(this));
+    },
     
     saveNewPricing: function(pricingName, pricingCategory, priceObjectToSet) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -172,17 +186,21 @@ export default Ember.Mixin.create({
         }.bind(this), 'saveNewPricing for: '+pricingName);        
     },
        
-    selectedObjectTypeChanged: function(selectedField, typeField) {
-        var isNew = this.get('isNew'),
-            selectedItem = this.get(selectedField);
-        if (isNew) {
-            if (!Ember.isEmpty(selectedItem)) {            
-                this.store.find('pricing', selectedItem._id.substr(8)).then(function(item) {
-                    this.set(typeField, item);
-                }.bind(this));
-            } else {
-               this.set(typeField);
-            }
+    getSelectedPricing: function(selectedField) {
+        var selectedItem = this.get(selectedField); 
+        if (!Ember.isEmpty(selectedItem)) {
+            return new Ember.RSVP.Promise(function(resolve, reject) {
+                if (Ember.isArray(selectedItem)) {
+                    var pricingIds = selectedItem.map(function(pricingItem) {
+                        return pricingItem._id.substr(8);
+                    });
+                    this.store.findByIds('pricing', pricingIds).then(resolve, reject);
+                } else {
+                    this.store.find('pricing', selectedItem._id.substr(8)).then(resolve, reject);
+                }
+            }.bind(this));
+        } else {
+           return Ember.RSVP.resolve();
         }
     },
   

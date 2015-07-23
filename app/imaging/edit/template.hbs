@@ -3,37 +3,37 @@
         {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
     {{else}}
         {{patient-summary patient=patient returnTo='imaging.edit' returnToContext=id disablePatientLink=isNew }}
-    {{/if}}
-    <div class="row">
-        {{#if isNew}}
+    {{/if}}    
+    {{#if isNew}}
+        <div class="row">
             {{em-select class="col-xs-3 required" label="Visit" 
                 property="visit" content=patientVisits
                 optionValuePath="content" optionLabelPath="content.visitDescription"
                 prompt="--Add New Visit--"
                 selected=visit
             }}
-        {{else}}        
+        </div>
+        {{checkbox-or-typeahead property="imagingTypeName" 
+            label="Imaging Type" list=objectTypeList
+            selection=selectedImagingType
+            optionLabelPath='content.name'
+            typeAheadType='pricing'
+            class="required"
+            prompt=" "
+            model=model
+        }}
+    {{else}}
+        <div class="row">
             <div class="form-group col-xs-3">
                 <label>Visit</label>
                 <p class="form-control-static">{{visit.visitDate}}</p>
             </div>
-        {{/if}}
-        {{#if isNew}}
-            {{select-or-typeahead property="imagingTypeName" 
-                label="Imaging Type" list=objectTypeList
-                selection=selectedImagingType
-                optionLabelPath='content.name'
-                typeAheadType='pricing'
-                class="required col-xs-9"
-                prompt=" "
-            }}
-        {{else}}
             <div class="form-group col-xs-9">
                 <label>Imaging Type</label>
                 <p class="form-control-static">{{imagingType.name}}</p>
             </div>
-        {{/if}}
-    </div>
+        </div>
+    {{/if}}
     {{#if canComplete}}
         {{select-or-typeahead property="radiologist"
             label="Radiologist" list=radiologistList

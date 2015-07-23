@@ -107,12 +107,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
          */
         update: function(skipAfterUpdate) {
             this.beforeUpdate().then(function() {
-                this.get('model').save().then(function(record){
-                    this.updateLookupLists();
-                    if (!skipAfterUpdate) {
-                        this.afterUpdate(record);
-                    }
-                }.bind(this));
+                this.saveModel(skipAfterUpdate);
             }.bind(this));
         }
     },
@@ -130,7 +125,21 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
      */
     beforeUpdate: function() {
         return Ember.RSVP.Promise.resolve();
-    },    
+    },
+    
+    /**
+     * Save the model and then (optionally) run the after update.
+     * @param skipAfterUpdate boolean (optional) indicating whether or not 
+     * to skip the afterUpdate call.
+     */
+    saveModel: function(skipAfterUpdate) {
+        this.get('model').save().then(function(record){
+            this.updateLookupLists();
+            if (!skipAfterUpdate) {
+                this.afterUpdate(record);
+            }
+        }.bind(this));
+    },
     
     /**
      * Update any new values added to a lookup list
