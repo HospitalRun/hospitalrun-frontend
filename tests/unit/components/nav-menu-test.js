@@ -1,21 +1,40 @@
 import {
-  moduleForComponent,
-  test
-} from 'ember-qunit';
+  test, moduleForComponent
+}
+from 'ember-qunit';
+import startApp from '../../helpers/start-app';
 
-moduleForComponent('nav-menu', 'NavMenuComponent', {
-  // specify the other units that are required for this test
-  // needs: ['component:foo', 'helper:bar']
-});
+moduleForComponent('nav-menu', 'NavMenuComponent', {});
 
-test('it renders', function() {
+test('it renders', function(assert) {
+
   expect(2);
 
-  // creates the component instance
-  var component = this.subject();
-  equal(component._state, 'preRender');
+  var startingMenu = {
+    title: 'Inventory',
+    iconClass: 'octicon-package',
+    route: 'inventory',
+    capability: 'inventory',
+    subnav: [{
+      title: 'Requests',
+      iconClass: 'octicon-chevron-right',
+      route: 'inventory.index',
+      capability: 'add_inventory_request'
+    }, {
+      title: 'Items',
+      iconClass: 'octicon-chevron-right',
+      route: 'inventory.listing',
+      capability: 'inventory'
+    }]
+  };
 
-  // appends the component to the page
+  // creates the component instance
+  var navMenuProperties = { nav: startingMenu };
+  var navMenu = this.subject( navMenuProperties );
+  equal(navMenu._state, 'preRender');
+
+  // appends the navMenu to the page
   this.append();
-  equal(component._state, 'inDOM');
+  equal(navMenu._state, 'inDOM');
+
 });
