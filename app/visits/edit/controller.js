@@ -56,7 +56,12 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     canDeleteVitals: function() {        
         return this.currentUserCan('delete_vitals');
     }.property(),
-
+    
+    disabledAction: function() {
+        this.get('model').validate();
+        this._super();
+    }.property('endDate', 'startDate', 'isValid'),
+    
     isAdmissionVisit: function() {
         var visitType = this.get('visitType'),
             isAdmission = (visitType === 'Admission');
