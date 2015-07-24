@@ -8,6 +8,10 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, UserSession, VisitTypes, {
     needs: 'visits',
+    
+    canAddAppointment: function() {        
+        return this.currentUserCan('add_appointment');
+    }.property(),    
 
     canAddImaging: function() {
         return this.currentUserCan('add_imaging');
@@ -246,6 +250,19 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
                 dateRecorded: new Date()
             });
             this.send('openModal', 'visits.vitals.edit', newVitals);
+        },
+        
+        newAppointment: function() {
+            var now = moment().hours(8).minutes(0).seconds(0).toDate();
+            var newAppointment = this.get('store').createRecord('appointment', {
+                patient: this.get('patient'),
+                startDate: now,
+                endDate: now,
+                returnToVisit: true,
+                visit: this.get('model')                
+            });
+            newAppointment.set('returnToVisit', true);
+            this.transitionToRoute('appointments.edit', newAppointment);
         },
         
         newImaging: function() {
