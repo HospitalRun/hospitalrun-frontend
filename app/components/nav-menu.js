@@ -20,8 +20,8 @@ export default Ember.Component.extend(UserSession, {
     }.property("nav"),
 
     /**
-    isShowing Current visibility state of the nav menu item.
-    @attribute
+    Current visibility state of the nav menu item.
+    @attribute isShowing
     */
     isShowing: false,
 
