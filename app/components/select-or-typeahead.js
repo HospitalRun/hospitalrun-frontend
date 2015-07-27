@@ -1,8 +1,7 @@
 import Ember from "ember";
 export default Ember.Component.extend({
     name: "select-or-typeahead",
-    class: null,
-    content: null,
+    class: null,    
     hint: true,
     label: null,
     list: null,
@@ -13,25 +12,24 @@ export default Ember.Component.extend({
     selection: null,
     setOnBlur: true,
     typeAheadType: null,
-    userCanAdd: true, 
     
-     /**
-     * If list is set, pull the value as the content
-     * and the userCanAdd flag from the list.
-     */
-    _setup: function() {
-        this.listChanged();
-     }.on('init'),
-    
-    listChanged: function() {
+    content: function() {
         var list = this.get('list');
         if (!Ember.isEmpty(list) && list.get) {
-            this.set('content', list.get('value'));
-            this.set('userCanAdd', list.get('userCanAdd'));
-        }        
-    }.observes('list'),
-    
+            return list.get('value');
+        }
+    }.property('list'),
+            
     usePricingTypeAhead: function() {
         return (this.get('typeAheadType') === 'pricing');
-    }.property('typeAheadType')
+    }.property('typeAheadType'),
+    
+    userCanAdd: function() {
+        var list = this.get('list');
+        if (!Ember.isEmpty(list) && list.get) {            
+           return list.get('userCanAdd');
+        } else {
+            return true;
+        }
+    }.property('list')
 });

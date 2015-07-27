@@ -1,41 +1,41 @@
 {{#em-form model=this submit_button=false }}
-    
     {{#if selectPatient}}
         {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
     {{else}}
         {{patient-summary patient=patient returnTo='labs.edit' returnToContext=id disablePatientLink=isNew }}
     {{/if}}
-    <div class="row">
-        {{#if isNew}}
+    
+    {{#if isNew}}
+        <div class="row">
             {{em-select class="col-xs-3 required" label="Visit" 
                 property="visit" content=patientVisits
                 optionValuePath="content" optionLabelPath="content.visitDescription"
                 prompt="--Add New Visit--"
                 selected=visit
             }}
-        {{else}}        
+        </div>
+        {{checkbox-or-typeahead property="labTypeName" 
+            label="Lab Type" list=objectTypeList
+            selection=selectedLabType
+            optionLabelPath='content.name'
+            typeAheadType='pricing'
+            class="required"
+            prompt=" "
+            model=model
+        }}    
+    {{else}}  
+        <div class="row">
             <div class="form-group col-xs-3">
                 <label>Visit</label>
                 <p class="form-control-static">{{visit.visitDate}}</p>
             </div>
-        {{/if}}
-
-        {{#if isNew}}
-            {{select-or-typeahead property="labTypeName" 
-                label="Lab Type" list=objectTypeList
-                selection=selectedLabType
-                optionLabelPath='content.name'
-                typeAheadType='pricing'
-                class="required col-xs-6"
-                prompt=" "
-            }}
-        {{else}}
             <div class="form-group col-xs-6">
                 <label>Lab Type</label>
                 <p class="form-control-static">{{labType.name}}</p>
             </div>
-        {{/if}}
-    </div>
+        </div>
+    {{/if}}
+
     {{#if canComplete}}
         {{em-input property="result" label="Result"}}
     {{/if}}

@@ -28,24 +28,16 @@ export default Ember.Mixin.create(PatientVisits, {
     addChildToVisit: function(objectToAdd, childName, newVisitType) {
         return new Ember.RSVP.Promise(function(resolve, reject){
             var childPromises = [],
-                patient = this.get('patient'),               
                 visit = this.get('visit');
             if (Ember.isEmpty(visit)) {
-                visit = this.get('store').createRecord('visit', {
-                    startDate: new Date(),
-                    endDate: new Date(),
-                    outPatient: true,
-                    patient: patient,
-                    visitType: newVisitType
-                });
-                this.set('visit', visit);                            
+                visit = this.createNewVisit(newVisitType);
             }
             childPromises.addObjects(this.resolveVisitChildren());
             Ember.RSVP.all(childPromises, 'Resolved visit children before adding new '+childName).then(function() {        
                 visit.get(childName).then(function(visitChildren) {
                     visitChildren.addObject(objectToAdd);
                     this.set('needToUpdateVisit', true);
-                    resolve();
+                    resolve(objectToAdd);
                 }.bind(this), reject);
             }.bind(this), reject);
         }.bind(this));
@@ -63,6 +55,19 @@ export default Ember.Mixin.create(PatientVisits, {
         }
     }.property('returnToPatient', 'returnToVisit'),
     
+    createNewVisit: function(newVisitType) {
+        var patient = this.get('patient'),
+            visit = this.get('store').createRecord('visit', {
+            startDate: new Date(),
+            endDate: new Date(),
+            outPatient: true,
+            patient: patient,
+            visitType: newVisitType
+        });
+        this.set('visit', visit);
+        return visit;
+    },
+
     patientId: Ember.computed.alias('patient.id'),
     
     patientChanged: function() {
@@ -143,14 +148,14 @@ export default Ember.Mixin.create(PatientVisits, {
      * @param alertTitle String the title to use on the alert.
      * @param alertMessage String the message to display in the alert.
      */
-    saveVisitIfNeeded: function(alertTitle, alertMessage) {
+    saveVisitIfNeeded: function(alertTitle, alertMessage, alertAction) {
         if (this.get('needToUpdateVisit')) {
             this.get('visit').save().then(function() {
                 this.set('needToUpdateVisit', false);
-                this.displayAlert(alertTitle, alertMessage);    
+                this.displayAlert(alertTitle, alertMessage, alertAction);    
             }.bind(this));
         } else {
-            this.displayAlert(alertTitle, alertMessage);    
+            this.displayAlert(alertTitle, alertMessage, alertAction);    
         }
     }, 
         

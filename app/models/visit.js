@@ -1,6 +1,23 @@
 import AbstractModel from "hospitalrun/models/abstract";
 import Ember from "ember";
 
+function dateAcceptance(object) {
+    if (!object.get('isDirty')) {
+        return false;
+    }
+    var startDate = object.get('startDate'),
+        endDate = object.get('endDate');
+    if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
+        //Can't validate if empty
+        return false;
+    } else {
+        if (endDate.getTime() <  startDate.getTime()) {
+            return true;
+        }
+    }
+    return false;
+}
+
 export default AbstractModel.extend({
     additionalDiagnoses: DS.attr(), //Yes, the plural of diagnosis is diagnoses!
     charges: DS.hasMany('proc-charge'),
@@ -60,28 +77,18 @@ export default AbstractModel.extend({
         endDate: {
             acceptance: {
                 accept: true,
-                    if: function(object) {
-                        if (!object.get('isDirty')) {
-                            return false;
-                        }
-                        var startDate = object.get('startDate'),
-                            endDate = object.get('endDate');
-                        if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
-                            //Can't validate if empty
-                            return false;
-                        } else {
-                            if (endDate.getTime() <  startDate.getTime()) {
-                                return true;
-                            }
-                        }
-                        return false;
-                    }, 
+                if: dateAcceptance,    
                 message: 'Please select an end date later than the start date'
             }
         },
         
         startDate: {
-            presence: true
+            acceptance: {
+                accept: true,
+                if: dateAcceptance,    
+                message: 'Please select a start date earlier than the end date'
+            },
+            presence: true            
         },
         visitType: {
             presence: true

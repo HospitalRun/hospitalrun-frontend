@@ -345,11 +345,25 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         lineItems.addObject(lineItem);
         
         lineItem = this.store.createRecord('billing-line-item', {
-            name: 'Others/Misc',
+            name: 'Ward Items',
             category: 'Hospital Charges'
         });
         lineItem.get('details').addObjects(this.get('wardCharges'));
         lineItems.addObject(lineItem);
+
+        lineItem = this.store.createRecord('billing-line-item', {
+            name: 'Physical Therapy',
+            category: 'Hospital Charges'
+        });        
+        lineItems.addObject(lineItem);
+        
+        lineItem = this.store.createRecord('billing-line-item', {
+            name: 'Others/Misc',
+            category: 'Hospital Charges'
+        });        
+        lineItems.addObject(lineItem);        
+        
+        
         this.send('update', true);
     },
     

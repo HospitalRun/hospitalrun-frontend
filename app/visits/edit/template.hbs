@@ -5,6 +5,9 @@
                 <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-info">
                     Visit Information
                 </a>
+                 {{#if canAddAppointment}}
+                    <button type="button" class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}><span class="octicon octicon-plus"></span> New Appointment</button>
+                {{/if}}
             </h3>
         </div>
         <div id="visit-info" class="panel-collapse collapse in">

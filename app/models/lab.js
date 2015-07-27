@@ -30,7 +30,8 @@ export default AbstractModel.extend(DateFormat, ResultValidation, {
                     if (object.get('isNew')) {
                         return true;
                     }
-                }
+                },
+                message: 'Please select a lab type'
             }
         },        
         patientTypeAhead: PatientValidation.patientTypeAhead,
