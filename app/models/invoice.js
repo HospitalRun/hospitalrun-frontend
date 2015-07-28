@@ -1,5 +1,6 @@
 import AbstractModel from 'hospitalrun/models/abstract';
 import DateFormat from 'hospitalrun/mixins/date-format';
+import DS from 'ember-data';
 import Ember from 'ember';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import PatientValidation from 'hospitalrun/utils/patient-validation';
@@ -7,9 +8,13 @@ import PatientValidation from 'hospitalrun/utils/patient-validation';
 export default AbstractModel.extend(DateFormat, NumberFormat, {
     discount: DS.attr('number'),
     externalInvoiceNumber: DS.attr('string'),
-    patient: DS.belongsTo('patient'),
+    patient: DS.belongsTo('patient', {
+      async: false
+    }),
     patientInfo: DS.attr('string'), //Needed for searching
-    visit: DS.belongsTo('visit'),
+    visit: DS.belongsTo('visit', {
+      async: false
+    }),
     status: DS.attr('string'),
     remarks: DS.attr('string'),
     billDate: DS.attr('date'),
@@ -17,12 +22,18 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     paidTotal: DS.attr('number'),
     paidFlag: DS.attr('boolean', {defaultValue: false}),
     patientResponsibility: DS.attr('number'),
-    paymentProfile: DS.belongsTo('price-profile'),
+    paymentProfile: DS.belongsTo('price-profile', {
+      async: false
+    }),
     /*payments track the number of payment events attached to an invoice.*/
-    payments: DS.hasMany('payment'),
+    payments: DS.hasMany('payment', {
+      async: false
+    }),
     privateInsurance: DS.attr('number'),
     /*the individual line items of the invoice*/
-    lineItems: DS.hasMany('billing-line-item'),
+    lineItems: DS.hasMany('billing-line-item', {
+      async: false
+    }),
         
     addPayment: function(payment) {
         var payments = this.get('payments');

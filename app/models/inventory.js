@@ -1,4 +1,5 @@
-import AbstractModel from "hospitalrun/models/abstract";
+import AbstractModel from 'hospitalrun/models/abstract';
+import DS from 'ember-data';
 var validateIfNewItem = {
     if: function validateNewItem(object) {
         var skipSavePurchase = object.get('skipSavePurchase');
@@ -7,8 +8,12 @@ var validateIfNewItem = {
     }
 };
 export default AbstractModel.extend({
-    purchases: DS.hasMany('inv-purchase'),
-    locations: DS.hasMany('inv-location'),
+    purchases: DS.hasMany('inv-purchase', {
+      async: false
+    }),
+    locations: DS.hasMany('inv-location', {
+      async: false
+    }),
     description: DS.attr('string'),
     friendlyId: DS.attr('string'),
     keywords: DS.attr(),

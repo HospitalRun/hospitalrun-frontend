@@ -9,6 +9,7 @@ export default Ember.Controller.extend(PouchAdapterUtils, {
     isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
     mainDB: null, //Server DB
     configDB: null, //Initializer will set this up.
+    setMainDB: false,
     
     /**
      * Get the file link information for the specifed recordId.
@@ -34,6 +35,7 @@ export default Ember.Controller.extend(PouchAdapterUtils, {
             throw err;
         } else {
             this.set('mainDB', db);
+            this.set('setMainDB', true);
             //this._setupSync();
         }
     },
@@ -108,13 +110,15 @@ export default Ember.Controller.extend(PouchAdapterUtils, {
             new PouchDB(dbUrl, pouchOptions, function(err, db) {                
                 if (err) {
                     Ember.run.later(this, function() {
-                        this.get('session').invalidate();
+                        var session = this.get('session');
+                        if (!Ember.isEmpty(session) && session.isAuthenticated) {
+                            session.invalidate();
+                        }
                     });
                     reject(err);            
                 } else {
                     createPouchViews(db);
                     this._gotServerMainDB(err, db);
-                    this.get('applicationAdapter').set('db', db);
                     resolve({
                         mainDB: db, 
                         //localDB: localMainDB

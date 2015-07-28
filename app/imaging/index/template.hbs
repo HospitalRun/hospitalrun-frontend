@@ -9,7 +9,7 @@
                 <th>Actions</th>
             {{/if}}
         </tr>
-        {{#with this as parentController}}
+        {{#with this as |parentController|}}
             {{#each}}
                 <tr {{action 'editItem' this}}>
                     <td>{{date-format requestedDate}}</td>

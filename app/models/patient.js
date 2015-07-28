@@ -1,13 +1,13 @@
-import AbstractModel from "hospitalrun/models/abstract";
+import AbstractModel from 'hospitalrun/models/abstract';
 import DOBDays from 'hospitalrun/mixins/dob-days';
-import EmailValidation from "hospitalrun/utils/email-validation";
-import Ember from "ember";
+import EmailValidation from 'hospitalrun/utils/email-validation';
+import Ember from 'ember';
+import DS from 'ember-data';
 import PatientName from 'hospitalrun/mixins/patient-name';
 
 export default AbstractModel.extend(DOBDays, PatientName, {
     admitted: DS.attr('boolean', {defaultValue: false}),
-    additionalContacts: DS.attr(),
-    additionalData: DS.attr(null,{defaultValue:{}}), //Additional data will be used to store custom data per install.
+    additionalContacts: DS.attr(),    
     address: DS.attr('string'),
     address2: DS.attr('string'),
     address3: DS.attr('string'),
@@ -36,10 +36,12 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     middleName:  DS.attr('string'),
     notes: DS.attr('string'),  
     otherIncome: DS.attr('string'),
-    payments: DS.hasMany('payment', { async: true }),
+    payments: DS.hasMany('payment'),
     patientType: DS.attr('string'),
     parent: DS.attr('string'),
-    paymentProfile: DS.belongsTo('price-profile'),
+    paymentProfile: DS.belongsTo('price-profile', {
+      async: false
+    }),
     phone:  DS.attr('string'),
     placeOfBirth: DS.attr('string'),
     referredDate: DS.attr('date'),

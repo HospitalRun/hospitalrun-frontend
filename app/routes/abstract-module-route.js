@@ -1,9 +1,10 @@
-import Ember from "ember";
-import UserSession from "hospitalrun/mixins/user-session";
+import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
+import Ember from 'ember';
+import UserSession from 'hospitalrun/mixins/user-session';
 /**
  * Abstract route for top level modules (eg patients, inventory, users)
  */
-export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRouteMixin, {
+export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
     addCapability: null,
     additionalModels: null,
     allowSearch: true,

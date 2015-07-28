@@ -10,7 +10,7 @@ export default Ember.Mixin.create({
             if (err.status === 401) {
                 //User is unauthorized; reload to force login.                
                 var session = this.get('session');
-                if (!Ember.isEmpty(session)) {
+                if (!Ember.isEmpty(session) && session.isAuthenticated) {
                     session.invalidate();
                 }
             }

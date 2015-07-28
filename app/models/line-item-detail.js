@@ -1,4 +1,5 @@
 import AbstractModel from 'hospitalrun/models/abstract';
+import DS from 'ember-data';
 import Ember from 'ember';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 
@@ -10,7 +11,9 @@ export default AbstractModel.extend(NumberFormat,{
     expenseAccount: DS.attr('string'),
     name: DS.attr('string'),
     price: DS.attr('number'),
-    pricingItem: DS.belongsTo('pricing'),
+    pricingItem: DS.belongsTo('pricing', {
+      async: false
+    }),
     quantity: DS.attr('number'),
     total: DS.attr('number'),
     

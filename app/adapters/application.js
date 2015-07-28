@@ -1,8 +1,21 @@
 import Ember from "ember";
-import PouchDb from "hospitalrun/mixins/pouchdb";
+import { Adapter } from 'ember-pouch';
 import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 
-export default DS.PouchDBAdapter.extend(PouchDb, PouchAdapterUtils, {
+//var defaultDB = new PouchDB('main');
+
+export default Adapter.extend(PouchAdapterUtils, {
+    mainDB: Ember.computed.alias('pouchController.mainDB'),
+    db:  Ember.computed.alias('pouchController.mainDB'),
+    /*dbChanged: function() {
+        var db = this.get('mainDB'),
+            setMainDB = this.get('setMainDB');
+        if (setMainDB) {
+            console.log('MainDB DB CHANGED',db,this.toString());
+            this.set('db', db);ff
+        }
+    }.observes('pouchController.setMainDB'),*/
+    
     _specialQueries: [
         'containsValue',
         'mapReduce',
@@ -51,16 +64,21 @@ export default DS.PouchDBAdapter.extend(PouchDb, PouchAdapterUtils, {
         }.bind(this));
     },
     
-    _handleQueryResponse: function(resolve, response, store, type, options) {
-        if (response.rows) {
-            var data = Ember.A(response.rows).mapBy('doc');
-            if(Ember.isNone(options.embed)) {
-                options.embed = true;
+    _handleQueryResponse: function(response, store, type) {
+        var db = this.get('db');
+        return new Ember.RSVP.Promise(function(resolve, reject){
+            if (response.rows.length > 0) {
+                var ids = response.rows.map(function(row) {
+                    var docIdParts = db.rel.parseDocID(row.id);
+                    return docIdParts.id;
+                });
+                this.find(store, type, ids).then(resolve, reject);
+            } else {
+                var emptyResponse = {};
+                emptyResponse[type.modelName] = [];
+                resolve(emptyResponse);
             }
-            this._resolveRelationships(store, type, data, options).then(function(data){
-                resolve(data);
-            }.bind(this));
-        }
+        }.bind(this));
     },
     
     /**
@@ -80,6 +98,8 @@ export default DS.PouchDBAdapter.extend(PouchDb, PouchAdapterUtils, {
     },
     
     findQuery: function(store, type, query, options) {
+        var db = this.get('db');
+        console.log('findQuery',db,this.toString());
         var specialQuery = false;
         for (var i=0;i< this._specialQueries.length; i++) {
             if (Ember.get(query,this._specialQueries[i])) {

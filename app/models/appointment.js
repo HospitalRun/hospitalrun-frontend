@@ -1,10 +1,13 @@
-import AbstractModel from "hospitalrun/models/abstract";
-import PatientValidation from "hospitalrun/utils/patient-validation";
-import Ember from "ember";
+import AbstractModel from 'hospitalrun/models/abstract';
+import DS from 'ember-data';
+import Ember from 'ember';
+import PatientValidation from 'hospitalrun/utils/patient-validation';
 
 export default AbstractModel.extend({
     allDay: DS.attr(),
-    patient: DS.belongsTo('patient'),
+    patient: DS.belongsTo('patient', {
+      async: false
+    }),
     provider: DS.attr('string'),
     location: DS.attr('string'),
     appointmentType: DS.attr('string'),

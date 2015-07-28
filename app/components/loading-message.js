@@ -1,7 +1,6 @@
 import Ember from 'ember';
 export default Ember.Component.extend({
-    tagName: 'span',
-    layout: Ember.Handlebars.compile('{{message}}'),
+    tagName: 'span',    
     showLoadingMessages: false,
     loadingMessages: [
         'The top butterfly flight speed is 12 miles per hour. Some moths can fly 25 miles per hour!',

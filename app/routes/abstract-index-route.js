@@ -1,7 +1,8 @@
-import Ember from "ember";
+import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
+import Ember from 'ember';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
-export default Ember.Route.extend(PouchDbMixin, ProgressDialog, Ember.SimpleAuth.AuthenticatedRouteMixin, {
+export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRouteMixin, {
     filterParams: null,
     firstKey: null,
     hideNewButton: false,

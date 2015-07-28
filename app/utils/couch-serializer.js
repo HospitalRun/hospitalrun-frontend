@@ -1,3 +1,4 @@
+import DS from 'ember-data';
 var couchSerializer = DS.RESTSerializer.extend({
     /**
     @method extractArray

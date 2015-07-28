@@ -1,12 +1,17 @@
 import AbstractModel from 'hospitalrun/models/abstract';
+import DS from 'ember-data';
 import Ember from 'ember';
 
 /**
  * Procedure charges
  */
 export default AbstractModel.extend({
-    medication: DS.belongsTo('inventory'),
-    pricingItem: DS.belongsTo('pricing'),    
+    medication: DS.belongsTo('inventory', {
+      async: false
+    }),
+    pricingItem: DS.belongsTo('pricing', {
+      async: false
+    }),    
     quantity: DS.attr('number'),
     dateCharged: DS.attr('date'),
     

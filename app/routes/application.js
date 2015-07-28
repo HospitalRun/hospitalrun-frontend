@@ -1,5 +1,6 @@
-import Ember from "ember";
-var ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin, {
+import ApplicationRouteMixin from 'simple-auth/mixins/application-route-mixin';
+import Ember from 'ember';
+var ApplicationRoute = Ember.Route.extend(ApplicationRouteMixin, {
     use_google_auth: false,
 
     actions: {

@@ -5,7 +5,7 @@ Ember front end for HospitalRun
 
 To run the app, you will need the following:
 
-1. Install [ember-cli v0.1.4](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@0.1.4`
+1. Install [ember-cli v1.13.1](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@1.13.1`
 2. Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
 3. Go to the `frontend` directory, and run the following:
     * `npm install` to install needed node modules.

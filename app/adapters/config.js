@@ -1,5 +1,6 @@
-import Ember from "ember";
-import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
+import Ember from 'ember';
+import DS from 'ember-data';
+import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 
 export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
     databaseName: 'config',

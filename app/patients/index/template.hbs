@@ -11,15 +11,15 @@
                 <th>Actions</th>
             {{/if}}
         </tr>
-
-        {{#each itemController='patients/patient-controller'}}
+        
+        {{#each this as |patient|}}
             <tr {{action 'editItem' this}}>
-                <td>{{displayPatientId}}</td>
-                <td>{{firstName}}</td>
-                <td>{{lastName}}</td>
-                <td>{{gender}}</td>
-                <td>{{date-format dateOfBirth}}</td>
-                <td>{{status}}</td>
+                <td>{{patient.displayPatientId}}</td>
+                <td>{{patient.firstName}}</td>
+                <td>{{patient.lastName}}</td>
+                <td>{{patient.gender}}</td>
+                <td>{{date-format patient.dateOfBirth}}</td>
+                <td>{{patient.status}}</td>
                 {{#if showActions}}
                     <td>
                         {{#if canAdd}}

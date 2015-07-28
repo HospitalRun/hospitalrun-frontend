@@ -2,13 +2,12 @@ import {
   test, moduleForComponent
 }
 from 'ember-qunit';
-import startApp from '../../helpers/start-app';
 
 moduleForComponent('nav-menu', 'NavMenuComponent', {});
 
 test('it renders', function(assert) {
 
-  expect(2);
+  assert.expect(2);
 
   var startingMenu = {
     title: 'Inventory',
@@ -31,10 +30,10 @@ test('it renders', function(assert) {
   // creates the component instance
   var navMenuProperties = { nav: startingMenu };
   var navMenu = this.subject( navMenuProperties );
-  equal(navMenu._state, 'preRender');
+  assert.equal(navMenu._state, 'preRender');
 
   // appends the navMenu to the page
   this.append();
-  equal(navMenu._state, 'inDOM');
+  assert.equal(navMenu._state, 'inDOM');
 
 });

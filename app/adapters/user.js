@@ -1,5 +1,6 @@
-import Ember from "ember";
-import UserSession from "hospitalrun/mixins/user-session";
+import Ember from 'ember';
+import DS from 'ember-data';
+import UserSession from 'hospitalrun/mixins/user-session';
 export default DS.RESTAdapter.extend(UserSession, {
     endpoint: '/db/_users/',
         

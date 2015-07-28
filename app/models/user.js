@@ -1,4 +1,5 @@
-import EmailValidation from "hospitalrun/utils/email-validation";
+import DS from 'ember-data';
+import EmailValidation from 'hospitalrun/utils/email-validation';
 import EmberValidations from 'ember-validations';
 var User = DS.Model.extend(EmberValidations, {
     derived_key: DS.attr('string'),

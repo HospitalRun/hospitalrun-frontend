@@ -1,6 +1,7 @@
-import Ember from "ember";
-var LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-     authenticatorFactory: 'authenticators:custom',
+import Ember from 'ember';
+import LoginControllerMixin from 'simple-auth/mixins/login-controller-mixin';
+var LoginController = Ember.Controller.extend(LoginControllerMixin, {
+     authenticator: 'authenticator:custom',
 
      actions: {
          // display an error when logging in fails

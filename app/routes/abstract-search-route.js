@@ -1,5 +1,8 @@
-import Ember from "ember";
-export default Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
+import DS from 'ember-data';
+import Ember from 'ember';
+
+export default Ember.Route.extend(AuthenticatedRouteMixin, {
     searchKeys: null,
     searchModel: null,
     searchText: null,

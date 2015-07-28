@@ -1,6 +1,7 @@
-import AbstractModel from "hospitalrun/models/abstract";
-import Ember from "ember";
-import LocationName from "hospitalrun/mixins/location-name";
+import AbstractModel from 'hospitalrun/models/abstract';
+import DS from 'ember-data';
+import Ember from 'ember';
+import LocationName from 'hospitalrun/mixins/location-name';
 /**
  * Model to represent a request for inventory items.
  */ 
@@ -16,7 +17,9 @@ var InventoryRequest = AbstractModel.extend(LocationName, {
     inventoryItem: DS.belongsTo('inventory', { async: true }),
     locationsAffected: DS.attr(),
     markAsConsumed: DS.attr('boolean', { defaultValue:true }),
-    patient: DS.belongsTo('patient'),
+    patient: DS.belongsTo('patient', {
+      async: false
+    }),
     purchasesAffected: DS.attr(),
     quantity: DS.attr('number'),
     quantityAtCompletion: DS.attr('number'),
@@ -24,7 +27,9 @@ var InventoryRequest = AbstractModel.extend(LocationName, {
     requestedBy: DS.attr('string'),
     status: DS.attr('string'),
     transactionType: DS.attr('string'),
-    visit: DS.belongsTo('visit'),
+    visit: DS.belongsTo('visit', {
+      async: false
+    }),
     
     deliveryLocationName: function() {
         var aisle = this.get('deliveryAisle'), 

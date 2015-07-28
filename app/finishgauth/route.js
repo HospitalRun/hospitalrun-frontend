@@ -59,7 +59,7 @@ export default Ember.Route.extend({
 
     model: function(params) {
         if (params.k && params.s1 && params.s2 && params.t) {
-            this.get('session').authenticate('authenticators:custom', {
+            this.get('session').authenticate('authenticator:custom', {
                 google_auth: true,
                 params: params,
             });

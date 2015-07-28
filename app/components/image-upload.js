@@ -1,5 +1,5 @@
-import Ember from "ember";
-export default Ember.Forms.FormInputComponent.extend({
+import InputComponent from 'ember-idx-forms/input'; 
+export default InputComponent.extend({
     fileInputEl: null,
     resizeFile: true,
     selectedFile: null,
