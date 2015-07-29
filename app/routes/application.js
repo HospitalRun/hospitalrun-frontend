@@ -14,7 +14,7 @@ var ApplicationRoute = Ember.Route.extend(ApplicationRouteMixin, {
     },
 
     model: function() {
-        return this.store.find('config');        
+        return this.store.findAll('config');        
     },
     
     afterModel: function(resolvedModel) {
