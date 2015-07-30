@@ -3,7 +3,7 @@ import Ember from 'ember';
 import EmberValidations from 'ember-validations';
 import { Model } from 'ember-pouch';
 import UserSession from "hospitalrun/mixins/user-session";
-export default Model.extend(UserSession, EmberValidations.Mixin, {
+export default Model.extend(UserSession, EmberValidations, {
     lastModified: DS.attr('date'),
     modifiedBy: DS.attr(),
     modifiedFields: DS.attr(),
