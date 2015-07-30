@@ -1,4 +1,2 @@
-import DS from 'ember-data';
-export default DS.Model.extend({
-    value: DS.attr('')    
-});
+import OptionModel from 'hospitalrun/models/option';
+export default OptionModel.extend();

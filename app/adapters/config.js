@@ -1,9 +1,11 @@
+import { Adapter } from 'ember-pouch';
 import Ember from 'ember';
-import DS from 'ember-data';
+
 import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 
-export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
+export default Adapter.extend(PouchAdapterUtils, {
     databaseName: 'config',
+    db:  Ember.computed.alias('pouchController.configDB'),
     
     _mapQuery: function(doc, emit) {
         if (doc._id) {

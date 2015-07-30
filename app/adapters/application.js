@@ -156,7 +156,7 @@ export default Adapter.extend(PouchAdapterUtils, {
                 return this._executeContainsSearch(store, type, query, options);
             }
             return new Ember.RSVP.Promise(function(resolve, reject){
-                this._getDb().then(function(db){
+                var db = this.get('db');
                     try {
                         if (mapReduce) {
                             if (query.useList) {
@@ -167,7 +167,7 @@ export default Adapter.extend(PouchAdapterUtils, {
                                     if (err) {
                                         this._pouchError(reject)(err);
                                     } else {
-                                        this._handleQueryResponse(resolve, response.json, store, type, options);
+                                        this._handleQueryResponse(response.json, store, type).then(resolve, reject);
                                     }
                                 }.bind(this));
                             } else {
@@ -175,7 +175,7 @@ export default Adapter.extend(PouchAdapterUtils, {
                                     if (err) {
                                         this._pouchError(reject)(err);
                                     } else {
-                                        this._handleQueryResponse(resolve, response, store, type, options);
+                                        this._handleQueryResponse(response, store, type).then(resolve, reject);
                                     }
                                 }.bind(this));
                             }
@@ -184,14 +184,13 @@ export default Adapter.extend(PouchAdapterUtils, {
                                 if (err) {
                                     this._pouchError(reject)(err);
                                 } else {
-                                    this._handleQueryResponse(resolve, response, store, type, options);
+                                    this._handleQueryResponse(response, store, type).then(resolve, reject);
                                 }
                             }.bind(this));
                         }
                     } catch (err){
                         this._pouchError(reject)(err);
-                    }
-                }.bind(this), this._pouchError(reject));
+                    }                
             }.bind(this), "findQuery in application-pouchdb-adapter");
         }
     }
