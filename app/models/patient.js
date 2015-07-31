@@ -36,7 +36,9 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     middleName:  DS.attr('string'),
     notes: DS.attr('string'),  
     otherIncome: DS.attr('string'),
-    payments: DS.hasMany('payment'),
+    payments: DS.hasMany('payment', {
+        async: true
+    }),
     patientType: DS.attr('string'),
     parent: DS.attr('string'),
     paymentProfile: DS.belongsTo('price-profile', {
