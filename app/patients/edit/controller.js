@@ -105,11 +105,6 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         'Self Employed'      
     ],    
     
-    
-    primaryDiagnosisIdChanged: function() {
-        this.get('model').validate();
-    }.observes('primaryDiagnosisId'),
-    
     needs: ['filesystem','pouchdb','patients'],
 
     addressOptions: Ember.computed.alias('controllers.patients.addressOptions'),
@@ -507,13 +502,6 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
             });
         }
         return returnList;        
-    },
-    
-    beforeUpdate: function() {
-        //Make sure payments async relationship is loaded before saving.
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            this.get('payments').then(resolve, reject);
-        }.bind(this));
     },
     
     afterUpdate: function(record) {
