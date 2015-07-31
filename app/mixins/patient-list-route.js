@@ -9,8 +9,16 @@ export default Ember.Mixin.create({
             endkey: 'patient_\uffff',
             include_docs: true,
         };
-        this.controllerFor('pouchdb').queryMainDB(patientQuery).then(function(result) {
-            controller.set('patientList', result.rows);
+        var pouchDBController = this.controllerFor('pouchdb');
+        pouchDBController.queryMainDB(patientQuery).then(function(result) {    
+            if (result.rows) {
+                var list = result.rows.map(function(row) {
+                    var rowValues = row.doc.data;
+                    rowValues.id = pouchDBController.getLocalDocID(row.id);
+                    return rowValues;
+                });
+                controller.set('patientList', list);
+            }            
         });
     },
     

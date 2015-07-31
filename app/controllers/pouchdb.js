@@ -40,6 +40,13 @@ export default Ember.Controller.extend(PouchAdapterUtils, {
         }
     },
     
+    getLocalDocID: function(docId) {
+        var parsedId = this.get('mainDB').rel.parseDocID(docId);
+        if (!Ember.isEmpty(parsedId.id)) {
+            return parsedId.id;
+        }
+    }, 
+    
     getDocFromMainDB: function(docId) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
             var mainDB = this.get('mainDB');
