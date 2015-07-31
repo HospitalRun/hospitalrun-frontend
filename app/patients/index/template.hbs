@@ -1,43 +1,46 @@
 {{#if hasRecords}}
     <table class="table">
-        <tr class="table-header">
-            {{#sortable-column sortBy='id' sortDesc=sortDesc sortKey=sortKey }}ID{{/sortable-column}}
-            {{#sortable-column sortBy='firstName' sortDesc=sortDesc sortKey=sortKey }}First Name{{/sortable-column}}
-            {{#sortable-column sortBy='lastName' sortDesc=sortDesc sortKey=sortKey }}Last Name{{/sortable-column}}
-            {{#sortable-column sortBy='gender' sortDesc=sortDesc sortKey=sortKey }}Gender{{/sortable-column}}
-            {{#sortable-column sortBy='dateOfBirth' sortDesc=sortDesc sortKey=sortKey }}DOB{{/sortable-column}}
-            {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}Status{{/sortable-column}}
-            {{#if showActions}}
-                <th>Actions</th>
-            {{/if}}
-        </tr>
-        
-        {{#each this as |patient|}}
-            <tr {{action 'editItem' this}}>
-                <td>{{patient.displayPatientId}}</td>
-                <td>{{patient.firstName}}</td>
-                <td>{{patient.lastName}}</td>
-                <td>{{patient.gender}}</td>
-                <td>{{date-format patient.dateOfBirth}}</td>
-                <td>{{patient.status}}</td>
+        <thead>
+            <tr class="table-header">
+                {{#sortable-column sortBy='id' sortDesc=sortDesc sortKey=sortKey }}ID{{/sortable-column}}
+                {{#sortable-column sortBy='firstName' sortDesc=sortDesc sortKey=sortKey }}First Name{{/sortable-column}}
+                {{#sortable-column sortBy='lastName' sortDesc=sortDesc sortKey=sortKey }}Last Name{{/sortable-column}}
+                {{#sortable-column sortBy='gender' sortDesc=sortDesc sortKey=sortKey }}Gender{{/sortable-column}}
+                {{#sortable-column sortBy='dateOfBirth' sortDesc=sortDesc sortKey=sortKey }}DOB{{/sortable-column}}
+                {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}Status{{/sortable-column}}
                 {{#if showActions}}
-                    <td>
-                        {{#if canAdd}}
-                            <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
-                        {{/if}}
-                        {{#if canAdmitPatient}}
-                            <button class="btn btn-default success" {{action 'admitPatient' this  bubbles=false }}><span class="glyphicon glyphicon-log-in"></span> Admit</button>
-                        {{/if}}
-                        {{#if canDischargePatient}}
-                            <button class="btn btn-default info" {{action 'dischargePatient' this  bubbles=false }}><span class="glyphicon glyphicon-log-out"></span> Discharge</button>
-                        {{/if}}
-                        {{#if canDelete}}
-                            <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                        {{/if}}
-                    </td>
+                    <th>Actions</th>
                 {{/if}}
             </tr>
-        {{/each}}
+        </thead>
+        <tbody>
+            {{#each this as |patient|}}
+                <tr {{action 'editItem' this}}>
+                    <td>{{patient.displayPatientId}}</td>
+                    <td>{{patient.firstName}}</td>
+                    <td>{{patient.lastName}}</td>
+                    <td>{{patient.gender}}</td>
+                    <td>{{date-format patient.dateOfBirth}}</td>
+                    <td>{{patient.status}}</td>
+                    {{#if showActions}}
+                        <td>
+                            {{#if canAdd}}
+                                <button class="btn btn-default neutral" {{action 'editItem' patient  bubbles=false }}>Edit</button>
+                            {{/if}}
+                            {{#if canAdmitPatient}}
+                                <button class="btn btn-default success" {{action 'admitPatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-in"></span> Admit</button>
+                            {{/if}}
+                            {{#if canDischargePatient}}
+                                <button class="btn btn-default info" {{action 'dischargePatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-out"></span> Discharge</button>
+                            {{/if}}
+                            {{#if canDelete}}
+                                <button class="btn btn-default warning" {{action 'deleteItem' patient  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                            {{/if}}
+                        </td>
+                    {{/if}}
+                </tr>
+            {{/each}}
+        </tbody>
     </table>
 {{else}}
     <div class="alert alert-info">
