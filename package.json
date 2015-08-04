@@ -1,7 +1,7 @@
 {
   "name": "hospitalrun",
   "version": "0.0.0",
-  "description": "Ember front end for HospitalRun",
+  "description": "Small description for hospitalrun goes here",
   "private": true,
   "directories": {
     "doc": "doc",
@@ -24,7 +24,7 @@
     "broccoli-file-remover": "^0.3.1",
     "broccoli-manifest": "0.0.6",
     "broccoli-merge-trees": "^0.2.2",
-    "ember-cli": "1.13.1",
+    "ember-cli": "1.13.6",
     "ember-cli-app-version": "0.4.0",
     "ember-cli-babel": "^5.0.0",
     "ember-cli-content-security-policy": "0.4.0",
@@ -33,22 +33,24 @@
     "ember-cli-htmlbars-inline-precompile": "^0.1.1",
     "ember-cli-ic-ajax": "0.2.1",
     "ember-cli-inject-live-reload": "^1.3.0",
-    "ember-cli-qunit": "0.3.15",
+    "ember-cli-qunit": "0.3.18",
     "ember-cli-release": "0.2.3",
     "ember-cli-sass": "^4.0.1",
     "ember-cli-simple-auth": "0.8.0",
+    "ember-cli-sri": "^1.0.1",
     "ember-cli-uglify": "^1.0.1",
-    "ember-data": "1.13.5",
+    "ember-data": "1.13.7",
     "ember-disable-proxy-controllers": "^1.0.0",
-    "ember-export-application-global": "^1.0.2",
+    "ember-export-application-global": "^1.0.3",
     "ember-idx-forms": "^0.6.0",
     "ember-pouch": "^2.0.3",
     "ember-validations": "2.0.0-alpha.4",
     "express": "^4.8.5",
     "glob": "^5.0.14",
-    "install": "^0.1.8",
     "nano": "^6.1.4",
-    "npm": "^2.13.2",
     "request": "^2.60.0"
+  },
+  "dependencies": {
+    "ember-radio-buttons": "^4.0.1"
   }
 }
