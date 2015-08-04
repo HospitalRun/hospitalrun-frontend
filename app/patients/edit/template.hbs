@@ -32,7 +32,7 @@
                             <div class="form-group">
                                 <label>Gender</label>
                                 <div>
-                                    {{ext-radio name=gender content=genderList value=gender showInline=true }}
+                                    {{ext-radio content=genderList value=gender showInline=true }}
                                 </div>
                             </div>
                             {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now"}}
@@ -44,7 +44,7 @@
                             <div class="form-group">
                                 <label>Patient Type</label>
                                 <div>
-                                    {{ext-radio name=patientType content=patientTypes value=patientType showInline=true radioLabelPath="content" radioValuePath="content"}}
+                                    {{ext-radio content=patientTypes value=patientType showInline=true }}
                                 </div>
                             </div>
                         </div>
