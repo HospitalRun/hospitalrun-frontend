@@ -1,7 +1,7 @@
-import Ember from "ember";
-export default Ember.Controller.extend({
-    needs: 'pouchdb',
-    pouchdb: Ember.computed.alias('controllers.pouchdb'),
+import Ember from 'ember';
+export default Ember.Service.extend({
+    pouchDBService: Ember.inject.service('pouchdb'),
+
     filer: null, //Injected via initializer
     fileSystemSize: (1024*1024*1024*8), //8GB max size for local filesystem;chrome only,
     
@@ -60,7 +60,7 @@ export default Ember.Controller.extend({
                 filer = this.get('filer'),
                 fileName = file.name || currentDate.getTime(),
                 newFileName = path+fileName,
-                pouchdb = this.get('pouchdb');            
+                pouchDBService = this.get('pouchDBService');            
             if (path.indexOf('.') > -1) {
                 newFileName = path;
                 //If a full file path was provided, figure out the path and file name.
@@ -96,7 +96,7 @@ export default Ember.Controller.extend({
                 }
                 filer.mkdir(path, false, function() {
                     filer.write(newFileName, {data: file, type: file.type}, function(fileEntry) {                    
-                        pouchdb.saveFileLink(newFileName, pouchDbId);
+                        pouchDBService.saveFileLink(newFileName, pouchDbId);
                         resolve(fileEntry);
                     }, function(e) {
                         reject(e);
@@ -119,10 +119,10 @@ export default Ember.Controller.extend({
     deleteFile: function(filePath, pouchDbId) {
         return new Ember.RSVP.Promise(function(resolve, reject){
             var filer = this.get('filer'),
-                pouchdb = this.get('pouchdb');
+                pouchDBService = this.get('pouchDBService');
             try {
                 filer.rm(filePath, function() {
-                    pouchdb.removeFileLink(pouchDbId);
+                    pouchDBService.removeFileLink(pouchDbId);
                     resolve();
                 }, reject);
             } catch(ex) {

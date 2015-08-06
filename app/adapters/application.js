@@ -2,19 +2,11 @@ import Ember from "ember";
 import { Adapter } from 'ember-pouch';
 import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 
-//var defaultDB = new PouchDB('main');
-
 export default Adapter.extend(PouchAdapterUtils, {
-    mainDB: Ember.computed.alias('pouchController.mainDB'),
-    db:  Ember.computed.alias('pouchController.mainDB'),
-    /*dbChanged: function() {
-        var db = this.get('mainDB'),
-            setMainDB = this.get('setMainDB');
-        if (setMainDB) {
-            console.log('MainDB DB CHANGED',db,this.toString());
-            this.set('db', db);ff
-        }
-    }.observes('pouchController.setMainDB'),*/
+    pouchDBService: Ember.inject.service('pouchdb'),
+    
+    mainDB: Ember.computed.alias('pouchDBService.mainDB'),
+    db:  Ember.computed.alias('pouchDBService.mainDB'),
     
     _specialQueries: [
         'containsValue',

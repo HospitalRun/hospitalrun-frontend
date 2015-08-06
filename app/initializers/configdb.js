@@ -35,9 +35,8 @@ export default {
         application.deferReadiness();
         _initCouchDB().then(function() {
             application.register('couchdb:configdb', configDB, {instantiate: false});
-            application.inject('controller:pouchdb', 'configDB', 'couchdb:configdb');
-            application.inject('adapter', 'pouchController', 'controller:pouchdb');            
-            var pouchDBController = container.lookup('controller:pouchdb');
+            application.inject('service:pouchdb', 'configDB', 'couchdb:configdb');              
+            var pouchDBService = container.lookup('service:pouchdb');
             var options = {
                 include_docs: true,
                 keys: [
@@ -60,7 +59,7 @@ export default {
                             configs[response.rows[i].id] = response.rows[i].doc.value;
                         }
                     }                    
-                    pouchDBController.setupMainDB(configs).then(function() {
+                    pouchDBService.setupMainDB(configs).then(function() {
                         application.advanceReadiness();
                     }, function() {
                         application.advanceReadiness();

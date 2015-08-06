@@ -4,7 +4,7 @@ import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
-    needs: ['visits','visits/edit','pouchdb'],
+    needs: ['visits','visits/edit'],
 
     canAddProcedure: function() {        
         return this.currentUserCan('add_procedure');

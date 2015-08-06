@@ -7,8 +7,7 @@ import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes, 
         ModalHelper, ImagingPricingTypes, InventoryTypeList, VisitTypes, {
-    needs: 'filesystem',
-    fileSystem: Ember.computed.alias('controllers.filesystem'),
+    fileSystem: Ember.inject.service('filesystem'),
     lookupType: null,
     lookupTypes: [{
         name: 'Anesthesia Types',

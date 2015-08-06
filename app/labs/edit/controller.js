@@ -4,7 +4,7 @@ import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
-    needs: ['labs','pouchdb'],
+    needs: ['labs'],
     chargePricingCategory: 'Lab',
     chargeRoute: 'labs.charge',
 

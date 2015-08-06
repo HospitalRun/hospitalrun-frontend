@@ -6,7 +6,7 @@ import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(FulfillRequest, InventoryLocations, InventorySelection, PatientSubmodule, {    
-    needs: ['medication','pouchdb'],
+    needs: ['medication'],
 
     lookupListsToUpdate: [{
         name: 'aisleLocationList', //Name of property containing lookup list

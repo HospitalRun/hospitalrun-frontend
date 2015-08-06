@@ -7,7 +7,7 @@ import UnitTypes from "hospitalrun/mixins/unit-types";
 import UserSession from "hospitalrun/mixins/user-session";
 
 export default AbstractEditController.extend(InventoryLocations, InventoryTypeList, ReturnTo, UnitTypes, UserSession, {
-    needs: ['inventory','pouchdb'],
+    inventory: Ember.inject.controller(),
     
     canAddPurchase: function() {        
         return this.currentUserCan('add_inventory_purchase');
@@ -21,12 +21,12 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         return this.currentUserCan('delete_inventory_purchase');
     }.property(),    
     
-    warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
-    aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
-    inventoryTypeList: Ember.computed.alias('controllers.inventory.inventoryTypeList.value'),
-    vendorList: Ember.computed.alias('controllers.inventory.vendorList'),
-    pouchdbController: Ember.computed.alias('controllers.pouchdb'),
-    
+    warehouseList: Ember.computed.alias('inventory.warehouseList'),
+    aisleLocationList: Ember.computed.alias('inventory.aisleLocationList'),
+    inventoryTypeList: Ember.computed.alias('inventory.inventoryTypeList.value'),
+    vendorList: Ember.computed.alias('inventory.vendorList'),
+    pouchDBService: Ember.inject.service('pouchdb'),
+
     lookupListsToUpdate: [{
         name: 'aisleLocationList', //Name of property containing lookup list
         property: 'aisleLocation', //Corresponding property on model that potentially contains a new value to add to the list
@@ -42,8 +42,8 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     }],
     
     canEditQuantity: function() {		
-        return (this.get('isNew'));		
-    }.property('isNew'),
+        return (this.get('model.isNew'));		
+    }.property('model.isNew'),
     
     haveTransactions: function() {
         var transactions = this.get('transactions');
@@ -79,12 +79,12 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     }.property('locationQuantityTotal', 'quantity'),
     
     originalQuantityUpdated: function() {
-        var isNew = this.get('isNew'),
-            quantity = this.get('originalQuantity');
+        var isNew = this.get('model.isNew'),
+            quantity = this.get('model.originalQuantity');
         if (isNew && !Ember.isEmpty(quantity)) {
             this.set('quantity', quantity);
         }
-    }.observes('originalQuantity'),
+    }.observes('model.isNew','model.originalQuantity'),
     
     showTransactions: function() {
         var transactions = this.get('transactions');
@@ -263,11 +263,11 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     },
     
     _findSequenceByPrefix: function(type, prefixChars) {  
-        var pouchdbController = this.get('pouchdbController');
+        var pouchDBService = this.get('pouchDBService');
         var sequenceQuery = {
             key:  type.toLowerCase().substr(0,prefixChars)            
         };
-        return pouchdbController.queryMainDB(sequenceQuery, 'sequence_by_prefix');
+        return pouchDBService.queryMainDB(sequenceQuery, 'sequence_by_prefix');
     },    
     
     _checkNextSequence: function(resolve, type, prefixChars) {

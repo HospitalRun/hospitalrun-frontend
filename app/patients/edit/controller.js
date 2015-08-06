@@ -105,25 +105,27 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         'Self Employed'      
     ],    
     
-    needs: ['filesystem','pouchdb','patients'],
+    filesystem: Ember.inject.service(),
+    pouchdb: Ember.inject.service(),
+    patientController: Ember.inject.controller('patients'),
 
-    addressOptions: Ember.computed.alias('controllers.patients.addressOptions'),
-    address1Include: Ember.computed.alias('controllers.patients.addressOptions.value.address1Include'),
-    address1Label: Ember.computed.alias('controllers.patients.addressOptions.value.address1Label'),
-    address2Include: Ember.computed.alias('controllers.patients.addressOptions.value.address2Include'),
-    address2Label: Ember.computed.alias('controllers.patients.addressOptions.value.address2Label'),
-    address3Include: Ember.computed.alias('controllers.patients.addressOptions.value.address3Include'),
-    address3Label: Ember.computed.alias('controllers.patients.addressOptions.value.address3Label'),
-    address4Include: Ember.computed.alias('controllers.patients.addressOptions.value.address4Include'),
-    address4Label: Ember.computed.alias('controllers.patients.addressOptions.value.address4Label'),
+    addressOptions: Ember.computed.alias('patientController.addressOptions'),
+    address1Include: Ember.computed.alias('patientController.addressOptions.value.address1Include'),
+    address1Label: Ember.computed.alias('patientController.addressOptions.value.address1Label'),
+    address2Include: Ember.computed.alias('patientController.addressOptions.value.address2Include'),
+    address2Label: Ember.computed.alias('patientController.addressOptions.value.address2Label'),
+    address3Include: Ember.computed.alias('patientController.addressOptions.value.address3Include'),
+    address3Label: Ember.computed.alias('patientController.addressOptions.value.address3Label'),
+    address4Include: Ember.computed.alias('patientController.addressOptions.value.address4Include'),
+    address4Label: Ember.computed.alias('patientController.addressOptions.value.address4Label'),
 
-    clinicList: Ember.computed.alias('controllers.patients.clinicList'),
-    countryList: Ember.computed.alias('controllers.patients.countryList'),
-    fileSystem: Ember.computed.alias('controllers.filesystem'),
-    isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
-    patientController: Ember.computed.alias('controllers.patients'),
-    pricingProfiles: Ember.computed.alias('controllers.patients.pricingProfiles'),
-    statusList: Ember.computed.alias('controllers.patients.statusList'),
+    clinicList: Ember.computed.alias('patientController.clinicList'),
+    countryList: Ember.computed.alias('patientController.countryList'),
+    isFileSystemEnabled: Ember.computed.alias('filesystem.isFileSystemEnabled'),
+    
+    pricingProfiles: Ember.computed.alias('patientController.pricingProfiles'),
+    relationalPouch: Ember.computed.alias('pouchdb.mainDB.rel'),
+    statusList: Ember.computed.alias('patientController.statusList'),
     
     haveAdditionalContacts: function() {
         var additionalContacts = this.get('additionalContacts');
@@ -201,34 +203,41 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
          */
         addPhoto: function(photoFile, caption, coverImage) {
             var dirToSaveTo = this.get('id') + '/photos/',
-                fileSystem = this.get('fileSystem'),
-                photos = this.get('photos'),
+                fileSystem = this.get('filesystem'),
+                photos = this.get('model.photos'),
                 newPatientPhoto = this.get('store').createRecord('photo', {
                     patient: this.get('model'),                    
                     localFile: true,
                     caption: caption,
                     coverImage: coverImage,
                 });
-            var pouchDbId = this._idToPouchId(newPatientPhoto.get('id'), 'photo');
-            fileSystem.addFile(photoFile, dirToSaveTo, pouchDbId).then(function(fileEntry) {
-                fileSystem.fileToDataURL(photoFile).then(function(photoDataUrl) {                        
-                    var dataUrlParts = photoDataUrl.split(',');
-                    newPatientPhoto.setProperties({
-                        fileName: fileEntry.fullPath,
-                        url: fileEntry.toURL(),
-                        _attachments: {
-                            file: {
-                                content_type: photoFile.type,
-                                data: dataUrlParts[1]
-                            }
-                        }                    
-                    });                        
-                    newPatientPhoto.save().then(function() {
-                        photos.addObject(newPatientPhoto);
-                        this.send('closeModal');
+            newPatientPhoto.save().then(function(savedPhotoRecord) {
+                var pouchDbId = this.get('relationalPouch').makeDocID({
+                    id: savedPhotoRecord.get('id'),
+                    type: 'photo'
+                });
+                fileSystem.addFile(photoFile, dirToSaveTo, pouchDbId).then(function(fileEntry) {
+                    fileSystem.fileToDataURL(photoFile).then(function(photoDataUrl) {
+                        savedPhotoRecord = this.get('store').find('photo', savedPhotoRecord.get('id')).then(function(savedPhotoRecord) {                        
+                            var dataUrlParts = photoDataUrl.split(',');
+                            savedPhotoRecord.setProperties({
+                                fileName: fileEntry.fullPath,
+                                url: fileEntry.toURL(),
+                                _attachments: {
+                                    file: {
+                                        content_type: photoFile.type,
+                                        data: dataUrlParts[1]
+                                    }
+                                }                    
+                            });                        
+                            savedPhotoRecord.save().then(function(savedPhotoRecord) {
+                                photos.addObject(savedPhotoRecord);
+                                this.send('closeModal');
+                            }.bind(this));
+                        }.bind(this));
                     }.bind(this));
-                }.bind(this));            
-            }.bind(this));            
+                }.bind(this));
+            }.bind(this));
         },
         
         appointmentDeleted: function(deletedAppointment) {
@@ -264,11 +273,11 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         deletePhoto: function(model) {
             var photo = model.get('photoToDelete'),
                 photoId = model.get('id'),
-                photos = this.get('photos'),
+                photos = this.get('model.photos'),
                 filePath = photo.get('fileName');
             photos.removeObject(photo);
             photo.destroyRecord().then(function() {
-                var fileSystem = this.get('fileSystem'),
+                var fileSystem = this.get('filesystem'),
                     isFileSystemEnabled = this.get('isFileSystemEnabled');
                 if (isFileSystemEnabled) {
                     var pouchDbId = this._idToPouchId(photoId, 'photo');

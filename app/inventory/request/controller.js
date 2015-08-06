@@ -3,7 +3,7 @@ import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import Ember from 'ember';
 
 export default AbstractEditController.extend(InventorySelection, {    
-    needs: ['inventory','pouchdb'],
+    needs: ['inventory'],
     
     cancelAction: 'allRequests',
    

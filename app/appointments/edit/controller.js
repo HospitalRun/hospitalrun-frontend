@@ -5,7 +5,7 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodule, VisitTypes, {
-    needs: ['appointments','pouchdb'],
+    needs: ['appointments'],
     
     dateFormat: 'l h:mm A',
     findPatientVisits: false,

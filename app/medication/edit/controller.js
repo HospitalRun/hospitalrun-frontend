@@ -6,7 +6,7 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from "hospitalrun/mixins/user-session";
 
 export default AbstractEditController.extend(InventorySelection, PatientId, PatientSubmodule, UserSession, {    
-    needs: ['application','medication','pouchdb'],    
+    needs: ['application','medication'],    
     
     applicationConfigs: Ember.computed.alias('controllers.application.model'),
     expenseAccountList: Ember.computed.alias('controllers.medication.expenseAccountList'),

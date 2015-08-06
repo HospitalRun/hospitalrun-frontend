@@ -1,5 +1,7 @@
 import Ember from "ember";
-export default Ember.Route.extend({    
+export default Ember.Route.extend({ 
+    pouchdb: Ember.inject.service(),
+    
     oauth_config_keys: [
         'consumer_key',
         'consumer_secret',
@@ -64,7 +66,7 @@ export default Ember.Route.extend({
                 params: params,
             });
             this._save_oauth_config(params);
-            this.controllerFor('pouchdb').setupMainDB({
+            this.get('pouchdb').setupMainDB({
                 config_consumer_key: params.k,
                 config_consumer_secret: params.s1,
                 config_oauth_token: params.t,

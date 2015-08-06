@@ -2,6 +2,7 @@ import Ember from "ember";
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 export default Ember.Mixin.create(PouchDbMixin, {
     idPrefix: null,
+    pouchDBService: Ember.inject.service('pouchdb'),
     
     _createId: function(patientSequence) {
         var idPrefix = this.get('idPrefix'),
@@ -22,8 +23,8 @@ export default Ember.Mixin.create(PouchDbMixin, {
                 startkey: [newId,null],
                 endkey: [newId, maxValue],    
             },
-            pouchdbController = this._getPouchDBController();
-        pouchdbController.queryMainDB(queryParams, 'patient_by_display_id').then(function(foundRecord) {
+            pouchDBService = this.get('pouchDBService');
+        pouchDBService.queryMainDB(queryParams, 'patient_by_display_id').then(function(foundRecord) {
             if (!Ember.isEmpty(foundRecord.rows)) {
                 this._findUnusedId(patientSequenceRecord, resolve, reject);
             } else {
@@ -34,19 +35,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
             }
         }.bind(this), reject);
     },
-    
-    /**
-     * Since this mixin is used by both routes and controllers, try to get the pouchdb controller from the controllers property; 
-     * otherwise use controllerFor.
-     */ 
-    _getPouchDBController: function() {
-        var pouchDBController = this.get('controllers.pouchdb');
-        if (Ember.isEmpty(pouchDBController)) {
-            pouchDBController =  this.controllerFor('pouchdb');
-        }
-        return pouchDBController;
-    },
-    
+
     /**
      * Override this function to generate an id for a new record
      * @return a generated id;default is null which means that an

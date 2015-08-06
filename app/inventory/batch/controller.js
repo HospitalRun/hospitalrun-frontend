@@ -5,7 +5,7 @@ import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import Ember from 'ember';
 
 export default AbstractEditController.extend(InventoryId, InventoryLocations, InventorySelection, {    
-    needs: ['inventory','pouchdb'],
+    needs: ['inventory'],
    
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),

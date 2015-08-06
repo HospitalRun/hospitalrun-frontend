@@ -4,14 +4,15 @@ import LocationName from 'hospitalrun/mixins/location-name';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import NumberFormat from "hospitalrun/mixins/number-format";
 export default AbstractReportController.extend(LocationName, ModalHelper, NumberFormat, {
-    needs: ['inventory','pouchdb'],
+    needs: ['inventory'],
     effectiveDate: null,
     expenseCategories: ['Inventory Consumed', 'Gift In Kind Usage', 'Inventory Obsolence'],
     expenseMap: null,
     grandCost: 0,
     grandQuantity: 0,
     locationSummary: null,
-    pouchdbController: Ember.computed.alias('controllers.pouchdb'),
+    
+    pouchDBService: Ember.inject.service('pouchdb'),
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     reportColumns: {
         date: {
@@ -375,9 +376,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         if (Ember.isEmpty(inventoryList)) {
             inventoryList = {};
         }
-        var pouchdbController = this.get('pouchdbController');
+        var pouchDBService = this.get('pouchDBService');
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            pouchdbController.queryMainDB(queryParams, view).then(function(inventoryChildren) {
+            pouchDBService.queryMainDB(queryParams, view).then(function(inventoryChildren) {
                 var inventoryKeys = Ember.keys(inventoryList),
                     inventoryIds = [];
                 if (!Ember.isEmpty(inventoryChildren.rows)) {
@@ -506,10 +507,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     
     _generateExpirationReport: function() {
         var grandQuantity = 0,
-            pouchdbController = this.get('pouchdbController'),
+            pouchDBService = this.get('pouchDBService'),
             reportRows = this.get('reportRows'),
             reportTimes = this._getDateQueryParams();
-        pouchdbController.queryMainDB({
+        pouchDBService.queryMainDB({
             startkey:  [reportTimes.startTime, 'inv-purchase_'],
             endkey: [reportTimes.endTime, 'inv-purchase_\uffff'], 
             include_docs: true,
@@ -871,12 +872,12 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     },
     
     _getInventoryItems: function(inventoryIds, inventoryMap) {
-        var pouchdbController = this.get('pouchdbController');
+        var pouchDBService = this.get('pouchDBService');
         return new Ember.RSVP.Promise(function(resolve, reject) {
             if (Ember.isEmpty(inventoryMap)) {
                 inventoryMap = {};
             }
-            pouchdbController.queryMainDB({
+            pouchDBService.queryMainDB({
                 keys: inventoryIds,
                 include_docs: true
             }).then(function(inventoryItems) {

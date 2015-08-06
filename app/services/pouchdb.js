@@ -1,12 +1,9 @@
-import Ember from "ember";
-import createPouchOauthXHR from "hospitalrun/utils/pouch-oauth-xhr";
-import createPouchViews from "hospitalrun/utils/pouch-views";
-import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
-export default Ember.Controller.extend(PouchAdapterUtils, {
-    needs: ['filesystem','navigation'],
-    
-    filesystem: Ember.computed.alias('controllers.filesystem'),
-    isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
+import Ember from 'ember';
+import createPouchOauthXHR from 'hospitalrun/utils/pouch-oauth-xhr';
+import createPouchViews from 'hospitalrun/utils/pouch-views';
+import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
+
+export default Ember.Service.extend(PouchAdapterUtils, {
     mainDB: null, //Server DB
     configDB: null, //Initializer will set this up.
     setMainDB: false,

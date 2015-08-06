@@ -1,6 +1,7 @@
 import Ember from "ember";
 import Base from 'simple-auth/authenticators/base';
 export default Base.extend({
+    pouchDBService: Ember.inject.service('pouchdb'),
     serverEndpoint: '/db/_session',    
     useGoogleAuth: false,
     
@@ -94,8 +95,8 @@ export default Base.extend({
                     response.name = data.name;
                     response.expires_at = this._absolutizeExpirationTime(600);
                     this._checkUser(response, function(user) {
-                        var pouchDBController = this.get('pouchDBController');
-                        pouchDBController.setupMainDB({}).then(function() {
+                        var pouchDBService = this.get('pouchDBService');
+                        pouchDBService.setupMainDB({}).then(function() {
                             resolve(user);
                         }, reject);
                     }.bind(this), reject);

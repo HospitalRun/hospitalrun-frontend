@@ -7,6 +7,7 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
     editTitle: 'Edit Medication Request', 
     modelName: 'medication',
     newTitle: 'New Medication Request',
+    pouchdb: Ember.inject.service(),
     getNewData: function(params) {
         var idParam = this.get('idParam'),
             newData = {
@@ -51,7 +52,7 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
         var inventoryItem = model.get('inventoryItem'),
             patient = model.get('patient');
         if (Ember.isEmpty(inventoryItem)) {
-            this.controllerFor('pouchdb').queryMainDB(inventoryQuery, 'inventory_by_type').then(function(result) {
+            this.get('pouchdb').queryMainDB(inventoryQuery, 'inventory_by_type').then(function(result) {
                 var medicationList = result.rows.map(function(medication) {
                     return medication.doc;
                 });
