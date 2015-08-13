@@ -14,20 +14,12 @@ export default Ember.Component.extend({
         return false;
     }.property('calculated'),
     
-    targetUnitChanged: function() {
-        var targetUnit = this.get('targetUnit'),
-            selectedUnit = this.get('quantityGroups.firstObject.unit');
-        if (Ember.isEmpty(selectedUnit)) {
-            this.set('quantityGroups.firstObject.unit', targetUnit);
-        } else {
-            this.updateCurrentUnit(selectedUnit, 0);
-        }
-    }.observes('targetUnit'),
-    
-    _setup: function() {
+    currentQuantityGroups: function() {
         var calculated = this.get('calculated'),
+            firstQuantityObject,
+            quantityGroups = this.get('quantityGroups'),
             targetUnit = this.get('targetUnit'),
-            quantityGroups = this.get('quantityGroups');
+            selectedUnit;
         if (Ember.isEmpty(quantityGroups)) {
             quantityGroups = new Array({
                 index: 0,
@@ -37,8 +29,18 @@ export default Ember.Component.extend({
             });
             this.set('quantityGroups',quantityGroups);
         }
-    }.on('init'), 
-    
+        firstQuantityObject = quantityGroups.get('firstObject');        
+        if (!Ember.isEmpty(firstQuantityObject)) {
+            selectedUnit = firstQuantityObject.unit;
+            if (Ember.isEmpty(selectedUnit)) {
+                this.set('quantityGroups.firstObject.unit', targetUnit);
+            } else {
+                this.updateCurrentUnit(selectedUnit, 0);
+            }
+        }
+        return quantityGroups;
+    }.property('quantityGroups', 'targetUnit'),
+        
     calculateTotal: function() {
         var quantityGroups = this.get('quantityGroups'),
             haveQuantities = false,
