@@ -33,20 +33,20 @@
                     <th>Vendor</th>
                     <th>Invoice Number</th>
                 </tr>
-                {{#each purchases itemController='inventory/purchase/item-controller'}}
-                    <tr {{bind-attr class="rowClass"}}>
-                        <td>{{date-format dateReceived}}</td>
-                        <td>{{purchaseCost}}</td>
-                        <td>{{costPerUnit}}</td>
-                        <td>{{originalQuantity}}</td>
-                        <td>{{currentQuantity}}</td>
+                {{#each purchases as |purchase|}}
+                    <tr class={{if purchase.expired "warning"}}>
+                        <td>{{date-format purchase.dateReceived}}</td>
+                        <td>{{purchase.purchaseCost}}</td>
+                        <td>{{purchase.costPerUnit}}</td>
+                        <td>{{purchase.originalQuantity}}</td>
+                        <td>{{purchase.currentQuantity}}</td>
                         <td>
-                            {{#if giftInKind}}Y{{else}}N{{/if}}
+                            {{#if purchase.giftInKind}}Y{{else}}N{{/if}}
                         </td>
-                        <td>{{lotNumber}}</td>                
-                        <td>{{date-format expirationDate}}</td>
-                        <td>{{vendor}}</td>
-                        <td>{{invoiceNo}}</td>
+                        <td>{{purchase.lotNumber}}</td>                
+                        <td>{{date-format purchase.expirationDate}}</td>
+                        <td>{{purchase.vendor}}</td>
+                        <td>{{purchase.invoiceNo}}</td>
                     </tr>
                 {{/each}}
             </table>
@@ -62,16 +62,16 @@
                     <th>Action</th>
                 {{/if}}
             </tr>
-            {{#each locations itemController='inventory/location-item'}}
-                {{#if haveItems}}
+            {{#each locations as |location|}}
+                {{#if quantity}}
                     <tr>
-                        <td>{{location}}</td>
-                        <td>{{aisleLocation}}</td>
-                        <td>{{quantity}}</td>
-                        {{#if parentController.canAdjustLocation}}
+                        <td>{{location.location}}</td>
+                        <td>{{location.aisleLocation}}</td>
+                        <td>{{location.quantity}}</td>
+                        {{#if canAdjustLocation}}
                             <td>
-                                <button class="btn btn-primary neutral" {{action "showAdjustment" this}}>Adjust</button>
-                                <button class="btn btn-primary neutral" {{action "showTransfer" this}}>Transfer</button>
+                                <button class="btn btn-primary neutral" {{action "showAdjustment" location}}>Adjust</button>
+                                <button class="btn btn-primary neutral" {{action "showTransfer" location}}>Transfer</button>
                             </td>
                         {{/if}}
                     </tr>
