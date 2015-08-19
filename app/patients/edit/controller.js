@@ -3,11 +3,10 @@ import BloodTypes from 'hospitalrun/mixins/blood-types';
 import Ember from "ember";
 import FamilyInfoModel from 'hospitalrun/models/family-info';
 import GenderList from 'hospitalrun/mixins/gender-list';
-import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 import ReturnTo from 'hospitalrun/mixins/return-to';
 import SocialExpenseModel from 'hospitalrun/models/social-expense';
 import UserSession from "hospitalrun/mixins/user-session";
-export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapterUtils, ReturnTo, UserSession, {
+export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, UserSession, {
     
     canAddAppointment: function() {        
         return this.currentUserCan('add_appointment');
@@ -124,7 +123,6 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
     isFileSystemEnabled: Ember.computed.alias('filesystem.isFileSystemEnabled'),
     
     pricingProfiles: Ember.computed.alias('patientController.pricingProfiles'),
-    relationalPouch: Ember.computed.alias('pouchdb.mainDB.rel'),
     statusList: Ember.computed.alias('patientController.statusList'),
     
     haveAdditionalContacts: function() {
@@ -212,10 +210,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
                     coverImage: coverImage,
                 });
             newPatientPhoto.save().then(function(savedPhotoRecord) {
-                var pouchDbId = this.get('relationalPouch').makeDocID({
-                    id: savedPhotoRecord.get('id'),
-                    type: 'photo'
-                });
+                var pouchDbId = this.get('pouchdb').getPouchId(savedPhotoRecord.get('id'),'photo');
                 fileSystem.addFile(photoFile, dirToSaveTo, pouchDbId).then(function(fileEntry) {
                     fileSystem.fileToDataURL(photoFile).then(function(photoDataUrl) {
                         savedPhotoRecord = this.get('store').find('photo', savedPhotoRecord.get('id')).then(function(savedPhotoRecord) {                        
@@ -280,7 +275,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
                 var fileSystem = this.get('filesystem'),
                     isFileSystemEnabled = this.get('isFileSystemEnabled');
                 if (isFileSystemEnabled) {
-                    var pouchDbId = this._idToPouchId(photoId, 'photo');
+                    var pouchDbId = this.get('pouchdb').getPouchId(photoId,'photo');                       
                     fileSystem.deleteFile(filePath, pouchDbId);
                 }
             }.bind(this));
@@ -308,8 +303,10 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         },        
         
         editMedication: function(medication) {
-            medication.set('returnToPatient', true);
-            this.transitionToRoute('medication.edit', medication);
+            if (medication.get('canEdit')) {
+                medication.set('returnToPatient', true);
+                this.transitionToRoute('medication.edit', medication);
+            }
         },    
         
         editPhoto: function(photo) {        
@@ -354,12 +351,13 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         },
         
         newMedication: function() {
-            var newMedication = this.get('store').createRecord('medication', {
-                prescriptionDate: moment().startOf('day').toDate(),
-                patient: this.get('model'),
-                returnToPatient: true
-            });
-            this.transitionToRoute('medication.edit', newMedication);
+            this.transitionToRoute('medication.edit', 'new').then(function(newRoute) {                
+                newRoute.currentModel.setProperties({
+                    patient: this.get('model'),
+                    returnToPatient: true,
+                    selectPatient: false
+                });
+            }.bind(this));
         },
         
         newVisit: function() {
