@@ -156,7 +156,6 @@ export default Ember.Mixin.create({
         Ember.RSVP.all(addPromises).then(function(results) {
             var savePromises = [];
             results.forEach(function(newObject) {
-                console.log("Results are:", newObject);
                 savePromises.push(newObject.save());
             });
             Ember.RSVP.all(savePromises).then(function(saveResponse) {

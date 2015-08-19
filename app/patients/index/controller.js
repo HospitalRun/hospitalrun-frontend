@@ -6,7 +6,6 @@ export default AbstractPagedController.extend(PatientVisits, {
     startKey: [],    
     actions: {
         admitPatient: function(patient) {
-            console.log("patient is:", patient);
             this.getPatientVisits(patient).then(function(visits) {
                 this.send('createNewVisit', patient, visits);
             }.bind(this));
