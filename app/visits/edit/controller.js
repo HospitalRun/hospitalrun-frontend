@@ -92,6 +92,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     dateTimeFormat: 'l h:mm A',
     diagnosisList: Ember.computed.alias('controllers.visits.diagnosisList'),
     findPatientVisits: false,
+    patientMedications: Ember.computed.alias('model.medication'),
     pricingList: null, //This gets filled in by the route
     pricingTypes: Ember.computed.alias('controllers.visits.wardPricingTypes'),
     physicianList: Ember.computed.alias('controllers.visits.physicianList'),
@@ -241,8 +242,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         },
         
         editMedication: function(medication) {
-            medication.set('returnToVisit', true);
-            this.transitionToRoute('medication.edit', medication);
+            if (medication.get('canEdit')) {
+                medication.set('returnToVisit', true);
+                this.transitionToRoute('medication.edit', medication);
+            }
         },
         
         showAddVitals: function() {

@@ -22,6 +22,11 @@ export default AbstractModel.extend(DateFormat, {
       async: false
     }),
     
+    canEdit: function() {
+        var status = this.get('status');
+        return (status === 'Requested');
+    }.property('status'),
+    
     isRequested: function() {
         var status = this.get('status');
         return (status === 'Requested');

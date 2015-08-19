@@ -185,35 +185,7 @@
                         </h3>
                     </div>
                     <div class="panel-body detail-section-content">
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Date</th>
-                                <th>Name</th>
-                                <th>Status</th>
-                                <th>Prescription</th>
-                                <th>Requested By</th>
-                                <th>Actions</th>
-                            </tr>
-                            {{#each patientMedications itemController="medication/item-controller"}}
-                                <tr {{action "editMedication" this}}>
-                                    <td>{{date-format prescriptionDate}}</td>
-                                    <td>{{inventoryItem.name}}</td>
-                                    <td>{{status}}</td>
-                                    <td>{{prescription}}</td>
-                                    <td>{{requestedBy}}</td>
-                                    <td>
-                                        {{#if canEdit}}
-                                            {{#if parentController.canAddMedication}}
-                                                <button type="button" class="btn btn-default neutral" {{action "editMedication" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if parentController.canDeleteMedication}}
-                                                <button type="button" class="btn btn-default warning" {{action "showDeleteMedication" this  bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                                            {{/if}}
-                                        {{/if}}
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </table>
+                        {{partial 'patients/medication'}}
                     </div>
                 </div>
             </div>

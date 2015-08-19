@@ -1,0 +1,29 @@
+<table class="table">
+    <tr class="table-header">
+        <th>Date</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Prescription</th>
+        <th>Requested By</th>
+        <th>Actions</th>
+    </tr>
+    {{#each patientMedications as |medication|}}
+        <tr {{action "editMedication" medication}}>
+            <td>{{date-format medication.prescriptionDate}}</td>
+            <td>{{medication.inventoryItem.name}}</td>
+            <td>{{medication.status}}</td>
+            <td>{{medication.prescription}}</td>
+            <td>{{medication.requestedBy}}</td>
+            <td>
+                {{#if medication.canEdit}}
+                    {{#if canAddMedication}}
+                        <button type="button" class="btn btn-default neutral" {{action "editMedication" medication}}>Edit</button>
+                    {{/if}}
+                    {{#if canDeleteMedication}}
+                        <button type="button" class="btn btn-default warning" {{action "showDeleteMedication" medication bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                    {{/if}}
+                {{/if}}
+            </td>
+        </tr>
+    {{/each}}
+</table>

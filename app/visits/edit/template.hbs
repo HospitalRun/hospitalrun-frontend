@@ -151,35 +151,7 @@
             </div>
             <div id="patient-medication" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <table class="table">
-                        <tr class="table-header">
-                            <th>Date</th>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th>Prescription</th>
-                            <th>Requested By</th>
-                            <th>Actions</th>
-                        </tr>
-                        {{#each medication itemController="medication/item-controller"}}
-                            <tr {{action "editMedication" this}}>
-                                <td>{{date-format prescriptionDate}}</td>
-                                <td>{{inventoryItem.name}}</td>
-                                <td>{{status}}</td>
-                                <td>{{prescription}}</td>
-                                <td>{{requestedBy}}</td>
-                                <td>
-                                    {{#if canEdit}}
-                                        {{#if parentController.canAddMedication}}
-                                            <button class="btn btn-default neutral" {{action "editMedication" this}}>Edit</button>
-                                        {{/if}}
-                                        {{#if parentController.canDelete}}
-                                            <button class="btn btn-default warning" {{action "showDeleteMedication" this  bubbles=false }}><span class="octicon octicon-x"></span>  Delete</button>
-                                        {{/if}}
-                                    {{/if}}
-                                </td>
-                            </tr>
-                        {{/each}}
-                    </table>
+                    {{partial 'patients/medication'}}
                 </div>
             </div>
         </div>
