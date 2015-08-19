@@ -37,7 +37,12 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         }
     },
     
-    getLocalDocID: function(docId) {
+    /**
+    * Given an pouchDB doc id, return the corresponding ember record id.
+    * @param {String} docId the pouchDB doc id.
+    * @returns {String} the corresponding Ember id.
+    */
+    getEmberId: function(docId) {
         var parsedId = this.get('mainDB').rel.parseDocID(docId);
         if (!Ember.isEmpty(parsedId.id)) {
             return parsedId.id;
@@ -57,6 +62,19 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         }.bind(this));
     },
 
+    /**
+    * Given an Ember record id and type, return back the corresponding pouchDB id.
+    * @param {String} emberId the ember record id.
+    * @param {String} type the record type.
+    * @returns {String} the corresponding pouch id.
+    */
+    getPouchId: function(emberId, type) {
+        return this.get('mainDB').rel.makeDocID({
+            id: emberId,
+            type: type
+        });
+    },
+    
     removeFileLink: function(pouchDbId) {
          var configDB = this.get('configDB');
         this._getFileLink(pouchDbId).then(function(fileLink) {

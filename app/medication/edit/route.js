@@ -52,9 +52,12 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
         var inventoryItem = model.get('inventoryItem'),
             patient = model.get('patient');
         if (Ember.isEmpty(inventoryItem)) {
-            this.get('pouchdb').queryMainDB(inventoryQuery, 'inventory_by_type').then(function(result) {
+            var pouchdb = this.get('pouchdb');
+            pouchdb.queryMainDB(inventoryQuery, 'inventory_by_type').then(function(result) {
                 var medicationList = result.rows.map(function(medication) {
-                    return medication.doc;
+                    var medicationValues = medication.doc.data;
+                    medicationValues.id = pouchdb.getEmberId(medication.id);
+                    return medicationValues;
                 });
                 controller.set('medicationList', medicationList);
             });
