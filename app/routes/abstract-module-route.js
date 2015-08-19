@@ -124,7 +124,7 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
                 var promises = this.additionalModels.map(function(modelMap) {
                     return this.store.find.apply(this.store, modelMap.findArgs);
                 }.bind(this));
-                Ember.RSVP.allSettled(promises,'All additional Models for'+this.get('moduleName')).then(function(array){
+                Ember.RSVP.allSettled(promises,'All additional Models for '+this.get('moduleName')).then(function(array){
                     array.forEach(function(item, index) {
                         if (item.state === 'fulfilled') {
                             this.set(this.additionalModels[index].name, item.value);
