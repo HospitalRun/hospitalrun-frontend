@@ -25,8 +25,8 @@ export default Adapter.extend(PouchAdapterUtils, {
             };
             
             queryParams.keys = query.exactKeys.map(function(key) {
-                return self._idToPouchId(key, 'config');
-            });
+                return this.get('pouchDBService').getPouchId(key, 'config');
+            }.bind(this));
             return new Ember.RSVP.Promise(function(resolve, reject){
                 self._getDb().then(function(db){
                     try {

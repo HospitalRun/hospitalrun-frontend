@@ -57,12 +57,11 @@ export default Adapter.extend(PouchAdapterUtils, {
     },
     
     _handleQueryResponse: function(response, store, type) {
-        var db = this.get('db');
+        var pouchDBService = this.get('pouchDBService');
         return new Ember.RSVP.Promise(function(resolve, reject){
             if (response.rows.length > 0) {
                 var ids = response.rows.map(function(row) {
-                    var docIdParts = db.rel.parseDocID(row.id);
-                    return docIdParts.id;
+                    return pouchDBService.getEmberId(row.id);
                 });
                 this.find(store, type, ids).then(resolve, reject);
             } else {
@@ -90,8 +89,6 @@ export default Adapter.extend(PouchAdapterUtils, {
     },
     
     findQuery: function(store, type, query, options) {
-        var db = this.get('db');
-        console.log('findQuery',db,this.toString());
         var specialQuery = false;
         for (var i=0;i< this._specialQueries.length; i++) {
             if (Ember.get(query,this._specialQueries[i])) {

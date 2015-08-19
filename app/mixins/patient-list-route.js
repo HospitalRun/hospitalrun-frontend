@@ -16,7 +16,7 @@ export default Ember.Mixin.create({
             if (result.rows) {
                 var list = result.rows.map(function(row) {
                     var rowValues = row.doc.data;
-                    rowValues.id = pouchDBService.getLocalDocID(row.id);
+                    rowValues.id = pouchDBService.getEmberId(row.id);
                     return rowValues;
                 });
                 controller.set('patientList', list);
