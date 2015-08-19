@@ -6,16 +6,11 @@ export default Ember.Mixin.create({
      */ 
     inventoryItemChanged: function() {
         var selectedInventoryItem = this.get('selectedInventoryItem');
-        if (!Ember.isEmpty(selectedInventoryItem)) {
-            selectedInventoryItem.id = selectedInventoryItem._id.substr(10);
-            this.store.find('inventory', selectedInventoryItem._id.substr(10)).then(function(item) {
-                item.reload().then(function() {
-                    this.set('inventoryItem', item);
-                    Ember.run.once(this, function(){
-                        this.get('model').validate();
-                    });
-                }.bind(this), function(err) {
-                    console.log("ERROR reloading inventory item", err);
+        if (!Ember.isEmpty(selectedInventoryItem)) {            
+            this.store.find('inventory', selectedInventoryItem.id).then(function(item) {                
+                this.set('inventoryItem', item);
+                Ember.run.once(this, function(){
+                    this.get('model').validate();
                 });
             }.bind(this));
         }
