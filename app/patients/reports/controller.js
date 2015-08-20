@@ -292,30 +292,26 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
         }.bind(this));
     },
     
-    _addPatientProcedureRows: function(procedureTotals, reportColumns) {
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            procedureTotals.forEach(function(procedureTotal) {
-                if (!Ember.isEmpty(procedureTotal.records)) {
-                    procedureTotal.records.forEach(function(patientProcedure, index) {
-                        var visit = patientProcedure.get('visit');
-                        if (!Ember.isEmpty(visit)) {
-                            this._getPatientDetails(visit.get('patient.id')).then(function(patient) {
-                                this._addReportRow({
-                                    patient: patient,
-                                    procedure: patientProcedure.get('description'),
-                                    procedureDate: patientProcedure.get('procedureDate'),
-                                }, false, reportColumns);
-                                if (index+1 === procedureTotal.records.length) {
-                                    this._addReportRow({                            
-                                        procedure: 'Total for %@: %@'.fmt(procedureTotal.type, procedureTotal.total)
-                                    }, true, reportColumns);
-                                }
-                            }.bind(this), reject);
-                        }
-                    }.bind(this));
-                }
-            }.bind(this));   
-            resolve();
+    _addPatientProcedureRows: function(procedureTotals, reportColumns) {    
+        procedureTotals.forEach(function(procedureTotal) {
+            if (!Ember.isEmpty(procedureTotal.records)) {
+                procedureTotal.records.forEach(function(patientProcedure, index) {
+                    this._addReportRow({
+                        patient: patientProcedure.get('patient'),
+                        procedure: patientProcedure.get('description'),
+                        procedureDate: patientProcedure.get('procedureDate'),
+                    }, false, reportColumns);
+                    if (index+1 === procedureTotal.records.length) {
+                        this._addReportRow({                            
+                            procedure: 'Total for %@: %@'.fmt(procedureTotal.type, procedureTotal.total)
+                        }, true, reportColumns);
+                    }
+                }.bind(this));
+            } else {
+                this._addReportRow({                            
+                    procedure: 'Total for %@: %@'.fmt(procedureTotal.type, procedureTotal.total)
+                }, true, reportColumns);
+            }
         }.bind(this));
     },
     
@@ -438,7 +434,11 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
                 options: {},
                 mapReduce: 'visit_by_date'
             },
+            isDischargeReport = this.get('isDischargeReport'),
             maxValue = this.get('maxValue');
+        if (isDischargeReport) {
+            findParams.mapReduce = 'visit_by_discharge_date';
+        }
         
         /**
          * Admissions - start date between start and end date
@@ -446,15 +446,11 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
          */
         return new Ember.RSVP.Promise(function(resolve, reject) {
             var isDischargeReport = this.get('isDischargeReport');
-            if (isDischargeReport) {
-                findParams.options.startkey =  [null, filterStartDate.getTime()];
-            } else {
-                findParams.options.startkey =  [filterStartDate.getTime(), null];
-            }
+            findParams.options.startkey =  [filterStartDate.getTime(), null];
             if (!Ember.isEmpty(filterEndDate)) {
                 filterEndDate = moment(filterEndDate).endOf('day').toDate();
                 if (isDischargeReport) {
-                    findParams.options.endkey =  [maxValue, filterEndDate.getTime(), maxValue];
+                    findParams.options.endkey =  [filterEndDate.getTime(), maxValue];
                 } else {
                     findParams.options.endkey =  [filterEndDate.getTime(), maxValue, maxValue];
                 }
@@ -648,10 +644,30 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     _generateProcedureReport: function(reportType) {
         this._findProceduresByDate().then(function(procedures) {
             var reportColumns;
+            procedures = procedures.filter(function(procedure) {
+                var visit = procedure.get('visit');
+                if (Ember.isEmpty(visit) || Ember.isEmpty(visit.get('patient.id'))) {
+                    return false;
+                } else {
+                    return true;
+                }
+            });            
             if (reportType.indexOf('detailed') === 0) {
                 reportColumns = this.get('procedureDetailReportColumns');
-                var procedureTotals = this._totalByType(procedures, 'description', 'Total procedures: ');
-                this._addPatientProcedureRows(procedureTotals, reportColumns).then(function() {
+                var patientPromises = {};
+                procedures.forEach(function(procedure) {
+                    var visit = procedure.get('visit');
+                    if (!Ember.isEmpty(visit)) {
+                        patientPromises[procedure.get('id')] = this._getPatientDetails(visit.get('patient.id'));
+                    }
+                }.bind(this));
+                
+                Ember.RSVP.hash(patientPromises).then(function(resolutionHash) {
+                    procedures.forEach(function(procedure) {
+                        procedure.set('patient', resolutionHash[procedure.get('id')]);
+                    });
+                    var procedureTotals = this._totalByType(procedures, 'description', 'Total procedures');
+                    this._addPatientProcedureRows(procedureTotals, reportColumns);
                     this._finishReport(reportColumns);
                 }.bind(this), function(err) {
                     this._notifyReportError('Error in  _generateProcedureReport:'+err);
@@ -772,10 +788,13 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
             var type = record.get(typeField),
                 typeObject;
             if (!Ember.isEmpty(type)) {
-                typeObject = types.findBy('type', type);
+                typeObject = types.find(function(item) {
+                    var itemType = item.type;
+                    return itemType.trim().toLowerCase() === type.toLowerCase();
+                });
                 if (Ember.isEmpty(typeObject)) {
                     typeObject = {
-                        type: type,
+                        type: type.trim(),
                         total: 0,
                         records: []
                     };
