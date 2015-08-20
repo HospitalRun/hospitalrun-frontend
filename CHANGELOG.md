@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.8.6](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.8.6) (2015-08-20)
+
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.8.5...0.8.6)
+
+**Fixed bugs:**
+
+- Fixed issues with patient reports.  The detailed procedure report was not properly sorting and exporting to csv.  The discharge reports were not properly limited by date.
+
 ## [0.8.5](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.8.5) (2015-07-24)
 
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.8.4...0.8.5)
