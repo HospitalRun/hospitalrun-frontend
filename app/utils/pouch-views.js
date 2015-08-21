@@ -360,23 +360,10 @@ var designDocs = [{
     version: 3
 }, {
     name: 'visit_by_discharge_date',
-    function:  function(doc) {
-        var doctype,
-            uidx;
-        if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
-            doctype = doc._id.substring(0, uidx);
-            if(doctype === 'visit') {
-                var endDate = doc.endDate;
-                if (endDate && endDate !== '') {
-                    endDate = new Date(endDate);
-                    if (endDate.getTime) {
-                        endDate = endDate.getTime();
-                    }
-                    emit([endDate, doc._id]);
-                }
-            }
-        }
-    },
+    function: generateView('visit',
+        generateDateForView('endDate')+
+        'emit([endDate, doc._id]);'
+    ),
     version: 1
 }, {
     name: 'visit_by_patient',
