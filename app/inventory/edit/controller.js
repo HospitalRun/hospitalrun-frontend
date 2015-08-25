@@ -248,35 +248,35 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         });
     },
 
-    _findSequence: function(type, resolve, reject) {
+    _findSequence: function(inventoryType, resolve, reject) {
         var sequenceFinder = new Ember.RSVP.Promise(function(resolve){
-            this._checkNextSequence(resolve, type, 0);
+            this._checkNextSequence(resolve, inventoryType, 0);
         }.bind(this));
         sequenceFinder.then(function(prefixChars) {
             var newSequence = this.get('store').push('sequence',{
-                id: 'inventory_'+type,
-                prefix: type.toLowerCase().substr(0,prefixChars),
+                id: 'inventory_'+inventoryType,
+                prefix: inventoryType.toLowerCase().substr(0,prefixChars),
                 value: 0
             });
             this._completeBeforeUpdate(newSequence, resolve, reject);
         }.bind(this));
     },
     
-    _findSequenceByPrefix: function(type, prefixChars) {  
+    _findSequenceByPrefix: function(inventoryType, prefixChars) {  
         var pouchDBService = this.get('pouchDBService');
         var sequenceQuery = {
-            key:  type.toLowerCase().substr(0,prefixChars)            
+            key:  inventoryType.toLowerCase().substr(0,prefixChars)            
         };
         return pouchDBService.queryMainDB(sequenceQuery, 'sequence_by_prefix');
     },    
     
-    _checkNextSequence: function(resolve, type, prefixChars) {
+    _checkNextSequence: function(resolve, inventoryType, prefixChars) {
         prefixChars++;
-        this._findSequenceByPrefix(type, prefixChars).then(function(records) {
+        this._findSequenceByPrefix(inventoryType, prefixChars).then(function(records) {
             if (Ember.isEmpty(records.rows)) {
                 resolve(prefixChars);
             } else {
-                this._checkNextSequence(resolve, type, prefixChars);
+                this._checkNextSequence(resolve, inventoryType, prefixChars);
             }
         }.bind(this), function() {
             resolve(prefixChars);
@@ -315,15 +315,15 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     beforeUpdate: function() {
         if (this.get('isNew')) {
             var model = this.get('model'),
-                type = this.get('type');                
+                inventoryType = model.get('inventoryType');                
             return new Ember.RSVP.Promise(function(resolve, reject){
                 model.validate().then(function() {
                     if (model.get('isValid')) {
                         this.set('savingNewItem', true);
-                        this.store.find('sequence', 'inventory_'+type).then(function(sequence) {
+                        this.store.find('sequence', 'inventory_'+inventoryType).then(function(sequence) {
                             this._completeBeforeUpdate(sequence, resolve, reject);
                         }.bind(this), function() {
-                            this._findSequence(type, resolve, reject);
+                            this._findSequence(inventoryType, resolve, reject);
                         }.bind(this));                        
                     } else {
                         this.send('showDisabledDialog');

@@ -48,7 +48,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         type: {        
             label: 'Type',
             include: true,
-            property: 'inventoryItem.type'
+            property: 'inventoryItem.inventoryType'
         }, 
         xref: {
             label: 'Cross Reference',

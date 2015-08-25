@@ -22,7 +22,7 @@ export default AbstractModel.extend(LocationName, {
     name: DS.attr('string'),
     quantity: DS.attr('number'),
     crossReference: DS.attr('string'),
-    type: DS.attr('string'),
+    inventoryType: DS.attr('string'),
     price: DS.attr('number'),
     reorderPoint: DS.attr('number'),
     distributionUnit: DS.attr('string'),
@@ -74,7 +74,7 @@ export default AbstractModel.extend(LocationName, {
                 allowBlank: true
             }
         },
-        type: {
+        inventoryType: {
             presence: true,
         },
         vendor: {

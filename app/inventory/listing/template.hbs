@@ -3,7 +3,7 @@
         <tr class="table-header">
             {{#sortable-column sortBy='friendlyId' sortDesc=sortDesc sortKey=sortKey }}ID{{/sortable-column}}
             {{#sortable-column sortBy='name' sortDesc=sortDesc sortKey=sortKey }}Name{{/sortable-column}}
-            {{#sortable-column sortBy='type' sortDesc=sortDesc sortKey=sortKey }}Type{{/sortable-column}}
+            {{#sortable-column sortBy='inventoryType' sortDesc=sortDesc sortKey=sortKey }}Type{{/sortable-column}}
             {{#sortable-column sortBy='quantity' sortDesc=sortDesc sortKey=sortKey }}Quantity{{/sortable-column}}
             <th>Location</th>        
             {{#sortable-column sortBy='crossReference' sortDesc=sortDesc sortKey=sortKey }}XRef{{/sortable-column}}
@@ -14,7 +14,7 @@
                 <tr {{action 'editItem' inventory}}>
                     <td>{{inventory.friendlyId}}</td>
                     <td>{{inventory.name}}</td>
-                    <td>{{inventory.type}}</td>
+                    <td>{{inventory.inventoryType}}</td>
                     <td>{{inventory.quantity}} {{inventory.distributionUnit}}</td>
                     <td>{{inventory.displayLocations}}</td>
                     <td>{{inventory.crossReference}}</td>

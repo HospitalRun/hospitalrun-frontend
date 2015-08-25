@@ -10,7 +10,7 @@ export default Ember.ObjectController.extend({
             pricingType = this.get('model'),
             rows = [];
         if (!Ember.isEmpty(pricingList)) {
-            pricingList = pricingList.filterBy('type', pricingType);
+            pricingList = pricingList.filterBy('pricingType', pricingType);
             pricingList = pricingList.map(function(pricingItem) {
                 var chargesForItem = parentController.findChargeForPricingItem(pricingItem);
                 if (chargesForItem) {

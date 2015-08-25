@@ -9,7 +9,7 @@ export default AbstractModel.extend({
       async: false
     }),    
     datePaid: DS.attr('date'),
-    type: DS.attr('string'),
+    paymentType: DS.attr('string'),
     notes: DS.attr('string'),
     
      validations: {

@@ -9,8 +9,8 @@ export default AbstractIndexRoute.extend({
         var category = item.get('category'),
             keyPrefix = this.get('keyPrefix'),
             name = item.get('name'),
-            type = item.get('type');
-        return [category, name, type, keyPrefix+item.get('id')];        
+            pricingType = item.get('pricingType');
+        return [category, name, pricingType, keyPrefix+item.get('id')];        
     },
     
     _modelQueryParams: function() {

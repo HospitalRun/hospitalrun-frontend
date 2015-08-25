@@ -88,21 +88,21 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
         name: 'Inventory Types',
         value: 'inventory_types',
         models: {
-            inventory:  'type'
+            inventory:  'inventoryType'
         }
     }, {
         defaultValues: 'defaultImagingPricingTypes',
         name: 'Imaging Pricing Types',
         value: 'imaging_pricing_types',
         models: {
-            pricing:  'type'
+            pricing:  'pricingType'
         }
     }, {
         defaultValues: 'defaultLabPricingTypes',
         name: 'Lab Pricing Types',
         value: 'lab_pricing_types',
         models: {
-            pricing:  'type'
+            pricing:  'pricingType'
         }
     }, {
         name: 'Patient Status List',
@@ -137,7 +137,7 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
         name: 'Procedure Pricing Types',
         value: 'procedure_pricing_types',
         models: {
-            pricing:  'type'
+            pricing:  'pricingType'
         }
     }, {
         name: 'Radiologists',
@@ -169,7 +169,7 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
         name: 'Ward Pricing Types',
         value: 'ward_pricing_types',
         models: {
-            pricing:  'type'
+            pricing:  'pricingType'
         }
     }],
     

@@ -102,7 +102,7 @@ export default Ember.Mixin.create({
                 userCanAdd: userCanAddPricingTypes
             });        
         if (!Ember.isEmpty(pricingList)) {
-            returnList.set('value', pricingList.filterBy('type', pricingTypeForObjectType));
+            returnList.set('value', pricingList.filterBy('pricingType', pricingTypeForObjectType));
         }
         return returnList;
     }.property('pricingList','pricingTypeForObjectType','pricingTypeValues'),
@@ -172,7 +172,7 @@ export default Ember.Mixin.create({
             newPricing = this.store.createRecord('pricing', {
                 name: pricingName,
                 category: pricingCategory,
-                type: pricingTypeForObjectType
+                pricingType: pricingTypeForObjectType
             });
             newPricing.save().then(function() {
                 this.get('pricingList').addObject({

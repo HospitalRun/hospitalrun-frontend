@@ -221,7 +221,7 @@ var designDocs = [{
             case 'name':
             case 'price':
             case 'quantity':
-            case 'type': {
+            case 'inventoryType': {
                 return compareStrings(a.doc[sortBy], b.doc[sortBy]);
             }
             default: {
@@ -229,13 +229,13 @@ var designDocs = [{
             }
         }
     }.toString()),    
-    version: 2
+    version: 3
 }, {    
     name: 'inventory_by_type',
     function: generateView('inventory',
-        'emit(doc.data.type);'
+        'emit(doc.data.inventoryType);'
     ),
-    version: 3
+    version: 4
 }, {    
     name: 'inventory_purchase_by_date_received',
     function: generateView('inv-purchase',
@@ -341,9 +341,9 @@ var designDocs = [{
 }, {
     name: 'pricing_by_category',
     function: generateView('pricing',
-        'emit([doc.data.category, doc.data.name, doc.data.type, doc._id]);'
+        'emit([doc.data.category, doc.data.name, doc.data.pricingType, doc._id]);'
     ),
-    version: 3
+    version: 4
 }, {
     name: 'sequence_by_prefix',
     function: generateView('sequence',

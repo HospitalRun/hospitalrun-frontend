@@ -6,7 +6,7 @@ export default AbstractModel.extend({
     expenseAccount: DS.attr('string'),
     name: DS.attr('string'),
     price: DS.attr('number'),
-    type: DS.attr('string'),
+    pricingType: DS.attr('string'),
     pricingOverrides: DS.hasMany('override-price', {
       async: false
     }),
