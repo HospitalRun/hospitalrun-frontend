@@ -1,6 +1,6 @@
 {{#em-form model=this submit_button=false }}
     {{#unless selectPatient}}
-        {{patient-summary patient=patient returnTo='medication.edit' returnToContext=id disablePatientLink=isNew }}
+        {{patient-summary patient=model.patient returnTo='medication.edit' returnToContext=id disablePatientLink=isNew }}
     {{/unless}}
     <div class="row">
         {{#if selectPatient}}
@@ -16,7 +16,7 @@
         {{else}}
             <div class="form-group col-xs-3">
                 <label>Visit</label>
-                <p class="form-control-static">{{visit.visitDescription}}</p>
+                <p class="form-control-static">{{model.visit.visitDescription}}</p>
             </div>
         {{/if}}
     </div>

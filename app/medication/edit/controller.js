@@ -136,9 +136,9 @@ export default AbstractEditController.extend(InventorySelection, PatientId, Pati
                                 reject('creating new patient first');
                             } else {
                                 this.set('newMedication', true);
-                                this.set('status', 'Requested');
-                                this.set('requestedBy', newMedication.getUserName());
-                                this.set('requestedDate', new Date());
+                                newMedication.set('status', 'Requested');
+                                newMedication.set('requestedBy', newMedication.getUserName());
+                                newMedication.set('requestedDate', new Date());
                                 this.addChildToVisit(newMedication, 'medication', 'Pharmacy').then(function() {        
                                     this.finishBeforeUpdate(isFulfilling,  resolve);
                                 }.bind(this), reject);
