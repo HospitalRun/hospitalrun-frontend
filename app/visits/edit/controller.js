@@ -229,8 +229,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         
         editImaging: function(imaging) {
             if (imaging.get('canEdit')) {
-                imaging.setProperties({
-                    'isCompleting': false,
+                imaging.setProperties({                    
                     'returnToVisit': true
                 });
             }
@@ -239,8 +238,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         
         editLab: function(lab) {
             if (lab.get('canEdit')) {
-                lab.setProperties({
-                    'isCompleting': false,
+                lab.setProperties({                    
                     'returnToVisit': true
                 });
                 this.transitionToRoute('labs.edit', lab);
@@ -275,8 +273,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         },
         
         newImaging: function() {
-            var newImaging = this.get('store').createRecord('imaging', {
-                isCompleting: false,
+            var newImaging = this.get('store').createRecord('imaging', {                
                 patient: this.get('patient'),
                 visit: this.get('model'),
                 returnToVisit: true
@@ -285,8 +282,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         },
 
         newLab: function() {
-            var newLab = this.get('store').createRecord('lab', {
-                isCompleting: false,
+            var newLab = this.get('store').createRecord('lab', {                
                 patient: this.get('patient'),
                 visit: this.get('model'),
                 returnToVisit: true

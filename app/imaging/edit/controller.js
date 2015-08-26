@@ -7,15 +7,17 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     needs: ['imaging'],
     chargePricingCategory: 'Imaging',
     chargeRoute: 'imaging.charge',
+    selectedImagingType: null,
     
     canComplete: function() {
-        var imagingTypeName = this.get('selectedImagingType');
-        if (Ember.isArray(imagingTypeName) && imagingTypeName.length >1) {
+        var imagingTypeName = this.get('model.imagingTypeName'),
+            selectedImagingType = this.get('selectedImagingType');
+        if (Ember.isEmpty(imagingTypeName) || Ember.isArray(selectedImagingType) && selectedImagingType.length >1) {
             return false;
         } else {
             return this.currentUserCan('complete_imaging');
         }
-    }.property('selectedImagingType.[]'),
+    }.property('selectedImagingType.[]', 'model.imagingTypeName'),
     
     actions: {
         completeImaging: function() {
@@ -65,7 +67,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     
     additionalButtons: function() {
         var canComplete = this.get('canComplete'),
-            isValid = this.get('isValid');
+            isValid = this.get('model.isValid');
         if (isValid && canComplete) {
             return [{
                 buttonAction: 'completeImaging',
@@ -74,7 +76,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
                 buttonText: 'Complete'
             }];
         }
-    }.property('canComplete', 'isValid'),
+    }.property('canComplete', 'model.isValid'),
     
     lookupListsToUpdate: [{
         name: 'radiologistList',

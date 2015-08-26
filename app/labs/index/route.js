@@ -23,12 +23,5 @@ export default AbstractIndexRoute.extend({
             },
             mapReduce: 'lab_by_status'
         };
-    },
-    
-    actions: {
-        completeItem: function(item) {
-            item.set('isCompleting', true);
-            this.transitionTo('labs.edit', item);
-        }, 
-    }
+    }    
 });

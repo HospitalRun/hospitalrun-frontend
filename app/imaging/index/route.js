@@ -23,12 +23,5 @@ export default AbstractIndexRoute.extend({
             },
             mapReduce: 'imaging_by_status'
         };
-    },
-    
-    actions: {
-        completeItem: function(item) {
-            item.set('isCompleting', true);
-            this.transitionTo('imaging.edit', item);
-        }, 
     }
 });
