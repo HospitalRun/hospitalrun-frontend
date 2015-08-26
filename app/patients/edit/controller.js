@@ -287,11 +287,13 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
         },
 
         editImaging: function(imaging) {
-            imaging.setProperties({
-                'isCompleting': false,
-                'returnToPatient': true
-            });
-            this.transitionToRoute('imaging.edit', imaging);
+            if (imaging.get('canEdit')) {
+                imaging.setProperties({
+                    'isCompleting': false,
+                    'returnToPatient': true
+                });
+                this.transitionToRoute('imaging.edit', imaging);
+            }
         },        
         
         editLab: function(lab) {
@@ -323,41 +325,37 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
         
         newAppointment: function() {
             var now = moment().hours(8).minutes(0).seconds(0).toDate();
-            var newAppointment = this.get('store').createRecord('appointment', {
+            this._addChildObject('appointments.edit', {
                 patient: this.get('model'),
                 startDate: now,
-                endDate: now
+                endDate: now,
+                returnToPatient: true
             });
-            newAppointment.set('returnToPatient', true);
-            this.transitionToRoute('appointments.edit', newAppointment);
         },
 
         newImaging: function() {
-            var newImaging = this.get('store').createRecord('imaging', {
+            this._addChildObject('imaging.edit', {
                 isCompleting: false,
                 patient: this.get('model'),
-                returnToPatient: true
-            });            
-            this.transitionToRoute('imaging.edit', newImaging);
+                returnToPatient: true,
+                selectPatient: false
+            });
         },
         
         newLab: function() {
-            var newLab = this.get('store').createRecord('lab', {
+            this._addChildObject('labs.edit', {
                 isCompleting: false,
                 patient: this.get('model'),
                 returnToPatient: true
             });            
-            this.transitionToRoute('labs.edit', newLab);
         },
         
         newMedication: function() {
-            this.transitionToRoute('medication.edit', 'new').then(function(newRoute) {                
-                newRoute.currentModel.setProperties({
-                    patient: this.get('model'),
-                    returnToPatient: true,
-                    selectPatient: false
-                });
-            }.bind(this));
+            this._addChildObject('medication.edit', {
+                patient: this.get('model'),
+                returnToPatient: true,
+                selectPatient: false
+            });
         },
         
         newVisit: function() {
@@ -493,6 +491,12 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
             this.send('closeModal');
         }
         
+    },
+    
+    _addChildObject: function(route, newObjectProperties) {
+        this.transitionToRoute(route, 'new').then(function(newRoute) {
+            newRoute.currentModel.setProperties(newObjectProperties);
+        });
     },
     
     _getVisitCollection: function(name) {
