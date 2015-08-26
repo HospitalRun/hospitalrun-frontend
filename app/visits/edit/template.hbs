@@ -217,39 +217,7 @@
             </div>
             <div id="patient-imaging" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <table class="table">
-                        <tr class="table-header">
-                            <th>Date Requested</th>
-                            <th>Imaging Type</th>
-                            <th>Status</th>
-                            <th>Date Processed</th>
-                            <th>Result</th>
-                            <th>Notes</th>
-                            <th>Requested By</th>
-                            <th>Actions</th>
-                        </tr>
-                        {{#each imaging itemController="imaging/item-controller"}}
-                            <tr {{action "editImaging" this}}>
-                                <td>{{date-format requestedDate}}</td>
-                                <td>{{imagingType.name}}</td>
-                                <td>{{status}}</td>
-                                <td>{{date-format imagingDate}}</td>
-                                <td>{{result}}</td>
-                                <td>{{notes}}</td>
-                                <td>{{requestedBy}}</td>
-                                <td>
-                                    {{#if canEdit}}
-                                        {{#if parentController.canAddImaging}}
-                                            <button class="btn btn-default neutral" {{action "editImaging" this}}>Edit</button>
-                                        {{/if}}
-                                        {{#if parentController.canDeleteImaging}}
-                                            <button class="btn btn-default warning" {{action "showDeleteImaging" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                                        {{/if}}
-                                    {{/if}}
-                                </td>
-                            </tr>
-                        {{/each}}
-                    </table>
+                    {{partial 'patients/imaging'}}
                 </div>
             </div>
         </div>    

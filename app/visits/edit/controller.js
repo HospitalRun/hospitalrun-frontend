@@ -92,6 +92,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     dateTimeFormat: 'l h:mm A',
     diagnosisList: Ember.computed.alias('controllers.visits.diagnosisList'),
     findPatientVisits: false,
+    patientImaging: Ember.computed.alias('model.imaging'),
     patientMedications: Ember.computed.alias('model.medication'),
     pricingList: null, //This gets filled in by the route
     pricingTypes: Ember.computed.alias('controllers.visits.wardPricingTypes'),
@@ -226,10 +227,12 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         },
         
         editImaging: function(imaging) {
-            imaging.setProperties({
-                'isCompleting': false,
-                'returnToVisit': true
-            });
+            if (imaging.get('canEdit')) {
+                imaging.setProperties({
+                    'isCompleting': false,
+                    'returnToVisit': true
+                });
+            }
             this.transitionToRoute('imaging.edit', imaging);
         },        
         

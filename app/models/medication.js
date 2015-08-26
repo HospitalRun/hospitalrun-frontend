@@ -1,9 +1,10 @@
 import AbstractModel from 'hospitalrun/models/abstract';
+import CanEditRequested from 'hospitalrun/mixins/can-edit-requested';
 import DS from 'ember-data';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import Ember from 'ember';
 
-export default AbstractModel.extend(DateFormat, {
+export default AbstractModel.extend(CanEditRequested, DateFormat, {
     inventoryItem: DS.belongsTo('inventory', {
       async: false
     }),
@@ -21,12 +22,7 @@ export default AbstractModel.extend(DateFormat, {
     visit: DS.belongsTo('visit', {
       async: false
     }),
-    
-    canEdit: function() {
-        var status = this.get('status');
-        return (status === 'Requested');
-    }.property('status'),
-    
+
     isRequested: function() {
         var status = this.get('status');
         return (status === 'Requested');
