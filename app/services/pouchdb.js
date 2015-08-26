@@ -37,6 +37,20 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         }
     },
     
+    _mapPouchData: function(rows) {
+        var mappedRows = [];
+        if (rows) {
+            mappedRows = rows.map(function(row) {
+                var rowValues = {
+                    doc: row.doc.data
+                };
+                rowValues.doc.id = this.getEmberId(row.id);
+                return rowValues;
+            }.bind(this));
+        }
+        return mappedRows;
+    },
+    
     /**
     * Given an pouchDB doc id, return the corresponding ember record id.
     * @param {String} docId the pouchDB doc id.
@@ -97,6 +111,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
                     if (err) {
                         this._pouchError(reject)(err);
                     } else {
+                        response.rows = this._mapPouchData(response.rows);
                         resolve(response);
                     }                
                 }.bind(this));
@@ -105,6 +120,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
                     if (err) {
                         this._pouchError(reject)(err);
                     } else {
+                        response.rows = this._mapPouchData(response.rows);
                         resolve(response);
                     }                
                 }.bind(this));
