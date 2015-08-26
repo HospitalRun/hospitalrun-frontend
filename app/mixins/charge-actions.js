@@ -2,7 +2,7 @@ import Ember from 'ember';
 export default Ember.Mixin.create({
     _createNewChargeRecord: function(quantityCharged, pricingId) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            this.store.find('pricing', pricingId.substr(8)).then(function(item) {
+            this.store.find('pricing', pricingId).then(function(item) {
                 var newCharge = this.store.createRecord('proc-charge', {
                     dateCharged: new Date(),
                     quantity: quantityCharged,
@@ -84,7 +84,7 @@ export default Ember.Mixin.create({
         var charges = this.get('charges'),
             chargeForItem = charges.find(function(charge) {
                 var chargePricingItemId = charge.get('pricingItem.id');
-                return (pricingItem._id.substr(8) === chargePricingItemId);
+                return (pricingItem.id === chargePricingItemId);
             });
         return chargeForItem;
     },
@@ -174,9 +174,9 @@ export default Ember.Mixin.create({
                 category: pricingCategory,
                 pricingType: pricingTypeForObjectType
             });
-            newPricing.save().then(function() {
+            newPricing.save().then(function(savedNewPricing) {
                 this.get('pricingList').addObject({
-                    _id: 'pricing_'+ newPricing.get('id'),
+                    id: savedNewPricing.get('id'),
                     name: newPricing.get('name')
                 });
                 this.set(priceObjectToSet, newPricing);
@@ -191,11 +191,11 @@ export default Ember.Mixin.create({
             return new Ember.RSVP.Promise(function(resolve, reject) {
                 if (Ember.isArray(selectedItem)) {
                     var pricingIds = selectedItem.map(function(pricingItem) {
-                        return pricingItem._id.substr(8);
+                        return pricingItem.id;
                     });
                     this.store.findByIds('pricing', pricingIds).then(resolve, reject);
                 } else {
-                    this.store.find('pricing', selectedItem._id.substr(8)).then(resolve, reject);
+                    this.store.find('pricing', selectedItem.id).then(resolve, reject);
                 }
             }.bind(this));
         } else {
@@ -245,7 +245,7 @@ export default Ember.Mixin.create({
             var chargePromises = [];
             pricingList.forEach(function(pricingItem) {
                 var currentCharge = this.findChargeForPricingItem(pricingItem),
-                    quantityCharged = this.get(pricingItem._id);
+                    quantityCharged = this.get(pricingItem.id);
                 if (Ember.isEmpty(quantityCharged)) {
                     if (currentCharge) {
                         //Remove existing charge because quantity is blank
@@ -259,7 +259,7 @@ export default Ember.Mixin.create({
                             chargePromises.push(currentCharge.save());
                         }                        
                     } else {
-                        chargePromises.push(this._createNewChargeRecord(quantityCharged, pricingItem._id));
+                        chargePromises.push(this._createNewChargeRecord(quantityCharged, pricingItem.id));
                     }
                 }                
             }.bind(this));
