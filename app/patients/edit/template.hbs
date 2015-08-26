@@ -216,39 +216,7 @@
                     </div>
 
                     <div class="panel-body detail-section-content">
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Date Requested</th>
-                                <th>Lab Type</th>
-                                <th>Status</th>
-                                <th>Date Processed</th>
-                                <th>Result</th>
-                                <th>Notes</th>
-                                <th>Requested By</th>
-                                <th>Actions</th>
-                            </tr>
-                            {{#each patientLabs itemController="labs/item-controller"}}
-                                <tr {{action "editLab" this}}>
-                                    <td>{{date-format requestedDate}}</td>
-                                    <td>{{labType.name}}</td>
-                                    <td>{{status}}</td>
-                                    <td>{{date-format labDate}}</td>
-                                    <td>{{result}}</td>
-                                    <td>{{notes}}</td>
-                                    <td>{{requestedBy}}</td>
-                                    <td>
-                                        {{#if canEdit}}
-                                            {{#if parentController.canAddLab}}
-                                                <button type="button" class="btn btn-default neutral" {{action "editLab" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if parentController.canDeleteLab}}
-                                                <button type="button" class="btn btn-default warning" {{action "showDeleteLab" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                                            {{/if}}
-                                        {{/if}}
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </table>
+                        {{partial 'patients/labs'}}
                     </div>
                 </div>
             </div>

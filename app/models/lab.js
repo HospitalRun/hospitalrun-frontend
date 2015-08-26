@@ -1,10 +1,11 @@
 import AbstractModel from 'hospitalrun/models/abstract';
+import CanEditRequested from 'hospitalrun/mixins/can-edit-requested';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import DS from 'ember-data';
 import PatientValidation from 'hospitalrun/utils/patient-validation';
 import ResultValidation from 'hospitalrun/mixins/result-validation';
 
-export default AbstractModel.extend(DateFormat, ResultValidation, {
+export default AbstractModel.extend(CanEditRequested, DateFormat, ResultValidation, {
     charges: DS.hasMany('proc-charge', {
       async: false
     }),

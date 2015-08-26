@@ -1,0 +1,33 @@
+<table class="table">
+    <tr class="table-header">
+        <th>Date Requested</th>
+        <th>Lab Type</th>
+        <th>Status</th>
+        <th>Date Processed</th>
+        <th>Result</th>
+        <th>Notes</th>
+        <th>Requested By</th>
+        <th>Actions</th>
+    </tr>
+    {{#each patientLabs as |lab|}}
+        <tr {{action "editLab" lab}}>
+            <td>{{date-format lab.requestedDate}}</td>
+            <td>{{lab.labType.name}}</td>
+            <td>{{lab.status}}</td>
+            <td>{{date-format lab.labDate}}</td>
+            <td>{{lab.result}}</td>
+            <td>{{lab.notes}}</td>
+            <td>{{lab.requestedBy}}</td>
+            <td>
+                {{#if lab.canEdit}}
+                    {{#if canAddLab}}
+                        <button type="button" class="btn btn-default neutral" {{action "editLab" lab}}>Edit</button>
+                    {{/if}}
+                    {{#if canDeleteLab}}
+                        <button type="button" class="btn btn-default warning" {{action "showDeleteLab" lab  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                    {{/if}}
+                {{/if}}
+            </td>
+        </tr>
+    {{/each}}
+</table>
