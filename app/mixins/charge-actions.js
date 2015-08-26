@@ -228,7 +228,14 @@ export default Ember.Mixin.create({
         return (!Ember.isEmpty(pricingTypeList) && pricingTypeList.get('length') > 1);
     }.property('pricingTypeList'),
     
-    userCanAddPricingTypes: Ember.computed.alias('pricingTypes.userCanAdd'),
+    userCanAddPricingTypes: function() {
+        var pricingTypes = this.get('pricingTypes');
+        if (Ember.isEmpty(pricingTypes)) {
+            return true;
+        } else {
+            return pricingTypes.get('userCanAdd');
+        }
+    }.property('pricingTypes'),
     
     /**
      * When using organizeByType charges need to be mapped over from the price lists
