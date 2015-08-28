@@ -55,9 +55,7 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
             var pouchdb = this.get('pouchdb');
             pouchdb.queryMainDB(inventoryQuery, 'inventory_by_type').then(function(result) {
                 var medicationList = result.rows.map(function(medication) {
-                    var medicationValues = medication.doc.data;
-                    medicationValues.id = pouchdb.getEmberId(medication.id);
-                    return medicationValues;
+                    return medication.doc;
                 });
                 controller.set('medicationList', medicationList);
             });
