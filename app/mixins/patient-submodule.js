@@ -2,6 +2,7 @@ import Ember from 'ember';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 export default Ember.Mixin.create(PatientVisits, {
     findPatientVisits: true, //Override to false if visits shouldn't be set when patient is selected.    
+    needToUpdateVisit: false,
     patientList: null,
     selectedPatient: null,
     
@@ -31,8 +32,7 @@ export default Ember.Mixin.create(PatientVisits, {
         return new Ember.RSVP.Promise(function(resolve, reject){
             var visit = this.get('model.visit');
             if (Ember.isEmpty(visit)) {
-                visit = this.createNewVisit(newVisitType);
-                visit.save().then(function(savedVisit) {
+                visit = this.createNewVisit(newVisitType).then(function(savedVisit) {
                     this._finishAddChildToVisit(objectToAdd, childName, savedVisit, resolve, reject);
                 }.bind(this), reject);
             } else {
@@ -62,17 +62,30 @@ export default Ember.Mixin.create(PatientVisits, {
     }.property('returnToPatient', 'returnToVisit'),
     
     createNewVisit: function(newVisitType) {
-        var model = this.get('model'),
-            patient = model.get('patient'),
-            visit = this.get('store').createRecord('visit', {
-            startDate: new Date(),
-            endDate: new Date(),
-            outPatient: true,
-            patient: patient,
-            visitType: newVisitType
-        });
-        model.set('visit', visit);
-        return visit;
+        return new Ember.RSVP.Promise(function(resolve, reject){
+            var model = this.get('model'),
+                patient = model.get('patient'),
+                visit = this.get('store').createRecord('visit', {
+                startDate: new Date(),
+                endDate: new Date(),
+                outPatient: true,
+                patient: patient,
+                visitType: newVisitType
+            });
+            model.set('visit', visit);
+            visit.save().then(function() {
+                visit.reload().then(function(updatedVisit) {
+                    this.getPatientVisits(patient).then(function(visits) {
+                        this.set('patientVisits',visits);
+                        model.set('visit', updatedVisit);
+                        resolve(updatedVisit);
+                    }.bind(this),reject);
+                }.bind(this), reject);
+            }.bind(this), reject).catch(function(err) {
+                console.log("Error creating new visit");
+                reject(err);
+            }.bind(this));
+        }.bind(this));
     },
 
     patientId: Ember.computed.alias('model.patient.id'),
@@ -157,7 +170,7 @@ export default Ember.Mixin.create(PatientVisits, {
      */
     saveVisitIfNeeded: function(alertTitle, alertMessage, alertAction) {
         if (this.get('needToUpdateVisit')) {
-            this.get('visit').save().then(function() {
+            this.get('model.visit').save().then(function() {
                 this.set('needToUpdateVisit', false);
                 this.displayAlert(alertTitle, alertMessage, alertAction);    
             }.bind(this));
