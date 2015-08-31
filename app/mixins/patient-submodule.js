@@ -45,7 +45,7 @@ export default Ember.Mixin.create(PatientVisits, {
         visit.get(childName).then(function(visitChildren) {
             visitChildren.addObject(objectToAdd);
             this.set('needToUpdateVisit', true);
-            resolve(objectToAdd);
+            resolve(visit);
         }.bind(this), reject);
     },
 

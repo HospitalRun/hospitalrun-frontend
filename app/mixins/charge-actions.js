@@ -131,36 +131,46 @@ export default Ember.Mixin.create({
      * should be created. 
      */
     createMultipleRequests: function(pricingRecords, pricingField, visitChildName, newVisitType) {
-        var addPromises = [],
-            attributesToSave = {},        
+        var firstRecord = pricingRecords.get('firstObject'),
+            modelToSave = this.get('model');
+        modelToSave.set(pricingField, firstRecord);        
+        this.addChildToVisit(modelToSave, visitChildName, newVisitType).then(function(visit) {
+            modelToSave.save().then(function() {                
+                this._finishCreateMultipleRequests(pricingRecords, pricingField, visitChildName, newVisitType, visit);
+            }.bind(this));
+        }.bind(this));
+    },
+    
+    _finishCreateMultipleRequests: function(pricingRecords, pricingField, visitChildName, newVisitType, visit) {
+        var attributesToSave = {},        
             baseModel = this.get('model'),
             modelToSave,
+            modelsToAdd = [],
             patient = this.get('patient'),
-            visit = this.get('visit');
+            savePromises = [];
         
-        if (Ember.isEmpty(visit)) {
-            visit = this.createNewVisit(newVisitType);
-        }
         baseModel.eachAttribute(function(name) {
             attributesToSave[name] = baseModel.get(name);
-        });
+        });        
         
-        pricingRecords.forEach(function(pricingRecord) {
-            modelToSave = this.store.createRecord(newVisitType.toLowerCase(), attributesToSave); 
-            modelToSave.set(pricingField, pricingRecord);
-            modelToSave.set('patient', patient);
-            modelToSave.set('visit', visit);
-            addPromises.push(this.addChildToVisit(modelToSave, visitChildName, newVisitType));
+        pricingRecords.forEach(function(pricingRecord, index) {
+            if (index > 0) {
+                modelToSave = this.store.createRecord(newVisitType.toLowerCase(), attributesToSave); 
+                modelToSave.set(pricingField, pricingRecord);
+                modelToSave.set('patient', patient);
+                modelToSave.set('visit', visit);
+                modelsToAdd.push(modelToSave);
+                savePromises.push(modelToSave.save());
+            }
         }.bind(this));
         
-        Ember.RSVP.all(addPromises).then(function(results) {
-            var savePromises = [];
-            results.forEach(function(newObject) {
-                savePromises.push(newObject.save());
-            });
-            Ember.RSVP.all(savePromises).then(function(saveResponse) {
-                this.set('visit', visit); //Make sure the visit is properly set for saving
-                this.afterUpdate(saveResponse, true);
+        Ember.RSVP.all(savePromises).then(function() {
+            var addPromises = [];
+            modelsToAdd.forEach(function(modelToSave) {
+                addPromises.push(this.addChildToVisit(modelToSave, visitChildName, newVisitType));
+            }.bind(this));
+            Ember.RSVP.all(addPromises).then(function(addResults) {                
+                this.afterUpdate(addResults, true);
             }.bind(this));
         }.bind(this));
     },
