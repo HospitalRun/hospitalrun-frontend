@@ -42,7 +42,7 @@ export default Model.extend(UserSession, EmberValidations, {
             this._super(options).then(function(results) {
                 Ember.run(null, resolve, results);
             }, function(error) {
-                if (options.retry) {
+                if (!Ember.isEmpty(options) && options.retry) {
                     //We failed on the second attempt to save the record, so reject the save.
                     Ember.run(null, reject, error);
                 } else {
