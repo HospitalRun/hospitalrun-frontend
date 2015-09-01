@@ -1,7 +1,7 @@
 import Ember from "ember";
 export default Ember.Component.extend({
     name: "select-or-typeahead",
-    class: null,    
+    className: null,    
     hint: true,
     label: null,
     list: null,

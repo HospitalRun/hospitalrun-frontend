@@ -1,16 +1,16 @@
 {{#em-form model=this submit_button=false }}    
-    {{select-or-typeahead class="required" property="description"
+    {{select-or-typeahead className="required" property="description"
         label="Procedure" list=procedureList
         selection=description hint=false
     }}          
     <div class="row">
-        {{select-or-typeahead class="col-xs-6" property="cptCode"
+        {{select-or-typeahead className="col-xs-6" property="cptCode"
             label="CPT Code" list=cptCodeList
             selection=cptCode
         }}
     </div>
     <div class="row">
-        {{select-or-typeahead class="col-sm-3" property="location"
+        {{select-or-typeahead className="col-sm-3" property="location"
             label="Procedure Location" list=procedureLocations
             selection=location
         }}  
@@ -19,21 +19,21 @@
         {{em-input property="timeEnded" label="Time Ended" class="col-sm-3"}}
     </div>
     <div class="row">
-        {{select-or-typeahead class="col-sm-4 required" property="physician"
+        {{select-or-typeahead className="col-sm-4 required" property="physician"
             label="Physician" list=physicianList
             selection=physician
         }}
-        {{select-or-typeahead class="col-sm-4" property="assistant"
+        {{select-or-typeahead className="col-sm-4" property="assistant"
             label="Assistant" list=physicianList
             selection=assistant prompt=" "
         }}
-        {{select-or-typeahead class="col-sm-4" property="anesthesiologist"
+        {{select-or-typeahead className="col-sm-4" property="anesthesiologist"
             label="Anesthesiologist" list=anesthesiologistList
             selection=anesthesiologist
         }}
     </div>
     <div class="row">
-        {{select-or-typeahead class="col-sm-4" property="anesthesiaType"
+        {{select-or-typeahead className="col-sm-4" property="anesthesiaType"
             label="Anesthesia Type" list=anesthesiaTypes
             selection=anesthesiaTypes
         }}        
