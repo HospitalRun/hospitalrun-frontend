@@ -22,6 +22,13 @@ export default Ember.Mixin.create({
         });
     },
     
+    actions: {
+        returnToPatient: function() {            
+            this.controller.send('returnToPatient');
+            this.controller.send('closeModal');
+        }
+    },
+
     setupController: function(controller, model) {
         this._super(controller, model);
         this._fetchPatientList(controller);

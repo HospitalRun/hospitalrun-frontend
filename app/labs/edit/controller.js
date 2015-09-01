@@ -98,7 +98,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
             alertMessage = 'The lab request has been saved.';
         }
         if (multipleRecords) {
-            afterDialogAction = 'allItems';
+            afterDialogAction = this.get('cancelAction');
         }
         this.saveVisitIfNeeded(alertTitle, alertMessage, afterDialogAction);
         this.set('selectPatient', false);
