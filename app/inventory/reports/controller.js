@@ -161,6 +161,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     }, {
         name: 'Summary Stock Transfer',
         value: 'summaryTransfer'
+    }, {        
+        name: 'Finance Summary',
+        value: 'summaryFinance'
     }],
     
     includeDate: function() {
@@ -250,7 +253,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     
     useFieldPicker: function() {
         var reportType = this.get('reportType');
-        return (reportType !== 'expiration');
+        return (reportType !== 'expiration' && reportType !== 'summaryFinance');
     }.property('reportType'),
 
     _addAisleColumn: function(locations) {
@@ -551,6 +554,26 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             }.bind(this));
         }.bind(this));
         
+    },
+    
+    _generateFinancialSummaryReport: function() {
+        console.log("Running summary finance report.");
+        var beginningBalance = 1000,
+            pouchdbController = this.get('pouchdbController'),
+            reportRows = this.get('reportRows'),
+            reportTimes = this._getDateQueryParams();
+        pouchdbController.queryMainDB({
+            startkey:  [reportTimes.startTime, 'inv-purchase_'],
+            endkey: [reportTimes.endTime, 'inv-purchase_\uffff'], 
+            include_docs: true,
+        }, 'inventory_purchase_by_type').then(function(inventoryPurchases) {
+        });
+        reportRows.addObject(['Beginning Balance', '', beginningBalance]);
+        this.set('showReportResults', true);
+        this.set('reportHeaders', ['Category', 'Type', 'Total']);
+        this._generateExport();
+        this._setReportTitle();
+        this.closeProgressModal();
     },
     
     _generateInventoryReport: function() {
@@ -1044,6 +1067,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 case 'expiration': {
                     this._generateExpirationReport();
                     break;                    
+                }
+                case 'summaryFinance': {
+                    this._generateFinancialSummaryReport();
+                    break;
                 }
                 case 'detailedExpense':
                 case 'summaryExpense': {                    
