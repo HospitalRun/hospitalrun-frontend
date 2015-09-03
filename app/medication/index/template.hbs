@@ -9,23 +9,21 @@
             {{#if showActions}}
                 <th>Actions</th>
             {{/if}}
-        </tr>
-        {{#with showActions as showActions}}
-            {{#each}}
-                <tr {{action 'editItem' this}}>
-                    <td>{{date-format prescriptionDate}}</td>
-                    <td>{{patient.displayName}}</td>
-                    <td>{{inventoryItem.name}}</td>
-                    <td>{{quantity}}</td>
-                    <td>{{status}}</td>
-                    {{#if showActions}}
-                        <td>
-                            <button class="btn btn-default" {{action 'editItem' this bubbles=false }}>Fulfill</button>
-                        </td>
-                    {{/if}}
-                </tr>
-            {{/each}}
-        {{/with}}
+        </tr>        
+        {{#each model as |medicationRequest|}}
+            <tr {{action 'editItem' medicationRequest}}>
+                <td>{{date-format medicationRequest.prescriptionDate}}</td>
+                <td>{{medicationRequest.patient.displayName}}</td>
+                <td>{{medicationRequest.inventoryItem.name}}</td>
+                <td>{{medicationRequest.quantity}}</td>
+                <td>{{medicationRequest.status}}</td>
+                {{#if showActions}}
+                    <td>
+                        <button class="btn btn-default" {{action 'editItem' medicationRequest bubbles=false }}>Fulfill</button>
+                    </td>
+                {{/if}}
+            </tr>
+        {{/each}}        
     </table>
 {{else}}
     <div class="alert alert-info">
