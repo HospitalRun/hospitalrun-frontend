@@ -1,20 +1,15 @@
 /**
  * Stub model for adding new patient diagnoses; needed for validation.
  */
-import DiagnosisValidation from "hospitalrun/utils/diagnosis-validation";
-import Ember from "ember";
+import DS from 'ember-data';
 import EmberValidations from 'ember-validations';
+import { Model } from 'ember-pouch';
 
-export default Ember.Object.extend(EmberValidations, {
-    diagnosis: null,
-    diagnosisId: null,
+export default Model.extend(EmberValidations, {
+    diagnosis:  DS.attr('string'),
     validations: {
         diagnosis: {
-            acceptance: DiagnosisValidation.diagnosisValidation.acceptance,
-            length: { 
-                minimum: 3,
-                allowBlank: true
-            }
+            presence: true
         }
     }
 });
