@@ -125,7 +125,7 @@ function generateDateForView(date1) {
     
 var designDocs = [{
     name: 'appointments_by_date',
-    function: generateView('apppointment',
+    function: generateView('appointment',
         generateDateForView('endDate')+
         generateDateForView('startDate')+
         'emit([startDate, endDate, doc._id]);'                            
@@ -190,7 +190,7 @@ var designDocs = [{
     version: 4
 }, {
     name: 'appointments_by_patient',
-    function: generateView('apppointment',
+    function: generateView('appointment',
         generateDateForView('endDate')+
         generateDateForView('startDate')+
         'emit([doc.data.patient, startDate, endDate,doc._id]);'
