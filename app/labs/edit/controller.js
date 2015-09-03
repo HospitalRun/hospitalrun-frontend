@@ -11,9 +11,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
     
     canComplete: function() {
-        var labTypeName = this.get('model.labTypeName'),
+        var isNew = this.get('model.isNew'),
+            labTypeName = this.get('model.labTypeName'),
             selectedLabType = this.get('selectedLabType');
-        if (Ember.isEmpty(labTypeName) || (Ember.isArray(selectedLabType) && selectedLabType.length >1)) {
+        if (isNew && (Ember.isEmpty(labTypeName) || (Ember.isArray(selectedLabType) && selectedLabType.length >1))) {
             return false;
         } else {
             return this.currentUserCan('complete_lab');
