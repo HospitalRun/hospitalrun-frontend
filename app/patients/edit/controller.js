@@ -1,10 +1,8 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
 import Ember from "ember";
-import FamilyInfoModel from 'hospitalrun/models/family-info';
 import GenderList from 'hospitalrun/mixins/gender-list';
 import ReturnTo from 'hospitalrun/mixins/return-to';
-import SocialExpenseModel from 'hospitalrun/models/social-expense';
 import UserSession from "hospitalrun/mixins/user-session";
 export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, UserSession, {
     
@@ -424,14 +422,14 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     
         showEditExpense: function(model) {
             if (Ember.isEmpty(model)) {
-                model = SocialExpenseModel.create({isNew:true});
+                model = this.get('store').createRecord('social-expense');
             }
              this.send('openModal', 'patients.socialwork.expense', model);            
         },
         
         showEditFamily: function(model) {
             if (Ember.isEmpty(model)) {
-                model = FamilyInfoModel.create({isNew:true});
+                model = this.get('store').createRecord('family-info');
             }
             this.send('openModal', 'patients.socialwork.family-info', model);
         },

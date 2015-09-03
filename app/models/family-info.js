@@ -1,17 +1,18 @@
 /**
  * Model for social worker family info
  */
-import Ember from "ember";
+import DS from 'ember-data';
 import EmberValidations from 'ember-validations';
-export default Ember.Object.extend(EmberValidations, {
-    age: null,
-    civilStatus: null,
-    education: null,
-    income: null,
-    insurance: null,
-    name: null,
-    occupation: null,
-    relationship: null,
+import { Model } from 'ember-pouch';
+export default Model.extend(EmberValidations, {
+    age: DS.attr('number'),
+    civilStatus: DS.attr('string'),
+    education: DS.attr('string'),
+    income: DS.attr('string'),
+    insurance: DS.attr('string'),
+    name: DS.attr('string'),
+    occupation: DS.attr('string'),
+    relationship: DS.attr('string'),
     validations: {        
         age: {
             numericality: {
