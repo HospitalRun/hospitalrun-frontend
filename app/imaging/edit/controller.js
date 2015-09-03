@@ -10,9 +10,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     selectedImagingType: null,
     
     canComplete: function() {
-        var imagingTypeName = this.get('model.imagingTypeName'),
+        var isNew = this.get('model.isNew'),
+            imagingTypeName = this.get('model.imagingTypeName'),
             selectedImagingType = this.get('selectedImagingType');
-        if (Ember.isEmpty(imagingTypeName) || Ember.isArray(selectedImagingType) && selectedImagingType.length >1) {
+        if (isNew && (Ember.isEmpty(imagingTypeName) || Ember.isArray(selectedImagingType) && selectedImagingType.length >1)) {
             return false;
         } else {
             return this.currentUserCan('complete_imaging');
