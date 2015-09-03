@@ -9,23 +9,21 @@
                 <th>Actions</th>
             {{/if}}
         </tr>
-        {{#with this as parentController}}
-            {{#each}}
-                <tr {{action 'editItem' this}}>
-                    <td>{{date-format requestedDate}}</td>
-                    <td>{{patient.displayName}}</td>
-                    <td>{{labType.name}}</td>
-                    <td>{{notes}}</td>
-                     {{#if parentController.showActions}}
-                        <td>
-                            {{#if parentController.canEdit}}
-                                <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
-                            {{/if}}
-                        </td>
-                    {{/if}}
-                </tr>
-            {{/each}}
-        {{/with}}
+        {{#each model as |lab|}}
+            <tr {{action 'editItem' lab}}>
+                <td>{{date-format lab.requestedDate}}</td>
+                <td>{{lab.patient.displayName}}</td>
+                <td>{{lab.labType.name}}</td>
+                <td>{{lab.notes}}</td>
+                 {{#if showActions}}
+                    <td>
+                        {{#if canEdit}}
+                            <button class="btn btn-default neutral" {{action 'editItem' lab  bubbles=false }}>Edit</button>
+                        {{/if}}
+                    </td>
+                {{/if}}
+            </tr>
+        {{/each}}
     </table>
 {{else}}
     <div class="alert alert-info">
