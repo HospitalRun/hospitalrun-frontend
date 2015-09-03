@@ -284,25 +284,23 @@
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
-                            {{#with this as patientController}}
-                                {{#each appointments itemController='appointments/item'}}
-                                    <tr {{action "editAppointment" this}}>
-                                        <td>{{appointmentDate}}</td>
-                                        <td>{{provider}}</td>
-                                        <td>{{location}}</td>
-                                        <td>{{appointmentType}}</td>
-                                        <td>{{displayStatus}}</td>
-                                        <td>
-                                            {{#if patientController.canAddAppointment}}
-                                                <button type="button" class="btn btn-default neutral" {{action "editAppointment" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if patientController.canDeleteAppointment}}
-                                                <button type="button" class="btn btn-default warning" {{action "showDeleteAppointment" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                                            {{/if}}
-                                        </td>
-                                    </tr>
-                                {{/each}}
-                            {{/with}}
+                            {{#each model.appointments as |appointment|}}
+                                <tr {{action "editAppointment" appointment}}>
+                                    <td>{{appointment.formattedAppointmentDate}}</td>
+                                    <td>{{appointment.provider}}</td>
+                                    <td>{{appointment.location}}</td>
+                                    <td>{{appointment.appointmentType}}</td>
+                                    <td>{{appointment.displayStatus}}</td>
+                                    <td>
+                                        {{#if canAddAppointment}}
+                                            <button type="button" class="btn btn-default neutral" {{action "editAppointment" appointment}}>Edit</button>
+                                        {{/if}}
+                                        {{#if canDeleteAppointment}}
+                                            <button type="button" class="btn btn-default warning" {{action "showDeleteAppointment" appointment  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                                        {{/if}}
+                                    </td>
+                                </tr>
+                            {{/each}}
                         </table>
                     </div>
                 </div>

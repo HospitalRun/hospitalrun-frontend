@@ -16,6 +16,16 @@ export default AbstractModel.extend({
     notes: DS.attr('string'),
     status: DS.attr('string', {defaultValue:'Scheduled'}),
     
+    longDateFormat: 'l h:mm A',
+    shortDateFormat: 'l',
+    timeFormat:  'h:mm A',
+    
+    _getDateSpan: function(startDate, endDate, format) {
+        var formattedStart = startDate.format(format),
+            formattedEnd = endDate.format(format);
+        return '%@ - %@'.fmt(formattedStart, formattedEnd);
+    },
+        
     appointmentDate: function() {
         var startDate = this.get('startDate');
         return startDate;
@@ -28,6 +38,30 @@ export default AbstractModel.extend({
         }
         return status;
     }.property('status'),
+    
+    formattedAppointmentDate: function() {
+        var allDay = this.get('allDay'),
+            endDate = moment(this.get('endDate')),
+            dateFormat = '',
+            formattedDate = '',
+            startDate = moment(this.get('startDate'));
+
+        if (startDate.isSame(endDate, 'day')) {
+            formattedDate = startDate.format(this.get('shortDateFormat'));
+            if (!allDay) {                
+                formattedDate += ' ';
+                formattedDate += this._getDateSpan(startDate, endDate, this.get('timeFormat'));
+            }
+        } else {            
+            if (allDay) {
+                dateFormat = this.get('shortDateFormat');
+            } else {
+                dateFormat = this.get('longDateFormat');
+            }
+            formattedDate = this._getDateSpan(startDate, endDate, dateFormat);
+        }        
+        return formattedDate;
+    }.property('startDate','endDate'),    
 
     validations: {
         appointmentDate: {
