@@ -8,6 +8,12 @@ export default AbstractEditRoute.extend(ChargeRoute, {
     pricingCategory: 'Procedure',
     pouchdb: Ember.inject.service(),
     
+    getNewData: function() {
+        return Ember.RSVP.resolve({
+            procedureDate: new Date()
+        });
+    },
+    
     setupController: function(controller, model) {
         this._super(controller, model);
         var medicationQuery = {
