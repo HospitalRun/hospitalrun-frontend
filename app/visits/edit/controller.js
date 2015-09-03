@@ -1,5 +1,4 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import AddDiagnosisModel from 'hospitalrun/models/add-diagnosis';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
 import Ember from "ember";
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
@@ -125,6 +124,16 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     ],
 
     updateCapability: 'add_visit',
+    
+    _addChildObject: function(route) {
+        this.transitionToRoute(route, 'new').then(function(newRoute) {
+            newRoute.currentModel.setProperties( {
+                patient: this.get('patient'),
+                visit: this.get('model'),
+                returnToVisit: true
+            });
+        }.bind(this));
+    },    
     
     _finishAfterUpdate: function() {
         this.displayAlert('Visit Saved', 'The visit record has been saved.');
@@ -260,56 +269,28 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         },
         
         newAppointment: function() {
-            var now = moment().hours(8).minutes(0).seconds(0).toDate();
-            var newAppointment = this.get('store').createRecord('appointment', {
-                patient: this.get('patient'),
-                startDate: now,
-                endDate: now,
-                returnToVisit: true,
-                visit: this.get('model')                
-            });
-            newAppointment.set('returnToVisit', true);
-            this.transitionToRoute('appointments.edit', newAppointment);
+            this._addChildObject('appointments.edit');
         },
         
         newImaging: function() {
-            var newImaging = this.get('store').createRecord('imaging', {                
-                patient: this.get('patient'),
-                visit: this.get('model'),
-                returnToVisit: true
-            });            
-            this.transitionToRoute('imaging.edit', newImaging);
+            this._addChildObject('imaging.edit');
         },
 
         newLab: function() {
-            var newLab = this.get('store').createRecord('lab', {                
-                patient: this.get('patient'),
-                visit: this.get('model'),
-                returnToVisit: true
-            });            
-            this.transitionToRoute('labs.edit', newLab);
+            this._addChildObject('labs.edit');
         },        
 
         newMedication: function() {
-            var newMedication = this.get('store').createRecord('medication', {
-                prescriptionDate: moment().startOf('day').toDate(),
-                patient: this.get('patient'),
-                visit: this.get('model'),
-                returnToVisit: true
-            });            
-            this.transitionToRoute('medication.edit', newMedication);
+            this._addChildObject('medication.edit');
         },
         
         showAddDiagnosis: function() {
-            this.send('openModal', 'visits.add-diagnosis', AddDiagnosisModel.create());
+            var newDiagnosis =  this.get('store').createRecord('add-diagnosis');
+            this.send('openModal', 'visits.add-diagnosis', newDiagnosis);
         },
         
         showAddProcedure: function() {
-            var newProcedure = this.get('store').createRecord('procedure', {
-                procedureDate: new Date(),
-                visit: this.get('model'),
-            });
-            this.transitionToRoute('procedures.edit', newProcedure);
+            this._addChildObject('procedures.edit');
         },
 
         showDeleteImaging: function(imaging) {
