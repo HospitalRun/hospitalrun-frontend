@@ -21,19 +21,6 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
         return Ember.RSVP.resolve(newData);
     },
     
-    afterModel: function(model) {
-        var inventoryItem = model.get('inventoryItem');
-        if (!Ember.isEmpty(inventoryItem)) {
-            //Make sure inventory item is fully resolved.
-            return new Ember.RSVP.Promise(function(resolve, reject) {
-                inventoryItem.reload().then(function(inventoryItem) {
-                    model.set('inventoryItem', inventoryItem);
-                    resolve();
-                }, reject);                
-            }.bind(this));
-        }
-    },
-    
     model: function(params) {
         var idParam = this.get('idParam');
         if (!Ember.isEmpty(idParam) && params[idParam] === 'new' || params[idParam] === 'dispense') {
