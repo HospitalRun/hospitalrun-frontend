@@ -175,7 +175,7 @@ export default Ember.Mixin.create({
                 this.send('closeModal');
             }
             if (!skipTransition) {
-                this.transitionTo('inventory.request');
+                this.transitionTo('inventory.index');
             }
         }.bind(this));
     },
