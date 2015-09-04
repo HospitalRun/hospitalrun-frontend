@@ -7,7 +7,8 @@ export default AbstractEditRoute.extend({
     pouchdb: Ember.inject.service(),
     getNewData: function() {
         return Ember.RSVP.resolve({
-            transactionType: 'Request'
+            transactionType: 'Request',
+            requestedItems: []
         });
     },
     
