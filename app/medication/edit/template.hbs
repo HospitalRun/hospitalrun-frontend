@@ -60,7 +60,7 @@
             {{select-or-typeahead property="expenseAccount" label="Bill To" list=expenseAccountList selection=expenseAccount }}
             {{inventory-location-picker label="Pull From" quantityRequested=quantity
                 locationList=inventoryItem.availableLocations
-                selectedLocations=inventoryLocations
+                selectedLocations=model.inventoryLocations
             }}
         {{/if}}
     {{/if}}

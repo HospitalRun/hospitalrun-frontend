@@ -1,13 +1,13 @@
-{{#each locationPickers}}
+{{#each calculatedLocationPickers as |locationPicker|}}
     <div class="form-group">
-        <label class="control-label">{{this.label}}</label>
+        <label class="control-label">{{locationPicker.label}}</label>
         {{location-select
-            currentLocation=this.selectedLocation
-            content=this.subLocationList
+            currentLocation=locationPicker.selectedLocation
+            content=locationPicker.subLocationList
             class="form-control"
             optionValuePath="content"
             optionLabelPath="content.locationNameWithQuantity"
-            selection=this.selectedLocation            
+            selection=locationPicker.selectedLocation            
         }}    
     </div>
 {{/each}}
