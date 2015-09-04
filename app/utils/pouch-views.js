@@ -148,9 +148,9 @@ var designDocs = [{
             case 'provider':
                 return compareStrings(a.doc[sortBy], b.doc[sortBy]);
             case 'date': {
-                var startDiff = getCompareDate(a.doc.data.startDate) -getCompareDate(b.doc.data.startDate);
+                var startDiff = getCompareDate(a.doc.data.startDate) - getCompareDate(b.doc.data.startDate);
                 if (startDiff === 0) {
-                    return getCompareDate(a.doc.data.endDate) -getCompareDate(b.doc.data.endDate);
+                    return getCompareDate(a.doc.data.endDate) - getCompareDate(b.doc.data.endDate);
                 } else {
                     return startDiff;
                 }
@@ -238,32 +238,32 @@ var designDocs = [{
     version: 4
 }, {    
     name: 'inventory_purchase_by_date_received',
-    function: generateView('inv-purchase',
+    function: generateView('invPurchase',
         generateDateForView('dateReceived')+
         'emit([dateReceived, doc._id]);'
     ),
-    version: 3
+    version: 4
 }, {    
     name: 'inventory_purchase_by_expiration_date',
-    function: generateView('inv-purchase',
+    function: generateView('invPurchase',
         generateDateForView('expirationDate')+
         'emit([expirationDate, doc._id]);'
     ),
-    version: 3
+    version: 4
 }, {
     name: 'inventory_request_by_item',
-    function: generateView('inv-request',
+    function: generateView('invRequest',
         generateDateForView('dateCompleted')+
         'emit([doc.data.inventoryItem, doc.data.status, dateCompleted]);'
     ),
-    version: 3
+    version: 4
 }, {
     name: 'inventory_request_by_status',
-    function: generateView('inv-request',
+    function: generateView('invRequest',
         generateDateForView('dateCompleted')+
         'emit([doc.data.status, dateCompleted, doc._id]);'
     ),
-    version: 3
+    version: 4
 }, {
     name: 'invoice_by_status',
     function: generateView('invoice',
@@ -311,7 +311,7 @@ var designDocs = [{
                 return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
             }
             case 'dateOfBirth': {
-                return getCompareDate(a.doc.data.dateOfBirth) -getCompareDate(b.doc.data.dateOfBirth);
+                return getCompareDate(a.doc.data.dateOfBirth) - getCompareDate(b.doc.data.dateOfBirth);
             }
             default: {
                 return 0; //Don't sort
