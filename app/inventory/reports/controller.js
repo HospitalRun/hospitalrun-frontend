@@ -364,6 +364,24 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         }
         return row;
     },
+
+    _calculateUsage: function(inventoryPurchases, row) {
+        //Calculate quantity and cost per unit for the row
+        if (!Ember.isEmpty(inventoryPurchases)) {
+            inventoryPurchases.forEach(function(purchase) {
+                var costPerUnit = this._calculateCostPerUnit(purchase),
+                    quantity = purchase.calculatedQuantity;                                    
+                row.quantity -= purchase.calculatedQuantity;
+                row.totalCost -= (quantity * costPerUnit);
+            }.bind(this));
+        }
+        if (row.totalCost === 0 || row.quantity === 0) {
+            row.unitCost = 0;
+        } else {
+            row.unitCost = (row.totalCost/row.quantity);
+        }
+        return row;
+    },
     
     _calculateCostPerUnit: function(purchase) {
         var purchaseCost = purchase.purchaseCost,
@@ -558,22 +576,152 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     
     _generateFinancialSummaryReport: function() {
         console.log("Running summary finance report.");
-        var beginningBalance = 1000,
-            pouchdbController = this.get('pouchdbController'),
-            reportRows = this.get('reportRows'),
-            reportTimes = this._getDateQueryParams();
-        pouchdbController.queryMainDB({
-            startkey:  [reportTimes.startTime, 'inv-purchase_'],
-            endkey: [reportTimes.endTime, 'inv-purchase_\uffff'], 
-            include_docs: true,
-        }, 'inventory_purchase_by_type').then(function(inventoryPurchases) {
-        });
-        reportRows.addObject(['Beginning Balance', '', beginningBalance]);
+        var reportTimes = this._getDateQueryParams();
         this.set('showReportResults', true);
         this.set('reportHeaders', ['Category', 'Type', 'Total']);
+        /*
+        step 1: find the valuation as of start date, 
+        meaning that we need to exchange the end date to be the start date and then tabulate the value
+        */
+        console.log("Start and end times.");
+        console.dir(reportTimes);
+        this.set('grandCost', 0);
+        this._calculateBeginningBalance(reportTimes);
+        this._generateSummaries(reportTimes);
         this._generateExport();
         this._setReportTitle();
         this.closeProgressModal();
+    },
+    
+    _generateSummaries: function(reportTimes) {
+        /*
+        cycle through each purchase and request from the beginning of time until startTime 
+        to determine the total value of inventory as of that date/time.
+        */
+        this._findInventoryItemsByRequest(reportTimes,{}).then(function(inventoryMap) {
+            this._findInventoryItemsByPurchase(reportTimes, inventoryMap).then(function(inventoryMap) {
+                console.log("Generating inventory summaries.");
+                console.dir(inventoryMap);
+                var purchaseSummary = [],
+                    consumed = [],
+                    gikConsumed = [],
+                    requested = [],
+                    adjustments = [];
+                Ember.keys(inventoryMap).forEach(function(key) {
+                    if (Ember.isEmpty(key) || Ember.isEmpty(inventoryMap[key])) {
+                        //If the inventory item has been deleted, ignore it.
+                        return;
+                    }
+                    var item = inventoryMap[key];
+                    
+                    if (!Ember.isEmpty(item.purchaseObjects)) {
+                        //Setup intial locations for an inventory item
+                        item.purchaseObjects.forEach(function(purchase) {
+                            console.log("Adding " + purchase.purchaseCost + " to " +this._getValidNumber(purchaseSummary[item.type]) + " for type " + item.type);
+                            purchaseSummary[item.type] = this._getValidNumber(purchaseSummary[item.type]) + this._getValidNumber(purchase.purchaseCost);
+                        }.bind(this));
+                    }
+                    console.dir(purchaseSummary);
+                    /*
+                    if (!Ember.isEmpty(item.requestObjects)) {
+                        item.requestObjects.forEach(function(request) {
+                            //we have three categories here: consumed, gik consumed, and adjustments
+                            if (request.adjustPurchases) {
+                                switch (request.transactionType) {
+                                    case 'Fulfillment':
+                                        if (request.giftInKind) {
+                                            gikConsumed[item.type] = this._getValidNumber(gikConsumed[item.type]) + this._getValidNumber(request.purchaseCost);
+                                        } else {
+                                            consumed[item.type] = this._getValidNumber(consumed[item.type]) + this._getValidNumber(request.purchaseCost);
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }.bind(this));
+                    }*/
+                }.bind(this));
+                if (Object.keys(purchaseSummary).length > 0) {
+                    var totalVal = 0;
+                    this.get('reportRows').addObject(['Purchases', '', '']);  
+                    Ember.keys(purchaseSummary).forEach(function(key) {
+                        var i = this._getValidNumber( purchaseSummary[key]);
+                        totalVal += i;
+                        this.get('reportRows').addObject(['', key, i]);    
+                    }.bind(this));
+                    this.get('reportRows').addObject(['Total Purchases', '', totalVal]);  
+                } 
+            }.bind(this), function(err) {                
+                this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
+            }.bind(this));
+        }.bind(this), function(err) {
+            this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
+        }.bind(this));
+    },    
+
+    _calculateBeginningBalance: function(reportTimes) {
+        var startingValueReportTimes = {
+                startTime: null,
+                endTime: reportTimes.startTime            
+            };
+        /*
+        cycle through each purchase and request from the beginning of time until startTime 
+        to determine the total value of inventory as of that date/time.
+        */
+        this._findInventoryItemsByRequest(startingValueReportTimes,{}).then(function(inventoryMap) {
+            this._findInventoryItemsByPurchase(startingValueReportTimes, inventoryMap).then(function(inventoryMap) {
+                Ember.keys(inventoryMap).forEach(function(key) {
+                    if (Ember.isEmpty(key) || Ember.isEmpty(inventoryMap[key])) {
+                        //If the inventory item has been deleted, ignore it.
+                        return;
+                    }
+                    var item = inventoryMap[key],
+                        inventoryPurchases = item.purchaseObjects,
+                        inventoryRequests = item.requestObjects,
+                        row = {
+                            inventoryItem: item,
+                            quantity: 0,
+                            unitCost: 0,
+                            totalCost: 0
+                        };
+                    if (!Ember.isEmpty(inventoryPurchases)) {
+                        //Setup intial locations for an inventory item
+                        inventoryPurchases.forEach(function(purchase) {
+                            var purchaseQuantity = purchase.originalQuantity;
+                            purchase.calculatedQuantity = purchaseQuantity;
+                        });
+                    }
+                    if (!Ember.isEmpty(inventoryRequests)) {
+                        inventoryRequests.forEach(function(request) {
+                            var adjustPurchases = request.adjustPurchases,
+                                increment = false,
+                                purchases = request.purchasesAffected,
+                                transactionType = request.transactionType;
+                            increment = (transactionType === 'Adjustment (Add)' || transactionType === 'Return');
+                            if (adjustPurchases) {
+                                if (!Ember.isEmpty(purchases) && !Ember.isEmpty(inventoryPurchases)) {
+                                    //Loop through purchase(s) on request and adjust corresponding inventory purchases
+                                    purchases.forEach(function(purchaseInfo) {
+                                        this._adjustPurchase(inventoryPurchases, purchaseInfo.id, purchaseInfo.quantity, increment);
+                                    }.bind(this));
+                                }
+                            } 
+                        }.bind(this));
+                    }
+                    if (!Ember.isEmpty(inventoryPurchases)) {
+                        row = this._calculateCosts(inventoryPurchases, row);                        
+                        this.incrementProperty('grandCost', this._getValidNumber(row.totalCost));
+                        console.log("incremented "+this.get('grandCost')+" with "+row.totalCost);
+                    }
+                }.bind(this));
+                this.get('reportRows').addObject(['Beginning Balance', '', this.get('grandCost')]);        
+            }.bind(this), function(err) {                
+                this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
+            }.bind(this));
+        }.bind(this), function(err) {
+            this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
+        }.bind(this));
     },
     
     _generateInventoryReport: function() {
