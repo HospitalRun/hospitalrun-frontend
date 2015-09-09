@@ -3,7 +3,8 @@ import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import NumberFormat from "hospitalrun/mixins/number-format";
-export default AbstractReportController.extend(LocationName, ModalHelper, NumberFormat, {
+import InventoryAdjustmentTypes from "hospitalrun/mixins/inventory-adjustment-types";
+export default AbstractReportController.extend(LocationName, ModalHelper, NumberFormat, InventoryAdjustmentTypes, {
     needs: ['inventory','pouchdb'],
     effectiveDate: null,
     expenseCategories: ['Inventory Consumed', 'Gift In Kind Usage', 'Inventory Obsolence'],
@@ -575,152 +576,232 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     },
     
     _generateFinancialSummaryReport: function() {
-        console.log("Running summary finance report.");
+        //console.log("Running summary finance report.");
         var reportTimes = this._getDateQueryParams();
-        this.set('showReportResults', true);
-        this.set('reportHeaders', ['Category', 'Type', 'Total']);
         /*
         step 1: find the valuation as of start date, 
         meaning that we need to exchange the end date to be the start date and then tabulate the value
         */
-        console.log("Start and end times.");
-        console.dir(reportTimes);
-        this.set('grandCost', 0);
-        this._calculateBeginningBalance(reportTimes);
-        this._generateSummaries(reportTimes);
-        this._generateExport();
-        this._setReportTitle();
-        this.closeProgressModal();
+        this._calculateBeginningBalance(reportTimes).then(function(beginningBalance) {
+            this._generateSummaries(reportTimes).then(function(inventoryAdjustment) {
+                //console.log("Promises generated " + beginningBalance + " and " + inventoryAdjustment);
+                var i = this._numberFormat(beginningBalance+inventoryAdjustment);
+                if ((beginningBalance+inventoryAdjustment) < 0) {
+                    this.get('reportRows').addObject(['Ending Balance', '', '('+i+')']);  
+                } else {
+                    this.get('reportRows').addObject(['Ending Balance', '', i]);  
+                }
+                this.set('showReportResults', true);
+                this.set('reportHeaders', ['Category', 'Type', 'Total']);
+                this._generateExport();
+                this._setReportTitle();
+                this.closeProgressModal();
+            }.bind(this));    
+        }.bind(this));
     },
     
     _generateSummaries: function(reportTimes) {
-        /*
-        cycle through each purchase and request from the beginning of time until startTime 
-        to determine the total value of inventory as of that date/time.
-        */
-        this._findInventoryItemsByRequest(reportTimes,{}).then(function(inventoryMap) {
-            this._findInventoryItemsByPurchase(reportTimes, inventoryMap).then(function(inventoryMap) {
-                console.log("Generating inventory summaries.");
-                console.dir(inventoryMap);
-                var purchaseSummary = [],
-                    consumed = [],
-                    gikConsumed = [],
-                    requested = [],
-                    adjustments = [];
-                Ember.keys(inventoryMap).forEach(function(key) {
-                    if (Ember.isEmpty(key) || Ember.isEmpty(inventoryMap[key])) {
-                        //If the inventory item has been deleted, ignore it.
-                        return;
-                    }
-                    var item = inventoryMap[key];
-                    
-                    if (!Ember.isEmpty(item.purchaseObjects)) {
-                        //Setup intial locations for an inventory item
-                        item.purchaseObjects.forEach(function(purchase) {
-                            console.log("Adding " + purchase.purchaseCost + " to " +this._getValidNumber(purchaseSummary[item.type]) + " for type " + item.type);
-                            purchaseSummary[item.type] = this._getValidNumber(purchaseSummary[item.type]) + this._getValidNumber(purchase.purchaseCost);
-                        }.bind(this));
-                    }
-                    console.dir(purchaseSummary);
-                    /*
-                    if (!Ember.isEmpty(item.requestObjects)) {
-                        item.requestObjects.forEach(function(request) {
-                            //we have three categories here: consumed, gik consumed, and adjustments
-                            if (request.adjustPurchases) {
-                                switch (request.transactionType) {
-                                    case 'Fulfillment':
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            var adjustedValue = 0;
+            /*
+            cycle through each purchase and request from the beginning of time until startTime 
+            to determine the total value of inventory as of that date/time.
+            */
+            this._findInventoryItemsByRequest(reportTimes,{}).then(function(inventoryMap) {
+                this._findInventoryItemsByPurchase(reportTimes, inventoryMap).then(function(inventoryMap) {
+                    var purchaseSummary = [],
+                        consumed = [],
+                        gikConsumed = [],
+                        adjustments = [];
+                    this.adjustmentTypes.forEach(function(adjustmentType) {
+                        adjustments[adjustmentType.type] = [];
+                    });
+                    Ember.keys(inventoryMap).forEach(function(key) {
+                        if (Ember.isEmpty(key) || Ember.isEmpty(inventoryMap[key])) {
+                            //If the inventory item has been deleted, ignore it.
+                            return;
+                        }
+                        var item = inventoryMap[key];
+
+                        if (!Ember.isEmpty(item.purchaseObjects)) {
+                            item.purchaseObjects.forEach(function(purchase) {
+                                //console.log("Adding " + purchase.purchaseCost + " to " +this._getValidNumber(purchaseSummary[item.type]) + " for type " + item.type);
+                                purchaseSummary[item.type] = this._getValidNumber(purchaseSummary[item.type]) + this._getValidNumber(purchase.purchaseCost);
+                            }.bind(this));
+                        }
+                        if (!Ember.isEmpty(item.requestObjects)) {
+                            item.requestObjects.forEach(function(request) {
+                                //console.dir(request);
+                                //we have three categories here: consumed, gik consumed, and adjustments
+                                if (request.adjustPurchases) {
+                                    if (request.transactionType === 'Fulfillment') {
                                         if (request.giftInKind) {
-                                            gikConsumed[item.type] = this._getValidNumber(gikConsumed[item.type]) + this._getValidNumber(request.purchaseCost);
+                                            gikConsumed[item.type] = this._getValidNumber(gikConsumed[item.type]) + (this._getValidNumber(request.quantity * request.costPerUnit));
+                                            //console.log("Added GIK: "+item.type+" " +gikConsumed[item.type]);
                                         } else {
-                                            consumed[item.type] = this._getValidNumber(consumed[item.type]) + this._getValidNumber(request.purchaseCost);
+                                            consumed[item.type] = this._getValidNumber(consumed[item.type]) + (this._getValidNumber(request.quantity * request.costPerUnit));
+                                            //console.log("Added Consumption: "+item.type+" " +consumed[item.type]);
                                         }
-                                        break;
-                                    default:
-                                        break;
+                                    } else {
+                                        adjustments[request.transactionType][item.type] = this._getValidNumber(adjustments[request.transactionType][item.type]) + (this._getValidNumber(request.quantity * request.costPerUnit));
+                                        //console.log("Added Adjustment: "+request.transactionType+" "+item.type+" "+adjustments[request.transactionType][item.type]);
+                                    }
                                 }
-                            }
-                        }.bind(this));
-                    }*/
-                }.bind(this));
-                if (Object.keys(purchaseSummary).length > 0) {
-                    var totalVal = 0;
-                    this.get('reportRows').addObject(['Purchases', '', '']);  
-                    Ember.keys(purchaseSummary).forEach(function(key) {
-                        var i = this._getValidNumber( purchaseSummary[key]);
-                        totalVal += i;
-                        this.get('reportRows').addObject(['', key, i]);    
+                            }.bind(this));
+                        }
                     }.bind(this));
-                    this.get('reportRows').addObject(['Total Purchases', '', totalVal]);  
-                } 
-            }.bind(this), function(err) {                
+                    //console.log("writing summary rows");
+                    //write the purchase rows
+                    if (Object.keys(purchaseSummary).length > 0) {
+                        var purchaseTotal = 0;
+                        this.get('reportRows').addObject(['Purchases', '', '']);  
+                        Ember.keys(purchaseSummary).forEach(function(key) {
+                            var i = this._getValidNumber( purchaseSummary[key]);
+                            purchaseTotal += i;
+                            this.get('reportRows').addObject(['', key, i]);    
+                        }.bind(this));
+                        this.get('reportRows').addObject(['Total Purchases', '', this._numberFormat(purchaseTotal)]);  
+                        adjustedValue += purchaseTotal;
+                    } 
+                    //write the consumed rows                    
+                    if (Object.keys(consumed).length > 0 || Object.keys(gikConsumed).length > 0) {
+                        this.get('reportRows').addObject(['Consumed', '', '']); 
+                        var overallValue = 0;
+                        if (Object.keys(consumed).length > 0) {
+                            this.get('reportRows').addObject(['Purchases Consumed', '', '']);  
+                            var consumedTotal = 0;
+                            Ember.keys(consumed).forEach(function(key) {
+                                var i = this._getValidNumber( consumed[key]);
+                                consumedTotal += i;
+                                this.get('reportRows').addObject(['', key, '('+ this._numberFormat(i)+')']);    
+                            }.bind(this));
+                            overallValue += consumedTotal;
+                            this.get('reportRows').addObject(['Total Purchases Consumed', '', '('+ this._numberFormat(consumedTotal)+')']);
+                        }
+                        if (Object.keys(gikConsumed).length > 0) {
+                            this.get('reportRows').addObject(['GIK Consumed', '', '']);  
+                            var gikTotal = 0;
+                            Ember.keys(gikConsumed).forEach(function(key) {
+                                var i = this._getValidNumber( gikConsumed[key]);
+                                gikTotal += i;
+                                this.get('reportRows').addObject(['', key, '('+ this._numberFormat(i)+')']);    
+                            }.bind(this));
+                            overallValue += gikTotal;
+                            this.get('reportRows').addObject(['Total GIK Consumed', '', '('+this._numberFormat(gikTotal)+')']);
+                        }
+                        this.get('reportRows').addObject(['Total Consumed', '', '('+this._numberFormat(overallValue)+')']);     
+                        adjustedValue -= overallValue;
+                    }
+                    //write the adjustment rows
+                    //console.log("adjustments");
+                    //console.dir(adjustments);
+                    var adjustmentTotal = 0;
+                    this.get('reportRows').addObject(['Adjustments', '', '']);  
+                    Ember.keys(adjustments).forEach(function(adjustmentT) {
+                        if (Object.keys(adjustments[adjustmentT]).length > 0) {
+                            this.get('reportRows').addObject([adjustmentT, '', '']);  
+                            Ember.keys(adjustments[adjustmentT]).forEach(function(key) {
+                                var i = this._getValidNumber( adjustments[adjustmentT][key]);
+                                if (adjustmentT === 'Adjustment (Add)' || adjustmentT === 'Return') {
+                                    adjustmentTotal += i;
+                                    this.get('reportRows').addObject(['', key, i]);    
+                                } else {
+                                    adjustmentTotal -= i;
+                                    this.get('reportRows').addObject(['', key, '('+this._numberFormat(i)+')']);    
+                                }                                
+                            }.bind(this));
+                        }
+                    }.bind(this));
+                    if (adjustmentTotal < 0) {
+                        this.get('reportRows').addObject(['Total Adjustments', '', '('+this._numberFormat(adjustmentTotal)+')']);  
+                    } else {
+                        this.get('reportRows').addObject(['Total Adjustments', '', this._numberFormat(adjustmentTotal)]);  
+                    }
+                    
+                    adjustedValue += adjustmentTotal;
+                    //console.log("resolve adjustedValue " + adjustedValue);
+                    resolve(adjustedValue);
+                }.bind(this), function(err) {                
+                    this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
+                }.bind(this));
+            }.bind(this), function(err) {
                 this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
-            }.bind(this));
-        }.bind(this), function(err) {
-            this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
+            }.bind(this));  
         }.bind(this));
     },    
 
     _calculateBeginningBalance: function(reportTimes) {
-        var startingValueReportTimes = {
-                startTime: null,
-                endTime: reportTimes.startTime            
-            };
-        /*
-        cycle through each purchase and request from the beginning of time until startTime 
-        to determine the total value of inventory as of that date/time.
-        */
-        this._findInventoryItemsByRequest(startingValueReportTimes,{}).then(function(inventoryMap) {
-            this._findInventoryItemsByPurchase(startingValueReportTimes, inventoryMap).then(function(inventoryMap) {
-                Ember.keys(inventoryMap).forEach(function(key) {
-                    if (Ember.isEmpty(key) || Ember.isEmpty(inventoryMap[key])) {
-                        //If the inventory item has been deleted, ignore it.
-                        return;
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            
+            var startingValueReportTimes = {
+                    startTime: null,
+                    endTime: reportTimes.startTime            
+                },
+                beginningBalance = 0;
+            /*
+            cycle through each purchase and request from the beginning of time until startTime 
+            to determine the total value of inventory as of that date/time.
+            */
+            this._findInventoryItemsByRequest(startingValueReportTimes,{}).then(function(inventoryMap) {
+                this._findInventoryItemsByPurchase(startingValueReportTimes, inventoryMap).then(function(inventoryMap) {
+                    Ember.keys(inventoryMap).forEach(function(key) {
+                        if (Ember.isEmpty(key) || Ember.isEmpty(inventoryMap[key])) {
+                            //If the inventory item has been deleted, ignore it.
+                            return;
+                        }
+                        var item = inventoryMap[key],
+                            inventoryPurchases = item.purchaseObjects,
+                            inventoryRequests = item.requestObjects,
+                            row = {
+                                inventoryItem: item,
+                                quantity: 0,
+                                unitCost: 0,
+                                totalCost: 0
+                            };
+                        if (!Ember.isEmpty(inventoryPurchases)) {
+                            //Setup intial locations for an inventory item
+                            inventoryPurchases.forEach(function(purchase) {
+                                var purchaseQuantity = purchase.originalQuantity;
+                                purchase.calculatedQuantity = purchaseQuantity;
+                            });
+                        }
+                        if (!Ember.isEmpty(inventoryRequests)) {
+                            inventoryRequests.forEach(function(request) {
+                                var adjustPurchases = request.adjustPurchases,
+                                    increment = false,
+                                    purchases = request.purchasesAffected,
+                                    transactionType = request.transactionType;
+                                increment = (transactionType === 'Adjustment (Add)' || transactionType === 'Return');
+                                if (adjustPurchases) {
+                                    if (!Ember.isEmpty(purchases) && !Ember.isEmpty(inventoryPurchases)) {
+                                        //Loop through purchase(s) on request and adjust corresponding inventory purchases
+                                        purchases.forEach(function(purchaseInfo) {
+                                            this._adjustPurchase(inventoryPurchases, purchaseInfo.id, purchaseInfo.quantity, increment);
+                                        }.bind(this));
+                                    }
+                                } 
+                            }.bind(this));
+                        }
+                        if (!Ember.isEmpty(inventoryPurchases)) {
+                            row = this._calculateCosts(inventoryPurchases, row);   
+                            beginningBalance += this._getValidNumber(row.totalCost);
+                            //console.log("incremented "+beginningBalance+" with "+row.totalCost);
+                        }
+                    }.bind(this));
+                    //console.log("writing beginning balance rows");
+                    if (beginningBalance < 0) {
+                        this.get('reportRows').addObject(['Beginning Balance', '', '('+this._numberFormat(beginningBalance)+')']);  
+                    } else {
+                        this.get('reportRows').addObject(['Beginning Balance', '', this._numberFormat(beginningBalance)]);  
                     }
-                    var item = inventoryMap[key],
-                        inventoryPurchases = item.purchaseObjects,
-                        inventoryRequests = item.requestObjects,
-                        row = {
-                            inventoryItem: item,
-                            quantity: 0,
-                            unitCost: 0,
-                            totalCost: 0
-                        };
-                    if (!Ember.isEmpty(inventoryPurchases)) {
-                        //Setup intial locations for an inventory item
-                        inventoryPurchases.forEach(function(purchase) {
-                            var purchaseQuantity = purchase.originalQuantity;
-                            purchase.calculatedQuantity = purchaseQuantity;
-                        });
-                    }
-                    if (!Ember.isEmpty(inventoryRequests)) {
-                        inventoryRequests.forEach(function(request) {
-                            var adjustPurchases = request.adjustPurchases,
-                                increment = false,
-                                purchases = request.purchasesAffected,
-                                transactionType = request.transactionType;
-                            increment = (transactionType === 'Adjustment (Add)' || transactionType === 'Return');
-                            if (adjustPurchases) {
-                                if (!Ember.isEmpty(purchases) && !Ember.isEmpty(inventoryPurchases)) {
-                                    //Loop through purchase(s) on request and adjust corresponding inventory purchases
-                                    purchases.forEach(function(purchaseInfo) {
-                                        this._adjustPurchase(inventoryPurchases, purchaseInfo.id, purchaseInfo.quantity, increment);
-                                    }.bind(this));
-                                }
-                            } 
-                        }.bind(this));
-                    }
-                    if (!Ember.isEmpty(inventoryPurchases)) {
-                        row = this._calculateCosts(inventoryPurchases, row);                        
-                        this.incrementProperty('grandCost', this._getValidNumber(row.totalCost));
-                        console.log("incremented "+this.get('grandCost')+" with "+row.totalCost);
-                    }
+                    //console.log("resolve beginningBalance " + beginningBalance);
+                    resolve(beginningBalance);
+                }.bind(this), function(err) {                
+                    this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
                 }.bind(this));
-                this.get('reportRows').addObject(['Beginning Balance', '', this.get('grandCost')]);        
-            }.bind(this), function(err) {                
-                this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
+            }.bind(this), function(err) {
+                this._notifyReportError('Error in _findInventoryItemsByRequest:'+err);
             }.bind(this));
-        }.bind(this), function(err) {
-            this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
         }.bind(this));
     },
     
