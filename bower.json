@@ -28,7 +28,10 @@
     "idb.filesystem": "https://github.com/ebidel/idb.filesystem.js.git",
     "node-uuid": "https://github.com/broofa/node-uuid.git",
     "filer.js": "https://github.com/ebidel/filer.js.git#~0.4.3",
-    "pouchdb-quick-search": "~1.0.1"
+    "pouchdb-quick-search": "~1.0.1",
+    "pretender": "~0.9.0",
+    "lodash": "~3.7.0",
+    "Faker": "~3.0.0"
   },
   "resolutions": {
     "pouchdb": "~3.3.1",
