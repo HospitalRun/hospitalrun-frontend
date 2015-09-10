@@ -658,7 +658,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                         Ember.keys(purchaseSummary).forEach(function(key) {
                             var i = this._getValidNumber( purchaseSummary[key]);
                             purchaseTotal += i;
-                            this.get('reportRows').addObject(['', key, i]);    
+                            this.get('reportRows').addObject(['', key, this._numberFormat(i)]);    
                         }.bind(this));
                         this.get('reportRows').addObject(['Total Purchases', '', this._numberFormat(purchaseTotal)]);  
                         adjustedValue += purchaseTotal;
