@@ -167,6 +167,12 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         value: 'summaryFinance'
     }],
     
+    hideLocationFilter: function() {
+        var reportType = this.get('reportType');
+        return (reportType === 'summaryFinance');
+    }.property('reportType'),
+
+    
     includeDate: function() {
         var reportType = this.get('reportType');
         if (!Ember.isEmpty(reportType) && reportType.indexOf('detailed') ===0) {

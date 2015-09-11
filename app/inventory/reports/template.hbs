@@ -7,11 +7,13 @@
                     optionValuePath="content.value" optionLabelPath="content.name"
                     selected=reportType
                 }}
-                {{em-select class="col-xs-6" label="Location" 
-                    property="filterLocation" content=warehouseList.value
-                    optionValuePath="content" optionLabelPath="content"
-                    prompt=" "
-                }}
+                {{#unless hideLocationFilter}}
+                    {{em-select class="col-xs-6" label="Location" 
+                        property="filterLocation" content=warehouseList.value
+                        optionValuePath="content" optionLabelPath="content"
+                        prompt=" "
+                    }}
+                {{/unless}}
             </div>
             <div class="row">
                 {{#if showEffectiveDate}}
