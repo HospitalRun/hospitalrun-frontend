@@ -1,10 +1,21 @@
 {{#if showPagination}}
     <div class="btn-group pull-right">
-        <button class="btn btn-default on-white" {{action 'previousPage'}}{{bind-attr disabled=disablePreviousPage}}>
+        {{#if showFirstPageButton}}
+            <button class="btn btn-default on-white" {{action 'firstPage'}}{{bind-attr disabled=disablePreviousPage }}>
+                <span class="glyphicon glyphicon-step-backward"></span>
+            </button>
+        {{/if}}
+        <button class="btn btn-default on-white" {{action 'previousPage'}}{{bind-attr disabled=disablePreviousPage }}>
             <span class="glyphicon glyphicon-chevron-left"></span>
         </button>
-        <button class="btn btn-default on-white" {{action 'nextPage'}}{{bind-attr disabled=disableNextPage}}>
+        <button class="btn btn-default on-white" {{action 'nextPage'}}{{bind-attr disabled=disableNextPage }}>
             <span class="glyphicon glyphicon-chevron-right"></span>
         </button>
+        {{#if showLastPageButton}}
+            <button class="btn btn-default on-white" {{action 'lastPage'}}{{bind-attr disabled=disableNextPage }}>
+                <span class="glyphicon glyphicon-step-forward"></span>
+            </button>
+        {{/if}}
+        
     </div>
 {{/if}}

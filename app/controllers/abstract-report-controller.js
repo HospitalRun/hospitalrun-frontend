@@ -15,6 +15,8 @@ export default Ember.ArrayController.extend(DateFormat, ModalHelper, NumberForma
     reportTitle: null,
     reportType: null,
     reportTypes: null,    
+    showFirstPageButton: true,
+    showLastPageButton: true,
     showReportResults: false,
     
     /**
@@ -148,6 +150,10 @@ export default Ember.ArrayController.extend(DateFormat, ModalHelper, NumberForma
     },
     
     actions: {
+        firstPage: function() {
+            this.set('offset', 0);
+        },
+        
         nextPage: function() {
             var limit = this.get('limit');
             this.incrementProperty('offset', limit);
@@ -156,7 +162,15 @@ export default Ember.ArrayController.extend(DateFormat, ModalHelper, NumberForma
         previousPage: function() {
             var limit = this.get('limit');
             this.decrementProperty('offset', limit);    
-        }
+        },
+        
+        lastPage: function() {
+            var reportRowLength = this.get('reportRows.length'),
+                limit = this.get('limit'),
+                pages = parseInt(reportRowLength / limit);
+            this.set('offset', (pages * limit));
+        },
+
     },
     
     currentReportRows: function() {		
