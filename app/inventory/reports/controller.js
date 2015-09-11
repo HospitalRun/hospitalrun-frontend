@@ -594,12 +594,14 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 this._generateExport();
                 this._setReportTitle();
                 this.closeProgressModal();
-            }.bind(this));    
+            }.bind(this), function(err) {
+                this._notifyReportError('Error in _generateFinancialSummaryReport:'+err);
+            }.bind(this));
         }.bind(this));
     },
     
     _generateSummaries: function(reportTimes) {
-        return new Ember.RSVP.Promise(function(resolve) {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
             var adjustedValue = 0;
             /*
             cycle through each purchase and request from the beginning of time until startTime 
@@ -710,17 +712,13 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                     
                     adjustedValue += adjustmentTotal;
                     resolve(adjustedValue);
-                }.bind(this), function(err) {                
-                    this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
-                }.bind(this));
-            }.bind(this), function(err) {
-                this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
-            }.bind(this));  
+                }.bind(this), reject);
+            }.bind(this), reject);  
         }.bind(this));
     },    
 
     _calculateBeginningBalance: function(reportTimes) {
-        return new Ember.RSVP.Promise(function(resolve) {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
             
             var startingValueReportTimes = {
                     startTime: null,
@@ -782,12 +780,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                         this.get('reportRows').addObject(['Beginning Balance', '', this._numberFormat(beginningBalance)]);  
                     }
                     resolve(beginningBalance);
-                }.bind(this), function(err) {                
-                    this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
-                }.bind(this));
-            }.bind(this), function(err) {
-                this._notifyReportError('Error in _findInventoryItemsByRequest:'+err);
-            }.bind(this));
+                }.bind(this), reject);
+            }.bind(this), reject);
         }.bind(this));
     },
     
