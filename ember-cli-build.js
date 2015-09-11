@@ -7,7 +7,12 @@ var fileRemover = require('broccoli-file-remover');
 
 module.exports = function(defaults) {
     var app = new EmberApp(defaults, {
-        es3Safe: false
+        es3Safe: false,
+        vendorFiles: {
+            'handlebars.js': {
+                production: 'bower_components/handlebars/handlebars.js'
+            }
+        }    
     });
 
     // Use `app.import` to add additional libraries to the generated
