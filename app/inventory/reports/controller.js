@@ -36,7 +36,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             property: 'transactionType'
         }, 
         expenseAccount: {
-            label: 'Expense Account',
+            label: 'Expense To',
             include: false,
             property: 'expenseAccount'
         }, 
