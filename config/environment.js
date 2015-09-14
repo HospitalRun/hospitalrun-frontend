@@ -16,9 +16,13 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+    },
+
+    'simple-auth': {
+      
     }
   };
-    
+
 ENV.APP.manifest = {
   enabled: true,
   appcacheFile: "/manifest.appcache",
@@ -26,7 +30,7 @@ ENV.APP.manifest = {
   includePaths: ['/'],
   network: ['api/'],
   showCreateDate: true
-};    
+};
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
@@ -46,12 +50,14 @@ ENV.APP.manifest = {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
+
+    ENV['simple-auth'].store = 'simple-auth-session-store:ephemeral';
   }
 
   if (environment === 'production') {
 
   }
-    
+
 ENV.manifest = {
   enabled: true,
   appcacheFile: "/manifest.appcache",
