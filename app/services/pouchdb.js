@@ -5,38 +5,19 @@ import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 
 export default Ember.Service.extend(PouchAdapterUtils, {
     mainDB: null, //Server DB
-    configDB: null, //Initializer will set this up.
+    configDB: Ember.inject.service('config-db'),
     setMainDB: false,
-    
+
     /**
      * Get the file link information for the specifed recordId.
      * @param {String} recordId the id of the record to the find the file link for.
-     * @returns {Promise} returns a Promise that resolves once the file link object is retrieved.  
-     * The promise resolves with the file link object if found;otherwise it resolves with null.     
+     * @returns {Promise} returns a Promise that resolves once the file link object is retrieved.
+     * The promise resolves with the file link object if found;otherwise it resolves with null.
      */
-    _getFileLink: function(recordId) {
-        return new Ember.RSVP.Promise(function(resolve){
-            var configDB = this.get('configDB');
-            configDB.get('file-link_'+recordId, function(err, doc){
-                resolve(doc);
-            });
-        }.bind(this));
+    _getFileLink: function(id) {
+      return this.get('configDB').getFileLink(id);
     },
-    
-    /**
-     * Handler called when handler to sever main DB is created.
-     */
-    _gotServerMainDB: function(err, db) {
-        if (err) {
-            console.log("Error creating main pouchDB",err);
-            throw err;
-        } else {
-            this.set('mainDB', db);
-            this.set('setMainDB', true);
-            //this._setupSync();
-        }
-    },
-    
+
     _mapPouchData: function(rows) {
         var mappedRows = [];
         if (rows) {
@@ -50,7 +31,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         }
         return mappedRows;
     },
-    
+
     /**
     * Given an pouchDB doc id, return the corresponding ember record id.
     * @param {String} docId the pouchDB doc id.
@@ -61,8 +42,8 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         if (!Ember.isEmpty(parsedId.id)) {
             return parsedId.id;
         }
-    }, 
-    
+    },
+
     getDocFromMainDB: function(docId) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
             var mainDB = this.get('mainDB');
@@ -71,7 +52,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
                     this._pouchError(reject)(err);
                 } else {
                     resolve(doc);
-                }                 
+                }
             }.bind(this));
         }.bind(this));
     },
@@ -88,32 +69,26 @@ export default Ember.Service.extend(PouchAdapterUtils, {
             type: type
         });
     },
-    
-    removeFileLink: function(pouchDbId) {
-         var configDB = this.get('configDB');
-        this._getFileLink(pouchDbId).then(function(fileLink) {
-            configDB.remove(fileLink);
-        });
+
+    removeFileLink: function(id) {
+      return this.get('configDB').removeFileLink(id);
     },
-    
-    saveFileLink: function(newFileName, recordId) {
-        var configDB = this.get('configDB');
-        configDB.put({
-            fileName: newFileName
-        }, 'file-link_'+recordId);
+
+    saveFileLink: function(newFileName, id) {
+      return this.get('configDB').saveFileLink(newFileName, id);
     },
-    
+
     queryMainDB: function(queryParams, mapReduce) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
             var mainDB = this.get('mainDB');
-            if (mapReduce) { 
+            if (mapReduce) {
                 mainDB.query(mapReduce, queryParams, function(err, response) {
                     if (err) {
                         this._pouchError(reject)(err);
                     } else {
                         response.rows = this._mapPouchData(response.rows);
                         resolve(response);
-                    }                
+                    }
                 }.bind(this));
             } else {
                 mainDB.allDocs(queryParams, function(err, response) {
@@ -122,47 +97,50 @@ export default Ember.Service.extend(PouchAdapterUtils, {
                     } else {
                         response.rows = this._mapPouchData(response.rows);
                         resolve(response);
-                    }                
+                    }
                 }.bind(this));
             }
         }.bind(this));
     },
-    
-    setupMainDB: function(configs) {
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            var pouchOptions = {};
-            if (configs.config_use_google_auth) {
-                //If we don't have the proper credentials don't sync.
-                if (Ember.isEmpty(configs.config_consumer_key) || 
-                    Ember.isEmpty(configs.config_consumer_secret) ||
-                    Ember.isEmpty(configs.config_oauth_token) || 
-                    Ember.isEmpty(configs.config_token_secret)) {
-                    reject();
-                }
-                pouchOptions.ajax = {
-                    xhr: createPouchOauthXHR(configs),
-                    timeout: 30000
-                };
-            }
-            var dbUrl =  document.location.protocol+'//'+document.location.host+'/db/main';
-            new PouchDB(dbUrl, pouchOptions, function(err, db) {                
-                if (err) {
-                    Ember.run.later(this, function() {
-                        var session = this.get('session');
-                        if (!Ember.isEmpty(session) && session.isAuthenticated) {
-                            session.invalidate();
-                        }
-                    });
-                    reject(err);            
-                } else {
-                    createPouchViews(db);
-                    this._gotServerMainDB(err, db);
-                    resolve({
-                        mainDB: db, 
-                        //localDB: localMainDB
-                    });
-                }
-            }.bind(this));
-        }.bind(this));
+
+    setupMainDB: function() {
+      const configDB = this.get('configDB');
+      return configDB.setup()
+        .then((configs)=>{
+          const pouchOptions = {};
+          if (configs.config_use_google_auth) {
+              //If we don't have the proper credentials don't sync.
+              if (Ember.isEmpty(configs.config_consumer_key) ||
+                  Ember.isEmpty(configs.config_consumer_secret) ||
+                  Ember.isEmpty(configs.config_oauth_token) ||
+                  Ember.isEmpty(configs.config_token_secret)) {
+                  // TODO: do we need this here?
+                  // reject();
+              }
+              pouchOptions.ajax = {
+                  xhr: createPouchOauthXHR(configs),
+                  timeout: 30000
+              };
+          }
+          const url = `${document.location.protocol}//${document.location.host}/db/main`;
+          return this.createPouchDB(url, pouchOptions);
+        })
+        .then((db)=>{
+          this.set('mainDB', db);
+          this.set('setMainDB', true);
+        });
+    },
+
+    createPouchDB(url, options) {
+      return new Ember.RSVP.Promise((resolve, reject)=>{
+        new PouchDB(url, options, (err, db)=>{
+          if (err) {
+            reject(err);
+            return;
+          }
+          createPouchViews(db);
+          resolve(db);
+        });
+      });
     }
 });

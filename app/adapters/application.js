@@ -4,16 +4,16 @@ import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 
 export default Adapter.extend(PouchAdapterUtils, {
     pouchDBService: Ember.inject.service('pouchdb'),
-    
+
     mainDB: Ember.computed.alias('pouchDBService.mainDB'),
     db:  Ember.computed.alias('pouchDBService.mainDB'),
-    
+
     _specialQueries: [
         'containsValue',
         'mapReduce',
         'searchIndex'
     ],
-  
+
     _executeContainsSearch: function(store, type, query) {
          return new Ember.RSVP.Promise(function(resolve, reject){
             var searchUrl = '/search/hrdb/'+type.typeKey+'/_search';
@@ -53,7 +53,7 @@ export default Adapter.extend(PouchAdapterUtils, {
             }
         }.bind(this));
     },
-    
+
     _handleQueryResponse: function(response, store, type) {
         var pouchDBService = this.get('pouchDBService');
         return new Ember.RSVP.Promise(function(resolve, reject){
@@ -79,7 +79,7 @@ export default Adapter.extend(PouchAdapterUtils, {
             }
         }.bind(this));
     },
-    
+
     /**
      * Look for nulls and maxvalues in start key because those keys can't be handled by the sort/list function
      */
@@ -95,7 +95,7 @@ export default Adapter.extend(PouchAdapterUtils, {
         }
         return haveSpecialCharacters;
     },
-    
+
     findQuery: function(store, type, query, options) {
         var specialQuery = false;
         for (var i=0;i< this._specialQueries.length; i++) {
@@ -113,7 +113,7 @@ export default Adapter.extend(PouchAdapterUtils, {
                 return this._super(store, type, query, options);
             }
         } else {
-            var mapReduce = null,                
+            var mapReduce = null,
                 queryParams = {};
             if (query.searchIndex) {
                 queryParams = query.searchIndex;
@@ -146,7 +146,6 @@ export default Adapter.extend(PouchAdapterUtils, {
             }
             queryParams.reduce  = false;
             queryParams.include_docs = false;
-            
             if (query.mapReduce) {
                 mapReduce = query.mapReduce;
             } else if (query.containsValue) {
@@ -188,7 +187,7 @@ export default Adapter.extend(PouchAdapterUtils, {
                         }
                     } catch (err){
                         this._pouchError(reject)(err);
-                    }                
+                    }
             }.bind(this), "findQuery in application-pouchdb-adapter");
         }
     }

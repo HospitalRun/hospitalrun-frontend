@@ -10,13 +10,37 @@ var ApplicationRoute = Ember.Route.extend(ApplicationRouteMixin, {
             } else {
                 this._super();
             }
+        },
+        goToLogin() {
+          this.transitionTo('login');
         }
     },
 
-    model: function() {
-        return this.store.findAll('config');        
+    pouchDB: Ember.inject.service('pouchdb'),
+
+    model: function(params, transition) {
+      const session = this.get('session');
+      const isAuthenticated = session && session.isAuthenticated;
+      if (isAuthenticated) {
+        return this.get('pouchDB').setupMainDB()
+          .then(()=>{
+            return this.store.findAll('config');
+          })
+          .catch((error)=>{
+            // should handle with an exception
+            if (error.name === "unauthorized") {
+              if (!Ember.isEmpty(session) && session.isAuthenticated) {
+                session.invalidate();
+              } else {
+                transition.send('goToLogin');
+              }
+            }
+          });
+      } else {
+        transition.send('goToLogin');
+      }
     },
-    
+
     afterModel: function(resolvedModel) {
         this.controllerFor('navigation').set('allowSearch',false);
         if (resolvedModel) {
@@ -26,6 +50,6 @@ var ApplicationRoute = Ember.Route.extend(ApplicationRouteMixin, {
             }
         }
     }
-    
+
 });
 export default ApplicationRoute;

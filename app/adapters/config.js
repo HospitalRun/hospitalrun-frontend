@@ -4,10 +4,10 @@ import Ember from 'ember';
 import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 
 export default Adapter.extend(PouchAdapterUtils, {
-    databaseName: 'config',    
+    databaseName: 'config',
     db:  Ember.computed.alias('pouchDBService.configDB'),
     pouchDBService: Ember.inject.service('pouchdb'),
-    
+
     _mapQuery: function(doc, emit) {
         if (doc._id) {
             emit(doc._id, null);
@@ -23,7 +23,7 @@ export default Adapter.extend(PouchAdapterUtils, {
                 reduce: false,
                 include_docs: true
             };
-            
+
             queryParams.keys = query.exactKeys.map(function(key) {
                 return this.get('pouchDBService').getPouchId(key, 'config');
             }.bind(this));
