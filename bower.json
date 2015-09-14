@@ -25,7 +25,10 @@
     "pouchdb-quick-search": "~1.0.2",
     "qunit": "~1.18.0",
     "relational-pouch": "HospitalRun/relational-pouch#query",
-    "typeahead.js": "~0.11.1"
+    "typeahead.js": "~0.11.1",
+    "pretender": "~0.9.0",
+    "lodash": "~3.7.0",
+    "Faker": "~3.0.0"
   },
   "resolutions": {
     "ember": "1.13.10"
