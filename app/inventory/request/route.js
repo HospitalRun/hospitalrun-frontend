@@ -13,6 +13,10 @@ export default AbstractEditRoute.extend({
     },
     
     actions: {
+        allRequests: function(model) {
+            this.controller.send('allRequests', model);
+        },
+        
         removeItem: function(model) {
             this.controller.send('removeItem', model);
         }

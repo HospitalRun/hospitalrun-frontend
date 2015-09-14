@@ -1,10 +1,11 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import FulfillRequest from 'hospitalrun/mixins/fulfill-request'; 
+import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; //inventory-locations mixin is needed for fulfill-request mixin!
 import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import Ember from 'ember';
 
-export default AbstractEditController.extend(InventorySelection, {    
-    needs: ['inventory'],
-    
+export default AbstractEditController.extend(FulfillRequest, InventoryLocations, InventorySelection, {    
+    needs: ['inventory'],    
     cancelAction: 'allRequests',
    
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
@@ -142,7 +143,7 @@ export default AbstractEditController.extend(InventorySelection, {
                 var updateViaFulfillRequest = this.get('updateViaFulfillRequest');
                 if (updateViaFulfillRequest) {
                     this.updateLookupLists();
-                    this.send('fulfillRequest', this.get('model'));
+                    this.performFulfillRequest(this.get('model')).then(this.afterUpdate.bind(this));
                 } else {
                     var isNew = this.get('isNew'),
                         requestedItems = this.get('requestedItems');
@@ -191,8 +192,13 @@ export default AbstractEditController.extend(InventorySelection, {
         }
     },
     
-    afterUpdate: function() {        
-        this.send('allRequests');
+    afterUpdate: function() {
+        var updateViaFulfillRequest = this.get('updateViaFulfillRequest');
+        if (updateViaFulfillRequest) {
+            this.displayAlert('Request Fulfilled', 'The inventory request has been fulfilled.', 'allRequests');
+        } else {
+            this.displayAlert('Request Updated', 'The inventory request has been updated.');
+        }
     }, 
 
     beforeUpdate: function() {

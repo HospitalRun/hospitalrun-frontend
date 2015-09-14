@@ -7,6 +7,12 @@ export default Ember.Mixin.create({
         },
         
         fulfillRequest: function(request, closeModal, increment, skipTransition) {
+            this.performFulfillRequest(request, closeModal, increment, skipTransition);
+        }
+    },
+    
+    performFulfillRequest: function(request, closeModal, increment, skipTransition) {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
             var markAsConsumed = request.get('markAsConsumed'),
                 transactionType = request.get('transactionType');
             if (transactionType === 'Request') {
@@ -20,16 +26,18 @@ export default Ember.Mixin.create({
                     }
                     this._performFulfillment(request, inventoryItem, increment).then(function() {
                         this._finishFulfillRequest(request, inventoryItem, closeModal, increment, skipTransition);
-                    }.bind(this));
+                        resolve();
+                    }.bind(this), reject);
                 } else {
                     request.set('adjustPurchases', false);
                     if (Ember.isEmpty(transactionType)) {
                         request.set('transactionType', 'Transfer');
                     }
                     this._finishFulfillRequest(request, inventoryItem, closeModal, increment, skipTransition);
+                    resolve();
                 }
-            }.bind(this));
-        }
+            }.bind(this), reject);
+        }.bind(this));
     },
     
     /**

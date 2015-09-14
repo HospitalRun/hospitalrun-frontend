@@ -1,11 +1,13 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from "ember";
+import FulfillRequest from 'hospitalrun/mixins/fulfill-request'; 
+import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; //inventory-locations mixin is needed for fulfill-request mixin!
 import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from "hospitalrun/mixins/user-session";
 
-export default AbstractEditController.extend(InventorySelection, PatientId, PatientSubmodule, UserSession, {    
+export default AbstractEditController.extend(InventorySelection, FulfillRequest, InventoryLocations, PatientId, PatientSubmodule, UserSession, {    
     needs: ['application','medication'],    
     
     applicationConfigs: Ember.computed.alias('controllers.application.model'),
@@ -172,10 +174,11 @@ export default AbstractEditController.extend(InventorySelection, PatientId, Pati
                     transactionType: 'Fulfillment',
                     patient: this.get('patient'),
                     markAsConsumed: true
-                });            
-            this.send('fulfillRequest', inventoryRequest, false, false, true);
-            this.set('status','Fulfilled');
-            resolve();
+                });
+            this.performFulfillRequest(inventoryRequest, false, false, true).then(function() {                
+                this.set('status','Fulfilled');
+                resolve();
+            }.bind(this));
         } else {
             resolve();
         }

@@ -1,9 +1,10 @@
 import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
 import Ember from 'ember';
+import InventoryAdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
 import LocationName from 'hospitalrun/mixins/location-name';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
-import NumberFormat from "hospitalrun/mixins/number-format";
-export default AbstractReportController.extend(LocationName, ModalHelper, NumberFormat, {
+import NumberFormat from 'hospitalrun/mixins/number-format';
+export default AbstractReportController.extend(LocationName, ModalHelper, NumberFormat, InventoryAdjustmentTypes, {
     needs: ['inventory'],
     effectiveDate: null,
     expenseCategories: ['Inventory Consumed', 'Gift In Kind Usage', 'Inventory Obsolence'],
@@ -36,7 +37,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             property: 'transactionType'
         }, 
         expenseAccount: {
-            label: 'Expense Account',
+            label: 'Expense To',
             include: false,
             property: 'expenseAccount'
         }, 
@@ -162,7 +163,16 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     }, {
         name: 'Summary Stock Transfer',
         value: 'summaryTransfer'
+    }, {        
+        name: 'Finance Summary',
+        value: 'summaryFinance'
     }],
+    
+    hideLocationFilter: function() {
+        var reportType = this.get('reportType');
+        return (reportType === 'summaryFinance');
+    }.property('reportType'),
+
     
     includeDate: function() {
         var reportType = this.get('reportType');
@@ -251,7 +261,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     
     useFieldPicker: function() {
         var reportType = this.get('reportType');
-        return (reportType !== 'expiration');
+        return (reportType !== 'expiration' && reportType !== 'summaryFinance');
     }.property('reportType'),
 
     _addAisleColumn: function(locations) {
@@ -353,6 +363,24 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                     quantity = purchase.calculatedQuantity;                                    
                 row.quantity += purchase.calculatedQuantity;
                 row.totalCost += (quantity * costPerUnit);
+            }.bind(this));
+        }
+        if (row.totalCost === 0 || row.quantity === 0) {
+            row.unitCost = 0;
+        } else {
+            row.unitCost = (row.totalCost/row.quantity);
+        }
+        return row;
+    },
+
+    _calculateUsage: function(inventoryPurchases, row) {
+        //Calculate quantity and cost per unit for the row
+        if (!Ember.isEmpty(inventoryPurchases)) {
+            inventoryPurchases.forEach(function(purchase) {
+                var costPerUnit = this._calculateCostPerUnit(purchase),
+                    quantity = purchase.calculatedQuantity;                                    
+                row.quantity -= purchase.calculatedQuantity;
+                row.totalCost -= (quantity * costPerUnit);
             }.bind(this));
         }
         if (row.totalCost === 0 || row.quantity === 0) {
@@ -552,6 +580,216 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             }.bind(this));
         }.bind(this));
         
+    },
+    
+    _generateFinancialSummaryReport: function() {
+        var reportTimes = this._getDateQueryParams();
+        /*
+        step 1: find the valuation as of start date, 
+        meaning that we need to exchange the end date to be the start date and then tabulate the value
+        */
+        this._calculateBeginningBalance(reportTimes).then(function(beginningBalance) {
+            this._generateSummaries(reportTimes).then(function(inventoryAdjustment) {
+                var i = this._numberFormat(beginningBalance+inventoryAdjustment);
+                if ((beginningBalance+inventoryAdjustment) < 0) {
+                    this.get('reportRows').addObject(['Ending Balance', '', '('+i+')']);  
+                } else {
+                    this.get('reportRows').addObject(['Ending Balance', '', i]);  
+                }
+                this.set('showReportResults', true);
+                this.set('reportHeaders', ['Category', 'Type', 'Total']);
+                this._generateExport();
+                this._setReportTitle();
+                this.closeProgressModal();
+            }.bind(this), function(err) {
+                this._notifyReportError('Error in _generateFinancialSummaryReport:'+err);
+            }.bind(this));
+        }.bind(this));
+    },
+    
+    _generateSummaries: function(reportTimes) {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            var adjustedValue = 0;
+            /*
+            cycle through each purchase and request from the beginning of time until startTime 
+            to determine the total value of inventory as of that date/time.
+            */
+            this._findInventoryItemsByRequest(reportTimes,{}).then(function(inventoryMap) {
+                this._findInventoryItemsByPurchase(reportTimes, inventoryMap).then(function(inventoryMap) {
+                    var purchaseSummary = [],
+                        consumed = [],
+                        gikConsumed = [],
+                        adjustments = [];
+                    this.adjustmentTypes.forEach(function(adjustmentType) {
+                        adjustments[adjustmentType.type] = [];
+                    });
+                    Ember.keys(inventoryMap).forEach(function(key) {
+                        if (Ember.isEmpty(key) || Ember.isEmpty(inventoryMap[key])) {
+                            //If the inventory item has been deleted, ignore it.
+                            return;
+                        }
+                        var item = inventoryMap[key];
+
+                        if (!Ember.isEmpty(item.purchaseObjects)) {
+                            item.purchaseObjects.forEach(function(purchase) {
+                                purchaseSummary[item.type] = this._getValidNumber(purchaseSummary[item.type]) + this._getValidNumber(purchase.purchaseCost);
+                            }.bind(this));
+                        }
+                        if (!Ember.isEmpty(item.requestObjects)) {
+                            item.requestObjects.forEach(function(request) {
+                                //we have three categories here: consumed, gik consumed, and adjustments
+                                if (request.adjustPurchases) {
+                                    if (request.transactionType === 'Fulfillment') {
+                                        if (request.giftInKind) {
+                                            gikConsumed[item.type] = this._getValidNumber(gikConsumed[item.type]) + (this._getValidNumber(request.quantity * request.costPerUnit));
+                                        } else {
+                                            consumed[item.type] = this._getValidNumber(consumed[item.type]) + (this._getValidNumber(request.quantity * request.costPerUnit));
+                                        }
+                                    } else {
+                                        adjustments[request.transactionType][item.type] = this._getValidNumber(adjustments[request.transactionType][item.type]) + (this._getValidNumber(request.quantity * request.costPerUnit));
+                                    }
+                                }
+                            }.bind(this));
+                        }
+                    }.bind(this));
+                    //write the purchase rows
+                    if (Object.keys(purchaseSummary).length > 0) {
+                        var purchaseTotal = 0;
+                        this.get('reportRows').addObject(['Purchases', '', '']);  
+                        Ember.keys(purchaseSummary).forEach(function(key) {
+                            var i = this._getValidNumber( purchaseSummary[key]);
+                            purchaseTotal += i;
+                            this.get('reportRows').addObject(['', key, this._numberFormat(i)]);    
+                        }.bind(this));
+                        this.get('reportRows').addObject(['Total Purchases', '', this._numberFormat(purchaseTotal)]);  
+                        adjustedValue += purchaseTotal;
+                    } 
+                    //write the consumed rows                    
+                    if (Object.keys(consumed).length > 0 || Object.keys(gikConsumed).length > 0) {
+                        this.get('reportRows').addObject(['Consumed', '', '']); 
+                        var overallValue = 0;
+                        if (Object.keys(consumed).length > 0) {
+                            this.get('reportRows').addObject(['Purchases Consumed', '', '']);  
+                            var consumedTotal = 0;
+                            Ember.keys(consumed).forEach(function(key) {
+                                var i = this._getValidNumber( consumed[key]);
+                                consumedTotal += i;
+                                this.get('reportRows').addObject(['', key, '('+ this._numberFormat(i)+')']);    
+                            }.bind(this));
+                            overallValue += consumedTotal;
+                            this.get('reportRows').addObject(['Total Purchases Consumed', '', '('+ this._numberFormat(consumedTotal)+')']);
+                        }
+                        if (Object.keys(gikConsumed).length > 0) {
+                            this.get('reportRows').addObject(['GIK Consumed', '', '']);  
+                            var gikTotal = 0;
+                            Ember.keys(gikConsumed).forEach(function(key) {
+                                var i = this._getValidNumber( gikConsumed[key]);
+                                gikTotal += i;
+                                this.get('reportRows').addObject(['', key, '('+ this._numberFormat(i)+')']);    
+                            }.bind(this));
+                            overallValue += gikTotal;
+                            this.get('reportRows').addObject(['Total GIK Consumed', '', '('+this._numberFormat(gikTotal)+')']);
+                        }
+                        this.get('reportRows').addObject(['Total Consumed', '', '('+this._numberFormat(overallValue)+')']);     
+                        adjustedValue -= overallValue;
+                    }
+                    //write the adjustment rows
+                    var adjustmentTotal = 0;
+                    this.get('reportRows').addObject(['Adjustments', '', '']);  
+                    Ember.keys(adjustments).forEach(function(adjustmentT) {
+                        if (Object.keys(adjustments[adjustmentT]).length > 0) {
+                            this.get('reportRows').addObject([adjustmentT, '', '']);  
+                            Ember.keys(adjustments[adjustmentT]).forEach(function(key) {
+                                var i = this._getValidNumber( adjustments[adjustmentT][key]);
+                                if (adjustmentT === 'Adjustment (Add)' || adjustmentT === 'Return') {
+                                    adjustmentTotal += i;
+                                    this.get('reportRows').addObject(['', key, i]);    
+                                } else {
+                                    adjustmentTotal -= i;
+                                    this.get('reportRows').addObject(['', key, '('+this._numberFormat(i)+')']);    
+                                }                                
+                            }.bind(this));
+                        }
+                    }.bind(this));
+                    if (adjustmentTotal < 0) {
+                        this.get('reportRows').addObject(['Total Adjustments', '', '('+this._numberFormat(adjustmentTotal)+')']);  
+                    } else {
+                        this.get('reportRows').addObject(['Total Adjustments', '', this._numberFormat(adjustmentTotal)]);  
+                    }
+                    
+                    adjustedValue += adjustmentTotal;
+                    resolve(adjustedValue);
+                }.bind(this), reject);
+            }.bind(this), reject);  
+        }.bind(this));
+    },    
+
+    _calculateBeginningBalance: function(reportTimes) {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            
+            var startingValueReportTimes = {
+                    startTime: null,
+                    endTime: reportTimes.startTime            
+                },
+                beginningBalance = 0;
+            /*
+            cycle through each purchase and request from the beginning of time until startTime 
+            to determine the total value of inventory as of that date/time.
+            */
+            this._findInventoryItemsByRequest(startingValueReportTimes,{}).then(function(inventoryMap) {
+                this._findInventoryItemsByPurchase(startingValueReportTimes, inventoryMap).then(function(inventoryMap) {
+                    Ember.keys(inventoryMap).forEach(function(key) {
+                        if (Ember.isEmpty(key) || Ember.isEmpty(inventoryMap[key])) {
+                            //If the inventory item has been deleted, ignore it.
+                            return;
+                        }
+                        var item = inventoryMap[key],
+                            inventoryPurchases = item.purchaseObjects,
+                            inventoryRequests = item.requestObjects,
+                            row = {
+                                inventoryItem: item,
+                                quantity: 0,
+                                unitCost: 0,
+                                totalCost: 0
+                            };
+                        if (!Ember.isEmpty(inventoryPurchases)) {
+                            //Setup intial locations for an inventory item
+                            inventoryPurchases.forEach(function(purchase) {
+                                var purchaseQuantity = purchase.originalQuantity;
+                                purchase.calculatedQuantity = purchaseQuantity;
+                            });
+                        }
+                        if (!Ember.isEmpty(inventoryRequests)) {
+                            inventoryRequests.forEach(function(request) {
+                                var adjustPurchases = request.adjustPurchases,
+                                    increment = false,
+                                    purchases = request.purchasesAffected,
+                                    transactionType = request.transactionType;
+                                increment = (transactionType === 'Adjustment (Add)' || transactionType === 'Return');
+                                if (adjustPurchases) {
+                                    if (!Ember.isEmpty(purchases) && !Ember.isEmpty(inventoryPurchases)) {
+                                        //Loop through purchase(s) on request and adjust corresponding inventory purchases
+                                        purchases.forEach(function(purchaseInfo) {
+                                            this._adjustPurchase(inventoryPurchases, purchaseInfo.id, purchaseInfo.quantity, increment);
+                                        }.bind(this));
+                                    }
+                                } 
+                            }.bind(this));
+                        }
+                        if (!Ember.isEmpty(inventoryPurchases)) {
+                            row = this._calculateCosts(inventoryPurchases, row);   
+                            beginningBalance += this._getValidNumber(row.totalCost);
+                        }
+                    }.bind(this));
+                    if (beginningBalance < 0) {
+                        this.get('reportRows').addObject(['Beginning Balance', '', '('+this._numberFormat(beginningBalance)+')']);  
+                    } else {
+                        this.get('reportRows').addObject(['Beginning Balance', '', this._numberFormat(beginningBalance)]);  
+                    }
+                    resolve(beginningBalance);
+                }.bind(this), reject);
+            }.bind(this), reject);
+        }.bind(this));
     },
     
     _generateInventoryReport: function() {
@@ -1045,6 +1283,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 case 'expiration': {
                     this._generateExpirationReport();
                     break;                    
+                }
+                case 'summaryFinance': {
+                    this._generateFinancialSummaryReport();
+                    break;
                 }
                 case 'detailedExpense':
                 case 'summaryExpense': {                    
