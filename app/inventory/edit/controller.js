@@ -230,7 +230,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             var purchase = this.get('store').createRecord('inv-purchase', newPurchase);
             promises.push(purchase.save());
             this.get('purchases').addObject(purchase);
-            this.newPurchaseAdded(this.get('model'), purchase);
+            promises.push(this.newPurchaseAdded(this.get('model'), purchase));
         }
         sequence.incrementProperty('value',1);
         sequenceValue = sequence.get('value');

@@ -70,15 +70,17 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     _finishUpdate: function() {
         var aisle = this.get('deliveryAisle'),
             location = this.get('deliveryLocation'),
-            inventoryItem = this.get('inventoryItem'),
-            //find location on inventoryItem
-            inventoryLocation = this._findOrCreateLocation(inventoryItem, location, aisle);
-        this.set('adjustPurchases', true);
-        this.set('inventoryLocations',[inventoryLocation]);            
-        this.set('markAsConsumed',true);
-        //Make sure inventory item is resolved first.
-        this.get('inventoryItem').then(function() {
-            this.send('fulfillRequest', this.get('model'), false, true, true);
+            inventoryItem = this.get('inventoryItem');
+        
+        //find location on inventoryItem
+        this._findOrCreateLocation(inventoryItem, location, aisle).then(function(inventoryLocation) {
+            this.set('adjustPurchases', true);
+            this.set('inventoryLocations',[inventoryLocation]);            
+            this.set('markAsConsumed',true);
+            //Make sure inventory item is resolved first.
+            this.get('inventoryItem').then(function() {
+                this.send('fulfillRequest', this.get('model'), false, true, true);
+            }.bind(this));
         }.bind(this));
     },
     

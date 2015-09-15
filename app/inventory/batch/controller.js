@@ -169,18 +169,25 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
             savePromises.push(inventoryPurchase.save());
         }.bind(this));
         Ember.RSVP.all(savePromises).then(function(results) {
-            var inventorySaves = [];
+            var inventorySaves = [],
+                purchasesAdded = [];                
             results.forEach(function(newPurchase) {
                 var inventoryItem = this._findInventoryItem(newPurchase),
                     purchases = inventoryItem.get('purchases');
                 purchases.addObject(newPurchase);
-                this.newPurchaseAdded(inventoryItem, newPurchase); 
-                inventoryItem.updateQuantity();
-                inventorySaves.push(inventoryItem.save());
+                purchasesAdded.push(this.newPurchaseAdded(inventoryItem, newPurchase));
             }.bind(this));
+            
             Ember.RSVP.all(inventorySaves).then(function() {
-                this.updateLookupLists();
-                this.displayAlert('Inventory Purchases Saved', 'The inventory purchases have been successfully saved', 'allItems');
+                results.forEach(function(newPurchase) {
+                    var inventoryItem = this._findInventoryItem(newPurchase);
+                        inventoryItem.updateQuantity();
+                        inventorySaves.push(inventoryItem.save());
+                }.bind(this));
+                Ember.RSVP.all(inventorySaves).then(function() {
+                    this.updateLookupLists();
+                    this.displayAlert('Inventory Purchases Saved', 'The inventory purchases have been successfully saved', 'allItems');
+                }.bind(this));
             }.bind(this));
         }.bind(this));
     },

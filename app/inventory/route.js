@@ -52,10 +52,12 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
             var currentItem = this.get('currentItem'),
                 purchases = currentItem.get('purchases');
             purchases.addObject(newPurchase);
-            this.newPurchaseAdded(currentItem, newPurchase); 
-            currentItem.updateQuantity();
-            currentItem.save();
-            this.send('closeModal');
+            this.newPurchaseAdded(currentItem, newPurchase).then(function() {                
+                currentItem.updateQuantity();
+                currentItem.save().then(function() {
+                    this.send('closeModal');
+                }.bind(this));
+            }.bind(this));
         },
         
         newInventoryBatch: function() {
