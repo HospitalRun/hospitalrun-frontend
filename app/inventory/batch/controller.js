@@ -118,7 +118,6 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
         var invoiceItems = this.get('invoiceItems'),
             inventoryId = purchase.get('inventoryItem');
         if (!Ember.isEmpty(inventoryId)) {
-            inventoryId = inventoryId.substr(10);
             var invoiceItem = invoiceItems.find(function(item) {
                 return (item.get('inventoryItem.id') === inventoryId);
             }, this);
@@ -164,7 +163,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
                 distributionUnit: inventoryItem.get('distributionUnit'),
                 currentQuantity:  quantity,
                 originalQuantity: quantity,
-                inventoryItem: 'inventory_'+inventoryItem.get('id')
+                inventoryItem: inventoryItem.get('id')
             });
             savePromises.push(inventoryPurchase.save());
         }.bind(this));

@@ -226,7 +226,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         if (!Ember.isEmpty(quantity)) {
             newPurchase.originalQuantity = quantity;
             newPurchase.currentQuantity = quantity;
-            newPurchase.inventoryItem = 'inventory_'+this.get('model.id');
+            newPurchase.inventoryItem = this.get('model.id');
             var purchase = this.get('store').createRecord('inv-purchase', newPurchase);
             promises.push(purchase.save());
             this.get('purchases').addObject(purchase);
@@ -297,8 +297,8 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         }.bind(this));
     },
     
-    getTransactions: function() {        
-        var inventoryId = 'inventory_'+this.get('id');
+    getTransactions: function() {
+        var inventoryId =  this.get('id');
         this.set('transactions',null);
         this.store.find('inv-request', {
             options: {
