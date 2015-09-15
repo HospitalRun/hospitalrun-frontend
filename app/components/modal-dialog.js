@@ -27,7 +27,9 @@ export default Ember.Component.extend({
     },
 
     willDestroyElement: function() {
-        this.$('.modal').modal('hide');
+        var $modal = this.$('.modal');
+        $modal.off('hidden.bs.modal');
+        $modal.modal('hide');        
         //jquery fixes
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
