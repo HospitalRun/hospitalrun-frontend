@@ -89,38 +89,38 @@
                     <th>Details</th>
                 </tr>
                 {{#if haveTransactions}}
-                    {{#each transactions itemController='inventory/completed-items'}}
+                    {{#each transactions as |transaction|}}
                         <tr>
-                            <td>{{date-format dateCompleted}}</td>                    
-                            <td>{{quantity}}</td>
-                            <td>{{transactionType}}</td>
-                            <td>{{expenseAccount}}</td>
+                            <td>{{date-format transaction.dateCompleted}}</td>                    
+                            <td>{{transaction.quantity}}</td>
+                            <td>{{transaction.transactionType}}</td>
+                            <td>{{transaction.expenseAccount}}</td>
                             <td>
-                                {{#if isAdjustment}}
-                                    {{#if haveReason}}
-                                        <strong>Reason:</strong> {{reason}}<br/>
+                                {{#if transaction.isAdjustment}}
+                                    {{#if transaction.haveReason}}
+                                        <strong>Reason:</strong> {{transaction.reason}}<br/>
                                     {{/if}}
-                                    <strong>Location Adjusted:</strong> {{deliveryDetails}}
+                                    <strong>Location Adjusted:</strong> {{transaction.deliveryDetails}}
                                 {{/if}}
-                                {{#if isFulfillment}}
-                                    <strong>Cost Per Unit:</strong> {{costPerUnit}}<br/>
-                                    <strong>Quantity At Completion:</strong> {{quantityAtCompletion}}<br/>
+                                {{#if transaction.isFulfillment}}
+                                    <strong>Cost Per Unit:</strong> {{transaction.costPerUnit}}<br/>
+                                    <strong>Quantity At Completion:</strong> {{transaction.quantityAtCompletion}}<br/>
                                     <strong>Pulled From:</strong>
-                                    {{#each locationsAffected}}
-                                        {{name}}<br/>
+                                    {{#each transaction.locationsAffected as |location|}}
+                                        {{location.name}}<br/>
                                     {{/each}}
-                                    {{#if patient}}
-                                        <strong>Prescription For: </strong> {{deliveryDetails}}
+                                    {{#if transaction.patient}}
+                                        <strong>Prescription For: </strong> {{transaction.deliveryDetails}}
                                     {{else}}
-                                        <strong>Delivered To: </strong> {{deliveryDetails}}
+                                        <strong>Delivered To: </strong> {{transaction.deliveryDetails}}
                                     {{/if}}
                                 {{/if}}
-                                {{#if isTransfer}}
+                                {{#if transaction.isTransfer}}
                                     <strong>Transferred From:</strong>
-                                    {{#each locationsAffected}}
-                                        {{name}}<br/>
+                                    {{#each transaction.locationsAffected as |location|}}
+                                        {{location.name}}<br/>
                                     {{/each}}
-                                    <strong>Transferred To: </strong> {{deliveryDetails}}
+                                    <strong>Transferred To: </strong> {{transaction.deliveryDetails}}
                                 {{/if}}
                             </td>
                         </tr>            
