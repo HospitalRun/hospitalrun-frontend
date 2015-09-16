@@ -146,7 +146,7 @@ var designDocs = [{
             case 'appointmentType':
             case 'location':
             case 'provider':
-                return compareStrings(a.doc[sortBy], b.doc[sortBy]);
+                return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
             case 'date': {
                 var startDiff = getCompareDate(a.doc.data.startDate) - getCompareDate(b.doc.data.startDate);
                 if (startDiff === 0) {
@@ -176,7 +176,7 @@ var designDocs = [{
             return true;
         }
         for (i=0; i < filterBy.length; i++) {
-            var currentValue = row.doc[filterBy[i].name];
+            var currentValue = row.doc.data[filterBy[i].name];
             if (filterBy[i].name === 'status' && (!currentValue || currentValue === '')) {
                 currentValue = 'Scheduled';
             }
@@ -222,7 +222,7 @@ var designDocs = [{
             case 'price':
             case 'quantity':
             case 'inventoryType': {
-                return compareStrings(a.doc[sortBy], b.doc[sortBy]);
+                return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
             }
             default: {
                 return 0; //Don't sort

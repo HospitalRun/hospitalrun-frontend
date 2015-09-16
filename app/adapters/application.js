@@ -63,7 +63,17 @@ export default Adapter.extend(PouchAdapterUtils, {
                 var ids = response.rows.map(function(row) {
                     return pouchDBService.getEmberId(row.id);
                 });
-                this.find(store, type, ids).then(resolve, reject);
+                this.findRecord(store, type, ids).then(function(findResponse) {
+                    var primaryRecordName = type.modelName.camelize().pluralize(),
+                        sortedValues = [];
+                    //Sort response in order of ids
+                    ids.forEach(function(id) {
+                        var resolvedRecord = findResponse[primaryRecordName].findBy('id',id);
+                        sortedValues.push(resolvedRecord);
+                    });
+                    findResponse[primaryRecordName] = sortedValues;
+                    resolve(findResponse);
+                }.bind(this), reject);
             } else {
                 var emptyResponse = {};
                 emptyResponse[type.modelName] = [];
@@ -137,7 +147,7 @@ export default Adapter.extend(PouchAdapterUtils, {
                 }
             }
             queryParams.reduce  = false;
-            queryParams.include_docs = true;
+            queryParams.include_docs = false;
             
             if (query.mapReduce) {
                 mapReduce = query.mapReduce;
@@ -149,6 +159,7 @@ export default Adapter.extend(PouchAdapterUtils, {
                     try {
                         if (mapReduce) {
                             if (query.useList) {
+                                queryParams.include_docs = true;
                                 var listParams = {
                                     query: queryParams
                                 };
