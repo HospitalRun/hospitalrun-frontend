@@ -131,7 +131,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
                 var updateViaFulfillRequest = this.get('updateViaFulfillRequest');
                 if (updateViaFulfillRequest) {
                     this.updateLookupLists();
-                    this.performFulfillRequest(this.get('model')).then(this.afterUpdate.bind(this));
+                    this.performFulfillRequest(this.get('model'), false, false, true).then(this.afterUpdate.bind(this));
                 } else {
                     var isNew = this.get('isNew'),
                         requestedItems = this.get('requestedItems');
