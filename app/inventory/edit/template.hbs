@@ -63,7 +63,7 @@
                 {{/if}}
             </tr>
             {{#each locations as |location|}}
-                {{#if quantity}}
+                {{#if location.quantity}}
                     <tr>
                         <td>{{location.location}}</td>
                         <td>{{location.aisleLocation}}</td>
