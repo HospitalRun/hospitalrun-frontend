@@ -294,9 +294,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     
     _addReportRow: function(row, skipNumberFormatting, reportColumns, rowAction) {
         if (Ember.isEmpty(rowAction) && !Ember.isEmpty(row.inventoryItem) && !Ember.isEmpty(row.inventoryItem._id)) {
+            var inventoryId = this.get('pouchDBService').getEmberId(row.inventoryItem._id);
             rowAction = {
                 action: 'viewInventory',
-                model: row.inventoryItem._id.substr(10)
+                model: inventoryId
             };
         }
         this._super(row, skipNumberFormatting, reportColumns, rowAction);
@@ -343,7 +344,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
      * @param {boolean} increment boolean indicating if the adjustment is an increment; or false if decrement.
      */
     _adjustPurchase: function(purchases, purchaseId, quantity, increment) {
-        var purchaseToAdjust = purchases.findBy('_id', 'inv-purchase_'+purchaseId);
+        var pouchPurchaseId = this.get('pouchDBService').getPouchId(purchaseId, 'inv-purchase'),
+            purchaseToAdjust = purchases.findBy('_id', pouchPurchaseId);
         if (!Ember.isEmpty(purchaseToAdjust)) {
             var calculatedQuantity = purchaseToAdjust.calculatedQuantity;
             if (increment) {
@@ -411,8 +413,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                     inventoryIds = [];
                 if (!Ember.isEmpty(inventoryChildren.rows)) {
                     inventoryChildren.rows.forEach(function (child) {
-                        if (child.doc.inventoryItem && !inventoryKeys.contains(child.doc.inventoryItem)) {
-                            inventoryIds.push(child.doc.inventoryItem);
+                        if (child.doc.inventoryItem && !inventoryKeys.contains(child.doc.inventoryItem)) {        
+                            inventoryIds.push(pouchDBService.getPouchId(child.doc.inventoryItem, 'inventory'));
                             inventoryKeys.push(child.doc.inventoryItem);
                         }
                     });
@@ -438,16 +440,16 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     
     _findInventoryItemsByPurchase: function(reportTimes, inventoryMap) {
         return this._findInventoryItems({
-            startkey: [reportTimes.startTime,'inv-purchase_'],
-            endkey: [reportTimes.endTime,'inv-purchase_\uffff'],
+            startkey: [reportTimes.startTime,'invPurchase_'],
+            endkey: [reportTimes.endTime,'invPurchase_\uffff'],
             include_docs: true,
         }, 'inventory_purchase_by_date_received', inventoryMap, 'purchaseObjects');
     },
     
     _findInventoryItemsByRequest: function(reportTimes, inventoryMap) {
         return this._findInventoryItems({
-            startkey: ['Completed',reportTimes.startTime,'inv-request_'],            
-            endkey: ['Completed',reportTimes.endTime,'inv-request_\uffff'],
+            startkey: ['Completed',reportTimes.startTime,'invRequest_'],            
+            endkey: ['Completed',reportTimes.endTime,'invRequest_\uffff'],
             include_docs: true,
         }, 'inventory_request_by_status', inventoryMap, 'requestObjects');
     },    
@@ -539,8 +541,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             reportRows = this.get('reportRows'),
             reportTimes = this._getDateQueryParams();
         pouchDBService.queryMainDB({
-            startkey:  [reportTimes.startTime, 'inv-purchase_'],
-            endkey: [reportTimes.endTime, 'inv-purchase_\uffff'], 
+            startkey:  [reportTimes.startTime, 'invPurchase_'],
+            endkey: [reportTimes.endTime, 'invPurchase_\uffff'], 
             include_docs: true,
         }, 'inventory_purchase_by_expiration_date').then(function(inventoryPurchases) {
             var purchaseDocs = [],
@@ -549,7 +551,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             inventoryPurchases.rows.forEach(function(purchase) {
                 if (purchase.doc.currentQuantity > 0 && !Ember.isEmpty(purchase.doc.expirationDate)) {
                     purchaseDocs.push(purchase.doc);
-                    inventoryIds.push(purchase.doc.inventoryItem);                    
+                    inventoryIds.push(pouchDBService.getPouchId(purchase.doc.inventoryItem, 'inventory'));
                 }
             }.bind(this));
             this._getInventoryItems(inventoryIds).then(function(inventoryMap) {
