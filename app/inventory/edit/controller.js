@@ -189,21 +189,22 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                     deliveryLocation: inventoryLocation.get('transferLocation'),
                     transactionType: 'Transfer'
                 });
-            this.transferToLocation(inventoryItem, inventoryLocation);            
-            inventoryLocation.setProperties({
-                transferItem: null,
-                transferLocation: null,
-                transferAisleLocation: null,
-                adjustmentQuantity: null
-            });
-            request.set('locationsAffected',[{
-                name: inventoryLocation.get('locationName'),
-                quantity: request.get('quantity')
-            }]);
-            request.get('inventoryItem').then(function() {
-                //Make sure relationships are resolved before saving
-                this._saveRequest(request);                
-            }.bind(this));            
+            this.transferToLocation(inventoryItem, inventoryLocation).then(function() {
+                inventoryLocation.setProperties({
+                    transferItem: null,
+                    transferLocation: null,
+                    transferAisleLocation: null,
+                    adjustmentQuantity: null
+                });
+                request.set('locationsAffected',[{
+                    name: inventoryLocation.get('locationName'),
+                    quantity: request.get('quantity')
+                }]);
+                request.get('inventoryItem').then(function() {
+                    //Make sure relationships are resolved before saving
+                    this._saveRequest(request);                
+                }.bind(this));
+            }.bind(this));
         },
         
         updatePurchase: function(purchase, updateQuantity) {

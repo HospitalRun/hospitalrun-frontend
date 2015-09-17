@@ -94,6 +94,6 @@ export default Ember.Mixin.create({
                 transferLocation.decrementProperty('quantity', quantity);                
                 transferLocation.save().then(resolve, reject);
             }, reject);
-        });
+        }.bind(this));
     }
 });
