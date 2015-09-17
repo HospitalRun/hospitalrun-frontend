@@ -43,14 +43,16 @@ var InventoryLocation = AbstractModel.extend(LocationName, {
                 },
                 message: 'Invalid quantity'         
             }
-        },        
+        },
+        
+        dateCompleted: {
+            presence: {
+                message: 'Please provide a date'
+            }
+        },
         
         transferLocation: {
             acceptance: {
-                /***
-                * Validate that a procedure has been specified and that it
-                * is a valid procedure.
-                */
                 accept: true,
                 if: function(object) {
                     var transferLocation = object.get('transferLocation'),
