@@ -68,18 +68,6 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     }.property('requestedItems.@each'),
     
     updateViaFulfillRequest: false,
-    
-    updateDateCompleted: function() {
-        var isFulfilling = this.get('isFulfilling'),
-            dateCompleted = this.get('dateCompleted');
-        if (isFulfilling) {
-            if (Ember.isEmpty(dateCompleted)) {
-                this.set('dateCompleted', new Date());
-            }
-        } else if (!this.get('updateViaFulfillRequest')) {
-            this.set('dateCompleted');
-        }
-    }.observes('isFulfilling'),
 
     updateButtonText: function() {
         if (this.get('isFulfilling')) {
@@ -203,6 +191,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
 
     beforeUpdate: function() {
         if (this.get('isFulfilling')) {
+            this.set('dateCompleted', new Date());
             this.set('updateViaFulfillRequest', true);
         } else {
             this.set('updateViaFulfillRequest', false);
