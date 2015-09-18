@@ -54,18 +54,16 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
         return !Ember.isEmpty(patientMedication);
     }.property('patientMedication'),
     
-    setPatientMedicationList: function() {
+    patientMedication: function() {
         var visit = this.get('visit');
         if (!Ember.isEmpty(visit)) {
             visit.get('medication').then(function(medication) {
                 medication = medication.filterBy('status','Fulfilled');
-                this.set('patientMedication', medication);
                 this.set('medication', medication.get('firstObject'));
+                return medication;
             }.bind(this));
-        } else {
-            this.set('patientMedication');
         }
-    }.observes('patient','visit'),
+    }.property('patient','visit'),
     
     _finishUpdate: function() {
         var aisle = this.get('deliveryAisle'),

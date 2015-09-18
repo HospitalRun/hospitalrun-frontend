@@ -100,7 +100,11 @@
                                     {{#if transaction.haveReason}}
                                         <strong>Reason:</strong> {{transaction.reason}}<br/>
                                     {{/if}}
-                                    <strong>Location Adjusted:</strong> {{transaction.deliveryDetails}}
+                                    {{#if transaction.patient}}
+                                        <strong>Returned from Patient:</strong> {{transaction.deliveryDetails}}
+                                    {{else}}
+                                        <strong>Location Adjusted:</strong> {{transaction.deliveryDetails}}
+                                    {{/if}}
                                 {{/if}}
                                 {{#if transaction.isFulfillment}}
                                     <strong>Cost Per Unit:</strong> {{transaction.costPerUnit}}<br/>

@@ -36,9 +36,9 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
             key:  'Medication',            
             include_docs: true,
         };
-        var inventoryItem = model.get('inventoryItem'),
+        var inventoryItemId = model.get('inventoryItem.id'),
             patient = model.get('patient');
-        if (Ember.isEmpty(inventoryItem)) {
+        if (Ember.isEmpty(inventoryItemId)) {
             var pouchdb = this.get('pouchdb');
             pouchdb.queryMainDB(inventoryQuery, 'inventory_by_type').then(function(result) {
                 var medicationList = result.rows.map(function(medication) {
