@@ -293,8 +293,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     },
     
     _addReportRow: function(row, skipNumberFormatting, reportColumns, rowAction) {
-        if (Ember.isEmpty(rowAction) && !Ember.isEmpty(row.inventoryItem) && !Ember.isEmpty(row.inventoryItem._id)) {
-            var inventoryId = this.get('pouchDBService').getEmberId(row.inventoryItem._id);
+        if (Ember.isEmpty(rowAction) && !Ember.isEmpty(row.inventoryItem) && !Ember.isEmpty(row.inventoryItem.id)) {
+            var inventoryId = this.get('pouchDBService').getEmberId(row.inventoryItem.id);
             rowAction = {
                 action: 'viewInventory',
                 model: inventoryId
@@ -344,8 +344,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
      * @param {boolean} increment boolean indicating if the adjustment is an increment; or false if decrement.
      */
     _adjustPurchase: function(purchases, purchaseId, quantity, increment) {
-        var pouchPurchaseId = this.get('pouchDBService').getPouchId(purchaseId, 'inv-purchase'),
-            purchaseToAdjust = purchases.findBy('_id', pouchPurchaseId);
+        var purchaseToAdjust = purchases.findBy('id', purchaseId);
         if (!Ember.isEmpty(purchaseToAdjust)) {
             var calculatedQuantity = purchaseToAdjust.calculatedQuantity;
             if (increment) {
@@ -888,7 +887,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                     switch(reportType) {
                         case 'byLocation': {
                             row.locations.forEach(function(location) {
-                                var locationToUpdate = locationSummary.findBy('name', location.name);
+                                var locationToUpdate = locationSummary.findBy('name', this._getWarehouseLocationName((location.name)));
                                 if (Ember.isEmpty(locationToUpdate)) {
                                     locationToUpdate = Ember.copy(location);
                                     locationToUpdate.items = {};
@@ -900,7 +899,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                                     quantity: 0,
                                     totalCost: 0
                                 });
-                                locationToUpdate.items[item._id] = {
+                                locationToUpdate.items[item.id] = {
                                     item: item,
                                     quantity: this._getValidNumber(location.quantity),
                                     giftInKind: row.giftInKind,                                
@@ -1122,7 +1121,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 include_docs: true
             }).then(function(inventoryItems) {
                 inventoryItems.rows.forEach(function(inventoryItem) {
-                    inventoryMap[inventoryItem.id] = inventoryItem.doc;
+                    inventoryMap[inventoryItem.doc.id] = inventoryItem.doc;
                 });
                 resolve(inventoryMap);
             }, reject);
