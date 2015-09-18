@@ -29,8 +29,8 @@ export default AbstractIndexRoute.extend({
         };
         
         if (searchStatus === 'All') {
-            queryParams.options.startkey[0] = null;
-            queryParams.options.endkey[0] = maxValue;
+            delete queryParams.options.startkey;
+            delete queryParams.options.endkey;
         }
         return queryParams;
         
