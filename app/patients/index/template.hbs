@@ -27,11 +27,15 @@
                             {{#if canAdd}}
                                 <button class="btn btn-default neutral" {{action 'editItem' patient  bubbles=false }}>Edit</button>
                             {{/if}}
-                            {{#if canAdmitPatient}}
-                                <button class="btn btn-default success" {{action 'admitPatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-in"></span> Admit</button>
-                            {{/if}}
-                            {{#if canDischargePatient}}
-                                <button class="btn btn-default info" {{action 'dischargePatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-out"></span> Discharge</button>
+                            {{#unless patient.admitted}}
+                                {{#if canAdmitPatient}}
+                                    <button class="btn btn-default success" {{action 'admitPatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-in"></span> Admit</button>
+                                {{/if}}
+                            {{/unless}}
+                            {{#if patient.admitted}}
+                                {{#if canDischargePatient}}
+                                    <button class="btn btn-default info" {{action 'dischargePatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-out"></span> Discharge</button>
+                                {{/if}}
                             {{/if}}
                             {{#if canDelete}}
                                 <button class="btn btn-default warning" {{action 'deleteItem' patient  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
