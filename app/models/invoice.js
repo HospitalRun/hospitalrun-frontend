@@ -19,8 +19,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     remarks: DS.attr('string'),
     billDate: DS.attr('date'),
     nationalInsurance: DS.attr('number'),
-    paidTotal: DS.attr('number'),
-    paidFlag: DS.attr('boolean', {defaultValue: false}),
+    paidTotal: DS.attr('number'),    
     patientResponsibility: DS.attr('number'),
     paymentProfile: DS.belongsTo('price-profile', {
       async: false
@@ -56,6 +55,10 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
             this.set('nationalInsurance', this._calculateTotal('lineItems','nationalInsurance'));
         }, 300);
     }.observes('lineItems.@each.nationalInsurance'),
+    
+    paidFlag: function() {
+        return (this.get('status') === 'Paid');
+    }.property('status'),
         
     remainingBalance: function() {
         var patientResponsibility = this.get('patientResponsibility'),

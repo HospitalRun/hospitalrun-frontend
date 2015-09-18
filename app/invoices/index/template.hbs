@@ -11,28 +11,30 @@
                 <th>Actions</th>
             {{/if}}
         </tr>
-        {{#each itemController='invoices/invoice-item'}}
-            <tr {{action 'editItem' this}}>
-                <td>{{displayInvoiceNumber}}</td>
-                <td>{{date-format billDate}}</td>
-                <td>{{status}}</td>
-                <td>{{patient.displayName}} - {{patient.displayPatientId}} <br>{{visit.primaryDiagnosis}}</td>
-                <td>{{total}}</td>
-                <td>{{remainingBalance}}</td>
+        {{#each model as |invoice|}}
+            <tr {{action 'editItem' invoice}}>
+                <td>{{invoice.displayInvoiceNumber}}</td>
+                <td>{{date-format invoice.billDate}}</td>
+                <td>{{invoice.status}}</td>
+                <td>{{invoice.patient.displayName}} - {{invoice.patient.displayPatientId}} <br>{{invoice.visit.primaryDiagnosis}}</td>
+                <td>{{invoice.total}}</td>
+                <td>{{invoice.remainingBalance}}</td>
                 <td>
-                    {{#if showActions}}
-                        {{#if parentController.canAddPayment}}
-                            <button class="btn btn-default neutral" {{action 'showAddPayment' this  bubbles=false }}>
-                                <span class="octicon octicon-plus"></span> Add Payment
-                            </button>
+                    {{#unless invoice.paidFlag}}
+                        {{#if showActions}}
+                            {{#if canAddPayment}}
+                                <button class="btn btn-default neutral" {{action 'showAddPayment' invoice bubbles=false }}>
+                                    <span class="octicon octicon-plus"></span> Add Payment
+                                </button>
+                            {{/if}}
+                            {{#if canAdd}}
+                                <button class="btn btn-default neutral" {{action 'editItem' invoice bubbles=false }}>Edit</button>
+                            {{/if}}
+                            {{#if canDelete}}
+                                <button class="btn btn-default warning" {{action 'deleteItem' invoice bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                            {{/if}}
                         {{/if}}
-                        {{#if parentController.canAdd}}
-                            <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
-                        {{/if}}
-                        {{#if parentController.canDelete}}
-                            <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                        {{/if}}
-                    {{/if}}
+                    {{/unless}}
                 </td>
             </tr>
         {{/each}}
