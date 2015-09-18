@@ -8,8 +8,9 @@ export default AbstractEditController.extend({
     editController: Ember.computed.alias('controllers.visits/edit'), 
     lookupListsToUpdate: [{
         name: 'diagnosisList',
-        property: 'diagnosis',    
-    }],    
+        property: 'diagnosis',
+        id: 'diagnosis_list'
+    }],
     title: 'Add Diagnosis',
     updateButtonText: 'Add',
     updateButtonAction: 'add',
