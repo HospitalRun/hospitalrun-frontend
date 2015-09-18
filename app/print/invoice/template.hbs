@@ -55,24 +55,24 @@
                         <strong>{{category}}</strong>
                     </td>
                 </tr>
-                {{#each items itemController='invoices/line-item'}}        
+                {{#each items as |item|}}        
                     <tr>
                         <td>
-                            {{name}}
+                            {{item.name}}
                         </td>
                         <td class="text-right">
-                            {{number-format total}}                    
+                            {{number-format item.total}}                    
                         </td>
                         <td class="text-right">
-                            {{number-format discount}}
+                            {{number-format item.discount}}
                         </td>
                         <td class="text-right">
-                            {{number-format nationalInsurance}}
+                            {{number-format item.nationalInsurance}}
                         </td>
                         <td class="text-right">
-                            {{number-format privateInsurance}}
+                            {{number-format item.privateInsurance}}
                         </td>
-                        <td class="text-right">{{number-format amountOwed}}</td>
+                        <td class="text-right">{{number-format item.amountOwed}}</td>
                     </tr>
                 {{/each}}
                 <tr>

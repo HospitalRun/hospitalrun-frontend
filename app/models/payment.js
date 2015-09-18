@@ -12,7 +12,11 @@ export default AbstractModel.extend({
     paymentType: DS.attr('string'),
     notes: DS.attr('string'),
     
-     validations: {
+    canRemovePayment: function() {        
+        return (this.get('paymentType') === 'Deposit');
+    }.property('paymentType'),
+    
+    validations: {
         amount: {
             numericality: true
         },

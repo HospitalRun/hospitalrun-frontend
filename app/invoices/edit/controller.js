@@ -56,6 +56,12 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     }.property('expenseAccountList.value'),
     
     actions: {
+        addItemCharge: function(lineItem) {
+            var details = lineItem.get('details');
+            var detail = this.store.createRecord('line-item-detail');
+            details.addObject(detail);
+        },
+        
         addLineItem: function(lineItem) {
             var lineItems = this.get('lineItems');
             lineItems.addObject(lineItem);
@@ -64,22 +70,11 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         },
         
         deleteCharge: function(deleteInfo) {
-            deleteInfo.deleteFrom.removeObject(deleteInfo.itemToDelete);
-            if (!deleteInfo.itemToDelete.get('isNew')) {
-                deleteInfo.itemToDelete.destroyRecord();
-            }
-            this.send('update', true);
-            this.send('closeModal');
-        },        
-        
+            this._deleteObject(deleteInfo.itemToDelete, deleteInfo.deleteFrom);
+        },
+                
         deleteLineItem: function(deleteInfo) {
-            var lineItems = this.get('lineItems');
-            lineItems.removeObject(deleteInfo.itemToDelete);
-            if (!deleteInfo.itemToDelete.get('isNew')) {
-                deleteInfo.itemToDelete.destroyRecord();
-            }
-            this.send('update', true);
-            this.send('closeModal');
+            this._deleteObject(deleteInfo.itemToDelete, this.get('lineItems'));
         },
         
         finalizeInvoice: function() {            
@@ -117,6 +112,29 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
             this.send('openModal','invoices.add-line-item', newLineItem);
         },
         
+        showDeleteItem: function(item) {             
+            this.send('openModal', 'dialog', Ember.Object.create({
+                confirmAction: 'deleteCharge',
+                deleteFrom: item.get('details'),
+                title: 'Delete Charge',
+                message: 'Are you sure you want to delete %@?'.fmt(item.name),
+                itemToDelete: item,
+                updateButtonAction: 'confirm',
+                updateButtonText: 'Ok'
+            }));
+        },
+        
+        showDeleteLineItem: function(item) {             
+            this.send('openModal', 'dialog', Ember.Object.create({               
+                confirmAction: 'deleteLineItem',
+                title: 'Delete Line Item',
+                message: 'Are you sure you want to delete %@?'.fmt(item.name),
+                itemToDelete: item,                
+                updateButtonAction: 'confirm',
+                updateButtonText: 'Ok'
+            }));
+        },         
+        
         showRemovePayment: function(payment) {
            var message= 'Are you sure you want to remove this payment from this invoice?',
                 model = Ember.Object.create({
@@ -124,6 +142,10 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
                 }),
                 title = 'Remove Payment';
             this.displayConfirm(title, message, 'removePayment', model);
+        },
+        
+        toggleDetails: function(item) {
+            item.toggleProperty('showDetails');
         }
     },
     
@@ -235,6 +257,20 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
                 pricingItem: charge.get('pricingItem')
             });
         return chargeItem;
+    },
+    
+    /**
+     * Remove the specified object from the specified list, update the model and close the modal.
+     * @param objectToDelete {object} - the object to remove
+     * @param deleteFrom {Array} - the array to remove the object from.
+     */
+    _deleteObject: function(objectToDelete, deleteFrom) {
+        deleteFrom.removeObject(objectToDelete);
+        if (!objectToDelete.get('isNew')) {
+            objectToDelete.destroyRecord();
+        }
+        this.send('update', true);
+        this.send('closeModal');    
     },
     
     _mapWardCharge: function(charge) {

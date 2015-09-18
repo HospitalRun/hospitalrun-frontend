@@ -17,6 +17,14 @@ export default AbstractModel.extend(NumberFormat,{
     quantity: DS.attr('number'),
     total: DS.attr('number'),
     
+    displayDiscount: function() {
+        var discount = this.get('discount');
+        if (!Ember.isEmpty(discount)) {
+            this.set('discountPercentage');            
+        }
+        return this.get('discount');
+    }.property('discount'),
+    
     _calculateAmountOwed: function() {
         var amountOwed,
             discount = this.get('discount'),
