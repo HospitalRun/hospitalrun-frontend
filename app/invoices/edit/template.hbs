@@ -60,13 +60,13 @@
                     <th class="text-right">Action</th>
                 </tr>
                 
-                {{#each lineItemsByCategory}} 
+                {{#each lineItemsByCategory as |categoryGroup|}} 
                     <tr>
                         <td colspan="7">
-                            <strong>{{category}}</strong>
+                            <strong>{{categoryGroup.category}}</strong>
                         </td>
                     </tr>
-                    {{#each items as |item|}}
+                    {{#each categoryGroup.items as |item|}}
                         <tr>
                             <td class="col-xs-5">
                                 <div class="form-group">
@@ -158,7 +158,7 @@
                                     </td>
                                     <td class="col-xs-3">
                                         {{#if canAddCharge}}                            
-                                            <button class="btn btn-default warning" {{action "showDeleteItem" detail bubbles=false }}>
+                                            <button class="btn btn-default warning" {{action "showDeleteItem" detail item.details bubbles=false }}>
                                                 <span class="octicon octicon-x"></span>Delete
                                             </button>
                                         {{/if}}
@@ -169,13 +169,13 @@
                     {{/each}}
                     <tr>
                         <td>
-                            <strong>Total {{category}}</strong>
+                            <strong>Total {{categoryGroup.category}}</strong>
                         </td>
-                        <td class="text-right">{{number-format total}}</td>
-                        <td class="text-right">{{number-format discount}}</td>
-                        <td class="text-right">{{number-format nationalInsurance}}</td>
-                        <td class="text-right">{{number-format privateInsurance}}</td>
-                        <td class="text-right">{{number-format amountOwed }}</td>                            
+                        <td class="text-right">{{number-format categoryGroup.total}}</td>
+                        <td class="text-right">{{number-format categoryGroup.discount}}</td>
+                        <td class="text-right">{{number-format categoryGroup.nationalInsurance}}</td>
+                        <td class="text-right">{{number-format categoryGroup.privateInsurance}}</td>
+                        <td class="text-right">{{number-format categoryGroup.amountOwed }}</td>                            
                         <td></td>
                     </tr>
                 {{/each}}

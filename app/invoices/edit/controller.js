@@ -112,13 +112,13 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
             this.send('openModal','invoices.add-line-item', newLineItem);
         },
         
-        showDeleteItem: function(item) {             
+        showDeleteItem: function(itemToDelete, deleteFrom) {             
             this.send('openModal', 'dialog', Ember.Object.create({
                 confirmAction: 'deleteCharge',
-                deleteFrom: item.get('details'),
+                deleteFrom: deleteFrom,
                 title: 'Delete Charge',
-                message: 'Are you sure you want to delete %@?'.fmt(item.name),
-                itemToDelete: item,
+                message: 'Are you sure you want to delete %@?'.fmt(itemToDelete.get('name')),
+                itemToDelete: itemToDelete,
                 updateButtonAction: 'confirm',
                 updateButtonText: 'Ok'
             }));
@@ -128,7 +128,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
             this.send('openModal', 'dialog', Ember.Object.create({               
                 confirmAction: 'deleteLineItem',
                 title: 'Delete Line Item',
-                message: 'Are you sure you want to delete %@?'.fmt(item.name),
+                message: 'Are you sure you want to delete %@?'.fmt(item.get('name')),
                 itemToDelete: item,                
                 updateButtonAction: 'confirm',
                 updateButtonText: 'Ok'
