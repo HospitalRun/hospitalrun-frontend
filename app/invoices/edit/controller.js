@@ -58,7 +58,9 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     actions: {
         addItemCharge: function(lineItem) {
             var details = lineItem.get('details');
-            var detail = this.store.createRecord('line-item-detail');
+            var detail = this.store.createRecord('line-item-detail', {
+                id: PouchDB.utils.uuid()
+            });
             details.addObject(detail);
         },
         
@@ -108,7 +110,9 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         },
         
         showAddLineItem: function() {
-            var newLineItem = this.store.createRecord('billing-line-item', {});
+            var newLineItem = this.store.createRecord('billing-line-item', {
+                id: PouchDB.utils.uuid()
+            });
             this.send('openModal','invoices.add-line-item', newLineItem);
         },
         
@@ -232,6 +236,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
             pharmacyCharges = this.get('pharmacyCharges'),
             pharmacyExpenseAccount = this.get('pharmacyExpenseAccount'),
             pharmacyCharge = this.store.createRecord('line-item-detail', {
+                id: PouchDB.utils.uuid(),
                 name: medicationItem.get('name'),
                 quantity: quantity,
                 price: price,
@@ -249,6 +254,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     
     _createChargeItem: function(charge, department) {
         var chargeItem = this.store.createRecord('line-item-detail', {
+                id: PouchDB.utils.uuid(),
                 name: charge.get('pricingItem.name'),
                 expenseAccount: charge.get('pricingItem.expenseAccount'),
                 quantity: charge.get('quantity'),
@@ -313,10 +319,12 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
             var stayDays = endDate.diff(startDate, 'days');
             if (stayDays > 1) {
                 lineDetail = this.store.createRecord('line-item-detail', {
+                    id: PouchDB.utils.uuid(),
                     name: 'Days',
                     quantity: stayDays                    
                 });
                 lineItem = this.store.createRecord('billing-line-item', {
+                    id: PouchDB.utils.uuid(),
                     category: 'Hospital Charges',
                     name: 'Room/Accomodation'
                 });
@@ -367,6 +375,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         }.bind(this));
         
         lineItem = this.store.createRecord('billing-line-item', {
+            id: PouchDB.utils.uuid(),
             name: 'Pharmacy',
             category: 'Hospital Charges'
         });
@@ -374,6 +383,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         lineItems.addObject(lineItem);
         
         lineItem = this.store.createRecord('billing-line-item', {
+            id: PouchDB.utils.uuid(),
             name: 'X-ray/Lab/Supplies',
             category: 'Hospital Charges'
         });
@@ -381,6 +391,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         lineItems.addObject(lineItem);
         
         lineItem = this.store.createRecord('billing-line-item', {
+            id: PouchDB.utils.uuid(),
             name: 'Ward Items',
             category: 'Hospital Charges'
         });
@@ -388,12 +399,14 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         lineItems.addObject(lineItem);
 
         lineItem = this.store.createRecord('billing-line-item', {
+            id: PouchDB.utils.uuid(),
             name: 'Physical Therapy',
             category: 'Hospital Charges'
         });        
         lineItems.addObject(lineItem);
         
         lineItem = this.store.createRecord('billing-line-item', {
+            id: PouchDB.utils.uuid(),
             name: 'Others/Misc',
             category: 'Hospital Charges'
         });        
