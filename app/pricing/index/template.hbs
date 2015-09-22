@@ -12,29 +12,29 @@
                 <th>Actions</th>
             {{/if}}
         </tr>
-        {{#with this as parentController}}
-            {{#each}}
-                <tr {{action 'editItem' this}}>
-                    {{#if parentController.showCategory}}
-                        <td>{{category}}</td>
-                    {{/if}}
-                    <td>{{name}}</td>
-                    <td>{{price}}</td>
-                    <td>{{pricingType}}</td>
-                    <td>{{expenseAccount}}</td>
-                    {{#if parentController.showActions}}
-                        <td>
-                            {{#if parentController.canEdit}}
-                                <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
-                            {{/if}}
-                            {{#if parentController.canDelete}}
-                                <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                            {{/if}}
-                        </td>
-                    {{/if}}
-                </tr>
-            {{/each}}
-        {{/with}}
+        
+        {{#each model as |pricingItem|}}
+            <tr {{action 'editItem' pricingItem}}>
+                {{#if showCategory}}
+                    <td>{{pricingItem.category}}</td>
+                {{/if}}
+                <td>{{pricingItem.name}}</td>
+                <td>{{pricingItem.price}}</td>
+                <td>{{pricingItem.pricingType}}</td>
+                <td>{{pricingItem.expenseAccount}}</td>
+                {{#if showActions}}
+                    <td>
+                        {{#if canEdit}}
+                            <button class="btn btn-default neutral" {{action 'editItem' pricingItem bubbles=false }}>Edit</button>
+                        {{/if}}
+                        {{#if parentController.canDelete}}
+                            <button class="btn btn-default warning" {{action 'deleteItem' pricingItem bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                        {{/if}}
+                    </td>
+                {{/if}}
+            </tr>
+        {{/each}}
+        
     </table>
 {{else}}
     <div class="alert alert-info">
