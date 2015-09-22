@@ -62,7 +62,7 @@
                 
                 {{#each lineItemsByCategory as |categoryGroup|}} 
                     <tr>
-                        <td colspan="7">
+                        <td class="col-xs-12">
                             <strong>{{categoryGroup.category}}</strong>
                         </td>
                     </tr>
@@ -77,10 +77,8 @@
                                     </div>
                                 </div>                                
                             </td>
-                            <td class="col-xs-1">
-                                <div class="form-group">
-                                    {{input class="form-control text-right" value=item.total }}
-                                </div>
+                            <td class="col-xs-1 text-right">
+                                {{number-format item.total}}
                             </td>
                             <td class="col-xs-1">
                                 <div class="form-group">
@@ -108,10 +106,9 @@
                         </tr>
                         {{#if item.showDetails}}
                             <tr>
-                                <th>Name</th>
+                                <th colspan="2">Name</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
-                                <th>Discount</th>
                                 <th>Expense To</th>
                                 <th class="col-xs-1 text-right">Total</th>
                                 <th>
@@ -124,9 +121,11 @@
                             </tr>
                             {{#each item.details as |detail|}}
                                 <tr>
-                                    <td class="col-xs-5">
+                                    <td colspan="2" class="col-xs-6">
                                         <div class="form-group">
-                                            {{input class="form-control" value=detail.name }}
+                                            <div class="input-group">
+                                                {{input class="form-control" value=detail.name }}
+                                            </div>
                                         </div>
                                     </td>                                
                                     <td class="col-xs-1">
@@ -141,11 +140,6 @@
                                     </td>
                                     <td class="col-xs-1">
                                         <div class="form-group">
-                                            {{input class="form-control" value=detail.displayDiscount }}
-                                        </div>
-                                    </td>
-                                    <td class="col-xs-1">
-                                        <div class="form-group">
                                             {{view Ember.Select
                                                 class="form-control"
                                                 content=expenseAccountList
@@ -156,7 +150,7 @@
                                     <td class="col-xs-1 text-right">
                                         {{number-format detail.amountOwed}}
                                     </td>
-                                    <td class="col-xs-3">
+                                    <td class="col-xs-2">
                                         {{#if canAddCharge}}                            
                                             <button class="btn btn-default warning" {{action "showDeleteItem" detail item.details bubbles=false }}>
                                                 <span class="octicon octicon-x"></span>Delete
@@ -183,11 +177,11 @@
                     <td>
                         <strong>Total</strong>
                     </td>
-                    <td class="text-right">{{number-format total}}</td>
-                    <td class="text-right">{{number-format discount}}</td>
-                    <td class="text-right">{{number-format ationalInsurance}}</td>
-                    <td class="text-right">{{number-format privateInsurance}}</td>
-                    <td class="text-right">{{number-format patientResponsibility}}</td>                            
+                    <td class="text-right">{{number-format model.total}}</td>
+                    <td class="text-right">{{number-format model.discount}}</td>
+                    <td class="text-right">{{number-format model.nationalInsurance}}</td>
+                    <td class="text-right">{{number-format model.privateInsurance}}</td>
+                    <td class="text-right">{{number-format model.patientResponsibility}}</td>                            
                     <td></td>
                 </tr>
                 <tr>
