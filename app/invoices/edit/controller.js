@@ -80,19 +80,22 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         },
         
         finalizeInvoice: function() {            
-            var invoicePayments = this.get('payments'),
-                paymentsToSave = [];
+            var currentInvoice = this.get('model'),
+                invoicePayments = this.get('payments'),
+                paymentsToSave = [];                
             this.get('patient.payments').then(function(patientPayments) {
                 patientPayments.forEach(function(payment) {
                     var invoice = payment.get('invoice');
                     if (Ember.isEmpty(invoice)) {
-                        payment.set('invoice', invoice);
-                        paymentsToSave.push(payment);
+                        payment.set('invoice', currentInvoice);
+                        paymentsToSave.push(payment.save());
                         invoicePayments.addObject(payment);
                     }
-                }.bind(this));            
-                this.set('status', 'Billed');
-                this.send('update');
+                }.bind(this));
+                Ember.RSVP.all(paymentsToSave).then(function() {
+                    this.set('status', 'Billed');
+                    this.send('update');
+                }.bind(this));
             }.bind(this));
         },
         
