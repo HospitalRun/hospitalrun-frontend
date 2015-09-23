@@ -171,23 +171,19 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
                 var details = lineItem.get('details'),
                     lineDiscount = 0;
                 details.forEach(function(detail) {
-                    var detailTotal = detail.get('total'),
-                        overrodePrice = false,
-                        pricingOverrides = detail.get('pricingItem.pricingOverrides');                        
+                    var pricingOverrides = detail.get('pricingItem.pricingOverrides');                        
                     if (!Ember.isEmpty(pricingOverrides)) {
                         var pricingOverride = pricingOverrides.findBy('profile.id', profileId);
                         if (!Ember.isEmpty(pricingOverride)) {
-                            Ember.set(detail, 'discount', this._numberFormat((detailTotal - pricingOverride.get('price')),true));
-                            overrodePrice = true;
+                            Ember.set(detail, 'price', pricingOverride.get('price'));                        
                         }
-                    }
-                    if (!overrodePrice && detailTotal > 0) {
-                        Ember.set(detail, 'discountPercentage', (discountPercentage / 100));
-                        Ember.set(detail, 'discount', this._numberFormat((discountPercentage / 100) * (detailTotal), true));
-                    }
-                    lineDiscount += this._getValidNumber(Ember.get(detail,'discount'));
+                    }                    
                 }.bind(this));
-                lineItem.set('discount', this._numberFormat(lineDiscount,true));
+                if (discountPercentage > 0) {
+                    var lineTotal = lineItem.get('total');
+                    lineDiscount = this._numberFormat((discountPercentage / 100) * (lineTotal), true);
+                    lineItem.set('discount', lineDiscount);
+                }
             }.bind(this));
             this.set('originalPaymentProfileId', profileId);
         }
