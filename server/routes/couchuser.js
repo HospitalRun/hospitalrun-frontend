@@ -15,8 +15,11 @@ function delete_user(user, idToDelete, rev, res) {
     }
 }
 
-function find_user(userName, callback) {
-    var user_key = 'org.couchdb.user:'+userName;
+function find_user(userName, callback) {    
+    var user_key = userName;
+    if (user_key.indexOf('org.couchdb.user:') !== 0) {
+        user_key = 'org.couchdb.user:' + user_key;
+    }
     users.get(user_key, {}, function(err, body) {
         if (err) {
             callback(err);
@@ -40,7 +43,7 @@ function get_primary_role(user) {
 
 function get_user(user, id, res) {
     if(is_admin(user)) {
-        this.find_user(id, function(err, body) {
+        find_user(id, function(err, body) {
             if (err) {
                 res.json({error:true, errorResult: err});
             } else {
@@ -81,7 +84,7 @@ function is_admin(user) {
 }
 
 function update_user(user, userData, updateParams, res) {
-    if(is_admin(user)) {
+    if(is_admin(user)) {        
         users.insert(userData, updateParams, function(err, body) {
             if (err) {
                 res.json({error:true, errorResult: err});

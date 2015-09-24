@@ -32,7 +32,8 @@ var couchSerializer = DS.RESTSerializer.extend({
         if (payload.ok) {            
             var record =  store.getById('user', payload.id);
             var data = {};
-            this.serializeIntoHash(data, primaryType, record, { includeId: true });
+            var snapshot = record._internalModel.createSnapshot();
+            this.serializeIntoHash(data, primaryType, snapshot, { includeId: true });
             data.user.rev = payload.rev;
             return data.user;
         }
