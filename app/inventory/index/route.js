@@ -1,8 +1,6 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-import Ember from 'ember';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default AbstractIndexRoute.extend(UserSession, {
-    pouchdb: Ember.inject.service(),
+export default AbstractIndexRoute.extend(UserSession, {    
     modelName: 'inv-request',
     newButtonAction: function() {
         if (this.currentUserCan('add_inventory_request')) {
@@ -15,7 +13,7 @@ export default AbstractIndexRoute.extend(UserSession, {
     pageTitle: 'Requests',
     
     _getStartKeyFromItem: function(item) {
-        var itemId = this.get('pouchdb').getPouchId(item.get('id'), 'invRequest');
+        var itemId = this._getPouchIdFromItem(item);
         return ['Requested',null,itemId];
     },
     
