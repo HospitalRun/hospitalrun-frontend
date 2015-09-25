@@ -57,6 +57,10 @@ export default Ember.Mixin.create({
                 updateButtonAction: 'confirm',
                 updateButtonText: 'Ok'
             }));                 
+        },
+        
+        setChargeQuantity: function(id, quantity) {
+            this.set(id, quantity);
         }
     },
     
@@ -110,14 +114,19 @@ export default Ember.Mixin.create({
     organizeByType: Ember.computed.alias('pricingTypes.organizeByType'),
         
     pricingTypeList: function() {
-        var pricingTypeValues = this.get('pricingTypeValues'),
+        var pricingList = this.get('pricingList'),
+            pricingTypeValues = this.get('pricingTypeValues'),
             pricingTypeForObjectType = this.get('pricingTypeForObjectType');
         pricingTypeValues = pricingTypeValues.filter(function(pricingType) {
-            return pricingType !== pricingTypeForObjectType;
+            var havePricing = false;
+            if (!Ember.isEmpty(pricingList)) {
+                havePricing = !Ember.isEmpty(pricingList.findBy('pricingType', pricingType));
+            }
+            return havePricing && pricingType !== pricingTypeForObjectType;
         });
         pricingTypeValues = pricingTypeValues.sortBy('name');
         return pricingTypeValues;
-    }.property('pricingTypeValues','pricingTypeForObjectType'),
+    }.property('pricingTypeValues','pricingTypeForObjectType','pricingList'),
     
     pricingTypeValues: Ember.computed.alias('pricingTypes.value'),
     

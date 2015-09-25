@@ -1,0 +1,22 @@
+<div class="panel detail-section">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            {{pricingType}} charges
+        </h3>
+    </div>
+    <div class="panel-body detail-section-content">
+        <table class="table table-bordered">
+            <tbody>
+                {{#each pricingListByType as |pricingList|}}
+                    <tr>
+                        {{#each pricingList as |price|}}
+                            <td class="col-xs-2">
+                                {{em-input property=price.id label=price.name }}
+                            </td>
+                        {{/each}}
+                    </tr> 
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
