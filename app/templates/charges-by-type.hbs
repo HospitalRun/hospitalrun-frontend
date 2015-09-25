@@ -1,0 +1,18 @@
+{{#if showPricingTypeTabs}}
+    <ul class="nav nav-pills" role="tablist">
+        {{#each pricingTypeList as |pricingType index|}}
+            {{charges-by-type-tab pricingType=pricingType index=index }}
+        {{/each}}
+    </ul>
+{{/if}}
+<div class="tab-content">
+    {{#each pricingTypeList as |pricingType index|}}
+        {{price-list 
+            canAddCharge=canAddCharge 
+            charges=charges    
+            pricingType=pricingType 
+            index=index 
+            pricingList=pricingList
+        }}    
+    {{/each}}
+</div>
