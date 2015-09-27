@@ -3,7 +3,7 @@
         {{take-photo photoFile=photoFile }}
     {{else}}
         <div class="thumbnail">
-            <img {{bind-attr alt="caption" src="url"}} class="img-responsive" >
+            <img alt={{caption}} src={{url}} class="img-responsive" >
         </div>
     {{/if}}
     <div class="row">        

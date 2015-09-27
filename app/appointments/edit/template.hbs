@@ -19,7 +19,7 @@
                         {{view Ember.Select viewName="select" content=minuteList optionLabelPath="content" optionValuePath="content" value=startMinute class="form-control"}}
                     </div>
                 </div>
-                <div {{bind-attr class=":form-group :col-sm-3 :required :has-feedback endTimeHasError:has-error"}}>            
+                <div class="form-group col-sm-3 required has-feedback {{if endTimeHasError 'has-error'}}">
                     <label class="control-label" for="endTime">End Time</label>
                     <div class="input-group">
                         {{view Ember.Select viewName="select" content=hourList optionLabelPath="content.name" optionValuePath="content.value" value=endHour id="endTime" class="form-control"}}

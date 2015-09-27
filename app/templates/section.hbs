@@ -14,8 +14,8 @@
                 {{/if}}
                 {{#if additionalButtons}}
                     {{#each additionalButtons}}
-                    <button {{bind-attr class="class"}} {{action buttonAction}}>
-                        {{#if buttonIcon}}<span {{bind-attr class="buttonIcon"}}></span>{{/if}}
+                    <button class={{class}} {{action buttonAction}}>
+                        {{#if buttonIcon}}<span class={{buttonIcon}}></span>{{/if}}
                         {{buttonText}}</button>
                     {{/each}}
                 {{/if}}

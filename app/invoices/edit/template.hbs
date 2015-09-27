@@ -71,7 +71,7 @@
                             <td class="col-xs-5">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <span {{bind-attr class=":input-group-addon :glyphicon showDetails:glyphicon-minus:glyphicon-plus"}} 
+                                        <span class="input-group-addon glyphicon {{unless showDetails 'glyphicon-minus' 'glyphicon-plus'}}"
                                             {{action "toggleDetails" item bubbles=false }}> </span>
                                         <strong>{{input class="form-control" value=item.name }}</strong>
                                     </div>
