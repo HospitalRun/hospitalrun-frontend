@@ -1,0 +1,17 @@
+{
+  "name": "hospitalrun",
+  "version": "0.0.0",
+  "options": {
+    "paths": [
+      "app"
+    ],
+    "exclude": "vendor",
+    "outdir": "docs",
+    "yuidoc": {
+      "linkNatives": true,
+      "quiet": true,
+      "parseOnly": false,
+      "lint": false
+    }
+  }
+}
