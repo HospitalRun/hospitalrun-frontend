@@ -7,22 +7,22 @@
             <div class="form-group col-xs-2">
                 <label>Invoice Id</label>
                 <p class="form-control-static">{{id}}</p>
-            </div>        
+            </div>
         {{/unless}}
         {{date-picker property="billDate" label="Bill Date" class="col-xs-2"}}
         {{#if isNew}}
             {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-4 required"}}
-            {{em-select class="col-xs-4 required" label="Visit" 
+            {{em-select class="col-xs-4 required" label="Visit"
                 property="visit" content=patientVisits
-                optionValuePath="content" optionLabelPath="content.visitDescription"            
+                optionValuePath="content" optionLabelPath="content.visitDescription"
                 selected=visit
                 prompt='Please select a visit'
-            }}                
+            }}
         {{else}}
             <div class="form-group col-xs-3">
                 <label>Visit</label>
                 <p class="form-control-static">{{visit.visitDescription}}</p>
-            </div>        
+            </div>
         {{/if}}
     </div>
     <div class="row">
@@ -59,8 +59,8 @@
                     <th class="text-right">Excess</th>
                     <th class="text-right">Action</th>
                 </tr>
-                
-                {{#each lineItemsByCategory as |categoryGroup|}} 
+
+                {{#each lineItemsByCategory as |categoryGroup|}}
                     <tr>
                         <td class="col-xs-12">
                             <strong>{{categoryGroup.category}}</strong>
@@ -75,7 +75,7 @@
                                             {{action "toggleDetails" item bubbles=false }}> </span>
                                         <strong>{{input class="form-control" value=item.name }}</strong>
                                     </div>
-                                </div>                                
+                                </div>
                             </td>
                             <td class="col-xs-1 text-right">
                                 {{number-format item.total}}
@@ -97,7 +97,7 @@
                             </td>
                             <td class="col-xs-1 text-right">{{number-format item.amountOwed}}</td>
                             <td class="col-xs-2">
-                                {{#if canAddCharge}}     
+                                {{#if canAddCharge}}
                                     <button class="btn btn-default warning" {{action "showDeleteLineItem" item bubbles=false }}>
                                         <span class="octicon octicon-x"></span>Delete
                                     </button>
@@ -127,7 +127,7 @@
                                                 {{input class="form-control" value=detail.name }}
                                             </div>
                                         </div>
-                                    </td>                                
+                                    </td>
                                     <td class="col-xs-1">
                                         <div class="form-group">
                                             {{input class="form-control" value=detail.quantity }}
@@ -151,7 +151,7 @@
                                         {{number-format detail.amountOwed}}
                                     </td>
                                     <td class="col-xs-2">
-                                        {{#if canAddCharge}}                            
+                                        {{#if canAddCharge}}
                                             <button class="btn btn-default warning" {{action "showDeleteItem" detail item.details bubbles=false }}>
                                                 <span class="octicon octicon-x"></span>Delete
                                             </button>
@@ -169,7 +169,7 @@
                         <td class="text-right">{{number-format categoryGroup.discount}}</td>
                         <td class="text-right">{{number-format categoryGroup.nationalInsurance}}</td>
                         <td class="text-right">{{number-format categoryGroup.privateInsurance}}</td>
-                        <td class="text-right">{{number-format categoryGroup.amountOwed }}</td>                            
+                        <td class="text-right">{{number-format categoryGroup.amountOwed }}</td>
                         <td></td>
                     </tr>
                 {{/each}}
@@ -181,7 +181,7 @@
                     <td class="text-right">{{number-format model.discount}}</td>
                     <td class="text-right">{{number-format model.nationalInsurance}}</td>
                     <td class="text-right">{{number-format model.privateInsurance}}</td>
-                    <td class="text-right">{{number-format model.patientResponsibility}}</td>                            
+                    <td class="text-right">{{number-format model.patientResponsibility}}</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -189,7 +189,7 @@
                         <strong>Payments/Deposits</strong>
                     </td>
                     <td colspan="4"></td>
-                    <td class="text-right">-{{number-format paidTotal}}</td>                            
+                    <td class="text-right">-{{number-format paidTotal}}</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -197,7 +197,7 @@
                         <strong>Grand Total</strong>
                     </td>
                     <td colspan="4"></td>
-                    <td class="text-right">{{number-format remainingBalance}}</td>                            
+                    <td class="text-right">{{number-format remainingBalance}}</td>
                     <td></td>
                 </tr>
             </table>
@@ -207,7 +207,7 @@
 <div class="panel detail-section">
     <div class="panel-heading">
         <h3 class="panel-title">
-            Remarks            
+            Remarks
         </h3>
     </div>
     <div class="panel-body detail-section-content">

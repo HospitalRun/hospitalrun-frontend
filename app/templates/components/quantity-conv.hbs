@@ -17,13 +17,13 @@
             <span class="help-block">{{quantityHelp}}</span>
         </div>
     </div>
-    
-    
+
+
     <div class="col-xs-3">
         <div class="form-group required {{unitClass}}">
             {{#if firstQuantity}}
                 <label class="control-label">Unit</label>
-            {{/if}}            
+            {{/if}}
             {{view Ember.Select viewName="select" class="form-control" content=unitList optionLabelPath="content"
                 optionValuePath="content"
                 value=unit

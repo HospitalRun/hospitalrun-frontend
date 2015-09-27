@@ -6,11 +6,11 @@
     </div>
     {{#each checkboxRow in checkboxRows}}
         <div class="row">
-            <div class="col-xs-1"></div>        
+            <div class="col-xs-1"></div>
             {{#each checkbox in checkboxRow}}
                 <div class="checkbox col-xs-2">
                 <label>
-                    {{action-checkbox value=checkbox.value action="checkboxChanged"}}{{checkbox.label}}                    
+                    {{action-checkbox value=checkbox.value action="checkboxChanged"}}{{checkbox.label}}
                 </label>
                 </div>
             {{/each}}
