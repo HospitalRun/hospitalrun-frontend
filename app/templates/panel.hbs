@@ -17,12 +17,12 @@
                 <button class="btn btn-default warning" {{action "cancel"}}>Cancel</button>
             {{/if}}
         {{/unless}}
-        {{#each additionalButtons}}
-            <button {{bind-attr class="class"}} {{action buttonAction}}>
-                {{#if buttonIcon}}
-                    <span {{bind-attr class="buttonIcon"}}></span> 
+        {{#each button in additionalButtons}}
+            <button class="{{button.class}}" {{action button.buttonAction}}>
+                {{#if buttonbuttonIcon}}
+                    <span class="{{button.buttonIcon}}"></span>
                 {{/if}}
-                {{buttonText}}
+                {{button.buttonText}}
             </button>
         {{/each}}
     </div>
