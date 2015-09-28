@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
-import { session, index } from 'hospitalrun/tests/helpers/server';
 
 module('Acceptance | login', {
   beforeEach: function() {
@@ -25,7 +24,6 @@ test('visiting / redirects user to login', function(assert) {
     assert.equal(request.requestBody, "name=hradmin", "username is sent to /chkuser");
     return {"prefix":"p1","role":"System Administrator"};
   });
-
   andThen(function() {
     assert.equal(currentURL(), '/login');
   });
