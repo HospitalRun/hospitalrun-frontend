@@ -7,22 +7,22 @@
             <div class="form-group col-xs-2">
                 <label>Invoice Id</label>
                 <p class="form-control-static">{{id}}</p>
-            </div>        
+            </div>
         {{/unless}}
         {{date-picker property="billDate" label="Bill Date" class="col-xs-2"}}
         {{#if isNew}}
             {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-4 required"}}
-            {{em-select class="col-xs-4 required" label="Visit" 
+            {{em-select class="col-xs-4 required" label="Visit"
                 property="visit" content=patientVisits
-                optionValuePath="content" optionLabelPath="content.visitDescription"            
+                optionValuePath="content" optionLabelPath="content.visitDescription"
                 selected=visit
                 prompt='Please select a visit'
-            }}                
+            }}
         {{else}}
             <div class="form-group col-xs-3">
                 <label>Visit</label>
                 <p class="form-control-static">{{visit.visitDescription}}</p>
-            </div>        
+            </div>
         {{/if}}
     </div>
     <div class="row">
@@ -59,89 +59,83 @@
                     <th class="text-right">Excess</th>
                     <th class="text-right">Action</th>
                 </tr>
-                
-                {{#each lineItemsByCategory}} 
+
+                {{#each lineItemsByCategory as |categoryGroup|}}
                     <tr>
-                        <td colspan="7">
-                            <strong>{{category}}</strong>
+                        <td class="col-xs-12">
+                            <strong>{{categoryGroup.category}}</strong>
                         </td>
                     </tr>
-                    {{#each items itemController='invoices/line-item'}}
+                    {{#each categoryGroup.items as |item|}}
                         <tr>
                             <td class="col-xs-5">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <span {{bind-attr class=":input-group-addon :glyphicon showDetails:glyphicon-minus:glyphicon-plus"}} 
-                                            {{action "toggleDetails" bubbles=false }}> </span>
-                                        <strong>{{input class="form-control" value=name }}</strong>
+                                        <span class="input-group-addon glyphicon {{unless showDetails 'glyphicon-minus' 'glyphicon-plus'}}"
+                                            {{action "toggleDetails" item bubbles=false }}> </span>
+                                        <strong>{{input class="form-control" value=item.name }}</strong>
                                     </div>
-                                </div>                                
+                                </div>
+                            </td>
+                            <td class="col-xs-1 text-right">
+                                {{number-format item.total}}
                             </td>
                             <td class="col-xs-1">
                                 <div class="form-group">
-                                    {{input class="form-control text-right" value=total }}
+                                    {{input class="form-control text-right" value=item.discount }}
                                 </div>
                             </td>
                             <td class="col-xs-1">
                                 <div class="form-group">
-                                    {{input class="form-control text-right" value=discount }}
+                                    {{input class="form-control text-right" value=item.nationalInsurance }}
                                 </div>
                             </td>
                             <td class="col-xs-1">
                                 <div class="form-group">
-                                    {{input class="form-control text-right" value=nationalInsurance }}
+                                    {{input class="form-control text-right" value=item.privateInsurance }}
                                 </div>
                             </td>
-                            <td class="col-xs-1">
-                                <div class="form-group">
-                                    {{input class="form-control text-right" value=privateInsurance }}
-                                </div>
-                            </td>
-                            <td class="col-xs-1 text-right">{{number-format amountOwed}}</td>
+                            <td class="col-xs-1 text-right">{{number-format item.amountOwed}}</td>
                             <td class="col-xs-2">
-                                {{#if canAddCharge}}     
-                                    <button class="btn btn-default warning" {{action "showDeleteLineItem" this bubbles=false }}>
+                                {{#if canAddCharge}}
+                                    <button class="btn btn-default warning" {{action "showDeleteLineItem" item bubbles=false }}>
                                         <span class="octicon octicon-x"></span>Delete
                                     </button>
                                 {{/if}}
                             </td>
                         </tr>
-                        {{#if showDetails}}                            
+                        {{#if item.showDetails}}
                             <tr>
-                                <th>Name</th>
+                                <th colspan="2">Name</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
-                                <th>Discount</th>
                                 <th>Expense To</th>
                                 <th class="col-xs-1 text-right">Total</th>
                                 <th>
                                     {{#if canAddCharge}}
-                                        <button class="btn btn-primary" {{action "addCharge" this}}>
+                                        <button class="btn btn-primary" {{action "addItemCharge" item}}>
                                             <span class="octicon octicon-plus"></span>Add Charge
                                         </button>
                                     {{/if}}
                                 </th>
                             </tr>
-                            {{#each details itemController='invoices/detail-item'}}
+                            {{#each item.details as |detail|}}
                                 <tr>
-                                    <td class="col-xs-5">
+                                    <td colspan="2" class="col-xs-6">
                                         <div class="form-group">
-                                            {{input class="form-control" value=name }}
-                                        </div>
-                                    </td>                                
-                                    <td class="col-xs-1">
-                                        <div class="form-group">
-                                            {{input class="form-control" value=quantity }}
+                                            <div class="input-group">
+                                                {{input class="form-control" value=detail.name }}
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="col-xs-1">
                                         <div class="form-group">
-                                            {{input class="form-control" value=price }}
+                                            {{input class="form-control" value=detail.quantity }}
                                         </div>
                                     </td>
                                     <td class="col-xs-1">
                                         <div class="form-group">
-                                            {{input class="form-control" value=discount }}
+                                            {{input class="form-control" value=detail.price }}
                                         </div>
                                     </td>
                                     <td class="col-xs-1">
@@ -150,15 +144,15 @@
                                                 class="form-control"
                                                 content=expenseAccountList
                                                 optionValuePath="content"
-                                                optionLabelPath="content" value=expenseAccount }}
+                                                optionLabelPath="content" value=detail.expenseAccount }}
                                         </div>
                                     </td>
                                     <td class="col-xs-1 text-right">
-                                        {{number-format amountOwed}}
+                                        {{number-format detail.amountOwed}}
                                     </td>
-                                    <td class="col-xs-3">
-                                        {{#if canAddCharge}}                            
-                                            <button class="btn btn-default warning" {{action "showDeleteItem" this bubbles=false }}>
+                                    <td class="col-xs-2">
+                                        {{#if canAddCharge}}
+                                            <button class="btn btn-default warning" {{action "showDeleteItem" detail item.details bubbles=false }}>
                                                 <span class="octicon octicon-x"></span>Delete
                                             </button>
                                         {{/if}}
@@ -169,13 +163,13 @@
                     {{/each}}
                     <tr>
                         <td>
-                            <strong>Total {{category}}</strong>
+                            <strong>Total {{categoryGroup.category}}</strong>
                         </td>
-                        <td class="text-right">{{number-format total}}</td>
-                        <td class="text-right">{{number-format discount}}</td>
-                        <td class="text-right">{{number-format nationalInsurance}}</td>
-                        <td class="text-right">{{number-format privateInsurance}}</td>
-                        <td class="text-right">{{number-format amountOwed }}</td>                            
+                        <td class="text-right">{{number-format categoryGroup.total}}</td>
+                        <td class="text-right">{{number-format categoryGroup.discount}}</td>
+                        <td class="text-right">{{number-format categoryGroup.nationalInsurance}}</td>
+                        <td class="text-right">{{number-format categoryGroup.privateInsurance}}</td>
+                        <td class="text-right">{{number-format categoryGroup.amountOwed }}</td>
                         <td></td>
                     </tr>
                 {{/each}}
@@ -183,11 +177,11 @@
                     <td>
                         <strong>Total</strong>
                     </td>
-                    <td class="text-right">{{number-format total}}</td>
-                    <td class="text-right">{{number-format discount}}</td>
-                    <td class="text-right">{{number-format ationalInsurance}}</td>
-                    <td class="text-right">{{number-format privateInsurance}}</td>
-                    <td class="text-right">{{number-format patientResponsibility}}</td>                            
+                    <td class="text-right">{{number-format model.total}}</td>
+                    <td class="text-right">{{number-format model.discount}}</td>
+                    <td class="text-right">{{number-format model.nationalInsurance}}</td>
+                    <td class="text-right">{{number-format model.privateInsurance}}</td>
+                    <td class="text-right">{{number-format model.patientResponsibility}}</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -195,7 +189,7 @@
                         <strong>Payments/Deposits</strong>
                     </td>
                     <td colspan="4"></td>
-                    <td class="text-right">-{{number-format paidTotal}}</td>                            
+                    <td class="text-right">-{{number-format paidTotal}}</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -203,7 +197,7 @@
                         <strong>Grand Total</strong>
                     </td>
                     <td colspan="4"></td>
-                    <td class="text-right">{{number-format remainingBalance}}</td>                            
+                    <td class="text-right">{{number-format remainingBalance}}</td>
                     <td></td>
                 </tr>
             </table>
@@ -213,7 +207,7 @@
 <div class="panel detail-section">
     <div class="panel-heading">
         <h3 class="panel-title">
-            Remarks            
+            Remarks
         </h3>
     </div>
     <div class="panel-body detail-section-content">
@@ -238,17 +232,17 @@
                 <th>Notes</th>
                 <th>Action</th>
             </tr>
-            {{#each payments itemController='invoices/payment-item'}}
-                <tr {{action 'showEditPayment' this}}>
-                    <td>{{date-format datePaid}}</td>
-                    <td>{{amount}}</td>
-                    <td>{{type}}</td>
-                    <td>{{notes}}</td>
-                    {{#if parentController.canAddPayment}}
+            {{#each payments as |payment|}}
+                <tr {{action 'showEditPayment' payment}}>
+                    <td>{{date-format payment.datePaid}}</td>
+                    <td>{{payment.amount}}</td>
+                    <td>{{payment.type}}</td>
+                    <td>{{payment.notes}}</td>
+                    {{#if canAddPayment}}
                         <td>
-                            <button class="btn btn-default neutral" {{action 'showEditPayment' this  bubbles=false }}>Edit</button>
-                            {{#if canRemovePayment}}
-                                <button class="btn btn-default warning" {{action "showRemovePayment" this bubbles=false }}>
+                            <button class="btn btn-default neutral" {{action 'showEditPayment' payment  bubbles=false }}>Edit</button>
+                            {{#if payment.canRemovePayment}}
+                                <button class="btn btn-default warning" {{action "showRemovePayment" payment bubbles=false }}>
                                     <span class="octicon octicon-x"></span>Remove
                                 </button>
                             {{/if}}

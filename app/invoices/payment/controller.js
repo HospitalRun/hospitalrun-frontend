@@ -16,29 +16,29 @@ export default AbstractEditController.extend(PatientSubmodule, {
     },
     
     currentPatient: function() {
-        var type = this.get('type');
+        var type = this.get('paymentType');
         if (type === 'Deposit') {
             return this.get('patient');
         } else {
             return this.get('invoice.patient');
         }
-    }.property('patient', 'type', 'invoice.patient'),
+    }.property('patient', 'paymentType', 'invoice.patient'),
     
     title: function() {
         var isNew = this.get('isNew'),
-            type = this.get('type');
+            type = this.get('paymentType');
         if (isNew) {    
             return 'Add %@'.fmt(type);
         } else {
             return 'Edit %@'.fmt(type);
         }
-    }.property('isNew', 'type'),
+    }.property('isNew', 'paymentType'),
     
     selectPatient: function() {
         var isNew = this.get('isNew'),
-            type = this.get('type');
+            type = this.get('paymentType');
         return (isNew && type === 'Deposit');
-    }.property('isNew', 'type'),    
+    }.property('isNew', 'paymentType'),    
         
     beforeUpdate: function() {
         if (this.get('isNew')) {
@@ -58,7 +58,7 @@ export default AbstractEditController.extend(PatientSubmodule, {
                 patient.get('payments').then(function(payments) {                    
                     payments.addObject(record);
                     patient.save().then(function() {
-                        if (record.get('type') === 'Deposit') {
+                        if (record.get('paymentType') === 'Deposit') {
                             var message = 'A deposit of %@ was added for patient %@'.fmt(record.get('amount'), patient.get('displayName'));
                             this._finishUpdate(message, 'Deposit Added');
                         } else {          

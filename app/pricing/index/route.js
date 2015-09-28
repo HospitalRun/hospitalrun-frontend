@@ -7,23 +7,22 @@ export default AbstractIndexRoute.extend({
         
     _getStartKeyFromItem: function(item) {
         var category = item.get('category'),
-            keyPrefix = this.get('keyPrefix'),
+            id = this._getPouchIdFromItem(item),
             name = item.get('name'),
-            type = item.get('type');
-        return [category, name, type, keyPrefix+item.get('id')];        
+            pricingType = item.get('pricingType');
+        return [category, name, pricingType, id];        
     },
     
     _modelQueryParams: function() {
         var category = this.get('category'),
-            keyPrefix = this.get('keyPrefix'),
-            maxValue = this.get('maxValue'),
+            maxId = this._getMaxPouchId(),
             queryParams = {
                 mapReduce: 'pricing_by_category'
             };
         if (!Ember.isEmpty(category)) {
             queryParams.options = {
                 startkey: [category, null, null, null],
-                endkey: [category, {}, {}, keyPrefix+maxValue]
+                endkey: [category, {}, {}, maxId]
             };
         }
         return queryParams;

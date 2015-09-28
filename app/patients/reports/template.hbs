@@ -2,69 +2,69 @@
     <div class="panel-body">
         {{#em-form model=this submit_button=false }}
             <div class="row">
-                {{em-select class="col-xs-6" label="Report Type" 
+                {{em-select class="col-xs-6" label="Report Type"
                     property="reportType" content=reportTypes
                     optionValuePath="content.value" optionLabelPath="content.name"
                     selected=reportType
                 }}
             </div>
             {{#if isStatusReport}}
-                {{em-select property="status" label="Patient Status" 
-                    content=statusList.value 
-                    optionValuePath="content" 
-                    optionLabelPath="content" 
+                {{em-select property="status" label="Patient Status"
+                    content=statusList.value
+                    optionValuePath="content"
+                    optionLabelPath="content"
                     prompt=" "
                 }}
             {{else}}
                 <div class="row">
                     {{date-picker property="startDate" label="Start Date" class="col-sm-4"}}
                     {{date-picker property="endDate" label="End Date" class="col-sm-4"}}
-                </div>        
+                </div>
             {{/if}}
             {{#if isVisitReport}}
                 <div class="row">
-                    {{em-select class="col-sm-6" label="Visit Type" 
+                    {{em-select class="col-sm-6" label="Visit Type"
                         property="visitType" content=visitTypes
                         optionValuePath="content" optionLabelPath="content"
                         prompt=" "
                     }}
-                    {{em-select class="col-sm-6" label="Examiner" 
+                    {{em-select class="col-sm-6" label="Examiner"
                         property="examiner" content=physicianList.value
                         optionValuePath="content" optionLabelPath="content"
                         prompt=" "
-                    }}                
+                    }}
                 </div>
                 <div class="row">
-                    {{em-select class="col-sm-6" label="Location" 
+                    {{em-select class="col-sm-6" label="Location"
                         property="location" content=locationList.value
                         optionValuePath="content" optionLabelPath="content"
                         prompt=" "
                     }}
-                    {{em-select class="col-sm-6" label="Clinic" 
+                    {{em-select class="col-sm-6" label="Clinic"
                         property="clinic" content=clinicList.value
                         optionValuePath="content" optionLabelPath="content"
                         prompt=" "
                     }}
                 </div>
                 <div class="row">
-                    <div class="form-group col-xs-12">                        
-                        {{select-or-typeahead property="diagnosis" 
-                            label="Diagnosis" list=diagnosisList 
-                        }} 
+                    <div class="form-group col-xs-12">
+                        {{select-or-typeahead property="diagnosis"
+                            label="Diagnosis" list=diagnosisList
+                        }}
                     </div>
-                </div>        
+                </div>
 
                 <h3>Fields to Include</h3>
                 <div class="row">
                     <div class="col-xs-1"></div>
                     {{em-checkbox label=reportColumns.id.label property="reportColumns.id.include" class="col-xs-2"}}
-                    {{em-checkbox label=reportColumns.name.label property="reportColumns.name.include" class="col-xs-2"}}                
+                    {{em-checkbox label=reportColumns.name.label property="reportColumns.name.include" class="col-xs-2"}}
                     {{em-checkbox label=reportColumns.age.label property="reportColumns.age.include" class="col-xs-2"}}
                     {{em-checkbox label=reportColumns.contacts.label property="reportColumns.contacts.include" class="col-xs-2"}}
                     {{em-checkbox label=reportColumns.dateOfBirth.label property="reportColumns.dateOfBirth.include" class="col-xs-2"}}
                 </div>
                 <div class="row">
-                    <div class="col-xs-1"></div>        
+                    <div class="col-xs-1"></div>
                     {{em-checkbox label=reportColumns.examiner.label property="reportColumns.examiner.include" class="col-xs-2"}}
                     {{em-checkbox label=reportColumns.gender.label property="reportColumns.gender.include" class="col-xs-2"}}
                     {{em-checkbox label=reportColumns.primaryDiagnosis.label property="reportColumns.primaryDiagnosis.include" class="col-xs-2"}}
@@ -88,7 +88,7 @@
 </div>
 {{#if showReportResults}}
     <div class="panel panel-primary">
-        <div class="panel-heading">            
+        <div class="panel-heading">
             <h3 class="panel-title">{{reportTitle}}{{partial 'paging'}}</h3>
         </div>
         <div class="panel-body">
@@ -100,12 +100,12 @@
                         </th>
                     {{/each}}
                 </tr>
-                {{partial "report-rows"}}                
+                {{partial "report-rows"}}
             </table>
         </div>
         <div class="panel-footer">
-            <a {{bind-attr href="csvExport"}} target="_blank" download="report.csv" class="btn btn-default">Export Report</a>
+            <a href={{csvExport}} target="_blank" download="report.csv" class="btn btn-default">Export Report</a>
 
-        </div>    
+        </div>
     </div>
 {{/if}}

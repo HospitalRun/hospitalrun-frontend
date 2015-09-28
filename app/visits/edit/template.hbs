@@ -26,7 +26,7 @@
                         {{else}}
                             {{date-picker property="startDate" label="Date" class="col-sm-3 required"}}
                         {{/if}}
-                        {{select-or-typeahead class="col-sm-3" property="location"
+                        {{select-or-typeahead className="col-sm-3" property="location"
                             label="Location" list=locationList
                             selection=location
                         }}
@@ -43,17 +43,17 @@
                                 prompt=" "
                             }}
                         {{/if}}
-                        {{select-or-typeahead class="col-sm-3" property="examiner" 
+                        {{select-or-typeahead className="col-sm-3" property="examiner" 
                             label="Examiner" list=physicianList 
                             selection=examiner
                         }}
                     </div>
                     <div class="row">
-                        {{select-or-typeahead class="col-sm-5" property="primaryDiagnosis" 
+                        {{select-or-typeahead className="col-sm-5" property="primaryDiagnosis" 
                             label="Admitting Diagnosis" list=diagnosisList 
                             selection=primaryDiagnosis hint=false
                         }} 
-                        {{select-or-typeahead class="col-sm-5" property="primaryBillingDiagnosis" 
+                        {{select-or-typeahead className="col-sm-5" property="primaryBillingDiagnosis" 
                             label="Final/Billing Diagnosis" list=diagnosisList 
                             selection=primaryBillingDiagnosis hint=false
                         }}
@@ -151,35 +151,7 @@
             </div>
             <div id="patient-medication" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <table class="table">
-                        <tr class="table-header">
-                            <th>Date</th>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th>Prescription</th>
-                            <th>Requested By</th>
-                            <th>Actions</th>
-                        </tr>
-                        {{#each medication itemController="medication/item-controller"}}
-                            <tr {{action "editMedication" this}}>
-                                <td>{{date-format prescriptionDate}}</td>
-                                <td>{{inventoryItem.name}}</td>
-                                <td>{{status}}</td>
-                                <td>{{prescription}}</td>
-                                <td>{{requestedBy}}</td>
-                                <td>
-                                    {{#if canEdit}}
-                                        {{#if parentController.canAddMedication}}
-                                            <button class="btn btn-default neutral" {{action "editMedication" this}}>Edit</button>
-                                        {{/if}}
-                                        {{#if parentController.canDelete}}
-                                            <button class="btn btn-default warning" {{action "showDeleteMedication" this  bubbles=false }}><span class="octicon octicon-x"></span>  Delete</button>
-                                        {{/if}}
-                                    {{/if}}
-                                </td>
-                            </tr>
-                        {{/each}}
-                    </table>
+                    {{partial 'patients/medication'}}
                 </div>
             </div>
         </div>
@@ -196,39 +168,7 @@
             </div>
             <div id="patient-labs" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <table class="table">
-                        <tr class="table-header">
-                            <th>Date Requested</th>
-                            <th>Lab Type</th>
-                            <th>Status</th>
-                            <th>Date Processed</th>
-                            <th>Result</th>
-                            <th>Notes</th>
-                            <th>Requested By</th>
-                            <th>Actions</th>
-                        </tr>
-                        {{#each labs itemController="labs/item-controller"}}
-                            <tr {{action "editLab" this}}>
-                                <td>{{date-format requestedDate}}</td>
-                                <td>{{labType.name}}</td>
-                                <td>{{status}}</td>
-                                <td>{{date-format labDate}}</td>
-                                <td>{{result}}</td>
-                                <td>{{notes}}</td>
-                                <td>{{requestedBy}}</td>
-                                <td>
-                                    {{#if canEdit}}
-                                        {{#if parentController.canAddLab}}
-                                            <button class="btn btn-default neutral" {{action "editLab" this}}>Edit</button>
-                                        {{/if}}
-                                        {{#if parentController.canDeleteLab}}
-                                            <button class="btn btn-default warning" {{action "showDeleteLab" this  bubbles=false }}><span class="octicon octicon-x"></span>  Delete</button>
-                                        {{/if}}
-                                    {{/if}}
-                                </td>
-                            </tr>
-                        {{/each}}
-                    </table>
+                    {{partial 'patients/medication'}}
                 </div>
             </div>
         </div>
@@ -245,39 +185,7 @@
             </div>
             <div id="patient-imaging" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <table class="table">
-                        <tr class="table-header">
-                            <th>Date Requested</th>
-                            <th>Imaging Type</th>
-                            <th>Status</th>
-                            <th>Date Processed</th>
-                            <th>Result</th>
-                            <th>Notes</th>
-                            <th>Requested By</th>
-                            <th>Actions</th>
-                        </tr>
-                        {{#each imaging itemController="imaging/item-controller"}}
-                            <tr {{action "editImaging" this}}>
-                                <td>{{date-format requestedDate}}</td>
-                                <td>{{imagingType.name}}</td>
-                                <td>{{status}}</td>
-                                <td>{{date-format imagingDate}}</td>
-                                <td>{{result}}</td>
-                                <td>{{notes}}</td>
-                                <td>{{requestedBy}}</td>
-                                <td>
-                                    {{#if canEdit}}
-                                        {{#if parentController.canAddImaging}}
-                                            <button class="btn btn-default neutral" {{action "editImaging" this}}>Edit</button>
-                                        {{/if}}
-                                        {{#if parentController.canDeleteImaging}}
-                                            <button class="btn btn-default warning" {{action "showDeleteImaging" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                                        {{/if}}
-                                    {{/if}}
-                                </td>
-                            </tr>
-                        {{/each}}
-                    </table>
+                    {{partial 'patients/imaging'}}
                 </div>
             </div>
         </div>    

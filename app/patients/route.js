@@ -35,16 +35,16 @@ export default AbstractModuleRoute.extend(PatientId, {
     actions: {
         createNewVisit: function(patient, visits) {
             var lastVisit = visits.get('lastObject'), 
-                newVisit = this.get('store').createRecord('visit', {
-                    visitType: 'Admission',
-                    startDate: new Date(),
-                    status: 'Admitted',
-                    patient: patient
-                }); 
+                propertiesToSet = {};
+            
             if (!Ember.isEmpty(lastVisit)) {
-                newVisit.setProperties(lastVisit.getProperties('primaryDiagnosis','primaryBillingDiagnosis'));
+                propertiesToSet = lastVisit.getProperties('primaryDiagnosis','primaryBillingDiagnosis');
             }
-            this.transitionTo('visits.edit', newVisit);
+            propertiesToSet.patient = patient;
+            
+            this.transitionTo('visits.edit', 'new').then(function(newRoute) {
+                newRoute.currentModel.setProperties(propertiesToSet);
+            }.bind(this));
         }
     },
     moduleName: 'patients',

@@ -1,8 +1,12 @@
-import Ember from "ember";
-import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
+import { Adapter } from 'ember-pouch';
+import Ember from 'ember';
 
-export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
-    databaseName: 'config',
+import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
+
+export default Adapter.extend(PouchAdapterUtils, {
+    databaseName: 'config',    
+    db:  Ember.computed.alias('pouchDBService.configDB'),
+    pouchDBService: Ember.inject.service('pouchdb'),
     
     _mapQuery: function(doc, emit) {
         if (doc._id) {
@@ -21,8 +25,8 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
             };
             
             queryParams.keys = query.exactKeys.map(function(key) {
-                return self._idToPouchId(key, 'config');
-            });
+                return this.get('pouchDBService').getPouchId(key, 'config');
+            }.bind(this));
             return new Ember.RSVP.Promise(function(resolve, reject){
                 self._getDb().then(function(db){
                     try {

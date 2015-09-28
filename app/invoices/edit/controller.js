@@ -5,7 +5,7 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PublishStatuses from 'hospitalrun/mixins/publish-statuses';
 
 export default AbstractEditController.extend(NumberFormat, PatientSubmodule, PublishStatuses, {
-    needs: ['invoices','pouchdb'],
+    needs: ['invoices'],
     expenseAccountList: Ember.computed.alias('controllers.invoices.expenseAccountList.value'),
     patientList: Ember.computed.alias('controllers.invoices.patientList'),
     pharmacyCharges: [],
@@ -56,6 +56,14 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     }.property('expenseAccountList.value'),
     
     actions: {
+        addItemCharge: function(lineItem) {
+            var details = lineItem.get('details');
+            var detail = this.store.createRecord('line-item-detail', {
+                id: PouchDB.utils.uuid()
+            });
+            details.addObject(detail);
+        },
+        
         addLineItem: function(lineItem) {
             var lineItems = this.get('lineItems');
             lineItems.addObject(lineItem);
@@ -64,38 +72,30 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         },
         
         deleteCharge: function(deleteInfo) {
-            deleteInfo.deleteFrom.removeObject(deleteInfo.itemToDelete);
-            if (!deleteInfo.itemToDelete.get('isNew')) {
-                deleteInfo.itemToDelete.destroyRecord();
-            }
-            this.send('update', true);
-            this.send('closeModal');
-        },        
-        
+            this._deleteObject(deleteInfo.itemToDelete, deleteInfo.deleteFrom);
+        },
+                
         deleteLineItem: function(deleteInfo) {
-            var lineItems = this.get('lineItems');
-            lineItems.removeObject(deleteInfo.itemToDelete);
-            if (!deleteInfo.itemToDelete.get('isNew')) {
-                deleteInfo.itemToDelete.destroyRecord();
-            }
-            this.send('update', true);
-            this.send('closeModal');
+            this._deleteObject(deleteInfo.itemToDelete, this.get('lineItems'));
         },
         
         finalizeInvoice: function() {            
-            var invoicePayments = this.get('payments'),
-                paymentsToSave = [];
+            var currentInvoice = this.get('model'),
+                invoicePayments = this.get('payments'),
+                paymentsToSave = [];                
             this.get('patient.payments').then(function(patientPayments) {
                 patientPayments.forEach(function(payment) {
                     var invoice = payment.get('invoice');
                     if (Ember.isEmpty(invoice)) {
-                        payment.set('invoice', invoice);
-                        paymentsToSave.push(payment);
+                        payment.set('invoice', currentInvoice);
+                        paymentsToSave.push(payment.save());
                         invoicePayments.addObject(payment);
                     }
-                }.bind(this));            
-                this.set('status', 'Billed');
-                this.send('update');
+                }.bind(this));
+                Ember.RSVP.all(paymentsToSave).then(function() {
+                    this.set('status', 'Billed');
+                    this.send('update');
+                }.bind(this));
             }.bind(this));
         },
         
@@ -113,9 +113,34 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         },
         
         showAddLineItem: function() {
-            var newLineItem = this.store.createRecord('billing-line-item', {});
+            var newLineItem = this.store.createRecord('billing-line-item', {
+                id: PouchDB.utils.uuid()
+            });
             this.send('openModal','invoices.add-line-item', newLineItem);
         },
+        
+        showDeleteItem: function(itemToDelete, deleteFrom) {             
+            this.send('openModal', 'dialog', Ember.Object.create({
+                confirmAction: 'deleteCharge',
+                deleteFrom: deleteFrom,
+                title: 'Delete Charge',
+                message: 'Are you sure you want to delete %@?'.fmt(itemToDelete.get('name')),
+                itemToDelete: itemToDelete,
+                updateButtonAction: 'confirm',
+                updateButtonText: 'Ok'
+            }));
+        },
+        
+        showDeleteLineItem: function(item) {             
+            this.send('openModal', 'dialog', Ember.Object.create({               
+                confirmAction: 'deleteLineItem',
+                title: 'Delete Line Item',
+                message: 'Are you sure you want to delete %@?'.fmt(item.get('name')),
+                itemToDelete: item,                
+                updateButtonAction: 'confirm',
+                updateButtonText: 'Ok'
+            }));
+        },         
         
         showRemovePayment: function(payment) {
            var message= 'Are you sure you want to remove this payment from this invoice?',
@@ -124,6 +149,10 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
                 }),
                 title = 'Remove Payment';
             this.displayConfirm(title, message, 'removePayment', model);
+        },
+        
+        toggleDetails: function(item) {
+            item.toggleProperty('showDetails');
         }
     },
     
@@ -145,23 +174,19 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
                 var details = lineItem.get('details'),
                     lineDiscount = 0;
                 details.forEach(function(detail) {
-                    var detailTotal = detail.get('total'),
-                        overrodePrice = false,
-                        pricingOverrides = detail.get('pricingItem.pricingOverrides');                        
+                    var pricingOverrides = detail.get('pricingItem.pricingOverrides');                        
                     if (!Ember.isEmpty(pricingOverrides)) {
                         var pricingOverride = pricingOverrides.findBy('profile.id', profileId);
                         if (!Ember.isEmpty(pricingOverride)) {
-                            Ember.set(detail, 'discount', this._numberFormat((detailTotal - pricingOverride.get('price')),true));
-                            overrodePrice = true;
+                            Ember.set(detail, 'price', pricingOverride.get('price'));                        
                         }
-                    }
-                    if (!overrodePrice && detailTotal > 0) {
-                        Ember.set(detail, 'discountPercentage', (discountPercentage / 100));
-                        Ember.set(detail, 'discount', this._numberFormat((discountPercentage / 100) * (detailTotal), true));
-                    }
-                    lineDiscount += this._getValidNumber(Ember.get(detail,'discount'));
+                    }                    
                 }.bind(this));
-                lineItem.set('discount', this._numberFormat(lineDiscount,true));
+                if (discountPercentage > 0) {
+                    var lineTotal = lineItem.get('total');
+                    lineDiscount = this._numberFormat((discountPercentage / 100) * (lineTotal), true);
+                    lineItem.set('discount', lineDiscount);
+                }
             }.bind(this));
             this.set('originalPaymentProfileId', profileId);
         }
@@ -210,6 +235,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
             pharmacyCharges = this.get('pharmacyCharges'),
             pharmacyExpenseAccount = this.get('pharmacyExpenseAccount'),
             pharmacyCharge = this.store.createRecord('line-item-detail', {
+                id: PouchDB.utils.uuid(),
                 name: medicationItem.get('name'),
                 quantity: quantity,
                 price: price,
@@ -227,6 +253,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     
     _createChargeItem: function(charge, department) {
         var chargeItem = this.store.createRecord('line-item-detail', {
+                id: PouchDB.utils.uuid(),
                 name: charge.get('pricingItem.name'),
                 expenseAccount: charge.get('pricingItem.expenseAccount'),
                 quantity: charge.get('quantity'),
@@ -235,6 +262,20 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
                 pricingItem: charge.get('pricingItem')
             });
         return chargeItem;
+    },
+    
+    /**
+     * Remove the specified object from the specified list, update the model and close the modal.
+     * @param objectToDelete {object} - the object to remove
+     * @param deleteFrom {Array} - the array to remove the object from.
+     */
+    _deleteObject: function(objectToDelete, deleteFrom) {
+        deleteFrom.removeObject(objectToDelete);
+        if (!objectToDelete.get('isNew')) {
+            objectToDelete.destroyRecord();
+        }
+        this.send('update', true);
+        this.send('closeModal');    
     },
     
     _mapWardCharge: function(charge) {
@@ -277,10 +318,12 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
             var stayDays = endDate.diff(startDate, 'days');
             if (stayDays > 1) {
                 lineDetail = this.store.createRecord('line-item-detail', {
+                    id: PouchDB.utils.uuid(),
                     name: 'Days',
                     quantity: stayDays                    
                 });
                 lineItem = this.store.createRecord('billing-line-item', {
+                    id: PouchDB.utils.uuid(),
                     category: 'Hospital Charges',
                     name: 'Room/Accomodation'
                 });
@@ -331,6 +374,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         }.bind(this));
         
         lineItem = this.store.createRecord('billing-line-item', {
+            id: PouchDB.utils.uuid(),
             name: 'Pharmacy',
             category: 'Hospital Charges'
         });
@@ -338,6 +382,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         lineItems.addObject(lineItem);
         
         lineItem = this.store.createRecord('billing-line-item', {
+            id: PouchDB.utils.uuid(),
             name: 'X-ray/Lab/Supplies',
             category: 'Hospital Charges'
         });
@@ -345,6 +390,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         lineItems.addObject(lineItem);
         
         lineItem = this.store.createRecord('billing-line-item', {
+            id: PouchDB.utils.uuid(),
             name: 'Ward Items',
             category: 'Hospital Charges'
         });
@@ -352,12 +398,14 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         lineItems.addObject(lineItem);
 
         lineItem = this.store.createRecord('billing-line-item', {
+            id: PouchDB.utils.uuid(),
             name: 'Physical Therapy',
             category: 'Hospital Charges'
         });        
         lineItems.addObject(lineItem);
         
         lineItem = this.store.createRecord('billing-line-item', {
+            id: PouchDB.utils.uuid(),
             name: 'Others/Misc',
             category: 'Hospital Charges'
         });        

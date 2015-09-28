@@ -131,7 +131,7 @@ export default Ember.Mixin.create({
             inventoryLocations.reduce(function(quantityNeeded, location) {
                 var deliveryLocation = request.get('deliveryLocation'),
                     deliveryAisle = request.get('deliveryAisle'),
-                    locationQuantity = parseInt(location.get('quantity'));                
+                    locationQuantity = parseInt(location.get('quantity'));
                 if (quantityNeeded > 0) {
                     if (!markAsConsumed) {
                         location.set('transferAisleLocation', deliveryAisle);
@@ -143,7 +143,7 @@ export default Ember.Mixin.create({
                             promises.push(location.save());
                         } else {
                             location.set('adjustmentQuantity', quantityNeeded);
-                            this.transferToLocation(inventoryItem, location);                            
+                            promises.push(this.transferToLocation(inventoryItem, location));         
                         }
                         locationsAffected.push({
                             name: location.get('locationName'),
@@ -156,7 +156,7 @@ export default Ember.Mixin.create({
                             promises.push(location.save());
                         } else {
                             location.set('adjustmentQuantity', locationQuantity);
-                            this.transferToLocation(inventoryItem, location);                            
+                            promises.push(this.transferToLocation(inventoryItem, location));            
                         }
                         locationsAffected.push({
                             name: location.get('locationName'),
@@ -173,18 +173,21 @@ export default Ember.Mixin.create({
                 promises.push(purchase.save());
             });
         }
-        promises.push(inventoryItem.save());
-        request.set('status','Completed');
-        request.set('completedBy', request.getUserName());
-        promises.push(request.save());
-        Ember.RSVP.all(promises,'All saving done for inventory fulfillment').then(function(){
-            this.send('doneFulfillRequest');
-            if (closeModal) {
-                this.send('closeModal');
-            }
-            if (!skipTransition) {
-                this.transitionTo('inventory.request');
-            }
+        Ember.RSVP.all(promises,'Preliminary saving done for inventory fulfillment').then(function(){        
+            var savePromises = [];
+            savePromises.push(inventoryItem.save());
+            request.set('status','Completed');
+            request.set('completedBy', request.getUserName());
+            savePromises.push(request.save());
+            Ember.RSVP.all(savePromises,'All saving done for inventory fulfillment').then(function(){
+                this.send('doneFulfillRequest');
+                if (closeModal) {
+                    this.send('closeModal');
+                }
+                if (!skipTransition) {
+                    this.transitionTo('inventory.index');
+                }
+            }.bind(this));
         }.bind(this));
     },
     

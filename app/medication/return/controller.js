@@ -6,7 +6,7 @@ import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(FulfillRequest, InventoryLocations, InventorySelection, PatientSubmodule, {    
-    needs: ['medication','pouchdb'],
+    needs: ['medication'],
 
     lookupListsToUpdate: [{
         name: 'aisleLocationList', //Name of property containing lookup list
@@ -54,31 +54,31 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
         return !Ember.isEmpty(patientMedication);
     }.property('patientMedication'),
     
-    setPatientMedicationList: function() {
+    patientMedication: function() {
         var visit = this.get('visit');
         if (!Ember.isEmpty(visit)) {
             visit.get('medication').then(function(medication) {
                 medication = medication.filterBy('status','Fulfilled');
-                this.set('patientMedication', medication);
                 this.set('medication', medication.get('firstObject'));
+                return medication;
             }.bind(this));
-        } else {
-            this.set('patientMedication');
         }
-    }.observes('patient','visit'),
+    }.property('patient','visit'),
     
     _finishUpdate: function() {
         var aisle = this.get('deliveryAisle'),
             location = this.get('deliveryLocation'),
-            inventoryItem = this.get('inventoryItem'),
-            //find location on inventoryItem
-            inventoryLocation = this._findOrCreateLocation(inventoryItem, location, aisle);
-        this.set('adjustPurchases', true);
-        this.set('inventoryLocations',[inventoryLocation]);            
-        this.set('markAsConsumed',true);
-        //Make sure inventory item is resolved first.
-        this.get('inventoryItem').then(function() {
-            this.send('fulfillRequest', this.get('model'), false, true, true);
+            inventoryItem = this.get('inventoryItem');
+        
+        //find location on inventoryItem
+        this._findOrCreateLocation(inventoryItem, location, aisle).then(function(inventoryLocation) {
+            this.set('adjustPurchases', true);
+            this.set('inventoryLocations',[inventoryLocation]);            
+            this.set('markAsConsumed',true);
+            //Make sure inventory item is resolved first.
+            this.get('inventoryItem').then(function() {
+                this.send('fulfillRequest', this.get('model'), false, true, true);
+            }.bind(this));
         }.bind(this));
     },
     

@@ -59,7 +59,7 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
         }];
         listsToUpdate.push({       
             name: category+'PricingTypes', 
-            property: 'type',
+            property: 'pricingType',
             id: category+'_pricing_types'
         });
         return listsToUpdate;

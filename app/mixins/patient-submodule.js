@@ -2,6 +2,9 @@ import Ember from 'ember';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 export default Ember.Mixin.create(PatientVisits, {
     findPatientVisits: true, //Override to false if visits shouldn't be set when patient is selected.    
+    needToUpdateVisit: false,
+    patientList: null,
+    selectedPatient: null,
     
     actions: {
         showPatient: function(patient) {
@@ -27,20 +30,23 @@ export default Ember.Mixin.create(PatientVisits, {
      */
     addChildToVisit: function(objectToAdd, childName, newVisitType) {
         return new Ember.RSVP.Promise(function(resolve, reject){
-            var childPromises = [],
-                visit = this.get('visit');
+            var visit = this.get('model.visit');
             if (Ember.isEmpty(visit)) {
-                visit = this.createNewVisit(newVisitType);
-            }
-            childPromises.addObjects(this.resolveVisitChildren());
-            Ember.RSVP.all(childPromises, 'Resolved visit children before adding new '+childName).then(function() {        
-                visit.get(childName).then(function(visitChildren) {
-                    visitChildren.addObject(objectToAdd);
-                    this.set('needToUpdateVisit', true);
-                    resolve(objectToAdd);
+                visit = this.createNewVisit(newVisitType).then(function(savedVisit) {
+                    this._finishAddChildToVisit(objectToAdd, childName, savedVisit, resolve, reject);
                 }.bind(this), reject);
-            }.bind(this), reject);
+            } else {
+                this._finishAddChildToVisit(objectToAdd, childName, visit, resolve, reject);
+            }
         }.bind(this));
+    },
+    
+    _finishAddChildToVisit: function(objectToAdd, childName, visit, resolve, reject) {
+        visit.get(childName).then(function(visitChildren) {
+            visitChildren.addObject(objectToAdd);
+            this.set('needToUpdateVisit', true);
+            resolve(visit);
+        }.bind(this), reject);
     },
 
     cancelAction: function() {
@@ -56,34 +62,48 @@ export default Ember.Mixin.create(PatientVisits, {
     }.property('returnToPatient', 'returnToVisit'),
     
     createNewVisit: function(newVisitType) {
-        var patient = this.get('patient'),
-            visit = this.get('store').createRecord('visit', {
-            startDate: new Date(),
-            endDate: new Date(),
-            outPatient: true,
-            patient: patient,
-            visitType: newVisitType
-        });
-        this.set('visit', visit);
-        return visit;
+        return new Ember.RSVP.Promise(function(resolve, reject){
+            var model = this.get('model'),
+                patient = model.get('patient'),
+                visit = this.get('store').createRecord('visit', {
+                startDate: new Date(),
+                endDate: new Date(),
+                outPatient: true,
+                patient: patient,
+                visitType: newVisitType
+            });
+            model.set('visit', visit);
+            visit.save().then(function() {
+                visit.reload().then(function(updatedVisit) {
+                    this.getPatientVisits(patient).then(function(visits) {
+                        this.set('patientVisits',visits);
+                        model.set('visit', updatedVisit);
+                        resolve(updatedVisit);
+                    }.bind(this),reject);
+                }.bind(this), reject);
+            }.bind(this), reject).catch(function(err) {
+                console.log("Error creating new visit");
+                reject(err);
+            }.bind(this));
+        }.bind(this));
     },
 
-    patientId: Ember.computed.alias('patient.id'),
+    patientId: Ember.computed.alias('model.patient.id'),
     
     patientChanged: function() {
-        var patient = this.get('patient');
+        var patient = this.get('model.patient');
         if (!Ember.isEmpty(patient) && this.get('findPatientVisits')) {
             this.getPatientVisits(patient).then(function(visits) {
                 this.set('patientVisits',visits);
             }.bind(this));
         }
-    }.observes('patient'),
+    }.observes('model.patient'),
     
     selectedPatientChanged: function() {
         var selectedPatient = this.get('selectedPatient');        
         if (!Ember.isEmpty(selectedPatient)) {
             this.store.find('patient', selectedPatient.id).then(function(item) {
-                this.set('patient', item);
+                this.set('model.patient', item);
                 Ember.run.once(this, function(){
                     this.get('model').validate();
                 });
@@ -112,7 +132,7 @@ export default Ember.Mixin.create(PatientVisits, {
     removeChildFromVisit: function(objectToRemove, childName) {
         return new Ember.RSVP.Promise(function(resolve, reject){
             var childPromises = [],
-                visit = this.get('visit');
+                visit = this.get('model.visit');
             childPromises.addObjects(this.resolveVisitChildren());
             Ember.RSVP.all(childPromises, 'Resolved visit children before removing '+childName).then(function() {
                 visit.get(childName).then(function(visitChildren) {
@@ -130,7 +150,7 @@ export default Ember.Mixin.create(PatientVisits, {
      */
     resolveVisitChildren: function() {        
         var promises = [],
-            visit = this.get('visit');
+            visit = this.get('model.visit');
         if (!Ember.isEmpty(visit)) {
             //Make sure all the async relationships are resolved    
             promises.push(visit.get('imaging'));
@@ -150,7 +170,7 @@ export default Ember.Mixin.create(PatientVisits, {
      */
     saveVisitIfNeeded: function(alertTitle, alertMessage, alertAction) {
         if (this.get('needToUpdateVisit')) {
-            this.get('visit').save().then(function() {
+            this.get('model.visit').save().then(function() {
                 this.set('needToUpdateVisit', false);
                 this.displayAlert(alertTitle, alertMessage, alertAction);    
             }.bind(this));

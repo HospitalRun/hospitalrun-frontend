@@ -1,5 +1,6 @@
-import Ember from "ember";
-import UserSession from "hospitalrun/mixins/user-session";
+import Ember from 'ember';
+import DS from 'ember-data';
+import UserSession from 'hospitalrun/mixins/user-session';
 export default DS.RESTAdapter.extend(UserSession, {
     endpoint: '/db/_users/',
         
@@ -63,7 +64,10 @@ export default DS.RESTAdapter.extend(UserSession, {
     */
     deleteRecord: function(store, type, record) {
         var ajaxData = {
-            data: record.getProperties('id', 'rev')
+            data: {
+                id: record.get('id'),
+                rev: record.get('rev')
+            }
         };
         ajaxData.data.name = this.getUserName(true);
         return this.ajax('/deleteuser', 'POST', ajaxData);

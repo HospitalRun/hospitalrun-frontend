@@ -1,10 +1,12 @@
-import AbstractModel from "hospitalrun/models/abstract";
-import Ember from "ember";
-import LocationName from "hospitalrun/mixins/location-name";
+import AbstractModel from 'hospitalrun/models/abstract';
+import AdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
+import DS from 'ember-data';
+import Ember from 'ember';
+import LocationName from 'hospitalrun/mixins/location-name';
 /**
  * Model to represent a request for inventory items.
  */ 
-var InventoryRequest = AbstractModel.extend(LocationName, {
+var InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
     adjustPurchases: DS.attr('boolean'),
     completedBy: DS.attr('string'),
     costPerUnit: DS.attr('number'),
@@ -16,7 +18,9 @@ var InventoryRequest = AbstractModel.extend(LocationName, {
     inventoryItem: DS.belongsTo('inventory', { async: true }),
     locationsAffected: DS.attr(),
     markAsConsumed: DS.attr('boolean', { defaultValue:true }),
-    patient: DS.belongsTo('patient'),
+    patient: DS.belongsTo('patient', {
+      async: false
+    }),
     purchasesAffected: DS.attr(),
     quantity: DS.attr('number'),
     quantityAtCompletion: DS.attr('number'),
@@ -24,13 +28,44 @@ var InventoryRequest = AbstractModel.extend(LocationName, {
     requestedBy: DS.attr('string'),
     status: DS.attr('string'),
     transactionType: DS.attr('string'),
-    visit: DS.belongsTo('visit'),
+    visit: DS.belongsTo('visit', {
+      async: false
+    }),
     
     deliveryLocationName: function() {
         var aisle = this.get('deliveryAisle'), 
             location = this.get('deliveryLocation');
         return this.formatLocationName(location, aisle);
     }.property('deliveryAisle', 'deliveryLocation'),
+    
+    deliveryDetails: function() {
+        var locationName = this.get('deliveryLocationName'),
+            patient = this.get('patient');
+        if (Ember.isEmpty(patient)) {    
+            return locationName;
+        } else {
+            return patient.get('displayName');
+        }
+    }.property('deliveryAisle', 'deliveryLocation','patient'),
+    
+    haveReason: function() {
+        return !Ember.isEmpty(this.get('reason'));
+    }.property('reason'),
+
+    isAdjustment: function() {
+        var adjustmentTypes = this.get('adjustmentTypes'),
+            transactionType = this.get('transactionType'),
+            adjustmentType = adjustmentTypes.findBy('type', transactionType);            
+        return !Ember.isEmpty(adjustmentType);
+    }.property('transactionType'),
+    
+    isFulfillment: function() {
+        return this.get('transactionType') === 'Fulfillment';
+    }.property('transactionType'),
+    
+    isTransfer: function() {
+        return this.get('transactionType') === 'Transfer';
+    }.property('transactionType'),    
     
     validations: {
         inventoryItemTypeAhead: {

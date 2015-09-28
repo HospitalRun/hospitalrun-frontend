@@ -2,15 +2,15 @@
     {{#if isRequested}}
         <div class="form-group">
             <label class="control-label">Item</label>
-            <p class="form-control-static">{{inventoryItem.name}}</p>        
+            <p class="form-control-static">{{model.inventoryItem.name}}</p>        
         </div>
         <div class="form-group">
             <label class="control-label">Quantity Requested</label>
-            <p class="form-control-static">{{quantity}}</p>        
+            <p class="form-control-static">{{model.quantity}}</p>        
         </div>
         <div class="form-group">
             <label class="control-label">Quantity on Hand</label>
-            <p class="form-control-static">{{inventoryItem.quantity}}</p>        
+            <p class="form-control-static">{{model.inventoryItem.quantity}}</p>        
         </div>
     {{else}}
         <div class="row">
@@ -37,19 +37,19 @@
                     <th>Quantity</th>
                     <th>Action</th>
                 </tr>
-                {{#each requestedItems}}
+                {{#each requestedItems as |requestedItem|}}
                     <tr>
                         <td>
-                            {{item.name}}
+                            {{requestedItem.item.name}}
                         </td>
                         <td class="col-xs-2">
                             <div class="input-group">                            
-                                {{input class="form-control" value=quantity }}
-                                <div class="input-group-addon">{{item.distributionUnit}}</div>
+                                {{input class="form-control" value=requestedItem.quantity }}
+                                <div class="input-group-addon">{{requestedItem.item.distributionUnit}}</div>
                             </div>
                         </td>
                         <td>
-                            <button class="btn btn-default warning" {{action "showRemoveItem" this bubbles=false }}>
+                            <button class="btn btn-default warning" {{action "showRemoveItem" requestedItem bubbles=false }}>
                                 <span class="octicon octicon-x"></span>Remove
                             </button>
                         </td>
@@ -74,8 +74,8 @@
             {{date-picker property="dateCompleted" label="Date Completed" class="col-sm-4"}}
         </div>
         {{inventory-location-picker label="Pull From" quantityRequested=quantity
-            locationList=inventoryItem.availableLocations 
-            selectedLocations=inventoryLocations
+            locationList=model.inventoryItem.availableLocations 
+            selectedLocations=model.inventoryLocations
         }}
          <div class="form-group">            
             <label class="control-label">Consume Purchases</label>

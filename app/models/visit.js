@@ -1,5 +1,6 @@
-import AbstractModel from "hospitalrun/models/abstract";
-import Ember from "ember";
+import AbstractModel from 'hospitalrun/models/abstract';
+import DS from 'ember-data';
+import Ember from 'ember';
 
 function dateAcceptance(object) {
     if (!object.get('isDirty')) {
@@ -20,7 +21,9 @@ function dateAcceptance(object) {
 
 export default AbstractModel.extend({
     additionalDiagnoses: DS.attr(), //Yes, the plural of diagnosis is diagnoses!
-    charges: DS.hasMany('proc-charge'),
+    charges: DS.hasMany('proc-charge', {
+      async: false
+    }),
     dischargeInfo: DS.attr('string'),
     endDate:  DS.attr('date'),  //if visit type is outpatient, startDate and endDate are equal 
     examiner: DS.attr('string'),
@@ -32,7 +35,9 @@ export default AbstractModel.extend({
     medication: DS.hasMany('medication', {async: true}),
     notes: DS.attr('string'),
     outPatient: DS.attr('boolean'),
-    patient: DS.belongsTo('patient'),
+    patient: DS.belongsTo('patient', {
+      async: false
+    }),
     primaryDiagnosis: DS.attr('string'), //AKA admitting diagnosis
     primaryBillingDiagnosis: DS.attr('string'), //AKA final diagnosis
     primaryBillingDiagnosisId: DS.attr('string'),
@@ -77,7 +82,7 @@ export default AbstractModel.extend({
         endDate: {
             acceptance: {
                 accept: true,
-                if: dateAcceptance,    
+                if: dateAcceptance,
                 message: 'Please select an end date later than the start date'
             }
         },
@@ -85,10 +90,10 @@ export default AbstractModel.extend({
         startDate: {
             acceptance: {
                 accept: true,
-                if: dateAcceptance,    
+                if: dateAcceptance,
                 message: 'Please select a start date earlier than the end date'
             },
-            presence: true            
+            presence: true
         },
         visitType: {
             presence: true

@@ -1,9 +1,10 @@
-import Ember from "ember";
-import UserSession from "hospitalrun/mixins/user-session";
+import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
+import Ember from 'ember';
+import UserSession from 'hospitalrun/mixins/user-session';
 /**
  * Abstract route for top level modules (eg patients, inventory, users)
  */
-export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRouteMixin, {
+export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
     addCapability: null,
     additionalModels: null,
     allowSearch: true,
@@ -123,7 +124,7 @@ export default Ember.Route.extend(UserSession, Ember.SimpleAuth.AuthenticatedRou
                 var promises = this.additionalModels.map(function(modelMap) {
                     return this.store.find.apply(this.store, modelMap.findArgs);
                 }.bind(this));
-                Ember.RSVP.allSettled(promises,'All additional Models for'+this.get('moduleName')).then(function(array){
+                Ember.RSVP.allSettled(promises,'All additional Models for '+this.get('moduleName')).then(function(array){
                     array.forEach(function(item, index) {
                         if (item.state === 'fulfilled') {
                             this.set(this.additionalModels[index].name, item.value);

@@ -5,8 +5,7 @@ import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import Ember from 'ember';
 
 export default AbstractEditController.extend(FulfillRequest, InventoryLocations, InventorySelection, {    
-    needs: ['inventory','pouchdb'],
-    
+    needs: ['inventory'],    
     cancelAction: 'allRequests',
    
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
@@ -45,8 +44,16 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     isFulfilling: function() {
         var canFulfill = this.get('canFulfill'),
             isRequested = this.get('isRequested'),
-            fulfillRequest = this.get('shouldFulfillRequest');
-        return (canFulfill && (isRequested || fulfillRequest));
+            fulfillRequest = this.get('shouldFulfillRequest'),
+            isFulfilling = (canFulfill && (isRequested || fulfillRequest));
+        if (isFulfilling) {
+            if (Ember.isEmpty(this.get('dateCompleted'))) {
+                this.set('dateCompleted', new Date());
+            }
+        } else {
+            this.set('dateCompleted');
+        }
+        return isFulfilling;
     }.property('isRequested', 'shouldFulfillRequest'),
 
     isRequested: function() {
@@ -69,18 +76,6 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     }.property('requestedItems.@each'),
     
     updateViaFulfillRequest: false,
-    
-    updateDateCompleted: function() {
-        var isFulfilling = this.get('isFulfilling'),
-            dateCompleted = this.get('dateCompleted');
-        if (isFulfilling) {
-            if (Ember.isEmpty(dateCompleted)) {
-                this.set('dateCompleted', new Date());
-            }
-        } else if (!this.get('updateViaFulfillRequest')) {
-            this.set('dateCompleted');
-        }
-    }.observes('isFulfilling'),
 
     updateButtonText: function() {
         if (this.get('isFulfilling')) {
@@ -144,7 +139,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
                 var updateViaFulfillRequest = this.get('updateViaFulfillRequest');
                 if (updateViaFulfillRequest) {
                     this.updateLookupLists();
-                    this.performFulfillRequest(this.get('model')).then(this.afterUpdate.bind(this));
+                    this.performFulfillRequest(this.get('model'), false, false, true).then(this.afterUpdate.bind(this));
                 } else {
                     var isNew = this.get('isNew'),
                         requestedItems = this.get('requestedItems');

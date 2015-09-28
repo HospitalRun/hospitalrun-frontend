@@ -2,7 +2,7 @@
 import Ember from 'ember';
 
 export default {
-    after: 'authentication',
+    //after: 'authentication',
     name: 'configdb',    
     
     initialize: function(container, application) {
@@ -35,12 +35,8 @@ export default {
         application.deferReadiness();
         _initCouchDB().then(function() {
             application.register('couchdb:configdb', configDB, {instantiate: false});
-            application.inject('controller:pouchdb', 'configDB', 'couchdb:configdb');
-            var customAuthenticator = container.lookup('authenticators:custom'),
-                pouchDBController = container.lookup('controller:pouchdb'),
-                applicationAdapter = container.lookup('adapter:application');
-            customAuthenticator.set('pouchDBController', pouchDBController);
-            pouchDBController.set('applicationAdapter', applicationAdapter);
+            application.inject('service:pouchdb', 'configDB', 'couchdb:configdb');              
+            var pouchDBService = container.lookup('service:pouchdb');
             var options = {
                 include_docs: true,
                 keys: [
@@ -63,7 +59,7 @@ export default {
                             configs[response.rows[i].id] = response.rows[i].doc.value;
                         }
                     }                    
-                    pouchDBController.setupMainDB(configs).then(function() {                        
+                    pouchDBService.setupMainDB(configs).then(function() {
                         application.advanceReadiness();
                     }, function() {
                         application.advanceReadiness();

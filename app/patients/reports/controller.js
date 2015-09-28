@@ -269,11 +269,19 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     },
     
     _addReportRow: function(row, skipFormatting, reportColumns, rowAction) {
-        if (Ember.isEmpty(rowAction) && !Ember.isEmpty(row.patient) && !Ember.isEmpty(row.patient.get('id'))) {
-            rowAction = {
-                action: 'viewPatient',
-                model: row.patient.get('id')
-            };
+        if (Ember.isEmpty(rowAction) && !Ember.isEmpty(row.patient)) {
+            var patientId = null;
+            if (row.get) {
+                patientId = row.get('patient.id');
+            } else {                
+                patientId = row.patient.get('id');
+            }
+            if (!Ember.isEmpty(patientId)) {                
+                rowAction = {
+                    action: 'viewPatient',
+                    model: patientId
+                };
+            }
         }
         this._super(row, skipFormatting, reportColumns, rowAction);
     },

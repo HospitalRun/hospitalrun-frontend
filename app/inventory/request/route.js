@@ -4,9 +4,11 @@ export default AbstractEditRoute.extend({
     editTitle: 'Edit Request',
     modelName: 'inv-request',
     newTitle: 'New Request',
+    pouchdb: Ember.inject.service(),
     getNewData: function() {
         return Ember.RSVP.resolve({
-            transactionType: 'Request'
+            transactionType: 'Request',
+            requestedItems: []
         });
     },
     
@@ -30,7 +32,7 @@ export default AbstractEditRoute.extend({
             endkey: 'inventory_\uffff',
             include_docs: true,
         };
-        this.controllerFor('pouchdb').queryMainDB(inventoryQuery).then(function(result) {            
+        this.get('pouchdb').queryMainDB(inventoryQuery).then(function(result) {            
             controller.set('inventoryItems', result.rows);
         });        
     }

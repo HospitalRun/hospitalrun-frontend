@@ -5,16 +5,17 @@ export default AbstractIndexRoute.extend({
     pageTitle: 'Invoice Listing',
     
     _getStartKeyFromItem: function(item) {
-        var billDateAsTime = item.get('labDateAsTime'),
-            keyPrefix = this.get('keyPrefix'),            
+        var billDateAsTime = item.get('billDateAsTime'),
+            id = this._getPouchIdFromItem(item),
             searchStatus = item.get('status');
-        return [searchStatus, billDateAsTime, keyPrefix+item.get('id')];
+        return [searchStatus, billDateAsTime, id];
     },
     
     _modelQueryParams: function(params) {
-        var keyPrefix = this.get('keyPrefix'),
-            queryParams,
-            maxValue = this.get('maxValue'),            
+        var queryParams,            
+            maxId = this._getMaxPouchId(),
+            maxValue = this.get('maxValue'),
+            minId = this._getMinPouchId(),            
             searchStatus = params.status;
         if (Ember.isEmpty(searchStatus)) {
             searchStatus = 'Billed';
@@ -22,15 +23,15 @@ export default AbstractIndexRoute.extend({
         this.set('pageTitle', '%@ Invoices'.fmt(searchStatus));
         queryParams = {
             options: {
-                startkey: [searchStatus, null, keyPrefix],
-                endkey: [searchStatus, maxValue, keyPrefix+maxValue]
+                startkey: [searchStatus, null, minId],
+                endkey: [searchStatus, maxValue, maxId]
             },
             mapReduce: 'invoice_by_status'
         };
         
         if (searchStatus === 'All') {
-            queryParams.options.startkey[0] = null;
-            queryParams.options.endkey[0] = maxValue;
+            delete queryParams.options.startkey;
+            delete queryParams.options.endkey;
         }
         return queryParams;
         

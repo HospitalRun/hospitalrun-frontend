@@ -1,5 +1,7 @@
 import Ember from "ember";
 export default Ember.Mixin.create({
+    pouchDBService: Ember.inject.service('pouchdb'),
+    
     /**
      * Lazily load patient list so that it doesn't impact performance.
      */    
@@ -9,11 +11,24 @@ export default Ember.Mixin.create({
             endkey: 'patient_\uffff',
             include_docs: true,
         };
-        this.controllerFor('pouchdb').queryMainDB(patientQuery).then(function(result) {
-            controller.set('patientList', result.rows);
+        var pouchDBService = this.get('pouchDBService');
+        pouchDBService.queryMainDB(patientQuery).then(function(result) {    
+            if (result.rows) {
+                var list = result.rows.map(function(row) {
+                    return row.doc;
+                });
+                controller.set('patientList', list);
+            }            
         });
     },
     
+    actions: {
+        returnToPatient: function() {            
+            this.controller.send('returnToPatient');
+            this.controller.send('closeModal');
+        }
+    },
+
     setupController: function(controller, model) {
         this._super(controller, model);
         this._fetchPatientList(controller);

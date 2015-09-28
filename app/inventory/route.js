@@ -52,10 +52,12 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
             var currentItem = this.get('currentItem'),
                 purchases = currentItem.get('purchases');
             purchases.addObject(newPurchase);
-            this.newPurchaseAdded(currentItem, newPurchase); 
-            currentItem.updateQuantity();
-            currentItem.save();
-            this.send('closeModal');
+            this.newPurchaseAdded(currentItem, newPurchase).then(function() {                
+                currentItem.updateQuantity();
+                currentItem.save().then(function() {
+                    this.send('closeModal');
+                }.bind(this));
+            }.bind(this));
         },
         
         newInventoryBatch: function() {
@@ -65,11 +67,7 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
         },
         
         newRequest: function() {
-            var item = this.get('store').createRecord('inv-request', {
-                transactionType: 'Request',
-                requestedItems: []
-            });            
-            this.transitionTo('inventory.request', item);
+            this.transitionTo('inventory.request', 'new');
         },    
         
         allItems: function() {
@@ -80,7 +78,7 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
             var newPurchase = this.get('store').createRecord('inv-purchase', {
                 dateReceived: new Date(),
                 distributionUnit: inventoryItem.get('distributionUnit'),
-                inventoryItem: 'inventory_'+inventoryItem.get('id')
+                inventoryItem: inventoryItem.get('id')
             });            
             this.set('currentItem', inventoryItem);
             this.send('openModal', 'inventory.purchase.edit', newPurchase);

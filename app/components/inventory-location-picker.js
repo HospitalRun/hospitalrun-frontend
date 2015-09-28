@@ -11,7 +11,8 @@ export default Ember.Component.extend({
             locationList = this.get('locationList'),
             locationPickers = this.get('locationPickers'),
             quantityRequested = this.get('quantityRequested'),
-            quantitySatisfiedIdx = -1;
+            quantitySatisfiedIdx = -1,
+            selectedLocations = [];
         if (!doingSetup) {
             locationPickers.reduce(function(previousValue, item, index) {
                 var selectedLocation = item.get('selectedLocation'),
@@ -36,9 +37,14 @@ export default Ember.Component.extend({
             }        
             this._setupLocationPickers(locationPickers, locationList);
         }
+        locationPickers.forEach(function(locationPicker) {
+            selectedLocations.addObject(locationPicker.get('selectedLocation'));
+        });
+        this.set('componentSelectedLocations', selectedLocations);
     },
     
     _setup: function() {
+        Ember.Binding.from('selectedLocations').to('componentSelectedLocations').connect(this);
         var locationList = this.get('locationList'),
             locationPickers = [],
             quantityRequested = this.get('quantityRequested');        
@@ -55,6 +61,7 @@ export default Ember.Component.extend({
         },0);
         this._setupLocationPickers(locationPickers, locationList, true);
         this.set('locationPickers', locationPickers);
+        this.locationChange();
         this.set('doingSetup', false);
     }.on('init'),
     
@@ -76,16 +83,9 @@ export default Ember.Component.extend({
         }
     },
     
-    _selectedLocationChange: function() {
-        var locationPickers = this.get('locationPickers'),
-            selectedLocations = [];
-        locationPickers.forEach(function(locationPicker) {
-            selectedLocations.addObject(locationPicker.get('selectedLocation'));
-        });
-        this.set('selectedLocations', selectedLocations);
-    }.observes('locationPickers.@each.selectedLocation'),
-    
-    resetLocationParameters: function() {
+    calculatedLocationPickers: function() {
         this._setup();
-    }.observes('locationList', 'quantityRequested')
+        var locationPickers = this.get('locationPickers');
+        return locationPickers;
+    }.property('locationList', 'quantityRequested')
 });

@@ -16,11 +16,11 @@
             property="transactionType" content=adjustmentTypes
             optionValuePath="content.type" optionLabelPath="content.name"
         }}
-        {{em-input property="adjustmentQuantity" label="Quantity" class="col-sm-3"}}
+        {{em-input property="adjustmentQuantity" label="Quantity" class="col-sm-3 required"}}
     </div>
     {{em-text label="Reason" property="reason" rows=3 }}
     <div class="row">
-        {{date-picker property="dateCompleted" label="Adjustment Date" class="col-sm-4"}}
+        {{date-picker property="dateCompleted" label="Adjustment Date" class="col-sm-4 required"}}
         {{select-or-typeahead property="expenseAccount" label="Expense To" list=expenseAccountList selection=expenseAccount  class="col-sm-8"}}
     </div>
 {{/em-form}}

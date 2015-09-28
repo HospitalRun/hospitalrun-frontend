@@ -34,7 +34,7 @@
         {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}Status{{/sortable-column}}
         <th>Actions</th>
     </tr>
-    {{#each itemController='appointments/item'}}
+    {{#each model as |appointment|}}
         {{partial 'appointments/item'}}
     {{/each}}
 </table>

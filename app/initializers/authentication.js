@@ -1,14 +1,8 @@
-import CustomAuth from "hospitalrun/utils/custom-auth";
-import CouchSerializer from "hospitalrun/utils/couch-serializer";
-import Ember from "ember";
-
 export default {
     name: 'authentication',
     
     initialize: function(container, application) {
-        container.register('authenticators:custom', CustomAuth);
-        application.register('serializer:couchdb', CouchSerializer);        
-        Ember.SimpleAuth.setup(container, application);
-        container.injection('adapter', 'session', 'ember-simple-auth:session:current');
+        application.inject('model', 'session', 'simple-auth-session:main');
+        application.inject('adapter', 'session', 'simple-auth-session:main');            
     }    
 };

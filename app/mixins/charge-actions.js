@@ -2,7 +2,7 @@ import Ember from 'ember';
 export default Ember.Mixin.create({
     _createNewChargeRecord: function(quantityCharged, pricingId) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            this.store.find('pricing', pricingId.substr(8)).then(function(item) {
+            this.store.find('pricing', pricingId).then(function(item) {
                 var newCharge = this.store.createRecord('proc-charge', {
                     dateCharged: new Date(),
                     quantity: quantityCharged,
@@ -57,6 +57,10 @@ export default Ember.Mixin.create({
                 updateButtonAction: 'confirm',
                 updateButtonText: 'Ok'
             }));                 
+        },
+        
+        setChargeQuantity: function(id, quantity) {
+            this.set(id, quantity);
         }
     },
     
@@ -84,7 +88,7 @@ export default Ember.Mixin.create({
         var charges = this.get('charges'),
             chargeForItem = charges.find(function(charge) {
                 var chargePricingItemId = charge.get('pricingItem.id');
-                return (pricingItem._id.substr(8) === chargePricingItemId);
+                return (pricingItem.id === chargePricingItemId);
             });
         return chargeForItem;
     },
@@ -102,7 +106,7 @@ export default Ember.Mixin.create({
                 userCanAdd: userCanAddPricingTypes
             });        
         if (!Ember.isEmpty(pricingList)) {
-            returnList.set('value', pricingList.filterBy('type', pricingTypeForObjectType));
+            returnList.set('value', pricingList.filterBy('pricingType', pricingTypeForObjectType));
         }
         return returnList;
     }.property('pricingList','pricingTypeForObjectType','pricingTypeValues'),
@@ -110,14 +114,19 @@ export default Ember.Mixin.create({
     organizeByType: Ember.computed.alias('pricingTypes.organizeByType'),
         
     pricingTypeList: function() {
-        var pricingTypeValues = this.get('pricingTypeValues'),
+        var pricingList = this.get('pricingList'),
+            pricingTypeValues = this.get('pricingTypeValues'),
             pricingTypeForObjectType = this.get('pricingTypeForObjectType');
         pricingTypeValues = pricingTypeValues.filter(function(pricingType) {
-            return pricingType !== pricingTypeForObjectType;
+            var havePricing = false;
+            if (!Ember.isEmpty(pricingList)) {
+                havePricing = !Ember.isEmpty(pricingList.findBy('pricingType', pricingType));
+            }
+            return havePricing && pricingType !== pricingTypeForObjectType;
         });
         pricingTypeValues = pricingTypeValues.sortBy('name');
         return pricingTypeValues;
-    }.property('pricingTypeValues','pricingTypeForObjectType'),
+    }.property('pricingTypeValues','pricingTypeForObjectType','pricingList'),
     
     pricingTypeValues: Ember.computed.alias('pricingTypes.value'),
     
@@ -131,37 +140,46 @@ export default Ember.Mixin.create({
      * should be created. 
      */
     createMultipleRequests: function(pricingRecords, pricingField, visitChildName, newVisitType) {
-        var addPromises = [],
-            attributesToSave = {},        
+        var firstRecord = pricingRecords.get('firstObject'),
+            modelToSave = this.get('model');
+        modelToSave.set(pricingField, firstRecord);        
+        this.addChildToVisit(modelToSave, visitChildName, newVisitType).then(function(visit) {
+            modelToSave.save().then(function() {                
+                this._finishCreateMultipleRequests(pricingRecords, pricingField, visitChildName, newVisitType, visit);
+            }.bind(this));
+        }.bind(this));
+    },
+    
+    _finishCreateMultipleRequests: function(pricingRecords, pricingField, visitChildName, newVisitType, visit) {
+        var attributesToSave = {},        
             baseModel = this.get('model'),
             modelToSave,
+            modelsToAdd = [],
             patient = this.get('patient'),
-            visit = this.get('visit');
+            savePromises = [];
         
-        if (Ember.isEmpty(visit)) {
-            visit = this.createNewVisit(newVisitType);
-        }
         baseModel.eachAttribute(function(name) {
             attributesToSave[name] = baseModel.get(name);
-        });
+        });        
         
-        pricingRecords.forEach(function(pricingRecord) {
-            modelToSave = this.store.createRecord(newVisitType.toLowerCase(), attributesToSave); 
-            modelToSave.set(pricingField, pricingRecord);
-            modelToSave.set('patient', patient);
-            modelToSave.set('visit', visit);
-            addPromises.push(this.addChildToVisit(modelToSave, visitChildName, newVisitType));
+        pricingRecords.forEach(function(pricingRecord, index) {
+            if (index > 0) {
+                modelToSave = this.store.createRecord(newVisitType.toLowerCase(), attributesToSave); 
+                modelToSave.set(pricingField, pricingRecord);
+                modelToSave.set('patient', patient);
+                modelToSave.set('visit', visit);
+                modelsToAdd.push(modelToSave);
+                savePromises.push(modelToSave.save());
+            }
         }.bind(this));
         
-        Ember.RSVP.all(addPromises).then(function(results) {
-            var savePromises = [];
-            results.forEach(function(newObject) {
-                console.log("Results are:", newObject);
-                savePromises.push(newObject.save());
-            });
-            Ember.RSVP.all(savePromises).then(function(saveResponse) {
-                this.set('visit', visit); //Make sure the visit is properly set for saving
-                this.afterUpdate(saveResponse, true);
+        Ember.RSVP.all(savePromises).then(function() {
+            var addPromises = [];
+            modelsToAdd.forEach(function(modelToSave) {
+                addPromises.push(this.addChildToVisit(modelToSave, visitChildName, newVisitType));
+            }.bind(this));
+            Ember.RSVP.all(addPromises).then(function(addResults) {                
+                this.afterUpdate(addResults, true);
             }.bind(this));
         }.bind(this));
     },
@@ -173,11 +191,11 @@ export default Ember.Mixin.create({
             newPricing = this.store.createRecord('pricing', {
                 name: pricingName,
                 category: pricingCategory,
-                type: pricingTypeForObjectType
+                pricingType: pricingTypeForObjectType
             });
-            newPricing.save().then(function() {
+            newPricing.save().then(function(savedNewPricing) {
                 this.get('pricingList').addObject({
-                    _id: 'pricing_'+ newPricing.get('id'),
+                    id: savedNewPricing.get('id'),
                     name: newPricing.get('name')
                 });
                 this.set(priceObjectToSet, newPricing);
@@ -192,11 +210,11 @@ export default Ember.Mixin.create({
             return new Ember.RSVP.Promise(function(resolve, reject) {
                 if (Ember.isArray(selectedItem)) {
                     var pricingIds = selectedItem.map(function(pricingItem) {
-                        return pricingItem._id.substr(8);
+                        return pricingItem.id;
                     });
                     this.store.findByIds('pricing', pricingIds).then(resolve, reject);
                 } else {
-                    this.store.find('pricing', selectedItem._id.substr(8)).then(resolve, reject);
+                    this.store.find('pricing', selectedItem.id).then(resolve, reject);
                 }
             }.bind(this));
         } else {
@@ -229,7 +247,14 @@ export default Ember.Mixin.create({
         return (!Ember.isEmpty(pricingTypeList) && pricingTypeList.get('length') > 1);
     }.property('pricingTypeList'),
     
-    userCanAddPricingTypes: Ember.computed.alias('pricingTypes.userCanAdd'),
+    userCanAddPricingTypes: function() {
+        var pricingTypes = this.get('pricingTypes');
+        if (Ember.isEmpty(pricingTypes)) {
+            return true;
+        } else {
+            return pricingTypes.get('userCanAdd');
+        }
+    }.property('pricingTypes'),
     
     /**
      * When using organizeByType charges need to be mapped over from the price lists
@@ -246,7 +271,7 @@ export default Ember.Mixin.create({
             var chargePromises = [];
             pricingList.forEach(function(pricingItem) {
                 var currentCharge = this.findChargeForPricingItem(pricingItem),
-                    quantityCharged = this.get(pricingItem._id);
+                    quantityCharged = this.get(pricingItem.id);
                 if (Ember.isEmpty(quantityCharged)) {
                     if (currentCharge) {
                         //Remove existing charge because quantity is blank
@@ -260,7 +285,7 @@ export default Ember.Mixin.create({
                             chargePromises.push(currentCharge.save());
                         }                        
                     } else {
-                        chargePromises.push(this._createNewChargeRecord(quantityCharged, pricingItem._id));
+                        chargePromises.push(this._createNewChargeRecord(quantityCharged, pricingItem.id));
                     }
                 }                
             }.bind(this));

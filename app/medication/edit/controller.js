@@ -8,7 +8,7 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from "hospitalrun/mixins/user-session";
 
 export default AbstractEditController.extend(InventorySelection, FulfillRequest, InventoryLocations, PatientId, PatientSubmodule, UserSession, {    
-    needs: ['application','medication','pouchdb'],    
+    needs: ['application','medication'],    
     
     applicationConfigs: Ember.computed.alias('controllers.application.model'),
     expenseAccountList: Ember.computed.alias('controllers.medication.expenseAccountList'),
@@ -37,7 +37,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     
     prescriptionClass: function() {
         var quantity = this.get('quantity');
-        this.get('model').validate();
+        this.get('model').validate().catch(Ember.K, 'Prescription validation');
         if (Ember.isEmpty(quantity)) {
             return 'required';
         }
@@ -138,9 +138,9 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
                                 reject('creating new patient first');
                             } else {
                                 this.set('newMedication', true);
-                                this.set('status', 'Requested');
-                                this.set('requestedBy', newMedication.getUserName());
-                                this.set('requestedDate', new Date());
+                                newMedication.set('status', 'Requested');
+                                newMedication.set('requestedBy', newMedication.getUserName());
+                                newMedication.set('requestedDate', new Date());
                                 this.addChildToVisit(newMedication, 'medication', 'Pharmacy').then(function() {        
                                     this.finishBeforeUpdate(isFulfilling,  resolve);
                                 }.bind(this), reject);

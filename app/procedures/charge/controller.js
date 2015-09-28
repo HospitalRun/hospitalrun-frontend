@@ -6,14 +6,16 @@ export default AbstractEditController.extend({
     cancelAction: 'closeModal',
     newPricingItem: false,
     requestingController: Ember.computed.alias('controllers.procedures/edit'),
+    pouchdb: Ember.inject.service(),
     pricingList: Ember.computed.alias('controllers.procedures/edit.pricingList'),
     
     updateCapability: 'add_charge',
 
     itemChanged: function() {
         var selectedItem = this.get('selectedItem');
-        if (!Ember.isEmpty(selectedItem)) {            
-            this.store.find('pricing', selectedItem._id.substr(8)).then(function(item) {
+        if (!Ember.isEmpty(selectedItem)) {
+            var pricingId = this.get('pouchdb').getEmberId(selectedItem._id);
+            this.store.find('pricing', pricingId).then(function(item) {
                 this.set('pricingItem', item);
             }.bind(this));
         }

@@ -1,0 +1,33 @@
+<table class="table">
+    <tr class="table-header">
+        <th>Date Requested</th>
+        <th>Imaging Type</th>
+        <th>Status</th>
+        <th>Date Processed</th>
+        <th>Result</th>
+        <th>Notes</th>
+        <th>Requested By</th>
+        <th>Actions</th>
+    </tr>
+    {{#each patientImaging as |imaging|}}
+        <tr {{action "editImaging" imaging}}>
+            <td>{{date-format imaging.requestedDate}}</td>
+            <td>{{imaging.imagingType.name}}</td>
+            <td>{{imaging.status}}</td>
+            <td>{{date-format imaging.imagingDate}}</td>
+            <td>{{imaging.result}}</td>
+            <td>{{imaging.notes}}</td>
+            <td>{{imaging.requestedBy}}</td>
+            <td>
+                {{#if imaging.canEdit}}
+                    {{#if canAddImaging}}
+                        <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>Edit</button>
+                    {{/if}}
+                    {{#if canDeleteImaging}}
+                        <button type="button" class="btn btn-default warning" {{action "showDeleteImaging" imaging  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                    {{/if}}
+                {{/if}}
+            </td>
+        </tr>
+    {{/each}}
+</table>

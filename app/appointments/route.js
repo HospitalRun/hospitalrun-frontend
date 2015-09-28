@@ -12,12 +12,12 @@ export default AbstractModuleRoute.extend(UserSession,{
     
     actions: {
         createVisit: function(appointment) {
-            var visitProps = appointment.getProperties('startDate', 'endDate', 'location', 'patient'),
-                visit;            
+            var visitProps = appointment.getProperties('startDate', 'endDate', 'location', 'patient');
             visitProps.visitType = appointment.get('appointmentType');
             visitProps.examiner = appointment.get('provider');
-            visit = this.get('store').createRecord('visit', visitProps);
-            this.transitionTo('visits.edit', visit);
+            this.transitionTo('visits.edit', 'new').then(function(newRoute) {
+                newRoute.currentModel.setProperties(visitProps);
+            }.bind(this));
         }        
     },
     

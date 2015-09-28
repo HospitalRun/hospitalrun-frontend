@@ -1,6 +1,5 @@
-<th {{action 'sortBy'}}>
-    {{#if sorted}}
-        <span {{bind-attr class=":glyphicon sortDesc:glyphicon-arrow-down:glyphicon-arrow-up"}}></span>
-    {{/if}}    
-    {{yield}}
-</th>
+{{#if sorted}}
+    <span class="glyphicon {{if sortDesc 'glyphicon-arrow-down' 'glyphicon-arrow-up'}}"></span>
+{{/if}}
+
+{{yield}}

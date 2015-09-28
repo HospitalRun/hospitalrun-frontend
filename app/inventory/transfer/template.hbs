@@ -11,12 +11,12 @@
         <label class="control-label">Quantity Available</label>
         <p class="form-control-static">{{quantity}}</p>
     </div>
-    {{select-or-typeahead property="transferLocation" label="Transfer To Location" list=warehouseList selection=transferLocation }}
+    {{select-or-typeahead class="required" property="transferLocation" label="Transfer To Location" list=warehouseList selection=transferLocation }}
     {{select-or-typeahead property="transferAisleLocation" label="Transfer To Aisle Location" list=aisleLocationList selection=transferAisleLocation }}
     <div class="row">
-        {{em-input property="adjustmentQuantity" label="Quantity" class="col-sm-3"}}        
+        {{em-input property="adjustmentQuantity" label="Quantity" class="col-sm-3 required"}}        
     </div>
     <div class="row">
-        {{date-picker property="dateCompleted" label="Date Transferred" class="col-sm-4"}}
+        {{date-picker property="dateCompleted" label="Date Transferred" class="col-sm-4 required"}}
     </div>
 {{/em-form}}

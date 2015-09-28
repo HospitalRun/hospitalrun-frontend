@@ -1,18 +1,19 @@
 import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
 import Ember from 'ember';
+import InventoryAdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
 import LocationName from 'hospitalrun/mixins/location-name';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
-import NumberFormat from "hospitalrun/mixins/number-format";
-import InventoryAdjustmentTypes from "hospitalrun/mixins/inventory-adjustment-types";
+import NumberFormat from 'hospitalrun/mixins/number-format';
 export default AbstractReportController.extend(LocationName, ModalHelper, NumberFormat, InventoryAdjustmentTypes, {
-    needs: ['inventory','pouchdb'],
+    needs: ['inventory'],
     effectiveDate: null,
     expenseCategories: ['Inventory Consumed', 'Gift In Kind Usage', 'Inventory Obsolence'],
     expenseMap: null,
     grandCost: 0,
     grandQuantity: 0,
     locationSummary: null,
-    pouchdbController: Ember.computed.alias('controllers.pouchdb'),
+    
+    pouchDBService: Ember.inject.service('pouchdb'),
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     reportColumns: {
         date: {
@@ -48,7 +49,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         type: {        
             label: 'Type',
             include: true,
-            property: 'inventoryItem.type'
+            property: 'inventoryItem.inventoryType'
         }, 
         xref: {
             label: 'Cross Reference',
@@ -292,10 +293,11 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     },
     
     _addReportRow: function(row, skipNumberFormatting, reportColumns, rowAction) {
-        if (Ember.isEmpty(rowAction) && !Ember.isEmpty(row.inventoryItem) && !Ember.isEmpty(row.inventoryItem._id)) {
+        if (Ember.isEmpty(rowAction) && !Ember.isEmpty(row.inventoryItem) && !Ember.isEmpty(row.inventoryItem.id)) {
+            var inventoryId = this.get('pouchDBService').getEmberId(row.inventoryItem.id);
             rowAction = {
                 action: 'viewInventory',
-                model: row.inventoryItem._id.substr(10)
+                model: inventoryId
             };
         }
         this._super(row, skipNumberFormatting, reportColumns, rowAction);
@@ -342,7 +344,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
      * @param {boolean} increment boolean indicating if the adjustment is an increment; or false if decrement.
      */
     _adjustPurchase: function(purchases, purchaseId, quantity, increment) {
-        var purchaseToAdjust = purchases.findBy('_id', 'inv-purchase_'+purchaseId);
+        var purchaseToAdjust = purchases.findBy('id', purchaseId);
         if (!Ember.isEmpty(purchaseToAdjust)) {
             var calculatedQuantity = purchaseToAdjust.calculatedQuantity;
             if (increment) {
@@ -403,15 +405,15 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         if (Ember.isEmpty(inventoryList)) {
             inventoryList = {};
         }
-        var pouchdbController = this.get('pouchdbController');
+        var pouchDBService = this.get('pouchDBService');
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            pouchdbController.queryMainDB(queryParams, view).then(function(inventoryChildren) {
+            pouchDBService.queryMainDB(queryParams, view).then(function(inventoryChildren) {
                 var inventoryKeys = Ember.keys(inventoryList),
                     inventoryIds = [];
                 if (!Ember.isEmpty(inventoryChildren.rows)) {
                     inventoryChildren.rows.forEach(function (child) {
-                        if (child.doc.inventoryItem && !inventoryKeys.contains(child.doc.inventoryItem)) {
-                            inventoryIds.push(child.doc.inventoryItem);
+                        if (child.doc.inventoryItem && !inventoryKeys.contains(child.doc.inventoryItem)) {        
+                            inventoryIds.push(pouchDBService.getPouchId(child.doc.inventoryItem, 'inventory'));
                             inventoryKeys.push(child.doc.inventoryItem);
                         }
                     });
@@ -437,16 +439,16 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     
     _findInventoryItemsByPurchase: function(reportTimes, inventoryMap) {
         return this._findInventoryItems({
-            startkey: [reportTimes.startTime,'inv-purchase_'],
-            endkey: [reportTimes.endTime,'inv-purchase_\uffff'],
+            startkey: [reportTimes.startTime,'invPurchase_'],
+            endkey: [reportTimes.endTime,'invPurchase_\uffff'],
             include_docs: true,
         }, 'inventory_purchase_by_date_received', inventoryMap, 'purchaseObjects');
     },
     
     _findInventoryItemsByRequest: function(reportTimes, inventoryMap) {
         return this._findInventoryItems({
-            startkey: ['Completed',reportTimes.startTime,'inv-request_'],            
-            endkey: ['Completed',reportTimes.endTime,'inv-request_\uffff'],
+            startkey: ['Completed',reportTimes.startTime,'invRequest_'],            
+            endkey: ['Completed',reportTimes.endTime,'invRequest_\uffff'],
             include_docs: true,
         }, 'inventory_request_by_status', inventoryMap, 'requestObjects');
     },    
@@ -534,12 +536,12 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     
     _generateExpirationReport: function() {
         var grandQuantity = 0,
-            pouchdbController = this.get('pouchdbController'),
+            pouchDBService = this.get('pouchDBService'),
             reportRows = this.get('reportRows'),
             reportTimes = this._getDateQueryParams();
-        pouchdbController.queryMainDB({
-            startkey:  [reportTimes.startTime, 'inv-purchase_'],
-            endkey: [reportTimes.endTime, 'inv-purchase_\uffff'], 
+        pouchDBService.queryMainDB({
+            startkey:  [reportTimes.startTime, 'invPurchase_'],
+            endkey: [reportTimes.endTime, 'invPurchase_\uffff'], 
             include_docs: true,
         }, 'inventory_purchase_by_expiration_date').then(function(inventoryPurchases) {
             var purchaseDocs = [],
@@ -548,7 +550,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             inventoryPurchases.rows.forEach(function(purchase) {
                 if (purchase.doc.currentQuantity > 0 && !Ember.isEmpty(purchase.doc.expirationDate)) {
                     purchaseDocs.push(purchase.doc);
-                    inventoryIds.push(purchase.doc.inventoryItem);                    
+                    inventoryIds.push(pouchDBService.getPouchId(purchase.doc.inventoryItem, 'inventory'));
                 }
             }.bind(this));
             this._getInventoryItems(inventoryIds).then(function(inventoryMap) {
@@ -885,7 +887,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                     switch(reportType) {
                         case 'byLocation': {
                             row.locations.forEach(function(location) {
-                                var locationToUpdate = locationSummary.findBy('name', location.name);
+                                var locationToUpdate = locationSummary.findBy('name', this._getWarehouseLocationName((location.name)));
                                 if (Ember.isEmpty(locationToUpdate)) {
                                     locationToUpdate = Ember.copy(location);
                                     locationToUpdate.items = {};
@@ -897,7 +899,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                                     quantity: 0,
                                     totalCost: 0
                                 });
-                                locationToUpdate.items[item._id] = {
+                                locationToUpdate.items[item.id] = {
                                     item: item,
                                     quantity: this._getValidNumber(location.quantity),
                                     giftInKind: row.giftInKind,                                
@@ -1109,17 +1111,17 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     },
     
     _getInventoryItems: function(inventoryIds, inventoryMap) {
-        var pouchdbController = this.get('pouchdbController');
+        var pouchDBService = this.get('pouchDBService');
         return new Ember.RSVP.Promise(function(resolve, reject) {
             if (Ember.isEmpty(inventoryMap)) {
                 inventoryMap = {};
             }
-            pouchdbController.queryMainDB({
+            pouchDBService.queryMainDB({
                 keys: inventoryIds,
                 include_docs: true
             }).then(function(inventoryItems) {
                 inventoryItems.rows.forEach(function(inventoryItem) {
-                    inventoryMap[inventoryItem.id] = inventoryItem.doc;
+                    inventoryMap[inventoryItem.doc.id] = inventoryItem.doc;
                 });
                 resolve(inventoryMap);
             }, reject);

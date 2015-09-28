@@ -1,7 +1,9 @@
-import Ember from "ember";
+import DS from 'ember-data';
+import Ember from 'ember';
 import EmberValidations from 'ember-validations';
+import { Model } from 'ember-pouch';
 import UserSession from "hospitalrun/mixins/user-session";
-export default DS.Model.extend(UserSession, EmberValidations.Mixin, {
+export default Model.extend(UserSession, EmberValidations, {
     lastModified: DS.attr('date'),
     modifiedBy: DS.attr(),
     modifiedFields: DS.attr(),
@@ -11,7 +13,7 @@ export default DS.Model.extend(UserSession, EmberValidations.Mixin, {
     * Also, if the save failed because of a conflict, reload the record and reapply the changed attributes and
     * attempt to save again.
     */
-    save: function(retry) {
+    save: function(options) {
         var attribute,
             changedAttributes = this.changedAttributes(),
             modifiedDate = new Date(),
@@ -35,12 +37,12 @@ export default DS.Model.extend(UserSession, EmberValidations.Mixin, {
             this.set('modifiedFields', modifiedFields);
             this.set('modifiedBy', this.getUserName());
         }
-        
+
         return new Ember.RSVP.Promise(function(resolve, reject){
-            this._super().then(function(results) {
+            this._super(options).then(function(results) {
                 Ember.run(null, resolve, results);
             }, function(error) {
-                if (retry) {
+                if (!Ember.isEmpty(options) && options.retry) {
                     //We failed on the second attempt to save the record, so reject the save.
                     Ember.run(null, reject, error);
                 } else {
@@ -51,7 +53,8 @@ export default DS.Model.extend(UserSession, EmberValidations.Mixin, {
                             for (var attribute in changedAttributes) {
                                 record.set(attribute, changedAttributes[attribute][1]);
                             }
-                            record.save(true).then(function(results) {
+                            options.retry = true;
+                            record.save(options).then(function(results) {
                                 Ember.run(null, resolve, results);
                             }, function(err) {
                                 Ember.run(null, reject, err);

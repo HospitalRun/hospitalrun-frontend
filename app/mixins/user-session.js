@@ -454,7 +454,7 @@ export default Ember.Mixin.create({
         var session = this.get('session');
         if (!Ember.isEmpty(session) && session.isAuthenticated) {
             var sessionVars = session.store.restore();
-            return sessionVars;
+            return sessionVars.secure;
         }
     },
     

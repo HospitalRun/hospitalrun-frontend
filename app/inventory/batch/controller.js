@@ -5,7 +5,7 @@ import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import Ember from 'ember';
 
 export default AbstractEditController.extend(InventoryId, InventoryLocations, InventorySelection, {    
-    needs: ['inventory','pouchdb'],
+    needs: ['inventory'],
    
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
@@ -118,7 +118,6 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
         var invoiceItems = this.get('invoiceItems'),
             inventoryId = purchase.get('inventoryItem');
         if (!Ember.isEmpty(inventoryId)) {
-            inventoryId = inventoryId.substr(10);
             var invoiceItem = invoiceItems.find(function(item) {
                 return (item.get('inventoryItem.id') === inventoryId);
             }, this);
@@ -164,23 +163,30 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
                 distributionUnit: inventoryItem.get('distributionUnit'),
                 currentQuantity:  quantity,
                 originalQuantity: quantity,
-                inventoryItem: 'inventory_'+inventoryItem.get('id')
+                inventoryItem: inventoryItem.get('id')
             });
             savePromises.push(inventoryPurchase.save());
         }.bind(this));
         Ember.RSVP.all(savePromises).then(function(results) {
-            var inventorySaves = [];
+            var inventorySaves = [],
+                purchasesAdded = [];                
             results.forEach(function(newPurchase) {
                 var inventoryItem = this._findInventoryItem(newPurchase),
                     purchases = inventoryItem.get('purchases');
                 purchases.addObject(newPurchase);
-                this.newPurchaseAdded(inventoryItem, newPurchase); 
-                inventoryItem.updateQuantity();
-                inventorySaves.push(inventoryItem.save());
+                purchasesAdded.push(this.newPurchaseAdded(inventoryItem, newPurchase));
             }.bind(this));
+            
             Ember.RSVP.all(inventorySaves).then(function() {
-                this.updateLookupLists();
-                this.displayAlert('Inventory Purchases Saved', 'The inventory purchases have been successfully saved', 'allItems');
+                results.forEach(function(newPurchase) {
+                    var inventoryItem = this._findInventoryItem(newPurchase);
+                        inventoryItem.updateQuantity();
+                        inventorySaves.push(inventoryItem.save());
+                }.bind(this));
+                Ember.RSVP.all(inventorySaves).then(function() {
+                    this.updateLookupLists();
+                    this.displayAlert('Inventory Purchases Saved', 'The inventory purchases have been successfully saved', 'allItems');
+                }.bind(this));
             }.bind(this));
         }.bind(this));
     },

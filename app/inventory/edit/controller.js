@@ -7,7 +7,7 @@ import UnitTypes from "hospitalrun/mixins/unit-types";
 import UserSession from "hospitalrun/mixins/user-session";
 
 export default AbstractEditController.extend(InventoryLocations, InventoryTypeList, ReturnTo, UnitTypes, UserSession, {
-    needs: ['inventory','pouchdb'],
+    inventory: Ember.inject.controller(),
     
     canAddPurchase: function() {        
         return this.currentUserCan('add_inventory_purchase');
@@ -21,12 +21,12 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         return this.currentUserCan('delete_inventory_purchase');
     }.property(),    
     
-    warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
-    aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
-    inventoryTypeList: Ember.computed.alias('controllers.inventory.inventoryTypeList.value'),
-    vendorList: Ember.computed.alias('controllers.inventory.vendorList'),
-    pouchdbController: Ember.computed.alias('controllers.pouchdb'),
-    
+    warehouseList: Ember.computed.alias('inventory.warehouseList'),
+    aisleLocationList: Ember.computed.alias('inventory.aisleLocationList'),
+    inventoryTypeList: Ember.computed.alias('inventory.inventoryTypeList.value'),
+    vendorList: Ember.computed.alias('inventory.vendorList'),
+    pouchDBService: Ember.inject.service('pouchdb'),
+
     lookupListsToUpdate: [{
         name: 'aisleLocationList', //Name of property containing lookup list
         property: 'aisleLocation', //Corresponding property on model that potentially contains a new value to add to the list
@@ -42,8 +42,8 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     }],
     
     canEditQuantity: function() {		
-        return (this.get('isNew'));		
-    }.property('isNew'),
+        return (this.get('model.isNew'));		
+    }.property('model.isNew'),
     
     haveTransactions: function() {
         var transactions = this.get('transactions');
@@ -79,12 +79,12 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     }.property('locationQuantityTotal', 'quantity'),
     
     originalQuantityUpdated: function() {
-        var isNew = this.get('isNew'),
-            quantity = this.get('originalQuantity');
+        var isNew = this.get('model.isNew'),
+            quantity = this.get('model.originalQuantity');
         if (isNew && !Ember.isEmpty(quantity)) {
             this.set('quantity', quantity);
         }
-    }.observes('originalQuantity'),
+    }.observes('model.isNew','model.originalQuantity'),
     
     showTransactions: function() {
         var transactions = this.get('transactions');
@@ -189,21 +189,22 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                     deliveryLocation: inventoryLocation.get('transferLocation'),
                     transactionType: 'Transfer'
                 });
-            this.transferToLocation(inventoryItem, inventoryLocation);            
-            inventoryLocation.setProperties({
-                transferItem: null,
-                transferLocation: null,
-                transferAisleLocation: null,
-                adjustmentQuantity: null
-            });
-            request.set('locationsAffected',[{
-                name: inventoryLocation.get('locationName'),
-                quantity: request.get('quantity')
-            }]);
-            request.get('inventoryItem').then(function() {
-                //Make sure relationships are resolved before saving
-                this._saveRequest(request);                
-            }.bind(this));            
+            this.transferToLocation(inventoryItem, inventoryLocation).then(function() {
+                inventoryLocation.setProperties({
+                    transferItem: null,
+                    transferLocation: null,
+                    transferAisleLocation: null,
+                    adjustmentQuantity: null
+                });
+                request.set('locationsAffected',[{
+                    name: inventoryLocation.get('locationName'),
+                    quantity: request.get('quantity')
+                }]);
+                request.get('inventoryItem').then(function() {
+                    //Make sure relationships are resolved before saving
+                    this._saveRequest(request);                
+                }.bind(this));
+            }.bind(this));
         },
         
         updatePurchase: function(purchase, updateQuantity) {
@@ -226,11 +227,11 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         if (!Ember.isEmpty(quantity)) {
             newPurchase.originalQuantity = quantity;
             newPurchase.currentQuantity = quantity;
-            newPurchase.inventoryItem = 'inventory_'+this.get('model.id');
+            newPurchase.inventoryItem = this.get('model.id');
             var purchase = this.get('store').createRecord('inv-purchase', newPurchase);
             promises.push(purchase.save());
             this.get('purchases').addObject(purchase);
-            this.newPurchaseAdded(this.get('model'), purchase);
+            promises.push(this.newPurchaseAdded(this.get('model'), purchase));
         }
         sequence.incrementProperty('value',1);
         sequenceValue = sequence.get('value');
@@ -248,35 +249,35 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         });
     },
 
-    _findSequence: function(type, resolve, reject) {
+    _findSequence: function(inventoryType, resolve, reject) {
         var sequenceFinder = new Ember.RSVP.Promise(function(resolve){
-            this._checkNextSequence(resolve, type, 0);
+            this._checkNextSequence(resolve, inventoryType, 0);
         }.bind(this));
         sequenceFinder.then(function(prefixChars) {
             var newSequence = this.get('store').push('sequence',{
-                id: 'inventory_'+type,
-                prefix: type.toLowerCase().substr(0,prefixChars),
+                id: 'inventory_'+inventoryType,
+                prefix: inventoryType.toLowerCase().substr(0,prefixChars),
                 value: 0
             });
             this._completeBeforeUpdate(newSequence, resolve, reject);
         }.bind(this));
     },
     
-    _findSequenceByPrefix: function(type, prefixChars) {  
-        var pouchdbController = this.get('pouchdbController');
+    _findSequenceByPrefix: function(inventoryType, prefixChars) {  
+        var pouchDBService = this.get('pouchDBService');
         var sequenceQuery = {
-            key:  type.toLowerCase().substr(0,prefixChars)            
+            key:  inventoryType.toLowerCase().substr(0,prefixChars)            
         };
-        return pouchdbController.queryMainDB(sequenceQuery, 'sequence_by_prefix');
+        return pouchDBService.queryMainDB(sequenceQuery, 'sequence_by_prefix');
     },    
     
-    _checkNextSequence: function(resolve, type, prefixChars) {
+    _checkNextSequence: function(resolve, inventoryType, prefixChars) {
         prefixChars++;
-        this._findSequenceByPrefix(type, prefixChars).then(function(records) {
+        this._findSequenceByPrefix(inventoryType, prefixChars).then(function(records) {
             if (Ember.isEmpty(records.rows)) {
                 resolve(prefixChars);
             } else {
-                this._checkNextSequence(resolve, type, prefixChars);
+                this._checkNextSequence(resolve, inventoryType, prefixChars);
             }
         }.bind(this), function() {
             resolve(prefixChars);
@@ -297,8 +298,8 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         }.bind(this));
     },
     
-    getTransactions: function() {        
-        var inventoryId = 'inventory_'+this.get('id');
+    getTransactions: function() {
+        var inventoryId =  this.get('id');
         this.set('transactions',null);
         this.store.find('inv-request', {
             options: {
@@ -315,15 +316,15 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     beforeUpdate: function() {
         if (this.get('isNew')) {
             var model = this.get('model'),
-                type = this.get('type');                
+                inventoryType = model.get('inventoryType');                
             return new Ember.RSVP.Promise(function(resolve, reject){
                 model.validate().then(function() {
                     if (model.get('isValid')) {
                         this.set('savingNewItem', true);
-                        this.store.find('sequence', 'inventory_'+type).then(function(sequence) {
+                        this.store.find('sequence', 'inventory_'+inventoryType).then(function(sequence) {
                             this._completeBeforeUpdate(sequence, resolve, reject);
                         }.bind(this), function() {
-                            this._findSequence(type, resolve, reject);
+                            this._findSequence(inventoryType, resolve, reject);
                         }.bind(this));                        
                     } else {
                         this.send('showDisabledDialog');

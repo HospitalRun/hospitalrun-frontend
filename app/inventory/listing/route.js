@@ -1,6 +1,6 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-import UserSession from "hospitalrun/mixins/user-session";
-export default AbstractIndexRoute.extend(UserSession, {
+import UserSession from 'hospitalrun/mixins/user-session';
+export default AbstractIndexRoute.extend(UserSession, {    
     modelName: 'inventory',
     newButtonAction: function() {
         if (this.currentUserCan('add_inventory_item')) {
@@ -19,7 +19,8 @@ export default AbstractIndexRoute.extend(UserSession, {
     },
     
     _getStartKeyFromItem: function(item) {
-        return [item.get('name'),'inventory_'+item.get('id')];
+        var inventoryId = this._getPouchIdFromItem(item);
+        return [item.get('name'),inventoryId];
     }
         
 });

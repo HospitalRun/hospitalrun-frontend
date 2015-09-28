@@ -32,7 +32,7 @@
                             <div class="form-group">
                                 <label>Gender</label>
                                 <div>
-                                    {{ext-radio name=gender content=genderList value=gender showInline=true }}
+                                    {{ext-radio content=genderList value=gender showInline=true }}
                                 </div>
                             </div>
                             {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now"}}
@@ -44,7 +44,7 @@
                             <div class="form-group">
                                 <label>Patient Type</label>
                                 <div>
-                                    {{ext-radio name=patientType content=patientTypes value=patientType showInline=true radioLabelPath="content" radioValuePath="content"}}
+                                    {{ext-radio content=patientTypes value=patientType showInline=true }}
                                 </div>
                             </div>
                         </div>
@@ -106,39 +106,37 @@
                         {{else}}
                             {{em-text label="Address" property="address" rows=3  class="col-xs-12 col-sm-6"}}
                         {{/if}}
-                        {{select-or-typeahead property="country" label="Country" list=countryList selection=country class="col-xs-12 col-sm-6" }}
+                        {{select-or-typeahead property="country" label="Country" list=countryList selection=country className="col-xs-12 col-sm-6" }}
 
                     </div>
                 </div>
-                {{#with this as patientController}}
-                    {{#if haveAdditionalContacts}}
-                        <h4>Additional Contacts</h4>
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Relationship</th>
-                                {{#if parentController.canDeleteContact}}
-                                    <th>Action</th>
+                {{#if haveAdditionalContacts}}
+                    <h4>Additional Contacts</h4>
+                    <table class="table">
+                        <tr class="table-header">
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Relationship</th>
+                            {{#if canDeleteContact}}
+                                <th>Action</th>
+                            {{/if}}
+                        </tr>
+                        {{#each model.additionalContacts as |additionalContact|}}
+                            <tr>
+                                <td>{{additionalContact.name}}</td>
+                                <td>{{additionalContact.phone}}</td>
+                                <td>{{additionalContact.email}}</td>
+                                <td>{{additionalContact.relationship}}</td>
+                                {{#if canDeleteContact}}
+                                    <td>
+                                        <button type="button" class="btn btn-default warning" {{action "showDeleteContact" additionalContact bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                    </td>
                                 {{/if}}
                             </tr>
-                            {{#each additionalContacts}}
-                                <tr>
-                                    <td>{{name}}</td>
-                                    <td>{{phone}}</td>
-                                    <td>{{email}}</td>
-                                    <td>{{relationship}}</td>
-                                    {{#if patientController.canDeleteContact}}
-                                        <td>
-                                            <button type="button" class="btn btn-default warning" {{action "showDeleteContact" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                                        </td>
-                                    {{/if}}
-                                </tr>
-                            {{/each}}
-                        </table>                
-                    {{/if}}
-                {{/with}}
+                        {{/each}}
+                    </table>                
+                {{/if}}
             </div>
         </div>
         {{#unless isNewOrDeleted}}
@@ -146,7 +144,6 @@
                 <div class="panel">    
                     <div class="panel-heading">
                         <h3 class="panel-title">
-
                             Photos
                             {{#if canAddPhoto}}
                                 <button type="button" class="btn btn-primary align-right" {{action "showAddPhoto" bubbles=false }}><span class="octicon octicon-plus"></span>New Photo</button>
@@ -155,18 +152,18 @@
                     </div>
                     <div class="panel-body detail-section-content">
                         <div class="row">
-                            {{#each photos itemController="patients/photo-item"}}
+                            {{#each model.photos as |photo|}}
                                 <div class="col-sm-4 col-md-3">                                
-                                     <div {{action "editPhoto" this}} class="thumbnail">
-                                        <img {{bind-attr alt="caption" src="photoUrl"}} class="img-responsive" >
+                                     <div {{action "editPhoto" photo}} class="thumbnail">
+                                        {{photo-display photo=photo }}
                                         <div class="caption">
-                                            {{caption}}
+                                            {{photo.caption}}
                                             <p>
-                                                {{#if parentController.canAddPhoto}}
-                                                    <button type="button" class="btn btn-default neutral" {{action "editPhoto" this}}>Edit</button>
+                                                {{#if canAddPhoto}}
+                                                    <button type="button" class="btn btn-default neutral" {{action "editPhoto" photo}}>Edit</button>
                                                 {{/if}}
-                                                {{#if parentController.canDeletePhoto}}
-                                                    <button type="button" class="btn btn-default warning" {{action "showDeletePhoto" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                                {{#if canDeletePhoto}}
+                                                    <button type="button" class="btn btn-default warning" {{action "showDeletePhoto" photo bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
                                                 {{/if}}
                                             </p>
                                         </div>
@@ -188,35 +185,7 @@
                         </h3>
                     </div>
                     <div class="panel-body detail-section-content">
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Date</th>
-                                <th>Name</th>
-                                <th>Status</th>
-                                <th>Prescription</th>
-                                <th>Requested By</th>
-                                <th>Actions</th>
-                            </tr>
-                            {{#each patientMedications itemController="medication/item-controller"}}
-                                <tr {{action "editMedication" this}}>
-                                    <td>{{date-format prescriptionDate}}</td>
-                                    <td>{{inventoryItem.name}}</td>
-                                    <td>{{status}}</td>
-                                    <td>{{prescription}}</td>
-                                    <td>{{requestedBy}}</td>
-                                    <td>
-                                        {{#if canEdit}}
-                                            {{#if parentController.canAddMedication}}
-                                                <button type="button" class="btn btn-default neutral" {{action "editMedication" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if parentController.canDeleteMedication}}
-                                                <button type="button" class="btn btn-default warning" {{action "showDeleteMedication" this  bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                                            {{/if}}
-                                        {{/if}}
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </table>
+                        {{partial 'patients/medication'}}
                     </div>
                 </div>
             </div>
@@ -231,39 +200,7 @@
                         </h3>
                     </div>
                     <div class="panel-body detail-section-content">
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Date Requested</th>
-                                <th>Imaging Type</th>
-                                <th>Status</th>
-                                <th>Date Processed</th>
-                                <th>Result</th>
-                                <th>Notes</th>
-                                <th>Requested By</th>
-                                <th>Actions</th>
-                            </tr>
-                            {{#each patientImaging itemController="imaging/item-controller"}}
-                                <tr {{action "editImaging" this}}>
-                                    <td>{{date-format requestedDate}}</td>
-                                    <td>{{imagingType.name}}</td>
-                                    <td>{{status}}</td>
-                                    <td>{{date-format imagingDate}}</td>
-                                    <td>{{result}}</td>
-                                    <td>{{notes}}</td>
-                                    <td>{{requestedBy}}</td>
-                                    <td>
-                                        {{#if canEdit}}
-                                            {{#if parentController.canAddImaging}}
-                                                <button type="button" class="btn btn-default neutral" {{action "editImaging" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if parentController.canDeleteImaging}}
-                                                <button type="button" class="btn btn-default warning" {{action "showDeleteImaging" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                                            {{/if}}
-                                        {{/if}}
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </table>
+                        {{partial 'patients/imaging'}}
                     </div>
                 </div>
             </div>
@@ -279,39 +216,7 @@
                     </div>
 
                     <div class="panel-body detail-section-content">
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Date Requested</th>
-                                <th>Lab Type</th>
-                                <th>Status</th>
-                                <th>Date Processed</th>
-                                <th>Result</th>
-                                <th>Notes</th>
-                                <th>Requested By</th>
-                                <th>Actions</th>
-                            </tr>
-                            {{#each patientLabs itemController="labs/item-controller"}}
-                                <tr {{action "editLab" this}}>
-                                    <td>{{date-format requestedDate}}</td>
-                                    <td>{{labType.name}}</td>
-                                    <td>{{status}}</td>
-                                    <td>{{date-format labDate}}</td>
-                                    <td>{{result}}</td>
-                                    <td>{{notes}}</td>
-                                    <td>{{requestedBy}}</td>
-                                    <td>
-                                        {{#if canEdit}}
-                                            {{#if parentController.canAddLab}}
-                                                <button type="button" class="btn btn-default neutral" {{action "editLab" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if parentController.canDeleteLab}}
-                                                <button type="button" class="btn btn-default warning" {{action "showDeleteLab" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                                            {{/if}}
-                                        {{/if}}
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </table>
+                        {{partial 'patients/labs'}}
                     </div>
                 </div>
             </div>
@@ -379,25 +284,23 @@
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
-                            {{#with this as patientController}}
-                                {{#each appointments itemController='appointments/item'}}
-                                    <tr {{action "editAppointment" this}}>
-                                        <td>{{appointmentDate}}</td>
-                                        <td>{{provider}}</td>
-                                        <td>{{location}}</td>
-                                        <td>{{appointmentType}}</td>
-                                        <td>{{displayStatus}}</td>
-                                        <td>
-                                            {{#if patientController.canAddAppointment}}
-                                                <button type="button" class="btn btn-default neutral" {{action "editAppointment" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if patientController.canDeleteAppointment}}
-                                                <button type="button" class="btn btn-default warning" {{action "showDeleteAppointment" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                                            {{/if}}
-                                        </td>
-                                    </tr>
-                                {{/each}}
-                            {{/with}}
+                            {{#each model.appointments as |appointment|}}
+                                <tr {{action "editAppointment" appointment}}>
+                                    <td>{{appointment.formattedAppointmentDate}}</td>
+                                    <td>{{appointment.provider}}</td>
+                                    <td>{{appointment.location}}</td>
+                                    <td>{{appointment.appointmentType}}</td>
+                                    <td>{{appointment.displayStatus}}</td>
+                                    <td>
+                                        {{#if canAddAppointment}}
+                                            <button type="button" class="btn btn-default neutral" {{action "editAppointment" appointment}}>Edit</button>
+                                        {{/if}}
+                                        {{#if canDeleteAppointment}}
+                                            <button type="button" class="btn btn-default warning" {{action "showDeleteAppointment" appointment  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                                        {{/if}}
+                                    </td>
+                                </tr>
+                            {{/each}}
                         </table>
                     </div>
                 </div>

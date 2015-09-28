@@ -1,13 +1,10 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
 import Ember from "ember";
-import FamilyInfoModel from 'hospitalrun/models/family-info';
 import GenderList from 'hospitalrun/mixins/gender-list';
-import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 import ReturnTo from 'hospitalrun/mixins/return-to';
-import SocialExpenseModel from 'hospitalrun/models/social-expense';
 import UserSession from "hospitalrun/mixins/user-session";
-export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapterUtils, ReturnTo, UserSession, {
+export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, UserSession, {
     
     canAddAppointment: function() {        
         return this.currentUserCan('add_appointment');
@@ -105,30 +102,26 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         'Self Employed'      
     ],    
     
-    
-    primaryDiagnosisIdChanged: function() {
-        this.get('model').validate();
-    }.observes('primaryDiagnosisId'),
-    
-    needs: ['filesystem','pouchdb','patients'],
+    filesystem: Ember.inject.service(),
+    pouchdb: Ember.inject.service(),
+    patientController: Ember.inject.controller('patients'),
 
-    addressOptions: Ember.computed.alias('controllers.patients.addressOptions'),
-    address1Include: Ember.computed.alias('controllers.patients.addressOptions.value.address1Include'),
-    address1Label: Ember.computed.alias('controllers.patients.addressOptions.value.address1Label'),
-    address2Include: Ember.computed.alias('controllers.patients.addressOptions.value.address2Include'),
-    address2Label: Ember.computed.alias('controllers.patients.addressOptions.value.address2Label'),
-    address3Include: Ember.computed.alias('controllers.patients.addressOptions.value.address3Include'),
-    address3Label: Ember.computed.alias('controllers.patients.addressOptions.value.address3Label'),
-    address4Include: Ember.computed.alias('controllers.patients.addressOptions.value.address4Include'),
-    address4Label: Ember.computed.alias('controllers.patients.addressOptions.value.address4Label'),
+    addressOptions: Ember.computed.alias('patientController.addressOptions'),
+    address1Include: Ember.computed.alias('patientController.addressOptions.value.address1Include'),
+    address1Label: Ember.computed.alias('patientController.addressOptions.value.address1Label'),
+    address2Include: Ember.computed.alias('patientController.addressOptions.value.address2Include'),
+    address2Label: Ember.computed.alias('patientController.addressOptions.value.address2Label'),
+    address3Include: Ember.computed.alias('patientController.addressOptions.value.address3Include'),
+    address3Label: Ember.computed.alias('patientController.addressOptions.value.address3Label'),
+    address4Include: Ember.computed.alias('patientController.addressOptions.value.address4Include'),
+    address4Label: Ember.computed.alias('patientController.addressOptions.value.address4Label'),
 
-    clinicList: Ember.computed.alias('controllers.patients.clinicList'),
-    countryList: Ember.computed.alias('controllers.patients.countryList'),
-    fileSystem: Ember.computed.alias('controllers.filesystem'),
-    isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
-    patientController: Ember.computed.alias('controllers.patients'),
-    pricingProfiles: Ember.computed.alias('controllers.patients.pricingProfiles'),
-    statusList: Ember.computed.alias('controllers.patients.statusList'),
+    clinicList: Ember.computed.alias('patientController.clinicList'),
+    countryList: Ember.computed.alias('patientController.countryList'),
+    isFileSystemEnabled: Ember.computed.alias('filesystem.isFileSystemEnabled'),
+    
+    pricingProfiles: Ember.computed.alias('patientController.pricingProfiles'),
+    statusList: Ember.computed.alias('patientController.statusList'),
     
     haveAdditionalContacts: function() {
         var additionalContacts = this.get('additionalContacts');
@@ -206,34 +199,38 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
          */
         addPhoto: function(photoFile, caption, coverImage) {
             var dirToSaveTo = this.get('id') + '/photos/',
-                fileSystem = this.get('fileSystem'),
-                photos = this.get('photos'),
+                fileSystem = this.get('filesystem'),
+                photos = this.get('model.photos'),
                 newPatientPhoto = this.get('store').createRecord('photo', {
                     patient: this.get('model'),                    
                     localFile: true,
                     caption: caption,
                     coverImage: coverImage,
                 });
-            var pouchDbId = this._idToPouchId(newPatientPhoto.get('id'), 'photo');
-            fileSystem.addFile(photoFile, dirToSaveTo, pouchDbId).then(function(fileEntry) {
-                fileSystem.fileToDataURL(photoFile).then(function(photoDataUrl) {                        
-                    var dataUrlParts = photoDataUrl.split(',');
-                    newPatientPhoto.setProperties({
-                        fileName: fileEntry.fullPath,
-                        url: fileEntry.toURL(),
-                        _attachments: {
-                            file: {
-                                content_type: photoFile.type,
-                                data: dataUrlParts[1]
-                            }
-                        }                    
-                    });                        
-                    newPatientPhoto.save().then(function() {
-                        photos.addObject(newPatientPhoto);
-                        this.send('closeModal');
+            newPatientPhoto.save().then(function(savedPhotoRecord) {
+                var pouchDbId = this.get('pouchdb').getPouchId(savedPhotoRecord.get('id'),'photo');
+                fileSystem.addFile(photoFile, dirToSaveTo, pouchDbId).then(function(fileEntry) {
+                    fileSystem.fileToDataURL(photoFile).then(function(photoDataUrl) {
+                        savedPhotoRecord = this.get('store').find('photo', savedPhotoRecord.get('id')).then(function(savedPhotoRecord) {                        
+                            var dataUrlParts = photoDataUrl.split(',');
+                            savedPhotoRecord.setProperties({
+                                fileName: fileEntry.fullPath,
+                                url: fileEntry.toURL(),
+                                _attachments: {
+                                    file: {
+                                        content_type: photoFile.type,
+                                        data: dataUrlParts[1]
+                                    }
+                                }                    
+                            });                        
+                            savedPhotoRecord.save().then(function(savedPhotoRecord) {
+                                photos.addObject(savedPhotoRecord);
+                                this.send('closeModal');
+                            }.bind(this));
+                        }.bind(this));
                     }.bind(this));
-                }.bind(this));            
-            }.bind(this));            
+                }.bind(this));
+            }.bind(this));
         },
         
         appointmentDeleted: function(deletedAppointment) {
@@ -269,14 +266,14 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         deletePhoto: function(model) {
             var photo = model.get('photoToDelete'),
                 photoId = model.get('id'),
-                photos = this.get('photos'),
+                photos = this.get('model.photos'),
                 filePath = photo.get('fileName');
             photos.removeObject(photo);
             photo.destroyRecord().then(function() {
-                var fileSystem = this.get('fileSystem'),
+                var fileSystem = this.get('filesystem'),
                     isFileSystemEnabled = this.get('isFileSystemEnabled');
                 if (isFileSystemEnabled) {
-                    var pouchDbId = this._idToPouchId(photoId, 'photo');
+                    var pouchDbId = this.get('pouchdb').getPouchId(photoId,'photo');                       
                     fileSystem.deleteFile(filePath, pouchDbId);
                 }
             }.bind(this));
@@ -288,24 +285,28 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         },
 
         editImaging: function(imaging) {
-            imaging.setProperties({
-                'isCompleting': false,
-                'returnToPatient': true
-            });
-            this.transitionToRoute('imaging.edit', imaging);
+            if (imaging.get('canEdit')) {
+                imaging.setProperties({
+                    'returnToPatient': true
+                });
+                this.transitionToRoute('imaging.edit', imaging);
+            }
         },        
         
         editLab: function(lab) {
-            lab.setProperties({
-                'isCompleting': false,
-                'returnToPatient': true
-            });
-            this.transitionToRoute('labs.edit', lab);
+            if (lab.get('canEdit')) {
+                lab.setProperties({
+                    'returnToPatient': true
+                });
+                this.transitionToRoute('labs.edit', lab);
+            }
         },        
         
         editMedication: function(medication) {
-            medication.set('returnToPatient', true);
-            this.transitionToRoute('medication.edit', medication);
+            if (medication.get('canEdit')) {
+                medication.set('returnToPatient', true);
+                this.transitionToRoute('medication.edit', medication);
+            }
         },    
         
         editPhoto: function(photo) {        
@@ -320,42 +321,20 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
             this.transitionToRoute('visits.edit', visit);
         },
         
-        newAppointment: function() {
-            var now = moment().hours(8).minutes(0).seconds(0).toDate();
-            var newAppointment = this.get('store').createRecord('appointment', {
-                patient: this.get('model'),
-                startDate: now,
-                endDate: now
-            });
-            newAppointment.set('returnToPatient', true);
-            this.transitionToRoute('appointments.edit', newAppointment);
+        newAppointment: function() {            
+            this._addChildObject('appointments.edit');
         },
 
         newImaging: function() {
-            var newImaging = this.get('store').createRecord('imaging', {
-                isCompleting: false,
-                patient: this.get('model'),
-                returnToPatient: true
-            });            
-            this.transitionToRoute('imaging.edit', newImaging);
+            this._addChildObject('imaging.edit');
         },
         
         newLab: function() {
-            var newLab = this.get('store').createRecord('lab', {
-                isCompleting: false,
-                patient: this.get('model'),
-                returnToPatient: true
-            });            
-            this.transitionToRoute('labs.edit', newLab);
+            this._addChildObject('labs.edit');            
         },
         
         newMedication: function() {
-            var newMedication = this.get('store').createRecord('medication', {
-                prescriptionDate: moment().startOf('day').toDate(),
-                patient: this.get('model'),
-                returnToPatient: true
-            });
-            this.transitionToRoute('medication.edit', newMedication);
+            this._addChildObject('medication.edit');
         },
         
         newVisit: function() {
@@ -443,14 +422,14 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
     
         showEditExpense: function(model) {
             if (Ember.isEmpty(model)) {
-                model = SocialExpenseModel.create({isNew:true});
+                model = this.get('store').createRecord('social-expense');
             }
              this.send('openModal', 'patients.socialwork.expense', model);            
         },
         
         showEditFamily: function(model) {
             if (Ember.isEmpty(model)) {
-                model = FamilyInfoModel.create({isNew:true});
+                model = this.get('store').createRecord('family-info');
             }
             this.send('openModal', 'patients.socialwork.family-info', model);
         },
@@ -493,6 +472,16 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         
     },
     
+    _addChildObject: function(route) {
+        this.transitionToRoute(route, 'new').then(function(newRoute) {
+            newRoute.currentModel.setProperties( {
+                patient: this.get('model'),
+                returnToPatient: true,
+                selectPatient: false
+            });
+        }.bind(this));
+    },
+    
     _getVisitCollection: function(name) {
         var returnList = [],
             visits = this.get('visits');
@@ -507,13 +496,6 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
             });
         }
         return returnList;        
-    },
-    
-    beforeUpdate: function() {
-        //Make sure payments async relationship is loaded before saving.
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            this.get('payments').then(resolve, reject);
-        }.bind(this));
     },
     
     afterUpdate: function(record) {

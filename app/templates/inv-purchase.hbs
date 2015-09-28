@@ -3,11 +3,11 @@
     {{em-input property="invoiceNo" label="Invoice Number" class="col-sm-4"}}
 </div>
 {{#if canEditQuantity }}
-    {{quantity-calc calculated=originalQuantity targetUnit=distributionUnit quantityGroups=quantityGroups }}
+    {{quantity-calc calculated=model.originalQuantity targetUnit=model.distributionUnit quantityGroups=model.quantityGroups }}
 {{else}}
     <div class="form-group">
         <label>Quantity</label>
-        {{input class="form-control" value=originalQuantity type="text" disabled=true }}                    
+        {{input class="form-control" value=model.originalQuantity type="text" disabled=true }}                    
     </div>
 {{/if}}
 <div class="row">
@@ -18,7 +18,7 @@
     {{date-picker property="expirationDate" label="Expiration Date" minDate="now" class="col-sm-4"}}
 </div>
 <div class="row">    
-    {{select-or-typeahead property="vendor" label="Vendor" list=vendorList selection=vendor class="col-sm-6 required"}}
+    {{select-or-typeahead property="vendor" label="Vendor" list=vendorList selection=vendor className="col-sm-6 required"}}
     {{em-input property="vendorItemNo" label="Vendor Item Number" class="col-sm-6"}}    
 </div>
 {{#if isNew}}

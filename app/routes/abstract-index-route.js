@@ -1,7 +1,9 @@
-import Ember from "ember";
+import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
+import Ember from 'ember';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
-export default Ember.Route.extend(PouchDbMixin, ProgressDialog, Ember.SimpleAuth.AuthenticatedRouteMixin, {
+export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRouteMixin, {
+    pouchdb: Ember.inject.service(),
     filterParams: null,
     firstKey: null,
     hideNewButton: false,
@@ -11,13 +13,6 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, Ember.SimpleAuth
     newButtonText: null,
     nextStartKey: null,
     pageTitle: null,
-    
-    keyPrefix: function() {
-        var modelName = this.get('modelName');
-        if (!Ember.isEmpty(modelName)) {
-            return modelName + '_';
-        }
-    }.property('modelName'),
     
     _getFilterParams: function(params) {
         var filterByList = [],
@@ -35,9 +30,20 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, Ember.SimpleAuth
         return filterByList;
     },
     
+    _getMaxPouchId: function() {
+        return this.get('pouchdb').getPouchId({}, this.get('modelName').camelize());
+    },
+    
+    _getMinPouchId: function() {
+        return this.get('pouchdb').getPouchId(null, this.get('modelName').camelize());
+    },    
+    
+    _getPouchIdFromItem: function(item) {
+        return this.get('pouchdb').getPouchId(item.get('id'), this.get('modelName').camelize());
+    },
+    
     _getStartKeyFromItem: function(item) {
-        var modelName = this.get('modelName');
-        return modelName+'_'+item.get('id');
+        return item.get('id');
     },
     
     _modelQueryParams: function() {

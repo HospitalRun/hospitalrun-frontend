@@ -1,4 +1,6 @@
-import EmailValidation from "hospitalrun/utils/email-validation";
+import DS from 'ember-data';
+import EmailValidation from 'hospitalrun/utils/email-validation';
+import Ember from 'ember';
 import EmberValidations from 'ember-validations';
 var User = DS.Model.extend(EmberValidations, {
     derived_key: DS.attr('string'),
@@ -13,6 +15,14 @@ var User = DS.Model.extend(EmberValidations, {
     roles: DS.attr(),
     salt: DS.attr('string'),
     userPrefix: DS.attr('string'),
+    
+    displayRole: function() {        
+        var roles = this.get('roles');
+        if (!Ember.isEmpty(roles)) {
+            return roles[0];
+        }
+    }.property('roles'),
+    
     validations: {
         email: {
             format: { 

@@ -12,6 +12,6 @@
     {{em-input property="password" type="password" label="Password"}}
     <div class="form-group has-success">
         <label class="control-label">Role</label>
-        {{role-select value=roles class="form-control" content=userRoles}}
+        {{role-select selection=model.roles content=userRoles action=(action (mut model.roles))}}
     </div>
 {{/em-form}}

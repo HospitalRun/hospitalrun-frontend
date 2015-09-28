@@ -1,13 +1,16 @@
 import Ember from "ember";
-import PouchDb from "hospitalrun/mixins/pouchdb";
+import { Adapter } from 'ember-pouch';
 import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 
-export default DS.PouchDBAdapter.extend(PouchDb, PouchAdapterUtils, {
+export default Adapter.extend(PouchAdapterUtils, {
+    pouchDBService: Ember.inject.service('pouchdb'),
+    
+    mainDB: Ember.computed.alias('pouchDBService.mainDB'),
+    db:  Ember.computed.alias('pouchDBService.mainDB'),
+    
     _specialQueries: [
         'containsValue',
         'mapReduce',
-        'options.startkey',
-        'options.endkey',
         'searchIndex'
     ],
   
@@ -51,16 +54,30 @@ export default DS.PouchDBAdapter.extend(PouchDb, PouchAdapterUtils, {
         }.bind(this));
     },
     
-    _handleQueryResponse: function(resolve, response, store, type, options) {
-        if (response.rows) {
-            var data = Ember.A(response.rows).mapBy('doc');
-            if(Ember.isNone(options.embed)) {
-                options.embed = true;
+    _handleQueryResponse: function(response, store, type) {
+        var pouchDBService = this.get('pouchDBService');
+        return new Ember.RSVP.Promise(function(resolve, reject){
+            if (response.rows.length > 0) {
+                var ids = response.rows.map(function(row) {
+                    return pouchDBService.getEmberId(row.id);
+                });
+                this.findRecord(store, type, ids).then(function(findResponse) {
+                    var primaryRecordName = type.modelName.camelize().pluralize(),
+                        sortedValues = [];
+                    //Sort response in order of ids
+                    ids.forEach(function(id) {
+                        var resolvedRecord = findResponse[primaryRecordName].findBy('id',id);
+                        sortedValues.push(resolvedRecord);
+                    });
+                    findResponse[primaryRecordName] = sortedValues;
+                    resolve(findResponse);
+                }.bind(this), reject);
+            } else {
+                var emptyResponse = {};
+                emptyResponse[type.modelName] = [];
+                resolve(emptyResponse);
             }
-            this._resolveRelationships(store, type, data, options).then(function(data){
-                resolve(data);
-            }.bind(this));
-        }
+        }.bind(this));
     },
     
     /**
@@ -89,9 +106,9 @@ export default DS.PouchDBAdapter.extend(PouchDb, PouchAdapterUtils, {
         }
         if (!specialQuery) {
             if (query.options) {
-                var newQuery = Ember.copy(query);
-                delete newQuery.options;            
-                return this._super(store, type, newQuery, query.options);
+                this._init(store, type);
+                var recordTypeName = this.getRecordTypeName(type);
+                return this.get('db').rel.find(recordTypeName, query.options);
             } else {
                 return this._super(store, type, query, options);
             }
@@ -128,7 +145,7 @@ export default DS.PouchDBAdapter.extend(PouchDb, PouchAdapterUtils, {
                 }
             }
             queryParams.reduce  = false;
-            queryParams.include_docs = true;
+            queryParams.include_docs = false;
             
             if (query.mapReduce) {
                 mapReduce = query.mapReduce;
@@ -136,10 +153,11 @@ export default DS.PouchDBAdapter.extend(PouchDb, PouchAdapterUtils, {
                 return this._executeContainsSearch(store, type, query, options);
             }
             return new Ember.RSVP.Promise(function(resolve, reject){
-                this._getDb().then(function(db){
+                var db = this.get('db');
                     try {
                         if (mapReduce) {
                             if (query.useList) {
+                                queryParams.include_docs = true;
                                 var listParams = {
                                     query: queryParams
                                 };
@@ -147,7 +165,7 @@ export default DS.PouchDBAdapter.extend(PouchDb, PouchAdapterUtils, {
                                     if (err) {
                                         this._pouchError(reject)(err);
                                     } else {
-                                        this._handleQueryResponse(resolve, response.json, store, type, options);
+                                        this._handleQueryResponse(response.json, store, type).then(resolve, reject);
                                     }
                                 }.bind(this));
                             } else {
@@ -155,7 +173,7 @@ export default DS.PouchDBAdapter.extend(PouchDb, PouchAdapterUtils, {
                                     if (err) {
                                         this._pouchError(reject)(err);
                                     } else {
-                                        this._handleQueryResponse(resolve, response, store, type, options);
+                                        this._handleQueryResponse(response, store, type).then(resolve, reject);
                                     }
                                 }.bind(this));
                             }
@@ -164,14 +182,13 @@ export default DS.PouchDBAdapter.extend(PouchDb, PouchAdapterUtils, {
                                 if (err) {
                                     this._pouchError(reject)(err);
                                 } else {
-                                    this._handleQueryResponse(resolve, response, store, type, options);
+                                    this._handleQueryResponse(response, store, type).then(resolve, reject);
                                 }
                             }.bind(this));
                         }
                     } catch (err){
                         this._pouchError(reject)(err);
-                    }
-                }.bind(this), this._pouchError(reject));
+                    }                
             }.bind(this), "findQuery in application-pouchdb-adapter");
         }
     }

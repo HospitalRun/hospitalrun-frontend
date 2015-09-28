@@ -1,11 +1,17 @@
-import AbstractModel from "hospitalrun/models/abstract";
-import DateFormat from "hospitalrun/mixins/date-format";
-import Ember from "ember";
+import AbstractModel from 'hospitalrun/models/abstract';
+import CanEditRequested from 'hospitalrun/mixins/can-edit-requested';
+import DS from 'ember-data';
+import DateFormat from 'hospitalrun/mixins/date-format';
+import Ember from 'ember';
 
-export default AbstractModel.extend(DateFormat, {
-    inventoryItem: DS.belongsTo('inventory'),
+export default AbstractModel.extend(CanEditRequested, DateFormat, {
+    inventoryItem: DS.belongsTo('inventory', {
+      async: false
+    }),
     notes: DS.attr('string'),
-    patient: DS.belongsTo('patient'),
+    patient: DS.belongsTo('patient', {
+      async: false
+    }),
     prescription: DS.attr('string'),
     prescriptionDate: DS.attr('date'),
     quantity: DS.attr('number'),
@@ -13,8 +19,10 @@ export default AbstractModel.extend(DateFormat, {
     requestedDate: DS.attr('date'),
     requestedBy: DS.attr('string'),
     status: DS.attr('string'),
-    visit: DS.belongsTo('visit'),
-    
+    visit: DS.belongsTo('visit', {
+      async: false
+    }),
+
     isRequested: function() {
         var status = this.get('status');
         return (status === 'Requested');
@@ -83,7 +91,7 @@ export default AbstractModel.extend(DateFormat, {
         },
         
         quantity: {
-            numericality: {                
+            numericality: {
                 allowBlank: true,
                 greaterThan: 0
             },
@@ -114,7 +122,7 @@ export default AbstractModel.extend(DateFormat, {
                         }
                 }, 
                 message: 'The quantity must be less than or equal to the number of available medication.'
-            }            
+            }
         },
         
         refills: {

@@ -4,19 +4,22 @@ import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
-    needs: ['labs','pouchdb'],
+    needs: ['labs'],
     chargePricingCategory: 'Lab',
-    chargeRoute: 'labs.charge',
+    chargeRoute: 'labs.charge',    
+    selectedLabType: null,
 
     
     canComplete: function() {
-        var labTypeName = this.get('selectedLabType');
-        if (Ember.isArray(labTypeName) && labTypeName.length >1) {
+        var isNew = this.get('model.isNew'),
+            labTypeName = this.get('model.labTypeName'),
+            selectedLabType = this.get('selectedLabType');
+        if (isNew && (Ember.isEmpty(labTypeName) || (Ember.isArray(selectedLabType) && selectedLabType.length >1))) {
             return false;
         } else {
             return this.currentUserCan('complete_lab');
         }
-    }.property('selectedLabType.[]'),
+    }.property('selectedLabType.[]', 'model.labTypeName'),
     
     actions: {
         completeLab: function() {
@@ -66,7 +69,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     
     additionalButtons: function() {
         var canComplete = this.get('canComplete'),
-            isValid = this.get('isValid');
+            isValid = this.get('model.isValid');
         if (isValid && canComplete) {
             return [{
                 buttonAction: 'completeLab',
@@ -75,7 +78,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
                 buttonText: 'Complete'
             }];
         }
-    }.property('canComplete', 'isValid'),
+    }.property('canComplete', 'model.isValid'),
 
     pricingTypeForObjectType: 'Lab Procedure',
     pricingTypes: Ember.computed.alias('controllers.labs.labPricingTypes'),
@@ -96,7 +99,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
             alertMessage = 'The lab request has been saved.';
         }
         if (multipleRecords) {
-            afterDialogAction = 'allItems';
+            afterDialogAction = this.get('cancelAction');
         }
         this.saveVisitIfNeeded(alertTitle, alertMessage, afterDialogAction);
         this.set('selectPatient', false);

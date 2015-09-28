@@ -1,6 +1,6 @@
 import Ember from 'ember';
 export default Ember.Component.extend({
-    
+    tagName: 'th',
     action: 'sortByKey',
     sortDesc: false,
     sortBy: null,
@@ -11,16 +11,13 @@ export default Ember.Component.extend({
         return sortBy === sortKey;
     }.property('sortBy','sortKey'),
     
-    actions: {
-        sortBy: function () {
-            var sortBy = this.get('sortBy'),
-                sorted = this.get('sorted'),
-                sortDesc = false;
-            if (sorted) {
-                sortDesc = this.toggleProperty('sortDesc');
-            }
-            this.sendAction('action', sortBy, sortDesc);
+    click() {
+        var sortBy = this.get('sortBy'),
+            sorted = this.get('sorted'),
+            sortDesc = false;
+        if (sorted) {
+            sortDesc = this.toggleProperty('sortDesc');
         }
+        this.sendAction('action', sortBy, sortDesc);
     }
- 
 });

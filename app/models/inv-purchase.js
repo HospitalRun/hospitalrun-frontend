@@ -1,6 +1,7 @@
-import AbstractModel from "hospitalrun/models/abstract";
-import Ember from "ember";
-import LocationName from "hospitalrun/mixins/location-name";
+import AbstractModel from 'hospitalrun/models/abstract';
+import DS from 'ember-data';
+import Ember from 'ember';
+import LocationName from 'hospitalrun/mixins/location-name';
 /**
  * Model to represent a purchase within an inventory item.
  * File/model name is inv-purchase because using inventory-purchase will cause purchase 

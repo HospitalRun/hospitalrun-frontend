@@ -1,29 +1,29 @@
 {{#em-form model=this submit_button=false }}
     {{#unless selectPatient}}
-        {{patient-summary patient=patient returnTo='medication.edit' returnToContext=id disablePatientLink=isNew }}
+        {{patient-summary patient=model.patient returnTo='medication.edit' returnToContext=id disablePatientLink=isNew }}
     {{/unless}}
     <div class="row">
         {{#if selectPatient}}
             {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-6 required"}}
         {{/if}}
         {{#if isNew}}
-            {{em-select class="col-xs-4 required" label="Visit" 
+            {{em-select class="col-xs-4 required" label="Visit"
                 property="visit" content=patientVisits
                 optionValuePath="content" optionLabelPath="content.visitDescription"
                 prompt="--Add New Outpatient Visit--"
                 selected=visit
-            }}        
+            }}
         {{else}}
             <div class="form-group col-xs-3">
                 <label>Visit</label>
-                <p class="form-control-static">{{visit.visitDescription}}</p>
+                <p class="form-control-static">{{model.visit.visitDescription}}</p>
             </div>
         {{/if}}
     </div>
     {{#if isFulfilledOrRequested}}
         <div class="form-group">
             <label class="control-label">Medication</label>
-            <p class="form-control-static">{{inventoryItem.name}}</p>        
+            <p class="form-control-static">{{inventoryItem.name}}</p>
         </div>
     {{else}}
         {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required"}}
@@ -43,13 +43,13 @@
             {{date-picker property="prescriptionDate" label="Prescription Date" class="col-sm-4"}}
         </div>
         <div class="row">
-            {{em-input property="quantity" label=quantityLabel class=quantityClass }}          
+            {{em-input property="quantity" label=quantityLabel class=quantityClass }}
             {{em-input property="refills" label="Refills" class="col-xs-3"}}
         </div>
         {{#unless hideFulfillRequest}}
             {{#if isNew}}
                 {{#if canFulfill}}
-                    <div class="form-group">            
+                    <div class="form-group">
                         <label class="control-label">Fulfill Request</label>
                      </div>
                     {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
@@ -60,7 +60,7 @@
             {{select-or-typeahead property="expenseAccount" label="Bill To" list=expenseAccountList selection=expenseAccount }}
             {{inventory-location-picker label="Pull From" quantityRequested=quantity
                 locationList=inventoryItem.availableLocations
-                selectedLocations=inventoryLocations
+                selectedLocations=model.inventoryLocations
             }}
         {{/if}}
     {{/if}}

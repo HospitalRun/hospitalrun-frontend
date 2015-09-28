@@ -1,4 +1,7 @@
-import AbstractModel from "hospitalrun/models/abstract";
+import AbstractModel from 'hospitalrun/models/abstract';
+import DS from 'ember-data';
+import Ember from 'ember';
+import LocationName from 'hospitalrun/mixins/location-name';
 var validateIfNewItem = {
     if: function validateNewItem(object) {
         var skipSavePurchase = object.get('skipSavePurchase');
@@ -6,16 +9,20 @@ var validateIfNewItem = {
         return (!skipSavePurchase && object.get('isNew'));
     }
 };
-export default AbstractModel.extend({
-    purchases: DS.hasMany('inv-purchase'),
-    locations: DS.hasMany('inv-location'),
+export default AbstractModel.extend(LocationName, {
+    purchases: DS.hasMany('inv-purchase', {
+      async: false
+    }),
+    locations: DS.hasMany('inv-location', {
+      async: false
+    }),
     description: DS.attr('string'),
     friendlyId: DS.attr('string'),
     keywords: DS.attr(),
     name: DS.attr('string'),
     quantity: DS.attr('number'),
     crossReference: DS.attr('string'),
-    type: DS.attr('string'),
+    inventoryType: DS.attr('string'),
     price: DS.attr('number'),
     reorderPoint: DS.attr('number'),
     distributionUnit: DS.attr('string'),
@@ -25,7 +32,21 @@ export default AbstractModel.extend({
             return location.get('quantity') > 0;
         });
         return locations;
-    }.property('locations@each.lastModified'),
+    }.property('locations.@each.lastModified'),
+    
+    displayLocations: function() {
+        var locations = this.get('availableLocations'),
+            returnLocations = [];
+        locations.forEach(function(currentLocation) {
+            var aisleLocationName = currentLocation.get('aisleLocation'),
+                locationName = currentLocation.get('location'),
+                displayLocationName = this.formatLocationName(locationName, aisleLocationName);
+            if (!Ember.isEmpty(displayLocationName)) {
+                returnLocations.push(displayLocationName);
+            }
+        }.bind(this));
+        return returnLocations.toString();
+    }.property('availableLocations'),
     
     validations: {
         distributionUnit: {
@@ -53,7 +74,7 @@ export default AbstractModel.extend({
                 allowBlank: true
             }
         },
-        type: {
+        inventoryType: {
             presence: true,
         },
         vendor: {

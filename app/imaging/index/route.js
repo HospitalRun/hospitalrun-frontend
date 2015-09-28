@@ -6,29 +6,23 @@ export default AbstractIndexRoute.extend({
     
     _getStartKeyFromItem: function(item) {
         var imagingDateAsTime = item.get('imagingDateAsTime'),
-            keyPrefix = this.get('keyPrefix'),
+            id = this._getPouchIdFromItem(item),
             requestedDateAsTime = item.get('requestedDateAsTime'),
             searchStatus = this.get('searchStatus');
-        return [searchStatus, requestedDateAsTime, imagingDateAsTime, keyPrefix+item.get('id')];
+        return [searchStatus, requestedDateAsTime, imagingDateAsTime, id];
     },
     
     _modelQueryParams: function() {
-        var keyPrefix = this.get('keyPrefix'),
+        var maxId = this._getMaxPouchId(),
             maxValue = this.get('maxValue'),
+            minId = this._getMinPouchId(),
             searchStatus = this.get('searchStatus');
         return {
             options: {
-                startkey: [searchStatus, null, null, keyPrefix],
-                endkey: [searchStatus, maxValue, maxValue, keyPrefix+maxValue]
+                startkey: [searchStatus, null, null, minId],
+                endkey: [searchStatus, maxValue, maxValue, maxId]
             },
             mapReduce: 'imaging_by_status'
         };
-    },
-    
-    actions: {
-        completeItem: function(item) {
-            item.set('isCompleting', true);
-            this.transitionTo('imaging.edit', item);
-        }, 
     }
 });

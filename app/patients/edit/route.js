@@ -57,14 +57,14 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
         //Load appointments, photos and visits asynchronously.
         var friendlyId = model.get('friendlyId'),
             externalId = model.get('externalPatientId'),
-            maxValue = this.get('maxValue'),            
-            patientId = 'patient_'+model.get('id');
+            maxValue = this.get('maxValue'),
+            patientId = model.get('id');
         if (Ember.isEmpty(friendlyId) && !Ember.isEmpty(externalId)) {
             model.set('friendlyId', externalId);
         }
         this._super(controller, model);
         this.getPatientVisits(model).then(function(visits) {
-            controller.set('visits', visits);
+            model.set('visits', visits);
         });
         this.store.find('appointment', {
             options: {
@@ -73,7 +73,7 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
             },
             mapReduce: 'appointments_by_patient'
         }).then(function(appointments) {
-            controller.set('appointments', appointments);
+            model.set('appointments', appointments);
         });
         this.store.find('photo', {
             options: {
@@ -81,7 +81,9 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
             },
             mapReduce: 'photo_by_patient'
         }).then(function(photos) {
-            controller.set('photos', photos);
+            var patientPhotos = [];
+            patientPhotos.addObjects(photos);
+            model.set('photos', patientPhotos);
         });
     }
     

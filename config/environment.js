@@ -18,13 +18,22 @@ module.exports = function(environment) {
       // when it is created
     }
   };
+    
+ENV.APP.manifest = {
+  enabled: true,
+  appcacheFile: "/manifest.appcache",
+  excludePaths: ['index.html', 'someother.html'],
+  includePaths: ['/'],
+  network: ['api/'],
+  showCreateDate: true
+};    
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
-    ENV.APP.LOG_ACTIVE_GENERATION = true;
+    // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
-    ENV.APP.LOG_VIEW_LOOKUPS = true;
+    // ENV.APP.LOG_VIEW_LOOKUPS = true;
   }
 
   if (environment === 'test') {
@@ -42,6 +51,14 @@ module.exports = function(environment) {
   if (environment === 'production') {
 
   }
+    
+ENV.manifest = {
+  enabled: true,
+  appcacheFile: "/manifest.appcache",
+  excludePaths: ['index.html', 'tests', 'dymo','robots.txt','testem.js'],
+  //includePaths: ['/'],
+  showCreateDate: true
+};
 
   return ENV;
 };

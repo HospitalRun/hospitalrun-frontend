@@ -2,13 +2,13 @@
     <div class="panel-body">
         {{#em-form model=this submit_button=false }}
             <div class="row">
-                {{em-select class="col-xs-6" label="Report Type" 
+                {{em-select class="col-xs-6" label="Report Type"
                     property="reportType" content=reportTypes
                     optionValuePath="content.value" optionLabelPath="content.name"
                     selected=reportType
                 }}
                 {{#unless hideLocationFilter}}
-                    {{em-select class="col-xs-6" label="Location" 
+                    {{em-select class="col-xs-6" label="Location"
                         property="filterLocation" content=warehouseList.value
                         optionValuePath="content" optionLabelPath="content"
                         prompt=" "
@@ -22,7 +22,7 @@
                     {{date-picker property="startDate" label="Start Date" class="col-sm-4"}}
                     {{date-picker property="endDate" label="End Date" class="col-sm-4"}}
                 {{/if}}
-            </div>        
+            </div>
             {{#if useFieldPicker}}
                 <h3>Fields to Include</h3>
                 <div class="row">
@@ -33,19 +33,19 @@
                     {{em-checkbox label=reportColumns.id.label property="reportColumns.id.include" class="col-xs-2"}}
                     {{em-checkbox label=reportColumns.name.label property="reportColumns.name.include" class="col-xs-2"}}
                     {{em-checkbox label=reportColumns.description.label property="reportColumns.description.include" class="col-xs-2"}}
-                    {{em-checkbox label=reportColumns.type.label property="reportColumns.type.include" class="col-xs-2"}}                        
+                    {{em-checkbox label=reportColumns.type.label property="reportColumns.type.include" class="col-xs-2"}}
                 </div>
                 <div class="row">
-                    <div class="col-xs-1"></div>                
+                    <div class="col-xs-1"></div>
                     {{em-checkbox label=reportColumns.quantity.label property="reportColumns.quantity.include" class="col-xs-2"}}
                     {{em-checkbox label=reportColumns.unit.label property="reportColumns.unit.include" class="col-xs-2"}}
-                    {{#if includeCostFields}}                    
+                    {{#if includeCostFields}}
                         {{em-checkbox label=reportColumns.total.label property="reportColumns.total.include" class="col-xs-2"}}
                         {{em-checkbox label=reportColumns.unitcost.label property="reportColumns.unitcost.include" class="col-xs-2"}}
                     {{/if}}
                     {{#if includeDaysLeft}}
                         {{em-checkbox label=reportColumns.consumedPerDay.label property="reportColumns.consumedPerDay.include" class="col-xs-2"}}
-                        {{em-checkbox label=reportColumns.daysLeft.label property="reportColumns.daysLeft.include" class="col-xs-2"}}                    
+                        {{em-checkbox label=reportColumns.daysLeft.label property="reportColumns.daysLeft.include" class="col-xs-2"}}
                     {{/if}}
                     {{em-checkbox label=reportColumns.price.label property="reportColumns.price.include" class="col-xs-2"}}
                 </div>
@@ -56,21 +56,21 @@
                     {{em-checkbox label=reportColumns.locations.label property="reportColumns.locations.include" class="col-xs-2"}}
                     {{em-checkbox label=reportColumns.aisle.label property="reportColumns.aisle.include" class="col-xs-2"}}
                     {{em-checkbox label=reportColumns.xref.label property="reportColumns.xref.include" class="col-xs-2"}}
-                    
+
                 </div>
                 <div class="row">
-                    <div class="col-xs-1"></div>        
+                    <div class="col-xs-1"></div>
                     {{em-checkbox label=reportColumns.vendor.label property="reportColumns.vendor.include" class="col-xs-2"}}
                     {{#if includeExpenseAccount}}
                         {{em-checkbox label=reportColumns.expenseAccount.label property="reportColumns.expenseAccount.include" class="col-xs-2"}}
                     {{/if}}
-                    
+
                     {{#if includeTransactionType}}
                         {{em-checkbox label=reportColumns.transactionType.label property="reportColumns.transactionType.include" class="col-xs-2"}}
                     {{/if}}
                 </div>
             {{/if}}
-        
+
         {{/em-form}}
     </div>
     <div class="panel-footer">
@@ -95,8 +95,8 @@
             </table>
         </div>
         <div class="panel-footer">
-            <a {{bind-attr href="csvExport"}} target="_blank" download="report.csv" class="btn btn-default">Export Report</a>
+            <a href={{csvExport}} target="_blank" download="report.csv" class="btn btn-default">Export Report</a>
 
-        </div>    
+        </div>
     </div>
 {{/if}}
