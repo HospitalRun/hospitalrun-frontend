@@ -16,13 +16,13 @@ var ApplicationRoute = Ember.Route.extend(ApplicationRouteMixin, {
         }
     },
 
-    pouchDB: Ember.inject.service('pouchdb'),
+    database: Ember.inject.service(),
 
     model: function(params, transition) {
       const session = this.get('session');
       const isAuthenticated = session && session.isAuthenticated;
       if (isAuthenticated) {
-        return this.get('pouchDB').setupMainDB()
+        return this.get('database').setup()
           .then(()=>{
             return this.store.findAll('config');
           })

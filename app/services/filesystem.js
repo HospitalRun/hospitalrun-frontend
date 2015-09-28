@@ -1,14 +1,14 @@
 import Ember from 'ember';
 export default Ember.Service.extend({
-    pouchDBService: Ember.inject.service('pouchdb'),
+    database: Ember.inject.service(),
 
     filer: null, //Injected via initializer
     fileSystemSize: (1024*1024*1024*8), //8GB max size for local filesystem;chrome only,
-    
+
     _onError: function(e) {
         console.log('Filer filesystem error: '+e);
     },
-    
+
     _downloadFiles: function() {
         this.store.find('photo').then(function(photos) {
             photos.forEach(function(photo) {
@@ -16,7 +16,7 @@ export default Ember.Service.extend({
             }.bind(this));
         }.bind(this));
     },
-    
+
     /**
      * Downloads the file from the server and saves it to the local filesystem.
      * @param {Object} fileRecord Record to use to download the file.
@@ -29,20 +29,20 @@ export default Ember.Service.extend({
         if (!Ember.isEmpty(url)) {
             xhr.open('GET', url, true);
             xhr.responseType = 'blob';
-            xhr.onload = function() {  
+            xhr.onload = function() {
                 var file = new Blob([xhr.response]);
                 this.addFile(file, fileName, pouchDbId);
             }.bind(this);
             xhr.send();
         }
-    },    
-    
+    },
+
     setup: function() {
         var size = this.get('fileSystemSize'),
             filer = new Filer();
-        filer.init({persistent: true, size: size}, function() {            
+        filer.init({persistent: true, size: size}, function() {
             this.set('filer', filer);
-        }.bind(this));     
+        }.bind(this));
     },
 
     /**
@@ -50,7 +50,7 @@ export default Ember.Service.extend({
      * @param {File} file the file to save.
      * @param {String} path the file path to save the file to.
      * @param {String} pouchDbId database id that the file is associated with.
-     * The pouch DB ids are prefixed with the type of record (eg patient record is 
+     * The pouch DB ids are prefixed with the type of record (eg patient record is
      * prefixed by 'patient_'.
      * @returns {Promise} returns a Promise that resolves once the file is saved.
      */
@@ -60,7 +60,7 @@ export default Ember.Service.extend({
                 filer = this.get('filer'),
                 fileName = file.name || currentDate.getTime(),
                 newFileName = path+fileName,
-                pouchDBService = this.get('pouchDBService');            
+                database = this.get('database');
             if (path.indexOf('.') > -1) {
                 newFileName = path;
                 //If a full file path was provided, figure out the path and file name.
@@ -69,17 +69,17 @@ export default Ember.Service.extend({
                 path = pathParts.join('/');
                 path += '/';
             }
-            
+
             if (newFileName.indexOf('.') === -1) {
                 if (file.type) {
                     var typeParts = file.type.split('/');
                     newFileName += '.' + typeParts.pop();
                 } else {
                     //Default to png extension
-                    newFileName += '.png';                    
+                    newFileName += '.png';
                 }
             }
-            
+
             this.fileExists(newFileName).then(function(exists) {
                 if (exists) {
                     //Make sure a unique name is used.
@@ -95,8 +95,8 @@ export default Ember.Service.extend({
                     }
                 }
                 filer.mkdir(path, false, function() {
-                    filer.write(newFileName, {data: file, type: file.type}, function(fileEntry) {                    
-                        pouchDBService.saveFileLink(newFileName, pouchDbId);
+                    filer.write(newFileName, {data: file, type: file.type}, function(fileEntry) {
+                        database.saveFileLink(newFileName, pouchDbId);
                         resolve(fileEntry);
                     }, function(e) {
                         reject(e);
@@ -105,24 +105,24 @@ export default Ember.Service.extend({
                     reject(e);
                 });
             }.bind(this));
-        }.bind(this));    
+        }.bind(this));
     },
-    
-    /** 
+
+    /**
      * Delete the specified file
      * @param {String} filePath path of file to delete.
      * @param {String} pouchId database id that the file is associated with.
-     * The pouch DB ids are prefixed with the type of record (eg patient record is 
+     * The pouch DB ids are prefixed with the type of record (eg patient record is
      * prefixed by 'patient_'.
      * @returns {Promise} returns a Promise that resolves once the file is deleted.
      */
     deleteFile: function(filePath, pouchDbId) {
         return new Ember.RSVP.Promise(function(resolve, reject){
             var filer = this.get('filer'),
-                pouchDBService = this.get('pouchDBService');
+                database = this.get('database');
             try {
                 filer.rm(filePath, function() {
-                    pouchDBService.removeFileLink(pouchDbId);
+                    database.removeFileLink(pouchDbId);
                     resolve();
                 }, reject);
             } catch(ex) {
@@ -130,7 +130,7 @@ export default Ember.Service.extend({
             }
         }.bind(this));
     },
-        
+
     downloadIfNeeded: function(fileRecord) {
         var fileName = Ember.get(fileRecord, 'fileName');
         this.fileExists(fileName).then(function(exists) {
@@ -139,13 +139,13 @@ export default Ember.Service.extend({
             }
         }.bind(this));
     },
-    
+
     /**
      * Determine if specified file exists
      * @param {String} the path of the file to determine if it exists.
      * @returns {Promise} returns a Promise that resolves with a boolean indicating
      * if the file exists.
-     */    
+     */
     fileExists: function(filePath) {
         return new Ember.RSVP.Promise(function(resolve){
             var filer = this.get('filer');
@@ -154,14 +154,14 @@ export default Ember.Service.extend({
             }, function() {
                 //if ls errs, file doesn't exist.
                 resolve(false);
-            });        
+            });
         }.bind(this));
     },
-    
+
     /**
      * Convert specified file to a data url
      * @param {File} file to convert
-     * @returns {Promise} returns a Promise that resolves with the data url 
+     * @returns {Promise} returns a Promise that resolves with the data url
      * for the file.
      */
     fileToDataURL: function(file) {
@@ -170,10 +170,10 @@ export default Ember.Service.extend({
             reader.onloadend = function (e) {
                 resolve(e.target.result);
             };
-            reader.readAsDataURL(file);        
-        });        
+            reader.readAsDataURL(file);
+        });
     },
-    
+
     /**
      * Property to to determine if file system API is available.
      */
@@ -181,12 +181,12 @@ export default Ember.Service.extend({
         var filer = this.get('filer');
         return !(Ember.isEmpty(filer));
     }.property('filer'),
-    
-    
+
+
     /**
      * Get filesystem url from specified path.
      * @param {String} the path of the file to get the url for.
-     * @returns {Promise} returns a Promise that resolves with the file system 
+     * @returns {Promise} returns a Promise that resolves with the file system
      * url or null if the file doesn't exist.
      */
     pathToFileSystemURL: function(path) {
@@ -197,7 +197,7 @@ export default Ember.Service.extend({
             }, function() {
                 //if ls errs, just return empty, file doesn't exist.
                 resolve();
-            });        
+            });
         }.bind(this));
     }
 });

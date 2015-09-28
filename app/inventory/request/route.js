@@ -4,24 +4,24 @@ export default AbstractEditRoute.extend({
     editTitle: 'Edit Request',
     modelName: 'inv-request',
     newTitle: 'New Request',
-    pouchdb: Ember.inject.service(),
+    database: Ember.inject.service(),
     getNewData: function() {
         return Ember.RSVP.resolve({
             transactionType: 'Request',
             requestedItems: []
         });
     },
-    
+
     actions: {
         allRequests: function(model) {
             this.controller.send('allRequests', model);
         },
-        
+
         removeItem: function(model) {
             this.controller.send('removeItem', model);
         }
     },
-    
+
     /**
      * Lazily load inventory items so that it doesn't impact performance.
      */
@@ -32,8 +32,8 @@ export default AbstractEditRoute.extend({
             endkey: 'inventory_\uffff',
             include_docs: true,
         };
-        this.get('pouchdb').queryMainDB(inventoryQuery).then(function(result) {            
+        this.get('database').queryMainDB(inventoryQuery).then(function(result) {            
             controller.set('inventoryItems', result.rows);
-        });        
+        });
     }
 });

@@ -2,8 +2,8 @@ import Ember from "ember";
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 export default Ember.Mixin.create(PouchDbMixin, {
     idPrefix: null,
-    pouchDBService: Ember.inject.service('pouchdb'),
-    
+    database: Ember.inject.service(),
+
     _createId: function(patientSequence) {
         var idPrefix = this.get('idPrefix'),
             newId;
@@ -14,17 +14,17 @@ export default Ember.Mixin.create(PouchDbMixin, {
         }
         return newId;
     },
-    
+
     _findUnusedId: function(patientSequenceRecord, resolve, reject) {
         var patientSequence = patientSequenceRecord.incrementProperty('value'),
             maxValue = this.get('maxValue'),
             newId = this._createId(patientSequence),
             queryParams = {
                 startkey: [newId,null],
-                endkey: [newId, maxValue],    
+                endkey: [newId, maxValue],
             },
-            pouchDBService = this.get('pouchDBService');
-        pouchDBService.queryMainDB(queryParams, 'patient_by_display_id').then(function(foundRecord) {
+            database = this.get('database');
+        database.queryMainDB(queryParams, 'patient_by_display_id').then(function(foundRecord) {
             if (!Ember.isEmpty(foundRecord.rows)) {
                 this._findUnusedId(patientSequenceRecord, resolve, reject);
             } else {
@@ -53,7 +53,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
                 idPrefix = idPrefixRecord.get('value');
             }
             this.set('idPrefix', idPrefix);
-            
+
             this.store.find('sequence', 'patient').then(function(sequence) {
                 this._findUnusedId(sequence, resolve, reject);
             }.bind(this), function() {

@@ -3,10 +3,9 @@ import { Adapter } from 'ember-pouch';
 import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 
 export default Adapter.extend(PouchAdapterUtils, {
-    pouchDBService: Ember.inject.service('pouchdb'),
-
-    mainDB: Ember.computed.alias('pouchDBService.mainDB'),
-    db:  Ember.computed.alias('pouchDBService.mainDB'),
+    database: Ember.inject.service(),
+    mainDB: Ember.computed.alias('database.mainDB'),
+    db:  Ember.computed.alias('database.mainDB'),
 
     _specialQueries: [
         'containsValue',
@@ -55,11 +54,11 @@ export default Adapter.extend(PouchAdapterUtils, {
     },
 
     _handleQueryResponse: function(response, store, type) {
-        var pouchDBService = this.get('pouchDBService');
+        var database = this.get('database');
         return new Ember.RSVP.Promise(function(resolve, reject){
             if (response.rows.length > 0) {
                 var ids = response.rows.map(function(row) {
-                    return pouchDBService.getEmberId(row.id);
+                    return database.getEmberId(row.id);
                 });
                 this.findRecord(store, type, ids).then(function(findResponse) {
                     var primaryRecordName = type.modelName.camelize().pluralize(),

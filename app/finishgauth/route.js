@@ -1,14 +1,14 @@
 import Ember from "ember";
-export default Ember.Route.extend({ 
-    pouchdb: Ember.inject.service(),
-    
+export default Ember.Route.extend({
+    database: Ember.inject.service(),
+
     oauth_config_keys: [
         'consumer_key',
         'consumer_secret',
         'oauth_token',
         'token_secret'
     ],
-    
+
     _get_oauth_configs: function() {
         return new Ember.RSVP.Promise(function(resolve, reject){
             var configKeys = this.get('oauth_config_keys');
@@ -19,8 +19,8 @@ export default Ember.Route.extend({
             });
         }.bind(this));
     },
-    
-    _save_oauth_config: function(queryParams) {                        
+
+    _save_oauth_config: function(queryParams) {
         this._get_oauth_configs().then(function(records) {
             var configKeys = this.get('oauth_config_keys');
             configKeys.forEach(function(key) {
@@ -57,7 +57,7 @@ export default Ember.Route.extend({
                 configRecord.save();
             }.bind(this));
         }.bind(this));
-    },    
+    },
 
     model: function(params) {
         if (params.k && params.s1 && params.s2 && params.t) {
@@ -66,13 +66,13 @@ export default Ember.Route.extend({
                 params: params,
             });
             this._save_oauth_config(params);
-            this.get('pouchdb').setupMainDB({
+            this.get('database').setup({
                 config_consumer_key: params.k,
                 config_consumer_secret: params.s1,
                 config_oauth_token: params.t,
                 config_token_secret:  params.s2,
                 config_use_google_auth: true
             });
-        } 
+        }
     }
 });
