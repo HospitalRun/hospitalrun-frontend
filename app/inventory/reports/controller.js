@@ -704,7 +704,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                                 var i = this._getValidNumber( adjustments[adjustmentT][key]);
                                 if (adjustmentT === 'Adjustment (Add)' || adjustmentT === 'Return') {
                                     adjustmentTotal += i;
-                                    this.get('reportRows').addObject(['', key, i]);    
+                                    this.get('reportRows').addObject(['', key, this._numberFormat(i)]);    
                                 } else {
                                     adjustmentTotal -= i;
                                     this.get('reportRows').addObject(['', key, '('+this._numberFormat(i)+')']);    
