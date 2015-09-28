@@ -7,12 +7,12 @@
             {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-6 required"}}
         {{/if}}
         {{#if isNew}}
-            {{em-select class="col-xs-4 required" label="Visit" 
+            {{em-select class="col-xs-4 required" label="Visit"
                 property="visit" content=patientVisits
                 optionValuePath="content" optionLabelPath="content.visitDescription"
                 prompt="--Add New Outpatient Visit--"
                 selected=visit
-            }}        
+            }}
         {{else}}
             <div class="form-group col-xs-3">
                 <label>Visit</label>
@@ -23,7 +23,7 @@
     {{#if isFulfilledOrRequested}}
         <div class="form-group">
             <label class="control-label">Medication</label>
-            <p class="form-control-static">{{inventoryItem.name}}</p>        
+            <p class="form-control-static">{{inventoryItem.name}}</p>
         </div>
     {{else}}
         {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required"}}
@@ -43,13 +43,13 @@
             {{date-picker property="prescriptionDate" label="Prescription Date" class="col-sm-4"}}
         </div>
         <div class="row">
-            {{em-input property="quantity" label=quantityLabel class=quantityClass }}          
+            {{em-input property="quantity" label=quantityLabel class=quantityClass }}
             {{em-input property="refills" label="Refills" class="col-xs-3"}}
         </div>
         {{#unless hideFulfillRequest}}
             {{#if isNew}}
                 {{#if canFulfill}}
-                    <div class="form-group">            
+                    <div class="form-group">
                         <label class="control-label">Fulfill Request</label>
                      </div>
                     {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
