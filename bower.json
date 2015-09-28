@@ -24,7 +24,7 @@
     "pouchdb": "^3.5.0",
     "pouchdb-quick-search": "~1.0.2",
     "qunit": "~1.18.0",
-    "relational-pouch": "^1.3.2",
+    "relational-pouch": "HospitalRun/relational-pouch#query",
     "typeahead.js": "~0.11.1"
   },
   "resolutions": {

@@ -11,8 +11,6 @@ export default Adapter.extend(PouchAdapterUtils, {
     _specialQueries: [
         'containsValue',
         'mapReduce',
-        'options.startkey',
-        'options.endkey',
         'searchIndex'
     ],
   
@@ -108,9 +106,9 @@ export default Adapter.extend(PouchAdapterUtils, {
         }
         if (!specialQuery) {
             if (query.options) {
-                var newQuery = Ember.copy(query);
-                delete newQuery.options;            
-                return this._super(store, type, newQuery, query.options);
+                this._init(store, type);
+                var recordTypeName = this.getRecordTypeName(type);
+                return this.get('db').rel.find(recordTypeName, query.options);
             } else {
                 return this._super(store, type, query, options);
             }
