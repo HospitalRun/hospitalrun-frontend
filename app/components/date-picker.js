@@ -1,6 +1,6 @@
 import Ember from "ember";
 //Dervied from http://spin.atomicobject.com/2013/10/29/ember-js-date-picker/
-import InputComponent from 'ember-idx-forms/input'; 
+import InputComponent from 'ember-rapid-forms/components/em-input'; 
 export default InputComponent.extend({
     currentDate: null,
     currentDisplayDate: null,

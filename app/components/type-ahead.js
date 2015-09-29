@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import DS from 'ember-data';
-import InputComponent from 'ember-idx-forms/input'; 
+import InputComponent from 'ember-rapid-forms/components/em-input'; 
 export default InputComponent.extend({
     _mapContentItems: function() {
         var content = this.get('content');

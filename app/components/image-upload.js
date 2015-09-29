@@ -1,4 +1,4 @@
-import InputComponent from 'ember-idx-forms/input'; 
+import InputComponent from 'ember-rapid-forms/components/em-input'; 
 export default InputComponent.extend({
     fileInputEl: null,
     resizeFile: true,
