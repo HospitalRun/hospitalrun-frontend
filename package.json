@@ -51,7 +51,7 @@
     "express": "^4.8.5",
     "glob": "^5.0.14",
     "nano": "<= 5.12.1",
-    "request": "^2.60.0"
+    "request": "2.36.0"
   },
   "dependencies": {
     "ember-radio-buttons": "^4.0.1"

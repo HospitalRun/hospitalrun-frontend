@@ -17,7 +17,7 @@ function _createMapFunction(type, query) {
                         var key = queryParts[0],
                             value = queryParts[1];
                         mapFunction += 'queryValue = "'+value.toLowerCase()+'";';
-                        mapFunction += 'if (doc["'+key+'"] && doc["'+key+'"].toLowerCase().indexOf(queryValue) >= 0) {'+
+                        mapFunction += 'if (doc.data["'+key+'"] && doc.data["'+key+'"].toLowerCase().indexOf(queryValue) >= 0) {'+
                             'found_doc = true;'+                            
                         '}';
                     }

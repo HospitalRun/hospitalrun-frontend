@@ -14,7 +14,7 @@ export default Adapter.extend(PouchAdapterUtils, {
         'searchIndex'
     ],
   
-    _executeContainsSearch: function(store, type, query, options) {
+    _executeContainsSearch: function(store, type, query) {
          return new Ember.RSVP.Promise(function(resolve, reject){
             var searchUrl = '/search/hrdb/'+type.typeKey+'/_search';
             if (query.containsValue && query.containsValue.value) {
@@ -33,16 +33,16 @@ export default Adapter.extend(PouchAdapterUtils, {
                     success: function (results) {
                         if (results && results.hits && results.hits.hits) {
                             var resultDocs = Ember.A(results.hits.hits).map(function(hit) {
-                                return {
-                                    doc: hit._source
-                                };
+                                var mappedResult = hit._source;
+                                mappedResult.id = mappedResult._id;
+                                return mappedResult;
                             });
                             var response = {
                                 rows: resultDocs
                             };
-                            this._handleQueryResponse(resolve, response, store, type, options);
+                            this._handleQueryResponse(response, store, type).then(resolve,reject);
                         } else if (results.rows) {
-                            this._handleQueryResponse(resolve, results, store, type, options);
+                            this._handleQueryResponse(results, store, type).then(resolve,reject);
                         } else {
                             reject('Search results are not valid');
                         }
@@ -150,7 +150,7 @@ export default Adapter.extend(PouchAdapterUtils, {
             if (query.mapReduce) {
                 mapReduce = query.mapReduce;
             } else if (query.containsValue) {
-                return this._executeContainsSearch(store, type, query, options);
+                return this._executeContainsSearch(store, type, query);
             }
             return new Ember.RSVP.Promise(function(resolve, reject){
                 var db = this.get('db');
