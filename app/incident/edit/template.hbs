@@ -79,9 +79,6 @@
                             property="categoryItem" content=itemList
                              selected=categoryItem optionValuePath="content" optionLabelPath="content"}}
                     </div>
-                    <div class="row">
-                        {{em-input property="categoryOther" label="Other (Please specify)" class="col-xs-12 col-sm-6"}}
-                   </div>                   
                 </div>
              </div>
         </div>
@@ -576,9 +573,6 @@
                         {{#if canAddRecommendation}}
                             {{em-text label="Lessons Learned" property="lessonsLearned" rows=3}}
                         {{/if}}
-                        {{#if canAddRecommendation}}
-                            {{em-text label="Actions Taken" property="actionsTaken" rows=3}}
-                        {{/if}}
                     </div>
                 </div>
         </div>
@@ -893,10 +887,6 @@
                                     <tr>
                                         <td>Lessons Learned</td>
                                         <td>{{lessonsLearned}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Actions Taken</td>
-                                        <td>{{actionsTaken}}</td>
                                     </tr>
                                 </TBODY>
                             </table>

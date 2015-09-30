@@ -53,7 +53,6 @@ export default Ember.Mixin.create({
         //'Investigation Re-Entry',
         //'Inpatient'    
         'ENT clinic',
-        'Cardiology Clinic',
-        'Other'
+        'Cardiology Clinic'
     ]
 });

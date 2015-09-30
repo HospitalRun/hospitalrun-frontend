@@ -13,7 +13,6 @@ export default AbstractModel.extend({
         
     categoryName: DS.attr('string'),
     categoryItem: DS.attr('string'),
-    categoryOther: DS.attr('string'),
 
     reviewers: DS.hasMany('inc-reviewer', {async: true}),
     feedbacks: DS.hasMany('inc-feedback', {async: true}),
@@ -37,8 +36,7 @@ export default AbstractModel.extend({
     preRiskScore: DS.attr('string'),
     
     recommendations: DS.hasMany('inc-recommendation',  {async: true}),
-    lessonsLearned: DS.attr('string'),
-    actionsTaken: DS.attr('string'),    
+    lessonsLearned: DS.attr('string'),    
     
     postSeverity: DS.attr('string'),
     postOccurence: DS.attr('string'),

@@ -4,8 +4,6 @@ export default AbstractPagedController.extend({
     deletePermission: 'delete_incident',
     startKey: [],
 
-    sortProperties: ['friendlyId'],
-
     	actions: {
 
     		showDeleteIncident: function(incident) {
