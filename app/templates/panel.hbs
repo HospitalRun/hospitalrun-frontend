@@ -7,7 +7,7 @@
             {{#if disabledAction}}
                 <button class="btn btn-primary on-white disabled-btn" {{action disabledAction}}>{{updateButtonText}}</button>
             {{else}}
-                <button class="btn btn-primary on-white" {{action updateButtonAction}} disabled="{{isUpdateDisabled}}">{{updateButtonText}}</button>
+                <button class="btn btn-primary on-white" {{action updateButtonAction}} disabled={{isUpdateDisabled}}>{{updateButtonText}}</button>
             {{/if}}
         {{/if}}
         {{#unless hideCancelButton}}
