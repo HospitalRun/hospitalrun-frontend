@@ -14,6 +14,7 @@ module('Acceptance | login', {
 
 test('visiting / redirects user to login', function(assert) {
   assert.expect(3);
+  loadPouchDump('default');
   visit('/');
 
   server.post('/db/_session', function(db, request){

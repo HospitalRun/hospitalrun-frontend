@@ -25,7 +25,8 @@
     "andThen",
     "currentURL",
     "currentPath",
-    "currentRouteName"
+    "currentRouteName",
+    "loadPouchDump"
   ],
   "node": false,
   "browser": false,

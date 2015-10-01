@@ -28,7 +28,9 @@
     "typeahead.js": "~0.11.1",
     "pretender": "~0.9.0",
     "lodash": "~3.7.0",
-    "Faker": "~3.0.0"
+    "Faker": "~3.0.0",
+    "pouchdb-load": "^1.4.0",
+    "pouchdb-memory": "https://github.com/pouchdb/pouchdb/releases/download/3.6.0/pouchdb.memory.js"
   },
   "resolutions": {
     "ember": "1.13.10"

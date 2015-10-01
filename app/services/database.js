@@ -9,6 +9,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   mainDB: null, //Server DB
   setMainDB: false,
   setup() {
+    PouchDB.plugin(List);
     const replicateConfigDB = this.replicateConfigDB.bind(this);
     const loadConfig = this.loadConfig.bind(this);
     const createMainDB = this.createMainDB.bind(this);
@@ -58,7 +59,6 @@ export default Ember.Service.extend(PouchAdapterUtils, {
     });
   },
   createConfigDB() {
-    PouchDB.plugin(List);
     return new Ember.RSVP.Promise(function(resolve, reject){
       new PouchDB('config', function(err, db){
         if(err){
