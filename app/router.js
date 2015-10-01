@@ -16,7 +16,6 @@ Router.map(function() {
     });
     
     this.resource('appointments', function() {
-        //this.route('calendar'); //currently not working in prod build
         this.route('edit', { path: "/edit/:appointment_id" });
         this.route('search');
         this.route('today');
