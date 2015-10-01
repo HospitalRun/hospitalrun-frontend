@@ -10,21 +10,8 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   setMainDB: false,
   setup() {
     PouchDB.plugin(List);
-    const replicateConfigDB = this.replicateConfigDB.bind(this);
-    const loadConfig = this.loadConfig.bind(this);
-    const createMainDB = this.createMainDB.bind(this);
     return this.createConfigDB()
-      .then((db) => {
-        this.set('configDB', db);
-        return db;
-      })
-      .then(replicateConfigDB)
-      .then(loadConfig)
-      .then((config) => {
-        this.set('config', config);
-        return config;
-      })
-      .then(createMainDB)
+      .then(this.createMainDB.bind(this))
       .then((db) => {
         this.set('mainDB', db);
         this.set('setMainDB', true);
@@ -59,7 +46,9 @@ export default Ember.Service.extend(PouchAdapterUtils, {
     });
   },
   createConfigDB() {
-    return new Ember.RSVP.Promise(function(resolve, reject){
+    const replicateConfigDB = this.replicateConfigDB.bind(this);
+    const loadConfig = this.loadConfig.bind(this);
+    const promise = new Ember.RSVP.Promise(function(resolve, reject){
       new PouchDB('config', function(err, db){
         if(err){
           reject(err);
@@ -67,6 +56,17 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         resolve(db);
       });
     }, 'instantiating config database instance');
+
+    return promise.then((db) => {
+      this.set('configDB', db);
+      return db;
+    })
+    .then(replicateConfigDB)
+    .then(loadConfig)
+    .then((config) => {
+      this.set('config', config);
+      return config;
+    });
   },
   replicateConfigDB(db){
     const url = `${document.location.protocol}//${document.location.host}/db/config`;
