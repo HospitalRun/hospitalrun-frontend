@@ -18,3 +18,28 @@ To run the app, you will need the following:
 5. Copy the server/config-example.js to server/config.js.
 6. Start the server so you can view the repo in your browser by running `ember serve` from the `frontend` directory.
 7. Go to `http://0.0.0.0:4200/` in a browser and login with username `hradmin` and password `test`.
+
+## Testing
+
+### Fixtures for Acceptance Tests
+
+Fixtures are PouchDB dumps that are generated with [pouchdb-dump-cli](https://github.com/nolanlawson/pouchdb-dump-cli).
+
+To create a fixture, run `pouchdb-dump http://localhost:5984/main -u hradmin -p test | cat > tests/fixtures/${name_of_fixture}.txt`.
+
+To use a fixture, use `loadPouchDump(`${name_of_fixture})` in your acceptance test. For example,
+
+```
+test('visiting /patients', function(assert) {
+  loadPouchDump('default');
+  authenticateSession();
+  andThen(function(){
+    const secure = currentSession().get('secure');
+    Ember.setProperties(secure, user);
+  });
+  visit('/patients');
+  andThen(function() {
+    assert.equal(currentURL(), '/patients');
+  });
+});
+```
