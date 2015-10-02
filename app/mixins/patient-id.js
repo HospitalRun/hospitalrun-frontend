@@ -1,68 +1,65 @@
 import Ember from "ember";
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
+
+const {
+  inject,
+  isEmpty
+} = Ember;
+
 export default Ember.Mixin.create(PouchDbMixin, {
-    idPrefix: null,
-    database: Ember.inject.service(),
+  idPrefix: null,
+  database: inject.service(),
+  config: inject.service(),
 
-    _createId: function(patientSequence) {
-        var idPrefix = this.get('idPrefix'),
-            newId;
-        if (patientSequence < 100000) {
-            newId = idPrefix + String('00000' + patientSequence).slice(-5);
-        } else {
-            newId = String(idPrefix + patientSequence);
-        }
-        return newId;
-    },
+  /**
+  * Override this function to generate an id for a new record
+  * @return a generated id;default is null which means that an
+  * id will be automatically generated via Ember data.
+  */
+  generateFriendlyId() {
+    const config = this.get('config');
+    const database = this.get('database');
+    const maxValue = this.get('maxValue');
 
-    _findUnusedId: function(patientSequenceRecord, resolve, reject) {
-        var patientSequence = patientSequenceRecord.incrementProperty('value'),
-            maxValue = this.get('maxValue'),
-            newId = this._createId(patientSequence),
-            queryParams = {
-                startkey: [newId,null],
-                endkey: [newId, maxValue],
-            },
-            database = this.get('database');
-        database.queryMainDB(queryParams, 'patient_by_display_id').then(function(foundRecord) {
-            if (!Ember.isEmpty(foundRecord.rows)) {
-                this._findUnusedId(patientSequenceRecord, resolve, reject);
-            } else {
-                patientSequenceRecord.set('value', patientSequence);
-                patientSequenceRecord.save().then(function() {
-                    resolve(newId);
-                }, reject);
-            }
-        }.bind(this), reject);
-    },
+    const findUnusedId = (sequence)=>{
+      let next, id;
+      return config.getPatientPrefix()
+        .then(function(prefix) {
+          next = sequence.incrementProperty('value');
+          id = sequenceId(prefix, next);
+          const query = {
+            startkey: [ id, null ],
+            endkey: [ id, maxValue ],
+          };
+          return database.queryMainDB(query, 'patient_by_display_id');
+        })
+        .then(function(found){
+          if (isEmpty(found.rows)) {
+            sequence.set('value', next);
+          } else {
+            return findUnusedId(sequence);
+          }
+          return sequence.save().then(function(){
+            return id;
+          });
+        });
+    };
 
-    /**
-     * Override this function to generate an id for a new record
-     * @return a generated id;default is null which means that an
-     * id will be automatically generated via Ember data.
-     */
-    generateFriendlyId: function(configs) {
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            var idPrefix = 'P',
-                idPrefixRecord;
-            if (Ember.isEmpty(configs)) {
-                 configs = this.modelFor('application');
-            }
-             idPrefixRecord = configs.findBy('id','patient_id_prefix');
-            if (!Ember.isEmpty(idPrefixRecord)) {
-                idPrefix = idPrefixRecord.get('value');
-            }
-            this.set('idPrefix', idPrefix);
-
-            this.store.find('sequence', 'patient').then(function(sequence) {
-                this._findUnusedId(sequence, resolve, reject);
-            }.bind(this), function() {
-                var newSequence = this.get('store').push('sequence',{
-                    id: 'patient',
-                    value: 0
-                });
-                this._findUnusedId(newSequence, resolve, reject);
-            }.bind(this));
-        }.bind(this));
-    }
+    return this.store.find('sequence', 'patient')
+      .then(findUnusedId)
+      .catch(()=>{
+        var sequence = this.get('store').push('sequence',{
+          id: 'patient',
+          value: 0
+        });
+        return findUnusedId(sequence);
+      });
+  }
 });
+
+export function sequenceId(prefix, sequence) {
+  if (sequence < 100000) {
+    sequence = `00000${sequence}`.slice(-5);
+  }
+  return `${prefix}${sequence}`;
+}

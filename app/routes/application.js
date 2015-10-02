@@ -1,6 +1,12 @@
 import ApplicationRouteMixin from 'simple-auth/mixins/application-route-mixin';
 import Ember from 'ember';
-var ApplicationRoute = Ember.Route.extend(ApplicationRouteMixin, {
+
+const {
+  inject,
+  Route
+} = Ember;
+
+var ApplicationRoute = Route.extend(ApplicationRouteMixin, {
     use_google_auth: false,
 
     actions: {
@@ -16,7 +22,8 @@ var ApplicationRoute = Ember.Route.extend(ApplicationRouteMixin, {
         }
     },
 
-    database: Ember.inject.service(),
+    database: inject.service(),
+    config: inject.service(),
 
     model: function(params, transition) {
       const session = this.get('session');
@@ -24,7 +31,7 @@ var ApplicationRoute = Ember.Route.extend(ApplicationRouteMixin, {
       if (isAuthenticated) {
         return this.get('database').setup()
           .then(()=>{
-            return this.store.findAll('config');
+            return this.get('config').setup();
           })
           .catch((error)=>{
             // should handle with an exception
