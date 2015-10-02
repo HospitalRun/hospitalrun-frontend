@@ -32,11 +32,7 @@ To use a fixture, use `loadPouchDump(`${name_of_fixture})` in your acceptance te
 ```
 test('visiting /patients', function(assert) {
   loadPouchDump('default');
-  authenticateSession();
-  andThen(function(){
-    const secure = currentSession().get('secure');
-    Ember.setProperties(secure, user);
-  });
+  authenticateUser();
   visit('/patients');
   andThen(function() {
     assert.equal(currentURL(), '/patients');
