@@ -26,7 +26,8 @@
     "currentURL",
     "currentPath",
     "currentRouteName",
-    "loadPouchDump"
+    "loadPouchDump",
+    "authenticateUser"
   ],
   "node": false,
   "browser": false,

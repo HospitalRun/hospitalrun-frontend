@@ -25,6 +25,7 @@ function loadPouchDumpAsyncHelper(app, dumpName) {
 
   on(app, 'willDestroy', function(){
     db.destroy();
+    db = null;
   });
 
   return new Ember.RSVP.Promise(function(resolve, reject){

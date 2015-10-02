@@ -6,6 +6,7 @@ import initializeTestHelpers from 'simple-auth-testing/test-helpers';
 initializeTestHelpers();
 
 import './load-pouch-dump';
+import './authenticate-user';
 
 export default function startApp(attrs) {
   var application;
