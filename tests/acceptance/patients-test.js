@@ -32,7 +32,7 @@ test('visiting /patients route', function(assert) {
   destroyDatabases();
 });
 
-test('View reports', function(assert) {
+test('View reports tab', function(assert) {
   loadPouchDump('default');
   authenticateUser();
   visit('/patients/reports');
@@ -43,18 +43,29 @@ test('View reports', function(assert) {
     assert.equal(generateReportButton.length, 1, 'Generate Report button is visible');
     const reportType = find('[data-test-selector="select-report-type"]');
     assert.equal(reportType.length, 1, 'Report type select is visible');
-    const reportStartDate = find('[data-test-selector="select-report-start-date"]');
-    const reportEndDate = find('[data-test-selector="select-report-end-date"]');
-    assert.equal(reportStartDate.length, 1, 'Report start date select is visible');
-    assert.equal(reportEndDate.length, 1, 'Report end date select is visible');
-    //assert.equal(reportType.text().trim(), 'Admissions Detail', 'Default value selected"');
-  });
-  fillIn('[data-test-selector="select-report-type"]', 'Visit');
-  andThen(function() {
-    //assertions
+    assert.equal(reportType.find(':selected').text(), 'Admissions Detail', 'Default value selected"');
   });
   destroyDatabases();
 });
+
+testSimpleReportForm('Admissions Summary');
+testSimpleReportForm('Diagnostic Testing');
+
+function testSimpleReportForm(reportName) {
+  test(`View reports tab | ${reportName} shows start and end dates`, function(assert) {
+    loadPouchDump('default');
+    authenticateUser();
+    visit('/patients/reports');
+    fillIn('[data-test-selector="select-report-type"]', reportName);
+    andThen(function() {
+      const reportStartDate = find('[data-test-selector="select-report-start-date"]');
+      const reportEndDate = find('[data-test-selector="select-report-end-date"]');
+      assert.equal(reportStartDate.length, 1, 'Report start date select is visible');
+      assert.equal(reportEndDate.length, 1, 'Report end date select is visible');
+    });
+    destroyDatabases();
+  });
+}
 
 // test('Adding a new patient record', function(assert) {
 //   loadPouchDump('default');
