@@ -4,8 +4,7 @@ import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 
 export default Adapter.extend(PouchAdapterUtils, {
     database: Ember.inject.service(),
-    mainDB: Ember.computed.alias('database.mainDB'),
-    db:  Ember.computed.alias('database.mainDB'),
+    db:  Ember.computed.reads('database.mainDB'),
 
     _specialQueries: [
         'containsValue',
