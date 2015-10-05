@@ -13,46 +13,42 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
         appointmentDeleted: function(model) {
             this.controller.send('appointmentDeleted', model);
         },
-        
+
         deleteContact: function(model) {
             this.controller.send('deleteContact', model);
         },
-        
+
         deleteExpense: function(model) {
             this.controller.send('deleteExpense', model);
-        },         
-        
+        },
+
         deleteFamily: function(model) {
             this.controller.send('deleteFamily', model);
-        },        
-        
+        },
+
         deletePhoto: function(model) {
             this.controller.send('deletePhoto', model);
         },
-        
+
         updateExpense: function(model) {
             this.controller.send('updateExpense', model);
         },
-        
+
         updateFamilyInfo: function(model) {
             this.controller.send('updateFamilyInfo', model);
         },
-        
+
         visitDeleted: function(model) {
             this.controller.send('visitDeleted', model);
         }
     },
-    
-    getNewData: function() {
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            this.generateFriendlyId().then(function(friendlyId) {
-                resolve({
-                    friendlyId: friendlyId
-                });
-            },reject);
-        }.bind(this));
+
+    getNewData() {
+      return this.generateFriendlyId().then(function(friendlyId){
+        return { friendlyId };
+      });
     },
-    
+
     setupController: function(controller, model) {
         //Load appointments, photos and visits asynchronously.
         var friendlyId = model.get('friendlyId'),
@@ -77,7 +73,7 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
         });
         this.store.find('photo', {
             options: {
-                key: patientId            
+                key: patientId
             },
             mapReduce: 'photo_by_patient'
         }).then(function(photos) {
@@ -86,5 +82,5 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
             model.set('photos', patientPhotos);
         });
     }
-    
+
 });

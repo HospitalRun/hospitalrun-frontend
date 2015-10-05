@@ -1,7 +1,7 @@
 <div class="panel panel-primary">
     <div class="panel-body">
         {{#em-form model=this submit_button=false }}
-            <div class="row">
+            <div class="row" data-test-selector="select-report-type">
                 {{em-select class="col-xs-6" label="Report Type"
                     property="reportType" content=reportTypes
                     optionValuePath="content.value" optionLabelPath="content.name"
@@ -16,10 +16,14 @@
                     prompt=" "
                 }}
             {{else}}
-                <div class="row">
-                    {{date-picker property="startDate" label="Start Date" class="col-sm-4"}}
-                    {{date-picker property="endDate" label="End Date" class="col-sm-4"}}
+              <div class="row">
+                <div data-test-selector="select-report-start-date">
+                  {{date-picker property="startDate" label="Start Date" class="col-sm-4"}}
                 </div>
+                <div data-test-selector="select-report-end-date">
+                  {{date-picker property="endDate" label="End Date" class="col-sm-4"}}
+                </div>
+              </div>
             {{/if}}
             {{#if isVisitReport}}
                 <div class="row">

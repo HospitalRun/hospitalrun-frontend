@@ -47,7 +47,7 @@
         </tbody>
     </table>
 {{else}}
-    <div class="alert alert-info">
+    <div class="alert alert-info" data-test-selector="no-patients-found">
         <p>No patients found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new patient record?</a>{{/if}}</p>
     </div>
 {{/if}}

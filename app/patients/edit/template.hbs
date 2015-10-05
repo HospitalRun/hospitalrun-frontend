@@ -3,7 +3,7 @@
         {{patient-summary patient=model visits=visits patientProcedures=patientProcedures disablePatientLink=true }}
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class="active" ><a class="active" href="#general" role="tab" data-toggle="pill">General</a></li>
-            <li role="presentation"><a href="#photos" role="tab" data-toggle="pill">Photos</a></li>            
+            <li role="presentation"><a href="#photos" role="tab" data-toggle="pill">Photos</a></li>
             <li role="presentation"><a href="#medication" role="tab" data-toggle="pill">Medication</a></li>
             <li role="presentation"><a href="#imaging" role="tab" data-toggle="pill">Imaging</a></li>
             <li role="presentation"><a href="#labs" role="tab" data-toggle="pill">Labs</a></li>
@@ -14,7 +14,7 @@
         </ul>
     {{/unless}}
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="general">        
+        <div role="tabpanel" class="tab-pane active" id="general">
             <div class="panel detail-section">
                 <div class="panel-heading">
                     <h3 class="panel-title">
@@ -25,10 +25,10 @@
                 <div class="panel-body detail-section-content">
                     <div class="row">
                         <div class="col-xs-12 col-sm-6">
-                            {{em-input property="friendlyId" label="Id" class="required"}}
-                            {{em-input property="firstName" label="First Name" class="required"}}
-                            {{em-input property="middleName" label="Middle Name" }}
-                            {{em-input property="lastName" label="Last Name" class="required"}}
+                            {{em-input property="friendlyId" label="Id" class="required test-id"}}
+                            {{em-input property="firstName" label="First Name" class="required test-first-name"}}
+                            {{em-input property="middleName" label="Middle Name" class="test-middle-name"}}
+                            {{em-input property="lastName" label="Last Name" class="required test-last-name"}}
                             <div class="form-group">
                                 <label>Gender</label>
                                 <div>
@@ -61,8 +61,8 @@
                             }}
                             {{select-or-typeahead property="clinic" label="Clinic Site" list=clinicList selection=clinic }}
                             {{em-input property="referredBy" label="Referred By"}}
-                            {{date-picker property="referredDate" label="Referred Date"}}                            
-                            {{em-input property="religion" label="Religion"}}                            
+                            {{date-picker property="referredDate" label="Referred Date"}}
+                            {{em-input property="religion" label="Religion"}}
                             {{em-input property="parent" label="Parent/Guardian"}}
                             {{em-select label="Payment Profile"
                                 property="paymentProfile"
@@ -70,7 +70,7 @@
                                 optionValuePath="content"
                                 optionLabelPath="content.name"
                                 prompt=" "
-                            }}                            
+                            }}
                         </div>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                         {{#if haveAddressOptions}}
                             {{#if address1Include}}
                                 {{em-text label=address1Label property="address" rows=3 class="col-xs-12 col-sm-6"}}
-                            {{/if}}                                
+                            {{/if}}
                             {{#if address2Include}}
                                 {{em-input label=address2Label property="address2" class="col-xs-12 col-sm-6" }}
                             {{/if}}
@@ -102,7 +102,7 @@
                             {{/if}}
                             {{#if address4Include}}
                                 {{em-input label=address4Label property="address4" class="col-xs-12 col-sm-6" }}
-                            {{/if}}                            
+                            {{/if}}
                         {{else}}
                             {{em-text label="Address" property="address" rows=3  class="col-xs-12 col-sm-6"}}
                         {{/if}}
@@ -135,25 +135,25 @@
                                 {{/if}}
                             </tr>
                         {{/each}}
-                    </table>                
+                    </table>
                 {{/if}}
             </div>
         </div>
         {{#unless isNewOrDeleted}}
             <div role="tabpanel" class="tab-pane" id="photos">
-                <div class="panel">    
+                <div class="panel">
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             Photos
                             {{#if canAddPhoto}}
                                 <button type="button" class="btn btn-primary align-right" {{action "showAddPhoto" bubbles=false }}><span class="octicon octicon-plus"></span>New Photo</button>
-                            {{/if}}                
+                            {{/if}}
                         </h3>
                     </div>
                     <div class="panel-body detail-section-content">
                         <div class="row">
                             {{#each model.photos as |photo|}}
-                                <div class="col-sm-4 col-md-3">                                
+                                <div class="col-sm-4 col-md-3">
                                      <div {{action "editPhoto" photo}} class="thumbnail">
                                         {{photo-display photo=photo }}
                                         <div class="caption">
@@ -309,15 +309,15 @@
                 <div role="tabpanel" class="tab-pane" id="social">
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">                
-                                Social Work Details                
+                            <h3 class="panel-title">
+                                Social Work Details
                             </h3>
                         </div>
-                        <div class="panel-body detail-section-content">        
+                        <div class="panel-body detail-section-content">
                             <h4>
-                                Family Information              
+                                Family Information
                                 <button type="button" class="btn btn-primary align-right" {{ action "showEditFamily" bubbles=false }}><span class="octicon octicon-plus"></span>Add Family Member</button>
-                            </h4>            
+                            </h4>
 
                             <table class="table">
                                 <tr class="table-header">
@@ -344,7 +344,7 @@
                                             <td>{{insurance}}</td>
 
                                             <td>
-                                                
+
                                                 <button type="button" class="btn btn-default neutral" {{action "showEditFamily" this}}>Edit</button>
                                                 {{#if patientController.canDeleteSocialWork}}
                                                     <button type="button" class="btn btn-default warning" {{action "showDeleteFamily" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
@@ -354,7 +354,7 @@
                                         </tr>
                                     {{/each}}
                                 {{/with}}
-                            </table>         
+                            </table>
                             <h4>
                                 Expenses
                                 <button type="button" class="btn btn-primary align-right" {{action "showEditExpense" bubbles=false }}><span class="octicon octicon-plus"></span>Add Expense</button>
@@ -393,12 +393,12 @@
                             <div class="row">
                                 <div class="form-group col-sm-6">
                                     <label>Living Arrangement</label>
-                                    {{ext-radio 
-                                        name=livingArrangement 
-                                        content=livingArrangementList 
-                                        value=livingArrangement 
-                                        includeOtherOption=true 
-                                        otherOptionLabel="Other" 
+                                    {{ext-radio
+                                        name=livingArrangement
+                                        content=livingArrangementList
+                                        value=livingArrangement
+                                        includeOtherOption=true
+                                        otherOptionLabel="Other"
                                         radioLabelPath="content"
                                         radioValuePath="content"
                                     }}
@@ -417,13 +417,13 @@
                             {{em-text label="Action Taken" property="socialActionTaken"}}
                             <div class="row">
 
-                                {{em-select label="Philhealth" 
+                                {{em-select label="Philhealth"
                                     property="insurance" content=philhealthTypes
                                     optionValuePath="content" optionLabelPath="content"
                                     selected=insurance
                                     class="col-sm-6"
                                 }}
-                                {{em-select label="Classification" 
+                                {{em-select label="Classification"
                                     property="economicClassification" content=economicClassificationTypes
                                     optionValuePath="content" optionLabelPath="content"
                                     selected=economicClassification
