@@ -27,6 +27,7 @@
     "currentPath",
     "currentRouteName",
     "loadPouchDump",
+    "destroyDatabases",
     "authenticateUser"
   ],
   "node": false,

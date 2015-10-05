@@ -5,6 +5,7 @@ import config from '../../config/environment';
 import initializeTestHelpers from 'simple-auth-testing/test-helpers';
 initializeTestHelpers();
 
+import './destroy-databases';
 import './load-pouch-dump';
 import './authenticate-user';
 

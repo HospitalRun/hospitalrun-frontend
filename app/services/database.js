@@ -10,10 +10,17 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   setMainDB: false,
   setup(configs) {
     PouchDB.plugin(List);
+    const loadConfig = this.loadConfig.bind(this);
     return this.createConfigDB()
       .then((db) => {
         this.set('configDB', db);
         return db;
+      })
+      .then(loadConfig)
+      .then((config) => {
+        // TODO: delegate to config service
+        this.set('config', config);
+        return config;
       })
       .then(this.createMainDB.bind(this))
       .then((db) => {
@@ -21,8 +28,46 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         this.set('setMainDB', true);
       });
   },
+  createConfigDB() {
+    const url = getDatabaseURL('config');
+    let db;
+    const create = function(){
+      return new Ember.RSVP.Promise(function(resolve, reject){
+        new PouchDB('config', function(err, _db){
+          if(err){ reject(err); }
+          db = _db;
+          resolve(_db);
+        });
+      }, 'instantiating config database instance');
+    };
+
+    const replicate = function(db) {
+      return new Ember.RSVP.Promise(function(resolve, reject){
+        db.replicate.from(url, { complete: resolve }, reject);
+      }, 'replicating the database');
+    };
+
+    return create().then(replicate).then(function(){
+      return db;
+    });
+  },
   createMainDB(configs){
-    const url = `${document.location.protocol}//${document.location.host}/db/main`;
+    const pouchOptions = {};
+    if (configs.config_use_google_auth) {
+        //If we don't have the proper credentials don't sync.
+        if (Ember.isEmpty(configs.config_consumer_key) ||
+            Ember.isEmpty(configs.config_consumer_secret) ||
+            Ember.isEmpty(configs.config_oauth_token) ||
+            Ember.isEmpty(configs.config_token_secret)) {
+            // TODO: do we need this here?
+            // reject();
+        }
+        pouchOptions.ajax = {
+            xhr: createPouchOauthXHR(configs),
+            timeout: 30000
+        };
+    }
+    const url = getDatabaseURL('main');
     return new Ember.RSVP.Promise((resolve, reject)=>{
       let pouchOptions = {};
       if (configs.config_use_google_auth) {
@@ -47,31 +92,6 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         resolve(db);
       });
     });
-  },
-  createConfigDB() {
-    const replicateConfigDB = this.replicateConfigDB.bind(this);
-    const loadConfig = this.loadConfig.bind(this);
-    const promise = new Ember.RSVP.Promise(function(resolve, reject){
-      new PouchDB('config', function(err, db){
-        if(err){
-          reject(err);
-        }
-        resolve(db);
-      });
-    }, 'instantiating config database instance');
-
-    return promise.then(replicateConfigDB)
-    .then(loadConfig)
-    .then((config) => {
-      this.set('config', config);
-      return config;
-    });
-  },
-  replicateConfigDB(db){
-    const url = `${document.location.protocol}//${document.location.host}/db/config`;
-    return new Ember.RSVP.Promise(function(resolve, reject){
-      db.replicate.from(url, { complete: resolve }, reject);
-    }, 'replicating the database');
   },
   loadConfig() {
     const config = this.get('configDB');
@@ -202,3 +222,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       return mappedRows;
   },
 });
+
+function getDatabaseURL(name) {
+  return `${document.location.protocol}//${document.location.host}/db/${name}`;
+}

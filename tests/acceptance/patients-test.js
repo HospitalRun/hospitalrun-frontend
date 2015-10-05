@@ -29,6 +29,7 @@ test('visiting /patients route', function(assert) {
   andThen(function() {
     assert.equal(currentURL(),'/patients/edit/new');
   });
+  destroyDatabases();
 });
 
 test('View reports', function(assert) {
@@ -52,6 +53,7 @@ test('View reports', function(assert) {
   andThen(function() {
     //assertions
   });
+  destroyDatabases();
 });
 
 // test('Adding a new patient record', function(assert) {
