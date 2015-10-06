@@ -8,6 +8,7 @@ initializeTestHelpers();
 import './destroy-databases';
 import './load-pouch-dump';
 import './authenticate-user';
+import './select';
 
 export default function startApp(attrs) {
   var application;
