@@ -97,12 +97,23 @@ test('Adding a new patient record', function(assert) {
   loadPouchDump('default');
   authenticateUser();
   visit('/patients/edit/new');
+  // Ember.run(function() {
+  //   fillIn('.test-first-name input', 'John');
+  //   fillIn('.test-last-name input', 'Doe');
+  // });
   fillIn('.test-first-name input', 'John');
   fillIn('.test-last-name input', 'Doe');
-  click('button:contains("Add")');
+  click('.panel-footer button:contains(Add)');
+  //return pauseTest();
+
   andThen(function() {
     assert.equal(currentURL(), '/patients/edit/new');
-    return pauseTest();
+    assert.equal(find('.modal-title').text(), 'Patient Saved', 'Patient record has been saved');
+    assert.equal(find('.modal-body').text().trim(), 'The patient record for John Doe has been saved.', 'Record has been saved');
+  });
+  click('button:contains("Ok")');
+  andThen(function() {
+    assert.equal(find('label:contains(Name)').text(), 'Name', 'Name is showing');
   });
   destroyDatabases();
 });
