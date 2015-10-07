@@ -4,10 +4,10 @@ import FulfillRequest from "hospitalrun/mixins/fulfill-request";
 import InventoryLocations from "hospitalrun/mixins/inventory-locations"; //inventory-locations mixin is needed for fulfill-request mixin!
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, PatientListRoute, {
-    editTitle: 'Edit Medication Request', 
+    editTitle: 'Edit Medication Request',
     modelName: 'medication',
     newTitle: 'New Medication Request',
-    pouchdb: Ember.inject.service(),
+    database: Ember.inject.service(),
     getNewData: function(params) {
         var idParam = this.get('idParam'),
             newData = {
@@ -20,7 +20,7 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
         }
         return Ember.RSVP.resolve(newData);
     },
-    
+
     model: function(params) {
         var idParam = this.get('idParam');
         if (!Ember.isEmpty(idParam) && params[idParam] === 'new' || params[idParam] === 'dispense') {
@@ -29,18 +29,18 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
             return this._super(params);
         }
     },
-    
+
     setupController: function(controller, model) {
         this._super(controller, model);
         var inventoryQuery = {
-            key:  'Medication',            
+            key:  'Medication',
             include_docs: true,
         };
         var inventoryItemId = model.get('inventoryItem.id'),
             patient = model.get('patient');
         if (Ember.isEmpty(inventoryItemId)) {
-            var pouchdb = this.get('pouchdb');
-            pouchdb.queryMainDB(inventoryQuery, 'inventory_by_type').then(function(result) {
+            this.get('database').queryMainDB(inventoryQuery, 'inventory_by_type')
+              .then(function(result) {
                 var medicationList = result.rows.map(function(medication) {
                     return medication.doc;
                 });
@@ -49,6 +49,6 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
         }
         if (Ember.isEmpty(patient)) {
             this._fetchPatientList(controller);
-        }        
+        }
     }
 });

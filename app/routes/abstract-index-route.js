@@ -3,7 +3,7 @@ import Ember from 'ember';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRouteMixin, {
-    pouchdb: Ember.inject.service(),
+    database: Ember.inject.service(),
     filterParams: null,
     firstKey: null,
     hideNewButton: false,
@@ -13,7 +13,7 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
     newButtonText: null,
     nextStartKey: null,
     pageTitle: null,
-    
+
     _getFilterParams: function(params) {
         var filterByList = [],
             filterParams = this.get('filterParams');
@@ -23,33 +23,33 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
                     filterByList.push({
                         name: paramName,
                         value: params[paramName]
-                    });                                                
+                    });
                 }
             });
         }
         return filterByList;
     },
-    
+
     _getMaxPouchId: function() {
-        return this.get('pouchdb').getPouchId({}, this.get('modelName').camelize());
+        return this.get('database').getPouchId({}, this.get('modelName').camelize());
     },
-    
+
     _getMinPouchId: function() {
-        return this.get('pouchdb').getPouchId(null, this.get('modelName').camelize());
-    },    
-    
-    _getPouchIdFromItem: function(item) {
-        return this.get('pouchdb').getPouchId(item.get('id'), this.get('modelName').camelize());
+        return this.get('database').getPouchId(null, this.get('modelName').camelize());
     },
-    
+
+    _getPouchIdFromItem: function(item) {
+        return this.get('database').getPouchId(item.get('id'), this.get('modelName').camelize());
+    },
+
     _getStartKeyFromItem: function(item) {
         return item.get('id');
     },
-    
+
     _modelQueryParams: function() {
         return {};
     },
-    
+
     model: function(params) {
         return new Ember.RSVP.Promise(function(resolve, reject){
             var filterParams = this._getFilterParams(params),
@@ -60,7 +60,7 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
                 queryParams.sortKey = params.sortKey;
                 if (!Ember.isEmpty(params.sortDesc)) {
                     queryParams.sortDesc = params.sortDesc;
-                }                
+                }
             }
             if (!Ember.isEmpty(filterParams)) {
                 queryParams.filterBy = filterParams;
@@ -80,19 +80,19 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
                     var lastItem = model.popObject();
                     this.set('nextStartKey', this._getStartKeyFromItem(lastItem));
                 } else {
-                    this.set('nextStartKey');                                    
+                    this.set('nextStartKey');
                 }
                 resolve(model);
             }.bind(this), reject);
         }.bind(this));
     },
-    
+
     queryParams: {
         sortDesc: {refreshModel: true},
         sortKey: {refreshModel: true},
         startKey: {refreshModel: true}
     },
-    
+
     setupController: function(controller, model) {
         var props = this.getProperties('firstKey', 'nextStartKey');
         controller.setProperties(props);

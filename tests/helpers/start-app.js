@@ -2,6 +2,12 @@ import Ember from 'ember';
 import Application from '../../app';
 import config from '../../config/environment';
 
+import initializeTestHelpers from 'simple-auth-testing/test-helpers';
+initializeTestHelpers();
+
+import './load-pouch-dump';
+import './authenticate-user';
+
 export default function startApp(attrs) {
   var application;
 

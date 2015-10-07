@@ -1,5 +1,9 @@
 {
   "predef": [
+    "server",
+    "authenticateSession",
+    "invalidateSession",
+    "currentSession",
     "document",
     "window",
     "location",
@@ -21,7 +25,9 @@
     "andThen",
     "currentURL",
     "currentPath",
-    "currentRouteName"
+    "currentRouteName",
+    "loadPouchDump",
+    "authenticateUser"
   ],
   "node": false,
   "browser": false,

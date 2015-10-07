@@ -36,6 +36,10 @@ module.exports = function(defaults) {
     app.import('bower_components/idb.filesystem/src/idb.filesystem.js');
     app.import('bower_components/pikaday/css/pikaday.css');
     app.import('vendor/octicons/octicons/octicons.css');
+
+    app.import('bower_components/pouchdb-load/dist/pouchdb.load.js');
+    app.import('bower_components/pouchdb-memory/index.js');
+
     var completeTree = app.toTree();
     var manifestTree = fileRemover(completeTree, {
         paths: ['index.html', 'tests/', 'testem.js', 'robots.txt']

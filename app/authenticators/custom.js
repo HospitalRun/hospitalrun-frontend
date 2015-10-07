@@ -1,10 +1,10 @@
 import Ember from "ember";
 import Base from 'simple-auth/authenticators/base';
 export default Base.extend({
-    pouchDBService: Ember.inject.service('pouchdb'),
-    serverEndpoint: '/db/_session',    
+    database: Ember.inject.service(),
+    serverEndpoint: '/db/_session',
     useGoogleAuth: false,
-    
+
     /**
       @method absolutizeExpirationTime
       @private
@@ -14,7 +14,7 @@ export default Base.extend({
             return new Date((new Date().getTime()) + (expiresIn - 5) * 1000).getTime();
         }
     },
-    
+
     _checkUser: function(user, resolve, reject) {
         this._makeRequest('POST', {name: user.name}, '/chkuser').then(function(response) {
             Ember.run(function() {
@@ -31,10 +31,10 @@ export default Base.extend({
                 //If chkuser fails, user is probably offline; resolve with currently stored credentials
                 resolve(user);
             });
-        });               
+        });
     },
-    
-    _getPromise: function(type, data) {        
+
+    _getPromise: function(type, data) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
             this._makeRequest(type, data).then(function(response) {
                 Ember.run(function() {
@@ -47,7 +47,7 @@ export default Base.extend({
             });
         }.bind(this));
     },
-    
+
 
     _makeRequest: function(type, data, url) {
         if (!url) {
@@ -64,8 +64,8 @@ export default Base.extend({
             }
         });
     },
-    
-    
+
+
     /**
      Authenticate using google auth credentials or credentials from couch db.
      @method authenticate
@@ -86,8 +86,8 @@ export default Base.extend({
             return new Ember.RSVP.Promise(function(resolve, reject) {
                 this._checkUser(session_credentials, resolve, reject);
             }.bind(this));
-        }            
-        
+        }
+
         return new Ember.RSVP.Promise(function(resolve, reject) {
             var data = { name: credentials.identification, password: credentials.password };
             this._makeRequest('POST', data).then(function(response) {
@@ -95,8 +95,8 @@ export default Base.extend({
                     response.name = data.name;
                     response.expires_at = this._absolutizeExpirationTime(600);
                     this._checkUser(response, function(user) {
-                        var pouchDBService = this.get('pouchDBService');
-                        pouchDBService.setupMainDB({}).then(function() {
+                        var database = this.get('database');
+                        database.setup({}).then(function() {
                             resolve(user);
                         }, reject);
                     }.bind(this), reject);
@@ -106,9 +106,9 @@ export default Base.extend({
                     reject(xhr.responseJSON || xhr.responseText);
                 }.bind(this));
             }.bind(this));
-        }.bind(this)); 
+        }.bind(this));
     },
-    
+
     invalidate: function() {
         if (this.useGoogleAuth) {
             return new Ember.RSVP.resolve();
@@ -116,7 +116,7 @@ export default Base.extend({
             return this._getPromise('DELETE');
         }
     },
-        
+
     restore: function(data) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
             var now = (new Date()).getTime();
@@ -126,9 +126,9 @@ export default Base.extend({
                 if (data.google_auth) {
                     this.useGoogleAuth = true;
                 }
-                this._checkUser(data, resolve, reject);                                
+                this._checkUser(data, resolve, reject);
             }
         }.bind(this));
     }
-        
+
 });

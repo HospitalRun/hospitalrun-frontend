@@ -21,7 +21,9 @@
   "devDependencies": {
     "body-parser": "^1.13.2",
     "broccoli-asset-rev": "^2.1.2",
+    "broccoli-export-text": "0.0.2",
     "broccoli-file-remover": "^0.3.1",
+    "broccoli-funnel": "^0.2.8",
     "broccoli-manifest": "0.0.6",
     "broccoli-merge-trees": "^0.2.2",
     "ember-cli": "1.13.8",
@@ -30,6 +32,7 @@
     "ember-cli-content-security-policy": "0.4.0",
     "ember-cli-dependency-checker": "^1.0.1",
     "ember-cli-deprecation-workflow": "0.1.4",
+    "ember-cli-fake-server": "0.2.4",
     "ember-cli-htmlbars": "0.7.9",
     "ember-cli-htmlbars-inline-precompile": "^0.2.0",
     "ember-cli-ic-ajax": "0.2.1",
@@ -38,12 +41,13 @@
     "ember-cli-release": "0.2.3",
     "ember-cli-sass": "^4.0.1",
     "ember-cli-simple-auth": "0.8.0",
+    "ember-cli-simple-auth-testing": "0.8.0",
     "ember-cli-sri": "^1.0.3",
     "ember-cli-uglify": "^1.2.0",
     "ember-data": "1.13.12",
     "ember-disable-proxy-controllers": "^1.0.0",
     "ember-export-application-global": "^1.0.3",
-    "ember-get-helper": "1.0.2",   
+    "ember-get-helper": "1.0.2",
     "ember-pouch": "^2.0.3",
     "ember-rapid-forms": "0.7.2",
     "ember-truth-helpers": "1.1.0",
@@ -55,5 +59,10 @@
   },
   "dependencies": {
     "ember-radio-buttons": "^4.0.1"
+  },
+  "ember-addon": {
+    "paths": [
+      "lib/pouch-fixtures"
+    ]
   }
 }
