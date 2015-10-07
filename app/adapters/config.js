@@ -5,8 +5,6 @@ import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 
 export default Adapter.extend(PouchAdapterUtils, {
     databaseName: 'config',
-    database: Ember.inject.service(),
-    db:  Ember.computed.alias('database.configDB'),
 
     _mapQuery: function(doc, emit) {
         if (doc._id) {
