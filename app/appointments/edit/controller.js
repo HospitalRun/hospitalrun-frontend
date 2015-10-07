@@ -62,12 +62,6 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
         }
     }.property('returnTo'),
     
-    dateChanged: function() {
-        Ember.run.once(this, function(){
-            this.get('model').validate();
-        });
-    }.observes('startDate','endDate'),
-    
     isAdmissionAppointment: function() {
         var appointmentType = this.get('appointmentType'),
             isAdmissionAppointment = (appointmentType === 'Admission');
@@ -83,25 +77,6 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
         this.send(this.get('cancelAction'));
     },
 
-    allDayChanged: function() {
-        var allDay = this.get('allDay'),
-            isAdmissionAppointment = this.get('isAdmissionAppointment');
-        if (allDay) {
-            var endDate = this.get('endDate'),
-                startDate = this.get('startDate');
-            this.set('startDate', moment(startDate).startOf('day').toDate());
-            this.set('endDate', moment(endDate).endOf('day').toDate());
-            this.set('dateFormat', 'l');
-            this.set('showTime', false);
-        } else {
-            this.set('dateFormat', 'l h:mm A');
-            this.set('showTime', true);
-            if (isAdmissionAppointment) {
-                this._updateAllTimes();
-            }
-        }
-    }.observes('allDay'),
-    
     beforeUpdate: function() {
         this._updateAppointmentDates();
         return Ember.RSVP.Promise.resolve();
@@ -116,17 +91,41 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
     }.observes('endMinute'),
     
     endTimeHasError: function() {
-        var endDateError = this.get('errors.endDate');
+        Ember.run.once(this, function(){
+            this.get('model').validate();
+        });        
+        var endDateError = this.get('model.errors.endDate');
         return (endDateError.length > 0);
-    }.property('errors.endDate'),
-        
+    }.property('model.errors.endDate', 'model.startDate','model.endDate','model.isValid'),
+
+    isAllDay: function() {
+        var allDay = this.get('model.allDay'),
+            isAdmissionAppointment = this.get('isAdmissionAppointment');            
+        if (allDay) {
+            var endDate = this.get('model.endDate'),
+                startDate = this.get('model.startDate');
+            this.set('model.startDate', moment(startDate).startOf('day').toDate());
+            this.set('model.endDate', moment(endDate).endOf('day').toDate());
+            this.set('dateFormat', 'l');
+            this.set('showTime', false);
+        } else {
+            this.set('dateFormat', 'l h:mm A');
+            this.set('showTime', true);
+            if (isAdmissionAppointment) {
+                this._updateAllTimes();
+            }
+        }
+        return allDay;
+    }.property('model.allDay'),
+    
     startHourChanged: function() {
         this._updateDate('startHour', 'startDate');
     }.observes('startHour'),
     
     startMinuteChanged: function() {
         this._updateDate('startMinute', 'startDate');
-    }.observes('startMinute'),    
+    }.observes('startMinute'),
+    
     
     _updateAllTimes: function() {
         this.endHourChanged();
@@ -138,10 +137,10 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
     _updateAppointmentDates: function() {
         var allDay = this.get('allDay'),            
             isAdmissionAppointment = this.get('isAdmissionAppointment'), 
-            appointmentDate = this.get('appointmentDate');
+            appointmentDate = this.get('model.appointmentDate');
         if (!isAdmissionAppointment) {
-            this.set('endDate', appointmentDate);
-            this.set('startDate', appointmentDate);
+            this.set('model.endDate', appointmentDate);
+            this.set('model.startDate', appointmentDate);
             if (!allDay) {
                 this._updateAllTimes();
             }
@@ -149,8 +148,9 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
     },
     
     _updateDate: function(fieldName, dateFieldName) {
-        var fieldValue = this.get(fieldName),
-            dateToChange = this.get(dateFieldName);
+        var model = this.get('model'),
+            fieldValue = model.get(fieldName),
+            dateToChange = model.get(dateFieldName);
         if (!Ember.isEmpty(dateToChange)) {
             dateToChange = moment(dateToChange);
             if (fieldName.indexOf('Hour') > -1) {
@@ -158,8 +158,10 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
             } else {
                 dateToChange.minute(fieldValue);
             }
-            this.set(dateFieldName, dateToChange.toDate());
-            this.dateChanged();
+            model.set(dateFieldName, dateToChange.toDate());
+            Ember.run.once(this, function(){
+                model.validate();
+            }); 
         }
     }
 });

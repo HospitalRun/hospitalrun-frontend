@@ -1,11 +1,12 @@
 import Ember from "ember";
+import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.Controller.extend({
     hideCancelButton: true,
     showUpdateButton: true,
     updateButtonAction: 'query',
     updateButtonText: 'Query',
     
-    objectTypes: [
+    objectTypeList: [
         'appointment',
         'imaging',
         'inv-location',
@@ -21,6 +22,8 @@ export default Ember.Controller.extend({
         'visit',
         'vital'
     ],
+    
+    objectTypes: Ember.computed.map('objectTypeList',SelectValues.selectValuesMap),
     
     actions: {
         query: function() {

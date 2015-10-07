@@ -1,11 +1,13 @@
 import AppointmentIndexController from 'hospitalrun/appointments/index/controller';
 import AppointmentStatuses from 'hospitalrun/mixins/appointment-statuses';
 import Ember from 'ember';
+import SelectValues from 'hospitalrun/utils/select-values';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes, {
     needs: 'appointments',
     appointmentType: null,
-    physicianList: Ember.computed.alias('controllers.appointments.physicianList'),
+    physicianList: Ember.computed.map('controllers.appointments.physicianList.value', SelectValues.selectValuesMap),
+    
     provider: null,
     queryParams: ['appointmentType', 'provider', 'status', 'startKey', 'startDate'],
     searchFields: ['selectedAppointmentType', 'selectedProvider', 'selectedStatus', 'selectedStartDate'],

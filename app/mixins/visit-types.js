@@ -1,4 +1,5 @@
 import Ember from "ember";
+import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.Mixin.create({
     defaultVisitTypes: [
         'Admission',
@@ -11,11 +12,14 @@ export default Ember.Mixin.create({
     
     visitTypes: function() {
         var defaultVisitTypes = this.get('defaultVisitTypes'),
-            visitTypesList = this.get('visitTypesList');
+            visitTypesList = this.get('visitTypesList'),
+            visitList;
         if (Ember.isEmpty(visitTypesList)) {
-            return defaultVisitTypes;
+            visitList = defaultVisitTypes;
         } else {
-            return visitTypesList.get('value');
+            visitList = visitTypesList.get('value');
         }
+        visitList = SelectValues.selectValues(visitList);
+        return visitList;
     }.property('visitTypesList', 'defaultVisitTypes'),
 });

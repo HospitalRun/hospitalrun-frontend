@@ -1,7 +1,9 @@
-import Ember from "ember";
+import Ember from 'ember';
+import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.Mixin.create({
-    appointmentStatuses: [
+    appointmentStatusList: [
         'Scheduled',
         'Canceled'
-    ],
+    ],    
+    appointmentStatuses: Ember.computed.map('appointmentStatusList',SelectValues.selectValuesMap)
 });
