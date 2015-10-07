@@ -5,36 +5,34 @@ import createPouchViews from 'hospitalrun/utils/pouch-views';
 import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 
 export default Ember.Service.extend(PouchAdapterUtils, {
-  configDB: null,
+  config: Ember.inject.service(),
   mainDB: null, //Server DB
   setMainDB: false,
-  setup() {
+  setup(configs) {
     PouchDB.plugin(List);
-    return this.createConfigDB()
-      .then(this.createMainDB.bind(this))
+    return this.createMainDB(configs)
       .then((db) => {
         this.set('mainDB', db);
         this.set('setMainDB', true);
       });
   },
   createMainDB(configs){
-    const pouchOptions = {};
-    if (configs.config_use_google_auth) {
-        //If we don't have the proper credentials don't sync.
-        if (Ember.isEmpty(configs.config_consumer_key) ||
-            Ember.isEmpty(configs.config_consumer_secret) ||
-            Ember.isEmpty(configs.config_oauth_token) ||
-            Ember.isEmpty(configs.config_token_secret)) {
-            // TODO: do we need this here?
-            // reject();
-        }
-        pouchOptions.ajax = {
-            xhr: createPouchOauthXHR(configs),
-            timeout: 30000
-        };
-    }
     const url = `${document.location.protocol}//${document.location.host}/db/main`;
     return new Ember.RSVP.Promise((resolve, reject)=>{
+      let pouchOptions = {};
+      if (configs.config_use_google_auth) {
+          //If we don't have the proper credentials, throw error to force login.
+          if (Ember.isEmpty(configs.config_consumer_key) ||
+              Ember.isEmpty(configs.config_consumer_secret) ||
+              Ember.isEmpty(configs.config_oauth_token) ||
+              Ember.isEmpty(configs.config_token_secret)) {
+              throw Error('login required');
+          }
+          pouchOptions.ajax = {
+              xhr: createPouchOauthXHR(configs),
+              timeout: 30000
+          };
+      }
       new PouchDB(url, pouchOptions, (err, db)=>{
         if (err) {
           reject(err);
@@ -44,63 +42,6 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         resolve(db);
       });
     });
-  },
-  createConfigDB() {
-    const replicateConfigDB = this.replicateConfigDB.bind(this);
-    const loadConfig = this.loadConfig.bind(this);
-    const promise = new Ember.RSVP.Promise(function(resolve, reject){
-      new PouchDB('config', function(err, db){
-        if(err){
-          reject(err);
-        }
-        resolve(db);
-      });
-    }, 'instantiating config database instance');
-
-    return promise.then((db) => {
-      this.set('configDB', db);
-      return db;
-    })
-    .then(replicateConfigDB)
-    .then(loadConfig)
-    .then((config) => {
-      this.set('config', config);
-      return config;
-    });
-  },
-  replicateConfigDB(db){
-    const url = `${document.location.protocol}//${document.location.host}/db/config`;
-    return new Ember.RSVP.Promise(function(resolve, reject){
-      db.replicate.from(url, { complete: resolve }, reject);
-    }, 'replicating the database');
-  },
-  loadConfig() {
-    const config = this.get('configDB');
-    var options = {
-        include_docs: true,
-        keys: [
-            'config_consumer_key',
-            'config_consumer_secret',
-            'config_oauth_token',
-            'config_token_secret',
-            'config_use_google_auth'
-        ]
-    };
-    return new Ember.RSVP.Promise(function(resolve, reject){
-      config.allDocs(options, function(err, response) {
-          if (err) {
-              console.log('Could not get configDB configs:', err);
-              reject(err);
-          }
-          const config = {};
-          for (var i=0;i<response.rows.length;i++) {
-              if (!response.rows[i].error) {
-                  config[response.rows[i].id] = response.rows[i].doc.value;
-              }
-          }
-          resolve(config);
-      });
-    }, 'getting configuration from the database');
   },
   queryMainDB: function(queryParams, mapReduce) {
       return new Ember.RSVP.Promise(function(resolve, reject) {

@@ -7,55 +7,27 @@ const {
 } = Ember;
 
 var ApplicationRoute = Route.extend(ApplicationRouteMixin, {
-    use_google_auth: false,
-
-    actions: {
-        authenticateSession: function() {
-            if (this.use_google_auth) {
-                window.location.replace('/auth/google');
-            } else {
-                this._super();
-            }
-        },
-        goToLogin() {
-          this.transitionTo('login');
-        }
-    },
-
     database: inject.service(),
     config: inject.service(),
 
     model: function(params, transition) {
       const session = this.get('session');
       const isAuthenticated = session && session.isAuthenticated;
-      if (isAuthenticated) {
-        return this.get('database').setup()
-          .then(()=>{
-            return this.get('config').setup();
-          })
-          .catch((error)=>{
-            // should handle with an exception
-            if (error.name === "unauthorized") {
-              if (!Ember.isEmpty(session) && session.isAuthenticated) {
+      return this.get('config').setup().then(function(configs) {
+        if (transition.targetName !== 'finishgauth' && transition.targetName !== 'login') {
+          if (isAuthenticated) {
+            return this.get('database').setup(configs)
+              .catch(()=>{
+                //Error thrown indicates missing auth, so invalidate session.
                 session.invalidate();
-              } else {
-                transition.send('goToLogin');
-              }
-            }
-          });
-      } else {
-        transition.send('goToLogin');
-      }
+              });
+          }
+        }
+      }.bind(this));
     },
 
-    afterModel: function(resolvedModel) {
-        this.controllerFor('navigation').set('allowSearch',false);
-        if (resolvedModel) {
-            var use_google_auth = resolvedModel.findBy('id','use_google_auth');
-            if (use_google_auth) {
-                this.use_google_auth = use_google_auth.get('value');
-            }
-        }
+    afterModel: function() {
+      this.controllerFor('navigation').set('allowSearch',false);
     }
 
 });
