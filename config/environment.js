@@ -20,9 +20,6 @@ module.exports = function(environment) {
 
     'simple-auth': {
 
-    },
-    'ember-cli-mirage': {
-      enabled: false
     }
   };
 
