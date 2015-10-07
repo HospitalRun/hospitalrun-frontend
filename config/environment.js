@@ -52,7 +52,6 @@ ENV.APP.manifest = {
     ENV.APP.rootElement = '#ember-testing';
 
     ENV['simple-auth'].store = 'simple-auth-session-store:ephemeral';
-    ENV['ember-cli-mirage'].enabled = true;
   }
 
   if (environment === 'production') {
