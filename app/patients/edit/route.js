@@ -45,7 +45,7 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
 
     getNewData() {
       return this.generateFriendlyId().then(function(friendlyId){
-        return { friendlyId }
+        return { friendlyId };
       });
     },
 

@@ -3,8 +3,7 @@ import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 
 const {
   inject,
-  isEmpty,
-  run
+  isEmpty
 } = Ember;
 
 export default Ember.Mixin.create(PouchDbMixin, {
@@ -26,7 +25,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
       let next, id;
       return config.getPatientPrefix()
         .then(function(prefix) {
-          next = sequence.incrementProperty('value');            
+          next = sequence.incrementProperty('value');
           id = sequenceId(prefix, next);
           const query = {
             startkey: [ id, null ],

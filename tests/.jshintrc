@@ -29,7 +29,8 @@
     "loadPouchDump",
     "destroyDatabases",
     "authenticateUser",
-    "waitToAppear"
+    "waitToAppear",
+    "select"
   ],
   "node": false,
   "browser": false,

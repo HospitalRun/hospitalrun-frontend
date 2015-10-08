@@ -10,11 +10,15 @@ export default Ember.Service.extend({
   database: inject.service(),
 
   setup() {
-    return this.createConfigDB().then(this.loadConfig.bind(this));
+    const replicateConfigDB = this.replicateConfigDB.bind(this);
+    const loadConfig = this.loadConfig.bind(this);
+    return this.createDB().then((db) => {
+      this.set('configDB', db);
+      return db;
+    }).then(replicateConfigDB).then(loadConfig);
   },
 
-  createConfigDB() {
-    const replicateConfigDB = this.replicateConfigDB.bind(this);
+  createDB() {
     const promise = new Ember.RSVP.Promise(function(resolve, reject){
       new PouchDB('config', function(err, db){
         if(err){
@@ -23,12 +27,7 @@ export default Ember.Service.extend({
         resolve(db);
       });
     }, 'instantiating config database instance');
-
-    return promise.then((db) => {
-      this.set('configDB', db);
-      return db;
-    })
-    .then(replicateConfigDB);
+    return promise;
   },
   replicateConfigDB(db){
     const url = `${document.location.protocol}//${document.location.host}/db/config`;

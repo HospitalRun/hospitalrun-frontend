@@ -10,48 +10,13 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   setMainDB: false,
   setup(configs) {
     PouchDB.plugin(List);
-    const loadConfig = this.loadConfig.bind(this);
-    return this.createConfigDB()
-      .then((db) => {
-        this.set('configDB', db);
-        return db;
-      })
-      .then(loadConfig)
-      .then((config) => {
-        // TODO: delegate to config service
-        this.set('config', config);
-        return config;
-      })
-      .then(this.createMainDB.bind(this))
+    return this.createDB(configs)
       .then((db) => {
         this.set('mainDB', db);
         this.set('setMainDB', true);
       });
   },
-  createConfigDB() {
-    const url = getDatabaseURL('config');
-    let db;
-    const create = function(){
-      return new Ember.RSVP.Promise(function(resolve, reject){
-        new PouchDB('config', function(err, _db){
-          if(err){ reject(err); }
-          db = _db;
-          resolve(_db);
-        });
-      }, 'instantiating config database instance');
-    };
-
-    const replicate = function(db) {
-      return new Ember.RSVP.Promise(function(resolve, reject){
-        db.replicate.from(url, { complete: resolve }, reject);
-      }, 'replicating the database');
-    };
-
-    return create().then(replicate).then(function(){
-      return db;
-    });
-  },
-  createMainDB(configs){
+  createDB(configs= {}){
     const pouchOptions = {};
     if (configs.config_use_google_auth) {
         //If we don't have the proper credentials don't sync.
@@ -92,34 +57,6 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         resolve(db);
       });
     });
-  },
-  loadConfig() {
-    const config = this.get('configDB');
-    var options = {
-        include_docs: true,
-        keys: [
-            'config_consumer_key',
-            'config_consumer_secret',
-            'config_oauth_token',
-            'config_token_secret',
-            'config_use_google_auth'
-        ]
-    };
-    return new Ember.RSVP.Promise(function(resolve, reject){
-      config.allDocs(options, function(err, response) {
-          if (err) {
-              console.log('Could not get configDB configs:', err);
-              reject(err);
-          }
-          const config = {};
-          for (var i=0;i<response.rows.length;i++) {
-              if (!response.rows[i].error) {
-                  config[response.rows[i].id] = response.rows[i].doc.value;
-              }
-          }
-          resolve(config);
-      });
-    }, 'getting configuration from the database');
   },
   queryMainDB: function(queryParams, mapReduce) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
