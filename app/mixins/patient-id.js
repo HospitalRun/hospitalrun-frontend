@@ -1,10 +1,7 @@
-import Ember from "ember";
+import Ember from 'ember';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 
-const {
-  inject,
-  isEmpty
-} = Ember;
+const {inject, isEmpty} = Ember;
 
 export default Ember.Mixin.create(PouchDbMixin, {
   idPrefix: null,
@@ -21,10 +18,10 @@ export default Ember.Mixin.create(PouchDbMixin, {
     const database = this.get('database');
     const maxValue = this.get('maxValue');
 
-    const findUnusedId = (sequence)=>{
+    const findUnusedId = (sequence) => {
       let next, id;
       return config.getPatientPrefix()
-        .then(function(prefix) {
+        .then(function (prefix) {
           next = sequence.incrementProperty('value');
           id = sequenceId(prefix, next);
           const query = {
@@ -33,13 +30,13 @@ export default Ember.Mixin.create(PouchDbMixin, {
           };
           return database.queryMainDB(query, 'patient_by_display_id');
         })
-        .then(function(found){
+        .then(function (found) {
           if (isEmpty(found.rows)) {
             sequence.set('value', next);
           } else {
             return findUnusedId(sequence);
           }
-          return sequence.save().then(function(){
+          return sequence.save().then(function () {
             return id;
           });
         });
@@ -47,8 +44,8 @@ export default Ember.Mixin.create(PouchDbMixin, {
 
     return this.store.find('sequence', 'patient')
       .then(findUnusedId)
-      .catch(()=>{
-        var sequence = this.get('store').push('sequence',{
+      .catch(() => {
+        var sequence = this.get('store').push('sequence', {
           id: 'patient',
           value: 0
         });
@@ -57,7 +54,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
   }
 });
 
-export function sequenceId(prefix, sequence) {
+export function sequenceId (prefix, sequence) {
   if (sequence < 100000) {
     sequence = `00000${sequence}`.slice(-5);
   }
