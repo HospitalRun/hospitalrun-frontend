@@ -130,26 +130,26 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     severityTypes: [
         { 
           label: '5 Extreme Death, toxic release off-site with detrimental effect, huge financial loss',
-          value: "Extreme 5"
+          value: "(Post Severity:5) Extreme Death, toxic release off-site with detrimental effect, huge financial loss"
         },
         {
           label: '4 High Extensive injuries, loss of production capability, off-site release with no detrimental effects, major financial loss',
-          value: "High 4"
+          value: "(Post Severity:4) High Extensive injuries, loss of production capability, off-site release with no detrimental effects, major financial loss"
 
         },
         {
           label: '3 Moderate Medical treatment required, on-site release contained with outside assistance, high financial loss',
-          value: "Moderate 3"
+          value: "(Post Severity:3) Moderate Medical treatment required, on-site release contained with outside assistance, high financial loss"
 
         },
         {
           label: '2 Low First aid treatment, on-site release contained, medium financial loss',
-          value: "Low 2"
+          value: "(Post Severity:2) Low First aid treatment, on-site release contained, medium financial loss"
 
         },
         {
           label: '1 Minimum No injuries, low financial loss',
-          value: "Minimum 1"
+          value: "(Post Severity:1) Minimum No injuries, low financial loss"
 
         }
     ],
@@ -157,26 +157,26 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     occurrenceTypes: [
         { 
           label: '5  Almost Certain  Is expected to occur in most circumstances (e.g. most weeks or months)',
-          value: "Almost Certain 5"
+          value: "(Post Occurance:5)  Almost Certain  Is expected to occur in most circumstances (e.g. most weeks or months)"
         },
         {
           label: '4  Likely Will probably occur in most circumstances (several times a year)',
-          value: "Likely 4"
+          value: "(Post Occurance:4) Likely Will probably occur in most circumstances (several times a year)"
 
         },
         {
           label: '3  Possible Might occur at some time (every 1 to 2 years)',
-          value: "Possible 3"
+          value: "(Post Occurance:3) Possible Might occur at some time (every 1 to 2 years)"
 
         },
         {
           label: '2  Unlikely Could occur at some time (possibly in the next 2 to 5 years)',
-          value: "Unlikely 2"
+          value: "(Post Occurance:2) Unlikely 2"
 
         },
         {
           label: '1  Rare May occur only in exceptional circumstances (perhaps every 5 to 30 years)',
-          value: "Rare 1"
+          value: "(Post Occurance:1) Rare May occur only in exceptional circumstances (perhaps every 5 to 30 years)"
 
         }
     ],
@@ -184,21 +184,21 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     riskScores: [
         { 
           label: '15-25  : extreme risk; immediate action required',
-          value: "extreme risk"
+          value: "(Post Risk) Extreme risk; immediate action required"
         },
         {
           label: '9-12   : high risk; senior management needed',
-          value: "high risk"
+          value: "(Post Risk) High risk; senior management needed"
 
         },
         {
           label: '4-8    : moderate risk; management responsibility must be specified',
-          value: "moderate risk"
+          value: "(Post Risk) Moderate risk; management responsibility must be specified"
 
         },
         {
           label: '1-3    : low risk; manage by routine procedures',
-          value: "low risk"
+          value: "(Post Risk) Low risk; manage by routine procedures"
 
         }
         
@@ -207,26 +207,26 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     preSeverityTypes: [
         { 
           label: '5 Extreme Death, toxic release off-site with detrimental effect, huge financial loss',
-          value: "Extreme 5"
+          value: "(Pre Severity 5) Extreme Death, toxic release off-site with detrimental effect, huge financial loss"
         },
         {
           label: '4 High Extensive injuries, loss of production capability, off-site release with no detrimental effects, major financial loss',
-          value: "High 4"
+          value: "(Pre Severity 4) High Extensive injuries, loss of production capability, off-site release with no detrimental effects, major financial loss"
 
         },
         {
           label: '3 Moderate Medical treatment required, on-site release contained with outside assistance, high financial loss',
-          value: "Moderate 3"
+          value: "(Pre Severity 3) Moderate Medical treatment required, on-site release contained with outside assistance, high financial loss"
 
         },
         {
           label: '2 Low First aid treatment, on-site release contained, medium financial loss',
-          value: "Low 2"
+          value: "(Pre Severity 2) Low First aid treatment, on-site release contained, medium financial loss"
 
         },
         {
           label: '1 Minimum No injuries, low financial loss',
-          value: "Minimum 1"
+          value: "(Pre Severity 1) Minimum No injuries, low financial loss"
 
         }
     ],
@@ -234,26 +234,26 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     preOccurrenceTypes:  [
         { 
           label: '5  Almost Certain  Is expected to occur in most circumstances (e.g. most weeks or months)',
-          value: "Almost Certain 5"
+          value: "(Pre Occurance:5)  Almost Certain  Is expected to occur in most circumstances (e.g. most weeks or months)"
         },
         {
           label: '4  Likely Will probably occur in most circumstances (several times a year)',
-          value: "Likely 4"
+          value: "(Pre Occurance:4)  Likely Will probably occur in most circumstances (several times a year)"
 
         },
         {
           label: '3  Possible Might occur at some time (every 1 to 2 years)',
-          value: "Possible 3"
+          value: "(Pre Occurance:3)  Possible Might occur at some time (every 1 to 2 years)"
 
         },
         {
           label: '2  Unlikely Could occur at some time (possibly in the next 2 to 5 years)',
-          value: "Unlikely 2"
+          value: "(Pre Occurance:2)  Unlikely Could occur at some time (possibly in the next 2 to 5 years)"
 
         },
         {
           label: '1  Rare May occur only in exceptional circumstances (perhaps every 5 to 30 years)',
-          value: "Rare 1"
+          value: "(Pre Occurance:1)  Rare May occur only in exceptional circumstances (perhaps every 5 to 30 years)"
 
         }
     ],
@@ -261,21 +261,21 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     preRiskScores: [
         { 
           label: '15-25  : extreme risk; immediate action required',
-          value: "extreme risk"
+          value: "(Pre Risk) Extreme risk; immediate action required"
         },
         {
           label: '9-12   : high risk; senior management needed',
-          value: "high risk"
+          value: "(Pre Risk) High risk; senior management needed"
 
         },
         {
           label: '4-8    : moderate risk; management responsibility must be specified',
-          value: "moderate risk"
+          value: "(Pre Risk) Moderate risk; management responsibility must be specified"
 
         },
         {
           label: '1-3    : low risk; manage by routine procedures',
-          value: "low risk"
+          value: "(Pre Risk) Low risk; manage by routine procedures"
 
         }
         

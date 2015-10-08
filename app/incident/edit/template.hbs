@@ -574,10 +574,10 @@
                             {{/with}}
                         </table>
                         {{#if canAddRecommendation}}
-                            {{em-text label="Lessons Learned" property="lessonsLearned" rows=3}}
+                            {{em-text label="Actions Taken" property="actionsTaken" rows=3}}
                         {{/if}}
                         {{#if canAddRecommendation}}
-                            {{em-text label="Actions Taken" property="actionsTaken" rows=3}}
+                            {{em-text label="Lessons Learned" property="lessonsLearned" rows=3}}
                         {{/if}}
                     </div>
                 </div>
@@ -891,12 +891,12 @@
                                         </tr>
                                     {{/each}}
                                     <tr>
-                                        <td>Lessons Learned</td>
-                                        <td>{{lessonsLearned}}</td>
-                                    </tr>
-                                    <tr>
                                         <td>Actions Taken</td>
                                         <td>{{actionsTaken}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lessons Learned</td>
+                                        <td>{{lessonsLearned}}</td>
                                     </tr>
                                 </TBODY>
                             </table>
@@ -909,11 +909,11 @@
                                 <TBODY>
                                     <tr>
                                         <td>Severity:</td>
-                                        <td>{{postOccurence}}</td>
+                                        <td>{{postSeverity}}</td>
                                     </tr>
                                     <tr>
                                         <td>Occurance:</td>
-                                        <td>{{preOccurence}}</td>
+                                        <td>{{postOccurence}}</td>
                                     </tr>
                                     <tr>
                                         <td>Risk Score:</td>

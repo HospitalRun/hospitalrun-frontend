@@ -1,6 +1,7 @@
 {{#if hasRecords}}
     <table class="table">
         <tr class="table-header">
+            <th>Incident Id</th>
             <th>Reported By</th>
             <th>Location of Incident</th>
             <th>Date of Incident</th>
@@ -13,6 +14,7 @@
         {{#with this as parentController}}
             {{#each}}
                     <tr {{action 'editItem' this}}>
+                        <td>{{friendlyId}}</td>
                         <td>{{reportedBy}}</td>
                         <td>{{locationOfIncident}}</td>
                         <td>{{date-format dateOfIncident}}</td>
