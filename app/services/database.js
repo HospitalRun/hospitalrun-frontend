@@ -10,14 +10,13 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   setMainDB: false,
   setup(configs) {
     PouchDB.plugin(List);
-    return this.createMainDB(configs)
+    return this.createDB(configs)
       .then((db) => {
         this.set('mainDB', db);
         this.set('setMainDB', true);
       });
   },
-  createMainDB(configs){
-    const url = `${document.location.protocol}//${document.location.host}/db/main`;
+  createDB(configs){
     return new Ember.RSVP.Promise((resolve, reject)=>{
       let pouchOptions = {};
       if (configs.config_use_google_auth) {
@@ -33,6 +32,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
               timeout: 30000
           };
       }
+      const url = `${document.location.protocol}//${document.location.host}/db/main`;
       new PouchDB(url, pouchOptions, (err, db)=>{
         if (err) {
           reject(err);

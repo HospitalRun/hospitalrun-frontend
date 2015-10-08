@@ -11,26 +11,26 @@ export default Ember.Mixin.create({
                     title: 'Requests',
                     iconClass: 'octicon-chevron-right',
                     route: 'inventory.index',
-                    capability: 'add_inventory_request'                    
+                    capability: 'add_inventory_request'
                 },
                 {
                     title: 'Items',
                     iconClass: 'octicon-chevron-right',
                     route: 'inventory.listing',
-                    capability: 'inventory'                    
+                    capability: 'inventory'
                 },
                 {
                     title: 'Inventory Received',
                     iconClass: 'octicon-plus',
                     route: 'inventory.batch',
                     subroute: 'new',
-                    capability: 'add_inventory_item'                    
+                    capability: 'add_inventory_item'
                 },
                 {
                     title: 'Reports',
                     iconClass: 'octicon-chevron-right',
                     route: 'inventory.reports',
-                    capability: 'inventory'                    
+                    capability: 'inventory'
                 }
             ]
         },
@@ -51,13 +51,13 @@ export default Ember.Mixin.create({
                     iconClass: 'octicon-plus',
                     route: 'patients.edit',
                     subroute: 'new',
-                    capability: 'add_patient'                    
+                    capability: 'add_patient'
                 },
                 {
                     title: 'Reports',
                     iconClass: 'octicon-chevron-right',
                     route: 'patients.reports',
-                    capability: 'patients'                    
+                    capability: 'patients'
                 }
             ]
         },
@@ -71,26 +71,26 @@ export default Ember.Mixin.create({
                     title: 'This Week',
                     iconClass: 'octicon-chevron-right',
                     route: 'appointments.index',
-                    capability: 'appointments'                    
+                    capability: 'appointments'
                 },
                 {
                     title: 'Today',
                     iconClass: 'octicon-chevron-right',
                     route: 'appointments.today',
-                    capability: 'appointments'                    
+                    capability: 'appointments'
                 },
                 {
                     title: 'Search',
                     iconClass: 'octicon-search',
                     route: 'appointments.search',
-                    capability: 'appointments'                    
+                    capability: 'appointments'
                 },
                 {
                     title: 'Add Appointment',
                     iconClass: 'octicon-plus',
                     route: 'appointments.edit',
                     subroute: 'new',
-                    capability: 'add_appointment'                    
+                    capability: 'add_appointment'
                 }
             ]
         },
@@ -104,20 +104,20 @@ export default Ember.Mixin.create({
                     title: 'Requests',
                     iconClass: 'octicon-chevron-right',
                     route: 'imaging.index',
-                    capability: 'imaging'                    
+                    capability: 'imaging'
                 },
                 {
                     title: 'Completed',
                     iconClass: 'octicon-chevron-right',
                     route: 'imaging.completed',
-                    capability: 'imaging'                    
+                    capability: 'imaging'
                 },
                 {
                     title: 'New Request',
                     iconClass: 'octicon-plus',
                     route: 'imaging.edit',
                     subroute: 'new',
-                    capability: 'add_imaging'                    
+                    capability: 'add_imaging'
                 }
             ]
         },
@@ -131,34 +131,34 @@ export default Ember.Mixin.create({
                     title: 'Requests',
                     iconClass: 'octicon-chevron-right',
                     route: 'medication.index',
-                    capability: 'medication'                    
+                    capability: 'medication'
                 },
                 {
                     title: 'Completed',
                     iconClass: 'octicon-chevron-right',
                     route: 'medication.completed',
-                    capability: 'medication'                    
+                    capability: 'medication'
                 },
                 {
                     title: 'New Request',
                     iconClass: 'octicon-plus',
                     route: 'medication.edit',
                     subroute: 'new',
-                    capability: 'add_medication'                    
+                    capability: 'add_medication'
                 },
                 {
                     title: 'Dispense',
                     iconClass: 'octicon-checklist',
                     route: 'medication.edit',
                     subroute: 'dispense',
-                    capability: 'fulfill_medication'                    
-                },                
+                    capability: 'fulfill_medication'
+                },
                 {
                     title: 'Return Medication',
                     iconClass: 'octicon-mail-reply',
                     route: 'medication.return',
                     subroute: 'new',
-                    capability: 'add_medication'                    
+                    capability: 'add_medication'
                 }
             ]
         },
@@ -172,20 +172,20 @@ export default Ember.Mixin.create({
                     title: 'Requests',
                     iconClass: 'octicon-chevron-right',
                     route: 'labs.index',
-                    capability: 'labs'                    
+                    capability: 'labs'
                 },
                 {
                     title: 'Completed',
                     iconClass: 'octicon-chevron-right',
                     route: 'labs.completed',
-                    capability: 'labs'                    
+                    capability: 'labs'
                 },
                 {
                     title: 'New Request',
                     iconClass: 'octicon-plus',
                     route: 'labs.edit',
                     subroute: 'new',
-                    capability: 'add_lab'                    
+                    capability: 'add_lab'
                 }
             ]
         },
@@ -199,26 +199,26 @@ export default Ember.Mixin.create({
                     title: 'Invoices',
                     iconClass: 'octicon-chevron-right',
                     route: 'invoices.index',
-                    capability: 'invoices'                    
+                    capability: 'invoices'
                 },
                 {
                     title: 'New Invoice',
                     iconClass: 'octicon-plus',
                     route: 'invoices.edit',
                     subroute: 'new',
-                    capability: 'invoices'                    
+                    capability: 'invoices'
                 },
                 {
                     title: 'Prices',
                     iconClass: 'octicon-chevron-right',
                     route: 'pricing.index',
-                    capability: 'invoices'                    
+                    capability: 'invoices'
                 },
                 {
                     title: 'Price Profiles',
                     iconClass: 'octicon-chevron-right',
                     route: 'pricing.profiles',
-                    capability: 'invoices'                    
+                    capability: 'invoices'
                 }
             ]
         },
@@ -232,26 +232,26 @@ export default Ember.Mixin.create({
                     title: 'Lookup Lists',
                     iconClass: 'octicon-chevron-right',
                     route: 'admin.lookup',
-                    capability: 'update_config'                    
+                    capability: 'update_config'
                 },
                 {
                     title: 'Address Fields',
                     iconClass: 'octicon-chevron-right',
                     route: 'admin.address',
-                    capability: 'update_config'                    
+                    capability: 'update_config'
                 },
                 {
                     title: 'Users',
                     iconClass: 'octicon-chevron-right',
                     route: 'users',
-                    capability: 'users'                    
+                    capability: 'users'
                 },
                 {
                     title: 'New User',
                     iconClass: 'octicon-plus',
                     route: 'users.edit',
                     subroute: 'new',
-                    capability: 'add_user'                    
+                    capability: 'add_user'
                 }
             ]
         }
