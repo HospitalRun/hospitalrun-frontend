@@ -1,7 +1,8 @@
 import Ember from 'ember';
 
 const {
-  inject
+  inject,
+  run
 } = Ember;
 
 export default Ember.Service.extend({
@@ -94,11 +95,14 @@ export default Ember.Service.extend({
 
   _getConfigValue(id, defaultValue) {
     const configDB = this.get('configDB');
-    return configDB.get('config_'+id).then(function(doc) {
-      return doc.value;
-    }).catch(function() {
-      return defaultValue;
-    });
+    return new Ember.RSVP.Promise(function(resolve){
+      configDB.get('config_'+id).then(function(doc) {
+        run(null, resolve, doc.value);
+      })
+      .catch(function(){
+        run(null, resolve, defaultValue);
+      });
+    }, `get ${id} from config database`);
   },
 
   _getOauthConfigs: function(configKeys) {

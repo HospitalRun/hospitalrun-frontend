@@ -28,7 +28,8 @@
     "currentRouteName",
     "loadPouchDump",
     "destroyDatabases",
-    "authenticateUser"
+    "authenticateUser",
+    "waitToAppear"
   ],
   "node": false,
   "browser": false,

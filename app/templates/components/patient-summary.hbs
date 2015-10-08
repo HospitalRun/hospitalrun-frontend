@@ -1,7 +1,7 @@
-<div class="panel panel-success" {{action 'linkToPatient'}}>    
+<div class="panel panel-success" {{action 'linkToPatient'}}>
     <div class="panel-body">
-        <div class="row">        
-            <div class="form-group col-sm-3">
+        <div class="row">
+            <div class="form-group col-sm-3" data-test-selector="patient-summary-id">
                 <label class="control-label">Id</label> {{patient.displayPatientId}}
             </div>
             <div class="form-group col-sm-4">
@@ -15,9 +15,9 @@
             </div>
         </div>
         {{#if havePrimaryDiagnoses}}
-            <div class="row">        
+            <div class="row">
                 <div class="form-group col-sm-12">
-                    <label class="control-label">Primary Diagnoses</label> 
+                    <label class="control-label">Primary Diagnoses</label>
                     {{#each primaryDiagnoses}}
                         {{#unless first}}, {{/unless}}
                         {{description}} (<strong>{{date-format date}}</strong>)
@@ -32,7 +32,7 @@
                     {{#each secondaryDiagnoses}}
                         {{#unless first}}, {{/unless}}
                         {{description}} (<strong>{{date-format date}}</strong>)
-                    {{/each}}                
+                    {{/each}}
                 </div>
             </div>
         {{/if}}
@@ -41,13 +41,13 @@
                 <div class="form-group col-sm-12">
                     <label class="control-label">Procedures</label>
                     {{#each patientProcedures}}
-                        {{#unless first}}, {{/unless}}                    
+                        {{#unless first}}, {{/unless}}
                         <span {{action 'editProcedure' this}}>
                               {{description}}>{{description}} (<strong>{{date-format procedureDate}}</strong>)
                         </span>
-                    {{/each}}                
+                    {{/each}}
                 </div>
             </div>
-        {{/if}}                
+        {{/if}}
     </div>
 </div>

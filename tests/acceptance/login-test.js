@@ -19,7 +19,7 @@ test('visiting / redirects user to login', function(assert) {
   assert.expect(3);
   loadPouchDump('default');
   visit('/');
-
+  
   stubRequest('post', '/db/_session', function(request){
     assert.equal(request.requestBody, "name=hradmin&password=test", 'credential are sent to the server');
     request.ok({"ok":true,"name":"hradmin","roles":["System Administrator","admin","user"]});
