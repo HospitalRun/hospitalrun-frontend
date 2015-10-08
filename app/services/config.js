@@ -1,9 +1,6 @@
 import Ember from 'ember';
 
-const {
-  inject,
-  run
-} = Ember;
+const {inject, run} = Ember;
 
 export default Ember.Service.extend({
   configDB: null,
@@ -19,9 +16,9 @@ export default Ember.Service.extend({
   },
 
   createDB() {
-    const promise = new Ember.RSVP.Promise(function(resolve, reject){
-      new PouchDB('config', function(err, db){
-        if(err){
+    const promise = new Ember.RSVP.Promise(function (resolve, reject) {
+      new PouchDB('config', function (err, db) {
+        if (err) {
           reject(err);
         }
         resolve(db);
@@ -29,46 +26,46 @@ export default Ember.Service.extend({
     }, 'instantiating config database instance');
     return promise;
   },
-  replicateConfigDB(db){
+  replicateConfigDB( db) {
     const url = `${document.location.protocol}//${document.location.host}/db/config`;
-    return new Ember.RSVP.Promise(function(resolve, reject){
+    return new Ember.RSVP.Promise(function (resolve, reject) {
       db.replicate.from(url, { complete: resolve }, reject);
     }, 'replicating the database');
   },
   loadConfig() {
     const config = this.get('configDB');
     var options = {
-        include_docs: true,
-        keys: [
-            'config_consumer_key',
-            'config_consumer_secret',
-            'config_oauth_token',
-            'config_token_secret',
-            'config_use_google_auth'
-        ]
+      include_docs: true,
+      keys: [
+        'config_consumer_key',
+        'config_consumer_secret',
+        'config_oauth_token',
+        'config_token_secret',
+        'config_use_google_auth'
+      ]
     };
-    return new Ember.RSVP.Promise(function(resolve, reject){
-      config.allDocs(options, function(err, response) {
-          if (err) {
-              console.log('Could not get configDB configs:', err);
-              reject(err);
+    return new Ember.RSVP.Promise(function (resolve, reject) {
+      config.allDocs(options, function (err, response) {
+        if (err) {
+          console.log('Could not get configDB configs:', err);
+          reject(err);
+        }
+        const config = {};
+        for (var i = 0;i < response.rows.length;i++) {
+          if (!response.rows[i].error && response.rows[i].doc) {
+            config[response.rows[i].id] = response.rows[i].doc.value;
           }
-          const config = {};
-          for (var i=0;i<response.rows.length;i++) {
-              if (!response.rows[i].error && response.rows[i].doc) {
-                  config[response.rows[i].id] = response.rows[i].doc.value;
-              }
-          }
-          resolve(config);
+        }
+        resolve(config);
       });
     }, 'getting configuration from the database');
   },
-  saveOauthConfigs: function(configs) {
+  saveOauthConfigs: function (configs) {
     const configDB = this.get('configDB');
     var configKeys = Object.keys(configs);
     var savePromises = [];
-    return this._getOauthConfigs(configKeys).then(function(records) {
-      configKeys.forEach(function(key) {
+    return this._getOauthConfigs(configKeys).then(function (records) {
+      configKeys.forEach(function (key) {
         var configRecord = records.rows.findBy('key', key);
         if (!configRecord || !configRecord.doc) {
           configRecord = {
@@ -92,19 +89,19 @@ export default Ember.Service.extend({
     return this._getConfigValue('patient_id_prefix', 'P');
   },
 
-  _getConfigValue(id, defaultValue) {
+  _getConfigValue( id, defaultValue) {
     const configDB = this.get('configDB');
-    return new Ember.RSVP.Promise(function(resolve){
-      configDB.get('config_'+id).then(function(doc) {
+    return new Ember.RSVP.Promise(function (resolve) {
+      configDB.get('config_' + id).then(function (doc) {
         run(null, resolve, doc.value);
       })
-      .catch(function(){
-        run(null, resolve, defaultValue);
-      });
+        .catch(function () {
+          run(null, resolve, defaultValue);
+        });
     }, `get ${id} from config database`);
   },
 
-  _getOauthConfigs: function(configKeys) {
+  _getOauthConfigs: function (configKeys) {
     const configDB = this.get('configDB');
     let options = {
       include_docs: true,

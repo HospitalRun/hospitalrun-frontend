@@ -1,4 +1,4 @@
-import ImageUpload from "hospitalrun/components/image-upload";
+import ImageUpload from 'hospitalrun/components/image-upload';
 export default ImageUpload.extend({
-    resizeFile: false
+  resizeFile: false
 });

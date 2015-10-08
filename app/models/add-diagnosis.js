@@ -6,10 +6,10 @@ import EmberValidations from 'ember-validations';
 import { Model } from 'ember-pouch';
 
 export default Model.extend(EmberValidations, {
-    diagnosis:  DS.attr('string'),
-    validations: {
-        diagnosis: {
-            presence: true
-        }
+  diagnosis: DS.attr('string'),
+  validations: {
+    diagnosis: {
+      presence: true
     }
+  }
 });

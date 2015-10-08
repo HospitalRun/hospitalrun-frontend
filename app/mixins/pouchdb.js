@@ -1,4 +1,4 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
-    maxValue: '\uffff'
+  maxValue: '\uffff'
 });
