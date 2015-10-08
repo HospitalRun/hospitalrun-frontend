@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
-export default Ember.ObjectController.extend(IsUpdateDisabled, {
-  needs: 'patients',
+export default Ember.Controller.extend(IsUpdateDisabled, {
+  patientsController: Ember.inject.controller('patients'),
 
-  editController: Ember.computed.alias('controllers.patients'),
+  editController: Ember.computed.alias('patientsController'),
   showUpdateButton: true,
   title: 'Family Info',
   updateButtonAction: 'update',
