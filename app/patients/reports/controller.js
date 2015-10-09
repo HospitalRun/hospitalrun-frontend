@@ -2,15 +2,16 @@ import AbstractReportController from 'hospitalrun/controllers/abstract-report-co
 import Ember from 'ember';
 import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
+import SelectValues from 'hospitalrun/utils/select-values';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, VisitTypes, {
   needs: ['patients'],
 
-  clinicList: Ember.computed.alias('controllers.patients.clinicList'),
+  clinicList: Ember.computed.map('controllers.patients.clinicList.value', SelectValues.selectValuesMap),
   diagnosisList: Ember.computed.alias('controllers.patients.diagnosisList'),
-  physicianList: Ember.computed.alias('controllers.patients.physicianList'),
-  locationList: Ember.computed.alias('controllers.patients.locationList'),
-  statusList: Ember.computed.alias('controllers.patients.statusList'),
+  physicianList: Ember.computed.map('controllers.patients.physicianList.value', SelectValues.selectValuesMap),
+  locationList: Ember.computed.map('controllers.patients.locationList.value', SelectValues.selectValuesMap),
+  statusList: Ember.computed.map('controllers.patients.statusList.value', SelectValues.selectValuesMap),
   visitTypesList: Ember.computed.alias('controllers.patients.visitTypeList'),
   patientDetails: {},
 
@@ -291,7 +292,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
    * @param records {Array} list of records to total.
    * @param typeField {String} the field in the records containing the type.
    * @param totalLabel {String} the label for the grand total.
-   * @param reportColumns 
+   * @param reportColumns
    */
   _addRowsByType: function (records, typeField, totalLabel, reportColumns) {
     var types = this._totalByType(records, typeField, totalLabel);
@@ -786,7 +787,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
    * @param records {Array} list of records to total.
    * @param typeField {String} the field in the records containing the type.
    * @param totalLabel {String} the label for the grand total.
-   * @param reportColumns 
+   * @param reportColumns
    */
   _totalByType: function (records, typeField, totalLabel) {
     var total = 0,

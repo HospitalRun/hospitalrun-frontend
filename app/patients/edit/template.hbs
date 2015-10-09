@@ -56,8 +56,6 @@
                                 label="Blood Type"
                                 property="bloodType"
                                 content=bloodTypes
-                                optionValuePath="content"
-                                optionLabelPath="content"
                             }}
                             {{select-or-typeahead property="clinic" label="Clinic Site" list=clinicList selection=clinic }}
                             {{em-input property="referredBy" label="Referred By"}}
@@ -67,8 +65,8 @@
                             {{em-select label="Payment Profile"
                                 property="paymentProfile"
                                 content=pricingProfiles
-                                optionValuePath="content"
-                                optionLabelPath="content.name"
+                                optionValuePath="selectObject"
+                                optionLabelPath="selectObject.name"
                                 prompt=" "
                             }}
                         </div>
@@ -419,13 +417,11 @@
 
                                 {{em-select label="Philhealth"
                                     property="insurance" content=philhealthTypes
-                                    optionValuePath="content" optionLabelPath="content"
                                     selected=insurance
                                     class="col-sm-6"
                                 }}
                                 {{em-select label="Classification"
                                     property="economicClassification" content=economicClassificationTypes
-                                    optionValuePath="content" optionLabelPath="content"
                                     selected=economicClassification
                                     class="col-sm-6"
                                     prompt=" "

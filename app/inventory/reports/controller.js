@@ -4,6 +4,7 @@ import InventoryAdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-ty
 import LocationName from 'hospitalrun/mixins/location-name';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import NumberFormat from 'hospitalrun/mixins/number-format';
+import SelectValues from 'hospitalrun/utils/select-values';
 export default AbstractReportController.extend(LocationName, ModalHelper, NumberFormat, InventoryAdjustmentTypes, {
   needs: ['inventory'],
   effectiveDate: null,
@@ -14,7 +15,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   locationSummary: null,
 
   database: Ember.inject.service(),
-  warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
+  warehouseList: Ember.computed.map('controllers.inventory.warehouseList.value', SelectValues.selectValuesMap),
   reportColumns: {
     date: {
       label: 'Date',

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.Mixin.create({
   defaultInventoryTypes: [
     'Medication',
@@ -7,11 +8,14 @@ export default Ember.Mixin.create({
 
   inventoryTypes: function () {
     var defaultInventoryTypes = this.get('defaultInventoryTypes'),
-      inventoryTypeList = this.get('inventoryTypeList');
+      inventoryTypeList = this.get('inventoryTypeList'),
+      typeList;
     if (Ember.isEmpty(inventoryTypeList)) {
-      return defaultInventoryTypes;
+      typeList = defaultInventoryTypes;
     } else {
-      return inventoryTypeList;
+      typeList = inventoryTypeList;
     }
+    typeList = SelectValues.selectValues(typeList);
+    return typeList;
   }.property('inventoryTypeList', 'defaultInventoryTypes')
 });

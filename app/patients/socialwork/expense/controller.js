@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
+import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.ObjectController.extend(IsUpdateDisabled, {
   needs: 'patients',
 
@@ -13,7 +14,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
     'Rent',
     'Transportation',
     'Water'
-  ],
+  ].map(SelectValues.selectValuesMap),
 
   editController: Ember.computed.alias('controllers.patients'),
   showUpdateButton: true,

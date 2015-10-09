@@ -4,15 +4,13 @@
             <div class="row" data-test-selector="select-report-type">
                 {{em-select class="col-xs-6" label="Report Type"
                     property="reportType" content=reportTypes
-                    optionValuePath="content.value" optionLabelPath="content.name"
+                    optionValuePath="value" optionLabelPath="name"
                     selected=reportType
                 }}
             </div>
             {{#if isStatusReport}}
                 {{em-select property="status" label="Patient Status"
-                    content=statusList.value
-                    optionValuePath="content"
-                    optionLabelPath="content"
+                    content=statusList
                     prompt=" "
                 }}
             {{else}}
@@ -29,24 +27,20 @@
                 <div class="row">
                     {{em-select class="col-sm-6" label="Visit Type"
                         property="visitType" content=visitTypes
-                        optionValuePath="content" optionLabelPath="content"
                         prompt=" "
                     }}
                     {{em-select class="col-sm-6" label="Examiner"
-                        property="examiner" content=physicianList.value
-                        optionValuePath="content" optionLabelPath="content"
+                        property="examiner" content=physicianList
                         prompt=" "
                     }}
                 </div>
                 <div class="row">
                     {{em-select class="col-sm-6" label="Location"
-                        property="location" content=locationList.value
-                        optionValuePath="content" optionLabelPath="content"
+                        property="location" content=locationList
                         prompt=" "
                     }}
                     {{em-select class="col-sm-6" label="Clinic"
-                        property="clinic" content=clinicList.value
-                        optionValuePath="content" optionLabelPath="content"
+                        property="clinic" content=clinicList
                         prompt=" "
                     }}
                 </div>

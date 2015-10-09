@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
+import SelectValues from 'hospitalrun/utils/select-values';
 
 export default Ember.ObjectController.extend(IsUpdateDisabled, {
   needs: ['pricing', 'pricing/edit'],
@@ -24,7 +25,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
   },
 
   editController: Ember.computed.alias('controllers.pricing/edit'),
-  pricingProfiles: Ember.computed.alias('controllers.pricing.pricingProfiles'),
+  pricingProfiles: Ember.computed.map('controllers.pricing.pricingProfiles', SelectValues.selectObjectMap),
   showUpdateButton: true,
 
   title: function () {

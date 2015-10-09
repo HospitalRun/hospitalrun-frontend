@@ -3,6 +3,7 @@ import BloodTypes from 'hospitalrun/mixins/blood-types';
 import Ember from 'ember';
 import GenderList from 'hospitalrun/mixins/gender-list';
 import ReturnTo from 'hospitalrun/mixins/return-to';
+import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, UserSession, {
   canAddAppointment: function () {
@@ -77,7 +78,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     'C2',
     'C3',
     'D'
-  ],
+  ].map(SelectValues.selectValuesMap),
 
   livingArrangementList: [
     'Homeless',
@@ -99,7 +100,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     'Employed: Private',
     'Employed: Sponsored/Indigent',
     'Self Employed'
-  ],
+  ].map(SelectValues.selectValuesMap),
 
   filesystem: Ember.inject.service(),
   database: Ember.inject.service(),
@@ -119,7 +120,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
   countryList: Ember.computed.alias('patientController.countryList'),
   isFileSystemEnabled: Ember.computed.alias('filesystem.isFileSystemEnabled'),
 
-  pricingProfiles: Ember.computed.alias('patientController.pricingProfiles'),
+  pricingProfiles: Ember.computed.map('patientController.pricingProfiles', SelectValues.selectObjectMap),
   statusList: Ember.computed.alias('patientController.statusList'),
 
   haveAdditionalContacts: function () {

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.Mixin.create({
   bloodTypes: [
     'A+',
@@ -9,5 +10,5 @@ export default Ember.Mixin.create({
     'B-',
     'O+',
     'O-'
-  ]
+  ].map(SelectValues.selectValuesMap)
 });

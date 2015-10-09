@@ -3,6 +3,7 @@ import Ember from 'ember';
 import LabPricingTypes from 'hospitalrun/mixins/lab-pricing-types';
 import ImagingPricingTypes from 'hospitalrun/mixins/imaging-pricing-types';
 import ReturnTo from 'hospitalrun/mixins/return-to';
+import SelectValues from 'hospitalrun/utils/select-values';
 export default AbstractEditController.extend(LabPricingTypes, ImagingPricingTypes, ReturnTo, {
   needs: ['pricing'],
 
@@ -43,7 +44,7 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
     'Lab',
     'Procedure',
     'Ward'
-  ],
+  ].map(SelectValues.selectValuesMap),
   expenseAccountList: Ember.computed.alias('controllers.pricing.expenseAccountList'),
   imagingPricingTypes: Ember.computed.alias('controllers.pricing.imagingPricingTypes'),
   labPricingTypes: Ember.computed.alias('controllers.pricing.labPricingTypes'),

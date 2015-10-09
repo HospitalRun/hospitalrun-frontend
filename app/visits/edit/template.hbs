@@ -34,12 +34,10 @@
                     <div class="row">
                         {{em-select class="col-sm-3 required" label="Visit Type" 
                             property="visitType" content=visitTypes
-                            optionValuePath="content" optionLabelPath="content"
                         }}
                         {{#if isAdmissionVisit}}
                             {{em-select class="col-sm-3" label="Visit Status" 
                                 property="status" content=visitStatuses
-                                optionValuePath="content" optionLabelPath="content"
                                 prompt=" "
                             }}
                         {{/if}}

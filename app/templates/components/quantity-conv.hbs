@@ -24,12 +24,14 @@
             {{#if firstQuantity}}
                 <label class="control-label">Unit</label>
             {{/if}}
-            {{view Ember.Select viewName="select" class="form-control" content=unitList optionLabelPath="content"
-                optionValuePath="content"
+            {{select-list
+                class='form-control'
+                content=unitList
                 value=unit
+                action=(action (mut unit))
                 prompt=" "
             }}
-             <span class="help-block">{{unitHelp}}</span>
+            <span class="help-block">{{unitHelp}}</span>
         </div>
     </div>
 </div>

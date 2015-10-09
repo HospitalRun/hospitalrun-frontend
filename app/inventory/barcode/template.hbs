@@ -13,7 +13,15 @@
         <div class="form-group">            
             {{#unless singlePrinter}}    
                 <label for="printerSelect">Printer</label>
-                {{view Ember.Select viewName="select" content=printers optionLabelPath="content.name" optionValuePath="content.name" value=selectedPrinter id="printerSelect"}}
+                {{select-list 
+                    content=printers 
+                    optionLabelPath='name' 
+                    optionValuePath='name' 
+                    value=selectedPrinter 
+                    class="form-control" 
+                    action=(action (mut selectedPrinter))
+                    id="printerSelect"
+                }}            
             {{/unless}}
         </div>
         <button class="btn btn-primary" {{action 'print'}}><span class=" glyphicon glyphicon-print"></span> Print</button>

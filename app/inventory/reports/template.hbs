@@ -4,13 +4,12 @@
             <div class="row">
                 {{em-select class="col-xs-6" label="Report Type"
                     property="reportType" content=reportTypes
-                    optionValuePath="content.value" optionLabelPath="content.name"
+                    optionValuePath="value" optionLabelPath="name"
                     selected=reportType
                 }}
                 {{#unless hideLocationFilter}}
                     {{em-select class="col-xs-6" label="Location"
-                        property="filterLocation" content=warehouseList.value
-                        optionValuePath="content" optionLabelPath="content"
+                        property="filterLocation" content=warehouseList
                         prompt=" "
                     }}
                 {{/unless}}

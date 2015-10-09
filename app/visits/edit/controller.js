@@ -2,6 +2,7 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
 import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
+import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
@@ -121,7 +122,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
   visitStatuses: [
     'Admitted',
     'Discharged'
-  ],
+  ].map(SelectValues.selectValuesMap),
 
   updateCapability: 'add_visit',
 

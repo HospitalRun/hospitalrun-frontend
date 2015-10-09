@@ -18,8 +18,6 @@
 <div class="row">
     {{em-select label="Type" property="inventoryType" 
         content=inventoryTypes 
-        optionValuePath="content" 
-        optionLabelPath="content"
         class="required col-sm-4"
         prompt=" "
     }}
@@ -28,11 +26,9 @@
 <div class="row">
     {{em-input property="reorderPoint" label="Reorder Point" class="col-sm-3"}}
     {{em-input property="price" label="Sale Price Per Unit" class="col-sm-3"}}
-    {{em-select label="Distribution Unit" class="col-sm-3 required" 
-        property="distributionUnit" 
-        content=unitList 
-        optionLabelPath="content"
-        optionValuePath="content"
+    {{em-select label="Distribution Unit" class="col-sm-3 required"
+        property="distributionUnit"
+        content=unitListForSelect
         prompt=" "
-    }}            
+    }}
 </div>
