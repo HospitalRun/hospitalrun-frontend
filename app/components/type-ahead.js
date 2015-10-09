@@ -125,6 +125,8 @@ export default InputComponent.extend({
                 this.set('selection');
               }
             }.bind(this));
+          } else if (Ember.isEmpty(targetValue)) {
+            this.set('selection');
           }
         }
       }.bind(this));
