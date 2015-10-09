@@ -4,6 +4,7 @@ import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
 import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
+import SelectValues from 'hospitalrun/utils/select-values';
 
 export default AbstractEditController.extend(FulfillRequest, InventoryLocations, InventorySelection, PatientSubmodule, {
   needs: ['medication'],
@@ -22,6 +23,9 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     id: 'warehouse_list' // Id of the lookup list to update
   }],
 
+  patientMedicationList: [],
+  setNewMedicationList: false,
+
   aisleLocationList: Ember.computed.alias('controllers.medication.aisleLocationList'),
   expenseAccountList: Ember.computed.alias('controllers.medication.expenseAccountList'),
   warehouseList: Ember.computed.alias('controllers.medication.warehouseList'),
@@ -33,7 +37,6 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
       var inventoryItem = medication.get('inventoryItem');
       this.set('inventoryItemTypeAhead', '%@ - %@'.fmt(inventoryItem.get('name'), inventoryItem.get('friendlyId')));
       this.set('inventoryItem', inventoryItem);
-    // this.set('inventoryItemTypeAhead', medication.get('inventoryItem.name'));            
     } else {
       this.set('inventoryItem');
     }
@@ -50,20 +53,28 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   }.observes('patientVisits'),
 
   showPatientMedicationList: function () {
-    var patientMedication = this.get('patientMedication');
-    return !Ember.isEmpty(patientMedication);
-  }.property('patientMedication'),
+    var patientMedicationList = this.get('patientMedicationList');
+    this.get('patientMedication'); //Request patient medication be updated
+    return !Ember.isEmpty(patientMedicationList);
+  }.property('patientMedicationList','model.patient', 'model.visit'),
 
   patientMedication: function () {
-    var visit = this.get('visit');
-    if (!Ember.isEmpty(visit)) {
+    var setNewMedicationList = this.get('setNewMedicationList'),
+      visit = this.get('model.visit');
+    if (setNewMedicationList) {
+      this.set('setNewMedicationList', false);
+    } else if (!Ember.isEmpty(visit)) {
       visit.get('medication').then(function (medication) {
         medication = medication.filterBy('status', 'Fulfilled');
         this.set('medication', medication.get('firstObject'));
-        return medication;
+        //if (!Ember.isEmpty(medication)) {
+          this.set('patientMedicationList', medication.map(SelectValues.selectObjectMap));
+          this.set('setNewMedicationList', true);
+        //}
       }.bind(this));
     }
-  }.property('patient', 'visit'),
+    return this.get('patientMedicationList');
+  }.property('setNewMedicationList','model.patient', 'model.visit'),
 
   _finishUpdate: function () {
     var aisle = this.get('deliveryAisle'),

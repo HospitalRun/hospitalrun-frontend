@@ -6,9 +6,9 @@
     {{/if}}    
     {{#if isNew}}
         <div class="row">
-            {{em-select class="col-xs-3 required" label="Visit" 
-                property="visit" content=patientVisits
-                optionValuePath="content" optionLabelPath="content.visitDescription"
+            {{em-select class="col-xs-3 required" label="Visit"
+                property="visit" content=patientVisitsForSelect
+                optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
                 prompt="--Add New Visit--"
                 selected=visit
             }}

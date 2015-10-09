@@ -13,8 +13,8 @@
         {{#if isNew}}
             {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-4 required"}}
             {{em-select class="col-xs-4 required" label="Visit"
-                property="visit" content=patientVisits
-                optionValuePath="content" optionLabelPath="content.visitDescription"
+                property="visit" content=patientVisitsForSelect
+                optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
                 selected=visit
                 prompt='Please select a visit'
             }}
@@ -30,8 +30,8 @@
         {{em-select label="Payment Profile"
             property="paymentProfile"
             content=pricingProfiles
-            optionValuePath="content"
-            optionLabelPath="content.name"
+            optionValuePath="selectObject"
+            optionLabelPath="selectObject.name"
             class="col-xs-3"
             prompt=" "
             selected=paymentProfile
@@ -140,11 +140,12 @@
                                     </td>
                                     <td class="col-xs-1">
                                         <div class="form-group">
-                                            {{view Ember.Select
-                                                class="form-control"
+                                            {{select-list
+                                                class='form-control'
                                                 content=expenseAccountList
-                                                optionValuePath="content"
-                                                optionLabelPath="content" value=detail.expenseAccount }}
+                                                value=detail.expenseAccount
+                                                action=(action (mut detail.expenseAccount))
+                                            }}
                                         </div>
                                     </td>
                                     <td class="col-xs-1 text-right">

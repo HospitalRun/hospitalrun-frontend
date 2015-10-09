@@ -3,13 +3,14 @@ import Ember from 'ember';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PublishStatuses from 'hospitalrun/mixins/publish-statuses';
+import SelectValues from 'hospitalrun/utils/select-values';
 
 export default AbstractEditController.extend(NumberFormat, PatientSubmodule, PublishStatuses, {
   needs: ['invoices'],
   expenseAccountList: Ember.computed.alias('controllers.invoices.expenseAccountList.value'),
   patientList: Ember.computed.alias('controllers.invoices.patientList'),
   pharmacyCharges: [],
-  pricingProfiles: Ember.computed.alias('controllers.invoices.pricingProfiles'),
+  pricingProfiles: Ember.computed.map('controllers.invoices.pricingProfiles', SelectValues.selectObjectMap),
   supplyCharges: [],
   updateCapability: 'add_invoice',
   wardCharges: [],

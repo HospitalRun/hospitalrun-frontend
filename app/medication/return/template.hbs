@@ -1,20 +1,20 @@
 {{#em-form model=this submit_button=false }}
     {{#if showPatientMedicationList}}
-        {{em-select class="required" label="Medication" 
+        {{em-select class="required" label="Medication"
             property="medication" content=patientMedication
-            optionValuePath="content" optionLabelPath="content.inventoryItem.name"            
+            optionValuePath="selectObject" optionLabelPath="selectObject.inventoryItem.name"
             selected=medication
-        }}        
+        }}
     {{else}}
         {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required" showQuantity=false }}
     {{/if}}
     <div class="row">
         {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-6"}}
-        {{em-select class="col-xs-6" label="Visit" 
-            property="visit" content=patientVisits
-            optionValuePath="content" optionLabelPath="content.visitDescription"            
-            selected=visit
-        }}        
+        {{em-select class="col-xs-6" label="Visit"
+            property="visit" content=patientVisitsForSelect
+            optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
+            selected=model.visit
+        }}
     </div>
     <div class="row">
         {{em-input property="quantity" label="Quantity To Return" class="col-xs-3 required"}}

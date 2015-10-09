@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
+import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.Mixin.create(PatientVisits, {
-  findPatientVisits: true, // Override to false if visits shouldn't be set when patient is selected.    
+  findPatientVisits: true, // Override to false if visits shouldn't be set when patient is selected.
   needToUpdateVisit: false,
   patientList: null,
   selectedPatient: null,
@@ -24,7 +25,7 @@ export default Ember.Mixin.create(PatientVisits, {
    * @param {Object} objectToAdd the object to add.
    * @param {string} childName the name of the child object on the visit to add to.
    * @param {string} newVisitType if a new visit needs to be created, what type of visit
-   * should be created. 
+   * should be created.
    * @returns {Promise} promise that will resolve or reject depending on whether or
    * not the add and subsequent saves were successful.
    */
@@ -94,8 +95,14 @@ export default Ember.Mixin.create(PatientVisits, {
     var patient = this.get('model.patient');
     if (!Ember.isEmpty(patient) && this.get('findPatientVisits')) {
       this.getPatientVisits(patient).then(function (visits) {
-        this.set('patientVisits', visits);
+        if (Ember.isEmpty(this.get('model.patient'))) {
+          this.set('patientVisits', []);
+        } else {
+          this.set('patientVisits', visits);
+        }
       }.bind(this));
+    } else if (Ember.isEmpty(patient) && this.get('findPatientVisits')) {
+      this.set('patientVisits', []);
     }
   }.observes('model.patient'),
 
@@ -108,6 +115,8 @@ export default Ember.Mixin.create(PatientVisits, {
           this.get('model').validate();
         });
       }.bind(this));
+    } else {
+      this.set('model.patient', null);
     }
   }.observes('selectedPatient'),
 
@@ -121,6 +130,9 @@ export default Ember.Mixin.create(PatientVisits, {
   patientVisits: [],
   returnPatientId: null,
   returnVisitId: null,
+  patientVisitsForSelect: function() {
+    return this.get('patientVisits').map(SelectValues.selectObjectMap);
+  }.property('patientVisits.@each'),
 
   /**
    * Removes the specified child from the current visit object and then saves the visit.
@@ -152,7 +164,7 @@ export default Ember.Mixin.create(PatientVisits, {
     var promises = [],
       visit = this.get('model.visit');
     if (!Ember.isEmpty(visit)) {
-      // Make sure all the async relationships are resolved    
+      // Make sure all the async relationships are resolved
       promises.push(visit.get('imaging'));
       promises.push(visit.get('labs'));
       promises.push(visit.get('medication'));

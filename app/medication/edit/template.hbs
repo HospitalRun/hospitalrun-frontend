@@ -8,8 +8,8 @@
         {{/if}}
         {{#if isNew}}
             {{em-select class="col-xs-4 required" label="Visit"
-                property="visit" content=patientVisits
-                optionValuePath="content" optionLabelPath="content.visitDescription"
+                property="visit" content=patientVisitsForSelect
+                optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
                 prompt="--Add New Outpatient Visit--"
                 selected=visit
             }}
@@ -34,7 +34,7 @@
             {{#static-text label="Prescription Date" class="col-xs-4"}}
                 {{date-format prescriptionDate}}
             {{/static-text}}
-            {{static-text label=quantityLabel class="col-xs-3" value=quantity }}            
+            {{static-text label=quantityLabel class="col-xs-3" value=quantity }}
             {{static-text label="Refills" class="col-xs-3" value=refills }}
         </div>
     {{else}}
