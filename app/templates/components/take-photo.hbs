@@ -3,16 +3,14 @@
         label="How Do You Want To Add A Photo?" 
         property="photoSource"
         content=photoSources 
-        optionValuePath="content"
-        optionLabelPath="content"
     }}
     {{#if showCameraSelect}}
         {{em-select 
             label="Camera" 
             property="selectedCamera"
             content=videoSources 
-            optionValuePath="content.id"
-            optionLabelPath="content.label"
+            optionValuePath="id"
+            optionLabelPath="label"
         }}
     {{/if}}
     <div class="camera panel panel-success">
