@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.Component.extend({
   doingSetup: false,
   label: null,
@@ -68,7 +69,7 @@ export default Ember.Component.extend({
   _setupLocationPickers: function (locationPickers, locationList, setInitialLocation) {
     locationPickers.reduce(function (previousValue, item) {
       var selectedLocation = item.get('selectedLocation');
-      item.set('subLocationList', previousValue);
+      item.set('subLocationList', previousValue.map(SelectValues.selectObjectMap));
       if (!previousValue.contains(selectedLocation) || setInitialLocation) {
         item.set('selectedLocation', previousValue.get('firstObject'));
       }
@@ -81,11 +82,5 @@ export default Ember.Component.extend({
     if (!Ember.isEmpty(firstPicker)) {
       firstPicker.set('label', this.get('label'));
     }
-  },
-
-  calculatedLocationPickers: function () {
-    this._setup();
-    var locationPickers = this.get('locationPickers');
-    return locationPickers;
-  }.property('locationList', 'quantityRequested')
+  }
 });
