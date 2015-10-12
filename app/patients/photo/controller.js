@@ -2,7 +2,7 @@ import Ember from 'ember';
 export default Ember.ObjectController.extend({
   needs: 'patients/edit',
 
-  title: function () {
+  title: function() {
     var isNew = this.get('isNew');
     if (isNew) {
       return 'Add Photo';
@@ -11,7 +11,7 @@ export default Ember.ObjectController.extend({
     }
   }.property('isNew'),
 
-  updateButtonText: function () {
+  updateButtonText: function() {
     var isNew = this.get('isNew');
     if (isNew) {
       return 'Add';
@@ -26,11 +26,11 @@ export default Ember.ObjectController.extend({
   editController: Ember.computed.alias('controllers.patients/edit'),
 
   actions: {
-    cancel: function () {
+    cancel: function() {
       this.send('closeModal');
     },
 
-    update: function () {
+    update: function() {
       var caption = this.get('caption'),
         isNew = this.get('isNew'),
         photoFile = this.get('photoFile');

@@ -4,7 +4,7 @@ export default PricingIndexRoute.extend({
   pageTitle: 'Lab Pricing',
 
   actions: {
-    editItem: function (item) {
+    editItem: function(item) {
       item.set('returnTo', 'pricing.lab');
       this.transitionTo('pricing.edit', item);
     }

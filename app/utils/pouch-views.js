@@ -2,7 +2,7 @@
 /* global compareStrings */
 /* global getCompareDate */
 
-function createDesignDoc (item, rev) {
+function createDesignDoc(item, rev) {
   var ddoc = {
     _id: '_design/' + item.name,
     version: item.version,
@@ -21,7 +21,7 @@ function createDesignDoc (item, rev) {
   return ddoc;
 }
 
-function generateSortFunction (sortFunction, includeCompareDate, filterFunction) {
+function generateSortFunction(sortFunction, includeCompareDate, filterFunction) {
   var generatedFunction = 'function(head, req) {' +
     'function keysEqual(keyA, keyB) {' +
     'for (var i= 0; i < keyA.length; i++) {' +
@@ -86,7 +86,7 @@ function generateSortFunction (sortFunction, includeCompareDate, filterFunction)
   return generatedFunction;
 }
 
-function generateView (viewDocType, viewBody) {
+function generateView(viewDocType, viewBody) {
   return 'function(doc) {' +
   'var doctype,' +
   'uidx;' +
@@ -99,19 +99,19 @@ function generateView (viewDocType, viewBody) {
   '}';
 }
 
-function updateDesignDoc (item, db, rev) {
+function updateDesignDoc(item, db, rev) {
   var designDoc = createDesignDoc(item, rev);
-  db.put(designDoc).then(function () {
+  db.put(designDoc).then(function() {
     // design doc created!
     // Update index
-    db.query(item.name, {stale: 'update_after'});
-  }, function (err) {
+    db.query(item.name, { stale: 'update_after' });
+  }, function(err) {
     console.log('ERR updateDesignDoc:', err);
-  // ignored, design doc already exists
+    // ignored, design doc already exists
   });
 }
 
-function generateDateForView (date1) {
+function generateDateForView(date1) {
   return 'var ' + date1 + ' = doc.data.' + date1 + ';' +
   'if (' + date1 + ' && ' + date1 + ' !== "") {' +
   date1 + ' = new Date(' + date1 + ');' +
@@ -122,7 +122,6 @@ function generateDateForView (date1) {
 
 }
 
-
 var designDocs = [{
   name: 'appointments_by_date',
   function: generateView('appointment',
@@ -130,8 +129,8 @@ var designDocs = [{
     generateDateForView('startDate') +
     'emit([startDate, endDate, doc._id]);'
   ),
-  sort: generateSortFunction(function (a, b) {
-    function defaultStatus (value) {
+  sort: generateSortFunction(function(a, b) {
+    function defaultStatus(value) {
       if (!value || value === '') {
         return 'Scheduled';
       } else {
@@ -155,17 +154,17 @@ var designDocs = [{
           return startDiff;
         }
         break;
-        }
+      }
       case 'status': {
         var aStatus = defaultStatus(a.doc.data[sortBy]),
           bStatus = defaultStatus(b.doc.data[sortBy]);
         return compareStrings(aStatus, bStatus);
-        }
+      }
       default: {
         return 0; // Don't sort
-        }
+      }
     }
-  }.toString(), true, function (row) {
+  }.toString(), true, function(row) {
     var i,
       filterBy = null,
       includeRow = true;
@@ -209,7 +208,7 @@ var designDocs = [{
   function: generateView('inventory',
     'emit([doc.data.name, doc._id]);'
   ),
-  sort: generateSortFunction(function (a, b) {
+  sort: generateSortFunction(function(a, b) {
     var sortBy = '';
     if (req.query && req.query.sortKey) {
       sortBy = req.query.sortKey;
@@ -223,10 +222,10 @@ var designDocs = [{
       case 'quantity':
       case 'inventoryType': {
         return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
-        }
+      }
       default: {
         return 0; // Don't sort
-        }
+      }
     }
   }.toString()),
   version: 3
@@ -298,7 +297,7 @@ var designDocs = [{
     'emit([doc._id, doc._id]);' +
     '}'
   ),
-  sort: generateSortFunction(function (a, b) {
+  sort: generateSortFunction(function(a, b) {
     var sortBy = '';
     if (req.query && req.query.sortKey) {
       sortBy = req.query.sortKey;
@@ -309,13 +308,13 @@ var designDocs = [{
       case 'lastName':
       case 'status': {
         return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
-        }
+      }
       case 'dateOfBirth': {
         return getCompareDate(a.doc.data.dateOfBirth) - getCompareDate(b.doc.data.dateOfBirth);
-        }
+      }
       default: {
         return 0; // Don't sort
-        }
+      }
     }
   }.toString(), true),
   version: 4
@@ -376,12 +375,12 @@ var designDocs = [{
 }];
 
 export default function(db) {
-  designDocs.forEach(function (item) {
-    db.get('_design/' + item.name).then(function (doc) {
+  designDocs.forEach(function(item) {
+    db.get('_design/' + item.name).then(function(doc) {
       if (doc.version !== item.version) {
         updateDesignDoc(item, db, doc._rev);
       }
-    }, function () {
+    }, function() {
       updateDesignDoc(item, db);
     });
   });

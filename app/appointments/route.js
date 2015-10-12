@@ -11,11 +11,11 @@ export default AbstractModuleRoute.extend(UserSession, {
   sectionTitle: 'Appointments',
 
   actions: {
-    createVisit: function (appointment) {
+    createVisit: function(appointment) {
       var visitProps = appointment.getProperties('startDate', 'endDate', 'location', 'patient');
       visitProps.visitType = appointment.get('appointmentType');
       visitProps.examiner = appointment.get('provider');
-      this.transitionTo('visits.edit', 'new').then(function (newRoute) {
+      this.transitionTo('visits.edit', 'new').then(function(newRoute) {
         newRoute.currentModel.setProperties(visitProps);
       }.bind(this));
     }

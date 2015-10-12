@@ -1,4 +1,4 @@
-function selectValuesMap (value) {
+function selectValuesMap(value) {
   return {
     id: value,
     value: value
@@ -12,7 +12,7 @@ export default {
    * @param {object} object the object to map
    * @returns {object} the mapped object
    */
-  selectObjectMap: function (selectValue) {
+  selectObjectMap: function(selectValue) {
     return Ember.Object.create({
       selectObject: selectValue
     });
@@ -22,7 +22,7 @@ export default {
   // so that the array can be used for em-select
   selectValuesMap: selectValuesMap,
 
-  selectValues: function (array) {
+  selectValues: function(array) {
     if (Ember.isArray(array)) {
       return array.map(selectValuesMap);
     }

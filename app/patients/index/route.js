@@ -3,12 +3,12 @@ export default AbstractIndexRoute.extend({
   modelName: 'patient',
   pageTitle: 'Patient Listing',
 
-  _getStartKeyFromItem: function (item) {
+  _getStartKeyFromItem: function(item) {
     var displayPatientId = item.get('displayPatientId');
     return [displayPatientId, 'patient_' + item.get('id')];
   },
 
-  _modelQueryParams: function () {
+  _modelQueryParams: function() {
     return {
       mapReduce: 'patient_by_display_id'
     };

@@ -10,12 +10,12 @@ export default AbstractEditController.extend(PatientSubmodule, {
   expenseAccountList: Ember.computed.alias('controllers.invoices.expenseAccountList'),
   patientList: Ember.computed.alias('controllers.invoices.patientList'),
 
-  _finishUpdate: function (message, title) {
+  _finishUpdate: function(message, title) {
     this.send('closeModal');
     this.displayAlert(title, message);
   },
 
-  currentPatient: function () {
+  currentPatient: function() {
     var type = this.get('paymentType');
     if (type === 'Deposit') {
       return this.get('patient');
@@ -24,7 +24,7 @@ export default AbstractEditController.extend(PatientSubmodule, {
     }
   }.property('patient', 'paymentType', 'invoice.patient'),
 
-  title: function () {
+  title: function() {
     var isNew = this.get('isNew'),
       type = this.get('paymentType');
     if (isNew) {
@@ -34,13 +34,13 @@ export default AbstractEditController.extend(PatientSubmodule, {
     }
   }.property('isNew', 'paymentType'),
 
-  selectPatient: function () {
+  selectPatient: function() {
     var isNew = this.get('isNew'),
       type = this.get('paymentType');
     return (isNew && type === 'Deposit');
   }.property('isNew', 'paymentType'),
 
-  beforeUpdate: function () {
+  beforeUpdate: function() {
     if (this.get('isNew')) {
       this.set('newPayment', true);
     } else {
@@ -51,20 +51,20 @@ export default AbstractEditController.extend(PatientSubmodule, {
     return Ember.RSVP.resolve();
   },
 
-  afterUpdate: function () {
-    this.get('model').save().then(function (record) {
+  afterUpdate: function() {
+    this.get('model').save().then(function(record) {
       if (this.get('newPayment')) {
         var patient = this.get('currentPatient');
-        patient.get('payments').then(function (payments) {
+        patient.get('payments').then(function(payments) {
           payments.addObject(record);
-          patient.save().then(function () {
+          patient.save().then(function() {
             if (record.get('paymentType') === 'Deposit') {
               var message = 'A deposit of %@ was added for patient %@'.fmt(record.get('amount'), patient.get('displayName'));
               this._finishUpdate(message, 'Deposit Added');
             } else {
               var invoice = this.get('invoice');
               invoice.addPayment(record);
-              invoice.save().then(function () {
+              invoice.save().then(function() {
                 var message = 'A payment of %@ was added to invoice %@'.fmt(record.get('amount'), invoice.get('id'));
                 this._finishUpdate(message, 'Payment Added');
               }.bind(this));

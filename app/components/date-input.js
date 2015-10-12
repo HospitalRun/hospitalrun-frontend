@@ -9,13 +9,13 @@ export default HtmlInput.extend({
 
   _picker: null,
 
-  _shouldSetDate: function (currentDate, picker) {
+  _shouldSetDate: function(currentDate, picker) {
     return (picker && (Ember.isEmpty(currentDate) ||
     Ember.isEmpty(picker.getDate()) ||
     (currentDate.getTime && picker.getDate().getTime() !== currentDate.getTime())));
   },
 
-  currentDateChangedValue: function () {
+  currentDateChangedValue: function() {
     var currentDate = this.get('currentDate'),
       picker = this.get('_picker');
     if (this._shouldSetDate(currentDate, picker)) {
@@ -23,7 +23,7 @@ export default HtmlInput.extend({
     }
   }.observes('currentDate'),
 
-  showTimeChanged: function () {
+  showTimeChanged: function() {
     var picker = this.get('_picker');
     if (picker) {
       picker.destroy();
@@ -31,7 +31,7 @@ export default HtmlInput.extend({
     }
   }.observes('showTime'),
 
-  dateSet: function () {
+  dateSet: function() {
     var currentDate = this.get('currentDate'),
       picker = this.get('_picker');
     if (this._shouldSetDate(currentDate, picker)) {
@@ -39,7 +39,7 @@ export default HtmlInput.extend({
     }
   },
 
-  didInsertElement: function () {
+  didInsertElement: function() {
     var currentDate = this.get('currentDate'),
       $input = this.$('input'),
       picker = null,
@@ -65,7 +65,7 @@ export default HtmlInput.extend({
     this.set('_picker', picker);
   },
 
-  didReceiveAttrs( /*attrs*/ ) {
+  didReceiveAttrs(/*attrs*/) {
     this._super(...arguments);
     var dateProperty = this.get('mainComponent.property'),
       displayPropertyName = 'display_' + dateProperty;
@@ -75,7 +75,7 @@ export default HtmlInput.extend({
     Ember.Binding.from('mainComponent.model.errors.' + dateProperty).to('mainComponent.model.errors.' + displayPropertyName).connect(this);
   },
 
-  willDestroyElement: function () {
+  willDestroyElement: function() {
     var picker = this.get('_picker');
     if (picker) {
       picker.destroy();

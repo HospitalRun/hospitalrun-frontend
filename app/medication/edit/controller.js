@@ -12,16 +12,16 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
 
   expenseAccountList: Ember.computed.alias('controllers.medication.expenseAccountList'),
 
-  canFulfill: function () {
+  canFulfill: function() {
     return this.currentUserCan('fulfill_medication');
   }.property(),
 
-  isFulfilled: function () {
+  isFulfilled: function() {
     var status = this.get('status');
     return (status === 'Fulfilled');
   }.property('status'),
 
-  isFulfilling: function () {
+  isFulfilling: function() {
     var canFulfill = this.get('canFulfill'),
       isRequested = this.get('isRequested'),
       fulfillRequest = this.get('shouldFulfillRequest'),
@@ -30,11 +30,11 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     return isFulfilling;
   }.property('canFulfill', 'isRequested', 'shouldFulfillRequest'),
 
-  isFulfilledOrRequested: function () {
+  isFulfilledOrRequested: function() {
     return (this.get('isFulfilled') || this.get('isRequested'));
   }.property('isFulfilled', 'isRequested'),
 
-  prescriptionClass: function () {
+  prescriptionClass: function() {
     var quantity = this.get('quantity');
     this.get('model').validate().catch(Ember.K, 'Prescription validation');
     if (Ember.isEmpty(quantity)) {
@@ -42,7 +42,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     }
   }.property('quantity'),
 
-  quantityClass: function () {
+  quantityClass: function() {
     var prescription = this.get('prescription'),
       returnClass = 'col-xs-3',
       isFulfilling = this.get('isFulfilling');
@@ -52,7 +52,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     return returnClass;
   }.property('isFulfilling', 'prescription'),
 
-  quantityLabel: function () {
+  quantityLabel: function() {
     var returnLabel = 'Quantity Requested',
       isFulfilled = this.get('isFulfilled'),
       isFulfilling = this.get('isFulfilling');
@@ -67,7 +67,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
   medicationList: [],
   updateCapability: 'add_medication',
 
-  afterUpdate: function () {
+  afterUpdate: function() {
     var alertTitle = 'Medication Request Saved',
       alertMessage = 'The medication record has been saved.',
       isFulfilled = this.get('isFulfilled');
@@ -82,9 +82,9 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     this.saveVisitIfNeeded(alertTitle, alertMessage);
   },
 
-  _addNewPatient: function () {
+  _addNewPatient: function() {
     this.displayAlert('Please Wait', 'A new patient needs to be created...Please wait..');
-    this._getNewPatientId().then(function (friendlyId) {
+    this._getNewPatientId().then(function(friendlyId) {
       var patientTypeAhead = this.get('patientTypeAhead'),
         nameParts = patientTypeAhead.split(' '),
         patientDetails = {
@@ -108,11 +108,11 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     }.bind(this));
   },
 
-  _getNewPatientId: function () {
+  _getNewPatientId: function() {
     var newPatientId = this.get('newPatientId');
     if (Ember.isEmpty(newPatientId)) {
-      return new Ember.RSVP.Promise(function (resolve, reject) {
-        this.generateFriendlyId().then(function (friendlyId) {
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        this.generateFriendlyId().then(function(friendlyId) {
           this.set('newPatientId', friendlyId);
           resolve(friendlyId);
         }.bind(this), reject);
@@ -122,13 +122,13 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     }
   },
 
-  beforeUpdate: function () {
+  beforeUpdate: function() {
     var isFulfilling = this.get('isFulfilling'),
       isNew = this.get('isNew');
     if (isNew || isFulfilling) {
-      return new Ember.RSVP.Promise(function (resolve, reject) {
+      return new Ember.RSVP.Promise(function(resolve, reject) {
         var newMedication = this.get('model');
-        newMedication.validate().then(function () {
+        newMedication.validate().then(function() {
           if (newMedication.get('isValid')) {
             if (isNew) {
               if (Ember.isEmpty(newMedication.get('patient'))) {
@@ -139,7 +139,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
                 newMedication.set('status', 'Requested');
                 newMedication.set('requestedBy', newMedication.getUserName());
                 newMedication.set('requestedDate', new Date());
-                this.addChildToVisit(newMedication, 'medication', 'Pharmacy').then(function () {
+                this.addChildToVisit(newMedication, 'medication', 'Pharmacy').then(function() {
                   this.finishBeforeUpdate(isFulfilling, resolve);
                 }.bind(this), reject);
               }
@@ -150,7 +150,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
             this.send('showDisabledDialog');
             reject('invalid model');
           }
-        }.bind(this)).catch(function () {
+        }.bind(this)).catch(function() {
           this.send('showDisabledDialog');
           reject('invalid model');
         }.bind(this));
@@ -160,7 +160,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     }
   },
 
-  finishBeforeUpdate: function (isFulfilling, resolve) {
+  finishBeforeUpdate: function(isFulfilling, resolve) {
     if (isFulfilling) {
       var inventoryLocations = this.get('inventoryLocations'),
         inventoryRequest = this.get('store').createRecord('inv-request', {
@@ -173,7 +173,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
           patient: this.get('patient'),
           markAsConsumed: true
         });
-      this.performFulfillRequest(inventoryRequest, false, false, true).then(function () {
+      this.performFulfillRequest(inventoryRequest, false, false, true).then(function() {
         this.set('status', 'Fulfilled');
         resolve();
       }.bind(this));
@@ -182,7 +182,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     }
   },
 
-  showUpdateButton: function () {
+  showUpdateButton: function() {
     var isFulfilled = this.get('isFulfilled');
     if (isFulfilled) {
       return false;
@@ -191,7 +191,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     }
   }.property('updateCapability', 'isFulfilled'),
 
-  updateButtonText: function () {
+  updateButtonText: function() {
     if (this.get('hideFulfillRequest')) {
       return 'Dispense';
     } else if (this.get('isFulfilling')) {
@@ -204,7 +204,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
   }.property('isNew', 'isFulfilling'),
 
   actions: {
-    addedNewPatient: function (record) {
+    addedNewPatient: function(record) {
       this.send('closeModal');
       this.set('patient', record);
       this.set('newPatientId');

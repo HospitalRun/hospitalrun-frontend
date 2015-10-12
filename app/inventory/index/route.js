@@ -2,7 +2,7 @@ import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default AbstractIndexRoute.extend(UserSession, {
   modelName: 'inv-request',
-  newButtonAction: function () {
+  newButtonAction: function() {
     if (this.currentUserCan('add_inventory_request')) {
       return 'newRequest';
     } else {
@@ -12,12 +12,12 @@ export default AbstractIndexRoute.extend(UserSession, {
   newButtonText: '+ new request',
   pageTitle: 'Requests',
 
-  _getStartKeyFromItem: function (item) {
+  _getStartKeyFromItem: function(item) {
     var itemId = this._getPouchIdFromItem(item);
     return ['Requested', null, itemId];
   },
 
-  _modelQueryParams: function () {
+  _modelQueryParams: function() {
     var maxValue = this.get('maxValue');
     return {
       options: {
@@ -29,7 +29,7 @@ export default AbstractIndexRoute.extend(UserSession, {
   },
 
   actions: {
-    fulfill: function (item) {
+    fulfill: function(item) {
       item.set('dateCompleted', new Date());
       this.transitionTo('inventory.request', item);
     }

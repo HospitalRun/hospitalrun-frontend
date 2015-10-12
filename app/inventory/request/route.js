@@ -5,7 +5,7 @@ export default AbstractEditRoute.extend({
   modelName: 'inv-request',
   newTitle: 'New Request',
   database: Ember.inject.service(),
-  getNewData: function () {
+  getNewData: function() {
     return Ember.RSVP.resolve({
       transactionType: 'Request',
       requestedItems: []
@@ -13,11 +13,11 @@ export default AbstractEditRoute.extend({
   },
 
   actions: {
-    allRequests: function (model) {
+    allRequests: function(model) {
       this.controller.send('allRequests', model);
     },
 
-    removeItem: function (model) {
+    removeItem: function(model) {
       this.controller.send('removeItem', model);
     }
   },
@@ -25,14 +25,14 @@ export default AbstractEditRoute.extend({
   /**
    * Lazily load inventory items so that it doesn't impact performance.
    */
-  setupController: function (controller, model) {
+  setupController: function(controller, model) {
     this._super(controller, model);
     var inventoryQuery = {
       startkey: 'inventory_',
       endkey: 'inventory_\uffff',
-      include_docs: true,
+      include_docs: true
     };
-    this.get('database').queryMainDB(inventoryQuery).then(function (result) {
+    this.get('database').queryMainDB(inventoryQuery).then(function(result) {
       controller.set('inventoryItems', result.rows);
     });
   }

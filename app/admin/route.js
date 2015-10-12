@@ -15,11 +15,11 @@ export default AbstractModuleRoute.extend({
     linkTo: 'users.index'
   }],
 
-  editPath: function () {
+  editPath: function() {
     return 'users.edit';
   }.property(),
 
-  deletePath: function () {
+  deletePath: function() {
     return 'users.delete';
   }.property()
 });

@@ -11,17 +11,17 @@ export default AbstractEditController.extend({
 
   updateCapability: 'add_charge',
 
-  itemChanged: function () {
+  itemChanged: function() {
     var selectedItem = this.get('selectedItem');
     if (!Ember.isEmpty(selectedItem)) {
       var pricingId = this.get('database').getEmberId(selectedItem._id);
-      this.store.find('pricing', pricingId).then(function (item) {
+      this.store.find('pricing', pricingId).then(function(item) {
         this.set('pricingItem', item);
       }.bind(this));
     }
   }.observes('selectedItem'),
 
-  pricingItemChanged: function () {
+  pricingItemChanged: function() {
     var itemName = this.get('itemName'),
       pricingItem = this.get('pricingItem');
     if (!Ember.isEmpty(pricingItem)) {
@@ -34,7 +34,7 @@ export default AbstractEditController.extend({
     }
   }.observes('pricingItem'),
 
-  title: function () {
+  title: function() {
     var isNew = this.get('isNew');
     if (isNew) {
       return 'Add Charge Item';
@@ -42,18 +42,18 @@ export default AbstractEditController.extend({
     return 'Edit Charge Item';
   }.property('isNew'),
 
-  beforeUpdate: function () {
+  beforeUpdate: function() {
     var isNew = this.get('isNew');
     if (isNew) {
       this.set('newCharge', true);
     }
     if (this.get('newPricingItem')) {
-      return new Ember.RSVP.Promise(function (resolve, reject) {
+      return new Ember.RSVP.Promise(function(resolve, reject) {
         var newPricing = this.store.createRecord('pricing', {
           name: this.get('itemName'),
           category: this.get('pricingCategory')
         });
-        newPricing.save().then(function () {
+        newPricing.save().then(function() {
           this.get('pricingList').addObject({
             _id: 'pricing_' + newPricing.get('id'),
             name: newPricing.get('name')
@@ -67,7 +67,7 @@ export default AbstractEditController.extend({
     }
   },
 
-  afterUpdate: function (record) {
+  afterUpdate: function(record) {
     if (this.get('newCharge')) {
       this.get('requestingController').send('addCharge', record);
     } else {

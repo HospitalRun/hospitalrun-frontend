@@ -11,6 +11,6 @@ export default Model.extend(EmberValidations, {
   validations: {
     cost: {
       numericality: true
-    },
+    }
   }
 });

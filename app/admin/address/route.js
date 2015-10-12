@@ -4,11 +4,11 @@ export default AbstractEditRoute.extend({
   hideNewButton: true,
   newTitle: 'Address Options',
   editTitle: 'Address Options',
-  model: function () {
-    return new Ember.RSVP.Promise(function (resolve) {
-      this.get('store').find('option', 'address_options').then(function (address_options) {
-        resolve(address_options);
-      }, function () {
+  model: function() {
+    return new Ember.RSVP.Promise(function(resolve) {
+      this.get('store').find('option', 'address_options').then(function(addressOptions) {
+        resolve(addressOptions);
+      }, function() {
         var newConfig = this.get('store').push('option', {
           id: 'address_options',
           value: {

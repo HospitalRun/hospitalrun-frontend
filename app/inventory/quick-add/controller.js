@@ -5,19 +5,19 @@ export default InventoryEditController.extend({
   updateCapability: 'add_inventory_item',
 
   actions: {
-    cancel: function () {
+    cancel: function() {
       this.send('closeModal');
     }
   },
 
-  beforeUpdate: function () {
+  beforeUpdate: function() {
     if (this.get('skipSavePurchase')) {
       this.set('quantity', null);
     }
     return this._super();
   },
 
-  afterUpdate: function (record) {
+  afterUpdate: function(record) {
     this.send('addedNewInventoryItem', record);
   }
 });

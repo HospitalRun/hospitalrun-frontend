@@ -5,13 +5,13 @@ export default Ember.Service.extend({
   filer: null, // Injected via initializer
   fileSystemSize: (1024 * 1024 * 1024 * 8), // 8GB max size for local filesystem;chrome only,
 
-  _onError: function (e) {
+  _onError: function(e) {
     console.log('Filer filesystem error: ' + e);
   },
 
-  _downloadFiles: function () {
-    this.store.find('photo').then(function (photos) {
-      photos.forEach(function (photo) {
+  _downloadFiles: function() {
+    this.store.find('photo').then(function(photos) {
+      photos.forEach(function(photo) {
         this.downloadIfNeeded(photo);
       }.bind(this));
     }.bind(this));
@@ -21,7 +21,7 @@ export default Ember.Service.extend({
    * Downloads the file from the server and saves it to the local filesystem.
    * @param {Object} fileRecord Record to use to download the file.
    */
-  _downloadFileFromServer: function (fileRecord) {
+  _downloadFileFromServer: function(fileRecord) {
     var fileName = Ember.get(fileRecord, 'fileName'),
       pouchDbId = Ember.get(fileRecord, 'id'),
       url = Ember.get(fileRecord, 'url'),
@@ -29,7 +29,7 @@ export default Ember.Service.extend({
     if (!Ember.isEmpty(url)) {
       xhr.open('GET', url, true);
       xhr.responseType = 'blob';
-      xhr.onload = function () {
+      xhr.onload = function() {
         var file = new Blob([xhr.response]);
         this.addFile(file, fileName, pouchDbId);
       }.bind(this);
@@ -37,10 +37,10 @@ export default Ember.Service.extend({
     }
   },
 
-  setup: function () {
+  setup: function() {
     var size = this.get('fileSystemSize'),
       filer = new Filer();
-    filer.init({persistent: true, size: size}, function () {
+    filer.init({ persistent: true, size: size }, function() {
       this.set('filer', filer);
     }.bind(this));
   },
@@ -54,8 +54,8 @@ export default Ember.Service.extend({
    * prefixed by 'patient_'.
    * @returns {Promise} returns a Promise that resolves once the file is saved.
    */
-  addFile: function (file, path, pouchDbId) {
-    return new Ember.RSVP.Promise(function (resolve, reject) {
+  addFile: function(file, path, pouchDbId) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
       var currentDate = new Date(),
         filer = this.get('filer'),
         fileName = file.name || currentDate.getTime(),
@@ -80,7 +80,7 @@ export default Ember.Service.extend({
         }
       }
 
-      this.fileExists(newFileName).then(function (exists) {
+      this.fileExists(newFileName).then(function(exists) {
         if (exists) {
           // Make sure a unique name is used.
           newFileName = path + currentDate.getTime() + fileName;
@@ -94,14 +94,14 @@ export default Ember.Service.extend({
             newFileName += '.' + typeParts[1];
           }
         }
-        filer.mkdir(path, false, function () {
-          filer.write(newFileName, {data: file, type: file.type}, function (fileEntry) {
+        filer.mkdir(path, false, function() {
+          filer.write(newFileName, { data: file, type: file.type }, function(fileEntry) {
             database.saveFileLink(newFileName, pouchDbId);
             resolve(fileEntry);
-          }, function (e) {
+          }, function(e) {
             reject(e);
           });
-        }, function (e) {
+        }, function(e) {
           reject(e);
         });
       }.bind(this));
@@ -116,12 +116,12 @@ export default Ember.Service.extend({
    * prefixed by 'patient_'.
    * @returns {Promise} returns a Promise that resolves once the file is deleted.
    */
-  deleteFile: function (filePath, pouchDbId) {
-    return new Ember.RSVP.Promise(function (resolve, reject) {
+  deleteFile: function(filePath, pouchDbId) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
       var filer = this.get('filer'),
         database = this.get('database');
       try {
-        filer.rm(filePath, function () {
+        filer.rm(filePath, function() {
           database.removeFileLink(pouchDbId);
           resolve();
         }, reject);
@@ -131,9 +131,9 @@ export default Ember.Service.extend({
     }.bind(this));
   },
 
-  downloadIfNeeded: function (fileRecord) {
+  downloadIfNeeded: function(fileRecord) {
     var fileName = Ember.get(fileRecord, 'fileName');
-    this.fileExists(fileName).then(function (exists) {
+    this.fileExists(fileName).then(function(exists) {
       if (!exists) {
         this._downloadFileFromServer(fileRecord);
       }
@@ -146,12 +146,12 @@ export default Ember.Service.extend({
    * @returns {Promise} returns a Promise that resolves with a boolean indicating
    * if the file exists.
    */
-  fileExists: function (filePath) {
-    return new Ember.RSVP.Promise(function (resolve) {
+  fileExists: function(filePath) {
+    return new Ember.RSVP.Promise(function(resolve) {
       var filer = this.get('filer');
-      filer.fs.root.getFile(filePath, {}, function () {
+      filer.fs.root.getFile(filePath, {}, function() {
         resolve(true);
-      }, function () {
+      }, function() {
         // if ls errs, file doesn't exist.
         resolve(false);
       });
@@ -164,10 +164,10 @@ export default Ember.Service.extend({
    * @returns {Promise} returns a Promise that resolves with the data url
    * for the file.
    */
-  fileToDataURL: function (file) {
-    return new Ember.RSVP.Promise(function (resolve) {
+  fileToDataURL: function(file) {
+    return new Ember.RSVP.Promise(function(resolve) {
       var reader = new FileReader();
-      reader.onloadend = function (e) {
+      reader.onloadend = function(e) {
         resolve(e.target.result);
       };
       reader.readAsDataURL(file);
@@ -177,7 +177,7 @@ export default Ember.Service.extend({
   /**
    * Property to to determine if file system API is available.
    */
-  isFileSystemEnabled: function () {
+  isFileSystemEnabled: function() {
     var filer = this.get('filer');
     return !(Ember.isEmpty(filer));
   }.property('filer'),
@@ -188,12 +188,12 @@ export default Ember.Service.extend({
    * @returns {Promise} returns a Promise that resolves with the file system
    * url or null if the file doesn't exist.
    */
-  pathToFileSystemURL: function (path) {
-    return new Ember.RSVP.Promise(function (resolve) {
+  pathToFileSystemURL: function(path) {
+    return new Ember.RSVP.Promise(function(resolve) {
       var filer = this.get('filer');
-      filer.fs.root.getFile(path, {}, function (fileEntry) {
+      filer.fs.root.getFile(path, {}, function(fileEntry) {
         resolve(fileEntry.toURL());
-      }, function () {
+      }, function() {
         // if ls errs, just return empty, file doesn't exist.
         resolve();
       });

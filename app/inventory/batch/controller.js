@@ -19,10 +19,10 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     'vendorItemNo'
   ],
 
-  inventoryList: function () {
+  inventoryList: function() {
     var inventoryItems = this.get('inventoryItems');
     if (!Ember.isEmpty(inventoryItems)) {
-      var mappedItems = inventoryItems.map(function (item) {
+      var mappedItems = inventoryItems.map(function(item) {
         return item.doc;
       });
       return mappedItems;
@@ -43,20 +43,20 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     id: 'warehouse_list' // Id of the lookup list to update
   }],
 
-  showDistributionUnit: function () {
+  showDistributionUnit: function() {
     return this._haveValidInventoryItem();
   }.property('inventoryItemTypeAhead', 'inventoryItem'),
 
-  showInvoiceItems: function () {
+  showInvoiceItems: function() {
     var invoiceItems = this.get('invoiceItems');
     return !Ember.isEmpty(invoiceItems);
   }.property('invoiceItems.@each'),
 
-  totalReceived: function () {
+  totalReceived: function() {
     var invoiceItems = this.get('invoiceItems'),
       total = 0;
     if (!Ember.isEmpty('invoiceItems')) {
-      total = invoiceItems.reduce(function (previousValue, item) {
+      total = invoiceItems.reduce(function(previousValue, item) {
         return previousValue + Number(item.get('purchaseCost'));
       }, total);
     }
@@ -71,8 +71,8 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
 
   updateCapability: 'add_inventory_item',
 
-  _addNewInventoryItem: function () {
-    this.generateId().then(function (inventoryId) {
+  _addNewInventoryItem: function() {
+    this.generateId().then(function(inventoryId) {
       var inventoryItem = this.store.createRecord('inventory', {
         id: inventoryId,
         name: this.get('inventoryItemTypeAhead'),
@@ -83,7 +83,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     }.bind(this));
   },
 
-  _addInventoryItem: function () {
+  _addInventoryItem: function() {
     var model = this.get('model'),
       inventoryItemTypeAhead = this.get('inventoryItemTypeAhead'),
       purchaseCost = this.get('purchaseCost'),
@@ -99,7 +99,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     }
   },
 
-  _addInvoiceItem: function () {
+  _addInvoiceItem: function() {
     var invoiceItems = this.get('invoiceItems'),
       itemProperties = this.getProperties(this.get('purchaseAttributes')),
       invoiceItem = Ember.Object.create(itemProperties);
@@ -114,11 +114,11 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     this.set('vendorItemNo');
   },
 
-  _findInventoryItem: function (purchase) {
+  _findInventoryItem: function(purchase) {
     var invoiceItems = this.get('invoiceItems'),
       inventoryId = purchase.get('inventoryItem');
     if (!Ember.isEmpty(inventoryId)) {
-      var invoiceItem = invoiceItems.find(function (item) {
+      var invoiceItem = invoiceItems.find(function(item) {
         return (item.get('inventoryItem.id') === inventoryId);
       }, this);
       if (!Ember.isEmpty(invoiceItem)) {
@@ -127,7 +127,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     }
   },
 
-  _haveValidInventoryItem: function () {
+  _haveValidInventoryItem: function() {
     var inventoryItemTypeAhead = this.get('inventoryItemTypeAhead'),
       inventoryItem = this.get('inventoryItem');
     if (Ember.isEmpty(inventoryItemTypeAhead) || Ember.isEmpty(inventoryItem)) {
@@ -143,7 +143,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     }
   },
 
-  _savePurchases: function () {
+  _savePurchases: function() {
     var purchaseDefaults = this.getProperties([
         'dateReceived',
         'vendor',
@@ -154,7 +154,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
       invoiceItems = this.get('invoiceItems'),
       inventoryPurchase,
       savePromises = [];
-    invoiceItems.forEach(function (invoiceItem) {
+    invoiceItems.forEach(function(invoiceItem) {
       var inventoryItem = invoiceItem.get('inventoryItem'),
         quantity = invoiceItem.get('quantity');
       inventoryPurchase = this.store.createRecord('inv-purchase', purchaseDefaults);
@@ -167,23 +167,23 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
       });
       savePromises.push(inventoryPurchase.save());
     }.bind(this));
-    Ember.RSVP.all(savePromises).then(function (results) {
+    Ember.RSVP.all(savePromises).then(function(results) {
       var inventorySaves = [],
         purchasesAdded = [];
-      results.forEach(function (newPurchase) {
+      results.forEach(function(newPurchase) {
         var inventoryItem = this._findInventoryItem(newPurchase),
           purchases = inventoryItem.get('purchases');
         purchases.addObject(newPurchase);
         purchasesAdded.push(this.newPurchaseAdded(inventoryItem, newPurchase));
       }.bind(this));
 
-      Ember.RSVP.all(inventorySaves).then(function () {
-        results.forEach(function (newPurchase) {
+      Ember.RSVP.all(inventorySaves).then(function() {
+        results.forEach(function(newPurchase) {
           var inventoryItem = this._findInventoryItem(newPurchase);
           inventoryItem.updateQuantity();
           inventorySaves.push(inventoryItem.save());
         }.bind(this));
-        Ember.RSVP.all(inventorySaves).then(function () {
+        Ember.RSVP.all(inventorySaves).then(function() {
           this.updateLookupLists();
           this.displayAlert('Inventory Purchases Saved', 'The inventory purchases have been successfully saved', 'allItems');
         }.bind(this));
@@ -192,11 +192,11 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
   },
 
   actions: {
-    addInventoryItem: function () {
+    addInventoryItem: function() {
       this._addInventoryItem();
     },
 
-    addedNewInventoryItem: function (inventoryItem) {
+    addedNewInventoryItem: function(inventoryItem) {
       this.set('inventoryItem', inventoryItem);
       this._addInvoiceItem();
       this.send('closeModal');
@@ -205,14 +205,14 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
       }
     },
 
-    removeItem: function (removeInfo) {
+    removeItem: function(removeInfo) {
       var invoiceItems = this.get('invoiceItems'),
         item = removeInfo.itemToRemove;
       invoiceItems.removeObject(item);
       this.send('closeModal');
     },
 
-    showRemoveItem: function (item) {
+    showRemoveItem: function(item) {
       var message = 'Are you sure you want to remove this item from this invoice?',
         model = Ember.Object.create({
           itemToRemove: item
@@ -224,7 +224,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     /**
      * Update the model
      */
-    update: function () {
+    update: function() {
       this.set('doingUpdate', true);
       var addingNewInventory = this._addInventoryItem();
       if (!addingNewInventory) {

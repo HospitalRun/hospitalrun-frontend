@@ -4,7 +4,7 @@ import InventoryId from 'hospitalrun/mixins/inventory-id';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
 export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, InventoryLocations, {
   addCapability: 'add_inventory_item',
-  additionalButtons: function () {
+  additionalButtons: function() {
     if (this.currentUserCan(this.get('addCapability'))) {
       return [{
         buttonAction: 'newInventoryBatch',
@@ -48,33 +48,33 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
   sectionTitle: 'Inventory',
 
   actions: {
-    addPurchase: function (newPurchase) {
+    addPurchase: function(newPurchase) {
       var currentItem = this.get('currentItem'),
         purchases = currentItem.get('purchases');
       purchases.addObject(newPurchase);
-      this.newPurchaseAdded(currentItem, newPurchase).then(function () {
+      this.newPurchaseAdded(currentItem, newPurchase).then(function() {
         currentItem.updateQuantity();
-        currentItem.save().then(function () {
+        currentItem.save().then(function() {
           this.send('closeModal');
         }.bind(this));
       }.bind(this));
     },
 
-    newInventoryBatch: function () {
+    newInventoryBatch: function() {
       if (this.currentUserCan(this.get('addCapability'))) {
         this.transitionTo('inventory.batch', 'new');
       }
     },
 
-    newRequest: function () {
+    newRequest: function() {
       this.transitionTo('inventory.request', 'new');
     },
 
-    allItems: function () {
+    allItems: function() {
       this.transitionTo('inventory.listing');
     },
 
-    showAddPurchase: function (inventoryItem) {
+    showAddPurchase: function(inventoryItem) {
       var newPurchase = this.get('store').createRecord('inv-purchase', {
         dateReceived: new Date(),
         distributionUnit: inventoryItem.get('distributionUnit'),

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default function(configs) {
-  function PouchOauthXHR (objParameters) {
+  function PouchOauthXHR(objParameters) {
     this.internalXHR = new XMLHttpRequest(objParameters);
     this.requestHeaders = {
     };
@@ -9,33 +9,33 @@ export default function(configs) {
   }
 
   PouchOauthXHR.prototype = {
-    _decodeParameters: function (param_string, current_params) {
-      var return_params = current_params || {},
-        params = decodeURIComponent(param_string).split('&'),
-        param_parts,
+    _decodeParameters: function(paramString, currentParams) {
+      var returnParams = currentParams || {},
+        params = decodeURIComponent(paramString).split('&'),
+        paramParts,
         i;
-      for (i = 0;i < params.length;i++) {
-        param_parts = params[i].split('=');
-        return_params[param_parts[0]] = param_parts[1];
+      for (i = 0; i < params.length; i++) {
+        paramParts = params[i].split('=');
+        returnParams[paramParts[0]] = paramParts[1];
       }
-      return return_params;
+      return returnParams;
     },
 
-    abort: function () {
+    abort: function() {
       this.internalXHR.abort();
     },
 
     oauth: configs,
 
-    getAllResponseHeaders: function () {
+    getAllResponseHeaders: function() {
       return this.internalXHR.getAllResponseHeaders();
     },
 
-    getResponseHeader: function (header) {
+    getResponseHeader: function(header) {
       return this.internalXHR.getResponseHeader(header);
     },
 
-    open: function (method, url, async, user, password) {
+    open: function(method, url, async, user, password) {
       this.method = method;
       this.url = url;
       if (async !== undefined) {
@@ -46,21 +46,21 @@ export default function(configs) {
       this.user = user;
       this.password = password;
       if (url.indexOf('?') > 0) {
-        var url_params = url.split('?');
+        var urlParams = url.split('?');
         if (this.method === 'POST' || this.method === 'GET' || this.method === 'DELETE') {
-          this.url = url_params[0];
+          this.url = urlParams[0];
         }
-        this.params = this._decodeParameters(url_params[1]);
+        this.params = this._decodeParameters(urlParams[1]);
       }
     },
 
-    send: function (data) {
+    send: function(data) {
       if (this.signOauth !== undefined) {
         this.params = this.signOauth(this.params);
         if (this.method === 'POST' || this.method === 'GET' || this.method === 'DELETE') {
           this.url = OAuth.addToURL(this.url, this.params);
         } else {
-          this.requestHeaders['Authorization'] = OAuth.getAuthorizationHeader('', this.params);
+          this.requestHeaders.Authorization = OAuth.getAuthorizationHeader('', this.params);
         }
       }
 
@@ -87,7 +87,7 @@ export default function(configs) {
       this.status = this.internalXHR.status;
       if (this.onreadystatechange !== undefined) {
         var xhrwrapper = this;
-        this.internalXHR.onreadystatechange = function () {
+        this.internalXHR.onreadystatechange = function() {
           if (this.readyState === 4 && this.status === 0) {
             console.log('wrapper readystatechange fired with xhr state and status:', this.readyState, this.status);
             console.log('URL WAS: ' + xhrwrapper.url, xhrwrapper);
@@ -106,18 +106,18 @@ export default function(configs) {
       this.internalXHR.send(data);
     },
 
-    setRequestHeader: function (header, value) {
+    setRequestHeader: function(header, value) {
       this.requestHeaders[header] = value;
     },
 
-    signOauth: function (params) {
+    signOauth: function(params) {
       if (Ember.isEmpty(params)) {
         params = {};
       }
-      var signature_url = this.url,
+      var signatureUrl = this.url,
         dblocation = this.url.indexOf('/db/');
       if (dblocation > -1) {
-        signature_url = 'http://localhost:5984/' + this.url.substring(dblocation + 4);
+        signatureUrl = 'http://localhost:5984/' + this.url.substring(dblocation + 4);
       }
 
       var accessor = {
@@ -133,7 +133,7 @@ export default function(configs) {
       var message = {
         parameters: params
       };
-      message.action = signature_url;
+      message.action = signatureUrl;
       message.method = this.method;
       OAuth.SignatureMethod.sign(message, accessor);
       return message.parameters;

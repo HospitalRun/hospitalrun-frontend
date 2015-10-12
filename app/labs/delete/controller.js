@@ -4,9 +4,9 @@ export default AbstractDeleteController.extend(PatientSubmodule, {
   title: 'Delete Request',
 
   actions: {
-    delete: function () {
-      this.removeChildFromVisit(this.get('model'), 'labs').then(function () {
-        this.get('model').destroyRecord().then(function () {
+    delete: function() {
+      this.removeChildFromVisit(this.get('model'), 'labs').then(function() {
+        this.get('model').destroyRecord().then(function() {
           this.send('closeModal');
         }.bind(this));
       }.bind(this));

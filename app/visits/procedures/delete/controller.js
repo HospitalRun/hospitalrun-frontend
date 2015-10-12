@@ -8,7 +8,7 @@ export default AbstractDeleteController.extend({
   title: 'Delete Procedure',
 
   actions: {
-    notifyProcedureDelete: function () {
+    notifyProcedureDelete: function() {
       this.send('closeModal');
       this.get('editController').send('deleteProcedure', this.get('model'));
     }

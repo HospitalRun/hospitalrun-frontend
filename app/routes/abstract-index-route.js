@@ -14,11 +14,11 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
   nextStartKey: null,
   pageTitle: null,
 
-  _getFilterParams: function (params) {
+  _getFilterParams: function(params) {
     var filterByList = [],
       filterParams = this.get('filterParams');
     if (!Ember.isEmpty(filterParams)) {
-      filterParams.forEach(function (paramName) {
+      filterParams.forEach(function(paramName) {
         if (!Ember.isEmpty(params[paramName])) {
           filterByList.push({
             name: paramName,
@@ -30,28 +30,28 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
     return filterByList;
   },
 
-  _getMaxPouchId: function () {
+  _getMaxPouchId: function() {
     return this.get('database').getPouchId({}, this.get('modelName').camelize());
   },
 
-  _getMinPouchId: function () {
+  _getMinPouchId: function() {
     return this.get('database').getPouchId(null, this.get('modelName').camelize());
   },
 
-  _getPouchIdFromItem: function (item) {
+  _getPouchIdFromItem: function(item) {
     return this.get('database').getPouchId(item.get('id'), this.get('modelName').camelize());
   },
 
-  _getStartKeyFromItem: function (item) {
+  _getStartKeyFromItem: function(item) {
     return item.get('id');
   },
 
-  _modelQueryParams: function () {
+  _modelQueryParams: function() {
     return {};
   },
 
-  model: function (params) {
-    return new Ember.RSVP.Promise(function (resolve, reject) {
+  model: function(params) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
       var filterParams = this._getFilterParams(params),
         modelName = this.get('modelName'),
         itemsPerPage = this.get('itemsPerPage'),
@@ -72,7 +72,7 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
       if (!Ember.isEmpty(params.startKey)) {
         queryParams.options.startkey = params.startKey;
       }
-      this.store.find(modelName, queryParams).then(function (model) {
+      this.store.find(modelName, queryParams).then(function(model) {
         if (model.get('length') > 0) {
           this.set('firstKey', this._getStartKeyFromItem(model.get('firstObject')));
         }
@@ -88,12 +88,12 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
   },
 
   queryParams: {
-    sortDesc: {refreshModel: true},
-    sortKey: {refreshModel: true},
-    startKey: {refreshModel: true}
+    sortDesc: { refreshModel: true },
+    sortKey: { refreshModel: true },
+    startKey: { refreshModel: true }
   },
 
-  setupController: function (controller, model) {
+  setupController: function(controller, model) {
     var props = this.getProperties('firstKey', 'nextStartKey');
     controller.setProperties(props);
     if (!Ember.isEmpty(model)) {

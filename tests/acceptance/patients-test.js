@@ -27,7 +27,7 @@ test('visiting /patients route', function(assert) {
   });
   click('button:contains(+ new patient)');
   andThen(function() {
-    assert.equal(currentURL(),'/patients/edit/new');
+    assert.equal(currentURL(), '/patients/edit/new');
   });
   destroyDatabases();
 });
@@ -79,7 +79,6 @@ skip('View reports tab | Patient Status', function(assert) {
   visit('/patients/reports');
   select('[data-test-selector="select-report-type"] select', 'Patient Status');
 
-
   andThen(function() {
     var generateReportButton = find('button:contains(Generate Report)');
     assert.equal(currentURL(), '/patients/reports');
@@ -95,7 +94,7 @@ test('Adding a new patient record', function(assert) {
   loadPouchDump('default');
   authenticateUser();
   visit('/patients/edit/new');
-  andThen(function(){
+  andThen(function() {
     assert.equal(currentURL(), '/patients/edit/new');
   });
   // Ember.run(function() {
@@ -111,7 +110,7 @@ test('Adding a new patient record', function(assert) {
     assert.equal(find('.modal-body').text().trim(), 'The patient record for John Doe has been saved.', 'Record has been saved');
   });
   waitToAppear('.patient-summary');
-  andThen(function(){
+  andThen(function() {
     assert.ok(find('.patient-summary').length > 0, 'patient summary is displayed');
   });
   destroyDatabases();

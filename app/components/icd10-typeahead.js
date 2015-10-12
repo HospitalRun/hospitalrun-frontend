@@ -8,9 +8,9 @@ export default TypeAhead.extend({
     header: '<div class="alert alert-success well-sm query-results" role="alert"></div>'
   },
 
-  _sourceQuery: function (query, cb) { // Custom source function
+  _sourceQuery: function(query, cb) { // Custom source function
     // Get the data from the Blodhound engine and process it.
-    this.bloodhound.get(query, function (suggestions) {
+    this.bloodhound.get(query, function(suggestions) {
       cb(suggestions);
       // Set the headers content.
       var $header = this.$('.query-results');
@@ -18,7 +18,7 @@ export default TypeAhead.extend({
     }.bind(this));
   },
 
-  _getSource: function () {
+  _getSource: function() {
     return this._sourceQuery.bind(this);
   }
 });

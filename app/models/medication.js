@@ -23,16 +23,16 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, {
     async: false
   }),
 
-  isRequested: function () {
+  isRequested: function() {
     var status = this.get('status');
     return (status === 'Requested');
   }.property('status'),
 
-  prescriptionDateAsTime: function () {
+  prescriptionDateAsTime: function() {
     return this.dateToTime(this.get('prescriptionDate'));
   }.property('prescriptionDate'),
 
-  requestedDateAsTime: function () {
+  requestedDateAsTime: function() {
     return this.dateToTime(this.get('requestedDate'));
   }.property('requestedDate'),
 
@@ -40,7 +40,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, {
     prescription: {
       acceptance: {
         accept: true,
-        if: function (object) {
+        if: function(object) {
           if (!object.get('isDirty') || object.get('isFulfilling')) {
             return false;
           }
@@ -60,7 +60,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, {
     inventoryItemTypeAhead: {
       acceptance: {
         accept: true,
-        if: function (object) {
+        if: function(object) {
           if (!object.get('isDirty') || !object.get('isNew')) {
             return false;
           }
@@ -84,7 +84,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, {
 
     patientTypeAhead: {
       presence: {
-        if: function (object) {
+        if: function(object) {
           return (object.get('selectPatient'));
         }
       }
@@ -96,14 +96,14 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, {
         greaterThan: 0
       },
       presence: {
-        if: function (object) {
+        if: function(object) {
           var isFulfilling = object.get('isFulfilling');
           return isFulfilling;
         }
       },
       acceptance: {
         accept: true,
-        if: function (object) {
+        if: function(object) {
           var isFulfilling = object.get('isFulfilling'),
             requestQuantity = parseInt(object.get('quantity')),
             quantityToCompare = null;
@@ -113,7 +113,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, {
           } else {
             quantityToCompare = object.get('inventoryItem.quantity');
           }
-          if ( requestQuantity > quantityToCompare) {
+          if (requestQuantity > quantityToCompare) {
             // force validation to fail
             return true;
           } else {

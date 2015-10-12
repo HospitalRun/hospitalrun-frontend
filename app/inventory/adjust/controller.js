@@ -8,13 +8,13 @@ export default AbstractEditController.extend(AdjustmentTypes, {
 
   title: 'Adjustment',
 
-  transactionTypeChanged: function () {
-    Ember.run.once(this, function () {
+  transactionTypeChanged: function() {
+    Ember.run.once(this, function() {
       this.get('model').validate();
     });
   }.observes('transactionType'),
 
-  updateButtonText: function () {
+  updateButtonText: function() {
     return this.get('transactionType');
   }.property('transactionType'),
 
@@ -23,11 +23,11 @@ export default AbstractEditController.extend(AdjustmentTypes, {
   updateCapability: 'adjust_inventory_location',
 
   actions: {
-    cancel: function () {
+    cancel: function() {
       this.send('closeModal');
     },
 
-    adjust: function () {
+    adjust: function() {
       this.send('adjustItems', this.get('model'), true);
     }
   }

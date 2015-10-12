@@ -5,14 +5,14 @@ export default Ember.ObjectController.extend(InventoryLocations, {
 
   locations: Ember.computed.alias('controllers.inventory/edit.locations'),
 
-  deleteLocations: Ember.computed.map('filteredLocations', function (location) {
+  deleteLocations: Ember.computed.map('filteredLocations', function(location) {
     return {
       name: '%@ (%@ available)'.fmt(location.get('locationName'), location.get('quantity')),
       location: location
     };
   }),
 
-  locationChanged: function () {
+  locationChanged: function() {
     var originalAisle = this.get('aisleLocation'),
       originalLocation = this.get('location'),
       locations = this.get('locations');
@@ -22,21 +22,21 @@ export default Ember.ObjectController.extend(InventoryLocations, {
     this.set('deleteFromLocation', defaultLocation);
   }.observes('aisleLocation', 'location'),
 
-  filteredLocations: function () {
+  filteredLocations: function() {
     var currentQuantity = this.get('currentQuantity'),
       locations = this.get('locations');
-    return locations.filter(function (location) {
+    return locations.filter(function(location) {
       var locationQuantity = location.get('quantity');
       return (locationQuantity >= currentQuantity);
     });
   }.property('locations', 'currentQuantity'),
 
-  showLocations: function () {
+  showLocations: function() {
     var locations = this.get('locations');
     return (locations.get('length') > 0);
   }.property('locations'),
 
-  updateButtonText: function () {
+  updateButtonText: function() {
     var expire = this.get('expire');
     if (!Ember.isEmpty(expire) && expire === true) {
       return 'Expire';
@@ -46,7 +46,7 @@ export default Ember.ObjectController.extend(InventoryLocations, {
   updateButtonAction: 'delete',
   isUpdateDisabled: false,
   showUpdateButton: true,
-  title: function () {
+  title: function() {
     var expire = this.get('expire');
     if (!Ember.isEmpty(expire) && expire === true) {
       return 'Expire';
@@ -55,12 +55,12 @@ export default Ember.ObjectController.extend(InventoryLocations, {
   }.property('expire'),
 
   actions: {
-    cancel: function () {
+    cancel: function() {
       this.set('expire');
       this.send('closeModal');
     },
 
-    delete: function () {
+    delete: function() {
       var deleteFromLocation = this.get('deleteFromLocation'),
         expire = this.get('expire');
       if (!Ember.isEmpty(expire) && expire === true) {

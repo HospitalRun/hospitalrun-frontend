@@ -9,64 +9,64 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, UserSession, VisitTypes, {
   needs: 'visits',
 
-  canAddAppointment: function () {
+  canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
   }.property(),
 
-  canAddImaging: function () {
+  canAddImaging: function() {
     return this.currentUserCan('add_imaging');
   }.property(),
 
-  canAddLab: function () {
+  canAddLab: function() {
     return this.currentUserCan('add_lab');
   }.property(),
 
-  canAddMedication: function () {
+  canAddMedication: function() {
     return this.currentUserCan('add_medication');
   }.property(),
 
-  canAddDiagnosis: function () {
+  canAddDiagnosis: function() {
     return this.currentUserCan('add_diagnosis');
   }.property(),
 
-  canAddProcedure: function () {
+  canAddProcedure: function() {
     return this.currentUserCan('add_procedure');
   }.property(),
 
-  canAddVitals: function () {
+  canAddVitals: function() {
     return this.currentUserCan('add_vitals');
   }.property(),
 
-  canDeleteDiagnosis: function () {
+  canDeleteDiagnosis: function() {
     return this.currentUserCan('delete_diagnosis');
   }.property(),
 
-  canDeleteImaging: function () {
+  canDeleteImaging: function() {
     return this.currentUserCan('delete_imaging');
   }.property(),
 
-  canDeleteLab: function () {
+  canDeleteLab: function() {
     return this.currentUserCan('delete_lab');
   }.property(),
 
-  canDeleteMedication: function () {
+  canDeleteMedication: function() {
     return this.currentUserCan('delete_medication');
   }.property(),
 
-  canDeleteProcedure: function () {
+  canDeleteProcedure: function() {
     return this.currentUserCan('delete_procedure');
   }.property(),
 
-  canDeleteVitals: function () {
+  canDeleteVitals: function() {
     return this.currentUserCan('delete_vitals');
   }.property(),
 
-  disabledAction: function () {
+  disabledAction: function() {
     this.get('model').validate();
     this._super();
   }.property('endDate', 'startDate', 'isValid'),
 
-  isAdmissionVisit: function () {
+  isAdmissionVisit: function() {
     var visitType = this.get('visitType'),
       isAdmission = (visitType === 'Admission');
     if (isAdmission) {
@@ -78,7 +78,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     return isAdmission;
   }.property('visitType'),
 
-  startDateChanged: function () {
+  startDateChanged: function() {
     var isAdmissionVisit = this.get('isAdmissionVisit'),
       startDate = this.get('startDate');
     if (!isAdmissionVisit) {
@@ -126,8 +126,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
 
   updateCapability: 'add_visit',
 
-  _addChildObject: function (route) {
-    this.transitionToRoute(route, 'new').then(function (newRoute) {
+  _addChildObject: function(route) {
+    this.transitionToRoute(route, 'new').then(function(newRoute) {
       newRoute.currentModel.setProperties({
         patient: this.get('patient'),
         visit: this.get('model'),
@@ -136,15 +136,15 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     }.bind(this));
   },
 
-  _finishAfterUpdate: function () {
+  _finishAfterUpdate: function() {
     this.displayAlert('Visit Saved', 'The visit record has been saved.');
   },
 
-  haveAdditionalDiagnoses: function () {
+  haveAdditionalDiagnoses: function() {
     return !Ember.isEmpty(this.get('additionalDiagnoses'));
   }.property('additionalDiagnoses.@each'),
 
-  afterUpdate: function () {
+  afterUpdate: function() {
     var patient = this.get('patient'),
       patientAdmitted = patient.get('admitted'),
       patientUpdated = false,
@@ -153,7 +153,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
       patient.set('admitted', true);
       patientUpdated = true;
     } else if (status === 'Discharged' && patientAdmitted) {
-      this.getPatientVisits(patient).then(function (visits) {
+      this.getPatientVisits(patient).then(function(visits) {
         if (Ember.isEmpty(visits.findBy('status', 'Admitted'))) {
           patient.set('admitted', false);
           patientUpdated = true;
@@ -167,11 +167,11 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     }
   },
 
-  beforeUpdate: function () {
+  beforeUpdate: function() {
     if (this.get('isNew')) {
       this.set('newVisit', true);
     }
-    return new Ember.RSVP.Promise(function (resolve, reject) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
       this.updateCharges().then(resolve, reject);
     }.bind(this));
   },
@@ -184,8 +184,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
    * @param {boolean} removeObject If true remove the object from the list;
    * otherwise add the specified object to the list.
    */
-  updateList: function (listName, listObject, removeObject) {
-    this.get(listName).then(function (list) {
+  updateList: function(listName, listObject, removeObject) {
+    this.get(listName).then(function(list) {
       if (removeObject) {
         list.removeObject(listObject);
       } else {
@@ -197,7 +197,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
   },
 
   actions: {
-    addDiagnosis: function (newDiagnosis) {
+    addDiagnosis: function(newDiagnosis) {
       var additionalDiagnoses = this.get('additionalDiagnoses');
       if (!Ember.isArray(additionalDiagnoses)) {
         additionalDiagnoses = [];
@@ -208,18 +208,18 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
       this.send('closeModal');
     },
 
-    deleteDiagnosis: function (diagnosis) {
+    deleteDiagnosis: function(diagnosis) {
       var additionalDiagnoses = this.get('additionalDiagnoses');
       additionalDiagnoses.removeObject(diagnosis);
       this.set('additionalDiagnoses', additionalDiagnoses);
       this.send('update', true);
     },
 
-    addVitals: function (newVitals) {
+    addVitals: function(newVitals) {
       this.updateList('vitals', newVitals);
     },
 
-    cancel: function () {
+    cancel: function() {
       var cancelledItem = this.get('model');
       if (this.get('isNew')) {
         cancelledItem.deleteRecord();
@@ -229,15 +229,15 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
       this.send(this.get('cancelAction'));
     },
 
-    deleteProcedure: function (procedure) {
+    deleteProcedure: function(procedure) {
       this.updateList('procedures', procedure, true);
     },
 
-    deleteVitals: function (vitals) {
+    deleteVitals: function(vitals) {
       this.updateList('vitals', vitals, true);
     },
 
-    editImaging: function (imaging) {
+    editImaging: function(imaging) {
       if (imaging.get('canEdit')) {
         imaging.setProperties({
           'returnToVisit': true
@@ -246,7 +246,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
       this.transitionToRoute('imaging.edit', imaging);
     },
 
-    editLab: function (lab) {
+    editLab: function(lab) {
       if (lab.get('canEdit')) {
         lab.setProperties({
           'returnToVisit': true
@@ -255,66 +255,66 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
       }
     },
 
-    editMedication: function (medication) {
+    editMedication: function(medication) {
       if (medication.get('canEdit')) {
         medication.set('returnToVisit', true);
         this.transitionToRoute('medication.edit', medication);
       }
     },
 
-    showAddVitals: function () {
+    showAddVitals: function() {
       var newVitals = this.get('store').createRecord('vital', {
         dateRecorded: new Date()
       });
       this.send('openModal', 'visits.vitals.edit', newVitals);
     },
 
-    newAppointment: function () {
+    newAppointment: function() {
       this._addChildObject('appointments.edit');
     },
 
-    newImaging: function () {
+    newImaging: function() {
       this._addChildObject('imaging.edit');
     },
 
-    newLab: function () {
+    newLab: function() {
       this._addChildObject('labs.edit');
     },
 
-    newMedication: function () {
+    newMedication: function() {
       this._addChildObject('medication.edit');
     },
 
-    showAddDiagnosis: function () {
+    showAddDiagnosis: function() {
       var newDiagnosis = this.get('store').createRecord('add-diagnosis');
       this.send('openModal', 'visits.add-diagnosis', newDiagnosis);
     },
 
-    showAddProcedure: function () {
+    showAddProcedure: function() {
       this._addChildObject('procedures.edit');
     },
 
-    showDeleteImaging: function (imaging) {
+    showDeleteImaging: function(imaging) {
       this.send('openModal', 'imaging.delete', imaging);
     },
 
-    showDeleteLab: function (lab) {
+    showDeleteLab: function(lab) {
       this.send('openModal', 'labs.delete', lab);
     },
 
-    showDeleteMedication: function (medication) {
+    showDeleteMedication: function(medication) {
       this.send('openModal', 'medication.delete', medication);
     },
 
-    showDeleteProcedure: function (procedure) {
+    showDeleteProcedure: function(procedure) {
       this.send('openModal', 'visits.procedures.delete', procedure);
     },
 
-    showDeleteVitals: function (vitals) {
+    showDeleteVitals: function(vitals) {
       this.send('openModal', 'visits.vitals.delete', vitals);
     },
 
-    showEditProcedure: function (procedure) {
+    showEditProcedure: function(procedure) {
       if (Ember.isEmpty(procedure.get('visit'))) {
         procedure.set('visit', this.get('model'));
       }
@@ -323,7 +323,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
       this.transitionToRoute('procedures.edit', procedure);
     },
 
-    showEditVitals: function (vitals) {
+    showEditVitals: function(vitals) {
       this.send('openModal', 'visits.vitals.edit', vitals);
     }
   }

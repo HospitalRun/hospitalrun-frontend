@@ -6,15 +6,15 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
   needs: ['pricing', 'pricing/edit'],
 
   actions: {
-    cancel: function () {
+    cancel: function() {
       this.get('model').rollback();
       this.send('closeModal');
     },
 
-    update: function () {
+    update: function() {
       var isNew = this.get('isNew'),
         override = this.get('model');
-      override.save().then(function () {
+      override.save().then(function() {
         if (isNew) {
           this.get('editController').send('addOverride', override);
         } else {
@@ -28,7 +28,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
   pricingProfiles: Ember.computed.map('controllers.pricing.pricingProfiles', SelectValues.selectObjectMap),
   showUpdateButton: true,
 
-  title: function () {
+  title: function() {
     if (this.get('isNew')) {
       return 'Add Override';
     } else {
@@ -37,14 +37,13 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
   }.property('isNew'),
 
   updateButtonAction: 'update',
-  updateButtonText: function () {
+  updateButtonText: function() {
     var isNew = this.get('isNew');
     if (isNew) {
       return 'Add';
     } else {
       return 'Update';
     }
-  }.property('isNew'),
-
+  }.property('isNew')
 
 });

@@ -6,12 +6,12 @@ export default AbstractEditController.extend(GenderList, {
   updateCapability: 'add_patient',
 
   actions: {
-    cancel: function () {
+    cancel: function() {
       this.send('closeModal');
     }
   },
 
-  afterUpdate: function (record) {
+  afterUpdate: function(record) {
     var requestingController = this.get('requestingController');
     requestingController.send('addedNewPatient', record);
   }

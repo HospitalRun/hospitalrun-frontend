@@ -29,7 +29,7 @@ test('it renders', function(assert) {
 
   // creates the component instance
   var navMenuProperties = { nav: startingMenu };
-  var navMenu = this.subject( navMenuProperties );
+  var navMenu = this.subject(navMenuProperties);
   assert.equal(navMenu._state, 'preRender');
 
   // appends the navMenu to the page

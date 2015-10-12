@@ -23,7 +23,7 @@ export default Ember.Component.extend({
   /***
    * Setup the specified camera
    */
-  _cameraChange: function () {
+  _cameraChange: function() {
     var stream = this.get('stream'),
       video = this.get('video');
     if (!Ember.isEmpty(stream)) {
@@ -34,21 +34,21 @@ export default Ember.Component.extend({
     var constraints = {
       audio: false,
       video: {
-        optional: [{sourceId: videoSource}]
+        optional: [{ sourceId: videoSource }]
       }
     };
     navigator.getUserMedia(constraints, this._gotStream.bind(this), this._errorCallback);
     this._setupVideo();
   }.observes('parentView.model.selectedCamera'),
 
-  _errorCallback: function (error) {
+  _errorCallback: function(error) {
     console.log('navigator.getUserMedia error: ', error);
   },
 
   /***
    * Callback for MediaStreamTrack.getSources
    */
-  _gotSources: function (sourceInfos) {
+  _gotSources: function(sourceInfos) {
     var cameraCount = 0,
       cameraLabel,
       videoSources = [];
@@ -79,7 +79,7 @@ export default Ember.Component.extend({
   /***
    * Callback handler for getUserMedia.
    */
-  _gotStream: function (stream) {
+  _gotStream: function(stream) {
     if (this.isDestroyed) {
       stream.stop();
     } else {
@@ -90,7 +90,7 @@ export default Ember.Component.extend({
     }
   },
 
-  _photoSourceChanged: function () {
+  _photoSourceChanged: function() {
     var camera = this.$('.camera'),
       fileUpload = this.$('.fileupload'),
       photoSource = this.get('photoSource'),
@@ -113,7 +113,7 @@ export default Ember.Component.extend({
         if (typeof MediaStreamTrack === 'undefined' || MediaStreamTrack.getSources === 'undefined') {
           this.set('showCameraSelect', false);
           if (navigator.getUserMedia) {
-            navigator.getUserMedia({audio: false,video: true}, this._gotStream.bind(this), this._errorCallback);
+            navigator.getUserMedia({ audio: false,video: true }, this._gotStream.bind(this), this._errorCallback);
             this._setupCanPlayListener(video);
           }
         } else {
@@ -125,7 +125,7 @@ export default Ember.Component.extend({
     }
   }.observes('parentView.model.photoSource'),
 
-  _setupCanPlayListener: function (video) {
+  _setupCanPlayListener: function(video) {
     // Remove listener if it was already added before.
     video.removeEventListener('canplay', this._setupVideo.bind(this), false);
     video.addEventListener('canplay', this._setupVideo.bind(this), false);
@@ -134,7 +134,7 @@ export default Ember.Component.extend({
   /***
    * Setup the dimensions for the video preview and picture elements.
    */
-  _setupVideo: function () {
+  _setupVideo: function() {
     var canvas = this.get('canvas'),
       height = this.get('height'),
       video = this.get('video'),
@@ -150,7 +150,7 @@ export default Ember.Component.extend({
     });
   },
 
-  _stopStream: function () {
+  _stopStream: function() {
     var stream = this.get('stream');
     if (!Ember.isEmpty(stream)) {
       stream.stop();
@@ -158,7 +158,7 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    takePhoto: function () {
+    takePhoto: function() {
       var canvas = this.get('canvas'),
         height = this.get('height'),
         video = this.get('video'),
@@ -172,11 +172,11 @@ export default Ember.Component.extend({
       for (var i = 0; i < binary.length; i++) {
         array.push(binary.charCodeAt(i));
       }
-      this.set('photoFile', new Blob([new Uint8Array(array)], {type: 'image/png'}));
+      this.set('photoFile', new Blob([new Uint8Array(array)], { type: 'image/png' }));
     }
   },
 
-  canCaptureVideo: function () {
+  canCaptureVideo: function() {
     if (navigator.getUserMedia) {
       return true;
     } else {
@@ -184,7 +184,7 @@ export default Ember.Component.extend({
     }
   }.property(),
 
-  didInsertElement: function () {
+  didInsertElement: function() {
     var camera = this.$('.camera'),
       fileUpload = this.$('.fileUpload');
     if (camera.length === 1) {
@@ -192,7 +192,7 @@ export default Ember.Component.extend({
     }
   },
 
-  willDestroyElement: function () {
+  willDestroyElement: function() {
     this._stopStream();
   }
 });

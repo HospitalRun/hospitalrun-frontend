@@ -14,24 +14,24 @@ export default AbstractModel.extend({
   startDate: DS.attr('date'),
   endDate: DS.attr('date'),
   notes: DS.attr('string'),
-  status: DS.attr('string', {defaultValue: 'Scheduled'}),
+  status: DS.attr('string', { defaultValue: 'Scheduled' }),
 
   longDateFormat: 'l h:mm A',
   shortDateFormat: 'l',
   timeFormat: 'h:mm A',
 
-  _getDateSpan: function (startDate, endDate, format) {
+  _getDateSpan: function(startDate, endDate, format) {
     var formattedStart = startDate.format(format),
       formattedEnd = endDate.format(format);
     return '%@ - %@'.fmt(formattedStart, formattedEnd);
   },
 
-  appointmentDate: function () {
+  appointmentDate: function() {
     var startDate = this.get('startDate');
     return startDate;
   }.property('startDate'),
 
-  displayStatus: function () {
+  displayStatus: function() {
     var status = this.get('status');
     if (Ember.isEmpty(status)) {
       status = 'Scheduled';
@@ -39,7 +39,7 @@ export default AbstractModel.extend({
     return status;
   }.property('status'),
 
-  formattedAppointmentDate: function () {
+  formattedAppointmentDate: function() {
     var allDay = this.get('allDay'),
       endDate = moment(this.get('endDate')),
       dateFormat = '',
@@ -66,7 +66,7 @@ export default AbstractModel.extend({
   validations: {
     appointmentDate: {
       presence: {
-        if: function (object) {
+        if: function(object) {
           var appointmentType = object.get('appointmentType');
           return appointmentType !== 'Admission';
         }
@@ -90,7 +90,7 @@ export default AbstractModel.extend({
     endDate: {
       acceptance: {
         accept: true,
-        if: function (object) {
+        if: function(object) {
           if (!object.get('isDirty')) {
             return false;
           }

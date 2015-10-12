@@ -9,7 +9,7 @@ export default Ember.Component.extend(UnitTypes, {
   resetUnitName: false,
   targetUnit: Ember.computed.alias('parentView.targetUnit'),
 
-  unitClass: function () {
+  unitClass: function() {
     var selectedUnit = this.get('unit'),
       targetUnit = this.get('targetUnit'),
       unitClass = 'has-success';
@@ -26,7 +26,7 @@ export default Ember.Component.extend(UnitTypes, {
     return unitClass;
   }.property('targetUnit', 'unit'),
 
-  quantityClass: function () {
+  quantityClass: function() {
     var quantity = this.get('quantity'),
       quantityClass = 'has-success',
       targetUnit = this.get('targetUnit');
@@ -39,7 +39,7 @@ export default Ember.Component.extend(UnitTypes, {
       }
       this.set('quantityHelp');
     }
-    Ember.run.once(this, function () {
+    Ember.run.once(this, function() {
       this.get('parentView').calculateTotal();
     });
     return quantityClass;

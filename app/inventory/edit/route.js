@@ -7,42 +7,42 @@ export default AbstractEditRoute.extend(InventoryId, {
   newTitle: 'New Item',
 
   actions: {
-    adjustItems: function (inventoryLocation) {
+    adjustItems: function(inventoryLocation) {
       this.controller.send('adjustItems', inventoryLocation);
     },
 
-    doneFulfillRequest: function () {
+    doneFulfillRequest: function() {
       this.controller.getTransactions();
     },
 
-    deletePurchase: function (purchase, deleteFromLocation) {
+    deletePurchase: function(purchase, deleteFromLocation) {
       this.controller.send('deletePurchase', purchase, deleteFromLocation);
     },
 
-    editNewItem: function () {
+    editNewItem: function() {
       this.controller.send('editNewItem');
     },
 
-    expirePurchase: function (purchase, deleteFromLocation) {
+    expirePurchase: function(purchase, deleteFromLocation) {
       this.controller.send('deletePurchase', purchase, deleteFromLocation, true);
     },
 
-    transferItems: function (inventoryLocation) {
+    transferItems: function(inventoryLocation) {
       this.controller.send('transferItems', inventoryLocation);
     },
 
-    updatePurchase: function (purchase, updateQuantity) {
+    updatePurchase: function(purchase, updateQuantity) {
       this.controller.send('updatePurchase', purchase, updateQuantity);
     }
   },
 
-  getNewData: function () {
+  getNewData: function() {
     return Ember.RSVP.resolve({
       dateReceived: new Date()
     });
   },
 
-  setupController: function (controller, model) {
+  setupController: function(controller, model) {
     this._super(controller, model);
     controller.getTransactions();
   }

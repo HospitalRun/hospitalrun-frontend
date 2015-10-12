@@ -4,7 +4,7 @@ export default PricingIndexRoute.extend({
   pageTitle: 'Procedure Pricing',
 
   actions: {
-    editItem: function (item) {
+    editItem: function(item) {
       item.set('returnTo', 'pricing.procedure');
       this.transitionTo('pricing.edit', item);
     }

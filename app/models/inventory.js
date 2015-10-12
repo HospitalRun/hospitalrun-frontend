@@ -3,9 +3,9 @@ import DS from 'ember-data';
 import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
 var validateIfNewItem = {
-  if: function validateNewItem (object) {
+  if: function validateNewItem(object) {
     var skipSavePurchase = object.get('skipSavePurchase');
-    // Only validate on new items and only if we are saving a purchase.        
+    // Only validate on new items and only if we are saving a purchase.
     return (!skipSavePurchase && object.get('isNew'));
   }
 };
@@ -27,17 +27,17 @@ export default AbstractModel.extend(LocationName, {
   reorderPoint: DS.attr('number'),
   distributionUnit: DS.attr('string'),
 
-  availableLocations: function () {
-    var locations = this.get('locations').filter(function (location) {
+  availableLocations: function() {
+    var locations = this.get('locations').filter(function(location) {
       return location.get('quantity') > 0;
     });
     return locations;
   }.property('locations.@each.lastModified'),
 
-  displayLocations: function () {
+  displayLocations: function() {
     var locations = this.get('availableLocations'),
       returnLocations = [];
-    locations.forEach(function (currentLocation) {
+    locations.forEach(function(currentLocation) {
       var aisleLocationName = currentLocation.get('aisleLocation'),
         locationName = currentLocation.get('location'),
         displayLocationName = this.formatLocationName(locationName, aisleLocationName);
@@ -50,13 +50,13 @@ export default AbstractModel.extend(LocationName, {
 
   validations: {
     distributionUnit: {
-      presence: true,
+      presence: true
     },
     purchaseCost: {
       numericality: validateIfNewItem
     },
     name: {
-      presence: true,
+      presence: true
     },
     quantity: {
       numericality: validateIfNewItem
@@ -75,16 +75,16 @@ export default AbstractModel.extend(LocationName, {
       }
     },
     inventoryType: {
-      presence: true,
+      presence: true
     },
     vendor: {
       presence: validateIfNewItem
     }
   },
 
-  updateQuantity: function () {
+  updateQuantity: function() {
     var purchases = this.get('purchases');
-    var newQuantity = purchases.reduce(function (previousItem, currentItem) {
+    var newQuantity = purchases.reduce(function(previousItem, currentItem) {
       var currentQuantity = 0;
       if (!currentItem.get('expired')) {
         currentQuantity = currentItem.get('currentQuantity');

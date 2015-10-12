@@ -13,37 +13,37 @@ export default Ember.ArrayController.extend(ProgressDialog, UserSession, {
   sortDesc: false,
   sortKey: null,
 
-  canAdd: function () {
+  canAdd: function() {
     return this.currentUserCan(this.get('addPermission'));
   }.property(),
 
-  canDelete: function () {
+  canDelete: function() {
     return this.currentUserCan(this.get('deletePermission'));
   }.property(),
 
-  canEdit: function () {
+  canEdit: function() {
     // Default to using add permission
     return this.currentUserCan(this.get('addPermission'));
   }.property(),
 
-  showActions: function () {
+  showActions: function() {
     return (this.get('canAdd') || this.get('canEdit') || this.get('canDelete'));
   }.property('canAdd', 'canEdit', 'canDelete'),
 
-  disablePreviousPage: function () {
+  disablePreviousPage: function() {
     return (Ember.isEmpty(this.get('previousStartKey')));
   }.property('previousStartKey'),
 
-  disableNextPage: function () {
+  disableNextPage: function() {
     return (Ember.isEmpty(this.get('nextStartKey')));
   }.property('nextStartKey'),
 
-  showPagination: function () {
+  showPagination: function() {
     return (!Ember.isEmpty(this.get('previousStartKey') || !Ember.isEmpty(this.get('nextStartKey'))));
   }.property('nextStartKey', 'previousStartKey'),
 
   actions: {
-    nextPage: function () {
+    nextPage: function() {
       var key = this.get('nextStartKey'),
         previousStartKeys = this.get('previousStartKeys'),
         firstKey = this.get('firstKey');
@@ -52,7 +52,7 @@ export default Ember.ArrayController.extend(ProgressDialog, UserSession, {
       this.set('startKey', key);
       this.showProgressModal();
     },
-    previousPage: function () {
+    previousPage: function() {
       var key = this.get('previousStartKey'),
         previousStartKeys = this.get('previousStartKeys');
       previousStartKeys.pop();
@@ -61,7 +61,7 @@ export default Ember.ArrayController.extend(ProgressDialog, UserSession, {
       this.set('previousStartKeys', previousStartKeys);
       this.showProgressModal();
     },
-    sortByKey: function (sortKey, sortDesc) {
+    sortByKey: function(sortKey, sortDesc) {
       this.setProperties({
         previousStartKey: null,
         previousStartKeys: [],

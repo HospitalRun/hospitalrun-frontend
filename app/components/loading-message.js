@@ -17,18 +17,18 @@ export default Ember.Component.extend({
     'Camels have three eyelids to protect themselves from blowing sand.'
   ],
 
-  _setRandomMessage: function () {
+  _setRandomMessage: function() {
     var loadingMessages = this.get('loadingMessages'),
       idx = Math.floor(Math.random() * loadingMessages.length);
     this.set('message', loadingMessages[idx]);
     this.set('timer', Ember.run.later(this, this._setRandomMessage, 1000));
   },
 
-  didInsertElement: function () {
+  didInsertElement: function() {
     this._setRandomMessage();
   },
 
-  willDestroyElement: function () {
+  willDestroyElement: function() {
     var timer = this.get('timer');
     if (!Ember.isEmpty(timer)) {
       Ember.run.cancel(timer);

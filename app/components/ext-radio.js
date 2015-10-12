@@ -4,12 +4,12 @@ export default Ember.Component.extend({
   otherOptionLabel: null,
   showInline: false,
 
-  haveLabel: function () {
+  haveLabel: function() {
     var firstRadio = this.get('content.firstObject');
     return !Ember.isEmpty(firstRadio.label);
   }.property('content'),
 
-  radioClass: function () {
+  radioClass: function() {
     if (this.get('showInline')) {
       return 'radio-inline';
     } else {

@@ -15,13 +15,13 @@ export default AbstractModel.extend({
   quantity: DS.attr('number'),
   dateCharged: DS.attr('date'),
 
-  medicationCharge: function () {
+  medicationCharge: function() {
     var medication = this.get('medication'),
       newMedicationCharge = this.get('newMedicationCharge');
     return (!Ember.isEmpty(medication) || newMedicationCharge);
   }.property('medication'),
 
-  inventoryItemChanged: function () {
+  inventoryItemChanged: function() {
     var inventoryItem = this.get('inventoryItem');
     this.set('medication', inventoryItem);
   }.observes('inventoryItem'),
@@ -31,7 +31,7 @@ export default AbstractModel.extend({
       presence: true,
       acceptance: {
         accept: true,
-        if: function (object) {
+        if: function(object) {
           var medicationCharge = object.get('medicationCharge');
           if (!medicationCharge || !object.get('isDirty')) {
             return false;
@@ -57,7 +57,7 @@ export default AbstractModel.extend({
 
     quantity: {
       numericality: {
-        greaterThan: 0,
+        greaterThan: 0
       }
     }
   }

@@ -9,38 +9,38 @@ export default Ember.Component.extend(PatientDiagnosis, {
   showPatientAction: 'showPatient',
   visits: null,
 
-  havePrimaryDiagnoses: function () {
+  havePrimaryDiagnoses: function() {
     var primaryDiagnosesLength = this.get('primaryDiagnoses.length');
     return (primaryDiagnosesLength > 0);
   }.property('primaryDiagnoses.length'),
 
-  haveProcedures: function () {
+  haveProcedures: function() {
     var proceduresLength = this.get('patientProcedures.length');
     return (proceduresLength > 0);
   }.property('patientProcedures.length'),
 
-  haveSecondaryDiagnoses: function () {
+  haveSecondaryDiagnoses: function() {
     var secondaryDiagnosesLength = this.get('secondaryDiagnoses.length');
     return (secondaryDiagnosesLength > 0);
   }.property('secondaryDiagnoses.length'),
 
-  primaryDiagnoses: function () {
+  primaryDiagnoses: function() {
     var visits = this.get('visits');
     return this.getPrimaryDiagnoses(visits);
   }.property('visits.@each'),
 
-  secondaryDiagnoses: function () {
+  secondaryDiagnoses: function() {
     var visits = this.get('visits');
     return this.getSecondaryDiagnoses(visits);
   }.property('visits.@each'),
 
-  shouldLinkToPatient: function () {
+  shouldLinkToPatient: function() {
     var disablePatientLink = this.get('disablePatientLink');
     return !disablePatientLink;
   }.property('disablePatientLink'),
 
   actions: {
-    linkToPatient: function () {
+    linkToPatient: function() {
       var shouldLink = this.get('shouldLinkToPatient');
       if (shouldLink) {
         var patient = this.get('patient'),
@@ -51,11 +51,11 @@ export default Ember.Component.extend(PatientDiagnosis, {
         this.sendAction('showPatientAction', this.get('patient'));
       }
     },
-    editProcedure: function (procedure) {
+    editProcedure: function(procedure) {
       procedure.set('returnToVisit', false);
       procedure.set('returnToPatient', true);
       procedure.set('patient', this.get('patient'));
       this.sendAction('editProcedureAction', procedure);
-    },
+    }
   }
 });

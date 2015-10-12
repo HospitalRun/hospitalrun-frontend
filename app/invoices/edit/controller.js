@@ -15,7 +15,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   updateCapability: 'add_invoice',
   wardCharges: [],
 
-  additionalButtons: function () {
+  additionalButtons: function() {
     var buttons = [],
       isValid = this.get('isValid'),
       status = this.get('status');
@@ -37,18 +37,17 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
 
   }.property('isValid', 'status'),
 
-  canAddCharge: function () {
+  canAddCharge: function() {
     return this.currentUserCan('add_charge');
   }.property(),
 
-  canAddPayment: function () {
+  canAddPayment: function() {
     return this.currentUserCan('add_payment');
   }.property(),
 
-
-  pharmacyExpenseAccount: function () {
+  pharmacyExpenseAccount: function() {
     var expenseAccountList = this.get('expenseAccountList');
-    var account = expenseAccountList.find(function (value) {
+    var account = expenseAccountList.find(function(value) {
       if (value.toLowerCase().indexOf('pharmacy') > -1) {
         return true;
       }
@@ -57,7 +56,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   }.property('expenseAccountList.value'),
 
   actions: {
-    addItemCharge: function (lineItem) {
+    addItemCharge: function(lineItem) {
       var details = lineItem.get('details');
       var detail = this.store.createRecord('line-item-detail', {
         id: PouchDB.utils.uuid()
@@ -65,27 +64,27 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       details.addObject(detail);
     },
 
-    addLineItem: function (lineItem) {
+    addLineItem: function(lineItem) {
       var lineItems = this.get('lineItems');
       lineItems.addObject(lineItem);
       this.send('update', true);
       this.send('closeModal');
     },
 
-    deleteCharge: function (deleteInfo) {
+    deleteCharge: function(deleteInfo) {
       this._deleteObject(deleteInfo.itemToDelete, deleteInfo.deleteFrom);
     },
 
-    deleteLineItem: function (deleteInfo) {
+    deleteLineItem: function(deleteInfo) {
       this._deleteObject(deleteInfo.itemToDelete, this.get('lineItems'));
     },
 
-    finalizeInvoice: function () {
+    finalizeInvoice: function() {
       var currentInvoice = this.get('model'),
         invoicePayments = this.get('payments'),
         paymentsToSave = [];
-      this.get('patient.payments').then(function (patientPayments) {
-        patientPayments.forEach(function (payment) {
+      this.get('patient.payments').then(function(patientPayments) {
+        patientPayments.forEach(function(payment) {
           var invoice = payment.get('invoice');
           if (Ember.isEmpty(invoice)) {
             payment.set('invoice', currentInvoice);
@@ -93,18 +92,18 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
             invoicePayments.addObject(payment);
           }
         }.bind(this));
-        Ember.RSVP.all(paymentsToSave).then(function () {
+        Ember.RSVP.all(paymentsToSave).then(function() {
           this.set('status', 'Billed');
           this.send('update');
         }.bind(this));
       }.bind(this));
     },
 
-    printInvoice: function () {
+    printInvoice: function() {
       this.transitionToRoute('print.invoice', this.get('model'));
     },
 
-    removePayment: function (removeInfo) {
+    removePayment: function(removeInfo) {
       var payments = this.get('payments'),
         payment = removeInfo.itemToRemove;
       payment.set('invoice');
@@ -113,14 +112,14 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       this.send('closeModal');
     },
 
-    showAddLineItem: function () {
+    showAddLineItem: function() {
       var newLineItem = this.store.createRecord('billing-line-item', {
         id: PouchDB.utils.uuid()
       });
       this.send('openModal', 'invoices.add-line-item', newLineItem);
     },
 
-    showDeleteItem: function (itemToDelete, deleteFrom) {
+    showDeleteItem: function(itemToDelete, deleteFrom) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteCharge',
         deleteFrom: deleteFrom,
@@ -132,7 +131,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       }));
     },
 
-    showDeleteLineItem: function (item) {
+    showDeleteLineItem: function(item) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteLineItem',
         title: 'Delete Line Item',
@@ -143,7 +142,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       }));
     },
 
-    showRemovePayment: function (payment) {
+    showRemovePayment: function(payment) {
       var message = 'Are you sure you want to remove this payment from this invoice?',
         model = Ember.Object.create({
           itemToRemove: payment
@@ -152,12 +151,12 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       this.displayConfirm(title, message, 'removePayment', model);
     },
 
-    toggleDetails: function (item) {
+    toggleDetails: function(item) {
       item.toggleProperty('showDetails');
     }
   },
 
-  changePaymentProfile: function () {
+  changePaymentProfile: function() {
     var patient = this.get('patient'),
       paymentProfile = this.get('paymentProfile');
     if (!Ember.isEmpty(patient) && Ember.isEmpty(paymentProfile)) {
@@ -165,16 +164,16 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     }
   }.observes('patient'),
 
-  paymentProfileChanged: function () {
+  paymentProfileChanged: function() {
     var discountPercentage = this._getValidNumber(this.get('paymentProfile.discountPercentage')),
       originalPaymentProfileId = this.get('originalPaymentProfileId'),
       profileId = this.get('paymentProfile.id');
     if (profileId !== originalPaymentProfileId) {
       var lineItems = this.get('lineItems');
-      lineItems.forEach(function (lineItem) {
+      lineItems.forEach(function(lineItem) {
         var details = lineItem.get('details'),
           lineDiscount = 0;
-        details.forEach(function (detail) {
+        details.forEach(function(detail) {
           var pricingOverrides = detail.get('pricingItem.pricingOverrides');
           if (!Ember.isEmpty(pricingOverrides)) {
             var pricingOverride = pricingOverrides.findBy('profile.id', profileId);
@@ -193,19 +192,19 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     }
   }.observes('paymentProfile'),
 
-  visitChanged: function () {
+  visitChanged: function() {
     var visit = this.get('visit'),
       lineItems = this.get('lineItems');
     if (!Ember.isEmpty(visit) && Ember.isEmpty(lineItems)) {
       this.set('originalPaymentProfileId');
       var promises = this.resolveVisitChildren();
-      Ember.RSVP.allSettled(promises, 'Resolved visit children before generating invoice').then(function (results) {
+      Ember.RSVP.allSettled(promises, 'Resolved visit children before generating invoice').then(function(results) {
         var chargePromises = this._resolveVisitDescendents(results, 'charges');
         if (!Ember.isEmpty(chargePromises)) {
           var promiseLabel = 'Reloaded charges before generating invoice';
-          Ember.RSVP.allSettled(chargePromises, promiseLabel).then(function (chargeResults) {
+          Ember.RSVP.allSettled(chargePromises, promiseLabel).then(function(chargeResults) {
             var pricingPromises = [];
-            chargeResults.forEach(function (result) {
+            chargeResults.forEach(function(result) {
               if (!Ember.isEmpty(result.value)) {
                 var pricingItem = result.value.get('pricingItem');
                 if (!Ember.isEmpty(pricingItem)) {
@@ -214,7 +213,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
               }
             });
             promiseLabel = 'Reloaded pricing items before generating invoice';
-            Ember.RSVP.allSettled(pricingPromises, promiseLabel).then(function () {
+            Ember.RSVP.allSettled(pricingPromises, promiseLabel).then(function() {
               this._generateLineItems(visit, results);
               this.paymentProfileChanged();
             }.bind(this));
@@ -223,13 +222,13 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
           this._generateLineItems(visit, results);
           this.paymentProfileChanged();
         }
-      }.bind(this), function (err) {
+      }.bind(this), function(err) {
         console.log('Error resolving visit children', err);
       });
     }
   }.observes('visit'),
 
-  _addPharmacyCharge: function (charge, medicationItemName) {
+  _addPharmacyCharge: function(charge, medicationItemName) {
     var medicationItem = charge.get(medicationItemName),
       price = medicationItem.get('price'),
       quantity = charge.get('quantity'),
@@ -246,13 +245,13 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     pharmacyCharges.addObject(pharmacyCharge);
   },
 
-  _addSupplyCharge: function (charge, department) {
+  _addSupplyCharge: function(charge, department) {
     var supplyCharges = this.get('supplyCharges'),
       supplyCharge = this._createChargeItem(charge, department);
     supplyCharges.addObject(supplyCharge);
   },
 
-  _createChargeItem: function (charge, department) {
+  _createChargeItem: function(charge, department) {
     var chargeItem = this.store.createRecord('line-item-detail', {
       id: PouchDB.utils.uuid(),
       name: charge.get('pricingItem.name'),
@@ -270,7 +269,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
    * @param objectToDelete {object} - the object to remove
    * @param deleteFrom {Array} - the array to remove the object from.
    */
-  _deleteObject: function (objectToDelete, deleteFrom) {
+  _deleteObject: function(objectToDelete, deleteFrom) {
     deleteFrom.removeObject(objectToDelete);
     if (!objectToDelete.get('isNew')) {
       objectToDelete.destroyRecord();
@@ -279,11 +278,11 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     this.send('closeModal');
   },
 
-  _mapWardCharge: function (charge) {
+  _mapWardCharge: function(charge) {
     return this._createChargeItem(charge, 'Ward');
   },
 
-  _completeBeforeUpdate: function (sequence, resolve, reject) {
+  _completeBeforeUpdate: function(sequence, resolve, reject) {
     var invoiceId = 'inv',
       sequenceValue;
     sequence.incrementProperty('value', 1);
@@ -297,7 +296,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     sequence.save().then(resolve, reject);
   },
 
-  _generateLineItems: function (visit, visitChildren) {
+  _generateLineItems: function(visit, visitChildren) {
     var endDate = visit.get('endDate'),
       imaging = visitChildren[0].value,
       labs = visitChildren[1].value,
@@ -333,15 +332,15 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       }
     }
 
-    medication.forEach(function (medicationItem) {
+    medication.forEach(function(medicationItem) {
       this._addPharmacyCharge(medicationItem, 'inventoryItem');
     }.bind(this));
 
     this.set('wardCharges', visitCharges.map(this._mapWardCharge.bind(this)));
 
-    procedures.forEach(function (procedure) {
+    procedures.forEach(function(procedure) {
       var charges = procedure.get('charges');
-      charges.forEach(function (charge) {
+      charges.forEach(function(charge) {
         if (charge.get('medicationCharge')) {
           this._addPharmacyCharge(charge, 'medication');
         } else {
@@ -350,26 +349,26 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       }.bind(this));
     }.bind(this));
 
-    labs.forEach(function (lab) {
+    labs.forEach(function(lab) {
       if (!Ember.isEmpty(imaging.get('labType'))) {
         this._addSupplyCharge(Ember.Object.create({
           pricingItem: imaging.get('labType'),
           quantity: 1
         }), 'Lab');
       }
-      lab.get('charges').forEach(function (charge) {
+      lab.get('charges').forEach(function(charge) {
         this._addSupplyCharge(charge, 'Lab');
       }.bind(this));
     }.bind(this));
 
-    imaging.forEach(function (imaging) {
+    imaging.forEach(function(imaging) {
       if (!Ember.isEmpty(imaging.get('imagingType'))) {
         this._addSupplyCharge(Ember.Object.create({
           pricingItem: imaging.get('imagingType'),
           quantity: 1
         }), 'Imaging');
       }
-      imaging.get('charges').forEach(function (charge) {
+      imaging.get('charges').forEach(function(charge) {
         this._addSupplyCharge(charge, 'Imaging');
       }.bind(this));
     }.bind(this));
@@ -412,18 +411,17 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     });
     lineItems.addObject(lineItem);
 
-
     this.send('update', true);
   },
 
-  _resolveVisitDescendents: function (results, childNameToResolve) {
+  _resolveVisitDescendents: function(results, childNameToResolve) {
     var promises = [];
-    results.forEach(function (result) {
+    results.forEach(function(result) {
       if (!Ember.isEmpty(result.value)) {
-        result.value.forEach(function (record) {
+        result.value.forEach(function(record) {
           var children = record.get(childNameToResolve);
           if (!Ember.isEmpty(children)) {
-            children.forEach(function (child) {
+            children.forEach(function(child) {
               // Make sure children are fully resolved
               promises.push(child.reload());
             });
@@ -434,21 +432,21 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     return promises;
   },
 
-  beforeUpdate: function () {
-    return new Ember.RSVP.Promise(function (resolve, reject) {
+  beforeUpdate: function() {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
       var lineItems = this.get('lineItems'),
         savePromises = [];
-      lineItems.forEach(function (lineItem) {
-        lineItem.get('details').forEach(function (detail) {
+      lineItems.forEach(function(lineItem) {
+        lineItem.get('details').forEach(function(detail) {
           savePromises.push(detail.save());
         }.bind(this));
         savePromises.push(lineItem.save());
       }.bind(this));
-      Ember.RSVP.all(savePromises, 'Saved invoice children before saving invoice').then(function () {
+      Ember.RSVP.all(savePromises, 'Saved invoice children before saving invoice').then(function() {
         if (this.get('isNew')) {
-          this.store.find('sequence', 'invoice').then(function (sequence) {
+          this.store.find('sequence', 'invoice').then(function(sequence) {
             this._completeBeforeUpdate(sequence, resolve, reject);
-          }.bind(this), function () {
+          }.bind(this), function() {
             var newSequence = this.get('store').push('sequence', {
               id: 'invoice',
               value: 0
@@ -462,7 +460,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     }.bind(this));
   },
 
-  afterUpdate: function (record) {
+  afterUpdate: function(record) {
     var message = 'The invoice record has been saved.'.fmt(record.get('displayName'));
     this.displayAlert('Invoice Saved', message);
   }

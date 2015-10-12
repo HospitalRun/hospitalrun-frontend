@@ -5,7 +5,7 @@ export default AbstractEditRoute.extend({
   newTitle: 'New Pricing Item',
 
   actions: {
-    deleteOverride: function (overrideToDelete) {
+    deleteOverride: function(overrideToDelete) {
       this.controller.send('deleteOverride', overrideToDelete);
     }
   }

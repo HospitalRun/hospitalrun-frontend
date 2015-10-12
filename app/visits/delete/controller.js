@@ -2,7 +2,7 @@ import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-co
 export default AbstractDeleteController.extend({
   title: 'Delete Visit',
 
-  afterDeleteAction: function () {
+  afterDeleteAction: function() {
     var deleteFromPatient = this.get('deleteFromPatient');
     if (deleteFromPatient) {
       return 'visitDeleted';

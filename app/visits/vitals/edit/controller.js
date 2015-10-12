@@ -12,7 +12,7 @@ export default AbstractEditController.extend({
 
   temperatureLabel: 'Temperature (\xb0C)',
 
-  title: function () {
+  title: function() {
     var isNew = this.get('isNew');
     if (isNew) {
       return 'Add Vitals';
@@ -22,14 +22,14 @@ export default AbstractEditController.extend({
 
   updateCapability: 'add_vitals',
 
-  beforeUpdate: function () {
+  beforeUpdate: function() {
     if (this.get('isNew')) {
       this.set('newVitals', true);
     }
     return Ember.RSVP.Promise.resolve();
   },
 
-  afterUpdate: function (vitals) {
+  afterUpdate: function(vitals) {
     if (this.get('newVitals')) {
       this.get('editController').send('addVitals', vitals);
     } else {

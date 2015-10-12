@@ -9,7 +9,7 @@ export default AbstractEditController.extend(UserRoles, {
   users: Ember.computed.alias('controllers.users/index.model'),
 
   actions: {
-    update: function () {
+    update: function() {
       var updateModel = this.get('model'),
         users = this.get('users');
 
@@ -37,7 +37,7 @@ export default AbstractEditController.extend(UserRoles, {
         }
         this.set('userPrefix', prefix);
       }
-      updateModel.save().then(function () {
+      updateModel.save().then(function() {
         this.displayAlert('User Saved', 'The user has been saved.');
       }.bind(this));
     }

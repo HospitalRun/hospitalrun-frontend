@@ -450,14 +450,14 @@ export default Ember.Mixin.create({
 
   },
 
-  _getUserSessionVars: function () {
+  _getUserSessionVars: function() {
     var session = this.get('session');
     if (!Ember.isEmpty(session) && session.isAuthenticated) {
       return session.get('secure');
     }
   },
 
-  currentUserCan: function (capability) {
+  currentUserCan: function(capability) {
     var sessionVars = this._getUserSessionVars();
     if (!Ember.isEmpty(sessionVars) && !Ember.isEmpty(sessionVars.role)) {
       var capabilities = this.get('defaultCapabilities'),
@@ -475,7 +475,7 @@ export default Ember.Mixin.create({
    * @param {boolean} returnUserName if true, always return the username instead
    * of the display name even if the display name is set.
    */
-  getUserName: function (returnUserName) {
+  getUserName: function(returnUserName) {
     var returnName,
       sessionVars = this._getUserSessionVars();
     if (!Ember.isEmpty(sessionVars)) {

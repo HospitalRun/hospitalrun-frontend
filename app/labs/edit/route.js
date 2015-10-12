@@ -8,7 +8,7 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
   newTitle: 'New Lab Request',
   pricingCategory: 'Lab',
 
-  getNewData: function () {
+  getNewData: function() {
     return Ember.RSVP.resolve({
       selectPatient: true,
       requestDate: moment().startOf('day').toDate()

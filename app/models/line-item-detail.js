@@ -13,7 +13,7 @@ export default AbstractModel.extend(NumberFormat, {
   quantity: DS.attr('number'),
   total: DS.attr('number'),
 
-  amountOwed: function () {
+  amountOwed: function() {
     var price = this.get('price'),
       quantity = this.get('quantity'),
       total = 0;

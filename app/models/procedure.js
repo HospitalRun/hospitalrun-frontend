@@ -39,12 +39,12 @@ export default AbstractModel.extend({
       presence: true
     },
     procedureDate: {
-      presence: true,
+      presence: true
     },
     display_procedureDate: {
       presence: {
         message: 'Please select a valid date'
       }
-    },
+    }
   }
 });

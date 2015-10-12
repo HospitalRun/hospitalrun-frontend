@@ -6,7 +6,7 @@ export default DS.RESTAdapter.extend(UserSession, {
 
   defaultSerializer: 'couchdb',
 
-  ajaxError: function (jqXHR) {
+  ajaxError: function(jqXHR) {
     var error = this._super(jqXHR);
     if (jqXHR && jqXHR.status === 401) {
       var jsonErrors = Ember.$.parseJSON(jqXHR.responseText);
@@ -25,7 +25,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   @param {Object} hash
   @return {Object} hash
   */
-  ajaxOptions: function (url, type, hash) {
+  ajaxOptions: function(url, type, hash) {
     hash = hash || {};
     hash.xhrFields = { withCredentials: true };
     return this._super(url, type, hash);
@@ -47,7 +47,7 @@ export default DS.RESTAdapter.extend(UserSession, {
    @param {DS.Model} record
    @returns {Promise} promise
   */
-  createRecord: function (store, type, record) {
+  createRecord: function(store, type, record) {
     return this.updateRecord(store, type, record);
   },
 
@@ -62,7 +62,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   @param {DS.Model} record
   @returns {Promise} promise
   */
-  deleteRecord: function (store, type, record) {
+  deleteRecord: function(store, type, record) {
     var ajaxData = {
       data: {
         id: record.get('id'),
@@ -88,7 +88,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   @param {String} id
   @returns {Promise} promise
   */
-  find: function (store, type, id) {
+  find: function(store, type, id) {
     var ajaxData = {
       data: {
         id: id,
@@ -114,7 +114,7 @@ export default DS.RESTAdapter.extend(UserSession, {
    @param {DS.Model} record
    @returns {Promise} promise
   */
-  updateRecord: function (store, type, record) {
+  updateRecord: function(store, type, record) {
     var data = {};
     var serializer = store.serializerFor(type.typeKey);
     serializer.serializeIntoHash(data, type, record, { includeId: true });
@@ -154,7 +154,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   @param {String} sinceToken //currently unused
   @returns {Promise} promise
   */
-  findAll: function () {
+  findAll: function() {
     var ajaxData = {
       data: {
         name: this.getUserName(true)
@@ -167,7 +167,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   /**
    Remove null/empty password fields from payload sent to server
    */
-  _cleanPasswordAttrs: function (data) {
+  _cleanPasswordAttrs: function(data) {
     var attrsToCheck = [
       'derived_key',
       'password',
@@ -176,7 +176,7 @@ export default DS.RESTAdapter.extend(UserSession, {
       'salt',
       'iterations'
     ];
-    attrsToCheck.forEach(function (attr) {
+    attrsToCheck.forEach(function(attr) {
       if (Ember.isEmpty(data[attr])) {
         delete data[attr];
       }
@@ -184,7 +184,7 @@ export default DS.RESTAdapter.extend(UserSession, {
     return data;
   },
 
-  _getItemUrl: function (record) {
+  _getItemUrl: function(record) {
     var urlArray = [this.endpoint];
     urlArray.push(Ember.get(record, 'id'));
     var rev = Ember.get(record, 'rev');

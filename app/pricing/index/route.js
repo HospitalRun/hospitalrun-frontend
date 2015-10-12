@@ -5,7 +5,7 @@ export default AbstractIndexRoute.extend({
   modelName: 'pricing',
   pageTitle: 'All Pricing Items',
 
-  _getStartKeyFromItem: function (item) {
+  _getStartKeyFromItem: function(item) {
     var category = item.get('category'),
       id = this._getPouchIdFromItem(item),
       name = item.get('name'),
@@ -13,7 +13,7 @@ export default AbstractIndexRoute.extend({
     return [category, name, pricingType, id];
   },
 
-  _modelQueryParams: function () {
+  _modelQueryParams: function() {
     var category = this.get('category'),
       maxId = this._getMaxPouchId(),
       queryParams = {

@@ -2,7 +2,7 @@ import TypeAhead from 'hospitalrun/components/type-ahead';
 export default TypeAhead.extend({
   displayKey: 'name',
   showQuantity: true,
-  _mapInventoryItems: function (item) {
+  _mapInventoryItems: function(item) {
     var returnObj = {};
     if (this.get('showQuantity') && item.quantity) {
       returnObj.name = '%@ - %@ (%@ available)'.fmt(item.name, item.friendlyId, item.quantity);
@@ -13,7 +13,7 @@ export default TypeAhead.extend({
     return returnObj;
   },
 
-  mappedContent: function () {
+  mappedContent: function() {
     var content = this.get('content'),
       mapped = [];
     if (content) {
@@ -22,12 +22,12 @@ export default TypeAhead.extend({
     return mapped;
   }.property('content'),
 
-  contentChanged: function () {
+  contentChanged: function() {
     var bloodhound = this.get('bloodhound'),
       content = this.get('content');
     if (bloodhound) {
       bloodhound.clear();
       bloodhound.add(content.map(this._mapInventoryItems.bind(this)));
     }
-  }.observes('content.[]'),
+  }.observes('content.[]')
 });

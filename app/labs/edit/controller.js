@@ -9,8 +9,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   chargeRoute: 'labs.charge',
   selectedLabType: null,
 
-
-  canComplete: function () {
+  canComplete: function() {
     var isNew = this.get('model.isNew'),
       labTypeName = this.get('model.labTypeName'),
       selectedLabType = this.get('selectedLabType');
@@ -22,7 +21,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   }.property('selectedLabType.[]', 'model.labTypeName'),
 
   actions: {
-    completeLab: function () {
+    completeLab: function() {
       this.set('status', 'Completed');
       this.get('model').validate();
       if (this.get('isValid')) {
@@ -34,7 +33,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     /**
      * Update the model and perform the before update and after update
      */
-    update: function () {
+    update: function() {
       if (this.get('isNew')) {
         var newLab = this.get('model'),
           selectedLabType = this.get('selectedLabType');
@@ -44,18 +43,18 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         this.set('requestedBy', newLab.getUserName());
         this.set('requestedDate', new Date());
         if (Ember.isEmpty(selectedLabType)) {
-          this.saveNewPricing(this.get('labTypeName'), 'Lab', 'labType').then(function () {
-            this.addChildToVisit(newLab, 'labs', 'Lab').then(function () {
+          this.saveNewPricing(this.get('labTypeName'), 'Lab', 'labType').then(function() {
+            this.addChildToVisit(newLab, 'labs', 'Lab').then(function() {
               this.saveModel();
             }.bind(this));
           }.bind(this));
         } else {
-          this.getSelectedPricing('selectedLabType').then(function (pricingRecords) {
+          this.getSelectedPricing('selectedLabType').then(function(pricingRecords) {
             if (Ember.isArray(pricingRecords)) {
               this.createMultipleRequests(pricingRecords, 'labType', 'labs', 'Lab');
             } else {
               this.set('labType', pricingRecords);
-              this.addChildToVisit(newLab, 'labs', 'Lab').then(function () {
+              this.addChildToVisit(newLab, 'labs', 'Lab').then(function() {
                 this.saveModel();
               }.bind(this));
             }
@@ -67,7 +66,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }
   },
 
-  additionalButtons: function () {
+  additionalButtons: function() {
     var canComplete = this.get('canComplete'),
       isValid = this.get('model.isValid');
     if (isValid && canComplete) {
@@ -87,7 +86,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
   updateCapability: 'add_lab',
 
-  afterUpdate: function (saveResponse, multipleRecords) {
+  afterUpdate: function(saveResponse, multipleRecords) {
     var afterDialogAction,
       alertMessage,
       alertTitle;

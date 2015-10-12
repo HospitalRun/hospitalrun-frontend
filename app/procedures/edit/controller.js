@@ -6,7 +6,7 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   needs: ['visits', 'visits/edit'],
 
-  canAddProcedure: function () {
+  canAddProcedure: function() {
     return this.currentUserCan('add_procedure');
   }.property(),
 
@@ -54,7 +54,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   pricingTypes: Ember.computed.alias('controllers.visits.procedurePricingTypes'),
   newProcedure: false,
 
-  title: function () {
+  title: function() {
     var isNew = this.get('isNew');
     if (isNew) {
       return 'Add Procedure';
@@ -65,7 +65,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   updateCapability: 'add_charge',
 
   actions: {
-    showAddMedication: function () {
+    showAddMedication: function() {
       var newCharge = this.get('store').createRecord('proc-charge', {
         dateCharged: new Date(),
         newMedicationCharge: true,
@@ -74,11 +74,11 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
       this.send('openModal', 'procedures.medication', newCharge);
     },
 
-    showEditMedication: function (charge) {
+    showEditMedication: function(charge) {
       this.send('openModal', 'procedures.medication', charge);
     },
 
-    showDeleteMedication: function (charge) {
+    showDeleteMedication: function(charge) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteCharge',
         title: 'Delete Medication Used',
@@ -90,9 +90,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }
   },
 
-  beforeUpdate: function () {
-    return new Ember.RSVP.Promise(function (resolve, reject) {
-      this.updateCharges().then(function () {
+  beforeUpdate: function() {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      this.updateCharges().then(function() {
         if (this.get('isNew')) {
           this.addChildToVisit(this.get('model'), 'procedures').then(resolve, reject);
         } else {
@@ -102,7 +102,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }.bind(this));
   },
 
-  afterUpdate: function () {
+  afterUpdate: function() {
     var alertTitle = 'Procedure Saved',
       alertMessage = 'The procedure record has been saved.';
     this.saveVisitIfNeeded(alertTitle, alertMessage);

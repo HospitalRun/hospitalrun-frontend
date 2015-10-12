@@ -9,9 +9,9 @@ var couchSerializer = DS.RESTSerializer.extend({
   @returns {Array} The primary array that was returned in response
   to the original query.
   */
-  extractArray: function (store, primaryType, payload) {
+  extractArray: function(store, primaryType, payload) {
     var serializer = this;
-    var newPayload = payload.rows.map(function (row) {
+    var newPayload = payload.rows.map(function(row) {
       return serializer.normalizeRow(row.doc);
     });
     return newPayload;
@@ -28,7 +28,7 @@ var couchSerializer = DS.RESTSerializer.extend({
   @param {Object} payload
   @return {Object} json The deserialized payload
   */
-  extractSave: function (store, primaryType, payload) {
+  extractSave: function(store, primaryType, payload) {
     if (payload.ok) {
       var record = store.getById('user', payload.id);
       var data = {};
@@ -40,16 +40,16 @@ var couchSerializer = DS.RESTSerializer.extend({
     return null;
   },
 
-  /**    
+  /**
   @method extractSingle
   @param {DS.Store} store
   @param {subclass of DS.Model} type
   @param {Object} payload
   @param {String} id //unused
   @param {'find'|'createRecord'|'updateRecord'|'deleteRecord'} requestType //unused
-  @returns {Object} the primary response to the original request          
+  @returns {Object} the primary response to the original request
   */
-  extractSingle: function (store, primaryType, payload) {
+  extractSingle: function(store, primaryType, payload) {
     return this.normalizeRow(payload);
   },
 
@@ -57,13 +57,11 @@ var couchSerializer = DS.RESTSerializer.extend({
   Maps _id and _rev to id and rev so that Ember doesn't think they are private properties.
   @param {Object} row Row to normalize
   */
-  normalizeRow: function (row) {
+  normalizeRow: function(row) {
     row.id = row._id;
     row.rev = row._rev;
     return row;
   }
-
-
 
 });
 

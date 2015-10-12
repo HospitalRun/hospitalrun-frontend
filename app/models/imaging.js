@@ -26,18 +26,18 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, ResultValidati
     async: false
   }),
 
-  imagingDateAsTime: function () {
+  imagingDateAsTime: function() {
     return this.dateToTime(this.get('imagingDate'));
   }.property('imagingDate'),
 
-  requestedDateAsTime: function () {
+  requestedDateAsTime: function() {
     return this.dateToTime(this.get('requestedDate'));
   }.property('requestedDate'),
 
   validations: {
     imagingTypeName: {
       presence: {
-        'if': function (object) {
+        'if': function(object) {
           if (object.get('isNew')) {
             return true;
           }
@@ -48,6 +48,6 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, ResultValidati
     patientTypeAhead: PatientValidation.patientTypeAhead,
     patient: {
       presence: true
-    },
+    }
   }
 });

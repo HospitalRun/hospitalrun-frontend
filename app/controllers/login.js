@@ -5,12 +5,12 @@ var LoginController = Ember.Controller.extend(LoginControllerMixin, {
 
   actions: {
     // display an error when logging in fails
-    sessionAuthenticationFailed: function (message) {
+    sessionAuthenticationFailed: function(message) {
       this.set('errorMessage', message);
     },
 
     // handle login success
-    sessionAuthenticationSucceeded: function () {
+    sessionAuthenticationSucceeded: function() {
       this.set('errorMessage', '');
       this.set('identification', '');
       this.set('password', '');

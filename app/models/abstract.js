@@ -13,7 +13,7 @@ export default Model.extend(UserSession, EmberValidations, {
   * Also, if the save failed because of a conflict, reload the record and reapply the changed attributes and
   * attempt to save again.
   */
-  save: function (options) {
+  save: function(options) {
     var attribute,
       changedAttributes = this.changedAttributes(),
       modifiedDate = new Date(),
@@ -21,7 +21,7 @@ export default Model.extend(UserSession, EmberValidations, {
       session = this.get('session');
 
     if (!session || !session.isAuthenticated) {
-      return new Ember.RSVP.Promise(function (resolve, reject) {
+      return new Ember.RSVP.Promise(function(resolve, reject) {
         Ember.run(null, reject, 'ERROR you must be logged in to save');
       });
     }
@@ -38,10 +38,10 @@ export default Model.extend(UserSession, EmberValidations, {
       this.set('modifiedBy', this.getUserName());
     }
 
-    return new Ember.RSVP.Promise(function (resolve, reject) {
-      this._super(options).then(function (results) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      this._super(options).then(function(results) {
         Ember.run(null, resolve, results);
-      }, function (error) {
+      }, function(error) {
         if (!Ember.isEmpty(options) && options.retry) {
           // We failed on the second attempt to save the record, so reject the save.
           Ember.run(null, reject, error);
@@ -49,18 +49,18 @@ export default Model.extend(UserSession, EmberValidations, {
           if (error.indexOf && error.indexOf('conflict') > -1) {
             // Conflict encountered, so rollback, reload and then save the record with the changed attributes.
             this.rollback();
-            this.reload().then(function (record) {
+            this.reload().then(function(record) {
               for (var attribute in changedAttributes) {
                 record.set(attribute, changedAttributes[attribute][1]);
               }
               options.retry = true;
-              record.save(options).then(function (results) {
+              record.save(options).then(function(results) {
                 Ember.run(null, resolve, results);
-              }, function (err) {
+              }, function(err) {
                 Ember.run(null, reject, err);
               });
 
-            }, function (err) {
+            }, function(err) {
               Ember.run(null, reject, err);
             });
           } else {

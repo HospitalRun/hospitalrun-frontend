@@ -7,7 +7,7 @@ export default Ember.Component.extend({
   locationList: null,
   quantityRequested: null,
 
-  locationChange: function () {
+  locationChange: function() {
     var doingSetup = this.get('doingSetup'),
       locationList = this.get('locationList'),
       locationPickers = this.get('locationPickers'),
@@ -15,7 +15,7 @@ export default Ember.Component.extend({
       quantitySatisfiedIdx = -1,
       selectedLocations = [];
     if (!doingSetup) {
-      locationPickers.reduce(function (previousValue, item, index) {
+      locationPickers.reduce(function(previousValue, item, index) {
         var selectedLocation = item.get('selectedLocation'),
           returnValue;
         if (Ember.isEmpty(selectedLocation)) {
@@ -38,13 +38,13 @@ export default Ember.Component.extend({
       }
       this._setupLocationPickers(locationPickers, locationList);
     }
-    locationPickers.forEach(function (locationPicker) {
+    locationPickers.forEach(function(locationPicker) {
       selectedLocations.addObject(locationPicker.get('selectedLocation'));
     });
     this.set('componentSelectedLocations', selectedLocations);
   },
 
-  _setup: function () {
+  _setup: function() {
     Ember.Binding.from('selectedLocations').to('componentSelectedLocations').connect(this);
     var locationList = this.get('locationList'),
       locationPickers = [],
@@ -54,7 +54,7 @@ export default Ember.Component.extend({
       return;
     }
     this.set('doingSetup', true);
-    locationList.reduce(function (previousValue, location) {
+    locationList.reduce(function(previousValue, location) {
       if (previousValue < quantityRequested) {
         locationPickers.addObject(Ember.Object.create());
       }
@@ -66,15 +66,15 @@ export default Ember.Component.extend({
     this.set('doingSetup', false);
   }.on('init'),
 
-  _setupLocationPickers: function (locationPickers, locationList, setInitialLocation) {
-    locationPickers.reduce(function (previousValue, item) {
+  _setupLocationPickers: function(locationPickers, locationList, setInitialLocation) {
+    locationPickers.reduce(function(previousValue, item) {
       var selectedLocation = item.get('selectedLocation');
       item.set('subLocationList', previousValue.map(SelectValues.selectObjectMap));
       if (!previousValue.contains(selectedLocation) || setInitialLocation) {
         item.set('selectedLocation', previousValue.get('firstObject'));
       }
       item.set('label', 'And');
-      return previousValue.filter(function (location) {
+      return previousValue.filter(function(location) {
         return (item.get('selectedLocation.id') !== location.get('id'));
       });
     }, locationList);

@@ -13,25 +13,25 @@ export default Ember.ObjectController.extend(BillingCategories, IsUpdateDisabled
   showUpdateButton: true,
 
   actions: {
-    cancel: function () {
+    cancel: function() {
       this.send('closeModal');
     },
 
-    add: function () {
-      this.get('model').save().then(function (record) {
+    add: function() {
+      this.get('model').save().then(function(record) {
         this.get('editController').send('addLineItem', record);
       }.bind(this));
     }
   },
 
-  billingCategories: function () {
+  billingCategories: function() {
     var defaultBillingCategories = this.get('defaultBillingCategories'),
       billingCategoryList = this.get('billingCategoryList');
     if (Ember.isEmpty(billingCategoryList)) {
-      return Ember.Object.create({value: defaultBillingCategories});
+      return Ember.Object.create({ value: defaultBillingCategories });
     } else {
       return billingCategoryList;
     }
-  }.property('billingCategoryList', 'defaultBillingCategories'),
+  }.property('billingCategoryList', 'defaultBillingCategories')
 
 });

@@ -3,7 +3,7 @@ export default {
   patientTypeAhead: {
     acceptance: {
       accept: true,
-      if: function (object) {
+      if: function(object) {
         if (!object.get('selectPatient')) {
           return false;
         }

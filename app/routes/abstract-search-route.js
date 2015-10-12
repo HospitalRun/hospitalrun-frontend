@@ -7,8 +7,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   searchModel: null,
   searchText: null,
 
-  _findBySearchIndex: function (searchText) {
-    return new Ember.RSVP.Promise(function (resolve, reject) {
+  _findBySearchIndex: function(searchText) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
       var searchIndex = this.get('searchIndex'),
         searchModel = this.get('searchModel');
       if (Ember.isEmpty(searchIndex)) {
@@ -19,7 +19,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         searchParams.query = searchText;
         this.store.find(searchModel, {
           searchIndex: searchParams
-        }).then(function (results) {
+        }).then(function(results) {
           if (Ember.isEmpty(results)) {
             reject();
           } else {
@@ -30,7 +30,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     }.bind(this));
   },
 
-  _findByContains: function (searchText) {
+  _findByContains: function(searchText) {
     var searchKeys = this.get('searchKeys'),
       searchModel = this.get('searchModel'),
       queryParams = {
@@ -49,19 +49,19 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
    * 3) If search index doesn't exist or if search by index doesn't yield a result, do a contains search which ends
    * up using a mapreduce function which loops through all the records in PouchDB (very slow).
    */
-  model: function (params) {
-    return new Ember.RSVP.Promise(function (resolve) {
+  model: function(params) {
+    return new Ember.RSVP.Promise(function(resolve) {
       var searchText = params.search_text;
       this.controllerFor('navigation').set('currentSearchText', searchText);
       this.set('searchText', searchText);
-      this._findByContains(searchText).then(resolve, function (err) {
+      this._findByContains(searchText).then(resolve, function(err) {
         resolve(new DS.AdapterPopulatedRecordArray());
         throw new Error(err);
       }.bind(this));
     }.bind(this));
   },
 
-  setupController: function (controller, model) {
+  setupController: function(controller, model) {
     this._super(controller, model);
     if (!Ember.isEmpty(model)) {
       controller.set('hasRecords', (model.get('length') > 0));

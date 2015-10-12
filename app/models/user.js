@@ -16,7 +16,7 @@ var User = DS.Model.extend(EmberValidations, {
   salt: DS.attr('string'),
   userPrefix: DS.attr('string'),
 
-  displayRole: function () {
+  displayRole: function() {
     var roles = this.get('roles');
     if (!Ember.isEmpty(roles)) {
       return roles[0];

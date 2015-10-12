@@ -10,7 +10,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
   dateFormat: 'l h:mm A',
   findPatientVisits: false,
 
-  hourList: function () {
+  hourList: function() {
     var hour,
       hourList = [];
     for (hour = 0; hour < 24; hour++) {
@@ -40,7 +40,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
     id: 'visit_location_list'
   }],
 
-  minuteList: function () {
+  minuteList: function() {
     var minute,
       minuteList = [];
     for (minute = 0; minute < 60; minute++) {
@@ -53,7 +53,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
   showTime: true,
   visitTypesList: Ember.computed.alias('controllers.appointments.visitTypeList'),
 
-  cancelAction: function () {
+  cancelAction: function() {
     var returnTo = this.get('returnTo');
     if (Ember.isEmpty(returnTo)) {
       return this._super();
@@ -62,7 +62,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
     }
   }.property('returnTo'),
 
-  isAdmissionAppointment: function () {
+  isAdmissionAppointment: function() {
     var appointmentType = this.get('appointmentType'),
       isAdmissionAppointment = (appointmentType === 'Admission');
     if (!isAdmissionAppointment) {
@@ -73,32 +73,32 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
 
   updateCapability: 'add_appointment',
 
-  afterUpdate: function () {
+  afterUpdate: function() {
     this.send(this.get('cancelAction'));
   },
 
-  beforeUpdate: function () {
+  beforeUpdate: function() {
     this._updateAppointmentDates();
     return Ember.RSVP.Promise.resolve();
   },
 
-  endHourChanged: function () {
+  endHourChanged: function() {
     this._updateDate('endHour', 'endDate');
   }.observes('endHour'),
 
-  endMinuteChanged: function () {
+  endMinuteChanged: function() {
     this._updateDate('endMinute', 'endDate');
   }.observes('endMinute'),
 
-  endTimeHasError: function () {
-    Ember.run.once(this, function () {
+  endTimeHasError: function() {
+    Ember.run.once(this, function() {
       this.get('model').validate();
     });
     var endDateError = this.get('model.errors.endDate');
     return (endDateError.length > 0);
   }.property('model.errors.endDate', 'model.startDate', 'model.endDate', 'model.isValid'),
 
-  isAllDay: function () {
+  isAllDay: function() {
     var allDay = this.get('model.allDay'),
       isAdmissionAppointment = this.get('isAdmissionAppointment');
     if (allDay) {
@@ -118,23 +118,22 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
     return allDay;
   }.property('model.allDay'),
 
-  startHourChanged: function () {
+  startHourChanged: function() {
     this._updateDate('startHour', 'startDate');
   }.observes('startHour'),
 
-  startMinuteChanged: function () {
+  startMinuteChanged: function() {
     this._updateDate('startMinute', 'startDate');
   }.observes('startMinute'),
 
-
-  _updateAllTimes: function () {
+  _updateAllTimes: function() {
     this.endHourChanged();
     this.endMinuteChanged();
     this.startMinuteChanged();
     this.startHourChanged();
   },
 
-  _updateAppointmentDates: function () {
+  _updateAppointmentDates: function() {
     var allDay = this.get('allDay'),
       isAdmissionAppointment = this.get('isAdmissionAppointment'),
       appointmentDate = this.get('model.appointmentDate');
@@ -147,7 +146,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
     }
   },
 
-  _updateDate: function (fieldName, dateFieldName) {
+  _updateDate: function(fieldName, dateFieldName) {
     var model = this.get('model'),
       fieldValue = model.get(fieldName),
       dateToChange = model.get(dateFieldName);
@@ -159,7 +158,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
         dateToChange.minute(fieldValue);
       }
       model.set(dateFieldName, dateToChange.toDate());
-      Ember.run.once(this, function () {
+      Ember.run.once(this, function() {
         model.validate();
       });
     }

@@ -11,12 +11,12 @@ function loadPouchDumpAsyncHelper(app, dumpName) {
   });
   const dump = require(`hospitalrun/tests/fixtures/${dumpName}`).default;
   const promise = db.load(dump, {
-    proxy: 'main',
+    proxy: 'main'
   });
 
   const InMemoryDatabaseService = DatabaseService.extend({
     createDB() {
-      return promise.then(function(){
+      return promise.then(function() {
         return db;
       });
     }

@@ -8,28 +8,28 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
   needs: ['pricing'],
 
   actions: {
-    addOverride: function (override) {
+    addOverride: function(override) {
       var pricingOverrides = this.get('pricingOverrides');
       pricingOverrides.addObject(override);
       this.send('update', true);
       this.send('closeModal');
     },
-    deleteOverride: function (model) {
+    deleteOverride: function(model) {
       var overrideToDelete = model.overrideToDelete,
         pricingOverrides = this.get('pricingOverrides');
       pricingOverrides.removeObject(overrideToDelete);
-      overrideToDelete.destroyRecord().then(function () {
+      overrideToDelete.destroyRecord().then(function() {
         this.send('update', true);
         this.send('closeModal');
       }.bind(this));
     },
-    editOverride: function (overrideToEdit) {
+    editOverride: function(overrideToEdit) {
       if (Ember.isEmpty(overrideToEdit)) {
         overrideToEdit = this.store.createRecord('override-price');
       }
       this.send('openModal', 'pricing.override', overrideToEdit);
     },
-    showDeleteOverride: function (overrideToDelete) {
+    showDeleteOverride: function(overrideToDelete) {
       var message = 'Are you sure you want to delete this override?',
         model = Ember.Object.create({
           overrideToDelete: overrideToDelete
@@ -51,7 +51,7 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
   procedurePricingTypes: Ember.computed.alias('controllers.pricing.procedurePricingTypes'),
   wardPricingTypes: Ember.computed.alias('controllers.pricing.wardPricingTypes'),
 
-  lookupListsToUpdate: function () {
+  lookupListsToUpdate: function() {
     var category = this.get('category').toLowerCase(),
       listsToUpdate = [{
         name: 'expenseAccountList',
@@ -66,15 +66,15 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
     return listsToUpdate;
   }.property('category'),
 
-  pricingTypes: function () {
+  pricingTypes: function() {
     var category = this.get('category');
     if (!Ember.isEmpty(category)) {
       var typesList = this.get(category.toLowerCase() + 'PricingTypes');
       if (Ember.isEmpty(typesList) || Ember.isEmpty(typesList.get('value'))) {
         if (category === 'Lab') {
-          return Ember.Object.create({value: this.defaultLabPricingTypes});
+          return Ember.Object.create({ value: this.defaultLabPricingTypes });
         } else if (category === 'Imaging') {
-          return Ember.Object.create({value: this.defaultImagingPricingTypes});
+          return Ember.Object.create({ value: this.defaultImagingPricingTypes });
         }
       }
       return typesList;
@@ -83,7 +83,7 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
 
   updateCapability: 'add_pricing',
 
-  afterUpdate: function (record) {
+  afterUpdate: function(record) {
     var message = 'The pricing record for %@ has been saved.'.fmt(record.get('name'));
     this.displayAlert('Pricing Item Saved', message);
   }

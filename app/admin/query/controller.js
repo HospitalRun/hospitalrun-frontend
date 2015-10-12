@@ -26,7 +26,7 @@ export default Ember.Controller.extend({
   objectTypes: Ember.computed.map('objectTypeList', SelectValues.selectValuesMap),
 
   actions: {
-    query: function () {
+    query: function() {
       var fieldName = this.get('fieldName'),
         objectType = this.get('objectType'),
         queryValue = this.get('queryValue');
@@ -36,7 +36,7 @@ export default Ember.Controller.extend({
           keys: [fieldName]
         }
       };
-      this.store.find(objectType, query).then(function (results) {
+      this.store.find(objectType, query).then(function(results) {
         if (Ember.isEmpty(results)) {
           this.set('errorMessage', 'Query returned no results.');
           this.set('haveError', true);
@@ -46,17 +46,17 @@ export default Ember.Controller.extend({
             attributes = ['id'],
             resultRow,
             resultRows = [];
-          results.get('firstObject').eachAttribute(function (name) {
+          results.get('firstObject').eachAttribute(function(name) {
             attributes.push(name);
           });
 
-          results.forEach(function (result) {
+          results.forEach(function(result) {
             resultRow = [];
             /*resultRow.push({
                 name: 'id',
                 value: result.get('id')
             });*/
-            attributes.forEach(function (attribute) {
+            attributes.forEach(function(attribute) {
               currentValue = result.get(attribute);
               if (!Ember.isEmpty(currentValue)) {
                 resultRow.push({
@@ -71,7 +71,7 @@ export default Ember.Controller.extend({
           this.set('haveError', false);
           this.set('showQueryResults', true);
         }
-      }.bind(this), function (error) {
+      }.bind(this), function(error) {
         this.set('errorMessage', error);
         this.set('haveError', true);
         this.set('showQueryResults', false);

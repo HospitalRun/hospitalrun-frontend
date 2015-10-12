@@ -14,7 +14,7 @@ export default Ember.Component.extend({
   setOnBlur: true,
   typeAheadType: null,
 
-  content: function () {
+  content: function() {
     var list = this.get('list'),
       optionLabelPath = this.get('optionLabelPath'),
       optionValuePath = this.get('optionValuePath');
@@ -28,11 +28,11 @@ export default Ember.Component.extend({
     }
   }.property('list'),
 
-  usePricingTypeAhead: function () {
+  usePricingTypeAhead: function() {
     return (this.get('typeAheadType') === 'pricing');
   }.property('typeAheadType'),
 
-  userCanAdd: function () {
+  userCanAdd: function() {
     var list = this.get('list');
     if (!Ember.isEmpty(list) && list.get) {
       return list.get('userCanAdd');

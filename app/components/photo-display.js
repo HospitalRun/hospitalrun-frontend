@@ -7,7 +7,7 @@ export default Ember.Component.extend({
   photo: null,
   url: Ember.computed.alias('photo.url'),
 
-  photoUrl: function () {
+  photoUrl: function() {
     var computedPhotoUrl = this.get('computedPhotoUrl'),
       fileName = this.get('fileName'),
       filesystem = this.get('filesystem'),
@@ -16,7 +16,7 @@ export default Ember.Component.extend({
     if (!Ember.isEmpty(computedPhotoUrl)) {
       return computedPhotoUrl;
     } else if (isFileSystemEnabled) {
-      filesystem.pathToFileSystemURL(fileName).then(function (photoUrl) {
+      filesystem.pathToFileSystemURL(fileName).then(function(photoUrl) {
         if (!Ember.isEmpty(photoUrl)) {
           this.set('computedPhotoUrl', photoUrl);
         }

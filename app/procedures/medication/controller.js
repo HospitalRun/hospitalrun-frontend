@@ -11,7 +11,7 @@ export default AbstractEditController.extend(InventorySelection, {
 
   updateCapability: 'add_charge',
 
-  medicationChanged: function () {
+  medicationChanged: function() {
     var itemName = this.get('itemName'),
       medication = this.get('medication');
     if (!Ember.isEmpty(medication) && medication.get('name') !== itemName) {
@@ -19,7 +19,7 @@ export default AbstractEditController.extend(InventorySelection, {
     }
   }.observes('medication'),
 
-  title: function () {
+  title: function() {
     var isNew = this.get('isNew');
     if (isNew) {
       return 'Add Medication Used';
@@ -27,7 +27,7 @@ export default AbstractEditController.extend(InventorySelection, {
     return 'Edit Medication Used';
   }.property('isNew'),
 
-  beforeUpdate: function () {
+  beforeUpdate: function() {
     var isNew = this.get('isNew');
     if (isNew) {
       this.set('newCharge', true);
@@ -35,7 +35,7 @@ export default AbstractEditController.extend(InventorySelection, {
     return Ember.RSVP.Promise.resolve();
   },
 
-  afterUpdate: function (record) {
+  afterUpdate: function(record) {
     if (this.get('newCharge')) {
       this.get('requestingController').send('addCharge', record);
     } else {

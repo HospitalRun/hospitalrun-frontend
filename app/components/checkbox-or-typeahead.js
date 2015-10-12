@@ -4,33 +4,33 @@ export default SelectOrTypeahead.extend({
   checkboxesPerRow: 5,
   model: null,
 
-  _getLabelFromContent: function (object) {
+  _getLabelFromContent: function(object) {
     var optionLabelPath = this.get('optionLabelPath');
     return this._getPropertyFromContent(optionLabelPath, object);
   },
 
-  _getPropertyFromContent: function (property, object) {
+  _getPropertyFromContent: function(property, object) {
     var retrieveObject = {
       content: object
     };
     return Ember.get(retrieveObject, property);
   },
 
-  _getValueFromContent: function (object) {
+  _getValueFromContent: function(object) {
     var optionValuePath = this.get('optionValuePath');
     return this._getPropertyFromContent(optionValuePath, object);
   },
 
-  _mapCheckboxValues: function (value) {
+  _mapCheckboxValues: function(value) {
     return {
       label: this._getLabelFromContent(value),
       value: this._getValueFromContent(value)
     };
   },
 
-  _setup: function () {
+  _setup: function() {
     var property = this.get('property');
-    Ember.defineProperty(this, 'errors', Ember.computed('model.errors.' + property, function () {
+    Ember.defineProperty(this, 'errors', Ember.computed('model.errors.' + property, function() {
       var property = this.get('property'),
         errors = this.get('model.errors.' + property);
       if (!Ember.isEmpty(errors)) {
@@ -39,12 +39,12 @@ export default SelectOrTypeahead.extend({
     }));
   }.on('init'),
 
-  checkboxRows: function () {
+  checkboxRows: function() {
     var checkboxRows = [],
       checkboxesPerRow = this.get('checkboxesPerRow'),
       content = this.get('content'),
       allValues = content.copy();
-    while(allValues.length > 0) {
+    while (allValues.length > 0) {
       var checkBoxRowValues = allValues.splice(0, checkboxesPerRow).map(this._mapCheckboxValues.bind(this));
       checkboxRows.push(checkBoxRowValues);
     }
@@ -52,7 +52,7 @@ export default SelectOrTypeahead.extend({
   }.property('content', 'checkboxesPerRow'),
 
   actions: {
-    checkboxChanged: function (value, checked) {
+    checkboxChanged: function(value, checked) {
       var property = this.get('property'),
         propertyName = 'model.' + property,
         selectedValues = this.get(propertyName);
@@ -69,6 +69,5 @@ export default SelectOrTypeahead.extend({
       this.get('model').validate();
     }
   }
-
 
 });

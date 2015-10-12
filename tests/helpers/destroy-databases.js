@@ -9,8 +9,8 @@ function destroyDatabases(app) {
 
   const destroy = function(db) {
     const deferred = Ember.RSVP.defer();
-    Ember.run.later(function(){
-      db.on('destroyed', function(){
+    Ember.run.later(function() {
+      db.on('destroyed', function() {
         deferred.resolve();
       });
       db.destroy();
@@ -18,7 +18,7 @@ function destroyDatabases(app) {
     return deferred.promise;
   };
 
-  return wait().then(function(){
+  return wait().then(function() {
     return Ember.RSVP.all([destroy(config), destroy(db)]);
   });
 }

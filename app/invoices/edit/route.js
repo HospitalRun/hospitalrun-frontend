@@ -6,30 +6,30 @@ export default AbstractEditRoute.extend({
   newTitle: 'New Invoice',
 
   actions: {
-    deleteCharge: function (model) {
+    deleteCharge: function(model) {
       this.controller.send('deleteCharge', model);
     },
 
-    deleteLineItem: function (model) {
+    deleteLineItem: function(model) {
       this.controller.send('deleteLineItem', model);
     },
 
-    removePayment: function (model) {
+    removePayment: function(model) {
       this.controller.send('removePayment', model);
-    },
+    }
   },
 
-  afterModel: function (model) {
-    return new Ember.RSVP.Promise(function (resolve, reject) {
+  afterModel: function(model) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
       var lineItems = model.get('lineItems'),
         promises = [];
-      lineItems.forEach(function (lineItem) {
+      lineItems.forEach(function(lineItem) {
         promises.push(lineItem.reload());
       });
-      Ember.RSVP.all(promises, 'Reload billing line items for invoice').then(function (results) {
+      Ember.RSVP.all(promises, 'Reload billing line items for invoice').then(function(results) {
         var detailPromises = [];
-        results.forEach(function (result) {
-          result.get('details').forEach(function (detail) {
+        results.forEach(function(result) {
+          result.get('details').forEach(function(detail) {
             detailPromises.push(detail.reload());
           });
         });
@@ -38,20 +38,20 @@ export default AbstractEditRoute.extend({
     });
   },
 
-  getNewData: function () {
+  getNewData: function() {
     return Ember.RSVP.resolve({
       billDate: new Date(),
       status: 'Draft'
     });
   },
 
-  setupController: function (controller, model) {
+  setupController: function(controller, model) {
     model.set('originalPaymentProfileId', model.get('paymentProfile.id'));
     this._super(controller, model);
     var lineItems = model.get('lineItems'),
       promises = [];
-    lineItems.forEach(function (lineItem) {
-      lineItem.get('details').forEach(function (detail) {
+    lineItems.forEach(function(lineItem) {
+      lineItem.get('details').forEach(function(detail) {
         var pricingItem = detail.get('pricingItem');
         if (!Ember.isEmpty(pricingItem)) {
           promises.push(pricingItem.reload());

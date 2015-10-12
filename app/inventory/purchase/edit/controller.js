@@ -5,7 +5,7 @@ export default AbstractEditController.extend({
   needs: 'inventory',
   cancelAction: 'closeModal',
 
-  canEditQuantity: function () {
+  canEditQuantity: function() {
     var originalQuantity = this.get('originalQuantity'),
       currentQuantity = this.get('currentQuantity');
     if (currentQuantity < originalQuantity) {
@@ -38,7 +38,7 @@ export default AbstractEditController.extend({
 
   updateCapability: 'add_inventory_purchase',
 
-  title: function () {
+  title: function() {
     var isNew = this.get('isNew');
     if (isNew) {
       return 'Add Purchase';
@@ -46,7 +46,7 @@ export default AbstractEditController.extend({
     return 'Edit Purchase';
   }.property('isNew'),
 
-  beforeUpdate: function () {
+  beforeUpdate: function() {
     var isNew = this.get('isNew'),
       changedAttributes = this.get('model').changedAttributes();
     if (changedAttributes.originalQuantity) {
@@ -61,7 +61,7 @@ export default AbstractEditController.extend({
     return Ember.RSVP.Promise.resolve();
   },
 
-  afterUpdate: function (record) {
+  afterUpdate: function(record) {
     if (this.get('newPurchase')) {
       this.send('addPurchase', record);
     } else {

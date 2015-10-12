@@ -5,7 +5,7 @@ export default MedicationEditRoute.extend({
   editTitle: 'Return Medication',
   modelName: 'inv-request',
   newTitle: 'Return Medication',
-  getNewData: function () {
+  getNewData: function() {
     return Ember.RSVP.resolve({
       dateCompleted: new Date(),
       selectPatient: true,

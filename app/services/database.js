@@ -8,7 +8,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   config: Ember.inject.service(),
   mainDB: null, // Server DB
   setMainDB: false,
-  setup( configs) {
+  setup(configs) {
     PouchDB.plugin(List);
     return this.createDB(configs)
       .then((db) => {
@@ -16,7 +16,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         this.set('setMainDB', true);
       });
   },
-  createDB( configs) {
+  createDB(configs) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       let pouchOptions = {};
       if (configs.config_use_google_auth) {
@@ -43,11 +43,11 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       });
     });
   },
-  queryMainDB: function (queryParams, mapReduce) {
-    return new Ember.RSVP.Promise(function (resolve, reject) {
+  queryMainDB: function(queryParams, mapReduce) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
       var mainDB = this.get('mainDB');
       if (mapReduce) {
-        mainDB.query(mapReduce, queryParams, function (err, response) {
+        mainDB.query(mapReduce, queryParams, function(err, response) {
           if (err) {
             this._pouchError(reject)(err);
           } else {
@@ -56,7 +56,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
           }
         }.bind(this));
       } else {
-        mainDB.allDocs(queryParams, function (err, response) {
+        mainDB.allDocs(queryParams, function(err, response) {
           if (err) {
             this._pouchError(reject)(err);
           } else {
@@ -67,10 +67,10 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       }
     }.bind(this));
   },
-  getFileLink( id) {
+  getFileLink(id) {
     const config = this.get('configDB');
-    return new Ember.RSVP.Promise(function (resolve, reject) {
-      config.get(`file-link_${id}`, function (err, doc) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      config.get(`file-link_${id}`, function(err, doc) {
         if (err) {
           reject(err);
         }
@@ -78,16 +78,16 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       });
     });
   },
-  removeFileLink( id) {
+  removeFileLink(id) {
     const config = this.get('configDB');
-    return this.getFileLink(id).then(function (fileLink) {
+    return this.getFileLink(id).then(function(fileLink) {
       config.remove(fileLink);
     });
   },
-  saveFileLink( fileName, id) {
+  saveFileLink(fileName, id) {
     const config = this.get('configDB');
-    return new Ember.RSVP.Promise(function (resolve, reject) {
-      config.put({ fileName}, `file-link_${id}`, function (err, doc) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      config.put({ fileName }, `file-link_${id}`, function(err, doc) {
         if (err) {
           reject(err);
         }
@@ -100,16 +100,16 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   * @param {String} docId the pouchDB doc id.
   * @returns {String} the corresponding Ember id.
   */
-  getEmberId: function (docId) {
+  getEmberId: function(docId) {
     var parsedId = this.get('mainDB').rel.parseDocID(docId);
     if (!Ember.isEmpty(parsedId.id)) {
       return parsedId.id;
     }
   },
-  getDocFromMainDB: function (docId) {
-    return new Ember.RSVP.Promise(function (resolve, reject) {
+  getDocFromMainDB: function(docId) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
       var mainDB = this.get('mainDB');
-      mainDB.get(docId, function (err, doc) {
+      mainDB.get(docId, function(err, doc) {
         if (err) {
           this._pouchError(reject)(err);
         } else {
@@ -124,16 +124,16 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   * @param {String} type the record type.
   * @returns {String} the corresponding pouch id.
   */
-  getPouchId: function (emberId, type) {
+  getPouchId: function(emberId, type) {
     return this.get('mainDB').rel.makeDocID({
       id: emberId,
       type: type
     });
   },
-  _mapPouchData: function (rows) {
+  _mapPouchData: function(rows) {
     var mappedRows = [];
     if (rows) {
-      mappedRows = rows.map(function (row) {
+      mappedRows = rows.map(function(row) {
         var rowValues = {
           doc: row.doc.data
         };
@@ -142,5 +142,5 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       }.bind(this));
     }
     return mappedRows;
-  },
+  }
 });

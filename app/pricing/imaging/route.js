@@ -4,7 +4,7 @@ export default PricingIndexRoute.extend({
   pageTitle: 'Imaging Pricing',
 
   actions: {
-    editItem: function (item) {
+    editItem: function(item) {
       item.set('returnTo', 'pricing.imaging');
       this.transitionTo('pricing.edit', item);
     }

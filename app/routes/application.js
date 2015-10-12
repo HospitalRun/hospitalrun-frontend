@@ -1,16 +1,16 @@
 import ApplicationRouteMixin from 'simple-auth/mixins/application-route-mixin';
 import Ember from 'ember';
 
-const {inject, Route} = Ember;
+const { inject, Route } = Ember;
 
 var ApplicationRoute = Route.extend(ApplicationRouteMixin, {
   database: inject.service(),
   config: inject.service(),
 
-  model: function (params, transition) {
+  model: function(params, transition) {
     const session = this.get('session');
     const isAuthenticated = session && session.isAuthenticated;
-    return this.get('config').setup().then(function (configs) {
+    return this.get('config').setup().then(function(configs) {
       if (transition.targetName !== 'finishgauth' && transition.targetName !== 'login') {
         if (isAuthenticated) {
           return this.get('database').setup(configs)
@@ -23,7 +23,7 @@ var ApplicationRoute = Route.extend(ApplicationRouteMixin, {
     }.bind(this));
   },
 
-  afterModel: function () {
+  afterModel: function() {
     this.controllerFor('navigation').set('allowSearch', false);
   }
 

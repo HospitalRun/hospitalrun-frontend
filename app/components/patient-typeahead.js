@@ -5,15 +5,14 @@ export default TypeAhead.extend(PatientName, {
   displayKey: 'name',
   setOnBlur: true,
 
-
-  _mapPatient: function (item) {
+  _mapPatient: function(item) {
     var returnObj = {};
     returnObj.name = '%@ - %@'.fmt(this.getPatientDisplayName(item), this.getPatientDisplayId(item));
     returnObj[this.get('selectionKey')] = item;
     return returnObj;
   },
 
-  contentChanged: function () {
+  contentChanged: function() {
     var bloodhound = this.get('bloodhound'),
       content = this.get('content');
     if (bloodhound) {
@@ -24,7 +23,7 @@ export default TypeAhead.extend(PatientName, {
     }
   }.observes('content.[]'),
 
-  mappedContent: function () {
+  mappedContent: function() {
     var content = this.get('content'),
       mapped = [];
     if (content) {

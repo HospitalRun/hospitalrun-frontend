@@ -7,7 +7,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
   showUpdateButton: true,
   title: 'Family Info',
   updateButtonAction: 'update',
-  updateButtonText: function () {
+  updateButtonText: function() {
     if (this.get('isNew')) {
       return 'Add';
     } else {
@@ -16,11 +16,11 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
   }.property('isNew'),
 
   actions: {
-    cancel: function () {
+    cancel: function() {
       this.send('closeModal');
     },
 
-    update: function () {
+    update: function() {
       var model = this.getProperties('isNew', 'name', 'age', 'civilStatus', 'relationship', 'education', 'occupation', 'income', 'insurance');
       this.get('editController').send('updateFamilyInfo', model);
     }

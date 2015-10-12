@@ -6,7 +6,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
   editController: Ember.computed.alias('controllers.admin/lookup'),
   showUpdateButton: true,
 
-  title: function () {
+  title: function() {
     var isNew = this.get('isNew');
     if (isNew) {
       return 'Add Value';
@@ -17,7 +17,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
 
   updateButtonAction: 'update',
 
-  updateButtonText: function () {
+  updateButtonText: function() {
     var isNew = this.get('isNew');
     if (isNew) {
       return 'Add';
@@ -27,11 +27,11 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
   }.property('isNew'),
 
   actions: {
-    cancel: function () {
+    cancel: function() {
       this.send('closeModal');
     },
 
-    update: function () {
+    update: function() {
       if (!Ember.isEmpty(this.get('value'))) {
         this.get('editController').send('updateValue', this.get('model'));
         this.send('closeModal');

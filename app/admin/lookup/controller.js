@@ -57,7 +57,7 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
       value: 'expense_account_list',
       models: {
         'inv-request': 'expenseAccount',
-        pricing: 'expenseAccount',
+        pricing: 'expenseAccount'
       }
     }, {
       name: 'Inventory Aisle Locations',
@@ -156,14 +156,14 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
       value: 'visit_location_list',
       models: {
         appointment: 'location',
-        visit: 'location',
+        visit: 'location'
       }
     }, {
       defaultValues: 'defaultVisitTypes',
       name: 'Visit Types',
       value: 'visit_types',
       models: {
-        visit: 'visitType',
+        visit: 'visitType'
       }
     }, {
       name: 'Ward Pricing Types',
@@ -175,7 +175,7 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
 
     importFile: Ember.computed.alias('lookupTypeList.importFile'),
 
-    lookupTitle: function () {
+    lookupTitle: function() {
       var lookupType = this.get('lookupType'),
         lookupTypes = this.get('lookupTypes'),
         lookupDesc;
@@ -187,7 +187,7 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
       }
     }.property('lookupType'),
 
-    lookupTypeList: function () {
+    lookupTypeList: function() {
       var lookupType = this.get('lookupType'),
         lookupItem;
       if (!Ember.isEmpty(lookupType)) {
@@ -211,24 +211,24 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
       }
     }.property('lookupType'),
 
-    lookupTypeValues: function () {
+    lookupTypeValues: function() {
       var values = this.get('lookupTypeList.value');
       if (!Ember.isEmpty(values)) {
         values.sort(this._sortValues);
       }
-      return Ember.ArrayProxy.create({content: Ember.A(values)});
+      return Ember.ArrayProxy.create({ content: Ember.A(values) });
     }.property('lookupType', 'lookupTypeList.value'),
 
     organizeByType: Ember.computed.alias('lookupTypeList.organizeByType'),
 
-    showOrganizeByType: function () {
+    showOrganizeByType: function() {
       var lookupType = this.get('lookupType');
       return (!Ember.isEmpty(lookupType) && lookupType.indexOf('pricing_types') > 0);
     }.property('lookupType'),
 
     userCanAdd: Ember.computed.alias('lookupTypeList.userCanAdd'),
 
-    _canDeleteValue: function (value) {
+    _canDeleteValue: function(value) {
       var lookupType = this.get('lookupType');
       switch (lookupType) {
         case 'inventory_types': {
@@ -237,21 +237,21 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
             return false;
           }
           break;
-          }
+        }
         case 'lab_pricing_types': {
           if (value === 'Lab Procedure') {
             this.displayAlert('Cannot Delete Lab Pricing Type', 'The Lab Procedure pricing type cannot be deleted because it is needed for the Labs module.');
             return false;
           }
           break;
-          }
+        }
         case 'imaging_pricing_types': {
           if (value === 'Imaging Procedure') {
             this.displayAlert('Cannot Delete Imaging Pricing Type', 'The Imaging Procedure pricing type cannot be deleted because it is needed for the Imaging module.');
             return false;
           }
           break;
-          }
+        }
         case 'visit_types': {
           if (value === 'Admission') {
             this.displayAlert('Cannot Delete Admmission Visit Type', 'The Admission Visit type cannot be deleted because it is needed for the Visits module.');
@@ -266,22 +266,22 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
             this.displayAlert('Cannot Delete Pharmacy Visit Type', 'The Lab Visit type cannot be deleted because it is needed for the Medication module.');
             return false;
           }
-          }
+        }
       }
       return true;
     },
 
-    _sortValues: function (a, b) {
+    _sortValues: function(a, b) {
       return Ember.compare(a.toLowerCase(), b.toLowerCase());
     },
 
     actions: {
-      addValue: function () {
+      addValue: function() {
         this.send('openModal', 'admin.lookup.edit', Ember.Object.create({
           isNew: true
         }));
       },
-      deleteValue: function (value) {
+      deleteValue: function(value) {
         var lookupTypeList = this.get('lookupTypeList'),
           lookupTypeValues = lookupTypeList.get('value');
         if (this._canDeleteValue(value)) {
@@ -289,7 +289,7 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
           lookupTypeList.save();
         }
       },
-      editValue: function (value) {
+      editValue: function(value) {
         if (!Ember.isEmpty(value)) {
           this.send('openModal', 'admin.lookup.edit', Ember.Object.create({
             isNew: false,
@@ -298,14 +298,14 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
           }));
         }
       },
-      importList: function () {
+      importList: function() {
         var fileSystem = this.get('fileSystem'),
           fileToImport = this.get('importFile'),
           lookupTypeList = this.get('lookupTypeList');
         if (!fileToImport || !fileToImport.type) {
           this.displayAlert('Select File To Import', 'Please select file to import.');
         } else {
-          fileSystem.fileToDataURL(fileToImport).then(function (fileDataUrl) {
+          fileSystem.fileToDataURL(fileToImport).then(function(fileDataUrl) {
             var dataUrlParts = fileDataUrl.split(',');
             lookupTypeList.setProperties({
               _attachments: {
@@ -316,7 +316,7 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
               },
               importFile: true
             });
-            lookupTypeList.save().then(function () {
+            lookupTypeList.save().then(function() {
               this.displayAlert('List Imported', 'The lookup list has been imported.', 'refreshLookupLists');
               this.set('importFile');
               this.set('importFileName');
@@ -324,13 +324,13 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
           }.bind(this));
         }
       },
-      updateList: function () {
+      updateList: function() {
         var lookupTypeList = this.get('lookupTypeList');
-        lookupTypeList.save().then(function () {
+        lookupTypeList.save().then(function() {
           this.displayAlert('List Saved', 'The lookup list has been saved');
         }.bind(this));
       },
-      updateValue: function (valueObject) {
+      updateValue: function(valueObject) {
         var updateList = false,
           lookupTypeList = this.get('lookupTypeList'),
           lookupTypeValues = this.get('lookupTypeValues'),
@@ -343,14 +343,14 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
           if (value !== originalValue) {
             lookupTypeValues.removeObject(originalValue);
             updateList = true;
-          // TODO UPDATE ALL EXISTING DATA LOOKUPS (NODEJS JOB)
+            // TODO UPDATE ALL EXISTING DATA LOOKUPS (NODEJS JOB)
           }
         }
         if (updateList) {
           values.addObject(value);
           values = values.sort(this._sortValues);
           lookupTypeList.set('value', values);
-          lookupTypeList.save().then(function (list) {
+          lookupTypeList.save().then(function(list) {
             // Make sure that the list on screen gets updated with the sorted items.
             var values = Ember.copy(list.get('value'));
             lookupTypeValues.clear();

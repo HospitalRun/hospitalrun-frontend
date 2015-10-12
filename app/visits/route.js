@@ -3,10 +3,10 @@ export default AbstractModuleRoute.extend({
   addCapability: 'add_visit',
   additionalModels: [{
     name: 'anesthesiaTypes',
-    findArgs: ['lookup', 'anesthesia_types'],
+    findArgs: ['lookup', 'anesthesia_types']
   }, {
     name: 'anesthesiologistList',
-    findArgs: ['lookup', 'anesthesiologists'],
+    findArgs: ['lookup', 'anesthesiologists']
   }, {
     name: 'diagnosisList',
     findArgs: ['lookup', 'diagnosis_list']

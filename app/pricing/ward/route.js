@@ -4,7 +4,7 @@ export default PricingIndexRoute.extend({
   pageTitle: 'Ward Pricing',
 
   actions: {
-    editItem: function (item) {
+    editItem: function(item) {
       item.set('returnTo', 'pricing.ward');
       this.transitionTo('pricing.edit', item);
     }

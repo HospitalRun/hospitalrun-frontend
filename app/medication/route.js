@@ -6,7 +6,7 @@ export default AbstractModuleRoute.extend({
   newButtonText: '+ new request',
   sectionTitle: 'Medication',
 
-  additionalButtons: function () {
+  additionalButtons: function() {
     var additionalButtons = [];
     if (this.currentUserCan('fulfill_medication')) {
       additionalButtons.push({
@@ -49,13 +49,13 @@ export default AbstractModuleRoute.extend({
   }],
 
   actions: {
-    dispenseMedication: function () {
+    dispenseMedication: function() {
       if (this.currentUserCan('fulfill_medication')) {
         this.transitionTo('medication.edit', 'dispense');
       }
     },
 
-    returnMedication: function () {
+    returnMedication: function() {
       if (this.currentUserCan(this.get('addCapability'))) {
         this.transitionTo('medication.return', 'new');
       }

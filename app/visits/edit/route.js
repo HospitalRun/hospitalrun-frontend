@@ -7,7 +7,7 @@ export default AbstractEditRoute.extend(ChargeRoute, {
   newTitle: 'New Visit',
   pricingCategory: 'Ward',
 
-  getNewData: function () {
+  getNewData: function() {
     return Ember.RSVP.resolve({
       visitType: 'Admission',
       startDate: new Date(),

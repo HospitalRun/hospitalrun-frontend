@@ -12,7 +12,7 @@ export default AbstractModel.extend({
   paymentType: DS.attr('string'),
   notes: DS.attr('string'),
 
-  canRemovePayment: function () {
+  canRemovePayment: function() {
     return (this.get('paymentType') === 'Deposit');
   }.property('paymentType'),
 

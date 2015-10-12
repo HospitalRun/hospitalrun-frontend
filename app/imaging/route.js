@@ -6,7 +6,7 @@ export default AbstractModuleRoute.extend({
     findArgs: ['lookup', 'imaging_pricing_types']
   }, {
     name: 'radiologistList',
-    findArgs: ['lookup', 'radiologists'],
+    findArgs: ['lookup', 'radiologists']
   }],
   allowSearch: false,
   moduleName: 'imaging',
@@ -18,6 +18,6 @@ export default AbstractModuleRoute.extend({
   }, {
     text: 'Completed',
     linkTo: 'imaging.completed'
-  }],
+  }]
 
 });

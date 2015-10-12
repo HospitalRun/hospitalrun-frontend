@@ -2,16 +2,16 @@ import AbstractPagedController from 'hospitalrun/controllers/abstract-paged-cont
 import UserSession from 'hospitalrun/mixins/user-session';
 export default AbstractPagedController.extend(UserSession, {
   startKey: [],
-  canAddVisit: function () {
+  canAddVisit: function() {
     return this.currentUserCan('add_visit');
   }.property(),
 
-  canEdit: function () {
+  canEdit: function() {
     // Add and edit are the same capability
     return this.currentUserCan('add_appointment');
   }.property(),
 
-  canDelete: function () {
+  canDelete: function() {
     return this.currentUserCan('delete_appointment');
   }.property(),
 

@@ -6,7 +6,7 @@ export default AbstractEditRoute.extend(PatientListRoute, {
   modelName: 'appointment',
   newTitle: 'New Appointment',
 
-  getNewData: function () {
+  getNewData: function() {
     return Ember.RSVP.resolve({
       selectPatient: true
     });

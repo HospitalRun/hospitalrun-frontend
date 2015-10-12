@@ -6,7 +6,7 @@ import DS from 'ember-data';
 import PatientName from 'hospitalrun/mixins/patient-name';
 
 export default AbstractModel.extend(DOBDays, PatientName, {
-  admitted: DS.attr('boolean', {defaultValue: false}),
+  admitted: DS.attr('boolean', { defaultValue: false }),
   additionalContacts: DS.attr(),
   address: DS.attr('string'),
   address2: DS.attr('string'),
@@ -53,12 +53,12 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   socialRecommendation: DS.attr('string'),
   status: DS.attr('string'),
 
-  age: function () {
+  age: function() {
     var dob = this.get('dateOfBirth');
     return this.convertDOBToText(dob);
   }.property('dateOfBirth'),
 
-  displayAddress: function () {
+  displayAddress: function() {
     var addressFields = this.getProperties('address', 'address2', 'address3', 'address4'),
       displayAddress = '';
     for (var prop in addressFields) {
@@ -72,11 +72,11 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     return displayAddress;
   }.property('address', 'address2', 'address3', 'address4'),
 
-  displayName: function () {
+  displayName: function() {
     return this.getPatientDisplayName(this);
   }.property('firstName', 'lastName', 'middleName'),
 
-  displayPatientId: function () {
+  displayPatientId: function() {
     return this.getPatientDisplayId(this);
   }.property('id', 'externalPatientId', 'friendlyId'),
 

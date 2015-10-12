@@ -13,7 +13,7 @@ export default Ember.Controller.extend(ProgressDialog, UserSession, Navigation, 
   currentOpenNav: null,
 
   actions: {
-    search: function () {
+    search: function() {
       if (this.allowSearch && this.searchRoute) {
         var currentRouteName = this.get('currentRouteName'),
           currentSearchText = this.get('currentSearchText'),
@@ -27,7 +27,7 @@ export default Ember.Controller.extend(ProgressDialog, UserSession, Navigation, 
       }
     },
 
-    navAction: function (nav) {
+    navAction: function(nav) {
       if (this.currentOpenNav && this.currentOpenNav.route !== nav.route) {
         this.currentOpenNav.closeSubnav();
       }
@@ -36,11 +36,11 @@ export default Ember.Controller.extend(ProgressDialog, UserSession, Navigation, 
       this.set('isShowingSettings', false);
     },
 
-    toggleSettings: function () {
+    toggleSettings: function() {
       this.toggleProperty('isShowingSettings');
     },
 
-    closeSettings: function () {
+    closeSettings: function() {
       this.set('isShowingSettings', false);
     }
 

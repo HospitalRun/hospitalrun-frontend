@@ -12,7 +12,7 @@ To run the app, you will need the following:
     * `bower install` to install needed bower modules.
 4. Install/configure [couchdb](http://couchdb.apache.org/)
   1. Download and install couchdb from http://couchdb.apache.org/#download
-  2. Run `initcouch.sh` to setup couchdb with an admin user with the credentials `hradmin/test`.  
+  2. Run `initcouch.sh` to setup couchdb with an admin user with the credentials `hradmin/test`.
     * If you have just installed couchdb and have not setup a couchdb admin user, then run `initcouch.sh`.
     * If you have already created a couchdb admin, then run `initcouch.sh user pass` with the couch admin credentials (where user is the couchdb admin user and pass is the user's password).
 5. Copy the server/config-example.js to server/config.js.
@@ -39,3 +39,6 @@ test('visiting /patients', function(assert) {
   });
 });
 ```
+Contributing
+------------
+Contributions are welcome via pull requests and issues.  Please see our [contributing guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/CONTRIBUTING.md) for more details.

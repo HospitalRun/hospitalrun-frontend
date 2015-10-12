@@ -13,7 +13,7 @@ export default AbstractModel.extend({
   caption: DS.attr('string'),
   url: DS.attr('string'),
 
-  downloadImageFromServer: function (imageRecord) {
+  downloadImageFromServer: function(imageRecord) {
     var me = this,
       url = imageRecord.get('url'),
       xhr = new XMLHttpRequest();
@@ -22,11 +22,11 @@ export default AbstractModel.extend({
       this.getPatientDirectory(imageRecord.get('patientId'));
       xhr.open('GET', url, true);
       xhr.responseType = 'blob';
-      xhr.onload = function () {
+      xhr.onload = function() {
         var file = new Blob([xhr.response]);
         me.addImageToFileStore(file, null, imageRecord);
       };
       xhr.send();
     }
-  },
+  }
 });

@@ -5,7 +5,7 @@ export default Ember.Mixin.create({
    * @param title string containing the title to display.
    * @param message string containing the message to display.
    */
-  displayAlert: function (title, message, okAction) {
+  displayAlert: function(title, message, okAction) {
     this.send('openModal', 'dialog', Ember.Object.create({
       title: title,
       message: message,
@@ -16,7 +16,7 @@ export default Ember.Mixin.create({
     }));
   },
 
-  displayConfirm: function (title, message, confirmAction, model) {
+  displayConfirm: function(title, message, confirmAction, model) {
     if (Ember.isEmpty(model)) {
       model = Ember.Object.create();
     }

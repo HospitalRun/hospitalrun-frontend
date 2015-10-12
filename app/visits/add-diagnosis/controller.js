@@ -17,11 +17,11 @@ export default AbstractEditController.extend({
   showUpdateButton: true,
 
   actions: {
-    cancel: function () {
+    cancel: function() {
       this.send('closeModal');
     },
 
-    add: function () {
+    add: function() {
       this.updateLookupLists();
       var newDiag = {
         date: new Date(),

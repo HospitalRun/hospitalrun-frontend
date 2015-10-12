@@ -4,14 +4,14 @@ export default AbstractIndexRoute.extend({
   modelName: 'invoice',
   pageTitle: 'Invoice Listing',
 
-  _getStartKeyFromItem: function (item) {
+  _getStartKeyFromItem: function(item) {
     var billDateAsTime = item.get('billDateAsTime'),
       id = this._getPouchIdFromItem(item),
       searchStatus = item.get('status');
     return [searchStatus, billDateAsTime, id];
   },
 
-  _modelQueryParams: function (params) {
+  _modelQueryParams: function(params) {
     var queryParams,
       maxId = this._getMaxPouchId(),
       maxValue = this.get('maxValue'),
@@ -38,7 +38,7 @@ export default AbstractIndexRoute.extend({
   },
 
   queryParams: {
-    startKey: {refreshModel: true},
-    status: {refreshModel: true}
-  },
+    startKey: { refreshModel: true },
+    status: { refreshModel: true }
+  }
 });

@@ -8,13 +8,13 @@ export default Ember.ObjectController.extend({
   isUpdateDisabled: false,
 
   actions: {
-    cancel: function () {
+    cancel: function() {
       this.send('closeModal');
     },
 
-    delete: function () {
+    delete: function() {
       var recordToDelete = this.get('model');
-      this.get('model').destroyRecord().then(function () {
+      this.get('model').destroyRecord().then(function() {
         this.send(this.get('afterDeleteAction'), recordToDelete);
       }.bind(this));
     }

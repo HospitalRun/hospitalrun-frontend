@@ -3,7 +3,7 @@ export default AbstractEditController.extend({
   hideCancelButton: true,
   updateCapability: 'update_config',
 
-  afterUpdate: function () {
+  afterUpdate: function() {
     this.displayAlert('Options Saved', 'The address options have been saved');
   }
 });

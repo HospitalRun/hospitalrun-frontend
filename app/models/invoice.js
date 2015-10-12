@@ -30,13 +30,13 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     async: false
   }),
 
-  addPayment: function (payment) {
+  addPayment: function(payment) {
     var payments = this.get('payments');
     payments.addObject(payment);
     this.paymentAmountChanged();
   },
 
-  billDateAsTime: function () {
+  billDateAsTime: function() {
     return this.dateToTime(this.get('billDate'));
   }.property('billDate'),
 
@@ -46,11 +46,11 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
   nationalInsuranceTotals: Ember.computed.mapBy('lineItemsByCategory', 'nationalInsurance'),
   nationalInsurance: Ember.computed.sum('nationalInsuranceTotals'),
 
-  paidFlag: function () {
+  paidFlag: function() {
     return (this.get('status') === 'Paid');
   }.property('status'),
 
-  remainingBalance: function () {
+  remainingBalance: function() {
     var patientResponsibility = this.get('patientResponsibility'),
       paidTotal = this.get('paidTotal');
     return this._numberFormat((patientResponsibility - paidTotal), true);
@@ -62,7 +62,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
   lineTotals: Ember.computed.mapBy('lineItems', 'total'),
   total: Ember.computed.sum('lineTotals'),
 
-  displayInvoiceNumber: function () {
+  displayInvoiceNumber: function() {
     var externalInvoiceNumber = this.get('externalInvoiceNumber'),
       id = this.get('id');
     if (Ember.isEmpty(externalInvoiceNumber)) {
@@ -72,22 +72,22 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     }
   }.property('externalInvoiceNumber', 'id'),
 
-  lineItemsByCategory: function () {
+  lineItemsByCategory: function() {
     var lineItems = this.get('lineItems'),
       byCategory = [];
-    lineItems.forEach(function (lineItem) {
+    lineItems.forEach(function(lineItem) {
       var category = lineItem.get('category'),
         categoryList = byCategory.findBy('category', category);
       if (Ember.isEmpty(categoryList)) {
         categoryList = {
           category: category,
-          items: [],
+          items: []
         };
         byCategory.push(categoryList);
       }
       categoryList.items.push(lineItem);
     }.bind(this));
-    byCategory.forEach(function (categoryList) {
+    byCategory.forEach(function(categoryList) {
       categoryList.amountOwed = this._calculateTotal(categoryList.items, 'amountOwed');
       categoryList.discount = this._calculateTotal(categoryList.items, 'discount');
       categoryList.nationalInsurance = this._calculateTotal(categoryList.items, 'nationalInsurance');
@@ -97,7 +97,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     return byCategory;
   }.property('lineItems.@each.amountOwed'),
 
-  patientIdChanged: function () {
+  patientIdChanged: function() {
     if (!Ember.isEmpty(this.get('patient'))) {
       var patientDisplayName = this.get('patient.displayName'),
         patientDisplayId = this.get('patient.displayPatientId');
@@ -105,13 +105,12 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     }
   }.observes('patient.displayName', 'patient.id', 'patient.displayPatientId'),
 
-
   patientResponsibilityTotals: Ember.computed.mapBy('lineItems', 'amountOwed'),
   patientResponsibility: Ember.computed.sum('patientResponsibilityTotals'),
 
-  paymentAmountChanged: function () {
+  paymentAmountChanged: function() {
     var payments = this.get('payments'),
-      paidTotal = payments.reduce(function (previousValue, payment) {
+      paidTotal = payments.reduce(function(previousValue, payment) {
         return previousValue += this._getValidNumber(payment.get('amount'));
       }.bind(this), 0);
     this.set('paidTotal', this._numberFormat(paidTotal, true));

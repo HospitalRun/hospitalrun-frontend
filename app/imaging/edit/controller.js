@@ -9,7 +9,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   chargeRoute: 'imaging.charge',
   selectedImagingType: null,
 
-  canComplete: function () {
+  canComplete: function() {
     var isNew = this.get('model.isNew'),
       imagingTypeName = this.get('model.imagingTypeName'),
       selectedImagingType = this.get('selectedImagingType');
@@ -21,7 +21,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   }.property('selectedImagingType.[]', 'model.imagingTypeName'),
 
   actions: {
-    completeImaging: function () {
+    completeImaging: function() {
       this.set('status', 'Completed');
       this.get('model').validate();
       if (this.get('isValid')) {
@@ -33,7 +33,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     /**
      * Save the imaging request(s), creating multiples when user selects multiple imaging tests.
      */
-    update: function () {
+    update: function() {
       if (this.get('isNew')) {
         var newImaging = this.get('model'),
           selectedImagingType = this.get('selectedImagingType');
@@ -43,18 +43,18 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         this.set('requestedBy', newImaging.getUserName());
         this.set('requestedDate', new Date());
         if (Ember.isEmpty(selectedImagingType)) {
-          this.saveNewPricing(this.get('imagingTypeName'), 'Imaging', 'imagingType').then(function () {
-            this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(function () {
+          this.saveNewPricing(this.get('imagingTypeName'), 'Imaging', 'imagingType').then(function() {
+            this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(function() {
               this.saveModel();
             }.bind(this));
           }.bind(this));
         } else {
-          this.getSelectedPricing('selectedImagingType').then(function (pricingRecords) {
+          this.getSelectedPricing('selectedImagingType').then(function(pricingRecords) {
             if (Ember.isArray(pricingRecords)) {
               this.createMultipleRequests(pricingRecords, 'imagingType', 'imaging', 'Imaging');
             } else {
               this.set('imagingType', pricingRecords);
-              this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(function () {
+              this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(function() {
                 this.saveModel();
               }.bind(this));
             }
@@ -66,7 +66,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }
   },
 
-  additionalButtons: function () {
+  additionalButtons: function() {
     var canComplete = this.get('canComplete'),
       isValid = this.get('model.isValid');
     if (isValid && canComplete) {
@@ -94,7 +94,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
   updateCapability: 'add_imaging',
 
-  afterUpdate: function (saveResponse, multipleRecords) {
+  afterUpdate: function(saveResponse, multipleRecords) {
     this.updateLookupLists();
     var afterDialogAction,
       alertTitle,

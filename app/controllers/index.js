@@ -11,7 +11,7 @@ export default Ember.Controller.extend(UserSession, {
     'Users'
   ],
 
-  setupPermissions: function () {
+  setupPermissions: function() {
     var permissions = this.get('defaultCapabilities');
     for (var capability in permissions) {
       if (this.currentUserCan(capability)) {
@@ -20,10 +20,10 @@ export default Ember.Controller.extend(UserSession, {
     }
   }.on('init'),
 
-  activeLinks: function () {
+  activeLinks: function() {
     var activeLinks = [],
       indexLinks = this.get('indexLinks');
-    indexLinks.forEach(function (link) {
+    indexLinks.forEach(function(link) {
       var action = link.toLowerCase();
       if (this.currentUserCan(action)) {
         activeLinks.push({

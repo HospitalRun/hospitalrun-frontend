@@ -32,13 +32,13 @@ var InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
     async: false
   }),
 
-  deliveryLocationName: function () {
+  deliveryLocationName: function() {
     var aisle = this.get('deliveryAisle'),
       location = this.get('deliveryLocation');
     return this.formatLocationName(location, aisle);
   }.property('deliveryAisle', 'deliveryLocation'),
 
-  deliveryDetails: function () {
+  deliveryDetails: function() {
     var locationName = this.get('deliveryLocationName'),
       patient = this.get('patient');
     if (Ember.isEmpty(patient)) {
@@ -48,22 +48,22 @@ var InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
     }
   }.property('deliveryAisle', 'deliveryLocation', 'patient'),
 
-  haveReason: function () {
+  haveReason: function() {
     return !Ember.isEmpty(this.get('reason'));
   }.property('reason'),
 
-  isAdjustment: function () {
+  isAdjustment: function() {
     var adjustmentTypes = this.get('adjustmentTypes'),
       transactionType = this.get('transactionType'),
       adjustmentType = adjustmentTypes.findBy('type', transactionType);
     return !Ember.isEmpty(adjustmentType);
   }.property('transactionType'),
 
-  isFulfillment: function () {
+  isFulfillment: function() {
     return this.get('transactionType') === 'Fulfillment';
   }.property('transactionType'),
 
-  isTransfer: function () {
+  isTransfer: function() {
     return this.get('transactionType') === 'Transfer';
   }.property('transactionType'),
 
@@ -71,7 +71,7 @@ var InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
     inventoryItemTypeAhead: {
       acceptance: {
         accept: true,
-        if: function (object) {
+        if: function(object) {
           if (!object.get('isDirty')) {
             return false;
           }
@@ -102,14 +102,14 @@ var InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
     quantity: {
       numericality: {
         greaterThan: 0,
-        if: function (object) {
+        if: function(object) {
           var requestedItems = object.get('requestedItems');
           return (Ember.isEmpty(requestedItems));
         }
       },
       acceptance: {
         accept: true,
-        if: function (object) {
+        if: function(object) {
           var isNew = object.get('isNew'),
             requestQuantity = parseInt(object.get('quantity')),
             transactionType = object.get('transactionType'),
@@ -122,7 +122,7 @@ var InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
           } else {
             quantityToCompare = object.get('inventoryLocation.quantity');
           }
-          if ( requestQuantity > quantityToCompare) {
+          if (requestQuantity > quantityToCompare) {
             // force validation to fail
             return true;
           } else {

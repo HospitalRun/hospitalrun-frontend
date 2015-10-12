@@ -7,14 +7,14 @@ export default AppointmentIndexRoute.extend({
   pageTitle: 'Search Appointments',
 
   queryParams: {
-    appointmentType: {refreshModel: true},
-    provider: {refreshModel: true},
-    status: {refreshModel: true},
-    startDate: {refreshModel: true},
-    startKey: {refreshModel: true}
+    appointmentType: { refreshModel: true },
+    provider: { refreshModel: true },
+    status: { refreshModel: true },
+    startDate: { refreshModel: true },
+    startKey: { refreshModel: true }
   },
 
-  _modelQueryParams: function (params) {
+  _modelQueryParams: function(params) {
     var startDate = params.startDate,
       maxValue = this.get('maxValue');
     if (Ember.isEmpty(startDate)) {

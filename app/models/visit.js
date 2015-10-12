@@ -2,7 +2,7 @@ import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import Ember from 'ember';
 
-function dateAcceptance (object) {
+function dateAcceptance(object) {
   if (!object.get('isDirty')) {
     return false;
   }
@@ -25,14 +25,14 @@ export default AbstractModel.extend({
     async: false
   }),
   dischargeInfo: DS.attr('string'),
-  endDate: DS.attr('date'), // if visit type is outpatient, startDate and endDate are equal 
+  endDate: DS.attr('date'), // if visit type is outpatient, startDate and endDate are equal
   examiner: DS.attr('string'),
   history: DS.attr('string'),
   historySince: DS.attr('string'), // History since last seen
-  imaging: DS.hasMany('imaging', {async: true}),
-  labs: DS.hasMany('lab', {async: true}),
+  imaging: DS.hasMany('imaging', { async: true }),
+  labs: DS.hasMany('lab', { async: true }),
   location: DS.attr('string'),
-  medication: DS.hasMany('medication', {async: true}),
+  medication: DS.hasMany('medication', { async: true }),
   notes: DS.attr('string'),
   outPatient: DS.attr('boolean'),
   patient: DS.belongsTo('patient', {
@@ -41,13 +41,13 @@ export default AbstractModel.extend({
   primaryDiagnosis: DS.attr('string'), // AKA admitting diagnosis
   primaryBillingDiagnosis: DS.attr('string'), // AKA final diagnosis
   primaryBillingDiagnosisId: DS.attr('string'),
-  procedures: DS.hasMany('procedure', {async: true}),
+  procedures: DS.hasMany('procedure', { async: true }),
   startDate: DS.attr('date'),
   status: DS.attr('string'),
   visitType: DS.attr(),
-  vitals: DS.hasMany('vital', {async: true}),
+  vitals: DS.hasMany('vital', { async: true }),
 
-  diagnosisList: function () {
+  diagnosisList: function() {
     var additionalDiagnosis = this.get('additionalDiagnoses'),
       diagnosisList = [],
       primaryDiagnosis = this.get('primaryDiagnosis');
@@ -55,14 +55,14 @@ export default AbstractModel.extend({
       diagnosisList.push(primaryDiagnosis);
     }
     if (!Ember.isEmpty(additionalDiagnosis)) {
-      diagnosisList.addObjects(additionalDiagnosis.map(function (diagnosis) {
+      diagnosisList.addObjects(additionalDiagnosis.map(function(diagnosis) {
         return diagnosis.description;
       }));
     }
     return diagnosisList;
   }.property('additionalDiagnosis@each', 'primaryDiagnosis'),
 
-  visitDate: function () {
+  visitDate: function() {
     var endDate = this.get('endDate'),
       startDate = moment(this.get('startDate')),
       visitDate = startDate.format('l');
@@ -72,7 +72,7 @@ export default AbstractModel.extend({
     return visitDate;
   }.property('startDate', 'endDate'),
 
-  visitDescription: function () {
+  visitDescription: function() {
     var visitDate = this.get('visitDate'),
       visitType = this.get('visitType');
     return '%@ (%@)'.fmt(visitDate, visitType);

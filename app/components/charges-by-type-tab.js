@@ -7,16 +7,16 @@ export default Ember.Component.extend({
   role: 'presentation',
   tagName: 'li',
 
-  active: function () {
+  active: function() {
     var index = this.get('index');
     return (index === 0);
   }.property(),
 
-  tabId: function () {
+  tabId: function() {
     return this.get('pricingType').toLowerCase().dasherize();
   }.property('pricingType'),
 
-  tabHref: function () {
+  tabHref: function() {
     var tabId = this.get('tabId');
     return '#' + tabId;
   }.property('tabId')

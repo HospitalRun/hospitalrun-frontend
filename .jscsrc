@@ -1,0 +1,10 @@
+{
+  "disallowVar": null,
+  "disallowMultipleVarDecl": null,
+  "requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties",
+  "requireCommentsToIncludeAccess": null,
+  "requireEnhancedObjectLiterals": null,
+  "requireTemplateStringsForConcatenation": null,
+  "requireArrayDestructuring": null,
+  "requireObjectDestructuring": null
+}

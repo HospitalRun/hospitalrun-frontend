@@ -11,7 +11,7 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
   newButtonText: '+ new invoice',
   sectionTitle: 'Invoices',
 
-  additionalButtons: function () {
+  additionalButtons: function() {
     if (this.currentUserCan('add_payment')) {
       return [{
         class: 'btn btn-default',
@@ -32,9 +32,8 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
     findArgs: ['price-profile']
   }],
 
-
   actions: {
-    showAddDeposit: function () {
+    showAddDeposit: function() {
       var payment = this.store.createRecord('payment', {
         paymentType: 'Deposit',
         datePaid: new Date()
@@ -42,7 +41,7 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
       this.send('openModal', 'invoices.payment', payment);
     },
 
-    showAddPayment: function (invoice) {
+    showAddPayment: function(invoice) {
       var payment = this.store.createRecord('payment', {
         invoice: invoice,
         paymentType: 'Payment',
@@ -51,14 +50,14 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
       this.send('openModal', 'invoices.payment', payment);
     },
 
-    showEditPayment: function (payment) {
+    showEditPayment: function(payment) {
       if (this.currentUserCan('add_payment')) {
         this.send('openModal', 'invoices.payment', payment);
       }
-    },
+    }
   },
 
-  subActions: function () {
+  subActions: function() {
     var actions = [{
       text: 'Billed',
       linkTo: 'invoices.index',

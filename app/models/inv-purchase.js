@@ -4,15 +4,15 @@ import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
 /**
  * Model to represent a purchase within an inventory item.
- * File/model name is inv-purchase because using inventory-purchase will cause purchase 
- * items to be shown as inventory items since the pouchdb adapter does a 
+ * File/model name is inv-purchase because using inventory-purchase will cause purchase
+ * items to be shown as inventory items since the pouchdb adapter does a
  * retrieve for keys starting with 'inventory' to fetch inventory items.
  */
 var InventoryPurchaseItem = AbstractModel.extend(LocationName, {
   purchaseCost: DS.attr('number'),
   lotNumber: DS.attr('string'),
   dateReceived: DS.attr('date'),
-  costPerUnit: function () {
+  costPerUnit: function() {
     var purchaseCost = this.get('purchaseCost'),
       quantity = parseInt(this.get('originalQuantity'));
     if (Ember.isEmpty(purchaseCost) || Ember.isEmpty(quantity) || purchaseCost === 0 || quantity === 0) {

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
-  convertDOBToText: function (birthDate, shortFormat, omitDays) {
+  convertDOBToText: function(birthDate, shortFormat, omitDays) {
     var today = new Date(),
       years = 0,
       months = 0,

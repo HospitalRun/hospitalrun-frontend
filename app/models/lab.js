@@ -25,18 +25,18 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, ResultValidati
     async: false
   }),
 
-  labDateAsTime: function () {
+  labDateAsTime: function() {
     return this.dateToTime(this.get('labDate'));
   }.property('labDate'),
 
-  requestedDateAsTime: function () {
+  requestedDateAsTime: function() {
     return this.dateToTime(this.get('requestedDate'));
   }.property('requestedDate'),
 
   validations: {
     labTypeName: {
       presence: {
-        'if': function (object) {
+        'if': function(object) {
           if (object.get('isNew')) {
             return true;
           }

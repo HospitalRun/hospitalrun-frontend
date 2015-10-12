@@ -33,7 +33,7 @@ export default AbstractModuleRoute.extend(PatientId, {
   }],
 
   actions: {
-    createNewVisit: function (patient, visits) {
+    createNewVisit: function(patient, visits) {
       var lastVisit = visits.get('lastObject'),
         propertiesToSet = {};
 
@@ -42,7 +42,7 @@ export default AbstractModuleRoute.extend(PatientId, {
       }
       propertiesToSet.patient = patient;
 
-      this.transitionTo('visits.edit', 'new').then(function (newRoute) {
+      this.transitionTo('visits.edit', 'new').then(function(newRoute) {
         newRoute.currentModel.setProperties(propertiesToSet);
       }.bind(this));
     }

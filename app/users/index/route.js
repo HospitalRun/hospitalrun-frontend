@@ -1,7 +1,7 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default AbstractIndexRoute.extend(UserSession, {
-  newButtonAction: function () {
+  newButtonAction: function() {
     if (this.currentUserCan('add_user')) {
       return 'newItem';
     } else {
@@ -10,7 +10,7 @@ export default AbstractIndexRoute.extend(UserSession, {
   }.property(),
   newButtonText: '+ new user',
   pageTitle: 'User Listing',
-  model: function () {
+  model: function() {
     return this.store.find('user');
   }
 });
