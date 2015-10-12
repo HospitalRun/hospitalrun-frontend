@@ -18,6 +18,7 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
       newData.shouldFulfillRequest = true;
       newData.hideFulfillRequest = true;
     }
+    newData.id = PouchDB.utils.uuid();
     return Ember.RSVP.resolve(newData);
   },
 
