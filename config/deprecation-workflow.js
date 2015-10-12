@@ -24,7 +24,7 @@ window.deprecationWorkflow.config = {
     { handler: "silence", matchMessage: "DS.Model#isDirty has been deprecated please use hasDirtyAttributes instead" },
     { handler: "silence", matchMessage: "Ember.ObjectController is deprecated, please use Ember.Controller and use `model.propertyName`." },
     { handler: "silence", matchMessage: "Depending on arrays using a dependent key ending with `@each` is deprecated. Please refactor from `Ember.computed('additionalDiagnosis@each', function() {});` to `Ember.computed('additionalDiagnosi.[]', function() {})`." },
-    { handler: "silence", matchMessage: "Usage of `submit_button` is deprecated, use `submitButton` instead." },
+    //{ handler: "silence", matchMessage: "Usage of `submit_button` is deprecated, use `submitButton` instead." },
     { handler: "silence", matchMessage: "You attempted to access `isNew` from `<hospitalrun@controller:patients/edit::ember1079>`, but object proxying is deprecated. Please use `model.isNew` instead." },
     { handler: "silence", matchMessage: "You attempted to access `errors` from `<hospitalrun@controller:patients/edit::ember1079>`, but object proxying is deprecated. Please use `model.errors` instead." },
     { handler: "silence", matchMessage: "You attempted to access `friendlyId` from `<hospitalrun@controller:patients/edit::ember1079>`, but object proxying is deprecated. Please use `model.friendlyId` instead." },

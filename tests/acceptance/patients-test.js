@@ -97,10 +97,7 @@ test('Adding a new patient record', function(assert) {
   andThen(function() {
     assert.equal(currentURL(), '/patients/edit/new');
   });
-  // Ember.run(function() {
-  //   fillIn('.test-first-name input', 'John');
-  //   fillIn('.test-last-name input', 'Doe');
-  // });
+
   fillIn('.test-first-name input', 'John');
   fillIn('.test-last-name input', 'Doe');
   click('.panel-footer button:contains(Add)');
@@ -109,9 +106,15 @@ test('Adding a new patient record', function(assert) {
     assert.equal(find('.modal-title').text(), 'Patient Saved', 'Patient record has been saved');
     assert.equal(find('.modal-body').text().trim(), 'The patient record for John Doe has been saved.', 'Record has been saved');
   });
+  click('button:contains(Ok)');
   waitToAppear('.patient-summary');
   andThen(function() {
     assert.ok(find('.patient-summary').length > 0, 'patient summary is displayed');
   });
+  click('[data-test-selector="photos-tab"]');
+
+  andThen(() => {
+    assert.equal(find('.panel-title').text().trim(), 'Photos', 'Photos tab is visible');
+  })
   destroyDatabases();
 });
