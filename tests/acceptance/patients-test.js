@@ -108,13 +108,12 @@ test('Adding a new patient record', function(assert) {
   });
   click('button:contains(Ok)');
   waitToAppear('.patient-summary');
-  andThen(function() {
-    assert.ok(find('.patient-summary').length > 0, 'patient summary is displayed');
+  andThen(function(){
+    findWithAssert('.patient-summary');
   });
   click('[data-test-selector="photos-tab"]');
-
-  andThen(() => {
-    assert.equal(find('.panel-title').text().trim(), 'Photos', 'Photos tab is visible');
-  })
+  andThen(function(){
+    findWithAssert('.active .panel-title:contains(Photos)');
+  });
   destroyDatabases();
 });

@@ -92,9 +92,9 @@
         <div class="panel-body">
             <table class="table">
                 <tr class="table-header">
-                    {{#each reportHeaders}}
+                    {{#each reportHeaders as |reportHeader|}}
                         <th>
-                            {{this}}
+                            {{reportHeader}}
                         </th>
                     {{/each}}
                 </tr>
