@@ -22,11 +22,17 @@
             </div>
 
             <ul class="nav nav-pills view-sub-nav">
-                {{#each subActions}}
-                    {{#if statusQuery}}
-                        <li>{{#link-to linkTo (query-params status=statusQuery)}}{{text}}{{/link-to}}</li>
+                {{#each subActions as |subAction|}}
+                    {{#if subAction.statusQuery}}
+                        {{#active-link}}
+                          {{#link-to subAction.linkTo (query-params status=subActive.statusQuery) }}
+                            {{subAction.text}}
+                          {{/link-to}}
+                        {{/active-link}}
                     {{else}}
-                        <li>{{#link-to linkTo}}{{text}}{{/link-to}}</li>
+                        {{#active-link}}
+                          {{#link-to subAction.linkTo}}{{subAction.text}}{{/link-to}}
+                        {{/active-link}}
                     {{/if}}
                 {{/each}}
             </ul>

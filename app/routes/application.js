@@ -25,6 +25,7 @@ var ApplicationRoute = Route.extend(ApplicationRouteMixin, {
 
   afterModel: function() {
     this.controllerFor('navigation').set('allowSearch', false);
+    $('#apploading').remove();
   }
 
 });
