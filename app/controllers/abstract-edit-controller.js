@@ -59,6 +59,9 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
    */
   _addValueToLookupList: function(lookupList, value, listsToUpdate, listName) {
     var lookupListValues = lookupList.get('value');
+    if (!Ember.isArray(lookupListValues)) {
+      lookupListValues = [];
+    }
     if (!lookupListValues.contains(value)) {
       lookupListValues.push(value);
       lookupListValues.sort();

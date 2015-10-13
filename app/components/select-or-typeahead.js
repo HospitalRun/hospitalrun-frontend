@@ -17,11 +17,16 @@ export default Ember.Component.extend({
   content: function() {
     var list = this.get('list'),
       optionLabelPath = this.get('optionLabelPath'),
-      optionValuePath = this.get('optionValuePath');
+      optionValuePath = this.get('optionValuePath'),
+      userCanAdd = this.get('userCanAdd');
 
     if (!Ember.isEmpty(list) && list.get) {
       var contentList = list.get('value');
-      if (optionLabelPath === 'value' && optionValuePath === 'id') {
+      if (Ember.isEmpty(contentList)) {
+        return [];
+      }
+
+      if (!userCanAdd && optionLabelPath === 'value' && optionValuePath === 'id') {
         contentList = contentList.map(SelectValues.selectValuesMap);
       }
       return contentList;
