@@ -18,27 +18,23 @@
                     <th>Quantity</th>
                     <th>Action</th>
                 </tr>
-                {{#with this as parentController}}
-                    {{#each charges}}
-                        {{#unless medicationCharge}}
-                            <tr>
-                                <td>{{date-format dateCharged}}</td>
-                                <td>{{pricingItem.name}}</td>
-                                <td>{{quantity}}</td>
-                                <td>
-                                    {{#if parentController.canAddCharge}}
-                                        <button class="btn btn-default neutral" {{action "showEditCharge" this}}>Edit</button>
-                                    {{/if}}
-                                    {{#if parentController.canAddCharge}}
-                                        <button class="btn btn-default warning" {{action "showDeleteCharge" this bubbles=false }}>
-                                            <span class="octicon octicon-x"></span>Delete
-                                        </button>
-                                    {{/if}}
-                                </td>
-                            </tr>
-                        {{/unless}}
-                    {{/each}}
-                {{/with}}
+                {{#each charges as |charge|}}
+                    {{#unless charge.medicationCharge}}
+                        <tr>
+                            <td>{{date-format charge.dateCharged}}</td>
+                            <td>{{charge.pricingItem.name}}</td>
+                            <td>{{charge.quantity}}</td>
+                            <td>
+                                {{#if canAddCharge}}
+                                    <button class="btn btn-default neutral" {{action "showEditCharge" charge}}>Edit</button>
+                                    <button class="btn btn-default warning" {{action "showDeleteCharge" charge bubbles=false }}>
+                                        <span class="octicon octicon-x"></span>Delete
+                                    </button>
+                                {{/if}}
+                            </td>
+                        </tr>
+                    {{/unless}}
+                {{/each}}
             </table>
         </div>
     </div>
