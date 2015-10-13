@@ -3,10 +3,10 @@ import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 import UserSession from 'hospitalrun/mixins/user-session';
 import Navigation from 'hospitalrun/mixins/navigation';
 export default Ember.Controller.extend(ProgressDialog, UserSession, Navigation, {
-  needs: 'application',
+  application: Ember.inject.controller(),
   allowSearch: false,
   currentSearchText: null,
-  currentRouteName: Ember.computed.alias('controllers.application.currentRouteName'),
+  currentRouteName: Ember.computed.alias('application.currentRouteName'),
   progressTitle: 'Searching',
   searchRoute: null,
   syncStatus: '',
