@@ -4,10 +4,10 @@
     <div class="required {{if errors 'has-error'}}">
         <label class="control-label">{{label}}</label>
     </div>
-    {{#each checkboxRow in checkboxRows}}
+    {{#each checkboxRows as |checkboxRow|}}
         <div class="row">
             <div class="col-xs-1"></div>
-            {{#each checkbox in checkboxRow}}
+            {{#each checkboxRow as |checkbox|}}
                 <div class="checkbox col-xs-2">
                 <label>
                     {{action-checkbox value=checkbox.value action="checkboxChanged"}}{{checkbox.label}}
