@@ -4,5 +4,8 @@ export default Ember.TextField.extend(Ember.TargetActionSupport, {
     this.triggerAction({
       action: 'search'
     });
+  },
+  didInsertElement: function() {
+    this.$().focus();
   }
 });
