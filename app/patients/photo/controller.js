@@ -1,24 +1,24 @@
 import Ember from 'ember';
-export default Ember.ObjectController.extend({
+export default Ember.Controller.extend({
   needs: 'patients/edit',
 
-  title: function() {
-    var isNew = this.get('isNew');
+  title: function () {
+    var isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add Photo';
     } else {
       return 'Edit Photo';
     }
-  }.property('isNew'),
+  }.property('model.isNew'),
 
-  updateButtonText: function() {
-    var isNew = this.get('isNew');
+  updateButtonText: function () {
+    var isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add';
     } else {
       return 'Update';
     }
-  }.property('isNew'),
+  }.property('model.isNew'),
 
   updateButtonAction: 'update',
   showUpdateButton: true,
@@ -32,7 +32,7 @@ export default Ember.ObjectController.extend({
 
     update: function() {
       var caption = this.get('caption'),
-        isNew = this.get('isNew'),
+        isNew = this.get('model.isNew'),
         photoFile = this.get('photoFile');
       if (isNew) {
         this.get('editController').send('addPhoto', photoFile, caption);

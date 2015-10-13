@@ -6,7 +6,7 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
   {{#em-form model=this submit_button=false }}
-    {{#if isNew}}
+    {{#if model.isNew}}
       {{take-photo photoFile=photoFile }}
     {{else}}
       <div class="thumbnail">
