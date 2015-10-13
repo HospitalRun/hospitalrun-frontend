@@ -17,7 +17,7 @@
                 <button class="btn btn-default warning" {{action "cancel"}}>Cancel</button>
             {{/if}}
         {{/unless}}
-        {{#each button in additionalButtons}}
+        {{#each additionalButtons as |button|}}
             <button class="{{button.class}}" {{action button.buttonAction}}>
                 {{#if buttonbuttonIcon}}
                     <span class="{{button.buttonIcon}}"></span>
