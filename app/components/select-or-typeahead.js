@@ -27,9 +27,10 @@ export default Ember.Component.extend({
       }
 
       if (!userCanAdd && optionLabelPath === 'value' && optionValuePath === 'id') {
-        contentList = contentList.map(SelectValues.selectValuesMap);
+        return contentList.map(SelectValues.selectValuesMap);
+      } else {
+        return contentList;
       }
-      return contentList;
     }
   }.property('list'),
 
