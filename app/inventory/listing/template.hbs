@@ -26,7 +26,7 @@
             {{#if canAddItem}}
               <button class="btn btn-default neutral" {{action 'editItem' inventory bubbles=false }}>Edit</button>
             {{/if}}
-            {{#if canDelete}}
+            {{#if canDeleteItem}}
               <button class="btn btn-default warning" {{action 'deleteItem' inventory bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
             {{/if}}
             {{#link-to 'inventory.barcode' inventory class="btn btn-default neutral" bubbles=false }}Barcode{{/link-to}}
