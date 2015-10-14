@@ -1,6 +1,6 @@
 import Ember from 'ember';
 export default Ember.Controller.extend({
-  needs: 'patients/edit',
+  patientsEdit: Ember.inject.controller('patients/edit'),
 
   title: function () {
     var isNew = this.get('model.isNew');
@@ -23,7 +23,7 @@ export default Ember.Controller.extend({
   updateButtonAction: 'update',
   showUpdateButton: true,
 
-  editController: Ember.computed.alias('controllers.patients/edit'),
+  editController: Ember.computed.alias('patientsEdit'),
 
   actions: {
     cancel: function() {

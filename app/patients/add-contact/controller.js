@@ -2,7 +2,6 @@ import Ember from 'ember';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 export default Ember.Controller.extend(IsUpdateDisabled, {
   patientsEdit: Ember.inject.controller('patients/edit'),
-
   editController: Ember.computed.alias('patientsEdit'),
   title: 'Add Contact',
   updateButtonText: 'Add',
