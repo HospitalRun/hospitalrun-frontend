@@ -25,7 +25,7 @@
                 {{#each subActions as |subAction|}}
                     {{#if subAction.statusQuery}}
                         {{#active-link}}
-                          {{#link-to subAction.linkTo (query-params status=subActive.statusQuery) }}
+                          {{#link-to subAction.linkTo (query-params status=subAction.statusQuery) }}
                             {{subAction.text}}
                           {{/link-to}}
                         {{/active-link}}
