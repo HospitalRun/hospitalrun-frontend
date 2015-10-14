@@ -6,19 +6,12 @@ export default SelectOrTypeahead.extend({
 
   _getLabelFromContent: function(object) {
     var optionLabelPath = this.get('optionLabelPath');
-    return this._getPropertyFromContent(optionLabelPath, object);
-  },
-
-  _getPropertyFromContent: function(property, object) {
-    var retrieveObject = {
-      content: object
-    };
-    return Ember.get(retrieveObject, property);
+    return Ember.get(object, optionLabelPath);
   },
 
   _getValueFromContent: function(object) {
     var optionValuePath = this.get('optionValuePath');
-    return this._getPropertyFromContent(optionValuePath, object);
+    return Ember.get(object, optionValuePath);
   },
 
   _mapCheckboxValues: function(value) {

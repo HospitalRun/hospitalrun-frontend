@@ -3,7 +3,7 @@
         {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
     {{else}}
         {{patient-summary patient=patient returnTo='imaging.edit' returnToContext=id disablePatientLink=isNew }}
-    {{/if}}    
+    {{/if}}
     {{#if isNew}}
         <div class="row">
             {{em-select class="col-xs-3 required" label="Visit"
@@ -13,10 +13,10 @@
                 selected=visit
             }}
         </div>
-        {{checkbox-or-typeahead property="imagingTypeName" 
+        {{checkbox-or-typeahead property="imagingTypeName"
             label="Imaging Type" list=objectTypeList
             selection=selectedImagingType
-            optionLabelPath='content.name'
+            optionLabelPath='name'
             typeAheadType='pricing'
             className="required"
             prompt=" "

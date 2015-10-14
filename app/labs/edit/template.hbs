@@ -4,7 +4,7 @@
     {{else}}
         {{patient-summary patient=patient returnTo='labs.edit' returnToContext=id disablePatientLink=isNew }}
     {{/if}}
-    
+
     {{#if isNew}}
         <div class="row">
             {{em-select class="col-xs-3 required" label="Visit"
@@ -14,16 +14,16 @@
                 selected=visit
             }}
         </div>
-        {{checkbox-or-typeahead property="labTypeName" 
+        {{checkbox-or-typeahead property="labTypeName"
             label="Lab Type" list=objectTypeList
             selection=selectedLabType
-            optionLabelPath='content.name'
+            optionLabelPath='name'
             typeAheadType='pricing'
             className="required"
             prompt=" "
             model=model
-        }}    
-    {{else}}  
+        }}
+    {{else}}
         <div class="row">
             <div class="form-group col-xs-3">
                 <label>Visit</label>
