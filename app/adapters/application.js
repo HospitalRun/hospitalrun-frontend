@@ -189,5 +189,9 @@ export default Adapter.extend(PouchAdapterUtils, {
         }
       }.bind(this), 'findQuery in application-pouchdb-adapter');
     }
+  },
+
+  shouldReloadAll: function() {
+    return false;
   }
 });
