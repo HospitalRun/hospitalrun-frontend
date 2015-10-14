@@ -125,7 +125,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
         model = Ember.Object.create({
           itemToRemove: item
         }),
-        title = 'Remove Payment';
+        title = 'Remove Item';
       this.displayConfirm(title, message, 'removeItem', model);
     },
 
