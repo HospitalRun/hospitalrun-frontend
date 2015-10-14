@@ -95,6 +95,10 @@ export default Adapter.extend(PouchAdapterUtils, {
     return haveSpecialCharacters;
   },
 
+  generateIdForRecord: function() {
+    return PouchDB.utils.uuid();
+  },
+
   findQuery: function(store, type, query, options) {
     var specialQuery = false;
     for (var i = 0; i < this._specialQueries.length; i++) {
