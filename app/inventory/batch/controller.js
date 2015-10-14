@@ -88,15 +88,20 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
       inventoryItemTypeAhead = this.get('inventoryItemTypeAhead'),
       purchaseCost = this.get('purchaseCost'),
       quantity = this.get('quantity');
-    model.validate();
-    if (this.get('isValid') && !Ember.isEmpty(inventoryItemTypeAhead) && !Ember.isEmpty(quantity) && !Ember.isEmpty(purchaseCost)) {
-      if (this._haveValidInventoryItem()) {
-        this._addInvoiceItem();
+    model.validate().then(function() {
+      if (this.get('isValid') && !Ember.isEmpty(inventoryItemTypeAhead) && !Ember.isEmpty(quantity) && !Ember.isEmpty(purchaseCost)) {
+        if (this._haveValidInventoryItem()) {
+          this._addInvoiceItem();
+        } else {
+          this._addNewInventoryItem();
+          return true;
+        }
       } else {
-        this._addNewInventoryItem();
-        return true;
+        throw Error('invalid');
       }
-    }
+    }.bind(this)).catch(function() {
+        this.displayAlert('Warning!!!!', 'Please fill in required fields (marked with *) and correct the errors before adding.');
+    }.bind(this));
   },
 
   _addInvoiceItem: function() {
