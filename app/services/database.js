@@ -134,11 +134,15 @@ export default Ember.Service.extend(PouchAdapterUtils, {
     var mappedRows = [];
     if (rows) {
       mappedRows = rows.map(function(row) {
-        var rowValues = {
-          doc: row.doc.data
-        };
-        rowValues.doc.id = this.getEmberId(row.id);
-        return rowValues;
+        if (row.doc) {
+          var rowValues = {
+            doc: row.doc.data
+          };
+          rowValues.doc.id = this.getEmberId(row.id);
+          return rowValues;
+        } else {
+          return row;
+        }
       }.bind(this));
     }
     return mappedRows;
