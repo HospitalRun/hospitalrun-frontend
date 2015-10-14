@@ -1,7 +1,7 @@
 window.deprecationWorkflow = window.deprecationWorkflow || {};
 window.deprecationWorkflow.config = {
   workflow: [
-    { handler: "silence", matchMessage: "Ember.Handlebars.helper is deprecated, please refactor to Ember.Helper.helper" },
+    //{ handler: "silence", matchMessage: "Ember.Handlebars.helper is deprecated, please refactor to Ember.Helper.helper" },
     { handler: "silence", matchMessage: "`Ember.Handlebars.makeViewHelper` and `Ember.HTMLBars.makeViewHelper` are deprecated. Please refactor to normal component usage." },
     { handler: "silence", matchMessage: "the component:nav-menu test module is implicitly running in unit test mode, which will change to integration test mode by default in an upcoming version of ember-test-helpers. Add `unit: true` or a `needs:[]` list to explicitly opt in to unit test mode." },
     { handler: "silence", matchMessage: "Using Ember.HTMLBars._registerHelper is deprecated. Helpers (even dashless ones) are automatically resolved." },
