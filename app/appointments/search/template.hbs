@@ -1,37 +1,39 @@
-<div class="panel panel-info">    
+{{#item-listing paginationProps=paginationProps }}
+  <div class="panel panel-info">
     <div class="panel-body">
-        {{#em-form model=this submit_button=false }}
-            <div class="row">        
-                {{date-picker property="selectedStartingDate" label="Show Appointments On Or After" class="col-sm-3"}}
-                {{em-select class="col-sm-3" prompt=" " property="selectedStatus"
-                    label="Status" content=appointmentStatuses                    
-                }}
-            </div>
-            <div calss="row">
-                {{em-select class="col-sm-3" prompt=" " label="Type" 
-                    property="selectedAppointmentType" content=visitTypes                    
-                }}
-                {{em-select class="col-sm-3" prompt=" " property="selectedProvider" 
-                    label="With" content=physicianList                    
-                }}
-            </div>        
-        {{/em-form}}
+      {{#em-form model=this submit_button=false }}
+        <div class="row">
+          {{date-picker property="selectedStartingDate" label="Show Appointments On Or After" class="col-sm-3"}}
+          {{em-select class="col-sm-3" prompt=" " property="selectedStatus"
+              label="Status" content=appointmentStatuses
+          }}
+        </div>
+        <div calss="row">
+          {{em-select class="col-sm-3" prompt=" " label="Type"
+              property="selectedAppointmentType" content=visitTypes
+          }}
+          {{em-select class="col-sm-3" prompt=" " property="selectedProvider"
+              label="With" content=physicianList
+          }}
+        </div>
+      {{/em-form}}
     </div>
     <div class="panel-footer">
-        <button class="btn btn-default" {{action 'search'}}>Search</button>
+      <button class="btn btn-default" {{action 'search'}}>Search</button>
     </div>
-</div>
-<table class="table">
+  </div>
+  <table class="table">
     <tr class="table-header">
-        {{#sortable-column sortBy='date' sortDesc=sortDesc sortKey=sortKey }}Date{{/sortable-column}}
-        <th>Name</th>
-        {{#sortable-column sortBy='appointmentType' sortDesc=sortDesc sortKey=sortKey }}Type{{/sortable-column}}
-        {{#sortable-column sortBy='location' sortDesc=sortDesc sortKey=sortKey }}Location{{/sortable-column}}        
-        {{#sortable-column sortBy='provider' sortDesc=sortDesc sortKey=sortKey }}With{{/sortable-column}}
-        {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}Status{{/sortable-column}}
-        <th>Actions</th>
+      {{#sortable-column sortBy='date' sortDesc=sortDesc sortKey=sortKey }}Date{{/sortable-column}}
+      <th>Name</th>
+      {{#sortable-column sortBy='appointmentType' sortDesc=sortDesc sortKey=sortKey }}Type{{/sortable-column}}
+      {{#sortable-column sortBy='location' sortDesc=sortDesc sortKey=sortKey }}Location{{/sortable-column}}
+      {{#sortable-column sortBy='provider' sortDesc=sortDesc sortKey=sortKey }}With{{/sortable-column}}
+      {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}Status{{/sortable-column}}
+      <th>Actions</th>
     </tr>
     {{#each model as |appointment|}}
-        {{partial 'appointments/item'}}
+      {{partial 'appointments/item'}}
     {{/each}}
-</table>
+  </table>
+{{/item-listing}}

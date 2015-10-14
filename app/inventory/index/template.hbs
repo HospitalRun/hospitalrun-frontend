@@ -1,30 +1,32 @@
-{{#if hasRecords}}
+{{#item-listing paginationProps=paginationProps }}
+  {{#if hasRecords}}
     <table class="table">
-        <tr class="table-header">
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Requested On</th>
-            <th>Requested By</th>
-            {{#if canFulfill}}
-                <th>Actions</th>
-            {{/if}}
+      <tr class="table-header">
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Requested On</th>
+        <th>Requested By</th>
+        {{#if canFulfill}}
+          <th>Actions</th>
+        {{/if}}
+      </tr>
+      {{#each model as |request|}}
+        <tr>
+          <td>{{request.inventoryItem.name}}</td>
+          <td>{{request.quantity}}</td>
+          <td>{{date-format request.dateRequested}}</td>
+          <td>{{request.requestedBy}}</td>
+          {{#if canFulfill}}
+            <td>
+              <button class="btn btn-primary" {{action 'fulfill' request}}>Fulfill</button>
+            </td>
+          {{/if}}
         </tr>
-        {{#each model as |request|}}
-            <tr>
-                <td>{{request.inventoryItem.name}}</td>
-                <td>{{request.quantity}}</td>
-                <td>{{date-format request.dateRequested}}</td>
-                <td>{{request.requestedBy}}</td>
-                {{#if canFulfill}}
-                    <td>
-                        <button class="btn btn-primary" {{action 'fulfill' request}}>Fulfill</button>
-                    </td>
-                {{/if}}
-            </tr>
-        {{/each}}
+      {{/each}}
     </table>
-{{else}}
+  {{else}}
     <div class="alert alert-info">
-        <p>No requests found. {{#if canAdd}}<a href="#" {{action 'newRequest'}}>Create a new request?</a>{{/if}}</p>
+      <p>No requests found. {{#if canAdd}}<a href="#" {{action 'newRequest'}}>Create a new request?</a>{{/if}}</p>
     </div>
-{{/if}}
+  {{/if}}
+{{/item-listing}}

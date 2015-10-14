@@ -1,32 +1,34 @@
-{{#if hasRecords}}
+{{#item-listing paginationProps=paginationProps }}
+  {{#if hasRecords}}
     <table class="table">
-        <tr class="table-header">
-            <th>Date Requested</th>
-            <th>Patient</th>
-            <th>Lab Type</th>
-            <th>Notes</th>
-            {{#if showActions}}
-                <th>Actions</th>
-            {{/if}}
+      <tr class="table-header">
+        <th>Date Requested</th>
+        <th>Patient</th>
+        <th>Lab Type</th>
+        <th>Notes</th>
+        {{#if showActions}}
+          <th>Actions</th>
+        {{/if}}
+      </tr>
+      {{#each model as |lab|}}
+        <tr {{action 'editItem' lab}}>
+          <td>{{date-format lab.requestedDate}}</td>
+          <td>{{lab.patient.displayName}}</td>
+          <td>{{lab.labType.name}}</td>
+          <td>{{lab.notes}}</td>
+           {{#if showActions}}
+            <td>
+              {{#if canEdit}}
+                <button class="btn btn-default neutral" {{action 'editItem' lab  bubbles=false }}>Edit</button>
+              {{/if}}
+            </td>
+          {{/if}}
         </tr>
-        {{#each model as |lab|}}
-            <tr {{action 'editItem' lab}}>
-                <td>{{date-format lab.requestedDate}}</td>
-                <td>{{lab.patient.displayName}}</td>
-                <td>{{lab.labType.name}}</td>
-                <td>{{lab.notes}}</td>
-                 {{#if showActions}}
-                    <td>
-                        {{#if canEdit}}
-                            <button class="btn btn-default neutral" {{action 'editItem' lab  bubbles=false }}>Edit</button>
-                        {{/if}}
-                    </td>
-                {{/if}}
-            </tr>
-        {{/each}}
+      {{/each}}
     </table>
-{{else}}
+  {{else}}
     <div class="alert alert-info">
-        <p>No labs found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
+      <p>No labs found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
     </div>
-{{/if}}
+  {{/if}}
+{{/item-listing}}

@@ -1,38 +1,40 @@
-{{#if hasRecords}}
+{{#item-listing paginationProps=paginationProps }}
+  {{#if hasRecords}}
     <table class="table">
-        <tr class="table-header">
-            <th>Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role</th>
-            {{#if showActions}}
-                <th>Actions</th>
-            {{/if}}
-        </tr>
-        {{#each model as |user|}}
-            <tr {{action 'editItem' user}}>
-                <td>{{user.displayName}}</td>                
-                <td>{{user.name}}</td>
-                <td>{{user.email}}</td>
-                <td>{{user.displayRole}}</td>
-                {{#if showActions}}
-                    <td>
-                        {{#if canAdd}}
-                            <button class="btn btn-default" {{action 'editItem' user bubbles=false }}>Edit</button>
-                        {{/if}}
-                        {{#if canDelete}}
-                            <button class="btn btn-default" {{action 'deleteItem' user bubbles=false }}>Delete</button>
-                        {{/if}}
-                    </td>
-                {{/if}}
-            </tr>
-        {{/each}}
-    </table>
-{{else}}
-    <div class="alert alert-info">
-        <em>No users found.</em>  
-        {{#if canAdd}}
-            <em>Create a new user?</em> <button class="btn btn-primary" {{action 'newItem'}}>New User</button>
+      <tr class="table-header">
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        {{#if showActions}}
+          <th>Actions</th>
         {{/if}}
+      </tr>
+      {{#each model as |user|}}
+        <tr {{action 'editItem' user}}>
+          <td>{{user.displayName}}</td>
+          <td>{{user.name}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.displayRole}}</td>
+          {{#if showActions}}
+            <td>
+              {{#if canAdd}}
+                <button class="btn btn-default" {{action 'editItem' user bubbles=false }}>Edit</button>
+              {{/if}}
+              {{#if canDelete}}
+                <button class="btn btn-default" {{action 'deleteItem' user bubbles=false }}>Delete</button>
+              {{/if}}
+            </td>
+          {{/if}}
+        </tr>
+      {{/each}}
+    </table>
+  {{else}}
+    <div class="alert alert-info">
+      <em>No users found.</em>
+      {{#if canAdd}}
+        <em>Create a new user?</em> <button class="btn btn-primary" {{action 'newItem'}}>New User</button>
+      {{/if}}
     </div>
-{{/if}}
+  {{/if}}
+{{/item-listing}}

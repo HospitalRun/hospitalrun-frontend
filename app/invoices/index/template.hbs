@@ -1,46 +1,48 @@
-{{#if hasRecords}}
+{{#item-listing paginationProps=paginationProps }}
+  {{#if hasRecords}}
     <table class="table">
-        <tr class="table-header">
-            <th>Number</th>
-            <th>Bill Date</th>
-            <th>Status</th>
-            <th>Patient</th>
-            <th>Total</th>
-            <th>Balance Due</th>
-            {{#if showActions}}
-                <th>Actions</th>
-            {{/if}}
+      <tr class="table-header">
+        <th>Number</th>
+        <th>Bill Date</th>
+        <th>Status</th>
+        <th>Patient</th>
+        <th>Total</th>
+        <th>Balance Due</th>
+        {{#if showActions}}
+          <th>Actions</th>
+        {{/if}}
+      </tr>
+      {{#each model as |invoice|}}
+        <tr {{action 'editItem' invoice}}>
+          <td>{{invoice.displayInvoiceNumber}}</td>
+          <td>{{date-format invoice.billDate}}</td>
+          <td>{{invoice.status}}</td>
+          <td>{{invoice.patient.displayName}} - {{invoice.patient.displayPatientId}} <br>{{invoice.visit.primaryDiagnosis}}</td>
+          <td>{{invoice.total}}</td>
+          <td>{{invoice.remainingBalance}}</td>
+          <td>
+            {{#unless invoice.paidFlag}}
+              {{#if showActions}}
+                {{#if canAddPayment}}
+                  <button class="btn btn-default neutral" {{action 'showAddPayment' invoice bubbles=false }}>
+                    <span class="octicon octicon-plus"></span> Add Payment
+                  </button>
+                {{/if}}
+                {{#if canAdd}}
+                  <button class="btn btn-default neutral" {{action 'editItem' invoice bubbles=false }}>Edit</button>
+                {{/if}}
+                {{#if canDelete}}
+                  <button class="btn btn-default warning" {{action 'deleteItem' invoice bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                {{/if}}
+              {{/if}}
+            {{/unless}}
+          </td>
         </tr>
-        {{#each model as |invoice|}}
-            <tr {{action 'editItem' invoice}}>
-                <td>{{invoice.displayInvoiceNumber}}</td>
-                <td>{{date-format invoice.billDate}}</td>
-                <td>{{invoice.status}}</td>
-                <td>{{invoice.patient.displayName}} - {{invoice.patient.displayPatientId}} <br>{{invoice.visit.primaryDiagnosis}}</td>
-                <td>{{invoice.total}}</td>
-                <td>{{invoice.remainingBalance}}</td>
-                <td>
-                    {{#unless invoice.paidFlag}}
-                        {{#if showActions}}
-                            {{#if canAddPayment}}
-                                <button class="btn btn-default neutral" {{action 'showAddPayment' invoice bubbles=false }}>
-                                    <span class="octicon octicon-plus"></span> Add Payment
-                                </button>
-                            {{/if}}
-                            {{#if canAdd}}
-                                <button class="btn btn-default neutral" {{action 'editItem' invoice bubbles=false }}>Edit</button>
-                            {{/if}}
-                            {{#if canDelete}}
-                                <button class="btn btn-default warning" {{action 'deleteItem' invoice bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                            {{/if}}
-                        {{/if}}
-                    {{/unless}}
-                </td>
-            </tr>
-        {{/each}}
+      {{/each}}
     </table>
-{{else}}
+  {{else}}
     <div class="alert alert-info">
-        <p>No invoices found. <a href="#" {{action 'newItem'}}>Create an invoice?</a></p>
+      <p>No invoices found. <a href="#" {{action 'newItem'}}>Create an invoice?</a></p>
     </div>
-{{/if}}
+  {{/if}}
+{{/item-listing}}

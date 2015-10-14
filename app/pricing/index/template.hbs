@@ -1,43 +1,45 @@
-{{#if hasRecords}}
+{{#item-listing paginationProps=paginationProps }}
+  {{#if hasRecords}}
     <table class="table">
-        <tr class="table-header">
-            {{#if showCategory}}
-                <th>Category</th>
-            {{/if}}
-            <th>Name</th>
-            <th>Price</th>
-            <th>Type</th>
-            <th>Expense To</th>
-            {{#if showActions}}
-                <th>Actions</th>
-            {{/if}}
+      <tr class="table-header">
+        {{#if showCategory}}
+          <th>Category</th>
+        {{/if}}
+        <th>Name</th>
+        <th>Price</th>
+        <th>Type</th>
+        <th>Expense To</th>
+        {{#if showActions}}
+          <th>Actions</th>
+        {{/if}}
+      </tr>
+      {{#each model as |pricingItem|}}
+        <tr {{action 'editItem' pricingItem}}>
+          {{#if showCategory}}
+            <td>{{pricingItem.category}}</td>
+          {{/if}}
+          <td>{{pricingItem.name}}</td>
+          <td>{{pricingItem.price}}</td>
+          <td>{{pricingItem.pricingType}}</td>
+          <td>{{pricingItem.expenseAccount}}</td>
+          {{#if showActions}}
+            <td>
+              {{#if canEdit}}
+                <button class="btn btn-default neutral" {{action 'editItem' pricingItem bubbles=false }}>Edit</button>
+              {{/if}}
+              {{#if canDelete}}
+                <button class="btn btn-default warning" {{action 'deleteItem' pricingItem bubbles=false }}>
+                  <span class="octicon octicon-x"></span> Delete
+                </button>
+              {{/if}}
+            </td>
+          {{/if}}
         </tr>
-        
-        {{#each model as |pricingItem|}}
-            <tr {{action 'editItem' pricingItem}}>
-                {{#if showCategory}}
-                    <td>{{pricingItem.category}}</td>
-                {{/if}}
-                <td>{{pricingItem.name}}</td>
-                <td>{{pricingItem.price}}</td>
-                <td>{{pricingItem.pricingType}}</td>
-                <td>{{pricingItem.expenseAccount}}</td>
-                {{#if showActions}}
-                    <td>
-                        {{#if canEdit}}
-                            <button class="btn btn-default neutral" {{action 'editItem' pricingItem bubbles=false }}>Edit</button>
-                        {{/if}}
-                        {{#if parentController.canDelete}}
-                            <button class="btn btn-default warning" {{action 'deleteItem' pricingItem bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                        {{/if}}
-                    </td>
-                {{/if}}
-            </tr>
-        {{/each}}
-        
+      {{/each}}
     </table>
-{{else}}
+  {{else}}
     <div class="alert alert-info">
-        <p>No pricing items found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
+      <p>No pricing items found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
     </div>
-{{/if}}
+  {{/if}}
+{{/item-listing}}

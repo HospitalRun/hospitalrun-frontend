@@ -1,32 +1,34 @@
-{{#if model}}
+{{#item-listing paginationProps=paginationProps }}
+  {{#if model}}
     <table class="table">
-        <tr class="table-header">
-            <th>Date</th>
-            <th>Patient</th>
-            <th>Medication</th>
-            <th>Quantity</th>
-            <th>Status</th>
-            {{#if showActions}}
-                <th>Actions</th>
-            {{/if}}
-        </tr>        
-        {{#each model as |medicationRequest|}}
-            <tr {{action 'editItem' medicationRequest}}>
-                <td>{{date-format medicationRequest.prescriptionDate}}</td>
-                <td>{{medicationRequest.patient.displayName}}</td>
-                <td>{{medicationRequest.inventoryItem.name}}</td>
-                <td>{{medicationRequest.quantity}}</td>
-                <td>{{medicationRequest.status}}</td>
-                {{#if showActions}}
-                    <td>
-                        <button class="btn btn-default" {{action 'editItem' medicationRequest bubbles=false }}>Fulfill</button>
-                    </td>
-                {{/if}}
-            </tr>
-        {{/each}}        
+      <tr class="table-header">
+        <th>Date</th>
+        <th>Patient</th>
+        <th>Medication</th>
+        <th>Quantity</th>
+        <th>Status</th>
+        {{#if showActions}}
+          <th>Actions</th>
+        {{/if}}
+      </tr>
+      {{#each model as |medicationRequest|}}
+        <tr {{action 'editItem' medicationRequest}}>
+          <td>{{date-format medicationRequest.prescriptionDate}}</td>
+          <td>{{medicationRequest.patient.displayName}}</td>
+          <td>{{medicationRequest.inventoryItem.name}}</td>
+          <td>{{medicationRequest.quantity}}</td>
+          <td>{{medicationRequest.status}}</td>
+          {{#if showActions}}
+            <td>
+              <button class="btn btn-default" {{action 'editItem' medicationRequest bubbles=false }}>Fulfill</button>
+            </td>
+          {{/if}}
+        </tr>
+      {{/each}}
     </table>
-{{else}}
+  {{else}}
     <div class="alert alert-info">
-        <p>No items found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new medication request?</a>{{/if}}</p>
+      <p>No items found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new medication request?</a>{{/if}}</p>
     </div>
-{{/if}}
+  {{/if}}
+{{/item-listing}}

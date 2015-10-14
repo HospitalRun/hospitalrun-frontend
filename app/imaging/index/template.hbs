@@ -1,32 +1,34 @@
-{{#if hasRecords}}
+{{#item-listing paginationProps=paginationProps }}
+  {{#if hasRecords}}
     <table class="table">
-        <tr class="table-header">
-            <th>Date Requested</th>
-            <th>Patient</th>
-            <th>Imaging Type</th>
-            <th>Notes</th>
-            {{#if showActions}}
-                <th>Actions</th>
-            {{/if}}
+      <tr class="table-header">
+        <th>Date Requested</th>
+        <th>Patient</th>
+        <th>Imaging Type</th>
+        <th>Notes</th>
+        {{#if showActions}}
+          <th>Actions</th>
+        {{/if}}
+      </tr>
+      {{#each model as |imaging|}}
+        <tr {{action 'editItem' imaging }}>
+          <td>{{date-format imaging.requestedDate}}</td>
+          <td>{{imaging.patient.displayName}}</td>
+          <td>{{imaging.imagingType.name}}</td>
+          <td>{{imaging.notes}}</td>
+          {{#if showActions}}
+            <td>
+              {{#if canEdit}}
+                <button class="btn btn-default neutral" {{action 'editItem' imaging  bubbles=false }}>Edit</button>
+              {{/if}}
+            </td>
+          {{/if}}
         </tr>
-        {{#each model as |imaging|}}
-            <tr {{action 'editItem' imaging }}>
-                <td>{{date-format imaging.requestedDate}}</td>
-                <td>{{imaging.patient.displayName}}</td>
-                <td>{{imaging.imagingType.name}}</td>
-                <td>{{imaging.notes}}</td>
-                 {{#if showActions}}
-                    <td>
-                        {{#if canEdit}}
-                            <button class="btn btn-default neutral" {{action 'editItem' imaging  bubbles=false }}>Edit</button>
-                        {{/if}}
-                    </td>
-                {{/if}}
-            </tr>
-        {{/each}}    
+      {{/each}}
     </table>
-{{else}}
+  {{else}}
     <div class="alert alert-info">
-        <p>No items found. {{#if canAdd}} <a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
+      <p>No items found. {{#if canAdd}} <a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
     </div>
-{{/if}}
+  {{/if}}
+{{/item-listing}}

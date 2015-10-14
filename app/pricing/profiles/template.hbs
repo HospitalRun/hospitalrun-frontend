@@ -1,33 +1,35 @@
-{{#if hasRecords}}
+{{#item-listing paginationProps=paginationProps }}
+  {{#if hasRecords}}
     <table class="table">
-        <tr class="table-header">
-            <th>Name</th>
-            <th>Discount Amount</th>
-            <th>Discount Percentage</th>
-            {{#if showActions}}
-                <th>Actions</th>
-            {{/if}}
+      <tr class="table-header">
+        <th>Name</th>
+        <th>Discount Amount</th>
+        <th>Discount Percentage</th>
+        {{#if showActions}}
+          <th>Actions</th>
+        {{/if}}
+      </tr>
+      {{#each model as |profile|}}
+        <tr {{action 'editItem' profile}}>
+          <td>{{profile.name}}</td>
+          <td>{{profile.discountAmount}}</td>
+          <td>{{profile.discountPercentage}}</td>
+          {{#if showActions}}
+            <td>
+              {{#if canEdit}}
+                <button class="btn btn-default neutral" {{action 'editItem' profile bubbles=false }}>Edit</button>
+              {{/if}}
+              {{#if canDelete}}
+                <button class="btn btn-default warning" {{action 'deleteItem' profile bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+              {{/if}}
+            </td>
+          {{/if}}
         </tr>
-        {{#each model as |profile|}}
-            <tr {{action 'editItem' profile}}>
-                <td>{{profile.name}}</td>
-                <td>{{profile.discountAmount}}</td>
-                <td>{{profile.discountPercentage}}</td>
-                {{#if showActions}}
-                    <td>
-                        {{#if canEdit}}
-                            <button class="btn btn-default neutral" {{action 'editItem' profile bubbles=false }}>Edit</button>
-                        {{/if}}
-                        {{#if parentController.canDelete}}
-                            <button class="btn btn-default warning" {{action 'deleteItem' profile bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                        {{/if}}
-                    </td>
-                {{/if}}
-            </tr>
-        {{/each}}
+      {{/each}}
     </table>
-{{else}}
+  {{else}}
     <div class="alert alert-info">
-        <p>No pricing profiles found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
+      <p>No pricing profiles found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
     </div>
-{{/if}}
+  {{/if}}
+{{/item-listing}}

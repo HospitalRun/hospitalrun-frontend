@@ -1,26 +1,28 @@
-{{#if model}}
+{{#item-listing paginationProps=paginationProps }}
+  {{#if model}}
     <table class="table">
-        <tr class="table-header">
-            <th>Date Requested</th>
-            <th>Date Completed</th>
-            <th>Patient</th>
-            <th>Imaging Type</th>
-            <th>Results</th>
-            <th>Notes</th>
+      <tr class="table-header">
+          <th>Date Requested</th>
+          <th>Date Completed</th>
+          <th>Patient</th>
+          <th>Imaging Type</th>
+          <th>Results</th>
+          <th>Notes</th>
+      </tr>
+      {{#each model as |imaging|}}
+        <tr>
+          <td>{{date-format imaging.requestedDate}}</td>
+          <td>{{date-format imaging.imagingDate}}</td>
+          <td>{{imaging.patient.displayName}}</td>
+          <td>{{imaging.imagingType.name}}</td>
+          <td>{{imaging.result}}</td>
+          <td>{{imaging.notes}}</td>
         </tr>
-            {{#each}}
-                <tr>
-                    <td>{{date-format requestedDate}}</td>
-                    <td>{{date-format imagingDate}}</td>
-                    <td>{{patient.displayName}}</td>
-                    <td>{{imagingType.name}}</td>
-                    <td>{{result}}</td>
-                    <td>{{notes}}</td>
-                </tr>
-            {{/each}}
+      {{/each}}
     </table>
-{{else}}
-    <div class="alert alert-info">
-        <p>No completed items found.</p>
-    </div>
-{{/if}}
+  {{else}}
+      <div class="alert alert-info">
+          <p>No completed items found.</p>
+      </div>
+  {{/if}}
+{{/item-listing}}
