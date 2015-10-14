@@ -1,7 +1,8 @@
 import Ember from 'ember';
+import PaginationProps from 'hospitalrun/mixins/pagination-props';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default Ember.ArrayController.extend(ProgressDialog, UserSession, {
+export default Ember.ArrayController.extend(PaginationProps, ProgressDialog, UserSession, {
   addPermission: null,
   deletePermission: null,
   nextStartKey: null,
@@ -39,7 +40,7 @@ export default Ember.ArrayController.extend(ProgressDialog, UserSession, {
   }.property('nextStartKey'),
 
   showPagination: function() {
-    return (!Ember.isEmpty(this.get('previousStartKey') || !Ember.isEmpty(this.get('nextStartKey'))));
+    return (!Ember.isEmpty(this.get('previousStartKey')) || !Ember.isEmpty(this.get('nextStartKey')));
   }.property('nextStartKey', 'previousStartKey'),
 
   actions: {

@@ -1,0 +1,18 @@
+{{#if paginationProps.showPagination}}
+  {{#if paginationProps.showFirstPageButton}}
+    <button class="btn btn-default on-white" {{action 'firstPage'}} disabled={{paginationProps.disablePreviousPage}}>
+      <span class="glyphicon glyphicon-step-backward"></span>
+    </button>
+  {{/if}}
+  <button class="btn btn-default on-white" {{action 'previousPage'}} disabled={{paginationProps.disablePreviousPage}}>
+    <span class="glyphicon glyphicon-chevron-left"></span>
+  </button>
+  <button class="btn btn-default on-white" {{action 'nextPage'}} disabled={{paginationProps.disableNextPage}}>
+    <span class="glyphicon glyphicon-chevron-right"></span>
+  </button>
+  {{#if paginationProps.showLastPageButton}}
+    <button class="btn btn-default on-white" {{action 'lastPage'}} disabled={{paginationProps.disableNextPage}}>
+      <span class="glyphicon glyphicon-step-forward"></span>
+    </button>
+  {{/if}}
+{{/if}}
