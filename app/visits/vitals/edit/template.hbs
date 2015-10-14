@@ -1,21 +1,28 @@
-{{#em-form model=this submit_button=false }}
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=this submit_button=false }}
     <div class="row">
-        {{date-picker property="dateRecorded" label="Date Recorded" class="col-sm-6" format="l h:mm A" showTime=true }}
-    </div>
-    <div class="row">        
-        {{em-input class="col-sm-3" property="temperature" label=temperatureLabel }}
-    </div>
-    <div class="row">
-        {{em-input class="col-sm-3" property="weight" label="Weight"}}
-        {{em-input class="col-sm-3" property="height" label="Height"}}
-        
-    </div>
-    <div class="row">
-        {{em-input class="col-sm-3" property="sbp" label="SBP"}}
-        {{em-input class="col-sm-3" property="dbp" label="DBP"}}
+      {{date-picker property="dateRecorded" label="Date Recorded" class="col-sm-6" format="l h:mm A" showTime=true }}
     </div>
     <div class="row">
-        {{em-input class="col-sm-3" property="heartRate" label="Heart Rate"}}
-        {{em-input class="col-sm-3" property="respiratoryRate" label="Respiratory Rate"}}
+      {{em-input class="col-sm-3 required" property="temperature" label=temperatureLabel }}
     </div>
-{{/em-form}}
+    <div class="row">
+      {{em-input class="col-sm-3" property="weight" label="Weight"}}
+      {{em-input class="col-sm-3" property="height" label="Height"}}
+    </div>
+    <div class="row">
+      {{em-input class="col-sm-3 required" property="sbp" label="SBP"}}
+      {{em-input class="col-sm-3 required" property="dbp" label="DBP"}}
+    </div>
+    <div class="row">
+      {{em-input class="col-sm-3 required" property="heartRate" label="Heart Rate"}}
+      {{em-input class="col-sm-3 required" property="respiratoryRate" label="Respiratory Rate"}}
+    </div>
+  {{/em-form}}
+{{/modal-dialog}}

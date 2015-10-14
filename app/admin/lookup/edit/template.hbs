@@ -1,3 +1,9 @@
-{{#em-form model=this submit_button=false action="update" }}
-     {{em-input label="Value" property="value"}}
-{{/em-form}}
+{{#modal-dialog
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText}}
+  {{#em-form model=this submit_button=false action="update" }}
+    {{em-input label="Value" property="value"}}
+  {{/em-form}}
+{{/modal-dialog}}

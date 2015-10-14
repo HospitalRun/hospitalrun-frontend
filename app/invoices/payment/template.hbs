@@ -1,16 +1,24 @@
-{{#em-form model=this submit_button=false }}
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=this submit_button=false }}
     {{#if isNew}}
-            {{#if selectPatient}}
-                {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
-            {{else}}
-                <div class="form-group">
-                    <label>Patient</label>
-                    <p class="form-control-static">{{invoice.patient.displayName}}</p>
-                </div>
-            {{/if}}
+      {{#if selectPatient}}
+        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
+      {{else}}
+        <div class="form-group">
+          <label>Patient</label>
+          <p class="form-control-static">{{invoice.patient.displayName}}</p>
+        </div>
+      {{/if}}
     {{/if}}
     {{em-input property="amount" label="Amount" class="required"}}
     {{date-picker property="datePaid" label="Date Paid" maxDate="now" class="required"}}
     {{select-or-typeahead property="expenseAccount" label="Credit To" list=expenseAccountList selection=expenseAccount }}
     {{em-text property="notes" label="Notes"}}
-{{/em-form}}
+  {{/em-form}}
+{{/modal-dialog}}

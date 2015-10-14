@@ -1,5 +1,13 @@
-{{#em-form model=this submit_button=false }}
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=this submit_button=false }}
     {{em-input property="name" label="Name" class="required"}}
     {{em-input property="discountPercentage" label="Discount Percentage"}}
     {{em-input property="discountAmount" label="Discount Amount"}}
-{{/em-form}}
+  {{/em-form}}
+{{/modal-dialog}}

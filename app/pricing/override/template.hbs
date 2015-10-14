@@ -1,11 +1,19 @@
-{{#em-form model=this submit_button=false}}
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=this submit_button=false}}
     {{em-select label="Pricing Profile"
-        property="profile"
-        content=pricingProfiles
-        optionValuePath="selectObject"
-        optionLabelPath="selectObject.name"
-        class="required"
-        prompt=" "
+      property="profile"
+      content=pricingProfiles
+      optionValuePath="selectObject"
+      optionLabelPath="selectObject.name"
+      class="required"
+      prompt=" "
     }}
     {{em-input label="Price" property="price" class="required"}}
-{{/em-form}}
+  {{/em-form}}
+{{/modal-dialog}}

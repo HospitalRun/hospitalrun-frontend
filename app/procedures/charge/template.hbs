@@ -1,7 +1,15 @@
-{{#em-form model=this submit_button=false }}
-    {{pricing-typeahead property="itemName" label="Item" content=pricingList selection=selectedItem class="required"}}   
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=this submit_button=false }}
+    {{pricing-typeahead property="itemName" label="Item" content=pricingList selection=selectedItem class="required"}}
     <div class="row">
-        {{em-input label="Quantity" property="quantity" class="col-xs-3 required"}}    
-        {{date-picker property="dateCharged" label="Date Charged" class="col-xs-4 required"}}
+      {{em-input label="Quantity" property="quantity" class="col-xs-3 required"}}
+      {{date-picker property="dateCharged" label="Date Charged" class="col-xs-4 required"}}
     </div>
-{{/em-form}}
+  {{/em-form}}
+{{/modal-dialog}}

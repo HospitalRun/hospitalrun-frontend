@@ -1,12 +1,20 @@
-{{#em-form model=this submit_button=false }}
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=this submit_button=false }}
     {{#if isNew}}
-        {{take-photo photoFile=photoFile }}
+      {{take-photo photoFile=photoFile }}
     {{else}}
-        <div class="thumbnail">
-            <img alt={{caption}} src={{url}} class="img-responsive" >
-        </div>
+      <div class="thumbnail">
+        <img alt={{caption}} src={{url}} class="img-responsive" >
+      </div>
     {{/if}}
     <div class="row">
-        {{em-input property="caption" label="Caption"}}
+      {{em-input property="caption" label="Caption"}}
     </div>
-{{/em-form}}
+  {{/em-form}}
+{{/modal-dialog}}

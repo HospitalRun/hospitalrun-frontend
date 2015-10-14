@@ -1,1 +1,9 @@
-{{partial 'procedures/charge'}}
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{partial 'procedures/charge'}}
+{{/modal-dialog}}

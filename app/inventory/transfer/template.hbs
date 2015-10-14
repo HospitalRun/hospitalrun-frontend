@@ -1,22 +1,30 @@
-{{#em-form model=this submit_button=false }}
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=this submit_button=false }}
     <div class="form-group">
-        <label class="control-label">Item</label>
-        <p class="form-control-static">{{transferItem.name}}</p>        
+      <label class="control-label">Item</label>
+      <p class="form-control-static">{{transferItem.name}}</p>
     </div>
     <div class="form-group">
-        <label class="control-label">Transfer From</label>
-        <p class="form-control-static">{{locationName}}</p>        
+      <label class="control-label">Transfer From</label>
+      <p class="form-control-static">{{locationName}}</p>
     </div>
     <div class="form-group">
-        <label class="control-label">Quantity Available</label>
-        <p class="form-control-static">{{quantity}}</p>
+      <label class="control-label">Quantity Available</label>
+      <p class="form-control-static">{{quantity}}</p>
     </div>
     {{select-or-typeahead class="required" property="transferLocation" label="Transfer To Location" list=warehouseList selection=transferLocation }}
     {{select-or-typeahead property="transferAisleLocation" label="Transfer To Aisle Location" list=aisleLocationList selection=transferAisleLocation }}
     <div class="row">
-        {{em-input property="adjustmentQuantity" label="Quantity" class="col-sm-3 required"}}        
+      {{em-input property="adjustmentQuantity" label="Quantity" class="col-sm-3 required"}}
     </div>
     <div class="row">
-        {{date-picker property="dateCompleted" label="Date Transferred" class="col-sm-4 required"}}
+      {{date-picker property="dateCompleted" label="Date Transferred" class="col-sm-4 required"}}
     </div>
-{{/em-form}}
+  {{/em-form}}
+{{/modal-dialog}}

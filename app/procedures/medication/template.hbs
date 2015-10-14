@@ -1,4 +1,12 @@
-{{#em-form model=this submit_button=false }}
-    {{inventory-typeahead property="itemName" label="Medication Used" content=medicationList selection=selectedInventoryItem }}  
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=this submit_button=false }}
+    {{inventory-typeahead property="itemName" label="Medication Used" content=medicationList selection=selectedInventoryItem }}
     {{em-input label="Quantity" property="quantity" class="required"}}
-{{/em-form}}
+  {{/em-form}}
+{{/modal-dialog}}

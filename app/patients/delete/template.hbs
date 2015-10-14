@@ -1,4 +1,12 @@
-<div class="alert alert-danger">
-    <span class="glyphicon glyphicon-warning-sign"></span> 
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  <div class="alert alert-danger">
+    <span class="glyphicon glyphicon-warning-sign"></span>
     Are you sure you wish to delete {{firstName}} {{lastName}}?
-</div>
+  </div>
+{{/modal-dialog}}

@@ -1,4 +1,13 @@
-<div class="alert alert-danger">
-    <span class="glyphicon glyphicon-warning-sign"></span> 
-    Are you sure you wish to delete <b>{{displayInvoiceNumber}}</b>?
-</div>
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=this submit_button=false }}{{/em-form}}
+    <div class="alert alert-danger">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      Are you sure you wish to delete <b>{{displayInvoiceNumber}}</b>?
+    </div>
+{{/modal-dialog}}

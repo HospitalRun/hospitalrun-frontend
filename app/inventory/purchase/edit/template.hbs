@@ -1,3 +1,11 @@
-{{#em-form model=this submit_button=false }}
-    {{partial 'inventory/purchase'}}
-{{/em-form}}
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=this submit_button=false }}
+    {{partial 'inv-purchase'}}
+  {{/em-form}}
+{{/modal-dialog}}

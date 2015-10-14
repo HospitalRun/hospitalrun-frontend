@@ -1,8 +1,16 @@
-{{#em-form model=this submit_button=false }}
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=this submit_button=false }}
     {{em-select label="Category" property="category" class="required"
-        content=categoryTypes
-        selected=category
+      content=categoryTypes
+      selected=category
     }}
     {{em-input label="Sources" property="sources"}}
     {{em-input label="Cost" property="cost" class="required"}}
-{{/em-form}}
+  {{/em-form}}
+{{/modal-dialog}}

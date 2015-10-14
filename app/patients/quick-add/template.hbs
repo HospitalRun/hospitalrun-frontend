@@ -1,20 +1,30 @@
-<div class="alert alert-warning" role="alert">The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.</div>
-{{#em-form model=this submit_button=false }}
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  <div class="alert alert-warning" role="alert">
+    The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.
+  </div>
+  {{#em-form model=this submit_button=false }}
     <div class="row">
-        {{em-input property="friendlyId" label="Id" class="required col-sm-6"}}
-        {{em-input property="firstName" label="First Name" class="required col-sm-6"}}
+      {{em-input property="friendlyId" label="Id" class="required col-sm-6"}}
+      {{em-input property="firstName" label="First Name" class="required col-sm-6"}}
     </div>
     <div class="row">
-        {{em-input property="middleName" label="Middle Name" class="col-sm-6" }}
-        {{em-input property="lastName" label="Last Name" class="required col-sm-6"}}
+      {{em-input property="middleName" label="Middle Name" class="col-sm-6" }}
+      {{em-input property="lastName" label="Last Name" class="required col-sm-6"}}
     </div>
-    <div class="row">        
-        <div class="form-group col-sm-6">
-            <label>Gender</label>
-            <div>
-                {{ext-radio name=gender content=genderList value=gender showInline=true }}
-            </div>
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <label>Gender</label>
+        <div>
+          {{ext-radio name=gender content=genderList value=gender showInline=true }}
         </div>
-        {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now" class="col-sm-6"}}
-    </div>    
-{{/em-form}}
+      </div>
+      {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now" class="col-sm-6"}}
+    </div>
+  {{/em-form}}
+{{/modal-dialog}}

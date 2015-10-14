@@ -1,26 +1,34 @@
-<div class="alert alert-danger">
-    <span class="glyphicon glyphicon-warning-sign"></span> 
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  <div class="alert alert-danger">
+    <span class="glyphicon glyphicon-warning-sign"></span>
     Are you sure you wish to delete this visit?
-</div>
-<form role="form">
+  </div>
+  <form role="form">
     <div class="form-group">
-        <label class="control-label">Start Date</label>
-        <p class="form-control-static">{{date-format startDate}}</p>        
-    </div>
-     <div class="form-group">
-        <label class="control-label">End Date</label>
-        <p class="form-control-static">{{date-format endDate}}</p>        
-    </div>
-     <div class="form-group">
-        <label class="control-label">Examiner</label>
-        <p class="form-control-static">{{examiner}}</p>        
+      <label class="control-label">Start Date</label>
+      <p class="form-control-static">{{date-format startDate}}</p>
     </div>
     <div class="form-group">
-        <label class="control-label">Location</label>
-        <p class="form-control-static">{{location}}</p>        
+      <label class="control-label">End Date</label>
+      <p class="form-control-static">{{date-format endDate}}</p>
     </div>
     <div class="form-group">
-        <label class="control-label">Type</label>
-        <p class="form-control-static">{{visitType}}</p>        
+      <label class="control-label">Examiner</label>
+      <p class="form-control-static">{{examiner}}</p>
     </div>
-</form>
+    <div class="form-group">
+      <label class="control-label">Location</label>
+      <p class="form-control-static">{{location}}</p>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Type</label>
+      <p class="form-control-static">{{visitType}}</p>
+    </div>
+  </form>
+{{/modal-dialog}}
