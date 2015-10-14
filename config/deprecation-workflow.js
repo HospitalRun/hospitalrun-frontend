@@ -7,7 +7,7 @@ window.deprecationWorkflow.config = {
     { handler: "silence", matchMessage: "Using Ember.HTMLBars._registerHelper is deprecated. Helpers (even dashless ones) are automatically resolved." },
     { handler: "silence", matchMessage: "Ember.LinkView is deprecated. Please use Ember.LinkComponent." },
     { handler: "silence", matchMessage: "`lookup` was called on a Registry. The `initializer` API no longer receives a container, and you should use an `instanceInitializer` to look up objects from the container." },
-    { handler: "silence", matchMessage: "Controller#needs is deprecated, please use Ember.inject.controller() instead" },
+    //{ handler: "silence", matchMessage: "Controller#needs is deprecated, please use Ember.inject.controller() instead" },
     { handler: "silence", matchMessage: "Using store.find(type) has been deprecated. Use store.findAll(type) to retrieve all records for a given type." },
     { handler: "silence", matchMessage: "The default behavior of shouldReloadAll will change in Ember Data 2.0 to always return false when there is at least one \"price-profile\" record in the store. If you would like to preserve the current behavior please override shouldReloadAll in your adapter:application and return true." },
     { handler: "silence", matchMessage: "Ember.View is deprecated. Consult the Deprecations Guide for a migration strategy." },
