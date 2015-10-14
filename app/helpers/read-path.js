@@ -1,5 +1,5 @@
 import Ember from 'ember';
-export default Ember.Handlebars.makeBoundHelper(function(object, path) {
+export default Ember.Helper.helper(function([object, path]) {
   if (Ember.isEmpty(path)) {
     return object;
   } else {

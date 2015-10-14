@@ -1,4 +1,4 @@
 import Ember from 'ember';
-export default Ember.Handlebars.makeBoundHelper(function(lhs, rhs) {
+export default Ember.Helper.helper(function([lhs, rhs]) {
   return lhs === rhs;
 });
