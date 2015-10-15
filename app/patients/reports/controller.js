@@ -5,14 +5,14 @@ import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import SelectValues from 'hospitalrun/utils/select-values';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, VisitTypes, {
-  needs: ['patients'],
+  patientsController: Ember.inject.controller('patients'),
 
-  clinicList: Ember.computed.map('controllers.patients.clinicList.value', SelectValues.selectValuesMap),
-  diagnosisList: Ember.computed.alias('controllers.patients.diagnosisList'),
-  physicianList: Ember.computed.map('controllers.patients.physicianList.value', SelectValues.selectValuesMap),
-  locationList: Ember.computed.map('controllers.patients.locationList.value', SelectValues.selectValuesMap),
-  statusList: Ember.computed.map('controllers.patients.statusList.value', SelectValues.selectValuesMap),
-  visitTypesList: Ember.computed.alias('controllers.patients.visitTypeList'),
+  clinicList: Ember.computed.map('patientsController.clinicList.value', SelectValues.selectValuesMap),
+  diagnosisList: Ember.computed.alias('patientsController.diagnosisList'),
+  physicianList: Ember.computed.map('patientsController.physicianList.value', SelectValues.selectValuesMap),
+  locationList: Ember.computed.map('patientsController.locationList.value', SelectValues.selectValuesMap),
+  statusList: Ember.computed.map('patientsController.statusList.value', SelectValues.selectValuesMap),
+  visitTypesList: Ember.computed.alias('patientsController.visitTypeList'),
   patientDetails: {},
 
   admissionReportColumns: {

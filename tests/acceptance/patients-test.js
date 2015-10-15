@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { module, test, skip } from 'qunit';
+import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
 module('Acceptance | patients', {
@@ -32,7 +32,7 @@ test('visiting /patients route', function(assert) {
   destroyDatabases();
 });
 
-skip('View reports tab', function(assert) {
+test('View reports tab', function(assert) {
   loadPouchDump('default');
   authenticateUser();
   visit('/patients/reports');
@@ -43,7 +43,7 @@ skip('View reports tab', function(assert) {
     assert.equal(generateReportButton.length, 1, 'Generate Report button is visible');
     const reportType = find('[data-test-selector="select-report-type"]');
     assert.equal(reportType.length, 1, 'Report type select is visible');
-    assert.equal(reportType.find(':selected').text(), 'Admissions Detail', 'Default value selected"');
+    assert.equal(reportType.find(':selected').text().trim(), 'Admissions Detail', 'Default value selected"');
   });
   destroyDatabases();
 });
@@ -54,26 +54,7 @@ testSimpleReportForm('Discharges Detail');
 testSimpleReportForm('Discharges Summary');
 testSimpleReportForm('Procedures Detail');
 
-function testSimpleReportForm(reportName) {
-  skip(`View reports tab | ${reportName} shows start and end dates`, function(assert) {
-    loadPouchDump('default');
-    authenticateUser();
-    visit('/patients/reports');
-    select('[data-test-selector="select-report-type"] select', reportName);
-
-    andThen(function() {
-      const reportStartDate = find('[data-test-selector="select-report-start-date"]');
-      const reportEndDate = find('[data-test-selector="select-report-end-date"]');
-      assert.equal(reportStartDate.length, 1, 'Report start date select is visible');
-      assert.equal(reportEndDate.length, 1, 'Report end date select is visible');
-      const reportType = find('[data-test-selector="select-report-type"] select');
-      assert.equal(reportType.find(':selected').text(), reportName, `${reportName} option selected`);
-    });
-    destroyDatabases();
-  });
-}
-
-skip('View reports tab | Patient Status', function(assert) {
+test('View reports tab | Patient Status', function(assert) {
   loadPouchDump('default');
   authenticateUser();
   visit('/patients/reports');
@@ -85,7 +66,7 @@ skip('View reports tab | Patient Status', function(assert) {
     assert.equal(generateReportButton.length, 1, 'Generate Report button is visible');
     const reportType = find('[data-test-selector="select-report-type"] select');
     assert.equal(reportType.length, 1, 'Report type select is visible');
-    assert.equal(reportType.find(':selected').text(), 'Patient Status', 'Default value selected"');
+    assert.equal(reportType.find(':selected').text().trim(), 'Patient Status', 'Default value selected"');
   });
   destroyDatabases();
 });
@@ -97,10 +78,7 @@ test('Adding a new patient record', function(assert) {
   andThen(function() {
     assert.equal(currentURL(), '/patients/edit/new');
   });
-  // Ember.run(function() {
-  //   fillIn('.test-first-name input', 'John');
-  //   fillIn('.test-last-name input', 'Doe');
-  // });
+
   fillIn('.test-first-name input', 'John');
   fillIn('.test-last-name input', 'Doe');
   click('.panel-footer button:contains(Add)');
@@ -109,9 +87,43 @@ test('Adding a new patient record', function(assert) {
     assert.equal(find('.modal-title').text(), 'Patient Saved', 'Patient record has been saved');
     assert.equal(find('.modal-body').text().trim(), 'The patient record for John Doe has been saved.', 'Record has been saved');
   });
+  click('button:contains(Ok)');
   waitToAppear('.patient-summary');
+
   andThen(function() {
-    assert.ok(find('.patient-summary').length > 0, 'patient summary is displayed');
+    findWithAssert('.patient-summary');
   });
+  tabTest('photos-tab', 'Photos');
+  tabTest('medication-tab', 'Medication');
+  tabTest('imaging-tab', 'Imaging');
+  tabTest('labs-tab', 'Labs');
+  tabTest('appointments-tab', 'Visits');
+  tabTest('social-tab', 'Social Work Details');
   destroyDatabases();
 });
+
+function tabTest(tabName, tabTitle) {
+  click(`[data-test-selector=${tabName}]`);
+  andThen(function() {
+    findWithAssert(`.active .panel-title:contains(${tabTitle})`);
+  });
+}
+
+function testSimpleReportForm(reportName) {
+  test(`View reports tab | ${reportName} shows start and end dates`, function(assert) {
+    loadPouchDump('default');
+    authenticateUser();
+    visit('/patients/reports');
+    select('[data-test-selector="select-report-type"] select', reportName);
+
+    andThen(function() {
+      const reportStartDate = find('[data-test-selector="select-report-start-date"]');
+      const reportEndDate = find('[data-test-selector="select-report-end-date"]');
+      assert.equal(reportStartDate.length, 1, 'Report start date select is visible');
+      assert.equal(reportEndDate.length, 1, 'Report end date select is visible');
+      const reportType = find('[data-test-selector="select-report-type"] select');
+      assert.equal(reportType.find(':selected').text().trim(), reportName, `${reportName} option selected`);
+    });
+    destroyDatabases();
+  });
+}

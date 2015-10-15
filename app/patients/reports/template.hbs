@@ -1,6 +1,6 @@
 <div class="panel panel-primary">
     <div class="panel-body">
-        {{#em-form model=this submit_button=false }}
+        {{#em-form model=this submitButton=false }}
             <div class="row" data-test-selector="select-report-type">
                 {{em-select class="col-xs-6" label="Report Type"
                     property="reportType" content=reportTypes
@@ -92,9 +92,9 @@
         <div class="panel-body">
             <table class="table">
                 <tr class="table-header">
-                    {{#each reportHeaders}}
+                    {{#each reportHeaders as |reportHeader|}}
                         <th>
-                            {{this}}
+                            {{reportHeader}}
                         </th>
                     {{/each}}
                 </tr>
