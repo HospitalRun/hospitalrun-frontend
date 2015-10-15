@@ -1,15 +1,15 @@
-{{#em-form model=this submit_button=false bubbles=false }}
+{{#em-form model=this submitButton=false bubbles=false }}
     {{#unless isNewOrDeleted}}
         {{patient-summary patient=model visits=visits patientProcedures=patientProcedures disablePatientLink=true }}
         <ul class="nav nav-pills" role="tablist">
-            <li role="presentation" class="active" ><a class="active" href="#general" role="tab" data-toggle="pill">General</a></li>
-            <li role="presentation"><a href="#photos" role="tab" data-toggle="pill">Photos</a></li>
-            <li role="presentation"><a href="#medication" role="tab" data-toggle="pill">Medication</a></li>
-            <li role="presentation"><a href="#imaging" role="tab" data-toggle="pill">Imaging</a></li>
-            <li role="presentation"><a href="#labs" role="tab" data-toggle="pill">Labs</a></li>
-            <li role="presentation"><a href="#visits" role="tab" data-toggle="pill">Visits/Appointments</a></li>
+            <li role="presentation" class="active"><a class="active" href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">General</a></li>
+            <li role="presentation"><a href="#photos" role="tab" data-toggle="pill" data-test-selector="photos-tab">Photos</a></li>
+            <li role="presentation"><a href="#medication" role="tab" data-toggle="pill" data-test-selector="medication-tab">Medication</a></li>
+            <li role="presentation"><a href="#imaging" role="tab" data-toggle="pill" data-test-selector="imaging-tab">Imaging</a></li>
+            <li role="presentation"><a href="#labs" role="tab" data-toggle="pill" data-test-selector="labs-tab">Labs</a></li>
+            <li role="presentation"><a href="#visits" role="tab" data-toggle="pill" data-test-selector="appointments-tab">Visits/Appointments</a></li>
             {{#if canAddSocialWork}}
-                <li role="presentation"><a href="#social" role="tab" data-toggle="pill">Social Work</a></li>
+                <li role="presentation"><a href="#social" role="tab" data-toggle="pill" data-test-selector="social-tab">Social Work</a></li>
             {{/if}}
         </ul>
     {{/unless}}
@@ -240,26 +240,24 @@
                                 <th>Type</th>
                                 <th>Actions</th>
                             </tr>
-                            {{#with this as patientController}}
-                                {{#each visits}}
+                                {{#each visits as |visit|}}
                                     <tr {{action "editVisit" this}}>
-                                        <td>{{date-format startDate}}</td>
-                                        <td>{{date-format endDate}}</td>
-                                        <td>{{primaryDiagnosis}}</td>
-                                        <td>{{examiner}}</td>
-                                        <td>{{location}}</td>
-                                        <td>{{visitType}}</td>
+                                        <td>{{date-format visit.startDate}}</td>
+                                        <td>{{date-format visit.endDate}}</td>
+                                        <td>{{visit.primaryDiagnosis}}</td>
+                                        <td>{{visit.examiner}}</td>
+                                        <td>{{visit.location}}</td>
+                                        <td>{{visit.visitType}}</td>
                                         <td>
-                                            {{#if patientController.canAddVisit}}
+                                            {{#if canAddVisit}}
                                                 <button type="button" class="btn btn-default neutral" {{action "editVisit" this}}>Edit</button>
                                             {{/if}}
-                                            {{#if patientController.canDeleteVisit}}
+                                            {{#if canDeleteVisit}}
                                                 <button type="button" class="btn btn-default warning" {{action "showDeleteVisit" this bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                             {{/if}}
                                         </td>
                                     </tr>
                                 {{/each}}
-                            {{/with}}
                         </table>
                     </div>
                 </div>
@@ -329,29 +327,27 @@
                                     <th>Insurance</th>
                                     <th>Action</th>
                                 </tr>
-                                {{#with this as patientController}}
-                                    {{#each familyInfo}}
-                                        <tr>
-                                            <td>{{name}}</td>
-                                            <td>{{age}}</td>
-                                            <td>{{civilStatus}}</td>
-                                            <td>{{relationship}}</td>
-                                            <td>{{education}}</td>
-                                            <td>{{occupation}}</td>
-                                            <td>{{income}}</td>
-                                            <td>{{insurance}}</td>
+                                {{#each familyInfo as |info|}}
+                                    <tr>
+                                        <td>{{info.name}}</td>
+                                        <td>{{info.age}}</td>
+                                        <td>{{info.civilStatus}}</td>
+                                        <td>{{info.relationship}}</td>
+                                        <td>{{info.education}}</td>
+                                        <td>{{info.occupation}}</td>
+                                        <td>{{info.income}}</td>
+                                        <td>{{info.insurance}}</td>
 
-                                            <td>
+                                        <td>
 
-                                                <button type="button" class="btn btn-default neutral" {{action "showEditFamily" this}}>Edit</button>
-                                                {{#if patientController.canDeleteSocialWork}}
-                                                    <button type="button" class="btn btn-default warning" {{action "showDeleteFamily" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                                                {{/if}}
+                                            <button type="button" class="btn btn-default neutral" {{action "showEditFamily" this}}>Edit</button>
+                                            {{#if canDeleteSocialWork}}
+                                                <button type="button" class="btn btn-default warning" {{action "showDeleteFamily" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                            {{/if}}
 
-                                            </td>
-                                        </tr>
-                                    {{/each}}
-                                {{/with}}
+                                        </td>
+                                    </tr>
+                                {{/each}}
                             </table>
                             <h4>
                                 Expenses
@@ -364,21 +360,19 @@
                                     <th>Monthly Cost</th>
                                     <th>Actions</th>
                                 </tr>
-                                {{#with this as patientController}}
-                                    {{#each expenses}}
+                                    {{#each expenses as |expense|}}
                                         <tr>
-                                            <td>{{category}}</td>
-                                            <td>{{sources}}</td>
-                                            <td>{{cost}}</td>
+                                            <td>{{expense.category}}</td>
+                                            <td>{{expense.sources}}</td>
+                                            <td>{{expense.cost}}</td>
                                             <td>
                                                 <button type="button" class="btn btn-default neutral" {{action "showEditExpense" this}}>Edit</button>
-                                                {{#if patientController.canDeleteSocialWork}}
+                                                {{#if canDeleteSocialWork}}
                                                     <button type="button" class="btn btn-default warning" {{action "showDeleteExpense" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
                                                 {{/if}}
                                             </td>
                                         </tr>
                                     {{/each}}
-                                {{/with}}
                                 {{#if showExpenseTotal}}
                                     <tr>
                                         <td colspan="2"><b>Total Monthly Expenses</b></td>

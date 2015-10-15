@@ -100,7 +100,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
         throw Error('invalid');
       }
     }.bind(this)).catch(function() {
-        this.displayAlert('Warning!!!!', 'Please fill in required fields (marked with *) and correct the errors before adding.');
+      this.displayAlert('Warning!!!!', 'Please fill in required fields (marked with *) and correct the errors before adding.');
     }.bind(this));
   },
 
