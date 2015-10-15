@@ -1,4 +1,5 @@
 {
+  "preset": "ember-suave",
   "disallowVar": null,
   "disallowMultipleVarDecl": null,
   "requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties",
