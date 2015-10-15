@@ -60,7 +60,7 @@ export default AbstractModel.extend({
       }));
     }
     return diagnosisList;
-  }.property('additionalDiagnosis@each', 'primaryDiagnosis'),
+  }.property('additionalDiagnosis.[]', 'primaryDiagnosis'),
 
   visitDate: function() {
     var endDate = this.get('endDate'),

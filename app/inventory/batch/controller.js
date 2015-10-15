@@ -65,7 +65,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
       total += Number(purchaseCost);
     }
     return total;
-  }.property('invoiceItems@each.purchaseCost', 'isValid', 'purchaseCost'),
+  }.property('invoiceItems.[].purchaseCost', 'isValid', 'purchaseCost'),
 
   updateButtonText: 'Save',
 
