@@ -99,7 +99,7 @@ export default Adapter.extend(PouchAdapterUtils, {
     return PouchDB.utils.uuid();
   },
 
-  findQuery: function(store, type, query, options) {
+  query: function(store, type, query, options) {
     var specialQuery = false;
     for (var i = 0; i < this._specialQueries.length; i++) {
       if (Ember.get(query, this._specialQueries[i])) {

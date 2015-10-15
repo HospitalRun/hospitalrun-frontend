@@ -72,7 +72,7 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
       if (!Ember.isEmpty(params.startKey)) {
         queryParams.options.startkey = params.startKey;
       }
-      this.store.find(modelName, queryParams).then(function(model) {
+      this.store.query(modelName, queryParams).then(function(model) {
         if (model.get('length') > 0) {
           this.set('firstKey', this._getStartKeyFromItem(model.get('firstObject')));
         }
