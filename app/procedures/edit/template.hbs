@@ -1,8 +1,8 @@
-{{#em-form model=this submit_button=false }}    
+{{#em-form model=this submit_button=false }}
     {{select-or-typeahead className="required" property="description"
         label="Procedure" list=procedureList
         selection=description hint=false
-    }}          
+    }}
     <div class="row">
         {{select-or-typeahead className="col-xs-6" property="cptCode"
             label="CPT Code" list=cptCodeList
@@ -13,7 +13,7 @@
         {{select-or-typeahead className="col-sm-3" property="location"
             label="Procedure Location" list=procedureLocations
             selection=location
-        }}  
+        }}
         {{date-picker property="procedureDate" label="Procedure Date" class="col-sm-3 required"}}
         {{em-input property="timeStarted" label="Time Started" class="col-sm-3"}}
         {{em-input property="timeEnded" label="Time Ended" class="col-sm-3"}}
@@ -36,7 +36,7 @@
         {{select-or-typeahead className="col-sm-4" property="anesthesiaType"
             label="Anesthesia Type" list=anesthesiaTypes
             selection=anesthesiaTypes
-        }}        
+        }}
     </div>
     {{em-text label="Notes" property="notes" rows=3 }}
     {{partial 'item-charges'}}
@@ -56,26 +56,24 @@
                     <th>Quantity</th>
                     <th>Action</th>
                 </tr>
-                {{#with this as parentController}}
-                    {{#each charges}}
-                        {{#if medicationCharge}}
-                            <tr>
-                                <td>{{medication.name}}</td>
-                                <td>{{quantity}}</td>
-                                <td>
-                                    {{#if parentController.canAddCharge}}
-                                        <button class="btn btn-default neutral" {{action "showEditMedication" this}}>Edit</button>
-                                    {{/if}}
-                                    {{#if parentController.canAddCharge}}
-                                        <button class="btn btn-default warning" {{action "showDeleteMedication" this bubbles=false }}>
-                                            <span class="octicon octicon-x"></span>Delete
-                                        </button>
-                                    {{/if}}
-                                </td>
-                            </tr>
-                        {{/if}}
-                    {{/each}}
-                {{/with}}
+                {{#each charges as |charge|}}
+                    {{#if charge.medicationCharge}}
+                        <tr>
+                            <td>{{charge.medication.name}}</td>
+                            <td>{{charge.quantity}}</td>
+                            <td>
+                                {{#if canAddCharge}}
+                                    <button class="btn btn-default neutral" {{action "showEditMedication" charge}}>Edit</button>
+                                {{/if}}
+                                {{#if canAddCharge}}
+                                    <button class="btn btn-default warning" {{action "showDeleteMedication" charge bubbles=false }}>
+                                        <span class="octicon octicon-x"></span>Delete
+                                    </button>
+                                {{/if}}
+                            </td>
+                        </tr>
+                    {{/if}}
+                {{/each}}
             </table>
         </div>
     </div>
