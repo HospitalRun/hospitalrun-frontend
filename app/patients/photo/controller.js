@@ -2,7 +2,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   patientsEdit: Ember.inject.controller('patients/edit'),
 
-  title: function () {
+  title: function() {
     var isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add Photo';
@@ -11,7 +11,7 @@ export default Ember.Controller.extend({
     }
   }.property('model.isNew'),
 
-  updateButtonText: function () {
+  updateButtonText: function() {
     var isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add';

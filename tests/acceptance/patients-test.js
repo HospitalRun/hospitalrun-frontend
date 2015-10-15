@@ -90,7 +90,7 @@ test('Adding a new patient record', function(assert) {
   click('button:contains(Ok)');
   waitToAppear('.patient-summary');
 
-  andThen(function(){
+  andThen(function() {
     findWithAssert('.patient-summary');
   });
   tabTest('photos-tab', 'Photos');
@@ -104,7 +104,7 @@ test('Adding a new patient record', function(assert) {
 
 function tabTest(tabName, tabTitle) {
   click(`[data-test-selector=${tabName}]`);
-  andThen(function(){
+  andThen(function() {
     findWithAssert(`.active .panel-title:contains(${tabTitle})`);
   });
 }
