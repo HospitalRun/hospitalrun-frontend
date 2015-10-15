@@ -3,7 +3,7 @@ window.deprecationWorkflow.config = {
   workflow: [
     { handler: "throw", matchMessage: "Ember.Handlebars.helper is deprecated, please refactor to Ember.Helper.helper" },
     { handler: "throw", matchMessage: "`Ember.Handlebars.makeViewHelper` and `Ember.HTMLBars.makeViewHelper` are deprecated. Please refactor to normal component usage." },
-    { handler: "throw", matchMessage: "the component:nav-menu test module is implicitly running in unit test mode, which will change to integration test mode by default in an upcoming version of ember-test-helpers. Add `unit: true` or a `needs:[]` list to explicitly opt in to unit test mode." },
+    { handler: "silence", matchMessage: "the component:nav-menu test module is implicitly running in unit test mode, which will change to integration test mode by default in an upcoming version of ember-test-helpers. Add `unit: true` or a `needs:[]` list to explicitly opt in to unit test mode." },
     { handler: "silence", matchMessage: "Using Ember.HTMLBars._registerHelper is deprecated. Helpers (even dashless ones) are automatically resolved." },
     { handler: "throw", matchMessage: "Ember.LinkView is deprecated. Please use Ember.LinkComponent." },
     { handler: "silence", matchMessage: "`lookup` was called on a Registry. The `initializer` API no longer receives a container, and you should use an `instanceInitializer` to look up objects from the container." },
