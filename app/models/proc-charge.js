@@ -33,7 +33,7 @@ export default AbstractModel.extend({
         accept: true,
         if: function(object) {
           var medicationCharge = object.get('medicationCharge');
-          if (!medicationCharge || !object.get('isDirty')) {
+          if (!medicationCharge || !object.get('hasDirtyAttributes')) {
             return false;
           }
           var itemName = object.get('inventoryItem.name'),

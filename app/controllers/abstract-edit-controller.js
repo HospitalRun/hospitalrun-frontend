@@ -6,13 +6,13 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
   cancelAction: 'allItems',
 
   cancelButtonText: function() {
-    var isDirty = this.get('isDirty');
-    if (isDirty) {
+    var hasDirtyAttributes = this.get('model.hasDirtyAttributes');
+    if (hasDirtyAttributes) {
       return 'Cancel';
     } else {
       return 'Return';
     }
-  }.property('isDirty'),
+  }.property('model.hasDirtyAttributes'),
 
   disabledAction: function() {
     var isValid = this.get('isValid');

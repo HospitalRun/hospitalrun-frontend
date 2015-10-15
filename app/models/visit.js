@@ -3,7 +3,7 @@ import DS from 'ember-data';
 import Ember from 'ember';
 
 function dateAcceptance(object) {
-  if (!object.get('isDirty')) {
+  if (!object.get('hasDirtyAttributes')) {
     return false;
   }
   var startDate = object.get('startDate'),

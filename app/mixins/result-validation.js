@@ -5,7 +5,7 @@ export default Ember.Mixin.create({
       acceptance: {
         accept: true,
         if: function(object) {
-          if (!object.get('isDirty')) {
+          if (!object.get('hasDirtyAttributes')) {
             return false;
           }
           var status = object.get('status'),

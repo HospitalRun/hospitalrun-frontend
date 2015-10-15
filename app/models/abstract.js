@@ -26,7 +26,7 @@ export default Model.extend(UserSession, EmberValidations, {
       });
     }
 
-    if (this.get('isDirty') && !this.get('isDeleted')) {
+    if (this.get('hasDirtyAttributes') && !this.get('isDeleted')) {
       if (Ember.isEmpty(modifiedFields)) {
         modifiedFields = {};
       }

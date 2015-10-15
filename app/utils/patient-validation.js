@@ -7,7 +7,7 @@ export default {
         if (!object.get('selectPatient')) {
           return false;
         }
-        if (!object.get('isDirty')) {
+        if (!object.get('hasDirtyAttributes')) {
           return false;
         }
         var patientName = object.get('patient.displayName'),
