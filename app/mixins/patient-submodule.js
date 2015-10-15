@@ -132,7 +132,7 @@ export default Ember.Mixin.create(PatientVisits, {
   returnVisitId: null,
   patientVisitsForSelect: function() {
     return this.get('patientVisits').map(SelectValues.selectObjectMap);
-  }.property('patientVisits.@each'),
+  }.property('patientVisits.[]'),
 
   /**
    * Removes the specified child from the current visit object and then saves the visit.

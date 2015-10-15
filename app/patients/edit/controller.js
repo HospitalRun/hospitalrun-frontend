@@ -149,19 +149,19 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
 
   patientImaging: function() {
     return this._getVisitCollection('imaging');
-  }.property('visits.@each.imaging'),
+  }.property('visits.[].imaging'),
 
   patientLabs: function() {
     return this._getVisitCollection('labs');
-  }.property('visits.@each.labs'),
+  }.property('visits.[].labs'),
 
   patientMedications: function() {
     return this._getVisitCollection('medication');
-  }.property('visits.@each.medication'),
+  }.property('visits.[].medication'),
 
   patientProcedures: function() {
     return this._getVisitCollection('procedures');
-  }.property('visits.@each.procedures'),
+  }.property('visits.[].procedures'),
 
   showExpenseTotal: true,
 

@@ -50,7 +50,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
   showInvoiceItems: function() {
     var invoiceItems = this.get('invoiceItems');
     return !Ember.isEmpty(invoiceItems);
-  }.property('invoiceItems.@each'),
+  }.property('invoiceItems.[]'),
 
   totalReceived: function() {
     var invoiceItems = this.get('invoiceItems'),

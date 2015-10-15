@@ -27,12 +27,12 @@ export default Ember.Component.extend(PatientDiagnosis, {
   primaryDiagnoses: function() {
     var visits = this.get('visits');
     return this.getPrimaryDiagnoses(visits);
-  }.property('visits.@each'),
+  }.property('visits.[]'),
 
   secondaryDiagnoses: function() {
     var visits = this.get('visits');
     return this.getSecondaryDiagnoses(visits);
-  }.property('visits.@each'),
+  }.property('visits.[]'),
 
   shouldLinkToPatient: function() {
     var disablePatientLink = this.get('disablePatientLink');

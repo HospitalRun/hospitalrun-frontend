@@ -32,7 +32,7 @@ export default AbstractModel.extend(LocationName, {
       return location.get('quantity') > 0;
     });
     return locations;
-  }.property('locations.@each.lastModified'),
+  }.property('locations.[].lastModified'),
 
   displayLocations: function() {
     var locations = this.get('availableLocations'),

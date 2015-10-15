@@ -142,7 +142,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
 
   haveAdditionalDiagnoses: function() {
     return !Ember.isEmpty(this.get('additionalDiagnoses'));
-  }.property('additionalDiagnoses.@each'),
+  }.property('additionalDiagnoses.[]'),
 
   afterUpdate: function() {
     var patient = this.get('patient'),

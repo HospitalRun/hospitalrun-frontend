@@ -39,7 +39,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   canFulfill: function() {
     var requestedItems = this.get('requestedItems');
     return Ember.isEmpty(requestedItems) && this.currentUserCan('fulfill_inventory');
-  }.property('requestedItems.@each'),
+  }.property('requestedItems.[]'),
 
   isFulfilling: function() {
     var canFulfill = this.get('canFulfill'),
@@ -73,7 +73,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   showRequestedItems: function() {
     var requestedItems = this.get('requestedItems');
     return !Ember.isEmpty(requestedItems);
-  }.property('requestedItems.@each'),
+  }.property('requestedItems.[]'),
 
   updateViaFulfillRequest: false,
 

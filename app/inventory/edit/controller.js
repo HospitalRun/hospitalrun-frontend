@@ -48,7 +48,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
   haveTransactions: function() {
     var transactions = this.get('transactions');
     return transactions !== null;
-  }.property('transactions.@each'),
+  }.property('transactions.[]'),
 
   locationQuantityTotal: function() {
     var locations = this.get('locations');
@@ -89,7 +89,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
   showTransactions: function() {
     var transactions = this.get('transactions');
     return !Ember.isEmpty(transactions);
-  }.property('transactions.@each'),
+  }.property('transactions.[]'),
 
   transactions: null,
 
