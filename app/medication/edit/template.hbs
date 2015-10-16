@@ -1,67 +1,69 @@
-{{#em-form model=this submit_button=false }}
+{{#edit-panel editPanelProps=editPanelProps}}
+  {{#em-form model=this submit_button=false }}
     {{#unless selectPatient}}
-        {{patient-summary patient=model.patient returnTo='medication.edit' returnToContext=id disablePatientLink=isNew }}
+      {{patient-summary patient=model.patient returnTo='medication.edit' returnToContext=id disablePatientLink=isNew }}
     {{/unless}}
     <div class="row">
-        {{#if selectPatient}}
-            {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-6 required"}}
-        {{/if}}
-        {{#if isNew}}
-            {{em-select class="col-xs-4 required" label="Visit"
-                property="visit" content=patientVisitsForSelect
-                optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
-                prompt="--Add New Outpatient Visit--"
-                selected=visit
-            }}
-        {{else}}
-            <div class="form-group col-xs-3">
-                <label>Visit</label>
-                <p class="form-control-static">{{model.visit.visitDescription}}</p>
-            </div>
-        {{/if}}
+      {{#if selectPatient}}
+        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-6 required"}}
+      {{/if}}
+      {{#if isNew}}
+        {{em-select class="col-xs-4 required" label="Visit"
+          property="visit" content=patientVisitsForSelect
+          optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
+          prompt="--Add New Outpatient Visit--"
+          selected=visit
+        }}
+      {{else}}
+        <div class="form-group col-xs-3">
+          <label>Visit</label>
+          <p class="form-control-static">{{model.visit.visitDescription}}</p>
+        </div>
+      {{/if}}
     </div>
     {{#if isFulfilledOrRequested}}
-        <div class="form-group">
-            <label class="control-label">Medication</label>
-            <p class="form-control-static">{{inventoryItem.name}}</p>
-        </div>
+      <div class="form-group">
+        <label class="control-label">Medication</label>
+        <p class="form-control-static">{{inventoryItem.name}}</p>
+      </div>
     {{else}}
-        {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required"}}
+      {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required"}}
     {{/if}}
     {{#if isFulfilled}}
-        {{static-text label="Prescription" value=prescription }}
-        <div class="row">
-            {{#static-text label="Prescription Date" class="col-xs-4"}}
-                {{date-format prescriptionDate}}
-            {{/static-text}}
-            {{static-text label=quantityLabel class="col-xs-3" value=quantity }}
-            {{static-text label="Refills" class="col-xs-3" value=refills }}
-        </div>
+      {{static-text label="Prescription" value=prescription }}
+      <div class="row">
+        {{#static-text label="Prescription Date" class="col-xs-4"}}
+          {{date-format prescriptionDate}}
+        {{/static-text}}
+        {{static-text label=quantityLabel class="col-xs-3" value=quantity }}
+        {{static-text label="Refills" class="col-xs-3" value=refills }}
+      </div>
     {{else}}
-        {{em-text property="prescription" label="Prescription" rows="3" class=prescriptionClass }}
-        <div class="row">
-            {{date-picker property="prescriptionDate" label="Prescription Date" class="col-sm-4"}}
-        </div>
-        <div class="row">
-            {{em-input property="quantity" label=quantityLabel class=quantityClass }}
-            {{em-input property="refills" label="Refills" class="col-xs-3"}}
-        </div>
-        {{#unless hideFulfillRequest}}
-            {{#if isNew}}
-                {{#if canFulfill}}
-                    <div class="form-group">
-                        <label class="control-label">Fulfill Request</label>
-                     </div>
-                    {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
-                {{/if}}
-            {{/if}}
-        {{/unless}}
-        {{#if isFulfilling}}
-            {{select-or-typeahead property="expenseAccount" label="Bill To" list=expenseAccountList selection=expenseAccount }}
-            {{inventory-location-picker label="Pull From" quantityRequested=quantity
-                locationList=inventoryItem.availableLocations
-                selectedLocations=model.inventoryLocations
-            }}
+      {{em-text property="prescription" label="Prescription" rows="3" class=prescriptionClass }}
+      <div class="row">
+        {{date-picker property="prescriptionDate" label="Prescription Date" class="col-sm-4"}}
+      </div>
+      <div class="row">
+        {{em-input property="quantity" label=quantityLabel class=quantityClass }}
+        {{em-input property="refills" label="Refills" class="col-xs-3"}}
+      </div>
+      {{#unless hideFulfillRequest}}
+        {{#if isNew}}
+          {{#if canFulfill}}
+            <div class="form-group">
+              <label class="control-label">Fulfill Request</label>
+            </div>
+            {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
+          {{/if}}
         {{/if}}
+      {{/unless}}
+      {{#if isFulfilling}}
+        {{select-or-typeahead property="expenseAccount" label="Bill To" list=expenseAccountList selection=expenseAccount }}
+        {{inventory-location-picker label="Pull From" quantityRequested=quantity
+          locationList=inventoryItem.availableLocations
+          selectedLocations=model.inventoryLocations
+        }}
+      {{/if}}
     {{/if}}
-{{/em-form}}
+  {{/em-form}}
+{{/edit-panel}}

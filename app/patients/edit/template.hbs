@@ -1,430 +1,447 @@
-{{#em-form model=this submitButton=false bubbles=false }}
+{{#edit-panel editPanelProps=editPanelProps}}
+  {{#em-form model=model submitButton=false bubbles=false }}
     {{#unless isNewOrDeleted}}
-        {{patient-summary patient=model visits=visits patientProcedures=patientProcedures disablePatientLink=true }}
-        <ul class="nav nav-pills" role="tablist">
-            <li role="presentation" class="active"><a class="active" href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">General</a></li>
-            <li role="presentation"><a href="#photos" role="tab" data-toggle="pill" data-test-selector="photos-tab">Photos</a></li>
-            <li role="presentation"><a href="#medication" role="tab" data-toggle="pill" data-test-selector="medication-tab">Medication</a></li>
-            <li role="presentation"><a href="#imaging" role="tab" data-toggle="pill" data-test-selector="imaging-tab">Imaging</a></li>
-            <li role="presentation"><a href="#labs" role="tab" data-toggle="pill" data-test-selector="labs-tab">Labs</a></li>
-            <li role="presentation"><a href="#visits" role="tab" data-toggle="pill" data-test-selector="appointments-tab">Visits/Appointments</a></li>
-            {{#if canAddSocialWork}}
-                <li role="presentation"><a href="#social" role="tab" data-toggle="pill" data-test-selector="social-tab">Social Work</a></li>
-            {{/if}}
-        </ul>
+      {{patient-summary patient=model visits=visits patientProcedures=patientProcedures disablePatientLink=true }}
+      <ul class="nav nav-pills" role="tablist">
+        <li role="presentation" class="active"><a class="active" href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">General</a></li>
+        <li role="presentation"><a href="#photos" role="tab" data-toggle="pill" data-test-selector="photos-tab">Photos</a></li>
+        <li role="presentation"><a href="#medication" role="tab" data-toggle="pill" data-test-selector="medication-tab">Medication</a></li>
+        <li role="presentation"><a href="#imaging" role="tab" data-toggle="pill" data-test-selector="imaging-tab">Imaging</a></li>
+        <li role="presentation"><a href="#labs" role="tab" data-toggle="pill" data-test-selector="labs-tab">Labs</a></li>
+        <li role="presentation"><a href="#visits" role="tab" data-toggle="pill" data-test-selector="appointments-tab">Visits/Appointments</a></li>
+        {{#if canAddSocialWork}}
+          <li role="presentation"><a href="#social" role="tab" data-toggle="pill" data-test-selector="social-tab">Social Work</a></li>
+        {{/if}}
+      </ul>
     {{/unless}}
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="general">
-            <div class="panel detail-section">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                            General Information
-                    </h3>
+      <div role="tabpanel" class="tab-pane active" id="general">
+        <div class="panel detail-section">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              General Information
+            </h3>
+          </div>
+          <div class="panel-body detail-section-content">
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                {{em-input property="friendlyId" label="Id" class="required test-id"}}
+                {{em-input property="firstName" label="First Name" class="required test-first-name"}}
+                {{em-input property="middleName" label="Middle Name" class="test-middle-name"}}
+                {{em-input property="lastName" label="Last Name" class="required test-last-name"}}
+                <div class="form-group">
+                  <label>Gender</label>
+                  <div>
+                    {{ext-radio content=genderList value=gender showInline=true }}
+                  </div>
                 </div>
-
-                <div class="panel-body detail-section-content">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6">
-                            {{em-input property="friendlyId" label="Id" class="required test-id"}}
-                            {{em-input property="firstName" label="First Name" class="required test-first-name"}}
-                            {{em-input property="middleName" label="Middle Name" class="test-middle-name"}}
-                            {{em-input property="lastName" label="Last Name" class="required test-last-name"}}
-                            <div class="form-group">
-                                <label>Gender</label>
-                                <div>
-                                    {{ext-radio content=genderList value=gender showInline=true }}
-                                </div>
-                            </div>
-                            {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now"}}
-                            <div class="form-group">
-                                <label class="control-label">Age</label>
-                                <p class="form-control-static">{{age}}</p>
-                            </div>
-                            {{em-input property="placeOfBirth" label="Place of Birth"}}
-                            <div class="form-group">
-                                <label>Patient Type</label>
-                                <div>
-                                    {{ext-radio content=patientTypes value=patientType showInline=true }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            {{select-or-typeahead property="status" label="Patient Status" list=statusList selection=status }}
-                            {{em-input property="externalPatientId" label="External Patient Id"}}
-                            {{em-select
-                                prompt=" "
-                                label="Blood Type"
-                                property="bloodType"
-                                content=bloodTypes
-                            }}
-                            {{select-or-typeahead property="clinic" label="Clinic Site" list=clinicList selection=clinic }}
-                            {{em-input property="referredBy" label="Referred By"}}
-                            {{date-picker property="referredDate" label="Referred Date"}}
-                            {{em-input property="religion" label="Religion"}}
-                            {{em-input property="parent" label="Parent/Guardian"}}
-                            {{em-select label="Payment Profile"
-                                property="paymentProfile"
-                                content=pricingProfiles
-                                optionValuePath="selectObject"
-                                optionLabelPath="selectObject.name"
-                                prompt=" "
-                            }}
-                        </div>
-                    </div>
+                {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now"}}
+                <div class="form-group">
+                  <label class="control-label">Age</label>
+                  <p class="form-control-static">{{age}}</p>
                 </div>
+                {{em-input property="placeOfBirth" label="Place of Birth"}}
+                <div class="form-group">
+                  <label>Patient Type</label>
+                  <div>
+                    {{ext-radio content=patientTypes value=patientType showInline=true }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                  {{select-or-typeahead property="status" label="Patient Status" list=statusList selection=status }}
+                  {{em-input property="externalPatientId" label="External Patient Id"}}
+                  {{em-select
+                    prompt=" "
+                    label="Blood Type"
+                    property="bloodType"
+                    content=bloodTypes
+                  }}
+                  {{select-or-typeahead property="clinic" label="Clinic Site" list=clinicList selection=clinic }}
+                  {{em-input property="referredBy" label="Referred By"}}
+                  {{date-picker property="referredDate" label="Referred Date"}}
+                  {{em-input property="religion" label="Religion"}}
+                  {{em-input property="parent" label="Parent/Guardian"}}
+                  {{em-select label="Payment Profile"
+                    property="paymentProfile"
+                    content=pricingProfiles
+                    optionValuePath="selectObject"
+                    optionLabelPath="selectObject.name"
+                    prompt=" "
+                  }}
+              </div>
             </div>
-            <div class="panel detail-section">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                            Address/Contact Information
-                            {{#if canAddContact}}
-                                <button type="button" class="btn btn-primary align-right" {{action "showAddContact" bubbles=false on="click"}}><span class="octicon octicon-plus"></span>Add Contact</button>
-                            {{/if}}
-                    </h3>
-                </div>
-
-                <div class="panel-body detail-section-content">
-                    <div class="row">
-
-                        {{em-input property="phone" label="Phone Contact" class="col-xs-12 col-sm-6"}}
-                        {{em-input property="email" type="email" label="Email" class="col-xs-12 col-sm-6"}}
-                        {{#if haveAddressOptions}}
-                            {{#if address1Include}}
-                                {{em-text label=address1Label property="address" rows=3 class="col-xs-12 col-sm-6"}}
-                            {{/if}}
-                            {{#if address2Include}}
-                                {{em-input label=address2Label property="address2" class="col-xs-12 col-sm-6" }}
-                            {{/if}}
-                            {{#if address3Include}}
-                                {{em-input label=address3Label property="address3" class="col-xs-12 col-sm-6" }}
-                            {{/if}}
-                            {{#if address4Include}}
-                                {{em-input label=address4Label property="address4" class="col-xs-12 col-sm-6" }}
-                            {{/if}}
-                        {{else}}
-                            {{em-text label="Address" property="address" rows=3  class="col-xs-12 col-sm-6"}}
-                        {{/if}}
-                        {{select-or-typeahead property="country" label="Country" list=countryList selection=country className="col-xs-12 col-sm-6" }}
-
-                    </div>
-                </div>
-                {{#if haveAdditionalContacts}}
-                    <h4>Additional Contacts</h4>
-                    <table class="table">
-                        <tr class="table-header">
-                            <th>Name</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Relationship</th>
-                            {{#if canDeleteContact}}
-                                <th>Action</th>
-                            {{/if}}
-                        </tr>
-                        {{#each model.additionalContacts as |additionalContact|}}
-                            <tr>
-                                <td>{{additionalContact.name}}</td>
-                                <td>{{additionalContact.phone}}</td>
-                                <td>{{additionalContact.email}}</td>
-                                <td>{{additionalContact.relationship}}</td>
-                                {{#if canDeleteContact}}
-                                    <td>
-                                        <button type="button" class="btn btn-default warning" {{action "showDeleteContact" additionalContact bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                                    </td>
-                                {{/if}}
-                            </tr>
-                        {{/each}}
-                    </table>
+          </div>
+        </div>
+        <div class="panel detail-section">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              Address/Contact Information
+              {{#if canAddContact}}
+                <button type="button" class="btn btn-primary align-right" {{action "showAddContact" bubbles=false on="click"}}>
+                  <span class="octicon octicon-plus"></span>Add Contact
+                </button>
+              {{/if}}
+            </h3>
+          </div>
+          <div class="panel-body detail-section-content">
+            <div class="row">
+              {{em-input property="phone" label="Phone Contact" class="col-xs-12 col-sm-6"}}
+              {{em-input property="email" type="email" label="Email" class="col-xs-12 col-sm-6"}}
+              {{#if haveAddressOptions}}
+                {{#if address1Include}}
+                  {{em-text label=address1Label property="address" rows=3 class="col-xs-12 col-sm-6"}}
                 {{/if}}
+                {{#if address2Include}}
+                  {{em-input label=address2Label property="address2" class="col-xs-12 col-sm-6" }}
+                {{/if}}
+                {{#if address3Include}}
+                  {{em-input label=address3Label property="address3" class="col-xs-12 col-sm-6" }}
+                {{/if}}
+                {{#if address4Include}}
+                  {{em-input label=address4Label property="address4" class="col-xs-12 col-sm-6" }}
+                {{/if}}
+              {{else}}
+                {{em-text label="Address" property="address" rows=3  class="col-xs-12 col-sm-6"}}
+              {{/if}}
+              {{select-or-typeahead property="country" label="Country" list=countryList selection=country className="col-xs-12 col-sm-6" }}
+            </div>
+          </div>
+          {{#if haveAdditionalContacts}}
+            <h4>Additional Contacts</h4>
+            <table class="table">
+              <tr class="table-header">
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Relationship</th>
+                {{#if canDeleteContact}}
+                  <th>Action</th>
+                {{/if}}
+              </tr>
+              {{#each model.additionalContacts as |additionalContact|}}
+                <tr>
+                  <td>{{additionalContact.name}}</td>
+                  <td>{{additionalContact.phone}}</td>
+                  <td>{{additionalContact.email}}</td>
+                  <td>{{additionalContact.relationship}}</td>
+                  {{#if canDeleteContact}}
+                    <td>
+                      <button type="button" class="btn btn-default warning" {{action "showDeleteContact" additionalContact bubbles=false }}>
+                        <span class="octicon octicon-x"></span>Delete
+                      </button>
+                    </td>
+                  {{/if}}
+                </tr>
+              {{/each}}
+            </table>
+          {{/if}}
+        </div>
+      </div>
+      {{#unless isNewOrDeleted}}
+        <div role="tabpanel" class="tab-pane" id="photos">
+          <div class="panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                Photos
+                {{#if canAddPhoto}}
+                  <button type="button" class="btn btn-primary align-right" {{action "showAddPhoto" bubbles=false }}>
+                    <span class="octicon octicon-plus"></span>New Photo
+                  </button>
+                {{/if}}
+              </h3>
+            </div>
+            <div class="panel-body detail-section-content">
+              <div class="row">
+                {{#each model.photos as |photo|}}
+                  <div class="col-sm-4 col-md-3">
+                     <div {{action "editPhoto" photo}} class="thumbnail">
+                      {{photo-display photo=photo }}
+                      <div class="caption">
+                        {{photo.caption}}
+                        <p>
+                          {{#if canAddPhoto}}
+                            <button type="button" class="btn btn-default neutral" {{action "editPhoto" photo}}>Edit</button>
+                          {{/if}}
+                          {{#if canDeletePhoto}}
+                            <button type="button" class="btn btn-default warning" {{action "showDeletePhoto" photo bubbles=false }}>
+                              <span class="octicon octicon-x"></span>Delete</button>
+                          {{/if}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="medication">
+            <div class="panel">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  Medication
+                  {{#if canAddMedication}}
+                    <button type="button" class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}>
+                      <span class="octicon octicon-plus"></span>New Medication
+                    </button>
+                  {{/if}}
+                </h3>
+              </div>
+              <div class="panel-body detail-section-content">
+                {{partial 'patients/medication'}}
+              </div>
             </div>
         </div>
-        {{#unless isNewOrDeleted}}
-            <div role="tabpanel" class="tab-pane" id="photos">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Photos
-                            {{#if canAddPhoto}}
-                                <button type="button" class="btn btn-primary align-right" {{action "showAddPhoto" bubbles=false }}><span class="octicon octicon-plus"></span>New Photo</button>
-                            {{/if}}
-                        </h3>
-                    </div>
-                    <div class="panel-body detail-section-content">
-                        <div class="row">
-                            {{#each model.photos as |photo|}}
-                                <div class="col-sm-4 col-md-3">
-                                     <div {{action "editPhoto" photo}} class="thumbnail">
-                                        {{photo-display photo=photo }}
-                                        <div class="caption">
-                                            {{photo.caption}}
-                                            <p>
-                                                {{#if canAddPhoto}}
-                                                    <button type="button" class="btn btn-default neutral" {{action "editPhoto" photo}}>Edit</button>
-                                                {{/if}}
-                                                {{#if canDeletePhoto}}
-                                                    <button type="button" class="btn btn-default warning" {{action "showDeletePhoto" photo bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                                                {{/if}}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            {{/each}}
-                        </div>
-                    </div>
-                </div>
+        <div role="tabpanel" class="tab-pane" id="imaging">
+          <div class="panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                Imaging
+                {{#if canAddImaging}}
+                  <button type="button" class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}>
+                    <span class="octicon octicon-plus"></span> New Imaging
+                  </button>
+                {{/if}}
+              </h3>
             </div>
-            <div role="tabpanel" class="tab-pane" id="medication">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Medication
-                            {{#if canAddMedication}}
-                                <button type="button" class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span>New Medication</button>
-                            {{/if}}
-                        </h3>
-                    </div>
-                    <div class="panel-body detail-section-content">
-                        {{partial 'patients/medication'}}
-                    </div>
-                </div>
+            <div class="panel-body detail-section-content">
+              {{partial 'patients/imaging'}}
             </div>
-            <div role="tabpanel" class="tab-pane" id="imaging">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Imaging
-                            {{#if canAddImaging}}
-                                <button type="button" class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}><span class="octicon octicon-plus"></span> New Imaging</button>
-                            {{/if}}
-                        </h3>
-                    </div>
-                    <div class="panel-body detail-section-content">
-                        {{partial 'patients/imaging'}}
-                    </div>
-                </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="labs">
+          <div class="panel">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  Labs
+                  {{#if canAddLab}}
+                    <button type="button" class="btn btn-primary align-right" {{action "newLab" bubbles=false }}>
+                      <span class="octicon octicon-plus"></span> New Lab
+                    </button>
+                  {{/if}}
+                </h3>
+              </div>
+              <div class="panel-body detail-section-content">
+                {{partial 'patients/labs'}}
+              </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="visits">
+          <div class="panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                Visits
+                {{#if canAddVisit}}
+                  <button type="button" class="btn btn-primary align-right" {{action "newVisit" bubbles=false }}>
+                    <span class="octicon octicon-plus"></span> New Visit
+                  </button>
+                {{/if}}
+              </h3>
             </div>
-            <div role="tabpanel" class="tab-pane" id="labs">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Labs
-                            {{#if canAddLab}}
-                                <button type="button" class="btn btn-primary align-right" {{action "newLab" bubbles=false }}><span class="octicon octicon-plus"></span> New Lab</button>
-                            {{/if}}
-                        </h3>
-                    </div>
-
-                    <div class="panel-body detail-section-content">
-                        {{partial 'patients/labs'}}
-                    </div>
-                </div>
+            <div class="panel-body detail-section-content">
+              <table class="table" >
+                <tr class="table-header">
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Diagnosis</th>
+                  <th>Provider</th>
+                  <th>Location</th>
+                  <th>Type</th>
+                  <th>Actions</th>
+                </tr>
+                {{#each visits as |visit|}}
+                  <tr {{action "editVisit" visit}}>
+                    <td>{{date-format visit.startDate}}</td>
+                    <td>{{date-format visit.endDate}}</td>
+                    <td>{{visit.primaryDiagnosis}}</td>
+                    <td>{{visit.examiner}}</td>
+                    <td>{{visit.location}}</td>
+                    <td>{{visit.visitType}}</td>
+                    <td>
+                    {{#if canAddVisit}}
+                      <button type="button" class="btn btn-default neutral" {{action "editVisit" visit}}>Edit</button>
+                    {{/if}}
+                    {{#if canDeleteVisit}}
+                      <button type="button" class="btn btn-default warning" {{action "showDeleteVisit" visit bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                    {{/if}}
+                    </td>
+                  </tr>
+                {{/each}}
+              </table>
             </div>
-            <div role="tabpanel" class="tab-pane" id="visits">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Visits
-                            {{#if canAddVisit}}
-                                <button type="button" class="btn btn-primary align-right" {{action "newVisit" bubbles=false }}><span class="octicon octicon-plus"></span> New Visit</button>
-                            {{/if}}
-                        </h3>
-                    </div>
-
-                    <div class="panel-body detail-section-content">
-                        <table class="table" >
-                            <tr class="table-header">
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Diagnosis</th>
-                                <th>Provider</th>
-                                <th>Location</th>
-                                <th>Type</th>
-                                <th>Actions</th>
-                            </tr>
-                                {{#each visits as |visit|}}
-                                    <tr {{action "editVisit" this}}>
-                                        <td>{{date-format visit.startDate}}</td>
-                                        <td>{{date-format visit.endDate}}</td>
-                                        <td>{{visit.primaryDiagnosis}}</td>
-                                        <td>{{visit.examiner}}</td>
-                                        <td>{{visit.location}}</td>
-                                        <td>{{visit.visitType}}</td>
-                                        <td>
-                                            {{#if canAddVisit}}
-                                                <button type="button" class="btn btn-default neutral" {{action "editVisit" this}}>Edit</button>
-                                            {{/if}}
-                                            {{#if canDeleteVisit}}
-                                                <button type="button" class="btn btn-default warning" {{action "showDeleteVisit" this bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                                            {{/if}}
-                                        </td>
-                                    </tr>
-                                {{/each}}
-                        </table>
-                    </div>
-                </div>
-                <div class="panel">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Appointments
-                            {{#if canAddAppointment}}
-                                <button type="button" class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}><span class="octicon octicon-plus"></span> New Appointment</button>
-                            {{/if}}
-                        </h3>
-                    </div>
-                    <div class="panel-body detail-section-content">
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Date</th>
-                                <th>Examiner</th>
-                                <th>Location</th>
-                                <th>Type</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                            {{#each model.appointments as |appointment|}}
-                                <tr {{action "editAppointment" appointment}}>
-                                    <td>{{appointment.formattedAppointmentDate}}</td>
-                                    <td>{{appointment.provider}}</td>
-                                    <td>{{appointment.location}}</td>
-                                    <td>{{appointment.appointmentType}}</td>
-                                    <td>{{appointment.displayStatus}}</td>
-                                    <td>
-                                        {{#if canAddAppointment}}
-                                            <button type="button" class="btn btn-default neutral" {{action "editAppointment" appointment}}>Edit</button>
-                                        {{/if}}
-                                        {{#if canDeleteAppointment}}
-                                            <button type="button" class="btn btn-default warning" {{action "showDeleteAppointment" appointment  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                                        {{/if}}
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </table>
-                    </div>
-                </div>
+          </div>
+          <div class="panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                Appointments
+                {{#if canAddAppointment}}
+                  <button type="button" class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}>
+                    <span class="octicon octicon-plus"></span> New Appointment
+                  </button>
+                {{/if}}
+              </h3>
             </div>
-            {{#if canAddSocialWork}}
-                <div role="tabpanel" class="tab-pane" id="social">
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">
-                                Social Work Details
-                            </h3>
-                        </div>
-                        <div class="panel-body detail-section-content">
-                            <h4>
-                                Family Information
-                                <button type="button" class="btn btn-primary align-right" {{ action "showEditFamily" bubbles=false }}><span class="octicon octicon-plus"></span>Add Family Member</button>
-                            </h4>
-
-                            <table class="table">
-                                <tr class="table-header">
-                                    <th>Name</th>
-                                    <th>Age</th>
-                                    <th>Civil Status</th>
-                                    <th>Relation to Patient</th>
-                                    <th>Education</th>
-                                    <th>Occupation</th>
-                                    <th>Income</th>
-                                    <th>Insurance</th>
-                                    <th>Action</th>
-                                </tr>
-                                {{#each familyInfo as |info|}}
-                                    <tr>
-                                        <td>{{info.name}}</td>
-                                        <td>{{info.age}}</td>
-                                        <td>{{info.civilStatus}}</td>
-                                        <td>{{info.relationship}}</td>
-                                        <td>{{info.education}}</td>
-                                        <td>{{info.occupation}}</td>
-                                        <td>{{info.income}}</td>
-                                        <td>{{info.insurance}}</td>
-
-                                        <td>
-
-                                            <button type="button" class="btn btn-default neutral" {{action "showEditFamily" this}}>Edit</button>
-                                            {{#if canDeleteSocialWork}}
-                                                <button type="button" class="btn btn-default warning" {{action "showDeleteFamily" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                                            {{/if}}
-
-                                        </td>
-                                    </tr>
-                                {{/each}}
-                            </table>
-                            <h4>
-                                Expenses
-                                <button type="button" class="btn btn-primary align-right" {{action "showEditExpense" bubbles=false }}><span class="octicon octicon-plus"></span>Add Expense</button>
-                            </h4>
-                            <table class="table">
-                                <tr class="table-header">
-                                    <th>Category</th>
-                                    <th>Sources</th>
-                                    <th>Monthly Cost</th>
-                                    <th>Actions</th>
-                                </tr>
-                                    {{#each expenses as |expense|}}
-                                        <tr>
-                                            <td>{{expense.category}}</td>
-                                            <td>{{expense.sources}}</td>
-                                            <td>{{expense.cost}}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-default neutral" {{action "showEditExpense" this}}>Edit</button>
-                                                {{#if canDeleteSocialWork}}
-                                                    <button type="button" class="btn btn-default warning" {{action "showDeleteExpense" this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                                                {{/if}}
-                                            </td>
-                                        </tr>
-                                    {{/each}}
-                                {{#if showExpenseTotal}}
-                                    <tr>
-                                        <td colspan="2"><b>Total Monthly Expenses</b></td>
-                                        <td>{{totalExpenses}}</td>
-                                        <td></td>
-                                    </tr>
-                                {{/if}}
-                            </table>
-
-                            <div class="row">
-                                <div class="form-group col-sm-6">
-                                    <label>Living Arrangement</label>
-                                    {{ext-radio
-                                        name=livingArrangement
-                                        content=livingArrangementList
-                                        value=livingArrangement
-                                        includeOtherOption=true
-                                        otherOptionLabel="Other"
-                                        radioLabelPath="content"
-                                        radioValuePath="content"
-                                    }}
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label>Family Support System</label>
-                                    {{em-checkbox label="Family members are living together" property="familySupport1"}}
-                                    {{em-checkbox label="Family members listen, care and help one another" property="familySupport2"}}
-                                    {{em-checkbox label="Spend time together in prayer especially in difficult times" property="familySupport3"}}
-                                    {{em-checkbox label="Family and closest relatives have open communication" property="familySupport4"}}
-                                    {{em-checkbox label="Has relatives around who are responsive to families needs" property="familySupport5"}}
-                                </div>
-                            </div>
-                            {{em-text label="Assessment/Findings" property="notes"}}
-                            {{em-text label="Recommendation" property="socialRecommendation"}}
-                            {{em-text label="Action Taken" property="socialActionTaken"}}
-                            <div class="row">
-
-                                {{em-select label="Philhealth"
-                                    property="insurance" content=philhealthTypes
-                                    selected=insurance
-                                    class="col-sm-6"
-                                }}
-                                {{em-select label="Classification"
-                                    property="economicClassification" content=economicClassificationTypes
-                                    selected=economicClassification
-                                    class="col-sm-6"
-                                    prompt=" "
-                                }}
-                            </div>
-                        </div>
-                    </div>
+            <div class="panel-body detail-section-content">
+              <table class="table">
+                <tr class="table-header">
+                  <th>Date</th>
+                  <th>Examiner</th>
+                  <th>Location</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+                {{#each model.appointments as |appointment|}}
+                  <tr {{action "editAppointment" appointment}}>
+                    <td>{{appointment.formattedAppointmentDate}}</td>
+                    <td>{{appointment.provider}}</td>
+                    <td>{{appointment.location}}</td>
+                    <td>{{appointment.appointmentType}}</td>
+                    <td>{{appointment.displayStatus}}</td>
+                    <td>
+                      {{#if canAddAppointment}}
+                        <button type="button" class="btn btn-default neutral" {{action "editAppointment" appointment}}>Edit</button>
+                      {{/if}}
+                      {{#if canDeleteAppointment}}
+                        <button type="button" class="btn btn-default warning" {{action "showDeleteAppointment" appointment  bubbles=false }}>
+                          <span class="octicon octicon-x"></span> Delete
+                        </button>
+                      {{/if}}
+                    </td>
+                  </tr>
+                {{/each}}
+              </table>
+            </div>
+          </div>
+        </div>
+        {{#if canAddSocialWork}}
+          <div role="tabpanel" class="tab-pane" id="social">
+            <div class="panel">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  Social Work Details
+                </h3>
+              </div>
+              <div class="panel-body detail-section-content">
+                <h4>
+                  Family Information
+                  <button type="button" class="btn btn-primary align-right" {{ action "showEditFamily" bubbles=false }}>
+                    <span class="octicon octicon-plus"></span>Add Family Member
+                  </button>
+                </h4>
+                <table class="table">
+                  <tr class="table-header">
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Civil Status</th>
+                    <th>Relation to Patient</th>
+                    <th>Education</th>
+                    <th>Occupation</th>
+                    <th>Income</th>
+                    <th>Insurance</th>
+                    <th>Action</th>
+                  </tr>
+                  {{#each familyInfo as |info|}}
+                    <tr>
+                      <td>{{info.name}}</td>
+                      <td>{{info.age}}</td>
+                      <td>{{info.civilStatus}}</td>
+                      <td>{{info.relationship}}</td>
+                      <td>{{info.education}}</td>
+                      <td>{{info.occupation}}</td>
+                      <td>{{info.income}}</td>
+                      <td>{{info.insurance}}</td>
+                      <td>
+                        <button type="button" class="btn btn-default neutral" {{action "showEditFamily" info}}>Edit</button>
+                        {{#if canDeleteSocialWork}}
+                          <button type="button" class="btn btn-default warning" {{action "showDeleteFamily" info bubbles=false }}>
+                            <span class="octicon octicon-x"></span>Delete
+                          </button>
+                        {{/if}}
+                      </td>
+                    </tr>
+                  {{/each}}
+              </table>
+                <h4>
+                  Expenses
+                  <button type="button" class="btn btn-primary align-right" {{action "showEditExpense" bubbles=false }}>
+                    <span class="octicon octicon-plus"></span>Add Expense
+                  </button>
+                </h4>
+                <table class="table">
+                  <tr class="table-header">
+                    <th>Category</th>
+                    <th>Sources</th>
+                    <th>Monthly Cost</th>
+                    <th>Actions</th>
+                  </tr>
+                  {{#each expenses as |expense|}}
+                    <tr>
+                      <td>{{expense.category}}</td>
+                      <td>{{expense.sources}}</td>
+                      <td>{{expense.cost}}</td>
+                      <td>
+                      <button type="button" class="btn btn-default neutral" {{action "showEditExpense" expense}}>Edit</button>
+                      {{#if canDeleteSocialWork}}
+                        <button type="button" class="btn btn-default warning" {{action "showDeleteExpense" expense bubbles=false }}>
+                          <span class="octicon octicon-x"></span>Delete
+                        </button>
+                      {{/if}}
+                      </td>
+                    </tr>
+                  {{/each}}
+                  {{#if showExpenseTotal}}
+                    <tr>
+                      <td colspan="2"><b>Total Monthly Expenses</b></td>
+                      <td>{{totalExpenses}}</td>
+                      <td></td>
+                    </tr>
+                  {{/if}}
+                </table>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label>Living Arrangement</label>
+                    {{ext-radio
+                      name=livingArrangement
+                      content=livingArrangementList
+                      value=livingArrangement
+                      includeOtherOption=true
+                      otherOptionLabel="Other"
+                      radioLabelPath="content"
+                      radioValuePath="content"
+                    }}
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label>Family Support System</label>
+                    {{em-checkbox label="Family members are living together" property="familySupport1"}}
+                    {{em-checkbox label="Family members listen, care and help one another" property="familySupport2"}}
+                    {{em-checkbox label="Spend time together in prayer especially in difficult times" property="familySupport3"}}
+                    {{em-checkbox label="Family and closest relatives have open communication" property="familySupport4"}}
+                    {{em-checkbox label="Has relatives around who are responsive to families needs" property="familySupport5"}}
+                  </div>
                 </div>
-            {{/if}}
-        {{/unless}}
+                {{em-text label="Assessment/Findings" property="notes"}}
+                {{em-text label="Recommendation" property="socialRecommendation"}}
+                {{em-text label="Action Taken" property="socialActionTaken"}}
+                <div class="row">
+                  {{em-select label="Philhealth"
+                    property="insurance" content=philhealthTypes
+                    selected=insurance
+                    class="col-sm-6"
+                  }}
+                  {{em-select label="Classification"
+                    property="economicClassification" content=economicClassificationTypes
+                    selected=economicClassification
+                    class="col-sm-6"
+                    prompt=" "
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      {{/unless}}
     </div>
-{{/em-form}}
+  {{/em-form}}
+{{/edit-panel}}

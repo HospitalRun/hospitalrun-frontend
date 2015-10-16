@@ -1,241 +1,253 @@
-<div class="panel-group" id="visit-accordion">
+{{#edit-panel editPanelProps=editPanelProps}}
+  <div class="panel-group" id="visit-accordion">
     <div class="panel">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-info">
-                    Visit Information
-                </a>
-                 {{#if canAddAppointment}}
-                    <button type="button" class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}><span class="octicon octicon-plus"></span> New Appointment</button>
-                {{/if}}
-            </h3>
-        </div>
-        <div id="visit-info" class="panel-collapse collapse in">
-            <div class="panel-body">
-
-                {{#em-form model=this submit_button=false }}
-
-                    <div class="row">
-                        <div class="form-group col-sm-3">
-                            <label>Patient</label>
-                            <p class="form-control-static">{{patient.displayName}}</p>
-                        </div>
-                        {{#if isAdmissionVisit}}
-                            {{date-picker property="startDate" label="Admission Date" format=dateTimeFormat showTime=true class="col-sm-3 required"}}
-                            {{date-picker property="endDate" label="Discharge Date" format=dateTimeFormat showTime=true class="col-sm-3"}}
-                        {{else}}
-                            {{date-picker property="startDate" label="Date" class="col-sm-3 required"}}
-                        {{/if}}
-                        {{select-or-typeahead className="col-sm-3" property="location"
-                            label="Location" list=locationList
-                            selection=location
-                        }}
-                    </div>
-                    <div class="row">
-                        {{em-select class="col-sm-3 required" label="Visit Type"
-                            property="visitType" content=visitTypes
-                        }}
-                        {{#if isAdmissionVisit}}
-                            {{em-select class="col-sm-3" label="Visit Status"
-                                property="status" content=visitStatuses
-                                prompt=" "
-                            }}
-                        {{/if}}
-                        {{select-or-typeahead className="col-sm-3" property="examiner"
-                            label="Examiner" list=physicianList
-                            selection=examiner
-                        }}
-                    </div>
-                    <div class="row">
-                        {{select-or-typeahead className="col-sm-5" property="primaryDiagnosis"
-                            label="Admitting Diagnosis" list=diagnosisList
-                            selection=primaryDiagnosis hint=false
-                        }}
-                        {{select-or-typeahead className="col-sm-5" property="primaryBillingDiagnosis"
-                            label="Final/Billing Diagnosis" list=diagnosisList
-                            selection=primaryBillingDiagnosis hint=false
-                        }}
-                        {{#if canAddDiagnosis}}
-                            <div class="form-group col-sm-2">
-                                <label class="control-label">&nbsp;</label>
-                                <p class="form-control-static">
-                                    <button class="btn btn-primary" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> Add Diagnosis</button>
-                                </p>
-                            </div>
-                        {{/if}}
-                    </div>
-                    {{#if haveAdditionalDiagnoses}}
-                        <h4>
-                            Additional Diagnoses
-                        </h4>
-                        <table class="table">
-                            <tr class="table-header">
-                                <th>Date</th>
-                                <th>Diagnosis</th>
-                                <th>Delete</th>
-                            </tr>
-                            {{#each additionalDiagnoses as |diagnosis|}}
-                            <tr>
-                                <td>{{date-format diagnosis.date}}</td>
-                                <td>{{diagnosis.description}}</td>
-                                <td>
-                                    {{#if canDeleteDiagnosis}}
-                                        <button class="btn btn-default warning" {{action "deleteDiagnosis" diagnosis}}><span class="octicon octicon-x"></span> Delete</button>
-                                    {{/if}}
-                                </td>
-                            </tr>
-                            {{/each}}
-                        </table>
-                    {{/if}}
-                    {{em-text label="Patient History" property="history" rows=3 }}
-                    {{em-text label="History since last seen" property="historySince" rows=3 }}
-                    {{em-text label="Notes" property="notes" rows=3 }}
-                {{/em-form}}
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-info">
+            Visit Information
+          </a>
+          {{#if canAddAppointment}}
+            <button type="button" class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}>
+              <span class="octicon octicon-plus"></span> New Appointment
+            </button>
+          {{/if}}
+        </h3>
+      </div>
+      <div id="visit-info" class="panel-collapse collapse in">
+        <div class="panel-body">
+          {{#em-form model=this submit_button=false }}
+            <div class="row">
+              <div class="form-group col-sm-3">
+                <label>Patient</label>
+                <p class="form-control-static">{{patient.displayName}}</p>
+              </div>
+              {{#if isAdmissionVisit}}
+                {{date-picker property="startDate" label="Admission Date" format=dateTimeFormat showTime=true class="col-sm-3 required"}}
+                {{date-picker property="endDate" label="Discharge Date" format=dateTimeFormat showTime=true class="col-sm-3"}}
+              {{else}}
+                {{date-picker property="startDate" label="Date" class="col-sm-3 required"}}
+              {{/if}}
+              {{select-or-typeahead className="col-sm-3" property="location"
+                label="Location" list=locationList
+                selection=location
+              }}
             </div>
+            <div class="row">
+              {{em-select class="col-sm-3 required" label="Visit Type"
+                property="visitType" content=visitTypes
+              }}
+              {{#if isAdmissionVisit}}
+                {{em-select class="col-sm-3" label="Visit Status"
+                  property="status" content=visitStatuses
+                  prompt=" "
+                }}
+              {{/if}}
+              {{select-or-typeahead className="col-sm-3" property="examiner"
+                label="Examiner" list=physicianList
+                selection=examiner
+              }}
+            </div>
+            <div class="row">
+              {{select-or-typeahead className="col-sm-5" property="primaryDiagnosis"
+                label="Admitting Diagnosis" list=diagnosisList
+                selection=primaryDiagnosis hint=false
+              }}
+              {{select-or-typeahead className="col-sm-5" property="primaryBillingDiagnosis"
+                label="Final/Billing Diagnosis" list=diagnosisList
+                selection=primaryBillingDiagnosis hint=false
+              }}
+              {{#if canAddDiagnosis}}
+                <div class="form-group col-sm-2">
+                  <label class="control-label">&nbsp;</label>
+                  <p class="form-control-static">
+                    <button class="btn btn-primary" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> Add Diagnosis</button>
+                  </p>
+                </div>
+              {{/if}}
+            </div>
+            {{#if haveAdditionalDiagnoses}}
+              <h4>
+                Additional Diagnoses
+              </h4>
+              <table class="table">
+                <tr class="table-header">
+                  <th>Date</th>
+                  <th>Diagnosis</th>
+                  <th>Delete</th>
+                </tr>
+                {{#each additionalDiagnoses as |diagnosis|}}
+                  <tr>
+                    <td>{{date-format diagnosis.date}}</td>
+                    <td>{{diagnosis.description}}</td>
+                    <td>
+                        {{#if canDeleteDiagnosis}}
+                          <button class="btn btn-default warning" {{action "deleteDiagnosis" diagnosis}}>
+                            <span class="octicon octicon-x"></span> Delete
+                          </button>
+                        {{/if}}
+                    </td>
+                  </tr>
+                {{/each}}
+              </table>
+            {{/if}}
+            {{em-text label="Patient History" property="history" rows=3 }}
+            {{em-text label="History since last seen" property="historySince" rows=3 }}
+            {{em-text label="Notes" property="notes" rows=3 }}
+          {{/em-form}}
         </div>
+      </div>
     </div>
     {{#unless isNew}}
-        <div class="panel">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-procedures">
-                        Procedures
-                        {{#if canAddProcedure}}
-                            <button class="btn btn-primary align-right" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> New Procedure</button>
-                        {{/if}}
-                    </a>
-                </h3>
-            </div>
-            <div id="visit-procedures" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <table class="table">
-                        <tr class="table-header">
-                            <th>Date</th>
-                            <th>Procedure</th>
-                            <th>Actions</th>
-                        </tr>
-                        {{#each procedures as |procedure|}}
-                          <tr>
-                              <td>{{date-format procedure.procedureDate}}</td>
-                              <td>{{procedure.description}}</td>
-                              <td>
-                                  {{#if canAddProcedure}}
-                                      <button class="btn btn-default neutral" {{action "showEditProcedure" procedure}}>Edit</button>
-                                  {{/if}}
-                                  {{#if canDeleteProcedure}}
-                                      <button class="btn btn-default warning" {{action "showDeleteProcedure" procedure}}><span class="octicon octicon-x"></span> Delete</button>
-                                  {{/if}}
-                              </td>
-                          </tr>
-                        {{/each}}
-                    </table>
-                </div>
-            </div>
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-procedures">
+              Procedures
+              {{#if canAddProcedure}}
+                <button class="btn btn-primary align-right" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> New Procedure</button>
+              {{/if}}
+            </a>
+          </h3>
         </div>
-        <div class="panel">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-medication">
-                        Medication
-                        {{#if canAddMedication}}
-                            <button class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span> New Medication</button>
-                        {{/if}}
-                    </a>
-                </h3>
-            </div>
-            <div id="patient-medication" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    {{partial 'patients/medication'}}
-                </div>
-            </div>
+        <div id="visit-procedures" class="panel-collapse collapse in">
+          <div class="panel-body">
+            <table class="table">
+              <tr class="table-header">
+                  <th>Date</th>
+                  <th>Procedure</th>
+                  <th>Actions</th>
+              </tr>
+              {{#each procedures as |procedure|}}
+                <tr>
+                  <td>{{date-format procedure.procedureDate}}</td>
+                  <td>{{procedure.description}}</td>
+                  <td>
+                    {{#if canAddProcedure}}
+                      <button class="btn btn-default neutral" {{action "showEditProcedure" procedure}}>Edit</button>
+                    {{/if}}
+                    {{#if canDeleteProcedure}}
+                      <button class="btn btn-default warning" {{action "showDeleteProcedure" procedure}}>
+                        <span class="octicon octicon-x"></span> Delete
+                      </button>
+                    {{/if}}
+                  </td>
+                </tr>
+              {{/each}}
+            </table>
+          </div>
         </div>
-        <div class="panel">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-labs">
-                        Labs
-                        {{#if canAddLab}}
-                            <button class="btn btn-primary align-right" {{action "newLab" bubbles=false }}><span class="octicon octicon-plus"></span> New Lab</button>
-                        {{/if}}
-                    </a>
-                </h3>
-            </div>
-            <div id="patient-labs" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    {{partial 'patients/medication'}}
-                </div>
-            </div>
+      </div>
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-medication">
+              Medication
+              {{#if canAddMedication}}
+                <button class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span> New Medication</button>
+              {{/if}}
+            </a>
+          </h3>
         </div>
-        <div class="panel">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-imaging">
-                        Imaging
-                        {{#if canAddImaging}}
-                            <button class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}><span class="octicon octicon-plus"></span> New Imaging</button>
-                        {{/if}}
-                    </a>
-                </h3>
-            </div>
-            <div id="patient-imaging" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    {{partial 'patients/imaging'}}
-                </div>
-            </div>
+        <div id="patient-medication" class="panel-collapse collapse in">
+          <div class="panel-body">
+            {{partial 'patients/medication'}}
+          </div>
         </div>
-        <div class="panel">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-vitals">
-                        Vitals
-                        {{#if canAddVitals}}
-                            <button class="btn btn-primary align-right" {{action "showAddVitals" bubbles=false }}><span class="octicon octicon-plus"></span> New Vitals</button>
-                        {{/if}}
-                    </a>
-                </h3>
-            </div>
-            <div id="visit-vitals" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <table class="table">
-                        <tr class="table-header">
-                            <th>Date</th>
-                            <th>Temperature</th>
-                            <th>Weight</th>
-                            <th>Height</th>
-                            <th>SBP</th>
-                            <th>DBP</th>
-                            <th>Heart Rate</th>
-                            <th>Respiratory Rate</th>
-                            <th>Delete</th>
-                        </tr>
-                        {{#each vitals as |vital|}}
-                            <tr>
-                                <td>{{date-format vital.dateRecorded format="l h:mm A"}}</td>
-                                <td>{{vital.temperature}}</td>
-                                <td>{{vital.weight}}</td>
-                                <td>{{vital.height}}</td>
-                                <td>{{vital.sbp}}</td>
-                                <td>{{vital.dbp}}</td>
-                                <td>{{vital.heartRate}}</td>
-                                <td>{{vital.respiratoryRate}}</td>
-                                <td>
-                                    {{#if canAddVitals}}
-                                        <button class="btn btn-default neutral" {{action "showEditVitals" vital}}>Edit</button>
-                                    {{/if}}
-                                    {{#if canDeleteVitals}}
-                                        <button class="btn btn-default warning" {{action "showDeleteVitals" vital}}>
-                                          <span class="octicon octicon-x"></span> Delete
-                                        </button>
-                                    {{/if}}
-                                </td>
-                            </tr>
-                        {{/each}}
-                    </table>
-                </div>
-            </div>
+      </div>
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-labs">
+              Labs
+              {{#if canAddLab}}
+                <button class="btn btn-primary align-right" {{action "newLab" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span> New Lab
+                </button>
+              {{/if}}
+            </a>
+          </h3>
         </div>
-        {{#em-form model=this submit_button=false }}
-            {{partial 'item-charges'}}
-        {{/em-form}}
+        <div id="patient-labs" class="panel-collapse collapse in">
+          <div class="panel-body">
+            {{partial 'patients/medication'}}
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-imaging">
+              Imaging
+              {{#if canAddImaging}}
+                <button class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span> New Imaging
+                </button>
+              {{/if}}
+            </a>
+          </h3>
+        </div>
+        <div id="patient-imaging" class="panel-collapse collapse in">
+          <div class="panel-body">
+            {{partial 'patients/imaging'}}
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-vitals">
+              Vitals
+              {{#if canAddVitals}}
+                <button class="btn btn-primary align-right" {{action "showAddVitals" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span> New Vitals
+                </button>
+              {{/if}}
+            </a>
+          </h3>
+        </div>
+        <div id="visit-vitals" class="panel-collapse collapse in">
+          <div class="panel-body">
+            <table class="table">
+              <tr class="table-header">
+                <th>Date</th>
+                <th>Temperature</th>
+                <th>Weight</th>
+                <th>Height</th>
+                <th>SBP</th>
+                <th>DBP</th>
+                <th>Heart Rate</th>
+                <th>Respiratory Rate</th>
+                <th>Delete</th>
+              </tr>
+              {{#each vitals as |vital|}}
+                <tr>
+                  <td>{{date-format vital.dateRecorded format="l h:mm A"}}</td>
+                  <td>{{vital.temperature}}</td>
+                  <td>{{vital.weight}}</td>
+                  <td>{{vital.height}}</td>
+                  <td>{{vital.sbp}}</td>
+                  <td>{{vital.dbp}}</td>
+                  <td>{{vital.heartRate}}</td>
+                  <td>{{vital.respiratoryRate}}</td>
+                  <td>
+                    {{#if canAddVitals}}
+                      <button class="btn btn-default neutral" {{action "showEditVitals" vital}}>Edit</button>
+                    {{/if}}
+                    {{#if canDeleteVitals}}
+                      <button class="btn btn-default warning" {{action "showDeleteVitals" vital}}>
+                      <span class="octicon octicon-x"></span> Delete
+                      </button>
+                    {{/if}}
+                  </td>
+                </tr>
+              {{/each}}
+            </table>
+          </div>
+        </div>
+      </div>
+      {{#em-form model=this submit_button=false }}
+          {{partial 'item-charges'}}
+      {{/em-form}}
     {{/unless}}
-</div>
+  </div>
+{{/edit-panel}}

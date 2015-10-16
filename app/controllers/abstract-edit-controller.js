@@ -1,8 +1,9 @@
 import Ember from 'ember';
+import EditPanelProps from 'hospitalrun/mixins/edit-panel-props';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, UserSession, {
+export default Ember.ObjectController.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, UserSession, {
   cancelAction: 'allItems',
 
   cancelButtonText: function() {

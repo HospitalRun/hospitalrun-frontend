@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import EditPanelProps from 'hospitalrun/mixins/edit-panel-props';
 import SelectValues from 'hospitalrun/utils/select-values';
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(EditPanelProps, {
   hideCancelButton: true,
   showUpdateButton: true,
   updateButtonAction: 'query',
@@ -36,7 +37,7 @@ export default Ember.Controller.extend({
           keys: [fieldName]
         }
       };
-      this.store.find(objectType, query).then(function(results) {
+      this.store.query(objectType, query).then(function(results) {
         if (Ember.isEmpty(results)) {
           this.set('errorMessage', 'Query returned no results.');
           this.set('haveError', true);

@@ -1,14 +1,16 @@
-<div class="panel panel-primary">
-    <div class="panel-body">        
-        {{#em-form model=this submit_button=false }}
-            {{em-input label="Address 1 Label" property="value.address1Label"}}
-            {{em-checkbox label="Include address 1" property="value.address1Include"}}
-            {{em-input label="Address 2 Label" property="value.address2Label"}}
-            {{em-checkbox label="Include address 2" property="value.address2Include"}}
-            {{em-input label="Address 3 Label" property="value.address3Label"}}
-            {{em-checkbox label="Include address 3" property="value.address3Include"}}
-            {{em-input label="Address 4 Label" property="value.address4Label"}}
-            {{em-checkbox label="Include address 4" property="value.address4Include"}}
-        {{/em-form}}
+{{#edit-panel editPanelProps=editPanelProps}}
+  <div class="panel panel-primary">
+    <div class="panel-body">
+      {{#em-form model=this submit_button=false }}
+        {{em-input label="Address 1 Label" property="value.address1Label"}}
+        {{em-checkbox label="Include address 1" property="value.address1Include"}}
+        {{em-input label="Address 2 Label" property="value.address2Label"}}
+        {{em-checkbox label="Include address 2" property="value.address2Include"}}
+        {{em-input label="Address 3 Label" property="value.address3Label"}}
+        {{em-checkbox label="Include address 3" property="value.address3Include"}}
+        {{em-input label="Address 4 Label" property="value.address4Label"}}
+        {{em-checkbox label="Include address 4" property="value.address4Include"}}
+      {{/em-form}}
     </div>
-</div>
+  </div>
+{{/edit-panel}}

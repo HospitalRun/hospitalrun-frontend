@@ -1,51 +1,52 @@
-{{#em-form model=this submit_button=false }}
+{{#edit-panel editPanelProps=editPanelProps}}
+  {{#em-form model=this submit_button=false }}
     {{em-input label="Name" property="name" class="required"}}
     <div class="row">
-        {{em-input label="Price" property="price" class="required col-xs-2"}}
-        {{select-or-typeahead property="expenseAccount" label="Department" list=expenseAccountList selection=expenseAccount className="col-xs-4"}}
+      {{em-input label="Price" property="price" class="required col-xs-2"}}
+      {{select-or-typeahead property="expenseAccount" label="Department" list=expenseAccountList selection=expenseAccount className="col-xs-4"}}
     </div>
     <div class="row">
-        {{em-select label="Category" class="required col-xs-4"
-        property="category" content=categories
-        selected=category }}
-        {{select-or-typeahead property="pricingType" label="Type" list=pricingTypes selection=pricingType className="col-xs-4" prompt=" "}}
+      {{em-select label="Category" class="required col-xs-4"
+      property="category" content=categories
+      selected=category }}
+      {{select-or-typeahead property="pricingType" label="Type" list=pricingTypes selection=pricingType className="col-xs-4" prompt=" "}}
     </div>
-
     <div class="panel">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                Pricing profile overrides
-                {{#if showUpdateButton}}
-                    <button class="btn btn-primary align-right" {{action "editOverride" bubbles=false }}><span class="octicon octicon-plus"></span>Add Override</button>
-                {{/if}}
-            </h3>
-        </div>
-        <div class="panel-body detail-section-content">
-            <table class="table">
-                <tbody>
-                    <tr class="table-header">
-                        <th>Pricing Profile</th>
-                        <th>Price</th>
-                        {{#if showUpdateButton}}
-                            <th>Actions</th>
-                        {{/if}}
-                    </tr>
-                    {{#each pricingOverrides as |override|}}
-                        <tr>
-                            <td>{{override.profile.name}}</td>
-                            <td>{{override.price}}</td>
-                            <td>
-                                {{#if showUpdateButton}}
-                                    <button class="btn btn-default neutral" {{action "editOverride" override}}>Edit</button>
-                                    <button class="btn btn-default warning" {{action "showDeleteOverride" override bubbles=false }}>
-                                        <span class="octicon octicon-x"></span>  Delete
-                                    </button>
-                                {{/if}}
-                            </td>
-                        </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-        </div>
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          Pricing profile overrides
+          {{#if showUpdateButton}}
+            <button class="btn btn-primary align-right" {{action "editOverride" bubbles=false }}><span class="octicon octicon-plus"></span>Add Override</button>
+          {{/if}}
+        </h3>
+      </div>
+      <div class="panel-body detail-section-content">
+        <table class="table">
+          <tbody>
+            <tr class="table-header">
+              <th>Pricing Profile</th>
+              <th>Price</th>
+              {{#if showUpdateButton}}
+                <th>Actions</th>
+              {{/if}}
+            </tr>
+            {{#each pricingOverrides as |override|}}
+              <tr>
+                <td>{{override.profile.name}}</td>
+                <td>{{override.price}}</td>
+                <td>
+                  {{#if showUpdateButton}}
+                    <button class="btn btn-default neutral" {{action "editOverride" override}}>Edit</button>
+                    <button class="btn btn-default warning" {{action "showDeleteOverride" override bubbles=false }}>
+                      <span class="octicon octicon-x"></span>  Delete
+                    </button>
+                  {{/if}}
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
     </div>
-{{/em-form}}
+  {{/em-form}}
+{{/edit-panel}}

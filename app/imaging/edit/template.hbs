@@ -1,45 +1,47 @@
-{{#em-form model=this submit_button=false }}
+{{#edit-panel editPanelProps=editPanelProps}}
+  {{#em-form model=this submit_button=false }}
     {{#if selectPatient}}
-        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
+      {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
     {{else}}
-        {{patient-summary patient=patient returnTo='imaging.edit' returnToContext=id disablePatientLink=isNew }}
+      {{patient-summary patient=patient returnTo='imaging.edit' returnToContext=id disablePatientLink=isNew }}
     {{/if}}
     {{#if isNew}}
-        <div class="row">
-            {{em-select class="col-xs-3 required" label="Visit"
-                property="visit" content=patientVisitsForSelect
-                optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
-                prompt="--Add New Visit--"
-                selected=visit
-            }}
-        </div>
-        {{checkbox-or-typeahead property="imagingTypeName"
-            label="Imaging Type" list=objectTypeList
-            selection=selectedImagingType
-            optionLabelPath='name'
-            typeAheadType='pricing'
-            className="required"
-            prompt=" "
-            model=model
+      <div class="row">
+        {{em-select class="col-xs-3 required" label="Visit"
+          property="visit" content=patientVisitsForSelect
+          optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
+          prompt="--Add New Visit--"
+          selected=visit
         }}
+      </div>
+      {{checkbox-or-typeahead property="imagingTypeName"
+        label="Imaging Type" list=objectTypeList
+        selection=selectedImagingType
+        optionLabelPath='name'
+        typeAheadType='pricing'
+        className="required"
+        prompt=" "
+        model=model
+      }}
     {{else}}
-        <div class="row">
-            <div class="form-group col-xs-3">
-                <label>Visit</label>
-                <p class="form-control-static">{{visit.visitDate}}</p>
-            </div>
-            <div class="form-group col-xs-9">
-                <label>Imaging Type</label>
-                <p class="form-control-static">{{imagingType.name}}</p>
-            </div>
+      <div class="row">
+        <div class="form-group col-xs-3">
+          <label>Visit</label>
+          <p class="form-control-static">{{visit.visitDate}}</p>
         </div>
+        <div class="form-group col-xs-9">
+          <label>Imaging Type</label>
+          <p class="form-control-static">{{imagingType.name}}</p>
+        </div>
+      </div>
     {{/if}}
     {{#if canComplete}}
-        {{select-or-typeahead property="radiologist"
-            label="Radiologist" list=radiologistList
-            prompt=" "
-        }}
-        {{em-input property="result" label="Result"}}
+      {{select-or-typeahead property="radiologist"
+        label="Radiologist" list=radiologistList
+        prompt=" "
+      }}
+      {{em-input property="result" label="Result"}}
     {{/if}}
     {{em-text property="notes" label="Notes" rows=3 }}
-{{/em-form}}
+  {{/em-form}}
+{{/edit-panel}}

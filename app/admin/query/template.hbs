@@ -1,40 +1,42 @@
-<div class="panel panel-primary">
-    <div class="panel-body">        
-        {{#em-form model=this submit_button=false }}
-            <div class="row">
-                {{em-select class="col-xs-3" label="Object Type" 
-                    property="objectType" content=objectTypes                    
-                    selected=objectType
-                }}
-            </div>
-            {{em-input label="Field Name" property="fieldName"}}
-            {{em-input label="Query Value" property="queryValue"}}
-        {{/em-form}}
+{{#edit-panel editPanelProps=editPanelProps}}
+  <div class="panel panel-primary">
+    <div class="panel-body">
+      {{#em-form model=this submit_button=false }}
+        <div class="row">
+          {{em-select class="col-xs-3" label="Object Type"
+              property="objectType" content=objectTypes
+              selected=objectType
+          }}
+        </div>
+        {{em-input label="Field Name" property="fieldName"}}
+        {{em-input label="Query Value" property="queryValue"}}
+      {{/em-form}}
     </div>
-</div>
-{{#if haveError}}
+  </div>
+  {{#if haveError}}
     <div class="alert alert-danger" role="alert">{{errorMessage}}</div>
-{{/if}}
-{{#if showQueryResults}}
+  {{/if}}
+  {{#if showQueryResults}}
     <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">Query Results</h3>
-        </div>
-        <div class="panel-body">
-            {{#each resultRows}}
-                <table class="table">
-                    <tr class="table-header">
-                        <th>Field</th>
-                        <th>Value</th>
-                    </tr>
-                    {{#each this}}
-                        <tr>
-                            <th>{{name}}</th>
-                            <td>{{value}}</td>
-                        </tr>
-                    {{/each}}
-                </table>
+      <div class="panel-heading">
+        <h3 class="panel-title">Query Results</h3>
+      </div>
+      <div class="panel-body">
+        {{#each resultRows}}
+          <table class="table">
+            <tr class="table-header">
+              <th>Field</th>
+              <th>Value</th>
+            </tr>
+            {{#each this}}
+              <tr>
+                <th>{{name}}</th>
+                <td>{{value}}</td>
+              </tr>
             {{/each}}
-        </div>
+          </table>
+        {{/each}}
+      </div>
     </div>
-{{/if}}
+  {{/if}}
+{{/edit-panel}}

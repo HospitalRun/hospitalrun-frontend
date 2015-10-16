@@ -1,80 +1,84 @@
-{{#em-form model=this submit_button=false }}
+{{#edit-panel editPanelProps=editPanelProps}}
+  {{#em-form model=this submit_button=false }}
     {{select-or-typeahead className="required" property="description"
-        label="Procedure" list=procedureList
-        selection=description hint=false
+      label="Procedure" list=procedureList
+      selection=description hint=false
     }}
     <div class="row">
-        {{select-or-typeahead className="col-xs-6" property="cptCode"
-            label="CPT Code" list=cptCodeList
-            selection=cptCode
-        }}
+      {{select-or-typeahead className="col-xs-6" property="cptCode"
+        label="CPT Code" list=cptCodeList
+        selection=cptCode
+      }}
     </div>
     <div class="row">
-        {{select-or-typeahead className="col-sm-3" property="location"
-            label="Procedure Location" list=procedureLocations
-            selection=location
-        }}
-        {{date-picker property="procedureDate" label="Procedure Date" class="col-sm-3 required"}}
-        {{em-input property="timeStarted" label="Time Started" class="col-sm-3"}}
-        {{em-input property="timeEnded" label="Time Ended" class="col-sm-3"}}
+      {{select-or-typeahead className="col-sm-3" property="location"
+        label="Procedure Location" list=procedureLocations
+        selection=location
+      }}
+      {{date-picker property="procedureDate" label="Procedure Date" class="col-sm-3 required"}}
+      {{em-input property="timeStarted" label="Time Started" class="col-sm-3"}}
+      {{em-input property="timeEnded" label="Time Ended" class="col-sm-3"}}
     </div>
     <div class="row">
-        {{select-or-typeahead className="col-sm-4 required" property="physician"
-            label="Physician" list=physicianList
-            selection=physician
-        }}
-        {{select-or-typeahead className="col-sm-4" property="assistant"
-            label="Assistant" list=physicianList
-            selection=assistant prompt=" "
-        }}
-        {{select-or-typeahead className="col-sm-4" property="anesthesiologist"
-            label="Anesthesiologist" list=anesthesiologistList
-            selection=anesthesiologist
-        }}
+      {{select-or-typeahead className="col-sm-4 required" property="physician"
+        label="Physician" list=physicianList
+        selection=physician
+      }}
+      {{select-or-typeahead className="col-sm-4" property="assistant"
+        label="Assistant" list=physicianList
+        selection=assistant prompt=" "
+      }}
+      {{select-or-typeahead className="col-sm-4" property="anesthesiologist"
+        label="Anesthesiologist" list=anesthesiologistList
+        selection=anesthesiologist
+      }}
     </div>
     <div class="row">
         {{select-or-typeahead className="col-sm-4" property="anesthesiaType"
-            label="Anesthesia Type" list=anesthesiaTypes
-            selection=anesthesiaTypes
+          label="Anesthesia Type" list=anesthesiaTypes
+          selection=anesthesiaTypes
         }}
     </div>
     {{em-text label="Notes" property="notes" rows=3 }}
     {{partial 'item-charges'}}
     <div class="panel detail-section">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                Medication Used
-                {{#if canAddCharge}}
-                    <button class="btn btn-primary align-right" {{action "showAddMedication" bubbles=false }}><span class="octicon octicon-plus"></span>Add Medication</button>
-                {{/if}}
-            </h3>
-        </div>
-        <div class="panel-body detail-section-content">
-            <table class="table">
-                <tr class="table-header">
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Action</th>
-                </tr>
-                {{#each charges as |charge|}}
-                    {{#if charge.medicationCharge}}
-                        <tr>
-                            <td>{{charge.medication.name}}</td>
-                            <td>{{charge.quantity}}</td>
-                            <td>
-                                {{#if canAddCharge}}
-                                    <button class="btn btn-default neutral" {{action "showEditMedication" charge}}>Edit</button>
-                                {{/if}}
-                                {{#if canAddCharge}}
-                                    <button class="btn btn-default warning" {{action "showDeleteMedication" charge bubbles=false }}>
-                                        <span class="octicon octicon-x"></span>Delete
-                                    </button>
-                                {{/if}}
-                            </td>
-                        </tr>
-                    {{/if}}
-                {{/each}}
-            </table>
-        </div>
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          Medication Used
+          {{#if canAddCharge}}
+            <button class="btn btn-primary align-right" {{action "showAddMedication" bubbles=false }}>
+              <span class="octicon octicon-plus"></span>Add Medication
+            </button>
+          {{/if}}
+        </h3>
+      </div>
+      <div class="panel-body detail-section-content">
+        <table class="table">
+          <tr class="table-header">
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Action</th>
+          </tr>
+          {{#each charges as |charge|}}
+            {{#if charge.medicationCharge}}
+              <tr>
+                <td>{{charge.medication.name}}</td>
+                <td>{{charge.quantity}}</td>
+                <td>
+                  {{#if canAddCharge}}
+                    <button class="btn btn-default neutral" {{action "showEditMedication" charge}}>Edit</button>
+                  {{/if}}
+                  {{#if canAddCharge}}
+                    <button class="btn btn-default warning" {{action "showDeleteMedication" charge bubbles=false }}>
+                      <span class="octicon octicon-x"></span>Delete
+                    </button>
+                  {{/if}}
+                </td>
+              </tr>
+            {{/if}}
+          {{/each}}
+        </table>
+      </div>
     </div>
-{{/em-form}}
+  {{/em-form}}
+{{/edit-panel}}

@@ -1,85 +1,85 @@
-{{#em-form model=this submit_button=false }}
+{{#edit-panel editPanelProps=editPanelProps}}
+  {{#em-form model=this submit_button=false }}
     {{#if isRequested}}
-        <div class="form-group">
-            <label class="control-label">Item</label>
-            <p class="form-control-static">{{model.inventoryItem.name}}</p>        
-        </div>
-        <div class="form-group">
-            <label class="control-label">Quantity Requested</label>
-            <p class="form-control-static">{{model.quantity}}</p>        
-        </div>
-        <div class="form-group">
-            <label class="control-label">Quantity on Hand</label>
-            <p class="form-control-static">{{model.inventoryItem.quantity}}</p>        
-        </div>
+      <div class="form-group">
+        <label class="control-label">Item</label>
+        <p class="form-control-static">{{model.inventoryItem.name}}</p>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Quantity Requested</label>
+        <p class="form-control-static">{{model.quantity}}</p>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Quantity on Hand</label>
+        <p class="form-control-static">{{model.inventoryItem.quantity}}</p>
+      </div>
     {{else}}
-        <div class="row">
-            {{inventory-typeahead 
-                class="col-sm-8"
-                property="inventoryItemTypeAhead" 
-                label="Inventory Item" 
-                content=inventoryList 
-                selection=selectedInventoryItem 
-            }}
-            {{em-input property="quantity" label=quantityLabel class="col-sm-3"}}
-            <div class="form-group col-sm-1">
-                <label class="control-label"></label>
-                <h4 class="form-control-static">                    
-                    <span class="glyphicon glyphicon-plus" {{action 'addInventoryItem'}}></span>                    
-                </h4>
-            </div>
+      <div class="row">
+        {{inventory-typeahead
+          class="col-sm-8"
+          property="inventoryItemTypeAhead"
+          label="Inventory Item"
+          content=inventoryList
+          selection=selectedInventoryItem
+        }}
+        {{em-input property="quantity" label=quantityLabel class="col-sm-3"}}
+        <div class="form-group col-sm-1">
+          <label class="control-label"></label>
+          <h4 class="form-control-static">
+            <span class="glyphicon glyphicon-plus" {{action 'addInventoryItem'}}></span>
+          </h4>
         </div>
-        {{#if showRequestedItems}}
-            <h3>Requested Items</h3>
-            <table class="table">
-                <tr class="table-header">
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Action</th>
-                </tr>
-                {{#each requestedItems as |requestedItem|}}
-                    <tr>
-                        <td>
-                            {{requestedItem.item.name}}
-                        </td>
-                        <td class="col-xs-2">
-                            <div class="input-group">                            
-                                {{input class="form-control" value=requestedItem.quantity }}
-                                <div class="input-group-addon">{{requestedItem.item.distributionUnit}}</div>
-                            </div>
-                        </td>
-                        <td>
-                            <button class="btn btn-default warning" {{action "showRemoveItem" requestedItem bubbles=false }}>
-                                <span class="octicon octicon-x"></span>Remove
-                            </button>
-                        </td>
-                    </tr>
-                {{/each}}
-            </table>
-        {{/if}}
-        {{#if canFulfill}}
-            <div class="form-group">            
-                <label class="control-label">Fulfill Request</label>
-            </div>
-            {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}        
-        {{/if}}
+      </div>
+      {{#if showRequestedItems}}
+        <h3>Requested Items</h3>
+        <table class="table">
+          <tr class="table-header">
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Action</th>
+          </tr>
+          {{#each requestedItems as |requestedItem|}}
+            <tr>
+              <td>
+                {{requestedItem.item.name}}
+              </td>
+              <td class="col-xs-2">
+                <div class="input-group">
+                  {{input class="form-control" value=requestedItem.quantity }}
+                  <div class="input-group-addon">{{requestedItem.item.distributionUnit}}</div>
+                </div>
+              </td>
+              <td>
+                <button class="btn btn-default warning" {{action "showRemoveItem" requestedItem bubbles=false }}>
+                  <span class="octicon octicon-x"></span>Remove
+                </button>
+              </td>
+            </tr>
+          {{/each}}
+        </table>
+      {{/if}}
+      {{#if canFulfill}}
+        <div class="form-group">
+          <label class="control-label">Fulfill Request</label>
+        </div>
+        {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
+      {{/if}}
     {{/if}}
-
     {{select-or-typeahead property="deliveryLocation" label="Delivery Location" list=warehouseList selection=deliveryLocation }}
     {{select-or-typeahead property="deliveryAisle" label="Delivery Aisle" list=aisleLocationList selection=deliveryAisle }}
     {{select-or-typeahead property="expenseAccount" label="Bill To" list=expenseAccountList selection=expenseAccount }}
-
     {{#if isFulfilling}}
-        <div class="row">
-            {{date-picker property="dateCompleted" label="Date Completed" class="col-sm-4"}}
-        </div>
-        {{inventory-location-picker label="Pull From" quantityRequested=quantity
-            locationList=model.inventoryItem.availableLocations 
-            selectedLocations=model.inventoryLocations
-        }}
-         <div class="form-group">            
-            <label class="control-label">Consume Purchases</label>
-         </div>
-        {{em-checkbox label="Mark As Consumed" property="markAsConsumed"}}
+      <div class="row">
+        {{date-picker property="dateCompleted" label="Date Completed" class="col-sm-4"}}
+      </div>
+      {{inventory-location-picker label="Pull From" quantityRequested=quantity
+        locationList=model.inventoryItem.availableLocations
+        selectedLocations=model.inventoryLocations
+      }}
+      <div class="form-group">
+        <label class="control-label">Consume Purchases</label>
+      </div>
+      {{em-checkbox label="Mark As Consumed" property="markAsConsumed"}}
     {{/if}}
-{{/em-form}}
+  {{/em-form}}
+{{/edit-panel}}
