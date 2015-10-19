@@ -124,9 +124,9 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
   statusList: Ember.computed.alias('patientController.statusList'),
 
   haveAdditionalContacts: function() {
-    var additionalContacts = this.get('additionalContacts');
+    var additionalContacts = this.get('model.additionalContacts');
     return (!Ember.isEmpty(additionalContacts));
-  }.property('additionalContacts'),
+  }.property('model.additionalContacts'),
 
   haveAddressOptions: function() {
     var addressOptions = this.get('addressOptions');
@@ -135,38 +135,38 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
 
   lookupListsToUpdate: [{
     name: 'countryList',
-    property: 'country',
+    property: 'model.country',
     id: 'country_list'
   }, {
     name: 'clinicList',
-    property: 'clinic',
+    property: 'model.clinic',
     id: 'clinic_list'
   }, {
     name: 'statusList',
-    property: 'status',
+    property: 'model.status',
     id: 'patient_status_list'
   }],
 
   patientImaging: function() {
     return this._getVisitCollection('imaging');
-  }.property('visits.[].imaging'),
+  }.property('model.visits.[].imaging'),
 
   patientLabs: function() {
     return this._getVisitCollection('labs');
-  }.property('visits.[].labs'),
+  }.property('model.visits.[].labs'),
 
   patientMedications: function() {
     return this._getVisitCollection('medication');
-  }.property('visits.[].medication'),
+  }.property('model.visits.[].medication'),
 
   patientProcedures: function() {
     return this._getVisitCollection('procedures');
-  }.property('visits.[].procedures'),
+  }.property('model.visits.[].procedures'),
 
   showExpenseTotal: true,
 
   totalExpenses: function() {
-    var expenses = this.get('expenses');
+    var expenses = this.get('model.expenses');
     if (!Ember.isEmpty(expenses)) {
       var total = expenses.reduce(function(previousValue, expense) {
         if (!Ember.isEmpty(expense.cost)) {
@@ -178,15 +178,16 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     } else {
       this.set('showExpenseTotal', false);
     }
-  }.property('expenses'),
+  }.property('model.expenses'),
 
   updateCapability: 'add_patient',
 
   actions: {
     addContact: function(newContact) {
-      var additionalContacts = this.getWithDefault('additionalContacts', []);
+      var additionalContacts = this.getWithDefault('model.additionalContacts', []),
+          model = this.get('model');
       additionalContacts.addObject(newContact);
-      this.set('additionalContacts', additionalContacts);
+      model.set('additionalContacts', additionalContacts);
       this.send('update', true);
       this.send('closeModal');
     },
@@ -198,7 +199,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
      * @param {boolean} coverImage flag indicating if image should be marked as the cover image (currently unused).
      */
     addPhoto: function(photoFile, caption, coverImage) {
-      var dirToSaveTo = this.get('id') + '/photos/',
+      var dirToSaveTo = this.get('model.id') + '/photos/',
         fileSystem = this.get('filesystem'),
         photos = this.get('model.photos'),
         newPatientPhoto = this.get('store').createRecord('photo', {
@@ -234,32 +235,29 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     },
 
     appointmentDeleted: function(deletedAppointment) {
-      var appointments = this.get('appointments');
+      var appointments = this.get('model.appointments');
       appointments.removeObject(deletedAppointment);
       this.send('closeModal');
     },
 
     deleteContact: function(model) {
       var contact = model.get('contactToDelete');
-      var additionalContacts = this.get('additionalContacts');
+      var additionalContacts = this.get('model.additionalContacts');
       additionalContacts.removeObject(contact);
-      this.set('additionalContacts', additionalContacts);
       this.send('update', true);
     },
 
     deleteExpense: function(model) {
       var expense = model.get('expenseToDelete'),
-        expenses = this.get('expenses');
+        expenses = this.get('model.expenses');
       expenses.removeObject(expense);
-      this.set('expenses', expenses);
       this.send('update', true);
     },
 
     deleteFamily: function(model) {
       var family = model.get('familyToDelete'),
-        familyInfo = this.get('familyInfo');
+        familyInfo = this.get('model.familyInfo');
       familyInfo.removeObject(family);
-      this.set('familyInfo', familyInfo);
       this.send('update', true);
     },
 
@@ -339,7 +337,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
 
     newVisit: function() {
       var patient = this.get('model'),
-        visits = this.get('visits');
+        visits = this.get('model.visits');
       this.send('createNewVisit', patient, visits);
     },
 
@@ -435,24 +433,26 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     },
 
     updateExpense: function(model) {
-      var expenses = this.getWithDefault('expenses', []),
-        isNew = model.isNew;
+      var expenses = this.getWithDefault('model.expenses', []),
+        isNew = model.isNew,
+        patient = this.get('model');
       if (isNew) {
         delete model.isNew;
         expenses.addObject(model);
       }
-      this.set('expenses', expenses);
+      patient.set('expenses', expenses);
       this.send('update', true);
       this.send('closeModal');
     },
 
     updateFamilyInfo: function(model) {
-      var familyInfo = this.getWithDefault('familyInfo', []),
-        isNew = model.isNew;
+      var familyInfo = this.getWithDefault('model.familyInfo', []),
+        isNew = model.isNew,
+        patient = this.get('model');
       if (isNew) {
         delete model.isNew;
         familyInfo.addObject(model);
-        this.set('familyInfo', familyInfo);
+        patient.set('familyInfo', familyInfo);
       }
       this.send('update', true);
       this.send('closeModal');
@@ -465,7 +465,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     },
 
     visitDeleted: function(deletedVisit) {
-      var visits = this.get('visits');
+      var visits = this.get('model.visits');
       visits.removeObject(deletedVisit);
       this.send('closeModal');
     }
@@ -484,7 +484,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
 
   _getVisitCollection: function(name) {
     var returnList = [],
-      visits = this.get('visits');
+      visits = this.get('model.visits');
     if (!Ember.isEmpty(visits)) {
       visits.forEach(function(visit) {
         visit.get(name).then(function(items) {

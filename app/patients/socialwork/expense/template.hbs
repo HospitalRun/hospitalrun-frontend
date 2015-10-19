@@ -5,10 +5,10 @@
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  {{#em-form model=this submitButton=false }}
+  {{#em-form model=model submitButton=false }}
     {{em-select label="Category" property="category" class="required"
       content=categoryTypes
-      selected=category
+      prompt=" "
     }}
     {{em-input label="Sources" property="sources"}}
     {{em-input label="Cost" property="cost" class="required"}}

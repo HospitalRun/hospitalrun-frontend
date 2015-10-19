@@ -5,12 +5,12 @@
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  {{#em-form model=this submitButton=false }}
+  {{#em-form model=model submitButton=false }}
     {{#if model.isNew}}
-      {{take-photo photoFile=photoFile }}
+      {{take-photo photoFile=model.photoFile }}
     {{else}}
       <div class="thumbnail">
-        <img alt={{caption}} src={{url}} class="img-responsive" >
+        <img alt={{model.caption}} src={{model.url}} class="img-responsive" >
       </div>
     {{/if}}
     <div class="row">

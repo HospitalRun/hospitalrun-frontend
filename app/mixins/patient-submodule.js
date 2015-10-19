@@ -198,6 +198,6 @@ export default Ember.Mixin.create(PatientVisits, {
     }
   }.observes('visitId').on('init'),
 
-  visitId: Ember.computed.alias('visit.id'),
+  visitId: Ember.computed.alias('model.visit.id'),
   visitsController: Ember.computed.alias('controllers.visits')
 });

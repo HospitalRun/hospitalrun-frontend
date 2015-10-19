@@ -1,7 +1,7 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false bubbles=false }}
     {{#unless isNewOrDeleted}}
-      {{patient-summary patient=model visits=visits patientProcedures=patientProcedures disablePatientLink=true }}
+      {{patient-summary patient=model visits=model.visits patientProcedures=patientProcedures disablePatientLink=true }}
       <ul class="nav nav-pills" role="tablist">
         <li role="presentation" class="active"><a class="active" href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">General</a></li>
         <li role="presentation"><a href="#photos" role="tab" data-toggle="pill" data-test-selector="photos-tab">Photos</a></li>
@@ -32,24 +32,24 @@
                 <div class="form-group">
                   <label>Gender</label>
                   <div>
-                    {{ext-radio content=genderList value=gender showInline=true }}
+                    {{ext-radio content=genderList value=model.gender showInline=true }}
                   </div>
                 </div>
                 {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now"}}
                 <div class="form-group">
                   <label class="control-label">Age</label>
-                  <p class="form-control-static">{{age}}</p>
+                  <p class="form-control-static">{{model.age}}</p>
                 </div>
                 {{em-input property="placeOfBirth" label="Place of Birth"}}
                 <div class="form-group">
                   <label>Patient Type</label>
                   <div>
-                    {{ext-radio content=patientTypes value=patientType showInline=true }}
+                    {{ext-radio content=patientTypes value=model.patientType showInline=true }}
                   </div>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
-                  {{select-or-typeahead property="status" label="Patient Status" list=statusList selection=status }}
+                  {{select-or-typeahead property="status" label="Patient Status" list=statusList selection=model.status }}
                   {{em-input property="externalPatientId" label="External Patient Id"}}
                   {{em-select
                     prompt=" "
@@ -57,7 +57,7 @@
                     property="bloodType"
                     content=bloodTypes
                   }}
-                  {{select-or-typeahead property="clinic" label="Clinic Site" list=clinicList selection=clinic }}
+                  {{select-or-typeahead property="clinic" label="Clinic Site" list=clinicList selection=model.clinic }}
                   {{em-input property="referredBy" label="Referred By"}}
                   {{date-picker property="referredDate" label="Referred Date"}}
                   {{em-input property="religion" label="Religion"}}
@@ -104,7 +104,7 @@
               {{else}}
                 {{em-text label="Address" property="address" rows=3  class="col-xs-12 col-sm-6"}}
               {{/if}}
-              {{select-or-typeahead property="country" label="Country" list=countryList selection=country className="col-xs-12 col-sm-6" }}
+              {{select-or-typeahead property="country" label="Country" list=countryList selection=model.country className="col-xs-12 col-sm-6" }}
             </div>
           </div>
           {{#if haveAdditionalContacts}}
@@ -250,7 +250,7 @@
                   <th>Type</th>
                   <th>Actions</th>
                 </tr>
-                {{#each visits as |visit|}}
+                {{#each model.visits as |visit|}}
                   <tr {{action "editVisit" visit}}>
                     <td>{{date-format visit.startDate}}</td>
                     <td>{{date-format visit.endDate}}</td>
@@ -342,7 +342,7 @@
                     <th>Insurance</th>
                     <th>Action</th>
                   </tr>
-                  {{#each familyInfo as |info|}}
+                  {{#each model.familyInfo as |info|}}
                     <tr>
                       <td>{{info.name}}</td>
                       <td>{{info.age}}</td>
@@ -376,7 +376,7 @@
                     <th>Monthly Cost</th>
                     <th>Actions</th>
                   </tr>
-                  {{#each expenses as |expense|}}
+                  {{#each model.expenses as |expense|}}
                     <tr>
                       <td>{{expense.category}}</td>
                       <td>{{expense.sources}}</td>
@@ -403,9 +403,9 @@
                   <div class="form-group col-sm-6">
                     <label>Living Arrangement</label>
                     {{ext-radio
-                      name=livingArrangement
+                      name="livingArrangement"
                       content=livingArrangementList
-                      value=livingArrangement
+                      value=model.livingArrangement
                       includeOtherOption=true
                       otherOptionLabel="Other"
                       radioLabelPath="content"
@@ -427,12 +427,12 @@
                 <div class="row">
                   {{em-select label="Philhealth"
                     property="insurance" content=philhealthTypes
-                    selected=insurance
+                    selected=model.insurance
                     class="col-sm-6"
                   }}
                   {{em-select label="Classification"
                     property="economicClassification" content=economicClassificationTypes
-                    selected=economicClassification
+                    selected=model.economicClassification
                     class="col-sm-6"
                     prompt=" "
                   }}

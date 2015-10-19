@@ -21,12 +21,12 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
   title: 'Expense',
   updateButtonAction: 'update',
   updateButtonText: function() {
-    if (this.get('isNew')) {
+    if (this.get('model.isNew')) {
       return 'Add';
     } else {
       return 'Update';
     }
-  }.property('isNew'),
+  }.property('model.isNew'),
 
   actions: {
     cancel: function() {
@@ -34,7 +34,7 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
     },
 
     update: function() {
-      var model = this.getProperties('isNew', 'category', 'sources', 'cost');
+      var model = this.get('model');
       this.get('editController').send('updateExpense', model);
     }
   }

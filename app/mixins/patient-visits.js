@@ -5,7 +5,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var maxValue = this.get('maxValue'),
         patientId = patient.get('id');
-      this.store.find('visit', {
+      this.store.query('visit', {
         options: {
           startkey: [patientId, null, null, null, 'visit_'],
           endkey: [patientId, maxValue, maxValue, maxValue, maxValue]
