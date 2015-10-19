@@ -1,6 +1,6 @@
 import Ember from 'ember';
 export default Ember.Service.extend({
-  database: Ember.inject.service(),
+  config: Ember.inject.service(),
 
   filer: null, // Injected via initializer
   fileSystemSize: (1024 * 1024 * 1024 * 8), // 8GB max size for local filesystem;chrome only,
@@ -60,7 +60,7 @@ export default Ember.Service.extend({
         filer = this.get('filer'),
         fileName = file.name || currentDate.getTime(),
         newFileName = path + fileName,
-        database = this.get('database');
+        config = this.get('config');
       if (path.indexOf('.') > -1) {
         newFileName = path;
         // If a full file path was provided, figure out the path and file name.
@@ -96,7 +96,7 @@ export default Ember.Service.extend({
         }
         filer.mkdir(path, false, function() {
           filer.write(newFileName, { data: file, type: file.type }, function(fileEntry) {
-            database.saveFileLink(newFileName, pouchDbId);
+            config.saveFileLink(newFileName, pouchDbId);
             resolve(fileEntry);
           }, function(e) {
             reject(e);
@@ -119,10 +119,10 @@ export default Ember.Service.extend({
   deleteFile: function(filePath, pouchDbId) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var filer = this.get('filer'),
-        database = this.get('database');
+        config = this.get('config');
       try {
         filer.rm(filePath, function() {
-          database.removeFileLink(pouchDbId);
+          config.removeFileLink(pouchDbId);
           resolve();
         }, reject);
       } catch(ex) {

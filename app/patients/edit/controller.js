@@ -265,7 +265,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
 
     deletePhoto: function(model) {
       var photo = model.get('photoToDelete'),
-        photoId = model.get('id'),
+        photoId = photo.get('id'),
         photos = this.get('model.photos'),
         filePath = photo.get('fileName');
       photos.removeObject(photo);
