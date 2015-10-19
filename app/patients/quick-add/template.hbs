@@ -8,7 +8,7 @@
   <div class="alert alert-warning" role="alert">
     The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.
   </div>
-  {{#em-form model=this submit_button=false }}
+  {{#em-form model=this submitButton=false }}
     <div class="row">
       {{em-input property="friendlyId" label="Id" class="required col-sm-6"}}
       {{em-input property="firstName" label="First Name" class="required col-sm-6"}}

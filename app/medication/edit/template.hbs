@@ -1,5 +1,5 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=this submit_button=false }}
+  {{#em-form model=this submitButton=false }}
     {{#unless selectPatient}}
       {{patient-summary patient=model.patient returnTo='medication.edit' returnToContext=id disablePatientLink=isNew }}
     {{/unless}}
