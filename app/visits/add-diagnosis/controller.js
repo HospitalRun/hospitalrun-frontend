@@ -1,14 +1,13 @@
 import Ember from 'ember';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 export default AbstractEditController.extend({
-  diagnosisList: Ember.computed.alias('controllers.visits.diagnosisList'),
+  visitsController: Ember.inject.controller('visits'),
+  diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
 
-  needs: ['visits', 'visits/edit'],
-
-  editController: Ember.computed.alias('controllers.visits/edit'),
+  editController: Ember.inject.controller('visits/edit'),
   lookupListsToUpdate: [{
     name: 'diagnosisList',
-    property: 'diagnosis',
+    property: 'model.diagnosis',
     id: 'diagnosis_list'
   }],
   title: 'Add Diagnosis',
@@ -25,7 +24,7 @@ export default AbstractEditController.extend({
       this.updateLookupLists();
       var newDiag = {
         date: new Date(),
-        description: this.get('diagnosis')
+        description: this.get('model.diagnosis')
       };
       this.get('editController').send('addDiagnosis', newDiag);
     }

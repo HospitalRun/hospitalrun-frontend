@@ -7,7 +7,7 @@ import UserSession from 'hospitalrun/mixins/user-session';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, UserSession, VisitTypes, {
-  needs: 'visits',
+  visitsController: Ember.inject.controller('visits'),
 
   canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
@@ -64,57 +64,59 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
   disabledAction: function() {
     this.get('model').validate();
     this._super();
-  }.property('endDate', 'startDate', 'isValid'),
+  }.property('model.endDate', 'model.startDate', 'model.isValid'),
 
   isAdmissionVisit: function() {
-    var visitType = this.get('visitType'),
-      isAdmission = (visitType === 'Admission');
+    var visitType = this.get('model.visitType'),
+      isAdmission = (visitType === 'Admission'),
+      visit = this.get('model');
     if (isAdmission) {
-      this.set('outPatient', false);
+      visit.set('outPatient', false);
     } else {
-      this.set('status');
-      this.set('outPatient', true);
+      visit.set('status');
+      visit.set('outPatient', true);
     }
     return isAdmission;
-  }.property('visitType'),
+  }.property('model.visitType'),
 
   startDateChanged: function() {
     var isAdmissionVisit = this.get('isAdmissionVisit'),
-      startDate = this.get('startDate');
+      startDate = this.get('model.startDate'),
+      visit = this.get('model');
     if (!isAdmissionVisit) {
-      this.set('endDate', startDate);
+      visit.set('endDate', startDate);
     }
-  }.observes('isAdmissionVisit', 'startDate'),
+  }.observes('isAdmissionVisit', 'model.startDate'),
 
   cancelAction: 'returnToPatient',
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
   dateTimeFormat: 'l h:mm A',
-  diagnosisList: Ember.computed.alias('controllers.visits.diagnosisList'),
+  diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
   findPatientVisits: false,
   patientImaging: Ember.computed.alias('model.imaging'),
   patientLabs: Ember.computed.alias('model.labs'),
   patientMedications: Ember.computed.alias('model.medication'),
   pricingList: null, // This gets filled in by the route
-  pricingTypes: Ember.computed.alias('controllers.visits.wardPricingTypes'),
-  physicianList: Ember.computed.alias('controllers.visits.physicianList'),
-  locationList: Ember.computed.alias('controllers.visits.locationList'),
-  visitTypesList: Ember.computed.alias('controllers.visits.visitTypeList'),
+  pricingTypes: Ember.computed.alias('visitsController.wardPricingTypes'),
+  physicianList: Ember.computed.alias('visitsController.physicianList'),
+  locationList: Ember.computed.alias('visitsController.locationList'),
+  visitTypesList: Ember.computed.alias('visitsController.visitTypeList'),
   lookupListsToUpdate: [{
     name: 'diagnosisList',
-    property: 'primaryBillingDiagnosis',
+    property: 'model.primaryBillingDiagnosis',
     id: 'diagnosis_list'
   }, {
     name: 'diagnosisList',
-    property: 'primaryDiagnosis',
+    property: 'model.primaryDiagnosis',
     id: 'diagnosis_list'
   }, {
     name: 'physicianList',
-    property: 'examiner',
+    property: 'model.examiner',
     id: 'physician_list'
   }, {
     name: 'locationList',
-    property: 'location',
+    property: 'model.location',
     id: 'visit_location_list'
   }],
 
@@ -129,7 +131,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
   _addChildObject: function(route) {
     this.transitionToRoute(route, 'new').then(function(newRoute) {
       newRoute.currentModel.setProperties({
-        patient: this.get('patient'),
+        patient: this.get('model.patient'),
         visit: this.get('model'),
         returnToVisit: true
       });
@@ -141,14 +143,14 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
   },
 
   haveAdditionalDiagnoses: function() {
-    return !Ember.isEmpty(this.get('additionalDiagnoses'));
-  }.property('additionalDiagnoses.[]'),
+    return !Ember.isEmpty(this.get('model.additionalDiagnoses'));
+  }.property('model.additionalDiagnoses.[]'),
 
   afterUpdate: function() {
-    var patient = this.get('patient'),
+    var patient = this.get('model.patient'),
       patientAdmitted = patient.get('admitted'),
       patientUpdated = false,
-      status = this.get('status');
+      status = this.get('model.status');
     if (status === 'Admitted' && !patientAdmitted) {
       patient.set('admitted', true);
       patientUpdated = true;
@@ -168,7 +170,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
   },
 
   beforeUpdate: function() {
-    if (this.get('isNew')) {
+    if (this.get('model.isNew')) {
       this.set('newVisit', true);
     }
     return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -185,7 +187,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
    * otherwise add the specified object to the list.
    */
   updateList: function(listName, listObject, removeObject) {
-    this.get(listName).then(function(list) {
+    var model = this.get('model');
+    model.get(listName).then(function(list) {
       if (removeObject) {
         list.removeObject(listObject);
       } else {
@@ -198,20 +201,22 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
 
   actions: {
     addDiagnosis: function(newDiagnosis) {
-      var additionalDiagnoses = this.get('additionalDiagnoses');
+      var additionalDiagnoses = this.get('model.additionalDiagnoses'),
+        visit = this.get('model');
       if (!Ember.isArray(additionalDiagnoses)) {
         additionalDiagnoses = [];
       }
       additionalDiagnoses.addObject(newDiagnosis);
-      this.set('additionalDiagnoses', additionalDiagnoses);
+      visit.set('additionalDiagnoses', additionalDiagnoses);
       this.send('update', true);
       this.send('closeModal');
     },
 
     deleteDiagnosis: function(diagnosis) {
-      var additionalDiagnoses = this.get('additionalDiagnoses');
+      var additionalDiagnoses = this.get('model.additionalDiagnoses'),
+        visit = this.get('model');
       additionalDiagnoses.removeObject(diagnosis);
-      this.set('additionalDiagnoses', additionalDiagnoses);
+      visit.set('additionalDiagnoses', additionalDiagnoses);
       this.send('update', true);
     },
 
@@ -221,7 +226,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
 
     cancel: function() {
       var cancelledItem = this.get('model');
-      if (this.get('isNew')) {
+      if (this.get('model.isNew')) {
         cancelledItem.deleteRecord();
       } else {
         cancelledItem.rollback();

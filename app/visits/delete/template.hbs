@@ -1,6 +1,4 @@
 {{#modal-dialog
-    hideCancelButton=hideCancelButton
-    hideUpdateButton=hideUpdateButton
     isUpdateDisabled=isUpdateDisabled
     title=title
     updateButtonAction=updateButtonAction
@@ -12,23 +10,23 @@
   <form role="form">
     <div class="form-group">
       <label class="control-label">Start Date</label>
-      <p class="form-control-static">{{date-format startDate}}</p>
+      <p class="form-control-static">{{date-format model.startDate}}</p>
     </div>
     <div class="form-group">
       <label class="control-label">End Date</label>
-      <p class="form-control-static">{{date-format endDate}}</p>
+      <p class="form-control-static">{{date-format model.endDate}}</p>
     </div>
     <div class="form-group">
       <label class="control-label">Examiner</label>
-      <p class="form-control-static">{{examiner}}</p>
+      <p class="form-control-static">{{model.examiner}}</p>
     </div>
     <div class="form-group">
       <label class="control-label">Location</label>
-      <p class="form-control-static">{{location}}</p>
+      <p class="form-control-static">{{model.location}}</p>
     </div>
     <div class="form-group">
       <label class="control-label">Type</label>
-      <p class="form-control-static">{{visitType}}</p>
+      <p class="form-control-static">{{model.visitType}}</p>
     </div>
   </form>
 {{/modal-dialog}}

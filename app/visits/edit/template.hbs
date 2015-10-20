@@ -15,11 +15,11 @@
       </div>
       <div id="visit-info" class="panel-collapse collapse in">
         <div class="panel-body">
-          {{#em-form model=this submitButton=false }}
+          {{#em-form model=model submitButton=false }}
             <div class="row">
               <div class="form-group col-sm-3">
                 <label>Patient</label>
-                <p class="form-control-static">{{patient.displayName}}</p>
+                <p class="form-control-static">{{model.patient.displayName}}</p>
               </div>
               {{#if isAdmissionVisit}}
                 {{date-picker property="startDate" label="Admission Date" format=dateTimeFormat showTime=true class="col-sm-3 required"}}
@@ -29,7 +29,7 @@
               {{/if}}
               {{select-or-typeahead className="col-sm-3" property="location"
                 label="Location" list=locationList
-                selection=location
+                selection=model.location
               }}
             </div>
             <div class="row">
@@ -44,17 +44,17 @@
               {{/if}}
               {{select-or-typeahead className="col-sm-3" property="examiner"
                 label="Examiner" list=physicianList
-                selection=examiner
+                selection=model.examiner
               }}
             </div>
             <div class="row">
               {{select-or-typeahead className="col-sm-5" property="primaryDiagnosis"
                 label="Admitting Diagnosis" list=diagnosisList
-                selection=primaryDiagnosis hint=false
+                selection=model.primaryDiagnosis hint=false
               }}
               {{select-or-typeahead className="col-sm-5" property="primaryBillingDiagnosis"
                 label="Final/Billing Diagnosis" list=diagnosisList
-                selection=primaryBillingDiagnosis hint=false
+                selection=model.primaryBillingDiagnosis hint=false
               }}
               {{#if canAddDiagnosis}}
                 <div class="form-group col-sm-2">
@@ -75,7 +75,7 @@
                   <th>Diagnosis</th>
                   <th>Delete</th>
                 </tr>
-                {{#each additionalDiagnoses as |diagnosis|}}
+                {{#each model.additionalDiagnoses as |diagnosis|}}
                   <tr>
                     <td>{{date-format diagnosis.date}}</td>
                     <td>{{diagnosis.description}}</td>
@@ -97,7 +97,7 @@
         </div>
       </div>
     </div>
-    {{#unless isNew}}
+    {{#unless model.isNew}}
       <div class="panel">
         <div class="panel-heading">
           <h3 class="panel-title">
@@ -117,7 +117,7 @@
                   <th>Procedure</th>
                   <th>Actions</th>
               </tr>
-              {{#each procedures as |procedure|}}
+              {{#each model.procedures as |procedure|}}
                 <tr>
                   <td>{{date-format procedure.procedureDate}}</td>
                   <td>{{procedure.description}}</td>
@@ -219,7 +219,7 @@
                 <th>Respiratory Rate</th>
                 <th>Delete</th>
               </tr>
-              {{#each vitals as |vital|}}
+              {{#each model.vitals as |vital|}}
                 <tr>
                   <td>{{date-format vital.dateRecorded format="l h:mm A"}}</td>
                   <td>{{vital.temperature}}</td>

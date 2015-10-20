@@ -1,11 +1,10 @@
 {{#modal-dialog
     hideCancelButton=hideCancelButton
-    hideUpdateButton=hideUpdateButton
     isUpdateDisabled=isUpdateDisabled
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  {{#em-form model=this submitButton=false }}
+  {{#em-form model=model submitButton=false }}
     {{select-or-typeahead property="diagnosis" label="Diagnosis" list=diagnosisList hint=false}}
   {{/em-form}}
 {{/modal-dialog}}

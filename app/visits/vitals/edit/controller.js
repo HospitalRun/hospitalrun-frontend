@@ -2,28 +2,26 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import Ember from 'ember';
 
 export default AbstractEditController.extend({
-  needs: 'visits/edit',
-
   cancelAction: 'closeModal',
 
-  editController: Ember.computed.alias('controllers.visits/edit'),
+  editController: Ember.inject.controller('visits/edit'),
 
   newVitals: false,
 
   temperatureLabel: 'Temperature (\xb0C)',
 
   title: function() {
-    var isNew = this.get('isNew');
+    var isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add Vitals';
     }
     return 'Edit Vitals';
-  }.property('isNew'),
+  }.property('model.isNew'),
 
   updateCapability: 'add_vitals',
 
   beforeUpdate: function() {
-    if (this.get('isNew')) {
+    if (this.get('model.isNew')) {
       this.set('newVitals', true);
     }
     return Ember.RSVP.Promise.resolve();
