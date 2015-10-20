@@ -1,5 +1,9 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
+  chargePricingCategory: null,
+  pricingList: null,
+  pricingTypeForObjectType: null,
+  pricingTypes: null,
   _createNewChargeRecord: function(quantityCharged, pricingId) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       this.store.find('pricing', pricingId).then(function(item) {
@@ -9,7 +13,7 @@ export default Ember.Mixin.create({
           pricingItem: item
         });
         newCharge.save().then(function(chargeRecord) {
-          var charges = this.get('charges');
+          var charges = this.get('model.charges');
           charges.addObject(chargeRecord);
           resolve();
         }.bind(this), reject);
@@ -19,7 +23,7 @@ export default Ember.Mixin.create({
 
   actions: {
     addCharge: function(charge) {
-      var charges = this.get('charges');
+      var charges = this.get('model.charges');
       charges.addObject(charge);
       this.send('update', true);
       this.send('closeModal');
@@ -27,7 +31,7 @@ export default Ember.Mixin.create({
 
     deleteCharge: function(model) {
       var chargeToDelete = model.get('chargeToDelete'),
-        charges = this.get('charges');
+        charges = this.get('model.charges');
       charges.removeObject(chargeToDelete);
       chargeToDelete.destroyRecord();
       this.send('update', true);
@@ -60,7 +64,8 @@ export default Ember.Mixin.create({
     },
 
     setChargeQuantity: function(id, quantity) {
-      this.set(id, quantity);
+      let model = this.get('model');
+      model.set(id, quantity);
     }
   },
 
@@ -83,9 +88,8 @@ export default Ember.Mixin.create({
 
   chargeRoute: null,
 
-  findChargeForPricingItem: function(pricingItem) {
-    var charges = this.get('charges'),
-      chargeForItem = charges.find(function(charge) {
+  findChargeForPricingItem: function(pricingItem, charges) {
+    var chargeForItem = charges.find(function(charge) {
         var chargePricingItemId = charge.get('pricingItem.id');
         return (pricingItem.id === chargePricingItemId);
       });
@@ -154,7 +158,7 @@ export default Ember.Mixin.create({
       baseModel = this.get('model'),
       modelToSave,
       modelsToAdd = [],
-      patient = this.get('patient'),
+      patient = this.get('model.patient'),
       savePromises = [];
 
     baseModel.eachAttribute(function(name) {
@@ -259,7 +263,7 @@ export default Ember.Mixin.create({
    * When using organizeByType charges need to be mapped over from the price lists
    */
   updateCharges: function() {
-    var charges = this.get('charges'),
+    var charges = this.get('model.charges'),
       organizeByType = this.get('organizeByType'),
       pricingList = this.get('pricingList');
 
@@ -268,9 +272,10 @@ export default Ember.Mixin.create({
     }
     return new Ember.RSVP.Promise(function(resolve, reject) {
       var chargePromises = [];
+      var model = this.get('model');
       pricingList.forEach(function(pricingItem) {
-        var currentCharge = this.findChargeForPricingItem(pricingItem),
-          quantityCharged = this.get(pricingItem.id);
+        var currentCharge = this.findChargeForPricingItem(pricingItem, model.get('charges')),
+          quantityCharged = model.get(pricingItem.id);
         if (Ember.isEmpty(quantityCharged)) {
           if (currentCharge) {
             // Remove existing charge because quantity is blank
@@ -288,7 +293,7 @@ export default Ember.Mixin.create({
           }
         }
       }.bind(this));
-      Ember.RSVP.all(chargePromises, 'Charges updated for current record:' + this.get('id')).then(resolve, reject);
-    }.bind(this), 'updateCharges for current record:' + this.get('id'));
+      Ember.RSVP.all(chargePromises, 'Charges updated for current record:' + this.get('model.id')).then(resolve, reject);
+    }.bind(this), 'updateCharges for current record:' + this.get('model.id'));
   }
 });

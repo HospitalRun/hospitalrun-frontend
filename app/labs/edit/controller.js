@@ -49,7 +49,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
             }.bind(this));
           }.bind(this));
         } else {
-          this.getSelectedPricing('selectedLabType').then(function(pricingRecords) {
+          this.getSelectedPricing('model.selectedLabType').then(function(pricingRecords) {
             if (Ember.isArray(pricingRecords)) {
               this.createMultipleRequests(pricingRecords, 'labType', 'labs', 'Lab');
             } else {

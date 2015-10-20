@@ -10,11 +10,9 @@
                 {{#each pricingListByType as |pricingList|}}
                     <tr>
                         {{#each pricingList as |price|}}
-                            <td class="col-xs-2">
-                                {{em-input property=price.id label=price.name }}
-                            </td>
+                          {{charge-quantity pricingItem=price model=model}}
                         {{/each}}
-                    </tr> 
+                    </tr>
                 {{/each}}
             </tbody>
         </table>
