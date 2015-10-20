@@ -1,11 +1,11 @@
 {{#modal-dialog
-    hideCancelButton=hideCancelButton
-    hideUpdateButton=hideUpdateButton
-    isUpdateDisabled=isUpdateDisabled
-    title=title
-    updateButtonAction=updateButtonAction
-    updateButtonText=updateButtonText }}
-  {{#if showProgress}}
+    hideCancelButton=model.hideCancelButton
+    hideUpdateButton=model.hideUpdateButton
+    isUpdateDisabled=model.isUpdateDisabled
+    title=model.title
+    updateButtonAction=model.updateButtonAction
+    updateButtonText=model.updateButtonText }}
+  {{#if model.showProgress}}
     <div class="progress">
       <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow={{progressBarValue}}
       aria-valuemin="0" aria-valuemax="100" style={{progressBarStyle}}>
@@ -13,5 +13,5 @@
       </div>
     </div>
   {{/if}}
-  {{message}}
+  {{model.message}}
 {{/modal-dialog}}

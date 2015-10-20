@@ -9,13 +9,13 @@ export default Ember.ObjectController.extend({
     },
 
     confirm: function() {
-      var confirmAction = this.getWithDefault('confirmAction', 'confirm');
+      var confirmAction = this.getWithDefault('model.confirmAction', 'model.confirm');
       this.send(confirmAction, this.get('model'));
       this.send('closeModal');
     },
 
     ok: function() {
-      var okAction = this.get('okAction');
+      var okAction = this.get('model.okAction');
       if (!Ember.isEmpty(okAction)) {
         this.send(okAction, this.get('model'));
       }
