@@ -13,6 +13,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   locationList: Ember.computed.map('patientsController.locationList.value', SelectValues.selectValuesMap),
   statusList: Ember.computed.map('patientsController.statusList.value', SelectValues.selectValuesMap),
   visitTypesList: Ember.computed.alias('patientsController.visitTypeList'),
+  reportType: 'detailedAdmissions',
   patientDetails: {},
 
   admissionReportColumns: {
