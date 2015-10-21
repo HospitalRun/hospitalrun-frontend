@@ -51,8 +51,8 @@ export default Ember.Mixin.create(PatientVisits, {
   },
 
   cancelAction: function() {
-    var returnToPatient = this.get('returnToPatient'),
-      returnToVisit = this.get('returnToVisit');
+    var returnToPatient = this.get('model.returnToPatient'),
+      returnToVisit = this.get('model.returnToVisit');
     if (returnToVisit) {
       return 'returnToVisit';
     } else if (returnToPatient) {

@@ -3,32 +3,32 @@ import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import Ember from 'ember';
 
 export default AbstractEditController.extend(InventorySelection, {
-  needs: ['procedures/edit'],
   cancelAction: 'closeModal',
-  newPricingItem: false,
-  requestingController: Ember.computed.alias('controllers.procedures/edit'),
-  medicationList: Ember.computed.alias('controllers.procedures/edit.medicationList'),
+  newCharge: false,
+  requestingController:  Ember.inject.controller('procedures/edit'),
+  medicationList: Ember.computed.alias('requestingController.medicationList'),
 
   updateCapability: 'add_charge',
 
   medicationChanged: function() {
-    var itemName = this.get('itemName'),
-      medication = this.get('medication');
+    var model = this.get('model'),
+      itemName = model.get('itemName'),
+      medication = model.get('medication');
     if (!Ember.isEmpty(medication) && medication.get('name') !== itemName) {
-      this.set('itemName', medication.get('name'));
+      model.set('itemName', medication.get('name'));
     }
-  }.observes('medication'),
+  }.observes('model.medication'),
 
   title: function() {
-    var isNew = this.get('isNew');
+    var isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add Medication Used';
     }
     return 'Edit Medication Used';
-  }.property('isNew'),
+  }.property('model.isNew'),
 
   beforeUpdate: function() {
-    var isNew = this.get('isNew');
+    var isNew = this.get('model.isNew');
     if (isNew) {
       this.set('newCharge', true);
     }

@@ -15,8 +15,7 @@ export default AbstractEditController.extend({
     var model = this.get('model'),
       selectedItem = this.get('selectedItem');
     if (!Ember.isEmpty(selectedItem)) {
-      var pricingId = this.get('database').getEmberId(selectedItem._id);
-      this.store.find('pricing', pricingId).then(function(item) {
+      this.store.find('pricing', selectedItem.id).then(function(item) {
         model.set('pricingItem', item);
       }.bind(this));
     }
@@ -58,7 +57,7 @@ export default AbstractEditController.extend({
           });
         newPricing.save().then(function() {
           this.get('pricingList').addObject({
-            _id: 'pricing_' + newPricing.get('id'),
+            id: newPricing.get('id'),
             name: newPricing.get('name')
           });
           model.set('pricingItem', newPricing);

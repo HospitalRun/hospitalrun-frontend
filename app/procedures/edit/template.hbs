@@ -1,19 +1,19 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=this submitButton=false }}
+  {{#em-form model=model submitButton=false }}
     {{select-or-typeahead className="required" property="description"
       label="Procedure" list=procedureList
-      selection=description hint=false
+      selection=model.description hint=false
     }}
     <div class="row">
       {{select-or-typeahead className="col-xs-6" property="cptCode"
         label="CPT Code" list=cptCodeList
-        selection=cptCode
+        selection=model.cptCode
       }}
     </div>
     <div class="row">
       {{select-or-typeahead className="col-sm-3" property="location"
         label="Procedure Location" list=procedureLocations
-        selection=location
+        selection=model.location
       }}
       {{date-picker property="procedureDate" label="Procedure Date" class="col-sm-3 required"}}
       {{em-input property="timeStarted" label="Time Started" class="col-sm-3"}}
@@ -22,21 +22,21 @@
     <div class="row">
       {{select-or-typeahead className="col-sm-4 required" property="physician"
         label="Physician" list=physicianList
-        selection=physician
+        selection=model.physician
       }}
       {{select-or-typeahead className="col-sm-4" property="assistant"
         label="Assistant" list=physicianList
-        selection=assistant prompt=" "
+        selection=model.assistant prompt=" "
       }}
       {{select-or-typeahead className="col-sm-4" property="anesthesiologist"
         label="Anesthesiologist" list=anesthesiologistList
-        selection=anesthesiologist
+        selection=model.anesthesiologist
       }}
     </div>
     <div class="row">
         {{select-or-typeahead className="col-sm-4" property="anesthesiaType"
           label="Anesthesia Type" list=anesthesiaTypes
-          selection=anesthesiaTypes
+          selection=model.anesthesiaTypes
         }}
     </div>
     {{em-text label="Notes" property="notes" rows=3 }}
@@ -59,7 +59,7 @@
             <th>Quantity</th>
             <th>Action</th>
           </tr>
-          {{#each charges as |charge|}}
+          {{#each model.charges as |charge|}}
             {{#if charge.medicationCharge}}
               <tr>
                 <td>{{charge.medication.name}}</td>
