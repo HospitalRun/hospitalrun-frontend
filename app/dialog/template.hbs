@@ -7,9 +7,9 @@
     updateButtonText=model.updateButtonText }}
   {{#if model.showProgress}}
     <div class="progress">
-      <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow={{progressBarValue}}
-      aria-valuemin="0" aria-valuemax="100" style={{progressBarStyle}}>
-        <span class="sr-only">{{progressBarValue}}% Complete</span>
+      <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow={{model.progressBarValue}}
+      aria-valuemin="0" aria-valuemax="100" style={{model.progressBarStyle}}>
+        <span class="sr-only">{{model.progressBarValue}}% Complete</span>
       </div>
     </div>
   {{/if}}
