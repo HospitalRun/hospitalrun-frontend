@@ -13,10 +13,10 @@
                 <button class="btn btn-primary" {{action newButtonAction}}>{{newButtonText}}</button>
                 {{/if}}
                 {{#if additionalButtons}}
-                    {{#each additionalButtons}}
-                    <button class={{class}} {{action buttonAction}}>
-                        {{#if buttonIcon}}<span class={{buttonIcon}}></span>{{/if}}
-                        {{buttonText}}</button>
+                    {{#each additionalButtons as |button|}}
+                        <button class={{button.class}} {{action button.buttonAction}}>
+                          {{#if buttonIcon}}<span class={{button.buttonIcon}}></span>{{/if}}
+                        {{button.buttonText}}</button>
                     {{/each}}
                 {{/if}}
             </div>

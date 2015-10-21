@@ -1,14 +1,14 @@
-{{#each currentReportRows}}
-    {{#if rowAction}}
-        <tr {{action rowAction.action rowAction.model}}>
-            {{#each row}}
-                <td>{{array-display content=this }}</td>
+{{#each currentReportRows as |reportRow|}}
+    {{#if reportRow.rowAction}}
+        <tr {{action reportRow.rowAction.action reportRow.rowAction.model}}>
+            {{#each reportRow.row as |column|}}
+                <td>{{array-display content=column }}</td>
             {{/each}}
         </tr>
     {{else}}
         <tr>
-            {{#each this}}
-                <td>{{array-display content=this }}</td>
+            {{#each reportRow as |column|}}
+                <td>{{array-display content=column }}</td>
             {{/each}}
         </tr>
     {{/if}}
