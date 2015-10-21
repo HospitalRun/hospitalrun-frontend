@@ -48,7 +48,7 @@ export default Model.extend(UserSession, EmberValidations, {
         } else {
           if (error.indexOf && error.indexOf('conflict') > -1) {
             // Conflict encountered, so rollback, reload and then save the record with the changed attributes.
-            this.rollback();
+            this.rollbackAttributes();
             this.reload().then(function(record) {
               for (var attribute in changedAttributes) {
                 record.set(attribute, changedAttributes[attribute][1]);

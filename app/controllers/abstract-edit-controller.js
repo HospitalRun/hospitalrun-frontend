@@ -79,7 +79,7 @@ export default Ember.ObjectController.extend(EditPanelProps, IsUpdateDisabled, M
     if (cancelledItem.get('isNew')) {
       cancelledItem.deleteRecord();
     } else {
-      cancelledItem.rollback();
+      cancelledItem.rollbackAttributes();
     }
   },
 

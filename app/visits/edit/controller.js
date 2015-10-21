@@ -229,7 +229,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
       if (this.get('model.isNew')) {
         cancelledItem.deleteRecord();
       } else {
-        cancelledItem.rollback();
+        cancelledItem.rollbackAttributes();
       }
       this.send(this.get('cancelAction'));
     },
