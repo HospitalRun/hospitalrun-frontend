@@ -5,7 +5,7 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodule, VisitTypes, {
-  needs: ['appointments'],
+  appointmentsController: Ember.inject.controller('appointments'),
 
   dateFormat: 'l h:mm A',
   findPatientVisits: false,
@@ -28,15 +28,15 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
     return hourList;
   }.property(),
 
-  locationList: Ember.computed.alias('controllers.appointments.locationList'),
+  locationList: Ember.computed.alias('appointmentsController.locationList'),
 
   lookupListsToUpdate: [{
     name: 'physicianList',
-    property: 'provider',
+    property: 'model.provider',
     id: 'physician_list'
   }, {
     name: 'locationList',
-    property: 'location',
+    property: 'model.location',
     id: 'visit_location_list'
   }],
 
@@ -49,27 +49,28 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
     return minuteList;
   }.property(),
 
-  physicianList: Ember.computed.alias('controllers.appointments.physicianList'),
+  physicianList: Ember.computed.alias('appointmentsController.physicianList'),
   showTime: true,
-  visitTypesList: Ember.computed.alias('controllers.appointments.visitTypeList'),
+  visitTypesList: Ember.computed.alias('appointmentsController.visitTypeList'),
 
   cancelAction: function() {
-    var returnTo = this.get('returnTo');
+    var returnTo = this.get('model.returnTo');
     if (Ember.isEmpty(returnTo)) {
       return this._super();
     } else {
       return 'returnTo';
     }
-  }.property('returnTo'),
+  }.property('model.returnTo'),
 
   isAdmissionAppointment: function() {
-    var appointmentType = this.get('appointmentType'),
+    var model = this.get('model'),
+      appointmentType = model.get('appointmentType'),
       isAdmissionAppointment = (appointmentType === 'Admission');
     if (!isAdmissionAppointment) {
-      this.set('allDay', true);
+      model.set('allDay', true);
     }
     return isAdmissionAppointment;
-  }.property('appointmentType'),
+  }.property('model.appointmentType'),
 
   updateCapability: 'add_appointment',
 
@@ -134,7 +135,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
   },
 
   _updateAppointmentDates: function() {
-    var allDay = this.get('allDay'),
+    var allDay = this.get('model.allDay'),
       isAdmissionAppointment = this.get('isAdmissionAppointment'),
       appointmentDate = this.get('model.appointmentDate');
     if (!isAdmissionAppointment) {
