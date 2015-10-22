@@ -10,7 +10,7 @@ export default Ember.Mixin.create({
     'Pharmacy'
   ],
 
-  visitTypes: function() {
+  _getVisitTypes: function(includeEmpty) {
     var defaultVisitTypes = this.get('defaultVisitTypes'),
       visitTypesList = this.get('visitTypesList'),
       visitList;
@@ -19,7 +19,15 @@ export default Ember.Mixin.create({
     } else {
       visitList = visitTypesList.get('value');
     }
-    visitList = SelectValues.selectValues(visitList);
+    visitList = SelectValues.selectValues(visitList, includeEmpty);
     return visitList;
+  },
+
+  visitTypes: function() {
+    return this._getVisitTypes();
+  }.property('visitTypesList', 'defaultVisitTypes'),
+
+  visitTypesWithEmpty: function() {
+    return this._getVisitTypes(true);
   }.property('visitTypesList', 'defaultVisitTypes')
 });

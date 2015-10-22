@@ -5,5 +5,9 @@ export default Ember.Mixin.create({
     'Scheduled',
     'Canceled'
   ],
-  appointmentStatuses: Ember.computed.map('appointmentStatusList', SelectValues.selectValuesMap)
+  appointmentStatuses: Ember.computed.map('appointmentStatusList', SelectValues.selectValuesMap),
+
+  appointmentStatusesWithEmpty: function() {
+    return SelectValues.selectValues(this.get('appointmentStatusList'), true);
+  }.property()
 });
