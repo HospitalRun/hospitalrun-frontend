@@ -41,9 +41,21 @@ test('creating a new imaging request', (assert) => {
   andThen(() => {
     assert.equal(currentURL(), '/imaging/edit/new');
   });
-  fillIn(find('[data-test-selector="imaging-type-field"] input'), 'Chest Scan');
-  //fillIn(find('[data-test-selector="imaging-result-field"]'), 'Chest looks fine');
-  fillIn('[data-test-selector="imaging-notes-field"] textarea', 'Needs to have other scans taken');
+
+  fillIn('.patient-input .tt-input', 'Lennex Zinyando - P00017');
+  Ember.run(() => {
+    keyEvent('.patient-input .tt-input', 'keypress', 9);
+    keyEvent('.patient-input .tt-input', 'keypress', 9);
+    fillIn('.imaging-type-input .tt-input', 'Chest Scan');
+    keyEvent('.patient-input .tt-input', 'keypress', 9);
+    fillIn('.radiologist-input .tt-input', 'Dr Test');
+    fillIn('.result-input input', 'Check is clear');
+    fillIn('textarea', 'Patient is healthy');
+  });
+  click('button:contains(Add)');
   return pauseTest();
+  andThen(() => {
+    //assertions
+  });
   destroyDatabases();
 });
