@@ -8,6 +8,7 @@ import UserSession from 'hospitalrun/mixins/user-session';
 
 export default AbstractEditController.extend(InventoryLocations, InventoryTypeList, ReturnTo, UnitTypes, UserSession, {
   inventory: Ember.inject.controller(),
+  savingNewItem: false,
 
   canAddPurchase: function() {
     return this.currentUserCan('add_inventory_purchase');
@@ -29,15 +30,15 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
 
   lookupListsToUpdate: [{
     name: 'aisleLocationList', // Name of property containing lookup list
-    property: 'aisleLocation', // Corresponding property on model that potentially contains a new value to add to the list
+    property: 'model.aisleLocation', // Corresponding property on model that potentially contains a new value to add to the list
     id: 'aisle_location_list' // Id of the lookup list to update
   }, {
     name: 'vendorList', // Name of property containing lookup list
-    property: 'vendor', // Corresponding property on model that potentially contains a new value to add to the list
+    property: 'model.vendor', // Corresponding property on model that potentially contains a new value to add to the list
     id: 'vendor_list' // Id of the lookup list to update
   }, {
     name: 'warehouseList', // Name of property containing lookup list
-    property: 'location', // Corresponding property on model that potentially contains a new value to add to the list
+    property: 'model.location', // Corresponding property on model that potentially contains a new value to add to the list
     id: 'warehouse_list' // Id of the lookup list to update
   }],
 
@@ -51,12 +52,12 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
   }.property('transactions.[]'),
 
   locationQuantityTotal: function() {
-    var locations = this.get('locations');
+    var locations = this.get('model.locations');
     var total = locations.reduce(function(previousValue, location) {
       return previousValue + parseInt(location.get('quantity'));
     }, 0);
     return total;
-  }.property('locations'),
+  }.property('model.locations'),
 
   /**
    * Check to see if the total quantity by location matches the quantity calculated on the item
@@ -64,9 +65,9 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
    */
   quantityDiscrepency: function() {
     var locationQuantityTotal = this.get('locationQuantityTotal'),
-      quantity = this.get('quantity');
+      quantity = this.get('model.quantity');
     return (!Ember.isEmpty(locationQuantityTotal) && !Ember.isEmpty(quantity) && locationQuantityTotal !== quantity);
-  }.property('locationQuantityTotal', 'quantity'),
+  }.property('locationQuantityTotal', 'model.quantity'),
 
   /**
    * Get the difference in quantity between the total quantity by location and the quantity on the item.
@@ -74,15 +75,15 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
    */
   quantityDifferential: function() {
     var locationQuantityTotal = this.get('locationQuantityTotal'),
-      quantity = this.get('quantity');
+      quantity = this.get('model.quantity');
     return Math.abs(locationQuantityTotal - quantity);
-  }.property('locationQuantityTotal', 'quantity'),
+  }.property('locationQuantityTotal', 'model.quantity'),
 
   originalQuantityUpdated: function() {
     var isNew = this.get('model.isNew'),
       quantity = this.get('model.originalQuantity');
     if (isNew && !Ember.isEmpty(quantity)) {
-      this.set('quantity', quantity);
+      this.set('model.quantity', quantity);
     }
   }.observes('model.isNew', 'model.originalQuantity'),
 
@@ -124,7 +125,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     },
 
     deletePurchase: function(purchase, deleteFromLocation, expire) {
-      var purchases = this.get('purchases'),
+      var purchases = this.get('model.purchases'),
         quantityDeleted = purchase.get('currentQuantity');
       if (expire) {
         purchase.set('expired', true);
@@ -156,19 +157,6 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         transactionType: 'Adjustment (Add)'
       });
       this.send('openModal', 'inventory.adjust', inventoryLocation);
-    },
-
-    showDeletePurchase: function(purchase) {
-      this.send('openModal', 'inventory.purchase.delete', purchase);
-    },
-
-    showEditPurchase: function(purchase) {
-      this.send('openModal', 'inventory.purchase.edit', purchase);
-    },
-
-    showExpirePurchase: function(purchase) {
-      purchase.set('expire', true);
-      this.send('openModal', 'inventory.purchase.delete', purchase);
     },
 
     showTransfer: function(inventoryLocation) {
@@ -220,10 +208,11 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     var sequenceValue = null,
       friendlyId = sequence.get('prefix'),
       promises = [],
-      newPurchase = this.getProperties('aisleLocation', 'dateReceived',
+      model = this.get('model'),
+      newPurchase = model.getProperties('aisleLocation', 'dateReceived',
         'purchaseCost', 'lotNumber', 'expirationDate', 'giftInKind',
         'location', 'vendor', 'vendorItemNo'),
-      quantity = this.get('quantity');
+      quantity = this.get('model.quantity');
     if (!Ember.isEmpty(quantity)) {
       newPurchase.originalQuantity = quantity;
       newPurchase.currentQuantity = quantity;
@@ -240,7 +229,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     } else {
       friendlyId += sequenceValue;
     }
-    this.set('friendlyId', friendlyId);
+    model.set('friendlyId', friendlyId);
     promises.push(sequence.save());
     Ember.RSVP.all(promises, 'All before update done for inventory item').then(function() {
       resolve();
@@ -298,7 +287,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
   },
 
   getTransactions: function() {
-    var inventoryId = this.get('id');
+    var inventoryId = this.get('model.id');
     this.set('transactions', null);
     this.store.find('inv-request', {
       options: {
@@ -313,7 +302,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
   },
 
   beforeUpdate: function() {
-    if (this.get('isNew')) {
+    if (this.get('model.isNew')) {
       var model = this.get('model'),
         inventoryType = model.get('inventoryType');
       return new Ember.RSVP.Promise(function(resolve, reject) {

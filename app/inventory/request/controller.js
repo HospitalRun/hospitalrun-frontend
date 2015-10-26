@@ -5,12 +5,13 @@ import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import Ember from 'ember';
 
 export default AbstractEditController.extend(FulfillRequest, InventoryLocations, InventorySelection, {
-  needs: ['inventory'],
+  inventoryController: Ember.inject.controller('inventory'),
+  inventoryItems: null,
   cancelAction: 'allRequests',
 
-  warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
-  aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
-  expenseAccountList: Ember.computed.alias('controllers.inventory.expenseAccountList'),
+  warehouseList: Ember.computed.alias('inventoryController.warehouseList'),
+  aisleLocationList: Ember.computed.alias('inventoryController.aisleLocationList'),
+  expenseAccountList: Ember.computed.alias('inventoryController.expenseAccountList'),
 
   inventoryList: function() {
     var inventoryItems = this.get('inventoryItems');
@@ -24,42 +25,42 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
 
   lookupListsToUpdate: [{
     name: 'expenseAccountList', // Name of property containing lookup list
-    property: 'expenseAccount', // Corresponding property on model that potentially contains a new value to add to the list
+    property: 'model.expenseAccount', // Corresponding property on model that potentially contains a new value to add to the list
     id: 'expense_account_list' // Id of the lookup list to update
   }, {
     name: 'aisleLocationList', // Name of property containing lookup list
-    property: 'deliveryAisle', // Corresponding property on model that potentially contains a new value to add to the list
+    property: 'model.deliveryAisle', // Corresponding property on model that potentially contains a new value to add to the list
     id: 'aisle_location_list' // Id of the lookup list to update
   }, {
     name: 'warehouseList', // Name of property containing lookup list
-    property: 'deliveryLocation', // Corresponding property on model that potentially contains a new value to add to the list
+    property: 'model.deliveryLocation', // Corresponding property on model that potentially contains a new value to add to the list
     id: 'warehouse_list' // Id of the lookup list to update
   }],
 
   canFulfill: function() {
-    var requestedItems = this.get('requestedItems');
+    var requestedItems = this.get('model.requestedItems');
     return Ember.isEmpty(requestedItems) && this.currentUserCan('fulfill_inventory');
-  }.property('requestedItems.[]'),
+  }.property('model.requestedItems.[]'),
 
   isFulfilling: function() {
     var canFulfill = this.get('canFulfill'),
       isRequested = this.get('isRequested'),
-      fulfillRequest = this.get('shouldFulfillRequest'),
+      fulfillRequest = this.get('model.shouldFulfillRequest'),
       isFulfilling = (canFulfill && (isRequested || fulfillRequest));
     if (isFulfilling) {
-      if (Ember.isEmpty(this.get('dateCompleted'))) {
-        this.set('dateCompleted', new Date());
+      if (Ember.isEmpty(this.get('model.dateCompleted'))) {
+        this.set('model.dateCompleted', new Date());
       }
     } else {
-      this.set('dateCompleted');
+      this.set('model.dateCompleted');
     }
     return isFulfilling;
-  }.property('isRequested', 'shouldFulfillRequest'),
+  }.property('isRequested', 'model.shouldFulfillRequest'),
 
   isRequested: function() {
-    var status = this.get('status');
+    var status = this.get('model.status');
     return (status === 'Requested');
-  }.property('status'),
+  }.property('model.status'),
 
   quantityLabel: function() {
     var selectedInventoryItem = this.get('selectedInventoryItem');
@@ -71,40 +72,40 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   }.property('selectedInventoryItem'),
 
   showRequestedItems: function() {
-    var requestedItems = this.get('requestedItems');
+    var requestedItems = this.get('model.requestedItems');
     return !Ember.isEmpty(requestedItems);
-  }.property('requestedItems.[]'),
+  }.property('model.requestedItems.[]'),
 
   updateViaFulfillRequest: false,
 
   updateButtonText: function() {
     if (this.get('isFulfilling')) {
       return 'Fulfill';
-    } else if (this.get('isNew')) {
+    } else if (this.get('model.isNew')) {
       return 'Add';
     } else {
       return 'Update';
     }
-  }.property('isNew', 'isFulfilling'),
+  }.property('model.isNew', 'isFulfilling'),
 
   updateCapability: 'add_inventory_request',
 
   actions: {
     addInventoryItem: function() {
-      var inventoryItem = this.get('inventoryItem'),
-        model = this.get('model'),
-        requestedItems = this.get('requestedItems'),
-        quantity = this.get('quantity');
+      var model = this.get('model'),
+        inventoryItem = model.get('model.inventoryItem'),
+        requestedItems = model.get('requestedItems'),
+        quantity = model.get('quantity');
       model.validate();
-      if (this.get('isValid') && !Ember.isEmpty(inventoryItem) && !Ember.isEmpty(quantity)) {
+      if (model.get('isValid') && !Ember.isEmpty(inventoryItem) && !Ember.isEmpty(quantity)) {
         var requestedItem = Ember.Object.create({
           item: inventoryItem.get('content'),
           quantity: quantity
         });
         requestedItems.addObject(requestedItem);
-        this.set('inventoryItem');
-        this.set('inventoryItemTypeAhead');
-        this.set('quantity');
+        model.set('inventoryItem');
+        model.set('inventoryItemTypeAhead');
+        model.set('quantity');
         this.set('selectedInventoryItem');
       }
     },
@@ -114,7 +115,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     },
 
     removeItem: function(removeInfo) {
-      var requestedItems = this.get('requestedItems'),
+      var requestedItems = this.get('model.requestedItems'),
         item = removeInfo.itemToRemove;
       requestedItems.removeObject(item);
       this.send('closeModal');
@@ -141,8 +142,8 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
           this.updateLookupLists();
           this.performFulfillRequest(this.get('model'), false, false, true).then(this.afterUpdate.bind(this));
         } else {
-          var isNew = this.get('isNew'),
-            requestedItems = this.get('requestedItems');
+          var isNew = this.get('model.isNew'),
+            requestedItems = this.get('model.requestedItems');
           if (isNew && !Ember.isEmpty(requestedItems)) {
             var baseModel = this.get('model'),
               propertiesToCopy = baseModel.getProperties([
@@ -156,7 +157,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
               inventoryPromises = [],
               newModels = [],
               savePromises = [];
-            if (!Ember.isEmpty(this.get('inventoryItem')) && !Ember.isEmpty(this.get('quantity'))) {
+            if (!Ember.isEmpty(this.get('model.inventoryItem')) && !Ember.isEmpty(this.get('model.quantity'))) {
               savePromises.push(baseModel.save());
             }
             requestedItems.forEach(function(requestedItem) {
@@ -203,11 +204,11 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     } else {
       this.set('updateViaFulfillRequest', false);
     }
-    if (this.get('isNew')) {
-      this.set('dateRequested', new Date());
-      this.set('requestedBy', this.get('model').getUserName());
+    if (this.get('model.isNew')) {
+      this.set('model.dateRequested', new Date());
+      this.set('model.requestedBy', this.get('model').getUserName());
       if (!this.get('isFulfilling')) {
-        this.set('status', 'Requested');
+        this.set('model.status', 'Requested');
       }
     }
     return Ember.RSVP.resolve();

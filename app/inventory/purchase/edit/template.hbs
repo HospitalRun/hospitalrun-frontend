@@ -1,11 +1,9 @@
 {{#modal-dialog
-    hideCancelButton=hideCancelButton
-    hideUpdateButton=hideUpdateButton
     isUpdateDisabled=isUpdateDisabled
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  {{#em-form model=this submitButton=false }}
+  {{#em-form model=model submitButton=false }}
     {{partial 'inv-purchase'}}
   {{/em-form}}
 {{/modal-dialog}}

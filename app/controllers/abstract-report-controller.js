@@ -12,6 +12,7 @@ export default Ember.ArrayController.extend(DateFormat, ModalHelper, NumberForma
   progressMessage: 'Please wait while your report is generated.',
   progressTitle: 'Generating Report',
   reportColumns: null,
+  reportHeaders: null,
   reportRows: [],
   reportTitle: null,
   reportType: null,

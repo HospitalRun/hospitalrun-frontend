@@ -1,7 +1,7 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=this submitButton=false }}
+  {{#em-form model=model submitButton=false }}
     {{partial 'inventory-basic'}}
-    {{#if isNew}}
+    {{#if model.isNew}}
       <h3>Purchase information</h3>
       {{partial 'inv-purchase'}}
     {{else}}
@@ -10,7 +10,7 @@
           <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
           <p>
             <span class="glyphicon glyphicon-warning-sign"></span>
-            The total quantity <strong>({{quantity}})</strong>, does not match the total quantity in the locations <strong>({{locationQuantityTotal}})</strong>.
+            The total quantity <strong>({{model.quantity}})</strong>, does not match the total quantity in the locations <strong>({{locationQuantityTotal}})</strong>.
           </p>
           <p>Please adjust the quantities on the appropriate location(s) to account for the difference of {{quantityDifferential}}.</p>
         </div>
@@ -34,7 +34,7 @@
           <th>Vendor</th>
           <th>Invoice Number</th>
         </tr>
-        {{#each purchases as |purchase|}}
+        {{#each model.purchases as |purchase|}}
           <tr class={{if purchase.expired "warning"}}>
             <td>{{date-format purchase.dateReceived}}</td>
             <td>{{purchase.purchaseCost}}</td>
@@ -52,7 +52,7 @@
         {{/each}}
       </table>
     {{/if}}
-    {{#unless isNew}}
+    {{#unless model.isNew}}
       <h3>Locations</h3>
       <table class="table">
         <tr class="table-header">
@@ -63,7 +63,7 @@
             <th>Action</th>
           {{/if}}
         </tr>
-        {{#each locations as |location|}}
+        {{#each model.locations as |location|}}
           {{#if location.quantity}}
             <tr>
               <td>{{location.location}}</td>

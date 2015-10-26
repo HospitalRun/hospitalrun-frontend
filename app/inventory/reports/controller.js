@@ -6,16 +6,17 @@ import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import SelectValues from 'hospitalrun/utils/select-values';
 export default AbstractReportController.extend(LocationName, ModalHelper, NumberFormat, InventoryAdjustmentTypes, {
-  needs: ['inventory'],
+  inventoryController: Ember.inject.controller('inventory'),
   effectiveDate: null,
   expenseCategories: ['Inventory Consumed', 'Gift In Kind Usage', 'Inventory Obsolence'],
   expenseMap: null,
   grandCost: 0,
   grandQuantity: 0,
   locationSummary: null,
+  reportType: 'daysLeft',
 
   database: Ember.inject.service(),
-  warehouseList: Ember.computed.map('controllers.inventory.warehouseList.value', SelectValues.selectValuesMap),
+  warehouseList: Ember.computed.map('inventoryController.warehouseList.value', SelectValues.selectValuesMap),
   reportColumns: {
     date: {
       label: 'Date',
@@ -246,14 +247,14 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   showEffectiveDate: function() {
     var reportType = this.get('reportType');
     if (reportType === 'valuation' || reportType === 'byLocation') {
-      this.set('startDate', null);
-      if (Ember.isEmpty(this.get('endDate'))) {
-        this.set('endDate', new Date());
+      this.set('model.startDate', null);
+      if (Ember.isEmpty(this.get('model.endDate'))) {
+        this.set('model.endDate', new Date());
       }
       return true;
     } else {
-      if (Ember.isEmpty(this.get('startDate'))) {
-        this.set('startDate', new Date());
+      if (Ember.isEmpty(this.get('model.startDate'))) {
+        this.set('model.startDate', new Date());
       }
       return false;
     }
@@ -801,8 +802,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       reportType = this.get('reportType'),
       reportTimes = this._getDateQueryParams();
     if (reportType === 'daysLeft') {
-      var endDate = this.get('endDate'),
-        startDate = this.get('startDate');
+      var endDate = this.get('model.endDate'),
+        startDate = this.get('model.startDate');
       if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
         this.closeProgressModal();
         return;
@@ -1090,9 +1091,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   },
 
   _getDateQueryParams: function() {
-    var endDate = this.get('endDate'),
+    var endDate = this.get('model.endDate'),
       endTime = this.get('maxValue'),
-      startDate = this.get('startDate'),
+      startDate = this.get('model.startDate'),
       startTime;
     if (!Ember.isEmpty(endDate)) {
       endTime = moment(endDate).endOf('day').toDate().getTime();
@@ -1161,7 +1162,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
    * @return {boolean} true if the location should be included.
    */
   _includeLocation: function(location) {
-    var filterLocation = this.get('filterLocation');
+    var filterLocation = this.get('model.filterLocation');
     return Ember.isEmpty(filterLocation) || location === filterLocation;
   },
 
@@ -1265,10 +1266,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
 
   actions: {
     generateReport: function() {
-      var endDate = this.get('endDate'),
+      var endDate = this.get('model.endDate'),
         reportRows = this.get('reportRows'),
         reportType = this.get('reportType'),
-        startDate = this.get('startDate');
+        startDate = this.get('model.startDate');
       if (Ember.isEmpty(startDate) && Ember.isEmpty(endDate)) {
         return;
       }

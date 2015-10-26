@@ -1,12 +1,19 @@
 <div class="panel panel-primary">
     <div class="panel-body">
-        {{#em-form model=this submitButton=false }}
+        {{#em-form model=model submitButton=false }}
             <div class="row">
-                {{em-select class="col-xs-6" label="Report Type"
-                    property="reportType" content=reportTypes
-                    optionValuePath="value" optionLabelPath="name"
-                    selected=reportType
-                }}
+                <div class="form-group col-xs-6">
+                  <label class="control-label" for="report-type">Report Type</label>
+                  {{select-list
+                    action=(action (mut reportType))
+                    class='form-control'
+                    content=reportTypes
+                    id='report-type'
+                    optionValuePath='value'
+                    optionLabelPath='name'
+                    value=reportType
+                  }}
+                </div>
                 {{#unless hideLocationFilter}}
                     {{em-select class="col-xs-6" label="Location"
                         property="filterLocation" content=warehouseList
@@ -84,9 +91,9 @@
         <div class="panel-body">
             <table class="table">
                 <tr class="table-header">
-                    {{#each reportHeaders}}
+                    {{#each reportHeaders as |reportHeader|}}
                         <th>
-                            {{this}}
+                            {{reportHeader}}
                         </th>
                     {{/each}}
                 </tr>

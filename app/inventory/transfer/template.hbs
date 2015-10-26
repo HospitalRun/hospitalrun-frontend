@@ -1,25 +1,23 @@
 {{#modal-dialog
-    hideCancelButton=hideCancelButton
-    hideUpdateButton=hideUpdateButton
     isUpdateDisabled=isUpdateDisabled
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  {{#em-form model=this submitButton=false }}
+  {{#em-form model=model submitButton=false }}
     <div class="form-group">
       <label class="control-label">Item</label>
-      <p class="form-control-static">{{transferItem.name}}</p>
+      <p class="form-control-static">{{model.transferItem.name}}</p>
     </div>
     <div class="form-group">
       <label class="control-label">Transfer From</label>
-      <p class="form-control-static">{{locationName}}</p>
+      <p class="form-control-static">{{model.locationName}}</p>
     </div>
     <div class="form-group">
       <label class="control-label">Quantity Available</label>
-      <p class="form-control-static">{{quantity}}</p>
+      <p class="form-control-static">{{model.quantity}}</p>
     </div>
-    {{select-or-typeahead class="required" property="transferLocation" label="Transfer To Location" list=warehouseList selection=transferLocation }}
-    {{select-or-typeahead property="transferAisleLocation" label="Transfer To Aisle Location" list=aisleLocationList selection=transferAisleLocation }}
+    {{select-or-typeahead class="required" property="transferLocation" label="Transfer To Location" list=warehouseList selection=model.transferLocation }}
+    {{select-or-typeahead property="transferAisleLocation" label="Transfer To Aisle Location" list=aisleLocationList selection=model.transferAisleLocation }}
     <div class="row">
       {{em-input property="adjustmentQuantity" label="Quantity" class="col-sm-3 required"}}
     </div>

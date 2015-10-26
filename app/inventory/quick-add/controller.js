@@ -11,8 +11,8 @@ export default InventoryEditController.extend({
   },
 
   beforeUpdate: function() {
-    if (this.get('skipSavePurchase')) {
-      this.set('quantity', null);
+    if (this.get('model.skipSavePurchase')) {
+      this.set('model.quantity', null);
     }
     return this._super();
   },

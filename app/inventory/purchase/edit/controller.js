@@ -2,33 +2,33 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import Ember from 'ember';
 
 export default AbstractEditController.extend({
-  needs: 'inventory',
+  inventoryController: Ember.inject.controller('inventory'),
   cancelAction: 'closeModal',
 
   canEditQuantity: function() {
-    var originalQuantity = this.get('originalQuantity'),
-      currentQuantity = this.get('currentQuantity');
+    var originalQuantity = this.get('model.originalQuantity'),
+      currentQuantity = this.get('model.currentQuantity');
     if (currentQuantity < originalQuantity) {
       return false;
     }
     return true;
-  }.property('currentQuantity'),
+  }.property('model.currentQuantity', 'model.originalQuantity'),
 
-  warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
-  aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
-  vendorList: Ember.computed.alias('controllers.inventory.vendorList'),
+  warehouseList: Ember.computed.alias('inventoryController.warehouseList'),
+  aisleLocationList: Ember.computed.alias('inventoryController.aisleLocationList'),
+  vendorList: Ember.computed.alias('inventoryController.vendorList'),
 
   lookupListsToUpdate: [{
     name: 'aisleLocationList', // Name of property containing lookup list
-    property: 'aisleLocation', // Corresponding property on model that potentially contains a new value to add to the list
+    property: 'model.aisleLocation', // Corresponding property on model that potentially contains a new value to add to the list
     id: 'aisle_location_list' // Id of the lookup list to update
   }, {
     name: 'vendorList', // Name of property containing lookup list
-    property: 'vendor', // Corresponding property on model that potentially contains a new value to add to the list
+    property: 'model.vendor', // Corresponding property on model that potentially contains a new value to add to the list
     id: 'vendor_list' // Id of the lookup list to update
   }, {
     name: 'warehouseList', // Name of property containing lookup list
-    property: 'location', // Corresponding property on model that potentially contains a new value to add to the list
+    property: 'model.location', // Corresponding property on model that potentially contains a new value to add to the list
     id: 'warehouse_list' // Id of the lookup list to update
   }],
 
@@ -39,18 +39,18 @@ export default AbstractEditController.extend({
   updateCapability: 'add_inventory_purchase',
 
   title: function() {
-    var isNew = this.get('isNew');
+    var isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add Purchase';
     }
     return 'Edit Purchase';
-  }.property('isNew'),
+  }.property('model.isNew'),
 
   beforeUpdate: function() {
-    var isNew = this.get('isNew'),
+    var isNew = this.get('model.isNew'),
       changedAttributes = this.get('model').changedAttributes();
     if (changedAttributes.originalQuantity) {
-      this.set('currentQuantity', this.get('originalQuantity'));
+      this.set('model.currentQuantity', this.get('model.originalQuantity'));
       if (!isNew) {
         this.set('updateQuantity', true);
       }

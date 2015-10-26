@@ -1,5 +1,5 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=this submitButton=false }}
+  {{#em-form model=model submitButton=false }}
     {{#if isRequested}}
       <div class="form-group">
         <label class="control-label">Item</label>
@@ -38,7 +38,7 @@
             <th>Quantity</th>
             <th>Action</th>
           </tr>
-          {{#each requestedItems as |requestedItem|}}
+          {{#each model.requestedItems as |requestedItem|}}
             <tr>
               <td>
                 {{requestedItem.item.name}}
@@ -65,14 +65,14 @@
         {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
       {{/if}}
     {{/if}}
-    {{select-or-typeahead property="deliveryLocation" label="Delivery Location" list=warehouseList selection=deliveryLocation }}
-    {{select-or-typeahead property="deliveryAisle" label="Delivery Aisle" list=aisleLocationList selection=deliveryAisle }}
-    {{select-or-typeahead property="expenseAccount" label="Bill To" list=expenseAccountList selection=expenseAccount }}
+    {{select-or-typeahead property="deliveryLocation" label="Delivery Location" list=warehouseList selection=model.deliveryLocation }}
+    {{select-or-typeahead property="deliveryAisle" label="Delivery Aisle" list=aisleLocationList selection=model.deliveryAisle }}
+    {{select-or-typeahead property="expenseAccount" label="Bill To" list=expenseAccountList selection=model.expenseAccount }}
     {{#if isFulfilling}}
       <div class="row">
         {{date-picker property="dateCompleted" label="Date Completed" class="col-sm-4"}}
       </div>
-      {{inventory-location-picker label="Pull From" quantityRequested=quantity
+      {{inventory-location-picker label="Pull From" quantityRequested=model.quantity
         locationList=model.inventoryItem.availableLocations
         selectedLocations=model.inventoryLocations
       }}

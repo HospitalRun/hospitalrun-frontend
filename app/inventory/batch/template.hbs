@@ -1,13 +1,13 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=this submitButton=false }}
+  {{#em-form model=model submitButton=false }}
     <div class="row">
       {{date-picker property="dateReceived" label="Date Received" class="col-sm-4 required"}}
-      {{select-or-typeahead property="vendor" label="Vendor" list=vendorList selection=vendor className="col-sm-4 required"}}
+      {{select-or-typeahead property="vendor" label="Vendor" list=vendorList selection=model.vendor className="col-sm-4 required"}}
       {{em-input property="invoiceNo" label="Invoice Number" class="col-sm-4"}}
     </div>
     <div class="row">
-      {{select-or-typeahead property="location" label="Location" list=warehouseList selection=location className="col-sm-5"}}
-      {{select-or-typeahead property="aisleLocation" label="Aisle Location" list=aisleLocationList selection=aisleLocation className="col-sm-5"}}
+      {{select-or-typeahead property="location" label="Location" list=warehouseList selection=model.location className="col-sm-5"}}
+      {{select-or-typeahead property="aisleLocation" label="Aisle Location" list=aisleLocationList selection=model.aisleLocation className="col-sm-5"}}
       <div class="form-group col-sm-2">
         <label class="control-label">Gift In Kind</label>
         {{em-checkbox label="Gift In Kind" property="giftInKind"}}
@@ -31,7 +31,7 @@
           <div class="form-group col-sm-1">
             <label class="control-label">Unit</label>
             {{#if showDistributionUnit}}
-              <p class="form-control-static">{{inventoryItem.distributionUnit}}</p>
+              <p class="form-control-static">{{model.inventoryItem.distributionUnit}}</p>
             {{/if}}
           </div>
           {{em-input property="purchaseCost" label="Purchase Cost" class="col-sm-2 required"}}
@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-    {{#if invoiceItems}}
+    {{#if model.invoiceItems}}
       <h3>Invoice Items</h3>
       <table class="table">
         <tr class="table-header">
@@ -63,39 +63,39 @@
           <th>Expiration Date</th>
           <th>Action</th>
         </tr>
-        {{#each invoiceItems}}
+        {{#each model.invoiceItems as |invoiceItem|}}
           <tr>
             <td class="col-sm-2">
-              {{inventoryItem.name}}
+              {{invoiceItem.inventoryItem.name}}
             </td>
             <td class="col-sm-2">
               <div class="input-group">
-                {{input class="form-control" value=quantity }}
+                {{input class="form-control" value=invoiceItem.quantity }}
                 <span class="input-group-addon">
-                  {{inventoryItem.distributionUnit}}
+                  {{invoiceItem.inventoryItem.distributionUnit}}
                  </span>
               </div>
             </td>
             <td class="col-sm-2">
               <div class="form-group">
-                {{input class="form-control" value=purchaseCost }}
+                {{input class="form-control" value=invoiceItem.purchaseCost }}
               </div>
             </td>
             <td class="col-sm-2">
               <div class="form-group">
-                {{input class="form-control" value=vendorItemNo }}
+                {{input class="form-control" value=invoiceItem.vendorItemNo }}
               </div>
             </td>
             <td class="col-sm-2">
             <div class="form-group">
-              {{input class="form-control" value=lotNumber }}
+              {{input class="form-control" value=invoiceItem.lotNumber }}
             </div>
             </td>
             <td class="col-sm-2">
-              {{date-picker property="expirationDate" minDate="now" model=this }}
+              {{date-picker property="expirationDate" minDate="now" model=invoiceItem }}
             </td>
             <td class="col-sm-1">
-              <button class="btn btn-default warning" {{action "showRemoveItem" this bubbles=false }}>
+              <button class="btn btn-default warning" {{action "showRemoveItem" invoiceItem bubbles=false }}>
                 <span class="octicon octicon-x"></span>Remove
               </button>
             </td>
