@@ -41,17 +41,12 @@ test('creating a new imaging request', (assert) => {
   andThen(() => {
     assert.equal(currentURL(), '/imaging/edit/new');
   });
-
   fillIn('.patient-input .tt-input', 'Lennex Zinyando - P00017');
-  Ember.run(() => {
-    keyEvent('.patient-input .tt-input', 'keypress', 9);
-    keyEvent('.patient-input .tt-input', 'keypress', 9);
-    fillIn('.imaging-type-input .tt-input', 'Chest Scan');
-    keyEvent('.patient-input .tt-input', 'keypress', 9);
-    fillIn('.radiologist-input .tt-input', 'Dr Test');
-    fillIn('.result-input input', 'Check is clear');
-    fillIn('textarea', 'Patient is healthy');
-  });
+  keyEvent('.patient-input .tt-input', 'keypress', 9);
+  fillIn('.imaging-type-input .tt-input', 'Chest Scan');
+  fillIn('.radiologist-input .tt-input', 'Dr Test');
+  fillIn('.result-input input', 'Check is clear');
+  fillIn('textarea', 'Patient is healthy');
   click('button:contains(Add)');
   return pauseTest();
   andThen(() => {
