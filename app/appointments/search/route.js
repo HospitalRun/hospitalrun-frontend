@@ -1,6 +1,7 @@
 import AppointmentIndexRoute from 'hospitalrun/appointments/index/route';
+import DateFormat from 'hospitalrun/mixins/date-format';
 import Ember from 'ember';
-export default AppointmentIndexRoute.extend({
+export default AppointmentIndexRoute.extend(DateFormat, {
   editReturn: 'appointments.search',
   filterParams: ['appointmentType', 'provider', 'status'],
   modelName: 'appointment',
@@ -31,5 +32,24 @@ export default AppointmentIndexRoute.extend({
       options: searchOptions,
       mapReduce: 'appointments_by_date'
     };
+  },
+
+  model: function(params) {
+    return this._super(params).then(function(model) {
+      model.setProperties({
+        selectedAppointmentType: params.appointmentType,
+        selectedProvider: params.provider,
+        selectedStatus: params.status
+      });
+      var startDate = params.startDate;
+      startDate = new Date();
+      if (!Ember.isEmpty(params.startDate)) {
+        startDate.setTime(params.startDate);
+      }
+      model.set('selectedStartingDate', startDate);
+      model.set('display_selectedStartingDate', this._dateFormat(startDate));
+      return model;
+    }.bind(this));
   }
+
 });

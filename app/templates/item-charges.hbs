@@ -18,7 +18,7 @@
                     <th>Quantity</th>
                     <th>Action</th>
                 </tr>
-                {{#each charges as |charge|}}
+                {{#each model.charges as |charge|}}
                     {{#unless charge.medicationCharge}}
                         <tr>
                             <td>{{date-format charge.dateCharged}}</td>

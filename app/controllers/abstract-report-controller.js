@@ -12,6 +12,7 @@ export default Ember.ArrayController.extend(DateFormat, ModalHelper, NumberForma
   progressMessage: 'Please wait while your report is generated.',
   progressTitle: 'Generating Report',
   reportColumns: null,
+  reportHeaders: null,
   reportRows: [],
   reportTitle: null,
   reportType: null,
@@ -179,7 +180,7 @@ export default Ember.ArrayController.extend(DateFormat, ModalHelper, NumberForma
       offset = this.get('offset'),
       reportRows = this.get('reportRows');
     return reportRows.slice(offset, offset + limit);
-  }.property('reportRows.@each', 'offset', 'limit'),
+  }.property('reportRows.[]', 'offset', 'limit'),
 
   disablePreviousPage: function() {
     return (this.get('offset') === 0);

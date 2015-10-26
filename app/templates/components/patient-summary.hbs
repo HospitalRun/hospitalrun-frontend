@@ -18,9 +18,9 @@
             <div class="row">
                 <div class="form-group col-sm-12">
                     <label class="control-label">Primary Diagnoses</label>
-                    {{#each primaryDiagnoses}}
-                        {{#unless first}}, {{/unless}}
-                        {{description}} (<strong>{{date-format date}}</strong>)
+                    {{#each primaryDiagnoses as |diagnosis|}}
+                        {{#unless diagnosis.first}}, {{/unless}}
+                        {{diagnosis.description}} (<strong>{{date-format diagnosis.date}}</strong>)
                     {{/each}}
                 </div>
             </div>
@@ -29,9 +29,9 @@
             <div class="row">
                 <div class="form-group col-sm-12">
                     <label class="control-label">Secondary Diagnoses</label>
-                    {{#each secondaryDiagnoses}}
-                        {{#unless first}}, {{/unless}}
-                        {{description}} (<strong>{{date-format date}}</strong>)
+                    {{#each secondaryDiagnoses as |diagnosis|}}
+                        {{#unless diagnosis.first}}, {{/unless}}
+                        {{diagnosis.description}} (<strong>{{date-format diagnosis.date}}</strong>)
                     {{/each}}
                 </div>
             </div>
@@ -40,10 +40,10 @@
             <div class="row">
                 <div class="form-group col-sm-12">
                     <label class="control-label">Procedures</label>
-                    {{#each patientProcedures}}
-                        {{#unless first}}, {{/unless}}
-                        <span {{action 'editProcedure' this}}>
-                              {{description}}>{{description}} (<strong>{{date-format procedureDate}}</strong>)
+                    {{#each patientProcedures as |procedure|}}
+                        {{#unless procedure.first}}, {{/unless}}
+                        <span {{action 'editProcedure' procedure}}>
+                              {{procedure.description}} (<strong>{{date-format procedure.procedureDate}}</strong>)
                         </span>
                     {{/each}}
                 </div>

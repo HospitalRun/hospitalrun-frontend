@@ -18,13 +18,23 @@ export default {
     });
   },
 
-  // Map an array of strings to objects with id and value set to the string values
-  // so that the array can be used for em-select
   selectValuesMap: selectValuesMap,
 
-  selectValues: function(array) {
+  /** Map an array of strings to objects with id and value set to the string values
+   * so that the array can be used for em-select
+   * @param {Array} array to map.
+   * @param {boolean} includeEmpty if there should be an empty item added to the select list
+   */
+  selectValues: function(array, includeEmpty) {
     if (Ember.isArray(array)) {
-      return array.map(selectValuesMap);
+      var arrayToMap = new Array(array);
+      if (includeEmpty) {
+        arrayToMap = [''];
+        arrayToMap.addObjects(array);
+      } else {
+        arrayToMap = array;
+      }
+      return arrayToMap.map(selectValuesMap);
     }
   }
 };

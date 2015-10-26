@@ -72,7 +72,7 @@ var InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
       acceptance: {
         accept: true,
         if: function(object) {
-          if (!object.get('isDirty')) {
+          if (!object.get('hasDirtyAttributes')) {
             return false;
           }
           var itemName = object.get('inventoryItem.name'),

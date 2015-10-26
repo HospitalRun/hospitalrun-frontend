@@ -1,38 +1,48 @@
 {{#if canCaptureVideo}}
-    {{em-select 
-        label="How Do You Want To Add A Photo?" 
-        property="photoSource"
-        content=photoSources 
+  <div class="form-group">
+    <label class="control-label" for="photo-source">How Do You Want To Add A Photo?</label>
+    {{select-list
+      action=photoSourceChange
+      class='form-control'
+      content=photoSources
+      id='photo-source'
+      value=photoSource
     }}
-    {{#if showCameraSelect}}
-        {{em-select 
-            label="Camera" 
-            property="selectedCamera"
-            content=videoSources 
-            optionValuePath="id"
-            optionLabelPath="label"
-        }}
-    {{/if}}
-    <div class="camera panel panel-success">
-        <div class="panel-body">
-
-            <div class="col-sm-4">
-                <h2>Preview</h2>
-                <video></video>
-            </div>
-            <div class="col-sm-2">
-            </div>
-            <div class="col-sm-4">
-                <h2>Photo</h2>
-                <canvas id="canvas"></canvas>
-            </div>
+  </div>
+  {{#if showCameraSelect}}
+    <div class="form-group">
+      <label class="control-label" for="camera">Camera</label>
+      {{select-list
+          action=cameraChange
+          class='form-control'
+          content=videoSources
+          id='camera'
+          label="Camera"
+          optionLabelPath="label"
+          optionValuePath="id"
+          value=selectedCamera
+      }}
+    </div>
+  {{/if}}
+  <div class="camera panel panel-success">
+    <div class="panel-body">
+        <div class="col-sm-4">
+          <h2>Preview</h2>
+          <video></video>
         </div>
-        <div class="panel-footer">
-            <button class="btn btn-default neutral" {{action 'takePhoto'}}>Take photo</button>
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-4">
+          <h2>Photo</h2>
+          <canvas id="canvas"></canvas>
         </div>
     </div>
+    <div class="panel-footer">
+      <button class="btn btn-default neutral" {{action 'takePhoto'}}>Take photo</button>
+    </div>
+  </div>
 {{/if}}
 <div class="fileupload row">
-    <h2>Upload Photo</h2>
-    {{image-upload label="Upload File" property="fileName" selectedFile=photoFile }}
+  <h2>Upload Photo</h2>
+  {{image-upload label="Upload File" property="fileName" selectedFile=photoFile }}
 </div>

@@ -60,6 +60,34 @@ export default Ember.Service.extend({
       });
     }, 'getting configuration from the database');
   },
+  getFileLink(id) {
+    const config = this.get('configDB');
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      config.get(`file-link_${id}`, function(err, doc) {
+        if (err) {
+          reject(err);
+        }
+        resolve(doc);
+      });
+    });
+  },
+  removeFileLink(id) {
+    const config = this.get('configDB');
+    return this.getFileLink(id).then(function(fileLink) {
+      config.remove(fileLink);
+    });
+  },
+  saveFileLink(fileName, id) {
+    const config = this.get('configDB');
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      config.put({ fileName }, `file-link_${id}`, function(err, doc) {
+        if (err) {
+          reject(err);
+        }
+        resolve(doc);
+      });
+    });
+  },
   saveOauthConfigs: function(configs) {
     const configDB = this.get('configDB');
     var configKeys = Object.keys(configs);

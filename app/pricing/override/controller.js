@@ -7,7 +7,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
 
   actions: {
     cancel: function() {
-      this.get('model').rollback();
+      this.get('model').rollbackAttributes();
       this.send('closeModal');
     },
 

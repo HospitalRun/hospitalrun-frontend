@@ -2,10 +2,11 @@ import Ember from 'ember';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
 export default Ember.Component.extend(ChargeActions, {
   attributeBindings: ['tabId:id', 'role'],
-  charges: null,
+  charges: Ember.computed.alias('model.charges'),
   classNameBindings: ['active'],
   classNames: ['tab-pane'],
   index: null,
+  model: null,
   pricingList: null,
   pricingType: null,
   role: 'tab',
@@ -23,7 +24,7 @@ export default Ember.Component.extend(ChargeActions, {
     if (!Ember.isEmpty(pricingList)) {
       pricingList = pricingList.filterBy('pricingType', pricingType);
       pricingList = pricingList.map(function(pricingItem) {
-        var chargesForItem = this.findChargeForPricingItem(pricingItem);
+        var chargesForItem = this.findChargeForPricingItem(pricingItem, this.get('charges'));
         if (chargesForItem) {
           this.sendAction('setChargeQuantityAction', pricingItem.id, chargesForItem.get('quantity'));
         }

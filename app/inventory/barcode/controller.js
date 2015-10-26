@@ -1,8 +1,10 @@
 import Ember from 'ember';
 export default Ember.ObjectController.extend({
+  selectedPrinter: null,
+
   barcodeUri: function() {
-    var id = this.get('id'),
-      name = this.get('name');
+    var id = this.get('model.id'),
+      name = this.get('model.name');
     return Ember.$(document).JsBarcode(id, {
       width: 1,
       height: 20,

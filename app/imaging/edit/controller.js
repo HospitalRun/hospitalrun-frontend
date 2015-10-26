@@ -49,7 +49,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
             }.bind(this));
           }.bind(this));
         } else {
-          this.getSelectedPricing('selectedImagingType').then(function(pricingRecords) {
+          this.getSelectedPricing('model.selectedImagingType').then(function(pricingRecords) {
             if (Ember.isArray(pricingRecords)) {
               this.createMultipleRequests(pricingRecords, 'imagingType', 'imaging', 'Imaging');
             } else {

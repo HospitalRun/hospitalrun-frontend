@@ -4,7 +4,7 @@ import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
-  needs: ['visits', 'visits/edit'],
+  visitsController: Ember.inject.controller('visits'),
 
   canAddProcedure: function() {
     return this.currentUserCan('add_procedure');
@@ -13,54 +13,55 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   chargePricingCategory: 'Procedure',
   chargeRoute: 'procedures.charge',
 
-  anesthesiaTypes: Ember.computed.alias('controllers.visits.anesthesiaTypes'),
-  anesthesiologistList: Ember.computed.alias('controllers.visits.anesthesiologistList'),
-  cptCodeList: Ember.computed.alias('controllers.visits.cptCodeList'),
-  physicianList: Ember.computed.alias('controllers.visits.physicianList'),
-  procedureList: Ember.computed.alias('controllers.visits.procedureList'),
-  procedureLocations: Ember.computed.alias('controllers.visits.procedureLocations'),
+  anesthesiaTypes: Ember.computed.alias('visitsController.anesthesiaTypes'),
+  anesthesiologistList: Ember.computed.alias('visitsController.anesthesiologistList'),
+  cptCodeList: Ember.computed.alias('visitsController.cptCodeList'),
+  medicationList: null,
+  physicianList: Ember.computed.alias('visitsController.physicianList'),
+  procedureList: Ember.computed.alias('visitsController.procedureList'),
+  procedureLocations: Ember.computed.alias('visitsController.procedureLocations'),
   lookupListsToUpdate: [{
     name: 'anesthesiaTypes',
-    property: 'anesthesiaType',
+    property: 'model.anesthesiaType',
     id: 'anesthesia_types'
   }, {
     name: 'anesthesiologistList',
-    property: 'anesthesiologist',
+    property: 'model.anesthesiologist',
     id: 'anesthesiologists'
   }, {
     name: 'cptCodeList',
-    property: 'cptCode',
+    property: 'model.cptCode',
     id: 'cpt_code_list'
   }, {
     name: 'physicianList',
-    property: 'assistant',
+    property: 'model.assistant',
     id: 'physician_list'
   }, {
     name: 'physicianList',
-    property: 'physician',
+    property: 'model.physician',
     id: 'physician_list'
   }, {
     name: 'procedureList',
-    property: 'description',
+    property: 'model.description',
     id: 'procedure_list'
   }, {
     name: 'procedureLocations',
-    property: 'location',
+    property: 'model.location',
     id: 'procedure_locations'
   }],
 
-  editController: Ember.computed.alias('controllers.visits/edit'),
+  editController: Ember.inject.controller('visits/edit'),
   pricingList: null, // This gets filled in by the route
-  pricingTypes: Ember.computed.alias('controllers.visits.procedurePricingTypes'),
+  pricingTypes: Ember.computed.alias('visitsController.procedurePricingTypes'),
   newProcedure: false,
 
   title: function() {
-    var isNew = this.get('isNew');
+    var isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add Procedure';
     }
     return 'Edit Procedure';
-  }.property('isNew'),
+  }.property('model.isNew'),
 
   updateCapability: 'add_charge',
 
@@ -93,7 +94,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   beforeUpdate: function() {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       this.updateCharges().then(function() {
-        if (this.get('isNew')) {
+        if (this.get('model.isNew')) {
           this.addChildToVisit(this.get('model'), 'procedures').then(resolve, reject);
         } else {
           resolve();

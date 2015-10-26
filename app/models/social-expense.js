@@ -9,6 +9,9 @@ export default Model.extend(EmberValidations, {
   sources: DS.attr('string'),
   cost: DS.attr(),
   validations: {
+    category: {
+      presence: true
+    },
     cost: {
       numericality: true
     }

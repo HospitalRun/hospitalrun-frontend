@@ -91,7 +91,7 @@ export default AbstractModel.extend({
       acceptance: {
         accept: true,
         if: function(object) {
-          if (!object.get('isDirty')) {
+          if (!object.get('hasDirtyAttributes')) {
             return false;
           }
           var allDay = object.get('allDay'),

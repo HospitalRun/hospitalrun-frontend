@@ -51,8 +51,8 @@ export default Ember.Mixin.create(PatientVisits, {
   },
 
   cancelAction: function() {
-    var returnToPatient = this.get('returnToPatient'),
-      returnToVisit = this.get('returnToVisit');
+    var returnToPatient = this.get('model.returnToPatient'),
+      returnToVisit = this.get('model.returnToVisit');
     if (returnToVisit) {
       return 'returnToVisit';
     } else if (returnToPatient) {
@@ -132,7 +132,7 @@ export default Ember.Mixin.create(PatientVisits, {
   returnVisitId: null,
   patientVisitsForSelect: function() {
     return this.get('patientVisits').map(SelectValues.selectObjectMap);
-  }.property('patientVisits.@each'),
+  }.property('patientVisits.[]'),
 
   /**
    * Removes the specified child from the current visit object and then saves the visit.
@@ -198,6 +198,6 @@ export default Ember.Mixin.create(PatientVisits, {
     }
   }.observes('visitId').on('init'),
 
-  visitId: Ember.computed.alias('visit.id'),
+  visitId: Ember.computed.alias('model.visit.id'),
   visitsController: Ember.computed.alias('controllers.visits')
 });

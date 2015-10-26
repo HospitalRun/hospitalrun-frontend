@@ -62,7 +62,7 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
     this.getPatientVisits(model).then(function(visits) {
       model.set('visits', visits);
     });
-    this.store.find('appointment', {
+    this.store.query('appointment', {
       options: {
         startkey: [patientId, null, null, 'appointment_'],
         endkey: [patientId, maxValue, maxValue, maxValue]
@@ -71,7 +71,7 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
     }).then(function(appointments) {
       model.set('appointments', appointments);
     });
-    this.store.find('photo', {
+    this.store.query('photo', {
       options: {
         key: patientId
       },

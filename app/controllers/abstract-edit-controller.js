@@ -1,29 +1,30 @@
 import Ember from 'ember';
+import EditPanelProps from 'hospitalrun/mixins/edit-panel-props';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, UserSession, {
+export default Ember.ObjectController.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, UserSession, {
   cancelAction: 'allItems',
 
   cancelButtonText: function() {
-    var isDirty = this.get('isDirty');
-    if (isDirty) {
+    var hasDirtyAttributes = this.get('model.hasDirtyAttributes');
+    if (hasDirtyAttributes) {
       return 'Cancel';
     } else {
       return 'Return';
     }
-  }.property('isDirty'),
+  }.property('model.hasDirtyAttributes'),
 
   disabledAction: function() {
-    var isValid = this.get('isValid');
+    var isValid = this.get('model.isValid');
     if (!isValid) {
       return 'showDisabledDialog';
     }
-  }.property('isValid'),
+  }.property('model.isValid'),
 
   isNewOrDeleted: function() {
-    return this.get('isNew') || this.get('isDeleted');
-  }.property('isNew', 'isDeleted'),
+    return this.get('model.isNew') || this.get('model.isDeleted');
+  }.property('model.isNew', 'model.isDeleted'),
 
   /**
    *  Lookup lists that should be updated when the model has a new value to add to the lookup list.
@@ -42,12 +43,12 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
 
   updateButtonAction: 'update',
   updateButtonText: function() {
-    if (this.get('isNew')) {
+    if (this.get('model.isNew')) {
       return 'Add';
     } else {
       return 'Update';
     }
-  }.property('isNew'),
+  }.property('model.isNew'),
   updateCapability: null,
 
   /**
@@ -75,10 +76,10 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
 
   _cancelUpdate: function() {
     var cancelledItem = this.get('model');
-    if (this.get('isNew')) {
+    if (cancelledItem.get('isNew')) {
       cancelledItem.deleteRecord();
     } else {
-      cancelledItem.rollback();
+      cancelledItem.rollbackAttributes();
     }
   },
 
@@ -90,8 +91,8 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
 
     returnTo: function() {
       this._cancelUpdate();
-      var returnTo = this.get('returnTo'),
-        returnToContext = this.get('returnToContext');
+      var returnTo = this.get('model.returnTo'),
+        returnToContext = this.get('model.returnToContext');
       if (Ember.isEmpty(returnToContext)) {
         this.transitionToRoute(returnTo);
       } else {

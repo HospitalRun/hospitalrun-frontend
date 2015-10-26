@@ -1,6 +1,7 @@
 import DS from 'ember-data';
 
 export default DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
+  isNewSerializerAPI: true,
   attrs: {
     charges: { serialize: 'ids' },
     details: { serialize: 'ids' },

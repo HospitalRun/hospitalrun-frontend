@@ -61,7 +61,9 @@ export default HtmlInput.extend({
     }
     props.field = $input[0];
     picker = new Pikaday(props);
-    picker.setDate(currentDate);
+    Ember.run.next(this, function() {
+      picker.setDate(currentDate);
+    });
     this.set('_picker', picker);
   },
 

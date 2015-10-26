@@ -2,21 +2,21 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import AdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
 import Ember from 'ember';
 export default AbstractEditController.extend(AdjustmentTypes, {
-  needs: 'inventory',
+  inventoryController: Ember.inject.controller('inventory'),
 
-  expenseAccountList: Ember.computed.alias('controllers.inventory.expenseAccountList'),
+  expenseAccountList: Ember.computed.alias('inventoryController.expenseAccountList'),
 
   title: 'Adjustment',
 
   transactionTypeChanged: function() {
     Ember.run.once(this, function() {
-      this.get('model').validate();
+      this.get('model').validate().catch();
     });
   }.observes('transactionType'),
 
   updateButtonText: function() {
-    return this.get('transactionType');
-  }.property('transactionType'),
+    return this.get('model.transactionType');
+  }.property('model.transactionType'),
 
   updateButtonAction: 'adjust',
 

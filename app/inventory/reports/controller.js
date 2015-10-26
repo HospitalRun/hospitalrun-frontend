@@ -6,16 +6,17 @@ import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import SelectValues from 'hospitalrun/utils/select-values';
 export default AbstractReportController.extend(LocationName, ModalHelper, NumberFormat, InventoryAdjustmentTypes, {
-  needs: ['inventory'],
+  inventoryController: Ember.inject.controller('inventory'),
   effectiveDate: null,
   expenseCategories: ['Inventory Consumed', 'Gift In Kind Usage', 'Inventory Obsolence'],
   expenseMap: null,
   grandCost: 0,
   grandQuantity: 0,
   locationSummary: null,
+  reportType: 'daysLeft',
 
   database: Ember.inject.service(),
-  warehouseList: Ember.computed.map('controllers.inventory.warehouseList.value', SelectValues.selectValuesMap),
+  warehouseList: Ember.computed.map('inventoryController.warehouseList.value', SelectValues.selectValuesMap),
   reportColumns: {
     date: {
       label: 'Date',
@@ -246,14 +247,14 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   showEffectiveDate: function() {
     var reportType = this.get('reportType');
     if (reportType === 'valuation' || reportType === 'byLocation') {
-      this.set('startDate', null);
-      if (Ember.isEmpty(this.get('endDate'))) {
-        this.set('endDate', new Date());
+      this.set('model.startDate', null);
+      if (Ember.isEmpty(this.get('model.endDate'))) {
+        this.set('model.endDate', new Date());
       }
       return true;
     } else {
-      if (Ember.isEmpty(this.get('startDate'))) {
-        this.set('startDate', new Date());
+      if (Ember.isEmpty(this.get('model.startDate'))) {
+        this.set('model.startDate', new Date());
       }
       return false;
     }
@@ -408,7 +409,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     var database = this.get('database');
     return new Ember.RSVP.Promise(function(resolve, reject) {
       database.queryMainDB(queryParams, view).then(function(inventoryChildren) {
-        var inventoryKeys = Ember.keys(inventoryList),
+        var inventoryKeys = Object.keys(inventoryList),
           inventoryIds = [];
         if (!Ember.isEmpty(inventoryChildren.rows)) {
           inventoryChildren.rows.forEach(function(child) {
@@ -624,7 +625,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           this.adjustmentTypes.forEach(function(adjustmentType) {
             adjustments[adjustmentType.type] = [];
           });
-          Ember.keys(inventoryMap).forEach(function(key) {
+          Object.keys(inventoryMap).forEach(function(key) {
             if (Ember.isEmpty(key) || Ember.isEmpty(inventoryMap[key])) {
               // If the inventory item has been deleted, ignore it.
               return;
@@ -657,7 +658,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           if (Object.keys(purchaseSummary).length > 0) {
             var purchaseTotal = 0;
             this.get('reportRows').addObject(['Purchases', '', '']);
-            Ember.keys(purchaseSummary).forEach(function(key) {
+            Object.keys(purchaseSummary).forEach(function(key) {
               var i = this._getValidNumber(purchaseSummary[key]);
               purchaseTotal += i;
               this.get('reportRows').addObject(['', key, this._numberFormat(i)]);
@@ -672,7 +673,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             if (Object.keys(consumed).length > 0) {
               this.get('reportRows').addObject(['Purchases Consumed', '', '']);
               var consumedTotal = 0;
-              Ember.keys(consumed).forEach(function(key) {
+              Object.keys(consumed).forEach(function(key) {
                 var i = this._getValidNumber(consumed[key]);
                 consumedTotal += i;
                 this.get('reportRows').addObject(['', key, '(' + this._numberFormat(i) + ')']);
@@ -683,7 +684,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             if (Object.keys(gikConsumed).length > 0) {
               this.get('reportRows').addObject(['GIK Consumed', '', '']);
               var gikTotal = 0;
-              Ember.keys(gikConsumed).forEach(function(key) {
+              Object.keys(gikConsumed).forEach(function(key) {
                 var i = this._getValidNumber(gikConsumed[key]);
                 gikTotal += i;
                 this.get('reportRows').addObject(['', key, '(' + this._numberFormat(i) + ')']);
@@ -697,10 +698,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           // write the adjustment rows
           var adjustmentTotal = 0;
           this.get('reportRows').addObject(['Adjustments', '', '']);
-          Ember.keys(adjustments).forEach(function(adjustmentT) {
+          Object.keys(adjustments).forEach(function(adjustmentT) {
             if (Object.keys(adjustments[adjustmentT]).length > 0) {
               this.get('reportRows').addObject([adjustmentT, '', '']);
-              Ember.keys(adjustments[adjustmentT]).forEach(function(key) {
+              Object.keys(adjustments[adjustmentT]).forEach(function(key) {
                 var i = this._getValidNumber(adjustments[adjustmentT][key]);
                 if (adjustmentT === 'Adjustment (Add)' || adjustmentT === 'Return') {
                   adjustmentTotal += i;
@@ -738,7 +739,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       */
       this._findInventoryItemsByRequest(startingValueReportTimes, {}).then(function(inventoryMap) {
         this._findInventoryItemsByPurchase(startingValueReportTimes, inventoryMap).then(function(inventoryMap) {
-          Ember.keys(inventoryMap).forEach(function(key) {
+          Object.keys(inventoryMap).forEach(function(key) {
             if (Ember.isEmpty(key) || Ember.isEmpty(inventoryMap[key])) {
               // If the inventory item has been deleted, ignore it.
               return;
@@ -801,8 +802,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       reportType = this.get('reportType'),
       reportTimes = this._getDateQueryParams();
     if (reportType === 'daysLeft') {
-      var endDate = this.get('endDate'),
-        startDate = this.get('startDate');
+      var endDate = this.get('model.endDate'),
+        startDate = this.get('model.startDate');
       if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
         this.closeProgressModal();
         return;
@@ -814,7 +815,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       this._findInventoryItemsByPurchase(reportTimes, inventoryMap).then(function(inventoryMap) {
         // Loop through each inventory item, looking at the requests and purchases to determine
         // state of inventory at effective date
-        Ember.keys(inventoryMap).forEach(function(key) {
+        Object.keys(inventoryMap).forEach(function(key) {
           if (Ember.isEmpty(inventoryMap[key])) {
             // If the inventory item has been deleted, ignore it.
             return;
@@ -1090,9 +1091,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   },
 
   _getDateQueryParams: function() {
-    var endDate = this.get('endDate'),
+    var endDate = this.get('model.endDate'),
       endTime = this.get('maxValue'),
-      startDate = this.get('startDate'),
+      startDate = this.get('model.startDate'),
       startTime;
     if (!Ember.isEmpty(endDate)) {
       endTime = moment(endDate).endOf('day').toDate().getTime();
@@ -1161,7 +1162,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
    * @return {boolean} true if the location should be included.
    */
   _includeLocation: function(location) {
-    var filterLocation = this.get('filterLocation');
+    var filterLocation = this.get('model.filterLocation');
     return Ember.isEmpty(filterLocation) || location === filterLocation;
   },
 
@@ -1265,10 +1266,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
 
   actions: {
     generateReport: function() {
-      var endDate = this.get('endDate'),
+      var endDate = this.get('model.endDate'),
         reportRows = this.get('reportRows'),
         reportType = this.get('reportType'),
-        startDate = this.get('startDate');
+        startDate = this.get('model.startDate');
       if (Ember.isEmpty(startDate) && Ember.isEmpty(endDate)) {
         return;
       }

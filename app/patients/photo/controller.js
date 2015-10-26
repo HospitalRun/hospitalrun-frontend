@@ -1,29 +1,29 @@
 import Ember from 'ember';
-export default Ember.ObjectController.extend({
-  needs: 'patients/edit',
+export default Ember.Controller.extend({
+  patientsEdit: Ember.inject.controller('patients/edit'),
 
   title: function() {
-    var isNew = this.get('isNew');
+    var isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add Photo';
     } else {
       return 'Edit Photo';
     }
-  }.property('isNew'),
+  }.property('model.isNew'),
 
   updateButtonText: function() {
-    var isNew = this.get('isNew');
+    var isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add';
     } else {
       return 'Update';
     }
-  }.property('isNew'),
+  }.property('model.isNew'),
 
   updateButtonAction: 'update',
   showUpdateButton: true,
 
-  editController: Ember.computed.alias('controllers.patients/edit'),
+  editController: Ember.computed.alias('patientsEdit'),
 
   actions: {
     cancel: function() {
@@ -31,9 +31,9 @@ export default Ember.ObjectController.extend({
     },
 
     update: function() {
-      var caption = this.get('caption'),
-        isNew = this.get('isNew'),
-        photoFile = this.get('photoFile');
+      var caption = this.get('model.caption'),
+        isNew = this.get('model.isNew'),
+        photoFile = this.get('model.photoFile');
       if (isNew) {
         this.get('editController').send('addPhoto', photoFile, caption);
       } else {

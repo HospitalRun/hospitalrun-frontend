@@ -41,7 +41,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, {
       acceptance: {
         accept: true,
         if: function(object) {
-          if (!object.get('isDirty') || object.get('isFulfilling')) {
+          if (!object.get('hasDirtyAttributes') || object.get('isFulfilling')) {
             return false;
           }
           var prescription = object.get('prescription'),
@@ -61,7 +61,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, {
       acceptance: {
         accept: true,
         if: function(object) {
-          if (!object.get('isDirty') || !object.get('isNew')) {
+          if (!object.get('hasDirtyAttributes') || !object.get('isNew')) {
             return false;
           }
           var itemName = object.get('inventoryItem.name'),

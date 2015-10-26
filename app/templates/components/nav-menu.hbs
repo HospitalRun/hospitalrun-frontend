@@ -6,16 +6,16 @@
   </div>
   {{#if isShowing }}
   <div class="category-sub-items">
-      {{#each nav.subnav}}
-        {{#if show}}
+      {{#each nav.subnav as |subnav|}}
+        {{#if subnav.show}}
           <div {{action 'resetNav'}}>
-          {{#if subroute}}
-            {{#link-to route subroute class="category-sub-item nav-link"}}
-            <span class="octicon {{iconClass}}"></span>{{title}}
+          {{#if subnav.subroute}}
+            {{#link-to subnav.route subnav.subroute class="category-sub-item nav-link"}}
+            <span class="octicon {{subnav.iconClass}}"></span>{{subnav.title}}
             {{/link-to}}
           {{else}}
-            {{#link-to route class="category-sub-item nav-link"}}
-            <span class="octicon {{iconClass}}"></span>{{title}}
+            {{#link-to subnav.route class="category-sub-item nav-link"}}
+            <span class="octicon {{subnav.iconClass}}"></span>{{subnav.title}}
             {{/link-to}}
           {{/if}}
           </div>

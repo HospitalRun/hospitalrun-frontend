@@ -7,12 +7,12 @@
 {{/if}}
 <div class="tab-content">
     {{#each pricingTypeList as |pricingType index|}}
-        {{price-list 
-            canAddCharge=canAddCharge 
-            charges=charges    
-            pricingType=pricingType 
-            index=index 
+        {{price-list
+            canAddCharge=canAddCharge
+            pricingType=pricingType
+            index=index
             pricingList=pricingList
-        }}    
+            model=model
+        }}
     {{/each}}
 </div>

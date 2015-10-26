@@ -7,7 +7,7 @@
 {{else}}
     <div class="form-group">
         <label>Quantity</label>
-        {{input class="form-control" value=model.originalQuantity type="text" disabled=true }}                    
+        {{input class="form-control" value=model.originalQuantity type="text" disabled=true }}
     </div>
 {{/if}}
 <div class="row">
@@ -17,12 +17,12 @@
 <div class="row">
     {{date-picker property="expirationDate" label="Expiration Date" minDate="now" class="col-sm-4"}}
 </div>
-<div class="row">    
-    {{select-or-typeahead property="vendor" label="Vendor" list=vendorList selection=vendor className="col-sm-6 required"}}
-    {{em-input property="vendorItemNo" label="Vendor Item Number" class="col-sm-6"}}    
+<div class="row">
+    {{select-or-typeahead property="vendor" label="Vendor" list=vendorList selection=model.vendor className="col-sm-6 required"}}
+    {{em-input property="vendorItemNo" label="Vendor Item Number" class="col-sm-6"}}
 </div>
-{{#if isNew}}
-    {{select-or-typeahead property="location" label="Location" list=warehouseList selection=location }}
-    {{select-or-typeahead property="aisleLocation" label="Aisle Location" list=aisleLocationList selection=aisleLocation }}
+{{#if model.isNew}}
+    {{select-or-typeahead property="location" label="Location" list=warehouseList selection=model.location }}
+    {{select-or-typeahead property="aisleLocation" label="Aisle Location" list=aisleLocationList selection=model.aisleLocation }}
 {{/if}}
 {{em-checkbox label="Gift In Kind" property="giftInKind"}}

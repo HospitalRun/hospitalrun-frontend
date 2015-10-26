@@ -95,7 +95,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
       categoryList.total = this._calculateTotal(categoryList.items, 'total');
     }.bind(this));
     return byCategory;
-  }.property('lineItems.@each.amountOwed'),
+  }.property('lineItems.[].amountOwed'),
 
   patientIdChanged: function() {
     if (!Ember.isEmpty(this.get('patient'))) {
@@ -118,7 +118,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     if (remainingBalance <= 0) {
       this.set('status', 'Paid');
     }
-  }.observes('payments.[]', 'payments.@each.amount'),
+  }.observes('payments.[]', 'payments.[].amount'),
 
   validations: {
     patientTypeAhead: PatientValidation.patientTypeAhead,

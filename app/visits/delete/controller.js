@@ -3,11 +3,11 @@ export default AbstractDeleteController.extend({
   title: 'Delete Visit',
 
   afterDeleteAction: function() {
-    var deleteFromPatient = this.get('deleteFromPatient');
+    var deleteFromPatient = this.get('model.deleteFromPatient');
     if (deleteFromPatient) {
       return 'visitDeleted';
     } else {
       return 'closeModal';
     }
-  }.property('deleteFromPatient')
+  }.property('model.deleteFromPatient')
 });

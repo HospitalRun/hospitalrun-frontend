@@ -1,23 +1,23 @@
 <div class="row">
-    {{#unless isNew}}
+    {{#unless model.isNew}}
         <div class="form-group col-sm-2">
             <label>ID</label>
-            {{input class="form-control" value=friendlyId type="text" disabled=true }}
+            {{input class="form-control" value=model.friendlyId type="text" disabled=true }}
         </div>
     {{/unless}}
     {{em-input property="name" label="Name" class="required  col-sm-8"}}
-    {{#unless isNew}}
+    {{#unless model.isNew}}
         <div class="form-group col-sm-2">
             <label>Quantity</label>
-            <p class="form-control-static">{{quantity}}</p>                    
+            <p class="form-control-static">{{model.quantity}}</p>
         </div>
     {{/unless}}
 
 </div>
 {{em-text label="Description" property="description" rows=1 }}
 <div class="row">
-    {{em-select label="Type" property="inventoryType" 
-        content=inventoryTypes 
+    {{em-select label="Type" property="inventoryType"
+        content=inventoryTypes
         class="required col-sm-4"
         prompt=" "
     }}

@@ -3,7 +3,7 @@ import DS from 'ember-data';
 import Ember from 'ember';
 
 function dateAcceptance(object) {
-  if (!object.get('isDirty')) {
+  if (!object.get('hasDirtyAttributes')) {
     return false;
   }
   var startDate = object.get('startDate'),
@@ -60,7 +60,7 @@ export default AbstractModel.extend({
       }));
     }
     return diagnosisList;
-  }.property('additionalDiagnosis@each', 'primaryDiagnosis'),
+  }.property('additionalDiagnosis.[]', 'primaryDiagnosis'),
 
   visitDate: function() {
     var endDate = this.get('endDate'),

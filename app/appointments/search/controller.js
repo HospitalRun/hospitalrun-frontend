@@ -4,32 +4,34 @@ import Ember from 'ember';
 import SelectValues from 'hospitalrun/utils/select-values';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes, {
-  needs: 'appointments',
+  appointmentsController: Ember.inject.controller('appointments'),
   appointmentType: null,
-  physicianList: Ember.computed.map('controllers.appointments.physicianList.value', SelectValues.selectValuesMap),
+  physicians: Ember.computed.alias('appointmentsController.physicianList.value'),
+  physicianList: function() {
+    return SelectValues.selectValues(this.get('physicians'), true);
+  }.property('physicians'),
 
   provider: null,
   queryParams: ['appointmentType', 'provider', 'status', 'startKey', 'startDate'],
-  searchFields: ['selectedAppointmentType', 'selectedProvider', 'selectedStatus', 'selectedStartDate'],
   selectedProvider: null,
-  selectedStartingDate: new Date(),
   selectedStatus: null,
   sortProperties: null,
+  startDate: null,
   startKey: [],
   status: null,
-  visitTypesList: Ember.computed.alias('controllers.appointments.visitTypeList'),
+  visitTypesList: Ember.computed.alias('appointmentsController.visitTypeList'),
 
   actions: {
     search: function() {
-      var appointmentType = this.get('selectedAppointmentType'),
+      var appointmentType = this.get('model.selectedAppointmentType'),
         fieldsToSet = {
           startKey: [],
           previousStartKey: null,
           previousStartKeys: []
         },
-        provider = this.get('selectedProvider'),
-        status = this.get('selectedStatus'),
-        startDate = this.get('selectedStartingDate');
+        provider = this.get('model.selectedProvider'),
+        status = this.get('model.selectedStatus'),
+        startDate = this.get('model.selectedStartingDate');
 
       if (Ember.isEmpty(appointmentType)) {
         fieldsToSet.appointmentType = null;
