@@ -2,11 +2,18 @@
     <div class="panel-body">
         {{#em-form model=this submitButton=false }}
             <div class="row" data-test-selector="select-report-type">
-                {{em-select class="col-xs-6" label="Report Type"
-                    property="reportType" content=reportTypes
-                    optionValuePath="value" optionLabelPath="name"
-                    selected=reportType
-                }}
+                <div class="form-group col-xs-6">
+                  <label class="control-label" for="report-type">Report Type</label>
+                  {{select-list
+                    action=(action (mut reportType))
+                    class='form-control'
+                    content=reportTypes
+                    id='report-type'
+                    optionValuePath='value'
+                    optionLabelPath='name'
+                    value=reportType
+                  }}
+                </div>
             </div>
             {{#if isStatusReport}}
                 {{em-select property="status" label="Patient Status"
