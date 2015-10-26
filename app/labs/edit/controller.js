@@ -4,7 +4,7 @@ import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
-  needs: ['labs'],
+  labsController: Ember.inject.controller('labs'),
   chargePricingCategory: 'Lab',
   chargeRoute: 'labs.charge',
   selectedLabType: null,
@@ -22,10 +22,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
   actions: {
     completeLab: function() {
-      this.set('status', 'Completed');
+      this.set('model.status', 'Completed');
       this.get('model').validate();
-      if (this.get('isValid')) {
-        this.set('labDate', new Date());
+      if (this.get('model.isValid')) {
+        this.set('model.labDate', new Date());
         this.send('update');
       }
     },
@@ -34,16 +34,16 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
      * Update the model and perform the before update and after update
      */
     update: function() {
-      if (this.get('isNew')) {
+      if (this.get('model.isNew')) {
         var newLab = this.get('model'),
           selectedLabType = this.get('selectedLabType');
-        if (Ember.isEmpty(this.get('status'))) {
-          this.set('status', 'Requested');
+        if (Ember.isEmpty(this.get('model.status'))) {
+          this.set('model.status', 'Requested');
         }
-        this.set('requestedBy', newLab.getUserName());
-        this.set('requestedDate', new Date());
+        this.set('model.requestedBy', newLab.getUserName());
+        this.set('model.requestedDate', new Date());
         if (Ember.isEmpty(selectedLabType)) {
-          this.saveNewPricing(this.get('labTypeName'), 'Lab', 'labType').then(function() {
+          this.saveNewPricing(this.get('model.labTypeName'), 'Lab', 'labType').then(function() {
             this.addChildToVisit(newLab, 'labs', 'Lab').then(function() {
               this.saveModel();
             }.bind(this));
@@ -80,7 +80,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   }.property('canComplete', 'model.isValid'),
 
   pricingTypeForObjectType: 'Lab Procedure',
-  pricingTypes: Ember.computed.alias('controllers.labs.labPricingTypes'),
+  pricingTypes: Ember.computed.alias('labsController.labPricingTypes'),
 
   pricingList: null, // This gets filled in by the route
 
@@ -90,7 +90,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     var afterDialogAction,
       alertMessage,
       alertTitle;
-    if (this.get('status') === 'Completed') {
+    if (this.get('model.status') === 'Completed') {
       alertTitle = 'Lab Request Completed';
       alertMessage = 'The lab request has been completed.';
     } else {
@@ -98,10 +98,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
       alertMessage = 'The lab request has been saved.';
     }
     if (multipleRecords) {
-      afterDialogAction = this.get('cancelAction');
+      afterDialogAction = this.get('model.cancelAction');
     }
     this.saveVisitIfNeeded(alertTitle, alertMessage, afterDialogAction);
-    this.set('selectPatient', false);
+    this.set('model.selectPatient', false);
   }
 
 });

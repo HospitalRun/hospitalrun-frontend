@@ -1,21 +1,21 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=this submitButton=false }}
-    {{#if selectPatient}}
+  {{#em-form model=model submitButton=false }}
+    {{#if model.selectPatient}}
       {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
     {{else}}
-      {{patient-summary patient=patient returnTo='labs.edit' returnToContext=id disablePatientLink=isNew }}
+      {{patient-summary patient=model.patient returnTo='labs.edit' returnToContext=model.id disablePatientLink=model.isNew }}
     {{/if}}
-    {{#if isNew}}
+    {{#if model.isNew}}
       <div class="row">
         {{em-select class="col-xs-3 required" label="Visit"
-          property="visit" content=patientVisitsForSelect
+          property="visit" content=model.patientVisitsForSelect
           optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
           prompt="--Add New Visit--"
-          selected=visit
+          selected=model.visit
         }}
       </div>
       {{checkbox-or-typeahead property="labTypeName"
-        label="Lab Type" list=objectTypeList
+        label="Lab Type" list=model.objectTypeList
         selection=selectedLabType
         optionLabelPath='name'
         typeAheadType='pricing'
@@ -27,11 +27,11 @@
       <div class="row">
         <div class="form-group col-xs-3">
           <label>Visit</label>
-          <p class="form-control-static">{{visit.visitDate}}</p>
+          <p class="form-control-static">{{model.visit.visitDate}}</p>
         </div>
         <div class="form-group col-xs-6">
           <label>Lab Type</label>
-          <p class="form-control-static">{{labType.name}}</p>
+          <p class="form-control-static">{{model.labType.name}}</p>
         </div>
       </div>
     {{/if}}
