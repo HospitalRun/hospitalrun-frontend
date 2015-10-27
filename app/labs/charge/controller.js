@@ -2,7 +2,6 @@ import ProcedureChargeController from 'hospitalrun/procedures/charge/controller'
 import Ember from 'ember';
 
 export default ProcedureChargeController.extend({
-  //needs: ['labs/edit'],
   labsEdit: Ember.inject.controller('labs/edit'),
   cancelAction: 'closeModal',
   newPricingItem: false,

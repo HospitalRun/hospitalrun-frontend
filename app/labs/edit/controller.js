@@ -53,7 +53,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
             if (Ember.isArray(pricingRecords)) {
               this.createMultipleRequests(pricingRecords, 'labType', 'labs', 'Lab');
             } else {
-              this.set('labType', pricingRecords);
+              this.set('model.labType', pricingRecords);
               this.addChildToVisit(newLab, 'labs', 'Lab').then(function() {
                 this.saveModel();
               }.bind(this));
