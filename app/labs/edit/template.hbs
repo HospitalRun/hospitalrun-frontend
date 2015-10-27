@@ -8,14 +8,14 @@
     {{#if model.isNew}}
       <div class="row">
         {{em-select class="col-xs-3 required" label="Visit"
-          property="visit" content=model.patientVisitsForSelect
+          property="visit" content=patientVisitsForSelect
           optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
           prompt="--Add New Visit--"
           selected=model.visit
         }}
       </div>
       {{checkbox-or-typeahead property="labTypeName"
-        label="Lab Type" list=model.objectTypeList
+        label="Lab Type" list=objectTypeList
         selection=selectedLabType
         optionLabelPath='name'
         typeAheadType='pricing'
