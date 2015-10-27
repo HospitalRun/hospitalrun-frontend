@@ -43,7 +43,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         this.set('model.requestedBy', newLab.getUserName());
         this.set('model.requestedDate', new Date());
         if (Ember.isEmpty(selectedLabType)) {
-          this.saveNewPricing(this.get('model.labTypeName'), 'Lab', 'labType').then(function() {
+          this.saveNewPricing(this.get('model.labTypeName'), 'Lab', 'model.labType').then(function() {
             this.addChildToVisit(newLab, 'labs', 'Lab').then(function() {
               this.saveModel();
             }.bind(this));
