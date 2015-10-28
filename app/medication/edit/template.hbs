@@ -1,18 +1,18 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=this submitButton=false }}
-    {{#unless selectPatient}}
-      {{patient-summary patient=model.patient returnTo='medication.edit' returnToContext=id disablePatientLink=isNew }}
+  {{#em-form model=model submitButton=false }}
+    {{#unless model.selectPatient}}
+      {{patient-summary patient=model.patient returnTo='medication.edit' returnToContext=model.id disablePatientLink=model.isNew }}
     {{/unless}}
     <div class="row">
-      {{#if selectPatient}}
+      {{#if model.selectPatient}}
         {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-6 required"}}
       {{/if}}
-      {{#if isNew}}
+      {{#if model.isNew}}
         {{em-select class="col-xs-4 required" label="Visit"
           property="visit" content=patientVisitsForSelect
           optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
           prompt="--Add New Outpatient Visit--"
-          selected=visit
+          selected=model.visit
         }}
       {{else}}
         <div class="form-group col-xs-3">
@@ -24,19 +24,19 @@
     {{#if isFulfilledOrRequested}}
       <div class="form-group">
         <label class="control-label">Medication</label>
-        <p class="form-control-static">{{inventoryItem.name}}</p>
+        <p class="form-control-static">{{model.inventoryItem.name}}</p>
       </div>
     {{else}}
       {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required"}}
     {{/if}}
     {{#if isFulfilled}}
-      {{static-text label="Prescription" value=prescription }}
+      {{static-text label="Prescription" value=model.prescription }}
       <div class="row">
         {{#static-text label="Prescription Date" class="col-xs-4"}}
-          {{date-format prescriptionDate}}
+          {{date-format model.prescriptionDate}}
         {{/static-text}}
-        {{static-text label=quantityLabel class="col-xs-3" value=quantity }}
-        {{static-text label="Refills" class="col-xs-3" value=refills }}
+        {{static-text label=quantityLabel class="col-xs-3" value=model.quantity }}
+        {{static-text label="Refills" class="col-xs-3" value=model.refills }}
       </div>
     {{else}}
       {{em-text property="prescription" label="Prescription" rows="3" class=prescriptionClass }}
@@ -47,8 +47,8 @@
         {{em-input property="quantity" label=quantityLabel class=quantityClass }}
         {{em-input property="refills" label="Refills" class="col-xs-3"}}
       </div>
-      {{#unless hideFulfillRequest}}
-        {{#if isNew}}
+      {{#unless model.hideFulfillRequest}}
+        {{#if model.isNew}}
           {{#if canFulfill}}
             <div class="form-group">
               <label class="control-label">Fulfill Request</label>
@@ -58,9 +58,9 @@
         {{/if}}
       {{/unless}}
       {{#if isFulfilling}}
-        {{select-or-typeahead property="expenseAccount" label="Bill To" list=expenseAccountList selection=expenseAccount }}
-        {{inventory-location-picker label="Pull From" quantityRequested=quantity
-          locationList=inventoryItem.availableLocations
+        {{select-or-typeahead property="expenseAccount" label="Bill To" list=expenseAccountList selection=model.expenseAccount }}
+        {{inventory-location-picker label="Pull From" quantityRequested=model.quantity
+          locationList= model.inventoryItem.availableLocations
           selectedLocations=model.inventoryLocations
         }}
       {{/if}}
