@@ -424,12 +424,14 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           inventoryChildren.rows.forEach(function(child) {
             var childItem = inventoryMap[child.doc.inventoryItem];
             if (!Ember.isEmpty(childItem)) {
-              var itemChildren = childItem[childName];
-              if (Ember.isEmpty(itemChildren)) {
-                itemChildren = [];
+              if (childName !== 'purchaseObjects' || childItem.purchases.contains(child.doc.id)) {
+                var itemChildren = childItem[childName];
+                if (Ember.isEmpty(itemChildren)) {
+                  itemChildren = [];
+                }
+                itemChildren.push(child.doc);
+                childItem[childName] = itemChildren;
               }
-              itemChildren.push(child.doc);
-              childItem[childName] = itemChildren;
             }
           });
           resolve(inventoryMap);
