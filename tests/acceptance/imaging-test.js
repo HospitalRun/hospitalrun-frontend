@@ -42,9 +42,7 @@ test('creating a new imaging request', (assert) => {
     assert.equal(currentURL(), '/imaging/edit/new');
   });
   fillIn('.patient-input .tt-input', 'Lennex Zinyando - P00017');
-  keyEvent('.patient-input .tt-input', 'keypress', 9).then(function() {
-    keyEvent('.patient-input .tt-input', 'keypress', 9);
-  });
+  triggerEvent('.patient-input .tt-input', 'input');
   fillIn('.imaging-type-input .tt-input', 'Chest Scan');
   fillIn('.radiologist-input .tt-input', 'Dr Test');
   fillIn('.result-input input', 'Check is clear');
