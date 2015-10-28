@@ -112,7 +112,7 @@ export default Ember.Mixin.create(PatientVisits, {
       this.store.find('patient', selectedPatient.id).then(function(item) {
         this.set('model.patient', item);
         Ember.run.once(this, function() {
-          this.get('model').validate();
+          this.get('model').validate().catch(Ember.K);
         });
       }.bind(this));
     } else {
