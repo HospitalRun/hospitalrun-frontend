@@ -43,7 +43,7 @@ test('create a new imaging request', (assert) => {
   });
   fillIn('.patient-input .tt-input', 'Lennex Zinyando - P00017');
   triggerEvent('.patient-input .tt-input', 'input');
-  keyEvent('.patient-input .tt-input', 'keypress', 9);
+  triggerEvent('.patient-input .tt-input', 'blur');
   fillIn('.imaging-type-input .tt-input', 'Chest Scan');
   fillIn('.radiologist-input .tt-input', 'Dr Test');
   fillIn('.result-input input', 'Check is clear');
