@@ -23,6 +23,8 @@ test('visiting /imaging', function(assert) {
     assert.equal(find('li a:contains(Completed)').length, 1, 'Completed link is visible');
     let newImagingButton = find('button:contains(new imaging)');
     assert.equal(newImagingButton.length, 1, 'New Imaging button is visible');
+    findWithAssert('p:contains(No items found. )');
+    findWithAssert('a:contains(Create a new record?)');
   });
   click('button:contains(new imaging)');
   andThen(() => {
@@ -93,7 +95,7 @@ test('mark an imaging request as completed', (assert) => {
   waitToAppear('.modal-dialog');
   andThen(() => {
     assert.equal(find('.modal-title').text(), 'Imaging Request Completed', 'Imaging Request was saved successfully');
-  })
+  });
   click('button:contains(Ok)');
   click('button:contains(Return)');
   andThen(() => {
