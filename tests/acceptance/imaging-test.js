@@ -17,7 +17,7 @@ test('visiting /imaging', function(assert) {
   authenticateUser();
   visit('/imaging');
 
-  andThen(function() {
+  andThen(() => {
     assert.equal(currentURL(), '/imaging');
     assert.equal(find('li a:contains(Requests)').length, 1, 'Requests link is visible');
     assert.equal(find('li a:contains(Completed)').length, 1, 'Completed link is visible');
@@ -48,9 +48,17 @@ test('creating a new imaging request', (assert) => {
   fillIn('.result-input input', 'Check is clear');
   fillIn('textarea', 'Patient is healthy');
   click('button:contains(Add)');
-  return pauseTest();
+  waitToAppear('.modal-dialog');
   andThen(() => {
-    //assertions
+    assert.equal(find('.modal-title').text(), 'Imaging Request Saved', 'Imaging Request was saved successfully');
   });
+  click('button:contains(Ok)');
+  andThen(() => {
+    findWithAssert('button:contains(Update)');
+    findWithAssert('button:contains(Return)');
+    findWithAssert('button:contains(Complete)');
+    assert.equal(find('.test-patient-summary').length, 1, 'Patient summary is displayed');
+  });
+  return pauseTest();
   destroyDatabases();
 });
