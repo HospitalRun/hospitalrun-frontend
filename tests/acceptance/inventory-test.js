@@ -126,7 +126,12 @@ test('Receiving inventory', function(assert) {
   waitToAppear('.modal-dialog');
 
   andThen(() => {
-    assert.equal(find('h3').text(), 'Invoice Items', 'Item found');
+    assert.equal(find('.modal-title').text(), 'Inventory Purchases Saved', 'Inventory has been received');
   });
+  click('button:contains(Ok)');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/inventory/listing');
+  })
   destroyDatabases();
 });
