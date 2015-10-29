@@ -50,7 +50,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
             }.bind(this));
           }.bind(this));
         } else {
-          this.getSelectedPricing('model.selectedLabType').then(function(pricingRecords) {
+          this.getSelectedPricing('selectedLabType').then(function(pricingRecords) {
             if (Ember.isArray(pricingRecords)) {
               this.createMultipleRequests(pricingRecords, 'labType', 'labs', 'Lab');
             } else {
@@ -99,7 +99,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
       alertMessage = 'The lab request has been saved.';
     }
     if (multipleRecords) {
-      afterDialogAction = this.get('model.cancelAction');
+      afterDialogAction = this.get('cancelAction');
     }
     this.saveVisitIfNeeded(alertTitle, alertMessage, afterDialogAction);
     this.set('model.selectPatient', false);
