@@ -167,3 +167,14 @@ test('Receiving inventory', function(assert) {
   })
   destroyDatabases();
 });
+
+test('Correct report forms are displayed', function(assert) {
+  loadPouchDump('default');
+  authenticateUser();
+  visit('/inventory/reports');
+
+  andThen(function() {
+    assert.equal(currentURL(), '/inventory/reports');
+  });
+  destroyDatabases();
+});
