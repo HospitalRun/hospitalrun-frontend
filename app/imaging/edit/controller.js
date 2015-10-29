@@ -23,7 +23,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   actions: {
     completeImaging: function() {
       this.set('status', 'Completed');
-      this.get('model').validate();
+      this.get('model').validate().catch(Ember.K);
       if (this.get('isValid')) {
         this.set('imagingDate', new Date());
         this.send('update');

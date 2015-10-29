@@ -62,7 +62,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
   }.property(),
 
   disabledAction: function() {
-    this.get('model').validate();
+    this.get('model').validate().catch(Ember.K);
     this._super();
   }.property('model.endDate', 'model.startDate', 'model.isValid'),
 

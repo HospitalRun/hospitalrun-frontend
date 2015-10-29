@@ -13,7 +13,7 @@ export default Ember.Mixin.create({
         var model = this.get('model');
         model.set('inventoryItem', inventoryItem);
         Ember.run.once(this, function() {
-          model.validate();
+          model.validate().catch(Ember.K);
         });
       }.bind(this));
     }

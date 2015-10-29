@@ -23,11 +23,12 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   actions: {
     completeLab: function() {
       this.set('model.status', 'Completed');
-      this.get('model').validate();
-      if (this.get('model.isValid')) {
-        this.set('model.labDate', new Date());
-        this.send('update');
-      }
+      this.get('model').validate().then(function() {
+        if (this.get('model.isValid')) {
+          this.set('model.labDate', new Date());
+          this.send('update');
+        }
+      }.bind(this)).catch(Ember.K);
     },
 
     /**

@@ -93,7 +93,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
 
   endTimeHasError: function() {
     Ember.run.once(this, function() {
-      this.get('model').validate();
+      this.get('model').validate().catch(Ember.K);
     });
     var endDateError = this.get('model.errors.endDate');
     return (endDateError.length > 0);
@@ -160,7 +160,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
       }
       model.set(dateFieldName, dateToChange.toDate());
       Ember.run.once(this, function() {
-        model.validate();
+        model.validate().catch(Ember.K);
       });
     }
   }
