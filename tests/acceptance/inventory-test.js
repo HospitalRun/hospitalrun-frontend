@@ -164,11 +164,11 @@ test('Receiving inventory', function(assert) {
 
   andThen(() => {
     assert.equal(currentURL(), '/inventory/listing');
-  })
+  });
   destroyDatabases();
 });
 
-test('Correct report forms are displayed', function(assert) {
+test('Reports can be generated', function(assert) {
   loadPouchDump('default');
   authenticateUser();
   visit('/inventory/reports');
