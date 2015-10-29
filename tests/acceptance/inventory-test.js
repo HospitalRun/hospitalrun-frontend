@@ -29,7 +29,7 @@ test('visiting /inventory', function(assert) {
   destroyDatabases();
 });
 
-test('Add a new item', (assert) => {
+test('Adding a new inventory item', (assert) => {
   loadPouchDump('default');
   authenticateUser();
   visit('/inventory/edit/new');
@@ -67,6 +67,51 @@ test('Add a new item', (assert) => {
   andThen(() => {
     assert.equal(currentURL(), '/inventory/listing');
     assert.equal(find('tr').length, 2, 'One item is listed');
+  });
+  destroyDatabases();
+});
+
+test('Creating a new inventory request', function(assert) {
+  loadPouchDump('inventory');
+  authenticateUser();
+  visit('/inventory/request/new');
+
+  andThen(function() {
+    assert.equal(currentURL(), '/inventory/request/new');
+  });
+  fillIn('.test-inv-item .tt-input', 'Biogesic - m00001 (1000 available)');
+  triggerEvent('.test-inv-item .tt-input', 'input');
+  triggerEvent('.test-inv-item .tt-input', 'blur');
+  fillIn('.test-inv-quantity input', 500);
+  fillIn('.test-delivery-location .tt-input', 'Harare');
+  fillIn('.test-delivery-aisle .tt-input', 'C100');
+  fillIn('.test-bill-to .tt-input', 'Accounts Dept');
+  click('button:contains(Add)');
+  waitToAppear('.modal-dialog');
+
+  andThen(() => {
+    assert.equal(find('.modal-title').text(), 'Request Updated', 'New request has been saved');
+  });
+  click('button:contains(Ok)');
+  andThen(() => {
+    findWithAssert('button:contains(Fulfill)');
+    findWithAssert('button:contains(Cancel)');
+  });
+  click('button:contains(Cancel)');
+  andThen(() => {
+    assert.equal(currentURL(), '/inventory');
+    assert.equal(find('tr').length, 3, 'Two requests are now displayed');
+  });
+  destroyDatabases();
+});
+
+test('Receiving inventory', function(assert) {
+  loadPouchDump('default');
+  authenticateUser();
+  visit('/inventory/batch/new');
+
+  andThen(function() {
+    assert.equal(currentURL(), '/inventory/batch/new');
   });
   destroyDatabases();
 });
