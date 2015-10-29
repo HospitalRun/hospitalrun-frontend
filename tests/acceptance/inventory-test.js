@@ -106,12 +106,27 @@ test('Creating a new inventory request', function(assert) {
 });
 
 test('Receiving inventory', function(assert) {
-  loadPouchDump('default');
+  loadPouchDump('inventory');
   authenticateUser();
   visit('/inventory/batch/new');
 
   andThen(function() {
     assert.equal(currentURL(), '/inventory/batch/new');
+  });
+  fillIn('.test-vendor .tt-input', 'Alpha Pharmacy');
+  triggerEvent('.test-vendor .tt-input', 'input');
+  triggerEvent('.test-vendor .tt-input', 'blur');
+  fillIn('.test-invoice-number input', 'P2345');
+  fillIn('.test-inv-item .tt-input', 'Biogesic - m00001');
+  triggerEvent('.test-inv-item .tt-input', 'input');
+  triggerEvent('.test-inv-item .tt-input', 'blur');
+  fillIn('.test-inv-quantity input', 500);
+  fillIn('.test-inv-cost input', '2000');
+  click('button:contains(Save)');
+  waitToAppear('.modal-dialog');
+
+  andThen(() => {
+    assert.equal(find('h3').text(), 'Invoice Items', 'Item found');
   });
   destroyDatabases();
 });
