@@ -4,7 +4,7 @@
       {{em-select class="required" label="Medication"
         property="medication" content=patientMedication
         optionValuePath="selectObject" optionLabelPath="selectObject.inventoryItem.name"
-        selected=medication
+        selected=model.medication
       }}
     {{else}}
       {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required" showQuantity=false }}
@@ -19,13 +19,13 @@
     </div>
     <div class="row">
       {{em-input property="quantity" label="Quantity To Return" class="col-xs-3 required"}}
-      {{select-or-typeahead property="deliveryLocation" label="Return Location" list=warehouseList selection=location className="col-xs-4"}}
-      {{select-or-typeahead property="deliveryAisle" label="Return Aisle" list=aisleLocationList selection=aisleLocation className="col-xs-4"}}
+      {{select-or-typeahead property="deliveryLocation" label="Return Location" list=warehouseList selection=model.location className="col-xs-4"}}
+      {{select-or-typeahead property="deliveryAisle" label="Return Aisle" list=aisleLocationList selection=model.aisleLocation className="col-xs-4"}}
     </div>
     {{em-text property="reason" label="Return Reason/Notes" rows="3"}}
     <div class="row">
       {{date-picker property="dateCompleted" label="Adjustment Date" class="col-sm-4"}}
-      {{select-or-typeahead property="expenseAccount" label="Credit To Account" list=expenseAccountList selection=expenseAccount  className="col-sm-8"}}
+      {{select-or-typeahead property="expenseAccount" label="Credit To Account" list=expenseAccountList selection=model.expenseAccount  className="col-sm-8"}}
     </div>
   {{/em-form}}
 {{/edit-panel}}

@@ -8,6 +8,7 @@ import SelectValues from 'hospitalrun/utils/select-values';
 
 export default AbstractEditController.extend(FulfillRequest, InventoryLocations, InventorySelection, PatientSubmodule, {
   medicationController: Ember.inject.controller('medication'),
+  medicationList: [],
 
   lookupListsToUpdate: [{
     name: 'aisleLocationList', // Name of property containing lookup list
@@ -32,23 +33,23 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   updateCapability: 'add_medication',
 
   medicationChanged: function() {
-    var medication = this.get('medication');
+    var medication = this.get('model.medication');
     if (!Ember.isEmpty(medication)) {
       var inventoryItem = medication.get('inventoryItem');
-      this.set('inventoryItemTypeAhead', '%@ - %@'.fmt(inventoryItem.get('name'), inventoryItem.get('friendlyId')));
-      this.set('inventoryItem', inventoryItem);
+      this.set('model.inventoryItemTypeAhead', '%@ - %@'.fmt(inventoryItem.get('name'), inventoryItem.get('friendlyId')));
+      this.set('model.inventoryItem', inventoryItem);
     } else {
-      this.set('inventoryItem');
+      this.set('model.inventoryItem');
     }
     Ember.run.later(function() {
       this.get('model').validate().catch(Ember.K);
     }.bind(this));
-  }.observes('medication'),
+  }.observes('model.medication'),
 
   patientVisitsChanged: function() {
     var patientVisits = this.get('patientVisits');
     if (!Ember.isEmpty(patientVisits)) {
-      this.set('visit', patientVisits.get('firstObject'));
+      this.set('model.visit', patientVisits.get('firstObject'));
     }
   }.observes('patientVisits'),
 
@@ -66,7 +67,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     } else if (!Ember.isEmpty(visit)) {
       visit.get('medication').then(function(medication) {
         medication = medication.filterBy('status', 'Fulfilled');
-        this.set('medication', medication.get('firstObject'));
+        this.set('model.medication', medication.get('firstObject'));
         this.set('patientMedicationList', medication.map(SelectValues.selectObjectMap));
         this.set('setNewMedicationList', true);
       }.bind(this));
@@ -75,17 +76,17 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   }.property('setNewMedicationList', 'model.patient', 'model.visit'),
 
   _finishUpdate: function() {
-    var aisle = this.get('deliveryAisle'),
-      location = this.get('deliveryLocation'),
-      inventoryItem = this.get('inventoryItem');
+    var aisle = this.get('model.deliveryAisle'),
+      location = this.get('model.deliveryLocation'),
+      inventoryItem = this.get('model.inventoryItem');
 
     // find location on inventoryItem
     this._findOrCreateLocation(inventoryItem, location, aisle).then(function(inventoryLocation) {
-      this.set('adjustPurchases', true);
-      this.set('inventoryLocations', [inventoryLocation]);
-      this.set('markAsConsumed', true);
+      this.set('model.adjustPurchases', true);
+      this.set('model.inventoryLocations', [inventoryLocation]);
+      this.set('model.markAsConsumed', true);
       // Make sure inventory item is resolved first.
-      this.get('inventoryItem').then(function() {
+      this.get('model.inventoryItem').then(function() {
         this.send('fulfillRequest', this.get('model'), false, true, true);
       }.bind(this));
     }.bind(this));
@@ -97,8 +98,8 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
       this.displayAlert('Medication Returned', 'The medication has been marked as returned.', 'allItems');
     },
     update: function() {
-      var medication = this.get('medication'),
-        quantity = this.get('quantity');
+      var medication = this.get('model.medication'),
+        quantity = this.get('model.quantity');
       if (!Ember.isEmpty(medication)) {
         medication.reload().then(function() {
           medication.decrementProperty('quantity', quantity);
