@@ -4,7 +4,8 @@ import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
-  needs: ['imaging'],
+  imagingController: Ember.inject.controller('imaging'),
+
   chargePricingCategory: 'Imaging',
   chargeRoute: 'imaging.charge',
   selectedImagingType: null,
@@ -22,38 +23,39 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
   actions: {
     completeImaging: function() {
-      this.set('status', 'Completed');
-      this.get('model').validate().catch(Ember.K);
-      if (this.get('isValid')) {
-        this.set('imagingDate', new Date());
-        this.send('update');
-      }
+      this.set('model.status', 'Completed');
+      this.get('model').validate().then(function() {
+        if (this.get('model.isValid')) {
+          this.set('model.imagingDate', new Date());
+          this.send('update');
+        }
+      }.bind(this)).catch(Ember.K);
     },
 
     /**
      * Save the imaging request(s), creating multiples when user selects multiple imaging tests.
      */
     update: function() {
-      if (this.get('isNew')) {
+      if (this.get('model.isNew')) {
         var newImaging = this.get('model'),
           selectedImagingType = this.get('selectedImagingType');
-        if (Ember.isEmpty(this.get('status'))) {
-          this.set('status', 'Requested');
+        if (Ember.isEmpty(this.get('model.status'))) {
+          this.set('model.status', 'Requested');
         }
-        this.set('requestedBy', newImaging.getUserName());
-        this.set('requestedDate', new Date());
+        this.set('model.requestedBy', newImaging.getUserName());
+        this.set('model.requestedDate', new Date());
         if (Ember.isEmpty(selectedImagingType)) {
-          this.saveNewPricing(this.get('imagingTypeName'), 'Imaging', 'imagingType').then(function() {
+          this.saveNewPricing(this.get('model.imagingTypeName'), 'Imaging', 'model.imagingType').then(function() {
             this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(function() {
               this.saveModel();
             }.bind(this));
           }.bind(this));
         } else {
-          this.getSelectedPricing('model.selectedImagingType').then(function(pricingRecords) {
+          this.getSelectedPricing('selectedImagingType').then(function(pricingRecords) {
             if (Ember.isArray(pricingRecords)) {
               this.createMultipleRequests(pricingRecords, 'imagingType', 'imaging', 'Imaging');
             } else {
-              this.set('imagingType', pricingRecords);
+              this.set('model.imagingType', pricingRecords);
               this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(function() {
                 this.saveModel();
               }.bind(this));
@@ -81,16 +83,16 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
   lookupListsToUpdate: [{
     name: 'radiologistList',
-    property: 'radiologist',
+    property: 'model.radiologist',
     id: 'radiologists'
   }],
 
   pricingTypeForObjectType: 'Imaging Procedure',
-  pricingTypes: Ember.computed.alias('controllers.imaging.imagingPricingTypes'),
+  pricingTypes: Ember.computed.alias('imagingController.imagingPricingTypes'),
 
   pricingList: null, // This gets filled in by the route
 
-  radiologistList: Ember.computed.alias('controllers.imaging.radiologistList'),
+  radiologistList: Ember.computed.alias('imagingController.radiologistList'),
 
   updateCapability: 'add_imaging',
 
@@ -99,7 +101,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     var afterDialogAction,
       alertTitle,
       alertMessage;
-    if (this.get('status') === 'Completed') {
+    if (this.get('model.status') === 'Completed') {
       alertTitle = 'Imaging Request Completed';
       alertMessage = 'The imaging request has been completed.';
     } else {
@@ -110,7 +112,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
       afterDialogAction = this.get('cancelAction');
     }
     this.saveVisitIfNeeded(alertTitle, alertMessage, afterDialogAction);
-    this.set('selectPatient', false);
+    this.set('model.selectPatient', false);
   }
 
 });
