@@ -105,6 +105,38 @@ test('Creating a new inventory request', function(assert) {
   destroyDatabases();
 });
 
+test('Fulfilling an inventory request', function(assert) {
+  loadPouchDump('inventory');
+  authenticateUser();
+  visit('/inventory');
+
+  andThen(function() {
+    assert.equal(currentURL(), '/inventory');
+    assert.equal(find('tr').length, 2, 'One request not fulfilled');
+  });
+  click('button:contains(Fulfill)');
+
+  andThen(() => {
+    findWithAssert('button:contains(Fulfill)');
+    findWithAssert('button:contains(Cancel)');
+  });
+
+  click('button:contains(Fulfill)');
+  waitToAppear('.modal-dialog');
+
+  andThen(() => {
+    assert.equal(find('.modal-title').text(), 'Request Fulfilled', 'Inventory request has been fulfilled');
+  });
+
+  click('button:contains(Ok)');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/inventory');
+    assert.equal(find('tr').length, 1, 'No more requests left to fulfill');
+  });
+  destroyDatabases();
+});
+
 test('Receiving inventory', function(assert) {
   loadPouchDump('inventory');
   authenticateUser();
