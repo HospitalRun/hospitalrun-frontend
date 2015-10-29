@@ -1,15 +1,13 @@
 {{#modal-dialog
-    hideCancelButton=hideCancelButton
-    hideUpdateButton=hideUpdateButton
     isUpdateDisabled=isUpdateDisabled
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  {{#em-form model=this submitButton=false }}
+  {{#em-form model=model submitButton=false }}
     {{em-input property="name" label="Name" class="required"}}
     {{select-or-typeahead property="category" className="required"
       label="Category" list=billingCategories
-      selection=category
+      selection=model.category
     }}
   {{/em-form}}
 {{/modal-dialog}}

@@ -5,10 +5,11 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 export default AbstractEditController.extend(PatientSubmodule, {
   cancelAction: 'closeModal',
   findPatientVisits: false,
-  needs: ['invoices'],
+  invoiceController: Ember.inject.controller('invoices'),
+  newPayment: false,
 
-  expenseAccountList: Ember.computed.alias('controllers.invoices.expenseAccountList'),
-  patientList: Ember.computed.alias('controllers.invoices.patientList'),
+  expenseAccountList: Ember.computed.alias('invoiceController.expenseAccountList'),
+  patientList: Ember.computed.alias('invoiceController.patientList'),
 
   _finishUpdate: function(message, title) {
     this.send('closeModal');
@@ -16,38 +17,38 @@ export default AbstractEditController.extend(PatientSubmodule, {
   },
 
   currentPatient: function() {
-    var type = this.get('paymentType');
+    var type = this.get('model.paymentType');
     if (type === 'Deposit') {
-      return this.get('patient');
+      return this.get('model.patient');
     } else {
-      return this.get('invoice.patient');
+      return this.get('model.invoice.patient');
     }
-  }.property('patient', 'paymentType', 'invoice.patient'),
+  }.property('model.patient', 'model.paymentType', 'model.invoice.patient'),
 
   title: function() {
-    var isNew = this.get('isNew'),
-      type = this.get('paymentType');
+    var isNew = this.get('model.isNew'),
+      type = this.get('model.paymentType');
     if (isNew) {
       return 'Add %@'.fmt(type);
     } else {
       return 'Edit %@'.fmt(type);
     }
-  }.property('isNew', 'paymentType'),
+  }.property('model.isNew', 'model.paymentType'),
 
   selectPatient: function() {
-    var isNew = this.get('isNew'),
-      type = this.get('paymentType');
+    var isNew = this.get('model.isNew'),
+      type = this.get('model.paymentType');
     return (isNew && type === 'Deposit');
-  }.property('isNew', 'paymentType'),
+  }.property('model.isNew', 'model.paymentType'),
 
   beforeUpdate: function() {
-    if (this.get('isNew')) {
+    if (this.get('model.isNew')) {
       this.set('newPayment', true);
     } else {
       this.set('newPayment', false);
     }
     var patient = this.get('currentPatient');
-    this.set('charityPatient', patient.get('patientType') === 'Charity');
+    this.set('model.charityPatient', patient.get('patientType') === 'Charity');
     return Ember.RSVP.resolve();
   },
 
@@ -62,7 +63,7 @@ export default AbstractEditController.extend(PatientSubmodule, {
               var message = 'A deposit of %@ was added for patient %@'.fmt(record.get('amount'), patient.get('displayName'));
               this._finishUpdate(message, 'Deposit Added');
             } else {
-              var invoice = this.get('invoice');
+              var invoice = this.get('model.invoice');
               invoice.addPayment(record);
               invoice.save().then(function() {
                 var message = 'A payment of %@ was added to invoice %@'.fmt(record.get('amount'), invoice.get('id'));

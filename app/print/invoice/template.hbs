@@ -15,29 +15,29 @@
       <table>
         <tr>
           <td colspan="2" class="col-xs-8">
-            NAME OF PATIENT: {{patient.displayName}}
+            NAME OF PATIENT: {{model.patient.displayName}}
           </td>
           <td class="col-xs-4">
-            PATIENT #:{{patient.displayPatientId}}
+            PATIENT #:{{model.patient.displayPatientId}}
           </td>
         </tr>
         <tr>
           <td class="col-xs-5">
-            AGE: {{patient.age}}
+            AGE: {{model.patient.age}}
           </td>
           <td class="col-xs-3">
-            ADMITTED: {{date-format visit.startDate}}
+            ADMITTED: {{date-format model.visit.startDate}}
           </td>
           <td class="col-xs-4"></td>
         </tr>
         <tr>
           <td class="col-xs-5"></td>
-          <td class="col-xs-3">DISCHARGE: {{date-format visit.endDate}}</td>
+          <td class="col-xs-3">DISCHARGE: {{date-format model.visit.endDate}}</td>
           <td class="col-xs-4"></td>
         </tr>
         <tr>
           <td colspan="3" class="col-xs-12">
-            ADDRESS: {{patient.displayAddress}}
+            ADDRESS: {{model.patient.displayAddress}}
           </td>
         </tr>
       </table>
@@ -50,13 +50,13 @@
           <th class="text-right">HMO/COM</th>
           <th class="text-right">Excess</th>
         </tr>
-        {{#each lineItemsByCategory}}
+        {{#each model.lineItemsByCategory as |categoryGroup|}}
           <tr>
             <td colspan="6">
-              <strong>{{category}}</strong>
+              <strong>{{categoryGroup.category}}</strong>
             </td>
           </tr>
-          {{#each items as |item|}}
+          {{#each categoryGroup.items as |item|}}
             <tr>
               <td>
                 {{item.name}}
@@ -77,47 +77,47 @@
             </tr>
           {{/each}}
           <tr>
-            <td><strong>Total {{category}}</strong></td>
-            <td class="text-right"><strong>{{number-format total}}</strong></td>
-            <td class="text-right"><strong>{{number-format discount}}</strong></td>
-            <td class="text-right"><strong>{{number-format nationalInsurance}}</strong></td>
-            <td class="text-right"><strong>{{number-format privateInsurance}}</strong></td>
-            <td class="text-right"><strong>{{number-format amountOwed}}</strong></td>
+            <td><strong>Total {{categoryGroup.category}}</strong></td>
+            <td class="text-right"><strong>{{number-format categoryGroup.total}}</strong></td>
+            <td class="text-right"><strong>{{number-format categoryGroup.discount}}</strong></td>
+            <td class="text-right"><strong>{{number-format categoryGroup.nationalInsurance}}</strong></td>
+            <td class="text-right"><strong>{{number-format categoryGroup.privateInsurance}}</strong></td>
+            <td class="text-right"><strong>{{number-format categoryGroup.amountOwed}}</strong></td>
           </tr>
         {{/each}}
         <tr>
           <td><strong>Total</strong></td>
-          <td class="text-right"><strong>{{number-format total}}</strong></td>
-          <td class="text-right"><strong>{{number-format discount}}</strong></td>
-          <td class="text-right"><strong>{{number-format nationalInsurance}}</strong></td>
-          <td class="text-right"><strong>{{number-format privateInsurance}}</strong></td>
-          <td class="text-right"><strong>{{number-format amountOwed}}</strong></td>
+          <td class="text-right"><strong>{{number-format model.total}}</strong></td>
+          <td class="text-right"><strong>{{number-format model.discount}}</strong></td>
+          <td class="text-right"><strong>{{number-format model.nationalInsurance}}</strong></td>
+          <td class="text-right"><strong>{{number-format model.privateInsurance}}</strong></td>
+          <td class="text-right"><strong>{{number-format model.amountOwed}}</strong></td>
         </tr>
         <tr>
           <td><strong>Payments/Deposits</strong></td>
           <td colspan="4"></td>
-          <td class="text-right">-{{number-format paidTotal}}</td>
+          <td class="text-right">-{{number-format model.paidTotal}}</td>
           <td></td>
         </tr>
         <tr>
           <td><strong>Grand Total</strong></td>
           <td colspan="4"></td>
-          <td class="text-right"><strong>{{number-format remainingBalance}}</strong></td>
+          <td class="text-right"><strong>{{number-format model.remainingBalance}}</strong></td>
           <td></td>
         </tr>
       </table>
       <table>
-        {{#if visit.dischargeInfo}}
+        {{#if model.visit.dischargeInfo}}
           <tr>
             <td class="col-xs-12">
-              Discharge Notes: {{visit.dischargeInfo}}
+              Discharge Notes: {{model.visit.dischargeInfo}}
             </td>
           </tr>
         {{/if}}
-        {{#if remarks}}
+        {{#if model.remarks}}
           <tr>
             <td class="col-xs-12">
-              Remarks: {{remarks}}
+              Remarks: {{model.remarks}}
             </td>
           </tr>
         {{/if}}
@@ -126,11 +126,11 @@
           <td class="col-xs-5">were deducted during my confinement</td>
         </tr>
         <tr>
-          <td class="col-xs-8">Billed by: {{modifiedBy}}</td>
+          <td class="col-xs-8">Billed by: {{model.modifiedBy}}</td>
           <td class="col-xs-4">__________________________________________</td>
         </tr>
         <tr>
-          <td class="col-xs-8">Bill Date: {{date-format billDate}}</td>
+          <td class="col-xs-8">Bill Date: {{date-format model.billDate}}</td>
           <td class="text-center col-xs-4">Patient-Member</td>
         </tr>
         <tr>
@@ -144,7 +144,7 @@
       </table>
     </div>
     <div class="panel-footer">
-      {{#link-to 'invoices.edit' this class="btn btn-default warning" }}Return{{/link-to}}
+      {{#link-to 'invoices.edit' model class="btn btn-default warning" }}Return{{/link-to}}
     </div>
   </div>
 {{/print-this}}

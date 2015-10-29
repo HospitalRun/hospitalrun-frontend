@@ -3,10 +3,10 @@ import Ember from 'ember';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 
 export default Ember.ObjectController.extend(BillingCategories, IsUpdateDisabled, {
-  needs: ['invoices', 'invoices/edit'],
+  invoiceController: Ember.inject.controller('invoices'),
 
-  billingCategoryList: Ember.computed.alias('controllers.invoices.billingCategoryList'),
-  editController: Ember.computed.alias('controllers.invoices/edit'),
+  billingCategoryList: Ember.computed.alias('invoiceController.billingCategoryList'),
+  editController: Ember.inject.controller('invoices/edit'),
   title: 'Add Line Item',
   updateButtonText: 'Add',
   updateButtonAction: 'add',
