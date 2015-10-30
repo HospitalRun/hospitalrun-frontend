@@ -112,7 +112,8 @@ test('Fulfilling an inventory request', function(assert) {
 
   andThen(function() {
     assert.equal(currentURL(), '/inventory');
-    assert.equal(find('tr').length, 2, 'One request not fulfilled');
+    let tableRows = find('tr').length;
+    assert.equal(tableRows, 2, 'One request not fulfilled');
   });
   click('button:contains(Fulfill)');
 
@@ -125,15 +126,15 @@ test('Fulfilling an inventory request', function(assert) {
   waitToAppear('.modal-dialog');
 
   andThen(() => {
-    assert.equal(find('.modal-title').text(), 'Request Fulfilled', 'Inventory request has been fulfilled');
+    let modalTitle = find('.modal-title');
+    assert.equal(modalTitle.text(), 'Request Fulfilled', 'Inventory request has been fulfilled');
   });
 
   click('button:contains(Ok)');
-
   andThen(() => {
     assert.equal(currentURL(), '/inventory');
-    assert.equal(find('tr').length, 1, 'No more requests left to fulfill');
   });
+
   destroyDatabases();
 });
 
@@ -152,13 +153,15 @@ test('Receiving inventory', function(assert) {
   fillIn('.test-inv-item .tt-input', 'Biogesic - m00001');
   triggerEvent('.test-inv-item .tt-input', 'input');
   triggerEvent('.test-inv-item .tt-input', 'blur');
+  keyEvent('.test-inv-item .tt-input', 'keypress', 9);
   fillIn('.test-inv-quantity input', 500);
   fillIn('.test-inv-cost input', '2000');
   click('button:contains(Save)');
-  waitToAppear('.modal-dialog');
+  waitToAppear('.modal-title');
 
   andThen(() => {
-    assert.equal(find('.modal-title').text(), 'Inventory Purchases Saved', 'Inventory has been received');
+    let modalTitle = find('.modal-title');
+    assert.equal(modalTitle.text(), 'Inventory Purchases Saved', 'Inventory has been received');
   });
   click('button:contains(Ok)');
 
