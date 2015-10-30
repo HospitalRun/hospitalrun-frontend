@@ -14,7 +14,8 @@ export default Adapter.extend(PouchAdapterUtils, {
 
   _executeContainsSearch: function(store, type, query) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var searchUrl = `/search/hrdb/${type.typeKey}/_search`;
+      var typeName = this.getRecordTypeName(type);
+      var searchUrl = `/search/hrdb/${typeName}/_search`;
       if (query.containsValue && query.containsValue.value) {
         var queryString = '';
         query.containsValue.keys.forEach(function(key) {
