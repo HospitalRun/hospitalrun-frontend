@@ -37,37 +37,27 @@ export default Model.extend(UserSession, EmberValidations, {
       this.set('modifiedFields', modifiedFields);
       this.set('modifiedBy', this.getUserName());
     }
-
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      this._super(options).then(function(results) {
-        Ember.run(null, resolve, results);
-      }, function(error) {
-        if (!Ember.isEmpty(options) && options.retry) {
-          // We failed on the second attempt to save the record, so reject the save.
-          Ember.run(null, reject, error);
+    return this._super(options).catch(function(error) {
+      if (!Ember.isEmpty(options) && options.retry) {
+        throw error;
+      } else {
+        if (error.name && error.name.indexOf && error.name.indexOf('conflict') > -1) {
+          // Conflict encountered, so rollback, reload and then save the record with the changed attributes.
+          this.rollbackAttributes();
+          return this.reload().then(function(record) {
+            for (var attribute in changedAttributes) {
+              record.set(attribute, changedAttributes[attribute][1]);
+            }
+            if (Ember.isEmpty(options)) {
+              options = {};
+            }
+            options.retry = true;
+            return record.save(options);
+          });
         } else {
-          if (error.indexOf && error.indexOf('conflict') > -1) {
-            // Conflict encountered, so rollback, reload and then save the record with the changed attributes.
-            this.rollbackAttributes();
-            this.reload().then(function(record) {
-              for (var attribute in changedAttributes) {
-                record.set(attribute, changedAttributes[attribute][1]);
-              }
-              options.retry = true;
-              record.save(options).then(function(results) {
-                Ember.run(null, resolve, results);
-              }, function(err) {
-                Ember.run(null, reject, err);
-              });
-
-            }, function(err) {
-              Ember.run(null, reject, err);
-            });
-          } else {
-            Ember.run(null, reject, error);
-          }
+          throw error;
         }
-      }.bind(this));
+      }
     }.bind(this));
   }
 });
