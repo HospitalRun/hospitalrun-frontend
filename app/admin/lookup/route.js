@@ -6,6 +6,10 @@ export default AbstractIndexRoute.extend({
     return this.store.find('lookup');
   },
 
+  afterModel: function(model) {
+    model.set('lookupType', 'anesthesia_types');
+  },
+
   actions: {
     refreshLookupLists: function() {
       this.refresh();

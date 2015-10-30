@@ -1,10 +1,10 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=this submitButton=false}}
-    {{#unless isNew}}
+  {{#em-form model=model submitButton=false}}
+    {{#unless model.isNew}}
       <div class="form-group has-success">
         <label class="control-label">Username</label>
         <div class="form-control">
-          {{name}}
+          {{model.name}}
         </div>
       </div>
     {{/unless}}

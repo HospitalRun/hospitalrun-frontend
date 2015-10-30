@@ -116,7 +116,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   */
   updateRecord: function(store, type, record) {
     var data = {};
-    var serializer = store.serializerFor(type.typeKey);
+    var serializer = store.serializerFor(record.modelName);
     serializer.serializeIntoHash(data, type, record, { includeId: true });
     data = data.user;
     data.type = 'user';
@@ -193,6 +193,10 @@ export default DS.RESTAdapter.extend(UserSession, {
       urlArray.push(rev);
     }
     return urlArray.join('');
+  },
+
+  shouldReloadAll: function() {
+    return true;
   }
 
 });

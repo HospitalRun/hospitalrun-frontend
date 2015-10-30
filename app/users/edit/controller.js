@@ -4,16 +4,17 @@ import UserRoles from 'hospitalrun/mixins/user-roles';
 
 export default AbstractEditController.extend(UserRoles, {
   needs: 'users/index',
+  usersController: Ember.inject.controller('users/index'),
   updateCapability: 'add_user',
 
-  users: Ember.computed.alias('controllers.users/index.model'),
+  users: Ember.computed.alias('usersController.model'),
 
   actions: {
     update: function() {
       var updateModel = this.get('model'),
         users = this.get('users');
 
-      if (this.get('isNew')) {
+      if (updateModel.get('isNew')) {
         var newData = updateModel.getProperties('password', 'email', 'roles', 'displayName');
         newData.name = newData.email;
         newData.id = 'org.couchdb.user:' + newData.email;
@@ -25,7 +26,7 @@ export default AbstractEditController.extend(UserRoles, {
         this.set('model', updateModel);
       }
 
-      if (Ember.isEmpty(this.get('userPrefix'))) {
+      if (Ember.isEmpty(updateModel.get('userPrefix'))) {
         var counter = 1,
           prefix = 'p',
           userPrefix = prefix + 0,
@@ -35,7 +36,7 @@ export default AbstractEditController.extend(UserRoles, {
           prefix = userPrefix + counter++;
           usedPrefix = users.findBy('userPrefix', prefix);
         }
-        this.set('userPrefix', prefix);
+        updateModel.set('userPrefix', prefix);
       }
       updateModel.save().then(function() {
         this.displayAlert('User Saved', 'The user has been saved.');

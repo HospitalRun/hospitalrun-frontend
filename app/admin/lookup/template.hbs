@@ -1,32 +1,32 @@
 <div class="panel panel-primary">
     <div class="panel-body">
-        {{#em-form model=this submitButton=false }}
+        {{#em-form model=model submitButton=false }}
             <div class="row">
-                {{em-select class="col-xs-3" label="Lookup Type" 
+                {{em-select class="col-xs-3" label="Lookup Type"
                     property="lookupType" content=lookupTypes
                     optionValuePath="value" optionLabelPath="name"
-                    selected=lookupType
+                    selected=model.lookupType
                 }}
-            </div>        
+            </div>
         {{/em-form}}
     </div>
 </div>
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">{{lookupTitle}}</h3>
-    </div>    
+    </div>
     <div class="panel-body">
         <table class="table">
             <tr class="table-header">
                 <th>Value</th>
                 <th>Actions</th>
             </tr>
-            {{#each lookupTypeValues}}
+            {{#each lookupTypeValues as |lookupTypeValue|}}
                 <tr>
-                    <td>{{this}}</td>                    
+                    <td>{{lookupTypeValue}}</td>
                     <td>
-                        <button class="btn btn-default neutral" {{action 'editValue' this bubbles=false }}>Edit</button>
-                        <button class="btn btn-default warning" {{action 'deleteValue' this bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                        <button class="btn btn-default neutral" {{action 'editValue' lookupTypeValue bubbles=false }}>Edit</button>
+                        <button class="btn btn-default warning" {{action 'deleteValue' lookupTypeValue bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
                     </td>
                 </tr>
             {{/each}}
@@ -34,11 +34,11 @@
     </div>
     <div class="panel-footer">
         <button class="btn btn-default neutral" {{action 'addValue'}}>Add Value</button>
-        {{#em-form model=this submitButton=false }}
+        {{#em-form model=model submitButton=false }}
             <div class="row">
                 <div class="col-sm-4">
                     {{em-checkbox label="User Can Add New Values" property="userCanAdd"}}
-                    <button class="btn btn-default" {{action 'updateList'}}>Update</button> 
+                    <button class="btn btn-default" {{action 'updateList'}}>Update</button>
                 </div>
                 {{#if showOrganizeByType}}
                     {{em-checkbox label="Organize Pricing By Type" property="organizeByType" class="col-sm-4"}}
