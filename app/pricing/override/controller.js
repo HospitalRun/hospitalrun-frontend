@@ -3,7 +3,7 @@ import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import SelectValues from 'hospitalrun/utils/select-values';
 
 export default Ember.ObjectController.extend(IsUpdateDisabled, {
-  needs: ['pricing', 'pricing/edit'],
+  pricingController: Ember.inject.controller('pricing'),
 
   actions: {
     cancel: function() {
@@ -12,7 +12,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
     },
 
     update: function() {
-      var isNew = this.get('isNew'),
+      var isNew = this.get('model.isNew'),
         override = this.get('model');
       override.save().then(function() {
         if (isNew) {
@@ -24,26 +24,26 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, {
     }
   },
 
-  editController: Ember.computed.alias('controllers.pricing/edit'),
-  pricingProfiles: Ember.computed.map('controllers.pricing.pricingProfiles', SelectValues.selectObjectMap),
+  editController: Ember.inject.controller('pricing/edit'),
+  pricingProfiles: Ember.computed.map('pricingController.pricingProfiles', SelectValues.selectObjectMap),
   showUpdateButton: true,
 
   title: function() {
-    if (this.get('isNew')) {
+    if (this.get('model.isNew')) {
       return 'Add Override';
     } else {
       return 'Edit Override';
     }
-  }.property('isNew'),
+  }.property('model.isNew'),
 
   updateButtonAction: 'update',
   updateButtonText: function() {
-    var isNew = this.get('isNew');
+    var isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add';
     } else {
       return 'Update';
     }
-  }.property('isNew')
+  }.property('model.isNew')
 
 });

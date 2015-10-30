@@ -1,6 +1,7 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import Ember from 'ember';
-export default AbstractIndexRoute.extend({
+import UserSession from 'hospitalrun/mixins/user-session';
+export default AbstractIndexRoute.extend(UserSession, {
   category: null,
   modelName: 'pricing',
   pageTitle: 'All Pricing Items',
@@ -26,5 +27,18 @@ export default AbstractIndexRoute.extend({
       };
     }
     return queryParams;
+  },
+
+  actions: {
+    newItem: function() {
+      if (this.currentUserCan('add_pricing')) {
+        var routeId = 'new',
+          routeParts = this.routeName.split('.');
+        if (routeParts.length === 2 && routeParts[1] !== 'index') {
+          routeId += routeParts[1].capitalize();
+        }
+        this.transitionTo('pricing.edit', routeId);
+      }
+    }
   }
 });

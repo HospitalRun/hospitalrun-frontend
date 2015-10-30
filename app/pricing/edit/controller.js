@@ -5,18 +5,18 @@ import ImagingPricingTypes from 'hospitalrun/mixins/imaging-pricing-types';
 import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
 export default AbstractEditController.extend(LabPricingTypes, ImagingPricingTypes, ReturnTo, {
-  needs: ['pricing'],
+  pricingController: Ember.inject.controller('pricing'),
 
   actions: {
     addOverride: function(override) {
-      var pricingOverrides = this.get('pricingOverrides');
+      var pricingOverrides = this.get('model.pricingOverrides');
       pricingOverrides.addObject(override);
       this.send('update', true);
       this.send('closeModal');
     },
     deleteOverride: function(model) {
       var overrideToDelete = model.overrideToDelete,
-        pricingOverrides = this.get('pricingOverrides');
+        pricingOverrides = this.get('model.pricingOverrides');
       pricingOverrides.removeObject(overrideToDelete);
       overrideToDelete.destroyRecord().then(function() {
         this.send('update', true);
@@ -45,29 +45,29 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
     'Procedure',
     'Ward'
   ].map(SelectValues.selectValuesMap),
-  expenseAccountList: Ember.computed.alias('controllers.pricing.expenseAccountList'),
-  imagingPricingTypes: Ember.computed.alias('controllers.pricing.imagingPricingTypes'),
-  labPricingTypes: Ember.computed.alias('controllers.pricing.labPricingTypes'),
-  procedurePricingTypes: Ember.computed.alias('controllers.pricing.procedurePricingTypes'),
-  wardPricingTypes: Ember.computed.alias('controllers.pricing.wardPricingTypes'),
+  expenseAccountList: Ember.computed.alias('pricingController.expenseAccountList'),
+  imagingPricingTypes: Ember.computed.alias('pricingController.imagingPricingTypes'),
+  labPricingTypes: Ember.computed.alias('pricingController.labPricingTypes'),
+  procedurePricingTypes: Ember.computed.alias('pricingController.procedurePricingTypes'),
+  wardPricingTypes: Ember.computed.alias('pricingController.wardPricingTypes'),
 
   lookupListsToUpdate: function() {
-    var category = this.get('category').toLowerCase(),
+    var category = this.get('model.category').toLowerCase(),
       listsToUpdate = [{
         name: 'expenseAccountList',
-        property: 'expenseAccount',
+        property: 'model.expenseAccount',
         id: 'expense_account_list'
       }];
     listsToUpdate.push({
       name: category + 'PricingTypes',
-      property: 'pricingType',
+      property: 'model.pricingType',
       id: category + '_pricing_types'
     });
     return listsToUpdate;
-  }.property('category'),
+  }.property('model.category'),
 
   pricingTypes: function() {
-    var category = this.get('category');
+    var category = this.get('model.category');
     if (!Ember.isEmpty(category)) {
       var typesList = this.get(category.toLowerCase() + 'PricingTypes');
       if (Ember.isEmpty(typesList) || Ember.isEmpty(typesList.get('value'))) {
@@ -79,7 +79,7 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
       }
       return typesList;
     }
-  }.property('category'),
+  }.property('model.category'),
 
   updateCapability: 'add_pricing',
 
