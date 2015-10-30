@@ -2,8 +2,8 @@
   {{#em-form model=model submitButton=false }}
     <div class="row">
       {{date-picker property="dateReceived" label="Date Received" class="col-sm-4 required"}}
-      {{select-or-typeahead property="vendor" label="Vendor" list=vendorList selection=model.vendor className="col-sm-4 required"}}
-      {{em-input property="invoiceNo" label="Invoice Number" class="col-sm-4"}}
+      {{select-or-typeahead property="vendor" label="Vendor" list=vendorList selection=model.vendor className="col-sm-4 required test-vendor"}}
+      {{em-input property="invoiceNo" label="Invoice Number" class="col-sm-4 test-invoice-number"}}
     </div>
     <div class="row">
       {{select-or-typeahead property="location" label="Location" list=warehouseList selection=model.location className="col-sm-5"}}
@@ -20,21 +20,21 @@
       <div class="panel-body">
         <div class="row">
           {{inventory-typeahead
-            class="col-sm-7 required"
+            class="col-sm-7 required test-inv-item"
             property="inventoryItemTypeAhead"
             label="Inventory Item"
             content=inventoryList
             selection=selectedInventoryItem
             showQuantity=false
           }}
-          {{em-input property="quantity" label="Quantity" class="col-sm-2 required"}}
+          {{em-input property="quantity" label="Quantity" class="col-sm-2 required test-inv-quantity"}}
           <div class="form-group col-sm-1">
             <label class="control-label">Unit</label>
             {{#if showDistributionUnit}}
               <p class="form-control-static">{{model.inventoryItem.distributionUnit}}</p>
             {{/if}}
           </div>
-          {{em-input property="purchaseCost" label="Purchase Cost" class="col-sm-2 required"}}
+          {{em-input property="purchaseCost" label="Purchase Cost" class="col-sm-2 required test-inv-cost"}}
         </div>
         <div class="row">
           {{em-input property="vendorItemNo" label="Vendor Item Number" class="col-sm-4"}}
