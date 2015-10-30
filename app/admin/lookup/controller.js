@@ -5,7 +5,7 @@ import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import ImagingPricingTypes from 'hospitalrun/mixins/imaging-pricing-types';
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
-export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
+export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
   ModalHelper, ImagingPricingTypes, InventoryTypeList, VisitTypes, {
     fileSystem: Ember.inject.service('filesystem'),
     lookupTypes: [{
