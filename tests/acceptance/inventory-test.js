@@ -168,13 +168,58 @@ test('Receiving inventory', function(assert) {
   destroyDatabases();
 });
 
-test('Reports can be generated', function(assert) {
-  loadPouchDump('default');
-  authenticateUser();
-  visit('/inventory/reports');
+testSimpleReportForm('Detailed Adjustment');
+testSimpleReportForm('Detailed Purchase');
+testSimpleReportForm('Detailed Stock Usage');
+testSimpleReportForm('Detailed Stock Transfer');
+testSimpleReportForm('Detailed Expenses');
+testSimpleReportForm('Expiration Date');
+testSimpleReportForm('Summary Expenses');
+testSimpleReportForm('Summary Purchase');
+testSimpleReportForm('Summary Stock Usage');
+testSimpleReportForm('Summary Stock Transfer');
+testSimpleReportForm('Finance Summary');
+testSingleDateReportForm('Inventory By Location');
+testSingleDateReportForm('Inventory Valuation');
 
-  andThen(function() {
-    assert.equal(currentURL(), '/inventory/reports');
+function testSimpleReportForm(reportName) {
+  test(`${reportName} report can be generated`, function(assert) {
+    loadPouchDump('default');
+    authenticateUser();
+    visit('/inventory/reports');
+    andThen(function() {
+      assert.equal(currentURL(), '/inventory/reports');
+    });
+    fillIn('.test-start-date input', '10/01/2015');
+    fillIn('.test-end-date input', '10/31/2015');
+    select('#report-type', `${reportName}`);
+    click('button:contains(Generate Report)');
+    waitToAppear('.panel-title');
+
+    andThen(() => {
+      assert.equal(find('.panel-title').text().trim(), `${reportName} Report`, `${reportName} Report generated`);
+      findWithAssert('a:contains(Export Report)');
+    });
+    destroyDatabases();
   });
-  destroyDatabases();
-});
+}
+
+function testSingleDateReportForm(reportName) {
+  test(`${reportName} report can be generated`, function(assert) {
+    loadPouchDump('default');
+    authenticateUser();
+    visit('/inventory/reports');
+    andThen(function() {
+      assert.equal(currentURL(), '/inventory/reports');
+    });
+    select('#report-type', `${reportName}`);
+    click('button:contains(Generate Report)');
+    waitToAppear('.panel-title');
+
+    andThen(() => {
+      assert.equal(find('.panel-title').text().trim(), `${reportName} Report`, `${reportName} Report generated`);
+      findWithAssert('a:contains(Export Report)');
+    });
+    destroyDatabases();
+  });
+}
