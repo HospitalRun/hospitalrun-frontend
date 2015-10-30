@@ -2,7 +2,7 @@ import Ember from 'ember';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import SelectValues from 'hospitalrun/utils/select-values';
 
-export default Ember.ObjectController.extend(IsUpdateDisabled, {
+export default Ember.Controller.extend(IsUpdateDisabled, {
   pricingController: Ember.inject.controller('pricing'),
 
   actions: {

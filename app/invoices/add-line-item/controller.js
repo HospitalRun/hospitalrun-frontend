@@ -2,7 +2,7 @@ import BillingCategories from 'hospitalrun/mixins/billing-categories';
 import Ember from 'ember';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 
-export default Ember.ObjectController.extend(BillingCategories, IsUpdateDisabled, {
+export default Ember.Controller.extend(BillingCategories, IsUpdateDisabled, {
   invoiceController: Ember.inject.controller('invoices'),
 
   billingCategoryList: Ember.computed.alias('invoiceController.billingCategoryList'),
