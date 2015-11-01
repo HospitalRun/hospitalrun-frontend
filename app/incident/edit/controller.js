@@ -12,18 +12,22 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
      needs: ['incident','pouchdb'],
 
     canAddFeedback: function() {
-         var currentUser = this._getCurrentUserName(),
-             status = this.get('statusOfIncident'),
-             canAdd = this.currentUserCan('add_feedback');
-             this.get('reviewers').then(function(reviewers){
-                reviewers.forEach(function(reviewer) {
-                  if((currentUser === reviewer.get('reviewerEmail')) && (status !== 'Closed')){
-                    canAdd = true;
-                  }
-                });
-              });    
-      return canAdd;
-    }.property('reviewers.@each'),
+        var canAdd = true;
+        if(this.get('statusOfIncident') === 'Closed'){
+            canAdd = false;
+        }
+        return canAdd;
+    }.property('statusOfIncident'),
+    
+
+         //currentUser = this._getCurrentUserName(),
+             
+         //    canAdd = this.currentUserCan('add_feedback');
+         //    this.get('reviewers').then(function(reviewers){
+          //      reviewers.forEach(function(reviewer) {
+          //        if((currentUser === reviewer.get('reviewerEmail')) 
+
+    //}.property('reviewers.@each'),
 
     canEditFeedback: function() {
         return this.currentUserCan('add_feedback');
