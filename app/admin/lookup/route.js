@@ -3,7 +3,7 @@ export default AbstractIndexRoute.extend({
   hideNewButton: true,
   pageTitle: 'Lookup Lists',
   model: function() {
-    return this.store.find('lookup');
+    return this.store.findAll('lookup');
   },
 
   afterModel: function(model) {
