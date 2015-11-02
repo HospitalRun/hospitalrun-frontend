@@ -4,6 +4,7 @@ import EmberValidations from 'ember-validations';
 import { Model } from 'ember-pouch';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default Model.extend(UserSession, EmberValidations, {
+  session: Ember.inject.service(),
   lastModified: DS.attr('date'),
   modifiedBy: DS.attr(),
   modifiedFields: DS.attr(),
@@ -20,7 +21,7 @@ export default Model.extend(UserSession, EmberValidations, {
       modifiedFields = this.get('modifiedFields'),
       session = this.get('session');
 
-    if (!session || !session.isAuthenticated) {
+    if (!session || !session.get('isAuthenticated')) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
         Ember.run(null, reject, 'ERROR you must be logged in to save');
       });

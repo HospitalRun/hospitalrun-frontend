@@ -2,6 +2,7 @@ import Ember from 'ember';
 import DS from 'ember-data';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default DS.RESTAdapter.extend(UserSession, {
+  session: Ember.inject.service(),
   endpoint: '/db/_users/',
 
   defaultSerializer: 'couchdb',

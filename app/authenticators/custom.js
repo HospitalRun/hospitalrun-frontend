@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import Base from 'simple-auth/authenticators/base';
-export default Base.extend({
+import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
+export default BaseAuthenticator.extend({
   database: Ember.inject.service(),
   serverEndpoint: '/db/_session',
   useGoogleAuth: false,
