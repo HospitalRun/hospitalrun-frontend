@@ -100,6 +100,48 @@ export default Adapter.extend(PouchAdapterUtils, {
     return PouchDB.utils.uuid();
   },
 
+  onChange: function(change) {
+    // If relational_pouch isn't initialized yet, there can't be any records
+    // in the store to update.
+    if (!this.get('db').rel) {
+      return;
+    }
+
+    var obj = this.get('db').rel.parseDocID(change.id);
+    // skip changes for non-relational_pouch docs. E.g., design docs.
+    if (!obj.type || !obj.id || obj.type === '') {
+      return;
+    }
+
+    var store = this.store;
+
+    try {
+      store.modelFor(obj.type);
+    } catch (e) {
+      // The record refers to a model which this version of the application
+      // does not have.
+      return;
+    }
+
+    var recordInStore = store.peekRecord(obj.type, obj.id);
+    if (!recordInStore) {
+      // The record hasn't been loaded into the store; no need to reload its data.
+      return;
+    }
+    if (!recordInStore.get('isLoaded') || recordInStore.get('hasDirtyAttributes')) {
+      // The record either hasn't loaded yet or has unpersisted local changes.
+      // In either case, we don't want to refresh it in the store
+      // (and for some substates, attempting to do so will result in an error).
+      return;
+    }
+
+    if (change.deleted) {
+      store.unloadRecord(recordInStore);
+    } else {
+      recordInStore.reload();
+    }
+  },
+
   query: function(store, type, query, options) {
     var specialQuery = false;
     for (var i = 0; i < this._specialQueries.length; i++) {

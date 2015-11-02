@@ -194,14 +194,15 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         if (Ember.isEmpty(lookupItem)) {
           var defaultValues = [],
             lookupTypes = this.get('lookupTypes'),
-            lookupDesc = lookupTypes.findBy('value', lookupType);
+            lookupDesc = lookupTypes.findBy('value', lookupType),
+            store = this.get('store');
           if (!Ember.isEmpty(lookupDesc) && !Ember.isEmpty(lookupDesc.defaultValues)) {
             defaultValues = this.get(lookupDesc.defaultValues);
           }
-          lookupItem = this.get('store').push('lookup', {
+          lookupItem = store.push(store.normalize('lookup', {
             id: lookupType,
             value: defaultValues
-          });
+          }));
         }
         if (!Ember.isEmpty(lookupItem) && Ember.isEmpty(lookupItem.get('userCanAdd'))) {
           lookupItem.set('userCanAdd', true);

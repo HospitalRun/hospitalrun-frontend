@@ -243,11 +243,12 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
       this._checkNextSequence(resolve, inventoryType, 0);
     }.bind(this));
     sequenceFinder.then(function(prefixChars) {
-      var newSequence = this.get('store').push('sequence', {
+      var store = this.get('store');
+      var newSequence = store.push(store.normalize('sequence', {
         id: 'inventory_' + inventoryType,
         prefix: inventoryType.toLowerCase().substr(0, prefixChars),
         value: 0
-      });
+      }));
       this._completeBeforeUpdate(newSequence, resolve, reject);
     }.bind(this));
   },
@@ -289,7 +290,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
   getTransactions: function() {
     var inventoryId = this.get('model.id');
     this.set('transactions', null);
-    this.store.find('inv-request', {
+    this.store.query('inv-request', {
       options: {
         endkey: [inventoryId, 'Completed', 0],
         startkey: [inventoryId, 'Completed', 9999999999999],

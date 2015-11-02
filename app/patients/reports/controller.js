@@ -380,7 +380,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
         filterEndDate = moment(filterEndDate).endOf('day').toDate();
         findParams.options.endkey = ['Completed', maxValue, filterEndDate.getTime(), maxValue];
       }
-      this.store.find('imaging', findParams).then(function(imagingRecords) {
+      this.store.query('imaging', findParams).then(function(imagingRecords) {
         var returnRecords = {
           imaging: imagingRecords
         };

@@ -15,7 +15,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
             data.id = newId;
           }
           if (newId && this.store.hasRecordForId(modelName, newId)) {
-            resolve(this.store.push(modelName, data));
+            resolve(this.store.push(this.store.normalize(modelName, data)));
           } else {
             resolve(this.store.createRecord(modelName, data));
           }

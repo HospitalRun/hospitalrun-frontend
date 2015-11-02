@@ -3,7 +3,9 @@ import {
 }
 from 'ember-qunit';
 
-moduleForComponent('nav-menu', 'NavMenuComponent', {});
+moduleForComponent('nav-menu', 'NavMenuComponent', {
+  unit: true
+});
 
 test('it renders', function(assert) {
 
@@ -33,7 +35,7 @@ test('it renders', function(assert) {
   assert.equal(navMenu._state, 'preRender');
 
   // appends the navMenu to the page
-  this.append();
+  this.render();
   assert.equal(navMenu._state, 'inDOM');
 
 });

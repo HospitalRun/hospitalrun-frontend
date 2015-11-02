@@ -447,10 +447,11 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
           this.store.find('sequence', 'invoice').then(function(sequence) {
             this._completeBeforeUpdate(sequence, resolve, reject);
           }.bind(this), function() {
-            var newSequence = this.get('store').push('sequence', {
+            var store = this.get('store');
+            var newSequence = store.push(store.normalize('sequence', {
               id: 'invoice',
               value: 0
-            });
+            }));
             this._completeBeforeUpdate(newSequence, resolve, reject);
           }.bind(this));
         } else {

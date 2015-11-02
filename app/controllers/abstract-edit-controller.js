@@ -153,14 +153,15 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
     if (!Ember.isEmpty(lookupLists)) {
       lookupLists.forEach(function(list) {
         var propertyValue = this.get(list.property),
-          lookupList = this.get(list.name);
+          lookupList = this.get(list.name),
+          store = this.get('store');
         if (!Ember.isEmpty(propertyValue)) {
           if (!lookupList) {
-            lookupList = this.get('store').push('lookup', {
+            lookupList = store.push(store.normalize('lookup', {
               id: list.id,
               value: [],
               userCanAdd: true
-            });
+            }));
           }
           if (Ember.isArray(propertyValue)) {
             propertyValue.forEach(function(value) {

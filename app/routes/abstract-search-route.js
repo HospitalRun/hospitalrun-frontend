@@ -17,7 +17,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       } else {
         var searchParams = Ember.copy(searchIndex);
         searchParams.query = searchText;
-        this.store.find(searchModel, {
+        this.store.query(searchModel, {
           searchIndex: searchParams
         }).then(function(results) {
           if (Ember.isEmpty(results)) {
