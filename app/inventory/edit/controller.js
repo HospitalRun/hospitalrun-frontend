@@ -144,7 +144,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     },
 
     editNewItem: function() {
-      this.send('editItem', this.get('id'));
+      this.send('editItem', this.get('model.id'));
     },
 
     showAdjustment: function(inventoryLocation) {
@@ -219,7 +219,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
       newPurchase.inventoryItem = this.get('model.id');
       var purchase = this.get('store').createRecord('inv-purchase', newPurchase);
       promises.push(purchase.save());
-      this.get('purchases').addObject(purchase);
+      this.get('model.purchases').addObject(purchase);
       promises.push(this.newPurchaseAdded(this.get('model'), purchase));
     }
     sequence.incrementProperty('value', 1);
