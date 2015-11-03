@@ -1,16 +1,16 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false }}
     {{#if model.selectPatient}}
-      {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
+      {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required test-patient-input"}}
     {{else}}
       {{patient-summary patient=model.patient returnTo='appointments.edit' returnToContext=model.id disablePatientLink=model.isNew }}
     {{/if}}
     <div class="row">
       {{#if isAdmissionAppointment}}
-        {{date-picker property="startDate" label="Start Date" showTime=showTime format=dateFormat class="col-sm-4 required"}}
-        {{date-picker property="endDate" label="End Date" showTime=showTime format=dateFormat class="col-sm-4 required"}}
+        {{date-picker property="startDate" label="Start Date" showTime=showTime format=dateFormat class="col-sm-4 required test-appointment-start"}}
+        {{date-picker property="endDate" label="End Date" showTime=showTime format=dateFormat class="col-sm-4 required test-appointment-end"}}
       {{else}}
-        {{date-picker property="appointmentDate" label="Date" class="col-sm-4 required"}}
+        {{date-picker property="appointmentDate" label="Date" class="col-sm-4 required test-appointment-date"}}
         {{#unless isAllDay}}
           <div class="form-group col-sm-3 required">
             <label class="control-label" for="startTime">Start Time</label>
@@ -62,20 +62,20 @@
       {{em-checkbox label="All Day" property="allDay"  class="col-sm-2"}}
     </div>
     <div class="row">
-      {{em-select class="col-sm-6 required" label="Type"
+      {{em-select class="col-sm-6 required test-appointment-type" label="Type"
         property="appointmentType" content=visitTypes
       }}
-      {{select-or-typeahead className="col-sm-6" property="provider"
+      {{select-or-typeahead className="col-sm-6 test-appointment-with" property="provider"
         label="With" list=physicianList
         selection=model.provider
       }}
     </div>
     <div class="row">
-      {{select-or-typeahead className="col-sm-6 required" property="location"
+      {{select-or-typeahead className="col-sm-6 required test-appointment-location" property="location"
         label="Location" list=locationList
         selection=model.location
       }}
-      {{em-select class="col-sm-3" property="status"
+      {{em-select class="col-sm-3 test-appointment-status" property="status"
         label="Status" content=appointmentStatuses
       }}
     </div>
