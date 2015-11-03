@@ -64,7 +64,7 @@ test('Creating a new appointment', function(assert) {
 test('Adding a visit to an appointment', function(assert) {
   loadPouchDump('appointments');
   authenticateUser();
-  createAppointment()
+  createAppointment();
   visit('/appointments');
 
   andThen(function() {
