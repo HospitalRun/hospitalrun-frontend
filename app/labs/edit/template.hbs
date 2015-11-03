@@ -1,13 +1,13 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false }}
     {{#if model.selectPatient}}
-      {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
+      {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required test-patient-name"}}
     {{else}}
       {{patient-summary patient=model.patient returnTo='labs.edit' returnToContext=model.id disablePatientLink=model.isNew }}
     {{/if}}
     {{#if model.isNew}}
       <div class="row">
-        {{em-select class="col-xs-3 required" label="Visit"
+        {{em-select class="col-xs-3 required test-visit-type" label="Visit"
           property="visit" content=patientVisitsForSelect
           optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
           prompt="--Add New Visit--"
@@ -19,7 +19,7 @@
         selection=selectedLabType
         optionLabelPath='name'
         typeAheadType='pricing'
-        className="required"
+        className="required test-lab-type"
         prompt=" "
         model=model
       }}
@@ -36,7 +36,7 @@
       </div>
     {{/if}}
     {{#if canComplete}}
-      {{em-input property="result" label="Result"}}
+      {{em-input property="result" label="Result" class="test-result-input"}}
     {{/if}}
     {{em-text property="notes" label="Notes" rows=3 }}
   {{/em-form}}
