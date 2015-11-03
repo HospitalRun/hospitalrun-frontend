@@ -107,3 +107,28 @@ test('Adding a visit to an appointment', function(assert) {
   });
   destroyDatabases();
 });
+
+test('Delete an appointment', function(assert) {
+  loadPouchDump('appointments');
+  authenticateUser();
+  visit('/appointments');
+
+  andThen(function() {
+    assert.equal(currentURL(), '/appointments');
+    assert.equal(find('tr').length, 2, 'One appointment is listed');
+    findWithAssert('button:contains(Add Visit)');
+    findWithAssert('button:contains(Edit)');
+    findWithAssert('button:contains(Delete)');
+  });
+
+  click('button:contains(Delete)');
+  waitToAppear('.modal-dialog');
+  andThen(() => {
+    assert.equal(find('.modal-title').text().trim(), 'Delete Appointment', 'Delete Appointment confirmation modal has been displayed');
+  });
+  click('button:contains(Delete)');
+  andThen(() => {
+    assert.equal(find('tr').length, 1, 'No appointments are displayed');
+  });
+  destroyDatabases();
+});
