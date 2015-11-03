@@ -53,7 +53,7 @@ test('Creating a new appointment', function(assert) {
 
   andThen(() => {
     assert.equal(currentURL(), '/appointments');
-    assert.equal(find('tr').length, 3, 'New appointment has been added');
+    assert.equal(find('tr').length, 2, 'New appointment has been added');
     findWithAssert('button:contains(Add Visit)');
     findWithAssert('button:contains(Edit)');
     findWithAssert('button:contains(Delete)');
@@ -64,6 +64,7 @@ test('Creating a new appointment', function(assert) {
 test('Adding a visit to an appointment', function(assert) {
   loadPouchDump('appointments');
   authenticateUser();
+  createAppointment()
   visit('/appointments');
 
   andThen(function() {
@@ -111,6 +112,7 @@ test('Adding a visit to an appointment', function(assert) {
 test('Delete an appointment', function(assert) {
   loadPouchDump('appointments');
   authenticateUser();
+  createAppointment();
   visit('/appointments');
 
   andThen(function() {
@@ -132,3 +134,18 @@ test('Delete an appointment', function(assert) {
   });
   destroyDatabases();
 });
+
+function createAppointment() {
+  visit('/appointments/edit/new');
+  fillIn('.test-patient-input .tt-input', 'Lennex Zinyando - P00017');
+  triggerEvent('.test-patient-input .tt-input', 'input');
+  triggerEvent('.test-patient-input .tt-input', 'blur');
+  fillIn('.test-appointment-date input', Date.now());
+  select('.test-appointment-type', 'Admission');
+  fillIn('.test-appointment-location .tt-input', 'Harare');
+  triggerEvent('.test-appointment-location .tt-input', 'input');
+  triggerEvent('.test-appointment-location .tt-input', 'blur');
+  fillIn('.test-appointment-with', 'Dr Test');
+  click('button:contains(Add)');
+  waitToAppear('.table-header');
+}
