@@ -89,7 +89,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   @param {String} id
   @returns {Promise} promise
   */
-  find: function(store, type, id) {
+  findRecord: function(store, type, id) {
     var ajaxData = {
       data: {
         id: id,
@@ -119,12 +119,11 @@ export default DS.RESTAdapter.extend(UserSession, {
     var data = {};
     var serializer = store.serializerFor(record.modelName);
     serializer.serializeIntoHash(data, type, record, { includeId: true });
-    data = data.user;
     data.type = 'user';
     var idToUpdate = data.id,
-      revToUpdate = data.rev;
+      revToUpdate = data._rev;
     delete data.id;
-    delete data.rev;
+    delete data._rev;
     data = this._cleanPasswordAttrs(data);
     var ajaxData = {
       data: {

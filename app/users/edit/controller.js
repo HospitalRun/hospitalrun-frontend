@@ -3,7 +3,6 @@ import Ember from 'ember';
 import UserRoles from 'hospitalrun/mixins/user-roles';
 
 export default AbstractEditController.extend(UserRoles, {
-  needs: 'users/index',
   usersController: Ember.inject.controller('users/index'),
   updateCapability: 'add_user',
 
