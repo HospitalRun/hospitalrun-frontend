@@ -8,12 +8,12 @@
         </div>
       </div>
     {{/unless}}
-    {{em-input property="displayName" label="Display Name"}}
-    {{em-input property="email" type="email" label="Email"}}
-    {{em-input property="password" type="password" label="Password"}}
+    {{em-input property="displayName" label="Display Name" class="user-display-name"}}
+    {{em-input property="email" type="email" label="Email" class="user-email"}}
+    {{em-input property="password" type="password" label="Password" class="user-password"}}
     <div class="form-group has-success">
       <label class="control-label">Role</label>
-      {{role-select selection=model.roles content=userRoles action=(action (mut model.roles))}}
+      {{role-select selection=model.roles content=userRoles action=(action (mut model.roles)) class="user-role"}}
     </div>
   {{/em-form}}
 {{/edit-panel}}
