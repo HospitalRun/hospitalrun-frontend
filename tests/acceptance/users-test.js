@@ -77,6 +77,7 @@ test('visiting /admin/users', function(assert) {
     assert.equal(find('td.user-email:first').text(), 'hradmin@hospitalrun.io');
     assert.equal(find('td.user-role:first').text(), 'System Administrator');
   });
+  destroyDatabases();
 });
 
 test('create new user', function(assert) {
@@ -122,6 +123,7 @@ test('create new user', function(assert) {
     });
     click('button:contains(Ok)');
   });
+  destroyDatabases();
 });
 
 test('delete user', function(assert) {
@@ -155,4 +157,5 @@ test('delete user', function(assert) {
       assert.equal(find('.user-email:contains(joe@donuts.com)').length, 0, 'User disappears from user list');
     });
   });
+  destroyDatabases();
 });
