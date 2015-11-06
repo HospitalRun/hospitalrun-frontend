@@ -2,7 +2,7 @@
     <div class="panel-body">
         {{#em-form model=model submitButton=false }}
             <div class="row">
-                {{em-select class="col-xs-3" label="Lookup Type"
+                {{em-select class="col-xs-3 lookup-type" label="Lookup Type"
                     property="lookupType" content=lookupTypes
                     optionValuePath="value" optionLabelPath="name"
                     selected=model.lookupType
@@ -23,7 +23,7 @@
             </tr>
             {{#each lookupTypeValues as |lookupTypeValue|}}
                 <tr>
-                    <td>{{lookupTypeValue}}</td>
+                    <td class="lookup-type-value">{{lookupTypeValue}}</td>
                     <td>
                         <button class="btn btn-default neutral" {{action 'editValue' lookupTypeValue bubbles=false }}>Edit</button>
                         <button class="btn btn-default warning" {{action 'deleteValue' lookupTypeValue bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
