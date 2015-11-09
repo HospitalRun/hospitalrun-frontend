@@ -5,10 +5,10 @@
     {{/unless}}
     <div class="row">
       {{#if model.selectPatient}}
-        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-6 required"}}
+        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-6 required test-patient-input"}}
       {{/if}}
       {{#if model.isNew}}
-        {{em-select class="col-xs-4 required" label="Visit"
+        {{em-select class="col-xs-4 required test-add-visit" label="Visit"
           property="visit" content=patientVisitsForSelect
           optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
           prompt="--Add New Outpatient Visit--"
@@ -27,7 +27,7 @@
         <p class="form-control-static">{{model.inventoryItem.name}}</p>
       </div>
     {{else}}
-      {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required"}}
+      {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required test-medication-input"}}
     {{/if}}
     {{#if isFulfilled}}
       {{static-text label="Prescription" value=model.prescription }}
