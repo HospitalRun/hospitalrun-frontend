@@ -15,12 +15,12 @@ Router.map(function() {
          this.route('query');
     });
     
-    this.resource('appointments', function() {
+    /*this.resource('appointments', function() {
         //this.route('calendar'); //currently not working in prod build
         this.route('edit', { path: "/edit/:appointment_id" });
         this.route('search');
         this.route('today');
-    });
+    });*/
     
     this.route('finishgauth', { path: "/finishgauth/:s1/:s2/:k/:t/:i/:p" });
     
@@ -29,9 +29,9 @@ Router.map(function() {
     this.resource('imaging', function() {
         this.route('completed');
         this.route('edit', { path: "/edit/:imaging_id" });
-    });   
+    });  
     
-    this.resource('inventory', function() {
+   this.resource('inventory', function() {
         this.route('barcode', { path: "/barcode/:inventory_id" });
         this.route('completed');
         this.route('delivery', { path: "/delivery/:inv-request_id" });
@@ -54,11 +54,11 @@ Router.map(function() {
         this.route('edit', { path: "/edit/:invoice_id" });
         this.route('search', { path: "/search/:search_text" });
     });
-    
-    this.resource('labs', function() {
+
+   this.resource('labs', function() {
         this.route('completed');
         this.route('edit', { path: "/edit/:lab_id" });
-    });    
+    }); 
     
     this.route('login');
 

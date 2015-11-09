@@ -6,7 +6,7 @@ export default Ember.Controller.extend({
     updateButtonText: 'Query',
     
     objectTypes: [
-        'appointment',
+        //'appointment',
         'imaging',
         'inv-location',
         'inv-purchase',
