@@ -1,15 +1,15 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false }}
-    {{em-input label="Name" property="name" class="required"}}
+    {{em-input label="Name" property="name" class="required price-name"}}
     <div class="row">
-      {{em-input label="Price" property="price" class="required col-xs-2"}}
-      {{select-or-typeahead property="expenseAccount" label="Department" list=expenseAccountList selection=model.expenseAccount className="col-xs-4"}}
+      {{em-input label="Price" property="price" class="required col-xs-2 price-amount"}}
+      {{select-or-typeahead property="expenseAccount" label="Department" list=expenseAccountList selection=model.expenseAccount className="col-xs-4 price-department"}}
     </div>
     <div class="row">
-      {{em-select label="Category" class="required col-xs-4"
+      {{em-select label="Category" class="required col-xs-4 price-category"
       property="category" content=categories
       selected=model.category }}
-      {{select-or-typeahead property="pricingType" label="Type" list=pricingTypes selection=model.pricingType className="col-xs-4" prompt=" "}}
+      {{select-or-typeahead property="pricingType" label="Type" list=pricingTypes selection=model.pricingType className="col-xs-4 price-type" prompt=" "}}
     </div>
     <div class="panel">
       <div class="panel-heading">
@@ -32,7 +32,7 @@
             </tr>
             {{#each model.pricingOverrides as |override|}}
               <tr>
-                <td>{{override.profile.name}}</td>
+                <td class="override-profile">{{override.profile.name}}</td>
                 <td>{{override.price}}</td>
                 <td>
                   {{#if showUpdateButton}}
