@@ -87,6 +87,34 @@ test('fulfilling a medication request', function(assert) {
     assert.equal(currentURL(), '/medication');
     findWithAssert('p:contains(No items found. )');
     findWithAssert('a:contains(Create a new medication request?)');
-  })
+  });
+  destroyDatabases();
+});
+
+test('returning medication', function(assert) {
+  loadPouchDump('medication');
+  authenticateUser();
+  visit('/medication/return/new');
+
+  andThen(function() {
+    assert.equal(currentURL(), '/medication/return/new');
+  });
+  fillIn('.test-medication-input .tt-input', 'Biogesic - m00001');
+  triggerEvent('.test-medication-input .tt-input', 'input');
+  triggerEvent('.test-medication-input .tt-input', 'blur');
+  keyEvent('.test-medication-input .tt-input', 'keypress', 9);
+  fillIn('.test-medication-quantity input', 30);
+  return pauseTest();
+  click('button:contains(Return Medication)');
+  waitToAppear('.modal-dialog');
+
+  andThen(() => {
+    assert.equal(find('.modal-title').text(), 'Medication Returned', 'Medication has been return successfully');
+  });
+  click('button:contains(Ok)');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/medication');
+  });
   destroyDatabases();
 });

@@ -7,7 +7,7 @@
         selected=model.medication
       }}
     {{else}}
-      {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required" showQuantity=false }}
+      {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required test-medication-input" showQuantity=false }}
     {{/if}}
     <div class="row">
       {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-6"}}
@@ -18,7 +18,7 @@
       }}
     </div>
     <div class="row">
-      {{em-input property="quantity" label="Quantity To Return" class="col-xs-3 required"}}
+      {{em-input property="quantity" label="Quantity To Return" class="col-xs-3 required test-medication-quantity"}}
       {{select-or-typeahead property="deliveryLocation" label="Return Location" list=warehouseList selection=model.location className="col-xs-4"}}
       {{select-or-typeahead property="deliveryAisle" label="Return Aisle" list=aisleLocationList selection=model.aisleLocation className="col-xs-4"}}
     </div>
