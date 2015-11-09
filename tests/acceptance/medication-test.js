@@ -104,7 +104,6 @@ test('returning medication', function(assert) {
   triggerEvent('.test-medication-input .tt-input', 'blur');
   keyEvent('.test-medication-input .tt-input', 'keypress', 9);
   fillIn('.test-medication-quantity input', 30);
-  return pauseTest();
   click('button:contains(Return Medication)');
   waitToAppear('.modal-dialog');
 
