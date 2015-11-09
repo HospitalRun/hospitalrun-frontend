@@ -62,3 +62,31 @@ test('creating a new medication request', function(assert) {
   });
   destroyDatabases();
 });
+
+test('fulfilling a medication request', function(assert) {
+  loadPouchDump('medication');
+  authenticateUser();
+  visit('/medication');
+  click('button:contains(Fulfill)');
+
+  andThen(function() {
+    assert.equal(find('.patient-summary').length, 1, 'Patient summary is displayed');
+  });
+
+  click('button:contains(Fulfill)');
+  waitToAppear('.modal-dialog');
+
+  andThen(() => {
+    assert.equal(find('.modal-title').text().trim(), 'Medication Request Fulfilled', 'Medication Request has been Fulfilled');
+  });
+
+  click('button:contains(Ok)');
+  click('button:contains(Return)');
+
+  andThen(() => {
+    assert.equal(currentURL(), '/medication');
+    findWithAssert('p:contains(No items found. )');
+    findWithAssert('a:contains(Create a new medication request?)');
+  })
+  destroyDatabases();
+});
