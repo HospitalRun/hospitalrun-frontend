@@ -50,7 +50,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     if (isFulfilling || Ember.isEmpty(prescription)) {
       returnClass += ' required';
     }
-    return returnClass;
+    return `${returnClass} test-quantity-input`;
   }.property('isFulfilling', 'model.prescription'),
 
   quantityLabel: function() {
