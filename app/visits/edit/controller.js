@@ -133,6 +133,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
       newRoute.currentModel.setProperties({
         patient: this.get('model.patient'),
         visit: this.get('model'),
+        selectPatient: false,
         returnToVisit: true
       });
     }.bind(this));

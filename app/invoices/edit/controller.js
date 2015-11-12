@@ -226,7 +226,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         console.log('Error resolving visit children', err);
       });
     }
-  }.observes('visit'),
+  }.observes('model.visit'),
 
   _addPharmacyCharge: function(charge, medicationItemName) {
     var medicationItem = charge.get(medicationItemName),
