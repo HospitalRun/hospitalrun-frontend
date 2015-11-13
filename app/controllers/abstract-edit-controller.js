@@ -76,11 +76,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
 
   _cancelUpdate: function() {
     var cancelledItem = this.get('model');
-    if (cancelledItem.get('isNew')) {
-      cancelledItem.deleteRecord();
-    } else {
-      cancelledItem.rollbackAttributes();
-    }
+    cancelledItem.rollbackAttributes();
   },
 
   actions: {
