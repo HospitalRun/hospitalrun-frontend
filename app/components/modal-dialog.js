@@ -7,6 +7,7 @@ export default Ember.Component.extend({
   isUpdateDisabled: false,
   title: '',
   updateButtonAction: '',
+  updateButtonClass: '',
   updateButtonText: '',
 
   actions: {

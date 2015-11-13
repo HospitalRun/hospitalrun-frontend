@@ -10,7 +10,7 @@
             </div>
             <div class="modal-footer">
                 {{#unless hideUpdateButton}}
-                    <button class="btn btn-primary on-white" {{action "updateAction" }} disabled={{isUpdateDisabled}}>{{ updateButtonText }}</button>
+                    <button class="btn btn-primary on-white {{updateButtonClass}}" {{action "updateAction" }} disabled={{isUpdateDisabled}}>{{ updateButtonText }}</button>
                 {{/unless}}
                 {{#unless hideCancelButton}}
                     <button class="btn btn-default warning" {{action "cancelAction"}}>Cancel</button>
