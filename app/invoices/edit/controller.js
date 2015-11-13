@@ -47,12 +47,14 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
 
   pharmacyExpenseAccount: function() {
     var expenseAccountList = this.get('expenseAccountList');
-    var account = expenseAccountList.find(function(value) {
-      if (value.toLowerCase().indexOf('pharmacy') > -1) {
-        return true;
-      }
-    });
-    return account;
+    if (!Ember.isEmpty(expenseAccountList)) {
+      var account = expenseAccountList.find(function(value) {
+        if (value.toLowerCase().indexOf('pharmacy') > -1) {
+          return true;
+        }
+      });
+      return account;
+    }
   }.property('expenseAccountList.value'),
 
   actions: {

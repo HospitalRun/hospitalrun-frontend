@@ -2,11 +2,12 @@
     isUpdateDisabled=isUpdateDisabled
     title=title
     updateButtonAction=updateButtonAction
-    updateButtonText=updateButtonText }}
+    updateButtonText=updateButtonText
+    updateButtonClass='update-payment-btn'}}
   {{#em-form model=model submitButton=false }}
     {{#if model.isNew}}
       {{#if selectPatient}}
-        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required"}}
+        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required payment-patient"}}
       {{else}}
         <div class="form-group">
           <label>Patient</label>
@@ -14,7 +15,7 @@
         </div>
       {{/if}}
     {{/if}}
-    {{em-input property="amount" label="Amount" class="required"}}
+    {{em-input property="amount" label="Amount" class="required payment-amount"}}
     {{date-picker property="datePaid" label="Date Paid" maxDate="now" class="required"}}
     {{select-or-typeahead property="expenseAccount" label="Credit To" list=expenseAccountList selection=model.expenseAccount }}
     {{em-text property="notes" label="Notes"}}
