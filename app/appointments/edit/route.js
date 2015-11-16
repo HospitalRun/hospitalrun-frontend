@@ -8,7 +8,10 @@ export default AbstractEditRoute.extend(PatientListRoute, {
 
   getNewData: function() {
     return Ember.RSVP.resolve({
-      selectPatient: true
+      appointmentType: 'Admission',
+      allDay: true,
+      selectPatient: true,
+      startDate: new Date()
     });
   }
 });

@@ -7,8 +7,8 @@
     {{/if}}
     <div class="row">
       {{#if isAdmissionAppointment}}
-        {{date-picker property="startDate" label="Start Date" showTime=showTime format=dateFormat class="col-sm-4 required test-appointment-start"}}
-        {{date-picker property="endDate" label="End Date" showTime=showTime format=dateFormat class="col-sm-4 required test-appointment-end"}}
+        {{date-picker property="startDate" label="Start Date" showTime=showTime class="col-sm-4 required test-appointment-start"}}
+        {{date-picker property="endDate" label="End Date" showTime=showTime class="col-sm-4 required test-appointment-end"}}
       {{else}}
         {{date-picker property="appointmentDate" label="Date" class="col-sm-4 required test-appointment-date"}}
         {{#unless isAllDay}}
@@ -47,7 +47,7 @@
               }}
               <div class="input-group-addon">:</div>
               {{select-list
-                  content=minuteLists
+                  content=minuteList
                   value=endMinute
                   class='form-control'
                   action=(action (mut endMinute))

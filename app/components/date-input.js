@@ -1,12 +1,6 @@
 import Ember from 'ember';
 import HtmlInput from 'ember-rapid-forms/components/html-input';
 export default HtmlInput.extend({
-  minDate: null,
-  maxDate: null,
-  format: 'l',
-  showTime: false,
-  yearRange: 10,
-
   _picker: null,
 
   _shouldSetDate: function(currentDate, picker) {
@@ -21,7 +15,16 @@ export default HtmlInput.extend({
     if (this._shouldSetDate(currentDate, picker)) {
       picker.setDate(currentDate);
     }
-  }.observes('currentDate'),
+  },
+
+  format: function() {
+    var showTime = this.get('showTime');
+    if (showTime) {
+      return 'l h:mm A';
+    } else {
+      return 'l';
+    }
+  }.property('mainComponent.showTime'),
 
   showTimeChanged: function() {
     var picker = this.get('_picker');
@@ -29,7 +32,7 @@ export default HtmlInput.extend({
       picker.destroy();
       this.didInsertElement();
     }
-  }.observes('showTime'),
+  }.observes('mainComponent.showTime'),
 
   dateSet: function() {
     var currentDate = this.get('currentDate'),
@@ -74,6 +77,11 @@ export default HtmlInput.extend({
     this.set('mainComponent.property', displayPropertyName);
     this.currentDate = Ember.computed.alias('mainComponent.model.' + dateProperty);
     this.selectedValue = Ember.computed.alias('mainComponent.model.' + displayPropertyName);
+    this.minDate = Ember.computed.alias('mainComponent.minDate');
+    this.maxDate = Ember.computed.alias('mainComponent.maxDate');
+    this.showTime = Ember.computed.alias('mainComponent.showTime');
+    this.yearRange = Ember.computed.alias('mainComponent.yearRange');
+    this.addObserver('mainComponent.model.' + dateProperty, this, this.currentDateChangedValue);
     Ember.Binding.from('mainComponent.model.errors.' + dateProperty).to('mainComponent.model.errors.' + displayPropertyName).connect(this);
   },
 

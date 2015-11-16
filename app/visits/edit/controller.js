@@ -91,7 +91,6 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
   cancelAction: 'returnToPatient',
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
-  dateTimeFormat: 'l h:mm A',
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
   findPatientVisits: false,
   patientImaging: Ember.computed.alias('model.imaging'),

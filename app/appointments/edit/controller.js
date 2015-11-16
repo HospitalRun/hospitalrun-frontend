@@ -6,9 +6,11 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodule, VisitTypes, {
   appointmentsController: Ember.inject.controller('appointments'),
-
-  dateFormat: 'l h:mm A',
+  endHour: null,
+  endMinute: null,
   findPatientVisits: false,
+  startHour: null,
+  startMinute: null,
 
   hourList: function() {
     var hour,
@@ -50,7 +52,11 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
   }.property(),
 
   physicianList: Ember.computed.alias('appointmentsController.physicianList'),
-  showTime: true,
+  showTime: function() {
+    var allDay = this.get('model.allDay'),
+        isAdmissionAppointment = this.get('isAdmissionAppointment');
+    return (!allDay && isAdmissionAppointment);
+  }.property('model.allDay', 'isAdmissionAppointment'),
   visitTypesList: Ember.computed.alias('appointmentsController.visitTypeList'),
 
   cancelAction: function() {
@@ -92,12 +98,9 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
   }.observes('endMinute'),
 
   endTimeHasError: function() {
-    Ember.run.once(this, function() {
-      this.get('model').validate().catch(Ember.K);
-    });
     var endDateError = this.get('model.errors.endDate');
     return (endDateError.length > 0);
-  }.property('model.errors.endDate', 'model.startDate', 'model.endDate', 'model.isValid'),
+  }.property('model.isValid'),
 
   isAllDay: function() {
     var allDay = this.get('model.allDay'),
@@ -106,12 +109,12 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
       var endDate = this.get('model.endDate'),
         startDate = this.get('model.startDate');
       this.set('model.startDate', moment(startDate).startOf('day').toDate());
+      this.set('startHour', 0);
+      this.set('startMinute', '00');
       this.set('model.endDate', moment(endDate).endOf('day').toDate());
-      this.set('dateFormat', 'l');
-      this.set('showTime', false);
+      this.set('endHour', 23);
+      this.set('endMinute', '59');
     } else {
-      this.set('dateFormat', 'l h:mm A');
-      this.set('showTime', true);
       if (isAdmissionAppointment) {
         this._updateAllTimes();
       }
@@ -149,7 +152,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
 
   _updateDate: function(fieldName, dateFieldName) {
     var model = this.get('model'),
-      fieldValue = model.get(fieldName),
+      fieldValue = this.get(fieldName),
       dateToChange = model.get(dateFieldName);
     if (!Ember.isEmpty(dateToChange)) {
       dateToChange = moment(dateToChange);

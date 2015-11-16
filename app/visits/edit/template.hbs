@@ -22,8 +22,8 @@
                 <p class="form-control-static">{{model.patient.displayName}}</p>
               </div>
               {{#if isAdmissionVisit}}
-                {{date-picker property="startDate" label="Admission Date" format=dateTimeFormat showTime=true class="col-sm-3 required"}}
-                {{date-picker property="endDate" label="Discharge Date" format=dateTimeFormat showTime=true class="col-sm-3"}}
+                {{date-picker property="startDate" label="Admission Date" showTime=true class="col-sm-3 required"}}
+                {{date-picker property="endDate" label="Discharge Date" showTime=true class="col-sm-3"}}
               {{else}}
                 {{date-picker property="startDate" label="Date" class="col-sm-3 required"}}
               {{/if}}
