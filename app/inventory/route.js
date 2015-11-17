@@ -1,9 +1,19 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
-import FulfillRequest from "hospitalrun/mixins/fulfill-request";
-import InventoryId from "hospitalrun/mixins/inventory-id";
-import InventoryLocations from "hospitalrun/mixins/inventory-locations"; //inventory-locations mixin is needed for fulfill-request mixin!
+import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
+import InventoryId from 'hospitalrun/mixins/inventory-id';
+import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; //inventory-locations mixin is needed for fulfill-request mixin!
 export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, InventoryLocations, {
     addCapability: 'add_inventory_item',
+    additionalButtons: function() {
+        if (this.currentUserCan(this.get('addCapability'))) {
+            return [{
+                buttonAction: 'newInventoryBatch',
+                buttonText: '+ inventory received',
+                class: 'btn btn-primary'
+            }];
+        }
+    }.property(),
+    
     additionalModels: [{ 
         name: 'aisleLocationList',
         findArgs: ['lookup','aisle_location_list']
@@ -16,8 +26,10 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
     }, {
         name: 'warehouseList',
         findArgs: ['lookup','warehouse_list']
-    }
-  ],
+    }, {
+        name: 'vendorList',
+        findArgs: ['lookup','vendor_list']
+    }],
     
     currentItem: null,
     moduleName: 'inventory',
@@ -29,9 +41,6 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
     }, {
         text: 'Items',
         linkTo: 'inventory.listing'
-    }, {
-        text: 'History',
-        linkTo: 'inventory.completed'
     }, {
         text: 'Reports',
         linkTo: 'inventory.reports'
@@ -49,9 +58,16 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
             this.send('closeModal');
         },
         
+        newInventoryBatch: function() {
+            if (this.currentUserCan(this.get('addCapability'))) {
+                this.transitionTo('inventory.batch', 'new');
+            }
+        },
+        
         newRequest: function() {
             var item = this.get('store').createRecord('inv-request', {
-                transactionType: 'Request'
+                transactionType: 'Request',
+                requestedItems: []
             });            
             this.transitionTo('inventory.request', item);
         },    
@@ -69,20 +85,5 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
             this.set('currentItem', inventoryItem);
             this.send('openModal', 'inventory.purchase.edit', newPurchase);
         }        
-
-    },
-    
-
-    
-    /**
-     * Define what data a new inventory item should be instantiated with.  
-     * The only default is to set the type to asset; at some point this may be driven by subsection of inventory you are in.
-     * @return the default properties for a new inventory item.
-     */    
-    getNewData: function() {
-        return  {
-            type: 'Asset',
-            dateReceived: new Date()
-        };
     }
 });

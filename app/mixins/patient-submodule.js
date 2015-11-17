@@ -1,9 +1,12 @@
 import Ember from 'ember';
-import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
-export default Ember.Mixin.create(PouchDbMixin, {
+import PatientVisits from 'hospitalrun/mixins/patient-visits';
+export default Ember.Mixin.create(PatientVisits, {
     findPatientVisits: true, //Override to false if visits shouldn't be set when patient is selected.    
     
     actions: {
+        showPatient: function(patient) {
+            this.transitionToRoute('patients.edit', patient);
+        },        
         returnToPatient: function() {
             this.transitionToRoute('patients.edit', this.get('returnPatientId'));
         },        
@@ -13,10 +16,10 @@ export default Ember.Mixin.create(PouchDbMixin, {
     },
 
     /**
-     * Add the specified child to the specified visit.  If a visit
+     * Add the specified child to the current visit and then save the visit.  If a visit
      * has not been selected, create a new visit and add it to the selected patient.
      * @param {Object} objectToAdd the object to add.
-     * @param {string} the name of the child object on visit to add to.
+     * @param {string} childName the name of the child object on the visit to add to.
      * @param {string} newVisitType if a new visit needs to be created, what type of visit
      * should be created. 
      * @returns {Promise} promise that will resolve or reject depending on whether or
@@ -25,27 +28,16 @@ export default Ember.Mixin.create(PouchDbMixin, {
     addChildToVisit: function(objectToAdd, childName, newVisitType) {
         return new Ember.RSVP.Promise(function(resolve, reject){
             var childPromises = [],
-                patient = this.get('patient'),
-                promises = [],
                 visit = this.get('visit');
             if (Ember.isEmpty(visit)) {
-                visit = this.get('store').createRecord('visit', {
-                    startDate: new Date(),
-                    endDate: new Date(),
-                    outPatient: true,
-                    patient: patient,
-                    visitType: newVisitType
-                });
-                this.set('visit', visit);                            
+                visit = this.createNewVisit(newVisitType);
             }
             childPromises.addObjects(this.resolveVisitChildren());
             Ember.RSVP.all(childPromises, 'Resolved visit children before adding new '+childName).then(function() {        
                 visit.get(childName).then(function(visitChildren) {
                     visitChildren.addObject(objectToAdd);
-                    promises.push(visit.save());
-                    Ember.RSVP.all(promises, 'All updates done for visit add child object to '+childName).then(function() {        
-                        resolve();
-                    }.bind(this), reject);
+                    this.set('needToUpdateVisit', true);
+                    resolve(objectToAdd);
                 }.bind(this), reject);
             }.bind(this), reject);
         }.bind(this));
@@ -63,20 +55,25 @@ export default Ember.Mixin.create(PouchDbMixin, {
         }
     }.property('returnToPatient', 'returnToVisit'),
     
+    createNewVisit: function(newVisitType) {
+        var patient = this.get('patient'),
+            visit = this.get('store').createRecord('visit', {
+            startDate: new Date(),
+            endDate: new Date(),
+            outPatient: true,
+            patient: patient,
+            visitType: newVisitType
+        });
+        this.set('visit', visit);
+        return visit;
+    },
+
     patientId: Ember.computed.alias('patient.id'),
     
     patientChanged: function() {
-        var maxValue = this.get('maxValue'),
-            patient = this.get('patient'),
-            patientId = 'patient_'+this.get('patientId');
+        var patient = this.get('patient');
         if (!Ember.isEmpty(patient) && this.get('findPatientVisits')) {
-            this.store.find('visit', {
-                options: {
-                    startkey: [patientId, null, null, null, 'visit_'],
-                    endkey: [patientId, maxValue, maxValue, maxValue, 'visit_'+maxValue]
-                },
-                mapReduce: 'visit_by_patient'
-            }).then(function(visits) {
+            this.getPatientVisits(patient).then(function(visits) {
                 this.set('patientVisits',visits);
             }.bind(this));
         }
@@ -103,7 +100,28 @@ export default Ember.Mixin.create(PouchDbMixin, {
     
     patientVisits: [],
     returnPatientId: null,
-    returnVisitId: null,    
+    returnVisitId: null,
+    
+    /**
+     * Removes the specified child from the current visit object and then saves the visit.
+     * @param {Object} objectToRemove the object to remove.
+     * @param {string} childName the name of the child object on the visit to remove from.
+     * @returns {Promise} promise that will resolve or reject depending on whether or
+     * not the remove and subsequent save were successful.
+     */    
+    removeChildFromVisit: function(objectToRemove, childName) {
+        return new Ember.RSVP.Promise(function(resolve, reject){
+            var childPromises = [],
+                visit = this.get('visit');
+            childPromises.addObjects(this.resolveVisitChildren());
+            Ember.RSVP.all(childPromises, 'Resolved visit children before removing '+childName).then(function() {
+                visit.get(childName).then(function(visitChildren) {
+                    visitChildren.removeObject(objectToRemove);                    
+                    visit.save().then(resolve, reject);                
+                }.bind(this), reject);
+            }.bind(this), reject);
+        }.bind(this));
+    },
     
     /**
      * Observer on visits to make sure async relationships are resolved.
@@ -123,10 +141,24 @@ export default Ember.Mixin.create(PouchDbMixin, {
         }
         return promises;
     },
-
-    visitChanged: function() {
-        this.resolveVisitChildren();
-    }.observes('visit'),
+    
+    /**
+     * If visit needs to saved, save it and then display an alert message; otherwise
+     * just display the alert message.
+     * @param alertTitle String the title to use on the alert.
+     * @param alertMessage String the message to display in the alert.
+     */
+    saveVisitIfNeeded: function(alertTitle, alertMessage, alertAction) {
+        if (this.get('needToUpdateVisit')) {
+            this.get('visit').save().then(function() {
+                this.set('needToUpdateVisit', false);
+                this.displayAlert(alertTitle, alertMessage, alertAction);    
+            }.bind(this));
+        } else {
+            this.displayAlert(alertTitle, alertMessage, alertAction);    
+        }
+    }, 
+        
     
     visitIdChanged: function() {
         var visitId = this.get('visitId');

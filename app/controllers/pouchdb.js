@@ -1,18 +1,14 @@
 import Ember from "ember";
 import createPouchOauthXHR from "hospitalrun/utils/pouch-oauth-xhr";
 import createPouchViews from "hospitalrun/utils/pouch-views";
-export default Ember.Controller.extend({
-    needs: 'filesystem',
+import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
+export default Ember.Controller.extend(PouchAdapterUtils, {
+    needs: ['filesystem','navigation'],
     
     filesystem: Ember.computed.alias('controllers.filesystem'),
     isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
-    localMainDB: null,
-    
-    backoff: 2, //Factor to increment timeout by each time it fails
+    mainDB: null, //Server DB
     configDB: null, //Initializer will set this up.
-    serverMainDB: null,
-    sync: null, //PouchDB sync process
-    timeout: 5000, //Timeout to retry sync
     
     /**
      * Get the file link information for the specifed recordId.
@@ -29,28 +25,6 @@ export default Ember.Controller.extend({
         }.bind(this));
     },
     
-    _gotChange: function(info) {
-        var filesystem = this.get('filesystem'),
-            isFileSystemEnabled = this.get('isFileSystemEnabled');
-        
-        if (info.deleted) {
-            if (info.id.indexOf('photo_') ===0 && isFileSystemEnabled) {
-                this._getFileLink(info.id).then(function(fileLink) {
-                    if (!Ember.isEmpty(fileLink)) {
-                        //Delete from local filesystem if exists.
-                        filesystem.deleteFile(fileLink.fileName, info.id);   
-                    }
-                });                
-            }
-        } else {            
-            if (info.id.indexOf('photo_') ===0) {
-                if (isFileSystemEnabled) {
-                    filesystem.downloadIfNeeded(info.doc);
-                }
-            }
-        }        
-    },
-
     /**
      * Handler called when handler to sever main DB is created.
      */
@@ -59,55 +33,21 @@ export default Ember.Controller.extend({
             console.log("Error creating main pouchDB",err);
             throw err;
         } else {
-            this.set('serverMainDB', db);
-            this._setupSync();
+            this.set('mainDB', db);
+            //this._setupSync();
         }
-    },
-
-    _retrySync: function() {
-        var backoff = this.get('backoff'),
-            timeout = this.get('timeout');
-        timeout *= backoff;
-        this.set('timeout',timeout);
-        this._setupSync();
-    },    
-
-    _setupSync: function() {
-        var db = this.get('serverMainDB'),
-            sync;
-        sync = db.sync('main', {live: true})
-            .on('change', this._syncChange.bind(this))
-            .on('error', this._syncError.bind(this));
-        
-        this.set('sync', sync);
-    },    
-
-    /**
-     * Got sync error, probably offline.
-     * Retry after timeout to resync.
-     */
-    _syncError: function() {
-        var sync = this.get('sync'),
-            timeout = this.get('timeout');
-        sync.cancel();
-        setTimeout(this._retrySync.bind(this), timeout);        
-    },
-    
-    _syncChange: function() {
-        //Successfully synced, reset timeout to 5 seconds for retries
-        this.set('timeout', 5000);
     },
     
     getDocFromMainDB: function(docId) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            var localMainDB = this.get('localMainDB');
-            localMainDB.get(docId, function(err, doc) {
+            var mainDB = this.get('mainDB');
+            mainDB.get(docId, function(err, doc) {
                 if (err) {
-                    reject(err);
+                    this._pouchError(reject)(err);
                 } else {
                     resolve(doc);
                 }                 
-            });
+            }.bind(this));
         }.bind(this));
     },
 
@@ -127,81 +67,60 @@ export default Ember.Controller.extend({
     
     queryMainDB: function(queryParams, mapReduce) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            var localMainDB = this.get('localMainDB');
+            var mainDB = this.get('mainDB');
             if (mapReduce) { 
-                localMainDB.query(mapReduce, queryParams, function(err, response) {
+                mainDB.query(mapReduce, queryParams, function(err, response) {
                     if (err) {
-                        reject(err);
+                        this._pouchError(reject)(err);
                     } else {
                         resolve(response);
                     }                
-                });
+                }.bind(this));
             } else {
-                localMainDB.allDocs(queryParams, function(err, response) {
+                mainDB.allDocs(queryParams, function(err, response) {
                     if (err) {
-                        reject(err);
+                        this._pouchError(reject)(err);
                     } else {
                         resolve(response);
                     }                
-                });
+                }.bind(this));
             }
         }.bind(this));
     },
     
-    setup: function() {
-        var configDB = this.get('configDB'),
-            localMainDB = new PouchDB('main'),
-            options = {
-                include_docs: true,
-                keys: [
-                    'config_consumer_key',
-                    'config_consumer_secret',
-                    'config_oauth_token',
-                    'config_token_secret',
-                    'config_use_google_auth'
-                ]
-            };
-        this.set('localMainDB', localMainDB);
-        localMainDB.changes({
-            include_docs: true, 
-            live: true,
-            since: 'now',
-            style: 'all_docs'
-        }).on('change', this._gotChange.bind(this));
-        
-        createPouchViews(localMainDB);
-
-        configDB.allDocs(options, function(err, response) { 
-            if (err) {
-                console.log('Could not get configDB configs:', err);
-            } else {
-                var configs = {};
-                for (var i=0;i<response.rows.length;i++) {
-                    if (!response.rows[i].error) {
-                        configs[response.rows[i].id] = response.rows[i].doc.value;
-                    }
-                }
-                this.setupMainDB(configs);                
-            }
-        }.bind(this));
-
-    },    
-
     setupMainDB: function(configs) {
-        var pouchOptions = {};
-        if (configs.config_use_google_auth) {
-            //If we don't have the proper credentials don't sync.
-            if (Ember.isEmpty(configs.config_consumer_key) || 
-                Ember.isEmpty(configs.config_consumer_secret) ||
-                Ember.isEmpty(configs.config_oauth_token) || 
-                Ember.isEmpty(configs.config_token_secret)) {
-                return;
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            var pouchOptions = {};
+            if (configs.config_use_google_auth) {
+                //If we don't have the proper credentials don't sync.
+                if (Ember.isEmpty(configs.config_consumer_key) || 
+                    Ember.isEmpty(configs.config_consumer_secret) ||
+                    Ember.isEmpty(configs.config_oauth_token) || 
+                    Ember.isEmpty(configs.config_token_secret)) {
+                    reject();
+                }
+                pouchOptions.ajax = {
+                    xhr: createPouchOauthXHR(configs),
+                    timeout: 30000
+                };
             }
-            pouchOptions.ajax = {
-                xhr: createPouchOauthXHR(configs)
-            };
-        }
-        var dbUrl =  document.location.protocol+'//'+document.location.host+'/db/main';
-        new PouchDB(dbUrl, pouchOptions, this._gotServerMainDB.bind(this));
+            var dbUrl =  document.location.protocol+'//'+document.location.host+'/db/main';
+            new PouchDB(dbUrl, pouchOptions, function(err, db) {                
+                if (err) {
+                    Ember.run.later(this, function() {
+                        this.get('session').invalidate();
+                    });
+                    reject(err);            
+                } else {
+                    createPouchViews(db);
+                    this._gotServerMainDB(err, db);
+                    this.get('applicationAdapter').set('db', db);
+                    resolve({
+                        mainDB: db, 
+                        //localDB: localMainDB
+                    });
+                }
+            }.bind(this));
+        }.bind(this));
     }
 });

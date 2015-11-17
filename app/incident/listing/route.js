@@ -14,7 +14,7 @@ export default IncidentIndexRoute.extend(UserSession, {
 
         queryParams.options = 
                     {
-                        startkey:  [currentUser,'inc-reviewer_'],
+                        startkey:  [currentUser,null],
                         endkey: [currentUser,'inc-reviewer_'+maxValue]
                     };       
         return queryParams;

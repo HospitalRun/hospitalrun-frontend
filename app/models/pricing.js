@@ -6,7 +6,8 @@ export default AbstractModel.extend({
     name: DS.attr('string'),
     price: DS.attr('number'),
     type: DS.attr('string'),
-    
+    pricingOverrides: DS.hasMany('override-price'),
+        
     validations: {
         category: {
             presence: true

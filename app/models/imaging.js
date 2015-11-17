@@ -1,13 +1,15 @@
 import AbstractModel from "hospitalrun/models/abstract";
 import DateFormat from "hospitalrun/mixins/date-format";
 import PatientValidation from "hospitalrun/utils/patient-validation";
+import ResultValidation from 'hospitalrun/mixins/result-validation';
 
-export default AbstractModel.extend(DateFormat, {
+export default AbstractModel.extend(DateFormat, ResultValidation, {
     charges: DS.hasMany('proc-charge'),
     imagingDate: DS.attr('date'),
     imagingType: DS.belongsTo('pricing'),
     notes: DS.attr('string'),
     patient: DS.belongsTo('patient'),
+    radiologist: DS.attr('string'),
     requestedBy: DS.attr('string'),
     requestedDate: DS.attr('date'),
     result: DS.attr('string'),
@@ -23,10 +25,19 @@ export default AbstractModel.extend(DateFormat, {
     }.property('requestedDate'),
     
     validations: {
-        patientTypeAhead: PatientValidation.patientTypeAhead,        
-        
+        imagingTypeName: {
+            presence: {
+                'if': function(object) {
+                    if (object.get('isNew')) {
+                        return true;
+                    }
+                },
+                message: 'Please select an imaging type'
+            }
+        },        
+        patientTypeAhead: PatientValidation.patientTypeAhead,
         patient: {
             presence: true
-        }
+        },
     }
 });

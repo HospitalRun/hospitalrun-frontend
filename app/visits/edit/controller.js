@@ -9,9 +9,9 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, UserSession, VisitTypes, {
     needs: 'visits',
     
-    canAddCharge: function() {        
-        return this.currentUserCan('add_charge');
-    }.property(),
+    canAddAppointment: function() {        
+        return this.currentUserCan('add_appointment');
+    }.property(),    
 
     canAddImaging: function() {
         return this.currentUserCan('add_imaging');
@@ -61,18 +61,50 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         return this.currentUserCan('delete_vitals');
     }.property(),
     
+    disabledAction: function() {
+        this.get('model').validate();
+        this._super();
+    }.property('endDate', 'startDate', 'isValid'),
+    
+    isAdmissionVisit: function() {
+        var visitType = this.get('visitType'),
+            isAdmission = (visitType === 'Admission');
+        if (isAdmission) {
+            this.set('outPatient', false);
+        } else {
+            this.set('status');
+            this.set('outPatient', true);
+        }
+        return isAdmission;
+    }.property('visitType'),
+    
+    startDateChanged: function() {
+        var isAdmissionVisit = this.get('isAdmissionVisit'), 
+            startDate = this.get('startDate');
+        if (!isAdmissionVisit) {
+            this.set('endDate', startDate);
+        }
+    }.observes('isAdmissionVisit', 'startDate'),
     
     cancelAction: 'returnToPatient',
+    chargePricingCategory: 'Ward',
     chargeRoute: 'visits.charge',
-    clinicList: Ember.computed.alias('controllers.visits.clinicList'),
+    dateTimeFormat: 'l h:mm A',
+    diagnosisList: Ember.computed.alias('controllers.visits.diagnosisList'),
     findPatientVisits: false,
     pricingList: null, //This gets filled in by the route
+    pricingTypes: Ember.computed.alias('controllers.visits.wardPricingTypes'),
     physicianList: Ember.computed.alias('controllers.visits.physicianList'),
     locationList: Ember.computed.alias('controllers.visits.locationList'),
+    visitTypesList: Ember.computed.alias('controllers.visits.visitTypeList'),
     lookupListsToUpdate: [{
-        name: 'clinicList',
-        property: 'clinic',
-        id: 'clinic_list'
+        name: 'diagnosisList',
+        property: 'primaryBillingDiagnosis',
+        id: 'diagnosis_list'
+    }, {
+        name: 'diagnosisList',
+        property: 'primaryDiagnosis',
+        id: 'diagnosis_list'
     }, {
         name: 'physicianList',
         property: 'examiner',
@@ -90,20 +122,45 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     ],
 
     updateCapability: 'add_visit',
+    
+    _finishAfterUpdate: function() {
+        this.displayAlert('Visit Saved', 'The visit record has been saved.');
+    },
 
-    primaryDiagnosisIdChanged: function() {
-        this.get('model').validate();
-    }.observes('primaryDiagnosisId'),
+    haveAdditionalDiagnoses: function() {
+        return !Ember.isEmpty(this.get('additionalDiagnoses'));
+    }.property('additionalDiagnoses.@each'),
 
     afterUpdate: function() {
-        this.displayAlert('Visit Saved', 'The visit record has been saved.');
+        var patient = this.get('patient'),
+            patientAdmitted = patient.get('admitted'),
+            patientUpdated = false,
+            status = this.get('status');
+        if (status === 'Admitted' && !patientAdmitted) {
+            patient.set('admitted', true);
+            patientUpdated = true;
+        } else if (status === 'Discharged' && patientAdmitted) {
+            this.getPatientVisits(patient).then(function(visits)  {
+                if (Ember.isEmpty(visits.findBy('status', 'Admitted'))) {
+                    patient.set('admitted', false);
+                    patientUpdated = true;
+                }                    
+            }.bind(this));
+        }
+        if (patientUpdated) {
+            patient.save().then(this._finishAfterUpdate.bind(this));
+        } else {
+            this.displayAlert('Visit Saved', 'The visit record has been saved.');
+        }
     },
     
     beforeUpdate: function() {        
         if (this.get('isNew')) {
             this.set('newVisit', true);
         }
-        return Ember.RSVP.resolve();        
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            this.updateCharges().then(resolve, reject);
+        }.bind(this));
     },
     
     /**
@@ -195,6 +252,19 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
             this.send('openModal', 'visits.vitals.edit', newVitals);
         },
         
+        newAppointment: function() {
+            var now = moment().hours(8).minutes(0).seconds(0).toDate();
+            var newAppointment = this.get('store').createRecord('appointment', {
+                patient: this.get('patient'),
+                startDate: now,
+                endDate: now,
+                returnToVisit: true,
+                visit: this.get('model')                
+            });
+            newAppointment.set('returnToVisit', true);
+            this.transitionToRoute('appointments.edit', newAppointment);
+        },
+        
         newImaging: function() {
             var newImaging = this.get('store').createRecord('imaging', {
                 isCompleting: false,
@@ -231,7 +301,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
         
         showAddProcedure: function() {
             var newProcedure = this.get('store').createRecord('procedure', {
-                dateRecorded: new Date(),
+                procedureDate: new Date(),
                 visit: this.get('model'),
             });
             this.transitionToRoute('procedures.edit', newProcedure);
@@ -261,6 +331,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
             if (Ember.isEmpty(procedure.get('visit'))) {
                 procedure.set('visit', this.get('model'));
             }
+            procedure.set('returnToVisit', true);
+            procedure.set('returnToPatient', false);            
             this.transitionToRoute('procedures.edit', procedure);
         },
         

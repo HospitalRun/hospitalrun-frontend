@@ -1,7 +1,8 @@
 import Ember from "ember";
+import PouchDb from "hospitalrun/mixins/pouchdb";
 import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
 
-export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
+export default DS.PouchDBAdapter.extend(PouchDb, PouchAdapterUtils, {
     _specialQueries: [
         'containsValue',
         'mapReduce',
@@ -9,39 +10,45 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
         'options.endkey',
         'searchIndex'
     ],
-    
-    databaseName: 'main',
-    
-    _createMapFunction: function(type, query) {
-        return function(doc, emit) {
-            var found_doc = false,
-                doctype, 
-                queryValue,
-                uidx;
-            
-            if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
-                try {
-                    doctype = doc._id.substring(0, uidx);
-                    if(doctype === type.typeKey) {
-                        if (query.containsValue && query.containsValue.value) {
-                            queryValue = query.containsValue.value.toLowerCase();
-                            query.containsValue.keys.forEach(function(key) {
-                                if (doc[key] && doc[key].toLowerCase().indexOf(queryValue) >= 0) {
-                                    found_doc = true;
-                                }
-                            });
-                        } else {
-                            found_doc = true;
-                        }
-                        if (found_doc === true) {
-                            emit(doc._id, null);
-                        }
+  
+    _executeContainsSearch: function(store, type, query, options) {
+         return new Ember.RSVP.Promise(function(resolve, reject){
+            var searchUrl = '/search/hrdb/'+type.typeKey+'/_search';
+            if (query.containsValue && query.containsValue.value) {
+                var queryString = '';
+                query.containsValue.keys.forEach(function(key) {
+                    if (!Ember.isEmpty(queryString)) {
+                        queryString += ' OR ';
                     }
-                } catch (e) {
-                    console.log("Got exception:",e);
-                }
+                    queryString += key+':'+query.containsValue.value;
+                });
+                Ember.$.ajax(searchUrl, {
+                    dataType: 'json',
+                    data: {
+                        q:queryString
+                    },
+                    success: function (results) {
+                        if (results && results.hits && results.hits.hits) {
+                            var resultDocs = Ember.A(results.hits.hits).map(function(hit) {
+                                return {
+                                    doc: hit._source
+                                };
+                            });
+                            var response = {
+                                rows: resultDocs
+                            };
+                            this._handleQueryResponse(resolve, response, store, type, options);
+                        } else if (results.rows) {
+                            this._handleQueryResponse(resolve, results, store, type, options);
+                        } else {
+                            reject('Search results are not valid');
+                        }
+                    }.bind(this)
+                });
+            } else {
+                reject('invalid query');
             }
-        };
+        }.bind(this));
     },
     
     _handleQueryResponse: function(resolve, response, store, type, options) {
@@ -50,12 +57,26 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
             if(Ember.isNone(options.embed)) {
                 options.embed = true;
             }
-            Ember.run(function(){
-                this._resolveRelationships(store, type, data, options).then(function(data){
-                    Ember.run(null, resolve, data);
-                });
+            this._resolveRelationships(store, type, data, options).then(function(data){
+                resolve(data);
             }.bind(this));
         }
+    },
+    
+    /**
+     * Look for nulls and maxvalues in start key because those keys can't be handled by the sort/list function
+     */
+    _doesStartKeyContainSpecialCharacters: function(startkey) {
+        var haveSpecialCharacters = false,
+            maxValue = this.get('maxValue');
+        if (!Ember.isEmpty(startkey) && Ember.isArray(startkey)) {
+            startkey.forEach(function(keyvalue) {
+                if (keyvalue === null || keyvalue === maxValue) {
+                    haveSpecialCharacters = true;
+                }
+            });
+        }
+        return haveSpecialCharacters;
     },
     
     findQuery: function(store, type, query, options) {
@@ -82,6 +103,29 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
             }
             if (query.options) {
                 queryParams = Ember.copy(query.options);
+                if (query.sortKey || query.filterBy) {
+                    if (query.sortDesc) {
+                        queryParams.sortDesc = query.sortDesc;
+                    }
+                    if (query.sortKey) {
+                        queryParams.sortKey = query.sortKey;
+                    }
+                    if (!this._doesStartKeyContainSpecialCharacters(queryParams.startkey)) {
+                        queryParams.sortLimit = queryParams.limit;
+                        delete queryParams.limit;
+                        queryParams.sortStartKey = JSON.stringify(queryParams.startkey);
+                        delete queryParams.startkey;
+                    } else if (queryParams.startkey) {
+                        queryParams.startkey = JSON.stringify(queryParams.startkey);
+                    }
+                    if (query.filterBy) {
+                        queryParams.filterBy = JSON.stringify(query.filterBy);
+                    }
+                    if (queryParams.endkey) {
+                        queryParams.endkey = JSON.stringify(queryParams.endkey);
+                    }
+                    query.useList = true;
+                }
             }
             queryParams.reduce  = false;
             queryParams.include_docs = true;
@@ -89,27 +133,32 @@ export default DS.PouchDBAdapter.extend(PouchAdapterUtils, {
             if (query.mapReduce) {
                 mapReduce = query.mapReduce;
             } else if (query.containsValue) {
-                mapReduce = this._createMapFunction(type, query);
+                return this._executeContainsSearch(store, type, query, options);
             }
             return new Ember.RSVP.Promise(function(resolve, reject){
                 this._getDb().then(function(db){
                     try {
-                        if (mapReduce) {                            
-                            db.query(mapReduce, queryParams, function(err, response) {
-                                if (err) {
-                                    this._pouchError(reject)(err);
-                                } else {
-                                    this._handleQueryResponse(resolve, response, store, type, options);
-                                }
-                            }.bind(this));
-                        } else if (query.searchIndex) {
-                            db.search(queryParams, function(err, response) {
-                                if (err) {
-                                    this._pouchError(reject)(err);
-                                } else {
-                                    this._handleQueryResponse(resolve, response, store, type, options);
-                                }                                
-                            }.bind(this));
+                        if (mapReduce) {
+                            if (query.useList) {
+                                var listParams = {
+                                    query: queryParams
+                                };
+                                db.list(mapReduce+'/sort/'+mapReduce, listParams, function(err, response) {
+                                    if (err) {
+                                        this._pouchError(reject)(err);
+                                    } else {
+                                        this._handleQueryResponse(resolve, response.json, store, type, options);
+                                    }
+                                }.bind(this));
+                            } else {
+                                db.query(mapReduce, queryParams, function(err, response) {
+                                    if (err) {
+                                        this._pouchError(reject)(err);
+                                    } else {
+                                        this._handleQueryResponse(resolve, response, store, type, options);
+                                    }
+                                }.bind(this));
+                            }
                         } else {
                             db.allDocs(queryParams, function(err, response) {
                                 if (err) {

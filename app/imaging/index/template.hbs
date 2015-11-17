@@ -4,21 +4,23 @@
             <th>Date Requested</th>
             <th>Patient</th>
             <th>Imaging Type</th>
-            <th>Notes</th>            
-            {{#if canComplete}}
+            <th>Notes</th>
+            {{#if showActions}}
                 <th>Actions</th>
             {{/if}}
         </tr>
-        {{#with canComplete as canComplete}}
+        {{#with this as parentController}}
             {{#each}}
-                <tr>
+                <tr {{action 'editItem' this}}>
                     <td>{{date-format requestedDate}}</td>
                     <td>{{patient.displayName}}</td>
                     <td>{{imagingType.name}}</td>
                     <td>{{notes}}</td>
-                    {{#if canComplete}}
+                     {{#if parentController.showActions}}
                         <td>
-                            <button class="btn btn-default" {{action 'completeItem' this}}>Complete</button>
+                            {{#if parentController.canEdit}}
+                                <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
+                            {{/if}}
                         </td>
                     {{/if}}
                 </tr>
@@ -27,9 +29,6 @@
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No items found.  Create a new record?</em> 
-        {{#if canAdd}}
-            <button class="btn btn-primary" {{action 'newItem'}}>New Imaging</button>
-        {{/if}}
-    </div>    
+        <p>No items found. {{#if canAdd}} <a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
+    </div>
 {{/if}}

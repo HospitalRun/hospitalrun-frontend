@@ -8,6 +8,7 @@
     "DS",
     "PouchDB",
     "oauthSignature",
+    "OAuth",
     "$",
     "MediaStreamTrack",
     "dymo",

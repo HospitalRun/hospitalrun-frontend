@@ -4,9 +4,10 @@ import Ember from "ember";
 import FamilyInfoModel from 'hospitalrun/models/family-info';
 import GenderList from 'hospitalrun/mixins/gender-list';
 import PouchAdapterUtils from "hospitalrun/mixins/pouch-adapter-utils";
+import ReturnTo from 'hospitalrun/mixins/return-to';
 import SocialExpenseModel from 'hospitalrun/models/social-expense';
 import UserSession from "hospitalrun/mixins/user-session";
-export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapterUtils, UserSession, {
+export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapterUtils, ReturnTo, UserSession, {
     
     canAddAppointment: function() {        
         return this.currentUserCan('add_appointment');
@@ -46,7 +47,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
     }.property(), 
     
     canDeleteContact: function() {        
-        return this.currentUserCan('add_user');
+        return this.currentUserCan('add_patient');
     }.property(),
     
     canDeleteImaging: function() {
@@ -109,7 +110,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         this.get('model').validate();
     }.observes('primaryDiagnosisId'),
     
-    needs: ['filesystem','patients'],
+    needs: ['filesystem','pouchdb','patients'],
 
     addressOptions: Ember.computed.alias('controllers.patients.addressOptions'),
     address1Include: Ember.computed.alias('controllers.patients.addressOptions.value.address1Include'),
@@ -126,6 +127,8 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
     fileSystem: Ember.computed.alias('controllers.filesystem'),
     isFileSystemEnabled: Ember.computed.alias('controllers.filesystem.isFileSystemEnabled'),
     patientController: Ember.computed.alias('controllers.patients'),
+    pricingProfiles: Ember.computed.alias('controllers.patients.pricingProfiles'),
+    statusList: Ember.computed.alias('controllers.patients.statusList'),
     
     haveAdditionalContacts: function() {
         var additionalContacts = this.get('additionalContacts');
@@ -145,23 +148,11 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         name: 'clinicList',
         property: 'clinic',
         id: 'clinic_list'
+    }, {
+        name: 'statusList',
+        property: 'status',
+        id: 'patient_status_list'
     }],
-
-    havePrimaryDiagnoses: function() {
-        var primaryDiagnosesLength = this.get('primaryDiagnoses.length');
-        return (primaryDiagnosesLength > 0);
-    }.property('primaryDiagnoses.length'),
-    
-    haveProcedures: function() {
-        var proceduresLength = this.get('patientProcedures.length');
-        return (proceduresLength > 0);
-    }.property('patientProcedures.length'),
-    
-    haveSecondaryDiagnoses: function() {
-        var secondaryDiagnosesLength = this.get('secondaryDiagnoses.length');
-        return (secondaryDiagnosesLength > 0);
-    }.property('secondaryDiagnoses.length'),
-    
     
     patientImaging: function() {
         return this._getVisitCollection('imaging');
@@ -178,46 +169,6 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
     patientProcedures: function() {
         return this._getVisitCollection('procedures');
     }.property('visits.@each.procedures'),
-
-    primaryDiagnoses: function() {
-        var diagnosesList = [],
-            visits = this.get('visits');        
-        if (!Ember.isEmpty(visits)) {
-            visits.forEach(function(visit) {
-                if (!Ember.isEmpty(visit.get('primaryDiagnosisId'))) {
-                    diagnosesList.addObject({
-                        id: visit.get('primaryDiagnosisId'),
-                        date: visit.get('startDate'),
-                        description: visit.get('primaryDiagnosis')
-                    });
-                }
-            });
-        }
-        var firstDiagnosis = diagnosesList.get('firstObject');
-        if (!Ember.isEmpty(firstDiagnosis)) {
-            firstDiagnosis.first = true;
-        }
-        return diagnosesList;
-    }.property('visits.@each'),
-
-    secondaryDiagnoses: function() {
-        var diagnosesList = [],
-            visits = this.get('visits');        
-        if (!Ember.isEmpty(visits)) {
-            visits.forEach(function(visit) {                
-                if (!Ember.isEmpty(visit.get('additionalDiagnoses'))) {
-                    diagnosesList.addObjects(visit.get('additionalDiagnoses'));
-                }
-            });
-        }
-        
-        var firstDiagnosis = diagnosesList.get('firstObject');
-        if (!Ember.isEmpty(firstDiagnosis)) {
-            firstDiagnosis.first = true;
-        }
-        return diagnosesList;
-    }.property('visits.@each'),    
-
     
     showExpenseTotal: true,
     
@@ -361,6 +312,10 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
             this.send('openModal', 'patients.photo', photo);
         },
         
+        editProcedure: function(procedure) {
+            this.transitionToRoute('procedures.edit', procedure);
+        },
+        
         editVisit: function(visit) {
             this.transitionToRoute('visits.edit', visit);
         },
@@ -404,11 +359,9 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
         },
         
         newVisit: function() {
-            var newVisit = this.get('store').createRecord('visit', {
-                startDate: new Date(),
-                patient: this.get('model')
-            });            
-            this.transitionToRoute('visits.edit', newVisit);
+            var patient = this.get('model'),
+                visits = this.get('visits');
+            this.send('createNewVisit', patient, visits);
         },     
 
         showAddContact: function() {
@@ -554,6 +507,13 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PouchAdapte
             });
         }
         return returnList;        
+    },
+    
+    beforeUpdate: function() {
+        //Make sure payments async relationship is loaded before saving.
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            this.get('payments').then(resolve, reject);
+        }.bind(this));
     },
     
     afterUpdate: function(record) {

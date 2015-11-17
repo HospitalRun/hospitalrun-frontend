@@ -5,9 +5,7 @@ export default Ember.Controller.extend({
     pouchdb: Ember.computed.alias('controllers.pouchdb'),
     
     _setup: function() {
-        var fileSystem = this.get('filesystem'),
-            pouchDB = this.get('pouchdb');
-        fileSystem.setup();
-        pouchDB.setup();
+        var fileSystem = this.get('filesystem');
+        fileSystem.setup();        
     }.on('init')
 });

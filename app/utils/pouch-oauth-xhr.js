@@ -1,4 +1,4 @@
-import couchOauthSign from "hospitalrun/utils/couch-oauth-sign";
+import Ember from 'ember';
 
 export default function(configs) {
     function PouchOauthXHR(objParameters) {
@@ -47,7 +47,7 @@ export default function(configs) {
             this.password = password;
             if(url.indexOf("?") > 0) {
                 var url_params = url.split("?");
-                if (this.method === 'POST' || this.method === 'GET') {                
+                if (this.method === 'POST' || this.method === 'GET' || this.method === 'DELETE') {                
                     this.url = url_params[0];
                 }
                 this.params = this._decodeParameters(url_params[1]);            
@@ -57,18 +57,10 @@ export default function(configs) {
         send: function(data) {
             if (this.signOauth !== undefined) {            
                 this.params = this.signOauth(this.params);
-                if (this.method === 'POST' || this.method === 'GET') {                
-                    if (this.params !== undefined ) {                    
-                        this.url = this.url + '?'+ decodeURIComponent($.param( this.params ));
-                    }
+                if (this.method === 'POST' || this.method === 'GET' || this.method === 'DELETE') {
+                    this.url = OAuth.addToURL(this.url, this.params);
                 } else {
-                    var oauth_header = 'OAuth realm=""';
-                    for (var parameter in this.params) {
-                        if (parameter.indexOf("oauth_") === 0) {                        
-                            oauth_header += ', '+parameter+'="'+this.params[parameter]+'"';
-                        }
-                    }
-                    this.requestHeaders['Authorization'] = oauth_header;
+                    this.requestHeaders['Authorization'] =  OAuth.getAuthorizationHeader('', this.params);
                 }         
             }
 
@@ -91,10 +83,16 @@ export default function(configs) {
             if (this.ontimeout  !== undefined) {
                 this.internalXHR.ontimeout = this.ontimeout;
             }
-
+            this.readyState = this.internalXHR.readyState;
+            this.status = this.internalXHR.status;
             if (this.onreadystatechange !== undefined) {
                 var xhrwrapper = this;
                 this.internalXHR.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 0) {
+                        console.log("wrapper readystatechange fired with xhr state and status:",this.readyState, this.status);
+                        console.log("URL WAS: "+xhrwrapper.url,xhrwrapper);
+                        console.trace();
+                    }
                     xhrwrapper.readyState = this.readyState;
                     xhrwrapper.response = this.response;
                     xhrwrapper.responseText = this.responseText;
@@ -113,21 +111,32 @@ export default function(configs) {
         },
         
         signOauth: function(params) {
+            if (Ember.isEmpty(params)) {
+                params = {};
+            }
             var signature_url = this.url,
                 dblocation = this.url.indexOf('/db/');
             if (dblocation > -1) {            
                 signature_url = 'http://localhost:5984/' + this.url.substring(dblocation+4);
             }
-
-            params = couchOauthSign(signature_url, {
-                    consumerKey: this.oauth.config_consumer_key,
-                    consumerSecret:  this.oauth.config_consumer_secret,
-                    token: this.oauth.config_oauth_token,
-                    tokenSecret: this.oauth.config_token_secret,
-                    type: this.method,
-                    requestParams: params
-            });
-            return params;
+            
+            var accessor = {
+                consumerSecret: this.oauth.config_consumer_secret,
+                tokenSecret: this.oauth.config_token_secret
+            };
+            
+            params.oauth_signature_method = 'HMAC-SHA1';
+            params.oauth_consumer_key = this.oauth.config_consumer_key;
+            params.oauth_token = this.oauth.config_oauth_token;
+            params.oauth_version =  "1.0";
+            
+            var message = {
+                parameters: params
+            };
+            message.action = signature_url;
+            message.method = this.method;
+            OAuth.SignatureMethod.sign(message, accessor);
+            return message.parameters;
         }
     };
 

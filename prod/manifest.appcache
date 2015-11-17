@@ -1,12 +1,11 @@
 CACHE MANIFEST
-# created 2015-02-06T23:47:44.357Z
+# created 2015-11-11T18:58:14.398Z
 
 CACHE:
-assets/hospitalrun-a7dc6c2ce8f3e08e410fd3946e89382e.js
-assets/hospitalrun-a8184510bb60b1b7ae0028ba0b1dd3e8.css
-assets/hospitalrun.css.map
-assets/vendor-758044e22fa0d7b564affb151f185ecd.css
-assets/vendor-f96facf548baa9a64d3fef5d2edf05a4.js
+assets/hospitalrun.css
+assets/hospitalrun.js
+assets/vendor.css
+assets/vendor.js
 dymo/BarcodeAsImage.label
 fonts/glyphicons-halflings-regular.eot
 fonts/glyphicons-halflings-regular.svg

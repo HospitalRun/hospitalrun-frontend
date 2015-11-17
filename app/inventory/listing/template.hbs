@@ -1,13 +1,12 @@
 {{#if hasRecords}}
     <table class="table">
         <tr class="table-header">
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Type</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>XRef</th>
+            {{#sortable-column sortBy='friendlyId' sortDesc=sortDesc sortKey=sortKey }}ID{{/sortable-column}}
+            {{#sortable-column sortBy='name' sortDesc=sortDesc sortKey=sortKey }}Name{{/sortable-column}}
+            {{#sortable-column sortBy='type' sortDesc=sortDesc sortKey=sortKey }}Type{{/sortable-column}}
+            {{#sortable-column sortBy='quantity' sortDesc=sortDesc sortKey=sortKey }}Quantity{{/sortable-column}}
+            <th>Location</th>        
+            {{#sortable-column sortBy='crossReference' sortDesc=sortDesc sortKey=sortKey }}XRef{{/sortable-column}}
             <th>Actions</th>
         </tr>
         {{#each itemController='inventory/item-controller'}}
@@ -15,10 +14,9 @@
                 <tr {{action 'editItem' this}}>
                     <td>{{friendlyId}}</td>
                     <td>{{name}}</td>
-                    <td>{{description}}</td>
                     <td>{{type}}</td>
-                    <td>{{quantity}}</td>
-                    <td>{{price}}</td>
+                    <td>{{quantity}} {{distributionUnit}}</td>
+                    <td>{{displayLocations}}</td>
                     <td>{{crossReference}}</td>
                     <td>
                         {{#if showAdd}}
@@ -38,10 +36,6 @@
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No items found.</em>  
-        {{#if canAddItem}}
-            <em>Create a new record?</em>
-            <button class="btn btn-primary" {{action 'newItem'}}>New Item</button>
-        {{/if}}
+        <p>No items found. {{#if canAddItem}} <a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
     </div>
 {{/if}}

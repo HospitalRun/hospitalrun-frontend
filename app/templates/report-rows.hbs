@@ -1,0 +1,15 @@
+{{#each currentReportRows}}
+    {{#if rowAction}}
+        <tr {{action rowAction.action rowAction.model}}>
+            {{#each row}}
+                <td>{{array-display content=this }}</td>
+            {{/each}}
+        </tr>
+    {{else}}
+        <tr>
+            {{#each this}}
+                <td>{{array-display content=this }}</td>
+            {{/each}}
+        </tr>
+    {{/if}}
+{{/each}}

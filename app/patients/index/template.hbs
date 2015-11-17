@@ -1,43 +1,46 @@
 {{#if hasRecords}}
     <table class="table">
         <tr class="table-header">
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Gender</th>
-            <th>DOB</th>
+            {{#sortable-column sortBy='id' sortDesc=sortDesc sortKey=sortKey }}ID{{/sortable-column}}
+            {{#sortable-column sortBy='firstName' sortDesc=sortDesc sortKey=sortKey }}First Name{{/sortable-column}}
+            {{#sortable-column sortBy='lastName' sortDesc=sortDesc sortKey=sortKey }}Last Name{{/sortable-column}}
+            {{#sortable-column sortBy='gender' sortDesc=sortDesc sortKey=sortKey }}Gender{{/sortable-column}}
+            {{#sortable-column sortBy='dateOfBirth' sortDesc=sortDesc sortKey=sortKey }}DOB{{/sortable-column}}
+            {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}Status{{/sortable-column}}
             {{#if showActions}}
                 <th>Actions</th>
             {{/if}}
         </tr>
-        {{#with this as parentController}}
-            {{#each}}
-                <tr {{action 'editItem' this}}>
-                    <td>{{displayPatientId}}</td>
-                    <td>{{firstName}}</td>
-                    <td>{{lastName}}</td>
-                    <td>{{gender}}</td>
-                    <td>{{date-format dateOfBirth}}</td>
-                    {{#if parentController.showActions}}
-                        <td>
-                            {{#if parentController.canAdd}}
-                                <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
-                            {{/if}}
-                            {{#if parentController.canDelete}}
-                                <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                            {{/if}}
-                        </td>
-                    {{/if}}
-                </tr>
-            {{/each}}
-        {{/with}}
+
+        {{#each itemController='patients/patient-controller'}}
+            <tr {{action 'editItem' this}}>
+                <td>{{displayPatientId}}</td>
+                <td>{{firstName}}</td>
+                <td>{{lastName}}</td>
+                <td>{{gender}}</td>
+                <td>{{date-format dateOfBirth}}</td>
+                <td>{{status}}</td>
+                {{#if showActions}}
+                    <td>
+                        {{#if canAdd}}
+                            <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
+                        {{/if}}
+                        {{#if canAdmitPatient}}
+                            <button class="btn btn-default success" {{action 'admitPatient' this  bubbles=false }}><span class="glyphicon glyphicon-log-in"></span> Admit</button>
+                        {{/if}}
+                        {{#if canDischargePatient}}
+                            <button class="btn btn-default info" {{action 'dischargePatient' this  bubbles=false }}><span class="glyphicon glyphicon-log-out"></span> Discharge</button>
+                        {{/if}}
+                        {{#if canDelete}}
+                            <button class="btn btn-default warning" {{action 'deleteItem' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                        {{/if}}
+                    </td>
+                {{/if}}
+            </tr>
+        {{/each}}
     </table>
 {{else}}
     <div class="alert alert-info">
-        <em>No patients found.</em>
-        {{#if canAdd}}
-            <em>Create a new patient record?</em>
-            <button class="btn btn-primary on-white" {{action 'newItem'}}>New Patient</button>
-        {{/if}}
+        <p>No patients found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new patient record?</a>{{/if}}</p>
     </div>
 {{/if}}

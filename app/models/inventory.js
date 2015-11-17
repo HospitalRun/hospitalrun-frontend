@@ -1,5 +1,11 @@
 import AbstractModel from "hospitalrun/models/abstract";
-
+var validateIfNewItem = {
+    if: function validateNewItem(object) {
+        var skipSavePurchase = object.get('skipSavePurchase');
+        //Only validate on new items and only if we are saving a purchase.        
+        return (!skipSavePurchase && object.get('isNew'));
+    }
+};
 export default AbstractModel.extend({
     purchases: DS.hasMany('inv-purchase'),
     locations: DS.hasMany('inv-location'),
@@ -22,24 +28,25 @@ export default AbstractModel.extend({
     }.property('locations@each.lastModified'),
     
     validations: {
+        distributionUnit: {
+            presence: true,
+        },
         purchaseCost: {
-            numericality: {
-                if: function(object) {
-                    //Only validate on new items that are not assets
-                    return (object.get('isNew') && object.get('type') !== 'Asset');
-                }
-            }
+            numericality: validateIfNewItem
         },
         name: {
             presence: true,
         },
         quantity: {
-            numericality: true
+            numericality: validateIfNewItem
         },
         price: {
             numericality: {
                 allowBlank: true
             }
+        },
+        originalQuantity: {
+            presence: validateIfNewItem         
         },
         reorderPoint: {
             numericality: {
@@ -49,13 +56,12 @@ export default AbstractModel.extend({
         type: {
             presence: true,
         },
+        vendor: {
+            presence: validateIfNewItem
+        }
     },
 
     updateQuantity: function() {
-        if (this.get('type') === 'Asset') {
-            //Asset quantity is edited directly
-            return;
-        }
         var purchases = this.get('purchases');
         var newQuantity = purchases.reduce(function(previousItem, currentItem) {
             var currentQuantity = 0;

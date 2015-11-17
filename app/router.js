@@ -15,12 +15,12 @@ Router.map(function() {
          this.route('query');
     });
     
-    /*this.resource('appointments', function() {
+    this.resource('appointments', function() {
         //this.route('calendar'); //currently not working in prod build
         this.route('edit', { path: "/edit/:appointment_id" });
         this.route('search');
         this.route('today');
-    });*/
+    });
     
     this.route('finishgauth', { path: "/finishgauth/:s1/:s2/:k/:t/:i/:p" });
     
@@ -33,9 +33,9 @@ Router.map(function() {
     
    this.resource('inventory', function() {
         this.route('barcode', { path: "/barcode/:inventory_id" });
-        this.route('completed');
         this.route('delivery', { path: "/delivery/:inv-request_id" });
         this.route('edit', { path: "/edit/:inventory_id" });
+        this.route('batch', { path: "/batch/:inventory-batch_id" });
         this.route('listing');
         this.route('reports');
         this.route('request', { path: "/request/:inv-request_id" });
@@ -65,6 +65,7 @@ Router.map(function() {
     this.resource('medication', function() {
         this.route('completed');
         this.route('edit', { path: "/edit/:medication_id" });
+        this.route('return', { path: "/return/:inv-request_id" });
         this.route('search', { path: "/search/:search_text" });
     });
     
@@ -79,8 +80,9 @@ Router.map(function() {
         this.route('lab');
         this.route('procedure');
         this.route('ward');
-        this.route('edit', { path: "/pricing/:pricing_id" });
+        this.route('edit', { path: "/edit/:pricing_id" });
         this.route('search', { path: "/search/:search_text" });
+        this.route('profiles');
     });
     
     this.resource('print', function() {

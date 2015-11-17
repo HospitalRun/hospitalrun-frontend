@@ -1,0 +1,11 @@
+{{#em-form model=this submit_button=false}}
+    {{em-select label="Pricing Profile"
+        property="profile"
+        content=pricingProfiles
+        optionValuePath="content"
+        optionLabelPath="content.name"
+        class="required"
+        prompt=" "
+    }}
+    {{em-input label="Price" property="price" class="required"}}
+{{/em-form}}

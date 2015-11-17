@@ -3,5 +3,6 @@ import ChargeRoute from 'hospitalrun/mixins/charge-route';
 export default AbstractEditRoute.extend(ChargeRoute, {
     editTitle: 'Edit Visit',
     modelName: 'visit',
-    newTitle: 'New Visit'
+    newTitle: 'New Visit',
+    pricingCategory: 'Ward'
 });

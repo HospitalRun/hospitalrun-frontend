@@ -6,5 +6,5 @@ export default ProcedureChargeController.extend({
     cancelAction: 'closeModal',
     newPricingItem: false,
     requestingController: Ember.computed.alias('controllers.labs/edit'),
-    pricingList: Ember.computed.alias('controllers.labs/edit.pricingList'),    
+    pricingList: Ember.computed.alias('controllers.labs/edit.chargesPricingList')
 });

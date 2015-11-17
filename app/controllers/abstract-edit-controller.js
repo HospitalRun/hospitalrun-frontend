@@ -1,7 +1,8 @@
-import Ember from "ember";
-import IsUpdateDisabled from "hospitalrun/mixins/is-update-disabled";
-import UserSession from "hospitalrun/mixins/user-session";
-export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
+import Ember from 'ember';
+import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
+import ModalHelper from 'hospitalrun/mixins/modal-helper';
+import UserSession from 'hospitalrun/mixins/user-session';
+export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, UserSession, {
     cancelAction: 'allItems',
     
     cancelButtonText: function() {
@@ -13,6 +14,17 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
         }
     }.property('isDirty'),
 
+    disabledAction: function() {
+        var isValid = this.get('isValid');
+        if (!isValid) {
+            return 'showDisabledDialog';  
+        }
+    }.property('isValid'),
+    
+    isNewOrDeleted: function() {
+        return this.get('isNew') || this.get('isDeleted');
+    }.property('isNew', 'isDeleted'),
+    
     /**
      *  Lookup lists that should be updated when the model has a new value to add to the lookup list.
      *  lookupListsToUpdate: [{
@@ -58,16 +70,35 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
         }
     },
     
+    _cancelUpdate: function() {
+        var cancelledItem = this.get('model');
+        if (this.get('isNew')) {
+            cancelledItem.deleteRecord();
+        } else {
+            cancelledItem.rollback();
+        }
+    },
+    
     actions: {
         cancel: function() {
-            var cancelledItem = this.get('model');
-            if (this.get('isNew')) {
-                cancelledItem.deleteRecord();
-            } else {
-                cancelledItem.rollback();
-            }
+            this._cancelUpdate();
             this.send(this.get('cancelAction'));
         },
+        
+        returnTo: function() {
+            this._cancelUpdate();            
+            var returnTo = this.get('returnTo'),
+                returnToContext = this.get('returnToContext');
+            if (Ember.isEmpty(returnToContext)) {
+                this.transitionToRoute(returnTo);
+            } else {
+                this.transitionToRoute(returnTo, returnToContext);
+            }
+        },        
+        
+        showDisabledDialog: function() {            
+            this.displayAlert('Warning!!!!','Please fill in required fields (marked with *) and correct the errors before saving.');
+        },        
         
         /**
          * Update the model and perform the before update and after update
@@ -76,13 +107,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
          */
         update: function(skipAfterUpdate) {
             this.beforeUpdate().then(function() {
-                this.get('model').save().then(function(record){
-                    this.updateLookupLists();
-                    if (!skipAfterUpdate) {
-                        this.afterUpdate(record);
-                    }
-
-                }.bind(this));
+                this.saveModel(skipAfterUpdate);
             }.bind(this));
         }
     },
@@ -103,18 +128,17 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, UserSession, {
     },
     
     /**
-     * Display a message in a closable modal.
-     * @param title string containing the title to display.
-     * @param message string containing the message to display.
+     * Save the model and then (optionally) run the after update.
+     * @param skipAfterUpdate boolean (optional) indicating whether or not 
+     * to skip the afterUpdate call.
      */
-    displayAlert: function(title, message) {
-        this.send('openModal', 'dialog', Ember.Object.create({
-            title: title,
-            message: message,
-            hideCancelButton: true,
-            updateButtonAction: 'ok',
-            updateButtonText: 'Ok'
-        }));        
+    saveModel: function(skipAfterUpdate) {
+        this.get('model').save().then(function(record){
+            this.updateLookupLists();
+            if (!skipAfterUpdate) {
+                this.afterUpdate(record);
+            }
+        }.bind(this));
     },
     
     /**

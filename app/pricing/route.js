@@ -4,9 +4,21 @@ export default AbstractModuleRoute.extend({
     additionalModels: [{
         name: 'expenseAccountList',
         findArgs: ['lookup','expense_account_list']
-    },{ 
-        name: 'pricingTypes',
-        findArgs: ['lookup','pricing_types']
+    }, { 
+        name: 'imagingPricingTypes',
+        findArgs: ['lookup','imaging_pricing_types']
+    }, { 
+        name: 'labPricingTypes',
+        findArgs: ['lookup','lab_pricing_types']
+    }, { 
+        name: 'procedurePricingTypes',
+        findArgs: ['lookup','procedure_pricing_types']
+    }, { 
+        name: 'pricingProfiles',
+        findArgs: ['price-profile']
+    }, { 
+        name: 'wardPricingTypes',
+        findArgs: ['lookup','ward_pricing_types']
     }],    
     allowSearch: true,
     moduleName: 'pricing',
@@ -27,6 +39,9 @@ export default AbstractModuleRoute.extend({
     }, {
         text: 'Ward Pricing',
         linkTo: 'pricing.ward'
+    }, {
+        text: 'Pricing Profiles',
+        linkTo: 'pricing.profiles'
     }]
 });
 

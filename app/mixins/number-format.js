@@ -33,7 +33,7 @@ export default Ember.Mixin.create({
             return Number(number);
         }
     },
-        
+    
     /**
      * Return a formatted number with a maximum of two digits
      * @param value number to format
@@ -43,13 +43,25 @@ export default Ember.Mixin.create({
      */
     _numberFormat: function(value, returnAsNumber) {
         var returnValue;
-        if (!Ember.isEmpty(value)) {            
-            returnValue = value.toFixed(2);
+        if (!Ember.isEmpty(value)) {
+            if (isNaN(value)) {
+                return;
+            }
+            if (Math.round(value) === value) {
+                returnValue = Number(value).toString();
+            } else {
+                returnValue = Number(value).toFixed(2);
+            }
             if (returnAsNumber) {
                 return Number(returnValue);
             } else {
                 return returnValue.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
             }
         }
-    }
+    },
+    
+    _validNumber: function(number) {
+        return (!Ember.isEmpty(number) && !isNaN(number) && number > 0);
+    },
+
 });

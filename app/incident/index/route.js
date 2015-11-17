@@ -18,7 +18,7 @@ export default AbstractIndexRoute.extend(UserSession, {
         if (!this.currentUserCan('edit_others_incident')) {
                 queryParams.options = 
                     {
-                        startkey:  [currentUser,'incident_'],
+                        startkey:  [currentUser,null],
                         endkey: [currentUser,'incident_'+maxValue]
                     };             
         }

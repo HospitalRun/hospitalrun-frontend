@@ -5,8 +5,9 @@ import Ember from "ember";
 import PatientName from 'hospitalrun/mixins/patient-name';
 
 export default AbstractModel.extend(DOBDays, PatientName, {
+    admitted: DS.attr('boolean', {defaultValue: false}),
     additionalContacts: DS.attr(),
-    additionalData: DS.attr(), //Additional data will be used to store custom data per install.
+    additionalData: DS.attr(null,{defaultValue:{}}), //Additional data will be used to store custom data per install.
     address: DS.attr('string'),
     address2: DS.attr('string'),
     address3: DS.attr('string'),
@@ -19,20 +20,34 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     email: DS.attr('string'),
     expenses: DS.attr(),
     externalPatientId: DS.attr('string'),
+    familySupport1: DS.attr('string'),
+    familySupport2: DS.attr('string'),
+    familySupport3: DS.attr('string'),
+    familySupport4: DS.attr('string'),
+    familySupport5: DS.attr('string'),
+    friendlyId: DS.attr('string'),
     familyInfo: DS.attr(),
     firstName: DS.attr('string'),
     gender:  DS.attr('string'),
     history: DS.attr('string'),
+    insurance: DS.attr('string'),
     lastName:  DS.attr('string'),
+    livingArrangement: DS.attr('string'),
+    middleName:  DS.attr('string'),
     notes: DS.attr('string'),  
     otherIncome: DS.attr('string'),
+    payments: DS.hasMany('payment', { async: true }),
     patientType: DS.attr('string'),
     parent: DS.attr('string'),
+    paymentProfile: DS.belongsTo('price-profile'),
     phone:  DS.attr('string'),
     placeOfBirth: DS.attr('string'),
     referredDate: DS.attr('date'),
     referredBy: DS.attr('string'),    
     religion: DS.attr('string'),
+    socialActionTaken: DS.attr('string'),
+    socialRecommendation: DS.attr('string'),
+    status: DS.attr('string'),
     
     age: function() {
         var dob = this.get('dateOfBirth');
@@ -55,17 +70,11 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     
     displayName: function() {
         return this.getPatientDisplayName(this);
-    }.property('firstName', 'lastName'),
+    }.property('firstName', 'lastName', 'middleName'),
     
     displayPatientId: function() {
-        var externalPatientId = this.get('externalPatientId'),
-            id = this.get('id');
-        if (Ember.isEmpty(externalPatientId)) {
-            return id;
-        } else {
-            return externalPatientId;
-        }
-    }.property('id', 'externalPatientId'),
+        return this.getPatientDisplayId(this);
+    }.property('id', 'externalPatientId', 'friendlyId'),
     
     validations: {
         email: {
@@ -74,6 +83,9 @@ export default AbstractModel.extend(DOBDays, PatientName, {
                 allowBlank: true, 
                 message: 'please enter a valid email address'
             }
+        },
+        friendlyId: {
+            presence: true
         },
         firstName: {
             presence: true

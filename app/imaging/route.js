@@ -1,12 +1,17 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
-import UserSession from "hospitalrun/mixins/user-session";
-export default AbstractModuleRoute.extend(UserSession, {
+export default AbstractModuleRoute.extend({
     addCapability: 'add_imaging',
+    additionalModels: [{ 
+        name: 'imagingPricingTypes',
+        findArgs: ['lookup','imaging_pricing_types']
+    }, {
+        name: 'radiologistList',
+        findArgs: ['lookup','radiologists'],
+    }],
     allowSearch: false,
     moduleName: 'imaging',
     newButtonText: '+ new imaging',
     sectionTitle: 'Imaging',
-    
     subActions: [{
         text: 'Requests',
         linkTo: 'imaging.index'
@@ -15,11 +20,5 @@ export default AbstractModuleRoute.extend(UserSession, {
         linkTo: 'imaging.completed'
     }],
 
-    getNewData: function() {
-        return {
-            selectPatient: true,
-            requestDate: moment().startOf('day').toDate()
-        };
-    }
 });
 

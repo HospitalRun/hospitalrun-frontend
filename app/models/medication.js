@@ -1,16 +1,12 @@
 import AbstractModel from "hospitalrun/models/abstract";
 import DateFormat from "hospitalrun/mixins/date-format";
 import Ember from "ember";
-import PatientValidation from "hospitalrun/utils/patient-validation";
 
 export default AbstractModel.extend(DateFormat, {
-    dose: DS.attr('string'),
-    duration: DS.attr('number'),
-    durationType: DS.attr('string'),
-    frequency: DS.attr('string'),
     inventoryItem: DS.belongsTo('inventory'),
     notes: DS.attr('string'),
     patient: DS.belongsTo('patient'),
+    prescription: DS.attr('string'),
     prescriptionDate: DS.attr('date'),
     quantity: DS.attr('number'),
     refills: DS.attr('number'),
@@ -18,15 +14,12 @@ export default AbstractModel.extend(DateFormat, {
     requestedBy: DS.attr('string'),
     status: DS.attr('string'),
     visit: DS.belongsTo('visit'),
-        
-    prescription: function() {
-        var dose = this.get('dose'),
-            duration = this.get('duration'),
-            durationType = this.get('durationType'),
-            frequency = this.get('frequency');
-        return '%@ %@ for %@ %@'.fmt(dose, frequency, duration, durationType);
-    }.property('dose','duration','durationType', 'frequency'),
     
+    isRequested: function() {
+        var status = this.get('status');
+        return (status === 'Requested');
+    }.property('status'),
+            
     prescriptionDateAsTime: function() {        
         return this.dateToTime(this.get('prescriptionDate'));
     }.property('prescriptionDate'),
@@ -36,27 +29,31 @@ export default AbstractModel.extend(DateFormat, {
     }.property('requestedDate'),
     
     validations: {
-        dose: {
-            presence: true
+        prescription: {
+            acceptance: {
+                accept: true,
+                if: function(object) {
+                    if (!object.get('isDirty') || object.get('isFulfilling')) {
+                        return false;
+                    }
+                    var prescription = object.get('prescription'),
+                        quantity = object.get('quantity');
+                    if (Ember.isEmpty(prescription) && Ember.isEmpty(quantity)) {
+                        //force validation to fail
+                        return true;
+                    } else {
+                        return false;
+                    }                    
+                },
+                message: 'Please enter a prescription or a quantity'
+            }
         },
-        
-        duration: {
-            numericality: true
-        },
-
-        durationType: {
-            presence: true
-        },
-        
-        frequency: {
-            presence: true            
-        },
-        
+                
         inventoryItemTypeAhead: {
             acceptance: {
                 accept: true,
                 if: function(object) {
-                    if (!object.get('isDirty')) {
+                    if (!object.get('isDirty') || !object.get('isNew')) {
                         return false;
                     }
                     var itemName = object.get('inventoryItem.name'),
@@ -77,16 +74,47 @@ export default AbstractModel.extend(DateFormat, {
             }
         },
         
-        patientTypeAhead: PatientValidation.patientTypeAhead,        
-        
-        patient: {
-            presence: true
+        patientTypeAhead: {
+            presence: {
+                if: function(object) {
+                    return (object.get('selectPatient'));
+                }
+            }
         },
         
         quantity: {
-            numericality: {
-                allowBlank: true
-            }
+            numericality: {                
+                allowBlank: true,
+                greaterThan: 0
+            },
+            presence: {
+                if: function(object) {
+                    var isFulfilling = object.get('isFulfilling');
+                    return isFulfilling;
+                }
+            },
+            acceptance: {
+                accept: true,
+                if: function(object) {
+                        var isFulfilling = object.get('isFulfilling'),
+                            requestQuantity = parseInt(object.get('quantity')),
+                            quantityToCompare = null;
+                        if (!isFulfilling) {
+                            //no validation needed when not fulfilling
+                            return false;
+                        } else {
+                            quantityToCompare = object.get('inventoryItem.quantity');
+                        }
+                        if ( requestQuantity > quantityToCompare) {
+                            //force validation to fail
+                            return true;
+                        } else {
+                            //There is enough quantity on hand.
+                            return false;
+                        }
+                }, 
+                message: 'The quantity must be less than or equal to the number of available medication.'
+            }            
         },
         
         refills: {

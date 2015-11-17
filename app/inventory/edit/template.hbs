@@ -1,47 +1,9 @@
 {{#em-form model=this submit_button=false }}
-    {{#unless isNew}}
-        <div class="form-group">
-            <label>ID</label>
-            {{input class="form-control" value=friendlyId type="text" disabled=true }}
-        </div>
-    {{/unless}}
-    {{em-input property="name" label="Name" class="required"}}
-    {{em-text label="Description" property="description" rows=3 }}
-    {{em-select label="Type" property="type" 
-        content=inventoryTypes 
-        optionValuePath="content" 
-        optionLabelPath="content"
-        class="required"
-    }}
-    {{em-input property="crossReference" label="Cross Reference"}}
-    {{#if showPurchases}}
-        <div class="row">
-            {{em-input property="reorderPoint" label="Reorder Point" class="col-sm-3"}}
-            {{em-input property="price" label="Price Per Unit" class="col-sm-3"}}
-            {{em-select label="Distribution Unit" class="col-sm-3" 
-                property="distributionUnit" 
-                content=unitList 
-                optionLabelPath="content"
-                optionValuePath="content"
-            
-            }}            
-        </div>
-    {{/if}}
-    {{#if showNewPurchase}}
+    {{partial 'inventory-basic'}}
+    {{#if isNew}}
         <h3>Purchase information</h3>
-        {{partial 'inventory/purchase'}}
+        {{partial 'inv-purchase'}}
     {{else}}
-        <div class="row">
-            {{#if canEditQuantity}}
-                {{em-input property="quantity" label="Quantity" class="col-sm-3 required"}}
-            {{else}}
-                <div class="form-group col-sm-3">
-                    <label>Quantity</label>
-                    <p class="form-control-static">{{quantity}}</p>                    
-                </div>
-            {{/if}}
-        </div>
-        {{#if showPurchases}}
             {{#if quantityDiscrepency}}
                 <div class="alert alert-danger alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -65,9 +27,11 @@
                     <th>Cost Per Unit</th>
                     <th>Original Quantity</th>
                     <th>Current Quantity</th>
+                    <th>Gift In Kind</th>
                     <th>Serial/Lot Number</th>
                     <th>Expiration Date</th>
                     <th>Vendor</th>
+                    <th>Invoice Number</th>
                 </tr>
                 {{#each purchases itemController='inventory/purchase/item-controller'}}
                     <tr {{bind-attr class="rowClass"}}>
@@ -76,15 +40,18 @@
                         <td>{{costPerUnit}}</td>
                         <td>{{originalQuantity}}</td>
                         <td>{{currentQuantity}}</td>
+                        <td>
+                            {{#if giftInKind}}Y{{else}}N{{/if}}
+                        </td>
                         <td>{{lotNumber}}</td>                
                         <td>{{date-format expirationDate}}</td>
                         <td>{{vendor}}</td>
+                        <td>{{invoiceNo}}</td>
                     </tr>
                 {{/each}}
             </table>
-        {{/if}}
     {{/if}}
-    {{#if showLocations}}
+    {{#unless isNew}}
         <h3>Locations</h3>    
         <table class="table">
             <tr class="table-header">
@@ -111,5 +78,59 @@
                 {{/if}}
             {{/each}}
         </table>
-    {{/if}}
+        {{#if showTransactions}}
+            <h3>Transactions</h3>
+            <table class="table">
+                <tr class="table-header">
+                    <th>Date Completed</th>
+                    <th>Quantity</th>
+                    <th>Transaction</th>
+                    <th>Expense To</th>
+                    <th>Details</th>
+                </tr>
+                {{#if haveTransactions}}
+                    {{#each transactions itemController='inventory/completed-items'}}
+                        <tr>
+                            <td>{{date-format dateCompleted}}</td>                    
+                            <td>{{quantity}}</td>
+                            <td>{{transactionType}}</td>
+                            <td>{{expenseAccount}}</td>
+                            <td>
+                                {{#if isAdjustment}}
+                                    {{#if haveReason}}
+                                        <strong>Reason:</strong> {{reason}}<br/>
+                                    {{/if}}
+                                    <strong>Location Adjusted:</strong> {{deliveryDetails}}
+                                {{/if}}
+                                {{#if isFulfillment}}
+                                    <strong>Cost Per Unit:</strong> {{costPerUnit}}<br/>
+                                    <strong>Quantity At Completion:</strong> {{quantityAtCompletion}}<br/>
+                                    <strong>Pulled From:</strong>
+                                    {{#each locationsAffected}}
+                                        {{name}}<br/>
+                                    {{/each}}
+                                    {{#if patient}}
+                                        <strong>Prescription For: </strong> {{deliveryDetails}}
+                                    {{else}}
+                                        <strong>Delivered To: </strong> {{deliveryDetails}}
+                                    {{/if}}
+                                {{/if}}
+                                {{#if isTransfer}}
+                                    <strong>Transferred From:</strong>
+                                    {{#each locationsAffected}}
+                                        {{name}}<br/>
+                                    {{/each}}
+                                    <strong>Transferred To: </strong> {{deliveryDetails}}
+                                {{/if}}
+                            </td>
+                        </tr>            
+                    {{/each}}
+                {{else}}
+                    <tr>
+                        <td colspan="4"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading transactions....</td>
+                    </tr>
+                {{/if}}
+            </table>
+        {{/if}}
+    {{/unless}}
 {{/em-form}}

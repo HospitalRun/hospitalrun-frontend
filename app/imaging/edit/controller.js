@@ -5,84 +5,109 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     needs: ['imaging','pouchdb'],
+    chargePricingCategory: 'Imaging',
     chargeRoute: 'imaging.charge',
     
-    canAddCharge: function() {        
-        return this.currentUserCan('add_charge');
-    }.property(),
-
-    newImagingType: false,
-    imagingTypesList: null, //This gets filled in by the route
-    pricingList: null, //This gets filled in by the route
-    updateCapability: 'add_imaging',
-    
-    selectedImagingTypeChangeds: function() {
-        var selectedItem = this.get('selectedImagingType');
-        if (!Ember.isEmpty(selectedItem)) {            
-            this.store.find('pricing', selectedItem._id.substr(8)).then(function(item) {
-                this.set('imagingType', item);
-            }.bind(this));
-        }
-    }.observes('selectedImagingType'),
-    
-    imagingTypeChanged: function() {
-        var imagingTypeName = this.get('imagingTypeName'),
-            imagingType = this.get('imagingType');
-        if (!Ember.isEmpty(imagingType)) {
-            this.set('newImagingType', false);
-            if (imagingType.get('name') !== imagingTypeName) {
-                this.set('imagingTypeName', imagingType.get('name'));
-            }
+    canComplete: function() {
+        var imagingTypeName = this.get('selectedImagingType');
+        if (Ember.isArray(imagingTypeName) && imagingTypeName.length >1) {
+            return false;
         } else {
-            this.set('newImagingType', true);
+            return this.currentUserCan('complete_imaging');
         }
-    }.observes('imagingType'),    
-
-    afterUpdate: function() {
-        this.send(this.get('cancelAction'));
-    },
+    }.property('selectedImagingType.[]'),
     
-    beforeUpdate: function() {
-        if (this.get('isNew')) {
-            var newImaging = this.get('model');
-            this.set('status', 'Requested');
-            this.set('requestedBy', newImaging.getUserName());
-            this.set('requestedDate', new Date());            
-            if (this.get('newImagingType')) {
-                return new Ember.RSVP.Promise(function(resolve, reject) {
-                    var newPricing = this.store.createRecord('pricing', {
-                        name: this.get('imagingTypeName'),
-                        category: 'Imaging'
-                    });
-                    newPricing.save().then(function() {
-                        this.get('pricingList').addObject({
-                            _id: 'pricing_'+ newPricing.get('id'),
-                            name: newPricing.get('name')
-                        });
-                        this.set('imagingType', newPricing);
-                        this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(resolve, reject);
-                    }.bind(this), reject);
-                }.bind(this));
-            } else {
-                return this.addChildToVisit(newImaging, 'imaging', 'Imaging');
-            }
-        } else {
-            if (this.get('isCompleting')) {
+    actions: {
+        completeImaging: function() {
+            this.set('status', 'Completed');
+            this.get('model').validate();
+            if (this.get('isValid')) {
                 this.set('imagingDate', new Date());
-                this.set('status', 'Completed');
+                this.send('update');
             }
-            return Ember.RSVP.resolve();
-        }
+        },
+
+        /**
+         * Save the imaging request(s), creating multiples when user selects multiple imaging tests.
+         */
+        update: function() {
+            if (this.get('isNew')) {
+                var newImaging = this.get('model'),
+                    selectedImagingType = this.get('selectedImagingType');
+                    if (Ember.isEmpty(this.get('status'))) {
+                        this.set('status', 'Requested');
+                    }
+                    this.set('requestedBy', newImaging.getUserName());
+                    this.set('requestedDate', new Date());
+                if (Ember.isEmpty(selectedImagingType)) {
+                    this.saveNewPricing(this.get('imagingTypeName'), 'Imaging','imagingType').then(function() {
+                        this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(function() {
+                            this.saveModel();
+                        }.bind(this));
+                    }.bind(this));
+                } else {
+                    this.getSelectedPricing('selectedImagingType').then(function(pricingRecords) {
+                        if (Ember.isArray(pricingRecords)) {
+                            this.createMultipleRequests(pricingRecords, 'imagingType','imaging', 'Imaging');
+                        } else {
+                            this.set('imagingType', pricingRecords);
+                            this.addChildToVisit(newImaging, 'imaging', 'Imaging').then(function() {
+                                this.saveModel();
+                            }.bind(this));
+                        }
+                    }.bind(this));
+                }
+            } else {
+               this.saveModel();
+            }
+        } 
     },
     
-    updateButtonText: function() {
-        if (this.get('isCompleting')) {
-            return 'Complete';
-        } else if (this.get('isNew')) {
-            return 'Add';
-        } else {
-            return 'Update';
+    additionalButtons: function() {
+        var canComplete = this.get('canComplete'),
+            isValid = this.get('isValid');
+        if (isValid && canComplete) {
+            return [{
+                buttonAction: 'completeImaging',
+                buttonIcon: 'glyphicon glyphicon-ok',
+                class: 'btn btn-primary on-white',
+                buttonText: 'Complete'
+            }];
         }
-    }.property('isNew', 'isCompleting'),
-
+    }.property('canComplete', 'isValid'),
+    
+    lookupListsToUpdate: [{
+        name: 'radiologistList',
+        property: 'radiologist',
+        id: 'radiologists'
+    }],
+    
+    pricingTypeForObjectType: 'Imaging Procedure',
+    pricingTypes: Ember.computed.alias('controllers.imaging.imagingPricingTypes'),
+    
+    pricingList: null, //This gets filled in by the route
+    
+    radiologistList: Ember.computed.alias('controllers.imaging.radiologistList'),
+    
+    updateCapability: 'add_imaging',    
+    
+    afterUpdate: function(saveResponse, multipleRecords) {
+        this.updateLookupLists();
+        var afterDialogAction,
+            alertTitle,
+            alertMessage;
+        if (this.get('status') === 'Completed') {
+            alertTitle = 'Imaging Request Completed';
+            alertMessage = 'The imaging request has been completed.';
+        } else {
+            alertTitle = 'Imaging Request Saved';
+            alertMessage = 'The imaging request has been saved.';
+        }
+        if (multipleRecords) {
+            afterDialogAction = 'allItems';
+        }
+        this.saveVisitIfNeeded(alertTitle, alertMessage, afterDialogAction);
+        this.set('selectPatient', false);
+    }
+    
 });

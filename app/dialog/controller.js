@@ -15,6 +15,10 @@ export default Ember.ObjectController.extend({
         }, 
         
         ok: function() {
+            var okAction = this.get('okAction');
+            if (!Ember.isEmpty(okAction)) {
+                this.send(okAction, this.get('model'));
+            }
             this.send('closeModal');
         }
     }

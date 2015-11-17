@@ -4,5 +4,11 @@ export default AbstractIndexRoute.extend({
     pageTitle: 'Lookup Lists',
     model: function() {
         return this.store.find('lookup');
+    },
+        
+    actions: {
+        refreshLookupLists: function() {
+            this.refresh();            
+        }
     }
 });

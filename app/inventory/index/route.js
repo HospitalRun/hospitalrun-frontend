@@ -13,7 +13,7 @@ export default AbstractIndexRoute.extend(UserSession, {
     pageTitle: 'Requests',
     
     _getStartKeyFromItem: function(item) {
-        return ['Requested',,'inv-request_'+item.get('id')];
+        return ['Requested',null,'inv-request_'+item.get('id')];
     },
     
     _modelQueryParams: function() {

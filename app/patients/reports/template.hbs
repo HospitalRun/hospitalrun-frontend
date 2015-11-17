@@ -2,16 +2,25 @@
     <div class="panel-body">
         {{#em-form model=this submit_button=false }}
             <div class="row">
-                {{em-select class="col-xs-3" label="Report Type" 
+                {{em-select class="col-xs-6" label="Report Type" 
                     property="reportType" content=reportTypes
                     optionValuePath="content.value" optionLabelPath="content.name"
                     selected=reportType
                 }}
             </div>
-            <div class="row">
-                {{date-picker property="startDate" label="Start Date" class="col-sm-4"}}
-                {{date-picker property="endDate" label="End Date" class="col-sm-4"}}
-            </div>
+            {{#if isStatusReport}}
+                {{em-select property="status" label="Patient Status" 
+                    content=statusList.value 
+                    optionValuePath="content" 
+                    optionLabelPath="content" 
+                    prompt=" "
+                }}
+            {{else}}
+                <div class="row">
+                    {{date-picker property="startDate" label="Start Date" class="col-sm-4"}}
+                    {{date-picker property="endDate" label="End Date" class="col-sm-4"}}
+                </div>        
+            {{/if}}
             {{#if isVisitReport}}
                 <div class="row">
                     {{em-select class="col-sm-6" label="Visit Type" 
@@ -38,8 +47,10 @@
                     }}
                 </div>
                 <div class="row">
-                    <div class="form-group col-xs-12">
-                        {{icd10-typeahead property="diagnosis" label="Diagnosis"}}
+                    <div class="form-group col-xs-12">                        
+                        {{select-or-typeahead property="diagnosis" 
+                            label="Diagnosis" list=diagnosisList 
+                        }} 
                     </div>
                 </div>        
 
@@ -77,8 +88,8 @@
 </div>
 {{#if showReportResults}}
     <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">{{reportTitle}}</h3>
+        <div class="panel-heading">            
+            <h3 class="panel-title">{{reportTitle}}{{partial 'paging'}}</h3>
         </div>
         <div class="panel-body">
             <table class="table">
@@ -89,13 +100,7 @@
                         </th>
                     {{/each}}
                 </tr>
-                {{#each reportRows}}
-                    <tr>
-                        {{#each this}}
-                            <td>{{this}}</td>
-                        {{/each}}
-                    </tr>
-                {{/each}}
+                {{partial "report-rows"}}                
             </table>
         </div>
         <div class="panel-footer">

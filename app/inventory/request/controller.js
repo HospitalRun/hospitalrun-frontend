@@ -1,8 +1,10 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import FulfillRequest from 'hospitalrun/mixins/fulfill-request'; 
+import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; //inventory-locations mixin is needed for fulfill-request mixin!
 import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import Ember from 'ember';
 
-export default AbstractEditController.extend(InventorySelection, {    
+export default AbstractEditController.extend(FulfillRequest, InventoryLocations, InventorySelection, {    
     needs: ['inventory','pouchdb'],
     
     cancelAction: 'allRequests',
@@ -14,10 +16,7 @@ export default AbstractEditController.extend(InventorySelection, {
     inventoryList: function() {
         var inventoryItems = this.get('inventoryItems');
         if (!Ember.isEmpty(inventoryItems)) {
-            var filteredItems = inventoryItems.filter(function(item) {
-                return item.doc.type !== 'Asset';
-            });
-            var mappedItems = filteredItems.map(function(item) {
+            var mappedItems = inventoryItems.map(function(item) {
                 return item.doc;
             });
             return mappedItems;
@@ -37,10 +36,11 @@ export default AbstractEditController.extend(InventorySelection, {
         property: 'deliveryLocation', //Corresponding property on model that potentially contains a new value to add to the list
         id: 'warehouse_list' //Id of the lookup list to update
     }],
-    
+
     canFulfill: function() {
-        return this.currentUserCan('fulfill_inventory');
-    }.property(),
+        var requestedItems = this.get('requestedItems');
+        return Ember.isEmpty(requestedItems) && this.currentUserCan('fulfill_inventory');
+    }.property('requestedItems.@each'),
 
     isFulfilling: function() {
         var canFulfill = this.get('canFulfill'),
@@ -53,6 +53,20 @@ export default AbstractEditController.extend(InventorySelection, {
         var status = this.get('status');
         return (status === 'Requested');
     }.property('status'),
+    
+    quantityLabel: function() {
+        var selectedInventoryItem = this.get('selectedInventoryItem');
+        if (Ember.isEmpty(selectedInventoryItem)) {
+            return 'Quantity';
+        } else {
+            return 'Quantity (%@)'.fmt(selectedInventoryItem.distributionUnit);
+        }
+    }.property('selectedInventoryItem'),
+    
+    showRequestedItems: function() {
+        var requestedItems = this.get('requestedItems');
+        return !Ember.isEmpty(requestedItems);
+    }.property('requestedItems.@each'),
     
     updateViaFulfillRequest: false,
     
@@ -81,8 +95,43 @@ export default AbstractEditController.extend(InventorySelection, {
     updateCapability: 'add_inventory_request',
     
     actions: {
+        addInventoryItem: function() {
+            var inventoryItem = this.get('inventoryItem'),
+                model = this.get('model'),
+                requestedItems = this.get('requestedItems'),
+                quantity = this.get('quantity');
+            model.validate();
+            if (this.get('isValid') && !Ember.isEmpty(inventoryItem) && !Ember.isEmpty(quantity)) {
+                var requestedItem = Ember.Object.create({
+                    item: inventoryItem.get('content'),
+                    quantity: quantity
+                });
+                requestedItems.addObject(requestedItem);
+                this.set('inventoryItem');
+                this.set('inventoryItemTypeAhead');
+                this.set('quantity');
+                this.set('selectedInventoryItem');
+            }
+        },
+        
         allRequests: function() {
             this.transitionToRoute('inventory.index');
+        },
+        
+        removeItem: function(removeInfo) {
+            var requestedItems = this.get('requestedItems'),
+                item = removeInfo.itemToRemove;
+            requestedItems.removeObject(item);
+            this.send('closeModal');
+        },        
+        
+        showRemoveItem: function(item) {
+           var message= 'Are you sure you want to remove this item from this request?',
+                model = Ember.Object.create({
+                    itemToRemove: item               
+                }),
+                title = 'Remove Payment';
+            this.displayConfirm(title, message, 'removeItem', model);            
         },
         
         /**
@@ -95,22 +144,62 @@ export default AbstractEditController.extend(InventorySelection, {
                 var updateViaFulfillRequest = this.get('updateViaFulfillRequest');
                 if (updateViaFulfillRequest) {
                     this.updateLookupLists();
-                    this.send('fulfillRequest', this.get('model'));
+                    this.performFulfillRequest(this.get('model')).then(this.afterUpdate.bind(this));
                 } else {
-                    this.get('model').save().then(function(record){
-                        this.updateLookupLists();
-                        if (!skipAfterUpdate) {
-                            this.afterUpdate(record);
+                    var isNew = this.get('isNew'),
+                        requestedItems = this.get('requestedItems');
+                    if (isNew && !Ember.isEmpty(requestedItems)) {
+                        var baseModel = this.get('model'),
+                            propertiesToCopy = baseModel.getProperties([
+                                'dateRequested',
+                                'deliveryAisle', 
+                                'deliveryLocation', 
+                                'expenseAccount',
+                                'requestedBy',
+                                'status'
+                            ]),
+                            inventoryPromises = [],
+                            newModels = [],
+                            savePromises = [];
+                        if (!Ember.isEmpty(this.get('inventoryItem')) && !Ember.isEmpty(this.get('quantity'))) {
+                            savePromises.push(baseModel.save());
                         }
-
-                    }.bind(this));
+                        requestedItems.forEach(function(requestedItem) {     
+                            propertiesToCopy.inventoryItem = requestedItem.get('item');
+                            propertiesToCopy.quantity = requestedItem.get('quantity');
+                            var modelToSave = this.get('store').createRecord('inv-request', propertiesToCopy);
+                            inventoryPromises.push(modelToSave.get('inventoryItem'));
+                            newModels.push(modelToSave);
+                        }.bind(this));
+                        Ember.RSVP.all(inventoryPromises,'Get inventory items for inventory requests').then(function(){
+                            newModels.forEach(function(newModel) {
+                                savePromises.push(newModel.save());
+                            });
+                            Ember.RSVP.all(savePromises,'Save batch inventory requests').then(function(){
+                                this.updateLookupLists();                            
+                                this.afterUpdate();                            
+                            }.bind(this));
+                        }.bind(this));
+                    } else {
+                        this.get('model').save().then(function(record){
+                            this.updateLookupLists();
+                            if (!skipAfterUpdate) {
+                                this.afterUpdate(record);
+                            }
+                        }.bind(this));
+                    }
                 }
             }.bind(this));
         }
     },
     
-    afterUpdate: function() {        
-        this.send('allRequests');
+    afterUpdate: function() {
+        var updateViaFulfillRequest = this.get('updateViaFulfillRequest');
+        if (updateViaFulfillRequest) {
+            this.displayAlert('Request Fulfilled', 'The inventory request has been fulfilled.', 'allRequests');
+        } else {
+            this.displayAlert('Request Updated', 'The inventory request has been updated.');
+        }
     }, 
 
     beforeUpdate: function() {

@@ -8,6 +8,7 @@ export default AbstractModel.extend({
     medication: DS.belongsTo('inventory'),
     pricingItem: DS.belongsTo('pricing'),    
     quantity: DS.attr('number'),
+    dateCharged: DS.attr('date'),
     
     medicationCharge: function() {
         var medication = this.get('medication'),

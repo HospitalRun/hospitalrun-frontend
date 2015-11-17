@@ -1,6 +1,8 @@
 import Ember from "ember";
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
-export default Ember.Route.extend(PouchDbMixin, Ember.SimpleAuth.AuthenticatedRouteMixin, {
+import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
+export default Ember.Route.extend(PouchDbMixin, ProgressDialog, Ember.SimpleAuth.AuthenticatedRouteMixin, {
+    filterParams: null,
     firstKey: null,
     hideNewButton: false,
     itemsPerPage: 25,
@@ -17,14 +19,25 @@ export default Ember.Route.extend(PouchDbMixin, Ember.SimpleAuth.AuthenticatedRo
         }
     }.property('modelName'),
     
+    _getFilterParams: function(params) {
+        var filterByList = [],
+            filterParams = this.get('filterParams');
+        if (!Ember.isEmpty(filterParams)) {
+            filterParams.forEach(function(paramName) {
+                if (!Ember.isEmpty(params[paramName])) {
+                    filterByList.push({
+                        name: paramName,
+                        value: params[paramName]
+                    });                                                
+                }
+            });
+        }
+        return filterByList;
+    },
+    
     _getStartKeyFromItem: function(item) {
         var modelName = this.get('modelName');
         return modelName+'_'+item.get('id');
-    },
-    
-    _getEndKey: function() {
-        var modelName = this.get('modelName');
-        return modelName+'_\uffff';
     },
     
     _modelQueryParams: function() {
@@ -33,18 +46,25 @@ export default Ember.Route.extend(PouchDbMixin, Ember.SimpleAuth.AuthenticatedRo
     
     model: function(params) {
         return new Ember.RSVP.Promise(function(resolve, reject){
-            var modelName = this.get('modelName'),
+            var filterParams = this._getFilterParams(params),
+                modelName = this.get('modelName'),
                 itemsPerPage = this.get('itemsPerPage'),
                 queryParams = this._modelQueryParams(params);
+            if (!Ember.isEmpty(params.sortKey)) {
+                queryParams.sortKey = params.sortKey;
+                if (!Ember.isEmpty(params.sortDesc)) {
+                    queryParams.sortDesc = params.sortDesc;
+                }                
+            }
+            if (!Ember.isEmpty(filterParams)) {
+                queryParams.filterBy = filterParams;
+            }
             if (Ember.isEmpty(queryParams.options)) {
                 queryParams.options = {};
             }
             queryParams.options.limit = itemsPerPage + 1;
             if (!Ember.isEmpty(params.startKey)) {
                 queryParams.options.startkey = params.startKey;
-            }
-            if (queryParams.options.startkey && !queryParams.options.endkey) {
-                queryParams.options.endkey = this._getEndKey();
             }
             this.store.find(modelName, queryParams).then(function(model) {
                 if (model.get('length') > 0) {
@@ -62,6 +82,8 @@ export default Ember.Route.extend(PouchDbMixin, Ember.SimpleAuth.AuthenticatedRo
     },
     
     queryParams: {
+        sortDesc: {refreshModel: true},
+        sortKey: {refreshModel: true},
         startKey: {refreshModel: true}
     },
     
@@ -83,6 +105,7 @@ export default Ember.Route.extend(PouchDbMixin, Ember.SimpleAuth.AuthenticatedRo
             sectionDetails.newButtonText = this.get('newButtonText');
         }
         this.send('setSectionHeader', sectionDetails);
+        this.closeProgressModal();
         this._super(controller, model);
     }
 });

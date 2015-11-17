@@ -1,5 +1,6 @@
 import Ember from "ember";
-export default Ember.Mixin.create({
+import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
+export default Ember.Mixin.create(PouchDbMixin, {
     idPrefix: null,
     
     _createId: function(patientSequence) {
@@ -13,24 +14,37 @@ export default Ember.Mixin.create({
         return newId;
     },
     
-    _findUnusedId: function(patientSequence, patientSequenceRecord, resolve, reject) {
-        patientSequence++;
-        var newId = this._createId(patientSequence);
-        
-        this.store.find('patient',newId).then(function() {
-            this._findUnusedId(patientSequence, patientSequenceRecord, resolve, reject);
-        }.bind(this), function(err) {
-            console.log("GOT ERR", err);
-            if (Ember.isEmpty(patientSequenceRecord)) {
-                patientSequenceRecord = this.store.createRecord('config', {
-                    id: 'patient_sequence'
-                });
+    _findUnusedId: function(patientSequenceRecord, resolve, reject) {
+        var patientSequence = patientSequenceRecord.incrementProperty('value'),
+            maxValue = this.get('maxValue'),
+            newId = this._createId(patientSequence),
+            queryParams = {
+                startkey: [newId,null],
+                endkey: [newId, maxValue],    
+            },
+            pouchdbController = this._getPouchDBController();
+        pouchdbController.queryMainDB(queryParams, 'patient_by_display_id').then(function(foundRecord) {
+            if (!Ember.isEmpty(foundRecord.rows)) {
+                this._findUnusedId(patientSequenceRecord, resolve, reject);
+            } else {
+                patientSequenceRecord.set('value', patientSequence);
+                patientSequenceRecord.save().then(function() {
+                    resolve(newId);
+                }, reject);
             }
-            patientSequenceRecord.set('value', patientSequence);
-            patientSequenceRecord.save().then(function() {
-                resolve(newId);
-            }, reject);                    
-        }.bind(this));
+        }.bind(this), reject);
+    },
+    
+    /**
+     * Since this mixin is used by both routes and controllers, try to get the pouchdb controller from the controllers property; 
+     * otherwise use controllerFor.
+     */ 
+    _getPouchDBController: function() {
+        var pouchDBController = this.get('controllers.pouchdb');
+        if (Ember.isEmpty(pouchDBController)) {
+            pouchDBController =  this.controllerFor('pouchdb');
+        }
+        return pouchDBController;
     },
     
     /**
@@ -38,17 +52,28 @@ export default Ember.Mixin.create({
      * @return a generated id;default is null which means that an
      * id will be automatically generated via Ember data.
      */
-    generateId: function() {
+    generateFriendlyId: function(configs) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            var configs = this.modelFor('application'),
-                sessionVars = this.get('session').store.restore(),
-                patientSequence = 0,
-                patientSequenceRecord = configs.findBy('id','patient_sequence');
-            this.set('idPrefix', sessionVars.prefix+'_');
-            if (!Ember.isEmpty(patientSequenceRecord)) {
-                patientSequence = patientSequenceRecord.get('value');
+            var idPrefix = 'P',
+                idPrefixRecord;
+            if (Ember.isEmpty(configs)) {
+                 configs = this.modelFor('application');
             }
-            this._findUnusedId(patientSequence, patientSequenceRecord, resolve, reject);
+             idPrefixRecord = configs.findBy('id','patient_id_prefix');
+            if (!Ember.isEmpty(idPrefixRecord)) {
+                idPrefix = idPrefixRecord.get('value');
+            }
+            this.set('idPrefix', idPrefix);
+            
+            this.store.find('sequence', 'patient').then(function(sequence) {
+                this._findUnusedId(sequence, resolve, reject);
+            }.bind(this), function() {
+                var newSequence = this.get('store').push('sequence',{
+                    id: 'patient',
+                    value: 0
+                });
+                this._findUnusedId(newSequence, resolve, reject);
+            }.bind(this));
         }.bind(this));
     }
 });

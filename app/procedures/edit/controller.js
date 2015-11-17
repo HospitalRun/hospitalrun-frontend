@@ -5,19 +5,19 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     needs: ['visits','visits/edit','pouchdb'],
-        
-    cancelAction: 'returnToVisit',
+
     canAddProcedure: function() {        
         return this.currentUserCan('add_procedure');
     }.property(),
     
-    canAddCharge: function() {        
-        return this.currentUserCan('add_charge');
-    }.property(),
+    chargePricingCategory: 'Procedure',
+    chargeRoute: 'procedures.charge',
     
     anesthesiaTypes: Ember.computed.alias('controllers.visits.anesthesiaTypes'),
     anesthesiologistList: Ember.computed.alias('controllers.visits.anesthesiologistList'),
+    cptCodeList: Ember.computed.alias('controllers.visits.cptCodeList'),
     physicianList: Ember.computed.alias('controllers.visits.physicianList'),
+    procedureList: Ember.computed.alias('controllers.visits.procedureList'),
     procedureLocations: Ember.computed.alias('controllers.visits.procedureLocations'),
     lookupListsToUpdate: [{
         name: 'anesthesiaTypes',
@@ -28,6 +28,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         property: 'anesthesiologist',
         id: 'anesthesiologists'
     }, {
+        name: 'cptCodeList',
+        property: 'cptCode',
+        id: 'cpt_code_list'
+    }, {
         name: 'physicianList',
         property: 'assistant',
         id: 'physician_list'
@@ -36,15 +40,18 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         property: 'physician',
         id: 'physician_list'
     }, {
+        name: 'procedureList',
+        property: 'description',
+        id: 'procedure_list'
+    }, {
         name: 'procedureLocations',
         property: 'location',
         id: 'procedure_locations'
     }],
     
     editController: Ember.computed.alias('controllers.visits/edit'),
-    visitProcedures: Ember.computed.alias('visit.procedures'),
-    
     pricingList: null, //This gets filled in by the route
+    pricingTypes: Ember.computed.alias('controllers.visits.procedurePricingTypes'),
     newProcedure: false,
     
     title: function() {
@@ -55,15 +62,12 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         return 'Edit Procedure';
 	}.property('isNew'),
     
-    billingIdChanged: function() {
-        this.get('model').validate();
-    }.observes('billingId'),
-    
     updateCapability: 'add_charge',
     
     actions: {
         showAddMedication: function() {
             var newCharge = this.get('store').createRecord('proc-charge',{
+                dateCharged: new Date(),
                 newMedicationCharge: true,
                 quantity: 1
             });
@@ -87,23 +91,20 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     },
     
     beforeUpdate: function() {
-        if (this.get('isNew')) {
-            this.set('newProcedure', true);         
-        }
-        return Ember.RSVP.Promise.resolve();
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            this.updateCharges().then(function() {
+                if (this.get('isNew')) {
+                    this.addChildToVisit(this.get('model'), 'procedures').then(resolve, reject);
+                } else {
+                    resolve();
+                }
+            }.bind(this), reject);
+        }.bind(this));
     },
     
-    afterUpdate: function(procedure) {
+    afterUpdate: function() {
         var alertTitle = 'Procedure Saved',
             alertMessage = 'The procedure record has been saved.';
-        if (this.get('newProcedure')) {
-            this.get('visitProcedures').then(function(list) {
-                list.addObject(procedure);
-                this.get('editController').send('update');
-                this.displayAlert(alertTitle, alertMessage);                
-            }.bind(this));            
-        } else {
-            this.displayAlert(alertTitle, alertMessage);
-        }
+        this.saveVisitIfNeeded(alertTitle, alertMessage);
     }
 });

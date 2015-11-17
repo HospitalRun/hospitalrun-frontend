@@ -14,7 +14,7 @@ var InventoryPurchaseItem = AbstractModel.extend(LocationName, {
     costPerUnit: function() {
         var purchaseCost = this.get('purchaseCost'),
             quantity = parseInt(this.get('originalQuantity'));
-        if (Ember.isEmpty(purchaseCost) || Ember.isEmpty(quantity)) {
+        if (Ember.isEmpty(purchaseCost) || Ember.isEmpty(quantity) || purchaseCost === 0 || quantity === 0) {
             return 0;
         }
         return Number((purchaseCost/quantity).toFixed(2));
@@ -30,6 +30,7 @@ var InventoryPurchaseItem = AbstractModel.extend(LocationName, {
     vendor: DS.attr('string'),
     vendorItemNo: DS.attr('string'),
     distributionUnit: DS.attr('string'),
+    invoiceNo: DS.attr('string'),
     quantityGroups: DS.attr(),
     validations: {
         purchaseCost: {
@@ -37,6 +38,9 @@ var InventoryPurchaseItem = AbstractModel.extend(LocationName, {
         },
         originalQuantity: {
             numericality: true
+        },
+        vendor: {
+            presence: true
         }
     }
 });

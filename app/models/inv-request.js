@@ -15,7 +15,7 @@ var InventoryRequest = AbstractModel.extend(LocationName, {
     expenseAccount: DS.attr('string'),
     inventoryItem: DS.belongsTo('inventory', { async: true }),
     locationsAffected: DS.attr(),
-    markAsConsumed: DS.attr('boolean'),
+    markAsConsumed: DS.attr('boolean', { defaultValue:true }),
     patient: DS.belongsTo('patient'),
     purchasesAffected: DS.attr(),
     quantity: DS.attr('number'),
@@ -42,14 +42,15 @@ var InventoryRequest = AbstractModel.extend(LocationName, {
                     }
                     var itemName = object.get('inventoryItem.name'),
                         itemTypeAhead = object.get('inventoryItemTypeAhead'),
+                        requestedItems = object.get('requestedItems'),
                         status = object.get('status');
                     if (status === 'Requested') {
                         //Requested items don't show the type ahead and therefore don't need validation.
                         return false;
                     }
                     if (Ember.isEmpty(itemName) || Ember.isEmpty(itemTypeAhead)) {
-                        //force validation to fail
-                        return true;
+                        //force validation to fail if fields are empty and requested items are empty
+                        return Ember.isEmpty(requestedItems);
                     } else {
                         var typeAheadName = itemTypeAhead.substr(0, itemName.length);
                         if (itemName !== typeAheadName) {
@@ -66,6 +67,10 @@ var InventoryRequest = AbstractModel.extend(LocationName, {
         quantity: {
             numericality: {
                 greaterThan: 0,
+                if: function(object) {
+                    var requestedItems = object.get('requestedItems');
+                    return (Ember.isEmpty(requestedItems));
+                }
             },
             acceptance: {
                 accept: true,
@@ -74,7 +79,10 @@ var InventoryRequest = AbstractModel.extend(LocationName, {
                             requestQuantity = parseInt(object.get('quantity')),
                             transactionType = object.get('transactionType'),
                             quantityToCompare = null;
-                        if (isNew && transactionType === 'Request') {
+                        if (transactionType === 'Return') {
+                            //no validation needed for returns
+                            return false;
+                        } else if (isNew && transactionType === 'Request') {
                             quantityToCompare = object.get('inventoryItem.quantity');
                         } else { 
                             quantityToCompare = object.get('inventoryLocation.quantity');

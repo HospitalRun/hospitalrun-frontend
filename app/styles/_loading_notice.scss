@@ -1,0 +1,92 @@
+// Loading notice styles
+// ------------------------------------------
+
+.loading-notice {
+    text-align: center;
+    margin: 0 auto;
+    position: absolute;
+    height: 100%;
+    width: calc(100% - 275px);
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 99;
+
+    .wrapper {
+        width: 140px;
+        border-radius: 10px;
+        background-color: $blue_light3;
+        padding: 20px;
+        margin: 0 auto;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    &.apploading {
+        width: 100%;
+        left: 0;
+    }
+
+    .loading-text {
+        text-transform: uppercase;
+        font-weight: 300;
+        letter-spacing: 2px;
+        margin-bottom: 0;
+        color: $navy_drk2;
+    }
+
+    // adapted from @tobiasahlin's spinkit: http://tobiasahlin.com/spinkit/
+    .spinner {
+        width: 50px;
+        margin: 0 auto 10px;
+        height: 40px;
+        text-align: center;
+        font-size: 10px;
+
+        > div {
+            background-color: $green;
+            height: 100%;
+            width: 6px;
+            display: inline-block;
+            margin-left: 3px;
+            border-radius: 50px;
+            -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+            animation: stretchdelay 1.2s infinite ease-in-out;
+
+            &:first-child { margin-left: 0; }
+        }
+
+        .rect2 {
+            -webkit-animation-delay: -1.1s;
+            animation-delay: -1.1s;
+        }
+        .rect3 {
+            -webkit-animation-delay: -1.0s;
+            animation-delay: -1.0s;
+        }
+        .rect4 {
+            -webkit-animation-delay: -0.9s;
+            animation-delay: -0.9s;
+        }
+        .rect5 {
+            -webkit-animation-delay: -0.8s;
+            animation-delay: -0.8s;
+        }
+    }
+}
+
+@-webkit-keyframes stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes stretchdelay {
+  0%, 40%, 100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% {
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
+  }
+}

@@ -24,3 +24,5 @@ nbproject/project.xml
 
 *.sublime-workspace
 server/config.js
+.brackets.json
+/app/nbproject/private/

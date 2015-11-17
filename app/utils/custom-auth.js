@@ -92,7 +92,12 @@ export default Ember.SimpleAuth.Authenticators.Base.extend({
                 Ember.run(function() {
                     response.name = data.name;
                     response.expires_at = this._absolutizeExpirationTime(600);
-                    this._checkUser(response, resolve, reject);
+                    this._checkUser(response, function(user) {
+                        var pouchDBController = this.get('pouchDBController');
+                        pouchDBController.setupMainDB({}).then(function() {
+                            resolve(user);
+                        }, reject);
+                    }.bind(this), reject);
                 }.bind(this));
             }.bind(this), function(xhr) {
                 Ember.run(function() {

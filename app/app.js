@@ -13,7 +13,7 @@ var App = Ember.Application.extend({
 
 loadInitializers(App, config.modulePrefix);
 
-window.onerror = function(errorMsg, url, lineNumber, colno, error) {
+/*window.onerror = function(errorMsg, url, lineNumber, colno, error) {
     var errorMessage = "Error Occurred: "+errorMsg;
     if (url) {
         errorMessage += "; url:"+url;
@@ -28,6 +28,6 @@ window.onerror = function(errorMsg, url, lineNumber, colno, error) {
         errorMessage += "; stack:"+error.stack;
     }
     console.log("UNCAUGHT ERROR IN APPLICATION: "+errorMessage);
-};
+};*/
 
 export default App;

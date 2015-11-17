@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import PatientName from 'hospitalrun/mixins/patient-name';
 import TypeAhead from "hospitalrun/components/type-ahead";
 export default TypeAhead.extend(PatientName, {
@@ -8,7 +9,7 @@ export default TypeAhead.extend(PatientName, {
     _mapPatient: function(item) {
         var returnObj = {};
         item.doc.id = item.id.substr(8);
-        returnObj.name = '%@ - %@'.fmt(this.getPatientDisplayName(item.doc), item.doc.id);
+        returnObj.name = '%@ - %@'.fmt(this.getPatientDisplayName(item.doc), this.getPatientDisplayId(item.doc));
         returnObj[this.get('selectionKey')] = item.doc;
         return returnObj;
     },
@@ -18,7 +19,9 @@ export default TypeAhead.extend(PatientName, {
             content = this.get('content');
         if (bloodhound) {
             bloodhound.clear();
-            bloodhound.add(content.map(this._mapPatient.bind(this)));
+            if (!Ember.isEmpty(content)) {
+                bloodhound.add(content.map(this._mapPatient.bind(this)));
+            }
         }        
     }.observes('content.[]'),
     

@@ -1,13 +1,17 @@
 import Ember from 'ember';
+import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default Ember.ArrayController.extend(UserSession, {
+export default Ember.ArrayController.extend(ProgressDialog, UserSession, {
     addPermission: null,
     deletePermission: null,
     nextStartKey: null,
     previousStartKey: null,
     previousStartKeys: [],
-    queryParams: ['startKey'],
-    limit: 10,
+    progressMessage: 'Loading Records.  Please wait...',
+    progressTitle: 'Loading',    
+    queryParams: ['startKey', 'sortKey', 'sortDesc'],
+    sortDesc: false,
+    sortKey: null,
     
     canAdd: function() {        
         return this.currentUserCan(this.get('addPermission'));
@@ -46,6 +50,7 @@ export default Ember.ArrayController.extend(UserSession, {
             this.set('previousStartKey', firstKey);
             previousStartKeys.push(firstKey);
             this.set('startKey',key);
+            this.showProgressModal();
         },
         previousPage: function() {
             var key = this.get('previousStartKey'),
@@ -54,7 +59,17 @@ export default Ember.ArrayController.extend(UserSession, {
             this.set('startKey',key);
             this.set('previousStartKey', previousStartKeys.pop());
             this.set('previousStartKeys', previousStartKeys);
-            
+            this.showProgressModal();  
+        },
+        sortByKey: function(sortKey, sortDesc) {
+            this.setProperties({
+                previousStartKey: null,
+                previousStartKeys: [],
+                sortDesc: sortDesc,
+                sortKey: sortKey,                
+                startKey: null
+            });            
+            this.showProgressModal();
         }
     }
 });

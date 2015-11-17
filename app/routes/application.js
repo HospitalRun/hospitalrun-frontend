@@ -9,7 +9,7 @@ var ApplicationRoute = Ember.Route.extend(Ember.SimpleAuth.ApplicationRouteMixin
             } else {
                 this._super();
             }
-        }        
+        }
     },
 
     model: function() {

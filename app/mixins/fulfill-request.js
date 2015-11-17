@@ -2,7 +2,17 @@ import Ember from "ember";
 //NOTE!!! inventory-locations mixin is needed for fulfill-request mixin!
 export default Ember.Mixin.create({
     actions: {
+        doneFulfillRequest: function() {
+            //Placeholder function; override if you need to know when fulfillrequest is complete.    
+        },
+        
         fulfillRequest: function(request, closeModal, increment, skipTransition) {
+            this.performFulfillRequest(request, closeModal, increment, skipTransition);
+        }
+    },
+    
+    performFulfillRequest: function(request, closeModal, increment, skipTransition) {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
             var markAsConsumed = request.get('markAsConsumed'),
                 transactionType = request.get('transactionType');
             if (transactionType === 'Request') {
@@ -16,16 +26,18 @@ export default Ember.Mixin.create({
                     }
                     this._performFulfillment(request, inventoryItem, increment).then(function() {
                         this._finishFulfillRequest(request, inventoryItem, closeModal, increment, skipTransition);
-                    }.bind(this));
+                        resolve();
+                    }.bind(this), reject);
                 } else {
                     request.set('adjustPurchases', false);
                     if (Ember.isEmpty(transactionType)) {
                         request.set('transactionType', 'Transfer');
                     }
                     this._finishFulfillRequest(request, inventoryItem, closeModal, increment, skipTransition);
+                    resolve();
                 }
-            }.bind(this));
-        }
+            }.bind(this), reject);
+        }.bind(this));
     },
     
     /**
@@ -36,7 +48,7 @@ export default Ember.Mixin.create({
             costPerUnit,
             requestPurchases = [],
             quantityOnHand = item.get('quantity'),
-            quantityRequested = request.get('quantity'),
+            quantityRequested = parseInt(request.get('quantity')),
             quantityNeeded = quantityRequested,
             purchaseInfo = [],
             totalCost = 0;
@@ -166,11 +178,12 @@ export default Ember.Mixin.create({
         request.set('completedBy', request.getUserName());
         promises.push(request.save());
         Ember.RSVP.all(promises,'All saving done for inventory fulfillment').then(function(){
+            this.send('doneFulfillRequest');
             if (closeModal) {
                 this.send('closeModal');
             }
             if (!skipTransition) {
-                this.transitionTo('inventory.completed');
+                this.transitionTo('inventory.request');
             }
         }.bind(this));
     },

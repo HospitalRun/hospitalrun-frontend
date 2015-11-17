@@ -1,45 +1,127 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from "ember";
+import FulfillRequest from 'hospitalrun/mixins/fulfill-request'; 
+import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; //inventory-locations mixin is needed for fulfill-request mixin!
 import InventorySelection from 'hospitalrun/mixins/inventory-selection';
+import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from "hospitalrun/mixins/user-session";
 
-export default AbstractEditController.extend(InventorySelection, PatientSubmodule, UserSession, {    
-    needs: ['medication','pouchdb'],
-
+export default AbstractEditController.extend(InventorySelection, FulfillRequest, InventoryLocations, PatientId, PatientSubmodule, UserSession, {    
+    needs: ['application','medication','pouchdb'],    
+    
+    applicationConfigs: Ember.computed.alias('controllers.application.model'),
+    expenseAccountList: Ember.computed.alias('controllers.medication.expenseAccountList'),
+    
     canFulfill: function() {
         return this.currentUserCan('fulfill_medication');
     }.property(),
-
-    durationTypes: [
-        'Days',
-        'Weeks'
-    ],
+    
+    isFulfilled: function() {
+        var status = this.get('status');
+        return (status === 'Fulfilled');
+    }.property('status'),
     
     isFulfilling: function() {
         var canFulfill = this.get('canFulfill'),
             isRequested = this.get('isRequested'),
-            fulfillRequest = this.get('shouldFulfillRequest');
-        return canFulfill && (isRequested || fulfillRequest);
+            fulfillRequest = this.get('shouldFulfillRequest'),
+            isFulfilling = canFulfill && (isRequested || fulfillRequest);
+        this.get('model').set('isFulfilling', isFulfilling);
+        return isFulfilling;
     }.property('canFulfill','isRequested', 'shouldFulfillRequest'),
-
-    isRequested: function() {
-        var status = this.get('status');
-        return (status === 'Requested');
-    }.property('status'),
-
-    lookupListsToUpdate: [{
-        name: 'medicationFrequencyList', //Name of property containing lookup list
-        property: 'frequency', //Corresponding property on model that potentially contains a new value to add to the list
-        id: 'medication_frequency' //Id of the lookup list to update
-    }],
+    
+    isFulfilledOrRequested: function() {
+        return (this.get('isFulfilled') || this.get('isRequested'));
+    }.property('isFulfilled','isRequested'),
+    
+    prescriptionClass: function() {
+        var quantity = this.get('quantity');
+        this.get('model').validate();
+        if (Ember.isEmpty(quantity)) {
+            return 'required';
+        }
+    }.property('quantity'),
+    
+    quantityClass: function() {
+        var prescription = this.get('prescription'),
+            returnClass = 'col-xs-3',
+            isFulfilling = this.get('isFulfilling');
+        if (isFulfilling || Ember.isEmpty(prescription)) {
+            returnClass += ' required';
+        }
+        return returnClass;
+    }.property('isFulfilling', 'prescription'),
+    
+    quantityLabel: function() {
+        var returnLabel = "Quantity Requested",
+            isFulfilled = this.get('isFulfilled'),
+            isFulfilling = this.get('isFulfilling');
+        if (isFulfilling) {
+            returnLabel = "Quantity Dispensed";
+        } else if (isFulfilled) {
+            returnLabel = "Quantity Distributed";
+        }
+        return returnLabel;
+    }.property('isFulfilled'),
 
     medicationList: [],
-    medicationFrequencyList: Ember.computed.alias('controllers.medication.medicationFrequencyList'),
     updateCapability: 'add_medication',
 
     afterUpdate: function() {
-        this.send(this.get('cancelAction'));
+        var alertTitle = 'Medication Request Saved',
+            alertMessage = 'The medication record has been saved.',
+            isFulfilled = this.get('isFulfilled');
+        if (isFulfilled) {
+            alertTitle = 'Medication Request Fulfilled';
+            alertMessage = 'The medication request has been fulfilled.';
+            this.set('selectPatient', false);
+        } else {
+            alertTitle = 'Medication Request Saved';
+            alertMessage = 'The medication record has been saved.';
+        }
+        this.saveVisitIfNeeded(alertTitle, alertMessage);
+    },
+    
+    _addNewPatient: function() {        
+        this.displayAlert('Please Wait','A new patient needs to be created...Please wait..');
+        this._getNewPatientId().then(function(friendlyId) {
+            var patientTypeAhead = this.get('patientTypeAhead'),
+                nameParts = patientTypeAhead.split(' '),
+                patientDetails = {
+                    friendlyId: friendlyId,
+                    patientFullName: patientTypeAhead,
+                    requestingController: this
+                },
+                patient;
+            if (nameParts.length >= 3) {
+                patientDetails.firstName = nameParts[0];
+                patientDetails.middleName = nameParts[1];            
+                patientDetails.lastName = nameParts.splice(2, nameParts.length).join(' ');
+            } else if (nameParts.length === 2) {
+                patientDetails.firstName = nameParts[0];
+                patientDetails.lastName = nameParts[1];                        
+            } else {
+                patientDetails.firstName = patientTypeAhead;
+            }
+            patient = this.store.createRecord('patient', patientDetails);
+            this.send('openModal', 'patients.quick-add', patient);        
+        }.bind(this));
+    },
+    
+    _getNewPatientId: function() {
+        var newPatientId = this.get('newPatientId');
+        if (Ember.isEmpty(newPatientId)) {
+            return new Ember.RSVP.Promise(function(resolve, reject){
+                var configs = this.get('applicationConfigs');
+                this.generateFriendlyId(configs).then(function(friendlyId) {
+                    this.set('newPatientId', friendlyId);
+                    resolve(friendlyId);
+                }.bind(this), reject);    
+            }.bind(this));
+        } else {
+            return Ember.RSVP.resolve(newPatientId);
+        }
     },
     
     beforeUpdate: function() {
@@ -48,17 +130,32 @@ export default AbstractEditController.extend(InventorySelection, PatientSubmodul
         if (isNew || isFulfilling) {
             return new Ember.RSVP.Promise(function(resolve, reject){
                 var newMedication = this.get('model');
-                if (isNew) {
-                    this.set('newMedication', true);
-                    this.set('status', 'Requested');
-                    this.set('requestedBy', newMedication.getUserName());
-                    this.set('requestedDate', new Date());
-                    this.addChildToVisit(newMedication, 'medication', 'Pharmacy').then(function() {        
-                        this.finishBeforeUpdate(isFulfilling,  resolve);
-                    }.bind(this), reject);
-                } else {
-                    this.finishBeforeUpdate(isFulfilling,  resolve);
-                }
+                newMedication.validate().then(function() {
+                    if (newMedication.get('isValid')) {                        
+                        if (isNew) {
+                            if (Ember.isEmpty(newMedication.get('patient'))) {
+                                this._addNewPatient();
+                                reject('creating new patient first');
+                            } else {
+                                this.set('newMedication', true);
+                                this.set('status', 'Requested');
+                                this.set('requestedBy', newMedication.getUserName());
+                                this.set('requestedDate', new Date());
+                                this.addChildToVisit(newMedication, 'medication', 'Pharmacy').then(function() {        
+                                    this.finishBeforeUpdate(isFulfilling,  resolve);
+                                }.bind(this), reject);
+                            }
+                        } else {
+                            this.finishBeforeUpdate(isFulfilling,  resolve);
+                        }                        
+                    } else {
+                        this.send('showDisabledDialog');
+                        reject('invalid model');                        
+                    }
+                }.bind(this)).catch(function() {
+                    this.send('showDisabledDialog');
+                    reject('invalid model');                    
+                }.bind(this));
             }.bind(this));
         } else {
             return Ember.RSVP.resolve();
@@ -69,6 +166,7 @@ export default AbstractEditController.extend(InventorySelection, PatientSubmodul
         if (isFulfilling) {
             var inventoryLocations = this.get('inventoryLocations'),
                 inventoryRequest = this.get('store').createRecord('inv-request', {
+                    expenseAccount: this.get('expenseAccount'),
                     dateCompleted: new Date(),
                     inventoryItem: this.get('inventoryItem'),
                     inventoryLocations: inventoryLocations,
@@ -76,17 +174,29 @@ export default AbstractEditController.extend(InventorySelection, PatientSubmodul
                     transactionType: 'Fulfillment',
                     patient: this.get('patient'),
                     markAsConsumed: true
-                });            
-            this.send('fulfillRequest', inventoryRequest, false, false, true);
-            this.set('status','Fulfilled');
-            resolve();            
+                });
+            this.performFulfillRequest(inventoryRequest, false, false, true).then(function() {                
+                this.set('status','Fulfilled');
+                resolve();
+            }.bind(this));
         } else {
             resolve();
         }
     },
     
+    showUpdateButton: function() {        
+        var isFulfilled = this.get('isFulfilled');
+        if (isFulfilled) {
+            return false;
+        } else {
+            return this._super();
+        }
+    }.property('updateCapability', 'isFulfilled'),
+    
     updateButtonText: function() {
-        if (this.get('isFulfilling')) {
+        if (this.get('hideFulfillRequest')) {
+            return 'Dispense';
+        } else if (this.get('isFulfilling')) {
             return 'Fulfill';
         } else if (this.get('isNew')) {
             return 'Add';
@@ -94,5 +204,14 @@ export default AbstractEditController.extend(InventorySelection, PatientSubmodul
             return 'Update';
         }
     }.property('isNew', 'isFulfilling'),
+    
+    actions: {
+        addedNewPatient: function(record) {
+            this.send('closeModal');
+            this.set('patient', record);
+            this.set('newPatientId');
+            this.send('update');
+        }
+    }
 
 });

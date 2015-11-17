@@ -11,7 +11,31 @@ export default AbstractModel.extend({
     startDate: DS.attr('date'),
     endDate: DS.attr('date'),
     notes: DS.attr('string'),
+    status: DS.attr('string', {defaultValue:'Scheduled'}),
+    
+    appointmentDate: function() {
+        var startDate = this.get('startDate');
+        return startDate;
+    }.property('startDate'),
+    
+    displayStatus: function() {
+        var status = this.get('status');
+        if (Ember.isEmpty(status)) {
+            status = 'Scheduled';
+        }
+        return status;
+    }.property('status'),
+
     validations: {
+        appointmentDate: {
+            presence: {
+                if: function(object) {
+                    var appointmentType = object.get('appointmentType');
+                    return appointmentType !== 'Admission';
+                }
+            }
+        },
+        
         patientTypeAhead: PatientValidation.patientTypeAhead,        
         
         patient: {

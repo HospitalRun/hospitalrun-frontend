@@ -49,7 +49,7 @@ export default AbstractEditController.extend({
             return new Ember.RSVP.Promise(function(resolve, reject) {                
                 var newPricing = this.store.createRecord('pricing', {
                     name: this.get('itemName'),
-                    category: 'Procedure Charges'
+                    category: this.get('pricingCategory')
                 });
                 newPricing.save().then(function() {
                     this.get('pricingList').addObject({

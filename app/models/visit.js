@@ -1,15 +1,31 @@
 import AbstractModel from "hospitalrun/models/abstract";
 import Ember from "ember";
-import DiagnosisValidation from "hospitalrun/utils/diagnosis-validation";
+
+function dateAcceptance(object) {
+    if (!object.get('isDirty')) {
+        return false;
+    }
+    var startDate = object.get('startDate'),
+        endDate = object.get('endDate');
+    if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
+        //Can't validate if empty
+        return false;
+    } else {
+        if (endDate.getTime() <  startDate.getTime()) {
+            return true;
+        }
+    }
+    return false;
+}
 
 export default AbstractModel.extend({
     additionalDiagnoses: DS.attr(), //Yes, the plural of diagnosis is diagnoses!
-    clinic: DS.attr('string'),
     charges: DS.hasMany('proc-charge'),
     dischargeInfo: DS.attr('string'),
     endDate:  DS.attr('date'),  //if visit type is outpatient, startDate and endDate are equal 
     examiner: DS.attr('string'),
     history: DS.attr('string'),
+    historySince: DS.attr('string'), //History since last seen
     imaging: DS.hasMany('imaging', {async: true}),
     labs: DS.hasMany('lab', {async: true}),
     location: DS.attr('string'),
@@ -17,8 +33,9 @@ export default AbstractModel.extend({
     notes: DS.attr('string'),
     outPatient: DS.attr('boolean'),
     patient: DS.belongsTo('patient'),
-    primaryDiagnosis: DS.attr('string'),
-    primaryDiagnosisId: DS.attr('string'),
+    primaryDiagnosis: DS.attr('string'), //AKA admitting diagnosis
+    primaryBillingDiagnosis: DS.attr('string'), //AKA final diagnosis
+    primaryBillingDiagnosisId: DS.attr('string'),
     procedures: DS.hasMany('procedure', {async: true}),
     startDate:  DS.attr('date'),
     status: DS.attr('string'),
@@ -57,20 +74,26 @@ export default AbstractModel.extend({
     }.property('visitDate', 'visitType'),
     
     validations: {
+        endDate: {
+            acceptance: {
+                accept: true,
+                if: dateAcceptance,    
+                message: 'Please select an end date later than the start date'
+            }
+        },
+        
         startDate: {
-            presence: true
+            acceptance: {
+                accept: true,
+                if: dateAcceptance,    
+                message: 'Please select a start date earlier than the end date'
+            },
+            presence: true            
         },
         visitType: {
             presence: true
-        },
-        
-        primaryDiagnosis: {            
-            acceptance: DiagnosisValidation.diagnosisValidation.acceptance,
-            length: { 
-                allowBlank: true,
-                minimum: 3
-            }
         }
+        
     }
 
 });

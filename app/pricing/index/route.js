@@ -6,29 +6,26 @@ export default AbstractIndexRoute.extend({
     pageTitle: 'All Pricing Items',    
         
     _getStartKeyFromItem: function(item) {
-        var category = this.get('category'),
-            keyPrefix = this.get('keyPrefix');        
-        if (Ember.isEmpty(category)) {
-            return this._super(item);
-        } else {
-            return [category, keyPrefix+item.get('id')];
-        }
+        var category = item.get('category'),
+            keyPrefix = this.get('keyPrefix'),
+            name = item.get('name'),
+            type = item.get('type');
+        return [category, name, type, keyPrefix+item.get('id')];        
     },
     
     _modelQueryParams: function() {
         var category = this.get('category'),
             keyPrefix = this.get('keyPrefix'),
-            maxValue = this.get('maxValue');
-        if (Ember.isEmpty(category)) {
-            return this._super();
-        } else {
-            return {
-                options: {
-                    startkey: [category, keyPrefix],
-                    endkey: [category, keyPrefix+maxValue]
-                },
+            maxValue = this.get('maxValue'),
+            queryParams = {
                 mapReduce: 'pricing_by_category'
             };
+        if (!Ember.isEmpty(category)) {
+            queryParams.options = {
+                startkey: [category, null, null, null],
+                endkey: [category, {}, {}, keyPrefix+maxValue]
+            };
         }
+        return queryParams;
     }    
 });

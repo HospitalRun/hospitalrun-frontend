@@ -5,85 +5,101 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     needs: ['labs','pouchdb'],
+    chargePricingCategory: 'Lab',
     chargeRoute: 'labs.charge',
-    
-    canAddCharge: function() {        
-        return this.currentUserCan('add_charge');
-    }.property(),
 
-    newLabType: false,
-    labTypesList: null, //This gets filled in by the route
+    
+    canComplete: function() {
+        var labTypeName = this.get('selectedLabType');
+        if (Ember.isArray(labTypeName) && labTypeName.length >1) {
+            return false;
+        } else {
+            return this.currentUserCan('complete_lab');
+        }
+    }.property('selectedLabType.[]'),
+    
+    actions: {
+        completeLab: function() {
+            this.set('status', 'Completed');
+            this.get('model').validate();
+            if (this.get('isValid')) {
+                this.set('labDate', new Date());
+                this.send('update');
+            }
+        },
+        
+        /**
+         * Update the model and perform the before update and after update
+         */
+        update: function() {
+            if (this.get('isNew')) {
+                var newLab = this.get('model'),
+                    selectedLabType = this.get('selectedLabType');
+                    if (Ember.isEmpty(this.get('status'))) {
+                        this.set('status', 'Requested');
+                    }
+                    this.set('requestedBy', newLab.getUserName());
+                    this.set('requestedDate', new Date());
+                if (Ember.isEmpty(selectedLabType)) {
+                    this.saveNewPricing(this.get('labTypeName'), 'Lab', 'labType').then(function() {
+                        this.addChildToVisit(newLab, 'labs', 'Lab').then(function() {
+                            this.saveModel();
+                        }.bind(this));
+                    }.bind(this));
+                } else {
+                    this.getSelectedPricing('selectedLabType').then(function(pricingRecords) {
+                        if (Ember.isArray(pricingRecords)) {
+                            this.createMultipleRequests(pricingRecords, 'labType','labs', 'Lab');
+                        } else {
+                            this.set('labType', pricingRecords);
+                            this.addChildToVisit(newLab, 'labs', 'Lab').then(function() {
+                            this.saveModel();
+                        }.bind(this));
+                        }
+                    }.bind(this));
+                }
+            } else {
+               this.saveModel();
+            }
+        }
+    },
+    
+    additionalButtons: function() {
+        var canComplete = this.get('canComplete'),
+            isValid = this.get('isValid');
+        if (isValid && canComplete) {
+            return [{
+                buttonAction: 'completeLab',
+                buttonIcon: 'glyphicon glyphicon-ok',
+                class: 'btn btn-primary on-white',
+                buttonText: 'Complete'
+            }];
+        }
+    }.property('canComplete', 'isValid'),
+
+    pricingTypeForObjectType: 'Lab Procedure',
+    pricingTypes: Ember.computed.alias('controllers.labs.labPricingTypes'),
+    
     pricingList: null, //This gets filled in by the route
+    
     updateCapability: 'add_lab',
     
-    selectedLabTypeChanged: function() {
-        var selectedItem = this.get('selectedLabType');
-        if (!Ember.isEmpty(selectedItem)) {            
-            this.store.find('pricing', selectedItem._id.substr(8)).then(function(item) {
-                this.set('labType', item);
-            }.bind(this));
-        }
-    }.observes('selectedLabType'),
-    
-    labTypeChanged: function() {
-        var labTypeName = this.get('labTypeName'),
-            labType = this.get('labType');
-        if (!Ember.isEmpty(labType)) {
-            this.set('newLabType', false);
-            if (labType.get('name') !== labTypeName) {
-                this.set('labTypeName', labType.get('name'));
-            }
+    afterUpdate: function(saveResponse, multipleRecords) {
+        var afterDialogAction,
+            alertMessage,
+            alertTitle;            
+        if (this.get('status') === 'Completed') {
+            alertTitle = 'Lab Request Completed';
+            alertMessage = 'The lab request has been completed.';
         } else {
-            this.set('newLabType', true);
+            alertTitle = 'Lab Request Saved';
+            alertMessage = 'The lab request has been saved.';
         }
-    }.observes('labType'),    
-
-    afterUpdate: function() {
-        this.send(this.get('cancelAction'));
-    },
+        if (multipleRecords) {
+            afterDialogAction = 'allItems';
+        }
+        this.saveVisitIfNeeded(alertTitle, alertMessage, afterDialogAction);
+        this.set('selectPatient', false);
+    }
     
-    beforeUpdate: function() {
-        if (this.get('isNew')) {
-            var newLab = this.get('model');
-            this.set('status', 'Requested');
-            this.set('requestedBy', newLab.getUserName());
-            this.set('requestedDate', new Date());
-            
-            if (this.get('newLabType')) {
-                return new Ember.RSVP.Promise(function(resolve, reject) {
-                    var newPricing = this.store.createRecord('pricing', {
-                        name: this.get('labTypeName'),
-                        category: 'Lab'
-                    });
-                    newPricing.save().then(function() {
-                        this.get('pricingList').addObject({
-                            _id: 'pricing_'+ newPricing.get('id'),
-                            name: newPricing.get('name')
-                        });
-                        this.set('labType', newPricing);
-                        this.addChildToVisit(newLab, 'labs', 'Lab').then(resolve, reject);
-                    }.bind(this), reject);
-                }.bind(this));
-            } else {
-                return this.addChildToVisit(newLab, 'labs', 'Lab');
-            }
-        } else {
-            if (this.get('isCompleting')) {
-                this.set('labDate', new Date());
-                this.set('status', 'Completed');
-            }
-            return Ember.RSVP.resolve();
-        }
-    },
-    
-    updateButtonText: function() {
-        if (this.get('isCompleting')) {
-            return 'Complete';
-        } else if (this.get('isNew')) {
-            return 'Add';
-        } else {
-            return 'Update';
-        }
-    }.property('isNew', 'isCompleting'),
-
 });

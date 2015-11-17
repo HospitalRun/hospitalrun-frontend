@@ -1,12 +1,23 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
+import Ember from 'ember';
 export default AbstractEditRoute.extend({
     editTitle: 'Edit Request',
     modelName: 'inv-request',
     newTitle: 'New Request',
     getNewData: function() {
-        return {
+        return Ember.RSVP.resolve({
             transactionType: 'Request'
-        };
+        });
+    },
+    
+    actions: {
+        allRequests: function(model) {
+            this.controller.send('allRequests', model);
+        },
+        
+        removeItem: function(model) {
+            this.controller.send('removeItem', model);
+        }
     },
     
     /**

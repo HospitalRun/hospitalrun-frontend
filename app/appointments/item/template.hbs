@@ -6,6 +6,7 @@
     <td>{{appointmentType}}</td>
     <td>{{location}}</td>
     <td>{{provider}}</td>
+    <td>{{displayStatus}}</td>
     <td>
         {{#if parentController.canAddVisit}}
             <button class="btn btn-default" {{action 'createVisit' this bubbles=false }}>Add Visit</button>
