@@ -133,6 +133,21 @@ export default Ember.Mixin.create({
       'Medical Records Officer',
       'System Administrator'
     ],
+    add_note: [
+      'Data Entry',
+      'Doctor',
+      'Medical Records Officer',
+      'Nurse',
+      'Nurse Manager',
+      'Patient Administration',
+      'System Administrator'
+    ],
+    delete_note: [
+      'Medical Records Officer',
+      'Nurse Manager',
+      'Patient Administration',
+      'System Administrator'
+    ],
     add_procedure: [
       'Data Entry',
       'Doctor',

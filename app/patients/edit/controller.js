@@ -31,6 +31,14 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     return (this.currentUserCan('add_photo') && isFileSystemEnabled);
   }.property(),
 
+  canAddNote: function() {
+    return this.currentUserCan('add_note');
+  }.property(),
+
+  canDeleteNote: function() {
+    return this.currentUserCan('delete_note');
+  }.property(),
+
   canAddSocialWork: function() {
     return this.currentUserCan('add_socialwork');
   }.property(),
