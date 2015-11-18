@@ -25,7 +25,9 @@ export default AbstractModel.extend(NumberFormat, {
       if (amountOwed < 0) {
         amountOwed = 0;
       }
-      this.set('amountOwed', this._numberFormat(amountOwed, true));
+      if (!this.get('isDestroyed')) {
+        this.set('amountOwed', this._numberFormat(amountOwed, true));
+      }
     }, 500);
   }.observes('discount', 'nationalInsurance', 'privateInsurance', 'total'),
 

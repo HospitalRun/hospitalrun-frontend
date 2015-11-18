@@ -11,14 +11,14 @@
     </div>
 {{/if}}
 <div class="row">
-    {{em-input property="purchaseCost" label="Purchase Cost" class="required col-sm-4"}}
+    {{em-input property="purchaseCost" label="Purchase Cost" class="required col-sm-4 test-inv-cost"}}
     {{em-input property="lotNumber" label="Serial/Lot Number" class="col-sm-4"}}
 </div>
 <div class="row">
     {{date-picker property="expirationDate" label="Expiration Date" minDate="now" class="col-sm-4"}}
 </div>
 <div class="row">
-    {{select-or-typeahead property="vendor" label="Vendor" list=vendorList selection=model.vendor className="col-sm-6 required"}}
+    {{select-or-typeahead property="vendor" label="Vendor" list=vendorList selection=model.vendor className="col-sm-6 required test-vendor"}}
     {{em-input property="vendorItemNo" label="Vendor Item Number" class="col-sm-6"}}
 </div>
 {{#if model.isNew}}

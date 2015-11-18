@@ -113,7 +113,7 @@ export default InputComponent.extend({
             exactMatch = true;
           }
           if (!Ember.isEmpty(targetValue) && !Ember.isEmpty(lastHint)) {
-            this.get('bloodhound').get(lastHint, function(suggestions) {
+            this.get('bloodhound').search(lastHint, function(suggestions) {
               if (suggestions.length > 0) {
                 if (!exactMatch || lastHint.toLowerCase() === suggestions[0][this.get('displayKey')].toLowerCase()) {
                   this.set('selectedItem', true);

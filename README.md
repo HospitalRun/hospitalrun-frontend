@@ -17,7 +17,7 @@ To run the app, you will need the following:
     * If you have already created a couchdb admin, then run `initcouch.sh user pass` with the couch admin credentials (where user is the couchdb admin user and pass is the user's password).
 5. Copy the server/config-example.js to server/config.js.
 6. Start the server so you can view the repo in your browser by running `ember serve` from the `frontend` directory.
-7. Go to `http://0.0.0.0:4200/` in a browser and login with username `hradmin` and password `test`.
+7. Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
 ## Testing
 

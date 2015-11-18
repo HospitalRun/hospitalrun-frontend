@@ -62,7 +62,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
   }.property(),
 
   disabledAction: function() {
-    this.get('model').validate();
+    this.get('model').validate().catch(Ember.K);
     this._super();
   }.property('model.endDate', 'model.startDate', 'model.isValid'),
 
@@ -91,7 +91,6 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
   cancelAction: 'returnToPatient',
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
-  dateTimeFormat: 'l h:mm A',
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
   findPatientVisits: false,
   patientImaging: Ember.computed.alias('model.imaging'),
@@ -133,6 +132,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
       newRoute.currentModel.setProperties({
         patient: this.get('model.patient'),
         visit: this.get('model'),
+        selectPatient: false,
         returnToVisit: true
       });
     }.bind(this));

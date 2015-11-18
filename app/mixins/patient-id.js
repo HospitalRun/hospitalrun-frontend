@@ -45,10 +45,11 @@ export default Ember.Mixin.create(PouchDbMixin, {
     return this.store.find('sequence', 'patient')
       .then(findUnusedId)
       .catch(() => {
-        var sequence = this.get('store').push('sequence', {
+        var store = this.get('store');
+        var sequence = store.push(store.normalize('sequence', {
           id: 'patient',
           value: 0
-        });
+        }));
         return findUnusedId(sequence);
       });
   }

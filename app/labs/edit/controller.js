@@ -23,11 +23,12 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   actions: {
     completeLab: function() {
       this.set('model.status', 'Completed');
-      this.get('model').validate();
-      if (this.get('model.isValid')) {
-        this.set('model.labDate', new Date());
-        this.send('update');
-      }
+      this.get('model').validate().then(function() {
+        if (this.get('model.isValid')) {
+          this.set('model.labDate', new Date());
+          this.send('update');
+        }
+      }.bind(this)).catch(Ember.K);
     },
 
     /**
@@ -43,17 +44,17 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         this.set('model.requestedBy', newLab.getUserName());
         this.set('model.requestedDate', new Date());
         if (Ember.isEmpty(selectedLabType)) {
-          this.saveNewPricing(this.get('model.labTypeName'), 'Lab', 'labType').then(function() {
+          this.saveNewPricing(this.get('model.labTypeName'), 'Lab', 'model.labType').then(function() {
             this.addChildToVisit(newLab, 'labs', 'Lab').then(function() {
               this.saveModel();
             }.bind(this));
           }.bind(this));
         } else {
-          this.getSelectedPricing('model.selectedLabType').then(function(pricingRecords) {
+          this.getSelectedPricing('selectedLabType').then(function(pricingRecords) {
             if (Ember.isArray(pricingRecords)) {
               this.createMultipleRequests(pricingRecords, 'labType', 'labs', 'Lab');
             } else {
-              this.set('labType', pricingRecords);
+              this.set('model.labType', pricingRecords);
               this.addChildToVisit(newLab, 'labs', 'Lab').then(function() {
                 this.saveModel();
               }.bind(this));
@@ -98,7 +99,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
       alertMessage = 'The lab request has been saved.';
     }
     if (multipleRecords) {
-      afterDialogAction = this.get('model.cancelAction');
+      afterDialogAction = this.get('cancelAction');
     }
     this.saveVisitIfNeeded(alertTitle, alertMessage, afterDialogAction);
     this.set('model.selectPatient', false);

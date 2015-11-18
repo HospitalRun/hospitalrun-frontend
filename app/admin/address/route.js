@@ -9,13 +9,14 @@ export default AbstractEditRoute.extend({
       this.get('store').find('option', 'address_options').then(function(addressOptions) {
         resolve(addressOptions);
       }, function() {
-        var newConfig = this.get('store').push('option', {
+        var store = this.get('store');
+        var newConfig = store.push(store.normalize('option', {
           id: 'address_options',
           value: {
             address1Label: 'Address',
             address1Include: true
           }
-        });
+        }));
         resolve(newConfig);
       }.bind(this));
     }.bind(this));

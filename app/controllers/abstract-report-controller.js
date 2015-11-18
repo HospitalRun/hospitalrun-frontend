@@ -5,7 +5,7 @@ import NumberFormat from 'hospitalrun/mixins/number-format';
 import PaginationProps from 'hospitalrun/mixins/pagination-props';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
-export default Ember.ArrayController.extend(DateFormat, ModalHelper, NumberFormat, PaginationProps, PouchDbMixin, ProgressDialog, {
+export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, PaginationProps, PouchDbMixin, ProgressDialog, {
   defaultErrorMessage: 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.',
   offset: 0,
   limit: 25,

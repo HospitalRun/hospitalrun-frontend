@@ -3,7 +3,7 @@ import EditPanelProps from 'hospitalrun/mixins/edit-panel-props';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default Ember.ObjectController.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, UserSession, {
+export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, UserSession, {
   cancelAction: 'allItems',
 
   cancelButtonText: function() {
@@ -76,11 +76,7 @@ export default Ember.ObjectController.extend(EditPanelProps, IsUpdateDisabled, M
 
   _cancelUpdate: function() {
     var cancelledItem = this.get('model');
-    if (cancelledItem.get('isNew')) {
-      cancelledItem.deleteRecord();
-    } else {
-      cancelledItem.rollbackAttributes();
-    }
+    cancelledItem.rollbackAttributes();
   },
 
   actions: {
@@ -153,14 +149,15 @@ export default Ember.ObjectController.extend(EditPanelProps, IsUpdateDisabled, M
     if (!Ember.isEmpty(lookupLists)) {
       lookupLists.forEach(function(list) {
         var propertyValue = this.get(list.property),
-          lookupList = this.get(list.name);
+          lookupList = this.get(list.name),
+          store = this.get('store');
         if (!Ember.isEmpty(propertyValue)) {
           if (!lookupList) {
-            lookupList = this.get('store').push('lookup', {
+            lookupList = store.push(store.normalize('lookup', {
               id: list.id,
               value: [],
               userCanAdd: true
-            });
+            }));
           }
           if (Ember.isArray(propertyValue)) {
             propertyValue.forEach(function(value) {

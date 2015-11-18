@@ -1,21 +1,18 @@
 import Ember from 'ember';
+import {authenticateSession} from 'hospitalrun/tests/helpers/ember-simple-auth';
+
 const {
-  merge,
-  setProperties
+  merge
 } = Ember;
 
 Ember.Test.registerHelper('authenticateUser', function(app, attrs = {}) {
-  authenticateSession();
-  andThen(function() {
-    const secure = currentSession().get('secure');
-    setProperties(secure, merge({
-      authenticator: 'authenticator:custom',
-      ok: true,
+  const expiresAt = new Date().getTime() + 600000;
+  authenticateSession(app, merge({
       name: 'hradmin',
       roles: ['System Administrator','admin','user'],
-      expires_at: 1443727594804,
+      expires_at: expiresAt,
       role: 'System Administrator',
       prefix: 'p1'
-    }, attrs));
-  });
+    }, attrs)
+  );
 });

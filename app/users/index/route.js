@@ -11,6 +11,6 @@ export default AbstractIndexRoute.extend(UserSession, {
   newButtonText: '+ new user',
   pageTitle: 'User Listing',
   model: function() {
-    return this.store.find('user');
+    return this.store.findAll('user');
   }
 });

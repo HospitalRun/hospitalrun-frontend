@@ -11,10 +11,17 @@ export default Ember.Mixin.create(PatientVisits, {
     showPatient: function(patient) {
       this.transitionToRoute('patients.edit', patient);
     },
+
+    returnToAllItems: function() {
+      this._cancelUpdate();
+      this.send('allItems');
+    },
     returnToPatient: function() {
+      this._cancelUpdate();
       this.transitionToRoute('patients.edit', this.get('returnPatientId'));
     },
     returnToVisit: function() {
+      this._cancelUpdate();
       this.transitionToRoute('visits.edit', this.get('returnVisitId'));
     }
   },
@@ -58,7 +65,7 @@ export default Ember.Mixin.create(PatientVisits, {
     } else if (returnToPatient) {
       return 'returnToPatient';
     } else {
-      return 'allItems';
+      return 'returnToAllItems';
     }
   }.property('returnToPatient', 'returnToVisit'),
 
@@ -112,7 +119,7 @@ export default Ember.Mixin.create(PatientVisits, {
       this.store.find('patient', selectedPatient.id).then(function(item) {
         this.set('model.patient', item);
         Ember.run.once(this, function() {
-          this.get('model').validate();
+          this.get('model').validate().catch(Ember.K);
         });
       }.bind(this));
     } else {

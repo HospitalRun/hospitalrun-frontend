@@ -11,7 +11,6 @@
     "ember-qunit": "0.4.9",
     "ember-qunit-notifications": "0.0.7",
     "ember-resolver": "~0.1.18",
-    "ember-simple-auth": "0.8.0",
     "filer.js": "https://github.com/ebidel/filer.js.git#~0.4.3",
     "idb.filesystem": "https://github.com/ebidel/idb.filesystem.js.git",
     "jquery": "^1.11.3",

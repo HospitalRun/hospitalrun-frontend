@@ -2,7 +2,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   config: Ember.inject.service(),
   database: Ember.inject.service(),
-
+  session: Ember.inject.service(),
   model: function(params) {
     if (params.k && params.s1 && params.s2 && params.t) {
       this.get('session').authenticate('authenticator:custom', {

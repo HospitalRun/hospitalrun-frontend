@@ -1,5 +1,6 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
+  session: Ember.inject.service(),
   defaultCapabilities: {
     admin: [
       'User Administrator',
@@ -452,8 +453,8 @@ export default Ember.Mixin.create({
 
   _getUserSessionVars: function() {
     var session = this.get('session');
-    if (!Ember.isEmpty(session) && session.isAuthenticated) {
-      return session.get('secure');
+    if (!Ember.isEmpty(session) && session.get('isAuthenticated')) {
+      return session.get('data.authenticated');
     }
   },
 

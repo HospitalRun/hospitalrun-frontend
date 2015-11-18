@@ -5,7 +5,7 @@ export default AbstractIndexRoute.extend({
 
   // No model for reports; data gets retrieved when report is run.
   model: function() {
-    return Ember.RSVP.resolve();
+    return Ember.RSVP.resolve(Ember.Object.create({}));
   }
 
 });

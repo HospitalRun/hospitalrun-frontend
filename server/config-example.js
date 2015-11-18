@@ -3,7 +3,7 @@ var config = {
     couch_db_port: '5984',
     couch_db_use_ssl: false,
     couch_db_changes_since: 'now',
-    couch_admin_user: 'hradmin',
+    couch_admin_user: 'couchadmin',
     couch_admin_password: 'test',
     google_client_id: 'FOR GOOGLE SSO; GOOGLE CLIENT ID GOES HERE',
     google_client_secret: 'FOR GOOGLE SSO; GOOGLE CLIENT SECRET GOES HERE',

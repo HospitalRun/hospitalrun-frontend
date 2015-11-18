@@ -2,7 +2,7 @@ import Ember from 'ember';
 import PaginationProps from 'hospitalrun/mixins/pagination-props';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default Ember.ArrayController.extend(PaginationProps, ProgressDialog, UserSession, {
+export default Ember.Controller.extend(PaginationProps, ProgressDialog, UserSession, {
   addPermission: null,
   deletePermission: null,
   nextStartKey: null,

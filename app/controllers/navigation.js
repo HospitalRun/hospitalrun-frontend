@@ -9,10 +9,18 @@ export default Ember.Controller.extend(ProgressDialog, UserSession, Navigation, 
   currentRouteName: Ember.computed.alias('application.currentRouteName'),
   progressTitle: 'Searching',
   searchRoute: null,
+  session: Ember.inject.service(),
   syncStatus: '',
   currentOpenNav: null,
 
   actions: {
+    invalidateSession: function() {
+      const session = this.get('session');
+      if (session.get('isAuthenticated')) {
+        session.invalidate();
+      }
+    },
+
     search: function() {
       if (this.allowSearch && this.searchRoute) {
         var currentRouteName = this.get('currentRouteName'),

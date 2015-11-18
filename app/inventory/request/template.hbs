@@ -16,13 +16,13 @@
     {{else}}
       <div class="row">
         {{inventory-typeahead
-          class="col-sm-8"
+          class="col-sm-8 test-inv-item"
           property="inventoryItemTypeAhead"
           label="Inventory Item"
           content=inventoryList
           selection=selectedInventoryItem
         }}
-        {{em-input property="quantity" label=quantityLabel class="col-sm-3"}}
+        {{em-input property="quantity" label=quantityLabel class="col-sm-3 test-inv-quantity"}}
         <div class="form-group col-sm-1">
           <label class="control-label"></label>
           <h4 class="form-control-static">
@@ -65,9 +65,9 @@
         {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
       {{/if}}
     {{/if}}
-    {{select-or-typeahead property="deliveryLocation" label="Delivery Location" list=warehouseList selection=model.deliveryLocation }}
-    {{select-or-typeahead property="deliveryAisle" label="Delivery Aisle" list=aisleLocationList selection=model.deliveryAisle }}
-    {{select-or-typeahead property="expenseAccount" label="Bill To" list=expenseAccountList selection=model.expenseAccount }}
+    {{select-or-typeahead property="deliveryLocation" label="Delivery Location" list=warehouseList selection=model.deliveryLocation class="test-delivery-location"}}
+    {{select-or-typeahead property="deliveryAisle" label="Delivery Aisle" list=aisleLocationList selection=model.deliveryAisle class="test-delivery-aisle"}}
+    {{select-or-typeahead property="expenseAccount" label="Bill To" list=expenseAccountList selection=model.expenseAccount class="test-bill-to"}}
     {{#if isFulfilling}}
       <div class="row">
         {{date-picker property="dateCompleted" label="Date Completed" class="col-sm-4"}}

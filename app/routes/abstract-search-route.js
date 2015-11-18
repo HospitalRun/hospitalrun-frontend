@@ -1,4 +1,4 @@
-import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import DS from 'ember-data';
 import Ember from 'ember';
 
@@ -17,7 +17,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       } else {
         var searchParams = Ember.copy(searchIndex);
         searchParams.query = searchText;
-        this.store.find(searchModel, {
+        this.store.query(searchModel, {
           searchIndex: searchParams
         }).then(function(results) {
           if (Ember.isEmpty(results)) {

@@ -5,10 +5,9 @@ import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import ImagingPricingTypes from 'hospitalrun/mixins/imaging-pricing-types';
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
-export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
+export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
   ModalHelper, ImagingPricingTypes, InventoryTypeList, VisitTypes, {
     fileSystem: Ember.inject.service('filesystem'),
-    lookupType: null,
     lookupTypes: [{
       name: 'Anesthesia Types',
       value: 'anesthesia_types',
@@ -176,7 +175,7 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
     importFile: Ember.computed.alias('lookupTypeList.importFile'),
 
     lookupTitle: function() {
-      var lookupType = this.get('lookupType'),
+      var lookupType = this.get('model.lookupType'),
         lookupTypes = this.get('lookupTypes'),
         lookupDesc;
       if (!Ember.isEmpty(lookupType)) {
@@ -185,31 +184,32 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
           return lookupDesc.name;
         }
       }
-    }.property('lookupType'),
+    }.property('model.lookupType'),
 
     lookupTypeList: function() {
-      var lookupType = this.get('lookupType'),
+      var lookupType = this.get('model.lookupType'),
         lookupItem;
       if (!Ember.isEmpty(lookupType)) {
         lookupItem = this.get('model').findBy('id', lookupType);
         if (Ember.isEmpty(lookupItem)) {
           var defaultValues = [],
             lookupTypes = this.get('lookupTypes'),
-            lookupDesc = lookupTypes.findBy('value', lookupType);
+            lookupDesc = lookupTypes.findBy('value', lookupType),
+            store = this.get('store');
           if (!Ember.isEmpty(lookupDesc) && !Ember.isEmpty(lookupDesc.defaultValues)) {
             defaultValues = this.get(lookupDesc.defaultValues);
           }
-          lookupItem = this.get('store').push('lookup', {
+          lookupItem = store.push(store.normalize('lookup', {
             id: lookupType,
             value: defaultValues
-          });
+          }));
         }
         if (!Ember.isEmpty(lookupItem) && Ember.isEmpty(lookupItem.get('userCanAdd'))) {
           lookupItem.set('userCanAdd', true);
         }
         return lookupItem;
       }
-    }.property('lookupType'),
+    }.property('model.lookupType'),
 
     lookupTypeValues: function() {
       var values = this.get('lookupTypeList.value');
@@ -217,19 +217,19 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
         values.sort(this._sortValues);
       }
       return Ember.ArrayProxy.create({ content: Ember.A(values) });
-    }.property('lookupType', 'lookupTypeList.value'),
+    }.property('model.lookupType', 'lookupTypeList.value'),
 
     organizeByType: Ember.computed.alias('lookupTypeList.organizeByType'),
 
     showOrganizeByType: function() {
-      var lookupType = this.get('lookupType');
+      var lookupType = this.get('model.lookupType');
       return (!Ember.isEmpty(lookupType) && lookupType.indexOf('pricing_types') > 0);
-    }.property('lookupType'),
+    }.property('model.lookupType'),
 
     userCanAdd: Ember.computed.alias('lookupTypeList.userCanAdd'),
 
     _canDeleteValue: function(value) {
-      var lookupType = this.get('lookupType');
+      var lookupType = this.get('model.lookupType');
       switch (lookupType) {
         case 'inventory_types': {
           if (value === 'Medication') {
@@ -319,7 +319,7 @@ export default Ember.ArrayController.extend(BillingCategories, LabPricingTypes,
             lookupTypeList.save().then(function() {
               this.displayAlert('List Imported', 'The lookup list has been imported.', 'refreshLookupLists');
               this.set('importFile');
-              this.set('importFileName');
+              this.set('model.importFileName');
             }.bind(this));
           }.bind(this));
         }

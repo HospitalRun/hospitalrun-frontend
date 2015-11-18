@@ -238,7 +238,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
         if (!addingNewInventory) {
           this._savePurchases();
         }
-      });
+      }.bind(this));
     }
   }
 });

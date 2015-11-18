@@ -1,4 +1,4 @@
-import ApplicationRouteMixin from 'simple-auth/mixins/application-route-mixin';
+import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import Ember from 'ember';
 
 const { inject, Route } = Ember;
@@ -6,10 +6,11 @@ const { inject, Route } = Ember;
 var ApplicationRoute = Route.extend(ApplicationRouteMixin, {
   database: inject.service(),
   config: inject.service(),
+  session: inject.service(),
 
   model: function(params, transition) {
     const session = this.get('session');
-    const isAuthenticated = session && session.isAuthenticated;
+    const isAuthenticated = session && session.get('isAuthenticated');
     return this.get('config').setup().then(function(configs) {
       if (transition.targetName !== 'finishgauth' && transition.targetName !== 'login') {
         if (isAuthenticated) {

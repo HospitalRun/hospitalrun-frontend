@@ -1,4 +1,4 @@
-import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import Ember from 'ember';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';

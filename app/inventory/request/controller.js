@@ -96,18 +96,19 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
         inventoryItem = model.get('model.inventoryItem'),
         requestedItems = model.get('requestedItems'),
         quantity = model.get('quantity');
-      model.validate();
-      if (model.get('isValid') && !Ember.isEmpty(inventoryItem) && !Ember.isEmpty(quantity)) {
-        var requestedItem = Ember.Object.create({
-          item: inventoryItem.get('content'),
-          quantity: quantity
-        });
-        requestedItems.addObject(requestedItem);
-        model.set('inventoryItem');
-        model.set('inventoryItemTypeAhead');
-        model.set('quantity');
-        this.set('selectedInventoryItem');
-      }
+      model.validate().then(function() {
+        if (model.get('isValid') && !Ember.isEmpty(inventoryItem) && !Ember.isEmpty(quantity)) {
+          var requestedItem = Ember.Object.create({
+            item: inventoryItem.get('content'),
+            quantity: quantity
+          });
+          requestedItems.addObject(requestedItem);
+          model.set('inventoryItem');
+          model.set('inventoryItemTypeAhead');
+          model.set('quantity');
+          this.set('selectedInventoryItem');
+        }
+      }.bind(this)).catch(Ember.K);
     },
 
     allRequests: function() {
