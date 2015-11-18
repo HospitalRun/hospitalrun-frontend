@@ -1,5 +1,6 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import Ember from 'ember';
+import NewRelic from 'hospitalrun/utils/newrelic';
 import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
@@ -80,6 +81,11 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
       var patientPhotos = [];
       patientPhotos.addObjects(photos);
       model.set('photos', patientPhotos);
+    });
+    NewRelic.pageAction(NewRelic.WATCH_PATIENT, {
+      patientId: patientId,
+      externalId: model.get('externalPatientId'),
+      displayName: model.get('displayName')
     });
   }
 
