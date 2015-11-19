@@ -102,6 +102,9 @@ var InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
     quantity: {
       numericality: {
         greaterThan: 0,
+        messages: {
+          greaterThan: 'must be greater than 0'
+        },
         if: function(object) {
           var requestedItems = object.get('requestedItems');
           return (Ember.isEmpty(requestedItems));

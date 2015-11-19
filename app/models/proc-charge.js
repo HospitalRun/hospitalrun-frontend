@@ -57,7 +57,10 @@ export default AbstractModel.extend({
 
     quantity: {
       numericality: {
-        greaterThan: 0
+        greaterThan: 0,
+        messages: {
+          greaterThan: 'must be greater than 0'
+        }
       }
     }
   }
