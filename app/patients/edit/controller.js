@@ -150,10 +150,16 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     property: 'model.clinic',
     id: 'clinic_list'
   }, {
+    name: 'physicianList',
+    property: 'model.examiner',
+    id: 'physician_list'
+  }, {
     name: 'statusList',
     property: 'model.status',
     id: 'patient_status_list'
   }],
+  
+  physicianList: Ember.computed.alias('patientController.physicianList'),
 
   patientImaging: function() {
     return this._getVisitCollection('imaging');
@@ -464,6 +470,21 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
       }
       this.send('update', true);
       this.send('closeModal');
+    },
+    
+    updateNote: function() {
+      var patient = this.get('model'),
+          clinicalNotes = this.getWithDefault('model.clinicalNotes', []),
+          patientNote = {
+          attribution: this.getUserName(),
+          date: new Date(),
+          onBehalfOf: patient.newOnBehalfOf,
+          content: patient.newNote
+        };
+      
+      clinicalNotes.addObject(patientNote);
+      patient.set('clinicalNotes', clinicalNotes);
+      this.send('update', true);
     },
 
     updatePhoto: function(photo) {

@@ -14,6 +14,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   address4: DS.attr('string'),
   bloodType: DS.attr('string'),
   clinic: DS.attr('string'),
+  clinicalNotes: DS.attr(),
   country: DS.attr('string'),
   dateOfBirth: DS.attr('date'),
   economicClassification: DS.attr('string'),

@@ -26,6 +26,10 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
     deleteFamily: function(model) {
       this.controller.send('deleteFamily', model);
     },
+    
+    deleteNote: function(model) {
+      this.controller.send('deleteNote', model);
+    },
 
     deletePhoto: function(model) {
       this.controller.send('deletePhoto', model);
@@ -37,6 +41,10 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
 
     updateFamilyInfo: function(model) {
       this.controller.send('updateFamilyInfo', model);
+    },
+
+    updateNote: function(model) {
+      this.controller.send('updateNote', model);
     },
 
     visitDeleted: function(model) {

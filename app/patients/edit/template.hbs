@@ -3,7 +3,8 @@
     {{#unless isNewOrDeleted}}
       {{patient-summary patient=model visits=model.visits patientProcedures=patientProcedures disablePatientLink=true }}
       <ul class="nav nav-pills" role="tablist">
-        <li role="presentation" class="active"><a class="active" href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">General</a></li>
+        <li role="presentation" class="active"><a class="active" href="#notes" role="tab" data-toggle="pill" data-test-selector="notes-tab">Notes</a></li>
+        <li role="presentation"><a href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">General</a></li>
         <li role="presentation"><a href="#photos" role="tab" data-toggle="pill" data-test-selector="photos-tab">Photos</a></li>
         <li role="presentation"><a href="#medication" role="tab" data-toggle="pill" data-test-selector="medication-tab">Medication</a></li>
         <li role="presentation"><a href="#imaging" role="tab" data-toggle="pill" data-test-selector="imaging-tab">Imaging</a></li>
@@ -15,7 +16,38 @@
       </ul>
     {{/unless}}
     <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="general">
+      <div role="tabpanel" class="tab-pane active" id="notes">
+        <div class="panel">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              Notes
+            </h3>
+          </div>
+          <div class="panel-body detail-section-content">
+            <div class="row">
+              {{#if canAddNote}}
+                <div class="col-xs-12">
+                  {{em-text label="New Note" property="newNote" rows=3}}
+                  {{select-or-typeahead className="col-sm-3" property="newOnBehalfOf"
+                    label="On Behalf Of" list=physicianList
+                  }}
+                  <button class="btn btn-primary" {{action "updateNote" bubbles=false }}><span class="octicon octicon-plus"></span> Add Note</button>
+                </div>
+              {{/if}}
+              {{#each model.clinicalNotes as |note|}}              
+                <label class="control-label">By</label>
+                {{note.attribution}} on {{date-format note.date}}
+                {{#if note.onBehalfOf}}
+                  <label class="control-label">On Behalf Of</label>
+                  {{note.onBehalfOf}}
+                {{/if}}
+                {{note.content}}
+              {{/each}}              
+            </div>
+          </div>
+        </div>
+      </div>      
+      <div role="tabpanel" class="tab-pane" id="general">
         <div class="panel detail-section">
           <div class="panel-heading">
             <h3 class="panel-title">
