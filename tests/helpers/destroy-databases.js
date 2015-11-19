@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 function destroyDatabases(app) {
-  const databaseService = app.registry.lookup('service:database');
-  const configService = app.registry.lookup('service:config');
+  const databaseService = app.__container__.lookup('service:database');
+  const configService = app.__container__.lookup('service:config');
 
   const config = configService.get('configDB');
   const db = databaseService.get('mainDB');
