@@ -60,14 +60,14 @@ export default DS.RESTAdapter.extend(UserSession, {
   @method deleteRecord
   @param {DS.Store} store
   @param {subclass of DS.Model} type
-  @param {DS.Model} record
+  @param {DS.Snapshot} record
   @returns {Promise} promise
   */
   deleteRecord: function(store, type, record) {
     var ajaxData = {
       data: {
-        id: record.get('id'),
-        rev: record.get('rev')
+        id: record.id,
+        rev: record.attr('rev')
       }
     };
     ajaxData.data.name = this.getUserName(true);
