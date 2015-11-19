@@ -7,7 +7,7 @@ function waitToAppear(app, selector, interval = 200) {
   return new Ember.RSVP.Promise(function(resolve) {
     const checkVisibility = function() {
       if (isVisible()) {
-        resolve();
+        resolve($(selector));
       } else {
         Ember.run.later(null, checkVisibility, interval);
       }

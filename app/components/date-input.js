@@ -12,7 +12,7 @@ export default HtmlInput.extend({
   currentDateChangedValue: function() {
     var currentDate = this.get('currentDate'),
       picker = this.get('_picker');
-    if (this._shouldSetDate(currentDate, picker)) {
+    if (!Ember.isEmpty(currentDate) && this._shouldSetDate(currentDate, picker)) {
       picker.setDate(currentDate);
     }
   },

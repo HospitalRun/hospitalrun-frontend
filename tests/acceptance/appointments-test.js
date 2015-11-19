@@ -42,8 +42,11 @@ test('Creating a new appointment', function(assert) {
   fillIn('.test-patient-input .tt-input', 'Lennex Zinyando - P00017');
   triggerEvent('.test-patient-input .tt-input', 'input');
   triggerEvent('.test-patient-input .tt-input', 'blur');
-  fillIn('.test-appointment-date input', Date.now());
-  select('.test-appointment-type', 'Admission');
+  select('.test-appointment-type', 'Followup');
+  waitToAppear('.test-appointment-date input');
+  andThen(function() {
+    selectDate('.test-appointment-date input', new Date());
+  });
   fillIn('.test-appointment-location .tt-input', 'Harare');
   triggerEvent('.test-appointment-location .tt-input', 'input');
   triggerEvent('.test-appointment-location .tt-input', 'blur');
@@ -74,6 +77,7 @@ test('Adding a visit to an appointment', function(assert) {
     findWithAssert('button:contains(Edit)');
     findWithAssert('button:contains(Delete)');
   });
+
   click('button:contains(Add Visit)');
   andThen(() => {
     assert.equal(currentURL(), '/visits/edit/new', 'Now in add visiting information route');
@@ -140,8 +144,14 @@ function createAppointment() {
   fillIn('.test-patient-input .tt-input', 'Lennex Zinyando - P00017');
   triggerEvent('.test-patient-input .tt-input', 'input');
   triggerEvent('.test-patient-input .tt-input', 'blur');
-  fillIn('.test-appointment-date input', Date.now());
   select('.test-appointment-type', 'Admission');
+  waitToAppear('.test-appointment-start input');
+  andThen(function() {
+    selectDate('.test-appointment-start input', new Date());
+  });
+  andThen(function() {
+    selectDate('.test-appointment-end input', moment().add(1, 'day').toDate());
+  });
   fillIn('.test-appointment-location .tt-input', 'Harare');
   triggerEvent('.test-appointment-location .tt-input', 'input');
   triggerEvent('.test-appointment-location .tt-input', 'blur');

@@ -30,7 +30,9 @@
     "destroyDatabases",
     "authenticateUser",
     "waitToAppear",
-    "select"
+    "select",
+    "selectDate",
+    "moment"
   ],
   "node": false,
   "browser": false,
