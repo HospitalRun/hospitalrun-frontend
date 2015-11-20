@@ -24,25 +24,19 @@
             </h3>
           </div>
           <div class="panel-body detail-section-content">
-            <div class="row">
-              {{#if canAddNote}}
-                <div class="col-xs-12">
-                  {{em-text label="New Note" property="newNote" rows=3}}
-                  {{select-or-typeahead className="col-sm-3" property="newOnBehalfOf"
-                    label="On Behalf Of" list=physicianList
-                  }}
-                  <button class="btn btn-primary" {{action "updateNote" bubbles=false }}><span class="octicon octicon-plus"></span> Add Note</button>
-                </div>
-              {{/if}}
-              {{#each model.clinicalNotes as |note|}}              
-                <label class="control-label">By</label>
-                {{note.attribution}} on {{date-format note.date}}
-                {{#if note.onBehalfOf}}
-                  <label class="control-label">On Behalf Of</label>
-                  {{note.onBehalfOf}}
-                {{/if}}
-                {{note.content}}
-              {{/each}}              
+            {{#if canAddNote}}
+              <div class="col-xs-12">
+                {{em-text label="New Note" property="newNote" rows=3}}
+                {{select-or-typeahead className="col-sm-3" property="newOnBehalfOf"
+                  label="On Behalf Of" list=physicianList
+                }}
+                <br>
+                <button class="btn btn-primary" {{action "updateNote" bubbles=false }}><span class="octicon octicon-plus"></span> Add Note</button>
+                
+              </div>
+            {{/if}}
+            <div class="panel-body detail-section-content">
+              {{partial 'patients/notes'}}       
             </div>
           </div>
         </div>

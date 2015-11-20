@@ -274,6 +274,15 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
       familyInfo.removeObject(family);
       this.send('update', true);
     },
+    
+    deleteNote: function(model) {
+      var patient = this.get('model'),
+          clinicalNotes = this.getWithDefault('model.clinicalNotes', []),
+          note = model.get('noteToDelete');
+      clinicalNotes.removeObject(note);
+      patient.set('clinicalNotes', clinicalNotes);
+      this.send('update', true);
+    },
 
     deletePhoto: function(model) {
       var photo = model.get('photoToDelete'),
@@ -416,6 +425,17 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
       this.send('openModal', 'medication.delete', medication);
     },
 
+    showDeleteNote: function(noteInfo) {
+      this.send('openModal', 'dialog', Ember.Object.create({
+        confirmAction: 'deleteNote',
+        title: 'Delete Note',
+        message: 'Are you sure you want to delete this note?',
+        noteToDelete: noteInfo,
+        updateButtonAction: 'confirm',
+        updateButtonText: 'Ok'
+      }));
+    },
+
     showDeletePhoto: function(photo) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deletePhoto',
@@ -483,8 +503,10 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
         };
       
       clinicalNotes.addObject(patientNote);
-      patient.set('clinicalNotes', clinicalNotes);
+      patient.set('clinicalNotes', clinicalNotes);      
       this.send('update', true);
+      patient.set('newOnBehalfOf', null);
+      patient.set('newNote', null);
     },
 
     updatePhoto: function(photo) {
