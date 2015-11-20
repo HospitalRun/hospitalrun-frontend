@@ -6,6 +6,7 @@ import './destroy-databases';
 import './load-pouch-dump';
 import './authenticate-user';
 import './select';
+import './select-date';
 import './wait-to-appear';
 
 export default function startApp(attrs) {
