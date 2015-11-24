@@ -1,6 +1,5 @@
 {
   "predef": [
-    "server",
     "authenticateSession",
     "invalidateSession",
     "currentSession",
