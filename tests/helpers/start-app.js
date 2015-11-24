@@ -2,8 +2,7 @@ import Ember from 'ember';
 import Application from '../../app';
 import config from '../../config/environment';
 
-import './destroy-databases';
-import './load-pouch-dump';
+import './run-with-pouch-dump';
 import './authenticate-user';
 import './select';
 import './select-date';
