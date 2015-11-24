@@ -347,6 +347,9 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
           }
         }
         if (updateList) {
+          if (values == null) {
+            values = [];
+          }
           values.addObject(value);
           values = values.sort(this._sortValues);
           lookupTypeList.set('value', values);
