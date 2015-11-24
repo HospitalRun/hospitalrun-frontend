@@ -51,7 +51,7 @@
     "ember-rapid-forms": "1.0.0-beta3",
     "ember-select-list": "0.9.2",
     "ember-simple-auth": "1.0.1",
-    "ember-suave": "1.2.0",
+    "ember-suave": "1.2.3",
     "ember-truth-helpers": "1.1.0",
     "ember-validations": "2.0.0-alpha.4",
     "express": "^4.8.5",
