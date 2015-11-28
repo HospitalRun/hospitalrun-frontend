@@ -1,9 +1,9 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false bubbles=false }}
     {{#unless isNewOrDeleted}}
-      {{patient-summary patient=model visits=model.visits patientProcedures=patientProcedures disablePatientLink=true }}
+      {{patient-summary patient=model visits=model.visits patientProcedures=patientProcedures disablePatientLink=true store=store }}
       <ul class="nav nav-pills" role="tablist">
-        <li role="presentation" class="active"><a class="active" href="#notes" role="tab" data-toggle="pill" data-test-selector="notes-tab">Notes</a></li>
+        <li role="presentation" class="active"><a class="active" href="#notes" role="tab" data-toggle="pill" data-test-selector="general-tab">Notes</a></li>
         <li role="presentation"><a href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">General</a></li>
         <li role="presentation"><a href="#photos" role="tab" data-toggle="pill" data-test-selector="photos-tab">Photos</a></li>
         <li role="presentation"><a href="#medication" role="tab" data-toggle="pill" data-test-selector="medication-tab">Medication</a></li>
@@ -15,32 +15,41 @@
         {{/if}}
       </ul>
     {{/unless}}
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="notes">
-        <div class="panel">
-          <div class="panel-heading">
-            <h3 class="panel-title">
-              Notes
-            </h3>
-          </div>
-          <div class="panel-body detail-section-content">
-            {{#if canAddNote}}
-              <div class="col-xs-12">
-                {{em-text label="New Note" property="newNote" rows=3}}
-                {{select-or-typeahead className="col-sm-3" property="newOnBehalfOf"
-                  label="On Behalf Of" list=physicianList
-                }}
-                <br>
-                <button class="btn btn-primary" {{action "updateNote" bubbles=false }}><span class="octicon octicon-plus"></span> Add Note</button>
-                
-              </div>
-            {{/if}}
+    <div class="tab-content">     
+      {{#unless isNewOrDeleted}}
+        <div role="tabpanel" class="tab-pane active" id="notes">
+          <div class="panel detail-section">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                Notes
+              </h3>
+            </div>
             <div class="panel-body detail-section-content">
-              {{partial 'patients/notes'}}       
+              <table class="table">
+                <tr class="table-header">
+                  <th>Date</th>
+                  <th>By</th>
+                  <th>Note</th>    
+                  <th>Actions</th>
+                </tr>
+                {{#each model.patientNotes as |note|}}              
+                <tr>
+                  <td>{{date-format note.date}}</td>
+                  <td>{{note.createdBy}}{{#if note.attribution}} on behalf of {{note.attribution}}{{/if}}</td>
+                  <td><b>{{note.noteType}}</b>: {{note.content}}</td>
+                  <td>
+                    {{#if canDeleteNote}}
+                      <button type="button" class="btn btn-default neutral" {{action "showEditPatientNote" note bubbles=false }}>Edit</button>
+                      <button type="button" class="btn btn-default warning" {{action "showDeleteNote" note bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                    {{/if}}
+                  </td>
+                </tr>
+                {{/each}}
+              </table>
             </div>
           </div>
-        </div>
-      </div>      
+        </div>        
+      {{/unless}}
       <div role="tabpanel" class="tab-pane" id="general">
         <div class="panel detail-section">
           <div class="panel-heading">

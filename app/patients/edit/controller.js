@@ -130,6 +130,8 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
 
   pricingProfiles: Ember.computed.map('patientController.pricingProfiles', SelectValues.selectObjectMap),
   statusList: Ember.computed.alias('patientController.statusList'),
+  
+  physicianList: Ember.computed.alias('patientController.physicianList'),
 
   haveAdditionalContacts: function() {
     var additionalContacts = this.get('model.additionalContacts');
@@ -159,8 +161,6 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     id: 'patient_status_list'
   }],
   
-  physicianList: Ember.computed.alias('patientController.physicianList'),
-
   patientImaging: function() {
     return this._getVisitCollection('imaging');
   }.property('model.visits.[].imaging'),
@@ -276,12 +276,10 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     },
     
     deleteNote: function(model) {
-      var patient = this.get('model'),
-          clinicalNotes = this.getWithDefault('model.clinicalNotes', []),
+      var patientNotes = this.get('model.patientNotes'),
           note = model.get('noteToDelete');
-      clinicalNotes.removeObject(note);
-      patient.set('clinicalNotes', clinicalNotes);
-      this.send('update', true);
+      patientNotes.removeObject(note);
+      this.send('update', true);      
     },
 
     deletePhoto: function(model) {
@@ -367,13 +365,21 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     showAddContact: function() {
       this.send('openModal', 'patients.add-contact', {});
     },
+    
+    showAddPatientNote: function() {
+      this.send('openModal', 'patients/notes', {});
+    },
+    
+    showEditPatientNote: function(note) {
+      this.send('openModal', 'patients/notes', note);
+    },
 
     showAddPhoto: function() {
       this.send('openModal', 'patients.photo', {
         isNew: true
       });
     },
-
+    
     showDeleteAppointment: function(appointment) {
       appointment.set('deleteFromPatient', true);
       this.send('openModal', 'appointments.delete', appointment);
@@ -492,21 +498,8 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
       this.send('closeModal');
     },
     
-    updateNote: function() {
-      var patient = this.get('model'),
-          clinicalNotes = this.getWithDefault('model.clinicalNotes', []),
-          patientNote = {
-          attribution: this.getUserName(),
-          date: new Date(),
-          onBehalfOf: patient.newOnBehalfOf,
-          content: patient.newNote
-        };
-      
-      clinicalNotes.addObject(patientNote);
-      patient.set('clinicalNotes', clinicalNotes);      
+    updateNote: function(patientNote) {
       this.send('update', true);
-      patient.set('newOnBehalfOf', null);
-      patient.set('newNote', null);
     },
 
     updatePhoto: function(photo) {

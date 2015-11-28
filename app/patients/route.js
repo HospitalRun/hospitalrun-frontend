@@ -19,6 +19,9 @@ export default AbstractModuleRoute.extend(PatientId, {
     name: 'locationList',
     findArgs: ['lookup', 'visit_location_list']
   }, {
+    name: 'patientNoteTypesList',
+    findArgs: ['lookup', 'patient_note_types']
+  }, {
     name: 'physicianList',
     findArgs: ['lookup', 'physician_list']
   }, {
@@ -48,7 +51,7 @@ export default AbstractModuleRoute.extend(PatientId, {
     }
   },
   moduleName: 'patients',
-  newButtonText: '+ new patient',
+  //newButtonText: '+ new patient',
   sectionTitle: 'Patients',
   subActions: [{
     text: 'Patient listing',

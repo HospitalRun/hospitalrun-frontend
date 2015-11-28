@@ -14,7 +14,6 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   address4: DS.attr('string'),
   bloodType: DS.attr('string'),
   clinic: DS.attr('string'),
-  clinicalNotes: DS.attr(),
   country: DS.attr('string'),
   dateOfBirth: DS.attr('date'),
   economicClassification: DS.attr('string'),
@@ -39,6 +38,9 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   otherIncome: DS.attr('string'),
   payments: DS.hasMany('payment', {
     async: true
+  }),
+  patientNotes: DS.hasMany('patient-note', {
+    async: false
   }),
   patientType: DS.attr('string'),
   parent: DS.attr('string'),

@@ -325,6 +325,12 @@ var designDocs = [{
   ),
   version: 2
 }, {
+  name: 'patient_note_by_patient',
+  function: generateView('patient-note',
+    'emit(doc.data.patient-note);'
+  ),
+  version: 1
+}, {
   name: 'photo_by_patient',
   function: generateView('photo',
     'emit(doc.data.patient);'

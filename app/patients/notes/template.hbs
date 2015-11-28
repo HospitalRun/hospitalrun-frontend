@@ -1,20 +1,17 @@
-<table class="table">
-  <tr class="table-header">
-    <th>Actions</th>
-    <th>Date</th>
-    <th>By</th>
-    <th>Note</th>    
-  </tr>
-  {{#each model.clinicalNotes as |note|}}              
-  <tr>
-    <td>
-      {{#if canDeleteMedication}}
-        <button type="button" class="btn btn-default warning" {{action "showDeleteNote" note bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-      {{/if}}
-    </td>
-    <td>{{date-format note.date}}</td>
-    <td>{{note.attribution}}{{#if note.onBehalfOf}} on behalf of {{note.onBehalfOf}}{{/if}}</td>
-    <td>{{note.content}}</td>
-  </tr>
-  {{/each}}
-</table>
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=model submitButton=false }}
+    {{em-text label="Note" property="content" rows=3}}        
+    {{em-select className="col-sm-3" property="noteType"
+      label="Type" content=patientNoteTypes
+    }}
+    {{em-select className="col-sm-3" property="attribution"
+      label="On Behalf Of" content=physicianList prompt=" "
+    }}
+  {{/em-form}}
+{{/modal-dialog}}

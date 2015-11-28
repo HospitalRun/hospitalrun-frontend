@@ -1,12 +1,19 @@
 import Ember from 'ember';
 import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
-export default Ember.Component.extend(PatientDiagnosis, {
+import UserSession from 'hospitalrun/mixins/user-session';
+export default Ember.Component.extend(PatientDiagnosis, UserSession, {
+  canAddNote: function() {
+    return this.currentUserCan('add_note');
+  },
+  
   classNames: ['patient-summary'],
   disablePatientLink: false,
   editProcedureAction: 'editProcedure',
   patient: null,
   patientProcedures: null,
   showPatientAction: 'showPatient',
+  openModalAction: 'openModal',
+  store: null,
   visits: null,
 
   havePrimaryDiagnoses: function() {
@@ -56,6 +63,15 @@ export default Ember.Component.extend(PatientDiagnosis, {
       procedure.set('returnToPatient', true);
       procedure.set('patient', this.get('patient'));
       this.sendAction('editProcedureAction', procedure);
+    },
+    showPatientHistory: function() {      
+      this.sendAction('openModalAction', 'patients/history', this.get('patient'));
+    },
+    showAddPatientNote: function(model) {
+      if (Ember.isEmpty(model)) {
+        model = this.get('store').createRecord('patient-note', {patient: this.get('patient')});
+      }
+      this.sendAction('openModalAction', 'patients/notes', model);
     }
   }
 });

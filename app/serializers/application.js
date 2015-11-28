@@ -12,6 +12,7 @@ export default DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
     medication: { serialize: 'ids' },
     payments: { serialize: 'ids' },
     pricingOverrides: { serialize: 'ids' },
+    patientNotes: { serialize: 'ids' },
     procedures: { serialize: 'ids' },
     purchases: { serialize: 'ids' },
     vitals: { serialize: 'ids' }
