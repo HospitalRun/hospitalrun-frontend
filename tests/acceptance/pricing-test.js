@@ -3,21 +3,20 @@ import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
 function verifyPricingLists(path, includesPrices, excludesPrices, assert) {
-  loadPouchDump('billing');
-  authenticateUser();
-  visit(path);
-  andThen(function() {
-    assert.equal(currentURL(), path);
-    includesPrices.forEach(function(priceName) {
-      assert.equal(find('.price-name:contains(' + priceName + ')').length, 1, priceName + ' displays');
-    });
-    excludesPrices.forEach(function(priceName) {
-      assert.equal(find('.price-name:contains(' + priceName + ')').length, 0, priceName + ' is not present');
-    });
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit(path);
+    andThen(function() {
+      assert.equal(currentURL(), path);
+      includesPrices.forEach(function(priceName) {
+        assert.equal(find('.price-name:contains(' + priceName + ')').length, 1, priceName + ' displays');
+      });
+      excludesPrices.forEach(function(priceName) {
+        assert.equal(find('.price-name:contains(' + priceName + ')').length, 0, priceName + ' is not present');
+      });
 
+    });
   });
-  destroyDatabases();
-
 }
 
 module('Acceptance | pricing', {
@@ -90,103 +89,103 @@ test('visiting /pricing/ward', function(assert) {
 });
 
 test('create new price', function(assert) {
-  loadPouchDump('billing');
-  authenticateUser();
-  visit('/pricing/edit/new');
-  andThen(function() {
-    assert.equal(currentURL(), '/pricing/edit/new');
-    fillIn('.price-name input', 'Xray Foot');
-    fillIn('.price-amount input', 100);
-    fillIn('.price-department input', 'Imaging');
-    select('.price-category', 'Imaging');
-    fillIn('.price-type', 'Imaging Procedure');
-    click('button:contains(Add):last');
-    waitToAppear('.modal-dialog');
-    andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Pricing Item Saved', 'Pricing Item saved');
-      click('button:contains(Ok)');
-    });
-    andThen(() => {
-      click('button:contains(Add Override)');
-      waitToAppear('.modal-dialog');
-    });
-    andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Add Override', 'Add Override Dialog displays');
-      select('.pricing-profile', 'Half off');
-      fillIn('.pricing-override-price input', 20);
-    });
-    andThen(() => {
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit('/pricing/edit/new');
+    andThen(function() {
+      assert.equal(currentURL(), '/pricing/edit/new');
+      fillIn('.price-name input', 'Xray Foot');
+      fillIn('.price-amount input', 100);
+      fillIn('.price-department input', 'Imaging');
+      select('.price-category', 'Imaging');
+      fillIn('.price-type', 'Imaging Procedure');
       click('button:contains(Add):last');
-      waitToAppear('.override-profile');
-    });
-    andThen(() => {
-      assert.equal(find('.override-profile').text(), 'Half off', 'Pricing override saved');
+      waitToAppear('.modal-dialog');
+      andThen(() => {
+        assert.equal(find('.modal-title').text(), 'Pricing Item Saved', 'Pricing Item saved');
+        click('button:contains(Ok)');
+      });
+      andThen(() => {
+        click('button:contains(Add Override)');
+        waitToAppear('.modal-dialog');
+      });
+      andThen(() => {
+        assert.equal(find('.modal-title').text(), 'Add Override', 'Add Override Dialog displays');
+        select('.pricing-profile', 'Half off');
+        fillIn('.pricing-override-price input', 20);
+      });
+      andThen(() => {
+        click('button:contains(Add):last');
+        waitToAppear('.override-profile');
+      });
+      andThen(() => {
+        assert.equal(find('.override-profile').text(), 'Half off', 'Pricing override saved');
+      });
     });
   });
-  destroyDatabases();
 });
 
 test('delete price', function(assert) {
-  loadPouchDump('billing');
-  authenticateUser();
-  visit('/pricing/lab');
-  andThen(function() {
-    assert.equal(currentURL(), '/pricing/lab');
-    assert.equal(find('.price-name:contains(Blood test)').length, 1, 'Price exists to delete');
-    click('button:contains(Delete)');
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit('/pricing/lab');
+    andThen(function() {
+      assert.equal(currentURL(), '/pricing/lab');
+      assert.equal(find('.price-name:contains(Blood test)').length, 1, 'Price exists to delete');
+      click('button:contains(Delete)');
+    });
+    waitToAppear('.modal-dialog');
+    andThen(() => {
+      assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete Blood test?', 'Pricing item is displayed for deletion');
+    });
+    click('button:contains(Delete):last');
+    andThen(() => {
+      assert.equal(find('.price-name:contains(Blood test)').length, 0, 'Price disappears from price list');
+    });
   });
-  waitToAppear('.modal-dialog');
-  andThen(() => {
-    assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete Blood test?', 'Pricing item is displayed for deletion');
-  });
-  click('button:contains(Delete):last');
-  andThen(() => {
-    assert.equal(find('.price-name:contains(Blood test)').length, 0, 'Price disappears from price list');
-  });
-  destroyDatabases();
 });
 
 test('create new pricing profile', function(assert) {
-  loadPouchDump('billing');
-  authenticateUser();
-  visit('/pricing/profiles');
-  andThen(function() {
-    assert.equal(currentURL(), '/pricing/profiles');
-    click('button:contains(+ new item)');
-    waitToAppear('.modal-dialog');
-    andThen(() => {
-      assert.equal(find('.modal-title').text(), 'New Pricing Profile', 'New Pricing Profile modal appears');
-    });
-    fillIn('.pricing-profile-name input', 'Quarter Off');
-    fillIn('.pricing-profile-percentage input', 25);
-    fillIn('.pricing-profile-discount input', 10);
-    andThen(() => {
-      click('button:contains(Add)');
-      waitToAppear('.pricing-profile-name:contains(Quarter Off)');
-    });
-    andThen(() => {
-      assert.equal(find('.pricing-profile-name:contains(Quarter Off)').text(), 'Quarter Off', 'New price profile displays');
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit('/pricing/profiles');
+    andThen(function() {
+      assert.equal(currentURL(), '/pricing/profiles');
+      click('button:contains(+ new item)');
+      waitToAppear('.modal-dialog');
+      andThen(() => {
+        assert.equal(find('.modal-title').text(), 'New Pricing Profile', 'New Pricing Profile modal appears');
+      });
+      fillIn('.pricing-profile-name input', 'Quarter Off');
+      fillIn('.pricing-profile-percentage input', 25);
+      fillIn('.pricing-profile-discount input', 10);
+      andThen(() => {
+        click('button:contains(Add)');
+        waitToAppear('.pricing-profile-name:contains(Quarter Off)');
+      });
+      andThen(() => {
+        assert.equal(find('.pricing-profile-name:contains(Quarter Off)').text(), 'Quarter Off', 'New price profile displays');
+      });
     });
   });
-  destroyDatabases();
 });
 
 test('delete pricing profile', function(assert) {
-  loadPouchDump('billing');
-  authenticateUser();
-  visit('/pricing/profiles');
-  andThen(function() {
-    assert.equal(currentURL(), '/pricing/profiles');
-    assert.equal(find('.pricing-profile-name:contains(Half off)').length, 1, 'Pricing profile exists to delete');
-    click('button:contains(Delete)');
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit('/pricing/profiles');
+    andThen(function() {
+      assert.equal(currentURL(), '/pricing/profiles');
+      assert.equal(find('.pricing-profile-name:contains(Half off)').length, 1, 'Pricing profile exists to delete');
+      click('button:contains(Delete)');
+    });
+    waitToAppear('.modal-dialog');
+    andThen(() => {
+      assert.equal(find('.modal-title').text().trim(), 'Delete Profile', 'Pricing Profile delete confirmation is displayed');
+    });
+    click('button:contains(Ok)');
+    andThen(() => {
+      assert.equal(find('.pricing-profile-name:contains(Half off)').length, 0, 'Pricing profile disappears from list');
+    });
   });
-  waitToAppear('.modal-dialog');
-  andThen(() => {
-    assert.equal(find('.modal-title').text().trim(), 'Delete Profile', 'Pricing Profile delete confirmation is displayed');
-  });
-  click('button:contains(Ok)');
-  andThen(() => {
-    assert.equal(find('.pricing-profile-name:contains(Half off)').length, 0, 'Pricing profile disappears from list');
-  });
-  destroyDatabases();
 });

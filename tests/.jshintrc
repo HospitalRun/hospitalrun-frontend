@@ -1,6 +1,5 @@
 {
   "predef": [
-    "server",
     "authenticateSession",
     "invalidateSession",
     "currentSession",
@@ -26,8 +25,7 @@
     "currentURL",
     "currentPath",
     "currentRouteName",
-    "loadPouchDump",
-    "destroyDatabases",
+    "runWithPouchDump",
     "authenticateUser",
     "waitToAppear",
     "select",

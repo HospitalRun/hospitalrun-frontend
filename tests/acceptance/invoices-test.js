@@ -13,104 +13,104 @@ module('Acceptance | invoices', {
 });
 
 test('visiting /invoices', function(assert) {
-  loadPouchDump('billing');
-  authenticateUser();
-  visit('/invoices');
-  andThen(function() {
-    assert.equal(currentURL(), '/invoices');
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit('/invoices');
+    andThen(function() {
+      assert.equal(currentURL(), '/invoices');
+    });
   });
-  destroyDatabases();
 });
 
 test('create invoice', function(assert) {
-  loadPouchDump('billing');
-  authenticateUser();
-  visit('/invoices/edit/new');
-  andThen(function() {
-    assert.equal(currentURL(), '/invoices/edit/new');
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit('/invoices/edit/new');
+    andThen(function() {
+      assert.equal(currentURL(), '/invoices/edit/new');
+    });
+    fillIn('.invoice-patient .tt-input', 'Joe Bagadonuts - TCH 00001');
+    triggerEvent('.invoice-patient .tt-input', 'input');
+    triggerEvent('.invoice-patient .tt-input', 'blur');
+    waitToAppear('.invoice-visit option:contains(11/1/2015 - 11/12/2015 (Admission)');
+    andThen(function() {
+      select('.invoice-visit', '11/1/2015 - 11/12/2015 (Admission)');
+      fillIn('.external-invoice-no input', 'inv000002');
+    });
+    waitToAppear('button:contains(Update)');
+    andThen(function() {
+      click('button:contains(Update)');
+    });
+    waitToAppear('.modal-dialog');
+    andThen(() => {
+      assert.equal(find('.modal-title').text(), 'Invoice Saved', 'Invoice was saved successfully');
+    });
   });
-  fillIn('.invoice-patient .tt-input', 'Joe Bagadonuts - TCH 00001');
-  triggerEvent('.invoice-patient .tt-input', 'input');
-  triggerEvent('.invoice-patient .tt-input', 'blur');
-  waitToAppear('.invoice-visit option:contains(11/1/2015 - 11/12/2015 (Admission)');
-  andThen(function() {
-    select('.invoice-visit', '11/1/2015 - 11/12/2015 (Admission)');
-    fillIn('.external-invoice-no input', 'inv000002');
-  });
-  waitToAppear('button:contains(Update)');
-  andThen(function() {
-    click('button:contains(Update)');
-  });
-  waitToAppear('.modal-dialog');
-  andThen(() => {
-    assert.equal(find('.modal-title').text(), 'Invoice Saved', 'Invoice was saved successfully');
-  });
-  destroyDatabases();
 });
 
 test('delete invoice', function(assert) {
-  loadPouchDump('billing');
-  authenticateUser();
-  visit('/invoices');
-  andThen(function() {
-    assert.equal(currentURL(), '/invoices');
-    assert.equal(find('.invoice-number:contains(inv00001)').length, 1, 'Invoice is displayed for deletion');
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit('/invoices');
+    andThen(function() {
+      assert.equal(currentURL(), '/invoices');
+      assert.equal(find('.invoice-number:contains(inv00001)').length, 1, 'Invoice is displayed for deletion');
+    });
+    click('button:contains(Delete)');
+    andThen(function() {
+      waitToAppear('.modal-dialog');
+    });
+    andThen(() => {
+      assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete inv00001?', 'Invoice deletion confirm displays');
+    });
+    click('button:contains(Delete):last');
+    andThen(() => {
+      assert.equal(find('.invoice-number:contains(inv00001)').length, 0, 'Invoice is deleted');
+    });
   });
-  click('button:contains(Delete)');
-  andThen(function() {
-    waitToAppear('.modal-dialog');
-  });
-  andThen(() => {
-    assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete inv00001?', 'Invoice deletion confirm displays');
-  });
-  click('button:contains(Delete):last');
-  andThen(() => {
-    assert.equal(find('.invoice-number:contains(inv00001)').length, 0, 'Invoice is deleted');
-  });
-  destroyDatabases();
 });
 
 test('add payment', function(assert) {
-  loadPouchDump('billing');
-  authenticateUser();
-  visit('/invoices');
-  andThen(function() {
-    assert.equal(currentURL(), '/invoices');
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit('/invoices');
+    andThen(function() {
+      assert.equal(currentURL(), '/invoices');
+    });
+    click('button:contains(Add Payment)');
+    waitToAppear('.modal-dialog');
+    andThen(function() {
+      assert.equal(find('.modal-title').text(), 'Add Payment', 'Add Payment modal displays');
+    });
+    fillIn('.payment-amount input', 100);
+    click('.update-payment-btn');
+    waitToAppear('.modal-title:contains(Payment Added)');
+    andThen(() => {
+      assert.equal(find('.modal-title').text(), 'Payment Added', 'Payment was saved successfully');
+    });
   });
-  click('button:contains(Add Payment)');
-  waitToAppear('.modal-dialog');
-  andThen(function() {
-    assert.equal(find('.modal-title').text(), 'Add Payment', 'Add Payment modal displays');
-  });
-  fillIn('.payment-amount input', 100);
-  click('.update-payment-btn');
-  waitToAppear('.modal-title:contains(Payment Added)');
-  andThen(() => {
-    assert.equal(find('.modal-title').text(), 'Payment Added', 'Payment was saved successfully');
-  });
-  destroyDatabases();
 });
 
 test('add deposit', function(assert) {
-  loadPouchDump('billing');
-  authenticateUser();
-  visit('/invoices');
-  andThen(function() {
-    assert.equal(currentURL(), '/invoices');
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit('/invoices');
+    andThen(function() {
+      assert.equal(currentURL(), '/invoices');
+    });
+    click('button:contains(add deposit)');
+    waitToAppear('.modal-dialog');
+    andThen(function() {
+      assert.equal(find('.modal-title').text(), 'Add Deposit', 'Add Deposit modal displays');
+    });
+    fillIn('.payment-amount input', 140);
+    fillIn('.payment-patient .tt-input', 'Joe Bagadonuts - TCH 00001');
+    triggerEvent('.payment-patient .tt-input', 'input');
+    triggerEvent('.payment-patient .tt-input', 'blur');
+    click('.update-payment-btn');
+    waitToAppear('.modal-title:contains(Deposit Added)');
+    andThen(() => {
+      assert.equal(find('.modal-title').text(), 'Deposit Added', 'Deposit was saved successfully');
+    });
   });
-  click('button:contains(add deposit)');
-  waitToAppear('.modal-dialog');
-  andThen(function() {
-    assert.equal(find('.modal-title').text(), 'Add Deposit', 'Add Deposit modal displays');
-  });
-  fillIn('.payment-amount input', 140);
-  fillIn('.payment-patient .tt-input', 'Joe Bagadonuts - TCH 00001');
-  triggerEvent('.payment-patient .tt-input', 'input');
-  triggerEvent('.payment-patient .tt-input', 'blur');
-  click('.update-payment-btn');
-  waitToAppear('.modal-title:contains(Deposit Added)');
-  andThen(() => {
-    assert.equal(find('.modal-title').text(), 'Deposit Added', 'Deposit was saved successfully');
-  });
-  destroyDatabases();
 });

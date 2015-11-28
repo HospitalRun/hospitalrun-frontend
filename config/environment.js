@@ -16,21 +16,8 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-    },
-
-    'simple-auth': {
-
     }
   };
-
-ENV.APP.manifest = {
-  enabled: true,
-  appcacheFile: "/manifest.appcache",
-  excludePaths: ['index.html', 'someother.html'],
-  includePaths: ['/'],
-  network: ['api/'],
-  showCreateDate: true
-};
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
@@ -38,16 +25,6 @@ ENV.APP.manifest = {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
-      
-    ENV.contentSecurityPolicy = {
-      'default-src': "'none'",
-      'script-src': "'self' 'unsafe-inline'",
-      'font-src': "'self'",
-      'connect-src': "'self'",
-      'img-src': "'self' data:",
-      'style-src': "'self' 'unsafe-inline'",
-      'media-src': "'self'"
-    };      
   }
 
   if (environment === 'test') {
@@ -60,8 +37,6 @@ ENV.APP.manifest = {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
-
-    ENV['simple-auth'].store = 'simple-auth-session-store:ephemeral';
   }
 
   if (environment === 'production') {

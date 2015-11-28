@@ -65,97 +65,97 @@ module('Acceptance | users', {
 });
 
 test('visiting /admin/users', function(assert) {
-  loadPouchDump('default');
-  authenticateUser();
-  addAllUsers(assert);
+  runWithPouchDump('default', function() {
+    authenticateUser();
+    addAllUsers(assert);
 
-  visit('/admin/users');
-  andThen(function() {
-    assert.equal(currentURL(), '/admin/users');
-    assert.equal(find('td.user-display-name:first').text(), 'HospitalRun Administrator');
-    assert.equal(find('td.user-name:first').text(), 'hradmin');
-    assert.equal(find('td.user-email:first').text(), 'hradmin@hospitalrun.io');
-    assert.equal(find('td.user-role:first').text(), 'System Administrator');
+    visit('/admin/users');
+    andThen(function() {
+      assert.equal(currentURL(), '/admin/users');
+      assert.equal(find('td.user-display-name:first').text(), 'HospitalRun Administrator');
+      assert.equal(find('td.user-name:first').text(), 'hradmin');
+      assert.equal(find('td.user-email:first').text(), 'hradmin@hospitalrun.io');
+      assert.equal(find('td.user-role:first').text(), 'System Administrator');
+    });
   });
-  destroyDatabases();
 });
 
 test('create new user', function(assert) {
-  loadPouchDump('default');
-  authenticateUser();
-  addAllUsers(assert);
-  visit('/admin/users');
+  runWithPouchDump('default', function() {
+    authenticateUser();
+    addAllUsers(assert);
+    visit('/admin/users');
 
-  stubRequest('post', '/updateuser', function(request) {
-    var expectedBody = {
-      data: {
-        displayName: 'Jane Bagadonuts',
-        email: 'jane@donuts.com',
-        name: 'jane@donuts.com',
-        password: 'password',
-        roles: ['Hospital Administrator', 'user'],
-        userPrefix: 'p02',
-        type: 'user'
-      },
-      updateParams: {
-        doc_name: 'org.couchdb.user:jane@donuts.com'
-      },
-      name: 'hradmin'
-    };
-    assert.equal(request.requestBody, JSON.stringify(expectedBody), 'New user data sent to the server');
-    request.ok({
-      'ok': true,
-      'id': 'org.couchdb.user:jane@donuts.com',
-      'rev': '1-ef3d54502f2cc8e8f73d8547881f0836'
+    stubRequest('post', '/updateuser', function(request) {
+      var expectedBody = {
+        data: {
+          displayName: 'Jane Bagadonuts',
+          email: 'jane@donuts.com',
+          name: 'jane@donuts.com',
+          password: 'password',
+          roles: ['Hospital Administrator', 'user'],
+          userPrefix: 'p02',
+          type: 'user'
+        },
+        updateParams: {
+          doc_name: 'org.couchdb.user:jane@donuts.com'
+        },
+        name: 'hradmin'
+      };
+      assert.equal(request.requestBody, JSON.stringify(expectedBody), 'New user data sent to the server');
+      request.ok({
+        'ok': true,
+        'id': 'org.couchdb.user:jane@donuts.com',
+        'rev': '1-ef3d54502f2cc8e8f73d8547881f0836'
+      });
+    });
+
+    visit('/admin/users/edit/new');
+    andThen(function() {
+      select('.user-role', 'Hospital Administrator');
+      fillIn('.user-display-name input', 'Jane Bagadonuts');
+      fillIn('.user-email input', 'jane@donuts.com');
+      fillIn('.user-password input', 'password');
+      click('button:contains(Add)');
+      waitToAppear('.modal-dialog');
+      andThen(() => {
+        assert.equal(find('.modal-title').text(), 'User Saved', 'User was saved successfully');
+      });
+      click('button:contains(Ok)');
     });
   });
-
-  visit('/admin/users/edit/new');
-  andThen(function() {
-    select('.user-role', 'Hospital Administrator');
-    fillIn('.user-display-name input', 'Jane Bagadonuts');
-    fillIn('.user-email input', 'jane@donuts.com');
-    fillIn('.user-password input', 'password');
-    click('button:contains(Add)');
-    waitToAppear('.modal-dialog');
-    andThen(() => {
-      assert.equal(find('.modal-title').text(), 'User Saved', 'User was saved successfully');
-    });
-    click('button:contains(Ok)');
-  });
-  destroyDatabases();
 });
 
 test('delete user', function(assert) {
-  loadPouchDump('default');
-  authenticateUser();
-  addAllUsers(assert);
+  runWithPouchDump('default', function() {
+    authenticateUser();
+    addAllUsers(assert);
 
-  stubRequest('post', '/deleteuser', function(request) {
-    var expectedBody = {
-      id: 'org.couchdb.user:joe@donuts.com',
-      rev: '1-ef3d54502f2cc8e8f73d8547881f0836',
-      name: 'hradmin'
-    };
-    assert.equal(request.requestBody, JSON.stringify(expectedBody), 'Delete user request sent to the server');
-    request.ok({
-      'ok': true,
-      'id': 'org.couchdb.user:joe@donuts.com',
-      'rev': '1-ef3d54502f2cc8e8f73d8547881f0836'
+    stubRequest('post', '/deleteuser', function(request) {
+      var expectedBody = {
+        id: 'org.couchdb.user:joe@donuts.com',
+        rev: '1-ef3d54502f2cc8e8f73d8547881f0836',
+        name: 'hradmin'
+      };
+      assert.equal(request.requestBody, JSON.stringify(expectedBody), 'Delete user request sent to the server');
+      request.ok({
+        'ok': true,
+        'id': 'org.couchdb.user:joe@donuts.com',
+        'rev': '1-ef3d54502f2cc8e8f73d8547881f0836'
+      });
+    });
+
+    visit('/admin/users');
+    andThen(function() {
+      click('button:contains(Delete):last');
+      waitToAppear('.modal-dialog');
+      andThen(() => {
+        assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete the user joe@donuts.com?', 'User is displayed for deletion');
+      });
+      click('button:contains(Delete):last');
+      andThen(() => {
+        assert.equal(find('.user-email:contains(joe@donuts.com)').length, 0, 'User disappears from user list');
+      });
     });
   });
-
-  visit('/admin/users');
-  andThen(function() {
-    click('button:contains(Delete):last');
-    waitToAppear('.modal-dialog');
-    andThen(() => {
-      assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete the user joe@donuts.com?', 'User is displayed for deletion');
-    });
-    click('button:contains(Delete):last');
-    andThen(() => {
-      assert.equal(find('.user-email:contains(joe@donuts.com)').length, 0, 'User disappears from user list');
-    });
-  });
-  destroyDatabases();
 });

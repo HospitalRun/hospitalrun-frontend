@@ -24,6 +24,9 @@ export default AbstractModel.extend({
     purchaseCost: {
       numericality: {
         greaterThan: 0,
+        messages: {
+          greaterThan: 'must be greater than 0'
+        },
         if: function(object) {
           return object.haveInvoiceItems();
         }
@@ -32,6 +35,9 @@ export default AbstractModel.extend({
     quantity: {
       numericality: {
         greaterThan: 0,
+        messages: {
+          greaterThan: 'must be greater than 0'
+        },
         if: function(object) {
           return object.haveInvoiceItems();
         }

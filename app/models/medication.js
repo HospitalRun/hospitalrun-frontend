@@ -93,7 +93,10 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, {
     quantity: {
       numericality: {
         allowBlank: true,
-        greaterThan: 0
+        greaterThan: 0,
+        messages: {
+          greaterThan: 'must be greater than 0'
+        }
       },
       presence: {
         if: function(object) {
