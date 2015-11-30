@@ -52,48 +52,53 @@ export default Ember.Mixin.create({
       quantityNeeded = quantityRequested,
       purchaseInfo = [],
       totalCost = 0;
-
-    var foundQuantity = purchases.any(function(purchase) {
-      currentQuantity = purchase.get('currentQuantity');
-      if (purchase.get('expired') || currentQuantity <= 0) {
-        return false;
-      }
+    if (increment) {
+      var purchase = purchases.get('lastObject');
       costPerUnit = purchase.get('costPerUnit');
-      if (increment) {
-        purchase.incrementProperty('currentQuantity', quantityRequested);
-        totalCost += (costPerUnit * quantityNeeded);
-        purchaseInfo.push({
-          id: purchase.get('id'),
-          quantity: quantityRequested
-        });
-        requestPurchases.addObject(purchase);
-        return true;
-      } else {
-        if (quantityNeeded > currentQuantity) {
-          totalCost += (costPerUnit * currentQuantity);
-          quantityNeeded = quantityNeeded - currentQuantity;
-          purchaseInfo.push({
-            id: purchase.get('id'),
-            quantity: parseInt(currentQuantity)
-          });
-          currentQuantity = 0;
-
-        } else {
-          totalCost += (costPerUnit * quantityNeeded);
-          currentQuantity = currentQuantity - quantityNeeded;
-          purchaseInfo.push({
-            id: purchase.get('id'),
-            quantity: parseInt(quantityNeeded)
-          });
-          quantityNeeded = 0;
+      purchase.incrementProperty('currentQuantity', quantityRequested);
+      totalCost += (costPerUnit * quantityNeeded);
+      purchaseInfo.push({
+        id: purchase.get('id'),
+        quantity: quantityRequested
+      });
+      requestPurchases.addObject(purchase);
+    } else {
+      var foundQuantity = purchases.any(function(purchase) {
+        currentQuantity = purchase.get('currentQuantity');
+        if (purchase.get('expired') || currentQuantity <= 0) {
+          return false;
         }
-        purchase.set('currentQuantity', currentQuantity);
-        requestPurchases.addObject(purchase);
-        return (quantityNeeded === 0);
+        costPerUnit = purchase.get('costPerUnit');
+        if (increment) {
+
+          return true;
+        } else {
+          if (quantityNeeded > currentQuantity) {
+            totalCost += (costPerUnit * currentQuantity);
+            quantityNeeded = quantityNeeded - currentQuantity;
+            purchaseInfo.push({
+              id: purchase.get('id'),
+              quantity: parseInt(currentQuantity)
+            });
+            currentQuantity = 0;
+
+          } else {
+            totalCost += (costPerUnit * quantityNeeded);
+            currentQuantity = currentQuantity - quantityNeeded;
+            purchaseInfo.push({
+              id: purchase.get('id'),
+              quantity: parseInt(quantityNeeded)
+            });
+            quantityNeeded = 0;
+          }
+          purchase.set('currentQuantity', currentQuantity);
+          requestPurchases.addObject(purchase);
+          return (quantityNeeded === 0);
+        }
+      });
+      if (!foundQuantity) {
+        return 'Could not find any purchases that had the required quantity:' + quantityRequested;
       }
-    });
-    if (!foundQuantity) {
-      return 'Could not find any purchases that had the required quantity:' + quantityRequested;
     }
     request.set('costPerUnit', (totalCost / quantityRequested).toFixed(2));
     request.set('quantityAtCompletion', quantityOnHand);
