@@ -5809,14 +5809,14 @@ define('hospitalrun/initializers/export-application-global', ['exports', 'ember'
         window[globalName] = application;
 
         application.reopen({
-          willDestroy: function(){
+          willDestroy: function() {
             this._super.apply(this, arguments);
             delete window[globalName];
           }
         });
       }
     }
-  };
+  }
 
   exports['default'] = {
     name: 'export-application-global',
@@ -11803,17 +11803,6 @@ define('hospitalrun/invoices/line-item/controller', ['exports', 'ember', 'hospit
     });
 
 });
-define('hospitalrun/invoices/payment-item/controller', ['exports', 'ember'], function (exports, Ember) {
-
-    'use strict';
-
-    exports['default'] = Ember['default'].ObjectController.extend({
-        canRemovePayment: function() {        
-            return (this.get('type') === 'Deposit');
-        }.property()
-    });
-
-});
 define('hospitalrun/invoices/payment/controller', ['exports', 'hospitalrun/controllers/abstract-edit-controller', 'ember', 'hospitalrun/mixins/patient-submodule'], function (exports, AbstractEditController, Ember, PatientSubmodule) {
 
     'use strict';
@@ -11988,6 +11977,17 @@ define('hospitalrun/invoices/payment/view', ['exports', 'hospitalrun/views/modal
 	'use strict';
 
 	exports['default'] = ModalView['default'].extend();
+
+});
+define('hospitalrun/invoices/payment-item/controller', ['exports', 'ember'], function (exports, Ember) {
+
+    'use strict';
+
+    exports['default'] = Ember['default'].ObjectController.extend({
+        canRemovePayment: function() {        
+            return (this.get('type') === 'Deposit');
+        }.property()
+    });
 
 });
 define('hospitalrun/invoices/route', ['exports', 'hospitalrun/routes/abstract-module-route', 'hospitalrun/mixins/modal-helper', 'hospitalrun/mixins/patient-list-route'], function (exports, AbstractModuleRoute, ModalHelper, PatientListRoute) {
@@ -14343,14 +14343,14 @@ define('hospitalrun/mixins/fulfill-request', ['exports', 'ember'], function (exp
     exports['default'] = Ember['default'].Mixin.create({
         actions: {
             doneFulfillRequest: function() {
-                //Placeholder function; override if you need to know when fulfillrequest is complete.    
+                //Placeholder function; override if you need to know when fulfillrequest is complete.
             },
-            
+
             fulfillRequest: function(request, closeModal, increment, skipTransition) {
                 this.performFulfillRequest(request, closeModal, increment, skipTransition);
             }
         },
-        
+
         performFulfillRequest: function(request, closeModal, increment, skipTransition) {
             return new Ember['default'].RSVP.Promise(function(resolve, reject) {
                 var markAsConsumed = request.get('markAsConsumed'),
@@ -14379,7 +14379,7 @@ define('hospitalrun/mixins/fulfill-request', ['exports', 'ember'], function (exp
                 }.bind(this), reject);
             }.bind(this));
         },
-        
+
         /**
          * @private
          */
@@ -14392,48 +14392,47 @@ define('hospitalrun/mixins/fulfill-request', ['exports', 'ember'], function (exp
                 quantityNeeded = quantityRequested,
                 purchaseInfo = [],
                 totalCost = 0;
-            
-            var foundQuantity = purchases.any(function(purchase) {
-                currentQuantity = purchase.get('currentQuantity');
-                if (purchase.get('expired') || currentQuantity <= 0) {
-                    return false;
-                }
-                costPerUnit = purchase.get('costPerUnit');
-                if (increment) {
-                    purchase.incrementProperty('currentQuantity', quantityRequested);
-                    totalCost += (costPerUnit * quantityNeeded);
-                    purchaseInfo.push({
-                        id: purchase.get('id'),
-                        quantity: quantityRequested
-                    });
-                    requestPurchases.addObject(purchase);
-                    return true;
-                } else {
-                    if (quantityNeeded > currentQuantity) {
-                        totalCost += (costPerUnit * currentQuantity);
-                        quantityNeeded = quantityNeeded - currentQuantity;
-                        purchaseInfo.push({
-                            id: purchase.get('id'),
-                            quantity: parseInt(currentQuantity)
-                        });
-                        currentQuantity = 0;
+            if (increment) {
+                var purchase = purchases.get('lastObject');
+                purchase.incrementProperty('currentQuantity', quantityRequested);
+                totalCost += (purchase.get('costPerUnit') * quantityNeeded);
+                purchaseInfo.push({
+                    id: purchase.get('id'),
+                    quantity: quantityRequested
+                });
+                requestPurchases.addObject(purchase);
+            } else {
+              var foundQuantity = purchases.any(function(purchase) {
+                  currentQuantity = purchase.get('currentQuantity');
+                  if (purchase.get('expired') || currentQuantity <= 0) {
+                      return false;
+                  }
+                  costPerUnit = purchase.get('costPerUnit');
+                  if (quantityNeeded > currentQuantity) {
+                      totalCost += (costPerUnit * currentQuantity);
+                      quantityNeeded = quantityNeeded - currentQuantity;
+                      purchaseInfo.push({
+                          id: purchase.get('id'),
+                          quantity: parseInt(currentQuantity)
+                      });
+                      currentQuantity = 0;
 
-                    } else {
-                        totalCost += (costPerUnit * quantityNeeded);
-                        currentQuantity = currentQuantity - quantityNeeded;
-                        purchaseInfo.push({
-                            id: purchase.get('id'),
-                            quantity: parseInt(quantityNeeded)
-                        });
-                        quantityNeeded = 0;
-                    }
-                    purchase.set('currentQuantity',currentQuantity);
-                    requestPurchases.addObject(purchase);
-                    return (quantityNeeded === 0);
-                }
-            });
-            if (!foundQuantity) {
-                return 'Could not find any purchases that had the required quantity:'+quantityRequested;
+                  } else {
+                      totalCost += (costPerUnit * quantityNeeded);
+                      currentQuantity = currentQuantity - quantityNeeded;
+                      purchaseInfo.push({
+                          id: purchase.get('id'),
+                          quantity: parseInt(quantityNeeded)
+                      });
+                      quantityNeeded = 0;
+                  }
+                  purchase.set('currentQuantity',currentQuantity);
+                  requestPurchases.addObject(purchase);
+                  return (quantityNeeded === 0);
+              });
+              if (!foundQuantity) {
+                  return 'Could not find any purchases that had the required quantity:'+quantityRequested;
+              }
             }
             request.set('costPerUnit', (totalCost/quantityRequested).toFixed(2));
             request.set('quantityAtCompletion', quantityOnHand);
@@ -14471,44 +14470,44 @@ define('hospitalrun/mixins/fulfill-request', ['exports', 'ember'], function (exp
                 inventoryLocations.reduce(function(quantityNeeded, location) {
                     var deliveryLocation = request.get('deliveryLocation'),
                         deliveryAisle = request.get('deliveryAisle'),
-                        locationQuantity = parseInt(location.get('quantity'));                
+                        locationQuantity = parseInt(location.get('quantity'));
                     if (quantityNeeded > 0) {
                         if (!markAsConsumed) {
                             location.set('transferAisleLocation', deliveryAisle);
-                            location.set('transferLocation', deliveryLocation);                        
+                            location.set('transferLocation', deliveryLocation);
                         }
                         if (locationQuantity >= quantityNeeded) {
                             if (markAsConsumed) {
-                                location.decrementProperty('quantity', quantityNeeded);                                
+                                location.decrementProperty('quantity', quantityNeeded);
                                 promises.push(location.save());
                             } else {
                                 location.set('adjustmentQuantity', quantityNeeded);
-                                this.transferToLocation(inventoryItem, location);                            
+                                this.transferToLocation(inventoryItem, location);
                             }
                             locationsAffected.push({
                                 name: location.get('locationName'),
                                 quantity: quantityNeeded
                             });
                             return 0;
-                        } else {                                
-                            if (markAsConsumed) {                            
-                                location.decrementProperty('quantity', locationQuantity);                                
+                        } else {
+                            if (markAsConsumed) {
+                                location.decrementProperty('quantity', locationQuantity);
                                 promises.push(location.save());
                             } else {
                                 location.set('adjustmentQuantity', locationQuantity);
-                                this.transferToLocation(inventoryItem, location);                            
+                                this.transferToLocation(inventoryItem, location);
                             }
                             locationsAffected.push({
                                 name: location.get('locationName'),
                                 quantity: locationQuantity
-                            });                            
+                            });
                             return (quantityNeeded - locationQuantity);
                         }
-                    }                
+                    }
                 }.bind(this), quantity);
             }
             request.set('locationsAffected', locationsAffected);
-            if (markAsConsumed) {        
+            if (markAsConsumed) {
                 requestPurchases.forEach(function(purchase) {
                     promises.push(purchase.save());
                 });
@@ -14527,11 +14526,11 @@ define('hospitalrun/mixins/fulfill-request', ['exports', 'ember'], function (exp
                 }
             }.bind(this));
         },
-        
+
         /**
          * @private
          * Fulfill the request, decrementing from the purchases available on the inventory item
-         * This function doesn't save anything, it just updates the objects in memory, so 
+         * This function doesn't save anything, it just updates the objects in memory, so
          * a route will need to ensure that the models affected here get updated.
          * @param {object} request the request to fulfill.
          * @param {object} inventoryItem the inventoryItem that should be used for fulfillment.
@@ -20015,33 +20014,6 @@ define('hospitalrun/patients/patient-controller/controller', ['exports', 'ember'
     });
 
 });
-define('hospitalrun/patients/photo-item/controller', ['exports', 'ember'], function (exports, Ember) {
-
-    'use strict';
-
-    exports['default'] = Ember['default'].ObjectController.extend({
-        needs: 'filesystem',
-        
-        fileSystem: Ember['default'].computed.alias('controllers.filesystem'),
-        isFileSystemEnabled: Ember['default'].computed.alias('controllers.filesystem.isFileSystemEnabled'),
-        
-        photoUrl: function() {
-            var fileName = this.get('fileName'),
-            fileSystem = this.get('fileSystem'),
-            isFileSystemEnabled = this.get('isFileSystemEnabled'),
-            url = this.get('url');
-            if (isFileSystemEnabled) {
-                fileSystem.pathToFileSystemURL(fileName).then(function(photoUrl) {
-                    if (!Ember['default'].isEmpty(photoUrl)) {
-                        this.set('photoUrl', photoUrl);
-                    }                
-                }.bind(this));
-            }
-            return url;
-        }.property('fileName', 'url')    
-    });
-
-});
 define('hospitalrun/patients/photo/controller', ['exports', 'ember'], function (exports, Ember) {
 
     'use strict';
@@ -20153,6 +20125,33 @@ define('hospitalrun/patients/photo/view', ['exports', 'hospitalrun/views/modal']
 	'use strict';
 
 	exports['default'] = ModalView['default'].extend();
+
+});
+define('hospitalrun/patients/photo-item/controller', ['exports', 'ember'], function (exports, Ember) {
+
+    'use strict';
+
+    exports['default'] = Ember['default'].ObjectController.extend({
+        needs: 'filesystem',
+        
+        fileSystem: Ember['default'].computed.alias('controllers.filesystem'),
+        isFileSystemEnabled: Ember['default'].computed.alias('controllers.filesystem.isFileSystemEnabled'),
+        
+        photoUrl: function() {
+            var fileName = this.get('fileName'),
+            fileSystem = this.get('fileSystem'),
+            isFileSystemEnabled = this.get('isFileSystemEnabled'),
+            url = this.get('url');
+            if (isFileSystemEnabled) {
+                fileSystem.pathToFileSystemURL(fileName).then(function(photoUrl) {
+                    if (!Ember['default'].isEmpty(photoUrl)) {
+                        this.set('photoUrl', photoUrl);
+                    }                
+                }.bind(this));
+            }
+            return url;
+        }.property('fileName', 'url')    
+    });
 
 });
 define('hospitalrun/patients/quick-add/controller', ['exports', 'hospitalrun/controllers/abstract-edit-controller', 'hospitalrun/mixins/gender-list'], function (exports, AbstractEditController, GenderList) {
