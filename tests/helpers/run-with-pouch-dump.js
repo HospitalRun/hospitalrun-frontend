@@ -51,16 +51,8 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
     }
   });
 
-  /* The following is needed for Ember 2.x
   app.__deprecatedInstance__.register('service:config', InMemoryConfigService);
   app.__deprecatedInstance__.register('service:database', InMemoryDatabaseService);
-  */
-
-  app.registry.resolve('service:config');
-  app.__container__._registry._resolveCache['service:config'] = InMemoryConfigService;
-
-  app.registry.resolve('service:database');
-  app.__container__._registry._resolveCache['service:database'] = InMemoryDatabaseService;
 
   return new Ember.RSVP.Promise(function(resolve) {
     promise.then(function() {

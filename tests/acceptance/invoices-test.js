@@ -64,6 +64,7 @@ test('delete invoice', function(assert) {
       assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete inv00001?', 'Invoice deletion confirm displays');
     });
     click('button:contains(Delete):last');
+    waitToDisappear('.invoice-number:contains(inv00001)');
     andThen(() => {
       assert.equal(find('.invoice-number:contains(inv00001)').length, 0, 'Invoice is deleted');
     });
