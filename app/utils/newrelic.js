@@ -1,14 +1,14 @@
 import UserSession from 'hospitalrun/mixins/user-session';
-export default {
+export default (UserSession, {
   WATCH_PATIENT: 'hr_watch_patient',
   pageAction: function(name, obj) {
     if (typeof newrelic !== 'undefined') {
       if (obj) {
-        obj.userName = UserSession.getUserName();
+        obj.userName = this.getUserName();
         newrelic.addPageAction(name, obj);
       } else {
         newrelic.addPageAction(name);
       }
     }
   }
-};
+});
