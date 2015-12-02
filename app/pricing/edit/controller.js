@@ -84,7 +84,7 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
   updateCapability: 'add_pricing',
 
   afterUpdate: function(record) {
-    var message = 'The pricing record for %@ has been saved.'.fmt(record.get('name'));
+    var message = `The pricing record for ${record.get('name')} has been saved.`;
     this.displayAlert('Pricing Item Saved', message);
   }
 });

@@ -23,7 +23,7 @@ export default AbstractModel.extend({
   _getDateSpan: function(startDate, endDate, format) {
     var formattedStart = startDate.format(format),
       formattedEnd = endDate.format(format);
-    return '%@ - %@'.fmt(formattedStart, formattedEnd);
+    return `${formattedStart} - ${formattedEnd}`;
   },
 
   appointmentDate: function() {

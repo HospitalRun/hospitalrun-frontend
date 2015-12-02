@@ -7,9 +7,9 @@ export default TypeAhead.extend({
   _mapInventoryItems: function(item) {
     var returnObj = {};
     if (this.get('showQuantity') && item.quantity) {
-      returnObj.name = '%@ - %@ (%@ available)'.fmt(item.name, item.friendlyId, item.quantity);
+      returnObj.name = `${item.name} - ${item.friendlyId} (${item.quantity} available)`;
     } else {
-      returnObj.name = '%@ - %@'.fmt(item.name, item.friendlyId);
+      returnObj.name = `${item.name} - ${item.friendlyId}`;
     }
     returnObj[this.get('selectionKey')] = item;
     return returnObj;

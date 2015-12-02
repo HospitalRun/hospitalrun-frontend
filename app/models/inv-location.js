@@ -16,7 +16,7 @@ var InventoryLocation = AbstractModel.extend(LocationName, {
   locationNameWithQuantity: function() {
     var quantity = this.get('quantity'),
       locationName = this.get('locationName');
-    return '%@ (%@ available)'.fmt(locationName, quantity);
+    return `${locationName} (${quantity} available)`;
   }.property('locationName'),
 
   validations: {

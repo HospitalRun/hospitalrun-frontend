@@ -313,13 +313,13 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
           }, false, reportColumns);
           if (index + 1 === procedureTotal.records.length) {
             this._addReportRow({
-              procedure: 'Total for %@: %@'.fmt(procedureTotal.type, procedureTotal.total)
+              procedure: `Total for ${procedureTotal.type}: ${procedureTotal.total}`
             }, true, reportColumns);
           }
         }.bind(this));
       } else {
         this._addReportRow({
-          procedure: 'Total for %@: %@'.fmt(procedureTotal.type, procedureTotal.total)
+          procedure: `Total for ${procedureTotal.type}: ${procedureTotal.total}`
         }, true, reportColumns);
       }
     }.bind(this));
@@ -385,7 +385,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
           imaging: imagingRecords
         };
         findParams.mapReduce = 'lab_by_status';
-        this.store.find('lab', findParams).then(function(labRecords) {
+        this.store.query('lab', findParams).then(function(labRecords) {
           returnRecords.labs = labRecords;
           resolve(returnRecords);
         }, reject);
@@ -406,7 +406,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
         mapReduce: 'patient_by_status'
       };
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      this.store.find('patient', findParams).then(resolve, reject);
+      this.store.query('patient', findParams).then(resolve, reject);
     }.bind(this));
   },
 
@@ -428,7 +428,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
         filterEndDate = moment(filterEndDate).endOf('day').toDate();
         findParams.options.endkey = [filterEndDate.getTime(), maxValue];
       }
-      this.store.find('procedure', findParams).then(resolve, reject);
+      this.store.query('procedure', findParams).then(resolve, reject);
     }.bind(this));
   },
 
@@ -464,7 +464,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
           findParams.options.endkey = [filterEndDate.getTime(), maxValue, maxValue];
         }
       }
-      this.store.find('visit', findParams).then(resolve, reject);
+      this.store.query('visit', findParams).then(resolve, reject);
 
     }.bind(this));
   },
@@ -505,7 +505,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
           this._addReportRow(visit);
         }.bind(this));
         this._addReportRow({
-          visitDate: 'Total for %@: %@'.fmt(visitType.type, visitType.total)
+          visitDate: `Total for ${visitType.type}: ${visitType.total}`
         });
       }
     }.bind(this));
@@ -674,7 +674,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
           procedures.forEach(function(procedure) {
             procedure.set('patient', resolutionHash[procedure.get('id')]);
           });
-          var procedureTotals = this._totalByType(procedures, 'description', 'Total procedures');
+          var procedureTotals = this._totalByType(procedures, 'description', 'all procedures');
           this._addPatientProcedureRows(procedureTotals, reportColumns);
           this._finishReport(reportColumns);
         }.bind(this), function(err) {

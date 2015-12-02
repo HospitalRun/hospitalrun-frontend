@@ -101,7 +101,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     if (!Ember.isEmpty(this.get('patient'))) {
       var patientDisplayName = this.get('patient.displayName'),
         patientDisplayId = this.get('patient.displayPatientId');
-      this.set('patientInfo', '%@ - %@'.fmt(patientDisplayName, patientDisplayId));
+      this.set('patientInfo', `${patientDisplayName} - ${patientDisplayId}`);
     }
   }.observes('patient.displayName', 'patient.id', 'patient.displayPatientId'),
 

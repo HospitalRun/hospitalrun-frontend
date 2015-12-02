@@ -479,13 +479,13 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         } else {
           expenseAccountName = expenseAccount.name;
         }
-        totalLabel = 'Subtotal for %@: '.fmt(category + ' - ' + expenseAccountName);
+        totalLabel = `Subtotal for ${(category + ' - ' + expenseAccountName)}: `;
         this._addReportRow({
           totalCost: totalLabel + this._numberFormat(expenseAccount.total)
         }, true);
         categoryTotal += expenseAccount.total;
       }.bind(this));
-      totalLabel = 'Total for %@: '.fmt(category);
+      totalLabel = `Total for ${category}: `;
       this._addReportRow({
         totalCost: totalLabel + this._numberFormat(categoryTotal)
       }, true);
@@ -506,7 +506,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     locationSummary.forEach(function(location) {
       parentLocation = this._getWarehouseLocationName(location.name);
       if (currentLocation !== parentLocation) {
-        this._addTotalsRow('Total for %@: '.fmt(currentLocation), locationCost, parentCount);
+        this._addTotalsRow(`Total for ${currentLocation}: `, locationCost, parentCount);
         parentCount = 0;
         locationCost = 0;
         currentLocation = parentLocation;
@@ -533,7 +533,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       }
     }.bind(this));
     if (parentCount > 0) {
-      this._addTotalsRow('Total for %@: '.fmt(parentLocation), locationCost, parentCount);
+      this._addTotalsRow(`Total for ${parentLocation}: `, locationCost, parentCount);
     }
   },
 
@@ -947,11 +947,11 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                     locations = request.locationsAffected.map(function(location) {
                       if (reportType === 'detailedTransfer') {
                         return {
-                          name: 'From: %@ To: %@'.fmt(location.name, deliveryLocation)
+                          name: `From: ${location.name} To: ${deliveryLocation}`
                         };
                       } else {
                         return {
-                          name: '%@ from %@'.fmt(this._getValidNumber(location.quantity), location.name)
+                          name: `${this._getValidNumber(location.quantity)} from ${location.name}`
                         };
                       }
                     }.bind(this));

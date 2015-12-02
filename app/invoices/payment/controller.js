@@ -29,9 +29,9 @@ export default AbstractEditController.extend(PatientSubmodule, {
     var isNew = this.get('model.isNew'),
       type = this.get('model.paymentType');
     if (isNew) {
-      return 'Add %@'.fmt(type);
+      return `Add ${type}`;
     } else {
-      return 'Edit %@'.fmt(type);
+      return `Edit ${type}`;
     }
   }.property('model.isNew', 'model.paymentType'),
 
@@ -60,13 +60,13 @@ export default AbstractEditController.extend(PatientSubmodule, {
           payments.addObject(record);
           patient.save().then(function() {
             if (record.get('paymentType') === 'Deposit') {
-              var message = 'A deposit of %@ was added for patient %@'.fmt(record.get('amount'), patient.get('displayName'));
+              var message = `A deposit of ${record.get('amount')} was added for patient ${patient.get('displayName')}`;
               this._finishUpdate(message, 'Deposit Added');
             } else {
               var invoice = this.get('model.invoice');
               invoice.addPayment(record);
               invoice.save().then(function() {
-                var message = 'A payment of %@ was added to invoice %@'.fmt(record.get('amount'), invoice.get('id'));
+                var message = `A payment of ${record.get('amount')} was added to invoice ${invoice.get('id')}`;
                 this._finishUpdate(message, 'Payment Added');
               }.bind(this));
             }

@@ -39,7 +39,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
           keys: searchKeys
         }
       };
-    return this.store.find(searchModel, queryParams);
+    return this.store.query(searchModel, queryParams);
   },
 
   /**
