@@ -162,8 +162,10 @@ test('create new pricing profile', function(assert) {
       fillIn('.pricing-profile-discount input', 10);
       andThen(() => {
         click('button:contains(Add)');
-        waitToAppear('.pricing-profile-name:contains(Quarter Off)');
       });
+      waitToAppear('.modal-title:contains(Pricing Profile Saved)');
+      click('button:contains(Ok)');
+      waitToAppear('.pricing-profile-name:contains(Quarter Off)');
       andThen(() => {
         assert.equal(find('.pricing-profile-name:contains(Quarter Off)').text(), 'Quarter Off', 'New price profile displays');
       });
