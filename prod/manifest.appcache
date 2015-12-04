@@ -2,15 +2,14 @@ CACHE MANIFEST
 # created 2015-12-04T18:24:13.342Z
 
 CACHE:
-assets/ember-data.js.map
-assets/hospitalrun.css
-assets/hospitalrun.js
-assets/vendor.css
-assets/vendor.js
+assets/hospitalrun-6d82db4507cce3a11004c2031a71db42.css
+assets/hospitalrun-7c8ec568a22e1bca1e9aadb460581f25.js
+assets/vendor-6e22b075833827ba2ee54984f5e1ae63.js
+assets/vendor-c883cd8d279c410b9ab93b38d0981ea0.css
 crossdomain.xml
 dymo/BarcodeAsImage.label
+favicon-7440091f4e8bd83e23e4d5824c2c3da4.png
 favicon.ico
-favicon.png
 fonts/glyphicons-halflings-regular.eot
 fonts/glyphicons-halflings-regular.svg
 fonts/glyphicons-halflings-regular.ttf
@@ -39,7 +38,6 @@ fonts/octicons.eot
 fonts/octicons.svg
 fonts/octicons.ttf
 fonts/octicons.woff
-robots.txt
 
 NETWORK:
 *
