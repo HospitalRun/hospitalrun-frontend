@@ -1,12 +1,16 @@
 CACHE MANIFEST
-# created 2015-09-11T19:42:58.060Z
+# created 2015-12-04T18:24:13.342Z
 
 CACHE:
+assets/ember-data.js.map
 assets/hospitalrun.css
 assets/hospitalrun.js
 assets/vendor.css
 assets/vendor.js
+crossdomain.xml
 dymo/BarcodeAsImage.label
+favicon.ico
+favicon.png
 fonts/glyphicons-halflings-regular.eot
 fonts/glyphicons-halflings-regular.svg
 fonts/glyphicons-halflings-regular.ttf
@@ -35,6 +39,7 @@ fonts/octicons.eot
 fonts/octicons.svg
 fonts/octicons.ttf
 fonts/octicons.woff
+robots.txt
 
 NETWORK:
 *
