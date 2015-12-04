@@ -192,14 +192,17 @@ function testSimpleReportForm(reportName) {
       andThen(function() {
         assert.equal(currentURL(), '/inventory/reports');
       });
-      fillIn('.test-start-date input', '10/01/2015');
-      fillIn('.test-end-date input', '10/31/2015');
+      var startDate = moment('2015-10-01');
+      var endDate = moment('2015-10-31');
+      selectDate('.test-start-date input', startDate.toDate());
+      selectDate('.test-end-date input', endDate.toDate());
       select('#report-type', `${reportName}`);
       click('button:contains(Generate Report)');
       waitToAppear('.panel-title');
 
       andThen(() => {
-        assert.equal(find('.panel-title').text().trim(), `${reportName} Report`, `${reportName} Report generated`);
+        var reportTitle = `${reportName} Report ${startDate.format('l')} - ${endDate.format('l')}`;
+        assert.equal(find('.panel-title').text().trim(), reportTitle, `${reportName} Report generated`);
         findWithAssert('a:contains(Export Report)');
       });
     });
@@ -219,7 +222,7 @@ function testSingleDateReportForm(reportName) {
       waitToAppear('.panel-title');
 
       andThen(() => {
-        assert.equal(find('.panel-title').text().trim(), `${reportName} Report`, `${reportName} Report generated`);
+        assert.equal(find('.panel-title').text().trim(), `${reportName} Report ${moment().format('l')}`, `${reportName} Report generated`);
         findWithAssert('a:contains(Export Report)');
       });
     });
