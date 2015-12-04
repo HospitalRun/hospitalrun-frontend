@@ -51,7 +51,7 @@ export default AbstractModuleRoute.extend(PatientId, {
     }
   },
   moduleName: 'patients',
-  //newButtonText: '+ new patient',
+  newButtonText: '+ new patient',
   sectionTitle: 'Patients',
   subActions: [{
     text: 'Patient listing',

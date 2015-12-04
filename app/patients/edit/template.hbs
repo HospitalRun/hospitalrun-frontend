@@ -1,7 +1,7 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false bubbles=false }}
     {{#unless isNewOrDeleted}}
-      {{patient-summary patient=model visits=model.visits patientProcedures=patientProcedures disablePatientLink=true store=store }}
+      {{patient-summary model=model disablePatientLink=true store=store }}
       <ul class="nav nav-pills" role="tablist">
         <li role="presentation" class="active"><a class="active" href="#notes" role="tab" data-toggle="pill" data-test-selector="general-tab">Notes</a></li>
         <li role="presentation"><a href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">General</a></li>

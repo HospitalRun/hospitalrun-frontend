@@ -3,7 +3,7 @@
     {{#if model.selectPatient}}
       {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required test-patient-input"}}
     {{else}}
-      {{patient-summary patient=model.patient returnTo='appointments.edit' returnToContext=model.id disablePatientLink=model.isNew }}
+      {{patient-summary model=model.patient returnTo='appointments.edit' returnToContext=model.id disablePatientLink=model.isNew }}
     {{/if}}
     <div class="row">
       {{#if isAdmissionAppointment}}

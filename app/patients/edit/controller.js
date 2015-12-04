@@ -2,10 +2,11 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import BloodTypes from 'hospitalrun/mixins/blood-types';
 import Ember from 'ember';
 import GenderList from 'hospitalrun/mixins/gender-list';
+import PatientVisitTypes from 'hospitalrun/mixins/patient-visit-types';
 import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, UserSession, {
+export default AbstractEditController.extend(BloodTypes, GenderList, PatientVisitTypes, ReturnTo, UserSession, {
   canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
   }.property(),
@@ -161,22 +162,6 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     id: 'patient_status_list'
   }],
   
-  patientImaging: function() {
-    return this._getVisitCollection('imaging');
-  }.property('model.visits.[].imaging'),
-
-  patientLabs: function() {
-    return this._getVisitCollection('labs');
-  }.property('model.visits.[].labs'),
-
-  patientMedications: function() {
-    return this._getVisitCollection('medication');
-  }.property('model.visits.[].medication'),
-
-  patientProcedures: function() {
-    return this._getVisitCollection('procedures');
-  }.property('model.visits.[].procedures'),
-
   showExpenseTotal: true,
 
   totalExpenses: function() {
@@ -367,11 +352,11 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     },
     
     showAddPatientNote: function() {
-      this.send('openModal', 'patients/notes', {});
+      this.send('openModal', 'patients.notes', {});
     },
     
     showEditPatientNote: function(note) {
-      this.send('openModal', 'patients/notes', note);
+      this.send('openModal', 'patients.notes', note);
     },
 
     showAddPhoto: function() {
@@ -526,25 +511,17 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     }.bind(this));
   },
 
-  _getVisitCollection: function(name) {
-    var returnList = [],
-      visits = this.get('model.visits');
-    if (!Ember.isEmpty(visits)) {
-      visits.forEach(function(visit) {
-        visit.get(name).then(function(items) {
-          returnList.addObjects(items);
-          if (returnList.length > 0) {
-            returnList[0].set('first', true);
-          }
-        });
-      });
-    }
-    return returnList;
-  },
-
   afterUpdate: function(record) {
     var message = 'The patient record for %@ has been saved.'.fmt(record.get('displayName'));
     this.displayAlert('Patient Saved', message);
+  },
+  
+  setupController: function(controller, model) {
+    // Load appointments, photos and visits asynchronously.
+    this._super(controller, model);
+    this.getPatientVisits(model).then(function(visits) {
+      model.set('visits', visits);
+    });
   }
 
 });

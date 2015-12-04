@@ -1,0 +1,49 @@
+    <div class="row test-patient-summary">
+      <div class="form-group col-sm-3">
+        <label class="control-label">Id</label> {{model.displayPatientId}}
+      </div>
+      <div class="form-group col-sm-4">
+        <label class="control-label">Name</label> {{model.displayName}}
+      </div>
+      <div class="form-group col-sm-2">
+        <label class="control-label">Gender</label> {{model.gender}}
+      </div>
+      <div class="form-group col-sm-3">
+        <label class="control-label">Age</label> {{model.age}}
+      </div>
+    </div>
+    {{#if havePrimaryDiagnoses}}
+      <div class="row">
+        <div class="form-group col-sm-12">
+          <label class="control-label">Primary Diagnoses</label>
+          {{#each primaryDiagnoses as |diagnosis|}}
+            {{#unless diagnosis.first}}, {{/unless}}
+            {{diagnosis.description}} (<strong>{{date-format diagnosis.date}}</strong>)
+          {{/each}}
+        </div>
+      </div>
+    {{/if}}
+    {{#if haveSecondaryDiagnoses}}
+      <div class="row">
+        <div class="form-group col-sm-12">
+          <label class="control-label">Secondary Diagnoses</label>
+          {{#each secondaryDiagnoses as |diagnosis|}}
+            {{#unless diagnosis.first}}, {{/unless}}
+            {{diagnosis.description}} (<strong>{{date-format diagnosis.date}}</strong>)
+          {{/each}}
+        </div>
+      </div>
+    {{/if}}
+    {{#if haveProcedures}}
+      <div class="row">
+        <div class="form-group col-sm-12">
+          <label class="control-label">Procedures</label>
+          {{#each patientProcedures as |procedure|}}
+            {{#unless procedure.first}}, {{/unless}}
+            <span {{action 'editProcedure' procedure}}>
+              {{procedure.description}} (<strong>{{date-format procedure.procedureDate}}</strong>)
+            </span>
+          {{/each}}
+        </div>
+      </div>
+    {{/if}}

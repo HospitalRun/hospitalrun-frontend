@@ -1,20 +1,34 @@
-<table class="table">
-  <tr class="table-header">
-    <th>Date</th>
-    <th>By</th>
-    <th>Note</th>    
-    <th>Actions</th>
-  </tr>
-  {{#each patientNotes as |note|}}              
-  <tr>
-    <td>{{date-format note.date}}</td>
-    <td>{{note.createdBy}}{{#if note.attribution}} on behalf of {{note.attribution}}{{/if}}</td>
-    <td>{{note.content}}</td>
-    <td>
-      {{#if canDeleteNote}}
-        <button type="button" class="btn btn-default warning" {{action "showDeleteNote" note bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-      {{/if}}
-    </td>
-  </tr>
-  {{/each}}
-</table>
+{{#modal-dialog
+    hideCancelButton=false
+    hideUpdateButton=true
+    isUpdateDisabled=true
+    title=title
+    updateButtonAction="print"
+    updateButtonText="Print" }}
+  <div class="panel panel-primary">
+    <div class="panel-body">
+      <h5 class="text-center">
+        {{title}}
+      </h5>
+      <p class="text-center">The following report is meant for authorized personnel only.</p>
+      {{partial 'patients/summary' }}      
+      <table class="table">
+        <tr class="table-header">
+          <th>Date</th>
+          <th>By</th>
+          <th>Activity</th>
+        </tr>
+        
+        {{#each model.patientNotes as |note|}}
+        {{#if note.appointment}}
+        {{/if}}
+        <tr>
+          <td>{{date-format note.date}}</td>
+          <td>{{note.createdBy}}{{#if note.attribution}} on behalf of {{note.attribution}}{{/if}}</td>
+          <td>{{note.content}}</td>
+        </tr>
+        {{/each}}
+      </table>      
+    </div>
+  </div>
+{{/modal-dialog}}

@@ -8,10 +8,18 @@ export default AbstractModel.extend({
   createdBy: DS.attr('string'),
   date: DS.attr('date'),
   /*
-  //linkedObjectType is a shortcut to the name of the model (lab, visit, phisio, etc)
-  linkedObjectType: DS.attr('string'),
-  //linkedObjectId is a id of the model (lab, visit, phisio, etc)
-  linkedObjectId: DS.attr('string'),
+  appointment: DS.belongsTo('appointment', {
+    async: false
+  }),
+  lab: DS.belongsTo('lab', {
+    async: false
+  }),
+  procedure: DS.belongsTo('procedure', {
+    async: false
+  }),
+  visit: DS.belongsTo('visit', {
+    async: false
+  }),
   */
   //custom list of noteTypes of mixins/patient-note-types
   noteType: DS.attr(),
