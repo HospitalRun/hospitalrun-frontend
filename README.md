@@ -9,17 +9,21 @@ To run the development environment for this frontend you will need to have [Git]
 To install the frontend please do the following:
 
 - Make sure you have installed [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- Make sure you have installed [Node.js](https://nodejs.org/en/download/)
+- Make sure you have installed [Node.js](https://nodejs.org/en/download/). Versions after 0.10.0 should work, but please note if you encounter errors using 5.x it may be necessary to upgrade your npm version:
+
+```npm install npm -g```
+
+NPM versions after 3.5.x should work.
 - Install [ember-cli v1.13.13](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@1.13.13`
 - Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
 - Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and:
     1. `npm install` to install needed node modules.
     2. `bower install` to install needed bower modules.
-- Install ands configure [couchdb](http://couchdb.apache.org/)
-  1. Download and install couchdb from http://couchdb.apache.org/#download
+- Install ands configure [CouchDB](http://couchdb.apache.org/)
+  1. Download and install CouchDB from http://couchdb.apache.org/#download
   2. Create admin user:
-    1. If you have just installed couchdb and have no admin user, please run `initcouch.sh`. A user `hradmin` will be created with password: `test`.
-    2. If you already have a couchdb admin user, please run `initcouch.sh USER PASS` where `USER` and `PASS` are the couchdb admin user credentials.
+    1. If you have just installed CouchDB and have no admin user, please run `initcouch.sh`. A user `hradmin` will be created with password: `test`.
+    2. If you already have a CouchDB admin user, please run `initcouch.sh USER PASS` where `USER` and `PASS` are the CouchDB admin user credentials.
 - Copy the `server/config-example.js` to `server/config.js`.
 
 ## Start
