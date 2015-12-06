@@ -9,11 +9,8 @@ To run the development environment for this frontend you will need to have [Git]
 To install the frontend please do the following:
 
 - Make sure you have installed [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- Make sure you have installed [Node.js](https://nodejs.org/en/download/). Versions after 0.10.0 should work, but please note if you encounter errors using 5.x it may be necessary to upgrade your npm version:
-
-```npm install npm -g```
-
-NPM versions after 3.5.x should work.
+- Make sure you have installed [Node.js](https://nodejs.org/en/download/). Versions after 0.10.0 should work, but please note if you encounter errors using 5.x it may be necessary to upgrade your npm version. Versions after 3.5.x should work:
+    1. `npm install -g npm`
 - Install [ember-cli v1.13.13](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@1.13.13`
 - Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
 - Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and:
