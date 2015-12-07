@@ -2,7 +2,15 @@ import Ember from 'ember';
 import config from './config/environment';
 
 const Router = Ember.Router.extend({
-  location: config.locationType
+  location: config.locationType,
+  didTransition: function() {
+    this._super(...arguments);
+    console.log('URL transition:' + this.get('url'));
+    return ga('send', 'pageview', {
+      'page': this.get('url'),
+      'title': (document.title||"Unknown")
+    });
+  }
 });
 
 Router.map(function() {
