@@ -51,5 +51,11 @@ ENV.manifest = {
   showCreateDate: true
 };
 
+ENV.contentSecurityPolicy = {
+  'connect-src': "'self' 'unsafe-inline' http://www.google-analytics.com",
+  'script-src': "'self' 'unsafe-inline' http://www.google-analytics.com",
+  'img-src': "'self' 'unsafe-inline' http://www.google-analytics.com"
+};
+
   return ENV;
 };
