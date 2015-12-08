@@ -1,9 +1,9 @@
 import DS from 'ember-data';
 var couchSerializer = DS.JSONSerializer.extend({
   attrs: {
-    id: '_id',
     rev: '_rev'
   },
+  primaryKey: '_id',
 
   isNewSerializerAPI: true,
 
@@ -12,6 +12,18 @@ var couchSerializer = DS.JSONSerializer.extend({
       return row.doc;
     }.bind(this));
     return this._super(store, primaryModelClass, newPayload, id, requestType);
+  },
+
+  normalizeSaveResponse: function(store, primaryModelClass, payload) {
+    return {
+      data: {
+        id: payload.id,
+        type: 'user',
+        attrs: {
+          rev: payload.rev
+        }
+      }
+    };
   }
 
 });

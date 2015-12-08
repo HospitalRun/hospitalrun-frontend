@@ -512,7 +512,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, PatientVisi
   },
 
   afterUpdate: function(record) {
-    var message = 'The patient record for %@ has been saved.'.fmt(record.get('displayName'));
+    var message = `The patient record for ${record.get('displayName')} has been saved.`;
     this.displayAlert('Patient Saved', message);
   },
   

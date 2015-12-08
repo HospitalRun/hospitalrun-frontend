@@ -28,6 +28,7 @@
     "runWithPouchDump",
     "authenticateUser",
     "waitToAppear",
+    "waitToDisappear",
     "select",
     "selectDate",
     "moment"

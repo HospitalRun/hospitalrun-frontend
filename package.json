@@ -1,6 +1,6 @@
 {
   "name": "hospitalrun",
-  "version": "0.0.0",
+  "version": "0.9.0",
   "description": "Small description for hospitalrun goes here",
   "private": true,
   "directories": {
@@ -40,13 +40,12 @@
     "ember-cli-inject-live-reload": "^1.3.1",
     "ember-cli-qunit": "^1.0.4",
     "ember-cli-release": "0.2.8",
-    "ember-cli-sass": "^4.0.1",
+    "ember-cli-sass": "^5.2.0",
     "ember-cli-sri": "^1.2.0",
     "ember-cli-uglify": "^1.2.0",
-    "ember-data": "1.13.15",
+    "ember-data": "2.2.1",
     "ember-disable-proxy-controllers": "^1.0.1",
     "ember-export-application-global": "^1.0.4",
-    "ember-get-helper": "1.0.3",
     "ember-pouch": "^2.0.3",
     "ember-rapid-forms": "1.0.0-beta3",
     "ember-select-list": "0.9.2",

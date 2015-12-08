@@ -1,5 +1,5 @@
 <tr {{action 'editAppointment' appointment}}>
-    <td>
+    <td class="appointment-date">
         {{appointment.formattedAppointmentDate}}
     </td>
     <td>{{appointment.patient.displayName}}</td>
@@ -17,5 +17,5 @@
         {{#if canDelete}}
             <button class="btn btn-default" {{action 'deleteItem' appointment bubbles=false }}>Delete</button>
         {{/if}}
-    </td>        
+    </td>
 </tr>

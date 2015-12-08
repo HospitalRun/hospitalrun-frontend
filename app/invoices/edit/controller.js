@@ -126,7 +126,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         confirmAction: 'deleteCharge',
         deleteFrom: deleteFrom,
         title: 'Delete Charge',
-        message: 'Are you sure you want to delete %@?'.fmt(itemToDelete.get('name')),
+        message: `Are you sure you want to delete ${itemToDelete.get('name')}?`,
         itemToDelete: itemToDelete,
         updateButtonAction: 'confirm',
         updateButtonText: 'Ok'
@@ -137,7 +137,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteLineItem',
         title: 'Delete Line Item',
-        message: 'Are you sure you want to delete %@?'.fmt(item.get('name')),
+        message: `Are you sure you want to delete ${item.get('name')}?`,
         itemToDelete: item,
         updateButtonAction: 'confirm',
         updateButtonText: 'Ok'
@@ -463,8 +463,8 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     }.bind(this));
   },
 
-  afterUpdate: function(record) {
-    var message = 'The invoice record has been saved.'.fmt(record.get('displayName'));
+  afterUpdate: function() {
+    var message = 'The invoice record has been saved.';
     this.displayAlert('Invoice Saved', message);
   }
 });

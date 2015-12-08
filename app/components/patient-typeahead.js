@@ -7,7 +7,7 @@ export default TypeAhead.extend(PatientName, {
 
   _mapPatient: function(item) {
     var returnObj = {};
-    returnObj.name = '%@ - %@'.fmt(this.getPatientDisplayName(item), this.getPatientDisplayId(item));
+    returnObj.name = `${this.getPatientDisplayName(item)} - ${this.getPatientDisplayId(item)}`;
     returnObj[this.get('selectionKey')] = item;
     return returnObj;
   },

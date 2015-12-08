@@ -220,7 +220,7 @@ export default Ember.Mixin.create({
           reject(findResult);
         }
       } else {
-        reject('The quantity on hand, %@ is less than the requested quantity of %@.'.fmt(quantityOnHand, quantityRequested));
+        reject(`The quantity on hand, ${quantityOnHand} is less than the requested quantity of ${quantityRequested}.`);
       }
     }.bind(this));
   }

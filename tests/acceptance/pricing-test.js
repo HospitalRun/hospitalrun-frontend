@@ -139,6 +139,7 @@ test('delete price', function(assert) {
       assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete Blood test?', 'Pricing item is displayed for deletion');
     });
     click('button:contains(Delete):last');
+    waitToDisappear('.price-name:contains(Blood test)');
     andThen(() => {
       assert.equal(find('.price-name:contains(Blood test)').length, 0, 'Price disappears from price list');
     });
@@ -161,8 +162,10 @@ test('create new pricing profile', function(assert) {
       fillIn('.pricing-profile-discount input', 10);
       andThen(() => {
         click('button:contains(Add)');
-        waitToAppear('.pricing-profile-name:contains(Quarter Off)');
       });
+      waitToAppear('.modal-title:contains(Pricing Profile Saved)');
+      click('button:contains(Ok)');
+      waitToAppear('.pricing-profile-name:contains(Quarter Off)');
       andThen(() => {
         assert.equal(find('.pricing-profile-name:contains(Quarter Off)').text(), 'Quarter Off', 'New price profile displays');
       });
@@ -184,6 +187,7 @@ test('delete pricing profile', function(assert) {
       assert.equal(find('.modal-title').text().trim(), 'Delete Profile', 'Pricing Profile delete confirmation is displayed');
     });
     click('button:contains(Ok)');
+    waitToDisappear('.pricing-profile-name:contains(Half off)');
     andThen(() => {
       assert.equal(find('.pricing-profile-name:contains(Half off)').length, 0, 'Pricing profile disappears from list');
     });

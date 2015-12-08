@@ -120,7 +120,7 @@ test('Delete an appointment', function(assert) {
 
     andThen(function() {
       assert.equal(currentURL(), '/appointments');
-      assert.equal(find('tr').length, 2, 'One appointment is listed');
+      assert.equal(find('.appointment-date').length, 1, 'One appointment is listed');
       findWithAssert('button:contains(Add Visit)');
       findWithAssert('button:contains(Edit)');
       findWithAssert('button:contains(Delete)');
@@ -132,8 +132,9 @@ test('Delete an appointment', function(assert) {
       assert.equal(find('.modal-title').text().trim(), 'Delete Appointment', 'Delete Appointment confirmation modal has been displayed');
     });
     click('button:contains(Delete)');
+    waitToDisappear('.appointment-date');
     andThen(() => {
-      assert.equal(find('tr').length, 1, 'No appointments are displayed');
+      assert.equal(find('.appointment-date').length, 0, 'No appointments are displayed');
     });
   });
 });

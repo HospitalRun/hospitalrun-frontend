@@ -46,28 +46,28 @@ export default Ember.Mixin.create({
     var formatString = '';
     if (shortFormat) {
       if (years > 0) {
-        formatString = years + 'y %@1m %@2d';
+        formatString = `${years}y ${months}m ${days}d`;
       } else {
-        formatString = '%@1m %@2d';
+        formatString = `${months}m ${days}d`;
       }
     } else if (omitDays) {
       if (years > 1) {
-        formatString = years + ' years %@1 months';
+        formatString = `${years} years ${months} months`;
       } else if (years === 1) {
-        formatString = years + ' year %@1 months';
+        formatString = `${years} year ${months} months`;
       } else {
-        formatString = '%@1 months';
+        formatString = `${months} months`;
       }
     } else {
       if (years > 1) {
-        formatString = years + ' years %@1 months %@2 days';
+        formatString = `${years} years ${months} months ${days} days`;
       } else if (years === 1) {
-        formatString = years + ' year %@1 months %@2 days';
+        formatString = `${years} year ${months} months ${days} days`;
       } else {
-        formatString = '%@1 months %@2 days';
+        formatString = `${months} months ${days} days`;
       }
     }
-    return formatString.fmt(months, days);
+    return formatString;
 
   }
 });

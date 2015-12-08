@@ -75,7 +75,7 @@ export default AbstractModel.extend({
   visitDescription: function() {
     var visitDate = this.get('visitDate'),
       visitType = this.get('visitType');
-    return '%@ (%@)'.fmt(visitDate, visitType);
+    return `${visitDate} (${visitType})`;
   }.property('visitDate', 'visitType'),
 
   validations: {

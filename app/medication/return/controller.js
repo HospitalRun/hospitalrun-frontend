@@ -36,7 +36,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     var medication = this.get('model.medication');
     if (!Ember.isEmpty(medication)) {
       var inventoryItem = medication.get('inventoryItem');
-      this.set('model.inventoryItemTypeAhead', '%@ - %@'.fmt(inventoryItem.get('name'), inventoryItem.get('friendlyId')));
+      this.set('model.inventoryItemTypeAhead', `${inventoryItem.get('name')} - ${inventoryItem.get('friendlyId')}`);
       this.set('model.inventoryItem', inventoryItem);
     } else {
       this.set('model.inventoryItem');

@@ -67,7 +67,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     if (Ember.isEmpty(selectedInventoryItem)) {
       return 'Quantity';
     } else {
-      return 'Quantity (%@)'.fmt(selectedInventoryItem.distributionUnit);
+      return `Quantity (${selectedInventoryItem.distributionUnit})`;
     }
   }.property('selectedInventoryItem'),
 
