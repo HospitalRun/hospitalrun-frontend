@@ -22,7 +22,6 @@
     "body-parser": "^1.13.2",
     "broccoli-asset-rev": "^2.2.0",
     "broccoli-export-text": "0.0.2",
-    "broccoli-file-remover": "^0.3.1",
     "broccoli-funnel": "^1.0.1",
     "broccoli-manifest": "0.0.7",
     "broccoli-merge-trees": "^1.0.0",

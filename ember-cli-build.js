@@ -1,9 +1,5 @@
 /* global require, module */
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
-var mergeTrees = require('broccoli-merge-trees');
-var writeManifest = require('broccoli-manifest');
-var fileRemover = require('broccoli-file-remover');
-
 module.exports = function(defaults) {
     var app = new EmberApp(defaults, {
         // Add options here
@@ -39,9 +35,5 @@ module.exports = function(defaults) {
     app.import('bower_components/pouchdb-load/dist/pouchdb.load.js');
     app.import('bower_components/pouchdb-memory/index.js');
 
-    var completeTree = app.toTree();
-    var manifestTree = fileRemover(completeTree, {
-        paths: ['index.html', 'tests/', 'testem.js', 'robots.txt']
-    });
-    return mergeTrees([completeTree, writeManifest(manifestTree)]);
+    return app.toTree();
 };
