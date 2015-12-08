@@ -2,9 +2,10 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import AppointmentStatuses from 'hospitalrun/mixins/appointment-statuses';
 import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
+import UserSession from 'hospitalrun/mixins/user-session';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodule, VisitTypes, {
+export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodule, UserSession, VisitTypes, {
   appointmentsController: Ember.inject.controller('appointments'),
   endHour: null,
   endMinute: null,
@@ -80,12 +81,27 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
 
   updateCapability: 'add_appointment',
 
-  afterUpdate: function() {
-    this.send(this.get('cancelAction'));
+  afterUpdate: function() {    
+    this.send(this.get('cancelAction'));    
   },
 
   beforeUpdate: function() {
-    this._updateAppointmentDates();
+    var appointment = this.get('model');
+    /*
+    if (Ember.isEmpty(appointment.patientNote)) {
+      appointment.patientNote = this.get('store').createRecord('patient-note', {
+        patient: appointment.patient, 
+        appointment: appointment,
+        date: new Date(),
+        createdBy: this.getUserName(),
+        content: appointment.notes,
+        noteType: 'Appointment'
+      });      
+    } else {
+      this.set('model.patientNote.content', appointment.notes);
+    }
+    */
+    this._updateAppointmentDates();    
     return Ember.RSVP.Promise.resolve();
   },
 
