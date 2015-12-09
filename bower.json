@@ -19,7 +19,7 @@
     "node-uuid": "https://github.com/broofa/node-uuid.git",
     "octicons": "~2.4.1",
     "pikaday": "owenmead/Pikaday#~1.3.3",
-    "pouchdb": "^3.5.0",
+    "pouchdb": "^3.6.0",
     "pouchdb-quick-search": "~1.0.2",
     "qunit": "~1.20.0",
     "relational-pouch": "HospitalRun/relational-pouch#query",
