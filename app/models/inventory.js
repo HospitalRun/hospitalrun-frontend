@@ -1,7 +1,21 @@
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import Ember from 'ember';
+import computed from 'ember-computed';
 import LocationName from 'hospitalrun/mixins/location-name';
+
+function getCondition(quantity, multiplier = 1) {
+  quantity /= multiplier;
+
+  if (quantity >= 100) {
+    return 'good';
+  } else if (quantity < 50) {
+    return 'bad';
+  } else {
+    return 'average';
+  }
+}
+
 var validateIfNewItem = {
   if: function validateNewItem(object) {
     var skipSavePurchase = object.get('skipSavePurchase');
@@ -9,6 +23,7 @@ var validateIfNewItem = {
     return (!skipSavePurchase && object.get('isNew'));
   }
 };
+
 export default AbstractModel.extend(LocationName, {
   purchases: DS.hasMany('inv-purchase', {
     async: false
@@ -28,26 +43,41 @@ export default AbstractModel.extend(LocationName, {
   distributionUnit: DS.attr('string'),
   rank: DS.attr('string'),
 
-  availableLocations: function() {
-    var locations = this.get('locations').filter(function(location) {
+  availableLocations: computed('locations.[].lastModified', function() {
+    var locations = this.get('locations').filter((location) => {
       return location.get('quantity') > 0;
     });
     return locations;
-  }.property('locations.[].lastModified'),
+  }),
 
-  displayLocations: function() {
+  displayLocations: computed('availableLocations', function() {
     var locations = this.get('availableLocations'),
       returnLocations = [];
-    locations.forEach(function(currentLocation) {
+    locations.forEach((currentLocation) => {
       var aisleLocationName = currentLocation.get('aisleLocation'),
         locationName = currentLocation.get('location'),
         displayLocationName = this.formatLocationName(locationName, aisleLocationName);
       if (!Ember.isEmpty(displayLocationName)) {
         returnLocations.push(displayLocationName);
       }
-    }.bind(this));
+    });
     return returnLocations.toString();
-  }.property('availableLocations'),
+  }),
+
+  condition: computed('rank', 'quantity', function() {
+    const quantity = this.get('quantity');
+
+    switch (this.get('rank')) {
+      case 'A':
+        return getCondition(quantity, 2);
+      case 'B':
+        return getCondition(quantity);
+      case 'C':
+        return getCondition(quantity, 0.5);
+      default:
+        return;
+    }
+  }),
 
   validations: {
     distributionUnit: {
@@ -85,7 +115,7 @@ export default AbstractModel.extend(LocationName, {
 
   updateQuantity: function() {
     var purchases = this.get('purchases');
-    var newQuantity = purchases.reduce(function(previousItem, currentItem) {
+    var newQuantity = purchases.reduce((previousItem, currentItem) => {
       var currentQuantity = 0;
       if (!currentItem.get('expired')) {
         currentQuantity = currentItem.get('currentQuantity');
@@ -94,5 +124,4 @@ export default AbstractModel.extend(LocationName, {
     }, 0);
     this.set('quantity', newQuantity);
   }
-
 });

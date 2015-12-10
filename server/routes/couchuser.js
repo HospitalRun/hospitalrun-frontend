@@ -24,6 +24,9 @@ function find_user(userName, callback) {
     if (err) {
       callback(err);
       return;
+    }
+    callback(null, body);
+  });
 }
 
 function get_primary_role(user) {
@@ -81,7 +84,6 @@ function is_admin(user) {
 }
 
 function update_user(user, userData, updateParams, res) {
-<<<<<<< a315ae122cd4027bb890f225f78710be51a5cb4f
   if (is_admin(user)) {
     users.insert(userData, updateParams, function(err, body) {
       if (err) {
@@ -91,30 +93,8 @@ function update_user(user, userData, updateParams, res) {
       }
     });
   }
-||||||| merged common ancestors
-    if(is_admin(user)) {
-        users.insert(userData, updateParams, function(err, body) {
-            if (err) {
-                res.json({error:true, errorResult: err});
-            } else {
-                res.json(body);
-            }
-        });
-    }
-=======
-    if(is_admin(user)) {
-        users.insert(userData, updateParams, function(err, body) {
-            if (err) {
-                res.json({error:true, errorResult: err});
-            } else {
-                res.json(body);
-            }
-        });
-    }
->>>>>>> Refactoring - whities, arrow functions method syntax
 }
 
-<<<<<<< a315ae122cd4027bb890f225f78710be51a5cb4f
 module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({
@@ -129,45 +109,9 @@ module.exports = function(app) {
           displayName: user.displayName,
           prefix: user.userPrefix,
           role: get_primary_role(user)
-||||||| merged common ancestors
-module.exports = function(app) {
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({
-        extended: true
-    }));
-    app.post('/chkuser', function(req, res){
-        find_user(req.body.name, function(err, user) {
-            if (err) {
-                res.json({error:true, errorResult: err});
-            } else {
-                res.json({
-                    displayName: user.displayName,
-                    prefix: user.userPrefix,
-                    role: get_primary_role(user)
-                });
-            }
-=======
-module.exports = function(app) {
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({
-        extended: true
-    }));
-    app.post('/chkuser', function(req, res){
-        find_user(req.body.name, function(err, user) {
-            if (err) {
-                res.json({error:true, errorResult: err});
-            } else {
-                res.json({
-                    displayName: user.displayName,
-                    prefix: user.userPrefix,
-                    role: get_primary_role(user)
-                });
-            }
->>>>>>> Refactoring - whities, arrow functions method syntax
         });
       }
     });
-<<<<<<< a315ae122cd4027bb890f225f78710be51a5cb4f
   });
 
   app.post('/allusers', function(req, res) {
@@ -177,29 +121,7 @@ module.exports = function(app) {
       } else {
         get_users(user, res);
       }
-||||||| merged common ancestors
-
-    app.post('/allusers', function(req, res){
-        find_user(req.body.name, function(err, user) {
-            if (err) {
-                res.json({error:true, errorResult: err});
-            } else {
-                get_users(user, res);
-            }
-        });
-=======
-
-    app.post('/allusers', function(req, res){
-        find_user(req.body.name, function(err, user) {
-            if (err) {
-                res.json({error:true, errorResult: err});
-            } else {
-                get_users(user, res);
-            }
-        });
->>>>>>> Refactoring - whities, arrow functions method syntax
     });
-<<<<<<< a315ae122cd4027bb890f225f78710be51a5cb4f
   });
 
   app.post('/deleteuser', function(req, res) {
@@ -209,29 +131,7 @@ module.exports = function(app) {
       } else {
         delete_user(user, req.body.id, req.body.rev, res);
       }
-||||||| merged common ancestors
-
-    app.post('/deleteuser', function(req, res){
-        find_user(req.body.name, function(err, user) {
-            if (err) {
-                res.json({error:true, errorResult: err});
-            } else {
-                delete_user(user, req.body.id, req.body.rev, res);
-            }
-        });
-=======
-
-    app.post('/deleteuser', function(req, res){
-        find_user(req.body.name, function(err, user) {
-            if (err) {
-                res.json({error:true, errorResult: err});
-            } else {
-                delete_user(user, req.body.id, req.body.rev, res);
-            }
-        });
->>>>>>> Refactoring - whities, arrow functions method syntax
     });
-<<<<<<< a315ae122cd4027bb890f225f78710be51a5cb4f
   });
 
   app.post('/getuser', function(req, res) {
@@ -241,29 +141,7 @@ module.exports = function(app) {
       } else {
         get_user(user, req.body.id, res);
       }
-||||||| merged common ancestors
-
-    app.post('/getuser', function(req, res){
-        find_user(req.body.name, function(err, user) {
-            if (err) {
-                res.json({error:true, errorResult: err});
-            } else {
-                get_user(user, req.body.id, res);
-            }
-        });
-=======
-
-    app.post('/getuser', function(req, res){
-        find_user(req.body.name, function(err, user) {
-            if (err) {
-                res.json({error:true, errorResult: err});
-            } else {
-                get_user(user, req.body.id, res);
-            }
-        });
->>>>>>> Refactoring - whities, arrow functions method syntax
     });
-<<<<<<< a315ae122cd4027bb890f225f78710be51a5cb4f
   });
 
   app.post('/updateuser', function(req, res) {
@@ -276,28 +154,3 @@ module.exports = function(app) {
     });
   });
 };
-||||||| merged common ancestors
-
-    app.post('/updateuser', function(req, res){
-        find_user(req.body.name, function(err, user) {
-            if (err) {
-                res.json({error:true, errorResult: err});
-            } else {
-                update_user(user, req.body.data, req.body.updateParams, res);
-            }
-        });
-    });
-};
-=======
-
-    app.post('/updateuser', function(req, res){
-        find_user(req.body.name, function(err, user) {
-            if (err) {
-                res.json({error:true, errorResult: err});
-            } else {
-                update_user(user, req.body.data, req.body.updateParams, res);
-            }
-        });
-    });
-};
->>>>>>> Refactoring - whities, arrow functions method syntax
