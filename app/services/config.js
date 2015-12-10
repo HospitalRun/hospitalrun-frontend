@@ -28,9 +28,7 @@ export default Ember.Service.extend({
   },
   replicateConfigDB(db) {
     const url = `${document.location.protocol}//${document.location.host}/db/config`;
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      db.replicate.from(url, { complete: resolve }, reject);
-    }, 'replicating the database');
+    return db.replicate.from(url);
   },
   loadConfig() {
     const config = this.get('configDB');

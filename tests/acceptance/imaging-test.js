@@ -85,7 +85,7 @@ test('mark an imaging request as completed', (assert) => {
       assert.equal(find('.table').length, 1, 'Requests table is visible');
       assert.equal(find('tr').length, 3, 'Two imaging requests not completed');
     });
-    click('button:contains(Edit)');
+    click('button:contains(Edit):first');
     andThen(() => {
       assert.equal(currentURL(), '/imaging/edit/1AC1DD3D-E7E7-15B4-A698-8A8AE62749EB');
       findWithAssert('button:contains(Update)');
