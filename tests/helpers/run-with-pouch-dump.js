@@ -5,19 +5,8 @@ import DatabaseService from 'hospitalrun/services/database';
 import ConfigService from 'hospitalrun/services/config';
 
 function destroyDatabases(dbs) {
-  const destroy = function(db) {
-    const deferred = Ember.RSVP.defer();
-    Ember.run.later(function() {
-      db.on('destroyed', function() {
-        deferred.resolve();
-      });
-      db.destroy();
-    }, 100);
-    return deferred.promise;
-  };
-
   return wait().then(function() {
-    return Ember.RSVP.all([destroy(dbs.config), destroy(dbs.main)]);
+    return Ember.RSVP.all([dbs.config.destroy(), dbs.main.destroy()]);
   });
 }
 

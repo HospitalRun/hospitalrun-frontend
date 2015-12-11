@@ -26,6 +26,7 @@ export default AbstractModel.extend(LocationName, {
   price: DS.attr('number'),
   reorderPoint: DS.attr('number'),
   distributionUnit: DS.attr('string'),
+  rank: DS.attr('string'),
 
   availableLocations: function() {
     var locations = this.get('locations').filter(function(location) {

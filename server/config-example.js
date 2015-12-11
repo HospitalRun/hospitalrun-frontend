@@ -1,4 +1,4 @@
-var config = {    
+var config = {
     couch_db_server: 'localhost',
     couch_db_port: '5984',
     couch_db_use_ssl: false,
@@ -9,17 +9,17 @@ var config = {
     google_client_secret: 'FOR GOOGLE SSO; GOOGLE CLIENT SECRET GOES HERE',
     server_port: '3000',
     server: 'localhost',
-    use_ssl: false        
+    use_ssl: false
 };
 
 config.couch_credentials = function() {
     if (config.couch_admin_user && config.couch_admin_password) {
         return config.couch_admin_user + ":" + config.couch_admin_password + "@";
-    } else { 
-        return ''; 
+    } else {
+        return '';
     }
 };
-    
+
 config.get_protocol = function(is_ssl) {
     return "http" + (is_ssl ? 's' : '') + '://';
 };

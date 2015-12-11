@@ -38,6 +38,7 @@ test('Adding a new inventory item', (assert) => {
       assert.equal(currentURL(), '/inventory/edit/new');
     });
     fillIn('.test-inv-name input', 'Biogesic');
+    select('.test-inv-rank', 'B');
     fillIn('textarea', 'Biogesic nga medisina');
     select('.test-inv-type', 'Medication');
     fillIn('.test-inv-cross input', '2600');

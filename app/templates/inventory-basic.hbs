@@ -5,15 +5,16 @@
             {{input class="form-control test-item-id" value=model.friendlyId type="text" disabled=true }}
         </div>
     {{/unless}}
-    {{em-input property="name" label="Name" class="required  col-sm-8 test-inv-name"}}
+    {{em-input property="name" label="Name" class="required  col-sm-6 test-inv-name"}}
+    {{inventory/rank-select property="rank"}}
     {{#unless model.isNew}}
         <div class="form-group col-sm-2">
             <label>Quantity</label>
             <p class="form-control-static">{{model.quantity}}</p>
         </div>
     {{/unless}}
-
 </div>
+
 {{em-text label="Description" property="description" rows=1 }}
 <div class="row">
     {{em-select label="Type" property="inventoryType"
