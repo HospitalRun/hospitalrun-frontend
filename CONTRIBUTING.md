@@ -5,7 +5,7 @@ Contributions are welcome via pull requests and issues.  This project uses the s
 
 Slack / Communication
 ==================================================
-Project communication occurs primarily and intentionally via our project [Slack](https://hospitalrun.slack.com/signup). Those interested in contributing are encouraged to [join](https://hospitalrun.slack.com/signup).
+Project communication occurs primarily and intentionally via our project [Slack](https://hospitalrun.slack.com/signup). Those interested in / considering contribution are encouraged to [join](https://hospitalrun.slack.com/signup).
 
 Help Wanted
 ==================================================
