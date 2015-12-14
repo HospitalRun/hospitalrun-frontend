@@ -1,7 +1,9 @@
 HospitalRun frontend
 ========
 
-_Ember frontend for HospitalRun_
+_Ember frontend for HospitalRun_  
+
+[![Build Status](https://travis-ci.org/HospitalRun/hospitalrun-frontend.svg)](https://travis-ci.org/HospitalRun/hospitalrun-frontend)
 
 To run the development environment for this frontend you will need to have [Git](https://git-scm.com/), [Node.js](https://nodejs.org), [Ember CLI](http://ember-cli.com/), [Bower](http://bower.io/) and [CouchDB](http://couchdb.apache.org/) installed.
 
