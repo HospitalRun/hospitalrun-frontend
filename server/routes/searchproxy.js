@@ -43,10 +43,12 @@ function slowSearch(pattern, dburl) {
       var requestOptions = {
         body: _createMapFunction(model,  queryParts),
         json: true,
-        method: 'post',
-        url: searchUrl
+        url: searchUrl,
+        headers: {
+          'Cookie': req.get('Cookie')
+        }
       };
-      req.pipe(request(requestOptions)).pipe(res);
+      request.post(requestOptions).pipe(res);
     } else {
       next();
     }
