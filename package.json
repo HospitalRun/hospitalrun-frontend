@@ -20,7 +20,7 @@
   "license": "MIT",
   "devDependencies": {
     "body-parser": "^1.13.2",
-    "broccoli-asset-rev": "^2.2.0",
+    "broccoli-asset-rev": "^2.4.1",
     "broccoli-export-text": "0.0.2",
     "broccoli-funnel": "^1.0.1",
     "broccoli-manifest": "0.0.7",
