@@ -12,5 +12,7 @@ var globSync   = require('glob').sync;
 var routes     = globSync('./routes/**/*.js', { cwd: __dirname }).map(require);
 
 module.exports = function(app) {
-  routes.forEach(function(route) { route(app); });
+  routes.forEach(function(route) {
+    route(app);
+  });
 };
