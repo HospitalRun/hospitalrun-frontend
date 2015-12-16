@@ -19,7 +19,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "body-parser": "^1.13.2",
+    "body-parser": "^1.14.2",
     "broccoli-asset-rev": "^2.4.1",
     "broccoli-export-text": "0.0.2",
     "broccoli-funnel": "^1.0.1",
