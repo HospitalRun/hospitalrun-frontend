@@ -1,11 +1,18 @@
 export default {
-  // "some.translation.key": "Text for some.translation.key",
-  //
-  // "a": {
-  //   "nested": {
-  //     "key": "Text for a.nested.key"
-  //   }
-  // },
-  //
-  // "key.with.interpolation": "Text with {{anInterpolation}}"
+  dashboard: {
+    title: 'What would you like to do?'
+  },
+  labels: {
+    name: 'Name',
+    quantity: 'Quantity',
+    requested_on: 'Requested On',
+    requested_by: 'Requested By',
+    fulfill: 'Fulfill'
+  },
+  inventory: {
+    messages: {
+      no_requests: 'No requests found.',
+      create_request: 'Create a new request?'
+    }
+  }
 };
