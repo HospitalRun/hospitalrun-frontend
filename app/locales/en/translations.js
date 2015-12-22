@@ -6,6 +6,7 @@ export default {
     name: 'Name',
     quantity: 'Quantity',
     requested_on: 'Requested On',
+    date_requested: 'Date Requested',
     requested_by: 'Requested By',
     fulfill: 'Fulfill',
     actions: 'Actions',
