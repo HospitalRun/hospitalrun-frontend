@@ -4,6 +4,7 @@ export default {
   },
   labels: {
     name: 'Name',
+    patient: 'Patient',
     quantity: 'Quantity',
     requested_on: 'Requested On',
     date_requested: 'Date Requested',
