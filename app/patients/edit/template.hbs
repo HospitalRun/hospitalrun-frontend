@@ -116,7 +116,7 @@
                 <th>Email</th>
                 <th>Relationship</th>
                 {{#if canDeleteContact}}
-                  <th>Action</th>
+                  <th>{{t 'labels.action'}}</th>
                 {{/if}}
               </tr>
               {{#each model.additionalContacts as |additionalContact|}}
@@ -340,7 +340,7 @@
                     <th>Occupation</th>
                     <th>Income</th>
                     <th>Insurance</th>
-                    <th>Action</th>
+                    <th>{{t 'labels.action'}}</th>
                   </tr>
                   {{#each model.familyInfo as |info|}}
                     <tr>

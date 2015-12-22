@@ -58,7 +58,7 @@
             <th class="text-right">PhilHealth</th>
             <th class="text-right">HMO/COM</th>
             <th class="text-right">Excess</th>
-            <th class="text-right">Action</th>
+            <th class="text-right">{{t 'labels.action'}}</th>
           </tr>
           {{#each model.lineItemsByCategory as |categoryGroup|}}
             <tr>
@@ -231,7 +231,7 @@
           <th>Amount</th>
           <th>Type</th>
           <th>Notes</th>
-          <th>Action</th>
+          <th>{{t 'labels.action'}}</th>
         </tr>
         {{#each model.payments as |payment|}}
           <tr {{action 'showEditPayment' payment}}>
