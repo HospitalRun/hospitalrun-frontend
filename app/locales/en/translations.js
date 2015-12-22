@@ -7,7 +7,8 @@ export default {
     quantity: 'Quantity',
     requested_on: 'Requested On',
     requested_by: 'Requested By',
-    fulfill: 'Fulfill'
+    fulfill: 'Fulfill',
+    actions: 'Actions'
   },
   inventory: {
     messages: {

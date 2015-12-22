@@ -8,7 +8,7 @@
       {{#sortable-column sortBy='quantity' sortDesc=sortDesc sortKey=sortKey }}Quantity{{/sortable-column}}
       <th>Location</th>
       {{#sortable-column sortBy='crossReference' sortDesc=sortDesc sortKey=sortKey }}XRef{{/sortable-column}}
-      <th>Actions</th>
+      <th>{{t 'labels.actions'}}</th>
     </tr>
     {{#each model as |inventory|}}
       {{#unless inventory.isNew}}

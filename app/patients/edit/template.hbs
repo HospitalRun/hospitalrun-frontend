@@ -248,7 +248,7 @@
                   <th>Provider</th>
                   <th>Location</th>
                   <th>Type</th>
-                  <th>Actions</th>
+                  <th>{{t 'labels.actions'}}</th>
                 </tr>
                 {{#each model.visits as |visit|}}
                   <tr {{action "editVisit" visit}}>
@@ -290,7 +290,7 @@
                   <th>Location</th>
                   <th>Type</th>
                   <th>Status</th>
-                  <th>Actions</th>
+                  <th>{{t 'labels.actions'}}</th>
                 </tr>
                 {{#each model.appointments as |appointment|}}
                   <tr {{action "editAppointment" appointment}}>
@@ -374,7 +374,7 @@
                     <th>Category</th>
                     <th>Sources</th>
                     <th>Monthly Cost</th>
-                    <th>Actions</th>
+                    <th>{{t 'labels.actions'}}</th>
                   </tr>
                   {{#each model.expenses as |expense|}}
                     <tr>
