@@ -11,7 +11,8 @@ export default {
     requested_by: 'Requested By',
     fulfill: 'Fulfill',
     actions: 'Actions',
-    action: 'Action'
+    action: 'Action',
+    notes: 'Notes',
   },
   inventory: {
     messages: {
