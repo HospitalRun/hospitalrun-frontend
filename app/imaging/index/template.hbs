@@ -4,7 +4,7 @@
       <tr class="table-header">
         <th>{{t 'labels.date_requested'}}</th>
         <th>{{t 'labels.patient'}}</th>
-        <th>Imaging Type</th>
+        <th>{{t 'labels.imaging_type'}}</th>
         <th>{{t 'labels.notes'}}</th>
         {{#if showActions}}
           <th>{{t 'labels.actions'}}</th>
@@ -19,7 +19,7 @@
           {{#if showActions}}
             <td>
               {{#if canEdit}}
-                <button class="btn btn-default neutral" {{action 'editItem' imaging  bubbles=false }}>Edit</button>
+                <button class="btn btn-default neutral" {{action 'editItem' imaging  bubbles=false }}>{{t 'labels.edit'}}</button>
               {{/if}}
             </td>
           {{/if}}

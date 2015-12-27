@@ -13,6 +13,7 @@ export default {
     actions: 'Actions',
     action: 'Action',
     notes: 'Notes',
+    edit: 'Edit'
   },
   inventory: {
     messages: {

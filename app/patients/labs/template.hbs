@@ -21,7 +21,7 @@
             <td>
                 {{#if lab.canEdit}}
                     {{#if canAddLab}}
-                        <button type="button" class="btn btn-default neutral" {{action "editLab" lab}}>Edit</button>
+                        <button type="button" class="btn btn-default neutral" {{action "editLab" lab}}>{{t 'labels.edit'}}</button>
                     {{/if}}
                     {{#if canDeleteLab}}
                         <button type="button" class="btn btn-default warning" {{action "showDeleteLab" lab  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>

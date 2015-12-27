@@ -1,7 +1,7 @@
 <table class="table">
     <tr class="table-header">
         <th>{{t 'labels.date_requested'}}</th>
-        <th>Imaging Type</th>
+        <th>{{t 'labels.imaging_type'}}</th>
         <th>Status</th>
         <th>Date Processed</th>
         <th>Result</th>
@@ -21,7 +21,7 @@
             <td>
                 {{#if imaging.canEdit}}
                     {{#if canAddImaging}}
-                        <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>Edit</button>
+                        <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>{{t 'labels.edit'}}</button>
                     {{/if}}
                     {{#if canDeleteImaging}}
                         <button type="button" class="btn btn-default warning" {{action "showDeleteImaging" imaging  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
