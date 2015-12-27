@@ -36,6 +36,6 @@ test('visiting / redirects user to login', function(assert) {
 
     fillIn('#identification', 'hradmin');
     fillIn('#password', 'test');
-    click('button:contains(Sign in)');
+    click('button:contains(sign in)');
   });
 });

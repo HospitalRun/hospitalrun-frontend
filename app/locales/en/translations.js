@@ -15,6 +15,16 @@ export default {
     notes: 'Notes',
     edit: 'Edit'
   },
+  login: {
+    messages: {
+      sign_in:  'please sign in'
+    },
+    labels: {
+      password: 'Password',
+      username: 'Username',
+      sign_in:  'sign in'
+    }
+  },
   inventory: {
     messages: {
       no_requests: 'No requests found.',
