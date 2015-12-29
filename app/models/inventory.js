@@ -3,38 +3,7 @@ import DS from 'ember-data';
 import Ember from 'ember';
 import computed from 'ember-computed';
 import LocationName from 'hospitalrun/mixins/location-name';
-
-const rankMultiplierValues = [
-  {
-    rank: 'A',
-    value: 0.5
-  },
-  {
-    rank: 'B',
-    value: 1
-  },
-  {
-    rank: 'C',
-    value: 2
-  }
-];
-
-function rankToMultiplier(rank = 'B') {
-  const rankModel = Ember.A(rankMultiplierValues).findBy('rank', rank);
-  return rankModel.value;
-}
-
-function getCondition(estimatedDaysOfStock, multiplier = 1) {
-  estimatedDaysOfStock *= multiplier;
-
-  if (estimatedDaysOfStock >= 14) {
-    return 'good';
-  } else if (estimatedDaysOfStock < 7) {
-    return 'bad';
-  } else {
-    return 'average';
-  }
-}
+import { rankToMultiplier, getCondition } from 'hospitalrun/utils/item-condition';
 
 var validateIfNewItem = {
   if: function validateNewItem(object) {
