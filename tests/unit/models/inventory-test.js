@@ -13,14 +13,14 @@ test('condition', function(assert) {
 
   Ember.run(() => {
     model.setProperties({
-      quantity: 200,
+      estimatedDaysOfStock: 28,
       rank: 'A'
     });
   });
   assert.equal(model.get('condition'), 'good', 'Condition Should be good with given values');
 
   Ember.run(() => {
-    model.set('quantity', 199);
+    model.set('estimatedDaysOfStock', 15);
   });
   assert.equal(model.get('condition'), 'average', 'Condition Should be average with new quantity');
 
@@ -30,7 +30,7 @@ test('condition', function(assert) {
   assert.equal(model.get('condition'), 'good', 'Condition should be good again with new rank');
 
   Ember.run(() => {
-    model.set('quantity', 49);
+    model.set('estimatedDaysOfStock', 6);
   });
   assert.equal(model.get('condition'), 'bad', 'Condition should be bad with new quantity');
 

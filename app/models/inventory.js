@@ -4,12 +4,32 @@ import Ember from 'ember';
 import computed from 'ember-computed';
 import LocationName from 'hospitalrun/mixins/location-name';
 
-function getCondition(quantity, multiplier = 1) {
-  quantity /= multiplier;
+const rankMultiplierValues = [
+  {
+    rank: 'A',
+    value: 0.5
+  },
+  {
+    rank: 'B',
+    value: 1
+  },
+  {
+    rank: 'C',
+    value: 2
+  }
+];
 
-  if (quantity >= 100) {
+function rankToMultiplier(rank = 'B') {
+  const rankModel = Ember.A(rankMultiplierValues).findBy('rank', rank);
+  return rankModel.value;
+}
+
+function getCondition(estimatedDaysOfStock, multiplier = 1) {
+  estimatedDaysOfStock *= multiplier;
+
+  if (estimatedDaysOfStock >= 14) {
     return 'good';
-  } else if (quantity < 50) {
+  } else if (estimatedDaysOfStock < 7) {
     return 'bad';
   } else {
     return 'average';
@@ -43,6 +63,9 @@ export default AbstractModel.extend(LocationName, {
   distributionUnit: DS.attr('string'),
   rank: DS.attr('string'),
 
+  // TODO: this value should be server calcuated property on model!
+  estimatedDaysOfStock: 14,
+
   availableLocations: computed('locations.[].lastModified', function() {
     var locations = this.get('locations').filter((location) => {
       return location.get('quantity') > 0;
@@ -64,19 +87,11 @@ export default AbstractModel.extend(LocationName, {
     return returnLocations.toString();
   }),
 
-  condition: computed('rank', 'quantity', function() {
-    const quantity = this.get('quantity');
+  condition: computed('rank', 'estimatedDaysOfStock', function() {
+    const estimatedDaysOfStock = this.get('estimatedDaysOfStock');
+    const multiplier = rankToMultiplier(this.get('rank'));
 
-    switch (this.get('rank')) {
-      case 'A':
-        return getCondition(quantity, 2);
-      case 'B':
-        return getCondition(quantity);
-      case 'C':
-        return getCondition(quantity, 0.5);
-      default:
-        return;
-    }
+    return getCondition(estimatedDaysOfStock, multiplier);
   }),
 
   validations: {
