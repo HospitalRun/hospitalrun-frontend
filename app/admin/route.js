@@ -4,16 +4,26 @@ export default AbstractModuleRoute.extend({
   allowSearch: false,
   moduleName: 'admin',
   sectionTitle: 'Admin',
-  subActions: [{
-    text: 'Address Options',
-    linkTo: 'admin.address'
-  }, {
-    text: 'Lookup Lists',
-    linkTo: 'admin.lookup'
-  }, {
-    text: 'Users',
-    linkTo: 'users.index'
-  }],
+  subActions: function() {
+    var options = [{
+      text: 'Address Options',
+      linkTo: 'admin.address'
+    }, {
+      text: 'Lookup Lists',
+      linkTo: 'admin.lookup'
+    }];
+    if (this.currentUserCan('load_db')) {
+      options.push({
+        text: 'Load DB',
+        linkTo: 'admin.loaddb'
+      });
+    }
+    options.push({
+      text: 'Users',
+      linkTo: 'users.index'
+    });
+    return options;
+  }.property(),
 
   editPath: function() {
     return 'users.edit';

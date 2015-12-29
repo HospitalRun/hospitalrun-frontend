@@ -241,6 +241,12 @@ export default Ember.Mixin.create({
           capability: 'update_config'
         },
         {
+          title: 'Load DB',
+          iconClass: 'octicon-plus',
+          route: 'admin.loaddb',
+          capability: 'load_db'
+        },
+        {
           title: 'Users',
           iconClass: 'octicon-chevron-right',
           route: 'users',

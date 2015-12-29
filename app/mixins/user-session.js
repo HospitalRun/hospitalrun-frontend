@@ -391,6 +391,9 @@ export default Ember.Mixin.create({
       'Pharmacist',
       'System Administrator'
     ],
+    load_db: [
+      'System Administrator'
+    ],
     override_invoice: [
       'Business Office',
       'Hospital Administrator',

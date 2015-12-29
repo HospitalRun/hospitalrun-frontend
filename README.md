@@ -31,6 +31,13 @@ To start the frontend please do the following:
 - Start the server by running `ember serve` in the repo folder.
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
+## Loading sample data
+If you would like to load sample data, you can do so by navigating to **Load DB** under the Adminstration menu.  You should see the following screen:
+![Load DB screenshot](screenshots/load-db.png)
+
+Click on ***Choose File*** and select the file **sample-data.txt** which is included in root directory of the repo at [sample-data.txt](sample-data.txt).
+Next, click on ***Load File***.  When the database load is complete a message will appear indicating if the load was successful.
+
 ## Testing
 
 ### Fixtures for Acceptance Tests
@@ -39,15 +46,17 @@ Fixtures are PouchDB dumps that are generated with [pouchdb-dump-cli](https://gi
 
 To create a fixture, run `pouchdb-dump http://localhost:5984/main -u hradmin -p test | cat > tests/fixtures/${name_of_fixture}.txt`.
 
-To use a fixture, use `loadPouchDump(`${name_of_fixture})` in your acceptance test. For example,
+To use a fixture, use `runWithPouchDump(${name_of_fixture}, function(){..});` in your acceptance test. For example,
 
 ```
 test('visiting /patients', function(assert) {
-  loadPouchDump('default');
-  authenticateUser();
-  visit('/patients');
-  andThen(function() {
-    assert.equal(currentURL(), '/patients');
+  runWithPouchDump('default', function() {
+    //Actual test code here
+    authenticateUser();
+    visit('/patients');
+    andThen(function() {
+      assert.equal(currentURL(), '/patients');
+    });
   });
 });
 ```

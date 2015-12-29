@@ -102,6 +102,28 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       type: type
     });
   },
+
+  /**
+   * Load the specified db dump into the database.
+   * @param {String} dbDump A couchdb dump string produced by pouchdb-dump-cli.
+   * @returns {Promise} A promise that resolves once the dump has been loaded.
+   */
+  loadDBFromDump: function(dbDump) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      var db = new PouchDB('dbdump', {
+        adapter: 'memory'
+      });
+      db.load(dbDump).then(() => {
+        var mainDB = this.get('mainDB');
+        db.replicate.to(mainDB).on('complete', (info) => {
+          resolve(info);
+        }).on('error', (err) => {
+          reject(err);
+        });
+      });
+    });
+  },
+
   _mapPouchData: function(rows) {
     var mappedRows = [];
     if (rows) {
