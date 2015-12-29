@@ -53,7 +53,7 @@
     "ember-truth-helpers": "1.2.0",
     "ember-validations": "2.0.0-alpha.4",
     "express": "^4.8.5",
-    "glob": "^6.0.1",
+    "glob": "^6.0.3",
     "nano": "6.1.5",
     "request": "2.67.0"
   },
