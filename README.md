@@ -18,6 +18,7 @@ To install the frontend please do the following:
 - Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and:
     1. `npm install` to install needed node modules.
     2. `bower install` to install needed bower modules.
+    3. `npm install -g phantomjs2` to install PhantomJS2, which is needed to run tests.
 - Install ands configure [CouchDB](http://couchdb.apache.org/)
   1. Download and install CouchDB from http://couchdb.apache.org/#download
   2. Create admin user:
