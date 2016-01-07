@@ -1,7 +1,7 @@
 HospitalRun frontend
 ========
 
-_Ember frontend for HospitalRun_  
+_Ember frontend for HospitalRun_
 
 [![Build Status](https://travis-ci.org/HospitalRun/hospitalrun-frontend.svg)](https://travis-ci.org/HospitalRun/hospitalrun-frontend)
 
@@ -18,8 +18,8 @@ To install the frontend please do the following:
 - Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and:
     1. `npm install` to install needed node modules.
     2. `bower install` to install needed bower modules.
-    3. `npm install -g phantomjs2` to install PhantomJS2, which is needed to run tests.
-- Install ands configure [CouchDB](http://couchdb.apache.org/)
+    3. `npm install -g phantomjs2` to install PhantomJS2, which is needed to run tests.  If you are using Linux, you will need to build PhantomJS from source following directions here: http://phantomjs.org/download.html.
+- Install and configure [CouchDB](http://couchdb.apache.org/)
   1. Download and install CouchDB from http://couchdb.apache.org/#download
   2. Create admin user:
     1. If you have just installed CouchDB and have no admin user, please run `initcouch.sh`. A user `hradmin` will be created with password: `test`.
