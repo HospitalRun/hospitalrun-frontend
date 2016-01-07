@@ -26,7 +26,6 @@ export default Ember.Mixin.create({
     ],
     add_charge: [
       'Data Entry',
-      'Business Office',
       'Hospital Administrator',
       'Medical Records Officer',
       'System Administrator'
@@ -67,7 +66,6 @@ export default Ember.Mixin.create({
     add_pricing: [
       'Data Entry',
       'Finance',
-      'Business Office',
       'Hospital Administrator',
       'Medical Records Officer',
       'System Administrator'
@@ -75,7 +73,6 @@ export default Ember.Mixin.create({
     add_pricing_profile: [
       'Data Entry',
       'Finance',
-      'Business Office',
       'Hospital Administrator',
       'Medical Records Officer',
       'System Administrator'
@@ -121,14 +118,11 @@ export default Ember.Mixin.create({
     ],
     add_invoice: [
       'Data Entry',
-      'Business Office',
       'Hospital Administrator',
       'Medical Records Officer',
       'System Administrator'
     ],
     add_payment: [
-      'Cashier',
-      'Business Office',
       'Hospital Administrator',
       'Medical Records Officer',
       'System Administrator'
@@ -239,7 +233,6 @@ export default Ember.Mixin.create({
       'System Administrator'
     ],
     delete_invoice: [
-      'Business Office',
       'Hospital Administrator',
       'System Administrator'
     ],
@@ -272,7 +265,6 @@ export default Ember.Mixin.create({
     delete_pricing: [
       'Finance',
       'Data Entry',
-      'Business Office',
       'Hospital Administrator',
       'Medical Records Officer',
       'System Administrator'
@@ -280,7 +272,6 @@ export default Ember.Mixin.create({
     delete_pricing_profile: [
       'Finance',
       'Data Entry',
-      'Business Office',
       'Hospital Administrator',
       'Medical Records Officer',
       'System Administrator'
@@ -335,7 +326,6 @@ export default Ember.Mixin.create({
     ],
     edit_invoice: [
       'Data Entry',
-      'Business Office',
       'Hospital Administrator',
       'Medical Records Officer',
       'System Administrator'
@@ -395,7 +385,6 @@ export default Ember.Mixin.create({
       'System Administrator'
     ],
     override_invoice: [
-      'Business Office',
       'Hospital Administrator',
       'System Administrator'
     ],
@@ -403,7 +392,6 @@ export default Ember.Mixin.create({
       'System Administrator'
     ],
     patients: [
-      'Business Office',
       'Data Entry',
       'Doctor',
       'Finance',
@@ -428,7 +416,6 @@ export default Ember.Mixin.create({
     pricing: [
       'Data Entry',
       'Finance',
-      'Business Office',
       'Hospital Administrator',
       'Medical Records Officer',
       'System Administrator'
