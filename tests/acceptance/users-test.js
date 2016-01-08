@@ -89,6 +89,7 @@ test('create new user', function(assert) {
     stubRequest('post', '/updateuser', function(request) {
       var expectedBody = {
         data: {
+          _id: 'org.couchdb.user:jane@donuts.com',
           displayName: 'Jane Bagadonuts',
           email: 'jane@donuts.com',
           name: 'jane@donuts.com',
@@ -96,9 +97,6 @@ test('create new user', function(assert) {
           roles: ['Hospital Administrator', 'user'],
           userPrefix: 'p02',
           type: 'user'
-        },
-        updateParams: {
-          doc_name: 'org.couchdb.user:jane@donuts.com'
         },
         name: 'hradmin'
       };

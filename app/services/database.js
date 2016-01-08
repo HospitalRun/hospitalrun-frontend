@@ -8,6 +8,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   config: Ember.inject.service(),
   mainDB: null, // Server DB
   setMainDB: false,
+
   setup(configs) {
     PouchDB.plugin(List);
     return this.createDB(configs)
@@ -16,6 +17,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         this.set('setMainDB', true);
       });
   },
+
   createDB(configs) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       let pouchOptions = {};
@@ -43,69 +45,95 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       });
     });
   },
-  queryMainDB: function(queryParams, mapReduce) {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+
+  queryMainDB(queryParams, mapReduce) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
       var mainDB = this.get('mainDB');
       if (mapReduce) {
-        mainDB.query(mapReduce, queryParams, function(err, response) {
+        mainDB.query(mapReduce, queryParams, (err, response) => {
           if (err) {
             this._pouchError(reject)(err);
           } else {
             response.rows = this._mapPouchData(response.rows);
             resolve(response);
           }
-        }.bind(this));
+        });
       } else {
-        mainDB.allDocs(queryParams, function(err, response) {
+        mainDB.allDocs(queryParams, (err, response) => {
           if (err) {
             this._pouchError(reject)(err);
           } else {
             response.rows = this._mapPouchData(response.rows);
             resolve(response);
           }
-        }.bind(this));
+        });
       }
-    }.bind(this));
+    });
   },
+
   /**
   * Given an pouchDB doc id, return the corresponding ember record id.
   * @param {String} docId the pouchDB doc id.
   * @returns {String} the corresponding Ember id.
   */
-  getEmberId: function(docId) {
+  getEmberId(docId) {
     var parsedId = this.get('mainDB').rel.parseDocID(docId);
     if (!Ember.isEmpty(parsedId.id)) {
       return parsedId.id;
     }
   },
-  getDocFromMainDB: function(docId) {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+
+  getDocFromMainDB(docId) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
       var mainDB = this.get('mainDB');
-      mainDB.get(docId, function(err, doc) {
+      mainDB.get(docId, (err, doc) => {
         if (err) {
           this._pouchError(reject)(err);
         } else {
           resolve(doc);
         }
-      }.bind(this));
-    }.bind(this));
+      });
+    });
   },
+
   /**
   * Given an Ember record id and type, return back the corresponding pouchDB id.
   * @param {String} emberId the ember record id.
   * @param {String} type the record type.
   * @returns {String} the corresponding pouch id.
   */
-  getPouchId: function(emberId, type) {
+  getPouchId(emberId, type) {
     return this.get('mainDB').rel.makeDocID({
       id: emberId,
       type: type
     });
   },
-  _mapPouchData: function(rows) {
+
+  /**
+   * Load the specified db dump into the database.
+   * @param {String} dbDump A couchdb dump string produced by pouchdb-dump-cli.
+   * @returns {Promise} A promise that resolves once the dump has been loaded.
+   */
+  loadDBFromDump: function(dbDump) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      var db = new PouchDB('dbdump', {
+        adapter: 'memory'
+      });
+      db.load(dbDump).then(() => {
+        var mainDB = this.get('mainDB');
+        db.replicate.to(mainDB).on('complete', (info) => {
+          resolve(info);
+        }).on('error', (err) => {
+          reject(err);
+        });
+      });
+    });
+  },
+
+  _mapPouchData(rows) {
     var mappedRows = [];
     if (rows) {
-      mappedRows = rows.map(function(row) {
+      mappedRows = rows.map((row) => {
         if (row.doc) {
           var rowValues = {
             doc: row.doc.data
@@ -115,7 +143,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         } else {
           return row;
         }
-      }.bind(this));
+      });
     }
     return mappedRows;
   }

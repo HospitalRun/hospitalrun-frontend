@@ -120,23 +120,16 @@ export default DS.RESTAdapter.extend(UserSession, {
     var serializer = store.serializerFor(record.modelName);
     serializer.serializeIntoHash(data, type, record, { includeId: true });
     data.type = 'user';
-    var idToUpdate = data._id,
-      revToUpdate = data._rev;
-    delete data._id;
-    delete data._rev;
+    if (Ember.isEmpty(data._rev)) {
+      delete data._rev;
+    }
     data = this._cleanPasswordAttrs(data);
     var ajaxData = {
       data: {
         data: data,
-        updateParams: {
-          doc_name: idToUpdate
-        },
         name: this.getUserName(true)
       }
     };
-    if (!Ember.isEmpty(revToUpdate)) {
-      ajaxData.data.updateParams.rev = revToUpdate;
-    }
     return this.ajax('/updateuser', 'POST', ajaxData);
   },
 
