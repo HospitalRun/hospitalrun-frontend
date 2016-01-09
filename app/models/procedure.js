@@ -12,6 +12,9 @@ export default AbstractModel.extend({
   cptCode: DS.attr('string'),
   location: DS.attr('string'),
   notes: DS.attr('string'),
+  patientNote: DS.belongsTo('patient-note', {
+    async: false  
+  }),
   physician: DS.attr('string'),
   procedureDate: DS.attr('date'),
   timeStarted: DS.attr('string'),

@@ -38,6 +38,9 @@ export default AbstractModel.extend({
   patient: DS.belongsTo('patient', {
     async: false
   }),
+  patientNote: DS.belongsTo('patient-note', { 
+    async: false 
+  }),
   primaryDiagnosis: DS.attr('string'), // AKA admitting diagnosis
   primaryBillingDiagnosis: DS.attr('string'), // AKA final diagnosis
   primaryBillingDiagnosisId: DS.attr('string'),

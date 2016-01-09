@@ -17,6 +17,9 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, ResultValidati
   patient: DS.belongsTo('patient', {
     async: false
   }),
+  patientNote: DS.belongsTo('patient-note', { 
+    async: false 
+  }),
   requestedBy: DS.attr('string'),
   requestedDate: DS.attr('date'),
   result: DS.attr('string'),
