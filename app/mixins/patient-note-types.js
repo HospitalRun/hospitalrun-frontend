@@ -3,15 +3,12 @@ import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.Mixin.create({
   patientNoteTypesList: [
     'General',
-    'Appointment',
     'Clinic',
+    'Procedure',
+    'Imaging',
     'Lab',
     'Pharmacy',
-    'Imaging',
-    'Pre-op',
-    'Procedural',
-    'Post-op',
-    'Physio',
+    // 'Physiotherapy',
     'Social',
     'Other'
   ],
