@@ -4,7 +4,7 @@
     "window",
     "-Promise",
     "Bloodhound",
-    "Filer",    
+    "Filer",
     "PouchDB",
     "oauthSignature",
     "OAuth",
@@ -13,7 +13,12 @@
     "dymo",
     "uuid",
     "moment",
-    "Pikaday"
+    "Pikaday",
+    "Promise",
+    "logDebug",
+    "toolbox",
+    "self",
+    "Response"
   ],
   "browser": true,
   "boss": true,
