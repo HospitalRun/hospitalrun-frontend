@@ -13,7 +13,7 @@
     "ember-resolver": "~0.1.20",
     "filer.js": "https://github.com/ebidel/filer.js.git#~0.4.3",
     "idb.filesystem": "https://github.com/ebidel/idb.filesystem.js.git",
-    "jquery": "^1.11.3",
+    "jquery": "1.11.3",
     "loader.js": "ember-cli/loader.js#3.4.0",
     "moment": "~2.10.5",
     "node-uuid": "https://github.com/broofa/node-uuid.git",
