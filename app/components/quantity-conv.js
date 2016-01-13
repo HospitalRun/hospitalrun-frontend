@@ -1,14 +1,14 @@
 import Ember from "ember";
-import UnitTypes from "hospitalrun/mixins/unit-types";
-export default Ember.Component.extend(UnitTypes, {
+export default Ember.Component.extend({
     firstQuantity: false,
-    quantity: null,    
-    quantityHelp: null,    
+    quantity: null,
+    quantityHelp: null,
     unitName: null,
     unit: null,
     resetUnitName: false,
     targetUnit: Ember.computed.alias('parentView.targetUnit'),
-            
+    unitList: null,
+
     unitClass: function() {
         var selectedUnit = this.get('unit'),
             targetUnit = this.get('targetUnit'),
@@ -20,12 +20,12 @@ export default Ember.Component.extend(UnitTypes, {
             if (Ember.isEmpty(targetUnit)) {
                 unitClass = '';
             }
-            this.set('unitHelp');           
+            this.set('unitHelp');
         }
         this.get('parentView').updateCurrentUnit(selectedUnit, this.get('index'));
         return unitClass;
     }.property('targetUnit', 'unit'),
-    
+
     quantityClass: function() {
         var quantity = this.get('quantity'),
             quantityClass = 'has-success',
@@ -36,8 +36,8 @@ export default Ember.Component.extend(UnitTypes, {
         } else {
             if (Ember.isEmpty(targetUnit)) {
                 quantityClass='';
-            }        
-            this.set('quantityHelp');            
+            }
+            this.set('quantityHelp');
         }
         Ember.run.once(this, function() {
             this.get('parentView').calculateTotal();

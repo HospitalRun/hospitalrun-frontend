@@ -4,7 +4,8 @@ export default Ember.Component.extend({
     calculated: null,
     currentUnit: null,
     targetUnit: null,
-    
+    unitList: null,
+
     showTotal: function() {
         var calculated = this.get('calculated'),
             quantityGroups = this.get('quantityGroups');
@@ -13,7 +14,7 @@ export default Ember.Component.extend({
         }
         return false;
     }.property('calculated'),
-    
+
     targetUnitChanged: function() {
         var targetUnit = this.get('targetUnit'),
             selectedUnit = this.get('quantityGroups.firstObject.unit');
@@ -23,7 +24,7 @@ export default Ember.Component.extend({
             this.updateCurrentUnit(selectedUnit, 0);
         }
     }.observes('targetUnit'),
-    
+
     _setup: function() {
         var calculated = this.get('calculated'),
             targetUnit = this.get('targetUnit'),
@@ -37,8 +38,8 @@ export default Ember.Component.extend({
             });
             this.set('quantityGroups',quantityGroups);
         }
-    }.on('init'), 
-    
+    }.on('init'),
+
     calculateTotal: function() {
         var quantityGroups = this.get('quantityGroups'),
             haveQuantities = false,
@@ -51,16 +52,16 @@ export default Ember.Component.extend({
         });
         if (haveQuantities && lastObject.unit === targetUnit) {
             var newValue = quantityGroups.reduce(function(previousValue, item) {
-                return previousValue * parseInt(item.quantity);  
+                return previousValue * parseInt(item.quantity);
             }, 1);
-            this.set('calculated', newValue);            
+            this.set('calculated', newValue);
         } else {
-            this.set('calculated');            
+            this.set('calculated');
         }
     },
 
     updateCurrentUnit: function(selectedUnit, index) {
-        var targetUnit = this.get('targetUnit'),            
+        var targetUnit = this.get('targetUnit'),
             quantityGroups = this.get('quantityGroups'),
             groupLength = quantityGroups.length;
         if (!Ember.isEmpty(targetUnit)) {

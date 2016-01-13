@@ -1,6 +1,8 @@
-{{#each quantityGroups}}
-    {{quantity-conv unit=this.unit firstQuantity=this.firstQuantity unitName=this.unitName index=this.index quantity=this.quantity}}
-{{/each}}
+{{#with unitList as unitList}}
+  {{#each quantityGroups}}
+      {{quantity-conv unit=this.unit firstQuantity=this.firstQuantity unitName=this.unitName index=this.index quantity=this.quantity unitList=unitList}}
+  {{/each}}
+{{/with}}
 {{#if showTotal}}
     <div class="row">
         <div class="col-xs-6">

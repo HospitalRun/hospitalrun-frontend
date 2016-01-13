@@ -547,19 +547,19 @@ define('hospitalrun/admin/address/view', ['exports', 'hospitalrun/views/panel'],
 	exports['default'] = PanelView['default'].extend();
 
 });
-define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/mixins/billing-categories', 'hospitalrun/mixins/lab-pricing-types', 'hospitalrun/mixins/modal-helper', 'hospitalrun/mixins/imaging-pricing-types', 'hospitalrun/mixins/inventory-type-list', 'hospitalrun/mixins/visit-types'], function (exports, Ember, BillingCategories, LabPricingTypes, ModalHelper, ImagingPricingTypes, InventoryTypeList, VisitTypes) {
+define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/mixins/billing-categories', 'hospitalrun/mixins/lab-pricing-types', 'hospitalrun/mixins/modal-helper', 'hospitalrun/mixins/imaging-pricing-types', 'hospitalrun/mixins/inventory-type-list', 'hospitalrun/mixins/unit-types', 'hospitalrun/mixins/visit-types'], function (exports, Ember, BillingCategories, LabPricingTypes, ModalHelper, ImagingPricingTypes, InventoryTypeList, UnitTypes, VisitTypes) {
 
     'use strict';
 
-    exports['default'] = Ember['default'].ArrayController.extend(BillingCategories['default'], LabPricingTypes['default'], 
-            ModalHelper['default'], ImagingPricingTypes['default'], InventoryTypeList['default'], VisitTypes['default'], {
+    exports['default'] = Ember['default'].ArrayController.extend(BillingCategories['default'], LabPricingTypes['default'],
+            ModalHelper['default'], ImagingPricingTypes['default'], InventoryTypeList['default'], UnitTypes['default'], VisitTypes['default'], {
         needs: 'filesystem',
         fileSystem: Ember['default'].computed.alias('controllers.filesystem'),
         lookupType: null,
         lookupTypes: [{
             name: 'Anesthesia Types',
-            value: 'anesthesia_types',        
-            model: {        
+            value: 'anesthesia_types',
+            model: {
                 procedure: 'anesthesiaType'
             }
         }, {
@@ -653,13 +653,13 @@ define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/
             }
         }, {
             name: 'Patient Status List',
-            value: 'patient_status_list', 
+            value: 'patient_status_list',
             models: {
                 patient: 'status'
             }
         }, {
             name: 'Physicians',
-            value: 'physician_list', 
+            value: 'physician_list',
             models: {
                 appointment: 'provider',
                 visit: 'examiner',
@@ -678,7 +678,7 @@ define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/
             name: 'Procedure Locations',
             value: 'procedure_locations',
             models: {
-                procedure: 'location'         
+                procedure: 'location'
             }
         }, {
             name: 'Procedure Pricing Types',
@@ -693,24 +693,32 @@ define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/
                 imaging: 'radiologist'
             }
         }, {
+            defaultValues: 'defaultUnitList',
+            name: 'Unit Types',
+            value: 'unit_types',
+            models: {
+                inventory: 'distributionUnit',
+                'inv-purchase': 'distributionUnit'
+            }
+        }, {
             name: 'Vendor',
             value: 'vendor_list',
             models: {
-                'inv-purchase': 'vendor'      
+                'inv-purchase': 'vendor'
             }
         }, {
             name: 'Visit Locations',
             value: 'visit_location_list',
             models: {
                 appointment: 'location',
-                visit: 'location',            
+                visit: 'location',
             }
         }, {
             defaultValues: 'defaultVisitTypes',
             name: 'Visit Types',
             value: 'visit_types',
             models: {
-                visit: 'visitType',            
+                visit: 'visitType',
             }
         }, {
             name: 'Ward Pricing Types',
@@ -719,9 +727,9 @@ define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/
                 pricing:  'type'
             }
         }],
-        
+
         importFile: Ember['default'].computed.alias('lookupTypeList.importFile'),
-        
+
         lookupTitle: function() {
             var lookupType = this.get('lookupType'),
                 lookupTypes = this.get('lookupTypes'),
@@ -731,12 +739,12 @@ define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/
                 if (!Ember['default'].isEmpty(lookupDesc)) {
                     return lookupDesc.name;
                 }
-            }            
+            }
         }.property('lookupType'),
-            
+
         lookupTypeList: function() {
             var lookupType = this.get('lookupType'),
-                lookupItem;        
+                lookupItem;
             if (!Ember['default'].isEmpty(lookupType)) {
                 lookupItem = this.get('model').findBy('id', lookupType);
                 if (Ember['default'].isEmpty(lookupItem)) {
@@ -749,15 +757,15 @@ define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/
                     lookupItem = this.get('store').push('lookup', {
                         id: lookupType,
                         value: defaultValues
-                    });          
+                    });
                 }
                 if (!Ember['default'].isEmpty(lookupItem) && Ember['default'].isEmpty(lookupItem.get('userCanAdd'))) {
-                    lookupItem.set('userCanAdd', true);                
-                } 
+                    lookupItem.set('userCanAdd', true);
+                }
                 return lookupItem;
             }
         }.property('lookupType'),
-        
+
         lookupTypeValues: function() {
             var values = this.get('lookupTypeList.value');
             if (!Ember['default'].isEmpty(values)) {
@@ -765,16 +773,16 @@ define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/
             }
             return Ember['default'].ArrayProxy.create({content: Ember['default'].A(values)});
         }.property('lookupType', 'lookupTypeList.value'),
-        
+
         organizeByType: Ember['default'].computed.alias('lookupTypeList.organizeByType'),
-        
+
         showOrganizeByType: function() {
             var lookupType = this.get('lookupType');
             return (!Ember['default'].isEmpty(lookupType) && lookupType.indexOf('pricing_types') > 0);
         }.property('lookupType'),
-            
+
         userCanAdd: Ember['default'].computed.alias('lookupTypeList.userCanAdd'),
-        
+
         _canDeleteValue: function(value) {
             var lookupType = this.get('lookupType');
             switch (lookupType) {
@@ -802,7 +810,7 @@ define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/
                 case 'visit_types': {
                     if (value === 'Admission') {
                         this.displayAlert('Cannot Delete Admmission Visit Type', 'The Admission Visit type cannot be deleted because it is needed for the Visits module.');
-                        return false;                    
+                        return false;
                     } else if (value === 'Imaging') {
                         this.displayAlert('Cannot Delete Imaging Visit Type', 'The Imaging Visit type cannot be deleted because it is needed for the Imaging module.');
                         return false;
@@ -815,13 +823,13 @@ define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/
                     }
                 }
             }
-            return true;        
+            return true;
         },
-        
+
         _sortValues: function(a, b) {
             return Ember['default'].compare(a.toLowerCase(), b.toLowerCase());
         },
-        
+
         actions: {
             addValue: function() {
                 this.send('openModal', 'admin.lookup.edit', Ember['default'].Object.create({
@@ -832,7 +840,7 @@ define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/
                 var lookupTypeList = this.get('lookupTypeList'),
                     lookupTypeValues = lookupTypeList.get('value');
                 if (this._canDeleteValue(value)) {
-                    lookupTypeValues.removeObject(value.toString());        
+                    lookupTypeValues.removeObject(value.toString());
                     lookupTypeList.save();
                 }
             },
@@ -862,7 +870,7 @@ define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/
                                 }
                             },
                             importFile: true
-                        }); 
+                        });
                         lookupTypeList.save().then(function() {
                             this.displayAlert('List Imported', 'The lookup list has been imported.','refreshLookupLists');
                             this.set('importFile');
@@ -876,7 +884,7 @@ define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/
                 lookupTypeList.save().then(function() {
                     this.displayAlert('List Saved', 'The lookup list has been saved');
                 }.bind(this));
-            },        
+            },
             updateValue: function(valueObject) {
                  var updateList = false,
                      lookupTypeList = this.get('lookupTypeList'),
@@ -896,14 +904,14 @@ define('hospitalrun/admin/lookup/controller', ['exports', 'ember', 'hospitalrun/
                 if (updateList) {
                     values.addObject(value);
                     values = values.sort(this._sortValues);
-                    lookupTypeList.set('value', values);                
+                    lookupTypeList.set('value', values);
                     lookupTypeList.save().then(function(list) {
                         //Make sure that the list on screen gets updated with the sorted items.
                         var values = Ember['default'].copy(list.get('value'));
                         lookupTypeValues.clear();
                         lookupTypeValues.addObjects(values);
                     });
-                    
+
                 }
             }
         }
@@ -3173,7 +3181,8 @@ define('hospitalrun/components/quantity-calc', ['exports', 'ember'], function (e
         calculated: null,
         currentUnit: null,
         targetUnit: null,
-        
+        unitList: null,
+
         showTotal: function() {
             var calculated = this.get('calculated'),
                 quantityGroups = this.get('quantityGroups');
@@ -3182,7 +3191,7 @@ define('hospitalrun/components/quantity-calc', ['exports', 'ember'], function (e
             }
             return false;
         }.property('calculated'),
-        
+
         targetUnitChanged: function() {
             var targetUnit = this.get('targetUnit'),
                 selectedUnit = this.get('quantityGroups.firstObject.unit');
@@ -3192,7 +3201,7 @@ define('hospitalrun/components/quantity-calc', ['exports', 'ember'], function (e
                 this.updateCurrentUnit(selectedUnit, 0);
             }
         }.observes('targetUnit'),
-        
+
         _setup: function() {
             var calculated = this.get('calculated'),
                 targetUnit = this.get('targetUnit'),
@@ -3206,8 +3215,8 @@ define('hospitalrun/components/quantity-calc', ['exports', 'ember'], function (e
                 });
                 this.set('quantityGroups',quantityGroups);
             }
-        }.on('init'), 
-        
+        }.on('init'),
+
         calculateTotal: function() {
             var quantityGroups = this.get('quantityGroups'),
                 haveQuantities = false,
@@ -3220,16 +3229,16 @@ define('hospitalrun/components/quantity-calc', ['exports', 'ember'], function (e
             });
             if (haveQuantities && lastObject.unit === targetUnit) {
                 var newValue = quantityGroups.reduce(function(previousValue, item) {
-                    return previousValue * parseInt(item.quantity);  
+                    return previousValue * parseInt(item.quantity);
                 }, 1);
-                this.set('calculated', newValue);            
+                this.set('calculated', newValue);
             } else {
-                this.set('calculated');            
+                this.set('calculated');
             }
         },
 
         updateCurrentUnit: function(selectedUnit, index) {
-            var targetUnit = this.get('targetUnit'),            
+            var targetUnit = this.get('targetUnit'),
                 quantityGroups = this.get('quantityGroups'),
                 groupLength = quantityGroups.length;
             if (!Ember['default'].isEmpty(targetUnit)) {
@@ -3255,19 +3264,20 @@ define('hospitalrun/components/quantity-calc', ['exports', 'ember'], function (e
     });
 
 });
-define('hospitalrun/components/quantity-conv', ['exports', 'ember', 'hospitalrun/mixins/unit-types'], function (exports, Ember, UnitTypes) {
+define('hospitalrun/components/quantity-conv', ['exports', 'ember'], function (exports, Ember) {
 
     'use strict';
 
-    exports['default'] = Ember['default'].Component.extend(UnitTypes['default'], {
+    exports['default'] = Ember['default'].Component.extend({
         firstQuantity: false,
-        quantity: null,    
-        quantityHelp: null,    
+        quantity: null,
+        quantityHelp: null,
         unitName: null,
         unit: null,
         resetUnitName: false,
         targetUnit: Ember['default'].computed.alias('parentView.targetUnit'),
-                
+        unitList: null,
+
         unitClass: function() {
             var selectedUnit = this.get('unit'),
                 targetUnit = this.get('targetUnit'),
@@ -3279,12 +3289,12 @@ define('hospitalrun/components/quantity-conv', ['exports', 'ember', 'hospitalrun
                 if (Ember['default'].isEmpty(targetUnit)) {
                     unitClass = '';
                 }
-                this.set('unitHelp');           
+                this.set('unitHelp');
             }
             this.get('parentView').updateCurrentUnit(selectedUnit, this.get('index'));
             return unitClass;
         }.property('targetUnit', 'unit'),
-        
+
         quantityClass: function() {
             var quantity = this.get('quantity'),
                 quantityClass = 'has-success',
@@ -3295,8 +3305,8 @@ define('hospitalrun/components/quantity-conv', ['exports', 'ember', 'hospitalrun
             } else {
                 if (Ember['default'].isEmpty(targetUnit)) {
                     quantityClass='';
-                }        
-                this.set('quantityHelp');            
+                }
+                this.set('quantityHelp');
             }
             Ember['default'].run.once(this, function() {
                 this.get('parentView').calculateTotal();
@@ -6602,25 +6612,26 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
 
     exports['default'] = AbstractEditController['default'].extend(InventoryLocations['default'], InventoryTypeList['default'], ReturnTo['default'], UnitTypes['default'], UserSession['default'], {
         needs: ['inventory','pouchdb'],
-        
-        canAddPurchase: function() {        
+
+        canAddPurchase: function() {
             return this.currentUserCan('add_inventory_purchase');
         }.property(),
-        
+
         canAdjustLocation: function() {
             return this.currentUserCan('adjust_inventory_location');
-        },    
+        },
 
-        canDeletePurchase: function() {        
+        canDeletePurchase: function() {
             return this.currentUserCan('delete_inventory_purchase');
-        }.property(),    
-        
+        }.property(),
+
         warehouseList: Ember['default'].computed.alias('controllers.inventory.warehouseList'),
         aisleLocationList: Ember['default'].computed.alias('controllers.inventory.aisleLocationList'),
         inventoryTypeList: Ember['default'].computed.alias('controllers.inventory.inventoryTypeList.value'),
+        inventoryUnitList: Ember['default'].computed.alias('controllers.inventory.inventoryUnitList.value'),
         vendorList: Ember['default'].computed.alias('controllers.inventory.vendorList'),
         pouchdbController: Ember['default'].computed.alias('controllers.pouchdb'),
-        
+
         lookupListsToUpdate: [{
             name: 'aisleLocationList', //Name of property containing lookup list
             property: 'aisleLocation', //Corresponding property on model that potentially contains a new value to add to the list
@@ -6634,16 +6645,16 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
             property: 'location', //Corresponding property on model that potentially contains a new value to add to the list
             id: 'warehouse_list' //Id of the lookup list to update
         }],
-        
-        canEditQuantity: function() {		
-            return (this.get('isNew'));		
+
+        canEditQuantity: function() {
+            return (this.get('isNew'));
         }.property('isNew'),
-        
+
         haveTransactions: function() {
             var transactions = this.get('transactions');
             return transactions !== null;
         }.property('transactions.@each'),
-        
+
         locationQuantityTotal: function() {
             var locations = this.get('locations');
             var total = locations.reduce(function(previousValue, location) {
@@ -6651,27 +6662,27 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
             }, 0);
             return total;
         }.property('locations'),
-        
+
         /**
          * Check to see if the total quantity by location matches the quantity calculated on the item
          * @return {boolean} true if there is a discrepency;otherwise false.
          */
         quantityDiscrepency: function() {
-            var locationQuantityTotal = this.get('locationQuantityTotal'), 
+            var locationQuantityTotal = this.get('locationQuantityTotal'),
                 quantity = this.get('quantity');
             return (!Ember['default'].isEmpty(locationQuantityTotal) && !Ember['default'].isEmpty(quantity) && locationQuantityTotal !== quantity);
         }.property('locationQuantityTotal', 'quantity'),
-        
+
         /**
          * Get the difference in quantity between the total quantity by location and the quantity on the item.
          * @return {int} the difference.
          */
         quantityDifferential: function() {
-            var locationQuantityTotal = this.get('locationQuantityTotal'), 
+            var locationQuantityTotal = this.get('locationQuantityTotal'),
                 quantity = this.get('quantity');
             return Math.abs(locationQuantityTotal - quantity);
         }.property('locationQuantityTotal', 'quantity'),
-        
+
         originalQuantityUpdated: function() {
             var isNew = this.get('isNew'),
                 quantity = this.get('originalQuantity');
@@ -6679,20 +6690,20 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
                 this.set('quantity', quantity);
             }
         }.observes('originalQuantity'),
-        
+
         showTransactions: function() {
             var transactions = this.get('transactions');
             return !Ember['default'].isEmpty(transactions);
         }.property('transactions.@each'),
-        
+
         transactions: null,
-        
+
         updateCapability: 'add_inventory_item',
 
         actions: {
             adjustItems: function(inventoryLocation) {
                 var adjustmentQuantity = parseInt(inventoryLocation.get('adjustmentQuantity')),
-                    inventoryItem = this.get('model'),                
+                    inventoryItem = this.get('model'),
                     transactionType = inventoryLocation.get('transactionType'),
                     request = this.get('store').createRecord('inv-request', {
                         adjustPurchases: true,
@@ -6705,7 +6716,7 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
                         deliveryAisle: inventoryLocation.get('aisleLocation'),
                         deliveryLocation: inventoryLocation.get('location')
                     });
-                request.set('inventoryLocations',[inventoryLocation]);            
+                request.set('inventoryLocations',[inventoryLocation]);
                 var increment = false;
                 if (transactionType === 'Adjustment (Add)' || transactionType === 'Return') {
                     increment = true;
@@ -6714,9 +6725,9 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
                 //Make sure inventory item is resolved first.
                 request.get('inventoryItem').then(function() {
                     this.send('fulfillRequest', request, true, increment, true);
-                }.bind(this));            
-            },        
-            
+                }.bind(this));
+            },
+
             deletePurchase: function(purchase, deleteFromLocation, expire) {
                 var purchases = this.get('purchases'),
                     quantityDeleted = purchase.get('currentQuantity');
@@ -6733,15 +6744,15 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
                 }
                 this.get('model').updateQuantity();
                 this.send('update',true);
-                this.send('closeModal');        
+                this.send('closeModal');
             },
-            
+
             editNewItem: function() {
                 this.send('editItem', this.get('id'));
             },
-            
+
             showAdjustment: function(inventoryLocation) {
-                inventoryLocation.setProperties({                
+                inventoryLocation.setProperties({
                     dateCompleted: new Date(),
                     adjustmentItem: this.get('model'),
                     adjustmentQuantity: '',
@@ -6755,23 +6766,23 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
             showDeletePurchase: function(purchase) {
                 this.send('openModal', 'inventory.purchase.delete', purchase);
             },
-            
+
             showEditPurchase: function(purchase) {
                 this.send('openModal', 'inventory.purchase.edit', purchase);
             },
-            
+
             showExpirePurchase: function(purchase) {
                 purchase.set('expire', true);
                 this.send('openModal', 'inventory.purchase.delete', purchase);
             },
-            
+
             showTransfer: function(inventoryLocation) {
                 inventoryLocation.set('adjustmentQuantity');
                 inventoryLocation.set('transferItem', this.get('model'));
-                inventoryLocation.set('dateCompleted', new Date());            
+                inventoryLocation.set('dateCompleted', new Date());
                 this.send('openModal', 'inventory.transfer', inventoryLocation);
             },
-            
+
             transferItems: function(inventoryLocation) {
                 var inventoryItem = this.get('model'),
                     request = this.get('store').createRecord('inv-request', {
@@ -6783,7 +6794,7 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
                         deliveryLocation: inventoryLocation.get('transferLocation'),
                         transactionType: 'Transfer'
                     });
-                this.transferToLocation(inventoryItem, inventoryLocation);            
+                this.transferToLocation(inventoryItem, inventoryLocation);
                 inventoryLocation.setProperties({
                     transferItem: null,
                     transferLocation: null,
@@ -6796,25 +6807,25 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
                 }]);
                 request.get('inventoryItem').then(function() {
                     //Make sure relationships are resolved before saving
-                    this._saveRequest(request);                
-                }.bind(this));            
+                    this._saveRequest(request);
+                }.bind(this));
             },
-            
+
             updatePurchase: function(purchase, updateQuantity) {
                 if (updateQuantity) {
                     this.get('model').updateQuantity();
                     this.send('update',true);
                 }
-                this.send('closeModal');            
+                this.send('closeModal');
             },
         },
-        
+
         _completeBeforeUpdate: function(sequence, resolve, reject) {
             var sequenceValue = null,
                 friendlyId = sequence.get('prefix'),
                 promises = [],
                 newPurchase = this.getProperties('aisleLocation', 'dateReceived',
-                'purchaseCost', 'lotNumber', 'expirationDate', 'giftInKind', 
+                'purchaseCost', 'lotNumber', 'expirationDate', 'giftInKind',
                 'location', 'vendor', 'vendorItemNo'),
                 quantity = this.get('quantity');
             if (!Ember['default'].isEmpty(quantity)) {
@@ -6855,15 +6866,15 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
                 this._completeBeforeUpdate(newSequence, resolve, reject);
             }.bind(this));
         },
-        
-        _findSequenceByPrefix: function(type, prefixChars) {  
+
+        _findSequenceByPrefix: function(type, prefixChars) {
             var pouchdbController = this.get('pouchdbController');
             var sequenceQuery = {
-                key:  type.toLowerCase().substr(0,prefixChars)            
+                key:  type.toLowerCase().substr(0,prefixChars)
             };
             return pouchdbController.queryMainDB(sequenceQuery, 'sequence_by_prefix');
-        },    
-        
+        },
+
         _checkNextSequence: function(resolve, type, prefixChars) {
             prefixChars++;
             this._findSequenceByPrefix(type, prefixChars).then(function(records) {
@@ -6874,10 +6885,10 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
                 }
             }.bind(this), function() {
                 resolve(prefixChars);
-            });        
+            });
         },
-        
-        
+
+
         /**
          * Saves the specified request, then updates the inventory item and closes the modal.
          */
@@ -6890,26 +6901,26 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
                 this.getTransactions();
             }.bind(this));
         },
-        
-        getTransactions: function() {        
+
+        getTransactions: function() {
             var inventoryId = 'inventory_'+this.get('id');
             this.set('transactions',null);
             this.store.find('inv-request', {
                 options: {
                     endkey: [inventoryId, 'Completed', 0],
                     startkey: [inventoryId, 'Completed', 9999999999999],
-                    descending: true                
+                    descending: true
                 },
                 mapReduce: 'inventory_request_by_item'
             }).then(function(transactions) {
                 this.set('transactions', transactions);
-            }.bind(this));    
+            }.bind(this));
         },
-        
+
         beforeUpdate: function() {
             if (this.get('isNew')) {
                 var model = this.get('model'),
-                    type = this.get('type');                
+                    type = this.get('type');
                 return new Ember['default'].RSVP.Promise(function(resolve, reject){
                     model.validate().then(function() {
                         if (model.get('isValid')) {
@@ -6918,20 +6929,20 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
                                 this._completeBeforeUpdate(sequence, resolve, reject);
                             }.bind(this), function() {
                                 this._findSequence(type, resolve, reject);
-                            }.bind(this));                        
+                            }.bind(this));
                         } else {
                             this.send('showDisabledDialog');
-                            reject('invalid model');                        
+                            reject('invalid model');
                         }
                     }.bind(this)).catch(function() {
                         this.send('showDisabledDialog');
-                    }.bind(this));                
+                    }.bind(this));
                 }.bind(this));
             } else {
                 return Ember['default'].RSVP.Promise.resolve();
             }
         },
-        
+
         afterUpdate: function() {
             var afterUpdateAction = null;
             if (this.get('savingNewItem')) {
@@ -7950,78 +7961,79 @@ define('hospitalrun/inventory/purchase/delete/view', ['exports', 'hospitalrun/vi
 	exports['default'] = ModalView['default'].extend();
 
 });
-define('hospitalrun/inventory/purchase/edit/controller', ['exports', 'hospitalrun/controllers/abstract-edit-controller', 'ember'], function (exports, AbstractEditController, Ember) {
+define('hospitalrun/inventory/purchase/edit/controller', ['exports', 'hospitalrun/controllers/abstract-edit-controller', 'ember', 'hospitalrun/mixins/unit-types'], function (exports, AbstractEditController, Ember, UnitTypes) {
 
-    'use strict';
+  'use strict';
 
-    exports['default'] = AbstractEditController['default'].extend({
-        needs: 'inventory',
-        cancelAction: 'closeModal',
-        
-        canEditQuantity: function() {
-            var originalQuantity = this.get('originalQuantity'),
-                currentQuantity = this.get('currentQuantity');
-            if (currentQuantity < originalQuantity) {
-                return false;
-            }
-            return true;
-        }.property('currentQuantity'),
-        
-        warehouseList: Ember['default'].computed.alias('controllers.inventory.warehouseList'),
-        aisleLocationList: Ember['default'].computed.alias('controllers.inventory.aisleLocationList'),
-        vendorList: Ember['default'].computed.alias('controllers.inventory.vendorList'),
-        
-        lookupListsToUpdate: [{
-            name: 'aisleLocationList', //Name of property containing lookup list
-            property: 'aisleLocation', //Corresponding property on model that potentially contains a new value to add to the list
-            id: 'aisle_location_list' //Id of the lookup list to update
-         }, {
-            name: 'vendorList', //Name of property containing lookup list
-            property: 'vendor', //Corresponding property on model that potentially contains a new value to add to the list
-            id: 'vendor_list' //Id of the lookup list to update
-        }, {
-            name: 'warehouseList', //Name of property containing lookup list
-            property: 'location', //Corresponding property on model that potentially contains a new value to add to the list
-            id: 'warehouse_list' //Id of the lookup list to update
-         }],
-        
-        newPurchase: false,
-        
-        updateQuantity: false,
-        
-        updateCapability: 'add_inventory_purchase',
+  exports['default'] = AbstractEditController['default'].extend(UnitTypes['default'], {
+      needs: 'inventory',
+      cancelAction: 'closeModal',
 
-        title: function() {
-            var isNew = this.get('isNew');
-            if (isNew) {
-                return 'Add Purchase';
-            }
-            return 'Edit Purchase';
-    	}.property('isNew'),
-        
-        beforeUpdate: function() {
-            var isNew = this.get('isNew'),
-                 changedAttributes = this.get('model').changedAttributes();
-            if (changedAttributes.originalQuantity) {
-                this.set('currentQuantity',this.get('originalQuantity'));
-                if (!isNew) {
-                    this.set('updateQuantity', true);                
-                }
-            }
-            if (isNew) {
-                this.set('newPurchase', true);         
-            }
-            return Ember['default'].RSVP.Promise.resolve();
-        },
-        
-        afterUpdate: function(record) {
-            if (this.get('newPurchase')) {            
-                this.send('addPurchase', record);
-            } else {
-                this.send('updatePurchase', record, true);
-            }
-        }
-    });
+      canEditQuantity: function() {
+          var originalQuantity = this.get('originalQuantity'),
+              currentQuantity = this.get('currentQuantity');
+          if (currentQuantity < originalQuantity) {
+              return false;
+          }
+          return true;
+      }.property('currentQuantity'),
+
+      warehouseList: Ember['default'].computed.alias('controllers.inventory.warehouseList'),
+      aisleLocationList: Ember['default'].computed.alias('controllers.inventory.aisleLocationList'),
+      inventoryUnitList: Ember['default'].computed.alias('controllers.inventory.inventoryUnitList.value'),
+      vendorList: Ember['default'].computed.alias('controllers.inventory.vendorList'),
+
+      lookupListsToUpdate: [{
+          name: 'aisleLocationList', //Name of property containing lookup list
+          property: 'aisleLocation', //Corresponding property on model that potentially contains a new value to add to the list
+          id: 'aisle_location_list' //Id of the lookup list to update
+       }, {
+          name: 'vendorList', //Name of property containing lookup list
+          property: 'vendor', //Corresponding property on model that potentially contains a new value to add to the list
+          id: 'vendor_list' //Id of the lookup list to update
+      }, {
+          name: 'warehouseList', //Name of property containing lookup list
+          property: 'location', //Corresponding property on model that potentially contains a new value to add to the list
+          id: 'warehouse_list' //Id of the lookup list to update
+       }],
+
+      newPurchase: false,
+
+      updateQuantity: false,
+
+      updateCapability: 'add_inventory_purchase',
+
+      title: function() {
+          var isNew = this.get('isNew');
+          if (isNew) {
+              return 'Add Purchase';
+          }
+          return 'Edit Purchase';
+    }.property('isNew'),
+
+      beforeUpdate: function() {
+          var isNew = this.get('isNew'),
+               changedAttributes = this.get('model').changedAttributes();
+          if (changedAttributes.originalQuantity) {
+              this.set('currentQuantity',this.get('originalQuantity'));
+              if (!isNew) {
+                  this.set('updateQuantity', true);
+              }
+          }
+          if (isNew) {
+              this.set('newPurchase', true);
+          }
+          return Ember['default'].RSVP.Promise.resolve();
+      },
+
+      afterUpdate: function(record) {
+          if (this.get('newPurchase')) {
+              this.send('addPurchase', record);
+          } else {
+              this.send('updatePurchase', record, true);
+          }
+      }
+  });
 
 });
 define('hospitalrun/inventory/purchase/edit/template', ['exports', 'ember'], function (exports, Ember) {
@@ -8032,13 +8044,13 @@ define('hospitalrun/inventory/purchase/edit/template', ['exports', 'ember'], fun
   /**/) {
   this.compilerInfo = [4,'>= 1.0.0'];
   helpers = this.merge(helpers, Ember['default'].Handlebars.helpers); data = data || {};
-    var stack1, helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
+    var buffer = '', stack1, helper, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
 
   function program1(depth0,data) {
     
     var buffer = '', helper, options;
     data.buffer.push("\n    ");
-    data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "inventory/purchase", options) : helperMissing.call(depth0, "partial", "inventory/purchase", options))));
+    data.buffer.push(escapeExpression((helper = helpers.partial || (depth0 && depth0.partial),options={hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data},helper ? helper.call(depth0, "inv-purchase", options) : helperMissing.call(depth0, "partial", "inv-purchase", options))));
     data.buffer.push("\n");
     return buffer;
     }
@@ -8048,7 +8060,8 @@ define('hospitalrun/inventory/purchase/edit/template', ['exports', 'ember'], fun
       'submit_button': (false)
     },hashTypes:{'model': "ID",'submit_button': "BOOLEAN"},hashContexts:{'model': depth0,'submit_button': depth0},inverse:self.noop,fn:self.program(1, program1, data),contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "em-form", options));
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    else { data.buffer.push(''); }
+    data.buffer.push("\n");
+    return buffer;
     
   });
 
@@ -10280,8 +10293,8 @@ define('hospitalrun/inventory/route', ['exports', 'hospitalrun/routes/abstract-m
                 }];
             }
         }.property(),
-        
-        additionalModels: [{ 
+
+        additionalModels: [{
             name: 'aisleLocationList',
             findArgs: ['lookup','aisle_location_list']
         }, {
@@ -10291,16 +10304,19 @@ define('hospitalrun/inventory/route', ['exports', 'hospitalrun/routes/abstract-m
             name: 'inventoryTypeList',
             findArgs: ['lookup','inventory_types']
         }, {
+            name: 'inventoryUnitList',
+            findArgs: ['lookup','unit_types']
+        }, {
             name: 'warehouseList',
             findArgs: ['lookup','warehouse_list']
         }, {
             name: 'vendorList',
             findArgs: ['lookup','vendor_list']
         }],
-        
+
         currentItem: null,
         moduleName: 'inventory',
-        
+
         newButtonText: '+ new request',
         subActions: [{
             text: 'Requests',
@@ -10313,45 +10329,45 @@ define('hospitalrun/inventory/route', ['exports', 'hospitalrun/routes/abstract-m
             linkTo: 'inventory.reports'
         }],
         sectionTitle: 'Inventory',
-        
+
         actions: {
             addPurchase: function(newPurchase) {
                 var currentItem = this.get('currentItem'),
                     purchases = currentItem.get('purchases');
                 purchases.addObject(newPurchase);
-                this.newPurchaseAdded(currentItem, newPurchase); 
+                this.newPurchaseAdded(currentItem, newPurchase);
                 currentItem.updateQuantity();
                 currentItem.save();
                 this.send('closeModal');
             },
-            
+
             newInventoryBatch: function() {
                 if (this.currentUserCan(this.get('addCapability'))) {
                     this.transitionTo('inventory.batch', 'new');
                 }
             },
-            
+
             newRequest: function() {
                 var item = this.get('store').createRecord('inv-request', {
                     transactionType: 'Request',
                     requestedItems: []
-                });            
+                });
                 this.transitionTo('inventory.request', item);
-            },    
-            
+            },
+
             allItems: function() {
                 this.transitionTo('inventory.listing');
             },
-            
+
             showAddPurchase: function(inventoryItem) {
                 var newPurchase = this.get('store').createRecord('inv-purchase', {
                     dateReceived: new Date(),
                     distributionUnit: inventoryItem.get('distributionUnit'),
                     inventoryItem: 'inventory_'+inventoryItem.get('id')
-                });            
+                });
                 this.set('currentItem', inventoryItem);
                 this.send('openModal', 'inventory.purchase.edit', newPurchase);
-            }        
+            }
         }
     });
 
@@ -15760,7 +15776,7 @@ define('hospitalrun/mixins/unit-types', ['exports', 'ember'], function (exports,
     'use strict';
 
     exports['default'] = Ember['default'].Mixin.create({
-        unitList: [
+        defaultUnitList: [
             'ampoule',
             'bag',
             'bottle',
@@ -15771,18 +15787,21 @@ define('hospitalrun/mixins/unit-types', ['exports', 'ember'], function (exports,
             'container',
             'cream',
             'each',
+            'gallon',
             'gel',
+            'ml',
             'nebule',
             'ointment',
-            'pack',        
+            'pack',
             'pair',
             'pallet',
             'patch',
             'pcs',
-            'pill',        
+            'pill',
             'plastic',
             'polyamp',
             'roll',
+            'sachet',
             'spray',
             'suppository',
             'suspension',
@@ -15792,7 +15811,17 @@ define('hospitalrun/mixins/unit-types', ['exports', 'ember'], function (exports,
             'tray',
             'tube',
             'vial'
-        ]
+        ],
+
+        unitList: function() {
+          var defaultUnitList = this.get('defaultUnitList'),
+              inventoryUnitList = this.get('inventoryUnitList');
+          if (Ember['default'].isEmpty(inventoryUnitList)) {
+              return defaultUnitList;
+          } else {
+              return inventoryUnitList;
+          }
+        }.property('inventoryUnitList', 'defaultUnitList')
     });
 
 });
@@ -24794,20 +24823,30 @@ define('hospitalrun/templates/components/quantity-calc', ['exports', 'ember'], f
 
   function program1(depth0,data) {
     
+    var buffer = '', stack1;
+    data.buffer.push("\n  ");
+    stack1 = helpers.each.call(depth0, "quantityGroups", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(2, program2, data),contexts:[depth0],types:["ID"],data:data});
+    if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+    data.buffer.push("\n");
+    return buffer;
+    }
+  function program2(depth0,data) {
+    
     var buffer = '', helper, options;
-    data.buffer.push("\n    ");
+    data.buffer.push("\n      ");
     data.buffer.push(escapeExpression((helper = helpers['quantity-conv'] || (depth0 && depth0['quantity-conv']),options={hash:{
       'unit': ("unit"),
       'firstQuantity': ("firstQuantity"),
       'unitName': ("unitName"),
       'index': ("index"),
-      'quantity': ("quantity")
-    },hashTypes:{'unit': "ID",'firstQuantity': "ID",'unitName': "ID",'index': "ID",'quantity': "ID"},hashContexts:{'unit': depth0,'firstQuantity': depth0,'unitName': depth0,'index': depth0,'quantity': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "quantity-conv", options))));
-    data.buffer.push("\n");
+      'quantity': ("quantity"),
+      'unitList': ("unitList")
+    },hashTypes:{'unit': "ID",'firstQuantity': "ID",'unitName': "ID",'index': "ID",'quantity': "ID",'unitList': "ID"},hashContexts:{'unit': depth0,'firstQuantity': depth0,'unitName': depth0,'index': depth0,'quantity': depth0,'unitList': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "quantity-conv", options))));
+    data.buffer.push("\n  ");
     return buffer;
     }
 
-  function program3(depth0,data) {
+  function program4(depth0,data) {
     
     var buffer = '', stack1;
     data.buffer.push("\n    <div class=\"row\">\n        <div class=\"col-xs-6\">\n            <div class=\"form-group\">\n                <label>");
@@ -24820,10 +24859,10 @@ define('hospitalrun/templates/components/quantity-calc', ['exports', 'ember'], f
     return buffer;
     }
 
-    stack1 = helpers.each.call(depth0, "quantityGroups", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
+    stack1 = helpers['with'].call(depth0, "unitList", "as", "unitList", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0,depth0,depth0],types:["ID","ID","ID"],data:data});
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
     data.buffer.push("\n");
-    stack1 = helpers['if'].call(depth0, "showTotal", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],data:data});
+    stack1 = helpers['if'].call(depth0, "showTotal", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0],types:["ID"],data:data});
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
     data.buffer.push("\n");
     return buffer;
@@ -25217,8 +25256,9 @@ define('hospitalrun/templates/inv-purchase', ['exports', 'ember'], function (exp
     data.buffer.push(escapeExpression((helper = helpers['quantity-calc'] || (depth0 && depth0['quantity-calc']),options={hash:{
       'calculated': ("originalQuantity"),
       'targetUnit': ("distributionUnit"),
-      'quantityGroups': ("quantityGroups")
-    },hashTypes:{'calculated': "ID",'targetUnit': "ID",'quantityGroups': "ID"},hashContexts:{'calculated': depth0,'targetUnit': depth0,'quantityGroups': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "quantity-calc", options))));
+      'quantityGroups': ("quantityGroups"),
+      'unitList': ("unitList")
+    },hashTypes:{'calculated': "ID",'targetUnit': "ID",'quantityGroups': "ID",'unitList': "ID"},hashContexts:{'calculated': depth0,'targetUnit': depth0,'quantityGroups': depth0,'unitList': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "quantity-calc", options))));
     data.buffer.push("\n");
     return buffer;
     }
@@ -25233,7 +25273,7 @@ define('hospitalrun/templates/inv-purchase', ['exports', 'ember'], function (exp
       'type': ("text"),
       'disabled': (true)
     },hashTypes:{'class': "STRING",'value': "ID",'type': "STRING",'disabled': "BOOLEAN"},hashContexts:{'class': depth0,'value': depth0,'type': depth0,'disabled': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-    data.buffer.push("                    \n    </div>\n");
+    data.buffer.push("\n    </div>\n");
     return buffer;
     }
 
@@ -25292,7 +25332,7 @@ define('hospitalrun/templates/inv-purchase', ['exports', 'ember'], function (exp
       'minDate': ("now"),
       'class': ("col-sm-4")
     },hashTypes:{'property': "STRING",'label': "STRING",'minDate': "STRING",'class': "STRING"},hashContexts:{'property': depth0,'label': depth0,'minDate': depth0,'class': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "date-picker", options))));
-    data.buffer.push("\n</div>\n<div class=\"row\">    \n    ");
+    data.buffer.push("\n</div>\n<div class=\"row\">\n    ");
     data.buffer.push(escapeExpression((helper = helpers['select-or-typeahead'] || (depth0 && depth0['select-or-typeahead']),options={hash:{
       'property': ("vendor"),
       'label': ("Vendor"),
@@ -25306,7 +25346,7 @@ define('hospitalrun/templates/inv-purchase', ['exports', 'ember'], function (exp
       'label': ("Vendor Item Number"),
       'class': ("col-sm-6")
     },hashTypes:{'property': "STRING",'label': "STRING",'class': "STRING"},hashContexts:{'property': depth0,'label': depth0,'class': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "em-input", options))));
-    data.buffer.push("    \n</div>\n");
+    data.buffer.push("\n</div>\n");
     stack1 = helpers['if'].call(depth0, "isNew", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0],types:["ID"],data:data});
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
     data.buffer.push("\n");
@@ -25314,6 +25354,7 @@ define('hospitalrun/templates/inv-purchase', ['exports', 'ember'], function (exp
       'label': ("Gift In Kind"),
       'property': ("giftInKind")
     },hashTypes:{'label': "STRING",'property': "STRING"},hashContexts:{'label': depth0,'property': depth0},contexts:[],types:[],data:data},helper ? helper.call(depth0, options) : helperMissing.call(depth0, "em-checkbox", options))));
+    data.buffer.push("\n");
     return buffer;
     
   });

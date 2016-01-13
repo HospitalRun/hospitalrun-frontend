@@ -13,8 +13,8 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
             }];
         }
     }.property(),
-    
-    additionalModels: [{ 
+
+    additionalModels: [{
         name: 'aisleLocationList',
         findArgs: ['lookup','aisle_location_list']
     }, {
@@ -24,16 +24,19 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
         name: 'inventoryTypeList',
         findArgs: ['lookup','inventory_types']
     }, {
+        name: 'inventoryUnitList',
+        findArgs: ['lookup','unit_types']
+    }, {
         name: 'warehouseList',
         findArgs: ['lookup','warehouse_list']
     }, {
         name: 'vendorList',
         findArgs: ['lookup','vendor_list']
     }],
-    
+
     currentItem: null,
     moduleName: 'inventory',
-    
+
     newButtonText: '+ new request',
     subActions: [{
         text: 'Requests',
@@ -46,44 +49,44 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
         linkTo: 'inventory.reports'
     }],
     sectionTitle: 'Inventory',
-    
+
     actions: {
         addPurchase: function(newPurchase) {
             var currentItem = this.get('currentItem'),
                 purchases = currentItem.get('purchases');
             purchases.addObject(newPurchase);
-            this.newPurchaseAdded(currentItem, newPurchase); 
+            this.newPurchaseAdded(currentItem, newPurchase);
             currentItem.updateQuantity();
             currentItem.save();
             this.send('closeModal');
         },
-        
+
         newInventoryBatch: function() {
             if (this.currentUserCan(this.get('addCapability'))) {
                 this.transitionTo('inventory.batch', 'new');
             }
         },
-        
+
         newRequest: function() {
             var item = this.get('store').createRecord('inv-request', {
                 transactionType: 'Request',
                 requestedItems: []
-            });            
+            });
             this.transitionTo('inventory.request', item);
-        },    
-        
+        },
+
         allItems: function() {
             this.transitionTo('inventory.listing');
         },
-        
+
         showAddPurchase: function(inventoryItem) {
             var newPurchase = this.get('store').createRecord('inv-purchase', {
                 dateReceived: new Date(),
                 distributionUnit: inventoryItem.get('distributionUnit'),
                 inventoryItem: 'inventory_'+inventoryItem.get('id')
-            });            
+            });
             this.set('currentItem', inventoryItem);
             this.send('openModal', 'inventory.purchase.edit', newPurchase);
-        }        
+        }
     }
 });

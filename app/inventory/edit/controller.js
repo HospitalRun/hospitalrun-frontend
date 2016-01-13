@@ -1,4 +1,4 @@
-import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';    
+import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from "ember";
 import InventoryLocations from "hospitalrun/mixins/inventory-locations";
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
@@ -8,25 +8,26 @@ import UserSession from "hospitalrun/mixins/user-session";
 
 export default AbstractEditController.extend(InventoryLocations, InventoryTypeList, ReturnTo, UnitTypes, UserSession, {
     needs: ['inventory','pouchdb'],
-    
-    canAddPurchase: function() {        
+
+    canAddPurchase: function() {
         return this.currentUserCan('add_inventory_purchase');
     }.property(),
-    
+
     canAdjustLocation: function() {
         return this.currentUserCan('adjust_inventory_location');
-    },    
+    },
 
-    canDeletePurchase: function() {        
+    canDeletePurchase: function() {
         return this.currentUserCan('delete_inventory_purchase');
-    }.property(),    
-    
+    }.property(),
+
     warehouseList: Ember.computed.alias('controllers.inventory.warehouseList'),
     aisleLocationList: Ember.computed.alias('controllers.inventory.aisleLocationList'),
     inventoryTypeList: Ember.computed.alias('controllers.inventory.inventoryTypeList.value'),
+    inventoryUnitList: Ember.computed.alias('controllers.inventory.inventoryUnitList.value'),
     vendorList: Ember.computed.alias('controllers.inventory.vendorList'),
     pouchdbController: Ember.computed.alias('controllers.pouchdb'),
-    
+
     lookupListsToUpdate: [{
         name: 'aisleLocationList', //Name of property containing lookup list
         property: 'aisleLocation', //Corresponding property on model that potentially contains a new value to add to the list
@@ -40,16 +41,16 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         property: 'location', //Corresponding property on model that potentially contains a new value to add to the list
         id: 'warehouse_list' //Id of the lookup list to update
     }],
-    
-    canEditQuantity: function() {		
-        return (this.get('isNew'));		
+
+    canEditQuantity: function() {
+        return (this.get('isNew'));
     }.property('isNew'),
-    
+
     haveTransactions: function() {
         var transactions = this.get('transactions');
         return transactions !== null;
     }.property('transactions.@each'),
-    
+
     locationQuantityTotal: function() {
         var locations = this.get('locations');
         var total = locations.reduce(function(previousValue, location) {
@@ -57,27 +58,27 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         }, 0);
         return total;
     }.property('locations'),
-    
+
     /**
      * Check to see if the total quantity by location matches the quantity calculated on the item
      * @return {boolean} true if there is a discrepency;otherwise false.
      */
     quantityDiscrepency: function() {
-        var locationQuantityTotal = this.get('locationQuantityTotal'), 
+        var locationQuantityTotal = this.get('locationQuantityTotal'),
             quantity = this.get('quantity');
         return (!Ember.isEmpty(locationQuantityTotal) && !Ember.isEmpty(quantity) && locationQuantityTotal !== quantity);
     }.property('locationQuantityTotal', 'quantity'),
-    
+
     /**
      * Get the difference in quantity between the total quantity by location and the quantity on the item.
      * @return {int} the difference.
      */
     quantityDifferential: function() {
-        var locationQuantityTotal = this.get('locationQuantityTotal'), 
+        var locationQuantityTotal = this.get('locationQuantityTotal'),
             quantity = this.get('quantity');
         return Math.abs(locationQuantityTotal - quantity);
     }.property('locationQuantityTotal', 'quantity'),
-    
+
     originalQuantityUpdated: function() {
         var isNew = this.get('isNew'),
             quantity = this.get('originalQuantity');
@@ -85,20 +86,20 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             this.set('quantity', quantity);
         }
     }.observes('originalQuantity'),
-    
+
     showTransactions: function() {
         var transactions = this.get('transactions');
         return !Ember.isEmpty(transactions);
     }.property('transactions.@each'),
-    
+
     transactions: null,
-    
+
     updateCapability: 'add_inventory_item',
 
     actions: {
         adjustItems: function(inventoryLocation) {
             var adjustmentQuantity = parseInt(inventoryLocation.get('adjustmentQuantity')),
-                inventoryItem = this.get('model'),                
+                inventoryItem = this.get('model'),
                 transactionType = inventoryLocation.get('transactionType'),
                 request = this.get('store').createRecord('inv-request', {
                     adjustPurchases: true,
@@ -111,7 +112,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                     deliveryAisle: inventoryLocation.get('aisleLocation'),
                     deliveryLocation: inventoryLocation.get('location')
                 });
-            request.set('inventoryLocations',[inventoryLocation]);            
+            request.set('inventoryLocations',[inventoryLocation]);
             var increment = false;
             if (transactionType === 'Adjustment (Add)' || transactionType === 'Return') {
                 increment = true;
@@ -120,9 +121,9 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             //Make sure inventory item is resolved first.
             request.get('inventoryItem').then(function() {
                 this.send('fulfillRequest', request, true, increment, true);
-            }.bind(this));            
-        },        
-        
+            }.bind(this));
+        },
+
         deletePurchase: function(purchase, deleteFromLocation, expire) {
             var purchases = this.get('purchases'),
                 quantityDeleted = purchase.get('currentQuantity');
@@ -139,15 +140,15 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             }
             this.get('model').updateQuantity();
             this.send('update',true);
-            this.send('closeModal');        
+            this.send('closeModal');
         },
-        
+
         editNewItem: function() {
             this.send('editItem', this.get('id'));
         },
-        
+
         showAdjustment: function(inventoryLocation) {
-            inventoryLocation.setProperties({                
+            inventoryLocation.setProperties({
                 dateCompleted: new Date(),
                 adjustmentItem: this.get('model'),
                 adjustmentQuantity: '',
@@ -161,23 +162,23 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         showDeletePurchase: function(purchase) {
             this.send('openModal', 'inventory.purchase.delete', purchase);
         },
-        
+
         showEditPurchase: function(purchase) {
             this.send('openModal', 'inventory.purchase.edit', purchase);
         },
-        
+
         showExpirePurchase: function(purchase) {
             purchase.set('expire', true);
             this.send('openModal', 'inventory.purchase.delete', purchase);
         },
-        
+
         showTransfer: function(inventoryLocation) {
             inventoryLocation.set('adjustmentQuantity');
             inventoryLocation.set('transferItem', this.get('model'));
-            inventoryLocation.set('dateCompleted', new Date());            
+            inventoryLocation.set('dateCompleted', new Date());
             this.send('openModal', 'inventory.transfer', inventoryLocation);
         },
-        
+
         transferItems: function(inventoryLocation) {
             var inventoryItem = this.get('model'),
                 request = this.get('store').createRecord('inv-request', {
@@ -189,7 +190,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                     deliveryLocation: inventoryLocation.get('transferLocation'),
                     transactionType: 'Transfer'
                 });
-            this.transferToLocation(inventoryItem, inventoryLocation);            
+            this.transferToLocation(inventoryItem, inventoryLocation);
             inventoryLocation.setProperties({
                 transferItem: null,
                 transferLocation: null,
@@ -202,25 +203,25 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             }]);
             request.get('inventoryItem').then(function() {
                 //Make sure relationships are resolved before saving
-                this._saveRequest(request);                
-            }.bind(this));            
+                this._saveRequest(request);
+            }.bind(this));
         },
-        
+
         updatePurchase: function(purchase, updateQuantity) {
             if (updateQuantity) {
                 this.get('model').updateQuantity();
                 this.send('update',true);
             }
-            this.send('closeModal');            
+            this.send('closeModal');
         },
     },
-    
+
     _completeBeforeUpdate: function(sequence, resolve, reject) {
         var sequenceValue = null,
             friendlyId = sequence.get('prefix'),
             promises = [],
             newPurchase = this.getProperties('aisleLocation', 'dateReceived',
-            'purchaseCost', 'lotNumber', 'expirationDate', 'giftInKind', 
+            'purchaseCost', 'lotNumber', 'expirationDate', 'giftInKind',
             'location', 'vendor', 'vendorItemNo'),
             quantity = this.get('quantity');
         if (!Ember.isEmpty(quantity)) {
@@ -261,15 +262,15 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             this._completeBeforeUpdate(newSequence, resolve, reject);
         }.bind(this));
     },
-    
-    _findSequenceByPrefix: function(type, prefixChars) {  
+
+    _findSequenceByPrefix: function(type, prefixChars) {
         var pouchdbController = this.get('pouchdbController');
         var sequenceQuery = {
-            key:  type.toLowerCase().substr(0,prefixChars)            
+            key:  type.toLowerCase().substr(0,prefixChars)
         };
         return pouchdbController.queryMainDB(sequenceQuery, 'sequence_by_prefix');
-    },    
-    
+    },
+
     _checkNextSequence: function(resolve, type, prefixChars) {
         prefixChars++;
         this._findSequenceByPrefix(type, prefixChars).then(function(records) {
@@ -280,10 +281,10 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             }
         }.bind(this), function() {
             resolve(prefixChars);
-        });        
+        });
     },
-    
-    
+
+
     /**
      * Saves the specified request, then updates the inventory item and closes the modal.
      */
@@ -296,26 +297,26 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             this.getTransactions();
         }.bind(this));
     },
-    
-    getTransactions: function() {        
+
+    getTransactions: function() {
         var inventoryId = 'inventory_'+this.get('id');
         this.set('transactions',null);
         this.store.find('inv-request', {
             options: {
                 endkey: [inventoryId, 'Completed', 0],
                 startkey: [inventoryId, 'Completed', 9999999999999],
-                descending: true                
+                descending: true
             },
             mapReduce: 'inventory_request_by_item'
         }).then(function(transactions) {
             this.set('transactions', transactions);
-        }.bind(this));    
+        }.bind(this));
     },
-    
+
     beforeUpdate: function() {
         if (this.get('isNew')) {
             var model = this.get('model'),
-                type = this.get('type');                
+                type = this.get('type');
             return new Ember.RSVP.Promise(function(resolve, reject){
                 model.validate().then(function() {
                     if (model.get('isValid')) {
@@ -324,20 +325,20 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
                             this._completeBeforeUpdate(sequence, resolve, reject);
                         }.bind(this), function() {
                             this._findSequence(type, resolve, reject);
-                        }.bind(this));                        
+                        }.bind(this));
                     } else {
                         this.send('showDisabledDialog');
-                        reject('invalid model');                        
+                        reject('invalid model');
                     }
                 }.bind(this)).catch(function() {
                     this.send('showDisabledDialog');
-                }.bind(this));                
+                }.bind(this));
             }.bind(this));
         } else {
             return Ember.RSVP.Promise.resolve();
         }
     },
-    
+
     afterUpdate: function() {
         var afterUpdateAction = null;
         if (this.get('savingNewItem')) {
