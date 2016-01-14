@@ -175,6 +175,22 @@ export default Ember.Service.extend({
   },
 
   /**
+   * Read the specified file into a string
+   * @param {File} file to read
+   * @returns {Promise} returns a Promise that resolves with the data url
+   * for the file.
+   */
+  fileToString: function(file) {
+    return new Ember.RSVP.Promise(function(resolve) {
+      var reader = new FileReader();
+      reader.onloadend = function(e) {
+        resolve(e.target.result);
+      };
+      reader.readAsText(file);
+    });
+  },
+
+  /**
    * Property to to determine if file system API is available.
    */
   isFileSystemEnabled: function() {

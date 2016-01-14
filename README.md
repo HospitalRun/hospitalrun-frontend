@@ -1,9 +1,9 @@
 HospitalRun frontend
 ========
 
-_Ember frontend for HospitalRun_  
+_Ember frontend for HospitalRun_
 
-[![Build Status](https://travis-ci.org/HospitalRun/hospitalrun-frontend.svg)](https://travis-ci.org/HospitalRun/hospitalrun-frontend)
+[![Build Status](https://travis-ci.org/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.org/HospitalRun/hospitalrun-frontend)
 
 To run the development environment for this frontend you will need to have [Git](https://git-scm.com/), [Node.js](https://nodejs.org), [Ember CLI](http://ember-cli.com/), [Bower](http://bower.io/) and [CouchDB](http://couchdb.apache.org/) installed.
 
@@ -18,7 +18,8 @@ To install the frontend please do the following:
 - Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and:
     1. `npm install` to install needed node modules.
     2. `bower install` to install needed bower modules.
-- Install ands configure [CouchDB](http://couchdb.apache.org/)
+    3. `npm install -g phantomjs2` to install PhantomJS2, which is needed to run tests.  If you are using Linux, you will need to build PhantomJS from source following directions here: http://phantomjs.org/download.html.
+- Install and configure [CouchDB](http://couchdb.apache.org/)
   1. Download and install CouchDB from http://couchdb.apache.org/#download
   2. Create admin user:
     1. If you have just installed CouchDB and have no admin user, please run `initcouch.sh`. A user `hradmin` will be created with password: `test`.
@@ -31,6 +32,13 @@ To start the frontend please do the following:
 - Start the server by running `ember serve` in the repo folder.
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
+## Loading sample data
+If you would like to load sample data, you can do so by navigating to **Load DB** under the Adminstration menu.  You should see the following screen:
+![Load DB screenshot](screenshots/load-db.png)
+
+Click on ***Choose File*** and select the file **sample-data.txt** which is included in root directory of the repo at [sample-data.txt](sample-data.txt).
+Next, click on ***Load File***.  When the database load is complete a message will appear indicating if the load was successful.
+
 ## Testing
 
 ### Fixtures for Acceptance Tests
@@ -39,15 +47,17 @@ Fixtures are PouchDB dumps that are generated with [pouchdb-dump-cli](https://gi
 
 To create a fixture, run `pouchdb-dump http://localhost:5984/main -u hradmin -p test | cat > tests/fixtures/${name_of_fixture}.txt`.
 
-To use a fixture, use `loadPouchDump(`${name_of_fixture})` in your acceptance test. For example,
+To use a fixture, use `runWithPouchDump(${name_of_fixture}, function(){..});` in your acceptance test. For example,
 
 ```
 test('visiting /patients', function(assert) {
-  loadPouchDump('default');
-  authenticateUser();
-  visit('/patients');
-  andThen(function() {
-    assert.equal(currentURL(), '/patients');
+  runWithPouchDump('default', function() {
+    //Actual test code here
+    authenticateUser();
+    visit('/patients');
+    andThen(function() {
+      assert.equal(currentURL(), '/patients');
+    });
   });
 });
 ```

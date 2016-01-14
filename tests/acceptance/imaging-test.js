@@ -58,6 +58,9 @@ test('create a new imaging request', (assert) => {
       findWithAssert('button:contains(Update)');
       findWithAssert('button:contains(Return)');
       findWithAssert('button:contains(Complete)');
+    });
+    waitToAppear('.test-patient-summary');
+    andThen(() => {
       assert.equal(find('.test-patient-summary').length, 1, 'Patient summary is displayed');
     });
   });
