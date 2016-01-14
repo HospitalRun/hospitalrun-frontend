@@ -1,10 +1,11 @@
 {{#each currentQuantityGroups as |quantityGroup| }}
-    {{quantity-conv 
-        unit=quantityGroup.unit 
-        firstQuantity=quantityGroup.firstQuantity 
-        unitName=quantityGroup.unitName 
-        index=quantityGroup.index 
-        quantity=quantityGroup.quantity 
+    {{quantity-conv
+        unit=quantityGroup.unit
+        firstQuantity=quantityGroup.firstQuantity
+        unitName=quantityGroup.unitName
+        index=quantityGroup.index
+        quantity=quantityGroup.quantity
+        unitList=unitList
     }}
 {{/each}}
 {{#if showTotal}}

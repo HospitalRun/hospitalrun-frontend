@@ -4,6 +4,7 @@ export default Ember.Component.extend({
   calculated: null,
   currentUnit: null,
   targetUnit: null,
+  unitList: null,
 
   showTotal: function() {
     var calculated = this.get('calculated'),

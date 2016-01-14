@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.Mixin.create({
-  unitList: [
+  defaultUnitList: [
     'ampoule',
     'bag',
     'bottle',
@@ -34,6 +34,16 @@ export default Ember.Mixin.create({
     'tube',
     'vial'
   ],
+
+  unitList: function() {
+    var defaultUnitList = this.get('defaultUnitList'),
+      inventoryUnitList = this.get('inventoryUnitList');
+    if (Ember.isEmpty(inventoryUnitList)) {
+      return defaultUnitList;
+    } else {
+      return inventoryUnitList;
+    }
+  }.property('inventoryUnitList', 'defaultUnitList'),
 
   unitListForSelect: Ember.computed.map('unitList', SelectValues.selectValuesMap)
 });
