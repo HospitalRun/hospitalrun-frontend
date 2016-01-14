@@ -13,7 +13,8 @@ export default {
     actions: 'Actions',
     action: 'Action',
     notes: 'Notes',
-    edit: 'Edit'
+    edit: 'Edit',
+    imaging_type: 'Imaging Type'
   },
   login: {
     messages: {
@@ -22,7 +23,7 @@ export default {
     labels: {
       password: 'Password',
       username: 'Username',
-      sign_in:  'sign in'
+      sign_in:  'Sign in'
     }
   },
   inventory: {
