@@ -1,6 +1,5 @@
 import Ember from 'ember';
-import UnitTypes from 'hospitalrun/mixins/unit-types';
-export default Ember.Component.extend(UnitTypes, {
+export default Ember.Component.extend({
   firstQuantity: false,
   quantity: null,
   quantityHelp: null,
@@ -8,6 +7,7 @@ export default Ember.Component.extend(UnitTypes, {
   unit: null,
   resetUnitName: false,
   targetUnit: Ember.computed.alias('parentView.targetUnit'),
+  unitList: null,
 
   unitClass: function() {
     var selectedUnit = this.get('unit'),

@@ -4,9 +4,10 @@ import LabPricingTypes from 'hospitalrun/mixins/lab-pricing-types';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import ImagingPricingTypes from 'hospitalrun/mixins/imaging-pricing-types';
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
+import UnitTypes from 'hospitalrun/mixins/unit-types';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
-  ModalHelper, ImagingPricingTypes, InventoryTypeList, VisitTypes, {
+  ModalHelper, ImagingPricingTypes, InventoryTypeList,  UnitTypes, VisitTypes, {
     fileSystem: Ember.inject.service('filesystem'),
     lookupTypes: [{
       name: 'Anesthesia Types',
@@ -145,6 +146,14 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         imaging: 'radiologist'
       }
     }, {
+      defaultValues: 'defaultUnitList',
+      name: 'Unit Types',
+      value: 'unit_types',
+      models: {
+        inventory: 'distributionUnit',
+        'inv-purchase': 'distributionUnit'
+      }
+    }, {
       name: 'Vendor',
       value: 'vendor_list',
       models: {
@@ -191,7 +200,7 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         lookupItem;
       if (!Ember.isEmpty(lookupType)) {
         lookupItem = this.get('model').findBy('id', lookupType);
-        if (Ember.isEmpty(lookupItem)) {
+        if (Ember.isEmpty(lookupItem) || !lookupItem.get('isLoaded')) {
           var defaultValues = [],
             lookupTypes = this.get('lookupTypes'),
             lookupDesc = lookupTypes.findBy('value', lookupType),

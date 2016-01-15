@@ -3,7 +3,7 @@
     {{em-input property="invoiceNo" label="Invoice Number" class="col-sm-4"}}
 </div>
 {{#if canEditQuantity }}
-    {{quantity-calc calculated=model.originalQuantity targetUnit=model.distributionUnit quantityGroups=model.quantityGroups }}
+    {{quantity-calc calculated=model.originalQuantity targetUnit=model.distributionUnit quantityGroups=model.quantityGroups unitList=unitList}}
 {{else}}
     <div class="form-group">
         <label>Quantity</label>
