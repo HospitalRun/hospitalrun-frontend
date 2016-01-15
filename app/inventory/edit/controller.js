@@ -25,6 +25,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
   warehouseList: Ember.computed.alias('inventory.warehouseList'),
   aisleLocationList: Ember.computed.alias('inventory.aisleLocationList'),
   inventoryTypeList: Ember.computed.alias('inventory.inventoryTypeList.value'),
+  inventoryUnitList: Ember.computed.alias('inventory.inventoryUnitList.value'),
   vendorList: Ember.computed.alias('inventory.vendorList'),
   database: Ember.inject.service(),
 

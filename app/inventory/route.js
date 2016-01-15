@@ -24,6 +24,9 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
     name: 'inventoryTypeList',
     findArgs: ['lookup', 'inventory_types']
   }, {
+    name: 'inventoryUnitList',
+    findArgs: ['lookup','unit_types']
+  }, {
     name: 'warehouseList',
     findArgs: ['lookup', 'warehouse_list']
   }, {
