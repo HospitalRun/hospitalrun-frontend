@@ -13,7 +13,7 @@ To install the frontend please do the following:
 - Make sure you have installed [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - Make sure you have installed [Node.js](https://nodejs.org/en/download/). Versions after 0.10.0 should work, but please note if you encounter errors using 5.x it may be necessary to upgrade your npm version. Versions after 3.5.x should work:
     1. `npm install -g npm`
-- Install [ember-cli v1.13.13](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@1.13.13`
+- Install [ember-cli v1.13.14](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@1.13.14`
 - Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
 - Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and:
     1. `npm install` to install needed node modules.
@@ -64,3 +64,11 @@ test('visiting /patients', function(assert) {
 Contributing
 ------------
 Contributions are welcome via pull requests and issues.  Please see our [contributing guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/CONTRIBUTING.md) for more details.
+
+## Further Reading / Useful Links
+
+* [ember.js](http://emberjs.com/)
+* [ember-cli](http://www.ember-cli.com/)
+* Development Browser Extensions
+  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
+  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
