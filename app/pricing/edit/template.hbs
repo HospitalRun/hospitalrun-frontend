@@ -27,7 +27,7 @@
               <th>Pricing Profile</th>
               <th>Price</th>
               {{#if showUpdateButton}}
-                <th>Actions</th>
+                <th>{{t 'labels.actions'}}</th>
               {{/if}}
             </tr>
             {{#each model.pricingOverrides as |override|}}
@@ -36,7 +36,7 @@
                 <td>{{override.price}}</td>
                 <td>
                   {{#if showUpdateButton}}
-                    <button class="btn btn-default neutral" {{action "editOverride" override}}>Edit</button>
+                    <button class="btn btn-default neutral" {{action "editOverride" override}}>{{t 'labels.edit'}}</button>
                     <button class="btn btn-default warning" {{action "showDeleteOverride" override bubbles=false }}>
                       <span class="octicon octicon-x"></span>  Delete
                     </button>

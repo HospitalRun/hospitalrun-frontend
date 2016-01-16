@@ -19,13 +19,13 @@
         <table class="table">
             <tr class="table-header">
                 <th>Value</th>
-                <th>Actions</th>
+                <th>{{t 'labels.actions'}}</th>
             </tr>
             {{#each lookupTypeValues as |lookupTypeValue|}}
                 <tr>
                     <td class="lookup-type-value">{{lookupTypeValue}}</td>
                     <td>
-                        <button class="btn btn-default neutral" {{action 'editValue' lookupTypeValue bubbles=false }}>Edit</button>
+                        <button class="btn btn-default neutral" {{action 'editValue' lookupTypeValue bubbles=false }}>{{t 'labels.edit'}}</button>
                         <button class="btn btn-default warning" {{action 'deleteValue' lookupTypeValue bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
                     </td>
                 </tr>

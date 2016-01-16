@@ -56,8 +56,8 @@
         <table class="table">
           <tr class="table-header">
             <th>Item</th>
-            <th>Quantity</th>
-            <th>Action</th>
+            <th>{{t 'labels.quantity'}}</th>
+            <th>{{t 'labels.action'}}</th>
           </tr>
           {{#each model.charges as |charge|}}
             {{#if charge.medicationCharge}}
@@ -66,7 +66,7 @@
                 <td>{{charge.quantity}}</td>
                 <td>
                   {{#if canAddCharge}}
-                    <button class="btn btn-default neutral" {{action "showEditMedication" charge}}>Edit</button>
+                    <button class="btn btn-default neutral" {{action "showEditMedication" charge}}>{{t 'labels.edit'}}</button>
                   {{/if}}
                   {{#if canAddCharge}}
                     <button class="btn btn-default warning" {{action "showDeleteMedication" charge bubbles=false }}>

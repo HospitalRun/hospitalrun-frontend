@@ -25,12 +25,12 @@
   <table class="table">
     <tr class="table-header">
       {{#sortable-column sortBy='date' sortDesc=sortDesc sortKey=sortKey }}Date{{/sortable-column}}
-      <th>Name</th>
+      <th>{{t 'labels.name'}}</th>
       {{#sortable-column sortBy='appointmentType' sortDesc=sortDesc sortKey=sortKey }}Type{{/sortable-column}}
       {{#sortable-column sortBy='location' sortDesc=sortDesc sortKey=sortKey }}Location{{/sortable-column}}
       {{#sortable-column sortBy='provider' sortDesc=sortDesc sortKey=sortKey }}With{{/sortable-column}}
       {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}Status{{/sortable-column}}
-      <th>Actions</th>
+      <th>{{t 'labels.actions'}}</th>
     </tr>
     {{#each model as |appointment|}}
       {{partial 'appointments/item'}}

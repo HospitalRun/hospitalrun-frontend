@@ -2,12 +2,12 @@
   <table class="table">
     <tr class="table-header">
       <th>Date</th>
-      <th>Name</th>
+      <th>{{t 'labels.name'}}</th>
       <th>Type</th>
       <th>Location</th>
       <th>Provider</th>
       <th>Status</th>
-      <th>Actions</th>
+      <th>{{t 'labels.actions'}}</th>
     </tr>
     {{#each model as |appointment|}}
       {{partial 'appointments/item'}}

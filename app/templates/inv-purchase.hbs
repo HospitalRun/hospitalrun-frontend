@@ -6,7 +6,7 @@
     {{quantity-calc calculated=model.originalQuantity targetUnit=model.distributionUnit quantityGroups=model.quantityGroups unitList=unitList}}
 {{else}}
     <div class="form-group">
-        <label>Quantity</label>
+        <label>{{t 'labels.quantity'}}</label>
         {{input class="form-control" value=model.originalQuantity type="text" disabled=true }}
     </div>
 {{/if}}

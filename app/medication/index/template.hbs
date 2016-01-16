@@ -3,12 +3,12 @@
     <table class="table">
       <tr class="table-header">
         <th>Date</th>
-        <th>Patient</th>
+        <th>{{t 'labels.patient'}}</th>
         <th>Medication</th>
-        <th>Quantity</th>
+        <th>{{t 'labels.quantity'}}</th>
         <th>Status</th>
         {{#if showActions}}
-          <th>Actions</th>
+          <th>{{t 'labels.actions'}}</th>
         {{/if}}
       </tr>
       {{#each model as |medicationRequest|}}
@@ -20,7 +20,7 @@
           <td>{{medicationRequest.status}}</td>
           {{#if showActions}}
             <td>
-              <button class="btn btn-default" {{action 'editItem' medicationRequest bubbles=false }}>Fulfill</button>
+              <button class="btn btn-default" {{action 'editItem' medicationRequest bubbles=false }}>{{t 'labels.fulfill'}}</button>
             </td>
           {{/if}}
         </tr>
