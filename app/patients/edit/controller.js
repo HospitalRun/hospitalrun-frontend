@@ -500,14 +500,10 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     return returnList;
   },
 
-  //afterUpdate: function(record) {
-  //  var message = `The patient record for ${record.get('displayName')} has been saved!`;
-  //  this.displayAlert('Patient Saved!', message, 'updateAction');
-  //}
   afterUpdate: function(record) {
     this.send('openModal', 'dialog', Ember.Object.create({
       title: 'Patient Saved',
-      message: `The patient record for ${record.get('displayName')}  has been saved!`,
+      message: `The patient record for ${record.get('displayName')}  has been saved.`,
       updateButtonAction: 'returnToPatient',
       updateButtonText: 'Back to Patient List',
       cancelButtonText: 'Close',
