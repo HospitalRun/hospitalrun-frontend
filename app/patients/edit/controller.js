@@ -191,7 +191,9 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
       this.send('update', true);
       this.send('closeModal');
     },
-
+    returnToPatient: function(){
+      this.transitionToRoute('patients.index');
+    },
     /**
      * Add the specified photo to the patient's record.
      * @param {File} photoFile the photo file to add.
@@ -498,9 +500,19 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     return returnList;
   },
 
+  //afterUpdate: function(record) {
+  //  var message = `The patient record for ${record.get('displayName')} has been saved!`;
+  //  this.displayAlert('Patient Saved!', message, 'updateAction');
+  //}
   afterUpdate: function(record) {
-    var message = `The patient record for ${record.get('displayName')} has been saved.`;
-    this.displayAlert('Patient Saved', message);
-  }
+    this.send('openModal', 'dialog', Ember.Object.create({
+      title: 'Patient Saved',
+      message: `The patient record for ${record.get('displayName')}  has been saved!`,
+      updateButtonAction: 'returnToPatient',
+      updateButtonText: 'Back to Patient List',
+      cancelButtonText: 'Close',
+      isCancelTextChanged: true
+    }));
+  },
 
 });

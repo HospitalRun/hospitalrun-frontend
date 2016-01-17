@@ -5,11 +5,12 @@ export default Ember.Component.extend({
   hideCancelButton: false,
   hideUpdateButton: false,
   isUpdateDisabled: false,
+  isCancelTextChanged: false,
   title: '',
   updateButtonAction: '',
   updateButtonClass: '',
   updateButtonText: '',
-
+  cancelButtonText: '',
   actions: {
     cancelAction: function() {
       this.sendAction('cancelAction');
