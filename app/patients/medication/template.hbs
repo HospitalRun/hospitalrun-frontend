@@ -1,11 +1,11 @@
 <table class="table">
     <tr class="table-header">
         <th>Date</th>
-        <th>Name</th>
+        <th>{{t 'labels.name'}}</th>
         <th>Status</th>
         <th>Prescription</th>
-        <th>Requested By</th>
-        <th>Actions</th>
+        <th>{{t 'labels.requested_by'}}</th>
+        <th>{{t 'labels.actions'}}</th>
     </tr>
     {{#each patientMedications as |medication|}}
         <tr {{action "editMedication" medication}}>
@@ -17,7 +17,7 @@
             <td>
                 {{#if medication.canEdit}}
                     {{#if canAddMedication}}
-                        <button type="button" class="btn btn-default neutral" {{action "editMedication" medication}}>Edit</button>
+                        <button type="button" class="btn btn-default neutral" {{action "editMedication" medication}}>{{t 'labels.edit'}}</button>
                     {{/if}}
                     {{#if canDeleteMedication}}
                         <button type="button" class="btn btn-default warning" {{action "showDeleteMedication" medication bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>

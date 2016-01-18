@@ -111,12 +111,12 @@
             <h4>Additional Contacts</h4>
             <table class="table">
               <tr class="table-header">
-                <th>Name</th>
+                <th>{{t 'labels.name'}}</th>
                 <th>Phone</th>
                 <th>Email</th>
                 <th>Relationship</th>
                 {{#if canDeleteContact}}
-                  <th>Action</th>
+                  <th>{{t 'labels.action'}}</th>
                 {{/if}}
               </tr>
               {{#each model.additionalContacts as |additionalContact|}}
@@ -161,7 +161,7 @@
                         {{photo.caption}}
                         <p>
                           {{#if canAddPhoto}}
-                            <button type="button" class="btn btn-default neutral" {{action "editPhoto" photo}}>Edit</button>
+                            <button type="button" class="btn btn-default neutral" {{action "editPhoto" photo}}>{{t 'labels.edit'}}</button>
                           {{/if}}
                           {{#if canDeletePhoto}}
                             <button type="button" class="btn btn-default warning" {{action "showDeletePhoto" photo bubbles=false }}>
@@ -248,7 +248,7 @@
                   <th>Provider</th>
                   <th>Location</th>
                   <th>Type</th>
-                  <th>Actions</th>
+                  <th>{{t 'labels.actions'}}</th>
                 </tr>
                 {{#each model.visits as |visit|}}
                   <tr {{action "editVisit" visit}}>
@@ -260,7 +260,7 @@
                     <td>{{visit.visitType}}</td>
                     <td>
                     {{#if canAddVisit}}
-                      <button type="button" class="btn btn-default neutral" {{action "editVisit" visit}}>Edit</button>
+                      <button type="button" class="btn btn-default neutral" {{action "editVisit" visit}}>{{t 'labels.edit'}}</button>
                     {{/if}}
                     {{#if canDeleteVisit}}
                       <button type="button" class="btn btn-default warning" {{action "showDeleteVisit" visit bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
@@ -290,7 +290,7 @@
                   <th>Location</th>
                   <th>Type</th>
                   <th>Status</th>
-                  <th>Actions</th>
+                  <th>{{t 'labels.actions'}}</th>
                 </tr>
                 {{#each model.appointments as |appointment|}}
                   <tr {{action "editAppointment" appointment}}>
@@ -301,7 +301,7 @@
                     <td>{{appointment.displayStatus}}</td>
                     <td>
                       {{#if canAddAppointment}}
-                        <button type="button" class="btn btn-default neutral" {{action "editAppointment" appointment}}>Edit</button>
+                        <button type="button" class="btn btn-default neutral" {{action "editAppointment" appointment}}>{{t 'labels.edit'}}</button>
                       {{/if}}
                       {{#if canDeleteAppointment}}
                         <button type="button" class="btn btn-default warning" {{action "showDeleteAppointment" appointment  bubbles=false }}>
@@ -332,7 +332,7 @@
                 </h4>
                 <table class="table">
                   <tr class="table-header">
-                    <th>Name</th>
+                    <th>{{t 'labels.name'}}</th>
                     <th>Age</th>
                     <th>Civil Status</th>
                     <th>Relation to Patient</th>
@@ -340,7 +340,7 @@
                     <th>Occupation</th>
                     <th>Income</th>
                     <th>Insurance</th>
-                    <th>Action</th>
+                    <th>{{t 'labels.action'}}</th>
                   </tr>
                   {{#each model.familyInfo as |info|}}
                     <tr>
@@ -353,7 +353,7 @@
                       <td>{{info.income}}</td>
                       <td>{{info.insurance}}</td>
                       <td>
-                        <button type="button" class="btn btn-default neutral" {{action "showEditFamily" info}}>Edit</button>
+                        <button type="button" class="btn btn-default neutral" {{action "showEditFamily" info}}>{{t 'labels.edit'}}</button>
                         {{#if canDeleteSocialWork}}
                           <button type="button" class="btn btn-default warning" {{action "showDeleteFamily" info bubbles=false }}>
                             <span class="octicon octicon-x"></span>Delete
@@ -374,7 +374,7 @@
                     <th>Category</th>
                     <th>Sources</th>
                     <th>Monthly Cost</th>
-                    <th>Actions</th>
+                    <th>{{t 'labels.actions'}}</th>
                   </tr>
                   {{#each model.expenses as |expense|}}
                     <tr>
@@ -382,7 +382,7 @@
                       <td>{{expense.sources}}</td>
                       <td>{{expense.cost}}</td>
                       <td>
-                      <button type="button" class="btn btn-default neutral" {{action "showEditExpense" expense}}>Edit</button>
+                      <button type="button" class="btn btn-default neutral" {{action "showEditExpense" expense}}>{{t 'labels.edit'}}</button>
                       {{#if canDeleteSocialWork}}
                         <button type="button" class="btn btn-default warning" {{action "showDeleteExpense" expense bubbles=false }}>
                           <span class="octicon octicon-x"></span>Delete

@@ -55,13 +55,13 @@
       <h3>Invoice Items</h3>
       <table class="table">
         <tr class="table-header">
-          <th>Name</th>
-          <th>Quantity</th>
+          <th>{{t 'labels.name'}}</th>
+          <th>{{t 'labels.quantity'}}</th>
           <th>Cost</th>
           <th>Item Number</th>
           <th>Serial/Lot Number</th>
           <th>Expiration Date</th>
-          <th>Action</th>
+          <th>{{t 'labels.action'}}</th>
         </tr>
         {{#each model.invoiceItems as |invoiceItem|}}
           <tr>

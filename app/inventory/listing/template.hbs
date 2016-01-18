@@ -8,7 +8,7 @@
       {{#sortable-column sortBy='quantity' sortDesc=sortDesc sortKey=sortKey }}Quantity{{/sortable-column}}
       <th>Location</th>
       {{#sortable-column sortBy='crossReference' sortDesc=sortDesc sortKey=sortKey }}XRef{{/sortable-column}}
-      <th>Actions</th>
+      <th>{{t 'labels.actions'}}</th>
     </tr>
     {{#each model as |inventory|}}
       {{#unless inventory.isNew}}
@@ -24,7 +24,7 @@
               <button class="btn btn-default" {{action 'showAddPurchase' inventory bubbles=false }}>Add</button>
             {{/if}}
             {{#if canAddItem}}
-              <button class="btn btn-default neutral" {{action 'editItem' inventory bubbles=false }}>Edit</button>
+              <button class="btn btn-default neutral" {{action 'editItem' inventory bubbles=false }}>{{t 'labels.edit'}}</button>
             {{/if}}
             {{#if canDeleteItem}}
               <button class="btn btn-default warning" {{action 'deleteItem' inventory bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>

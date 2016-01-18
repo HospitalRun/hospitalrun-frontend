@@ -5,12 +5,12 @@
         {{#if showCategory}}
           <th>Category</th>
         {{/if}}
-        <th>Name</th>
+        <th>{{t 'labels.name'}}</th>
         <th>Price</th>
         <th>Type</th>
         <th>Expense To</th>
         {{#if showActions}}
-          <th>Actions</th>
+          <th>{{t 'labels.actions'}}</th>
         {{/if}}
       </tr>
       {{#each model as |pricingItem|}}
@@ -25,7 +25,7 @@
           {{#if showActions}}
             <td>
               {{#if canEdit}}
-                <button class="btn btn-default neutral" {{action 'editItem' pricingItem bubbles=false }}>Edit</button>
+                <button class="btn btn-default neutral" {{action 'editItem' pricingItem bubbles=false }}>{{t 'labels.edit'}}</button>
               {{/if}}
               {{#if canDelete}}
                 <button class="btn btn-default warning" {{action 'deleteItem' pricingItem bubbles=false }}>

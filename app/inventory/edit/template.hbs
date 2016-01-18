@@ -58,9 +58,9 @@
         <tr class="table-header">
           <th>Location</th>
           <th>Aisle Location</th>
-          <th>Quantity</th>
+          <th>{{t 'labels.quantity'}}</th>
           {{#if canAdjustLocation}}
-            <th>Action</th>
+            <th>{{t 'labels.action'}}</th>
           {{/if}}
         </tr>
         {{#each model.locations as |location|}}
@@ -84,7 +84,7 @@
         <table class="table">
           <tr class="table-header">
             <th>Date Completed</th>
-            <th>Quantity</th>
+            <th>{{t 'labels.quantity'}}</th>
             <th>Transaction</th>
             <th>Expense To</th>
             <th>Details</th>

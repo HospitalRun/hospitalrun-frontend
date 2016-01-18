@@ -45,6 +45,7 @@
     "ember-data": "2.3.1",
     "ember-disable-proxy-controllers": "^1.0.1",
     "ember-export-application-global": "^1.0.4",
+    "ember-i18n": "4.2.0",
     "ember-pouch": "^3.0.0",
     "ember-rapid-forms": "1.0.0-beta4",
     "ember-select-list": "0.9.5",
