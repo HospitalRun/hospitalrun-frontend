@@ -12,7 +12,7 @@
             <button class="btn btn-default" {{action 'createVisit' appointment bubbles=false }}>Add Visit</button>
         {{/if}}
         {{#if canEdit}}
-            <button class="btn btn-default" {{action 'editAppointment' appointment bubbles=false }}>Edit</button>
+            <button class="btn btn-default" {{action 'editAppointment' appointment bubbles=false }}>{{t 'labels.edit'}}</button>
         {{/if}}
         {{#if canDelete}}
             <button class="btn btn-default" {{action 'deleteItem' appointment bubbles=false }}>Delete</button>

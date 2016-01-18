@@ -2,12 +2,12 @@
   {{#if hasRecords}}
     <table class="table">
       <tr class="table-header">
-        <th>Name</th>
         <th>Username</th>
+        <th>{{t 'labels.name'}}</th>
         <th>Email</th>
         <th>Role</th>
         {{#if showActions}}
-          <th>Actions</th>
+          <th>{{t 'labels.actions'}}</th>
         {{/if}}
       </tr>
       {{#each model as |user|}}
@@ -19,7 +19,7 @@
           {{#if showActions}}
             <td>
               {{#if canAdd}}
-                <button class="btn btn-default" {{action 'editItem' user bubbles=false }}>Edit</button>
+                <button class="btn btn-default" {{action 'editItem' user bubbles=false }}>{{t 'labels.edit'}}</button>
               {{/if}}
               {{#if canDelete}}
                 <button class="btn btn-default" {{action 'deleteItem' user bubbles=false }}>Delete</button>

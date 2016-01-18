@@ -2,12 +2,12 @@
   {{#if hasRecords}}
     <table class="table">
       <tr class="table-header">
-        <th>Name</th>
-        <th>Quantity</th>
-        <th>Requested On</th>
-        <th>Requested By</th>
+        <th>{{t 'labels.name'}}</th>
+        <th>{{t 'labels.quantity'}}</th>
+        <th>{{t 'labels.requested_on'}}</th>
+        <th>{{t 'labels.requested_by'}}</th>
         {{#if canFulfill}}
-          <th>Actions</th>
+          <th>{{t 'labels.actions'}}</th>
         {{/if}}
       </tr>
       {{#each model as |request|}}
@@ -18,7 +18,7 @@
           <td>{{request.requestedBy}}</td>
           {{#if canFulfill}}
             <td>
-              <button class="btn btn-primary" {{action 'fulfill' request}}>Fulfill</button>
+              <button class="btn btn-primary" {{action 'fulfill' request}}>{{t 'labels.fulfill'}}</button>
             </td>
           {{/if}}
         </tr>
@@ -26,7 +26,7 @@
     </table>
   {{else}}
     <div class="alert alert-info">
-      <p>No requests found. {{#if canAdd}}<a href="#" {{action 'newRequest'}}>Create a new request?</a>{{/if}}</p>
+      <p>{{t 'inventory.messages.no_requests'}}{{#if canAdd}}<a href="#" {{action 'newRequest'}}> {{t 'inventory.messages.create_request'}}</a>{{/if}}</p>
     </div>
   {{/if}}
 {{/item-listing}}

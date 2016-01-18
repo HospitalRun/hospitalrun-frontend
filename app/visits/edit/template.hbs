@@ -18,7 +18,7 @@
           {{#em-form model=model submitButton=false }}
             <div class="row">
               <div class="form-group col-sm-3">
-                <label>Patient</label>
+                <label>{{t 'labels.patient'}}</label>
                 <p class="form-control-static">{{model.patient.displayName}}</p>
               </div>
               {{#if isAdmissionVisit}}
@@ -115,7 +115,7 @@
               <tr class="table-header">
                   <th>Date</th>
                   <th>Procedure</th>
-                  <th>Actions</th>
+                  <th>{{t 'labels.actions'}}</th>
               </tr>
               {{#each model.procedures as |procedure|}}
                 <tr>
@@ -123,7 +123,7 @@
                   <td>{{procedure.description}}</td>
                   <td>
                     {{#if canAddProcedure}}
-                      <button class="btn btn-default neutral" {{action "showEditProcedure" procedure}}>Edit</button>
+                      <button class="btn btn-default neutral" {{action "showEditProcedure" procedure}}>{{t 'labels.edit'}}</button>
                     {{/if}}
                     {{#if canDeleteProcedure}}
                       <button class="btn btn-default warning" {{action "showDeleteProcedure" procedure}}>
@@ -231,7 +231,7 @@
                   <td>{{vital.respiratoryRate}}</td>
                   <td>
                     {{#if canAddVitals}}
-                      <button class="btn btn-default neutral" {{action "showEditVitals" vital}}>Edit</button>
+                      <button class="btn btn-default neutral" {{action "showEditVitals" vital}}>{{t 'labels.edit'}}</button>
                     {{/if}}
                     {{#if canDeleteVitals}}
                       <button class="btn btn-default warning" {{action "showDeleteVitals" vital}}>

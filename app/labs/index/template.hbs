@@ -2,12 +2,12 @@
   {{#if hasRecords}}
     <table class="table">
       <tr class="table-header">
-        <th>Date Requested</th>
-        <th>Patient</th>
+        <th>{{t 'labels.date_requested'}}</th>
+        <th>{{t 'labels.patient'}}</th>
         <th>Lab Type</th>
-        <th>Notes</th>
+        <th>{{t 'labels.notes'}}</th>
         {{#if showActions}}
-          <th>Actions</th>
+          <th>{{t 'labels.actions'}}</th>
         {{/if}}
       </tr>
       {{#each model as |lab|}}
@@ -19,7 +19,7 @@
            {{#if showActions}}
             <td>
               {{#if canEdit}}
-                <button class="btn btn-default neutral" {{action 'editItem' lab  bubbles=false }}>Edit</button>
+                <button class="btn btn-default neutral" {{action 'editItem' lab  bubbles=false }}>{{t 'labels.edit'}}</button>
               {{/if}}
             </td>
           {{/if}}

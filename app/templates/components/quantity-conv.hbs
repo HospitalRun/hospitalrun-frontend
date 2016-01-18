@@ -11,7 +11,7 @@
     <div class="col-xs-3">
         <div class="form-group required {{quantityClass}} test-inv-quantity">
             {{#if firstQuantity}}
-                <label class="control-label">Quantity</label>
+                <label class="control-label">{{t 'labels.quantity'}}</label>
             {{/if}}
             {{input type="text" value=quantity class="form-control"}}
             <span class="help-block">{{quantityHelp}}</span>

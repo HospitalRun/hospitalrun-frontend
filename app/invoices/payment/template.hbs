@@ -10,7 +10,7 @@
         {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="required payment-patient"}}
       {{else}}
         <div class="form-group">
-          <label>Patient</label>
+          <label>{{t 'labels.patient'}}</label>
           <p class="form-control-static">{{model.invoice.patient.displayName}}</p>
         </div>
       {{/if}}

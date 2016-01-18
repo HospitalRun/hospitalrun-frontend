@@ -58,7 +58,7 @@
             <th class="text-right">PhilHealth</th>
             <th class="text-right">HMO/COM</th>
             <th class="text-right">Excess</th>
-            <th class="text-right">Action</th>
+            <th class="text-right">{{t 'labels.action'}}</th>
           </tr>
           {{#each model.lineItemsByCategory as |categoryGroup|}}
             <tr>
@@ -106,8 +106,8 @@
               </tr>
               {{#if item.showDetails}}
                 <tr>
-                  <th colspan="2">Name</th>
-                  <th>Quantity</th>
+                  <th colspan="2">{{t 'labels.name'}}</th>
+                  <th>{{t 'labels.quantity'}}</th>
                   <th>Price</th>
                   <th>Expense To</th>
                   <th class="col-xs-1 text-right">Total</th>
@@ -230,8 +230,8 @@
           <th>Date</th>
           <th>Amount</th>
           <th>Type</th>
-          <th>Notes</th>
-          <th>Action</th>
+          <th>{{t 'labels.notes'}}</th>
+          <th>{{t 'labels.action'}}</th>
         </tr>
         {{#each model.payments as |payment|}}
           <tr {{action 'showEditPayment' payment}}>
@@ -241,7 +241,7 @@
             <td>{{payment.notes}}</td>
             {{#if canAddPayment}}
             <td>
-              <button class="btn btn-default neutral" {{action 'showEditPayment' payment  bubbles=false }}>Edit</button>
+              <button class="btn btn-default neutral" {{action 'showEditPayment' payment  bubbles=false }}>{{t 'labels.edit'}}</button>
               {{#if payment.canRemovePayment}}
                 <button class="btn btn-default warning" {{action "showRemovePayment" payment bubbles=false }}>
                   <span class="octicon octicon-x"></span>Remove

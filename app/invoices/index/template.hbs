@@ -5,11 +5,11 @@
         <th>Number</th>
         <th>Bill Date</th>
         <th>Status</th>
-        <th>Patient</th>
+        <th>{{t 'labels.patient'}}</th>
         <th>Total</th>
         <th>Balance Due</th>
         {{#if showActions}}
-          <th>Actions</th>
+          <th>{{t 'labels.actions'}}</th>
         {{/if}}
       </tr>
       {{#each model as |invoice|}}
@@ -29,7 +29,7 @@
                   </button>
                 {{/if}}
                 {{#if canAdd}}
-                  <button class="btn btn-default neutral" {{action 'editItem' invoice bubbles=false }}>Edit</button>
+                  <button class="btn btn-default neutral" {{action 'editItem' invoice bubbles=false }}>{{t 'labels.edit'}}</button>
                 {{/if}}
                 {{#if canDelete}}
                   <button class="btn btn-default warning" {{action 'deleteItem' invoice bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
