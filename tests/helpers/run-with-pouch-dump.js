@@ -6,7 +6,14 @@ import ConfigService from 'hospitalrun/services/config';
 
 function destroyDatabases(dbs) {
   return wait().then(function() {
-    return Ember.RSVP.all([dbs.config.destroy(), dbs.main.destroy()]);
+    let destroyQueue = [];
+    destroyQueue.push(dbs.config.info().then(function() {
+      return dbs.config.destroy();
+    }));
+    destroyQueue.push(dbs.main.info().then(function() {
+      return dbs.main.destroy();
+    }));
+    return Ember.RSVP.all(destroyQueue);
   });
 }
 
