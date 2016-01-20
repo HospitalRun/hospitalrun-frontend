@@ -55,7 +55,7 @@
     "ember-validations": "2.0.0-alpha.4",
     "express": "^4.8.5",
     "glob": "^6.0.1",
-    "nano": "6.1.5",
+    "nano": "6.2.0",
     "request": "2.67.0"
   },
   "dependencies": {
