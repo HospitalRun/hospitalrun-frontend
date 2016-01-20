@@ -13,7 +13,9 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
     appointmentDeleted: function(model) {
       this.controller.send('appointmentDeleted', model);
     },
-
+    returnToPatient: function() {
+      this.controller.send('returnToPatient');
+    },
     deleteContact: function(model) {
       this.controller.send('deleteContact', model);
     },
