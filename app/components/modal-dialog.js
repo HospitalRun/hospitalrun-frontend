@@ -13,6 +13,7 @@ export default Ember.Component.extend({
   cancelBtnText: function() {
     let cancelText = this.get('cancelButtonText');
     if (Ember.isEmpty(cancelText)) {
+      return 'Cancel';
     } else {
       return cancelText;
     }
