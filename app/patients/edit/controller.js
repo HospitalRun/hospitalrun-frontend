@@ -506,8 +506,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
       message: `The patient record for ${record.get('displayName')} has been saved.`,
       updateButtonAction: 'returnToPatient',
       updateButtonText: 'Back to Patient List',
-      cancelButtonText: 'Close',
-      isCancelTextChanged: true
+      cancelButtonText: 'Close'
     }));
   }
 

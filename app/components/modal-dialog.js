@@ -5,12 +5,18 @@ export default Ember.Component.extend({
   hideCancelButton: false,
   hideUpdateButton: false,
   isUpdateDisabled: false,
-  isCancelTextChanged: false,
   title: '',
   updateButtonAction: '',
   updateButtonClass: '',
   updateButtonText: '',
   cancelButtonText: '',
+  cancelBtnText: function() {
+    let cancelText = this.get('cancelButtonText');
+    if (Ember.isEmpty(cancelText)) {
+    } else {
+      return cancelText;
+    }
+  }.property('cancelButtonText'),
   actions: {
     cancelAction: function() {
       this.sendAction('cancelAction');
