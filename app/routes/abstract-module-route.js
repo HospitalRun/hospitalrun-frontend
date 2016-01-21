@@ -41,12 +41,6 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
     allItems: function() {
       this.transitionTo(this.get('moduleName') + '.index');
     },
-    closeModal: function() {
-      this.disconnectOutlet({
-        parentView: 'application',
-        outlet: 'modal'
-      });
-    },
     deleteItem: function(item) {
       var deletePath = this.get('deletePath');
       this.send('openModal', deletePath, item);
@@ -58,17 +52,6 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
       if (this.currentUserCan(this.get('addCapability'))) {
         this.transitionTo(this.get('editPath'), 'new');
       }
-    },
-    /**
-     * Render a modal using the specifed path and optionally set a model.
-     * @param modalPath the path to use for the controller and template.
-     * @param model (optional) the model to set on the controller for the modal.
-     */
-    openModal: function(modalPath, model) {
-      if (model) {
-        this.controllerFor(modalPath).set('model', model);
-      }
-      this.renderModal(modalPath);
     },
 
     /**
@@ -82,15 +65,6 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
     setSectionHeader: function(details) {
       var currentController = this.controllerFor(this.get('moduleName'));
       currentController.setProperties(details);
-    },
-
-    /**
-     * Update an open modal using the specifed model.
-     * @param modalPath the path to use for the controller and template.
-     * @param model (optional) the model to set on the controller for the modal.
-     */
-    updateModal: function(modalPath, model) {
-      this.controllerFor(modalPath).set('model', model);
     }
 
   },
@@ -139,13 +113,6 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
     } else {
       return Ember.RSVP.resolve();
     }
-  },
-
-  renderModal: function(template) {
-    this.render(template, {
-      into: 'application',
-      outlet: 'modal'
-    });
   },
 
   renderTemplate: function() {
