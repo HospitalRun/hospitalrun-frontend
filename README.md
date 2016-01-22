@@ -32,6 +32,21 @@ To start the frontend please do the following:
 - Start the server by running `ember serve` in the repo folder.
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
+### Troubleshooting your local environment
+Always make sure to `git pull` and get the latest from master. 
+
+The app will usually tell you when something needs to happen (i.e. if you try to `ember serve` and npm is out of date, it will tell you to run `npm update`. But If you run into problems you can't resolve, feel free to open an issue, or ask for help in the [HospitalRun Slack channel](https://hospitalrun.slack.com/) (you can request an invite [here](https://hospitalrun-slackin.herokuapp.com/)).
+
+Otherwise, here are some tips for common issues:
+
+**The browser shows only a loading dialog**
+
+Is your server (still) running? Is Couch running? If not, that's problably the issue.
+
+**My changes aren't showing up in the browser**
+
+Try a browser refresh `cmd + r`.
+
 ## Loading sample data
 If you would like to load sample data, you can do so by navigating to **Load DB** under the Adminstration menu.  You should see the following screen:
 ![Load DB screenshot](screenshots/load-db.png)
