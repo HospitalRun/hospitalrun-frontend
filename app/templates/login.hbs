@@ -1,6 +1,9 @@
 <div class="container">
     <form class="form-signin" role="form" {{action 'authenticate' on='submit'}}>
         <h2 class="form-signin-heading">{{t 'login.messages.sign_in'}}</h2>
+        {{#if errorMessage}}
+            <div class="alert alert-danger form-signin-alert" role="alert">{{errorMessage}}</div>
+        {{/if}}
         <div class="form-group">
             {{input id='identification' value=identification placeholder=(t 'login.labels.username') class='form-control'}}
         </div>
@@ -10,8 +13,5 @@
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">{{t 'login.labels.sign_in'}}</button>
 
-        {{#if errorMessage}}
-            <div class="alert alert-danger form-signin-alert" role="alert">{{errorMessage}}</div>
-        {{/if}}
     </form>
 </div> <!-- /container -->
