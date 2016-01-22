@@ -14,14 +14,11 @@
         text-transform: uppercase;
         letter-spacing: 2px;
         text-align: center;
-        margin: 5px 0 26px;
+        margin: 5px 0 20px;
         color: $navy_drk2;
     }
 
-    .form-signin-alert {
-        margin-top: 15px;
-        margin-bottom: 0;
-    }
+    .form-signin-alert { margin-bottom: 15px; }
 
     input { background: white; }
 }
