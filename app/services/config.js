@@ -108,14 +108,14 @@ export default Ember.Service.extend({
     });
   },
   useGoogleAuth() {
-    return this._getConfigValue('use_google_auth', false);
+    return this.getConfigValue('use_google_auth', false);
   },
 
   getPatientPrefix() {
-    return this._getConfigValue('patient_id_prefix', 'P');
+    return this.getConfigValue('patient_id_prefix', 'P');
   },
 
-  _getConfigValue(id, defaultValue) {
+  getConfigValue(id, defaultValue) {
     const configDB = this.get('configDB');
     return new Ember.RSVP.Promise(function(resolve) {
       configDB.get('config_' + id).then(function(doc) {

@@ -2,12 +2,12 @@
   {{#if model}}
     <table class="table">
       <tr class="table-header">
-        <th>Date Requested</th>
+        <th>{{t 'labels.date_requested'}}</th>
         <th>Date Completed</th>
-        <th>Patient</th>
+        <th>{{t 'labels.patient'}}</th>
         <th>Lab Type</th>
         <th>Results</th>
-        <th>Notes</th>
+        <th>{{t 'labels.notes'}}</th>
       </tr>
       {{#each model as |lab|}}
         <tr>
