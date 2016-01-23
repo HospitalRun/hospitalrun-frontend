@@ -28,6 +28,8 @@
     text-transform: uppercase;
     letter-spacing: 2px;
     text-align: center;
-    margin: 5px 0 20px;
+    margin: 0 0 20px;
     color: $navy_drk2;
+    font-size: 24px;
 }
+.form-signin-heading::first-letter { text-transform: uppercase; }
