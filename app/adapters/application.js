@@ -24,28 +24,29 @@ export default Adapter.extend(PouchAdapterUtils, {
           }
           queryString = `${queryString}${key}:${query.containsValue.value}`;
         });
+        let successFn = (results) => {
+          if (results && results.hits && results.hits.hits) {
+            var resultDocs = Ember.A(results.hits.hits).map((hit) => {
+              var mappedResult = hit._source;
+              mappedResult.id = mappedResult._id;
+              return mappedResult;
+            });
+            var response = {
+              rows: resultDocs
+            };
+            this._handleQueryResponse(response, store, type).then(resolve, reject);
+          } else if (results.rows) {
+            this._handleQueryResponse(results, store, type).then(resolve, reject);
+          } else {
+            reject('Search results are not valid');
+          }
+        };
         Ember.$.ajax(searchUrl, {
           dataType: 'json',
           data: {
             q: queryString
           },
-          success(results) {
-            if (results && results.hits && results.hits.hits) {
-              var resultDocs = Ember.A(results.hits.hits).map((hit) => {
-                var mappedResult = hit._source;
-                mappedResult.id = mappedResult._id;
-                return mappedResult;
-              });
-              var response = {
-                rows: resultDocs
-              };
-              this._handleQueryResponse(response, store, type).then(resolve, reject);
-            } else if (results.rows) {
-              this._handleQueryResponse(results, store, type).then(resolve, reject);
-            } else {
-              reject('Search results are not valid');
-            }
-          }
+          success: successFn
         });
       } else {
         reject('invalid query');
