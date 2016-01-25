@@ -2,16 +2,16 @@
     <div class="panel-body">
         <div class="row test-patient-summary">
             <div class="form-group col-sm-3">
-                <label class="control-label">Id</label> {{patient.displayPatientId}}
+                <label class="control-label">{{t 'labels.id'}}</label> {{patient.displayPatientId}}
             </div>
             <div class="form-group col-sm-4">
                 <label class="control-label">{{t 'labels.name'}}</label> {{patient.displayName}}
             </div>
             <div class="form-group col-sm-2">
-                <label class="control-label">Gender</label> {{patient.gender}}
+                <label class="control-label">{{t 'labels.gender'}}</label> {{patient.gender}}
             </div>
             <div class="form-group col-sm-3">
-                <label class="control-label">Age</label> {{patient.age}}
+                <label class="control-label">{{t 'labels.age'}}</label> {{patient.age}}
             </div>
         </div>
         {{#if havePrimaryDiagnoses}}

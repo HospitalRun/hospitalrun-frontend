@@ -3,10 +3,10 @@
     <table class="table">
       <tr class="table-header">
           <th>{{t 'labels.date_requested'}}</th>
-          <th>Date Completed</th>
+          <th>{{t 'labels.date_completed'}}</th>
           <th>{{t 'labels.patient'}}</th>
-          <th>{{t 'labels.imaging_type'}}</th>
-          <th>Results</th>
+          <th>{{t 'labels.imaging_type '}}</th>
+          <th>{{t 'labels.results'}}</th>
           <th>{{t 'labels.notes'}}</th>
       </tr>
       {{#each model as |imaging|}}
@@ -22,7 +22,7 @@
     </table>
   {{else}}
       <div class="alert alert-info">
-          <p>No completed items found.</p>
+          <p>{{t 'imaging.messages.no_completed'}}</p>
       </div>
   {{/if}}
 {{/item-listing}}
