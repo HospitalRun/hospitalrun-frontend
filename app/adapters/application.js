@@ -2,6 +2,12 @@ import Ember from 'ember';
 import { Adapter } from 'ember-pouch';
 import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 
+const {
+  run: {
+    bind
+  }
+} = Ember;
+
 export default Adapter.extend(PouchAdapterUtils, {
   database: Ember.inject.service(),
   db: Ember.computed.reads('database.mainDB'),
@@ -95,6 +101,18 @@ export default Adapter.extend(PouchAdapterUtils, {
       });
     }
     return haveSpecialCharacters;
+  },
+
+  _startChangesToStoreListener: function() {
+    var db = this.get('db');
+    if (db) {
+      this.changes = db.changes({
+        since: 'now',
+        live: true,
+        returnDocs: false
+      }).on('change', bind(this, 'onChange'));
+      db.changesListener = this.changes;
+    }
   },
 
   generateIdForRecord() {
