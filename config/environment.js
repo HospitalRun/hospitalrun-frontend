@@ -5,7 +5,7 @@ module.exports = function(environment) {
     modulePrefix: 'hospitalrun',
     environment: environment,
     baseURL: '/',
-    locationType: 'hash', //Auto incompatible with google login right now
+    locationType: 'hash', // Auto incompatible with google login right now
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -19,14 +19,6 @@ module.exports = function(environment) {
     }
   };
 
-  if (environment === 'development') {
-    // ENV.APP.LOG_RESOLVER = true;
-    // ENV.APP.LOG_ACTIVE_GENERATION = true;
-    // ENV.APP.LOG_TRANSITIONS = true;
-    // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
-    // ENV.APP.LOG_VIEW_LOOKUPS = true;
-  }
-
   if (environment === 'test') {
     // Testem prefers this...
     ENV.baseURL = '/';
@@ -39,17 +31,22 @@ module.exports = function(environment) {
     ENV.APP.rootElement = '#ember-testing';
   }
 
-  if (environment === 'production') {
+  ENV.manifest = {
+    enabled: true,
+    appcacheFile: '/manifest.appcache',
+    excludePaths: ['index.html', 'tests/index.html', 'robots.txt', 'crossdomain.xml', 'testem.js'],
+    showCreateDate: true
+  };
 
-  }
-
-ENV.manifest = {
-  enabled: true,
-  appcacheFile: "/manifest.appcache",
-  excludePaths: ['index.html', 'tests/index.html', 'robots.txt', 'crossdomain.xml', 'testem.js'],
-  //includePaths: ['/'],
-  showCreateDate: true
-};
+  ENV.serviceWorker = {
+    enabled: true,
+    debug: true,
+    excludePaths: ['manifest.appcache'],
+    swIncludeFiles: [
+      'bower_components/pouchdb/dist/pouchdb.js'
+    ]
+  };
 
   return ENV;
 };
+
