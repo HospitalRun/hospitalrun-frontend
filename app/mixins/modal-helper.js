@@ -6,13 +6,16 @@ export default Ember.Mixin.create({
    * @param message string containing the message to display.
    */
   displayAlert: function(title, message, okAction) {
-    this.send('openModal', 'dialog', Ember.Object.create({
+    let i18n = this.get('i18n');
+    let modalOptions = Ember.Object.extend({
+      updateButtonText: i18n.t('buttons.ok')
+    });
+    this.send('openModal', 'dialog', modalOptions.create({
       title: title,
       message: message,
       okAction: okAction,
       hideCancelButton: true,
-      updateButtonAction: 'ok',
-      updateButtonText: 'Ok'
+      updateButtonAction: 'ok'
     }));
   },
 
