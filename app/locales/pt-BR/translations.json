@@ -1,0 +1,35 @@
+export default {
+  dashboard: {
+    title: 'O que você gostaria de fazer?'
+  },
+  labels: {
+    name: 'Nome',
+    patient: 'Paciente',
+    quantity: 'Quandidade',
+    requested_on: 'Solicitado em',
+    date_requested: 'Data da requisição',
+    requested_by: 'Requisitado por',
+    fulfill: 'Preencha',
+    actions: 'Ações',
+    action: 'Ação',
+    notes: 'Notas',
+    edit: 'Editar',
+    imaging_type: 'Tipo de imagem'
+  },
+  login: {
+    messages: {
+      sign_in:  'Por favor, inscreva-se'
+    },
+    labels: {
+      password: 'Senha',
+      username: 'Usuario',
+      sign_in:  'Entrar'
+    }
+  },
+  inventory: {
+    messages: {
+      no_requests: 'Requisições não encontradas.',
+      create_request: 'Criar uma nova requisição?'
+    }
+  }
+};
