@@ -3860,7 +3860,7 @@ define('hospitalrun/controllers/abstract-edit-controller', ['exports', 'ember', 
 
     exports['default'] = Ember['default'].ObjectController.extend(IsUpdateDisabled['default'], ModalHelper['default'], UserSession['default'], {
         cancelAction: 'allItems',
-        
+
         cancelButtonText: function() {
             var isDirty = this.get('isDirty');
             if (isDirty) {
@@ -3873,14 +3873,14 @@ define('hospitalrun/controllers/abstract-edit-controller', ['exports', 'ember', 
         disabledAction: function() {
             var isValid = this.get('isValid');
             if (!isValid) {
-                return 'showDisabledDialog';  
+                return 'showDisabledDialog';
             }
         }.property('isValid'),
-        
+
         isNewOrDeleted: function() {
             return this.get('isNew') || this.get('isDeleted');
         }.property('isNew', 'isDeleted'),
-        
+
         /**
          *  Lookup lists that should be updated when the model has a new value to add to the lookup list.
          *  lookupListsToUpdate: [{
@@ -3890,13 +3890,13 @@ define('hospitalrun/controllers/abstract-edit-controller', ['exports', 'ember', 
          *  }
          */
         lookupListsToUpdate: null,
-        
+
         showUpdateButton: function() {
             var updateButtonCapability = this.get('updateCapability');
             return this.currentUserCan(updateButtonCapability);
         }.property('updateCapability'),
-        
-        updateButtonAction: 'update',    
+
+        updateButtonAction: 'update',
         updateButtonText: function() {
             if (this.get('isNew')) {
                 return 'Add';
@@ -3905,7 +3905,7 @@ define('hospitalrun/controllers/abstract-edit-controller', ['exports', 'ember', 
             }
         }.property('isNew'),
         updateCapability: null,
-        
+
         /**
          * Add the specified value to the lookup list if it doesn't already exist in the list.
          * @param lookupList array the lookup list to add to.
@@ -3925,7 +3925,7 @@ define('hospitalrun/controllers/abstract-edit-controller', ['exports', 'ember', 
                 this.set(listName, lookupList);
             }
         },
-        
+
         _cancelUpdate: function() {
             var cancelledItem = this.get('model');
             if (this.get('isNew')) {
@@ -3934,15 +3934,15 @@ define('hospitalrun/controllers/abstract-edit-controller', ['exports', 'ember', 
                 cancelledItem.rollback();
             }
         },
-        
+
         actions: {
             cancel: function() {
                 this._cancelUpdate();
                 this.send(this.get('cancelAction'));
             },
-            
+
             returnTo: function() {
-                this._cancelUpdate();            
+                this._cancelUpdate();
                 var returnTo = this.get('returnTo'),
                     returnToContext = this.get('returnToContext');
                 if (Ember['default'].isEmpty(returnToContext)) {
@@ -3950,31 +3950,37 @@ define('hospitalrun/controllers/abstract-edit-controller', ['exports', 'ember', 
                 } else {
                     this.transitionToRoute(returnTo, returnToContext);
                 }
-            },        
-            
-            showDisabledDialog: function() {            
+            },
+
+            showDisabledDialog: function() {
                 this.displayAlert('Warning!!!!','Please fill in required fields (marked with *) and correct the errors before saving.');
-            },        
-            
+            },
+
             /**
              * Update the model and perform the before update and after update
-             * @param skipAfterUpdate boolean (optional) indicating whether or not 
+             * @param skipAfterUpdate boolean (optional) indicating whether or not
              * to skip the afterUpdate call.
              */
             update: function(skipAfterUpdate) {
-                this.beforeUpdate().then(function() {
-                    this.saveModel(skipAfterUpdate);
-                }.bind(this));
+                try {
+                  this.beforeUpdate().then(function() {
+                      this.saveModel(skipAfterUpdate);
+                  }.bind(this)).catch(function(err) {
+                      this.displayAlert('Error!!!!','An error occurred while attempting to save: ' + JSON.stringify(err));
+                  }.bind(this));
+                } catch (ex) {
+                  this.displayAlert('Error!!!!','An error occurred while attempting to save: ' +ex);
+                }
             }
         },
-        
+
         /**
          * Override this function to perform logic after record update
          * @param record the record that was just updated.
          */
         afterUpdate: function() {
         },
-        
+
         /**
          * Override this function to perform logic before record update.
          * @returns {Promise} Promise that resolves after before update is done.
@@ -3982,10 +3988,10 @@ define('hospitalrun/controllers/abstract-edit-controller', ['exports', 'ember', 
         beforeUpdate: function() {
             return Ember['default'].RSVP.Promise.resolve();
         },
-        
+
         /**
          * Save the model and then (optionally) run the after update.
-         * @param skipAfterUpdate boolean (optional) indicating whether or not 
+         * @param skipAfterUpdate boolean (optional) indicating whether or not
          * to skip the afterUpdate call.
          */
         saveModel: function(skipAfterUpdate) {
@@ -3996,14 +4002,14 @@ define('hospitalrun/controllers/abstract-edit-controller', ['exports', 'ember', 
                 }
             }.bind(this));
         },
-        
+
         /**
          * Update any new values added to a lookup list
          */
         updateLookupLists: function() {
             var lookupLists = this.get('lookupListsToUpdate'),
                 listsToUpdate = Ember['default'].A();
-            if (!Ember['default'].isEmpty(lookupLists)) {            
+            if (!Ember['default'].isEmpty(lookupLists)) {
                 lookupLists.forEach(function(list) {
                     var propertyValue = this.get(list.property),
                         lookupList = this.get(list.name);
@@ -4013,11 +4019,11 @@ define('hospitalrun/controllers/abstract-edit-controller', ['exports', 'ember', 
                                 id: list.id,
                                 value: [],
                                 userCanAdd: true
-                            });                        
+                            });
                         }
                         if (Ember['default'].isArray(propertyValue)) {
                             propertyValue.forEach(function(value) {
-                                this._addValueToLookupList(lookupList, value, listsToUpdate, list.name);    
+                                this._addValueToLookupList(lookupList, value, listsToUpdate, list.name);
                             }.bind(this));
                         } else {
                             this._addValueToLookupList(lookupList, propertyValue, listsToUpdate, list.name);
@@ -4029,8 +4035,8 @@ define('hospitalrun/controllers/abstract-edit-controller', ['exports', 'ember', 
                 });
             }
         }
-        
-        
+
+
 
 
     });
@@ -6826,10 +6832,9 @@ define('hospitalrun/inventory/edit/controller', ['exports', 'hospitalrun/control
                 promises = [],
                 newPurchase = this.getProperties('aisleLocation', 'dateReceived',
                 'purchaseCost', 'lotNumber', 'expirationDate', 'giftInKind',
-                'location', 'vendor', 'vendorItemNo'),
-                quantity = this.get('quantity');
+                'invoiceNo', 'location', 'originalQuantity', 'quantityGroups', 'vendor', 'vendorItemNo'),
+                quantity = this.get('originalQuantity');
             if (!Ember['default'].isEmpty(quantity)) {
-                newPurchase.originalQuantity = quantity;
                 newPurchase.currentQuantity = quantity;
                 newPurchase.inventoryItem = 'inventory_'+this.get('model.id');
                 var purchase = this.get('store').createRecord('inv-purchase', newPurchase);

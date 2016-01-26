@@ -222,10 +222,9 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
             promises = [],
             newPurchase = this.getProperties('aisleLocation', 'dateReceived',
             'purchaseCost', 'lotNumber', 'expirationDate', 'giftInKind',
-            'location', 'vendor', 'vendorItemNo'),
-            quantity = this.get('quantity');
+            'invoiceNo', 'location', 'originalQuantity', 'quantityGroups', 'vendor', 'vendorItemNo'),
+            quantity = this.get('originalQuantity');
         if (!Ember.isEmpty(quantity)) {
-            newPurchase.originalQuantity = quantity;
             newPurchase.currentQuantity = quantity;
             newPurchase.inventoryItem = 'inventory_'+this.get('model.id');
             var purchase = this.get('store').createRecord('inv-purchase', newPurchase);

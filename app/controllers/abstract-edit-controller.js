@@ -4,7 +4,7 @@ import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, UserSession, {
     cancelAction: 'allItems',
-    
+
     cancelButtonText: function() {
         var isDirty = this.get('isDirty');
         if (isDirty) {
@@ -17,14 +17,14 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
     disabledAction: function() {
         var isValid = this.get('isValid');
         if (!isValid) {
-            return 'showDisabledDialog';  
+            return 'showDisabledDialog';
         }
     }.property('isValid'),
-    
+
     isNewOrDeleted: function() {
         return this.get('isNew') || this.get('isDeleted');
     }.property('isNew', 'isDeleted'),
-    
+
     /**
      *  Lookup lists that should be updated when the model has a new value to add to the lookup list.
      *  lookupListsToUpdate: [{
@@ -34,13 +34,13 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
      *  }
      */
     lookupListsToUpdate: null,
-    
+
     showUpdateButton: function() {
         var updateButtonCapability = this.get('updateCapability');
         return this.currentUserCan(updateButtonCapability);
     }.property('updateCapability'),
-    
-    updateButtonAction: 'update',    
+
+    updateButtonAction: 'update',
     updateButtonText: function() {
         if (this.get('isNew')) {
             return 'Add';
@@ -49,7 +49,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
         }
     }.property('isNew'),
     updateCapability: null,
-    
+
     /**
      * Add the specified value to the lookup list if it doesn't already exist in the list.
      * @param lookupList array the lookup list to add to.
@@ -69,7 +69,7 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
             this.set(listName, lookupList);
         }
     },
-    
+
     _cancelUpdate: function() {
         var cancelledItem = this.get('model');
         if (this.get('isNew')) {
@@ -78,15 +78,15 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
             cancelledItem.rollback();
         }
     },
-    
+
     actions: {
         cancel: function() {
             this._cancelUpdate();
             this.send(this.get('cancelAction'));
         },
-        
+
         returnTo: function() {
-            this._cancelUpdate();            
+            this._cancelUpdate();
             var returnTo = this.get('returnTo'),
                 returnToContext = this.get('returnToContext');
             if (Ember.isEmpty(returnToContext)) {
@@ -94,31 +94,37 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
             } else {
                 this.transitionToRoute(returnTo, returnToContext);
             }
-        },        
-        
-        showDisabledDialog: function() {            
+        },
+
+        showDisabledDialog: function() {
             this.displayAlert('Warning!!!!','Please fill in required fields (marked with *) and correct the errors before saving.');
-        },        
-        
+        },
+
         /**
          * Update the model and perform the before update and after update
-         * @param skipAfterUpdate boolean (optional) indicating whether or not 
+         * @param skipAfterUpdate boolean (optional) indicating whether or not
          * to skip the afterUpdate call.
          */
         update: function(skipAfterUpdate) {
-            this.beforeUpdate().then(function() {
-                this.saveModel(skipAfterUpdate);
-            }.bind(this));
+            try {
+              this.beforeUpdate().then(function() {
+                  this.saveModel(skipAfterUpdate);
+              }.bind(this)).catch(function(err) {
+                  this.displayAlert('Error!!!!','An error occurred while attempting to save: ' + JSON.stringify(err));
+              }.bind(this));
+            } catch (ex) {
+              this.displayAlert('Error!!!!','An error occurred while attempting to save: ' +ex);
+            }
         }
     },
-    
+
     /**
      * Override this function to perform logic after record update
      * @param record the record that was just updated.
      */
     afterUpdate: function() {
     },
-    
+
     /**
      * Override this function to perform logic before record update.
      * @returns {Promise} Promise that resolves after before update is done.
@@ -126,10 +132,10 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
     beforeUpdate: function() {
         return Ember.RSVP.Promise.resolve();
     },
-    
+
     /**
      * Save the model and then (optionally) run the after update.
-     * @param skipAfterUpdate boolean (optional) indicating whether or not 
+     * @param skipAfterUpdate boolean (optional) indicating whether or not
      * to skip the afterUpdate call.
      */
     saveModel: function(skipAfterUpdate) {
@@ -140,14 +146,14 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
             }
         }.bind(this));
     },
-    
+
     /**
      * Update any new values added to a lookup list
      */
     updateLookupLists: function() {
         var lookupLists = this.get('lookupListsToUpdate'),
             listsToUpdate = Ember.A();
-        if (!Ember.isEmpty(lookupLists)) {            
+        if (!Ember.isEmpty(lookupLists)) {
             lookupLists.forEach(function(list) {
                 var propertyValue = this.get(list.property),
                     lookupList = this.get(list.name);
@@ -157,11 +163,11 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
                             id: list.id,
                             value: [],
                             userCanAdd: true
-                        });                        
+                        });
                     }
                     if (Ember.isArray(propertyValue)) {
                         propertyValue.forEach(function(value) {
-                            this._addValueToLookupList(lookupList, value, listsToUpdate, list.name);    
+                            this._addValueToLookupList(lookupList, value, listsToUpdate, list.name);
                         }.bind(this));
                     } else {
                         this._addValueToLookupList(lookupList, propertyValue, listsToUpdate, list.name);
@@ -173,8 +179,8 @@ export default Ember.ObjectController.extend(IsUpdateDisabled, ModalHelper, User
             });
         }
     }
-    
-    
+
+
 
 
 });
