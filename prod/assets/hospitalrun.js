@@ -4134,19 +4134,19 @@ define('hospitalrun/controllers/abstract-report-controller', ['exports', 'ember'
         reportRows: [],
         reportTitle: null,
         reportType: null,
-        reportTypes: null,    
+        reportTypes: null,
         showFirstPageButton: true,
         showLastPageButton: true,
         showReportResults: false,
-        
+
         /**
          * Add a row to the report using the selected columns to add the row.
          * @param {Array} row the row to add
          * @param {boolean} skipFormatting true if formatting should be skipped.
-         * @param reportColumns {Object} the columns to display on the report; 
-         * optional, if not set, the property reportColumns on the controller 
-         * will be used. 
-         * @param reportAction {Object} action to fire on row when row is clicked.     
+         * @param reportColumns {Object} the columns to display on the report;
+         * optional, if not set, the property reportColumns on the controller
+         * will be used.
+         * @param reportAction {Object} action to fire on row when row is clicked.
          */
         _addReportRow: function(row, skipFormatting, reportColumns, rowAction) {
             var columnValue,
@@ -4182,12 +4182,12 @@ define('hospitalrun/controllers/abstract-report-controller', ['exports', 'ember'
                 reportRows.addObject(reportRow);
             }
         },
-        
+
         /**
          * Finish up the report by setting headers, titles and export.
-         * @param reportColumns {Object} the columns to display on the report; 
-         * optional, if not set, the property reportColumns on the controller 
-         * will be used. 
+         * @param reportColumns {Object} the columns to display on the report;
+         * optional, if not set, the property reportColumns on the controller
+         * will be used.
          */
         _finishReport: function(reportColumns) {
             this.set('showReportResults', true);
@@ -4197,30 +4197,30 @@ define('hospitalrun/controllers/abstract-report-controller', ['exports', 'ember'
             this._generateExport();
             this.closeProgressModal();
         },
-        
+
         _generateExport: function() {
             var csvRows = [],
                 reportHeaders = this.get('reportHeaders'),
                 dataArray = [reportHeaders];
             dataArray.addObjects(this.get('reportRows'));
-            dataArray.forEach(function(reportRow) { 
-                var rowToAdd;            
+            dataArray.forEach(function(reportRow) {
+                var rowToAdd;
                 if (reportRow.row) {
                     rowToAdd = reportRow.row;
-                    
+
                 } else {
                     rowToAdd = reportRow;
-                    
-                }            
+
+                }
                 rowToAdd = rowToAdd.map(function(column) {
                     if (!column) {
                         return '';
                     } else if (column.replace) {
-                        return column.replace('"','""');
+                        return column.replace(/"/g, '""');
                     } else {
                         return column;
                     }
-                    
+
                 });
                 csvRows.push('"'+rowToAdd.join('","')+'"');
             });
@@ -4228,14 +4228,14 @@ define('hospitalrun/controllers/abstract-report-controller', ['exports', 'ember'
             var uriContent = "data:application/csv;charset=utf-8," + encodeURIComponent(csvString);
             this.set('csvExport', uriContent);
         },
-        
+
         _notifyReportError: function(errorMessage) {
             var alertMessage = 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.';
             this.closeProgressModal();
             this.displayAlert('Error Generating Report', alertMessage);
             throw new Error(errorMessage);
         },
-        
+
         _setReportHeaders: function(reportColumns) {
             var reportHeaders = [];
             if (Ember['default'].isEmpty(reportColumns)) {
@@ -4248,7 +4248,7 @@ define('hospitalrun/controllers/abstract-report-controller', ['exports', 'ember'
             }
             this.set('reportHeaders', reportHeaders);
         },
-        
+
         _setReportTitle: function() {
             var endDate = this.get('endDate'),
                 formattedEndDate = '',
@@ -4259,7 +4259,7 @@ define('hospitalrun/controllers/abstract-report-controller', ['exports', 'ember'
             if (!Ember['default'].isEmpty(endDate)) {
                 formattedEndDate = moment(endDate).format('l');
             }
-            
+
             var reportDesc = reportTypes.findBy('value', reportType);
             if (Ember['default'].isEmpty(startDate)) {
                 this.set('reportTitle', '%@ Report %@'.fmt(reportDesc.name, formattedEndDate));
@@ -4268,22 +4268,22 @@ define('hospitalrun/controllers/abstract-report-controller', ['exports', 'ember'
                 this.set('reportTitle', '%@ Report %@ - %@'.fmt(reportDesc.name, formattedStartDate, formattedEndDate));
             }
         },
-        
+
         actions: {
             firstPage: function() {
                 this.set('offset', 0);
             },
-            
+
             nextPage: function() {
                 var limit = this.get('limit');
                 this.incrementProperty('offset', limit);
             },
-            
+
             previousPage: function() {
                 var limit = this.get('limit');
-                this.decrementProperty('offset', limit);    
+                this.decrementProperty('offset', limit);
             },
-            
+
             lastPage: function() {
                 var reportRowLength = this.get('reportRows.length'),
                     limit = this.get('limit'),
@@ -4292,31 +4292,31 @@ define('hospitalrun/controllers/abstract-report-controller', ['exports', 'ember'
             },
 
         },
-        
-        currentReportRows: function() {		
+
+        currentReportRows: function() {
             var limit = this.get('limit'),
                 offset = this.get('offset'),
-                reportRows = this.get('reportRows');		
-            return reportRows.slice(offset, offset+limit);		
-        }.property('reportRows.@each', 'offset', 'limit'),    
-        
+                reportRows = this.get('reportRows');
+            return reportRows.slice(offset, offset+limit);
+        }.property('reportRows.@each', 'offset', 'limit'),
+
         disablePreviousPage: function() {
             return (this.get('offset') === 0);
         }.property('offset'),
-        
+
         disableNextPage: function() {
             var limit = this.get('limit'),
                 length = this.get('reportRows.length'),
                 offset = this.get('offset');
                 return ((offset+limit) >= length);
         }.property('offset','limit','reportRows.length'),
-        
+
         showPagination: function() {
             var length = this.get('reportRows.length'),
                 limit = this.get('limit');
-            return (length > limit);            
+            return (length > limit);
         }.property('reportRows.length')
-        
+
     });
 
 });
@@ -4707,14 +4707,15 @@ define('hospitalrun/controllers/login', ['exports', 'ember'], function (exports,
      exports['default'] = LoginController;
 
 });
-define('hospitalrun/controllers/navigation', ['exports', 'ember', 'hospitalrun/mixins/progress-dialog', 'hospitalrun/mixins/user-session', 'hospitalrun/mixins/navigation'], function (exports, Ember, ProgressDialog, UserSession, Navigation) {
+define('hospitalrun/controllers/navigation', ['exports', 'ember', 'hospitalrun/mixins/hospitalrun-version', 'hospitalrun/mixins/modal-helper', 'hospitalrun/mixins/progress-dialog', 'hospitalrun/mixins/user-session', 'hospitalrun/mixins/navigation'], function (exports, Ember, HospitalRunVersion, ModalHelper, ProgressDialog, UserSession, Navigation) {
 
     'use strict';
 
-    exports['default'] = Ember['default'].Controller.extend(ProgressDialog['default'], UserSession['default'], Navigation['default'], {
-        
+    exports['default'] = Ember['default'].Controller.extend(HospitalRunVersion['default'], ModalHelper['default'], ProgressDialog['default'], UserSession['default'], Navigation['default'], {
+
         needs: 'application',
         allowSearch: false,
+        configs: Ember['default'].computed.alias('controllers.application.model'),
         currentSearchText: null,
         currentRouteName: Ember['default'].computed.alias('controllers.application.currentRouteName'),
         progressTitle: 'Searching',
@@ -4723,6 +4724,16 @@ define('hospitalrun/controllers/navigation', ['exports', 'ember', 'hospitalrun/m
         currentOpenNav: null,
 
         actions: {
+            about: function() {
+                var configs = this.get('configs'),
+                    version = this.get('version'),
+                    message = `Version: ${version}`,
+                    siteInfo = configs.findBy('id','site_information');
+                if (!Ember['default'].isEmpty(siteInfo)) {
+                    message += ` Site Info: ${siteInfo.get('value')}`;
+                }
+                this.displayAlert('About HospitalRun', message);
+            },
             search: function() {
                 if (this.allowSearch && this.searchRoute) {
                     var currentRouteName = this.get('currentRouteName'),
@@ -4749,7 +4760,7 @@ define('hospitalrun/controllers/navigation', ['exports', 'ember', 'hospitalrun/m
             toggleSettings: function() {
                 this.toggleProperty('isShowingSettings');
             },
-            
+
             closeSettings: function() {
                 this.set('isShowingSettings', false);
             }
@@ -8236,70 +8247,70 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 label: 'Id',
                 include: true,
                 property: 'inventoryItem.friendlyId'
-            }, 
+            },
             name: {
                 label: 'Name',
                 include: true,
                 property: 'inventoryItem.name'
-            }, 
+            },
             transactionType: {
                 label: 'Adjustment Type',
                 include: false,
                 property: 'transactionType'
-            }, 
+            },
             expenseAccount: {
                 label: 'Expense To',
                 include: false,
                 property: 'expenseAccount'
-            }, 
+            },
             description: {
                 label: 'Description',
                 include: false,
                 property: 'inventoryItem.description'
             },
-            type: {        
+            type: {
                 label: 'Type',
                 include: true,
                 property: 'inventoryItem.type'
-            }, 
+            },
             xref: {
                 label: 'Cross Reference',
                 include: false,
                 property: 'inventoryItem.crossReference'
-            }, 
+            },
             reorder: {
                 label: 'Reorder Point',
                 include: false,
                 property: 'inventoryItem.reorderPoint',
                 format: '_numberFormat'
-            }, 
+            },
             price: {
                 label: 'Sale Price Per Unit',
                 include: false,
                 property: 'inventoryItem.price',
                 format: '_numberFormat'
-            }, 
+            },
             quantity: {
-                label: 'Quantity', 
+                label: 'Quantity',
                 include: true,
                 property: 'quantity',
                 format: '_numberFormat'
             },
             consumedPerDay: {
-                label: 'Consumption Rate', 
+                label: 'Consumption Rate',
                 include: false,
-                property: 'consumedPerDay'            
+                property: 'consumedPerDay'
             },
             daysLeft: {
-                label: 'Days Left', 
+                label: 'Days Left',
                 include: false,
                 property: 'daysLeft'
             },
             unit: {
-                label: 'Distribution Unit', 
+                label: 'Distribution Unit',
                 include: true,
                 property: 'inventoryItem.distributionUnit'
-            },        
+            },
             unitcost: {
                 label: 'Unit Cost',
                 include: true,
@@ -8311,7 +8322,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 include: true,
                 property: 'totalCost',
                 format: '_numberFormat'
-            },         
+            },
             gift: {
                 label: 'Gift In Kind',
                 include: true,
@@ -8350,10 +8361,10 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
         }, {
             name: 'Detailed Stock Transfer',
             value: 'detailedTransfer'
-        }, {        
+        }, {
             name: 'Detailed Expenses',
             value: 'detailedExpense'
-        },  {        
+        },  {
             name: 'Expiration Date',
             value: 'expiration'
         }, {
@@ -8362,7 +8373,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
         }, {
             name: 'Inventory Valuation',
             value: 'valuation'
-        }, {        
+        }, {
             name: 'Summary Expenses',
             value: 'summaryExpense'
         }, {
@@ -8374,29 +8385,29 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
         }, {
             name: 'Summary Stock Transfer',
             value: 'summaryTransfer'
-        }, {        
+        }, {
             name: 'Finance Summary',
             value: 'summaryFinance'
         }],
-        
+
         hideLocationFilter: function() {
             var reportType = this.get('reportType');
             return (reportType === 'summaryFinance');
         }.property('reportType'),
 
-        
+
         includeDate: function() {
             var reportType = this.get('reportType');
             if (!Ember['default'].isEmpty(reportType) && reportType.indexOf('detailed') ===0) {
-                this.set('reportColumns.date.include', true);                     
+                this.set('reportColumns.date.include', true);
                 return true;
             } else {
                 this.set('reportColumns.date.include', false);
                 return false;
             }
-            
+
         }.property('reportType'),
-        
+
         includeDaysLeft: function() {
             var reportType = this.get('reportType');
             if (reportType === 'daysLeft') {
@@ -8408,9 +8419,9 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 this.set('reportColumns.daysLeft.include', false);
                 return false;
             }
-            
-        }.property('reportType'),    
-        
+
+        }.property('reportType'),
+
         includeCostFields: function() {
             var reportType = this.get('reportType');
             if (reportType === 'detailedTransfer' || reportType === 'summaryTransfer' || reportType === 'daysLeft') {
@@ -8419,30 +8430,30 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 return false;
             } else {
                 this.set('reportColumns.total.include', true);
-                this.set('reportColumns.unitcost.include', true);            
+                this.set('reportColumns.unitcost.include', true);
                 return true;
             }
         }.property('reportType'),
-            
-        includeExpenseAccount: function() {    
+
+        includeExpenseAccount: function() {
             var reportType = this.get('reportType');
             switch (reportType) {
                 case 'detailedAdjustment':
-                case 'detailedTransfer':                            
+                case 'detailedTransfer':
                 case 'detailedUsage': {
                     return true;
                 }
                 case 'detailedExpense': {
                     this.set('reportColumns.expenseAccount.include', true);
                     return true;
-                }        
+                }
                 default: {
                     this.set('reportColumns.expenseAccount.include', false);
                     return false;
                 }
             }
         }.property('reportType'),
-        
+
         includeTransactionType: function() {
             var reportType = this.get('reportType');
             if (reportType === 'detailedAdjustment') {
@@ -8451,7 +8462,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
             } else {
                 this.set('reportColumns.transactionType.include', false);
                 return false;
-            }        
+            }
         }.property('reportType'),
 
         showEffectiveDate: function() {
@@ -8465,11 +8476,11 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
             } else {
                 if (Ember['default'].isEmpty(this.get('startDate'))) {
                     this.set('startDate', new Date());
-                }    
+                }
                 return false;
             }
         }.property('reportType'),
-        
+
         useFieldPicker: function() {
             var reportType = this.get('reportType');
             return (reportType !== 'expiration' && reportType !== 'summaryFinance');
@@ -8484,7 +8495,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 });
             }
         },
-        
+
         _addLocationColumn: function(locations) {
             if (!Ember['default'].isEmpty(locations)) {
                 var returnLocations = [];
@@ -8502,7 +8513,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 return returnLocations;
             }
         },
-        
+
         _addReportRow: function(row, skipNumberFormatting, reportColumns, rowAction) {
             if (Ember['default'].isEmpty(rowAction) && !Ember['default'].isEmpty(row.inventoryItem) && !Ember['default'].isEmpty(row.inventoryItem._id)) {
                 rowAction = {
@@ -8512,7 +8523,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
             }
             this._super(row, skipNumberFormatting, reportColumns, rowAction);
         },
-        
+
         _addTotalsRow: function(label, summaryCost, summaryQuantity) {
             if (summaryQuantity > 0) {
                 this._addReportRow({
@@ -8520,9 +8531,9 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                     quantity: label + this._numberFormat(summaryQuantity),
                     unitCost: label + this._numberFormat(summaryCost/summaryQuantity)
                 }, true);
-            }        
+            }
         },
-        
+
         /**
          * Adjust the specified location by the specified quantity
          * @param {array} locations the list of locations to adjust from
@@ -8545,7 +8556,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 locationToUpdate.quantity -= quantity;
             }
         },
-        
+
         /**
          * Adjust the specified purchase by the specified quantity.
          * @param {array} purchases the list of purchases to adjust from.
@@ -8563,15 +8574,16 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                     calculatedQuantity -= quantity;
                 }
                 purchaseToAdjust.calculatedQuantity = calculatedQuantity;
-            }        
+            }
         },
-        
+
         _calculateCosts: function(inventoryPurchases, row) {
             //Calculate quantity and cost per unit for the row
             if (!Ember['default'].isEmpty(inventoryPurchases)) {
                 inventoryPurchases.forEach(function(purchase) {
                     var costPerUnit = this._calculateCostPerUnit(purchase),
-                        quantity = purchase.calculatedQuantity;                                    
+                        quantity = purchase.calculatedQuantity;
+
                     row.quantity += purchase.calculatedQuantity;
                     row.totalCost += (quantity * costPerUnit);
                 }.bind(this));
@@ -8589,7 +8601,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
             if (!Ember['default'].isEmpty(inventoryPurchases)) {
                 inventoryPurchases.forEach(function(purchase) {
                     var costPerUnit = this._calculateCostPerUnit(purchase),
-                        quantity = purchase.calculatedQuantity;                                    
+                        quantity = purchase.calculatedQuantity;
                     row.quantity -= purchase.calculatedQuantity;
                     row.totalCost -= (quantity * costPerUnit);
                 }.bind(this));
@@ -8601,16 +8613,16 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
             }
             return row;
         },
-        
+
         _calculateCostPerUnit: function(purchase) {
             var purchaseCost = purchase.purchaseCost,
                 quantity = parseInt(purchase.originalQuantity);
-            if (Ember['default'].isEmpty(purchaseCost) || Ember['default'].isEmpty(quantity)) {
+            if (Ember['default'].isEmpty(purchaseCost) || Ember['default'].isEmpty(quantity) || purchaseCost === 0 || quantity === 0) {
                 return 0;
             }
             return Number((purchaseCost/quantity).toFixed(2));
         },
-        
+
         _findInventoryItems: function(queryParams, view, inventoryList, childName) {
             if (Ember['default'].isEmpty(inventoryList)) {
                 inventoryList = {};
@@ -8645,8 +8657,8 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                     }, reject);
                 }.bind(this), reject);
             }.bind(this));
-        },    
-        
+        },
+
         _findInventoryItemsByPurchase: function(reportTimes, inventoryMap) {
             return this._findInventoryItems({
                 startkey: [reportTimes.startTime,'inv-purchase_'],
@@ -8654,18 +8666,18 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 include_docs: true,
             }, 'inventory_purchase_by_date_received', inventoryMap, 'purchaseObjects');
         },
-        
+
         _findInventoryItemsByRequest: function(reportTimes, inventoryMap) {
             return this._findInventoryItems({
-                startkey: ['Completed',reportTimes.startTime,'inv-request_'],            
+                startkey: ['Completed',reportTimes.startTime,'inv-request_'],
                 endkey: ['Completed',reportTimes.endTime,'inv-request_\uffff'],
                 include_docs: true,
             }, 'inventory_request_by_status', inventoryMap, 'requestObjects');
-        },    
-        
+        },
+
         _finishExpenseReport: function(reportType) {
             var expenseCategories = this.get('expenseCategories'),
-                expenseMap = this.get('expenseMap');            
+                expenseMap = this.get('expenseMap');
             expenseCategories.forEach(function(category) {
                 var categoryTotal = 0,
                     expenseAccountName,
@@ -8697,18 +8709,18 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                     totalCost: totalLabel +  this._numberFormat(categoryTotal)
                 }, true);
                 this.incrementProperty('grandCost', categoryTotal);
-            }.bind(this));  
+            }.bind(this));
             this._addReportRow({
                 totalCost: 'Total: ' +  this._numberFormat(this.get('grandCost'))
             }, true);
         },
-        
+
         _finishLocationReport: function() {
             var currentLocation = '',
                 locationCost = 0,
                 locationSummary = this.get('locationSummary'),
                 parentLocation = '',
-                parentCount = 0;                    
+                parentCount = 0;
             locationSummary = locationSummary.sortBy('name');
             locationSummary.forEach(function(location) {
                 parentLocation = this._getWarehouseLocationName(location.name);
@@ -8727,7 +8739,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                                 quantity: location.items[id].quantity,
                                 locations: [{
                                     name: location.name
-                                }], 
+                                }],
                                 totalCost: location.items[id].totalCost,
                                 unitCost: location.items[id].unitCost
                             });
@@ -8743,7 +8755,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 this._addTotalsRow('Total for %@: '.fmt(parentLocation), locationCost, parentCount);
             }
         },
-        
+
         _generateExpirationReport: function() {
             var grandQuantity = 0,
                 pouchdbController = this.get('pouchdbController'),
@@ -8751,16 +8763,16 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 reportTimes = this._getDateQueryParams();
             pouchdbController.queryMainDB({
                 startkey:  [reportTimes.startTime, 'inv-purchase_'],
-                endkey: [reportTimes.endTime, 'inv-purchase_\uffff'], 
+                endkey: [reportTimes.endTime, 'inv-purchase_\uffff'],
                 include_docs: true,
             }, 'inventory_purchase_by_expiration_date').then(function(inventoryPurchases) {
                 var purchaseDocs = [],
                     inventoryIds = [];
-                
+
                 inventoryPurchases.rows.forEach(function(purchase) {
                     if (purchase.doc.currentQuantity > 0 && !Ember['default'].isEmpty(purchase.doc.expirationDate)) {
                         purchaseDocs.push(purchase.doc);
-                        inventoryIds.push(purchase.doc.inventoryItem);                    
+                        inventoryIds.push(purchase.doc.inventoryItem);
                     }
                 }.bind(this));
                 this._getInventoryItems(inventoryIds).then(function(inventoryMap) {
@@ -8776,7 +8788,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                                 inventoryItem.distributionUnit,
                                 moment(expirationDate).format('l'),
                                 this.formatLocationName(purchase.location, purchase.aisleLocation)
-                            ]);                    
+                            ]);
                             grandQuantity += currentQuantity;
                         }
                     }.bind(this));
@@ -8790,22 +8802,22 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                     this.closeProgressModal();
                 }.bind(this));
             }.bind(this));
-            
+
         },
-        
+
         _generateFinancialSummaryReport: function() {
             var reportTimes = this._getDateQueryParams();
             /*
-            step 1: find the valuation as of start date, 
+            step 1: find the valuation as of start date,
             meaning that we need to exchange the end date to be the start date and then tabulate the value
             */
             this._calculateBeginningBalance(reportTimes).then(function(beginningBalance) {
                 this._generateSummaries(reportTimes).then(function(inventoryAdjustment) {
                     var i = this._numberFormat(beginningBalance+inventoryAdjustment);
                     if ((beginningBalance+inventoryAdjustment) < 0) {
-                        this.get('reportRows').addObject(['Ending Balance', '', '('+i+')']);  
+                        this.get('reportRows').addObject(['Ending Balance', '', '('+i+')']);
                     } else {
-                        this.get('reportRows').addObject(['Ending Balance', '', i]);  
+                        this.get('reportRows').addObject(['Ending Balance', '', i]);
                     }
                     this.set('showReportResults', true);
                     this.set('reportHeaders', ['Category', 'Type', 'Total']);
@@ -8817,12 +8829,12 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 }.bind(this));
             }.bind(this));
         },
-        
+
         _generateSummaries: function(reportTimes) {
             return new Ember['default'].RSVP.Promise(function(resolve, reject) {
                 var adjustedValue = 0;
                 /*
-                cycle through each purchase and request from the beginning of time until startTime 
+                cycle through each purchase and request from the beginning of time until startTime
                 to determine the total value of inventory as of that date/time.
                 */
                 this._findInventoryItemsByRequest(reportTimes,{}).then(function(inventoryMap) {
@@ -8866,85 +8878,85 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                         //write the purchase rows
                         if (Object.keys(purchaseSummary).length > 0) {
                             var purchaseTotal = 0;
-                            this.get('reportRows').addObject(['Purchases', '', '']);  
+                            this.get('reportRows').addObject(['Purchases', '', '']);
                             Ember['default'].keys(purchaseSummary).forEach(function(key) {
                                 var i = this._getValidNumber( purchaseSummary[key]);
                                 purchaseTotal += i;
-                                this.get('reportRows').addObject(['', key, this._numberFormat(i)]);    
+                                this.get('reportRows').addObject(['', key, this._numberFormat(i)]);
                             }.bind(this));
-                            this.get('reportRows').addObject(['Total Purchases', '', this._numberFormat(purchaseTotal)]);  
+                            this.get('reportRows').addObject(['Total Purchases', '', this._numberFormat(purchaseTotal)]);
                             adjustedValue += purchaseTotal;
-                        } 
-                        //write the consumed rows                    
+                        }
+                        //write the consumed rows
                         if (Object.keys(consumed).length > 0 || Object.keys(gikConsumed).length > 0) {
-                            this.get('reportRows').addObject(['Consumed', '', '']); 
+                            this.get('reportRows').addObject(['Consumed', '', '']);
                             var overallValue = 0;
                             if (Object.keys(consumed).length > 0) {
-                                this.get('reportRows').addObject(['Purchases Consumed', '', '']);  
+                                this.get('reportRows').addObject(['Purchases Consumed', '', '']);
                                 var consumedTotal = 0;
                                 Ember['default'].keys(consumed).forEach(function(key) {
                                     var i = this._getValidNumber( consumed[key]);
                                     consumedTotal += i;
-                                    this.get('reportRows').addObject(['', key, '('+ this._numberFormat(i)+')']);    
+                                    this.get('reportRows').addObject(['', key, '('+ this._numberFormat(i)+')']);
                                 }.bind(this));
                                 overallValue += consumedTotal;
                                 this.get('reportRows').addObject(['Total Purchases Consumed', '', '('+ this._numberFormat(consumedTotal)+')']);
                             }
                             if (Object.keys(gikConsumed).length > 0) {
-                                this.get('reportRows').addObject(['GIK Consumed', '', '']);  
+                                this.get('reportRows').addObject(['GIK Consumed', '', '']);
                                 var gikTotal = 0;
                                 Ember['default'].keys(gikConsumed).forEach(function(key) {
                                     var i = this._getValidNumber( gikConsumed[key]);
                                     gikTotal += i;
-                                    this.get('reportRows').addObject(['', key, '('+ this._numberFormat(i)+')']);    
+                                    this.get('reportRows').addObject(['', key, '('+ this._numberFormat(i)+')']);
                                 }.bind(this));
                                 overallValue += gikTotal;
                                 this.get('reportRows').addObject(['Total GIK Consumed', '', '('+this._numberFormat(gikTotal)+')']);
                             }
-                            this.get('reportRows').addObject(['Total Consumed', '', '('+this._numberFormat(overallValue)+')']);     
+                            this.get('reportRows').addObject(['Total Consumed', '', '('+this._numberFormat(overallValue)+')']);
                             adjustedValue -= overallValue;
                         }
                         //write the adjustment rows
                         var adjustmentTotal = 0;
-                        this.get('reportRows').addObject(['Adjustments', '', '']);  
+                        this.get('reportRows').addObject(['Adjustments', '', '']);
                         Ember['default'].keys(adjustments).forEach(function(adjustmentT) {
                             if (Object.keys(adjustments[adjustmentT]).length > 0) {
-                                this.get('reportRows').addObject([adjustmentT, '', '']);  
+                                this.get('reportRows').addObject([adjustmentT, '', '']);
                                 Ember['default'].keys(adjustments[adjustmentT]).forEach(function(key) {
                                     var i = this._getValidNumber( adjustments[adjustmentT][key]);
                                     if (adjustmentT === 'Adjustment (Add)' || adjustmentT === 'Return') {
                                         adjustmentTotal += i;
-                                        this.get('reportRows').addObject(['', key, i]);    
+                                        this.get('reportRows').addObject(['', key, i]);
                                     } else {
                                         adjustmentTotal -= i;
-                                        this.get('reportRows').addObject(['', key, '('+this._numberFormat(i)+')']);    
-                                    }                                
+                                        this.get('reportRows').addObject(['', key, '('+this._numberFormat(i)+')']);
+                                    }
                                 }.bind(this));
                             }
                         }.bind(this));
                         if (adjustmentTotal < 0) {
-                            this.get('reportRows').addObject(['Total Adjustments', '', '('+this._numberFormat(adjustmentTotal)+')']);  
+                            this.get('reportRows').addObject(['Total Adjustments', '', '('+this._numberFormat(adjustmentTotal)+')']);
                         } else {
-                            this.get('reportRows').addObject(['Total Adjustments', '', this._numberFormat(adjustmentTotal)]);  
+                            this.get('reportRows').addObject(['Total Adjustments', '', this._numberFormat(adjustmentTotal)]);
                         }
-                        
+
                         adjustedValue += adjustmentTotal;
                         resolve(adjustedValue);
                     }.bind(this), reject);
-                }.bind(this), reject);  
+                }.bind(this), reject);
             }.bind(this));
-        },    
+        },
 
         _calculateBeginningBalance: function(reportTimes) {
             return new Ember['default'].RSVP.Promise(function(resolve, reject) {
-                
+
                 var startingValueReportTimes = {
                         startTime: null,
-                        endTime: reportTimes.startTime            
+                        endTime: reportTimes.startTime
                     },
                     beginningBalance = 0;
                 /*
-                cycle through each purchase and request from the beginning of time until startTime 
+                cycle through each purchase and request from the beginning of time until startTime
                 to determine the total value of inventory as of that date/time.
                 */
                 this._findInventoryItemsByRequest(startingValueReportTimes,{}).then(function(inventoryMap) {
@@ -8984,30 +8996,30 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                                                 this._adjustPurchase(inventoryPurchases, purchaseInfo.id, purchaseInfo.quantity, increment);
                                             }.bind(this));
                                         }
-                                    } 
+                                    }
                                 }.bind(this));
                             }
                             if (!Ember['default'].isEmpty(inventoryPurchases)) {
-                                row = this._calculateCosts(inventoryPurchases, row);   
+                                row = this._calculateCosts(inventoryPurchases, row);
                                 beginningBalance += this._getValidNumber(row.totalCost);
                             }
                         }.bind(this));
                         if (beginningBalance < 0) {
-                            this.get('reportRows').addObject(['Beginning Balance', '', '('+this._numberFormat(beginningBalance)+')']);  
+                            this.get('reportRows').addObject(['Beginning Balance', '', '('+this._numberFormat(beginningBalance)+')']);
                         } else {
-                            this.get('reportRows').addObject(['Beginning Balance', '', this._numberFormat(beginningBalance)]);  
+                            this.get('reportRows').addObject(['Beginning Balance', '', this._numberFormat(beginningBalance)]);
                         }
                         resolve(beginningBalance);
                     }.bind(this), reject);
                 }.bind(this), reject);
             }.bind(this));
         },
-        
+
         _generateInventoryReport: function() {
             this.set('grandCost', 0);
             this.set('grandQuantity', 0);
             this.set('locationSummary', []);
-            var dateDiff,            
+            var dateDiff,
                 locationSummary = this.get('locationSummary'),
                 reportType = this.get('reportType'),
                 reportTimes = this._getDateQueryParams();
@@ -9112,7 +9124,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                                     locationToUpdate.items[item._id] = {
                                         item: item,
                                         quantity: this._getValidNumber(location.quantity),
-                                        giftInKind: row.giftInKind,                                
+                                        giftInKind: row.giftInKind,
                                         totalCost: (this._getValidNumber(costData.unitCost) * this._getValidNumber(location.quantity)),
                                         unitCost: this._getValidNumber(costData.unitCost)
                                     };
@@ -9136,25 +9148,25 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                                         if (consumedQuantity ===0) {
                                             row.consumedPerDay = '0';
                                         } else {
-                                            row.consumedPerDay = '?'+consumedQuantity;                                        
+                                            row.consumedPerDay = '?'+consumedQuantity;
                                         }
                                         row.daysLeft = '?';
                                     }
                                     this._addReportRow(row);
                                 }
                                 break;
-                            }   
-                            case 'detailedAdjustment': 
-                            case 'detailedTransfer':                            
-                            case 'detailedUsage': 
-                            case 'detailedExpense': 
+                            }
+                            case 'detailedAdjustment':
+                            case 'detailedTransfer':
+                            case 'detailedUsage':
+                            case 'detailedExpense':
                             case 'summaryExpense': {
                                 if (!Ember['default'].isEmpty(inventoryRequests)) {
-                                    inventoryRequests.forEach(function(request) { 
+                                    inventoryRequests.forEach(function(request) {
                                         if (this._includeTransaction(reportType, request.transactionType) && this._hasIncludedLocation(request.locationsAffected)) {
                                             var deliveryLocation = this.getDisplayLocationName(request.deliveryLocation, request.deliveryAisle),
                                                 locations = [],
-                                                totalCost = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit)); 
+                                                totalCost = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit));
                                             locations = request.locationsAffected.map(function(location) {
                                                 if (reportType === 'detailedTransfer') {
                                                     return {
@@ -9163,10 +9175,10 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                                                 } else {
                                                     return {
                                                         name: '%@ from %@'.fmt(this._getValidNumber(location.quantity), location.name)
-                                                    };                                        
+                                                    };
                                                 }
                                             }.bind(this));
-                                            var reportRow = {                                            
+                                            var reportRow = {
                                                 date: moment(new Date(request.dateCompleted)).format('l'),
                                                 expenseAccount: request.expenseAccount,
                                                 giftInKind: row.giftInKind,
@@ -9176,7 +9188,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                                                 locations: locations,
                                                 unitCost: request.costPerUnit,
                                                 totalCost: totalCost
-                                            };                                        
+                                            };
                                             if (reportType === 'detailedExpense' || reportType === 'summaryExpense') {
                                                 this._updateExpenseMap(request, reportRow);
                                             } else {
@@ -9199,7 +9211,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                                 if (!Ember['default'].isEmpty(inventoryRequests) && this._hasIncludedLocation(row.locations)) {
                                     row.quantity = inventoryRequests.reduce(function(previousValue, request) {
                                         if (this._includeTransaction(reportType, request.transactionType)) {
-                                            var totalCost = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit)); 
+                                            var totalCost = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit));
                                             summaryCost += totalCost;
                                             return previousValue += this._getValidNumber(request.quantity);
                                         } else {
@@ -9267,7 +9279,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                                     }
                                 }
                                 break;
-                            }                                        
+                            }
                             case 'valuation': {
                                 if (!Ember['default'].isEmpty(inventoryPurchases) && this._hasIncludedLocation(row.locations)) {
                                     this._calculateCosts(inventoryPurchases, row);
@@ -9279,8 +9291,8 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                             }
                         }
                     }.bind(this));
-                    switch (reportType) {                    
-                        case 'detailedExpense': 
+                    switch (reportType) {
+                        case 'detailedExpense':
                         case 'summaryExpense': {
                             this._finishExpenseReport(reportType);
                             break;
@@ -9293,7 +9305,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                         default: {
                             this._addTotalsRow('Total: ', this.get('grandCost'), this.get('grandQuantity'));
                         }
-                    }                 
+                    }
                     this._finishReport();
                 }.bind(this), function(err) {
                     this._notifyReportError('Error in _findInventoryItemsByPurchase:'+err);
@@ -9302,12 +9314,12 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 this._notifyReportError('Error in _findInventoryItemsByRequest:'+err);
             }.bind(this));
         },
-        
+
         _getDateQueryParams: function() {
             var endDate = this.get('endDate'),
                 endTime = this.get('maxValue'),
                 startDate = this.get('startDate'),
-                startTime;  
+                startTime;
             if (!Ember['default'].isEmpty(endDate)) {
                 endTime = moment(endDate).endOf('day').toDate().getTime();
             }
@@ -9316,10 +9328,10 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
             }
             return {
                 endTime: endTime,
-                startTime: startTime            
+                startTime: startTime
             };
         },
-        
+
         _getInventoryItems: function(inventoryIds, inventoryMap) {
             var pouchdbController = this.get('pouchdbController');
             return new Ember['default'].RSVP.Promise(function(resolve, reject) {
@@ -9337,7 +9349,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 }, reject);
             });
         },
-        
+
         /**
          * Pull the warehouse name out of a formatted location name that (may) include the aisle location
          * @param {string} locationName the formatted location name.
@@ -9352,7 +9364,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
             }
             return returnLocation;
         },
-        
+
         /**
          * Determines if any of the passed in location objects match the currently filtered location
          * @param {array} locations list of location objects to check.
@@ -9368,8 +9380,8 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
             }.bind(this));
             return hasIncludedLocation;
         },
-        
-        
+
+
         /**
          * Determine if the specified location should be included in the report
          * @param {string} location the location to check for inclusion
@@ -9377,11 +9389,11 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
          */
         _includeLocation: function(location) {
             var filterLocation = this.get('filterLocation');
-            return Ember['default'].isEmpty(filterLocation) || location === filterLocation;        
+            return Ember['default'].isEmpty(filterLocation) || location === filterLocation;
         },
-        
+
         /**
-         * Given a report type and a transaction type determine if the transaction should 
+         * Given a report type and a transaction type determine if the transaction should
          * be included in the report.
          * @param {string} reportType the report type
          * @param {string} transactionType the transaction type
@@ -9408,7 +9420,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                     } else {
                         includeForReportType = 'summaryTransfer';
                     }
-                    break;                
+                    break;
                 }
                 default: {
                     if (detailed) {
@@ -9420,7 +9432,7 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
             }
             return (reportType === includeForReportType);
         },
-        
+
         _updateExpenseMap: function(request, reportRow) {
             var categoryToUpdate,
                 expenseAccountToUpdate,
@@ -9428,10 +9440,10 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 isGiftInKind = (reportRow.giftInKind === 'Y'),
                 increment = true,
                 transactionValue;
-                    
+
             switch (request.transactionType) {
-                case 'Fulfillment': 
-                case 'Return': {               
+                case 'Fulfillment':
+                case 'Return': {
                     if (isGiftInKind) {
                         categoryToUpdate = expenseMap['Gift In Kind Usage'];
                     } else {
@@ -9441,22 +9453,22 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                         increment = false;
                     }
                     break;
-                    
+
                 }
-                case 'Adjustment (Add)': 
-                case 'Adjustment (Remove)': 
+                case 'Adjustment (Add)':
+                case 'Adjustment (Remove)':
                 case 'Return To Vendor':
-                case 'Write Off': {     
+                case 'Write Off': {
                     categoryToUpdate = expenseMap['Inventory Obsolence'];
                     if (request.transactionType === 'Adjustment (Add)') {
                         increment = false;
                     }
                     break;
-                }           
+                }
             }
             if (!Ember['default'].isEmpty(categoryToUpdate)) {
                 expenseAccountToUpdate = categoryToUpdate.expenseAccounts.findBy('name',request.expenseAccount);
-                if (Ember['default'].isEmpty(expenseAccountToUpdate)) {                
+                if (Ember['default'].isEmpty(expenseAccountToUpdate)) {
                     expenseAccountToUpdate = {
                         name: request.expenseAccount,
                         total: 0,
@@ -9465,20 +9477,20 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                     categoryToUpdate.expenseAccounts.push(expenseAccountToUpdate);
                 }
                 expenseAccountToUpdate.reportRows.push(reportRow);
-                transactionValue = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit)); 
+                transactionValue = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit));
                 if (increment) {
-                    categoryToUpdate.total += transactionValue;                
-                    expenseAccountToUpdate.total += transactionValue;                
+                    categoryToUpdate.total += transactionValue;
+                    expenseAccountToUpdate.total += transactionValue;
                 } else {
-                    categoryToUpdate.total = categoryToUpdate.total - transactionValue; 
+                    categoryToUpdate.total = categoryToUpdate.total - transactionValue;
                     expenseAccountToUpdate.total = expenseAccountToUpdate.total - transactionValue;
                     reportRow.totalCost = (reportRow.totalCost * -1);
                 }
-                
-                
+
+
             }
-        },    
-        
+        },
+
         actions: {
             generateReport: function() {
                 var endDate = this.get('endDate'),
@@ -9488,19 +9500,19 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                 if (Ember['default'].isEmpty(startDate) && Ember['default'].isEmpty(endDate)) {
                     return;
                 }
-                reportRows.clear(); 
+                reportRows.clear();
                 this.showProgressModal();
                 switch (reportType) {
                     case 'expiration': {
                         this._generateExpirationReport();
-                        break;                    
+                        break;
                     }
                     case 'summaryFinance': {
                         this._generateFinancialSummaryReport();
                         break;
                     }
                     case 'detailedExpense':
-                    case 'summaryExpense': {                    
+                    case 'summaryExpense': {
                         var expenseCategories = this.get('expenseCategories'),
                             expenseMap = {};
                         expenseCategories.forEach(function(category) {
@@ -9509,9 +9521,9 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                                 expenseAccounts: []
                             };
                         });
-                        this.set('expenseMap', expenseMap);                    
+                        this.set('expenseMap', expenseMap);
                         this._generateInventoryReport();
-                        break;                    
+                        break;
                     }
                     default: {
                         this._generateInventoryReport();
@@ -9519,10 +9531,10 @@ define('hospitalrun/inventory/reports/controller', ['exports', 'hospitalrun/cont
                     }
                 }
             },
-            
+
             viewInventory: function(id) {
                 this.store.find('inventory', id).then(function(item) {
-                    item.set('returnTo', 'inventory.reports');                
+                    item.set('returnTo', 'inventory.reports');
                     this.transitionToRoute('inventory.edit', item);
                 }.bind(this));
             }
@@ -14592,6 +14604,15 @@ define('hospitalrun/mixins/gender-list', ['exports', 'ember'], function (exports
             label: "Female",
             value: "F"        
         }]
+    });
+
+});
+define('hospitalrun/mixins/hospitalrun-version', ['exports', 'ember'], function (exports, Ember) {
+
+    'use strict';
+
+    exports['default'] = Ember['default'].Mixin.create({
+        version: '0.8.7.1'
     });
 
 });
@@ -23839,15 +23860,15 @@ define('hospitalrun/routes/abstract-module-route', ['exports', 'ember', 'hospita
         newButtonText: null,
         sectionTitle:null,
         subActions: null,
-        
+
         editPath: function() {
             var module = this.get('moduleName');
             return module + '.edit';
         }.property('moduleName'),
-        
+
         deletePath: function() {
             var module = this.get('moduleName');
-            return module + '.delete';        
+            return module + '.delete';
         }.property('moduleName'),
 
         newButtonAction: function() {
@@ -23863,41 +23884,24 @@ define('hospitalrun/routes/abstract-module-route', ['exports', 'ember', 'hospita
             return '/'+module + '/search';
         }.property('moduleName'),
 
-        
+
         actions: {
             allItems: function() {
                 this.transitionTo(this.get('moduleName')+'.index');
-            },        
-            closeModal: function() {
-                this.disconnectOutlet({
-                    parentView: 'application',
-                    outlet: 'modal'
-                });
             },
-            deleteItem: function(item) {            
+            deleteItem: function(item) {
                 var deletePath = this.get('deletePath');
                 this.send('openModal', deletePath, item);
-            },        
+            },
             editItem: function(item) {
                 this.transitionTo(this.get('editPath'), item);
-            },        
+            },
             newItem: function() {
                 if (this.currentUserCan(this.get('addCapability'))) {
                     this.transitionTo(this.get('editPath'), 'new');
                 }
-            },        
-            /**
-             * Render a modal using the specifed path and optionally set a model.
-             * @param modalPath the path to use for the controller and template.
-             * @param model (optional) the model to set on the controller for the modal.
-             */
-            openModal: function(modalPath, model) {
-                if (model) {
-                    this.controllerFor(modalPath).set('model', model);
-                }
-                this.renderModal(modalPath);
-            },        
-            
+            },
+
             /**
              * Action to set items in the section header.
              * @param details an object containing details to set on the section header.
@@ -23907,21 +23911,11 @@ define('hospitalrun/routes/abstract-module-route', ['exports', 'ember', 'hospita
              * - newButtonAction - The action to fire for the "new" button.
              */
             setSectionHeader: function(details) {
-                var currentController = this.controllerFor(this.get('moduleName'));        
+                var currentController = this.controllerFor(this.get('moduleName'));
                 currentController.setProperties(details);
-            },
-            
-            /**
-             * Update an open modal using the specifed model.
-             * @param modalPath the path to use for the controller and template.
-             * @param model (optional) the model to set on the controller for the modal.
-             */
-            updateModal: function(modalPath, model) {        
-                this.controllerFor(modalPath).set('model', model);    
-            },        
-
+            }
         },
-        
+
         /**
          * Make sure the user has permissions to the module; if not reroute to index.
          */
@@ -23934,17 +23928,17 @@ define('hospitalrun/routes/abstract-module-route', ['exports', 'ember', 'hospita
                 return Ember['default'].RSVP.reject('Not available');
             }
         },
-        
+
         /**
          * Override this function to generate an id for a new record
          * @return a promise that will resolved to a generated id;default is null which means that an
          * id will be automatically generated via Ember data.
          */
         generateId: function() {
-            return Ember['default'].RSVP.resolve(null);                
+            return Ember['default'].RSVP.resolve(null);
         },
 
-        model: function() {        
+        model: function() {
             if (!Ember['default'].isEmpty(this.additionalModels)) {
                 return new Ember['default'].RSVP.Promise(function(resolve, reject){
                     var promises = this.additionalModels.map(function(modelMap) {
@@ -23961,21 +23955,14 @@ define('hospitalrun/routes/abstract-module-route', ['exports', 'ember', 'hospita
                 }.bind(this),'Additional Models for'+this.get('moduleName'));
             } else {
                  return Ember['default'].RSVP.resolve();
-            }        
+            }
         },
-        
-        renderModal: function(template) {
-            this.render(template, {
-                into: 'application',
-                outlet: 'modal'
-            });            
-        },
-        
+
         renderTemplate: function() {
             this.render('section');
         },
-        
-        setupController: function(controller, model) { 
+
+        setupController: function(controller, model) {
             var navigationController = this.controllerFor('navigation');
             if (this.get('allowSearch') === true) {
                 navigationController.set('allowSearch',true);
@@ -23984,16 +23971,16 @@ define('hospitalrun/routes/abstract-module-route', ['exports', 'ember', 'hospita
                 navigationController.set('allowSearch',false);
             }
             var currentController = this.controllerFor(this.get('moduleName'));
-            var propsToSet = this.getProperties('additionalButtons','currentScreenTitle','newButtonAction','newButtonText','sectionTitle','subActions');        
+            var propsToSet = this.getProperties('additionalButtons','currentScreenTitle','newButtonAction','newButtonText','sectionTitle','subActions');
             currentController.setProperties(propsToSet);
             if (!Ember['default'].isEmpty(this.additionalModels)) {
                 this.additionalModels.forEach(function(item) {
                     controller.set(item.name, this.get(item.name));
                 }.bind(this));
-            }        
+            }
             this._super(controller, model);
         }
-        
+
     });
 
 });
@@ -24091,13 +24078,38 @@ define('hospitalrun/routes/application', ['exports', 'ember'], function (exports
                 } else {
                     this._super();
                 }
+            },
+            closeModal: function() {
+                this.disconnectOutlet({
+                    parentView: 'application',
+                    outlet: 'modal'
+                });
+            },
+            /**
+             * Render a modal using the specifed path and optionally set a model.
+             * @param modalPath the path to use for the controller and template.
+             * @param model (optional) the model to set on the controller for the modal.
+             */
+            openModal: function(modalPath, model) {
+                if (model) {
+                    this.controllerFor(modalPath).set('model', model);
+                }
+                this.renderModal(modalPath);
+            },
+            /**
+             * Update an open modal using the specifed model.
+             * @param modalPath the path to use for the controller and template.
+             * @param model (optional) the model to set on the controller for the modal.
+             */
+            updateModal: function(modalPath, model) {
+                this.controllerFor(modalPath).set('model', model);
             }
         },
 
         model: function() {
-            return this.store.find('config');        
+            return this.store.find('config');
         },
-        
+
         afterModel: function(resolvedModel) {
             this.controllerFor('navigation').set('allowSearch',false);
             if (resolvedModel) {
@@ -24106,8 +24118,15 @@ define('hospitalrun/routes/application', ['exports', 'ember'], function (exports
                     this.use_google_auth = use_google_auth.get('value');
                 }
             }
-        }
-        
+        },
+
+        renderModal: function(template) {
+            this.render(template, {
+                into: 'application',
+                outlet: 'modal'
+            });
+        },
+
     });
     exports['default'] = ApplicationRoute;
 
@@ -26144,7 +26163,9 @@ define('hospitalrun/templates/sidebar_nav/header', ['exports', 'ember'], functio
     data.buffer.push("\n        <nav class=\"settings-nav\">\n        ");
     stack1 = helpers['if'].call(depth0, "session.isAuthenticated", {hash:{},hashTypes:{},hashContexts:{},inverse:self.program(4, program4, data),fn:self.program(2, program2, data),contexts:[depth0],types:["ID"],data:data});
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n        </nav>\n    ");
+    data.buffer.push("\n          <a href=\"#\" ");
+    data.buffer.push(escapeExpression(helpers.action.call(depth0, "about", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
+    data.buffer.push(">About HospitalRun</a>\n        </nav>\n    ");
     return buffer;
     }
   function program2(depth0,data) {
@@ -26182,7 +26203,7 @@ define('hospitalrun/templates/sidebar_nav/header', ['exports', 'ember'], functio
     data.buffer.push(">\n        <span class=\"mega-octicon octicon-gear\"></span>\n    </a>\n\n    ");
     stack1 = helpers['if'].call(depth0, "isShowingSettings", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
     if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-    data.buffer.push("\n\n</header>");
+    data.buffer.push("\n\n</header>\n");
     return buffer;
     
   });
