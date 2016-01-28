@@ -20,10 +20,10 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
         about: function() {
             var configs = this.get('configs'),
                 version = this.get('version'),
-                message = `Version: ${version}`,
+                message = 'Version: '+version,
                 siteInfo = configs.findBy('id','site_information');
             if (!Ember.isEmpty(siteInfo)) {
-                message += ` Site Info: ${siteInfo.get('value')}`;
+                message += ' Site Info: '+siteInfo.get('value');
             }
             this.displayAlert('About HospitalRun', message);
         },
