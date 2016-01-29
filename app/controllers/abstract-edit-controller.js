@@ -108,9 +108,15 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
      * to skip the afterUpdate call.
      */
     update: function(skipAfterUpdate) {
-      this.beforeUpdate().then(function() {
-        this.saveModel(skipAfterUpdate);
-      }.bind(this));
+      try {
+        this.beforeUpdate().then(() => {
+          this.saveModel(skipAfterUpdate);
+        }).catch((err) => {
+          this.displayAlert('Error!!!!', 'An error occurred while attempting to save: ' + JSON.stringify(err));
+        });
+      } catch (ex) {
+        this.displayAlert('Error!!!!', 'An error occurred while attempting to save: ' + ex);
+      }
     }
   },
 
