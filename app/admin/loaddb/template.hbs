@@ -1,0 +1,27 @@
+<div class="panel panel-primary">
+  <div class="panel-body">
+    {{#em-form model=model submitButton=false }}
+        {{file-upload label="File To Load" property="importFileName" selectedFile=importFile }}
+        <button class="btn btn-default" {{action 'loadFile'}}>Load File</button>
+    {{/em-form}}
+    {{#if syncResults}}
+      <h4>File Load Successful</h4>
+      <div class="form-group col-xs-3">
+        <label>Start Time</label>
+        <p class="form-control-static">{{date-format syncResults.start_time format="l h:mm A"}}</p>
+      </div>
+      <div class="form-group col-xs-3">
+        <label>End Time</label>
+        <p class="form-control-static">{{date-format syncResults.end_time format="l h:mm A"}}</p>
+      </div>
+      <div class="form-group col-xs-3">
+        <label>Docs Read</label>
+        <p class="form-control-static">{{syncResults.docs_read}}</p>
+      </div>
+        <div class="form-group col-xs-3">
+        <label>Docs Written</label>
+        <p class="form-control-static">{{syncResults.docs_written}}</p>
+      </div>
+    {{/if}}
+  </div>
+</div>

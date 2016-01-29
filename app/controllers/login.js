@@ -1,22 +1,21 @@
-import Ember from "ember";
-var LoginController = Ember.Controller.extend(Ember.SimpleAuth.LoginControllerMixin, {
-     authenticatorFactory: 'authenticators:custom',
+import Ember from 'ember';
+var LoginController = Ember.Controller.extend({
+  session: Ember.inject.service(),
+  errorMessage: null,
+  identification: null,
+  password: null,
 
-     actions: {
-         // display an error when logging in fails
-         sessionAuthenticationFailed: function(message) {
-           this.set('errorMessage', message);
-         },
-
-         // handle login success
-         sessionAuthenticationSucceeded: function() {
-             this.set('errorMessage', "");
-             this.set('identification', "");
-             this.set('password', "");
-             this._super();
-         }
-     }
- }
-);
+  actions: {
+    authenticate() {
+      let { identification, password } = this.getProperties('identification', 'password');
+      this.get('session').authenticate('authenticator:custom', {
+        identification: identification,
+        password: password
+      }).catch((error) => {
+        this.set('errorMessage', error.reason);
+      });
+    }
+  }
+});
 
 export default LoginController;

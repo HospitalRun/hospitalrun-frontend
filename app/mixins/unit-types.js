@@ -1,36 +1,49 @@
-import Ember from "ember";
+import Ember from 'ember';
+import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.Mixin.create({
-    unitList: [
-        'ampoule',
-        'bag',
-        'bottle',
-        'box',
-        'bundle',
-        'capsule',
-        'case',
-        'container',
-        'cream',
-        'each',
-        'gel',
-        'nebule',
-        'ointment',
-        'pack',        
-        'pair',
-        'pallet',
-        'patch',
-        'pcs',
-        'pill',        
-        'plastic',
-        'polyamp',
-        'roll',
-        'spray',
-        'suppository',
-        'suspension',
-        'set',
-        'syrup',
-        'tablet',
-        'tray',
-        'tube',
-        'vial'
-    ]
+  defaultUnitList: [
+    'ampoule',
+    'bag',
+    'bottle',
+    'box',
+    'bundle',
+    'capsule',
+    'case',
+    'container',
+    'cream',
+    'each',
+    'gel',
+    'nebule',
+    'ointment',
+    'pack',
+    'pair',
+    'pallet',
+    'patch',
+    'pcs',
+    'pill',
+    'plastic',
+    'polyamp',
+    'roll',
+    'spray',
+    'suppository',
+    'suspension',
+    'set',
+    'syrup',
+    'tablet',
+    'tray',
+    'tube',
+    'vial'
+  ],
+
+  unitList: function() {
+    var defaultUnitList = this.get('defaultUnitList'),
+      inventoryUnitList = this.get('inventoryUnitList');
+    if (Ember.isEmpty(inventoryUnitList)) {
+      return defaultUnitList;
+    } else {
+      return inventoryUnitList;
+    }
+  }.property('inventoryUnitList', 'defaultUnitList'),
+
+  unitListForSelect: Ember.computed.map('unitList', SelectValues.selectValuesMap)
 });

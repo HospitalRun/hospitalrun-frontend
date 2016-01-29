@@ -1487,7 +1487,7 @@ th {
     width: 100%;
     margin-bottom: 20px;
     > {
-        thead > tr > th, tbody > tr > th, tfoot > tr > th, thead > tr > td, tbody > tr > td, tfoot > tr > td {
+        thead > tr > th, tbody > tr > th, tfoot > tr > th, thead > tr > td, tbody > tr > td, tfoot > tr > td,  tr > th, tr > td {
             padding: 8px;
             line-height: 1.42857143;
             vertical-align: top;

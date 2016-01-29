@@ -2,7 +2,7 @@
     <a class="sidebar-nav-logo" href="#">
       {{partial "components/logo-svg"}}
     </a>
-    <a href="#" {{bind-attr class=":settings-trigger isShowingSettings:active"}} {{action 'toggleSettings'}}>
+    <a href="#" class="settings-trigger {{if isShowingSettings 'active'}}" {{action 'toggleSettings'}}>
         <span class="mega-octicon octicon-gear"></span>
     </a>
 
@@ -13,6 +13,7 @@
         {{else}}
             {{#link-to 'login'}}Login{{/link-to}}
         {{/if}}
+          <a href="#" {{ action 'about' }}>About HospitalRun</a>
         </nav>
     {{/if}}
 

@@ -13,20 +13,26 @@
                 <button class="btn btn-primary" {{action newButtonAction}}>{{newButtonText}}</button>
                 {{/if}}
                 {{#if additionalButtons}}
-                    {{#each additionalButtons}}
-                    <button {{bind-attr class="class"}} {{action buttonAction}}>
-                        {{#if buttonIcon}}<span {{bind-attr class="buttonIcon"}}></span>{{/if}}
-                        {{buttonText}}</button>
+                    {{#each additionalButtons as |button|}}
+                        <button class={{button.class}} {{action button.buttonAction}}>
+                          {{#if buttonIcon}}<span class={{button.buttonIcon}}></span>{{/if}}
+                        {{button.buttonText}}</button>
                     {{/each}}
                 {{/if}}
             </div>
 
             <ul class="nav nav-pills view-sub-nav">
-                {{#each subActions}}
-                    {{#if statusQuery}}
-                        <li>{{#link-to linkTo (query-params status=statusQuery)}}{{text}}{{/link-to}}</li>
+                {{#each subActions as |subAction|}}
+                    {{#if subAction.statusQuery}}
+                        {{#active-link}}
+                          {{#link-to subAction.linkTo (query-params status=subAction.statusQuery) }}
+                            {{subAction.text}}
+                          {{/link-to}}
+                        {{/active-link}}
                     {{else}}
-                        <li>{{#link-to linkTo}}{{text}}{{/link-to}}</li>
+                        {{#active-link}}
+                          {{#link-to subAction.linkTo}}{{subAction.text}}{{/link-to}}
+                        {{/active-link}}
                     {{/if}}
                 {{/each}}
             </ul>

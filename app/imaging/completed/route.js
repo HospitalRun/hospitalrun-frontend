@@ -1,5 +1,6 @@
+import { translationMacro as t } from 'ember-i18n';
 import ImagingIndexRoute from 'hospitalrun/imaging/index/route';
 export default ImagingIndexRoute.extend({
-    pageTitle: 'Completed Imaging',
-    searchStatus: 'Completed'
+  pageTitle: t('imaging.titles.completed_imaging'),
+  searchStatus: 'Completed'
 });

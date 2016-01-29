@@ -1,38 +1,35 @@
 <div class="row">
-    {{#unless isNew}}
+    {{#unless model.isNew}}
         <div class="form-group col-sm-2">
             <label>ID</label>
-            {{input class="form-control" value=friendlyId type="text" disabled=true }}
+            {{input class="form-control test-item-id" value=model.friendlyId type="text" disabled=true }}
         </div>
     {{/unless}}
-    {{em-input property="name" label="Name" class="required  col-sm-8"}}
-    {{#unless isNew}}
+    {{em-input property="name" label="Name" class="required  col-sm-6 test-inv-name"}}
+    {{inventory/rank-select property="rank"}}
+    {{#unless model.isNew}}
         <div class="form-group col-sm-2">
-            <label>Quantity</label>
-            <p class="form-control-static">{{quantity}}</p>                    
+            <label>{{t 'labels.quantity'}}</label>
+            <p class="form-control-static">{{model.quantity}}</p>
         </div>
     {{/unless}}
-
 </div>
+
 {{em-text label="Description" property="description" rows=1 }}
 <div class="row">
-    {{em-select label="Type" property="type" 
-        content=inventoryTypes 
-        optionValuePath="content" 
-        optionLabelPath="content"
-        class="required col-sm-4"
+    {{em-select label="Type" property="inventoryType"
+        content=inventoryTypes
+        class="required col-sm-4 test-inv-type"
         prompt=" "
     }}
-    {{em-input property="crossReference" label="Cross Reference" class="col-sm-8"}}
+    {{em-input property="crossReference" label="Cross Reference" class="col-sm-8 test-inv-cross"}}
 </div>
 <div class="row">
-    {{em-input property="reorderPoint" label="Reorder Point" class="col-sm-3"}}
-    {{em-input property="price" label="Sale Price Per Unit" class="col-sm-3"}}
-    {{em-select label="Distribution Unit" class="col-sm-3 required" 
-        property="distributionUnit" 
-        content=unitList 
-        optionLabelPath="content"
-        optionValuePath="content"
+    {{em-input property="reorderPoint" label="Reorder Point" class="col-sm-3 test-inv-reorder"}}
+    {{em-input property="price" label="Sale Price Per Unit" class="col-sm-3 test-inv-price"}}
+    {{em-select label="Distribution Unit" class="col-sm-3 required test-inv-dist-unit"
+        property="distributionUnit"
+        content=unitListForSelect
         prompt=" "
-    }}            
+    }}
 </div>

@@ -58,7 +58,7 @@ h3.panel-title {
     }
 }
 
-.tt-dropdown-menu {
+.tt-menu {
     min-width: 160px;
     margin-top: 2px;
     padding: 5px 0;
@@ -102,12 +102,12 @@ h3.panel-title {
 }
 
 //Scrollable typeahead
-.scrollable-typeahead .tt-dropdown-menu {
+.scrollable-typeahead .tt-menu {
   max-height: 200px;
   overflow-y: auto;
 }
 
-.tt-dropdown-menu .query-results {
+.tt-menu .query-results {
     margin-bottom: 0;
 }
 

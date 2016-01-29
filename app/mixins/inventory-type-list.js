@@ -1,17 +1,21 @@
-import Ember from "ember";
+import Ember from 'ember';
+import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.Mixin.create({
-    defaultInventoryTypes: [        
-        'Medication',
-        'Supply'
-    ],
-    
-    inventoryTypes: function() {
-        var defaultInventoryTypes = this.get('defaultInventoryTypes'),
-            inventoryTypeList = this.get('inventoryTypeList');
-        if (Ember.isEmpty(inventoryTypeList)) {
-            return defaultInventoryTypes;
-        } else {
-            return inventoryTypeList;
-        }
-    }.property('inventoryTypeList', 'defaultInventoryTypes')
+  defaultInventoryTypes: [
+    'Medication',
+    'Supply'
+  ],
+
+  inventoryTypes: function() {
+    var defaultInventoryTypes = this.get('defaultInventoryTypes'),
+      inventoryTypeList = this.get('inventoryTypeList'),
+      typeList;
+    if (Ember.isEmpty(inventoryTypeList)) {
+      typeList = defaultInventoryTypes;
+    } else {
+      typeList = inventoryTypeList;
+    }
+    typeList = SelectValues.selectValues(typeList);
+    return typeList;
+  }.property('inventoryTypeList', 'defaultInventoryTypes')
 });

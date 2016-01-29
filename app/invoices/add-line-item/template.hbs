@@ -1,7 +1,13 @@
-{{#em-form model=this submit_button=false }}
+{{#modal-dialog
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=model submitButton=false }}
     {{em-input property="name" label="Name" class="required"}}
-    {{select-or-typeahead property="category" class="required"
-        label="Category" list=billingCategories
-        selection=category        
+    {{select-or-typeahead property="category" className="required"
+      label="Category" list=billingCategories
+      selection=model.category
     }}
-{{/em-form}}
+  {{/em-form}}
+{{/modal-dialog}}

@@ -1,10 +1,11 @@
-import Ember from "ember";
-export default Ember.Handlebars.makeBoundHelper(function(date, options) {
-    if (!Ember.isEmpty(date)) {
-        var dateFormat = 'l';
-        if (options && options.hash.format) {
-            dateFormat = options.hash.format;
-        }
-        return moment(date).format(dateFormat);
+import Ember from 'ember';
+export default Ember.Helper.helper(function(params, hash) {
+  if (!Ember.isEmpty(params[0])) {
+    var dateFormat = 'l';
+    let date = params[0];
+    if (hash && hash.format) {
+      dateFormat = hash.format;
     }
+    return moment(date).format(dateFormat);
+  }
 });

@@ -1,31 +1,44 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import Ember from 'ember';
-export default AbstractIndexRoute.extend({
-    category: null,
-    modelName: 'pricing',
-    pageTitle: 'All Pricing Items',    
-        
-    _getStartKeyFromItem: function(item) {
-        var category = item.get('category'),
-            keyPrefix = this.get('keyPrefix'),
-            name = item.get('name'),
-            type = item.get('type');
-        return [category, name, type, keyPrefix+item.get('id')];        
-    },
-    
-    _modelQueryParams: function() {
-        var category = this.get('category'),
-            keyPrefix = this.get('keyPrefix'),
-            maxValue = this.get('maxValue'),
-            queryParams = {
-                mapReduce: 'pricing_by_category'
-            };
-        if (!Ember.isEmpty(category)) {
-            queryParams.options = {
-                startkey: [category, null, null, null],
-                endkey: [category, {}, {}, keyPrefix+maxValue]
-            };
+import UserSession from 'hospitalrun/mixins/user-session';
+export default AbstractIndexRoute.extend(UserSession, {
+  category: null,
+  modelName: 'pricing',
+  pageTitle: 'All Pricing Items',
+
+  _getStartKeyFromItem: function(item) {
+    var category = item.get('category'),
+      id = this._getPouchIdFromItem(item),
+      name = item.get('name'),
+      pricingType = item.get('pricingType');
+    return [category, name, pricingType, id];
+  },
+
+  _modelQueryParams: function() {
+    var category = this.get('category'),
+      maxId = this._getMaxPouchId(),
+      queryParams = {
+        mapReduce: 'pricing_by_category'
+      };
+    if (!Ember.isEmpty(category)) {
+      queryParams.options = {
+        startkey: [category, null, null, null],
+        endkey: [category, {}, {}, maxId]
+      };
+    }
+    return queryParams;
+  },
+
+  actions: {
+    newItem: function() {
+      if (this.currentUserCan('add_pricing')) {
+        var routeId = 'new',
+          routeParts = this.routeName.split('.');
+        if (routeParts.length === 2 && routeParts[1] !== 'index') {
+          routeId += routeParts[1].capitalize();
         }
-        return queryParams;
-    }    
+        this.transitionTo('pricing.edit', routeId);
+      }
+    }
+  }
 });

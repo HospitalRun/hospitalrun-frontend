@@ -1,32 +1,32 @@
-{{#if hasRecords}}
+{{#item-listing paginationProps=paginationProps }}
+  {{#if hasRecords}}
     <table class="table">
-        <tr class="table-header">
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Requested On</th>
-            <th>Requested By</th>
-            {{#if canFulfill}}
-                <th>Actions</th>
-            {{/if}}
+      <tr class="table-header">
+        <th>{{t 'labels.name'}}</th>
+        <th>{{t 'labels.quantity'}}</th>
+        <th>{{t 'labels.requested_on'}}</th>
+        <th>{{t 'labels.requested_by'}}</th>
+        {{#if canFulfill}}
+          <th>{{t 'labels.actions'}}</th>
+        {{/if}}
+      </tr>
+      {{#each model as |request|}}
+        <tr>
+          <td>{{request.inventoryItem.name}}</td>
+          <td>{{request.quantity}}</td>
+          <td>{{date-format request.dateRequested}}</td>
+          <td>{{request.requestedBy}}</td>
+          {{#if canFulfill}}
+            <td>
+              <button class="btn btn-primary" {{action 'fulfill' request}}>{{t 'labels.fulfill'}}</button>
+            </td>
+          {{/if}}
         </tr>
-        {{#with canFulfill as canFulfill}}
-            {{#each}}
-                <tr>
-                    <td>{{inventoryItem.name}}</td>
-                    <td>{{quantity}}</td>
-                    <td>{{date-format dateRequested}}</td>
-                    <td>{{requestedBy}}</td>
-                    {{#if canFulfill}}
-                        <td>
-                            <button class="btn btn-primary" {{action 'fulfill' this}}>Fulfill</button>
-                        </td>
-                    {{/if}}
-                </tr>
-            {{/each}}
-        {{/with}}
+      {{/each}}
     </table>
-{{else}}
+  {{else}}
     <div class="alert alert-info">
-        <p>No requests found. {{#if canAdd}}<a href="#" {{action 'newRequest'}}>Create a new request?</a>{{/if}}</p>
+      <p>{{t 'inventory.messages.no_requests'}}{{#if canAdd}}<a href="#" {{action 'newRequest'}}> {{t 'inventory.messages.create_request'}}</a>{{/if}}</p>
     </div>
-{{/if}}
+  {{/if}}
+{{/item-listing}}

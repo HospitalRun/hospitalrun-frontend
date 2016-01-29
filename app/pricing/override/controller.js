@@ -1,49 +1,49 @@
 import Ember from 'ember';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
+import SelectValues from 'hospitalrun/utils/select-values';
 
-export default Ember.ObjectController.extend(IsUpdateDisabled, {
-    needs: ['pricing','pricing/edit'],        
+export default Ember.Controller.extend(IsUpdateDisabled, {
+  pricingController: Ember.inject.controller('pricing'),
 
-    actions: {
-        cancel: function() {
-            this.get('model').rollback();
-            this.send('closeModal');
-        },
-        
-        update: function() {
-            var isNew = this.get('isNew'),
-                override = this.get('model');
-            override.save().then(function() {
-                if (isNew) {
-                    this.get('editController').send('addOverride',override);
-                } else {
-                    this.send('closeModal');
-                }
-            }.bind(this));                           
-        }
+  actions: {
+    cancel: function() {
+      this.get('model').rollbackAttributes();
+      this.send('closeModal');
     },
 
-    editController: Ember.computed.alias('controllers.pricing/edit'),    
-    pricingProfiles: Ember.computed.alias('controllers.pricing.pricingProfiles'),
-    showUpdateButton: true,
-    
-    title: function() {
-        if (this.get('isNew')) {            
-            return 'Add Override';
-        } else {
-            return 'Edit Override';
-        }
-    }.property('isNew'),
-    
-    updateButtonAction: 'update',
-    updateButtonText: function() {
-        var isNew = this.get('isNew');
+    update: function() {
+      var isNew = this.get('model.isNew'),
+        override = this.get('model');
+      override.save().then(function() {
         if (isNew) {
-            return 'Add';
+          this.get('editController').send('addOverride', override);
         } else {
-            return 'Update';
+          this.send('closeModal');
         }
-    }.property('isNew'),
+      }.bind(this));
+    }
+  },
 
-    
+  editController: Ember.inject.controller('pricing/edit'),
+  pricingProfiles: Ember.computed.map('pricingController.pricingProfiles', SelectValues.selectObjectMap),
+  showUpdateButton: true,
+
+  title: function() {
+    if (this.get('model.isNew')) {
+      return 'Add Override';
+    } else {
+      return 'Edit Override';
+    }
+  }.property('model.isNew'),
+
+  updateButtonAction: 'update',
+  updateButtonText: function() {
+    var isNew = this.get('model.isNew');
+    if (isNew) {
+      return 'Add';
+    } else {
+      return 'Update';
+    }
+  }.property('model.isNew')
+
 });
