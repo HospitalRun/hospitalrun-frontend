@@ -7,11 +7,12 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
   cancelAction: 'allItems',
 
   cancelButtonText: function() {
+    let i18n = this.get('i18n');
     var hasDirtyAttributes = this.get('model.hasDirtyAttributes');
     if (hasDirtyAttributes) {
-      return 'Cancel';
+      return i18n.t('buttons.cancel');
     } else {
-      return 'Return';
+      return i18n.t('buttons.return_button');
     }
   }.property('model.hasDirtyAttributes'),
 
@@ -43,10 +44,11 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
 
   updateButtonAction: 'update',
   updateButtonText: function() {
+    let i18n = this.get('i18n');
     if (this.get('model.isNew')) {
-      return 'Add';
+      return i18n.t('buttons.add');
     } else {
-      return 'Update';
+      return i18n.t('buttons.update');
     }
   }.property('model.isNew'),
   updateCapability: null,
@@ -106,9 +108,15 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
      * to skip the afterUpdate call.
      */
     update: function(skipAfterUpdate) {
-      this.beforeUpdate().then(function() {
-        this.saveModel(skipAfterUpdate);
-      }.bind(this));
+      try {
+        this.beforeUpdate().then(() => {
+          this.saveModel(skipAfterUpdate);
+        }).catch((err) => {
+          this.displayAlert('Error!!!!', 'An error occurred while attempting to save: ' + JSON.stringify(err));
+        });
+      } catch (ex) {
+        this.displayAlert('Error!!!!', 'An error occurred while attempting to save: ' + ex);
+      }
     }
   },
 

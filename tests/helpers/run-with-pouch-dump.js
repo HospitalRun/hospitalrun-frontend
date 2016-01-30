@@ -4,17 +4,30 @@ import PouchDB from 'pouchdb';
 import DatabaseService from 'hospitalrun/services/database';
 import ConfigService from 'hospitalrun/services/config';
 
-function destroyDatabases(dbs) {
+function cleanupDatabases(dbs) {
   return wait().then(function() {
-    let destroyQueue = [];
-    destroyQueue.push(dbs.config.info().then(function() {
-      return dbs.config.destroy();
-    }));
-    destroyQueue.push(dbs.main.info().then(function() {
-      return dbs.main.destroy();
-    }));
-    return Ember.RSVP.all(destroyQueue);
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      if (dbs.main.changesListener) {
+        dbs.main.changesListener.cancel();
+        dbs.main.changesListener.on('complete', function() {
+          destroyDatabases(dbs).then(resolve, reject);
+        });
+      } else {
+        destroyDatabases(dbs).then(resolve, reject);
+      }
+    });
   });
+}
+
+function destroyDatabases(dbs) {
+  let destroyQueue = [];
+  destroyQueue.push(dbs.config.info().then(function() {
+    return dbs.config.destroy();
+  }));
+  destroyQueue.push(dbs.main.info().then(function() {
+    return dbs.main.destroy();
+  }));
+  return Ember.RSVP.all(destroyQueue);
 }
 
 function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
@@ -54,7 +67,7 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
     promise.then(function() {
       functionToRun();
       andThen(function() {
-        destroyDatabases({
+        cleanupDatabases({
           config: configDB,
           main: db
         }).then(resolve);

@@ -25,11 +25,11 @@
     "broccoli-funnel": "^1.0.1",
     "broccoli-manifest": "0.0.7",
     "broccoli-merge-trees": "^1.0.0",
+    "broccoli-serviceworker": "0.0.7",
     "ember-cli": "1.13.14",
     "ember-cli-active-link-wrapper": "0.0.4",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-babel": "^5.1.5",
-    "ember-cli-content-security-policy": "0.5.0",
     "ember-cli-dependency-checker": "^1.1.0",
     "ember-cli-deprecation-workflow": "0.1.5",
     "ember-cli-fake-server": "0.2.4",
@@ -42,7 +42,7 @@
     "ember-cli-sass": "^5.2.1",
     "ember-cli-sri": "^2.0.0",
     "ember-cli-uglify": "^1.2.0",
-    "ember-data": "2.3.2",
+    "ember-data": "2.3.3",
     "ember-disable-proxy-controllers": "^1.0.1",
     "ember-export-application-global": "^1.0.4",
     "ember-i18n": "4.2.0",
@@ -56,7 +56,7 @@
     "express": "^4.8.5",
     "glob": "^6.0.1",
     "nano": "6.2.0",
-    "request": "2.67.0"
+    "request": "2.69.0"
   },
   "dependencies": {
     "ember-radio-buttons": "^4.0.1"

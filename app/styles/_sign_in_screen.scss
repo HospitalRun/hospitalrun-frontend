@@ -1,27 +1,35 @@
+.signin-logo {
+  max-width: 200px;
+  margin: 40px auto;
+}
+
 .form-signin {
     max-width: 300px;
     margin: 0 auto;
     position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
+    transform: translate(-50%, 0);
+    top: 0;
     left: 50%;
-    background: $blue_light3;
-    padding: 20px;
-    border-radius: 10px;
 
-    .form-signin-heading {
-        font-weight: 300;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        text-align: center;
-        margin: 5px 0 26px;
-        color: $navy_drk2;
-    }
-
-    .form-signin-alert {
-        margin-top: 15px;
-        margin-bottom: 0;
-    }
+    .alert { margin-bottom: 15px; }
 
     input { background: white; }
 }
+
+.signin-contents {
+  background: $blue_light3;
+  width: 300px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.form-signin-heading {
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    margin: 0 0 20px;
+    color: $navy_drk2;
+    font-size: 24px;
+}
+.form-signin-heading::first-letter { text-transform: uppercase; }

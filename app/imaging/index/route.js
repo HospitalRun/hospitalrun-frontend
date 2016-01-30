@@ -1,7 +1,8 @@
+import { translationMacro as t } from 'ember-i18n';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 export default AbstractIndexRoute.extend({
   modelName: 'imaging',
-  pageTitle: 'Imaging Requests',
+  pageTitle: t('imaging.page_title'),
   searchStatus: 'Requested',
 
   _getStartKeyFromItem: function(item) {
@@ -11,7 +12,6 @@ export default AbstractIndexRoute.extend({
       searchStatus = this.get('searchStatus');
     return [searchStatus, requestedDateAsTime, imagingDateAsTime, id];
   },
-
   _modelQueryParams: function() {
     var maxId = this._getMaxPouchId(),
       maxValue = this.get('maxValue'),

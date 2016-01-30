@@ -2,6 +2,12 @@ import Ember from 'ember';
 import { Adapter } from 'ember-pouch';
 import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 
+const {
+  run: {
+    bind
+  }
+} = Ember;
+
 export default Adapter.extend(PouchAdapterUtils, {
   database: Ember.inject.service(),
   db: Ember.computed.reads('database.mainDB'),
@@ -24,28 +30,29 @@ export default Adapter.extend(PouchAdapterUtils, {
           }
           queryString = `${queryString}${key}:${query.containsValue.value}`;
         });
+        let successFn = (results) => {
+          if (results && results.hits && results.hits.hits) {
+            var resultDocs = Ember.A(results.hits.hits).map((hit) => {
+              var mappedResult = hit._source;
+              mappedResult.id = mappedResult._id;
+              return mappedResult;
+            });
+            var response = {
+              rows: resultDocs
+            };
+            this._handleQueryResponse(response, store, type).then(resolve, reject);
+          } else if (results.rows) {
+            this._handleQueryResponse(results, store, type).then(resolve, reject);
+          } else {
+            reject('Search results are not valid');
+          }
+        };
         Ember.$.ajax(searchUrl, {
           dataType: 'json',
           data: {
             q: queryString
           },
-          success(results) {
-            if (results && results.hits && results.hits.hits) {
-              var resultDocs = Ember.A(results.hits.hits).map((hit) => {
-                var mappedResult = hit._source;
-                mappedResult.id = mappedResult._id;
-                return mappedResult;
-              });
-              var response = {
-                rows: resultDocs
-              };
-              this._handleQueryResponse(response, store, type).then(resolve, reject);
-            } else if (results.rows) {
-              this._handleQueryResponse(results, store, type).then(resolve, reject);
-            } else {
-              reject('Search results are not valid');
-            }
-          }
+          success: successFn
         });
       } else {
         reject('invalid query');
@@ -94,6 +101,19 @@ export default Adapter.extend(PouchAdapterUtils, {
       });
     }
     return haveSpecialCharacters;
+  },
+
+  _startChangesToStoreListener: function() {
+    var db = this.get('db');
+    if (db) {
+      this.changes = db.changes({
+        since: 'now',
+        live: true,
+        returnDocs: false
+      }).on('change', bind(this, 'onChange')
+      ).on('error', Ember.K); // Change sometimes throws weird 500 errors that we can ignore
+      db.changesListener = this.changes;
+    }
   },
 
   generateIdForRecord() {
