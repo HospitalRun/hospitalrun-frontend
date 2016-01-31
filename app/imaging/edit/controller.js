@@ -9,7 +9,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   chargePricingCategory: 'Imaging',
   chargeRoute: 'imaging.charge',
   selectedImagingType: null,
-
+  addNote: true,
   canComplete: function() {
     var isNew = this.get('model.isNew'),
       imagingTypeName = this.get('model.imagingTypeName'),
@@ -95,6 +95,25 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   radiologistList: Ember.computed.alias('imagingController.radiologistList'),
 
   updateCapability: 'add_imaging',
+  
+  beforeUpdate: function() {
+    if (!Ember.isEmpty(this.get('model.notes')) && this.addNote) {
+      var imaging = this.get('model'),
+          patientNote = imaging.get('patientNote');
+      if (Ember.isEmpty(patientNote)) {
+        imaging.set('patientNote', this.get('store').createRecord('patient-note', {
+          patient: imaging.get('patient'),
+          imaging: imaging,
+          date: new Date(),
+          createdBy: this.getUserName(),
+          content: imaging.get('notes'),
+          noteType: 'Imaging'
+        }));
+      } else {
+        patientNote.set('content', imaging.get('notes'));
+      }
+    }
+  },
 
   afterUpdate: function(saveResponse, multipleRecords) {
     this.updateLookupLists();
