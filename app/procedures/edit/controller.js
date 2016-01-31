@@ -93,6 +93,22 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
   beforeUpdate: function() {
     return new Ember.RSVP.Promise(function(resolve, reject) {
+      if (!Ember.isEmpty(this.get('model.notes'))) {
+        var procedure = this.get('model'),
+            patientNote = procedure.get('patientNote');
+        if (Ember.isEmpty(patientNote)) {
+          procedure.set('patientNote', this.get('store').createRecord('patient-note', {
+            patient: procedure.get('visit.patient'), 
+            procedure: procedure,
+            date: new Date(),
+            createdBy: this.getUserName(),
+            content: procedure.get('notes'),
+            noteType: 'Procedural'
+          }));      
+        } else {
+          patientNote.set('content', procedure.get('notes'));
+        }      
+      }
       this.updateCharges().then(function() {
         if (this.get('model.isNew')) {
           this.addChildToVisit(this.get('model'), 'procedures').then(resolve, reject);
