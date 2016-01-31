@@ -20,6 +20,7 @@
               <div class="form-group col-sm-3">
                 <label>Patient</label>
                 <p class="form-control-static">{{model.patient.displayName}}</p>
+                <button type="button" class="btn btn-default neutral" {{action "showPatientHistory" model.patient bubbles=false on="click"}}>View History</button>
               </div>
               {{#if isAdmissionVisit}}
                 {{date-picker property="startDate" label="Admission Date" showTime=true class="col-sm-3 required"}}
@@ -90,8 +91,6 @@
                 {{/each}}
               </table>
             {{/if}}
-            {{em-text label="Patient History" property="history" rows=3 }}
-            {{em-text label="History since last seen" property="historySince" rows=3 }}
             {{em-text label="Notes" property="notes" rows=3 }}
           {{/em-form}}
         </div>

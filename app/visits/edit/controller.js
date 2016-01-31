@@ -173,6 +173,39 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
     if (this.get('model.isNew')) {
       this.set('newVisit', true);
     }
+    if (!Ember.isEmpty(this.get('model.notes'))) {
+      var visit = this.get('model'),
+          patientNote = visit.get('patientNote');
+      if (Ember.isEmpty(patientNote)) {
+        visit.set('patientNote', this.get('store').createRecord('patient-note', {
+          patient: visit.get('patient'), 
+          visit: visit,
+          date: new Date(),
+          createdBy: this.getUserName(),
+          content: visit.get('notes'),
+          noteType: function(visit) {
+            switch (visit.visitType) {
+              case 'Admission':
+                if (Ember.isEmpty(visit.procedure)) {
+                  return 'Pre-op';
+                } else {
+                  return 'Post-op';
+                }
+                break;
+              case 'Clinic':
+              case 'Followup':
+                return 'General';
+                break;
+              default:
+                return visit.visitType;
+                break;
+            }
+          }
+        }));      
+      } else {
+        patientNote.set('content', visit.get('notes'));
+      }      
+    }
     return new Ember.RSVP.Promise(function(resolve, reject) {
       this.updateCharges().then(resolve, reject);
     }.bind(this));
@@ -273,7 +306,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
       });
       this.send('openModal', 'visits.vitals.edit', newVitals);
     },
-
+    showPatientHistory: function(model) {  
+      this.send('openModal', 'patients.history', model);
+    },
     newAppointment: function() {
       this._addChildObject('appointments.edit');
     },
