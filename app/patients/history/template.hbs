@@ -16,16 +16,33 @@
         <tr class="table-header">
           <th>Date</th>
           <th>By</th>
-          <th>Activity</th>
-        </tr>
-        
+          <th>Note</th>
+        </tr>        
         {{#each model.patientNotes as |note|}}
-        {{#if note.appointment}}
+        {{#if note.visit}}
+          <th>
+            <td colspan="3">On {{note.visit.visitDate}} at {{note.visit.location}}</td>
+          </th>
+        {{/if}}
+        {{#if note.lab}}
+          {{partial 'lab/summary' note.lab }}
+        {{/if}}
+        {{#if note.medication}}
+          {{partial 'medication/summary' note.medication }}
+        {{/if}}
+        {{#if note.procedure}}
+          {{partial 'procedure/summary' note.procedure }}
         {{/if}}
         <tr>
           <td>{{date-format note.date}}</td>
           <td>{{note.createdBy}}{{#if note.attribution}} on behalf of {{note.attribution}}{{/if}}</td>
-          <td>{{note.content}}</td>
+          <td>
+            {{#if note.imaging.imagingType}}{{note.imaging.imagingType}} {{/if}}
+            {{#if note.lab.labType}}{{note.lab.labType}}: {{/if}}
+            {{#if note.medication.prescription}}{{note.medication.prescription}}: {{/if}}
+            {{#if note.procedure.cptCode}}{{note.procedure.cptCode}}: {{/if}}
+            {{note.content}}
+          </td>
         </tr>
         {{/each}}
       </table>      
