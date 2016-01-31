@@ -6,6 +6,7 @@ import UserSession from 'hospitalrun/mixins/user-session';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodule, UserSession, VisitTypes, {
+  addNote: true,
   appointmentsController: Ember.inject.controller('appointments'),
   endHour: null,
   endMinute: null,
@@ -78,33 +79,34 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
     }
     return isAdmissionAppointment;
   }.property('model.appointmentType'),
-
+  
   updateCapability: 'add_appointment',
-
+  
   afterUpdate: function() {    
     this.send(this.get('cancelAction'));    
   },
-
+  
   beforeUpdate: function() {
-    var appointment = this.get('model');
-    /*
-    if (Ember.isEmpty(appointment.patientNote)) {
-      appointment.patientNote = this.get('store').createRecord('patient-note', {
-        patient: appointment.patient, 
-        appointment: appointment,
-        date: new Date(),
-        createdBy: this.getUserName(),
-        content: appointment.notes,
-        noteType: 'Appointment'
-      });      
-    } else {
-      this.set('model.patientNote.content', appointment.notes);
+    if (!Ember.isEmpty(this.get('model.notes')) && this.addNote) {
+      var appointment = this.get('model'),
+          patientNote = procedure.get('patientNote');
+      if (Ember.isEmpty(patientNote)) {
+        appointment.set('patientNote', this.get('store').createRecord('patient-note', {
+          patient: appointment.get('patient'), 
+          appointment: appointment,
+          date: new Date(),
+          createdBy: this.getUserName(),
+          content: appointment.get('notes'),
+          noteType: 'Appointment'
+        }));      
+      } else {
+        patientNote.set('content', appointment.get('notes'));
+      }      
     }
-    */
     this._updateAppointmentDates();    
     return Ember.RSVP.Promise.resolve();
   },
-
+  
   endHourChanged: function() {
     this._updateDate('endHour', 'endDate');
   }.observes('endHour'),
