@@ -67,6 +67,5 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     }
     this.send('setSectionHeader', sectionDetails);
     this._super(controller, model);
-    controller.notifyPropertyChange('cancelAction');
   }
 });
