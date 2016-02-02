@@ -281,7 +281,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
 
     editAppointment: function(appointment) {
       appointment.set('returnToPatient', true);
-      appointment.set('returnTo',null);
+      appointment.set('returnTo', null);
       this.transitionToRoute('appointments.edit', appointment);
     },
 
