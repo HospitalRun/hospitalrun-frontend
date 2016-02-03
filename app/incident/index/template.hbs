@@ -1,38 +1,37 @@
-{{#if hasRecords}}
-    <table class="table">
-        <tr class="table-header">
-            <th>Incident ID</th>
-            <th>Reported By</th>
-            <th>Location of Incident</th>
-            <th>Date of Incident</th>
-            <th>Incident Type Category</th>
-            <th>Incident Type Item</th>
-            {{#if showActions}}
-                <th>Actions</th>
-            {{/if}}
-        </tr>
-        {{#with this as parentController}}
-            {{#each}}
-                    <tr {{action 'editItem' this}}>
-                        <td>{{friendlyId}}
-                  	    <td>{{reportedBy}}</td>
-                        <td>{{locationOfIncident}}</td>
-                        <td>{{date-format dateOfIncident}}</td>
-                        <td>{{categoryName}}</td>
-					    <td>{{categoryItem}}</td>
-                        {{#if parentController.showActions}}
+{{#item-listing paginationProps=paginationProps }}
+    {{#if hasRecords}}
+        <table class="table">
+            <tr class="table-header">
+                <th>Incident ID</th>
+                <th>Reported By</th>
+                <th>Location of Incident</th>
+                <th>Date of Incident</th>
+                <th>Incident Type Category</th>
+                <th>Incident Type Item</th>
+                {{#if showActions}}
+                    <th>Actions</th>
+                {{/if}}
+            </tr>
+            {{#each model as |incident|}}
+                    <tr {{action 'editItem' incident}}>
+                        <td>{{incident.friendlyId}}</td>
+                  	    <td>{{incident.reportedBy}}</td>
+                        <td>{{incident.locationOfIncident}}</td>
+                        <td>{{date-format incident.dateOfIncident}}</td>
+                        <td>{{incident.categoryName}}</td>
+					    <td>{{incident.categoryItem}}</td>
+                        {{#if showActions}}
                             <td>
-                                {{#if parentController.canAdd}}
-                                    <button class="btn btn-default neutral" {{action 'editItem' this  bubbles=false }}>Edit</button>
+                                {{#if canAdd}}
+                                    <button class="btn btn-default neutral" {{action 'editItem' incident  bubbles=false }}>Edit</button>
                                 {{/if}}
-                                {{#if parentController.canDelete}}
-                                    <button class="btn btn-default warning" {{action 'showDeleteIncident' this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                                {{#if canDelete}}
+                                    <button class="btn btn-default warning" {{action 'showDeleteIncident' incident  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                 {{/if}}
                             </td>
                         {{/if}}
                     </tr>
             {{/each}}
-        {{/with}}
     </table>
 {{else}}
     <div class="alert alert-info">
@@ -43,3 +42,4 @@
         {{/if}}
     </div>
 {{/if}}
+{{/item-listing}}

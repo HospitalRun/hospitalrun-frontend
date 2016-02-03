@@ -3,7 +3,7 @@ import Ember from 'ember';
 import UserSession from "hospitalrun/mixins/user-session";
 import NumberFormat from "hospitalrun/mixins/number-format";
 export default AbstractReportController.extend(UserSession, NumberFormat, {
-    needs: ['incident'],
+    //needs: ['incident'],
 
     canGenerateReport: function() {
         return this.currentUserCan('generate_incident_report');

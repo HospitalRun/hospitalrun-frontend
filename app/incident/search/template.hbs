@@ -1,5 +1,5 @@
-{{#view "search-listing" newButtonText="New Incident" allButtonText="All Incidents"}}
-	{{#if canSearch}}
+{{#search-listing newButtonText="New Item" allButtonText="All Incidents"}}
+    {{#if canSearch}}
     	{{partial 'incident/index'}}
 	{{/if}}
-{{/view}}
+{{/search-listing}}

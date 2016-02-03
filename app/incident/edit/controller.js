@@ -9,7 +9,8 @@ import IncidentContributingFactors from 'hospitalrun/mixins/incident-contributin
 
 export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentHarmScoreList, IncidentLocationsList,
  IncidentContributingFactors, UserSession, {
-     needs: ['incident','pouchdb'],
+     incident: Ember.inject.controller(),
+     //needs: ['incident','pouchdb'],
 
     canAddFeedback: function() {
         var canAdd = true;

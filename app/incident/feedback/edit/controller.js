@@ -2,26 +2,24 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import Ember from "ember";
 
 export default AbstractEditController.extend({
-    needs: 'incident/edit',
-    
     cancelAction: 'closeModal',
-    
-    editController: Ember.computed.alias('controllers.incident/edit'),    
+
+    editController: Ember.inject.controller('incident/edit'),    
     
     newFeedback: false,
     
     title: function() {
-        var isNew = this.get('isNew');
+        var isNew = this.get('model.isNew');
         if (isNew) {
             return 'Add Feedback';
         }
         return 'Edit Feedback';
-    }.property('isNew'),
+    }.property('model.isNew'),
     
     updateCapability: 'add_feedback',
     
     beforeUpdate: function() {
-        if (this.get('isNew')) {
+        if (this.get('model.isNew')) {
             this.set('newFeedback', true);         
         }
         return Ember.RSVP.Promise.resolve();

@@ -1,14 +1,15 @@
-{{#em-form model=this submit_button=false }}
+{{#edit-panel editPanelProps=editPanelProps}}
+  {{#em-form model=model submit_button=false }}
     <div class="panel panel-success">
             <div class="row">        
                     <div class="col-xs-12 col-md-8">
-                        <p class="text-info">Incident Id: {{friendlyId}}</p>
+                        <p class="text-info">Incident Id: {{model.friendlyId}}</p>
                     </div>
                     <div class="col-xs-6 col-md-4">
-                        <p class="text-success pull-right">Status: {{statusOfIncident}}</p>
+                        <p class="text-success pull-right">Status: {{model.statusOfIncident}}</p>
                     </div>     
             </div>
-    </div>
+        </div>
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class="active" ><a href="#creation" role="tab" data-toggle="pill">Creation</a></li>
             <li role="presentation"><a href="#reviewers" role="tab" data-toggle="pill">+ Reviewers</a></li>
@@ -35,10 +36,10 @@
                             <div class="form-group has-success">
                                 <label class="control-label">Reported By</label>
                                 <div class="form-control not-editable">
-                                    {{#if isNew}}
-                                        {{setAndGetReportedBy}}
+                                    {{#if model.isNew}}
+                                        {{model.setAndGetReportedBy}}
                                     {{else}}
-                                        {{reportedBy}}
+                                        {{model.reportedBy}}
                                     {{/if}}
                                 </div>
                             </div>
@@ -104,24 +105,24 @@
                                 <th>Added On</th>
                                 <th>Actions</th>
                             </tr>
-                            {{#with this as parentController}}
-                                {{#each reviewers}}
+                            
+                                {{#each model.reviewers as |reviewer|}}
                                     <tr>
-                                        <td>{{reviewerName}}</td>
-                                        <td>{{reviewerEmail}}</td>
-                                        <td>{{addedBy}}</td>
-                                        <td>{{date-format dateRecorded}}</td>
+                                        <td>{{reviewer.reviewerName}}</td>
+                                        <td>{{reviewer.reviewerEmail}}</td>
+                                        <td>{{reviewer.addedBy}}</td>
+                                        <td>{{date-format reviewer.dateRecorded}}</td>
                                         <td>
-                                            {{#if parentController.canAddReviewer}}
-                                               <button class="btn btn-default neutral" {{action "showEditReviewer" this}}>Edit</button>
+                                            {{#if canAddReviewer}}
+                                               <button class="btn btn-default neutral" {{action "showEditReviewer" reviewer}}>Edit</button>
                                             {{/if}}
-                                            {{#if parentController.canDeleteReviewer}}
-                                               <button class="btn btn-default warning" {{action "showDeleteReviewer" this  bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                            {{#if canDeleteReviewer}}
+                                               <button class="btn btn-default warning" {{action "showDeleteReviewer" reviewer  bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
                                             {{/if}}
                                         </td>
                                     </tr>
                                 {{/each}}
-                            {{/with}}
+                           
                         </table>
                     </div>
                 </div>
@@ -144,23 +145,23 @@
                                 <th>Feedback</th>
                                 <th>Actions</th>
                             </tr>
-                            {{#with this as parentController}}
-                                {{#each feedbacks}}
+                    
+                                {{#each model.feedbacks as |feedback|}}
                                     <tr>
-                                        <td>{{date-format dateRecorded}}</td>
-                                        <td>{{givenBy}}</td>
-                                        <td>{{description}}</td>
+                                        <td>{{date-format feedback.dateRecorded}}</td>
+                                        <td>{{feedback.givenBy}}</td>
+                                        <td>{{feedback.description}}</td>
                                         <td>
-                                            {{#if parentController.canEditFeedback}}
-                                               <button class="btn btn-default neutral" {{action "showEditFeedback" this}}>Edit</button>
+                                            {{#if canEditFeedback}}
+                                               <button class="btn btn-default neutral" {{action "showEditFeedback" feedback}}>Edit</button>
                                             {{/if}}
-                                            {{#if parentController.canDeleteFeedback}}
-                                               <button class="btn btn-default warning" {{action "showDeleteFeedback" this  bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                                            {{#if canDeleteFeedback}}
+                                               <button class="btn btn-default warning" {{action "showDeleteFeedback" feedback  bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
                                             {{/if}}
                                         </td>
                                     </tr>
                                 {{/each}}
-                            {{/with}}
+                      
                         </table>
                     </div>
                 </div>
@@ -185,25 +186,25 @@
                                 <th>Narrative Statement</th>
                                 <th>Actions</th>
                             </tr>
-                            {{#with this as parentController}}
-                                {{#each investigationFindings}}
+                          
+                                {{#each model.investigationFindings as |investigationFinding|}}
                                     <tr>
-                                        <td>{{date-format dateRecorded}}</td>
-                                        <td>{{typeOfPerson}}</td>
-                                        <td>{{identityDocumentType}}</td>
-                                        <td>{{identityNumber}}</td>
-                                        <td>{{narrativeStatement}}</td>
+                                        <td>{{date-format investigationFinding.dateRecorded}}</td>
+                                        <td>{{investigationFinding.typeOfPerson}}</td>
+                                        <td>{{investigationFinding.identityDocumentType}}</td>
+                                        <td>{{investigationFinding.identityNumber}}</td>
+                                        <td>{{investigationFinding.narrativeStatement}}</td>
                                         <td>
-                                            {{#if parentController.canAddInvestigationFinding}}
-                                                <button class="btn btn-default neutral" {{action "showEditInvestigationFinding" this}}>Edit</button>
+                                            {{#if canAddInvestigationFinding}}
+                                                <button class="btn btn-default neutral" {{action "showEditInvestigationFinding" investigationFinding}}>Edit</button>
                                             {{/if}}
-                                            {{#if parentController.canDeleteInvestigationFinding}}
-                                                <button class="btn btn-default warning" {{action "showDeleteInvestigationFinding" this  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                                            {{#if canDeleteInvestigationFinding}}
+                                                <button class="btn btn-default warning" {{action "showDeleteInvestigationFinding" investigationFinding  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                             {{/if}}
                                         </td>
                                     </tr>
                                 {{/each}}
-                            {{/with}}
+                      
                         </table>
                     </div>
                 </div>
@@ -230,17 +231,17 @@
                                 </tr>
                             </THEAD>
                             <TBODY>
-                                {{#each patientFactors}}
+                                {{#each model.patientFactors as |patientFactor|}}
                                     <tr>
                                         <td>
-                                            {{type}}
+                                            {{patientFactor.type}}
                                         </td>
                                         <td>
                                             <table class="table">
                                                 <TBODY>
-                                                    {{#each components}}
+                                                    {{#each patientFactor.components as |component|}}
                                                         <tr>
-                                                            {{em-checkbox label=name property=id}}
+                                                            {{em-checkbox label=component.name property=component.id}}
                                                          </tr>
                                                     {{/each}}
                                                 </TBODY> 
@@ -258,17 +259,17 @@
                                     </tr>
                                 </THEAD>
                                 <TBODY>
-                                    {{#each staffFactors}}
+                                    {{#each model.staffFactors as |staffFactor|}}
                                         <tr>
                                             <td>
-                                                {{type}}
+                                                {{staffFactor.type}}
                                             </td>
                                             <td>
                                                 <table class="table">
                                                     <TBODY>  
-                                                        {{#each components}}
+                                                        {{#each staffFactor.components as |component|}}
                                                             <tr>
-                                                               {{em-checkbox label=name property=id}}
+                                                               {{em-checkbox label=component.name property=component.id}}
                                                              </tr>
                                                         {{/each}}
                                                     </TBODY>
@@ -286,17 +287,17 @@
                                 </tr>
                             </THEAD>
                             <TBODY>
-                                    {{#each taskFactors}}
+                                    {{#each model.taskFactors as |taskFactor|}}
                                         <tr>
                                             <td>
-                                                {{type}}
+                                                {{taskFactor.type}}
                                             </td>
                                             <td>
                                                 <table class="table">
                                                     <TBODY>
-                                                        {{#each components}}
+                                                        {{#each taskFactor.components as |component|}}
                                                             <tr>
-                                                                {{em-checkbox label=name property=id}}
+                                                                {{em-checkbox label=component.name property=component.id}}
                                                             </tr>                        
                                                         {{/each}}
                                                     </TBODY>
@@ -314,17 +315,17 @@
                                 </tr>
                             </THEAD>
                             <TBODY>
-                                    {{#each communicationFactors}}
+                                    {{#each model.communicationFactors as |communicationFactor|}}
                                         <tr>
                                             <td>
-                                                {{type}}
+                                                {{communicationFactor.type}}
                                             </td>
                                             <td>
                                                 <table class="table">
                                                     <TBODY> 
-                                                        {{#each components}}
+                                                        {{#each communicationFactor.components as |component|}}
                                                             <tr>
-                                                                {{em-checkbox label=name property=id}}
+                                                                {{em-checkbox label=component.name property=component.id}}
                                                             </tr>
                                                         {{/each}}
                                                     </TBODY>
@@ -342,17 +343,17 @@
                                 </tr>
                             </THEAD>
                             <TBODY>
-                                    {{#each equipmentFactors}}
+                                    {{#each model.equipmentFactors as |equipmentFactor|}}
                                         <tr>
                                             <td>
-                                                {{type}}
+                                                {{equipmentFactor.type}}
                                             </td>
                                             <td>
                                                 <table class="table">
                                                     <TBODY>
-                                                        {{#each components}}
+                                                        {{#each equipmentFactor.components as |component|}}
                                                             <tr>
-                                                                {{em-checkbox label=name property=id}}
+                                                                {{em-checkbox label=component.name property=component.id}}
                                                             </tr>
                                                         {{/each}}
                                                     </TBODY>
@@ -370,17 +371,17 @@
                                 </tr>
                             </THEAD>
                             <TBODY>
-                                    {{#each workEnvFactors}}
+                                    {{#each model.workEnvFactors as |workEnvFactor|}}
                                         <tr>
                                             <td>
-                                                {{type}}
+                                                {{workEnvFactor.type}}
                                             </td>
                                             <td>
                                                 <table class="table">
                                                     <TBODY> 
-                                                        {{#each components}}
+                                                        {{#each workEnvFactor.components as |component|}}
                                                             <tr>
-                                                               {{em-checkbox label=name property=id}}
+                                                               {{em-checkbox label=component.name property=component.id}}
                                                             </tr>
                                                         {{/each}}
                                                     </TBODY>
@@ -398,17 +399,17 @@
                                 </tr>
                             </THEAD>
                             <TBODY>
-                                    {{#each organisationalFactors}}
+                                    {{#each model.organisationalFactors as |organisationalFactor|}}
                                         <tr>
                                             <td>
-                                                {{type}}
+                                                {{organisationalFactor.type}}
                                             </td>
                                             <td>
                                                 <table class="table">
                                                     <TBODY> 
-                                                        {{#each components}}
+                                                        {{#each organisationalFactor.components as |component|}}
                                                             <tr>
-                                                                {{em-checkbox label=name property=id}}
+                                                                {{em-checkbox label=component.name property=component.id}}
                                                             </tr>
                                                         {{/each}}
                                                     </TBODY>
@@ -426,17 +427,17 @@
                                 </tr>
                             </THEAD>
                             <TBODY>
-                                    {{#each educationAndTrainingFactors}}
+                                    {{#each model.educationAndTrainingFactors as |educationAndTrainingFactor|}}
                                         <tr>
                                             <td>
-                                                {{type}}
+                                                {{educationAndTrainingFactor.type}}
                                             </td>
                                             <td>
                                                 <table class="table">
                                                     <TBODY>
-                                                        {{#each components}}
+                                                        {{#each educationAndTrainingFactor.components as  |component|}}
                                                             <tr>
-                                                                {{em-checkbox label=name property=id}}
+                                                                {{em-checkbox label=component.name property=component.id}}
                                                             </tr>
                                                        {{/each}}
                                                     </TBODY>
@@ -454,17 +455,17 @@
                                 </tr>
                             </THEAD>
                             <TBODY>
-                                {{#each teamFactors}}
+                                {{#each model.teamFactors as |teamFactor|}}
                                     <tr>
                                         <td>
-                                            {{type}}
+                                            {{teamFactor.type}}
                                         </td>
                                         <td>
                                             <table class="table">
                                                 <TBODY> 
-                                                    {{#each components}}
+                                                    {{#each teamFactor.components as |component|}}
                                                         <tr>
-                                                            {{em-checkbox label=name property=id}}
+                                                            {{em-checkbox label=component.name property=component.id}}
                                                         </tr>
                                                     {{/each}}
                                                 </TBODY>
@@ -488,7 +489,7 @@
                     </div>
                     {{#if canAddRisk}}
                         <div class="panel-body detail-section-content">
-                            {{ext-radio name=harmScore content=harmScoreList value=harmScore radioLabelPath="content.label" 
+                            {{ext-radio name=harmScore content=harmScoreList value=model.harmScore radioLabelPath="content.label" 
                               radioValuePath="content.value"}}
                         </div>
                     {{/if}}
@@ -553,25 +554,25 @@
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
-                            {{#with this as parentController}}
-                                {{#each recommendations}}
+                           
+                                {{#each model.recommendations as |recommendation|}}
                                     <tr>
-                                        <td>{{activity}}</td>
-                                        <td>{{responsibility}}</td>
-                                        <td>{{date-format startDate}}</td>
-                                        <td>{{date-format targetDateOfCompletion}}</td>
-                                        <td>{{status}}</td>
+                                        <td>{{recommendation.activity}}</td>
+                                        <td>{{recommendation.responsibility}}</td>
+                                        <td>{{date-format recommendation.startDate}}</td>
+                                        <td>{{date-format recommendation.targetDateOfCompletion}}</td>
+                                        <td>{{recommendation.status}}</td>
                                         <td>
-                                            {{#if parentController.canAddRecommendation}}
-                                                <button class="btn btn-default neutral" {{action "showEditRecommendation" this}}>Edit</button>
+                                            {{#if canAddRecommendation}}
+                                                <button class="btn btn-default neutral" {{action "showEditRecommendation" recommendation}}>Edit</button>
                                             {{/if}}
-                                            {{#if parentController.canDeleteRecommendation}}
-                                                <button class="btn btn-default warning" {{action "showDeleteRecommendation" this bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                                            {{#if canDeleteRecommendation}}
+                                                <button class="btn btn-default warning" {{action "showDeleteRecommendation" recommendation bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
                                             {{/if}}
                                         </td>
                                     </tr>
                                 {{/each}}
-                            {{/with}}
+                          
                         </table>
                         {{#if canAddRecommendation}}
                             {{em-text label="Actions Taken" property="actionsTaken" rows=3}}
@@ -641,7 +642,7 @@
                                 </THEAD>
                                 <TBODY>
                                     <tr>
-                                        <td>{{incidentDescription}}</td>
+                                        <td>{{model.incidentDescription}}</td>
                                     </tr>
                                 </TBODY>
                             </table>
@@ -654,20 +655,20 @@
                                 <TBODY>
                                     <tr>
                                         <td>Incident Date:</td>
-                                        <td>{{date-format dateOfIncident}}</td>
+                                        <td>{{date-format model.dateOfIncident}}</td>
                                     </tr>
                                     <tr>
                                         <td>Location of Incident:</td>
-                                        <td>{{locationOfIncident}}</td>
+                                        <td>{{model.locationOfIncident}}</td>
                                     </tr>   
                                     <tr>
                                         <td>Incident Type:</td>
-                                        <td>{{categoryName}}</td>
-                                        <td>{{categoryItem}}</td>
+                                        <td>{{model.categoryName}}</td>
+                                        <td>{{model.categoryItem}}</td>
                                     </tr>
                                     <tr>
                                         <td>Harm Score:</td>
-                                        <td>{{harmScore}}</td>
+                                        <td>{{model.harmScore}}</td>
                                     </tr>
                                 </TBODY>
                             </table>
@@ -684,11 +685,11 @@
                                             <td>
                                                 <table class="table table-striped">
                                                     <tbody>
-                                                        {{#each patientContributingFactors}}
+                                                        {{#each model.patientContributingFactors as |patientContributingFactor|}}
                                                             <tr>
-                                                                <td>{{type}}</td>
-                                                                <td>{{component}}</td>
-                                                                <td>{{userValue}}</td>
+                                                                <td>{{patientContributingFactor.type}}</td>
+                                                                <td>{{patientContributingFactor.component}}</td>
+                                                                <td>{{patientContributingFactor.userValue}}</td>
                                                             </tr>
                                                         {{/each}}   
                                                     </tbody>
@@ -702,11 +703,11 @@
                                             <td>
                                                 <table class="table table-striped">
                                                      <tbody>
-                                                        {{#each staffContributingFactors}}
+                                                        {{#each model.staffContributingFactors as |staffContributingFactor|}}
                                                             <tr>
-                                                                <td>{{type}}</td>
-                                                                <td>{{component}}</td>
-                                                                <td>{{userValue}}</td>
+                                                                <td>{{staffContributingFactor.type}}</td>
+                                                                <td>{{staffContributingFactor.component}}</td>
+                                                                <td>{{staffContributingFactor.userValue}}</td>
                                                             </tr>
                                                         {{/each}}
                                                     </tbody>
@@ -720,11 +721,11 @@
                                             <td>
                                                 <table class="table table-striped">
                                                     <tbody>
-                                                        {{#each taskContributingFactors}}
+                                                        {{#each model.taskContributingFactors as |taskContributingFactor|}}
                                                             <tr>
-                                                                <td>{{type}}</td>
-                                                                <td>{{component}}</td>
-                                                                <td>{{userValue}}</td>
+                                                                <td>{{taskContributingFactor.type}}</td>
+                                                                <td>{{taskContributingFactor.component}}</td>
+                                                                <td>{{taskContributingFactor.userValue}}</td>
                                                             </tr>
                                                         {{/each}}
                                                     </tbody>
@@ -738,11 +739,11 @@
                                             <td>
                                                 <table class="table table-striped">
                                                     <tbody>
-                                                        {{#each communicationContributingFactors}}
+                                                        {{#each model.communicationContributingFactors as |communicationContributingFactor|}}
                                                             <tr>
-                                                                <td>{{type}}</td>
-                                                                <td>{{component}}</td>
-                                                                <td>{{userValue}}</td>
+                                                                <td>{{communicationContributingFactor.type}}</td>
+                                                                <td>{{communicationContributingFactor.component}}</td>
+                                                                <td>{{communicationContributingFactor.userValue}}</td>
                                                             </tr>
                                                         {{/each}}
                                                     </tbody>
@@ -756,11 +757,11 @@
                                             <td>
                                                 <table class="table table-striped">
                                                     <tbody>
-                                                        {{#each equipmentContributingFactors}}
+                                                        {{#each model.equipmentContributingFactors as |equipmentContributingFactor|}}
                                                             <tr>
-                                                                <td>{{type}}</td>
-                                                                <td>{{component}}</td>
-                                                                <td>{{userValue}}</td>
+                                                                <td>{{equipmentContributingFactor.type}}</td>
+                                                                <td>{{equipmentContributingFactor.component}}</td>
+                                                                <td>{{equipmentContributingFactor.userValue}}</td>
                                                             </tr>
                                                         {{/each}}
                                                     </tbody>
@@ -774,11 +775,11 @@
                                             <td>
                                                 <table class="table table-striped">
                                                     <tbody>
-                                                        {{#each wrkEnvironmentContributingFactors}}
+                                                        {{#each model.wrkEnvironmentContributingFactors as |wrkEnvironmentContributingFactor|}}
                                                             <tr>
-                                                                <td>{{type}}</td>
-                                                                <td>{{component}}</td>
-                                                                <td>{{userValue}}</td>
+                                                                <td>{{wrkEnvironmentContributingFactor.type}}</td>
+                                                                <td>{{wrkEnvironmentContributingFactor.component}}</td>
+                                                                <td>{{wrkEnvironmentContributingFactor.userValue}}</td>
                                                             </tr>
                                                         {{/each}}
                                                     </tbody>
@@ -792,11 +793,11 @@
                                             <td>
                                                 <table class="table table-striped">
                                                     <tbody>
-                                                        {{#each organizationalContributingFactors}}
+                                                        {{#each model.organizationalContributingFactors as |organizationalContributingFactor|}}
                                                             <tr>
-                                                                <td>{{type}}</td>
-                                                                <td>{{component}}</td>
-                                                                <td>{{userValue}}</td>
+                                                                <td>{{organizationalContributingFactor.type}}</td>
+                                                                <td>{{organizationalContributingFactor.component}}</td>
+                                                                <td>{{organizationalContributingFactor.userValue}}</td>
                                                             </tr>
                                                         {{/each}}
                                                     </tbody>
@@ -810,11 +811,11 @@
                                             <td>
                                                 <table class="table table-striped">
                                                     <tbody>
-                                                        {{#each eduTrainingContributingFactors}}
+                                                        {{#each model.eduTrainingContributingFactors as |eduTrainingContributingFactor|}}
                                                             <tr>
-                                                                <td>{{type}}</td>
-                                                                <td>{{component}}</td>
-                                                                <td>{{userValue}}</td>
+                                                                <td>{{eduTrainingContributingFactor.type}}</td>
+                                                                <td>{{eduTrainingContributingFactor.component}}</td>
+                                                                <td>{{eduTrainingContributingFactor.userValue}}</td>
                                                             </tr>
                                                         {{/each}}
                                                     </tbody>
@@ -828,11 +829,11 @@
                                             <td>
                                                 <table class="table table-striped">
                                                     <tbody>
-                                                        {{#each teamContributingFactors}}
+                                                        {{#each model.teamContributingFactors as |teamContributingFactor|}}
                                                             <tr>
-                                                                <td>{{type}}</td>
-                                                                <td>{{component}}</td>
-                                                                <td>{{userValue}}</td>
+                                                                <td>{{teamContributingFactor.type}}</td>
+                                                                <td>{{teamContributingFactor.component}}</td>
+                                                                <td>{{teamContributingFactor.userValue}}</td>
                                                             </tr>
                                                         {{/each}}
                                                     </tbody>
@@ -842,7 +843,7 @@
                                     {{/if}}
                                     <tr>
                                        <td>Root Cause Summary</td>
-                                       <td>{{rcaSummary}}</td>
+                                       <td>{{model.rcaSummary}}</td>
                                     </tr>
                                 </TBODY>
                             </table>
@@ -855,15 +856,15 @@
                                 <TBODY>
                                     <tr>
                                         <td>Severity:</td>
-                                        <td>{{preSeverity}}</td>
+                                        <td>{{model.preSeverity}}</td>
                                     </tr>
                                     <tr>
                                         <td>Occurance:</td>
-                                        <td>{{preOccurence}}</td>
+                                        <td>{{model.preOccurence}}</td>
                                     </tr>
                                     <tr>
                                         <td>Risk Score:</td>
-                                        <td>{{preRiskScore}}</td>
+                                        <td>{{model.preRiskScore}}</td>
                                     </tr>
                                 </TBODY>
                             </table>
@@ -881,22 +882,22 @@
                                     </tr>
                                 </THEAD>
                                 <TBODY>
-                                    {{#each recommendations}}
+                                    {{#each model.recommendations as |recommendation|}}
                                         <tr>
-                                            <td>{{activity}}</td>
-                                            <td>{{responsibility}}</td>
-                                            <td>{{date-format startDate}}</td>
-                                            <td>{{date-format targetDateOfCompletion}}</td>
-                                            <td>{{status}}</td>
+                                            <td>{{recommendation.activity}}</td>
+                                            <td>{{recommendation.responsibility}}</td>
+                                            <td>{{date-format recommendation.startDate}}</td>
+                                            <td>{{date-format recommendation.targetDateOfCompletion}}</td>
+                                            <td>{{recommendation.status}}</td>
                                         </tr>
                                     {{/each}}
                                     <tr>
                                         <td>Actions Taken</td>
-                                        <td>{{actionsTaken}}</td>
+                                        <td>{{model.actionsTaken}}</td>
                                     </tr>
                                     <tr>
                                         <td>Lessons Learned</td>
-                                        <td>{{lessonsLearned}}</td>
+                                        <td>{{model.lessonsLearned}}</td>
                                     </tr>
                                 </TBODY>
                             </table>
@@ -909,15 +910,15 @@
                                 <TBODY>
                                     <tr>
                                         <td>Severity:</td>
-                                        <td>{{postSeverity}}</td>
+                                        <td>{{model.postSeverity}}</td>
                                     </tr>
                                     <tr>
                                         <td>Occurance:</td>
-                                        <td>{{postOccurence}}</td>
+                                        <td>{{model.postOccurence}}</td>
                                     </tr>
                                     <tr>
                                         <td>Risk Score:</td>
-                                        <td>{{postRiskScore}}</td>
+                                        <td>{{model.postRiskScore}}</td>
                                     </tr>
                                 </TBODY>
                             </table>
@@ -926,4 +927,5 @@
                 </div>
         </div>
     </div>
-{{/em-form}}
+  {{/em-form}}
+{{/edit-panel}}

@@ -1,4 +1,9 @@
-{{#em-form model=this submit_button=false }}
+{{#modal-dialog
+isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+{{#em-form model=model submit_button=false }}
     <div class="row">
         {{date-picker property="dateRecorded" label="Date Recorded" class="col-sm-6" format="l h:mm A" showTime=true }}
     </div>
@@ -19,3 +24,4 @@
             optionValuePath="content" optionLabelPath="content" selected=status class="col-sm-6"}}
     </div>
 {{/em-form}}
+{{/modal-dialog}}

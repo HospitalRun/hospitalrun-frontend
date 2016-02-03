@@ -56,9 +56,9 @@ Router.map(function() {
     resetNamespace: true
   }, function() {
      this.route('completed');
-     this.route('edit', { path: "/edit/:incident_id" });
+     this.route('edit', { path: '/edit/:incident_id' });
      this.route('reports');
-     this.route('search', { path: "/search/:search_text" });
+     this.route('search', { path: '/search/:search_text' });
      this.route('listing');
   });
 

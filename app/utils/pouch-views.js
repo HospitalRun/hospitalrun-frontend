@@ -1,6 +1,7 @@
 /* global req */
 /* global compareStrings */
 /* global getCompareDate */
+/*global emit*/
 
 function createDesignDoc(item, rev) {
   var ddoc = {
@@ -264,6 +265,14 @@ var designDocs = [{
             }
         }
     },
+    sort: generateSortFunction(function(a, b) {
+    var sortBy = '';
+    if (req.query && req.query.sortKey) {
+      sortBy = req.query.sortKey;
+      return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
+    }
+      return 0; // Don't sort
+    }.toString()),
     version: 1
 }, {
     name: 'closed_incidents_by_user',

@@ -5,9 +5,6 @@ export default AbstractPagedController.extend(UserSession,{
     deletePermission: 'delete_incident',
     startKey: [],
 
-    sortProperties: ['friendlyId'],
-    sortAscending: false,
-
     	actions: {
 
     		showDeleteIncident: function(incident) {

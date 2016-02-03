@@ -2,11 +2,9 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import Ember from "ember";
 
 export default AbstractEditController.extend({
-    needs: 'incident/edit',
-    
     cancelAction: 'closeModal',
     
-    editController: Ember.computed.alias('controllers.incident/edit'),
+    editController: Ember.inject.controller('incident/edit'),
 
     typeOfPersonInvolved: [
         'Patient',
@@ -26,17 +24,17 @@ export default AbstractEditController.extend({
     newInvestigationFinding: false,
     
     title: function() {
-        var isNew = this.get('isNew');
+        var isNew = this.get('model.isNew');
         if (isNew) {
             return 'Add Investigation Finding';
         }
         return 'Edit Investigation Finding';
-    }.property('isNew'),
+    }.property('model.isNew'),
     
     updateCapability: 'add_investigation_finding',
     
     beforeUpdate: function() {
-        if (this.get('isNew')) {
+        if (this.get('model.isNew')) {
             this.set('newInvestigationFinding', true);         
         }
         return Ember.RSVP.Promise.resolve();

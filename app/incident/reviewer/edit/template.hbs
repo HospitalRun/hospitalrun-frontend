@@ -1,7 +1,9 @@
-{{#em-form model=this submit_button=false }}
+{{#edit-panel editPanelProps=editPanelProps}}
+{{#em-form model=model submit_button=false }}
     <div class="row">
           {{em-select label="Reviewer To Add" 
             property="reviewerEmail" content=userList
             optionValuePath="content.email" optionLabelPath="content.displayName" }} 
     </div>
 {{/em-form}}
+{{/edit-panel}}
