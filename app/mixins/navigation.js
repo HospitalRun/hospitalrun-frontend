@@ -223,6 +223,39 @@ export default Ember.Mixin.create({
       ]
     },
     {
+      title: 'Incident',
+      iconClass: 'octicon-package',
+      route: 'incident',
+      capability: 'incident',
+      subnav: [
+          {
+            title: 'Current Incidents',
+            iconClass: 'octicon-chevron-right',
+            route: 'incident.index',
+            capability: 'add_incident'
+          },
+          {
+            title: 'New Incident',
+            iconClass: 'octicon-plus',
+            route: 'incident.edit',
+            subroute: 'new',
+            capability: 'add_incident'
+          },
+          {
+            title: 'History',
+            iconClass: 'octicon-chevron-right',
+            route: 'incident.completed',
+            capability: 'add_incident'
+          },
+          {
+            title: 'Reports',
+            iconClass: 'octicon-chevron-right',
+            route: 'incident.reports',
+            capability: 'generate_incident_report'
+          }
+      ]
+    },
+    {
       title: 'Administration',
       iconClass: 'octicon-person',
       route: 'admin.lookup',

@@ -1,8 +1,8 @@
-import AbstractModel from "hospitalrun/models/abstract";
+import AbstractModel from 'hospitalrun/models/abstract';
+import DS from 'ember-data';
 
 export default AbstractModel.extend({
-	//incident: DS.belongsTo('incident'),
-    givenBy: DS.attr('string'),
-	description: DS.attr('string'),
-    dateRecorded: DS.attr('date')
+  givenBy: DS.attr('string'),
+  description: DS.attr('string'),
+  dateRecorded: DS.attr('date')
 });

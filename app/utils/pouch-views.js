@@ -1,7 +1,6 @@
 /* global req */
 /* global compareStrings */
 /* global getCompareDate */
-/*global emit*/
 
 function createDesignDoc(item, rev) {
   var ddoc = {
@@ -231,81 +230,47 @@ var designDocs = [{
   }.toString()),
   version: 3
 }, {
-    name: 'incident_by_date',
-    function: function(doc) {
-        var doctype,
-            uidx;
-        if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
-            doctype = doc._id.substring(0, uidx);
-            if(doctype === 'incident') {
-                var dateOfIncident = doc.dateOfIncident;
-                if (dateOfIncident && dateOfIncident !== '') {
-                    dateOfIncident = new Date(dateOfIncident);
-                    if (dateOfIncident.getTime) {
-                        dateOfIncident = dateOfIncident.getTime();
-                    }
-                }
-                emit([dateOfIncident, doc._id]);
-            }
-        }
-    },
-    version: 1
+  name: 'incident_by_date',
+  function: generateView('incident',
+    generateDateForView('dateOfIncident') +
+    'emit([dateOfIncident, doc._id]);'
+  ),
+  version: 2
 }, {
-    name: 'open_incidents_by_user',
-    function: function(doc) {
-        var doctype,
-            uidx;
-        if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
-            doctype = doc._id.substring(0, uidx);
-            if(doctype === 'incident') {
-               var status = doc.statusOfIncident;
-               if(status && status !== 'Closed'){
-                    emit([doc.reportedBy, doc._id]);
-                }
-            }
-        }
-    },
-    sort: generateSortFunction(function(a, b) {
+  name: 'open_incidents_by_user',
+  function: generateView('incident',
+    'var status = doc.data.statusOfIncident;' +
+    'if (status && status !== "Closed") {' +
+    ' emit([doc.data.reportedBy, doc._id]);' +
+    '}'
+  ),
+  sort: generateSortFunction(function(a, b) {
     var sortBy = '';
     if (req.query && req.query.sortKey) {
       sortBy = req.query.sortKey;
       return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
     }
-      return 0; // Don't sort
-    }.toString()),
-    version: 1
+    return 0; // Don't sort
+  }.toString()),
+  version: 2
 }, {
-    name: 'closed_incidents_by_user',
-    function: function(doc) {
-        var doctype,
-            uidx;
-        if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
-            doctype = doc._id.substring(0, uidx);
-            if(doctype === 'incident') {
-               var status = doc.statusOfIncident;
-               if(status && status === 'Closed'){
-                    emit([doc.reportedBy, doc._id]);
-                }
-            }
-        }
-    },
-    version: 1
+  name: 'closed_incidents_by_user',
+  function: generateView('incident',
+    'var status = doc.data.statusOfIncident;' +
+    'if (status && status === "Closed") {' +
+    ' emit([doc.data.reportedBy, doc._id]);' +
+    '}'
+  ),
+  version: 2
 }, {
-    name: 'incident_by_reviewers',
-    function: function(doc) {
-        var doctype,
-            uidx;
-        if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {
-            doctype = doc._id.substring(0, uidx);
-            if (doctype === 'inc-reviewer') {
-                var inc = doc.incident;
-                if(inc){
-                    emit([doc.reviewerEmail, doc._id],{_id: doc.incident});
-                }
-            }
-        }
-    },
-  version: 1
+  name: 'incident_by_reviewers',
+  function: generateView('incReviewer',
+    'var inc = doc.data.incident;' +
+    'if (inc) {' +
+    ' emit([doc.data.reviewerEmail, doc._id], { _id: doc.data.incident });' +
+    '}'
+  ),
+  version: 2
 },
     {
   name: 'inventory_by_type',

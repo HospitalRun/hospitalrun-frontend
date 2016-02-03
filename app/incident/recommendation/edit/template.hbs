@@ -3,25 +3,25 @@ isUpdateDisabled=isUpdateDisabled
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-{{#em-form model=model submit_button=false }}
+{{#em-form model=model submitButton=false }}
     <div class="row">
         {{date-picker property="dateRecorded" label="Date Recorded" class="col-sm-6" format="l h:mm A" showTime=true }}
     </div>
-    <div class="row">        
+    <div class="row">
         {{em-text property="activity" label="Activity/Plan" }}
     </div>
-    <div class="row">        
+    <div class="row">
         {{em-text property="responsibility" label="Responsibility" }}
     </div>
-    <div class="row">        
+    <div class="row">
         {{date-picker property="startDate" label="Start Date" class="col-sm-6" format="l h:mm A" showTime=true }}
     </div>
-    <div class="row">        
+    <div class="row">
         {{date-picker property="targetDateOfCompletion" label="Target Date Of Completion" class="col-sm-6" format="l h:mm A" showTime=true }}
     </div>
-    <div class="row">        
+    <div class="row">
         {{em-select label="Status" property="status" content=recommendationStatusTypes
-            optionValuePath="content" optionLabelPath="content" selected=status class="col-sm-6"}}
+            selected=model.status class="col-sm-6"}}
     </div>
 {{/em-form}}
 {{/modal-dialog}}

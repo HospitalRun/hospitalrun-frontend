@@ -3,29 +3,27 @@ isUpdateDisabled=isUpdateDisabled
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-{{#em-form model=model submit_button=false }}
+{{#em-form model=model submitButton=false }}
     <div class="row">
         {{date-picker property="dateRecorded" label="Date Recorded" class="col-sm-6" format="l h:mm A" showTime=true }}
     </div>
       <div class="row">
         {{em-select label="Type of Person Involved" prompt=" "
-                                property="typeOfPerson" content=typeOfPersonInvolved
-                                optionValuePath="content" optionLabelPath="content"
-                                selected=typeOfPerson
-                                class="col-sm-6"
-                            }}        
+            property="typeOfPerson" content=typeOfPersonInvolved
+            selected=model.typeOfPerson
+            class="col-sm-6"
+        }}
     </div>
     <div class="row">
         {{em-select label="Identity Document Type" prompt=" "
-                                property="identityDocumentType" content=identityDocumentTypes
-                                optionValuePath="content" optionLabelPath="content"
-                                selected=identityDocumentType
-                                class="col-sm-6"
-                            }} 
+            property="identityDocumentType" content=identityDocumentTypes
+            selected=model.identityDocumentType
+            class="col-sm-6"
+        }}
         {{em-input class="col-sm-6" property="identityNumber" label="Identity Number"}}
-        
+
     </div>
-    <div class="row">        
+    <div class="row">
         {{em-text property="narrativeStatement" label="Narrative Statement" }}
     </div>
 {{/em-form}}

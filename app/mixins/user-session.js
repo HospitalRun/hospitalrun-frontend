@@ -443,7 +443,7 @@ export default Ember.Mixin.create({
       'System Administrator',
       'Incident System Administrator'
     ],
-    add_incident : [
+    add_incident: [
       'Hospital Staff',
       'User Administrator',
       'Quality',
@@ -455,13 +455,13 @@ export default Ember.Mixin.create({
       'System Administrator',
       'Incident System Administrator'
     ],
-    generate_incident_report : [
+    generate_incident_report: [
       'User Administrator',
       'Quality',
       'System Administrator',
       'Incident System Administrator'
     ],
-    add_incident_category : [
+    add_incident_category: [
       'Hospital Staff',
       'User Administrator',
       'Quality',
@@ -473,7 +473,7 @@ export default Ember.Mixin.create({
       'System Administrator',
       'Incident System Administrator'
     ],
-    add_feedback : [
+    add_feedback: [
       'Quality',
       'System Administrator',
       'Incident System Administrator'
@@ -483,7 +483,7 @@ export default Ember.Mixin.create({
       'System Administrator',
       'Incident System Administrator'
     ],
-    add_reviewer : [
+    add_reviewer: [
       'Quality',
       'System Administrator',
       'Incident System Administrator'
@@ -493,7 +493,7 @@ export default Ember.Mixin.create({
       'System Administrator',
       'Incident System Administrator'
     ],
-    add_investigation_finding : [
+    add_investigation_finding: [
       'Quality',
       'System Administrator',
       'Incident System Administrator'
@@ -503,7 +503,7 @@ export default Ember.Mixin.create({
       'System Administrator',
       'Incident System Administrator'
     ],
-    add_contributing_factor : [
+    add_contributing_factor: [
       'Quality',
       'System Administrator',
       'Incident System Administrator'
@@ -513,7 +513,7 @@ export default Ember.Mixin.create({
       'System Administrator',
       'Incident System Administrator'
     ],
-    add_recommendation : [
+    add_recommendation: [
       'Quality',
       'System Administrator',
       'Incident System Administrator'
@@ -523,7 +523,7 @@ export default Ember.Mixin.create({
       'System Administrator',
       'Incident System Administrator'
     ],
-    add_risk : [
+    add_risk: [
       'Quality',
       'System Administrator',
       'Incident System Administrator'
@@ -533,12 +533,12 @@ export default Ember.Mixin.create({
       'System Administrator',
       'Incident System Administrator'
     ],
-    add_summary : [
+    add_summary: [
       'Quality',
       'System Administrator',
       'Incident System Administrator'
     ],
-    edit_others_incident:[
+    edit_others_incident: [
         'Quality'
     ],
     update_config: [

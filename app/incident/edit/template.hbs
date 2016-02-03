@@ -1,19 +1,19 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=model submit_button=false }}
+  {{#em-form model=model submitButton=false }}
     <div class="panel panel-success">
-            <div class="row">        
+            <div class="row">
                     <div class="col-xs-12 col-md-8">
                         <p class="text-info">Incident Id: {{model.friendlyId}}</p>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <p class="text-success pull-right">Status: {{model.statusOfIncident}}</p>
-                    </div>     
+                    </div>
             </div>
         </div>
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class="active" ><a href="#creation" role="tab" data-toggle="pill">Creation</a></li>
             <li role="presentation"><a href="#reviewers" role="tab" data-toggle="pill">+ Reviewers</a></li>
-            <li role="presentation"><a href="#feedback" role="tab" data-toggle="pill">Feedback</a></li>    
+            <li role="presentation"><a href="#feedback" role="tab" data-toggle="pill">Feedback</a></li>
             <li role="presentation"><a href="#investigate" role="tab" data-toggle="pill">Investigations</a></li>
             <li role="presentation"><a href="#factors" role="tab" data-toggle="pill">Root Cause Analysis</a></li>
             <li role="presentation"><a href="#harmscore" role="tab" data-toggle="pill">Harm Score</a></li>
@@ -23,7 +23,7 @@
             <li role="presentation"><a href="#summary" role="tab" data-toggle="pill">Summary</a></li>
         </ul>
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="creation">        
+        <div role="tabpanel" class="tab-pane active" id="creation">
             <div class="panel detail-section">
                 <div class="panel-heading">
                     <h3 class="panel-title">
@@ -36,20 +36,14 @@
                             <div class="form-group has-success">
                                 <label class="control-label">Reported By</label>
                                 <div class="form-control not-editable">
-                                    {{#if model.isNew}}
-                                        {{model.setAndGetReportedBy}}
-                                    {{else}}
-                                        {{model.reportedBy}}
-                                    {{/if}}
+                                    {{model.reportedBy}}
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6">
-                          {{em-select label="Location of Incident" property="locationOfIncident" 
+                          {{em-select label="Location of Incident" property="locationOfIncident"
                                 prompt=" "
-                                content=incidentLocations 
-                                optionValuePath="content" 
-                                optionLabelPath="content"
+                                content=incidentLocations
                                 class="required"
                             }}
                         </div>
@@ -60,7 +54,7 @@
                     </div>
                     <div class="row">
                         {{em-input property="witnessList" label="Witness (Full Name)" class="col-xs-12 col-sm-12"}}
-                    </div>                        
+                    </div>
                     {{em-text label="Incident Description" property="incidentDescription" class="required" rows=3}}
                 </div>
             </div>
@@ -73,16 +67,16 @@
                 <div class="panel-body detail-section-content">
                     <div class="row">
                         {{em-select class="col-xs-12 col-sm-6 required" label="Category" prompt=" "
-                            property="categoryName" content=incidentCategory selected=categoryName
-                            optionValuePath="content.name" optionLabelPath="content.name"}}
-                        
+                            property="categoryName" content=incidentCategory selected=model.categoryName
+                            optionValuePath="name" optionLabelPath="name"}}
+
                         {{em-select class="col-xs-12 col-sm-6 required" label="Choose an Item" prompt=" "
                             property="categoryItem" content=itemList
-                             selected=categoryItem optionValuePath="content" optionLabelPath="content"}}
+                            selected=model.categoryItem}}
                     </div>
                     <div class="row">
                         {{em-input property="categoryOther" label="Other (Please specify)" class="col-xs-12 col-sm-6"}}
-                   </div>                   
+                   </div>
                 </div>
              </div>
         </div>
@@ -105,7 +99,7 @@
                                 <th>Added On</th>
                                 <th>Actions</th>
                             </tr>
-                            
+
                                 {{#each model.reviewers as |reviewer|}}
                                     <tr>
                                         <td>{{reviewer.reviewerName}}</td>
@@ -122,7 +116,7 @@
                                         </td>
                                     </tr>
                                 {{/each}}
-                           
+
                         </table>
                     </div>
                 </div>
@@ -145,7 +139,7 @@
                                 <th>Feedback</th>
                                 <th>Actions</th>
                             </tr>
-                    
+
                                 {{#each model.feedbacks as |feedback|}}
                                     <tr>
                                         <td>{{date-format feedback.dateRecorded}}</td>
@@ -161,7 +155,7 @@
                                         </td>
                                     </tr>
                                 {{/each}}
-                      
+
                         </table>
                     </div>
                 </div>
@@ -186,7 +180,7 @@
                                 <th>Narrative Statement</th>
                                 <th>Actions</th>
                             </tr>
-                          
+
                                 {{#each model.investigationFindings as |investigationFinding|}}
                                     <tr>
                                         <td>{{date-format investigationFinding.dateRecorded}}</td>
@@ -204,7 +198,7 @@
                                         </td>
                                     </tr>
                                 {{/each}}
-                      
+
                         </table>
                     </div>
                 </div>
@@ -234,7 +228,7 @@
                                 {{#each model.patientFactors as |patientFactor|}}
                                     <tr>
                                         <td>
-                                            {{patientFactor.type}}
+                                            {{patientFactor.factorType}}
                                         </td>
                                         <td>
                                             <table class="table">
@@ -244,7 +238,7 @@
                                                             {{em-checkbox label=component.name property=component.id}}
                                                          </tr>
                                                     {{/each}}
-                                                </TBODY> 
+                                                </TBODY>
                                             </table>
                                         </td>
                                     </tr>
@@ -262,11 +256,11 @@
                                     {{#each model.staffFactors as |staffFactor|}}
                                         <tr>
                                             <td>
-                                                {{staffFactor.type}}
+                                                {{staffFactor.factorType}}
                                             </td>
                                             <td>
                                                 <table class="table">
-                                                    <TBODY>  
+                                                    <TBODY>
                                                         {{#each staffFactor.components as |component|}}
                                                             <tr>
                                                                {{em-checkbox label=component.name property=component.id}}
@@ -290,7 +284,7 @@
                                     {{#each model.taskFactors as |taskFactor|}}
                                         <tr>
                                             <td>
-                                                {{taskFactor.type}}
+                                                {{taskFactor.factorType}}
                                             </td>
                                             <td>
                                                 <table class="table">
@@ -298,7 +292,7 @@
                                                         {{#each taskFactor.components as |component|}}
                                                             <tr>
                                                                 {{em-checkbox label=component.name property=component.id}}
-                                                            </tr>                        
+                                                            </tr>
                                                         {{/each}}
                                                     </TBODY>
                                                 </table>
@@ -318,11 +312,11 @@
                                     {{#each model.communicationFactors as |communicationFactor|}}
                                         <tr>
                                             <td>
-                                                {{communicationFactor.type}}
+                                                {{communicationFactor.factorType}}
                                             </td>
                                             <td>
                                                 <table class="table">
-                                                    <TBODY> 
+                                                    <TBODY>
                                                         {{#each communicationFactor.components as |component|}}
                                                             <tr>
                                                                 {{em-checkbox label=component.name property=component.id}}
@@ -346,7 +340,7 @@
                                     {{#each model.equipmentFactors as |equipmentFactor|}}
                                         <tr>
                                             <td>
-                                                {{equipmentFactor.type}}
+                                                {{equipmentFactor.factorType}}
                                             </td>
                                             <td>
                                                 <table class="table">
@@ -374,11 +368,11 @@
                                     {{#each model.workEnvFactors as |workEnvFactor|}}
                                         <tr>
                                             <td>
-                                                {{workEnvFactor.type}}
+                                                {{workEnvFactor.factorType}}
                                             </td>
                                             <td>
                                                 <table class="table">
-                                                    <TBODY> 
+                                                    <TBODY>
                                                         {{#each workEnvFactor.components as |component|}}
                                                             <tr>
                                                                {{em-checkbox label=component.name property=component.id}}
@@ -402,11 +396,11 @@
                                     {{#each model.organisationalFactors as |organisationalFactor|}}
                                         <tr>
                                             <td>
-                                                {{organisationalFactor.type}}
+                                                {{organisationalFactor.factorType}}
                                             </td>
                                             <td>
                                                 <table class="table">
-                                                    <TBODY> 
+                                                    <TBODY>
                                                         {{#each organisationalFactor.components as |component|}}
                                                             <tr>
                                                                 {{em-checkbox label=component.name property=component.id}}
@@ -430,7 +424,7 @@
                                     {{#each model.educationAndTrainingFactors as |educationAndTrainingFactor|}}
                                         <tr>
                                             <td>
-                                                {{educationAndTrainingFactor.type}}
+                                                {{educationAndTrainingFactor.factorType}}
                                             </td>
                                             <td>
                                                 <table class="table">
@@ -458,11 +452,11 @@
                                 {{#each model.teamFactors as |teamFactor|}}
                                     <tr>
                                         <td>
-                                            {{teamFactor.type}}
+                                            {{teamFactor.factorType}}
                                         </td>
                                         <td>
                                             <table class="table">
-                                                <TBODY> 
+                                                <TBODY>
                                                     {{#each teamFactor.components as |component|}}
                                                         <tr>
                                                             {{em-checkbox label=component.name property=component.id}}
@@ -489,7 +483,7 @@
                     </div>
                     {{#if canAddRisk}}
                         <div class="panel-body detail-section-content">
-                            {{ext-radio name=harmScore content=harmScoreList value=model.harmScore radioLabelPath="content.label" 
+                            {{ext-radio name=harmScore content=harmScoreList value=model.harmScore radioLabelPath="content.label"
                               radioValuePath="content.value"}}
                         </div>
                     {{/if}}
@@ -513,17 +507,17 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                                {{ext-radio name=preSeverity content=preSeverityTypes 
+                                                {{ext-radio name=preSeverity content=preSeverityTypes
                                                 value=preSeverity radioLabelPath="content.label"
                                                 radioValuePath="content.value"}}
                                          </td>
                                          <td>
-                                                {{ext-radio name=preOccurence content=preOccurrenceTypes 
+                                                {{ext-radio name=preOccurence content=preOccurrenceTypes
                                                 value=preOccurence radioLabelPath="content.label"
                                                 radioValuePath="content.value"}}
                                          </td>
-                                         <td> 
-                                                {{ext-radio name=preRiskScore content=preRiskScores 
+                                         <td>
+                                                {{ext-radio name=preRiskScore content=preRiskScores
                                                 value=preRiskScore radioLabelPath="content.label"
                                                 radioValuePath="content.value"}}
                                         </td>
@@ -554,7 +548,7 @@
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
-                           
+
                                 {{#each model.recommendations as |recommendation|}}
                                     <tr>
                                         <td>{{recommendation.activity}}</td>
@@ -572,7 +566,7 @@
                                         </td>
                                     </tr>
                                 {{/each}}
-                          
+
                         </table>
                         {{#if canAddRecommendation}}
                             {{em-text label="Actions Taken" property="actionsTaken" rows=3}}
@@ -601,17 +595,17 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            {{ext-radio name=postSeverity content=severityTypes 
+                                            {{ext-radio name=postSeverity content=severityTypes
                                                 value=postSeverity radioLabelPath="content.label"
                                                 radioValuePath="content.value"}}
                                         </td>
                                         <td>
-                                            {{ext-radio name=postOccurence content=occurrenceTypes 
+                                            {{ext-radio name=postOccurence content=occurrenceTypes
                                                 value=postOccurence radioLabelPath="content.label"
                                                 radioValuePath="content.value"}}
                                         </td>
-                                        <td> 
-                                            {{ext-radio name=postRiskScore content=riskScores 
+                                        <td>
+                                            {{ext-radio name=postRiskScore content=riskScores
                                                 value=postRiskScore radioLabelPath="content.label"
                                                 radioValuePath="content.value"}}
                                         </td>
@@ -633,7 +627,7 @@
                         </h3>
                     </div>
                     <div class="panel-body detail-section-content">
-                        {{#if canShowSummary}}
+                        {{#if showSummary}}
                             <table class="table">
                                 <THEAD>
                                     <tr class="table-header success">
@@ -660,7 +654,7 @@
                                     <tr>
                                         <td>Location of Incident:</td>
                                         <td>{{model.locationOfIncident}}</td>
-                                    </tr>   
+                                    </tr>
                                     <tr>
                                         <td>Incident Type:</td>
                                         <td>{{model.categoryName}}</td>
@@ -687,11 +681,11 @@
                                                     <tbody>
                                                         {{#each model.patientContributingFactors as |patientContributingFactor|}}
                                                             <tr>
-                                                                <td>{{patientContributingFactor.type}}</td>
+                                                                <td>{{patientContributingFactor.factorType}}</td>
                                                                 <td>{{patientContributingFactor.component}}</td>
                                                                 <td>{{patientContributingFactor.userValue}}</td>
                                                             </tr>
-                                                        {{/each}}   
+                                                        {{/each}}
                                                     </tbody>
                                                 </table>
                                             </td>
@@ -705,7 +699,7 @@
                                                      <tbody>
                                                         {{#each model.staffContributingFactors as |staffContributingFactor|}}
                                                             <tr>
-                                                                <td>{{staffContributingFactor.type}}</td>
+                                                                <td>{{staffContributingFactor.factorType}}</td>
                                                                 <td>{{staffContributingFactor.component}}</td>
                                                                 <td>{{staffContributingFactor.userValue}}</td>
                                                             </tr>
@@ -723,7 +717,7 @@
                                                     <tbody>
                                                         {{#each model.taskContributingFactors as |taskContributingFactor|}}
                                                             <tr>
-                                                                <td>{{taskContributingFactor.type}}</td>
+                                                                <td>{{taskContributingFactor.factorType}}</td>
                                                                 <td>{{taskContributingFactor.component}}</td>
                                                                 <td>{{taskContributingFactor.userValue}}</td>
                                                             </tr>
@@ -741,7 +735,7 @@
                                                     <tbody>
                                                         {{#each model.communicationContributingFactors as |communicationContributingFactor|}}
                                                             <tr>
-                                                                <td>{{communicationContributingFactor.type}}</td>
+                                                                <td>{{communicationContributingFactor.factorType}}</td>
                                                                 <td>{{communicationContributingFactor.component}}</td>
                                                                 <td>{{communicationContributingFactor.userValue}}</td>
                                                             </tr>
@@ -759,7 +753,7 @@
                                                     <tbody>
                                                         {{#each model.equipmentContributingFactors as |equipmentContributingFactor|}}
                                                             <tr>
-                                                                <td>{{equipmentContributingFactor.type}}</td>
+                                                                <td>{{equipmentContributingFactor.factorType}}</td>
                                                                 <td>{{equipmentContributingFactor.component}}</td>
                                                                 <td>{{equipmentContributingFactor.userValue}}</td>
                                                             </tr>
@@ -777,7 +771,7 @@
                                                     <tbody>
                                                         {{#each model.wrkEnvironmentContributingFactors as |wrkEnvironmentContributingFactor|}}
                                                             <tr>
-                                                                <td>{{wrkEnvironmentContributingFactor.type}}</td>
+                                                                <td>{{wrkEnvironmentContributingFactor.factorType}}</td>
                                                                 <td>{{wrkEnvironmentContributingFactor.component}}</td>
                                                                 <td>{{wrkEnvironmentContributingFactor.userValue}}</td>
                                                             </tr>
@@ -795,7 +789,7 @@
                                                     <tbody>
                                                         {{#each model.organizationalContributingFactors as |organizationalContributingFactor|}}
                                                             <tr>
-                                                                <td>{{organizationalContributingFactor.type}}</td>
+                                                                <td>{{organizationalContributingFactor.factorType}}</td>
                                                                 <td>{{organizationalContributingFactor.component}}</td>
                                                                 <td>{{organizationalContributingFactor.userValue}}</td>
                                                             </tr>
@@ -813,7 +807,7 @@
                                                     <tbody>
                                                         {{#each model.eduTrainingContributingFactors as |eduTrainingContributingFactor|}}
                                                             <tr>
-                                                                <td>{{eduTrainingContributingFactor.type}}</td>
+                                                                <td>{{eduTrainingContributingFactor.factorType}}</td>
                                                                 <td>{{eduTrainingContributingFactor.component}}</td>
                                                                 <td>{{eduTrainingContributingFactor.userValue}}</td>
                                                             </tr>
@@ -831,7 +825,7 @@
                                                     <tbody>
                                                         {{#each model.teamContributingFactors as |teamContributingFactor|}}
                                                             <tr>
-                                                                <td>{{teamContributingFactor.type}}</td>
+                                                                <td>{{teamContributingFactor.factorType}}</td>
                                                                 <td>{{teamContributingFactor.component}}</td>
                                                                 <td>{{teamContributingFactor.userValue}}</td>
                                                             </tr>

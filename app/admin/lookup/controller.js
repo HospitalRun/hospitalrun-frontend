@@ -91,12 +91,12 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         inventory: 'inventoryType'
       }
     },{
-        defaultValues: 'defaultIncidentLocations',
-        name: 'Department Names',
-        value: 'incident_locations',
-        models: {
-            incident: 'locationOfIncident'
-        }
+      defaultValues: 'defaultIncidentLocations',
+      name: 'Department Names',
+      value: 'incident_locations',
+      models: {
+        incident: 'locationOfIncident'
+      }
     },{
       defaultValues: 'defaultImagingPricingTypes',
       name: 'Imaging Pricing Types',
