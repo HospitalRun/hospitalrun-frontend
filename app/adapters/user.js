@@ -64,14 +64,8 @@ export default DS.RESTAdapter.extend(UserSession, {
   @returns {Promise} promise
   */
   deleteRecord: function(store, type, record) {
-    var ajaxData = {
-      data: {
-        id: record.id,
-        rev: record.attr('rev')
-      }
-    };
-    ajaxData.data.name = this.getUserName(true);
-    return this.ajax('/deleteuser', 'POST', ajaxData);
+    var deleteURL = this._getItemUrl(record);
+    return this.ajax(deleteURL, 'DELETE');
   },
 
   /**
@@ -89,14 +83,9 @@ export default DS.RESTAdapter.extend(UserSession, {
   @param {String} id
   @returns {Promise} promise
   */
-  findRecord: function(store, type, id) {
-    var ajaxData = {
-      data: {
-        id: id,
-        name: this.getUserName(true)
-      }
-    };
-    return this.ajax('/getuser', 'POST', ajaxData);
+  find: function(store, type, id) {
+    var findUrl = this.endpoint + id;
+    return this.ajax(findUrl, 'GET');
   },
 
   /**
@@ -112,7 +101,7 @@ export default DS.RESTAdapter.extend(UserSession, {
    @method updateRecord
    @param {DS.Store} store
    @param {subclass of DS.Model} type
-   @param {DS.Model} record
+   @param {DS.Snapshot} record
    @returns {Promise} promise
   */
   updateRecord: function(store, type, record) {
@@ -124,13 +113,10 @@ export default DS.RESTAdapter.extend(UserSession, {
       delete data._rev;
     }
     data = this._cleanPasswordAttrs(data);
-    var ajaxData = {
-      data: {
-        data: data,
-        name: this.getUserName(true)
-      }
-    };
-    return this.ajax('/updateuser', 'POST', ajaxData);
+    var putURL = `${this.endpoint}${Ember.get(record, 'id')}`;
+    return this.ajax(putURL, 'PUT', {
+      data: data
+    });
   },
 
   /**
@@ -150,11 +136,12 @@ export default DS.RESTAdapter.extend(UserSession, {
   findAll: function() {
     var ajaxData = {
       data: {
-        name: this.getUserName(true)
+        include_docs: true,
+        startkey: '"org.couchdb.user"'
       }
     };
-    var allURL = '/allusers';
-    return this.ajax(allURL, 'POST', ajaxData);
+    var allURL = this.endpoint + '_all_docs';
+    return this.ajax(allURL, 'GET', ajaxData);
   },
 
   /**
@@ -180,7 +167,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   _getItemUrl: function(record) {
     var urlArray = [this.endpoint];
     urlArray.push(Ember.get(record, 'id'));
-    var rev = Ember.get(record, 'rev');
+    var rev = record.attr('rev');
     if (rev) {
       urlArray.push('?rev=');
       urlArray.push(rev);

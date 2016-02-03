@@ -4,8 +4,12 @@ import startApp from 'hospitalrun/tests/helpers/start-app';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 
 function addAllUsers(assert) {
-  stubRequest('post', '/allusers', function(request) {
-    assert.equal(request.requestBody, '{"name":"hradmin"}', 'All Users request sent to the server');
+  stubRequest('get', '/db/_users/_all_docs', function(request) {
+    let expectedQuery = {
+      include_docs: 'true',
+      startkey: '"org.couchdb.user"'
+    };
+    assert.equal(JSON.stringify(request.queryParams), JSON.stringify(expectedQuery), 'All Users request sent to the server');
     request.ok({
       'total_rows': 1,
       'offset': 1,
@@ -86,19 +90,16 @@ test('create new user', function(assert) {
     addAllUsers(assert);
     visit('/admin/users');
 
-    stubRequest('post', '/updateuser', function(request) {
+    stubRequest('put', '/db/_users/org.couchdb.user:jane@donuts.com', function(request) {
       var expectedBody = {
-        data: {
-          _id: 'org.couchdb.user:jane@donuts.com',
-          displayName: 'Jane Bagadonuts',
-          email: 'jane@donuts.com',
-          name: 'jane@donuts.com',
-          password: 'password',
-          roles: ['Hospital Administrator', 'user'],
-          userPrefix: 'p02',
-          type: 'user'
-        },
-        name: 'hradmin'
+        _id: 'org.couchdb.user:jane@donuts.com',
+        displayName: 'Jane Bagadonuts',
+        email: 'jane@donuts.com',
+        name: 'jane@donuts.com',
+        password: 'password',
+        roles: ['Hospital Administrator', 'user'],
+        userPrefix: 'p02',
+        type: 'user'
       };
       assert.equal(request.requestBody, JSON.stringify(expectedBody), 'New user data sent to the server');
       request.ok({
@@ -128,14 +129,11 @@ test('delete user', function(assert) {
   runWithPouchDump('default', function() {
     authenticateUser();
     addAllUsers(assert);
-
-    stubRequest('post', '/deleteuser', function(request) {
-      var expectedBody = {
-        id: 'org.couchdb.user:joe@donuts.com',
-        rev: '1-ef3d54502f2cc8e8f73d8547881f0836',
-        name: 'hradmin'
+    stubRequest('delete', '/db/_users/org.couchdb.user:joe@donuts.com', function(request) {
+      let expectedQuery = {
+        rev: '1-ef3d54502f2cc8e8f73d8547881f0836'
       };
-      assert.equal(request.requestBody, JSON.stringify(expectedBody), 'Delete user request sent to the server');
+      assert.equal(JSON.stringify(request.queryParams), JSON.stringify(expectedQuery), 'Delete user request sent to the server');
       request.ok({
         'ok': true,
         'id': 'org.couchdb.user:joe@donuts.com',
