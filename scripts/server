@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-fail () {
+warn () {
   echo "CouchDB must be installed and running for the server to start."
   echo "Check https://github.com/HospitalRun/hospitalrun-frontend#install"
-  exit 1
+  exit 0
 }
 
 check_couchdb () {
@@ -25,7 +25,7 @@ retry_check () {
 }
 
 echo -n 'Checking CouchDB...'
-retry_check 1 check_couchdb || fail
+retry_check 3 check_couchdb || warn
 
 echo 'Starting ember server'
 ember serve
