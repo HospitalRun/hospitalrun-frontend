@@ -41,7 +41,7 @@ test('create a new imaging request', (assert) => {
     andThen(() => {
       assert.equal(currentURL(), '/imaging/edit/new');
     });
-    fillIn('.patient-input .tt-input', 'Lennex Zinyando - P00017');
+    fillIn('.patient-input .tt-input', 'Joe Bagadonuts - P00001');
     triggerEvent('.patient-input .tt-input', 'input');
     triggerEvent('.patient-input .tt-input', 'blur');
     fillIn('.imaging-type-input .tt-input', 'Chest Scan');
@@ -59,9 +59,13 @@ test('create a new imaging request', (assert) => {
       findWithAssert('button:contains(Return)');
       findWithAssert('button:contains(Complete)');
     });
-    waitToAppear('.test-patient-summary');
     andThen(() => {
-      assert.equal(find('.test-patient-summary').length, 1, 'Patient summary is displayed');
+      assert.equal(find('.patient-summary').length, 1, 'Patient summary is displayed');
+    });
+    click('button:contains(Return)');
+    andThen(() => {
+      assert.equal(currentURL(), '/imaging');
+      assert.equal(find('tr').length, 3, 'Two imaging requests are displayed');
     });
   });
 });
@@ -86,11 +90,11 @@ test('mark an imaging request as completed', (assert) => {
     andThen(() => {
       assert.equal(currentURL(), '/imaging');
       assert.equal(find('.table').length, 1, 'Requests table is visible');
-      assert.equal(find('tr').length, 3, 'Two imaging requests not completed');
+      assert.equal(find('tr').length, 2, 'One imaging request not completed');
     });
     click('button:contains(Edit):first');
     andThen(() => {
-      assert.equal(currentURL(), '/imaging/edit/1AC1DD3D-E7E7-15B4-A698-8A8AE62749EB');
+      assert.equal(currentURL(), '/imaging/edit/12DEDA58-4670-7A74-BA8B-9CC5E5CA82E7');
       findWithAssert('button:contains(Update)');
       findWithAssert('button:contains(Return)');
       findWithAssert('button:contains(Complete)');
@@ -104,7 +108,7 @@ test('mark an imaging request as completed', (assert) => {
     click('button:contains(Return)');
     andThen(() => {
       assert.equal(currentURL(), '/imaging');
-      assert.equal(find('tr').length, 2, 'One request is left to complete');
+      assert.equal(find('tr').length, 1, 'No requests are left to complete');
     });
   });
 });
