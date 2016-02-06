@@ -13,23 +13,21 @@ To install the frontend please do the following:
 - Make sure you have installed [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - Make sure you have installed [Node.js](https://nodejs.org/en/download/). Versions after 0.10.0 should work, but please note if you encounter errors using 5.x it may be necessary to upgrade your npm version. Versions after 3.5.x should work:
     1. `npm install -g npm`
-- Install [ember-cli v1.13.14](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@1.13.14`
-- Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
-- Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and:
-    1. `npm install` to install needed node modules.
-    2. `bower install` to install needed bower modules.
-    3. `npm install -g phantomjs2` to install PhantomJS2, which is needed to run tests.  If you are using Linux, you will need to build PhantomJS from source following directions here: http://phantomjs.org/download.html.
 - Install and configure [CouchDB](http://couchdb.apache.org/)
   1. Download and install CouchDB from http://couchdb.apache.org/#download
+    - Once installed, couchdb can be started with `make couchdb` or `make serve` (which also starts the server)
   2. Create admin user:
-    1. If you have just installed CouchDB and have no admin user, please run `initcouch.sh`. A user `hradmin` will be created with password: `test`.
-    2. If you already have a CouchDB admin user, please run `initcouch.sh USER PASS` where `USER` and `PASS` are the CouchDB admin user credentials.
+    1. If you have just installed CouchDB and have no admin user, please run `./script/initcouch.sh`. A user `hradmin` will be created with password: `test`.
+    2. If you already have a CouchDB admin user, please run `./script/initcouch.sh USER PASS` where `USER` and `PASS` are the CouchDB admin user credentials.
 - Copy the `server/config-example.js` to `server/config.js`.
 
 ## Start
 To start the frontend please do the following:
 
-- Start the server by running `ember serve` in the repo folder.
+- Start the server by running `make serve` in the repo folder. Note that this will start both couchdb and ember-server.
+  - To start them individually run the following on their own terminal window:
+    - `make couchdb`
+    - `make server`
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
 ### Troubleshooting your local environment
