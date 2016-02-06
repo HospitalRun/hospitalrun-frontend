@@ -8,9 +8,9 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "./scripts/build",
-    "start": "./scripts/server",
-    "test": "./scripts/test"
+    "build": "./script/build",
+    "start": "./script/server",
+    "test": "./script/test"
   },
   "repository": "",
   "engines": {
