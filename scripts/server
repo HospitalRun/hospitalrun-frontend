@@ -2,8 +2,8 @@
 set -euo pipefail
 
 warn () {
-  echo "CouchDB must be installed and running for the server to start."
-  echo "Check https://github.com/HospitalRun/hospitalrun-frontend#install"
+  echo "Oops! Looks like CouchDB isn't running. CouchDB must be running before you can start HospitalRun."
+  echo "For help or more info see https://github.com/HospitalRun/hospitalrun-frontend#install"
   exit 0
 }
 
