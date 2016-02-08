@@ -29,13 +29,13 @@ To install the frontend please do the following:
 ## Start
 To start the frontend please do the following:
 
-- Start the server by running `ember serve` in the repo folder.
+- Start the server by running `npm start` in the repo folder.
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
 ### Troubleshooting your local environment
-Always make sure to `git pull` and get the latest from master. 
+Always make sure to `git pull` and get the latest from master.
 
-The app will usually tell you when something needs to happen (i.e. if you try to `ember serve` and npm is out of date, it will tell you to run `npm update`. But If you run into problems you can't resolve, feel free to open an issue, or ask for help in the [HospitalRun Slack channel](https://hospitalrun.slack.com/) (you can request an invite [here](https://hospitalrun-slackin.herokuapp.com/)).
+The app will usually tell you when something needs to happen (i.e. if you try to `npm start` and npm is out of date, it will tell you to run `npm update`. But If you run into problems you can't resolve, feel free to open an issue, or ask for help in the [HospitalRun Slack channel](https://hospitalrun.slack.com/) (you can request an invite [here](https://hospitalrun-slackin.herokuapp.com/)).
 
 Otherwise, here are some tips for common issues:
 
