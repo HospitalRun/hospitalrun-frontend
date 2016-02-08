@@ -23,7 +23,7 @@ export default {
     id: 'Id',
     gender: 'Gênero',
     age: 'Idade'
- 
+
   },
   messages: {
     no_items_found: 'Nenhum item encontrado',
@@ -36,8 +36,8 @@ export default {
     add: 'Adicionar',
     update: 'Atualizar',
     ok: 'Ok'
-    },
-  
+  },
+
   login: {
     messages: {
       sign_in:  'inscreva-se'
@@ -57,26 +57,26 @@ export default {
   imaging: {
     page_title: 'Requisição de imagens',
     section_title: 'Imagem',
-  buttons: {
+    buttons: {
     new_button: '+ nova imagem'
   },
-  labels: {
+    labels: {
     radiologist: 'Radiologista',
     add_new_visit: '--Adicionar novo visitante--'
   },
-  messages: {
+    messages: {
     no_completed: 'Nenhum item completo encontrado.'
   },
-  titles: {
+    titles: {
     completed_imaging: 'Imagem completa',
     edit_title: 'Requisição de edição de imagem',
     new_title: 'Nova requisição de imagem'
   },
-  alerts: {
+    alerts: {
     completed_title: 'Requisição de imagem completa.',
     completed_message: 'A requisição de imagem esta completa.',
     saved_title: 'Requisição de imagem salva.',
     saved_message: 'A requisição de imagem foi salva.'
   }
- }
+  }
 };
