@@ -1,11 +1,12 @@
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import Ember from 'ember';
+import MedicationDetails from 'hospitalrun/mixins/medication-details';
 
 /**
  * Procedure charges
  */
-export default AbstractModel.extend({
+export default AbstractModel.extend(MedicationDetails, {
   medication: DS.belongsTo('inventory', {
     async: false
   }),
@@ -16,15 +17,22 @@ export default AbstractModel.extend({
   dateCharged: DS.attr('date'),
 
   medicationCharge: function() {
-    var medication = this.get('medication'),
+    let medicationTitle = this.get('medicationTitle');
+    if (!Ember.isEmpty(medicationTitle)) {
+      return true;
+    }
+    var pricingItem = this.get('pricingItem'),
       newMedicationCharge = this.get('newMedicationCharge');
-    return (!Ember.isEmpty(medication) || newMedicationCharge);
-  }.property('medication'),
+    return (Ember.isEmpty(pricingItem) || newMedicationCharge);
+  }.property('medicationTitle', 'pricingItem', 'newMedicationCharge'),
 
-  inventoryItemChanged: function() {
-    var inventoryItem = this.get('inventoryItem');
-    this.set('medication', inventoryItem);
-  }.observes('inventoryItem'),
+  medicationName: function() {
+    return this.getMedicationName('medication');
+  }.property('medicationTitle', 'medication'),
+
+  medicationPrice: function() {
+    return this.getMedicationPrice('medication');
+  }.property('priceOfMedication', 'medication'),
 
   validations: {
     itemName: {

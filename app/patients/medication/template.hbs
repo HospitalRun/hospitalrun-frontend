@@ -10,7 +10,7 @@
     {{#each patientMedications as |medication|}}
         <tr {{action "editMedication" medication}}>
             <td>{{date-format medication.prescriptionDate}}</td>
-            <td>{{medication.inventoryItem.name}}</td>
+            <td>{{medication.medicationName}}</td>
             <td>{{medication.status}}</td>
             <td>{{medication.prescription}}</td>
             <td>{{medication.requestedBy}}</td>
