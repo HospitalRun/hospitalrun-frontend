@@ -136,6 +136,8 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
                 this._addNewPatient();
                 reject('creating new patient first');
               } else {
+                newMedication.set('medicationTitle', newMedication.get('inventoryItem.name'));
+                newMedication.set('priceOfMedication', newMedication.get('inventoryItem.price'));
                 newMedication.set('status', 'Requested');
                 newMedication.set('requestedBy', newMedication.getUserName());
                 newMedication.set('requestedDate', new Date());

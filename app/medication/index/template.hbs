@@ -15,7 +15,7 @@
         <tr {{action 'editItem' medicationRequest}}>
           <td>{{date-format medicationRequest.prescriptionDate}}</td>
           <td>{{medicationRequest.patient.displayName}}</td>
-          <td>{{medicationRequest.inventoryItem.name}}</td>
+          <td>{{medicationRequest.medicationName}}</td>
           <td>{{medicationRequest.quantity}}</td>
           <td>{{medicationRequest.status}}</td>
           {{#if showActions}}

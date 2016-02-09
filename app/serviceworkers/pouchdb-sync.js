@@ -11,15 +11,16 @@ new PouchDB('localMainDB', function(err, db) {
   localMainDB = db;
 });
 
-self.addEventListener('activate', function() {
-  configDB.get('config_use_google_auth', function(useGoogleAuthConfig) {
-    if (useGoogleAuthConfig === true) {
-      useGoogleAuth = true;
-    } else {
-      useGoogleAuth = false;
-    }
-  });
-
+self.addEventListener('activate', function(event) {
+  event.waitUntil(
+    configDB.get('config_use_google_auth', function(useGoogleAuthConfig) {
+      if (useGoogleAuthConfig === true) {
+        useGoogleAuth = true;
+      } else {
+        useGoogleAuth = false;
+      }
+    })
+  );
 });
 
 toolbox.router.get('/db/main/_all_docs', function(request, values, options) {
