@@ -28,7 +28,7 @@ To install the frontend please do the following:
 
 ### Experimental
 If you are willing to try using `make`, ensure you have installed git, node and couchdb (steps 1, 2 and 6 above), you may skip the rest.
-* Run `make serve`, it will start couchdb, install npm dependencies and start `ember serve`.
+* Run `make serve`, it will start couchdb, install npm dependencies and start the server.
 * Look into `Makefile` to figure other targets available.
 
 ## Start
