@@ -40,6 +40,7 @@
     "ember-cli-qunit": "^1.2.1",
     "ember-cli-release": "0.2.8",
     "ember-cli-sass": "^5.2.1",
+    "ember-cli-scss-lint": "0.1.3",
     "ember-cli-sri": "^2.0.0",
     "ember-cli-uglify": "^1.2.0",
     "ember-data": "2.3.3",
