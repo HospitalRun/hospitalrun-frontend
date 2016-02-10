@@ -19,8 +19,11 @@ build: install
 	@./script/build
 
 .PHONY: server
-server: install node_modules/bower node_modules/ember-cli
+server: install node_modules/bower node_modules/ember-cli server/config.js
 	@./script/server
+
+server/config.js:
+	@cp server/config-example.js $@
 
 .PHONY: couchdb
 couchdb:
