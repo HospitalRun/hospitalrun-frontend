@@ -39,7 +39,8 @@ export default {
   },
   login: {
     messages: {
-      sign_in:  'please sign in'
+      sign_in:  'please sign in',
+      error:    'Username or password is incorrect.'
     },
     labels: {
       password: 'Password',
