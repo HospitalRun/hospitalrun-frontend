@@ -41,6 +41,6 @@ node_modules: package.json
 node_modules/%:
 	@npm install $*
 
-$(bower): node_modules bower.json
+$(bower): node_modules/bower bower.json
 	@bower install --allow-root
 	@touch $@
