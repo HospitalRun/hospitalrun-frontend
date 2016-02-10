@@ -13,12 +13,12 @@ To install the frontend please do the following:
 - Make sure you have installed [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - Make sure you have installed [Node.js](https://nodejs.org/en/download/). Versions after 0.10.0 should work, but please note if you encounter errors using 5.x it may be necessary to upgrade your npm version. Versions after 3.5.x should work:
     1. `npm install -g npm`
-- Install [ember-cli v1.13.14](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@1.13.14`
+- Install [ember-cli latest](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@latest`
 - Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
 - Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and:
     1. `npm install` to install needed node modules.
     2. `bower install` to install needed bower modules.
-    3. `npm install -g phantomjs2` to install PhantomJS2, which is needed to run tests.  If you are using Linux, you will need to build PhantomJS from source following directions here: http://phantomjs.org/download.html.
+    3. `npm install -g phantomjs-prebuilt` to install PhantomJS2, which is needed to run tests.
 - Install and configure [CouchDB](http://couchdb.apache.org/)
   1. Download and install CouchDB from http://couchdb.apache.org/#download
   2. Create admin user:
