@@ -62,7 +62,7 @@
           {{#each model.charges as |charge|}}
             {{#if charge.medicationCharge}}
               <tr>
-                <td>{{charge.medication.name}}</td>
+                <td>{{charge.medicationName}}</td>
                 <td>{{charge.quantity}}</td>
                 <td>
                   {{#if canAddCharge}}

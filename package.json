@@ -8,9 +8,9 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "ember build",
-    "start": "ember server",
-    "test": "ember test"
+    "build": "./script/build",
+    "start": "./script/server",
+    "test": "./script/test"
   },
   "repository": "",
   "engines": {

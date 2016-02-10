@@ -24,7 +24,7 @@
     {{#if isFulfilledOrRequested}}
       <div class="form-group">
         <label class="control-label">Medication</label>
-        <p class="form-control-static">{{model.inventoryItem.name}}</p>
+        <p class="form-control-static">{{model.medicationName}}</p>
       </div>
     {{else}}
       {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required test-medication-input"}}

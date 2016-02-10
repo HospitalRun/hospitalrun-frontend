@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+warn () {
+  echo "Oops! Looks like CouchDB isn't running. CouchDB must be running before you can start HospitalRun."
+  echo "For help or more info see https://github.com/HospitalRun/hospitalrun-frontend#install"
+  exit 0
+}
+
+check_couchdb () {
+  local server=${COUCHDB_URL:-'http://localhost:5984'}
+  curl -s -i ${server} | grep OK > /dev/null
+}
+
+retry_check () {
+  local retries=${1}
+  local func=${2}
+  local interval=3
+  for i in $(seq 1 ${retries})
+  do
+    ("${func}") \
+      || (echo -n "." && sleep ${interval} && "${func}") \
+      && break
+  done
+}
+
+echo -n 'Checking CouchDB...'
+retry_check 3 check_couchdb || warn
+
+echo 'Starting ember server'
+ember serve
