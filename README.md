@@ -10,21 +10,27 @@ To run the development environment for this frontend you will need to have [Git]
 ## Install
 To install the frontend please do the following:
 
-- Make sure you have installed [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- Make sure you have installed [Node.js](https://nodejs.org/en/download/). Versions after 0.10.0 should work, but please note if you encounter errors using 5.x it may be necessary to upgrade your npm version. Versions after 3.5.x should work:
+1. Make sure you have installed [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+2. Make sure you have installed [Node.js](https://nodejs.org/en/download/). Versions after 0.10.0 should work, but please note if you encounter errors using 5.x it may be necessary to upgrade your npm version. Versions after 3.5.x should work:
     1. `npm install -g npm`
-- Install [ember-cli latest](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@latest`
-- Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
-- Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and:
+3. Install [ember-cli latest](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@latest`
+4. Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
+5. Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and:
     1. `npm install` to install needed node modules.
     2. `bower install` to install needed bower modules.
     3. `npm install -g phantomjs-prebuilt` to install PhantomJS2, which is needed to run tests.
-- Install and configure [CouchDB](http://couchdb.apache.org/)
-  1. Download and install CouchDB from http://couchdb.apache.org/#download
-  2. Create admin user:
-    1. If you have just installed CouchDB and have no admin user, please run `initcouch.sh`. A user `hradmin` will be created with password: `test`.
-    2. If you already have a CouchDB admin user, please run `initcouch.sh USER PASS` where `USER` and `PASS` are the CouchDB admin user credentials.
-- Copy the `server/config-example.js` to `server/config.js`.
+6. Install and configure [CouchDB](http://couchdb.apache.org/)
+    1. Download and install CouchDB from http://couchdb.apache.org/#download
+    2. Create admin user:
+        1. If you have just installed CouchDB and have no admin user, please run `./script/initcouch.sh`. A user `hradmin` will be created with password: `test`.
+        2. If you already have a CouchDB admin user, please run `./script/initcouch.sh USER PASS` where `USER` and `PASS` are the CouchDB admin user credentials.
+7. Copy the `server/config-example.js` to `server/config.js`.
+
+### Experimental
+If you are willing to try using `make`, ensure you have installed git, node and couchdb (steps 1, 2 and 6 above), you may skip the rest.  This requires couchdb in the path to work correctly.
+* Run `make serve`, it will start couchdb, install npm dependencies and start the server.
+* Run `make all` to run all tests and build the app.
+* Look into `Makefile` to figure other targets available.
 
 ## Start
 To start the frontend please do the following:
