@@ -11,6 +11,9 @@ export default AbstractModuleRoute.extend({
     }, {
       text: 'Lookup Lists',
       linkTo: 'admin.lookup'
+    }, {
+      text: 'Incident Categories',
+      linkTo: 'admin.inc-category'
     }];
     if (this.currentUserCan('load_db')) {
       options.push({

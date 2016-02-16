@@ -11,6 +11,7 @@ Router.map(function() {
   }, function() {
     this.route('address');
     this.route('loaddb');
+    this.route('inc-category', { path: '/inc-category/:inc-category_id' });
     this.route('lookup', { path: '/' });
     this.route('users', {
       resetNamespace: true
