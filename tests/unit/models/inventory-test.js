@@ -3,7 +3,13 @@ import { moduleForModel, test } from 'ember-qunit';
 
 moduleForModel('inventory', 'Unit | Model | inventory', {
   // Specify the other units that are required for this test.
-  needs: ['model:inv-purchase', 'model:inv-location']
+  needs: [
+    'ember-validations@validator:local/numericality',
+    'ember-validations@validator:local/presence',
+    'model:inv-location',
+    'model:inv-purchase',
+    'service:validations'
+  ]
 });
 
 test('condition', function(assert) {
