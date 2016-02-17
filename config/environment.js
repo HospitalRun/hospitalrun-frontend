@@ -31,6 +31,10 @@ module.exports = function(environment) {
     ENV.APP.rootElement = '#ember-testing';
   }
 
+  ENV.i18n = {
+    defaultLocale: 'en'
+  };
+
   ENV.manifest = {
     enabled: true,
     appcacheFile: '/manifest.appcache',

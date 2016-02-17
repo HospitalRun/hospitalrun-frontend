@@ -9,12 +9,12 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 
-    {{content-for 'head'}}
+    {{content-for "head"}}
 
     <link rel="stylesheet" href="assets/vendor.css">
     <link rel="stylesheet" href="assets/hospitalrun.css">
 
-    {{content-for 'head-footer'}}
+    {{content-for "head-footer"}}
   </head>
   <body>
     <div class="loading-notice apploading" id="apploading" role="alert">
@@ -41,11 +41,11 @@
         },false);
       }
     </script>
-    {{content-for 'body'}}
+    {{content-for "body"}}
 
     <script src="assets/vendor.js"></script>
     <script src="assets/hospitalrun.js"></script>
 
-    {{content-for 'body-footer'}}
+    {{content-for "body-footer"}}
   </body>
 </html>
