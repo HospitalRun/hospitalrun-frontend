@@ -45,7 +45,7 @@ test('incorrect credentials shows an error message on the screen', function(asse
   runWithPouchDump('default', function() {
     visit('/');
 
-    let errorMessage = 'Name or password is incorrect.';
+    let errorMessage = 'Username or password is incorrect.';
 
     stubRequest('post', '/db/_session', function(request) {
       assert.equal(request.requestBody, 'name=hradmin&password=tset', 'credential are sent to the server');
