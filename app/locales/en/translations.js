@@ -23,11 +23,15 @@ export default {
     completed: 'Completed',
     id: 'Id',
     gender: 'Gender',
-    age: 'Age'
+    age: 'Age',
+    username: 'Username',
+    email: 'Role'
   },
   messages: {
     no_items_found: 'No items found.',
-    create_new_record: 'Create a new record?'
+    create_new_record: 'Create a new record?',
+    create_new_user: 'Create a new user?',
+    no_users_found: 'No users found.'
   },
   buttons: {
     complete: 'Complete',
@@ -35,7 +39,9 @@ export default {
     return_button: 'Return',
     add: 'Add',
     update: 'Update',
-    ok: 'Ok'
+    ok: 'Ok',
+    delete: 'Delete',
+    new_user: 'New User'
   },
   login: {
     messages: {
