@@ -2,6 +2,17 @@ export default {
   dashboard: {
     title: 'What would you like to do?'
   },
+  user:{
+    plus_new_user : '+ new user',
+    users_page_tile: 'User Listing'
+  },
+  admin:{
+    address_options: 'Address Options x',
+    lookup_lists: 'Lookup Lists x',
+    load_db: 'Load DB x',
+    users: 'Users x',
+    section_title: 'Admin x'
+  },
   labels: {
     name: 'Name',
     patient: 'Patient',
@@ -25,13 +36,17 @@ export default {
     gender: 'Gender',
     age: 'Age',
     username: 'Username',
-    email: 'Role'
+    email: 'Email',
+    role: 'Role',
+    delete: 'Delete'
+    
   },
   messages: {
     no_items_found: 'No items found.',
     create_new_record: 'Create a new record?',
     create_new_user: 'Create a new user?',
-    no_users_found: 'No users found.'
+    no_users_found: 'No users found.',
+    are_you_sure_delete: 'Are you sure you wish to delete the user '
   },
   buttons: {
     complete: 'Complete',
