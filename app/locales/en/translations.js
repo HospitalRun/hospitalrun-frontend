@@ -11,7 +11,9 @@ export default {
     lookup_lists: 'Lookup Lists x',
     load_db: 'Load DB x',
     users: 'Users x',
-    section_title: 'Admin x'
+    section_title: 'Admin x',
+    new_user: 'New User X',
+    address_fields : 'Address Fields x'
   },
   labels: {
     name: 'Name',
