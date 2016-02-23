@@ -1,13 +1,20 @@
-import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import Ember from 'ember';
-export default AbstractEditRoute.extend({
-  editTitle: 'Edit Incident Category',
+import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
+export default AbstractIndexRoute.extend({
   modelName: 'inc-category',
-  newTitle: 'New Incident Category',
+  pageTitle: 'Incident Categories',
 
-  getNewData: function() {
-    return Ember.RSVP.resolve({
-    });
+  newButtonAction: function() {
+    return 'newItem';
+  }.property(),
+  newButtonText: '+ new category',
+
+  actions: {
+    newItem: function() {
+        this.transitionTo('admin.inc-category.edit', 'new');
+      },
+
+    editItem: function(category) {
+      this.transitionTo('admin.inc-category.edit', category);
+    }
   }
-
 });

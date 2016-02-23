@@ -1,6 +1,6 @@
 import Ember from 'ember';
 export default Ember.Controller.extend({
-  incidentCategoryEdit: Ember.inject.controller('inc-category'),
+  incidentCategoryEdit: Ember.inject.controller('inc-category/edit'),
   editController: Ember.computed.alias('incidentCategoryEdit'),
   title: 'Add Item',
   updateButtonText: 'Add',

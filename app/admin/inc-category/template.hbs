@@ -1,44 +1,25 @@
-<div class="panel panel-primary">
-    <div class="panel-body">
-      {{#em-form model=model submitButton=false }}
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            Incident Category Name
-          </h3>
-          <div class="row">
-             {{em-text property="incidentCategoryName" label="Category Name" }}
-         </div>
-        </div>
-        <div class="row">
-          {{em-select class="col-xs-3 incident-category-name" label="Incident Category Name"
-            property="incidentCategoryName" content=incidentCategoryNames
-            selected=model.incidentCategoryName
-          }}
-        </div>
-      {{/em-form}}
-    </div>
-</div>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">{{incidentCategoryName}}</h3>
-    </div>
-    <div class="panel-body">
+{{#item-listing paginationProps=paginationProps }}
+    {{#if hasRecords}}
         <table class="table">
             <tr class="table-header">
-                <th>Item</th>
-                <th>{{t 'labels.actions'}}</th>
+                <th>Incident Category Name</th>
+                     <th>Actions</th>
             </tr>
-            {{#each incidentCategoryItems as |incidentCategoryItem|}}
-                <tr>
-                    <td class="incident-category-item">{{incidentCategoryItem}}</td>
-                    <td>
-                        <button class="btn btn-default warning" {{action 'showDeleteItem' incidentCategoryItem bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
-                    </td>
-                </tr>
+            {{#each model as |category|}}
+                    <tr {{action 'editItem' category}}>
+                        <td>{{category.incidentCategoryName}}</td>
+                        <td>
+                            <button class="btn btn-default neutral" {{action 'editItem' category  bubbles=false }}>Edit</button>
+                            <button class="btn btn-default warning" {{action 'showDeleteIncidentCategory' category  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                        </td>
+                    </tr>
             {{/each}}
         </table>
-    </div>
-    <div class="panel-footer">
-        <button class="btn btn-default neutral" {{action 'showAddItem'}}>Add Item</button>
-    </div>
-</div>
+    {{else}}
+        <div class="alert alert-info">
+            <em>No Incident Categories found.</em>
+            <em>Create a new Incident Category?</em>
+            <button class="btn btn-primary on-white" {{action 'newItem'}}>New Category</button>
+        </div>
+   {{/if}}
+{{/item-listing}}
