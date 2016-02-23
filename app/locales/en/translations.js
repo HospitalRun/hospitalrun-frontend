@@ -2,18 +2,37 @@ export default {
   dashboard: {
     title: 'What would you like to do?'
   },
-  user:{
+  user: {
     plus_new_user : '+ new user',
     users_page_tile: 'User Listing'
   },
-  admin:{
+  admin: {
     address_options: 'Address Options x',
     lookup_lists: 'Lookup Lists x',
     load_db: 'Load DB x',
     users: 'Users x',
     section_title: 'Admin x',
     new_user: 'New User X',
-    address_fields : 'Address Fields x'
+    address_fields: 'Address Fields x',
+    address: {
+        address1_label : 'Address 1 Label x',
+        address2_label : 'Address 2 Label x',
+        address3_label : 'Address 3 Label x',
+        address4_label : 'Address 4 Label x',
+        include1_label : 'Include 1 Label x',
+        include2_label : 'Include 2 Label x',
+        include3_label : 'Include 3 Label x',
+        include4_label : 'Include 4 Label x',
+        titles: {
+            options_saved: 'Options Saved'
+        },
+        messages: {
+            address_saved: 'The address options have been saved'
+        }
+    },
+    lookup: {
+        anesthesia_types : 'Anesthesia Types X'
+    }
   },
   labels: {
     name: 'Name',
