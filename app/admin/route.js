@@ -11,9 +11,6 @@ export default AbstractModuleRoute.extend({
     }, {
       text: 'Lookup Lists',
       linkTo: 'admin.lookup'
-    }, {
-      text: 'Incident Categories',
-      linkTo: 'admin.inc-category'
     }];
     if (this.currentUserCan('load_db')) {
       options.push({
@@ -24,6 +21,10 @@ export default AbstractModuleRoute.extend({
     options.push({
       text: 'Users',
       linkTo: 'users.index'
+    });
+    options.push({
+      text: 'Incident Categories',
+      linkTo: 'inc-category.index'
     });
     return options;
   }.property(),

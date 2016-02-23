@@ -10,11 +10,11 @@ export default AbstractIndexRoute.extend({
 
   actions: {
     newItem: function() {
-        this.transitionTo('admin.inc-category.edit', 'new');
+        this.transitionTo('inc-category.edit', 'new');
       },
 
     editItem: function(category) {
-      this.transitionTo('admin.inc-category.edit', category);
+      this.transitionTo('inc-category.edit', category);
     }
   }
 });

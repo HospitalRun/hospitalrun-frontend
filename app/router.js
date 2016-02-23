@@ -12,7 +12,7 @@ Router.map(function() {
     this.route('address');
     this.route('loaddb');
     this.route('inc-category', {
-      resetNamespace: false
+      resetNamespace: true
     }, function() {
       this.route('edit', { path: '/edit/:inc-category_id' });
     });
