@@ -1,8 +1,8 @@
 {
   "name": "hospitalrun",
   "version": "0.9.0",
-  "description": "Small description for hospitalrun goes here",
-  "private": true,
+  "description": "Ember front end for HospitalRun",
+  "homepage": "http://hospitalrun.io",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -12,12 +12,19 @@
     "start": "./script/server",
     "test": "./script/test"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:HospitalRun/hospitalrun-frontend"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
-  "license": "MIT",
+  "author": "John Kleinschmidt",
+  "contributors": [
+    "Joel Worrall",
+    "Joel Glovier"
+  ],
+  "license": "GPL-3.0",
   "devDependencies": {
     "body-parser": "^1.14.2",
     "broccoli-asset-rev": "^2.4.1",
@@ -58,6 +65,7 @@
     "ember-validations": "2.0.0-alpha.4",
     "express": "^4.8.5",
     "glob": "^7.0.0",
+    "hospitalrun-server-routes": "0.9.0",
     "nano": "6.2.0",
     "request": "2.69.0"
   },
