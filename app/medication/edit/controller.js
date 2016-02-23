@@ -134,7 +134,10 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
             if (isNew) {
               if (Ember.isEmpty(newMedication.get('patient'))) {
                 this._addNewPatient();
-                reject('creating new patient first');
+                reject({
+                  ignore: true,
+                  message: 'creating new patient first'
+                });
               } else {
                 newMedication.set('medicationTitle', newMedication.get('inventoryItem.name'));
                 newMedication.set('priceOfMedication', newMedication.get('inventoryItem.price'));
@@ -208,7 +211,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
   actions: {
     addedNewPatient: function(record) {
       this.send('closeModal');
-      this.set('patient', record);
+      this.set('model.patient', record);
       this.set('newPatientId');
       this.send('update');
     }

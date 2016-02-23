@@ -146,6 +146,12 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         imaging: 'radiologist'
       }
     }, {
+      name: 'Sex',
+      value: 'sex',
+      model: {
+        patient: 'sex'
+      }
+    }, {
       defaultValues: 'defaultUnitList',
       name: 'Unit Types',
       value: 'unit_types',
@@ -216,6 +222,7 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         if (!Ember.isEmpty(lookupItem) && Ember.isEmpty(lookupItem.get('userCanAdd'))) {
           lookupItem.set('userCanAdd', true);
         }
+        this.set('model.userCanAdd', lookupItem.get('userCanAdd'));
         return lookupItem;
       }
     }.property('model.lookupType'),
@@ -335,6 +342,7 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
       },
       updateList: function() {
         var lookupTypeList = this.get('lookupTypeList');
+        lookupTypeList.set('userCanAdd', this.get('model.userCanAdd'));
         lookupTypeList.save().then(function() {
           this.displayAlert('List Saved', 'The lookup list has been saved');
         }.bind(this));

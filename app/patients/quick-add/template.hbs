@@ -17,12 +17,7 @@
       {{em-input property="lastName" label="Last Name" class="required col-sm-6"}}
     </div>
     <div class="row">
-      <div class="form-group col-sm-6">
-        <label>Gender</label>
-        <div>
-          {{ext-radio name="gender" content=genderList value=model.gender showInline=true }}
-        </div>
-      </div>
+      {{select-or-typeahead property="sex" label="Sex" list=sexList selection=model.sex class="col-sm-6"}}
       {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now" class="col-sm-6"}}
     </div>
   {{/em-form}}

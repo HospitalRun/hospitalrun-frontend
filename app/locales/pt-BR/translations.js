@@ -21,7 +21,7 @@ export default {
     requests: 'Requisições',
     completed: 'Completo',
     id: 'Id',
-    gender: 'Gênero',
+    sex: 'Sexo',
     age: 'Idade'
 
   },

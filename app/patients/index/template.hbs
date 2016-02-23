@@ -6,7 +6,7 @@
           {{#sortable-column sortBy='id' sortDesc=sortDesc sortKey=sortKey }}ID{{/sortable-column}}
           {{#sortable-column sortBy='firstName' sortDesc=sortDesc sortKey=sortKey }}First Name{{/sortable-column}}
           {{#sortable-column sortBy='lastName' sortDesc=sortDesc sortKey=sortKey }}Last Name{{/sortable-column}}
-          {{#sortable-column sortBy='gender' sortDesc=sortDesc sortKey=sortKey }}Gender{{/sortable-column}}
+          {{#sortable-column sortBy='sex' sortDesc=sortDesc sortKey=sortKey }}Sex{{/sortable-column}}
           {{#sortable-column sortBy='dateOfBirth' sortDesc=sortDesc sortKey=sortKey }}DOB{{/sortable-column}}
           {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}Status{{/sortable-column}}
           {{#if showActions}}
@@ -20,7 +20,7 @@
             <td>{{patient.displayPatientId}}</td>
             <td>{{patient.firstName}}</td>
             <td>{{patient.lastName}}</td>
-            <td>{{patient.gender}}</td>
+            <td>{{patient.sex}}</td>
             <td>{{date-format patient.dateOfBirth}}</td>
             <td>{{patient.status}}</td>
             {{#if showActions}}

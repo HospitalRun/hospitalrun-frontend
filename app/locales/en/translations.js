@@ -22,7 +22,7 @@ export default {
     requests: 'Requests',
     completed: 'Completed',
     id: 'Id',
-    gender: 'Gender',
+    sex: 'Sex',
     age: 'Age'
   },
   messages: {

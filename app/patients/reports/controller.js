@@ -17,10 +17,10 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   patientDetails: {},
 
   admissionReportColumns: {
-    gender: {
-      label: 'Gender',
+    sex: {
+      label: 'Sex',
       include: true,
-      property: 'gender'
+      property: 'sex'
     },
     total: {
       label: 'Total',
@@ -127,10 +127,10 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       include: true,
       property: 'patient.displayPatientId'
     },
-    gender: {
-      label: 'Gender',
+    sex: {
+      label: 'Sex',
       include: true,
-      property: 'patient.gender'
+      property: 'patient.sex'
     },
     dateOfBirth: {
       label: 'Date Of Birth',
@@ -523,11 +523,8 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
 
   _generateAdmissionOrDischargeReport: function(visits, reportType) {
     var detailedReport = false,
-      femaleCount = 0,
-      femaleRows = [],
-      maleCount = 0,
-      maleRows = [],
-      reportColumns;
+      reportColumns,
+      patientBySex = {};
     if (reportType.indexOf('detailed') > -1) {
       detailedReport = true;
       reportColumns = this.get('admissionDetailReportColumns');
@@ -550,30 +547,32 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
           admissionDate: visit.get('startDate'),
           dischargeDate: visit.get('endDate')
         };
-        if (visit.get('patient.gender') === 'F') {
-          femaleCount++;
-          femaleRows.push(reportRow);
-        } else {
-          maleCount++;
-          maleRows.push(reportRow);
+        var sexGrouping = patientBySex[visit.get('patient.sex')];
+        if (!sexGrouping) {
+          sexGrouping = {
+            count: 0,
+            rows: []
+          };
+          patientBySex[visit.get('patient.sex')] = sexGrouping;
         }
+        sexGrouping.count++;
+        sexGrouping.rows.push(reportRow);
       }
     }.bind(this));
-    if (detailedReport) {
-      femaleRows.forEach(function(reportRow) {
-        this._addReportRow(reportRow, false, reportColumns);
-      }.bind(this));
-      this._addReportRow({ patientId: 'Female Total: ' + femaleCount }, true, reportColumns);
-      maleRows.forEach(function(reportRow) {
-        this._addReportRow(reportRow, false, reportColumns);
-      }.bind(this));
-      this._addReportRow({ patientId: 'Male Total: ' + maleCount }, true, reportColumns);
-      this._addReportRow({ patientId: 'Grand Total: ' + (femaleCount + maleCount) }, true, reportColumns);
-    } else {
-      this._addReportRow({ gender: 'Female',total: femaleCount }, true, reportColumns);
-      this._addReportRow({ gender: 'Male',total: maleCount }, true, reportColumns);
-      this._addReportRow({ gender: 'Total: ',total: femaleCount + maleCount }, true, reportColumns);
+    var sexTotal = 0;
+    var addPatientBySexRows = (reportRow) =>  {
+      this._addReportRow(reportRow, false, reportColumns);
+    };
+    for (var sex in patientBySex) {
+      if (detailedReport) {
+        patientBySex[sex].rows.forEach(addPatientBySexRows);
+        this._addReportRow({ patientId: sex + ' Total: ' + patientBySex[sex].count }, true, reportColumns);
+      } else {
+        this._addReportRow({ sex: sex,total: patientBySex[sex].count }, true, reportColumns);
+      }
+      sexTotal += patientBySex[sex].count;
     }
+    this._addReportRow({ patientId: 'Grand Total: ' + (sexTotal) }, true, reportColumns);
     this._finishReport(reportColumns);
   },
 

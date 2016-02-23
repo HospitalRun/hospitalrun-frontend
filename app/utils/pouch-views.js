@@ -304,7 +304,7 @@ var designDocs = [{
     }
     switch (sortBy) {
       case 'firstName':
-      case 'gender':
+      case 'sex':
       case 'lastName':
       case 'status': {
         return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
@@ -317,7 +317,7 @@ var designDocs = [{
       }
     }
   }.toString(), true),
-  version: 4
+  version: 5
 }, {
   name: 'patient_by_status',
   function: generateView('patient',

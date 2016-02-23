@@ -25,6 +25,9 @@ export default AbstractModuleRoute.extend(PatientId, {
     name: 'pricingProfiles',
     findArgs: ['price-profile']
   }, {
+    name: 'sexList',
+    findArgs: ['lookup', 'sex']
+  }, {
     name: 'statusList',
     findArgs: ['lookup', 'patient_status_list']
   }, {

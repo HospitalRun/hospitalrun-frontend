@@ -1,11 +1,10 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
 import Ember from 'ember';
-import GenderList from 'hospitalrun/mixins/gender-list';
 import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, UserSession, {
+export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, {
   canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
   }.property(),
@@ -121,6 +120,7 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
   isFileSystemEnabled: Ember.computed.alias('filesystem.isFileSystemEnabled'),
 
   pricingProfiles: Ember.computed.map('patientController.pricingProfiles', SelectValues.selectObjectMap),
+  sexList: Ember.computed.alias('patientController.sexList'),
   statusList: Ember.computed.alias('patientController.statusList'),
 
   haveAdditionalContacts: function() {
@@ -141,6 +141,10 @@ export default AbstractEditController.extend(BloodTypes, GenderList, ReturnTo, U
     name: 'clinicList',
     property: 'model.clinic',
     id: 'clinic_list'
+  }, {
+    name: 'sexList',
+    property: 'model.sex',
+    id: 'sex'
   }, {
     name: 'statusList',
     property: 'model.status',

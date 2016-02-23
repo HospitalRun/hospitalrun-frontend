@@ -29,12 +29,7 @@
                 {{em-input property="firstName" label="First Name" class="required test-first-name"}}
                 {{em-input property="middleName" label="Middle Name" class="test-middle-name"}}
                 {{em-input property="lastName" label="Last Name" class="required test-last-name"}}
-                <div class="form-group">
-                  <label>Gender</label>
-                  <div>
-                    {{ext-radio content=genderList value=model.gender showInline=true }}
-                  </div>
-                </div>
+                {{select-or-typeahead property="sex" label="Sex" list=sexList selection=model.sex}}
                 {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now"}}
                 <div class="form-group">
                   <label class="control-label">Age</label>
