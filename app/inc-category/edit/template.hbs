@@ -27,7 +27,7 @@
                         </tr>
                         {{#each incidentCategoryItems as |incidentCategoryItem|}}
                             <tr>
-                                <td class="incident-category-item">{{incidentCategoryItem}}</td>
+                                <td class="incident-category-item">{{incidentCategoryItem.item}}</td>
                                 <td>
                                     <button class="btn btn-default warning" {{action 'showDeleteItem' incidentCategoryItem bubbles=false }}>
                                     <span class="octicon octicon-x"></span>Delete</button>

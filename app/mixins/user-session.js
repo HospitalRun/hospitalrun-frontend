@@ -462,7 +462,6 @@ export default Ember.Mixin.create({
       'Incident System Administrator'
     ],
     add_incident_category: [
-      'Hospital Staff',
       'User Administrator',
       'Quality',
       'System Administrator',
