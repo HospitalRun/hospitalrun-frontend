@@ -110,7 +110,7 @@ export default Ember.ArrayController.extend(DateFormat, ModalHelper, NumberForma
     },
 
     _notifyReportError: function(errorMessage) {
-        var alertMessage = 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.';
+        var alertMessage = 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.  The error was: '+JSON.stringify(errorMessage);
         this.closeProgressModal();
         this.displayAlert('Error Generating Report', alertMessage);
         throw new Error(errorMessage);

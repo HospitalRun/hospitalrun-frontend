@@ -4230,7 +4230,7 @@ define('hospitalrun/controllers/abstract-report-controller', ['exports', 'ember'
         },
 
         _notifyReportError: function(errorMessage) {
-            var alertMessage = 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.';
+            var alertMessage = 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.  The error was: '+JSON.stringify(errorMessage);
             this.closeProgressModal();
             this.displayAlert('Error Generating Report', alertMessage);
             throw new Error(errorMessage);
@@ -4727,10 +4727,10 @@ define('hospitalrun/controllers/navigation', ['exports', 'ember', 'hospitalrun/m
             about: function() {
                 var configs = this.get('configs'),
                     version = this.get('version'),
-                    message = `Version: ${version}`,
+                    message = 'Version: '+version,
                     siteInfo = configs.findBy('id','site_information');
                 if (!Ember['default'].isEmpty(siteInfo)) {
-                    message += ` Site Info: ${siteInfo.get('value')}`;
+                    message += ' Site Info: '+siteInfo.get('value');
                 }
                 this.displayAlert('About HospitalRun', message);
             },
@@ -14612,7 +14612,7 @@ define('hospitalrun/mixins/hospitalrun-version', ['exports', 'ember'], function 
     'use strict';
 
     exports['default'] = Ember['default'].Mixin.create({
-        version: '0.8.7.1'
+        version: '0.8.7.2'
     });
 
 });
