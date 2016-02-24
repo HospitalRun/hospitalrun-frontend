@@ -10,10 +10,10 @@
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 
     
-<meta name="hospitalrun/config/environment" content="%7B%22modulePrefix%22%3A%22hospitalrun%22%2C%22environment%22%3A%22production%22%2C%22baseURL%22%3A%22/%22%2C%22locationType%22%3A%22hash%22%2C%22EmberENV%22%3A%7B%22FEATURES%22%3A%7B%7D%7D%2C%22APP%22%3A%7B%22name%22%3A%22hospitalrun%22%2C%22version%22%3A%220.9.0+77be7211%22%7D%2C%22manifest%22%3A%7B%22enabled%22%3Atrue%2C%22appcacheFile%22%3A%22/manifest.appcache%22%2C%22excludePaths%22%3A%5B%22index.html%22%2C%22tests/index.html%22%2C%22robots.txt%22%2C%22crossdomain.xml%22%2C%22testem.js%22%5D%2C%22showCreateDate%22%3Atrue%2C%22includePaths%22%3A%5B%5D%2C%22network%22%3A%5B%22*%22%5D%7D%2C%22exportApplicationGlobal%22%3Afalse%2C%22browserify%22%3A%7B%22tests%22%3Atrue%7D%7D" />
+<meta name="hospitalrun/config/environment" content="%7B%22modulePrefix%22%3A%22hospitalrun%22%2C%22environment%22%3A%22production%22%2C%22baseURL%22%3A%22/%22%2C%22locationType%22%3A%22hash%22%2C%22EmberENV%22%3A%7B%22FEATURES%22%3A%7B%7D%7D%2C%22APP%22%3A%7B%22name%22%3A%22hospitalrun%22%2C%22version%22%3A%220.9.0+a90d132a%22%7D%2C%22i18n%22%3A%7B%22defaultLocale%22%3A%22en%22%7D%2C%22manifest%22%3A%7B%22enabled%22%3Atrue%2C%22appcacheFile%22%3A%22/manifest.appcache%22%2C%22excludePaths%22%3A%5B%22index.html%22%2C%22tests/index.html%22%2C%22robots.txt%22%2C%22crossdomain.xml%22%2C%22testem.js%22%5D%2C%22showCreateDate%22%3Atrue%2C%22includePaths%22%3A%5B%5D%2C%22network%22%3A%5B%22*%22%5D%7D%2C%22serviceWorker%22%3A%7B%22enabled%22%3Atrue%2C%22debug%22%3Atrue%2C%22excludePaths%22%3A%5B%22manifest.appcache%22%5D%2C%22swIncludeFiles%22%3A%5B%22bower_components/pouchdb/dist/pouchdb.js%22%5D%7D%2C%22exportApplicationGlobal%22%3Afalse%2C%22browserify%22%3A%7B%22tests%22%3Atrue%7D%7D" />
 
-    <link rel="stylesheet" href="assets/vendor-c883cd8d279c410b9ab93b38d0981ea0.css" integrity="sha256-A+dUm7t9Q6hJ9OxW6B2IbC23quWTEhQH55Pi9dxh0WQ= sha512-5aIVTy/fie7s6hQlgkasgHbA7JrZDvSBbDCgJOYfD9CwNcIcIA19MWmbwUtrLiJXYt7i0a51D3BdMpvdEhJt9w==" >
-    <link rel="stylesheet" href="assets/hospitalrun-48841f0bc7e6c490e097837ea352581e.css" integrity="sha256-T6q0YBqXQP/j/L3av/ys8IRd/HiQKyy8sy8a8TaWnNI= sha512-ufstJGsvcX1pyC0EKGmOrBOWJELpuZhTV+nDTQ05Si5hZVOaCFXKqrKO3gKx+/IVjGtE7zgfJX3DpY7S9HQ5qg==" >
+    <link rel="stylesheet" href="assets/vendor-ed8acd5f4063b4b83b5df16f6da9e8b0.css" integrity="sha256-8SEzsmD/Yu0KXXOOfKz1o2a7UPfUg0z/idfuC6vxZWY= sha512-rBdZdkJyfXTenDbP1KZYS3FLalUji+IE+vxyRjp0xrjs0jI7NO4zKk6EkPAC3XGwtiVf3Fy/PnJpQM3VOZd7Pg==" >
+    <link rel="stylesheet" href="assets/hospitalrun-a28c893d100a9ee55ca12b9bf5781f5f.css" integrity="sha256-3itoqAAvzcd6eQ+c169y0sHLyn3wFe/7JoX7OEhfheI= sha512-8KAjSeQRnjhVVajx2v402GxYrA8V4g9L3Gs1CjKTH9FRetoV9tlXBU68d6U3FbZ6OagIscRNXKIohP79yPXDfg==" >
 
     
   </head>
@@ -31,13 +31,33 @@
         </div>
     </div>
     <script>
-        window.addEventListener('load',function(e){window.applicationCache.addEventListener('updateready', function(e){if (window.applicationCache.status==window.applicationCache.UPDATEREADY){window.applicationCache.swapCache();window.location.reload();}},false);},false);
+      if (!'serviceWorker' in navigator) {
+        window.addEventListener('load',function(e){
+          window.applicationCache.addEventListener('updateready', function(e){
+            if(window.applicationCache.status==window.applicationCache.UPDATEREADY) {
+              window.applicationCache.swapCache();
+              window.location.reload();
+            }
+          },false);
+        },false);
+      }
     </script>
     
 
-    <script src="assets/vendor-6ad31f6a2e03f5da366c8f5ff1d01f7d.js" integrity="sha256-Y2ethmWuxKOtRrYMFeHjNcGlfaPEbovqmpVotKyalE0= sha512-Bv747e+E2eb1Q+BDbqrxQl/GVCQvolHl+948APeVj0ixW0k+5vfNW8Yxpfc/HODn3dUs5PMfPmDaRrSO8/3h7w==" ></script>
-    <script src="assets/hospitalrun-951aabf8050bbf409b9e90cecbb093a9.js" integrity="sha256-RAE5KtGgQ3o1zSq4kz/lmSDJoG/w11XTXV/FzW+wgco= sha512-lckjMhTRPF17aB4qqswDf8bMpS2gKRsqrmpK8GD7UXVJpoXRzEJmpi/Frd4/cfPho86U1SdUlfDfX+dKi9DGkg==" ></script>
+    <script src="assets/vendor-2f68acee6879af174b88028bfc0138a7.js" integrity="sha256-DWtxqI46pknOypiNHgfL/ViUCt54GZbWPKvoxaV6RJ0= sha512-L7yRtQ6LN1FgtkRs7n8GPeydceI7NUtCdXAJ9cnA1N52A2ttoYNWwDSoI27GaYUm9Cb/iDFrTJyUe6UzUTYPpA==" ></script>
+    <script src="assets/hospitalrun-1bf9a130d391e05463dfdc44a8b7d280.js" integrity="sha256-LDFoiKCJOJp/Nvf/vJbri7MURcofcg8IVh/dLoRAD48= sha512-hrZtO1OYpeIIU6RF3GCQ/ZBGdVyvdFtA6+GUEHrgsF14spEEFB+pGz09Bsx0lpZHNMT6YRA6zmNpXKUNgyTvRQ==" ></script>
 
-    
+    <script>if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js', {scope: './'})
+    .catch(function(error) {
+      console.error('Error registering service worker:'+error);
+    });
+    navigator.serviceWorker.addEventListener('controllerchange', function() {
+      window.location.reload();
+    });
+} else {
+  console.log('service worker not supported');
+}
+</script>
   </body>
 </html>
