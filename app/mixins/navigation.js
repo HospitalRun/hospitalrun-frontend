@@ -1,4 +1,7 @@
 import Ember from 'ember';
+
+const { underscore } = Ember.String;
+
 export default Ember.Mixin.create({
   navItems: [
     {
@@ -261,5 +264,33 @@ export default Ember.Mixin.create({
         }
       ]
     }
-  ]
+  ],
+
+  // Navigation items get mapped localizations
+  localizedNavItems: Ember.computed('navItems.[]', function() {
+    const localizationPrefix = 'navigation.';
+    // Supports unlocalized keys for now, otherwise we would get:
+    // "Missing translation: key.etc.path"
+    let translationOrOriginal = (translation, original) => {
+      // Check for typeof string, because if it's found in localization,
+      // i18n will return a SafeString object, not a string
+      return typeof translation === 'string' ? original : translation;
+    };
+    return this.get('navItems').map((nav) => {
+      let sectionKey = localizationPrefix + underscore(nav.title).toLowerCase(),
+          navTranslated = this.get('i18n').t(sectionKey);
+
+      nav.localizedTitle = translationOrOriginal(navTranslated, nav.title);
+      // Map all of the sub navs, too
+      nav.subnav = nav.subnav.map((sub) => {
+        let subItemKey = localizationPrefix + 'subnav.' + underscore(sub.title).toLowerCase(),
+            subTranslated = this.get('i18n').t(subItemKey);
+
+        sub.localizedTitle = translationOrOriginal(subTranslated, sub.title);
+        return sub;
+      });
+
+      return nav;
+    });
+  })
 });

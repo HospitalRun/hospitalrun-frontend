@@ -1,7 +1,7 @@
 {{#if show}}
   <div class="category-title" {{action 'toggleContent'}}>
     {{#link-to nav.route class="primary-section-link nav-link"}}
-      <span class="mega-octicon {{nav.iconClass}}"></span>{{nav.title}}
+      <span class="mega-octicon {{nav.iconClass}}"></span>{{nav.localizedTitle}}
     {{/link-to}}
   </div>
   {{#if isShowing }}
@@ -11,11 +11,11 @@
           <div {{action 'resetNav'}}>
           {{#if subnav.subroute}}
             {{#link-to subnav.route subnav.subroute class="category-sub-item nav-link"}}
-            <span class="octicon {{subnav.iconClass}}"></span>{{subnav.title}}
+            <span class="octicon {{subnav.iconClass}}"></span>{{subnav.localizedTitle}}
             {{/link-to}}
           {{else}}
             {{#link-to subnav.route class="category-sub-item nav-link"}}
-            <span class="octicon {{subnav.iconClass}}"></span>{{subnav.title}}
+            <span class="octicon {{subnav.iconClass}}"></span>{{subnav.localizedTitle}}
             {{/link-to}}
           {{/if}}
           </div>

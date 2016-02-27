@@ -25,7 +25,7 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
         if (!Ember.isEmpty(siteInfo)) {
           message += ` Site Info: ${siteInfo}`;
         }
-        this.displayAlert('About HospitalRun', message);
+        this.displayAlert(this.get('i18n').t('navigation.about'), message);
       });
     },
 
