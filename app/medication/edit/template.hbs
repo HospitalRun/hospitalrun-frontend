@@ -5,61 +5,61 @@
     {{/unless}}
     <div class="row">
       {{#if model.selectPatient}}
-        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-6 required test-patient-input"}}
+        {{patient-typeahead property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="col-xs-6 required test-patient-input"}}
       {{/if}}
       {{#if model.isNew}}
-        {{em-select class="col-xs-4 required test-add-visit" label="Visit"
+        {{em-select class="col-xs-4 required test-add-visit" label=(t 'labels.visit')
           property="visit" content=patientVisitsForSelect
           optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
-          prompt="--Add New Outpatient Visit--"
+          prompt=(t 'labels.add_new_outpatient_visit')
           selected=model.visit
         }}
       {{else}}
         <div class="form-group col-xs-3">
-          <label>Visit</label>
+          <label>{{t 'labels.visit'}}</label>
           <p class="form-control-static">{{model.visit.visitDescription}}</p>
         </div>
       {{/if}}
     </div>
     {{#if isFulfilledOrRequested}}
       <div class="form-group">
-        <label class="control-label">Medication</label>
+        <label class="control-label">{{t 'labels.medication'}}</label>
         <p class="form-control-static">{{model.medicationName}}</p>
       </div>
     {{else}}
-      {{inventory-typeahead property="inventoryItemTypeAhead" label="Medication" content=medicationList selection=selectedInventoryItem class="required test-medication-input"}}
+      {{inventory-typeahead property="inventoryItemTypeAhead" label=(t 'labels.medication') content=medicationList selection=selectedInventoryItem class="required test-medication-input"}}
     {{/if}}
     {{#if isFulfilled}}
-      {{static-text label="Prescription" value=model.prescription }}
+      {{static-text label=(t 'labels.prescription') value=model.prescription }}
       <div class="row">
-        {{#static-text label="Prescription Date" class="col-xs-4"}}
+        {{#static-text label=(t 'labels.prescription_date') class="col-xs-4"}}
           {{date-format model.prescriptionDate}}
         {{/static-text}}
         {{static-text label=quantityLabel class="col-xs-3" value=model.quantity }}
-        {{static-text label="Refills" class="col-xs-3" value=model.refills }}
+        {{static-text label=(t 'medication.labels.refills') class="col-xs-3" value=model.refills }}
       </div>
     {{else}}
-      {{em-text property="prescription" label="Prescription" rows="3" class=prescriptionClass }}
+      {{em-text property="prescription" label=(t 'labels.prescription')rows="3" class=prescriptionClass }}
       <div class="row">
-        {{date-picker property="prescriptionDate" label="Prescription Date" class="col-sm-4"}}
+        {{date-picker property="prescriptionDate" label=(t 'labels.prescription_date') class="col-sm-4"}}
       </div>
       <div class="row">
         {{em-input property="quantity" label=quantityLabel class=quantityClass }}
-        {{em-input property="refills" label="Refills" class="col-xs-3"}}
+        {{em-input property="refills" label=(t 'medication.labels.refills') class="col-xs-3"}}
       </div>
       {{#unless model.hideFulfillRequest}}
         {{#if model.isNew}}
           {{#if canFulfill}}
             <div class="form-group">
-              <label class="control-label">Fulfill Request</label>
+              <label class="control-label">{{t 'labels.fulfill_request'}}</label>
             </div>
-            {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
+            {{em-checkbox label=(t 'labels.fulfill_request_now') property="shouldFulfillRequest"}}
           {{/if}}
         {{/if}}
       {{/unless}}
       {{#if isFulfilling}}
-        {{select-or-typeahead property="expenseAccount" label="Bill To" list=expenseAccountList selection=model.expenseAccount }}
-        {{inventory-location-picker label="Pull From" quantityRequested=model.quantity
+        {{select-or-typeahead property="expenseAccount" label=(t 'labels.bill_to') list=expenseAccountList selection=model.expenseAccount }}
+        {{inventory-location-picker label=(t 'labels.pull_from') quantityRequested=model.quantity
           locationList= model.inventoryItem.availableLocations
           selectedLocations=model.inventoryLocations
         }}
