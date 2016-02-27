@@ -9,7 +9,7 @@ export default {
     appointments: 'Appointments',
     medication: 'Medication',
     labs: 'Labs',
-    billing: 'Billings',
+    billing: 'Billing',
     administration: 'Administration',
     subnav: {
       requests: 'Requests',
