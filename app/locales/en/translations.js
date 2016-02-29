@@ -2,6 +2,46 @@ export default {
   dashboard: {
     title: 'What would you like to do?'
   },
+  navigation: {
+    imaging: 'Imaging',
+    inventory: 'Inventory',
+    patients: 'Patients',
+    appointments: 'Appointments',
+    medication: 'Medication',
+    labs: 'Labs',
+    billing: 'Billing',
+    administration: 'Administration',
+    subnav: {
+      requests: 'Requests',
+      items: 'Items',
+      completed: 'Completed',
+      new_request: 'New Request',
+      inventory_received: 'Inventory Received',
+      reports: 'Reports',
+      patient_listing: 'Patient Listing',
+      new_patient: 'New Patient',
+      this_week: 'This Week',
+      today: 'Today',
+      search: 'Search',
+      add_appointment: 'Add Appointment',
+      dispense: 'Dispense',
+      return_medication: 'Return Medication',
+      invoices: 'Invoices',
+      new_invoice: 'New Invoice',
+      prices: 'Prices',
+      price_profiles: 'Price Profiles',
+      lookup_lists: 'Lookup Lists',
+      address_fields: 'Address Fields',
+      load_db: 'Load DB',
+      users: 'Users',
+      new_user: 'New User'
+    },
+    actions: {
+      logout: 'Logout',
+      login: 'Login'
+    },
+    about: 'About HospitalRun'
+  },
   labels: {
     name: 'Name',
     patient: 'Patient',
