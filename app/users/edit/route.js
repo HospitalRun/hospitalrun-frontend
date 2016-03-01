@@ -1,9 +1,10 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import Ember from 'ember';
+import { translationMacro as t } from "ember-i18n";
 export default AbstractEditRoute.extend({
-  editTitle: 'Edit User',
+  editTitle: t('labels.edit_user'),
   modelName: 'user',
-  newTitle: 'New User',
+  newTitle: t('labels.new_user'),
 
   getNewData: function() {
     return Ember.RSVP.resolve({

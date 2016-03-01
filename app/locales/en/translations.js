@@ -7,22 +7,22 @@ export default {
     users_page_tile: 'User Listing'
   },
   admin: {
-    address_options: 'Address Options x',
-    lookup_lists: 'Lookup Lists x',
-    load_db: 'Load DB x',
-    users: 'Users x',
-    section_title: 'Admin x',
-    new_user: 'New User X',
-    address_fields: 'Address Fields x',
+    address_options: 'Address Options',
+    lookup_lists: 'Lookup Lists',
+    load_db: 'Load DB',
+    users: 'Users',
+    section_title: 'Admin',
+    new_user: 'New User',
+    address_fields: 'Address Fields',
     address: {
-        address1_label : 'Address 1 Label x',
-        address2_label : 'Address 2 Label x',
-        address3_label : 'Address 3 Label x',
-        address4_label : 'Address 4 Label x',
-        include1_label : 'Include 1 Label x',
-        include2_label : 'Include 2 Label x',
-        include3_label : 'Include 3 Label x',
-        include4_label : 'Include 4 Label x',
+        address1_label : 'Address 1 Label',
+        address2_label : 'Address 2 Label',
+        address3_label : 'Address 3 Label',
+        address4_label : 'Address 4 Label',
+        include1_label : 'Include 1 Label',
+        include2_label : 'Include 2 Label',
+        include3_label : 'Include 3 Label',
+        include4_label : 'Include 4 Label',
         titles: {
             options_saved: 'Options Saved'
         },
@@ -31,30 +31,30 @@ export default {
         }
     },
     lookup: {
-        anesthesia_types : 'Anesthesia Types X',
-        anesthesiologists : 'Anesthesiologists x',
-        billing_categories : 'Billing Categories x',
-        clinic_list : 'Clinic Locations x',
-        country_list : 'Countries x',
-        diagnosis_list : 'Diagnoses x',
-        cpt_code_list : 'CPT Codes x',
-        expense_account_list : 'Expense Accounts x',
-        aisle_location_list : 'Inventory Aisle Locations x',
-        warehouse_list : 'Inventory Locations x',
-        inventory_types :'Inventory Types x',
-        imaging_pricing_types : 'Imaging Pricing Types x',
-        lab_pricing_types : 'Lab Pricing Types x',
-        patient_status_list : 'Patient Status List x',
-        physician_list : 'Physicians x',
-        procedure_list : 'Procedures x',
-        procedure_locations : 'Procedures Locations x',
-        procedure_pricing_types : 'Procedure Pricing Types x',
-        radiologists : 'Radiologists x',
-        unit_types : 'Unit Types x',
-        vendor_list : 'Vendor x',
-        visit_location_list : 'Visit Locations x',
-        visit_types : 'Visit Types x',
-        ward_pricing_types : 'Ward Pricing Types x'
+        anesthesia_types : 'Anesthesia Types',
+        anesthesiologists : 'Anesthesiologists',
+        billing_categories : 'Billing Categories',
+        clinic_list : 'Clinic Locations',
+        country_list : 'Countries',
+        diagnosis_list : 'Diagnoses',
+        cpt_code_list : 'CPT Codes',
+        expense_account_list : 'Expense Accounts',
+        aisle_location_list : 'Inventory Aisle Locations',
+        warehouse_list : 'Inventory Locations',
+        inventory_types :'Inventory Types',
+        imaging_pricing_types : 'Imaging Pricing Types',
+        lab_pricing_types : 'Lab Pricing Types',
+        patient_status_list : 'Patient Status List',
+        physician_list : 'Physicians',
+        procedure_list : 'Procedures',
+        procedure_locations : 'Procedures Locations',
+        procedure_pricing_types : 'Procedure Pricing Types',
+        radiologists : 'Radiologists',
+        unit_types : 'Unit Types',
+        vendor_list : 'Vendor',
+        visit_location_list : 'Visit Locations',
+        visit_types : 'Visit Types',
+        ward_pricing_types : 'Ward Pricing Types'
     }
   },
   labels: {
@@ -83,18 +83,30 @@ export default {
     email: 'Email',
     role: 'Role',
     delete: 'Delete',
-    user_can_add_new_value: 'User Can Add New Values x',
-    value: 'Value x',
-    lookup_type: 'Lookup Type x',
-    import_file: 'Import Filex x'
-    
+    user_can_add_new_value: 'User Can Add New Values',
+    value: 'Value',
+    lookup_type: 'Lookup Type',
+    import_file: 'Import File',
+    file_load_successful: 'File To Load Successful',
+    file_to_Load: 'File Load',
+    start_time: 'Start Time',
+    end_time: 'End Time',
+    doc_read: 'Docs Read',
+    doc_written: 'Docs Written',
+    display_name: 'Display Name',
+    password: 'Password',
+    edit_user: 'Edit User',
+    new_user: 'New User',
+    delete_user: 'Delete User'
   },
   messages: {
     no_items_found: 'No items found.',
     create_new_record: 'Create a new record?',
     create_new_user: 'Create a new user?',
     no_users_found: 'No users found.',
-    are_you_sure_delete: 'Are you sure you wish to delete the user '
+    are_you_sure_delete: 'Are you sure you wish to delete the user ',
+    user_has_been_saved: 'The user has been saved.',
+    user_saved: 'User Saved'
   },
   buttons: {
     complete: 'Complete',
@@ -107,6 +119,7 @@ export default {
     new_user: 'New User',
     add_value: 'Add Value',
     import: 'Import',
+    load_file: 'Load File'
   },
   login: {
     messages: {
@@ -151,4 +164,3 @@ export default {
     }
   }
 };
-
