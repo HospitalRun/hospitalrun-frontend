@@ -82,7 +82,11 @@ export default {
     username: 'Username',
     email: 'Email',
     role: 'Role',
-    delete: 'Delete'
+    delete: 'Delete',
+    user_can_add_new_value: 'User Can Add New Values x',
+    value: 'Value x',
+    lookup_type: 'Lookup Type x',
+    import_file: 'Import Filex x'
     
   },
   messages: {
@@ -100,7 +104,9 @@ export default {
     update: 'Update',
     ok: 'Ok',
     delete: 'Delete',
-    new_user: 'New User'
+    new_user: 'New User',
+    add_value: 'Add Value',
+    import: 'Import',
   },
   login: {
     messages: {
@@ -145,3 +151,4 @@ export default {
     }
   }
 };
+
