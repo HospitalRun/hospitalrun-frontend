@@ -3,7 +3,7 @@ export default {
     title: 'What would you like to do?'
   },
   user: {
-    plus_new_user : '+ new user',
+    plus_new_user: '+ new user',
     users_page_tile: 'User Listing'
   },
   admin: {
@@ -15,46 +15,46 @@ export default {
     new_user: 'New User',
     address_fields: 'Address Fields',
     address: {
-        address1_label : 'Address 1 Label',
-        address2_label : 'Address 2 Label',
-        address3_label : 'Address 3 Label',
-        address4_label : 'Address 4 Label',
-        include1_label : 'Include 1 Label',
-        include2_label : 'Include 2 Label',
-        include3_label : 'Include 3 Label',
-        include4_label : 'Include 4 Label',
-        titles: {
-            options_saved: 'Options Saved'
-        },
-        messages: {
-            address_saved: 'The address options have been saved'
-        }
+      address1_label: 'Address 1 Label',
+      address2_label: 'Address 2 Label',
+      address3_label: 'Address 3 Label',
+      address4_label: 'Address 4 Label',
+      include1_label: 'Include 1 Label',
+      include2_label: 'Include 2 Label',
+      include3_label: 'Include 3 Label',
+      include4_label: 'Include 4 Label',
+      titles: {
+        options_saved: 'Options Saved'
+      },
+      messages: {
+        address_saved: 'The address options have been saved'
+      }
     },
     lookup: {
-        anesthesia_types : 'Anesthesia Types',
-        anesthesiologists : 'Anesthesiologists',
-        billing_categories : 'Billing Categories',
-        clinic_list : 'Clinic Locations',
-        country_list : 'Countries',
-        diagnosis_list : 'Diagnoses',
-        cpt_code_list : 'CPT Codes',
-        expense_account_list : 'Expense Accounts',
-        aisle_location_list : 'Inventory Aisle Locations',
-        warehouse_list : 'Inventory Locations',
-        inventory_types :'Inventory Types',
-        imaging_pricing_types : 'Imaging Pricing Types',
-        lab_pricing_types : 'Lab Pricing Types',
-        patient_status_list : 'Patient Status List',
-        physician_list : 'Physicians',
-        procedure_list : 'Procedures',
-        procedure_locations : 'Procedures Locations',
-        procedure_pricing_types : 'Procedure Pricing Types',
-        radiologists : 'Radiologists',
-        unit_types : 'Unit Types',
-        vendor_list : 'Vendor',
-        visit_location_list : 'Visit Locations',
-        visit_types : 'Visit Types',
-        ward_pricing_types : 'Ward Pricing Types'
+      anesthesia_types: 'Anesthesia Types',
+      anesthesiologists: 'Anesthesiologists',
+      billing_categories: 'Billing Categories',
+      clinic_list: 'Clinic Locations',
+      country_list: 'Countries',
+      diagnosis_list: 'Diagnoses',
+      cpt_code_list: 'CPT Codes',
+      expense_account_list: 'Expense Accounts',
+      aisle_location_list: 'Inventory Aisle Locations',
+      warehouse_list: 'Inventory Locations',
+      inventory_types: 'Inventory Types',
+      imaging_pricing_types: 'Imaging Pricing Types',
+      lab_pricing_types: 'Lab Pricing Types',
+      patient_status_list: 'Patient Status List',
+      physician_list: 'Physicians',
+      procedure_list: 'Procedures',
+      procedure_locations: 'Procedures Locations',
+      procedure_pricing_types: 'Procedure Pricing Types',
+      radiologists: 'Radiologists',
+      unit_types: 'Unit Types',
+      vendor_list: 'Vendor',
+      visit_location_list: 'Visit Locations',
+      visit_types: 'Visit Types',
+      ward_pricing_types: 'Ward Pricing Types'
     }
   },
   labels: {
