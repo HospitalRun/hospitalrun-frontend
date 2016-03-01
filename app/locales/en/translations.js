@@ -31,7 +31,30 @@ export default {
         }
     },
     lookup: {
-        anesthesia_types : 'Anesthesia Types X'
+        anesthesia_types : 'Anesthesia Types X',
+        anesthesiologists : 'Anesthesiologists x',
+        billing_categories : 'Billing Categories x',
+        clinic_list : 'Clinic Locations x',
+        country_list : 'Countries x',
+        diagnosis_list : 'Diagnoses x',
+        cpt_code_list : 'CPT Codes x',
+        expense_account_list : 'Expense Accounts x',
+        aisle_location_list : 'Inventory Aisle Locations x',
+        warehouse_list : 'Inventory Locations x',
+        inventory_types :'Inventory Types x',
+        imaging_pricing_types : 'Imaging Pricing Types x',
+        lab_pricing_types : 'Lab Pricing Types x',
+        patient_status_list : 'Patient Status List x',
+        physician_list : 'Physicians x',
+        procedure_list : 'Procedures x',
+        procedure_locations : 'Procedures Locations x',
+        procedure_pricing_types : 'Procedure Pricing Types x',
+        radiologists : 'Radiologists x',
+        unit_types : 'Unit Types x',
+        vendor_list : 'Vendor x',
+        visit_location_list : 'Visit Locations x',
+        visit_types : 'Visit Types x',
+        ward_pricing_types : 'Ward Pricing Types x'
     }
   },
   labels: {
