@@ -4,6 +4,9 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText}}
   {{#em-form model=model submitButton=false action="update" }}
+    {{#if model.isLookupTypeNameValue}}
+      {{em-input label="Name" property="name" class="lookup-type-name"}}
+    {{/if}}
     {{em-input label="Value" property="value" class="lookup-type-value"}}
   {{/em-form}}
 {{/modal-dialog}}
