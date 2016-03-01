@@ -4,6 +4,7 @@ export default AbstractEditController.extend({
   updateCapability: 'update_config',
 
   afterUpdate: function() {
-    this.displayAlert('Options Saved', 'The address options have been saved');
+    this.displayAlert(this.get('i18n').t('admin.address.titles.options_saved'), 
+       this.get('i18n').t('admin.address.messages.address_saved'));
   }
 });

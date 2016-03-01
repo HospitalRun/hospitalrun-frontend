@@ -9,58 +9,59 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
   ModalHelper, ImagingPricingTypes, InventoryTypeList,  UnitTypes, VisitTypes, {
     fileSystem: Ember.inject.service('filesystem'),
-    lookupTypes: [{
-      name: 'Anesthesia Types',
+    lookupTypes:  Ember.computed(function() {
+        return [{
+      name: this.get('i18n').t('admin.lookup.anesthesia_types'),
       value: 'anesthesia_types',
       model: {
         procedure: 'anesthesiaType'
       }
     }, {
-      name: 'Anesthesiologists',
+      name: this.get('i18n').t('admin.lookup.anesthesiologists'),
       value: 'anesthesiologists',
       model: {
         procedure: 'anesthesiologist'
       }
     }, {
       defaultValues: 'defaultBillingCategories',
-      name: 'Billing Categories',
+      name: this.get('i18n').t('admin.lookup.billing_categories'),
       value: 'billing_categories',
       models: {
         'billing-line-item': 'category'
       }
     }, {
-      name: 'Clinic Locations',
+      name: this.get('i18n').t('admin.lookup.clinic_list'),
       value: 'clinic_list',
       models: { // Models that use this lookup -- use this later to update models on lookup changes
         patient: 'clinic'
       }
     }, {
-      name: 'Countries',
+      name: this.get('i18n').t('admin.lookup.country_list'),
       value: 'country_list',
       models: {
         patient: 'country'
       }
     }, {
-      name: 'Diagnoses',
+      name: this.get('i18n').t('admin.lookup.diagnosis_list'),
       value: 'diagnosis_list',
       models: {
         visit: 'primaryDiagnosis'
       }
     }, {
-      name: 'CPT Codes',
+      name: this.get('i18n').t('admin.lookup.cpt_code_list'),
       value: 'cpt_code_list',
       models: {
         procedure: 'cptCode'
       }
     }, {
-      name: 'Expense Accounts',
+      name: this.get('i18n').t('admin.lookup.expense_account_list'),
       value: 'expense_account_list',
       models: {
         'inv-request': 'expenseAccount',
         pricing: 'expenseAccount'
       }
     }, {
-      name: 'Inventory Aisle Locations',
+      name: this.get('i18n').t('admin.lookup.aisle_location_list'),
       value: 'aisle_location_list',
       models: {
         inventory: 'aisleLocation',
@@ -72,7 +73,7 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         ]
       }
     }, {
-      name: 'Inventory Locations',
+      name: this.get('i18n').t('admin.lookup.warehouse_list'),
       value: 'warehouse_list',
       models: {
         inventory: 'location',
@@ -85,33 +86,33 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
       }
     }, {
       defaultValues: 'defaultInventoryTypes',
-      name: 'Inventory Types',
+      name: this.get('i18n').t('admin.lookup.inventory_types'),
       value: 'inventory_types',
       models: {
         inventory: 'inventoryType'
       }
     }, {
       defaultValues: 'defaultImagingPricingTypes',
-      name: 'Imaging Pricing Types',
+      name: this.get('i18n').t('admin.lookup.imaging_pricing_types'),
       value: 'imaging_pricing_types',
       models: {
         pricing: 'pricingType'
       }
     }, {
       defaultValues: 'defaultLabPricingTypes',
-      name: 'Lab Pricing Types',
+      name: this.get('i18n').t('admin.lookup.lab_pricing_types'),
       value: 'lab_pricing_types',
       models: {
         pricing: 'pricingType'
       }
     }, {
-      name: 'Patient Status List',
+      name: this.get('i18n').t('admin.lookup.patient_status_list'),
       value: 'patient_status_list',
       models: {
         patient: 'status'
       }
     }, {
-      name: 'Physicians',
+      name: this.get('i18n').t('admin.lookup.physician_list'),
       value: 'physician_list',
       models: {
         appointment: 'provider',
@@ -122,25 +123,25 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         ]
       }
     }, {
-      name: 'Procedures',
+      name: this.get('i18n').t('admin.lookup.procedure_list'),
       value: 'procedure_list',
       models: {
         procedure: 'description'
       }
     }, {
-      name: 'Procedure Locations',
+      name: this.get('i18n').t('admin.lookup.procedure_locations'),
       value: 'procedure_locations',
       models: {
         procedure: 'location'
       }
     }, {
-      name: 'Procedure Pricing Types',
+      name: this.get('i18n').t('admin.lookup.procedure_pricing_types'),
       value: 'procedure_pricing_types',
       models: {
         pricing: 'pricingType'
       }
     }, {
-      name: 'Radiologists',
+      name: this.get('i18n').t('admin.lookup.radiologists'),
       value: 'radiologists',
       model: {
         imaging: 'radiologist'
@@ -153,20 +154,20 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
       }
     }, {
       defaultValues: 'defaultUnitList',
-      name: 'Unit Types',
+      name: this.get('i18n').t('admin.lookup.unit_types'),
       value: 'unit_types',
       models: {
         inventory: 'distributionUnit',
         'inv-purchase': 'distributionUnit'
       }
     }, {
-      name: 'Vendor',
+      name: this.get('i18n').t('admin.lookup.vendor_list'),
       value: 'vendor_list',
       models: {
         'inv-purchase': 'vendor'
       }
     }, {
-      name: 'Visit Locations',
+      name: this.get('i18n').t('admin.lookup.visit_location_list'),
       value: 'visit_location_list',
       models: {
         appointment: 'location',
@@ -174,18 +175,18 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
       }
     }, {
       defaultValues: 'defaultVisitTypes',
-      name: 'Visit Types',
+      name: this.get('i18n').t('admin.lookup.visit_types'),
       value: 'visit_types',
       models: {
         visit: 'visitType'
       }
     }, {
-      name: 'Ward Pricing Types',
+      name: this.get('i18n').t('admin.lookup.visit_types'),
       value: 'ward_pricing_types',
       models: {
         pricing: 'pricingType'
       }
-    }],
+    }];}),
 
     importFile: Ember.computed.alias('lookupTypeList.importFile'),
 

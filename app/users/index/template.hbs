@@ -2,10 +2,10 @@
   {{#if hasRecords}}
     <table class="table">
       <tr class="table-header">
-        <th>Username</th>
+        <th>{{t 'labels.username'}}</th>
         <th>{{t 'labels.name'}}</th>
-        <th>Email</th>
-        <th>Role</th>
+        <th>{{t 'labels.email'}}</th>
+        <th>{{t 'labels.role'}}</th>
         {{#if showActions}}
           <th>{{t 'labels.actions'}}</th>
         {{/if}}
@@ -22,7 +22,7 @@
                 <button class="btn btn-default" {{action 'editItem' user bubbles=false }}>{{t 'labels.edit'}}</button>
               {{/if}}
               {{#if canDelete}}
-                <button class="btn btn-default" {{action 'deleteItem' user bubbles=false }}>Delete</button>
+                <button class="btn btn-default" {{action 'deleteItem' user bubbles=false }}>{{t 'labels.delete'}}</button>
               {{/if}}
             </td>
           {{/if}}
@@ -31,9 +31,9 @@
     </table>
   {{else}}
     <div class="alert alert-info">
-      <em>No users found.</em>
+      <em>{{t 'messages.no_users_found'}}</em>
       {{#if canAdd}}
-        <em>Create a new user?</em> <button class="btn btn-primary" {{action 'newItem'}}>New User</button>
+        <em>{{t 'messages.create_new_user'}}</em> <button class="btn btn-primary" {{action 'newItem'}}>{{t 'buttons.new_user'}}</button>
       {{/if}}
     </div>
   {{/if}}

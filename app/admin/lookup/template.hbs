@@ -2,7 +2,7 @@
     <div class="panel-body">
         {{#em-form model=model submitButton=false }}
             <div class="row">
-                {{em-select class="col-xs-3 lookup-type" label="Lookup Type"
+                {{em-select class="col-xs-3 lookup-type" label=(t 'labels.lookup_type')
                     property="lookupType" content=lookupTypes
                     optionValuePath="value" optionLabelPath="name"
                     selected=model.lookupType
@@ -18,7 +18,7 @@
     <div class="panel-body">
         <table class="table">
             <tr class="table-header">
-                <th>Value</th>
+                <th>{{t 'labels.value'}}</th>
                 <th>{{t 'labels.actions'}}</th>
             </tr>
             {{#each lookupTypeValues as |lookupTypeValue|}}
@@ -33,19 +33,19 @@
         </table>
     </div>
     <div class="panel-footer">
-        <button class="btn btn-default neutral" {{action 'addValue'}}>Add Value</button>
+        <button class="btn btn-default neutral" {{action 'addValue'}}>{{t 'buttons.add_value'}}</button>
         {{#em-form model=model submitButton=false }}
             <div class="row">
                 <div class="col-sm-4">
-                    {{em-checkbox label="User Can Add New Values" property="userCanAdd"}}
-                    <button class="btn btn-default" {{action 'updateList'}}>Update</button>
+                    {{em-checkbox label=(t 'labels.user_can_add_new_value') property="userCanAdd"}}
+                    <button class="btn btn-default" {{action 'updateList'}}>{{t 'buttons.update'}}</button>
                 </div>
                 {{#if showOrganizeByType}}
                     {{em-checkbox label="Organize Pricing By Type" property="organizeByType" class="col-sm-4"}}
                 {{/if}}
                 <div class="col-sm-4">
-                    {{file-upload label="Import File" property="importFileName" selectedFile=importFile }}
-                    <button class="btn btn-default" {{action 'importList'}}>Import</button>
+                    {{file-upload label=(t 'labels.import_file') property="importFileName" selectedFile=importFile }}
+                    <button class="btn btn-default" {{action 'importList'}}>{{t 'buttons.import'}}</button>
                 </div>
             </div>
         {{/em-form}}
