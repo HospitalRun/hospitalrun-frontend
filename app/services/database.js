@@ -7,6 +7,7 @@ import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 export default Ember.Service.extend(PouchAdapterUtils, {
   config: Ember.inject.service(),
   mainDB: null, // Server DB
+  PouchOauthXHR: null,
   setMainDB: false,
 
   setup(configs) {
@@ -29,8 +30,9 @@ export default Ember.Service.extend(PouchAdapterUtils, {
           Ember.isEmpty(configs.config_token_secret)) {
           throw Error('login required');
         }
+        this.set('PouchOauthXHR', createPouchOauthXHR(configs));
         pouchOptions.ajax = {
-          xhr: createPouchOauthXHR(configs),
+          xhr: this.get('PouchOauthXHR'),
           timeout: 30000
         };
       }
