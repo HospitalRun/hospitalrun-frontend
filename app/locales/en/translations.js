@@ -99,10 +99,13 @@ export default {
     patient: 'Patient',
     quantity: 'Quantity',
     requested_on: 'Requested On',
+    date: 'Date',
     date_requested: 'Date Requested',
     date_completed: 'Date Completed',
     requested_by: 'Requested By',
     fulfill: 'Fulfill',
+    fulfill_request: 'Fulfill Request',
+    fulfill_request_now: 'Fulfill Request Now',
     actions: 'Actions',
     action: 'Action',
     notes: 'Notes',
@@ -134,7 +137,16 @@ export default {
     password: 'Password',
     edit_user: 'Edit User',
     new_user: 'New User',
-    delete_user: 'Delete User'
+    delete_user: 'Delete User',
+    medication: 'Medication',
+    status: 'Status',
+    add_new_outpatient_visit: '--Add New Outpatient Visit--',
+    prescription: 'Prescription',
+    prescription_date: 'Prescription Date',
+    bill_to: 'Bill To',
+    pull_from: 'Pull From',
+    fulfilled: 'Fulfilled',
+    delete_request: 'Delete Request'
   },
   messages: {
     no_items_found: 'No items found.',
@@ -143,7 +155,11 @@ export default {
     no_users_found: 'No users found.',
     are_you_sure_delete: 'Are you sure you wish to delete the user ',
     user_has_been_saved: 'The user has been saved.',
-    user_saved: 'User Saved'
+    user_saved: 'User Saved',
+    new_patient_has_to_be_created: 'A new patient needs to be created...Please wait..'
+  },
+  alerts: {
+    please_wait: 'Please Wait'
   },
   buttons: {
     complete: 'Complete',
@@ -156,7 +172,10 @@ export default {
     new_user: 'New User',
     add_value: 'Add Value',
     import: 'Import',
-    load_file: 'Load File'
+    load_file: 'Load File',
+    new_request: 'New Request',
+    all_requests: 'All Requests',
+    dispense: 'Dispense'
   },
   login: {
     messages: {
@@ -198,6 +217,44 @@ export default {
       completed_message: 'The imaging request has been completed.',
       saved_title: 'Imaging Request Saved',
       saved_message: 'The imaging request has been saved.'
+    }
+  },
+  medication: {
+    page_title: 'Medication Requests',
+    section_title: 'Medication',
+    return_medication: 'Return Medication',
+    buttons: {
+      dispense_medication: 'dispense medication',
+      new_button: '+ new request',
+      return_medication: 'return medication'
+    },
+    titles: {
+      completed_medication: 'Completed Medication',
+      edit_medication_request: 'Edit Medication Request',
+      new_medication_request: 'New Medication Request'
+    },
+    messages: {
+      create_new: 'Create a new medication request?',
+      confirm_deletion: 'Are you sure you wish to delete this medication request?'
+    },
+    labels: {
+      refills: 'Refills',
+      quantity_requested: 'Quantity Requested',
+      quantity_dispensed: 'Quantity Dispensed',
+      quantity_distributed: 'Quantity Distributed',
+      quantity_to_return: 'Quantity To Return',
+      return_location: 'Return Location',
+      return_aisle: 'Return Aisle',
+      return_reason: 'Return Reason/Notes',
+      adjustment_date: 'Adjustment Date',
+      credit_to_account: 'Credit To Account'
+    },
+    alerts: {
+      returned_title: 'Medication Returned',
+      returned_message:  'The medication has been marked as returned.',
+      saved_title: 'Medication Request Saved',
+      saved_message: 'The medication record has been saved.',
+      fulfilled_title: 'Medication Request Fulfilled'
     }
   }
 };

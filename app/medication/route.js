@@ -1,18 +1,20 @@
+import { translationMacro as t } from 'ember-i18n';
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import Ember from 'ember';
 export default AbstractModuleRoute.extend({
   addCapability: 'add_medication',
   moduleName: 'medication',
-  newButtonText: '+ new request',
-  sectionTitle: 'Medication',
+  newButtonText: t('medication.buttons.new_button'),
+  sectionTitle: t('medication.section_title'),
 
   additionalButtons: function() {
+    let i18n = this.get('i18n');
     var additionalButtons = [];
     if (this.currentUserCan('fulfill_medication')) {
       additionalButtons.push({
         buttonIcon: 'octicon octicon-checklist',
         buttonAction: 'dispenseMedication',
-        buttonText: 'dispense medication',
+        buttonText: i18n.t('medication.buttons.dispense_medication'),
         class: 'btn btn-primary'
       });
     }
@@ -20,7 +22,7 @@ export default AbstractModuleRoute.extend({
       additionalButtons.push({
         buttonIcon: 'octicon octicon-mail-reply',
         buttonAction: 'returnMedication',
-        buttonText: 'return medication',
+        buttonText: i18n.t('medication.buttons.return_medication'),
         class: 'btn btn-primary'
       });
     }
@@ -43,13 +45,16 @@ export default AbstractModuleRoute.extend({
     findArgs: ['lookup', 'warehouse_list']
   }],
 
-  subActions: [{
-    text: 'Requests',
-    linkTo: 'medication.index'
-  }, {
-    text: 'Completed',
-    linkTo: 'medication.completed'
-  }],
+  subActions: function() {
+    let i18n = this.get('i18n');
+    return [{
+      text: i18n.t('labels.requests'),
+      linkTo: 'medication.index'
+    }, {
+      text: i18n.t('labels.completed'),
+      linkTo: 'medication.completed'
+    }];
+  }.property(),
 
   actions: {
     dispenseMedication: function() {
