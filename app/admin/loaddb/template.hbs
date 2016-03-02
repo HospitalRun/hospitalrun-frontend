@@ -1,25 +1,25 @@
 <div class="panel panel-primary">
   <div class="panel-body">
     {{#em-form model=model submitButton=false }}
-        {{file-upload label="File To Load" property="importFileName" selectedFile=importFile }}
-        <button class="btn btn-default" {{action 'loadFile'}}>Load File</button>
+        {{file-upload label=(t 'labels.file_to_Load') property="importFileName" selectedFile=importFile }}
+        <button class="btn btn-default" {{action 'loadFile'}}>{{t 'buttons.load_file'}}</button>
     {{/em-form}}
     {{#if syncResults}}
-      <h4>File Load Successful</h4>
+      <h4>{{t 'labels.file_load_successful'}}</h4>
       <div class="form-group col-xs-3">
-        <label>Start Time</label>
+        <label>{{t 'labels.start_time'}}</label>
         <p class="form-control-static">{{date-format syncResults.start_time format="l h:mm A"}}</p>
       </div>
       <div class="form-group col-xs-3">
-        <label>End Time</label>
+        <label>{{t 'labels.end_time'}}</label>
         <p class="form-control-static">{{date-format syncResults.end_time format="l h:mm A"}}</p>
       </div>
       <div class="form-group col-xs-3">
-        <label>Docs Read</label>
+        <label>{{t 'labels.doc_read'}}</label>
         <p class="form-control-static">{{syncResults.docs_read}}</p>
       </div>
         <div class="form-group col-xs-3">
-        <label>Docs Written</label>
+        <label>{{t 'labels.doc_written'}}</label>
         <p class="form-control-static">{{syncResults.docs_written}}</p>
       </div>
     {{/if}}

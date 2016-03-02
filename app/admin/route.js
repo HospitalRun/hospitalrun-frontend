@@ -6,20 +6,20 @@ export default AbstractModuleRoute.extend({
   sectionTitle: 'Admin',
   subActions: function() {
     var options = [{
-      text: 'Address Options',
+      text: this.get('i18n').t('admin.address_options'),
       linkTo: 'admin.address'
     }, {
-      text: 'Lookup Lists',
+      text: this.get('i18n').t('admin.lookup_lists'),
       linkTo: 'admin.lookup'
     }];
     if (this.currentUserCan('load_db')) {
       options.push({
-        text: 'Load DB',
+        text: this.get('i18n').t('admin.load_db'),
         linkTo: 'admin.loaddb'
       });
     }
     options.push({
-      text: 'Users',
+      text: this.get('i18n').t('admin.users'),
       linkTo: 'users.index'
     });
     return options;
