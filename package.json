@@ -64,7 +64,8 @@
     "ember-validations": "2.0.0-alpha.4",
     "express": "^4.8.5",
     "glob": "^7.0.0",
-    "hospitalrun-server-routes": "0.9.0",
+    "hospitalrun-dblisteners": "0.9.1",
+    "hospitalrun-server-routes": "0.9.1",
     "loader.js": "^4.0.0",
     "nano": "6.2.0",
     "request": "2.69.0"
