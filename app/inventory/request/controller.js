@@ -65,9 +65,9 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   quantityLabel: function() {
     var selectedInventoryItem = this.get('selectedInventoryItem');
     if (Ember.isEmpty(selectedInventoryItem)) {
-      return 'Quantity';
+      return this.get('i18n').t('labels.quantity').toString();
     } else {
-      return `Quantity (${selectedInventoryItem.distributionUnit})`;
+      return this.get('i18n').t('inventory.labels.quantity', { unit: selectedInventoryItem.distributionUnit }).toString();
     }
   }.property('selectedInventoryItem'),
 
