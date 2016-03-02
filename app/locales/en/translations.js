@@ -153,7 +153,7 @@ export default {
     create_new_record: 'Create a new record?',
     create_new_user: 'Create a new user?',
     no_users_found: 'No users found.',
-    are_you_sure_delete: 'Are you sure you wish to delete the user ',
+    are_you_sure_delete: 'Are you sure you wish to delete the user {{user}}?',
     user_has_been_saved: 'The user has been saved.',
     user_saved: 'User Saved',
     new_patient_has_to_be_created: 'A new patient needs to be created...Please wait..'
