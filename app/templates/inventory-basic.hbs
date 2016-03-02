@@ -1,11 +1,11 @@
 <div class="row">
     {{#unless model.isNew}}
         <div class="form-group col-sm-2">
-            <label>ID</label>
+            <label>{{t 'labels.id'}}</label>
             {{input class="form-control test-item-id" value=model.friendlyId type="text" disabled=true }}
         </div>
     {{/unless}}
-    {{em-input property="name" label="Name" class="required  col-sm-6 test-inv-name"}}
+    {{em-input property="name" label=(t 'labels.name') class="required  col-sm-6 test-inv-name"}}
     {{inventory/rank-select property="rank"}}
     {{#unless model.isNew}}
         <div class="form-group col-sm-2">
@@ -15,19 +15,19 @@
     {{/unless}}
 </div>
 
-{{em-text label="Description" property="description" rows=1 }}
+{{em-text label=(t 'labels.description') property="description" rows=1 }}
 <div class="row">
-    {{em-select label="Type" property="inventoryType"
+    {{em-select label=(t 'labels.type') property="inventoryType"
         content=inventoryTypes
         class="required col-sm-4 test-inv-type"
         prompt=" "
     }}
-    {{em-input property="crossReference" label="Cross Reference" class="col-sm-8 test-inv-cross"}}
+    {{em-input property="crossReference" label=(t 'inventory.labels.cross_reference') class="col-sm-8 test-inv-cross"}}
 </div>
 <div class="row">
-    {{em-input property="reorderPoint" label="Reorder Point" class="col-sm-3 test-inv-reorder"}}
-    {{em-input property="price" label="Sale Price Per Unit" class="col-sm-3 test-inv-price"}}
-    {{em-select label="Distribution Unit" class="col-sm-3 required test-inv-dist-unit"
+    {{em-input property="reorderPoint" label=(t 'inventory.labels.reorder_point') class="col-sm-3 test-inv-reorder"}}
+    {{em-input property="price" label=(t 'inventory.labels.sale_price_per_unit') class="col-sm-3 test-inv-price"}}
+    {{em-select label=(t 'inventory.labels.distribution_unit') class="col-sm-3 required test-inv-dist-unit"
         property="distributionUnit"
         content=unitListForSelect
         prompt=" "

@@ -102,6 +102,7 @@ export default {
     date: 'Date',
     date_requested: 'Date Requested',
     date_completed: 'Date Completed',
+    description: 'Description',
     requested_by: 'Requested By',
     fulfill: 'Fulfill',
     fulfill_request: 'Fulfill Request',
@@ -114,9 +115,10 @@ export default {
     result: 'Result',
     results: 'Results',
     visit: 'Visit',
+    type: 'Type',
     requests: 'Requests',
     completed: 'Completed',
-    id: 'Id',
+    id: 'ID',
     sex: 'Sex',
     age: 'Age',
     username: 'Username',
@@ -189,9 +191,19 @@ export default {
     }
   },
   inventory: {
+    labels: {
+      cross_reference: 'Cross Reference',
+      distribution_unit: 'Distribution Unit',
+      reorder_point: 'Reorder Point',
+      sale_price_per_unit: 'Sale Price Per Unit'
+    },
     messages: {
-      no_requests: 'No requests found.',
-      create_request: 'Create a new request?'
+      create_request: 'Create a new request?',
+      item_not_found: 'The inventory item <strong>{{item}}</strong> could not be found.<br>If you would like to create a new inventory item, fill in the information below.<br>Otherwise, press the Cancel button to return.',
+      no_requests: 'No requests found.'
+    },
+    titles: {
+      quick_add_title: 'New Inventory Item'
     }
   },
   imaging: {
