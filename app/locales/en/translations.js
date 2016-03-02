@@ -192,8 +192,17 @@ export default {
   },
   inventory: {
     labels: {
+      adjustment_date: 'Adjustment Date',
+      adjustment_for: 'Adjustment For',
+      adjustment_type: 'Adjustment Type',
       cross_reference: 'Cross Reference',
+      current_quantity: 'Current Quantity',
       distribution_unit: 'Distribution Unit',
+      expense: 'Expense To',
+      inventory_item: 'Inventory Item',
+      item: 'Item',
+      quantity: "Quantity",
+      reason: 'Reason',
       reorder_point: 'Reorder Point',
       sale_price_per_unit: 'Sale Price Per Unit'
     },
