@@ -3,15 +3,14 @@ import Ember from 'ember';
 import IncidentSubmodule from 'hospitalrun/mixins/incident-submodule';
 import UserSession from 'hospitalrun/mixins/user-session';
 import IncidentCategoryList from 'hospitalrun/mixins/incident-category';
-import IncidentHarmScoreList from 'hospitalrun/mixins/incident-harm-score';
 import IncidentLocationsList from 'hospitalrun/mixins/incident-locations-list';
 import IncidentContributingFactors from 'hospitalrun/mixins/incident-contributing-factors-classification';
 import SelectValues from 'hospitalrun/utils/select-values';
 
-export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentHarmScoreList,
-    IncidentLocationsList, IncidentContributingFactors, SelectValues, UserSession, {
+export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentLocationsList, 
+  IncidentContributingFactors, SelectValues, UserSession, {
   database: Ember.inject.service(),
-  incident: Ember.inject.controller(),
+  incidentController: Ember.inject.controller('incident'),
 
   canAddFeedback: function() {
    var canAdd = true;
@@ -275,8 +274,10 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     }
   ],
 
-  incidentLocationsList: Ember.computed.map('controllers.incident.incidentLocationsList.value', SelectValues.selectValuesMap),
-
+  incidentLocationsList: Ember.computed.alias('incidentController.incidentLocationsList.value'),
+  incidentCategoryList: Ember.computed.alias('incidentController.incidentCategoryList'),
+  harmScoreList: Ember.computed.alias('incidentController.harmScoreList.value'),
+ 
   incidentLocations: function() {
    var defaultIncidentLocations = this.get('defaultIncidentLocations'),
        incidentLocationsList = this.get('incidentLocationsList');
@@ -294,6 +295,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
   _completeBeforeUpdate: function(sequence, resolve, reject) {
    var sequenceValue = null,
        friendlyId = sequence.get('prefix'),
+       model = this.get('model'),
        promises = [];
 
    sequence.incrementProperty('value', 1);
@@ -303,7 +305,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
    } else {
      friendlyId += sequenceValue;
    }
-   this.set('friendlyId', friendlyId);
+   model.set('friendlyId', friendlyId);
    promises.push(sequence.save());
    Ember.RSVP.all(promises, 'All before update done for Incident item').then(function() {
      resolve();
@@ -369,7 +371,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
    }     else {
      // We need to return a promise because we need to ensure we have saved the inc-contributing-factor records first.
      return new Ember.RSVP.Promise(function(resolve, reject) {
-          var model = this.get('model'),
+          var model = model.get('model'),
               patientFactors = this.get('patientFactors'),
               savePromises = [];
 
@@ -432,56 +434,64 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
  },
 
   havePatientContributingFactors: function() {
-   var patientFactorsLength = this.get('patientContributingFactors.length');
+   var model = model.get('model'),
+   patientFactorsLength = model.get('patientContributingFactors.length');
    return (patientFactorsLength > 0);
  }.property('patientContributingFactors.length'),
 
   haveStaffContributingFactors: function() {
-   var staffFactorsLength = this.get('staffContributingFactors.length');
+   var model = model.get('model'), 
+   staffFactorsLength = model.get('staffContributingFactors.length');
    return (staffFactorsLength > 0);
  }.property('staffContributingFactors.length'),
 
   haveTaskContributingFactors: function() {
-   var taskFactorsLength = this.get('taskContributingFactors.length');
+   var model = model.get('model'), 
+   taskFactorsLength = model.get('taskContributingFactors.length');
    return (taskFactorsLength > 0);
  }.property('taskContributingFactors.length'),
 
   haveCommunicationContributingFactors: function() {
-   var communicationFactorsLength = this.get('communicationContributingFactors.length');
+   var model = model.get('model'), 
+   communicationFactorsLength = model.get('communicationContributingFactors.length');
    return (communicationFactorsLength > 0);
  }.property('communicationContributingFactors.length'),
 
   haveEquipmentContributingFactors: function() {
-   var equipmentFactorsLength = this.get('equipmentContributingFactors.length');
+   var model = model.get('model'), 
+   equipmentFactorsLength = model.get('equipmentContributingFactors.length');
    return (equipmentFactorsLength > 0);
  }.property('equipmentContributingFactors.length'),
 
   haveWorkEnvironmentContributingFactors: function() {
-   var wrkEnvironmentFactorsLength = this.get('wrkEnvironmentContributingFactors.length');
+   var model = model.get('model'), 
+   wrkEnvironmentFactorsLength = model.get('wrkEnvironmentContributingFactors.length');
    return (wrkEnvironmentFactorsLength > 0);
  }.property('wrkEnvironmentContributingFactors.length'),
 
   haveOrganizationalContributingFactors: function() {
-   var organizationalFactorsLength = this.get('organizationalContributingFactors.length');
+   var model = model.get('model'), 
+   organizationalFactorsLength = model.get('organizationalContributingFactors.length');
    return (organizationalFactorsLength > 0);
  }.property('organizationalContributingFactors.length'),
 
   haveEducationTrainingContributingFactors: function() {
-   var eduTrainingFactorsLength = this.get('eduTrainingContributingFactors.length');
+   var model = model.get('model'), 
+   eduTrainingFactorsLength = model.get('eduTrainingContributingFactors.length');
    return (eduTrainingFactorsLength > 0);
  }.property('eduTrainingContributingFactors.length'),
 
   haveTeamContributingFactors: function() {
-   var teamFactorsLength = this.get('teamContributingFactors.length');
+   var model = model.get('model'), 
+   teamFactorsLength = model.get('teamContributingFactors.length');
    return (teamFactorsLength > 0);
  }.property('teamContributingFactors.length'),
 
   itemList: function() {
    var categoryNameSelected = this.get('model.categoryName');
    if (!Ember.isEmpty(categoryNameSelected)) {
-     var incidentCategory = this.get('incidentCategory');
-     var index = this._findIndexOfProperty(incidentCategory, 'name', categoryNameSelected);
-     return incidentCategory[index].items.map(this.selectValuesMap);
+     var incidentCategory = this.get('incidentCategoryList');
+     return incidentCategory.findBy('incidentCategoryName',categoryNameSelected);
    }
  }.property('model.categoryName'),
 

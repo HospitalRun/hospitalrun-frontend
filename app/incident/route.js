@@ -8,6 +8,12 @@ export default AbstractModuleRoute.extend(IncidentId, {
   },{
     name: 'incidentLocationsList',
     findArgs: ['lookup','incident_locations']
+  },{
+    name: 'harmScoreList',
+    findArgs: ['lookup','harm_scores']
+  },{
+    name: 'incidentCategoryList',
+    findArgs: ['inc-category']
   }],
   moduleName: 'incident',
   newButtonText: '+ new incident',

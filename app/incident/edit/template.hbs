@@ -67,8 +67,7 @@
                 <div class="panel-body detail-section-content">
                     <div class="row">
                         {{em-select class="col-xs-12 col-sm-6 required" label="Category" prompt=" "
-                            property="categoryName" content=incidentCategory selected=model.categoryName
-                            optionValuePath="name" optionLabelPath="name"}}
+                            property="categoryName" content=incidentCategoryList.incidentCategoryName selected=model.categoryName}}
 
                         {{em-select class="col-xs-12 col-sm-6 required" label="Choose an Item" prompt=" "
                             property="categoryItem" content=itemList
@@ -483,8 +482,7 @@
                     </div>
                     {{#if canAddRisk}}
                         <div class="panel-body detail-section-content">
-                            {{ext-radio name=harmScore content=harmScoreList value=model.harmScore radioLabelPath="content.label"
-                              radioValuePath="content.value"}}
+                            {{ext-radio content=harmScoreList value=model.harmScore showInline=false }}
                         </div>
                     {{/if}}
                 </div>
