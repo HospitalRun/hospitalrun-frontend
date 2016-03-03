@@ -1,12 +1,34 @@
 # Change Log
 
-## [0.9.0](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.8.7) (2016-02-24)
+## [0.9.1](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.1)
 
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.0...0.9.1)
+
+**Fixed bugs:**
+
+- Inconsistent quantity displayed when fulfilling inventory [\#324](https://github.com/HospitalRun/hospitalrun-frontend/issues/324)
+- User CRUD doesn't work with Google Auth [\#323](https://github.com/HospitalRun/hospitalrun-frontend/issues/323)
+
+**Closed issues:**
+
+- Localization for Admin Module [\#281](https://github.com/HospitalRun/hospitalrun-frontend/issues/281)
+- Localization for Medication Module [\#278](https://github.com/HospitalRun/hospitalrun-frontend/issues/278)
+
+**Merged pull requests:**
+
+- Added Turkish localization [\#319](https://github.com/HospitalRun/hospitalrun-frontend/pull/319) ([aeke](https://github.com/aeke))
+- Fixes \#278: Localization for Medication module [\#318](https://github.com/HospitalRun/hospitalrun-frontend/pull/318) ([alexpelan](https://github.com/alexpelan))
+- Add russian localization [\#316](https://github.com/HospitalRun/hospitalrun-frontend/pull/316) ([G07cha](https://github.com/G07cha))
+
+## [0.9.0](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.0) (2016-02-24)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.8.7...0.9.0)
 
 **Implemented enhancements:**
 
 - Add an A,B,C ranking to inventory items [\#207](https://github.com/HospitalRun/hospitalrun-frontend/issues/207)
+- Cashier screen/workflow [\#92](https://github.com/HospitalRun/hospitalrun-frontend/issues/92)
+- Diagnosis coding [\#36](https://github.com/HospitalRun/hospitalrun-frontend/issues/36)
+- Physician home screen [\#33](https://github.com/HospitalRun/hospitalrun-frontend/issues/33)
 
 **Fixed bugs:**
 
@@ -30,7 +52,7 @@
 - Is REST Api supports? [\#227](https://github.com/HospitalRun/hospitalrun-frontend/issues/227)
 - Node 5 support [\#221](https://github.com/HospitalRun/hospitalrun-frontend/issues/221)
 - Mobile interface is identical to desktop interface [\#219](https://github.com/HospitalRun/hospitalrun-frontend/issues/219)
-- XSS vulnerability identified and corrected [\#218](https://github.com/HospitalRun/hospitalrun-frontend/issues/218)
+- XSS vulnerability identified [\#218](https://github.com/HospitalRun/hospitalrun-frontend/issues/218)
 - Clicking "Why HospitalRun?" in footer should go to static page rather than google doc [\#217](https://github.com/HospitalRun/hospitalrun-frontend/issues/217)
 - Demo login problem [\#216](https://github.com/HospitalRun/hospitalrun-frontend/issues/216)
 - Can't log into beta site [\#213](https://github.com/HospitalRun/hospitalrun-frontend/issues/213)
