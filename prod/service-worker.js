@@ -1,13 +1,13 @@
 importScripts('sw-toolbox.js');
 var CACHE_PREFIX = 'brocsw-v';
-var CACHE_VERSION = CACHE_PREFIX+'1456341755078';
+var CACHE_VERSION = CACHE_PREFIX+'1457016225727';
 toolbox.options.cache.name = CACHE_VERSION;
 toolbox.options.debug = true;
 var urlsToPrefetch = [
     '/',
-    "assets/hospitalrun-1bf9a130d391e05463dfdc44a8b7d280.js",
     "assets/hospitalrun-a28c893d100a9ee55ca12b9bf5781f5f.css",
-    "assets/vendor-2f68acee6879af174b88028bfc0138a7.js",
+    "assets/hospitalrun-ed3bc43f0d41606d73ccbbfdaca783a8.js",
+    "assets/vendor-549a937bf8f39574af4b8f4d9daf6254.js",
     "assets/vendor-ed8acd5f4063b4b83b5df16f6da9e8b0.css",
     "crossdomain.xml",
     "dymo/BarcodeAsImage.label",

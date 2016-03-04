@@ -11,22 +11,24 @@
         {{/if}}
       </tr>
       {{#each model as |user|}}
-        <tr {{action 'editItem' user}}>
-          <td class="user-display-name">{{user.displayName}}</td>
-          <td class="user-name">{{user.name}}</td>
-          <td class="user-email">{{user.email}}</td>
-          <td class="user-role">{{user.displayRole}}</td>
-          {{#if showActions}}
-            <td>
-              {{#if canAdd}}
-                <button class="btn btn-default" {{action 'editItem' user bubbles=false }}>{{t 'labels.edit'}}</button>
-              {{/if}}
-              {{#if canDelete}}
-                <button class="btn btn-default" {{action 'deleteItem' user bubbles=false }}>{{t 'labels.delete'}}</button>
-              {{/if}}
-            </td>
-          {{/if}}
-        </tr>
+        {{#unless user.deleted}}
+          <tr {{action 'editItem' user}}>
+            <td class="user-display-name">{{user.displayName}}</td>
+            <td class="user-name">{{user.name}}</td>
+            <td class="user-email">{{user.email}}</td>
+            <td class="user-role">{{user.displayRole}}</td>
+            {{#if showActions}}
+              <td>
+                {{#if canAdd}}
+                  <button class="btn btn-default" {{action 'editItem' user bubbles=false }}>{{t 'labels.edit'}}</button>
+                {{/if}}
+                {{#if canDelete}}
+                  <button class="btn btn-default" {{action 'deleteItem' user bubbles=false }}>{{t 'labels.delete'}}</button>
+                {{/if}}
+              </td>
+            {{/if}}
+          </tr>
+        {{/unless}}
       {{/each}}
     </table>
   {{else}}

@@ -6,9 +6,26 @@ export default function(configs) {
     this.requestHeaders = {
     };
     this.upload = this.internalXHR.upload;
+    return this;
   }
 
   PouchOauthXHR.prototype = {
+    _createCallback: function(functionName) {
+      if (this[functionName] !== undefined) {
+        let xhrwrapper = this;
+        this.internalXHR[functionName] = function() {
+          xhrwrapper.readyState = this.readyState;
+          xhrwrapper.response = this.response;
+          xhrwrapper.responseText = this.responseText;
+          xhrwrapper.responseType = this.responseType;
+          xhrwrapper.responseXML = this.responseXML;
+          xhrwrapper.status = this.status;
+          xhrwrapper.statusText = this.statusText;
+          xhrwrapper[functionName]();
+        };
+      }
+    },
+
     _decodeParameters: function(paramString, currentParams) {
       var returnParams = currentParams || {},
         params = decodeURIComponent(paramString).split('&'),
@@ -85,24 +102,9 @@ export default function(configs) {
       }
       this.readyState = this.internalXHR.readyState;
       this.status = this.internalXHR.status;
-      if (this.onreadystatechange !== undefined) {
-        var xhrwrapper = this;
-        this.internalXHR.onreadystatechange = function() {
-          if (this.readyState === 4 && this.status === 0) {
-            console.log('wrapper readystatechange fired with xhr state and status:', this.readyState, this.status);
-            console.log('URL WAS: ' + xhrwrapper.url, xhrwrapper);
-            console.trace();
-          }
-          xhrwrapper.readyState = this.readyState;
-          xhrwrapper.response = this.response;
-          xhrwrapper.responseText = this.responseText;
-          xhrwrapper.responseType = this.responseType;
-          xhrwrapper.responseXML = this.responseXML;
-          xhrwrapper.status = this.status;
-          xhrwrapper.statusText = this.statusText;
-          xhrwrapper.onreadystatechange();
-        };
-      }
+      this._createCallback('onreadystatechange');
+      this._createCallback('onload');
+      this._createCallback('onerror');
       this.internalXHR.send(data);
     },
 
