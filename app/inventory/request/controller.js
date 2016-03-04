@@ -93,7 +93,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   actions: {
     addInventoryItem: function() {
       var model = this.get('model'),
-        inventoryItem = model.get('model.inventoryItem'),
+        inventoryItem = model.get('inventoryItem'),
         requestedItems = model.get('requestedItems'),
         quantity = model.get('quantity');
       model.validate().then(function() {
