@@ -19,17 +19,17 @@
       {{/em-form}}
     </div>
     <div class="panel-footer">
-      <button class="btn btn-default" {{action 'search'}}>Search</button>
+      <button class="btn btn-default" {{action 'search'}}>{{t 'buttons.search'}}</button>
     </div>
   </div>
   <table class="table">
     <tr class="table-header">
-      {{#sortable-column sortBy='date' sortDesc=sortDesc sortKey=sortKey }}Date{{/sortable-column}}
+      {{#sortable-column sortBy='date' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.date'}}{{/sortable-column}}
       <th>{{t 'labels.name'}}</th>
-      {{#sortable-column sortBy='appointmentType' sortDesc=sortDesc sortKey=sortKey }}Type{{/sortable-column}}
-      {{#sortable-column sortBy='location' sortDesc=sortDesc sortKey=sortKey }}Location{{/sortable-column}}
-      {{#sortable-column sortBy='provider' sortDesc=sortDesc sortKey=sortKey }}With{{/sortable-column}}
-      {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}Status{{/sortable-column}}
+      {{#sortable-column sortBy='appointmentType' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.type'}}{{/sortable-column}}
+      {{#sortable-column sortBy='location' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.location'}}{{/sortable-column}}
+      {{#sortable-column sortBy='provider' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.with'}}{{/sortable-column}}
+      {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.status'}}{{/sortable-column}}
       <th>{{t 'labels.actions'}}</th>
     </tr>
     {{#each model as |appointment|}}
