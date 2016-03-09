@@ -24,7 +24,7 @@ module.exports = function(environment) {
     'connect-src': "'self'",
     'frame-src': "'self'",
     'style-src': "'self' 'unsafe-inline'",
-    'img-src': "'self'",
+    'img-src': "'self' data:"
   };
 
   if (environment === 'test') {
