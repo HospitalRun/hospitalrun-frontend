@@ -19,6 +19,7 @@ To install the frontend please do the following:
     1. `npm install` to install needed node modules.
     2. `bower install` to install needed bower modules.
     3. `npm install -g phantomjs-prebuilt` to install PhantomJS2, which is needed to run tests.
+        (needs root access to install PhantomJs)
 6. Install and configure [CouchDB](http://couchdb.apache.org/)
     1. Download and install CouchDB from http://couchdb.apache.org/#download
     2. Create admin user:
