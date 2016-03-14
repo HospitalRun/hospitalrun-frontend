@@ -17,6 +17,7 @@ If you're looking for a way to contribute, the [Help Wanted](https://github.com/
 ## Selecting a Issue / Feature to which you wish to contribute
 
 This guide assumes a level of knowledge on how to use GitHub issues and pull requests. If you choose to contribute code, the standard procedure would to do the following:
+
 1. Fork the master repo
 2. Add a comment in the given issue, referencing @tangollama to let our product management function know your intentions.
 3. Use the GitHub issue to converse regarding requirements.
@@ -25,6 +26,6 @@ This guide assumes a level of knowledge on how to use GitHub issues and pull req
 ## Guidelines for submitting a Pull Request
 
 - When opening a PR for a specific issue already open, please use the `address #[issue number]` or `closes #[issue number]` syntax in the pull request description.
-- Please keep your changes succint in scope. Large pull requests with multiple changes to the codebase (i.e. multiple features) may be asked to be broken into multiple smaller pull requests.
+- Please keep your changes succinct in scope. Large pull requests with multiple changes to the codebase (i.e. multiple features) may be asked to be broken into multiple smaller pull requests.
 - Please give as much detail as is relevant about your approach to the solution in the pull request description.
 - When your code changes include any change to the visual UI, please include a screenshot of how your changes appear in the browser.

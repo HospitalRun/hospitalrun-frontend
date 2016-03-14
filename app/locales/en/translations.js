@@ -130,7 +130,9 @@ export default {
     file_load_successful: 'File To Load Successful',
     file_to_Load: 'File Load',
     start_time: 'Start Time',
+    start_date: 'Start Date',
     end_time: 'End Time',
+    end_date: 'End Date',
     doc_read: 'Docs Read',
     doc_written: 'Docs Written',
     display_name: 'Display Name',
@@ -146,7 +148,12 @@ export default {
     bill_to: 'Bill To',
     pull_from: 'Pull From',
     fulfilled: 'Fulfilled',
-    delete_request: 'Delete Request'
+    delete_request: 'Delete Request',
+    type: 'Type',
+    location: 'Location',
+    provider: 'Provider',
+    with: 'With',
+    all_day: 'All Day'
   },
   messages: {
     no_items_found: 'No items found.',
@@ -175,7 +182,9 @@ export default {
     load_file: 'Load File',
     new_request: 'New Request',
     all_requests: 'All Requests',
-    dispense: 'Dispense'
+    dispense: 'Dispense',
+    add_visit: 'Add Visit',
+    search: 'Search'
   },
   login: {
     messages: {
@@ -255,6 +264,22 @@ export default {
       saved_title: 'Medication Request Saved',
       saved_message: 'The medication record has been saved.',
       fulfilled_title: 'Medication Request Fulfilled'
+    }
+  },
+  appointments: {
+    current_screen_title: 'Appointment List',
+    edit_title: 'Edit Appointment',
+    new_title: 'New Appointment',
+    section_title: 'Appointments',
+    this_week: 'Appointments This Week',
+    search_title: 'Search Appointments',
+    today_title: 'Today\'s Appointments',
+    messages: {
+      delete_appointment_message: 'Are you sure you wish to delete this appointment?',
+      end_time_later_than_start: 'Please select an end time later than the start time.'
+    },
+    buttons: {
+      new_button: '+ new appointment'
     }
   }
 };

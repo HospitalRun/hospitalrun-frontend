@@ -32,9 +32,9 @@ test('create invoice', function(assert) {
     fillIn('.invoice-patient .tt-input', 'Joe Bagadonuts - TCH 00001');
     triggerEvent('.invoice-patient .tt-input', 'input');
     triggerEvent('.invoice-patient .tt-input', 'blur');
-    waitToAppear('.invoice-visit option:contains(11/1/2015 - 11/12/2015 (Admission)');
+    waitToAppear('.invoice-visit option:contains((Admission))');
     andThen(function() {
-      select('.invoice-visit', '11/1/2015 - 11/12/2015 (Admission)');
+      select('.invoice-visit', '(Admission)');
       fillIn('.external-invoice-no input', 'inv000002');
     });
     waitToAppear('button:contains(Update)');
