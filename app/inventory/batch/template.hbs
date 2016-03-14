@@ -1,50 +1,50 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false }}
     <div class="row">
-      {{date-picker property="dateReceived" label="Date Received" class="col-sm-4 required"}}
-      {{select-or-typeahead property="vendor" label="Vendor" list=vendorList selection=model.vendor className="col-sm-4 required test-vendor"}}
-      {{em-input property="invoiceNo" label="Invoice Number" class="col-sm-4 test-invoice-number"}}
+      {{date-picker property="dateReceived" label=(t 'inventory.labels.date_received') class="col-sm-4 required"}}
+      {{select-or-typeahead property="vendor" label=(t 'inventory.labels.vendor') list=vendorList selection=model.vendor className="col-sm-4 required test-vendor"}}
+      {{em-input property="invoiceNo" label=(t 'inventory.labels.invoice_number') class="col-sm-4 test-invoice-number"}}
     </div>
     <div class="row">
-      {{select-or-typeahead property="location" label="Location" list=warehouseList selection=model.location className="col-sm-5"}}
-      {{select-or-typeahead property="aisleLocation" label="Aisle Location" list=aisleLocationList selection=model.aisleLocation className="col-sm-5"}}
+      {{select-or-typeahead property="location" label=(t 'inventory.labels.location') list=warehouseList selection=model.location className="col-sm-5"}}
+      {{select-or-typeahead property="aisleLocation" label=(t 'inventory.labels.aisle_location') list=aisleLocationList selection=model.aisleLocation className="col-sm-5"}}
       <div class="form-group col-sm-2">
-        <label class="control-label">Gift In Kind</label>
-        {{em-checkbox label="Gift In Kind" property="giftInKind"}}
+        <label class="control-label">{{t 'inventory.labels.gift'}}</label>
+        {{em-checkbox label=(t 'inventory.labels.gift') property="giftInKind"}}
       </div>
     </div>
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3 class="panel-title">Invoice Line Item</h3>
+        <h3 class="panel-title">{{t 'inventory.labels.invoice_line_item'}}</h3>
       </div>
       <div class="panel-body">
         <div class="row">
           {{inventory-typeahead
             class="col-sm-7 required test-inv-item"
             property="inventoryItemTypeAhead"
-            label="Inventory Item"
+            label=(t 'inventory.labels.inventory_item')
             content=inventoryList
             selection=selectedInventoryItem
             showQuantity=false
           }}
-          {{em-input property="quantity" label="Quantity" class="col-sm-2 required test-inv-quantity"}}
+          {{em-input property="quantity" label=(t 'labels.quantity') class="col-sm-2 required test-inv-quantity"}}
           <div class="form-group col-sm-1">
-            <label class="control-label">Unit</label>
+            <label class="control-label">{{t 'inventory.labels.unit'}}</label>
             {{#if showDistributionUnit}}
               <p class="form-control-static">{{model.inventoryItem.distributionUnit}}</p>
             {{/if}}
           </div>
-          {{em-input property="purchaseCost" label="Purchase Cost" class="col-sm-2 required test-inv-cost"}}
+          {{em-input property="purchaseCost" label=(t 'inventory.labels.purchase_cost') class="col-sm-2 required test-inv-cost"}}
         </div>
         <div class="row">
-          {{em-input property="vendorItemNo" label="Vendor Item Number" class="col-sm-4"}}
-          {{em-input property="lotNumber" label="Serial/Lot Number" class="col-sm-4"}}
-          {{date-picker property="expirationDate" label="Expiration Date" minDate="now" class="col-sm-2"}}
+          {{em-input property="vendorItemNo" label=(t 'inventory.labels.vendor_item_number') class="col-sm-4"}}
+          {{em-input property="lotNumber" label=(t 'inventory.labels.serial_number') class="col-sm-4"}}
+          {{date-picker property="expirationDate" label=(t 'inventory.labels.expiration_date') minDate="now" class="col-sm-2"}}
           <div class="form-group col-sm-2">
             <label class="control-label">&nbsp;</label>
             <p class="form-control-static">
               <button class="btn btn-primary" {{action "addInventoryItem"}}>
-                <span class="octicon octicon-plus"></span> Add
+                <span class="octicon octicon-plus"></span> {{t 'inventory.labels.add'}}
               </button>
             </p>
         </div>
@@ -52,16 +52,16 @@
       </div>
     </div>
     {{#if model.invoiceItems}}
-      <h3>Invoice Items</h3>
+      <h3>{{t 'inventory.labels.invoice_items'}}</h3>
       <table class="table">
         <tr class="table-header">
-          <th>{{t 'labels.name'}}</th>
+          <th>{{t 'inventory.labels.name'}}</th>
           <th>{{t 'labels.quantity'}}</th>
-          <th>Cost</th>
-          <th>Item Number</th>
-          <th>Serial/Lot Number</th>
-          <th>Expiration Date</th>
-          <th>{{t 'labels.action'}}</th>
+          <th>{{t 'inventory.labels.cost'}}</th>
+          <th>{{t 'inventory.labels.item_number'}}</th>
+          <th>{{t 'inventory.labels.serial_number'}}</th>
+          <th>{{t 'inventory.labels.expiration_date'}}</th>
+          <th>{{t 'inventory.labels.action'}}</th>
         </tr>
         {{#each model.invoiceItems as |invoiceItem|}}
           <tr>
@@ -96,13 +96,13 @@
             </td>
             <td class="col-sm-1">
               <button class="btn btn-default warning" {{action "showRemoveItem" invoiceItem bubbles=false }}>
-                <span class="octicon octicon-x"></span>Remove
+                <span class="octicon octicon-x"></span>{{t 'inventory.labels.remove'}}
               </button>
             </td>
           </tr>
         {{/each}}
       </table>
-      <h4>Total Received: {{totalReceived}}</h4>
+      <h4>{{t 'inventory.labels.total_received' total=totalReceived}}</h4>
     {{/if}}
   {{/em-form}}
 {{/edit-panel}}
