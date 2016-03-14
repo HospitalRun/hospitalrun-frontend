@@ -128,7 +128,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         }).on('error', (err) => {
           reject(err);
         });
-      });
+      }, reject);
     });
   },
 
