@@ -19,6 +19,14 @@ module.exports = function(environment) {
     }
   };
 
+  ENV.contentSecurityPolicy = {
+    'script-src': "'self' 'unsafe-inline' 'unsafe-eval'",
+    'connect-src': "'self'",
+    'frame-src': "'self'",
+    'style-src': "'self' 'unsafe-inline'",
+    'img-src': "'self' data:"
+  };
+
   if (environment === 'test') {
     // Testem prefers this...
     ENV.baseURL = '/';

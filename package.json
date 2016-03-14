@@ -38,6 +38,7 @@
     "ember-cli-active-link-wrapper": "0.0.4",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-babel": "^5.1.5",
+    "ember-cli-content-security-policy": "0.5.0",
     "ember-cli-dependency-checker": "^1.2.0",
     "ember-cli-deprecation-workflow": "0.2.0",
     "ember-cli-fake-server": "0.3.1",
