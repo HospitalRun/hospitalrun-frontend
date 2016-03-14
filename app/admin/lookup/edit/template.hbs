@@ -1,8 +1,8 @@
 {{#modal-dialog
     isUpdateDisabled=isUpdateDisabled
-    title=title
+    title=(t (if model.isNew 'admin.lookup.edit.controller.add_title' 'admin.lookup.edit.controller.edit_title'))
     updateButtonAction=updateButtonAction
-    updateButtonText=updateButtonText}}
+    updateButtonText=(t (if model.isNew 'admin.lookup.edit.controller.update_button_text_add' 'admin.lookup.edit.controller.update_button_text_update'))}}
   {{#em-form model=model submitButton=false action="update" }}
     {{em-input label="Value" property="value" class="lookup-type-value"}}
   {{/em-form}}
