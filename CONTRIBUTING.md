@@ -17,6 +17,7 @@ If you're looking for a way to contribute, the [Help Wanted](https://github.com/
 ## Selecting a Issue / Feature to which you wish to contribute
 
 This guide assumes a level of knowledge on how to use GitHub issues and pull requests. If you choose to contribute code, the standard procedure would to do the following:
+
 1. Fork the master repo
 2. Add a comment in the given issue, referencing @tangollama to let our product management function know your intentions.
 3. Use the GitHub issue to converse regarding requirements.
