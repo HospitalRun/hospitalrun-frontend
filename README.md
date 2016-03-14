@@ -22,9 +22,9 @@ To install the frontend please do the following:
 6. Install and configure [CouchDB](http://couchdb.apache.org/)
     1. Download and install CouchDB from http://couchdb.apache.org/#download
     2. Create admin user:
-        1. If you have just installed CouchDB and have no admin user, please run `./script/initcouch.sh`. A user `hradmin` will be created with password: `test`.
-        2. If you already have a CouchDB admin user, please run `./script/initcouch.sh USER PASS` where `USER` and `PASS` are the CouchDB admin user credentials.
-7. Copy the `server/config-example.js` to `server/config.js`.
+        1. If you have just installed CouchDB and have no admin user, please run `./script/initcouch.sh` in the folder you cloned the HospitalRun repo.  A user `hradmin` will be created with password: `test`.
+        2. If you already have a CouchDB admin user, please run `./script/initcouch.sh USER PASS` in the folder you cloned the HospitalRun repo.  `USER` and `PASS` are the CouchDB admin user credentials.
+7. Copy the `server/config-example.js` to `server/config.js` in the folder you cloned the HospitalRun repo.
 
 ### Experimental
 If you are willing to try using `make`, ensure you have installed git, node and couchdb (steps 1, 2 and 6 above), you may skip the rest.  This requires couchdb in the path to work correctly.
@@ -47,14 +47,14 @@ Otherwise, here are some tips for common issues:
 
 **The browser shows only a loading dialog**
 
-Is your server (still) running? Is Couch running? If not, that's problably the issue.
+Is your server (still) running? Is Couch running? If not, that's probably the issue.
 
 **My changes aren't showing up in the browser**
 
 Try a browser refresh `cmd + r`.
 
 ## Loading sample data
-If you would like to load sample data, you can do so by navigating to **Load DB** under the Adminstration menu.  You should see the following screen:
+If you would like to load sample data, you can do so by navigating to **Load DB** under the Administration menu.  You should see the following screen:
 ![Load DB screenshot](screenshots/load-db.png)
 
 Click on ***Choose File*** and select the file **sample-data.txt** which is included in root directory of the repo at [sample-data.txt](sample-data.txt).
