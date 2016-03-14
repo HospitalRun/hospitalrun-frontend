@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import SelectValues from 'hospitalrun/utils/select-values';
 import computed from 'ember-computed';
-
+import { translationMacro as t } from 'ember-i18n';
 export default Ember.Component.extend({
-  label: 'Rank',
+  label: t('inventory.labels.rank'),
   rankOptions: [],
   prompt: ' ',
   class: 'col-sm-2 test-inv-rank',

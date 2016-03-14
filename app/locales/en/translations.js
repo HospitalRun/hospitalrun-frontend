@@ -233,6 +233,7 @@ export default {
       quantity_available: 'Quantity Available',
       quantity_on_hand: 'Quantity on Hand',
       quantity_requested: 'Quantity Requested',
+      rank: 'Rank',
       reason: 'Reason',
       remove: 'Remove',
       reorder_point: 'Reorder Point',
