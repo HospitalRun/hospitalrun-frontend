@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import { translationMacro as t } from 'ember-i18n';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 export default Ember.Controller.extend(IsUpdateDisabled, {
   editController: Ember.inject.controller('admin/lookup'),
@@ -8,22 +7,22 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
   title: function() {
     var isNew = this.get('model.isNew');
     if (isNew) {
-      return t('admin.lookup.edit.controller.add_title');
+      return this.get('i18n').t('admin.lookup.edit.controller.add_title');
     } else {
-      return t('admin.lookup.edit.controller.edit_title');
+      return this.get('i18n').t('admin.lookup.edit.controller.edit_title');
     }
-  }.property('model.isNew'),
+  }.property('i18n.locale', 'model.isNew'),
 
   updateButtonAction: 'update',
 
   updateButtonText: function() {
     var isNew = this.get('model.isNew');
     if (isNew) {
-      return t('admin.lookup.edit.controller.update_button_text_add');
+      return this.get('i18n').t('admin.lookup.edit.controller.update_button_text_add');
     } else {
-      return t('admin.lookup.edit.controller.update_button_text_update');
+      return this.get('i18n').t('admin.lookup.edit.controller.update_button_text_update');
     }
-  }.property('model.isNew'),
+  }.property('i18n.locale', 'model.isNew'),
 
   actions: {
     cancel: function() {
