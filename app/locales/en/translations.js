@@ -208,6 +208,7 @@ export default {
       delivery_aisle: 'Delivery Aisle',
       delivery_location: 'Delivery Location',
       distribution_unit: 'Distribution Unit',
+      delete_item: 'Delete Item',
       expense: 'Expense To',
       expiration_date: 'Expiration Date',
       fulfill_request: 'Fulfill Request',
