@@ -1,12 +1,13 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import AdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
 import Ember from 'ember';
+import { translationMacro as t } from 'ember-i18n';
 export default AbstractEditController.extend(AdjustmentTypes, {
   inventoryController: Ember.inject.controller('inventory'),
 
   expenseAccountList: Ember.computed.alias('inventoryController.expenseAccountList'),
 
-  title: 'Adjustment',
+  title: t('inventory.titles.adjustment'),
 
   transactionTypeChanged: function() {
     Ember.run.once(this, function() {

@@ -224,6 +224,7 @@ export default {
       no_requests: 'No requests found.'
     },
     titles: {
+      adjustment: 'Adjustment',
       quick_add_title: 'New Inventory Item'
     }
   },
