@@ -86,6 +86,14 @@ export default {
       }
     },
     lookup: {
+      edit: {
+        controller: {
+          add_title: 'Add Value',
+          edit_title: 'Edit Value',
+          update_button_text_add: 'Add',
+          update_button_text_update: 'Update'
+        }
+      },
       anesthesia_types: 'Anesthesia Types',
       anesthesiologists: 'Anesthesiologists',
       billing_categories: 'Billing Categories',
