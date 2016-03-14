@@ -245,6 +245,7 @@ export default {
     },
     messages: {
       create_request: 'Create a new request?',
+      delete: 'Are you sure you wish to delete {{name}}?',
       item_not_found: 'The inventory item <strong>{{item}}</strong> could not be found.<br>If you would like to create a new inventory item, fill in the information below.<br>Otherwise, press the Cancel button to return.',
       purchase_saved: 'The inventory purchases have been successfully saved.',
       no_requests: 'No requests found.',
