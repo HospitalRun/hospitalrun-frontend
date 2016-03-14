@@ -205,6 +205,7 @@ export default {
       cross_reference: 'Cross Reference',
       current_quantity: 'Current Quantity',
       date_received: 'Date Received',
+      date_tranferred: 'Date Transferred',
       delivery_aisle: 'Delivery Aisle',
       delivery_location: 'Delivery Location',
       distribution_unit: 'Distribution Unit',
@@ -229,6 +230,7 @@ export default {
       pull_from: 'Pull From',
       purchase_cost: 'Purchase Cost',
       quantity: 'Quantity ({{unit}})',
+      quantity_available: 'Quantity Available',
       quantity_on_hand: 'Quantity on Hand',
       quantity_requested: 'Quantity Requested',
       reason: 'Reason',
@@ -239,6 +241,10 @@ export default {
       save: 'Save',
       serial_number: 'Serial/Lot Number',
       total_received: 'Total Received: {{total}}',
+      transfer: 'Transfer',
+      transfer_from: 'Transfer From',
+      transfer_to: 'Transfer To Location',
+      transfer_to_aisle: 'Transfer to Aisle Location',
       unit: 'Unit',
       vendor: 'Vendor',
       vendor_item_number: 'Vendor Item Number'
@@ -257,6 +263,7 @@ export default {
       purchase_saved: 'Inventory Purchases Saved',
       quick_add_title: 'New Inventory Item',
       remove_item: 'Remove Item',
+      transfer: 'Transfer Items',
       warning: 'Warning!!!!!'
     }
   },
