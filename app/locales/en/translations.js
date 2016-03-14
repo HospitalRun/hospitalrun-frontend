@@ -260,6 +260,7 @@ export default {
     },
     titles: {
       adjustment: 'Adjustment',
+      inventory_item: 'New Inventory Item',
       purchase_saved: 'Inventory Purchases Saved',
       quick_add_title: 'New Inventory Item',
       remove_item: 'Remove Item',
