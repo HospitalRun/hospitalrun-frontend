@@ -170,6 +170,7 @@ export default {
     add: 'Add',
     update: 'Update',
     ok: 'Ok',
+    fulfill: 'Fulfill',
     remove: 'Remove',
     delete: 'Delete',
     new_user: 'New User',
@@ -257,6 +258,9 @@ export default {
       purchase_saved: 'The inventory purchases have been successfully saved.',
       no_requests: 'No requests found.',
       remove_item: 'Are you sure you want to remove this item from this invoice?',
+      remove_item_request: 'Are you sure you want to remove this item from this request?',
+      request_fulfilled: 'The inventory request has been fulfilled.',
+      request_updated: 'The inventory request has been updated.',
       warning: 'Please fill in required fields (marked with *) and correct the errors before adding.'
     },
     titles: {
@@ -265,6 +269,8 @@ export default {
       purchase_saved: 'Inventory Purchases Saved',
       quick_add_title: 'New Inventory Item',
       remove_item: 'Remove Item',
+      request_fulfilled: 'Request Fulfilled',
+      request_updated: 'Request Updated',
       transfer: 'Transfer Items',
       warning: 'Warning!!!!!'
     }
