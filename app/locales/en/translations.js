@@ -65,6 +65,24 @@ export default {
       },
       messages: {
         address_saved: 'The address options have been saved'
+      },
+      route: {
+        new_title: 'Address Options',
+        edit_title: 'Address Options',
+        address1_label: 'Address'
+      }
+    },
+    loaddb: {
+      controller: {
+        progress_message: 'Please wait while your database is loaded.',
+        progress_title: 'Loading Database',
+        display_alert_title: 'Select File To Load',
+        display_alert_message: 'Please select file to load.',
+        error_display_alert_title: 'Error Loading',
+        error_display_alert_message: `The database could not be imported. The error was: {{error}}`
+      },
+      route: {
+        edit_title: 'Load DB'
       }
     },
     lookup: {
