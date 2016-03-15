@@ -31,7 +31,7 @@ linters:
     enabled: true
 
   ColorVariable:
-    enabled: true
+    enabled: false #turn back on and resolve eventually
 
   Comment:
     enabled: true
@@ -151,13 +151,13 @@ linters:
 
   QualifyingElement:
     enabled: true
-    allow_element_with_attribute: false
+    allow_element_with_attribute: true
     allow_element_with_class: false
     allow_element_with_id: false
 
   SelectorDepth:
     enabled: true
-    max_depth: 3
+    max_depth: 4
 
   SelectorFormat:
     enabled: true
@@ -234,7 +234,7 @@ linters:
     properties: []
 
   VendorPrefix:
-    enabled: false
+    enabled: false # resolve later by turning back on and adding a prefixer solution
     identifier_list: base
     additional_identifiers: []
     excluded_identifiers: []
