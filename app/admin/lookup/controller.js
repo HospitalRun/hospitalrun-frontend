@@ -375,7 +375,7 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         lookupTypeList.save().then(function() {
           this.displayAlert(
             this.get('i18n').t('admin.lookup.controller.alert_import_list_update_title'),
-            this.get('i18n').t('admin.lookup.controller.alert_import_list_update_message'),     
+            this.get('i18n').t('admin.lookup.controller.alert_import_list_update_message')    
           );
         }.bind(this));
       },
