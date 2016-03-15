@@ -12,6 +12,7 @@ cache:
 before_install:
   - "npm config set spin false"
   - "npm install -g npm@^2"
+  - "gem install scss_lint"
 
 install:
   - npm install -g bower
