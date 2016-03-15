@@ -1,9 +1,9 @@
 {{#modal-dialog
     isUpdateDisabled=isUpdateDisabled
-    title=(t (if model.isNew 'admin.lookup.edit.controller.add_title' 'admin.lookup.edit.controller.edit_title'))
+    title=(t (if model.isNew 'admin.lookup.edit.template.add_title' 'admin.lookup.edit.template.edit_title'))
     updateButtonAction=updateButtonAction
-    updateButtonText=(t (if model.isNew 'admin.lookup.edit.controller.update_button_text_add' 'admin.lookup.edit.controller.update_button_text_update'))}}
+    updateButtonText=(t (if model.isNew 'admin.lookup.edit.template.update_button_text_add' 'admin.lookup.edit.template.update_button_text_update'))}}
   {{#em-form model=model submitButton=false action="update" }}
-    {{em-input label="Value" property="value" class="lookup-type-value"}}
+    {{em-input label=(t 'admin.lookup.edit.template.label_title') property="value" class="lookup-type-value"}}
   {{/em-form}}
 {{/modal-dialog}}

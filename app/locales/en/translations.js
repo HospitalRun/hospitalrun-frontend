@@ -86,12 +86,35 @@ export default {
       }
     },
     lookup: {
+      controller: {
+        delete_value_inventory_type_medication_title: 'Cannot Delete Medication',
+        delete_value_inventory_type_medication_message: 'The Medication inventory type cannot be deleted because it is needed for the Medication module.',
+        delete_value_lab_pricing_type_procedure_title: 'Cannot Delete Lab Pricing Type',
+        delete_value_lab_pricing_type_procedure_message: 'The Lab Procedure pricing type cannot be deleted because it is needed for the Labs module.',
+        delete_value_imaging_pricing_type_procedure_title: 'Cannot Delete Imaging Pricing Type',
+        delete_value_imaging_pricing_type_procedure_message: 'The Imaging Procedure pricing type cannot be deleted because it is needed for the Imaging module.',
+        delete_value_visit_type_admission_title: 'Cannot Delete Admmission Visit Type',
+        delete_value_visit_type_admission_message: 'The Admission Visit type cannot be deleted because it is needed for the Visits module.',
+        delete_value_visit_type_imaging_title: 'Cannot Delete Imaging Visit Type',
+        delete_value_visit_type_imaging_message: 'The Imaging Visit type cannot be deleted because it is needed for the Imaging module.',
+        delete_value_visit_type_lab_title: 'Cannot Delete Lab Visit Type',
+        delete_value_visit_type_lab_message: 'The Lab Visit type cannot be deleted because it is needed for the Lab module.',
+        delete_value_visit_type_pharmacy_title: 'Cannot Delete Pharmacy Visit Type',
+        delete_value_visit_type_pharmacy_message: 'The Lab Visit type cannot be deleted because it is needed for the Medication module.',
+        alert_import_list_title: 'Select File To Import',
+        alert_import_list_message: 'Please select file to import.',
+        alert_import_list_save_title: 'List Imported',
+        alert_import_list_save_message: 'The lookup list has been imported.',
+        alert_import_list_update_title: 'List Saved',
+        alert_import_list_update_message: 'The lookup list has been saved.'
+      },
       edit: {
-        controller: {
+        template: {
           add_title: 'Add Value',
           edit_title: 'Edit Value',
           update_button_text_add: 'Add',
-          update_button_text_update: 'Update'
+          update_button_text_update: 'Update',
+          label_title: 'Value'
         }
       },
       anesthesia_types: 'Anesthesia Types',
