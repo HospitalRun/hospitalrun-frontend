@@ -149,23 +149,21 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
   afterUpdate: function() {
     var patient = this.get('model.patient'),
       patientAdmitted = patient.get('admitted'),
-      patientUpdated = false,
       status = this.get('model.status');
     if (status === 'Admitted' && !patientAdmitted) {
       patient.set('admitted', true);
-      patientUpdated = true;
+      patient.save().then(this._finishAfterUpdate.bind(this));
     } else if (status === 'Discharged' && patientAdmitted) {
       this.getPatientVisits(patient).then(function(visits) {
         if (Ember.isEmpty(visits.findBy('status', 'Admitted'))) {
           patient.set('admitted', false);
-          patientUpdated = true;
+          patient.save().then(this._finishAfterUpdate.bind(this));
+        } else {
+          this._finishAfterUpdate();
         }
       }.bind(this));
-    }
-    if (patientUpdated) {
-      patient.save().then(this._finishAfterUpdate.bind(this));
     } else {
-      this.displayAlert('Visit Saved', 'The visit record has been saved.');
+      this._finishAfterUpdate();
     }
   },
 
