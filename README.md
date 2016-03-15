@@ -88,6 +88,8 @@ Contributing
 ------------
 Contributions are welcome via pull requests and issues.  Please see our [contributing guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md) for more details.
 
+## Seriously, please read the [Contribution Guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md).
+
 ## Further Reading / Useful Links
 
 * [ember.js](http://emberjs.com/)
@@ -95,3 +97,4 @@ Contributions are welcome via pull requests and issues.  Please see our [contrib
 * Development Browser Extensions
   * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
   * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+
