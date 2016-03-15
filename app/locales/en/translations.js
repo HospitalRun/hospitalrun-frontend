@@ -108,6 +108,9 @@ export default {
         alert_import_list_update_title: 'List Saved',
         alert_import_list_update_message: 'The lookup list has been saved.'
       },
+      route: {
+        page_title: 'Lookup Lists'
+      },
       edit: {
         template: {
           add_title: 'Add Value',
