@@ -1,4 +1,5 @@
 # Default application configuration that all configurations inherit from.
+# see https://github.com/brigade/scss-lint/blob/master/lib/scss_lint/linter/README.md for config docs
 
 scss_files: "app/styles/**/*.scss"
 plugin_directories: ['.scss-linters']
