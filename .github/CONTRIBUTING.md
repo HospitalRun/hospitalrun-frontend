@@ -10,6 +10,10 @@ Project communication occurs primarily and intentionally via our project [Slack]
 
 If you're looking for a way to contribute, the [Help Wanted](https://github.com/HospitalRun/hospitalrun-frontend/labels/Help%20Wanted) tag is the right place to start. Those issues are intended to be bugs / features / enhancements / technologies that have been vetted and we know we want to include in the project.
 
+## In Progress
+
+Issues (normally ones that were listed as Help Wanted) where people have committed to working on and delivering the issue are marked with the [In Progress](https://github.com/HospitalRun/hospitalrun-frontend/labels/Help%20Wanted) tag. Project maintainers will review status on those issues weekly and - if status changes - move the issue our of In Progress and back to Help Wanted in appropriate.
+
 ## Needs Requirements
 
 [Needs Requirements](https://github.com/HospitalRun/hospitalrun-frontend/labels/Needs%20Requirements) is a tag we use to designate that someone analyst interests / skills can/could/is needed to work out and document the requirements for the given issue. Simple requirements (or frankly anything that can be) should be recorded in the issue. More complicated formatting our documentation could be stored in the project wiki. To be honest, we're working this out still. So if you're interested in helping us sort out requirements, email joel@cure.org
