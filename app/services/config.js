@@ -5,12 +5,15 @@ const { inject, run } = Ember;
 export default Ember.Service.extend({
   configDB: null,
   database: inject.service(),
+  session: inject.service(),
+  sessionData: Ember.computed.alias('session.data'),
 
   setup() {
     const replicateConfigDB = this.replicateConfigDB.bind(this);
     const loadConfig = this.loadConfig.bind(this);
     return this.createDB().then((db) => {
       this.set('configDB', db);
+      this.setCurrentUser();
       return db;
     }).then(replicateConfigDB).then(loadConfig);
   },
@@ -115,6 +118,10 @@ export default Ember.Service.extend({
     return this.getConfigValue('patient_id_prefix', 'P');
   },
 
+  getConfigDB() {
+    return this.get('configDB');
+  },
+
   getConfigValue(id, defaultValue) {
     const configDB = this.get('configDB');
     return new Ember.RSVP.Promise(function(resolve) {
@@ -134,6 +141,23 @@ export default Ember.Service.extend({
       keys: configKeys
     };
     return configDB.allDocs(options);
+  },
+
+  setCurrentUser: function(userName) {
+    const config = this.get('configDB');
+    const sessionData = this.get('sessionData');
+    if (!userName && sessionData.authenticated) {
+      userName = sessionData.authenticated.name;
+    }
+    config.get('current_user').then((doc) => {
+      doc.value = userName;
+      config.put(doc);
+    }).catch(() => {
+      config.put({
+        _id: 'current_user',
+        value: userName
+      });
+    });
   }
 
 });
