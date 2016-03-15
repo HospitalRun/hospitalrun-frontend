@@ -1,0 +1,55 @@
+{{#item-listing paginationProps=paginationProps }}
+  {{#if hasRecords}}
+    <table class="table">
+      <thead>
+        <tr class="table-header">
+          {{#sortable-column sortBy='id' sortDesc=sortDesc sortKey=sortKey }}ID{{/sortable-column}}
+          {{#sortable-column sortBy='firstName' sortDesc=sortDesc sortKey=sortKey }}First Name{{/sortable-column}}
+          {{#sortable-column sortBy='lastName' sortDesc=sortDesc sortKey=sortKey }}Last Name{{/sortable-column}}
+          {{#sortable-column sortBy='sex' sortDesc=sortDesc sortKey=sortKey }}Sex{{/sortable-column}}
+          {{#sortable-column sortBy='dateOfBirth' sortDesc=sortDesc sortKey=sortKey }}DOB{{/sortable-column}}
+          {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}Status{{/sortable-column}}
+          {{#if showActions}}
+            <th>{{t 'labels.actions'}}</th>
+          {{/if}}
+        </tr>
+      </thead>
+      <tbody>
+        {{#each model as |patient|}}
+          <tr {{action 'editItem' patient}}>
+            <td>{{patient.displayPatientId}}</td>
+            <td>{{patient.firstName}}</td>
+            <td>{{patient.lastName}}</td>
+            <td>{{patient.sex}}</td>
+            <td>{{date-format patient.dateOfBirth}}</td>
+            <td>{{patient.status}}</td>
+            {{#if showActions}}
+              <td>
+                {{#if canAdd}}
+                  <button class="btn btn-default neutral" {{action 'editItem' patient  bubbles=false }}>{{t 'labels.edit'}}</button>
+                {{/if}}
+                {{#unless patient.admitted}}
+                  {{#if canAdmitPatient}}
+                    <button class="btn btn-default success" {{action 'admitPatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-in"></span> Admit</button>
+                  {{/if}}
+                {{/unless}}
+                {{#if patient.admitted}}
+                  {{#if canDischargePatient}}
+                    <button class="btn btn-default info" {{action 'dischargePatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-out"></span> Discharge</button>
+                  {{/if}}
+                {{/if}}
+                {{#if canDelete}}
+                  <button class="btn btn-default warning" {{action 'deleteItem' patient  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                {{/if}}
+              </td>
+            {{/if}}
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{else}}
+    <div class="alert alert-info" data-test-selector="no-patients-found">
+      <p>No patients found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new patient record?</a>{{/if}}</p>
+    </div>
+  {{/if}}
+{{/item-listing}}
