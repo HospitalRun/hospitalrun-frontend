@@ -178,6 +178,7 @@ export default {
     delete: 'Delete',
     new_user: 'New User',
     add_value: 'Add Value',
+    add_note: 'Add Note',
     import: 'Import',
     load_file: 'Load File',
     new_request: 'New Request',
