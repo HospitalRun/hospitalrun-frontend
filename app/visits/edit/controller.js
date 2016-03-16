@@ -275,9 +275,17 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
     
     showAddPatientNote: function(model) {
       if (Ember.isEmpty(model)) {
-        model = this.get('store').createRecord('patient-note', { patient: this.get('model') });
+        model = this.get('store').createRecord('patient-note', { 
+          visit: this.get('model'),
+          patient: this.get('model').get('patient'),
+          noteType: this._computeNoteType(this.get('model'))
+        });
       }
       this.send('openModal', 'patients.notes', model);
+    },
+    
+    updateNote: function(patientNote) {
+      this.send('update', true);
     },
 
     newAppointment: function() {

@@ -4,11 +4,11 @@
       <div class="panel-heading">
         <h3 class="panel-title">
           <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-info">
-            Visit Information
+            {{t 'visits.edit.visit_information' }}
           </a>
           {{#if canAddAppointment}}
             <button type="button" class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}>
-              <span class="octicon octicon-plus"></span> New Appointment
+              <span class="octicon octicon-plus"></span> {{t 'visits.edit.new_appointment' }}
             </button>
           {{/if}}
         </h3>
@@ -60,7 +60,7 @@
                 <div class="form-group col-sm-2">
                   <label class="control-label">&nbsp;</label>
                   <p class="form-control-static">
-                    <button class="btn btn-primary" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> Add Diagnosis</button>
+                    <button class="btn btn-primary" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.edit.add_diagnosis' }}</button>
                   </p>
                 </div>
               {{/if}}
@@ -71,9 +71,9 @@
               </h4>
               <table class="table">
                 <tr class="table-header">
-                  <th>Date</th>
-                  <th>Diagnosis</th>
-                  <th>Delete</th>
+                  <th>{{t 'visits.edit.date' }}</th>
+                  <th>{{t 'visits.edit.diagnosis' }}</th>
+                  <th>{{t 'visits.edit.actions' }}</th>
                 </tr>
                 {{#each model.additionalDiagnoses as |diagnosis|}}
                   <tr>
@@ -82,7 +82,7 @@
                     <td>
                         {{#if canDeleteDiagnosis}}
                           <button class="btn btn-default warning" {{action "deleteDiagnosis" diagnosis}}>
-                            <span class="octicon octicon-x"></span> Delete
+                            <span class="octicon octicon-x"></span> {{t 'visits.edit.delete' }}
                           </button>
                         {{/if}}
                     </td>
@@ -92,7 +92,6 @@
             {{/if}}
             {{em-text label="Patient History" property="history" rows=3 }}
             {{em-text label="History since last seen" property="historySince" rows=3 }}
-            {{em-text label="Notes" property="notes" rows=3 }}
           {{/em-form}}
         </div>
       </div>
@@ -102,9 +101,50 @@
         <div class="panel-heading">
           <h3 class="panel-title">
             <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-procedures">
-              Procedures
+              {{t 'visits.edit.notes' }}
+              {{#if canAddNote}}
+                <button class="btn btn-primary align-right" {{action "showAddPatientNote" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.edit.new_note' }}</button>
+              {{/if}}
+            </a>
+          </h3>
+        </div>
+        <div id="visit-notes" class="panel-collapse collapse in">
+          <div class="panel-body">
+            <table class="table">
+              <tr class="table-header">
+                  <th>{{t 'visits.edit.date'}}</th>
+                  <th>{{t 'visits.edit.authored_by'}}</th>
+                  <th>{{t 'visits.edit.note'}}</th>
+                  <th>{{t 'common.actions'}}</th>
+              </tr>
+              {{#each model.patientNotes as |note|}}
+                <tr>
+                  <td>{{date-format note.date}}</td>
+                  <td>{{note.authoredBy}}</td>
+                  <td>{{note.noteType}}: {{note.content}}</td>
+                  <td>
+                    {{#if canAddNote}}
+                      <button class="btn btn-default neutral" {{action "showAddPatientNote" note}}>{{t 'visits.edit.edit'}}</button>
+                    {{/if}}
+                    {{#if canDeleteNote}}
+                      <button class="btn btn-default warning" {{action "showDeletePatientNote" note}}>
+                        <span class="octicon octicon-x"></span> {{t 'visits.edit.delete' }}
+                      </button>
+                    {{/if}}
+                  </td>
+                </tr>
+              {{/each}}
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-procedures">
+              {{t 'visits.edit.procedures' }}
               {{#if canAddProcedure}}
-                <button class="btn btn-primary align-right" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> New Procedure</button>
+                <button class="btn btn-primary align-right" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.edit.new_procedure' }}</button>
               {{/if}}
             </a>
           </h3>
@@ -113,9 +153,9 @@
           <div class="panel-body">
             <table class="table">
               <tr class="table-header">
-                  <th>Date</th>
-                  <th>Procedure</th>
-                  <th>{{t 'labels.actions'}}</th>
+                  <th>{{t 'visits.edit.date' }}</th>
+                  <th>{{t 'visits.edit.procedure' }}</th>
+                  <th>{{t 'common.actions'}}</th>
               </tr>
               {{#each model.procedures as |procedure|}}
                 <tr>
@@ -127,7 +167,7 @@
                     {{/if}}
                     {{#if canDeleteProcedure}}
                       <button class="btn btn-default warning" {{action "showDeleteProcedure" procedure}}>
-                        <span class="octicon octicon-x"></span> Delete
+                        <span class="octicon octicon-x"></span> {{t 'visits.edit.delete' }}
                       </button>
                     {{/if}}
                   </td>
@@ -141,9 +181,9 @@
         <div class="panel-heading">
           <h3 class="panel-title">
             <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-medication">
-              Medication
+              {{t 'visits.edit.medication' }}
               {{#if canAddMedication}}
-                <button class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span> New Medication</button>
+                <button class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.edit.new_medication' }}</button>
               {{/if}}
             </a>
           </h3>
@@ -158,10 +198,10 @@
         <div class="panel-heading">
           <h3 class="panel-title">
             <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-labs">
-              Labs
+              {{t 'visits.edit.labs' }}
               {{#if canAddLab}}
                 <button class="btn btn-primary align-right" {{action "newLab" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> New Lab
+                  <span class="octicon octicon-plus"></span> {{t 'visits.edit.new_lab' }}
                 </button>
               {{/if}}
             </a>
@@ -177,10 +217,10 @@
         <div class="panel-heading">
           <h3 class="panel-title">
             <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-imaging">
-              Imaging
+              {{t 'visits.edit.imaging' }}
               {{#if canAddImaging}}
                 <button class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> New Imaging
+                  <span class="octicon octicon-plus"></span> {{t 'visits.edit.new_imaging' }}
                 </button>
               {{/if}}
             </a>

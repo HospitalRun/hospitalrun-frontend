@@ -32,17 +32,6 @@ export default Ember.Mixin.create({
     if (model.get('noteType') == null) {
       model.set('noteType', this._computeNoteType(model.get('visit')));
     }
-  },
-  
-  actions: {
-    showAddPatientNote: function(model) {
-      if (Ember.isEmpty(model)) {
-        model = this.get('store').createRecord('patient-note', { 
-          patient: this.get('model')
-        });
-      }
-      this.send('openModal', 'patients.notes', model);
-    }
   }
   
 });

@@ -358,6 +358,15 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
         isNew: true
       });
     },
+    
+    showAddPatientNote: function(model) {
+      if (Ember.isEmpty(model)) {
+        model = this.get('store').createRecord('patient-note', { 
+          patient: this.get('model')
+        });
+      }
+      this.send('openModal', 'patients.notes', model);
+    },
 
     showDeleteAppointment: function(appointment) {
       appointment.set('deleteFromPatient', true);

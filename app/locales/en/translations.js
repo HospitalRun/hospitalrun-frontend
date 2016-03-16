@@ -166,6 +166,7 @@ export default {
   },
   messages: {
     no_items_found: 'No items found.',
+    no_history_available: 'No history available.',
     create_new_record: 'Create a new record?',
     create_new_user: 'Create a new user?',
     no_users_found: 'No users found.',
@@ -293,5 +294,32 @@ export default {
     buttons: {
       new_button: '+ new appointment'
     }
+  },
+  visits: {
+    edit: {
+      edit: 'Edit',
+      date: 'Date',
+      authored_by: 'Authored By',
+      note: 'Note',
+      notes: 'Notes',
+      new_note: 'New Note',
+      visit_information: 'Visit Information',
+      new_appointment: 'New Appointment',
+      add_diagnosis: 'Add Diagnosis',
+      diagnosis: 'Diagnosis',
+      delete: 'Delete',
+      procedure: 'Procedure',
+      procedures: 'Procedures',
+      new_procedure: 'New Procedure',
+      labs: 'Procedures',
+      new_lab: 'New Procedure',
+      imaging: 'Imaging',
+      new_imaging: 'New Imaging',
+      medication: 'Medication',
+      new_medication: 'New Medication'
+    }
+  },
+  common: {
+    actions: 'Actions'
   }
 };
