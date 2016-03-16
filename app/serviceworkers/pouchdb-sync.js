@@ -1,8 +1,6 @@
 var configDB;
-var currentUser = '';
+var configs = false;
 var localMainDB;
-var logMetrics = false;
-var setupConfigs = false;
 var syncingRemote = false;
 
 new PouchDB('config', function(err, db) {
@@ -47,62 +45,65 @@ toolbox.router.post('/db/main/_bulk_docs', function(request, values, options) {
 
 function setupRemoteSync() {
   if (!syncingRemote) {
+    var pouchOptions = {
+      ajax: {
+        headers: {},
+        timeout: 30000
+      }
+    };
+    if (configs.config_consumer_secret && configs.config_token_secret &&
+        configs.config_consumer_key && configs.config_oauth_token) {
+      pouchOptions.ajax.headers['x-oauth-consumer-secret'] = configs.config_consumer_secret;
+      pouchOptions.ajax.headers['x-oauth-consumer-key'] = configs.config_consumer_key;
+      pouchOptions.ajax.headers['x-oauth-token-secret'] = configs.config_token_secret;
+      pouchOptions.ajax.headers['x-oauth-token'] = configs.config_oauth_token;
+    }
     var remoteURL = self.location.protocol + '//' + self.location.host + '/db/main';
-    syncingRemote = localMainDB.sync(remoteURL, {
-      live: true,
-      retry: true
-    }).on('change', function(info) {
-      logDebug('local sync change', info);
-    }).on('paused', function() {
-      logDebug('local sync paused');
-      // replication paused (e.g. user went offline)
-    }).on('active', function() {
-      logDebug('local sync active');
-      // replicate resumed (e.g. user went back online)
-    }).on('denied', function(info) {
-      logDebug('local sync denied:', info);
-      // a document failed to replicate, e.g. due to permissions
-    }).on('complete', function(info) {
-      logDebug('local sync complete:', info);
-      // handle complete
-    }).on('error', function(err) {
-      logDebug('local sync error:', err);
-    });
-  }
-}
-
-function setupConfigDocs() {
-  if (!setupConfigs) {
-    setupConfigs = true;
-    configDB.allDocs({
-      include_docs: true,
-      keys: ['config_log_metrics','current_user']
-    }).then((result) => {
-      result.rows.forEach((row) => {
-        switch (row.id) {
-          case 'current_user': {
-            if (row.doc) {
-              currentUser = row.doc.value;
-            }
-            break;
-          }
-          case 'config_log_metrics': {
-            if (row.doc && row.doc.value === true) {
-              logMetrics = true;
-            } else {
-              logMetrics = false;
-            }
-            break;
-          }
-        }
+    new PouchDB(remoteURL, pouchOptions, function(err, db) {
+      syncingRemote = localMainDB.sync(db, {
+        live: true,
+        retry: true
+      }).on('change', function(info) {
+        logDebug('local sync change', info);
+      }).on('paused', function() {
+        logDebug('local sync paused');
+        // replication paused (e.g. user went offline)
+      }).on('active', function() {
+        logDebug('local sync active');
+        // replicate resumed (e.g. user went back online)
+      }).on('denied', function(info) {
+        logDebug('local sync denied:', info);
+        // a document failed to replicate, e.g. due to permissions
+      }).on('complete', function(info) {
+        logDebug('local sync complete:', info);
+        // handle complete
+      }).on('error', function(err) {
+        logDebug('local sync error:', err);
       });
     });
   }
 }
 
+function setupConfigs() {
+  return new Promise(function(resolve, reject) {
+    if (configs) {
+      resolve();
+    } else {
+      configDB.allDocs({
+        include_docs: true
+      }).then((result) => {
+        configs = {};
+        result.rows.forEach((row) => {
+          configs[row.id] = row.doc.value;
+        });
+        resolve();
+      }, reject);
+    }
+  });
+}
+
 function couchDBResponse(request, values, options, pouchDBFn) {
-  setupRemoteSync();
-  setupConfigDocs();
+  setupConfigs().then(setupRemoteSync);
   logDebug('Looking for couchdb response for:', request.url);
   return new Promise(function(resolve, reject) {
     var startTime = performance.now();
@@ -145,17 +146,13 @@ function getDBOptions(url) {
 }
 
 function logPerformance(elapsedTime, requestUrl) {
-  if (logMetrics && currentUser) {
+  if (configs.config_log_metrics && configs.current_user) {
     var now = Date.now();
-    var timingId = 'timing_' + currentUser.toLowerCase() + '_' + now;
+    var timingId = 'timing_' + configs.current_user.toLowerCase() + '_' + now;
     localMainDB.put({
       _id: timingId,
       elapsed: elapsedTime,
       url: requestUrl
-    }).then(function() {
-      console.log('Saved timing data');
-    }).catch(function(err) {
-      console.log('Error saving timing data:', err);
     });
   }
 }
