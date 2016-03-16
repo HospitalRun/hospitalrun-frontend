@@ -313,6 +313,7 @@ export default {
       edit_purchase: 'Edit Purchase',
       edit_request: 'Edit Request',
       inventory_item: 'New Inventory Item',
+      inventory_report: 'Inventory Report',
       purchase_saved: 'Inventory Purchases Saved',
       quick_add_title: 'New Inventory Item',
       remove_item: 'Remove Item',
