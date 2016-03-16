@@ -152,7 +152,6 @@ export default {
     pull_from: 'Pull From',
     fulfilled: 'Fulfilled',
     delete_request: 'Delete Request',
-    type: 'Type',
     location: 'Location',
     provider: 'Provider',
     with: 'With',
