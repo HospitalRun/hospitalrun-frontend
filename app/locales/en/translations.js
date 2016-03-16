@@ -167,6 +167,7 @@ export default {
     complete: 'Complete',
     cancel: 'Cancel',
     return_button: 'Return',
+    barcode: 'Barcode',
     add: 'Add',
     update: 'Update',
     ok: 'Ok',
@@ -261,7 +262,8 @@ export default {
       unit: 'Unit',
       unit_cost: 'Unit Cost',
       vendor: 'Vendor',
-      vendor_item_number: 'Vendor Item Number'
+      vendor_item_number: 'Vendor Item Number',
+      xref: 'XRef'
     },
     messages: {
       create_request: 'Create a new request?',
@@ -269,6 +271,7 @@ export default {
       item_not_found: 'The inventory item <strong>{{item}}</strong> could not be found.<br>If you would like to create a new inventory item, fill in the information below.<br>Otherwise, press the Cancel button to return.',
       purchase_saved: 'The inventory purchases have been successfully saved.',
       no_requests: 'No requests found.',
+      no_items: 'No items found.',
       remove_item: 'Are you sure you want to remove this item from this invoice?',
       remove_item_request: 'Are you sure you want to remove this item from this request?',
       request_fulfilled: 'The inventory request has been fulfilled.',
