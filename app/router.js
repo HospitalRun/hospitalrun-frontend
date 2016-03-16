@@ -21,7 +21,9 @@ Router.map(function() {
     this.route('roles');
     this.route('query');
     this.route('workflow');
-    this.route('templates');
+    this.route('templates', function() {
+      this.route('invoice');
+    });
   });
 
   this.route('appointments', {
