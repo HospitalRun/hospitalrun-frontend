@@ -180,7 +180,8 @@ export default {
     load_file: 'Load File',
     new_request: 'New Request',
     all_requests: 'All Requests',
-    dispense: 'Dispense'
+    dispense: 'Dispense',
+    new_item: '+ new item'
   },
   login: {
     messages: {
@@ -231,6 +232,7 @@ export default {
       invoice_line_item: 'Invoice Line Item',
       invoice_number: 'Invoice Number',
       item: 'Item',
+      items: 'Items',
       item_number: 'Item Number',
       location: 'Location',
       locations: 'Locations',
