@@ -9,6 +9,7 @@ var config = {
   googleClientSecret: 'FOR GOOGLE SSO; GOOGLE CLIENT SECRET GOES HERE',
   serverPort: '4200',
   server: 'localhost',
+  useGoogleAuth: false,
   useSSL: false
 };
 
