@@ -95,6 +95,7 @@ export default {
     }
   },
   labels: {
+    loading: 'Loading',
     name: 'Name',
     patient: 'Patient',
     quantity: 'Quantity',
@@ -158,7 +159,8 @@ export default {
     are_you_sure_delete: 'Are you sure you wish to delete the user {{user}}?',
     user_has_been_saved: 'The user has been saved.',
     user_saved: 'User Saved',
-    new_patient_has_to_be_created: 'A new patient needs to be created...Please wait..'
+    new_patient_has_to_be_created: 'A new patient needs to be created...Please wait..',
+    sorry: 'Sorry, something went wrong...'
   },
   alerts: {
     please_wait: 'Please Wait'
