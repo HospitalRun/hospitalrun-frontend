@@ -95,6 +95,7 @@ export default {
     }
   },
   labels: {
+    cptcode: 'CPT Code',
     name: 'Name',
     patient: 'Patient',
     quantity: 'Quantity',
@@ -110,6 +111,9 @@ export default {
     action: 'Action',
     notes: 'Notes',
     edit: 'Edit',
+    image_orders: 'Image Orders',
+    lab_orders: 'Lab Orders',
+    patient_history: 'Patient History',
     imaging_type: 'Imaging Type',
     result: 'Result',
     results: 'Results',
@@ -117,6 +121,7 @@ export default {
     requests: 'Requests',
     completed: 'Completed',
     id: 'Id',
+    on: 'on',
     sex: 'Sex',
     age: 'Age',
     username: 'Username',
@@ -153,7 +158,11 @@ export default {
     location: 'Location',
     provider: 'Provider',
     with: 'With',
-    all_day: 'All Day'
+    all_day: 'All Day',
+    physician: 'Physician',
+    assisting: 'Assisting',
+    anesthesia: 'Anesthesia',
+    procedures: 'Procedures'
   },
   messages: {
     no_items_found: 'No items found.',
@@ -163,7 +172,9 @@ export default {
     are_you_sure_delete: 'Are you sure you wish to delete the user {{user}}?',
     user_has_been_saved: 'The user has been saved.',
     user_saved: 'User Saved',
-    new_patient_has_to_be_created: 'A new patient needs to be created...Please wait..'
+    on_behalf_of: 'on behalf of',
+    new_patient_has_to_be_created: 'A new patient needs to be created...Please wait..',
+    no_notes_available: 'No notes available for this visit.'
   },
   alerts: {
     please_wait: 'Please Wait'

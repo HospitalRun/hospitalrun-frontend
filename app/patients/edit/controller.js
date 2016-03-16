@@ -1,10 +1,11 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
 import Ember from 'ember';
+import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, {
+export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, PatientNotes, {
   canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
   }.property(),

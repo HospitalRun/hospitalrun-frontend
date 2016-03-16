@@ -1,11 +1,19 @@
+import { translationMacro as t } from 'ember-i18n';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 
 export default AbstractModel.extend({
+  authoredBy: function() {
+    if (!Ember.isEmpty(this.get('attribution')) {
+      return this.get('attribution')+' '+i18n.t('messages.on_behalf_of')+' '+this.get('createdBy');
+    } else {
+      return this.get('createdBy');
+    }
+  }.property('attribution', 'createdBy'),
   //if the note was written by one person but dictated / given on behalf of another, otherwise, this and createdBy are the same
   attribution: DS.attr('string'),  
   content: DS.attr('string'),
-  createdBy: DS.attr('string'),
+  createdBy: DS.attr('string'),  
   date: DS.attr('date'),
   //custom list of noteTypes of mixins/patient-note-types
   noteType: DS.attr(),

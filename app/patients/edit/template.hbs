@@ -1,9 +1,10 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false bubbles=false }}
     {{#unless isNewOrDeleted}}
-      {{patient-summary patient=model visits=model.visits patientProcedures=patientProcedures disablePatientLink=true }}
+      {{patient-summary patient=model visits=model.visits patientProcedures=patientProcedures disablePatientLink=true store=store }}
       <ul class="nav nav-pills" role="tablist">
-        <li role="presentation" class="active"><a class="active" href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">General</a></li>
+        <li role="presentation" class="active"><a class="active" href="#history" role="tab" data-toggle="pill" data-test-selector="history-tab">History</a></li>
+        <li role="presentation"><a href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">General</a></li>
         <li role="presentation"><a href="#photos" role="tab" data-toggle="pill" data-test-selector="photos-tab">Photos</a></li>
         <li role="presentation"><a href="#medication" role="tab" data-toggle="pill" data-test-selector="medication-tab">Medication</a></li>
         <li role="presentation"><a href="#imaging" role="tab" data-toggle="pill" data-test-selector="imaging-tab">Imaging</a></li>
@@ -15,7 +16,106 @@
       </ul>
     {{/unless}}
     <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="general">
+      {{#unless isNewOrDeleted}}
+        <div role="tabpanel" class="tab-pane active" id="history">
+          <div class="panel detail-section">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                {{t 'labels.patient_history'}}
+                {{#if canAddNote}}
+                  <button type="button" class="btn btn-primary align-right" {{action "showAddPatientNote" bubbles=false on="click"}}>
+                    <span class="octicon octicon-plus"></span>{{t 'buttons.add_note'}}
+                  </button>
+                {{/if}}
+              </h3>
+            </div>
+            <div class="panel-body detail-section-content">
+              {{#each model.visits as |visit|}}
+                <div>
+                  <h4>{{visit.visitType}} {{t 'labels.on'}} {{visit.visitDate}}</h4>
+                  {{#if visit.history}}
+                  <div>
+                    <h5>History</h5>
+                    {{visit.history}}
+                  </div>
+                  {{/if}}
+                  {{#if visit.historySince}}
+                  <div>
+                    <h5>History Since</h5>
+                    {{visit.historySince}}
+                  </div>
+                  {{/if}}
+                  {{#if visit.procedures}}
+                    <div>
+                      <h5>{{t 'labels.procedures' }}</h5>
+                      {{#each visit.procedures as |procedure|}}
+                          <div>
+                            <h5>{{date-format procedure.procedureDate}}: 
+                              {{#if procedure.cptCode}}
+                                [{{t 'labels.cptcode' }} - {{procedure.cptCode}}]
+                              {{/if}}
+                              {{procedure.description}}
+                            </h5>
+                            <h6>
+                              {{t 'labels.physician'}}: {{procedure.physician}}
+                              {{#if procedure.assistant}}
+                                , {{t 'labels.assisting'}}: {{procedure.assistant}}
+                              {{/if}}
+                              {{#if procedure.anesthesiologist}}
+                                , {{t 'labels.anesthesia'}}: {{procedure.anesthesiologist}}
+                              {{/if}}
+                            </h6>                            
+                            {{procedure.notes}}
+                          </div>
+                      {{/each}}
+                    </div>
+                  {{/if}}
+                  {{#if visit.imaging}}
+                    <div>
+                      <h5>{{t 'labels.image_orders' }}</h5>
+                      {{#each visit.imaging as |imaging|}}
+                          <div>
+                            <h5>{{date-format imaging.imagingDate}}: {{imaging.imagingType.name}}</h5>
+                            <div>{{imaging.result}}</div>
+                            <div>{{imaging.notes}}</div>                            
+                          </div>
+                      {{/each}}
+                    </div>
+                  {{/if}}
+                  {{#if visit.labs}}
+                    <div>
+                      <h5>{{t 'labels.lab_orders' }}</h5>
+                      {{#each visit.labs as |lab|}}
+                          <div>
+                            <h5>{{date-format lab.labDate}}: {{lab.labType.name}}</h5>
+                            <div>{{lab.result}}</div>
+                            <div>{{lab.notes}}</div>                            
+                          </div>
+                      {{/each}}
+                    </div>
+                  {{/if}}
+                  {{#if visit.patientNotes}}
+                    <div>
+                      <h5>{{t 'labels.notes'}}</h5>
+                      {{#each visit.patientNotes as |note|}}
+                          <div>
+                            <h5>{{note.authoredBy}}</h5>
+                            {{date-format note.date}}[{{note.noteType}}]: {{note.content}}
+                          </div>
+                      {{/each}}
+                    </div>
+                  {{else}}
+                    <div>
+                      {{t 'messages.no_notes_available'}}
+                    </div>
+                  {{/if}}
+                </div>
+              {{/each}}
+            </div>
+          </div>
+      </div>
+      {{/unless}}
+      <div role="tabpanel" class="tab-pane" id="general">
         <div class="panel detail-section">
           <div class="panel-heading">
             <h3 class="panel-title">
