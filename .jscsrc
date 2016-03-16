@@ -1,11 +1,14 @@
 {
   "preset": "ember-suave",
-  "disallowVar": null,
+  "disallowConstOutsideModuleScope": null,
   "disallowMultipleVarDecl": null,
+  "disallowPrototypeExtension": null,
+  "disallowVar": null,
+  "requireArrayDestructuring": null,
   "requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties",
   "requireCommentsToIncludeAccess": null,
   "requireEnhancedObjectLiterals": null,
-  "requireTemplateStringsForConcatenation": null,
-  "requireArrayDestructuring": null,
-  "requireObjectDestructuring": null
+  "requireObjectDestructuring": null,
+  "requireSpread": null,
+  "requireTemplateStringsForConcatenation": null
 }

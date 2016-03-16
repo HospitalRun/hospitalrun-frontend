@@ -1,7 +1,9 @@
 var configDB;
+var currentUser = '';
 var localMainDB;
+var logMetrics = false;
+var setupConfigs = false;
 var syncingRemote = false;
-var useGoogleAuth = true;
 
 new PouchDB('config', function(err, db) {
   configDB = db;
@@ -9,18 +11,6 @@ new PouchDB('config', function(err, db) {
 
 new PouchDB('localMainDB', function(err, db) {
   localMainDB = db;
-});
-
-self.addEventListener('activate', function(event) {
-  event.waitUntil(
-    configDB.get('config_use_google_auth', function(useGoogleAuthConfig) {
-      if (useGoogleAuthConfig === true) {
-        useGoogleAuth = true;
-      } else {
-        useGoogleAuth = false;
-      }
-    })
-  );
 });
 
 toolbox.router.get('/db/main/_all_docs', function(request, values, options) {
@@ -81,13 +71,46 @@ function setupRemoteSync() {
   }
 }
 
+function setupConfigDocs() {
+  if (!setupConfigs) {
+    setupConfigs = true;
+    configDB.allDocs({
+      include_docs: true,
+      keys: ['config_log_metrics','current_user']
+    }).then((result) => {
+      result.rows.forEach((row) => {
+        switch (row.id) {
+          case 'current_user': {
+            if (row.doc) {
+              currentUser = row.doc.value;
+            }
+            break;
+          }
+          case 'config_log_metrics': {
+            if (row.doc && row.doc.value === true) {
+              logMetrics = true;
+            } else {
+              logMetrics = false;
+            }
+            break;
+          }
+        }
+      });
+    });
+  }
+}
+
 function couchDBResponse(request, values, options, pouchDBFn) {
   setupRemoteSync();
+  setupConfigDocs();
   logDebug('Looking for couchdb response for:', request.url);
   return new Promise(function(resolve, reject) {
+    var startTime = performance.now();
     toolbox.networkOnly(request, values, options).then(function(response) {
       if (response) {
+        var elapsedTime = performance.now() - startTime;
         resolve(response);
+        logPerformance(elapsedTime, request.url);
       } else {
         logDebug('Network first returned no response, get data from local pouch db.');
         runPouchFn(pouchDBFn, request, resolve, reject);
@@ -119,6 +142,22 @@ function getDBOptions(url) {
     }
   }
   return returnParams;
+}
+
+function logPerformance(elapsedTime, requestUrl) {
+  if (logMetrics && currentUser) {
+    var now = Date.now();
+    var timingId = 'timing_' + currentUser.toLowerCase() + '_' + now;
+    localMainDB.put({
+      _id: timingId,
+      elapsed: elapsedTime,
+      url: requestUrl
+    }).then(function() {
+      console.log('Saved timing data');
+    }).catch(function(err) {
+      console.log('Error saving timing data:', err);
+    });
+  }
 }
 
 function runPouchFn(pouchDBFn, request, resolve, reject) {
