@@ -22,10 +22,8 @@ export default Ember.Mixin.create({
       case 'Clinic':
       case 'Followup':
         return 'General';
-        break;
       default:
         return visit.get('visitType');
-        break;
     }
   },
   
