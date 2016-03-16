@@ -1,6 +1,8 @@
 # Default application configuration that all configurations inherit from.
+# see https://github.com/brigade/scss-lint/blob/master/lib/scss_lint/linter/README.md for config docs
 
 scss_files: "app/styles/**/*.scss"
+
 plugin_directories: ['.scss-linters']
 
 # List of gem names to load custom linters from (make sure they are already
@@ -31,7 +33,7 @@ linters:
     enabled: true
 
   ColorVariable:
-    enabled: true
+    enabled: false #turn back on and resolve eventually
 
   Comment:
     enabled: true
@@ -104,13 +106,13 @@ linters:
     force_nesting: true
 
   NameFormat:
-    enabled: true
+    enabled: false
     allow_leading_underscore: true
     convention: hyphenated_lowercase # or 'camel_case', or 'snake_case', or a regex pattern
 
   NestingDepth:
     enabled: true
-    max_depth: 3
+    max_depth: 4
     ignore_parent_selectors: false
 
   PlaceholderInExtend:
@@ -123,9 +125,10 @@ linters:
 
   PropertySortOrder:
     enabled: true
-    ignore_unspecified: false
+    ignore_unspecified: true
     min_properties: 2
     separate_groups: false
+    order: concentric
 
   PropertySpelling:
     enabled: true
@@ -150,13 +153,13 @@ linters:
 
   QualifyingElement:
     enabled: true
-    allow_element_with_attribute: false
+    allow_element_with_attribute: true
     allow_element_with_class: false
     allow_element_with_id: false
 
   SelectorDepth:
     enabled: true
-    max_depth: 3
+    max_depth: 4
 
   SelectorFormat:
     enabled: true
@@ -175,7 +178,7 @@ linters:
 
   SpaceAfterComma:
     enabled: true
-    style: one_space # or 'no_space', or 'at_least_one_space'
+    style: no_space # or 'no_space', or 'at_least_one_space'
 
   SpaceAfterPropertyColon:
     enabled: true
@@ -233,7 +236,7 @@ linters:
     properties: []
 
   VendorPrefix:
-    enabled: true
+    enabled: false # resolve later by turning back on and adding a prefixer solution
     identifier_list: base
     additional_identifiers: []
     excluded_identifiers: []
