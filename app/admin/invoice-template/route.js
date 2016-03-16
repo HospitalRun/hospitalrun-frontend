@@ -2,8 +2,8 @@ import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import Ember from 'ember';
 export default AbstractEditRoute.extend({
   hideNewButton: true,
-  newTitle: 'Address Options',
-  editTitle: 'Address Options',
+  newTitle: 'Invoice Template',
+  editTitle: 'Invoice Template',
   model: function() {
     return new Ember.RSVP.Promise(function(resolve) {
       this.get('store').find('option', 'address_options').then(function(addressOptions) {
