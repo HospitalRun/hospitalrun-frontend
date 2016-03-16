@@ -4,7 +4,7 @@ import DS from 'ember-data';
 
 export default AbstractModel.extend({
   authoredBy: function() {
-    if (!Ember.isEmpty(this.get('attribution')) {
+    if (!Ember.isEmpty(this.get('attribution'))) {
       return this.get('attribution')+' '+i18n.t('messages.on_behalf_of')+' '+this.get('createdBy');
     } else {
       return this.get('createdBy');
