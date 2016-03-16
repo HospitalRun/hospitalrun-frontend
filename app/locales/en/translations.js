@@ -204,6 +204,7 @@ export default {
       adjustment_type: 'Adjustment Type',
       aisle: 'Aisle',
       aisle_location: 'Aisle Location',
+      all_inventory: 'All Inventory',
       bill_to: 'Bill To',
       consume_purchases: 'Consume Purchases',
       consumption_rate: 'Consumption Rate',
@@ -305,8 +306,10 @@ export default {
     },
     titles: {
       add_purchase: 'Add Purchase',
+      add_request: 'New Request',
       adjustment: 'Adjustment',
       edit_purchase: 'Edit Purchase',
+      edit_request: 'Edit Request',
       inventory_item: 'New Inventory Item',
       purchase_saved: 'Inventory Purchases Saved',
       quick_add_title: 'New Inventory Item',
