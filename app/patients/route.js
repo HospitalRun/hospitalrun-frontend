@@ -50,14 +50,6 @@ export default AbstractModuleRoute.extend(PatientId, {
       }.bind(this));
     }
   },
-  moduleName: 'patients',
   newButtonText: '+ new patient',
-  sectionTitle: 'Patients',
-  subActions: [{
-    text: 'Patient listing',
-    linkTo: 'patients.index'
-  }, {
-    text: 'Reports',
-    linkTo: 'patients.reports'
-  }]
+  moduleName: 'patients'
 });
