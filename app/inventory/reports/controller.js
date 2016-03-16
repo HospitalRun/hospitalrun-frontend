@@ -9,7 +9,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   inventoryController: Ember.inject.controller('inventory'),
   effectiveDate: null,
   endDate: null,
-  expenseCategories: ['Inventory Consumed', 'Gift In Kind Usage', 'Inventory Obsolence'],
+  expenseCategories: Ember.computed(function() {
+    let i18n = this.get('i18n');
+    return [i18n.t('inventory.labels.inventory_consumed'), i18n.t('inventory.labels.gift_usage'), i18n.t('inventory.labels.inventory_obsolence')];
+  }),
   expenseMap: null,
   filterLocation: null,
   grandCost: 0,
@@ -20,158 +23,164 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
 
   database: Ember.inject.service(),
   warehouseList: Ember.computed.map('inventoryController.warehouseList.value', SelectValues.selectValuesMap),
-  reportColumns: {
-    date: {
-      label: 'Date',
-      include: true,
-      property: 'date'
-    },
-    id: {
-      label: 'Id',
-      include: true,
-      property: 'inventoryItem.friendlyId'
-    },
-    name: {
-      label: 'Name',
-      include: true,
-      property: 'inventoryItem.name'
-    },
-    transactionType: {
-      label: 'Adjustment Type',
-      include: false,
-      property: 'transactionType'
-    },
-    expenseAccount: {
-      label: 'Expense To',
-      include: false,
-      property: 'expenseAccount'
-    },
-    description: {
-      label: 'Description',
-      include: false,
-      property: 'inventoryItem.description'
-    },
-    type: {
-      label: 'Type',
-      include: true,
-      property: 'inventoryItem.inventoryType'
-    },
-    xref: {
-      label: 'Cross Reference',
-      include: false,
-      property: 'inventoryItem.crossReference'
-    },
-    reorder: {
-      label: 'Reorder Point',
-      include: false,
-      property: 'inventoryItem.reorderPoint',
-      format: '_numberFormat'
-    },
-    price: {
-      label: 'Sale Price Per Unit',
-      include: false,
-      property: 'inventoryItem.price',
-      format: '_numberFormat'
-    },
-    quantity: {
-      label: 'Quantity',
-      include: true,
-      property: 'quantity',
-      format: '_numberFormat'
-    },
-    consumedPerDay: {
-      label: 'Consumption Rate',
-      include: false,
-      property: 'consumedPerDay'
-    },
-    daysLeft: {
-      label: 'Days Left',
-      include: false,
-      property: 'daysLeft'
-    },
-    unit: {
-      label: 'Distribution Unit',
-      include: true,
-      property: 'inventoryItem.distributionUnit'
-    },
-    unitcost: {
-      label: 'Unit Cost',
-      include: true,
-      property: 'unitCost',
-      format: '_numberFormat'
-    },
-    total: {
-      label: 'Total Cost',
-      include: true,
-      property: 'totalCost',
-      format: '_numberFormat'
-    },
-    gift: {
-      label: 'Gift In Kind',
-      include: true,
-      property: 'giftInKind'
-    },
-    locations: {
-      label: 'Locations',
-      include: true,
-      property: 'locations',
-      format: '_addLocationColumn'
-    },
-    aisle: {
-      label: 'Aisle',
-      include: false,
-      property: 'locations',
-      format: '_addAisleColumn'
-    },
-    vendor: {
-      label: 'Vendor',
-      include: false,
-      property: 'vendors'
-    }
-  },
-  reportTypes: [{
-    name: 'Days Supply Left In Stock',
-    value: 'daysLeft'
-  }, {
-    name: 'Detailed Adjustment',
-    value: 'detailedAdjustment'
-  }, {
-    name: 'Detailed Purchase',
-    value: 'detailedPurchase'
-  }, {
-    name: 'Detailed Stock Usage',
-    value: 'detailedUsage'
-  }, {
-    name: 'Detailed Stock Transfer',
-    value: 'detailedTransfer'
-  }, {
-    name: 'Detailed Expenses',
-    value: 'detailedExpense'
-  }, {
-    name: 'Expiration Date',
-    value: 'expiration'
-  }, {
-    name: 'Inventory By Location',
-    value: 'byLocation'
-  }, {
-    name: 'Inventory Valuation',
-    value: 'valuation'
-  }, {
-    name: 'Summary Expenses',
-    value: 'summaryExpense'
-  }, {
-    name: 'Summary Purchase',
-    value: 'summaryPurchase'
-  }, {
-    name: 'Summary Stock Usage',
-    value: 'summaryUsage'
-  }, {
-    name: 'Summary Stock Transfer',
-    value: 'summaryTransfer'
-  }, {
-    name: 'Finance Summary',
-    value: 'summaryFinance'
-  }],
+  reportColumns: Ember.computed(function() {
+    let i18n = this.get('i18n');
+    return {
+      date: {
+        label: i18n.t('labels.date'),
+        include: true,
+        property: 'date'
+      },
+      id: {
+        label: i18n.t('labels.id'),
+        include: true,
+        property: 'inventoryItem.friendlyId'
+      },
+      name: {
+        label: i18n.t('inventory.labels.name'),
+        include: true,
+        property: 'inventoryItem.name'
+      },
+      transactionType: {
+        label: i18n.t('inventory.labels.adjustment_type'),
+        include: false,
+        property: 'transactionType'
+      },
+      expenseAccount: {
+        label: i18n.t('inventory.labels.expense'),
+        include: false,
+        property: 'expenseAccount'
+      },
+      description: {
+        label: i18n.t('labels.description'),
+        include: false,
+        property: 'inventoryItem.description'
+      },
+      type: {
+        label: i18n.t('labels.type'),
+        include: true,
+        property: 'inventoryItem.inventoryType'
+      },
+      xref: {
+        label: i18n.t('inventory.labels.cross_reference'),
+        include: false,
+        property: 'inventoryItem.crossReference'
+      },
+      reorder: {
+        label: i18n.t('inventory.labels.reorder_point'),
+        include: false,
+        property: 'inventoryItem.reorderPoint',
+        format: '_numberFormat'
+      },
+      price: {
+        label: i18n.t('inventory.labels.sale_price_per_unit'),
+        include: false,
+        property: 'inventoryItem.price',
+        format: '_numberFormat'
+      },
+      quantity: {
+        label: i18n.t('labels.quantity'),
+        include: true,
+        property: 'quantity',
+        format: '_numberFormat'
+      },
+      consumedPerDay: {
+        label: i18n.t('inventory.labels.consumption_rate'),
+        include: false,
+        property: 'consumedPerDay'
+      },
+      daysLeft: {
+        label: i18n.t('inventory.labels.days_left'),
+        include: false,
+        property: 'daysLeft'
+      },
+      unit: {
+        label: i18n.t('inventory.labels.distribution_unit'),
+        include: true,
+        property: 'inventoryItem.distributionUnit'
+      },
+      unitcost: {
+        label: i18n.t('inventory.labels.unit_cost'),
+        include: true,
+        property: 'unitCost',
+        format: '_numberFormat'
+      },
+      total: {
+        label: i18n.t('inventory.labels.total_cost'),
+        include: true,
+        property: 'totalCost',
+        format: '_numberFormat'
+      },
+      gift: {
+        label: i18n.t('inventory.labels.gift'),
+        include: true,
+        property: 'giftInKind'
+      },
+      locations: {
+        label: i18n.t('inventory.labels.locations'),
+        include: true,
+        property: 'locations',
+        format: '_addLocationColumn'
+      },
+      aisle: {
+        label: i18n.t('inventory.labels.aisle'),
+        include: false,
+        property: 'locations',
+        format: '_addAisleColumn'
+      },
+      vendor: {
+        label: i18n.t('inventory.labels.vendor'),
+        include: false,
+        property: 'vendors'
+      }
+    };
+  }),
+  reportTypes: Ember.computed(function() {
+    let i18n = this.get('i18n');
+    return [{
+      name: i18n.t('inventory.reports.days_supply'),
+      value: 'daysLeft'
+    }, {
+      name: i18n.t('inventory.reports.adjustment'),
+      value: 'detailedAdjustment'
+    }, {
+      name: i18n.t('inventory.reports.purchase_detail'),
+      value: 'detailedPurchase'
+    }, {
+      name: i18n.t('inventory.reports.stock_usage_detail'),
+      value: 'detailedUsage'
+    }, {
+      name: i18n.t('inventory.reports.stock_transfer_detail'),
+      value: 'detailedTransfer'
+    }, {
+      name: i18n.t('inventory.reports.expense_detail'),
+      value: 'detailedExpense'
+    }, {
+      name: i18n.t('inventory.reports.expiration'),
+      value: 'expiration'
+    }, {
+      name: i18n.t('inventory.reports.inv_location'),
+      value: 'byLocation'
+    }, {
+      name: i18n.t('inventory.reports.inv_valuation'),
+      value: 'valuation'
+    }, {
+      name: i18n.t('inventory.reports.expense_sum'),
+      value: 'summaryExpense'
+    }, {
+      name: i18n.t('inventory.reports.purchase_sum'),
+      value: 'summaryPurchase'
+    }, {
+      name: i18n.t('inventory.reports.stock_usage_sum'),
+      value: 'summaryUsage'
+    }, {
+      name: i18n.t('inventory.reports.stock_transfer_sum'),
+      value: 'summaryTransfer'
+    }, {
+      name: i18n.t('inventory.reports.finance'),
+      value: 'summaryFinance'
+    }];
+  }),
 
   hideLocationFilter: function() {
     var reportType = this.get('reportType');
