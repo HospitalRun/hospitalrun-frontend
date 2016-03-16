@@ -181,7 +181,8 @@ export default {
     new_request: 'New Request',
     all_requests: 'All Requests',
     dispense: 'Dispense',
-    new_item: '+ new item'
+    new_item: '+ new item',
+    new_request_plus: '+ new request'
   },
   login: {
     messages: {
@@ -219,6 +220,7 @@ export default {
       delivery_location: 'Delivery Location',
       distribution_unit: 'Distribution Unit',
       delete_item: 'Delete Item',
+      edit_item: 'Edit Item',
       expense: 'Expense To',
       expiration_date: 'Expiration Date',
       fulfill_request: 'Fulfill Request',
@@ -238,6 +240,7 @@ export default {
       locations: 'Locations',
       name: 'Name',
       mark_as_consumed: 'Mark as Consumed',
+      new_item: 'New Item',
       print: 'Print',
       print_barcode: 'Print Barcode',
       printer: 'Printer',
@@ -301,7 +304,9 @@ export default {
       stock_usage_sum: 'Summary Stock Usage'
     },
     titles: {
+      add_purchase: 'Add Purchase',
       adjustment: 'Adjustment',
+      edit_purchase: 'Edit Purchase',
       inventory_item: 'New Inventory Item',
       purchase_saved: 'Inventory Purchases Saved',
       quick_add_title: 'New Inventory Item',

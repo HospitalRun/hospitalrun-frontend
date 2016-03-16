@@ -1,9 +1,10 @@
 import InventoryRequestRoute from 'hospitalrun/inventory/request/route';
 import Ember from 'ember';
+import { translationMacro as t } from 'ember-i18n';
 export default InventoryRequestRoute.extend({
-  editTitle: 'Inventory Received',
+  editTitle: t('navigation.subnav.inventory_received'),
   modelName: 'inventory-batch',
-  newTitle: 'Inventory Received',
+  newTitle: t('navigation.subnav.inventory_received'),
   getNewData: function() {
     return Ember.RSVP.resolve({
       invoiceItems: [],
