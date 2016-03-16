@@ -2,8 +2,8 @@
 # see https://github.com/brigade/scss-lint/blob/master/lib/scss_lint/linter/README.md for config docs
 
 scss_files: "app/styles/**/*.scss"
+
 plugin_directories: ['.scss-linters']
-exclude: "app/styles/_bootstrap.scss"
 
 # List of gem names to load custom linters from (make sure they are already
 # installed)
