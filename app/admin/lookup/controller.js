@@ -263,7 +263,7 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
           if (value === 'Lab Procedure') {
             this.displayAlert(
               this.get('i18n').t('admin.lookup.controller.delete_value_lab_pricing_type_procedure_title'),
-              this.get('i18n').t('admin.lookup.controller.delete_value_lab_pricing_type_procedure_message')  
+              this.get('i18n').t('admin.lookup.controller.delete_value_lab_pricing_type_procedure_message')
             );
             return false;
           }
@@ -361,7 +361,7 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
             lookupTypeList.save().then(function() {
               this.displayAlert(
                 this.get('i18n').t('admin.lookup.controller.alert_import_list_save_title'),
-                this.get('i18n').t('admin.lookup.controller.alert_import_list_save_message'), 
+                this.get('i18n').t('admin.lookup.controller.alert_import_list_save_message'),
                 'refreshLookupLists');
               this.set('importFile');
               this.set('model.importFileName');
@@ -375,7 +375,7 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         lookupTypeList.save().then(function() {
           this.displayAlert(
             this.get('i18n').t('admin.lookup.controller.alert_import_list_update_title'),
-            this.get('i18n').t('admin.lookup.controller.alert_import_list_update_message')    
+            this.get('i18n').t('admin.lookup.controller.alert_import_list_update_message')
           );
         }.bind(this));
       },
