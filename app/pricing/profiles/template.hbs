@@ -10,7 +10,7 @@
         {{/if}}
       </tr>
       {{#each model as |profile|}}
-        <tr {{action 'editItem' profile}}>
+        <tr {{action 'editItem' profile}} class="clickable">
           <td class="pricing-profile-name">{{profile.name}}</td>
           <td>{{profile.discountAmount}}</td>
           <td>{{profile.discountPercentage}}</td>

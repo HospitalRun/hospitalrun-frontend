@@ -12,7 +12,7 @@
         {{/if}}
       </tr>
       {{#each model as |medicationRequest|}}
-        <tr {{action 'editItem' medicationRequest}}>
+        <tr {{action 'editItem' medicationRequest}} class="clickable">
           <td>{{date-format medicationRequest.prescriptionDate}}</td>
           <td>{{medicationRequest.patient.displayName}}</td>
           <td>{{medicationRequest.medicationName}}</td>
