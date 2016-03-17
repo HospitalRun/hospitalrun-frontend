@@ -1,0 +1,26 @@
+#!/bin/sh
+# Usage: script/bootstrap
+# Ensures all dependencies are installed locally.
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+git pull
+
+if [ -f "package.json" ]; then
+  echo "==> Installing packages…"
+  npm install
+fi
+
+if [ -f "bower.json"]; then
+  echo "==> Installing bower components…"
+  bower install
+fi
+
+if [ -f "Gemfile" ]; then
+  echo "==> Installing gem dependencies…"
+  bundle check --path vendor/gems >/dev/null 2>&1  || {
+    bundle install --path vendor/gems --quiet --without production
+  }
+fi
