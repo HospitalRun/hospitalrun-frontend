@@ -33,7 +33,7 @@
               {{#if model.visits}}
                 {{#each model.visits as |visit|}}
                   <div>
-                    <h4>{{visit.visitType}} {{t 'labels.on'}} {{visit.visitDate}}</h4>
+                    <h4 {{action "editVisit" visit}}>{{visit.visitType}} {{t 'labels.on'}} {{visit.visitDate}}</h4>
                     {{#if visit.history}}
                     <div>
                       <h5>History</h5>
@@ -50,7 +50,7 @@
                       <div>
                         <h5>{{t 'labels.procedures' }}</h5>
                         {{#each visit.procedures as |procedure|}}
-                            <div>
+                            <div {{action 'editProcedure' procedure }}>
                               <h5>{{date-format procedure.procedureDate}}: 
                                 {{#if procedure.cptCode}}
                                   [{{t 'labels.cptcode' }} - {{procedure.cptCode}}]
@@ -75,7 +75,7 @@
                       <div>
                         <h5>{{t 'labels.image_orders' }}</h5>
                         {{#each visit.imaging as |imaging|}}
-                            <div>
+                            <div {{action 'editImaging' imaging }}>
                               <h5>{{date-format imaging.imagingDate}}: {{imaging.imagingType.name}}</h5>
                               <div>{{imaging.result}}</div>
                               <div>{{imaging.notes}}</div>                            
@@ -87,7 +87,7 @@
                       <div>
                         <h5>{{t 'labels.lab_orders' }}</h5>
                         {{#each visit.labs as |lab|}}
-                            <div>
+                            <div {{action 'editLab' lab }}>
                               <h5>{{date-format lab.labDate}}: {{lab.labType.name}}</h5>
                               <div>{{lab.result}}</div>
                               <div>{{lab.notes}}</div>                            
@@ -99,7 +99,7 @@
                       <div>
                         <h5>{{t 'labels.notes'}}</h5>
                         {{#each visit.patientNotes as |note|}}
-                            <div>
+                            <div {{action 'showAddPatientNote' note }}>
                               <h5>{{note.authoredBy}}</h5>
                               {{date-format note.date}}[{{note.noteType}}]: {{note.content}}
                             </div>

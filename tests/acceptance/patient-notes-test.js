@@ -35,7 +35,6 @@ test('visiting /patients new note route', function(assert) {
     waitToAppear('.modal-dialog');
     andThen(function() {
       assert.equal(find('.modal-title').text(), 'Patient Saved', 'Patient record has been saved');
-      assert.equal(find('.modal-body').text().trim(), 'The patient record for John Doe has been saved.', 'Record has been saved');
     });
     click('button:contains(Close)');
     waitToAppear('.patient-summary');
@@ -46,10 +45,9 @@ test('visiting /patients new note route', function(assert) {
     
     andThen(function() {
       tabTest('appointments-tab', 'Visits');
-      click('button:contains(New Visit)');
     });
-    
-    andThen(() => {
+    andThen(function() {
+      click('button:contains(New Visit)');  
       assert.equal(currentURL(), '/visits/edit/new', 'Now in add visiting information route');
     });
     click('.panel-footer button:contains(Add)');
@@ -69,7 +67,7 @@ test('visiting /patients new note route', function(assert) {
     });
     
     andThen(function() {
-      assert.equal(find('button:contains(New Note)').length, 1, 'Add Note button in visible');
+      assert.equal(find('button:contains(New Note)').length, 1, 'New Note button in visible');
       click('button:contains(New Note)');
     });
     andThen(function() {
