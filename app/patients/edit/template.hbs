@@ -2,7 +2,7 @@
   {{#em-form model=model submitButton=false bubbles=false }}
     {{#unless isNewOrDeleted}}
       {{patient-summary patient=model visits=model.visits patientProcedures=patientProcedures disablePatientLink=true }}
-      <ul class="nav nav-pills" role="tablist">
+      <ul class="nav nav-pills tab-nav" role="tablist">
         <li role="presentation" class="active"><a class="active" href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">General</a></li>
         <li role="presentation"><a href="#photos" role="tab" data-toggle="pill" data-test-selector="photos-tab">Photos</a></li>
         <li role="presentation"><a href="#medication" role="tab" data-toggle="pill" data-test-selector="medication-tab">Medication</a></li>
