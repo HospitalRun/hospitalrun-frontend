@@ -7,7 +7,6 @@ export default DS.RESTAdapter.extend(UserSession, {
   endpoint: '/db/_users/',
   defaultSerializer: 'couchdb',
   oauthHeaders: Ember.computed.alias('database.oauthHeaders'),
-  requestHeaders: null,
 
   ajaxError: function(jqXHR) {
     var error = this._super(jqXHR);
@@ -87,7 +86,12 @@ export default DS.RESTAdapter.extend(UserSession, {
   },
 
   headers: function() {
-    return this.get('oauthHeaders');
+    var oauthHeaders = this.get('oauthHeaders');
+    if (Ember.isEmpty(oauthHeaders)) {
+      return {};
+    } else {
+      return oauthHeaders;
+    }
   }.property('oauthHeaders'),
 
   /**
