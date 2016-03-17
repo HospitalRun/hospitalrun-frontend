@@ -284,10 +284,6 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
       this.send('openModal', 'patients.notes', model);
     },
     
-    updateNote: function(patientNote) {
-      this.send('update', true);
-    },
-
     newAppointment: function() {
       this._addChildObject('appointments.edit');
     },

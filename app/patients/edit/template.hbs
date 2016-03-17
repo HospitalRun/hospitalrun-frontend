@@ -113,13 +113,13 @@
                   </div>
                 {{/each}}
               {{else}}
-                {{t 'messages.no_history_available''}}
+                {{t 'messages.no_history_available'}}
               {{/if}}
             </div>
           </div>
       </div>
       {{/unless}}
-      <div role="tabpanel" class="{{if isNewOrDeleted 'tab-pane active' 'tab-pane'}}" id="general">
+      <div role="tabpanel" class="tab-pane {{if isNewOrDeleted 'active'}}" id="general">
         <div class="panel detail-section">
           <div class="panel-heading">
             <h3 class="panel-title">

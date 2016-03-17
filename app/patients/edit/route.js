@@ -10,6 +10,11 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
   photos: null,
 
   actions: {
+    updateNote: function(note) {
+      note.get('visit').save().then(function() {
+        //noop
+      });      
+    },
     appointmentDeleted: function(model) {
       this.controller.send('appointmentDeleted', model);
     },

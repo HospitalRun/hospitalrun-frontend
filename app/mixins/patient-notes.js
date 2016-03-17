@@ -13,7 +13,7 @@ export default Ember.Mixin.create({
   _computeNoteType: function(visit) {
     switch (visit.get('visitType')) {
       case 'Admission':
-        if (Ember.isEmpty(visit.get('procedure'))) {
+        if (Ember.isEmpty(visit.get('procedures'))) {
           return 'Pre-op';
         } else {
           return 'Post-op';

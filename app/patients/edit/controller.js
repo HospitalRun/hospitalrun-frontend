@@ -474,7 +474,7 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
       this.send('update', true);
       this.send('closeModal');
     },
-
+    
     updatePhoto: function(photo) {
       photo.save().then(function() {
         this.send('closeModal');

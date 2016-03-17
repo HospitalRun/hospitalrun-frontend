@@ -7,7 +7,7 @@ import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default AbstractEditController.extend(IsUpdateDisabled, UserSession, PatientSubmodule, PatientNotes, {
   cancelAction: 'closeModal',
-  editController: Ember.inject.controller('visits/edit'),
+  updateAction: 'updateNote',
   physicianList: Ember.computed.map('patientsController.physicianList.value', SelectValues.selectValuesMap),
   title: function() {
     if (this.get('model.isNew')) {
@@ -23,7 +23,8 @@ export default AbstractEditController.extend(IsUpdateDisabled, UserSession, Pati
     return Ember.RSVP.Promise.resolve();
   },
   afterUpdate: function() {
-    this.get('editController').send('updateNote', this.get('model'));
+    //this.get('editController').send('updateNote', this.get('model'));
+    this.send(this.get('updateAction'), this.get('model'));
     this.send(this.get('cancelAction'));
   },
   actions: {
