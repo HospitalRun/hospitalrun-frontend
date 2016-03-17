@@ -4,4 +4,14 @@ body {
   &.ember-application {
     padding-left: 275px; // to accomodate for .sidebar-nav
   }
+
+  /*
+  Adding pointer cursor for elements with an data-ember-action attribute
+  as a UX cue.
+  */
+  th, td, tr, div {
+    &[data-ember-action] {
+      cursor: pointer;
+    }
+  }
 }
