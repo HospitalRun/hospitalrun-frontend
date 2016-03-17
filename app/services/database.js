@@ -1,13 +1,12 @@
 /* global List */
 import Ember from 'ember';
-import createPouchOauthXHR from 'hospitalrun/utils/pouch-oauth-xhr';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
 import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 
 export default Ember.Service.extend(PouchAdapterUtils, {
   config: Ember.inject.service(),
   mainDB: null, // Server DB
-  PouchOauthXHR: null,
+  oauthHeaders: null,
   setMainDB: false,
 
   setup(configs) {
@@ -23,18 +22,25 @@ export default Ember.Service.extend(PouchAdapterUtils, {
     return new Ember.RSVP.Promise((resolve, reject) => {
       let pouchOptions = {};
       if (configs.config_use_google_auth) {
+        pouchOptions.ajax = {
+          timeout: 30000
+        };
         // If we don't have the proper credentials, throw error to force login.
         if (Ember.isEmpty(configs.config_consumer_key) ||
           Ember.isEmpty(configs.config_consumer_secret) ||
           Ember.isEmpty(configs.config_oauth_token) ||
           Ember.isEmpty(configs.config_token_secret)) {
           throw Error('login required');
+        } else {
+          var headers = {
+            'x-oauth-consumer-secret': configs.config_consumer_secret,
+            'x-oauth-consumer-key': configs.config_consumer_key,
+            'x-oauth-token-secret': configs.config_token_secret,
+            'x-oauth-token': configs.config_oauth_token
+          };
+          this.set('oauthHeaders', headers);
+          pouchOptions.ajax.headers = headers;
         }
-        this.set('PouchOauthXHR', createPouchOauthXHR(configs));
-        pouchOptions.ajax = {
-          xhr: this.get('PouchOauthXHR'),
-          timeout: 30000
-        };
       }
       const url = `${document.location.protocol}//${document.location.host}/db/main`;
       new PouchDB(url, pouchOptions, (err, db) => {

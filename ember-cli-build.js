@@ -17,8 +17,6 @@ module.exports = function(defaults) {
     // please specify an object with the list of modules as keys
     // along with the exports of each module as its value.
     app.import('vendor/pouchdb-list/pouchdb-list.js');
-    app.import('vendor/couch-oauth/sha1.js');
-    app.import('vendor/couch-oauth/oauth.js');
     app.import('bower_components/node-uuid/uuid.js');
     app.import('bower_components/bootstrap/dist/js/bootstrap.js');
     app.import('bower_components/JsBarcode/CODE128.js');
