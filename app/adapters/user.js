@@ -6,8 +6,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   session: Ember.inject.service(),
   endpoint: '/db/_users/',
   defaultSerializer: 'couchdb',
-  PouchOauthXHR: Ember.computed.alias('database.PouchOauthXHR'),
-  requestHeaders: null,
+  oauthHeaders: Ember.computed.alias('database.oauthHeaders'),
 
   ajaxError: function(jqXHR) {
     var error = this._super(jqXHR);
@@ -25,19 +24,13 @@ export default DS.RESTAdapter.extend(UserSession, {
   @private
   @param {String} url
   @param {String} type The request type GET, POST, PUT, DELETE etc.
-  @param {Object} hash
+  @param {Object} options
   @return {Object} hash
   */
-  ajaxOptions: function(url, type, hash) {
-    hash = hash || {};
-    hash.xhrFields = { withCredentials: true };
-    let PouchOauthXHR = this.get('PouchOauthXHR');
-    if (PouchOauthXHR) {
-      hash.xhr = function() {
-        return new PouchOauthXHR();
-      };
-    }
-    return this._super(url, type, hash);
+  ajaxOptions: function(url, type, options) {
+    options = options || {};
+    options.xhrFields = { withCredentials: true };
+    return this._super(url, type, options);
   },
 
   /**
@@ -91,6 +84,15 @@ export default DS.RESTAdapter.extend(UserSession, {
     var findUrl = this.endpoint + id;
     return this.ajax(findUrl, 'GET');
   },
+
+  headers: function() {
+    var oauthHeaders = this.get('oauthHeaders');
+    if (Ember.isEmpty(oauthHeaders)) {
+      return {};
+    } else {
+      return oauthHeaders;
+    }
+  }.property('oauthHeaders'),
 
   /**
    Called by the store when an existing record is saved
