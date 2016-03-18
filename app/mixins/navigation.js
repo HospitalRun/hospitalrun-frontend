@@ -50,6 +50,12 @@ export default Ember.Mixin.create({
           capability: 'patients'
         },
         {
+          title: 'Admitted Patients',
+          iconClass: 'octicon-chevron-right',
+          route: 'patients.admitted',
+          capability: 'patients'
+        },
+        {
           title: 'New Patient',
           iconClass: 'octicon-plus',
           route: 'patients.edit',

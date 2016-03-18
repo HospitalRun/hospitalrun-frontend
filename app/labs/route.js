@@ -8,12 +8,5 @@ export default AbstractModuleRoute.extend({
   allowSearch: false,
   moduleName: 'labs',
   newButtonText: '+ new lab',
-  sectionTitle: 'Labs',
-  subActions: [{
-    text: 'Requests',
-    linkTo: 'labs.index'
-  }, {
-    text: 'Completed',
-    linkTo: 'labs.completed'
-  }]
+  sectionTitle: 'Labs'
 });

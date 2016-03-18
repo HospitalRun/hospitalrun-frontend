@@ -32,16 +32,5 @@ export default AbstractModuleRoute.extend(UserSession, {
   }, {
     name: 'visitTypesList',
     findArgs: ['lookup', 'visit_types']
-  }],
-
-  subActions: [{
-    text: 'This Week',
-    linkTo: 'appointments.index'
-  }, {
-    text: 'Today',
-    linkTo: 'appointments.today'
-  }, {
-    text: 'Search',
-    linkTo: 'appointments.search'
   }]
 });

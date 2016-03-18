@@ -22,8 +22,6 @@ test('visiting /patients route', function(assert) {
       assert.equal(noPatientsFound.text().trim(), 'No patients found. Create a new patient record?', 'no records found');
       const newPatientButton = find('button:contains(+ new patient)');
       assert.equal(newPatientButton.length, 1, 'Add new patient button is visible');
-      assert.equal(find('.nav-pills li:contains(Patient listing)').length, 1, 'Patient listing link is visible');
-      assert.equal(find('.nav-pills li:contains(Reports)').length, 1, 'Reports link is visible');
     });
     click('button:contains(+ new patient)');
     andThen(function() {
