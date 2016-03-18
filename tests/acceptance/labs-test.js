@@ -19,8 +19,6 @@ test('visiting /labs', function(assert) {
 
     andThen(function() {
       assert.equal(currentURL(), '/labs');
-      findWithAssert('a:contains(Requests)');
-      findWithAssert('a:contains(Completed)');
       findWithAssert('a:contains(Create a new record?)');
       findWithAssert('button:contains(new lab)');
     });

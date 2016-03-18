@@ -19,8 +19,6 @@ test('visiting /imaging', function(assert) {
 
     andThen(() => {
       assert.equal(currentURL(), '/imaging');
-      assert.equal(find('li a:contains(Requests)').length, 1, 'Requests link is visible');
-      assert.equal(find('li a:contains(Completed)').length, 1, 'Completed link is visible');
       let newImagingButton = find('button:contains(new imaging)');
       assert.equal(newImagingButton.length, 1, 'New Imaging button is visible');
       findWithAssert('p:contains(No items found. )');
