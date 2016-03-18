@@ -45,17 +45,6 @@ export default AbstractModuleRoute.extend({
     findArgs: ['lookup', 'warehouse_list']
   }],
 
-  subActions: function() {
-    let i18n = this.get('i18n');
-    return [{
-      text: i18n.t('labels.requests'),
-      linkTo: 'medication.index'
-    }, {
-      text: i18n.t('labels.completed'),
-      linkTo: 'medication.completed'
-    }];
-  }.property(),
-
   actions: {
     dispenseMedication: function() {
       if (this.currentUserCan('fulfill_medication')) {

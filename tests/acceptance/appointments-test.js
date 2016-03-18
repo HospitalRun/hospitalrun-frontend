@@ -18,9 +18,6 @@ test('visiting /appointments', function(assert) {
     visit('/appointments');
     andThen(function() {
       assert.equal(currentURL(), '/appointments');
-      findWithAssert('a:contains(This Week)');
-      findWithAssert('a:contains(Today)');
-      findWithAssert('a:contains(Search)');
       findWithAssert('button:contains(new appointment)');
       findWithAssert('.table-header');
     });
