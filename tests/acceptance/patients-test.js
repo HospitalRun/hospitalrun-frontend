@@ -93,21 +93,19 @@ test('Adding a new patient record', function(assert) {
     andThen(function() {
       findWithAssert('.patient-summary');
     });
-    tabTest('photos-tab', 'Photos');
-    tabTest('medication-tab', 'Medication');
-    tabTest('imaging-tab', 'Imaging');
-    tabTest('labs-tab', 'Labs');
-    tabTest('appointments-tab', 'Visits');
-    tabTest('social-tab', 'Social Work Details');
+    andThen(function() {
+      findWithAssert('#general');
+    });
+
   });
 });
 
-function tabTest(tabName, tabTitle) {
+/*function tabTest(tabName, tabTitle) {
   click(`[data-test-selector=${tabName}]`);
   andThen(function() {
-    findWithAssert(`.active .panel-title:contains(${tabTitle})`);
+    findWithAssert(`[data-test-selector=${tabName}] .active`);
   });
-}
+}*/
 
 function testSimpleReportForm(reportName) {
   test(`View reports tab | ${reportName} shows start and end dates`, function(assert) {

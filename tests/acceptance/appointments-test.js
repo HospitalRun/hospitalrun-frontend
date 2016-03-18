@@ -98,10 +98,6 @@ test('Adding a visit to an appointment', function(assert) {
 
     click('button:contains(Return)');
 
-    andThen(() => {
-      findWithAssert('.panel-heading h3:contains(General Information)');
-    });
-
     click('button:contains(Return)');
     andThen(() => {
       assert.equal(currentURL(), '/patients');
