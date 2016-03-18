@@ -10,7 +10,7 @@ plugin_directories: ['.scss-linters']
 plugin_gems: []
 
 # Default severity of all linters.
-severity: warning
+severity: error
 
 linters:
   BangFormat:
