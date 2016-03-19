@@ -10,25 +10,43 @@
       position: absolute;
       top: 0;
       right: 0;
+      border-radius: 3px;
+      background: $blue_lightest;
+      padding: 0 10px;
+      text-align: center;
 
-      .ps-info-label { text-align: right; }
+      .ps-info-label {
+        margin-right: 5px;
+        margin-bottom: 0;
+        width: auto;
+        text-align: right;
+      }
+
+      .ps-info-data {
+        font-size: 22px;
+        font-weight: 600;
+      }
     }
 
     &.patient-name {
-      .ps-info-data { font-size: 18px; }
+      .ps-info-data {
+        font-size: 22px;
+        font-weight: 600;
+      }
     }
 
     &.long-form {
-      margin: 20px 0;
+      float: left;
+      padding-right: 15px;
+      width: 50%;
     }
   }
 
   .ps-info-label {
     margin-right: 10px;
     width: 40px;
-    color: $view_sub_nav;
     font-size: 16px;
-    font-weight: 300;
+    font-weight: 400;
 
     &.wide {
       width: auto;
@@ -38,6 +56,10 @@
   .ps-info-data {
     color: $navy_mid2;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 300;
+  }
+
+  .ps-info-data-block {
+    font-weight: 300;
   }
 }

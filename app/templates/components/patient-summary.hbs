@@ -1,4 +1,4 @@
-<div {{action 'linkToPatient'}}>
+<div {{action 'linkToPatient'}} class="clearfix">
 
   <div class="ps-info-group patient-id">
     <label class="ps-info-label">{{t 'labels.id'}}</label>
@@ -51,7 +51,7 @@
     <div class="ps-info-data-block">
       {{#each patientProcedures as |procedure|}}
         {{#unless procedure.first}}, {{/unless}}
-        <span {{action 'editProcedure' procedure}}>
+        <span {{action 'editProcedure' procedure}} class="clickable">
             {{procedure.description}} (<strong>{{date-format procedure.procedureDate}}</strong>)
         </span>
       {{/each}}
