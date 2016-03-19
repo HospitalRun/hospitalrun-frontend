@@ -10,6 +10,13 @@
 @import 'loading_notice';
 @import 'sidebar_nav';
 
+// Components
+
+@import 'components/form_styles';
+@import 'components/tab_nav';
+@import 'components/tab_content';
+@import 'components/patient_summary';
+
 // NOTE: do not place styles in this file
 // If you have styles to add, put them in
 // the appropriate imported stylesheet, or
