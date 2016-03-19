@@ -20,18 +20,18 @@
           <div class="panel-body detail-section-content">
             <div class="row">
               <div class="col-xs-12 col-sm-6">
-                {{em-input property="friendlyId" label="Id" class="required test-id"}}
-                {{em-input property="firstName" label="First Name" class="required test-first-name"}}
-                {{em-input property="middleName" label="Middle Name" class="test-middle-name"}}
-                {{em-input property="lastName" label="Last Name" class="required test-last-name"}}
-                {{select-or-typeahead property="sex" label="Sex" list=sexList selection=model.sex}}
-                {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now"}}
-                <div class="form-group">
+                {{em-input property="friendlyId" label="Id" class="form-input-group required test-id"}}
+                {{em-input property="firstName" label="First Name" class="form-input-group required test-first-name"}}
+                {{em-input property="middleName" label="Middle Name" class="form-input-group test-middle-name"}}
+                {{em-input property="lastName" label="Last Name" class="form-input-group required test-last-name"}}
+                {{select-or-typeahead property="sex" label="Sex" class="form-input-group" list=sexList selection=model.sex}}
+                {{date-picker property="dateOfBirth" label="Date of Birth" class="form-input-group " maxDate="now"}}
+                <div class="form-input-group">
                   <label class="control-label">Age</label>
                   <p class="form-control-static">{{model.age}}</p>
                 </div>
-                {{em-input property="placeOfBirth" label="Place of Birth"}}
-                <div class="form-group">
+                {{em-input property="placeOfBirth" label="Place of Birth" class="form-input-group"}}
+                <div class="form-input-group">
                   <label>Patient Type</label>
                   <div>
                     {{ext-radio content=patientTypes value=model.patientType showInline=true }}
@@ -39,25 +39,27 @@
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
-                  {{select-or-typeahead property="status" label="Patient Status" list=statusList selection=model.status }}
-                  {{em-input property="externalPatientId" label="External Patient Id"}}
+                  {{select-or-typeahead property="status" label="Patient Status" list=statusList selection=model.status class="form-input-group" }}
+                  {{em-input property="externalPatientId" label="External Patient Id" class="form-input-group"}}
                   {{em-select
                     prompt=" "
                     label="Blood Type"
                     property="bloodType"
                     content=bloodTypes
+                    class="form-input-group"
                   }}
-                  {{select-or-typeahead property="clinic" label="Clinic Site" list=clinicList selection=model.clinic }}
-                  {{em-input property="referredBy" label="Referred By"}}
-                  {{date-picker property="referredDate" label="Referred Date"}}
-                  {{em-input property="religion" label="Religion"}}
-                  {{em-input property="parent" label="Parent/Guardian"}}
+                  {{select-or-typeahead property="clinic" label="Clinic Site" list=clinicList selection=model.clinic class="form-input-group"}}
+                  {{em-input property="referredBy" label="Referred By" class="form-input-group"}}
+                  {{date-picker property="referredDate" label="Referred Date" class="form-input-group"}}
+                  {{em-input property="religion" label="Religion" class="form-input-group"}}
+                  {{em-input property="parent" label="Parent/Guardian" class="form-input-group"}}
                   {{em-select label="Payment Profile"
                     property="paymentProfile"
                     content=pricingProfiles
                     optionValuePath="selectObject"
                     optionLabelPath="selectObject.name"
                     prompt=" "
+                    class="form-input-group"
                   }}
               </div>
             </div>
