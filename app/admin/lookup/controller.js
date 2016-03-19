@@ -252,8 +252,8 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         case 'inventory_types': {
           if (value === 'Medication') {
             this.displayAlert(
-              this.get('i18n').t('admin.lookup.controller.delete_value_inventory_type_medication_title'),
-              this.get('i18n').t('admin.lookup.controller.delete_value_inventory_type_medication_message')
+              this.get('i18n').t('admin.lookup.delete_value_inventory_type_medication_title'),
+              this.get('i18n').t('admin.lookup.delete_value_inventory_type_medication_message')
             );
             return false;
           }
@@ -262,8 +262,8 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         case 'lab_pricing_types': {
           if (value === 'Lab Procedure') {
             this.displayAlert(
-              this.get('i18n').t('admin.lookup.controller.delete_value_lab_pricing_type_procedure_title'),
-              this.get('i18n').t('admin.lookup.controller.delete_value_lab_pricing_type_procedure_message')
+              this.get('i18n').t('admin.lookup.delete_value_lab_pricing_type_procedure_title'),
+              this.get('i18n').t('admin.lookup.delete_value_lab_pricing_type_procedure_message')
             );
             return false;
           }
@@ -272,8 +272,8 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         case 'imaging_pricing_types': {
           if (value === 'Imaging Procedure') {
             this.displayAlert(
-              this.get('i18n').t('admin.lookup.controller.delete_value_imaging_pricing_type_procedure_title'),
-              this.get('i18n').t('admin.lookup.controller.delete_value_imaging_pricing_type_procedure_message')
+              this.get('i18n').t('admin.lookup.delete_value_imaging_pricing_type_procedure_title'),
+              this.get('i18n').t('admin.lookup.delete_value_imaging_pricing_type_procedure_message')
             );
             return false;
           }
@@ -282,26 +282,26 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         case 'visit_types': {
           if (value === 'Admission') {
             this.displayAlert(
-              this.get('i18n').t('admin.lookup.controller.delete_value_visit_type_admission_title'),
-              this.get('i18n').t('admin.lookup.controller.delete_value_visit_type_admission_message')
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_admission_title'),
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_admission_message')
             );
             return false;
           } else if (value === 'Imaging') {
             this.displayAlert(
-              this.get('i18n').t('admin.lookup.controller.delete_value_visit_type_imaging_title'),
-              this.get('i18n').t('admin.lookup.controller.delete_value_visit_type_imaging_message')
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_imaging_title'),
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_imaging_message')
             );
             return false;
           } else if (value === 'Lab') {
             this.displayAlert(
-              this.get('i18n').t('admin.lookup.controller.delete_value_visit_type_lab_title'),
-              this.get('i18n').t('admin.lookup.controller.delete_value_visit_type_lab_message')
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_lab_title'),
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_lab_message')
             );
             return false;
           } else if (value === 'Pharmacy') {
             this.displayAlert(
-              this.get('i18n').t('admin.lookup.controller.delete_value_visit_type_pharmacy_title'),
-              this.get('i18n').t('admin.lookup.controller.delete_value_visit_type_pharmacy_message')
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_pharmacy_title'),
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_pharmacy_message')
             );
             return false;
           }
@@ -343,8 +343,8 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
           lookupTypeList = this.get('lookupTypeList');
         if (!fileToImport || !fileToImport.type) {
           this.displayAlert(
-            this.get('i18n').t('admin.lookup.controller.alert_import_list_title'),
-            this.get('i18n').t('admin.lookup.controller.alert_import_list_message')
+            this.get('i18n').t('admin.lookup.alert_import_list_title'),
+            this.get('i18n').t('admin.lookup.alert_import_list_message')
           );
         } else {
           fileSystem.fileToDataURL(fileToImport).then(function(fileDataUrl) {
@@ -360,8 +360,8 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
             });
             lookupTypeList.save().then(function() {
               this.displayAlert(
-                this.get('i18n').t('admin.lookup.controller.alert_import_list_save_title'),
-                this.get('i18n').t('admin.lookup.controller.alert_import_list_save_message'),
+                this.get('i18n').t('admin.lookup.alert_import_list_save_title'),
+                this.get('i18n').t('admin.lookup.alert_import_list_save_message'),
                 'refreshLookupLists');
               this.set('importFile');
               this.set('model.importFileName');
@@ -374,8 +374,8 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         lookupTypeList.set('userCanAdd', this.get('model.userCanAdd'));
         lookupTypeList.save().then(function() {
           this.displayAlert(
-            this.get('i18n').t('admin.lookup.controller.alert_import_list_update_title'),
-            this.get('i18n').t('admin.lookup.controller.alert_import_list_update_message')
+            this.get('i18n').t('admin.lookup.alert_import_list_update_title'),
+            this.get('i18n').t('admin.lookup.alert_import_list_update_message')
           );
         }.bind(this));
       },

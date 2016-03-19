@@ -4,7 +4,7 @@ import { translationMacro as t } from 'ember-i18n';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default AbstractEditRoute.extend(UserSession, {
   hideNewButton: true,
-  editTitle: t('admin.loaddb.route.edit_title'),
+  editTitle: t('admin.loaddb.edit_title'),
 
   beforeModel: function() {
     if (!this.currentUserCan('load_db')) {
