@@ -437,8 +437,10 @@ export default Ember.Mixin.create({
     users: [
       'User Administrator',
       'System Administrator'
+    ],
+    'user_roles': [
+      'System Administrator'
     ]
-
   },
 
   _getUserSessionVars: function() {

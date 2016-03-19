@@ -34,7 +34,8 @@ export default {
       address_fields: 'Address Fields',
       load_db: 'Load DB',
       users: 'Users',
-      new_user: 'New User'
+      new_user: 'New User',
+      user_roles: 'User Roles'
     },
     actions: {
       logout: 'Logout',
@@ -50,6 +51,7 @@ export default {
     address_options: 'Address Options',
     lookup_lists: 'Lookup Lists',
     load_db: 'Load DB',
+    user_roles: 'User Roles',
     users: 'Users',
     address: {
       address1_label: 'Address 1 Label',
@@ -92,6 +94,73 @@ export default {
       visit_location_list: 'Visit Locations',
       visit_types: 'Visit Types',
       ward_pricing_types: 'Ward Pricing Types'
+    },
+    roles: {
+      capability: {
+        admin: 'Administration',
+        load_db: 'Load Database',
+        update_config: 'Update Configurations',
+        appointments: 'Appointments',
+        add_appointment: 'Add Appointment',
+        billing: 'Billing',
+        add_charge: 'Add Charge',
+        add_pricing: 'Add Pricing',
+        add_pricing_profile: 'Add Pricing Profile',
+        add_invoice: 'Add Invoice',
+        add_payment: 'Add Payment',
+        delete_invoice: 'Delete Invoice',
+        delete_pricing: 'Delete Pricing',
+        delete_pricing_profile: 'Delete Pricing Profile',
+        edit_invoice: 'Edit Invoice',
+        invoices: 'Invoices',
+        override_invoice: 'Override Invoice',
+        pricing: 'Pricing',
+        patients: 'Patients',
+        add_diagnosis: 'Add Diagnosis',
+        add_photo: 'Add Photo',
+        add_patient: 'Add Patient',
+        add_visit: 'Add Visit',
+        add_vitals: 'Add Vitals',
+        admit_patient: 'Admit Patient',
+        delete_photo: 'Delete Photo',
+        delete_patient: 'Delete Patient',
+        delete_appointment: 'Delete Appointment',
+        delete_diagnosis: 'Delete Diagnosis',
+        delete_procedure: 'Delete Procedure',
+        delete_socialwork: 'Delete Social Work',
+        delete_vitals: 'Delete Vitals',
+        delete_visit: 'Delete Visit',
+        discharge_patient: 'Discharge Patient',
+        patient_reports: 'Patient Reports',
+        visits: 'Visits',
+        medication: 'Medication',
+        add_medication: 'Add Medication',
+        delete_medication: 'Delete Medication',
+        fulfill_medication: 'Fulfill Medication',
+        labs: 'Labs',
+        add_lab: 'Add Lab',
+        complete_lab: 'Complete Lab',
+        delete_lab: 'Delete Lab',
+        imaging: 'Imaging',
+        add_imaging: 'Add Imaging',
+        complete_imaging: 'Complete Imaging',
+        delete_imaging: 'Delete Imaging',
+        inventory: 'Inventory',
+        add_inventory_request: 'Add Inventory Request',
+        add_inventory_item: 'Add Inventory Item',
+        add_inventory_purchase: 'Add Inventory Purchase',
+        adjust_inventory_location: 'Adjust Inventory Location',
+        delete_inventory_item: 'Delete Inventory Item',
+        delete_inventory_purchase: 'Delete Inventory Purchase',
+        fulfill_inventory: 'Fulfill Inventory',
+        user_roles: 'User Roles'
+      },
+      messages: {
+        role_saved: 'The {{roleName}} role has been saved.'
+      },
+      titles: {
+        role_saved: 'Role Saved'
+      }
     }
   },
   labels: {
