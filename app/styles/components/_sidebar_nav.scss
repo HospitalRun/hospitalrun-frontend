@@ -175,15 +175,20 @@
   }
 
   // sub section link
+  .category-sub-items {
+    border-bottom: 1px solid $navy_drkest;
+    background: #3a4d63;
+    padding: 5px 0;
+  }
+
   .category-sub-item {
     display: block;
-    border-bottom: 1px solid $navy_drkest;
     background: $navy_mid3;
     padding: 0 15px;
-    height: 42px;
-    line-height: 42px;
+    height: 36px;
+    line-height: 36px;
     color: $sidebar_sublink_text;
-    font-size: 16px;
+    font-size: 15px;
 
     &:hover { background: $navy_mid;
       .octicon { color: $white; }
@@ -194,7 +199,7 @@
       margin-right: 6px;
       margin-left: 6px;
       width: 24px;
-      line-height: 42px;
+      line-height: 36px;
     }
   }
 
