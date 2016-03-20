@@ -43,6 +43,7 @@
 }
 
 .sidebar-nav-logo {
+  @include transition_opacity;
   display: inline-block;
   padding: 0 15px;
   height: 55px;
@@ -51,6 +52,11 @@
     position: relative;
     top: 15px;
     width: 150px;
+  }
+
+  &:hover,
+  &:focus {
+    opacity: .8;
   }
 }
 

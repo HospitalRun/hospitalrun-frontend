@@ -75,5 +75,9 @@ $view_sub_nav:          #6784a2;
   transition: all 200ms ease;
 }
 
+@mixin transition_opacity {
+  transition: opacity 200ms ease;
+}
+
 
 // end mixins ------------/
