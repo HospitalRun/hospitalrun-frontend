@@ -13,7 +13,7 @@
         {{/if}}
       </tr>
       {{#each model as |invoice|}}
-        <tr {{action 'editItem' invoice}}>
+        <tr {{action 'editItem' invoice}} class="clickable">
           <td class="invoice-number">{{invoice.displayInvoiceNumber}}</td>
           <td>{{date-format invoice.billDate}}</td>
           <td>{{invoice.status}}</td>

@@ -12,7 +12,7 @@
     </tr>
     {{#each model as |inventory|}}
       {{#unless inventory.isNew}}
-        <tr {{action 'editItem' inventory}}>
+        <tr {{action 'editItem' inventory}} class="clickable">
           <td>{{inventory.friendlyId}}</td>
           <td>{{inventory.name}}</td>
           <td>{{inventory.inventoryType}}</td>

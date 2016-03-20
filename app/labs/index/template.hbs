@@ -11,7 +11,7 @@
         {{/if}}
       </tr>
       {{#each model as |lab|}}
-        <tr {{action 'editItem' lab}}>
+        <tr {{action 'editItem' lab}} class="clickable">
           <td>{{date-format lab.requestedDate}}</td>
           <td>{{lab.patient.displayName}}</td>
           <td>{{lab.labType.name}}</td>
