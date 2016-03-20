@@ -69,5 +69,15 @@ $view_sub_nav:          #6784a2;
   padding: 0 15px;
 }
 
+// animation and transitions
+
+@mixin transition_all {
+  transition: all 200ms ease;
+}
+
+@mixin transition_opacity {
+  transition: opacity 200ms ease;
+}
+
 
 // end mixins ------------/
