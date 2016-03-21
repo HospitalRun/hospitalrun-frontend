@@ -1,10 +1,11 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import Ember from 'ember';
+import { translationMacro as t } from 'ember-i18n';
 import InventoryId from 'hospitalrun/mixins/inventory-id';
 export default AbstractEditRoute.extend(InventoryId, {
-  editTitle: 'Edit Item',
+  editTitle: t('inventory.labels.edit_item'),
   modelName: 'inventory',
-  newTitle: 'New Item',
+  newTitle: t('inventory.labels.new_item'),
 
   actions: {
     adjustItems: function(inventoryLocation) {

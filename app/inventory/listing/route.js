@@ -1,5 +1,6 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import UserSession from 'hospitalrun/mixins/user-session';
+import { translationMacro as t } from 'ember-i18n';
 export default AbstractIndexRoute.extend(UserSession, {
   modelName: 'inventory',
   newButtonAction: function() {
@@ -9,8 +10,8 @@ export default AbstractIndexRoute.extend(UserSession, {
       return null;
     }
   }.property(),
-  newButtonText: '+ new item',
-  pageTitle: 'Items',
+  newButtonText: t('buttons.new_item'),
+  pageTitle: t('inventory.labels.items'),
 
   _modelQueryParams: function() {
     return {
