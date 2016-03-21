@@ -754,7 +754,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           endTime: reportTimes.startTime
         },
         beginningBalance = 0;
-        var i18n = this.get('i18n');
+      var i18n = this.get('i18n');
       /*
       cycle through each purchase and request from the beginning of time until startTime
       to determine the total value of inventory as of that date/time.
@@ -822,7 +822,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     var dateDiff,
       locationSummary = this.get('locationSummary'),
       reportType = this.get('reportType'),
-      reportTimes = this._getDateQueryParams();
+      reportTimes = this._getDateQueryParams(),
+      i18n = this.get('i18n');
     if (reportType === 'daysLeft') {
       var endDate = this.get('endDate'),
         startDate = this.get('startDate');
@@ -963,15 +964,16 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                   if (this._includeTransaction(reportType, request.transactionType) && this._hasIncludedLocation(request.locationsAffected)) {
                     var deliveryLocation = this.getDisplayLocationName(request.deliveryLocation, request.deliveryAisle),
                       locations = [],
+                      num = this._getValidNumber(location.quantity),
                       totalCost = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit));
                     locations = request.locationsAffected.map(function(location) {
                       if (reportType === 'detailedTransfer') {
                         return {
-                          name: `From: ${location.name} To: ${deliveryLocation}`
+                          name: i18n.t('inventory.reports.rows.transfer2', { source: location.name, target: deliveryLocation })
                         };
                       } else {
                         return {
-                          name: `${this._getValidNumber(location.quantity)} from ${location.name}`
+                          name: i18n.t('inventory.reports.rows.transfer1', { quantity: num, location: location.name })
                         };
                       }
                     }.bind(this));
@@ -996,7 +998,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                   }
                 }.bind(this));
                 if (reportType !== 'detailedExpense' && reportType !== 'summaryExpense') {
-                  this._addTotalsRow('Subtotal: ', summaryCost, summaryQuantity);
+                  this._addTotalsRow(i18n.t('inventory.reports.rows.subtotal'), summaryCost, summaryQuantity);
                   this.incrementProperty('grandCost', summaryCost);
                   this.incrementProperty('grandQuantity', summaryQuantity);
                 }
@@ -1048,7 +1050,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                     summaryQuantity += this._getValidNumber(purchase.originalQuantity);
                   }
                 }.bind(this));
-                this._addTotalsRow('Subtotal: ', summaryCost, summaryQuantity);
+                this._addTotalsRow(i18n.t('inventory.reports.rows.subtotal'), summaryCost, summaryQuantity);
                 this.incrementProperty('grandCost', summaryCost);
                 this.incrementProperty('grandQuantity', summaryQuantity);
               }
@@ -1096,19 +1098,19 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           }
           case 'byLocation': {
             this._finishLocationReport();
-            this._addTotalsRow('Total: ', this.get('grandCost'), this.get('grandQuantity'));
+            this._addTotalsRow(i18n.t('inventory.reports.rows.total'), this.get('grandCost'), this.get('grandQuantity'));
             break;
           }
           default: {
-            this._addTotalsRow('Total: ', this.get('grandCost'), this.get('grandQuantity'));
+            this._addTotalsRow(i18n.t('inventory.reports.rows.total'), this.get('grandCost'), this.get('grandQuantity'));
           }
         }
         this._finishReport();
       }.bind(this), function(err) {
-        this._notifyReportError('Error in _findInventoryItemsByPurchase:' + err);
+        this._notifyReportError(i18n.t('inventory.reports.rows.err_in_find_pur') + err);
       }.bind(this));
     }.bind(this), function(err) {
-      this._notifyReportError('Error in _findInventoryItemsByRequest:' + err);
+      this._notifyReportError(i18n.t('inventory.reports.rows.err_in_find_pur') + err);
     }.bind(this));
   },
 

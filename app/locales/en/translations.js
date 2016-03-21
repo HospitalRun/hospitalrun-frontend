@@ -334,13 +334,18 @@ export default {
         consumed_purchases_total: 'Total Purchases Consumed',
         consumed_total: 'Total Consumed',
         err_in_fin_sum: 'Error in _generateFinancialSummaryReport: ',
+        err_in_find_pur: 'Error in _findInventoryItemsByPurchase: ',
+        err_in_find_req: 'Error in _findInventoryItemsByRequest: ',
         expenses_for: 'Expenses For: ',
         no_account: '(No Account)',
         subtotal: 'Subtotal: ',
         subtotal_for: 'Subtotal for {{category}} - {{account}}: ',
         total: 'Total: ',
         total_for: 'Total for {{var}}: ',
-        total_purchases: 'Total Purchases'
+        total_purchases: 'Total Purchases',
+        transfer1: '{{quantity}} from {{location}}',
+        trasnfer2: 'From: {{source}} To: {{target}}'
+        
       },
       adjustment: 'Detailed Adjustment',
       days_supply: 'Days Supply Left In Stock',
