@@ -345,7 +345,6 @@ export default {
         total_purchases: 'Total Purchases',
         transfer1: '{{quantity}} from {{location}}',
         trasnfer2: 'From: {{source}} To: {{target}}'
-        
       },
       adjustment: 'Detailed Adjustment',
       days_supply: 'Days Supply Left In Stock',
