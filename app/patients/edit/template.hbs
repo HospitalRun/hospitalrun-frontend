@@ -51,7 +51,7 @@
                         <h5>{{t 'labels.procedures' }}</h5>
                         {{#each visit.procedures as |procedure|}}
                             <div {{action 'editProcedure' procedure }}>
-                              <h5>{{date-format procedure.procedureDate}}: 
+                              <h5>{{date-format procedure.procedureDate}}:
                                 {{#if procedure.cptCode}}
                                   [{{t 'labels.cptcode' }} - {{procedure.cptCode}}]
                                 {{/if}}
@@ -65,7 +65,7 @@
                                 {{#if procedure.anesthesiologist}}
                                   , {{t 'labels.anesthesia'}}: {{procedure.anesthesiologist}}
                                 {{/if}}
-                              </h6>                            
+                              </h6>
                               {{procedure.notes}}
                             </div>
                         {{/each}}
@@ -78,7 +78,7 @@
                             <div {{action 'editImaging' imaging }}>
                               <h5>{{date-format imaging.imagingDate}}: {{imaging.imagingType.name}}</h5>
                               <div>{{imaging.result}}</div>
-                              <div>{{imaging.notes}}</div>                            
+                              <div>{{imaging.notes}}</div>
                             </div>
                         {{/each}}
                       </div>
@@ -90,7 +90,7 @@
                             <div {{action 'editLab' lab }}>
                               <h5>{{date-format lab.labDate}}: {{lab.labType.name}}</h5>
                               <div>{{lab.result}}</div>
-                              <div>{{lab.notes}}</div>                            
+                              <div>{{lab.notes}}</div>
                             </div>
                         {{/each}}
                       </div>
