@@ -639,10 +639,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       */
       this._findInventoryItemsByRequest(reportTimes, {}).then(function(inventoryMap) {
         this._findInventoryItemsByPurchase(reportTimes, inventoryMap).then(function(inventoryMap) {
-          var purchaseSummary = [],
-            consumed = [],
-            gikConsumed = [],
-            adjustments = [];
+          var purchaseSummary = {},
+            consumed = {},
+            gikConsumed = {},
+            adjustments = {};
           this.adjustmentTypes.forEach(function(adjustmentType) {
             adjustments[adjustmentType.type] = [];
           });
@@ -655,7 +655,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
 
             if (!Ember.isEmpty(item.purchaseObjects)) {
               item.purchaseObjects.forEach(function(purchase) {
-                purchaseSummary[item.type] = this._getValidNumber(purchaseSummary[item.type]) + this._getValidNumber(purchase.purchaseCost);
+                purchaseSummary[item.inventoryType] = this._getValidNumber(purchaseSummary[item.inventoryType]) + this._getValidNumber(purchase.purchaseCost);
               }.bind(this));
             }
             if (!Ember.isEmpty(item.requestObjects)) {
@@ -664,12 +664,12 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 if (request.adjustPurchases) {
                   if (request.transactionType === 'Fulfillment') {
                     if (request.giftInKind) {
-                      gikConsumed[item.type] = this._getValidNumber(gikConsumed[item.type]) + (this._getValidNumber(request.quantity * request.costPerUnit));
+                      gikConsumed[item.inventoryType] = this._getValidNumber(gikConsumed[item.inventoryType]) + (this._getValidNumber(request.quantity * request.costPerUnit));
                     } else {
-                      consumed[item.type] = this._getValidNumber(consumed[item.type]) + (this._getValidNumber(request.quantity * request.costPerUnit));
+                      consumed[item.inventoryType] = this._getValidNumber(consumed[item.inventoryType]) + (this._getValidNumber(request.quantity * request.costPerUnit));
                     }
                   } else {
-                    adjustments[request.transactionType][item.type] = this._getValidNumber(adjustments[request.transactionType][item.type]) + (this._getValidNumber(request.quantity * request.costPerUnit));
+                    adjustments[request.transactionType][item.inventoryType] = this._getValidNumber(adjustments[request.transactionType][item.inventoryType]) + (this._getValidNumber(request.quantity * request.costPerUnit));
                   }
                 }
               }.bind(this));
