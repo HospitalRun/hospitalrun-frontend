@@ -101,6 +101,8 @@ export default {
     quantity: 'Quantity',
     requested_on: 'Requested On',
     date: 'Date',
+    date_of_birth: 'Date of Birth',
+    date_of_birth_short: 'DoB',
     date_requested: 'Date Requested',
     date_completed: 'Date Completed',
     requested_by: 'Requested By',
