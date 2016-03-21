@@ -1,7 +1,9 @@
 import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-controller';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
+import { translationMacro as t } from 'ember-i18n';
+
 export default AbstractDeleteController.extend(PatientSubmodule, {
-  title: 'Delete Request',
+  title: t('labs.delete_title'),
 
   actions: {
     delete: function() {

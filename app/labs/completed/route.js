@@ -1,5 +1,7 @@
 import LabsIndexRoute from 'hospitalrun/labs/index/route';
+import { translationMacro as t } from 'ember-i18n';
+
 export default LabsIndexRoute.extend({
-  pageTitle: 'Completed Labs',
+  pageTitle: t('labs.completed_title'),
   searchStatus: 'Completed'
 });

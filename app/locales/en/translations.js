@@ -160,8 +160,6 @@ export default {
     results: 'Results',
     visit: 'Visit',
     type: 'Type',
-    requests: 'Requests',
-    completed: 'Completed',
     id: 'ID',
     sex: 'Sex',
     age: 'Age',
@@ -504,6 +502,33 @@ export default {
     },
     buttons: {
       new_button: '+ new appointment'
+    }
+  },
+  labs: {
+    section_title: 'Labs',
+    requests_title: 'Lab Requests',
+    edit_title: 'Edit Lab Request',
+    new_title: 'New Lab Request',
+    delete_title: 'Delete Request',
+    completed_title: 'Completed Labs',
+    labels: {
+      lab_type: 'Lab Type',
+      add_new_visit: '--Add New Visit--'
+    },
+    messages: {
+      no_items_found: 'No labs found.',
+      create_new_record: 'Create a new record?',
+      confirm_deletion: 'Are you sure you wish to delete this lab request?',
+      no_completed: 'No completed items found.'
+    },
+    buttons: {
+      new_button: '+ new lab'
+    },
+    alerts: {
+      request_completed_title: 'Lab Request Completed',
+      request_completed_message: 'The lab request has been completed.',
+      request_saved_title: 'Lab Request Saved',
+      request_saved_message: 'The lab request has been saved.'
     }
   }
 };

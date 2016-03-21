@@ -69,13 +69,14 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
   additionalButtons: function() {
     var canComplete = this.get('canComplete'),
-      isValid = this.get('model.isValid');
+        isValid = this.get('model.isValid'),
+        i18n = this.get('i18n');
     if (isValid && canComplete) {
       return [{
         buttonAction: 'completeLab',
         buttonIcon: 'glyphicon glyphicon-ok',
         class: 'btn btn-primary on-white',
-        buttonText: 'Complete'
+        buttonText: i18n.t('buttons.complete')
       }];
     }
   }.property('canComplete', 'model.isValid'),
@@ -88,15 +89,16 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   updateCapability: 'add_lab',
 
   afterUpdate: function(saveResponse, multipleRecords) {
-    var afterDialogAction,
-      alertMessage,
-      alertTitle;
+    var i18n = this.get('i18n'),
+        afterDialogAction,
+        alertMessage,
+        alertTitle;
     if (this.get('model.status') === 'Completed') {
-      alertTitle = 'Lab Request Completed';
-      alertMessage = 'The lab request has been completed.';
+      alertTitle = i18n.t('labs.alerts.request_completed_title');
+      alertMessage = i18n.t('labs.alerts.request_completed_message');
     } else {
-      alertTitle = 'Lab Request Saved';
-      alertMessage = 'The lab request has been saved.';
+      alertTitle = i18n.t('labs.alerts.request_saved_title');
+      alertMessage = i18n.t('labs.alerts.request_completed_message');
     }
     if (multipleRecords) {
       afterDialogAction = this.get('cancelAction');
