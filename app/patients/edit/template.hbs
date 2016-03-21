@@ -20,7 +20,7 @@
         <div role="tabpanel" class="tab-pane active" id="history">
           <div class="panel detail-section">
             {{#if canAddNote}}
-              <div class="panel-heading">
+              <div class="panel-heading clearfix">
                 <button type="button" class="btn btn-primary align-right" {{action "showAddPatientNote" bubbles=false on="click"}}>
                   <span class="octicon octicon-plus"></span>{{t 'buttons.new_note'}}
                 </button>
@@ -29,20 +29,27 @@
             <div class="panel-body detail-section-content">
               {{#if model.visits}}
                 {{#each model.visits as |visit|}}
-                  <div>
-                    <h4 {{action "editVisit" visit}}>{{visit.visitType}} {{t 'labels.on'}} {{visit.visitDate}}</h4>
+                  <div class="patient-history-item">
+
+                    <div class="patient-history-heading clickable" {{action "editVisit" visit}}>
+                      <span class="ph-visit-date">{{visit.visitDate}}</span>
+                      <span class="ph-visit-type">{{visit.visitType}} {{t 'labels.on'}}</span>
+                    </div>
+
                     {{#if visit.history}}
                     <div>
                       <h5>History</h5>
                       {{visit.history}}
                     </div>
                     {{/if}}
+
                     {{#if visit.historySince}}
                     <div>
                       <h5>History Since</h5>
                       {{visit.historySince}}
                     </div>
                     {{/if}}
+
                     {{#if visit.procedures}}
                       <div>
                         <h5>{{t 'labels.procedures' }}</h5>
