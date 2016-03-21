@@ -16,7 +16,7 @@
       </thead>
       <tbody>
         {{#each model as |patient|}}
-          <tr {{action 'editItem' patient}}>
+          <tr {{action 'editItem' patient}} class="clickable">
             <td>{{patient.displayPatientId}}</td>
             <td>{{patient.firstName}}</td>
             <td>{{patient.lastName}}</td>

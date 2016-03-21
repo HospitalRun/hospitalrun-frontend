@@ -43,6 +43,7 @@
 }
 
 .sidebar-nav-logo {
+  @include transition_opacity;
   display: inline-block;
   padding: 0 15px;
   height: 55px;
@@ -51,6 +52,11 @@
     position: relative;
     top: 15px;
     width: 150px;
+  }
+
+  &:hover,
+  &:focus {
+    opacity: .8;
   }
 }
 
@@ -152,6 +158,7 @@
 
   // main section link
   .primary-section-link {
+    @include transition_all;
     display: block;
     border-bottom: 1px solid $navy_drkest;
     background: $navy_mid2;
@@ -162,6 +169,7 @@
     font-size: 18px;
 
     .mega-octicon {
+      @include transition_all;
       float: left;
       margin-right: 12px;
       width: 24px;
@@ -175,26 +183,40 @@
   }
 
   // sub section link
-  .category-sub-item {
-    display: block;
+  .category-sub-items {
     border-bottom: 1px solid $navy_drkest;
+    background: #3a4d63;
+    padding: 5px 0;
+  }
+
+  .category-sub-item {
+    @include transition_all;
+    display: block;
     background: $navy_mid3;
     padding: 0 15px;
-    height: 42px;
-    line-height: 42px;
+    height: 36px;
+    line-height: 36px;
     color: $sidebar_sublink_text;
-    font-size: 16px;
+    font-size: 15px;
 
-    &:hover { background: $navy_mid;
-      .octicon { color: $white; }
+    &:hover {
+      background: $navy_mid;
+      color: $white;
+
+      .octicon {
+        margin-right: 2px;
+        margin-left: 10px;
+        color: $white;
+      }
     }
 
     .octicon {
+      @include transition_all;
       float: left;
       margin-right: 6px;
       margin-left: 6px;
       width: 24px;
-      line-height: 42px;
+      line-height: 36px;
     }
   }
 

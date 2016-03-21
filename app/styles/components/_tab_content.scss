@@ -1,0 +1,12 @@
+// styles for tab content panel
+// mostly over writing bootstrap styles
+.tab-pane {
+  // currently this is deleted from template.hbs, but if
+  // the markup is needed the styles will be here waiting
+  .panel-heading {
+    background-color: transparent;
+    padding: 10px 0;
+  }
+
+  .panel-title { font-size: 20px; }
+}

@@ -4166,10 +4166,6 @@ select[multiple].input-group-sm > {
             position: relative;
             display: block;
             padding: 10px 15px;
-            &:hover, &:focus {
-                text-decoration: none;
-                background-color: #eee;
-            }
         }
         &.disabled > a {
             color: #999;
@@ -4283,23 +4279,7 @@ select[multiple].input-group-sm > {
     }
 }
 
-.nav-pills > li {
-    float: left;
-    > a {
-        border-radius: 4px;
-    }
-    + li {
-        margin-left: 2px;
-    }
-    &.active > a {
-        color: #fff;
-        background-color: #428bca;
-        &:hover, &:focus {
-            color: #fff;
-            background-color: #428bca;
-        }
-    }
-}
+.nav-pills > li { float: left; }
 
 .nav-stacked > li {
     float: none;
@@ -5209,16 +5189,6 @@ a {
     &.list-group-item.active > .badge {
         color: #428bca;
         background-color: #fff;
-    }
-}
-
-.nav-pills > {
-    .active > a > .badge {
-        color: #428bca;
-        background-color: #fff;
-    }
-    li > a > .badge {
-        margin-left: 3px;
     }
 }
 

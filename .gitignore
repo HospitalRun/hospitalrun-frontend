@@ -26,3 +26,4 @@ nbproject/project.xml
 server/config.js
 .brackets.json
 /app/nbproject/private/
+newrelic_agent.log

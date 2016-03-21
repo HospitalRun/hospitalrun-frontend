@@ -56,6 +56,7 @@ $view_sub_nav:          #6784a2;
   font-size: 28px;
   line-height: 55px;
   margin: 0;
+  float: left;
 }
 
 // layout
@@ -66,6 +67,16 @@ $view_sub_nav:          #6784a2;
   background: $white;
   border-bottom: 1px solid $sidebar_icon_lighter;
   padding: 0 15px;
+}
+
+// animation and transitions
+
+@mixin transition_all {
+  transition: all 200ms ease;
+}
+
+@mixin transition_opacity {
+  transition: opacity 200ms ease;
 }
 
 
