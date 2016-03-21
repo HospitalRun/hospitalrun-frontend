@@ -8,11 +8,11 @@
 
     &.patient-id {
       position: absolute;
-      top: 0;
-      right: 0;
+      top: -10px;
+      right: -10px;
       border-radius: 3px;
       background: $blue_lightest;
-      padding: 0 10px;
+      padding: 10px 15px;
       text-align: center;
 
       .ps-info-label {
