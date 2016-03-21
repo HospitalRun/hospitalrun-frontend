@@ -19,16 +19,13 @@
       {{#unless isNewOrDeleted}}
         <div role="tabpanel" class="tab-pane active" id="history">
           <div class="panel detail-section">
-            <div class="panel-heading">
-              <h3 class="panel-title">
-                {{t 'labels.patient_history'}}
-                {{#if canAddNote}}
-                  <button type="button" class="btn btn-primary align-right" {{action "showAddPatientNote" bubbles=false on="click"}}>
-                    <span class="octicon octicon-plus"></span>{{t 'buttons.new_note'}}
-                  </button>
-                {{/if}}
-              </h3>
-            </div>
+            {{#if canAddNote}}
+              <div class="panel-heading">
+                <button type="button" class="btn btn-primary align-right" {{action "showAddPatientNote" bubbles=false on="click"}}>
+                  <span class="octicon octicon-plus"></span>{{t 'buttons.new_note'}}
+                </button>
+              </div>
+            {{/if}}
             <div class="panel-body detail-section-content">
               {{#if model.visits}}
                 {{#each model.visits as |visit|}}
