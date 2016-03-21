@@ -26,7 +26,7 @@
                     <td class="lookup-type-value">{{lookupTypeValue}}</td>
                     <td>
                         <button class="btn btn-default neutral" {{action 'editValue' lookupTypeValue bubbles=false }}>{{t 'labels.edit'}}</button>
-                        <button class="btn btn-default warning" {{action 'deleteValue' lookupTypeValue bubbles=false }}><span class="octicon octicon-x"></span>Delete</button>
+                        <button class="btn btn-default warning" {{action 'deleteValue' lookupTypeValue bubbles=false }}><span class="octicon octicon-x"></span>{{t 'labels.delete'}}</button>
                     </td>
                 </tr>
             {{/each}}

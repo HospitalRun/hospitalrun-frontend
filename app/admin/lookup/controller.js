@@ -251,37 +251,58 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
       switch (lookupType) {
         case 'inventory_types': {
           if (value === 'Medication') {
-            this.displayAlert('Cannot Delete Medication', 'The Medication inventory type cannot be deleted because it is needed for the Medication module.');
+            this.displayAlert(
+              this.get('i18n').t('admin.lookup.delete_value_inventory_type_medication_title'),
+              this.get('i18n').t('admin.lookup.delete_value_inventory_type_medication_message')
+            );
             return false;
           }
           break;
         }
         case 'lab_pricing_types': {
           if (value === 'Lab Procedure') {
-            this.displayAlert('Cannot Delete Lab Pricing Type', 'The Lab Procedure pricing type cannot be deleted because it is needed for the Labs module.');
+            this.displayAlert(
+              this.get('i18n').t('admin.lookup.delete_value_lab_pricing_type_procedure_title'),
+              this.get('i18n').t('admin.lookup.delete_value_lab_pricing_type_procedure_message')
+            );
             return false;
           }
           break;
         }
         case 'imaging_pricing_types': {
           if (value === 'Imaging Procedure') {
-            this.displayAlert('Cannot Delete Imaging Pricing Type', 'The Imaging Procedure pricing type cannot be deleted because it is needed for the Imaging module.');
+            this.displayAlert(
+              this.get('i18n').t('admin.lookup.delete_value_imaging_pricing_type_procedure_title'),
+              this.get('i18n').t('admin.lookup.delete_value_imaging_pricing_type_procedure_message')
+            );
             return false;
           }
           break;
         }
         case 'visit_types': {
           if (value === 'Admission') {
-            this.displayAlert('Cannot Delete Admmission Visit Type', 'The Admission Visit type cannot be deleted because it is needed for the Visits module.');
+            this.displayAlert(
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_admission_title'),
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_admission_message')
+            );
             return false;
           } else if (value === 'Imaging') {
-            this.displayAlert('Cannot Delete Imaging Visit Type', 'The Imaging Visit type cannot be deleted because it is needed for the Imaging module.');
+            this.displayAlert(
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_imaging_title'),
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_imaging_message')
+            );
             return false;
           } else if (value === 'Lab') {
-            this.displayAlert('Cannot Delete Lab Visit Type', 'The Lab Visit type cannot be deleted because it is needed for the Lab module.');
+            this.displayAlert(
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_lab_title'),
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_lab_message')
+            );
             return false;
           } else if (value === 'Pharmacy') {
-            this.displayAlert('Cannot Delete Pharmacy Visit Type', 'The Lab Visit type cannot be deleted because it is needed for the Medication module.');
+            this.displayAlert(
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_pharmacy_title'),
+              this.get('i18n').t('admin.lookup.delete_value_visit_type_pharmacy_message')
+            );
             return false;
           }
         }
@@ -321,7 +342,10 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
           fileToImport = this.get('importFile'),
           lookupTypeList = this.get('lookupTypeList');
         if (!fileToImport || !fileToImport.type) {
-          this.displayAlert('Select File To Import', 'Please select file to import.');
+          this.displayAlert(
+            this.get('i18n').t('admin.lookup.alert_import_list_title'),
+            this.get('i18n').t('admin.lookup.alert_import_list_message')
+          );
         } else {
           fileSystem.fileToDataURL(fileToImport).then(function(fileDataUrl) {
             var dataUrlParts = fileDataUrl.split(',');
@@ -335,7 +359,10 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
               importFile: true
             });
             lookupTypeList.save().then(function() {
-              this.displayAlert('List Imported', 'The lookup list has been imported.', 'refreshLookupLists');
+              this.displayAlert(
+                this.get('i18n').t('admin.lookup.alert_import_list_save_title'),
+                this.get('i18n').t('admin.lookup.alert_import_list_save_message'),
+                'refreshLookupLists');
               this.set('importFile');
               this.set('model.importFileName');
             }.bind(this));
@@ -346,7 +373,10 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         var lookupTypeList = this.get('lookupTypeList');
         lookupTypeList.set('userCanAdd', this.get('model.userCanAdd'));
         lookupTypeList.save().then(function() {
-          this.displayAlert('List Saved', 'The lookup list has been saved');
+          this.displayAlert(
+            this.get('i18n').t('admin.lookup.alert_import_list_update_title'),
+            this.get('i18n').t('admin.lookup.alert_import_list_update_message')
+          );
         }.bind(this));
       },
       updateValue: function(valueObject) {
