@@ -37,25 +37,25 @@
                     </div>
 
                     {{#if visit.history}}
-                    <div>
-                      <h5>History</h5>
+                    <div class="ph-note-item">
+                      <h5 class="ph-note-heading">History</h5>
                       {{visit.history}}
                     </div>
                     {{/if}}
 
                     {{#if visit.historySince}}
-                    <div>
-                      <h5>History Since</h5>
+                    <div class="ph-note-item">
+                      <h5 class="ph-note-heading">History Since</h5>
                       {{visit.historySince}}
                     </div>
                     {{/if}}
 
                     {{#if visit.procedures}}
-                      <div>
-                        <h5>{{t 'labels.procedures' }}</h5>
+                      <div class="ph-note-item">
+                        <h5 class="ph-note-heading">{{t 'labels.procedures' }}</h5>
                         {{#each visit.procedures as |procedure|}}
                             <div {{action 'editProcedure' procedure }}>
-                              <h5>{{date-format procedure.procedureDate}}:
+                              <h5 class="ph-note-heading">{{date-format procedure.procedureDate}}:
                                 {{#if procedure.cptCode}}
                                   [{{t 'labels.cptcode' }} - {{procedure.cptCode}}]
                                 {{/if}}
@@ -76,11 +76,11 @@
                       </div>
                     {{/if}}
                     {{#if visit.imaging}}
-                      <div>
-                        <h5>{{t 'labels.image_orders' }}</h5>
+                      <div class="ph-note-item">
+                        <h5 class="ph-note-heading">{{t 'labels.image_orders' }}</h5>
                         {{#each visit.imaging as |imaging|}}
                             <div {{action 'editImaging' imaging }}>
-                              <h5>{{date-format imaging.imagingDate}}: {{imaging.imagingType.name}}</h5>
+                              <h5 class="ph-note-heading">{{date-format imaging.imagingDate}}: {{imaging.imagingType.name}}</h5>
                               <div>{{imaging.result}}</div>
                               <div>{{imaging.notes}}</div>
                             </div>
@@ -88,11 +88,11 @@
                       </div>
                     {{/if}}
                     {{#if visit.labs}}
-                      <div>
-                        <h5>{{t 'labels.lab_orders' }}</h5>
+                      <div class="ph-note-item">
+                        <h5 class="ph-note-heading">{{t 'labels.lab_orders' }}</h5>
                         {{#each visit.labs as |lab|}}
                             <div {{action 'editLab' lab }}>
-                              <h5>{{date-format lab.labDate}}: {{lab.labType.name}}</h5>
+                              <h5 class="ph-note-heading">{{date-format lab.labDate}}: {{lab.labType.name}}</h5>
                               <div>{{lab.result}}</div>
                               <div>{{lab.notes}}</div>
                             </div>
@@ -100,17 +100,17 @@
                       </div>
                     {{/if}}
                     {{#if visit.patientNotes}}
-                      <div>
-                        <h5>{{t 'labels.notes'}}</h5>
+                      <div class="ph-note-item">
+                        <h5 class="ph-note-heading">{{t 'labels.notes'}}</h5>
                         {{#each visit.patientNotes as |note|}}
                             <div {{action 'showAddPatientNote' note }}>
-                              <h5>{{note.authoredBy}}</h5>
+                              <h5 class="ph-note-heading">{{note.authoredBy}}</h5>
                               {{date-format note.date}}[{{note.noteType}}]: {{note.content}}
                             </div>
                         {{/each}}
                       </div>
                     {{else}}
-                      <div>
+                      <div class="ph-note-item">
                         {{t 'messages.no_notes_available'}}
                       </div>
                     {{/if}}
