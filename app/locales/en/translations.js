@@ -177,7 +177,7 @@ export default {
     user_saved: 'User Saved',
     on_behalf_of: 'on behalf of',
     new_patient_has_to_be_created: 'A new patient needs to be created...Please wait..',
-    no_notes_available: 'No notes available for this visit.'
+    no_notes_available: 'No additional clinical notes are available for this visit.'
   },
   alerts: {
     please_wait: 'Please Wait'
@@ -299,6 +299,7 @@ export default {
   },
   visits: {
     edit: {
+      actions: 'Actions',
       edit: 'Edit',
       date: 'Date',
       authored_by: 'Authored By',
