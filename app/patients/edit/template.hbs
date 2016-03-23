@@ -271,21 +271,7 @@
             </div>
           </div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="medication">
-            <div class="panel">
-              {{#if canAddMedication}}
-                <div class="panel-heading">
-                  <button type="button" class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}>
-                    <span class="octicon octicon-plus"></span>New Medication
-                  </button>
-                </div>
-              {{/if}}
-              <div class="panel-body detail-section-content">
-                {{partial 'patients/medication'}}
-              </div>
-            </div>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="imaging">
+        <div role="tabpanel" class="tab-pane" id="appointments">
           <div class="panel">
             {{#if canAddAppointment}}
               <div class="panel-heading">
