@@ -2,8 +2,9 @@ import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import Ember from 'ember';
 import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
+import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
-export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, {
+export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, PatientNotes, {
   editTitle: 'Edit Patient',
   modelName: 'patient',
   newTitle: 'New Patient',
@@ -66,7 +67,13 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
       model.set('friendlyId', externalId);
     }
     this._super(controller, model);
+    var self = this;
     this.getPatientVisits(model).then(function(visits) {
+      if (!Ember.isEmpty(visits)) {
+        visits.forEach(function(visit) {
+          self.migrateNote(visit);
+        });
+      }
       model.set('visits', visits);
     });
     this.store.query('appointment', {

@@ -32,6 +32,19 @@ export default Ember.Mixin.create({
     if (model.get('noteType') == null) {
       model.set('noteType', this._computeNoteType(model.get('visit')));
     }
+  },
+  
+  migrateNote: function(visit) {
+    if (Ember.isEmpty(visit.get('patientNotes')) && !Ember.isEmpty(visit.get('notes'))) {
+      var note = this.get('store').createRecord('patient-note', { 
+        createdBy: visit.get('examiner'),
+        date: visit.get('lastModified'),
+        content: visit.get('notes'),
+        visit: visit,      
+        patient: visit.get('patient'),
+        noteType: this._computeNoteType(visit)
+      });      
+    }
   }
   
 });
