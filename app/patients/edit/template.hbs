@@ -6,10 +6,11 @@
         <li role="presentation" class="active"><a href="#history" role="tab" data-toggle="pill" data-test-selector="history-tab">History</a></li>
         <li role="presentation"><a href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">General</a></li>
         <li role="presentation"><a href="#photos" role="tab" data-toggle="pill" data-test-selector="photos-tab">Photos</a></li>
+        <li role="presentation"><a href="#appointments" role="tab" data-toggle="pill" data-test-selector="appointments-tab">Appointments</a></li>
+        <li role="presentation"><a href="#visits" role="tab" data-toggle="pill" data-test-selector="visits-tab">Visits</a></li>
         <li role="presentation"><a href="#medication" role="tab" data-toggle="pill" data-test-selector="medication-tab">Medication</a></li>
         <li role="presentation"><a href="#imaging" role="tab" data-toggle="pill" data-test-selector="imaging-tab">Imaging</a></li>
         <li role="presentation"><a href="#labs" role="tab" data-toggle="pill" data-test-selector="labs-tab">Labs</a></li>
-        <li role="presentation"><a href="#visits" role="tab" data-toggle="pill" data-test-selector="appointments-tab">Visits/Appointments</a></li>
         {{#if canAddSocialWork}}
           <li role="presentation"><a href="#social" role="tab" data-toggle="pill" data-test-selector="social-tab">Social Work</a></li>
         {{/if}}
@@ -286,32 +287,46 @@
         </div>
         <div role="tabpanel" class="tab-pane" id="imaging">
           <div class="panel">
-            {{#if canAddImaging}}
+            {{#if canAddAppointment}}
               <div class="panel-heading">
-                <button type="button" class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> New Imaging
+                <button type="button" class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span> New Appointment
                 </button>
               </div>
             {{/if}}
             <div class="panel-body detail-section-content">
-              {{partial 'patients/imaging'}}
+              <table class="table">
+                <tr class="table-header">
+                  <th>Date</th>
+                  <th>Examiner</th>
+                  <th>Location</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>{{t 'labels.actions'}}</th>
+                </tr>
+                {{#each model.appointments as |appointment|}}
+                  <tr {{action "editAppointment" appointment}}>
+                    <td>{{appointment.formattedAppointmentDate}}</td>
+                    <td>{{appointment.provider}}</td>
+                    <td>{{appointment.location}}</td>
+                    <td>{{appointment.appointmentType}}</td>
+                    <td>{{appointment.displayStatus}}</td>
+                    <td>
+                      {{#if canAddAppointment}}
+                        <button type="button" class="btn btn-default neutral" {{action "editAppointment" appointment}}>{{t 'labels.edit'}}</button>
+                      {{/if}}
+                      {{#if canDeleteAppointment}}
+                        <button type="button" class="btn btn-default warning" {{action "showDeleteAppointment" appointment  bubbles=false }}>
+                          <span class="octicon octicon-x"></span> Delete
+                        </button>
+                      {{/if}}
+                    </td>
+                  </tr>
+                {{/each}}
+              </table>
             </div>
           </div>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="labs">
-          <div class="panel">
-            {{#if canAddLab}}
-              <div class="panel-heading">
-                <button type="button" class="btn btn-primary align-right" {{action "newLab" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> New Lab
-                </button>
-              </div>
-            {{/if}}
-            <div class="panel-body detail-section-content">
-              {{partial 'patients/labs'}}
-            </div>
-          </div>
-        </div>
+        </div>            
         <div role="tabpanel" class="tab-pane" id="visits">
           <div class="panel">
             {{#if canAddVisit}}
@@ -353,44 +368,46 @@
               </table>
             </div>
           </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="medication">
+            <div class="panel">
+              {{#if canAddMedication}}
+                <div class="panel-heading">
+                  <button type="button" class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}>
+                    <span class="octicon octicon-plus"></span>New Medication
+                  </button>
+                </div>
+              {{/if}}
+              <div class="panel-body detail-section-content">
+                {{partial 'patients/medication'}}
+              </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="imaging">
           <div class="panel">
-            {{#if canAddAppointment}}
+            {{#if canAddImaging}}
               <div class="panel-heading">
-                <button type="button" class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> New Appointment
+                <button type="button" class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span> New Imaging
                 </button>
               </div>
             {{/if}}
             <div class="panel-body detail-section-content">
-              <table class="table">
-                <tr class="table-header">
-                  <th>Date</th>
-                  <th>Examiner</th>
-                  <th>Location</th>
-                  <th>Type</th>
-                  <th>Status</th>
-                  <th>{{t 'labels.actions'}}</th>
-                </tr>
-                {{#each model.appointments as |appointment|}}
-                  <tr {{action "editAppointment" appointment}}>
-                    <td>{{appointment.formattedAppointmentDate}}</td>
-                    <td>{{appointment.provider}}</td>
-                    <td>{{appointment.location}}</td>
-                    <td>{{appointment.appointmentType}}</td>
-                    <td>{{appointment.displayStatus}}</td>
-                    <td>
-                      {{#if canAddAppointment}}
-                        <button type="button" class="btn btn-default neutral" {{action "editAppointment" appointment}}>{{t 'labels.edit'}}</button>
-                      {{/if}}
-                      {{#if canDeleteAppointment}}
-                        <button type="button" class="btn btn-default warning" {{action "showDeleteAppointment" appointment  bubbles=false }}>
-                          <span class="octicon octicon-x"></span> Delete
-                        </button>
-                      {{/if}}
-                    </td>
-                  </tr>
-                {{/each}}
-              </table>
+              {{partial 'patients/imaging'}}
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="labs">
+          <div class="panel">
+            {{#if canAddLab}}
+              <div class="panel-heading">
+                <button type="button" class="btn btn-primary align-right" {{action "newLab" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span> New Lab
+                </button>
+              </div>
+            {{/if}}
+            <div class="panel-body detail-section-content">
+              {{partial 'patients/labs'}}
             </div>
           </div>
         </div>
