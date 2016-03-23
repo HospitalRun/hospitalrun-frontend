@@ -1,7 +1,9 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
+import { translationMacro as t } from 'ember-i18n';
+
 export default AbstractIndexRoute.extend({
   modelName: 'lab',
-  pageTitle: 'Lab Requests',
+  pageTitle: t('labs.requests_title'),
   searchStatus: 'Requested',
 
   _getStartKeyFromItem: function(item) {

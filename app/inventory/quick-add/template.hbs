@@ -1,9 +1,9 @@
 {{#modal-dialog
     isUpdateDisabled=isUpdateDisabled
-    title=title
+    title=(t 'inventory.titles.quick_add_title')
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  <div class="alert alert-warning" role="alert">The inventory item <strong>{{model.name}}</strong> could not be found.  If you would like to create a new inventory item, fill in the information below.  Otherwise press the Cancel button to return.</div>
+  <div class="alert alert-warning" role="alert">{{t 'inventory.messages.item_not_found' item=model.name}}</div>
   {{#em-form model=model submitButton=false }}
     {{partial 'inventory-basic'}}
   {{/em-form}}

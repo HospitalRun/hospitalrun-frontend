@@ -3,7 +3,7 @@
         {{#em-form model=this submitButton=false }}
             <div class="row">
                 <div class="form-group col-xs-6">
-                  <label class="control-label" for="report-type">Report Type</label>
+                  <label class="control-label" for="report-type">{{t 'inventory.reports.report_type'}}</label>
                   {{select-list
                     action=(action (mut reportType))
                     class='form-control'
@@ -15,7 +15,7 @@
                   }}
                 </div>
                 {{#unless hideLocationFilter}}
-                    {{em-select class="col-xs-6" label="Location"
+                    {{em-select class="col-xs-6" label=(t 'inventory.labels.location')
                         property="filterLocation" content=warehouseList
                         prompt=" "
                     }}
@@ -23,14 +23,14 @@
             </div>
             <div class="row">
                 {{#if showEffectiveDate}}
-                    {{date-picker property="endDate" label="Effective Date" class="col-sm-4"}}
+                    {{date-picker property="endDate" label=(t 'inventory.labels.date_effective') class="col-sm-4"}}
                 {{else}}
-                    {{date-picker property="startDate" label="Start Date" class="col-sm-4 test-start-date"}}
-                    {{date-picker property="endDate" label="End Date" class="col-sm-4 test-end-date"}}
+                    {{date-picker property="startDate" label=(t 'inventory.labels.date_start') class="col-sm-4 test-start-date"}}
+                    {{date-picker property="endDate" label=(t 'inventory.labels.date_end') class="col-sm-4 test-end-date"}}
                 {{/if}}
             </div>
             {{#if useFieldPicker}}
-                <h3>Fields to Include</h3>
+                <h3>{{t 'inventory.reports.fields'}}</h3>
                 <div class="row">
                     <div class="col-xs-1"></div>
                     {{#if includeDate}}
@@ -80,7 +80,7 @@
         {{/em-form}}
     </div>
     <div class="panel-footer">
-        <button class="btn btn-default" {{action 'generateReport'}}>Generate Report</button>
+        <button class="btn btn-default" {{action 'generateReport'}}>{{t 'inventory.reports.generate'}}</button>
     </div>
 </div>
 {{#if showReportResults}}
@@ -101,7 +101,7 @@
             </table>
         </div>
         <div class="panel-footer">
-            <a href={{csvExport}} target="_blank" download="report.csv" class="btn btn-default">Export Report</a>
+            <a href={{csvExport}} target="_blank" download="report.csv" class="btn btn-default">{{t 'inventory.reports.export'}}</a>
 
         </div>
     </div>

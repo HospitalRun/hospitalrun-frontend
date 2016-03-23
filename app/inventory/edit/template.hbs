@@ -2,37 +2,37 @@
   {{#em-form model=model submitButton=false }}
     {{partial 'inventory-basic'}}
     {{#if model.isNew}}
-      <h3>Purchase information</h3>
+      <h3>{{t 'inventory.labels.purchase_info'}}</h3>
       {{partial 'inv-purchase'}}
     {{else}}
       {{#if quantityDiscrepency}}
         <div class="alert alert-danger alert-dismissible" role="alert">
-          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">{{t 'buttons.close'}}</span></button>
           <p>
             <span class="glyphicon glyphicon-warning-sign"></span>
-            The total quantity <strong>({{model.quantity}})</strong>, does not match the total quantity in the locations <strong>({{locationQuantityTotal}})</strong>.
+            {{t 'inventory.messages.quantity' quantity=model.quantity locationQuantity=locationQuantityTotal}}
           </p>
-          <p>Please adjust the quantities on the appropriate location(s) to account for the difference of {{quantityDifferential}}.</p>
+          <p>{{t 'inventory.messages.adjust' difference=quantityDifferential}}</p>
         </div>
       {{/if}}
       <h3>
-        Purchases
+        {{t 'inventory.labels.purchases'}}
         {{#if canAddPurchase}}
-          <button class="btn btn-primary align-right" {{action "showAddPurchase" this}}><span class="octicon octicon-plus"></span> Add Purchase</button>
+          <button class="btn btn-primary align-right" {{action "showAddPurchase" this}}><span class="octicon octicon-plus"></span> {{t 'inventory.titles.add_purchase'}}</button>
         {{/if}}
       </h3>
       <table class="table">
         <tr class="table-header">
-          <th>Date Received</th>
-          <th>Purchase Cost</th>
-          <th>Cost Per Unit</th>
-          <th>Original Quantity</th>
-          <th>Current Quantity</th>
-          <th>Gift In Kind</th>
-          <th>Serial/Lot Number</th>
-          <th>Expiration Date</th>
-          <th>Vendor</th>
-          <th>Invoice Number</th>
+          <th>{{t 'inventory.labels.date_received'}}</th>
+          <th>{{t 'inventory.labels.purchase_cost'}}</th>
+          <th>{{t 'inventory.labels.cost_per_unit'}}</th>
+          <th>{{t 'inventory.labels.original_quantity'}}</th>
+          <th>{{t 'inventory.labels.current_quantity'}}</th>
+          <th>{{t 'inventory.labels.gift'}}</th>
+          <th>{{t 'inventory.labels.serial_number'}}</th>
+          <th>{{t 'inventory.labels.expiration_date'}}</th>
+          <th>{{t 'inventory.labels.vendor'}}</th>
+          <th>{{t 'inventory.labels.invoice_number'}}</th>
         </tr>
         {{#each model.purchases as |purchase|}}
           <tr class={{if purchase.expired "warning"}}>
@@ -42,7 +42,11 @@
             <td>{{purchase.originalQuantity}}</td>
             <td>{{purchase.currentQuantity}}</td>
             <td>
-              {{#if purchase.giftInKind}}Y{{else}}N{{/if}}
+              {{#if purchase.giftInKind}}
+                {{t 'inventory.labels.gift_in_kind_yes'}}
+              {{else}}
+                {{t 'inventory.labels.gift_in_kind_no'}}
+              {{/if}}
             </td>
             <td>{{purchase.lotNumber}}</td>
             <td>{{date-format purchase.expirationDate}}</td>
@@ -53,11 +57,11 @@
       </table>
     {{/if}}
     {{#unless model.isNew}}
-      <h3>Locations</h3>
+      <h3>{{t 'inventory.labels.locations'}}</h3>
       <table class="table">
         <tr class="table-header">
-          <th>Location</th>
-          <th>Aisle Location</th>
+          <th>{{t 'inventory.labels.location'}}</th>
+          <th>{{t 'inventory.labels.aisle_location'}}</th>
           <th>{{t 'labels.quantity'}}</th>
           {{#if canAdjustLocation}}
             <th>{{t 'labels.action'}}</th>
@@ -71,8 +75,8 @@
               <td>{{location.quantity}}</td>
               {{#if canAdjustLocation}}
                 <td>
-                  <button class="btn btn-primary neutral" {{action "showAdjustment" location}}>Adjust</button>
-                  <button class="btn btn-primary neutral" {{action "showTransfer" location}}>Transfer</button>
+                  <button class="btn btn-primary neutral" {{action "showAdjustment" location}}>{{t 'inventory.labels.adjust'}}</button>
+                  <button class="btn btn-primary neutral" {{action "showTransfer" location}}>{{t 'inventory.labels.transfer'}}</button>
                 </td>
               {{/if}}
             </tr>
@@ -80,14 +84,14 @@
         {{/each}}
       </table>
       {{#if showTransactions}}
-        <h3>Transactions</h3>
+        <h3>{{t 'inventory.labels.transactions'}}</h3>
         <table class="table">
           <tr class="table-header">
-            <th>Date Completed</th>
+            <th>{{t 'inventory.labels.date_completed'}}</th>
             <th>{{t 'labels.quantity'}}</th>
-            <th>Transaction</th>
-            <th>Expense To</th>
-            <th>Details</th>
+            <th>{{t 'inventory.labels.transaction'}}</th>
+            <th>{{t 'inventory.labels.expense'}}</th>
+            <th>{{t 'inventory.labels.details'}}</th>
           </tr>
           {{#if haveTransactions}}
             {{#each transactions as |transaction|}}
@@ -99,40 +103,40 @@
                 <td>
                   {{#if transaction.isAdjustment}}
                     {{#if transaction.haveReason}}
-                      <strong>Reason:</strong> {{transaction.reason}}<br/>
+                      <strong>{{t 'inventory.edit.reason'}}</strong> {{transaction.reason}}<br/>
                     {{/if}}
                     {{#if transaction.patient}}
-                      <strong>Returned from Patient:</strong> {{transaction.deliveryDetails}}
+                      <strong>{{t 'inventory.edit.returned'}}</strong> {{transaction.deliveryDetails}}
                     {{else}}
-                      <strong>Location Adjusted:</strong> {{transaction.deliveryDetails}}
+                      <strong>{{t 'inventory.edit.location'}}</strong> {{transaction.deliveryDetails}}
                     {{/if}}
                   {{/if}}
                   {{#if transaction.isFulfillment}}
-                    <strong>Cost Per Unit:</strong> {{transaction.costPerUnit}}<br/>
-                    <strong>Quantity At Completion:</strong> {{transaction.quantityAtCompletion}}<br/>
-                    <strong>Pulled From:</strong>
+                    <strong>{{t 'inventory.edit.cost'}}</strong> {{transaction.costPerUnit}}<br/>
+                    <strong>{{t 'inventory.edit.quantity'}}</strong> {{transaction.quantityAtCompletion}}<br/>
+                    <strong>{{t 'inventory.edit.pulled'}}</strong>
                     {{#each transaction.locationsAffected as |location|}}
                       {{location.name}}<br/>
                     {{/each}}
                     {{#if transaction.patient}}
-                      <strong>Prescription For: </strong> {{transaction.deliveryDetails}}
+                      <strong>{{t 'inventory.edit.prescription'}}</strong> {{transaction.deliveryDetails}}
                     {{else}}
-                      <strong>Delivered To: </strong> {{transaction.deliveryDetails}}
+                      <strong>{{t 'inventory.edit.delivered'}}</strong> {{transaction.deliveryDetails}}
                     {{/if}}
                   {{/if}}
                   {{#if transaction.isTransfer}}
-                    <strong>Transferred From:</strong>
+                    <strong>{{t 'inventory.edit.transfer_from'}}</strong>
                     {{#each transaction.locationsAffected as |location|}}
                       {{location.name}}<br/>
                     {{/each}}
-                    <strong>Transferred To: </strong> {{transaction.deliveryDetails}}
+                    <strong>{{t 'inventory.edit.transferred_to'}}</strong> {{transaction.deliveryDetails}}
                   {{/if}}
                 </td>
               </tr>
             {{/each}}
           {{else}}
             <tr>
-              <td colspan="4"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading transactions....</td>
+              <td colspan="4"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> {{t 'inventory.messages.loading'}}</td>
             </tr>
           {{/if}}
         </table>
