@@ -222,7 +222,7 @@ export default {
     user_saved: 'User Saved',
     on_behalf_of: 'on behalf of',
     new_patient_has_to_be_created: 'A new patient needs to be created...Please wait..',
-    no_notes_available: 'No additional clinical notes are available for this visit.'
+    no_notes_available: 'No additional clinical notes are available for this visit.',
     sorry: 'Sorry, something went wrong...'
   },
   alerts: {
