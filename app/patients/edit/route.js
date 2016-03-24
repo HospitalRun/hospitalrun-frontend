@@ -69,11 +69,6 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
     this._super(controller, model);
     var self = this;
     this.getPatientVisits(model).then(function(visits) {
-      if (!Ember.isEmpty(visits)) {
-        visits.forEach(function(visit) {
-          self.migrateNote(visit);
-        });
-      }
       model.set('visits', visits);
     });
     this.store.query('appointment', {
