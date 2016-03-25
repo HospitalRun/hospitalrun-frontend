@@ -40,7 +40,7 @@ test('visiting /patients new note route', function(assert) {
       findWithAssert('.patient-summary');
     });
     andThen(function() {
-      tabTest('appointments-tab', 'Visits');
+      tabTest('visits-tab', 'Visits');
     });
     andThen(function() {
       click('button:contains(New Visit)');
