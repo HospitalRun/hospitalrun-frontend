@@ -13,8 +13,8 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
   actions: {
     updateNote: function(note) {
       note.get('visit').save().then(function() {
-        //noop
-      });      
+        // noop
+      });
     },
     appointmentDeleted: function(model) {
       this.controller.send('appointmentDeleted', model);
@@ -67,7 +67,6 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
       model.set('friendlyId', externalId);
     }
     this._super(controller, model);
-    var self = this;
     this.getPatientVisits(model).then(function(visits) {
       model.set('visits', visits);
     });

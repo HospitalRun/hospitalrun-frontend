@@ -25,26 +25,6 @@ export default AbstractModel.extend({
   visit: DS.belongsTo('visit', {
     async: false
   }),
-  // if this note is related to an appointment, make sure it's noted.
-  appointment: DS.belongsTo('appointment', {
-    async: false
-  }),
-  // if this note is related to an imaging request, make sure it's noted.
-  imaging: DS.belongsTo('imaging', {
-    async: false
-  }),
-  // if this note is related to a lab, make sure it's noted.
-  lab: DS.belongsTo('lab', {
-    async: false
-  }),
-  // if this note is related to a medication request, make sure it's noted.
-  medication: DS.belongsTo('medication', {
-    async: false
-  }),
-  // if this note is related to a procedure, make sure it's noted.
-  procedure: DS.belongsTo('procedure', {
-    async: false
-  }),
   validations: {
     patient: {
       presence: true
