@@ -40,14 +40,14 @@
                     {{#if visit.history}}
                     <div class="ph-note-item">
                       <h5 class="ph-note-heading">History</h5>
-                      {{visit.history}}
+                      {{html-line-break visit.history}}
                     </div>
                     {{/if}}
 
                     {{#if visit.historySince}}
                     <div class="ph-note-item">
                       <h5 class="ph-note-heading">History Since</h5>
-                      {{visit.historySince}}
+                      {{html-line-break visit.historySince}}
                     </div>
                     {{/if}}
 
@@ -71,7 +71,7 @@
                                   , {{t 'labels.anesthesia'}}: {{procedure.anesthesiologist}}
                                 {{/if}}
                               </h6>
-                              {{procedure.notes}}
+                              {{html-line-break procedure.notes}}
                             </div>
                         {{/each}}
                       </div>
@@ -83,7 +83,7 @@
                             <div {{action 'editImaging' imaging }}>
                               <h5 class="ph-note-heading">{{date-format imaging.imagingDate}}: {{imaging.imagingType.name}}</h5>
                               <div>{{imaging.result}}</div>
-                              <div>{{imaging.notes}}</div>
+                              <div>{{html-line-break imaging.notes}}</div>
                             </div>
                         {{/each}}
                       </div>
@@ -95,7 +95,7 @@
                             <div {{action 'editLab' lab }}>
                               <h5 class="ph-note-heading">{{date-format lab.labDate}}: {{lab.labType.name}}</h5>
                               <div>{{lab.result}}</div>
-                              <div>{{lab.notes}}</div>
+                              <div>{{html-line-break lab.notes}}</div>
                             </div>
                         {{/each}}
                       </div>
@@ -106,7 +106,7 @@
                         {{#each visit.patientNotes as |note|}}
                             <div {{action 'showAddPatientNote' note }}>
                               <h5 class="ph-note-heading">{{note.authoredBy}}</h5>
-                              {{date-format note.date}}[{{note.noteType}}]: {{note.content}}
+                              {{date-format note.date}}[{{note.noteType}}]: {{html-line-break note.content}}
                             </div>
                         {{/each}}
                       </div>
