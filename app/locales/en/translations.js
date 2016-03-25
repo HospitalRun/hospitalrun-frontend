@@ -575,5 +575,5 @@ export default {
   },
   common: {
     actions: 'Actions'
-  }   
+  }
 };

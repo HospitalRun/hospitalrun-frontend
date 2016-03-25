@@ -13,8 +13,8 @@ export default AbstractEditController.extend(IsUpdateDisabled, UserSession, Pati
     if (this.get('model.isNew')) {
       return 'New Note for ' + this.get('model.patient.displayName');
     } else {
-      return 'Updating Note from '+(moment(this.get('model.date')).format('MM/DD/YYYY'))+' for ' + this.get('model.patient.displayName');
-    }    
+      return 'Updating Note from ' + (moment(this.get('model.date')).format('MM/DD/YYYY')) + ' for ' + this.get('model.patient.displayName');
+    }
   }.property('model.patient.displayName'),
   updateCapability: 'add_note',
   beforeUpdate: function() {
@@ -23,7 +23,6 @@ export default AbstractEditController.extend(IsUpdateDisabled, UserSession, Pati
     return Ember.RSVP.Promise.resolve();
   },
   afterUpdate: function() {
-    //this.get('editController').send('updateNote', this.get('model'));
     this.send(this.get('updateAction'), this.get('model'));
     this.send(this.get('cancelAction'));
   },

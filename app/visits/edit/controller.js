@@ -272,10 +272,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
       });
       this.send('openModal', 'visits.vitals.edit', newVitals);
     },
-    
+
     showAddPatientNote: function(model) {
       if (Ember.isEmpty(model)) {
-        model = this.get('store').createRecord('patient-note', { 
+        model = this.get('store').createRecord('patient-note', {
           visit: this.get('model'),
           patient: this.get('model').get('patient'),
           noteType: this._computeNoteType(this.get('model'))
@@ -283,7 +283,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
       }
       this.send('openModal', 'patients.notes', model);
     },
-    
+
     newAppointment: function() {
       this._addChildObject('appointments.edit');
     },

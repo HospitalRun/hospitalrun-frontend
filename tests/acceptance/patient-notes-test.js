@@ -23,12 +23,10 @@ test('visiting /patients new note route', function(assert) {
   runWithPouchDump('default', function() {
     authenticateUser();
     visit('/patients');
-    
     visit('/patients/edit/new');
     andThen(function() {
       assert.equal(currentURL(), '/patients/edit/new');
     });
-
     fillIn('.test-first-name input', 'John');
     fillIn('.test-last-name input', 'Doe');
     click('.panel-footer button:contains(Add)');
@@ -38,16 +36,14 @@ test('visiting /patients new note route', function(assert) {
     });
     click('button:contains(Close)');
     waitToAppear('.patient-summary');
-
     andThen(function() {
       findWithAssert('.patient-summary');
     });
-    
     andThen(function() {
       tabTest('appointments-tab', 'Visits');
     });
     andThen(function() {
-      click('button:contains(New Visit)');  
+      click('button:contains(New Visit)');
       assert.equal(currentURL(), '/visits/edit/new', 'Now in add visiting information route');
     });
     click('.panel-footer button:contains(Add)');
@@ -65,7 +61,6 @@ test('visiting /patients new note route', function(assert) {
       findWithAssert('button:contains(New Vitals)');
       findWithAssert('button:contains(Add Item)');
     });
-    
     andThen(function() {
       assert.equal(find('button:contains(New Note)').length, 1, 'New Note button in visible');
       click('button:contains(New Note)');

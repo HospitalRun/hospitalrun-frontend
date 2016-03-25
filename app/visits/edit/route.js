@@ -14,7 +14,7 @@ export default AbstractEditRoute.extend(ChargeRoute, {
       status: 'Admitted'
     });
   },
-  
+
   actions: {
     updateNote: function() {
       this.controller.send('update', true);

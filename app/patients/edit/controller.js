@@ -288,12 +288,12 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
       if (this.get('canAddAppointment')) {
         appointment.set('returnToPatient', true);
         appointment.set('returnTo', null);
-        this.transitionToRoute('appointments.edit', appointment);        
+        this.transitionToRoute('appointments.edit', appointment);
       }
     },
 
     editImaging: function(imaging) {
-      if (this.get('canAddImaging')) {      
+      if (this.get('canAddImaging')) {
         if (imaging.get('canEdit')) {
           imaging.setProperties({
             'returnToPatient': true
@@ -315,7 +315,7 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     },
 
     editMedication: function(medication) {
-      if (this.get('canAddMedication')) {      
+      if (this.get('canAddMedication')) {
         if (medication.get('canEdit')) {
           medication.set('returnToPatient', true);
           this.transitionToRoute('medication.edit', medication);
@@ -329,7 +329,7 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
 
     editProcedure: function(procedure) {
       if (this.get('canAddVisit')) {
-        this.transitionToRoute('procedures.edit', procedure);        
+        this.transitionToRoute('procedures.edit', procedure);
       }
     },
 
@@ -370,11 +370,11 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
         isNew: true
       });
     },
-    
+
     showAddPatientNote: function(model) {
       if (this.get('canAddNote')) {
         if (Ember.isEmpty(model)) {
-          model = this.get('store').createRecord('patient-note', { 
+          model = this.get('store').createRecord('patient-note', {
             patient: this.get('model')
           });
         }
@@ -488,7 +488,7 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
       this.send('update', true);
       this.send('closeModal');
     },
-    
+
     updatePhoto: function(photo) {
       photo.save().then(function() {
         this.send('closeModal');
