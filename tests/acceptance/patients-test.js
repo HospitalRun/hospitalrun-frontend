@@ -98,13 +98,6 @@ test('Adding a new patient record', function(assert) {
   });
 });
 
-/*function tabTest(tabName, tabTitle) {
-  click(`[data-test-selector=${tabName}]`);
-  andThen(function() {
-    findWithAssert(`[data-test-selector=${tabName}] .active`);
-  });
-}*/
-
 function testSimpleReportForm(reportName) {
   test(`View reports tab | ${reportName} shows start and end dates`, function(assert) {
     runWithPouchDump('default', function() {

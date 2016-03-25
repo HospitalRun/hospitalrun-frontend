@@ -12,10 +12,10 @@ module('Acceptance | patient notes', {
   }
 });
 
-function tabTest(tabName, tabTitle) {
+function tabTest(tabName, tabId) {
   click(`[data-test-selector=${tabName}]`);
   andThen(function() {
-    findWithAssert(`.active .panel-title:contains(${tabTitle})`);
+    findWithAssert(`#${tabId}`);
   });
 }
 
@@ -40,10 +40,10 @@ test('visiting /patients new note route', function(assert) {
       findWithAssert('.patient-summary');
     });
     andThen(function() {
-      tabTest('visits-tab', 'Visits');
+      tabTest('visits-tab', 'visits');
     });
+    click('button:contains(New Visit)');
     andThen(function() {
-      click('button:contains(New Visit)');
       assert.equal(currentURL(), '/visits/edit/new', 'Now in add visiting information route');
     });
     click('.panel-footer button:contains(Add)');
