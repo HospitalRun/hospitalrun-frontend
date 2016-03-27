@@ -19,7 +19,7 @@ function tabTest(tabName, tabId) {
   });
 }
 
-test('visiting /patients new note route', function(assert) {
+test('patient notes crud testing', function(assert) {
   runWithPouchDump('default', function() {
     authenticateUser();
     visit('/patients');
@@ -67,6 +67,20 @@ test('visiting /patients new note route', function(assert) {
     });
     andThen(function() {
       assert.equal(find('label:contains(Note)').length, 1, 'Notes modal appeared.');
+    });
+    fillIn('.test-note-content textarea', 'This is a note.');
+    fillIn('.test-note-attribution input', 'Dr. Nick');
+    click('.modal-footer button:contains(Add)');
+    andThen(function(){
+      assert.equal(find('#visit-notes table tr td:contains(This is a note.)').length, 1, 'Successfully added note.');
+    });
+    andThen(function() {
+      click('#visit-notes table tr td button:contains(Delete)');
+      waitToAppear('.modal-dialog');
+      click('.modal-footer button:contains(Ok)');      
+    });
+    andThen(function() {
+      assert.equal(find('#visit-notes table tr td:contains(This is a note.)').length, 0, 'Successfully deleted note.');
     });
   });
 });
