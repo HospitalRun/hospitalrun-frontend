@@ -1,9 +1,8 @@
 import Ember from 'ember';
-
 export default Ember.Mixin.create({
 
   canAddNote: function() {
-    return this.currentUserCan('add_note') && !Ember.isEmpty(this.get('visits'));
+    return this.currentUserCan('add_note') && (!Ember.isEmpty(this.get('visits')) || !Ember.isEmpty(this.get('model.visits')));
   },
 
   canDeleteNote: function() {
