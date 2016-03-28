@@ -18,7 +18,9 @@ export default AbstractEditRoute.extend(ChargeRoute, {
   actions: {
     updateNote: function() {
       this.controller.send('update', true);
+    },
+    deletePatientNote: function(model) {
+      this.controller.send('deletePatientNote', model);
     }
   }
-
 });
