@@ -3,12 +3,17 @@ import Ember from 'ember';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
-import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default AbstractEditController.extend(IsUpdateDisabled, UserSession, PatientSubmodule, PatientNotes, {
   cancelAction: 'closeModal',
   updateAction: 'updateNote',
-  physicianList: Ember.computed.map('patientsController.physicianList.value', SelectValues.selectValuesMap),
+  moduleController: Ember.inject.controller('patients'),
+  physicianList: Ember.computed.alias('moduleController.physicianList'),
+  lookupListsToUpdate: [{
+    name: 'physicianList',
+    property: 'model.attribution',
+    id: 'physician_list'
+  }],
   title: function() {
     if (this.get('model.isNew')) {
       return 'New Note for ' + this.get('model.patient.displayName');
