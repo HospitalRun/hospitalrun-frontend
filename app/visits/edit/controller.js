@@ -340,6 +340,24 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
 
     showEditVitals: function(vitals) {
       this.send('openModal', 'visits.vitals.edit', vitals);
+    },
+
+    showDeletePatientNote: function(note) {
+      this.send('openModal', 'dialog', Ember.Object.create({
+        confirmAction: 'deletePatientNote',
+        title: 'Delete Note',
+        message: 'Are you sure you want to delete this note?',
+        noteToDelete: note,
+        updateButtonAction: 'confirm',
+        updateButtonText: 'Ok'
+      }));
+    },
+
+    deletePatientNote: function(model) {
+      var note = model.get('noteToDelete');
+      var patientNotes = this.get('model.patientNotes');
+      patientNotes.removeObject(note);
+      this.send('update', true);
     }
   }
 });
