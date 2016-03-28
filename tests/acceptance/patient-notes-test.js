@@ -71,6 +71,7 @@ test('patient notes crud testing', function(assert) {
     fillIn('.test-note-content textarea', 'This is a note.');
     fillIn('.test-note-attribution input', 'Dr. Nick');
     click('.modal-footer button:contains(Add)');
+    waitToAppear('#visit-notes table tr td:contains(This is a note.)');
     andThen(function() {
       assert.equal(find('#visit-notes table tr td:contains(This is a note.)').length, 1, 'Successfully added note.');
     });
@@ -82,10 +83,12 @@ test('patient notes crud testing', function(assert) {
       click('.modal-footer button:contains(Update)');
     });
     andThen(function() {
+      waitToAppear('#visit-notes table tr td:contains(This is an updated note.)');
       assert.equal(find('#visit-notes table tr td:contains(This is an updated note.)').length, 1, 'Successfully updated note.');
     });
     // delete note
     andThen(function() {
+      waitToAppear('#visit-notes table tr td');
       click('#visit-notes table tr td button:contains(Delete)');
       waitToAppear('.modal-dialog');
       click('.modal-footer button:contains(Ok)');
