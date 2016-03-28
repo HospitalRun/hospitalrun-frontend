@@ -575,5 +575,13 @@ export default {
   },
   common: {
     actions: 'Actions'
+  },
+  patients: {
+    notes: {
+      on_behalf_of_label: 'On Behalf Of',
+      on_behalf_of_copy: 'on behalf of',
+      please_select_a_visit: 'Please select a visit',
+      note_label: 'Note'
+    }
   }
 };

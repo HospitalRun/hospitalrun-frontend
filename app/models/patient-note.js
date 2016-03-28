@@ -1,11 +1,11 @@
-import { translationMacro as t } from 'ember-i18n';
 import AbstractModel from 'hospitalrun/models/abstract';
 import Ember from 'ember';
 import DS from 'ember-data';
 export default AbstractModel.extend({
   authoredBy: function() {
     if (!Ember.isEmpty(this.get('attribution'))) {
-      return this.get('attribution') + ' ' + t('messages.on_behalf_of') + ' ' + this.get('createdBy');
+      let i18n = this.get('i18n');
+      return this.get('createdBy') + ' ' + i18n.t('patients.notes.on_behalf_of_copy') + ' ' + this.get('attribution');
     } else {
       return this.get('createdBy');
     }
