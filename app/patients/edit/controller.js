@@ -375,7 +375,8 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
       if (this.get('canAddNote')) {
         if (Ember.isEmpty(model)) {
           model = this.get('store').createRecord('patient-note', {
-            patient: this.get('model')
+            patient: this.get('model'),
+            createdBy: this.getUserName()
           });
         }
         this.send('openModal', 'patients.notes', model);

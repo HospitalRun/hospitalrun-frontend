@@ -277,6 +277,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
       if (Ember.isEmpty(model)) {
         model = this.get('store').createRecord('patient-note', {
           visit: this.get('model'),
+          createdBy: this.getUserName(),
           patient: this.get('model').get('patient'),
           noteType: this._computeNoteType(this.get('model'))
         });
