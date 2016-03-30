@@ -19,7 +19,6 @@ module.exports = function(environment) {
     }
   };
 
-  
   ENV.contentSecurityPolicy = {
     'connect-src': "'self'",
     'default-src': "'self'",
@@ -60,6 +59,9 @@ module.exports = function(environment) {
       'bower_components/pouchdb/dist/pouchdb.js'
     ]
   };
+  if (environment === 'production') {
+    ENV.serviceWorker.debug = false;
+  }
 
   return ENV;
 };
