@@ -138,12 +138,15 @@ export default {
     }
   },
   labels: {
+    cptcode: 'CPT Code',
     loading: 'Loading',
     name: 'Name',
     patient: 'Patient',
     quantity: 'Quantity',
     requested_on: 'Requested On',
     date: 'Date',
+    date_of_birth: 'Date of Birth',
+    date_of_birth_short: 'DoB',
     date_requested: 'Date Requested',
     date_completed: 'Date Completed',
     description: 'Description',
@@ -155,12 +158,18 @@ export default {
     action: 'Action',
     notes: 'Notes',
     edit: 'Edit',
+    image_orders: 'Image Orders',
+    lab_orders: 'Lab Orders',
+    patient_history: 'Patient History',
     imaging_type: 'Imaging Type',
     result: 'Result',
     results: 'Results',
     visit: 'Visit',
+    requests: 'Requests',
+    completed: 'Completed',
+    id: 'Id',
+    on: 'on',
     type: 'Type',
-    id: 'ID',
     sex: 'Sex',
     age: 'Age',
     username: 'Username',
@@ -196,17 +205,24 @@ export default {
     location: 'Location',
     provider: 'Provider',
     with: 'With',
-    all_day: 'All Day'
+    all_day: 'All Day',
+    physician: 'Physician',
+    assisting: 'Assisting',
+    anesthesia: 'Anesthesia',
+    procedures: 'Procedures'
   },
   messages: {
     no_items_found: 'No items found.',
+    no_history_available: 'No history available.',
     create_new_record: 'Create a new record?',
     create_new_user: 'Create a new user?',
     no_users_found: 'No users found.',
     are_you_sure_delete: 'Are you sure you wish to delete the user {{user}}?',
     user_has_been_saved: 'The user has been saved.',
     user_saved: 'User Saved',
+    on_behalf_of: 'on behalf of',
     new_patient_has_to_be_created: 'A new patient needs to be created...Please wait..',
+    no_notes_available: 'No additional clinical notes are available for this visit.',
     sorry: 'Sorry, something went wrong...'
   },
   alerts: {
@@ -226,6 +242,7 @@ export default {
     delete: 'Delete',
     new_user: 'New User',
     add_value: 'Add Value',
+    new_note: 'New Note',
     import: 'Import',
     load_file: 'Load File',
     new_request: 'New Request',
@@ -504,6 +521,31 @@ export default {
       new_button: '+ new appointment'
     }
   },
+  visits: {
+    edit: {
+      actions: 'Actions',
+      edit: 'Edit',
+      date: 'Date',
+      authored_by: 'Authored By',
+      note: 'Note',
+      notes: 'Notes',
+      new_note: 'New Note',
+      visit_information: 'Visit Information',
+      new_appointment: 'New Appointment',
+      add_diagnosis: 'Add Diagnosis',
+      diagnosis: 'Diagnosis',
+      delete: 'Delete',
+      procedure: 'Procedure',
+      procedures: 'Procedures',
+      new_procedure: 'New Procedure',
+      labs: 'Labs',
+      new_lab: 'New Lab',
+      imaging: 'Imaging',
+      new_imaging: 'New Imaging',
+      medication: 'Medication',
+      new_medication: 'New Medication'
+    }
+  },
   labs: {
     section_title: 'Labs',
     requests_title: 'Lab Requests',
@@ -529,6 +571,17 @@ export default {
       request_completed_message: 'The lab request has been completed.',
       request_saved_title: 'Lab Request Saved',
       request_saved_message: 'The lab request has been saved.'
+    }
+  },
+  common: {
+    actions: 'Actions'
+  },
+  patients: {
+    notes: {
+      on_behalf_of_label: 'On Behalf Of',
+      on_behalf_of_copy: 'on behalf of',
+      please_select_a_visit: 'Please select a visit',
+      note_label: 'Note'
     }
   }
 };

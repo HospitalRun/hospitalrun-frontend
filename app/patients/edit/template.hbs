@@ -1,21 +1,130 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false bubbles=false }}
     {{#unless isNewOrDeleted}}
-      {{patient-summary patient=model visits=model.visits patientProcedures=patientProcedures disablePatientLink=true }}
+      {{patient-summary patient=model visits=model.visits patientProcedures=patientProcedures disablePatientLink=true store=store }}
       <ul class="nav nav-pills tab-nav" role="tablist">
-        <li role="presentation" class="active"><a class="active" href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">General</a></li>
+        <li role="presentation" class="active"><a href="#history" role="tab" data-toggle="pill" data-test-selector="history-tab">History</a></li>
+        <li role="presentation"><a href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">General</a></li>
         <li role="presentation"><a href="#photos" role="tab" data-toggle="pill" data-test-selector="photos-tab">Photos</a></li>
+        <li role="presentation"><a href="#appointments" role="tab" data-toggle="pill" data-test-selector="appointments-tab">Appointments</a></li>
+        <li role="presentation"><a href="#visits" role="tab" data-toggle="pill" data-test-selector="visits-tab">Visits</a></li>
         <li role="presentation"><a href="#medication" role="tab" data-toggle="pill" data-test-selector="medication-tab">Medication</a></li>
         <li role="presentation"><a href="#imaging" role="tab" data-toggle="pill" data-test-selector="imaging-tab">Imaging</a></li>
         <li role="presentation"><a href="#labs" role="tab" data-toggle="pill" data-test-selector="labs-tab">Labs</a></li>
-        <li role="presentation"><a href="#visits" role="tab" data-toggle="pill" data-test-selector="appointments-tab">Visits/Appointments</a></li>
         {{#if canAddSocialWork}}
           <li role="presentation"><a href="#social" role="tab" data-toggle="pill" data-test-selector="social-tab">Social Work</a></li>
         {{/if}}
       </ul>
     {{/unless}}
     <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="general">
+      {{#unless isNewOrDeleted}}
+        <div role="tabpanel" class="tab-pane active" id="history">
+          <div class="panel detail-section">
+            {{#if canAddNote}}
+              <div class="panel-heading clearfix">
+                <button type="button" class="btn btn-primary align-right" {{action "showAddPatientNote" bubbles=false on="click"}}>
+                  <span class="octicon octicon-plus"></span>{{t 'buttons.new_note'}}
+                </button>
+              </div>
+            {{/if}}
+            <div class="panel-body detail-section-content">
+              {{#if model.visits}}
+                {{#each model.visits as |visit|}}
+                  <div class="patient-history-item">
+
+                    <div class="patient-history-heading clickable" {{action "editVisit" visit}}>
+                      <span class="ph-visit-date">{{visit.visitDate}}</span>
+                      <span class="ph-visit-type">{{visit.visitType}}</span>
+                    </div>
+
+                    {{#if visit.history}}
+                    <div class="ph-note-item">
+                      <h5 class="ph-note-heading">History</h5>
+                      {{html-line-break visit.history}}
+                    </div>
+                    {{/if}}
+
+                    {{#if visit.historySince}}
+                    <div class="ph-note-item">
+                      <h5 class="ph-note-heading">History Since</h5>
+                      {{html-line-break visit.historySince}}
+                    </div>
+                    {{/if}}
+
+                    {{#if visit.procedures}}
+                      <div class="ph-note-item">
+                        <h5 class="ph-note-heading">{{t 'labels.procedures' }}</h5>
+                        {{#each visit.procedures as |procedure|}}
+                            <div {{action 'editProcedure' procedure }}>
+                              <h5 class="ph-note-heading">{{date-format procedure.procedureDate}}:
+                                {{#if procedure.cptCode}}
+                                  [{{t 'labels.cptcode' }} - {{procedure.cptCode}}]
+                                {{/if}}
+                                {{procedure.description}}
+                              </h5>
+                              <h6>
+                                {{t 'labels.physician'}}: {{procedure.physician}}
+                                {{#if procedure.assistant}}
+                                  , {{t 'labels.assisting'}}: {{procedure.assistant}}
+                                {{/if}}
+                                {{#if procedure.anesthesiologist}}
+                                  , {{t 'labels.anesthesia'}}: {{procedure.anesthesiologist}}
+                                {{/if}}
+                              </h6>
+                              {{html-line-break procedure.notes}}
+                            </div>
+                        {{/each}}
+                      </div>
+                    {{/if}}
+                    {{#if visit.imaging}}
+                      <div class="ph-note-item">
+                        <h5 class="ph-note-heading">{{t 'labels.image_orders' }}</h5>
+                        {{#each visit.imaging as |imaging|}}
+                            <div {{action 'editImaging' imaging }}>
+                              <h5 class="ph-note-heading">{{date-format imaging.imagingDate}}: {{imaging.imagingType.name}}</h5>
+                              <div>{{imaging.result}}</div>
+                              <div>{{html-line-break imaging.notes}}</div>
+                            </div>
+                        {{/each}}
+                      </div>
+                    {{/if}}
+                    {{#if visit.labs}}
+                      <div class="ph-note-item">
+                        <h5 class="ph-note-heading">{{t 'labels.lab_orders' }}</h5>
+                        {{#each visit.labs as |lab|}}
+                            <div {{action 'editLab' lab }}>
+                              <h5 class="ph-note-heading">{{date-format lab.labDate}}: {{lab.labType.name}}</h5>
+                              <div>{{lab.result}}</div>
+                              <div>{{html-line-break lab.notes}}</div>
+                            </div>
+                        {{/each}}
+                      </div>
+                    {{/if}}
+                    {{#if visit.patientNotes}}
+                      <div class="ph-note-item">
+                        <h5 class="ph-note-heading">{{t 'labels.notes'}}</h5>
+                        {{#each visit.patientNotes as |note|}}
+                            <div {{action 'showAddPatientNote' note }}>
+                              <h5 class="ph-note-heading">{{note.authoredBy}}</h5>
+                              {{date-format note.date}}[{{note.noteType}}]: {{html-line-break note.content}}
+                            </div>
+                        {{/each}}
+                      </div>
+                    {{else}}
+                      <div class="ph-note-item">
+                        {{t 'messages.no_notes_available'}}
+                      </div>
+                    {{/if}}
+                  </div>
+                {{/each}}
+              {{else}}
+                {{t 'messages.no_history_available'}}
+              {{/if}}
+            </div>
+          </div>
+      </div>
+      {{/unless}}
+      <div role="tabpanel" class="tab-pane {{if isNewOrDeleted 'active'}}" id="general">
         <div class="panel detail-section">
           <div class="panel-body detail-section-content">
             <div class="row">
@@ -162,48 +271,48 @@
             </div>
           </div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="medication">
-            <div class="panel">
-              {{#if canAddMedication}}
-                <div class="panel-heading">
-                  <button type="button" class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}>
-                    <span class="octicon octicon-plus"></span>New Medication
-                  </button>
-                </div>
-              {{/if}}
-              <div class="panel-body detail-section-content">
-                {{partial 'patients/medication'}}
-              </div>
-            </div>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="imaging">
+        <div role="tabpanel" class="tab-pane" id="appointments">
           <div class="panel">
-            {{#if canAddImaging}}
+            {{#if canAddAppointment}}
               <div class="panel-heading">
-                <button type="button" class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> New Imaging
+                <button type="button" class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span> New Appointment
                 </button>
               </div>
             {{/if}}
             <div class="panel-body detail-section-content">
-              {{partial 'patients/imaging'}}
+              <table class="table">
+                <tr class="table-header">
+                  <th>Date</th>
+                  <th>Examiner</th>
+                  <th>Location</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>{{t 'labels.actions'}}</th>
+                </tr>
+                {{#each model.appointments as |appointment|}}
+                  <tr {{action "editAppointment" appointment}}>
+                    <td>{{appointment.formattedAppointmentDate}}</td>
+                    <td>{{appointment.provider}}</td>
+                    <td>{{appointment.location}}</td>
+                    <td>{{appointment.appointmentType}}</td>
+                    <td>{{appointment.displayStatus}}</td>
+                    <td>
+                      {{#if canAddAppointment}}
+                        <button type="button" class="btn btn-default neutral" {{action "editAppointment" appointment}}>{{t 'labels.edit'}}</button>
+                      {{/if}}
+                      {{#if canDeleteAppointment}}
+                        <button type="button" class="btn btn-default warning" {{action "showDeleteAppointment" appointment  bubbles=false }}>
+                          <span class="octicon octicon-x"></span> Delete
+                        </button>
+                      {{/if}}
+                    </td>
+                  </tr>
+                {{/each}}
+              </table>
             </div>
           </div>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="labs">
-          <div class="panel">
-            {{#if canAddLab}}
-              <div class="panel-heading">
-                <button type="button" class="btn btn-primary align-right" {{action "newLab" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> New Lab
-                </button>
-              </div>
-            {{/if}}
-            <div class="panel-body detail-section-content">
-              {{partial 'patients/labs'}}
-            </div>
-          </div>
-        </div>
+        </div>            
         <div role="tabpanel" class="tab-pane" id="visits">
           <div class="panel">
             {{#if canAddVisit}}
@@ -245,44 +354,46 @@
               </table>
             </div>
           </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="medication">
+            <div class="panel">
+              {{#if canAddMedication}}
+                <div class="panel-heading">
+                  <button type="button" class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}>
+                    <span class="octicon octicon-plus"></span>New Medication
+                  </button>
+                </div>
+              {{/if}}
+              <div class="panel-body detail-section-content">
+                {{partial 'patients/medication'}}
+              </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="imaging">
           <div class="panel">
-            {{#if canAddAppointment}}
+            {{#if canAddImaging}}
               <div class="panel-heading">
-                <button type="button" class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> New Appointment
+                <button type="button" class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span> New Imaging
                 </button>
               </div>
             {{/if}}
             <div class="panel-body detail-section-content">
-              <table class="table">
-                <tr class="table-header">
-                  <th>Date</th>
-                  <th>Examiner</th>
-                  <th>Location</th>
-                  <th>Type</th>
-                  <th>Status</th>
-                  <th>{{t 'labels.actions'}}</th>
-                </tr>
-                {{#each model.appointments as |appointment|}}
-                  <tr {{action "editAppointment" appointment}}>
-                    <td>{{appointment.formattedAppointmentDate}}</td>
-                    <td>{{appointment.provider}}</td>
-                    <td>{{appointment.location}}</td>
-                    <td>{{appointment.appointmentType}}</td>
-                    <td>{{appointment.displayStatus}}</td>
-                    <td>
-                      {{#if canAddAppointment}}
-                        <button type="button" class="btn btn-default neutral" {{action "editAppointment" appointment}}>{{t 'labels.edit'}}</button>
-                      {{/if}}
-                      {{#if canDeleteAppointment}}
-                        <button type="button" class="btn btn-default warning" {{action "showDeleteAppointment" appointment  bubbles=false }}>
-                          <span class="octicon octicon-x"></span> Delete
-                        </button>
-                      {{/if}}
-                    </td>
-                  </tr>
-                {{/each}}
-              </table>
+              {{partial 'patients/imaging'}}
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="labs">
+          <div class="panel">
+            {{#if canAddLab}}
+              <div class="panel-heading">
+                <button type="button" class="btn btn-primary align-right" {{action "newLab" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span> New Lab
+                </button>
+              </div>
+            {{/if}}
+            <div class="panel-body detail-section-content">
+              {{partial 'patients/labs'}}
             </div>
           </div>
         </div>

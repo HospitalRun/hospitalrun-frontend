@@ -1,18 +1,18 @@
 // styles for patient summary
 .patient-summary {
   position: relative;
-  border-bottom: 2px solid $blue_lightest;
+  border-bottom: 2px solid $content_border;
   padding-bottom: 15px;
 
   .ps-info-group { margin-bottom: 5px;
 
     &.patient-id {
       position: absolute;
-      top: 0;
-      right: 0;
+      top: -10px;
+      right: -10px;
       border-radius: 3px;
-      background: $blue_lightest;
-      padding: 0 10px;
+      background: rgba($blue_lightest,.7);
+      padding: 10px 20px;
       text-align: center;
 
       .ps-info-label {
@@ -24,7 +24,7 @@
 
       .ps-info-data {
         font-size: 22px;
-        font-weight: 600;
+        font-weight: 300;
       }
     }
 

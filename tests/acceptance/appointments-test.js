@@ -85,6 +85,7 @@ test('Adding a visit to an appointment', function(assert) {
     });
     click('button:contains(Ok)');
     andThen(() => {
+      findWithAssert('button:contains(New Note)');
       findWithAssert('button:contains(New Procedure)');
       findWithAssert('button:contains(New Medication)');
       findWithAssert('button:contains(New Lab)');

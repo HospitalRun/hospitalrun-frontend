@@ -1,10 +1,11 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
 import Ember from 'ember';
+import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, {
+export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, PatientNotes, {
   canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
   }.property(),
@@ -284,33 +285,41 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     },
 
     editAppointment: function(appointment) {
-      appointment.set('returnToPatient', true);
-      appointment.set('returnTo', null);
-      this.transitionToRoute('appointments.edit', appointment);
+      if (this.get('canAddAppointment')) {
+        appointment.set('returnToPatient', true);
+        appointment.set('returnTo', null);
+        this.transitionToRoute('appointments.edit', appointment);
+      }
     },
 
     editImaging: function(imaging) {
-      if (imaging.get('canEdit')) {
-        imaging.setProperties({
-          'returnToPatient': true
-        });
-        this.transitionToRoute('imaging.edit', imaging);
+      if (this.get('canAddImaging')) {
+        if (imaging.get('canEdit')) {
+          imaging.setProperties({
+            'returnToPatient': true
+          });
+          this.transitionToRoute('imaging.edit', imaging);
+        }
       }
     },
 
     editLab: function(lab) {
-      if (lab.get('canEdit')) {
-        lab.setProperties({
-          'returnToPatient': true
-        });
-        this.transitionToRoute('labs.edit', lab);
+      if (this.get('canAddLab')) {
+        if (lab.get('canEdit')) {
+          lab.setProperties({
+            'returnToPatient': true
+          });
+          this.transitionToRoute('labs.edit', lab);
+        }
       }
     },
 
     editMedication: function(medication) {
-      if (medication.get('canEdit')) {
-        medication.set('returnToPatient', true);
-        this.transitionToRoute('medication.edit', medication);
+      if (this.get('canAddMedication')) {
+        if (medication.get('canEdit')) {
+          medication.set('returnToPatient', true);
+          this.transitionToRoute('medication.edit', medication);
+        }
       }
     },
 
@@ -319,11 +328,15 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     },
 
     editProcedure: function(procedure) {
-      this.transitionToRoute('procedures.edit', procedure);
+      if (this.get('canAddVisit')) {
+        this.transitionToRoute('procedures.edit', procedure);
+      }
     },
 
     editVisit: function(visit) {
-      this.transitionToRoute('visits.edit', visit);
+      if (this.get('canAddVisit')) {
+        this.transitionToRoute('visits.edit', visit);
+      }
     },
 
     newAppointment: function() {
@@ -356,6 +369,18 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
       this.send('openModal', 'patients.photo', {
         isNew: true
       });
+    },
+
+    showAddPatientNote: function(model) {
+      if (this.get('canAddNote')) {
+        if (Ember.isEmpty(model)) {
+          model = this.get('store').createRecord('patient-note', {
+            patient: this.get('model'),
+            createdBy: this.getUserName()
+          });
+        }
+        this.send('openModal', 'patients.notes', model);
+      }
     },
 
     showDeleteAppointment: function(appointment) {
