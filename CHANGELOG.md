@@ -1,7 +1,62 @@
 # Change Log
 
-## [0.9.1](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.1)
+## [0.9.2](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.2)
 
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.1...0.9.2)
+
+**Implemented enhancements:**
+
+- Notes feature [\#32](https://github.com/HospitalRun/hospitalrun-frontend/issues/32)
+
+**Fixed bugs:**
+
+- Finance summary report displays "undefined" in the type column [\#389](https://github.com/HospitalRun/hospitalrun-frontend/issues/389)
+- Patient discharge is not working [\#356](https://github.com/HospitalRun/hospitalrun-frontend/issues/356)
+- Don’t force login if offline [\#60](https://github.com/HospitalRun/hospitalrun-frontend/issues/60)
+
+**Closed issues:**
+
+- Redesign patient summary section [\#379](https://github.com/HospitalRun/hospitalrun-frontend/issues/379)
+- Change scss linting severity from warning to error [\#366](https://github.com/HospitalRun/hospitalrun-frontend/issues/366)
+- Bug in Load DB, error being displayed [\#350](https://github.com/HospitalRun/hospitalrun-frontend/issues/350)
+- Admitted list screen for Patients [\#349](https://github.com/HospitalRun/hospitalrun-frontend/issues/349)
+- Localization for Admin module [\#345](https://github.com/HospitalRun/hospitalrun-frontend/issues/345)
+- Get ember-cli-content-security-policy working [\#285](https://github.com/HospitalRun/hospitalrun-frontend/issues/285)
+- Localization for Labs Module [\#279](https://github.com/HospitalRun/hospitalrun-frontend/issues/279)
+- Localization for Inventory Module [\#276](https://github.com/HospitalRun/hospitalrun-frontend/issues/276)
+- Localization for Appointments Module [\#275](https://github.com/HospitalRun/hospitalrun-frontend/issues/275)
+- Create Invoice Test Fail with Certain Timezones [\#270](https://github.com/HospitalRun/hospitalrun-frontend/issues/270)
+- server duplication [\#264](https://github.com/HospitalRun/hospitalrun-frontend/issues/264)
+- Patient History Report [\#239](https://github.com/HospitalRun/hospitalrun-frontend/issues/239)
+- Setup SCSS linting via CI [\#137](https://github.com/HospitalRun/hospitalrun-frontend/issues/137)
+
+**Merged pull requests:**
+
+- Update docs to account for scss-lint [\#398](https://github.com/HospitalRun/hospitalrun-frontend/pull/398) ([jglovier](https://github.com/jglovier))
+- Update broccoli-serviceworker to version 0.1.0 🚀 [\#394](https://github.com/HospitalRun/hospitalrun-frontend/pull/394) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update ember-cli-active-link-wrapper to version 0.1.0 🚀 [\#393](https://github.com/HospitalRun/hospitalrun-frontend/pull/393) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Nav design tweaks [\#386](https://github.com/HospitalRun/hospitalrun-frontend/pull/386) ([jglovier](https://github.com/jglovier))
+- Form cleanup first pass [\#385](https://github.com/HospitalRun/hospitalrun-frontend/pull/385) ([jglovier](https://github.com/jglovier))
+- i18n add localization support for labs module closes \#279 [\#376](https://github.com/HospitalRun/hospitalrun-frontend/pull/376) ([James1x0](https://github.com/James1x0))
+- Resolve lint errors [\#373](https://github.com/HospitalRun/hospitalrun-frontend/pull/373) ([jglovier](https://github.com/jglovier))
+- Action cursor [\#372](https://github.com/HospitalRun/hospitalrun-frontend/pull/372) ([pete-the-pete](https://github.com/pete-the-pete))
+- Add a bootstrap script [\#371](https://github.com/HospitalRun/hospitalrun-frontend/pull/371) ([jglovier](https://github.com/jglovier))
+- Removed all the subActions \(sub nav links\) and updated styling to match [\#369](https://github.com/HospitalRun/hospitalrun-frontend/pull/369) ([dswanson](https://github.com/dswanson))
+- Change lint severity from warning to error [\#367](https://github.com/HospitalRun/hospitalrun-frontend/pull/367) ([jglovier](https://github.com/jglovier))
+- Admitted list screen [\#358](https://github.com/HospitalRun/hospitalrun-frontend/pull/358) ([dswanson](https://github.com/dswanson))
+- Resolve linting warnings [\#355](https://github.com/HospitalRun/hospitalrun-frontend/pull/355) ([jglovier](https://github.com/jglovier))
+- Propagate the error out when loading DB fails [\#352](https://github.com/HospitalRun/hospitalrun-frontend/pull/352) ([dswanson](https://github.com/dswanson))
+- Add issue and pr template for GitHub repo [\#347](https://github.com/HospitalRun/hospitalrun-frontend/pull/347) ([jglovier](https://github.com/jglovier))
+- Fixed numbered list issue [\#343](https://github.com/HospitalRun/hospitalrun-frontend/pull/343) ([dswanson](https://github.com/dswanson))
+- Instruction clarification and spelling [\#341](https://github.com/HospitalRun/hospitalrun-frontend/pull/341) ([dswanson](https://github.com/dswanson))
+- Update ember-cli-fake-server to version 0.3.1 🚀 [\#339](https://github.com/HospitalRun/hospitalrun-frontend/pull/339) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Added french translation [\#337](https://github.com/HospitalRun/hospitalrun-frontend/pull/337) ([douno](https://github.com/douno))
+- Update hospitalrun-server-routes to version 0.9.2 🚀 [\#336](https://github.com/HospitalRun/hospitalrun-frontend/pull/336) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update ember-cli-fake-server to version 0.3.0 🚀 [\#332](https://github.com/HospitalRun/hospitalrun-frontend/pull/332) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update ember-cli-deprecation-workflow to version 0.2.0 🚀 [\#330](https://github.com/HospitalRun/hospitalrun-frontend/pull/330) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- \[TRANSLATION\] Translated appointments section [\#329](https://github.com/HospitalRun/hospitalrun-frontend/pull/329) ([mellisdesigns](https://github.com/mellisdesigns))
+
+## [0.9.1](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.1) (2016-03-03)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.0...0.9.1)
 
 **Fixed bugs:**
