@@ -285,3 +285,7 @@
 .radio-inline input[type="radio"],
 .checkbox input[type="checkbox"],
 .checkbox-inline input[type="checkbox"] { margin-left: -18px; }
+
+.form-control {
+  border: 1px solid $blue_lightest2;
+}
