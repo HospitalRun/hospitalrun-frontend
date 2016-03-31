@@ -8,7 +8,16 @@
 @import 'temp_misc';
 @import 'sign_in_screen';
 @import 'loading_notice';
-@import 'sidebar_nav';
+
+// Components
+
+@import 'components/sidebar_nav';
+@import 'components/panel';
+@import 'components/form_styles';
+@import 'components/tab_nav';
+@import 'components/tab_content';
+@import 'components/patient_summary';
+@import 'components/patient_history';
 
 // NOTE: do not place styles in this file
 // If you have styles to add, put them in

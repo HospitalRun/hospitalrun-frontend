@@ -3,7 +3,7 @@ import InventoryId from 'hospitalrun/mixins/inventory-id';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations';
 import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import Ember from 'ember';
-
+import { translationMacro as t } from 'ember-i18n';
 export default AbstractEditController.extend(InventoryId, InventoryLocations, InventorySelection, {
   doingUpdate: false,
   inventoryController: Ember.inject.controller('inventory'),
@@ -68,7 +68,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     return total;
   }.property('model.invoiceItems.[].purchaseCost', 'model.isValid', 'model.purchaseCost'),
 
-  updateButtonText: 'Save',
+  updateButtonText: t('inventory.labels.save'),
 
   updateCapability: 'add_inventory_item',
 
@@ -101,7 +101,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
         throw Error('invalid');
       }
     }.bind(this)).catch(function() {
-      this.displayAlert('Warning!!!!', 'Please fill in required fields (marked with *) and correct the errors before adding.');
+      this.displayAlert(this.get('i18n').t('inventory.titles.warning'), this.get('i18n').t('inventory.messages.warning'));
     }.bind(this));
   },
 
@@ -193,7 +193,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
         }.bind(this));
         Ember.RSVP.all(inventorySaves).then(function() {
           this.updateLookupLists();
-          this.displayAlert('Inventory Purchases Saved', 'The inventory purchases have been successfully saved', 'allItems');
+          this.displayAlert(this.get('i18n').t('inventory.titles.purchase_saved'), this.get('i18n').t('inventory.messages.purchase_saved'), 'allItems');
         }.bind(this));
       }.bind(this));
     }.bind(this));
@@ -221,11 +221,11 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     },
 
     showRemoveItem: function(item) {
-      var message = 'Are you sure you want to remove this item from this invoice?',
+      var message = this.get('i18n').t('inventory.messages.remove_item'),
         model = Ember.Object.create({
           itemToRemove: item
         }),
-        title = 'Remove Item';
+        title = this.get('i18n').t('inventory.titles.remove_item');
       this.displayConfirm(title, message, 'removeItem', model);
     },
 

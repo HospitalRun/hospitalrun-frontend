@@ -1,4 +1,5 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
+import { translationMacro as t } from 'ember-i18n';
 export default AbstractModuleRoute.extend({
   addCapability: 'add_lab',
   additionalModels: [{
@@ -7,13 +8,6 @@ export default AbstractModuleRoute.extend({
   }],
   allowSearch: false,
   moduleName: 'labs',
-  newButtonText: '+ new lab',
-  sectionTitle: 'Labs',
-  subActions: [{
-    text: 'Requests',
-    linkTo: 'labs.index'
-  }, {
-    text: 'Completed',
-    linkTo: 'labs.completed'
-  }]
+  newButtonText: t('labs.buttons.new_button'),
+  sectionTitle: t('labs.section_title')
 });

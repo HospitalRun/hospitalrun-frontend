@@ -438,6 +438,20 @@ export default Ember.Mixin.create({
       'User Administrator',
       'System Administrator'
     ],
+    add_note: [
+      'Doctor',
+      'Medical Records Officer',
+      'Nurse',
+      'Nurse Manager',
+      'Patient Administration',
+      'System Administrator'
+    ],
+    delete_note: [
+      'Medical Records Officer',
+      'Nurse Manager',
+      'Patient Administration',
+      'System Administrator'
+    ],
     'user_roles': [
       'System Administrator'
     ]

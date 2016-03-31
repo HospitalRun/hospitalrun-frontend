@@ -14,7 +14,7 @@
         {{/if}}
       </tr>
       {{#each model as |pricingItem|}}
-        <tr {{action 'editItem' pricingItem}}>
+        <tr {{action 'editItem' pricingItem}} class="clickable">
           {{#if showCategory}}
             <td>{{pricingItem.category}}</td>
           {{/if}}

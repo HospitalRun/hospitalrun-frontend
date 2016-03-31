@@ -264,34 +264,14 @@
       padding: 0;
       color: $navy;
     }
-
-    .panel-body { padding-top: 0; }
   }
 }
 
-.panel-primary > .panel-heading {
-  background-image: linear-gradient(to bottom,#428bca 0%,#357ebd 100%);
-  background-repeat: repeat-x;
-}
-
-.panel-success > .panel-heading {
-  background-image: linear-gradient(to bottom,#dff0d8 0%,#d0e9c6 100%);
-  background-repeat: repeat-x;
-}
-
-.panel-info > .panel-heading {
-  background-image: linear-gradient(to bottom,#d9edf7 0%,#c4e3f3 100%);
-  background-repeat: repeat-x;
-}
-
-.panel-warning > .panel-heading {
-  background-image: linear-gradient(to bottom,#fcf8e3 0%,#faf2cc 100%);
-  background-repeat: repeat-x;
-}
-
-.panel-danger > .panel-heading {
-  background-image: linear-gradient(to bottom,#f2dede 0%,#ebcccc 100%);
-  background-repeat: repeat-x;
+.panel-heading {
+  border-radius: 3px;
+  background-color: $blue_light2;
+  padding: 10px 15px;
+  color: $navy;
 }
 
 .well {
@@ -305,3 +285,7 @@
 .radio-inline input[type="radio"],
 .checkbox input[type="checkbox"],
 .checkbox-inline input[type="checkbox"] { margin-left: -18px; }
+
+.form-control {
+  border: 1px solid $blue_lightest2;
+}

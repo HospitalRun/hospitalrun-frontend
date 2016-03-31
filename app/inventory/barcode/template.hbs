@@ -7,12 +7,12 @@
 {{#if havePrinters}}
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h3 class="panel-title">Print Barcode</h3>
+        <h3 class="panel-title">{{t 'inventory.labels.print_barcode'}}</h3>
     </div>    
     <div class="panel-body">
         <div class="form-group">            
             {{#unless singlePrinter}}    
-                <label for="printerSelect">Printer</label>
+                <label for="printerSelect">{{t 'inventory.labels.printer'}}</label>
                 {{select-list 
                     content=printers 
                     optionLabelPath='name' 
@@ -24,7 +24,7 @@
                 }}            
             {{/unless}}
         </div>
-        <button class="btn btn-primary" {{action 'print'}}><span class=" glyphicon glyphicon-print"></span> Print</button>
+        <button class="btn btn-primary" {{action 'print'}}><span class=" glyphicon glyphicon-print"></span> {{t 'inventory.labels.print'}}</button>
     </div>
 </div>
 {{/if}}

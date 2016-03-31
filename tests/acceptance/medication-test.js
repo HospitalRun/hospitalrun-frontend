@@ -19,8 +19,6 @@ test('visiting /medication', function(assert) {
 
     andThen(function() {
       assert.equal(currentURL(), '/medication');
-      assert.equal(find('li a:contains(Requests)').length, 1, 'Requests link is visible');
-      assert.equal(find('li a:contains(Completed)').length, 1, 'Completed link is visible');
       findWithAssert('button:contains(new request)');
       findWithAssert('button:contains(dispense medication)');
       findWithAssert('button:contains(return medication)');

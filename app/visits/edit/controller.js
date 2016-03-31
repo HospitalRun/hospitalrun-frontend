@@ -1,12 +1,13 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
 import Ember from 'ember';
+import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-export default AbstractEditController.extend(ChargeActions, PatientSubmodule, UserSession, VisitTypes, {
+export default AbstractEditController.extend(ChargeActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
   visitsController: Ember.inject.controller('visits'),
 
   canAddAppointment: function() {
@@ -272,6 +273,18 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
       this.send('openModal', 'visits.vitals.edit', newVitals);
     },
 
+    showAddPatientNote: function(model) {
+      if (Ember.isEmpty(model)) {
+        model = this.get('store').createRecord('patient-note', {
+          visit: this.get('model'),
+          createdBy: this.getUserName(),
+          patient: this.get('model').get('patient'),
+          noteType: this._computeNoteType(this.get('model'))
+        });
+      }
+      this.send('openModal', 'patients.notes', model);
+    },
+
     newAppointment: function() {
       this._addChildObject('appointments.edit');
     },
@@ -328,6 +341,24 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Us
 
     showEditVitals: function(vitals) {
       this.send('openModal', 'visits.vitals.edit', vitals);
+    },
+
+    showDeletePatientNote: function(note) {
+      this.send('openModal', 'dialog', Ember.Object.create({
+        confirmAction: 'deletePatientNote',
+        title: 'Delete Note',
+        message: 'Are you sure you want to delete this note?',
+        noteToDelete: note,
+        updateButtonAction: 'confirm',
+        updateButtonText: 'Ok'
+      }));
+    },
+
+    deletePatientNote: function(model) {
+      var note = model.get('noteToDelete');
+      var patientNotes = this.get('model.patientNotes');
+      patientNotes.removeObject(note);
+      this.send('update', true);
     }
   }
 });

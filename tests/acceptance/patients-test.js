@@ -22,8 +22,6 @@ test('visiting /patients route', function(assert) {
       assert.equal(noPatientsFound.text().trim(), 'No patients found. Create a new patient record?', 'no records found');
       const newPatientButton = find('button:contains(+ new patient)');
       assert.equal(newPatientButton.length, 1, 'Add new patient button is visible');
-      assert.equal(find('.nav-pills li:contains(Patient listing)').length, 1, 'Patient listing link is visible');
-      assert.equal(find('.nav-pills li:contains(Reports)').length, 1, 'Reports link is visible');
     });
     click('button:contains(+ new patient)');
     andThen(function() {
@@ -93,21 +91,12 @@ test('Adding a new patient record', function(assert) {
     andThen(function() {
       findWithAssert('.patient-summary');
     });
-    tabTest('photos-tab', 'Photos');
-    tabTest('medication-tab', 'Medication');
-    tabTest('imaging-tab', 'Imaging');
-    tabTest('labs-tab', 'Labs');
-    tabTest('appointments-tab', 'Visits');
-    tabTest('social-tab', 'Social Work Details');
+    andThen(function() {
+      findWithAssert('#general');
+    });
+
   });
 });
-
-function tabTest(tabName, tabTitle) {
-  click(`[data-test-selector=${tabName}]`);
-  andThen(function() {
-    findWithAssert(`.active .panel-title:contains(${tabTitle})`);
-  });
-}
 
 function testSimpleReportForm(reportName) {
   test(`View reports tab | ${reportName} shows start and end dates`, function(assert) {

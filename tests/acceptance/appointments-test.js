@@ -18,9 +18,6 @@ test('visiting /appointments', function(assert) {
     visit('/appointments');
     andThen(function() {
       assert.equal(currentURL(), '/appointments');
-      findWithAssert('a:contains(This Week)');
-      findWithAssert('a:contains(Today)');
-      findWithAssert('a:contains(Search)');
       findWithAssert('button:contains(new appointment)');
       findWithAssert('.table-header');
     });
@@ -88,6 +85,7 @@ test('Adding a visit to an appointment', function(assert) {
     });
     click('button:contains(Ok)');
     andThen(() => {
+      findWithAssert('button:contains(New Note)');
       findWithAssert('button:contains(New Procedure)');
       findWithAssert('button:contains(New Medication)');
       findWithAssert('button:contains(New Lab)');
@@ -97,10 +95,6 @@ test('Adding a visit to an appointment', function(assert) {
     });
 
     click('button:contains(Return)');
-
-    andThen(() => {
-      findWithAssert('.panel-heading h3:contains(General Information)');
-    });
 
     click('button:contains(Return)');
     andThen(() => {

@@ -19,10 +19,8 @@ test('visiting /inventory', function(assert) {
 
     andThen(function() {
       assert.equal(currentURL(), '/inventory');
-      findWithAssert('li a:contains(Requests)');
-      findWithAssert('li a:contains(Items)');
-      findWithAssert('li a:contains(Reports)');
       findWithAssert('button:contains(new request)');
+      findWithAssert('button:contains(inventory received)');
       findWithAssert('p:contains(No requests found. )');
       findWithAssert('a:contains(Create a new request?)');
     });

@@ -4,14 +4,6 @@ body {
   &.ember-application {
     padding-left: 275px; // to accomodate for .sidebar-nav
   }
-
-  // Make cursor appear to be clickable on rows
-  th,
-  td,
-  tr,
-  div {
-    &[data-ember-action] {
-      cursor: pointer;
-    }
-  }
 }
+
+.clickable { cursor: pointer; }

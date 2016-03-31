@@ -20,11 +20,12 @@ module.exports = function(environment) {
   };
 
   ENV.contentSecurityPolicy = {
-    'script-src': "'self' 'unsafe-inline' 'unsafe-eval'",
     'connect-src': "'self'",
+    'default-src': "'self'",
     'frame-src': "'self'",
-    'style-src': "'self' 'unsafe-inline'",
-    'img-src': "'self' data:"
+    'img-src': "'self' filesystem: data:",
+    'script-src': "'self' 'unsafe-inline' 'unsafe-eval'",
+    'style-src': "'self' 'unsafe-inline'"
   };
 
   if (environment === 'test') {
@@ -58,6 +59,9 @@ module.exports = function(environment) {
       'bower_components/pouchdb/dist/pouchdb.js'
     ]
   };
+  if (environment === 'production') {
+    ENV.serviceWorker.debug = false;
+  }
 
   return ENV;
 };

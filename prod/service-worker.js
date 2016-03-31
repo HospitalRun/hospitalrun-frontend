@@ -1,13 +1,12 @@
 importScripts('sw-toolbox.js');
 var CACHE_PREFIX = 'brocsw-v';
-var CACHE_VERSION = CACHE_PREFIX+'1457016225727';
+var CACHE_VERSION = CACHE_PREFIX+'1459363078940';
 toolbox.options.cache.name = CACHE_VERSION;
-toolbox.options.debug = true;
 var urlsToPrefetch = [
     '/',
-    "assets/hospitalrun-a28c893d100a9ee55ca12b9bf5781f5f.css",
-    "assets/hospitalrun-ed3bc43f0d41606d73ccbbfdaca783a8.js",
-    "assets/vendor-549a937bf8f39574af4b8f4d9daf6254.js",
+    "assets/hospitalrun-5597b10d9b3989644768cdf048da1cad.css",
+    "assets/hospitalrun-9b80c3a7e4645e1aae9abbc5e1b8b20c.js",
+    "assets/vendor-b57517d0e9737f65a1aa2c92104e9858.js",
     "assets/vendor-ed8acd5f4063b4b83b5df16f6da9e8b0.css",
     "crossdomain.xml",
     "dymo/BarcodeAsImage.label",
@@ -13141,9 +13140,9 @@ module.exports = PouchDB;
 },{"1":1,"10":10,"12":12,"13":13,"14":14,"15":15,"16":16,"2":2,"4":4,"6":6,"7":7,"8":8}]},{},[17])(17)
 });
 var configDB;
+var configs = false;
 var localMainDB;
 var syncingRemote = false;
-var useGoogleAuth = true;
 
 new PouchDB('config', function(err, db) {
   configDB = db;
@@ -13151,18 +13150,6 @@ new PouchDB('config', function(err, db) {
 
 new PouchDB('localMainDB', function(err, db) {
   localMainDB = db;
-});
-
-self.addEventListener('activate', function(event) {
-  event.waitUntil(
-    configDB.get('config_use_google_auth', function(useGoogleAuthConfig) {
-      if (useGoogleAuthConfig === true) {
-        useGoogleAuth = true;
-      } else {
-        useGoogleAuth = false;
-      }
-    })
-  );
 });
 
 toolbox.router.get('/db/main/_all_docs', function(request, values, options) {
@@ -13199,37 +13186,73 @@ toolbox.router.post('/db/main/_bulk_docs', function(request, values, options) {
 
 function setupRemoteSync() {
   if (!syncingRemote) {
+    var pouchOptions = {
+      ajax: {
+        headers: {},
+        timeout: 30000
+      }
+    };
+    if (configs.config_consumer_secret && configs.config_token_secret &&
+        configs.config_consumer_key && configs.config_oauth_token) {
+      pouchOptions.ajax.headers['x-oauth-consumer-secret'] = configs.config_consumer_secret;
+      pouchOptions.ajax.headers['x-oauth-consumer-key'] = configs.config_consumer_key;
+      pouchOptions.ajax.headers['x-oauth-token-secret'] = configs.config_token_secret;
+      pouchOptions.ajax.headers['x-oauth-token'] = configs.config_oauth_token;
+    }
     var remoteURL = self.location.protocol + '//' + self.location.host + '/db/main';
-    syncingRemote = localMainDB.sync(remoteURL, {
-      live: true,
-      retry: true
-    }).on('change', function(info) {
-      logDebug('local sync change', info);
-    }).on('paused', function() {
-      logDebug('local sync paused');
-      // replication paused (e.g. user went offline)
-    }).on('active', function() {
-      logDebug('local sync active');
-      // replicate resumed (e.g. user went back online)
-    }).on('denied', function(info) {
-      logDebug('local sync denied:', info);
-      // a document failed to replicate, e.g. due to permissions
-    }).on('complete', function(info) {
-      logDebug('local sync complete:', info);
-      // handle complete
-    }).on('error', function(err) {
-      logDebug('local sync error:', err);
+    new PouchDB(remoteURL, pouchOptions, function(err, db) {
+      syncingRemote = localMainDB.sync(db, {
+        live: true,
+        retry: true
+      }).on('change', function(info) {
+        logDebug('local sync change', info);
+      }).on('paused', function() {
+        logDebug('local sync paused');
+        // replication paused (e.g. user went offline)
+      }).on('active', function() {
+        logDebug('local sync active');
+        // replicate resumed (e.g. user went back online)
+      }).on('denied', function(info) {
+        logDebug('local sync denied:', info);
+        // a document failed to replicate, e.g. due to permissions
+      }).on('complete', function(info) {
+        logDebug('local sync complete:', info);
+        // handle complete
+      }).on('error', function(err) {
+        logDebug('local sync error:', err);
+      });
     });
   }
 }
 
+function setupConfigs() {
+  return new Promise(function(resolve, reject) {
+    if (configs) {
+      resolve();
+    } else {
+      configDB.allDocs({
+        include_docs: true
+      }).then((result) => {
+        configs = {};
+        result.rows.forEach((row) => {
+          configs[row.id] = row.doc.value;
+        });
+        resolve();
+      }, reject);
+    }
+  });
+}
+
 function couchDBResponse(request, values, options, pouchDBFn) {
-  setupRemoteSync();
+  setupConfigs().then(setupRemoteSync);
   logDebug('Looking for couchdb response for:', request.url);
   return new Promise(function(resolve, reject) {
+    var startTime = performance.now();
     toolbox.networkOnly(request, values, options).then(function(response) {
       if (response) {
+        var elapsedTime = performance.now() - startTime;
         resolve(response);
+        logPerformance(elapsedTime, request.url);
       } else {
         logDebug('Network first returned no response, get data from local pouch db.');
         runPouchFn(pouchDBFn, request, resolve, reject);
@@ -13263,6 +13286,18 @@ function getDBOptions(url) {
   return returnParams;
 }
 
+function logPerformance(elapsedTime, requestUrl) {
+  if (configs.config_log_metrics && configs.current_user) {
+    var now = Date.now();
+    var timingId = 'timing_' + configs.current_user.toLowerCase() + '_' + now;
+    localMainDB.put({
+      _id: timingId,
+      elapsed: elapsedTime,
+      url: requestUrl
+    });
+  }
+}
+
 function runPouchFn(pouchDBFn, request, resolve, reject) {
   pouchDBFn(request).then(function(response) {
     resolve(convertPouchToResponse(response));
@@ -13273,7 +13308,6 @@ function runPouchFn(pouchDBFn, request, resolve, reject) {
 }
 
 self.addEventListener('install', function(event) {
-console.log('Handling install event. Resources to pre-fetch:', urlsToPrefetch);
   if (self.skipWaiting) { self.skipWaiting(); }
 });
 
@@ -13290,7 +13324,9 @@ self.addEventListener('activate', function(event) {
           return caches.delete(cacheName);
         })
       );
-    }).then(() => self.clients.claim())
+    }).then(function() {
+      self.clients.claim();
+    })
   );
 });
 
@@ -13303,7 +13339,7 @@ function logDebug() {
       }
       console.log(arguments[0], consoleArgs);
     } else {
-      console.log(arguments);
+      console.log(arguments[0]);
     }
   }
 }

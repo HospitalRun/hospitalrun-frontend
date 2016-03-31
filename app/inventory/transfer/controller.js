@@ -1,5 +1,6 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
+import { translationMacro as t } from 'ember-i18n';
 export default AbstractEditController.extend({
   inventoryController: Ember.inject.controller('inventory'),
 
@@ -16,8 +17,8 @@ export default AbstractEditController.extend({
     id: 'warehouse_list' // Id of the lookup list to update
   }],
 
-  title: 'Transfer Items',
-  updateButtonText: 'Transfer',
+  title: t('inventory.titles.transfer'),
+  updateButtonText: t('inventory.labels.transfer'),
   updateButtonAction: 'transfer',
   updateCapability: 'adjust_inventory_location',
 
