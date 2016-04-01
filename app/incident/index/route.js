@@ -1,9 +1,10 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import UserSession from 'hospitalrun/mixins/user-session';
+import { translationMacro as t } from 'ember-i18n';
 export default AbstractIndexRoute.extend(UserSession, {
   editReturn: 'incident.index',
   modelName: 'incident',
-  pageTitle: 'Incidents',
+  pageTitle: t('incident.titles.incidents'),
 
   _getStartKeyFromItem: function(item) {
     var id = this._getPouchIdFromItem(item);

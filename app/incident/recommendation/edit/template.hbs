@@ -1,27 +1,22 @@
-{{#modal-dialog
-isUpdateDisabled=isUpdateDisabled
-    title=title
-    updateButtonAction=updateButtonAction
-    updateButtonText=updateButtonText }}
-{{#em-form model=model submitButton=false }}
+{{#modal-dialog isUpdateDisabled=isUpdateDisabled title=title updateButtonAction=updateButtonAction updateButtonText=updateButtonText}}
+  {{#em-form model=model submitButton=false}}
     <div class="row">
-        {{date-picker property="dateRecorded" label="Date Recorded" class="col-sm-6" format="l h:mm A" showTime=true }}
+      {{date-picker property="dateRecorded" label=(t 'incident.labels.date_recorded') class="col-sm-6" format="l h:mm A" showTime=true}}
     </div>
     <div class="row">
-        {{em-text property="activity" label="Activity/Plan" }}
+      {{em-text property="activity" label=(t 'incident.labels.activity')}}
     </div>
     <div class="row">
-        {{em-text property="responsibility" label="Responsibility" }}
+      {{em-text property="responsibility" label=(t 'incident.labels.responsibility')}}
     </div>
     <div class="row">
-        {{date-picker property="startDate" label="Start Date" class="col-sm-6" format="l h:mm A" showTime=true }}
+      {{date-picker property="startDate" label=(t 'incident.labels.start_date') class="col-sm-6" format="l h:mm A" showTime=true}}
     </div>
     <div class="row">
-        {{date-picker property="targetDateOfCompletion" label="Target Date Of Completion" class="col-sm-6" format="l h:mm A" showTime=true }}
+      {{date-picker property="targetDateOfCompletion" label=(t 'incident.labels.target_date') class="col-sm-6" format="l h:mm A" showTime=true}}
     </div>
     <div class="row">
-        {{em-select label="Status" property="status" content=recommendationStatusTypes
-            selected=model.status class="col-sm-6"}}
+      {{em-select label=(t 'incident.labels.status') property="status" content=recommendationStatusTypes selected=model.status class="col-sm-6"}}
     </div>
-{{/em-form}}
+  {{/em-form}}
 {{/modal-dialog}}

@@ -1,10 +1,9 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false }}
-      <div class="row">
-        {{em-select label="Reviewer To Add"
-          property="reviewerEmail" content=userList
-          optionValuePath="email" optionLabelPath="displayName"
-        }}
-      </div>
+    <div class="row">
+      {{em-select label=(t 'incident.labels.add_reviewer') property="reviewerEmail" content=userList
+        optionValuePath="email" optionLabelPath="displayName"
+      }}
+    </div>
   {{/em-form}}
 {{/edit-panel}}

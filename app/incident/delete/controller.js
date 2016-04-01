@@ -1,7 +1,8 @@
 import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-controller';
 import Ember from 'ember';
+import { translationMacro as t } from 'ember-i18n';
 export default AbstractDeleteController.extend({
-  title: 'Delete Item',
+  title: t('incident.titles.delete_item'),
 
   _deleteChildObject: function(incident, childObject, destroyPromises) {
     incident.get(childObject).then(function(childObject) {
@@ -12,15 +13,12 @@ export default AbstractDeleteController.extend({
   },
 
   actions: {
-
     delete: function() {
       var destroyPromises = [];
       var incident = this.get('model');
-
       this._deleteChildObject(incident, 'reviewers', destroyPromises);
       this._deleteChildObject(incident, 'feedbacks', destroyPromises);
       this._deleteChildObject(incident, 'investigationFindings', destroyPromises);
-
       this._deleteChildObject(incident, 'patientContributingFactors', destroyPromises);
       this._deleteChildObject(incident, 'staffContributingFactors', destroyPromises);
       this._deleteChildObject(incident, 'taskContributingFactors', destroyPromises);
@@ -30,9 +28,7 @@ export default AbstractDeleteController.extend({
       this._deleteChildObject(incident, 'organizationalContributingFactors', destroyPromises);
       this._deleteChildObject(incident, 'eduTrainingContributingFactors', destroyPromises);
       this._deleteChildObject(incident, 'teamContributingFactors', destroyPromises);
-
       this._deleteChildObject(incident, 'recommendations', destroyPromises);
-
       Ember.RSVP.all(destroyPromises).then(function() {
         // fires when all the destroys have been completed.
         this.get('model').destroyRecord().then(function() { // delete incident

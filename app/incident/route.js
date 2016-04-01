@@ -1,5 +1,7 @@
+import Ember from 'ember';
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import IncidentId from 'hospitalrun/mixins/incident-id';
+import { translationMacro as t } from 'ember-i18n';
 export default AbstractModuleRoute.extend(IncidentId, {
   addCapability: 'add_incident',
   additionalModels: [{
@@ -16,20 +18,23 @@ export default AbstractModuleRoute.extend(IncidentId, {
     findArgs: ['inc-category']
   }],
   moduleName: 'incident',
-  newButtonText: '+ new incident',
-  sectionTitle: 'Incidents',
-  subActions: [{
-    text: 'Current',
-    linkTo: 'incident.index'
-  },{
-    text: 'Incidents as Reviewer',
-    linkTo: 'incident.listing'
-  },{
-    text: 'History',
-    linkTo: 'incident.completed'
-  }, {
-    text: 'Reports',
-    linkTo: 'incident.reports'
-  }]
+  newButtonText: t('incident.buttons.new_incident'),
+  sectionTitle: t('incident.titles.incidents'),
+  subActions: Ember.computed(function() {
+    let i18n = this.get('i18n');
+    return [{
+      text: i18n.t('incident.titles.current'),
+      linkTo: 'incident.index'
+    },{
+      text: i18n.t('incident.titles.as_reviewer'),
+      linkTo: 'incident.listing'
+    },{
+      text: i18n.t('incident.titles.history'),
+      linkTo: 'incident.completed'
+    }, {
+      text: i18n.t('incident.titles.reports'),
+      linkTo: 'incident.reports'
+    }];
+  })
 });
 

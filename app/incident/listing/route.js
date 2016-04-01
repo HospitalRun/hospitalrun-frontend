@@ -1,9 +1,10 @@
 import IncidentIndexRoute from 'hospitalrun/incident/index/route';
 import UserSession from 'hospitalrun/mixins/user-session';
+import { translationMacro as t } from 'ember-i18n';
 export default IncidentIndexRoute.extend(UserSession, {
   editReturn: 'incident.listing',
   modelName: 'inc-reviewer',
-  pageTitle: 'Incidents as Reviewer',
+  pageTitle: t('incident.titles.as_reviewer'),
 
   _modelQueryParams: function() {
     var maxId = this._getMaxPouchId(),
@@ -17,5 +18,4 @@ export default IncidentIndexRoute.extend(UserSession, {
     };
     return queryParams;
   }
-
 });

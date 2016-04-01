@@ -2,14 +2,14 @@
     {{#if hasRecords}}
         <table class="table">
             <tr class="table-header">
-                <th>Incident Id</th>
-                <th>Reported By</th>
-                <th>Location of Incident</th>
-                <th>Date of Incident</th>
-                <th>Incident Type Category</th>
-                <th>Incident Type Item</th>
+                <th>{{t 'incident.labels.incident_id'}}</th>
+                <th>{{t 'incident.labels.reported_by'}}</th>
+                <th>{{t 'incident.labels.incident_location'}}</th>
+                <th>{{t 'incident.labels.incident_date'}}</th>
+                <th>{{t 'incident.labels.incident_category'}}</th>
+                <th>{{t 'incident.labels.incident_item'}}</th>
                 {{#if showActions}}
-                    <th>Actions</th>
+                    <th>{{t 'incident.labels.actions'}}</th>
                 {{/if}}
             </tr>
             {{#each model as |incident|}}
@@ -23,7 +23,7 @@
                     {{#if showActions}}
                         <td>
                             {{#if canAdd}}
-                                <button class="btn btn-default neutral" {{action 'editItem' incident  bubbles=false }}>Edit</button>
+                                <button class="btn btn-default neutral" {{action 'editItem' incident  bubbles=false }}>{{t 'incident.buttons.edit'}}</button>
                             {{/if}}
                         </td>
                     {{/if}}
@@ -32,11 +32,7 @@
         </table>
     {{else}}
         <div class="alert alert-info">
-            <em>No Incidents found.</em>
-            {{#if canAdd}}
-                <em>Create a new Incident?</em>
-                <button class="btn btn-primary on-white" {{action 'newItem'}}>New Incident</button>
-            {{/if}}
-        </div>
+        {{t 'incident.messages.no_incidents'}} {{#if canAdd}}<a href='#' {{action 'newItem'}}>{{t 'incident.messages.create_new'}}</a>{{/if}}
+    </div>
     {{/if}}
 {{/item-listing}}

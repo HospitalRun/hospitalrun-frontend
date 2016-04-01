@@ -16,10 +16,11 @@ export default AbstractEditController.extend({
 
   title: function() {
     var isNew = this.get('model.isNew');
+    let i18n = this.get('i18n');
     if (isNew) {
-      return 'Add Recommendation';
+      return i18n.t('incident.titles.add_recommendation');
     }
-    return 'Edit Recommendation';
+    return i18n.t('incident.titles.edit_recommendation');
   }.property('model.isNew'),
 
   updateCapability: 'add_recommendation',

@@ -24,10 +24,11 @@ export default AbstractEditController.extend({
 
   title: function() {
     var isNew = this.get('model.isNew');
+    let i18n = this.get('i18n');
     if (isNew) {
-      return 'Add Reviewer';
+      return i18n.t('incident.titles.add_reviewer');
     }
-    return 'Edit Reviewer';
+    return i18n.t('incident.titles.edit_reviewer');
   }.property('model.isNew'),
 
   updateCapability: 'add_reviewer',
