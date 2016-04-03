@@ -24,6 +24,22 @@ test('visiting /appointments', function(assert) {
   });
 });
 
+test('visiting /appointments/missed', function(assert) {
+  runWithPouchDump('appointments', function() {
+    authenticateUser();
+    let shortFormat = 'l';
+    // create an apointmet scheduled in the past
+    let lastWeek = moment().subtract(7, 'days');
+    let sixDaysAgo = moment().subtract(6, 'days');
+    createAppointment(lastWeek.toDate(), sixDaysAgo.toDate());
+    visit('/appointments/missed');
+    andThen(function() {
+      assert.equal(currentURL(), '/appointments/missed');
+      findWithAssert(`.appointment-date:contains(${moment(lastWeek).format(shortFormat)} - ${moment(sixDaysAgo).format(shortFormat)})`);
+    });
+  });
+});
+
 test('Creating a new appointment', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
@@ -35,20 +51,7 @@ test('Creating a new appointment', function(assert) {
       findWithAssert('button:contains(Add)');
     });
 
-    fillIn('.test-patient-input .tt-input', 'Lennex Zinyando - P00017');
-    triggerEvent('.test-patient-input .tt-input', 'input');
-    triggerEvent('.test-patient-input .tt-input', 'blur');
-    select('.test-appointment-type', 'Followup');
-    waitToAppear('.test-appointment-date input');
-    andThen(function() {
-      selectDate('.test-appointment-date input', new Date());
-    });
-    fillIn('.test-appointment-location .tt-input', 'Harare');
-    triggerEvent('.test-appointment-location .tt-input', 'input');
-    triggerEvent('.test-appointment-location .tt-input', 'blur');
-    fillIn('.test-appointment-with', 'Dr Test');
-    click('button:contains(Add)');
-    waitToAppear('.table-header');
+    createAppointment();
 
     andThen(() => {
       assert.equal(currentURL(), '/appointments');
@@ -133,7 +136,7 @@ test('Delete an appointment', function(assert) {
   });
 });
 
-function createAppointment() {
+function createAppointment(startDate=(new Date()), endDate=(moment().add(1, 'day').toDate())) {
   visit('/appointments/edit/new');
   fillIn('.test-patient-input .tt-input', 'Lennex Zinyando - P00017');
   triggerEvent('.test-patient-input .tt-input', 'input');
@@ -141,10 +144,10 @@ function createAppointment() {
   select('.test-appointment-type', 'Admission');
   waitToAppear('.test-appointment-start input');
   andThen(function() {
-    selectDate('.test-appointment-start input', new Date());
+    selectDate('.test-appointment-start input', startDate);
   });
   andThen(function() {
-    selectDate('.test-appointment-end input', moment().add(1, 'day').toDate());
+    selectDate('.test-appointment-end input', endDate);
   });
   fillIn('.test-appointment-location .tt-input', 'Harare');
   triggerEvent('.test-appointment-location .tt-input', 'input');
