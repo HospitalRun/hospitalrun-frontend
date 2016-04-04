@@ -249,8 +249,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         incidentLocationsList = this.get('incidentLocationsList');
       if (Ember.isEmpty(incidentLocationsList)) {
         return SelectValues.selectValues(defaultIncidentLocations);
-      }
-      else {
+      } else {
         return SelectValues.selectValues(incidentLocationsList);
       }
     }.property('incidentLocationsList', 'defaultIncidentLocations'),
@@ -269,8 +268,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       sequenceValue = sequence.get('value');
       if (sequenceValue < 100000) {
         friendlyId += String('00000' + sequenceValue).slice(-5);
-      }
-      else {
+      } else {
         friendlyId += sequenceValue;
       }
       model.set('friendlyId', friendlyId);
@@ -310,8 +308,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       this._findSequenceByPrefix(type, prefixChars).then(function(records) {
         if (Ember.isEmpty(records.rows)) {
           resolve(prefixChars);
-        }
-        else {
+        } else {
           this._checkNextSequence(resolve, type, prefixChars);
         }
       }.bind(this), function() {
@@ -337,8 +334,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
             this._findSequence(type, resolve, reject);
           }.bind(this));
         }.bind(this));
-      }
-      else {
+      } else {
         // We need to return a promise because we need to ensure we have saved the inc-contributing-factor records first.
         return new Ember.RSVP.Promise(function(resolve, reject) {
           var model = model.get('model'),
@@ -461,7 +457,8 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       var categoryNameSelected = this.get('model.categoryName');
       if (!Ember.isEmpty(categoryNameSelected)) {
         var incidentCategory = this.get('incidentCategoryList');
-        return incidentCategory.findBy('incidentCategoryName', categoryNameSelected);
+        var temp = incidentCategory.findBy('incidentCategoryName', categoryNameSelected);
+        return temp.get('firstObject.incidentCategoryItems');
       }
     }.property('model.categoryName'),
 
@@ -487,8 +484,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
               contributingFactors.removeObject(existingFactor);
               savePromises.push(existingFactor.destroyRecord());
             }
-          }
-          else {
+          } else {
             if (Ember.isEmpty(existingFactor)) {
               // Checkbox is checked, but value isn't stored on the model, so save it
               existingFactor = this.store.createRecord('inc-contributing-factor', {
@@ -517,8 +513,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       this.get(listName).then(function(list) {
         if (removeObject) {
           list.removeObject(listObject);
-        }
-        else {
+        } else {
           list.addObject(listObject);
         }
         this.send('update', true);
@@ -532,8 +527,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         var cancelledItem = this.get('model');
         if (this.get('isNew')) {
           cancelledItem.deleteRecord();
-        }
-        else {
+        } else {
           cancelledItem.rollback();
         }
         this.send(this.get('cancelAction'));

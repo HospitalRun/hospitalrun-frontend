@@ -54,8 +54,11 @@
         </div>
         <div class="panel-body detail-section-content">
           <div class="row">
-            {{em-select class="col-xs-12 col-sm-6 required" label=(t 'incident.labels.category') prompt=" " property="categoryName" content=incidentCategoryList.incidentCategoryName selected=model.categoryName}} {{em-select class="col-xs-12 col-sm-6 required"
-            label=(t 'incident.labels.choose') prompt=" " property="categoryItem" content=itemList selected=model.categoryItem}}
+            {{em-select class="col-xs-12 col-sm-6 required" label=(t 'incident.labels.category')
+              prompt=" " property="categoryName" content=incidentCategoryList optionValuePath="incidentCategoryName"
+              optionLabelPath="incidentCategoryName" selected=model.categoryName}}
+            {{em-select class="col-xs-12 col-sm-6 required" label=(t 'incident.labels.choose')
+              prompt=" " property="categoryItem" content=itemList selected=model.categoryName}}
           </div>
           <div class="row">
             {{em-input property="categoryOther" label=(t 'incident.labels.other') class="col-xs-12 col-sm-6"}}
