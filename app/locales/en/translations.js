@@ -580,6 +580,7 @@ export default {
     new_title: 'New Appointment',
     section_title: 'Appointments',
     this_week: 'Appointments This Week',
+    missed: 'Missed Appointments',
     search_title: 'Search Appointments',
     today_title: 'Today\'s Appointments',
     messages: {
