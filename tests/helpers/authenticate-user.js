@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import {authenticateSession} from 'hospitalrun/tests/helpers/ember-simple-auth';
+import {invalidateSession} from 'hospitalrun/tests/helpers/ember-simple-auth';
 
 const {
   merge
@@ -15,4 +16,8 @@ Ember.Test.registerHelper('authenticateUser', function(app, attrs = {}) {
       prefix: 'p1'
     }, attrs)
   );
+});
+
+Ember.Test.registerHelper('invalidateSession', function(app) {
+  invalidateSession(app);
 });
