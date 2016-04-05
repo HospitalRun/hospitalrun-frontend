@@ -7,7 +7,7 @@
           <select onchange={{action "selectRole" value="target.value"}} class="form-control role-select">
             <option disabled selected={{is-not selectedRole}}>
             </option>
-            {{#each userRoles as |userRole|}}
+            {{#each filteredRoles as |userRole|}}
               <option value="{{userRole.name}}"
                       selected={{eq selectedRole userRole.name}}>
                 {{userRole.name}}

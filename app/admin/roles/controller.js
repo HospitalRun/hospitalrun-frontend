@@ -8,6 +8,9 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
   disabledAction: false,
   hideCancelButton: true,
   updateCapability: 'user_roles',
+  filteredRoles: Ember.computed.filter('userRoles', function(userRole) {
+    return (userRole.name !== 'System Administrator');
+  }),
 
   availableCapabilities: [{
     name: 'admin',
