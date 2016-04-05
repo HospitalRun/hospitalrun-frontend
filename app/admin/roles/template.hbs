@@ -4,7 +4,7 @@
       {{#em-form model=this submitButton=false }}
         <div class="form-group has-success">
           <label class="control-label">{{t 'labels.role'}}</label>
-          <select onchange={{action "selectRole" value="target.value"}} class="form-control">
+          <select onchange={{action "selectRole" value="target.value"}} class="form-control role-select">
             <option disabled selected={{is-not selectedRole}}>
             </option>
             {{#each userRoles as |userRole|}}
@@ -24,7 +24,7 @@
             </div>
             <div class="detail-section-content">
               {{#each capabilitySection.capabilities as |capability|}}
-                {{em-checkbox label=capability.name property=capability.key}}
+                {{em-checkbox label=capability.name property=capability.key class=(concat 'checkbox' ' checkbox-' capability.key)}}
               {{/each}}
             </div>
           </div>
