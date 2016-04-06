@@ -10,7 +10,7 @@
   "scripts": {
     "build": "./script/build",
     "start": "./script/server",
-    "test": "./script/test"
+    "test": "snyk test && ./script/test"
   },
   "repository": {
     "type": "git",
@@ -73,7 +73,8 @@
     "request": "2.70.0"
   },
   "dependencies": {
-    "ember-radio-buttons": "^4.0.1"
+    "ember-radio-buttons": "^4.0.1",
+    "snyk": "^1.13.2"
   },
   "ember-addon": {
     "paths": [
