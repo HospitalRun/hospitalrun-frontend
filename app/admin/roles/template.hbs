@@ -1,0 +1,35 @@
+{{#edit-panel editPanelProps=editPanelProps}}
+  <div class="panel panel-primary">
+    <div class="panel-body">
+      {{#em-form model=this submitButton=false }}
+        <div class="form-group has-success">
+          <label class="control-label">{{t 'labels.role'}}</label>
+          <select onchange={{action "selectRole" value="target.value"}} class="form-control role-select">
+            <option disabled selected={{is-not selectedRole}}>
+            </option>
+            {{#each filteredRoles as |userRole|}}
+              <option value="{{userRole.name}}"
+                      selected={{eq selectedRole userRole.name}}>
+                {{userRole.name}}
+              </option>
+            {{/each}}
+          </select>
+        </div>
+        {{#each capabilitySections as |capabilitySection|}}
+          <div class="detail-section">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                {{capabilitySection.name}}
+              </h3>
+            </div>
+            <div class="detail-section-content">
+              {{#each capabilitySection.capabilities as |capability|}}
+                {{em-checkbox label=capability.name property=capability.key class=(concat 'checkbox' ' checkbox-' capability.key)}}
+              {{/each}}
+            </div>
+          </div>
+        {{/each}}
+      {{/em-form}}
+    </div>
+  </div>
+{{/edit-panel}}
