@@ -1,6 +1,6 @@
 {
   "name": "hospitalrun",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "Ember front end for HospitalRun",
   "homepage": "http://hospitalrun.io",
   "directories": {

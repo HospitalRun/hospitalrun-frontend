@@ -1,7 +1,25 @@
 # Change Log
 
-## [0.9.2](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.2)
+## [0.9.3](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.3)
 
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.2...0.9.3)
+
+**Implemented enhancements:**
+
+- Allow custom roles [\#338](https://github.com/HospitalRun/hospitalrun-frontend/issues/338)
+
+**Fixed bugs:**
+
+- Paging breaks when last item has an ampersand \(&\) in the name [\#408](https://github.com/HospitalRun/hospitalrun-frontend/issues/408)
+
+**Merged pull requests:**
+
+- Update hospitalrun-server-routes to version 0.9.4 🚀 [\#405](https://github.com/HospitalRun/hospitalrun-frontend/pull/405) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Added ability to save roles [\#404](https://github.com/HospitalRun/hospitalrun-frontend/pull/404) ([jkleinsc](https://github.com/jkleinsc))
+- Update request to version 2.70.0 🚀 [\#403](https://github.com/HospitalRun/hospitalrun-frontend/pull/403) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Done the french translation [\#400](https://github.com/HospitalRun/hospitalrun-frontend/pull/400) ([douno](https://github.com/douno))
+
+## [0.9.2](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.2) (2016-03-30)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.1...0.9.2)
 
 **Implemented enhancements:**

@@ -1,11 +1,11 @@
 importScripts('sw-toolbox.js');
 var CACHE_PREFIX = 'brocsw-v';
-var CACHE_VERSION = CACHE_PREFIX+'1459363078940';
+var CACHE_VERSION = CACHE_PREFIX+'1460144787073';
 toolbox.options.cache.name = CACHE_VERSION;
 var urlsToPrefetch = [
     '/',
     "assets/hospitalrun-5597b10d9b3989644768cdf048da1cad.css",
-    "assets/hospitalrun-9b80c3a7e4645e1aae9abbc5e1b8b20c.js",
+    "assets/hospitalrun-b56d503b103aa8b74bbdea0d513efcf8.js",
     "assets/vendor-b57517d0e9737f65a1aa2c92104e9858.js",
     "assets/vendor-ed8acd5f4063b4b83b5df16f6da9e8b0.css",
     "crossdomain.xml",
@@ -13185,7 +13185,7 @@ toolbox.router.post('/db/main/_bulk_docs', function(request, values, options) {
 });
 
 function setupRemoteSync() {
-  if (!syncingRemote) {
+  if (!syncingRemote && !configs.config_disable_offline_sync) {
     var pouchOptions = {
       ajax: {
         headers: {},
@@ -13299,12 +13299,16 @@ function logPerformance(elapsedTime, requestUrl) {
 }
 
 function runPouchFn(pouchDBFn, request, resolve, reject) {
-  pouchDBFn(request).then(function(response) {
-    resolve(convertPouchToResponse(response));
-  }).catch(function(err) {
-    logDebug('POUCH error is:', err);
-    reject(err);
-  });
+  if (configs.disable_offline_sync) {
+    reject('Offline access has been disabled.');
+  } else {
+    pouchDBFn(request).then(function(response) {
+      resolve(convertPouchToResponse(response));
+    }).catch(function(err) {
+      logDebug('POUCH error is:', err);
+      reject(err);
+    });
+  }
 }
 
 self.addEventListener('install', function(event) {
