@@ -12,6 +12,13 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     database: Ember.inject.service(),
     incidentController: Ember.inject.controller('incident'),
 
+    categoryNameList: Ember.computed.map('incidentCategoryList', function (value) {
+      return {
+        id: value.get('incidentCategoryName'),
+        value: value.get('incidentCategoryName')
+      };
+    }),
+    
     canAddFeedback: function() {
       var canAdd = true;
       if (this.get('model.statusOfIncident') === 'Closed') {
@@ -337,7 +344,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       } else {
         // We need to return a promise because we need to ensure we have saved the inc-contributing-factor records first.
         return new Ember.RSVP.Promise(function(resolve, reject) {
-          var model = model.get('model'),
+          var model = this.get('model'),
             patientFactors = this.get('patientFactors'),
             savePromises = [];
 
@@ -400,55 +407,55 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     },
 
     havePatientContributingFactors: function() {
-      var model = model.get('model'),
+      var model = this.get('model'),
         patientFactorsLength = model.get('patientContributingFactors.length');
       return (patientFactorsLength > 0);
     }.property('patientContributingFactors.length'),
 
     haveStaffContributingFactors: function() {
-      var model = model.get('model'),
+      var model = this.get('model'),
         staffFactorsLength = model.get('staffContributingFactors.length');
       return (staffFactorsLength > 0);
     }.property('staffContributingFactors.length'),
 
     haveTaskContributingFactors: function() {
-      var model = model.get('model'),
+      var model = this.get('model'),
         taskFactorsLength = model.get('taskContributingFactors.length');
       return (taskFactorsLength > 0);
     }.property('taskContributingFactors.length'),
 
     haveCommunicationContributingFactors: function() {
-      var model = model.get('model'),
+      var model = this.get('model'),
         communicationFactorsLength = model.get('communicationContributingFactors.length');
       return (communicationFactorsLength > 0);
     }.property('communicationContributingFactors.length'),
 
     haveEquipmentContributingFactors: function() {
-      var model = model.get('model'),
+      var model = this.get('model'),
         equipmentFactorsLength = model.get('equipmentContributingFactors.length');
       return (equipmentFactorsLength > 0);
     }.property('equipmentContributingFactors.length'),
 
     haveWorkEnvironmentContributingFactors: function() {
-      var model = model.get('model'),
+      var model = this.get('model'),
         wrkEnvironmentFactorsLength = model.get('wrkEnvironmentContributingFactors.length');
       return (wrkEnvironmentFactorsLength > 0);
     }.property('wrkEnvironmentContributingFactors.length'),
 
     haveOrganizationalContributingFactors: function() {
-      var model = model.get('model'),
+      var model = this.get('model'),
         organizationalFactorsLength = model.get('organizationalContributingFactors.length');
       return (organizationalFactorsLength > 0);
     }.property('organizationalContributingFactors.length'),
 
     haveEducationTrainingContributingFactors: function() {
-      var model = model.get('model'),
+      var model = this.get('model'),
         eduTrainingFactorsLength = model.get('eduTrainingContributingFactors.length');
       return (eduTrainingFactorsLength > 0);
     }.property('eduTrainingContributingFactors.length'),
 
     haveTeamContributingFactors: function() {
-      var model = model.get('model'),
+      var model = this.get('model'),
         teamFactorsLength = model.get('teamContributingFactors.length');
       return (teamFactorsLength > 0);
     }.property('teamContributingFactors.length'),
@@ -456,9 +463,9 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     itemList: function() {
       var categoryNameSelected = this.get('model.categoryName');
       if (!Ember.isEmpty(categoryNameSelected)) {
-        var incidentCategory = this.get('incidentCategoryList');
-        var temp = incidentCategory.findBy('incidentCategoryName', categoryNameSelected);
-        return temp.get('firstObject.incidentCategoryItems');
+        var categoryList = this.get('incidentCategoryList');
+        var incidentCategory = categoryList.findBy('incidentCategoryName', categoryNameSelected);
+        return incidentCategory.get('incidentCategoryItems');
       }
     }.property('model.categoryName'),
 

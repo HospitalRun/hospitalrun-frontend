@@ -55,10 +55,9 @@
         <div class="panel-body detail-section-content">
           <div class="row">
             {{em-select class="col-xs-12 col-sm-6 required" label=(t 'incident.labels.category')
-              prompt=" " property="categoryName" content=incidentCategoryList optionValuePath="incidentCategoryName"
-              optionLabelPath="incidentCategoryName" selected=model.categoryName}}
+              prompt=" " property="categoryName" content=categoryNameList}}
             {{em-select class="col-xs-12 col-sm-6 required" label=(t 'incident.labels.choose')
-              prompt=" " property="categoryItem" content=itemList selected=model.categoryName}}
+              prompt=" " property="categoryItem" content=itemList optionLabelPath="item" optionValuePath="item"}}
           </div>
           <div class="row">
             {{em-input property="categoryOther" label=(t 'incident.labels.other') class="col-xs-12 col-sm-6"}}
