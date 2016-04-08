@@ -44,7 +44,7 @@ toolbox.router.post('/db/main/_bulk_docs', function(request, values, options) {
 });
 
 function setupRemoteSync() {
-  if (!syncingRemote) {
+  if (!syncingRemote && !configs.config_disable_offline_sync) {
     var pouchOptions = {
       ajax: {
         headers: {},
@@ -158,10 +158,14 @@ function logPerformance(elapsedTime, requestUrl) {
 }
 
 function runPouchFn(pouchDBFn, request, resolve, reject) {
-  pouchDBFn(request).then(function(response) {
-    resolve(convertPouchToResponse(response));
-  }).catch(function(err) {
-    logDebug('POUCH error is:', err);
-    reject(err);
-  });
+  if (configs.disable_offline_sync) {
+    reject('Offline access has been disabled.');
+  } else {
+    pouchDBFn(request).then(function(response) {
+      resolve(convertPouchToResponse(response));
+    }).catch(function(err) {
+      logDebug('POUCH error is:', err);
+      reject(err);
+    });
+  }
 }
