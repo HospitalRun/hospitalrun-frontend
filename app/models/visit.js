@@ -32,6 +32,8 @@ export default AbstractModel.extend({
   imaging: DS.hasMany('imaging', { async: true }),
   labs: DS.hasMany('lab', { async: true }),
   location: DS.attr('string'),
+  visitLocationType: DS.attr('string', {defaultValue:'Health Facility'}),
+  visitLocationOther: DS.attr('string'),
   medication: DS.hasMany('medication', { async: true }),
   // this field is being deprecated in favor of patient-note
   notes: DS.attr('string'),
