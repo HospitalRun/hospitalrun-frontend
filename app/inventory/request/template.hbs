@@ -62,7 +62,7 @@
         <div class="form-group">
           <label class="control-label">{{t 'inventory.labels.fulfill_request'}}</label>
         </div>
-        {{em-checkbox label=(t 'inventory.labels.fulfill_request') property="shouldFulfillRequest"}}
+        {{em-checkbox property="shouldFulfillRequest"}}
       {{/if}}
     {{/if}}
     {{select-or-typeahead property="deliveryLocation" label=(t 'inventory.labels.delivery_location') list=warehouseList selection=model.deliveryLocation class="test-delivery-location"}}
@@ -79,7 +79,7 @@
       <div class="form-group">
         <label class="control-label">{{t 'inventory.labels.consume_purchases'}}</label>
       </div>
-      {{em-checkbox label=(t 'inventory.labels.mark_as_consumed') property="markAsConsumed"}}
+      {{em-checkbox property="markAsConsumed"}}
     {{/if}}
   {{/em-form}}
 {{/edit-panel}}
