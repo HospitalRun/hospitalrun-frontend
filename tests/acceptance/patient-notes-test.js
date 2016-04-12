@@ -78,7 +78,7 @@ test('patient notes crud testing', function(assert) {
       assert.equal(find('#visit-notes table tr td:contains(This is a note.)').length, 1, 'Successfully added note.');
     });
     // update note
-    waitToAppear('##visit-notes table tr td button:contains(Edit)');
+    waitToAppear('#visit-notes table tr td button:contains(Edit)');
     andThen(function() {
       click('#visit-notes table tr td button:contains(Edit)');
     });
