@@ -1,41 +1,9 @@
 {{#print-this}}
   <div class="panel panel-primary print-invoice">
     <div class="panel-body">
-      <h5 class="text-center">
-        {{t "print.invoice.titles.patients"}}
-      </h5>
-      <h5 class="text-center">
-        {{t "print.invoice.titles.billingStatement"}}
-      </h5>
-      <table>
-        <tr>
-          <td colspan="2" class="col-xs-8">
-            {{t "print.invoice.labels.patientName"}} {{model.patient.displayName}}
-          </td>
-          <td class="col-xs-4">
-            {{t "print.invoice.labels.patientId"}} {{model.patient.displayPatientId}}
-          </td>
-        </tr>
-        <tr>
-          <td class="col-xs-5">
-            {{t "print.invoice.labels.patientAge"}} {{model.patient.age}}
-          </td>
-          <td class="col-xs-3">
-            {{t "print.invoice.labels.dateAdmitted"}}{{date-format model.visit.startDate}}
-          </td>
-          <td class="col-xs-4"></td>
-        </tr>
-        <tr>
-          <td class="col-xs-5"></td>
-          <td class="col-xs-3">{{t "print.invoice.labels.dateDischarged"}}{{date-format model.visit.endDate}}</td>
-          <td class="col-xs-4"></td>
-        </tr>
-        <tr>
-          <td colspan="3" class="col-xs-12">
-            {{t "print.invoice.labels.patientAddress"}} {{model.patient.displayAddress}}
-          </td>
-        </tr>
-      </table>
+      {{#if model.template.isError}}
+        Please define a template in {{#link-to 'admin.invoice-template'}}Adminstrator->Invoice Templates{{/link-to}}
+      {{/if}}
       <table class="table">
         <tr class="table-header">
           <th>{{t "labels.description"}}</th>

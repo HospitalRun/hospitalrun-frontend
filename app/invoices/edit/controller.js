@@ -102,7 +102,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     },
 
     printInvoice: function() {
-      this.transitionToRoute('print.invoice', this.get('model'));
+      this.transitionToRoute('print.invoice', this.get('model.id'));
     },
 
     removePayment: function(removeInfo) {

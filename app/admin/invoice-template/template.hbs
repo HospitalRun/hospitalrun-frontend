@@ -1,16 +1,47 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  <div class="panel panel-primary">
-    <div class="panel-body">
-      {{#em-form model=model submitButton=false }}
-        {{em-input label=(t 'admin.address.address1_label') property="value.address1Label"}}
-        {{em-checkbox label=(t 'admin.address.include1_label') property="value.address1Include"}}
-        {{em-input label=(t 'admin.address.address2_label') property="value.address2Label"}}
-        {{em-checkbox label=(t 'admin.address.include2_label') property="value.address2Include"}}
-        {{em-input label=(t 'admin.address.address3_label') property="value.address3Label"}}
-        {{em-checkbox label=(t 'admin.address.include3_label') property="value.address3Include"}}
-        {{em-input label=(t 'admin.address.address4_label') property="value.address4Label"}}
-        {{em-checkbox label=(t 'admin.address.include4_label') property="value.address4Include"}}
-      {{/em-form}}
+    <ul class="nav nav-pills" role="tablist">
+      <li role="presentation" class="active"><a class="active" href="#edit" role="tab" data-toggle="pill" data-test-selector="general-tab">Edit</a></li>
+      <li role="presentation"><a class="active" href="#preview" role="tab" data-toggle="pill" data-test-selector="general-tab">Preview</a></li>
+    </ul>
+      
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="edit">
+        <div class="panel detail-section">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              Invoice Template
+            </h3>
+          </div>
+          <div class="panel-body detail-section-content">
+            <div class="row">      
+              <h4>Header Template</h4>
+              {{textarea value=model.value.invoiceHeader}}
+              
+              <h4>Footer Template</h4>
+              {{textarea value=model.value.invoiceFooter}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="preview">
+        <div class="panel detail-section">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              Invoice Template Preview
+            </h3>
+          </div>
+          <div class="panel-body detail-section-content">
+            <div class="row">      
+              <h4>Header Template</h4>
+              {{model.value.invoiceHeader}}
+              
+              <h4>Footer Template</h4>
+              {{model.value.invoiceFooter}}
+            </div>
+          </div>
+        </div>
+      </div>      
+      
     </div>
-  </div>
+
 {{/edit-panel}}

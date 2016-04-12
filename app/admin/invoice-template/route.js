@@ -6,15 +6,15 @@ export default AbstractEditRoute.extend({
   editTitle: 'Invoice Template',
   model: function() {
     return new Ember.RSVP.Promise(function(resolve) {
-      this.get('store').find('option', 'address_options').then(function(addressOptions) {
-        resolve(addressOptions);
+      this.get('store').find('option', 'invoice_template').then(function(invoiceOptions) {
+        resolve(invoiceOptions);
       }, function() {
         var store = this.get('store');
         var newConfig = store.push(store.normalize('option', {
-          id: 'address_options',
+          id: 'invoice_template',
           value: {
-            address1Label: 'Address',
-            address1Include: true
+            invoiceHeader: 'Header',
+            invoiceFooter: 'Footer'
           }
         }));
         resolve(newConfig);

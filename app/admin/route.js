@@ -4,6 +4,7 @@ export default AbstractModuleRoute.extend({
   allowSearch: false,
   moduleName: 'admin',
   sectionTitle: 'Admin',
+  subActions: [],
 
   editPath: function() {
     return 'users.edit';
