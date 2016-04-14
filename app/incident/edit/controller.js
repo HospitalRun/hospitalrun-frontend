@@ -517,7 +517,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
      * otherwise add the specified object to the list.
      */
     updateList: function(listName, listObject, removeObject) {
-      this.get(listName).then(function(list) {
+      this.get('model.' + listName).then(function(list) {
         if (removeObject) {
           list.removeObject(listObject);
         } else {

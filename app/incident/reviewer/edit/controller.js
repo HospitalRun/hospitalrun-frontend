@@ -1,26 +1,22 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
-
 export default AbstractEditController.extend({
-
-  cancelAction: 'closeModal',
-
+  incidentController: Ember.inject.controller('incident'),
   editController: Ember.inject.controller('incident/edit'),
 
-  userList: Ember.computed.alias('editController.userList'),
+  userList: Ember.computed.alias('incidentController.userList'),
+
+  cancelAction: 'closeModal',
+  updateCapability: 'add_reviewer',
 
   newReviewer: false,
 
-  setReviewerName: function() {
-      var email = this.get('reviewerEmail');
-      if (!Ember.isEmpty(email)) {
-        var userList = this.get('userList'),
-            userObject = userList.findBy('email', email);
-        if (!Ember.isEmpty(userObject)) {
-          this.set('reviewerName', userObject.get('displayName'));
-        }
-      }
-    }.observes('reviewerEmail'),
+  emailList: Ember.computed.map('userList', function(value) {
+    return {
+      value: value.get('displayName'),
+      id: value.get('email')
+    };
+  }),
 
   title: function() {
     var isNew = this.get('model.isNew');
@@ -31,9 +27,15 @@ export default AbstractEditController.extend({
     return i18n.t('incident.titles.edit_reviewer');
   }.property('model.isNew'),
 
-  updateCapability: 'add_reviewer',
-
   beforeUpdate: function() {
+    var email = this.get('model.reviewerEmail');
+    if (!Ember.isEmpty(email)) {
+      var userList = this.get('userList'),
+          userObject = userList.findBy('email', email);
+      if (!Ember.isEmpty(userObject)) {
+        this.set('model.reviewerName', userObject.get('displayName'));
+      }
+    }
     if (this.get('model.isNew')) {
       this.set('newReviewer', true);
     }

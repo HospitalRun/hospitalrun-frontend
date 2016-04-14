@@ -1,9 +1,7 @@
-{{#edit-panel editPanelProps=editPanelProps}}
+{{#modal-dialog isUpdateDisabled=isUpdateDisabled title=title updateButtonAction=updateButtonAction updateButtonText=updateButtonText}}
   {{#em-form model=model submitButton=false }}
     <div class="row">
-      {{em-select label=(t 'incident.labels.add_reviewer') property="reviewerEmail" content=userList
-        optionValuePath="email" optionLabelPath="displayName"
-      }}
+      {{em-select label=(t 'incident.titles.add_reviewer') property="reviewerEmail" content=emailList class="col-sm-12"}}
     </div>
   {{/em-form}}
-{{/edit-panel}}
+{{/modal-dialog}}

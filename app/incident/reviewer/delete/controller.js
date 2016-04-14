@@ -4,14 +4,15 @@ import { translationMacro as t } from 'ember-i18n';
 export default AbstractDeleteController.extend({
   afterDeleteAction: 'notifyReviewerDelete',
   editController: Ember.inject.controller('incident/edit'),
+
   title: t('incident.titles.delete_reviewer'),
 
   actions: {
     notifyReviewerDelete: function() {
+      this.get('editController').send('deleteReviewer', this.get('model'));
       this.get('model').destroyRecord().then(function() {
         this.send('closeModal');
       }.bind(this));
-      this.get('editController').send('deleteReviewer', this.get('model'));
     }
   }
 });
