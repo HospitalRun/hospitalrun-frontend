@@ -13,6 +13,14 @@ export default AbstractEditRoute.extend(ChargeRoute, {
       startDate: new Date(),
       status: 'Admitted'
     });
-  }
+  },
 
+  actions: {
+    updateNote: function() {
+      this.controller.send('update', true);
+    },
+    deletePatientNote: function(model) {
+      this.controller.send('deletePatientNote', model);
+    }
+  }
 });

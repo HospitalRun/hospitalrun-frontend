@@ -4,25 +4,7 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
   editController: Ember.inject.controller('admin/lookup'),
   showUpdateButton: true,
 
-  title: function() {
-    var isNew = this.get('model.isNew');
-    if (isNew) {
-      return 'Add Value';
-    } else {
-      return 'Edit Value';
-    }
-  }.property('model.isNew'),
-
   updateButtonAction: 'update',
-
-  updateButtonText: function() {
-    var isNew = this.get('model.isNew');
-    if (isNew) {
-      return 'Add';
-    } else {
-      return 'Update';
-    }
-  }.property('model.isNew'),
 
   actions: {
     cancel: function() {

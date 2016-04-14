@@ -9,7 +9,7 @@
 
           <h2 class="form-signin-heading">{{t 'login.messages.sign_in'}}</h2>
           {{#if errorMessage}}
-              <div class="alert alert-danger form-signin-alert" role="alert">{{errorMessage}}</div>
+              <div class="alert alert-danger form-signin-alert" role="alert">{{t 'login.messages.error'}}</div>
           {{/if}}
           <div class="form-group">
               {{input id='identification' value=identification placeholder=(t 'login.labels.username') class='form-control'}}

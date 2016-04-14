@@ -38,16 +38,6 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
   moduleName: 'inventory',
 
   newButtonText: '+ new request',
-  subActions: [{
-    text: 'Requests',
-    linkTo: 'inventory.index'
-  }, {
-    text: 'Items',
-    linkTo: 'inventory.listing'
-  }, {
-    text: 'Reports',
-    linkTo: 'inventory.reports'
-  }],
   sectionTitle: 'Inventory',
 
   actions: {

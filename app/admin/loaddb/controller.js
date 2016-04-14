@@ -1,11 +1,12 @@
 import Ember from 'ember';
+import { translationMacro as t } from 'ember-i18n';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 export default Ember.Controller.extend(ModalHelper, ProgressDialog, {
     database: Ember.inject.service(),
     fileSystem: Ember.inject.service('filesystem'),
-    progressMessage: 'Please wait while your database is loaded.',
-    progressTitle: 'Loading Database',
+    progressMessage: t('admin.loaddb.progress_message'),
+    progressTitle: t('admin.loaddb.progress_title'),
     syncResults: null,
 
     actions: {
@@ -13,7 +14,10 @@ export default Ember.Controller.extend(ModalHelper, ProgressDialog, {
         var fileSystem = this.get('fileSystem'),
           fileToImport = this.get('importFile');
         if (!fileToImport || !fileToImport.type) {
-          this.displayAlert('Select File To Load', 'Please select file to load.');
+          this.displayAlert(
+            this.get('i18n').t('admin.loaddb.display_alert_title'),
+            this.get('i18n').t('admin.loaddb.display_alert_message')
+          );
         } else {
           this.showProgressModal();
           this.set('syncResults');
@@ -25,7 +29,10 @@ export default Ember.Controller.extend(ModalHelper, ProgressDialog, {
               this.closeProgressModal();
               this.set('syncResults', results);
             }).catch((err) => {
-              this.displayAlert('Error Loading', `The database could not be imported.  The error was:${JSON.stringify(err)}`);
+              this.displayAlert(
+                this.get('i18n').t('admin.loaddb.error_display_alert_title'),
+                this.get('i18n').t('admin.loaddb.error_display_alert_message', { error: JSON.stringify(err) })
+              );
             });
           });
         }

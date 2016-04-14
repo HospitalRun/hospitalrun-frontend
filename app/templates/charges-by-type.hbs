@@ -1,18 +1,18 @@
 {{#if showPricingTypeTabs}}
-    <ul class="nav nav-pills" role="tablist">
-        {{#each pricingTypeList as |pricingType index|}}
-            {{charges-by-type-tab pricingType=pricingType index=index }}
-        {{/each}}
-    </ul>
+  <ul class="nav nav-pills tab-nav" role="tablist">
+    {{#each pricingTypeList as |pricingType index|}}
+      {{charges-by-type-tab pricingType=pricingType index=index }}
+    {{/each}}
+  </ul>
 {{/if}}
 <div class="tab-content">
-    {{#each pricingTypeList as |pricingType index|}}
-        {{price-list
-            canAddCharge=canAddCharge
-            pricingType=pricingType
-            index=index
-            pricingList=pricingList
-            model=model
-        }}
-    {{/each}}
+  {{#each pricingTypeList as |pricingType index|}}
+    {{price-list
+      canAddCharge=canAddCharge
+      pricingType=pricingType
+      index=index
+      pricingList=pricingList
+      model=model
+    }}
+  {{/each}}
 </div>

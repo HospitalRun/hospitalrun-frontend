@@ -8,16 +8,16 @@
 // ? unsure what below are for...
 
 .detail-section-content {
-    padding: 15px 0;
+  padding: 15px 0;
 
-    .table { margin-top: -15px; }
+  .table { margin-top: -15px; }
 }
 
 .table-header {
-    background-color: transparent;
+  background-color: transparent;
 
-    > th {
-        border-top: none !important;
-        font-weight: 300;
-    }
+  > th {
+    border-top: 0;
+    font-weight: 300;
+  }
 }

@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 export default BaseAuthenticator.extend({
+  config: Ember.inject.service(),
   database: Ember.inject.service(),
   serverEndpoint: '/db/_session',
   useGoogleAuth: false,
@@ -15,9 +16,9 @@ export default BaseAuthenticator.extend({
     }
   },
 
-  _checkUser: function(user, resolve, reject) {
-    this._makeRequest('POST', { name: user.name }, '/chkuser').then(function(response) {
-      Ember.run(function() {
+  _checkUser: function(user) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      this._makeRequest('POST', { name: user.name }, '/chkuser').then((response) => {
         if (response.error) {
           reject(response);
         }
@@ -25,9 +26,7 @@ export default BaseAuthenticator.extend({
         user.role = response.role;
         user.prefix = response.prefix;
         resolve(user);
-      });
-    }, function() {
-      Ember.run(function() {
+      }, () => {
         // If chkuser fails, user is probably offline; resolve with currently stored credentials
         resolve(user);
       });
@@ -81,30 +80,30 @@ export default BaseAuthenticator.extend({
         token_secret: credentials.params.s2,
         name: credentials.params.i
       };
-      return new Ember.RSVP.Promise(function(resolve, reject) {
-        this._checkUser(sessionCredentials, resolve, reject);
-      }.bind(this));
+      return new Ember.RSVP.Promise((resolve, reject) => {
+        this._checkUser(sessionCredentials).then((user) => {
+          resolve(user);
+          this.get('config').setCurrentUser(user.name);
+        }, reject);
+      });
     }
 
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
       var data = { name: credentials.identification, password: credentials.password };
-      this._makeRequest('POST', data).then(function(response) {
-        Ember.run(function() {
-          response.name = data.name;
-          response.expires_at = this._absolutizeExpirationTime(600);
-          this._checkUser(response, function(user) {
-            var database = this.get('database');
-            database.setup({}).then(function() {
-              resolve(user);
-            }, reject);
-          }.bind(this), reject);
-        }.bind(this));
-      }.bind(this), function(xhr) {
-        Ember.run(function() {
-          reject(xhr.responseJSON || xhr.responseText);
-        }.bind(this));
-      }.bind(this));
-    }.bind(this));
+      this._makeRequest('POST', data).then((response) => {
+        response.name = data.name;
+        response.expires_at = this._absolutizeExpirationTime(600);
+        this._checkUser(response).then((user) => {
+          this.get('config').setCurrentUser(user.name);
+          var database = this.get('database');
+          database.setup({}).then(() => {
+            resolve(user);
+          }, reject);
+        }, reject);
+      }, function(xhr) {
+        reject(xhr.responseJSON || xhr.responseText);
+      });
+    });
   },
 
   invalidate: function() {
@@ -116,7 +115,7 @@ export default BaseAuthenticator.extend({
   },
 
   restore: function(data) {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
       var now = (new Date()).getTime();
       if (!Ember.isEmpty(data.expires_at) && data.expires_at < now) {
         reject();
@@ -124,9 +123,9 @@ export default BaseAuthenticator.extend({
         if (data.google_auth) {
           this.useGoogleAuth = true;
         }
-        this._checkUser(data, resolve, reject);
+        this._checkUser(data).then(resolve, reject);
       }
-    }.bind(this));
+    });
   }
 
 });

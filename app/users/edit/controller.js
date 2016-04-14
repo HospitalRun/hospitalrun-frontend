@@ -38,7 +38,7 @@ export default AbstractEditController.extend(UserRoles, {
         updateModel.set('userPrefix', prefix);
       }
       updateModel.save().then(function() {
-        this.displayAlert('User Saved', 'The user has been saved.');
+        this.displayAlert(this.get('i18n').t('messages.user_saved'), this.get('i18n').t('messages.user_has_been_saved'));
       }.bind(this));
     }
   }

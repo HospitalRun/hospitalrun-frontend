@@ -5,7 +5,7 @@ export default Ember.Controller.extend(EditPanelProps, {
   hideCancelButton: true,
   showUpdateButton: true,
   updateButtonAction: 'query',
-  updateButtonText: 'Query',
+  updateButtonText: 'Query', // admin function not requiring i8ln
 
   objectTypeList: [
     'appointment',

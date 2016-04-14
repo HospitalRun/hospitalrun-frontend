@@ -35,7 +35,7 @@ export default AbstractModel.extend(LocationName, {
   // TODO: this value should be server calcuated property on model!
   estimatedDaysOfStock: 14,
 
-  availableLocations: computed('locations.[].lastModified', function() {
+  availableLocations: computed('locations.@each.quantity', function() {
     var locations = this.get('locations').filter((location) => {
       return location.get('quantity') > 0;
     });

@@ -4,10 +4,6 @@
 
         <div class="view-top-bar">
             <h1 class="view-current-title">{{currentScreenTitle}}</h1>
-        </div>
-
-        <div class="view-sub-bar">
-
             <div class="view-action-buttons">
                 {{#if newButtonAction}}
                 <button class="btn btn-primary" {{action newButtonAction}}>{{newButtonText}}</button>
@@ -20,7 +16,9 @@
                     {{/each}}
                 {{/if}}
             </div>
+        </div>
 
+        <div class="view-sub-bar">
             <ul class="nav nav-pills view-sub-nav">
                 {{#each subActions as |subAction|}}
                     {{#if subAction.statusQuery}}

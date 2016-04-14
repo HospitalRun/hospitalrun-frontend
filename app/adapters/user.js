@@ -2,10 +2,11 @@ import Ember from 'ember';
 import DS from 'ember-data';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default DS.RESTAdapter.extend(UserSession, {
+  database: Ember.inject.service(),
   session: Ember.inject.service(),
   endpoint: '/db/_users/',
-
   defaultSerializer: 'couchdb',
+  oauthHeaders: Ember.computed.alias('database.oauthHeaders'),
 
   ajaxError: function(jqXHR) {
     var error = this._super(jqXHR);
@@ -23,13 +24,13 @@ export default DS.RESTAdapter.extend(UserSession, {
   @private
   @param {String} url
   @param {String} type The request type GET, POST, PUT, DELETE etc.
-  @param {Object} hash
+  @param {Object} options
   @return {Object} hash
   */
-  ajaxOptions: function(url, type, hash) {
-    hash = hash || {};
-    hash.xhrFields = { withCredentials: true };
-    return this._super(url, type, hash);
+  ajaxOptions: function(url, type, options) {
+    options = options || {};
+    options.xhrFields = { withCredentials: true };
+    return this._super(url, type, options);
   },
 
   /**
@@ -54,18 +55,14 @@ export default DS.RESTAdapter.extend(UserSession, {
 
   /**
   Called by the store when a record is deleted.
-
-  The `deleteRecord` method  makes an Ajax (HTTP DELETE) request to a URL computed by `buildURL`.
-
   @method deleteRecord
   @param {DS.Store} store
   @param {subclass of DS.Model} type
   @param {DS.Snapshot} record
   @returns {Promise} promise
   */
-  deleteRecord: function(store, type, record) {
-    var deleteURL = this._getItemUrl(record);
-    return this.ajax(deleteURL, 'DELETE');
+  deleteRecord: function(store, type, snapshot) {
+    return this.updateRecord(store, type, snapshot, true);
   },
 
   /**
@@ -88,6 +85,15 @@ export default DS.RESTAdapter.extend(UserSession, {
     return this.ajax(findUrl, 'GET');
   },
 
+  headers: function() {
+    var oauthHeaders = this.get('oauthHeaders');
+    if (Ember.isEmpty(oauthHeaders)) {
+      return {};
+    } else {
+      return oauthHeaders;
+    }
+  }.property('oauthHeaders'),
+
   /**
    Called by the store when an existing record is saved
    via the `save` method on a model record instance.
@@ -102,13 +108,19 @@ export default DS.RESTAdapter.extend(UserSession, {
    @param {DS.Store} store
    @param {subclass of DS.Model} type
    @param {DS.Snapshot} record
+   @param {boolean} deleteUser true if we are deleting the user.
    @returns {Promise} promise
   */
-  updateRecord: function(store, type, record) {
+  updateRecord: function(store, type, record, deleteUser) {
     var data = {};
     var serializer = store.serializerFor(record.modelName);
     serializer.serializeIntoHash(data, type, record, { includeId: true });
     data.type = 'user';
+    if (deleteUser) {
+      data.deleted = true;
+      delete data.oauth;
+      data.roles = ['deleted'];
+    }
     if (Ember.isEmpty(data._rev)) {
       delete data._rev;
     }
@@ -162,17 +174,6 @@ export default DS.RESTAdapter.extend(UserSession, {
       }
     });
     return data;
-  },
-
-  _getItemUrl: function(record) {
-    var urlArray = [this.endpoint];
-    urlArray.push(Ember.get(record, 'id'));
-    var rev = record.attr('rev');
-    if (rev) {
-      urlArray.push('?rev=');
-      urlArray.push(rev);
-    }
-    return urlArray.join('');
   },
 
   shouldReloadAll: function() {

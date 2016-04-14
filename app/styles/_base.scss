@@ -2,6 +2,8 @@ body {
   background: $blue_lightest;
 
   &.ember-application {
-      padding-left: 275px; // to accomodate for .sidebar-nav
+    padding-left: 275px; // to accomodate for .sidebar-nav
   }
 }
+
+.clickable { cursor: pointer; }

@@ -9,11 +9,11 @@
     {{#if isShowingSettings }}
         <nav class="settings-nav">
         {{#if session.isAuthenticated}}
-            <a href="#" class="logout" {{ action 'invalidateSession' }}>Logout</a>
+            <a href="#" class="logout" {{ action 'invalidateSession' }}>{{t "navigation.actions.logout"}}</a>
         {{else}}
-            {{#link-to 'login'}}Login{{/link-to}}
+            {{#link-to 'login'}}{{t "navigation.actions.login"}}{{/link-to}}
         {{/if}}
-          <a href="#" {{ action 'about' }}>About HospitalRun</a>
+          <a href="#" {{ action 'about' }}>{{t "navigation.about"}}</a>
         </nav>
     {{/if}}
 

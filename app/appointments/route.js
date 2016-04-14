@@ -1,14 +1,16 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import UserSession from 'hospitalrun/mixins/user-session';
+import { translationMacro as t } from 'ember-i18n';
+
 export default AbstractModuleRoute.extend(UserSession, {
   addCapability: 'add_appointment',
   allowSearch: false,
-  currentScreenTitle: 'Appointment List',
-  editTitle: 'Edit Appointment',
-  newTitle: 'New Appointment',
+  currentScreenTitle: t('appointments.current_screen_title'),
+  editTitle: t('appointments.edit_title'),
+  newTitle: t('appointments.new_title'),
   moduleName: 'appointments',
-  newButtonText: '+ new appointment',
-  sectionTitle: 'Appointments',
+  newButtonText: t('appointments.buttons.new_button'),
+  sectionTitle: t('appointments.section_title'),
 
   actions: {
     createVisit: function(appointment) {
@@ -30,16 +32,5 @@ export default AbstractModuleRoute.extend(UserSession, {
   }, {
     name: 'visitTypesList',
     findArgs: ['lookup', 'visit_types']
-  }],
-
-  subActions: [{
-    text: 'This Week',
-    linkTo: 'appointments.index'
-  }, {
-    text: 'Today',
-    linkTo: 'appointments.today'
-  }, {
-    text: 'Search',
-    linkTo: 'appointments.search'
   }]
 });

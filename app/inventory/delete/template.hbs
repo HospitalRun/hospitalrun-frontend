@@ -4,7 +4,7 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
   <div class="alert alert-danger">
-    <span class="glyphicon glyphicon-warning-sign"></span>
-    Are you sure you wish to delete {{model.name}}?
+    <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+    {{t 'inventory.messages.delete' name=model.name}}
   </div>
 {{/modal-dialog}}

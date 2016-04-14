@@ -1,5 +1,6 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import UserSession from 'hospitalrun/mixins/user-session';
+import { translationMacro as t } from 'ember-i18n';
 export default AbstractIndexRoute.extend(UserSession, {
   modelName: 'inv-request',
   newButtonAction: function() {
@@ -9,8 +10,8 @@ export default AbstractIndexRoute.extend(UserSession, {
       return null;
     }
   }.property(),
-  newButtonText: '+ new request',
-  pageTitle: 'Requests',
+  newButtonText: t('buttons.new_request_plus'),
+  pageTitle: t('navigation.subnav.requests'),
 
   _getStartKeyFromItem: function(item) {
     var itemId = this._getPouchIdFromItem(item);

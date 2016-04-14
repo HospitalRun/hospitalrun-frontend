@@ -9,13 +9,13 @@
     <td>{{appointment.displayStatus}}</td>
     <td>
         {{#if canAddVisit}}
-            <button class="btn btn-default" {{action 'createVisit' appointment bubbles=false }}>Add Visit</button>
+            <button class="btn btn-default" {{action 'createVisit' appointment bubbles=false }}>{{t 'buttons.add_visit'}}</button>
         {{/if}}
         {{#if canEdit}}
             <button class="btn btn-default" {{action 'editAppointment' appointment bubbles=false }}>{{t 'labels.edit'}}</button>
         {{/if}}
         {{#if canDelete}}
-            <button class="btn btn-default" {{action 'deleteItem' appointment bubbles=false }}>Delete</button>
+            <button class="btn btn-default" {{action 'deleteItem' appointment bubbles=false }}>{{t 'buttons.delete'}}</button>
         {{/if}}
     </td>
 </tr>

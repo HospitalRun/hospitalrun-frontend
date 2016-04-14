@@ -22,6 +22,7 @@ Router.map(function() {
     }, function() {
       this.route('edit', { path: '/edit/:user_id' });
     });
+    this.route('roles');
     this.route('query');
   });
 
@@ -97,6 +98,7 @@ Router.map(function() {
   }, function() {
     this.route('edit', { path: '/edit/:patient_id' });
     this.route('reports');
+    this.route('admitted');
     this.route('search', { path: '/search/:search_text' });
   });
 

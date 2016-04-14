@@ -1,3 +1,4 @@
+import { translationMacro as t } from 'ember-i18n';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
@@ -94,8 +95,9 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
 
   actions: {
     doneFulfillRequest: function() {
+      let i18n = this.get('i18n');
       this.updateLookupLists();
-      this.displayAlert('Medication Returned', 'The medication has been marked as returned.', 'allItems');
+      this.displayAlert(i18n.t('medication.alerts.returned_title'), i18n.t('medication.alerts.returned_message'), 'allItems');
     },
     update: function() {
       var medication = this.get('model.medication'),
@@ -114,5 +116,5 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     }
   },
 
-  updateButtonText: 'Return Medication'
+  updateButtonText: t('medication.return_medication')
 });

@@ -548,8 +548,25 @@ export default Ember.Mixin.create({
       'System Administrator',
       'Quality',
       'Incident System Administrator'
-    ]
 
+    ],
+    add_note: [
+      'Doctor',
+      'Medical Records Officer',
+      'Nurse',
+      'Nurse Manager',
+      'Patient Administration',
+      'System Administrator'
+    ],
+    delete_note: [
+      'Medical Records Officer',
+      'Nurse Manager',
+      'Patient Administration',
+      'System Administrator'
+    ],
+    'user_roles': [
+      'System Administrator'
+    ]
   },
 
   _getUserSessionVars: function() {
@@ -562,10 +579,15 @@ export default Ember.Mixin.create({
   currentUserCan: function(capability) {
     var sessionVars = this._getUserSessionVars();
     if (!Ember.isEmpty(sessionVars) && !Ember.isEmpty(sessionVars.role)) {
-      var capabilities = this.get('defaultCapabilities'),
-        supportedRoles = capabilities[capability];
-      if (!Ember.isEmpty(supportedRoles)) {
-        return supportedRoles.contains(sessionVars.role);
+      var userCaps = this.get('session').get('data.authenticated.userCaps');
+      if (Ember.isEmpty(userCaps)) {
+        var capabilities = this.get('defaultCapabilities');
+        var supportedRoles = capabilities[capability];
+        if (!Ember.isEmpty(supportedRoles)) {
+          return supportedRoles.contains(sessionVars.role);
+        }
+      } else {
+        return userCaps.contains(capability);
       }
     }
     return false;
