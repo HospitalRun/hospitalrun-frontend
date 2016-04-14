@@ -324,10 +324,11 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     },
 
     afterUpdate: function() {
+      var i18n = this.get('i18n');
       if (this.get('model.statusOfIncident') === 'Opened') {
         this.set('model.statusOfIncident', 'Reported');
       }
-      this.displayAlert('Incident Saved', 'The Incident report has been saved.');
+      this.displayAlert(i18n.t('incident.titles.incident_saved'), i18n.t('incident.messages.saved'));
     },
 
     beforeUpdate: function() {

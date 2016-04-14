@@ -35,7 +35,7 @@ export default {
     return_button: 'Return',
     add: 'Add',
     update: 'Update',
-    ok: 'Ok'
+    ok: 'OK'
   },
   login: {
     messages: {
@@ -159,6 +159,7 @@ export default {
       no_closed_incidents: 'No closed incidents found.',
       occurence: 'Occurence:',
       risk_score: 'Risk Score:',
+      saved: 'The incident report has been saved.',
       severtiy: 'Severity:',
       status: 'Status: {{status}}'
     },
@@ -193,6 +194,7 @@ export default {
       edit_reviewer: 'Edit Reviewer',
       edit_recommendation: 'Edit Recommendation',
       feedback_list: 'Feedback List',
+      incident_saved: 'Incident Saved',
       findings: 'Investigation Findings - Narrative Statements from People Involved',
       general: 'General Information',
       harm_score: 'HARM Score',

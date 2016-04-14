@@ -10,9 +10,7 @@ export default AbstractDeleteController.extend({
   actions: {
     notifyReviewerDelete: function() {
       this.get('editController').send('deleteReviewer', this.get('model'));
-      this.get('model').destroyRecord().then(function() {
-        this.send('closeModal');
-      }.bind(this));
+      this.send('closeModal');
     }
   }
 });
