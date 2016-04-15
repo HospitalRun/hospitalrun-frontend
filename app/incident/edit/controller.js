@@ -578,7 +578,8 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       showAddReviewer: function() {
         var newReviewer = this.get('store').createRecord('inc-reviewer', {
           dateRecorded: new Date(),
-          addedBy: this._getCurrentUserName()
+          addedBy: this._getCurrentUserName(),
+          incident: this.get('model')
         });
         this.send('openModal', 'incident.reviewer.edit', newReviewer);
       },
