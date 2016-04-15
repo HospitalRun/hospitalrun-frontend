@@ -1,11 +1,14 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
-import SelectValues from 'utils/select-values';
+import SelectValues from 'hospitalrun/utils/select-values';
 
 export default AbstractEditController.extend(SelectValues, {
   cancelAction: 'closeModal',
+  updateCapability: 'add_investigation_finding',
 
   editController: Ember.inject.controller('incident/edit'),
+
+  newInvestigationFinding: false,
 
   typeOfPersonInvolved: [
     'Patient',
@@ -22,17 +25,14 @@ export default AbstractEditController.extend(SelectValues, {
     'Mobile Number'
   ].map(SelectValues.selectValuesMap),
 
-  newInvestigationFinding: false,
-
   title: function() {
+    var i18n = this.get('i18n');
     var isNew = this.get('model.isNew');
     if (isNew) {
-      return 'Add Investigation Finding';
+      return i18n.t('incident.titles.add_finding');
     }
-    return 'Edit Investigation Finding';
+    return i18n.t('incident.titles.edit_finding');
   }.property('model.isNew'),
-
-  updateCapability: 'add_investigation_finding',
 
   beforeUpdate: function() {
     if (this.get('model.isNew')) {

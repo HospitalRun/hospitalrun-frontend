@@ -12,13 +12,13 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     database: Ember.inject.service(),
     incidentController: Ember.inject.controller('incident'),
 
-    categoryNameList: Ember.computed.map('incidentCategoryList', function (value) {
+    categoryNameList: Ember.computed.map('incidentCategoryList', function(value) {
       return {
         id: value.get('incidentCategoryName'),
         value: value.get('incidentCategoryName')
       };
     }),
-    
+
     canAddFeedback: function() {
       var canAdd = true;
       if (this.get('model.statusOfIncident') === 'Closed') {

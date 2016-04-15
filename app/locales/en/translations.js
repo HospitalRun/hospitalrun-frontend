@@ -68,7 +68,6 @@ export default {
       messages: {
         address_saved: 'The address options have been saved'
       },
-
       new_title: 'Address Options',
       edit_title: 'Address Options',
       address_label: 'Address'
@@ -111,7 +110,6 @@ export default {
         update_button_text_add: 'Add',
         update_button_text_update: 'Update',
         value: 'Value'
-
       },
       anesthesia_types: 'Anesthesia Types',
       anesthesiologists: 'Anesthesiologists',
@@ -536,7 +534,6 @@ export default {
       saved_message: 'The imaging request has been saved.'
     }
   },
-
   incident: {
     buttons: {
       add: 'Add',
@@ -639,6 +636,7 @@ export default {
       add_reviewer: 'Add Reviewer',
       add_reviewers: 'Add Reviewers',
       add_feedback: 'Add Feedback',
+      add_finding: 'Add Investigation Finding',
       as_reviewer: 'Incidents as Reviewer',
       cfcf: 'Contributory Factors Classification Framework',
       closed: 'Closed Incidents',
@@ -649,12 +647,14 @@ export default {
       delete_recommendation: 'Delete Recommendation',
       delete_reviewer: 'Delete Reviewer',
       edit_feedback: 'Edit Feedback',
+      edit_finding: 'Edit Investigation Finding',
       edit_incident: 'Edit Incident',
       edit_reviewer: 'Edit Reviewer',
       edit_recommendation: 'Edit Recommendation',
       feedback_list: 'Feedback List',
       incident_saved: 'Incident Saved',
-      findings: 'Investigation Findings - Narrative Statements from People Involved',
+      findings: 'Investigation Findings',
+      findings2: 'Narrative Statements from People Involved',
       general: 'General Information',
       harm_score: 'HARM Score',
       history: 'History',
