@@ -55,7 +55,7 @@ export default EmText.extend({
 
       return cursorLoc >= s.index && cursorLoc <= endIndex;
     });
-  },
+  }),
 
   possibleSwaps: Ember.computed('activeExpansionSite', 'expansions', function() {
     const activeSite = this.get('activeExpansionSite');
@@ -92,4 +92,5 @@ export default EmText.extend({
       else {
         div.style.visibility = 'hidden';
       }
-});
+    })
+})
