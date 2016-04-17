@@ -15,6 +15,7 @@ export default EmText.extend({
       const feedbackDiv = document.createElement('div');
       feedbackDiv.style.position = 'absolute';
       const textarea = this.$()[0];
+      this.set('textarea', this.$()[0]);
       const textPos = textarea.getBoundingClientRect();
       const fbStyle = feedbackDiv.style;
       fbStyle.top = textPos.bottom + 'px';
@@ -39,44 +40,56 @@ export default EmText.extend({
   keyUp: function(k) {
     const textArea = k.target;
     const text = textArea.value;
-    const cursorLoc = textArea.selectionStart;
+    this.set('text', text);
+  },
+
+  activeExpansionSite: Ember.computed('text', function() {
+
+    const textarea = this.get('textarea');
+    const cursorLoc = textarea.selectionStart;
     const subjects = textExpansion.findExpansionSubjects(text);
     const sites = textExpansion.findExpansionSites(text, subjects);
 
-    const activeSite = sites.find(s => {
+    return sites.find(s => {
       const endIndex = s.index + s.match.length;
 
       return cursorLoc >= s.index && cursorLoc <= endIndex;
     });
+  },
 
-    console.log('activesite ' + JSON.stringify(activeSite));
+  possibleSwaps: Ember.computed('activeExpansionSite', 'expansions', function() {
+    const activeSite = this.get('activeExpansionSite');
 
-    const div = this.get('feedbackDiv');
 
     if (activeSite) {
       const expansions = this.get('expansions');
-      const possibleSwaps =
-        Object.keys(expansions)
+      return Object.keys(expansions)
         .filter(ex => {
           return ex.startsWith(activeSite.term);
         })
         .sort();
+    }
+  }),
 
-      div.style.visibility = 'visible';
-      if (possibleSwaps.length === 1) {
-        const swapFrom = possibleSwaps[0];
-        const swapTo = expansions[swapFrom];
-        div.innerHTML = `Press Enter to replace '${activeSite.term}' with '${swapTo}'`;
-      } else if (possibleSwaps.length > 1) {
-        div.innerHTML = 'Possible expansions: ' + possibleSwaps.join(', ');
+  feedbackText: Ember.computed('possibleSwaps', function() {
+      const div = this.get('feedbackDiv');
+      const possibleSwaps = this.get('possibleSwaps');
+
+      if (possibleSwaps) {
+          div.style.visibility = 'visible';
+          if (possibleSwaps.length === 1) {
+            const swapFrom = possibleSwaps[0];
+            const swapTo = expansions[swapFrom];
+            div.innerHTML = `Press Enter to replace '${activeSite.term}' with '${swapTo}'`;
+          } else if (possibleSwaps.length > 1) {
+            div.innerHTML = 'Possible expansions: ' + possibleSwaps.join(', ');
+          }
+          else {
+            div.innerHTML = 'No expansion terms match ' + activeSite.term;
+          }
+          div.innerHTML += '   ' + JSON.stringify(activeSite);
       }
       else {
-        div.innerHTML = 'No expansion terms match ' + activeSite.term;
+        div.style.visibility = 'hidden';
       }
-      div.innerHTML += '   ' + JSON.stringify(activeSite);
-    }
-    else {
-      div.style.visibility = 'hidden';
-    }
-  }
 });
