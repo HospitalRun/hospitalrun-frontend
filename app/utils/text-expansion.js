@@ -35,7 +35,8 @@ function findAllIndices(text) {
       if (matchPoint > -1) {
         result.push({
           index: matchPoint,
-          subject: value
+          match: value,
+          term: value.slice(1)
         });
       } else {
         keepMatching = false;
