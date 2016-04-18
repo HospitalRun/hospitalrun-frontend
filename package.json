@@ -70,7 +70,7 @@
     "hospitalrun-server-routes": "0.9.4",
     "loader.js": "^4.0.2",
     "nano": "6.2.0",
-    "request": "2.71.0"
+    "request": "2.72.0"
   },
   "dependencies": {
     "ember-radio-buttons": "^4.0.1",
