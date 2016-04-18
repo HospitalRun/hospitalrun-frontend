@@ -1,7 +1,25 @@
 # Change Log
 
-## [0.9.3](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.3)
+## [Unreleased](https://github.com/HospitalRun/hospitalrun-frontend/tree/HEAD)
 
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.3...HEAD)
+
+**Fixed bugs:**
+
+- Invoices are not generating properly [\#423](https://github.com/HospitalRun/hospitalrun-frontend/issues/423)
+
+**Merged pull requests:**
+
+- loader.js@4.0.2 breaks build 🚨 [\#425](https://github.com/HospitalRun/hospitalrun-frontend/pull/425) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update request to version 2.72.0 🚀 [\#424](https://github.com/HospitalRun/hospitalrun-frontend/pull/424) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update ember-cli-deprecation-workflow to version 0.2.2 🚀 [\#422](https://github.com/HospitalRun/hospitalrun-frontend/pull/422) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update PULL\_REQUEST\_TEMPLATE.md to be more clear [\#421](https://github.com/HospitalRun/hospitalrun-frontend/pull/421) ([jglovier](https://github.com/jglovier))
+- Update ember-cli-deprecation-workflow to version 0.2.1 🚀 [\#418](https://github.com/HospitalRun/hospitalrun-frontend/pull/418) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update request to version 2.71.0 🚀 [\#417](https://github.com/HospitalRun/hospitalrun-frontend/pull/417) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update ember-ajax to version 2.0.1 🚀 [\#414](https://github.com/HospitalRun/hospitalrun-frontend/pull/414) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update ember-cli-active-link-wrapper to version 0.2.0 🚀 [\#412](https://github.com/HospitalRun/hospitalrun-frontend/pull/412) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+
+## [0.9.3](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.3) (2016-04-08)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.2...0.9.3)
 
 **Implemented enhancements:**
