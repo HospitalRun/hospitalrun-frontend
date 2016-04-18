@@ -7,9 +7,14 @@ export default Ember.Mixin.create({
     if (!Ember.isEmpty(medicationTitle)) {
       return medicationTitle;
     } else {
-      this.get(inventoryAttribute).then((inventoryItem) => {
-        this.set('medicationTitle', inventoryItem.get('name'));
-      });
+      var inventoryObject = this.get(inventoryAttribute);
+      if (inventoryObject.then) {
+        this.get(inventoryAttribute).then((inventoryItem) => {
+          this.set('medicationTitle', inventoryItem.get('name'));
+        });
+      } else {
+        this.set('medicationTitle', inventoryObject.get('name'));
+      }
     }
   },
 
@@ -34,12 +39,20 @@ export default Ember.Mixin.create({
           price: priceOfMedication
         });
       } else {
-        this.get(inventoryAttribute).then((inventoryItem) => {
-          resolve({
-            name: inventoryItem.get('name'),
-            price: inventoryItem.get('price')
+        var objectInventoryItem = this.get(inventoryAttribute);
+        if (objectInventoryItem.then) {
+          this.get(inventoryAttribute).then((inventoryItem) => {
+            resolve({
+              name: inventoryItem.get('name'),
+              price: inventoryItem.get('price')
+            });
           });
-        });
+        } else {
+          resolve({
+            name: objectInventoryItem.get('name'),
+            price: objectInventoryItem.get('price')
+          });
+        }
       }
     });
   },

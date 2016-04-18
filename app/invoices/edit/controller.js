@@ -353,9 +353,9 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     }.bind(this));
 
     labs.forEach(function(lab) {
-      if (!Ember.isEmpty(imaging.get('labType'))) {
+      if (!Ember.isEmpty(lab.get('labType'))) {
         this._addSupplyCharge(Ember.Object.create({
-          pricingItem: imaging.get('labType'),
+          pricingItem: lab.get('labType'),
           quantity: 1
         }), 'Lab');
       }
