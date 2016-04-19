@@ -1,0 +1,10 @@
+{
+  "template": "ruby",
+  "ports": [4200],
+  "name": "HospitalRun",
+  "description": "Ember front end for HospitalRun",
+  "scripts": {
+    "post-create": "sudo apt-get install -y couchdb && echo 'running npm install - this might take awhile...' && npm install -g ember-cli@latest && npm install -g bower && bower install && script/bootstrap && ./script/initcouch.sh && cp server/config-example.js server/config.js",
+    "Start HospitalRun": "cd ~/code/hospitalrun-frontend && npm start"
+  }
+}
