@@ -6,9 +6,9 @@ import IncidentCategoryList from 'hospitalrun/mixins/incident-category';
 import IncidentLocationsList from 'hospitalrun/mixins/incident-locations-list';
 import IncidentContributingFactors from 'hospitalrun/mixins/incident-contributing-factors-classification';
 import SelectValues from 'hospitalrun/utils/select-values';
-
+import HarmScoreOptions from 'hospitalrun/mixins/incident-harm-score';
 export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentLocationsList,
-  IncidentContributingFactors, SelectValues, UserSession, {
+  IncidentContributingFactors, SelectValues, UserSession, HarmScoreOptions, {
     database: Ember.inject.service(),
     incidentController: Ember.inject.controller('incident'),
 
@@ -249,7 +249,6 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
 
     incidentLocationsList: Ember.computed.alias('incidentController.incidentLocationsList.value'),
     incidentCategoryList: Ember.computed.alias('incidentController.incidentCategoryList'),
-    harmScoreList: Ember.computed.alias('incidentController.harmScoreList.value'),
 
     incidentLocations: function() {
       var defaultIncidentLocations = this.get('defaultIncidentLocations'),

@@ -442,7 +442,15 @@
           <h3 class="panel-title">{{t 'incident.titles.harm_score'}}</h3>
         </div>
         {{#if canAddRisk}}
-          <div class="panel-body detail-section-content">{{ext-radio content=harmScoreList value=model.harmScore showInline=false}}</div>
+          
+          <div class="panel-body detail-section-content">
+            <h5>{{t 'incident.labels.harm_prompt'}}</h5>
+            {{ext-radio content=harmScoreList value=model.harmScore showInline=false}}
+          </div>
+          <div class="panel-body detail-section-content">
+            <h5>{{t 'incident.labels.harm_duration'}}</h5>
+            {{ext-radio content=harmDurationList value=model.harmDuration showInline=false}}
+          </div>
         {{/if}}
       </div>
     </div>

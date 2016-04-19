@@ -1,34 +1,33 @@
+// HARM Score criteria from here: https://fshrmps.org/docs/resources/theReliabilityofAHRQ_CommonFormatHarmScales_inRatingPSE.pdf
 import Ember from 'ember';
 export default Ember.Mixin.create({
   harmScoreList: [{
-    label: 'A   No Actual Event (Unsafe Condition)',
-    value: '(A)   No Actual Event (Unsafe Condition)'
+    label: 'Death: Death at time of assessment',
+    value: 'Death'
   }, {
-    label: 'B1  Near Miss - The event did not reach the individual because of chance alone.',
-    value: '(B1)  Near Miss - The event did not reach the individual because of chance alone.'
+    label: 'Severe Harm: Bodily or psychological injury (including pain and disfigurement) that interferes significantly with functional ability or quality of life',
+    value: 'Severe Harm'
   }, {
-    label: 'B2  Near Miss - The event did not reach the individual because of active recovery efforts by caregivers.',
-    value: '(B2)  Near Miss - The event did not reach the individual because of active recovery efforts by caregivers.'
+    label: 'Moderate Harm: Bodily or psychological injury adversely affecting functional ability or quality of life, but not at the level of severe harm',
+    value: 'Moderate Harm'
   }, {
-    label: 'C   The event reached the individual but did not cause harm.',
-    value: '(C)   The event reached the individual but did not cause harm.'
+    label: 'Mild Harm: Minimal symptoms, loss of function, or injury limited to additional treatment, monitoring, and/or increased length of stay',
+    value: 'Mild Harm'
   }, {
-    label: 'D   The event reached the individual and required additional monitoring or treatment to prevent harm.',
-    value: '(D)   The event reached the individual and required additional monitoring or treatment to prevent harm.'
+    label: 'No Harm: Event reached patient, but no harm was evident',
+    value: 'No Harm'
   }, {
-    label: 'E   The individual experienced temporary harm and required treatment or intervention.',
-    value: '(E)   The individual experienced temporary harm and required treatment or intervention.'
+    label: 'Unknown: The severity is unknown at the time of assessment',
+    value: 'Unknown'
+  }],
+  harmDurationList: [{
+    label: 'Permanent Harm: Greater than or equal to 1 year',
+    value: 'Permanent Duration'
   }, {
-    label: 'F   The individual experienced temporary harm and required initial or prolonged hospitalization',
-    value: '(F)   The individual experienced temporary harm and required initial or prolonged hospitalization'
+    label: 'Temporary Harm: Less than 1 year',
+    value: 'Temporary Duration'
   }, {
-    label: 'G   The individual experienced permanent harm.',
-    value: '(G)   The individual experienced permanent harm.'
-  }, {
-    label: 'H   The individual experienced permanent harm and required intervention necessary to sustain life (e.g. transfer to ICU)',
-    value: '(H)  The individual experienced permanent harm and required intervention necessary to sustain life (e.g. transfer to ICU)'
-  }, {
-    label: 'I   The individual died.',
-    value: '(I)   The individual died.'
+    label: 'Unknown: The duration is unknown at the time of assessment',
+    value: 'Unknown'
   }]
 });

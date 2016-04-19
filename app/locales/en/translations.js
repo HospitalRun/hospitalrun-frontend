@@ -570,6 +570,8 @@ export default {
       feedback: 'Feedback',
       given_by: 'Given By',
       harm_score: 'HARM Score:',
+      harm_duration: 'What is the anticipated duration of the harm to the individual?',
+      harm_prompt: 'What is the extent of the harm to the individual at the time of the assessment?',
       id_number: 'ID Number',
       id_type: 'Identification Document Type',
       incident_category: 'Incident Type Category',

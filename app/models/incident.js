@@ -31,6 +31,7 @@ export default AbstractModel.extend({
   rcaSummary: DS.attr('string'),
 
   harmScore: DS.attr('string'),
+  harmDuration: DS.attr('string'),
 
   preSeverity: DS.attr('string'),
   preOccurence: DS.attr('string'),
