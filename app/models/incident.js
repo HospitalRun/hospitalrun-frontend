@@ -1,6 +1,6 @@
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
-
+import Ember from 'ember';
 export default AbstractModel.extend({
   friendlyId: DS.attr('string'),
   reportedBy: DS.attr('string'),
@@ -33,9 +33,29 @@ export default AbstractModel.extend({
   harmScore: DS.attr('string'),
   harmDuration: DS.attr('string'),
 
-  preSeverity: DS.attr('string'),
-  preOccurence: DS.attr('string'),
-  preRiskScore: DS.attr('string'),
+  preSeverity: DS.attr('number'),
+  preOccurence: DS.attr('number'),
+  preRiskScore: function() {
+    if (Ember.isBlank(this.get('preSeverity')) || Ember.isBlank(this.get('preOccurence'))) {
+      return undefined;
+    } else {
+      return this.get('preSeverity') * this.get('preOccurence');
+    }
+  }.property('preSeverity', 'preOccurence'),
+  preRiskResults: function() {
+    var score = this.get('preRiskScore');
+    if (Ember.isBlank(score)) {
+      return undefined;
+    } else if (score <= 3) {
+      return 'Low Risk: manage with routine procedures';
+    } else if (score <= 8) {
+      return 'Moderate Risk: management responsibility must be specified';
+    } else if (score <= 12) {
+      return 'High Risk: senior management needed';
+    } else {
+      return 'Extreme Risk: immediate action required';
+    }
+  }.property('preRiskScore'),
 
   recommendations: DS.hasMany('inc-recommendation',  { async: true }),
   lessonsLearned: DS.attr('string'),

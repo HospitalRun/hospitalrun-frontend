@@ -612,6 +612,7 @@ export default {
     messages: {
       create_new: 'Create a new incident?',
       delete: 'Are you sure you wish to delete {{name}}?',
+      fill_in: 'Fill in the above options to calculate score',
       incident_id: 'Incident ID: {{id}}',
       no_incidents: 'No incidents found.',
       no_closed_incidents: 'No closed incidents found.',

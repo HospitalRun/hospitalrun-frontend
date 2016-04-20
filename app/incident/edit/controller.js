@@ -1,5 +1,6 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
+import { translationMacro as t } from 'ember-i18n';
 import IncidentSubmodule from 'hospitalrun/mixins/incident-submodule';
 import UserSession from 'hospitalrun/mixins/user-session';
 import IncidentCategoryList from 'hospitalrun/mixins/incident-category';
@@ -7,8 +8,9 @@ import IncidentLocationsList from 'hospitalrun/mixins/incident-locations-list';
 import IncidentContributingFactors from 'hospitalrun/mixins/incident-contributing-factors-classification';
 import SelectValues from 'hospitalrun/utils/select-values';
 import HarmScoreOptions from 'hospitalrun/mixins/incident-harm-score';
+import incidentRisk from 'hospitalrun/mixins/incident-risk';
 export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentLocationsList,
-  IncidentContributingFactors, SelectValues, UserSession, HarmScoreOptions, {
+  IncidentContributingFactors, SelectValues, UserSession, HarmScoreOptions, incidentRisk, {
     database: Ember.inject.service(),
     incidentController: Ember.inject.controller('incident'),
 
@@ -18,6 +20,18 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         value: value.get('incidentCategoryName')
       };
     }),
+
+    displayPreScore: function() {
+      var i18n = this.get('i18n');
+      if (Ember.isBlank(this.get('model.preRiskScore'))) {
+        return i18n.t('incident.messages.fill_in');
+      } else {
+        return (this.get('model.preRiskScore')) + ' -';
+      }
+    }.property('model.preRiskScore'),
+    displayPreResults: function() {
+      return this.get('model.preRiskResults');
+    }.property('model.preRiskResults'),
 
     canAddFeedback: function() {
       var canAdd = true;
@@ -185,65 +199,6 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     }, {
       label: '1-3    : low risk; manage by routine procedures',
       value: '(Post Risk) Low risk; manage by routine procedures'
-
-    }],
-
-    preSeverityTypes: [{
-      label: '5 Extreme Death, toxic release off-site with detrimental effect, huge financial loss',
-      value: '(Pre Severity 5) Extreme Death, toxic release off-site with detrimental effect, huge financial loss'
-    }, {
-      label: '4 High Extensive injuries, loss of production capability, off-site release with no detrimental effects, major financial loss',
-      value: '(Pre Severity 4) High Extensive injuries, loss of production capability, off-site release with no detrimental effects, major financial loss'
-
-    }, {
-      label: '3 Moderate Medical treatment required, on-site release contained with outside assistance, high financial loss',
-      value: '(Pre Severity 3) Moderate Medical treatment required, on-site release contained with outside assistance, high financial loss'
-
-    }, {
-      label: '2 Low First aid treatment, on-site release contained, medium financial loss',
-      value: '(Pre Severity 2) Low First aid treatment, on-site release contained, medium financial loss'
-
-    }, {
-      label: '1 Minimum No injuries, low financial loss',
-      value: '(Pre Severity 1) Minimum No injuries, low financial loss'
-
-    }],
-
-    preOccurrenceTypes: [{
-      label: '5  Almost Certain  Is expected to occur in most circumstances (e.g. most weeks or months)',
-      value: '(Pre Occurance:5)  Almost Certain  Is expected to occur in most circumstances (e.g. most weeks or months)'
-    }, {
-      label: '4  Likely Will probably occur in most circumstances (several times a year)',
-      value: '(Pre Occurance:4)  Likely Will probably occur in most circumstances (several times a year)'
-
-    }, {
-      label: '3  Possible Might occur at some time (every 1 to 2 years)',
-      value: '(Pre Occurance:3)  Possible Might occur at some time (every 1 to 2 years)'
-
-    }, {
-      label: '2  Unlikely Could occur at some time (possibly in the next 2 to 5 years)',
-      value: '(Pre Occurance:2)  Unlikely Could occur at some time (possibly in the next 2 to 5 years)'
-
-    }, {
-      label: '1  Rare May occur only in exceptional circumstances (perhaps every 5 to 30 years)',
-      value: '(Pre Occurance:1)  Rare May occur only in exceptional circumstances (perhaps every 5 to 30 years)'
-
-    }],
-
-    preRiskScores: [{
-      label: '15-25  : extreme risk; immediate action required',
-      value: '(Pre Risk) Extreme risk; immediate action required'
-    }, {
-      label: '9-12   : high risk; senior management needed',
-      value: '(Pre Risk) High risk; senior management needed'
-
-    }, {
-      label: '4-8    : moderate risk; management responsibility must be specified',
-      value: '(Pre Risk) Moderate risk; management responsibility must be specified'
-
-    }, {
-      label: '1-3    : low risk; manage by routine procedures',
-      value: '(Pre Risk) Low risk; manage by routine procedures'
 
     }],
 

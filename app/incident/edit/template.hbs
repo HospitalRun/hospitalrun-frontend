@@ -462,18 +462,32 @@
         {{#if canAddRisk}}
           <div class="panel-body detail-section-content">
             <div class="panel-body">
-              <table class="table">
-                <tr class="table-header">
-                  <th>{{t 'incident.labels.severity'}}</th>
-                  <th>{{t 'incident.labels.occurrence'}}</th>
-                  <th>{{t 'incident.labels.risk_score'}}</th>
-                </tr>
-                <tr>
-                  <td>{{ext-radio name=preSeverity content=preSeverityTypes value=preSeverity radioLabelPath="content.label" radioValuePath="content.value"}}</td>
-                  <td>{{ext-radio name=preOccurence content=preOccurrenceTypes value=preOccurence radioLabelPath="content.label" radioValuePath="content.value"}}</td>
-                  <td>{{ext-radio name=preRiskScore content=preRiskScores value=preRiskScore radioLabelPath="content.label" radioValuePath="content.value"}}</td>
-                </tr>
-              </table>
+              <div class="row">
+                <div class="col-sm-12">
+                  <table class="table">
+                    <tr class="table-header">
+                      <th>{{t 'incident.labels.severity'}}</th>
+                      <th>{{t 'incident.labels.occurrence'}}</th>
+                    </tr>
+                    <tr>
+                      <td>{{ext-radio name=preSeverity content=preSeverityTypes value=model.preSeverity radioLabelPath="content.label" radioValuePath="content.value"}}</td>
+                      <td>{{ext-radio name=preOccurence content=preOccurrenceTypes value=model.preOccurence radioLabelPath="content.label" radioValuePath="content.value"}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <table class="table">
+                    <tr class="table-header">
+                      <th>{{t 'incident.labels.risk_score'}}</th>
+                    </tr>
+                    <tr>
+                      <td><b>{{displayPreScore}} {{displayPreResults}}</b></td>
+                    </tr>
+                  </table>
+                 </div>
+              </div>
             </div>
           </div>
         {{/if}}
