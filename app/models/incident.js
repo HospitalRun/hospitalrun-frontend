@@ -61,9 +61,29 @@ export default AbstractModel.extend({
   lessonsLearned: DS.attr('string'),
   actionsTaken: DS.attr('string'),
 
-  postSeverity: DS.attr('string'),
-  postOccurence: DS.attr('string'),
-  postRiskScore: DS.attr('string'),
+  postSeverity: DS.attr('number'),
+  postOccurence: DS.attr('number'),
+  postRiskScore: function() {
+    if (Ember.isBlank(this.get('postSeverity')) || Ember.isBlank(this.get('postOccurence'))) {
+      return undefined;
+    } else {
+      return this.get('postSeverity') * this.get('postOccurence');
+    }
+  }.property('postSeverity', 'postOccurence'),
+  postRiskResults: function() {
+    var score = this.get('postRiskScore');
+    if (Ember.isBlank(score)) {
+      return undefined;
+    } else if (score <= 3) {
+      return 'Low Risk: manage with routine procedures';
+    } else if (score <= 8) {
+      return 'Moderate Risk: management responsibility must be specified';
+    } else if (score <= 12) {
+      return 'High Risk: senior management needed';
+    } else {
+      return 'Extreme Risk: immediate action required';
+    }
+  }.property('postRiskScore'),
 
   incidentOpen: DS.attr('boolean', { defaultValue: true }),
   notificationSend: DS.attr('boolean', { defaultValue: false }),

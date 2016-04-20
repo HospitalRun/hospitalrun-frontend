@@ -143,65 +143,6 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       }.bind(this));
     },
 
-    severityTypes: [{
-      label: '5 Extreme Death, toxic release off-site with detrimental effect, huge financial loss',
-      value: '(Post Severity:5) Extreme Death, toxic release off-site with detrimental effect, huge financial loss'
-    }, {
-      label: '4 High Extensive injuries, loss of production capability, off-site release with no detrimental effects, major financial loss',
-      value: '(Post Severity:4) High Extensive injuries, loss of production capability, off-site release with no detrimental effects, major financial loss'
-
-    }, {
-      label: '3 Moderate Medical treatment required, on-site release contained with outside assistance, high financial loss',
-      value: '(Post Severity:3) Moderate Medical treatment required, on-site release contained with outside assistance, high financial loss'
-
-    }, {
-      label: '2 Low First aid treatment, on-site release contained, medium financial loss',
-      value: '(Post Severity:2) Low First aid treatment, on-site release contained, medium financial loss'
-
-    }, {
-      label: '1 Minimum No injuries, low financial loss',
-      value: '(Post Severity:1) Minimum No injuries, low financial loss'
-
-    }],
-
-    occurrenceTypes: [{
-      label: '5  Almost Certain  Is expected to occur in most circumstances (e.g. most weeks or months)',
-      value: '(Post Occurance:5)  Almost Certain  Is expected to occur in most circumstances (e.g. most weeks or months)'
-    }, {
-      label: '4  Likely Will probably occur in most circumstances (several times a year)',
-      value: '(Post Occurance:4) Likely Will probably occur in most circumstances (several times a year)'
-
-    }, {
-      label: '3  Possible Might occur at some time (every 1 to 2 years)',
-      value: '(Post Occurance:3) Possible Might occur at some time (every 1 to 2 years)'
-
-    }, {
-      label: '2  Unlikely Could occur at some time (possibly in the next 2 to 5 years)',
-      value: '(Post Occurance:2) Unlikely 2'
-
-    }, {
-      label: '1  Rare May occur only in exceptional circumstances (perhaps every 5 to 30 years)',
-      value: '(Post Occurance:1) Rare May occur only in exceptional circumstances (perhaps every 5 to 30 years)'
-
-    }],
-
-    riskScores: [{
-      label: '15-25  : extreme risk; immediate action required',
-      value: '(Post Risk) Extreme risk; immediate action required'
-    }, {
-      label: '9-12   : high risk; senior management needed',
-      value: '(Post Risk) High risk; senior management needed'
-
-    }, {
-      label: '4-8    : moderate risk; management responsibility must be specified',
-      value: '(Post Risk) Moderate risk; management responsibility must be specified'
-
-    }, {
-      label: '1-3    : low risk; manage by routine procedures',
-      value: '(Post Risk) Low risk; manage by routine procedures'
-
-    }],
-
     incidentLocationsList: Ember.computed.alias('incidentController.incidentLocationsList.value'),
     incidentCategoryList: Ember.computed.alias('incidentController.incidentCategoryList'),
 

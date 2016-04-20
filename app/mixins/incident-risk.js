@@ -1,6 +1,6 @@
-  import Ember from 'ember';
+import Ember from 'ember';
 export default Ember.Mixin.create({
-  preSeverityTypes: [{
+  severityTypes: [{
     label: '5 - Extreme: death, toxic release off-site with detrimental effect, huge financial loss, etc.',
     value: 5
   }, {
@@ -20,7 +20,7 @@ export default Ember.Mixin.create({
     value: 0
   }],
 
-  preOccurrenceTypes: [{
+  occurrenceTypes: [{
     label: '5 - Certain: expected to occur in most circumstances (e.g. most weeks or months)',
     value: 5
   }, {
@@ -38,19 +38,5 @@ export default Ember.Mixin.create({
   }, {
     label: '0 - Never: will never occur again',
     value: 0
-  }],
-
-  preRiskScores: [{
-    label: '15-25  : extreme risk; immediate action required',
-    value: '(Pre Risk) Extreme risk; immediate action required'
-  }, {
-    label: '9-12   : high risk; senior management needed',
-    value: '(Pre Risk) High risk; senior management needed'
-  }, {
-    label: '4-8    : moderate risk; management responsibility must be specified',
-    value: '(Pre Risk) Moderate risk; management responsibility must be specified'
-  }, {
-    label: '1-3    : low risk; manage by routine procedures',
-    value: '(Pre Risk) Low risk; manage by routine procedures'
   }]
 });

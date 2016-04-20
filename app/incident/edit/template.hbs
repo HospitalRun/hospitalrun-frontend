@@ -470,8 +470,8 @@
                       <th>{{t 'incident.labels.occurrence'}}</th>
                     </tr>
                     <tr>
-                      <td>{{ext-radio name=preSeverity content=preSeverityTypes value=model.preSeverity radioLabelPath="content.label" radioValuePath="content.value"}}</td>
-                      <td>{{ext-radio name=preOccurence content=preOccurrenceTypes value=model.preOccurence radioLabelPath="content.label" radioValuePath="content.value"}}</td>
+                      <td>{{ext-radio content=severityTypes value=model.preSeverity radioLabelPath="content.label" radioValuePath="content.value"}}</td>
+                      <td>{{ext-radio content=occurrenceTypes value=model.preOccurence radioLabelPath="content.label" radioValuePath="content.value"}}</td>
                     </tr>
                   </table>
                 </div>
@@ -546,18 +546,32 @@
         {{#if canAddRisk}}
           <div class="panel-body detail-section-content">
             <div class="panel-body">
-              <table class="table">
-                <tr class="table-header">
-                  <th>{{t 'incident.labels.severity'}}</th>
-                  <th>{{t 'incident.labels.occurrence'}}</th>
-                  <th>{{t 'incident.labels.risk_score'}}</th>
-                </tr>
-                <tr>
-                  <td>{{ext-radio name=postSeverity content=severityTypes value=postSeverity radioLabelPath="content.label" radioValuePath="content.value"}}</td>
-                  <td>{{ext-radio name=postOccurence content=occurrenceTypes value=postOccurence radioLabelPath="content.label" radioValuePath="content.value"}}</td>
-                  <td>{{ext-radio name=postRiskScore content=riskScores value=postRiskScore radioLabelPath="content.label" radioValuePath="content.value"}}</td>
-                </tr>
-              </table>
+              <div class="row">
+                <div class="col-sm-12">
+                  <table class="table">
+                    <tr class="table-header">
+                      <th>{{t 'incident.labels.severity'}}</th>
+                      <th>{{t 'incident.labels.occurrence'}}</th>
+                    </tr>
+                    <tr>
+                      <td>{{ext-radio content=severityTypes value=model.postSeverity radioLabelPath="content.label" radioValuePath="content.value"}}</td>
+                      <td>{{ext-radio content=occurrenceTypes value=model.postOccurence radioLabelPath="content.label" radioValuePath="content.value"}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <table class="table">
+                    <tr class="table-header">
+                      <th>{{t 'incident.labels.risk_score'}}</th>
+                    </tr>
+                    <tr>
+                      <td><b>{{displayPostScore}} {{displayPostResults}}</b></td>
+                    </tr>
+                  </table>
+                 </div>
+              </div>
             </div>
           </div>
         {{/if}}
