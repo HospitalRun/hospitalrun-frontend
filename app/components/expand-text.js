@@ -104,16 +104,14 @@ export default Ember.Component.extend({
     }
   }),
 
-  feedbackText: Ember.computed('possibleSwaps', 'activeExpansionSite', 'userText', function() {
-      const div = this.get('feedbackDiv');
+  expansionText: Ember.computed('possibleSwaps', 'activeExpansionSite', 'userText', function() {
       var result = '';
-      if (!div) { return null; }
+
       const possibleSwaps = this.get('possibleSwaps');
       const expansions = this.get('expansions');
       if (possibleSwaps) {
         const activeSite = this.get('activeExpansionSite');
 
-          div.style.visibility = 'visible';
           if (possibleSwaps.length === 1) {
             const swapTo = possibleSwaps[0].to;
             result = `Press Enter to replace '${activeSite.term}' with '${swapTo}'`;
@@ -126,28 +124,24 @@ export default Ember.Component.extend({
                 }).join(', ');
           }
           else {
-            result = 'No expansion terms match ' + activeSite.term;
+            result = `No expansion terms match '${activeSite.term}'`;
           }
-      }
-      else {
-        div.style.visibility = 'hidden';
       }
 
       return result;
     }),
 
-    feedbackDivStyle: Ember.computed('feedbackText', function() {
-      const feedbackText = this.get('feedbackText');
-      const visiblility = feedbackText ? 'visible' : 'hidden';
+    expansionDivStyle: Ember.computed('expansionText', function() {
+      const expansionText = this.get('expansionText');
+      const visiblility = expansionText ? 'visible' : 'hidden';
       const textArea = this.get('textarea');
+
+      var styleString = `visibility: ${visiblility};`;
 
       if (textArea) {
         const textPos = textArea.getBoundingClientRect();
-        var styleString = `top: ${textPos.bottom}px; left: ${textPos.left}px; width: ${textArea.offsetWidth}px;
-        background-color: lightyellow; border-style: solid; border-width: 1px; border-radius: 3px;
-        position: absolute; padding-left: 5px; visibility: ${visiblility}`;
-
-        return styleString;
+        styleString += ` top: ${textPos.bottom}px; left: ${textPos.left}px; width: ${textArea.offsetWidth}px;`;
       }
+      return new Ember.Handlebars.SafeString(styleString);
     })
 });
