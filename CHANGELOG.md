@@ -1,4 +1,8 @@
 # Change Log
+## [0.9.6](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.5) (2016-04-21)
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.5...0.9.6)
+
+Forgot to run build for 0.9.5, so here it is.
 
 ## [0.9.5](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.5) (2016-04-21)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.4...0.9.5)
