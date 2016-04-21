@@ -44,7 +44,8 @@ export default Ember.Component.extend({
   keyUp: function(k) {
     const textArea = k.target;
     const text = textArea.value;
-    Ember.run.once(this, 'set', 'userText', text);
+    this.set('userText', text);
+    this.set('cursorLocation', textArea.selectionStart);
   },
 
   keyDown: function(k) {
@@ -67,7 +68,7 @@ export default Ember.Component.extend({
   },
 
   // Find an expandable word that has the cursor within it
-  activeExpansionSite: Ember.computed('userText', function() {
+  activeExpansionSite: Ember.computed('userText', 'cursorLocation', function() {
 
     const userText = this.get('userText');
     const textarea = this.get('textarea');
