@@ -1,8 +1,25 @@
 # Change Log
 
-## [Unreleased](https://github.com/HospitalRun/hospitalrun-frontend/tree/HEAD)
+## [0.9.5](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.5) (2016-04-21)
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.4...0.9.5)
 
-[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.3...HEAD)
+Upgraded [PouchDB](https://pouchdb.com/) to 5.3.2
+
+**Fixed bugs:**
+
+- Adding family member or expense info to social work tab is slow & broken [\#429](https://github.com/HospitalRun/hospitalrun-frontend/issues/429)
+
+**Closed issues:**
+
+- Incorrect Column Labels in Admin/Users [\#415](https://github.com/HospitalRun/hospitalrun-frontend/issues/415)
+
+**Merged pull requests:**
+
+- Update snyk to 1.14.1 [\#428](https://github.com/HospitalRun/hospitalrun-frontend/pull/428) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Switch labels in user admin page [\#426](https://github.com/HospitalRun/hospitalrun-frontend/pull/426) ([juanjcsr](https://github.com/juanjcsr))
+
+## [0.9.4](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.4) (2016-04-18)
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.3...0.9.4)
 
 **Fixed bugs:**
 
