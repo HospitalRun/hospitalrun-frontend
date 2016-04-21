@@ -74,7 +74,7 @@
   },
   "dependencies": {
     "ember-radio-buttons": "^4.0.1",
-    "snyk": "^1.13.2"
+    "snyk": "^1.14.1"
   },
   "ember-addon": {
     "paths": [
