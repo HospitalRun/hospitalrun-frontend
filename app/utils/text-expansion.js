@@ -1,4 +1,6 @@
 export default {
+  // Find words with expansion prefix
+  // '#abc abc #cd' -> ['#abc', '#cd']
   findExpansionSubjects: function(text) {
     const search = /(^|\s+)(#\S+)/g;
     var match = true;
@@ -15,6 +17,8 @@ export default {
     return subjects.filter(onlyUnique);
   },
 
+  // Find all detected expandable sites by index
+  // 'abc #abc cd', ['#abc'] -> [{ index: 4, match: '#abc', term: 'abc'}]
   findExpansionSites: function(text, subjects) {
 
     return subjects

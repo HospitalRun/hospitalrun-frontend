@@ -45,12 +45,28 @@ export default Ember.Component.extend({
     const textArea = k.target;
     const text = textArea.value;
     Ember.run.once(this, 'set', 'userText', text);
+  },
 
+  keyDown: function(k) {
     if (k.keyCode === 13) {
-      console.log('pressed enter');
+      const possibleSwaps = this.get('possibleSwaps');
+      if (possibleSwaps && possibleSwaps.length === 1) {
+        const swapTo = possibleSwaps[0].to;
+        const activeSite = this.get('activeExpansionSite');
+        const sliceLength = activeSite.match.length;
+        const currentText = k.target.value;
+        const modifiedText = currentText.slice(0, activeSite.index) + swapTo + currentText.slice(activeSite.index + sliceLength);
+        k.target.value = modifiedText;
+
+        k.preventDefault();
+        k.returnValue = false;
+        k.cancelBubble = true;
+        return false;
+      }
     }
   },
 
+  // Find an expandable word that has the cursor within it
   activeExpansionSite: Ember.computed('userText', function() {
 
     const userText = this.get('userText');
@@ -67,6 +83,7 @@ export default Ember.Component.extend({
     });
   }),
 
+  // If an expansion site is active, which possible swaps could occur there?
   possibleSwaps: Ember.computed('activeExpansionSite', 'expansions', function() {
     const activeSite = this.get('activeExpansionSite');
 
@@ -76,7 +93,13 @@ export default Ember.Component.extend({
         .filter(ex => {
           return ex.startsWith(activeSite.term);
         })
-        .sort();
+        .sort()
+        .map(from => {
+          return {
+            from: from,
+            to: expansions[from]
+          };
+        });
     }
   }),
 
@@ -91,11 +114,15 @@ export default Ember.Component.extend({
 
           div.style.visibility = 'visible';
           if (possibleSwaps.length === 1) {
-            const swapFrom = possibleSwaps[0];
-            const swapTo = expansions[swapFrom];
+            const swapTo = possibleSwaps[0].to;
             result = `Press Enter to replace '${activeSite.term}' with '${swapTo}'`;
           } else if (possibleSwaps.length > 1) {
-            result = 'Possible expansions: ' + possibleSwaps.join(', ');
+            result =
+              'Possible expansions: ' +
+                possibleSwaps
+                .map(swap => {
+                  return swap.from;
+                }).join(', ');
           }
           else {
             result = 'No expansion terms match ' + activeSite.term;
