@@ -1,12 +1,12 @@
 importScripts('sw-toolbox.js');
 var CACHE_PREFIX = 'brocsw-v';
-var CACHE_VERSION = CACHE_PREFIX+'1461011397069';
+var CACHE_VERSION = CACHE_PREFIX+'1461263699300';
 toolbox.options.cache.name = CACHE_VERSION;
 var urlsToPrefetch = [
     '/',
-    "assets/hospitalrun-293ae695f65e85b365f57e2117dac95d.js",
+    "assets/hospitalrun-0f1dc69ac11bd63b5e7a6990f9f4a550.js",
     "assets/hospitalrun-5597b10d9b3989644768cdf048da1cad.css",
-    "assets/vendor-0f7ba101d6bb762e7b7ff14c06fa21c4.js",
+    "assets/vendor-b6284f17c4c005c6ac6701af48e1c53f.js",
     "assets/vendor-ed8acd5f4063b4b83b5df16f6da9e8b0.css",
     "crossdomain.xml",
     "dymo/BarcodeAsImage.label",
@@ -47,7 +47,7 @@ urlsToPrefetch.forEach(function(url) {
   toolbox.router.any(url, toolbox.cacheFirst);
 });
 toolbox.precache(urlsToPrefetch);
-// PouchDB 5.3.1
+// PouchDB 5.3.2
 // 
 // (c) 2012-2016 Dale Harvey and the PouchDB team
 // PouchDB may be freely distributed under the Apache license, version 2.0.
@@ -3743,7 +3743,7 @@ function bulkGet(db, opts, callback) {
     }
 
     // globally-supplied options
-    ['revs', 'attachments', 'binary'].forEach(function (param) {
+    ['revs', 'attachments', 'binary', 'ajax'].forEach(function (param) {
       if (param in opts) {
         docOpts[param] = opts[param];
       }
@@ -4187,7 +4187,7 @@ function cacheUpdateRequired(api, cache, designDocName, callback) {
     limit: 1,
     since: cache.seq
   };
-  api.changes(changesOpts).then(function(res) {
+  api.changes(changesOpts).then(function (res) {
     var latestSeq = res.results && res.results.length && res.results[0].seq;
     if (latestSeq && latestSeq > cache.seq) {
       // invalidate the cache
@@ -4202,7 +4202,7 @@ function getDesignDocCache(api, designDocName, callback) {
   api._ddocCache = api._ddocCache || {};
   api._ddocCache[designDocName] = api._ddocCache[designDocName] || {};
   var cache = api._ddocCache[designDocName];
-  cacheUpdateRequired(api, cache, designDocName, function(err) {
+  cacheUpdateRequired(api, cache, designDocName, function (err) {
     if (err) {
       return callback(err);
     }
@@ -4213,14 +4213,14 @@ function getDesignDocCache(api, designDocName, callback) {
             return reject(err);
           }
           var cache = {};
-          ['views', 'filters'].forEach(function(propertyName) {
+          ['views', 'filters'].forEach(function (propertyName) {
             cache[propertyName] = res.doc[propertyName];
           });
           resolve(cache);
         });
       });
     }
-    cache.promise.then(function(cache) {
+    cache.promise.then(function (cache) {
       callback(null, cache);
     })["catch"](callback);
   });
@@ -4228,7 +4228,7 @@ function getDesignDocCache(api, designDocName, callback) {
 
 function getDesignDocProperty(api, designDocName, propertyName,
                               propertyElement, callback) {
-  getDesignDocCache(api, designDocName, function(err, designDoc) {
+  getDesignDocCache(api, designDocName, function (err, designDoc) {
     if (err) {
       return callback(err);
     }
@@ -4317,10 +4317,12 @@ AbstractPouchDB.prototype.putAttachment =
   }
 
   function createAttachment(doc) {
+    var prevrevpos = '_rev' in doc ? parseInt(doc._rev, 10) : 0;
     doc._attachments = doc._attachments || {};
     doc._attachments[attachmentId] = {
       content_type: type,
-      data: blob
+      data: blob,
+      revpos: ++prevrevpos
     };
     return api.put(doc);
   }
@@ -4622,7 +4624,7 @@ AbstractPouchDB.prototype.get =
         for (var i = 0; i < leaves.length; i++) {
           var l = leaves[i];
           // looks like it's the only thing couchdb checks
-          if (!(typeof(l) === "string" && /^\d+-/.test(l))) {
+          if (!(typeof (l) === "string" && /^\d+-/.test(l))) {
             return callback(createError(INVALID_REV));
           }
         }
@@ -4853,7 +4855,7 @@ AbstractPouchDB.prototype.bulkDocs =
   }
 
   var attachmentError;
-  req.docs.forEach(function(doc) {
+  req.docs.forEach(function (doc) {
     if (doc._attachments) {
       Object.keys(doc._attachments).forEach(function (name) {
         attachmentError = attachmentError || attachmentNameError(name);
@@ -5367,7 +5369,7 @@ function readAsArrayBuffer(blob, callback) {
 function wrappedFetch() {
   var wrappedPromise = {};
 
-  var promise = new PouchPromise(function(resolve, reject) {
+  var promise = new PouchPromise(function (resolve, reject) {
     wrappedPromise.resolve = resolve;
     wrappedPromise.reject = reject;
   });
@@ -5382,9 +5384,9 @@ function wrappedFetch() {
 
   PouchPromise.resolve().then(function () {
     return fetch.apply(null, args);
-  }).then(function(response) {
+  }).then(function (response) {
     wrappedPromise.resolve(response);
-  })["catch"](function(error) {
+  })["catch"](function (error) {
     wrappedPromise.reject(error);
   });
 
@@ -5422,7 +5424,7 @@ function fetchRequest(options, callback) {
     fetchOptions.body = null;
   }
 
-  Object.keys(options.headers).forEach(function(key) {
+  Object.keys(options.headers).forEach(function (key) {
     if (options.headers.hasOwnProperty(key)) {
       headers.set(key, options.headers[key]);
     }
@@ -5431,13 +5433,13 @@ function fetchRequest(options, callback) {
   wrappedPromise = wrappedFetch(options.url, fetchOptions);
 
   if (options.timeout > 0) {
-    timer = setTimeout(function() {
+    timer = setTimeout(function () {
       wrappedPromise.reject(new Error('Load timeout for resource: ' +
         options.url));
     }, options.timeout);
   }
 
-  wrappedPromise.promise.then(function(fetchResponse) {
+  wrappedPromise.promise.then(function (fetchResponse) {
     response = {
       statusCode: fetchResponse.status
     };
@@ -5451,13 +5453,13 @@ function fetchRequest(options, callback) {
     }
 
     return fetchResponse.json();
-  }).then(function(result) {
+  }).then(function (result) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       callback(null, response, result);
     } else {
       callback(result, response);
     }
-  })["catch"](function(error) {
+  })["catch"](function (error) {
     callback(error, response);
   });
 
@@ -5467,8 +5469,14 @@ function fetchRequest(options, callback) {
 function xhRequest(options, callback) {
 
   var xhr, timer;
+  var timedout = false;
 
   var abortReq = function () {
+    xhr.abort();
+  };
+
+  var timeoutReq = function () {
+    timedout = true;
     xhr.abort();
   };
 
@@ -5516,10 +5524,12 @@ function xhRequest(options, callback) {
   }
 
   if (options.timeout > 0) {
-    timer = setTimeout(abortReq, options.timeout);
+    timer = setTimeout(timeoutReq, options.timeout);
     xhr.onprogress = function () {
       clearTimeout(timer);
-      timer = setTimeout(abortReq, options.timeout);
+      if(xhr.readyState !== 4) {
+        timer = setTimeout(timeoutReq, options.timeout);
+      }
     };
     if (typeof xhr.upload !== 'undefined') { // does not exist in ie9
       xhr.upload.onprogress = xhr.onprogress;
@@ -5547,9 +5557,14 @@ function xhRequest(options, callback) {
       callback(null, response, data);
     } else {
       var err = {};
-      try {
-        err = JSON.parse(xhr.response);
-      } catch(e) {}
+      if(timedout) {
+        err = new Error('ETIMEDOUT');
+        response.statusCode = 400;      // for consistency with node request
+      } else {
+        try {
+          err = JSON.parse(xhr.response);
+        } catch(e) {}
+      }
       callback(err, response);
     }
   };
@@ -5637,6 +5652,9 @@ function ajaxCore(options, callback) {
       err2.status = err.status;
       return cb(err2);
     }
+    if (err.message && err.message === 'ETIMEDOUT') {
+      return cb(err);
+    }
     // We always get code && status in node
     /* istanbul ignore next */
     try {
@@ -5711,12 +5729,16 @@ function ajax(opts, callback) {
   var isIE = ua.indexOf('msie') !== -1;
   var isEdge = ua.indexOf('edge') !== -1;
 
-  var shouldCacheBust = (isSafari && opts.method === 'POST') ||
-    ((isIE || isEdge) && opts.method === 'GET');
+  // it appears the new version of safari also caches GETs,
+  // see https://github.com/pouchdb/pouchdb/issues/5010
+  var shouldCacheBust = (isSafari ||
+    ((isIE || isEdge) && opts.method === 'GET'));
 
   var cache = 'cache' in opts ? opts.cache : true;
 
-  if (shouldCacheBust || !cache) {
+  var isBlobUrl = /^blob:/.test(opts.url); // don't append nonces for blob URLs
+
+  if (!isBlobUrl && (shouldCacheBust || !cache)) {
     var hasArgs = opts.url.indexOf('?') !== -1;
     opts.url += (hasArgs ? '&' : '?') + '_nonce=' + Date.now();
   }
@@ -5953,7 +5975,7 @@ Checkpointer.prototype.updateSource = function (checkpoint, session) {
 };
 
 var comparisons = {
-  "undefined": function(targetDoc, sourceDoc) {
+  "undefined": function (targetDoc, sourceDoc) {
     // This is the previous comparison function
     if (collate$1(targetDoc.last_seq, sourceDoc.last_seq) === 0) {
       return sourceDoc.last_seq;
@@ -5961,7 +5983,7 @@ var comparisons = {
     /* istanbul ignore next */
     return 0;
   },
-  "1": function(targetDoc, sourceDoc) {
+  "1": function (targetDoc, sourceDoc) {
     // This is the comparison function ported from CouchDB
     return compareReplicationLogs(sourceDoc, targetDoc).last_seq;
   }
@@ -6023,7 +6045,7 @@ Checkpointer.prototype.getCheckpoint = function () {
 // they come from here:
 // https://github.com/apache/couchdb-couch-replicator/blob/master/src/couch_replicator.erl#L863-L906
 
-function compareReplicationLogs (srcDoc, tgtDoc) {
+function compareReplicationLogs(srcDoc, tgtDoc) {
   if (srcDoc.session_id === tgtDoc.session_id) {
     return {
       last_seq: srcDoc.last_seq,
@@ -6036,7 +6058,7 @@ function compareReplicationLogs (srcDoc, tgtDoc) {
   return compareReplicationHistory(sourceHistory, targetHistory);
 }
 
-function compareReplicationHistory (sourceHistory, targetHistory) {
+function compareReplicationHistory(sourceHistory, targetHistory) {
   // the erlang loop via function arguments is not so easy to repeat in JS
   // therefore, doing this as recursion
   var S = sourceHistory[0];
@@ -6071,7 +6093,7 @@ function compareReplicationHistory (sourceHistory, targetHistory) {
   return compareReplicationHistory(sourceRest, targetRest);
 }
 
-function hasSessionId (sessionId, history) {
+function hasSessionId(sessionId, history) {
   var props = history[0];
   var rest = history.slice(1);
 
@@ -6086,7 +6108,7 @@ function hasSessionId (sessionId, history) {
   return hasSessionId(sessionId, rest);
 }
 
-function isForbiddenError (err) {
+function isForbiddenError(err) {
   return typeof err.status === 'number' && Math.floor(err.status / 100) === 4;
 }
 
@@ -6258,7 +6280,8 @@ function createBulkGetOpts(diffs) {
 function getDocs(src, diffs, state) {
   diffs = clone(diffs); // we do not need to modify this
 
-  var resultDocs = [];
+  var resultDocs = [],
+      ok = true;
 
   function getAllDocs() {
 
@@ -6277,7 +6300,11 @@ function getDocs(src, diffs, state) {
         bulkGetInfo.docs.forEach(function (doc) {
           if (doc.ok) {
             resultDocs.push(doc.ok);
+          } else if (doc.error !== undefined) {
+            ok = false;
           }
+          // else: when AUTO_COMPACTION is set, docs can be returned which look
+          // like this: {"missing":"1-7c3ac256b693c462af8442f992b83696"}
         });
       });
     });
@@ -6323,14 +6350,14 @@ function getDocs(src, diffs, state) {
     }
   }
 
-  function returnDocs() {
-    return resultDocs;
+  function returnResult() {
+    return { ok:ok, docs:resultDocs };
   }
 
   return PouchPromise.resolve()
     .then(getRevisionOneDocs)
     .then(getAllDocs)
-    .then(returnDocs);
+    .then(returnResult);
 }
 
 function replicate(src, target, opts, returnValue, result) {
@@ -6406,7 +6433,7 @@ function replicate(src, target, opts, returnValue, result) {
         return error.name !== 'unauthorized' && error.name !== 'forbidden';
       });
 
-      docs.forEach(function(doc) {
+      docs.forEach(function (doc) {
         var error = errorsById[doc._id];
         if (error) {
           returnValue.emit('denied', clone(error));
@@ -6428,6 +6455,9 @@ function replicate(src, target, opts, returnValue, result) {
   }
 
   function finishBatch() {
+    if (currentBatch.error) {
+      throw new Error('There was a problem getting docs.');
+    }
     result.last_seq = last_seq = currentBatch.seq;
     var outResult = clone(result);
     if (changedDocs.length) {
@@ -6474,8 +6504,9 @@ function replicate(src, target, opts, returnValue, result) {
   }
 
   function getBatchDocs() {
-    return getDocs(src, currentBatch.diffs, returnValue).then(function (docs) {
-      docs.forEach(function (doc) {
+    return getDocs(src, currentBatch.diffs, returnValue).then(function (got) {
+      currentBatch.error = !got.ok;
+      got.docs.forEach(function (doc) {
         delete currentBatch.diffs[doc._id];
         result.docs_read++;
         currentBatch.docs.push(doc);
@@ -7267,7 +7298,7 @@ function HttpPouch(opts, callback) {
     return adapterFun(name, getArguments(function (args) {
       setup().then(function () {
         return fun.apply(this, args);
-      })["catch"](function(e) {
+      })["catch"](function (e) {
         var callback = args.pop();
         callback(e);
       });
@@ -7290,7 +7321,7 @@ function HttpPouch(opts, callback) {
     }
 
     var checkExists = {method: 'GET', url: dbUrl};
-    setupPromise = ajaxPromise({}, checkExists)["catch"](function(err) {
+    setupPromise = ajaxPromise({}, checkExists)["catch"](function (err) {
       if (err && err.status && err.status === 404) {
         // Doesnt exist, create it
         explainError(404, 'PouchDB is just detecting if the remote exists.');
@@ -7298,7 +7329,7 @@ function HttpPouch(opts, callback) {
       } else {
         return PouchPromise.reject(err);
       }
-    })["catch"](function(err) {
+    })["catch"](function (err) {
       // If we try to create a database that already exists
       if (err && err.status && err.status === 412) {
         return true;
@@ -7306,14 +7337,14 @@ function HttpPouch(opts, callback) {
       return PouchPromise.reject(err);
     });
 
-    setupPromise["catch"](function() {
+    setupPromise["catch"](function () {
       setupPromise = null;
     });
 
     return setupPromise;
   }
 
-  setTimeout(function() {
+  setTimeout(function () {
     callback(null, api);
   });
 
@@ -7397,6 +7428,7 @@ function HttpPouch(opts, callback) {
 
       for (var i = 0; i < numBatches; i++) {
         var subOpts = pick(opts, ['revs', 'attachments']);
+        subOpts.ajax = ajaxOpts;
         subOpts.docs = opts.docs.slice(i * batchSize,
           Math.min(opts.docs.length, (i + 1) * batchSize));
         bulkGet(self, subOpts, onResult(i));
@@ -7442,7 +7474,7 @@ function HttpPouch(opts, callback) {
   //    couchdb: A welcome string
   //    version: The version of CouchDB it is running
   api._info = function (callback) {
-    setup().then(function() {
+    setup().then(function () {
       ajax({}, {
         method: 'GET',
         url: genDBUrl(host, '')
@@ -7937,7 +7969,7 @@ function HttpPouch(opts, callback) {
       }
 
       // Get the changes
-      setup().then(function() {
+      setup().then(function () {
         xhr = ajax(opts, xhrOpts, callback);
       })["catch"](callback);
     };
@@ -8415,7 +8447,7 @@ function addHttpParam(paramName, opts, params, asJson) {
   }
 }
 
-function coerceInteger (integerCandidate) {
+function coerceInteger(integerCandidate) {
   if (typeof integerCandidate !== 'undefined') {
     var asNumber = Number(integerCandidate);
     // prevents e.g. '1foo' or '1.1' being coerced to 1
@@ -8434,7 +8466,7 @@ function coerceOptions(opts) {
   return opts;
 }
 
-function checkPositiveInteger (number) {
+function checkPositiveInteger(number) {
   if (number) {
     if (typeof number !== 'number') {
       return  new QueryParseError('Invalid value for integer: "' +
@@ -10297,6 +10329,7 @@ function idbBulkDocs(dbOpts, req, opts, api, idb, idbChanges, callback) {
       if (!att.stub) {
         var data = att.data;
         delete att.data;
+        att.revpos = parseInt(winningRev, 10);
         var digest = att.digest;
         saveAttachment(digest, data, attachmentSaved);
       } else {
@@ -10349,7 +10382,7 @@ function idbBulkDocs(dbOpts, req, opts, api, idb, idbChanges, callback) {
 
 
     var getKeyReq = attachStore.count(digest);
-    getKeyReq.onsuccess = function(e) {
+    getKeyReq.onsuccess = function (e) {
       var count = e.target.result;
       if (count) {
         return callback(); // already exists
@@ -10633,7 +10666,7 @@ Changes$1.prototype.addListener = function (dbName, id, db, opts) {
       }
     }).on('complete', function () {
       if (inprogress === 'waiting') {
-        setTimeout(function(){
+        setTimeout(function (){
           eventFunction();
         },0);
       }
@@ -11585,7 +11618,7 @@ function init(api, opts, callback) {
     };
   };
 
-  req.onerror = function() {
+  req.onerror = function () {
     var msg = 'Failed to open indexedDB, are you in private browsing mode?';
     console.error(msg);
     callback(createError(IDB_ERROR, msg));
@@ -12103,6 +12136,7 @@ function websqlBulkDocs(dbOpts, req, opts, api, db, websqlChanges, callback) {
       if (!att.stub) {
         var data = att.data;
         delete att.data;
+        att.revpos = parseInt(winningRev, 10);
         var digest = att.digest;
         saveAttachment(digest, data, attachmentSaved);
       } else {
@@ -12296,15 +12330,10 @@ function WebSqlPouch(opts, callback) {
   api._docCount = -1; // cache sqlite count(*) for performance
   api._name = opts.name;
 
-  var openDBResult = openDB({
-    name: api._name,
-    version: POUCH_VERSION,
-    description: api._name,
-    size: size,
-    location: opts.location,
-    createFromLocation: opts.createFromLocation,
-    androidDatabaseImplementation: opts.androidDatabaseImplementation
-  });
+  // extend the options here, because sqlite plugin has a ton of options
+  // and they are constantly changing, so it's more prudent to allow anything
+  var websqlOpts = jsExtend.extend({}, opts, {size: size, version: POUCH_VERSION});
+  var openDBResult = openDB(websqlOpts);
   if (openDBResult.error) {
     return websqlError(callback)(openDBResult.error);
   }
@@ -13224,7 +13253,7 @@ PouchDB.utils = utils;
 PouchDB.Errors = allErrors;
 PouchDB.replicate = replication.replicate;
 PouchDB.sync = sync;
-PouchDB.version = '5.3.1'; // will be automatically supplied by build.sh
+PouchDB.version = '5.3.2'; // will be automatically supplied by build.sh
 PouchDB.adapter('http', HttpPouch);
 PouchDB.adapter('https', HttpPouch);
 
