@@ -83,10 +83,10 @@ test('Deleting the last inventory item', (assert) => {
         assert.equal(find('.modal-title').text(), 'Delete Item', 'Deleting confirmation.');
       });
       click('.modal-content button:contains(Delete)');
+      waitToAppear('.panel-body .alert-info');
       andThen(function() {
-        assert.equal(currentURL(), '/inventory');
-        findWithAssert('p:contains(No requests found. )');
-        findWithAssert('a:contains(Create a new request?)');
+        assert.equal(currentURL(), '/inventory/listing');
+        findWithAssert('a:contains(Create a new record?)');
       });
     });
   });
