@@ -17,22 +17,18 @@ export default AbstractModel.extend(MedicationDetails, {
   dateCharged: DS.attr('date'),
 
   medicationCharge: function() {
-    let medicationTitle = this.get('medicationTitle');
-    if (!Ember.isEmpty(medicationTitle)) {
-      return true;
-    }
-    var pricingItem = this.get('pricingItem'),
-      newMedicationCharge = this.get('newMedicationCharge');
-    return (Ember.isEmpty(pricingItem) || newMedicationCharge);
-  }.property('medicationTitle', 'pricingItem', 'newMedicationCharge'),
+    let medication = this.get('medication');
+    let newMedicationCharge = this.get('newMedicationCharge');
+    return (!Ember.isEmpty(medication) || !Ember.isEmpty(newMedicationCharge));
+  }.property('medication', 'newMedicationCharge'),
 
   medicationName: function() {
-    return this.getMedicationName('medication');
-  }.property('medicationTitle', 'medication'),
+    return this.get('medication.name');
+  }.property('medication'),
 
   medicationPrice: function() {
-    return this.getMedicationPrice('medication');
-  }.property('priceOfMedication', 'medication'),
+    return this.get('medication.price');
+  }.property('medication'),
 
   validations: {
     itemName: {

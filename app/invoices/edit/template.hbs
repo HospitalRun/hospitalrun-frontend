@@ -52,13 +52,13 @@
       <div class="panel-body detail-section-content">
         <table class="table">
           <tr class="table-header">
-            <th>Description</th>
-            <th class="text-right">Actual Charges</th>
-            <th class="text-right">Discount</th>
-            <th class="text-right">PhilHealth</th>
-            <th class="text-right">HMO/COM</th>
-            <th class="text-right">Excess</th>
-            <th class="text-right">{{t 'labels.action'}}</th>
+            <th class="col-xs-5">Description</th>
+            <th class="col-xs-1 text-right">Actual Charges</th>
+            <th class="col-xs-1 text-right">Discount</th>
+            <th class="col-xs-1 text-right">PhilHealth</th>
+            <th class="col-xs-1 text-right">HMO/COM</th>
+            <th class="col-xs-1 text-right">Excess</th>
+            <th class="col-xs-2 text-right">{{t 'labels.action'}}</th>
           </tr>
           {{#each model.lineItemsByCategory as |categoryGroup|}}
             <tr>
@@ -69,13 +69,11 @@
             {{#each categoryGroup.items as |item|}}
               <tr>
                 <td class="col-xs-5">
-                  <div class="form-group">
                     <div class="input-group">
                       <span class="input-group-addon glyphicon {{if item.showDetails 'glyphicon-minus' 'glyphicon-plus'}}"
                         {{action "toggleDetails" item bubbles=false }}> </span>
                       <strong>{{input class="form-control" value=item.name }}</strong>
                     </div>
-                  </div>
                 </td>
                 <td class="col-xs-1 text-right">
                   {{number-format item.total}}
@@ -106,12 +104,12 @@
               </tr>
               {{#if item.showDetails}}
                 <tr>
-                  <th colspan="2">{{t 'labels.name'}}</th>
-                  <th>{{t 'labels.quantity'}}</th>
-                  <th>Price</th>
-                  <th>Expense To</th>
+                  <th colspan="2" class="col-xs-6">{{t 'labels.name'}}</th>
+                  <th class="col-xs-1">{{t 'labels.quantity'}}</th>
+                  <th class="col-xs-1">Price</th>
+                  <th class="col-xs-1">Expense To</th>
                   <th class="col-xs-1 text-right">Total</th>
-                  <th>
+                  <th class="col-xs-2">
                     {{#if canAddCharge}}
                       <button class="btn btn-primary" {{action "addItemCharge" item}}>
                         <span class="octicon octicon-plus"></span>Add Charge
@@ -121,12 +119,8 @@
                 </tr>
                 {{#each item.details as |detail|}}
                   <tr>
-                    <td colspan="2" class="col-xs-6">
-                      <div class="form-group">
-                        <div class="input-group">
-                          {{input class="form-control" value=detail.name }}
-                        </div>
-                      </div>
+                    <td colspan="2" class="col-xs-6 input-group">
+                        {{input class="form-control" value=detail.name }}
                     </td>
                     <td class="col-xs-1">
                       <div class="form-group">

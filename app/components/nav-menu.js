@@ -8,7 +8,7 @@ export default Ember.Component.extend(UserSession, {
 
   show: function() {
     return this.currentUserCan(this.get('nav').capability);
-  }.property('nav'),
+  }.property('nav', 'session.data.authenticated.userCaps'),
 
   isShowing: false,
 

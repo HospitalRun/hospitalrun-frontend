@@ -1,7 +1,64 @@
 # Change Log
+## [0.9.6](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.5) (2016-04-21)
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.5...0.9.6)
 
-## [0.9.2](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.2)
+Forgot to run build for 0.9.5, so here it is.
 
+## [0.9.5](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.5) (2016-04-21)
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.4...0.9.5)
+
+Upgraded [PouchDB](https://pouchdb.com/) to 5.3.2
+
+**Fixed bugs:**
+
+- Adding family member or expense info to social work tab is slow & broken [\#429](https://github.com/HospitalRun/hospitalrun-frontend/issues/429)
+
+**Closed issues:**
+
+- Incorrect Column Labels in Admin/Users [\#415](https://github.com/HospitalRun/hospitalrun-frontend/issues/415)
+
+**Merged pull requests:**
+
+- Update snyk to 1.14.1 [\#428](https://github.com/HospitalRun/hospitalrun-frontend/pull/428) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Switch labels in user admin page [\#426](https://github.com/HospitalRun/hospitalrun-frontend/pull/426) ([juanjcsr](https://github.com/juanjcsr))
+
+## [0.9.4](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.4) (2016-04-18)
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.3...0.9.4)
+
+**Fixed bugs:**
+
+- Invoices are not generating properly [\#423](https://github.com/HospitalRun/hospitalrun-frontend/issues/423)
+
+**Merged pull requests:**
+
+- loader.js@4.0.2 breaks build 🚨 [\#425](https://github.com/HospitalRun/hospitalrun-frontend/pull/425) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update request to version 2.72.0 🚀 [\#424](https://github.com/HospitalRun/hospitalrun-frontend/pull/424) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update ember-cli-deprecation-workflow to version 0.2.2 🚀 [\#422](https://github.com/HospitalRun/hospitalrun-frontend/pull/422) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update PULL\_REQUEST\_TEMPLATE.md to be more clear [\#421](https://github.com/HospitalRun/hospitalrun-frontend/pull/421) ([jglovier](https://github.com/jglovier))
+- Update ember-cli-deprecation-workflow to version 0.2.1 🚀 [\#418](https://github.com/HospitalRun/hospitalrun-frontend/pull/418) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update request to version 2.71.0 🚀 [\#417](https://github.com/HospitalRun/hospitalrun-frontend/pull/417) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update ember-ajax to version 2.0.1 🚀 [\#414](https://github.com/HospitalRun/hospitalrun-frontend/pull/414) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update ember-cli-active-link-wrapper to version 0.2.0 🚀 [\#412](https://github.com/HospitalRun/hospitalrun-frontend/pull/412) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+
+## [0.9.3](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.3) (2016-04-08)
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.2...0.9.3)
+
+**Implemented enhancements:**
+
+- Allow custom roles [\#338](https://github.com/HospitalRun/hospitalrun-frontend/issues/338)
+
+**Fixed bugs:**
+
+- Paging breaks when last item has an ampersand \(&\) in the name [\#408](https://github.com/HospitalRun/hospitalrun-frontend/issues/408)
+
+**Merged pull requests:**
+
+- Update hospitalrun-server-routes to version 0.9.4 🚀 [\#405](https://github.com/HospitalRun/hospitalrun-frontend/pull/405) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Added ability to save roles [\#404](https://github.com/HospitalRun/hospitalrun-frontend/pull/404) ([jkleinsc](https://github.com/jkleinsc))
+- Update request to version 2.70.0 🚀 [\#403](https://github.com/HospitalRun/hospitalrun-frontend/pull/403) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Done the french translation [\#400](https://github.com/HospitalRun/hospitalrun-frontend/pull/400) ([douno](https://github.com/douno))
+
+## [0.9.2](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.2) (2016-03-30)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.1...0.9.2)
 
 **Implemented enhancements:**

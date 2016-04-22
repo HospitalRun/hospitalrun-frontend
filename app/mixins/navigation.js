@@ -267,6 +267,12 @@ export default Ember.Mixin.create({
           route: 'users.edit',
           subroute: 'new',
           capability: 'add_user'
+        },
+        {
+          title: 'User Roles',
+          iconClass: 'octicon-chevron-right',
+          route: 'admin.roles',
+          capability: 'user_roles'
         }
       ]
     }

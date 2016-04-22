@@ -63,6 +63,15 @@ var ApplicationRoute = Route.extend(ApplicationRouteMixin, {
       into: 'application',
       outlet: 'modal'
     });
+  },
+
+  sessionAuthenticated() {
+    const session = this.get('session');
+    const userRole = session.get('data.authenticated.role');
+    this.get('store').find('user-role', userRole.dasherize()).then((userCaps) => {
+      session.set('data.authenticated.userCaps', userCaps.get('capabilities'));
+    }).catch(Ember.K);
+    this._super();
   }
 
 });
