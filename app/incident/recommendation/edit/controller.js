@@ -10,7 +10,7 @@ export default AbstractEditController.extend({
   newRecommendation: false,
 
   recommendationStatusTypes: [
-     'Inprogress',
+     'In-progress',
      'Completed'
   ].map(SelectValues.selectValuesMap),
 

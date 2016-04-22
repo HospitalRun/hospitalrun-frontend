@@ -303,7 +303,7 @@ export default {
     barcode: 'Barcode',
     add: 'Add',
     update: 'Update',
-    ok: 'Ok',
+    ok: 'OK',
     fulfill: 'Fulfill',
     remove: 'Remove',
     delete: 'Delete',
@@ -619,7 +619,7 @@ export default {
       occurence: 'Occurence:',
       risk_score: 'Risk Score:',
       saved: 'The incident report has been saved.',
-      severtiy: 'Severity:',
+      severity: 'Severity:',
       status: 'Status: {{status}}'
     },
     tabs: {

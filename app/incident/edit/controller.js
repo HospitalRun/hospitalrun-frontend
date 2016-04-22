@@ -33,6 +33,18 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       return this.get('model.preRiskResults');
     }.property('model.preRiskResults'),
 
+    displayPostScore: function() {
+      var i18n = this.get('i18n');
+      if (Ember.isBlank(this.get('model.postRiskScore'))) {
+        return i18n.t('incident.messages.fill_in');
+      } else {
+        return (this.get('model.postRiskScore')) + ' -';
+      }
+    }.property('model.postRiskScore'),
+    displayPostResults: function() {
+      return this.get('model.postRiskResults');
+    }.property('model.postRiskResults'),
+
     canAddFeedback: function() {
       var canAdd = true;
       if (this.get('model.statusOfIncident') === 'Closed') {
