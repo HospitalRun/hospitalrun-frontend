@@ -283,6 +283,12 @@ export default Ember.Mixin.create({
           capability: 'update_config'
         },
         {
+          title: 'Incident Categories',
+          iconClass: 'octicon-chevron-right',
+          route: 'inc-category',
+          capability: 'add_incident_category'
+        },
+        {
           title: 'Address Fields',
           iconClass: 'octicon-chevron-right',
           route: 'admin.address',
