@@ -43,6 +43,17 @@ export default Ember.Controller.extend(PaginationProps, ProgressDialog, UserSess
     return (!Ember.isEmpty(this.get('previousStartKey')) || !Ember.isEmpty(this.get('nextStartKey')));
   }.property('nextStartKey', 'previousStartKey'),
 
+  hasRecords: Ember.computed('model.length', {
+    get() {
+      let model = this.get('model');
+      if (!Ember.isEmpty(model)) {
+        return (model.get('length') > 0);
+      } else {
+        return false;
+      }
+    }
+  }),
+
   actions: {
     nextPage: function() {
       var key = this.get('nextStartKey'),
