@@ -189,14 +189,12 @@
           <h3 class="panel-title">
             {{t 'incident.titles.rca'}}
           </h3>
+          {{#if canAddContributingFactor}}
+            <h5>{{t 'incident.titles.cfcf'}}</h5>
+          {{/if}}
         </div>
         {{#if canAddContributingFactor}}
           <div class="panel-body detail-section-content">
-            <div class="panel-heading">
-              <h2 class="panel-title">
-                {{t 'incident.titles.cfcf'}}
-              </h2>
-            </div>
             <table class="table">
               <THEAD>
                 <tr class="table-header success">
@@ -205,13 +203,13 @@
                 </tr>
               </THEAD>
               <TBODY>
-                {{#each model.patientFactors as |patientFactor|}}
+                {{#each patientFactors as |patientFactor|}}
                   <tr>
                     <td>
-                      {{patientFactor.factorType}}
+                      {{patientFactor.type}}
                     </td>
                     <td>
-                      <table class="table">
+                      <table class="table" style="margin-top:-5px;">
                         <TBODY>
                           {{#each patientFactor.components as |component|}}
                             <tr>{{em-checkbox label=component.name property=component.id}}</tr>
@@ -231,13 +229,13 @@
                 </tr>
               </THEAD>
               <TBODY>
-                {{#each model.staffFactors as |staffFactor|}}
+                {{#each staffFactors as |staffFactor|}}
                   <tr>
                     <td>
-                      {{staffFactor.factorType}}
+                      {{staffFactor.type}}
                     </td>
                     <td>
-                      <table class="table">
+                      <table class="table" style="margin-top:-5px;">
                         <TBODY>
                           {{#each staffFactor.components as |component|}}
                             <tr>{{em-checkbox label=component.name property=component.id}}</tr>
@@ -257,13 +255,13 @@
                 </tr>
               </THEAD>
               <TBODY>
-                {{#each model.taskFactors as |taskFactor|}}
+                {{#each taskFactors as |taskFactor|}}
                   <tr>
                     <td>
-                      {{taskFactor.factorType}}
+                      {{taskFactor.type}}
                     </td>
                     <td>
-                      <table class="table">
+                      <table class="table" style="margin-top:-5px;">
                         <TBODY>
                           {{#each taskFactor.components as |component|}}
                             <tr>{{em-checkbox label=component.name property=component.id}}</tr>
@@ -283,13 +281,13 @@
                 </tr>
               </THEAD>
               <TBODY>
-                {{#each model.communicationFactors as |communicationFactor|}}
+                {{#each communicationFactors as |communicationFactor|}}
                   <tr>
                     <td>
-                      {{communicationFactor.factorType}}
+                      {{communicationFactor.type}}
                     </td>
                     <td>
-                      <table class="table">
+                      <table class="table" style="margin-top:-5px;">
                         <TBODY>
                           {{#each communicationFactor.components as |component|}}
                             <tr>{{em-checkbox label=component.name property=component.id}}</tr>
@@ -309,13 +307,13 @@
                 </tr>
               </THEAD>
               <TBODY>
-                {{#each model.equipmentFactors as |equipmentFactor|}}
+                {{#each equipmentFactors as |equipmentFactor|}}
                   <tr>
                     <td>
-                      {{equipmentFactor.factorType}}
+                      {{equipmentFactor.type}}
                     </td>
                     <td>
-                      <table class="table">
+                      <table class="table" style="margin-top:-5px;">
                         <TBODY>
                           {{#each equipmentFactor.components as |component|}}
                             <tr>{{em-checkbox label=component.name property=component.id}}</tr>
@@ -335,13 +333,13 @@
                 </tr>
               </THEAD>
               <TBODY>
-                {{#each model.workEnvFactors as |workEnvFactor|}}
+                {{#each workEnvFactors as |workEnvFactor|}}
                   <tr>
                     <td>
-                      {{workEnvFactor.factorType}}
+                      {{workEnvFactor.type}}
                     </td>
                     <td>
-                      <table class="table">
+                      <table class="table" style="margin-top:-5px;">
                         <TBODY>
                           {{#each workEnvFactor.components as |component|}}
                             <tr>{{em-checkbox label=component.name property=component.id}}</tr>
@@ -361,13 +359,13 @@
                 </tr>
               </THEAD>
               <TBODY>
-                {{#each model.organisationalFactors as |organisationalFactor|}}
+                {{#each organisationalFactors as |organisationalFactor|}}
                   <tr>
                     <td>
-                      {{organisationalFactor.factorType}}
+                      {{organisationalFactor.type}}
                     </td>
                     <td>
-                      <table class="table">
+                      <table class="table" style="margin-top:-5px;">
                         <TBODY>
                           {{#each organisationalFactor.components as |component|}}
                             <tr>{{em-checkbox label=component.name property=component.id}}</tr>
@@ -387,13 +385,13 @@
                 </tr>
               </THEAD>
               <TBODY>
-                {{#each model.educationAndTrainingFactors as |educationAndTrainingFactor|}}
+                {{#each educationAndTrainingFactors as |educationAndTrainingFactor|}}
                   <tr>
                     <td>
-                      {{educationAndTrainingFactor.factorType}}
+                      {{educationAndTrainingFactor.type}}
                     </td>
                     <td>
-                      <table class="table">
+                      <table class="table" style="margin-top:-5px;">
                         <TBODY>
                           {{#each educationAndTrainingFactor.components as |component|}}
                             <tr>{{em-checkbox label=component.name property=component.id}}</tr>
@@ -413,13 +411,13 @@
                 </tr>
               </THEAD>
               <TBODY>
-                {{#each model.teamFactors as |teamFactor|}}
+                {{#each teamFactors as |teamFactor|}}
                   <tr>
                     <td>
-                      {{teamFactor.factorType}}
+                      {{teamFactor.type}}
                     </td>
                     <td>
-                      <table class="table">
+                      <table class="table" style="margin-top:-5px;">
                         <TBODY>
                           {{#each teamFactor.components as |component|}}
                             <tr>{{em-checkbox label=component.name property=component.id}}</tr>

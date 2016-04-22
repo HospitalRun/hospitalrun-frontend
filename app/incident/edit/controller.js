@@ -8,9 +8,9 @@ import IncidentLocationsList from 'hospitalrun/mixins/incident-locations-list';
 import IncidentContributingFactors from 'hospitalrun/mixins/incident-contributing-factors-classification';
 import SelectValues from 'hospitalrun/utils/select-values';
 import HarmScoreOptions from 'hospitalrun/mixins/incident-harm-score';
-import incidentRisk from 'hospitalrun/mixins/incident-risk';
+import IncidentRisk from 'hospitalrun/mixins/incident-risk';
 export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentLocationsList,
-  IncidentContributingFactors, SelectValues, UserSession, HarmScoreOptions, incidentRisk, {
+  IncidentContributingFactors, SelectValues, UserSession, HarmScoreOptions, IncidentRisk, {
     database: Ember.inject.service(),
     incidentController: Ember.inject.controller('incident'),
 
@@ -107,39 +107,39 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
 
     patientContributingFactorsChanged: function() {
       this._reEnableCheckboxOnLoading('patientFactors', 'patientContributingFactors');
-    }.observes('patientContributingFactors.[]'),
+    }.observes('model.patientContributingFactors.[]'),
 
     staffContributingFactorsChanged: function() {
       this._reEnableCheckboxOnLoading('staffFactors', 'staffContributingFactors');
-    }.observes('staffContributingFactors.[]'),
+    }.observes('model.staffContributingFactors.[]'),
 
     taskContributingFactorsChanged: function() {
       this._reEnableCheckboxOnLoading('taskFactors', 'taskContributingFactors');
-    }.observes('taskContributingFactors.[]'),
+    }.observes('model.taskContributingFactors.[]'),
 
     communicationContributingFactorsChanged: function() {
       this._reEnableCheckboxOnLoading('communicationFactors', 'communicationContributingFactors');
-    }.observes('communicationContributingFactors.[]'),
+    }.observes('model.communicationContributingFactors.[]'),
 
     equipmentContributingFactorsChanged: function() {
       this._reEnableCheckboxOnLoading('equipmentFactors', 'equipmentContributingFactors');
-    }.observes('equipmentContributingFactors.[]'),
+    }.observes('model.equipmentContributingFactors.[]'),
 
     wrkEnvironmentContributingFactorsChanged: function() {
       this._reEnableCheckboxOnLoading('workEnvFactors', 'wrkEnvironmentContributingFactors');
-    }.observes('wrkEnvironmentContributingFactors.[]'),
+    }.observes('model.wrkEnvironmentContributingFactors.[]'),
 
     organizationalContributingFactorsChanged: function() {
       this._reEnableCheckboxOnLoading('organisationalFactors', 'organizationalContributingFactors');
-    }.observes('organizationalContributingFactors.[]'),
+    }.observes('model.organizationalContributingFactors.[]'),
 
     eduTrainingContributingFactorsChanged: function() {
       this._reEnableCheckboxOnLoading('educationAndTrainingFactors', 'eduTrainingContributingFactors');
-    }.observes('eduTrainingContributingFactors.[]'),
+    }.observes('model.eduTrainingContributingFactors.[]'),
 
     teamContributingFactorsChanged: function() {
       this._reEnableCheckboxOnLoading('teamFactors', 'teamContributingFactors');
-    }.observes('teamContributingFactors.[]'),
+    }.observes('model.teamContributingFactors.[]'),
 
     _reEnableCheckboxOnLoading: function(factorsList, contributingFactorsList) {
       var model = this.get('model');
