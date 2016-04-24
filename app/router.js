@@ -18,6 +18,7 @@ Router.map(function() {
       this.route('edit', { path: '/edit/:user_id' });
     });
     this.route('roles');
+    this.route('misc');
     this.route('query');
   });
 

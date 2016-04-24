@@ -35,7 +35,8 @@ export default {
       load_db: 'Load DB',
       users: 'Users',
       new_user: 'New User',
-      user_roles: 'User Roles'
+      user_roles: 'User Roles',
+      misc: 'Miscellaneous'
     },
     actions: {
       logout: 'Logout',
@@ -204,6 +205,9 @@ export default {
       titles: {
         role_saved: 'Role Saved'
       }
+    },
+    misc: {
+      page_title: 'Miscellaneous'
     }
   },
   labels: {

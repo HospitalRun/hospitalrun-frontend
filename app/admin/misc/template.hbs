@@ -1,0 +1,26 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+<h3 class="panel-title">Text replacements</h3>
+</div>
+<p>When entering text, these shortcuts allow you to replace a short sequence of characters with a longer phrase.</p>
+<h3>Existing expansions</h3>
+<table class="table">
+  <tr class="table-header">
+    <th style="min-width: 150px">From</th>
+    <th style="min-width: 150px">To</th>
+  </tr>
+  <tbody>
+{{#each model as |expansion|}}
+<tr>
+  <td>#{{expansion.from}}</td>
+  <td>{{expansion.to}}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+<h3>Create an expansion</h3>
+{{#em-form model=newExpansion action="addExpansion" formLayout="vertical" showErrorsOnFocusIn="true"}}
+    {{em-input property="from" label="From" placeholder="Text to replace"}}
+    {{em-input property="to" label="To" placeholder="Replace with"}}
+{{/em-form}}
+</div>
