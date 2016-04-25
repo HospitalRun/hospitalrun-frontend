@@ -67,7 +67,7 @@
     "express": "^4.8.5",
     "glob": "^7.0.0",
     "hospitalrun-dblisteners": "0.9.2",
-    "hospitalrun-server-routes": "0.9.4",
+    "hospitalrun-server-routes": "0.9.5",
     "loader.js": "^4.0.2",
     "nano": "6.2.0",
     "request": "2.72.0"

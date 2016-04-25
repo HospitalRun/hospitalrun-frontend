@@ -5,7 +5,7 @@ module.exports = function(environment) {
     modulePrefix: 'hospitalrun',
     environment: environment,
     baseURL: '/',
-    locationType: 'hash', // Auto incompatible with google login right now
+    locationType: 'history',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
