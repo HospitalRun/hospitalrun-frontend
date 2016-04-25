@@ -225,6 +225,7 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
           lookupItem.set('userCanAdd', true);
         }
         this.set('model.userCanAdd', lookupItem.get('userCanAdd'));
+        this.set('model.organizeByType', lookupItem.get('organizeByType'));
         return lookupItem;
       }
     }.property('model.lookupType'),
@@ -237,14 +238,10 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
       return Ember.ArrayProxy.create({ content: Ember.A(values) });
     }.property('model.lookupType', 'lookupTypeList.value'),
 
-    organizeByType: Ember.computed.alias('lookupTypeList.organizeByType'),
-
     showOrganizeByType: function() {
       var lookupType = this.get('model.lookupType');
       return (!Ember.isEmpty(lookupType) && lookupType.indexOf('pricing_types') > 0);
     }.property('model.lookupType'),
-
-    userCanAdd: Ember.computed.alias('lookupTypeList.userCanAdd'),
 
     _canDeleteValue: function(value) {
       var lookupType = this.get('model.lookupType');
@@ -372,6 +369,7 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
       updateList: function() {
         var lookupTypeList = this.get('lookupTypeList');
         lookupTypeList.set('userCanAdd', this.get('model.userCanAdd'));
+        lookupTypeList.set('organizeByType', this.get('model.organizeByType'));
         lookupTypeList.save().then(function() {
           this.displayAlert(
             this.get('i18n').t('admin.lookup.alert_import_list_update_title'),
