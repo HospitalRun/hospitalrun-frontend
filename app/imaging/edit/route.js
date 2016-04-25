@@ -9,6 +9,12 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
   newTitle: t('imaging.titles.new_title'),
   pricingCategory: 'Imaging',
 
+  actions: {
+    returnToAllItems: function() {
+      this.controller.send('returnToAllItems');
+    }
+  },
+
   getNewData: function() {
     return Ember.RSVP.resolve({
       selectPatient: true,

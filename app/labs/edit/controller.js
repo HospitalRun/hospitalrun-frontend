@@ -98,7 +98,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
       alertMessage = i18n.t('labs.alerts.request_completed_message');
     } else {
       alertTitle = i18n.t('labs.alerts.request_saved_title');
-      alertMessage = i18n.t('labs.alerts.request_completed_message');
+      alertMessage = i18n.t('labs.alerts.request_saved_message');
     }
     if (multipleRecords) {
       afterDialogAction = this.get('cancelAction');
