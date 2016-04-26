@@ -1,13 +1,43 @@
 # Change Log
-## [0.9.6](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.5) (2016-04-21)
-[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.5...0.9.6)
 
+## [0.9.7](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.7) (2016-04-26)
+
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.6...0.9.7)
+
+**Implemented enhancements:**
+
+- 'No items found' helper link not presented after removing all items [\#395](https://github.com/HospitalRun/hospitalrun-frontend/issues/395)
+- Alert given emails addresses when items are in danger of stocking out [\#209](https://github.com/HospitalRun/hospitalrun-frontend/issues/209)
+
+**Fixed bugs:**
+
+- Organize Pricing By Type checkbox is not saving properly [\#435](https://github.com/HospitalRun/hospitalrun-frontend/issues/435)
+- Creating imaging and labs using checkboxes fails [\#434](https://github.com/HospitalRun/hospitalrun-frontend/issues/434)
+- Unauthorized user trying to login via Google Auth produces error [\#433](https://github.com/HospitalRun/hospitalrun-frontend/issues/433)
+- login page accessible even after login [\#399](https://github.com/HospitalRun/hospitalrun-frontend/issues/399)
+
+**Closed issues:**
+
+- RFC: dockerize the app [\#407](https://github.com/HospitalRun/hospitalrun-frontend/issues/407)
+- 'No imaging found' helper link not presented after removing all imaging [\#397](https://github.com/HospitalRun/hospitalrun-frontend/issues/397)
+- 'No appointments found' helper link not presented after removing all appointments [\#396](https://github.com/HospitalRun/hospitalrun-frontend/issues/396)
+- Improve view content header layout [\#361](https://github.com/HospitalRun/hospitalrun-frontend/issues/361)
+- Allow External Results Submission [\#249](https://github.com/HospitalRun/hospitalrun-frontend/issues/249)
+- Encryption for patient data [\#220](https://github.com/HospitalRun/hospitalrun-frontend/issues/220)
+- Consider adding breadcrumb to UI [\#206](https://github.com/HospitalRun/hospitalrun-frontend/issues/206)
+- \[Discussion\] Project planning [\#205](https://github.com/HospitalRun/hospitalrun-frontend/issues/205)
+
+**Merged pull requests:**
+
+- Update ember-ajax to version 2.1.0 🚀 [\#432](https://github.com/HospitalRun/hospitalrun-frontend/pull/432) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Fix \#395 \#396 \#397 [\#431](https://github.com/HospitalRun/hospitalrun-frontend/pull/431) ([esbanarango](https://github.com/esbanarango))
+
+## [0.9.6](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.6) (2016-04-21)
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.5...0.9.6)
 Forgot to run build for 0.9.5, so here it is.
 
 ## [0.9.5](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.5) (2016-04-21)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.4...0.9.5)
-
-Upgraded [PouchDB](https://pouchdb.com/) to 5.3.2
 
 **Fixed bugs:**
 
