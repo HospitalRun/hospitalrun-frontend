@@ -4,6 +4,7 @@
       <tr class="table-header">
           <th>{{t 'labels.date_requested'}}</th>
           <th>{{t 'labels.date_completed'}}</th>
+          <th>{{t 'labels.requested_by'}}</th>
           <th>{{t 'labels.patient'}}</th>
           <th>{{t 'labels.imaging_type'}}</th>
           <th>{{t 'labels.results'}}</th>
@@ -13,6 +14,7 @@
         <tr>
           <td>{{date-format imaging.requestedDate}}</td>
           <td>{{date-format imaging.imagingDate}}</td>
+          <td>{{imaging.requestedBy}}</td>
           <td>{{imaging.patient.displayName}}</td>
           <td>{{imaging.imagingType.name}}</td>
           <td>{{imaging.result}}</td>
