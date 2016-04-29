@@ -1,0 +1,13 @@
+<td>{{date-format imaging.requestedDate}}</td>
+<td>{{imaging.requestedBy}}</td>
+<td>{{imaging.patient.displayName}}</td>
+<td>{{imaging.imagingType.name}}</td>
+<td>{{imaging.notes}}</td>
+
+{{#if showActions}}
+  <td>
+    {{#if canEdit}}
+      {{imaging/index/imaging-edit-button imaging=imaging}}
+    {{/if}}
+  </td>
+{{/if}}
