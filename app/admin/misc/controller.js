@@ -5,10 +5,6 @@ export default Ember.Controller.extend(EmberValidations, {
   hideCancelButton: true,
   updateCapability: 'update_config',
 
-  /*  afterUpdate: function() {
-      this.displayAlert(this.get('i18n').t('admin.address.titles.options_saved'), this.get('i18n').t('admin.address.messages.address_saved'));
-    },*/
-
   createExpansion: function() {
     const newExpansion = this.get('store').createRecord('text-expansion');
     this.set('newExpansion', newExpansion);
@@ -24,12 +20,8 @@ export default Ember.Controller.extend(EmberValidations, {
   },
 
   actions: {
-    addExpansion: function() {
-      const newExpansion = this.get('newExpansion');
-      const self = this;
-      newExpansion.save().then(() => {
-        self.createExpansion();
-      });
+    cancelExpansion: function() {
+      this.createExpansion();
     }
   }
 });

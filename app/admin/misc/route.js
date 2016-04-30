@@ -1,6 +1,5 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 
-import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 export default AbstractIndexRoute.extend({
   pageTitle: t('admin.misc.page_title'),
@@ -16,5 +15,22 @@ export default AbstractIndexRoute.extend({
         return !isNew;
       });
     });
+  },
+
+  setupController: function(controller, model) {
+    this._super(controller, model);
+    controller.createExpansion();
+  },
+
+  actions: {
+    addExpansion: function(newExpansion) {
+      newExpansion.save()
+        .then(() => {
+          this.refresh();
+        })
+        .catch(() => {
+          this.refresh();
+        });
+    }
   }
 });

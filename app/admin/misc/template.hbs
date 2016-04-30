@@ -18,9 +18,17 @@
 {{/each}}
 </tbody>
 </table>
-<h3>Create an expansion</h3>
-{{#em-form model=newExpansion action="addExpansion" formLayout="vertical" showErrorsOnFocusIn="true"}}
-    {{em-input property="from" label="From" placeholder="Text to replace"}}
-    {{em-input property="to" label="To" placeholder="Replace with"}}
-{{/em-form}}
+<div class="panel">
+  <div class="panel-body">
+    <h3>Create an expansion</h3>
+    {{#em-form model=newExpansion action="addExpansion" formLayout="horizontal" showErrorsOnFocusIn="true" submitButton=false}}
+        {{em-input property="from" label="From" placeholder="Text to replace"}}
+        {{em-input property="to" label="To" placeholder="Replace with"}}
+    {{/em-form}}
+  </div>
+  <div class="panel-footer">
+    <button class="btn button-primary on-white" disabled={{isInvalid}} {{action 'addExpansion' newExpansion}}>Create</button>
+    <button class="btn button-default on-white" {{action 'cancelExpansion'}}>Cancel</button>
+  </div>
+</div>
 </div>
