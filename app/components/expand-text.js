@@ -1,15 +1,9 @@
 import Ember from 'ember';
-import EmText from 'ember-rapid-forms/components/em-text';
 import textExpansion from '../utils/text-expansion';
 
 export default Ember.Component.extend({
-  expansions: {
-    foo: 'bar',
-    fox: 'bar',
-    abc: 'aaabbbccc',
-    q: 'uuu',
-    long: 'ggggggggggggggggggsssssssssss wwwwwwwwwwwwwh          ddddddd #abc dsdddeghsfiuoh3yvq83y489vq3n4yv8 8943rvyq3 vyq3yrvq'
-  },
+
+  store: Ember.inject.service(),
 
   userText: '',
 
@@ -35,8 +29,20 @@ export default Ember.Component.extend({
       this.get('feedbackText');
       this.get('activeExpansionSite');
 
-    }
-    catch (e) {
+      this.get('store')
+        .findAll('text-expansion')
+        .then(expansions => {
+          return expansions.reduce((prev, curr) => {
+            console.log('curr ' + JSON.stringify(prev));
+            prev[curr.get('from')] = curr.get('to');
+            return prev;
+          }, {});
+        })
+        .then(expansions => {
+          this.set('expansions', expansions);
+        });
+
+    } catch (e) {
       console.log('didInsert ' + e);
     }
   },
@@ -72,7 +78,9 @@ export default Ember.Component.extend({
 
     const userText = this.get('userText');
     const textarea = this.get('textarea');
-    if (!textarea) { return null; }
+    if (!textarea) {
+      return null;
+    }
     const cursorLoc = textarea.selectionStart;
     const subjects = textExpansion.findExpansionSubjects(userText);
     const sites = textExpansion.findExpansionSites(userText, subjects);
@@ -105,43 +113,41 @@ export default Ember.Component.extend({
   }),
 
   expansionText: Ember.computed('possibleSwaps', 'activeExpansionSite', 'userText', function() {
-      var result = '';
+    var result = '';
 
-      const possibleSwaps = this.get('possibleSwaps');
-      const expansions = this.get('expansions');
-      if (possibleSwaps) {
-        const activeSite = this.get('activeExpansionSite');
+    const possibleSwaps = this.get('possibleSwaps');
+    if (possibleSwaps) {
+      const activeSite = this.get('activeExpansionSite');
 
-          if (possibleSwaps.length === 1) {
-            const swapTo = possibleSwaps[0].to;
-            result = `Press Enter to replace '${activeSite.term}' with '${swapTo}'`;
-          } else if (possibleSwaps.length > 1) {
-            result =
-              'Possible expansions: ' +
-                possibleSwaps
-                .map(swap => {
-                  return swap.from;
-                }).join(', ');
-          }
-          else {
-            result = `No expansion terms match '${activeSite.term}'`;
-          }
+      if (possibleSwaps.length === 1) {
+        const swapTo = possibleSwaps[0].to;
+        result = `Press Enter to replace '${activeSite.term}' with '${swapTo}'`;
+      } else if (possibleSwaps.length > 1) {
+        result =
+          'Possible expansions: ' +
+          possibleSwaps
+          .map(swap => {
+            return swap.from;
+          }).join(', ');
+      } else {
+        result = `No expansion terms match '${activeSite.term}'`;
       }
+    }
 
-      return result;
-    }),
+    return result;
+  }),
 
-    expansionDivStyle: Ember.computed('expansionText', function() {
-      const expansionText = this.get('expansionText');
-      const visiblility = expansionText ? 'visible' : 'hidden';
-      const textArea = this.get('textarea');
+  expansionDivStyle: Ember.computed('expansionText', function() {
+    const expansionText = this.get('expansionText');
+    const visiblility = expansionText ? 'visible' : 'hidden';
+    const textArea = this.get('textarea');
 
-      var styleString = `visibility: ${visiblility};`;
+    var styleString = `visibility: ${visiblility};`;
 
-      if (textArea) {
-        const textPos = textArea.getBoundingClientRect();
-        styleString += ` top: ${textPos.bottom}px; left: ${textPos.left}px; width: ${textArea.offsetWidth}px;`;
-      }
-      return new Ember.Handlebars.SafeString(styleString);
-    })
+    if (textArea) {
+      const textPos = textArea.getBoundingClientRect();
+      styleString += ` top: ${textPos.bottom}px; left: ${textPos.left}px; width: ${textArea.offsetWidth}px;`;
+    }
+    return new Ember.Handlebars.SafeString(styleString);
+  })
 });
