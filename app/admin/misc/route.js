@@ -8,8 +8,8 @@ export default AbstractIndexRoute.extend({
   model: function() {
     const store = this.get('store');
     store.findAll('text-expansion');
-    return store.findAll('text-expansion').then(result => {
-      return result.filter(model => {
+    return store.findAll('text-expansion').then((result) => {
+      return result.filter((model) => {
         const isNew = model.get('isNew');
         console.log(`${model.get('from')} ${isNew}`);
         return !isNew;

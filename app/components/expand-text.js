@@ -31,14 +31,14 @@ export default Ember.Component.extend({
 
       this.get('store')
         .findAll('text-expansion')
-        .then(expansions => {
+        .then((expansions) => {
           return expansions.reduce((prev, curr) => {
             console.log('curr ' + JSON.stringify(prev));
             prev[curr.get('from')] = curr.get('to');
             return prev;
           }, {});
         })
-        .then(expansions => {
+        .then((expansions) => {
           this.set('expansions', expansions);
         });
 
@@ -85,7 +85,7 @@ export default Ember.Component.extend({
     const subjects = textExpansion.findExpansionSubjects(userText);
     const sites = textExpansion.findExpansionSites(userText, subjects);
 
-    return sites.find(s => {
+    return sites.find((s) => {
       const endIndex = s.index + s.match.length;
 
       return cursorLoc >= s.index && cursorLoc <= endIndex;
@@ -99,11 +99,11 @@ export default Ember.Component.extend({
     if (activeSite) {
       const expansions = this.get('expansions');
       return Object.keys(expansions)
-        .filter(ex => {
+        .filter((ex) => {
           return ex.startsWith(activeSite.term);
         })
         .sort()
-        .map(from => {
+        .map((from) => {
           return {
             from: from,
             to: expansions[from]
@@ -126,7 +126,7 @@ export default Ember.Component.extend({
         result =
           'Possible expansions: ' +
           possibleSwaps
-          .map(swap => {
+          .map((swap) => {
             return swap.from;
           }).join(', ');
       } else {

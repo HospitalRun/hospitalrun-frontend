@@ -11,8 +11,7 @@ test('findExpansionSubjects', function(assert) {
 
 test('findExpansionSites', function(assert) {
   assert.deepEqual(sut.findExpansionSites('abc', []), []);
-  assert.deepEqual(sut.findExpansionSites('#abc', ['#abc']), [{ index: 0, subject: '#abc'}]);
+  assert.deepEqual(sut.findExpansionSites('#abc', ['#abc']), [{ index: 0, subject: '#abc' }]);
   assert.deepEqual(
-    sut.findExpansionSites('#abc #abc', ['#abc']),
-    [{ index: 0, subject: '#abc'}, { index: 5, subject: '#abc'}]);
+    sut.findExpansionSites('#abc #abc', ['#abc']), [{ index: 0, subject: '#abc' }, { index: 5, subject: '#abc' }]);
 });
