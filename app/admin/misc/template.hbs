@@ -8,12 +8,16 @@
   <tr class="table-header">
     <th style="min-width: 150px">From</th>
     <th style="min-width: 150px">To</th>
+    <th/>
   </tr>
   <tbody>
 {{#each model as |expansion|}}
 <tr>
   <td>#{{expansion.from}}</td>
   <td>{{expansion.to}}</td>
+  <td>
+    <button class="pull-right btn button-default on-white" {{action 'deleteExpansion' expansion}}>Delete</button>
+  </td>
 </tr>
 {{/each}}
 </tbody>

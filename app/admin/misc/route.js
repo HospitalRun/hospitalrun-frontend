@@ -31,6 +31,17 @@ export default AbstractIndexRoute.extend({
         .catch(() => {
           this.refresh();
         });
+    },
+
+    deleteExpansion: function(expansion) {
+      expansion.deleteRecord();
+      expansion.save()
+        .then(() => {
+          this.refresh();
+        })
+        .catch(() => {
+          this.refresh();
+        });
     }
   }
 });
