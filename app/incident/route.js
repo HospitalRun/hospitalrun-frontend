@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import IncidentId from 'hospitalrun/mixins/incident-id';
 import { translationMacro as t } from 'ember-i18n';
@@ -19,6 +18,6 @@ export default AbstractModuleRoute.extend(IncidentId, {
   }],
   moduleName: 'incident',
   newButtonText: t('incident.buttons.new_incident'),
-  sectionTitle: t('incident.titles.incidents'),
+  sectionTitle: t('incident.titles.incidents')
 });
 

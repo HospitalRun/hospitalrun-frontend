@@ -388,10 +388,11 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     _addContributingFactors: function(factorsList, contributingFactors) {
       var savePromises = [],
         checkboxValue = null,
-        existingFactor = null;
+        existingFactor = null,
+        model = this.get('model');
       factorsList.forEach(function(factor) {
         factor.components.forEach(function(component) {
-          checkboxValue = this.get(component.id);
+          checkboxValue = model.get(component.id);
           existingFactor = contributingFactors.findBy('component', component.name);
           if (Ember.isEmpty(checkboxValue)) {
             // Checkbox isn't checked, delete from list if in list
@@ -404,7 +405,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
               // Checkbox is checked, but value isn't stored on the model, so save it
               existingFactor = this.store.createRecord('inc-contributing-factor', {
                 component: component.name,
-                factorType: factor.factorType
+                factorType: factor.type
               });
               savePromises.push(existingFactor.save());
               contributingFactors.addObject(existingFactor);
