@@ -62,7 +62,7 @@ module.exports = function(environment) {
   if (environment === 'production') {
     ENV.serviceWorker.debug = false;
   }
-
+  
   return ENV;
 };
 
