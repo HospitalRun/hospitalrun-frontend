@@ -1,7 +1,10 @@
 # Change Log
 
-## [0.9.8](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.8)(2016-05-03)
+## [0.9.8](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.9) (2016-05-03)
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.8...0.9.9)
+Forgot to run build... so here it is!
 
+## [0.9.8](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.8) (2016-05-03)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.7...0.9.8)
 
 **Fixed bugs:**
