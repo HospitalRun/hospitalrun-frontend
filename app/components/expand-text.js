@@ -2,7 +2,7 @@ import Ember from 'ember';
 import textExpansion from '../utils/text-expansion';
 
 export default Ember.Component.extend({
-
+  i18n: Ember.inject.service(),
   store: Ember.inject.service(),
 
   userText: '',
@@ -115,22 +115,22 @@ export default Ember.Component.extend({
   expansionText: Ember.computed('possibleSwaps', 'activeExpansionSite', 'userText', function() {
     var result = '';
 
+    const i18n = this.get('i18n');
     const possibleSwaps = this.get('possibleSwaps');
     if (possibleSwaps) {
       const activeSite = this.get('activeExpansionSite');
 
       if (possibleSwaps.length === 1) {
         const swapTo = possibleSwaps[0].to;
-        result = `Press Enter to replace '${activeSite.term}' with '${swapTo}'`;
+        result = i18n.t('admin.textrepl.perform_expand', { from: activeSite.term, to: swapTo });
       } else if (possibleSwaps.length > 1) {
-        result =
-          'Possible expansions: ' +
-          possibleSwaps
+        const possible = possibleSwaps
           .map((swap) => {
             return swap.from;
           }).join(', ');
+        result = i18n.t('admin.textrepl.possible_expansions', { possible: possible });
       } else {
-        result = `No expansion terms match '${activeSite.term}'`;
+        result = i18n.t('admin.textrepl.no_matches', { term: activeSite.term });
       }
     }
 

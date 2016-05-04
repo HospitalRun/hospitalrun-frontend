@@ -1,10 +1,10 @@
 <div class="panel panel-primary">
-<h3>Existing Replacements</h3>
-<p>When entering text, these shortcuts allow you to replace a short sequence of characters with a longer phrase.</p>
+<h3>{{t 'admin.textrepl.existing_repl'}}</h3>
+<p>{{t 'admin.textrepl.repl_desc'}}</p>
 <table class="table">
   <tr class="table-header">
-    <th style="min-width: 150px">From</th>
-    <th style="min-width: 150px">To</th>
+    <th style="min-width: 150px">{{t 'labels.from'}}</th>
+    <th style="min-width: 150px">{{t 'labels.to'}}</th>
     <th/>
   </tr>
   <tbody>
@@ -13,7 +13,7 @@
   <td>#{{expansion.from}}</td>
   <td>{{expansion.to}}</td>
   <td>
-    <button class="pull-right btn button-default on-white" {{action 'deleteExpansion' expansion}}>Delete</button>
+    <button class="pull-right btn button-default on-white" {{action 'deleteExpansion' expansion}}>{{t 'buttons.delete'}}</button>
   </td>
 </tr>
 {{/each}}
@@ -21,15 +21,15 @@
 </table>
 <div class="panel">
   <div class="panel-body">
-    <h3>Create a new replacement</h3>
+    <h3>{{t 'admin.textrepl.create_new'}}</h3>
     {{#em-form model=newExpansion action="addExpansion" formLayout="horizontal" showErrorsOnFocusIn="true" submitButton=false}}
-        {{em-input property="from" label="From" placeholder="Text to replace"}}
-        {{em-input property="to" label="To" placeholder="Replace with"}}
+        {{em-input property="from" label=(t 'labels.from') placeholder=(t 'admin.textrepl.to_replace')}}
+        {{em-input property="to" label=(t 'labels.from') placeholder=(t 'admin.textrepl.replace_with')}}
     {{/em-form}}
   </div>
   <div class="panel-footer">
-    <button class="btn button-primary on-white" disabled={{isInvalid}} {{action 'addExpansion' newExpansion}}>Create</button>
-    <button class="btn button-default on-white" {{action 'cancelExpansion'}}>Cancel</button>
+    <button class="btn button-primary on-white" disabled={{isInvalid}} {{action 'addExpansion' newExpansion}}>{{t 'buttons.add'}}</button>
+    <button class="btn button-default on-white" {{action 'cancelExpansion'}}>{{t 'buttons.cancel'}}</button>
   </div>
 </div>
 </div>

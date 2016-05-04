@@ -207,7 +207,15 @@ export default {
       }
     },
     textrepl: {
-      page_title: 'Text Replacements'
+      create_new: 'Create a new placement',
+      existing_repl: 'Existing replacements',
+      repl_desc: 'When entering text, these shortcuts allow you to replace a short sequence of characters with a longer phrase.',
+      page_title: 'Text Replacements',
+      to_replace: 'Text to replace',
+      replace_with: 'Replace with',
+      perform_expand: "Press Enter to replace #{{from}} with '{{to}}'",
+      possible_expansions: 'Possible replacements: {{possible}}',
+      no_matches: "No replacements match '{{term}}'"
     }
   },
   labels: {
@@ -282,7 +290,9 @@ export default {
     physician: 'Physician',
     assisting: 'Assisting',
     anesthesia: 'Anesthesia',
-    procedures: 'Procedures'
+    procedures: 'Procedures',
+    from: 'From',
+    to: 'To'
   },
   messages: {
     no_items_found: 'No items found.',
