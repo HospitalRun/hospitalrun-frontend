@@ -3,12 +3,11 @@
     <div class="panel-body">
       {{#em-form model=model submitButton=false }}
         <div class="row">
-          {{em-select class="col-xs-3" label=(t 'incident.labels.report_type') property="reportType" content=reportTypes
-            optionValuePath="value" optionLabelPath="name" selected=reportType}}
-        </div>
-        <div class="row">
           {{date-picker property="startDate" label=(t 'incident.labels.start_date') class="col-sm-4"}}
           {{date-picker property="endDate" label=(t 'incident.labels.end_date') class="col-sm-4"}}
+        </div>
+        <div class="row">
+          {{em-select class="col-sm-4" label=(t 'incident.labels.report_type') property="reportType" optionLabelPath="name" content=reportTypes}}
         </div>
       {{/em-form}}
     </div>
@@ -25,14 +24,14 @@
     <div class="panel-body">
       <table class="table">
         <tr class="table-header">
-          {{#each reportHeaders}}
-            <th>{{this}}</th>
+          {{#each reportHeaders as |header|}}
+            <th>{{header}}</th>
           {{/each}}
         </tr>
-        {{#each reportRows}}
+        {{#each reportRows as |row|}}
           <tr>
-            {{#each this}}
-              <td>{{this}}</td>
+            {{#each row as |subrow|}}
+              <td>{{subrow}}</td>
             {{/each}}
           </tr>
         {{/each}}

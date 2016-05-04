@@ -1,6 +1,5 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
-import { translationMacro as t } from 'ember-i18n';
 import IncidentSubmodule from 'hospitalrun/mixins/incident-submodule';
 import UserSession from 'hospitalrun/mixins/user-session';
 import IncidentCategoryList from 'hospitalrun/mixins/incident-category';
