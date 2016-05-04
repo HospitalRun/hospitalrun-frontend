@@ -24,6 +24,23 @@ test('visiting /appointments', function(assert) {
   });
 });
 
+test('visiting /appointments/missed', function(assert) {
+  runWithPouchDump('appointments', function() {
+    authenticateUser();
+    let url = '/appointments';
+    // create an apointmet scheduled in the past
+    let today = moment();
+    let tomorrow = moment().add(1, 'days');
+    let status = 'Missed';
+    createAppointment(today, tomorrow, status);
+    visit(url);
+    andThen(function() {
+      assert.equal(currentURL(), url);
+      findWithAssert(`.appointment-status:contains(${status})`);
+    });
+  });
+});
+
 test('Creating a new appointment', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
@@ -35,20 +52,7 @@ test('Creating a new appointment', function(assert) {
       findWithAssert('button:contains(Add)');
     });
 
-    fillIn('.test-patient-input .tt-input', 'Lennex Zinyando - P00017');
-    triggerEvent('.test-patient-input .tt-input', 'input');
-    triggerEvent('.test-patient-input .tt-input', 'blur');
-    select('.test-appointment-type', 'Followup');
-    waitToAppear('.test-appointment-date input');
-    andThen(function() {
-      selectDate('.test-appointment-date input', new Date());
-    });
-    fillIn('.test-appointment-location .tt-input', 'Harare');
-    triggerEvent('.test-appointment-location .tt-input', 'input');
-    triggerEvent('.test-appointment-location .tt-input', 'blur');
-    fillIn('.test-appointment-with', 'Dr Test');
-    click('button:contains(Add)');
-    waitToAppear('.table-header');
+    createAppointment();
 
     andThen(() => {
       assert.equal(currentURL(), '/appointments');
@@ -133,18 +137,19 @@ test('Delete an appointment', function(assert) {
   });
 });
 
-function createAppointment() {
+function createAppointment(startDate=(new Date()), endDate=(moment().add(1, 'day').toDate()), status='Scheduled') {
   visit('/appointments/edit/new');
   fillIn('.test-patient-input .tt-input', 'Lennex Zinyando - P00017');
   triggerEvent('.test-patient-input .tt-input', 'input');
   triggerEvent('.test-patient-input .tt-input', 'blur');
   select('.test-appointment-type', 'Admission');
+  select('.test-appointment-status', status);
   waitToAppear('.test-appointment-start input');
   andThen(function() {
-    selectDate('.test-appointment-start input', new Date());
+    selectDate('.test-appointment-start input', startDate);
   });
   andThen(function() {
-    selectDate('.test-appointment-end input', moment().add(1, 'day').toDate());
+    selectDate('.test-appointment-end input', endDate);
   });
   fillIn('.test-appointment-location .tt-input', 'Harare');
   triggerEvent('.test-appointment-location .tt-input', 'input');
