@@ -275,9 +275,9 @@ export default Ember.Mixin.create({
           capability: 'user_roles'
         },
         {
-          title: 'Miscellaneous',
+          title: 'Text Replacements',
           iconClass: 'octicon-plus',
-          route: 'admin.misc',
+          route: 'admin.textrepl',
           capability: 'update_config'
         }
       ]

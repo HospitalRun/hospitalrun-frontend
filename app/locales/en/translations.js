@@ -36,7 +36,7 @@ export default {
       users: 'Users',
       new_user: 'New User',
       user_roles: 'User Roles',
-      misc: 'Miscellaneous'
+      textrepl: 'Text Replacements'
     },
     actions: {
       logout: 'Logout',
@@ -206,8 +206,8 @@ export default {
         role_saved: 'Role Saved'
       }
     },
-    misc: {
-      page_title: 'Miscellaneous'
+    textrepl: {
+      page_title: 'Text Replacements'
     }
   },
   labels: {
@@ -328,13 +328,13 @@ export default {
   },
   login: {
     messages: {
-      sign_in:  'please sign in',
-      error:    'Username or password is incorrect.'
+      sign_in: 'please sign in',
+      error: 'Username or password is incorrect.'
     },
     labels: {
       password: 'Password',
       username: 'Username',
-      sign_in:  'Sign in'
+      sign_in: 'Sign in'
     }
   },
   inventory: {
@@ -572,7 +572,7 @@ export default {
     },
     alerts: {
       returned_title: 'Medication Returned',
-      returned_message:  'The medication has been marked as returned.',
+      returned_message: 'The medication has been marked as returned.',
       saved_title: 'Medication Request Saved',
       saved_message: 'The medication record has been saved.',
       fulfilled_title: 'Medication Request Fulfilled'

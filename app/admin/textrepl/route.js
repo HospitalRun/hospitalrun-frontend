@@ -2,7 +2,7 @@ import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 
 import { translationMacro as t } from 'ember-i18n';
 export default AbstractIndexRoute.extend({
-  pageTitle: t('admin.misc.page_title'),
+  pageTitle: t('admin.textrepl.page_title'),
   hideNewButton: true,
 
   model: function() {
