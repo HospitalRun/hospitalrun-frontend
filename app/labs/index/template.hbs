@@ -4,6 +4,7 @@
       <tr class="table-header">
         <th>{{t 'labels.date_requested'}}</th>
         <th>{{t 'labels.patient'}}</th>
+        <th>{{t 'labels.requested_by'}}</th>
         <th>{{t 'labs.labels.lab_type'}}</th>
         <th>{{t 'labels.notes'}}</th>
         {{#if showActions}}
@@ -11,19 +12,11 @@
         {{/if}}
       </tr>
       {{#each model as |lab|}}
-        <tr {{action 'editItem' lab}} class="clickable">
-          <td>{{date-format lab.requestedDate}}</td>
-          <td>{{lab.patient.displayName}}</td>
-          <td>{{lab.labType.name}}</td>
-          <td>{{lab.notes}}</td>
-           {{#if showActions}}
-            <td>
-              {{#if canEdit}}
-                <button class="btn btn-default neutral" {{action 'editItem' lab  bubbles=false }}>{{t 'labels.edit'}}</button>
-              {{/if}}
-            </td>
-          {{/if}}
-        </tr>
+        {{labs/index/labs-list-item
+          lab=lab
+          action='editItem'
+          showActions=showActions
+          canEdit=canEdit}}
       {{/each}}
     </table>
   {{else}}
