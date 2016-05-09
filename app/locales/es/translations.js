@@ -91,12 +91,12 @@ export default {
       delete_value_imaging_pricing_type_procedure_message: 'No se puede eliminar porque es necesario para el modulo de radiografias',
       delete_value_visit_type_admission_title: 'No se puede eliminar admision tipo visita',
       delete_value_visit_type_admission_message: 'Tipo de visita es necesaria para el modulo de admisiones.',
-      delete_value_visit_type_imaging_title: 'Cannot Delete Imaging Visit Type',
-      delete_value_visit_type_imaging_message: 'The Imaging Visit type cannot be deleted because it is needed for the Imaging module.',
-      delete_value_visit_type_lab_title: 'Cannot Delete Lab Visit Type',
-      delete_value_visit_type_lab_message: 'The Lab Visit type cannot be deleted because it is needed for the Lab module.',
-      delete_value_visit_type_pharmacy_title: 'Cannot Delete Pharmacy Visit Type',
-      delete_value_visit_type_pharmacy_message: 'The Lab Visit type cannot be deleted because it is needed for the Medication module.',
+      delete_value_visit_type_imaging_title: 'No se puee eliminar el tipo de imagen de visista de radiografia',
+      delete_value_visit_type_imaging_message: 'No se puede eliminar por que es requediro por el modulo de imagenes.',
+      delete_value_visit_type_lab_title: 'No se puede eliminar el tipo laboratorio',
+      delete_value_visit_type_lab_message: 'Bo se puede eliminar porque es requerido por el modulo de laboratorio.',
+      delete_value_visit_type_pharmacy_title: 'No se puede eliminar el tipo de visita farmacia',
+      delete_value_visit_type_pharmacy_message: 'No se puede eliminar es requerido por el modulo de medicacion.',
       alert_import_list_title: 'Seleccione un archivo para importar',
       alert_import_list_message: 'Por favor seleccione un archivo para importar.',
       alert_import_list_save_title: 'Lista importada',
@@ -202,7 +202,7 @@ export default {
         role_saved: 'El {{roleName}} rol ha sido salvado.'
       },
       titles: {
-        role_saved: 'Role salvado'
+        role_saved: 'Rol salvado'
       }
     }
   },
