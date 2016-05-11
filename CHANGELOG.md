@@ -1,7 +1,14 @@
 # Change Log
 
-## [0.9.10](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.10) (2016-05-11)
+## [0.9.11](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.11) (2016-05-11)
 
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.10...0.9.11)
+
+**Fixed bugs:**
+
+- Fix for offline broke google auth [\#455](https://github.com/HospitalRun/hospitalrun-frontend/issues/455)
+
+## [0.9.10](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.10) (2016-05-11)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.9...0.9.10)
 
 **Fixed bugs:**
