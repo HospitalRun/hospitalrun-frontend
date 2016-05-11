@@ -6,7 +6,8 @@ export default AbstractSearchRoute.extend({
     'friendlyId',
     'externalPatientId',
     'firstName',
-    'lastName'
+    'lastName',
+    'phone'
   ],
   searchIndex: PatientSearch,
   searchModel: 'patient'
