@@ -1,8 +1,27 @@
 # Change Log
 
-## [0.9.8](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.9) (2016-05-03)
+## [0.9.10](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.10) (2016-05-11)
+
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.9...0.9.10)
+
+**Fixed bugs:**
+
+- Inventory reports throw exception e.name.indexOf is not a function [\#454](https://github.com/HospitalRun/hospitalrun-frontend/issues/454)
+
+**Closed issues:**
+
+- List of missed appointments [\#351](https://github.com/HospitalRun/hospitalrun-frontend/issues/351)
+
+**Merged pull requests:**
+
+- Fixed missing translation in the Labs module [\#448](https://github.com/HospitalRun/hospitalrun-frontend/pull/448) ([napon](https://github.com/napon))
+- Update ember-cli-qunit to version 2.0.0 🚀 [\#446](https://github.com/HospitalRun/hospitalrun-frontend/pull/446) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update ember-ajax to version 2.3.2 🚀 [\#444](https://github.com/HospitalRun/hospitalrun-frontend/pull/444) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Enabled patient search by phone number [\#409](https://github.com/HospitalRun/hospitalrun-frontend/pull/409) ([douno](https://github.com/douno))
+- Adding 'missed appointments' tab [\#402](https://github.com/HospitalRun/hospitalrun-frontend/pull/402) ([pete-the-pete](https://github.com/pete-the-pete))
+
+## [0.9.9](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.9) (2016-05-03)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.8...0.9.9)
-Forgot to run build... so here it is!
 
 ## [0.9.8](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.8) (2016-05-03)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.7...0.9.8)
