@@ -1,7 +1,25 @@
 # Change Log
 
-## [0.9.7](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.7) (2016-04-26)
+## [0.9.8](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.9) (2016-05-03)
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.8...0.9.9)
+Forgot to run build... so here it is!
 
+## [0.9.8](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.8) (2016-05-03)
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.7...0.9.8)
+
+**Fixed bugs:**
+
+- Offline with service worker not working on new window/tab [\#391](https://github.com/HospitalRun/hospitalrun-frontend/issues/391)
+- 'No patients found' helper link not presented after removing all patients [\#357](https://github.com/HospitalRun/hospitalrun-frontend/issues/357)
+
+**Merged pull requests:**
+
+- Update hospitalrun-server-routes to version 0.9.6 🚀 [\#442](https://github.com/HospitalRun/hospitalrun-frontend/pull/442) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Fixes \#391 offline with service worker not working on new window/tab [\#441](https://github.com/HospitalRun/hospitalrun-frontend/pull/441) ([Epsilonnnn](https://github.com/Epsilonnnn))
+- Update ember-i18n to version 4.2.1 🚀 [\#439](https://github.com/HospitalRun/hospitalrun-frontend/pull/439) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update ember-ajax to version 2.3.1 🚀 [\#436](https://github.com/HospitalRun/hospitalrun-frontend/pull/436) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+
+## [0.9.7](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.7) (2016-04-26)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.6...0.9.7)
 
 **Implemented enhancements:**
@@ -34,7 +52,6 @@
 
 ## [0.9.6](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.6) (2016-04-21)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.5...0.9.6)
-Forgot to run build for 0.9.5, so here it is.
 
 ## [0.9.5](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.5) (2016-04-21)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.4...0.9.5)

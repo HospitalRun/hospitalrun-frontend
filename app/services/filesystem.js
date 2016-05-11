@@ -191,7 +191,7 @@ export default Ember.Service.extend({
   },
 
   /**
-   * Property to to determine if file system API is available.
+   * Property to determine if file system API is available.
    */
   isFileSystemEnabled: function() {
     var filer = this.get('filer');
