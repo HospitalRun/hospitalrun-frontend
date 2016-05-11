@@ -1,12 +1,14 @@
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import Ember from 'ember';
+import SetupUserRole from 'hospitalrun/mixins/setup-user-role';
 
 const { inject, Route } = Ember;
 
-var ApplicationRoute = Route.extend(ApplicationRouteMixin, {
+var ApplicationRoute = Route.extend(ApplicationRouteMixin, SetupUserRole, {
   database: inject.service(),
   config: inject.service(),
   session: inject.service(),
+  shouldSetupUserRole: true,
 
   actions: {
     closeModal: function() {
@@ -42,6 +44,7 @@ var ApplicationRoute = Route.extend(ApplicationRouteMixin, {
     const isAuthenticated = session && session.get('isAuthenticated');
     return this.get('config').setup().then(function(configs) {
       if (transition.targetName !== 'finishgauth' && transition.targetName !== 'login') {
+        this.set('shouldSetupUserRole', true);
         if (isAuthenticated) {
           return this.get('database').setup(configs)
             .catch(() => {
@@ -49,6 +52,8 @@ var ApplicationRoute = Route.extend(ApplicationRouteMixin, {
               session.invalidate();
             });
         }
+      } else if (transition.targetName === 'finishgauth') {
+        this.set('shouldSetupUserRole', false);
       }
     }.bind(this));
   },
@@ -66,11 +71,9 @@ var ApplicationRoute = Route.extend(ApplicationRouteMixin, {
   },
 
   sessionAuthenticated() {
-    const session = this.get('session');
-    const userRole = session.get('data.authenticated.role');
-    this.get('store').find('user-role', userRole.dasherize()).then((userCaps) => {
-      session.set('data.authenticated.userCaps', userCaps.get('capabilities'));
-    }).catch(Ember.K);
+    if (this.get('shouldSetupUserRole') === true) {
+      this.setupUserRole();
+    }
     this._super();
   }
 

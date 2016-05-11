@@ -1,5 +1,7 @@
 import Ember from 'ember';
-export default Ember.Route.extend({
+import SetupUserRole from 'hospitalrun/mixins/setup-user-role';
+
+export default Ember.Route.extend(SetupUserRole, {
   config: Ember.inject.service(),
   database: Ember.inject.service(),
   session: Ember.inject.service(),
@@ -18,7 +20,9 @@ export default Ember.Route.extend({
       return this.get('config').saveOauthConfigs(oauthConfigs)
         .then(function() {
           oauthConfigs.config_use_google_auth = true;
-          return this.get('database').setup(oauthConfigs);
+          return this.get('database').setup(oauthConfigs).then(() => {
+            return this.setupUserRole();
+          });
         }.bind(this));
     }
   }

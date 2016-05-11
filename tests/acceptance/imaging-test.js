@@ -106,7 +106,7 @@ test('mark an imaging request as completed', (assert) => {
     click('button:contains(Return)');
     andThen(() => {
       assert.equal(currentURL(), '/imaging');
-      assert.equal(find('tr').length, 1, 'No requests are left to complete');
+      findWithAssert('a:contains(Create a new record?)');
     });
   });
 });

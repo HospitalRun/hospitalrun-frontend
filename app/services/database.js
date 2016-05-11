@@ -21,7 +21,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   createDB(configs) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       let pouchOptions = {};
-      if (configs.config_use_google_auth) {
+      if (configs && configs.config_use_google_auth) {
         pouchOptions.ajax = {
           timeout: 30000
         };
@@ -43,15 +43,13 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         }
       }
       const url = `${document.location.protocol}//${document.location.host}/db/main`;
-      new PouchDB(url, pouchOptions, (err, db) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        createPouchViews(db);
-        resolve(db);
-      });
-    });
+
+      this._createRemoteDB(url, pouchOptions)
+          .catch(() => this._createLocalDB('localMainDB', pouchOptions))
+          .then((db) => resolve(db))
+          .catch((err) => reject(err));
+
+    }, 'initialize application db');
   },
 
   queryMainDB(queryParams, mapReduce) {
@@ -154,5 +152,36 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       });
     }
     return mappedRows;
+  },
+
+  _createRemoteDB(remoteUrl, pouchOptions) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      new PouchDB(remoteUrl, pouchOptions, (errRemote, remoteDB) => {
+        if (errRemote) {
+          reject(errRemote);
+          return;
+        }
+
+        // remote db lazy created, check if db created correctly
+        remoteDB.info().then(() => {
+          createPouchViews(remoteDB);
+          resolve(remoteDB);
+        }).catch((err) => reject(err));
+      });
+    });
+  },
+
+  _createLocalDB(localDBName, pouchOptions) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      new PouchDB(localDBName, pouchOptions, (errLocal, localDB) => {
+        if (errLocal) {
+          reject(errLocal);
+          return;
+        }
+
+        createPouchViews(localDB);
+        resolve(localDB);
+      });
+    });
   }
 });

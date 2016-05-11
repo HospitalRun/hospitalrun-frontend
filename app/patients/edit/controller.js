@@ -168,7 +168,10 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     return this._getVisitCollection('procedures');
   }.property('model.visits.[].procedures'),
 
-  showExpenseTotal: true,
+  showExpenseTotal: function() {
+    var expenses = this.get('model.expenses');
+    return (!Ember.isEmpty(expenses));
+  }.property('model.expenses.[]'),
 
   totalExpenses: function() {
     var expenses = this.get('model.expenses');
@@ -178,12 +181,9 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
           return previousValue + parseInt(expense.cost);
         }
       }, 0);
-      this.set('showExpenseTotal', true);
       return total;
-    } else {
-      this.set('showExpenseTotal', false);
     }
-  }.property('model.expenses'),
+  }.property('model.expenses.@each.cost'),
 
   updateCapability: 'add_patient',
 
@@ -450,44 +450,20 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
       this.send('openModal', 'visits.delete', visit);
     },
 
-    showEditExpense: function(model) {
-      if (Ember.isEmpty(model)) {
-        model = this.get('store').createRecord('social-expense');
-      }
-      this.send('openModal', 'patients.socialwork.expense', model);
+    showEditExpense: function(expenseInfo) {
+      this._showEditSocial(expenseInfo, 'social-expense', 'expense');
     },
 
-    showEditFamily: function(model) {
-      if (Ember.isEmpty(model)) {
-        model = this.get('store').createRecord('family-info');
-      }
-      this.send('openModal', 'patients.socialwork.family-info', model);
+    showEditFamily: function(familyInfo) {
+      this._showEditSocial(familyInfo, 'family-info', 'family-info');
     },
 
     updateExpense: function(model) {
-      var expenses = this.getWithDefault('model.expenses', []),
-        isNew = model.isNew,
-        patient = this.get('model');
-      if (isNew) {
-        delete model.isNew;
-        expenses.addObject(model);
-      }
-      patient.set('expenses', expenses);
-      this.send('update', true);
-      this.send('closeModal');
+      this._updateSocialRecord(model, 'expenses');
     },
 
     updateFamilyInfo: function(model) {
-      var familyInfo = this.getWithDefault('model.familyInfo', []),
-        isNew = model.isNew,
-        patient = this.get('model');
-      if (isNew) {
-        delete model.isNew;
-        familyInfo.addObject(model);
-        patient.set('familyInfo', familyInfo);
-      }
-      this.send('update', true);
-      this.send('closeModal');
+      this._updateSocialRecord(model, 'familyInfo');
     },
 
     updatePhoto: function(photo) {
@@ -514,6 +490,24 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     }.bind(this));
   },
 
+  _showEditSocial: function(editAttributes, modelName, route) {
+    var model;
+    if (Ember.isEmpty(editAttributes)) {
+      model = this.get('store').createRecord(modelName, {
+        newRecord: true
+      });
+    } else {
+      model = this.get('store').push({
+        data: {
+          id: Ember.get(editAttributes, 'id'),
+          type: modelName,
+          attributes: editAttributes
+        }
+      });
+    }
+    this.send('openModal', 'patients.socialwork.' + route, model);
+  },
+
   _getVisitCollection: function(name) {
     var returnList = [],
       visits = this.get('model.visits');
@@ -528,6 +522,23 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
       });
     }
     return returnList;
+  },
+
+  _updateSocialRecord: function(recordToUpdate, name) {
+    var socialRecords = this.getWithDefault('model.' + name, []);
+    var isNew = recordToUpdate.get('isNew');
+    var patient = this.get('model');
+    var objectToUpdate = recordToUpdate.serialize();
+    objectToUpdate.id = recordToUpdate.get('id');
+    if (isNew) {
+      socialRecords.addObject(Ember.Object.create(objectToUpdate));
+    } else {
+      var updateRecord = socialRecords.findBy('id', objectToUpdate.id);
+      Ember.setProperties(updateRecord, objectToUpdate);
+    }
+    patient.set(name, socialRecords);
+    this.send('update', true);
+    this.send('closeModal');
   },
 
   afterUpdate: function(record) {

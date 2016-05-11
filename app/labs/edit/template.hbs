@@ -15,7 +15,7 @@
         }}
       </div>
       {{checkbox-or-typeahead property="labTypeName"
-        label="Lab Type" list=objectTypeList
+        label=(t 'labs.labels.lab_type') list=objectTypeList
         selection=selectedLabType
         optionLabelPath='name'
         typeAheadType='pricing'
@@ -36,8 +36,8 @@
       </div>
     {{/if}}
     {{#if canComplete}}
-      {{em-input property="result" label="Result" class="test-result-input"}}
+      {{em-input property="result" label=(t 'labels.result') class="test-result-input"}}
     {{/if}}
-    {{em-text property="notes" label="Notes" rows=3 }}
+    {{em-text property="notes" label=(t 'labels.notes') rows=3 }}
   {{/em-form}}
 {{/edit-panel}}

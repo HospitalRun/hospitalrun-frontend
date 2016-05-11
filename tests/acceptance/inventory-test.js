@@ -70,6 +70,28 @@ test('Adding a new inventory item', (assert) => {
   });
 });
 
+test('Deleting the last inventory item', (assert) => {
+  runWithPouchDump('inventory', function() {
+    authenticateUser();
+    visit('/inventory/listing');
+
+    andThen(function() {
+      assert.equal(currentURL(), '/inventory/listing');
+      click('button:contains(Delete)');
+      waitToAppear('.modal-dialog');
+      andThen(() => {
+        assert.equal(find('.modal-title').text(), 'Delete Item', 'Deleting confirmation.');
+      });
+      click('.modal-content button:contains(Delete)');
+      waitToAppear('.panel-body .alert-info');
+      andThen(function() {
+        assert.equal(currentURL(), '/inventory/listing');
+        findWithAssert('a:contains(Create a new record?)');
+      });
+    });
+  });
+});
+
 test('Creating a new inventory request', function(assert) {
   runWithPouchDump('inventory', function() {
     authenticateUser();

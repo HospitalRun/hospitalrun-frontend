@@ -212,10 +212,7 @@ export default Ember.Mixin.create({
     if (!Ember.isEmpty(selectedItem)) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
         if (Ember.isArray(selectedItem)) {
-          var pricingIds = selectedItem.map(function(pricingItem) {
-            return pricingItem.id;
-          });
-          this.store.findByIds('pricing', pricingIds).then(resolve, reject);
+          this.store.findByIds('pricing', selectedItem).then(resolve, reject);
         } else {
           this.store.find('pricing', selectedItem.id).then(resolve, reject);
         }

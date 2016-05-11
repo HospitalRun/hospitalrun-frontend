@@ -13,7 +13,7 @@
     "node-uuid": "https://github.com/broofa/node-uuid.git",
     "octicons": "~2.4.1",
     "pikaday": "owenmead/Pikaday#~1.3.3",
-    "pouchdb": "^5.2.1",
+    "pouchdb": "^5.3.2",
     "relational-pouch": "HospitalRun/relational-pouch#query",
     "typeahead.js": "~0.11.1",
     "pouchdb-load": "^1.4.0",

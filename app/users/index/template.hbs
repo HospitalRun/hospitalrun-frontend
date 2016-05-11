@@ -13,8 +13,8 @@
       {{#each model as |user|}}
         {{#unless user.deleted}}
           <tr {{action 'editItem' user}} class="clickable">
-            <td class="user-display-name">{{user.displayName}}</td>
             <td class="user-name">{{user.name}}</td>
+            <td class="user-display-name">{{user.displayName}}</td>
             <td class="user-email">{{user.email}}</td>
             <td class="user-role">{{user.displayRole}}</td>
             {{#if showActions}}
