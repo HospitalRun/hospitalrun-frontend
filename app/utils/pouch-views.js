@@ -264,6 +264,12 @@ var designDocs = [{
   ),
   version: 4
 }, {
+  name: 'invoice_by_patient',
+  function: generateView('invoice',
+    'emit(doc.data.patient);'
+  ),
+  version: 1
+}, {
   name: 'invoice_by_status',
   function: generateView('invoice',
     generateDateForView('billDate') +
