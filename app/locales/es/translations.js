@@ -31,8 +31,8 @@ export default {
       prices: 'Precios',
       price_profiles: 'Perfil de precios',
       lookup_lists: 'Lista de busuedas',
-      address_fields: 'Campos de direccion',
-      load_db: 'Carfar base de datos',
+      address_fields: 'Campos de dirección',
+      load_db: 'Cargar base de datos',
       users: 'Usuarios',
       new_user: 'Nuevo usuario',
       user_roles: 'Roles'
@@ -41,15 +41,15 @@ export default {
       logout: 'Salir',
       login: 'Ingresar'
     },
-    about: 'Informacion de HospitalRun'
+    about: 'Información de HospitalRun'
   },
   user: {
-    plus_new_user: '+ new usuario',
+    plus_new_user: '+ nuevo usuario',
     users_page_tile: 'Listado de usuarios'
   },
   admin: {
     address_options: 'Opciones de direcciones',
-    lookup_lists: 'Lookup Lists',
+    lookup_lists: 'Lista de busqueda',
     load_db: 'Cargar Base de datos',
     user_roles: 'Roles',
     users: 'Usuarios',
@@ -66,11 +66,11 @@ export default {
         options_saved: 'Opciones guardadas'
       },
       messages: {
-        address_saved: 'las opciones de direccion han sido guardadas'
+        address_saved: 'las opciones de dirección han sido guardadas'
       },
 
-      new_title: 'Opciones de direccion',
-      edit_title: 'Opciones de direccion',
+      new_title: 'Opciones de dirección',
+      edit_title: 'Opciones de dirección',
       address_label: 'Direcciones'
     },
     loaddb: {
@@ -91,12 +91,12 @@ export default {
       delete_value_imaging_pricing_type_procedure_message: 'No se puede eliminar porque es necesario para el modulo de radiografias',
       delete_value_visit_type_admission_title: 'No se puede eliminar admision tipo visita',
       delete_value_visit_type_admission_message: 'Tipo de visita es necesaria para el modulo de admisiones.',
-      delete_value_visit_type_imaging_title: 'No se puee eliminar el tipo de imagen de visista de radiografia',
-      delete_value_visit_type_imaging_message: 'No se puede eliminar por que es requediro por el modulo de imagenes.',
+      delete_value_visit_type_imaging_title: 'No se puede eliminar el tipo radiografia',
+      delete_value_visit_type_imaging_message: 'No se puede eliminar por que es necesario para el modulo de radiografias.',
       delete_value_visit_type_lab_title: 'No se puede eliminar el tipo laboratorio',
-      delete_value_visit_type_lab_message: 'Bo se puede eliminar porque es requerido por el modulo de laboratorio.',
-      delete_value_visit_type_pharmacy_title: 'No se puede eliminar el tipo de visita farmacia',
-      delete_value_visit_type_pharmacy_message: 'No se puede eliminar es requerido por el modulo de medicacion.',
+      delete_value_visit_type_lab_message: 'Es necesario para el modulo de laboratorio.',
+      delete_value_visit_type_pharmacy_title: 'No se puede eliminar el tipo farmacia',
+      delete_value_visit_type_pharmacy_message: 'Es requerido por el modulo de recetas.',
       alert_import_list_title: 'Seleccione un archivo para importar',
       alert_import_list_message: 'Por favor seleccione un archivo para importar.',
       alert_import_list_save_title: 'Lista importada',
@@ -159,7 +159,7 @@ export default {
         override_invoice: 'Sobreescribir factura',
         pricing: 'Precio',
         patients: 'Pacientes',
-        add_diagnosis: 'Addicionar diagnostico',
+        add_diagnosis: 'Adicionar diagnostico',
         add_photo: 'Adicionar foto',
         add_patient: 'Adicionar paciente',
         add_visit: 'Adicionar visita',
@@ -195,14 +195,14 @@ export default {
         adjust_inventory_location: 'Ajustar lugar elemento en el inventario',
         delete_inventory_item: 'Eliminar elemento del inventario',
         delete_inventory_purchase: 'Eliminar compra del inventario',
-        fulfill_inventory: 'Fulfill Inventory',
+        fulfill_inventory: 'Cumplimiento de inventario',
         user_roles: 'Roles de usuario'
       },
       messages: {
         role_saved: 'El {{roleName}} rol ha sido salvado.'
       },
       titles: {
-        role_saved: 'Rol salvado'
+        role_saved: 'Role salvado'
       }
     }
   },
@@ -215,14 +215,14 @@ export default {
     requested_on: 'Pedido On',
     date: 'Fecha',
     date_of_birth: 'Fecha de nacimiento',
-    date_of_birth_short: 'FdN',
+    date_of_birth_short: 'FDN',
     date_requested: 'Fecha de pedido',
     date_completed: 'Fecha completada',
     description: 'Descripción',
     requested_by: 'Pedido por|',
     fulfill: 'Cumplomiento',
     fulfill_request: 'Pedido de cumplimiento',
-    fulfill_request_now: 'Pedido de cumplomiento ahora',
+    fulfill_request_now: 'Pedido de cumplimiento ahora',
     actions: 'Acciones',
     action: 'Accion',
     notes: 'Notas',
@@ -258,7 +258,7 @@ export default {
     doc_read: 'Leer documento',
     doc_written: 'Documento escrito',
     display_name: 'Nombre para mostrar',
-    password: 'Clave',
+    password: 'Contraseña',
     edit_user: 'Editar usuario',
     new_user: 'Nuevo usuario',
     delete_user: 'Eliminar usuario',
@@ -268,7 +268,7 @@ export default {
     prescription: 'Receta medica',
     prescription_date: 'Fecha de la receta medica',
     bill_to: 'Facturar a',
-    pull_from: 'Pull From',
+    pull_from: 'Traer de',
     fulfilled: 'Cumplido',
     delete_request: 'Eliminar pedido',
     location: 'Ubicacion',
@@ -276,7 +276,7 @@ export default {
     with: 'con',
     all_day: 'Todo el dia',
     physician: 'Médico',
-    assisting: 'Assisting',
+    assisting: 'Asistencia',
     anesthesia: 'Anestesia',
     procedures: 'Procedimiento'
   },
@@ -290,7 +290,7 @@ export default {
     user_has_been_saved: 'El usuario ha sido salvado.',
     user_saved: 'Usuario salvado',
     on_behalf_of: 'a nombre de',
-    new_patient_has_to_be_created: 'Un nuevo paciente debe ser creado...Por favor espero..',
+    new_patient_has_to_be_created: 'Un nuevo paciente debe ser creado...Por favor espere..',
     no_notes_available: 'No hay notas clínicas adicionales están disponibles para esta visita.',
     sorry: 'Lo sentimos, un error ha ocurrido...'
   },
@@ -368,20 +368,20 @@ export default {
       date_end: 'Fecha final',
       date_start: 'Fecha inicial',
       date_received: 'Fecha recibido',
-      date_tranferred: 'Date Fecha transferencia',
+      date_tranferred: 'Fecha transferencia',
       days_left: 'Dias restantes',
       delivery_aisle: 'Enviado a pasillo',
-      delivery_location: 'Ubicacion del envio',
+      delivery_location: 'Ubicación del envio',
       distribution_unit: 'Unidad de distribución',
       delete_item: 'Eliminar elemento',
       details: 'Detalles',
       edit_item: 'Editar elemento',
-      expense: 'Expense To',
+      expense: 'Gastos a',
       expiration_date: 'Fecha de vencimiento',
       fulfill_request: 'Pedido de cumplimiento',
       fulfill_request_now: 'Pedido de incumplimiento para hoy',
-      gift: 'Gift in Kind',
-      gift_usage: 'Gift in Kind Usage',
+      gift: 'Regalo en especie',
+      gift_usage: 'Uso del regalo en especie',
       gift_in_kind_no: 'N',
       gift_in_kind_yes: 'Y',
       inventory_consumed: 'Inventario consumido',
@@ -402,7 +402,7 @@ export default {
       print: 'Imprimir',
       print_barcode: 'Imprimir codigo de  barras',
       printer: 'Impresora',
-      pull_from: 'Pull From',
+      pull_from: 'Traido de',
       purchases: 'Compras',
       purchase_cost: 'Costo de compra',
       purchase_info: 'Informacion de la compra',
@@ -411,7 +411,7 @@ export default {
       quantity_on_hand: 'Cantidad a la mano',
       quantity_requested: 'Cantidad pedida',
       rank: 'Ranking',
-      reason: 'Razon',
+      reason: 'Razón',
       remove: 'Remover',
       reorder_point: 'Reordenar punto',
       requested_items: 'Elementos solicitados',
@@ -434,10 +434,10 @@ export default {
       xref: 'XRef'
     },
     messages: {
-      adjust: 'Please adjust the quantities on the appropriate location(s) to account for the difference of {{difference}}.',
-      create_request: 'Creaur un nuevo pedido?',
+      adjust: 'Por favor ajust las cantidades en la ubicación adecuada(s) la diferencia de la cuenta es {{difference}}.',
+      create_request: 'Crear un nuevo pedido?',
       delete: 'Estas seguro de eliminar {{name}}?',
-      item_not_found: 'El elemento del inventario <strong>{{item}}</strong> could no se pudo encontrar.<br>Si desea crear un nuevo elemento, Ingrese la información abajo.<br>De lo contrario opria cancelar para volver.',
+      item_not_found: 'El elemento del inventario <strong>{{item}}</strong> no se pudo encontrar.<br>Si desea crear un nuevo elemento, Ingrese la información abajo.<br>De lo contrario opria cancelar para volver.',
       loading: 'Cargando transacciones ...',
       purchase_saved: 'La compra de inventario ha sido salvada.',
       no_requests: 'No se encontraron pedidos.',
@@ -445,7 +445,7 @@ export default {
       quantity: 'La cantidad total <strong>({{quantity}})</strong> no encaja con la cantidad total en las ubicaciones <strong>({{locationQuantity}})</strong>.',
       remove_item: 'Esta seguro de eliminar este elemento de la factura?',
       remove_item_request: 'Seguro que quiere eliminar este elemento del pedido?',
-      request_fulfilled: 'The inventory request has been fulfilled.',
+      request_fulfilled: 'El pedido de inventario ha sido procesado.',
       request_updated: 'El pedido de inventario ha sido actualizado.',
       warning: 'Valide los campos requeridos (marcados con *) corrija los errores antes de adicionar.'
     },
@@ -454,17 +454,17 @@ export default {
         adjustments: 'Ajustes',
         adjustments_total: 'Ajustes totales',
         balance_begin: 'Balance inicial',
-        balance_end: 'Ending Balance',
+        balance_end: 'Balance Final',
         category: 'Categoria',
         consumed: 'Consumado',
-        consumed_gik: 'GiK Consumed',
-        consumed_gik_total: 'Total GiK Consumed',
-        consumed_puchases: 'Purchases Consumed',
-        consumed_purchases_total: 'Total Purchases Consumed',
+        consumed_gik: 'GiK Consumido',
+        consumed_gik_total: 'Total GiK Consumido',
+        consumed_puchases: 'Total de lo comprado consumido',
+        consumed_purchases_total: 'Total de lo comprado consumido',
         consumed_total: 'Total consumido',
-        err_in_fin_sum: 'Error in _generateFinancialSummaryReport: ',
-        err_in_find_pur: 'Error in _findInventoryItemsByPurchase: ',
-        err_in_find_req: 'Error in _findInventoryItemsByRequest: ',
+        err_in_fin_sum: 'Error en _generateFinancialSummaryReport: ',
+        err_in_find_pur: 'Error en _findInventoryItemsByPurchase: ',
+        err_in_find_req: 'Error en _findInventoryItemsByRequest: ',
         expenses_for: 'Gatos para: ',
         no_account: '(No Cuenta)',
         subtotal: 'Subtotal: ',
@@ -512,7 +512,7 @@ export default {
     }
   },
   imaging: {
-    page_title: 'Pedido de tadriografia',
+    page_title: 'Pedido de radriografia',
     section_title: 'Radiografias',
     buttons: {
       new_button: '+ new radiografia'
@@ -527,7 +527,7 @@ export default {
     titles: {
       completed_imaging: 'Radiografia completada',
       edit_title: 'Pedido de edicion de radiografia',
-      new_title: 'New pedido de radiografia'
+      new_title: 'Nuevo pedido de radiografia'
     },
     alerts: {
       completed_title: 'Pedido de radiografia completado',
@@ -542,7 +542,7 @@ export default {
     return_medication: 'Retorno de medicación',
     buttons: {
       dispense_medication: 'dispensar medicación',
-      new_button: '+ new pedido',
+      new_button: '+ nuevo pedido',
       return_medication: 'debolver medicacion'
     },
     titles: {
