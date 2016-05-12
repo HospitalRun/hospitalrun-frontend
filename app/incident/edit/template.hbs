@@ -6,7 +6,7 @@
       <div class="col-xs-6 col-md-4"><p class="text-success pull-right">{{t 'incident.messages.status' status=model.statusOfIncident}}</p></div>
     </div>
   </div>
-  <ul class="nav nav-pills" role="tablist">
+  <ul class="nav nav-pills tab-nav" role="tablist">
     <li role="presentation" class="active"><a href="#creation" role="tab" data-toggle="pill">{{t 'incident.tabs.creation'}}</a></li>
     <li role="presentation"><a href="#reviewers" role="tab" data-toggle="pill">{{t 'incident.tabs.reviewers'}}</a></li>
     <li role="presentation"><a href="#feedback" role="tab" data-toggle="pill">{{t 'incident.tabs.feedback'}}</a></li>
@@ -440,7 +440,7 @@
           <h3 class="panel-title">{{t 'incident.titles.harm_score'}}</h3>
         </div>
         {{#if canAddRisk}}
-          
+
           <div class="panel-body detail-section-content">
             <h5>{{t 'incident.labels.harm_prompt'}}</h5>
             {{ext-radio content=harmScoreList value=model.harmScore showInline=false}}
