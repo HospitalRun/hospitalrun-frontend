@@ -26,10 +26,24 @@ To install the frontend please do the following:
 8. Copy the `server/config-example.js` to `server/config.js` in the folder you cloned the HospitalRun repo.
 
 ### Experimental
+
+#### Make
 If you are willing to try using `make`, ensure you have installed git, node and couchdb (steps 1, 2 and 6 above), you may skip the rest.  This requires couchdb in the path to work correctly.
 * Run `make serve`, it will start couchdb, install npm dependencies and start the server.
 * Run `make all` to run all tests and build the app.
 * Look into `Makefile` to figure other targets available.
+
+#### Cloud 9 Development Environment
+[Documented in the project wiki](https://github.com/HospitalRun/hospitalrun-frontend/wiki/Optional:-Cloud9-Development-Environment)
+
+#### Nitrous Quickstart
+Create a free development environment for this HospitalRun project in the cloud on [Nitrous.io](https://www.nitrous.io) by clicking the button below.
+
+<a href="https://www.nitrous.io/quickstart">
+  <img src="https://nitrous-image-icons.s3.amazonaws.com/quickstart.png" alt="Nitrous Quickstart" width=142 height=34>
+</a>
+
+In the IDE, start HospitalRun via `Run > Start HospitalRun` and access your site via `Preview > 4200`.
 
 ## Start
 To start the frontend please do the following:
