@@ -1,13 +1,22 @@
 <div class="panel panel-primary">
   {{#if canGenerateReport}}
     <div class="panel-body">
-      {{#em-form model=model submitButton=false }}
+      {{#em-form model=this submitButton=false }}
         <div class="row">
           {{date-picker property="startDate" label=(t 'incident.labels.start_date') class="col-sm-4"}}
           {{date-picker property="endDate" label=(t 'incident.labels.end_date') class="col-sm-4"}}
         </div>
         <div class="row">
-          {{em-select class="col-sm-4" label=(t 'incident.labels.report_type') property="reportType" optionLabelPath="name" content=reportTypes}}
+          <label class="control-label" for="report-type">{{t 'incident.labels.report_type'}}</label>
+          {{select-list
+            action=(action (mut reportType))
+            class='form-control'
+            content=reportTypes
+            id='report-type'
+            optionValuePath='value'
+            optionLabelPath='name'
+            value=reportType
+          }}
         </div>
       {{/em-form}}
     </div>

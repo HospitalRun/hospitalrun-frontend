@@ -127,7 +127,7 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
         filterEndDate = moment(filterEndDate).endOf('day').toDate();
         findParams.options.endkey =  [filterEndDate.getTime(), maxValue];
       }
-      this.store.find('incident', findParams).then(resolve, reject);
+      return this.store.query('incident', findParams).then(resolve, reject);
     }.bind(this));
   },
 
@@ -199,7 +199,9 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
     incidents.forEach(function(incident) {
       this._addReportRow(incident, false, reportColumns);
     }.bind(this));
-    this._addRowDirectly(totalLabel);
+
+    var reportRows = this.get('reportRows');
+    reportRows.addObject([totalLabel]);
     this._finishReport(reportColumns);
   },
 
@@ -213,7 +215,7 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
         case 'department':
         case 'incidentType':
         case 'riskScores': {
-          this._findIncidentsByDate().then(function(incidents) {
+          this._findIncidentsByDate().then((incidents) => {
             switch (reportType) {
               case 'incidentType':
               case 'department': {
@@ -225,9 +227,10 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
                 break;
               }
             }
-          }.bind(this), function() {
+          }).catch((ex) => {
+            console.log('Error:', ex);
             this.closeProgressModal();
-          }.bind(this));
+          });
           break;
         }
       }

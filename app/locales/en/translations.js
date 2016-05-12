@@ -121,6 +121,7 @@ export default {
       expense_account_list: 'Expense Accounts',
       aisle_location_list: 'Inventory Aisle Locations',
       warehouse_list: 'Inventory Locations',
+      incident_location: 'Incident Locations',
       inventory_types: 'Inventory Types',
       imaging_pricing_types: 'Imaging Pricing Types',
       lab_pricing_types: 'Lab Pricing Types',
