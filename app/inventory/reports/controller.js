@@ -964,16 +964,16 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                   if (this._includeTransaction(reportType, request.transactionType) && this._hasIncludedLocation(request.locationsAffected)) {
                     var deliveryLocation = this.getDisplayLocationName(request.deliveryLocation, request.deliveryAisle),
                       locations = [],
-                      num = this._getValidNumber(location.quantity),
+                      num = this._getValidNumber(request.quantity),
                       totalCost = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit));
                     locations = request.locationsAffected.map(function(location) {
                       if (reportType === 'detailedTransfer') {
                         return {
-                          name: i18n.t('inventory.reports.rows.transfer2', { source: location.name, target: deliveryLocation })
+                          name: i18n.t('inventory.reports.rows.transfer2', { source: location.name, target: deliveryLocation }).toString()
                         };
                       } else {
                         return {
-                          name: i18n.t('inventory.reports.rows.transfer1', { quantity: num, location: location.name })
+                          name: i18n.t('inventory.reports.rows.transfer1', { quantity: num, location: location.name }).toString()
                         };
                       }
                     }.bind(this));

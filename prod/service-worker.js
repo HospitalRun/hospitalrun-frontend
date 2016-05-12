@@ -1,12 +1,12 @@
 importScripts('sw-toolbox.js');
 var CACHE_PREFIX = 'brocsw-v';
-var CACHE_VERSION = CACHE_PREFIX+'1462309324872';
+var CACHE_VERSION = CACHE_PREFIX+'1463006405467';
 toolbox.options.cache.name = CACHE_VERSION;
 var urlsToPrefetch = [
     '/',
-    "assets/hospitalrun-3f13246ab46f208fcacfac451c08b1a3.js",
     "assets/hospitalrun-5597b10d9b3989644768cdf048da1cad.css",
-    "assets/vendor-d4e773a0bf7d0d6e5ad0321158e989ee.js",
+    "assets/hospitalrun-ebc042106906d13db61bc72c82818edf.js",
+    "assets/vendor-0285628d17614f05f440504e766b1bd8.js",
     "assets/vendor-ed8acd5f4063b4b83b5df16f6da9e8b0.css",
     "crossdomain.xml",
     "dymo/BarcodeAsImage.label",
@@ -13313,7 +13313,7 @@ toolbox.router.post('/db/main/_bulk_docs', function(request, values, options) {
 });
 
 function setupRemoteSync() {
-  if (!syncingRemote && !configs.config_disable_offline_sync) {
+  if (!syncingRemote && configs.config_disable_offline_sync !== true) {
     var pouchOptions = {
       ajax: {
         headers: {},

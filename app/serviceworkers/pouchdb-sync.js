@@ -44,7 +44,7 @@ toolbox.router.post('/db/main/_bulk_docs', function(request, values, options) {
 });
 
 function setupRemoteSync() {
-  if (!syncingRemote && !configs.config_disable_offline_sync) {
+  if (!syncingRemote && configs.config_disable_offline_sync !== true) {
     var pouchOptions = {
       ajax: {
         headers: {},
