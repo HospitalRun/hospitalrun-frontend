@@ -1,7 +1,51 @@
 # Change Log
 
-## [0.9.7](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.7) (2016-04-26)
+## [0.9.11](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.11) (2016-05-11)
 
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.10...0.9.11)
+
+**Fixed bugs:**
+
+- Fix for offline broke google auth [\#455](https://github.com/HospitalRun/hospitalrun-frontend/issues/455)
+
+## [0.9.10](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.10) (2016-05-11)
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.9...0.9.10)
+
+**Fixed bugs:**
+
+- Inventory reports throw exception e.name.indexOf is not a function [\#454](https://github.com/HospitalRun/hospitalrun-frontend/issues/454)
+
+**Closed issues:**
+
+- List of missed appointments [\#351](https://github.com/HospitalRun/hospitalrun-frontend/issues/351)
+
+**Merged pull requests:**
+
+- Fixed missing translation in the Labs module [\#448](https://github.com/HospitalRun/hospitalrun-frontend/pull/448) ([napon](https://github.com/napon))
+- Update ember-cli-qunit to version 2.0.0 🚀 [\#446](https://github.com/HospitalRun/hospitalrun-frontend/pull/446) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update ember-ajax to version 2.3.2 🚀 [\#444](https://github.com/HospitalRun/hospitalrun-frontend/pull/444) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Enabled patient search by phone number [\#409](https://github.com/HospitalRun/hospitalrun-frontend/pull/409) ([douno](https://github.com/douno))
+- Adding 'missed appointments' tab [\#402](https://github.com/HospitalRun/hospitalrun-frontend/pull/402) ([pete-the-pete](https://github.com/pete-the-pete))
+
+## [0.9.9](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.9) (2016-05-03)
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.8...0.9.9)
+
+## [0.9.8](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.8) (2016-05-03)
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.7...0.9.8)
+
+**Fixed bugs:**
+
+- Offline with service worker not working on new window/tab [\#391](https://github.com/HospitalRun/hospitalrun-frontend/issues/391)
+- 'No patients found' helper link not presented after removing all patients [\#357](https://github.com/HospitalRun/hospitalrun-frontend/issues/357)
+
+**Merged pull requests:**
+
+- Update hospitalrun-server-routes to version 0.9.6 🚀 [\#442](https://github.com/HospitalRun/hospitalrun-frontend/pull/442) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Fixes \#391 offline with service worker not working on new window/tab [\#441](https://github.com/HospitalRun/hospitalrun-frontend/pull/441) ([Epsilonnnn](https://github.com/Epsilonnnn))
+- Update ember-i18n to version 4.2.1 🚀 [\#439](https://github.com/HospitalRun/hospitalrun-frontend/pull/439) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update ember-ajax to version 2.3.1 🚀 [\#436](https://github.com/HospitalRun/hospitalrun-frontend/pull/436) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+
+## [0.9.7](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.7) (2016-04-26)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.6...0.9.7)
 
 **Implemented enhancements:**
@@ -34,7 +78,6 @@
 
 ## [0.9.6](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.6) (2016-04-21)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.5...0.9.6)
-Forgot to run build for 0.9.5, so here it is.
 
 ## [0.9.5](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.5) (2016-04-21)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.4...0.9.5)

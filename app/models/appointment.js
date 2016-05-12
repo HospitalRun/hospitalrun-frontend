@@ -8,6 +8,7 @@ export default AbstractModel.extend({
   patient: DS.belongsTo('patient', {
     async: false
   }),
+  visits: DS.hasMany('visit'),
   provider: DS.attr('string'),
   location: DS.attr('string'),
   appointmentType: DS.attr('string'),

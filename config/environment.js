@@ -5,7 +5,7 @@ module.exports = function(environment) {
     modulePrefix: 'hospitalrun',
     environment: environment,
     baseURL: '/',
-    locationType: 'history',
+    locationType: 'hash', // Using hash location type because it is more friendly for offline.
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -62,7 +62,7 @@ module.exports = function(environment) {
   if (environment === 'production') {
     ENV.serviceWorker.debug = false;
   }
-
+  
   return ENV;
 };
 

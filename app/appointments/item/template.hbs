@@ -6,7 +6,7 @@
     <td>{{appointment.appointmentType}}</td>
     <td>{{appointment.location}}</td>
     <td>{{appointment.provider}}</td>
-    <td>{{appointment.displayStatus}}</td>
+    <td class="appointment-status">{{appointment.displayStatus}}</td>
     <td>
         {{#if canAddVisit}}
             <button class="btn btn-default" {{action 'createVisit' appointment bubbles=false }}>{{t 'buttons.add_visit'}}</button>

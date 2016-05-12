@@ -15,7 +15,8 @@ export default Ember.Service.extend({
       this.set('configDB', db);
       this.setCurrentUser();
       return db;
-    }).then(replicateConfigDB).then(loadConfig);
+    }).then(replicateConfigDB).then(loadConfig)
+    .catch((err)=>console.log(err));
   },
 
   createDB() {
@@ -30,8 +31,11 @@ export default Ember.Service.extend({
     return promise;
   },
   replicateConfigDB(db) {
-    const url = `${document.location.protocol}//${document.location.host}/db/config`;
-    return db.replicate.from(url);
+    const promise = new Ember.RSVP.Promise((resolve) => {
+      const url = `${document.location.protocol}//${document.location.host}/db/config`;
+      db.replicate.from(url).then(resolve).catch(resolve);
+    });
+    return promise;
   },
   loadConfig() {
     const config = this.get('configDB');
@@ -40,6 +44,7 @@ export default Ember.Service.extend({
       keys: [
         'config_consumer_key',
         'config_consumer_secret',
+        'config_disable_offline_sync',
         'config_oauth_token',
         'config_token_secret',
         'config_use_google_auth'
@@ -51,13 +56,13 @@ export default Ember.Service.extend({
           console.log('Could not get configDB configs:', err);
           reject(err);
         }
-        const config = {};
+        const configObj = {};
         for (var i = 0; i < response.rows.length; i++) {
           if (!response.rows[i].error && response.rows[i].doc) {
-            config[response.rows[i].id] = response.rows[i].doc.value;
+            configObj[response.rows[i].id] = response.rows[i].doc.value;
           }
         }
-        resolve(config);
+        resolve(configObj);
       });
     }, 'getting configuration from the database');
   },
