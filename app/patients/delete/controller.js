@@ -5,7 +5,11 @@ import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import Ember from 'ember';
 
 function deleteMany(manyArray) {
+  if (!manyArray) {
+    return Ember.RSVP.resolve();
+  }
   if (manyArray.then) {
+    // recursive call after resolving async model
     return manyArray.then(deleteMany);
   }
   var recordsCount = manyArray.get('length');
@@ -13,7 +17,6 @@ function deleteMany(manyArray) {
     // empty array: no records to delete
     return Ember.RSVP.resolve();
   }
-  console.log('deleting ' + recordsCount + ' records');
   return Ember.RSVP.all(manyArray.invoke('destroyRecord', 'async array deletion'));
 }
 
@@ -24,44 +27,52 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
   // all related records before deleting patient record
   // otherwise errors will occur
   deletePatient: function() {
+    var controller = this;
     var patient = this.get('model');
-    var promises = [];
-    promises.push(this.deleteVisits(patient));
-    promises.push(this.deleteInvoices(patient));
-    Ember.RSVP.all(promises)
-      .then(function() {
-         patient.destroyRecord();
-      });
-    this.send(this.get('afterDeleteAction'), patient);
-  },
-
-  deleteVisits: function(patient) {
-    return this.getPatientVisits(patient).then(function(visits) {
+    var visits = this.getPatientVisits(patient);
+    var invoices = this.getPatientInvoices(patient);
+    // resolve all async models first since they reference each other, then delete
+    return Ember.RSVP.all([visits, invoices]).then(function(records) {
       var promises = [];
-      visits.forEach(function(visit) {
-        promises.push(deleteMany(visit.get('labs')));
-        promises.push(deleteMany(visit.get('patientNotes')));
-        promises.push(deleteMany(visit.get('vitals')));
-        promises.push(deleteMany(visit.get('procedures')));
-        promises.push(deleteMany(visit.get('medication')));
-        promises.push(deleteMany(visit.get('imaging')));
-      });
-      return Ember.RSVP.all(promises).then(function(){
-         return deleteMany(visits);
-      });
+      promises.push(controller.deleteVisits(records[0]));
+      promises.push(controller.deleteInvoices(records[1]));
+      return Ember.RSVP.all(promises)
+        .then(function() {
+          return patient.destroyRecord();
+        });
     });
   },
 
-  deleteInvoices: function(patient) {
-    this.getPatientInvoices(patient).then(function(invoices){
-      deleteMany(invoices);
+  deleteVisits: function(visits) {
+    var promises = [];
+    visits.forEach(function(visit) {
+      promises.push(deleteMany(visit.get('labs')));
+      promises.push(deleteMany(visit.get('patientNotes')));
+      promises.push(deleteMany(visit.get('vitals')));
+      promises.push(deleteMany(visit.get('procedures')));
+      promises.push(deleteMany(visit.get('medication')));
+      promises.push(deleteMany(visit.get('imaging')));
+    });
+    return Ember.RSVP.all(promises).then(function() {
+      return deleteMany(visits);
+    });
+  },
+
+  deleteInvoices: function(invoices) {
+    var lineItems = invoices.get('lineItems');
+    var payments = invoices.get('payments');
+    return Ember.RSVP.all([lineItems, payments]).then(function() {
+      return deleteMany(invoices);
     });
   },
 
   actions: {
     // delete related records without modal dialogs
     delete: function(patient) {
-      this.deletePatient(patient);
+      var controller = this;
+      this.deletePatient(patient).then(function() {
+        controller.send(controller.get('afterDeleteAction'), patient);
+      });
       this.send('closeModal');
     }
   }
