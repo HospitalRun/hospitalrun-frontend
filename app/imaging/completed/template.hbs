@@ -1,28 +1,22 @@
-{{#item-listing paginationProps=paginationProps }}
+{{#item-listing paginationProps=paginationProps}}
   {{#if model}}
-    <table class="table">
+    <table class="table imaging-completed-table">
       <tr class="table-header">
           <th>{{t 'labels.date_requested'}}</th>
           <th>{{t 'labels.date_completed'}}</th>
+          <th>{{t 'labels.requested_by'}}</th>
           <th>{{t 'labels.patient'}}</th>
           <th>{{t 'labels.imaging_type'}}</th>
           <th>{{t 'labels.results'}}</th>
           <th>{{t 'labels.notes'}}</th>
       </tr>
       {{#each model as |imaging|}}
-        <tr>
-          <td>{{date-format imaging.requestedDate}}</td>
-          <td>{{date-format imaging.imagingDate}}</td>
-          <td>{{imaging.patient.displayName}}</td>
-          <td>{{imaging.imagingType.name}}</td>
-          <td>{{imaging.result}}</td>
-          <td>{{imaging.notes}}</td>
-        </tr>
+        {{imaging/completed/completed-list-item imaging=imaging}}
       {{/each}}
     </table>
   {{else}}
-      <div class="alert alert-info">
-          <p>{{t 'imaging.messages.no_completed'}}</p>
-      </div>
+    <div class="alert alert-info">
+      <p>{{t 'imaging.messages.no_completed'}}</p>
+    </div>
   {{/if}}
 {{/item-listing}}
