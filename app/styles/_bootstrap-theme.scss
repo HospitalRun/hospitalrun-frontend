@@ -27,6 +27,10 @@
     &:focus { opacity: .8; }
   }
 
+  &.admit {
+    width: 103px;
+  }
+
   .octicon {
     position: relative;
     left: -3px;
