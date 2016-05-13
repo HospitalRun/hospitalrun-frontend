@@ -32,3 +32,4 @@ newrelic_agent.log
 newrelic.js
 
 /async-disk-cache
+c9-couch.js
