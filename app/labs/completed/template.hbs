@@ -5,19 +5,13 @@
         <th>{{t 'labels.date_requested'}}</th>
         <th>{{t 'labels.date_completed'}}</th>
         <th>{{t 'labels.patient'}}</th>
+        <th>{{t 'labels.requested_by'}}</th>
         <th>{{t 'labs.labels.lab_type'}}</th>
         <th>{{t 'labels.results'}}</th>
         <th>{{t 'labels.notes'}}</th>
       </tr>
       {{#each model as |lab|}}
-        <tr>
-          <td>{{date-format lab.requestedDate}}</td>
-          <td>{{date-format lab.labDate}}</td>
-          <td>{{lab.patient.displayName}}</td>
-          <td>{{lab.labType.name}}</td>
-          <td>{{lab.result}}</td>
-          <td>{{lab.notes}}</td>
-        </tr>
+        {{labs/completed/labs-completed-list-item lab=lab}}
       {{/each}}
     </table>
   {{else}}

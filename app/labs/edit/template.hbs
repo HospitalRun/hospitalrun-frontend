@@ -33,6 +33,10 @@
           <label>{{t 'labs.labels.lab_type'}}</label>
           <p class="form-control-static">{{model.labType.name}}</p>
         </div>
+        <div class="form-group col-xs-9">
+          <label>{{t 'labels.requested_by'}}</label>
+          <p class="form-control-static">{{model.requestedBy}}</p>
+        </div>
       </div>
     {{/if}}
     {{#if canComplete}}
