@@ -4,6 +4,7 @@
       <tr class="table-header">
         <th>{{t 'labels.date'}}</th>
         <th>{{t 'labels.patient'}}</th>
+        <th>{{t 'labels.prescriber'}}</th>
         <th>{{t 'labels.medication'}}</th>
         <th>{{t 'labels.quantity'}}</th>
         <th>{{t 'labels.status'}}</th>
@@ -15,6 +16,7 @@
         <tr {{action 'editItem' medicationRequest}} class="clickable">
           <td>{{date-format medicationRequest.prescriptionDate}}</td>
           <td>{{medicationRequest.patient.displayName}}</td>
+          <td>{{medicationRequest.requestedBy}}</td>
           <td>{{medicationRequest.medicationName}}</td>
           <td>{{medicationRequest.quantity}}</td>
           <td>{{medicationRequest.status}}</td>
