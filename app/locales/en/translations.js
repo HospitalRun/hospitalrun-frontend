@@ -211,6 +211,7 @@ export default {
     loading: 'Loading',
     name: 'Name',
     patient: 'Patient',
+    prescriber: 'Prescriber',
     quantity: 'Quantity',
     requested_on: 'Requested On',
     date: 'Date',
