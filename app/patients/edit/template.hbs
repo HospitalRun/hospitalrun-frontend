@@ -134,6 +134,7 @@
                 {{em-input property="middleName" label="Middle Name" class="form-input-group test-middle-name"}}
                 {{em-input property="lastName" label="Last Name" class="form-input-group required test-last-name"}}
                 {{select-or-typeahead property="sex" label="Sex" class="form-input-group" list=sexList selection=model.sex}}
+                {{em-input property="occupation" label="Occupation" class="form-input-group"}}
                 {{date-picker property="dateOfBirth" label="Date of Birth" class="form-input-group " maxDate="now"}}
                 <div class="form-input-group">
                   <label class="control-label">Age</label>
@@ -161,7 +162,6 @@
                   {{em-input property="referredBy" label="Referred By" class="form-input-group"}}
                   {{date-picker property="referredDate" label="Referred Date" class="form-input-group"}}
                   {{em-input property="religion" label="Religion" class="form-input-group"}}
-                  {{em-input property="occupation" label="Occupation" class="form-input-group"}}
                   {{em-input property="parent" label="Parent/Guardian" class="form-input-group"}}
                   {{em-select label="Payment Profile"
                     property="paymentProfile"
