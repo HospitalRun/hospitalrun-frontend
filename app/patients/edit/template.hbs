@@ -140,6 +140,7 @@
                   <p class="form-control-static">{{model.age}}</p>
                 </div>
                 {{em-input property="placeOfBirth" label="Place of Birth" class="form-input-group"}}
+                {{em-input property="occupation" label="Occupation" class="form-input-group"}}
                 <div class="form-input-group">
                   <label>Patient Type</label>
                   <div>
@@ -312,7 +313,7 @@
               </table>
             </div>
           </div>
-        </div>            
+        </div>
         <div role="tabpanel" class="tab-pane" id="visits">
           <div class="panel">
             {{#if canAddVisit}}
