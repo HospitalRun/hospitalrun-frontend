@@ -2,6 +2,7 @@ import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-co
 import PatientVisitsMixin from 'hospitalrun/mixins/patient-visits';
 import PatientInvoicesMixin from 'hospitalrun/mixins/patient-invoices';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
+import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 import Ember from 'ember';
 
 function deleteMany(manyArray) {
@@ -20,8 +21,10 @@ function deleteMany(manyArray) {
   return Ember.RSVP.all(manyArray.invoke('destroyRecord', 'async array deletion'));
 }
 
-export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoicesMixin, PouchDbMixin, {
+export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoicesMixin, PouchDbMixin, ProgressDialog, {
   title: 'Delete Patient',
+  progressTitle: 'Delete Patient Record',
+  progressMessage: 'Deleting patient and all associated records',
 
   // Override delete action on controller; we must delete
   // all related records before deleting patient record
@@ -70,10 +73,12 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
     // delete related records without modal dialogs
     delete: function(patient) {
       var controller = this;
+      this.send('closeModal');
+      this.showProgressModal();
       this.deletePatient(patient).then(function() {
+        controller.closeProgressModal();
         controller.send(controller.get('afterDeleteAction'), patient);
       });
-      this.send('closeModal');
     }
   }
 });
