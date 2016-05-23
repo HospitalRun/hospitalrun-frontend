@@ -28,7 +28,7 @@ To install the frontend please do the following:
 ### Experimental
 
 #### Make
-If you are willing to try using `make`, ensure you have installed git, node and couchdb (steps 1, 2 and 6 above), you may skip the rest.  This requires couchdb in the path to work correctly.
+If you are willing to try using `make`, ensure you have installed git, node and couchdb (steps 1, 2 and 7 above), you may skip the rest.  This requires couchdb in the path to work correctly.
 * Run `make serve`, it will start couchdb, install npm dependencies and start the server.
 * Run `make all` to run all tests and build the app.
 * Look into `Makefile` to figure other targets available.
