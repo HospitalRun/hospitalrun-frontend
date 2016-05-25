@@ -281,7 +281,24 @@ export default {
     physician: 'Physician',
     assisting: 'Assisting',
     anesthesia: 'Anesthesia',
-    procedures: 'Procedures'
+    procedures: 'Procedures',
+    number: 'Number',
+    bill_date: 'Bill Date',
+    balance_due: 'Balance Due',
+    amount: 'Amount',
+    date_paid: 'Date Paid',
+    credit_to: 'Credit To',
+    invoice_id: 'Invoice ID',
+    line_items: 'Line Items',
+    discount: 'Discount',
+    excess: 'Excess',
+    price: 'Price',
+    total: 'Total',
+    expense_to: 'Expense To',
+    grand: 'Grand',
+    remarks: 'Remarks',
+    payments: 'Payments',
+    category: 'Category'
   },
   messages: {
     no_items_found: 'No items found.',
@@ -323,7 +340,9 @@ export default {
     new_item: '+ new item',
     new_request_plus: '+ new request',
     add_visit: 'Add Visit',
-    search: 'Search'
+    search: 'Search',
+    edit: 'Edit',
+    add_line_item: 'Add Line Item'
   },
   login: {
     messages: {
@@ -655,6 +674,23 @@ export default {
       on_behalf_of_copy: 'on behalf of',
       please_select_a_visit: 'Please select a visit',
       note_label: 'Note'
+    }
+  },
+  billing: {
+    alerts: {
+      no_invoice_found: 'No invoices found',
+      delete_invoice: 'Are you sure you wish to delete <strong>{{invoice_number}}</strong>?'
+    },
+    buttons: {
+      create_invoice: 'Create an invoice?'
+    },
+    labels: {
+      external_invoice_number: 'External Invoice #',
+      payment_profile: 'Payment Profile',
+      actual_charges: 'Actual Charges',
+      phil_health: 'PhilHealth',
+      hmo_com: 'HMO/COM',
+      payments_deposits: 'Payments/Deposits'
     }
   }
 };

@@ -4,9 +4,9 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
   {{#em-form model=model submitButton=false }}
-    {{em-input property="name" label="Name" class="required"}}
+    {{em-input property="name" label=(t 'labels.name') class="required"}}
     {{select-or-typeahead property="category" className="required"
-      label="Category" list=billingCategories
+      label=(t 'labels.category') list=billingCategories
       selection=model.category
     }}
   {{/em-form}}

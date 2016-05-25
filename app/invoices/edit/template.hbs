@@ -6,14 +6,14 @@
     <div class="row">
       {{#unless model.isNew}}
         <div class="form-group col-xs-2">
-          <label>Invoice Id</label>
+          <label>{{t 'labels.invoice_id'}}</label>
           <p class="form-control-static">{{model.id}}</p>
         </div>
       {{/unless}}
-      {{date-picker property="billDate" label="Bill Date" class="col-xs-2"}}
+      {{date-picker property="billDate" label=(t 'labels.bill_date') class="col-xs-2"}}
       {{#if model.isNew}}
-        {{patient-typeahead property="patientTypeAhead" label="Patient" content=patientList selection=selectedPatient class="col-xs-4 required invoice-patient"}}
-        {{em-select class="col-xs-4 required invoice-visit" label="Visit"
+        {{patient-typeahead property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="col-xs-4 required invoice-patient"}}
+        {{em-select class="col-xs-4 required invoice-visit" label=(t 'labels.visit')
             property="visit" content=patientVisitsForSelect
             optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
             selected=model.visit
@@ -21,14 +21,14 @@
         }}
       {{else}}
         <div class="form-group col-xs-3">
-          <label>Visit</label>
+          <label>{{t 'labels.visit'}}</label>
           <p class="form-control-static">{{model.visit.visitDescription}}</p>
         </div>
       {{/if}}
     </div>
     <div class="row">
-      {{em-input property="externalInvoiceNumber" label="External Invoice #" class="col-xs-3 external-invoice-no"}}
-      {{em-select label="Payment Profile"
+      {{em-input property="externalInvoiceNumber" label=(t 'billing.labels.external_invoice_number') class="col-xs-3 external-invoice-no"}}
+      {{em-select label=(t 'billing.labels.payment_profile')
         property="paymentProfile"
         content=pricingProfiles
         optionValuePath="selectObject"
@@ -43,21 +43,21 @@
     <div class="panel detail-section">
       <div class="panel-heading">
         <h3 class="panel-title">
-          Line Items
+          {{t 'labels.line_items'}}
           {{#if canAddCharge}}
-            <button class="btn btn-primary align-right" {{action "showAddLineItem" bubbles=false }}><span class="octicon octicon-plus"></span>Add Line Item</button>
+            <button class="btn btn-primary align-right" {{action "showAddLineItem" bubbles=false }}><span class="octicon octicon-plus"></span>{{t 'buttons.add_line_item'}}</button>
           {{/if}}
         </h3>
       </div>
       <div class="panel-body detail-section-content">
         <table class="table">
           <tr class="table-header">
-            <th class="col-xs-5">Description</th>
-            <th class="col-xs-1 text-right">Actual Charges</th>
-            <th class="col-xs-1 text-right">Discount</th>
-            <th class="col-xs-1 text-right">PhilHealth</th>
-            <th class="col-xs-1 text-right">HMO/COM</th>
-            <th class="col-xs-1 text-right">Excess</th>
+            <th class="col-xs-5">{{t 'labels.description'}}</th>
+            <th class="col-xs-1 text-right">{{t 'billing.labels.actual_charges'}}</th>
+            <th class="col-xs-1 text-right">{{t 'labels.discount'}}</th>
+            <th class="col-xs-1 text-right">{{t 'billing.labels.phil_health'}}</th>
+            <th class="col-xs-1 text-right">{{t 'billing.labels.hmo_com'}}</th>
+            <th class="col-xs-1 text-right">{{t 'labels.excess'}}</th>
             <th class="col-xs-2 text-right">{{t 'labels.action'}}</th>
           </tr>
           {{#each model.lineItemsByCategory as |categoryGroup|}}
@@ -97,7 +97,7 @@
                 <td class="col-xs-2">
                   {{#if canAddCharge}}
                     <button class="btn btn-default warning" {{action "showDeleteLineItem" item bubbles=false }}>
-                      <span class="octicon octicon-x"></span>Delete
+                      <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
                     </button>
                   {{/if}}
                 </td>
@@ -106,13 +106,13 @@
                 <tr>
                   <th colspan="2" class="col-xs-6">{{t 'labels.name'}}</th>
                   <th class="col-xs-1">{{t 'labels.quantity'}}</th>
-                  <th class="col-xs-1">Price</th>
-                  <th class="col-xs-1">Expense To</th>
-                  <th class="col-xs-1 text-right">Total</th>
+                  <th class="col-xs-1">{{t 'labels.price'}}</th>
+                  <th class="col-xs-1">{{t 'labels.expense_to'}}</th>
+                  <th class="col-xs-1 text-right">{{t 'labels.total'}}</th>
                   <th class="col-xs-2">
                     {{#if canAddCharge}}
                       <button class="btn btn-primary" {{action "addItemCharge" item}}>
-                        <span class="octicon octicon-plus"></span>Add Charge
+                        <span class="octicon octicon-plus"></span>{{t 'admin.roles.capability.add_charge'}}
                       </button>
                     {{/if}}
                   </th>
@@ -148,7 +148,7 @@
                     <td class="col-xs-2">
                       {{#if canAddCharge}}
                         <button class="btn btn-default warning" {{action "showDeleteItem" detail item.details bubbles=false }}>
-                          <span class="octicon octicon-x"></span>Delete
+                          <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
                         </button>
                       {{/if}}
                     </td>
@@ -158,7 +158,7 @@
             {{/each}}
             <tr>
               <td>
-                <strong>Total {{categoryGroup.category}}</strong>
+                <strong>{{t 'labels.total'}} {{categoryGroup.category}}</strong>
               </td>
               <td class="text-right">{{number-format categoryGroup.total}}</td>
               <td class="text-right">{{number-format categoryGroup.discount}}</td>
@@ -170,7 +170,7 @@
           {{/each}}
           <tr>
             <td>
-              <strong>Total</strong>
+              <strong>{{t 'labels.total'}}</strong>
             </td>
             <td class="text-right">{{number-format model.total}}</td>
             <td class="text-right">{{number-format model.discount}}</td>
@@ -181,7 +181,7 @@
           </tr>
           <tr>
             <td>
-              <strong>Payments/Deposits</strong>
+              <strong>{{t 'billing.labels.payments_deposits'}}</strong>
             </td>
             <td colspan="4"></td>
             <td class="text-right">-{{number-format model.paidTotal}}</td>
@@ -189,7 +189,7 @@
           </tr>
           <tr>
             <td>
-              <strong>Grand Total</strong>
+              <strong>{{t 'labels.grand'}} {{t 'labels.total'}}</strong>
             </td>
             <td colspan="4"></td>
             <td class="text-right">{{number-format model.remainingBalance}}</td>
@@ -202,7 +202,7 @@
   <div class="panel detail-section">
     <div class="panel-heading">
       <h3 class="panel-title">
-        Remarks
+        {{t 'labels.remarks'}}
       </h3>
     </div>
     <div class="panel-body detail-section-content">
@@ -212,18 +212,18 @@
   <div class="panel detail-section">
     <div class="panel-heading">
       <h3 class="panel-title">
-        Payments
+        {{t 'labels.payments'}}
         {{#if canAddPayment}}
-          <button class="btn btn-primary align-right" {{action "showAddPayment" model bubbles=false }}><span class="octicon octicon-plus"></span>Add Payment</button>
+          <button class="btn btn-primary align-right" {{action "showAddPayment" model bubbles=false }}><span class="octicon octicon-plus"></span>{{t 'admin.roles.capability.add_payment'}}</button>
         {{/if}}
       </h3>
     </div>
     <div class="panel-body detail-section-content">
       <table class="table">
         <tr class="table-header">
-          <th>Date</th>
-          <th>Amount</th>
-          <th>Type</th>
+          <th>{{t 'labels.date'}}</th>
+          <th>{{t 'labels.amount'}}</th>
+          <th>{{t 'labels.type'}}</th>
           <th>{{t 'labels.notes'}}</th>
           <th>{{t 'labels.action'}}</th>
         </tr>
@@ -238,7 +238,7 @@
               <button class="btn btn-default neutral" {{action 'showEditPayment' payment  bubbles=false }}>{{t 'labels.edit'}}</button>
               {{#if payment.canRemovePayment}}
                 <button class="btn btn-default warning" {{action "showRemovePayment" payment bubbles=false }}>
-                  <span class="octicon octicon-x"></span>Remove
+                  <span class="octicon octicon-x"></span>{{t 'buttons.remove'}}
                 </button>
               {{/if}}
             </td>
