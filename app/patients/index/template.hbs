@@ -30,7 +30,7 @@
                 {{/if}}
                 {{#unless patient.admitted}}
                   {{#if canAdmitPatient}}
-                    <button class="btn btn-default success" {{action 'admitPatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-in"></span> Admit</button>
+                    <button class="btn btn-default success admit" {{action 'admitPatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-in"></span> Admit</button>
                   {{/if}}
                 {{/unless}}
                 {{#if patient.admitted}}

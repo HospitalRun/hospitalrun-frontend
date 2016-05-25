@@ -29,6 +29,12 @@
     {{else}}
       {{inventory-typeahead property="inventoryItemTypeAhead" label=(t 'labels.medication') content=medicationList selection=selectedInventoryItem class="required test-medication-input"}}
     {{/if}}
+    {{#if isFulfilledOrRequested}}
+      <div class="form-group">
+        <label class="control-label">{{t 'labels.prescriber'}}</label>
+        <p class="form-control-static">{{model.requestedBy}}</p>
+      </div>
+    {{/if}}
     {{#if isFulfilled}}
       {{static-text label=(t 'labels.prescription') value=model.prescription }}
       <div class="row">

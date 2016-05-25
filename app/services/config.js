@@ -15,6 +15,7 @@ export default Ember.Service.extend({
       this.set('configDB', db);
       this.setCurrentUser();
       return db;
+<<<<<<< HEAD
     })
         .then(replicateConfigDB)
         .catch((err) => {
@@ -22,6 +23,10 @@ export default Ember.Service.extend({
         })
         .finally(loadConfig)
         .catch((err)=>console.log(err));
+=======
+    }).then(replicateConfigDB).then(loadConfig)
+    .catch((err)=>console.log(err));
+>>>>>>> HospitalRun/master
   },
 
   createDB() {
@@ -36,8 +41,11 @@ export default Ember.Service.extend({
     return promise;
   },
   replicateConfigDB(db) {
-    const url = `${document.location.protocol}//${document.location.host}/db/config`;
-    return db.replicate.from(url);
+    const promise = new Ember.RSVP.Promise((resolve) => {
+      const url = `${document.location.protocol}//${document.location.host}/db/config`;
+      db.replicate.from(url).then(resolve).catch(resolve);
+    });
+    return promise;
   },
   loadConfig() {
     const config = this.get('configDB');
@@ -46,6 +54,7 @@ export default Ember.Service.extend({
       keys: [
         'config_consumer_key',
         'config_consumer_secret',
+        'config_disable_offline_sync',
         'config_oauth_token',
         'config_token_secret',
         'config_use_google_auth'

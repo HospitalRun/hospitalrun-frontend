@@ -8,14 +8,15 @@
     <td>{{appointment.provider}}</td>
     <td class="appointment-status">{{appointment.displayStatus}}</td>
     <td>
+        
+        {{#if canEdit}}
+            <button class="btn btn-default neutral" {{action 'editAppointment' appointment bubbles=false }}>{{t 'labels.edit'}}</button>
+        {{/if}}
         {{#if canAddVisit}}
             <button class="btn btn-default" {{action 'createVisit' appointment bubbles=false }}>{{t 'buttons.add_visit'}}</button>
         {{/if}}
-        {{#if canEdit}}
-            <button class="btn btn-default" {{action 'editAppointment' appointment bubbles=false }}>{{t 'labels.edit'}}</button>
-        {{/if}}
         {{#if canDelete}}
-            <button class="btn btn-default" {{action 'deleteItem' appointment bubbles=false }}>{{t 'buttons.delete'}}</button>
-        {{/if}}
+                  <button class="btn btn-default warning" {{action 'deleteItem' appointment  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                {{/if}}
     </td>
 </tr>

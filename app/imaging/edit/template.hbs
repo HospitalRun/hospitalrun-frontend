@@ -35,6 +35,12 @@
           <p class="form-control-static">{{model.imagingType.name}}</p>
         </div>
       </div>
+      <div class="row">
+        <div class="form-group col-xs-12">
+          <label>{{t 'labels.requested_by'}}</label>
+          <p class="form-control-static">{{model.requestedBy}}</p>
+        </div>
+      </div>
     {{/if}}
     {{#if canComplete}}
       {{select-or-typeahead property="radiologist"

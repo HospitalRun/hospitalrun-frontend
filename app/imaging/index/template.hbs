@@ -3,6 +3,7 @@
     <table class="table">
       <tr class="table-header">
         <th>{{t 'labels.date_requested'}}</th>
+        <th>{{t 'labels.requested_by'}}</th>
         <th>{{t 'labels.patient'}}</th>
         <th>{{t 'labels.imaging_type'}}</th>
         <th>{{t 'labels.notes'}}</th>
@@ -11,19 +12,11 @@
         {{/if}}
       </tr>
       {{#each model as |imaging|}}
-        <tr {{action 'editItem' imaging }} class="clickable">
-          <td>{{date-format imaging.requestedDate}}</td>
-          <td>{{imaging.patient.displayName}}</td>
-          <td>{{imaging.imagingType.name}}</td>
-          <td>{{imaging.notes}}</td>
-          {{#if showActions}}
-            <td>
-              {{#if canEdit}}
-                <button class="btn btn-default neutral" {{action 'editItem' imaging  bubbles=false }}>{{t 'labels.edit'}}</button>
-              {{/if}}
-            </td>
-          {{/if}}
-        </tr>
+        {{imaging/index/requested-list-item
+          imaging=imaging
+          action="editItem"
+          showActions=showActions
+          canEdit=canEdit}}
       {{/each}}
     </table>
   {{else}}

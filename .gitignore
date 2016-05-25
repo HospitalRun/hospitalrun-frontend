@@ -31,4 +31,9 @@ newrelic_agent.log
 
 newrelic.js
 
+<<<<<<< HEAD
 /async-disk-cache
+=======
+/async-disk-cache
+c9-couch.js
+>>>>>>> HospitalRun/master
