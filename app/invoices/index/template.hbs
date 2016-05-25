@@ -2,12 +2,12 @@
   {{#if hasRecords}}
     <table class="table">
       <tr class="table-header">
-        <th>Number</th>
-        <th>Bill Date</th>
-        <th>Status</th>
+        <th>{{t 'labels.number'}}</th>
+        <th>{{t 'labels.bill_date'}}</th>
+        <th>{{t 'labels.status'}}</th>
         <th>{{t 'labels.patient'}}</th>
-        <th>Total</th>
-        <th>Balance Due</th>
+        <th>{{t 'labels.total'}}</th>
+        <th>{{t 'labels.balance_due'}}</th>
         {{#if showActions}}
           <th>{{t 'labels.actions'}}</th>
         {{/if}}
@@ -25,14 +25,14 @@
               {{#if showActions}}
                 {{#if canAddPayment}}
                   <button class="btn btn-default neutral" {{action 'showAddPayment' invoice bubbles=false }}>
-                    <span class="octicon octicon-plus"></span> Add Payment
+                    <span class="octicon octicon-plus"></span> {{t 'admin.roles.capability.add_payment'}}
                   </button>
                 {{/if}}
                 {{#if canAdd}}
-                  <button class="btn btn-default neutral" {{action 'editItem' invoice bubbles=false }}>{{t 'labels.edit'}}</button>
+                  <button class="btn btn-default neutral" {{action 'editItem' invoice bubbles=false }}>{{t 'buttons.edit'}}</button>
                 {{/if}}
                 {{#if canDelete}}
-                  <button class="btn btn-default warning" {{action 'deleteItem' invoice bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                  <button class="btn btn-default warning" {{action 'deleteItem' invoice bubbles=false }}><span class="octicon octicon-x"></span> {{t 'buttons.delete'}}</button>
                 {{/if}}
               {{/if}}
             {{/unless}}
@@ -42,7 +42,7 @@
     </table>
   {{else}}
     <div class="alert alert-info">
-      <p>No invoices found. <a href="#" {{action 'newItem'}}>Create an invoice?</a></p>
+      <p>{{t 'billing.alerts.no_invoice_found'}} <a href="#" {{action 'newItem'}}>{{t 'billing.buttons.create_invoice'}}</a></p>
     </div>
   {{/if}}
 {{/item-listing}}
