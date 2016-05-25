@@ -195,7 +195,27 @@ export default {
         delete_inventory_item: 'Delete Inventory Item',
         delete_inventory_purchase: 'Delete Inventory Purchase',
         fulfill_inventory: 'Fulfill Inventory',
-        user_roles: 'User Roles'
+        user_roles: 'User Roles',
+        incident: 'Incident',
+        add_contributing_factor: 'Add Contributing Factor',
+        add_feedback: 'Add Feedback',
+        add_incident: 'Add Incident',
+        add_incident_category: 'Add Incident Category',
+        add_investigation_finding: 'Add Investigation Finding',
+        add_recommendation: 'Add Recommendation',
+        add_reviewer: 'Add Reviewer',
+        add_risk: 'Add Risk',
+        add_summary: 'Add Summary',
+        delete_contributing_factor: 'Delete Contributing Factor',
+        delete_feedback: 'Delete Feedback',
+        delete_incident: 'Delete Incident',
+        delete_incident_category: 'Delete Incident Category',
+        delete_investigation_finding: 'Delete Investigation Finding',
+        delete_recommendation: 'Delete Recommendation',
+        delete_reviewer: 'Delete Reviewer',
+        delete_risk: 'Delete Risk',
+        edit_others_incident: 'Edit Other\'s Incidents',
+        generate_incident_report: 'Generate Incident Report'
       },
       messages: {
         role_saved: 'The {{roleName}} role has been saved.'
