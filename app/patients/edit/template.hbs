@@ -477,44 +477,7 @@
                     </tr>
                   {{/if}}
                 </table>
-                <div class="row">
-                  <div class="form-group col-sm-6">
-                    <label>Living Arrangement</label>
-                    {{ext-radio
-                      name="livingArrangement"
-                      content=livingArrangementList
-                      value=model.livingArrangement
-                      includeOtherOption=true
-                      otherOptionLabel="Other"
-                      radioLabelPath="content"
-                      radioValuePath="content"
-                    }}
-                  </div>
-                  <div class="form-group col-sm-6">
-                    <label>Family Support System</label>
-                    {{em-checkbox label="Family members are living together" property="familySupport1"}}
-                    {{em-checkbox label="Family members listen, care and help one another" property="familySupport2"}}
-                    {{em-checkbox label="Spend time together in prayer especially in difficult times" property="familySupport3"}}
-                    {{em-checkbox label="Family and closest relatives have open communication" property="familySupport4"}}
-                    {{em-checkbox label="Has relatives around who are responsive to families needs" property="familySupport5"}}
-                  </div>
-                </div>
-                {{em-text label="Assessment/Findings" property="notes"}}
-                {{em-text label="Recommendation" property="socialRecommendation"}}
-                {{em-text label="Action Taken" property="socialActionTaken"}}
-                <div class="row">
-                  {{em-select label="Philhealth"
-                    property="insurance" content=philhealthTypes
-                    selected=model.insurance
-                    class="col-sm-6"
-                  }}
-                  {{em-select label="Classification"
-                    property="economicClassification" content=economicClassificationTypes
-                    selected=model.economicClassification
-                    class="col-sm-6"
-                    prompt=" "
-                  }}
-                </div>
+                {{custom-form model=model form=customSocialForm}}
               </div>
             </div>
           </div>

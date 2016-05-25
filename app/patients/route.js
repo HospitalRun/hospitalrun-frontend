@@ -13,6 +13,9 @@ export default AbstractModuleRoute.extend(PatientId, {
     name: 'countryList',
     findArgs: ['lookup', 'country_list']
   }, {
+    name: 'customSocialForm',
+    findArgs: ['option', 'custom_form_social']
+  }, {
     name: 'diagnosisList',
     findArgs: ['lookup', 'diagnosis_list']
   }, {

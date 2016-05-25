@@ -71,36 +71,10 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     return this.currentUserCan('delete_visit');
   }.property(),
 
-  economicClassificationTypes: [
-    'A',
-    'B',
-    'C1',
-    'C2',
-    'C3',
-    'D'
-  ].map(SelectValues.selectValuesMap),
-
-  livingArrangementList: [
-    'Homeless',
-    'Institution',
-    'Owned',
-    'Rent',
-    'Shared'
-  ],
-
   patientTypes: [
     'Charity',
     'Private'
   ],
-
-  philhealthTypes: [
-    'Employed: Government',
-    'Employed: Non Paying Member/Lifetime',
-    'Employed: OWWA/OFW',
-    'Employed: Private',
-    'Employed: Sponsored/Indigent',
-    'Self Employed'
-  ].map(SelectValues.selectValuesMap),
 
   filesystem: Ember.inject.service(),
   database: Ember.inject.service(),
@@ -118,6 +92,7 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
 
   clinicList: Ember.computed.alias('patientController.clinicList'),
   countryList: Ember.computed.alias('patientController.countryList'),
+  customSocialForm: Ember.computed.alias('patientController.customSocialForm.value'),
   isFileSystemEnabled: Ember.computed.alias('filesystem.isFileSystemEnabled'),
 
   pricingProfiles: Ember.computed.map('patientController.pricingProfiles', SelectValues.selectObjectMap),
