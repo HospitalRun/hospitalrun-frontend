@@ -296,7 +296,8 @@ export default {
     grand: 'Grand',
     remarks: 'Remarks',
     payments: 'Payments',
-    category: 'Category'
+    category: 'Category',
+    department: 'Department'
   },
   messages: {
     no_items_found: 'No items found.',
@@ -418,6 +419,7 @@ export default {
       name: 'Name',
       mark_as_consumed: 'Mark as Consumed',
       new_item: 'New Item',
+      all_items: 'All Items',
       original_quantity: 'Original Quantity',
       print: 'Print',
       print_barcode: 'Print Barcode',
@@ -677,10 +679,13 @@ export default {
   billing: {
     alerts: {
       no_invoice_found: 'No invoices found',
-      delete_invoice: 'Are you sure you wish to delete <strong>{{invoice_number}}</strong>?'
+      delete_item: 'Are you sure you wish to delete <strong>{{item}}</strong>?',
+      no_pricing_items: 'No pricing items found.',
+      no_pricing_profiles: 'No pricing profiles found.'
     },
     buttons: {
-      create_invoice: 'Create an invoice?'
+      create_invoice: 'Create an invoice?',
+      add_override: 'Add Override'
     },
     labels: {
       external_invoice_number: 'External Invoice #',
@@ -688,7 +693,11 @@ export default {
       actual_charges: 'Actual Charges',
       phil_health: 'PhilHealth',
       hmo_com: 'HMO/COM',
-      payments_deposits: 'Payments/Deposits'
+      payments_deposits: 'Payments/Deposits',
+      pricing_panel_overrides: 'Pricing profile overrides',
+      pricing_profile: 'Pricing Profile',
+      discount_amount: 'Discount Amount',
+      discount_percentage: 'Discount Percentage'
     }
   }
 };
