@@ -230,6 +230,49 @@ var designDocs = [{
   }.toString()),
   version: 3
 }, {
+  name: 'incident_by_date',
+  function: generateView('incident',
+    generateDateForView('dateOfIncident') +
+    'emit([dateOfIncident, doc._id]);'
+  ),
+  version: 2
+}, {
+  name: 'open_incidents_by_user',
+  function: generateView('incident',
+    'var status = doc.data.statusOfIncident;' +
+    'if (status && status !== "Closed") {' +
+    ' emit([doc.data.reportedBy, doc._id]);' +
+    '}'
+  ),
+  sort: generateSortFunction(function(a, b) {
+    var sortBy = '';
+    if (req.query && req.query.sortKey) {
+      sortBy = req.query.sortKey;
+      return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
+    }
+    return 0; // Don't sort
+  }.toString()),
+  version: 2
+}, {
+  name: 'closed_incidents_by_user',
+  function: generateView('incident',
+    'var status = doc.data.statusOfIncident;' +
+    'if (status && status === "Closed") {' +
+    ' emit([doc.data.reportedBy, doc._id]);' +
+    '}'
+  ),
+  version: 2
+}, {
+  name: 'incident_by_reviewers',
+  function: generateView('incReviewer',
+    'var inc = doc.data.incident;' +
+    'if (inc) {' +
+    ' emit([doc.data.reviewerEmail, doc._id], { _id: doc.data.incident });' +
+    '}'
+  ),
+  version: 2
+},
+    {
   name: 'inventory_by_type',
   function: generateView('inventory',
     'emit(doc.data.inventoryType);'

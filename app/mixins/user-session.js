@@ -4,7 +4,9 @@ export default Ember.Mixin.create({
   defaultCapabilities: {
     admin: [
       'User Administrator',
-      'System Administrator'
+      'System Administrator',
+      'Incident System Administrator',
+      'Quality'
     ],
     appointments: [
       'Data Entry',
@@ -145,7 +147,8 @@ export default Ember.Mixin.create({
     ],
     add_user: [
       'User Administrator',
-      'System Administrator'
+      'System Administrator',
+      'Incident System Administrator'
     ],
     add_visit: [
       'Data Entry',
@@ -311,7 +314,8 @@ export default Ember.Mixin.create({
     ],
     delete_user: [
       'User Administrator',
-      'System Administrator'
+      'System Administrator',
+      'Incident System Administrator'
     ],
     discharge_patient: [
       'Data Entry',
@@ -389,7 +393,8 @@ export default Ember.Mixin.create({
       'System Administrator'
     ],
     query_db: [
-      'System Administrator'
+      'System Administrator',
+      'Incident System Administrator'
     ],
     patients: [
       'Data Entry',
@@ -431,12 +436,120 @@ export default Ember.Mixin.create({
       'Social Worker',
       'System Administrator'
     ],
+    incident: [
+      'Hospital Staff',
+      'User Administrator',
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    add_incident: [
+      'Hospital Staff',
+      'User Administrator',
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    delete_incident: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    generate_incident_report: [
+      'User Administrator',
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    add_incident_category: [
+      'User Administrator',
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    delete_incident_category: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    add_feedback: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    delete_feedback: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    add_reviewer: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    delete_reviewer: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    add_investigation_finding: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    delete_investigation_finding: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    add_contributing_factor: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    delete_contributing_factor: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    add_recommendation: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    delete_recommendation: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    add_risk: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    delete_risk: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    add_summary: [
+      'Quality',
+      'System Administrator',
+      'Incident System Administrator'
+    ],
+    edit_others_incident: [
+      'Quality',
+      'System Administrator'
+    ],
     update_config: [
       'System Administrator'
     ],
     users: [
       'User Administrator',
-      'System Administrator'
+      'System Administrator',
+      'Quality',
+      'Incident System Administrator'
+
     ],
     add_note: [
       'Doctor',

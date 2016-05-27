@@ -3,11 +3,12 @@ import BillingCategories from 'hospitalrun/mixins/billing-categories';
 import LabPricingTypes from 'hospitalrun/mixins/lab-pricing-types';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import ImagingPricingTypes from 'hospitalrun/mixins/imaging-pricing-types';
+import IncidentLocationsList from 'hospitalrun/mixins/incident-locations-list';
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import UnitTypes from 'hospitalrun/mixins/unit-types';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
-  ModalHelper, ImagingPricingTypes, InventoryTypeList,  UnitTypes, VisitTypes, {
+  ModalHelper, ImagingPricingTypes, IncidentLocationsList, InventoryTypeList,  UnitTypes, VisitTypes, {
     fileSystem: Ember.inject.service('filesystem'),
     lookupTypes:  Ember.computed(function() {
       return [{
@@ -83,6 +84,13 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
             'deliveryLocation',
             'locationsAffected' // Special use case that we need to handle
           ]
+        }
+      }, {
+        defaultValues: 'defaultIncidentLocations',
+        name: this.get('i18n').t('admin.lookup.incident_location'),
+        value: 'incident_locations',
+        models: {
+          incident: 'locationOfIncident'
         }
       }, {
         defaultValues: 'defaultInventoryTypes',
@@ -191,17 +199,29 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
 
     importFile: Ember.computed.alias('lookupTypeList.importFile'),
 
-    lookupTitle: function() {
+    isLookupTypeNameValue: function() {
+      var lookupDesc  = this.get('lookupDesc');
+      if (!Ember.isEmpty(lookupDesc)) {
+        return lookupDesc.nameValuePair;
+      }
+    }.property('lookupDesc'),
+
+    lookupDesc: function() {
       var lookupType = this.get('model.lookupType'),
         lookupTypes = this.get('lookupTypes'),
         lookupDesc;
       if (!Ember.isEmpty(lookupType)) {
         lookupDesc = lookupTypes.findBy('value', lookupType);
-        if (!Ember.isEmpty(lookupDesc)) {
-          return lookupDesc.name;
-        }
+        return lookupDesc;
       }
     }.property('model.lookupType'),
+
+    lookupTitle: function() {
+      var lookupDesc  = this.get('lookupDesc');
+      if (!Ember.isEmpty(lookupDesc)) {
+        return lookupDesc.name;
+      }
+    }.property('lookupDesc'),
 
     lookupTypeList: function() {
       var lookupType = this.get('model.lookupType'),
@@ -308,30 +328,50 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
     },
 
     _sortValues: function(a, b) {
-      return Ember.compare(a.toLowerCase(), b.toLowerCase());
+      if (a instanceof Object) {
+        return Ember.compare(a.name.toLowerCase(), b.name.toLowerCase());
+      } else {
+        return Ember.compare(a.toLowerCase(), b.toLowerCase());
+      }
+
     },
 
     actions: {
       addValue: function() {
+        var isLookupTypeNameValue = this.get('isLookupTypeNameValue');
         this.send('openModal', 'admin.lookup.edit', Ember.Object.create({
-          isNew: true
+          isNew: true,
+          isLookupTypeNameValue: isLookupTypeNameValue
         }));
       },
       deleteValue: function(value) {
-        var lookupTypeList = this.get('lookupTypeList'),
+        var isLookupTypeNameValue = this.get('isLookupTypeNameValue'),
+          lookupTypeList = this.get('lookupTypeList'),
           lookupTypeValues = lookupTypeList.get('value');
         if (this._canDeleteValue(value)) {
-          lookupTypeValues.removeObject(value.toString());
+          if (isLookupTypeNameValue) {
+            lookupTypeValues.removeObject(value);
+          } else {
+            lookupTypeValues.removeObject(value.toString());
+          }
           lookupTypeList.save();
         }
       },
       editValue: function(value) {
         if (!Ember.isEmpty(value)) {
-          this.send('openModal', 'admin.lookup.edit', Ember.Object.create({
+          var isLookupTypeNameValue = this.get('isLookupTypeNameValue');
+          var editObject =  Ember.Object.create({
             isNew: false,
-            originalValue: value.toString(),
-            value: value.toString()
-          }));
+            isLookupTypeNameValue: isLookupTypeNameValue,
+            originalValue: value
+          });
+          if (isLookupTypeNameValue) {
+            editObject.set('name', value.name.toString());
+            editObject.set('value', value.value.toString());
+          } else {
+            editObject.set('value', value.toString());
+          }
+          this.send('openModal', 'admin.lookup.edit', editObject);
         }
       },
       importList: function() {
@@ -379,15 +419,21 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
       },
       updateValue: function(valueObject) {
         var updateList = false,
+          isLookupTypeNameValue = this.get('isLookupTypeNameValue'),
           lookupTypeList = this.get('lookupTypeList'),
           lookupTypeValues = this.get('lookupTypeValues'),
           values = lookupTypeList.get('value'),
+          value;
+        if (isLookupTypeNameValue) {
+          value = valueObject.getProperties('name', 'value');
+        } else {
           value = valueObject.get('value');
+        }
         if (valueObject.get('isNew')) {
           updateList = true;
         } else {
           var originalValue = valueObject.get('originalValue');
-          if (value !== originalValue) {
+          if (JSON.stringify(value) !== JSON.stringify(originalValue)) {
             lookupTypeValues.removeObject(originalValue);
             updateList = true;
             // TODO UPDATE ALL EXISTING DATA LOOKUPS (NODEJS JOB)
