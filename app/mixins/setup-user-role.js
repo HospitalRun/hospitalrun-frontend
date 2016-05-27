@@ -7,7 +7,6 @@ export default Ember.Mixin.create({
       session.set('data.authenticated.userCaps', userCaps.get('capabilities'));
       let sessionStore = session.get('store');
       let sessionData = session.get('data');
-      console.log('Saving sessionData', sessionData);
       sessionStore.persist(sessionData);
       return true;
     }).catch(Ember.K);
