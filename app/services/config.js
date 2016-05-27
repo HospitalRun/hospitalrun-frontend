@@ -15,18 +15,8 @@ export default Ember.Service.extend({
       this.set('configDB', db);
       this.setCurrentUser();
       return db;
-<<<<<<< HEAD
-    })
-        .then(replicateConfigDB)
-        .catch((err) => {
-          console.log('replicate db error', err);
-        })
-        .finally(loadConfig)
-        .catch((err)=>console.log(err));
-=======
     }).then(replicateConfigDB).then(loadConfig)
     .catch((err)=>console.log(err));
->>>>>>> HospitalRun/master
   },
 
   createDB() {

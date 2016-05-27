@@ -1,11 +1,5 @@
 # Change Log
 
-<<<<<<< HEAD
-## [0.9.8](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.9) (2016-05-03)
-[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.8...0.9.9)
-Forgot to run build... so here it is!
-
-=======
 ## [0.9.11](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.11) (2016-05-11)
 
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.10...0.9.11)

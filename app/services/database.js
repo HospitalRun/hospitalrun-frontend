@@ -45,11 +45,6 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       const url = `${document.location.protocol}//${document.location.host}/db/main`;
 
       this._createRemoteDB(url, pouchOptions)
-<<<<<<< HEAD
-          .catch(() => this._createLocalDB('localMainDB', pouchOptions))
-          .then((db) => resolve(db))
-          .catch((err) => reject(err));
-=======
       .catch((err) => {
         if ((err.status && err.status === 401) || configs.config_disable_offline_sync === true) {
           reject(err);
@@ -58,7 +53,6 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         }
       }).then((db) => resolve(db))
       .catch((err) => reject(err));
->>>>>>> HospitalRun/master
 
     }, 'initialize application db');
   },
