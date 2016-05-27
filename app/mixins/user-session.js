@@ -538,7 +538,8 @@ export default Ember.Mixin.create({
       'Incident System Administrator'
     ],
     edit_others_incident: [
-        'Quality'
+      'Quality',
+      'System Administrator'
     ],
     update_config: [
       'System Administrator'
