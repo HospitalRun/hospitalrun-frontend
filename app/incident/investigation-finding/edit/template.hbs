@@ -1,0 +1,17 @@
+{{#modal-dialog isUpdateDisabled=isUpdateDisabled title=title updateButtonAction=updateButtonAction updateButtonText=updateButtonText}}
+  {{#em-form model=model submitButton=false}}
+    <div class="row">
+      {{date-picker property="dateRecorded" label=(t 'incident.labels.date_recorded') class="col-sm-6" format="l h:mm A" showTime=false}}
+      {{em-input class="col-sm-6" property="identityNumber" label=(t 'incident.labels.id_number')}}
+    </div>
+    <div class="row">
+      {{em-select label=(t 'incident.labels.type_of_person') prompt=" " property="typeOfPerson"
+        content=typeOfPersonInvolved selected=model.typeOfPerson class="col-sm-6"}}
+      {{em-select label=(t 'incident.labels.id_type') prompt=" " property="identityDocumentType"
+        content=identityDocumentTypes selected=model.identityDocumentType class="col-sm-6"}}
+    </div>
+    <div class="row">
+      {{em-text class="col-sm-12" property="narrativeStatement" label=(t 'incident.labels.narrative_statement')}}
+    </div>
+  {{/em-form}}
+{{/modal-dialog}}

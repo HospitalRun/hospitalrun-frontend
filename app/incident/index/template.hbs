@@ -1,0 +1,40 @@
+{{#item-listing paginationProps=paginationProps }}
+  {{#if hasRecords}}
+    <table class="table">
+      <tr class="table-header">
+        <th>{{t 'incident.labels.incident_id'}}</th>
+        <th>{{t 'incident.labels.reported_by'}}</th>
+        <th>{{t 'incident.labels.incident_location'}}</th>
+        <th>{{t 'incident.labels.incident_date'}}</th>
+        <th>{{t 'incident.labels.incident_category'}}</th>
+        <th>{{t 'incident.labels.incident_item'}}</th>
+        {{#if showActions}}
+            <th>{{t 'incident.labels.actions'}}</th>
+        {{/if}}
+      </tr>
+      {{#each model as |incident|}}
+        <tr {{action 'editItem' incident}}>
+          <td>{{incident.friendlyId}}</td>
+    	    <td>{{incident.reportedBy}}</td>
+          <td>{{incident.locationOfIncident}}</td>
+          <td>{{date-format incident.dateOfIncident}}</td>
+          <td>{{incident.categoryName}}</td>
+			    <td>{{incident.categoryItem}}</td>
+          {{#if showActions}}
+            <td>
+              {{#if canAdd}}
+                <button class="btn btn-default neutral" {{action 'editItem' incident  bubbles=false}}>{{t 'incident.buttons.edit'}}</button>
+              {{/if}} {{#if canDelete}}
+                <button class="btn btn-default warning" {{action 'showDeleteIncident' incident  bubbles=false}}><span class="octicon octicon-x"></span> {{t 'incident.buttons.delete'}}</button>
+              {{/if}}
+            </td>
+          {{/if}}
+        </tr>
+      {{/each}}
+    </table>
+  {{else}}
+    <div class="alert alert-info">
+      {{t 'incident.messages.no_incidents'}} {{#if canAdd}}<a href='#' {{action 'newItem'}}>{{t 'incident.messages.create_new'}}</a>{{/if}}
+    </div>
+  {{/if}}
+{{/item-listing}}
