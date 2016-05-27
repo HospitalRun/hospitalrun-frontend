@@ -17,5 +17,14 @@ export default IncidentIndexRoute.extend(UserSession, {
       endkey: [currentUser, maxId]
     };
     return queryParams;
+  },
+
+  model: function(params, transition) {
+    return this._super(params, transition).then((results) => {
+      return results.map((result) => {
+        return result.get('incident');
+      });
+    });
   }
+
 });
