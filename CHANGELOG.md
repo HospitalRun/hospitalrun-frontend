@@ -30,7 +30,6 @@
 ## [0.9.9](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.9) (2016-05-03)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.8...0.9.9)
 
->>>>>>> HospitalRun/master
 ## [0.9.8](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.8) (2016-05-03)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.7...0.9.8)
 

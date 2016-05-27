@@ -325,7 +325,7 @@ export default {
     barcode: 'Barcode',
     add: 'Add',
     update: 'Update',
-    ok: 'OK',
+    ok: 'Ok',
     fulfill: 'Fulfill',
     remove: 'Remove',
     delete: 'Delete',
