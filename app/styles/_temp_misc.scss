@@ -60,16 +60,6 @@
   label { font-weight: 300; }
 }
 
-.panel-primary {
-  border: 0;
-  background-color: $white;
-  color: $navy_mid2;
-
-  input,
-  textarea,
-  select { background: rgba($blue_light,.2); }
-}
-
 .modal-dialog { color: $navy; }
 
 .not-editable {

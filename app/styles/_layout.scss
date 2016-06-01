@@ -5,6 +5,19 @@
 
 .view-current-title { @include view_main_heading; }
 
+// panel styles
+
+.panel-primary {
+  position: relative;
+  border: 0;
+  background-color: $white;
+  color: $navy_mid2;
+
+  input,
+  textarea,
+  select { background: rgba($blue_light,.2); }
+}
+
 // ? unsure what below are for...
 
 .detail-section-content {
