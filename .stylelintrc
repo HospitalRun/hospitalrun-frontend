@@ -1,0 +1,60 @@
+{
+  "extends": "stylelint-config-concentric",
+  "plugins": [
+  "stylelint-declaration-use-variable",
+  "stylelint-value-border-zero",
+  "stylelint-scss"
+],
+  "rules":{
+    "declaration-use-variable": "color",
+    "value-border-zero": {
+      "convention": "0"
+    },
+    "scss/at-import-no-partial-extension": true,
+    "scss/at-import-no-partial-leading-underscore": true,
+    "scss/at-extend-no-missing-placeholder": true,
+    "selector-max-compound-selectors": 4,
+    "declaration-bang-space-after": "never",
+    "declaration-bang-space-before": "always",
+    "color-named": "never",
+    "color-no-invalid-hex": true,
+    "color-hex-length": "short",
+    "color-hex-case": "lower",
+    "declaration-block-no-duplicate-properties": true,
+    "declaration-no-important": true,
+    "rule-nested-empty-line-before": ["always-multi-line", {
+      "ignore": ["after-comment"],
+      "except": ["first-nested"]
+      } ],
+    "block-no-empty": true,
+    "no-missing-eof-newline": true,
+    "selector-no-id": true,
+    "number-leading-zero": "never",
+    "indentation": [2, {
+      "ignore": ["value"]
+    } ],
+    "no-duplicate-selectors": true,
+    "max-nesting-depth": 4,
+    "selector-pseudo-element-colon-notation": "double",
+    "selector-no-qualifying-type": [ true, {
+        "ignore": [ "attribute" ]
+      } ],
+    "selector-class-pattern": "[_a-z0-9]+",
+    "shorthand-property-no-redundant-values": true,
+    "declaration-block-semicolon-newline-after": "always-multi-line",
+    "selector-list-comma-newline-after": "always-multi-line",
+    "function-comma-space-after": "never-single-line",
+    "declaration-colon-space-after": "always-single-line",
+    "declaration-colon-space-before": "never",
+    "block-opening-brace-space-before": "always",
+    "function-parentheses-space-inside": "never",
+    "string-quotes": "single",
+    "declaration-block-trailing-semicolon": "always",
+    "no-eol-whitespace": true,
+    "number-no-trailing-zeros": true,
+    "function-url-quotes": "single",
+    "number-zero-length-no-unit": true,
+    "block-opening-brace-newline-after": "always-multi-line",
+    "block-opening-brace-space-after": "always-single-line"
+  }
+}
