@@ -15,11 +15,11 @@ $table-header-color: rgba($navy_drk2,.7);
   border: 1px solid rgba(0,0,0,.1);
   border-radius: 0 0 3px 3px;
   box-shadow: 0 3px 5px rgba(0,0,0,.1);
+  background-clip: padding-box;
   background-color: $white;
   padding: 5px 0;
   width: 100%;
   min-width: 160px;
-  background-clip: padding-box;
 
   .query-results { margin-bottom: 0; }
 }
@@ -84,8 +84,8 @@ $table-header-color: rgba($navy_drk2,.7);
 
 //Loading icon from http://www.bootply.com/128062
 .glyphicon-refresh-animate {
-  -animation: spin .7s infinite linear;
   -webkit-animation: spin2 .7s infinite linear;
+  -animation: spin .7s infinite linear;
 }
 
 @-webkit-keyframes spin2 {

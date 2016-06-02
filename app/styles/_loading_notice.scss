@@ -86,12 +86,12 @@
 
 @keyframes stretchdelay {
   0%, 40%, 100% {
-    transform: scaleY(.4);
     -webkit-transform: scaleY(.4);
+    transform: scaleY(.4);
   }
 
   20% {
-    transform: scaleY(1);
     -webkit-transform: scaleY(1);
+    transform: scaleY(1);
   }
 }
