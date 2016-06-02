@@ -152,7 +152,6 @@
 // primary nav
 
 .primary-nav-item {
-
   a:hover,
   a:focus,
   a:visited { text-decoration: none; }
@@ -178,7 +177,8 @@
     }
 
     &:hover,
-    &.active { background: $navy_mid;
+    &.active {
+      background: $navy_mid;
       .mega-octicon { color: $white; }
     }
   }

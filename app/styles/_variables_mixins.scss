@@ -51,23 +51,23 @@ $content_border:        $blue_lightest;
 // typography
 
 @mixin view_main_heading {
-  color: $navy_mid2;
-  font-weight: 600;
-  letter-spacing: -1px;
-  font-size: 28px;
-  line-height: 55px;
-  margin: 0;
   float: left;
+  margin: 0;
+  line-height: 55px;
+  letter-spacing: -1px;
+  color: $navy_mid2;
+  font-size: 28px;
+  font-weight: 600;
 }
 
 // layout
 
 @mixin view_main_heading_layout {
   margin: 0;
-  height: 55px;
-  background: $white;
   border-bottom: 1px solid $sidebar_icon_lighter;
+  background: $white;
   padding: 0 15px;
+  height: 55px;
 }
 
 // animation and transitions
@@ -79,6 +79,5 @@ $content_border:        $blue_lightest;
 @mixin transition_opacity {
   transition: opacity 200ms ease;
 }
-
 
 // end mixins ------------/
