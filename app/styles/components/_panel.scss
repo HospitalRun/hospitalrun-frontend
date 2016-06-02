@@ -34,7 +34,7 @@
 
       &:first-of-type { margin-left: 0; }
 
-      &.active > a {
+      &.active > a {/* stylelint-disable-line selector-no-qualifying-type */
         background-color: transparent;
         color: $navy_mid2;
         font-weight: 600;

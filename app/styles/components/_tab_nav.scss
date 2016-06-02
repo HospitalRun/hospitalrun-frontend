@@ -10,7 +10,7 @@
 
     &:first-of-type { margin-left: 0; }
 
-    &.active > a {
+    &.active > a {/* stylelint-disable-line selector-no-qualifying-type */
       background-color: transparent;
       color: $navy_mid2;
       font-weight: 600;
@@ -36,13 +36,14 @@
       margin-left: 0;
       line-height: 26px;
       font-size: 16px;
-
+      /* stylelint-disable selector-no-qualifying-type */
       &.active a,
       &:hover a,
       &:focus a {
         margin-bottom: -2px;
         border-bottom: 2px solid $view_sub_nav;
       }
+      /* stylelint-enable selector-no-qualifying-type */
     }
   }
 }
