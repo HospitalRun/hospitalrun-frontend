@@ -1,7 +1,8 @@
+$table-header-color: rgba($navy_drk2,.7);
 
 .table-header {
   background-color: $navy_light;
-  color: rgba($navy_drk2,.7);
+  color: $table-header-color;
 }
 
 .twitter-typeahead { width: 100%;
