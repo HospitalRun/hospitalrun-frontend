@@ -29,7 +29,8 @@
     }
   }
 
-  &.tab-nav { border-bottom: 2px solid $content_border;
+  &.tab-nav {
+    border-bottom: 2px solid $content_border;
 
     li {
       margin-left: 0;

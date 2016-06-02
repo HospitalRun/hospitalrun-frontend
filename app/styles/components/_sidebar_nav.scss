@@ -177,7 +177,8 @@
     }
 
     &:hover,
-    &.active { background: $navy_mid;
+    &.active {
+      background: $navy_mid;
       .mega-octicon { color: $white; }
     }
   }

@@ -5,7 +5,8 @@ $table-header-color: rgba($navy_drk2,.7);
   color: $table-header-color;
 }
 
-.twitter-typeahead { width: 100%;
+.twitter-typeahead {
+  width: 100%;
 
   .tt-query,
   .tt-hint { margin-bottom: 0; }
@@ -46,7 +47,8 @@ $table-header-color: rgba($navy_drk2,.7);
   overflow-y: auto;
 }
 
-.jumbotron { background-color: #2e4359;
+.jumbotron {
+  background-color: #2e4359;
 
   h1 {
     margin: 20px 0;
