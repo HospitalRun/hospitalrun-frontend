@@ -650,7 +650,35 @@ export default {
     actions: 'Actions'
   },
   patients: {
+    titles:{
+      add_contact: 'Add Contact',
+      delete: 'Delete Patient',
+      new: 'New Patient',
+      add_photo: 'Add Photo',
+      edit_photo: 'Edit Photo',
+      social_work: 'Expense',
+      family_info: 'Family Info',
+      delete_family_member: 'Delete Family Member',
+      delete_expense: 'Delete Expense',
+      delete_photo: 'Delete Photo',
+      delete_contact: 'Delete Contact',
+      saved_patient: 'Patient Saved'
+    },
+    messages: {
+      are_you_sure_delete: 'Are you sure you want to delete this {{object}}?',
+      saved_patient:'The patient record for {{displayName}} has been saved.'
+    }
+    buttons:{
+      back_to_patients: 'Back to Patient List'
+    },
+    labels:{
+      admission_date: 'Admission Date',
+      patient_days: 'Patient Days',
+      discharge_date: 'Discharge Date'
+    },
     notes: {
+      new_note: 'New Note for',
+      update_note: 'Updating Note from',
       on_behalf_of_label: 'On Behalf Of',
       on_behalf_of_copy: 'on behalf of',
       please_select_a_visit: 'Please select a visit',
