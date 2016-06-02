@@ -51,11 +51,11 @@
 .btn-primary {
   background-color: $green;
 
-// needs converted to variable
+  // needs converted to variable
   &:hover,
   &:focus { background-color: #00c4a2; }
 
-// needs converted to variable
+  // needs converted to variable
   &:active,
   &.active { background-color: #00cca8; }
 
