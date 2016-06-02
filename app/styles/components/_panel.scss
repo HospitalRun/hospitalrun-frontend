@@ -46,9 +46,7 @@
 
       &:hover {
         // needs resolved
-        // scss-lint:disable ImportantRule
-        background-color: transparent !important;
-        // scss-lint:enable ImportantRule
+        background-color: transparent !important;/* stylelint-disable-line declaration-no-important */
         color: $navy_mid2;
       }
     }
