@@ -2,7 +2,6 @@
 // Bootstrap v3.1.1 (http://getbootstrap.com)
 
 .btn {
-
   &.on-white {
     background-color: $blue_light;
     color: $navy;
@@ -52,11 +51,11 @@
 .btn-primary {
   background-color: $green;
 
-// needs converted to variable
+  // needs converted to variable
   &:hover,
   &:focus { background-color: #00c4a2; }
 
-// needs converted to variable
+  // needs converted to variable
   &:active,
   &.active { background-color: #00cca8; }
 
@@ -280,15 +279,15 @@
 
 .well {
   border-color: #dcdcdc;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,.05),0 1px 0 rgba(255,255,255,.1);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.05), 0 1px 0 rgba(255,255,255,.1);
   background-image: linear-gradient(to bottom,#e8e8e8 0%,#f5f5f5 100%);
   background-repeat: repeat-x;
 }
 
-.radio input[type="radio"],
-.radio-inline input[type="radio"],
-.checkbox input[type="checkbox"],
-.checkbox-inline input[type="checkbox"] { margin-left: -18px; }
+.radio input[type='radio'],
+.radio-inline input[type='radio'],
+.checkbox input[type='checkbox'],
+.checkbox-inline input[type='checkbox'] { margin-left: -18px; }
 
 .form-control {
   border: 1px solid $blue_lightest2;
