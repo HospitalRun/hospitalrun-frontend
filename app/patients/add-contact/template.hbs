@@ -6,9 +6,9 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
   {{#em-form model=this submitButton=false }}
-    {{em-input label="Name" property="name"}}
-    {{em-input label="Phone" property="phone"}}
-    {{em-input label="Email" property="email"}}
-    {{em-input label="Relationship" property="relationship"}}
+    {{em-input label=(t 'labels.name') property="name"}}
+    {{em-input label=(t 'patients.labels.phone') property="phone"}}
+    {{em-input label=(t 'patients.labels.email') property="email"}}
+    {{em-input label=(t 'patients.labels.relationships') property="relationship"}}
   {{/em-form}}
 {{/modal-dialog}}

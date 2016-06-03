@@ -666,7 +666,11 @@ export default {
     },
     messages: {
       are_you_sure_delete: 'Are you sure you want to delete this {{object}}?',
-      saved_patient:'The patient record for {{displayName}} has been saved.'
+      delete_patient: 'Are you sure you wish to delete {{firstName}} {{lastName}}?',
+      no_patients_found: 'No patients found.',
+      saved_patient: 'The patient record for {{displayName}} has been saved.',
+      not_found_quick_add: 'The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.',
+      create_new_patient: 'Create a new patient record?'
     }
     buttons:{
       back_to_patients: 'Back to Patient List'
@@ -675,6 +679,24 @@ export default {
       admission_date: 'Admission Date',
       patient_days: 'Patient Days',
       discharge_date: 'Discharge Date'
+      discharge: 'Discharge',
+      admit: 'Admit'
+      relationships: 'Relationships',
+      phone: 'Phone',
+      email: 'Email',
+      first_name: 'First Name',
+      last_name: 'Last Name',
+      sex: 'Sex',
+      dob: 'DOB',
+      sources: 'Sources',
+      costs: 'Costs',
+      civil_status: 'Civil Statu',
+      relationship: 'Relationship To Patient'
+      education: 'Education',
+      occupation: 'Occupation',
+      income: 'Income',
+      insurance: 'Insurance',
+      date_processed: 'Date Processed'
     },
     notes: {
       new_note: 'New Note for',

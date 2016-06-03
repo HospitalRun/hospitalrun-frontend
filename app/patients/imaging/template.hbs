@@ -2,9 +2,9 @@
     <tr class="table-header">
         <th>{{t 'labels.date_requested'}}</th>
         <th>{{t 'labels.imaging_type'}}</th>
-        <th>Status</th>
-        <th>Date Processed</th>
-        <th>Result</th>
+        <th>{{t 'labels.status'}}</th>
+        <th>{{t 'patients.labels.date_processed'}}</th>
+        <th>{{t 'labels.result'}}</th>
         <th>{{t 'labels.notes'}}</th>
         <th>{{t 'labels.requested_by'}}</th>
         <th>{{t 'labels.actions'}}</th>
@@ -24,7 +24,7 @@
                         <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>{{t 'labels.edit'}}</button>
                     {{/if}}
                     {{#if canDeleteImaging}}
-                        <button type="button" class="btn btn-default warning" {{action "showDeleteImaging" imaging  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                        <button type="button" class="btn btn-default warning" {{action "showDeleteImaging" imaging  bubbles=false }}><span class="octicon octicon-x"></span> {{t 'labels.delete'}}</button>
                     {{/if}}
                 {{/if}}
             </td>
