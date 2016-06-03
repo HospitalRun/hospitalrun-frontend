@@ -6,4 +6,7 @@ body {
   }
 }
 
-.clickable { cursor: pointer; }
+.clickable {
+  cursor: pointer;
+  display: block;
+}
