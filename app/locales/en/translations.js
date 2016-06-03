@@ -654,6 +654,10 @@ export default {
       add_contact: 'Add Contact',
       delete: 'Delete Patient',
       new: 'New Patient',
+      edit: 'Edit Patient',
+      patient: 'Patient Report',
+      patient_listing: 'Patient Listing',
+      patient_report: 'Patient Report',
       add_photo: 'Add Photo',
       edit_photo: 'Edit Photo',
       social_work: 'Expense',
@@ -674,6 +678,7 @@ export default {
     }
     buttons:{
       back_to_patients: 'Back to Patient List'
+      new_patient: '+ new patient'
     },
     labels:{
       admission_date: 'Admission Date',
