@@ -18,8 +18,3 @@ if [ -f "bower.json" ]; then
   echo "==> Installing bower components…"
   bower install
 fi
-
-if [ -f "Gemfile" ]; then
-  echo "==> Installing gem dependencies…"
-  bundle install
-fi
