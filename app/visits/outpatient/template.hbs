@@ -1,0 +1,57 @@
+{{#item-listing paginationProps=paginationProps }}
+  {{#if hasRecords}}
+    <table class="table">
+      <thead>
+        <tr class="table-header">
+          {{#sortable-column sortBy='startDate' sortDesc=sortDesc sortKey=sortKey }}Visit Start Date{{/sortable-column}}
+          {{#sortable-column sortBy='visit`' sortDesc=sortDesc sortKey=sortKey }}Examiner (Visit field){{/sortable-column}}
+          {{#sortable-column sortBy='id' sortDesc=sortDesc sortKey=sortKey }}Patient ID{{/sortable-column}}
+          {{#sortable-column sortBy='fullName' sortDesc=sortDesc sortKey=sortKey }}Patient Full Name{{/sortable-column}}
+          {{#sortable-column sortBy='sex' sortDesc=sortDesc sortKey=sortKey }}Patient Sex{{/sortable-column}}
+          {{#sortable-column sortBy='dateOfBirth' sortDesc=sortDesc sortKey=sortKey }}Patient DoB{{/sortable-column}}
+          {{#sortable-column sortBy='type' sortDesc=sortDesc sortKey=sortKey }}Visit Type{{/sortable-column}}
+          {{#if showActions}}
+            <th>{{t 'labels.actions'}}</th>
+          {{/if}}
+        </tr>
+      </thead>
+      <tbody>
+        {{#each model as |visit|}}
+          <tr {{action 'editItem' visit}} class="clickable">
+            <td>{{date-format visit.startDate}}</td>
+            <td>{{visit.examiner}}</td>
+            <td>{{visit.patient.displayPatientId}}</td>
+            <td>{{visit.patient.displayName}}</td>
+            <td>{{visit.patient.sex}}</td>
+            <td>{{date-format visit.patient.dateOfBirth}}</td>
+            <td>{{visit.visitType}}</td>
+            {{#if showActions}}
+              <td>
+                {{#if canAdd}}
+                  <button class="btn btn-default neutral" {{action 'editItem' patient  bubbles=false }}>{{t 'labels.edit'}}</button>
+                {{/if}}
+                {{#unless patient.admitted}}
+                  {{#if canAdmitPatient}}
+                    <button class="btn btn-default success admit" {{action 'admitPatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-in"></span> Admit</button>
+                  {{/if}}
+                {{/unless}}
+                {{#if patient.admitted}}
+                  {{#if canDischargePatient}}
+                    <button class="btn btn-default info" {{action 'dischargePatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-out"></span> Discharge</button>
+                  {{/if}}
+                {{/if}}
+                {{#if canDelete}}
+                  <button class="btn btn-default warning" {{action 'deleteItem' patient  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                {{/if}}
+              </td>
+            {{/if}}
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{else}}
+    <div class="alert alert-info" data-test-selector="no-patients-found">
+      <p>No outpatients found.</p>
+    </div>
+  {{/if}}
+{{/item-listing}}

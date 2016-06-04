@@ -110,6 +110,7 @@ Router.map(function() {
     resetNamespace: true
   }, function() {
     this.route('edit', { path: '/edit/:visit_id' });
+    this.route('outpatient');
     this.route('procedures', {
       resetNamespace: true
     }, function() {
