@@ -35,7 +35,8 @@ export default {
       load_db: 'Load DB',
       users: 'Users',
       new_user: 'New User',
-      user_roles: 'User Roles'
+      user_roles: 'User Roles',
+      textrepl: 'Text Replacements'
     },
     actions: {
       logout: 'Logout',
@@ -204,6 +205,17 @@ export default {
       titles: {
         role_saved: 'Role Saved'
       }
+    },
+    textrepl: {
+      create_new: 'Create a new placement',
+      existing_repl: 'Existing replacements',
+      repl_desc: 'When entering text, these shortcuts allow you to replace a short sequence of characters with a longer phrase.',
+      page_title: 'Text Replacements',
+      to_replace: 'Text to replace',
+      replace_with: 'Replace with',
+      perform_expand: "Press Enter to replace #{{from}} with '{{to}}'",
+      possible_expansions: 'Possible replacements: {{possible}}',
+      no_matches: "No replacements match '{{term}}'"
     }
   },
   labels: {
@@ -279,7 +291,9 @@ export default {
     physician: 'Physician',
     assisting: 'Assisting',
     anesthesia: 'Anesthesia',
-    procedures: 'Procedures'
+    procedures: 'Procedures',
+    from: 'From',
+    to: 'To'
   },
   messages: {
     no_items_found: 'No items found.',
@@ -325,13 +339,13 @@ export default {
   },
   login: {
     messages: {
-      sign_in:  'please sign in',
-      error:    'Username or password is incorrect.'
+      sign_in: 'please sign in',
+      error: 'Username or password is incorrect.'
     },
     labels: {
       password: 'Password',
       username: 'Username',
-      sign_in:  'Sign in'
+      sign_in: 'Sign in'
     }
   },
   inventory: {
@@ -569,7 +583,7 @@ export default {
     },
     alerts: {
       returned_title: 'Medication Returned',
-      returned_message:  'The medication has been marked as returned.',
+      returned_message: 'The medication has been marked as returned.',
       saved_title: 'Medication Request Saved',
       saved_message: 'The medication record has been saved.',
       fulfilled_title: 'Medication Request Fulfilled'

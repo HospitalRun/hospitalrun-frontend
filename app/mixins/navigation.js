@@ -279,6 +279,12 @@ export default Ember.Mixin.create({
           iconClass: 'octicon-chevron-right',
           route: 'admin.roles',
           capability: 'user_roles'
+        },
+        {
+          title: 'Text Replacements',
+          iconClass: 'octicon-plus',
+          route: 'admin.textrepl',
+          capability: 'update_config'
         }
       ]
     }
@@ -296,13 +302,13 @@ export default Ember.Mixin.create({
     };
     return this.get('navItems').map((nav) => {
       let sectionKey = localizationPrefix + underscore(nav.title).toLowerCase(),
-          navTranslated = this.get('i18n').t(sectionKey);
+        navTranslated = this.get('i18n').t(sectionKey);
 
       nav.localizedTitle = translationOrOriginal(navTranslated, nav.title);
       // Map all of the sub navs, too
       nav.subnav = nav.subnav.map((sub) => {
         let subItemKey = localizationPrefix + 'subnav.' + underscore(sub.title).toLowerCase(),
-            subTranslated = this.get('i18n').t(subItemKey);
+          subTranslated = this.get('i18n').t(subItemKey);
 
         sub.localizedTitle = translationOrOriginal(subTranslated, sub.title);
         return sub;
