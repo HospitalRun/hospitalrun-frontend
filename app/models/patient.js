@@ -50,7 +50,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   referredDate: DS.attr('date'),
   referredBy: DS.attr('string'),
   religion: DS.attr('string'),
-  diet: DS.attr('string),
+  diet: DS.attr('string'),
   socialActionTaken: DS.attr('string'),
   socialRecommendation: DS.attr('string'),
   status: DS.attr('string'),
