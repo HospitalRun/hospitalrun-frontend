@@ -35,6 +35,8 @@ export default {
       load_db: 'Load DB',
       users: 'Users',
       new_user: 'New User',
+      admitted_patients: 'Admitted Patients',
+      missed: 'Missed',
       user_roles: 'User Roles'
     },
     actions: {
