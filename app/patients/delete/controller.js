@@ -1,5 +1,6 @@
 import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-controller';
 import PatientVisitsMixin from 'hospitalrun/mixins/patient-visits';
+import PatientAppointmentsMixin from 'hospitalrun/mixins/patient-appointments';
 import PatientInvoicesMixin from 'hospitalrun/mixins/patient-invoices';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
@@ -21,7 +22,7 @@ function deleteMany(manyArray) {
   return Ember.RSVP.all(manyArray.invoke('destroyRecord', 'async array deletion'));
 }
 
-export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoicesMixin, PouchDbMixin, ProgressDialog, {
+export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoicesMixin, PouchDbMixin, ProgressDialog, PatientAppointmentsMixin, {
   title: 'Delete Patient',
   progressTitle: 'Delete Patient Record',
   progressMessage: 'Deleting patient and all associated records',
@@ -34,11 +35,15 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
     var patient = this.get('model');
     var visits = this.getPatientVisits(patient);
     var invoices = this.getPatientInvoices(patient);
+    var appointments = this.getPatientAppointments(patient);
+    var payments = patient.get('payments');
     // resolve all async models first since they reference each other, then delete
-    return Ember.RSVP.all([visits, invoices]).then(function(records) {
+    return Ember.RSVP.all([visits, invoices, appointments, payments]).then(function(records) {
       var promises = [];
       promises.push(controller.deleteVisits(records[0]));
       promises.push(controller.deleteInvoices(records[1]));
+      promises.push(deleteMany(records[2]));   // appointments
+      promises.push(deleteMany(records[3]));   // payments
       return Ember.RSVP.all(promises)
         .then(function() {
           return patient.destroyRecord();
@@ -49,23 +54,46 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
   deleteVisits: function(visits) {
     var promises = [];
     visits.forEach(function(visit) {
-      promises.push(deleteMany(visit.get('labs')));
+      var labs = visit.get('labs');
+      var procedures = visit.get('procedures');
+      var imaging = visit.get('imaging');
+      var procCharges = procedures.then(function(p) {
+        return p.get('charges');
+      });
+      var labCharges = labs.then(function(l) {
+        return l.get('charges');
+      });
+      var imagingCharges = imaging.then(function(i) {
+        return i.get('charges');
+      });
+      var visitCharges = visit.get('charges');
+      promises.push(deleteMany(labs));
+      promises.push(deleteMany(labCharges));
       promises.push(deleteMany(visit.get('patientNotes')));
       promises.push(deleteMany(visit.get('vitals')));
-      promises.push(deleteMany(visit.get('procedures')));
+      promises.push(deleteMany(procedures));
+      promises.push(deleteMany(procCharges));
       promises.push(deleteMany(visit.get('medication')));
-      promises.push(deleteMany(visit.get('imaging')));
+      promises.push(deleteMany(imaging));
+      promises.push(deleteMany(imagingCharges));
+      promises.push(deleteMany(visitCharges));
     });
     return Ember.RSVP.all(promises).then(function() {
       return deleteMany(visits);
     });
   },
 
-  deleteInvoices: function(invoices) {
-    var lineItems = invoices.get('lineItems');
-    var payments = invoices.get('payments');
-    return Ember.RSVP.all([lineItems, payments]).then(function() {
-      return deleteMany(invoices);
+  deleteInvoices: function(patientInvoices) {
+    return Ember.RSVP.resolve(patientInvoices).then(function(invoices) {
+      var lineItems = invoices.map(function(i) {
+        return i.get('lineItems');
+      });
+      var lineItemDetails = lineItems.map(function(li) {
+        return li.get('details');
+      });
+      return Ember.RSVP.all([lineItems, lineItemDetails]).then(function() {
+        return Ember.RSVP.all([deleteMany(invoices), deleteMany(lineItems), deleteMany(lineItemDetails)]);
+      });
     });
   },
 

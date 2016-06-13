@@ -11,6 +11,6 @@ export default Ember.Mixin.create(PouchDbMixin, {
         endkey: [patientId, maxValue, maxValue, maxValue]
       },
       mapReduce: 'appointments_by_patient'
-    })
+    });
   }
 });
