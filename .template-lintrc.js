@@ -2,5 +2,11 @@
 'use strict';
 
 module.exports = {
-  extends: 'recommended'
+  extends: 'recommended',
+  rules:{
+    'block-indentation': false,
+    'html-comments': false,
+    'self-closing-void-elements':false,
+    'nested-interactive': false
+  }
 };
