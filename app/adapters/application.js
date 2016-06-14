@@ -14,8 +14,7 @@ export default Adapter.extend(PouchAdapterUtils, {
 
   _specialQueries: [
     'containsValue',
-    'mapReduce',
-    'searchIndex'
+    'mapReduce'
   ],
 
   _executeContainsSearch(store, type, query) {
@@ -28,7 +27,18 @@ export default Adapter.extend(PouchAdapterUtils, {
           if (!Ember.isEmpty(queryString)) {
             queryString = `${queryString} OR `;
           }
-          queryString = `${queryString}${key}:${query.containsValue.value}`;
+          let queryValue = query.containsValue.value;
+          switch (key.type) {
+            case 'contains': {
+              queryValue = `*${queryValue}*`;
+              break;
+            }
+            case 'fuzzy': {
+              queryValue = `${queryValue}~`;
+              break;
+            }
+          }
+          queryString = `${queryString}data.${key.name}:${queryValue}`;
         });
         let successFn = (results) => {
           if (results && results.hits && results.hits.hits) {
@@ -139,9 +149,6 @@ export default Adapter.extend(PouchAdapterUtils, {
     } else {
       var mapReduce = null,
         queryParams = {};
-      if (query.searchIndex) {
-        queryParams = query.searchIndex;
-      }
       if (query.options) {
         queryParams = Ember.copy(query.options);
         if (query.sortKey || query.filterBy) {
