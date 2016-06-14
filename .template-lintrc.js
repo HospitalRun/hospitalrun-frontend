@@ -7,6 +7,7 @@ module.exports = {
     'block-indentation': false,
     'html-comments': false,
     'self-closing-void-elements':false,
-    'nested-interactive': false
+    'nested-interactive': false,
+    'bare-strings':true
   }
 };
