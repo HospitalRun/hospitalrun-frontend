@@ -101,9 +101,11 @@ $table-header-color: rgba($navy_drk2,.7);
 }
 
 @media print {
-  body { font-size: 10px; }
+  body { 
+    font-size: 12pt; 
+    &.ember-application { padding-left: 0; }
+  }
 
-  .ember-application { padding-left: 0; }
+  .panel-footer, .btn, .nav { display: none; }
 
-  .panel-footer { display: none; }
 }
