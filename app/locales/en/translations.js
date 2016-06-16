@@ -650,7 +650,7 @@ export default {
     actions: 'Actions'
   },
   patients: {
-    titles:{
+    titles: {
       add_contact: 'Add Contact',
       delete: 'Delete Patient',
       new: 'New Patient',
@@ -675,17 +675,17 @@ export default {
       saved_patient: 'The patient record for {{displayName}} has been saved.',
       not_found_quick_add: 'The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.',
       create_new_patient: 'Create a new patient record?'
-    }
-    buttons:{
-      back_to_patients: 'Back to Patient List'
+    },
+    buttons: {
+      back_to_patients: 'Back to Patient List',
       new_patient: '+ new patient'
     },
-    labels:{
+    labels: {
       admission_date: 'Admission Date',
       patient_days: 'Patient Days',
-      discharge_date: 'Discharge Date'
+      discharge_date: 'Discharge Date',
       discharge: 'Discharge',
-      admit: 'Admit'
+      admit: 'Admit',
       relationships: 'Relationships',
       phone: 'Phone',
       email: 'Email',
@@ -695,8 +695,8 @@ export default {
       dob: 'DOB',
       sources: 'Sources',
       costs: 'Costs',
-      civil_status: 'Civil Statu',
-      relationship: 'Relationship To Patient'
+      civil_status: 'Civil Status',
+      relationship: 'Relationship To Patient',
       education: 'Education',
       occupation: 'Occupation',
       income: 'Income',
