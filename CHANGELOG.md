@@ -1,7 +1,48 @@
 # Change Log
 
-## [0.9.11](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.11) (2016-05-11)
+## [0.9.12](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.12) (2016-06-15)
 
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.11...0.9.12)
+
+**Implemented enhancements:**
+
+- Migrate from scss-lint to stylelint [\#443](https://github.com/HospitalRun/hospitalrun-frontend/issues/443)
+- Requesting clinician needs to be added to the Lab Request list [\#364](https://github.com/HospitalRun/hospitalrun-frontend/issues/364)
+- Requesting clinician needs to be added to the Medication Request list [\#363](https://github.com/HospitalRun/hospitalrun-frontend/issues/363)
+- Requesting clinician needs to be added to the Imaging Request list [\#362](https://github.com/HospitalRun/hospitalrun-frontend/issues/362)
+
+**Fixed bugs:**
+
+- Search doesn't work under certain circumstances [\#507](https://github.com/HospitalRun/hospitalrun-frontend/issues/507)
+- Role customization doesn't work on page reload and for subnavigation [\#480](https://github.com/HospitalRun/hospitalrun-frontend/issues/480)
+- When logging in for the first time, server crashes with TypeError: Cannot read property 'deleted' of undefined in node\_modules/hospitalrun-server-routes/routes/30-auth.js:134 [\#475](https://github.com/HospitalRun/hospitalrun-frontend/issues/475)
+
+**Closed issues:**
+
+- hospitalrun loading for long time [\#500](https://github.com/HospitalRun/hospitalrun-frontend/issues/500)
+- Cannot find module 'sw-toolbox/sw-toolbox.js' [\#497](https://github.com/HospitalRun/hospitalrun-frontend/issues/497)
+- After login, nothing happens [\#478](https://github.com/HospitalRun/hospitalrun-frontend/issues/478)
+- this.\_super.apply [\#473](https://github.com/HospitalRun/hospitalrun-frontend/issues/473)
+- feature request : import function in Inventory \(with .csv file fore exemple\) [\#456](https://github.com/HospitalRun/hospitalrun-frontend/issues/456)
+- Travis Builds occasionally fail, timing out on Patient Notes Test [\#430](https://github.com/HospitalRun/hospitalrun-frontend/issues/430)
+- Travis builds should fail when scss-lint errors [\#374](https://github.com/HospitalRun/hospitalrun-frontend/issues/374)
+- Filter Inventory by Location report by Location [\#126](https://github.com/HospitalRun/hospitalrun-frontend/issues/126)
+
+**Merged pull requests:**
+
+- Stylelint [\#488](https://github.com/HospitalRun/hospitalrun-frontend/pull/488) ([billybonks](https://github.com/billybonks))
+- Style lint [\#487](https://github.com/HospitalRun/hospitalrun-frontend/pull/487) ([billybonks](https://github.com/billybonks))
+- Test for missing translations [\#486](https://github.com/HospitalRun/hospitalrun-frontend/pull/486) ([billybonks](https://github.com/billybonks))
+- Pagination button tweaks [\#484](https://github.com/HospitalRun/hospitalrun-frontend/pull/484) ([jglovier](https://github.com/jglovier))
+- Update ember-ajax to version 2.4.1 🚀 [\#482](https://github.com/HospitalRun/hospitalrun-frontend/pull/482) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Corrected one of the step numbers in the "Make" section [\#474](https://github.com/HospitalRun/hospitalrun-frontend/pull/474) ([vanakema](https://github.com/vanakema))
+- Add missing space to script/bootstrap [\#469](https://github.com/HospitalRun/hospitalrun-frontend/pull/469) ([dbradf](https://github.com/dbradf))
+- Requesting clinician added to the Medication Request list and edit se… [\#468](https://github.com/HospitalRun/hospitalrun-frontend/pull/468) ([alvesjtiago](https://github.com/alvesjtiago))
+- Changed buttons in patiens & appointments Idex [\#459](https://github.com/HospitalRun/hospitalrun-frontend/pull/459) ([cmwebby](https://github.com/cmwebby))
+- Spanish localization [\#449](https://github.com/HospitalRun/hospitalrun-frontend/pull/449) ([chibchombiano26](https://github.com/chibchombiano26))
+- Add `Requested By` to Imaging [\#437](https://github.com/HospitalRun/hospitalrun-frontend/pull/437) ([cacqw7](https://github.com/cacqw7))
+
+## [0.9.11](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.11) (2016-05-11)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.10...0.9.11)
 
 **Fixed bugs:**
@@ -21,6 +62,7 @@
 
 **Merged pull requests:**
 
+- Add requesting clinician to Labs [\#450](https://github.com/HospitalRun/hospitalrun-frontend/pull/450) ([cacqw7](https://github.com/cacqw7))
 - Fixed missing translation in the Labs module [\#448](https://github.com/HospitalRun/hospitalrun-frontend/pull/448) ([napon](https://github.com/napon))
 - Update ember-cli-qunit to version 2.0.0 🚀 [\#446](https://github.com/HospitalRun/hospitalrun-frontend/pull/446) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
 - Update ember-ajax to version 2.3.2 🚀 [\#444](https://github.com/HospitalRun/hospitalrun-frontend/pull/444) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
