@@ -1,0 +1,15 @@
+@media print {
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    margin: 0 5%;
+    &.ember-application { padding-left: 0; }
+  }
+
+  .panel-footer, .btn, .nav { display: none; }
+
+  .patient-history-heading { border-bottom: 1px solid black; }
+
+}
