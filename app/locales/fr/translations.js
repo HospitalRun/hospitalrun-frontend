@@ -143,7 +143,7 @@ export default {
       capability: {
         admin: 'Administration',
         load_db: 'Charger la Base de données',
-        update_config: 'Mettre à jour les Configurations'
+        update_config: 'Mettre à jour les Configurations',
         appointments: 'Rendez-vous',
         add_appointment: 'Ajouter un Rendez-vous',
         billing: 'Facturation',
