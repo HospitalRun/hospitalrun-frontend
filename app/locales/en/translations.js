@@ -755,5 +755,27 @@ export default {
       discount_amount: 'Discount Amount',
       discount_percentage: 'Discount Percentage'
     }
+  },
+  procedures: {
+    titles: {
+      add_charge_item: 'Add Charge Item',
+      delete_charge_item: 'Edit Charge Item',
+      medication_used: 'Medication Used',
+      delete_medication_used: 'Delete Medication Used',
+      add_medication_used: 'Add Medication Used',
+      edit_medication_used: 'Edit Medication Used',
+      edit: 'Edit Procedure',
+      saved: 'Procedure Saved',
+      new: 'New Procedure'
+    },
+    lables: {
+      medication_used: 'Medication Used'
+    },
+    messages: {
+      delete_medication: 'Are you sure you want to delete this medication?'
+    },
+    buttons: {
+      add_medication: 'Add Medication'
+    }
   }
 };
