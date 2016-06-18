@@ -220,12 +220,6 @@ export default Ember.Mixin.create({
       'Medical Records Officer',
       'System Administrator'
     ],
-    delete_inventory_purchase: [
-      'Hospital Administrator',
-      'Inventory Manager',
-      'Medical Records Officer',
-      'System Administrator'
-    ],
     delete_imaging: [
       'Doctor',
       'Hospital Administrator',

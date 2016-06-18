@@ -196,7 +196,6 @@ export default {
         add_inventory_purchase: 'Add Inventory Purchase',
         adjust_inventory_location: 'Adjust Inventory Location',
         delete_inventory_item: 'Delete Inventory Item',
-        delete_inventory_purchase: 'Delete Inventory Purchase',
         fulfill_inventory: 'Fulfill Inventory',
         user_roles: 'User Roles'
       },
