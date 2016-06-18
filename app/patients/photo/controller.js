@@ -5,18 +5,18 @@ export default Ember.Controller.extend({
   title: function() {
     var isNew = this.get('model.isNew');
     if (isNew) {
-      return 'Add Photo';
+      return this.get('i18n').t('patients.titles.add_photo');
     } else {
-      return 'Edit Photo';
+      return this.get('i18n').t('patients.titles.edit_photo');
     }
   }.property('model.isNew'),
 
   updateButtonText: function() {
     var isNew = this.get('model.isNew');
     if (isNew) {
-      return 'Add';
+      return this.get('i18n').t('buttons.add');
     } else {
-      return 'Update';
+      return this.get('i18n').t('buttons.add');
     }
   }.property('model.isNew'),
 

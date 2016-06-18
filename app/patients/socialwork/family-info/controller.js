@@ -5,13 +5,15 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
 
   editController: Ember.computed.alias('patientsController'),
   showUpdateButton: true,
-  title: 'Family Info',
+  title: t('patients.titles.family_info'),
   updateButtonAction: 'update',
+
   updateButtonText: function() {
-    if (this.get('model.isNew')) {
-      return 'Add';
+    var isNew = this.get('model.isNew');
+    if (isNew) {
+      return this.get('i18n').t('buttons.add');
     } else {
-      return 'Update';
+      return this.get('i18n').t('buttons.add');
     }
   }.property('model.isNew'),
 
