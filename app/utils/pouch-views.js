@@ -90,7 +90,7 @@ function generateView(viewDocType, viewBody) {
   return 'function(doc) {' +
   'var doctype,' +
   'uidx;' +
-  'if (doc._id && (uidx = doc._id.indexOf("_")) > 0) {' +
+  'if (doc._id && (uidx = doc._id.indexOf("_")) > 0 && !doc.archived) {' +
   'doctype = doc._id.substring(0, uidx);' +
   'if(doctype === "' + viewDocType + '") {' +
   viewBody +
@@ -186,7 +186,7 @@ var designDocs = [{
     }
     return includeRow;
   }.toString()),
-  version: 4
+  version: 5
 }, {
   name: 'appointments_by_patient',
   function: generateView('appointment',
@@ -194,7 +194,7 @@ var designDocs = [{
     generateDateForView('startDate') +
     'emit([doc.data.patient, startDate, endDate,doc._id]);'
   ),
-  version: 3
+  version: 4
 }, {
   name: 'imaging_by_status',
   function: generateView('imaging',
@@ -202,7 +202,7 @@ var designDocs = [{
     generateDateForView('requestedDate') +
     'emit([doc.data.status, requestedDate, imagingDate, doc._id]);'
   ),
-  version: 3
+  version: 4
 }, {
   name: 'inventory_by_name',
   function: generateView('inventory',
@@ -228,48 +228,48 @@ var designDocs = [{
       }
     }
   }.toString()),
-  version: 3
+  version: 4
 }, {
   name: 'inventory_by_type',
   function: generateView('inventory',
     'emit(doc.data.inventoryType);'
   ),
-  version: 4
+  version: 5
 }, {
   name: 'inventory_purchase_by_date_received',
   function: generateView('invPurchase',
     generateDateForView('dateReceived') +
     'emit([dateReceived, doc._id]);'
   ),
-  version: 4
+  version: 5
 }, {
   name: 'inventory_purchase_by_expiration_date',
   function: generateView('invPurchase',
     generateDateForView('expirationDate') +
     'emit([expirationDate, doc._id]);'
   ),
-  version: 4
+  version: 5
 }, {
   name: 'inventory_request_by_item',
   function: generateView('invRequest',
     generateDateForView('dateCompleted') +
     'emit([doc.data.inventoryItem, doc.data.status, dateCompleted]);'
   ),
-  version: 4
+  version: 5
 }, {
   name: 'inventory_request_by_status',
   function: generateView('invRequest',
     generateDateForView('dateCompleted') +
     'emit([doc.data.status, dateCompleted, doc._id]);'
   ),
-  version: 4
+  version: 5
 }, {
   name: 'invoice_by_status',
   function: generateView('invoice',
     generateDateForView('billDate') +
     'emit([doc.data.status, billDate, doc._id]);'
   ),
-  version: 3
+  version: 4
 }, {
   name: 'lab_by_status',
   function: generateView('lab',
@@ -277,7 +277,7 @@ var designDocs = [{
     generateDateForView('requestedDate') +
     'emit([doc.data.status, requestedDate, labDate, doc._id]);'
   ),
-  version: 3
+  version: 4
 }, {
   name: 'medication_by_status',
   function: generateView('medication',
@@ -285,7 +285,7 @@ var designDocs = [{
     generateDateForView('requestedDate') +
     'emit([doc.data.status, requestedDate, prescriptionDate, doc._id]);'
   ),
-  version: 3
+  version: 4
 }, {
   name: 'patient_by_display_id',
   function: generateView('patient',
@@ -317,44 +317,44 @@ var designDocs = [{
       }
     }
   }.toString(), true),
-  version: 5
+  version: 6
 }, {
   name: 'patient_by_status',
   function: generateView('patient',
     'emit(doc.data.status);'
   ),
-  version: 2
+  version: 3
 },{
   name: 'patient_by_admission',
   function: generateView('patient',
     'emit(doc.data.admitted);'
   ),
-  version: 1
+  version: 2
 }, {
   name: 'photo_by_patient',
   function: generateView('photo',
     'emit(doc.data.patient);'
   ),
-  version: 3
+  version: 4
 }, {
   name: 'procedure_by_date',
   function: generateView('procedure',
     generateDateForView('procedureDate') +
     'emit([procedureDate, doc._id]);'
   ),
-  version: 3
+  version: 4
 }, {
   name: 'pricing_by_category',
   function: generateView('pricing',
     'emit([doc.data.category, doc.data.name, doc.data.pricingType, doc._id]);'
   ),
-  version: 4
+  version: 5
 }, {
   name: 'sequence_by_prefix',
   function: generateView('sequence',
     'emit(doc.data.prefix);'
   ),
-  version: 3
+  version: 4
 }, {
   name: 'visit_by_date',
   function: generateView('visit',
@@ -362,14 +362,14 @@ var designDocs = [{
     generateDateForView('startDate') +
     'emit([startDate, endDate, doc._id]);'
   ),
-  version: 3
+  version: 4
 }, {
   name: 'visit_by_discharge_date',
   function: generateView('visit',
     generateDateForView('endDate') +
     'emit([endDate, doc._id]);'
   ),
-  version: 1
+  version: 2
 }, {
   name: 'visit_by_patient',
   function: generateView('visit',
@@ -377,7 +377,7 @@ var designDocs = [{
     generateDateForView('startDate') +
     'emit([doc.data.patient, startDate, endDate, doc.data.visitType, doc._id]);'
   ),
-  version: 3
+  version: 4
 }];
 
 export default function(db) {

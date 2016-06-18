@@ -96,6 +96,16 @@ export default Ember.Mixin.create(PatientVisits, {
     }.bind(this));
   },
 
+  deleteChildFromVisit(childName) {
+    var recordToDelete = this.get('model');
+    recordToDelete.set('archived', true);
+    this.removeChildFromVisit(recordToDelete, childName).then(() => {
+      recordToDelete.update().then(() => {
+        this.send('closeModal');
+      });
+    });
+  },
+
   patientId: Ember.computed.alias('model.patient.id'),
 
   patientChanged: function() {

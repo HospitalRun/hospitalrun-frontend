@@ -18,10 +18,6 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     return this.currentUserCan('adjust_inventory_location');
   },
 
-  canDeletePurchase: function() {
-    return this.currentUserCan('delete_inventory_purchase');
-  }.property(),
-
   warehouseList: Ember.computed.alias('inventory.warehouseList'),
   aisleLocationList: Ember.computed.alias('inventory.aisleLocationList'),
   inventoryTypeList: Ember.computed.alias('inventory.inventoryTypeList.value'),
@@ -123,25 +119,6 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
       request.get('inventoryItem').then(function() {
         this.send('fulfillRequest', request, true, increment, true);
       }.bind(this));
-    },
-
-    deletePurchase: function(purchase, deleteFromLocation, expire) {
-      var purchases = this.get('model.purchases'),
-        quantityDeleted = purchase.get('currentQuantity');
-      if (expire) {
-        purchase.set('expired', true);
-        purchase.save();
-      } else {
-        purchases.removeObject(purchase);
-        purchase.destroyRecord();
-      }
-      if (!Ember.isEmpty(deleteFromLocation)) {
-        deleteFromLocation.decrementProperty('quantity', quantityDeleted);
-        deleteFromLocation.save();
-      }
-      this.get('model').updateQuantity();
-      this.send('update', true);
-      this.send('closeModal');
     },
 
     editNewItem: function() {
