@@ -281,7 +281,25 @@ export default {
     physician: 'Physician',
     assisting: 'Assisting',
     anesthesia: 'Anesthesia',
-    procedures: 'Procedures'
+    procedures: 'Procedures',
+    number: 'Number',
+    bill_date: 'Bill Date',
+    balance_due: 'Balance Due',
+    amount: 'Amount',
+    date_paid: 'Date Paid',
+    credit_to: 'Credit To',
+    invoice_id: 'Invoice ID',
+    line_items: 'Line Items',
+    discount: 'Discount',
+    excess: 'Excess',
+    price: 'Price',
+    total: 'Total',
+    expense_to: 'Expense To',
+    grand: 'Grand',
+    remarks: 'Remarks',
+    payments: 'Payments',
+    category: 'Category',
+    department: 'Department'
   },
   messages: {
     no_items_found: 'No items found.',
@@ -323,7 +341,9 @@ export default {
     new_item: '+ new item',
     new_request_plus: '+ new request',
     add_visit: 'Add Visit',
-    search: 'Search'
+    search: 'Search',
+    edit: 'Edit',
+    add_line_item: 'Add Line Item'
   },
   login: {
     messages: {
@@ -401,6 +421,7 @@ export default {
       name: 'Name',
       mark_as_consumed: 'Mark as Consumed',
       new_item: 'New Item',
+      all_items: 'All Items',
       original_quantity: 'Original Quantity',
       print: 'Print',
       print_barcode: 'Print Barcode',
@@ -710,6 +731,30 @@ export default {
       on_behalf_of_copy: 'on behalf of',
       please_select_a_visit: 'Please select a visit',
       note_label: 'Note'
+    }
+  },
+  billing: {
+    alerts: {
+      no_invoice_found: 'No invoices found',
+      delete_item: 'Are you sure you wish to delete <strong>{{item}}</strong>?',
+      no_pricing_items: 'No pricing items found.',
+      no_pricing_profiles: 'No pricing profiles found.'
+    },
+    buttons: {
+      create_invoice: 'Create an invoice?',
+      add_override: 'Add Override'
+    },
+    labels: {
+      external_invoice_number: 'External Invoice #',
+      payment_profile: 'Payment Profile',
+      actual_charges: 'Actual Charges',
+      phil_health: 'PhilHealth',
+      hmo_com: 'HMO/COM',
+      payments_deposits: 'Payments/Deposits',
+      pricing_panel_overrides: 'Pricing profile overrides',
+      pricing_profile: 'Pricing Profile',
+      discount_amount: 'Discount Amount',
+      discount_percentage: 'Discount Percentage'
     }
   }
 };
