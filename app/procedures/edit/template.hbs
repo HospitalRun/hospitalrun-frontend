@@ -44,10 +44,10 @@
     <div class="panel detail-section">
       <div class="panel-heading">
         <h3 class="panel-title">
-          Medication Used
+          {{t 'procedures.titles.medication_used'}}
           {{#if canAddCharge}}
             <button class="btn btn-primary align-right" {{action "showAddMedication" bubbles=false }}>
-              <span class="octicon octicon-plus"></span>Add Medication
+              <span class="octicon octicon-plus"></span>{{t 'procedures.buttons.add_medication'}}
             </button>
           {{/if}}
         </h3>
@@ -55,7 +55,7 @@
       <div class="panel-body detail-section-content">
         <table class="table">
           <tr class="table-header">
-            <th>Item</th>
+            <th>{{t 'labels.item'}}</th>
             <th>{{t 'labels.quantity'}}</th>
             <th>{{t 'labels.action'}}</th>
           </tr>
@@ -70,7 +70,7 @@
                   {{/if}}
                   {{#if canAddCharge}}
                     <button class="btn btn-default warning" {{action "showDeleteMedication" charge bubbles=false }}>
-                      <span class="octicon octicon-x"></span>Delete
+                      <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
                     </button>
                   {{/if}}
                 </td>
