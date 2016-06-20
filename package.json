@@ -76,6 +76,7 @@
     "stylelint-value-border-zero": "^1.0.2"
   },
   "dependencies": {
+    "ember-cli-stylelint": "^0.1.5",
     "ember-radio-buttons": "^4.0.1",
     "snyk": "^1.14.1"
   },
