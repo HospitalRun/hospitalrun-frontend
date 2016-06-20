@@ -1,9 +1,11 @@
-import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
 import Ember from 'ember';
+import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
 import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import SelectValues from 'hospitalrun/utils/select-values';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
+import { translationMacro as t } from 'ember-i18n';
+
 export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, VisitTypes, {
   patientsController: Ember.inject.controller('patients'),
 
@@ -18,12 +20,12 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
 
   admissionReportColumns: {
     sex: {
-      label: 'Sex',
+      label: t('labels.sex'),
       include: true,
       property: 'sex'
     },
     total: {
-      label: 'Total',
+      label: t('labels.total'),
       include: true,
       property: 'total',
       format: '_numberFormat'
@@ -31,29 +33,29 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   },
   admissionDetailReportColumns: {
     id: {
-      label: 'Id',
+      label: t('labels.id'),
       include: true,
       property: 'patientId'
     },
     name: {
-      label: 'Name',
+      label: t('labels.name'),
       include: true,
       property: 'patientName'
     },
     admissionDate: {
-      label: 'Admission Date',
+      label: t('patients.labels.admission_date'),
       include: true,
       property: 'admissionDate',
       format: '_dateTimeFormat'
     },
     dischargeDate: {
-      label: 'Discharge Date',
+      label: t('patients.labels.discharge_date'),
       include: false,
       property: 'dischargeDate',
       format: '_dateTimeFormat'
     },
     patientDays: {
-      label: 'Patient Days',
+      label: t('patients.labels.discharge_date'),
       include: false,
       property: 'patientDays',
       format: '_numberFormat'

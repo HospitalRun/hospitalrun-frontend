@@ -3,12 +3,12 @@
     <table class="table">
       <tr class="table-header">
         {{#if showCategory}}
-          <th>Category</th>
+          <th>{{t 'labels.category'}}</th>
         {{/if}}
         <th>{{t 'labels.name'}}</th>
-        <th>Price</th>
-        <th>Type</th>
-        <th>Expense To</th>
+        <th>{{t 'labels.price'}}</th>
+        <th>{{t 'labels.type'}}</th>
+        <th>{{t 'labels.expense_to'}}</th>
         {{#if showActions}}
           <th>{{t 'labels.actions'}}</th>
         {{/if}}
@@ -29,7 +29,7 @@
               {{/if}}
               {{#if canDelete}}
                 <button class="btn btn-default warning" {{action 'deleteItem' pricingItem bubbles=false }}>
-                  <span class="octicon octicon-x"></span> Delete
+                  <span class="octicon octicon-x"></span> {{t 'buttons.delete'}}
                 </button>
               {{/if}}
             </td>
@@ -39,7 +39,7 @@
     </table>
   {{else}}
     <div class="alert alert-info">
-      <p>No pricing items found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
+      <p>{{t 'billing.alerts.no_pricing_items'}} {{#if canAdd}}<a href="#" {{action 'newItem'}}>{{t 'messages.create_new_record'}}</a>{{/if}}</p>
     </div>
   {{/if}}
 {{/item-listing}}

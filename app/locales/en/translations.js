@@ -196,7 +196,6 @@ export default {
         add_inventory_purchase: 'Add Inventory Purchase',
         adjust_inventory_location: 'Adjust Inventory Location',
         delete_inventory_item: 'Delete Inventory Item',
-        delete_inventory_purchase: 'Delete Inventory Purchase',
         fulfill_inventory: 'Fulfill Inventory',
         user_roles: 'User Roles'
       },
@@ -281,7 +280,25 @@ export default {
     physician: 'Physician',
     assisting: 'Assisting',
     anesthesia: 'Anesthesia',
-    procedures: 'Procedures'
+    procedures: 'Procedures',
+    number: 'Number',
+    bill_date: 'Bill Date',
+    balance_due: 'Balance Due',
+    amount: 'Amount',
+    date_paid: 'Date Paid',
+    credit_to: 'Credit To',
+    invoice_id: 'Invoice ID',
+    line_items: 'Line Items',
+    discount: 'Discount',
+    excess: 'Excess',
+    price: 'Price',
+    total: 'Total',
+    expense_to: 'Expense To',
+    grand: 'Grand',
+    remarks: 'Remarks',
+    payments: 'Payments',
+    category: 'Category',
+    department: 'Department'
   },
   messages: {
     no_items_found: 'No items found.',
@@ -323,7 +340,9 @@ export default {
     new_item: '+ new item',
     new_request_plus: '+ new request',
     add_visit: 'Add Visit',
-    search: 'Search'
+    search: 'Search',
+    edit: 'Edit',
+    add_line_item: 'Add Line Item'
   },
   login: {
     messages: {
@@ -401,6 +420,7 @@ export default {
       name: 'Name',
       mark_as_consumed: 'Mark as Consumed',
       new_item: 'New Item',
+      all_items: 'All Items',
       original_quantity: 'Original Quantity',
       print: 'Print',
       print_barcode: 'Print Barcode',
@@ -650,11 +670,112 @@ export default {
     actions: 'Actions'
   },
   patients: {
+    titles: {
+      add_contact: 'Add Contact',
+      delete: 'Delete Patient',
+      new: 'New Patient',
+      edit: 'Edit Patient',
+      patient: 'Patient Report',
+      patient_listing: 'Patient Listing',
+      patient_report: 'Patient Report',
+      add_photo: 'Add Photo',
+      edit_photo: 'Edit Photo',
+      social_work: 'Expense',
+      family_info: 'Family Info',
+      delete_family_member: 'Delete Family Member',
+      delete_expense: 'Delete Expense',
+      delete_photo: 'Delete Photo',
+      delete_contact: 'Delete Contact',
+      saved_patient: 'Patient Saved'
+    },
+    messages: {
+      are_you_sure_delete: 'Are you sure you want to delete this {{object}}?',
+      delete_patient: 'Are you sure you wish to delete {{firstName}} {{lastName}}?',
+      no_patients_found: 'No patients found.',
+      saved_patient: 'The patient record for {{displayName}} has been saved.',
+      not_found_quick_add: 'The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.',
+      create_new_patient: 'Create a new patient record?'
+    },
+    buttons: {
+      back_to_patients: 'Back to Patient List',
+      new_patient: '+ new patient'
+    },
+    labels: {
+      admission_date: 'Admission Date',
+      patient_days: 'Patient Days',
+      discharge_date: 'Discharge Date',
+      discharge: 'Discharge',
+      admit: 'Admit',
+      relationships: 'Relationships',
+      phone: 'Phone',
+      email: 'Email',
+      first_name: 'First Name',
+      last_name: 'Last Name',
+      sex: 'Sex',
+      dob: 'DOB',
+      sources: 'Sources',
+      costs: 'Costs',
+      civil_status: 'Civil Status',
+      relationship: 'Relationship To Patient',
+      education: 'Education',
+      occupation: 'Occupation',
+      income: 'Income',
+      insurance: 'Insurance',
+      date_processed: 'Date Processed'
+    },
     notes: {
+      new_note: 'New Note for',
+      update_note: 'Updating Note from',
       on_behalf_of_label: 'On Behalf Of',
       on_behalf_of_copy: 'on behalf of',
       please_select_a_visit: 'Please select a visit',
       note_label: 'Note'
+    }
+  },
+  billing: {
+    alerts: {
+      no_invoice_found: 'No invoices found',
+      delete_item: 'Are you sure you wish to delete <strong>{{item}}</strong>?',
+      no_pricing_items: 'No pricing items found.',
+      no_pricing_profiles: 'No pricing profiles found.'
+    },
+    buttons: {
+      create_invoice: 'Create an invoice?',
+      add_override: 'Add Override'
+    },
+    labels: {
+      external_invoice_number: 'External Invoice #',
+      payment_profile: 'Payment Profile',
+      actual_charges: 'Actual Charges',
+      phil_health: 'PhilHealth',
+      hmo_com: 'HMO/COM',
+      payments_deposits: 'Payments/Deposits',
+      pricing_panel_overrides: 'Pricing profile overrides',
+      pricing_profile: 'Pricing Profile',
+      discount_amount: 'Discount Amount',
+      discount_percentage: 'Discount Percentage'
+    }
+  },
+  procedures: {
+    titles: {
+      add_charge_item: 'Add Charge Item',
+      delete_charge_item: 'Edit Charge Item',
+      medication_used: 'Medication Used',
+      delete_medication_used: 'Delete Medication Used',
+      add_medication_used: 'Add Medication Used',
+      edit_medication_used: 'Edit Medication Used',
+      edit: 'Edit Procedure',
+      saved: 'Procedure Saved',
+      new: 'New Procedure'
+    },
+    lables: {
+      medication_used: 'Medication Used'
+    },
+    messages: {
+      delete_medication: 'Are you sure you want to delete this medication?'
+    },
+    buttons: {
+      add_medication: 'Add Medication'
     }
   }
 };

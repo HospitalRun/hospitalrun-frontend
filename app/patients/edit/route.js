@@ -4,10 +4,12 @@ import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
+import { translationMacro as t } from 'ember-i18n';
+
 export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, PatientNotes, {
-  editTitle: 'Edit Patient',
+  editTitle: t('patients.titles.edit'),
   modelName: 'patient',
-  newTitle: 'New Patient',
+  newTitle: t('patients.titles.new'),
   photos: null,
 
   actions: {
