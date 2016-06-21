@@ -12,6 +12,7 @@ export default {
     billing: 'Billing',
     administration: 'Administration',
     subnav: {
+      actions: 'Actions',
       requests: 'Requests',
       items: 'Items',
       completed: 'Completed',
@@ -211,6 +212,7 @@ export default {
     cptcode: 'CPT Code',
     loading: 'Loading',
     name: 'Name',
+    note: 'Note',
     patient: 'Patient',
     prescriber: 'Prescriber',
     quantity: 'Quantity',
@@ -615,28 +617,22 @@ export default {
     }
   },
   visits: {
-    edit: {
-      actions: 'Actions',
-      edit: 'Edit',
-      date: 'Date',
-      authored_by: 'Authored By',
-      note: 'Note',
-      notes: 'Notes',
-      new_note: 'New Note',
-      visit_information: 'Visit Information',
+    buttons: {
+      new_procedure: 'New Procedure',
+      new_lab: 'New Lab',
       new_appointment: 'New Appointment',
       add_diagnosis: 'Add Diagnosis',
-      diagnosis: 'Diagnosis',
-      delete: 'Delete',
-      procedure: 'Procedure',
-      procedures: 'Procedures',
-      new_procedure: 'New Procedure',
-      labs: 'Labs',
-      new_lab: 'New Lab',
-      imaging: 'Imaging',
       new_imaging: 'New Imaging',
-      medication: 'Medication',
       new_medication: 'New Medication'
+    },
+    labels: {
+      diagnosis: 'Diagnosis',
+      procedure: 'Procedure',
+      authored_by: 'Authored By',
+      labs: 'Labs',
+      imaging: 'Imaging',
+      visit_information: 'Visit Information',
+      medication: 'Medication'
     }
   },
   labs: {
@@ -665,9 +661,6 @@ export default {
       request_saved_title: 'Lab Request Saved',
       request_saved_message: 'The lab request has been saved.'
     }
-  },
-  common: {
-    actions: 'Actions'
   },
   patients: {
     titles: {
@@ -728,8 +721,7 @@ export default {
       update_note: 'Updating Note from',
       on_behalf_of_label: 'On Behalf Of',
       on_behalf_of_copy: 'on behalf of',
-      please_select_a_visit: 'Please select a visit',
-      note_label: 'Note'
+      please_select_a_visit: 'Please select a visit'
     }
   },
   billing: {

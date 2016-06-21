@@ -593,27 +593,22 @@ export default {
   },
   visits: {
     edit: {
-      actions: 'Actiones',
-      edit: 'Editar',
-      date: 'Fecha',
-      authored_by: 'Escrito por',
-      note: 'Nota',
-      notes: 'Notas',
-      new_note: 'Nueva nota',
-      visit_information: 'Informacion de visita',
-      new_appointment: 'Nuevas citas',
-      add_diagnosis: 'Adicionar diagnostico',
-      diagnosis: 'Diagnostico',
-      delete: 'Eliminar',
-      procedure: 'Procedimiento',
-      procedures: 'Procedimientos',
-      new_procedure: 'Nuevo procedimiento',
-      labs: 'Laboratorios',
-      new_lab: 'New laboratorio',
-      imaging: 'Radiografias',
-      new_imaging: 'Nueva radiografia',
-      medication: 'Medicacion',
-      new_medication: 'Nueva mediicación'
+      buttons: {
+        new_appointment: 'Nuevas citas',
+        add_diagnosis: 'Adicionar diagnostico',
+        new_procedure: 'Nuevo procedimiento',
+        new_lab: 'New laboratorio',
+        new_medication: 'Nueva mediicación',
+        new_imaging: 'Nueva radiografia'
+      },
+      labels: {
+        diagnosis: 'Diagnostico',
+        procedure: 'Procedimiento',
+        authored_by: 'Escrito por',
+        labs: 'Laboratorios',
+        imaging: 'Radiografias',
+        visit_information: 'Informacion de visita'
+      }
     }
   },
   labs: {

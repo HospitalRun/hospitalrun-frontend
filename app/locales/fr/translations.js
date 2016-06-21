@@ -523,27 +523,22 @@ export default {
   },
   visits: {
     edit: {
-      actions: 'Actions',
-      edit: 'Modifier',
-      date: 'Date',
-      authored_by: 'Crée par',
-      note: 'Note',
-      notes: 'Notes',
-      new_note: 'Nouvelle note',
-      visit_information: 'Détails de la visite',
-      new_appointment: 'Nouveau rendez-vous',
-      add_diagnosis: 'Ajoute un diagnostic',
-      diagnosis: 'Diagnostic',
-      delete: 'Supprimer',
-      procedure: 'Procédure',
-      procedures: 'Procédures',
-      new_procedure: 'Nouvelle procédure',
-      labs: 'Labos',
-      new_lab: 'Nouveau labo',
-      imaging: 'Imagerie',
-      new_imaging: 'Nouvelle imagerie',
-      medication: 'Médicament',
-      new_medication: 'Nouveau médicament'
+      buttons: {
+        new_appointment: 'Nouveau rendez-vous',
+        add_diagnosis: 'Ajoute un diagnostic',
+        new_procedure: 'Nouvelle procédure',
+        new_lab: 'Nouveau labo',
+        new_imaging: 'Nouvelle imagerie',
+        new_medication: 'Nouveau médicament'
+      },
+      labels: {
+        diagnosis: 'Diagnostic',
+        procedure: 'Procédure',
+        authored_by: 'Crée par',
+        labs: 'Labos',
+        imaging: 'Imagerie',
+        visit_information: 'Détails de la visite'
+      }
     }
   },
   labs: {
