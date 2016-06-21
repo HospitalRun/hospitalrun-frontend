@@ -27,7 +27,8 @@ export default {
   },
   messages: {
     no_items_found: 'Hiçbir öğe bulunamadı.',
-    create_new_record: 'Yeni bir kayıt oluştur?'
+    create_new_record: 'Yeni bir kayıt oluştur?',
+    for_authorized_persons: 'Bu rapor yetkili kişiler içindir.'
   },
   buttons: {
     complete: 'Bitir',
