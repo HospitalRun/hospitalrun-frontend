@@ -1,3 +1,44 @@
-version: v1.4.0
+version: v1.5.0
 ignore: {}
-patch: {}
+patch:
+  'npm:minimatch:20160620':
+    - ember-inflector > ember-cli-babel > broccoli-funnel > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-radio-buttons > ember-cli-babel > broccoli-funnel > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-cli-stylelint > ember-cli-babel > broccoli-babel-transpiler > broccoli-funnel > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-inflector > ember-cli-babel > broccoli-babel-transpiler > broccoli-funnel > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-radio-buttons > ember-cli-babel > broccoli-babel-transpiler > broccoli-funnel > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-cli-stylelint > broccoli-funnel > walk-sync > matcher-collection > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-cli-stylelint > ember-cli-babel > broccoli-funnel > walk-sync > matcher-collection > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-inflector > ember-cli-babel > broccoli-funnel > walk-sync > matcher-collection > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-radio-buttons > ember-cli-babel > broccoli-funnel > walk-sync > matcher-collection > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-cli-stylelint > ember-cli-babel > broccoli-funnel > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-inflector > ember-cli-babel > broccoli-babel-transpiler > broccoli-funnel > walk-sync > matcher-collection > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-radio-buttons > ember-cli-babel > broccoli-babel-transpiler > broccoli-funnel > walk-sync > matcher-collection > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-cli-stylelint > ember-cli-babel > broccoli-babel-transpiler > broccoli-funnel > walk-sync > matcher-collection > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-cli-stylelint > broccoli-funnel > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-inflector > ember-cli-babel > broccoli-babel-transpiler > broccoli-persistent-filter > walk-sync > matcher-collection > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-radio-buttons > ember-cli-babel > broccoli-babel-transpiler > broccoli-persistent-filter > walk-sync > matcher-collection > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-cli-stylelint > ember-cli-babel > broccoli-babel-transpiler > broccoli-persistent-filter > walk-sync > matcher-collection > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-inflector > ember-cli-babel > broccoli-babel-transpiler > babel-core > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-radio-buttons > ember-cli-babel > broccoli-babel-transpiler > babel-core > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'
+    - ember-cli-stylelint > ember-cli-babel > broccoli-babel-transpiler > babel-core > minimatch:
+        patched: '2016-06-23T18:55:00.686Z'

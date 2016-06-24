@@ -10,7 +10,9 @@
   "scripts": {
     "build": "./script/build",
     "start": "./script/server",
-    "test": "snyk test && ./script/test"
+    "test": "snyk test && ./script/test",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -77,13 +79,15 @@
   },
   "dependencies": {
     "ember-cli-stylelint": "^0.1.5",
+    "ember-inflector": "^1.9.4",
     "ember-radio-buttons": "^4.0.1",
-    "snyk": "^1.14.1",
+    "snyk": "^1.15.2",
     "stylelint": "^6.6.0"
   },
   "ember-addon": {
     "paths": [
       "lib/pouch-fixtures"
     ]
-  }
+  },
+  "snyk": true
 }
