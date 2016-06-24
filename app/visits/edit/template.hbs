@@ -22,38 +22,38 @@
                 <p class="form-control-static">{{model.patient.displayName}}</p>
               </div>
               {{#if isAdmissionVisit}}
-                {{date-picker property="startDate" label="Admission Date" showTime=true class="col-sm-3 required"}}
-                {{date-picker property="endDate" label="Discharge Date" showTime=true class="col-sm-3"}}
+                {{date-picker property="startDate" label=(t "patients.labels.admission_date") showTime=true class="col-sm-3 required"}}
+                {{date-picker property="endDate" label=(t "patients.labels.discharge_date") showTime=true class="col-sm-3"}}
               {{else}}
-                {{date-picker property="startDate" label="Date" class="col-sm-3 required"}}
+                {{date-picker property="startDate" label=(t "labels.date") class="col-sm-3 required"}}
               {{/if}}
               {{select-or-typeahead className="col-sm-3" property="location"
-                label="Location" list=locationList
+                label=(t "labels.location") list=locationList
                 selection=model.location
               }}
             </div>
             <div class="row">
-              {{em-select class="col-sm-3 required" label="Visit Type"
+              {{em-select class="col-sm-3 required" label=(t "visits.labels.visit_type")
                 property="visitType" content=visitTypes
               }}
               {{#if isAdmissionVisit}}
-                {{em-select class="col-sm-3" label="Visit Status"
+                {{em-select class="col-sm-3" label=(t "visits.labels.status")
                   property="status" content=visitStatuses
                   prompt=" "
                 }}
               {{/if}}
               {{select-or-typeahead className="col-sm-3" property="examiner"
-                label="Examiner" list=physicianList
+                label=(t "visits.labels.examiner") list=physicianList
                 selection=model.examiner
               }}
             </div>
             <div class="row">
               {{select-or-typeahead className="col-sm-5" property="primaryDiagnosis"
-                label="Admitting Diagnosis" list=diagnosisList
+                label=(t "visits.labels.admitting_diagnosis") list=diagnosisList
                 selection=model.primaryDiagnosis hint=false
               }}
               {{select-or-typeahead className="col-sm-5" property="primaryBillingDiagnosis"
-                label="Final/Billing Diagnosis" list=diagnosisList
+                label=(t "visits.labels.final_diagnosis")  list=diagnosisList
                 selection=model.primaryBillingDiagnosis hint=false
               }}
               {{#if canAddDiagnosis}}
@@ -67,7 +67,7 @@
             </div>
             {{#if haveAdditionalDiagnoses}}
               <h4>
-                Additional Diagnoses
+                {{t "visits.titles.additional_diagnoses"}}
               </h4>
               <table class="table">
                 <tr class="table-header">
@@ -236,10 +236,10 @@
         <div class="panel-heading">
           <h3 class="panel-title">
             <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-vitals">
-              Vitals
+              {{t "visits.labels.vitals"}}
               {{#if canAddVitals}}
                 <button class="btn btn-primary align-right" {{action "showAddVitals" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> New Vitals
+                  <span class="octicon octicon-plus"></span> {{t "visits.buttons.new_vitals"}}
                 </button>
               {{/if}}
             </a>
@@ -249,15 +249,15 @@
           <div class="panel-body">
             <table class="table">
               <tr class="table-header">
-                <th>Date</th>
-                <th>Temperature</th>
-                <th>Weight</th>
-                <th>Height</th>
-                <th>SBP</th>
-                <th>DBP</th>
-                <th>Heart Rate</th>
-                <th>Respiratory Rate</th>
-                <th>Delete</th>
+                <th>{{t "labels.date"}}</th>
+                <th>{{t "vitals.labels.temperature"}}</th>
+                <th>{{t "vitals.labels.weight"}}</th>
+                <th>{{t "vitals.labels.height"}}</th>
+                <th>{{t "vitals.labels.sbp"}}</th>
+                <th>{{t "vitals.labels.dbp"}}</th>
+                <th>{{t "vitals.labels.heart_rate"}}</th>
+                <th>{{t "vitals.labels.respiratory_rate"}}</th>
+                <th>{{t "labels.delete"}}</th>
               </tr>
               {{#each model.vitals as |vital|}}
                 <tr>
@@ -275,7 +275,7 @@
                     {{/if}}
                     {{#if canDeleteVitals}}
                       <button class="btn btn-default warning" {{action "showDeleteVitals" vital}}>
-                      <span class="octicon octicon-x"></span> Delete
+                      <span class="octicon octicon-x"></span> {{t "buttons.delete"}}
                       </button>
                     {{/if}}
                   </td>

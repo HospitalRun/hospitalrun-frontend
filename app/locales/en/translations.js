@@ -619,14 +619,36 @@ export default {
       selectedStartingDate: 'Show Appointments On Or After'
     }
   },
+  vitals: {
+    messages: {
+      delete: 'Are you sure you wish to delete these vitals?'
+    },
+    labels: {
+      date_recorded: 'Date Recorded',
+      temperature: 'Temperature',
+      weight: 'Weight',
+      height: 'Height',
+      sbp: 'SBP',
+      dbp: 'DBP',
+      heart_rate: 'Heart Rate',
+      respiratory_rate: 'Respiratory Rate'
+    }
+  },
   visits: {
+    titles: {
+      additional_diagnoses: 'Additional Diagnoses'
+    },
+    messages: {
+      delete: 'Are you sure you wish to delete this visit?'
+    },
     buttons: {
       new_procedure: 'New Procedure',
       new_lab: 'New Lab',
       new_appointment: 'New Appointment',
       add_diagnosis: 'Add Diagnosis',
       new_imaging: 'New Imaging',
-      new_medication: 'New Medication'
+      new_medication: 'New Medication',
+      new_vitals: 'New Vitals'
     },
     labels: {
       diagnosis: 'Diagnosis',
@@ -635,7 +657,13 @@ export default {
       labs: 'Labs',
       imaging: 'Imaging',
       visit_information: 'Visit Information',
-      medication: 'Medication'
+      examiner: 'Examiner',
+      medication: 'Medication',
+      status: 'Visit Status',
+      admitting_diagnosis: 'Admitting Diagnosis',
+      final_diagnosis: 'Final/Billing Diagnosis',
+      visit_type: 'Visit Type',
+      vitals: 'Vitals'
     }
   },
   labs: {
@@ -767,7 +795,8 @@ export default {
       medication_used: 'Medication Used'
     },
     messages: {
-      delete_medication: 'Are you sure you want to delete this medication?'
+      delete_medication: 'Are you sure you want to delete this medication?',
+      delete: 'Are you sure you wish to delete this procedure?'
     },
     buttons: {
       add_medication: 'Add Medication'
