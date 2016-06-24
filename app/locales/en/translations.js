@@ -614,6 +614,9 @@ export default {
     },
     buttons: {
       new_button: '+ new appointment'
+    },
+    labels: {
+      selectedStartingDate: 'Show Appointments On Or After'
     }
   },
   visits: {
