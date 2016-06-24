@@ -111,7 +111,7 @@ test('Update workflow options', function(assert) {
   });
 
   function setAllTo(checked, cb) {
-    document.querySelectorAll(selector).forEach((node) => {
+    Array.prototype.slice.call(document.querySelectorAll(selector)).forEach((node) => {
       node.checked = checked;
     });
     click('button:contains(Update)');
@@ -120,13 +120,15 @@ test('Update workflow options', function(assert) {
       andThen(() => {
         assert.equal(find('.modal-title').text(), 'Options Saved', 'Workflow Options Saved');
         verifyAll(checked);
-        if (cb) cb();
+        if (cb) {
+          cb();
+        }
       });
     });
   }
 
   function verifyAll(checked) {
-    document.querySelectorAll(selector).forEach((node) => {
+    Array.prototype.slice.call(document.querySelectorAll(selector)).forEach((node) => {
       assert.equal(node.checked, checked, 'Checkbox is ' + (checked ? 'checked' : 'unchecked'));
     });
   }
