@@ -81,6 +81,7 @@
     "ember-cli-stylelint": "^0.1.5",
     "ember-inflector": "^1.9.4",
     "ember-radio-buttons": "^4.0.1",
+    "minimatch": "^3.0.2",
     "snyk": "^1.16.0",
     "stylelint": "^6.6.0"
   },
