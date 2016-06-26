@@ -300,7 +300,9 @@ export default {
     remarks: 'Remarks',
     payments: 'Payments',
     category: 'Category',
-    department: 'Department'
+    department: 'Department',
+    address: 'Address',
+    country: 'Country'
   },
   messages: {
     no_items_found: 'No items found.',
@@ -694,8 +696,19 @@ export default {
     }
   },
   patients: {
+    navigation: {
+      photos: 'Photos',
+      general: 'General',
+      history: 'History',
+      appointments: 'Appointments',
+      visits: 'Visits',
+      medication: 'Medication',
+      imaging: 'Imaging',
+      labs: 'Labs',
+      social_work: 'Social Work'
+    },
     titles: {
-      add_contact: 'Add Contact',
+      family_information: 'Family Information',
       delete: 'Delete Patient',
       new: 'New Patient',
       edit: 'Edit Patient',
@@ -721,10 +734,26 @@ export default {
       create_new_patient: 'Create a new patient record?'
     },
     buttons: {
+      add_expense: 'Add Expense',
+      add_contact: 'Add Contact',
+      new_lab: 'New Lab',
+      new_visit: 'New Visit',
+      new_medication: 'New Medication',
+      new_imaging:'New Imaging',
+      add_family_member: 'Add Family Member',
+      new_photo: 'New Photo',
+      new_appointment: 'New Appointment',
       back_to_patients: 'Back to Patient List',
       new_patient: '+ new patient'
     },
+    headings: {
+      history: 'History',
+      history_since: 'History Since'
+    },
     labels: {
+      monthly_cost: 'Monthly Cost',
+      total_montly_expense: 'Total Monthly Expenses',
+      patient_type: 'Patient Type',
       admission_date: 'Admission Date',
       patient_days: 'Patient Days',
       discharge_date: 'Discharge Date',
@@ -734,9 +763,12 @@ export default {
       phone: 'Phone',
       email: 'Email',
       first_name: 'First Name',
+      middle_name: 'Middle Name',
       last_name: 'Last Name',
       sex: 'Sex',
       dob: 'DOB',
+      date_of_birth: 'Date Of Birth',
+      place_of_birth: 'Place Of Birth',
       sources: 'Sources',
       costs: 'Costs',
       civil_status: 'Civil Status',
@@ -745,7 +777,15 @@ export default {
       occupation: 'Occupation',
       income: 'Income',
       insurance: 'Insurance',
-      date_processed: 'Date Processed'
+      date_processed: 'Date Processed',
+      status: 'Patient Status',
+      external_patient_id: 'External Patient Id',
+      blood_type: 'Blood Type',
+      clinic: 'Clinic Site',
+      referred_by: 'Referred By',
+      referred_date: 'Referred Date',
+      religion: 'Religion',
+      parent: 'Parent/Guardian'
     },
     notes: {
       new_note: 'New Note for',
