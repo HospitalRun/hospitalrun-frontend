@@ -245,6 +245,7 @@ export default {
     type: 'Type',
     sex: 'Sex',
     age: 'Age',
+    search: 'Search',
     username: 'Username',
     email: 'Email',
     role: 'Role',
@@ -321,7 +322,11 @@ export default {
   alerts: {
     please_wait: 'Please Wait'
   },
+  headings: {
+    charged_items: 'Charged Items'
+  },
   buttons: {
+    add_item: 'Add Item',
     complete: 'Complete',
     cancel: 'Cancel',
     close: 'Close',
