@@ -364,6 +364,22 @@ export default {
       sign_in:  'Sign in'
     }
   },
+  loading: {
+    messages: {
+      0: 'The top butterfly flight speed is 12 miles per hour. Some moths can fly 25 miles per hour!',
+      1: 'Owls are the only birds that can see the color blue.',
+      2: 'Cats have over 100 vocal sounds; dogs only have 10.',
+      3: 'Humans use a total of 72 different muscles in speech.',
+      4: 'More than 1,000 different languages are spoken on the continent of Africa.',
+      5: 'An erythrophobe is someone who blushes easily.',
+      6: 'The most common phobia in the world is odynophobia which is the fear of pain.',
+      7: 'Your body uses 300 muscles to balance itself when you are standing still.',
+      8: 'Certain frogs can be frozen solid then thawed, and continue living.',
+      9: 'Our eyes are always the same size from birth, but our nose and ears never stop growing.',
+      10: 'Your tongue is the only muscle in your body that is attached at only one end.',
+      11: 'Camels have three eyelids to protect themselves from blowing sand.'
+    }
+  },
   inventory: {
     edit: {
       cost: 'Cost Per Unit:',
@@ -744,7 +760,7 @@ export default {
       new_lab: 'New Lab',
       new_visit: 'New Visit',
       new_medication: 'New Medication',
-      new_imaging:'New Imaging',
+      new_imaging: 'New Imaging',
       add_family_member: 'Add Family Member',
       new_photo: 'New Photo',
       new_appointment: 'New Appointment',
@@ -756,6 +772,8 @@ export default {
       history_since: 'History Since'
     },
     labels: {
+      primary_diagnosis: 'Primary Diagnoses',
+      secondary_diagnosis: 'Secondary Diagnoses',
       monthly_cost: 'Monthly Cost',
       total_montly_expense: 'Total Monthly Expenses',
       patient_type: 'Patient Type',
@@ -846,5 +864,16 @@ export default {
     buttons: {
       add_medication: 'Add Medication'
     }
+  },
+  photos: {
+    how: 'How Do You Want To Add A Photo?',
+    take_photo: 'Take photo',
+    upload_photo: 'Upload Photo',
+    upload_file: 'Upload File',
+    camera: 'Camera',
+    photo: 'photo'
+  },
+  components: {
+    invalid_number: 'not a valid number'
   }
 };
