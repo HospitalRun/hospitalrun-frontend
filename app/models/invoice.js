@@ -14,6 +14,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
   visit: DS.belongsTo('visit', {
     async: false
   }),
+  lastUnpaidStatus: DS.attr('string'),
   status: DS.attr('string'),
   remarks: DS.attr('string'),
   billDate: DS.attr('date'),
@@ -108,14 +109,23 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
   patientResponsibility: Ember.computed.sum('patientResponsibilityTotals'),
 
   paymentAmountChanged: function() {
-    var payments = this.get('payments'),
-      paidTotal = payments.reduce(function(previousValue, payment) {
+    var payments = this.get('payments');
+    var hasValidPayments = false;
+    var paidTotal = payments.reduce(function(previousValue, payment) {
+      if (payment.get('isValid')) {
+        hasValidPayments = true;
         return previousValue += this._getValidNumber(payment.get('amount'));
-      }.bind(this), 0);
+      }
+    }.bind(this), 0);
     this.set('paidTotal', this._numberFormat(paidTotal, true));
     var remainingBalance = this.get('remainingBalance');
-    if (remainingBalance <= 0) {
+    if (remainingBalance <= 0 && hasValidPayments) {
+      if (this.get('status') !== 'Paid') {
+        this.set('lastUnpaidStatus', this.get('status'));
+      }
       this.set('status', 'Paid');
+    } else if (this.get('status') == 'Paid') {
+      this.set('status', this.get('lastUnpaidStatus'));
     }
   }.observes('payments.[]', 'payments.@each.amount'),
 

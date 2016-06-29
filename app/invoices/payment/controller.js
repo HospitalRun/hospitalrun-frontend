@@ -3,10 +3,22 @@ import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(PatientSubmodule, {
+  closeModalAction: 'cleanup',
   cancelAction: 'closeModal',
   findPatientVisits: false,
   invoiceController: Ember.inject.controller('invoices'),
   newPayment: false,
+
+  actions: {
+    cleanup: function() {
+      var model = this.model;
+      this.model.validate().then(function() {
+        model.save();
+      }).catch(function() {
+        model.destroyRecord();
+      });
+    }
+  },
 
   expenseAccountList: Ember.computed.alias('invoiceController.expenseAccountList'),
   patientList: Ember.computed.alias('invoiceController.patientList'),
