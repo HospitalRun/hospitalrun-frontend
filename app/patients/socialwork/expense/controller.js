@@ -28,7 +28,7 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
     if (isNew) {
       return this.get('i18n').t('buttons.add');
     } else {
-      return this.get('i18n').t('buttons.add');
+      return this.get('i18n').t('buttons.update');
     }
   }.property('model.isNew'),
 
