@@ -141,7 +141,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         message: `Are you sure you want to delete ${item.get('name')}?`,
         itemToDelete: item,
         updateButtonAction: 'confirm',
-        updateButtonText: 'Ok'
+        updateButtonText: this.get('i18n').t('buttons.ok')
       }));
       this.send('openModal', 'dialog', options);
     },
