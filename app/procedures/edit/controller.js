@@ -85,7 +85,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         title: this.get('i18n').t('procedures.titles.delete_medication_used'),
         message: this.get('i18n').t('procedures.messages.delete_medication'),
         chargeToDelete: charge,
-        updateButtonAction: this.get('i18n').t('buttons.confirm'),
+        updateButtonAction: 'confirm',
         updateButtonText: this.get('i18n').t('buttons.ok')
       }));
     }
