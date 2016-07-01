@@ -72,14 +72,12 @@
     "request": "2.72.0",
     "ember-cli-stylelint": "^0.1.5",
     "stylelint": "^6.6.0",
+    "ember-radio-buttons": "^4.0.1",
+    "ember-inflector": "^1.9.4",
     "stylelint-config-concentric": "^1.0.2",
     "stylelint-declaration-use-variable": "^1.3.0",
     "stylelint-scss": "^1.2.0",
     "stylelint-value-border-zero": "^1.0.2"
-  },
-  "dependencies": {
-    "ember-inflector": "^1.9.4",
-    "ember-radio-buttons": "^4.0.1"
   },
   "ember-addon": {
     "paths": [
