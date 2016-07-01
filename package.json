@@ -53,7 +53,7 @@
     "ember-data": "2.5.3",
     "ember-disable-proxy-controllers": "^1.0.1",
     "ember-export-application-global": "^1.0.4",
-    "ember-i18n": "4.2.1",
+    "ember-i18n": "4.2.2",
     "ember-load-initializers": "^0.5.0",
     "ember-pouch": "3.2.1",
     "ember-rapid-forms": "1.0.0-beta4",
