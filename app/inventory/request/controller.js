@@ -81,11 +81,8 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   updateButtonText: function() {
     if (this.get('isFulfilling')) {
       return this.get('i18n').t('buttons.fulfill');
-    } else if (this.get('model.isNew')) {
-      return this.get('i18n').t('buttons.add');
-    } else {
-      return this.get('i18n').t('buttons.update');
     }
+    return this._super();
   }.property('model.isNew', 'isFulfilling'),
 
   updateCapability: 'add_inventory_request',

@@ -205,11 +205,8 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
       return i18n.t('buttons.dispense');
     } else if (this.get('isFulfilling')) {
       return i18n.t('labels.fulfill');
-    } else if (this.get('model.isNew')) {
-      return i18n.t('buttons.add');
-    } else {
-      return i18n.t('buttons.update');
     }
+    return this._super();
   }.property('model.isNew', 'isFulfilling', 'model.hideFulfillRequest'),
 
   actions: {
