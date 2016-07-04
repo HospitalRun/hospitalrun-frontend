@@ -5,7 +5,7 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
   {{#em-form model=model submitButton=false }}
-    {{pricing-typeahead property="itemName" label=(t 'labels.item') content=pricingList selection=selectedItem class="required"}}
+    {{pricing-typeahead property="itemName" label=(t 'inventory.labels.item') content=pricingList selection=selectedItem class="required"}}
     <div class="row">
       {{em-input label=(t 'labels.quantity') property="quantity" class="col-xs-3 required"}}
       {{date-picker property="dateCharged" label="Date Charged" class="col-xs-4 required"}}
