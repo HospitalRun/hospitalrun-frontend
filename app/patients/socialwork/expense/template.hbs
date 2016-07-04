@@ -6,11 +6,11 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
   {{#em-form model=model submitButton=false }}
-    {{em-select label="Category" property="category" class="required"
+    {{em-select label=(t 'inventory.reports.rows.category') property="category" class="required"
       content=categoryTypes
       prompt=" "
     }}
-    {{em-input label="Sources" property="sources"}}
-    {{em-input label="Cost" property="cost" class="required"}}
+    {{em-input label=(t 'patients.labels.sources') property="sources"}}
+    {{em-input label=(t 'patients.labels.cost') property="cost" class="required"}}
   {{/em-form}}
 {{/modal-dialog}}

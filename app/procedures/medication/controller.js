@@ -13,9 +13,9 @@ export default AbstractEditController.extend(InventorySelection, {
   title: function() {
     var isNew = this.get('model.isNew');
     if (isNew) {
-      return 'Add Medication Used';
+      return this.get('i18n').t('procedures.titles.add_medication_used');
     }
-    return 'Edit Medication Used';
+    return this.get('i18n').t('procedures.titles.edit_medication_used');
   }.property('model.isNew'),
 
   beforeUpdate: function() {

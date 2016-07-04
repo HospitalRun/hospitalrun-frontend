@@ -98,7 +98,6 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
       'add_inventory_purchase',
       'adjust_inventory_location',
       'delete_inventory_item',
-      'delete_inventory_purchase',
       'fulfill_inventory'
     ]
   }],
