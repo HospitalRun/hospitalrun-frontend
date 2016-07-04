@@ -1,0 +1,15 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+     - 4200:4200
+    links:
+      - couchdb
+    depends_on:
+     - couchdb
+    command: ./script/initcouch.sh && ember serve
+  couchdb:
+    image: klaemo/couchdb:latest
+    ports:
+      - 5984:5984
