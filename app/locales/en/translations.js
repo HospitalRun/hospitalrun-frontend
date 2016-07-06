@@ -782,7 +782,7 @@ export default {
   procedures: {
     titles: {
       add_charge_item: 'Add Charge Item',
-      delete_charge_item: 'Edit Charge Item',
+      delete_charge_item: 'Delete Charge Item',
       medication_used: 'Medication Used',
       delete_medication_used: 'Delete Medication Used',
       add_medication_used: 'Add Medication Used',

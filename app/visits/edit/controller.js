@@ -350,7 +350,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
         message: 'Are you sure you want to delete this note?',
         noteToDelete: note,
         updateButtonAction: 'confirm',
-        updateButtonText: 'Ok'
+        updateButtonText: this.get('i18n').t('buttons.ok')
       }));
     },
 
