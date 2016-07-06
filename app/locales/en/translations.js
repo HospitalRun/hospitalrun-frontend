@@ -758,7 +758,7 @@ export default {
   billing: {
     alerts: {
       no_invoice_found: 'No invoices found',
-      delete_item: 'Are you sure you wish to delete <strong>{{item}}</strong>?',
+      delete_item: 'Are you sure you wish to delete {{item}}?',
       no_pricing_items: 'No pricing items found.',
       no_pricing_profiles: 'No pricing profiles found.'
     },
