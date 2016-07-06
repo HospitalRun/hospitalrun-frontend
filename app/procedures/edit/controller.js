@@ -60,7 +60,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     if (isNew) {
       return this.get('i18n').t('procedures.titles.add');
     }
-    return this.get('i18n').t('procedures.titles.edit');;
+    return this.get('i18n').t('procedures.titles.edit');
   }.property('model.isNew'),
 
   updateCapability: 'add_charge',

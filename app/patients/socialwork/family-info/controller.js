@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
+import { translationMacro as t } from 'ember-i18n';
 export default Ember.Controller.extend(IsUpdateDisabled, {
   patientsController: Ember.inject.controller('patients'),
 

@@ -16,7 +16,7 @@ test('it renders correctly', function(assert) {
   // options
   const $options = this.$('option');
   assert.equal($options.length, 4, 'Should render 4 options');
-  assert.equal($options[0].value, 'null', 'First option value is null (prompt)');
+  assert.equal($options[0].value, '', 'First option value is empty (prompt)');
   assert.equal($options[0].innerHTML.trim(), 'n/a', 'First option label is prompt');
   assert.equal($options[1].value, 'A', 'Second option is "A"');
   assert.equal($options[2].value, $options[2].innerHTML.trim(), 'Values are similar as labels');
