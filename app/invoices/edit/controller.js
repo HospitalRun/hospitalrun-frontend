@@ -122,26 +122,28 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     },
 
     showDeleteItem: function(itemToDelete, deleteFrom) {
-      this.send('openModal', 'dialog', Ember.Object.create({
+      this.showDeleteModal(itemToDelete, Ember.Object.create({
         confirmAction: 'deleteCharge',
         deleteFrom: deleteFrom,
-        title: 'Delete Charge',
-        message: `Are you sure you want to delete ${itemToDelete.get('name')}?`,
-        itemToDelete: itemToDelete,
-        updateButtonAction: 'confirm',
-        updateButtonText: 'Ok'
+        title: 'Delete Charge'
       }));
     },
 
     showDeleteLineItem: function(item) {
-      this.send('openModal', 'dialog', Ember.Object.create({
+      this.showDeleteModal(item, Ember.Object.create({
         confirmAction: 'deleteLineItem',
-        title: 'Delete Line Item',
+        title: 'Delete Line Item'
+      }));
+    },
+
+    showDeleteModal(item, options) {
+      options = Ember.merge(options, Ember.Object.create({
         message: `Are you sure you want to delete ${item.get('name')}?`,
         itemToDelete: item,
         updateButtonAction: 'confirm',
-        updateButtonText: 'Ok'
+        updateButtonText: this.get('i18n').t('buttons.ok')
       }));
+      this.send('openModal', 'dialog', options);
     },
 
     showRemovePayment: function(payment) {
