@@ -6,10 +6,6 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   visitsController: Ember.inject.controller('visits'),
 
-  canAddProcedure: function() {
-    return this.currentUserCan('add_procedure');
-  }.property(),
-
   chargePricingCategory: 'Procedure',
   chargeRoute: 'procedures.charge',
 
