@@ -833,7 +833,7 @@ export default {
       external_invoice_number: 'External Invoice #',
       payment_profile: 'Payment Profile',
       actual_charges: 'Actual Charges',
-      phil_health: 'PhilHealth',
+      insurance: 'National Insurance',
       hmo_com: 'HMO/COM',
       payments_deposits: 'Payments/Deposits',
       pricing_panel_overrides: 'Pricing profile overrides',
