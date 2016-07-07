@@ -61,7 +61,8 @@ export default {
       new_user: 'New User',
       admitted_patients: 'Admitted Patients',
       missed: 'Missed',
-      user_roles: 'User Roles'
+      user_roles: 'User Roles',
+      workflow: 'Workflow'
     },
     actions: {
       logout: 'Logout',
@@ -230,6 +231,26 @@ export default {
       titles: {
         role_saved: 'Role Saved'
       }
+    },
+    workflow: {
+      admission_deposit_label: 'Admission deposit required',
+      clinic_prepayment_label: 'Clinic prepayment required',
+      followup_prepayment_label: 'Followup prepayment required',
+      outpatient_lab_label: 'Outpatient Lab prepayment required',
+      outpatient_imaging_label: 'Outpatient Imaging prepayment required',
+      outpatient_medication_label: 'Outpatient Medication prepayment required',
+
+      titles: {
+        options_saved: 'Options Saved'
+      },
+      messages: {
+        options_saved: 'The workflow options have been saved'
+      },
+
+      new_title: 'Workflow Options',
+      edit_title: 'Workflow Options',
+      workflow_label: 'Workflow'
+
     }
   },
   labels: {
