@@ -1,0 +1,14 @@
+{{#edit-panel editPanelProps=editPanelProps}}
+  <div class="panel panel-primary">
+    <div class="panel-body">
+      {{#em-form model=model submitButton=false }}
+        {{em-checkbox label=(t 'admin.workflow.admission_deposit_label') property="value.admissionDeposit"}}
+        {{em-checkbox label=(t 'admin.workflow.clinic_prepayment_label') property="value.clinicPrepayment"}}
+        {{em-checkbox label=(t 'admin.workflow.followup_prepayment_label') property="value.followupPrepayment"}}
+        {{em-checkbox label=(t 'admin.workflow.outpatient_lab_label') property="value.outpatientLabPrepayment"}}
+        {{em-checkbox label=(t 'admin.workflow.outpatient_imaging_label') property="value.outpatientImagingPrepayment"}}
+        {{em-checkbox label=(t 'admin.workflow.outpatient_medication_label') property="value.outpatientMedicationPrepayment"}}
+      {{/em-form}}
+    </div>
+  </div>
+{{/edit-panel}}
