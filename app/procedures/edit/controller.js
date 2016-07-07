@@ -63,7 +63,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     return this.get('i18n').t('procedures.titles.edit');
   }.property('model.isNew'),
 
-  updateCapability: 'add_charge',
+  updateCapability: 'add_procedure',
 
   actions: {
     showAddMedication: function() {
