@@ -1,6 +1,6 @@
 {{#if canCaptureVideo}}
   <div class="form-group">
-    <label class="control-label" for="photo-source">How Do You Want To Add A Photo?</label>
+    <label class="control-label" for="photo-source">{{t 'photos.how'}}</label>
     {{select-list
       action=photoSourceChange
       class='form-control'
@@ -11,13 +11,13 @@
   </div>
   {{#if showCameraSelect}}
     <div class="form-group">
-      <label class="control-label" for="camera">Camera</label>
+      <label class="control-label" for="camera">{{t 'photos.camera'}}</label>
       {{select-list
           action=cameraChange
           class='form-control'
           content=videoSources
           id='camera'
-          label="Camera"
+          label=(t 'photos.camera')
           optionLabelPath="label"
           optionValuePath="id"
           value=selectedCamera
@@ -33,16 +33,16 @@
         <div class="col-sm-2">
         </div>
         <div class="col-sm-4">
-          <h2>Photo</h2>
+          <h2>{{t 'photos.photo'}}</h2>
           <canvas id="canvas"></canvas>
         </div>
     </div>
     <div class="panel-footer">
-      <button class="btn btn-default neutral" {{action 'takePhoto'}}>Take photo</button>
+      <button class="btn btn-default neutral" {{action 'takePhoto'}}>{{t 'photos.take_photo'}}</button>
     </div>
   </div>
 {{/if}}
 <div class="fileupload row">
-  <h2>Upload Photo</h2>
-  {{image-upload label="Upload File" property="fileName" selectedFile=photoFile }}
+  <h2>{{t 'photos.upload_photo'}}</h2>
+  {{image-upload label=(t 'photos.upload_file') property="fileName" selectedFile=photoFile }}
 </div>
