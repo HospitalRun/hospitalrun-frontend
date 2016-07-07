@@ -187,6 +187,7 @@ export default {
         add_diagnosis: 'Add Diagnosis',
         add_photo: 'Add Photo',
         add_patient: 'Add Patient',
+        add_procedure: 'Add Procedure',
         add_visit: 'Add Visit',
         add_vitals: 'Add Vitals',
         admit_patient: 'Admit Patient',
