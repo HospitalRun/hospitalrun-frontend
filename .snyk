@@ -1,4 +1,5 @@
 version: v1.5.0
+failThreshold: high
 ignore: {}
 patch:
   'npm:minimatch:20160620':

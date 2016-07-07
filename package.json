@@ -10,7 +10,7 @@
   "scripts": {
     "build": "./script/build",
     "start": "./script/server",
-    "test": "snyk test && ./script/test",
+    "test": "./script/test",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect"
   },
