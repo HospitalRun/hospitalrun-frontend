@@ -296,7 +296,7 @@ export default {
     price: 'Price',
     total: 'Total',
     expense_to: 'Expense To',
-    grand: 'Grand',
+    grand_total: 'Grand Total',
     remarks: 'Remarks',
     payments: 'Payments',
     category: 'Category',
