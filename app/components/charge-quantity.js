@@ -18,7 +18,7 @@ export default Ember.Component.extend({
 
   quantityHelp: function() {
     if (this.get('hasError')) {
-      return this.get('i18n').t('components.invalid_number');
+      return this.get('i18n').t('errors.invalidNumber');
     }
   }.property('hasError')
 
