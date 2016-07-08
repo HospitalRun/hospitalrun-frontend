@@ -4,9 +4,12 @@
 
 @media print {
 
+  * {
+    color: $black;
+    background-color: $white;
+  }
+
   body {
-    background: $white !important;
-    color: $black !important;
     font-size: 12pt;
     margin: 0 5%;
     &.ember-application {
