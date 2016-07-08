@@ -2,6 +2,29 @@ export default {
   dashboard: {
     title: 'Que voulez-vous faire?'
   },
+  errors: {
+    inclusion: 'ne figure pas dans la liste',
+    exclusion: 'est réservé',
+    invalid: 'n\'est pas valide',
+    confirmation: 'ne correspond pas à {{attribute}}',
+    accepted: 'doit être accepté',
+    empty: 'ne peut pas être vide',
+    blank: 'ne peut pas est vierge',
+    present: 'doit être vierge',
+    tooLong: 'est trop long (le maximum est {{count}} caractères)',
+    tooShort: 'est trop court (le minimum est {{count}} caractères)',
+    wrongLength: 'est la bonne longueur (devrait être {{count}} caractères)',
+    notANumber: 'n\'est pas un nombre',
+    notAnInteger: 'doit être un nombre entier',
+    greaterThan: 'doit être supérieur à {{count}}',
+    greaterThanOrEqualTo: 'doit être supérieur ou égal à {{count}}',
+    equalTo: 'doit être égal à {{count}}',
+    lessThan: 'doit être inférieur à {{count}}',
+    lessThanOrEqualTo: 'doit être inférieur ou égal à {{count}}',
+    otherThan: 'doit être autre que {{count}}',
+    odd: 'doit être un nombre impair',
+    even: 'doit être un nombre pair'
+  },
   navigation: {
     imaging: 'Imagerie',
     inventory: 'Inventaire',
@@ -12,6 +35,7 @@ export default {
     billing: 'Facturation',
     administration: 'Administration',
     subnav: {
+      actions: 'Actions',
       requests: 'Demandes',
       items: 'Articles',
       completed: 'Traité',
@@ -37,7 +61,8 @@ export default {
       new_user: 'Nouvel utilisateur',
       admitted_patients: 'patients admis',
       missed: 'Manqué',
-      user_roles: 'Rôles de l\'utilisateur'
+      user_roles: 'Rôles de l\'utilisateur',
+      workflow: 'Workflow'
     },
     actions: {
       logout: 'Deconnexion',
@@ -53,6 +78,7 @@ export default {
     address_options: 'Options d\'adresse',
     lookup_lists: 'Listes de référence',
     load_db: 'Importer une BD',
+    user_roles: 'User Roles',
     users: 'Utilisateurs',
     address: {
       address1_label: 'Label de l\'adresse 1',
@@ -163,6 +189,7 @@ export default {
         add_diagnosis: 'Ajouter un diagnostic',
         add_photo: 'Ajouter une photo',
         add_patient: 'Ajouter un patient',
+        add_procedure: 'Add Procedure',
         add_visit: 'Ajouter une visite',
         add_vitals: 'Ajouter les signes vitaux',
         admit_patient: 'Admettre un patient',
@@ -200,11 +227,32 @@ export default {
         user_roles: 'Rôles d\'utilisateur'
       },
       messages: {
-        role_saved: 'Le rôle {{roleName}}  a été enregistré.'
+        role_saved: 'Le rôle {{roleName}} a été enregistré.'
       },
       titles: {
         role_saved: 'Rôle enregistré'
       }
+    }
+  },
+  workflow: {
+      admission_deposit_label: 'Caution d\'admission requis',
+      clinic_prepayment_label: 'Paiement d\'avance de la clinique requis',
+      followup_prepayment_label: 'Paiement d\'avance du suivi requis',
+      outpatient_lab_label: 'Paiement d\'avance de laboratoire externe requis',
+      outpatient_imaging_label: 'Paiement d\'avance d\'imagerie externe requis',
+      outpatient_medication_label: 'Paiement d\'avance de medication externe requis',
+
+      titles: {
+        options_saved: 'Options enregistrées'
+      },
+      messages: {
+        options_saved: 'Les options de workflow ont été enregistrées'
+      },
+
+      new_title: 'Options de workflow',
+      edit_title: 'Options de workflow',
+      workflow_label: 'Workflow'
+
     }
   },
   labels: {
@@ -280,7 +328,27 @@ export default {
     physician: 'Médecin',
     assisting: 'Assistant',
     anesthesia: 'Anesthésie',
-    procedures: 'Procédures'
+    procedures: 'Procédures',
+    number: 'Numero',
+    bill_date: 'Date de facturation',
+    balance_due: 'Solde dû',
+    amount: 'Montant',
+    date_paid: 'Date de paiement',
+    credit_to: 'Créditer',
+    invoice_id: 'ID de la facture',
+    line_items: 'Articles',
+    discount: 'Remise',
+    excess: 'Excès',
+    price: 'Prix',
+    total: 'Total',
+    expense_to: 'Facturer',
+    grand_total: 'Grand Total',
+    remarks: 'Remarques',
+    payments: 'Paiements',
+    category: 'Catégorie',
+    department: 'Département',
+    address: 'Adresse',
+    country: 'Pays'
   },
   messages: {
     no_items_found: 'Aucun article retrouvé.',
@@ -299,7 +367,11 @@ export default {
   alerts: {
     please_wait: 'Veuillez attendre'
   },
+  headings: {
+    charged_items: 'Articles coûteux'
+  },
   buttons: {
+    add_item: 'Ajouter un article',
     complete: 'Traiter',
     cancel: 'Annuler',
     close: 'Fermer',
@@ -322,7 +394,9 @@ export default {
     new_item: '+ nouvel article',
     new_request_plus: '+ nouvelle demande',
     add_visit: 'Ajouter une visite',
-    search: 'Rechercher'
+    search: 'Rechercher',
+    edit: 'Modifier',
+    add_line_item: 'Ajouter un article'
   },
   login: {
     messages: {
@@ -333,6 +407,22 @@ export default {
       password: 'Mot de passe',
       username: 'Nom d\'utilisateur',
       sign_in:  'Connexion'
+    }
+  },
+  loading: {
+    messages: {
+      0: 'La vitesse maximale de vol de papillon est de 12 miles par heure. Des mites peuvent voler 25 miles par heure!',
+      1: 'Les hiboux sont les seuls oiseaux qui peuvent voir la couleur bleue.',
+      2: 'Les chats ont plus de 100 sons vocaux; les chiens ont seulement 10.',
+      3: 'Les humains utilisent un total de 72 muscles différents dans la parole.',
+      4: 'Plus de 1000 langues différentes sont parlées sur le continent africain.',
+      5: 'Un érythrophobie est quelqu\'un qui rougit facilement.',
+      6: 'La phobie la plus courante dans le monde est odynophobia qui est la peur de la douleur.',
+      7: 'Votre corps utilise 300 muscles pour s\'équilibrer lorsque vous êtes immobile.',
+      8: 'Certaines grenouilles peuvent être congelés solides puis décongelés et continuer à vivre.',
+      9: 'Nos yeux sont toujours de la même taille depuis la naissance, mais notre nez et nos oreilles ne cessent de croître.',
+      10: 'Votre langue est le seul muscle dans votre corps qui est connecté à une seule extrémité.',
+      11: 'Les chameaux ont trois paupières pour se protéger des vents de sable.'
     }
   },
   inventory: {
@@ -400,6 +490,7 @@ export default {
       name: 'Nom',
       mark_as_consumed: 'Marqué comme utilisé',
       new_item: 'Nouvel article',
+      all_items: 'Tous les articles',
       original_quantity: 'Quantité originale',
       print: 'Imprimer',
       print_barcode: 'Imprimer le code barre',
@@ -591,31 +682,56 @@ export default {
     },
     buttons: {
       new_button: '+ nouveau rendez-vous'
+    },
+    labels: {
+      selectedStartingDate: 'Afficher les rendez-vous le ou après'
+    }
+  },
+  vitals: {
+    messages: {
+      delete: 'Êtes-vous sûr de vouloir supprimer ces signes vitaux?'
+    },
+    labels: {
+      date_recorded: 'Date enregistrées',
+      temperature: 'Température',
+      weight: 'Poids',
+      height: 'Taille',
+      sbp: 'PAS',
+      dbp: 'PAD',
+      heart_rate: 'Rythme cardiaque',
+      respiratory_rate: 'Rythme respiratoire'
     }
   },
   visits: {
-    edit: {
-      actions: 'Actions',
-      edit: 'Modifier',
-      date: 'Date',
-      authored_by: 'Crée par',
-      note: 'Note',
-      notes: 'Notes',
-      new_note: 'Nouvelle note',
-      visit_information: 'Détails de la visite',
-      new_appointment: 'Nouveau rendez-vous',
-      add_diagnosis: 'Ajoute un diagnostic',
-      diagnosis: 'Diagnostic',
-      delete: 'Supprimer',
-      procedure: 'Procédure',
-      procedures: 'Procédures',
+    titles: {
+      additional_diagnoses: 'Diagnostics supplémentaires'
+    },
+    messages: {
+      delete: 'Êtes-vous sûr de vouloir supprimer cette visite?'
+    },
+    buttons: {
       new_procedure: 'Nouvelle procédure',
-      labs: 'Labos',
-      new_lab: 'Nouveau labo',
-      imaging: 'Imagerie',
+      new_lab: 'Nouveau test labo',
+      new_appointment: 'Nouveau rendez-vous',
+      add_diagnosis: 'Ajouter un diagnostic',
       new_imaging: 'Nouvelle imagerie',
+      new_medication: 'Nouveau médicament',
+      new_vitals: 'Nouveaux signes vitaux'
+    },
+    labels: {
+      diagnosis: 'Diagnostic',
+      procedure: 'Procédure',
+      authored_by: 'Auteur',
+      labs: 'Tests labo',
+      imaging: 'Imagerie',
+      visit_information: 'Renseignements de visite',
+      examiner: 'Examinateur',
       medication: 'Médicament',
-      new_medication: 'Nouveau médicament'
+      status: 'Statut de visite',
+      admitting_diagnosis: 'Diagnostic á l\'admission',
+      final_diagnosis: 'Diagnostic final/de facturation',
+      visit_type: 'Type de visite',
+      vitals: 'Signes vitaux'
     }
   },
   labs: {
@@ -645,15 +761,162 @@ export default {
       request_saved_message: 'La demande de labo a été enregistrée.'
     }
   },
-  common: {
-    actions: 'Actions'
-  },
   patients: {
+    navigation: {
+      photos: 'Photos',
+      general: 'Général',
+      history: 'Historique',
+      appointments: 'Rendez-vous',
+      visits: 'Visites',
+      medication: 'Médicaments',
+      imaging: 'Imagerie',
+      labs: 'Tests labo',
+      social_work: 'Assistance sociale'
+    },
+    titles: {
+      family_information: 'Information familiale',
+      delete: 'Supprimer le patient',
+      new: 'Nouveau patient',
+      edit: 'Modifier le patient',
+      patient: 'Rapport de patient',
+      patient_listing: 'Liste des patients',
+      patient_report: 'Rapport de patient',
+      add_photo: 'Ajouter une photo',
+      edit_photo: 'Modifier une photo',
+      social_work: 'Dépense',
+      family_info: 'Info familiale',
+      delete_family_member: 'Supprimer le membre de la famille',
+      delete_expense: 'Supprimer la dépense',
+      delete_photo: 'Supprimer la photo',
+      delete_contact: 'Supprimer le contact',
+      saved_patient: 'Patient enregistré'
+    },
+    messages: {
+      are_you_sure_delete: 'Etes-vous sûr de vouloir supprimer cet {{object}}?',
+      delete_patient: 'Etes-vous sûr que vous souhaitez supprimer {{firstName}} {{lastName}}?',
+      no_patients_found: 'Aucun patient retrouvé.',
+      saved_patient: 'Le dossier du patient {{displayName}} a été enregistré.',
+      not_found_quick_add: 'Le patient <strong>{{patientFullName}}</strong> n\'a pu être retrouvé. Si vous souhaitez créer un nouveau patient, complétez les informations ci-dessous. Sinon, appuyez sur le bouton Annuler pour revenir.',
+      create_new_patient: 'Créer un nouveau dossier patient?'
+    },
+    buttons: {
+      add_expense: 'Ajouter une dépense',
+      add_contact: 'Ajouter une contact',
+      new_lab: 'Nouveau test labo',
+      new_visit: 'Nouvelle visite',
+      new_medication: 'Nouveau médicament',
+      new_imaging: 'NNouvelle imagerie',
+      add_family_member: 'Ajouter un membre de la famille',
+      new_photo: 'Nouvelle Photo',
+      new_appointment: 'Nouveau rendez-vous',
+      back_to_patients: 'Retour sur la liste des patients',
+      new_patient: '+ nouveau patient'
+    },
+    headings: {
+      history: 'Historique',
+      history_since: 'Historique depuis'
+    },
+    labels: {
+      primary_diagnosis: 'Diagnostic primaire',
+      secondary_diagnosis: 'Diagnostic secondaire',
+      monthly_cost: 'Coût mensuel',
+      total_montly_expense: 'Total des dépenses mensuelles',
+      patient_type: 'Type de patient',
+      admission_date: 'Date d\'admission',
+      patient_days: 'Jours du patient',
+      discharge_date: 'Date de sortie',
+      discharge: 'Sortie',
+      admit: 'Admettre',
+      relationships: 'Relations',
+      phone: 'Téléphone',
+      email: 'Email',
+      first_name: 'Prénom',
+      middle_name: 'Deuxième nom',
+      last_name: 'Nom de famille',
+      sex: 'Sexe',
+      dob: 'Date de naissance',
+      date_of_birth: 'Date de naissance',
+      place_of_birth: 'Lieu de naissance',
+      sources: 'Sources',
+      costs: 'Coûts',
+      civil_status: 'Etat civil',
+      relationship: 'Relation avec le patient',
+      education: 'Éducation',
+      occupation: 'Profession',
+      income: 'Revenu',
+      insurance: 'Assurance',
+      date_processed: 'Date de traitement',
+      status: 'Statut du patient',
+      external_patient_id: 'Id du patient externe',
+      blood_type: 'Groupe sanguin',
+      clinic: 'Emplacement de la clinique',
+      referred_by: 'Référé par',
+      referred_date: 'Date de référence',
+      religion: 'Religion',
+      parent: 'Parent / tuteur'
+    },
     notes: {
       on_behalf_of_label: 'De la part de',
       on_behalf_of_copy: 'de la part de',
       please_select_a_visit: 'Veuillez sélectionner une visite',
       note_label: 'Note'
+    },
+    billing: {
+    alerts: {
+      no_invoice_found: 'Aucune facture retrouvée',
+      delete_item: 'Etes-vous sûr que vous souhaitez supprimer {{item}}?',
+      no_pricing_items: 'Aucun élément de prix retrouvé.',
+      no_pricing_profiles: 'Aucun profil de prix retrouvé.'
+    },
+    buttons: {
+      create_invoice: 'Créer une facture?',
+      add_override: 'Ajouter un remplacement'
+    },
+    labels: {
+      external_invoice_number: 'Facture externe #',
+      payment_profile: 'Profil de paiement',
+      actual_charges: 'Coûts réels',
+      insurance: 'Assurance nationale',
+      hmo_com: 'HMO/COM',
+      payments_deposits: 'Paiements / Cautions',
+      pricing_panel_overrides: 'Pricing profile overrides',
+      pricing_profile: 'Profil de prix',
+      discount_amount: 'Montant de la remise',
+      discount_percentage: 'Pourcentage de remise'
     }
+  },
+  procedures: {
+    titles: {
+      add_charge_item: 'Ajouter un article',
+      delete_charge_item: 'Supprimer l\'article',
+      medication_used: 'Médicament Utilisé',
+      delete_medication_used: 'Supprimer le médicament Utilisé',
+      add_medication_used: 'Ajouter le médicament Utilisé',
+      edit_medication_used: 'Modifier le médicament Utilisé',
+      edit: 'Modifier la procédure',
+      saved: 'Procédure enregistrée',
+      new: 'Nouvelle procédure'
+    },
+    lables: {
+      medication_used: 'Médicament Utilisé'
+    },
+    messages: {
+      delete_medication: 'Êtes-vous sûr de vouloir supprimer ce médicament?',
+      delete: 'Êtes-vous sûr de vouloir supprimer cette procédure?'
+    },
+    buttons: {
+      add_medication: 'Ajouter un médicament'
+    }
+  },
+  photos: {
+    how: 'Comment voulez-vous ajouter une photo?',
+    take_photo: 'Prendre une photo',
+    upload_photo: 'Télécharger une photo',
+    upload_file: 'Télécharger un fichier',
+    camera: 'Caméra',
+    photo: 'photo'
+  },
+  components: {
+    invalid_number: 'n\'est pas un nombre valide'
   }
 };
