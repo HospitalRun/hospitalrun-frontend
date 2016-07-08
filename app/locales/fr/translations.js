@@ -205,14 +205,14 @@ export default {
       titles: {
         role_saved: 'Rôle enregistré'
       }
-	 }
+    }
   },
   labels: {
     cptcode: 'Code CPT',
     loading: 'Chargement',
     name: 'Nom',
     patient: 'Patient',
-	prescriber: 'prescripteur',
+    prescriber: 'prescripteur',
     quantity: 'Quantité',
     requested_on: 'Demandé le',
     date: 'Date',
@@ -582,7 +582,7 @@ export default {
     new_title: 'Nouveau rendez-vous',
     section_title: 'Rendez-vous',
     this_week: 'Rendez-vous de la semaine',
-	missed: 'Rendez-vous manqués',
+    missed: 'Rendez-vous manqués',
     search_title: 'Rechercher les rendez-vous',
     today_title: 'Rendez-vous d\'aujourd\'hui',
     messages: {
