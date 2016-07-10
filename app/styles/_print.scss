@@ -9,10 +9,10 @@
   }
 
   body {
+    font-size: 14px;
     margin: 0 5%;
-    font-size: 12pt;
 
-    .ember-application {
+    &.ember-application {
       padding-left: 0;
     }
   }
