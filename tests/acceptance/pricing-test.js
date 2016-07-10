@@ -136,7 +136,7 @@ test('delete price', function(assert) {
     });
     waitToAppear('.modal-dialog');
     andThen(() => {
-      assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete <strong>Blood test</strong>?', 'Pricing item is displayed for deletion');
+      assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete Blood test?', 'Pricing item is displayed for deletion');
     });
     click('button:contains(Delete):last');
     waitToDisappear('.price-name:contains(Blood test)');

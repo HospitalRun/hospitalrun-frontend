@@ -6,10 +6,6 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   visitsController: Ember.inject.controller('visits'),
 
-  canAddProcedure: function() {
-    return this.currentUserCan('add_procedure');
-  }.property(),
-
   chargePricingCategory: 'Procedure',
   chargeRoute: 'procedures.charge',
 
@@ -60,10 +56,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     if (isNew) {
       return this.get('i18n').t('procedures.titles.add');
     }
-    return this.get('i18n').t('procedures.titles.edit');;
+    return this.get('i18n').t('procedures.titles.edit');
   }.property('model.isNew'),
 
-  updateCapability: 'add_charge',
+  updateCapability: 'add_procedure',
 
   actions: {
     showAddMedication: function() {
@@ -85,7 +81,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         title: this.get('i18n').t('procedures.titles.delete_medication_used'),
         message: this.get('i18n').t('procedures.messages.delete_medication'),
         chargeToDelete: charge,
-        updateButtonAction: this.get('i18n').t('buttons.confirm'),
+        updateButtonAction: 'confirm',
         updateButtonText: this.get('i18n').t('buttons.ok')
       }));
     }

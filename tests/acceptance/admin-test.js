@@ -92,3 +92,44 @@ test('Update address options', function(assert) {
   });
 });
 
+test('Update workflow options', function(assert) {
+  const selector = 'input[type=checkbox]';
+
+  runWithPouchDump('admin', function() {
+    authenticateUser();
+    visit('/admin/workflow');
+    andThen(() => {
+      assert.equal(currentURL(), '/admin/workflow', 'Correctly navigated to admin workflow');
+
+      setAllTo(false, () => {
+        visit('/admin/workflow');
+        andThen(() => {
+          setAllTo(true);
+        });
+      });
+    });
+  });
+
+  function setAllTo(checked, cb) {
+    Array.prototype.slice.call(document.querySelectorAll(selector)).forEach((node) => {
+      node.checked = checked;
+    });
+    click('button:contains(Update)');
+    andThen(() => {
+      waitToAppear('.modal-dialog');
+      andThen(() => {
+        assert.equal(find('.modal-title').text(), 'Options Saved', 'Workflow Options Saved');
+        verifyAll(checked);
+        if (cb) {
+          cb();
+        }
+      });
+    });
+  }
+
+  function verifyAll(checked) {
+    Array.prototype.slice.call(document.querySelectorAll(selector)).forEach((node) => {
+      assert.equal(node.checked, checked, 'Checkbox is ' + (checked ? 'checked' : 'unchecked'));
+    });
+  }
+});
