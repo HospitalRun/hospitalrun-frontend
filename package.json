@@ -73,7 +73,7 @@
     "hospitalrun-server-routes": "0.9.8",
     "loader.js": "4.0.10",
     "nano": "6.2.0",
-    "request": "2.72.0",
+    "request": "2.73.0",
     "stylelint-config-concentric": "^1.0.3",
     "stylelint-declaration-use-variable": "^1.4.0",
     "stylelint-scss": "^1.2.0",
