@@ -389,7 +389,7 @@ export default {
     }
   },
   loading: {
-    progress_bar: {
+    progressBar: {
       progress: '{{progressBarValue}}% Complete'
     },
     messages: {
@@ -757,7 +757,7 @@ export default {
     },
     titles: {
       expenses: 'Expenses',
-      additional_contacts: 'Additional Contacts',
+      additionalContacts: 'Additional Contacts',
       family_information: 'Family Information',
       delete: 'Delete Patient',
       new: 'New Patient',
