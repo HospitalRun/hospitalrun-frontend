@@ -257,6 +257,7 @@ export default {
     cptcode: 'Code CPT',
     loading: 'Chargement',
     name: 'Nom',
+    note: 'Note',
     patient: 'Patient',
     prescriber: 'prescripteur',
     quantity: 'Quantité',
@@ -289,6 +290,7 @@ export default {
     type: 'Type',
     sex: 'Sexe',
     age: 'Age',
+    search: 'Recherche',
     username: 'Nom d\'utilisateur',
     email: 'Email',
     role: 'Rôle',
@@ -854,10 +856,11 @@ export default {
       parent: 'Parent / tuteur'
     },
     notes: {
+      new_note: 'Nouvelle note pour',
+      update_note: 'Mise à jour de la note de'
       on_behalf_of_label: 'De la part de',
       on_behalf_of_copy: 'de la part de',
       please_select_a_visit: 'Veuillez sélectionner une visite',
-      note_label: 'Note'
     }
   },
   billing: {
