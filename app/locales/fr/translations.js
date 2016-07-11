@@ -222,7 +222,6 @@ export default {
         add_inventory_purchase: 'Ajouter un achat d\'inventaire',
         adjust_inventory_location: 'Ajuster la localisation de l\'inventaire',
         delete_inventory_item: 'Supprimer un article d\'inventaire',
-        delete_inventory_purchase: 'Supprimer un achat d\'inventaire',
         fulfill_inventory: 'Traiter l\'inventaire',
         user_roles: 'Rôles d\'utilisateur'
       },
@@ -232,9 +231,8 @@ export default {
       titles: {
         role_saved: 'Rôle enregistré'
       }
-    }
-  },
-  workflow: {
+    },
+    workflow: {
       admission_deposit_label: 'Caution d\'admission requis',
       clinic_prepayment_label: 'Paiement d\'avance de la clinique requis',
       followup_prepayment_label: 'Paiement d\'avance du suivi requis',
@@ -860,8 +858,9 @@ export default {
       on_behalf_of_copy: 'de la part de',
       please_select_a_visit: 'Veuillez sélectionner une visite',
       note_label: 'Note'
-    },
-    billing: {
+    }
+  },
+  billing: {
     alerts: {
       no_invoice_found: 'Aucune facture retrouvée',
       delete_item: 'Etes-vous sûr que vous souhaitez supprimer {{item}}?',
