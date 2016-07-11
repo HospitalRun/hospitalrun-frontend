@@ -294,7 +294,8 @@ export default {
     on_behalf_of: 'de la part de',
     new_patient_has_to_be_created: 'Un nouveau patient doit être crée...Veuillez attendre...',
     no_notes_available: 'Aucune note clinique supplémentaire disponible pour cette visite.',
-    sorry: 'Désolé, quelque chose a mal tourné ...'
+    sorry: 'Désolé, quelque chose a mal tourné ...',
+    for_authorized_persons: 'Ce rapport est destiné uniquement aux personnes autorisées.'
   },
   alerts: {
     please_wait: 'Veuillez attendre'

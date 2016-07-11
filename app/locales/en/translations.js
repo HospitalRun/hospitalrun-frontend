@@ -362,7 +362,8 @@ export default {
     on_behalf_of: 'on behalf of',
     new_patient_has_to_be_created: 'A new patient needs to be created...Please wait..',
     no_notes_available: 'No additional clinical notes are available for this visit.',
-    sorry: 'Sorry, something went wrong...'
+    sorry: 'Sorry, something went wrong...',
+    for_authorized_persons: 'This report is for authorized persons only.'
   },
   alerts: {
     please_wait: 'Please Wait'

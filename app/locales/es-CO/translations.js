@@ -292,7 +292,8 @@ export default {
     on_behalf_of: 'a nombre de',
     new_patient_has_to_be_created: 'Un nuevo paciente debe ser creado...Por favor espere..',
     no_notes_available: 'No hay notas clínicas adicionales están disponibles para esta visita.',
-    sorry: 'Lo sentimos, un error ha ocurrido...'
+    sorry: 'Lo sentimos, un error ha ocurrido...',
+    for_authorized_persons: 'Este informe es sólo para personas autorizadas.'
   },
   alerts: {
     please_wait: 'Por favor espere'
