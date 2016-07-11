@@ -888,6 +888,32 @@ export default {
       discount_percentage: 'Discount Percentage'
     }
   },
+  print: {
+    invoice: {
+      labels: {
+        patient_name: 'NAME OF PATIENT:',
+        patient_id: 'PATIENT #:',
+        patient_age: 'AGE:',
+        patient_address: 'ADDRESS:',
+        date_admitted: 'ADMITTED:',
+        date_discharged: 'DISCHARGE:',
+        discharge_notes: 'Discharge Notes:',
+        remarks: 'Remarks:',
+        billed_by: 'Billed by:',
+        billed_date: 'Bill Date:',
+        spacer: '__________________________________________'
+      },
+      messages: {
+        where_conducted: 'were deducted during my confinement'
+      },
+      titles: {
+        patient_member: 'Patient-Member',
+        rel_contact: 'Relationship/Contact no.',
+        patients: 'PATIENT\'S',
+        billing_statement: 'BILLING STATEMENT'
+      }
+    }
+  },
   procedures: {
     titles: {
       add_charge_item: 'Add Charge Item',

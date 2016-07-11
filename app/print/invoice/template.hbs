@@ -7,48 +7,48 @@
       <p class="text-center">J.P. Laurel Ave. corner Banawe St. Brgy Aquino Davao City, Philippines</p>
       <p class="text-center">Telephone: (082) 300-5345    Email: info@tebowcure.org</p>
       <h5 class="text-center">
-        PATIENT'S
+        {{t "print.invoice.titles.patients"}}
       </h5>
       <h5 class="text-center">
-        BILLING STATEMENT
+        {{t "print.invoice.titles.billing_statement"}}
       </h5>
       <table>
         <tr>
           <td colspan="2" class="col-xs-8">
-            NAME OF PATIENT: {{model.patient.displayName}}
+            {{t "print.invoice.labels.patient_name"}} {{model.patient.displayName}}
           </td>
           <td class="col-xs-4">
-            PATIENT #:{{model.patient.displayPatientId}}
+            {{t "print.invoice.labels.patient_name"}} {{model.patient.displayPatientId}}
           </td>
         </tr>
         <tr>
           <td class="col-xs-5">
-            AGE: {{model.patient.age}}
+            {{t "print.invoice.labels.patient_age"}} {{model.patient.age}}
           </td>
           <td class="col-xs-3">
-            ADMITTED: {{date-format model.visit.startDate}}
+            {{t "print.invoice.labels.date_admitted"}}{{date-format model.visit.startDate}}
           </td>
           <td class="col-xs-4"></td>
         </tr>
         <tr>
           <td class="col-xs-5"></td>
-          <td class="col-xs-3">DISCHARGE: {{date-format model.visit.endDate}}</td>
+          <td class="col-xs-3">{{t "print.invoice.labels.date_discharged"}}{{date-format model.visit.endDate}}</td>
           <td class="col-xs-4"></td>
         </tr>
         <tr>
           <td colspan="3" class="col-xs-12">
-            ADDRESS: {{model.patient.displayAddress}}
+            {{t "print.invoice.labels.patient_address"}} {{model.patient.displayAddress}}
           </td>
         </tr>
       </table>
       <table class="table">
         <tr class="table-header">
-          <th>Description</th>
-          <th class="text-right">Actual Charges</th>
-          <th class="text-right">Discount</th>
-          <th class="text-right">PhilHealth</th>
-          <th class="text-right">HMO/COM</th>
-          <th class="text-right">Excess</th>
+          <th>{{t "labels.description"}}</th>
+          <th class="text-right">{{t "billing.labels.actual_charges"}}</th>
+          <th class="text-right">{{t "labels.discount"}}</th>
+          <th class="text-right">{{t "billing.labels.phil_health"}}</th>
+          <th class="text-right">{{t "billing.labels.hmo_com"}}</th>
+          <th class="text-right">{{t "labels.excess"}}</th>
         </tr>
         {{#each model.lineItemsByCategory as |categoryGroup|}}
           <tr>
@@ -77,7 +77,7 @@
             </tr>
           {{/each}}
           <tr>
-            <td><strong>Total {{categoryGroup.category}}</strong></td>
+            <td><strong>{{t 'labels.total'}} {{categoryGroup.category}}</strong></td>
             <td class="text-right"><strong>{{number-format categoryGroup.total}}</strong></td>
             <td class="text-right"><strong>{{number-format categoryGroup.discount}}</strong></td>
             <td class="text-right"><strong>{{number-format categoryGroup.nationalInsurance}}</strong></td>
@@ -86,7 +86,7 @@
           </tr>
         {{/each}}
         <tr>
-          <td><strong>Total</strong></td>
+          <td><strong>{{t 'labels.total'}}</strong></td>
           <td class="text-right"><strong>{{number-format model.total}}</strong></td>
           <td class="text-right"><strong>{{number-format model.discount}}</strong></td>
           <td class="text-right"><strong>{{number-format model.nationalInsurance}}</strong></td>
@@ -94,13 +94,13 @@
           <td class="text-right"><strong>{{number-format model.amountOwed}}</strong></td>
         </tr>
         <tr>
-          <td><strong>Payments/Deposits</strong></td>
+          <td><strong>{{t 'billing.labels.payments_deposits'}}</strong></td>
           <td colspan="4"></td>
           <td class="text-right">-{{number-format model.paidTotal}}</td>
           <td></td>
         </tr>
         <tr>
-          <td><strong>Grand Total</strong></td>
+          <td><strong>{{t 'labels.grand_total'}}</strong></td>
           <td colspan="4"></td>
           <td class="text-right"><strong>{{number-format model.remainingBalance}}</strong></td>
           <td></td>
@@ -110,41 +110,41 @@
         {{#if model.visit.dischargeInfo}}
           <tr>
             <td class="col-xs-12">
-              Discharge Notes: {{model.visit.dischargeInfo}}
+              {{t 'print.invoice.labels.discharge_notes'}} {{model.visit.dischargeInfo}}
             </td>
           </tr>
         {{/if}}
         {{#if model.remarks}}
           <tr>
             <td class="col-xs-12">
-              Remarks: {{model.remarks}}
+              {{t 'print.invoice.labels.remarks'}} {{model.remarks}}
             </td>
           </tr>
         {{/if}}
         <tr>
           <td class="col-xs-7"></td>
-          <td class="col-xs-5">were deducted during my confinement</td>
+          <td class="col-xs-5">{{t 'print.invoice.messages.where_conducted'}}</td>
         </tr>
         <tr>
-          <td class="col-xs-8">Billed by: {{model.modifiedBy}}</td>
-          <td class="col-xs-4">__________________________________________</td>
+          <td class="col-xs-8">{{t 'print.invoice.labels.billed_by'}} {{model.modifiedBy}}</td>
+          <td class="col-xs-4">{{t 'print.invoice.labels.spacer'}}</td>
         </tr>
         <tr>
-          <td class="col-xs-8">Bill Date: {{date-format model.billDate}}</td>
-          <td class="text-center col-xs-4">Patient-Member</td>
+          <td class="col-xs-8">{{t 'print.invoice.labels.billed_date'}} {{date-format model.billDate}}</td>
+          <td class="text-center col-xs-4">{{t 'print.titles.titles.patient_member'}}</td>
         </tr>
         <tr>
           <td class="col-xs-8"></td>
-          <td class="col-xs-4">__________________________________________</td>
+          <td class="col-xs-4">{{t 'print.invoice.labels.spacer'}}</td>
         </tr>
         <tr>
           <td class="col-xs-8">Certified Correct by: Leron L. Lehman- Executive Director</td>
-          <td class="text-center col-xs-4">Relationship/Contact no.</td>
+          <td class="text-center col-xs-4">{{t 'print.titles.titles.rel_contact'}}</td>
         </tr>
       </table>
     </div>
     <div class="panel-footer">
-      {{#link-to 'invoices.edit' model class="btn btn-default warning" }}Return{{/link-to}}
+      {{#link-to "invoices.edit" model class="btn btn-default warning" }}{{t 'buttons.return_button'}}{{/link-to}}
     </div>
   </div>
 {{/print-this}}
