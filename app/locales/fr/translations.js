@@ -857,7 +857,7 @@ export default {
     },
     notes: {
       new_note: 'Nouvelle note pour',
-      update_note: 'Mise à jour de la note de'
+      update_note: 'Mise à jour de la note de',
       on_behalf_of_label: 'De la part de',
       on_behalf_of_copy: 'de la part de',
       please_select_a_visit: 'Veuillez sélectionner une visite',
