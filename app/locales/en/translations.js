@@ -23,7 +23,8 @@ export default {
     lessThanOrEqualTo: 'must be less than or equal to {{count}}',
     otherThan: 'must be other than {{count}}',
     odd: 'must be odd',
-    even: 'must be even'
+    even: 'must be even',
+    invalidNumber: 'not a valid number'
   },
   navigation: {
     imaging: 'Imaging',
@@ -937,15 +938,28 @@ export default {
       add_medication: 'Add Medication'
     }
   },
-  photos: {
-    how: 'How Do You Want To Add A Photo?',
-    take_photo: 'Take photo',
-    upload_photo: 'Upload Photo',
-    upload_file: 'Upload File',
-    camera: 'Camera',
-    photo: 'photo'
-  },
   components: {
-    invalid_number: 'not a valid number'
+    chargesByTypeTab: {
+      charges: 'charges'
+    },
+    takePhoto: {
+      how: 'How Do You Want To Add A Photo?',
+      takePhoto: 'Take photo',
+      uploadPhoto: 'Upload Photo',
+      uploadFile: 'Upload File',
+      camera: 'Camera',
+      photo: 'photo',
+      preview: 'preview'
+    },
+    quantityConv: {
+      unit: 'Unit',
+      conversion: 'What does 1 {{name}} contain?'
+    },
+    quantityCalc: {
+      result: '{{targetUnit}} total: {{calculated}}'
+    },
+    priceList: {
+      charges: '{{pricingType}} charges'
+    }
   }
 };
