@@ -207,7 +207,7 @@
             </div>
           </div>
           {{#if haveAdditionalContacts}}
-            <h4>Additional Contacts</h4>
+            <h4>{{t 'patients.titles.additionalContacts'}}</h4>
             <table class="table">
               <tr class="table-header">
                 <th>{{t 'labels.name'}}</th>
@@ -442,7 +442,7 @@
                   {{/each}}
               </table>
                 <h4>
-                  Expenses
+                  {{t 'patients.titles.expenses'}}
                   <button type="button" class="btn btn-primary align-right" {{action "showEditExpense" bubbles=false }}>
                     <span class="octicon octicon-plus"></span>{{t 'patients.buttons.add_expense'}}
                   </button>

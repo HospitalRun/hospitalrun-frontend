@@ -412,6 +412,9 @@ export default {
     }
   },
   loading: {
+    progressBar: {
+      progress: '{{progressBarValue}}% Complete'
+    },
     messages: {
       0: 'The top butterfly flight speed is 12 miles per hour. Some moths can fly 25 miles per hour!',
       1: 'Owls are the only birds that can see the color blue.',
@@ -776,6 +779,8 @@ export default {
       social_work: 'Social Work'
     },
     titles: {
+      expenses: 'Expenses',
+      additionalContacts: 'Additional Contacts',
       family_information: 'Family Information',
       delete: 'Delete Patient',
       new: 'New Patient',
