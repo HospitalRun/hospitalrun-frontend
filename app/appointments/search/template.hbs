@@ -3,17 +3,17 @@
     <div class="panel-body">
       {{#em-form model=model submitButton=false }}
         <div class="row">
-          {{date-picker property="selectedStartingDate" label="Show Appointments On Or After" class="col-sm-3"}}
+          {{date-picker property="selectedStartingDate" label=(t "appointments.labels.selectedStartingDate")class="col-sm-3"}}
           {{em-select class="col-sm-3" property="selectedStatus"
-              label="Status" content=appointmentStatusesWithEmpty
+              label=(t "labels.status") content=appointmentStatusesWithEmpty
           }}
         </div>
         <div calss="row">
-          {{em-select class="col-sm-3" label="Type"
+          {{em-select class="col-sm-3" label=(t "labels.type")
               property="selectedAppointmentType" content=visitTypesWithEmpty
           }}
           {{em-select class="col-sm-3" property="selectedProvider"
-              label="With" content=physicianList
+              label=(t 'labels.with') content=physicianList
           }}
         </div>
       {{/em-form}}

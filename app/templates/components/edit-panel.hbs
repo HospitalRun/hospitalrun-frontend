@@ -16,7 +16,7 @@
       {{#if editPanelProps.cancelButtonText}}
         <button class="btn btn-default warning" {{action 'cancel'}}>{{editPanelProps.cancelButtonText}}</button>
       {{else}}
-        <button class="btn btn-default warning" {{action 'cancel'}}>Cancel</button>
+        <button class="btn btn-default warning" {{action 'cancel'}}>{{t 'buttons.cancel'}}</button>
       {{/if}}
     {{/unless}}
     {{#each editPanelProps.additionalButtons as |button|}}

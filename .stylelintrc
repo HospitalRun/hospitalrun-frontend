@@ -6,7 +6,7 @@
   "stylelint-scss"
 ],
   "rules":{
-    "declaration-use-variable": "color",
+    "sh-waqar/declaration-use-variable": "color",
     "value-border-zero": {
       "convention": "0"
     },

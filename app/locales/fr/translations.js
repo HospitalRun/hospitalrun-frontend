@@ -34,7 +34,10 @@ export default {
       address_fields: 'Champs d\'adresse',
       load_db: 'Importer une BD',
       users: 'Utilisateurs',
-      new_user: 'Nouvel utilisateur'
+      new_user: 'Nouvel utilisateur',
+      admitted_patients: 'patients admis',
+      missed: 'Manqué',
+      user_roles: 'Rôles de l\'utilisateur'
     },
     actions: {
       logout: 'Deconnexion',
@@ -77,7 +80,7 @@ export default {
       display_alert_title: 'Sélectionner le fichier à télécharger.',
       display_alert_message: 'Veuillez sélectionner le fichier à télécharger.',
       error_display_alert_title: 'Erreur de chargement',
-      error_display_alert_message: `La base de données ne pouvait pas être importée. L\'erreur etait: {{error}}`,
+      error_display_alert_message: 'La base de données ne pouvait pas être importée. L\'erreur etait: {{error}}',
       edit_title: 'Importer une BD'
     },
     lookup: {
@@ -135,6 +138,73 @@ export default {
       visit_location_list: 'Emplacements de visite',
       visit_types: 'Types de visite',
       ward_pricing_types: 'Types de prix de service'
+    },
+    roles: {
+      capability: {
+        admin: 'Administration',
+        load_db: 'Charger la Base de données',
+        update_config: 'Mettre à jour les Configurations',
+        appointments: 'Rendez-vous',
+        add_appointment: 'Ajouter un Rendez-vous',
+        billing: 'Facturation',
+        add_charge: 'Ajouter une charge',
+        add_pricing: 'Ajouter un Prix',
+        add_pricing_profile: 'Ajouter le profil de prix',
+        add_invoice: 'Ajouter une facture',
+        add_payment: 'Ajouter un paiement',
+        delete_invoice: 'Supprimer une facture',
+        delete_pricing: 'Supprimer un Prix',
+        delete_pricing_profile: 'Supprimer le profil de prix',
+        edit_invoice: 'Modifier la facture',
+        invoices: 'Factures',
+        override_invoice: 'Remplacer la facture',
+        pricing: 'Tarification',
+        patients: 'Patients',
+        add_diagnosis: 'Ajouter un diagnostic',
+        add_photo: 'Ajouter une photo',
+        add_patient: 'Ajouter un patient',
+        add_visit: 'Ajouter une visite',
+        add_vitals: 'Ajouter les signes vitaux',
+        admit_patient: 'Admettre un patient',
+        delete_photo: 'Supprimer une photo',
+        delete_patient: 'Supprimer un patient',
+        delete_appointment: 'Supprimer un rendez-vous',
+        delete_diagnosis: 'Supprimer un diagnostic',
+        delete_procedure: 'Supprimer une procédure',
+        delete_socialwork: 'Supprimer un travail social',
+        delete_vitals: 'Supprimer des signes vitaux',
+        delete_visit: 'Supprimer une Visite',
+        discharge_patient: 'Liberer un patient',
+        patient_reports: 'Rapports des patients',
+        visits: 'Visites',
+        medication: 'Médicament',
+        add_medication: 'Ajouter un médicament',
+        delete_medication: 'Supprimer un médicament',
+        fulfill_medication: 'Traiter une demande de médicaments',
+        labs: 'Test Labo',
+        add_lab: 'Ajouter un test labo',
+        complete_lab: 'Completer un test labo',
+        delete_lab: 'Supprimer un test labo',
+        imaging: 'Imagerie',
+        add_imaging: 'Ajouter une imagerie',
+        complete_imaging: 'Completer une imagerie',
+        delete_imaging: 'Supprimer une Imagerie',
+        inventory: 'Inventaire',
+        add_inventory_request: 'Ajouter une demande d\'inventaire',
+        add_inventory_item: 'Ajouter un article d\'inventaire',
+        add_inventory_purchase: 'Ajouter un achat d\'inventaire',
+        adjust_inventory_location: 'Ajuster la localisation de l\'inventaire',
+        delete_inventory_item: 'Supprimer un article d\'inventaire',
+        delete_inventory_purchase: 'Supprimer un achat d\'inventaire',
+        fulfill_inventory: 'Traiter l\'inventaire',
+        user_roles: 'Rôles d\'utilisateur'
+      },
+      messages: {
+        role_saved: 'Le rôle {{roleName}}  a été enregistré.'
+      },
+      titles: {
+        role_saved: 'Rôle enregistré'
+      }
     }
   },
   labels: {
@@ -142,6 +212,7 @@ export default {
     loading: 'Chargement',
     name: 'Nom',
     patient: 'Patient',
+    prescriber: 'prescripteur',
     quantity: 'Quantité',
     requested_on: 'Demandé le',
     date: 'Date',
@@ -223,7 +294,8 @@ export default {
     on_behalf_of: 'de la part de',
     new_patient_has_to_be_created: 'Un nouveau patient doit être crée...Veuillez attendre...',
     no_notes_available: 'Aucune note clinique supplémentaire disponible pour cette visite.',
-    sorry: 'Désolé, quelque chose a mal tourné ...'
+    sorry: 'Désolé, quelque chose a mal tourné ...',
+    for_authorized_persons: 'Ce rapport est destiné uniquement aux personnes autorisées.'
   },
   alerts: {
     please_wait: 'Veuillez attendre'
@@ -511,6 +583,7 @@ export default {
     new_title: 'Nouveau rendez-vous',
     section_title: 'Rendez-vous',
     this_week: 'Rendez-vous de la semaine',
+    missed: 'Rendez-vous manqués',
     search_title: 'Rechercher les rendez-vous',
     today_title: 'Rendez-vous d\'aujourd\'hui',
     messages: {
@@ -523,27 +596,22 @@ export default {
   },
   visits: {
     edit: {
-      actions: 'Actions',
-      edit: 'Modifier',
-      date: 'Date',
-      authored_by: 'Crée par',
-      note: 'Note',
-      notes: 'Notes',
-      new_note: 'Nouvelle note',
-      visit_information: 'Détails de la visite',
-      new_appointment: 'Nouveau rendez-vous',
-      add_diagnosis: 'Ajoute un diagnostic',
-      diagnosis: 'Diagnostic',
-      delete: 'Supprimer',
-      procedure: 'Procédure',
-      procedures: 'Procédures',
-      new_procedure: 'Nouvelle procédure',
-      labs: 'Labos',
-      new_lab: 'Nouveau labo',
-      imaging: 'Imagerie',
-      new_imaging: 'Nouvelle imagerie',
-      medication: 'Médicament',
-      new_medication: 'Nouveau médicament'
+      buttons: {
+        new_appointment: 'Nouveau rendez-vous',
+        add_diagnosis: 'Ajoute un diagnostic',
+        new_procedure: 'Nouvelle procédure',
+        new_lab: 'Nouveau labo',
+        new_imaging: 'Nouvelle imagerie',
+        new_medication: 'Nouveau médicament'
+      },
+      labels: {
+        diagnosis: 'Diagnostic',
+        procedure: 'Procédure',
+        authored_by: 'Crée par',
+        labs: 'Labos',
+        imaging: 'Imagerie',
+        visit_information: 'Détails de la visite'
+      }
     }
   },
   labs: {

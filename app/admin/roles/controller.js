@@ -50,6 +50,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
       'add_diagnosis',
       'add_photo',
       'add_patient',
+      'add_procedure',
       'add_visit',
       'add_vitals',
       'admit_patient',

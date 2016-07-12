@@ -27,7 +27,8 @@ export default {
   },
   messages: {
     no_items_found: 'Ничего не найдено.',
-    create_new_record: 'Создать новую запись?'
+    create_new_record: 'Создать новую запись?',
+    for_authorized_persons: 'Этот отчет предназначен только для уполномоченных лиц.'
   },
   buttons: {
     complete: 'Готово',

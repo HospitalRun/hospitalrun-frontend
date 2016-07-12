@@ -5,6 +5,14 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
   showUpdateButton: true,
 
   updateButtonAction: 'update',
+  updateButtonText: function() {
+    let i18n = this.get('i18n');
+    if (this.get('model.isNew')) {
+      return i18n.t('buttons.add');
+    } else {
+      return i18n.t('buttons.update');
+    }
+  }.property('model.isNew'),
 
   actions: {
     cancel: function() {

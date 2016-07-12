@@ -129,7 +129,7 @@ test('Delete an appointment', function(assert) {
     andThen(() => {
       assert.equal(find('.modal-title').text().trim(), 'Delete Appointment', 'Delete Appointment confirmation modal has been displayed');
     });
-    click('button:contains(Delete)');
+    click('.modal-dialog button:contains(Delete)');
     waitToDisappear('.appointment-date');
     andThen(() => {
       assert.equal(find('.appointment-date').length, 0, 'No appointments are displayed');

@@ -61,7 +61,7 @@ test('delete invoice', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete <strong>inv00001</strong>?', 'Invoice deletion confirm displays');
+      assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete inv00001?', 'Invoice deletion confirm displays');
     });
     click('button:contains(Delete):last');
     waitToDisappear('.invoice-number:contains(inv00001)');
