@@ -48,6 +48,26 @@ test('create invoice', function(assert) {
   });
 });
 
+test('print invoice', function(assert) {
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit('/invoices');
+    andThen(function() {
+      assert.equal(currentURL(), '/invoices');
+      assert.equal(find('.invoice-number:contains(inv00001)').length, 1, 'Invoice is available for printing');
+    });
+    click('button:contains(Edit)');
+    andThen(function() {
+      waitToAppear('button:contains(Print)');
+    });
+    window.print = Ember.K; // Disable browser print dialog.
+    click('button:contains(Print)');
+    andThen(function() {
+      assert.equal(find('.print-invoice').length, 1, 'Invoice is displayed for printing');
+    });
+  });
+});
+
 test('delete invoice', function(assert) {
   runWithPouchDump('billing', function() {
     authenticateUser();
