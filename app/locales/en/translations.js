@@ -23,7 +23,8 @@ export default {
     lessThanOrEqualTo: 'must be less than or equal to {{count}}',
     otherThan: 'must be other than {{count}}',
     odd: 'must be odd',
-    even: 'must be even'
+    even: 'must be even',
+    invalidNumber: 'not a valid number'
   },
   navigation: {
     imaging: 'Imaging',
@@ -411,6 +412,9 @@ export default {
     }
   },
   loading: {
+    progressBar: {
+      progress: '{{progressBarValue}}% Complete'
+    },
     messages: {
       0: 'The top butterfly flight speed is 12 miles per hour. Some moths can fly 25 miles per hour!',
       1: 'Owls are the only birds that can see the color blue.',
@@ -775,6 +779,8 @@ export default {
       social_work: 'Social Work'
     },
     titles: {
+      expenses: 'Expenses',
+      additionalContacts: 'Additional Contacts',
       family_information: 'Family Information',
       delete: 'Delete Patient',
       new: 'New Patient',
@@ -937,15 +943,28 @@ export default {
       add_medication: 'Add Medication'
     }
   },
-  photos: {
-    how: 'How Do You Want To Add A Photo?',
-    take_photo: 'Take photo',
-    upload_photo: 'Upload Photo',
-    upload_file: 'Upload File',
-    camera: 'Camera',
-    photo: 'photo'
-  },
   components: {
-    invalid_number: 'not a valid number'
+    chargesByTypeTab: {
+      charges: 'charges'
+    },
+    takePhoto: {
+      how: 'How Do You Want To Add A Photo?',
+      takePhoto: 'Take photo',
+      uploadPhoto: 'Upload Photo',
+      uploadFile: 'Upload File',
+      camera: 'Camera',
+      photo: 'photo',
+      preview: 'preview'
+    },
+    quantityConv: {
+      unit: 'Unit',
+      conversion: 'What does 1 {{name}} contain?'
+    },
+    quantityCalc: {
+      result: '{{targetUnit}} total: {{calculated}}'
+    },
+    priceList: {
+      charges: '{{pricingType}} charges'
+    }
   }
 };
