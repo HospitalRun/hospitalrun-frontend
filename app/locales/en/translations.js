@@ -72,8 +72,8 @@ export default {
     about: 'About HospitalRun'
   },
   user: {
-    plus_new_user: '+ new user',
-    users_page_tile: 'User Listing'
+    plusNewUser: '+ new user',
+    usersPageTile: 'User Listing'
   },
   admin: {
     address_options: 'Address Options',
