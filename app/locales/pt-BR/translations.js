@@ -41,13 +41,13 @@ export default {
 
   login: {
     messages: {
-      sign_in:  'inscreva-se',
+      signIn:  'inscreva-se',
       error:    'Nome de usuário ou senha está incorreta.'
     },
     labels: {
       password: 'Senha',
       username: 'Usuario',
-      sign_in:  'Entrar'
+      signIn:  'Entrar'
     }
   },
   inventory: {

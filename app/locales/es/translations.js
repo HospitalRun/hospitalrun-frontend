@@ -325,13 +325,13 @@ export default {
   },
   login: {
     messages: {
-      sign_in:  'por favor ingrese',
+      signIn:  'por favor ingrese',
       error:    'Nombre de usuario o clave incorrectos.'
     },
     labels: {
       password: 'Clave',
       username: 'Nombre de usuario',
-      sign_in:  'Ingresar'
+      signIn:  'Ingresar'
     }
   },
   inventory: {

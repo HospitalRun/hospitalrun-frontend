@@ -327,13 +327,13 @@ export default {
   },
   login: {
     messages: {
-      sign_in:  'veuillez-vous connecter',
+      signIn:  'veuillez-vous connecter',
       error:    'Nom d\'utilisateur ou mot de passe est incorrect.'
     },
     labels: {
       password: 'Mot de passe',
       username: 'Nom d\'utilisateur',
-      sign_in:  'Connexion'
+      signIn:  'Connexion'
     }
   },
   inventory: {

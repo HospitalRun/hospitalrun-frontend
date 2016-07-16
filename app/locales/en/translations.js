@@ -402,13 +402,13 @@ export default {
   },
   login: {
     messages: {
-      sign_in:  'please sign in',
+      signIn:  'please sign in',
       error:    'Username or password is incorrect.'
     },
     labels: {
       password: 'Password',
       username: 'Username',
-      sign_in:  'Sign in'
+      signIn:  'Sign in'
     }
   },
   loading: {

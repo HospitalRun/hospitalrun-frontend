@@ -40,13 +40,13 @@ export default {
   },
   login: {
     messages: {
-      sign_in:  'GİRİŞ YAPIN',
+      signIn:  'GİRİŞ YAPIN',
       error:    'Kullanıcı adı veya parola hatalı.'
     },
     labels: {
       password: 'Parola',
       username: 'Kullanıcı Adı',
-      sign_in:  'Giriş yap'
+      signIn:  'Giriş yap'
     }
   },
   inventory: {
