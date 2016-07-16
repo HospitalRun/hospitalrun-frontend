@@ -33,7 +33,7 @@ export default {
   buttons: {
     complete: 'Bitir',
     cancel: 'Vazgeç',
-    return_button: 'Geri Dön',
+    returnButton: 'Geri Dön',
     add: 'Ekle',
     update: 'Güncelle',
     ok: 'Tamam'

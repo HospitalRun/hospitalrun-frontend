@@ -33,7 +33,7 @@ export default {
   buttons: {
     complete: 'Готово',
     cancel: 'Отметить',
-    return_button: 'Вернутся',
+    returnButton: 'Вернутся',
     add: 'Добавить',
     update: 'Обновить',
     ok: 'Ок'

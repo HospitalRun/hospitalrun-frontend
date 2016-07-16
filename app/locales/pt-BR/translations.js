@@ -33,7 +33,7 @@ export default {
   buttons: {
     complete: 'Completo',
     cancel: 'Cencelar',
-    return_button: 'Retornar',
+    returnButton: 'Retornar',
     add: 'Adicionar',
     update: 'Atualizar',
     ok: 'Ok'

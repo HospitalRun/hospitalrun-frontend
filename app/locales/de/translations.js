@@ -149,15 +149,15 @@ export default {
   buttons: {
     complete: 'Abschließen',
     cancel: 'Abbrechen',
-    return_button: 'Zurück',
+    returnButton: 'Zurück',
     add: 'Hinzufügen',
     update: 'Aktualisieren',
     ok: 'Okay',
     delete: 'Entfernen',
-    new_user: 'Neuer Benutzer',
-    add_value: 'Wert hinzufügen',
+    newUser: 'Neuer Benutzer',
+    addValue: 'Wert hinzufügen',
     import: 'Importieren',
-    load_file: 'Datei laden'
+    loadFile: 'Datei laden'
   },
   login: {
     messages: {
