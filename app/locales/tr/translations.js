@@ -26,9 +26,9 @@ export default {
     age: 'Yaş'
   },
   messages: {
-    no_items_found: 'Hiçbir öğe bulunamadı.',
-    create_new_record: 'Yeni bir kayıt oluştur?',
-    for_authorized_persons: 'Bu rapor yetkili kişiler içindir.'
+    noItemsFound: 'Hiçbir öğe bulunamadı.',
+    createNewRecord: 'Yeni bir kayıt oluştur?',
+    forAuthorizedPersons: 'Bu rapor yetkili kişiler içindir.'
   },
   buttons: {
     complete: 'Bitir',

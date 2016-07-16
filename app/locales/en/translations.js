@@ -352,19 +352,19 @@ export default {
     country: 'Country'
   },
   messages: {
-    no_items_found: 'No items found.',
-    no_history_available: 'No history available.',
-    create_new_record: 'Create a new record?',
-    create_new_user: 'Create a new user?',
-    no_users_found: 'No users found.',
-    are_you_sure_delete: 'Are you sure you wish to delete the user {{user}}?',
-    user_has_been_saved: 'The user has been saved.',
-    user_saved: 'User Saved',
-    on_behalf_of: 'on behalf of',
-    new_patient_has_to_be_created: 'A new patient needs to be created...Please wait..',
-    no_notes_available: 'No additional clinical notes are available for this visit.',
+    noItemsFound: 'No items found.',
+    noHistoryAvailable: 'No history available.',
+    createNewRecord: 'Create a new record?',
+    createNewUser: 'Create a new user?',
+    noUsersFound: 'No users found.',
+    areYouSureDelete: 'Are you sure you wish to delete the user {{user}}?',
+    userHasBeenSaved: 'The user has been saved.',
+    userSaved: 'User Saved',
+    onBehalfOf: 'on behalf of',
+    newPatientHasToBeCreated: 'A new patient needs to be created...Please wait..',
+    noNotesAvailable: 'No additional clinical notes are available for this visit.',
     sorry: 'Sorry, something went wrong...',
-    for_authorized_persons: 'This report is for authorized persons only.'
+    forAuthorizedPersons: 'This report is for authorized persons only.'
   },
   alerts: {
     please_wait: 'Please Wait'

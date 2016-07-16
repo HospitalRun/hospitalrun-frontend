@@ -281,19 +281,19 @@ export default {
     procedures: 'Procedimiento'
   },
   messages: {
-    no_items_found: 'Elementos no encontrados.',
-    no_history_available: 'Historia no disponible.',
-    create_new_record: 'Crear un nuevo registro?',
-    create_new_user: 'Crear un nuevo usuario?',
-    no_users_found: 'Ningun usuario encontrado.',
-    are_you_sure_delete: 'Estas seguro de eliminar este usuario {{user}}?',
-    user_has_been_saved: 'El usuario ha sido salvado.',
-    user_saved: 'Usuario salvado',
-    on_behalf_of: 'a nombre de',
-    new_patient_has_to_be_created: 'Un nuevo paciente debe ser creado...Por favor espere..',
-    no_notes_available: 'No hay notas clínicas adicionales están disponibles para esta visita.',
+    noItemsFound: 'Elementos no encontrados.',
+    noHistoryAvailable: 'Historia no disponible.',
+    createNewRecord: 'Crear un nuevo registro?',
+    createNewUser: 'Crear un nuevo usuario?',
+    noUsersFound: 'Ningun usuario encontrado.',
+    areYouSureDelete: 'Estas seguro de eliminar este usuario {{user}}?',
+    userHasBeenSaved: 'El usuario ha sido salvado.',
+    userSaved: 'Usuario salvado',
+    onBehalf_of: 'a nombre de',
+    newPatientHasToBeCreated: 'Un nuevo paciente debe ser creado...Por favor espere..',
+    noNotesAvailable: 'No hay notas clínicas adicionales están disponibles para esta visita.',
     sorry: 'Lo sentimos, un error ha ocurrido...',
-    for_authorized_persons: 'Este informe es sólo para personas autorizadas.'
+    forAuthorizedPersons: 'Este informe es sólo para personas autorizadas.'
   },
   alerts: {
     please_wait: 'Por favor espere'

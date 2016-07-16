@@ -283,19 +283,19 @@ export default {
     procedures: 'Procédures'
   },
   messages: {
-    no_items_found: 'Aucun article retrouvé.',
-    no_history_available: 'Aucune historique disponible.',
-    create_new_record: 'Créer un nouveau dossier?',
-    create_new_user: 'Créer un nouvel utilisateur?',
-    no_users_found: 'Aucun utilisateur retrouvé.',
-    are_you_sure_delete: 'Êtes-vous sûr de vouloir supprimer l\'utilisateur {{user}}?',
-    user_has_been_saved: 'L\'utilisateur a été enregistré.',
-    user_saved: 'Utilisateur enregistré',
-    on_behalf_of: 'de la part de',
-    new_patient_has_to_be_created: 'Un nouveau patient doit être crée...Veuillez attendre...',
-    no_notes_available: 'Aucune note clinique supplémentaire disponible pour cette visite.',
+    noItemsFound: 'Aucun article retrouvé.',
+    noHistoryAvailable: 'Aucune historique disponible.',
+    createNewRecord: 'Créer un nouveau dossier?',
+    createNewUser: 'Créer un nouvel utilisateur?',
+    noUsersFound: 'Aucun utilisateur retrouvé.',
+    areYouSureDelete: 'Êtes-vous sûr de vouloir supprimer l\'utilisateur {{user}}?',
+    userHasBeenSaved: 'L\'utilisateur a été enregistré.',
+    userSaved: 'Utilisateur enregistré',
+    onBehalfOf: 'de la part de',
+    newPatientHasToBeCreated: 'Un nouveau patient doit être crée...Veuillez attendre...',
+    noNotesAvailable: 'Aucune note clinique supplémentaire disponible pour cette visite.',
     sorry: 'Désolé, quelque chose a mal tourné ...',
-    for_authorized_persons: 'Ce rapport est destiné uniquement aux personnes autorisées.'
+    forAuthorizedPersons: 'Ce rapport est destiné uniquement aux personnes autorisées.'
   },
   alerts: {
     please_wait: 'Veuillez attendre'

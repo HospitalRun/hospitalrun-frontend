@@ -137,14 +137,14 @@ export default {
     deleteUser: 'Benutzer löschen'
   },
   messages: {
-    no_items_found: 'Keine Einträge gefunden.',
-    create_new_record: 'Neuen Eintrag erstellen?',
-    create_new_user: 'Neuen Benutzer hinzufügen?',
-    no_users_found: 'Keine Benutzer gefunden.',
-    are_you_sure_delete: 'Wollen Sie den Benutzer {{user}} sicher löschen?',
-    user_has_been_saved: 'Der Benutzer wurde gespeichert.',
-    user_saved: 'Benutzer gespeichert',
-    for_authorized_persons: 'Dieser Bericht ist nur für autorisierte Personen.'
+    noItemsFound: 'Keine Einträge gefunden.',
+    createNewRecord: 'Neuen Eintrag erstellen?',
+    createNewUser: 'Neuen Benutzer hinzufügen?',
+    noUsersFound: 'Keine Benutzer gefunden.',
+    areYouSureDelete: 'Wollen Sie den Benutzer {{user}} sicher löschen?',
+    userHasBeenSaved: 'Der Benutzer wurde gespeichert.',
+    userSaved: 'Benutzer gespeichert',
+    forAuthorizedPersons: 'Dieser Bericht ist nur für autorisierte Personen.'
   },
   buttons: {
     complete: 'Abschließen',
