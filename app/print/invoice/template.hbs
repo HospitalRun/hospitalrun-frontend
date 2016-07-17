@@ -3,6 +3,8 @@
     <div class="panel-body">
       {{#if model.template.isError}}
         Please define a template in {{#link-to 'admin.invoice-template'}}Adminstrator->Invoice Templates{{/link-to}}
+      {{else}}
+        {{dynamic-render model.template.value.invoiceHeader model.invoice}}
       {{/if}}
       <table class="table">
         <tr class="table-header">
@@ -13,7 +15,7 @@
           <th class="text-right">{{t "billing.labels.hmoCom"}}</th>
           <th class="text-right">{{t "labels.excess"}}</th>
         </tr>
-        {{#each model.lineItemsByCategory as |categoryGroup|}}
+        {{#each model.invoice.lineItemsByCategory as |categoryGroup|}}
           <tr>
             <td colspan="6">
               <strong>{{categoryGroup.category}}</strong>
@@ -50,37 +52,37 @@
         {{/each}}
         <tr>
           <td><strong>{{t 'labels.total'}}</strong></td>
-          <td class="text-right"><strong>{{number-format model.total}}</strong></td>
-          <td class="text-right"><strong>{{number-format model.discount}}</strong></td>
-          <td class="text-right"><strong>{{number-format model.nationalInsurance}}</strong></td>
-          <td class="text-right"><strong>{{number-format model.privateInsurance}}</strong></td>
-          <td class="text-right"><strong>{{number-format model.amountOwed}}</strong></td>
+          <td class="text-right"><strong>{{number-format model.invoice.total}}</strong></td>
+          <td class="text-right"><strong>{{number-format model.invoice.discount}}</strong></td>
+          <td class="text-right"><strong>{{number-format model.invoice.nationalInsurance}}</strong></td>
+          <td class="text-right"><strong>{{number-format model.invoice.privateInsurance}}</strong></td>
+          <td class="text-right"><strong>{{number-format model.invoice.amountOwed}}</strong></td>
         </tr>
         <tr>
           <td><strong>{{t 'billing.labels.paymentsDeposits'}}</strong></td>
           <td colspan="4"></td>
-          <td class="text-right">-{{number-format model.paidTotal}}</td>
+          <td class="text-right">-{{number-format model.invoice.paidTotal}}</td>
           <td></td>
         </tr>
         <tr>
           <td><strong>{{t 'labels.grandTotal'}}</strong></td>
           <td colspan="4"></td>
-          <td class="text-right"><strong>{{number-format model.remainingBalance}}</strong></td>
+          <td class="text-right"><strong>{{number-format model.invoice.remainingBalance}}</strong></td>
           <td></td>
         </tr>
       </table>
       <table>
-        {{#if model.visit.dischargeInfo}}
+        {{#if model.invoice.visit.dischargeInfo}}
           <tr>
             <td class="col-xs-12">
-              {{t 'print.invoice.labels.dischargeNotes'}} {{model.visit.dischargeInfo}}
+              {{t 'print.invoice.labels.dischargeNotes'}} {{model.invoice.visit.dischargeInfo}}
             </td>
           </tr>
         {{/if}}
-        {{#if model.remarks}}
+        {{#if model.invoice.remarks}}
           <tr>
             <td class="col-xs-12">
-              {{t 'print.invoice.labels.remarks'}} {{model.remarks}}
+              {{t 'print.invoice.labels.remarks'}} {{model.invoice.remarks}}
             </td>
           </tr>
         {{/if}}
@@ -89,11 +91,11 @@
           <td class="col-xs-5">{{t 'print.invoice.messages.whereConducted'}}</td>
         </tr>
         <tr>
-          <td class="col-xs-8">{{t 'print.invoice.labels.billedBy'}} {{model.modifiedBy}}</td>
+          <td class="col-xs-8">{{t 'print.invoice.labels.billedBy'}} {{model.invoice.modifiedBy}}</td>
           <td class="col-xs-4">{{t 'print.invoice.labels.spacer'}}</td>
         </tr>
         <tr>
-          <td class="col-xs-8">{{t 'print.invoice.labels.billedDate'}} {{date-format model.billDate}}</td>
+          <td class="col-xs-8">{{t 'print.invoice.labels.billedDate'}} {{date-format model.invoice.billDate}}</td>
           <td class="text-center col-xs-4">{{t 'print.invoice.titles.patientMember'}}</td>
         </tr>
         <tr>
@@ -107,7 +109,7 @@
       </table>
     </div>
     <div class="panel-footer">
-      {{#link-to "invoices.edit" model class="btn btn-default warning" }}{{t 'buttons.returnButton'}}{{/link-to}}
+      {{#link-to "invoices.edit" model.invoice class="btn btn-default warning" }}{{t 'buttons.returnButton'}}{{/link-to}}
     </div>
   </div>
 {{/print-this}}
