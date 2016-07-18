@@ -45,7 +45,7 @@ export default InputComponent.extend({
   hint: true,
   highlight: true,
   lastHint: null,
-  limit: 10,
+  limit: 500,
   minlength: 1,
   selectedItem: false,
   inputElement: null,
