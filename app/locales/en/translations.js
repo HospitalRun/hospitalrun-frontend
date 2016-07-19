@@ -635,41 +635,41 @@ export default {
     }
   },
   medication: {
-    page_title: 'Medication Requests',
-    section_title: 'Medication',
-    return_medication: 'Return Medication',
+    pageTitle: 'Medication Requests',
+    sectionTitle: 'Medication',
+    returnMedication: 'Return Medication',
     buttons: {
-      dispense_medication: 'dispense medication',
-      new_button: '+ new request',
-      return_medication: 'return medication'
+      dispenseMedication: 'dispense medication',
+      newButton: '+ new request',
+      returnMedication: 'return medication'
     },
     titles: {
-      completed_medication: 'Completed Medication',
-      edit_medication_request: 'Edit Medication Request',
-      new_medication_request: 'New Medication Request'
+      completedMedication: 'Completed Medication',
+      editMedicationRequest: 'Edit Medication Request',
+      newMedicationRequest: 'New Medication Request'
     },
     messages: {
-      create_new: 'Create a new medication request?',
-      confirm_deletion: 'Are you sure you wish to delete this medication request?'
+      createNew: 'Create a new medication request?',
+      confirmDeletion: 'Are you sure you wish to delete this medication request?'
     },
     labels: {
       refills: 'Refills',
-      quantity_requested: 'Quantity Requested',
-      quantity_dispensed: 'Quantity Dispensed',
-      quantity_distributed: 'Quantity Distributed',
-      quantity_to_return: 'Quantity To Return',
-      return_location: 'Return Location',
-      return_aisle: 'Return Aisle',
-      return_reason: 'Return Reason/Notes',
-      adjustment_date: 'Adjustment Date',
-      credit_to_account: 'Credit To Account'
+      quantityRequested: 'Quantity Requested',
+      quantityDispensed: 'Quantity Dispensed',
+      quantityDistributed: 'Quantity Distributed',
+      quantityToReturn: 'Quantity To Return',
+      returnLocation: 'Return Location',
+      returnAisle: 'Return Aisle',
+      returnReason: 'Return Reason/Notes',
+      adjustmentDate: 'Adjustment Date',
+      creditToAccount: 'Credit To Account'
     },
     alerts: {
-      returned_title: 'Medication Returned',
-      returned_message:  'The medication has been marked as returned.',
-      saved_title: 'Medication Request Saved',
-      saved_message: 'The medication record has been saved.',
-      fulfilled_title: 'Medication Request Fulfilled'
+      returnedTitle: 'Medication Returned',
+      returnedMessage:  'The medication has been marked as returned.',
+      savedTitle: 'Medication Request Saved',
+      savedMessage: 'The medication record has been saved.',
+      fulfilledTitle: 'Medication Request Fulfilled'
     }
   },
   appointments: {
