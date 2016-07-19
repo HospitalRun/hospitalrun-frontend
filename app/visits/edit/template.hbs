@@ -19,7 +19,7 @@
             <div class="row">
               <div class="form-group col-sm-3">
                 <label>{{t 'labels.patient'}}</label>
-                <p class="form-control-static">{{model.patient.displayName}}</p>
+                <p class="form-control-static patient-name">{{model.patient.displayName}}</p>
               </div>
               {{#if isAdmissionVisit}}
                 {{date-picker property="startDate" label=(t "patients.labels.admission_date") showTime=true class="col-sm-3 required"}}
@@ -78,10 +78,10 @@
                 {{#each model.additionalDiagnoses as |diagnosis|}}
                   <tr>
                     <td>{{date-format diagnosis.date}}</td>
-                    <td>{{diagnosis.description}}</td>
+                    <td  class="additional-diagnoses-text">{{diagnosis.description}}</td>
                     <td>
                         {{#if canDeleteDiagnosis}}
-                          <button class="btn btn-default warning" {{action "deleteDiagnosis" diagnosis}}>
+                          <button class="btn btn-default warning delete-additional-diagnosis" {{action "deleteDiagnosis" diagnosis}}>
                             <span class="octicon octicon-x"></span> {{t 'buttons.delete' }}
                           </button>
                         {{/if}}
@@ -167,7 +167,7 @@
                     {{/if}}
                     {{#if canDeleteProcedure}}
                       <button class="btn btn-default warning" {{action "showDeleteProcedure" procedure}}>
-                        <span class="octicon octicon-x"></span> {{t 'visits.edit.delete' }}
+                        <span class="octicon octicon-x"></span> {{t 'buttons.delete' }}
                       </button>
                     {{/if}}
                   </td>
@@ -181,7 +181,7 @@
         <div class="panel-heading">
           <h3 class="panel-title">
             <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-medication">
-              {{t 'labels.actions' }}
+              {{t 'visits.labels.medication' }}
               {{#if canAddMedication}}
                 <button class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.new_medication' }}</button>
               {{/if}}
