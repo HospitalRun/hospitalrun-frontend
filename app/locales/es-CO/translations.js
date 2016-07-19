@@ -538,58 +538,58 @@ export default {
     }
   },
   medication: {
-    page_title: 'Pedido de medicación',
-    section_title: 'Medication',
-    return_medication: 'Retorno de medicación',
+    pageTitle: 'Pedido de medicación',
+    sectionTitle: 'Medication',
+    returnMedication: 'Retorno de medicación',
     buttons: {
-      dispense_medication: 'dispensar medicación',
-      new_button: '+ nuevo pedido',
-      return_medication: 'debolver medicacion'
+      dispenseMedication: 'dispensar medicación',
+      newButton: '+ nuevo pedido',
+      returnMedication: 'debolver medicacion'
     },
     titles: {
-      completed_medication: 'Medicacion completada',
-      edit_medication_request: 'Editar pedido de medicacion',
-      new_medication_request: 'Nuevo pedido de medicacion'
+      completedMedication: 'Medicacion completada',
+      editMedicationRequest: 'Editar pedido de medicacion',
+      newMedicationRequest: 'Nuevo pedido de medicacion'
     },
     messages: {
-      create_new: 'Crear un nuevo pedido de medicacion?',
-      confirm_deletion: 'Estas seguro de eliminar este pedido de medicación?'
+      createNew: 'Crear un nuevo pedido de medicacion?',
+      confirmDeletion: 'Estas seguro de eliminar este pedido de medicación?'
     },
     labels: {
       refills: 'Recargas',
-      quantity_requested: 'Cantidad solicitada',
-      quantity_dispensed: 'Cantidad dispensada',
-      quantity_distributed: 'Cantidad distribuida',
-      quantity_to_return: 'Cantidad a devolver',
-      return_location: 'Retornar a ubicación',
-      return_aisle: 'Devolve a pasillo',
-      return_reason: 'Razon por la que se devuelve/Nota',
-      adjustment_date: 'Fecha de ajuste',
-      credit_to_account: 'Credito a cuenta'
+      quantityRequested: 'Cantidad solicitada',
+      quantityDispensed: 'Cantidad dispensada',
+      quantityDistributed: 'Cantidad distribuida',
+      quantityToReturn: 'Cantidad a devolver',
+      returnLocation: 'Retornar a ubicación',
+      returnAisle: 'Devolve a pasillo',
+      returnReason: 'Razon por la que se devuelve/Nota',
+      adjustmentDate: 'Fecha de ajuste',
+      creditToAccount: 'Credito a cuenta'
     },
     alerts: {
-      returned_title: 'Medicacion devuelta',
-      returned_message:  'La medicacion ha sido marcada para devolver.',
-      saved_title: 'Pedido de medicacion guardado',
-      saved_message: 'La elemento de medicación ha sido guardado.',
-      fulfilled_title: 'Pedido de medicación cumplido'
+      returnedTitle: 'Medicacion devuelta',
+      returnedMessage:  'La medicacion ha sido marcada para devolver.',
+      savedTitle: 'Pedido de medicacion guardado',
+      savedMessage: 'La elemento de medicación ha sido guardado.',
+      fulfilledTitle: 'Pedido de medicación cumplido'
     }
   },
   appointments: {
-    current_screen_title: 'Listado de citas',
-    edit_title: 'Editar cita',
-    new_title: 'Nueva cita',
-    section_title: 'Citas',
-    this_week: 'Citas esta semana',
+    currentScreenTitle: 'Listado de citas',
+    editTitle: 'Editar cita',
+    newTitle: 'Nueva cita',
+    sectionTitle: 'Citas',
+    thisWeek: 'Citas esta semana',
     missed: 'Citas perdidas',
-    search_title: 'Buscar citas',
-    today_title: 'Citas para hoy',
+    searchTitle: 'Buscar citas',
+    todayTitle: 'Citas para hoy',
     messages: {
-      delete_appointment_message: 'Esta seguro de eliminar esta cita?',
-      end_time_later_than_start: 'Seleccione una hora de finalizacion despues de la de inicio.'
+      deleteAppointmentMessage: 'Esta seguro de eliminar esta cita?',
+      endTimeLaterThanStart: 'Seleccione una hora de finalizacion despues de la de inicio.'
     },
     buttons: {
-      new_button: '+ nueva cita'
+      newButton: '+ nueva cita'
     }
   },
   visits: {

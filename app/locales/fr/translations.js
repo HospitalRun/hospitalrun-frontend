@@ -540,58 +540,58 @@ export default {
     }
   },
   medication: {
-    page_title: 'Demandes de médicament',
-    section_title: 'Médicament',
-    return_medication: 'Retourner un médicament',
+    pageTitle: 'Demandes de médicament',
+    sectionTitle: 'Médicament',
+    returnMedication: 'Retourner un médicament',
     buttons: {
-      dispense_medication: 'dispenser un médicament',
-      new_button: '+ nouvelle demande',
-      return_medication: 'retourner un médicament'
+      dispenseMedication: 'dispenser un médicament',
+      newButton: '+ nouvelle demande',
+      returnMedication: 'retourner un médicament'
     },
     titles: {
-      completed_medication: 'Médicament traitée',
-      edit_medication_request: 'Modifier une demande de médicament',
-      new_medication_request: 'Nouvelle demande de médicament'
+      completedMedication: 'Médicament traitée',
+      editMedicationRequest: 'Modifier une demande de médicament',
+      newMedicationRequest: 'Nouvelle demande de médicament'
     },
     messages: {
-      create_new: 'Créer une nouvelle demande de médicament?',
-      confirm_deletion: 'Êtes-vous sûr de vouloir supprimer cette demande de médicaments?'
+      createNew: 'Créer une nouvelle demande de médicament?',
+      confirmDeletion: 'Êtes-vous sûr de vouloir supprimer cette demande de médicaments?'
     },
     labels: {
       refills: 'Renouvellements',
-      quantity_requested: 'Quantité demandé',
-      quantity_dispensed: 'Quantité dispensé',
-      quantity_distributed: 'Quantité distribué',
-      quantity_to_return: 'Quantité à retourner',
-      return_location: 'Emplacement de retour',
-      return_aisle: 'Rayon de retour',
-      return_reason: 'Motif/notes du retour',
-      adjustment_date: 'Date d\'ajustement',
-      credit_to_account: 'Créditer le compte'
+      quantityRequested: 'Quantité demandé',
+      quantityDispensed: 'Quantité dispensé',
+      quantityDistributed: 'Quantité distribué',
+      quantityToReturn: 'Quantité à retourner',
+      returnLocation: 'Emplacement de retour',
+      returnAisle: 'Rayon de retour',
+      returnReason: 'Motif/notes du retour',
+      adjustmentDate: 'Date d\'ajustement',
+      creditToAccount: 'Créditer le compte'
     },
     alerts: {
-      returned_title: 'Médicament retourné',
-      returned_message:  'Le médicament a été marqué comme retourné.',
-      saved_title: 'Demande de médicament enregistrée',
-      saved_message: 'Le dossier de médicament a été enregistré.',
-      fulfilled_title: 'Demande de médicament traitée'
+      returnedTitle: 'Médicament retourné',
+      returnedMessage:  'Le médicament a été marqué comme retourné.',
+      savedTitle: 'Demande de médicament enregistrée',
+      savedMessage: 'Le dossier de médicament a été enregistré.',
+      fulfilledTitle: 'Demande de médicament traitée'
     }
   },
   appointments: {
-    current_screen_title: 'Liste des rendez-vous',
-    edit_title: 'Modifier le rendez-vous',
-    new_title: 'Nouveau rendez-vous',
-    section_title: 'Rendez-vous',
-    this_week: 'Rendez-vous de la semaine',
+    currentScreenTitle: 'Liste des rendez-vous',
+    editTitle: 'Modifier le rendez-vous',
+    newTitle: 'Nouveau rendez-vous',
+    sectionTitle: 'Rendez-vous',
+    thisWeek: 'Rendez-vous de la semaine',
     missed: 'Rendez-vous manqués',
-    search_title: 'Rechercher les rendez-vous',
-    today_title: 'Rendez-vous d\'aujourd\'hui',
+    searchTitle: 'Rechercher les rendez-vous',
+    todayTitle: 'Rendez-vous d\'aujourd\'hui',
     messages: {
-      delete_appointment_message: 'Etes-vous sûr de vouloir supprimer ce rendez-vous?',
-      end_time_later_than_start: 'Veuillez sélectionnez une heure de fin plus tard que l\'heure de début.'
+      deleteAppointmentMessage: 'Etes-vous sûr de vouloir supprimer ce rendez-vous?',
+      endTimeLaterThanStart: 'Veuillez sélectionnez une heure de fin plus tard que l\'heure de début.'
     },
     buttons: {
-      new_button: '+ nouveau rendez-vous'
+      newButton: '+ nouveau rendez-vous'
     }
   },
   visits: {

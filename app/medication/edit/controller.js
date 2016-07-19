@@ -55,13 +55,13 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
 
   quantityLabel: function() {
     let i18n = this.get('i18n');
-    var returnLabel = i18n.t('medication.labels.quantity_requested'),
+    var returnLabel = i18n.t('medication.labels.quantityRequested'),
       isFulfilled = this.get('isFulfilled'),
       isFulfilling = this.get('isFulfilling');
     if (isFulfilling) {
-      returnLabel = i18n.t('medication.labels.quantity_dispensed');
+      returnLabel = i18n.t('medication.labels.quantityDispensed');
     } else if (isFulfilled) {
-      returnLabel = i18n.t('medication.labels.quantity_distributed');
+      returnLabel = i18n.t('medication.labels.quantityDistributed');
     }
     return returnLabel;
   }.property('isFulfilled'),
@@ -75,12 +75,12 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
       alertMessage,
       isFulfilled = this.get('isFulfilled');
     if (isFulfilled) {
-      alertTitle = i18n.t('medication.alerts.fulfilled_title');
+      alertTitle = i18n.t('medication.alerts.fulfilledTitle');
       alertMessage = 'The medication request has been fulfilled.';
       this.set('model.selectPatient', false);
     } else {
-      alertTitle = i18n.t('medication.alerts.saved_title');
-      alertMessage = i18n.t('medication.alerts.saved_message');
+      alertTitle = i18n.t('medication.alerts.savedTitle');
+      alertMessage = i18n.t('medication.alerts.savedMessage');
     }
     this.saveVisitIfNeeded(alertTitle, alertMessage);
   },

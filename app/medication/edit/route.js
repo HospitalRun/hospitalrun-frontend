@@ -5,9 +5,9 @@ import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, PatientListRoute, {
-  editTitle: t('medication.titles.edit_medication_request'),
+  editTitle: t('medication.titles.editMedicationRequest'),
   modelName: 'medication',
-  newTitle: t('medication.titles.new_medication_request'),
+  newTitle: t('medication.titles.newMedicationRequest'),
   database: Ember.inject.service(),
   getNewData: function(params) {
     var idParam = this.get('idParam'),
