@@ -576,20 +576,20 @@ export default {
     }
   },
   appointments: {
-    current_screen_title: 'Listado de citas',
-    edit_title: 'Editar cita',
-    new_title: 'Nueva cita',
-    section_title: 'Citas',
-    this_week: 'Citas esta semana',
+    currentScreenTitle: 'Listado de citas',
+    editTitle: 'Editar cita',
+    newTitle: 'Nueva cita',
+    sectionTitle: 'Citas',
+    thisWeek: 'Citas esta semana',
     missed: 'Citas perdidas',
-    search_title: 'Buscar citas',
-    today_title: 'Citas para hoy',
+    searchTitle: 'Buscar citas',
+    todayTitle: 'Citas para hoy',
     messages: {
-      delete_appointment_message: 'Esta seguro de eliminar esta cita?',
-      end_time_later_than_start: 'Seleccione una hora de finalizacion despues de la de inicio.'
+      deleteAppointmentMessage: 'Esta seguro de eliminar esta cita?',
+      endTimeLaterThanStart: 'Seleccione una hora de finalizacion despues de la de inicio.'
     },
     buttons: {
-      new_button: '+ nueva cita'
+      newButton: '+ nueva cita'
     }
   },
   visits: {

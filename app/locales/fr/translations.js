@@ -578,20 +578,20 @@ export default {
     }
   },
   appointments: {
-    current_screen_title: 'Liste des rendez-vous',
-    edit_title: 'Modifier le rendez-vous',
-    new_title: 'Nouveau rendez-vous',
-    section_title: 'Rendez-vous',
-    this_week: 'Rendez-vous de la semaine',
+    currentScreenTitle: 'Liste des rendez-vous',
+    editTitle: 'Modifier le rendez-vous',
+    newTitle: 'Nouveau rendez-vous',
+    sectionTitle: 'Rendez-vous',
+    thisWeek: 'Rendez-vous de la semaine',
     missed: 'Rendez-vous manqués',
-    search_title: 'Rechercher les rendez-vous',
-    today_title: 'Rendez-vous d\'aujourd\'hui',
+    searchTitle: 'Rechercher les rendez-vous',
+    todayTitle: 'Rendez-vous d\'aujourd\'hui',
     messages: {
-      delete_appointment_message: 'Etes-vous sûr de vouloir supprimer ce rendez-vous?',
-      end_time_later_than_start: 'Veuillez sélectionnez une heure de fin plus tard que l\'heure de début.'
+      deleteAppointmentMessage: 'Etes-vous sûr de vouloir supprimer ce rendez-vous?',
+      endTimeLaterThanStart: 'Veuillez sélectionnez une heure de fin plus tard que l\'heure de début.'
     },
     buttons: {
-      new_button: '+ nouveau rendez-vous'
+      newButton: '+ nouveau rendez-vous'
     }
   },
   visits: {

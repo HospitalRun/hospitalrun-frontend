@@ -673,20 +673,20 @@ export default {
     }
   },
   appointments: {
-    current_screen_title: 'Appointment List',
-    edit_title: 'Edit Appointment',
-    new_title: 'New Appointment',
-    section_title: 'Appointments',
-    this_week: 'Appointments This Week',
+    currentScreenTitle: 'Appointment List',
+    editTitle: 'Edit Appointment',
+    newTitle: 'New Appointment',
+    sectionTitle: 'Appointments',
+    thisWeek: 'Appointments This Week',
     missed: 'Missed Appointments',
-    search_title: 'Search Appointments',
-    today_title: 'Today\'s Appointments',
+    searchTitle: 'Search Appointments',
+    todayTitle: 'Today\'s Appointments',
     messages: {
-      delete_appointment_message: 'Are you sure you wish to delete this appointment?',
-      end_time_later_than_start: 'Please select an end time later than the start time.'
+      deleteAppointmentMessage: 'Are you sure you wish to delete this appointment?',
+      endTimeLaterThanStart: 'Please select an end time later than the start time.'
     },
     buttons: {
-      new_button: '+ new appointment'
+      newButton: '+ new appointment'
     },
     labels: {
       selectedStartingDate: 'Show Appointments On Or After'
