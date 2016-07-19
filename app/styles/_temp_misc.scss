@@ -99,11 +99,3 @@ $table-header-color: rgba($navy_drk2,.7);
   from { transform: scale(1) rotate(0deg); }
   to { transform: scale(1) rotate(360deg); }
 }
-
-@media print {
-  body { font-size: 10px; }
-
-  .ember-application { padding-left: 0; }
-
-  .panel-footer { display: none; }
-}

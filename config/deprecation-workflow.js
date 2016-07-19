@@ -1,6 +1,8 @@
 window.deprecationWorkflow = window.deprecationWorkflow || {};
 window.deprecationWorkflow.config = {
   workflow: [
-    { handler: "silence", matchMessage: "Using the injected `container` is deprecated. Please use the `getOwner` helper instead to access the owner of this object." }
+    { handler: "silence", matchId: "ember-application.injected-container" },
+    { handler: "silence", matchId: "ember-views.render-double-modify" },
+    { handler: "silence", matchId: "ember-views.did-init-attrs" }
   ]
 };

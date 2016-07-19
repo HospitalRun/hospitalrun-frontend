@@ -50,6 +50,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
       'add_diagnosis',
       'add_photo',
       'add_patient',
+      'add_procedure',
       'add_visit',
       'add_vitals',
       'admit_patient',
@@ -98,7 +99,6 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
       'add_inventory_purchase',
       'adjust_inventory_location',
       'delete_inventory_item',
-      'delete_inventory_purchase',
       'fulfill_inventory'
     ]
   }],

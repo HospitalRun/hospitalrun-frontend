@@ -16,9 +16,9 @@ export default AbstractEditController.extend(IsUpdateDisabled, UserSession, Pati
   }],
   title: function() {
     if (this.get('model.isNew')) {
-      return 'New Note for ' + this.get('model.patient.displayName');
+      return `${this.get('i18n').t('patients.notes.new_note')} ${this.get('model.patient.displayName')}`;
     } else {
-      return 'Updating Note from ' + (moment(this.get('model.date')).format('MM/DD/YYYY')) + ' for ' + this.get('model.patient.displayName');
+      return `${this.get('i18n').t('patients.notes.new_note')} ${(moment(this.get('model.date')).format('MM/DD/YYYY')) + ' for ' + this.get('model.patient.displayName')}`;
     }
   }.property('model.patient.displayName'),
   updateCapability: 'add_note',

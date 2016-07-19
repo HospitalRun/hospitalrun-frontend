@@ -3,7 +3,7 @@
         {{#em-form model=this submitButton=false }}
             <div class="row" data-test-selector="select-report-type">
                 <div class="form-group col-xs-6">
-                  <label class="control-label" for="report-type">Report Type</label>
+                  <label class="control-label" for="report-type">{{t 'inventory.reports.report_type'}}</label>
                   {{select-list
                     action=(action (mut reportType))
                     class='form-control'
@@ -59,7 +59,7 @@
                     </div>
                 </div>
 
-                <h3>Fields to Include</h3>
+                <h3>{{t "inventory.reports.fields"}}</h3>
                 <div class="row">
                     <div class="col-xs-1"></div>
                     {{em-checkbox label=reportColumns.id.label property="reportColumns.id.include" class="col-xs-2"}}
@@ -88,7 +88,7 @@
         {{/em-form}}
     </div>
     <div class="panel-footer">
-        <button class="btn btn-default" {{action 'generateReport'}}>Generate Report</button>
+        <button class="btn btn-default" {{action 'generateReport'}}>{{t 'inventory.reports.generate'}}</button>
     </div>
 </div>
 {{#if showReportResults}}
@@ -109,7 +109,7 @@
             </table>
         </div>
         <div class="panel-footer">
-            <a href={{csvExport}} target="_blank" download="report.csv" class="btn btn-default">Export Report</a>
+            <a href={{csvExport}} target="_blank" download="report.csv" class="btn btn-default">{{t 'inventory.reports.export'}}</a>
 
         </div>
     </div>

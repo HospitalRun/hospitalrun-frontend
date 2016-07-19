@@ -143,7 +143,8 @@ export default {
     no_users_found: 'Keine Benutzer gefunden.',
     are_you_sure_delete: 'Wollen Sie den Benutzer {{user}} sicher löschen?',
     user_has_been_saved: 'Der Benutzer wurde gespeichert.',
-    user_saved: 'Benutzer gespeichert'
+    user_saved: 'Benutzer gespeichert',
+    for_authorized_persons: 'Dieser Bericht ist nur für autorisierte Personen.'
   },
   buttons: {
     complete: 'Abschließen',

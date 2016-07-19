@@ -1,20 +1,21 @@
 import Ember from 'ember';
+import { translationMacro as t } from 'ember-i18n';
 export default Ember.Component.extend({
   tagName: 'span',
   showLoadingMessages: false,
   loadingMessages: [
-    'The top butterfly flight speed is 12 miles per hour. Some moths can fly 25 miles per hour!',
-    'Owls are the only birds that can see the color blue.',
-    'Cats have over 100 vocal sounds; dogs only have 10.',
-    'Humans use a total of 72 different muscles in speech.',
-    'More than 1,000 different languages are spoken on the continent of Africa.',
-    'An erythrophobe is someone who blushes easily.',
-    'The most common phobia in the world is odynophobia which is the fear of pain.',
-    'Your body uses 300 muscles to balance itself when you are standing still.',
-    'Certain frogs can be frozen solid then thawed, and continue living.',
-    'Our eyes are always the same size from birth, but our nose and ears never stop growing.',
-    'Your tongue is the only muscle in your body that is attached at only one end.',
-    'Camels have three eyelids to protect themselves from blowing sand.'
+    t('loading.messages.0'),
+    t('loading.messages.1'),
+    t('loading.messages.2'),
+    t('loading.messages.3'),
+    t('loading.messages.4'),
+    t('loading.messages.5'),
+    t('loading.messages.6'),
+    t('loading.messages.7'),
+    t('loading.messages.8'),
+    t('loading.messages.9'),
+    t('loading.messages.10'),
+    t('loading.messages.11')
   ],
 
   _setRandomMessage: function() {

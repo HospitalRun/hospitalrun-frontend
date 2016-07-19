@@ -21,7 +21,7 @@ export default Ember.Controller.extend(ModalHelper, ProgressDialog, {
         } else {
           this.showProgressModal();
           this.set('syncResults');
-          fileSystem. fileToString(fileToImport).then((fileAsString) => {
+          fileSystem.fileToString(fileToImport).then((fileAsString) => {
             var database = this.get('database');
             this.set('importFile');
             this.set('model.importFileName');

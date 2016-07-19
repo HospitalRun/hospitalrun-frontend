@@ -27,7 +27,8 @@ export default {
   },
   messages: {
     no_items_found: 'Nenhum item encontrado',
-    create_new_record: 'Criar uma nova gravação?'
+    create_new_record: 'Criar uma nova gravação?',
+    for_authorized_persons: 'Este relatório é apenas para pessoas autorizadas.'
   },
   buttons: {
     complete: 'Completo',

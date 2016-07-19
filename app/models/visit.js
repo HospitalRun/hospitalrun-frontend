@@ -19,6 +19,16 @@ function dateAcceptance(object) {
   return false;
 }
 
+const PAYMENT_STATES = {
+  CLEAR: 'clear',
+  PENDING: 'pending'
+};
+
+function paymentStateAcceptance(object) {
+  return !Object.keys(PAYMENT_STATES)
+      .some((state) => PAYMENT_STATES[state] === object.get('paymentState'));
+}
+
 export default AbstractModel.extend({
   additionalDiagnoses: DS.attr(), // Yes, the plural of diagnosis is diagnoses!
   charges: DS.hasMany('proc-charge', {
@@ -40,6 +50,7 @@ export default AbstractModel.extend({
   patient: DS.belongsTo('patient', {
     async: false
   }),
+  paymentState: DS.attr('string', { defaultValue: PAYMENT_STATES.PENDING }),
   primaryDiagnosis: DS.attr('string'), // AKA admitting diagnosis
   primaryBillingDiagnosis: DS.attr('string'), // AKA final diagnosis
   primaryBillingDiagnosisId: DS.attr('string'),
@@ -88,7 +99,13 @@ export default AbstractModel.extend({
         message: 'Please select an end date later than the start date'
       }
     },
-
+    paymentState: {
+      acceptance: {
+        accept: true,
+        if: paymentStateAcceptance
+      },
+      presence: true
+    },
     startDate: {
       acceptance: {
         accept: true,

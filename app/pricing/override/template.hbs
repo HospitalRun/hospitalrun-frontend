@@ -4,7 +4,7 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
   {{#em-form model=model submitButton=false}}
-    {{em-select label="Pricing Profile"
+    {{em-select label=(t 'billing.labels.pricing_profile')
       property="profile"
       content=pricingProfiles
       optionValuePath="selectObject"
@@ -12,6 +12,6 @@
       class="required pricing-profile"
       prompt=" "
     }}
-    {{em-input label="Price" property="price" class="required pricing-override-price"}}
+    {{em-input label=(t 'labels.price') property="price" class="required pricing-override-price"}}
   {{/em-form}}
 {{/modal-dialog}}

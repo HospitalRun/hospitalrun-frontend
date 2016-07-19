@@ -3,8 +3,8 @@
     <table class="table">
       <tr class="table-header">
         <th>{{t 'labels.name'}}</th>
-        <th>Discount Amount</th>
-        <th>Discount Percentage</th>
+        <th>{{t 'billing.labels.discount_amount'}}</th>
+        <th>{{t 'billing.labels.discount_percentage'}}</th>
         {{#if showActions}}
           <th>{{t 'labels.actions'}}</th>
         {{/if}}
@@ -20,7 +20,7 @@
                 <button class="btn btn-default neutral" {{action 'editItem' profile bubbles=false }}>{{t 'labels.edit'}}</button>
               {{/if}}
               {{#if canDelete}}
-                <button class="btn btn-default warning" {{action 'deleteItem' profile bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                <button class="btn btn-default warning" {{action 'deleteItem' profile bubbles=false }}><span class="octicon octicon-x"></span> {{t 'buttons.delete'}}</button>
               {{/if}}
             </td>
           {{/if}}
@@ -29,7 +29,7 @@
     </table>
   {{else}}
     <div class="alert alert-info">
-      <p>No pricing profiles found. {{#if canAdd}}<a href="#" {{action 'newItem'}}>Create a new record?</a>{{/if}}</p>
+      <p>{{t 'billing.alerts.no_pricing_profiles'}}. {{#if canAdd}}<a href="#" {{action 'newItem'}}>{{t 'messages.create_new_record'}}</a>{{/if}}</p>
     </div>
   {{/if}}
 {{/item-listing}}

@@ -6,6 +6,6 @@
   {{#em-form model=model submitButton=false }}{{/em-form}}
     <div class="alert alert-danger">
       <span class="glyphicon glyphicon-warning-sign"></span>
-      Are you sure you wish to delete <b>{{model.displayInvoiceNumber}}</b>?
+      {{t 'billing.alerts.delete_item' item=model.displayInvoiceNumber}}
     </div>
 {{/modal-dialog}}

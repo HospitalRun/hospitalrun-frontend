@@ -71,7 +71,9 @@ Try a browser refresh `cmd + r`.
 
 ## Loading sample data
 If you would like to load sample data, you can do so by navigating to **Load DB** under the Administration menu.  You should see the following screen:
+
 ![Load DB screenshot](screenshots/load-db.png)
+
 
 Click on ***Choose File*** and select the file **sample-data.txt** which is included in root directory of the repo at [sample-data.txt](sample-data.txt).
 Next, click on ***Load File***.  When the database load is complete a message will appear indicating if the load was successful.

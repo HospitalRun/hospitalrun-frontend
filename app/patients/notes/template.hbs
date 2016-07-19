@@ -6,7 +6,7 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
   {{#em-form model=model submitButton=false }}
-    {{em-text label=(t 'patients.notes.note_label') property="content" rows=3 class="test-note-content required form-input-group"}}
+    {{em-text label=(t 'labels.note') property="content" rows=3 class="test-note-content required form-input-group"}}
 
     <select name="note-visits" {{action 'changeVisit' on='change'}} class="form-control">
         <option selected={{is-not model.visit}}>
@@ -19,11 +19,11 @@
          </option>
       {{/each}}
     </select>
-    {{select-or-typeahead 
-      property="attribution" 
+    {{select-or-typeahead
+      property="attribution"
       label=(t 'patients.notes.on_behalf_of_label' )
-      list=physicianList 
-      selection=attribution 
+      list=physicianList
+      selection=attribution
       className="form-input-group test-note-attribution"
     }}
   {{/em-form}}

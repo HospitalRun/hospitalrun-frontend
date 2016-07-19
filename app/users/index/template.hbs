@@ -23,7 +23,7 @@
                   <button class="btn btn-default" {{action 'editItem' user bubbles=false }}>{{t 'labels.edit'}}</button>
                 {{/if}}
                 {{#if canDelete}}
-                  <button class="btn btn-default" {{action 'deleteItem' user bubbles=false }}>{{t 'labels.delete'}}</button>
+                  <button class="btn btn-default warning" {{action 'deleteItem' user bubbles=false }}><span class="octicon octicon-x"></span>{{t 'labels.delete'}}</button>
                 {{/if}}
               </td>
             {{/if}}

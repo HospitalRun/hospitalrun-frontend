@@ -1,22 +1,22 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false }}
-    {{em-input label="Name" property="name" class="required price-name"}}
+    {{em-input label=(t 'labels.name') property="name" class="required price-name"}}
     <div class="row">
-      {{em-input label="Price" property="price" class="required col-xs-2 price-amount"}}
-      {{select-or-typeahead property="expenseAccount" label="Department" list=expenseAccountList selection=model.expenseAccount className="col-xs-4 price-department"}}
+      {{em-input label=(t 'labels.price') property="price" class="required col-xs-2 price-amount"}}
+      {{select-or-typeahead property="expenseAccount" label=(t 'labels.department') list=expenseAccountList selection=model.expenseAccount className="col-xs-4 price-department"}}
     </div>
     <div class="row">
-      {{em-select label="Category" class="required col-xs-4 price-category"
+      {{em-select label=(t 'labels.category') class="required col-xs-4 price-category"
       property="category" content=categories
       selected=model.category }}
-      {{select-or-typeahead property="pricingType" label="Type" list=pricingTypes selection=model.pricingType className="col-xs-4 price-type" prompt=" "}}
+      {{select-or-typeahead property="pricingType" label=(t 'labels.type') list=pricingTypes selection=model.pricingType className="col-xs-4 price-type" prompt=" "}}
     </div>
     <div class="panel">
       <div class="panel-heading">
         <h3 class="panel-title">
-          Pricing profile overrides
+          {{t 'billing.labels.pricing_panel_overrides'}}
           {{#if showUpdateButton}}
-            <button class="btn btn-primary align-right" {{action "editOverride" bubbles=false }}><span class="octicon octicon-plus"></span>Add Override</button>
+            <button class="btn btn-primary align-right" {{action "editOverride" bubbles=false }}><span class="octicon octicon-plus"></span>{{t 'billing.buttons.add_override'}}</button>
           {{/if}}
         </h3>
       </div>
@@ -24,8 +24,8 @@
         <table class="table">
           <tbody>
             <tr class="table-header">
-              <th>Pricing Profile</th>
-              <th>Price</th>
+              <th>{{t 'billing.labels.pricing_profile'}}</th>
+              <th>{{t 'labels.price'}}</th>
               {{#if showUpdateButton}}
                 <th>{{t 'labels.actions'}}</th>
               {{/if}}
@@ -38,7 +38,7 @@
                   {{#if showUpdateButton}}
                     <button class="btn btn-default neutral" {{action "editOverride" override}}>{{t 'labels.edit'}}</button>
                     <button class="btn btn-default warning" {{action "showDeleteOverride" override bubbles=false }}>
-                      <span class="octicon octicon-x"></span>  Delete
+                      <span class="octicon octicon-x"></span>  {{t 'buttons.delete'}}
                     </button>
                   {{/if}}
                 </td>

@@ -2,6 +2,30 @@ export default {
   dashboard: {
     title: 'What would you like to do?'
   },
+  errors: {
+    inclusion: 'is not included in the list',
+    exclusion: 'is reserved',
+    invalid: 'is invalid',
+    confirmation: 'doesn\'t match {{attribute}}',
+    accepted: 'must be accepted',
+    empty: 'can\'t be empty',
+    blank: 'can\'t be blank',
+    present: 'must be blank',
+    tooLong: 'is too long (maximum is {{count}} characters)',
+    tooShort: 'is too short (minimum is {{count}} characters)',
+    wrongLength: 'is the wrong length (should be {{count}} characters)',
+    notANumber: 'is not a number',
+    notAnInteger: 'must be an integer',
+    greaterThan: 'must be greater than {{count}}',
+    greaterThanOrEqualTo: 'must be greater than or equal to {{count}}',
+    equalTo: 'must be equal to {{count}}',
+    lessThan: 'must be less than {{count}}',
+    lessThanOrEqualTo: 'must be less than or equal to {{count}}',
+    otherThan: 'must be other than {{count}}',
+    odd: 'must be odd',
+    even: 'must be even',
+    invalidNumber: 'not a valid number'
+  },
   navigation: {
     imaging: 'Imaging',
     inventory: 'Inventory',
@@ -12,6 +36,7 @@ export default {
     billing: 'Billing',
     administration: 'Administration',
     subnav: {
+      actions: 'Actions',
       requests: 'Requests',
       items: 'Items',
       completed: 'Completed',
@@ -37,7 +62,8 @@ export default {
       new_user: 'New User',
       admitted_patients: 'Admitted Patients',
       missed: 'Missed',
-      user_roles: 'User Roles'
+      user_roles: 'User Roles',
+      workflow: 'Workflow'
     },
     actions: {
       logout: 'Logout',
@@ -164,6 +190,7 @@ export default {
         add_diagnosis: 'Add Diagnosis',
         add_photo: 'Add Photo',
         add_patient: 'Add Patient',
+        add_procedure: 'Add Procedure',
         add_visit: 'Add Visit',
         add_vitals: 'Add Vitals',
         admit_patient: 'Admit Patient',
@@ -196,7 +223,6 @@ export default {
         add_inventory_purchase: 'Add Inventory Purchase',
         adjust_inventory_location: 'Adjust Inventory Location',
         delete_inventory_item: 'Delete Inventory Item',
-        delete_inventory_purchase: 'Delete Inventory Purchase',
         fulfill_inventory: 'Fulfill Inventory',
         user_roles: 'User Roles'
       },
@@ -206,12 +232,33 @@ export default {
       titles: {
         role_saved: 'Role Saved'
       }
+    },
+    workflow: {
+      admission_deposit_label: 'Admission deposit required',
+      clinic_prepayment_label: 'Clinic prepayment required',
+      followup_prepayment_label: 'Followup prepayment required',
+      outpatient_lab_label: 'Outpatient Lab prepayment required',
+      outpatient_imaging_label: 'Outpatient Imaging prepayment required',
+      outpatient_medication_label: 'Outpatient Medication prepayment required',
+
+      titles: {
+        options_saved: 'Options Saved'
+      },
+      messages: {
+        options_saved: 'The workflow options have been saved'
+      },
+
+      new_title: 'Workflow Options',
+      edit_title: 'Workflow Options',
+      workflow_label: 'Workflow'
+
     }
   },
   labels: {
     cptcode: 'CPT Code',
     loading: 'Loading',
     name: 'Name',
+    note: 'Note',
     patient: 'Patient',
     prescriber: 'Prescriber',
     quantity: 'Quantity',
@@ -244,6 +291,7 @@ export default {
     type: 'Type',
     sex: 'Sex',
     age: 'Age',
+    search: 'Search',
     username: 'Username',
     email: 'Email',
     role: 'Role',
@@ -281,7 +329,27 @@ export default {
     physician: 'Physician',
     assisting: 'Assisting',
     anesthesia: 'Anesthesia',
-    procedures: 'Procedures'
+    procedures: 'Procedures',
+    number: 'Number',
+    bill_date: 'Bill Date',
+    balance_due: 'Balance Due',
+    amount: 'Amount',
+    date_paid: 'Date Paid',
+    credit_to: 'Credit To',
+    invoice_id: 'Invoice ID',
+    line_items: 'Line Items',
+    discount: 'Discount',
+    excess: 'Excess',
+    price: 'Price',
+    total: 'Total',
+    expense_to: 'Expense To',
+    grand_total: 'Grand Total',
+    remarks: 'Remarks',
+    payments: 'Payments',
+    category: 'Category',
+    department: 'Department',
+    address: 'Address',
+    country: 'Country'
   },
   messages: {
     no_items_found: 'No items found.',
@@ -295,12 +363,17 @@ export default {
     on_behalf_of: 'on behalf of',
     new_patient_has_to_be_created: 'A new patient needs to be created...Please wait..',
     no_notes_available: 'No additional clinical notes are available for this visit.',
-    sorry: 'Sorry, something went wrong...'
+    sorry: 'Sorry, something went wrong...',
+    for_authorized_persons: 'This report is for authorized persons only.'
   },
   alerts: {
     please_wait: 'Please Wait'
   },
+  headings: {
+    charged_items: 'Charged Items'
+  },
   buttons: {
+    add_item: 'Add Item',
     complete: 'Complete',
     cancel: 'Cancel',
     close: 'Close',
@@ -323,7 +396,9 @@ export default {
     new_item: '+ new item',
     new_request_plus: '+ new request',
     add_visit: 'Add Visit',
-    search: 'Search'
+    search: 'Search',
+    edit: 'Edit',
+    add_line_item: 'Add Line Item'
   },
   login: {
     messages: {
@@ -334,6 +409,25 @@ export default {
       password: 'Password',
       username: 'Username',
       sign_in:  'Sign in'
+    }
+  },
+  loading: {
+    progressBar: {
+      progress: '{{progressBarValue}}% Complete'
+    },
+    messages: {
+      0: 'The top butterfly flight speed is 12 miles per hour. Some moths can fly 25 miles per hour!',
+      1: 'Owls are the only birds that can see the color blue.',
+      2: 'Cats have over 100 vocal sounds; dogs only have 10.',
+      3: 'Humans use a total of 72 different muscles in speech.',
+      4: 'More than 1,000 different languages are spoken on the continent of Africa.',
+      5: 'An erythrophobe is someone who blushes easily.',
+      6: 'The most common phobia in the world is odynophobia which is the fear of pain.',
+      7: 'Your body uses 300 muscles to balance itself when you are standing still.',
+      8: 'Certain frogs can be frozen solid then thawed, and continue living.',
+      9: 'Our eyes are always the same size from birth, but our nose and ears never stop growing.',
+      10: 'Your tongue is the only muscle in your body that is attached at only one end.',
+      11: 'Camels have three eyelids to protect themselves from blowing sand.'
     }
   },
   inventory: {
@@ -401,6 +495,7 @@ export default {
       name: 'Name',
       mark_as_consumed: 'Mark as Consumed',
       new_item: 'New Item',
+      all_items: 'All Items',
       original_quantity: 'Original Quantity',
       print: 'Print',
       print_barcode: 'Print Barcode',
@@ -592,31 +687,56 @@ export default {
     },
     buttons: {
       new_button: '+ new appointment'
+    },
+    labels: {
+      selectedStartingDate: 'Show Appointments On Or After'
+    }
+  },
+  vitals: {
+    messages: {
+      delete: 'Are you sure you wish to delete these vitals?'
+    },
+    labels: {
+      date_recorded: 'Date Recorded',
+      temperature: 'Temperature',
+      weight: 'Weight',
+      height: 'Height',
+      sbp: 'SBP',
+      dbp: 'DBP',
+      heart_rate: 'Heart Rate',
+      respiratory_rate: 'Respiratory Rate'
     }
   },
   visits: {
-    edit: {
-      actions: 'Actions',
-      edit: 'Edit',
-      date: 'Date',
-      authored_by: 'Authored By',
-      note: 'Note',
-      notes: 'Notes',
-      new_note: 'New Note',
-      visit_information: 'Visit Information',
+    titles: {
+      additional_diagnoses: 'Additional Diagnoses'
+    },
+    messages: {
+      delete: 'Are you sure you wish to delete this visit?'
+    },
+    buttons: {
+      new_procedure: 'New Procedure',
+      new_lab: 'New Lab',
       new_appointment: 'New Appointment',
       add_diagnosis: 'Add Diagnosis',
-      diagnosis: 'Diagnosis',
-      delete: 'Delete',
-      procedure: 'Procedure',
-      procedures: 'Procedures',
-      new_procedure: 'New Procedure',
-      labs: 'Labs',
-      new_lab: 'New Lab',
-      imaging: 'Imaging',
       new_imaging: 'New Imaging',
+      new_medication: 'New Medication',
+      new_vitals: 'New Vitals'
+    },
+    labels: {
+      diagnosis: 'Diagnosis',
+      procedure: 'Procedure',
+      authored_by: 'Authored By',
+      labs: 'Labs',
+      imaging: 'Imaging',
+      visit_information: 'Visit Information',
+      examiner: 'Examiner',
       medication: 'Medication',
-      new_medication: 'New Medication'
+      status: 'Visit Status',
+      admitting_diagnosis: 'Admitting Diagnosis',
+      final_diagnosis: 'Final/Billing Diagnosis',
+      visit_type: 'Visit Type',
+      vitals: 'Vitals'
     }
   },
   labs: {
@@ -646,15 +766,205 @@ export default {
       request_saved_message: 'The lab request has been saved.'
     }
   },
-  common: {
-    actions: 'Actions'
-  },
   patients: {
+    navigation: {
+      photos: 'Photos',
+      general: 'General',
+      history: 'History',
+      appointments: 'Appointments',
+      visits: 'Visits',
+      medication: 'Medication',
+      imaging: 'Imaging',
+      labs: 'Labs',
+      social_work: 'Social Work'
+    },
+    titles: {
+      expenses: 'Expenses',
+      additionalContacts: 'Additional Contacts',
+      family_information: 'Family Information',
+      delete: 'Delete Patient',
+      new: 'New Patient',
+      edit: 'Edit Patient',
+      patient: 'Patient Report',
+      patient_listing: 'Patient Listing',
+      patient_report: 'Patient Report',
+      add_photo: 'Add Photo',
+      edit_photo: 'Edit Photo',
+      social_work: 'Expense',
+      family_info: 'Family Info',
+      delete_family_member: 'Delete Family Member',
+      delete_expense: 'Delete Expense',
+      delete_photo: 'Delete Photo',
+      delete_contact: 'Delete Contact',
+      saved_patient: 'Patient Saved'
+    },
+    messages: {
+      are_you_sure_delete: 'Are you sure you want to delete this {{object}}?',
+      delete_patient: 'Are you sure you wish to delete {{firstName}} {{lastName}}?',
+      no_patients_found: 'No patients found.',
+      saved_patient: 'The patient record for {{displayName}} has been saved.',
+      not_found_quick_add: 'The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.',
+      create_new_patient: 'Create a new patient record?'
+    },
+    buttons: {
+      add_expense: 'Add Expense',
+      add_contact: 'Add Contact',
+      new_lab: 'New Lab',
+      new_visit: 'New Visit',
+      new_medication: 'New Medication',
+      new_imaging: 'New Imaging',
+      add_family_member: 'Add Family Member',
+      new_photo: 'New Photo',
+      new_appointment: 'New Appointment',
+      back_to_patients: 'Back to Patient List',
+      new_patient: '+ new patient'
+    },
+    headings: {
+      history: 'History',
+      history_since: 'History Since'
+    },
+    labels: {
+      primary_diagnosis: 'Primary Diagnoses',
+      secondary_diagnosis: 'Secondary Diagnoses',
+      monthly_cost: 'Monthly Cost',
+      total_montly_expense: 'Total Monthly Expenses',
+      patient_type: 'Patient Type',
+      admission_date: 'Admission Date',
+      patient_days: 'Patient Days',
+      discharge_date: 'Discharge Date',
+      discharge: 'Discharge',
+      admit: 'Admit',
+      relationships: 'Relationships',
+      phone: 'Phone',
+      email: 'Email',
+      first_name: 'First Name',
+      middle_name: 'Middle Name',
+      last_name: 'Last Name',
+      sex: 'Sex',
+      dob: 'DOB',
+      date_of_birth: 'Date Of Birth',
+      place_of_birth: 'Place Of Birth',
+      sources: 'Sources',
+      costs: 'Costs',
+      civil_status: 'Civil Status',
+      relationship: 'Relationship To Patient',
+      education: 'Education',
+      occupation: 'Occupation',
+      income: 'Income',
+      insurance: 'Insurance',
+      date_processed: 'Date Processed',
+      status: 'Patient Status',
+      external_patient_id: 'External Patient Id',
+      blood_type: 'Blood Type',
+      clinic: 'Clinic Site',
+      referred_by: 'Referred By',
+      referred_date: 'Referred Date',
+      religion: 'Religion',
+      parent: 'Parent/Guardian'
+    },
     notes: {
+      new_note: 'New Note for',
+      update_note: 'Updating Note from',
       on_behalf_of_label: 'On Behalf Of',
       on_behalf_of_copy: 'on behalf of',
-      please_select_a_visit: 'Please select a visit',
-      note_label: 'Note'
+      please_select_a_visit: 'Please select a visit'
+    }
+  },
+  billing: {
+    alerts: {
+      no_invoice_found: 'No invoices found',
+      delete_item: 'Are you sure you wish to delete {{item}}?',
+      no_pricing_items: 'No pricing items found.',
+      no_pricing_profiles: 'No pricing profiles found.'
+    },
+    buttons: {
+      create_invoice: 'Create an invoice?',
+      add_override: 'Add Override'
+    },
+    labels: {
+      external_invoice_number: 'External Invoice #',
+      payment_profile: 'Payment Profile',
+      actual_charges: 'Actual Charges',
+      insurance: 'National Insurance',
+      hmo_com: 'HMO/COM',
+      payments_deposits: 'Payments/Deposits',
+      pricing_panel_overrides: 'Pricing profile overrides',
+      pricing_profile: 'Pricing Profile',
+      discount_amount: 'Discount Amount',
+      discount_percentage: 'Discount Percentage'
+    }
+  },
+  print: {
+    invoice: {
+      labels: {
+        patient_name: 'NAME OF PATIENT:',
+        patient_id: 'PATIENT #:',
+        patient_age: 'AGE:',
+        patient_address: 'ADDRESS:',
+        date_admitted: 'ADMITTED:',
+        date_discharged: 'DISCHARGE:',
+        discharge_notes: 'Discharge Notes:',
+        remarks: 'Remarks:',
+        billed_by: 'Billed by:',
+        billed_date: 'Bill Date:',
+        spacer: '__________________________________________'
+      },
+      messages: {
+        where_conducted: 'were deducted during my confinement'
+      },
+      titles: {
+        patient_member: 'Patient-Member',
+        rel_contact: 'Relationship/Contact no.',
+        patients: 'PATIENT\'S',
+        billing_statement: 'BILLING STATEMENT'
+      }
+    }
+  },
+  procedures: {
+    titles: {
+      add_charge_item: 'Add Charge Item',
+      delete_charge_item: 'Delete Charge Item',
+      medication_used: 'Medication Used',
+      delete_medication_used: 'Delete Medication Used',
+      add_medication_used: 'Add Medication Used',
+      edit_medication_used: 'Edit Medication Used',
+      edit: 'Edit Procedure',
+      saved: 'Procedure Saved',
+      new: 'New Procedure'
+    },
+    lables: {
+      medication_used: 'Medication Used'
+    },
+    messages: {
+      delete_medication: 'Are you sure you want to delete this medication?',
+      delete: 'Are you sure you wish to delete this procedure?'
+    },
+    buttons: {
+      add_medication: 'Add Medication'
+    }
+  },
+  components: {
+    chargesByTypeTab: {
+      charges: 'charges'
+    },
+    takePhoto: {
+      how: 'How Do You Want To Add A Photo?',
+      takePhoto: 'Take photo',
+      uploadPhoto: 'Upload Photo',
+      uploadFile: 'Upload File',
+      camera: 'Camera',
+      photo: 'photo',
+      preview: 'preview'
+    },
+    quantityConv: {
+      unit: 'Unit',
+      conversion: 'What does 1 {{name}} contain?'
+    },
+    quantityCalc: {
+      result: '{{targetUnit}} total: {{calculated}}'
+    },
+    priceList: {
+      charges: '{{pricingType}} charges'
     }
   }
 };
