@@ -3,11 +3,11 @@
     <table class="table">
       <tr class="table-header">
         <th>{{t 'labels.number'}}</th>
-        <th>{{t 'labels.bill_date'}}</th>
+        <th>{{t 'labels.billDate'}}</th>
         <th>{{t 'labels.status'}}</th>
         <th>{{t 'labels.patient'}}</th>
         <th>{{t 'labels.total'}}</th>
-        <th>{{t 'labels.balance_due'}}</th>
+        <th>{{t 'labels.balanceDue'}}</th>
         {{#if showActions}}
           <th>{{t 'labels.actions'}}</th>
         {{/if}}
@@ -25,7 +25,7 @@
               {{#if showActions}}
                 {{#if canAddPayment}}
                   <button class="btn btn-default neutral" {{action 'showAddPayment' invoice bubbles=false }}>
-                    <span class="octicon octicon-plus"></span> {{t 'admin.roles.capability.add_payment'}}
+                    <span class="octicon octicon-plus"></span> {{t 'admin.roles.capability.addPayment'}}
                   </button>
                 {{/if}}
                 {{#if canAdd}}

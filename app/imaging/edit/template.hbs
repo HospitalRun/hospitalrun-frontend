@@ -15,7 +15,7 @@
         }}
       </div>
       {{checkbox-or-typeahead property="imagingTypeName"
-        label=(t 'labels.imaging_type') list=objectTypeList
+        label=(t 'labels.imagingType') list=objectTypeList
         selection=selectedImagingType
         optionLabelPath='name'
         typeAheadType='pricing'
@@ -31,13 +31,13 @@
           <p class="form-control-static">{{model.visit.visitDate}}</p>
         </div>
         <div class="form-group col-xs-9">
-          <label>{{t 'labels.imaging_type'}}</label>
+          <label>{{t 'labels.imagingType'}}</label>
           <p class="form-control-static">{{model.imagingType.name}}</p>
         </div>
       </div>
       <div class="row">
         <div class="form-group col-xs-12">
-          <label>{{t 'labels.requested_by'}}</label>
+          <label>{{t 'labels.requestedBy'}}</label>
           <p class="form-control-static">{{model.requestedBy}}</p>
         </div>
       </div>

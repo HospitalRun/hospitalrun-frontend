@@ -70,7 +70,7 @@
     {{select-or-typeahead property="expenseAccount" label=(t 'inventory.labels.bill_to') list=expenseAccountList selection=model.expenseAccount class="test-bill-to"}}
     {{#if isFulfilling}}
       <div class="row">
-        {{date-picker property="dateCompleted" label=(t 'labels.date_completed') class="col-sm-4"}}
+        {{date-picker property="dateCompleted" label=(t 'labels.dateCompleted') class="col-sm-4"}}
       </div>
       {{inventory-location-picker label=(t 'inventory.labels.pull_from') quantityRequested=model.quantity
         locationList=model.inventoryItem.availableLocations
