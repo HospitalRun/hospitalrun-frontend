@@ -38,7 +38,7 @@ export default AbstractEditController.extend({
   title: function() {
     var isNew = this.get('model.isNew');
     if (isNew) {
-      return this.get('i18n').t('procedures.titles.add_charge_item');
+      return this.get('i18n').t('procedures.titles.addChargeItem');
     }
     return this.get('i18n').t('procedures.titles.edit_charge_item');
   }.property('model.isNew'),

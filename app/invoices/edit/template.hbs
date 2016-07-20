@@ -27,8 +27,8 @@
       {{/if}}
     </div>
     <div class="row">
-      {{em-input property="externalInvoiceNumber" label=(t 'billing.labels.external_invoice_number') class="col-xs-3 external-invoice-no"}}
-      {{em-select label=(t 'billing.labels.payment_profile')
+      {{em-input property="externalInvoiceNumber" label=(t 'billing.labels.externalInvoiceNumber') class="col-xs-3 external-invoice-no"}}
+      {{em-select label=(t 'billing.labels.paymentProfile')
         property="paymentProfile"
         content=pricingProfiles
         optionValuePath="selectObject"
@@ -53,10 +53,10 @@
         <table class="table">
           <tr class="table-header">
             <th class="col-xs-5">{{t 'labels.description'}}</th>
-            <th class="col-xs-1 text-right">{{t 'billing.labels.actual_charges'}}</th>
+            <th class="col-xs-1 text-right">{{t 'billing.labels.actualCharges'}}</th>
             <th class="col-xs-1 text-right">{{t 'labels.discount'}}</th>
             <th class="col-xs-1 text-right">{{t 'billing.labels.insurance'}}</th>
-            <th class="col-xs-1 text-right">{{t 'billing.labels.hmo_com'}}</th>
+            <th class="col-xs-1 text-right">{{t 'billing.labels.hmoCom'}}</th>
             <th class="col-xs-1 text-right">{{t 'labels.excess'}}</th>
             <th class="col-xs-2 text-right">{{t 'labels.action'}}</th>
           </tr>
@@ -181,7 +181,7 @@
           </tr>
           <tr>
             <td>
-              <strong>{{t 'billing.labels.payments_deposits'}}</strong>
+              <strong>{{t 'billing.labels.paymentsDeposits'}}</strong>
             </td>
             <td colspan="4"></td>
             <td class="text-right">-{{number-format model.paidTotal}}</td>

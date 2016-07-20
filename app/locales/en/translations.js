@@ -872,75 +872,75 @@ export default {
   },
   billing: {
     alerts: {
-      no_invoice_found: 'No invoices found',
-      delete_item: 'Are you sure you wish to delete {{item}}?',
-      no_pricing_items: 'No pricing items found.',
-      no_pricing_profiles: 'No pricing profiles found.'
+      noInvoiceFound: 'No invoices found',
+      deleteItem: 'Are you sure you wish to delete {{item}}?',
+      noPricingItems: 'No pricing items found.',
+      noPricingProfiles: 'No pricing profiles found.'
     },
     buttons: {
-      create_invoice: 'Create an invoice?',
-      add_override: 'Add Override'
+      createInvoice: 'Create an invoice?',
+      addOverride: 'Add Override'
     },
     labels: {
-      external_invoice_number: 'External Invoice #',
-      payment_profile: 'Payment Profile',
-      actual_charges: 'Actual Charges',
+      externalInvoiceNumber: 'External Invoice #',
+      paymentProfile: 'Payment Profile',
+      actualCharges: 'Actual Charges',
       insurance: 'National Insurance',
-      hmo_com: 'HMO/COM',
-      payments_deposits: 'Payments/Deposits',
-      pricing_panel_overrides: 'Pricing profile overrides',
-      pricing_profile: 'Pricing Profile',
-      discount_amount: 'Discount Amount',
-      discount_percentage: 'Discount Percentage'
+      hmoCom: 'HMO/COM',
+      paymentsDeposits: 'Payments/Deposits',
+      pricingPanelOverrides: 'Pricing profile overrides',
+      pricingProfile: 'Pricing Profile',
+      discountAmount: 'Discount Amount',
+      discountPercentage: 'Discount Percentage'
     }
   },
   print: {
     invoice: {
       labels: {
-        patient_name: 'NAME OF PATIENT:',
-        patient_id: 'PATIENT #:',
-        patient_age: 'AGE:',
-        patient_address: 'ADDRESS:',
-        date_admitted: 'ADMITTED:',
-        date_discharged: 'DISCHARGE:',
-        discharge_notes: 'Discharge Notes:',
+        patientName: 'NAME OF PATIENT:',
+        patientId: 'PATIENT #:',
+        patientAge: 'AGE:',
+        patientAddress: 'ADDRESS:',
+        dateAdmitted: 'ADMITTED:',
+        dateDischarged: 'DISCHARGE:',
+        dischargeNotes: 'Discharge Notes:',
         remarks: 'Remarks:',
-        billed_by: 'Billed by:',
-        billed_date: 'Bill Date:',
+        billedBy: 'Billed by:',
+        billedDate: 'Bill Date:',
         spacer: '__________________________________________'
       },
       messages: {
-        where_conducted: 'were deducted during my confinement'
+        whereConducted: 'were deducted during my confinement'
       },
       titles: {
-        patient_member: 'Patient-Member',
-        rel_contact: 'Relationship/Contact no.',
+        patientMember: 'Patient-Member',
+        relContact: 'Relationship/Contact no.',
         patients: 'PATIENT\'S',
-        billing_statement: 'BILLING STATEMENT'
+        billingStatement: 'BILLING STATEMENT'
       }
     }
   },
   procedures: {
     titles: {
-      add_charge_item: 'Add Charge Item',
-      delete_charge_item: 'Delete Charge Item',
-      medication_used: 'Medication Used',
-      delete_medication_used: 'Delete Medication Used',
-      add_medication_used: 'Add Medication Used',
-      edit_medication_used: 'Edit Medication Used',
+      addChargeItem: 'Add Charge Item',
+      deleteChargeItem: 'Delete Charge Item',
+      medicationUsed: 'Medication Used',
+      deleteMedicationUsed: 'Delete Medication Used',
+      addMedicationUsed: 'Add Medication Used',
+      editMedicationUsed: 'Edit Medication Used',
       edit: 'Edit Procedure',
       saved: 'Procedure Saved',
       new: 'New Procedure'
     },
     lables: {
-      medication_used: 'Medication Used'
+      medicationUsed: 'Medication Used'
     },
     messages: {
-      delete_medication: 'Are you sure you want to delete this medication?',
+      deleteMedication: 'Are you sure you want to delete this medication?',
       delete: 'Are you sure you wish to delete this procedure?'
     },
     buttons: {
-      add_medication: 'Add Medication'
+      addMedication: 'Add Medication'
     }
   },
   components: {
