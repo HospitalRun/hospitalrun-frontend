@@ -36,7 +36,7 @@
     "broccoli-merge-trees": "^1.1.1",
     "broccoli-serviceworker": "0.1.0",
     "ember-ajax": "2.4.1",
-    "ember-cli": "2.6.2",
+    "ember-cli": "2.6.3",
     "ember-cli-active-link-wrapper": "0.2.0",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-babel": "^5.1.6",
