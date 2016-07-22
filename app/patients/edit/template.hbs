@@ -23,7 +23,7 @@
             {{#if canAddNote}}
               <div class="panel-heading clearfix">
                 <button type="button" class="btn btn-primary align-right" {{action "showAddPatientNote" bubbles=false on="click"}}>
-                  <span class="octicon octicon-plus"></span>{{t 'buttons.new_note'}}
+                  <span class="octicon octicon-plus"></span>{{t 'buttons.newNote'}}
                 </button>
               </div>
             {{/if}}
@@ -78,7 +78,7 @@
                     {{/if}}
                     {{#if visit.imaging}}
                       <div class="ph-note-item">
-                        <h5 class="ph-note-heading">{{t 'labels.image_orders' }}</h5>
+                        <h5 class="ph-note-heading">{{t 'labels.imageOrders' }}</h5>
                         {{#each visit.imaging as |imaging|}}
                             <div {{action 'editImaging' imaging }}>
                               <h5 class="ph-note-heading">{{date-format imaging.imagingDate}}: {{imaging.imagingType.name}}</h5>
@@ -90,7 +90,7 @@
                     {{/if}}
                     {{#if visit.labs}}
                       <div class="ph-note-item">
-                        <h5 class="ph-note-heading">{{t 'labels.lab_orders' }}</h5>
+                        <h5 class="ph-note-heading">{{t 'labels.labOrders' }}</h5>
                         {{#each visit.labs as |lab|}}
                             <div {{action 'editLab' lab }}>
                               <h5 class="ph-note-heading">{{date-format lab.labDate}}: {{lab.labType.name}}</h5>
@@ -112,13 +112,13 @@
                       </div>
                     {{else}}
                       <div class="ph-note-item">
-                        {{t 'messages.no_notes_available'}}
+                        {{t 'messages.noNotesAvailable'}}
                       </div>
                     {{/if}}
                   </div>
                 {{/each}}
               {{else}}
-                {{t 'messages.no_history_available'}}
+                {{t 'messages.noHistoryAvailable'}}
               {{/if}}
             </div>
           </div>
@@ -326,8 +326,8 @@
             <div class="panel-body detail-section-content">
               <table class="table" >
                 <tr class="table-header">
-                  <th>{{t 'labels.start_date'}}</th>
-                  <th>{{t 'labels.end_date'}}</th>
+                  <th>{{t 'labels.startDate'}}</th>
+                  <th>{{t 'labels.endDate'}}</th>
                   <th>{{t 'visits.labels.diagnosis'}}</th>
                   <th>{{t 'labels.provider'}}</th>
                   <th>{{t 'labels.location'}}</th>

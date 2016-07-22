@@ -6,11 +6,11 @@
     <div class="row">
       {{#unless model.isNew}}
         <div class="form-group col-xs-2">
-          <label>{{t 'labels.invoice_id'}}</label>
+          <label>{{t 'labels.invoiceId'}}</label>
           <p class="form-control-static">{{model.id}}</p>
         </div>
       {{/unless}}
-      {{date-picker property="billDate" label=(t 'labels.bill_date') class="col-xs-2"}}
+      {{date-picker property="billDate" label=(t 'labels.billDate') class="col-xs-2"}}
       {{#if model.isNew}}
         {{patient-typeahead property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="col-xs-4 required invoice-patient"}}
         {{em-select class="col-xs-4 required invoice-visit" label=(t 'labels.visit')
@@ -43,9 +43,9 @@
     <div class="panel detail-section">
       <div class="panel-heading">
         <h3 class="panel-title">
-          {{t 'labels.line_items'}}
+          {{t 'labels.lineItems'}}
           {{#if canAddCharge}}
-            <button class="btn btn-primary align-right" {{action "showAddLineItem" bubbles=false }}><span class="octicon octicon-plus"></span>{{t 'buttons.add_line_item'}}</button>
+            <button class="btn btn-primary align-right" {{action "showAddLineItem" bubbles=false }}><span class="octicon octicon-plus"></span>{{t 'buttons.addLineItem'}}</button>
           {{/if}}
         </h3>
       </div>
@@ -112,7 +112,7 @@
                   <th class="col-xs-2">
                     {{#if canAddCharge}}
                       <button class="btn btn-primary" {{action "addItemCharge" item}}>
-                        <span class="octicon octicon-plus"></span>{{t 'admin.roles.capability.add_charge'}}
+                        <span class="octicon octicon-plus"></span>{{t 'admin.roles.capability.addCharge'}}
                       </button>
                     {{/if}}
                   </th>
@@ -189,7 +189,7 @@
           </tr>
           <tr>
             <td>
-              <strong>{{t 'labels.grand_total'}}</strong>
+              <strong>{{t 'labels.grandTotal'}}</strong>
             </td>
             <td colspan="4"></td>
             <td class="text-right">{{number-format model.remainingBalance}}</td>
@@ -214,7 +214,7 @@
       <h3 class="panel-title">
         {{t 'labels.payments'}}
         {{#if canAddPayment}}
-          <button class="btn btn-primary align-right" {{action "showAddPayment" model bubbles=false }}><span class="octicon octicon-plus"></span>{{t 'admin.roles.capability.add_payment'}}</button>
+          <button class="btn btn-primary align-right" {{action "showAddPayment" model bubbles=false }}><span class="octicon octicon-plus"></span>{{t 'admin.roles.capability.addPayment'}}</button>
         {{/if}}
       </h3>
     </div>

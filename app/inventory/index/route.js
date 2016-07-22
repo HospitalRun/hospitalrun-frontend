@@ -10,7 +10,7 @@ export default AbstractIndexRoute.extend(UserSession, {
       return null;
     }
   }.property(),
-  newButtonText: t('buttons.new_request_plus'),
+  newButtonText: t('buttons.newRequestPlus'),
   pageTitle: t('navigation.subnav.requests'),
 
   _getStartKeyFromItem: function(item) {

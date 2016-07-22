@@ -8,7 +8,7 @@
         <th>{{t 'labels.name'}}</th>
         <th>{{t 'labels.price'}}</th>
         <th>{{t 'labels.type'}}</th>
-        <th>{{t 'labels.expense_to'}}</th>
+        <th>{{t 'labels.expenseTo'}}</th>
         {{#if showActions}}
           <th>{{t 'labels.actions'}}</th>
         {{/if}}
@@ -39,7 +39,7 @@
     </table>
   {{else}}
     <div class="alert alert-info">
-      <p>{{t 'billing.alerts.noPricingItems'}} {{#if canAdd}}<a href="#" {{action 'newItem'}}>{{t 'messages.create_new_record'}}</a>{{/if}}</p>
+      <p>{{t 'billing.alerts.noPricingItems'}} {{#if canAdd}}<a href="#" {{action 'newItem'}}>{{t 'messages.createNewRecord'}}</a>{{/if}}</p>
     </div>
   {{/if}}
 {{/item-listing}}

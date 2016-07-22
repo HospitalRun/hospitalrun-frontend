@@ -16,8 +16,8 @@
       {{/if}}
     {{/if}}
     {{em-input property="amount" label=(t 'labels.amount') class="required payment-amount"}}
-    {{date-picker property="datePaid" label=(t 'labels.date_paid') maxDate="now" class="required"}}
-    {{select-or-typeahead property="expenseAccount" label=(t 'labels.credit_to') list=expenseAccountList selection=model.expenseAccount }}
+    {{date-picker property="datePaid" label=(t 'labels.datePaid') maxDate="now" class="required"}}
+    {{select-or-typeahead property="expenseAccount" label=(t 'labels.creditTo') list=expenseAccountList selection=model.expenseAccount }}
     {{em-text property="notes" label=(t 'labels.notes')}}
   {{/em-form}}
 {{/modal-dialog}}
