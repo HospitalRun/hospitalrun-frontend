@@ -139,9 +139,7 @@ test('Delete an appointment', function(assert) {
 
 function createAppointment(startDate=(new Date()), endDate=(moment().add(1, 'day').toDate()), status='Scheduled') {
   visit('/appointments/edit/new');
-  fillIn('.test-patient-input .tt-input', 'Lennex Zinyando - P00017');
-  triggerEvent('.test-patient-input .tt-input', 'input');
-  triggerEvent('.test-patient-input .tt-input', 'blur');
+  typeAheadFillIn('.test-patient-input', 'Lennex Zinyando - P00017');
   select('.test-appointment-type', 'Admission');
   select('.test-appointment-status', status);
   waitToAppear('.test-appointment-start input');
@@ -151,9 +149,7 @@ function createAppointment(startDate=(new Date()), endDate=(moment().add(1, 'day
   andThen(function() {
     selectDate('.test-appointment-end input', endDate);
   });
-  fillIn('.test-appointment-location .tt-input', 'Harare');
-  triggerEvent('.test-appointment-location .tt-input', 'input');
-  triggerEvent('.test-appointment-location .tt-input', 'blur');
+  typeAheadFillIn('.test-appointment-location', 'Harare');
   fillIn('.test-appointment-with', 'Dr Test');
   click('button:contains(Add)');
   waitToAppear('.table-header');

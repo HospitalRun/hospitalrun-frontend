@@ -924,6 +924,7 @@ export default {
     titles: {
       addChargeItem: 'Add Charge Item',
       deleteChargeItem: 'Delete Charge Item',
+      editChargeItem: 'Edit Charge Item',
       medicationUsed: 'Medication Used',
       deleteMedicationUsed: 'Delete Medication Used',
       addMedicationUsed: 'Add Medication Used',
@@ -932,12 +933,13 @@ export default {
       saved: 'Procedure Saved',
       new: 'New Procedure'
     },
-    lables: {
+    labels: {
       medicationUsed: 'Medication Used'
     },
     messages: {
       deleteMedication: 'Are you sure you want to delete this medication?',
-      delete: 'Are you sure you wish to delete this procedure?'
+      delete: 'Are you sure you wish to delete this procedure?',
+      saved: 'The procedure record has been saved.'
     },
     buttons: {
       addMedication: 'Add Medication'

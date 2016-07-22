@@ -304,6 +304,9 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
 
     editProcedure: function(procedure) {
       if (this.get('canAddVisit')) {
+        procedure.set('patient', this.get('model'));
+        procedure.set('returnToVisit', false);
+        procedure.set('returnToPatient', true);
         this.transitionToRoute('procedures.edit', procedure);
       }
     },
