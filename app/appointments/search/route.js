@@ -7,7 +7,7 @@ export default AppointmentIndexRoute.extend(DateFormat, {
   editReturn: 'appointments.search',
   filterParams: ['appointmentType', 'provider', 'status'],
   modelName: 'appointment',
-  pageTitle: t('appointments.search_title'),
+  pageTitle: t('appointments.searchTitle'),
 
   queryParams: {
     appointmentType: { refreshModel: true },

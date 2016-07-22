@@ -18,14 +18,14 @@
       }}
     </div>
     <div class="row">
-      {{em-input property="quantity" label=(t 'medication.labels.quantity_to_return') class="col-xs-3 required test-medication-quantity"}}
-      {{select-or-typeahead property="deliveryLocation" label=(t 'medication.labels.return_location') list=warehouseList selection=model.location className="col-xs-4"}}
-      {{select-or-typeahead property="deliveryAisle" label=(t 'medication.labels.return_aisle') list=aisleLocationList selection=model.aisleLocation className="col-xs-4"}}
+      {{em-input property="quantity" label=(t 'medication.labels.quantityToReturn') class="col-xs-3 required test-medication-quantity"}}
+      {{select-or-typeahead property="deliveryLocation" label=(t 'medication.labels.returnLocation') list=warehouseList selection=model.location className="col-xs-4"}}
+      {{select-or-typeahead property="deliveryAisle" label=(t 'medication.labels.returnAisle') list=aisleLocationList selection=model.aisleLocation className="col-xs-4"}}
     </div>
-    {{em-text property="reason" label=(t 'medication.labels.return_reason') rows="3"}}
+    {{em-text property="reason" label=(t 'medication.labels.returnReason') rows="3"}}
     <div class="row">
-      {{date-picker property="dateCompleted" label=(t 'medication.labels.adjustment_date') class="col-sm-4"}}
-      {{select-or-typeahead property="expenseAccount" label=(t 'medication.labels.credit_to_account') list=expenseAccountList selection=model.expenseAccount  className="col-sm-8"}}
+      {{date-picker property="dateCompleted" label=(t 'medication.labels.adjustmentDate') class="col-sm-4"}}
+      {{select-or-typeahead property="expenseAccount" label=(t 'medication.labels.creditToAccount') list=expenseAccountList selection=model.expenseAccount  className="col-sm-8"}}
     </div>
   {{/em-form}}
 {{/edit-panel}}

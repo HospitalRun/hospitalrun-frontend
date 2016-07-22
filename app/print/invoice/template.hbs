@@ -5,44 +5,44 @@
         {{t "print.invoice.titles.patients"}}
       </h5>
       <h5 class="text-center">
-        {{t "print.invoice.titles.billing_statement"}}
+        {{t "print.invoice.titles.billingStatement"}}
       </h5>
       <table>
         <tr>
           <td colspan="2" class="col-xs-8">
-            {{t "print.invoice.labels.patient_name"}} {{model.patient.displayName}}
+            {{t "print.invoice.labels.patientName"}} {{model.patient.displayName}}
           </td>
           <td class="col-xs-4">
-            {{t "print.invoice.labels.patient_name"}} {{model.patient.displayPatientId}}
+            {{t "print.invoice.labels.patientId"}} {{model.patient.displayPatientId}}
           </td>
         </tr>
         <tr>
           <td class="col-xs-5">
-            {{t "print.invoice.labels.patient_age"}} {{model.patient.age}}
+            {{t "print.invoice.labels.patientAge"}} {{model.patient.age}}
           </td>
           <td class="col-xs-3">
-            {{t "print.invoice.labels.date_admitted"}}{{date-format model.visit.startDate}}
+            {{t "print.invoice.labels.dateAdmitted"}}{{date-format model.visit.startDate}}
           </td>
           <td class="col-xs-4"></td>
         </tr>
         <tr>
           <td class="col-xs-5"></td>
-          <td class="col-xs-3">{{t "print.invoice.labels.date_discharged"}}{{date-format model.visit.endDate}}</td>
+          <td class="col-xs-3">{{t "print.invoice.labels.dateDischarged"}}{{date-format model.visit.endDate}}</td>
           <td class="col-xs-4"></td>
         </tr>
         <tr>
           <td colspan="3" class="col-xs-12">
-            {{t "print.invoice.labels.patient_address"}} {{model.patient.displayAddress}}
+            {{t "print.invoice.labels.patientAddress"}} {{model.patient.displayAddress}}
           </td>
         </tr>
       </table>
       <table class="table">
         <tr class="table-header">
           <th>{{t "labels.description"}}</th>
-          <th class="text-right">{{t "billing.labels.actual_charges"}}</th>
+          <th class="text-right">{{t "billing.labels.actualCharges"}}</th>
           <th class="text-right">{{t "labels.discount"}}</th>
           <th class="text-right">{{t "billing.labels.insurance"}}</th>
-          <th class="text-right">{{t "billing.labels.hmo_com"}}</th>
+          <th class="text-right">{{t "billing.labels.hmoCom"}}</th>
           <th class="text-right">{{t "labels.excess"}}</th>
         </tr>
         {{#each model.lineItemsByCategory as |categoryGroup|}}
@@ -89,7 +89,7 @@
           <td class="text-right"><strong>{{number-format model.amountOwed}}</strong></td>
         </tr>
         <tr>
-          <td><strong>{{t 'billing.labels.payments_deposits'}}</strong></td>
+          <td><strong>{{t 'billing.labels.paymentsDeposits'}}</strong></td>
           <td colspan="4"></td>
           <td class="text-right">-{{number-format model.paidTotal}}</td>
           <td></td>
@@ -105,7 +105,7 @@
         {{#if model.visit.dischargeInfo}}
           <tr>
             <td class="col-xs-12">
-              {{t 'print.invoice.labels.discharge_notes'}} {{model.visit.dischargeInfo}}
+              {{t 'print.invoice.labels.dischargeNotes'}} {{model.visit.dischargeInfo}}
             </td>
           </tr>
         {{/if}}
@@ -118,15 +118,15 @@
         {{/if}}
         <tr>
           <td class="col-xs-7"></td>
-          <td class="col-xs-5">{{t 'print.invoice.messages.where_conducted'}}</td>
+          <td class="col-xs-5">{{t 'print.invoice.messages.whereConducted'}}</td>
         </tr>
         <tr>
-          <td class="col-xs-8">{{t 'print.invoice.labels.billed_by'}} {{model.modifiedBy}}</td>
+          <td class="col-xs-8">{{t 'print.invoice.labels.billedBy'}} {{model.modifiedBy}}</td>
           <td class="col-xs-4">{{t 'print.invoice.labels.spacer'}}</td>
         </tr>
         <tr>
-          <td class="col-xs-8">{{t 'print.invoice.labels.billed_date'}} {{date-format model.billDate}}</td>
-          <td class="text-center col-xs-4">{{t 'print.invoice.titles.patient_member'}}</td>
+          <td class="col-xs-8">{{t 'print.invoice.labels.billedDate'}} {{date-format model.billDate}}</td>
+          <td class="text-center col-xs-4">{{t 'print.invoice.titles.patientMember'}}</td>
         </tr>
         <tr>
           <td class="col-xs-8"></td>
@@ -134,7 +134,7 @@
         </tr>
         <tr>
           <td class="col-xs-8"></td>
-          <td class="text-center col-xs-4">{{t 'print.invoice.titles.rel_contact'}}</td>
+          <td class="text-center col-xs-4">{{t 'print.invoice.titles.relContact'}}</td>
         </tr>
       </table>
     </div>

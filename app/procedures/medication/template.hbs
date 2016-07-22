@@ -5,7 +5,7 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
   {{#em-form model=model submitButton=false }}
-    {{inventory-typeahead property="itemName" label=(t 'procedures.labels.medication_used') content=medicationList selection=selectedInventoryItem }}
+    {{inventory-typeahead property="itemName" label=(t 'procedures.labels.medicationUsed') content=medicationList selection=selectedInventoryItem }}
     {{em-input label=(t 'labels.quantity') property="quantity" class="required"}}
   {{/em-form}}
 {{/modal-dialog}}
