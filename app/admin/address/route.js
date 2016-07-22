@@ -3,8 +3,8 @@ import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 export default AbstractEditRoute.extend({
   hideNewButton: true,
-  newTitle: t('admin.address.new_title'),
-  editTitle: t('admin.address.edit_title'),
+  newTitle: t('admin.address.newTitle'),
+  editTitle: t('admin.address.editTitle'),
   model: function() {
     return new Ember.RSVP.Promise(function(resolve) {
       this.get('store').find('option', 'address_options').then(function(addressOptions) {
@@ -14,7 +14,7 @@ export default AbstractEditRoute.extend({
         var newConfig = store.push(store.normalize('option', {
           id: 'address_options',
           value: {
-            address1Label: this.get('i18n').t('admin.address.address_label'),
+            address1Label: this.get('i18n').t('admin.address.addressLabel'),
             address1Include: true
           }
         }));

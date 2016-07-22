@@ -22,13 +22,13 @@ test('visiting /admin/roles', function(assert) {
     });
     andThen(() => {
       assert.equal(find('.checkbox-appointments input:checked').length, 0, 'Appointments checkbox is not checked');
-      assert.equal(find('.checkbox-add_appointment input:checked').length, 0, 'Add appointments checkbox is not checked');
+      assert.equal(find('.checkbox-addAppointment input:checked').length, 0, 'Add appointments checkbox is not checked');
     });
     click('.checkbox-appointments input');
-    click('.checkbox-add_appointment input');
+    click('.checkbox-addAppointment input');
     andThen(() => {
       assert.equal(find('.checkbox-appointments input:checked').length, 1, 'Appointments checkbox is checked');
-      assert.equal(find('.checkbox-add_appointment input:checked').length, 1, 'Add appointments checkbox is checked');
+      assert.equal(find('.checkbox-addAppointment input:checked').length, 1, 'Add appointments checkbox is checked');
       click('button:contains(Update)');
       waitToAppear('.modal-dialog');
     });

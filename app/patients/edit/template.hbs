@@ -23,7 +23,7 @@
             {{#if canAddNote}}
               <div class="panel-heading clearfix">
                 <button type="button" class="btn btn-primary align-right" {{action "showAddPatientNote" bubbles=false on="click"}}>
-                  <span class="octicon octicon-plus"></span>{{t 'buttons.new_note'}}
+                  <span class="octicon octicon-plus"></span>{{t 'buttons.newNote'}}
                 </button>
               </div>
             {{/if}}
@@ -78,7 +78,7 @@
                     {{/if}}
                     {{#if visit.imaging}}
                       <div class="ph-note-item">
-                        <h5 class="ph-note-heading">{{t 'labels.image_orders' }}</h5>
+                        <h5 class="ph-note-heading">{{t 'labels.imageOrders' }}</h5>
                         {{#each visit.imaging as |imaging|}}
                             <div {{action 'editImaging' imaging }}>
                               <h5 class="ph-note-heading">{{date-format imaging.imagingDate}}: {{imaging.imagingType.name}}</h5>

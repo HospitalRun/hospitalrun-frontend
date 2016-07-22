@@ -10,7 +10,7 @@ export default AbstractIndexRoute.extend(UserSession, {
       return null;
     }
   }.property(),
-  newButtonText: t('buttons.new_item'),
+  newButtonText: t('buttons.newItem'),
   pageTitle: t('inventory.labels.items'),
 
   _modelQueryParams: function() {
