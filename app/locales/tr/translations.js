@@ -51,8 +51,8 @@ export default {
   },
   inventory: {
     messages: {
-      no_requests: 'Talep bulunamadı',
-      create_request: 'Yeni talep oluştur?'
+      noRequests: 'Talep bulunamadı',
+      createRequest: 'Yeni talep oluştur?'
     }
   },
   imaging: {

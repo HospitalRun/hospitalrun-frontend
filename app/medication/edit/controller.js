@@ -87,7 +87,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
 
   _addNewPatient: function() {
     let i18n = this.get('i18n');
-    this.displayAlert(i18n.t('alerts.please_wait'), i18n.t('messages.new_patient_has_to_be_created'));
+    this.displayAlert(i18n.t('alerts.pleaseWait'), i18n.t('messages.newPatientHasToBeCreated'));
     this._getNewPatientId().then(function(friendlyId) {
       var patientTypeAhead = this.get('model.patientTypeAhead'),
         nameParts = patientTypeAhead.split(' '),

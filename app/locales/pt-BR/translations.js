@@ -52,8 +52,8 @@ export default {
   },
   inventory: {
     messages: {
-      no_requests: 'Requisições não encontradas.',
-      create_request: 'Criar uma nova requisição?'
+      noRequests: 'Requisições não encontradas.',
+      createRequest: 'Criar uma nova requisição?'
     }
   },
   imaging: {

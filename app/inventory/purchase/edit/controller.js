@@ -44,9 +44,9 @@ export default AbstractEditController.extend(UnitTypes, {
     let i18n = this.get('i18n');
     var isNew = this.get('model.isNew');
     if (isNew) {
-      return i18n.t('inventory.titles.add_purchase');
+      return i18n.t('inventory.titles.addPurchase');
     }
-    return i18n.t('inventory.titles.edit_purchase');
+    return i18n.t('inventory.titles.editPurchase');
   }.property('model.isNew'),
 
   beforeUpdate: function() {

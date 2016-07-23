@@ -172,8 +172,8 @@ export default {
   },
   inventory: {
     messages: {
-      no_requests: 'Keine Anfragen gefunden.',
-      create_request: 'Neue Anfrage erstellen?'
+      noRequests: 'Keine Anfragen gefunden.',
+      createRequest: 'Neue Anfrage erstellen?'
     }
   },
   imaging: {

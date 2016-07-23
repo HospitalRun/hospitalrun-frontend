@@ -51,8 +51,8 @@ export default {
   },
   inventory: {
     messages: {
-      no_requests: 'Запросов не найдено.',
-      create_request: 'Создать новый запрос?'
+      noRequests: 'Запросов не найдено.',
+      createRequest: 'Создать новый запрос?'
     }
   },
   imaging: {

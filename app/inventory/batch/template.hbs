@@ -1,13 +1,13 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false }}
     <div class="row">
-      {{date-picker property="dateReceived" label=(t 'inventory.labels.date_received') class="col-sm-4 required"}}
+      {{date-picker property="dateReceived" label=(t 'inventory.labels.dateReceived') class="col-sm-4 required"}}
       {{select-or-typeahead property="vendor" label=(t 'inventory.labels.vendor') list=vendorList selection=model.vendor className="col-sm-4 required test-vendor"}}
-      {{em-input property="invoiceNo" label=(t 'inventory.labels.invoice_number') class="col-sm-4 test-invoice-number"}}
+      {{em-input property="invoiceNo" label=(t 'inventory.labels.invoiceNumber') class="col-sm-4 test-invoice-number"}}
     </div>
     <div class="row">
       {{select-or-typeahead property="location" label=(t 'inventory.labels.location') list=warehouseList selection=model.location className="col-sm-5"}}
-      {{select-or-typeahead property="aisleLocation" label=(t 'inventory.labels.aisle_location') list=aisleLocationList selection=model.aisleLocation className="col-sm-5"}}
+      {{select-or-typeahead property="aisleLocation" label=(t 'inventory.labels.aisleLocation') list=aisleLocationList selection=model.aisleLocation className="col-sm-5"}}
       <div class="form-group col-sm-2">
         <label class="control-label">{{t 'inventory.labels.gift'}}</label>
         {{em-checkbox label=(t 'inventory.labels.gift') property="giftInKind"}}
@@ -15,14 +15,14 @@
     </div>
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3 class="panel-title">{{t 'inventory.labels.invoice_line_item'}}</h3>
+        <h3 class="panel-title">{{t 'inventory.labels.invoiceLineItem'}}</h3>
       </div>
       <div class="panel-body">
         <div class="row">
           {{inventory-typeahead
             class="col-sm-7 required test-inv-item"
             property="inventoryItemTypeAhead"
-            label=(t 'inventory.labels.inventory_item')
+            label=(t 'inventory.labels.inventoryItem')
             content=inventoryList
             selection=selectedInventoryItem
             showQuantity=false
@@ -34,12 +34,12 @@
               <p class="form-control-static">{{model.inventoryItem.distributionUnit}}</p>
             {{/if}}
           </div>
-          {{em-input property="purchaseCost" label=(t 'inventory.labels.purchase_cost') class="col-sm-2 required test-inv-cost"}}
+          {{em-input property="purchaseCost" label=(t 'inventory.labels.purchaseCost') class="col-sm-2 required test-inv-cost"}}
         </div>
         <div class="row">
-          {{em-input property="vendorItemNo" label=(t 'inventory.labels.vendor_item_number') class="col-sm-4"}}
-          {{em-input property="lotNumber" label=(t 'inventory.labels.serial_number') class="col-sm-4"}}
-          {{date-picker property="expirationDate" label=(t 'inventory.labels.expiration_date') minDate="now" class="col-sm-2"}}
+          {{em-input property="vendorItemNo" label=(t 'inventory.labels.vendorItemNumber') class="col-sm-4"}}
+          {{em-input property="lotNumber" label=(t 'inventory.labels.serialNumber') class="col-sm-4"}}
+          {{date-picker property="expirationDate" label=(t 'inventory.labels.expirationDate') minDate="now" class="col-sm-2"}}
           <div class="form-group col-sm-2">
             <label class="control-label">&nbsp;</label>
             <p class="form-control-static">
@@ -52,15 +52,15 @@
       </div>
     </div>
     {{#if model.invoiceItems}}
-      <h3>{{t 'inventory.labels.invoice_items'}}</h3>
+      <h3>{{t 'inventory.labels.invoiceItems'}}</h3>
       <table class="table">
         <tr class="table-header">
           <th>{{t 'inventory.labels.name'}}</th>
           <th>{{t 'labels.quantity'}}</th>
           <th>{{t 'inventory.labels.cost'}}</th>
-          <th>{{t 'inventory.labels.item_number'}}</th>
-          <th>{{t 'inventory.labels.serial_number'}}</th>
-          <th>{{t 'inventory.labels.expiration_date'}}</th>
+          <th>{{t 'inventory.labels.itemNumber'}}</th>
+          <th>{{t 'inventory.labels.serialNumber'}}</th>
+          <th>{{t 'inventory.labels.expirationDate'}}</th>
           <th>{{t 'inventory.labels.action'}}</th>
         </tr>
         {{#each model.invoiceItems as |invoiceItem|}}
@@ -102,7 +102,7 @@
           </tr>
         {{/each}}
       </table>
-      <h4>{{t 'inventory.labels.total_received' total=totalReceived}}</h4>
+      <h4>{{t 'inventory.labels.totalReceived' total=totalReceived}}</h4>
     {{/if}}
   {{/em-form}}
 {{/edit-panel}}
