@@ -515,28 +515,28 @@ export default {
     }
   },
   imaging: {
-    page_title: 'Demandes d\'imagerie',
-    section_title: 'Imagerie',
+    pageTitle: 'Demandes d\'imagerie',
+    sectionTitle: 'Imagerie',
     buttons: {
-      new_button: '+ nouvelle imagerie'
+      newButton: '+ nouvelle imagerie'
     },
     labels: {
       radiologist: 'Radiologiste',
-      add_new_visit: '--Ajouter une nouvelle visite--'
+      addNewVisit: '--Ajouter une nouvelle visite--'
     },
     messages: {
-      no_completed: 'Aucun article traité retrouvé.'
+      noCompleted: 'Aucun article traité retrouvé.'
     },
     titles: {
-      completed_imaging: 'Imagerie traitée',
-      edit_title: 'Modifier la demande d\'imagerie',
-      new_title: 'Nouvelle demande d\'imagerie'
+      completedImaging: 'Imagerie traitée',
+      editTitle: 'Modifier la demande d\'imagerie',
+      newTitle: 'Nouvelle demande d\'imagerie'
     },
     alerts: {
-      completed_title: 'Demande d\'imagerie traitée' ,
-      completed_message: 'La demande d\'imagerie a été traitée.',
-      saved_title: 'Demande d\'imagerie enregistrée',
-      saved_message: 'La demande d\'imagerie a été enregistrée.'
+      completedTitle: 'Demande d\'imagerie traitée' ,
+      completedMessage: 'La demande d\'imagerie a été traitée.',
+      savedTitle: 'Demande d\'imagerie enregistrée',
+      savedMessage: 'La demande d\'imagerie a été enregistrée.'
     }
   },
   medication: {

@@ -513,28 +513,28 @@ export default {
     }
   },
   imaging: {
-    page_title: 'Pedido de radriografia',
-    section_title: 'Radiografias',
+    pageTitle: 'Pedido de radriografia',
+    sectionTitle: 'Radiografias',
     buttons: {
-      new_button: '+ new radiografia'
+      newButton: '+ new radiografia'
     },
     labels: {
       radiologist: 'Radiologo',
-      add_new_visit: '--Adicionar nueva visita--'
+      addNewVisit: '--Adicionar nueva visita--'
     },
     messages: {
-      no_completed: 'No de items encontrados.'
+      noCompleted: 'No de items encontrados.'
     },
     titles: {
-      completed_imaging: 'Radiografia completada',
-      edit_title: 'Pedido de edicion de radiografia',
-      new_title: 'Nuevo pedido de radiografia'
+      completedImaging: 'Radiografia completada',
+      editTitle: 'Pedido de edicion de radiografia',
+      newTitle: 'Nuevo pedido de radiografia'
     },
     alerts: {
-      completed_title: 'Pedido de radiografia completado',
-      completed_message: 'El pedido de radiografia ha sido completado.',
-      saved_title: 'Pedido de radiografia salvado',
-      saved_message: 'El pedido de radiografia ha sido guardado.'
+      completedTitle: 'Pedido de radiografia completado',
+      completedMessage: 'El pedido de radiografia ha sido completado.',
+      savedTitle: 'Pedido de radiografia salvado',
+      savedMessage: 'El pedido de radiografia ha sido guardado.'
     }
   },
   medication: {

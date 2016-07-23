@@ -610,28 +610,28 @@ export default {
     }
   },
   imaging: {
-    page_title: 'Imaging Requests',
-    section_title: 'Imaging',
+    pageTitle: 'Imaging Requests',
+    sectionTitle: 'Imaging',
     buttons: {
-      new_button: '+ new imaging'
+      newButton: '+ new imaging'
     },
     labels: {
       radiologist: 'Radiologist',
-      add_new_visit: '--Add New Visit--'
+      addNewVisit: '--Add New Visit--'
     },
     messages: {
-      no_completed: 'No completed items found.'
+      noCompleted: 'No completed items found.'
     },
     titles: {
-      completed_imaging: 'Completed Imaging',
-      edit_title: 'Edit Imaging Request',
-      new_title: 'New Imaging Request'
+      completedImaging: 'Completed Imaging',
+      editTitle: 'Edit Imaging Request',
+      newTitle: 'New Imaging Request'
     },
     alerts: {
-      completed_title: 'Imaging Request Completed',
-      completed_message: 'The imaging request has been completed.',
-      saved_title: 'Imaging Request Saved',
-      saved_message: 'The imaging request has been saved.'
+      completedTitle: 'Imaging Request Completed',
+      completedMessage: 'The imaging request has been completed.',
+      savedTitle: 'Imaging Request Saved',
+      savedMessage: 'The imaging request has been saved.'
     }
   },
   medication: {
