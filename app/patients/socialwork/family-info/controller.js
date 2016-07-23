@@ -6,7 +6,7 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
 
   editController: Ember.computed.alias('patientsController'),
   showUpdateButton: true,
-  title: t('patients.titles.family_info'),
+  title: t('patients.titles.familyInfo'),
   updateButtonAction: 'update',
 
   updateButtonText: function() {

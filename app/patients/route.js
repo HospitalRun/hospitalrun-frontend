@@ -55,6 +55,6 @@ export default AbstractModuleRoute.extend(PatientId, {
       }.bind(this));
     }
   },
-  newButtonText: t('patients.buttons.new_patient'),
+  newButtonText: t('patients.buttons.newPatient'),
   moduleName: 'patients'
 });

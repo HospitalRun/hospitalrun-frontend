@@ -697,73 +697,73 @@ export default {
       delete: 'Are you sure you wish to delete these vitals?'
     },
     labels: {
-      date_recorded: 'Date Recorded',
+      dateRecorded: 'Date Recorded',
       temperature: 'Temperature',
       weight: 'Weight',
       height: 'Height',
       sbp: 'SBP',
       dbp: 'DBP',
-      heart_rate: 'Heart Rate',
-      respiratory_rate: 'Respiratory Rate'
+      heartRate: 'Heart Rate',
+      respiratoryRate: 'Respiratory Rate'
     }
   },
   visits: {
     titles: {
-      additional_diagnoses: 'Additional Diagnoses'
+      additionalDiagnoses: 'Additional Diagnoses'
     },
     messages: {
       delete: 'Are you sure you wish to delete this visit?'
     },
     buttons: {
-      new_procedure: 'New Procedure',
-      new_lab: 'New Lab',
-      new_appointment: 'New Appointment',
-      add_diagnosis: 'Add Diagnosis',
-      new_imaging: 'New Imaging',
-      new_medication: 'New Medication',
-      new_vitals: 'New Vitals'
+      newProcedure: 'New Procedure',
+      newLab: 'New Lab',
+      newAppointment: 'New Appointment',
+      addDiagnosis: 'Add Diagnosis',
+      newImaging: 'New Imaging',
+      newMedication: 'New Medication',
+      newVitals: 'New Vitals'
     },
     labels: {
       diagnosis: 'Diagnosis',
       procedure: 'Procedure',
-      authored_by: 'Authored By',
+      authoredBy: 'Authored By',
       labs: 'Labs',
       imaging: 'Imaging',
-      visit_information: 'Visit Information',
+      visitInformation: 'Visit Information',
       examiner: 'Examiner',
       medication: 'Medication',
       status: 'Visit Status',
-      admitting_diagnosis: 'Admitting Diagnosis',
-      final_diagnosis: 'Final/Billing Diagnosis',
-      visit_type: 'Visit Type',
+      admittingDiagnosis: 'Admitting Diagnosis',
+      finalDiagnosis: 'Final/Billing Diagnosis',
+      visitType: 'Visit Type',
       vitals: 'Vitals'
     }
   },
   labs: {
-    section_title: 'Labs',
-    requests_title: 'Lab Requests',
-    edit_title: 'Edit Lab Request',
-    new_title: 'New Lab Request',
-    delete_title: 'Delete Request',
-    completed_title: 'Completed Labs',
+    sectionTitle: 'Labs',
+    requestsTitle: 'Lab Requests',
+    editTitle: 'Edit Lab Request',
+    newTitle: 'New Lab Request',
+    deleteTitle: 'Delete Request',
+    completedTitle: 'Completed Labs',
     labels: {
-      lab_type: 'Lab Type',
-      add_new_visit: '--Add New Visit--'
+      labType: 'Lab Type',
+      addNewVisit: '--Add New Visit--'
     },
     messages: {
-      no_items_found: 'No labs found.',
-      create_new_record: 'Create a new record?',
-      confirm_deletion: 'Are you sure you wish to delete this lab request?',
-      no_completed: 'No completed items found.'
+      noItemsFound: 'No labs found.',
+      createNewRecord: 'Create a new record?',
+      confirmDeletion: 'Are you sure you wish to delete this lab request?',
+      noCompleted: 'No completed items found.'
     },
     buttons: {
-      new_button: '+ new lab'
+      newButton: '+ new lab'
     },
     alerts: {
-      request_completed_title: 'Lab Request Completed',
-      request_completed_message: 'The lab request has been completed.',
-      request_saved_title: 'Lab Request Saved',
-      request_saved_message: 'The lab request has been saved.'
+      requestCompletedTitle: 'Lab Request Completed',
+      requestCompletedMessage: 'The lab request has been completed.',
+      requestSavedTitle: 'Lab Request Saved',
+      requestSavedMessage: 'The lab request has been saved.'
     }
   },
   patients: {
@@ -776,98 +776,98 @@ export default {
       medication: 'Medication',
       imaging: 'Imaging',
       labs: 'Labs',
-      social_work: 'Social Work'
+      socialWork: 'Social Work'
     },
     titles: {
       expenses: 'Expenses',
       additionalContacts: 'Additional Contacts',
-      family_information: 'Family Information',
+      familyInformation: 'Family Information',
       delete: 'Delete Patient',
       new: 'New Patient',
       edit: 'Edit Patient',
       patient: 'Patient Report',
-      patient_listing: 'Patient Listing',
-      patient_report: 'Patient Report',
-      add_photo: 'Add Photo',
-      edit_photo: 'Edit Photo',
-      social_work: 'Expense',
-      family_info: 'Family Info',
-      delete_family_member: 'Delete Family Member',
-      delete_expense: 'Delete Expense',
-      delete_photo: 'Delete Photo',
-      delete_contact: 'Delete Contact',
-      saved_patient: 'Patient Saved'
+      patientListing: 'Patient Listing',
+      patientReport: 'Patient Report',
+      addPhoto: 'Add Photo',
+      editPhoto: 'Edit Photo',
+      socialWork: 'Expense',
+      familyInfo: 'Family Info',
+      deleteFamilyMember: 'Delete Family Member',
+      deleteExpense: 'Delete Expense',
+      deletePhoto: 'Delete Photo',
+      deleteContact: 'Delete Contact',
+      savedPatient: 'Patient Saved'
     },
     messages: {
-      are_you_sure_delete: 'Are you sure you want to delete this {{object}}?',
-      delete_patient: 'Are you sure you wish to delete {{firstName}} {{lastName}}?',
-      no_patients_found: 'No patients found.',
-      saved_patient: 'The patient record for {{displayName}} has been saved.',
-      not_found_quick_add: 'The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.',
-      create_new_patient: 'Create a new patient record?'
+      areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
+      deletePatient: 'Are you sure you wish to delete {{firstName}} {{lastName}}?',
+      noPatientsFound: 'No patients found.',
+      savedPatient: 'The patient record for {{displayName}} has been saved.',
+      notFoundQuickAdd: 'The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.',
+      createNewPatient: 'Create a new patient record?'
     },
     buttons: {
-      add_expense: 'Add Expense',
-      add_contact: 'Add Contact',
-      new_lab: 'New Lab',
-      new_visit: 'New Visit',
-      new_medication: 'New Medication',
-      new_imaging: 'New Imaging',
-      add_family_member: 'Add Family Member',
-      new_photo: 'New Photo',
-      new_appointment: 'New Appointment',
-      back_to_patients: 'Back to Patient List',
-      new_patient: '+ new patient'
+      addExpense: 'Add Expense',
+      addContact: 'Add Contact',
+      newLab: 'New Lab',
+      newVisit: 'New Visit',
+      newMedication: 'New Medication',
+      newImaging: 'New Imaging',
+      addFamilyMember: 'Add Family Member',
+      newPhoto: 'New Photo',
+      newAppointment: 'New Appointment',
+      backToPatients: 'Back to Patient List',
+      newPatient: '+ new patient'
     },
     headings: {
       history: 'History',
-      history_since: 'History Since'
+      historySince: 'History Since'
     },
     labels: {
-      primary_diagnosis: 'Primary Diagnoses',
-      secondary_diagnosis: 'Secondary Diagnoses',
-      monthly_cost: 'Monthly Cost',
-      total_montly_expense: 'Total Monthly Expenses',
-      patient_type: 'Patient Type',
-      admission_date: 'Admission Date',
-      patient_days: 'Patient Days',
-      discharge_date: 'Discharge Date',
+      primaryDiagnosis: 'Primary Diagnoses',
+      secondaryDiagnosis: 'Secondary Diagnoses',
+      monthlyCost: 'Monthly Cost',
+      totalMontlyExpense: 'Total Monthly Expenses',
+      patientType: 'Patient Type',
+      admissionDate: 'Admission Date',
+      patientDays: 'Patient Days',
+      dischargeDate: 'Discharge Date',
       discharge: 'Discharge',
       admit: 'Admit',
       relationships: 'Relationships',
       phone: 'Phone',
       email: 'Email',
-      first_name: 'First Name',
-      middle_name: 'Middle Name',
-      last_name: 'Last Name',
+      firstName: 'First Name',
+      middleName: 'Middle Name',
+      lastName: 'Last Name',
       sex: 'Sex',
       dob: 'DOB',
-      date_of_birth: 'Date Of Birth',
-      place_of_birth: 'Place Of Birth',
+      dateOfBirth: 'Date Of Birth',
+      placeOfBirth: 'Place Of Birth',
       sources: 'Sources',
       costs: 'Costs',
-      civil_status: 'Civil Status',
+      civilStatus: 'Civil Status',
       relationship: 'Relationship To Patient',
       education: 'Education',
       occupation: 'Occupation',
       income: 'Income',
       insurance: 'Insurance',
-      date_processed: 'Date Processed',
+      dateProcessed: 'Date Processed',
       status: 'Patient Status',
-      external_patient_id: 'External Patient Id',
-      blood_type: 'Blood Type',
+      externalPatientId: 'External Patient Id',
+      bloodType: 'Blood Type',
       clinic: 'Clinic Site',
-      referred_by: 'Referred By',
-      referred_date: 'Referred Date',
+      referredBy: 'Referred By',
+      referredDate: 'Referred Date',
       religion: 'Religion',
       parent: 'Parent/Guardian'
     },
     notes: {
-      new_note: 'New Note for',
-      update_note: 'Updating Note from',
-      on_behalf_of_label: 'On Behalf Of',
-      on_behalf_of_copy: 'on behalf of',
-      please_select_a_visit: 'Please select a visit'
+      newNote: 'New Note for',
+      updateNote: 'Updating Note from',
+      onBehalfOfLabel: 'On Behalf Of',
+      onBehalfOfCopy: 'on behalf of',
+      pleaseSelectAVisit: 'Please select a visit'
     }
   },
   billing: {

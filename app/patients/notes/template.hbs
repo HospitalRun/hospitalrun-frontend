@@ -10,7 +10,7 @@
 
     <select name="note-visits" {{action 'changeVisit' on='change'}} class="form-control">
         <option selected={{is-not model.visit}}>
-          {{t 'patients.notes.please_select_a_visit' }}
+          {{t 'patients.notes.pleaseSelectAVisit' }}
         </option>
       {{#each patientVisitsForSelect as |item|}}
         <option value="{{item.selectObject}}"
@@ -21,7 +21,7 @@
     </select>
     {{select-or-typeahead
       property="attribution"
-      label=(t 'patients.notes.on_behalf_of_label' )
+      label=(t 'patients.notes.onBehalfOfLabel' )
       list=physicianList
       selection=attribution
       className="form-input-group test-note-attribution"

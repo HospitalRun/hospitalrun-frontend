@@ -5,7 +5,7 @@
         <th>{{t 'labels.dateRequested'}}</th>
         <th>{{t 'labels.patient'}}</th>
         <th>{{t 'labels.requestedBy'}}</th>
-        <th>{{t 'labs.labels.lab_type'}}</th>
+        <th>{{t 'labs.labels.labType'}}</th>
         <th>{{t 'labels.notes'}}</th>
         {{#if showActions}}
           <th>{{t 'labels.actions'}}</th>
@@ -21,7 +21,7 @@
     </table>
   {{else}}
     <div class="alert alert-info">
-      <p>{{t 'labs.messages.no_items_found'}} {{#if canAdd}}<a href="#" {{action 'newItem'}}>{{t 'labs.messages.create_new_record'}}</a>{{/if}}</p>
+      <p>{{t 'labs.messages.noItemsFound'}} {{#if canAdd}}<a href="#" {{action 'newItem'}}>{{t 'labs.messages.createNewRecord'}}</a>{{/if}}</p>
     </div>
   {{/if}}
 {{/item-listing}}

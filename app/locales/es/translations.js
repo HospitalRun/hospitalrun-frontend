@@ -595,48 +595,48 @@ export default {
   visits: {
     edit: {
       buttons: {
-        new_appointment: 'Nuevas citas',
-        add_diagnosis: 'Adicionar diagnostico',
-        new_procedure: 'Nuevo procedimiento',
-        new_lab: 'New laboratorio',
-        new_medication: 'Nueva mediicación',
-        new_imaging: 'Nueva radiografia'
+        newAppointment: 'Nuevas citas',
+        addDiagnosis: 'Adicionar diagnostico',
+        newProcedure: 'Nuevo procedimiento',
+        newLab: 'New laboratorio',
+        newMedication: 'Nueva mediicación',
+        newImaging: 'Nueva radiografia'
       },
       labels: {
         diagnosis: 'Diagnostico',
         procedure: 'Procedimiento',
-        authored_by: 'Escrito por',
+        authoredBy: 'Escrito por',
         labs: 'Laboratorios',
         imaging: 'Radiografias',
-        visit_information: 'Informacion de visita'
+        visitInformation: 'Informacion de visita'
       }
     }
   },
   labs: {
-    section_title: 'Laboratorios',
-    requests_title: 'Pedido de laboratorio',
-    edit_title: 'Editar pedido de laboratorio',
-    new_title: 'Nuevo pedido de laboratorio',
-    delete_title: 'Eliminar pedido',
-    completed_title: 'Completar laboratorio',
+    sectionTitle: 'Laboratorios',
+    requestsTitle: 'Pedido de laboratorio',
+    editTitle: 'Editar pedido de laboratorio',
+    newTitle: 'Nuevo pedido de laboratorio',
+    deleteTitle: 'Eliminar pedido',
+    completedTitle: 'Completar laboratorio',
     labels: {
-      lab_type: 'Tipo de laboratorio',
-      add_new_visit: '--Adicionar nueva visita--'
+      labType: 'Tipo de laboratorio',
+      addNewVisit: '--Adicionar nueva visita--'
     },
     messages: {
-      no_items_found: 'No boratorios encontrados.',
-      create_new_record: 'Crear un registro?',
-      confirm_deletion: 'Esta seguro de eliminar esta solicitud de laboratorio?',
-      no_completed: 'No elementos completados encontrados.'
+      noItemsFound: 'No boratorios encontrados.',
+      createNewRecord: 'Crear un registro?',
+      confirmDeletion: 'Esta seguro de eliminar esta solicitud de laboratorio?',
+      noCompleted: 'No elementos completados encontrados.'
     },
     buttons: {
-      new_button: '+ nuevo laboratorio'
+      newButton: '+ nuevo laboratorio'
     },
     alerts: {
-      request_completed_title: 'Pedido de laboratorio competado',
-      request_completed_message: 'El pedido de laboratorio ha sido completado.',
-      request_saved_title: 'Silicitud de laboratorio guardado',
-      request_saved_message: 'El pedido de laboratorio ha sido guardado.'
+      requestCompletedTitle: 'Pedido de laboratorio competado',
+      requestCompletedMessage: 'El pedido de laboratorio ha sido completado.',
+      requestSavedTitle: 'Silicitud de laboratorio guardado',
+      requestSavedMessage: 'El pedido de laboratorio ha sido guardado.'
     }
   },
   common: {
@@ -644,10 +644,10 @@ export default {
   },
   patients: {
     notes: {
-      on_behalf_of_label: 'A nombre de',
-      on_behalf_of_copy: 'a nombre de',
-      please_select_a_visit: 'Por favor seleccione una visista',
-      note_label: 'Nota'
+      onBehalfOfLabel: 'A nombre de',
+      onBehalfOfCopy: 'a nombre de',
+      pleaseSelectAVisit: 'Por favor seleccione una visista',
+      noteLabel: 'Nota'
     }
   }
 };

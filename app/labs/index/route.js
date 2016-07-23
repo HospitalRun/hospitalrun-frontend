@@ -3,7 +3,7 @@ import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractIndexRoute.extend({
   modelName: 'lab',
-  pageTitle: t('labs.requests_title'),
+  pageTitle: t('labs.requestsTitle'),
   searchStatus: 'Requested',
 
   _getStartKeyFromItem: function(item) {

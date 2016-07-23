@@ -597,48 +597,48 @@ export default {
   visits: {
     edit: {
       buttons: {
-        new_appointment: 'Nouveau rendez-vous',
-        add_diagnosis: 'Ajoute un diagnostic',
-        new_procedure: 'Nouvelle procédure',
-        new_lab: 'Nouveau labo',
-        new_imaging: 'Nouvelle imagerie',
-        new_medication: 'Nouveau médicament'
+        newAppointment: 'Nouveau rendez-vous',
+        addDiagnosis: 'Ajoute un diagnostic',
+        newProcedure: 'Nouvelle procédure',
+        newLab: 'Nouveau labo',
+        newImaging: 'Nouvelle imagerie',
+        newMedication: 'Nouveau médicament'
       },
       labels: {
         diagnosis: 'Diagnostic',
         procedure: 'Procédure',
-        authored_by: 'Crée par',
+        authoredBy: 'Crée par',
         labs: 'Labos',
         imaging: 'Imagerie',
-        visit_information: 'Détails de la visite'
+        visitInformation: 'Détails de la visite'
       }
     }
   },
   labs: {
-    section_title: 'Labos',
-    requests_title: 'Demandes de labo',
-    edit_title: 'Modifier la demande de labo',
-    new_title: 'Nouvelle demande de labo',
-    delete_title: 'Supprimer la demande',
-    completed_title: 'Labos traités',
+    sectionTitle: 'Labos',
+    requestsTitle: 'Demandes de labo',
+    editTitle: 'Modifier la demande de labo',
+    newTitle: 'Nouvelle demande de labo',
+    deleteTitle: 'Supprimer la demande',
+    completedTitle: 'Labos traités',
     labels: {
-      lab_type: 'Type de labo',
-      add_new_visit: '--Ajouter une nouvelle visite--'
+      labType: 'Type de labo',
+      addNewVisit: '--Ajouter une nouvelle visite--'
     },
     messages: {
-      no_items_found: 'Aucun labo retrouvé.',
-      create_new_record: 'Créer un nouveau dossier?',
-      confirm_deletion: 'Etes-vous sûr de vouloir supprimer cette demande de labo?',
-      no_completed: 'Aucun article traité retrouvé.'
+      noItemsFound: 'Aucun labo retrouvé.',
+      createNewRecord: 'Créer un nouveau dossier?',
+      confirmDeletion: 'Etes-vous sûr de vouloir supprimer cette demande de labo?',
+      noCompleted: 'Aucun article traité retrouvé.'
     },
     buttons: {
-      new_button: '+ nouveau labo'
+      newButton: '+ nouveau labo'
     },
     alerts: {
-      request_completed_title: 'Demande de labo traitée',
-      request_completed_message: 'La demande de labo a été traitée.',
-      request_saved_title: 'Demande de labo enregistrée',
-      request_saved_message: 'La demande de labo a été enregistrée.'
+      requestCompletedTitle: 'Demande de labo traitée',
+      requestCompletedMessage: 'La demande de labo a été traitée.',
+      requestSavedTitle: 'Demande de labo enregistrée',
+      requestSavedMessage: 'La demande de labo a été enregistrée.'
     }
   },
   common: {
@@ -646,10 +646,10 @@ export default {
   },
   patients: {
     notes: {
-      on_behalf_of_label: 'De la part de',
-      on_behalf_of_copy: 'de la part de',
-      please_select_a_visit: 'Veuillez sélectionner une visite',
-      note_label: 'Note'
+      onBehalfOfLabel: 'De la part de',
+      onBehalfOfCopy: 'de la part de',
+      pleaseSelectAVisit: 'Veuillez sélectionner une visite',
+      noteLabel: 'Note'
     }
   }
 };

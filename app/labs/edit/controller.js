@@ -94,11 +94,11 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         alertMessage,
         alertTitle;
     if (this.get('model.status') === 'Completed') {
-      alertTitle = i18n.t('labs.alerts.request_completed_title');
-      alertMessage = i18n.t('labs.alerts.request_completed_message');
+      alertTitle = i18n.t('labs.alerts.requestCompletedTitle');
+      alertMessage = i18n.t('labs.alerts.requestCompletedMessage');
     } else {
-      alertTitle = i18n.t('labs.alerts.request_saved_title');
-      alertMessage = i18n.t('labs.alerts.request_saved_message');
+      alertTitle = i18n.t('labs.alerts.requestSavedTitle');
+      alertMessage = i18n.t('labs.alerts.requestSavedMessage');
     }
     if (multipleRecords) {
       afterDialogAction = this.get('cancelAction');

@@ -5,9 +5,9 @@ export default Ember.Controller.extend({
   title: function() {
     var isNew = this.get('model.isNew');
     if (isNew) {
-      return this.get('i18n').t('patients.titles.add_photo');
+      return this.get('i18n').t('patients.titles.addPhoto');
     } else {
-      return this.get('i18n').t('patients.titles.edit_photo');
+      return this.get('i18n').t('patients.titles.editPhoto');
     }
   }.property('model.isNew'),
 

@@ -12,7 +12,7 @@
         <li role="presentation"><a href="#imaging" role="tab" data-toggle="pill" data-test-selector="imaging-tab">{{t 'patients.navigation.imaging'}}</a></li>
         <li role="presentation"><a href="#labs" role="tab" data-toggle="pill" data-test-selector="labs-tab">{{t 'patients.navigation.labs'}}</a></li>
         {{#if canAddSocialWork}}
-          <li role="presentation"><a href="#social" role="tab" data-toggle="pill" data-test-selector="social-tab">{{t 'patients.navigation.social_work'}}</a></li>
+          <li role="presentation"><a href="#social" role="tab" data-toggle="pill" data-test-selector="social-tab">{{t 'patients.navigation.socialWork'}}</a></li>
         {{/if}}
       </ul>
     {{/unless}}
@@ -46,7 +46,7 @@
 
                     {{#if visit.historySince}}
                     <div class="ph-note-item">
-                      <h5 class="ph-note-heading">{{t "patients.headings.history_since"}}</h5>
+                      <h5 class="ph-note-heading">{{t "patients.headings.historySince"}}</h5>
                       {{html-line-break visit.historySince}}
                     </div>
                     {{/if}}
@@ -130,19 +130,19 @@
             <div class="row">
               <div class="col-xs-12 col-sm-6">
                 {{em-input property="friendlyId" label=(t 'labels.id') class="form-input-group required test-id"}}
-                {{em-input property="firstName" label=(t 'patients.labels.first_name') class="form-input-group required test-first-name"}}
-                {{em-input property="middleName" label=(t 'patients.labels.middle_name') class="form-input-group test-middle-name"}}
-                {{em-input property="lastName" label=(t 'patients.labels.last_name') class="form-input-group required test-last-name"}}
+                {{em-input property="firstName" label=(t 'patients.labels.firstName') class="form-input-group required test-first-name"}}
+                {{em-input property="middleName" label=(t 'patients.labels.middleName') class="form-input-group test-middle-name"}}
+                {{em-input property="lastName" label=(t 'patients.labels.lastName') class="form-input-group required test-last-name"}}
                 {{select-or-typeahead property="sex" label=(t 'patients.labels.sex')  class="form-input-group" list=sexList selection=model.sex}}
-                {{date-picker property="dateOfBirth" label=(t 'patients.labels.date_of_birth')  class="form-input-group " maxDate="now"}}
+                {{date-picker property="dateOfBirth" label=(t 'patients.labels.dateOfBirth')  class="form-input-group " maxDate="now"}}
                 <div class="form-input-group">
                   <label class="control-label">{{t 'labels.age'}}</label>
                   <p class="form-control-static">{{model.age}}</p>
                 </div>
-                {{em-input property="placeOfBirth" label=(t 'patients.labels.place_of_birth') class="form-input-group"}}
+                {{em-input property="placeOfBirth" label=(t 'patients.labels.placeOfBirth') class="form-input-group"}}
                 {{em-input property="occupation" label=(t 'patients.labels.occupation')  class="form-input-group"}}
                 <div class="form-input-group">
-                  <label>{{t 'patients.labels.patient_type'}}</label>
+                  <label>{{t 'patients.labels.patientType'}}</label>
                   <div>
                     {{ext-radio content=patientTypes value=model.patientType showInline=true }}
                   </div>
@@ -150,17 +150,17 @@
               </div>
               <div class="col-xs-12 col-sm-6">
                   {{select-or-typeahead property="status" label=(t 'patients.labels.status') list=statusList selection=model.status class="form-input-group" }}
-                  {{em-input property="externalPatientId" label=(t 'patients.labels.external_patient_id') class="form-input-group"}}
+                  {{em-input property="externalPatientId" label=(t 'patients.labels.externalPatientId') class="form-input-group"}}
                   {{em-select
                     prompt=" "
-                    label=(t 'patients.labels.blood_type')
+                    label=(t 'patients.labels.bloodType')
                     property="bloodType"
                     content=bloodTypes
                     class="form-input-group"
                   }}
                   {{select-or-typeahead property="clinic" label=(t 'patients.labels.clinic') list=clinicList selection=model.clinic class="form-input-group"}}
-                  {{em-input property="referredBy" label=(t 'patients.labels.referred_by') class="form-input-group"}}
-                  {{date-picker property="referredDate" label=(t 'patients.labels.referred_date') class="form-input-group"}}
+                  {{em-input property="referredBy" label=(t 'patients.labels.referredBy') class="form-input-group"}}
+                  {{date-picker property="referredDate" label=(t 'patients.labels.referredDate') class="form-input-group"}}
                   {{em-input property="religion" label=(t 'patients.labels.religion') class="form-input-group"}}
                   {{em-input property="parent" label=(t 'patients.labels.parent') class="form-input-group"}}
                   {{em-select label=(t 'billing.labels.paymentProfile')
@@ -179,7 +179,7 @@
           {{#if canAddContact}}
             <div class="panel-heading">
               <button type="button" class="btn btn-primary align-right" {{action "showAddContact" bubbles=false on="click"}}>
-                <span class="octicon octicon-plus"></span>{{t 'patients.buttons.add_contact'}}
+                <span class="octicon octicon-plus"></span>{{t 'patients.buttons.addContact'}}
               </button>
             </div>
           {{/if}}
@@ -243,7 +243,7 @@
             {{#if canAddPhoto}}
               <div class="panel-heading">
                 <button type="button" class="btn btn-primary align-right" {{action "showAddPhoto" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span>{{t 'patients.buttons.new_photo'}}
+                  <span class="octicon octicon-plus"></span>{{t 'patients.buttons.newPhoto'}}
                 </button>
               </div>
             {{/if}}
@@ -277,7 +277,7 @@
             {{#if canAddAppointment}}
               <div class="panel-heading">
                 <button type="button" class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span>{{t 'patients.buttons.new_appointment'}}
+                  <span class="octicon octicon-plus"></span>{{t 'patients.buttons.newAppointment'}}
                 </button>
               </div>
             {{/if}}
@@ -319,7 +319,7 @@
             {{#if canAddVisit}}
               <div class="panel-heading">
                 <button type="button" class="btn btn-primary align-right" {{action "newVisit" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> {{t 'patients.buttons.new_visit'}}
+                  <span class="octicon octicon-plus"></span> {{t 'patients.buttons.newVisit'}}
                 </button>
               </div>
             {{/if}}
@@ -361,7 +361,7 @@
               {{#if canAddMedication}}
                 <div class="panel-heading">
                   <button type="button" class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}>
-                    <span class="octicon octicon-plus"></span>{{t 'patients.buttons.new_medication'}}
+                    <span class="octicon octicon-plus"></span>{{t 'patients.buttons.newMedication'}}
                   </button>
                 </div>
               {{/if}}
@@ -375,7 +375,7 @@
             {{#if canAddImaging}}
               <div class="panel-heading">
                 <button type="button" class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> {{t 'patients.buttons.new_imaging'}}
+                  <span class="octicon octicon-plus"></span> {{t 'patients.buttons.newImaging'}}
                 </button>
               </div>
             {{/if}}
@@ -389,7 +389,7 @@
             {{#if canAddLab}}
               <div class="panel-heading">
                 <button type="button" class="btn btn-primary align-right" {{action "newLab" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> {{t 'patients.buttons.new_lab'}}
+                  <span class="octicon octicon-plus"></span> {{t 'patients.buttons.newLab'}}
                 </button>
               </div>
             {{/if}}
@@ -403,16 +403,16 @@
             <div class="panel">
               <div class="panel-body detail-section-content">
                 <h4>
-                  {{t 'patients.titles.family_information'}}
+                  {{t 'patients.titles.familyInformation'}}
                   <button type="button" class="btn btn-primary align-right" {{ action "showEditFamily" bubbles=false }}>
-                    <span class="octicon octicon-plus"></span> {{t 'patients.buttons.add_family_member'}}
+                    <span class="octicon octicon-plus"></span> {{t 'patients.buttons.addFamilyMember'}}
                   </button>
                 </h4>
                 <table class="table">
                   <tr class="table-header">
                     <th>{{t 'labels.name'}}</th>
                     <th>{{t 'labels.age'}}</th>
-                    <th>{{t 'patients.labels.civil_status'}}</th>
+                    <th>{{t 'patients.labels.civilStatus'}}</th>
                     <th>{{t 'patients.labels.relationship'}}</th>
                     <th>{{t 'patients.labels.education'}}</th>
                     <th>{{t 'patients.labels.occupation'}}</th>
@@ -444,14 +444,14 @@
                 <h4>
                   {{t 'patients.titles.expenses'}}
                   <button type="button" class="btn btn-primary align-right" {{action "showEditExpense" bubbles=false }}>
-                    <span class="octicon octicon-plus"></span>{{t 'patients.buttons.add_expense'}}
+                    <span class="octicon octicon-plus"></span>{{t 'patients.buttons.addExpense'}}
                   </button>
                 </h4>
                 <table class="table">
                   <tr class="table-header">
                     <th>{{t 'labels.category'}}</th>
                     <th>{{t 'patients.labels.sources'}}</th>
-                    <th>{{t 'patients.labels.monthly_cost'}}</th>
+                    <th>{{t 'patients.labels.monthlyCost'}}</th>
                     <th>{{t 'labels.actions'}}</th>
                   </tr>
                   {{#each model.expenses as |expense|}}
@@ -471,7 +471,7 @@
                   {{/each}}
                   {{#if showExpenseTotal}}
                     <tr>
-                      <td colspan="2"><b>{{t 'patients.labels.total_montly_expense'}}</b></td>
+                      <td colspan="2"><b>{{t 'patients.labels.totalMontlyExpense'}}</b></td>
                       <td>{{totalExpenses}}</td>
                       <td></td>
                     </tr>

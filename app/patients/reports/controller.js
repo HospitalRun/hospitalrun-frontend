@@ -43,19 +43,19 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       property: 'patientName'
     },
     admissionDate: {
-      label: t('patients.labels.admission_date'),
+      label: t('patients.labels.admissionDate'),
       include: true,
       property: 'admissionDate',
       format: '_dateTimeFormat'
     },
     dischargeDate: {
-      label: t('patients.labels.discharge_date'),
+      label: t('patients.labels.dischargeDate'),
       include: false,
       property: 'dischargeDate',
       format: '_dateTimeFormat'
     },
     patientDays: {
-      label: t('patients.labels.discharge_date'),
+      label: t('patients.labels.dischargeDate'),
       include: false,
       property: 'patientDays',
       format: '_numberFormat'
