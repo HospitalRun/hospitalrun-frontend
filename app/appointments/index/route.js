@@ -4,7 +4,7 @@ import { translationMacro as t } from 'ember-i18n';
 export default AbstractIndexRoute.extend({
   editReturn: 'appointments.index',
   modelName: 'appointment',
-  pageTitle: t('appointments.this_week'),
+  pageTitle: t('appointments.thisWeek'),
 
   _getStartKeyFromItem: function(item) {
     var endDate = item.get('endDate'),

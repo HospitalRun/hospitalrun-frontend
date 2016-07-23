@@ -97,7 +97,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     doneFulfillRequest: function() {
       let i18n = this.get('i18n');
       this.updateLookupLists();
-      this.displayAlert(i18n.t('medication.alerts.returned_title'), i18n.t('medication.alerts.returned_message'), 'allItems');
+      this.displayAlert(i18n.t('medication.alerts.returnedTitle'), i18n.t('medication.alerts.returnedMessage'), 'allItems');
     },
     update: function() {
       var medication = this.get('model.medication'),
@@ -116,5 +116,5 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     }
   },
 
-  updateButtonText: t('medication.return_medication')
+  updateButtonText: t('medication.returnMedication')
 });

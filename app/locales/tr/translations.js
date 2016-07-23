@@ -6,16 +6,16 @@ export default {
     name: 'Ad',
     patient: 'Hasta',
     quantity: 'Miktar',
-    requested_on: 'Açık Talep',
-    date_requested: 'Talep Tarihi',
-    date_completed: 'Bitiş tarihi',
-    requested_by: 'Talep sahibi',
+    requestedOn: 'Açık Talep',
+    dateRequested: 'Talep Tarihi',
+    dateCompleted: 'Bitiş tarihi',
+    requestedBy: 'Talep sahibi',
     fulfill: 'Fulfill',
     actions: 'İşlemler',
     action: 'İşlem',
     notes: 'Notlar',
     edit: 'Düzenle',
-    imaging_type: 'Görüntüleme Tipi',
+    imagingType: 'Görüntüleme Tipi',
     result: 'Sonuç',
     results: 'Sonuçlar',
     visit: 'Ziyaret',
@@ -26,27 +26,27 @@ export default {
     age: 'Yaş'
   },
   messages: {
-    no_items_found: 'Hiçbir öğe bulunamadı.',
-    create_new_record: 'Yeni bir kayıt oluştur?',
-    for_authorized_persons: 'Bu rapor yetkili kişiler içindir.'
+    noItemsFound: 'Hiçbir öğe bulunamadı.',
+    createNewRecord: 'Yeni bir kayıt oluştur?',
+    forAuthorizedPersons: 'Bu rapor yetkili kişiler içindir.'
   },
   buttons: {
     complete: 'Bitir',
     cancel: 'Vazgeç',
-    return_button: 'Geri Dön',
+    returnButton: 'Geri Dön',
     add: 'Ekle',
     update: 'Güncelle',
     ok: 'Tamam'
   },
   login: {
     messages: {
-      sign_in:  'GİRİŞ YAPIN',
+      signIn:  'GİRİŞ YAPIN',
       error:    'Kullanıcı adı veya parola hatalı.'
     },
     labels: {
       password: 'Parola',
       username: 'Kullanıcı Adı',
-      sign_in:  'Giriş yap'
+      signIn:  'Giriş yap'
     }
   },
   inventory: {

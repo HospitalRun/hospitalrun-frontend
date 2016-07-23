@@ -1,5 +1,7 @@
 {{#if sorted}}
-    <span class="glyphicon {{if sortDesc 'glyphicon-arrow-down' 'glyphicon-arrow-up'}}"></span>
+    <span class="octicon {{if sortDesc 'octicon-triangle-down' 'octicon-triangle-up'}}"></span>
+{{else}}
+    <span class="octicon octicon-triangle-down inactive"></span>
 {{/if}}
 
 {{yield}}

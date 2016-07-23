@@ -4,9 +4,9 @@ import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractEditRoute.extend(ChargeRoute, {
-  editTitle: t('procedure.titles.edit'),
+  editTitle: t('procedures.titles.edit'),
   modelName: 'procedure',
-  newTitle: t('procedure.titles.new'),
+  newTitle: t('procedures.titles.new'),
   pricingCategory: 'Procedure',
   database: Ember.inject.service(),
 

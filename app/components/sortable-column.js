@@ -1,5 +1,6 @@
 import Ember from 'ember';
 export default Ember.Component.extend({
+  classNames: ['sortable-column'],
   tagName: 'th',
   action: 'sortByKey',
   sortDesc: false,

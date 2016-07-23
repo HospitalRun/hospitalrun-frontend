@@ -29,9 +29,7 @@ test('create invoice', function(assert) {
     andThen(function() {
       assert.equal(currentURL(), '/invoices/edit/new');
     });
-    fillIn('.invoice-patient .tt-input', 'Joe Bagadonuts - TCH 00001');
-    triggerEvent('.invoice-patient .tt-input', 'input');
-    triggerEvent('.invoice-patient .tt-input', 'blur');
+    typeAheadFillIn('.invoice-patient', 'Joe Bagadonuts - TCH 00001');
     waitToAppear('.invoice-visit option:contains((Admission))');
     andThen(function() {
       select('.invoice-visit', '(Admission)');
@@ -125,9 +123,7 @@ test('add deposit', function(assert) {
       assert.equal(find('.modal-title').text(), 'Add Deposit', 'Add Deposit modal displays');
     });
     fillIn('.payment-amount input', 140);
-    fillIn('.payment-patient .tt-input', 'Joe Bagadonuts - TCH 00001');
-    triggerEvent('.payment-patient .tt-input', 'input');
-    triggerEvent('.payment-patient .tt-input', 'blur');
+    typeAheadFillIn('.payment-patient', 'Joe Bagadonuts - TCH 00001');
     click('.update-payment-btn');
     waitToAppear('.modal-title:contains(Deposit Added)');
     andThen(() => {

@@ -6,15 +6,15 @@ export default {
     name: 'Nome',
     patient: 'Paciente',
     quantity: 'Quandidade',
-    requested_on: 'Solicitado em',
-    date_requested: 'Data da requisição',
-    requested_by: 'Requisitado por',
+    requestedOn: 'Solicitado em',
+    dateRequested: 'Data da requisição',
+    requestedBy: 'Requisitado por',
     fulfill: 'Preencha',
     actions: 'Ações',
     action: 'Ação',
     notes: 'Notas',
     edit: 'Editar',
-    imaging_type: 'Tipo de imagem',
+    imagingType: 'Tipo de imagem',
     result: 'Resultdo',
     results: 'Resultados',
     visit: 'Visita',
@@ -26,14 +26,14 @@ export default {
 
   },
   messages: {
-    no_items_found: 'Nenhum item encontrado',
-    create_new_record: 'Criar uma nova gravação?',
-    for_authorized_persons: 'Este relatório é apenas para pessoas autorizadas.'
+    noItemsFound: 'Nenhum item encontrado',
+    createNewRecord: 'Criar uma nova gravação?',
+    forAuthorizedPersons: 'Este relatório é apenas para pessoas autorizadas.'
   },
   buttons: {
     complete: 'Completo',
     cancel: 'Cencelar',
-    return_button: 'Retornar',
+    returnButton: 'Retornar',
     add: 'Adicionar',
     update: 'Atualizar',
     ok: 'Ok'
@@ -41,13 +41,13 @@ export default {
 
   login: {
     messages: {
-      sign_in:  'inscreva-se',
+      signIn:  'inscreva-se',
       error:    'Nome de usuário ou senha está incorreta.'
     },
     labels: {
       password: 'Senha',
       username: 'Usuario',
-      sign_in:  'Entrar'
+      signIn:  'Entrar'
     }
   },
   inventory: {

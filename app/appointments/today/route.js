@@ -3,7 +3,7 @@ import { translationMacro as t } from 'ember-i18n';
 export default AppointmentIndexRoute.extend({
   editReturn: 'appointments.today',
   modelName: 'appointment',
-  pageTitle: t('appointments.today_title'),
+  pageTitle: t('appointments.todayTitle'),
 
   _modelQueryParams: function() {
     var endOfDay = moment().endOf('day').toDate().getTime(),

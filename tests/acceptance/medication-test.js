@@ -36,15 +36,10 @@ test('creating a new medication request', function(assert) {
     andThen(function() {
       assert.equal(currentURL(), '/medication/edit/new');
     });
-    fillIn('.test-patient-input .tt-input', 'Lennex Zinyando - P00017');
-    triggerEvent('.test-patient-input .tt-input', 'input');
-    triggerEvent('.test-patient-input .tt-input', 'blur');
+    typeAheadFillIn('.test-patient-input', 'Lennex Zinyando - P00017');
     waitToAppear('.have-inventory-items');
     andThen(() => {
-      fillIn('.test-medication-input .tt-input', 'Biogesic - m00001 (950 available)');
-      triggerEvent('.test-medication-input .tt-input', 'input');
-      triggerEvent('.test-medication-input .tt-input', 'blur');
-      keyEvent('.test-medication-input .tt-input', 'keypress', 9);
+      typeAheadFillIn('.test-medication-input', 'Biogesic - m00001 (950 available)');
     });
     fillIn('textarea', '30 Biogesic Pills');
     fillIn('.test-quantity-input input', '30');
@@ -102,10 +97,7 @@ test('returning medication', function(assert) {
     });
     waitToAppear('.have-inventory-items');
     andThen(() => {
-      fillIn('.test-medication-input .tt-input', 'Biogesic - m00001');
-      triggerEvent('.test-medication-input .tt-input', 'input');
-      triggerEvent('.test-medication-input .tt-input', 'blur');
-      keyEvent('.test-medication-input .tt-input', 'keypress', 9);
+      typeAheadFillIn('.test-medication-input', 'Biogesic - m00001');
     });
     fillIn('.test-medication-quantity input', 30);
     click('button:contains(Return Medication)');

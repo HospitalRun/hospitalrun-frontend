@@ -6,16 +6,16 @@ export default {
     name: 'Имя',
     patient: 'Пациент',
     quantity: 'Количество',
-    requested_on: 'Запрошен',
-    date_requested: 'Дата Запроса',
-    date_completed: 'Дата Выполнения',
-    requested_by: 'Запрошен',
+    requestedOn: 'Запрошен',
+    dateRequested: 'Дата Запроса',
+    dateCompleted: 'Дата Выполнения',
+    requestedBy: 'Запрошен',
     fulfill: 'Отправить',
     actions: 'Действия',
     action: 'Действие',
     notes: 'Заметки',
     edit: 'Редактировать',
-    imaging_type: 'Тип визуализации',
+    imagingType: 'Тип визуализации',
     result: 'Результат',
     results: 'Результаты',
     visit: 'Осмотр',
@@ -26,27 +26,27 @@ export default {
     age: 'Возраст'
   },
   messages: {
-    no_items_found: 'Ничего не найдено.',
-    create_new_record: 'Создать новую запись?',
-    for_authorized_persons: 'Этот отчет предназначен только для уполномоченных лиц.'
+    noItemsFound: 'Ничего не найдено.',
+    createNewRecord: 'Создать новую запись?',
+    forAuthorizedPersons: 'Этот отчет предназначен только для уполномоченных лиц.'
   },
   buttons: {
     complete: 'Готово',
     cancel: 'Отметить',
-    return_button: 'Вернутся',
+    returnButton: 'Вернутся',
     add: 'Добавить',
     update: 'Обновить',
     ok: 'Ок'
   },
   login: {
     messages: {
-      sign_in:  'войдите в систему',
+      signIn:  'войдите в систему',
       error:    'Неверное имя пользователя или пароль.'
     },
     labels: {
       password: 'Пароль',
       username: 'Имя пользователя',
-      sign_in:  'Войти'
+      signIn:  'Войти'
     }
   },
   inventory: {
