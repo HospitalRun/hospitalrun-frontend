@@ -6,7 +6,7 @@
     updateButtonText=updateButtonText }}
   {{#em-form model=model submitButton=false }}
     <div class="row">
-      {{date-picker property="dateRecorded" label=(t "vitals.labels.date_recorded") class="col-sm-6" format="l h:mm A" showTime=true }}
+      {{date-picker property="dateRecorded" label=(t "vitals.labels.dateRecorded") class="col-sm-6" format="l h:mm A" showTime=true }}
     </div>
     <div class="row">
       {{em-input class="col-sm-3 required temperature-text" property="temperature" label=temperatureLabel }}
@@ -20,8 +20,8 @@
       {{em-input class="col-sm-3 required dbp-text" property="dbp" label=(t "vitals.labels.dbp")}}
     </div>
     <div class="row">
-      {{em-input class="col-sm-3 required heart-rate-text" property="heartRate" label=(t "vitals.labels.heart_rate")}}
-      {{em-input class="col-sm-3 required respiratory-rate-text" property="respiratoryRate" label=(t "vitals.labels.respiratory_rate")}}
+      {{em-input class="col-sm-3 required heart-rate-text" property="heartRate" label=(t "vitals.labels.heartRate")}}
+      {{em-input class="col-sm-3 required respiratory-rate-text" property="respiratoryRate" label=(t "vitals.labels.respiratoryRate")}}
     </div>
   {{/em-form}}
 {{/modal-dialog}}

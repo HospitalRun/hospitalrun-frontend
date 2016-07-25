@@ -3,7 +3,7 @@ import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractIndexRoute.extend({
   modelName: 'patient',
-  pageTitle: t('patients.titles.patient_listing'),
+  pageTitle: t('patients.titles.patientListing'),
 
   _getStartKeyFromItem: function(item) {
     var displayPatientId = item.get('displayPatientId');

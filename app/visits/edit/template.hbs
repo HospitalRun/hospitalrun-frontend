@@ -4,11 +4,11 @@
       <div class="panel-heading">
         <h3 class="panel-title">
           <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-info">
-            {{t 'visits.labels.visit_information' }}
+            {{t 'visits.labels.visitInformation' }}
           </a>
           {{#if canAddAppointment}}
             <button type="button" class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}>
-              <span class="octicon octicon-plus"></span> {{t 'visits.buttons.new_appointment' }}
+              <span class="octicon octicon-plus"></span> {{t 'visits.buttons.newAppointment' }}
             </button>
           {{/if}}
         </h3>
@@ -22,8 +22,8 @@
                 <p class="form-control-static patient-name">{{model.patient.displayName}}</p>
               </div>
               {{#if isAdmissionVisit}}
-                {{date-picker property="startDate" label=(t "patients.labels.admission_date") showTime=true class="col-sm-3 required"}}
-                {{date-picker property="endDate" label=(t "patients.labels.discharge_date") showTime=true class="col-sm-3"}}
+                {{date-picker property="startDate" label=(t "patients.labels.admissionDate") showTime=true class="col-sm-3 required"}}
+                {{date-picker property="endDate" label=(t "patients.labels.dischargeDate") showTime=true class="col-sm-3"}}
               {{else}}
                 {{date-picker property="startDate" label=(t "labels.date") class="col-sm-3 required"}}
               {{/if}}
@@ -33,7 +33,7 @@
               }}
             </div>
             <div class="row">
-              {{em-select class="col-sm-3 required" label=(t "visits.labels.visit_type")
+              {{em-select class="col-sm-3 required" label=(t "visits.labels.visitType")
                 property="visitType" content=visitTypes
               }}
               {{#if isAdmissionVisit}}
@@ -49,25 +49,25 @@
             </div>
             <div class="row">
               {{select-or-typeahead className="col-sm-5" property="primaryDiagnosis"
-                label=(t "visits.labels.admitting_diagnosis") list=diagnosisList
+                label=(t "visits.labels.admittingDiagnosis") list=diagnosisList
                 selection=model.primaryDiagnosis hint=false
               }}
               {{select-or-typeahead className="col-sm-5" property="primaryBillingDiagnosis"
-                label=(t "visits.labels.final_diagnosis")  list=diagnosisList
+                label=(t "visits.labels.finalDiagnosis")  list=diagnosisList
                 selection=model.primaryBillingDiagnosis hint=false
               }}
               {{#if canAddDiagnosis}}
                 <div class="form-group col-sm-2">
                   <label class="control-label">&nbsp;</label>
                   <p class="form-control-static">
-                    <button class="btn btn-primary" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.add_diagnosis' }}</button>
+                    <button class="btn btn-primary" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.addDiagnosis' }}</button>
                   </p>
                 </div>
               {{/if}}
             </div>
             {{#if haveAdditionalDiagnoses}}
               <h4>
-                {{t "visits.titles.additional_diagnoses"}}
+                {{t "visits.titles.additionalDiagnoses"}}
               </h4>
               <table class="table">
                 <tr class="table-header">
@@ -113,7 +113,7 @@
             <table class="table">
               <tr class="table-header">
                   <th>{{t 'labels.date'}}</th>
-                  <th>{{t 'visits.labels.authored_by'}}</th>
+                  <th>{{t 'visits.labels.authoredBy'}}</th>
                   <th>{{t 'labels.note'}}</th>
                   <th>{{t 'labels.actions'}}</th>
               </tr>
@@ -144,7 +144,7 @@
             <a data-toggle="collapse" data-parent="#visit-accordion" href="#visit-procedures">
               {{t 'labels.procedures' }}
               {{#if canAddProcedure}}
-                <button class="btn btn-primary align-right" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.new_procedure' }}</button>
+                <button class="btn btn-primary align-right" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.newProcedure' }}</button>
               {{/if}}
             </a>
           </h3>
@@ -183,7 +183,7 @@
             <a data-toggle="collapse" data-parent="#patient-accordion" href="#patient-medication">
               {{t 'visits.labels.medication' }}
               {{#if canAddMedication}}
-                <button class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.new_medication' }}</button>
+                <button class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.newMedication' }}</button>
               {{/if}}
             </a>
           </h3>
@@ -201,7 +201,7 @@
               {{t 'visits.labels.labs' }}
               {{#if canAddLab}}
                 <button class="btn btn-primary align-right" {{action "newLab" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> {{t 'visits.buttons.new_lab' }}
+                  <span class="octicon octicon-plus"></span> {{t 'visits.buttons.newLab' }}
                 </button>
               {{/if}}
             </a>
@@ -220,7 +220,7 @@
               {{t 'visits.labels.imaging' }}
               {{#if canAddImaging}}
                 <button class="btn btn-primary align-right" {{action "newImaging" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> {{t 'visits.buttons.new_imaging' }}
+                  <span class="octicon octicon-plus"></span> {{t 'visits.buttons.newImaging' }}
                 </button>
               {{/if}}
             </a>
@@ -239,7 +239,7 @@
               {{t "visits.labels.vitals"}}
               {{#if canAddVitals}}
                 <button class="btn btn-primary align-right" {{action "showAddVitals" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span> {{t "visits.buttons.new_vitals"}}
+                  <span class="octicon octicon-plus"></span> {{t "visits.buttons.newVitals"}}
                 </button>
               {{/if}}
             </a>
@@ -255,8 +255,8 @@
                 <th>{{t "vitals.labels.height"}}</th>
                 <th>{{t "vitals.labels.sbp"}}</th>
                 <th>{{t "vitals.labels.dbp"}}</th>
-                <th>{{t "vitals.labels.heart_rate"}}</th>
-                <th>{{t "vitals.labels.respiratory_rate"}}</th>
+                <th>{{t "vitals.labels.heartRate"}}</th>
+                <th>{{t "vitals.labels.respiratoryRate"}}</th>
                 <th>{{t "labels.delete"}}</th>
               </tr>
               {{#each model.vitals as |vital|}}

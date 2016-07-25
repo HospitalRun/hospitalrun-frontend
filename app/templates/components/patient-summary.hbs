@@ -23,7 +23,7 @@
 
   {{#if havePrimaryDiagnoses}}
   <div class="ps-info-group long-form">
-    <label class="ps-info-label wide">{{t 'patients.labels.primary_diagnosis'}}</label>
+    <label class="ps-info-label wide">{{t 'patients.labels.primaryDiagnosis'}}</label>
     <div class="ps-info-data-block">
       {{#each primaryDiagnoses as |diagnosis|}}
         {{#unless diagnosis.first}}, {{/unless}}
@@ -35,7 +35,7 @@
 
   {{#if haveSecondaryDiagnoses}}
   <div class="ps-info-group long-form">
-    <label class="ps-info-label wide">{{t 'patients.labels.secondary_diagnosis'}}</label>
+    <label class="ps-info-label wide">{{t 'patients.labels.secondaryDiagnosis'}}</label>
     <div class="ps-info-data-block">
       {{#each secondaryDiagnoses as |diagnosis|}}
         {{#unless diagnosis.first}}, {{/unless}}

@@ -9,15 +9,15 @@
       <p class="form-control-static">{{model.adjustmentItem.name}}</p>
     </div>
     <div class="form-group">
-      <label class="control-label">{{t 'inventory.labels.adjustment_for'}}</label>
+      <label class="control-label">{{t 'inventory.labels.adjustmentFor'}}</label>
       <p class="form-control-static">{{model.locationName}}</p>
     </div>
     <div class="form-group">
-      <label class="control-label">{{t 'inventory.labels.current_quantity'}}</label>
+      <label class="control-label">{{t 'inventory.labels.currentQuantity'}}</label>
       <p class="form-control-static">{{model.quantity}}</p>
     </div>
     <div class="row">
-      {{em-select class="col-sm-4" label=(t 'inventory.labels.adjustment_type')
+      {{em-select class="col-sm-4" label=(t 'inventory.labels.adjustmentType')
         property="transactionType" content=adjustmentTypes
         optionValuePath="type" optionLabelPath="name"
       }}
@@ -25,7 +25,7 @@
     </div>
     {{em-text label=(t 'inventory.labels.reason') property="reason" rows=3}}
     <div class="row">
-      {{date-picker property="dateCompleted" label=(t 'inventory.labels.adjustment_date') class="col-sm-4 required"}}
+      {{date-picker property="dateCompleted" label=(t 'inventory.labels.adjustmentDate') class="col-sm-4 required"}}
       {{select-or-typeahead property="expenseAccount" label=(t 'inventory.labels.expense') list=expenseAccountList selection=model.expenseAccount  class="col-sm-8"}}
     </div>
   {{/em-form}}

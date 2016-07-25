@@ -120,11 +120,11 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     },
 
     showRemoveItem: function(item) {
-      var message = this.get('i18n').t('inventory.messages.remove_item_request'),
+      var message = this.get('i18n').t('inventory.messages.removeItemRequest'),
         model = Ember.Object.create({
           itemToRemove: item
         }),
-        title = this.get('i18n').t('inventory.titles.remove_item');
+        title = this.get('i18n').t('inventory.titles.removeItem');
       this.displayConfirm(title, message, 'removeItem', model);
     },
 
@@ -190,9 +190,9 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   afterUpdate: function() {
     var updateViaFulfillRequest = this.get('updateViaFulfillRequest');
     if (updateViaFulfillRequest) {
-      this.displayAlert(this.get('i18n').t('inventory.titles.request_fulfilled'), this.get('i18n').t('inventory.messages.request_fulfilled'), 'allRequests');
+      this.displayAlert(this.get('i18n').t('inventory.titles.requestFulfilled'), this.get('i18n').t('inventory.messages.requestFulfilled'), 'allRequests');
     } else {
-      this.displayAlert(this.get('i18n').t('inventory.titles.request_updated'), this.get('i18n').t('inventory.messages.request_updated'));
+      this.displayAlert(this.get('i18n').t('inventory.titles.requestUpdated'), this.get('i18n').t('inventory.messages.requestUpdated'));
     }
   },
 

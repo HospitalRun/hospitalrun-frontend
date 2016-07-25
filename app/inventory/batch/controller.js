@@ -193,7 +193,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
         }.bind(this));
         Ember.RSVP.all(inventorySaves).then(function() {
           this.updateLookupLists();
-          this.displayAlert(this.get('i18n').t('inventory.titles.purchase_saved'), this.get('i18n').t('inventory.messages.purchase_saved'), 'allItems');
+          this.displayAlert(this.get('i18n').t('inventory.titles.purchaseSaved'), this.get('i18n').t('inventory.messages.purchaseSaved'), 'allItems');
         }.bind(this));
       }.bind(this));
     }.bind(this));
@@ -221,11 +221,11 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     },
 
     showRemoveItem: function(item) {
-      var message = this.get('i18n').t('inventory.messages.remove_item'),
+      var message = this.get('i18n').t('inventory.messages.removeItem'),
         model = Ember.Object.create({
           itemToRemove: item
         }),
-        title = this.get('i18n').t('inventory.titles.remove_item');
+        title = this.get('i18n').t('inventory.titles.removeItem');
       this.displayConfirm(title, message, 'removeItem', model);
     },
 

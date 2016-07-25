@@ -172,33 +172,33 @@ export default {
   },
   inventory: {
     messages: {
-      no_requests: 'Keine Anfragen gefunden.',
-      create_request: 'Neue Anfrage erstellen?'
+      noRequests: 'Keine Anfragen gefunden.',
+      createRequest: 'Neue Anfrage erstellen?'
     }
   },
   imaging: {
-    page_title: 'Anfrage zur Bildgebung',
-    section_title: 'Bildgebung',
+    pageTitle: 'Anfrage zur Bildgebung',
+    sectionTitle: 'Bildgebung',
     buttons: {
-      new_button: '+ Neue Bildgebung'
+      newButton: '+ Neue Bildgebung'
     },
     labels: {
       radiologist: 'Radiologe',
-      add_new_visit: '--Neuen Besuch hinzufügen--'
+      addNewVisit: '--Neuen Besuch hinzufügen--'
     },
     messages: {
-      no_completed: 'Keine erledigten Einträge gefunden.'
+      noCompleted: 'Keine erledigten Einträge gefunden.'
     },
     titles: {
-      completed_imaging: 'Erledigte Bildgebung',
-      edit_title: 'Bildgebungs-Anfrage bearbeiten',
-      new_title: 'Neue Bildgebungs-Anfrage'
+      completedImaging: 'Erledigte Bildgebung',
+      editTitle: 'Bildgebungs-Anfrage bearbeiten',
+      newTitle: 'Neue Bildgebungs-Anfrage'
     },
     alerts: {
-      completed_title: 'Bildgebungs-Anfrage gestellt',
-      completed_message: 'Die Anfrage zur Bildgebung wurde abgeschlossen.',
-      saved_title: 'Bildgebungs-Anfrage gespeichert',
-      saved_message: 'Die Anfrage zur Bildgebung wurde gespeichert.'
+      completedTitle: 'Bildgebungs-Anfrage gestellt',
+      completedMessage: 'Die Anfrage zur Bildgebung wurde abgeschlossen.',
+      savedTitle: 'Bildgebungs-Anfrage gespeichert',
+      savedMessage: 'Die Anfrage zur Bildgebung wurde gespeichert.'
     }
   }
 };

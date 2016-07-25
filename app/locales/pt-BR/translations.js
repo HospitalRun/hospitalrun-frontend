@@ -52,33 +52,33 @@ export default {
   },
   inventory: {
     messages: {
-      no_requests: 'Requisições não encontradas.',
-      create_request: 'Criar uma nova requisição?'
+      noRequests: 'Requisições não encontradas.',
+      createRequest: 'Criar uma nova requisição?'
     }
   },
   imaging: {
-    page_title: 'Requisição de imagens',
-    section_title: 'Imagem',
+    pageTitle: 'Requisição de imagens',
+    sectionTitle: 'Imagem',
     buttons: {
-    new_button: '+ nova imagem'
-  },
+      newButton: '+ nova imagem'
+    },
     labels: {
-    radiologist: 'Radiologista',
-    add_new_visit: '--Adicionar novo visitante--'
-  },
+      radiologist: 'Radiologista',
+      addNewVisit: '--Adicionar novo visitante--'
+    },
     messages: {
-    no_completed: 'Nenhum item completo encontrado.'
-  },
+      noCompleted: 'Nenhum item completo encontrado.'
+    },
     titles: {
-    completed_imaging: 'Imagem completa',
-    edit_title: 'Requisição de edição de imagem',
-    new_title: 'Nova requisição de imagem'
-  },
+      completedImaging: 'Imagem completa',
+      editTitle: 'Requisição de edição de imagem',
+      newTitle: 'Nova requisição de imagem'
+    },
     alerts: {
-    completed_title: 'Requisição de imagem completa.',
-    completed_message: 'A requisição de imagem esta completa.',
-    saved_title: 'Requisição de imagem salva.',
-    saved_message: 'A requisição de imagem foi salva.'
-  }
+      completedTitle: 'Requisição de imagem completa.',
+      completedMessage: 'A requisição de imagem esta completa.',
+      savedTitle: 'Requisição de imagem salva.',
+      savedMessage: 'A requisição de imagem foi salva.'
+    }
   }
 };
