@@ -620,6 +620,7 @@ export default {
       addNewVisit: '--Add New Visit--'
     },
     messages: {
+      delete: 'Are you sure you wish to delete this imaging request?',
       noCompleted: 'No completed items found.'
     },
     titles: {
