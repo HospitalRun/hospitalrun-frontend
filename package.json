@@ -29,7 +29,7 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "body-parser": "^1.14.2",
-    "broccoli-asset-rev": "^2.4.2",
+    "broccoli-asset-rev": "^2.4.5",
     "broccoli-export-text": "0.0.2",
     "broccoli-funnel": "^1.0.2",
     "broccoli-manifest": "0.0.7",
