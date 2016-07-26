@@ -5,14 +5,22 @@ node_js:
 
 sudo: false
 
+addons:
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
+
 cache:
   directories:
     - node_modules
 
 before_install:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
   - npm config set spin false
   - npm install -g bower
-  - npm install -g phantomjs-prebuilt
 
 install:
   - npm install
