@@ -29,7 +29,7 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "body-parser": "^1.14.2",
-    "broccoli-asset-rev": "^2.4.2",
+    "broccoli-asset-rev": "^2.4.5",
     "broccoli-export-text": "0.0.2",
     "broccoli-funnel": "^1.0.2",
     "broccoli-manifest": "0.0.7",
@@ -55,7 +55,7 @@
     "ember-cli-stylelint": "^0.2.2",
     "ember-cli-template-lint": "0.4.11",
     "ember-cli-uglify": "^1.2.0",
-    "ember-data": "2.6.1",
+    "ember-data": "~2.6.2",
     "ember-export-application-global": "^1.0.5",
     "ember-i18n": "4.2.2",
     "ember-load-initializers": "^0.5.1",
@@ -87,6 +87,6 @@
   },
   "snyk": true,
   "dependencies": {
-    "snyk": "^1.16.0"
+    "snyk": "^1.17.4"
   }
 }
