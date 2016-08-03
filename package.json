@@ -76,9 +76,9 @@
     "loader.js": "4.0.10",
     "nano": "6.2.0",
     "request": "2.74.0",
-    "stylelint-config-concentric": "^1.0.3",
+    "stylelint-config-concentric": "1.0.3",
     "stylelint-declaration-use-variable": "^1.4.0",
-    "stylelint-scss": "^1.2.0",
+    "stylelint-scss": "1.2.1",
     "stylelint-value-border-zero": "^1.0.2"
   },
   "ember-addon": {
