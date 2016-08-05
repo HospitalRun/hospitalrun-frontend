@@ -1,4 +1,5 @@
 export default {
+
   dashboard: {
     title: 'O que você gostaria de fazer?'
   },
@@ -373,7 +374,7 @@ export default {
     chargedItems: 'Itens Carregados'
   },
   buttons: {
-    addItem: 'Adicionar Item',
+      addItem: 'Adicionar Item',
       complete: 'Completo',
       cancel: 'Cancelar',
       close: 'Fechar',
@@ -381,14 +382,14 @@ export default {
       barcode: 'Código de Barras',
       add: 'Adicionar',
       update: 'Atualizar',
-      ok: 'Ok'
-    fulfill: 'Preencher',
+      ok: 'Ok',
+      fulfill: 'Preencher',
       remove: 'Remover',
       delete: 'Excluir',
       newUser: 'Novo Usuário',
       addValue: 'Adicionar Valor',
       newNote: 'Nova Nota',
-  import: 'Importar',
+      import: 'Importar',
       loadFile: 'Carregar Arquivo',
       newRequest: 'Nova Requisição',
       allRequests: 'Todas as Requisições',
@@ -855,7 +856,7 @@ export default {
         dateProcessed: 'Data de Processamento',
         status: 'Situação do Paciente',
         externalPatientId: 'ID de Paciente Externo',
-        bloodType: 'Tipo Sanguíneo,
+        bloodType: 'Tipo Sanguíneo',
         clinic: 'Site(Filial) da Clínica',
         referredBy: 'Indicado Por',
         referredDate: 'Data de Indicação',
