@@ -481,7 +481,7 @@ export default {
       gift: 'Doação em Espécie',
       giftUsage: 'Uso de Doação em Espécie',
       giftInKindNo: 'N',
-      giftInK indYes: 'S',
+      giftInKindYes: 'S',
       inventoryConsumed: 'Inventário Consumido',
       inventoryItem: 'Item de Inventário',
       inventoryObsolence: 'Obsolescência de Inventário',
