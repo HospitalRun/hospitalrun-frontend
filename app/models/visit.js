@@ -99,6 +99,13 @@ export default AbstractModel.extend({
         message: 'Please select an end date later than the start date'
       }
     },
+    patientTypeAhead: {
+      presence: {
+        if: function(object) {
+          return (object.get('checkIn'));
+        }
+      }
+    },
     paymentState: {
       acceptance: {
         accept: true,

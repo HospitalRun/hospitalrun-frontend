@@ -1,4 +1,5 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import AddNewPatient from 'hospitalrun/mixins/add-new-patient';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
 import Ember from 'ember';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
@@ -7,11 +8,11 @@ import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-export default AbstractEditController.extend(ChargeActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
+export default AbstractEditController.extend(AddNewPatient, ChargeActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
   visitsController: Ember.inject.controller('visits'),
 
   canAddAppointment: function() {
-    return this.currentUserCan('add_appointment');
+    return (!this.get('model.isNew') && this.currentUserCan('add_appointment'));
   }.property(),
 
   canAddImaging: function() {
@@ -120,7 +121,6 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
     id: 'visit_location_list'
   }],
 
-  newVisit: false,
   visitStatuses: [
     'Admitted',
     'Discharged'
@@ -169,12 +169,26 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
   },
 
   beforeUpdate: function() {
-    if (this.get('model.isNew')) {
-      this.set('newVisit', true);
+    let isNew = this.get('model.isNew');
+    if (isNew) {
+      return new Ember.RSVP.Promise((resolve, reject) => {
+        var newVisit = this.get('model');
+        return newVisit.validate().then(() => {
+          if (newVisit.get('isValid')) {
+            if (Ember.isEmpty(newVisit.get('patient'))) {
+              this.addNewPatient();
+              reject({
+                ignore: true,
+                message: 'creating new patient first'
+              });
+            }
+            resolve();
+          }
+        });
+      });
+    } else {
+      return this.updateCharges();
     }
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      this.updateCharges().then(resolve, reject);
-    }.bind(this));
   },
 
   /**

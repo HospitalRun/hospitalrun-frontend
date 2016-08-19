@@ -3,8 +3,7 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractEditController.extend({
-  medicationController: Ember.inject.controller('medication'),
-  sexList: Ember.computed.alias('medicationController.sexList'),
+  sexList: Ember.computed.alias('model.requestingController.sexList'),
   title: t('patients.titles.new'),
 
   updateCapability: 'add_patient',

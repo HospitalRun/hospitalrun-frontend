@@ -16,11 +16,15 @@
       <div id="visit-info" class="panel-collapse collapse in">
         <div class="panel-body">
           {{#em-form model=model submitButton=false }}
-            <div class="row">
-              <div class="form-group col-sm-3">
-                <label>{{t 'labels.patient'}}</label>
-                <p class="form-control-static patient-name">{{model.patient.displayName}}</p>
+            {{#if model.checkIn}}
+              <div class="row">
+                {{patient-typeahead property="patientTypeAhead" label=(t 'visits.labels.patientToCheckIn') content=patientList selection=selectedPatient class="required patient-name"}}
               </div>
+            {{/if}}
+            {{#if model.patient}}
+              {{patient-summary patient=model.patient returnTo='labs.edit' returnToContext=model.id disablePatientLink=model.isNew }}
+            {{/if}}
+            <div class="row">
               {{#if isAdmissionVisit}}
                 {{date-picker property="startDate" label=(t "patients.labels.admissionDate") showTime=true class="col-sm-3 required"}}
                 {{date-picker property="endDate" label=(t "patients.labels.dischargeDate") showTime=true class="col-sm-3"}}
@@ -91,7 +95,6 @@
               </table>
             {{/if}}
             {{em-text label="Patient History" property="history" rows=3 }}
-            {{em-text label="History since last seen" property="historySince" rows=3 }}
           {{/em-form}}
         </div>
       </div>

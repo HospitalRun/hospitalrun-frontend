@@ -63,7 +63,8 @@ export default {
       admittedPatients: 'Admitted Patients',
       missed: 'Missed',
       userRoles: 'User Roles',
-      workflow: 'Workflow'
+      workflow: 'Workflow',
+      outPatient: 'Outpatient'
     },
     actions: {
       logout: 'Logout',
@@ -710,7 +711,10 @@ export default {
   },
   visits: {
     titles: {
-      additionalDiagnoses: 'Additional Diagnoses'
+      additionalDiagnoses: 'Additional Diagnoses',
+      editVisit: 'Edit Visit',
+      newVisit: 'New Visit',
+      patientCheckIn: 'Patient Check In'
     },
     messages: {
       delete: 'Are you sure you wish to delete this visit?'
@@ -737,7 +741,8 @@ export default {
       admittingDiagnosis: 'Admitting Diagnosis',
       finalDiagnosis: 'Final/Billing Diagnosis',
       visitType: 'Visit Type',
-      vitals: 'Vitals'
+      vitals: 'Vitals',
+      patientToCheckIn: 'Patient To Check In'
     }
   },
   labs: {
@@ -797,7 +802,8 @@ export default {
       deleteExpense: 'Delete Expense',
       deletePhoto: 'Delete Photo',
       deleteContact: 'Delete Contact',
-      savedPatient: 'Patient Saved'
+      savedPatient: 'Patient Saved',
+      todaysOutpatients: 'Todays\' Outpatients'
     },
     messages: {
       areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
@@ -818,7 +824,8 @@ export default {
       newPhoto: 'New Photo',
       newAppointment: 'New Appointment',
       backToPatients: 'Back to Patient List',
-      newPatient: '+ new patient'
+      newPatient: '+ new patient',
+      patientCheckIn: 'Patient Check In'
     },
     headings: {
       history: 'History',
