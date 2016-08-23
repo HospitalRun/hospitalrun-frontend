@@ -122,6 +122,35 @@ function generateDateForView(date1) {
 
 }
 
+var patientListingKey = 'if (doc.data.friendlyId) {' +
+  'emit([doc.data.friendlyId, doc._id]);' +
+  '} else if (doc.data.externalPatientId) {' +
+  'emit([doc.data.externalPatientId, doc._id]);' +
+  '} else {' +
+  'emit([doc._id, doc._id]);' +
+'}';
+
+var patientListingSearch = generateSortFunction(function(a, b) {
+  var sortBy = '';
+  if (req.query && req.query.sortKey) {
+    sortBy = req.query.sortKey;
+  }
+  switch (sortBy) {
+    case 'firstName':
+    case 'sex':
+    case 'lastName':
+    case 'status': {
+      return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
+    }
+    case 'dateOfBirth': {
+      return getCompareDate(a.doc.data.dateOfBirth) - getCompareDate(b.doc.data.dateOfBirth);
+    }
+    default: {
+      return 0; // Don't sort
+    }
+  }
+}.toString(), true);
+
 var designDocs = [{
   name: 'appointments_by_date',
   function: generateView('appointment',
@@ -288,35 +317,8 @@ var designDocs = [{
   version: 3
 }, {
   name: 'patient_by_display_id',
-  function: generateView('patient',
-    'if (doc.data.friendlyId) {' +
-    'emit([doc.data.friendlyId, doc._id]);' +
-    '} else if (doc.data.externalPatientId) {' +
-    'emit([doc.data.externalPatientId, doc._id]);' +
-    '} else {' +
-    'emit([doc._id, doc._id]);' +
-    '}'
-  ),
-  sort: generateSortFunction(function(a, b) {
-    var sortBy = '';
-    if (req.query && req.query.sortKey) {
-      sortBy = req.query.sortKey;
-    }
-    switch (sortBy) {
-      case 'firstName':
-      case 'sex':
-      case 'lastName':
-      case 'status': {
-        return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
-      }
-      case 'dateOfBirth': {
-        return getCompareDate(a.doc.data.dateOfBirth) - getCompareDate(b.doc.data.dateOfBirth);
-      }
-      default: {
-        return 0; // Don't sort
-      }
-    }
-  }.toString(), true),
+  function: generateView('patient', patientListingKey),
+  sort: patientListingSearch,
   version: 5
 }, {
   name: 'patient_by_status',
@@ -327,9 +329,12 @@ var designDocs = [{
 },{
   name: 'patient_by_admission',
   function: generateView('patient',
-    'emit(doc.data.admitted);'
+    'if(doc.data.admitted === true) {' +
+      patientListingKey +
+    '}'
   ),
-  version: 1
+  sort: patientListingSearch,
+  version: 2
 }, {
   name: 'photo_by_patient',
   function: generateView('photo',
