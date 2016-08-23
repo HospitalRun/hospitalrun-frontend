@@ -195,7 +195,8 @@ export default Adapter.extend(PouchAdapterUtils, {
                 if (err) {
                   this._pouchError(reject)(err);
                 } else {
-                  this._handleQueryResponse(response.json, store, type).then(resolve, reject);
+                  let responseJSON = JSON.parse(response.body);
+                  this._handleQueryResponse(responseJSON, store, type).then(resolve, reject);
                 }
               });
             } else {
