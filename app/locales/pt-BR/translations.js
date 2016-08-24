@@ -758,7 +758,7 @@ export default {
       confirmDeletion: 'VOcê tem certeza que deseja excluir essa requisição de laboratório?',
       noCompleted: 'Items concluídos não econtrados.'
     },
-    buttons: {//AQUI
+    buttons: {
       newButton: '+ novo laboratório'
     },
     alerts: {
