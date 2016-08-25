@@ -3,7 +3,7 @@
         {{#em-form model=this submitButton=false }}
             <div class="row">
                 <div class="form-group col-xs-6">
-                  <label class="control-label" for="report-type">{{t 'inventory.reports.report_type'}}</label>
+                  <label class="control-label" for="report-type">{{t 'inventory.reports.reportType'}}</label>
                   {{select-list
                     action=(action (mut reportType))
                     class='form-control'
@@ -23,10 +23,10 @@
             </div>
             <div class="row">
                 {{#if showEffectiveDate}}
-                    {{date-picker property="endDate" label=(t 'inventory.labels.date_effective') class="col-sm-4"}}
+                    {{date-picker property="endDate" label=(t 'inventory.labels.dateEffective') class="col-sm-4"}}
                 {{else}}
-                    {{date-picker property="startDate" label=(t 'inventory.labels.date_start') class="col-sm-4 test-start-date"}}
-                    {{date-picker property="endDate" label=(t 'inventory.labels.date_end') class="col-sm-4 test-end-date"}}
+                    {{date-picker property="startDate" label=(t 'inventory.labels.dateStart') class="col-sm-4 test-start-date"}}
+                    {{date-picker property="endDate" label=(t 'inventory.labels.dateEnd') class="col-sm-4 test-end-date"}}
                 {{/if}}
             </div>
             {{#if useFieldPicker}}

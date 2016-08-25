@@ -1,6 +1,6 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false }}
-    {{select-or-typeahead className="required" property="description"
+    {{select-or-typeahead className="required procedure-description" property="description"
       label="Procedure" list=procedureList
       selection=model.description hint=false
     }}
@@ -20,7 +20,7 @@
       {{em-input property="timeEnded" label="Time Ended" class="col-sm-3"}}
     </div>
     <div class="row">
-      {{select-or-typeahead className="col-sm-4 required" property="physician"
+      {{select-or-typeahead className="col-sm-4 required procedure-physician" property="physician"
         label="Physician" list=physicianList
         selection=model.physician
       }}
@@ -39,15 +39,15 @@
           selection=model.anesthesiaTypes
         }}
     </div>
-    {{em-text label="Notes" property="notes" rows=3 }}
+    {{em-text label="Notes" property="notes" rows=3 class="procedure-notes"}}
     {{partial 'item-charges'}}
-    <div class="panel detail-section">
+    <div class="panel detail-section medication-charges">
       <div class="panel-heading">
         <h3 class="panel-title">
-          Medication Used
+          {{t 'procedures.titles.medicationUsed'}}
           {{#if canAddCharge}}
             <button class="btn btn-primary align-right" {{action "showAddMedication" bubbles=false }}>
-              <span class="octicon octicon-plus"></span>Add Medication
+              <span class="octicon octicon-plus"></span>{{t 'procedures.buttons.addMedication'}}
             </button>
           {{/if}}
         </h3>
@@ -55,7 +55,7 @@
       <div class="panel-body detail-section-content">
         <table class="table">
           <tr class="table-header">
-            <th>Item</th>
+            <th>{{t 'inventory.labels.item'}}</th>
             <th>{{t 'labels.quantity'}}</th>
             <th>{{t 'labels.action'}}</th>
           </tr>
@@ -63,14 +63,14 @@
             {{#if charge.medicationCharge}}
               <tr>
                 <td>{{charge.medicationName}}</td>
-                <td>{{charge.quantity}}</td>
+                <td class="medication-charge-quantity">{{charge.quantity}}</td>
                 <td>
                   {{#if canAddCharge}}
                     <button class="btn btn-default neutral" {{action "showEditMedication" charge}}>{{t 'labels.edit'}}</button>
                   {{/if}}
                   {{#if canAddCharge}}
                     <button class="btn btn-default warning" {{action "showDeleteMedication" charge bubbles=false }}>
-                      <span class="octicon octicon-x"></span>Delete
+                      <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
                     </button>
                   {{/if}}
                 </td>

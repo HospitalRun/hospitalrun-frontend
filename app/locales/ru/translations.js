@@ -6,16 +6,16 @@ export default {
     name: 'Имя',
     patient: 'Пациент',
     quantity: 'Количество',
-    requested_on: 'Запрошен',
-    date_requested: 'Дата Запроса',
-    date_completed: 'Дата Выполнения',
-    requested_by: 'Запрошен',
+    requestedOn: 'Запрошен',
+    dateRequested: 'Дата Запроса',
+    dateCompleted: 'Дата Выполнения',
+    requestedBy: 'Запрошен',
     fulfill: 'Отправить',
     actions: 'Действия',
     action: 'Действие',
     notes: 'Заметки',
     edit: 'Редактировать',
-    imaging_type: 'Тип визуализации',
+    imagingType: 'Тип визуализации',
     result: 'Результат',
     results: 'Результаты',
     visit: 'Осмотр',
@@ -26,57 +26,58 @@ export default {
     age: 'Возраст'
   },
   messages: {
-    no_items_found: 'Ничего не найдено.',
-    create_new_record: 'Создать новую запись?'
+    noItemsFound: 'Ничего не найдено.',
+    createNewRecord: 'Создать новую запись?',
+    forAuthorizedPersons: 'Этот отчет предназначен только для уполномоченных лиц.'
   },
   buttons: {
     complete: 'Готово',
     cancel: 'Отметить',
-    return_button: 'Вернутся',
+    returnButton: 'Вернутся',
     add: 'Добавить',
     update: 'Обновить',
     ok: 'Ок'
   },
   login: {
     messages: {
-      sign_in:  'войдите в систему',
+      signIn:  'войдите в систему',
       error:    'Неверное имя пользователя или пароль.'
     },
     labels: {
       password: 'Пароль',
       username: 'Имя пользователя',
-      sign_in:  'Войти'
+      signIn:  'Войти'
     }
   },
   inventory: {
     messages: {
-      no_requests: 'Запросов не найдено.',
-      create_request: 'Создать новый запрос?'
+      noRequests: 'Запросов не найдено.',
+      createRequest: 'Создать новый запрос?'
     }
   },
   imaging: {
-    page_title: 'Запросы на визуализацию',
-    section_title: 'Визуализация',
+    pageTitle: 'Запросы на визуализацию',
+    sectionTitle: 'Визуализация',
     buttons: {
-      new_button: '+ новый запрос'
+      newButton: '+ новый запрос'
     },
     labels: {
       radiologist: 'Радиолог',
-      add_new_visit: '--Добавить новый тип осмотра--'
+      addNewVisit: '--Добавить новый тип осмотра--'
     },
     messages: {
-      no_completed: 'Не найдено выполненых запросов.'
+      noCompleted: 'Не найдено выполненых запросов.'
     },
     titles: {
-      completed_imaging: 'Выполненые запросы',
-      edit_title: 'Редактировать запрос на визуализацию',
-      new_title: 'Новый запрос на визуализацию'
+      completedImaging: 'Выполненые запросы',
+      editTitle: 'Редактировать запрос на визуализацию',
+      newTitle: 'Новый запрос на визуализацию'
     },
     alerts: {
-      completed_title: 'Визуализация выполнена',
-      completed_message: 'Запрос на визуализацию удовлетворён.',
-      saved_title: 'Запрос сохранён',
-      saved_message: 'Запрос на визуализацию сохранён.'
+      completedTitle: 'Визуализация выполнена',
+      completedMessage: 'Запрос на визуализацию удовлетворён.',
+      savedTitle: 'Запрос сохранён',
+      savedMessage: 'Запрос на визуализацию сохранён.'
     }
   }
 };

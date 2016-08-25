@@ -1,5 +1,6 @@
 {
   "preset": "ember-suave",
+  "disallowDirectPropertyAccess": null,
   "disallowConstOutsideModuleScope": null,
   "disallowMultipleVarDecl": null,
   "disallowPrototypeExtension": null,

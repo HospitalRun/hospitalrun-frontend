@@ -12,7 +12,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
     if (hasDirtyAttributes) {
       return i18n.t('buttons.cancel');
     } else {
-      return i18n.t('buttons.return_button');
+      return i18n.t('buttons.returnButton');
     }
   }.property('model.hasDirtyAttributes'),
 

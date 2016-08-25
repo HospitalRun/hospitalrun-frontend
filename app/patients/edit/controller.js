@@ -304,6 +304,9 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
 
     editProcedure: function(procedure) {
       if (this.get('canAddVisit')) {
+        procedure.set('patient', this.get('model'));
+        procedure.set('returnToVisit', false);
+        procedure.set('returnToPatient', true);
         this.transitionToRoute('procedures.edit', procedure);
       }
     },
@@ -366,8 +369,8 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     showDeleteContact: function(contact) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteContact',
-        title: this.get('i18n').t('patients.titles.delete_contact'),
-        message: this.get('i18n').t('patients.titles.delete_photo', { object: 'contact' }),
+        title: this.get('i18n').t('patients.titles.deleteContact'),
+        message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'contact' }),
         contactToDelete: contact,
         updateButtonAction: 'confirm',
         updateButtonText: this.get('i18n').t('buttons.ok')
@@ -377,8 +380,8 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     showDeleteExpense: function(expense) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteExpense',
-        title: this.get('i18n').t('patients.titles.delete_expense'),
-        message: this.get('i18n').t('patients.titles.delete_photo', { object: 'expense' }),
+        title: this.get('i18n').t('patients.titles.deleteExpense'),
+        message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'expense' }),
         expenseToDelete: expense,
         updateButtonAction: 'confirm',
         updateButtonText: this.get('i18n').t('buttons.ok')
@@ -388,8 +391,8 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     showDeleteFamily: function(familyInfo) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteFamily',
-        title: this.get('i18n').t('patients.titles.delete_family_member'),
-        message: this.get('i18n').t('patients.titles.delete_photo', { object: 'family member' }),
+        title: this.get('i18n').t('patients.titles.deleteFamilyMember'),
+        message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'family member' }),
         familyToDelete: familyInfo,
         updateButtonAction: 'confirm',
         updateButtonText: this.get('i18n').t('buttons.ok')
@@ -412,8 +415,8 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     showDeletePhoto: function(photo) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deletePhoto',
-        title: this.get('i18n').t('patients.titles.delete_photo'),
-        message: this.get('i18n').t('patients.titles.delete_photo', { object: 'photo' }),
+        title: this.get('i18n').t('patients.titles.deletePhoto'),
+        message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'photo' }),
         photoToDelete: photo,
         updateButtonAction: 'confirm',
         updateButtonText: this.get('i18n').t('buttons.ok')
@@ -518,10 +521,10 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
 
   afterUpdate: function(record) {
     this.send('openModal', 'dialog', Ember.Object.create({
-      title: this.get('i18n').t('patients.titles.saved_patient'),
-      message: this.get('i18n').t('patients.messages.saved_patient', record),
+      title: this.get('i18n').t('patients.titles.savedPatient'),
+      message: this.get('i18n').t('patients.messages.savedPatient', record),
       updateButtonAction: 'returnToPatient',
-      updateButtonText: this.get('i18n').t('patients.buttons.back_to_patients'),
+      updateButtonText: this.get('i18n').t('patients.buttons.backToPatients'),
       cancelButtonText: this.get('i18n').t('buttons.close')
     }));
   }

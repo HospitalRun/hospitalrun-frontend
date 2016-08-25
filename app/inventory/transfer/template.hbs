@@ -9,20 +9,20 @@
       <p class="form-control-static">{{model.transferItem.name}}</p>
     </div>
     <div class="form-group">
-      <label class="control-label">{{t 'inventory.labels.transfer_from'}}</label>
+      <label class="control-label">{{t 'inventory.labels.transferFrom'}}</label>
       <p class="form-control-static">{{model.locationName}}</p>
     </div>
     <div class="form-group">
-      <label class="control-label">{{t 'inventory.labels.quantity_available'}}</label>
+      <label class="control-label">{{t 'inventory.labels.quantityAvailable'}}</label>
       <p class="form-control-static">{{model.quantity}}</p>
     </div>
-    {{select-or-typeahead class="required" property="transferLocation" label=(t 'inventory.labels.transfer_to') list=warehouseList selection=model.transferLocation }}
-    {{select-or-typeahead property="transferAisleLocation" label=(t 'inventory.labels.transfer_to_aisle') list=aisleLocationList selection=model.transferAisleLocation }}
+    {{select-or-typeahead class="required" property="transferLocation" label=(t 'inventory.labels.transferTo') list=warehouseList selection=model.transferLocation }}
+    {{select-or-typeahead property="transferAisleLocation" label=(t 'inventory.labels.transferToAisle') list=aisleLocationList selection=model.transferAisleLocation }}
     <div class="row">
       {{em-input property="adjustmentQuantity" label=(t 'labels.quantity') class="col-sm-3 required"}}
     </div>
     <div class="row">
-      {{date-picker property="dateCompleted" label=(t 'inventory.labels.date_tranferred') class="col-sm-4 required"}}
+      {{date-picker property="dateCompleted" label=(t 'inventory.labels.dateTransferred') class="col-sm-4 required"}}
     </div>
   {{/em-form}}
 {{/modal-dialog}}

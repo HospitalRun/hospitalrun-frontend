@@ -6,16 +6,16 @@ export default {
     name: 'Ad',
     patient: 'Hasta',
     quantity: 'Miktar',
-    requested_on: 'Açık Talep',
-    date_requested: 'Talep Tarihi',
-    date_completed: 'Bitiş tarihi',
-    requested_by: 'Talep sahibi',
+    requestedOn: 'Açık Talep',
+    dateRequested: 'Talep Tarihi',
+    dateCompleted: 'Bitiş tarihi',
+    requestedBy: 'Talep sahibi',
     fulfill: 'Fulfill',
     actions: 'İşlemler',
     action: 'İşlem',
     notes: 'Notlar',
     edit: 'Düzenle',
-    imaging_type: 'Görüntüleme Tipi',
+    imagingType: 'Görüntüleme Tipi',
     result: 'Sonuç',
     results: 'Sonuçlar',
     visit: 'Ziyaret',
@@ -26,57 +26,58 @@ export default {
     age: 'Yaş'
   },
   messages: {
-    no_items_found: 'Hiçbir öğe bulunamadı.',
-    create_new_record: 'Yeni bir kayıt oluştur?'
+    noItemsFound: 'Hiçbir öğe bulunamadı.',
+    createNewRecord: 'Yeni bir kayıt oluştur?',
+    forAuthorizedPersons: 'Bu rapor yetkili kişiler içindir.'
   },
   buttons: {
     complete: 'Bitir',
     cancel: 'Vazgeç',
-    return_button: 'Geri Dön',
+    returnButton: 'Geri Dön',
     add: 'Ekle',
     update: 'Güncelle',
     ok: 'Tamam'
   },
   login: {
     messages: {
-      sign_in:  'GİRİŞ YAPIN',
+      signIn:  'GİRİŞ YAPIN',
       error:    'Kullanıcı adı veya parola hatalı.'
     },
     labels: {
       password: 'Parola',
       username: 'Kullanıcı Adı',
-      sign_in:  'Giriş yap'
+      signIn:  'Giriş yap'
     }
   },
   inventory: {
     messages: {
-      no_requests: 'Talep bulunamadı',
-      create_request: 'Yeni talep oluştur?'
+      noRequests: 'Talep bulunamadı',
+      createRequest: 'Yeni talep oluştur?'
     }
   },
   imaging: {
-    page_title: 'Görüntüleme talepleri',
-    section_title: 'Görüntüleme',
+    pageTitle: 'Görüntüleme talepleri',
+    sectionTitle: 'Görüntüleme',
     buttons: {
-      new_button: '+ yeni görüntüleme'
+      newButton: '+ yeni görüntüleme'
     },
     labels: {
       radiologist: 'Radyolog',
-      add_new_visit: '--Yeni Ziyaret Ekle--'
+      addNewVisit: '--Yeni Ziyaret Ekle--'
     },
     messages: {
-      no_completed: 'Tamamlanmayan öğe bulunamadı.'
+      noCompleted: 'Tamamlanmayan öğe bulunamadı.'
     },
     titles: {
-      completed_imaging: 'Görüntüleme Tamamlandı',
-      edit_title: 'Görüntüleme Talebini Düzenle',
-      new_title: 'Yeni Görüntüleme Talebi'
+      completedImaging: 'Görüntüleme Tamamlandı',
+      editTitle: 'Görüntüleme Talebini Düzenle',
+      newTitle: 'Yeni Görüntüleme Talebi'
     },
     alerts: {
-      completed_title: 'Görüntüleme Talebi Tamamlandı',
-      completed_message: 'Görüntüleme talebi başarıyla tamamlandı.',
-      saved_title: 'Görüntüleme Talebi Kaydedildi',
-      saved_message: 'Görüntüleme Talebi başarıyla kaydedildi.'
+      completedTitle: 'Görüntüleme Talebi Tamamlandı',
+      completedMessage: 'Görüntüleme talebi başarıyla tamamlandı.',
+      savedTitle: 'Görüntüleme Talebi Kaydedildi',
+      savedMessage: 'Görüntüleme Talebi başarıyla kaydedildi.'
     }
   }
 };

@@ -5,12 +5,12 @@ import { translationMacro as t } from 'ember-i18n';
 export default AbstractModuleRoute.extend(UserSession, {
   addCapability: 'add_appointment',
   allowSearch: false,
-  currentScreenTitle: t('appointments.current_screen_title'),
-  editTitle: t('appointments.edit_title'),
-  newTitle: t('appointments.new_title'),
+  currentScreenTitle: t('appointments.currentScreenTitle'),
+  editTitle: t('appointments.editTitle'),
+  newTitle: t('appointments.newTitle'),
   moduleName: 'appointments',
-  newButtonText: t('appointments.buttons.new_button'),
-  sectionTitle: t('appointments.section_title'),
+  newButtonText: t('appointments.buttons.newButton'),
+  sectionTitle: t('appointments.sectionTitle'),
 
   actions: {
     createVisit: function(appointment) {

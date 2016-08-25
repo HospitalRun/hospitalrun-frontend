@@ -48,6 +48,7 @@ export default Ember.Mixin.create({
     },
 
     showEditCharge: function(charge) {
+      charge.set('itemName', charge.get('pricingItem.name'));
       charge.set('pricingCategory', this.get('chargePricingCategory'));
       this.send('openModal', this.get('chargeRoute'), charge);
     },
@@ -59,7 +60,7 @@ export default Ember.Mixin.create({
         message: 'Are you sure you want to delete this charged item?',
         chargeToDelete: charge,
         updateButtonAction: 'confirm',
-        updateButtonText: 'Ok'
+        updateButtonText: this.get('i18n').t('buttons.ok')
       }));
     },
 
@@ -120,15 +121,17 @@ export default Ember.Mixin.create({
     var pricingList = this.get('pricingList'),
       pricingTypeValues = this.get('pricingTypeValues'),
       pricingTypeForObjectType = this.get('pricingTypeForObjectType');
-    pricingTypeValues = pricingTypeValues.filter(function(pricingType) {
-      var havePricing = false;
-      if (!Ember.isEmpty(pricingList)) {
-        havePricing = !Ember.isEmpty(pricingList.findBy('pricingType', pricingType));
-      }
-      return havePricing && pricingType !== pricingTypeForObjectType;
-    });
-    pricingTypeValues = pricingTypeValues.sortBy('name');
-    return pricingTypeValues;
+    if (!Ember.isEmpty(pricingTypeValues)) {
+      pricingTypeValues = pricingTypeValues.filter(function(pricingType) {
+        var havePricing = false;
+        if (!Ember.isEmpty(pricingList)) {
+          havePricing = !Ember.isEmpty(pricingList.findBy('pricingType', pricingType));
+        }
+        return havePricing && pricingType !== pricingTypeForObjectType;
+      });
+      pricingTypeValues = pricingTypeValues.sortBy('name');
+      return pricingTypeValues;
+    }
   }.property('pricingTypeValues', 'pricingTypeForObjectType', 'pricingList'),
 
   pricingTypeValues: Ember.computed.alias('pricingTypes.value'),

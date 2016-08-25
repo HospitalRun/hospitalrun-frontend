@@ -2,11 +2,11 @@
   {{#if model}}
     <table class="table">
       <tr class="table-header">
-        <th>{{t 'labels.date_requested'}}</th>
-        <th>{{t 'labels.date_completed'}}</th>
+        <th>{{t 'labels.dateRequested'}}</th>
+        <th>{{t 'labels.dateCompleted'}}</th>
         <th>{{t 'labels.patient'}}</th>
-        <th>{{t 'labels.requested_by'}}</th>
-        <th>{{t 'labs.labels.lab_type'}}</th>
+        <th>{{t 'labels.requestedBy'}}</th>
+        <th>{{t 'labs.labels.labType'}}</th>
         <th>{{t 'labels.results'}}</th>
         <th>{{t 'labels.notes'}}</th>
       </tr>
@@ -16,7 +16,7 @@
     </table>
   {{else}}
     <div class="alert alert-info">
-      <p>{{t 'labs.messages.no_completed'}}</p>
+      <p>{{t 'labs.messages.noCompleted'}}</p>
     </div>
   {{/if}}
 {{/item-listing}}

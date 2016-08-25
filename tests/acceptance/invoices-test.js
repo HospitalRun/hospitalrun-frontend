@@ -29,9 +29,7 @@ test('create invoice', function(assert) {
     andThen(function() {
       assert.equal(currentURL(), '/invoices/edit/new');
     });
-    fillIn('.invoice-patient .tt-input', 'Joe Bagadonuts - TCH 00001');
-    triggerEvent('.invoice-patient .tt-input', 'input');
-    triggerEvent('.invoice-patient .tt-input', 'blur');
+    typeAheadFillIn('.invoice-patient', 'Joe Bagadonuts - TCH 00001');
     waitToAppear('.invoice-visit option:contains((Admission))');
     andThen(function() {
       select('.invoice-visit', '(Admission)');
@@ -44,6 +42,26 @@ test('create invoice', function(assert) {
     waitToAppear('.modal-dialog');
     andThen(() => {
       assert.equal(find('.modal-title').text(), 'Invoice Saved', 'Invoice was saved successfully');
+    });
+  });
+});
+
+test('print invoice', function(assert) {
+  runWithPouchDump('billing', function() {
+    window.print = Ember.K; // Disable browser print dialog.
+    authenticateUser();
+    visit('/invoices');
+    andThen(function() {
+      assert.equal(currentURL(), '/invoices');
+      assert.equal(find('.invoice-number:contains(inv00001)').length, 1, 'Invoice is available for printing');
+      click('button:contains(Edit)');
+      waitToAppear('button:contains(Print)');
+    });
+    andThen(function() {
+      click('button:contains(Print)');
+    });
+    andThen(function() {
+      assert.equal(find('.print-invoice').length, 1, 'Invoice is displayed for printing');
     });
   });
 });
@@ -61,7 +79,7 @@ test('delete invoice', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete <strong>inv00001</strong>?', 'Invoice deletion confirm displays');
+      assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete inv00001?', 'Invoice deletion confirm displays');
     });
     click('button:contains(Delete):last');
     waitToDisappear('.invoice-number:contains(inv00001)');
@@ -105,9 +123,7 @@ test('add deposit', function(assert) {
       assert.equal(find('.modal-title').text(), 'Add Deposit', 'Add Deposit modal displays');
     });
     fillIn('.payment-amount input', 140);
-    fillIn('.payment-patient .tt-input', 'Joe Bagadonuts - TCH 00001');
-    triggerEvent('.payment-patient .tt-input', 'input');
-    triggerEvent('.payment-patient .tt-input', 'blur');
+    typeAheadFillIn('.payment-patient', 'Joe Bagadonuts - TCH 00001');
     click('.update-payment-btn');
     waitToAppear('.modal-title:contains(Deposit Added)');
     andThen(() => {

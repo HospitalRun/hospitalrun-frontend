@@ -3,7 +3,7 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractDeleteController.extend(PatientSubmodule, {
-  title: t('labs.delete_title'),
+  title: t('labs.deleteTitle'),
 
   actions: {
     delete: function() {

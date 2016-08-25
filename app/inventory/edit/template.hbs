@@ -2,12 +2,12 @@
   {{#em-form model=model submitButton=false }}
     {{partial 'inventory-basic'}}
     {{#if model.isNew}}
-      <h3>{{t 'inventory.labels.purchase_info'}}</h3>
+      <h3>{{t 'inventory.labels.purchaseInfo'}}</h3>
       {{partial 'inv-purchase'}}
     {{else}}
       {{#if quantityDiscrepency}}
         <div class="alert alert-danger alert-dismissible" role="alert">
-          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">{{t 'buttons.close'}}</span></button>
+          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true" class="octicon octicon-x"></span><span class="sr-only">{{t 'buttons.close'}}</span></button>
           <p>
             <span class="glyphicon glyphicon-warning-sign"></span>
             {{t 'inventory.messages.quantity' quantity=model.quantity locationQuantity=locationQuantityTotal}}
@@ -18,21 +18,21 @@
       <h3>
         {{t 'inventory.labels.purchases'}}
         {{#if canAddPurchase}}
-          <button class="btn btn-primary align-right" {{action "showAddPurchase" this}}><span class="octicon octicon-plus"></span> {{t 'inventory.titles.add_purchase'}}</button>
+          <button class="btn btn-primary align-right" {{action "showAddPurchase" this}}><span class="octicon octicon-plus"></span> {{t 'inventory.titles.addPurchase'}}</button>
         {{/if}}
       </h3>
       <table class="table">
         <tr class="table-header">
-          <th>{{t 'inventory.labels.date_received'}}</th>
-          <th>{{t 'inventory.labels.purchase_cost'}}</th>
-          <th>{{t 'inventory.labels.cost_per_unit'}}</th>
-          <th>{{t 'inventory.labels.original_quantity'}}</th>
-          <th>{{t 'inventory.labels.current_quantity'}}</th>
+          <th>{{t 'inventory.labels.dateReceived'}}</th>
+          <th>{{t 'inventory.labels.purchaseCost'}}</th>
+          <th>{{t 'inventory.labels.costPerUnit'}}</th>
+          <th>{{t 'inventory.labels.originalQuantity'}}</th>
+          <th>{{t 'inventory.labels.currentQuantity'}}</th>
           <th>{{t 'inventory.labels.gift'}}</th>
-          <th>{{t 'inventory.labels.serial_number'}}</th>
-          <th>{{t 'inventory.labels.expiration_date'}}</th>
+          <th>{{t 'inventory.labels.serialNumber'}}</th>
+          <th>{{t 'inventory.labels.expirationDate'}}</th>
           <th>{{t 'inventory.labels.vendor'}}</th>
-          <th>{{t 'inventory.labels.invoice_number'}}</th>
+          <th>{{t 'inventory.labels.invoiceNumber'}}</th>
         </tr>
         {{#each model.purchases as |purchase|}}
           <tr class={{if purchase.expired "warning"}}>
@@ -43,9 +43,9 @@
             <td>{{purchase.currentQuantity}}</td>
             <td>
               {{#if purchase.giftInKind}}
-                {{t 'inventory.labels.gift_in_kind_yes'}}
+                {{t 'inventory.labels.giftInKindYes'}}
               {{else}}
-                {{t 'inventory.labels.gift_in_kind_no'}}
+                {{t 'inventory.labels.giftInKindNo'}}
               {{/if}}
             </td>
             <td>{{purchase.lotNumber}}</td>
@@ -61,7 +61,7 @@
       <table class="table">
         <tr class="table-header">
           <th>{{t 'inventory.labels.location'}}</th>
-          <th>{{t 'inventory.labels.aisle_location'}}</th>
+          <th>{{t 'inventory.labels.aisleLocation'}}</th>
           <th>{{t 'labels.quantity'}}</th>
           {{#if canAdjustLocation}}
             <th>{{t 'labels.action'}}</th>
@@ -87,7 +87,7 @@
         <h3>{{t 'inventory.labels.transactions'}}</h3>
         <table class="table">
           <tr class="table-header">
-            <th>{{t 'inventory.labels.date_completed'}}</th>
+            <th>{{t 'inventory.labels.dateCompleted'}}</th>
             <th>{{t 'labels.quantity'}}</th>
             <th>{{t 'inventory.labels.transaction'}}</th>
             <th>{{t 'inventory.labels.expense'}}</th>
@@ -125,11 +125,11 @@
                     {{/if}}
                   {{/if}}
                   {{#if transaction.isTransfer}}
-                    <strong>{{t 'inventory.edit.transferred_from'}}</strong>
+                    <strong>{{t 'inventory.edit.transferredFrom'}}</strong>
                     {{#each transaction.locationsAffected as |location|}}
                       {{location.name}}<br/>
                     {{/each}}
-                    <strong>{{t 'inventory.edit.transferred_to'}}</strong> {{transaction.deliveryDetails}}
+                    <strong>{{t 'inventory.edit.transferredTo'}}</strong> {{transaction.deliveryDetails}}
                   {{/if}}
                 </td>
               </tr>

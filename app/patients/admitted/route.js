@@ -1,18 +1,10 @@
-import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
-export default AbstractIndexRoute.extend({
-  modelName: 'patient',
-  pageTitle: 'Admitted patients',
-
-  _getStartKeyFromItem: function(item) {
-    var displayPatientId = item.get('displayPatientId');
-    return [displayPatientId, 'patient_' + item.get('id')];
-  },
+import { translationMacro as t } from 'ember-i18n';
+import PatientsIndexRoute from 'hospitalrun/patients/index/route';
+export default PatientsIndexRoute.extend({
+  pageTitle: t('patients.titles.admittedPatients'),
 
   _modelQueryParams: function() {
     return {
-      options: {
-        key: true
-      },
       mapReduce: 'patient_by_admission'
     };
   }

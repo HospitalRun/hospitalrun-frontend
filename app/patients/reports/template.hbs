@@ -3,7 +3,7 @@
         {{#em-form model=this submitButton=false }}
             <div class="row" data-test-selector="select-report-type">
                 <div class="form-group col-xs-6">
-                  <label class="control-label" for="report-type">{{t 'inventory.reports.report_type'}}</label>
+                  <label class="control-label" for="report-type">{{t 'inventory.reports.reportType'}}</label>
                   {{select-list
                     action=(action (mut reportType))
                     class='form-control'
@@ -59,7 +59,7 @@
                     </div>
                 </div>
 
-                <h3>Fields to Include</h3>
+                <h3>{{t "inventory.reports.fields"}}</h3>
                 <div class="row">
                     <div class="col-xs-1"></div>
                     {{em-checkbox label=reportColumns.id.label property="reportColumns.id.include" class="col-xs-2"}}

@@ -6,15 +6,15 @@ export default {
     name: 'Nome',
     patient: 'Paciente',
     quantity: 'Quandidade',
-    requested_on: 'Solicitado em',
-    date_requested: 'Data da requisição',
-    requested_by: 'Requisitado por',
+    requestedOn: 'Solicitado em',
+    dateRequested: 'Data da requisição',
+    requestedBy: 'Requisitado por',
     fulfill: 'Preencha',
     actions: 'Ações',
     action: 'Ação',
     notes: 'Notas',
     edit: 'Editar',
-    imaging_type: 'Tipo de imagem',
+    imagingType: 'Tipo de imagem',
     result: 'Resultdo',
     results: 'Resultados',
     visit: 'Visita',
@@ -26,13 +26,14 @@ export default {
 
   },
   messages: {
-    no_items_found: 'Nenhum item encontrado',
-    create_new_record: 'Criar uma nova gravação?'
+    noItemsFound: 'Nenhum item encontrado',
+    createNewRecord: 'Criar uma nova gravação?',
+    forAuthorizedPersons: 'Este relatório é apenas para pessoas autorizadas.'
   },
   buttons: {
     complete: 'Completo',
     cancel: 'Cencelar',
-    return_button: 'Retornar',
+    returnButton: 'Retornar',
     add: 'Adicionar',
     update: 'Atualizar',
     ok: 'Ok'
@@ -40,44 +41,44 @@ export default {
 
   login: {
     messages: {
-      sign_in:  'inscreva-se',
+      signIn:  'inscreva-se',
       error:    'Nome de usuário ou senha está incorreta.'
     },
     labels: {
       password: 'Senha',
       username: 'Usuario',
-      sign_in:  'Entrar'
+      signIn:  'Entrar'
     }
   },
   inventory: {
     messages: {
-      no_requests: 'Requisições não encontradas.',
-      create_request: 'Criar uma nova requisição?'
+      noRequests: 'Requisições não encontradas.',
+      createRequest: 'Criar uma nova requisição?'
     }
   },
   imaging: {
-    page_title: 'Requisição de imagens',
-    section_title: 'Imagem',
+    pageTitle: 'Requisição de imagens',
+    sectionTitle: 'Imagem',
     buttons: {
-    new_button: '+ nova imagem'
-  },
+      newButton: '+ nova imagem'
+    },
     labels: {
-    radiologist: 'Radiologista',
-    add_new_visit: '--Adicionar novo visitante--'
-  },
+      radiologist: 'Radiologista',
+      addNewVisit: '--Adicionar novo visitante--'
+    },
     messages: {
-    no_completed: 'Nenhum item completo encontrado.'
-  },
+      noCompleted: 'Nenhum item completo encontrado.'
+    },
     titles: {
-    completed_imaging: 'Imagem completa',
-    edit_title: 'Requisição de edição de imagem',
-    new_title: 'Nova requisição de imagem'
-  },
+      completedImaging: 'Imagem completa',
+      editTitle: 'Requisição de edição de imagem',
+      newTitle: 'Nova requisição de imagem'
+    },
     alerts: {
-    completed_title: 'Requisição de imagem completa.',
-    completed_message: 'A requisição de imagem esta completa.',
-    saved_title: 'Requisição de imagem salva.',
-    saved_message: 'A requisição de imagem foi salva.'
-  }
+      completedTitle: 'Requisição de imagem completa.',
+      completedMessage: 'A requisição de imagem esta completa.',
+      savedTitle: 'Requisição de imagem salva.',
+      savedMessage: 'A requisição de imagem foi salva.'
+    }
   }
 };

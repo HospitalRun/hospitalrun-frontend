@@ -67,7 +67,7 @@ export default Ember.Mixin.create(PatientVisits, {
     } else {
       return 'returnToAllItems';
     }
-  }.property('returnToPatient', 'returnToVisit'),
+  }.property('model.returnToPatient', 'model.returnToVisit'),
 
   createNewVisit: function(newVisitType) {
     return new Ember.RSVP.Promise(function(resolve, reject) {

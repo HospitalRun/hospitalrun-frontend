@@ -16,89 +16,90 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     name: 'admin',
     capabilities: [
       'admin',
-      'load_db',
-      'update_config',
-      'user_roles'
+      'loadDb',
+      'updateConfig',
+      'userRoles'
     ]
   }, {
     name: 'appointments',
     capabilities: [
       'appointments',
-      'add_appointment'
+      'addAppointment'
     ]
   }, {
     name: 'billing',
     capabilities: [
       'billing',
-      'add_charge',
-      'add_pricing',
-      'add_pricing_profile',
-      'add_invoice',
-      'add_payment',
-      'delete_invoice',
-      'delete_pricing',
-      'delete_pricing_profile',
-      'edit_invoice',
+      'addCharge',
+      'addPricing',
+      'addPricingProfile',
+      'addInvoice',
+      'addPayment',
+      'deleteInvoice',
+      'deletePricing',
+      'deletePricingProfile',
+      'editInvoice',
       'invoices',
-      'override_invoice',
+      'overrideInvoice',
       'pricing'
     ]
   }, {
     name: 'patients',
     capabilities: [
       'patients',
-      'add_diagnosis',
-      'add_photo',
-      'add_patient',
-      'add_visit',
-      'add_vitals',
-      'admit_patient',
-      'delete_photo',
-      'delete_patient',
-      'delete_appointment',
-      'delete_diagnosis',
-      'delete_procedure',
-      'delete_socialwork',
-      'delete_vitals',
-      'delete_visit',
-      'discharge_patient',
-      'patient_reports',
+      'addDiagnosis',
+      'addPhoto',
+      'addPatient',
+      'addProcedure',
+      'addVisit',
+      'addVitals',
+      'admitPatient',
+      'deletePhoto',
+      'deletePatient',
+      'deleteAppointment',
+      'deleteDiagnosis',
+      'deleteProcedure',
+      'deleteSocialwork',
+      'deleteVitals',
+      'deleteVisit',
+      'dischargePatient',
+      'patientReports',
       'visits'
     ]
   }, {
     name: 'medication',
     capabilities: [
       'medication',
-      'add_medication',
-      'delete_medication',
-      'fulfill_medication'
+      'addMedication',
+      'deleteMedication',
+      'fulfillMedication'
     ]
   }, {
     name: 'labs',
     capabilities: [
       'labs',
-      'add_lab',
-      'complete_lab',
-      'delete_lab'
+      'addLab',
+      'completeLab',
+      'deleteLab'
     ]
   }, {
     name: 'imaging',
     capabilities: [
       'imaging',
-      'add_imaging',
-      'complete_imaging',
-      'delete_imaging'
+      'addImaging',
+      'completeImaging',
+      'deleteImaging'
     ]
   }, {
     name: 'inventory',
     capabilities: [
       'inventory',
-      'add_inventory_request',
-      'add_inventory_item',
-      'add_inventory_purchase',
-      'adjust_inventory_location',
-      'delete_inventory_item',
-      'fulfill_inventory'
+      'addInventoryRequest',
+      'addInventoryItem',
+      'addInventoryPurchase',
+      'adjustInventoryLocation',
+      'deleteInventoryItem',
+      'fulfillInventory'
     ]
   }],
 
@@ -164,8 +165,8 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
       });
       roleToUpdate.set('capabilities', capabilitiesToSave);
       roleToUpdate.save().then(() => {
-        this.displayAlert(this.get('i18n').t('admin.roles.titles.role_saved'),
-          this.get('i18n').t('admin.roles.messages.role_saved', { roleName: currentRole }));
+        this.displayAlert(this.get('i18n').t('admin.roles.titles.roleSaved'),
+          this.get('i18n').t('admin.roles.messages.roleSaved', { roleName: currentRole }));
       });
     }
   }

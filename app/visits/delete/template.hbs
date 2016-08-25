@@ -5,27 +5,27 @@
     updateButtonText=updateButtonText }}
   <div class="alert alert-danger">
     <span class="glyphicon glyphicon-warning-sign"></span>
-    Are you sure you wish to delete this visit?
+      {{t 'visits.messages.delete'}}
   </div>
   <form role="form">
     <div class="form-group">
-      <label class="control-label">Start Date</label>
+      <label class="control-label">{{t 'labels.startDate'}}</label>
       <p class="form-control-static">{{date-format model.startDate}}</p>
     </div>
     <div class="form-group">
-      <label class="control-label">End Date</label>
+      <label class="control-label">{{t 'labels.endDate'}}</label>
       <p class="form-control-static">{{date-format model.endDate}}</p>
     </div>
     <div class="form-group">
-      <label class="control-label">Examiner</label>
+      <label class="control-label">{{t 'visits.labels.examiner'}}</label>
       <p class="form-control-static">{{model.examiner}}</p>
     </div>
     <div class="form-group">
-      <label class="control-label">Location</label>
+      <label class="control-label">{{t 'labels.location'}}</label>
       <p class="form-control-static">{{model.location}}</p>
     </div>
     <div class="form-group">
-      <label class="control-label">Type</label>
+      <label class="control-label">{{t 'labels.type'}}</label>
       <p class="form-control-static">{{model.visitType}}</p>
     </div>
   </form>

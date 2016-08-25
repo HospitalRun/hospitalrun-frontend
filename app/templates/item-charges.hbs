@@ -4,17 +4,17 @@
     <div class="panel detail-section">
         <div class="panel-heading">
             <h3 class="panel-title">
-                Charged Items
+                {{t 'headings.chargedItems'}}
                 {{#if canAddCharge}}
-                    <button class="btn btn-primary align-right" {{action "showAddCharge" bubbles=false }}><span class="octicon octicon-plus"></span>Add Item</button>
+                    <button class="btn btn-primary align-right" {{action "showAddCharge" bubbles=false }}><span class="octicon octicon-plus"></span>{{t 'buttons.addItem'}}</button>
                 {{/if}}
             </h3>
         </div>
         <div class="panel-body detail-section-content">
-            <table class="table">
+            <table class="table charge-items">
                 <tr class="table-header">
-                    <th>Date</th>
-                    <th>Item</th>
+                    <th>{{t 'labels.date'}}</th>
+                    <th>{{t 'inventory.labels.item'}}</th>
                     <th>{{t 'labels.quantity'}}</th>
                     <th>{{t 'labels.action'}}</th>
                 </tr>
@@ -22,13 +22,13 @@
                     {{#unless charge.medicationCharge}}
                         <tr>
                             <td>{{date-format charge.dateCharged}}</td>
-                            <td>{{charge.pricingItem.name}}</td>
+                            <td class="charge-item-name">{{charge.pricingItem.name}}</td>
                             <td>{{charge.quantity}}</td>
                             <td>
                                 {{#if canAddCharge}}
                                     <button class="btn btn-default neutral" {{action "showEditCharge" charge}}>{{t 'labels.edit'}}</button>
                                     <button class="btn btn-default warning" {{action "showDeleteCharge" charge bubbles=false }}>
-                                        <span class="octicon octicon-x"></span>Delete
+                                        <span class="octicon octicon-x"></span>{{t "buttons.delete"}}
                                     </button>
                                 {{/if}}
                             </td>

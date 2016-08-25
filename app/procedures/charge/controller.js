@@ -11,36 +11,12 @@ export default AbstractEditController.extend({
   selectedItem: null,
   updateCapability: 'add_charge',
 
-  itemChanged: function() {
-    var model = this.get('model'),
-      selectedItem = this.get('selectedItem');
-    if (!Ember.isEmpty(selectedItem)) {
-      this.store.find('pricing', selectedItem.id).then(function(item) {
-        model.set('pricingItem', item);
-      }.bind(this));
-    }
-  }.observes('selectedItem'),
-
-  pricingItemChanged: function() {
-    var model = this.get('model'),
-      itemName = model.get('itemName'),
-      pricingItem = model.get('pricingItem');
-    if (!Ember.isEmpty(pricingItem)) {
-      this.set('newPricingItem', false);
-      if (pricingItem.get('name') !== itemName) {
-        model.set('itemName', pricingItem.get('name'));
-      }
-    } else {
-      this.set('newPricingItem', true);
-    }
-  }.observes('model.pricingItem'),
-
   title: function() {
     var isNew = this.get('model.isNew');
     if (isNew) {
-      return 'Add Charge Item';
+      return this.get('i18n').t('procedures.titles.addChargeItem');
     }
-    return 'Edit Charge Item';
+    return this.get('i18n').t('procedures.titles.editChargeItem');
   }.property('model.isNew'),
 
   beforeUpdate: function() {
@@ -48,25 +24,51 @@ export default AbstractEditController.extend({
     if (isNew) {
       this.set('newCharge', true);
     }
-    if (this.get('newPricingItem')) {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
-        var model = this.get('model'),
-          newPricing = this.store.createRecord('pricing', {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      var model = this.get('model');
+      var pricingItem = model.get('pricingItem');
+      var selectedItem = this.get('selectedItem');
+      if (!Ember.isEmpty(selectedItem) && (Ember.isEmpty(pricingItem) || selectedItem.id !== pricingItem.get('id'))) {
+        this.store.find('pricing', selectedItem.id).then((item) => {
+          model.set('pricingItem', item);
+          resolve();
+        });
+      } else {
+        var newItem = false;
+        var saveItem = false;
+        if (Ember.isEmpty(pricingItem)) {
+          pricingItem = this.store.createRecord('pricing', {
             name: model.get('itemName'),
             category: model.get('pricingCategory')
           });
-        newPricing.save().then(function() {
-          this.get('pricingList').addObject({
-            id: newPricing.get('id'),
-            name: newPricing.get('name')
-          });
-          model.set('pricingItem', newPricing);
+          newItem = true;
+          saveItem = true;
+        } else {
+          if (pricingItem.get('name') !== model.get('itemName')) {
+            pricingItem.set('name', model.get('itemName'));
+            saveItem = true;
+          }
+        }
+        if (saveItem) {
+          pricingItem.save().then(() => {
+            var pricingList = this.get('pricingList');
+            if (newItem) {
+              pricingList.addObject({
+                id: pricingItem.get('id'),
+                name: pricingItem.get('name')
+              });
+              model.set('pricingItem', pricingItem);
+            } else {
+              var itemToUpdate = pricingList.findBy('id', pricingItem.get('id'));
+              itemToUpdate.name = pricingItem.get('name');
+            }
+            resolve();
+          }, reject);
+        } else {
           resolve();
-        }.bind(this), reject);
-      }.bind(this));
-    } else {
-      return Ember.RSVP.Promise.resolve();
-    }
+        }
+      }
+    });
   },
 
   afterUpdate: function(record) {

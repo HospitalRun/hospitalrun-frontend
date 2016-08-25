@@ -55,13 +55,13 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
 
   quantityLabel: function() {
     let i18n = this.get('i18n');
-    var returnLabel = i18n.t('medication.labels.quantity_requested'),
+    var returnLabel = i18n.t('medication.labels.quantityRequested'),
       isFulfilled = this.get('isFulfilled'),
       isFulfilling = this.get('isFulfilling');
     if (isFulfilling) {
-      returnLabel = i18n.t('medication.labels.quantity_dispensed');
+      returnLabel = i18n.t('medication.labels.quantityDispensed');
     } else if (isFulfilled) {
-      returnLabel = i18n.t('medication.labels.quantity_distributed');
+      returnLabel = i18n.t('medication.labels.quantityDistributed');
     }
     return returnLabel;
   }.property('isFulfilled'),
@@ -75,19 +75,19 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
       alertMessage,
       isFulfilled = this.get('isFulfilled');
     if (isFulfilled) {
-      alertTitle = i18n.t('medication.alerts.fulfilled_title');
+      alertTitle = i18n.t('medication.alerts.fulfilledTitle');
       alertMessage = 'The medication request has been fulfilled.';
       this.set('model.selectPatient', false);
     } else {
-      alertTitle = i18n.t('medication.alerts.saved_title');
-      alertMessage = i18n.t('medication.alerts.saved_message');
+      alertTitle = i18n.t('medication.alerts.savedTitle');
+      alertMessage = i18n.t('medication.alerts.savedMessage');
     }
     this.saveVisitIfNeeded(alertTitle, alertMessage);
   },
 
   _addNewPatient: function() {
     let i18n = this.get('i18n');
-    this.displayAlert(i18n.t('alerts.please_wait'), i18n.t('messages.new_patient_has_to_be_created'));
+    this.displayAlert(i18n.t('alerts.pleaseWait'), i18n.t('messages.newPatientHasToBeCreated'));
     this._getNewPatientId().then(function(friendlyId) {
       var patientTypeAhead = this.get('model.patientTypeAhead'),
         nameParts = patientTypeAhead.split(' '),
@@ -205,11 +205,8 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
       return i18n.t('buttons.dispense');
     } else if (this.get('isFulfilling')) {
       return i18n.t('labels.fulfill');
-    } else if (this.get('model.isNew')) {
-      return i18n.t('buttons.add');
-    } else {
-      return i18n.t('buttons.update');
     }
+    return this._super();
   }.property('model.isNew', 'isFulfilling', 'model.hideFulfillRequest'),
 
   actions: {

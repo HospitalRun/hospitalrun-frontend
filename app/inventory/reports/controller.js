@@ -11,7 +11,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   endDate: null,
   expenseCategories: Ember.computed(function() {
     let i18n = this.get('i18n');
-    return [i18n.t('inventory.labels.inventory_consumed'), i18n.t('inventory.labels.gift_usage'), i18n.t('inventory.labels.inventory_obsolence')];
+    return [i18n.t('inventory.labels.inventoryConsumed'), i18n.t('inventory.labels.giftUsage'), i18n.t('inventory.labels.inventoryObsolence')];
   }),
   expenseMap: null,
   filterLocation: null,
@@ -42,7 +42,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         property: 'inventoryItem.name'
       },
       transactionType: {
-        label: i18n.t('inventory.labels.adjustment_type'),
+        label: i18n.t('inventory.labels.adjustmentType'),
         include: false,
         property: 'transactionType'
       },
@@ -62,18 +62,18 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         property: 'inventoryItem.inventoryType'
       },
       xref: {
-        label: i18n.t('inventory.labels.cross_reference'),
+        label: i18n.t('inventory.labels.crossReference'),
         include: false,
         property: 'inventoryItem.crossReference'
       },
       reorder: {
-        label: i18n.t('inventory.labels.reorder_point'),
+        label: i18n.t('inventory.labels.reorderPoint'),
         include: false,
         property: 'inventoryItem.reorderPoint',
         format: '_numberFormat'
       },
       price: {
-        label: i18n.t('inventory.labels.sale_price_per_unit'),
+        label: i18n.t('inventory.labels.salePricePerUnit'),
         include: false,
         property: 'inventoryItem.price',
         format: '_numberFormat'
@@ -85,28 +85,28 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         format: '_numberFormat'
       },
       consumedPerDay: {
-        label: i18n.t('inventory.labels.consumption_rate'),
+        label: i18n.t('inventory.labels.consumptionRate'),
         include: false,
         property: 'consumedPerDay'
       },
       daysLeft: {
-        label: i18n.t('inventory.labels.days_left'),
+        label: i18n.t('inventory.labels.daysLeft'),
         include: false,
         property: 'daysLeft'
       },
       unit: {
-        label: i18n.t('inventory.labels.distribution_unit'),
+        label: i18n.t('inventory.labels.distributionUnit'),
         include: true,
         property: 'inventoryItem.distributionUnit'
       },
       unitcost: {
-        label: i18n.t('inventory.labels.unit_cost'),
+        label: i18n.t('inventory.labels.unitCost'),
         include: true,
         property: 'unitCost',
         format: '_numberFormat'
       },
       total: {
-        label: i18n.t('inventory.labels.total_cost'),
+        label: i18n.t('inventory.labels.totalCost'),
         include: true,
         property: 'totalCost',
         format: '_numberFormat'
@@ -138,43 +138,43 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   reportTypes: Ember.computed(function() {
     let i18n = this.get('i18n');
     return [{
-      name: i18n.t('inventory.reports.days_supply'),
+      name: i18n.t('inventory.reports.daysSupply'),
       value: 'daysLeft'
     }, {
       name: i18n.t('inventory.reports.adjustment'),
       value: 'detailedAdjustment'
     }, {
-      name: i18n.t('inventory.reports.purchase_detail'),
+      name: i18n.t('inventory.reports.purchaseDetail'),
       value: 'detailedPurchase'
     }, {
-      name: i18n.t('inventory.reports.stock_usage_detail'),
+      name: i18n.t('inventory.reports.stockUsageDetail'),
       value: 'detailedUsage'
     }, {
-      name: i18n.t('inventory.reports.stock_transfer_detail'),
+      name: i18n.t('inventory.reports.stockTransferDetail'),
       value: 'detailedTransfer'
     }, {
-      name: i18n.t('inventory.reports.expense_detail'),
+      name: i18n.t('inventory.reports.expenseDetail'),
       value: 'detailedExpense'
     }, {
       name: i18n.t('inventory.reports.expiration'),
       value: 'expiration'
     }, {
-      name: i18n.t('inventory.reports.inv_location'),
+      name: i18n.t('inventory.reports.invLocation'),
       value: 'byLocation'
     }, {
-      name: i18n.t('inventory.reports.inv_valuation'),
+      name: i18n.t('inventory.reports.invValuation'),
       value: 'valuation'
     }, {
-      name: i18n.t('inventory.reports.expense_sum'),
+      name: i18n.t('inventory.reports.expenseSum'),
       value: 'summaryExpense'
     }, {
-      name: i18n.t('inventory.reports.purchase_sum'),
+      name: i18n.t('inventory.reports.purchaseSum'),
       value: 'summaryPurchase'
     }, {
-      name: i18n.t('inventory.reports.stock_usage_sum'),
+      name: i18n.t('inventory.reports.stockUsageSum'),
       value: 'summaryUsage'
     }, {
-      name: i18n.t('inventory.reports.stock_transfer_sum'),
+      name: i18n.t('inventory.reports.stockTransferSum'),
       value: 'summaryTransfer'
     }, {
       name: i18n.t('inventory.reports.finance'),
@@ -478,7 +478,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         totalLabel;
       this._addReportRow({
         inventoryItem: {
-          name: i18n.t('inventory.reports.rows.expenses_for') + category
+          name: i18n.t('inventory.reports.rows.expensesFor') + category
         }
       });
       expenseMap[category].expenseAccounts.forEach(function(expenseAccount) {
@@ -488,17 +488,17 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           }.bind(this));
         }
         if (Ember.isEmpty(expenseAccount.name)) {
-          expenseAccountName = i18n.t('inventory.reports.rows.no_account');
+          expenseAccountName = i18n.t('inventory.reports.rows.noAccount');
         } else {
           expenseAccountName = expenseAccount.name;
         }
-        totalLabel = i18n.t('inventory.reports.rows.subtotal_for', { category: category, account: expenseAccountName });
+        totalLabel = i18n.t('inventory.reports.rows.subtotalFor', { category: category, account: expenseAccountName });
         this._addReportRow({
           totalCost: totalLabel + this._numberFormat(expenseAccount.total)
         }, true);
         categoryTotal += expenseAccount.total;
       }.bind(this));
-      totalLabel = i18n.t('inventory.reports.rows.total_for', { var: category });
+      totalLabel = i18n.t('inventory.reports.rows.totalFor', { var: category });
       this._addReportRow({
         totalCost: totalLabel + this._numberFormat(categoryTotal)
       }, true);
@@ -519,7 +519,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     locationSummary = locationSummary.sortBy('name');
     locationSummary.forEach(function(location) {
       parentLocation = this._getWarehouseLocationName(location.name);
-      var label = i18n.t('inventory.reports.rows.total_for', { var: currentLocation });
+      var label = i18n.t('inventory.reports.rows.totalFor', { var: currentLocation });
       if (currentLocation !== parentLocation) {
         this._addTotalsRow(label, locationCost, parentCount);
         parentCount = 0;
@@ -548,7 +548,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       }
     }.bind(this));
     if (parentCount > 0) {
-      this._addTotalsRow(i18n.t('inventory.reports.rows.total_for', { var: parentLocation }), locationCost, parentCount);
+      this._addTotalsRow(i18n.t('inventory.reports.rows.totalFor', { var: parentLocation }), locationCost, parentCount);
     }
   },
 
@@ -594,7 +594,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         ]);
         this.set('showReportResults', true);
         this.set('reportHeaders',
-          [i18n.t('labels.id'), i18n.t('labels.name'), i18n.t('inventory.labels.current_quantity'), i18n.t('inventory.labels.distribution_unit'), i18n.t('inventory.labels.expiration_date'), i18n.t('inventory.labels.location')]);
+          [i18n.t('labels.id'), i18n.t('labels.name'), i18n.t('inventory.labels.currentQuantity'), i18n.t('inventory.labels.distributionUnit'), i18n.t('inventory.labels.expirationDate'), i18n.t('inventory.labels.location')]);
         this._generateExport();
         this._setReportTitle();
         this.closeProgressModal();
@@ -614,9 +614,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         var i = this._numberFormat(beginningBalance + inventoryAdjustment);
         let i18n = this.get('i18n');
         if ((beginningBalance + inventoryAdjustment) < 0) {
-          this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balance_end'), '', '(' + i + ')']);
+          this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceEnd'), '', '(' + i + ')']);
         } else {
-          this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balance_end'), '', i]);
+          this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceEnd'), '', i]);
         }
         this.set('showReportResults', true);
         this.set('reportHeaders', [i18n.t('inventory.reports.rows.category'), i18n.t('labels.type'), i18n.t('inventory.labels.total')]);
@@ -624,7 +624,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         this._setReportTitle();
         this.closeProgressModal();
       }.bind(this), function(err) {
-        this._notifyReportError(this.get('i18n').t('inventory.reports.rows.err_in_fin_sum') + err);
+        this._notifyReportError(this.get('i18n').t('inventory.reports.rows.errInFinSum') + err);
       }.bind(this));
     }.bind(this));
   },
@@ -684,7 +684,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
               purchaseTotal += i;
               this.get('reportRows').addObject(['', key, this._numberFormat(i)]);
             }.bind(this));
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.total_purchases'), '', this._numberFormat(purchaseTotal)]);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.totalPurchases'), '', this._numberFormat(purchaseTotal)]);
             adjustedValue += purchaseTotal;
           }
           // write the consumed rows
@@ -692,7 +692,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumed'), '', '']);
             var overallValue = 0;
             if (Object.keys(consumed).length > 0) {
-              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumed_puchases'), '', '']);
+              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedPuchases'), '', '']);
               var consumedTotal = 0;
               Object.keys(consumed).forEach(function(key) {
                 var i = this._getValidNumber(consumed[key]);
@@ -700,10 +700,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 this.get('reportRows').addObject(['', key, '(' + this._numberFormat(i) + ')']);
               }.bind(this));
               overallValue += consumedTotal;
-              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumed_purchases_total'), '', '(' + this._numberFormat(consumedTotal) + ')']);
+              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedPurchasesTotal'), '', '(' + this._numberFormat(consumedTotal) + ')']);
             }
             if (Object.keys(gikConsumed).length > 0) {
-              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumed_gik'), '', '']);
+              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedGik'), '', '']);
               var gikTotal = 0;
               Object.keys(gikConsumed).forEach(function(key) {
                 var i = this._getValidNumber(gikConsumed[key]);
@@ -711,9 +711,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 this.get('reportRows').addObject(['', key, '(' + this._numberFormat(i) + ')']);
               }.bind(this));
               overallValue += gikTotal;
-              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumed_gik_total'), '', '(' + this._numberFormat(gikTotal) + ')']);
+              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedGikTotal'), '', '(' + this._numberFormat(gikTotal) + ')']);
             }
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumed_total'), '', '(' + this._numberFormat(overallValue) + ')']);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedTotal'), '', '(' + this._numberFormat(overallValue) + ')']);
             adjustedValue -= overallValue;
           }
           // write the adjustment rows
@@ -735,9 +735,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             }
           }.bind(this));
           if (adjustmentTotal < 0) {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustments_total'), '', '(' + this._numberFormat(adjustmentTotal) + ')']);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustmentsTotal'), '', '(' + this._numberFormat(adjustmentTotal) + ')']);
           } else {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustments_total'), '', this._numberFormat(adjustmentTotal)]);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustmentsTotal'), '', this._numberFormat(adjustmentTotal)]);
           }
 
           adjustedValue += adjustmentTotal;
@@ -805,9 +805,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             }
           }.bind(this));
           if (beginningBalance < 0) {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balance_begin'), '', '(' + this._numberFormat(beginningBalance) + ')']);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceBegin'), '', '(' + this._numberFormat(beginningBalance) + ')']);
           } else {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balance_begin'), '', this._numberFormat(beginningBalance)]);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceBegin'), '', this._numberFormat(beginningBalance)]);
           }
           resolve(beginningBalance);
         }.bind(this), reject);
@@ -1107,10 +1107,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         }
         this._finishReport();
       }.bind(this), function(err) {
-        this._notifyReportError(i18n.t('inventory.reports.rows.err_in_find_pur') + err);
+        this._notifyReportError(i18n.t('inventory.reports.rows.errInFindPur') + err);
       }.bind(this));
     }.bind(this), function(err) {
-      this._notifyReportError(i18n.t('inventory.reports.rows.err_in_find_pur') + err);
+      this._notifyReportError(i18n.t('inventory.reports.rows.errInFindPur') + err);
     }.bind(this));
   },
 

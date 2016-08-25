@@ -45,6 +45,7 @@ export default InputComponent.extend({
   hint: true,
   highlight: true,
   lastHint: null,
+  limit: 500,
   minlength: 1,
   selectedItem: false,
   inputElement: null,
@@ -73,6 +74,7 @@ export default InputComponent.extend({
       minLength: this.get('minlength')
     }, {
       displayKey: this.get('displayKey'),
+      limit: this.get('limit'),
       source: this._getSource(),
       templates: this.get('templates')
     });

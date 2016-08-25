@@ -1,8 +1,17 @@
 $table-header-color: rgba($navy_drk2,.7);
+$inactive-sort-indicator: rgba($navy_drk2,.3);
 
 .table-header {
   background-color: $navy_light;
   color: $table-header-color;
+
+  .sortable-column {
+    cursor: pointer;
+
+    .inactive {
+      color: $inactive-sort-indicator;
+    }
+  }
 }
 
 .twitter-typeahead {
@@ -21,6 +30,9 @@ $table-header-color: rgba($navy_drk2,.7);
   padding: 5px 0;
   width: 100%;
   min-width: 160px;
+  max-height: 110px;
+  overflow-y: scroll;
+  overflow-x: none;
 
   .query-results { margin-bottom: 0; }
 }
@@ -98,12 +110,4 @@ $table-header-color: rgba($navy_drk2,.7);
 @keyframes spin {
   from { transform: scale(1) rotate(0deg); }
   to { transform: scale(1) rotate(360deg); }
-}
-
-@media print {
-  body { font-size: 10px; }
-
-  .ember-application { padding-left: 0; }
-
-  .panel-footer { display: none; }
 }

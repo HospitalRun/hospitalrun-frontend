@@ -3,9 +3,9 @@ import MedicationEditRoute from '../edit/route';
 import Ember from 'ember';
 
 export default MedicationEditRoute.extend({
-  editTitle: t('medication.return_medication'),
+  editTitle: t('medication.returnMedication'),
   modelName: 'inv-request',
-  newTitle: t('medication.return_medication'),
+  newTitle: t('medication.returnMedication'),
   getNewData: function() {
     return Ember.RSVP.resolve({
       dateCompleted: new Date(),

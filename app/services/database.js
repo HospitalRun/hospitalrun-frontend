@@ -1,6 +1,6 @@
-/* global List */
 import Ember from 'ember';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
+import List from 'npm:pouchdb-list';
 import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 
 export default Ember.Service.extend(PouchAdapterUtils, {
