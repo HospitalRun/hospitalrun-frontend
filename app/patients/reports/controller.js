@@ -4,7 +4,6 @@ import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import SelectValues from 'hospitalrun/utils/select-values';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
-import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, VisitTypes, {
   patientsController: Ember.inject.controller('patients'),
@@ -18,231 +17,251 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   reportType: 'detailedAdmissions',
   patientDetails: {},
 
-  admissionReportColumns: {
-    sex: {
-      label: t('labels.sex'),
-      include: true,
-      property: 'sex'
-    },
-    total: {
-      label: t('labels.total'),
-      include: true,
-      property: 'total',
-      format: '_numberFormat'
-    }
-  },
-  admissionDetailReportColumns: {
-    id: {
-      label: t('labels.id'),
-      include: true,
-      property: 'patientId'
-    },
-    name: {
-      label: t('labels.name'),
-      include: true,
-      property: 'patientName'
-    },
-    admissionDate: {
-      label: t('patients.labels.admissionDate'),
-      include: true,
-      property: 'admissionDate',
-      format: '_dateTimeFormat'
-    },
-    dischargeDate: {
-      label: t('patients.labels.dischargeDate'),
-      include: false,
-      property: 'dischargeDate',
-      format: '_dateTimeFormat'
-    },
-    patientDays: {
-      label: t('patients.labels.dischargeDate'),
-      include: false,
-      property: 'patientDays',
-      format: '_numberFormat'
-    }
-  },
-  diagnosticReportColumns: {
-    type: {
-      label: 'Type',
-      include: true,
-      property: 'type'
-    },
-    total: {
-      label: 'Total',
-      include: true,
-      property: 'total',
-      format: '_numberFormat'
-    }
-  },
-
-  procedureDetailReportColumns: {
-    id: {
-      label: 'Id',
-      include: true,
-      property: 'patient.displayPatientId'
-    },
-    name: {
-      label: 'Name',
-      include: true,
-      property: 'patient.displayName'
-    },
-    procedure: {
-      label: 'Procedure',
-      include: true,
-      property: 'procedure'
-    },
-    procedureDate: {
-      label: 'Procedure Date',
-      include: true,
-      property: 'procedureDate',
-      format: '_dateTimeFormat'
-    }
-  },
-  reportColumns: {
-    visitDate: {
-      label: 'Visit Date',
-      include: true,
-      property: 'visitDate'
-    },
-    visitType: {
-      label: 'Visit Type',
-      include: true,
-      property: 'visitType'
-    },
-    visitLocation: {
-      label: 'Location',
-      include: false,
-      property: 'location'
-    },
-    examiner: {
-      label: 'Examiner',
-      include: true,
-      property: 'examiner'
-    },
-    name: {
-      label: 'Name',
-      include: true,
-      property: 'patient.displayName'
-    },
-    id: {
-      label: 'Id',
-      include: true,
-      property: 'patient.displayPatientId'
-    },
-    sex: {
-      label: 'Sex',
-      include: true,
-      property: 'patient.sex'
-    },
-    dateOfBirth: {
-      label: 'Date Of Birth',
-      include: true,
-      property: 'patient.dateOfBirth',
-      format: '_dateFormat'
-    },
-    age: {
-      label: 'Age',
-      include: false,
-      property: 'patient.age'
-    },
-    primaryDiagnosis: {
-      label: 'Primary Diagnosis',
-      include: false,
-      property: 'primaryDiagnosis'
-    },
-    secondaryDiagnoses: {
-      label: 'Secondary Diagnoses',
-      include: false,
-      property: 'additionalDiagnoses',
-      format: '_diagnosisListToString'
-    },
-    procedures: {
-      label: 'Procedures',
-      include: false,
-      property: 'resolvedProcedures',
-      format: '_procedureListToString'
-    },
-    contacts: {
-      label: 'Contacts',
-      include: false,
-      property: 'patient',
-      format: '_contactListToString'
-    },
-    referredBy: {
-      label: 'Referred By',
-      include: false,
-      property: 'patient.referredBy'
-    },
-    referredDate: {
-      label: 'Referred Date',
-      include: false,
-      property: 'patient.referredDate',
-      format: '_dateFormat'
-    }
-  },
-  statusReportColumns: {
-    id: {
-      label: 'Id',
-      include: true,
-      property: 'patient.displayPatientId'
-    },
-    name: {
-      label: 'Name',
-      include: true,
-      property: 'patient.displayName'
-    },
-    status: {
-      label: 'Status',
-      include: true,
-      property: 'patient.status'
-    },
-    primaryDiagnosis: {
-      label: 'Primary Diagnoses',
-      include: true,
-      property: 'patient.visits',
-      format: '_formatPrimaryDiagnosis'
-    },
-    secondaryDiagnoses: {
-      label: 'Secondary Diagnoses',
-      include: true,
-      property: 'patient.visits',
-      format: '_formatSecondaryDiagnosis'
-    }
-  },
-  reportTypes: [{
-    name: 'Admissions Detail',
-    value: 'detailedAdmissions'
-  }, {
-    name: 'Admissions Summary',
-    value: 'admissions'
-  }, {
-    name: 'Diagnostic Testing',
-    value: 'diagnostic'
-  }, {
-    name: 'Discharges Detail',
-    value: 'detailedDischarges'
-  }, {
-    name: 'Discharges Summary',
-    value: 'discharges'
-  }, {
-    name: 'Procedures Detail',
-    value: 'detailedProcedures'
-  }, {
-    name: 'Procedures Summary',
-    value: 'procedures'
-  }, {
-    name: 'Patient Status',
-    value: 'status'
-  }, {
-    name: 'Total Patient Days',
-    value: 'patientDays'
-  }, {
-    name: 'Total Patient Days (Detailed)',
-    value: 'detailedPatientDays'
-  }, {
-    name: 'Visit',
-    value: 'visit'
-  }],
+  admissionReportColumns: Ember.computed(function() {
+    let i18n = this.get('i18n');
+    return {
+      sex: {
+        label: i18n.t('labels.sex'),
+        include: true,
+        property: 'sex'
+      },
+      total: {
+        label: i18n.t('labels.total'),
+        include: true,
+        property: 'total',
+        format: '_numberFormat'
+      }
+    };
+  }),
+  admissionDetailReportColumns: Ember.computed(function() {
+    let i18n = this.get('i18n');
+    return {
+      id: {
+        label: i18n.t('labels.id'),
+        include: true,
+        property: 'patientId'
+      },
+      name: {
+        label: i18n.t('labels.name'),
+        include: true,
+        property: 'patientName'
+      },
+      admissionDate: {
+        label: i18n.t('patients.labels.admissionDate'),
+        include: true,
+        property: 'admissionDate',
+        format: '_dateTimeFormat'
+      },
+      dischargeDate: {
+        label: i18n.t('patients.labels.dischargeDate'),
+        include: false,
+        property: 'dischargeDate',
+        format: '_dateTimeFormat'
+      },
+      patientDays: {
+        label: i18n.t('patients.labels.patientDays'),
+        include: false,
+        property: 'patientDays',
+        format: '_numberFormat'
+      }
+    };
+  }),
+  diagnosticReportColumns: Ember.computed(function() {
+    let i18n = this.get('i18n');
+    return {
+      type: {
+        label: i18n.t('labels.type'),
+        include: true,
+        property: 'type'
+      },
+      total: {
+        label: i18n.t('labels.total'),
+        include: true,
+        property: 'total',
+        format: '_numberFormat'
+      }
+    };
+  }),
+  procedureDetailReportColumns: Ember.computed(function() {
+    let i18n = this.get('i18n');
+    return {
+      id: {
+        label: i18n.t('labels.id'),
+        include: true,
+        property: 'patient.displayPatientId'
+      },
+      name: {
+        label: i18n.t('labels.name'),
+        include: true,
+        property: 'patient.displayName'
+      },
+      procedure: {
+        label: i18n.t('visits.labels.procedure'),
+        include: true,
+        property: 'procedure'
+      },
+      procedureDate: {
+        label: i18n.t('visits.labels.procedureDate'),
+        include: true,
+        property: 'procedureDate',
+        format: '_dateTimeFormat'
+      }
+    };
+  }),
+  reportColumns: Ember.computed(function() {
+    let i18n = this.get('i18n');
+    return {
+      visitDate: {
+        label: i18n.t('visits.labels.visitDate'),
+        include: true,
+        property: 'visitDate'
+      },
+      visitType: {
+        label: i18n.t('visits.labels.visitType'),
+        include: true,
+        property: 'visitType'
+      },
+      visitLocation: {
+        label: i18n.t('labels.location'),
+        include: false,
+        property: 'location'
+      },
+      examiner: {
+        label: i18n.t('visits.labels.examiner'),
+        include: true,
+        property: 'examiner'
+      },
+      name: {
+        label: i18n.t('labels.name'),
+        include: true,
+        property: 'patient.displayName'
+      },
+      id: {
+        label: i18n.t('labels.id'),
+        include: true,
+        property: 'patient.displayPatientId'
+      },
+      sex: {
+        label: i18n.t('patients.labels.sex'),
+        include: true,
+        property: 'patient.sex'
+      },
+      dateOfBirth: {
+        label: i18n.t('patients.labels.dateOfBirth'),
+        include: true,
+        property: 'patient.dateOfBirth',
+        format: '_dateFormat'
+      },
+      age: {
+        label: i18n.t('labels.age'),
+        include: false,
+        property: 'patient.age'
+      },
+      primaryDiagnosis: {
+        label: i18n.t('patients.labels.primaryDiagnosis'),
+        include: false,
+        property: 'primaryDiagnosis'
+      },
+      secondaryDiagnoses: {
+        label: i18n.t('patients.labels.secondaryDiagnosis'),
+        include: false,
+        property: 'additionalDiagnoses',
+        format: '_diagnosisListToString'
+      },
+      procedures: {
+        label: i18n.t('labels.procedures'),
+        include: false,
+        property: 'resolvedProcedures',
+        format: '_procedureListToString'
+      },
+      contacts: {
+        label: i18n.t('patients.labels.contacts'),
+        include: false,
+        property: 'patient',
+        format: '_contactListToString'
+      },
+      referredBy: {
+        label: i18n.t('patients.labels.referredBy'),
+        include: false,
+        property: 'patient.referredBy'
+      },
+      referredDate: {
+        label: i18n.t('patients.labels.referredDate'),
+        include: false,
+        property: 'patient.referredDate',
+        format: '_dateFormat'
+      }
+    };
+  }),
+  statusReportColumns: Ember.computed(function() {
+    let i18n = this.get('i18n');
+    return {
+      id: {
+        label: i18n.t('labels.id'),
+        include: true,
+        property: 'patient.displayPatientId'
+      },
+      name: {
+        label: i18n.t('labels.name'),
+        include: true,
+        property: 'patient.displayName'
+      },
+      status: {
+        label: i18n.t('labels.status'),
+        include: true,
+        property: 'patient.status'
+      },
+      primaryDiagnosis: {
+        label: i18n.t('patients.labels.primaryDiagnosis'),
+        include: true,
+        property: 'patient.visits',
+        format: '_formatPrimaryDiagnosis'
+      },
+      secondaryDiagnoses: {
+        label: i18n.t('patients.labels.secondaryDiagnosis'),
+        include: true,
+        property: 'patient.visits',
+        format: '_formatSecondaryDiagnosis'
+      }
+    };
+  }),
+  reportTypes: Ember.computed(function() {
+    let i18n = this.get('i18n');
+    return [{
+      name: i18n.t('patients.titles.admissionsDetail'),
+      value: 'detailedAdmissions'
+    }, {
+      name: i18n.t('patients.titles.admissionsSummary'),
+      value: 'admissions'
+    }, {
+      name: 'Diagnostic Testing',
+      value: 'diagnostic'
+    }, {
+      name: 'Discharges Detail',
+      value: 'detailedDischarges'
+    }, {
+      name: 'Discharges Summary',
+      value: 'discharges'
+    }, {
+      name: 'Procedures Detail',
+      value: 'detailedProcedures'
+    }, {
+      name: 'Procedures Summary',
+      value: 'procedures'
+    }, {
+      name: 'Patient Status',
+      value: 'status'
+    }, {
+      name: 'Total Patient Days',
+      value: 'patientDays'
+    }, {
+      name: 'Total Patient Days (Detailed)',
+      value: 'detailedPatientDays'
+    }, {
+      name: 'Visit',
+      value: 'visit'
+    }];
+  }),
 
   isDischargeReport: function() {
     var reportType = this.get('reportType');
@@ -655,7 +674,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       var reportColumns;
       procedures = procedures.filter(function(procedure) {
         var visit = procedure.get('visit');
-        if (Ember.isEmpty(visit) || Ember.isEmpty(visit.get('patient.id'))) {
+        if (Ember.isEmpty(visit) || Ember.isEmpty(visit.get('patient.id')) || visit.get('patient.archived') === true) {
           return false;
         } else {
           return true;
@@ -663,24 +682,12 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       });
       if (reportType.indexOf('detailed') === 0) {
         reportColumns = this.get('procedureDetailReportColumns');
-        var patientPromises = {};
         procedures.forEach(function(procedure) {
-          var visit = procedure.get('visit');
-          if (!Ember.isEmpty(visit)) {
-            patientPromises[procedure.get('id')] = this._getPatientDetails(visit.get('patient.id'));
-          }
-        }.bind(this));
-
-        Ember.RSVP.hash(patientPromises).then(function(resolutionHash) {
-          procedures.forEach(function(procedure) {
-            procedure.set('patient', resolutionHash[procedure.get('id')]);
-          });
-          var procedureTotals = this._totalByType(procedures, 'description', 'all procedures');
-          this._addPatientProcedureRows(procedureTotals, reportColumns);
-          this._finishReport(reportColumns);
-        }.bind(this), function(err) {
-          this._notifyReportError('Error in  _generateProcedureReport:' + err);
-        }.bind(this));
+          procedure.set('patient', procedure.get('visit.patient'));
+        });
+        var procedureTotals = this._totalByType(procedures, 'description', 'all procedures');
+        this._addPatientProcedureRows(procedureTotals, reportColumns);
+        this._finishReport(reportColumns);
       } else {
         reportColumns = this.get('diagnosticReportColumns');
         this._addRowsByType(procedures, 'description', 'Total procedures: ', reportColumns);
@@ -741,15 +748,6 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       }.bind(this));
     } else {
       this._finishVisitReport(visits);
-    }
-  },
-
-  _getPatientDetails: function(patientId) {
-    var patientDetails = this.get('patientDetails');
-    if (!Ember.isEmpty(patientDetails[patientId])) {
-      return Ember.RSVP.resolve(patientDetails[patientId]);
-    } else {
-      return this.store.find('patient', patientId);
     }
   },
 
