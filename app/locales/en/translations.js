@@ -727,6 +727,7 @@ export default {
     labels: {
       diagnosis: 'Diagnosis',
       procedure: 'Procedure',
+      procedureDate: 'Procedure Date',
       authoredBy: 'Authored By',
       labs: 'Labs',
       imaging: 'Imaging',
@@ -736,6 +737,7 @@ export default {
       status: 'Visit Status',
       admittingDiagnosis: 'Admitting Diagnosis',
       finalDiagnosis: 'Final/Billing Diagnosis',
+      visitDate: 'Visit Date',
       visitType: 'Visit Type',
       vitals: 'Vitals'
     }
@@ -798,7 +800,8 @@ export default {
       deleteExpense: 'Delete Expense',
       deletePhoto: 'Delete Photo',
       deleteContact: 'Delete Contact',
-      savedPatient: 'Patient Saved'
+      savedPatient: 'Patient Saved',
+      admissionsDetail: 'Admissions Detail'
     },
     messages: {
       areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
@@ -862,7 +865,8 @@ export default {
       referredBy: 'Referred By',
       referredDate: 'Referred Date',
       religion: 'Religion',
-      parent: 'Parent/Guardian'
+      parent: 'Parent/Guardian',
+      contacts: 'Contacts'
     },
     notes: {
       newNote: 'New Note for',
