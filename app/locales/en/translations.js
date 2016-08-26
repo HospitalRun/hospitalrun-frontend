@@ -801,7 +801,8 @@ export default {
       deletePhoto: 'Delete Photo',
       deleteContact: 'Delete Contact',
       savedPatient: 'Patient Saved',
-      admissionsDetail: 'Admissions Detail'
+      admissionsDetail: 'Admissions Detail',
+      admissionsSummary: 'Admissions Summary'
     },
     messages: {
       areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
