@@ -22,7 +22,9 @@ export default AbstractIndexRoute.extend(ModalHelper, {
 
     deletePricingProfile: function(model) {
       model.itemToDelete.set('archived', true);
-      model.itemToDelete.update();
+      model.itemToDelete.save().then(()=> {
+        model.itemToDelete.unloadRecord();
+      });
     },
 
     newItem: function() {

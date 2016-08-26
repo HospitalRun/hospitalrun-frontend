@@ -100,7 +100,8 @@ export default Ember.Mixin.create(PatientVisits, {
     var recordToDelete = this.get('model');
     recordToDelete.set('archived', true);
     this.removeChildFromVisit(recordToDelete, childName).then(() => {
-      recordToDelete.update().then(() => {
+      recordToDelete.save().then(() => {
+        recordToDelete.unloadRecord();
         this.send('closeModal');
       });
     });

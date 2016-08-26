@@ -15,7 +15,8 @@ export default Ember.Controller.extend({
     delete: function() {
       var recordToDelete = this.get('model');
       recordToDelete.set('archived', true);
-      recordToDelete.update().then(function() {
+      recordToDelete.save().then(function() {
+        recordToDelete.unloadRecord();
         this.send(this.get('afterDeleteAction'), recordToDelete);
       }.bind(this));
     }
