@@ -333,7 +333,8 @@ var designDocs = [{
       patientListingKey +
     '}'
   ),
-  version: 2
+  sort: patientListingSearch,
+  version: 3
 }, {
   name: 'photo_by_patient',
   function: generateView('photo',
