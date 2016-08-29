@@ -20,13 +20,19 @@ function deleteMany(manyArray) {
     // empty array: no records to delete
     return Ember.RSVP.resolve();
   }
-  return Ember.RSVP.all(manyArray.invoke('destroyRecord', 'async array deletion'));
+  var archivePromises = manyArray.map((recordToDelete) => {
+    recordToDelete.set('archived', true);
+    return recordToDelete.save().then(() => {
+      return recordToDelete.unloadRecord();
+    });
+  });
+  return Ember.RSVP.all(archivePromises, 'async array deletion');
 }
 
 export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoicesMixin, PouchDbMixin, ProgressDialog, PatientAppointmentsMixin, {
   title: t('patients.titles.delete'),
-  progressTitle: 'Delete Patient Record',
-  progressMessage: 'Deleting patient and all associated records',
+  progressTitle: t('patients.titles.deletePatientRecord'),
+  progressMessage: t('patients.messages.deletingPatient'),
 
   // Override delete action on controller; we must delete
   // all related records before deleting patient record
@@ -86,11 +92,13 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
 
   deleteInvoices: function(patientInvoices) {
     return Ember.RSVP.resolve(patientInvoices).then(function(invoices) {
-      var lineItems = invoices.map(function(i) {
-        return i.get('lineItems');
+      let lineItems = Ember.A();
+      invoices.forEach(function(i) {
+        lineItems.addObjects(i.get('lineItems'));
       });
-      var lineItemDetails = lineItems.map(function(li) {
-        return li.get('details');
+      let lineItemDetails = Ember.A();
+      lineItems.forEach(function(li) {
+        lineItemDetails.addObjects(li.get('details'));
       });
       return Ember.RSVP.all([lineItems, lineItemDetails]).then(function() {
         return Ember.RSVP.all([deleteMany(invoices), deleteMany(lineItems), deleteMany(lineItemDetails)]);
