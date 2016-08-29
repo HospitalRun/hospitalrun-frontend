@@ -802,7 +802,16 @@ export default {
       deleteContact: 'Delete Contact',
       savedPatient: 'Patient Saved',
       admissionsDetail: 'Admissions Detail',
-      admissionsSummary: 'Admissions Summary'
+      admissionsSummary: 'Admissions Summary',
+      diagnosticTesting: 'Diagnostic Testing',
+      dischargesDetail: 'Discharges Detail',
+      dischargesSummary: 'Discharges Summary',
+      proceduresDetail: 'Procedures Detail',
+      proceduresSummary: 'Procedures Summary',
+      patientStatus: 'Patient Status',
+      totalPatientDays: 'Total Patient Days',
+      totalPatientDaysDetailed: 'Total Patient Days (Detailed)',
+      visit: 'Visit'
     },
     messages: {
       areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
