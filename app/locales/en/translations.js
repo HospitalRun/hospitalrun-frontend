@@ -811,7 +811,8 @@ export default {
       patientStatus: 'Patient Status',
       totalPatientDays: 'Total Patient Days',
       totalPatientDaysDetailed: 'Total Patient Days (Detailed)',
-      visit: 'Visit'
+      visit: 'Visit',
+      deletePatientRecord: 'Delete Patient Record'
     },
     messages: {
       areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
@@ -819,7 +820,8 @@ export default {
       noPatientsFound: 'No patients found.',
       savedPatient: 'The patient record for {{displayName}} has been saved.',
       notFoundQuickAdd: 'The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.',
-      createNewPatient: 'Create a new patient record?'
+      createNewPatient: 'Create a new patient record?',
+      deletingPatient: 'Deleting patient and all associated records'
     },
     buttons: {
       addExpense: 'Add Expense',
