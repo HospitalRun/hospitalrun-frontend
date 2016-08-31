@@ -54,6 +54,24 @@ To start the frontend please do the following:
 - Start the server by running `npm start` in the repo folder.
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
+## Running with Docker
+To run HospitalRun with Docker please do the following:
+- Goto [https://docs.docker.com/engine/installation](https://docs.docker.com/engine/installation) to download and install Docker.
+- Clone the repository with the command `git clone https://github.com/HospitalRun/hospitalrun-frontend.git`.
+- Change to the hospitalrun-frontend directory `cd hosptialrun-frontend`.
+- Build the HosptialRun image with `docker build -t hospitalrun-frontend .`
+- Execute `docker run -it --name couchdb -d couchdb` to create the couchdb container.
+- Execute `docker run -it --name hospitalrun-frontend -p 4200:4200 --link couchdb:couchdb -d hospitalrun-frontend` to create the HospitalRun container.
+
+### Accessing HospitalRun with Docker Toolbox
+If you are running with Docker Toolbox you will have to run the following commands to get the IP of the docker machine where hospitalrun-frontend is running with the following:
+- Run the following command to get the ip of the docker machine that the image was created on `docker-machine ip default`.
+- Go to `http://<docker-machine ip>:4200` in a browser and login with username `hradmin` and password `test`.
+
+### Accessing HospitalRun with Docker
+If you are not running with docker toolbox please do the following:
+- Go to `http://localhost:4200` in a browser and login with username `hradmin` and password `test`.
+
 ### Troubleshooting your local environment
 Always make sure to `git pull` and get the latest from master.
 
