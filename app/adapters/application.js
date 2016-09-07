@@ -126,10 +126,6 @@ export default Adapter.extend(PouchAdapterUtils, {
     }
   },
 
-  generateIdForRecord() {
-    return PouchDB.utils.uuid();
-  },
-
   query(store, type, query, options) {
     var specialQuery = false;
     for (var i = 0; i < this._specialQueries.length; i++) {
