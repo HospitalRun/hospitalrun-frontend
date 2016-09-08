@@ -2,14 +2,10 @@
   "extends": "stylelint-config-concentric",
   "plugins": [
   "stylelint-declaration-use-variable",
-  "stylelint-value-border-zero",
   "stylelint-scss"
 ],
   "rules":{
     "sh-waqar/declaration-use-variable": "color",
-    "value-border-zero": {
-      "convention": "0"
-    },
     "scss/at-import-no-partial-extension": true,
     "scss/at-import-no-partial-leading-underscore": true,
     "scss/at-extend-no-missing-placeholder": true,
@@ -25,7 +21,7 @@
     "block-opening-brace-space-before": "always",
     "block-opening-brace-newline-after": "always-multi-line",
     "block-opening-brace-space-after": "always-single-line",
-    "no-missing-eof-newline": true,
+    "no-missing-end-of-source-newline": true,
     "no-duplicate-selectors": true,
     "no-eol-whitespace": true,
     "selector-max-compound-selectors": 4,
@@ -42,10 +38,10 @@
     "declaration-block-trailing-semicolon": "always",
     "function-comma-space-after": "never-single-line",
     "function-parentheses-space-inside": "never",
-    "function-url-quotes": "single",
+    "function-url-quotes": "always",
     "number-leading-zero": "never",
     "number-no-trailing-zeros": true,
-    "number-zero-length-no-unit": true,
+    "length-zero-no-unit": true,
     "rule-nested-empty-line-before": ["always-multi-line", {
       "ignore": ["after-comment"],
       "except": ["first-nested"]
@@ -55,6 +51,9 @@
     } ],
     "max-nesting-depth": 4,
     "shorthand-property-no-redundant-values": true,
-    "string-quotes": "single"
+    "string-quotes": "single",
+    "declaration-property-value-blacklist": {
+      "/^border/": ["none"]
+    }
   }
 }

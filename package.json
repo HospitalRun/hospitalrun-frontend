@@ -53,7 +53,7 @@
     "ember-cli-release": "^0.2.9",
     "ember-cli-sass": "^5.2.1",
     "ember-cli-sri": "^2.1.0",
-    "ember-cli-stylelint": "^0.5.0",
+    "ember-cli-stylelint": "^0.6.0",
     "ember-cli-template-lint": "0.4.12",
     "ember-cli-test-loader": "^1.1.0",
     "ember-cli-uglify": "^1.2.0",
@@ -78,10 +78,10 @@
     "nano": "6.2.0",
     "pouchdb-list": "^1.1.0",
     "request": "2.74.0",
-    "stylelint-config-concentric": "1.0.3",
+    "stylelint": "^7.0.3",
+    "stylelint-config-concentric": "1.0.5",
     "stylelint-declaration-use-variable": "^1.4.0",
-    "stylelint-scss": "1.2.1",
-    "stylelint-value-border-zero": "^1.0.2"
+    "stylelint-scss": "1.3.4"
   },
   "ember-addon": {
     "paths": [
