@@ -73,7 +73,7 @@
     "express": "^4.8.5",
     "glob": "^7.0.0",
     "hospitalrun-dblisteners": "0.9.3",
-    "hospitalrun-server-routes": "0.9.8",
+    "hospitalrun-server-routes": "0.9.9",
     "loader.js": "4.0.11",
     "nano": "6.2.0",
     "pouchdb-list": "^1.1.0",
