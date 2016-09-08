@@ -1,11 +1,11 @@
 importScripts('sw-toolbox.js');
 var CACHE_PREFIX = 'brocsw-v';
-var CACHE_VERSION = CACHE_PREFIX+'1473351591473';
+var CACHE_VERSION = CACHE_PREFIX+'1473369154846';
 toolbox.options.cache.name = CACHE_VERSION;
 var urlsToPrefetch = [
     '/',
-    "assets/hospitalrun-0485f3b42ec8f6809a6c3176483a0598.js",
     "assets/hospitalrun-980b8d5a0672ed3caacf594c0306ac3a.css",
+    "assets/hospitalrun-b6ed07adeebea32530e38e712cf2d9de.js",
     "assets/vendor-84e14577fc06f86ba8c9d0befd750bcb.js",
     "assets/vendor-ed8acd5f4063b4b83b5df16f6da9e8b0.css",
     "crossdomain.xml",

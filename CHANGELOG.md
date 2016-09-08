@@ -1,11 +1,19 @@
 # Change Log
-## [0.9.14](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.14) (2016-09-08)
 
+## [0.9.15](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.15) (2016-09-08)
+
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.14...0.9.15)
+
+**Merged pull requests:**
+
+- Update hospitalrun-dblisteners to version 0.9.4 🚀 [\#642](https://github.com/HospitalRun/hospitalrun-frontend/pull/642) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update ember-cli-stylelint to version 0.6.0 🚀 [\#641](https://github.com/HospitalRun/hospitalrun-frontend/pull/641) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+
+## [0.9.14](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.14) (2016-09-08)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.13...0.9.14)
-Forgot to run build.
+- Forgot build for last release, so this has a build
 
 ## [0.9.13](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.13) (2016-09-08)
-
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.12...0.9.13)
 
 **Implemented enhancements:**
