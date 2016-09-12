@@ -15,7 +15,8 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
       let newVisit = this.get('store').createRecord('visit', {
         outPatient: true,
         checkIn: true,
-        startDate: new Date()
+        startDate: new Date(),
+        endDate: new Date()
       });
       return newVisit;
     } else {
