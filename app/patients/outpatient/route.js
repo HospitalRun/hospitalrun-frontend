@@ -18,8 +18,8 @@ export default AbstractIndexRoute.extend({
     return {
       mapReduce: 'visit_by_date',
       options: {
-        /*endkey: [endOfDay, endOfDay, this._getMaxPouchId()],
-        startkey: [startOfDay, null, this._getMinPouchId()]*/
+        endkey: [endOfDay, endOfDay, this._getMaxPouchId()],
+        startkey: [startOfDay, null, this._getMinPouchId()]
       }
     };
   },
