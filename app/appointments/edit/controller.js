@@ -57,7 +57,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
         isAdmissionAppointment = this.get('isAdmissionAppointment');
     return (!allDay && isAdmissionAppointment);
   }.property('model.allDay', 'isAdmissionAppointment'),
-  visitTypesList: Ember.computed.alias('appointmentsController.visitTypeList'),
+  visitTypesList: Ember.computed.alias('appointmentsController.visitTypesList'),
 
   cancelAction: function() {
     var returnTo = this.get('model.returnTo');
