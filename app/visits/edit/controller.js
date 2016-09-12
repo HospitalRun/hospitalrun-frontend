@@ -90,7 +90,15 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
     }
   }.observes('isAdmissionVisit', 'model.startDate'),
 
-  cancelAction: 'returnToPatient',
+  cancelAction: function() {
+    let checkIn = this.get('model.checkIn');
+    if (checkIn) {
+      return 'returnToOutPatient';
+    } else {
+      return 'returnToPatient';
+    }
+  }.property('model.checkIn'),
+
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
@@ -127,6 +135,26 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
   ].map(SelectValues.selectValuesMap),
 
   updateCapability: 'add_visit',
+
+  updateButtonText: function() {
+    let i18n = this.get('i18n');
+    if (this.get('model.checkIn')) {
+      return i18n.t('visits.buttons.checkIn');
+    } else {
+      return this._super();
+    }
+  }.property('model.checkIn', 'model.isNew'),
+
+  validVisitTypes: function() {
+    let outPatient = this.get('model.outPatient');
+    let visitTypes = this.get('visitTypes');
+    if (outPatient) {
+      visitTypes = visitTypes.filter(function(visitType) {
+        return (visitType.id !== 'Admission');
+      });
+    }
+    return visitTypes;
+  }.property('visitTypes', 'model.outPatient'),
 
   _addChildObject: function(route) {
     this.transitionToRoute(route, 'new').then(function(newRoute) {
@@ -373,6 +401,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
       var patientNotes = this.get('model.patientNotes');
       patientNotes.removeObject(note);
       this.send('update', true);
+    },
+
+    returnToOutPatient: function() {
+      this.transitionToRoute('patients.outpatient');
     }
   }
 });
