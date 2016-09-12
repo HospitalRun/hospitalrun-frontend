@@ -20,13 +20,13 @@ To install the frontend please do the following:
 3. Install [ember-cli latest](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@latest`.
    Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install ember-cli.
 4. Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
-5. Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and run `script/bootstrap`. (*Note: Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install PhantomJS2; also, Windows users must run with [Cygwin](http://cygwin.org/)*.
+5. Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and run `script/bootstrap`. (*Note: Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install PhantomJS2; also, Windows users must run with [Cygwin](http://cygwin.org/)*).
 6. Install and configure [CouchDB](http://couchdb.apache.org/)
     1. Download and install CouchDB from http://couchdb.apache.org/#download
     2. Create admin user:
         1. If you have just installed CouchDB and have no admin user, please run `./script/initcouch.sh` in the folder you cloned the HospitalRun repo.  A user `hradmin` will be created with password: `test`.
         2. If you already have a CouchDB admin user, please run `./script/initcouch.sh USER PASS` in the folder you cloned the HospitalRun repo.  `USER` and `PASS` are the CouchDB admin user credentials.
-7. Copy the `server/config-example.js` to `server/config.js` in the folder you cloned the HospitalRun repo.  If you already had a CouchDB admin user that you passed into the couch script (`./script/initcouch.sh USER PASS`), then you will need to modify the `couchAdminUser` and `couchAdminPassword` values in `server/config.js` to reflect those credentials.
+7. Copy the `server/config-example.js` to `server/config.js` in the folder you cloned the HospitalRun repo.  If you already had a CouchDB admin user that you passed into the couch script (`./script/initcouch.sh USER PASS`), then you will need to modify the `couchAdminUser` and `couchAdminPassword` values in `server/config.js` to reflect those credentials. (*Note: If on Mac, you need to make sure CouchDB can be run. See [How to open an app from a unidentified developer and exempt it from Gatekeeper](https://support.apple.com/en-us/HT202491).*)
 
 ### Experimental
 
@@ -53,6 +53,24 @@ To start the frontend please do the following:
 
 - Start the server by running `npm start` in the repo folder.
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
+
+## Running with Docker
+To run HospitalRun with Docker please do the following:
+- Goto [https://docs.docker.com/engine/installation](https://docs.docker.com/engine/installation) to download and install Docker.
+- Clone the repository with the command `git clone https://github.com/HospitalRun/hospitalrun-frontend.git`.
+- Change to the hospitalrun-frontend directory `cd hosptialrun-frontend`.
+- Build the HosptialRun image with `docker build -t hospitalrun-frontend .`
+- Execute `docker run -it --name couchdb -d couchdb` to create the couchdb container.
+- Execute `docker run -it --name hospitalrun-frontend -p 4200:4200 --link couchdb:couchdb -d hospitalrun-frontend` to create the HospitalRun container.
+
+### Accessing HospitalRun with Docker Toolbox
+If you are running with Docker Toolbox you will have to run the following commands to get the IP of the docker machine where hospitalrun-frontend is running with the following:
+- Run the following command to get the ip of the docker machine that the image was created on `docker-machine ip default`.
+- Go to `http://<docker-machine ip>:4200` in a browser and login with username `hradmin` and password `test`.
+
+### Accessing HospitalRun with Docker
+If you are not running with docker toolbox please do the following:
+- Go to `http://localhost:4200` in a browser and login with username `hradmin` and password `test`.
 
 ### Troubleshooting your local environment
 Always make sure to `git pull` and get the latest from master.

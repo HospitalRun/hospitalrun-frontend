@@ -731,6 +731,7 @@ export default {
     labels: {
       diagnosis: 'Diagnosis',
       procedure: 'Procedure',
+      procedureDate: 'Procedure Date',
       authoredBy: 'Authored By',
       labs: 'Labs',
       imaging: 'Imaging',
@@ -740,6 +741,7 @@ export default {
       status: 'Visit Status',
       admittingDiagnosis: 'Admitting Diagnosis',
       finalDiagnosis: 'Final/Billing Diagnosis',
+      visitDate: 'Visit Date',
       visitType: 'Visit Type',
       vitals: 'Vitals',
       patientToCheckIn: 'Patient To Check In'
@@ -785,6 +787,7 @@ export default {
       socialWork: 'Social Work'
     },
     titles: {
+      admittedPatients: 'Admitted Patients',
       expenses: 'Expenses',
       additionalContacts: 'Additional Contacts',
       familyInformation: 'Family Information',
@@ -803,7 +806,19 @@ export default {
       deletePhoto: 'Delete Photo',
       deleteContact: 'Delete Contact',
       savedPatient: 'Patient Saved',
-      todaysOutpatients: 'Todays\' Outpatients'
+      todaysOutpatients: 'Todays\' Outpatients',
+      admissionsDetail: 'Admissions Detail',
+      admissionsSummary: 'Admissions Summary',
+      diagnosticTesting: 'Diagnostic Testing',
+      dischargesDetail: 'Discharges Detail',
+      dischargesSummary: 'Discharges Summary',
+      proceduresDetail: 'Procedures Detail',
+      proceduresSummary: 'Procedures Summary',
+      patientStatus: 'Patient Status',
+      totalPatientDays: 'Total Patient Days',
+      totalPatientDaysDetailed: 'Total Patient Days (Detailed)',
+      visit: 'Visit',
+      deletePatientRecord: 'Delete Patient Record'
     },
     messages: {
       areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
@@ -811,7 +826,8 @@ export default {
       noPatientsFound: 'No patients found.',
       savedPatient: 'The patient record for {{displayName}} has been saved.',
       notFoundQuickAdd: 'The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.',
-      createNewPatient: 'Create a new patient record?'
+      createNewPatient: 'Create a new patient record?',
+      deletingPatient: 'Deleting patient and all associated records'
     },
     buttons: {
       addExpense: 'Add Expense',
@@ -868,7 +884,8 @@ export default {
       referredBy: 'Referred By',
       referredDate: 'Referred Date',
       religion: 'Religion',
-      parent: 'Parent/Guardian'
+      parent: 'Parent/Guardian',
+      contacts: 'Contacts'
     },
     notes: {
       newNote: 'New Note for',

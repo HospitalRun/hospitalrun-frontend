@@ -452,8 +452,15 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
 
     visitDeleted: function(deletedVisit) {
       var visits = this.get('model.visits');
+      var patient = this.get('model');
+      var patientAdmitted = patient.get('admitted');
       visits.removeObject(deletedVisit);
-      this.send('closeModal');
+      if (patientAdmitted && Ember.isEmpty(visits.findBy('status', 'Admitted'))) {
+        patient.set('admitted', false);
+        patient.save().then(() => this.send('closeModal'));
+      } else {
+        this.send('closeModal');
+      }
     }
 
   },

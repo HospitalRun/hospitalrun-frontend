@@ -307,10 +307,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
 
   _addReportRow: function(row, skipNumberFormatting, reportColumns, rowAction) {
     if (Ember.isEmpty(rowAction) && !Ember.isEmpty(row.inventoryItem) && !Ember.isEmpty(row.inventoryItem.id)) {
-      var inventoryId = this.get('database').getEmberId(row.inventoryItem.id);
       rowAction = {
         action: 'viewInventory',
-        model: inventoryId
+        model: row.inventoryItem.id
       };
     }
     this._super(row, skipNumberFormatting, reportColumns, rowAction);
@@ -1142,7 +1141,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         include_docs: true
       }).then(function(inventoryItems) {
         inventoryItems.rows.forEach(function(inventoryItem) {
-          if (inventoryItem.doc) {
+          if (inventoryItem.doc && inventoryItem.doc.archived !== true) {
             inventoryMap[inventoryItem.doc.id] = inventoryItem.doc;
           }
         });

@@ -5,6 +5,7 @@ import { Model } from 'ember-pouch';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default Model.extend(UserSession, EmberValidations, {
   session: Ember.inject.service(),
+  archived: DS.attr('boolean'),
   lastModified: DS.attr('date'),
   modifiedBy: DS.attr(),
   modifiedFields: DS.attr(),
