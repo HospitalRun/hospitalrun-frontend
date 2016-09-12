@@ -57,6 +57,7 @@ export default AbstractModel.extend({
   procedures: DS.hasMany('procedure', { async: true }),
   startDate: DS.attr('date'),
   status: DS.attr('string'),
+  visitReason: DS.attr('string'),
   visitType: DS.attr(),
   vitals: DS.hasMany('vital', { async: true }),
 
