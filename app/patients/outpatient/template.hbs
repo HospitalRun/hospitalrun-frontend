@@ -21,13 +21,13 @@
           <td class="col-xs-1">{{visit.patient.firstName}}</td>
           <td class="col-xs-1">{{visit.patient.lastName}}</td>
           <td class="col-xs-1">{{visit.patient.sex}}</td>
-          <td class="col-xs-1">{{visit.patient.age}}</td>
+          <td class="col-xs-1">{{visit.patient.shortAge}}</td>
           <td class="col-xs-1">{{visit.visitType}}</td>
           <td class="col-xs-1">{{visit.status}}</td>
           {{#if showActions}}
             <td>
               {{#if canAdd}}
-                <button class="btn btn-default neutral" {{action 'editItem' visit  bubbles=false }}>{{t 'labels.edit'}}</button>
+                <button class="btn btn-default neutral" {{action 'editVisit' visit  bubbles=false }}>{{t 'labels.edit'}}</button>
               {{/if}}
             </td>
           {{/if}}

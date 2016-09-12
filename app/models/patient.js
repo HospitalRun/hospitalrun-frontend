@@ -81,6 +81,11 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     return this.getPatientDisplayId(this);
   }.property('id', 'externalPatientId', 'friendlyId'),
 
+  shortAge: function() {
+    var dob = this.get('dateOfBirth');
+    return this.convertDOBToText(dob, true);
+  }.property('dateOfBirth'),
+
   validations: {
     email: {
       format: {
