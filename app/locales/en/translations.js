@@ -726,7 +726,8 @@ export default {
       addDiagnosis: 'Add Diagnosis',
       newImaging: 'New Imaging',
       newMedication: 'New Medication',
-      newVitals: 'New Vitals'
+      newVitals: 'New Vitals',
+      checkIn: 'Check In'
     },
     labels: {
       diagnosis: 'Diagnosis',
@@ -744,7 +745,15 @@ export default {
       visitDate: 'Visit Date',
       visitType: 'Visit Type',
       vitals: 'Vitals',
-      patientToCheckIn: 'Patient To Check In'
+      patientToCheckIn: 'Patient To Check In',
+      reasonForVisit: 'Reason for Visit'
+    },
+    navigation: {
+      charges: 'Charges',
+      notes: 'Notes',
+      orders: 'Orders',
+      procedures: 'Procedures',
+      vitals: 'Vitals'
     }
   },
   labs: {
