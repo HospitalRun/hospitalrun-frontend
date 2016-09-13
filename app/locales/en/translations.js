@@ -724,7 +724,6 @@ export default {
       newLab: 'New Lab',
       newAppointment: 'New Appointment',
       addDiagnosis: 'Add Diagnosis',
-      newImaging: 'New Imaging',
       newMedication: 'New Medication',
       newVitals: 'New Vitals',
       checkIn: 'Check In'
@@ -734,17 +733,13 @@ export default {
       procedure: 'Procedure',
       procedureDate: 'Procedure Date',
       authoredBy: 'Authored By',
-      labs: 'Labs',
-      imaging: 'Imaging',
       visitInformation: 'Visit Information',
       examiner: 'Examiner',
-      medication: 'Medication',
       status: 'Visit Status',
       admittingDiagnosis: 'Admitting Diagnosis',
       finalDiagnosis: 'Final/Billing Diagnosis',
       visitDate: 'Visit Date',
       visitType: 'Visit Type',
-      vitals: 'Vitals',
       patientToCheckIn: 'Patient To Check In',
       reasonForVisit: 'Reason for Visit'
     },
@@ -998,6 +993,13 @@ export default {
     },
     quantityCalc: {
       result: '{{targetUnit}} total: {{calculated}}'
+    },
+    patientOrders: {
+      imagingOrderType: 'Imaging',
+      labOrderType: 'Lab',
+      medicationOrderType: 'Medication',
+      orderType: 'Order Type',
+      newImagingButton: 'New Imaging',
     },
     priceList: {
       charges: '{{pricingType}} charges'

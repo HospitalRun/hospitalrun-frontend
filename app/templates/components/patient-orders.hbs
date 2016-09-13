@@ -1,0 +1,65 @@
+<div class="panel detail-section">
+  <div class="panel-body">
+    <table class="table">
+      <tr class="table-header">
+        <th>{{t 'labels.dateRequested'}}</th>
+        <th>{{t 'labels.name'}}</th>
+        <th>{{t 'components.patientOrders.labels.orderType'}}</th>
+        <th>{{t 'labels.status'}}</th>
+        <th>{{t 'patients.labels.dateProcessed'}}</th>
+        <th>{{t 'labels.result'}}</th>
+        <th>{{t 'labels.notes'}}</th>
+        <th>{{t 'labels.requestedBy'}}</th>
+        <th>{{t 'labels.actions'}}</th>
+      </tr>
+      {{#each orderList as |order|}}
+        <tr {{action "editOrder" order}}>
+          <td>{{date-format order.requestedDate}}</td>
+          <td>{{order.name}}</td>
+          <td>
+            {{#if order.isImaging}}
+              {{t 'components.patientOrders.labels.imagingOrderType'}}
+            {{/if}}
+            {{#if order.isLab}}
+              {{t 'components.patientOrders.labels.labOrderType'}}
+            {{/if}}
+            {{#if order.isMedication}}
+              {{t 'components.patientOrders.labels.medicationOrderType'}}
+            {{/if}}
+          </td>
+          <td>{{order.status}}</td>
+          <td>{{date-format order.dateProcessed}}</td>
+          <td>{{order.result}}</td>
+          <td>{{order.notes}}</td>
+          <td>{{order.requestedBy}}</td>
+          <td>
+            {{#if order.canEdit}}
+              <button type="button" class="btn btn-default neutral" {{action "editOrder" order}}>
+                {{t 'labels.edit'}}
+              </button>
+            {{/if}}
+            {{#if order.canDelete}}
+              <button type="button" class="btn btn-default warning" {{action "showDeleteOrder" order bubbles=false }}><span class="octicon octicon-x"></span>{{t 'labels.delete'}}</button>
+            {{/if}}
+          </td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
+  <div class="panel-footer">
+    {{#if canAddImaging}}
+      <button class="btn btn-primary" {{action "newImaging" bubbles=false }}>
+        <span class="octicon octicon-plus"></span> {{t 'components.patientOrders.buttons.newImaging' }}
+      </button>
+    {{/if}}
+    {{#if canAddLab}}
+      <button class="btn btn-primary" {{action "newLab" bubbles=false }}>
+        <span class="octicon octicon-plus"></span> {{t 'components.patientOrders.buttons.newLab' }}
+      </button>
+
+    {{/if}}
+    {{#if canAddMedication}}
+      <button class="btn btn-primary" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'components.patientOrders.newMedication' }}</button>
+    {{/if}}
+  </div>
+</div>
