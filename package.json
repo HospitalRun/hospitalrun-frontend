@@ -34,7 +34,7 @@
     "broccoli-funnel": "^1.0.5",
     "broccoli-manifest": "0.0.7",
     "broccoli-merge-trees": "^1.1.1",
-    "broccoli-serviceworker": "0.1.0",
+    "broccoli-serviceworker": "0.1.1",
     "ember-ajax": "2.5.1",
     "ember-browserify": "^1.1.12",
     "ember-cli": "^2.7.0",
