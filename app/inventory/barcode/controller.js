@@ -12,7 +12,7 @@ export default Ember.Controller.extend({
       displayValue: name,
       returnUri: true
     });
-  }.property('id', 'name'),
+  }.property('model.id', 'model.name'),
 
   printers: function() {
     return dymo.label.framework.getTapePrinters();
