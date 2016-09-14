@@ -2,33 +2,35 @@
   <div class="panel-body">
     <table class="table">
       <tr class="table-header">
-        <th>{{t 'labels.dateRequested'}}</th>
-        <th>{{t 'labels.name'}}</th>
-        <th>{{t 'components.patientOrders.labels.orderType'}}</th>
-        <th>{{t 'labels.status'}}</th>
-        <th>{{t 'patients.labels.dateProcessed'}}</th>
+        {{#sortable-column sortBy='requestedDate' sortDesc=sortDesc sortKey=sortKey }}
+          {{t 'labels.dateRequested'}}
+        {{/sortable-column}}
+        {{#sortable-column sortBy='name' sortDesc=sortDesc sortKey=sortKey }}
+          {{t 'labels.name'}}
+        {{/sortable-column}}
+        {{#sortable-column sortBy='orderType' sortDesc=sortDesc sortKey=sortKey filterBy='orderType' filteredBy=filteredBy filterValues=orderTypeFilters}}
+          {{t 'components.patientOrders.labels.orderType'}}
+        {{/sortable-column}}
+        {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}
+          {{t 'labels.status'}}
+        {{/sortable-column}}
+        {{#sortable-column sortBy='dateProcessed' sortDesc=sortDesc sortKey=sortKey }}
+          {{t 'patients.labels.dateProcessed'}}
+        {{/sortable-column}}
         <th>{{t 'labels.result'}}</th>
         <th>{{t 'labels.notes'}}</th>
-        <th>{{t 'labels.requestedBy'}}</th>
+        {{#sortable-column sortBy='requestedBy' sortDesc=sortDesc sortKey=sortKey }}
+          {{t 'labels.requestedBy'}}
+        {{/sortable-column}}
         <th>{{t 'labels.actions'}}</th>
       </tr>
-      {{#each orderList as |order|}}
+      {{#each sortedOrders as |order|}}
         <tr {{action "editOrder" order}}>
-          <td>{{date-format order.requestedDate}}</td>
+          <td>{{date-format order.requestedDate format="l h:mm A"}}</td>
           <td>{{order.name}}</td>
-          <td>
-            {{#if order.isImaging}}
-              {{t 'components.patientOrders.labels.imagingOrderType'}}
-            {{/if}}
-            {{#if order.isLab}}
-              {{t 'components.patientOrders.labels.labOrderType'}}
-            {{/if}}
-            {{#if order.isMedication}}
-              {{t 'components.patientOrders.labels.medicationOrderType'}}
-            {{/if}}
-          </td>
+          <td>{{order.orderType}}</td>
           <td>{{order.status}}</td>
-          <td>{{date-format order.dateProcessed}}</td>
+          <td>{{date-format order.dateProcessed format="l h:mm A"}}</td>
           <td>{{order.result}}</td>
           <td>{{order.notes}}</td>
           <td>{{order.requestedBy}}</td>
@@ -59,7 +61,7 @@
 
     {{/if}}
     {{#if canAddMedication}}
-      <button class="btn btn-primary" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'components.patientOrders.newMedication' }}</button>
+      <button class="btn btn-primary" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'components.patientOrders.buttons.newMedication' }}</button>
     {{/if}}
   </div>
 </div>

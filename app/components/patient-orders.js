@@ -4,36 +4,72 @@ export default Ember.Component.extend(UserSession, {
   editImagingAction: 'editImaging',
   editLabAction: 'editLab',
   editMedicationAction: 'editMedication',
+  filteredBy: null,
   newImagingAction: 'newImaging',
   newLabAction: 'newLab',
   newMedicationAction: 'newMedication',
   showDeleteImagingAction: 'showDeleteImaging',
   showDeleteLabAction: 'showDeleteLab',
   showDeleteMedicationAction: 'showDeleteMedication',
+  sortBy: null,
+  sortKey: null,
+  sortDesc: false,
+  orderTypeFilters: Ember.computed(function() {
+    let i18n = this.get('i18n');
+    return [
+      i18n.t('components.patientOrders.labels.imagingOrderType'),
+      i18n.t('components.patientOrders.labels.labOrderType'),
+      i18n.t('components.patientOrders.labels.medicationOrderType')
+    ];
+  }),
 
-  canAddImaging: function() {
+  canAddImaging: Ember.computed(function() {
     return this.currentUserCan('add_imaging');
-  }.property(),
+  }),
 
-  canAddLab: function() {
+  canAddLab: Ember.computed(function() {
     return this.currentUserCan('add_lab');
-  }.property(),
+  }),
 
-  canAddMedication: function() {
+  canAddMedication: Ember.computed(function() {
     return this.currentUserCan('add_medication');
-  }.property(),
+  }),
 
-  canDeleteImaging: function() {
+  canDeleteImaging: Ember.computed(function() {
     return this.currentUserCan('delete_imaging');
-  }.property(),
+  }),
 
-  canDeleteLab: function() {
+  canDeleteLab: Ember.computed(function() {
     return this.currentUserCan('delete_lab');
-  }.property(),
+  }),
 
-  canDeleteMedication: function() {
+  canDeleteMedication: Ember.computed(function() {
     return this.currentUserCan('delete_medication');
-  }.property(),
+  }),
+
+  sortedOrders: Ember.computed('filteredList', 'sortBy', 'sortDesc', function() {
+    let filteredList = this.get('filteredList');
+    let sortDesc = this.get('sortDesc');
+    let sortBy = this.get('sortBy');
+    if (Ember.isEmpty(filteredList) || Ember.isEmpty(sortBy)) {
+      return filteredList;
+    }
+    filteredList = filteredList.sort(function(a, b) {
+      let compareA = a.get(sortBy);
+      let compareB = b.get(sortBy);
+      if (sortBy === 'orderType') {
+        compareA = compareA.toString();
+        compareB = compareB.toString();
+      }
+      if (sortDesc) {
+        return Ember.compare(compareB, compareA);
+      } else {
+        return Ember.compare(compareA, compareB);
+      }
+    });
+    this.set('sortKey', sortBy);
+    return filteredList;
+  }),
 
   i18n: Ember.inject.service(),
   visit: null,
@@ -46,22 +82,23 @@ export default Ember.Component.extend(UserSession, {
       medication: this.get('visit.medication')
     }).then((results) => {
       let orderList = new Ember.A();
+      let i18n = this.get('i18n');
       orderList.addObjects(results.imaging.map((item) => {
-        item.set('isImaging', true);
+        item.set('orderType', i18n.t('components.patientOrders.labels.imagingOrderType'));
         item.set('name', item.get('imagingType.name'));
         item.set('dateProcessed', item.get('imagingDate'));
         this._setPermissions(item, 'canAddImaging', 'canDeleteImaging');
         return item;
       }));
       orderList.addObjects(results.labs.map((item) => {
-        item.set('isLab', true);
+        item.set('orderType', i18n.t('components.patientOrders.labels.labOrderType'));
         item.set('name', item.get('labType.name'));
         item.set('dateProcessed', item.get('labDate'));
         this._setPermissions(item, 'canAddLab', 'canDeleteLab');
         return item;
       }));
       orderList.addObjects(results.medication.map((item) => {
-        item.set('isMedication', true);
+        item.set('orderType', i18n.t('components.patientOrders.labels.medicationOrderType'));
         item.set('name', item.get('medicationName'));
         item.set('dateProcessed', item.get('prescriptionDate'));
         item.set('result', '');
@@ -70,6 +107,7 @@ export default Ember.Component.extend(UserSession, {
         return item;
       }));
       this.set('orderList', orderList);
+      this.set('filteredList', orderList);
     });
   },
 
@@ -85,6 +123,39 @@ export default Ember.Component.extend(UserSession, {
   },
 
   actions: {
+    filter: function(filterBy, filterValue) {
+      let filteredBy = this.get('filteredBy');
+      let orderList = this.get('orderList');
+      if (Ember.isEmpty(filteredBy)) {
+        filteredBy = {};
+      }
+      if (filterValue === false && filteredBy[filterBy]) {
+        delete filteredBy[filterBy];
+      } else {
+        filteredBy[filterBy] = filterValue;
+      }
+      orderList = orderList.filter((order) => {
+        let includeRecord = true;
+        for (var filterBy in filteredBy) {
+          let filterValue = filteredBy[filterBy];
+          let orderValue = order.get(filterBy);
+          if (filterValue instanceof Ember.Handlebars.SafeString) {
+            filterValue = filterValue.toString();
+          }
+          if (orderValue instanceof Ember.Handlebars.SafeString) {
+            orderValue = orderValue.toString();
+          }
+
+          if (orderValue !== filterValue) {
+            includeRecord = false;
+          }
+        }
+        return includeRecord;
+      });
+      this.set('filteredBy', filteredBy);
+      this.set('filteredList', orderList);
+    },
+
     newImaging: function() {
       this.sendAction('newImagingAction');
     },
@@ -105,6 +176,13 @@ export default Ember.Component.extend(UserSession, {
     showDeleteOrder: function(order) {
       let modelName = order.get('constructor.modelName').capitalize();
       this.sendAction(`showDelete${modelName}Action`, order);
+    },
+
+    sortByKey: function(sortBy, sortDesc) {
+      this.setProperties({
+        sortBy: sortBy,
+        sortDesc: sortDesc
+      });
     }
   }
 
