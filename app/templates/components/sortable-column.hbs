@@ -3,5 +3,23 @@
 {{else}}
     <span class="octicon octicon-triangle-down inactive"></span>
 {{/if}}
-
 {{yield}}
+{{#if filterBy}}
+  <div class="btn-group filter-button">
+    <button type="button" class="btn btn-default dropdown-toggle {{if filtered '' 'inactive neutral'}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="glyphicon glyphicon-filter"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li>
+        <a {{action 'filter' false bubbles=false}}>
+          {{t 'components.sortableColumn.labels.selectAll' }}
+        </a>
+      </li>
+      {{#each filterValues as |filterValue|}}
+        <li>
+          <a {{action 'filter' filterValue bubbles=false}}>{{filterValue}}</a>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+{{/if}}
