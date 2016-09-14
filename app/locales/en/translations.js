@@ -721,10 +721,8 @@ export default {
     },
     buttons: {
       newProcedure: 'New Procedure',
-      newLab: 'New Lab',
       newAppointment: 'New Appointment',
       addDiagnosis: 'Add Diagnosis',
-      newMedication: 'New Medication',
       newVitals: 'New Vitals',
       checkIn: 'Check In'
     },
@@ -978,6 +976,11 @@ export default {
     chargesByTypeTab: {
       charges: 'charges'
     },
+    sortableColumn: {
+      labels: {
+        selectAll: '(Select All)'
+      }
+    },
     takePhoto: {
       how: 'How Do You Want To Add A Photo?',
       takePhoto: 'Take photo',
@@ -995,11 +998,17 @@ export default {
       result: '{{targetUnit}} total: {{calculated}}'
     },
     patientOrders: {
-      imagingOrderType: 'Imaging',
-      labOrderType: 'Lab',
-      medicationOrderType: 'Medication',
-      orderType: 'Order Type',
-      newImagingButton: 'New Imaging',
+      buttons: {
+        newImaging: 'New Imaging',
+        newLab: 'New Lab',
+        newMedication: 'New Medication'
+      },
+      labels: {
+        imagingOrderType: 'Imaging',
+        labOrderType: 'Lab',
+        medicationOrderType: 'Medication',
+        orderType: 'Order Type'
+      }
     },
     priceList: {
       charges: '{{pricingType}} charges'
