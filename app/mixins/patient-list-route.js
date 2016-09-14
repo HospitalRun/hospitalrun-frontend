@@ -26,6 +26,10 @@ export default Ember.Mixin.create({
     returnToPatient: function() {
       this.controller.send('returnToPatient');
       this.controller.send('closeModal');
+    },
+
+    returnToVisit: function() {
+      this.controller.send('returnToVisit');
     }
   },
 
