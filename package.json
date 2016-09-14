@@ -7,9 +7,9 @@
     "doc": "doc",
     "test": "tests"
   },
-  files: [
-    'index.js',
-    'prod'
+  "files": [
+    "index.js",
+    "prod"
   ],
   "scripts": {
     "build": "./script/build",
