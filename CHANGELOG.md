@@ -1,7 +1,23 @@
 # Change Log
 
-## [0.9.15](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.15) (2016-09-08)
+## [0.9.16](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.16) (2016-09-14)
 
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.15...0.9.16)
+
+**Fixed bugs:**
+
+- Visit Types cannot be changed; although they are in the Administration as changeable [\#627](https://github.com/HospitalRun/hospitalrun-frontend/issues/627)
+- Image Request - Saved dialog - OK button not working first time [\#605](https://github.com/HospitalRun/hospitalrun-frontend/issues/605)
+- Barcode for inventory is inconsistent with browser Go back  [\#458](https://github.com/HospitalRun/hospitalrun-frontend/issues/458)
+
+**Merged pull requests:**
+
+- Update ember-i18n to version 4.3.1 🚀 [\#648](https://github.com/HospitalRun/hospitalrun-frontend/pull/648) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update broccoli-serviceworker to version 0.1.1 🚀 [\#647](https://github.com/HospitalRun/hospitalrun-frontend/pull/647) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Issue 458: Fixed incorrect dependent keys on barcode. [\#646](https://github.com/HospitalRun/hospitalrun-frontend/pull/646) ([akong](https://github.com/akong))
+- Issue 627: Fix visit types list not refreshing. [\#645](https://github.com/HospitalRun/hospitalrun-frontend/pull/645) ([akong](https://github.com/akong))
+
+## [0.9.15](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.15) (2016-09-08)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.14...0.9.15)
 
 **Merged pull requests:**
@@ -11,7 +27,6 @@
 
 ## [0.9.14](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.14) (2016-09-08)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.13...0.9.14)
-- Forgot build for last release, so this has a build
 
 ## [0.9.13](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.13) (2016-09-08)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.12...0.9.13)

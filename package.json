@@ -1,12 +1,16 @@
 {
   "name": "hospitalrun",
-  "version": "0.9.15",
+  "version": "0.9.16",
   "description": "Ember front end for HospitalRun",
   "homepage": "http://hospitalrun.io",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
+  "files": [
+    "index.js",
+    "prod"
+  ],
   "scripts": {
     "build": "./script/build",
     "start": "./script/server",
@@ -34,7 +38,7 @@
     "broccoli-funnel": "^1.0.5",
     "broccoli-manifest": "0.0.7",
     "broccoli-merge-trees": "^1.1.1",
-    "broccoli-serviceworker": "0.1.0",
+    "broccoli-serviceworker": "0.1.1",
     "ember-ajax": "2.5.1",
     "ember-browserify": "^1.1.12",
     "ember-cli": "^2.7.0",
@@ -59,7 +63,7 @@
     "ember-cli-uglify": "^1.2.0",
     "ember-data": "~2.6.2",
     "ember-export-application-global": "^1.0.5",
-    "ember-i18n": "4.2.2",
+    "ember-i18n": "4.3.1",
     "ember-load-initializers": "^0.5.1",
     "ember-pouch": "3.2.1",
     "ember-radio-buttons": "^4.0.1",
