@@ -4,7 +4,7 @@ export default Ember.Component.extend(UserSession, {
   editImagingAction: 'editImaging',
   editLabAction: 'editLab',
   editMedicationAction: 'editMedication',
-  filteredBy: null,
+  filteredBy: new Ember.Object(),
   newImagingAction: 'newImaging',
   newLabAction: 'newLab',
   newMedicationAction: 'newMedication',
@@ -126,30 +126,25 @@ export default Ember.Component.extend(UserSession, {
     filter: function(filterBy, filterValue) {
       let filteredBy = this.get('filteredBy');
       let orderList = this.get('orderList');
-      if (Ember.isEmpty(filteredBy)) {
-        filteredBy = {};
-      }
-      if (filterValue === false && filteredBy[filterBy]) {
-        delete filteredBy[filterBy];
-      } else {
-        filteredBy[filterBy] = filterValue;
-      }
+      filteredBy.set(filterBy, filterValue);
       orderList = orderList.filter((order) => {
         let includeRecord = true;
-        for (var filterBy in filteredBy) {
-          let filterValue = filteredBy[filterBy];
+        let filters = Object.keys(filteredBy);
+        filters.forEach((filterBy) => {
+          let filterValue = filteredBy.get(filterBy);
           let orderValue = order.get(filterBy);
-          if (filterValue instanceof Ember.Handlebars.SafeString) {
-            filterValue = filterValue.toString();
+          if (!Ember.isEmpty(filterValue)) {
+            if (filterValue instanceof Ember.Handlebars.SafeString) {
+              filterValue = filterValue.toString();
+            }
+            if (orderValue instanceof Ember.Handlebars.SafeString) {
+              orderValue = orderValue.toString();
+            }
+            if (orderValue !== filterValue) {
+              includeRecord = false;
+            }
           }
-          if (orderValue instanceof Ember.Handlebars.SafeString) {
-            orderValue = orderValue.toString();
-          }
-
-          if (orderValue !== filterValue) {
-            includeRecord = false;
-          }
-        }
+        });
         return includeRecord;
       });
       this.set('filteredBy', filteredBy);

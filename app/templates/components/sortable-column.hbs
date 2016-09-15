@@ -1,17 +1,18 @@
-{{#if sorted}}
-    <span class="octicon {{if sortDesc 'octicon-triangle-down' 'octicon-triangle-up'}}"></span>
-{{else}}
-    <span class="octicon octicon-triangle-down inactive"></span>
-{{/if}}
-{{yield}}
+<span {{action 'sort'}}>
+  {{#if sorted}}
+      <span class="octicon {{if sortDesc 'octicon-triangle-down' 'octicon-triangle-up'}}"></span>
+  {{else}}
+      <span class="octicon octicon-triangle-down inactive"></span>
+  {{/if}}
+  {{yield}}
+</span>
 {{#if filterBy}}
-  <div class="btn-group filter-button">
-    <button type="button" class="btn btn-default dropdown-toggle {{if filtered '' 'inactive neutral'}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <span class="glyphicon glyphicon-filter"></span>
-    </button>
+<span class="dropdown">
+
+      <span class="glyphicon glyphicon-filter dropdown-toggle {{if filtered '' 'inactive neutral'}}" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" ></span>
     <ul class="dropdown-menu">
       <li>
-        <a {{action 'filter' false bubbles=false}}>
+        <a {{action 'filter' bubbles=false}}>
           {{t 'components.sortableColumn.labels.selectAll' }}
         </a>
       </li>
@@ -21,5 +22,5 @@
         </li>
       {{/each}}
     </ul>
-  </div>
+</span>
 {{/if}}
