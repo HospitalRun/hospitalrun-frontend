@@ -17,9 +17,9 @@ export default Ember.Component.extend(UserSession, {
   orderTypeFilters: Ember.computed(function() {
     let i18n = this.get('i18n');
     return [
-      i18n.t('components.patientOrders.labels.imagingOrderType'),
-      i18n.t('components.patientOrders.labels.labOrderType'),
-      i18n.t('components.patientOrders.labels.medicationOrderType')
+      i18n.t('components.patientOrders.labels.imagingOrderType').toString(),
+      i18n.t('components.patientOrders.labels.labOrderType').toString(),
+      i18n.t('components.patientOrders.labels.medicationOrderType').toString()
     ];
   }),
 

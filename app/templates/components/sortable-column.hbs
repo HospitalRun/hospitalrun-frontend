@@ -7,20 +7,26 @@
   {{yield}}
 </span>
 {{#if filterBy}}
-<span class="dropdown">
-
-      <span class="glyphicon glyphicon-filter dropdown-toggle {{if filtered '' 'inactive neutral'}}" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" ></span>
+  <span class="dropdown">
+    <span class="glyphicon glyphicon-filter dropdown-toggle {{if filtered '' 'inactive neutral'}}" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" ></span>
     <ul class="dropdown-menu">
-      <li>
-        <a {{action 'filter' bubbles=false}}>
-          {{t 'components.sortableColumn.labels.selectAll' }}
-        </a>
-      </li>
-      {{#each filterValues as |filterValue|}}
+      {{#if (eq filterType 'typeahead')}}
         <li>
-          <a {{action 'filter' filterValue bubbles=false}}>{{filterValue}}</a>
+          {{typeahead-filter content=filterValues}}
         </li>
-      {{/each}}
+      {{/if}}
+      {{#if (eq 'list' filterType )}}
+        <li>
+          <a {{action 'filter' bubbles=false}}>
+            {{t 'components.sortableColumn.labels.selectAll' }}
+          </a>
+        </li>
+        {{#each filterValues as |filterValue|}}
+          <li>
+            <a {{action 'filter' filterValue bubbles=false}}>{{filterValue}}</a>
+          </li>
+        {{/each}}
+      {{/if}}
     </ul>
-</span>
+  </span>
 {{/if}}

@@ -6,6 +6,7 @@ export default Ember.Component.extend({
   filterAction: 'filter',
   filterBy: null,
   filteredBy: null,
+  filterType: 'list',
   sortDesc: false,
   sortBy: null,
   sortKey: null,
