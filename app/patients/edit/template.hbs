@@ -147,6 +147,12 @@
                     {{ext-radio content=patientTypes value=model.patientType showInline=true }}
                   </div>
                 </div>
+                <div class="form-input-group">
+                  <label>Create An Outpatient Visit</label>
+                  <div>
+                    {{em-checkbox property="createOutpatientVisit" }}
+                  </div>
+                </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                   {{select-or-typeahead property="status" label=(t 'patients.labels.status') list=statusList selection=model.status class="form-input-group" }}

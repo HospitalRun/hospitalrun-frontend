@@ -527,6 +527,12 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
   },
 
   afterUpdate: function(record) {
+    var patient = this.get('model');
+    if (patient.getProperties('createOutpatientVisit').createOutpatientVisit) {
+      var visits = this.get('model.visits');
+      this.send('createNewVisit', patient, visits);
+      this.transitionToRoute('visits.edit');
+    }
     this.send('openModal', 'dialog', Ember.Object.create({
       title: this.get('i18n').t('patients.titles.savedPatient'),
       message: this.get('i18n').t('patients.messages.savedPatient', record),
