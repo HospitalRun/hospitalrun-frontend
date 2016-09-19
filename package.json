@@ -81,7 +81,7 @@
     "loader.js": "4.0.11",
     "nano": "6.2.0",
     "pouchdb-list": "^1.1.0",
-    "request": "2.74.0",
+    "request": "2.75.0",
     "stylelint": "^7.0.3",
     "stylelint-config-concentric": "1.0.5",
     "stylelint-declaration-use-variable": "^1.4.0",
