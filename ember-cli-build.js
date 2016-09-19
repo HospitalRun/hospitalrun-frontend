@@ -28,7 +28,7 @@ module.exports = function(defaults) {
   app.import('bower_components/typeahead.js/dist/typeahead.bundle.js');
   app.import('bower_components/pikaday/pikaday.js');
   app.import('bower_components/filer.js/src/filer.js');
-  app.import('bower_components/idb.filesystem/src/idb.filesystem.js');
+  app.import('bower_components/idb.filesystem/dist/idb.filesystem.min.js');
   app.import('bower_components/pikaday/css/pikaday.css');
   app.import('vendor/octicons/octicons/octicons.css');
   app.import('bower_components/pouchdb-load/dist/pouchdb.load.js');
