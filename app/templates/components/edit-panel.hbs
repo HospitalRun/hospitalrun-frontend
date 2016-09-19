@@ -1,7 +1,5 @@
 <div class="panel panel-primary">
-  <div class="panel-body">
-    {{yield}}
-  </div>
+  
   <div class="panel-footer">
     {{#unless editPanelProps.hideCancelButton}}
       {{#if editPanelProps.cancelButtonText}}
@@ -27,5 +25,8 @@
         {{button.buttonText}}
       </button>
     {{/each}}
+  </div>
+  <div class="panel-body">
+    {{yield}}
   </div>
 </div>
