@@ -61,7 +61,7 @@
     "ember-cli-template-lint": "0.4.12",
     "ember-cli-test-loader": "^1.1.0",
     "ember-cli-uglify": "^1.2.0",
-    "ember-data": "~2.8.0",
+    "ember-data": "~2.6.2",
     "ember-export-application-global": "^1.0.5",
     "ember-i18n": "4.3.2",
     "ember-load-initializers": "^0.5.1",
