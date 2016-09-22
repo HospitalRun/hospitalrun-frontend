@@ -24,6 +24,7 @@ export default Ember.Mixin.create({
         resolve(foundLocation);
       } else {
         var locationRecord = this.get('store').createRecord('inv-location', {
+          id: uuid.v4(),
           aisleLocation: aisle,
           location: location,
           quantity: 0

@@ -126,6 +126,10 @@ export default Adapter.extend(PouchAdapterUtils, {
     }
   },
 
+  generateIdForRecord: function() {
+    return uuid.v4();
+  },
+
   query(store, type, query, options) {
     var specialQuery = false;
     for (var i = 0; i < this._specialQueries.length; i++) {
