@@ -35,7 +35,7 @@
     "body-parser": "^1.14.2",
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-export-text": "0.0.2",
-    "broccoli-funnel": "^1.0.5",
+    "broccoli-funnel": "^1.0.7",
     "broccoli-manifest": "0.0.7",
     "broccoli-merge-trees": "^1.1.1",
     "broccoli-serviceworker": "0.1.1",
