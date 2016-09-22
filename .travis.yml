@@ -3,18 +3,29 @@ language: node_js
 node_js:
   - "4"
 
-sudo: false
+dist: trusty
+sudo: required
+
+addons:
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
 
 cache:
   directories:
     - node_modules
 
+matrix:
+  fast_finish: true
+
 before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
   - npm config set spin false
   - npm install -g bower
   - bower --version
-  - npm install phantomjs-prebuilt
-  - node_modules/phantomjs-prebuilt/bin/phantomjs --version
 
 install:
   - npm install
