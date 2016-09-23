@@ -6,7 +6,7 @@ export default AbstractEditRoute.extend({
   hideNewButton: true,
   newTitle: 'Invoice Template',
   editTitle: 'Invoice Template',
-  
+
   model: function() {
     return new Ember.RSVP.Promise(function(resolve) {
       this.get('store').find('option', 'invoice_template').then(function(invoiceOptions) {
@@ -24,7 +24,7 @@ export default AbstractEditRoute.extend({
       }.bind(this));
     }.bind(this));
   },
-  
+
   afterModel() {
     return injectScript('//builds.emberjs.com/release/ember-template-compiler.js');
   }
