@@ -568,13 +568,17 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
           admissionDate: visit.get('startDate'),
           dischargeDate: visit.get('endDate')
         };
-        var sexGrouping = patientBySex[visit.get('patient.sex')];
+        var sex = visit.get('patient.sex');
+        if (!sex) {
+          sex = 'Sex Not Entered';
+        }
+        var sexGrouping = patientBySex[sex];
         if (!sexGrouping) {
           sexGrouping = {
             count: 0,
             rows: []
           };
-          patientBySex[visit.get('patient.sex')] = sexGrouping;
+          patientBySex[sex] = sexGrouping;
         }
         sexGrouping.count++;
         sexGrouping.rows.push(reportRow);
