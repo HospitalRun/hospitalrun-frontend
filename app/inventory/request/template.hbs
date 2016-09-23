@@ -60,7 +60,7 @@
       {{/if}}
       {{#if canFulfill}}
         <div class="form-group">
-          <label class="control-label">{{t 'inventory.labels.fulfillRequest'}}</label>
+          <label class="control-label sr-only">{{t 'inventory.labels.fulfillRequest'}}</label>
         </div>
         {{em-checkbox label=(t 'inventory.labels.fulfillRequest') property="shouldFulfillRequest"}}
       {{/if}}
@@ -77,7 +77,7 @@
         selectedLocations=model.inventoryLocations
       }}
       <div class="form-group">
-        <label class="control-label">{{t 'inventory.labels.consumePurchases'}}</label>
+        <label class="control-label sr-only">{{t 'inventory.labels.consumePurchases'}}</label>
       </div>
       {{em-checkbox label=(t 'inventory.labels.markAsConsumed') property="markAsConsumed"}}
     {{/if}}

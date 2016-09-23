@@ -5,12 +5,14 @@
       {{select-or-typeahead property="vendor" label=(t 'inventory.labels.vendor') list=vendorList selection=model.vendor className="col-sm-4 required test-vendor"}}
       {{em-input property="invoiceNo" label=(t 'inventory.labels.invoiceNumber') class="col-sm-4 test-invoice-number"}}
     </div>
-    <div class="row">
+    <div class="form-group row">
       {{select-or-typeahead property="location" label=(t 'inventory.labels.location') list=warehouseList selection=model.location className="col-sm-5"}}
       {{select-or-typeahead property="aisleLocation" label=(t 'inventory.labels.aisleLocation') list=aisleLocationList selection=model.aisleLocation className="col-sm-5"}}
-      <div class="form-group col-sm-2">
-        <label class="control-label">{{t 'inventory.labels.gift'}}</label>
-        {{em-checkbox label=(t 'inventory.labels.gift') property="giftInKind"}}
+      <div class="col-sm-2 checkbox-label-space">
+        <div class="form-check">
+          <label class="control-label sr-only">{{t 'inventory.labels.gift'}}</label>
+          {{em-checkbox label=(t 'inventory.labels.gift') property="giftInKind"}}
+        </div>
       </div>
     </div>
     <div class="panel panel-primary">
