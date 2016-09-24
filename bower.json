@@ -3,7 +3,7 @@
   "dependencies": {
     "JsBarcode": "https://github.com/HospitalRun/JsBarcode.git",
     "bootstrap": "~3.3.5",
-    "ember": "~2.7.0",
+    "ember": "~2.8.0",
     "ember-cli-shims": "0.1.1",
     "ember-qunit-notifications": "0.1.0",
     "filer.js": "https://github.com/ebidel/filer.js.git#~0.4.3",
