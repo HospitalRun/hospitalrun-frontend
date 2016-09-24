@@ -63,7 +63,8 @@ export default {
       admittedPatients: 'Admitted Patients',
       missed: 'Missed',
       userRoles: 'User Roles',
-      workflow: 'Workflow'
+      workflow: 'Workflow',
+      templates: 'Templates'
     },
     actions: {
       logout: 'Logout',

@@ -1,0 +1,55 @@
+{{#edit-panel editPanelProps=editPanelProps}}
+    <ul class="nav nav-pills" role="tablist">
+      <li role="presentation" class="active"><a class="active" href="#edit" role="tab" data-toggle="pill" data-test-selector="general-tab">Edit</a></li>
+      <li role="presentation"><a class="active" href="#preview" role="tab" data-toggle="pill" data-test-selector="general-tab">Preview</a></li>
+    </ul>
+    <p class="page-intro">
+      In this section, you can customize what shows up at the top and bottom of your invoices.
+    </p>      
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="edit">
+        <div class="panel detail-section">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              Invoice Template
+            </h3>
+          </div>
+          <div class="panel-body detail-section-content">
+            <div class="row">      
+              <h4>Top</h4>
+              <p class="section-intro">
+                Customize this section to change what shows up at the top of the invoice.
+              </p>
+              {{textarea value=model.value.invoiceHeader}}
+              
+              <h4>Bottom</h4>
+              <p class="section-intro">
+                Customize this section to change what shows up at the bottom of the invoice.
+              </p>
+              {{textarea value=model.value.invoiceFooter}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="preview">
+        <div class="panel detail-section">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              Invoice Template Preview
+            </h3>
+          </div>
+          <div class="panel-body detail-section-content">
+            <div class="row">      
+              <h4>Header Template</h4>
+              {{dynamic-render model.value.invoiceHeader}}
+              
+              <h4>Footer Template</h4>
+              {{dynamic-render model.value.invoiceFooter}}
+            </div>
+          </div>
+        </div>
+      </div>      
+      
+    </div>
+
+{{/edit-panel}}

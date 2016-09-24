@@ -283,7 +283,12 @@ export default Ember.Mixin.create({
         {
           title: 'Workflow',
           iconClass: 'octicon-chevron-right',
-          route: 'admin.workflow',
+          route: 'admin.workflow'
+        },
+        {
+          title: 'Invoice Template',
+          iconClass: 'octicon-chevron-right',
+          route: 'admin.invoice-template',
           capability: 'update_config'
         }
       ]
