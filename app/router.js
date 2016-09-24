@@ -7,6 +7,9 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+
+  this.mount('billing');
+
   this.route('admin', {
     resetNamespace: true
   }, function() {
@@ -56,13 +59,6 @@ Router.map(function() {
     this.route('search', { path: '/search/:search_text' });
   });
 
-  this.route('invoices', {
-    resetNamespace: true
-  }, function() {
-    this.route('edit', { path: '/edit/:invoice_id' });
-    this.route('search', { path: '/search/:search_text' });
-  });
-
   this.route('labs', {
     resetNamespace: true
   }, function() {
@@ -90,18 +86,6 @@ Router.map(function() {
     this.route('search', { path: '/search/:search_text' });
   });
 
-  this.route('pricing', {
-    resetNamespace: true
-  }, function() {
-    this.route('imaging');
-    this.route('lab');
-    this.route('procedure');
-    this.route('ward');
-    this.route('edit', { path: '/edit/:pricing_id' });
-    this.route('search', { path: '/search/:search_text' });
-    this.route('profiles');
-  });
-
   this.route('print', {
     resetNamespace: true
   }, function() {
@@ -118,6 +102,7 @@ Router.map(function() {
       this.route('edit', { path: '/edit/:procedure_id' });
     });
   });
+  this.mount('billing');
 });
 
 export default Router;

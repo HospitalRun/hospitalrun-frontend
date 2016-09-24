@@ -1,0 +1,10 @@
+{
+  "name": "billing",
+  "keywords": [
+    "ember-addon",
+    "ember-engine"
+  ],
+  "dependencies": {
+    "ember-cli-htmlbars": "*"
+  }
+}
