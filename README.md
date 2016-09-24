@@ -34,28 +34,14 @@ To install the frontend please do the following:
         2. If you already have a CouchDB admin user, please run `./script/initcouch.sh USER PASS` in the folder you cloned the HospitalRun repo.  `USER` and `PASS` are the CouchDB admin user credentials.
         If you are running CouchDB 2.x
         1. If you have just installed CouchDB and have no admin user, please run `./script/initcouch2.sh` in the folder you cloned the HospitalRun repo.  A user `hradmin` will be created with password: `test`.
-        2. If you already have a CouchDB admin user, please run `./script/initcouch2.sh USER PASS` in the folder you cloned the HospitalRun repo.  `USER` and `PASS` are the CouchDB admin user credentials.        
+        2. If you already have a CouchDB admin user, please run `./script/initcouch2.sh USER PASS` in the folder you cloned the HospitalRun repo.  `USER` and `PASS` are the CouchDB admin user credentials.
 7. Copy the `server/config-example.js` to `server/config.js` in the folder you cloned the HospitalRun repo.  If you already had a CouchDB admin user that you passed into the couch script (`./script/initcouch.sh USER PASS`), then you will need to modify the `couchAdminUser` and `couchAdminPassword` values in `server/config.js` to reflect those credentials. (*Note: If on Mac, you need to make sure CouchDB can be run. See [How to open an app from a unidentified developer and exempt it from Gatekeeper](https://support.apple.com/en-us/HT202491).*)
+8. Verify that CouchDB is running by visiting: http://127.0.0.1:5984/_utils/#login
+   and logging in with the with the credentials you just created from steps 6 and 7.
+   * If you the page returns an error or 404:
+     * Run `make serve`, it will start couchdb, install npm dependencies and start the server.
+     * Or start the application from your applications folder.
 
-### Experimental
-
-#### Make
-If you are willing to try using `make`, ensure you have installed git, node and couchdb (steps 1, 2 and 7 above), you may skip the rest.  This requires couchdb in the path to work correctly.
-* Run `make serve`, it will start couchdb, install npm dependencies and start the server.
-* Run `make all` to run all tests and build the app.
-* Look into `Makefile` to figure other targets available.
-
-#### Cloud 9 Development Environment
-[Documented in the project wiki](https://github.com/HospitalRun/hospitalrun-frontend/wiki/Optional:-Cloud9-Development-Environment)
-
-#### Nitrous Quickstart
-Create a free development environment for this HospitalRun project in the cloud on [Nitrous.io](https://www.nitrous.io) by clicking the button below.
-
-<a href="https://www.nitrous.io/quickstart">
-  <img src="https://nitrous-image-icons.s3.amazonaws.com/quickstart.png" alt="Nitrous Quickstart" width=142 height=34>
-</a>
-
-In the IDE, start HospitalRun via `Run > Start HospitalRun` and access your site via `Preview > 4200`.
 
 ## Start
 To start the frontend please do the following:
@@ -147,3 +133,23 @@ Again, contributions are welcome via pull requests and issues.  Please see our [
 * Development Browser Extensions
   * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
   * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+
+## Experimental
+
+### Make
+If you are willing to try using `make`, ensure you have installed git, node and couchdb (steps 1, 2 and 7 above), you may skip the rest.  This requires couchdb in the path to work correctly.
+* Run `make serve`, it will start couchdb, install npm dependencies and start the server.
+* Run `make all` to run all tests and build the app.
+* Look into `Makefile` to figure other targets available.
+
+### Cloud 9 Development Environment
+[Documented in the project wiki](https://github.com/HospitalRun/hospitalrun-frontend/wiki/Optional:-Cloud9-Development-Environment)
+
+### Nitrous Quickstart
+Create a free development environment for this HospitalRun project in the cloud on [Nitrous.io](https://www.nitrous.io) by clicking the button below.
+
+<a href="https://www.nitrous.io/quickstart">
+  <img src="https://nitrous-image-icons.s3.amazonaws.com/quickstart.png" alt="Nitrous Quickstart" width=142 height=34>
+</a>
+
+In the IDE, start HospitalRun via `Run > Start HospitalRun` and access your site via `Preview > 4200`.
