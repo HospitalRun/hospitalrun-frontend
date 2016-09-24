@@ -545,7 +545,9 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   _generateAdmissionOrDischargeReport: function(visits, reportType) {
     var detailedReport = false,
       reportColumns,
-      patientBySex = {};
+      patientBySex = {},
+      sexNotEnteredLabel = this.get('i18n').t('patients.labels.sexNotEntered');
+
     if (reportType.indexOf('detailed') > -1) {
       detailedReport = true;
       reportColumns = this.get('admissionDetailReportColumns');
@@ -570,7 +572,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
         };
         var sex = visit.get('patient.sex');
         if (!sex) {
-          sex = 'Sex Not Entered';
+          sex = sexNotEnteredLabel;
         }
         var sexGrouping = patientBySex[sex];
         if (!sexGrouping) {
