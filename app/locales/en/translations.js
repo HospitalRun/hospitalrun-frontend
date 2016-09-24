@@ -255,6 +255,7 @@ export default {
     }
   },
   labels: {
+    currency_symbol: '$',
     cptcode: 'CPT Code',
     loading: 'Loading',
     name: 'Name',
@@ -912,6 +913,10 @@ export default {
       setFee: 'Set Fee',
       discountAmount: 'Discount Amount',
       discountPercentage: 'Discount Percentage'
+    },
+    messages: {
+      flatFeeMsg: 'There is a flat fee for patient financial responsibility of {{currency}}{{setFee}}.',
+      flatDiscountMsg: 'There is a flat discount amount applied to the patient financial responsibility of {{currency}}{{discountAmount}}.'
     }
   },
   print: {
