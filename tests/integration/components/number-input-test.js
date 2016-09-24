@@ -22,6 +22,8 @@ test('the number-input renders', function(assert) {
 test('the number input sanitizes the data', function(assert) {
   assert.expect(1);
 
+  this.set('model', Ember.Object.create({ petType: 'cats' }));
+
   this.set('sanitizeFunction', (value) => {
     assert.equal(value, 'dragons', 'it passes the value to the sanitize function');
   });
