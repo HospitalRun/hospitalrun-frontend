@@ -51,10 +51,10 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
   }.property('status'),
 
   remainingBalance: function() {
-    var patientResponsibility = this.get('patientResponsibility'),
+    var patientResponsibility = this.get('finalPatientResponsibility'),
       paidTotal = this.get('paidTotal');
     return this._numberFormat((patientResponsibility - paidTotal), true);
-  }.property('patientResponsibility', 'paidTotal'),
+  }.property('finalPatientResponsibility', 'paidTotal'),
 
   privateInsuranceTotals: Ember.computed.mapBy('lineItemsByCategory', 'privateInsurance'),
   privateInsurance: Ember.computed.sum('privateInsuranceTotals'),
@@ -106,6 +106,26 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
 
   patientResponsibilityTotals: Ember.computed.mapBy('lineItems', 'amountOwed'),
   patientResponsibility: Ember.computed.sum('patientResponsibilityTotals'),
+  finalPatientResponsibility: function() {
+    var setFee = this._getValidNumber(this.get('paymentProfile.setFee')),
+        discountAmount = this._getValidNumber(this.get('paymentProfile.discountAmount')),
+        patientResponsibility = this._getValidNumber(this.get('patientResponsibility'));
+    if (setFee > 0) {
+      if (setFee < patientResponsibility) {
+        return setFee;
+      } else {
+        return patientResponsibility;
+      }
+    } else if (discountAmount > 0) {
+      if (patientResponsibility - discountAmount > 0) {
+        return patientResponsibility - discountAmount;
+      } else {
+        return 0;
+      }
+    } else {
+      return patientResponsibility;
+    }
+  }.property('patientResponsibility', 'paymentProfile'),
 
   paymentAmountChanged: function() {
     var payments = this.get('payments').filter(function(payment) {
