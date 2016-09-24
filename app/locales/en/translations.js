@@ -277,6 +277,7 @@ export default {
     action: 'Action',
     notes: 'Notes',
     edit: 'Edit',
+    expense_to: 'Expense To',
     imageOrders: 'Image Orders',
     labOrders: 'Lab Orders',
     patientHistory: 'Patient History',
@@ -908,6 +909,7 @@ export default {
       paymentsDeposits: 'Payments/Deposits',
       pricingPanelOverrides: 'Pricing profile overrides',
       pricingProfile: 'Pricing Profile',
+      setFee: 'Set Fee',
       discountAmount: 'Discount Amount',
       discountPercentage: 'Discount Percentage'
     }
