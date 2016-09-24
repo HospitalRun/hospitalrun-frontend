@@ -19,11 +19,11 @@ export default Ember.Mixin.create(PouchDbMixin, {
     const maxValue = this.get('maxValue');
 
     const findUnusedId = (sequence) => {
-      let next, id;
+      let current, id;
       return config.getPatientPrefix()
         .then(function(prefix) {
-          next = sequence.incrementProperty('value');
-          id = sequenceId(prefix, next);
+          current = sequence.get('value');
+          id = sequenceId(prefix, current);
           const query = {
             startkey: [ id, null ],
             endkey: [ id, maxValue ]
@@ -31,14 +31,16 @@ export default Ember.Mixin.create(PouchDbMixin, {
           return database.queryMainDB(query, 'patient_by_display_id');
         })
         .then(function(found) {
-          if (isEmpty(found.rows)) {
-            sequence.set('value', next);
-          } else {
+          if (!isEmpty(found.rows)) {
+            sequence.incrementProperty('value');
             return findUnusedId(sequence);
           }
-          return sequence.save().then(function() {
-            return id;
-          });
+          if (sequence.get('hasDirtyAttributes')) {
+            return sequence.save().then(function() {
+              return id;
+            });
+          }
+          return id;
         });
     };
 
@@ -48,7 +50,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
         var store = this.get('store');
         var sequence = store.push(store.normalize('sequence', {
           id: 'patient',
-          value: 0
+          value: 1
         }));
         return findUnusedId(sequence);
       });
