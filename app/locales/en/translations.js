@@ -24,7 +24,8 @@ export default {
     otherThan: 'must be other than {{count}}',
     odd: 'must be odd',
     even: 'must be even',
-    invalidNumber: 'not a valid number'
+    invalidNumber: 'not a valid number',
+    result: 'Please enter a result before completing'
   },
   navigation: {
     imaging: 'Imaging',
