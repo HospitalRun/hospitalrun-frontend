@@ -297,7 +297,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         } else {
           formattedName = this._getWarehouseLocationName(location.name);
         }
-        if (!returnLocations.contains(formattedName)) {
+        if (!returnLocations.includes(formattedName)) {
           returnLocations.push(formattedName);
         }
       }.bind(this));
@@ -424,7 +424,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           inventoryIds = [];
         if (!Ember.isEmpty(inventoryChildren.rows)) {
           inventoryChildren.rows.forEach(function(child) {
-            if (child.doc.inventoryItem && !inventoryKeys.contains(child.doc.inventoryItem)) {
+            if (child.doc.inventoryItem && !inventoryKeys.includes(child.doc.inventoryItem)) {
               inventoryIds.push(database.getPouchId(child.doc.inventoryItem, 'inventory'));
               inventoryKeys.push(child.doc.inventoryItem);
             }
@@ -435,7 +435,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           inventoryChildren.rows.forEach(function(child) {
             var childItem = inventoryMap[child.doc.inventoryItem];
             if (!Ember.isEmpty(childItem)) {
-              if (childName !== 'purchaseObjects' || childItem.purchases.contains(child.doc.id)) {
+              if (childName !== 'purchaseObjects' || childItem.purchases.includes(child.doc.id)) {
                 var itemChildren = childItem[childName];
                 if (Ember.isEmpty(itemChildren)) {
                   itemChildren = [];
@@ -864,7 +864,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 row.giftInKind = 'Y';
               }
               if (!Ember.isEmpty(purchase.vendor)) {
-                if (!row.vendors.contains(purchase.vendor)) {
+                if (!row.vendors.includes(purchase.vendor)) {
                   row.vendors.push(purchase.vendor);
                 }
               }
