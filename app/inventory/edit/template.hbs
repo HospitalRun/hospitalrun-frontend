@@ -103,7 +103,7 @@
                 <td>
                   {{#if transaction.isAdjustment}}
                     {{#if transaction.haveReason}}
-                      <strong>{{t 'inventory.edit.reason'}}</strong> {{transaction.reason}}<br/>
+                      <strong>{{t 'inventory.edit.reason'}}</strong> {{transaction.reason}}<br>
                     {{/if}}
                     {{#if transaction.patient}}
                       <strong>{{t 'inventory.edit.returned'}}</strong> {{transaction.deliveryDetails}}
@@ -112,11 +112,11 @@
                     {{/if}}
                   {{/if}}
                   {{#if transaction.isFulfillment}}
-                    <strong>{{t 'inventory.edit.cost'}}</strong> {{transaction.costPerUnit}}<br/>
-                    <strong>{{t 'inventory.edit.quantity'}}</strong> {{transaction.quantityAtCompletion}}<br/>
+                    <strong>{{t 'inventory.edit.cost'}}</strong> {{transaction.costPerUnit}}<br>
+                    <strong>{{t 'inventory.edit.quantity'}}</strong> {{transaction.quantityAtCompletion}}<br>
                     <strong>{{t 'inventory.edit.pulled'}}</strong>
                     {{#each transaction.locationsAffected as |location|}}
-                      {{location.name}}<br/>
+                      {{location.name}}<br>
                     {{/each}}
                     {{#if transaction.patient}}
                       <strong>{{t 'inventory.edit.prescription'}}</strong> {{transaction.deliveryDetails}}
@@ -127,7 +127,7 @@
                   {{#if transaction.isTransfer}}
                     <strong>{{t 'inventory.edit.transferredFrom'}}</strong>
                     {{#each transaction.locationsAffected as |location|}}
-                      {{location.name}}<br/>
+                      {{location.name}}<br>
                     {{/each}}
                     <strong>{{t 'inventory.edit.transferredTo'}}</strong> {{transaction.deliveryDetails}}
                   {{/if}}
