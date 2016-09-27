@@ -29,14 +29,14 @@
             selection=selectedInventoryItem
             showQuantity=false
           }}
-          {{em-input property="quantity" label=(t 'labels.quantity') class="col-sm-2 required test-inv-quantity"}}
+          {{number-input property="quantity" label=(t 'labels.quantity') class="col-sm-2 required test-inv-quantity"}}
           <div class="form-group col-sm-1">
             <label class="control-label">{{t 'inventory.labels.unit'}}</label>
             {{#if showDistributionUnit}}
               <p class="form-control-static">{{model.inventoryItem.distributionUnit}}</p>
             {{/if}}
           </div>
-          {{em-input property="purchaseCost" label=(t 'inventory.labels.purchaseCost') class="col-sm-2 required test-inv-cost"}}
+          {{number-input property="purchaseCost" label=(t 'inventory.labels.purchaseCost') class="col-sm-2 required test-inv-cost"}}
         </div>
         <div class="row">
           {{em-input property="vendorItemNo" label=(t 'inventory.labels.vendorItemNumber') class="col-sm-4"}}
