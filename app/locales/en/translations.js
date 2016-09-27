@@ -889,7 +889,8 @@ export default {
       referredDate: 'Referred Date',
       religion: 'Religion',
       parent: 'Parent/Guardian',
-      contacts: 'Contacts'
+      contacts: 'Contacts',
+      sexNotEntered: 'Sex Not Entered'
     },
     notes: {
       newNote: 'New Note for',
