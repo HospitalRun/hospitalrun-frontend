@@ -24,7 +24,18 @@ export default {
     otherThan: 'must be other than {{count}}',
     odd: 'must be odd',
     even: 'must be even',
-    invalidNumber: 'not a valid number'
+    invalidNumber: 'not a valid number',
+    result: 'Please enter a result before completing'
+  },
+  dates: {
+    long: '{{years}} year {{months}} months {{days}} days',
+    longPlural: '{{years}} years {{months}} months {{days}} days',
+    longOmitYears: '{{months}} months {{days}} days',
+    longOmitDays: '{{years}} year {{months}} months',
+    longOmitDaysPlural: '{{years}} years {{months}} months',
+    longOmitDaysYears: '{{months}} months',
+    shortOmitYears: '{{months}}m {{days}}d',
+    short: '{{years}}y {{months}}m {{days}}d'
   },
   navigation: {
     imaging: 'Imaging',
