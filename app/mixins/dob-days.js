@@ -44,27 +44,33 @@ export default Ember.Mixin.create({
     }
 
     var formatString = '';
+    let options = {
+      years: years,
+      days: days,
+      months: months
+    };
+    let t = this.get('i18n').t;
     if (shortFormat) {
       if (years > 0) {
-        formatString = `${years}y ${months}m ${days}d`;
+        formatString = t('dates.short', options);
       } else {
-        formatString = `${months}m ${days}d`;
+        formatString = t('dates.shortOmitYears', options);
       }
     } else if (omitDays) {
       if (years > 1) {
-        formatString = `${years} years ${months} months`;
+        formatString = t('dates.longOmitDaysPlural', options);
       } else if (years === 1) {
-        formatString = `${years} year ${months} months`;
+        formatString = t('dates.longOmitDays', options);
       } else {
-        formatString = `${months} months`;
+        formatString = t('dates.longOmitDaysYears', options);
       }
     } else {
       if (years > 1) {
-        formatString = `${years} years ${months} months ${days} days`;
+        formatString = t('dates.longPlural', options);
       } else if (years === 1) {
-        formatString = `${years} year ${months} months ${days} days`;
+        formatString = t('dates.long', options);
       } else {
-        formatString = `${months} months ${days} days`;
+        formatString = t('dates.longOmitYears', options);
       }
     }
     return formatString;
