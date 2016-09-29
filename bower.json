@@ -5,7 +5,6 @@
     "bootstrap": "~3.3.5",
     "ember": "~2.8.0",
     "ember-cli-shims": "0.1.1",
-    "ember-qunit-notifications": "0.1.0",
     "filer.js": "https://github.com/ebidel/filer.js.git#~0.4.3",
     "idb.filesystem": "https://github.com/ebidel/idb.filesystem.js.git#~0.0.6",
     "moment": "~2.10.5",
