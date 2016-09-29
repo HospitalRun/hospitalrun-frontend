@@ -6,6 +6,8 @@ import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, PatientNotes, {
+  config: Ember.inject.service(),
+
   canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
   }.property(),
@@ -526,14 +528,35 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     this.send('closeModal');
   },
 
+  _updateSequence: function(record) {
+    const config = this.get('config');
+    const friendlyId = record.get('friendlyId');
+    return config.getPatientPrefix().then((prefix) => {
+      const re = new RegExp(`^${prefix}\\d{5}$`);
+      if (!re.test(friendlyId)) {
+        return;
+      }
+      return this.store.find('sequence', 'patient').then((sequence) => {
+        const sequenceNumber = sequence.get('value');
+        const patientNumber = parseInt(friendlyId.slice(prefix.length));
+        if (patientNumber > sequenceNumber) {
+          sequence.set('value', patientNumber);
+          return sequence.save();
+        }
+      });
+    });
+  },
+
   afterUpdate: function(record) {
-    this.send('openModal', 'dialog', Ember.Object.create({
-      title: this.get('i18n').t('patients.titles.savedPatient'),
-      message: this.get('i18n').t('patients.messages.savedPatient', record),
-      updateButtonAction: 'returnToPatient',
-      updateButtonText: this.get('i18n').t('patients.buttons.backToPatients'),
-      cancelButtonText: this.get('i18n').t('buttons.close')
-    }));
+    this._updateSequence(record).then(() => {
+      this.send('openModal', 'dialog', Ember.Object.create({
+        title: this.get('i18n').t('patients.titles.savedPatient'),
+        message: this.get('i18n').t('patients.messages.savedPatient', record),
+        updateButtonAction: 'returnToPatient',
+        updateButtonText: this.get('i18n').t('patients.buttons.backToPatients'),
+        cancelButtonText: this.get('i18n').t('buttons.close')
+      }));
+    });
   }
 
 });
