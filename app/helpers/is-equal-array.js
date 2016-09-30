@@ -5,6 +5,6 @@ export default Ember.Helper.helper(function([lhs, rhs]) {
     return false;
   }
   return lhs.every(function(item) {
-    return rhs.contains(item);
+    return rhs.includes(item);
   });
 });
