@@ -52,7 +52,7 @@ export default Ember.Component.extend({
     locationPickers.reduce(function(previousValue, item) {
       var selectedLocation = item.get('selectedLocation');
       item.set('subLocationList', previousValue.map(SelectValues.selectObjectMap));
-      if (!previousValue.contains(selectedLocation) || setInitialLocation) {
+      if (!previousValue.includes(selectedLocation) || setInitialLocation) {
         item.set('selectedLocation', previousValue.get('firstObject'));
       }
       item.set('label', 'And');

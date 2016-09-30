@@ -52,9 +52,9 @@ export default SelectOrTypeahead.extend({
       if (!Ember.isArray(selectedValues)) {
         selectedValues = [];
       }
-      if (checked && !selectedValues.contains(value)) {
+      if (checked && !selectedValues.includes(value)) {
         selectedValues.addObject(value);
-      } else if (!checked && selectedValues.contains(value)) {
+      } else if (!checked && selectedValues.includes(value)) {
         selectedValues.removeObject(value);
       }
       this.set(propertyName, selectedValues);

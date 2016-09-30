@@ -6,8 +6,10 @@ import ImagingPricingTypes from 'hospitalrun/mixins/imaging-pricing-types';
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import UnitTypes from 'hospitalrun/mixins/unit-types';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
-export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
-  ModalHelper, ImagingPricingTypes, InventoryTypeList,  UnitTypes, VisitTypes, {
+import { EKMixin, keyDown } from 'ember-keyboard';
+export default Ember.Controller.extend(BillingCategories, EKMixin,
+  ImagingPricingTypes, InventoryTypeList, LabPricingTypes, ModalHelper,
+  UnitTypes, VisitTypes, {
     fileSystem: Ember.inject.service('filesystem'),
     lookupTypes:  Ember.computed(function() {
       return [{
@@ -310,6 +312,15 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
     _sortValues: function(a, b) {
       return Ember.compare(a.toLowerCase(), b.toLowerCase());
     },
+
+    activateKeyboard: Ember.on('init', function() {
+      this.set('keyboardActivated', true);
+    }),
+
+    updateListKeyboard: Ember.on(keyDown('ctrl+KeyS'), keyDown('cmd+KeyS'), function(event) {
+      this.send('updateList');
+      event.preventDefault();
+    }),
 
     actions: {
       addValue: function() {

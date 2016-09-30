@@ -126,7 +126,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
         var capabilities = roleToUpdate.get('capabilities');
         this.get('availableCapabilities').forEach((section) => {
           section.capabilities.forEach((capability) => {
-            if (capabilities.contains(capability)) {
+            if (capabilities.includes(capability)) {
               this.set(capability, true);
             } else {
               this.set(capability, false);
@@ -137,7 +137,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
         var defaultCapabilities = this.get('defaultCapabilities');
         Object.keys(defaultCapabilities).forEach((capability) => {
           var capabilityRoles = defaultCapabilities[capability];
-          if (capabilityRoles.contains(role)) {
+          if (capabilityRoles.includes(role)) {
             this.set(capability, true);
           } else {
             this.set(capability, false);
