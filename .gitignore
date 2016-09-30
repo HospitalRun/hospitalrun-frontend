@@ -16,7 +16,7 @@
 /libpeerconnection.log
 .DS_Store
 Thumbs.db
-npm-debug.log
+npm-debug.log*
 testem.log
 /nbproject/private/
 nbproject/project.properties
