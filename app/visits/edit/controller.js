@@ -1,4 +1,5 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import AddNewPatient from 'hospitalrun/mixins/add-new-patient';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
 import Ember from 'ember';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
@@ -7,11 +8,11 @@ import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-export default AbstractEditController.extend(ChargeActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
+export default AbstractEditController.extend(AddNewPatient, ChargeActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
   visitsController: Ember.inject.controller('visits'),
 
   canAddAppointment: function() {
-    return this.currentUserCan('add_appointment');
+    return (!this.get('model.isNew') && this.currentUserCan('add_appointment'));
   }.property(),
 
   canAddImaging: function() {
@@ -89,7 +90,15 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
     }
   }.observes('isAdmissionVisit', 'model.startDate'),
 
-  cancelAction: 'returnToPatient',
+  cancelAction: function() {
+    let checkIn = this.get('model.checkIn');
+    if (checkIn) {
+      return 'returnToOutPatient';
+    } else {
+      return 'returnToPatient';
+    }
+  }.property('model.checkIn'),
+
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
@@ -120,13 +129,32 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
     id: 'visit_location_list'
   }],
 
-  newVisit: false,
   visitStatuses: [
     'Admitted',
     'Discharged'
   ].map(SelectValues.selectValuesMap),
 
   updateCapability: 'add_visit',
+
+  updateButtonText: function() {
+    let i18n = this.get('i18n');
+    if (this.get('model.checkIn')) {
+      return i18n.t('visits.buttons.checkIn');
+    } else {
+      return this._super();
+    }
+  }.property('model.checkIn', 'model.isNew'),
+
+  validVisitTypes: function() {
+    let outPatient = this.get('model.outPatient');
+    let visitTypes = this.get('visitTypes');
+    if (outPatient) {
+      visitTypes = visitTypes.filter(function(visitType) {
+        return (visitType.id !== 'Admission');
+      });
+    }
+    return visitTypes;
+  }.property('visitTypes', 'model.outPatient'),
 
   _addChildObject: function(route) {
     this.transitionToRoute(route, 'new').then(function(newRoute) {
@@ -169,12 +197,26 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
   },
 
   beforeUpdate: function() {
-    if (this.get('model.isNew')) {
-      this.set('newVisit', true);
+    let isNew = this.get('model.isNew');
+    if (isNew) {
+      return new Ember.RSVP.Promise((resolve, reject) => {
+        var newVisit = this.get('model');
+        return newVisit.validate().then(() => {
+          if (newVisit.get('isValid')) {
+            if (Ember.isEmpty(newVisit.get('patient'))) {
+              this.addNewPatient();
+              reject({
+                ignore: true,
+                message: 'creating new patient first'
+              });
+            }
+            resolve();
+          }
+        });
+      });
+    } else {
+      return this.updateCharges();
     }
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      this.updateCharges().then(resolve, reject);
-    }.bind(this));
   },
 
   /**
@@ -359,6 +401,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
       var patientNotes = this.get('model.patientNotes');
       patientNotes.removeObject(note);
       this.send('update', true);
+    },
+
+    returnToOutPatient: function() {
+      this.transitionToRoute('patients.outpatient');
     }
   }
 });

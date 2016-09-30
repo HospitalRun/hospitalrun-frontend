@@ -1,0 +1,38 @@
+{{#item-listing paginationProps=paginationProps }}
+  <table class="table">
+    <thead>
+      <tr class="table-header">
+        {{#sortable-column sortBy='id' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.id'}}{{/sortable-column}}
+        {{#sortable-column sortBy='firstName' sortDesc=sortDesc sortKey=sortKey }}{{t 'patients.labels.firstName'}}{{/sortable-column}}
+        {{#sortable-column sortBy='lastName' sortDesc=sortDesc sortKey=sortKey }}{{t 'patients.labels.lastName'}}{{/sortable-column}}
+        {{#sortable-column sortBy='sex' sortDesc=sortDesc sortKey=sortKey }}{{t 'patients.labels.sex'}}{{/sortable-column}}
+        {{#sortable-column sortBy='dateOfBirth' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.age'}}{{/sortable-column}}
+        {{#sortable-column sortBy='visitType' sortDesc=sortDesc sortKey=sortKey }}{{t 'visits.labels.visitType'}}{{/sortable-column}}
+        {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.status'}}{{/sortable-column}}
+        {{#if showActions}}
+          <th>{{t 'labels.actions'}}</th>
+        {{/if}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each model as |visit|}}
+        <tr {{action 'editItem' visit}} class="clickable">
+          <td class="col-xs-1">{{visit.patient.displayPatientId}}</td>
+          <td class="col-xs-1">{{visit.patient.firstName}}</td>
+          <td class="col-xs-1">{{visit.patient.lastName}}</td>
+          <td class="col-xs-1">{{visit.patient.sex}}</td>
+          <td class="col-xs-1">{{visit.patient.shortAge}}</td>
+          <td class="col-xs-1">{{visit.visitType}}</td>
+          <td class="col-xs-1">{{visit.status}}</td>
+          {{#if showActions}}
+            <td>
+              {{#if canAdd}}
+                <button class="btn btn-default neutral" {{action 'editVisit' visit  bubbles=false }}>{{t 'labels.edit'}}</button>
+              {{/if}}
+            </td>
+          {{/if}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{/item-listing}}

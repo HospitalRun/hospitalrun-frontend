@@ -1,16 +1,14 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import AddNewPatient from 'hospitalrun/mixins/add-new-patient';
 import Ember from 'ember';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
 import InventorySelection from 'hospitalrun/mixins/inventory-selection';
-import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from 'hospitalrun/mixins/user-session';
 
-export default AbstractEditController.extend(InventorySelection, FulfillRequest, InventoryLocations, PatientId, PatientSubmodule, UserSession, {
+export default AbstractEditController.extend(AddNewPatient, InventorySelection, FulfillRequest, InventoryLocations, PatientSubmodule, UserSession, {
   medicationController: Ember.inject.controller('medication'),
-  newPatientId: null,
-
   expenseAccountList: Ember.computed.alias('medicationController.expenseAccountList'),
 
   canFulfill: function() {
@@ -85,47 +83,6 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     this.saveVisitIfNeeded(alertTitle, alertMessage);
   },
 
-  _addNewPatient: function() {
-    let i18n = this.get('i18n');
-    this.displayAlert(i18n.t('alerts.pleaseWait'), i18n.t('messages.newPatientHasToBeCreated'));
-    this._getNewPatientId().then(function(friendlyId) {
-      var patientTypeAhead = this.get('model.patientTypeAhead'),
-        nameParts = patientTypeAhead.split(' '),
-        patientDetails = {
-          friendlyId: friendlyId,
-          patientFullName: patientTypeAhead,
-          requestingController: this
-        },
-        patient;
-      if (nameParts.length >= 3) {
-        patientDetails.firstName = nameParts[0];
-        patientDetails.middleName = nameParts[1];
-        patientDetails.lastName = nameParts.splice(2, nameParts.length).join(' ');
-      } else if (nameParts.length === 2) {
-        patientDetails.firstName = nameParts[0];
-        patientDetails.lastName = nameParts[1];
-      } else {
-        patientDetails.firstName = patientTypeAhead;
-      }
-      patient = this.store.createRecord('patient', patientDetails);
-      this.send('openModal', 'patients.quick-add', patient);
-    }.bind(this));
-  },
-
-  _getNewPatientId: function() {
-    var newPatientId = this.get('newPatientId');
-    if (Ember.isEmpty(newPatientId)) {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
-        this.generateFriendlyId().then(function(friendlyId) {
-          this.set('newPatientId', friendlyId);
-          resolve(friendlyId);
-        }.bind(this), reject);
-      }.bind(this));
-    } else {
-      return Ember.RSVP.resolve(newPatientId);
-    }
-  },
-
   beforeUpdate: function() {
     var isFulfilling = this.get('isFulfilling'),
       isNew = this.get('model.isNew');
@@ -136,7 +93,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
           if (newMedication.get('isValid')) {
             if (isNew) {
               if (Ember.isEmpty(newMedication.get('patient'))) {
-                this._addNewPatient();
+                this.addNewPatient();
                 reject({
                   ignore: true,
                   message: 'creating new patient first'
@@ -207,15 +164,6 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
       return i18n.t('labels.fulfill');
     }
     return this._super();
-  }.property('model.isNew', 'isFulfilling', 'model.hideFulfillRequest'),
-
-  actions: {
-    addedNewPatient: function(record) {
-      this.send('closeModal');
-      this.set('model.patient', record);
-      this.set('newPatientId');
-      this.send('update');
-    }
-  }
+  }.property('model.isNew', 'isFulfilling', 'model.hideFulfillRequest')
 
 });

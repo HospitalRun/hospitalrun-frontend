@@ -74,7 +74,8 @@ export default {
       admittedPatients: 'Admitted Patients',
       missed: 'Missed',
       userRoles: 'User Roles',
-      workflow: 'Workflow'
+      workflow: 'Workflow',
+      outPatient: 'Outpatient'
     },
     actions: {
       logout: 'Logout',
@@ -721,35 +722,41 @@ export default {
   },
   visits: {
     titles: {
-      additionalDiagnoses: 'Additional Diagnoses'
+      additionalDiagnoses: 'Additional Diagnoses',
+      editVisit: 'Edit Visit',
+      newVisit: 'New Visit',
+      patientCheckIn: 'Patient Check In'
     },
     messages: {
       delete: 'Are you sure you wish to delete this visit?'
     },
     buttons: {
       newProcedure: 'New Procedure',
-      newLab: 'New Lab',
       newAppointment: 'New Appointment',
       addDiagnosis: 'Add Diagnosis',
-      newImaging: 'New Imaging',
-      newMedication: 'New Medication',
-      newVitals: 'New Vitals'
+      newVitals: 'New Vitals',
+      checkIn: 'Check In'
     },
     labels: {
       diagnosis: 'Diagnosis',
       procedure: 'Procedure',
       procedureDate: 'Procedure Date',
       authoredBy: 'Authored By',
-      labs: 'Labs',
-      imaging: 'Imaging',
       visitInformation: 'Visit Information',
       examiner: 'Examiner',
-      medication: 'Medication',
       status: 'Visit Status',
       admittingDiagnosis: 'Admitting Diagnosis',
       finalDiagnosis: 'Final/Billing Diagnosis',
       visitDate: 'Visit Date',
       visitType: 'Visit Type',
+      patientToCheckIn: 'Patient To Check In',
+      reasonForVisit: 'Reason for Visit'
+    },
+    navigation: {
+      charges: 'Charges',
+      notes: 'Notes',
+      orders: 'Orders',
+      procedures: 'Procedures',
       vitals: 'Vitals'
     }
   },
@@ -812,6 +819,7 @@ export default {
       deletePhoto: 'Delete Photo',
       deleteContact: 'Delete Contact',
       savedPatient: 'Patient Saved',
+      todaysOutpatients: 'Todays\' Outpatients',
       admissionsDetail: 'Admissions Detail',
       admissionsSummary: 'Admissions Summary',
       diagnosticTesting: 'Diagnostic Testing',
@@ -845,7 +853,8 @@ export default {
       newPhoto: 'New Photo',
       newAppointment: 'New Appointment',
       backToPatients: 'Back to Patient List',
-      newPatient: '+ new patient'
+      newPatient: '+ new patient',
+      patientCheckIn: 'Patient Check In'
     },
     headings: {
       history: 'History',
@@ -979,6 +988,11 @@ export default {
     chargesByTypeTab: {
       charges: 'charges'
     },
+    sortableColumn: {
+      labels: {
+        selectAll: '(Select All)'
+      }
+    },
     takePhoto: {
       how: 'How Do You Want To Add A Photo?',
       takePhoto: 'Take photo',
@@ -994,6 +1008,19 @@ export default {
     },
     quantityCalc: {
       result: '{{targetUnit}} total: {{calculated}}'
+    },
+    patientOrders: {
+      buttons: {
+        newImaging: 'New Imaging',
+        newLab: 'New Lab',
+        newMedication: 'New Medication'
+      },
+      labels: {
+        imagingOrderType: 'Imaging',
+        labOrderType: 'Lab',
+        medicationOrderType: 'Medication',
+        orderType: 'Order Type'
+      }
     },
     priceList: {
       charges: '{{pricingType}} charges'

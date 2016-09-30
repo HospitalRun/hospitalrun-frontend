@@ -57,6 +57,7 @@ export default AbstractModel.extend({
   procedures: DS.hasMany('procedure', { async: true }),
   startDate: DS.attr('date'),
   status: DS.attr('string'),
+  visitReason: DS.attr('string'),
   visitType: DS.attr(),
   vitals: DS.hasMany('vital', { async: true }),
 
@@ -97,6 +98,13 @@ export default AbstractModel.extend({
         accept: true,
         if: dateAcceptance,
         message: 'Please select an end date later than the start date'
+      }
+    },
+    patientTypeAhead: {
+      presence: {
+        if: function(object) {
+          return (object.get('checkIn'));
+        }
       }
     },
     paymentState: {

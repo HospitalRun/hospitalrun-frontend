@@ -88,6 +88,7 @@ Router.map(function() {
     this.route('reports');
     this.route('admitted');
     this.route('search', { path: '/search/:search_text' });
+    this.route('outpatient');
   });
 
   this.route('pricing', {
