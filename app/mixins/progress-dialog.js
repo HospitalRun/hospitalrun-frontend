@@ -28,7 +28,7 @@ export default Ember.Mixin.create({
       progressBarValue = 0;
     }
     progressDialog.set('progressBarValue', progressBarValue);
-    var progressBarStyle = new Ember.Handlebars.SafeString('width: ' + progressBarValue + '%');
+    var progressBarStyle = Ember.String.htmlSafe('width: ' + progressBarValue + '%');
     progressDialog.set('progressBarStyle', progressBarStyle);
   },
 
@@ -39,7 +39,7 @@ export default Ember.Mixin.create({
 
   showProgressModal: function() {
     var progressDialog = Ember.Object.create(this.get('progressDialogDefaults'));
-    progressDialog.progressBarStyle = new Ember.Handlebars.SafeString(progressDialog.progressBarStyle);
+    progressDialog.progressBarStyle = new Ember.String.htmlSafe(progressDialog.progressBarStyle);
     progressDialog.set('title', this.get('progressTitle'));
     progressDialog.set('message', this.get('progressMessage'));
     this.set('progressDialog', progressDialog);
