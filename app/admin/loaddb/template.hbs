@@ -1,8 +1,8 @@
 <div class="panel panel-primary">
   <div class="panel-body">
     {{#em-form model=model submitButton=false }}
-        {{file-upload label=(t 'labels.fileToLoad') property="importFileName" selectedFile=importFile }}
-        <button class="btn btn-default" {{action 'loadFile'}}>{{t 'buttons.loadFile'}}</button>
+      {{file-upload label=(t 'labels.fileToLoad') property="importFileName" selectedFile=importFile }}
+      <button class="btn btn-default" {{action 'loadFile'}}>{{t 'buttons.loadFile'}}</button>
     {{/em-form}}
     {{#if syncResults}}
       <h4>{{t 'labels.fileLoadSuccessful'}}</h4>
@@ -18,7 +18,7 @@
         <label>{{t 'labels.docRead'}}</label>
         <p class="form-control-static">{{syncResults.docs_read}}</p>
       </div>
-        <div class="form-group col-xs-3">
+      <div class="form-group col-xs-3">
         <label>{{t 'labels.docWritten'}}</label>
         <p class="form-control-static">{{syncResults.docs_written}}</p>
       </div>
