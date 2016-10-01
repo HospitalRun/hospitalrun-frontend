@@ -1,11 +1,11 @@
 {{#modal-dialog
-    isUpdateDisabled=isUpdateDisabled
-    title=title
-    updateButtonAction=updateButtonAction
-    updateButtonText=updateButtonText }}
+  isUpdateDisabled=isUpdateDisabled
+  title=title
+  updateButtonAction=updateButtonAction
+  updateButtonText=updateButtonText }}
   {{#em-form model=model submitButton=false }}{{/em-form}}
-    <div class="alert alert-danger">
-      <span class="glyphicon glyphicon-warning-sign"></span>
-      {{t 'billing.alerts.deleteItem' item=model.displayInvoiceNumber}}
-    </div>
+  <div class="alert alert-danger">
+    <span class="glyphicon glyphicon-warning-sign"></span>
+    {{t 'billing.alerts.deleteItem' item=model.displayInvoiceNumber}}
+  </div>
 {{/modal-dialog}}
