@@ -3,8 +3,10 @@ import Ember from 'ember';
 import EmberValidations from 'ember-validations';
 import { Model } from 'ember-pouch';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default Model.extend(UserSession, EmberValidations, {
+import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
+export default Model.extend(UserSession, EmberValidations, PouchDbMixin, {
   session: Ember.inject.service(),
+  database: Ember.inject.service(),
   archived: DS.attr('boolean'),
   lastModified: DS.attr('date'),
   modifiedBy: DS.attr(),

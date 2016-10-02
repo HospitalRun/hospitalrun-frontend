@@ -90,7 +90,8 @@ export default AbstractModel.extend(DOBDays, PatientName, {
       }
     },
     friendlyId: {
-      presence: true
+      presence: true,
+      uniqueness: true
     },
     firstName: {
       presence: true
