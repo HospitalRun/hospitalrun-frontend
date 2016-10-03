@@ -14,7 +14,7 @@
   "scripts": {
     "build": "./script/build",
     "start": "./script/server",
-    "test": "./script/test",
+    "test": "./script/test"
   },
   "repository": {
     "type": "git",
