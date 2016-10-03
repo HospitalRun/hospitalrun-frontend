@@ -15,8 +15,6 @@
     "build": "./script/build",
     "start": "./script/server",
     "test": "./script/test",
-    "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -92,9 +90,5 @@
     "paths": [
       "lib/pouch-fixtures"
     ]
-  },
-  "snyk": true,
-  "dependencies": {
-    "snyk": "^1.17.4"
   }
 }
