@@ -80,11 +80,11 @@
                     <td>{{date-format diagnosis.date}}</td>
                     <td  class="additional-diagnoses-text">{{diagnosis.description}}</td>
                     <td>
-                        {{#if canDeleteDiagnosis}}
-                          <button class="btn btn-default warning delete-additional-diagnosis" {{action "deleteDiagnosis" diagnosis}}>
-                            <span class="octicon octicon-x"></span> {{t 'buttons.delete' }}
-                          </button>
-                        {{/if}}
+                      {{#if canDeleteDiagnosis}}
+                        <button class="btn btn-default warning delete-additional-diagnosis" {{action "deleteDiagnosis" diagnosis}}>
+                          <span class="octicon octicon-x"></span> {{t 'buttons.delete' }}
+                        </button>
+                      {{/if}}
                     </td>
                   </tr>
                 {{/each}}
@@ -112,10 +112,10 @@
           <div class="panel-body">
             <table class="table">
               <tr class="table-header">
-                  <th>{{t 'labels.date'}}</th>
-                  <th>{{t 'visits.labels.authoredBy'}}</th>
-                  <th>{{t 'labels.note'}}</th>
-                  <th>{{t 'labels.actions'}}</th>
+                <th>{{t 'labels.date'}}</th>
+                <th>{{t 'visits.labels.authoredBy'}}</th>
+                <th>{{t 'labels.note'}}</th>
+                <th>{{t 'labels.actions'}}</th>
               </tr>
               {{#each model.patientNotes as |note|}}
                 <tr>
@@ -153,9 +153,9 @@
           <div class="panel-body">
             <table class="table">
               <tr class="table-header">
-                  <th>{{t 'labels.date' }}</th>
-                  <th>{{t 'visits.labels.procedure' }}</th>
-                  <th>{{t 'labels.actions'}}</th>
+                <th>{{t 'labels.date' }}</th>
+                <th>{{t 'visits.labels.procedure' }}</th>
+                <th>{{t 'labels.actions'}}</th>
               </tr>
               {{#each model.procedures as |procedure|}}
                 <tr>
@@ -275,7 +275,7 @@
                     {{/if}}
                     {{#if canDeleteVitals}}
                       <button class="btn btn-default warning" {{action "showDeleteVitals" vital}}>
-                      <span class="octicon octicon-x"></span> {{t "buttons.delete"}}
+                        <span class="octicon octicon-x"></span> {{t "buttons.delete"}}
                       </button>
                     {{/if}}
                   </td>
@@ -286,7 +286,7 @@
         </div>
       </div>
       {{#em-form model=this submitButton=false }}
-          {{partial 'item-charges'}}
+        {{partial 'item-charges'}}
       {{/em-form}}
     {{/unless}}
   </div>

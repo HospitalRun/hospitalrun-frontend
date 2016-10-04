@@ -34,10 +34,10 @@
       }}
     </div>
     <div class="row">
-        {{select-or-typeahead className="col-sm-4" property="anesthesiaType"
-          label="Anesthesia Type" list=anesthesiaTypes
-          selection=model.anesthesiaTypes
-        }}
+      {{select-or-typeahead className="col-sm-4" property="anesthesiaType"
+        label="Anesthesia Type" list=anesthesiaTypes
+        selection=model.anesthesiaTypes
+      }}
     </div>
     {{em-text label="Notes" property="notes" rows=3 class="procedure-notes"}}
     {{partial 'item-charges'}}
