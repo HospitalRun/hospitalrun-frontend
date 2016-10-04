@@ -313,6 +313,7 @@ export default {
     importFile: 'Import File',
     fileLoadSuccessful: 'File To Load Successful',
     fileToLoad: 'File Load',
+    fileName: 'File Name',
     startTime: 'Start Time',
     startDate: 'Start Date',
     endTime: 'End Time',

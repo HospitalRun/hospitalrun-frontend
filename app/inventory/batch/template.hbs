@@ -49,7 +49,7 @@
                 <span class="octicon octicon-plus"></span> {{t 'inventory.labels.add'}}
               </button>
             </p>
-        </div>
+          </div>
         </div>
       </div>
     </div>
@@ -75,7 +75,7 @@
                 {{input class="form-control" value=invoiceItem.quantity }}
                 <span class="input-group-addon">
                   {{invoiceItem.inventoryItem.distributionUnit}}
-                 </span>
+                </span>
               </div>
             </td>
             <td class="col-sm-2">
@@ -89,9 +89,9 @@
               </div>
             </td>
             <td class="col-sm-2">
-            <div class="form-group">
-              {{input class="form-control" value=invoiceItem.lotNumber }}
-            </div>
+              <div class="form-group">
+                {{input class="form-control" value=invoiceItem.lotNumber }}
+              </div>
             </td>
             <td class="col-sm-2">
               {{date-picker property="expirationDate" minDate="now" model=invoiceItem }}

@@ -22,41 +22,41 @@
 
 
   {{#if havePrimaryDiagnoses}}
-  <div class="ps-info-group long-form">
-    <label class="ps-info-label wide">{{t 'patients.labels.primaryDiagnosis'}}</label>
-    <div class="ps-info-data-block">
-      {{#each primaryDiagnoses as |diagnosis|}}
-        {{#unless diagnosis.first}}, {{/unless}}
-        {{diagnosis.description}} (<strong>{{date-format diagnosis.date}}</strong>)
-      {{/each}}
+    <div class="ps-info-group long-form">
+      <label class="ps-info-label wide">{{t 'patients.labels.primaryDiagnosis'}}</label>
+      <div class="ps-info-data-block">
+        {{#each primaryDiagnoses as |diagnosis|}}
+          {{#unless diagnosis.first}}, {{/unless}}
+          {{diagnosis.description}} (<strong>{{date-format diagnosis.date}}</strong>)
+        {{/each}}
+      </div>
     </div>
-  </div>
   {{/if}}
 
   {{#if haveSecondaryDiagnoses}}
-  <div class="ps-info-group long-form">
-    <label class="ps-info-label wide">{{t 'patients.labels.secondaryDiagnosis'}}</label>
-    <div class="ps-info-data-block">
-      {{#each secondaryDiagnoses as |diagnosis|}}
-        {{#unless diagnosis.first}}, {{/unless}}
-        {{diagnosis.description}} (<strong>{{date-format diagnosis.date}}</strong>)
-      {{/each}}
+    <div class="ps-info-group long-form">
+      <label class="ps-info-label wide">{{t 'patients.labels.secondaryDiagnosis'}}</label>
+      <div class="ps-info-data-block">
+        {{#each secondaryDiagnoses as |diagnosis|}}
+          {{#unless diagnosis.first}}, {{/unless}}
+          {{diagnosis.description}} (<strong>{{date-format diagnosis.date}}</strong>)
+        {{/each}}
+      </div>
     </div>
-  </div>
   {{/if}}
 
   {{#if haveProcedures}}
-  <div class="ps-info-group long-form">
-    <label class="ps-info-label wide">{{t 'labels.procedures'}}</label>
-    <div class="ps-info-data-block">
-      {{#each patientProcedures as |procedure|}}
-        {{#unless procedure.first}}, {{/unless}}
-        <span {{action 'editProcedure' procedure}} class="clickable">
+    <div class="ps-info-group long-form">
+      <label class="ps-info-label wide">{{t 'labels.procedures'}}</label>
+      <div class="ps-info-data-block">
+        {{#each patientProcedures as |procedure|}}
+          {{#unless procedure.first}}, {{/unless}}
+          <span {{action 'editProcedure' procedure}} class="clickable">
             {{procedure.description}} (<strong>{{date-format procedure.procedureDate}}</strong>)
-        </span>
-      {{/each}}
+          </span>
+        {{/each}}
+      </div>
     </div>
-  </div>
   {{/if}}
 
 </div>

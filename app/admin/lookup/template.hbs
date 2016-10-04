@@ -1,53 +1,53 @@
 <div class="panel panel-primary">
-    <div class="panel-body">
-        {{#em-form model=model submitButton=false }}
-            <div class="row">
-                {{em-select class="col-xs-3 lookup-type" label=(t 'labels.lookupType')
-                    property="lookupType" content=lookupTypes
-                    optionValuePath="value" optionLabelPath="name"
-                    selected=model.lookupType
-                }}
-            </div>
-        {{/em-form}}
-    </div>
+  <div class="panel-body">
+    {{#em-form model=model submitButton=false }}
+      <div class="row">
+        {{em-select class="col-xs-3 lookup-type" label=(t 'labels.lookupType')
+          property="lookupType" content=lookupTypes
+          optionValuePath="value" optionLabelPath="name"
+          selected=model.lookupType
+        }}
+      </div>
+    {{/em-form}}
+  </div>
 </div>
 <div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title">{{lookupTitle}}</h3>
-    </div>
-    <div class="panel-body">
-        <table class="table">
-            <tr class="table-header">
-                <th>{{t 'labels.value'}}</th>
-                <th>{{t 'labels.actions'}}</th>
-            </tr>
-            {{#each lookupTypeValues as |lookupTypeValue|}}
-                <tr>
-                    <td class="lookup-type-value">{{lookupTypeValue}}</td>
-                    <td>
-                        <button class="btn btn-default neutral" {{action 'editValue' lookupTypeValue bubbles=false }}>{{t 'labels.edit'}}</button>
-                        <button class="btn btn-default warning" {{action 'deleteValue' lookupTypeValue bubbles=false }}><span class="octicon octicon-x"></span>{{t 'labels.delete'}}</button>
-                    </td>
-                </tr>
-            {{/each}}
-        </table>
-    </div>
-    <div class="panel-footer">
-        <button class="btn btn-default neutral" {{action 'addValue'}}>{{t 'buttons.addValue'}}</button>
-        {{#em-form model=model submitButton=false }}
-            <div class="row">
-                <div class="col-sm-4">
-                    {{em-checkbox label=(t 'labels.userCanAddNewValue') property="userCanAdd"}}
-                    <button class="btn btn-default" {{action 'updateList'}}>{{t 'buttons.update'}}</button>
-                </div>
-                {{#if showOrganizeByType}}
-                    {{em-checkbox label="Organize Pricing By Type" property="organizeByType" class="col-sm-4"}}
-                {{/if}}
-                <div class="col-sm-4">
-                    {{file-upload label=(t 'labels.importFile') property="importFileName" selectedFile=importFile }}
-                    <button class="btn btn-default" {{action 'importList'}}>{{t 'buttons.import'}}</button>
-                </div>
-            </div>
-        {{/em-form}}
-    </div>
+  <div class="panel-heading">
+    <h3 class="panel-title">{{lookupTitle}}</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <tr class="table-header">
+        <th>{{t 'labels.value'}}</th>
+        <th>{{t 'labels.actions'}}</th>
+      </tr>
+      {{#each lookupTypeValues as |lookupTypeValue|}}
+        <tr>
+          <td class="lookup-type-value">{{lookupTypeValue}}</td>
+          <td>
+            <button class="btn btn-default neutral" {{action 'editValue' lookupTypeValue bubbles=false }}>{{t 'labels.edit'}}</button>
+            <button class="btn btn-default warning" {{action 'deleteValue' lookupTypeValue bubbles=false }}><span class="octicon octicon-x"></span>{{t 'labels.delete'}}</button>
+          </td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
+  <div class="panel-footer">
+    <button class="btn btn-default neutral" {{action 'addValue'}}>{{t 'buttons.addValue'}}</button>
+    {{#em-form model=model submitButton=false }}
+      <div class="row">
+        <div class="col-sm-4">
+          {{em-checkbox label=(t 'labels.userCanAddNewValue') property="userCanAdd"}}
+          <button class="btn btn-default" {{action 'updateList'}}>{{t 'buttons.update'}}</button>
+        </div>
+        {{#if showOrganizeByType}}
+          {{em-checkbox label="Organize Pricing By Type" property="organizeByType" class="col-sm-4"}}
+        {{/if}}
+        <div class="col-sm-4">
+          {{file-upload label=(t 'labels.importFile') property="importFileName" selectedFile=importFile }}
+          <button class="btn btn-default" {{action 'importList'}}>{{t 'buttons.import'}}</button>
+        </div>
+      </div>
+    {{/em-form}}
+  </div>
 </div>

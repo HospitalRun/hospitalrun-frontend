@@ -2,13 +2,13 @@
   {{#if model}}
     <table class="table imaging-completed-table">
       <tr class="table-header">
-          <th>{{t 'labels.dateRequested'}}</th>
-          <th>{{t 'labels.dateCompleted'}}</th>
-          <th>{{t 'labels.requestedBy'}}</th>
-          <th>{{t 'labels.patient'}}</th>
-          <th>{{t 'labels.imagingType'}}</th>
-          <th>{{t 'labels.results'}}</th>
-          <th>{{t 'labels.notes'}}</th>
+        <th>{{t 'labels.dateRequested'}}</th>
+        <th>{{t 'labels.dateCompleted'}}</th>
+        <th>{{t 'labels.requestedBy'}}</th>
+        <th>{{t 'labels.patient'}}</th>
+        <th>{{t 'labels.imagingType'}}</th>
+        <th>{{t 'labels.results'}}</th>
+        <th>{{t 'labels.notes'}}</th>
       </tr>
       {{#each model as |imaging|}}
         {{imaging/completed/completed-list-item imaging=imaging}}
