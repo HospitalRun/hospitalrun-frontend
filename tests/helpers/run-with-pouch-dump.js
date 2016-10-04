@@ -1,4 +1,5 @@
 /* jshint ignore:start */
+import createPouchViews from 'hospitalrun/utils/pouch-views';
 import Ember from 'ember';
 import PouchDB from 'pouchdb';
 import DatabaseService from 'hospitalrun/services/database';
@@ -39,9 +40,7 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
     adapter: 'memory'
   });
   const dump = require(`hospitalrun/tests/fixtures/${dumpName}`).default;
-  const promise = db.load(dump, {
-    proxy: 'main'
-  });
+  const promise = db.load(dump);
 
   const InMemoryDatabaseService = DatabaseService.extend({
     createDB() {
@@ -68,13 +67,19 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
 
   return new Ember.RSVP.Promise(function(resolve) {
     promise.then(function() {
-      functionToRun();
-      andThen(function() {
-        cleanupDatabases({
-          config: configDB,
-          main: db
-        }).then(resolve);
+      createPouchViews(db, true, dumpName).then(function() {
+        functionToRun();
+        andThen(function() {
+          cleanupDatabases({
+            config: configDB,
+            main: db
+          }).then(resolve, function(err) {
+            console.log('error cleaning up dbs:', JSON.stringify(err, null, 2));
+          });
+        });
       });
+    }, function(err) {
+      console.log('error loading db', JSON.stringify(err, null, 2));
     });
   });
 }
