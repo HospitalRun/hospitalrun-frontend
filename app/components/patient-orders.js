@@ -1,10 +1,10 @@
 import Ember from 'ember';
+import FilterList from 'hospitalrun/mixins/filter-list';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default Ember.Component.extend(UserSession, {
+export default Ember.Component.extend(FilterList, UserSession, {
   editImagingAction: 'editImaging',
   editLabAction: 'editLab',
   editMedicationAction: 'editMedication',
-  filteredBy: new Ember.Object(),
   newImagingAction: 'newImaging',
   newLabAction: 'newLab',
   newMedicationAction: 'newMedication',
@@ -124,30 +124,8 @@ export default Ember.Component.extend(UserSession, {
 
   actions: {
     filter: function(filterBy, filterValue) {
-      let filteredBy = this.get('filteredBy');
       let orderList = this.get('orderList');
-      filteredBy.set(filterBy, filterValue);
-      orderList = orderList.filter((order) => {
-        let includeRecord = true;
-        let filters = Object.keys(filteredBy);
-        filters.forEach((filterBy) => {
-          let filterValue = filteredBy.get(filterBy);
-          let orderValue = order.get(filterBy);
-          if (!Ember.isEmpty(filterValue)) {
-            if (filterValue instanceof Ember.Handlebars.SafeString) {
-              filterValue = filterValue.toString();
-            }
-            if (orderValue instanceof Ember.Handlebars.SafeString) {
-              orderValue = orderValue.toString();
-            }
-            if (orderValue !== filterValue) {
-              includeRecord = false;
-            }
-          }
-        });
-        return includeRecord;
-      });
-      this.set('filteredBy', filteredBy);
+      orderList = this.filterList(orderList, filterBy, filterValue);
       this.set('filteredList', orderList);
     },
 
