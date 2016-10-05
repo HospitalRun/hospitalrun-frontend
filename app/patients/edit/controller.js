@@ -547,6 +547,11 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     });
   },
 
+  beforeUpdate: function() {
+    return this.get('model').validate()
+      .catch(() => new Ember.RSVP.reject('ID has been taken'));
+  },
+
   afterUpdate: function(record) {
     this._updateSequence(record).then(() => {
       this.send('openModal', 'dialog', Ember.Object.create({

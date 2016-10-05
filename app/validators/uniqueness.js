@@ -2,6 +2,10 @@ import Ember from 'ember';
 import Base from 'ember-validations/validators/base';
 
 export default Base.extend({
+  _validate: Ember.on('init', function() {
+    return this.call();
+  }),
+
   call() {
     return new Ember.RSVP.Promise((resolve) => {
       Ember.run.debounce(this, () => {
