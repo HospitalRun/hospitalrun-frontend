@@ -34,11 +34,12 @@ export default AbstractModel.extend({
   charges: DS.hasMany('proc-charge', {
     async: false
   }),
+  chiefComplaint: DS.attr('string'),
   dischargeInfo: DS.attr('string'),
   endDate: DS.attr('date'), // if visit type is outpatient, startDate and endDate are equal
   examiner: DS.attr('string'),
   history: DS.attr('string'),
-  historySince: DS.attr('string'), // History since last seen
+  historySince: DS.attr('string'), // History of the Present Illness
   imaging: DS.hasMany('imaging', { async: true }),
   labs: DS.hasMany('lab', { async: true }),
   location: DS.attr('string'),
@@ -57,7 +58,6 @@ export default AbstractModel.extend({
   procedures: DS.hasMany('procedure', { async: true }),
   startDate: DS.attr('date'),
   status: DS.attr('string'),
-  visitReason: DS.attr('string'),
   visitType: DS.attr(),
   vitals: DS.hasMany('vital', { async: true }),
 

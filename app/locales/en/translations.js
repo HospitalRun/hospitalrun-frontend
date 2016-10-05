@@ -751,7 +751,9 @@ export default {
       visitDate: 'Visit Date',
       visitType: 'Visit Type',
       patientToCheckIn: 'Patient To Check In',
-      reasonForVisit: 'Reason for Visit'
+      chiefComplaint: 'Chief Complaint',
+      illnessHistory: 'History of the Present Illness',
+      patientHistory: 'Patient Medical History'
     },
     navigation: {
       charges: 'Charges',
