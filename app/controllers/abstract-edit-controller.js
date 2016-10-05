@@ -65,11 +65,11 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
     if (!Ember.isArray(lookupListValues)) {
       lookupListValues = [];
     }
-    if (!lookupListValues.contains(value)) {
+    if (!lookupListValues.includes(value)) {
       lookupListValues.push(value);
       lookupListValues.sort();
       lookupList.set('value', lookupListValues);
-      if (!listsToUpdate.contains(lookupList)) {
+      if (!listsToUpdate.includes(lookupList)) {
         listsToUpdate.push(lookupList);
       }
       this.set(listName, lookupList);

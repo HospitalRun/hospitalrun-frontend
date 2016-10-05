@@ -61,7 +61,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     addItemCharge: function(lineItem) {
       var details = lineItem.get('details');
       var detail = this.store.createRecord('line-item-detail', {
-        id: PouchDB.utils.uuid()
+        id: uuid.v4()
       });
       details.addObject(detail);
     },
@@ -116,7 +116,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
 
     showAddLineItem: function() {
       var newLineItem = this.store.createRecord('billing-line-item', {
-        id: PouchDB.utils.uuid()
+        id: uuid.v4()
       });
       this.send('openModal', 'invoices.add-line-item', newLineItem);
     },
@@ -238,7 +238,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       let pharmacyCharges = this.get('pharmacyCharges');
       let pharmacyExpenseAccount = this.get('pharmacyExpenseAccount');
       let pharmacyCharge = this.store.createRecord('line-item-detail', {
-        id: PouchDB.utils.uuid(),
+        id: uuid.v4(),
         name: medicationDetails.name,
         quantity: quantity,
         price: medicationDetails.price,
@@ -257,7 +257,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
 
   _createChargeItem: function(charge, department) {
     var chargeItem = this.store.createRecord('line-item-detail', {
-      id: PouchDB.utils.uuid(),
+      id: uuid.v4(),
       name: charge.get('pricingItem.name'),
       expenseAccount: charge.get('pricingItem.expenseAccount'),
       quantity: charge.get('quantity'),
@@ -322,12 +322,12 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       var stayDays = endDate.diff(startDate, 'days');
       if (stayDays > 1) {
         lineDetail = this.store.createRecord('line-item-detail', {
-          id: PouchDB.utils.uuid(),
+          id: uuid.v4(),
           name: 'Days',
           quantity: stayDays
         });
         lineItem = this.store.createRecord('billing-line-item', {
-          id: PouchDB.utils.uuid(),
+          id: uuid.v4(),
           category: 'Hospital Charges',
           name: 'Room/Accomodation'
         });
@@ -380,7 +380,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
 
     Ember.RSVP.all(pharmacyChargePromises).then(() =>  {
       lineItem = this.store.createRecord('billing-line-item', {
-        id: PouchDB.utils.uuid(),
+        id: uuid.v4(),
         name: 'Pharmacy',
         category: 'Hospital Charges'
       });
@@ -388,7 +388,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       lineItems.addObject(lineItem);
 
       lineItem = this.store.createRecord('billing-line-item', {
-        id: PouchDB.utils.uuid(),
+        id: uuid.v4(),
         name: 'X-ray/Lab/Supplies',
         category: 'Hospital Charges'
       });
@@ -396,7 +396,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       lineItems.addObject(lineItem);
 
       lineItem = this.store.createRecord('billing-line-item', {
-        id: PouchDB.utils.uuid(),
+        id: uuid.v4(),
         name: 'Ward Items',
         category: 'Hospital Charges'
       });
@@ -404,14 +404,14 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       lineItems.addObject(lineItem);
 
       lineItem = this.store.createRecord('billing-line-item', {
-        id: PouchDB.utils.uuid(),
+        id: uuid.v4(),
         name: 'Physical Therapy',
         category: 'Hospital Charges'
       });
       lineItems.addObject(lineItem);
 
       lineItem = this.store.createRecord('billing-line-item', {
-        id: PouchDB.utils.uuid(),
+        id: uuid.v4(),
         name: 'Others/Misc',
         category: 'Hospital Charges'
       });

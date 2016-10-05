@@ -1,37 +1,36 @@
 {{#unless firstQuantity}}
-    <div class="row">
-        <div class="col-xs-5">
-            <div class="form-group required {{quantityClass}}">
-                <label class="control-label">{{t 'components.quantityConv.conversion' name=unitName}}</label>
-            </div>
-        </div>
+  <div class="row">
+    <div class="col-xs-5">
+      <div class="form-group required {{quantityClass}}">
+        <label class="control-label">{{t 'components.quantityConv.conversion' name=unitName}}</label>
+      </div>
     </div>
+  </div>
 {{/unless}}
 <div class="row">
-    <div class="col-xs-3">
-        <div class="form-group required {{quantityClass}} test-inv-quantity">
-            {{#if firstQuantity}}
-                <label class="control-label">{{t 'labels.quantity'}}</label>
-            {{/if}}
-            {{input type="text" value=quantity class="form-control"}}
-            <span class="help-block">{{quantityHelp}}</span>
-        </div>
+  <div class="col-xs-3">
+    <div class="form-group required {{quantityClass}} test-inv-quantity">
+      {{#if firstQuantity}}
+        <label class="control-label">{{t 'labels.quantity'}}</label>
+      {{/if}}
+      {{input type="text" value=quantity class="form-control"}}
+      <span class="help-block">{{quantityHelp}}</span>
     </div>
+  </div>
 
-
-    <div class="col-xs-3">
-        <div class="form-group required {{unitClass}}">
-            {{#if firstQuantity}}
-                <label class="control-label">{{t 'components.quantityConv.unit'}}</label>
-            {{/if}}
-            {{select-list
-                class='form-control test-inv-unit'
-                content=unitList
-                value=unit
-                action=(action (mut unit))
-                prompt=" "
-            }}
-            <span class="help-block">{{unitHelp}}</span>
-        </div>
+  <div class="col-xs-3">
+    <div class="form-group required {{unitClass}}">
+      {{#if firstQuantity}}
+        <label class="control-label">{{t 'components.quantityConv.unit'}}</label>
+      {{/if}}
+      {{select-list
+        class='form-control test-inv-unit'
+        content=unitList
+        value=unit
+        action=(action (mut unit))
+        prompt=" "
+      }}
+      <span class="help-block">{{unitHelp}}</span>
     </div>
+  </div>
 </div>

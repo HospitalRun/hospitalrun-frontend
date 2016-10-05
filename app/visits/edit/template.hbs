@@ -90,11 +90,11 @@
                     <td>{{date-format diagnosis.date}}</td>
                     <td  class="additional-diagnoses-text">{{diagnosis.description}}</td>
                     <td>
-                        {{#if canDeleteDiagnosis}}
-                          <button class="btn btn-default warning delete-additional-diagnosis" {{action "deleteDiagnosis" diagnosis}}>
-                            <span class="octicon octicon-x"></span> {{t 'buttons.delete' }}
-                          </button>
-                        {{/if}}
+                      {{#if canDeleteDiagnosis}}
+                        <button class="btn btn-default warning delete-additional-diagnosis" {{action "deleteDiagnosis" diagnosis}}>
+                          <span class="octicon octicon-x"></span> {{t 'buttons.delete' }}
+                        </button>
+                      {{/if}}
                     </td>
                   </tr>
                 {{/each}}
