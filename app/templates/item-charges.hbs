@@ -2,15 +2,17 @@
   {{partial 'charges-by-type'}}
 {{else}}
   <div class="panel detail-section">
-    <div class="panel-heading">
-      <h3 class="panel-title">
-        {{t 'headings.chargedItems'}}
-        {{#if canAddCharge}}
-          <button class="btn btn-primary align-right" {{action "showAddCharge" bubbles=false }}><span class="octicon octicon-plus"></span>{{t 'buttons.addItem'}}</button>
-        {{/if}}
-      </h3>
-    </div>
-    <div class="panel-body detail-section-content">
+    {{#unless hideChargeHeader}}
+      <div class="panel-heading">
+          <h3 class="panel-title">
+            {{t 'headings.chargedItems'}}
+            {{#if canAddCharge}}
+              <button class="btn btn-primary align-right" {{action "showAddCharge" bubbles=false }}><span class="octicon octicon-plus"></span>{{t 'buttons.addItem'}}</button>
+            {{/if}}
+          </h3>
+      </div>
+    {{/unless}}
+    <div class="panel-body">
       <table class="table charge-items">
         <tr class="table-header">
           <th>{{t 'labels.date'}}</th>
@@ -37,5 +39,14 @@
         {{/each}}
       </table>
     </div>
+    {{#if hideChargeHeader}}
+      <div class="panel-footer">
+        {{#if canAddCharge}}
+          <button class="btn btn-primary align-right" {{action "showAddCharge" bubbles=false }}>
+            <span class="octicon octicon-plus"></span>{{t 'buttons.addItem'}}
+          </button>
+        {{/if}}
+      </div>
+    {{/if}}
   </div>
 {{/if}}

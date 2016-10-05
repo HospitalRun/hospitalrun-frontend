@@ -103,6 +103,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
   chargeRoute: 'visits.charge',
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
   findPatientVisits: false,
+  hideChargeHeader: true,
   patientImaging: Ember.computed.alias('model.imaging'),
   patientLabs: Ember.computed.alias('model.labs'),
   patientMedications: Ember.computed.alias('model.medication'),
