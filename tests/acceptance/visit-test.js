@@ -30,7 +30,7 @@ test('Add visit', function(assert) {
       waitToAppear('#visit-info');
     });
     andThen(function() {
-      assert.equal(find('.patient-name').text(), 'Joe Bagadonuts', 'Joe Bagadonuts displays as patient for visit');
+      assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts displays as patient for visit');
       updateVisit(assert, 'Add');
     });
   });
@@ -126,6 +126,7 @@ test('Edit visit', function(assert) {
     andThen(function() {
       assert.equal(find('.modal-title').text(), 'Delete Vitals', 'Delete Vitals dialog displays');
       click('.modal-footer button:contains(Delete)');
+      click('[data-test-selector=charges-tab]');
     });
     andThen(function() {
       click('.charge-items tr:last button:contains(Delete)');

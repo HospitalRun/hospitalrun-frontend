@@ -114,17 +114,17 @@
           </a>
         </li>
         <li role="presentation">
-          <a href="#vitals" role="tab" data-toggle="pill" data-test-selector="vitals-tab">
+          <a href="#visit-vitals" role="tab" data-toggle="pill" data-test-selector="vitals-tab">
             {{t 'visits.navigation.vitals'}}
           </a>
         </li>
         <li role="presentation">
-          <a href="#notes" role="tab" data-toggle="pill" data-test-selector="notes-tab">
+          <a href="#visit-notes" role="tab" data-toggle="pill" data-test-selector="notes-tab">
             {{t 'visits.navigation.notes'}}
           </a>
         </li>
         <li role="presentation">
-          <a href="#procedures" role="tab" data-toggle="pill" data-test-selector="procedures-tab">
+          <a href="#visit-procedures" role="tab" data-toggle="pill" data-test-selector="procedures-tab">
             {{t 'visits.navigation.procedures'}}
           </a>
         </li>
@@ -135,7 +135,7 @@
         </li>
       </ul>
       <div class="tab-content">
-        <div role="tabpanel" class="tab-pane" id="notes">
+        <div role="tabpanel" class="tab-pane" id="visit-notes">
           <div class="panel detail-section">
             <div class="panel-body">
               <table class="table">
@@ -171,7 +171,7 @@
             </div>
           </div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="procedures">
+        <div role="tabpanel" class="tab-pane" id="visit-procedures">
           <div class="panel detail-section">
             <div class="panel-body">
               <table class="table">
@@ -208,7 +208,7 @@
         <div role="tabpanel" class="tab-pane active" id="orders">
           {{patient-orders visit=model}}
         </div>
-        <div role="tabpanel" class="tab-pane" id="vitals">
+        <div role="tabpanel" class="tab-pane" id="visit-vitals">
           <div class="panel detail-section">
             <div class="panel-body">
               <table class="table">
