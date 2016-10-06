@@ -1,116 +1,116 @@
 <div class="panel panel-primary">
-    <div class="panel-body">
-        {{#em-form model=this submitButton=false }}
-            <div class="row" data-test-selector="select-report-type">
-                <div class="form-group col-xs-6">
-                  <label class="control-label" for="report-type">{{t 'inventory.reports.reportType'}}</label>
-                  {{select-list
-                    action=(action (mut reportType))
-                    class='form-control'
-                    content=reportTypes
-                    id='report-type'
-                    optionValuePath='value'
-                    optionLabelPath='name'
-                    value=reportType
-                  }}
-                </div>
-            </div>
-            {{#if isStatusReport}}
-                {{em-select property="status" label="Patient Status"
-                    content=statusList
-                    prompt=" "
-                }}
-            {{else}}
-              <div class="row">
-                <div data-test-selector="select-report-start-date">
-                  {{date-picker property="startDate" label="Start Date" class="col-sm-4"}}
-                </div>
-                <div data-test-selector="select-report-end-date">
-                  {{date-picker property="endDate" label="End Date" class="col-sm-4"}}
-                </div>
-              </div>
-            {{/if}}
-            {{#if isVisitReport}}
-                <div class="row">
-                    {{em-select class="col-sm-6" label="Visit Type"
-                        property="visitType" content=visitTypes
-                        prompt=" "
-                    }}
-                    {{em-select class="col-sm-6" label="Examiner"
-                        property="examiner" content=physicianList
-                        prompt=" "
-                    }}
-                </div>
-                <div class="row">
-                    {{em-select class="col-sm-6" label="Location"
-                        property="location" content=locationList
-                        prompt=" "
-                    }}
-                    {{em-select class="col-sm-6" label="Clinic"
-                        property="clinic" content=clinicList
-                        prompt=" "
-                    }}
-                </div>
-                <div class="row">
-                    <div class="form-group col-xs-12">
-                        {{select-or-typeahead property="diagnosis"
-                            label="Diagnosis" list=diagnosisList
-                        }}
-                    </div>
-                </div>
+  <div class="panel-body">
+    {{#em-form model=this submitButton=false }}
+      <div class="row" data-test-selector="select-report-type">
+        <div class="form-group col-xs-6">
+          <label class="control-label" for="report-type">{{t 'inventory.reports.reportType'}}</label>
+          {{select-list
+            action=(action (mut reportType))
+            class='form-control'
+            content=reportTypes
+            id='report-type'
+            optionValuePath='value'
+            optionLabelPath='name'
+            value=reportType
+          }}
+        </div>
+      </div>
+      {{#if isStatusReport}}
+        {{em-select property="status" label="Patient Status"
+          content=statusList
+          prompt=" "
+        }}
+      {{else}}
+        <div class="row">
+          <div data-test-selector="select-report-start-date">
+            {{date-picker property="startDate" label="Start Date" class="col-sm-4"}}
+          </div>
+          <div data-test-selector="select-report-end-date">
+            {{date-picker property="endDate" label="End Date" class="col-sm-4"}}
+          </div>
+        </div>
+      {{/if}}
+      {{#if isVisitReport}}
+        <div class="row">
+          {{em-select class="col-sm-6" label="Visit Type"
+            property="visitType" content=visitTypes
+            prompt=" "
+          }}
+          {{em-select class="col-sm-6" label="Examiner"
+            property="examiner" content=physicianList
+            prompt=" "
+          }}
+        </div>
+        <div class="row">
+          {{em-select class="col-sm-6" label="Location"
+            property="location" content=locationList
+            prompt=" "
+          }}
+          {{em-select class="col-sm-6" label="Clinic"
+            property="clinic" content=clinicList
+            prompt=" "
+          }}
+        </div>
+        <div class="row">
+          <div class="form-group col-xs-12">
+            {{select-or-typeahead property="diagnosis"
+              label="Diagnosis" list=diagnosisList
+            }}
+          </div>
+        </div>
 
-                <h3>{{t "inventory.reports.fields"}}</h3>
-                <div class="row">
-                    <div class="col-xs-1"></div>
-                    {{em-checkbox label=reportColumns.id.label property="reportColumns.id.include" class="col-xs-2"}}
-                    {{em-checkbox label=reportColumns.name.label property="reportColumns.name.include" class="col-xs-2"}}
-                    {{em-checkbox label=reportColumns.age.label property="reportColumns.age.include" class="col-xs-2"}}
-                    {{em-checkbox label=reportColumns.contacts.label property="reportColumns.contacts.include" class="col-xs-2"}}
-                    {{em-checkbox label=reportColumns.dateOfBirth.label property="reportColumns.dateOfBirth.include" class="col-xs-2"}}
-                </div>
-                <div class="row">
-                    <div class="col-xs-1"></div>
-                    {{em-checkbox label=reportColumns.examiner.label property="reportColumns.examiner.include" class="col-xs-2"}}
-                    {{em-checkbox label=reportColumns.sex.label property="reportColumns.sex.include" class="col-xs-2"}}
-                    {{em-checkbox label=reportColumns.primaryDiagnosis.label property="reportColumns.primaryDiagnosis.include" class="col-xs-2"}}
-                    {{em-checkbox label=reportColumns.procedures.label property="reportColumns.procedures.include" class="col-xs-2"}}
-                    {{em-checkbox label=reportColumns.referredBy.label property="reportColumns.referredBy.include" class="col-xs-2"}}
-                </div>
-                <div class="row">
-                    <div class="col-xs-1"></div>
-                    {{em-checkbox label=reportColumns.referredDate.label property="reportColumns.referredDate.include" class="col-xs-2"}}
-                    {{em-checkbox label=reportColumns.secondaryDiagnoses.label property="reportColumns.secondaryDiagnoses.include" class="col-xs-2"}}
-                    {{em-checkbox label=reportColumns.visitDate.label property="reportColumns.visitDate.include" class="col-xs-2"}}
-                    {{em-checkbox label=reportColumns.visitLocation.label property="reportColumns.visitLocation.include" class="col-xs-2"}}
-                    {{em-checkbox label=reportColumns.visitType.label property="reportColumns.visitType.include" class="col-xs-2"}}
-                </div>
-            {{/if}}
-        {{/em-form}}
-    </div>
-    <div class="panel-footer">
-        <button class="btn btn-default" {{action 'generateReport'}}>{{t 'inventory.reports.generate'}}</button>
-    </div>
+        <h3>{{t "inventory.reports.fields"}}</h3>
+        <div class="row">
+          <div class="col-xs-1"></div>
+          {{em-checkbox label=reportColumns.id.label property="reportColumns.id.include" class="col-xs-2"}}
+          {{em-checkbox label=reportColumns.name.label property="reportColumns.name.include" class="col-xs-2"}}
+          {{em-checkbox label=reportColumns.age.label property="reportColumns.age.include" class="col-xs-2"}}
+          {{em-checkbox label=reportColumns.contacts.label property="reportColumns.contacts.include" class="col-xs-2"}}
+          {{em-checkbox label=reportColumns.dateOfBirth.label property="reportColumns.dateOfBirth.include" class="col-xs-2"}}
+        </div>
+        <div class="row">
+          <div class="col-xs-1"></div>
+          {{em-checkbox label=reportColumns.examiner.label property="reportColumns.examiner.include" class="col-xs-2"}}
+          {{em-checkbox label=reportColumns.sex.label property="reportColumns.sex.include" class="col-xs-2"}}
+          {{em-checkbox label=reportColumns.primaryDiagnosis.label property="reportColumns.primaryDiagnosis.include" class="col-xs-2"}}
+          {{em-checkbox label=reportColumns.procedures.label property="reportColumns.procedures.include" class="col-xs-2"}}
+          {{em-checkbox label=reportColumns.referredBy.label property="reportColumns.referredBy.include" class="col-xs-2"}}
+        </div>
+        <div class="row">
+          <div class="col-xs-1"></div>
+          {{em-checkbox label=reportColumns.referredDate.label property="reportColumns.referredDate.include" class="col-xs-2"}}
+          {{em-checkbox label=reportColumns.secondaryDiagnoses.label property="reportColumns.secondaryDiagnoses.include" class="col-xs-2"}}
+          {{em-checkbox label=reportColumns.visitDate.label property="reportColumns.visitDate.include" class="col-xs-2"}}
+          {{em-checkbox label=reportColumns.visitLocation.label property="reportColumns.visitLocation.include" class="col-xs-2"}}
+          {{em-checkbox label=reportColumns.visitType.label property="reportColumns.visitType.include" class="col-xs-2"}}
+        </div>
+      {{/if}}
+    {{/em-form}}
+  </div>
+  <div class="panel-footer">
+    <button class="btn btn-default" {{action 'generateReport'}}>{{t 'inventory.reports.generate'}}</button>
+  </div>
 </div>
 {{#if showReportResults}}
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">{{reportTitle}}{{nav-paging paginationProps=paginationProps }}</h3>
-        </div>
-        <div class="panel-body">
-            <table class="table">
-                <tr class="table-header">
-                    {{#each reportHeaders as |reportHeader|}}
-                        <th>
-                            {{reportHeader}}
-                        </th>
-                    {{/each}}
-                </tr>
-                {{partial "report-rows"}}
-            </table>
-        </div>
-        <div class="panel-footer">
-            <a href={{csvExport}} target="_blank" download="report.csv" class="btn btn-default">{{t 'inventory.reports.export'}}</a>
-
-        </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{reportTitle}}{{nav-paging paginationProps=paginationProps }}</h3>
     </div>
+    <div class="panel-body">
+      <table class="table">
+        <tr class="table-header">
+          {{#each reportHeaders as |reportHeader|}}
+            <th>
+              {{reportHeader}}
+            </th>
+          {{/each}}
+        </tr>
+        {{partial "report-rows"}}
+      </table>
+    </div>
+    <div class="panel-footer">
+      <a href={{csvExport}} target="_blank" download="report.csv" class="btn btn-default">{{t 'inventory.reports.export'}}</a>
+
+    </div>
+  </div>
 {{/if}}

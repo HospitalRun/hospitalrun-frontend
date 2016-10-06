@@ -31,48 +31,48 @@
               {{#if model.visits}}
                 {{#each model.visits as |visit|}}
                   <div class="patient-history-item">
-
                     <div class="patient-history-heading clickable" {{action "editVisit" visit}}>
                       <span class="ph-visit-date">{{visit.visitDate}}</span>
                       <span class="ph-visit-type">{{visit.visitType}}</span>
                     </div>
 
                     {{#if visit.history}}
-                    <div class="ph-note-item">
-                      <h5 class="ph-note-heading">{{t 'patients.headings.history'}}</h5>
-                      {{html-line-break visit.history}}
-                    </div>
+                      <div class="ph-note-item">
+                        <h5 class="ph-note-heading">{{t 'patients.headings.history'}}</h5>
+                        {{html-line-break visit.history}}
+                      </div>
                     {{/if}}
 
                     {{#if visit.historySince}}
-                    <div class="ph-note-item">
-                      <h5 class="ph-note-heading">{{t "patients.headings.historySince"}}</h5>
-                      {{html-line-break visit.historySince}}
-                    </div>
+                      <div class="ph-note-item">
+                        <h5 class="ph-note-heading">{{t "patients.headings.historySince"}}</h5>
+                        {{html-line-break visit.historySince}}
+                      </div>
                     {{/if}}
 
                     {{#if visit.procedures}}
                       <div class="ph-note-item">
                         <h5 class="ph-note-heading">{{t 'labels.procedures' }}</h5>
                         {{#each visit.procedures as |procedure|}}
-                            <div {{action 'editProcedure' procedure }}>
-                              <h5 class="ph-note-heading">{{date-format procedure.procedureDate}}:
-                                {{#if procedure.cptCode}}
-                                  [{{t 'labels.cptcode' }} - {{procedure.cptCode}}]
-                                {{/if}}
-                                {{procedure.description}}
-                              </h5>
-                              <h6>
-                                {{t 'labels.physician'}}: {{procedure.physician}}
-                                {{#if procedure.assistant}}
-                                  , {{t 'labels.assisting'}}: {{procedure.assistant}}
-                                {{/if}}
-                                {{#if procedure.anesthesiologist}}
-                                  , {{t 'labels.anesthesia'}}: {{procedure.anesthesiologist}}
-                                {{/if}}
-                              </h6>
-                              {{html-line-break procedure.notes}}
-                            </div>
+                          <div {{action 'editProcedure' procedure }}>
+                            <h5 class="ph-note-heading">
+                              {{date-format procedure.procedureDate}}:
+                              {{#if procedure.cptCode}}
+                                [{{t 'labels.cptcode' }} - {{procedure.cptCode}}]
+                              {{/if}}
+                              {{procedure.description}}
+                            </h5>
+                            <h6>
+                              {{t 'labels.physician'}}: {{procedure.physician}}
+                              {{#if procedure.assistant}}
+                                , {{t 'labels.assisting'}}: {{procedure.assistant}}
+                              {{/if}}
+                              {{#if procedure.anesthesiologist}}
+                                , {{t 'labels.anesthesia'}}: {{procedure.anesthesiologist}}
+                              {{/if}}
+                            </h6>
+                            {{html-line-break procedure.notes}}
+                          </div>
                         {{/each}}
                       </div>
                     {{/if}}
@@ -80,11 +80,11 @@
                       <div class="ph-note-item">
                         <h5 class="ph-note-heading">{{t 'labels.imageOrders' }}</h5>
                         {{#each visit.imaging as |imaging|}}
-                            <div {{action 'editImaging' imaging }}>
-                              <h5 class="ph-note-heading">{{date-format imaging.imagingDate}}: {{imaging.imagingType.name}}</h5>
-                              <div>{{imaging.result}}</div>
-                              <div>{{html-line-break imaging.notes}}</div>
-                            </div>
+                          <div {{action 'editImaging' imaging }}>
+                            <h5 class="ph-note-heading">{{date-format imaging.imagingDate}}: {{imaging.imagingType.name}}</h5>
+                            <div>{{imaging.result}}</div>
+                            <div>{{html-line-break imaging.notes}}</div>
+                          </div>
                         {{/each}}
                       </div>
                     {{/if}}
@@ -92,11 +92,11 @@
                       <div class="ph-note-item">
                         <h5 class="ph-note-heading">{{t 'labels.labOrders' }}</h5>
                         {{#each visit.labs as |lab|}}
-                            <div {{action 'editLab' lab }}>
-                              <h5 class="ph-note-heading">{{date-format lab.labDate}}: {{lab.labType.name}}</h5>
-                              <div>{{lab.result}}</div>
-                              <div>{{html-line-break lab.notes}}</div>
-                            </div>
+                          <div {{action 'editLab' lab }}>
+                            <h5 class="ph-note-heading">{{date-format lab.labDate}}: {{lab.labType.name}}</h5>
+                            <div>{{lab.result}}</div>
+                            <div>{{html-line-break lab.notes}}</div>
+                          </div>
                         {{/each}}
                       </div>
                     {{/if}}
@@ -104,10 +104,10 @@
                       <div class="ph-note-item">
                         <h5 class="ph-note-heading">{{t 'labels.notes'}}</h5>
                         {{#each visit.patientNotes as |note|}}
-                            <div {{action 'showAddPatientNote' note }}>
-                              <h5 class="ph-note-heading">{{note.authoredBy}}</h5>
-                              {{date-format note.date}}[{{note.noteType}}]: {{html-line-break note.content}}
-                            </div>
+                          <div {{action 'showAddPatientNote' note }}>
+                            <h5 class="ph-note-heading">{{note.authoredBy}}</h5>
+                            {{date-format note.date}}[{{note.noteType}}]: {{html-line-break note.content}}
+                          </div>
                         {{/each}}
                       </div>
                     {{else}}
@@ -122,7 +122,7 @@
               {{/if}}
             </div>
           </div>
-      </div>
+        </div>
       {{/unless}}
       <div role="tabpanel" class="tab-pane {{if isNewOrDeleted 'active'}}" id="general">
         <div class="panel detail-section">
@@ -149,28 +149,28 @@
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
-                  {{select-or-typeahead property="status" label=(t 'patients.labels.status') list=statusList selection=model.status class="form-input-group" }}
-                  {{em-input property="externalPatientId" label=(t 'patients.labels.externalPatientId') class="form-input-group"}}
-                  {{em-select
-                    prompt=" "
-                    label=(t 'patients.labels.bloodType')
-                    property="bloodType"
-                    content=bloodTypes
-                    class="form-input-group"
-                  }}
-                  {{select-or-typeahead property="clinic" label=(t 'patients.labels.clinic') list=clinicList selection=model.clinic class="form-input-group"}}
-                  {{em-input property="referredBy" label=(t 'patients.labels.referredBy') class="form-input-group"}}
-                  {{date-picker property="referredDate" label=(t 'patients.labels.referredDate') class="form-input-group"}}
-                  {{em-input property="religion" label=(t 'patients.labels.religion') class="form-input-group"}}
-                  {{em-input property="parent" label=(t 'patients.labels.parent') class="form-input-group"}}
-                  {{em-select label=(t 'billing.labels.paymentProfile')
-                    property="paymentProfile"
-                    content=pricingProfiles
-                    optionValuePath="selectObject"
-                    optionLabelPath="selectObject.name"
-                    prompt=" "
-                    class="form-input-group"
-                  }}
+                {{select-or-typeahead property="status" label=(t 'patients.labels.status') list=statusList selection=model.status class="form-input-group" }}
+                {{em-input property="externalPatientId" label=(t 'patients.labels.externalPatientId') class="form-input-group"}}
+                {{em-select
+                  prompt=" "
+                  label=(t 'patients.labels.bloodType')
+                  property="bloodType"
+                  content=bloodTypes
+                  class="form-input-group"
+                }}
+                {{select-or-typeahead property="clinic" label=(t 'patients.labels.clinic') list=clinicList selection=model.clinic class="form-input-group"}}
+                {{em-input property="referredBy" label=(t 'patients.labels.referredBy') class="form-input-group"}}
+                {{date-picker property="referredDate" label=(t 'patients.labels.referredDate') class="form-input-group"}}
+                {{em-input property="religion" label=(t 'patients.labels.religion') class="form-input-group"}}
+                {{em-input property="parent" label=(t 'patients.labels.parent') class="form-input-group"}}
+                {{em-select label=(t 'billing.labels.paymentProfile')
+                  property="paymentProfile"
+                  content=pricingProfiles
+                  optionValuePath="selectObject"
+                  optionLabelPath="selectObject.name"
+                  prompt=" "
+                  class="form-input-group"
+                }}
               </div>
             </div>
           </div>
@@ -251,7 +251,7 @@
               <div class="row">
                 {{#each model.photos as |photo|}}
                   <div class="col-sm-4 col-md-3">
-                     <div {{action "editPhoto" photo}} class="thumbnail">
+                    <div {{action "editPhoto" photo}} class="thumbnail">
                       {{photo-display photo=photo }}
                       <div class="caption">
                         {{photo.caption}}
@@ -261,7 +261,8 @@
                           {{/if}}
                           {{#if canDeletePhoto}}
                             <button type="button" class="btn btn-default warning" {{action "showDeletePhoto" photo bubbles=false }}>
-                              <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}</button>
+                              <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
+                            </button>
                           {{/if}}
                         </p>
                       </div>
@@ -343,12 +344,12 @@
                     <td>{{visit.location}}</td>
                     <td>{{visit.visitType}}</td>
                     <td>
-                    {{#if canAddVisit}}
-                      <button type="button" class="btn btn-default neutral" {{action "editVisit" visit}}>{{t 'labels.edit'}}</button>
-                    {{/if}}
-                    {{#if canDeleteVisit}}
-                      <button type="button" class="btn btn-default warning" {{action "showDeleteVisit" visit bubbles=false }}><span class="octicon octicon-x"></span> {{t 'buttons.delete'}}</button>
-                    {{/if}}
+                      {{#if canAddVisit}}
+                        <button type="button" class="btn btn-default neutral" {{action "editVisit" visit}}>{{t 'labels.edit'}}</button>
+                      {{/if}}
+                      {{#if canDeleteVisit}}
+                        <button type="button" class="btn btn-default warning" {{action "showDeleteVisit" visit bubbles=false }}><span class="octicon octicon-x"></span> {{t 'buttons.delete'}}</button>
+                      {{/if}}
                     </td>
                   </tr>
                 {{/each}}
@@ -357,18 +358,18 @@
           </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="medication">
-            <div class="panel">
-              {{#if canAddMedication}}
-                <div class="panel-heading">
-                  <button type="button" class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}>
-                    <span class="octicon octicon-plus"></span>{{t 'patients.buttons.newMedication'}}
-                  </button>
-                </div>
-              {{/if}}
-              <div class="panel-body detail-section-content">
-                {{partial 'patients/medication'}}
+          <div class="panel">
+            {{#if canAddMedication}}
+              <div class="panel-heading">
+                <button type="button" class="btn btn-primary align-right" {{action "newMedication" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span>{{t 'patients.buttons.newMedication'}}
+                </button>
               </div>
+            {{/if}}
+            <div class="panel-body detail-section-content">
+              {{partial 'patients/medication'}}
             </div>
+          </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="imaging">
           <div class="panel">
@@ -440,7 +441,7 @@
                       </td>
                     </tr>
                   {{/each}}
-              </table>
+                </table>
                 <h4>
                   {{t 'patients.titles.expenses'}}
                   <button type="button" class="btn btn-primary align-right" {{action "showEditExpense" bubbles=false }}>
@@ -460,12 +461,12 @@
                       <td>{{expense.sources}}</td>
                       <td>{{expense.cost}}</td>
                       <td>
-                      <button type="button" class="btn btn-default neutral" {{action "showEditExpense" expense}}>{{t 'labels.edit'}}</button>
-                      {{#if canDeleteSocialWork}}
-                        <button type="button" class="btn btn-default warning" {{action "showDeleteExpense" expense bubbles=false }}>
-                          <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
-                        </button>
-                      {{/if}}
+                        <button type="button" class="btn btn-default neutral" {{action "showEditExpense" expense}}>{{t 'labels.edit'}}</button>
+                        {{#if canDeleteSocialWork}}
+                          <button type="button" class="btn btn-default warning" {{action "showDeleteExpense" expense bubbles=false }}>
+                            <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
+                          </button>
+                        {{/if}}
                       </td>
                     </tr>
                   {{/each}}

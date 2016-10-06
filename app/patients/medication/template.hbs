@@ -1,29 +1,29 @@
 <table class="table">
-    <tr class="table-header">
-        <th>{{t 'labels.date'}}</th>
-        <th>{{t 'labels.name'}}</th>
-        <th>{{t 'labels.status'}}</th>
-        <th>{{t 'labels.prescription'}}</th>
-        <th>{{t 'labels.requestedBy'}}</th>
-        <th>{{t 'labels.actions'}}</th>
+  <tr class="table-header">
+    <th>{{t 'labels.date'}}</th>
+    <th>{{t 'labels.name'}}</th>
+    <th>{{t 'labels.status'}}</th>
+    <th>{{t 'labels.prescription'}}</th>
+    <th>{{t 'labels.requestedBy'}}</th>
+    <th>{{t 'labels.actions'}}</th>
+  </tr>
+  {{#each patientMedications as |medication|}}
+    <tr {{action "editMedication" medication}}>
+      <td>{{date-format medication.prescriptionDate}}</td>
+      <td>{{medication.medicationName}}</td>
+      <td>{{medication.status}}</td>
+      <td>{{medication.prescription}}</td>
+      <td>{{medication.requestedBy}}</td>
+      <td>
+        {{#if medication.canEdit}}
+          {{#if canAddMedication}}
+            <button type="button" class="btn btn-default neutral" {{action "editMedication" medication}}>{{t 'labels.edit'}}</button>
+          {{/if}}
+          {{#if canDeleteMedication}}
+            <button type="button" class="btn btn-default warning" {{action "showDeleteMedication" medication bubbles=false }}><span class="octicon octicon-x"></span>{{t 'labels.delete'}}</button>
+          {{/if}}
+        {{/if}}
+      </td>
     </tr>
-    {{#each patientMedications as |medication|}}
-        <tr {{action "editMedication" medication}}>
-            <td>{{date-format medication.prescriptionDate}}</td>
-            <td>{{medication.medicationName}}</td>
-            <td>{{medication.status}}</td>
-            <td>{{medication.prescription}}</td>
-            <td>{{medication.requestedBy}}</td>
-            <td>
-                {{#if medication.canEdit}}
-                    {{#if canAddMedication}}
-                        <button type="button" class="btn btn-default neutral" {{action "editMedication" medication}}>{{t 'labels.edit'}}</button>
-                    {{/if}}
-                    {{#if canDeleteMedication}}
-                        <button type="button" class="btn btn-default warning" {{action "showDeleteMedication" medication bubbles=false }}><span class="octicon octicon-x"></span>{{t 'labels.delete'}}</button>
-                    {{/if}}
-                {{/if}}
-            </td>
-        </tr>
-    {{/each}}
+  {{/each}}
 </table>

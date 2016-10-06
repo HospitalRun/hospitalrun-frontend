@@ -8,6 +8,7 @@ export default Ember.Controller.extend(ModalHelper, ProgressDialog, {
     progressMessage: t('admin.loaddb.progressMessage'),
     progressTitle: t('admin.loaddb.progressTitle'),
     syncResults: null,
+    fileImportedName: null,
 
     actions: {
       loadFile: function() {
@@ -21,8 +22,11 @@ export default Ember.Controller.extend(ModalHelper, ProgressDialog, {
         } else {
           this.showProgressModal();
           this.set('syncResults');
+          this.set('fileImportedName');
           fileSystem.fileToString(fileToImport).then((fileAsString) => {
             var database = this.get('database');
+            var fileName = this.get('importFile.name');
+            this.set('fileImportedName', fileName);
             this.set('importFile');
             this.set('model.importFileName');
             database.loadDBFromDump(fileAsString).then((results) => {
