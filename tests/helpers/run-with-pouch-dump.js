@@ -55,9 +55,16 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
       return Ember.RSVP.resolve(configDB);
     },
     replicateConfigDB() {
-      return configDB.put({
-        _id: 'config_disable_offline_sync',
-        value: true
+      return configDB.get('config_disable_offline_sync').then(function(doc) {
+        if (doc.value !== true) {
+          doc.value = true;
+          return configDB.put(doc);
+        }
+      }).catch(function() {
+        return configDB.put({
+          _id: 'config_disable_offline_sync',
+          value: true
+        });
       });
     }
   });
