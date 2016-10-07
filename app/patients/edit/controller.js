@@ -1,11 +1,12 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
 import Ember from 'ember';
+import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, PatientNotes, {
+export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, PatientId, PatientNotes, {
   config: Ember.inject.service(),
 
   canAddAppointment: function() {
@@ -548,8 +549,11 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
   },
 
   beforeUpdate: function() {
-    return this.get('model').validate()
-      .catch(() => new Ember.RSVP.reject('ID has been taken'));
+    return this.get('model').validate().catch((err) => {
+      return this.generateFriendlyId().then((friendlyId) => {
+        this.model.set('friendlyId', friendlyId);
+      });
+    });
   },
 
   afterUpdate: function(record) {
