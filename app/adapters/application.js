@@ -17,6 +17,8 @@ export default Adapter.extend(PouchAdapterUtils, {
     'mapReduce'
   ],
 
+  _esDefaultSize: 100,
+
   _executeContainsSearch(store, type, query) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       var typeName = this.getRecordTypeName(type);
@@ -138,6 +140,11 @@ export default Adapter.extend(PouchAdapterUtils, {
         break;
       }
     }
+
+    if (!query.options.size) {
+      query.options.size = this.get('_esDefaultSize');
+    }
+
     if (!specialQuery) {
       if (query.options) {
         this._init(store, type);
