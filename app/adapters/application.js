@@ -17,7 +17,7 @@ export default Adapter.extend(PouchAdapterUtils, {
     'mapReduce'
   ],
 
-  _esDefaultSize: 100,
+  _esDefaultSize: 25,
 
   _executeContainsSearch(store, type, query) {
     return new Ember.RSVP.Promise((resolve, reject) => {
