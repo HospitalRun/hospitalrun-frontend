@@ -93,23 +93,23 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
 
   model: function() {
     if (!Ember.isEmpty(this.additionalModels)) {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
-        var promises = this.additionalModels.map(function(modelMap) {
+      return new Ember.RSVP.Promise((resolve, reject) => {
+        var promises = this.additionalModels.map((modelMap) => {
           if (modelMap.findArgs.length === 1) {
             return this.store.findAll.apply(this.store, modelMap.findArgs);
           } else {
             return this.store.find.apply(this.store, modelMap.findArgs);
           }
-        }.bind(this));
-        Ember.RSVP.allSettled(promises, 'All additional Models for ' + this.get('moduleName')).then(function(array) {
-          array.forEach(function(item, index) {
+        });
+        Ember.RSVP.allSettled(promises, 'All additional Models for ' + this.get('moduleName')).then((array) => {
+          array.forEach((item, index) => {
             if (item.state === 'fulfilled') {
               this.set(this.additionalModels[index].name, item.value);
             }
-          }.bind(this));
+          });
           resolve();
-        }.bind(this), reject);
-      }.bind(this), 'Additional Models for' + this.get('moduleName'));
+        }, reject);
+      }, 'Additional Models for' + this.get('moduleName'));
     } else {
       return Ember.RSVP.resolve();
     }
@@ -131,9 +131,9 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
     var propsToSet = this.getProperties('additionalButtons', 'currentScreenTitle', 'newButtonAction', 'newButtonText', 'sectionTitle', 'subActions');
     currentController.setProperties(propsToSet);
     if (!Ember.isEmpty(this.additionalModels)) {
-      this.additionalModels.forEach(function(item) {
+      this.additionalModels.forEach((item) => {
         controller.set(item.name, this.get(item.name));
-      }.bind(this));
+      });
     }
     this._super(controller, model);
   }
