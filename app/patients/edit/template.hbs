@@ -147,12 +147,14 @@
                     {{ext-radio content=patientTypes value=model.patientType showInline=true }}
                   </div>
                 </div>
+                {{#if model.isNew}}
                 <div class="form-input-group">
                   <label>Create An Outpatient Visit</label>
                   <div>
                     {{em-checkbox property="createOutpatientVisit" }}
                   </div>
                 </div>
+                {{/if}}
               </div>
               <div class="col-xs-12 col-sm-6">
                   {{select-or-typeahead property="status" label="Patient Status" list=statusList selection=model.status class="form-input-group" }}

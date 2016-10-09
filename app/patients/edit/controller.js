@@ -518,8 +518,8 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
 
   afterUpdate: function(record) {
     var patient = this.get('model');
-    if (patient.getProperties('createOutpatientVisit').createOutpatientVisit) {
-      var visits = this.get('model.visits');
+    if (patient.get('createOutpatientVisit')) {
+      var visits = [];
       this.send('createNewVisit', patient, visits);
       this.transitionToRoute('visits.edit');
     }
