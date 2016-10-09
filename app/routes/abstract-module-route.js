@@ -62,7 +62,7 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
      * - newButtonText - The text to display for the "new" button.
      * - newButtonAction - The action to fire for the "new" button.
      */
-    setSectionHeader: function(details) {
+    setSectionHeader(details) {
       var currentController = this.controllerFor(this.get('moduleName'));
       currentController.setProperties(details);
     }
@@ -72,7 +72,7 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
   /**
    * Make sure the user has permissions to the module; if not reroute to index.
    */
-  beforeModel: function(transition) {
+  beforeModel(transition) {
     var moduleName = this.get('moduleName');
     if (this.currentUserCan(moduleName)) {
       return this._super(transition);
@@ -85,13 +85,13 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
   /**
    * Override this function to generate an id for a new record
    * @return a promise that will resolved to a generated id;default is null which means that an
-   * id will be automatically generated via Ember data.
+   * id will be automatically generated via Ember data.8
    */
-  generateId: function() {
+  generateId() {
     return Ember.RSVP.resolve(null);
   },
 
-  model: function() {
+  model() {
     if (!Ember.isEmpty(this.additionalModels)) {
       return new Ember.RSVP.Promise((resolve, reject) => {
         var promises = this.additionalModels.map((modelMap) => {
