@@ -3,6 +3,8 @@ import Ember from 'ember';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 
+const { isEmpty } = Ember;
+
 export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRouteMixin, {
   database: Ember.inject.service(),
   filterParams: null,
@@ -15,12 +17,19 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
   nextStartKey: null,
   pageTitle: null,
 
+  queryParams: {
+    sortDesc: { refreshModel: true },
+    sortKey: { refreshModel: true },
+    startKey: { refreshModel: true }
+  },
+
   _getFilterParams(params) {
+
     let filterByList = [];
     let filterParams = this.get('filterParams');
     if (!Ember.isEmpty(filterParams)) {
       filterParams.forEach(function(paramName) {
-        if (!Ember.isEmpty(params[paramName])) {
+        if (!isEmpty(params[paramName])) {
           filterByList.push({
             name: paramName,
             value: params[paramName]
@@ -49,6 +58,29 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
 
   _modelQueryParams() {
     return {};
+  },
+
+  buildQueryParams(params) {
+    var filterParams = this._getFilterParams(params),
+      itemsPerPage = this.get('itemsPerPage'),
+      queryParams = this._modelQueryParams(params);
+    if (!isEmpty(params.sortKey)) {
+      queryParams.sortKey = params.sortKey;
+      if (!isEmpty(params.sortDesc)) {
+        queryParams.sortDesc = params.sortDesc;
+      }
+    }
+    if (!isEmpty(filterParams)) {
+      queryParams.filterBy = filterParams;
+    }
+    if (isEmpty(queryParams.options)) {
+      queryParams.options = {};
+    }
+    queryParams.options.limit = itemsPerPage + 1;
+    if (!isEmpty(params.startKey)) {
+      queryParams.options.startkey = params.startKey;
+    }
+    return queryParams;
   },
 
   model(params) {
@@ -88,12 +120,6 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
     });
   },
 
-  queryParams: {
-    sortDesc: { refreshModel: true },
-    sortKey: { refreshModel: true },
-    startKey: { refreshModel: true }
-  },
-
   setupController(controller, model) {
     let props = this.getProperties('firstKey', 'nextStartKey');
     controller.setProperties(props);
@@ -102,10 +128,10 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
     };
     if (this.get('hideNewButton')) {
       sectionDetails.newButtonAction = null;
-    } else if (!Ember.isEmpty(this.get('newButtonAction'))) {
+    } else if (!isEmpty(this.get('newButtonAction'))) {
       sectionDetails.newButtonAction = this.get('newButtonAction');
     }
-    if (!Ember.isEmpty(this.get('newButtonText'))) {
+    if (!isEmpty(this.get('newButtonText'))) {
       sectionDetails.newButtonText = this.get('newButtonText');
     }
     this.send('setSectionHeader', sectionDetails);
