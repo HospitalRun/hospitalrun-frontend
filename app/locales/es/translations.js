@@ -1,55 +1,94 @@
 export default {
   dashboard: {
-    title: 'Que deseas hacer?'
+    title: '¿Qué deseas hacer?'
+  },
+  errors: {
+    inclusion: 'no está incluido en la lista',
+    exclusion: 'es reservado',
+    invalid: 'es invalido',
+    confirmation: '{{attribute}} no corresponde',
+    accepted: 'debe ser aceptado',
+    empty: 'no puede ser vacío',
+    blank: 'no puede ser en blanco',
+    present: 'puede ser blanco',
+    tooLong: 'demasiado largo (máximo {{count}} caracteres)',
+    tooShort: 'demasiado corto (mínimo {{count}} caracteres)',
+    wrongLength: 'el tamaño es incorrecto (deben ser {{count}} caracteres)',
+    notANumber: 'no es un número',
+    notAnInteger: 'debe ser un número entero',
+    greaterThan: 'debe ser mayor que {{count}}',
+    greaterThanOrEqualTo: 'debe ser mayor o igual a {{count}}',
+    equalTo: 'debe ser igual a {{count}}',
+    lessThan: 'debe ser menor que {{count}}',
+    lessThanOrEqualTo: 'debe ser menor o igual a {{count}}',
+    otherThan: 'debe ser diferente a {{count}}',
+    odd: 'debe ser impar',
+    even: 'debe ser par',
+    invalidNumber: 'número no válido',
+    result: 'Por favor introduce un resultado antes de completar'
+  },
+  dates: {
+    long: '{{years}} años {{months}} meses {{days}} días',
+    longPlural: '{{years}} años {{months}} meses {{days}} días',
+    longOmitYears: '{{months}} meses {{days}} días',
+    longOmitDays: '{{years}} año {{months}} meses',
+    longOmitDaysPlural: '{{years}} años {{months}} meses',
+    longOmitDaysYears: '{{months}} meses',
+    shortOmitYears: '{{months}}m {{days}}d',
+    short: '{{years}}y {{months}}m {{days}}d'
   },
   navigation: {
-    imaging: 'Radiografia',
+    imaging: 'Radiografía',
     inventory: 'Inventario',
     patients: 'Pacientes',
     appointments: 'Citas',
-    medication: 'Recetas medicas',
+    medication: 'Recetas Médicas',
     labs: 'Laboratorio',
     billing: 'Facturas',
-    administration: 'Administracion',
+    administration: 'Administración',
     subnav: {
+      actions: 'Acciones',
       requests: 'Pedidos',
-      items: 'Items',
+      items: 'Artículos',
       completed: 'Completado',
-      newRequest: 'New pedido',
-      inventoryReceived: 'Inventario recibido',
+      newRequest: 'Nuevo Pedido',
+      inventoryReceived: 'Inventario Recibido',
       reports: 'Reportes',
-      patientListing: 'Lista de pacientes',
-      newPatient: 'Nuevo paciente',
-      thisWeek: 'Esta semana',
+      patientListing: 'Lista de Pacientes',
+      newPatient: 'Nuevo Paciente',
+      thisWeek: 'Esta Semana',
       today: 'Hoy',
       search: 'Buscar',
-      addAppointment: 'Nueva cita',
-      dispense: 'Dispense',
-      returnMedication: 'Devolver medicamento',
+      addAppointment: 'Nueva Cita',
+      dispense: 'Despachar',
+      returnMedication: 'Devolver Medicamento',
       invoices: 'Facturas',
-      newInvoice: 'Nueva factura',
+      newInvoice: 'Nueva Factura',
       prices: 'Precios',
-      priceProfiles: 'Perfil de precios',
-      lookupLists: 'Lista de busuedas',
-      addressFields: 'Campos de dirección',
-      loadDb: 'Cargar base de datos',
+      priceProfiles: 'Perfil de Precios',
+      lookupLists: 'Lista de Búsquedas',
+      addressFields: 'Campos de Dirección',
+      loadDB: 'Cargar Base de Datos',
       users: 'Usuarios',
-      newUser: 'Nuevo usuario',
-      userRoles: 'Roles'
+      newUser: 'Nuevo Usuarios',
+      admittedPatients: 'Pacientes Admitidos',
+      missed: 'Perdido',
+      userRoles: 'Perfiles de Usuarios',
+      workflow: 'Workflow'
     },
     actions: {
       logout: 'Salir',
-      login: 'Ingresar'
+      login: 'Entrar'
     },
-    about: 'Información de HospitalRun'
+    about: 'Acerca de HospitalRun'
   },
   user: {
-    plusNewUser: '+ nuevo usuario',
-    usersPageTile: 'Listado de usuarios'
+    plusNewUser: '+ Nuevo Usuario',
+    usersPageTile: 'Lista de Usuarios'
   },
   admin: {
     addressOptions: 'Opciones de direcciones',
-    lookupLists: 'Lista de busqueda',
+    lookupLists: 'Lista de búsqueda',
     loadDb: 'Cargar Base de datos',
     userRoles: 'Roles',
     users: 'Usuarios',
@@ -63,112 +102,112 @@ export default {
       include3Label: 'Incluir 3',
       include4Label: 'Incluir 4',
       titles: {
-        optionsSaved: 'Opciones guardadas'
+        optionsSaved: 'Opciones Guardadas'
       },
       messages: {
-        addressSaved: 'las opciones de dirección han sido guardadas'
+        addressSaved: 'Las opciones de dirección han sido guardadas'
       },
 
       newTitle: 'Opciones de dirección',
       editTitle: 'Opciones de dirección',
-      addressLabel: 'Direcciones'
+      addressLabel: 'Dirección'
     },
     loaddb: {
       progressMessage: 'Por favor espere mientras la base de datos es cargada.',
-      progressTitle: 'Cargando ase de datos',
+      progressTitle: 'Cargando base de datos',
       displayAlertTitle: 'Seleccione un archivo para cargar',
       displayAlertMessage: 'Por favor seleccione un archivo para ser cargado.',
-      errorDisplayAlertTitle: 'Error cargando',
-      errorDisplayAlertMessage: `La base de datos no fue cargada el error fue: {{error}}`,
+      errorDisplayAlertTitle: 'Error al cargar',
+      errorDisplayAlertMessage: 'La base de datos no fue cargada el error fue: {{error}}',
       editTitle: 'Cargar bd'
     },
     lookup: {
       deleteValueInventoryTypeMedicationTitle: 'No se puede eliminar el medicamento',
       deleteValueInventoryTypeMedicationMessage: 'El tipo de inventario de medicamentos no se pueden eliminar porque se necesita para el módulo de medicación.',
       deleteValueLabPricingTypeProcedureTitle: 'No se puede eliminar el tipo de precio',
-      deleteValueLabPricingTypeProcedureMessage: 'El tipo de precio Procedimiento Lab no se puede eliminar porque es necesaria para el módulo de laboratorios.',
+      deleteValueLabPricingTypeProcedureMessage: 'El tipo de precio procedimiento de laboratorio no se puede eliminar porque es necesaria para el módulo de laboratorios.',
       deleteValueImagingPricingTypeProcedureTitle: 'No se puede eliminar el tipo de imagen',
-      deleteValueImagingPricingTypeProcedureMessage: 'No se puede eliminar porque es necesario para el modulo de radiografias',
-      deleteValueVisitTypeAdmissionTitle: 'No se puede eliminar admision tipo visita',
-      deleteValueVisitTypeAdmissionMessage: 'Tipo de visita es necesaria para el modulo de admisiones.',
-      deleteValueVisitTypeImagingTitle: 'No se puede eliminar el tipo radiografia',
-      deleteValueVisitTypeImagingMessage: 'No se puede eliminar por que es necesario para el modulo de radiografias.',
+      deleteValueImagingPricingTypeProcedureMessage: 'No se puede eliminar porque es necesario para el módulo de radiografías',
+      deleteValueVisitTypeAdmissionTitle: 'No se puede eliminar admisión tipo visita',
+      deleteValueVisitTypeAdmissionMessage: 'Tipo de visita es necesaria para el módulo de admisiones.',
+      deleteValueVisitTypeImagingTitle: 'No se puede eliminar el tipo radiografía',
+      deleteValueVisitTypeImagingMessage: 'No se puede eliminar por que es necesario para el módulo de radiografías.',
       deleteValueVisitTypeLabTitle: 'No se puede eliminar el tipo laboratorio',
-      deleteValueVisitTypeLabMessage: 'Es necesario para el modulo de laboratorio.',
+      deleteValueVisitTypeLabMessage: 'Es necesario para el módulo de laboratorio.',
       deleteValueVisitTypePharmacyTitle: 'No se puede eliminar el tipo farmacia',
-      deleteValueVisitTypePharmacyMessage: 'Es requerido por el modulo de recetas.',
+      deleteValueVisitTypePharmacyMessage: 'Es requerido por el módulo de recetas.',
       alertImportListTitle: 'Seleccione un archivo para importar',
       alertImportListMessage: 'Por favor seleccione un archivo para importar.',
       alertImportListSaveTitle: 'Lista importada',
-      alertImportListSaveMessage: 'Lista de busqueda importada.',
-      alertImportListUpdateTitle: 'Lista salvada',
-      alertImportListUpdateMessage: 'La lista de busqueda ha sido salvada.',
-      pageTitle: 'Listas de busqueda',
+      alertImportListSaveMessage: 'Lista de búsqueda importada.',
+      alertImportListUpdateTitle: 'Lista guardada',
+      alertImportListUpdateMessage: 'La lista de búsqueda ha sido guardada.',
+      pageTitle: 'Listas de búsqueda',
       edit: {
         template: {
-          addTitle: 'Adicionar valor',
+          addTitle: 'Agregar valor',
           editTitle: 'Editar valor',
-          updateButtonTextAdd: 'Adicionar',
+          updateButtonTextAdd: 'Agregar',
           updateButtonTextUpdate: 'Actualizar',
           labelTitle: 'Valor'
         }
       },
       anesthesiaTypes: 'Tipos de anestesia',
-      anesthesiologists: 'Anestesiologo',
-      billingCategories: 'Categorias de facturacion',
-      clinicList: 'Ubicacion de las clinicas',
-      countryList: 'Paises',
-      diagnosisList: 'Diagnosticos',
-      cptCodeList: 'Codigos CPT',
+      anesthesiologists: 'Anestesiólogo',
+      billingCategories: 'Categorías de facturación',
+      clinicList: 'Ubicación de las clínicas',
+      countryList: 'Países',
+      diagnosisList: 'Diagnósticos',
+      cptCodeList: 'Códigos CPT',
       expenseAccountList: 'Cuentas de gastos',
-      aisleLocationList: 'Ubicacion de inventario de pasillo',
-      warehouseList: 'Ubicacciones de inventarios',
+      aisleLocationList: 'Ubicación de inventario de pasillo',
+      warehouseList: 'Ubicaciones de inventarios',
       inventoryTypes: 'Tipos de inventarios',
-      imagingPricingTypes: 'Tipos de precios de radiografias',
+      imagingPricingTypes: 'Tipos de precios de radiografías',
       labPricingTypes: 'Precios de laboratorio',
       patientStatusList: 'Lista de estado de pacientes',
-      physicianList: 'Medicos',
+      physicianList: 'Médicos',
       procedureList: 'Procedimientos',
-      procedureLocations: 'Ubicacion de los procedimientos',
+      procedureLocations: 'Ubicación de los procedimientos',
       procedurePricingTypes: 'Tipos de procedimientos y precios',
-      radiologists: 'Radiologo',
+      radiologists: 'Radiólogo',
       unitTypes: 'Tipos de unidad',
       vendorList: 'Proveedor',
-      visitLocationList: 'Lugares de visista',
+      visitLocationList: 'Lugares de visita',
       visitTypes: 'Tipos de visita',
-      wardPricingTypes: 'Tipos de las tarifas'
+      wardPricingTypes: 'Tipos de precios de enfermería'
     },
     roles: {
       capability: {
-        admin: 'Administracion',
+        admin: 'Administración',
         loadDb: 'Cargar base de datos',
-        updateConfig: 'Actualizar configuracion',
+        updateConfig: 'Actualizar configuración',
         appointments: 'Citas',
-        addAppointment: 'Adicionar cita',
-        billing: 'Facturacion',
-        addCharge: 'Adicionar cargo (valor)',
-        addPricing: 'Adicionar precio',
-        addPricingProfile: 'Adicionar perfil de precios',
-        addInvoice: 'Adicionar factura',
-        addPayment: 'Adicionar pago',
+        addAppointment: 'Agregar cita',
+        billing: 'Facturación',
+        addCharge: 'Agregar cargo (valor)',
+        addPricing: 'Agregar precio',
+        addPricingProfile: 'Agregar perfil de precios',
+        addInvoice: 'Agregar factura',
+        addPayment: 'Agregar pago',
         deleteInvoice: 'Eliminar factura',
         deletePricing: 'Eliminar precio',
         deletePricingProfile: 'Eliminar perfil de precio',
-        editInvoice: 'Editar factura',
+        editInvoice: 'Editar Factura',
         invoices: 'Facturas',
-        overrideInvoice: 'Sobreescribir factura',
+        overrideInvoice: 'Sobreescribir Factura',
         pricing: 'Precio',
         patients: 'Pacientes',
-        addDiagnosis: 'Adicionar diagnostico',
-        addPhoto: 'Adicionar foto',
-        addPatient: 'Adicionar paciente',
-        addVisit: 'Adicionar visita',
-        addVitals: 'Adicionar partes vitales',
+        addDiagnosis: 'Agregar diagnóstico',
+        addPhoto: 'Agregar foto',
+        addPatient: 'Agregar paciente',
+        addVisit: 'Agregar visita',
+        addVitals: 'Agregar partes vitales',
         admitPatient: 'Admitir paciente',
         deletePhoto: 'Eliminar foto',
         deletePatient: 'Eliminar paciente',
         deleteAppointment: 'Eliminar cita',
-        deleteDiagnosis: 'Eliminar diagnostico',
+        deleteDiagnosis: 'Eliminar diagnóstico',
         deleteProcedure: 'Eliminar procedimiento',
         deleteSocialwork: 'Eliminar trabajo social',
         deleteVitals: 'Eliminar organo vital',
@@ -177,77 +216,100 @@ export default {
         patientReports: 'Reportes por paciente',
         visits: 'Visitas',
         medication: 'Medicación',
-        addMedication: 'Adicionar medicación',
+        addMedication: 'Agregar medicación',
         deleteMedication: 'Eliminar medicación',
         fulfillMedication: 'Cumplir la medicación',
         labs: 'Laboratorios',
-        addLab: 'Adicionar laboratorio',
+        addLab: 'Agregar laboratorio',
         completeLab: 'Completar laboratorio',
         deleteLab: 'Eliminar laboratorio',
-        imaging: 'Radiografia',
-        addImaging: 'Adicionar radiografia',
-        completeImaging: 'Completar radiografia',
-        deleteImaging: 'Eliminar radiografia',
+        imaging: 'Radiografía',
+        addImaging: 'Agregar radiografía',
+        completeImaging: 'Completar radiografía',
+        deleteImaging: 'Eliminar radiografía',
         inventory: 'Inventario',
         addInventoryRequest: 'Pedido de inventario',
-        addInventoryItem: 'Adicionar elemento al inventario',
-        addInventoryPurchase: 'Adicionar compra',
+        addInventoryItem: 'Agregar elemento al inventario',
+        addInventoryPurchase: 'Agregar compra',
         adjustInventoryLocation: 'Ajustar lugar elemento en el inventario',
         deleteInventoryItem: 'Eliminar elemento del inventario',
         deleteInventoryPurchase: 'Eliminar compra del inventario',
         fulfillInventory: 'Cumplimiento de inventario',
-        userRoles: 'Roles de usuario'
+        userRoles: 'Perfiles de usuario'
       },
       messages: {
-        roleSaved: 'El {{roleName}} rol ha sido salvado.'
+        roleSaved: 'El {{roleName}} perfil ha sido guardado.'
       },
       titles: {
-        roleSaved: 'Role salvado'
+        roleSaved: 'Perfil guardado'
       }
+    },
+    workflow: {
+      admissionDepositLabel: 'Depósito de admisión obligatorio',
+      clinicPrepaymentLabel: 'Pago anticipado a la clínica obligatorio',
+      followupPrepaymentLabel: 'Pago anticipado de segimiento obligatorio',
+      outpatientLabLabel: 'Pago anticipado de laboratorio para paciente externo obligatorio',
+      outpatientImagingLabel: 'Pago anticipado de radiografía para paciente externo obligatorio',
+      outpatientMedicationLabel: 'Pago anticipado de medicación para paciente externo obligatorio',
+
+      titles: {
+        optionsSaved: 'Opciones Guardadas'
+      },
+      messages: {
+        optionsSaved: 'Las opciones de workflow han sido guardadas'
+      },
+
+      newTitle: 'Opciones de Workflow',
+      editTitle: 'Opciones de Workflow',
+      workflowLabel: 'Workflow'
+
     }
   },
   labels: {
-    cptcode: 'Codigo CPT',
+    cptcode: 'Código CPT',
     loading: 'Cargando',
     name: 'Nombre',
     patient: 'Paciente',
-    quantity: 'Cantidada',
-    requestedOn: 'Pedido On',
+    quantity: 'Cantidad',
+    requestedOn: 'Pedido En',
     date: 'Fecha',
     dateOfBirth: 'Fecha de nacimiento',
     dateOfBirthShort: 'FDN',
     dateRequested: 'Fecha de pedido',
     dateCompleted: 'Fecha completada',
     description: 'Descripción',
-    requestedBy: 'Pedido por|',
-    fulfill: 'Cumplomiento',
+    requestedBy: 'Pedido por',
+    fulfill: 'Cumplimiento',
     fulfillRequest: 'Pedido de cumplimiento',
     fulfillRequestNow: 'Pedido de cumplimiento ahora',
     actions: 'Acciones',
-    action: 'Accion',
+    action: 'Acción',
     notes: 'Notas',
     edit: 'Editar',
-    imageOrders: 'Ordenes de radiografias',
-    labOrders: 'Ordenes de laboratorio',
+    imageOrders: 'Órdenes de radiografías',
+    labOrders: 'Órdenes de laboratorio',
     patientHistory: 'Historia del paciente',
-    imagingType: 'Tipo de radiografia',
+    imagingType: 'Tipo de radiografía',
     result: 'Resultado',
     results: 'Resultados',
     visit: 'Visita',
     requests: 'Pedido',
     completed: 'Completado',
+    requests: 'Solicitudes',
+    completed: 'Completado',
     id: 'Id',
-    on: 'on',
+    on: 'en',
     type: 'Tipo',
     sex: 'Genero',
     age: 'Edad',
+    search: 'Buscar',
     username: 'Nombre de usuario',
     email: 'Email',
-    role: 'Rol',
+    role: 'Perfil',
     delete: 'Eliminar',
     userCanAddNewValue: 'Los usuarios pueden agregar nuevos valores',
     value: 'Valor',
-    lookupType: 'Tipo de busqueda',
+    lookupType: 'Tipo de búsqueda',
     importFile: 'Importar archivo',
     fileLoadSuccessful: 'Archivo cargado exitosamente',
     fileToLoad: 'Archivo cargado',
@@ -265,32 +327,53 @@ export default {
     medication: 'Medicación',
     status: 'Estado',
     addNewOutpatientVisit: '--Nueva visita a paciente externo--',
-    prescription: 'Receta medica',
-    prescriptionDate: 'Fecha de la receta medica',
+    prescription: 'Receta médica',
+    prescriptionDate: 'Fecha de la receta médica',
     billTo: 'Facturar a',
     pullFrom: 'Traer de',
     fulfilled: 'Cumplido',
     deleteRequest: 'Eliminar pedido',
-    location: 'Ubicacion',
+    location: 'Ubicación',
     provider: 'Proveedor',
     with: 'con',
-    allDay: 'Todo el dia',
+    allDay: 'Todo el día',
     physician: 'Médico',
     assisting: 'Asistencia',
     anesthesia: 'Anestesia',
     procedures: 'Procedimiento'
+    procedures: 'Procedimientos',
+    number: 'Numero',
+    billDate: 'Fecha Factura',
+    balanceDue: 'Saldo Vencido',
+    amount: 'Monto',
+    datePaid: 'Fecha de Pago',
+    creditTo: 'Crédito a',
+    invoiceId: 'Factura ID',
+    lineItems: 'Artículos de línea',
+    discount: 'Descuento',
+    excess: 'Excedente',
+    price: 'Precio',
+    total: 'Total',
+    expenseTo: 'Gasto para',
+    grandTotal: 'Gran Total',
+    remarks: 'Observaciones',
+    payments: 'Pagos',
+    category: 'Categoría',
+    department: 'Departmento',
+    address: 'Dirección',
+    country: 'País'
   },
   messages: {
     noItemsFound: 'Elementos no encontrados.',
     noHistoryAvailable: 'Historia no disponible.',
-    createNewRecord: 'Crear un nuevo registro?',
-    createNewUser: 'Crear un nuevo usuario?',
+    createNewRecord: '¿Crear un nuevo registro?',
+    createNewUser: '¿Crear un nuevo usuario?',
     noUsersFound: 'Ningun usuario encontrado.',
-    areYouSureDelete: 'Estas seguro de eliminar este usuario {{user}}?',
-    userHasBeenSaved: 'El usuario ha sido salvado.',
-    userSaved: 'Usuario salvado',
+    areYouSureDelete: '¿Estas seguro de eliminar este usuario {{user}}?',
+    userHasBeenSaved: 'El usuario ha sido guardado.',
+    userSaved: 'Usuario guardado',
     onBehalfOf: 'a nombre de',
-    newPatientHasToBeCreated: 'Un nuevo paciente debe ser creado...Por favor espere..',
+    newPatientHasToBeCreated: 'Un nuevo paciente debe ser creado... Por favor espere..',
     noNotesAvailable: 'No hay notas clínicas adicionales están disponibles para esta visita.',
     sorry: 'Lo sentimos, un error ha ocurrido...',
     forAuthorizedPersons: 'Este informe es sólo para personas autorizadas.'
@@ -298,20 +381,24 @@ export default {
   alerts: {
     pleaseWait: 'Por favor espere'
   },
+  headings: {
+    chargedItems: 'Elementos Cargados'
+  },
   buttons: {
+    addItem: 'Agregar Elemento',
     complete: 'Completado',
     cancel: 'Cancelar',
     close: 'Cerrar',
     returnButton: 'Regresar',
-    barcode: 'Codigo de barras',
-    add: 'Adicionar',
+    barcode: 'Código de barras',
+    add: 'Agregar',
     update: 'Actualizar',
     ok: 'Ok',
     fulfill: 'Cumplimiento',
     remove: 'Remover',
     delete: 'Eliminar',
     newUser: 'Nuevo usuario',
-    addValue: 'Adicionar valor',
+    addValue: 'Agregar valor',
     newNote: 'Nueva nota',
     import: 'Importar',
     loadFile: 'Cargar archivo',
@@ -320,8 +407,10 @@ export default {
     dispense: 'Repartir',
     newItem: '+ nuevo elemento',
     newRequestPlus: '+ nuevo pedido',
-    addVisit: 'Adicionar visita',
+    addVisit: 'Agregar visita',
     search: 'Buscar'
+    edit: 'Editar',
+    addLineItem: 'Agregar elemento de línea'
   },
   login: {
     messages: {
@@ -329,9 +418,28 @@ export default {
       error:    'Nombre de usuario o clave incorrectos.'
     },
     labels: {
-      password: 'Clave',
-      username: 'Nombre de usuario',
-      signIn:  'Ingresar'
+      password: 'Contraseña',
+      username: 'Usuario',
+      signIn:  'Entrar'
+    }
+  },
+  loading: {
+    progressBar: {
+      progress: '{{progressBarValue}}% Completado'
+    },
+    messages: {
+      0: 'La velocidad de vuelo de las mariposas es de 12 millas por hora. ¡Algunas mariposas pueden volar 25 millas por hora!',
+      1: 'Los búhos son las únicas aves que pueden ver el color azul.',
+      2: 'Los gatos tienen más de 100 sonidos vocales; Sólo los perros tienen 10.',
+      3: 'Los seres humanos utilizan un total de 72 músculos diferentes en el habla.',
+      4: 'Más de 1.000 lenguas diferentes se hablan en el continente de África.',
+      5: 'Un eritrofobico es alguien que se sonroja con facilidad.',
+      6: 'La fobia más común en el mundo es la algofobia que es el miedo al dolor.',
+      7: 'Tu cuerpo utiliza 300 músculos para equilibrarse cuando está de pie.',
+      8: 'Ciertas ranas pueden ser sólido congelado se descongela a continuación, y seguir viviendo.',
+      9: 'Nuestros ojos son siempre del mismo tamaño desde que nacemos, pero nuestra nariz y orejas nunca dejan de crecer.',
+      10: 'ST lengua es el único músculo en tu cuerpo que está unida en un solo extremo.',
+      11: 'Los camellos tienen tres párpados para protegerse de las tormentas de arena.'
     }
   },
   inventory: {
@@ -340,17 +448,17 @@ export default {
       delivered: 'Enviado A:',
       location: 'Cambio de ubicación:',
       prescription: 'Recetado por:',
-      pulled: 'Pulled From:',
-      quantity: 'Quantity at Completion:',
+      pulled: 'Retirado de:',
+      quantity: 'Cantidad de finalización:',
       reason: 'Razón:',
       returned: 'Regresado al paciente:',
-      transferredFrom: 'Transferido a:',
+      transferredFrom: 'Transferido de:',
       transferredTo: 'Transferido a:'
     },
     labels: {
       action: 'Acción',
-      add: 'Adicionar',
-      adjust: 'Adjustar',
+      add: 'Agregar',
+      adjust: 'Ajustar',
       adjustmentDate: 'Fecha de ajuste',
       adjustmentFor: 'Ajustado para',
       adjustmentType: 'Tipo de ajuste',
@@ -358,19 +466,19 @@ export default {
       aisleLocation: 'Ubicación pasillo',
       allInventory: 'Todo el inventario',
       billTo: 'Facturao a',
-      consumePurchases: 'Consume Purchases',
+      consumePurchases: 'Compras para consumo',
       consumptionRate: 'Tasa de consumo',
       cost: 'Costo',
       costPerUnit: 'Costo por Unidad',
       crossReference: 'Referencia cruzada',
       currentQuantity: 'Cantidad actual',
       dateCompleted: 'Fecha completado',
-      dateEffective: 'Gecha efectiva',
+      dateEffective: 'Fecha efectiva',
       dateEnd: 'Fecha final',
       dateStart: 'Fecha inicial',
       dateReceived: 'Fecha recibido',
       dateTranferred: 'Fecha transferencia',
-      daysLeft: 'Dias restantes',
+      daysLeft: 'Días restantes',
       deliveryAisle: 'Enviado a pasillo',
       deliveryLocation: 'Ubicación del envio',
       distributionUnit: 'Unidad de distribución',
@@ -389,11 +497,11 @@ export default {
       inventoryItem: 'Elemento del inventario',
       inventoryObsolence: 'Obsolescencia de inventario',
       invoiceItems: 'Articulos de factura',
-      invoiceLineItem: 'Elemento de la factura linea',
-      invoiceNumber: 'Factura numero',
+      invoiceLineItem: 'Elemento de la factura línea',
+      invoiceNumber: 'Factura número',
       item: 'Elemento',
       items: 'Elementos',
-      itemNumber: 'Numero de elemento',
+      itemNumber: 'Número de elemento',
       location: 'Ubicación',
       locations: 'Ubicaciones',
       name: 'Nombre',
@@ -401,12 +509,12 @@ export default {
       newItem: 'Nuevo elemento',
       originalQuantity: 'Cantidad original',
       print: 'Imprimir',
-      printBarcode: 'Imprimir codigo de  barras',
+      printBarcode: 'Imprimir código de  barras',
       printer: 'Impresora',
-      pullFrom: 'Traido de',
+      pullFrom: 'Traído de',
       purchases: 'Compras',
       purchaseCost: 'Costo de compra',
-      purchaseInfo: 'Informacion de la compra',
+      purchaseInfo: 'Información de la compra',
       quantity: 'Cantidad ({{unit}})',
       quantityAvailable: 'Cantidad disponible',
       quantityOnHand: 'Cantidad a la mano',
@@ -419,6 +527,7 @@ export default {
       salePricePerUnit: 'Costo de venta por unidad',
       save: 'Guardar',
       serialNumber: 'Serial/Numero de lote',
+      serialNumber: 'Serial/Lot Number',
       total: 'Total',
       totalCost: 'Costo total',
       totalReceived: 'Total Recivido: {{total}}',
@@ -431,223 +540,464 @@ export default {
       unit: 'Unidad',
       unitCost: 'Unidad Costo',
       vendor: 'Proveedor',
-      vendorItemNumber: 'Proveedor numero de elemento',
+      vendorItemNumber: 'Proveedor número de elemento',
       xref: 'XRef'
     },
     messages: {
-      adjust: 'Por favor ajust las cantidades en la ubicación adecuada(s) la diferencia de la cuenta es {{difference}}.',
-      createRequest: 'Crear un nuevo pedido?',
-      delete: 'Estas seguro de eliminar {{name}}?',
-      itemNotFound: 'El elemento del inventario <strong>{{item}}</strong> no se pudo encontrar.<br>Si desea crear un nuevo elemento, Ingrese la información abajo.<br>De lo contrario opria cancelar para volver.',
-      loading: 'Cargando transacciones ...',
-      purchaseSaved: 'La compra de inventario ha sido salvada.',
-      noRequests: 'No se encontraron pedidos.',
-      noItems: 'No se encontraron elementos.',
-      quantity: 'La cantidad total <strong>({{quantity}})</strong> no encaja con la cantidad total en las ubicaciones <strong>({{locationQuantity}})</strong>.',
-      removeItem: 'Esta seguro de eliminar este elemento de la factura?',
-      removeItemRequest: 'Seguro que quiere eliminar este elemento del pedido?',
-      requestFulfilled: 'El pedido de inventario ha sido procesado.',
-      requestUpdated: 'El pedido de inventario ha sido actualizado.',
-      warning: 'Valide los campos requeridos (marcados con *) corrija los errores antes de adicionar.'
+      adjust: 'Please adjust the quantities on the appropriate location(s) to account for the difference of {{difference}}.',
+      createRequest: 'Create a new request?',
+      delete: 'Are you sure you wish to delete {{name}}?',
+      itemNotFound: 'The inventory item <strong>{{item}}</strong> could not be found.<br>If you would like to create a new inventory item, fill in the information below.<br>Otherwise, press the Cancel button to return.',
+      loading: 'Loading transactions ...',
+      purchaseSaved: 'The inventory purchases have been successfully saved.',
+      noRequests: 'No requests found.',
+      noItems: 'No items found.',
+      quantity: 'The total quantity of <strong>({{quantity}})</strong> does not match the total quantity in the locations <strong>({{locationQuantity}})</strong>.',
+      removeItem: 'Are you sure you want to remove this item from this invoice?',
+      removeItemRequest: 'Are you sure you want to remove this item from this request?',
+      requestFulfilled: 'The inventory request has been fulfilled.',
+      requestUpdated: 'The inventory request has been updated.',
+      warning: 'Please fill in required fields (marked with *) and correct the errors before adding.'
     },
     reports: {
       rows: {
-        adjustments: 'Ajustes',
-        adjustmentsTotal: 'Ajustes totales',
-        balanceBegin: 'Balance inicial',
-        balanceEnd: 'Balance Final',
-        category: 'Categoria',
-        consumed: 'Consumado',
-        consumedGik: 'GiK Consumido',
-        consumedGikTotal: 'Total GiK Consumido',
-        consumedPuchases: 'Total de lo comprado consumido',
-        consumedPurchasesTotal: 'Total de lo comprado consumido',
-        consumedTotal: 'Total consumido',
-        errInFinSum: 'Error en _generateFinancialSummaryReport: ',
-        errInFindPur: 'Error en _findInventoryItemsByPurchase: ',
-        errInFindReq: 'Error en _findInventoryItemsByRequest: ',
-        expensesFor: 'Gatos para: ',
-        noAccount: '(No Cuenta)',
+        adjustments: 'Adjustments',
+        adjustmentsTotal: 'Total Adjustments',
+        balanceBegin: 'Beginning Balance',
+        balanceEnd: 'Ending Balance',
+        category: 'Category',
+        consumed: 'Consumed',
+        consumedGik: 'GiK Consumed',
+        consumedGikTotal: 'Total GiK Consumed',
+        consumedPuchases: 'Purchases Consumed',
+        consumedPurchasesTotal: 'Total Purchases Consumed',
+        consumedTotal: 'Total Consumed',
+        errInFinSum: 'Error in _generateFinancialSummaryReport: ',
+        errInFindPur: 'Error in _findInventoryItemsByPurchase: ',
+        errInFindReq: 'Error in _findInventoryItemsByRequest: ',
+        expensesFor: 'Expenses For: ',
+        noAccount: '(No Account)',
         subtotal: 'Subtotal: ',
-        subtotalFor: 'Subtotal para {{category}} - {{account}}: ',
+        subtotalFor: 'Subtotal for {{category}} - {{account}}: ',
         total: 'Total: ',
-        totalFor: 'Total para {{var}}: ',
-        totalPurchases: 'Compras Totales',
-        transfer1: '{{quantity}} de {{location}}',
-        trasnfer2: 'De: {{source}} A: {{target}}'
+        totalFor: 'Total for {{var}}: ',
+        totalPurchases: 'Total Purchases',
+        transfer1: '{{quantity}} from {{location}}',
+        trasnfer2: 'From: {{source}} To: {{target}}'
       },
-      adjustment: 'Ajuste detallado',
-      daysSupply: 'Dias de inventario restante',
-      expenseDetail: 'Gastos detallados',
-      expenseSum: 'Resumen de gastos',
-      expiration: 'Fecha de expiracion',
-      export: 'Exportar reporte',
-      fields: 'Campos a incluir',
-      finance: 'Resumen de finanzas',
-      generate: 'Generar reporte',
-      invLocation: 'Inventario por ubicacion',
-      invValuation: 'Inventario por valoracion',
-      purchaseDetail: 'Compras detalladas',
-      purchaseSum: 'Resumen de compras',
-      reportType: 'Tipo de reporte',
-      stockTransferDetail: 'Detalle de traslado de stock',
-      stockTransferSum: 'Resumen traslado de stock',
-      stockUsageDetail: 'Detalle de uso de stock',
-      stockUsageSum: 'Resumen uso de stock'
+      adjustment: 'Detailed Adjustment',
+      daysSupply: 'Days Supply Left In Stock',
+      expenseDetail: 'Detailed Expenses',
+      expenseSum: 'Summary Expenses',
+      expiration: 'Expiration Date',
+      export: 'Export Report',
+      fields: 'Fields to Include',
+      finance: 'Finance Summary',
+      generate: 'Generate Report',
+      invLocation: 'Inventory By Location',
+      invValuation: 'Inventory Valuation',
+      purchaseDetail: 'Detailed Purchase',
+      purchaseSum: 'Summary Purchase',
+      reportType: 'Report Type',
+      stockTransferDetail: 'Detailed Stock Transfer',
+      stockTransferSum: 'Summary Stock Transfer',
+      stockUsageDetail: 'Detailed Stock Usage',
+      stockUsageSum: 'Summary Stock Usage'
     },
     titles: {
-      addPurchase: 'Adicionar compra',
-      addRequest: 'Nuevo pedido',
-      adjustment: 'Ajuste',
-      editPurchase: 'Editar compra',
-      editRequest: 'Editar pedido',
-      inventoryItem: 'Nuevo elemento de inventario',
-      inventoryReport: 'Reporte de inventario',
-      purchaseSaved: 'Compras de inventario guardadas',
-      quickAddTitle: 'Nuevo elemento de inventario',
-      removeItem: 'Remover elemento',
-      requestFulfilled: 'Pedido cumplido',
-      requestUpdated: 'Pedido actualizado',
-      transfer: 'Trasladar elementos',
-      warning: 'Peligro!!!!!'
+      addPurchase: 'Add Purchase',
+      addRequest: 'New Request',
+      adjustment: 'Adjustment',
+      editPurchase: 'Edit Purchase',
+      editRequest: 'Edit Request',
+      inventoryItem: 'New Inventory Item',
+      inventoryReport: 'Inventory Report',
+      purchaseSaved: 'Inventory Purchases Saved',
+      quickAddTitle: 'New Inventory Item',
+      removeItem: 'Remove Item',
+      requestFulfilled: 'Request Fulfilled',
+      requestUpdated: 'Request Updated',
+      transfer: 'Transfer Items',
+      warning: 'Warning!!!!!'
     }
   },
   imaging: {
-    pageTitle: 'Pedido de radriografia',
-    sectionTitle: 'Radiografias',
+    pageTitle: 'Imaging Requests',
+    sectionTitle: 'Imaging',
     buttons: {
-      newButton: '+ new radiografia'
+      newButton: '+ new imaging'
     },
     labels: {
-      radiologist: 'Radiologo',
-      addNewVisit: '--Adicionar nueva visita--'
+      radiologist: 'Radiologist',
+      addNewVisit: '--Add New Visit--'
     },
     messages: {
-      noCompleted: 'No de items encontrados.'
+      delete: 'Are you sure you wish to delete this imaging request?',
+      noCompleted: 'No completed items found.'
     },
     titles: {
-      completedImaging: 'Radiografia completada',
-      editTitle: 'Pedido de edicion de radiografia',
-      newTitle: 'Nuevo pedido de radiografia'
+      completedImaging: 'Completed Imaging',
+      editTitle: 'Edit Imaging Request',
+      newTitle: 'New Imaging Request'
     },
     alerts: {
-      completedTitle: 'Pedido de radiografia completado',
-      completedMessage: 'El pedido de radiografia ha sido completado.',
-      savedTitle: 'Pedido de radiografia salvado',
-      savedMessage: 'El pedido de radiografia ha sido guardado.'
+      completedTitle: 'Imaging Request Completed',
+      completedMessage: 'The imaging request has been completed.',
+      savedTitle: 'Imaging Request Saved',
+      savedMessage: 'The imaging request has been saved.'
     }
   },
   medication: {
-    pageTitle: 'Pedido de medicación',
+    pageTitle: 'Medication Requests',
     sectionTitle: 'Medication',
-    returnMedication: 'Retorno de medicación',
+    returnMedication: 'Return Medication',
     buttons: {
-      dispenseMedication: 'dispensar medicación',
-      newButton: '+ nuevo pedido',
-      returnMedication: 'debolver medicacion'
+      dispenseMedication: 'dispense medication',
+      newButton: '+ new request',
+      returnMedication: 'return medication'
     },
     titles: {
-      completedMedication: 'Medicacion completada',
-      editMedicationRequest: 'Editar pedido de medicacion',
-      newMedicationRequest: 'Nuevo pedido de medicacion'
+      completedMedication: 'Completed Medication',
+      editMedicationRequest: 'Edit Medication Request',
+      newMedicationRequest: 'New Medication Request'
     },
     messages: {
-      createNew: 'Crear un nuevo pedido de medicacion?',
-      confirmDeletion: 'Estas seguro de eliminar este pedido de medicación?'
+      createNew: 'Create a new medication request?',
+      confirmDeletion: 'Are you sure you wish to delete this medication request?'
     },
     labels: {
-      refills: 'Recargas',
-      quantityRequested: 'Cantidad solicitada',
-      quantityDispensed: 'Cantidad dispensada',
-      quantityDistributed: 'Cantidad distribuida',
-      quantityToReturn: 'Cantidad a devolver',
-      returnLocation: 'Retornar a ubicación',
-      returnAisle: 'Devolve a pasillo',
-      returnReason: 'Razon por la que se devuelve/Nota',
-      adjustmentDate: 'Fecha de ajuste',
-      creditToAccount: 'Credito a cuenta'
+      refills: 'Refills',
+      quantityRequested: 'Quantity Requested',
+      quantityDispensed: 'Quantity Dispensed',
+      quantityDistributed: 'Quantity Distributed',
+      quantityToReturn: 'Quantity To Return',
+      returnLocation: 'Return Location',
+      returnAisle: 'Return Aisle',
+      returnReason: 'Return Reason/Notes',
+      adjustmentDate: 'Adjustment Date',
+      creditToAccount: 'Credit To Account'
     },
     alerts: {
-      returnedTitle: 'Medicacion devuelta',
-      returnedMessage:  'La medicacion ha sido marcada para devolver.',
-      savedTitle: 'Pedido de medicacion guardado',
-      savedMessage: 'La elemento de medicación ha sido guardado.',
-      fulfilledTitle: 'Pedido de medicación cumplido'
+      returnedTitle: 'Medication Returned',
+      returnedMessage:  'The medication has been marked as returned.',
+      savedTitle: 'Medication Request Saved',
+      savedMessage: 'The medication record has been saved.',
+      fulfilledTitle: 'Medication Request Fulfilled'
     }
   },
   appointments: {
-    currentScreenTitle: 'Listado de citas',
-    editTitle: 'Editar cita',
-    newTitle: 'Nueva cita',
-    sectionTitle: 'Citas',
-    thisWeek: 'Citas esta semana',
-    missed: 'Citas perdidas',
-    searchTitle: 'Buscar citas',
-    todayTitle: 'Citas para hoy',
+    currentScreenTitle: 'Appointment List',
+    editTitle: 'Edit Appointment',
+    newTitle: 'New Appointment',
+    sectionTitle: 'Appointments',
+    thisWeek: 'Appointments This Week',
+    missed: 'Missed Appointments',
+    searchTitle: 'Search Appointments',
+    todayTitle: 'Today\'s Appointments',
     messages: {
-      deleteAppointmentMessage: 'Esta seguro de eliminar esta cita?',
-      endTimeLaterThanStart: 'Seleccione una hora de finalizacion despues de la de inicio.'
+      deleteAppointmentMessage: 'Are you sure you wish to delete this appointment?',
+      endTimeLaterThanStart: 'Please select an end time later than the start time.'
     },
     buttons: {
-      newButton: '+ nueva cita'
+      newButton: '+ new appointment'
+    },
+    labels: {
+      selectedStartingDate: 'Show Appointments On Or After'
+    }
+  },
+  vitals: {
+    messages: {
+      delete: 'Are you sure you wish to delete these vitals?'
+    },
+    labels: {
+      dateRecorded: 'Date Recorded',
+      temperature: 'Temperature',
+      weight: 'Weight',
+      height: 'Height',
+      sbp: 'SBP',
+      dbp: 'DBP',
+      heartRate: 'Heart Rate',
+      respiratoryRate: 'Respiratory Rate'
     }
   },
   visits: {
-    edit: {
-      buttons: {
-        newAppointment: 'Nuevas citas',
-        addDiagnosis: 'Adicionar diagnostico',
-        newProcedure: 'Nuevo procedimiento',
-        newLab: 'New laboratorio',
-        newMedication: 'Nueva mediicación',
-        newImaging: 'Nueva radiografia'
-      },
-      labels: {
-        diagnosis: 'Diagnostico',
-        procedure: 'Procedimiento',
-        authoredBy: 'Escrito por',
-        labs: 'Laboratorios',
-        imaging: 'Radiografias',
-        visitInformation: 'Informacion de visita'
-      }
+    titles: {
+      additionalDiagnoses: 'Additional Diagnoses'
+    },
+    messages: {
+      delete: 'Are you sure you wish to delete this visit?'
+    },
+    buttons: {
+      newProcedure: 'New Procedure',
+      newLab: 'New Lab',
+      newAppointment: 'New Appointment',
+      addDiagnosis: 'Add Diagnosis',
+      newImaging: 'New Imaging',
+      newMedication: 'New Medication',
+      newVitals: 'New Vitals'
+    },
+    labels: {
+      diagnosis: 'Diagnosis',
+      procedure: 'Procedure',
+      procedureDate: 'Procedure Date',
+      authoredBy: 'Authored By',
+      labs: 'Labs',
+      imaging: 'Imaging',
+      visitInformation: 'Visit Information',
+      examiner: 'Examiner',
+      medication: 'Medication',
+      status: 'Visit Status',
+      admittingDiagnosis: 'Admitting Diagnosis',
+      finalDiagnosis: 'Final/Billing Diagnosis',
+      visitDate: 'Visit Date',
+      visitType: 'Visit Type',
+      vitals: 'Vitals'
     }
   },
   labs: {
-    sectionTitle: 'Laboratorios',
-    requestsTitle: 'Pedido de laboratorio',
-    editTitle: 'Editar pedido de laboratorio',
-    newTitle: 'Nuevo pedido de laboratorio',
-    deleteTitle: 'Eliminar pedido',
-    completedTitle: 'Completar laboratorio',
+    sectionTitle: 'Labs',
+    requestsTitle: 'Lab Requests',
+    editTitle: 'Edit Lab Request',
+    newTitle: 'New Lab Request',
+    deleteTitle: 'Delete Request',
+    completedTitle: 'Completed Labs',
     labels: {
-      labType: 'Tipo de laboratorio',
-      addNewVisit: '--Adicionar nueva visita--'
+      labType: 'Lab Type',
+      addNewVisit: '--Add New Visit--'
     },
     messages: {
-      noItemsFound: 'No boratorios encontrados.',
-      createNewRecord: 'Crear un registro?',
-      confirmDeletion: 'Esta seguro de eliminar esta solicitud de laboratorio?',
-      noCompleted: 'No elementos completados encontrados.'
+      noItemsFound: 'No labs found.',
+      createNewRecord: 'Create a new record?',
+      confirmDeletion: 'Are you sure you wish to delete this lab request?',
+      noCompleted: 'No completed items found.'
     },
     buttons: {
-      newButton: '+ nuevo laboratorio'
+      newButton: '+ new lab'
     },
     alerts: {
-      requestCompletedTitle: 'Pedido de laboratorio competado',
-      requestCompletedMessage: 'El pedido de laboratorio ha sido completado.',
-      requestSavedTitle: 'Silicitud de laboratorio guardado',
-      requestSavedMessage: 'El pedido de laboratorio ha sido guardado.'
+      requestCompletedTitle: 'Lab Request Completed',
+      requestCompletedMessage: 'The lab request has been completed.',
+      requestSavedTitle: 'Lab Request Saved',
+      requestSavedMessage: 'The lab request has been saved.'
     }
   },
-  common: {
-    actions: 'Acciones'
-  },
   patients: {
+    navigation: {
+      photos: 'Photos',
+      general: 'General',
+      history: 'History',
+      appointments: 'Appointments',
+      visits: 'Visits',
+      medication: 'Medication',
+      imaging: 'Imaging',
+      labs: 'Labs',
+      socialWork: 'Social Work'
+    },
+    titles: {
+      admittedPatients: 'Admitted Patients',
+      expenses: 'Expenses',
+      additionalContacts: 'Additional Contacts',
+      familyInformation: 'Family Information',
+      delete: 'Delete Patient',
+      new: 'New Patient',
+      edit: 'Edit Patient',
+      patient: 'Patient Report',
+      patientListing: 'Patient Listing',
+      patientReport: 'Patient Report',
+      addPhoto: 'Add Photo',
+      editPhoto: 'Edit Photo',
+      socialWork: 'Expense',
+      familyInfo: 'Family Info',
+      deleteFamilyMember: 'Delete Family Member',
+      deleteExpense: 'Delete Expense',
+      deletePhoto: 'Delete Photo',
+      deleteContact: 'Delete Contact',
+      savedPatient: 'Patient Saved',
+      admissionsDetail: 'Admissions Detail',
+      admissionsSummary: 'Admissions Summary',
+      diagnosticTesting: 'Diagnostic Testing',
+      dischargesDetail: 'Discharges Detail',
+      dischargesSummary: 'Discharges Summary',
+      proceduresDetail: 'Procedures Detail',
+      proceduresSummary: 'Procedures Summary',
+      patientStatus: 'Patient Status',
+      totalPatientDays: 'Total Patient Days',
+      totalPatientDaysDetailed: 'Total Patient Days (Detailed)',
+      visit: 'Visit',
+      deletePatientRecord: 'Delete Patient Record'
+    },
+    messages: {
+      areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
+      deletePatient: 'Are you sure you wish to delete {{firstName}} {{lastName}}?',
+      noPatientsFound: 'No patients found.',
+      savedPatient: 'The patient record for {{displayName}} has been saved.',
+      notFoundQuickAdd: 'The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.',
+      createNewPatient: 'Create a new patient record?',
+      deletingPatient: 'Deleting patient and all associated records'
+    },
+    buttons: {
+      addExpense: 'Add Expense',
+      addContact: 'Add Contact',
+      newLab: 'New Lab',
+      newVisit: 'New Visit',
+      newMedication: 'New Medication',
+      newImaging: 'New Imaging',
+      addFamilyMember: 'Add Family Member',
+      newPhoto: 'New Photo',
+      newAppointment: 'New Appointment',
+      backToPatients: 'Back to Patient List',
+      newPatient: '+ new patient'
+    },
+    headings: {
+      history: 'History',
+      historySince: 'History Since'
+    },
+    labels: {
+      primaryDiagnosis: 'Primary Diagnoses',
+      secondaryDiagnosis: 'Secondary Diagnoses',
+      monthlyCost: 'Monthly Cost',
+      totalMontlyExpense: 'Total Monthly Expenses',
+      patientType: 'Patient Type',
+      admissionDate: 'Admission Date',
+      patientDays: 'Patient Days',
+      dischargeDate: 'Discharge Date',
+      discharge: 'Discharge',
+      admit: 'Admit',
+      relationships: 'Relationships',
+      phone: 'Phone',
+      email: 'Email',
+      firstName: 'First Name',
+      middleName: 'Middle Name',
+      lastName: 'Last Name',
+      sex: 'Sex',
+      dob: 'DOB',
+      dateOfBirth: 'Date Of Birth',
+      placeOfBirth: 'Place Of Birth',
+      sources: 'Sources',
+      costs: 'Costs',
+      civilStatus: 'Civil Status',
+      relationship: 'Relationship To Patient',
+      education: 'Education',
+      occupation: 'Occupation',
+      income: 'Income',
+      insurance: 'Insurance',
+      dateProcessed: 'Date Processed',
+      status: 'Patient Status',
+      externalPatientId: 'External Patient Id',
+      bloodType: 'Blood Type',
+      clinic: 'Clinic Site',
+      referredBy: 'Referred By',
+      referredDate: 'Referred Date',
+      religion: 'Religion',
+      parent: 'Parent/Guardian',
+      contacts: 'Contacts',
+      sexNotEntered: 'Sex Not Entered'
+    },
     notes: {
-      onBehalfOfLabel: 'A nombre de',
-      onBehalfOfCopy: 'a nombre de',
-      pleaseSelectAVisit: 'Por favor seleccione una visista',
-      noteLabel: 'Nota'
+      newNote: 'New Note for',
+      updateNote: 'Updating Note from',
+      onBehalfOfLabel: 'On Behalf Of',
+      onBehalfOfCopy: 'on behalf of',
+      pleaseSelectAVisit: 'Please select a visit'
+    }
+  },
+  billing: {
+    alerts: {
+      noInvoiceFound: 'No invoices found',
+      deleteItem: 'Are you sure you wish to delete {{item}}?',
+      noPricingItems: 'No pricing items found.',
+      noPricingProfiles: 'No pricing profiles found.'
+    },
+    buttons: {
+      createInvoice: 'Create an invoice?',
+      addOverride: 'Add Override'
+    },
+    labels: {
+      externalInvoiceNumber: 'External Invoice #',
+      paymentProfile: 'Payment Profile',
+      actualCharges: 'Actual Charges',
+      insurance: 'National Insurance',
+      hmoCom: 'HMO/COM',
+      paymentsDeposits: 'Payments/Deposits',
+      pricingPanelOverrides: 'Pricing profile overrides',
+      pricingProfile: 'Pricing Profile',
+      discountAmount: 'Discount Amount',
+      discountPercentage: 'Discount Percentage'
+    }
+  },
+  print: {
+    invoice: {
+      labels: {
+        patientName: 'NAME OF PATIENT:',
+        patientId: 'PATIENT #:',
+        patientAge: 'AGE:',
+        patientAddress: 'ADDRESS:',
+        dateAdmitted: 'ADMITTED:',
+        dateDischarged: 'DISCHARGE:',
+        dischargeNotes: 'Discharge Notes:',
+        remarks: 'Remarks:',
+        billedBy: 'Billed by:',
+        billedDate: 'Bill Date:',
+        spacer: '__________________________________________'
+      },
+      messages: {
+        whereConducted: 'were deducted during my confinement'
+      },
+      titles: {
+        patientMember: 'Patient-Member',
+        relContact: 'Relationship/Contact no.',
+        patients: 'PATIENT\'S',
+        billingStatement: 'BILLING STATEMENT'
+      }
+    }
+  },
+  procedures: {
+    titles: {
+      addChargeItem: 'Add Charge Item',
+      deleteChargeItem: 'Delete Charge Item',
+      editChargeItem: 'Edit Charge Item',
+      medicationUsed: 'Medication Used',
+      deleteMedicationUsed: 'Delete Medication Used',
+      addMedicationUsed: 'Add Medication Used',
+      editMedicationUsed: 'Edit Medication Used',
+      edit: 'Edit Procedure',
+      saved: 'Procedure Saved',
+      new: 'New Procedure'
+    },
+    labels: {
+      medicationUsed: 'Medication Used'
+    },
+    messages: {
+      deleteMedication: 'Are you sure you want to delete this medication?',
+      delete: 'Are you sure you wish to delete this procedure?',
+      saved: 'The procedure record has been saved.'
+    },
+    buttons: {
+      addMedication: 'Add Medication'
+    }
+  },
+  components: {
+    chargesByTypeTab: {
+      charges: 'charges'
+    },
+    takePhoto: {
+      how: 'How Do You Want To Add A Photo?',
+      takePhoto: 'Take photo',
+      uploadPhoto: 'Upload Photo',
+      uploadFile: 'Upload File',
+      camera: 'Camera',
+      photo: 'photo',
+      preview: 'preview'
+    },
+    quantityConv: {
+      unit: 'Unit',
+      conversion: 'What does 1 {{name}} contain?'
+    },
+    quantityCalc: {
+      result: '{{targetUnit}} total: {{calculated}}'
+    },
+    priceList: {
+      charges: '{{pricingType}} charges'
     }
   }
 };
