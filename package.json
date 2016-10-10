@@ -60,7 +60,7 @@
     "ember-cli-test-loader": "^1.1.0",
     "ember-cli-uglify": "^1.2.0",
     "ember-data": "~2.8.1",
-    "ember-export-application-global": "^1.0.5",
+    "ember-export-application-global": "^1.1.1",
     "ember-i18n": "4.3.2",
     "ember-keyboard": "2.1.4",
     "ember-load-initializers": "^0.5.1",
