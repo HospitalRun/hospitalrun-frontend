@@ -15,6 +15,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
     return (!this.get('model.isNew') && this.currentUserCan('add_appointment'));
   }.property(),
 
+  canAddBillingDiagnosis: function() {
+    return this.currentUserCan('add_billing_diagnosisgg');
+  }.property(),
+
   canAddImaging: function() {
     return this.currentUserCan('add_imaging');
   }.property(),
@@ -99,6 +103,14 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
     }
   }.property('model.checkIn'),
 
+  diagnosisLabel: function() {
+    if (this.get('isAdmissionVisit')) {
+      return this.get('i18n').t('visits.labels.admittingDiagnosis');
+    } else {
+      return this.get('i18n').t('visits.labels.diagnosis');
+    }
+  }.property('isAdmissionVisit'),
+
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
@@ -112,6 +124,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
   physicianList: Ember.computed.alias('visitsController.physicianList'),
   locationList: Ember.computed.alias('visitsController.locationList'),
   visitTypesList: Ember.computed.alias('visitsController.visitTypesList'),
+  visitTemplate: 'visits/initial',
   lookupListsToUpdate: [{
     name: 'diagnosisList',
     property: 'model.primaryBillingDiagnosis',

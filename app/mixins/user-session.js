@@ -30,6 +30,12 @@ export default Ember.Mixin.create({
       'Medical Records Officer',
       'System Administrator'
     ],
+    add_billing_diagnosis: [
+      'Data Entry',
+      'Hospital Administrator',
+      'Medical Records Officer',
+      'System Administrator'
+    ],
     add_diagnosis: [
       'Data Entry',
       'Doctor',
