@@ -10,40 +10,40 @@ export default Ember.Component.extend(PatientDiagnosis, {
   visits: null,
 
   havePrimaryDiagnoses: function() {
-    var primaryDiagnosesLength = this.get('primaryDiagnoses.length');
+    let primaryDiagnosesLength = this.get('primaryDiagnoses.length');
     return (primaryDiagnosesLength > 0);
   }.property('primaryDiagnoses.length'),
 
   haveProcedures: function() {
-    var proceduresLength = this.get('patientProcedures.length');
+    let proceduresLength = this.get('patientProcedures.length');
     return (proceduresLength > 0);
   }.property('patientProcedures.length'),
 
   haveSecondaryDiagnoses: function() {
-    var secondaryDiagnosesLength = this.get('secondaryDiagnoses.length');
+    let secondaryDiagnosesLength = this.get('secondaryDiagnoses.length');
     return (secondaryDiagnosesLength > 0);
   }.property('secondaryDiagnoses.length'),
 
   primaryDiagnoses: function() {
-    var visits = this.get('visits');
+    let visits = this.get('visits');
     return this.getPrimaryDiagnoses(visits);
   }.property('visits.[]'),
 
   secondaryDiagnoses: function() {
-    var visits = this.get('visits');
+    let visits = this.get('visits');
     return this.getSecondaryDiagnoses(visits);
   }.property('visits.[]'),
 
   shouldLinkToPatient: function() {
-    var disablePatientLink = this.get('disablePatientLink');
+    let disablePatientLink = this.get('disablePatientLink');
     return !disablePatientLink;
   }.property('disablePatientLink'),
 
   actions: {
     linkToPatient: function() {
-      var shouldLink = this.get('shouldLinkToPatient');
+      let shouldLink = this.get('shouldLinkToPatient');
       if (shouldLink) {
-        var patient = this.get('patient'),
+        let patient = this.get('patient'),
           returnTo = this.get('returnTo'),
           returnToContext = this.get('returnToContext');
         patient.set('returnTo', returnTo);

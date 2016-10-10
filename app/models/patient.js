@@ -55,14 +55,14 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   status: DS.attr('string'),
 
   age: function() {
-    var dob = this.get('dateOfBirth');
+    let dob = this.get('dateOfBirth');
     return this.convertDOBToText(dob);
   }.property('dateOfBirth'),
 
   displayAddress: function() {
-    var addressFields = this.getProperties('address', 'address2', 'address3', 'address4'),
+    let addressFields = this.getProperties('address', 'address2', 'address3', 'address4'),
       displayAddress = '';
-    for (var prop in addressFields) {
+    for (let prop in addressFields) {
       if (!Ember.isEmpty(addressFields[prop])) {
         if (!Ember.isEmpty(displayAddress)) {
           displayAddress += ', ';

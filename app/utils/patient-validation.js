@@ -10,13 +10,13 @@ export default {
         if (!object.get('hasDirtyAttributes')) {
           return false;
         }
-        var patientName = object.get('patient.displayName'),
+        let patientName = object.get('patient.displayName'),
           patientTypeAhead = object.get('patientTypeAhead');
         if (Ember.isEmpty(patientName) || Ember.isEmpty(patientTypeAhead)) {
           // force validation to fail
           return true;
         } else {
-          var typeAheadName = patientTypeAhead.substr(0, patientName.length);
+          let typeAheadName = patientTypeAhead.substr(0, patientName.length);
           if (patientName !== typeAheadName) {
             return true;
           }

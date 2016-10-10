@@ -1,5 +1,5 @@
 import Ember from 'ember';
-var LoginController = Ember.Controller.extend({
+let LoginController = Ember.Controller.extend({
   session: Ember.inject.service(),
   errorMessage: null,
   identification: null,

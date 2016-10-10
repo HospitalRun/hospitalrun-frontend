@@ -27,7 +27,7 @@ export default {
    */
   selectValues: function(array, includeEmpty) {
     if (Ember.isArray(array)) {
-      var arrayToMap = new Array(array);
+      let arrayToMap = new Array(array);
       if (includeEmpty) {
         arrayToMap = [''];
         arrayToMap.addObjects(array);

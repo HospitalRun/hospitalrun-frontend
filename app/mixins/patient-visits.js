@@ -2,7 +2,7 @@ import Ember from 'ember';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 export default Ember.Mixin.create(PouchDbMixin, {
   getPatientVisits: function(patient) {
-    var maxValue = this.get('maxValue'),
+    let maxValue = this.get('maxValue'),
       patientId = patient.get('id');
     return this.store.query('visit', {
       options: {

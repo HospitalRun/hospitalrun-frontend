@@ -47,8 +47,8 @@ export default Ember.Mixin.create(PouchDbMixin, {
     return this.store.find('sequence', 'patient')
       .then(findUnusedId)
       .catch(() => {
-        var store = this.get('store');
-        var sequence = store.push(store.normalize('sequence', {
+        let store = this.get('store');
+        let sequence = store.push(store.normalize('sequence', {
           id: 'patient',
           value: 1
         }));

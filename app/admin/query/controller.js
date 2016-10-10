@@ -28,10 +28,10 @@ export default Ember.Controller.extend(EditPanelProps, {
 
   actions: {
     query: function() {
-      var fieldName = this.get('fieldName'),
+      let fieldName = this.get('fieldName'),
         objectType = this.get('objectType'),
         queryValue = this.get('queryValue');
-      var query = {
+      let query = {
         containsValue: {
           value: queryValue,
           keys: [fieldName]
@@ -43,7 +43,7 @@ export default Ember.Controller.extend(EditPanelProps, {
           this.set('haveError', true);
           this.set('showQueryResults', false);
         } else {
-          var currentValue,
+          let currentValue,
             attributes = ['id'],
             resultRow,
             resultRows = [];

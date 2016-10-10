@@ -14,7 +14,7 @@ export default Ember.Mixin.create({
 
   _findOrCreateLocation: function(inventoryItem, location, aisle) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var foundLocation = false,
+      let foundLocation = false,
         locations = inventoryItem.get('locations');
       this.set('aisleToFind', aisle);
       this.set('locationToFind', location);
@@ -23,7 +23,7 @@ export default Ember.Mixin.create({
       if (foundLocation) {
         resolve(foundLocation);
       } else {
-        var locationRecord = this.get('store').createRecord('inv-location', {
+        let locationRecord = this.get('store').createRecord('inv-location', {
           id: uuid.v4(),
           aisleLocation: aisle,
           location: location,
@@ -38,7 +38,7 @@ export default Ember.Mixin.create({
   },
 
   findLocation: function(inventoryLocation) {
-    var aisleLocation = inventoryLocation.get('aisleLocation'),
+    let aisleLocation = inventoryLocation.get('aisleLocation'),
       aisleToFind = this.get('aisleToFind'),
       itemLocation = inventoryLocation.get('location'),
       locationToFind = this.get('locationToFind');
@@ -55,7 +55,7 @@ export default Ember.Mixin.create({
    */
   newPurchaseAdded: function(inventoryItem, newPurchase) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var aisle = newPurchase.get('aisleLocation'),
+      let aisle = newPurchase.get('aisleLocation'),
         location = newPurchase.get('location'),
         quantity = parseInt(newPurchase.get('originalQuantity'));
       this._addQuantityToLocation(inventoryItem, quantity, location, aisle).then(resolve, reject);
@@ -70,7 +70,7 @@ export default Ember.Mixin.create({
    */
   saveLocation: function(location, inventoryItem) {
     if (location.get('quantity') === 0) {
-      var locations = inventoryItem.get('locations');
+      let locations = inventoryItem.get('locations');
       locations.removeObject(location);
       return location.destroyRecord();
     } else {
@@ -86,7 +86,7 @@ export default Ember.Mixin.create({
    * @returns {Promise} a promise that fulfills once the transfer to location has been saved.
    */
   transferToLocation: function(inventoryItem, transferLocation) {
-    var aisle = transferLocation.get('transferAisleLocation'),
+    let aisle = transferLocation.get('transferAisleLocation'),
       location = transferLocation.get('transferLocation'),
       quantity = parseInt(transferLocation.get('adjustmentQuantity'));
     return new Ember.RSVP.Promise(function(resolve, reject) {

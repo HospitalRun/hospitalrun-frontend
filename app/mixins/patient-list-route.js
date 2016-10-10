@@ -6,15 +6,15 @@ export default Ember.Mixin.create({
    * Lazily load patient list so that it doesn't impact performance.
    */
   _fetchPatientList: function(controller) {
-    var patientQuery = {
+    let patientQuery = {
       startkey: 'patient_',
       endkey: 'patient_\uffff',
       include_docs: true
     };
-    var database = this.get('database');
+    let database = this.get('database');
     database.queryMainDB(patientQuery).then(function(result) {
       if (result.rows) {
-        var list = result.rows.map(function(row) {
+        let list = result.rows.map(function(row) {
           return row.doc;
         });
         controller.set('patientList', list);

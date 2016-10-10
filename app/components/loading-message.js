@@ -19,7 +19,7 @@ export default Ember.Component.extend({
   ],
 
   _setRandomMessage: function() {
-    var loadingMessages = this.get('loadingMessages'),
+    let loadingMessages = this.get('loadingMessages'),
       idx = Math.floor(Math.random() * loadingMessages.length);
     this.set('message', loadingMessages[idx]);
     this.set('timer', Ember.run.later(this, this._setRandomMessage, 1000));
@@ -30,7 +30,7 @@ export default Ember.Component.extend({
   },
 
   willDestroyElement: function() {
-    var timer = this.get('timer');
+    let timer = this.get('timer');
     if (!Ember.isEmpty(timer)) {
       Ember.run.cancel(timer);
     }

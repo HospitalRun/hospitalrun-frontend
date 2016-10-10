@@ -12,7 +12,7 @@ function buildIndex(indexName, db) {
 }
 
 function createDesignDoc(item, rev) {
-  var ddoc = {
+  let ddoc = {
     _id: '_design/' + item.name,
     version: item.version,
     views: {
@@ -48,7 +48,7 @@ function checkForUpdate(view, db, runningTest, testDumpFile) {
 }
 
 function generateSortFunction(sortFunction, includeCompareDate, filterFunction) {
-  var generatedFunction = 'function(head, req) {' +
+  let generatedFunction = 'function(head, req) {' +
     'function keysEqual(keyA, keyB) {' +
     'for (var i= 0; i < keyA.length; i++) {' +
     'if (keyA[i] !== keyB[i]) {' +
@@ -126,7 +126,7 @@ function generateView(viewDocType, viewBody) {
 }
 
 function updateDesignDoc(item, db, rev, runningTest, testDumpFile) {
-  var designDoc = createDesignDoc(item, rev);
+  let designDoc = createDesignDoc(item, rev);
   if (runningTest) {
     console.log(`WARNING: The view ${item.name} is out of date.  Please update the pouch dump ${testDumpFile} to the latest version of ${item.name}`);
   }
@@ -150,7 +150,7 @@ function generateDateForView(date1) {
 
 }
 
-var patientListingKey = 'if (doc.data.friendlyId) {' +
+let patientListingKey = 'if (doc.data.friendlyId) {' +
   'emit([doc.data.friendlyId, doc._id]);' +
   '} else if (doc.data.externalPatientId) {' +
   'emit([doc.data.externalPatientId, doc._id]);' +
@@ -158,8 +158,8 @@ var patientListingKey = 'if (doc.data.friendlyId) {' +
   'emit([doc._id, doc._id]);' +
 '}';
 
-var patientListingSearch = generateSortFunction(function(a, b) {
-  var sortBy = '';
+let patientListingSearch = generateSortFunction(function(a, b) {
+  let sortBy = '';
   if (req.query && req.query.sortKey) {
     sortBy = req.query.sortKey;
   }
@@ -179,7 +179,7 @@ var patientListingSearch = generateSortFunction(function(a, b) {
   }
 }.toString(), true);
 
-var designDocs = [{
+let designDocs = [{
   name: 'appointments_by_date',
   function: generateView('appointment',
     generateDateForView('endDate') +
@@ -194,7 +194,7 @@ var designDocs = [{
         return value;
       }
     }
-    var sortBy = '';
+    let sortBy = '';
     if (req.query && req.query.sortKey) {
       sortBy = req.query.sortKey;
     }
@@ -204,7 +204,7 @@ var designDocs = [{
       case 'provider':
         return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
       case 'date': {
-        var startDiff = getCompareDate(a.doc.data.startDate) - getCompareDate(b.doc.data.startDate);
+        let startDiff = getCompareDate(a.doc.data.startDate) - getCompareDate(b.doc.data.startDate);
         if (startDiff === 0) {
           return getCompareDate(a.doc.data.endDate) - getCompareDate(b.doc.data.endDate);
         } else {
@@ -213,7 +213,7 @@ var designDocs = [{
         break;
       }
       case 'status': {
-        var aStatus = defaultStatus(a.doc.data[sortBy]),
+        let aStatus = defaultStatus(a.doc.data[sortBy]),
           bStatus = defaultStatus(b.doc.data[sortBy]);
         return compareStrings(aStatus, bStatus);
       }
@@ -222,7 +222,7 @@ var designDocs = [{
       }
     }
   }.toString(), true, function(row) {
-    var i,
+    let i,
       filterBy = null,
       includeRow = true;
     if (req.query && req.query.filterBy) {
@@ -232,7 +232,7 @@ var designDocs = [{
       return true;
     }
     for (i = 0; i < filterBy.length; i++) {
-      var currentValue = row.doc.data[filterBy[i].name];
+      let currentValue = row.doc.data[filterBy[i].name];
       if (filterBy[i].name === 'status' && (!currentValue || currentValue === '')) {
         currentValue = 'Scheduled';
       }
@@ -266,7 +266,7 @@ var designDocs = [{
     'emit([doc.data.name, doc._id]);'
   ),
   sort: generateSortFunction(function(a, b) {
-    var sortBy = '';
+    let sortBy = '';
     if (req.query && req.query.sortKey) {
       sortBy = req.query.sortKey;
     }
@@ -420,7 +420,7 @@ var designDocs = [{
 }];
 
 export default function(db, runningTest, testDumpFile) {
-  var viewUpdates = [];
+  let viewUpdates = [];
   designDocs.forEach(function(item) {
     viewUpdates.push(checkForUpdate(item, db, runningTest, testDumpFile));
   });

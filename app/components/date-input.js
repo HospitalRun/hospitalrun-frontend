@@ -10,7 +10,7 @@ export default HtmlInput.extend({
   },
 
   currentDateChangedValue: function() {
-    var currentDate = this.get('currentDate'),
+    let currentDate = this.get('currentDate'),
       picker = this.get('_picker');
     if (!Ember.isEmpty(currentDate) && this._shouldSetDate(currentDate, picker)) {
       picker.setDate(currentDate);
@@ -18,7 +18,7 @@ export default HtmlInput.extend({
   },
 
   format: function() {
-    var showTime = this.get('showTime');
+    let showTime = this.get('showTime');
     if (showTime) {
       return 'l h:mm A';
     } else {
@@ -27,7 +27,7 @@ export default HtmlInput.extend({
   }.property('mainComponent.showTime'),
 
   showTimeChanged: function() {
-    var picker = this.get('_picker');
+    let picker = this.get('_picker');
     if (picker) {
       picker.destroy();
       this.didInsertElement();
@@ -35,7 +35,7 @@ export default HtmlInput.extend({
   }.observes('mainComponent.showTime'),
 
   dateSet: function() {
-    var currentDate = this.get('currentDate'),
+    let currentDate = this.get('currentDate'),
       picker = this.get('_picker');
     if (this._shouldSetDate(currentDate, picker)) {
       this.set('currentDate', picker.getDate());
@@ -43,7 +43,7 @@ export default HtmlInput.extend({
   },
 
   didInsertElement: function() {
-    var currentDate = this.get('currentDate'),
+    let currentDate = this.get('currentDate'),
       $input = this.$('input'),
       picker = null,
       props = this.getProperties('format', 'yearRange', 'showTime');
@@ -72,7 +72,7 @@ export default HtmlInput.extend({
 
   didReceiveAttrs(/*attrs*/) {
     this._super(...arguments);
-    var dateProperty = this.get('mainComponent.property'),
+    let dateProperty = this.get('mainComponent.property'),
       displayPropertyName = 'display_' + dateProperty;
     this.set('mainComponent.property', displayPropertyName);
     this.currentDate = Ember.computed.alias('mainComponent.model.' + dateProperty);
@@ -86,7 +86,7 @@ export default HtmlInput.extend({
   },
 
   willDestroyElement: function() {
-    var picker = this.get('_picker');
+    let picker = this.get('_picker');
     if (picker) {
       picker.destroy();
     }

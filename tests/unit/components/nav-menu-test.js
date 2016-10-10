@@ -11,7 +11,7 @@ test('it renders', function(assert) {
 
   assert.expect(2);
 
-  var startingMenu = {
+  let startingMenu = {
     title: 'Inventory',
     iconClass: 'octicon-package',
     route: 'inventory',
@@ -30,8 +30,8 @@ test('it renders', function(assert) {
   };
 
   // creates the component instance
-  var navMenuProperties = { nav: startingMenu };
-  var navMenu = this.subject(navMenuProperties);
+  let navMenuProperties = { nav: startingMenu };
+  let navMenu = this.subject(navMenuProperties);
   assert.equal(navMenu._state, 'preRender');
 
   // appends the navMenu to the page
