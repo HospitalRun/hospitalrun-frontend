@@ -81,7 +81,7 @@
     "nano": "6.2.0",
     "pouchdb-list": "^1.1.0",
     "request": "2.75.0",
-    "stylelint": "^7.3.1",
+    "stylelint": "7.3.1",
     "stylelint-config-concentric": "1.0.5",
     "stylelint-declaration-use-variable": "^1.4.0",
     "stylelint-scss": "1.3.4"
