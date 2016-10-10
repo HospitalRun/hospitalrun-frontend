@@ -1,6 +1,15 @@
+import Ember from 'ember';
 /* global req */
 /* global compareStrings */
 /* global getCompareDate */
+
+function buildIndex(indexName, db) {
+  return db.query(indexName, {
+    limit: 0
+  }).catch(function(err) {
+    console.log('index error:' + JSON.stringify(err, null, 2));
+  });
+}
 
 function createDesignDoc(item, rev) {
   var ddoc = {
@@ -19,6 +28,23 @@ function createDesignDoc(item, rev) {
     };
   }
   return ddoc;
+}
+
+function checkForUpdate(view, db, runningTest, testDumpFile) {
+  return db.get('_design/' + view.name).then(function(doc) {
+    if (doc.version !== view.version) {
+      return updateDesignDoc(view, db, doc._rev, runningTest, testDumpFile);
+    } else {
+      if (runningTest) {
+        // Indexes need to be built when running tests
+        return buildIndex(view.name, db);
+      } else {
+        return Ember.RSVP.resolve();
+      }
+    }
+  }, function() {
+    return updateDesignDoc(view, db, null, runningTest, testDumpFile);
+  });
 }
 
 function generateSortFunction(sortFunction, includeCompareDate, filterFunction) {
@@ -99,14 +125,16 @@ function generateView(viewDocType, viewBody) {
   '}';
 }
 
-function updateDesignDoc(item, db, rev) {
+function updateDesignDoc(item, db, rev, runningTest, testDumpFile) {
   var designDoc = createDesignDoc(item, rev);
-  db.put(designDoc).then(function() {
-    // design doc created!
+  if (runningTest) {
+    console.log(`WARNING: The view ${item.name} is out of date.  Please update the pouch dump ${testDumpFile} to the latest version of ${item.name}`);
+  }
+  return db.put(designDoc).then(function() {
     // Update index
-    db.query(item.name, { stale: 'update_after' });
+    return buildIndex(item.name, db);
   }, function(err) {
-    console.log('ERR updateDesignDoc:', err);
+    console.log('ERR updating design doc:', JSON.stringify(err, null, 2));
     // ignored, design doc already exists
   });
 }
@@ -391,14 +419,10 @@ var designDocs = [{
   version: 4
 }];
 
-export default function(db) {
+export default function(db, runningTest, testDumpFile) {
+  var viewUpdates = [];
   designDocs.forEach(function(item) {
-    db.get('_design/' + item.name).then(function(doc) {
-      if (doc.version !== item.version) {
-        updateDesignDoc(item, db, doc._rev);
-      }
-    }, function() {
-      updateDesignDoc(item, db);
-    });
+    viewUpdates.push(checkForUpdate(item, db, runningTest, testDumpFile));
   });
+  return Ember.RSVP.all(viewUpdates);
 }

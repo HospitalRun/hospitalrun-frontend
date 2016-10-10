@@ -29,12 +29,12 @@
         {{em-input label=field.label property=field.property class=field.classNames}}
       {{/if}}
       {{#if (eq field.type 'select')}}
-          {{em-select label=field.label
-            property=field.property
-            content=field.mappedValues
-            class=field.classNames
-            prompt=field.prompt
-          }}
+        {{em-select label=field.label
+          property=field.property
+          content=field.mappedValues
+          class=field.classNames
+          prompt=field.prompt
+        }}
       {{/if}}
     {{/each}}
   </div>

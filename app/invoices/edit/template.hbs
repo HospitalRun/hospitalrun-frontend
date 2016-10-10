@@ -69,11 +69,13 @@
             {{#each categoryGroup.items as |item|}}
               <tr>
                 <td class="col-xs-5">
-                    <div class="input-group">
-                      <span class="input-group-addon glyphicon {{if item.showDetails 'glyphicon-minus' 'glyphicon-plus'}}"
-                        {{action "toggleDetails" item bubbles=false }}> </span>
-                      <strong>{{input class="form-control" value=item.name }}</strong>
-                    </div>
+                  <div class="input-group">
+                    <span class="input-group-addon glyphicon
+                      {{if item.showDetails 'glyphicon-minus' 'glyphicon-plus'}}"
+                        {{action "toggleDetails" item bubbles=false }}>
+                    </span>
+                    <strong>{{input class="form-control" value=item.name }}</strong>
+                  </div>
                 </td>
                 <td class="col-xs-1 text-right">
                   {{number-format item.total}}
@@ -120,7 +122,7 @@
                 {{#each item.details as |detail|}}
                   <tr>
                     <td colspan="2" class="col-xs-6 input-group">
-                        {{input class="form-control" value=detail.name }}
+                      {{input class="form-control" value=detail.name }}
                     </td>
                     <td class="col-xs-1">
                       <div class="form-group">
@@ -234,14 +236,14 @@
             <td>{{payment.paymentType}}</td>
             <td>{{payment.notes}}</td>
             {{#if canAddPayment}}
-            <td>
-              <button class="btn btn-default neutral" {{action 'showEditPayment' payment  bubbles=false }}>{{t 'labels.edit'}}</button>
-              {{#if payment.canRemovePayment}}
-                <button class="btn btn-default warning" {{action "showRemovePayment" payment bubbles=false }}>
-                  <span class="octicon octicon-x"></span>{{t 'buttons.remove'}}
-                </button>
-              {{/if}}
-            </td>
+              <td>
+                <button class="btn btn-default neutral" {{action 'showEditPayment' payment  bubbles=false }}>{{t 'labels.edit'}}</button>
+                {{#if payment.canRemovePayment}}
+                  <button class="btn btn-default warning" {{action "showRemovePayment" payment bubbles=false }}>
+                    <span class="octicon octicon-x"></span>{{t 'buttons.remove'}}
+                  </button>
+                {{/if}}
+              </td>
             {{/if}}
           </tr>
         {{/each}}
