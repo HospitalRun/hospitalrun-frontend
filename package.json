@@ -72,7 +72,7 @@
     "ember-simple-auth": "^1.1.0",
     "ember-suave": "4.0.1",
     "ember-truth-helpers": "1.2.0",
-    "ember-validations": "2.0.0-alpha.4",
+    "ember-validations": "2.0.0-alpha.5",
     "express": "^4.8.5",
     "glob": "^7.1.0",
     "hospitalrun-dblisteners": "0.9.5",
