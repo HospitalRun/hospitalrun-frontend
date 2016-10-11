@@ -10,7 +10,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   selectedLabType: null,
 
   canComplete: function() {
-    var isNew = this.get('model.isNew'),
+    let isNew = this.get('model.isNew'),
       labTypeName = this.get('model.labTypeName'),
       selectedLabType = this.get('selectedLabType');
     if (isNew && (Ember.isEmpty(labTypeName) || (Ember.isArray(selectedLabType) && selectedLabType.length > 1))) {
@@ -36,7 +36,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
      */
     update: function() {
       if (this.get('model.isNew')) {
-        var newLab = this.get('model'),
+        let newLab = this.get('model'),
           selectedLabType = this.get('selectedLabType');
         if (Ember.isEmpty(this.get('model.status'))) {
           this.set('model.status', 'Requested');
@@ -68,7 +68,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   },
 
   additionalButtons: function() {
-    var canComplete = this.get('canComplete'),
+    let canComplete = this.get('canComplete'),
         isValid = this.get('model.isValid'),
         i18n = this.get('i18n');
     if (isValid && canComplete) {
@@ -89,7 +89,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   updateCapability: 'add_lab',
 
   afterUpdate: function(saveResponse, multipleRecords) {
-    var i18n = this.get('i18n'),
+    let i18n = this.get('i18n'),
         afterDialogAction,
         alertMessage,
         alertTitle;

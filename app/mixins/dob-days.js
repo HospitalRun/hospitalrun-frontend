@@ -1,7 +1,7 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
   convertDOBToText: function(birthDate, shortFormat, omitDays) {
-    var today = new Date(),
+    let today = new Date(),
       years = 0,
       months = 0,
       days = 0;
@@ -43,7 +43,7 @@ export default Ember.Mixin.create({
       }
     }
 
-    var formatString = '';
+    let formatString = '';
     let options = {
       years: years,
       days: days,

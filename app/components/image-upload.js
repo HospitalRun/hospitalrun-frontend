@@ -6,15 +6,15 @@ export default InputComponent.extend({
   type: 'file',
 
   _fileChanged: function() {
-    var inputEl = this.get('fileInputEl'),
+    let inputEl = this.get('fileInputEl'),
       resize = this.get('resizeFile');
 
     if (resize) {
       // Derived from https://github.com/josefrichter/resize/blob/master/public/preprocess.js
       window.URL = window.URL || window.webkitURL;
-      var blobURL = window.URL.createObjectURL(inputEl.files[0]); // and get it's URL
+      let blobURL = window.URL.createObjectURL(inputEl.files[0]); // and get it's URL
       // helper Image object
-      var image = new Image();
+      let image = new Image();
       image.src = blobURL;
       image.onload = function() {
         window.URL.revokeObjectURL(blobURL);
@@ -33,7 +33,7 @@ export default InputComponent.extend({
    */
   _resizeImage: function(img) {
     // Derived from https://github.com/josefrichter/resize/blob/master/public/preprocess.js
-    var canvas = document.createElement('canvas'),
+    let canvas = document.createElement('canvas'),
       height = img.height,
       width = img.width,
       maxHeight = 1024,
@@ -57,20 +57,20 @@ export default InputComponent.extend({
     // resize the canvas and draw the image data into it
     canvas.width = width;
     canvas.height = height;
-    var ctx = canvas.getContext('2d');
+    let ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0, width, height);
 
-    var dataURI = canvas.toDataURL('image/png');
-    var binary = atob(dataURI.split(',')[1]);
-    var array = [];
-    for (var i = 0; i < binary.length; i++) {
+    let dataURI = canvas.toDataURL('image/png');
+    let binary = atob(dataURI.split(',')[1]);
+    let array = [];
+    for (let i = 0; i < binary.length; i++) {
       array.push(binary.charCodeAt(i));
     }
     return new Blob([new Uint8Array(array)], { type: 'image/png' });
   },
 
   didInsertElement: function() {
-    var $input = this.$('input');
+    let $input = this.$('input');
     this.set('fileInputEl', $input[0]);
     $input.on('change', this._fileChanged.bind(this));
   }

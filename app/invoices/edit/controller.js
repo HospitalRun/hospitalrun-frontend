@@ -16,7 +16,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   wardCharges: [],
 
   additionalButtons: function() {
-    var buttons = [],
+    let buttons = [],
       isValid = this.get('model.isValid'),
       status = this.get('model.status');
     if (isValid && status === 'Draft') {
@@ -46,9 +46,9 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   }.property(),
 
   pharmacyExpenseAccount: function() {
-    var expenseAccountList = this.get('expenseAccountList');
+    let expenseAccountList = this.get('expenseAccountList');
     if (!Ember.isEmpty(expenseAccountList)) {
-      var account = expenseAccountList.find(function(value) {
+      let account = expenseAccountList.find(function(value) {
         if (value.toLowerCase().indexOf('pharmacy') > -1) {
           return true;
         }
@@ -59,15 +59,15 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
 
   actions: {
     addItemCharge: function(lineItem) {
-      var details = lineItem.get('details');
-      var detail = this.store.createRecord('line-item-detail', {
+      let details = lineItem.get('details');
+      let detail = this.store.createRecord('line-item-detail', {
         id: uuid.v4()
       });
       details.addObject(detail);
     },
 
     addLineItem: function(lineItem) {
-      var lineItems = this.get('model.lineItems');
+      let lineItems = this.get('model.lineItems');
       lineItems.addObject(lineItem);
       this.send('update', true);
       this.send('closeModal');
@@ -82,12 +82,12 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     },
 
     finalizeInvoice: function() {
-      var currentInvoice = this.get('model'),
+      let currentInvoice = this.get('model'),
         invoicePayments = currentInvoice.get('payments'),
         paymentsToSave = [];
       currentInvoice.get('patient.payments').then(function(patientPayments) {
         patientPayments.forEach(function(payment) {
-          var invoice = payment.get('invoice');
+          let invoice = payment.get('invoice');
           if (Ember.isEmpty(invoice)) {
             payment.set('invoice', currentInvoice);
             paymentsToSave.push(payment.save());
@@ -106,7 +106,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     },
 
     removePayment: function(removeInfo) {
-      var payments = this.get('model.payments'),
+      let payments = this.get('model.payments'),
         payment = removeInfo.itemToRemove;
       payment.set('invoice');
       payments.removeObject(removeInfo.itemToRemove);
@@ -115,7 +115,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     },
 
     showAddLineItem: function() {
-      var newLineItem = this.store.createRecord('billing-line-item', {
+      let newLineItem = this.store.createRecord('billing-line-item', {
         id: uuid.v4()
       });
       this.send('openModal', 'invoices.add-line-item', newLineItem);
@@ -147,7 +147,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     },
 
     showRemovePayment: function(payment) {
-      var message = 'Are you sure you want to remove this payment from this invoice?',
+      let message = 'Are you sure you want to remove this payment from this invoice?',
         model = Ember.Object.create({
           itemToRemove: payment
         }),
@@ -161,7 +161,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   },
 
   changePaymentProfile: function() {
-    var patient = this.get('model.patient'),
+    let patient = this.get('model.patient'),
       paymentProfile = this.get('model.paymentProfile');
     if (!Ember.isEmpty(patient) && Ember.isEmpty(paymentProfile)) {
       this.set('model.paymentProfile', patient.get('paymentProfile'));
@@ -169,25 +169,25 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   }.observes('model.patient'),
 
   paymentProfileChanged: function() {
-    var discountPercentage = this._getValidNumber(this.get('model.paymentProfile.discountPercentage')),
+    let discountPercentage = this._getValidNumber(this.get('model.paymentProfile.discountPercentage')),
       originalPaymentProfileId = this.get('model.originalPaymentProfileId'),
       profileId = this.get('model.paymentProfile.id');
     if (profileId !== originalPaymentProfileId) {
-      var lineItems = this.get('model.lineItems');
+      let lineItems = this.get('model.lineItems');
       lineItems.forEach(function(lineItem) {
-        var details = lineItem.get('details'),
+        let details = lineItem.get('details'),
           lineDiscount = 0;
         details.forEach(function(detail) {
-          var pricingOverrides = detail.get('pricingItem.pricingOverrides');
+          let pricingOverrides = detail.get('pricingItem.pricingOverrides');
           if (!Ember.isEmpty(pricingOverrides)) {
-            var pricingOverride = pricingOverrides.findBy('profile.id', profileId);
+            let pricingOverride = pricingOverrides.findBy('profile.id', profileId);
             if (!Ember.isEmpty(pricingOverride)) {
               Ember.set(detail, 'price', pricingOverride.get('price'));
             }
           }
         }.bind(this));
         if (discountPercentage > 0) {
-          var lineTotal = lineItem.get('total');
+          let lineTotal = lineItem.get('total');
           lineDiscount = this._numberFormat((discountPercentage / 100) * (lineTotal), true);
           lineItem.set('discount', lineDiscount);
         }
@@ -197,20 +197,20 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   }.observes('model.paymentProfile'),
 
   visitChanged: function() {
-    var visit = this.get('model.visit'),
+    let visit = this.get('model.visit'),
       lineItems = this.get('model.lineItems');
     if (!Ember.isEmpty(visit) && Ember.isEmpty(lineItems)) {
       this.set('model.originalPaymentProfileId');
-      var promises = this.resolveVisitChildren();
+      let promises = this.resolveVisitChildren();
       Ember.RSVP.allSettled(promises, 'Resolved visit children before generating invoice').then(function(results) {
-        var chargePromises = this._resolveVisitDescendents(results, 'charges');
+        let chargePromises = this._resolveVisitDescendents(results, 'charges');
         if (!Ember.isEmpty(chargePromises)) {
-          var promiseLabel = 'Reloaded charges before generating invoice';
+          let promiseLabel = 'Reloaded charges before generating invoice';
           Ember.RSVP.allSettled(chargePromises, promiseLabel).then(function(chargeResults) {
-            var pricingPromises = [];
+            let pricingPromises = [];
             chargeResults.forEach(function(result) {
               if (!Ember.isEmpty(result.value)) {
-                var pricingItem = result.value.get('pricingItem');
+                let pricingItem = result.value.get('pricingItem');
                 if (!Ember.isEmpty(pricingItem)) {
                   pricingPromises.push(pricingItem.reload());
                 }
@@ -250,13 +250,13 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   },
 
   _addSupplyCharge: function(charge, department) {
-    var supplyCharges = this.get('supplyCharges'),
+    let supplyCharges = this.get('supplyCharges'),
       supplyCharge = this._createChargeItem(charge, department);
     supplyCharges.addObject(supplyCharge);
   },
 
   _createChargeItem: function(charge, department) {
-    var chargeItem = this.store.createRecord('line-item-detail', {
+    let chargeItem = this.store.createRecord('line-item-detail', {
       id: uuid.v4(),
       name: charge.get('pricingItem.name'),
       expenseAccount: charge.get('pricingItem.expenseAccount'),
@@ -287,7 +287,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   },
 
   _completeBeforeUpdate: function(sequence, resolve, reject) {
-    var invoiceId = 'inv',
+    let invoiceId = 'inv',
       sequenceValue;
     sequence.incrementProperty('value', 1);
     sequenceValue = sequence.get('value');
@@ -301,7 +301,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   },
 
   _generateLineItems: function(visit, visitChildren) {
-    var endDate = visit.get('endDate'),
+    let endDate = visit.get('endDate'),
       imaging = visitChildren[0].value,
       labs = visitChildren[1].value,
       lineDetail,
@@ -319,7 +319,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     if (!Ember.isEmpty(endDate) && !Ember.isEmpty(startDate)) {
       endDate = moment(endDate);
       startDate = moment(startDate);
-      var stayDays = endDate.diff(startDate, 'days');
+      let stayDays = endDate.diff(startDate, 'days');
       if (stayDays > 1) {
         lineDetail = this.store.createRecord('line-item-detail', {
           id: uuid.v4(),
@@ -344,7 +344,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     this.set('wardCharges', visitCharges.map(this._mapWardCharge.bind(this)));
 
     procedures.forEach(function(procedure) {
-      var charges = procedure.get('charges');
+      let charges = procedure.get('charges');
       charges.forEach(function(charge) {
         if (charge.get('medicationCharge')) {
           pharmacyChargePromises.push(this._addPharmacyCharge(charge, 'medication'));
@@ -422,11 +422,11 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   },
 
   _resolveVisitDescendents: function(results, childNameToResolve) {
-    var promises = [];
+    let promises = [];
     results.forEach(function(result) {
       if (!Ember.isEmpty(result.value)) {
         result.value.forEach(function(record) {
-          var children = record.get(childNameToResolve);
+          let children = record.get(childNameToResolve);
           if (!Ember.isEmpty(children)) {
             children.forEach(function(child) {
               // Make sure children are fully resolved
@@ -441,7 +441,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
 
   beforeUpdate: function() {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var lineItems = this.get('model.lineItems'),
+      let lineItems = this.get('model.lineItems'),
         savePromises = [];
       lineItems.forEach(function(lineItem) {
         lineItem.get('details').forEach(function(detail) {
@@ -454,8 +454,8 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
           this.store.find('sequence', 'invoice').then(function(sequence) {
             this._completeBeforeUpdate(sequence, resolve, reject);
           }.bind(this), function() {
-            var store = this.get('store');
-            var newSequence = store.push(store.normalize('sequence', {
+            let store = this.get('store');
+            let newSequence = store.push(store.normalize('sequence', {
               id: 'invoice',
               value: 0
             }));
@@ -469,7 +469,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   },
 
   afterUpdate: function() {
-    var message = 'The invoice record has been saved.';
+    let message = 'The invoice record has been saved.';
     this.displayAlert('Invoice Saved', message);
   }
 });

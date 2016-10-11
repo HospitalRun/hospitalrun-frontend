@@ -24,7 +24,7 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
   updateButtonAction: 'update',
 
   updateButtonText: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return this.get('i18n').t('buttons.add');
     } else {
@@ -38,7 +38,7 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
     },
 
     update: function() {
-      var model = this.get('model');
+      let model = this.get('model');
       this.get('editController').send('updateExpense', model);
     }
   }

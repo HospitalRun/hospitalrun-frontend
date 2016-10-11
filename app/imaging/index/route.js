@@ -6,14 +6,14 @@ export default AbstractIndexRoute.extend({
   searchStatus: 'Requested',
 
   _getStartKeyFromItem: function(item) {
-    var imagingDateAsTime = item.get('imagingDateAsTime'),
+    let imagingDateAsTime = item.get('imagingDateAsTime'),
       id = this._getPouchIdFromItem(item),
       requestedDateAsTime = item.get('requestedDateAsTime'),
       searchStatus = this.get('searchStatus');
     return [searchStatus, requestedDateAsTime, imagingDateAsTime, id];
   },
   _modelQueryParams: function() {
-    var maxId = this._getMaxPouchId(),
+    let maxId = this._getMaxPouchId(),
       maxValue = this.get('maxValue'),
       minId = this._getMinPouchId(),
       searchStatus = this.get('searchStatus');

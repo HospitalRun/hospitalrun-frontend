@@ -12,7 +12,7 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
     },
 
     update: function() {
-      var isNew = this.get('model.isNew'),
+      let isNew = this.get('model.isNew'),
         override = this.get('model');
       override.save().then(function() {
         if (isNew) {
@@ -38,7 +38,7 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
 
   updateButtonAction: 'update',
   updateButtonText: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add';
     } else {

@@ -19,10 +19,10 @@ export default Adapter.extend(PouchAdapterUtils, {
 
   _executeContainsSearch(store, type, query) {
     return new Ember.RSVP.Promise((resolve, reject) => {
-      var typeName = this.getRecordTypeName(type);
-      var searchUrl = `/search/hrdb/${typeName}/_search`;
+      let typeName = this.getRecordTypeName(type);
+      let searchUrl = `/search/hrdb/${typeName}/_search`;
       if (query.containsValue && query.containsValue.value) {
-        var queryString = '';
+        let queryString = '';
         query.containsValue.keys.forEach((key) => {
           if (!Ember.isEmpty(queryString)) {
             queryString = `${queryString} OR `;
@@ -42,12 +42,12 @@ export default Adapter.extend(PouchAdapterUtils, {
         });
         let successFn = (results) => {
           if (results && results.hits && results.hits.hits) {
-            var resultDocs = Ember.A(results.hits.hits).map((hit) => {
-              var mappedResult = hit._source;
+            let resultDocs = Ember.A(results.hits.hits).map((hit) => {
+              let mappedResult = hit._source;
               mappedResult.id = mappedResult._id;
               return mappedResult;
             });
-            var response = {
+            let response = {
               rows: resultDocs
             };
             this._handleQueryResponse(response, store, type).then(resolve, reject);
@@ -71,25 +71,25 @@ export default Adapter.extend(PouchAdapterUtils, {
   },
 
   _handleQueryResponse(response, store, type) {
-    var database = this.get('database');
+    let database = this.get('database');
     return new Ember.RSVP.Promise((resolve, reject) => {
       if (response.rows.length > 0) {
-        var ids = response.rows.map((row) => {
+        let ids = response.rows.map((row) => {
           return database.getEmberId(row.id);
         });
         this.findRecord(store, type, ids).then((findResponse) => {
-          var primaryRecordName = type.modelName.camelize().pluralize(),
+          let primaryRecordName = type.modelName.camelize().pluralize(),
             sortedValues = [];
           // Sort response in order of ids
           ids.forEach((id) => {
-            var resolvedRecord = findResponse[primaryRecordName].findBy('id', id);
+            let resolvedRecord = findResponse[primaryRecordName].findBy('id', id);
             sortedValues.push(resolvedRecord);
           });
           findResponse[primaryRecordName] = sortedValues;
           resolve(findResponse);
         }, reject);
       } else {
-        var emptyResponse = {};
+        let emptyResponse = {};
         emptyResponse[type.modelName] = [];
         resolve(emptyResponse);
       }
@@ -101,7 +101,7 @@ export default Adapter.extend(PouchAdapterUtils, {
    * Look for nulls and maxvalues in start key because those keys can't be handled by the sort/list function
    */
   _doesStartKeyContainSpecialCharacters(startkey) {
-    var haveSpecialCharacters = false,
+    let haveSpecialCharacters = false,
       maxValue = this.get('maxValue');
     if (!Ember.isEmpty(startkey) && Ember.isArray(startkey)) {
       startkey.forEach((keyvalue) => {
@@ -114,7 +114,7 @@ export default Adapter.extend(PouchAdapterUtils, {
   },
 
   _startChangesToStoreListener: function() {
-    var db = this.get('db');
+    let db = this.get('db');
     if (db) {
       this.changes = db.changes({
         since: 'now',
@@ -131,8 +131,8 @@ export default Adapter.extend(PouchAdapterUtils, {
   },
 
   query(store, type, query, options) {
-    var specialQuery = false;
-    for (var i = 0; i < this._specialQueries.length; i++) {
+    let specialQuery = false;
+    for (let i = 0; i < this._specialQueries.length; i++) {
       if (Ember.get(query, this._specialQueries[i])) {
         specialQuery = true;
         break;
@@ -141,13 +141,13 @@ export default Adapter.extend(PouchAdapterUtils, {
     if (!specialQuery) {
       if (query.options) {
         this._init(store, type);
-        var recordTypeName = this.getRecordTypeName(type);
+        let recordTypeName = this.getRecordTypeName(type);
         return this.get('db').rel.find(recordTypeName, query.options);
       } else {
         return this._super(store, type, query, options);
       }
     } else {
-      var mapReduce = null,
+      let mapReduce = null,
         queryParams = {};
       if (query.options) {
         queryParams = Ember.copy(query.options);
@@ -183,12 +183,12 @@ export default Adapter.extend(PouchAdapterUtils, {
         return this._executeContainsSearch(store, type, query);
       }
       return new Ember.RSVP.Promise((resolve, reject) => {
-        var db = this.get('db');
+        let db = this.get('db');
         try {
           if (mapReduce) {
             if (query.useList) {
               queryParams.include_docs = true;
-              var listParams = {
+              let listParams = {
                 query: queryParams
               };
               db.list(`${mapReduce}/sort/${mapReduce}`, listParams, (err, response) => {

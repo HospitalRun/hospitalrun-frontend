@@ -25,7 +25,7 @@ export default Ember.Controller.extend(BillingCategories, IsUpdateDisabled, {
   },
 
   billingCategories: function() {
-    var defaultBillingCategories = this.get('defaultBillingCategories'),
+    let defaultBillingCategories = this.get('defaultBillingCategories'),
       billingCategoryList = this.get('billingCategoryList');
     if (Ember.isEmpty(billingCategoryList)) {
       return Ember.Object.create({ value: defaultBillingCategories });

@@ -26,14 +26,14 @@ export default Ember.Component.extend({
    */
   _cameraChange: function(selectedCamera) {
     this.set('selectedCamera', selectedCamera);
-    var stream = this.get('stream'),
+    let stream = this.get('stream'),
       video = this.get('video');
     if (!Ember.isEmpty(stream)) {
       video.src = null;
       this._stopStream();
     }
-    var videoSource = this.get('selectedCamera');
-    var constraints = {
+    let videoSource = this.get('selectedCamera');
+    let constraints = {
       audio: false,
       video: {
         optional: [{ sourceId: videoSource }]
@@ -51,11 +51,11 @@ export default Ember.Component.extend({
    * Callback for MediaStreamTrack.getSources
    */
   _gotSources: function(sourceInfos) {
-    var cameraCount = 0,
+    let cameraCount = 0,
       cameraLabel,
       videoSources = [];
-    for (var i = 0; i !== sourceInfos.length; ++i) {
-      var sourceInfo = sourceInfos[i];
+    for (let i = 0; i !== sourceInfos.length; ++i) {
+      let sourceInfo = sourceInfos[i];
       if (sourceInfo.kind === 'video') {
         cameraLabel = 'Camera ' + (++cameraCount);
         if (sourceInfo.label) {
@@ -81,7 +81,7 @@ export default Ember.Component.extend({
     if (this.isDestroyed) {
       this._stopStream(stream);
     } else {
-      var video = this.get('video');
+      let video = this.get('video');
       this.set('stream', stream); // make stream available to object
       video.src = window.URL.createObjectURL(stream);
       video.play();
@@ -89,7 +89,7 @@ export default Ember.Component.extend({
   },
 
   _photoSourceChanged: function(photoSource) {
-    var camera = this.$('.camera'),
+    let camera = this.$('.camera'),
       fileUpload = this.$('.fileupload'),
       setupCamera = this.get('setupCamera');
     this.set('photoSource', photoSource);
@@ -100,7 +100,7 @@ export default Ember.Component.extend({
       fileUpload.hide();
       camera.show();
       if (!setupCamera) {
-        var canvas = this.$('canvas')[0],
+        let canvas = this.$('canvas')[0],
           photo = this.$('img')[0],
           video = this.$('video')[0];
         this.setProperties({
@@ -132,7 +132,7 @@ export default Ember.Component.extend({
    * Setup the dimensions for the video preview and picture elements.
    */
   _setupVideo: function() {
-    var canvas = this.get('canvas'),
+    let canvas = this.get('canvas'),
       height = this.get('height'),
       video = this.get('video'),
       width = this.get('width');
@@ -158,12 +158,12 @@ export default Ember.Component.extend({
   }.on('init'),
 
   _stopStream: function(stream) {
-    var streamToStop = stream || this.get('stream');
+    let streamToStop = stream || this.get('stream');
     if (!Ember.isEmpty(streamToStop)) {
       if (typeof streamToStop.active === 'undefined') {
         streamToStop.stop();
       } else {
-        var track = streamToStop.getTracks()[0];
+        let track = streamToStop.getTracks()[0];
         track.stop();
       }
     }
@@ -171,17 +171,17 @@ export default Ember.Component.extend({
 
   actions: {
     takePhoto: function() {
-      var canvas = this.get('canvas'),
+      let canvas = this.get('canvas'),
         height = this.get('height'),
         video = this.get('video'),
         width = this.get('width');
       canvas.width = width;
       canvas.height = height;
       canvas.getContext('2d').drawImage(video, 0, 0, width, height);
-      var data = canvas.toDataURL('image/png');
-      var binary = atob(data.split(',')[1]);
-      var array = [];
-      for (var i = 0; i < binary.length; i++) {
+      let data = canvas.toDataURL('image/png');
+      let binary = atob(data.split(',')[1]);
+      let array = [];
+      for (let i = 0; i < binary.length; i++) {
         array.push(binary.charCodeAt(i));
       }
       this.set('photoFile', new Blob([new Uint8Array(array)], { type: 'image/png' }));
@@ -197,7 +197,7 @@ export default Ember.Component.extend({
   }.property(),
 
   didInsertElement: function() {
-    var camera = this.$('.camera'),
+    let camera = this.$('.camera'),
       fileUpload = this.$('.fileUpload');
     if (camera.length === 1) {
       fileUpload.hide();
@@ -206,7 +206,7 @@ export default Ember.Component.extend({
   },
 
   showCameraSelect: function() {
-    var photoSource = this.get('photoSource') ,
+    let photoSource = this.get('photoSource') ,
       videoSources = this.get('videoSources');
     return (photoSource === takeAPicture && videoSources && videoSources.length > 1);
   }.property('photoSource', 'videoSources'),

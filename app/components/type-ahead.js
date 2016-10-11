@@ -3,20 +3,20 @@ import DS from 'ember-data';
 import InputComponent from 'ember-rapid-forms/components/em-input';
 export default InputComponent.extend({
   _mapContentItems: function() {
-    var content = this.get('content');
+    let content = this.get('content');
     if (content) {
-      var mapped = content.filter(function(item) {
+      let mapped = content.filter(function(item) {
         return !Ember.isEmpty(item);
       });
       if (content instanceof DS.RecordArray) {
         mapped = mapped.map(function(item) {
-          var returnObj = item.getProperties(this.get('displayKey'));
+          let returnObj = item.getProperties(this.get('displayKey'));
           returnObj[this.get('selectionKey')] = item;
           return returnObj;
         }.bind(this));
       } else {
         mapped = mapped.map(function(item) {
-          var returnObj = {};
+          let returnObj = {};
           returnObj[this.get('displayKey')] = item;
           return returnObj;
         }.bind(this));
@@ -32,7 +32,7 @@ export default InputComponent.extend({
   }.property('content'),
 
   contentChanged: function() {
-    var bloodhound = this.get('bloodhound');
+    let bloodhound = this.get('bloodhound');
     if (bloodhound) {
       bloodhound.clear();
       bloodhound.add(this._mapContentItems());
@@ -54,7 +54,7 @@ export default InputComponent.extend({
   templates: null,
 
   _getSource: function() {
-    var typeAheadBloodhound = new Bloodhound({
+    let typeAheadBloodhound = new Bloodhound({
       datumTokenizer: Bloodhound.tokenizers.obj.whitespace(this.get('displayKey')),
       queryTokenizer: Bloodhound.tokenizers.whitespace,
       local: this.get('mappedContent')
@@ -65,9 +65,9 @@ export default InputComponent.extend({
   },
 
   didInsertElement: function() {
-    var $input = this.$('input');
+    let $input = this.$('input');
     this.set('inputElement', $input);
-    var $typeahead = $input.typeahead({
+    let $typeahead = $input.typeahead({
       autoselect: true,
       hint: this.get('hint'),
       highlight: this.get('highlight'),
@@ -92,15 +92,15 @@ export default InputComponent.extend({
 
     if (this.get('setOnBlur')) {
       $input.on('keyup', function() {
-        var $hint = this.$('.tt-hint'),
+        let $hint = this.$('.tt-hint'),
           hintValue = $hint.val();
         this.set('lastHint', hintValue);
         this.set('selectedItem', false);
       }.bind(this));
 
       $input.on('blur', function(event) {
-        var selection = this.get('selection');
-        var targetValue = event.target.value.trim();
+        let selection = this.get('selection');
+        let targetValue = event.target.value.trim();
         if (!Ember.isEmpty(selection)) {
           if (selection.trim) {
             selection = selection.trim();
@@ -108,7 +108,7 @@ export default InputComponent.extend({
           this.set('selection', selection);
         }
         if (!this.get('selectedItem')) {
-          var lastHint = this.get('lastHint'),
+          let lastHint = this.get('lastHint'),
             exactMatch = false;
           if (Ember.isEmpty(lastHint)) {
             lastHint = targetValue;

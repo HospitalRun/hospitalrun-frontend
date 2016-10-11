@@ -104,7 +104,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
   }],
 
   capabilitySections: Ember.computed.map('availableCapabilities', function(section) {
-    var mappedCapabilities = [];
+    let mappedCapabilities = [];
     section.capabilities.forEach((key) => {
       mappedCapabilities.push({
         key: key,
@@ -119,11 +119,11 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
 
   actions: {
     selectRole(role) {
-      var roleToUpdate = this.get('model').findBy('id', role.dasherize());
+      let roleToUpdate = this.get('model').findBy('id', role.dasherize());
       this.set('currentRole', role);
       this.set('roleToUpdate', roleToUpdate);
       if (roleToUpdate) {
-        var capabilities = roleToUpdate.get('capabilities');
+        let capabilities = roleToUpdate.get('capabilities');
         this.get('availableCapabilities').forEach((section) => {
           section.capabilities.forEach((capability) => {
             if (capabilities.includes(capability)) {
@@ -134,9 +134,9 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
           });
         });
       } else {
-        var defaultCapabilities = this.get('defaultCapabilities');
+        let defaultCapabilities = this.get('defaultCapabilities');
         Object.keys(defaultCapabilities).forEach((capability) => {
-          var capabilityRoles = defaultCapabilities[capability];
+          let capabilityRoles = defaultCapabilities[capability];
           if (capabilityRoles.includes(role)) {
             this.set(capability, true);
           } else {
@@ -147,15 +147,15 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     },
 
     update() {
-      var currentRole = this.get('currentRole');
-      var roleToUpdate = this.get('roleToUpdate');
+      let currentRole = this.get('currentRole');
+      let roleToUpdate = this.get('roleToUpdate');
       if (Ember.isEmpty(roleToUpdate)) {
         roleToUpdate = this.get('store').createRecord('user-role', {
           id: currentRole.dasherize(),
           name: currentRole
         });
       }
-      var capabilitiesToSave = [];
+      let capabilitiesToSave = [];
       this.get('availableCapabilities').forEach((section) => {
         section.capabilities.forEach((capability) => {
           if (this.get(capability) === true) {

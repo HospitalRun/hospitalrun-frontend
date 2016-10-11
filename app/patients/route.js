@@ -42,7 +42,7 @@ export default AbstractModuleRoute.extend(PatientId, {
 
   actions: {
     createNewVisit: function(patient, visits) {
-      var lastVisit = visits.get('lastObject'),
+      let lastVisit = visits.get('lastObject'),
         propertiesToSet = {};
 
       if (!Ember.isEmpty(lastVisit)) {

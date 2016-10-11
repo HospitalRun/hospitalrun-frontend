@@ -12,14 +12,14 @@ export default Ember.Mixin.create({
   },
 
   getPrimaryDiagnoses: function(visits) {
-    var diagnosesList = [];
+    let diagnosesList = [];
     if (!Ember.isEmpty(visits)) {
       visits.forEach(function(visit) {
         this._addDiagnosisToList(visit.get('primaryDiagnosis'), diagnosesList, visit);
         this._addDiagnosisToList(visit.get('primaryBillingDiagnosis'), diagnosesList, visit);
       }.bind(this));
     }
-    var firstDiagnosis = diagnosesList.get('firstObject');
+    let firstDiagnosis = diagnosesList.get('firstObject');
     if (!Ember.isEmpty(firstDiagnosis)) {
       firstDiagnosis.first = true;
     }
@@ -27,7 +27,7 @@ export default Ember.Mixin.create({
   },
 
   getSecondaryDiagnoses: function(visits) {
-    var diagnosesList = [];
+    let diagnosesList = [];
     if (!Ember.isEmpty(visits)) {
       visits.forEach(function(visit) {
         if (!Ember.isEmpty(visit.get('additionalDiagnoses'))) {
@@ -36,7 +36,7 @@ export default Ember.Mixin.create({
       });
     }
 
-    var firstDiagnosis = diagnosesList.get('firstObject');
+    let firstDiagnosis = diagnosesList.get('firstObject');
     if (!Ember.isEmpty(firstDiagnosis)) {
       firstDiagnosis.first = true;
     }

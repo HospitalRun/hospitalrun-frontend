@@ -15,7 +15,7 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
   pageTitle: null,
 
   _getFilterParams: function(params) {
-    var filterByList = [],
+    let filterByList = [],
       filterParams = this.get('filterParams');
     if (!Ember.isEmpty(filterParams)) {
       filterParams.forEach(function(paramName) {
@@ -52,7 +52,7 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
 
   model: function(params) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var filterParams = this._getFilterParams(params),
+      let filterParams = this._getFilterParams(params),
         modelName = this.get('modelName'),
         itemsPerPage = this.get('itemsPerPage'),
         queryParams = this._modelQueryParams(params);
@@ -77,7 +77,7 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
           this.set('firstKey', this._getStartKeyFromItem(model.get('firstObject')));
         }
         if (model.get('length') > itemsPerPage) {
-          var lastItem = model.popObject();
+          let lastItem = model.popObject();
           this.set('nextStartKey', this._getStartKeyFromItem(lastItem));
         } else {
           this.set('nextStartKey');
@@ -94,9 +94,9 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
   },
 
   setupController: function(controller, model) {
-    var props = this.getProperties('firstKey', 'nextStartKey');
+    let props = this.getProperties('firstKey', 'nextStartKey');
     controller.setProperties(props);
-    var sectionDetails = {
+    let sectionDetails = {
       currentScreenTitle: this.get('pageTitle')
     };
     if (this.get('hideNewButton')) {

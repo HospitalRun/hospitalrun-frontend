@@ -7,13 +7,13 @@ export default Ember.Component.extend({
   sortBy: null,
   sortKey: null,
   sorted: function() {
-    var sortBy = this.get('sortBy'),
+    let sortBy = this.get('sortBy'),
       sortKey = this.get('sortKey');
     return sortBy === sortKey;
   }.property('sortBy', 'sortKey'),
 
   click() {
-    var sortBy = this.get('sortBy'),
+    let sortBy = this.get('sortBy'),
       sorted = this.get('sorted'),
       sortDesc = false;
     if (sorted) {
