@@ -1,13 +1,12 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
 import Ember from 'ember';
+import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, PatientNotes, {
-  config: Ember.inject.service(),
-
+export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, PatientId, PatientNotes, {
   canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
   }.property(),
@@ -78,6 +77,7 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     'Private'
   ],
 
+  config: Ember.inject.service(),
   filesystem: Ember.inject.service(),
   database: Ember.inject.service(),
   patientController: Ember.inject.controller('patients'),
@@ -545,6 +545,30 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
         }
       });
     });
+  },
+
+  beforeUpdate: function() {
+    if (!this.get('model.isNew')) {
+      return Ember.RSVP.resolve();
+    }
+    const database = this.get('database');
+    const id = this.get('model.friendlyId');
+    const maxValue = this.get('maxValue');
+    const query = {
+      startkey: [id, null],
+      endkey: [id, maxValue]
+    };
+    return database.queryMainDB(query, 'patient_by_display_id')
+      .then((found) => {
+        if (Ember.isEmpty(found.rows)) {
+          return Ember.RSVP.resolve();
+        }
+        return this.generateFriendlyId()
+          .then((friendlyId) => {
+            this.model.set('friendlyId', friendlyId);
+            return Ember.RSVP.resolve();
+          });
+      });
   },
 
   afterUpdate: function(record) {
