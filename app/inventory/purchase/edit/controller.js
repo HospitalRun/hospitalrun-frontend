@@ -41,11 +41,12 @@ export default AbstractEditController.extend(UnitTypes, {
   updateCapability: 'add_inventory_purchase',
 
   title: function() {
+    let i18n = this.get('i18n');
     var isNew = this.get('model.isNew');
     if (isNew) {
-      return 'Add Purchase';
+      return i18n.t('inventory.titles.addPurchase');
     }
-    return 'Edit Purchase';
+    return i18n.t('inventory.titles.editPurchase');
   }.property('model.isNew'),
 
   beforeUpdate: function() {

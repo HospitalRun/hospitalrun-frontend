@@ -1,0 +1,62 @@
+// panel styles
+.panel-heading {
+
+  .view-sub-bar { padding: 0 15px; }
+
+  .view-sub-nav { margin: 0; }
+
+  .view-action-buttons {
+    float: right;
+
+    .btn {
+      margin: 10px 0 10px 15px;
+      border: 1px solid $green;
+      background-color: transparent;
+      color: $green;
+      font-size: 14px;
+
+      &:hover,
+      &:focus {
+        background-color: $green;
+        color: $white;
+      }
+    }
+
+  }
+
+  .nav-pills {
+    margin: 0;
+
+    li {
+      margin-left: 40px;
+      line-height: 58px;
+      font-size: 18px;
+
+      &:first-of-type { margin-left: 0; }
+
+      &.active > a {/* stylelint-disable-line selector-no-qualifying-type */
+        background-color: transparent;
+        color: $navy_mid2;
+        font-weight: 600;
+      }
+    }
+
+    a {
+      padding: 0;
+      color: $view_sub_nav;
+
+      &:hover {
+        // needs resolved
+        background-color: transparent !important;/* stylelint-disable-line declaration-no-important */
+        color: $navy_mid2;
+      }
+    }
+  }
+}
+
+.panel-title { font-size: 24px; }
+
+.panel-footer {
+  background-color: $white;
+  text-align: right;
+}

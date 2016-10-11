@@ -1,0 +1,66 @@
+// styles for patient summary
+.patient-summary {
+  position: relative;
+  border-bottom: 2px solid $content_border;
+  padding-bottom: 15px;
+
+  .ps-info-group {
+    margin-bottom: 5px;
+
+    &.patient-id {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      border-radius: 3px;
+      background: rgba($blue_lightest,.7);
+      padding: 10px 20px;
+      text-align: center;
+
+      .ps-info-label {
+        margin-right: 5px;
+        margin-bottom: 0;
+        width: auto;
+        text-align: right;
+      }
+
+      .ps-info-data {
+        font-size: 22px;
+        font-weight: 300;
+      }
+    }
+
+    &.patient-name {
+      .ps-info-data {
+        font-size: 22px;
+        font-weight: 600;
+      }
+    }
+
+    &.long-form {
+      float: left;
+      padding-right: 15px;
+      width: 50%;
+    }
+  }
+
+  .ps-info-label {
+    margin-right: 10px;
+    width: 40px;
+    font-size: 16px;
+    font-weight: 400;
+
+    &.wide {
+      width: auto;
+    }
+  }
+
+  .ps-info-data {
+    color: $navy_mid2;
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  .ps-info-data-block {
+    font-weight: 300;
+  }
+}

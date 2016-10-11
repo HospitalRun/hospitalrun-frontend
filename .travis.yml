@@ -1,7 +1,11 @@
 ---
 language: node_js
 node_js:
-  - "0.12"
+  - "4"
+
+branches:
+  only:
+    - "master"
 
 sudo: false
 
@@ -10,12 +14,13 @@ cache:
     - node_modules
 
 before_install:
-  - "npm config set spin false"
-  - "npm install -g npm@^2"
+  - npm config set spin false
+  - npm install -g bower
+  - bower --version
+  - npm install phantomjs-prebuilt
+  - node_modules/phantomjs-prebuilt/bin/phantomjs --version
 
 install:
-  - npm install -g bower
-  - npm install -g phantomjs-prebuilt
   - npm install
   - bower install
 

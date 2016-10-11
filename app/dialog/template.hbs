@@ -10,7 +10,7 @@
     <div class="progress">
       <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow={{model.progressBarValue}}
       aria-valuemin="0" aria-valuemax="100" style={{model.progressBarStyle}}>
-        <span class="sr-only">{{model.progressBarValue}}% Complete</span>
+        <span class="sr-only">{{t 'loading.progressBar.progress' progressBarValue=model.progressBarValue}}</span>
       </div>
     </div>
   {{/if}}

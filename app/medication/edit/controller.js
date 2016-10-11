@@ -54,13 +54,14 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
   }.property('isFulfilling', 'model.prescription'),
 
   quantityLabel: function() {
-    var returnLabel = 'Quantity Requested',
+    let i18n = this.get('i18n');
+    var returnLabel = i18n.t('medication.labels.quantityRequested'),
       isFulfilled = this.get('isFulfilled'),
       isFulfilling = this.get('isFulfilling');
     if (isFulfilling) {
-      returnLabel = 'Quantity Dispensed';
+      returnLabel = i18n.t('medication.labels.quantityDispensed');
     } else if (isFulfilled) {
-      returnLabel = 'Quantity Distributed';
+      returnLabel = i18n.t('medication.labels.quantityDistributed');
     }
     return returnLabel;
   }.property('isFulfilled'),
@@ -69,22 +70,24 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
   updateCapability: 'add_medication',
 
   afterUpdate: function() {
-    var alertTitle = 'Medication Request Saved',
-      alertMessage = 'The medication record has been saved.',
+    let i18n = this.get('i18n');
+    var alertTitle,
+      alertMessage,
       isFulfilled = this.get('isFulfilled');
     if (isFulfilled) {
-      alertTitle = 'Medication Request Fulfilled';
+      alertTitle = i18n.t('medication.alerts.fulfilledTitle');
       alertMessage = 'The medication request has been fulfilled.';
       this.set('model.selectPatient', false);
     } else {
-      alertTitle = 'Medication Request Saved';
-      alertMessage = 'The medication record has been saved.';
+      alertTitle = i18n.t('medication.alerts.savedTitle');
+      alertMessage = i18n.t('medication.alerts.savedMessage');
     }
     this.saveVisitIfNeeded(alertTitle, alertMessage);
   },
 
   _addNewPatient: function() {
-    this.displayAlert('Please Wait', 'A new patient needs to be created...Please wait..');
+    let i18n = this.get('i18n');
+    this.displayAlert(i18n.t('alerts.pleaseWait'), i18n.t('messages.newPatientHasToBeCreated'));
     this._getNewPatientId().then(function(friendlyId) {
       var patientTypeAhead = this.get('model.patientTypeAhead'),
         nameParts = patientTypeAhead.split(' '),
@@ -134,7 +137,10 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
             if (isNew) {
               if (Ember.isEmpty(newMedication.get('patient'))) {
                 this._addNewPatient();
-                reject('creating new patient first');
+                reject({
+                  ignore: true,
+                  message: 'creating new patient first'
+                });
               } else {
                 newMedication.set('medicationTitle', newMedication.get('inventoryItem.name'));
                 newMedication.set('priceOfMedication', newMedication.get('inventoryItem.price'));
@@ -194,21 +200,19 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
   }.property('updateCapability', 'isFulfilled'),
 
   updateButtonText: function() {
+    let i18n = this.get('i18n');
     if (this.get('model.hideFulfillRequest')) {
-      return 'Dispense';
+      return i18n.t('buttons.dispense');
     } else if (this.get('isFulfilling')) {
-      return 'Fulfill';
-    } else if (this.get('model.isNew')) {
-      return 'Add';
-    } else {
-      return 'Update';
+      return i18n.t('labels.fulfill');
     }
+    return this._super();
   }.property('model.isNew', 'isFulfilling', 'model.hideFulfillRequest'),
 
   actions: {
     addedNewPatient: function(record) {
       this.send('closeModal');
-      this.set('patient', record);
+      this.set('model.patient', record);
       this.set('newPatientId');
       this.send('update');
     }

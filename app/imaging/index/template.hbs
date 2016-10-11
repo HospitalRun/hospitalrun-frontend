@@ -2,33 +2,26 @@
   {{#if hasRecords}}
     <table class="table">
       <tr class="table-header">
-        <th>{{t 'labels.date_requested'}}</th>
+        <th>{{t 'labels.dateRequested'}}</th>
+        <th>{{t 'labels.requestedBy'}}</th>
         <th>{{t 'labels.patient'}}</th>
-        <th>{{t 'labels.imaging_type'}}</th>
+        <th>{{t 'labels.imagingType'}}</th>
         <th>{{t 'labels.notes'}}</th>
         {{#if showActions}}
           <th>{{t 'labels.actions'}}</th>
         {{/if}}
       </tr>
       {{#each model as |imaging|}}
-        <tr {{action 'editItem' imaging }}>
-          <td>{{date-format imaging.requestedDate}}</td>
-          <td>{{imaging.patient.displayName}}</td>
-          <td>{{imaging.imagingType.name}}</td>
-          <td>{{imaging.notes}}</td>
-          {{#if showActions}}
-            <td>
-              {{#if canEdit}}
-                <button class="btn btn-default neutral" {{action 'editItem' imaging  bubbles=false }}>{{t 'labels.edit'}}</button>
-              {{/if}}
-            </td>
-          {{/if}}
-        </tr>
+        {{imaging/index/requested-list-item
+          imaging=imaging
+          action="editItem"
+          showActions=showActions
+          canEdit=canEdit}}
       {{/each}}
     </table>
   {{else}}
     <div class="alert alert-info">
-      <p>{{t 'messages.no_items_found'}} {{#if canAdd}} <a href="#" {{action 'newItem'}}>{{t 'messages.create_new_record'}}</a>{{/if}}</p>
+      <p>{{t 'messages.noItemsFound'}} {{#if canAdd}} <a href="#" {{action 'newItem'}}>{{t 'messages.createNewRecord'}}</a>{{/if}}</p>
     </div>
   {{/if}}
 {{/item-listing}}

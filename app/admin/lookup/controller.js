@@ -6,180 +6,190 @@ import ImagingPricingTypes from 'hospitalrun/mixins/imaging-pricing-types';
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import UnitTypes from 'hospitalrun/mixins/unit-types';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
-export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
-  ModalHelper, ImagingPricingTypes, InventoryTypeList,  UnitTypes, VisitTypes, {
+import { EKMixin, keyDown } from 'ember-keyboard';
+export default Ember.Controller.extend(BillingCategories, EKMixin,
+  ImagingPricingTypes, InventoryTypeList, LabPricingTypes, ModalHelper,
+  UnitTypes, VisitTypes, {
     fileSystem: Ember.inject.service('filesystem'),
-    lookupTypes: [{
-      name: 'Anesthesia Types',
-      value: 'anesthesia_types',
-      model: {
-        procedure: 'anesthesiaType'
-      }
-    }, {
-      name: 'Anesthesiologists',
-      value: 'anesthesiologists',
-      model: {
-        procedure: 'anesthesiologist'
-      }
-    }, {
-      defaultValues: 'defaultBillingCategories',
-      name: 'Billing Categories',
-      value: 'billing_categories',
-      models: {
-        'billing-line-item': 'category'
-      }
-    }, {
-      name: 'Clinic Locations',
-      value: 'clinic_list',
-      models: { // Models that use this lookup -- use this later to update models on lookup changes
-        patient: 'clinic'
-      }
-    }, {
-      name: 'Countries',
-      value: 'country_list',
-      models: {
-        patient: 'country'
-      }
-    }, {
-      name: 'Diagnoses',
-      value: 'diagnosis_list',
-      models: {
-        visit: 'primaryDiagnosis'
-      }
-    }, {
-      name: 'CPT Codes',
-      value: 'cpt_code_list',
-      models: {
-        procedure: 'cptCode'
-      }
-    }, {
-      name: 'Expense Accounts',
-      value: 'expense_account_list',
-      models: {
-        'inv-request': 'expenseAccount',
-        pricing: 'expenseAccount'
-      }
-    }, {
-      name: 'Inventory Aisle Locations',
-      value: 'aisle_location_list',
-      models: {
-        inventory: 'aisleLocation',
-        'inv-location': 'aisleLocation',
-        'inv-purchase': 'aisleLocation',
-        'inv-request': [
-          'deliveryAisle',
-          'locationsAffected' // Special use case that we need to handle
-        ]
-      }
-    }, {
-      name: 'Inventory Locations',
-      value: 'warehouse_list',
-      models: {
-        inventory: 'location',
-        'inv-location': 'location',
-        'inv-purchase': 'location',
-        'inv-request': [
-          'deliveryLocation',
-          'locationsAffected' // Special use case that we need to handle
-        ]
-      }
-    }, {
-      defaultValues: 'defaultInventoryTypes',
-      name: 'Inventory Types',
-      value: 'inventory_types',
-      models: {
-        inventory: 'inventoryType'
-      }
-    }, {
-      defaultValues: 'defaultImagingPricingTypes',
-      name: 'Imaging Pricing Types',
-      value: 'imaging_pricing_types',
-      models: {
-        pricing: 'pricingType'
-      }
-    }, {
-      defaultValues: 'defaultLabPricingTypes',
-      name: 'Lab Pricing Types',
-      value: 'lab_pricing_types',
-      models: {
-        pricing: 'pricingType'
-      }
-    }, {
-      name: 'Patient Status List',
-      value: 'patient_status_list',
-      models: {
-        patient: 'status'
-      }
-    }, {
-      name: 'Physicians',
-      value: 'physician_list',
-      models: {
-        appointment: 'provider',
-        visit: 'examiner',
-        procedure: [
-          'assistant',
-          'physician'
-        ]
-      }
-    }, {
-      name: 'Procedures',
-      value: 'procedure_list',
-      models: {
-        procedure: 'description'
-      }
-    }, {
-      name: 'Procedure Locations',
-      value: 'procedure_locations',
-      models: {
-        procedure: 'location'
-      }
-    }, {
-      name: 'Procedure Pricing Types',
-      value: 'procedure_pricing_types',
-      models: {
-        pricing: 'pricingType'
-      }
-    }, {
-      name: 'Radiologists',
-      value: 'radiologists',
-      model: {
-        imaging: 'radiologist'
-      }
-    }, {
-      defaultValues: 'defaultUnitList',
-      name: 'Unit Types',
-      value: 'unit_types',
-      models: {
-        inventory: 'distributionUnit',
-        'inv-purchase': 'distributionUnit'
-      }
-    }, {
-      name: 'Vendor',
-      value: 'vendor_list',
-      models: {
-        'inv-purchase': 'vendor'
-      }
-    }, {
-      name: 'Visit Locations',
-      value: 'visit_location_list',
-      models: {
-        appointment: 'location',
-        visit: 'location'
-      }
-    }, {
-      defaultValues: 'defaultVisitTypes',
-      name: 'Visit Types',
-      value: 'visit_types',
-      models: {
-        visit: 'visitType'
-      }
-    }, {
-      name: 'Ward Pricing Types',
-      value: 'ward_pricing_types',
-      models: {
-        pricing: 'pricingType'
-      }
-    }],
+    lookupTypes:  Ember.computed(function() {
+      return [{
+        name: this.get('i18n').t('admin.lookup.anesthesiaTypes'),
+        value: 'anesthesia_types',
+        model: {
+          procedure: 'anesthesiaType'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.anesthesiologists'),
+        value: 'anesthesiologists',
+        model: {
+          procedure: 'anesthesiologist'
+        }
+      }, {
+        defaultValues: 'defaultBillingCategories',
+        name: this.get('i18n').t('admin.lookup.billingCategories'),
+        value: 'billing_categories',
+        models: {
+          'billing-line-item': 'category'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.clinicList'),
+        value: 'clinic_list',
+        models: { // Models that use this lookup -- use this later to update models on lookup changes
+          patient: 'clinic'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.countryList'),
+        value: 'country_list',
+        models: {
+          patient: 'country'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.diagnosisList'),
+        value: 'diagnosis_list',
+        models: {
+          visit: 'primaryDiagnosis'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.cptCodeList'),
+        value: 'cpt_code_list',
+        models: {
+          procedure: 'cptCode'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.expenseAccountList'),
+        value: 'expense_account_list',
+        models: {
+          'inv-request': 'expenseAccount',
+          pricing: 'expenseAccount'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.aisleLocationList'),
+        value: 'aisle_location_list',
+        models: {
+          inventory: 'aisleLocation',
+          'inv-location': 'aisleLocation',
+          'inv-purchase': 'aisleLocation',
+          'inv-request': [
+            'deliveryAisle',
+            'locationsAffected' // Special use case that we need to handle
+          ]
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.warehouseList'),
+        value: 'warehouse_list',
+        models: {
+          inventory: 'location',
+          'inv-location': 'location',
+          'inv-purchase': 'location',
+          'inv-request': [
+            'deliveryLocation',
+            'locationsAffected' // Special use case that we need to handle
+          ]
+        }
+      }, {
+        defaultValues: 'defaultInventoryTypes',
+        name: this.get('i18n').t('admin.lookup.inventoryTypes'),
+        value: 'inventory_types',
+        models: {
+          inventory: 'inventoryType'
+        }
+      }, {
+        defaultValues: 'defaultImagingPricingTypes',
+        name: this.get('i18n').t('admin.lookup.imagingPricingTypes'),
+        value: 'imaging_pricing_types',
+        models: {
+          pricing: 'pricingType'
+        }
+      }, {
+        defaultValues: 'defaultLabPricingTypes',
+        name: this.get('i18n').t('admin.lookup.labPricingTypes'),
+        value: 'lab_pricing_types',
+        models: {
+          pricing: 'pricingType'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.patientStatusList'),
+        value: 'patient_status_list',
+        models: {
+          patient: 'status'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.physicianList'),
+        value: 'physician_list',
+        models: {
+          appointment: 'provider',
+          visit: 'examiner',
+          procedure: [
+            'assistant',
+            'physician'
+          ]
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.procedureList'),
+        value: 'procedure_list',
+        models: {
+          procedure: 'description'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.procedureLocations'),
+        value: 'procedure_locations',
+        models: {
+          procedure: 'location'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.procedurePricingTypes'),
+        value: 'procedure_pricing_types',
+        models: {
+          pricing: 'pricingType'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.radiologists'),
+        value: 'radiologists',
+        model: {
+          imaging: 'radiologist'
+        }
+      }, {
+        name: this.get('i18n').t('labels.sex'),
+        value: 'sex',
+        model: {
+          patient: 'sex'
+        }
+      }, {
+        defaultValues: 'defaultUnitList',
+        name: this.get('i18n').t('admin.lookup.unitTypes'),
+        value: 'unit_types',
+        models: {
+          inventory: 'distributionUnit',
+          'inv-purchase': 'distributionUnit'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.vendorList'),
+        value: 'vendor_list',
+        models: {
+          'inv-purchase': 'vendor'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.visitLocationList'),
+        value: 'visit_location_list',
+        models: {
+          appointment: 'location',
+          visit: 'location'
+        }
+      }, {
+        defaultValues: 'defaultVisitTypes',
+        name: this.get('i18n').t('admin.lookup.visitTypes'),
+        value: 'visit_types',
+        models: {
+          visit: 'visitType'
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.wardPricingTypes'),
+        value: 'ward_pricing_types',
+        models: {
+          pricing: 'pricingType'
+        }
+      }];
+    }),
 
     importFile: Ember.computed.alias('lookupTypeList.importFile'),
 
@@ -216,6 +226,8 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
         if (!Ember.isEmpty(lookupItem) && Ember.isEmpty(lookupItem.get('userCanAdd'))) {
           lookupItem.set('userCanAdd', true);
         }
+        this.set('model.userCanAdd', lookupItem.get('userCanAdd'));
+        this.set('model.organizeByType', lookupItem.get('organizeByType'));
         return lookupItem;
       }
     }.property('model.lookupType'),
@@ -228,51 +240,68 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
       return Ember.ArrayProxy.create({ content: Ember.A(values) });
     }.property('model.lookupType', 'lookupTypeList.value'),
 
-    organizeByType: Ember.computed.alias('lookupTypeList.organizeByType'),
-
     showOrganizeByType: function() {
       var lookupType = this.get('model.lookupType');
       return (!Ember.isEmpty(lookupType) && lookupType.indexOf('pricing_types') > 0);
     }.property('model.lookupType'),
-
-    userCanAdd: Ember.computed.alias('lookupTypeList.userCanAdd'),
 
     _canDeleteValue: function(value) {
       var lookupType = this.get('model.lookupType');
       switch (lookupType) {
         case 'inventory_types': {
           if (value === 'Medication') {
-            this.displayAlert('Cannot Delete Medication', 'The Medication inventory type cannot be deleted because it is needed for the Medication module.');
+            this.displayAlert(
+              this.get('i18n').t('admin.lookup.deleteValueInventoryTypeMedicationTitle'),
+              this.get('i18n').t('admin.lookup.deleteValueInventoryTypeMedicationMessage')
+            );
             return false;
           }
           break;
         }
         case 'lab_pricing_types': {
           if (value === 'Lab Procedure') {
-            this.displayAlert('Cannot Delete Lab Pricing Type', 'The Lab Procedure pricing type cannot be deleted because it is needed for the Labs module.');
+            this.displayAlert(
+              this.get('i18n').t('admin.lookup.deleteValueLabPricingTypeProcedureTitle'),
+              this.get('i18n').t('admin.lookup.deleteValueLabPricingTypeProcedureMessage')
+            );
             return false;
           }
           break;
         }
         case 'imaging_pricing_types': {
           if (value === 'Imaging Procedure') {
-            this.displayAlert('Cannot Delete Imaging Pricing Type', 'The Imaging Procedure pricing type cannot be deleted because it is needed for the Imaging module.');
+            this.displayAlert(
+              this.get('i18n').t('admin.lookup.deleteValueImagingPricingTypeProcedureTitle'),
+              this.get('i18n').t('admin.lookup.deleteValueImagingPricingTypeProcedureMessage')
+            );
             return false;
           }
           break;
         }
         case 'visit_types': {
           if (value === 'Admission') {
-            this.displayAlert('Cannot Delete Admmission Visit Type', 'The Admission Visit type cannot be deleted because it is needed for the Visits module.');
+            this.displayAlert(
+              this.get('i18n').t('admin.lookup.deleteValueVisitTypeAdmissionTitle'),
+              this.get('i18n').t('admin.lookup.deleteValueVisitTypeAdmissionMessage')
+            );
             return false;
           } else if (value === 'Imaging') {
-            this.displayAlert('Cannot Delete Imaging Visit Type', 'The Imaging Visit type cannot be deleted because it is needed for the Imaging module.');
+            this.displayAlert(
+              this.get('i18n').t('admin.lookup.deleteValueVisitTypeImagingTitle'),
+              this.get('i18n').t('admin.lookup.deleteValueVisitTypeImagingMessage')
+            );
             return false;
           } else if (value === 'Lab') {
-            this.displayAlert('Cannot Delete Lab Visit Type', 'The Lab Visit type cannot be deleted because it is needed for the Lab module.');
+            this.displayAlert(
+              this.get('i18n').t('admin.lookup.deleteValueVisitTypeLabTitle'),
+              this.get('i18n').t('admin.lookup.deleteValueVisitTypeLabMessage')
+            );
             return false;
           } else if (value === 'Pharmacy') {
-            this.displayAlert('Cannot Delete Pharmacy Visit Type', 'The Lab Visit type cannot be deleted because it is needed for the Medication module.');
+            this.displayAlert(
+              this.get('i18n').t('admin.lookup.deleteValueVisitTypePharmacyTitle'),
+              this.get('i18n').t('admin.lookup.deleteValueVisitTypePharmacyMessage')
+            );
             return false;
           }
         }
@@ -283,6 +312,15 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
     _sortValues: function(a, b) {
       return Ember.compare(a.toLowerCase(), b.toLowerCase());
     },
+
+    activateKeyboard: Ember.on('init', function() {
+      this.set('keyboardActivated', true);
+    }),
+
+    updateListKeyboard: Ember.on(keyDown('ctrl+KeyS'), keyDown('cmd+KeyS'), function(event) {
+      this.send('updateList');
+      event.preventDefault();
+    }),
 
     actions: {
       addValue: function() {
@@ -312,7 +350,10 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
           fileToImport = this.get('importFile'),
           lookupTypeList = this.get('lookupTypeList');
         if (!fileToImport || !fileToImport.type) {
-          this.displayAlert('Select File To Import', 'Please select file to import.');
+          this.displayAlert(
+            this.get('i18n').t('admin.lookup.alertImportListTitle'),
+            this.get('i18n').t('admin.lookup.alertImportListMessage')
+          );
         } else {
           fileSystem.fileToDataURL(fileToImport).then(function(fileDataUrl) {
             var dataUrlParts = fileDataUrl.split(',');
@@ -326,7 +367,10 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
               importFile: true
             });
             lookupTypeList.save().then(function() {
-              this.displayAlert('List Imported', 'The lookup list has been imported.', 'refreshLookupLists');
+              this.displayAlert(
+                this.get('i18n').t('admin.lookup.alertImportListSaveTitle'),
+                this.get('i18n').t('admin.lookup.alertImportListSaveMessage'),
+                'refreshLookupLists');
               this.set('importFile');
               this.set('model.importFileName');
             }.bind(this));
@@ -335,8 +379,13 @@ export default Ember.Controller.extend(BillingCategories, LabPricingTypes,
       },
       updateList: function() {
         var lookupTypeList = this.get('lookupTypeList');
+        lookupTypeList.set('userCanAdd', this.get('model.userCanAdd'));
+        lookupTypeList.set('organizeByType', this.get('model.organizeByType'));
         lookupTypeList.save().then(function() {
-          this.displayAlert('List Saved', 'The lookup list has been saved');
+          this.displayAlert(
+            this.get('i18n').t('admin.lookup.alertImportListUpdateTitle'),
+            this.get('i18n').t('admin.lookup.alertImportListUpdateMessage')
+          );
         }.bind(this));
       },
       updateValue: function(valueObject) {

@@ -96,9 +96,6 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
   setupController: function(controller, model) {
     var props = this.getProperties('firstKey', 'nextStartKey');
     controller.setProperties(props);
-    if (!Ember.isEmpty(model)) {
-      controller.set('hasRecords', (model.get('length') > 0));
-    }
     var sectionDetails = {
       currentScreenTitle: this.get('pageTitle')
     };

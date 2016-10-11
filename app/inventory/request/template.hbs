@@ -2,15 +2,15 @@
   {{#em-form model=model submitButton=false }}
     {{#if isRequested}}
       <div class="form-group">
-        <label class="control-label">Item</label>
+        <label class="control-label">{{t 'inventory.labels.item'}}</label>
         <p class="form-control-static">{{model.inventoryItem.name}}</p>
       </div>
       <div class="form-group">
-        <label class="control-label">Quantity Requested</label>
+        <label class="control-label">{{t 'inventory.labels.quantityRequested'}}</label>
         <p class="form-control-static">{{model.quantity}}</p>
       </div>
       <div class="form-group">
-        <label class="control-label">Quantity on Hand</label>
+        <label class="control-label">{{t 'inventory.labels.quantityOnHand'}}</label>
         <p class="form-control-static">{{model.inventoryItem.quantity}}</p>
       </div>
     {{else}}
@@ -18,11 +18,12 @@
         {{inventory-typeahead
           class="col-sm-8 test-inv-item"
           property="inventoryItemTypeAhead"
-          label="Inventory Item"
+          label=(t 'inventory.labels.inventoryItem')
           content=inventoryList
           selection=selectedInventoryItem
         }}
-        {{em-input property="quantity" label=quantityLabel class="col-sm-3 test-inv-quantity"}}
+
+        {{number-input property="quantity" label=quantityLabel class="col-sm-3 test-inv-quantity"}}
         <div class="form-group col-sm-1">
           <label class="control-label"></label>
           <h4 class="form-control-static">
@@ -31,7 +32,7 @@
         </div>
       </div>
       {{#if showRequestedItems}}
-        <h3>Requested Items</h3>
+        <h3>{{t 'inventory.labels.requestedItems'}}</h3>
         <table class="table">
           <tr class="table-header">
             <th>{{t 'labels.name'}}</th>
@@ -51,7 +52,7 @@
               </td>
               <td>
                 <button class="btn btn-default warning" {{action "showRemoveItem" requestedItem bubbles=false }}>
-                  <span class="octicon octicon-x"></span>Remove
+                  <span class="octicon octicon-x"></span> {{t 'buttons.remove'}}
                 </button>
               </td>
             </tr>
@@ -60,26 +61,26 @@
       {{/if}}
       {{#if canFulfill}}
         <div class="form-group">
-          <label class="control-label">Fulfill Request</label>
+          <label class="control-label sr-only">{{t 'inventory.labels.fulfillRequest'}}</label>
         </div>
-        {{em-checkbox label="Fulfill Request Now" property="shouldFulfillRequest"}}
+        {{em-checkbox label=(t 'inventory.labels.fulfillRequest') property="shouldFulfillRequest"}}
       {{/if}}
     {{/if}}
-    {{select-or-typeahead property="deliveryLocation" label="Delivery Location" list=warehouseList selection=model.deliveryLocation class="test-delivery-location"}}
-    {{select-or-typeahead property="deliveryAisle" label="Delivery Aisle" list=aisleLocationList selection=model.deliveryAisle class="test-delivery-aisle"}}
-    {{select-or-typeahead property="expenseAccount" label="Bill To" list=expenseAccountList selection=model.expenseAccount class="test-bill-to"}}
+    {{select-or-typeahead property="deliveryLocation" label=(t 'inventory.labels.deliveryLocation') list=warehouseList selection=model.deliveryLocation class="test-delivery-location"}}
+    {{select-or-typeahead property="deliveryAisle" label=(t 'inventory.labels.deliveryAisle') list=aisleLocationList selection=model.deliveryAisle class="test-delivery-aisle"}}
+    {{select-or-typeahead property="expenseAccount" label=(t 'inventory.labels.billTo') list=expenseAccountList selection=model.expenseAccount class="test-bill-to"}}
     {{#if isFulfilling}}
       <div class="row">
-        {{date-picker property="dateCompleted" label="Date Completed" class="col-sm-4"}}
+        {{date-picker property="dateCompleted" label=(t 'labels.dateCompleted') class="col-sm-4"}}
       </div>
-      {{inventory-location-picker label="Pull From" quantityRequested=model.quantity
+      {{inventory-location-picker label=(t 'inventory.labels.pullFrom') quantityRequested=model.quantity
         locationList=model.inventoryItem.availableLocations
         selectedLocations=model.inventoryLocations
       }}
       <div class="form-group">
-        <label class="control-label">Consume Purchases</label>
+        <label class="control-label sr-only">{{t 'inventory.labels.consumePurchases'}}</label>
       </div>
-      {{em-checkbox label="Mark As Consumed" property="markAsConsumed"}}
+      {{em-checkbox label=(t 'inventory.labels.markAsConsumed') property="markAsConsumed"}}
     {{/if}}
   {{/em-form}}
 {{/edit-panel}}

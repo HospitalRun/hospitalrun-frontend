@@ -1,9 +1,9 @@
 {{#if userCanAdd}}
-    {{partial 'components/render-typeahead'}}
+  {{partial 'components/render-typeahead'}}
 {{else}}
-    {{em-select class=className label=label
-        property=property content=content
-        optionValuePath=optionValuePath optionLabelPath=optionLabelPath
-        selected=selection prompt=prompt
-    }}
+  {{em-select class=className label=label
+    property=property content=content
+    optionValuePath=optionValuePath optionLabelPath=optionLabelPath
+    selected=selection prompt=prompt
+  }}
 {{/if}}

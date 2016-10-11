@@ -1,12 +1,12 @@
-/* global List */
 import Ember from 'ember';
-import createPouchOauthXHR from 'hospitalrun/utils/pouch-oauth-xhr';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
+import List from 'npm:pouchdb-list';
 import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 
 export default Ember.Service.extend(PouchAdapterUtils, {
   config: Ember.inject.service(),
   mainDB: null, // Server DB
+  oauthHeaders: null,
   setMainDB: false,
 
   setup(configs) {
@@ -21,29 +21,40 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   createDB(configs) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       let pouchOptions = {};
-      if (configs.config_use_google_auth) {
+      if (configs && configs.config_use_google_auth) {
+        pouchOptions.ajax = {
+          timeout: 30000
+        };
         // If we don't have the proper credentials, throw error to force login.
         if (Ember.isEmpty(configs.config_consumer_key) ||
           Ember.isEmpty(configs.config_consumer_secret) ||
           Ember.isEmpty(configs.config_oauth_token) ||
           Ember.isEmpty(configs.config_token_secret)) {
           throw Error('login required');
+        } else {
+          var headers = {
+            'x-oauth-consumer-secret': configs.config_consumer_secret,
+            'x-oauth-consumer-key': configs.config_consumer_key,
+            'x-oauth-token-secret': configs.config_token_secret,
+            'x-oauth-token': configs.config_oauth_token
+          };
+          this.set('oauthHeaders', headers);
+          pouchOptions.ajax.headers = headers;
         }
-        pouchOptions.ajax = {
-          xhr: createPouchOauthXHR(configs),
-          timeout: 30000
-        };
       }
       const url = `${document.location.protocol}//${document.location.host}/db/main`;
-      new PouchDB(url, pouchOptions, (err, db) => {
-        if (err) {
+
+      this._createRemoteDB(url, pouchOptions)
+      .catch((err) => {
+        if ((err.status && err.status === 401) || configs.config_disable_offline_sync === true) {
           reject(err);
-          return;
+        } else {
+          return this._createLocalDB('localMainDB', pouchOptions);
         }
-        createPouchViews(db);
-        resolve(db);
-      });
-    });
+      }).then((db) => resolve(db))
+      .catch((err) => reject(err));
+
+    }, 'initialize application db');
   },
 
   queryMainDB(queryParams, mapReduce) {
@@ -126,7 +137,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         }).on('error', (err) => {
           reject(err);
         });
-      });
+      }, reject);
     });
   },
 
@@ -146,5 +157,36 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       });
     }
     return mappedRows;
+  },
+
+  _createRemoteDB(remoteUrl, pouchOptions) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      new PouchDB(remoteUrl, pouchOptions, (errRemote, remoteDB) => {
+        if (errRemote) {
+          reject(errRemote);
+          return;
+        }
+
+        // remote db lazy created, check if db created correctly
+        remoteDB.info().then(() => {
+          createPouchViews(remoteDB);
+          resolve(remoteDB);
+        }).catch((err) => reject(err));
+      });
+    });
+  },
+
+  _createLocalDB(localDBName, pouchOptions) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      new PouchDB(localDBName, pouchOptions, (errLocal, localDB) => {
+        if (errLocal) {
+          reject(errLocal);
+          return;
+        }
+
+        createPouchViews(localDB);
+        resolve(localDB);
+      });
+    });
   }
 });

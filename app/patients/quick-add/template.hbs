@@ -5,7 +5,7 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
   <div class="alert alert-warning" role="alert">
-    The patient <strong>{{model.patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.
+    {{t 'patients.messages.notFoundQuickAdd' model}}
   </div>
   {{#em-form model=model submitButton=false }}
     <div class="row">
@@ -17,12 +17,7 @@
       {{em-input property="lastName" label="Last Name" class="required col-sm-6"}}
     </div>
     <div class="row">
-      <div class="form-group col-sm-6">
-        <label>Gender</label>
-        <div>
-          {{ext-radio name="gender" content=genderList value=model.gender showInline=true }}
-        </div>
-      </div>
+      {{select-or-typeahead property="sex" label="Sex" list=sexList selection=model.sex class="col-sm-6"}}
       {{date-picker property="dateOfBirth" label="Date of Birth" maxDate="now" class="col-sm-6"}}
     </div>
   {{/em-form}}

@@ -1,0 +1,13 @@
+version: v1.5.2
+failThreshold: high
+ignore: {}
+patch:
+  'npm:minimatch:20160620':
+    - ember-inflector > ember-cli-babel > broccoli-babel-transpiler > babel-core > minimatch:
+        patched: '2016-07-06T20:50:31.952Z'
+      ember-rapid-forms > ember-cli-babel > broccoli-babel-transpiler > babel-core > minimatch:
+        patched: '2016-09-29T20:23:59.408Z'
+    - ember-inflector > ember-cli-babel > broccoli-babel-transpiler > babel-core > regenerator > commoner > glob > minimatch:
+        patched: '2016-07-06T20:50:31.952Z'
+      ember-rapid-forms > ember-validations > ember-cli-babel > broccoli-babel-transpiler > babel-core > minimatch:
+        patched: '2016-09-29T20:23:59.408Z'

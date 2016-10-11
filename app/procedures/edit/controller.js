@@ -6,10 +6,6 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   visitsController: Ember.inject.controller('visits'),
 
-  canAddProcedure: function() {
-    return this.currentUserCan('add_procedure');
-  }.property(),
-
   chargePricingCategory: 'Procedure',
   chargeRoute: 'procedures.charge',
 
@@ -58,12 +54,12 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   title: function() {
     var isNew = this.get('model.isNew');
     if (isNew) {
-      return 'Add Procedure';
+      return this.get('i18n').t('procedures.titles.add');
     }
-    return 'Edit Procedure';
+    return this.get('i18n').t('procedures.titles.edit');
   }.property('model.isNew'),
 
-  updateCapability: 'add_charge',
+  updateCapability: 'add_procedure',
 
   actions: {
     showAddMedication: function() {
@@ -76,17 +72,20 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     },
 
     showEditMedication: function(charge) {
+      var medicationList = this.get('medicationList');
+      var selectedMedication = medicationList.findBy('id', charge.get('medication.id'));
+      charge.set('itemName', selectedMedication.name);
       this.send('openModal', 'procedures.medication', charge);
     },
 
     showDeleteMedication: function(charge) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteCharge',
-        title: 'Delete Medication Used',
-        message: 'Are you sure you want to delete this medication?',
+        title: this.get('i18n').t('procedures.titles.deleteMedicationUsed'),
+        message: this.get('i18n').t('procedures.messages.deleteMedication'),
         chargeToDelete: charge,
         updateButtonAction: 'confirm',
-        updateButtonText: 'Ok'
+        updateButtonText: this.get('i18n').t('buttons.ok')
       }));
     }
   },
@@ -104,8 +103,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   },
 
   afterUpdate: function() {
-    var alertTitle = 'Procedure Saved',
-      alertMessage = 'The procedure record has been saved.';
+    var alertTitle = this.get('i18n').t('procedures.titles.saved'),
+      alertMessage = this.get('i18n').t('procedures.messages.saved');
     this.saveVisitIfNeeded(alertTitle, alertMessage);
   }
 });

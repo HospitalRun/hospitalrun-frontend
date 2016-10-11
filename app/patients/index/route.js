@@ -1,11 +1,14 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
+import { translationMacro as t } from 'ember-i18n';
+
 export default AbstractIndexRoute.extend({
   modelName: 'patient',
-  pageTitle: 'Patient Listing',
+  pageTitle: t('patients.titles.patientListing'),
 
   _getStartKeyFromItem: function(item) {
     var displayPatientId = item.get('displayPatientId');
-    return [displayPatientId, 'patient_' + item.get('id')];
+    var id = this._getPouchIdFromItem(item);
+    return [displayPatientId, id];
   },
 
   _modelQueryParams: function() {

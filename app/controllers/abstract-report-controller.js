@@ -132,12 +132,12 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
   },
 
   _setReportTitle: function() {
-    var endDate = this.get('model.endDate'),
+    var endDate = this.get('endDate'),
       formattedEndDate = '',
       formattedStartDate = '',
       reportType = this.get('reportType'),
       reportTypes = this.get('reportTypes'),
-      startDate = this.get('model.startDate');
+      startDate = this.get('startDate');
     if (!Ember.isEmpty(endDate)) {
       formattedEndDate = moment(endDate).format('l');
     }

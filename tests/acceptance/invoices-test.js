@@ -29,12 +29,10 @@ test('create invoice', function(assert) {
     andThen(function() {
       assert.equal(currentURL(), '/invoices/edit/new');
     });
-    fillIn('.invoice-patient .tt-input', 'Joe Bagadonuts - TCH 00001');
-    triggerEvent('.invoice-patient .tt-input', 'input');
-    triggerEvent('.invoice-patient .tt-input', 'blur');
-    waitToAppear('.invoice-visit option:contains(11/1/2015 - 11/12/2015 (Admission)');
+    typeAheadFillIn('.invoice-patient', 'Joe Bagadonuts - TCH 00001');
+    waitToAppear('.invoice-visit option:contains((Admission))');
     andThen(function() {
-      select('.invoice-visit', '11/1/2015 - 11/12/2015 (Admission)');
+      select('.invoice-visit', '(Admission)');
       fillIn('.external-invoice-no input', 'inv000002');
     });
     waitToAppear('button:contains(Update)');
@@ -44,6 +42,26 @@ test('create invoice', function(assert) {
     waitToAppear('.modal-dialog');
     andThen(() => {
       assert.equal(find('.modal-title').text(), 'Invoice Saved', 'Invoice was saved successfully');
+    });
+  });
+});
+
+test('print invoice', function(assert) {
+  runWithPouchDump('billing', function() {
+    window.print = Ember.K; // Disable browser print dialog.
+    authenticateUser();
+    visit('/invoices');
+    andThen(function() {
+      assert.equal(currentURL(), '/invoices');
+      assert.equal(find('.invoice-number:contains(inv00001)').length, 1, 'Invoice is available for printing');
+      click('button:contains(Edit)');
+      waitToAppear('button:contains(Print)');
+    });
+    andThen(function() {
+      click('button:contains(Print)');
+    });
+    andThen(function() {
+      assert.equal(find('.print-invoice').length, 1, 'Invoice is displayed for printing');
     });
   });
 });
@@ -105,9 +123,7 @@ test('add deposit', function(assert) {
       assert.equal(find('.modal-title').text(), 'Add Deposit', 'Add Deposit modal displays');
     });
     fillIn('.payment-amount input', 140);
-    fillIn('.payment-patient .tt-input', 'Joe Bagadonuts - TCH 00001');
-    triggerEvent('.payment-patient .tt-input', 'input');
-    triggerEvent('.payment-patient .tt-input', 'blur');
+    typeAheadFillIn('.payment-patient', 'Joe Bagadonuts - TCH 00001');
     click('.update-payment-btn');
     waitToAppear('.modal-title:contains(Deposit Added)');
     andThen(() => {

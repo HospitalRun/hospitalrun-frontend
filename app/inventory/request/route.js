@@ -1,9 +1,10 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import Ember from 'ember';
+import { translationMacro as t } from 'ember-i18n';
 export default AbstractEditRoute.extend({
-  editTitle: 'Edit Request',
+  editTitle: t('inventory.titles.editRequest'),
   modelName: 'inv-request',
-  newTitle: 'New Request',
+  newTitle: t('inventory.titles.addRequest'),
   database: Ember.inject.service(),
   getNewData: function() {
     return Ember.RSVP.resolve({

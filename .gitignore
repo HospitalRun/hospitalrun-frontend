@@ -1,4 +1,5 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
+/.idea
 
 # compiled output
 /dist
@@ -26,3 +27,9 @@ nbproject/project.xml
 server/config.js
 .brackets.json
 /app/nbproject/private/
+newrelic_agent.log
+
+newrelic.js
+
+/async-disk-cache
+c9-couch.js

@@ -5,14 +5,18 @@ const { inject, run } = Ember;
 export default Ember.Service.extend({
   configDB: null,
   database: inject.service(),
+  session: inject.service(),
+  sessionData: Ember.computed.alias('session.data'),
 
   setup() {
     const replicateConfigDB = this.replicateConfigDB.bind(this);
     const loadConfig = this.loadConfig.bind(this);
     return this.createDB().then((db) => {
       this.set('configDB', db);
+      this.setCurrentUser();
       return db;
-    }).then(replicateConfigDB).then(loadConfig);
+    }).then(replicateConfigDB).then(loadConfig)
+    .catch((err)=>console.log(err));
   },
 
   createDB() {
@@ -27,8 +31,11 @@ export default Ember.Service.extend({
     return promise;
   },
   replicateConfigDB(db) {
-    const url = `${document.location.protocol}//${document.location.host}/db/config`;
-    return db.replicate.from(url);
+    const promise = new Ember.RSVP.Promise((resolve) => {
+      const url = `${document.location.protocol}//${document.location.host}/db/config`;
+      db.replicate.from(url).then(resolve).catch(resolve);
+    });
+    return promise;
   },
   loadConfig() {
     const config = this.get('configDB');
@@ -37,6 +44,7 @@ export default Ember.Service.extend({
       keys: [
         'config_consumer_key',
         'config_consumer_secret',
+        'config_disable_offline_sync',
         'config_oauth_token',
         'config_token_secret',
         'config_use_google_auth'
@@ -48,13 +56,13 @@ export default Ember.Service.extend({
           console.log('Could not get configDB configs:', err);
           reject(err);
         }
-        const config = {};
+        const configObj = {};
         for (var i = 0; i < response.rows.length; i++) {
           if (!response.rows[i].error && response.rows[i].doc) {
-            config[response.rows[i].id] = response.rows[i].doc.value;
+            configObj[response.rows[i].id] = response.rows[i].doc.value;
           }
         }
-        resolve(config);
+        resolve(configObj);
       });
     }, 'getting configuration from the database');
   },
@@ -115,6 +123,10 @@ export default Ember.Service.extend({
     return this.getConfigValue('patient_id_prefix', 'P');
   },
 
+  getConfigDB() {
+    return this.get('configDB');
+  },
+
   getConfigValue(id, defaultValue) {
     const configDB = this.get('configDB');
     return new Ember.RSVP.Promise(function(resolve) {
@@ -134,6 +146,23 @@ export default Ember.Service.extend({
       keys: configKeys
     };
     return configDB.allDocs(options);
+  },
+
+  setCurrentUser: function(userName) {
+    const config = this.get('configDB');
+    const sessionData = this.get('sessionData');
+    if (!userName && sessionData.authenticated) {
+      userName = sessionData.authenticated.name;
+    }
+    config.get('current_user').then((doc) => {
+      doc.value = userName;
+      config.put(doc);
+    }).catch(() => {
+      config.put({
+        _id: 'current_user',
+        value: userName
+      });
+    });
   }
 
 });

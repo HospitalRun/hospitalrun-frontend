@@ -3,7 +3,8 @@ import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.Mixin.create({
   appointmentStatusList: [
     'Scheduled',
-    'Canceled'
+    'Canceled',
+    'Missed'
   ],
   appointmentStatuses: Ember.computed.map('appointmentStatusList', SelectValues.selectValuesMap),
 

@@ -1,10 +1,11 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import Ember from 'ember';
+import { translationMacro as t } from 'ember-i18n';
 import InventoryId from 'hospitalrun/mixins/inventory-id';
 export default AbstractEditRoute.extend(InventoryId, {
-  editTitle: 'Edit Item',
+  editTitle: t('inventory.labels.editItem'),
   modelName: 'inventory',
-  newTitle: 'New Item',
+  newTitle: t('inventory.labels.newItem'),
 
   actions: {
     adjustItems: function(inventoryLocation) {
@@ -15,16 +16,8 @@ export default AbstractEditRoute.extend(InventoryId, {
       this.controller.getTransactions();
     },
 
-    deletePurchase: function(purchase, deleteFromLocation) {
-      this.controller.send('deletePurchase', purchase, deleteFromLocation);
-    },
-
     editNewItem: function() {
       this.controller.send('editNewItem');
-    },
-
-    expirePurchase: function(purchase, deleteFromLocation) {
-      this.controller.send('deletePurchase', purchase, deleteFromLocation, true);
     },
 
     transferItems: function(inventoryLocation) {

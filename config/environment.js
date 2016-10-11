@@ -4,8 +4,8 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'hospitalrun',
     environment: environment,
-    baseURL: '/',
-    locationType: 'hash', // Auto incompatible with google login right now
+    rootURL: '/',
+    locationType: 'hash', // Using hash location type because it is more friendly for offline.
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -19,9 +19,17 @@ module.exports = function(environment) {
     }
   };
 
+  ENV.contentSecurityPolicy = {
+    'connect-src': "'self'",
+    'default-src': "'self'",
+    'frame-src': "'self'",
+    'img-src': "'self' filesystem: data:",
+    'script-src': "'self' 'unsafe-inline' 'unsafe-eval'",
+    'style-src': "'self' 'unsafe-inline'"
+  };
+
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.baseURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter
@@ -30,6 +38,10 @@ module.exports = function(environment) {
 
     ENV.APP.rootElement = '#ember-testing';
   }
+
+  ENV.i18n = {
+    defaultLocale: 'en'
+  };
 
   ENV.manifest = {
     enabled: true,
@@ -46,7 +58,9 @@ module.exports = function(environment) {
       'bower_components/pouchdb/dist/pouchdb.js'
     ]
   };
+  if (environment === 'production') {
+    ENV.serviceWorker.debug = false;
+  }
 
   return ENV;
 };
-

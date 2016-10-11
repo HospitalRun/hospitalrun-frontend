@@ -7,8 +7,9 @@ export default Ember.Component.extend(UserSession, {
   nav: null,
 
   show: function() {
+    this._setupSubNav();
     return this.currentUserCan(this.get('nav').capability);
-  }.property('nav'),
+  }.property('nav', 'session.data.authenticated.userCaps'),
 
   isShowing: false,
 
@@ -17,10 +18,15 @@ export default Ember.Component.extend(UserSession, {
     nav.closeSubnav = function() {
       this.set('isShowing', false);
     }.bind(this);
-    nav.subnav.forEach(function(item) {
-      item.show = this.currentUserCan(item.capability);
-    }.bind(this));
+    this._setupSubNav();
   }.on('init'),
+
+  _setupSubNav: function() {
+    var nav = this.get('nav');
+    nav.subnav.forEach((item) => {
+      item.show = this.currentUserCan(item.capability);
+    });
+  },
 
   callNavAction: 'navAction',
   callCloseSettings: 'closeSettings',

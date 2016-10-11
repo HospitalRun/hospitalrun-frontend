@@ -95,8 +95,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
       categoryList.total = this._calculateTotal(categoryList.items, 'total');
     }.bind(this));
     return byCategory;
-  }.property('lineItems.[].amountOwed'),
-
+  }.property('lineItems.@each.amountOwed'),
   patientIdChanged: function() {
     if (!Ember.isEmpty(this.get('patient'))) {
       var patientDisplayName = this.get('patient.displayName'),
@@ -109,8 +108,13 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
   patientResponsibility: Ember.computed.sum('patientResponsibilityTotals'),
 
   paymentAmountChanged: function() {
-    var payments = this.get('payments'),
-      paidTotal = payments.reduce(function(previousValue, payment) {
+    var payments = this.get('payments').filter(function(payment) {
+      return !payment.get('isNew');
+    });
+    if (payments.length === 0) {
+      return;
+    }
+    var paidTotal = payments.reduce(function(previousValue, payment) {
         return previousValue += this._getValidNumber(payment.get('amount'));
       }.bind(this), 0);
     this.set('paidTotal', this._numberFormat(paidTotal, true));
@@ -118,7 +122,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     if (remainingBalance <= 0) {
       this.set('status', 'Paid');
     }
-  }.observes('payments.[]', 'payments.[].amount'),
+  }.observes('payments.[]', 'payments.@each.amount'),
 
   validations: {
     patientTypeAhead: PatientValidation.patientTypeAhead,

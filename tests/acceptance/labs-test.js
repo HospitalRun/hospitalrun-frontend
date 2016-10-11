@@ -19,8 +19,6 @@ test('visiting /labs', function(assert) {
 
     andThen(function() {
       assert.equal(currentURL(), '/labs');
-      findWithAssert('a:contains(Requests)');
-      findWithAssert('a:contains(Completed)');
       findWithAssert('a:contains(Create a new record?)');
       findWithAssert('button:contains(new lab)');
     });
@@ -38,10 +36,8 @@ test('Adding a new lab request', function(assert) {
       assert.equal(currentURL(), '/labs/edit/new');
     });
 
-    fillIn('.test-patient-name .tt-input', 'Lennex Zinyando - P00017');
-    triggerEvent('.test-patient-name .tt-input', 'input');
-    triggerEvent('.test-patient-name .tt-input', 'blur');
-    fillIn('.test-lab-type .tt-input', 'Chest Scan');
+    typeAheadFillIn('.test-patient-name', 'Lennex Zinyando - P00017');
+    typeAheadFillIn('.test-lab-type', 'Chest Scan');
     fillIn('.test-result-input input', 'Chest is clear');
     fillIn('textarea', 'Dr test ordered another scan');
     click('button:contains(Add)');

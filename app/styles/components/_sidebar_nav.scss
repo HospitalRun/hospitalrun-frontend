@@ -1,0 +1,225 @@
+// Sidebar nav
+// -------------------------------------------/
+
+.sidebar-nav {
+  display: block;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  box-shadow: 1px 0 0 $navy_drkest;
+  background-color: $navy_drk2;
+  width: 275px;
+  color: $white;
+  font-weight: 300;
+
+  .mega-octicon {
+    text-align: center;
+    color: $sidebar_icon;
+    font-size: 24px;
+  }
+}
+
+.scroll-container {
+  position: absolute;
+  top: 55px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 55px);
+  overflow: auto;
+}
+
+// sidebar header
+
+.sidebar-nav-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-bottom: 1px solid $navy_drkest;
+  background-color: $navy_mid2;
+  width: 100%;
+  height: 55px;
+}
+
+.sidebar-nav-logo {
+  @include transition_opacity;
+  display: inline-block;
+  padding: 0 15px;
+  height: 55px;
+
+  .logo-svg {
+    position: relative;
+    top: 15px;
+    width: 150px;
+  }
+
+  &:hover,
+  &:focus {
+    opacity: .8;
+  }
+}
+
+.settings-trigger {
+  float: right;
+  padding: 15px;
+
+  &.active .mega-octicon { color: $green; }
+}
+
+.settings-nav {
+  position: absolute;
+  top: 48px;
+  right: 10px;
+  z-index: 10;
+  border-radius: 5px;
+  background-color: $blue_lightest;
+  min-width: 130px;
+
+  &::before {
+    display: block;
+    position: absolute;
+    top: -7px;
+    right: 10px;
+    border-right: 5px solid transparent;
+    border-bottom: 7px solid $blue_lightest;
+    border-left: 5px solid transparent;
+    content: ' ';
+  }
+
+  > a {
+    display: block;
+    border-top: 1px solid $blue_lightest2;
+    padding: 6px 10px;
+    color: $navy_mid3;
+    font-size: 14px;
+    font-weight: 400;
+
+    &:first-of-type { border-top: 0; }
+  }
+}
+
+// sidebar search
+
+.sidebar-nav-search {
+  border-bottom: 1px solid $navy_drkest;
+  padding: 10px 15px;
+  height: 58px;
+
+  .form-group {
+    float: left;
+    margin-bottom: 0;
+  }
+
+  input {
+    border: 0;
+    border-radius: 5px 0 0 5px;
+    background-color: $navy_mid;
+    padding: 6px 12px;
+    width: 198px;
+    height: 38px;
+    color: $navy;
+    font-size: 18px;
+    font-weight: 300;
+
+    &::-webkit-input-placeholder { color: $sidebar_icon; }
+
+    &:focus { background-color: $white; }
+  }
+
+  .btn {
+    @include transition(opacity);
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    border-radius: 0 5px 5px 0;
+    background-color: $sidebar_icon;
+    width: 46px;
+    height: 38px;
+    text-shadow: none;
+    color: $sidebar_icon_lighter;
+    font-size: 18px;
+
+    &:hover { opacity: .8; }
+
+    .glyphicon {
+      top: 2px;
+      right: 1px;
+    }
+  }
+}
+
+// primary nav
+
+.primary-nav-item {
+  a:hover,
+  a:focus,
+  a:visited { text-decoration: none; }
+
+  // main section link
+  .primary-section-link {
+    @include transition_all;
+    display: block;
+    border-bottom: 1px solid $navy_drkest;
+    background: $navy_mid2;
+    padding: 0 15px;
+    height: 55px;
+    line-height: 55px;
+    color: $white;
+    font-size: 18px;
+
+    .mega-octicon {
+      @include transition_all;
+      float: left;
+      margin-right: 12px;
+      width: 24px;
+      line-height: 55px;
+    }
+
+    &:hover,
+    &.active {
+      background: $navy_mid;
+      .mega-octicon { color: $white; }
+    }
+  }
+
+  // sub section link
+  .category-sub-items {
+    border-bottom: 1px solid $navy_drkest;
+    background: #3a4d63;
+    padding: 5px 0;
+  }
+
+  .category-sub-item {
+    @include transition_all;
+    display: block;
+    background: $navy_mid3;
+    padding: 0 15px;
+    height: 36px;
+    line-height: 36px;
+    color: $sidebar_sublink_text;
+    font-size: 15px;
+
+    &:hover {
+      background: $navy_mid;
+      color: $white;
+
+      .octicon {
+        margin-right: 2px;
+        margin-left: 10px;
+        color: $white;
+      }
+    }
+
+    .octicon {
+      @include transition_all;
+      float: left;
+      margin-right: 6px;
+      margin-left: 6px;
+      width: 24px;
+      line-height: 36px;
+    }
+  }
+
+  .nav-link { font-weight: 300; }
+}

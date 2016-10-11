@@ -1,0 +1,42 @@
+// styles for patient history section
+// viewable at Patients > Edit Patient > History
+.patient-history-item {
+  margin: 15px 0;
+  border-radius: 5px;
+  background: rgba($blue_lightest,.5);
+  padding: 5px 15px 15px;
+
+  .ph-note-item {
+    margin-top: 15px;
+    font-weight: 300;
+  }
+
+  .ph-note-heading {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.patient-history-heading {
+  margin: -5px -15px 10px;
+  border-radius: 5px 5px 0 0;
+  background: $blue_lightest;
+  padding: 5px 15px;
+  font-size: 18px;
+
+  .ph-visit-date {
+    display: inline-block;
+    margin: -5px 10px -5px -15px;
+    border-radius: 5px 0 0;
+    background: $blue_lightest2;
+    padding: 5px 15px;
+    line-height: 26px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .ph-visit-type {
+    display: inline-block;
+    font-weight: 300;
+  }
+}

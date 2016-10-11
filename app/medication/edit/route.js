@@ -1,12 +1,13 @@
+import { translationMacro as t } from 'ember-i18n';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import Ember from 'ember';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, PatientListRoute, {
-  editTitle: 'Edit Medication Request',
+  editTitle: t('medication.titles.editMedicationRequest'),
   modelName: 'medication',
-  newTitle: 'New Medication Request',
+  newTitle: t('medication.titles.newMedicationRequest'),
   database: Ember.inject.service(),
   getNewData: function(params) {
     var idParam = this.get('idParam'),
@@ -18,7 +19,7 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
       newData.shouldFulfillRequest = true;
       newData.hideFulfillRequest = true;
     }
-    newData.id = PouchDB.utils.uuid();
+    newData.id = uuid.v4();
     return Ember.RSVP.resolve(newData);
   },
 

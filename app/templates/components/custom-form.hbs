@@ -1,0 +1,41 @@
+{{#each fieldsByRow as |row|}}
+  <div class="row form-group">
+    {{#each row as |field|}}
+      {{#if (eq field.type 'radio')}}
+        <div class="form-group {{field.classNames}}">
+          <label>{{field.label}}</label>
+          {{ext-radio
+            content=field.values
+            value=(get model field.property)
+            includeOtherOption=field.includeOtherOption
+            otherOptionLabel=field.otherOptionLabel
+            radioLabelPath="content"
+            radioValuePath="content"
+          }}
+        </div>
+      {{/if}}
+      {{#if (eq field.type 'checkbox')}}
+        <div class="form-group {{field.classNames}}">
+          <label>{{field.label}}</label>
+          {{#each field.checkboxes as |checkbox|}}
+            {{em-checkbox label=checkbox.label property=checkbox.property}}
+          {{/each}}
+        </div>
+      {{/if}}
+      {{#if (eq field.type 'textarea')}}
+        {{em-text label=field.label property=field.property class=field.classNames}}
+      {{/if}}
+      {{#if (eq field.type 'text')}}
+        {{em-input label=field.label property=field.property class=field.classNames}}
+      {{/if}}
+      {{#if (eq field.type 'select')}}
+        {{em-select label=field.label
+          property=field.property
+          content=field.mappedValues
+          class=field.classNames
+          prompt=field.prompt
+        }}
+      {{/if}}
+    {{/each}}
+  </div>
+{{/each}}

@@ -89,10 +89,10 @@ test('create new user', function(assert) {
     authenticateUser();
     addAllUsers(assert);
     visit('/admin/users');
-
     stubRequest('put', '/db/_users/org.couchdb.user:jane@donuts.com', function(request) {
       var expectedBody = {
         _id: 'org.couchdb.user:jane@donuts.com',
+        deleted: false,
         displayName: 'Jane Bagadonuts',
         email: 'jane@donuts.com',
         name: 'jane@donuts.com',
@@ -129,11 +129,23 @@ test('delete user', function(assert) {
   runWithPouchDump('default', function() {
     authenticateUser();
     addAllUsers(assert);
-    stubRequest('delete', '/db/_users/org.couchdb.user:joe@donuts.com', function(request) {
-      let expectedQuery = {
-        rev: '1-ef3d54502f2cc8e8f73d8547881f0836'
+    stubRequest('put', '/db/_users/org.couchdb.user:joe@donuts.com', function(request) {
+      let expectedBody = {
+        _id: 'org.couchdb.user:joe@donuts.com',
+        derived_key: 'derivedkeyhere',
+        deleted: true,
+        displayName: 'Joe Bagadonuts',
+        email: 'joe@donuts.com',
+        iterations: 10,
+        name: 'joe@donuts.com',
+        password_scheme: 'pbkdf2',
+        _rev: '1-ef3d54502f2cc8e8f73d8547881f0836',
+        roles: ['deleted'],
+        salt: 'saltgoeshere',
+        userPrefix: 'p01',
+        type: 'user'
       };
-      assert.equal(JSON.stringify(request.queryParams), JSON.stringify(expectedQuery), 'Delete user request sent to the server');
+      assert.equal(request.requestBody, JSON.stringify(expectedBody), 'Delete user request sent to the server');
       request.ok({
         'ok': true,
         'id': 'org.couchdb.user:joe@donuts.com',

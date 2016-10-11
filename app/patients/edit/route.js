@@ -2,14 +2,22 @@ import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import Ember from 'ember';
 import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
+import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
-export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, {
-  editTitle: 'Edit Patient',
+import { translationMacro as t } from 'ember-i18n';
+
+export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, PatientNotes, {
+  editTitle: t('patients.titles.edit'),
   modelName: 'patient',
-  newTitle: 'New Patient',
+  newTitle: t('patients.titles.new'),
   photos: null,
 
   actions: {
+    updateNote: function(note) {
+      note.get('visit').save().then(function() {
+        // noop
+      });
+    },
     appointmentDeleted: function(model) {
       this.controller.send('appointmentDeleted', model);
     },

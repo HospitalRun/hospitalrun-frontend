@@ -11,19 +11,6 @@ export default AbstractModuleRoute.extend({
   }],
   allowSearch: false,
   moduleName: 'imaging',
-  newButtonText: t('imaging.buttons.new_button'),
-  sectionTitle: t('imaging.section_title'),
-  subActions: function() {
-    let i18n = this.get('i18n');
-
-    return [{
-      text: i18n.t('labels.requests'),
-      linkTo: 'imaging.index'
-    }, {
-      text: i18n.t('labels.completed'),
-      linkTo: 'imaging.completed'
-    }];
-
-  }.property()
-
+  newButtonText: t('imaging.buttons.newButton'),
+  sectionTitle: t('imaging.sectionTitle')
 });

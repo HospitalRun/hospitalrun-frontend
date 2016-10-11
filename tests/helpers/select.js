@@ -8,7 +8,9 @@ Ember.Test.registerAsyncHelper('select', function(app, selector, ...texts) {
 
     Ember.run(() => {
       this.selected = texts.some((text) => $option.is(`:contains('${text}')`));
-      $option.trigger('change');
+      if (this.selected) {
+        $option.trigger('change');
+      }
     });
   });
 

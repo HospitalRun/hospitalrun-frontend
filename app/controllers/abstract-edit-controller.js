@@ -12,7 +12,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
     if (hasDirtyAttributes) {
       return i18n.t('buttons.cancel');
     } else {
-      return i18n.t('buttons.return_button');
+      return i18n.t('buttons.returnButton');
     }
   }.property('model.hasDirtyAttributes'),
 
@@ -65,11 +65,11 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
     if (!Ember.isArray(lookupListValues)) {
       lookupListValues = [];
     }
-    if (!lookupListValues.contains(value)) {
+    if (!lookupListValues.includes(value)) {
       lookupListValues.push(value);
       lookupListValues.sort();
       lookupList.set('value', lookupListValues);
-      if (!listsToUpdate.contains(lookupList)) {
+      if (!listsToUpdate.includes(lookupList)) {
         listsToUpdate.push(lookupList);
       }
       this.set(listName, lookupList);
@@ -112,7 +112,9 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
         this.beforeUpdate().then(() => {
           this.saveModel(skipAfterUpdate);
         }).catch((err) => {
-          this.displayAlert('Error!!!!', 'An error occurred while attempting to save: ' + JSON.stringify(err));
+          if (!err.ignore) {
+            this.displayAlert('Error!!!!', 'An error occurred while attempting to save: ' + JSON.stringify(err));
+          }
         });
       } catch (ex) {
         this.displayAlert('Error!!!!', 'An error occurred while attempting to save: ' + ex);

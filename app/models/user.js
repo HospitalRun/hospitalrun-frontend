@@ -4,6 +4,7 @@ import Ember from 'ember';
 import EmberValidations from 'ember-validations';
 var User = DS.Model.extend(EmberValidations, {
   derived_key: DS.attr('string'),
+  deleted: DS.attr('boolean'),
   displayName: DS.attr('string'),
   email: DS.attr('string'),
   iterations: DS.attr(),

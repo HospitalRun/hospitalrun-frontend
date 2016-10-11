@@ -1,0 +1,12 @@
+<td class="requested-date">{{date-format lab.requestedDate}}</td>
+<td class="patient">{{lab.patient.displayName}}</td>
+<td class="requested-by">{{lab.requestedBy}}</td>
+<td class="lab-type">{{lab.labType.name}}</td>
+<td class="notes">{{lab.notes}}</td>
+{{#if showActions}}
+  <td>
+    {{#if canEdit}}
+      {{labs/index/labs-edit-button lab=lab}}
+    {{/if}}
+  </td>
+{{/if}}

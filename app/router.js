@@ -2,7 +2,8 @@ import Ember from 'ember';
 import config from './config/environment';
 
 const Router = Ember.Router.extend({
-  location: config.locationType
+  location: config.locationType,
+  rootURL: config.rootURL
 });
 
 Router.map(function() {
@@ -17,7 +18,9 @@ Router.map(function() {
     }, function() {
       this.route('edit', { path: '/edit/:user_id' });
     });
+    this.route('roles');
     this.route('query');
+    this.route('workflow');
   });
 
   this.route('appointments', {
@@ -26,6 +29,7 @@ Router.map(function() {
     this.route('edit', { path: '/edit/:appointment_id' });
     this.route('search');
     this.route('today');
+    this.route('missed');
   });
 
   this.route('finishgauth', { path: '/finishgauth/:s1/:s2/:k/:t/:i/:p' });
@@ -43,7 +47,6 @@ Router.map(function() {
     resetNamespace: true
   }, function() {
     this.route('barcode', { path: '/barcode/:inventory_id' });
-    this.route('delivery', { path: '/delivery/:inv-request_id' });
     this.route('edit', { path: '/edit/:inventory_id' });
     this.route('batch', { path: '/batch/:inventory-batch_id' });
     this.route('listing');
@@ -82,6 +85,7 @@ Router.map(function() {
   }, function() {
     this.route('edit', { path: '/edit/:patient_id' });
     this.route('reports');
+    this.route('admitted');
     this.route('search', { path: '/search/:search_text' });
   });
 

@@ -1,0 +1,30 @@
+{{#modal-dialog
+  hideCancelButton=hideCancelButton
+  hideUpdateButton=hideUpdateButton
+  isUpdateDisabled=isUpdateDisabled
+  title=title
+  updateButtonAction=updateButtonAction
+  updateButtonText=updateButtonText }}
+  {{#em-form model=model submitButton=false }}
+    {{em-text label=(t 'labels.note') property="content" rows=3 class="test-note-content required form-input-group"}}
+
+    <select name="note-visits" {{action 'changeVisit' on='change'}} class="form-control">
+      <option selected={{is-not model.visit}}>
+        {{t 'patients.notes.pleaseSelectAVisit' }}
+      </option>
+      {{#each patientVisitsForSelect as |item|}}
+        <option value="{{item.selectObject}}"
+                selected={{is-equal item.selectObject model.visit}}>
+          {{item.selectObject.visitDescription}}
+        </option>
+      {{/each}}
+    </select>
+    {{select-or-typeahead
+      property="attribution"
+      label=(t 'patients.notes.onBehalfOfLabel' )
+      list=physicianList
+      selection=attribution
+      className="form-input-group test-note-attribution"
+    }}
+  {{/em-form}}
+{{/modal-dialog}}

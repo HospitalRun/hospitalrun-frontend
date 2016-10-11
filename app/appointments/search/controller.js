@@ -19,7 +19,7 @@ export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes
   startDate: null,
   startKey: [],
   status: null,
-  visitTypesList: Ember.computed.alias('appointmentsController.visitTypeList'),
+  visitTypesList: Ember.computed.alias('appointmentsController.visitTypesList'),
 
   actions: {
     search: function() {
