@@ -32,6 +32,29 @@ test('visiting /admin', function(assert) {
   });
 });
 
+test('visiting /admin/loaddb', function(assert) {
+  runWithPouchDump('admin', function() {
+    authenticateUser();
+    var url = '/admin/loaddb'
+    visit(url);
+    andThen(function() {
+      assert.equal(currentURL(), url);
+      assert.equal(find('.view-top-bar .view-current-title').text(), 'Load DB');
+    });
+  });
+});
+
+test('visiting /admin/query', function(assert) {
+  runWithPouchDump('admin', function() {
+    authenticateUser();
+    var url = '/admin/query'
+    visit(url);
+    andThen(function() {
+      assert.equal(currentURL(), url);
+    });
+  });
+});
+
 test('add new lookup value', function(assert) {
   runWithPouchDump('admin', function() {
     authenticateUser();
