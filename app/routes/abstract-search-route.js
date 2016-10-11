@@ -7,7 +7,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   searchModel: null,
   searchText: null,
 
-  _findByContains: function(searchText) {
+  _findByContains(searchText) {
     let searchKeys = this.get('searchKeys');
     let searchModel = this.get('searchModel');
     let queryParams = {
@@ -15,23 +15,23 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         value: searchText,
         keys: searchKeys
       }
-    };
+      };
     return this.store.query(searchModel, queryParams);
   },
 
-  model: function(params) {
-    return new Ember.RSVP.Promise(function(resolve) {
+  model(params) {
+    return new Ember.RSVP.Promise((resolve) => {
       let searchText = params.search_text;
       this.controllerFor('navigation').set('currentSearchText', searchText);
       this.set('searchText', searchText);
-      this._findByContains(searchText).then(resolve, function(err) {
+      this._findByContains(searchText).then(resolve, (err) => {
         resolve(new DS.AdapterPopulatedRecordArray());
         throw new Error(err);
-      }.bind(this));
-    }.bind(this));
+      });
+    });
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     this._super(controller, model);
     if (!Ember.isEmpty(model)) {
       controller.set('hasRecords', (model.get('length') > 0));
