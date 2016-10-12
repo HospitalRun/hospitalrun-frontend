@@ -11,24 +11,14 @@ export default Ember.Service.extend({
   setup() {
     const replicateConfigDB = this.replicateConfigDB.bind(this);
     const loadConfig = this.loadConfig.bind(this);
-    return this.createDB().then((db) => {
-      this.set('configDB', db);
-      this.setCurrentUser();
-      return db;
-    }).then(replicateConfigDB).then(loadConfig)
-    .catch((err)=>console.log(err));
+    let db = this.createDB();
+    this.set('configDB', db);
+    this.setCurrentUser();
+    return replicateConfigDB(db).then(loadConfig);
   },
 
   createDB() {
-    const promise = new Ember.RSVP.Promise(function(resolve, reject) {
-      new PouchDB('config', function(err, db) {
-        if (err) {
-          reject(err);
-        }
-        resolve(db);
-      });
-    }, 'instantiating config database instance');
-    return promise;
+    return new PouchDB('config');
   },
   replicateConfigDB(db) {
     const promise = new Ember.RSVP.Promise((resolve) => {

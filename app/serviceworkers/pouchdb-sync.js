@@ -4,6 +4,13 @@ let syncingRemote = false;
 let configDB = new PouchDB('config');
 let localMainDB = new PouchDB('localMainDB');
 
+toolbox.router.get('/db/main/', function(request, values, options) {
+  logDebug('request for main info:', request.url);
+  return couchDBResponse(request, values, options, function() {
+    return localMainDB.info();
+  });
+});
+
 toolbox.router.get('/db/main/_all_docs', function(request, values, options) {
   logDebug('request for all docs:', request.url);
   return couchDBResponse(request, values, options, function(request) {
@@ -52,27 +59,26 @@ function setupRemoteSync() {
       pouchOptions.ajax.headers['x-oauth-token'] = configs.config_oauth_token;
     }
     let remoteURL = self.location.protocol + '//' + self.location.host + '/db/main';
-    new PouchDB(remoteURL, pouchOptions, function(err, db) {
-      syncingRemote = localMainDB.sync(db, {
-        live: true,
-        retry: true
-      }).on('change', function(info) {
-        logDebug('local sync change', info);
-      }).on('paused', function() {
-        logDebug('local sync paused');
-        // replication paused (e.g. user went offline)
-      }).on('active', function() {
-        logDebug('local sync active');
-        // replicate resumed (e.g. user went back online)
-      }).on('denied', function(info) {
-        logDebug('local sync denied:', info);
-        // a document failed to replicate, e.g. due to permissions
-      }).on('complete', function(info) {
-        logDebug('local sync complete:', info);
-        // handle complete
-      }).on('error', function(err) {
-        logDebug('local sync error:', err);
-      });
+    let remoteDB = new PouchDB(remoteURL, pouchOptions);
+    syncingRemote = localMainDB.sync(remoteDB, {
+      live: true,
+      retry: true
+    }).on('change', function(info) {
+      logDebug('local sync change', info);
+    }).on('paused', function() {
+      logDebug('local sync paused');
+      // replication paused (e.g. user went offline)
+    }).on('active', function() {
+      logDebug('local sync active');
+      // replicate resumed (e.g. user went back online)
+    }).on('denied', function(info) {
+      logDebug('local sync denied:', info);
+      // a document failed to replicate, e.g. due to permissions
+    }).on('complete', function(info) {
+      logDebug('local sync complete:', info);
+      // handle complete
+    }).on('error', function(err) {
+      logDebug('local sync error:', err);
     });
   }
 }
@@ -96,7 +102,9 @@ function setupConfigs() {
 }
 
 function couchDBResponse(request, values, options, pouchDBFn) {
-  setupConfigs().then(setupRemoteSync);
+  setupConfigs().then(setupRemoteSync).catch(function(err) {
+    logDebug('Error setting up remote sync', JSON.stringify(err, null, 2));
+  });
   logDebug('Looking for couchdb response for:', request.url);
   return new Promise(function(resolve, reject) {
     let startTime = performance.now();

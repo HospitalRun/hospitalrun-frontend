@@ -161,32 +161,25 @@ export default Ember.Service.extend(PouchAdapterUtils, {
 
   _createRemoteDB(remoteUrl, pouchOptions) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      new PouchDB(remoteUrl, pouchOptions, (errRemote, remoteDB) => {
-        if (errRemote) {
-          reject(errRemote);
-          return;
-        }
-
-        // remote db lazy created, check if db created correctly
-        remoteDB.info().then(() => {
-          createPouchViews(remoteDB);
-          resolve(remoteDB);
-        }).catch((err) => reject(err));
+      let remoteDB = new PouchDB(remoteUrl, pouchOptions);
+      // remote db lazy created, check if db created correctly
+      remoteDB.info().then(()=> {
+        createPouchViews(remoteDB);
+        resolve(remoteDB);
+      }).catch((err) => {
+        console.log('error with remote db:', JSON.stringify(err, null, 2));
+        reject(err);
       });
     });
   },
 
   _createLocalDB(localDBName, pouchOptions) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      new PouchDB(localDBName, pouchOptions, (errLocal, localDB) => {
-        if (errLocal) {
-          reject(errLocal);
-          return;
-        }
-
+      let localDB = new PouchDB(localDBName, pouchOptions);
+      localDB.info().then(() => {
         createPouchViews(localDB);
         resolve(localDB);
-      });
+      }).catch((err) => reject(err));
     });
   }
 });
