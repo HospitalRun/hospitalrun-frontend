@@ -18,7 +18,7 @@
       }}
     </div>
     <div class="row">
-      {{em-input property="quantity" label=(t 'medication.labels.quantityToReturn') class="col-xs-3 required test-medication-quantity"}}
+      {{number-input property="quantity" label=(t 'medication.labels.quantityToReturn') class="col-xs-3 required test-medication-quantity"}}
       {{select-or-typeahead property="deliveryLocation" label=(t 'medication.labels.returnLocation') list=warehouseList selection=model.location className="col-xs-4"}}
       {{select-or-typeahead property="deliveryAisle" label=(t 'medication.labels.returnAisle') list=aisleLocationList selection=model.aisleLocation className="col-xs-4"}}
     </div>
