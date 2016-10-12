@@ -52,7 +52,7 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
 
   const InMemoryConfigService = ConfigService.extend({
     createDB() {
-      return Ember.RSVP.resolve(configDB);
+      return configDB;
     },
     replicateConfigDB() {
       return configDB.get('config_disable_offline_sync').then(function(doc) {
