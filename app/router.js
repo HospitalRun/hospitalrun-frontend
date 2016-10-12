@@ -47,7 +47,6 @@ Router.map(function() {
     resetNamespace: true
   }, function() {
     this.route('barcode', { path: '/barcode/:inventory_id' });
-    this.route('delivery', { path: '/delivery/:inv-request_id' });
     this.route('edit', { path: '/edit/:inventory_id' });
     this.route('batch', { path: '/batch/:inventory-batch_id' });
     this.route('listing');

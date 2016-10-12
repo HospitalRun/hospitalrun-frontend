@@ -72,7 +72,7 @@ export default BaseAuthenticator.extend({
   authenticate: function(credentials) {
     if (credentials.google_auth) {
       this.useGoogleAuth = true;
-      var sessionCredentials = {
+      let sessionCredentials = {
         google_auth: true,
         consumer_key: credentials.params.k,
         consumer_secret: credentials.params.s1,
@@ -89,13 +89,13 @@ export default BaseAuthenticator.extend({
     }
 
     return new Ember.RSVP.Promise((resolve, reject) => {
-      var data = { name: credentials.identification, password: credentials.password };
+      let data = { name: credentials.identification, password: credentials.password };
       this._makeRequest('POST', data).then((response) => {
         response.name = data.name;
         response.expires_at = this._absolutizeExpirationTime(600);
         this._checkUser(response).then((user) => {
           this.get('config').setCurrentUser(user.name);
-          var database = this.get('database');
+          let database = this.get('database');
           database.setup({}).then(() => {
             resolve(user);
           }, reject);
@@ -116,7 +116,7 @@ export default BaseAuthenticator.extend({
 
   restore: function(data) {
     return new Ember.RSVP.Promise((resolve, reject) => {
-      var now = (new Date()).getTime();
+      let now = (new Date()).getTime();
       if (!Ember.isEmpty(data.expires_at) && data.expires_at < now) {
         reject();
       } else {

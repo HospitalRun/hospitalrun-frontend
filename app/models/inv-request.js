@@ -6,7 +6,7 @@ import LocationName from 'hospitalrun/mixins/location-name';
 /**
  * Model to represent a request for inventory items.
  */
-var InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
+let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
   adjustPurchases: DS.attr('boolean'),
   completedBy: DS.attr('string'),
   costPerUnit: DS.attr('number'),
@@ -33,13 +33,13 @@ var InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
   }),
 
   deliveryLocationName: function() {
-    var aisle = this.get('deliveryAisle'),
+    let aisle = this.get('deliveryAisle'),
       location = this.get('deliveryLocation');
     return this.formatLocationName(location, aisle);
   }.property('deliveryAisle', 'deliveryLocation'),
 
   deliveryDetails: function() {
-    var locationName = this.get('deliveryLocationName'),
+    let locationName = this.get('deliveryLocationName'),
       patient = this.get('patient');
     if (Ember.isEmpty(patient)) {
       return locationName;
@@ -53,7 +53,7 @@ var InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
   }.property('reason'),
 
   isAdjustment: function() {
-    var adjustmentTypes = this.get('adjustmentTypes'),
+    let adjustmentTypes = this.get('adjustmentTypes'),
       transactionType = this.get('transactionType'),
       adjustmentType = adjustmentTypes.findBy('type', transactionType);
     return !Ember.isEmpty(adjustmentType);
@@ -75,7 +75,7 @@ var InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
           if (!object.get('hasDirtyAttributes')) {
             return false;
           }
-          var itemName = object.get('inventoryItem.name'),
+          let itemName = object.get('inventoryItem.name'),
             itemTypeAhead = object.get('inventoryItemTypeAhead'),
             requestedItems = object.get('requestedItems'),
             status = object.get('status');
@@ -87,7 +87,7 @@ var InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
             // force validation to fail if fields are empty and requested items are empty
             return Ember.isEmpty(requestedItems);
           } else {
-            var typeAheadName = itemTypeAhead.substr(0, itemName.length);
+            let typeAheadName = itemTypeAhead.substr(0, itemName.length);
             if (itemName !== typeAheadName) {
               return true;
             }
@@ -106,14 +106,14 @@ var InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
           greaterThan: 'must be greater than 0'
         },
         if: function(object) {
-          var requestedItems = object.get('requestedItems');
+          let requestedItems = object.get('requestedItems');
           return (Ember.isEmpty(requestedItems));
         }
       },
       acceptance: {
         accept: true,
         if: function(object) {
-          var isNew = object.get('isNew'),
+          let isNew = object.get('isNew'),
             requestQuantity = parseInt(object.get('quantity')),
             transactionType = object.get('transactionType'),
             quantityToCompare = null;

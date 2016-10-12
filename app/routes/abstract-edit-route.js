@@ -10,7 +10,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     return new Ember.RSVP.Promise(function(resolve) {
       this.generateId().then(function(newId) {
         this.getNewData(params).then(function(data) {
-          var modelName = this.get('modelName');
+          let modelName = this.get('modelName');
           if (newId) {
             data.id = newId;
           }
@@ -25,7 +25,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   idParam: function() {
-    var modelName = this.get('modelName');
+    let modelName = this.get('modelName');
     return modelName + '_id';
   }.property('modelName'),
 
@@ -55,7 +55,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   model: function(params) {
-    var idParam = this.get('idParam');
+    let idParam = this.get('idParam');
     if (!Ember.isEmpty(idParam) && params[idParam] === 'new') {
       return this._createNewRecord(params);
     } else {
@@ -64,7 +64,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   setupController: function(controller, model) {
-    var sectionDetails = {};
+    let sectionDetails = {};
     sectionDetails.currentScreenTitle = this.getScreenTitle(model);
     if (this.get('hideNewButton')) {
       sectionDetails.newButtonAction = null;

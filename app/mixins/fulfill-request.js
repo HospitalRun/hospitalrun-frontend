@@ -13,7 +13,7 @@ export default Ember.Mixin.create({
 
   performFulfillRequest: function(request, closeModal, increment, skipTransition) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var markAsConsumed = request.get('markAsConsumed'),
+      let markAsConsumed = request.get('markAsConsumed'),
         transactionType = request.get('transactionType');
       if (transactionType === 'Request') {
         transactionType = null; // reset the transaction type so that it gets set below.
@@ -44,7 +44,7 @@ export default Ember.Mixin.create({
    * @private
    */
   _findQuantity: function(request, purchases, item, increment) {
-    var currentQuantity,
+    let currentQuantity,
       costPerUnit,
       requestPurchases = [],
       quantityOnHand = item.get('quantity'),
@@ -53,7 +53,7 @@ export default Ember.Mixin.create({
       purchaseInfo = [],
       totalCost = 0;
     if (increment) {
-      var purchase = purchases.get('lastObject');
+      let purchase = purchases.get('lastObject');
       costPerUnit = purchase.get('costPerUnit');
       purchase.incrementProperty('currentQuantity', quantityRequested);
       totalCost += (costPerUnit * quantityNeeded);
@@ -63,7 +63,7 @@ export default Ember.Mixin.create({
       });
       requestPurchases.addObject(purchase);
     } else {
-      var foundQuantity = purchases.any(function(purchase) {
+      let foundQuantity = purchases.any(function(purchase) {
         currentQuantity = purchase.get('currentQuantity');
         if (purchase.get('expired') || currentQuantity <= 0) {
           return false;
@@ -118,14 +118,14 @@ export default Ember.Mixin.create({
    * @param {boolean} skipTransition if the transition should not run after fulfillment.
    */
   _finishFulfillRequest: function(request, inventoryItem, closeModal, increment, skipTransition) {
-    var inventoryLocations = request.get('inventoryLocations'),
+    let inventoryLocations = request.get('inventoryLocations'),
       locationsAffected = [],
       markAsConsumed = request.get('markAsConsumed'),
       promises = [],
       quantity = parseInt(request.get('quantity')),
       requestPurchases = request.get('purchases');
     if (increment) {
-      var locationToIncrement = inventoryLocations.get('firstObject');
+      let locationToIncrement = inventoryLocations.get('firstObject');
       locationToIncrement.incrementProperty('quantity', quantity);
       promises.push(locationToIncrement.save());
       locationsAffected.push({
@@ -134,7 +134,7 @@ export default Ember.Mixin.create({
       });
     } else {
       inventoryLocations.reduce(function(quantityNeeded, location) {
-        var deliveryLocation = request.get('deliveryLocation'),
+        let deliveryLocation = request.get('deliveryLocation'),
           deliveryAisle = request.get('deliveryAisle'),
           locationQuantity = parseInt(location.get('quantity'));
         if (quantityNeeded > 0) {
@@ -179,7 +179,7 @@ export default Ember.Mixin.create({
       });
     }
     Ember.RSVP.all(promises, 'Preliminary saving done for inventory fulfillment').then(function() {
-      var savePromises = [];
+      let savePromises = [];
       savePromises.push(inventoryItem.save());
       request.set('status', 'Completed');
       request.set('completedBy', request.getUserName());
@@ -209,11 +209,11 @@ export default Ember.Mixin.create({
    */
   _performFulfillment: function(request, inventoryItem, increment) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var purchases = inventoryItem.get('purchases'),
+      let purchases = inventoryItem.get('purchases'),
         quantityOnHand = inventoryItem.get('quantity'),
         quantityRequested = request.get('quantity');
       if (increment || (quantityOnHand >= quantityRequested)) {
-        var findResult = this._findQuantity(request, purchases, inventoryItem, increment);
+        let findResult = this._findQuantity(request, purchases, inventoryItem, increment);
         if (findResult === true) {
           resolve();
         } else {

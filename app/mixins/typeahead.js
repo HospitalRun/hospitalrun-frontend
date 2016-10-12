@@ -1,25 +1,27 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 
+const { computed, observer } = Ember;
+
 export default Ember.Mixin.create({
-  _mapContentItems: function() {
-    var content = this.get('content');
+  _mapContentItems() {
+    let content = this.get('content');
     if (content) {
-      var mapped = content.filter(function(item) {
+      let mapped = content.filter(function(item) {
         return !Ember.isEmpty(item);
       });
       if (content instanceof DS.RecordArray) {
-        mapped = mapped.map(function(item) {
-          var returnObj = item.getProperties(this.get('displayKey'));
+        mapped = mapped.map((item) => {
+          let returnObj = item.getProperties(this.get('displayKey'));
           returnObj[this.get('selectionKey')] = item;
           return returnObj;
-        }.bind(this));
+        });
       } else {
-        mapped = mapped.map(function(item) {
-          var returnObj = {};
+        mapped = mapped.map((item) => {
+          let returnObj = {};
           returnObj[this.get('displayKey')] = item;
           return returnObj;
-        }.bind(this));
+        });
       }
       return mapped;
     } else {
@@ -27,17 +29,17 @@ export default Ember.Mixin.create({
     }
   },
 
-  mappedContent: function() {
+  mappedContent: computed('content', function() {
     return this._mapContentItems();
-  }.property('content'),
+  }),
 
-  contentChanged: function() {
-    var bloodhound = this.get('bloodhound');
+  contentChanged: observer('content.[]', function() {
+    let bloodhound = this.get('bloodhound');
     if (bloodhound) {
       bloodhound.clear();
       bloodhound.add(this._mapContentItems());
     }
-  }.observes('content.[]'),
+  }),
 
   bloodhound: null,
   displayKey: 'value',
@@ -54,8 +56,8 @@ export default Ember.Mixin.create({
   templates: null,
   selectedAction: null,
 
-  _getSource: function() {
-    var typeAheadBloodhound = new Bloodhound({
+  _getSource() {
+    let typeAheadBloodhound = new Bloodhound({
       datumTokenizer: Bloodhound.tokenizers.obj.whitespace(this.get('displayKey')),
       queryTokenizer: Bloodhound.tokenizers.whitespace,
       local: this.get('mappedContent')
@@ -65,10 +67,10 @@ export default Ember.Mixin.create({
     return typeAheadBloodhound.ttAdapter();
   },
 
-  didInsertElement: function() {
-    var $input = this.$('input');
+  didInsertElement() {
+    let $input = this.$('input');
     this.set('inputElement', $input);
-    var $typeahead = $input.typeahead({
+    let $typeahead = $input.typeahead({
       autoselect: true,
       hint: this.get('hint'),
       highlight: this.get('highlight'),
@@ -90,16 +92,16 @@ export default Ember.Mixin.create({
     });
 
     if (this.get('setOnBlur')) {
-      $input.on('keyup', function() {
-        var $hint = this.$('.tt-hint'),
+      $input.on('keyup', () => {
+        let $hint = this.$('.tt-hint'),
           hintValue = $hint.val();
         this.set('lastHint', hintValue);
         this.set('selectedItem', false);
-      }.bind(this));
+      });
 
-      $input.on('blur', function(event) {
-        var selection = this.get('selection');
-        var targetValue = event.target.value.trim();
+      $input.on('blur', (event) => {
+        let selection = this.get('selection');
+        let targetValue = event.target.value.trim();
         if (!Ember.isEmpty(selection)) {
           if (selection.trim) {
             selection = selection.trim();
@@ -107,14 +109,14 @@ export default Ember.Mixin.create({
           this.set('selection', selection);
         }
         if (!this.get('selectedItem')) {
-          var lastHint = this.get('lastHint'),
+          let lastHint = this.get('lastHint'),
             exactMatch = false;
           if (Ember.isEmpty(lastHint)) {
             lastHint = targetValue;
             exactMatch = true;
           }
           if (!Ember.isEmpty(targetValue) && !Ember.isEmpty(lastHint)) {
-            this.get('bloodhound').search(lastHint, function(suggestions) {
+            this.get('bloodhound').search(lastHint, (suggestions) => {
               if (suggestions.length > 0) {
                 if (!exactMatch || lastHint.toLowerCase() === suggestions[0][this.get('displayKey')].toLowerCase()) {
                   this.itemSelected(suggestions[0][this.get('selectionKey')]);
@@ -124,16 +126,16 @@ export default Ember.Mixin.create({
               } else if (targetValue !== selection) {
                 this.set('selection');
               }
-            }.bind(this));
+            });
           } else if (Ember.isEmpty(targetValue)) {
             this.set('selection');
           }
         }
-      }.bind(this));
+      });
     }
   },
 
-  itemSelected: function(itemSelection) {
+  itemSelected(itemSelection) {
     this.set('selection', itemSelection);
     this.set('selectedItem', true);
     let selectedAction = this.get('selectedAction');
@@ -142,7 +144,7 @@ export default Ember.Mixin.create({
     }
   },
 
-  willDestroyElement: function() {
+  willDestroyElement() {
     this.get('inputElement').typeahead('destroy');
   }
 

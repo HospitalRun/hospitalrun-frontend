@@ -4,7 +4,7 @@ export default Ember.Mixin.create(PatientId, {
   newPatientId: null,
 
   actions: {
-    addedNewPatient: function(record) {
+    addedNewPatient(record) {
       this.send('closeModal');
       this.set('model.patient', record);
       this.set('newPatientId');
@@ -12,13 +12,13 @@ export default Ember.Mixin.create(PatientId, {
     }
   },
 
-  addNewPatient: function() {
+  addNewPatient() {
     let i18n = this.get('i18n');
     this.displayAlert(i18n.t('alerts.pleaseWait'), i18n.t('messages.newPatientHasToBeCreated'));
     this._getNewPatientId().then(function(friendlyId) {
-      var patientTypeAhead = this.get('model.patientTypeAhead'),
-        nameParts = patientTypeAhead.split(' '),
-        patientDetails = {
+      let patientTypeAhead = this.get('model.patientTypeAhead');
+      let nameParts = patientTypeAhead.split(' ');
+      let patientDetails = {
           friendlyId: friendlyId,
           patientFullName: patientTypeAhead,
           requestingController: this
@@ -39,8 +39,8 @@ export default Ember.Mixin.create(PatientId, {
     }.bind(this));
   },
 
-  _getNewPatientId: function() {
-    var newPatientId = this.get('newPatientId');
+  _getNewPatientId() {
+    let newPatientId = this.get('newPatientId');
     if (Ember.isEmpty(newPatientId)) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
         this.generateFriendlyId().then(function(friendlyId) {

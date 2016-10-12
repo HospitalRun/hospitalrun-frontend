@@ -29,7 +29,7 @@ export default Ember.Component.extend({
   },
 
   didInsertElement: function() {
-    var $modal = this.$('.modal').modal();
+    let $modal = this.$('.modal').modal();
 
     $modal.on('hidden.bs.modal', function() {
       this.sendAction('closeModalAction');
@@ -37,7 +37,7 @@ export default Ember.Component.extend({
   },
 
   willDestroyElement: function() {
-    var $modal = this.$('.modal');
+    let $modal = this.$('.modal');
     $modal.off('hidden.bs.modal');
     $modal.modal('hide');
     // jquery fixes

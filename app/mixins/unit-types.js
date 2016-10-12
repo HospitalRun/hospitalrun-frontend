@@ -36,7 +36,7 @@ export default Ember.Mixin.create({
   ],
 
   unitList: function() {
-    var defaultUnitList = this.get('defaultUnitList'),
+    let defaultUnitList = this.get('defaultUnitList'),
       inventoryUnitList = this.get('inventoryUnitList');
     if (Ember.isEmpty(inventoryUnitList)) {
       return defaultUnitList;

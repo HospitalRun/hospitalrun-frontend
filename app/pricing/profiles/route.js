@@ -12,7 +12,7 @@ export default AbstractIndexRoute.extend(ModalHelper, {
     },
 
     deleteItem: function(item) {
-      var message = 'Are you sure you want to delete this profile?',
+      let message = 'Are you sure you want to delete this profile?',
         model = Ember.Object.create({
           itemToDelete: item
         }),
@@ -28,7 +28,7 @@ export default AbstractIndexRoute.extend(ModalHelper, {
     },
 
     newItem: function() {
-      var newItem = this.store.createRecord('price-profile');
+      let newItem = this.store.createRecord('price-profile');
       this.send('openModal', 'pricing.profiles.edit', newItem);
     },
 

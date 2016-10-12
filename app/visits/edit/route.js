@@ -10,7 +10,7 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
   pricingCategory: 'Ward',
 
   model: function(params) {
-    var idParam = this.get('idParam');
+    let idParam = this.get('idParam');
     if (!Ember.isEmpty(idParam) && params[idParam] === 'checkin') {
       let newVisit = this.get('store').createRecord('visit', {
         outPatient: true,

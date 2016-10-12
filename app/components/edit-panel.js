@@ -1,10 +1,11 @@
 import Ember from 'ember';
 export default Ember.Component.extend({
   editPanelProps: null,
+  cancelAction: 'cancel',
 
   actions: {
     cancel: function() {
-      this.sendAction('editPanelProps.cancelAction');
+      this.sendAction('cancelAction');
     },
     disabledAction: function() {
       this.sendAction('editPanelProps.disabledAction');

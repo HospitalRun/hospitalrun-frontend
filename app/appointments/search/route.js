@@ -18,15 +18,15 @@ export default AppointmentIndexRoute.extend(DateFormat, {
   },
 
   _modelQueryParams: function(params) {
-    var startDate = params.startDate,
+    let startDate = params.startDate,
       maxValue = this.get('maxValue');
     if (Ember.isEmpty(startDate)) {
       startDate = moment();
     } else {
       startDate = moment(parseInt(startDate));
     }
-    var startOfDay = startDate.startOf('day').toDate().getTime();
-    var searchOptions = {
+    let startOfDay = startDate.startOf('day').toDate().getTime();
+    let searchOptions = {
       startkey: [startOfDay, null, 'appointment_'],
       endkey: [maxValue, maxValue, 'appointment_' + maxValue]
     };
@@ -43,7 +43,7 @@ export default AppointmentIndexRoute.extend(DateFormat, {
         selectedProvider: params.provider,
         selectedStatus: params.status
       });
-      var startDate = params.startDate;
+      let startDate = params.startDate;
       startDate = new Date();
       if (!Ember.isEmpty(params.startDate)) {
         startDate.setTime(params.startDate);

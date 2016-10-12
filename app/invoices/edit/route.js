@@ -21,13 +21,13 @@ export default AbstractEditRoute.extend({
 
   afterModel: function(model) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var lineItems = model.get('lineItems'),
+      let lineItems = model.get('lineItems'),
         promises = [];
       lineItems.forEach(function(lineItem) {
         promises.push(lineItem.reload());
       });
       Ember.RSVP.all(promises, 'Reload billing line items for invoice').then(function(results) {
-        var detailPromises = [];
+        let detailPromises = [];
         results.forEach(function(result) {
           result.get('details').forEach(function(detail) {
             detailPromises.push(detail.reload());
@@ -48,11 +48,11 @@ export default AbstractEditRoute.extend({
   setupController: function(controller, model) {
     model.set('originalPaymentProfileId', model.get('paymentProfile.id'));
     this._super(controller, model);
-    var lineItems = model.get('lineItems'),
+    let lineItems = model.get('lineItems'),
       promises = [];
     lineItems.forEach(function(lineItem) {
       lineItem.get('details').forEach(function(detail) {
-        var pricingItem = detail.get('pricingItem');
+        let pricingItem = detail.get('pricingItem');
         if (!Ember.isEmpty(pricingItem)) {
           promises.push(pricingItem.reload());
         }

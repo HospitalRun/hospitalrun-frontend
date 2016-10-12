@@ -9,9 +9,9 @@ export default DS.RESTAdapter.extend(UserSession, {
   oauthHeaders: Ember.computed.alias('database.oauthHeaders'),
 
   ajaxError: function(jqXHR) {
-    var error = this._super(jqXHR);
+    let error = this._super(jqXHR);
     if (jqXHR && jqXHR.status === 401) {
-      var jsonErrors = Ember.$.parseJSON(jqXHR.responseText);
+      let jsonErrors = Ember.$.parseJSON(jqXHR.responseText);
       window.Hospitalrun.__container__.lookup('controller:application').transitionToRoute('login');
       return new DS.InvalidError(jsonErrors);
     } else {
@@ -81,12 +81,12 @@ export default DS.RESTAdapter.extend(UserSession, {
   @returns {Promise} promise
   */
   find: function(store, type, id) {
-    var findUrl = this.endpoint + id;
+    let findUrl = this.endpoint + id;
     return this.ajax(findUrl, 'GET');
   },
 
   headers: function() {
-    var oauthHeaders = this.get('oauthHeaders');
+    let oauthHeaders = this.get('oauthHeaders');
     if (Ember.isEmpty(oauthHeaders)) {
       return {};
     } else {
@@ -112,8 +112,8 @@ export default DS.RESTAdapter.extend(UserSession, {
    @returns {Promise} promise
   */
   updateRecord: function(store, type, record, deleteUser) {
-    var data = {};
-    var serializer = store.serializerFor(record.modelName);
+    let data = {};
+    let serializer = store.serializerFor(record.modelName);
     serializer.serializeIntoHash(data, type, record, { includeId: true });
     data.type = 'user';
     if (deleteUser) {
@@ -125,7 +125,7 @@ export default DS.RESTAdapter.extend(UserSession, {
       delete data._rev;
     }
     data = this._cleanPasswordAttrs(data);
-    var putURL = `${this.endpoint}${Ember.get(record, 'id')}`;
+    let putURL = `${this.endpoint}${Ember.get(record, 'id')}`;
     return this.ajax(putURL, 'PUT', {
       data: data
     });
@@ -146,13 +146,13 @@ export default DS.RESTAdapter.extend(UserSession, {
   @returns {Promise} promise
   */
   findAll: function() {
-    var ajaxData = {
+    let ajaxData = {
       data: {
         include_docs: true,
         startkey: '"org.couchdb.user"'
       }
     };
-    var allURL = this.endpoint + '_all_docs';
+    let allURL = this.endpoint + '_all_docs';
     return this.ajax(allURL, 'GET', ajaxData);
   },
 
@@ -160,7 +160,7 @@ export default DS.RESTAdapter.extend(UserSession, {
    Remove null/empty password fields from payload sent to server
    */
   _cleanPasswordAttrs: function(data) {
-    var attrsToCheck = [
+    let attrsToCheck = [
       'derived_key',
       'password',
       'password_scheme',

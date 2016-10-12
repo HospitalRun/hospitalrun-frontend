@@ -8,7 +8,7 @@ export default Ember.Component.extend({
   url: Ember.computed.alias('photo.url'),
 
   photoUrl: function() {
-    var computedPhotoUrl = this.get('computedPhotoUrl'),
+    let computedPhotoUrl = this.get('computedPhotoUrl'),
       fileName = this.get('fileName'),
       filesystem = this.get('filesystem'),
       isFileSystemEnabled = this.get('isFileSystemEnabled'),

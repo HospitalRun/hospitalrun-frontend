@@ -61,7 +61,7 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
 
   setupController: function(controller, model) {
     // Load appointments, photos and visits asynchronously.
-    var friendlyId = model.get('friendlyId'),
+    let friendlyId = model.get('friendlyId'),
       externalId = model.get('externalPatientId'),
       maxValue = this.get('maxValue'),
       patientId = model.get('id');
@@ -87,7 +87,7 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
       },
       mapReduce: 'photo_by_patient'
     }).then(function(photos) {
-      var patientPhotos = [];
+      let patientPhotos = [];
       patientPhotos.addObjects(photos);
       model.set('photos', patientPhotos);
     });

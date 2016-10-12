@@ -11,7 +11,7 @@ export default Ember.Mixin.create({
   afterModel: function() {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       const database = this.get('database');
-      var maxId = database.getPouchId({}, 'pricing'),
+      let maxId = database.getPouchId({}, 'pricing'),
         minId = database.getPouchId(null, 'pricing'),
         pricingCategory = this.get('pricingCategory'),
         pricingQuery = {
@@ -20,7 +20,7 @@ export default Ember.Mixin.create({
           include_docs: true
         };
       database.queryMainDB(pricingQuery, 'pricing_by_category').then(function(result) {
-        var pricingList = result.rows.map(function(item) {
+        let pricingList = result.rows.map(function(item) {
           return item.doc;
         });
         this.set('pricingList', pricingList);

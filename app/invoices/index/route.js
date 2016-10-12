@@ -5,14 +5,14 @@ export default AbstractIndexRoute.extend({
   pageTitle: 'Invoice Listing',
 
   _getStartKeyFromItem: function(item) {
-    var billDateAsTime = item.get('billDateAsTime'),
+    let billDateAsTime = item.get('billDateAsTime'),
       id = this._getPouchIdFromItem(item),
       searchStatus = item.get('status');
     return [searchStatus, billDateAsTime, id];
   },
 
   _modelQueryParams: function(params) {
-    var queryParams,
+    let queryParams,
       maxId = this._getMaxPouchId(),
       maxValue = this.get('maxValue'),
       minId = this._getMinPouchId(),

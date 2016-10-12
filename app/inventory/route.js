@@ -42,7 +42,7 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
 
   actions: {
     addPurchase: function(newPurchase) {
-      var currentItem = this.get('currentItem'),
+      let currentItem = this.get('currentItem'),
         purchases = currentItem.get('purchases');
       purchases.addObject(newPurchase);
       this.newPurchaseAdded(currentItem, newPurchase).then(function() {
@@ -68,7 +68,7 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
     },
 
     showAddPurchase: function(inventoryItem) {
-      var newPurchase = this.get('store').createRecord('inv-purchase', {
+      let newPurchase = this.get('store').createRecord('inv-purchase', {
         dateReceived: new Date(),
         distributionUnit: inventoryItem.get('distributionUnit'),
         inventoryItem: inventoryItem.get('id')

@@ -8,13 +8,13 @@ import LocationName from 'hospitalrun/mixins/location-name';
  * items to be shown as inventory items since the pouchdb adapter does a
  * retrieve for keys starting with 'inventory' to fetch inventory items.
  */
-var InventoryLocation = AbstractModel.extend(LocationName, {
+let InventoryLocation = AbstractModel.extend(LocationName, {
   quantity: DS.attr('number'),
   location: DS.attr('string'),
   aisleLocation: DS.attr('string'),
 
   locationNameWithQuantity: function() {
-    var quantity = this.get('quantity'),
+    let quantity = this.get('quantity'),
       locationName = this.get('locationName');
     return `${locationName} (${quantity} available)`;
   }.property('locationName', 'quantity'),
@@ -33,7 +33,7 @@ var InventoryLocation = AbstractModel.extend(LocationName, {
          */
         accept: true,
         if: function(object) {
-          var adjustmentQuantity = object.get('adjustmentQuantity'),
+          let adjustmentQuantity = object.get('adjustmentQuantity'),
             transactionType = object.get('transactionType'),
             locationQuantity = object.get('quantity');
           if (Ember.isEmpty(adjustmentQuantity) || isNaN(adjustmentQuantity)) {
@@ -58,7 +58,7 @@ var InventoryLocation = AbstractModel.extend(LocationName, {
       acceptance: {
         accept: true,
         if: function(object) {
-          var transferLocation = object.get('transferLocation'),
+          let transferLocation = object.get('transferLocation'),
             transferItem = object.get('transferItem');
           // If we don't have a transfer item, then a transfer is not occurring.
           if (!Ember.isEmpty(transferItem) && Ember.isEmpty(transferLocation)) {

@@ -10,7 +10,7 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
   newTitle: t('medication.titles.newMedicationRequest'),
   database: Ember.inject.service(),
   getNewData: function(params) {
-    var idParam = this.get('idParam'),
+    let idParam = this.get('idParam'),
       newData = {
         selectPatient: true,
         prescriptionDate: moment().startOf('day').toDate()
@@ -24,7 +24,7 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
   },
 
   model: function(params) {
-    var idParam = this.get('idParam');
+    let idParam = this.get('idParam');
     if (!Ember.isEmpty(idParam) && params[idParam] === 'new' || params[idParam] === 'dispense') {
       return this._createNewRecord(params);
     } else {
@@ -34,16 +34,16 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
 
   setupController: function(controller, model) {
     this._super(controller, model);
-    var inventoryQuery = {
+    let inventoryQuery = {
       key: 'Medication',
       include_docs: true
     };
-    var inventoryItemId = model.get('inventoryItem.id'),
+    let inventoryItemId = model.get('inventoryItem.id'),
       patient = model.get('patient');
     if (Ember.isEmpty(inventoryItemId)) {
       this.get('database').queryMainDB(inventoryQuery, 'inventory_by_type')
         .then(function(result) {
-          var medicationList = result.rows.map(function(medication) {
+          let medicationList = result.rows.map(function(medication) {
             return medication.doc;
           });
           controller.set('medicationList', medicationList);

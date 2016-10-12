@@ -8,13 +8,13 @@ export default AbstractIndexRoute.extend({
   pageTitle: t('patients.titles.todaysOutpatients'),
 
   _getStartKeyFromItem: function(item) {
-    var displayPatientId = item.get('displayPatientId');
+    let displayPatientId = item.get('displayPatientId');
     return [displayPatientId, 'patient_' + item.get('id')];
   },
 
   _modelQueryParams: function() {
-    var endOfDay = moment().endOf('day').valueOf();
-    var startOfDay = moment().startOf('day').valueOf();
+    let endOfDay = moment().endOf('day').valueOf();
+    let startOfDay = moment().startOf('day').valueOf();
     return {
       mapReduce: 'visit_by_date',
       options: {

@@ -13,14 +13,14 @@ export default Ember.Component.extend({
   filtered: false,
 
   sorted: function() {
-    var sortBy = this.get('sortBy'),
+    let sortBy = this.get('sortBy'),
       sortKey = this.get('sortKey');
     return sortBy === sortKey;
   }.property('sortBy', 'sortKey'),
 
   actions: {
     sort() {
-      var sortBy = this.get('sortBy'),
+      let sortBy = this.get('sortBy'),
         sorted = this.get('sorted'),
         sortDesc = false;
       if (sorted) {
@@ -39,7 +39,6 @@ export default Ember.Component.extend({
       let $dropdown = this.$('.dropdown-toggle');
       $dropdown.dropdown('toggle');
       this.sendAction('filterAction', filterBy, filterValue);
-
     }
   }
 });

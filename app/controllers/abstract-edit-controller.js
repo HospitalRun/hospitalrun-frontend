@@ -8,7 +8,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
 
   cancelButtonText: function() {
     let i18n = this.get('i18n');
-    var hasDirtyAttributes = this.get('model.hasDirtyAttributes');
+    let hasDirtyAttributes = this.get('model.hasDirtyAttributes');
     if (hasDirtyAttributes) {
       return i18n.t('buttons.cancel');
     } else {
@@ -17,7 +17,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
   }.property('model.hasDirtyAttributes'),
 
   disabledAction: function() {
-    var isValid = this.get('model.isValid');
+    let isValid = this.get('model.isValid');
     if (!isValid) {
       return 'showDisabledDialog';
     }
@@ -38,7 +38,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
   lookupListsToUpdate: null,
 
   showUpdateButton: function() {
-    var updateButtonCapability = this.get('updateCapability');
+    let updateButtonCapability = this.get('updateCapability');
     return this.currentUserCan(updateButtonCapability);
   }.property('updateCapability'),
 
@@ -61,7 +61,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    * @param listsName string name of the list to add the value to.
    */
   _addValueToLookupList: function(lookupList, value, listsToUpdate, listName) {
-    var lookupListValues = lookupList.get('value');
+    let lookupListValues = lookupList.get('value');
     if (!Ember.isArray(lookupListValues)) {
       lookupListValues = [];
     }
@@ -77,7 +77,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
   },
 
   _cancelUpdate: function() {
-    var cancelledItem = this.get('model');
+    let cancelledItem = this.get('model');
     cancelledItem.rollbackAttributes();
   },
 
@@ -89,7 +89,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
 
     returnTo: function() {
       this._cancelUpdate();
-      var returnTo = this.get('model.returnTo'),
+      let returnTo = this.get('model.returnTo'),
         returnToContext = this.get('model.returnToContext');
       if (Ember.isEmpty(returnToContext)) {
         this.transitionToRoute(returnTo);
@@ -154,11 +154,11 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    * Update any new values added to a lookup list
    */
   updateLookupLists: function() {
-    var lookupLists = this.get('lookupListsToUpdate'),
+    let lookupLists = this.get('lookupListsToUpdate'),
       listsToUpdate = Ember.A();
     if (!Ember.isEmpty(lookupLists)) {
       lookupLists.forEach(function(list) {
-        var propertyValue = this.get(list.property),
+        let propertyValue = this.get(list.property),
           lookupList = this.get(list.name),
           store = this.get('store');
         if (!Ember.isEmpty(propertyValue)) {

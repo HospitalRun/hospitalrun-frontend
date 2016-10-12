@@ -12,7 +12,7 @@ export default AbstractEditRoute.extend({
   },
 
   getNewData: function(params) {
-    var newCategory = params.pricing_id.substr(3);
+    let newCategory = params.pricing_id.substr(3);
     if (Ember.isEmpty(newCategory)) {
       newCategory = 'Imaging';
     }
@@ -22,7 +22,7 @@ export default AbstractEditRoute.extend({
   },
 
   model: function(params) {
-    var idParam = this.get('idParam');
+    let idParam = this.get('idParam');
     if (!Ember.isEmpty(idParam) && params[idParam].indexOf('new') === 0) {
       return this._createNewRecord(params);
     } else {

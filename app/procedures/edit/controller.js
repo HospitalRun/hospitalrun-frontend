@@ -52,7 +52,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   newProcedure: false,
 
   title: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return this.get('i18n').t('procedures.titles.add');
     }
@@ -63,7 +63,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
   actions: {
     showAddMedication: function() {
-      var newCharge = this.get('store').createRecord('proc-charge', {
+      let newCharge = this.get('store').createRecord('proc-charge', {
         dateCharged: new Date(),
         newMedicationCharge: true,
         quantity: 1
@@ -72,8 +72,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     },
 
     showEditMedication: function(charge) {
-      var medicationList = this.get('medicationList');
-      var selectedMedication = medicationList.findBy('id', charge.get('medication.id'));
+      let medicationList = this.get('medicationList');
+      let selectedMedication = medicationList.findBy('id', charge.get('medication.id'));
       charge.set('itemName', selectedMedication.name);
       this.send('openModal', 'procedures.medication', charge);
     },
@@ -103,7 +103,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   },
 
   afterUpdate: function() {
-    var alertTitle = this.get('i18n').t('procedures.titles.saved'),
+    let alertTitle = this.get('i18n').t('procedures.titles.saved'),
       alertMessage = this.get('i18n').t('procedures.messages.saved');
     this.saveVisitIfNeeded(alertTitle, alertMessage);
   }
