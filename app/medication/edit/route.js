@@ -10,8 +10,8 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
   newTitle: t('medication.titles.newMedicationRequest'),
   database: Ember.inject.service(),
   getNewData: function(params) {
-    let idParam = this.get('idParam'),
-      newData = {
+    let idParam = this.get('idParam');
+    let newData = {
         selectPatient: true,
         prescriptionDate: moment().startOf('day').toDate()
       };
@@ -38,8 +38,8 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
       key: 'Medication',
       include_docs: true
     };
-    let inventoryItemId = model.get('inventoryItem.id'),
-      patient = model.get('patient');
+    let inventoryItemId = model.get('inventoryItem.id');
+    let patient = model.get('patient');
     if (Ember.isEmpty(inventoryItemId)) {
       this.get('database').queryMainDB(inventoryQuery, 'inventory_by_type')
         .then(function(result) {

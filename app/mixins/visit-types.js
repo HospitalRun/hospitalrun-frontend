@@ -11,9 +11,9 @@ export default Ember.Mixin.create({
   ],
 
   _getVisitTypes: function(includeEmpty) {
-    let defaultVisitTypes = this.get('defaultVisitTypes'),
-      visitTypesList = this.get('visitTypesList'),
-      visitList;
+    let defaultVisitTypes = this.get('defaultVisitTypes');
+    let visitTypesList = this.get('visitTypesList');
+    let visitList;
     if (Ember.isEmpty(visitTypesList)) {
       visitList = defaultVisitTypes;
     } else {

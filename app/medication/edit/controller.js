@@ -23,10 +23,10 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
   }.property('model.status'),
 
   isFulfilling: function() {
-    let canFulfill = this.get('canFulfill'),
-      isRequested = this.get('model.isRequested'),
-      fulfillRequest = this.get('model.shouldFulfillRequest'),
-      isFulfilling = canFulfill && (isRequested || fulfillRequest);
+    let canFulfill = this.get('canFulfill');
+    let isRequested = this.get('model.isRequested');
+    let fulfillRequest = this.get('model.shouldFulfillRequest');
+    let isFulfilling = canFulfill && (isRequested || fulfillRequest);
     this.get('model').set('isFulfilling', isFulfilling);
     return isFulfilling;
   }.property('canFulfill', 'model.isRequested', 'model.shouldFulfillRequest'),
@@ -44,9 +44,9 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
   }.property('model.quantity'),
 
   quantityClass: function() {
-    let prescription = this.get('model.prescription'),
-      returnClass = 'col-xs-3',
-      isFulfilling = this.get('isFulfilling');
+    let prescription = this.get('model.prescription');
+    let returnClass = 'col-xs-3';
+    let isFulfilling = this.get('isFulfilling');
     if (isFulfilling || Ember.isEmpty(prescription)) {
       returnClass += ' required';
     }
@@ -55,9 +55,9 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
 
   quantityLabel: function() {
     let i18n = this.get('i18n');
-    let returnLabel = i18n.t('medication.labels.quantityRequested'),
-      isFulfilled = this.get('isFulfilled'),
-      isFulfilling = this.get('isFulfilling');
+    let returnLabel = i18n.t('medication.labels.quantityRequested');
+    let isFulfilled = this.get('isFulfilled');
+    let isFulfilling = this.get('isFulfilling');
     if (isFulfilling) {
       returnLabel = i18n.t('medication.labels.quantityDispensed');
     } else if (isFulfilled) {
@@ -71,9 +71,8 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
 
   afterUpdate: function() {
     let i18n = this.get('i18n');
-    let alertTitle,
-      alertMessage,
-      isFulfilled = this.get('isFulfilled');
+    let alertTitle, alertMessage;
+    let isFulfilled = this.get('isFulfilled');
     if (isFulfilled) {
       alertTitle = i18n.t('medication.alerts.fulfilledTitle');
       alertMessage = 'The medication request has been fulfilled.';
@@ -89,14 +88,14 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     let i18n = this.get('i18n');
     this.displayAlert(i18n.t('alerts.pleaseWait'), i18n.t('messages.newPatientHasToBeCreated'));
     this._getNewPatientId().then(function(friendlyId) {
-      let patientTypeAhead = this.get('model.patientTypeAhead'),
-        nameParts = patientTypeAhead.split(' '),
-        patientDetails = {
+      let patientTypeAhead = this.get('model.patientTypeAhead');
+      let nameParts = patientTypeAhead.split(' ');
+      let patientDetails = {
           friendlyId: friendlyId,
           patientFullName: patientTypeAhead,
           requestingController: this
-        },
-        patient;
+        };
+      let patient;
       if (nameParts.length >= 3) {
         patientDetails.firstName = nameParts[0];
         patientDetails.middleName = nameParts[1];
@@ -127,8 +126,8 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
   },
 
   beforeUpdate: function() {
-    let isFulfilling = this.get('isFulfilling'),
-      isNew = this.get('model.isNew');
+    let isFulfilling = this.get('isFulfilling');
+    let isNew = this.get('model.isNew');
     if (isNew || isFulfilling) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
         let newMedication = this.get('model');
@@ -170,8 +169,8 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
 
   finishBeforeUpdate: function(isFulfilling, resolve) {
     if (isFulfilling) {
-      let inventoryLocations = this.get('model.inventoryLocations'),
-        inventoryRequest = this.get('store').createRecord('inv-request', {
+      let inventoryLocations = this.get('model.inventoryLocations');
+      let inventoryRequest = this.get('store').createRecord('inv-request', {
           expenseAccount: this.get('model.expenseAccount'),
           dateCompleted: new Date(),
           inventoryItem: this.get('model.inventoryItem'),

@@ -89,8 +89,8 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
 
     returnTo: function() {
       this._cancelUpdate();
-      let returnTo = this.get('model.returnTo'),
-        returnToContext = this.get('model.returnToContext');
+      let returnTo = this.get('model.returnTo');
+      let returnToContext = this.get('model.returnToContext');
       if (Ember.isEmpty(returnToContext)) {
         this.transitionToRoute(returnTo);
       } else {
@@ -154,13 +154,13 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    * Update any new values added to a lookup list
    */
   updateLookupLists: function() {
-    let lookupLists = this.get('lookupListsToUpdate'),
-      listsToUpdate = Ember.A();
+    let lookupLists = this.get('lookupListsToUpdate');
+    let listsToUpdate = Ember.A();
     if (!Ember.isEmpty(lookupLists)) {
       lookupLists.forEach(function(list) {
-        let propertyValue = this.get(list.property),
-          lookupList = this.get(list.name),
-          store = this.get('store');
+        let propertyValue = this.get(list.property);
+        let lookupList = this.get(list.name);
+        let store = this.get('store');
         if (!Ember.isEmpty(propertyValue)) {
           if (!lookupList) {
             lookupList = store.push(store.normalize('lookup', {

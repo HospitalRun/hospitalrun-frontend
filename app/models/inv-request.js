@@ -33,14 +33,14 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
   }),
 
   deliveryLocationName: function() {
-    let aisle = this.get('deliveryAisle'),
-      location = this.get('deliveryLocation');
+    let aisle = this.get('deliveryAisle');
+    let location = this.get('deliveryLocation');
     return this.formatLocationName(location, aisle);
   }.property('deliveryAisle', 'deliveryLocation'),
 
   deliveryDetails: function() {
-    let locationName = this.get('deliveryLocationName'),
-      patient = this.get('patient');
+    let locationName = this.get('deliveryLocationName');
+    let patient = this.get('patient');
     if (Ember.isEmpty(patient)) {
       return locationName;
     } else {
@@ -53,9 +53,9 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
   }.property('reason'),
 
   isAdjustment: function() {
-    let adjustmentTypes = this.get('adjustmentTypes'),
-      transactionType = this.get('transactionType'),
-      adjustmentType = adjustmentTypes.findBy('type', transactionType);
+    let adjustmentTypes = this.get('adjustmentTypes');
+    let transactionType = this.get('transactionType');
+    let adjustmentType = adjustmentTypes.findBy('type', transactionType);
     return !Ember.isEmpty(adjustmentType);
   }.property('transactionType'),
 
@@ -75,10 +75,10 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
           if (!object.get('hasDirtyAttributes')) {
             return false;
           }
-          let itemName = object.get('inventoryItem.name'),
-            itemTypeAhead = object.get('inventoryItemTypeAhead'),
-            requestedItems = object.get('requestedItems'),
-            status = object.get('status');
+          let itemName = object.get('inventoryItem.name');
+          let itemTypeAhead = object.get('inventoryItemTypeAhead');
+          let requestedItems = object.get('requestedItems');
+          let status = object.get('status');
           if (status === 'Requested') {
             // Requested items don't show the type ahead and therefore don't need validation.
             return false;
@@ -113,10 +113,10 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
       acceptance: {
         accept: true,
         if: function(object) {
-          let isNew = object.get('isNew'),
-            requestQuantity = parseInt(object.get('quantity')),
-            transactionType = object.get('transactionType'),
-            quantityToCompare = null;
+          let isNew = object.get('isNew');
+          let requestQuantity = parseInt(object.get('quantity'));
+          let transactionType = object.get('transactionType');
+          let quantityToCompare = null;
           if (transactionType === 'Return') {
             // no validation needed for returns
             return false;

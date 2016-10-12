@@ -31,9 +31,9 @@ export default Ember.Controller.extend({
     },
 
     update: function() {
-      let caption = this.get('model.caption'),
-        isNew = this.get('model.isNew'),
-        photoFile = this.get('model.photoFile');
+      let caption = this.get('model.caption');
+      let isNew = this.get('model.isNew');
+      let photoFile = this.get('model.photoFile');
       if (isNew) {
         this.get('editController').send('addPhoto', photoFile, caption);
       } else {

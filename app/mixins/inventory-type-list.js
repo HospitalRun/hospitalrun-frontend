@@ -7,9 +7,9 @@ export default Ember.Mixin.create({
   ],
 
   inventoryTypes: function() {
-    let defaultInventoryTypes = this.get('defaultInventoryTypes'),
-      inventoryTypeList = this.get('inventoryTypeList'),
-      typeList;
+    let defaultInventoryTypes = this.get('defaultInventoryTypes');
+    let inventoryTypeList = this.get('inventoryTypeList');
+    let typeList;
     if (Ember.isEmpty(inventoryTypeList)) {
       typeList = defaultInventoryTypes;
     } else {

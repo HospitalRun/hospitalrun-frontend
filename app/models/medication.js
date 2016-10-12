@@ -53,8 +53,8 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
           if (!object.get('hasDirtyAttributes') || object.get('isFulfilling')) {
             return false;
           }
-          let prescription = object.get('prescription'),
-            quantity = object.get('quantity');
+          let prescription = object.get('prescription');
+          let quantity = object.get('quantity');
           if (Ember.isEmpty(prescription) && Ember.isEmpty(quantity)) {
             // force validation to fail
             return true;
@@ -73,8 +73,8 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
           if (!object.get('hasDirtyAttributes') || !object.get('isNew')) {
             return false;
           }
-          let itemName = object.get('inventoryItem.name'),
-            itemTypeAhead = object.get('inventoryItemTypeAhead');
+          let itemName = object.get('inventoryItem.name');
+          let itemTypeAhead = object.get('inventoryItemTypeAhead');
           if (Ember.isEmpty(itemName) || Ember.isEmpty(itemTypeAhead)) {
             // force validation to fail
             return true;
@@ -116,9 +116,9 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
       acceptance: {
         accept: true,
         if: function(object) {
-          let isFulfilling = object.get('isFulfilling'),
-            requestQuantity = parseInt(object.get('quantity')),
-            quantityToCompare = null;
+          let isFulfilling = object.get('isFulfilling');
+          let requestQuantity = parseInt(object.get('quantity'));
+          let quantityToCompare = null;
           if (!isFulfilling) {
             // no validation needed when not fulfilling
             return false;

@@ -12,11 +12,11 @@ export default AbstractIndexRoute.extend(ModalHelper, {
     },
 
     deleteItem: function(item) {
-      let message = 'Are you sure you want to delete this profile?',
-        model = Ember.Object.create({
-          itemToDelete: item
-        }),
-        title = 'Delete Profile';
+      let message = 'Are you sure you want to delete this profile?';
+      let model = Ember.Object.create({
+        itemToDelete: item
+      });
+      let title = 'Delete Profile';
       this.displayConfirm(title, message, 'deletePricingProfile', model);
     },
 

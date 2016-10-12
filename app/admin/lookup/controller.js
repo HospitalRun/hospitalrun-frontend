@@ -194,9 +194,9 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
     importFile: Ember.computed.alias('lookupTypeList.importFile'),
 
     lookupTitle: function() {
-      let lookupType = this.get('model.lookupType'),
-        lookupTypes = this.get('lookupTypes'),
-        lookupDesc;
+      let lookupType = this.get('model.lookupType');
+      let lookupTypes = this.get('lookupTypes');
+      let lookupDesc;
       if (!Ember.isEmpty(lookupType)) {
         lookupDesc = lookupTypes.findBy('value', lookupType);
         if (!Ember.isEmpty(lookupDesc)) {
@@ -206,15 +206,15 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
     }.property('model.lookupType'),
 
     lookupTypeList: function() {
-      let lookupType = this.get('model.lookupType'),
-        lookupItem;
+      let lookupType = this.get('model.lookupType');
+      let lookupItem;
       if (!Ember.isEmpty(lookupType)) {
         lookupItem = this.get('model').findBy('id', lookupType);
         if (Ember.isEmpty(lookupItem) || !lookupItem.get('isLoaded')) {
-          let defaultValues = [],
-            lookupTypes = this.get('lookupTypes'),
-            lookupDesc = lookupTypes.findBy('value', lookupType),
-            store = this.get('store');
+          let defaultValues = [];
+          let lookupTypes = this.get('lookupTypes');
+          let lookupDesc = lookupTypes.findBy('value', lookupType);
+          let store = this.get('store');
           if (!Ember.isEmpty(lookupDesc) && !Ember.isEmpty(lookupDesc.defaultValues)) {
             defaultValues = this.get(lookupDesc.defaultValues);
           }
@@ -329,8 +329,8 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
         }));
       },
       deleteValue: function(value) {
-        let lookupTypeList = this.get('lookupTypeList'),
-          lookupTypeValues = lookupTypeList.get('value');
+        let lookupTypeList = this.get('lookupTypeList');
+        let lookupTypeValues = lookupTypeList.get('value');
         if (this._canDeleteValue(value)) {
           lookupTypeValues.removeObject(value.toString());
           lookupTypeList.save();
@@ -346,9 +346,9 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
         }
       },
       importList: function() {
-        let fileSystem = this.get('fileSystem'),
-          fileToImport = this.get('importFile'),
-          lookupTypeList = this.get('lookupTypeList');
+        let fileSystem = this.get('fileSystem');
+        let fileToImport = this.get('importFile');
+        let lookupTypeList = this.get('lookupTypeList');
         if (!fileToImport || !fileToImport.type) {
           this.displayAlert(
             this.get('i18n').t('admin.lookup.alertImportListTitle'),
@@ -389,11 +389,11 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
         }.bind(this));
       },
       updateValue: function(valueObject) {
-        let updateList = false,
-          lookupTypeList = this.get('lookupTypeList'),
-          lookupTypeValues = this.get('lookupTypeValues'),
-          values = lookupTypeList.get('value'),
-          value = valueObject.get('value');
+        let updateList = false;
+        let lookupTypeList = this.get('lookupTypeList');
+        let lookupTypeValues = this.get('lookupTypeValues');
+        let values = lookupTypeList.get('value');
+        let value = valueObject.get('value');
         if (valueObject.get('isNew')) {
           updateList = true;
         } else {

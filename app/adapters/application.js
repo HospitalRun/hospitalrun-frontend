@@ -78,8 +78,8 @@ export default Adapter.extend(PouchAdapterUtils, {
           return database.getEmberId(row.id);
         });
         this.findRecord(store, type, ids).then((findResponse) => {
-          let primaryRecordName = type.modelName.camelize().pluralize(),
-            sortedValues = [];
+          let primaryRecordName = type.modelName.camelize().pluralize();
+          let sortedValues = [];
           // Sort response in order of ids
           ids.forEach((id) => {
             let resolvedRecord = findResponse[primaryRecordName].findBy('id', id);
@@ -101,8 +101,8 @@ export default Adapter.extend(PouchAdapterUtils, {
    * Look for nulls and maxvalues in start key because those keys can't be handled by the sort/list function
    */
   _doesStartKeyContainSpecialCharacters(startkey) {
-    let haveSpecialCharacters = false,
-      maxValue = this.get('maxValue');
+    let haveSpecialCharacters = false;
+    let maxValue = this.get('maxValue');
     if (!Ember.isEmpty(startkey) && Ember.isArray(startkey)) {
       startkey.forEach((keyvalue) => {
         if (keyvalue === null || keyvalue === maxValue) {
@@ -147,8 +147,8 @@ export default Adapter.extend(PouchAdapterUtils, {
         return this._super(store, type, query, options);
       }
     } else {
-      let mapReduce = null,
-        queryParams = {};
+      let mapReduce = null;
+      let queryParams = {};
       if (query.options) {
         queryParams = Ember.copy(query.options);
         if (query.sortKey || query.filterBy) {

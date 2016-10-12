@@ -92,8 +92,8 @@ export default InputComponent.extend({
 
     if (this.get('setOnBlur')) {
       $input.on('keyup', function() {
-        let $hint = this.$('.tt-hint'),
-          hintValue = $hint.val();
+        let $hint = this.$('.tt-hint');
+        let hintValue = $hint.val();
         this.set('lastHint', hintValue);
         this.set('selectedItem', false);
       }.bind(this));
@@ -108,8 +108,8 @@ export default InputComponent.extend({
           this.set('selection', selection);
         }
         if (!this.get('selectedItem')) {
-          let lastHint = this.get('lastHint'),
-            exactMatch = false;
+          let lastHint = this.get('lastHint');
+          let exactMatch = false;
           if (Ember.isEmpty(lastHint)) {
             lastHint = targetValue;
             exactMatch = true;

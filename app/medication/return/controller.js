@@ -61,8 +61,8 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   }.property('patientMedicationList', 'model.patient', 'model.visit'),
 
   patientMedication: function() {
-    let setNewMedicationList = this.get('setNewMedicationList'),
-      visit = this.get('model.visit');
+    let setNewMedicationList = this.get('setNewMedicationList');
+    let visit = this.get('model.visit');
     if (setNewMedicationList) {
       this.set('setNewMedicationList', false);
     } else if (!Ember.isEmpty(visit)) {
@@ -77,9 +77,9 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   }.property('setNewMedicationList', 'model.patient', 'model.visit'),
 
   _finishUpdate: function() {
-    let aisle = this.get('model.deliveryAisle'),
-      location = this.get('model.deliveryLocation'),
-      inventoryItem = this.get('model.inventoryItem');
+    let aisle = this.get('model.deliveryAisle');
+    let location = this.get('model.deliveryLocation');
+    let inventoryItem = this.get('model.inventoryItem');
 
     // find location on inventoryItem
     this._findOrCreateLocation(inventoryItem, location, aisle).then(function(inventoryLocation) {
@@ -100,8 +100,8 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
       this.displayAlert(i18n.t('medication.alerts.returnedTitle'), i18n.t('medication.alerts.returnedMessage'), 'allItems');
     },
     update: function() {
-      let medication = this.get('model.medication'),
-        quantity = this.get('model.quantity');
+      let medication = this.get('model.medication');
+      let quantity = this.get('model.quantity');
       if (!Ember.isEmpty(medication)) {
         medication.reload().then(function() {
           medication.decrementProperty('quantity', quantity);

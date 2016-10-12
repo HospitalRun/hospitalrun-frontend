@@ -38,9 +38,9 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
 
     search: function() {
       if (this.allowSearch && this.searchRoute) {
-        let currentRouteName = this.get('currentRouteName'),
-          currentSearchText = this.get('currentSearchText'),
-          textToFind = this.get('searchText');
+        let currentRouteName = this.get('currentRouteName');
+        let currentSearchText = this.get('currentSearchText');
+        let textToFind = this.get('searchText');
         if (currentSearchText !== textToFind || currentRouteName.indexOf('.search') === -1) {
           this.set('searchText', '');
           this.set('progressMessage', 'Searching for ' + textToFind + '.  Please wait...');

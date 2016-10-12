@@ -24,8 +24,8 @@ export default SelectOrTypeahead.extend({
   _setup: function() {
     let property = this.get('property');
     Ember.defineProperty(this, 'errors', Ember.computed('model.errors.' + property, function() {
-      let property = this.get('property'),
-        errors = this.get('model.errors.' + property);
+      let property = this.get('property');
+      let errors = this.get('model.errors.' + property);
       if (!Ember.isEmpty(errors)) {
         return errors[0];
       }
@@ -33,10 +33,10 @@ export default SelectOrTypeahead.extend({
   }.on('init'),
 
   checkboxRows: function() {
-    let checkboxRows = [],
-      checkboxesPerRow = this.get('checkboxesPerRow'),
-      content = this.get('content'),
-      allValues = content.copy();
+    let checkboxRows = [];
+    let checkboxesPerRow = this.get('checkboxesPerRow');
+    let content = this.get('content');
+    let allValues = content.copy();
     while (allValues.length > 0) {
       let checkBoxRowValues = allValues.splice(0, checkboxesPerRow).map(this._mapCheckboxValues.bind(this));
       checkboxRows.push(checkBoxRowValues);
@@ -46,9 +46,9 @@ export default SelectOrTypeahead.extend({
 
   actions: {
     checkboxChanged: function(value, checked) {
-      let property = this.get('property'),
-        propertyName = 'model.' + property,
-        selectedValues = this.get(propertyName);
+      let property = this.get('property');
+      let propertyName = 'model.' + property;
+      let selectedValues = this.get(propertyName);
       if (!Ember.isArray(selectedValues)) {
         selectedValues = [];
       }

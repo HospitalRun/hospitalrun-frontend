@@ -28,9 +28,9 @@ export default Ember.Controller.extend(EditPanelProps, {
 
   actions: {
     query: function() {
-      let fieldName = this.get('fieldName'),
-        objectType = this.get('objectType'),
-        queryValue = this.get('queryValue');
+      let fieldName = this.get('fieldName');
+      let objectType = this.get('objectType');
+      let queryValue = this.get('queryValue');
       let query = {
         containsValue: {
           value: queryValue,
@@ -43,16 +43,15 @@ export default Ember.Controller.extend(EditPanelProps, {
           this.set('haveError', true);
           this.set('showQueryResults', false);
         } else {
-          let currentValue,
-            attributes = ['id'],
-            resultRow,
-            resultRows = [];
+          let currentValue;
+          let attributes = ['id'];
+          let resultRows = [];
           results.get('firstObject').eachAttribute(function(name) {
             attributes.push(name);
           });
 
           results.forEach(function(result) {
-            resultRow = [];
+            let resultRow = [];
             /*resultRow.push({
                 name: 'id',
                 value: result.get('id')

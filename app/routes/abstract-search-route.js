@@ -8,14 +8,14 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   searchText: null,
 
   _findByContains: function(searchText) {
-    let searchKeys = this.get('searchKeys'),
-      searchModel = this.get('searchModel'),
-      queryParams = {
-        containsValue: {
-          value: searchText,
-          keys: searchKeys
-        }
-      };
+    let searchKeys = this.get('searchKeys');
+    let searchModel = this.get('searchModel');
+    let queryParams = {
+      containsValue: {
+        value: searchText,
+        keys: searchKeys
+      }
+    };
     return this.store.query(searchModel, queryParams);
   },
 

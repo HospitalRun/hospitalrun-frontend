@@ -26,8 +26,8 @@ export default AbstractEditController.extend(PatientSubmodule, {
   }.property('model.patient', 'model.paymentType', 'model.invoice.patient'),
 
   title: function() {
-    let isNew = this.get('model.isNew'),
-      type = this.get('model.paymentType');
+    let isNew = this.get('model.isNew');
+    let type = this.get('model.paymentType');
     if (isNew) {
       return `Add ${type}`;
     } else {
@@ -36,8 +36,8 @@ export default AbstractEditController.extend(PatientSubmodule, {
   }.property('model.isNew', 'model.paymentType'),
 
   selectPatient: function() {
-    let isNew = this.get('model.isNew'),
-      type = this.get('model.paymentType');
+    let isNew = this.get('model.isNew');
+    let type = this.get('model.paymentType');
     return (isNew && type === 'Deposit');
   }.property('model.isNew', 'model.paymentType'),
 

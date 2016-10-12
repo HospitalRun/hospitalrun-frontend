@@ -8,16 +8,16 @@ export default Ember.Component.extend({
   quantityRequested: null,
 
   locationChange: function() {
-    let doingSetup = this.get('doingSetup'),
-      locationList = this.get('locationList'),
-      locationPickers = this.get('calculatedLocationPickers'),
-      quantityRequested = this.get('quantityRequested'),
-      quantitySatisfiedIdx = -1,
-      selectedLocations = [];
+    let doingSetup = this.get('doingSetup');
+    let locationList = this.get('locationList');
+    let locationPickers = this.get('calculatedLocationPickers');
+    let quantityRequested = this.get('quantityRequested');
+    let quantitySatisfiedIdx = -1;
+    let selectedLocations = [];
     if (!doingSetup) {
       locationPickers.reduce(function(previousValue, item, index) {
-        let selectedLocation = item.get('selectedLocation'),
-          returnValue;
+        let selectedLocation = item.get('selectedLocation');
+        let returnValue;
         if (Ember.isEmpty(selectedLocation)) {
           returnValue = previousValue;
         } else {
@@ -68,9 +68,9 @@ export default Ember.Component.extend({
   },
 
   locationPickers: function() {
-    let locationList = this.get('locationList'),
-      locationPickers = [],
-      quantityRequested = this.get('quantityRequested');
+    let locationList = this.get('locationList');
+    let locationPickers = [];
+    let quantityRequested = this.get('quantityRequested');
     if (Ember.isEmpty(locationList) || Ember.isEmpty(quantityRequested)) {
       // We need both a locationList and a quantityRequested
       return;

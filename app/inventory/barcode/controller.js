@@ -3,8 +3,8 @@ export default Ember.Controller.extend({
   selectedPrinter: null,
 
   barcodeUri: function() {
-    let id = this.get('model.id'),
-      name = this.get('model.name');
+    let id = this.get('model.id');
+    let name = this.get('model.name');
     return Ember.$(document).JsBarcode(id, {
       width: 1,
       height: 20,
@@ -38,8 +38,8 @@ export default Ember.Controller.extend({
 
   actions: {
     print: function() {
-      let barcodeUri = this.get('barcodeUri'),
-        selectedPrinter = this.get('selectedPrinter');
+      let barcodeUri = this.get('barcodeUri');
+      let selectedPrinter = this.get('selectedPrinter');
       if (!selectedPrinter) {
         selectedPrinter = this.get('printers')[0].name;
       }

@@ -10,8 +10,8 @@ export default HtmlInput.extend({
   },
 
   currentDateChangedValue: function() {
-    let currentDate = this.get('currentDate'),
-      picker = this.get('_picker');
+    let currentDate = this.get('currentDate');
+    let picker = this.get('_picker');
     if (!Ember.isEmpty(currentDate) && this._shouldSetDate(currentDate, picker)) {
       picker.setDate(currentDate);
     }
@@ -35,18 +35,18 @@ export default HtmlInput.extend({
   }.observes('mainComponent.showTime'),
 
   dateSet: function() {
-    let currentDate = this.get('currentDate'),
-      picker = this.get('_picker');
+    let currentDate = this.get('currentDate');
+    let picker = this.get('_picker');
     if (this._shouldSetDate(currentDate, picker)) {
       this.set('currentDate', picker.getDate());
     }
   },
 
   didInsertElement: function() {
-    let currentDate = this.get('currentDate'),
-      $input = this.$('input'),
-      picker = null,
-      props = this.getProperties('format', 'yearRange', 'showTime');
+    let currentDate = this.get('currentDate');
+    let $input = this.$('input');
+    let picker = null;
+    let props = this.getProperties('format', 'yearRange', 'showTime');
 
     props.onSelect = this.dateSet.bind(this);
 
@@ -72,8 +72,8 @@ export default HtmlInput.extend({
 
   didReceiveAttrs(/*attrs*/) {
     this._super(...arguments);
-    let dateProperty = this.get('mainComponent.property'),
-      displayPropertyName = 'display_' + dateProperty;
+    let dateProperty = this.get('mainComponent.property');
+    let displayPropertyName = 'display_' + dateProperty;
     this.set('mainComponent.property', displayPropertyName);
     this.currentDate = Ember.computed.alias('mainComponent.model.' + dateProperty);
     this.selectedValue = Ember.computed.alias('mainComponent.model.' + displayPropertyName);

@@ -13,8 +13,8 @@ export default Ember.Mixin.create({
 
   performFulfillRequest: function(request, closeModal, increment, skipTransition) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      let markAsConsumed = request.get('markAsConsumed'),
-        transactionType = request.get('transactionType');
+      let markAsConsumed = request.get('markAsConsumed');
+      let transactionType = request.get('transactionType');
       if (transactionType === 'Request') {
         transactionType = null; // reset the transaction type so that it gets set below.
       }
@@ -44,14 +44,13 @@ export default Ember.Mixin.create({
    * @private
    */
   _findQuantity: function(request, purchases, item, increment) {
-    let currentQuantity,
-      costPerUnit,
-      requestPurchases = [],
-      quantityOnHand = item.get('quantity'),
-      quantityRequested = parseInt(request.get('quantity')),
-      quantityNeeded = quantityRequested,
-      purchaseInfo = [],
-      totalCost = 0;
+    let costPerUnit;
+    let requestPurchases = [];
+    let quantityOnHand = item.get('quantity');
+    let quantityRequested = parseInt(request.get('quantity'));
+    let quantityNeeded = quantityRequested;
+    let purchaseInfo = [];
+    let totalCost = 0;
     if (increment) {
       let purchase = purchases.get('lastObject');
       costPerUnit = purchase.get('costPerUnit');
@@ -64,7 +63,7 @@ export default Ember.Mixin.create({
       requestPurchases.addObject(purchase);
     } else {
       let foundQuantity = purchases.any(function(purchase) {
-        currentQuantity = purchase.get('currentQuantity');
+        let currentQuantity = purchase.get('currentQuantity');
         if (purchase.get('expired') || currentQuantity <= 0) {
           return false;
         }
@@ -118,12 +117,12 @@ export default Ember.Mixin.create({
    * @param {boolean} skipTransition if the transition should not run after fulfillment.
    */
   _finishFulfillRequest: function(request, inventoryItem, closeModal, increment, skipTransition) {
-    let inventoryLocations = request.get('inventoryLocations'),
-      locationsAffected = [],
-      markAsConsumed = request.get('markAsConsumed'),
-      promises = [],
-      quantity = parseInt(request.get('quantity')),
-      requestPurchases = request.get('purchases');
+    let inventoryLocations = request.get('inventoryLocations');
+    let locationsAffected = [];
+    let markAsConsumed = request.get('markAsConsumed');
+    let promises = [];
+    let quantity = parseInt(request.get('quantity'));
+    let requestPurchases = request.get('purchases');
     if (increment) {
       let locationToIncrement = inventoryLocations.get('firstObject');
       locationToIncrement.incrementProperty('quantity', quantity);
@@ -134,9 +133,9 @@ export default Ember.Mixin.create({
       });
     } else {
       inventoryLocations.reduce(function(quantityNeeded, location) {
-        let deliveryLocation = request.get('deliveryLocation'),
-          deliveryAisle = request.get('deliveryAisle'),
-          locationQuantity = parseInt(location.get('quantity'));
+        let deliveryLocation = request.get('deliveryLocation');
+        let deliveryAisle = request.get('deliveryAisle');
+        let locationQuantity = parseInt(location.get('quantity'));
         if (quantityNeeded > 0) {
           if (!markAsConsumed) {
             location.set('transferAisleLocation', deliveryAisle);
@@ -209,9 +208,9 @@ export default Ember.Mixin.create({
    */
   _performFulfillment: function(request, inventoryItem, increment) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      let purchases = inventoryItem.get('purchases'),
-        quantityOnHand = inventoryItem.get('quantity'),
-        quantityRequested = request.get('quantity');
+      let purchases = inventoryItem.get('purchases');
+      let quantityOnHand = inventoryItem.get('quantity');
+      let quantityRequested = request.get('quantity');
       if (increment || (quantityOnHand >= quantityRequested)) {
         let findResult = this._findQuantity(request, purchases, inventoryItem, increment);
         if (findResult === true) {

@@ -13,8 +13,8 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
   startMinute: null,
 
   hourList: function() {
-    let hour,
-      hourList = [];
+    let hour;
+    let hourList = [];
     for (hour = 0; hour < 24; hour++) {
       let hourText = (hour % 12) + (hour < 12 ? ' AM' : ' PM');
       if (hourText === '0 AM') {
@@ -43,8 +43,8 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
   }],
 
   minuteList: function() {
-    let minute,
-      minuteList = [];
+    let minute;
+    let minuteList = [];
     for (minute = 0; minute < 60; minute++) {
       minuteList.push(String('00' + minute).slice(-2));
     }
@@ -53,8 +53,8 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
 
   physicianList: Ember.computed.alias('appointmentsController.physicianList'),
   showTime: function() {
-    let allDay = this.get('model.allDay'),
-        isAdmissionAppointment = this.get('isAdmissionAppointment');
+    let allDay = this.get('model.allDay');
+    let isAdmissionAppointment = this.get('isAdmissionAppointment');
     return (!allDay && isAdmissionAppointment);
   }.property('model.allDay', 'isAdmissionAppointment'),
   visitTypesList: Ember.computed.alias('appointmentsController.visitTypesList'),
@@ -69,9 +69,9 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
   }.property('model.returnTo'),
 
   isAdmissionAppointment: function() {
-    let model = this.get('model'),
-      appointmentType = model.get('appointmentType'),
-      isAdmissionAppointment = (appointmentType === 'Admission');
+    let model = this.get('model');
+    let appointmentType = model.get('appointmentType');
+    let isAdmissionAppointment = (appointmentType === 'Admission');
     if (!isAdmissionAppointment) {
       model.set('allDay', true);
     }
@@ -103,11 +103,11 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
   }.property('model.isValid'),
 
   isAllDay: function() {
-    let allDay = this.get('model.allDay'),
-      isAdmissionAppointment = this.get('isAdmissionAppointment');
+    let allDay = this.get('model.allDay');
+    let isAdmissionAppointment = this.get('isAdmissionAppointment');
     if (allDay) {
-      let endDate = this.get('model.endDate'),
-        startDate = this.get('model.startDate');
+      let endDate = this.get('model.endDate');
+      let startDate = this.get('model.startDate');
       this.set('model.startDate', moment(startDate).startOf('day').toDate());
       this.set('startHour', 0);
       this.set('startMinute', '00');
@@ -138,9 +138,9 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
   },
 
   _updateAppointmentDates: function() {
-    let allDay = this.get('model.allDay'),
-      isAdmissionAppointment = this.get('isAdmissionAppointment'),
-      appointmentDate = this.get('model.appointmentDate');
+    let allDay = this.get('model.allDay');
+    let isAdmissionAppointment = this.get('isAdmissionAppointment');
+    let appointmentDate = this.get('model.appointmentDate');
     if (!isAdmissionAppointment) {
       this.set('model.endDate', appointmentDate);
       this.set('model.startDate', appointmentDate);
@@ -151,9 +151,9 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
   },
 
   _updateDate: function(fieldName, dateFieldName) {
-    let model = this.get('model'),
-      fieldValue = this.get(fieldName),
-      dateToChange = model.get(dateFieldName);
+    let model = this.get('model');
+    let fieldValue = this.get(fieldName);
+    let dateToChange = model.get(dateFieldName);
     if (!Ember.isEmpty(dateToChange)) {
       dateToChange = moment(dateToChange);
       if (fieldName.indexOf('Hour') > -1) {
