@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "camelcase": [
+      2,
+      {
+        "properties": "always"
+      }
+    ]
+  }
+}
