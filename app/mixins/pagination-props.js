@@ -1,7 +1,7 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
   paginationProps: function() {
-    const paginationProperties = [
+    let paginationProperties = [
       'disableNextPage',
       'disablePreviousPage',
       'showFirstPageButton',

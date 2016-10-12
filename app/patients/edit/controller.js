@@ -529,16 +529,16 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
   },
 
   _updateSequence: function(record) {
-    const config = this.get('config');
-    const friendlyId = record.get('friendlyId');
+    let config = this.get('config');
+    let friendlyId = record.get('friendlyId');
     return config.getPatientPrefix().then((prefix) => {
-      const re = new RegExp(`^${prefix}\\d{5}$`);
+      let re = new RegExp(`^${prefix}\\d{5}$`);
       if (!re.test(friendlyId)) {
         return;
       }
       return this.store.find('sequence', 'patient').then((sequence) => {
-        const sequenceNumber = sequence.get('value');
-        const patientNumber = parseInt(friendlyId.slice(prefix.length));
+        let sequenceNumber = sequence.get('value');
+        let patientNumber = parseInt(friendlyId.slice(prefix.length));
         if (patientNumber > sequenceNumber) {
           sequence.set('value', patientNumber);
           return sequence.save();
@@ -551,10 +551,10 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     if (!this.get('model.isNew')) {
       return Ember.RSVP.resolve();
     }
-    const database = this.get('database');
-    const id = this.get('model.friendlyId');
-    const maxValue = this.get('maxValue');
-    const query = {
+    let database = this.get('database');
+    let id = this.get('model.friendlyId');
+    let maxValue = this.get('maxValue');
+    let query = {
       startkey: [id, null],
       endkey: [id, maxValue]
     };

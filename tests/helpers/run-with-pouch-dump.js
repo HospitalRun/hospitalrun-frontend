@@ -33,16 +33,16 @@ function destroyDatabases(dbs) {
 
 function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
 
-  const db = new PouchDB('hospitalrun-test-database', {
+  let db = new PouchDB('hospitalrun-test-database', {
     adapter: 'memory'
   });
-  const configDB = new PouchDB('hospitalrun-test-config-database', {
+  let configDB = new PouchDB('hospitalrun-test-config-database', {
     adapter: 'memory'
   });
-  const dump = require(`hospitalrun/tests/fixtures/${dumpName}`).default;
-  const promise = db.load(dump);
+  let dump = require(`hospitalrun/tests/fixtures/${dumpName}`).default;
+  let promise = db.load(dump);
 
-  const InMemoryDatabaseService = DatabaseService.extend({
+  let InMemoryDatabaseService = DatabaseService.extend({
     createDB() {
       return promise.then(function() {
         return db;
@@ -50,7 +50,7 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
     }
   });
 
-  const InMemoryConfigService = ConfigService.extend({
+  let InMemoryConfigService = ConfigService.extend({
     createDB() {
       return configDB;
     },

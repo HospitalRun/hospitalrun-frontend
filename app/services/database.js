@@ -42,7 +42,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
           pouchOptions.ajax.headers = headers;
         }
       }
-      const url = `${document.location.protocol}//${document.location.host}/db/main`;
+      let url = `${document.location.protocol}//${document.location.host}/db/main`;
 
       this._createRemoteDB(url, pouchOptions)
       .catch((err) => {

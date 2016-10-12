@@ -40,8 +40,8 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, SetupUserRole, {
   },
 
   model: function(params, transition) {
-    const session = this.get('session');
-    const isAuthenticated = session && session.get('isAuthenticated');
+    let session = this.get('session');
+    let isAuthenticated = session && session.get('isAuthenticated');
     return this.get('config').setup().then(function(configs) {
       if (transition.targetName !== 'finishgauth' && transition.targetName !== 'login') {
         this.set('shouldSetupUserRole', true);

@@ -57,8 +57,8 @@ export default AbstractModel.extend(LocationName, {
   }),
 
   condition: computed('rank', 'estimatedDaysOfStock', function() {
-    const estimatedDaysOfStock = this.get('estimatedDaysOfStock');
-    const multiplier = rankToMultiplier(this.get('rank'));
+    let estimatedDaysOfStock = this.get('estimatedDaysOfStock');
+    let multiplier = rankToMultiplier(this.get('rank'));
 
     return getCondition(estimatedDaysOfStock, multiplier);
   }),

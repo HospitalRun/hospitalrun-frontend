@@ -30,7 +30,7 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
     },
 
     invalidateSession: function() {
-      const session = this.get('session');
+      let session = this.get('session');
       if (session.get('isAuthenticated')) {
         session.invalidate();
       }
