@@ -1,13 +1,16 @@
-var path = require('path');
-
 module.exports = {
+  root: true,
+  parserOptions: {
+    ecmaVersion: 6,
+    sourceType: 'module'
+  },
   extends: [
-    require.resolve('ember-cli-eslint/coding-standard/ember-application.js'),
-    'plugin:ember-suave/recommended',
+    'eslint:recommended',
+    'plugin:ember-suave/recommended'
   ],
-  rules: [
-    'block-scoped-var': 'error',
-    'no-prototype-builtins': 'error',
-    'prefer-spread': 'error'
-  ]
+  env: {
+    'browser': true
+  },
+  rules: {
+  }
 };
