@@ -4,8 +4,8 @@
       <thead>
         <tr class="table-header">
           {{#sortable-column sortBy='id' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.id'}}{{/sortable-column}}
-          {{#sortable-column sortBy='firstName' sortDesc=sortDesc sortKey=sortKey }}{{t 'patients.labels.first_name'}}{{/sortable-column}}
-          {{#sortable-column sortBy='lastName' sortDesc=sortDesc sortKey=sortKey }}{{t 'patients.labels.last_name'}}{{/sortable-column}}
+          {{#sortable-column sortBy='firstName' sortDesc=sortDesc sortKey=sortKey }}{{t 'patients.labels.firstName'}}{{/sortable-column}}
+          {{#sortable-column sortBy='lastName' sortDesc=sortDesc sortKey=sortKey }}{{t 'patients.labels.lastName'}}{{/sortable-column}}
           {{#sortable-column sortBy='sex' sortDesc=sortDesc sortKey=sortKey }}{{t 'patients.labels.sex'}}{{/sortable-column}}
           {{#sortable-column sortBy='dateOfBirth' sortDesc=sortDesc sortKey=sortKey }}{{t 'patients.labels.dob'}}{{/sortable-column}}
           {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.status'}}{{/sortable-column}}
@@ -49,7 +49,7 @@
     </table>
   {{else}}
     <div class="alert alert-info" data-test-selector="no-patients-found">
-      <p>{{t 'patients.messages.no_patients_found'}}{{#if canAdd}} <a href="#" {{action 'newItem'}}>{{t 'patients.messages.create_new_patient'}}</a>{{/if}}</p>
+      <p>{{t 'patients.messages.noPatientsFound'}}{{#if canAdd}} <a href="#" {{action 'newItem'}}>{{t 'patients.messages.createNewPatient'}}</a>{{/if}}</p>
     </div>
   {{/if}}
 {{/item-listing}}

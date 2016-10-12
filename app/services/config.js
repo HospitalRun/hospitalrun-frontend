@@ -39,7 +39,7 @@ export default Ember.Service.extend({
   },
   loadConfig() {
     const config = this.get('configDB');
-    var options = {
+    let options = {
       include_docs: true,
       keys: [
         'config_consumer_key',
@@ -57,7 +57,7 @@ export default Ember.Service.extend({
           reject(err);
         }
         const configObj = {};
-        for (var i = 0; i < response.rows.length; i++) {
+        for (let i = 0; i < response.rows.length; i++) {
           if (!response.rows[i].error && response.rows[i].doc) {
             configObj[response.rows[i].id] = response.rows[i].doc.value;
           }
@@ -96,11 +96,11 @@ export default Ember.Service.extend({
   },
   saveOauthConfigs: function(configs) {
     const configDB = this.get('configDB');
-    var configKeys = Object.keys(configs);
-    var savePromises = [];
+    let configKeys = Object.keys(configs);
+    let savePromises = [];
     return this._getOauthConfigs(configKeys).then(function(records) {
       configKeys.forEach(function(key) {
-        var configRecord = records.rows.findBy('key', key);
+        let configRecord = records.rows.findBy('key', key);
         if (!configRecord || !configRecord.doc) {
           configRecord = {
             _id: key,

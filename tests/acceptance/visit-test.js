@@ -108,9 +108,7 @@ test('Edit visit', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(function() {
-      fillIn('.charge-item-name .tt-input', 'Gauze pad');
-      triggerEvent('.charge-item-name .tt-input', 'input');
-      triggerEvent('.charge-item-name .tt-input', 'blur');
+      typeAheadFillIn('.charge-item-name', 'Gauze pad');
       click('.modal-footer button:contains(Add)');
       waitToAppear('td.charge-item-name');
     });
@@ -166,6 +164,7 @@ test('Delete visit', function(assert) {
     andThen(function() {
       assert.equal(find('.modal-title').text(), 'Delete Visit', 'Delete Visit confirmation displays');
       click('.modal-footer button:contains(Delete)');
+      waitToDisappear('#visits td:contains(Fall from in-line roller-skates, initial encounter)');
     });
     andThen(function() {
       assert.equal(find('#visits tr').length, 1, 'Visit is deleted');

@@ -2,7 +2,7 @@
   {{#em-form model=model submitButton=false }}
     {{em-input label=(t 'labels.name') property="name" class="required price-name"}}
     <div class="row">
-      {{em-input label=(t 'labels.price') property="price" class="required col-xs-2 price-amount"}}
+      {{number-input label=(t 'labels.price') property="price" class="required col-xs-2 price-amount"}}
       {{select-or-typeahead property="expenseAccount" label=(t 'labels.department') list=expenseAccountList selection=model.expenseAccount className="col-xs-4 price-department"}}
     </div>
     <div class="row">
@@ -14,9 +14,9 @@
     <div class="panel">
       <div class="panel-heading">
         <h3 class="panel-title">
-          {{t 'billing.labels.pricing_panel_overrides'}}
+          {{t 'billing.labels.pricingPanelOverrides'}}
           {{#if showUpdateButton}}
-            <button class="btn btn-primary align-right" {{action "editOverride" bubbles=false }}><span class="octicon octicon-plus"></span>{{t 'billing.buttons.add_override'}}</button>
+            <button class="btn btn-primary align-right" {{action "editOverride" bubbles=false }}><span class="octicon octicon-plus"></span>{{t 'billing.buttons.addOverride'}}</button>
           {{/if}}
         </h3>
       </div>
@@ -24,7 +24,7 @@
         <table class="table">
           <tbody>
             <tr class="table-header">
-              <th>{{t 'billing.labels.pricing_profile'}}</th>
+              <th>{{t 'billing.labels.pricingProfile'}}</th>
               <th>{{t 'labels.price'}}</th>
               {{#if showUpdateButton}}
                 <th>{{t 'labels.actions'}}</th>

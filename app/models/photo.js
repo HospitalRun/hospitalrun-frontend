@@ -14,7 +14,7 @@ export default AbstractModel.extend({
   url: DS.attr('string'),
 
   downloadImageFromServer: function(imageRecord) {
-    var me = this,
+    let me = this,
       url = imageRecord.get('url'),
       xhr = new XMLHttpRequest();
     if (!Ember.isEmpty(url)) {
@@ -23,7 +23,7 @@ export default AbstractModel.extend({
       xhr.open('GET', url, true);
       xhr.responseType = 'blob';
       xhr.onload = function() {
-        var file = new Blob([xhr.response]);
+        let file = new Blob([xhr.response]);
         me.addImageToFileStore(file, null, imageRecord);
       };
       xhr.send();

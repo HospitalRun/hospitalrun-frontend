@@ -5,6 +5,7 @@ import { Model } from 'ember-pouch';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default Model.extend(UserSession, EmberValidations, {
   session: Ember.inject.service(),
+  archived: DS.attr('boolean'),
   lastModified: DS.attr('date'),
   modifiedBy: DS.attr(),
   modifiedFields: DS.attr(),
@@ -15,7 +16,7 @@ export default Model.extend(UserSession, EmberValidations, {
   * attempt to save again.
   */
   save: function(options) {
-    var attribute,
+    let attribute,
       changedAttributes = this.changedAttributes(),
       modifiedDate = new Date(),
       modifiedFields = this.get('modifiedFields'),
@@ -46,7 +47,7 @@ export default Model.extend(UserSession, EmberValidations, {
           // Conflict encountered, so rollback, reload and then save the record with the changed attributes.
           this.rollbackAttributes();
           return this.reload().then(function(record) {
-            for (var attribute in changedAttributes) {
+            for (let attribute in changedAttributes) {
               record.set(attribute, changedAttributes[attribute][1]);
             }
             if (Ember.isEmpty(options)) {

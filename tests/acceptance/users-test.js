@@ -90,7 +90,7 @@ test('create new user', function(assert) {
     addAllUsers(assert);
     visit('/admin/users');
     stubRequest('put', '/db/_users/org.couchdb.user:jane@donuts.com', function(request) {
-      var expectedBody = {
+      let expectedBody = {
         _id: 'org.couchdb.user:jane@donuts.com',
         deleted: false,
         displayName: 'Jane Bagadonuts',

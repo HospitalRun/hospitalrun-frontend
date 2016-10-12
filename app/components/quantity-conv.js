@@ -10,7 +10,7 @@ export default Ember.Component.extend({
   unitList: null,
 
   unitClass: function() {
-    var selectedUnit = this.get('unit'),
+    let selectedUnit = this.get('unit'),
       targetUnit = this.get('targetUnit'),
       unitClass = 'has-success';
     if (!Ember.isEmpty(targetUnit) && Ember.isEmpty(selectedUnit)) {
@@ -27,7 +27,7 @@ export default Ember.Component.extend({
   }.property('targetUnit', 'unit'),
 
   quantityClass: function() {
-    var quantity = this.get('quantity'),
+    let quantity = this.get('quantity'),
       quantityClass = 'has-success',
       targetUnit = this.get('targetUnit');
     if (!Ember.isEmpty(targetUnit) && (Ember.isEmpty(quantity) || isNaN(quantity))) {

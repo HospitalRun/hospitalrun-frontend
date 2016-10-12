@@ -4,10 +4,10 @@ import { translationMacro as t } from 'ember-i18n';
 export default AbstractIndexRoute.extend({
   editReturn: 'appointments.index',
   modelName: 'appointment',
-  pageTitle: t('appointments.this_week'),
+  pageTitle: t('appointments.thisWeek'),
 
   _getStartKeyFromItem: function(item) {
-    var endDate = item.get('endDate'),
+    let endDate = item.get('endDate'),
       id = this._getPouchIdFromItem(item),
       startDate = item.get('startDate');
     if (endDate && endDate !== '') {
@@ -27,7 +27,7 @@ export default AbstractIndexRoute.extend({
   },
 
   _modelQueryParams: function() {
-    var endOfWeek = moment().endOf('week').toDate().getTime(),
+    let endOfWeek = moment().endOf('week').toDate().getTime(),
       startOfWeek = moment().startOf('week').toDate().getTime(),
       maxId = this._getMaxPouchId();
     return {

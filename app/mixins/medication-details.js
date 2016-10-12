@@ -7,7 +7,7 @@ export default Ember.Mixin.create({
     if (!Ember.isEmpty(medicationTitle)) {
       return medicationTitle;
     } else {
-      var inventoryObject = this.get(inventoryAttribute);
+      let inventoryObject = this.get(inventoryAttribute);
       if (inventoryObject.then) {
         this.get(inventoryAttribute).then((inventoryItem) => {
           this.set('medicationTitle', inventoryItem.get('name'));
@@ -39,7 +39,7 @@ export default Ember.Mixin.create({
           price: priceOfMedication
         });
       } else {
-        var objectInventoryItem = this.get(inventoryAttribute);
+        let objectInventoryItem = this.get(inventoryAttribute);
         if (objectInventoryItem.then) {
           this.get(inventoryAttribute).then((inventoryItem) => {
             resolve({

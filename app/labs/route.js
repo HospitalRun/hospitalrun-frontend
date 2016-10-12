@@ -8,6 +8,6 @@ export default AbstractModuleRoute.extend({
   }],
   allowSearch: false,
   moduleName: 'labs',
-  newButtonText: t('labs.buttons.new_button'),
-  sectionTitle: t('labs.section_title')
+  newButtonText: t('labs.buttons.newButton'),
+  sectionTitle: t('labs.sectionTitle')
 });

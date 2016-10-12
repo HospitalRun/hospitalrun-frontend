@@ -7,7 +7,7 @@ export default AbstractIndexRoute.extend(UserSession, {
   pageTitle: 'All Pricing Items',
 
   _getStartKeyFromItem: function(item) {
-    var category = item.get('category'),
+    let category = item.get('category'),
       id = this._getPouchIdFromItem(item),
       name = item.get('name'),
       pricingType = item.get('pricingType');
@@ -15,7 +15,7 @@ export default AbstractIndexRoute.extend(UserSession, {
   },
 
   _modelQueryParams: function() {
-    var category = this.get('category'),
+    let category = this.get('category'),
       maxId = this._getMaxPouchId(),
       queryParams = {
         mapReduce: 'pricing_by_category'
@@ -32,7 +32,7 @@ export default AbstractIndexRoute.extend(UserSession, {
   actions: {
     newItem: function() {
       if (this.currentUserCan('add_pricing')) {
-        var routeId = 'new',
+        let routeId = 'new',
           routeParts = this.routeName.split('.');
         if (routeParts.length === 2 && routeParts[1] !== 'index') {
           routeId += routeParts[1].capitalize();

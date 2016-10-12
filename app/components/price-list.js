@@ -13,24 +13,24 @@ export default Ember.Component.extend(ChargeActions, {
   setChargeQuantityAction: 'setChargeQuantity',
 
   active: function() {
-    var index = this.get('index');
+    let index = this.get('index');
     return (index === 0);
   }.property(),
 
   pricingListByType: function() {
-    var pricingList = this.get('pricingList'),
+    let pricingList = this.get('pricingList'),
       pricingType = this.get('pricingType'),
       rows = [];
     if (!Ember.isEmpty(pricingList)) {
       pricingList = pricingList.filterBy('pricingType', pricingType);
       pricingList = pricingList.map(function(pricingItem) {
-        var chargesForItem = this.findChargeForPricingItem(pricingItem, this.get('charges'));
+        let chargesForItem = this.findChargeForPricingItem(pricingItem, this.get('charges'));
         if (chargesForItem) {
           this.sendAction('setChargeQuantityAction', pricingItem.id, chargesForItem.get('quantity'));
         }
         return pricingItem;
       }.bind(this));
-      var offset = 0,
+      let offset = 0,
         length = pricingList.length;
       while (offset < length) {
         rows.push(pricingList.slice(offset, offset + 6));

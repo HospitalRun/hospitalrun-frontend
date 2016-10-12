@@ -1,7 +1,7 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
   getPatientDisplayId: function(patient) {
-    var externalPatientId = Ember.get(patient, 'externalPatientId'),
+    let externalPatientId = Ember.get(patient, 'externalPatientId'),
       friendlyId = Ember.get(patient, 'friendlyId'),
       id = Ember.get(patient, 'id');
     if (!Ember.isEmpty(friendlyId)) {
@@ -14,7 +14,7 @@ export default Ember.Mixin.create({
   },
 
   getPatientDisplayName: function(patient) {
-    var firstName = Ember.get(patient, 'firstName'),
+    let firstName = Ember.get(patient, 'firstName'),
       lastName = Ember.get(patient, 'lastName'),
       middleName = Ember.get(patient, 'middleName'),
       nameArray = [];

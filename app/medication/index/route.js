@@ -2,11 +2,11 @@ import { translationMacro as t } from 'ember-i18n';
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 export default AbstractIndexRoute.extend({
   modelName: 'medication',
-  pageTitle: t('medication.page_title'),
+  pageTitle: t('medication.pageTitle'),
   searchStatus: 'Requested',
 
   _getStartKeyFromItem: function(item) {
-    var prescriptionDateAsTime = item.get('prescriptionDateAsTime'),
+    let prescriptionDateAsTime = item.get('prescriptionDateAsTime'),
       id = this._getPouchIdFromItem(item),
       requestedDateAsTime = item.get('requestedDateAsTime'),
       searchStatus = this.get('searchStatus');
@@ -14,7 +14,7 @@ export default AbstractIndexRoute.extend({
   },
 
   _modelQueryParams: function() {
-    var maxId = this._getMaxPouchId(),
+    let maxId = this._getMaxPouchId(),
       maxValue = this.get('maxValue'),
       minId = this._getMinPouchId(),
       searchStatus = this.get('searchStatus');

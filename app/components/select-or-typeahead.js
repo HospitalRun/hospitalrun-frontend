@@ -15,13 +15,13 @@ export default Ember.Component.extend({
   typeAheadType: null,
 
   content: function() {
-    var list = this.get('list'),
+    let list = this.get('list'),
       optionLabelPath = this.get('optionLabelPath'),
       optionValuePath = this.get('optionValuePath'),
       userCanAdd = this.get('userCanAdd');
 
     if (!Ember.isEmpty(list) && list.get) {
-      var contentList = list.get('value');
+      let contentList = list.get('value');
       if (Ember.isEmpty(contentList)) {
         return [];
       }
@@ -39,7 +39,7 @@ export default Ember.Component.extend({
   }.property('typeAheadType'),
 
   userCanAdd: function() {
-    var list = this.get('list');
+    let list = this.get('list');
     if (!Ember.isEmpty(list) && list.get) {
       return list.get('userCanAdd');
     } else {

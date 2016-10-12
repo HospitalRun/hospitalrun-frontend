@@ -4,7 +4,7 @@ import SetupUserRole from 'hospitalrun/mixins/setup-user-role';
 
 const { inject, Route } = Ember;
 
-var ApplicationRoute = Route.extend(ApplicationRouteMixin, SetupUserRole, {
+let ApplicationRoute = Route.extend(ApplicationRouteMixin, SetupUserRole, {
   database: inject.service(),
   config: inject.service(),
   session: inject.service(),

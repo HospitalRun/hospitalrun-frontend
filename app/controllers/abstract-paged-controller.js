@@ -56,7 +56,7 @@ export default Ember.Controller.extend(PaginationProps, ProgressDialog, UserSess
 
   actions: {
     nextPage: function() {
-      var key = this.get('nextStartKey'),
+      let key = this.get('nextStartKey'),
         previousStartKeys = this.get('previousStartKeys'),
         firstKey = this.get('firstKey');
       this.set('previousStartKey', firstKey);
@@ -65,7 +65,7 @@ export default Ember.Controller.extend(PaginationProps, ProgressDialog, UserSess
       this.showProgressModal();
     },
     previousPage: function() {
-      var key = this.get('previousStartKey'),
+      let key = this.get('previousStartKey'),
         previousStartKeys = this.get('previousStartKeys');
       previousStartKeys.pop();
       this.set('startKey', key);

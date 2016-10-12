@@ -1,0 +1,17 @@
+{{input
+  type=mainComponent.type
+
+  placeholder=mainComponent.placeholder
+  value=(readonly selectedValue)
+  name=mainComponent.name
+  disabled=mainComponent.disabled
+  class=(concat "form-control " mainComponent.elementClass)
+  id=mainComponent.id
+  required=mainComponent.required
+  title=mainComponent.title
+  pattern=mainComponent.pattern
+  autofocus=mainComponent.autofocus
+  readonly=mainComponent.readonly
+  autoresize=mainComponent.autoresize
+  input=(action "update" value="target.value")
+}}

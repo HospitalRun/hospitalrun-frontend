@@ -46,8 +46,7 @@ test('Adding a new inventory item', (assert) => {
     fillIn('.test-inv-quantity input', '1000');
     fillIn('.test-inv-cost input', '4000');
     select('.test-inv-unit', 'tablet');
-    fillIn('.test-vendor .tt-input', 'Alpha Pharmacy');
-    triggerEvent('.test-vendor .tt-input', 'input');
+    typeAheadFillIn('.test-vendor', 'Alpha Pharmacy');
     click('button:contains(Add)');
     waitToAppear('.modal-dialog');
 
@@ -100,13 +99,11 @@ test('Creating a new inventory request', function(assert) {
     andThen(function() {
       assert.equal(currentURL(), '/inventory/request/new');
     });
-    fillIn('.test-inv-item .tt-input', 'Biogesic - m00001 (1000 available)');
-    triggerEvent('.test-inv-item .tt-input', 'input');
-    triggerEvent('.test-inv-item .tt-input', 'blur');
+    typeAheadFillIn('.test-inv-item', 'Biogesic - m00001 (1000 available)');
     fillIn('.test-inv-quantity input', 500);
-    fillIn('.test-delivery-location .tt-input', 'Harare');
-    fillIn('.test-delivery-aisle .tt-input', 'C100');
-    fillIn('.test-bill-to .tt-input', 'Accounts Dept');
+    typeAheadFillIn('.test-delivery-location', 'Harare');
+    typeAheadFillIn('.test-delivery-aisle', 'C100');
+    typeAheadFillIn('.test-bill-to', 'Accounts Dept');
     click('button:contains(Add)');
     waitToAppear('.modal-dialog');
 
@@ -166,14 +163,9 @@ test('Receiving inventory', function(assert) {
     andThen(function() {
       assert.equal(currentURL(), '/inventory/batch/new');
     });
-    fillIn('.test-vendor .tt-input', 'Alpha Pharmacy');
-    triggerEvent('.test-vendor .tt-input', 'input');
-    triggerEvent('.test-vendor .tt-input', 'blur');
+    typeAheadFillIn('.test-vendor', 'Alpha Pharmacy');
     fillIn('.test-invoice-number input', 'P2345');
-    fillIn('.test-inv-item .tt-input', 'Biogesic - m00001');
-    triggerEvent('.test-inv-item .tt-input', 'input');
-    triggerEvent('.test-inv-item .tt-input', 'blur');
-    keyEvent('.test-inv-item .tt-input', 'keypress', 9);
+    typeAheadFillIn('.test-inv-item', 'Biogesic - m00001');
     fillIn('.test-inv-quantity input', 500);
     fillIn('.test-inv-cost input', '2000');
     click('button:contains(Save)');
@@ -213,8 +205,8 @@ function testSimpleReportForm(reportName) {
       andThen(function() {
         assert.equal(currentURL(), '/inventory/reports');
       });
-      var startDate = moment('2015-10-01');
-      var endDate = moment('2015-10-31');
+      let startDate = moment('2015-10-01');
+      let endDate = moment('2015-10-31');
       selectDate('.test-start-date input', startDate.toDate());
       selectDate('.test-end-date input', endDate.toDate());
       select('#report-type', `${reportName}`);
@@ -222,7 +214,7 @@ function testSimpleReportForm(reportName) {
       waitToAppear('.panel-title');
 
       andThen(() => {
-        var reportTitle = `${reportName} Report ${startDate.format('l')} - ${endDate.format('l')}`;
+        let reportTitle = `${reportName} Report ${startDate.format('l')} - ${endDate.format('l')}`;
         assert.equal(find('.panel-title').text().trim(), reportTitle, `${reportName} Report generated`);
         findWithAssert('a:contains(Export Report)');
       });

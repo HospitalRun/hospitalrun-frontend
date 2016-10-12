@@ -1,19 +1,19 @@
 {{#each currentQuantityGroups as |quantityGroup| }}
-    {{quantity-conv
-        unit=quantityGroup.unit
-        firstQuantity=quantityGroup.firstQuantity
-        unitName=quantityGroup.unitName
-        index=quantityGroup.index
-        quantity=quantityGroup.quantity
-        unitList=unitList
-    }}
+  {{quantity-conv
+    unit=quantityGroup.unit
+    firstQuantity=quantityGroup.firstQuantity
+    unitName=quantityGroup.unitName
+    index=quantityGroup.index
+    quantity=quantityGroup.quantity
+    unitList=unitList
+  }}
 {{/each}}
 {{#if showTotal}}
-    <div class="row">
-        <div class="col-xs-6">
-            <div class="form-group">
-                <label>{{t 'components.quantityCalc.result' targetUnit=targetUnit calculated=calculated}}</label>
-            </div>
-        </div>
+  <div class="row">
+    <div class="col-xs-6">
+      <div class="form-group">
+        <label>{{t 'components.quantityCalc.result' targetUnit=targetUnit calculated=calculated}}</label>
+      </div>
     </div>
+  </div>
 {{/if}}

@@ -4,17 +4,17 @@ import Ember from 'ember';
 export default AbstractModuleRoute.extend({
   addCapability: 'add_medication',
   moduleName: 'medication',
-  newButtonText: t('medication.buttons.new_button'),
-  sectionTitle: t('medication.section_title'),
+  newButtonText: t('medication.buttons.newButton'),
+  sectionTitle: t('medication.sectionTitle'),
 
   additionalButtons: function() {
     let i18n = this.get('i18n');
-    var additionalButtons = [];
+    let additionalButtons = [];
     if (this.currentUserCan('fulfill_medication')) {
       additionalButtons.push({
         buttonIcon: 'octicon octicon-checklist',
         buttonAction: 'dispenseMedication',
-        buttonText: i18n.t('medication.buttons.dispense_medication'),
+        buttonText: i18n.t('medication.buttons.dispenseMedication'),
         class: 'btn btn-primary'
       });
     }
@@ -22,7 +22,7 @@ export default AbstractModuleRoute.extend({
       additionalButtons.push({
         buttonIcon: 'octicon octicon-mail-reply',
         buttonAction: 'returnMedication',
-        buttonText: i18n.t('medication.buttons.return_medication'),
+        buttonText: i18n.t('medication.buttons.returnMedication'),
         class: 'btn btn-primary'
       });
     }

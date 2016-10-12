@@ -7,12 +7,12 @@ export default AbstractEditController.extend({
   },
 
   afterUpdate: function(record) {
-    var message = `The pricing profile ${record.get('name')} has been saved.`;
+    let message = `The pricing profile ${record.get('name')} has been saved.`;
     this.displayAlert('Pricing Profile Saved', message, 'refreshProfiles');
   },
 
   title: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return 'New Pricing Profile';
     } else {

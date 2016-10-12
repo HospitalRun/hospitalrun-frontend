@@ -3,8 +3,8 @@
     <table class="table">
       <tr class="table-header">
         <th>{{t 'labels.name'}}</th>
-        <th>{{t 'billing.labels.discount_amount'}}</th>
-        <th>{{t 'billing.labels.discount_percentage'}}</th>
+        <th>{{t 'billing.labels.discountAmount'}}</th>
+        <th>{{t 'billing.labels.discountPercentage'}}</th>
         {{#if showActions}}
           <th>{{t 'labels.actions'}}</th>
         {{/if}}
@@ -29,7 +29,7 @@
     </table>
   {{else}}
     <div class="alert alert-info">
-      <p>{{t 'billing.alerts.no_pricing_profiles'}}. {{#if canAdd}}<a href="#" {{action 'newItem'}}>{{t 'messages.create_new_record'}}</a>{{/if}}</p>
+      <p>{{t 'billing.alerts.noPricingProfiles'}}. {{#if canAdd}}<a href="#" {{action 'newItem'}}>{{t 'messages.createNewRecord'}}</a>{{/if}}</p>
     </div>
   {{/if}}
 {{/item-listing}}

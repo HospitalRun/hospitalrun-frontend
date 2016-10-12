@@ -36,17 +36,17 @@ export default AbstractModel.extend(MedicationDetails, {
       acceptance: {
         accept: true,
         if: function(object) {
-          var medicationCharge = object.get('medicationCharge');
+          let medicationCharge = object.get('medicationCharge');
           if (!medicationCharge || !object.get('hasDirtyAttributes')) {
             return false;
           }
-          var itemName = object.get('inventoryItem.name'),
+          let itemName = object.get('inventoryItem.name'),
             itemTypeAhead = object.get('itemName');
           if (Ember.isEmpty(itemName) || Ember.isEmpty(itemTypeAhead)) {
             // force validation to fail
             return true;
           } else {
-            var typeAheadName = itemTypeAhead.substr(0, itemName.length);
+            let typeAheadName = itemTypeAhead.substr(0, itemName.length);
             if (itemName !== typeAheadName) {
               return true;
             }

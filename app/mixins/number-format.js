@@ -7,7 +7,7 @@ export default Ember.Mixin.create({
    * @param number that contains at most two decimal places.
    */
   _calculateTotal: function(array, propertyName) {
-    var arrayItems,
+    let arrayItems,
       total = 0;
     if (Ember.isArray(array)) {
       arrayItems = array;
@@ -41,7 +41,7 @@ export default Ember.Mixin.create({
    * @returns String|Number a formatted String or number containing the formatted number.
    */
   _numberFormat: function(value, returnAsNumber) {
-    var returnValue;
+    let returnValue;
     if (!Ember.isEmpty(value)) {
       if (isNaN(value)) {
         return;

@@ -17,7 +17,7 @@ export default AbstractModel.extend(NumberFormat, {
 
   amountOwedChanged: function() {
     Ember.run.debounce(this, function() {
-      var discount = this._getValidNumber(this.get('discount')),
+      let discount = this._getValidNumber(this.get('discount')),
         nationalInsurance = this._getValidNumber(this.get('nationalInsurance')),
         privateInsurance = this._getValidNumber(this.get('privateInsurance')),
         amountOwed = this._getValidNumber(this.get('total'));

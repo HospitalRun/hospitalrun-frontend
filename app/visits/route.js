@@ -11,6 +11,9 @@ export default AbstractModuleRoute.extend({
     name: 'diagnosisList',
     findArgs: ['lookup', 'diagnosis_list']
   }, {
+    name: 'cptCodeList',
+    findArgs: ['lookup', 'cpt_code_list']
+  }, {
     name: 'physicianList',
     findArgs: ['lookup', 'physician_list']
   }, {

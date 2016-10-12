@@ -36,7 +36,7 @@ test('View reports tab', function(assert) {
     visit('/patients/reports');
 
     andThen(function() {
-      var generateReportButton = find('button:contains(Generate Report)');
+      let generateReportButton = find('button:contains(Generate Report)');
       assert.equal(currentURL(), '/patients/reports');
       assert.equal(generateReportButton.length, 1, 'Generate Report button is visible');
       const reportType = find('[data-test-selector="select-report-type"]');
@@ -59,7 +59,7 @@ test('View reports tab | Patient Status', function(assert) {
     select('[data-test-selector="select-report-type"] select', 'Patient Status');
 
     andThen(function() {
-      var generateReportButton = find('button:contains(Generate Report)');
+      let generateReportButton = find('button:contains(Generate Report)');
       assert.equal(currentURL(), '/patients/reports');
       assert.equal(generateReportButton.length, 1, 'Generate Report button is visible');
       const reportType = find('[data-test-selector="select-report-type"] select');

@@ -5,24 +5,28 @@ import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 export default Ember.Controller.extend(ModalHelper, ProgressDialog, {
     database: Ember.inject.service(),
     fileSystem: Ember.inject.service('filesystem'),
-    progressMessage: t('admin.loaddb.progress_message'),
-    progressTitle: t('admin.loaddb.progress_title'),
+    progressMessage: t('admin.loaddb.progressMessage'),
+    progressTitle: t('admin.loaddb.progressTitle'),
     syncResults: null,
+    fileImportedName: null,
 
     actions: {
       loadFile: function() {
-        var fileSystem = this.get('fileSystem'),
+        let fileSystem = this.get('fileSystem'),
           fileToImport = this.get('importFile');
         if (!fileToImport || !fileToImport.type) {
           this.displayAlert(
-            this.get('i18n').t('admin.loaddb.display_alert_title'),
-            this.get('i18n').t('admin.loaddb.display_alert_message')
+            this.get('i18n').t('admin.loaddb.displayAlertTitle'),
+            this.get('i18n').t('admin.loaddb.displayAlertMessage')
           );
         } else {
           this.showProgressModal();
           this.set('syncResults');
+          this.set('fileImportedName');
           fileSystem.fileToString(fileToImport).then((fileAsString) => {
-            var database = this.get('database');
+            let database = this.get('database');
+            let fileName = this.get('importFile.name');
+            this.set('fileImportedName', fileName);
             this.set('importFile');
             this.set('model.importFileName');
             database.loadDBFromDump(fileAsString).then((results) => {
@@ -30,8 +34,8 @@ export default Ember.Controller.extend(ModalHelper, ProgressDialog, {
               this.set('syncResults', results);
             }).catch((err) => {
               this.displayAlert(
-                this.get('i18n').t('admin.loaddb.error_display_alert_title'),
-                this.get('i18n').t('admin.loaddb.error_display_alert_message', { error: JSON.stringify(err) })
+                this.get('i18n').t('admin.loaddb.errorDisplayAlertTitle'),
+                this.get('i18n').t('admin.loaddb.errorDisplayAlertMessage', { error: JSON.stringify(err) })
               );
             });
           });

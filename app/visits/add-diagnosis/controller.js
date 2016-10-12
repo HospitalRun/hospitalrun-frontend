@@ -22,7 +22,7 @@ export default AbstractEditController.extend({
 
     add: function() {
       this.updateLookupLists();
-      var newDiag = {
+      let newDiag = {
         date: new Date(),
         description: this.get('model.diagnosis')
       };
