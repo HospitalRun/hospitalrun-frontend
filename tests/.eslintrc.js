@@ -16,5 +16,9 @@ module.exports = {
     'wait': true,
     'waitToAppear': true,
     'waitToDisappear': true
+  },
+
+  rules: {
+    'no-console': 0
   }
 };
