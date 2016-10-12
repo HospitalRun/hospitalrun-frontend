@@ -17,7 +17,6 @@ export default Ember.Mixin.create({
         } else {
           return 'Post-op';
         }
-        break;
       case 'Clinic':
       case 'Followup':
         return 'General';
