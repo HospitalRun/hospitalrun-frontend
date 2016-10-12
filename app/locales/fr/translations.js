@@ -533,7 +533,7 @@ export default {
       newTitle: 'Nouvelle demande d\'imagerie'
     },
     alerts: {
-      completedTitle: 'Demande d\'imagerie traitée' ,
+      completedTitle: 'Demande d\'imagerie traitée',
       completedMessage: 'La demande d\'imagerie a été traitée.',
       savedTitle: 'Demande d\'imagerie enregistrée',
       savedMessage: 'La demande d\'imagerie a été enregistrée.'

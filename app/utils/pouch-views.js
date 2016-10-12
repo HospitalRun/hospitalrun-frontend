@@ -360,7 +360,7 @@ let designDocs = [{
     'emit(doc.data.status);'
   ),
   version: 3
-},{
+}, {
   name: 'patient_by_admission',
   function: generateView('patient',
     'if(doc.data.admitted === true) {' +
