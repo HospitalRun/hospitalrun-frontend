@@ -26,7 +26,7 @@
 </div>
 <div class="row">
   {{em-input property="reorderPoint" label=(t 'inventory.labels.reorderPoint') class="col-sm-3 test-inv-reorder"}}
-  {{em-input property="price" label=(t 'inventory.labels.salePricePerUnit') class="col-sm-3 test-inv-price"}}
+  {{number-input property="price" label=(t 'inventory.labels.salePricePerUnit') class="col-sm-3 test-inv-price"}}
   {{em-select label=(t 'inventory.labels.distributionUnit') class="col-sm-3 required test-inv-dist-unit"
     property="distributionUnit"
     content=unitListForSelect
