@@ -46,7 +46,7 @@
     "ember-cli-content-security-policy": "0.5.0",
     "ember-cli-dependency-checker": "^1.2.0",
     "ember-cli-deprecation-workflow": "0.2.3",
-    "ember-cli-eslint": "2.0.0",
+    "ember-cli-eslint": "3.0.0",
     "ember-cli-fake-server": "0.3.1",
     "ember-cli-htmlbars": "^1.0.8",
     "ember-cli-htmlbars-inline-precompile": "^0.3.1",
