@@ -3,7 +3,7 @@ export default Ember.Component.extend({
   classNames: ['sortable-column'],
   tagName: 'th',
   action: 'sortByKey',
-  sortDesc: false,
+  descending: false,
   sortBy: null,
   sortKey: null,
   sorted: function() {
@@ -15,10 +15,10 @@ export default Ember.Component.extend({
   click() {
     let sortBy = this.get('sortBy');
     let sorted = this.get('sorted');
-    let sortDesc = false;
+    let descending = false;
     if (sorted) {
-      sortDesc = this.toggleProperty('sortDesc');
+      descending = this.toggleProperty('descending');
     }
-    this.sendAction('action', sortBy, sortDesc);
+    this.sendAction('action', sortBy, descending);
   }
 });

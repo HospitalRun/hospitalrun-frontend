@@ -152,8 +152,8 @@ export default Adapter.extend(PouchAdapterUtils, {
       if (query.options) {
         queryParams = Ember.copy(query.options);
         if (query.sortKey || query.filterBy) {
-          if (query.sortDesc) {
-            queryParams.sortDesc = query.sortDesc;
+          if (query.descending) {
+            queryParams.descending = query.descending;
           }
           if (query.sortKey) {
             queryParams.sortKey = query.sortKey;

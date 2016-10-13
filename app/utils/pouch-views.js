@@ -99,7 +99,7 @@ function generateSortFunction(sortFunction, includeCompareDate, filterFunction) 
     '}' +
     '}' +
     '}' +
-    'if (req.query.sortDesc) {' +
+    'if (req.query.descending) {' +
     'rows = rows.reverse();' +
     '}' +
     'if (req.query.sortLimit) {' +

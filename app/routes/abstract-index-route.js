@@ -58,8 +58,8 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
       let queryParams = this._modelQueryParams(params);
       if (!Ember.isEmpty(params.sortKey)) {
         queryParams.sortKey = params.sortKey;
-        if (!Ember.isEmpty(params.sortDesc)) {
-          queryParams.sortDesc = params.sortDesc;
+        if (!Ember.isEmpty(params.descending)) {
+          queryParams.descending = params.descending;
         }
       }
       if (!Ember.isEmpty(filterParams)) {
@@ -88,7 +88,7 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
   },
 
   queryParams: {
-    sortDesc: { refreshModel: true },
+    descending: { refreshModel: true },
     sortKey: { refreshModel: true },
     startKey: { refreshModel: true }
   },

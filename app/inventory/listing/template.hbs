@@ -2,12 +2,12 @@
   {{#if hasRecords}}
     <table class="table">
       <tr class="table-header">
-        {{#sortable-column sortBy='friendlyId' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.id'}}{{/sortable-column}}
-        {{#sortable-column sortBy='name' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.name'}}{{/sortable-column}}
-        {{#sortable-column sortBy='inventoryType' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.type'}}{{/sortable-column}}
-        {{#sortable-column sortBy='quantity' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.quantity'}}{{/sortable-column}}
+        {{#sortable-column sortBy='friendlyId' descending=descending sortKey=sortKey }}{{t 'labels.id'}}{{/sortable-column}}
+        {{#sortable-column sortBy='name' descending=descending sortKey=sortKey }}{{t 'labels.name'}}{{/sortable-column}}
+        {{#sortable-column sortBy='inventoryType' descending=descending sortKey=sortKey }}{{t 'labels.type'}}{{/sortable-column}}
+        {{#sortable-column sortBy='quantity' descending=descending sortKey=sortKey }}{{t 'labels.quantity'}}{{/sortable-column}}
         <th>{{t 'inventory.labels.location'}}</th>
-        {{#sortable-column sortBy='crossReference' sortDesc=sortDesc sortKey=sortKey }}{{t 'inventory.labels.xref'}}{{/sortable-column}}
+        {{#sortable-column sortBy='crossReference' descending=descending sortKey=sortKey }}{{t 'inventory.labels.xref'}}{{/sortable-column}}
         <th>{{t 'labels.actions'}}</th>
       </tr>
       {{#each model as |inventory|}}
