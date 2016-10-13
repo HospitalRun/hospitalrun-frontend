@@ -103,8 +103,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   },
 
   afterUpdate: function() {
-    let alertTitle = this.get('i18n').t('procedures.titles.saved'),
-      alertMessage = this.get('i18n').t('procedures.messages.saved');
+    let alertTitle = this.get('i18n').t('procedures.titles.saved');
+    let alertMessage = this.get('i18n').t('procedures.messages.saved');
     this.saveVisitIfNeeded(alertTitle, alertMessage);
   }
 });

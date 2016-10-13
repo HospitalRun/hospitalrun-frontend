@@ -23,8 +23,8 @@ export default TypeAhead.extend({
   }.property('content'),
 
   mappedContent: function() {
-    let content = this.get('content'),
-      mapped = [];
+    let content = this.get('content');
+    let mapped = [];
     if (content) {
       mapped = content.map(this._mapInventoryItems.bind(this));
     }
@@ -32,8 +32,8 @@ export default TypeAhead.extend({
   }.property('content'),
 
   contentChanged: function() {
-    let bloodhound = this.get('bloodhound'),
-      content = this.get('content');
+    let bloodhound = this.get('bloodhound');
+    let content = this.get('content');
     if (bloodhound) {
       bloodhound.clear();
       bloodhound.add(content.map(this._mapInventoryItems.bind(this)));

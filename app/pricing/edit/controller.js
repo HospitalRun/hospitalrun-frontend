@@ -15,8 +15,8 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
       this.send('closeModal');
     },
     deleteOverride: function(model) {
-      let overrideToDelete = model.overrideToDelete,
-        pricingOverrides = this.get('model.pricingOverrides');
+      let overrideToDelete = model.overrideToDelete;
+      let pricingOverrides = this.get('model.pricingOverrides');
       pricingOverrides.removeObject(overrideToDelete);
       overrideToDelete.destroyRecord().then(function() {
         this.send('update', true);
@@ -30,11 +30,11 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
       this.send('openModal', 'pricing.override', overrideToEdit);
     },
     showDeleteOverride: function(overrideToDelete) {
-      let message = 'Are you sure you want to delete this override?',
-        model = Ember.Object.create({
-          overrideToDelete: overrideToDelete
-        }),
-        title = 'Delete Override';
+      let message = 'Are you sure you want to delete this override?';
+      let model = Ember.Object.create({
+        overrideToDelete: overrideToDelete
+      });
+      let title = 'Delete Override';
       this.displayConfirm(title, message, 'deleteOverride', model);
     }
   },
@@ -52,12 +52,12 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
   wardPricingTypes: Ember.computed.alias('pricingController.wardPricingTypes'),
 
   lookupListsToUpdate: function() {
-    let category = this.get('model.category').toLowerCase(),
-      listsToUpdate = [{
-        name: 'expenseAccountList',
-        property: 'model.expenseAccount',
-        id: 'expense_account_list'
-      }];
+    let category = this.get('model.category').toLowerCase();
+    let listsToUpdate = [{
+      name: 'expenseAccountList',
+      property: 'model.expenseAccount',
+      id: 'expense_account_list'
+    }];
     listsToUpdate.push({
       name: category + 'PricingTypes',
       property: 'model.pricingType',

@@ -15,10 +15,10 @@ export default Ember.Component.extend({
   typeAheadType: null,
 
   content: function() {
-    let list = this.get('list'),
-      optionLabelPath = this.get('optionLabelPath'),
-      optionValuePath = this.get('optionValuePath'),
-      userCanAdd = this.get('userCanAdd');
+    let list = this.get('list');
+    let optionLabelPath = this.get('optionLabelPath');
+    let optionValuePath = this.get('optionValuePath');
+    let userCanAdd = this.get('userCanAdd');
 
     if (!Ember.isEmpty(list) && list.get) {
       let contentList = list.get('value');

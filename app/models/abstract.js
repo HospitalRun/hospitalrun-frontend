@@ -16,11 +16,11 @@ export default Model.extend(UserSession, EmberValidations, {
   * attempt to save again.
   */
   save: function(options) {
-    let attribute,
-      changedAttributes = this.changedAttributes(),
-      modifiedDate = new Date(),
-      modifiedFields = this.get('modifiedFields'),
-      session = this.get('session');
+    let attribute;
+    let changedAttributes = this.changedAttributes();
+    let modifiedDate = new Date();
+    let modifiedFields = this.get('modifiedFields');
+    let session = this.get('session');
 
     if (!session || !session.get('isAuthenticated')) {
       return new Ember.RSVP.Promise(function(resolve, reject) {

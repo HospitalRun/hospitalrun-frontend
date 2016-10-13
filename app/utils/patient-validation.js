@@ -10,8 +10,8 @@ export default {
         if (!object.get('hasDirtyAttributes')) {
           return false;
         }
-        let patientName = object.get('patient.displayName'),
-          patientTypeAhead = object.get('patientTypeAhead');
+        let patientName = object.get('patient.displayName');
+        let patientTypeAhead = object.get('patientTypeAhead');
         if (Ember.isEmpty(patientName) || Ember.isEmpty(patientTypeAhead)) {
           // force validation to fail
           return true;

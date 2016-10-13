@@ -40,8 +40,8 @@ export default AbstractModel.extend(MedicationDetails, {
           if (!medicationCharge || !object.get('hasDirtyAttributes')) {
             return false;
           }
-          let itemName = object.get('inventoryItem.name'),
-            itemTypeAhead = object.get('itemName');
+          let itemName = object.get('inventoryItem.name');
+          let itemTypeAhead = object.get('itemName');
           if (Ember.isEmpty(itemName) || Ember.isEmpty(itemTypeAhead)) {
             // force validation to fail
             return true;

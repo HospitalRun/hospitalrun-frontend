@@ -42,8 +42,8 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
 
   actions: {
     addPurchase: function(newPurchase) {
-      let currentItem = this.get('currentItem'),
-        purchases = currentItem.get('purchases');
+      let currentItem = this.get('currentItem');
+      let purchases = currentItem.get('purchases');
       purchases.addObject(newPurchase);
       this.newPurchaseAdded(currentItem, newPurchase).then(function() {
         currentItem.updateQuantity();

@@ -6,8 +6,8 @@ function dateAcceptance(object) {
   if (!object.get('hasDirtyAttributes')) {
     return false;
   }
-  let startDate = object.get('startDate'),
-    endDate = object.get('endDate');
+  let startDate = object.get('startDate');
+  let endDate = object.get('endDate');
   if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
     // Can't validate if empty
     return false;
@@ -61,9 +61,9 @@ export default AbstractModel.extend({
   vitals: DS.hasMany('vital', { async: true }),
 
   diagnosisList: function() {
-    let additionalDiagnosis = this.get('additionalDiagnoses'),
-      diagnosisList = [],
-      primaryDiagnosis = this.get('primaryDiagnosis');
+    let additionalDiagnosis = this.get('additionalDiagnoses');
+    let diagnosisList = [];
+    let primaryDiagnosis = this.get('primaryDiagnosis');
     if (!Ember.isEmpty(primaryDiagnosis)) {
       diagnosisList.push(primaryDiagnosis);
     }
@@ -76,9 +76,9 @@ export default AbstractModel.extend({
   }.property('additionalDiagnosis.[]', 'primaryDiagnosis'),
 
   visitDate: function() {
-    let endDate = this.get('endDate'),
-      startDate = moment(this.get('startDate')),
-      visitDate = startDate.format('l');
+    let endDate = this.get('endDate');
+    let startDate = moment(this.get('startDate'));
+    let visitDate = startDate.format('l');
     if (!Ember.isEmpty(endDate) && !startDate.isSame(endDate, 'day')) {
       visitDate += ' - ' + moment(endDate).format('l');
     }
@@ -86,8 +86,8 @@ export default AbstractModel.extend({
   }.property('startDate', 'endDate'),
 
   visitDescription: function() {
-    let visitDate = this.get('visitDate'),
-      visitType = this.get('visitType');
+    let visitDate = this.get('visitDate');
+    let visitType = this.get('visitType');
     return `${visitDate} (${visitType})`;
   }.property('visitDate', 'visitType'),
 

@@ -1,10 +1,10 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
   convertDOBToText: function(birthDate, shortFormat, omitDays) {
-    let today = new Date(),
-      years = 0,
-      months = 0,
-      days = 0;
+    let today = new Date();
+    let years = 0;
+    let months = 0;
+    let days = 0;
 
     if (birthDate) {
       if (birthDate.getFullYear === undefined) {

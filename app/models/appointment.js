@@ -22,8 +22,8 @@ export default AbstractModel.extend({
   timeFormat: 'h:mm A',
 
   _getDateSpan: function(startDate, endDate, format) {
-    let formattedStart = startDate.format(format),
-      formattedEnd = endDate.format(format);
+    let formattedStart = startDate.format(format);
+    let formattedEnd = endDate.format(format);
     return `${formattedStart} - ${formattedEnd}`;
   },
 
@@ -41,11 +41,11 @@ export default AbstractModel.extend({
   }.property('status'),
 
   formattedAppointmentDate: function() {
-    let allDay = this.get('allDay'),
-      endDate = moment(this.get('endDate')),
-      dateFormat = '',
-      formattedDate = '',
-      startDate = moment(this.get('startDate'));
+    let allDay = this.get('allDay');
+    let endDate = moment(this.get('endDate'));
+    let dateFormat = '';
+    let formattedDate = '';
+    let startDate = moment(this.get('startDate'));
 
     if (startDate.isSame(endDate, 'day')) {
       formattedDate = startDate.format(this.get('shortDateFormat'));
@@ -95,9 +95,9 @@ export default AbstractModel.extend({
           if (!object.get('hasDirtyAttributes')) {
             return false;
           }
-          let allDay = object.get('allDay'),
-            startDate = object.get('startDate'),
-            endDate = object.get('endDate');
+          let allDay = object.get('allDay');
+          let startDate = object.get('startDate');
+          let endDate = object.get('endDate');
           if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
             // force validation to fail
             return true;

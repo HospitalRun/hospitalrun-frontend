@@ -166,8 +166,8 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
 
   actions: {
     addContact: function(newContact) {
-      let additionalContacts = this.getWithDefault('model.additionalContacts', []),
-          model = this.get('model');
+      let additionalContacts = this.getWithDefault('model.additionalContacts', []);
+      let model = this.get('model');
       additionalContacts.addObject(newContact);
       model.set('additionalContacts', additionalContacts);
       this.send('update', true);
@@ -183,15 +183,15 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
      * @param {boolean} coverImage flag indicating if image should be marked as the cover image (currently unused).
      */
     addPhoto: function(photoFile, caption, coverImage) {
-      let dirToSaveTo = this.get('model.id') + '/photos/',
-        fileSystem = this.get('filesystem'),
-        photos = this.get('model.photos'),
-        newPatientPhoto = this.get('store').createRecord('photo', {
-          patient: this.get('model'),
-          localFile: true,
-          caption: caption,
-          coverImage: coverImage
-        });
+      let dirToSaveTo = this.get('model.id') + '/photos/';
+      let fileSystem = this.get('filesystem');
+      let photos = this.get('model.photos');
+      let newPatientPhoto = this.get('store').createRecord('photo', {
+        patient: this.get('model'),
+        localFile: true,
+        caption: caption,
+        coverImage: coverImage
+      });
       newPatientPhoto.save().then(function(savedPhotoRecord) {
         let pouchDbId = this.get('database').getPouchId(savedPhotoRecord.get('id'), 'photo');
         fileSystem.addFile(photoFile, dirToSaveTo, pouchDbId).then(function(fileEntry) {
@@ -232,28 +232,28 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     },
 
     deleteExpense: function(model) {
-      let expense = model.get('expenseToDelete'),
-        expenses = this.get('model.expenses');
+      let expense = model.get('expenseToDelete');
+      let expenses = this.get('model.expenses');
       expenses.removeObject(expense);
       this.send('update', true);
     },
 
     deleteFamily: function(model) {
-      let family = model.get('familyToDelete'),
-        familyInfo = this.get('model.familyInfo');
+      let family = model.get('familyToDelete');
+      let familyInfo = this.get('model.familyInfo');
       familyInfo.removeObject(family);
       this.send('update', true);
     },
 
     deletePhoto: function(model) {
-      let photo = model.get('photoToDelete'),
-        photoId = photo.get('id'),
-        photos = this.get('model.photos'),
-        filePath = photo.get('fileName');
+      let photo = model.get('photoToDelete');
+      let photoId = photo.get('id');
+      let photos = this.get('model.photos');
+      let filePath = photo.get('fileName');
       photos.removeObject(photo);
       photo.destroyRecord().then(function() {
-        let fileSystem = this.get('filesystem'),
-          isFileSystemEnabled = this.get('isFileSystemEnabled');
+        let fileSystem = this.get('filesystem');
+        let isFileSystemEnabled = this.get('isFileSystemEnabled');
         if (isFileSystemEnabled) {
           let pouchDbId = this.get('database').getPouchId(photoId, 'photo');
           fileSystem.deleteFile(filePath, pouchDbId);
@@ -336,8 +336,8 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     },
 
     newVisit: function() {
-      let patient = this.get('model'),
-        visits = this.get('model.visits');
+      let patient = this.get('model');
+      let visits = this.get('model.visits');
       this.send('createNewVisit', patient, visits);
     },
 
@@ -496,8 +496,8 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
   },
 
   _getVisitCollection: function(name) {
-    let returnList = [],
-      visits = this.get('model.visits');
+    let returnList = [];
+    let visits = this.get('model.visits');
     if (!Ember.isEmpty(visits)) {
       visits.forEach(function(visit) {
         visit.get(name).then(function(items) {

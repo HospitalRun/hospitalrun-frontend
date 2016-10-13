@@ -21,8 +21,8 @@ export default AbstractEditRoute.extend({
 
   afterModel: function(model) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      let lineItems = model.get('lineItems'),
-        promises = [];
+      let lineItems = model.get('lineItems');
+      let promises = [];
       lineItems.forEach(function(lineItem) {
         promises.push(lineItem.reload());
       });
@@ -48,8 +48,8 @@ export default AbstractEditRoute.extend({
   setupController: function(controller, model) {
     model.set('originalPaymentProfileId', model.get('paymentProfile.id'));
     this._super(controller, model);
-    let lineItems = model.get('lineItems'),
-      promises = [];
+    let lineItems = model.get('lineItems');
+    let promises = [];
     lineItems.forEach(function(lineItem) {
       lineItem.get('details').forEach(function(detail) {
         let pricingItem = detail.get('pricingItem');

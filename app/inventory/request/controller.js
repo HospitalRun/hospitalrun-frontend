@@ -43,10 +43,10 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   }.property('model.requestedItems.[]'),
 
   isFulfilling: function() {
-    let canFulfill = this.get('canFulfill'),
-      isRequested = this.get('isRequested'),
-      fulfillRequest = this.get('model.shouldFulfillRequest'),
-      isFulfilling = (canFulfill && (isRequested || fulfillRequest));
+    let canFulfill = this.get('canFulfill');
+    let isRequested = this.get('isRequested');
+    let fulfillRequest = this.get('model.shouldFulfillRequest');
+    let isFulfilling = (canFulfill && (isRequested || fulfillRequest));
     if (isFulfilling) {
       if (Ember.isEmpty(this.get('model.dateCompleted'))) {
         this.set('model.dateCompleted', new Date());
@@ -89,10 +89,10 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
 
   actions: {
     addInventoryItem: function() {
-      let model = this.get('model'),
-        inventoryItem = model.get('inventoryItem'),
-        requestedItems = model.get('requestedItems'),
-        quantity = model.get('quantity');
+      let model = this.get('model');
+      let inventoryItem = model.get('inventoryItem');
+      let requestedItems = model.get('requestedItems');
+      let quantity = model.get('quantity');
       model.validate().then(function() {
         if (model.get('isValid') && !Ember.isEmpty(inventoryItem) && !Ember.isEmpty(quantity)) {
           let requestedItem = Ember.Object.create({
@@ -113,18 +113,18 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     },
 
     removeItem: function(removeInfo) {
-      let requestedItems = this.get('model.requestedItems'),
-        item = removeInfo.itemToRemove;
+      let requestedItems = this.get('model.requestedItems');
+      let item = removeInfo.itemToRemove;
       requestedItems.removeObject(item);
       this.send('closeModal');
     },
 
     showRemoveItem: function(item) {
-      let message = this.get('i18n').t('inventory.messages.removeItemRequest'),
-        model = Ember.Object.create({
+      let message = this.get('i18n').t('inventory.messages.removeItemRequest');
+      let model = Ember.Object.create({
           itemToRemove: item
-        }),
-        title = this.get('i18n').t('inventory.titles.removeItem');
+        });
+      let title = this.get('i18n').t('inventory.titles.removeItem');
       this.displayConfirm(title, message, 'removeItem', model);
     },
 
@@ -140,21 +140,21 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
           this.updateLookupLists();
           this.performFulfillRequest(this.get('model'), false, false, true).then(this.afterUpdate.bind(this));
         } else {
-          let isNew = this.get('model.isNew'),
-            requestedItems = this.get('model.requestedItems');
+          let isNew = this.get('model.isNew');
+          let requestedItems = this.get('model.requestedItems');
           if (isNew && !Ember.isEmpty(requestedItems)) {
-            let baseModel = this.get('model'),
-              propertiesToCopy = baseModel.getProperties([
+            let baseModel = this.get('model');
+            let propertiesToCopy = baseModel.getProperties([
                 'dateRequested',
                 'deliveryAisle',
                 'deliveryLocation',
                 'expenseAccount',
                 'requestedBy',
                 'status'
-              ]),
-              inventoryPromises = [],
-              newModels = [],
-              savePromises = [];
+              ]);
+            let inventoryPromises = [];
+            let newModels = [];
+            let savePromises = [];
             if (!Ember.isEmpty(this.get('model.inventoryItem')) && !Ember.isEmpty(this.get('model.quantity'))) {
               savePromises.push(baseModel.save());
             }

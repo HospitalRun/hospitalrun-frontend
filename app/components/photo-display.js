@@ -8,11 +8,11 @@ export default Ember.Component.extend({
   url: Ember.computed.alias('photo.url'),
 
   photoUrl: function() {
-    let computedPhotoUrl = this.get('computedPhotoUrl'),
-      fileName = this.get('fileName'),
-      filesystem = this.get('filesystem'),
-      isFileSystemEnabled = this.get('isFileSystemEnabled'),
-      url = this.get('url');
+    let computedPhotoUrl = this.get('computedPhotoUrl');
+    let fileName = this.get('fileName');
+    let filesystem = this.get('filesystem');
+    let isFileSystemEnabled = this.get('isFileSystemEnabled');
+    let url = this.get('url');
     if (!Ember.isEmpty(computedPhotoUrl)) {
       return computedPhotoUrl;
     } else if (isFileSystemEnabled) {

@@ -21,8 +21,8 @@ export default Ember.Controller.extend(UserSession, {
   }.on('init'),
 
   activeLinks: function() {
-    let activeLinks = [],
-      indexLinks = this.get('indexLinks');
+    let activeLinks = [];
+    let indexLinks = this.get('indexLinks');
     indexLinks.forEach(function(link) {
       let action = link.toLowerCase();
       if (this.currentUserCan(action)) {

@@ -26,8 +26,8 @@ export default Ember.Component.extend({
    */
   _cameraChange: function(selectedCamera) {
     this.set('selectedCamera', selectedCamera);
-    let stream = this.get('stream'),
-      video = this.get('video');
+    let stream = this.get('stream');
+    let video = this.get('video');
     if (!Ember.isEmpty(stream)) {
       video.src = null;
       this._stopStream();
@@ -51,9 +51,9 @@ export default Ember.Component.extend({
    * Callback for MediaStreamTrack.getSources
    */
   _gotSources: function(sourceInfos) {
-    let cameraCount = 0,
-      cameraLabel,
-      videoSources = [];
+    let cameraCount = 0;
+    let cameraLabel;
+    let videoSources = [];
     for (let i = 0; i !== sourceInfos.length; ++i) {
       let sourceInfo = sourceInfos[i];
       if (sourceInfo.kind === 'video') {
@@ -89,9 +89,9 @@ export default Ember.Component.extend({
   },
 
   _photoSourceChanged: function(photoSource) {
-    let camera = this.$('.camera'),
-      fileUpload = this.$('.fileupload'),
-      setupCamera = this.get('setupCamera');
+    let camera = this.$('.camera');
+    let fileUpload = this.$('.fileupload');
+    let setupCamera = this.get('setupCamera');
     this.set('photoSource', photoSource);
     if (photoSource === uploadAFile) {
       fileUpload.show();
@@ -100,9 +100,9 @@ export default Ember.Component.extend({
       fileUpload.hide();
       camera.show();
       if (!setupCamera) {
-        let canvas = this.$('canvas')[0],
-          photo = this.$('img')[0],
-          video = this.$('video')[0];
+        let canvas = this.$('canvas')[0];
+        let photo = this.$('img')[0];
+        let video = this.$('video')[0];
         this.setProperties({
           canvas: canvas,
           photo: photo,
@@ -132,10 +132,10 @@ export default Ember.Component.extend({
    * Setup the dimensions for the video preview and picture elements.
    */
   _setupVideo: function() {
-    let canvas = this.get('canvas'),
-      height = this.get('height'),
-      video = this.get('video'),
-      width = this.get('width');
+    let canvas = this.get('canvas');
+    let height = this.get('height');
+    let video = this.get('video');
+    let width = this.get('width');
     height = video.videoHeight / (video.videoWidth / width);
     video.setAttribute('width', width);
     video.setAttribute('height', height);
@@ -171,10 +171,10 @@ export default Ember.Component.extend({
 
   actions: {
     takePhoto: function() {
-      let canvas = this.get('canvas'),
-        height = this.get('height'),
-        video = this.get('video'),
-        width = this.get('width');
+      let canvas = this.get('canvas');
+      let height = this.get('height');
+      let video = this.get('video');
+      let width = this.get('width');
       canvas.width = width;
       canvas.height = height;
       canvas.getContext('2d').drawImage(video, 0, 0, width, height);
@@ -197,8 +197,8 @@ export default Ember.Component.extend({
   }.property(),
 
   didInsertElement: function() {
-    let camera = this.$('.camera'),
-      fileUpload = this.$('.fileUpload');
+    let camera = this.$('.camera');
+    let fileUpload = this.$('.fileUpload');
     if (camera.length === 1) {
       fileUpload.hide();
     }
@@ -206,8 +206,8 @@ export default Ember.Component.extend({
   },
 
   showCameraSelect: function() {
-    let photoSource = this.get('photoSource'),
-      videoSources = this.get('videoSources');
+    let photoSource = this.get('photoSource');
+    let videoSources = this.get('videoSources');
     return (photoSource === takeAPicture && videoSources && videoSources.length > 1);
   }.property('photoSource', 'videoSources'),
 

@@ -347,11 +347,11 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   },
 
   _contactListToString: function(patient) {
-    let additionalContacts = patient.get('additionalContacts'),
-      contactDesc,
-      contactList = [],
-      email = patient.get('email'),
-      phone = patient.get('phone');
+    let additionalContacts = patient.get('additionalContacts');
+    let contactDesc;
+    let contactList = [];
+    let email = patient.get('email');
+    let phone = patient.get('phone');
     this._addContactToList(phone, email, 'Primary: ', contactList);
     if (!Ember.isEmpty(additionalContacts)) {
       additionalContacts.forEach(function(contact) {
@@ -385,13 +385,13 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
      * Find diagnostics by the specified dates and the record's start and (optional) end dates.
      */
   _findDiagnosticsByDate: function() {
-    let filterEndDate = this.get('endDate'),
-      filterStartDate = this.get('startDate'),
-      findParams = {
-        options: {},
-        mapReduce: 'imaging_by_status'
-      },
-      maxValue = this.get('maxValue');
+    let filterEndDate = this.get('endDate');
+    let filterStartDate = this.get('startDate');
+    let findParams = {
+      options: {},
+      mapReduce: 'imaging_by_status'
+    };
+    let maxValue = this.get('maxValue');
     return new Ember.RSVP.Promise(function(resolve, reject) {
       findParams.options.startkey = ['Completed', null, filterStartDate.getTime(), null];
 
@@ -417,13 +417,13 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
    * Find procedures by the specified dates and the record's start and (optional) end dates.
    */
   _findPatientsByStatus: function() {
-    let status = this.get('status'),
-      findParams = {
-        options: {
-          key: status
-        },
-        mapReduce: 'patient_by_status'
-      };
+    let status = this.get('status');
+    let findParams = {
+      options: {
+        key: status
+      },
+      mapReduce: 'patient_by_status'
+    };
     return new Ember.RSVP.Promise(function(resolve, reject) {
       this.store.query('patient', findParams).then(resolve, reject);
     }.bind(this));
@@ -433,13 +433,13 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
    * Find procedures by the specified dates and the record's start and (optional) end dates.
    */
   _findProceduresByDate: function() {
-    let filterEndDate = this.get('endDate'),
-      filterStartDate = this.get('startDate'),
-      findParams = {
-        options: {},
-        mapReduce: 'procedure_by_date'
-      },
-      maxValue = this.get('maxValue');
+    let filterEndDate = this.get('endDate');
+    let filterStartDate = this.get('startDate');
+    let findParams = {
+      options: {},
+      mapReduce: 'procedure_by_date'
+    };
+    let maxValue = this.get('maxValue');
     return new Ember.RSVP.Promise(function(resolve, reject) {
       findParams.options.startkey = [filterStartDate.getTime(), null];
 
@@ -456,14 +456,14 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
    * @param {String} reportType the type of report to find visits for.
    */
   _findVisitsByDate: function() {
-    let filterEndDate = this.get('endDate'),
-      filterStartDate = this.get('startDate'),
-      findParams = {
-        options: {},
-        mapReduce: 'visit_by_date'
-      },
-      isDischargeReport = this.get('isDischargeReport'),
-      maxValue = this.get('maxValue');
+    let filterEndDate = this.get('endDate');
+    let filterStartDate = this.get('startDate');
+    let findParams = {
+      options: {},
+      mapReduce: 'visit_by_date'
+    };
+    let isDischargeReport = this.get('isDischargeReport');
+    let maxValue = this.get('maxValue');
     if (isDischargeReport) {
       findParams.mapReduce = 'visit_by_discharge_date';
     }
@@ -507,8 +507,8 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   },
 
   _filterInPatientVisit: function(visit) {
-    let outPatient = visit.get('outPatient'),
-      status = visit.get('status');
+    let outPatient = visit.get('outPatient');
+    let status = visit.get('status');
     return !outPatient && !Ember.isEmpty(status);
   },
 
@@ -541,10 +541,10 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   },
 
   _generateAdmissionOrDischargeReport: function(visits, reportType) {
-    let detailedReport = false,
-      reportColumns,
-      patientBySex = {},
-      sexNotEnteredLabel = this.get('i18n').t('patients.labels.sexNotEntered');
+    let detailedReport = false;
+    let reportColumns;
+    let patientBySex = {};
+    let sexNotEnteredLabel = this.get('i18n').t('patients.labels.sexNotEntered');
 
     if (reportType.indexOf('detailed') > -1) {
       detailedReport = true;
@@ -614,10 +614,10 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
 
   _generatePatientDaysReport: function(visits, reportType) {
     visits = visits.filter(this._filterInPatientVisit);
-    let detailed = (reportType.indexOf('detailed') === 0),
-      reportEndDate = this.get('endDate'),
-      reportColumns,
-      reportStartDate = moment(this.get('startDate')).startOf('day');
+    let detailed = (reportType.indexOf('detailed') === 0);
+    let reportEndDate = this.get('endDate');
+    let reportColumns;
+    let reportStartDate = moment(this.get('startDate')).startOf('day');
     if (detailed) {
       reportColumns = this.get('admissionDetailReportColumns');
       reportColumns.patientDays.include = true;
@@ -638,8 +638,8 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       reportEndDate = moment(reportEndDate).endOf('day');
     }
     let patientDays = visits.reduce(function(previousValue, visit) {
-      let calcEndDate = visit.get('endDate'),
-        calcStartDate = moment(visit.get('startDate')).startOf('day');
+      let calcEndDate = visit.get('endDate');
+      let calcStartDate = moment(visit.get('startDate')).startOf('day');
       if (Ember.isEmpty(calcEndDate)) {
         calcEndDate = moment().endOf('day');
       } else {
@@ -704,8 +704,8 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
 
   _generateStatusReport: function() {
     this._findPatientsByStatus().then(function(patients) {
-      let reportColumns = this.get('statusReportColumns'),
-        sortedPatients = patients.sortBy('lastName', 'firstName');
+      let reportColumns = this.get('statusReportColumns');
+      let sortedPatients = patients.sortBy('lastName', 'firstName');
       this._getPatientVisits(sortedPatients).then(function(resolvedPatients) {
         resolvedPatients.forEach(function(patient) {
           this._addReportRow({ patient: patient }, false, reportColumns);
@@ -720,11 +720,11 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   },
 
   _generateVisitReport: function(visits) {
-    let reportColumns = this.get('reportColumns'),
-      visitFilters = this.getProperties(
-        'examiner', 'visitDate', 'visitType', 'location', 'clinic',
-        'primaryDiagnosis', 'secondaryDiagnosis'
-      );
+    let reportColumns = this.get('reportColumns');
+    let visitFilters = this.getProperties(
+      'examiner', 'visitDate', 'visitType', 'location', 'clinic',
+      'primaryDiagnosis', 'secondaryDiagnosis'
+    );
     for (let filter in visitFilters) {
       if (!Ember.isEmpty(visitFilters[filter])) {
         switch (filter) {
@@ -793,11 +793,11 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
    * @param reportColumns
    */
   _totalByType: function(records, typeField, totalLabel) {
-    let total = 0,
-      types = [];
+    let total = 0;
+    let types = [];
     records.forEach(function(record) {
-      let type = record.get(typeField),
-        typeObject;
+      let type = record.get(typeField);
+      let typeObject;
       if (!Ember.isEmpty(type)) {
         typeObject = types.find(function(item) {
           let itemType = item.type;
@@ -826,11 +826,11 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   },
 
   _validateDates: function() {
-    let alertMessage,
-      endDate = this.get('endDate'),
-      isValid = true,
-      reportType = this.get('reportType'),
-      startDate = this.get('startDate');
+    let alertMessage;
+    let endDate = this.get('endDate');
+    let isValid = true;
+    let reportType = this.get('reportType');
+    let startDate = this.get('startDate');
     if (reportType === 'status') {
       return true;
     }
@@ -850,8 +850,8 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   actions: {
     generateReport: function() {
       if (this._validateDates()) {
-        let reportRows = this.get('reportRows'),
-          reportType = this.get('reportType');
+        let reportRows = this.get('reportRows');
+        let reportType = this.get('reportType');
         reportRows.clear();
         this.showProgressModal();
         switch (reportType) {

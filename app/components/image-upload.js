@@ -6,8 +6,8 @@ export default InputComponent.extend({
   type: 'file',
 
   _fileChanged: function() {
-    let inputEl = this.get('fileInputEl'),
-      resize = this.get('resizeFile');
+    let inputEl = this.get('fileInputEl');
+    let resize = this.get('resizeFile');
 
     if (resize) {
       // Derived from https://github.com/josefrichter/resize/blob/master/public/preprocess.js
@@ -33,11 +33,11 @@ export default InputComponent.extend({
    */
   _resizeImage: function(img) {
     // Derived from https://github.com/josefrichter/resize/blob/master/public/preprocess.js
-    let canvas = document.createElement('canvas'),
-      height = img.height,
-      width = img.width,
-      maxHeight = 1024,
-      maxWidth = 1024;
+    let canvas = document.createElement('canvas');
+    let height = img.height;
+    let width = img.width;
+    let maxHeight = 1024;
+    let maxWidth = 1024;
 
     // calculate the width and height, constraining the proportions
     if (width > height) {

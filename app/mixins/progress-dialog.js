@@ -21,8 +21,8 @@ export default Ember.Mixin.create({
   },
 
   updateProgressBar: function() {
-    let progressDialog = this.get('progressDialog'),
-      progressBarValue = progressDialog.get('progressBarValue');
+    let progressDialog = this.get('progressDialog');
+    let progressBarValue = progressDialog.get('progressBarValue');
     progressBarValue += 10;
     if (progressBarValue > 100) {
       progressBarValue = 0;

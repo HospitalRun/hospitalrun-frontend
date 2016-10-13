@@ -134,12 +134,10 @@ function convertPouchToResponse(pouchResponse) {
 function getDBOptions(url) {
   let returnParams = {};
   if (url.indexOf('?') > 0) {
-    let urlParams = url.split('?'),
-    params = decodeURIComponent(urlParams[1]).split('&'),
-    paramParts,
-    i;
-    for (i = 0; i < params.length; i++) {
-      paramParts = params[i].split('=');
+    let urlParams = url.split('?');
+    let params = decodeURIComponent(urlParams[1]).split('&');
+    for (let i = 0; i < params.length; i++) {
+      let paramParts = params[i].split('=');
       returnParams[paramParts[0]] = JSON.parse(paramParts[1]);
     }
   }

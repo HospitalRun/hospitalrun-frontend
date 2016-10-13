@@ -31,9 +31,9 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
    * @param reportAction {Object} action to fire on row when row is clicked.
    */
   _addReportRow: function(row, skipFormatting, reportColumns, rowAction) {
-    let columnValue,
-      reportRows = this.get('reportRows'),
-      reportRow = [];
+    let columnValue;
+    let reportRows = this.get('reportRows');
+    let reportRow = [];
     if (Ember.isEmpty(reportColumns)) {
       reportColumns = this.get('reportColumns');
     }
@@ -81,9 +81,9 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
   },
 
   _generateExport: function() {
-    let csvRows = [],
-      reportHeaders = this.get('reportHeaders'),
-      dataArray = [reportHeaders];
+    let csvRows = [];
+    let reportHeaders = this.get('reportHeaders');
+    let dataArray = [reportHeaders];
     dataArray.addObjects(this.get('reportRows'));
     dataArray.forEach(function(reportRow) {
       let rowToAdd;
@@ -132,12 +132,12 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
   },
 
   _setReportTitle: function() {
-    let endDate = this.get('endDate'),
-      formattedEndDate = '',
-      formattedStartDate = '',
-      reportType = this.get('reportType'),
-      reportTypes = this.get('reportTypes'),
-      startDate = this.get('startDate');
+    let endDate = this.get('endDate');
+    let formattedEndDate = '';
+    let formattedStartDate = '';
+    let reportType = this.get('reportType');
+    let reportTypes = this.get('reportTypes');
+    let startDate = this.get('startDate');
     if (!Ember.isEmpty(endDate)) {
       formattedEndDate = moment(endDate).format('l');
     }
@@ -167,18 +167,18 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
     },
 
     lastPage: function() {
-      let reportRowLength = this.get('reportRows.length'),
-        limit = this.get('limit'),
-        pages = parseInt(reportRowLength / limit);
+      let reportRowLength = this.get('reportRows.length');
+      let limit = this.get('limit');
+      let pages = parseInt(reportRowLength / limit);
       this.set('offset', (pages * limit));
     }
 
   },
 
   currentReportRows: function() {
-    let limit = this.get('limit'),
-      offset = this.get('offset'),
-      reportRows = this.get('reportRows');
+    let limit = this.get('limit');
+    let offset = this.get('offset');
+    let reportRows = this.get('reportRows');
     return reportRows.slice(offset, offset + limit);
   }.property('reportRows.[]', 'offset', 'limit'),
 
@@ -187,15 +187,15 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
   }.property('offset'),
 
   disableNextPage: function() {
-    let limit = this.get('limit'),
-      length = this.get('reportRows.length'),
-      offset = this.get('offset');
+    let limit = this.get('limit');
+    let length = this.get('reportRows.length');
+    let offset = this.get('offset');
     return ((offset + limit) >= length);
   }.property('offset', 'limit', 'reportRows.length'),
 
   showPagination: function() {
-    let length = this.get('reportRows.length'),
-      limit = this.get('limit');
+    let length = this.get('reportRows.length');
+    let limit = this.get('limit');
     return (length > limit);
   }.property('reportRows.length')
 

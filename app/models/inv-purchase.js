@@ -13,8 +13,8 @@ let InventoryPurchaseItem = AbstractModel.extend(LocationName, {
   lotNumber: DS.attr('string'),
   dateReceived: DS.attr('date'),
   costPerUnit: function() {
-    let purchaseCost = this.get('purchaseCost'),
-      quantity = parseInt(this.get('originalQuantity'));
+    let purchaseCost = this.get('purchaseCost');
+    let quantity = parseInt(this.get('originalQuantity'));
     if (Ember.isEmpty(purchaseCost) || Ember.isEmpty(quantity) || purchaseCost === 0 || quantity === 0) {
       return 0;
     }

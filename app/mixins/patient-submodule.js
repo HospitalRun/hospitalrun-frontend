@@ -60,8 +60,8 @@ export default Ember.Mixin.create(PatientVisits, {
   },
 
   cancelAction: function() {
-    let returnToPatient = this.get('model.returnToPatient'),
-      returnToVisit = this.get('model.returnToVisit');
+    let returnToPatient = this.get('model.returnToPatient');
+    let returnToVisit = this.get('model.returnToVisit');
     if (returnToVisit) {
       return 'returnToVisit';
     } else if (returnToPatient) {
@@ -73,9 +73,9 @@ export default Ember.Mixin.create(PatientVisits, {
 
   createNewVisit: function(newVisitType) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      let model = this.get('model'),
-        patient = model.get('patient'),
-        visit = this.get('store').createRecord('visit', {
+      let model = this.get('model');
+      let patient = model.get('patient');
+      let visit = this.get('store').createRecord('visit', {
           startDate: new Date(),
           endDate: new Date(),
           outPatient: true,
@@ -163,8 +163,8 @@ export default Ember.Mixin.create(PatientVisits, {
    */
   removeChildFromVisit: function(objectToRemove, childName) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      let childPromises = [],
-        visit = this.get('model.visit');
+      let childPromises = [];
+      let visit = this.get('model.visit');
       childPromises.addObjects(this.resolveVisitChildren());
       Ember.RSVP.all(childPromises, 'Resolved visit children before removing ' + childName).then(function() {
         visit.get(childName).then(function(visitChildren) {
@@ -181,8 +181,8 @@ export default Ember.Mixin.create(PatientVisits, {
    * all relationships have resolved.
    */
   resolveVisitChildren: function() {
-    let promises = [],
-      visit = this.get('model.visit');
+    let promises = [];
+    let visit = this.get('model.visit');
     if (!Ember.isEmpty(visit)) {
       // Make sure all the async relationships are resolved
       promises.push(visit.get('imaging'));

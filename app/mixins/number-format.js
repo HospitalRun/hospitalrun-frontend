@@ -7,8 +7,8 @@ export default Ember.Mixin.create({
    * @param number that contains at most two decimal places.
    */
   _calculateTotal: function(array, propertyName) {
-    let arrayItems,
-      total = 0;
+    let arrayItems;
+    let total = 0;
     if (Ember.isArray(array)) {
       arrayItems = array;
     } else {

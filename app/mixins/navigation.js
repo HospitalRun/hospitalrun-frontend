@@ -301,14 +301,14 @@ export default Ember.Mixin.create({
       return typeof translation === 'string' ? original : translation;
     };
     return this.get('navItems').map((nav) => {
-      let sectionKey = localizationPrefix + camelize(nav.title).toLowerCase(),
-          navTranslated = this.get('i18n').t(sectionKey);
+      let sectionKey = localizationPrefix + camelize(nav.title).toLowerCase();
+      let navTranslated = this.get('i18n').t(sectionKey);
 
       nav.localizedTitle = translationOrOriginal(navTranslated, nav.title);
       // Map all of the sub navs, too
       nav.subnav = nav.subnav.map((sub) => {
-        let subItemKey = localizationPrefix + 'subnav.' + camelize(sub.title),
-            subTranslated = this.get('i18n').t(subItemKey);
+        let subItemKey = localizationPrefix + 'subnav.' + camelize(sub.title);
+        let subTranslated = this.get('i18n').t(subItemKey);
 
         sub.localizedTitle = translationOrOriginal(subTranslated, sub.title);
         return sub;
