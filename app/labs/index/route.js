@@ -21,7 +21,7 @@ export default AbstractIndexRoute.extend({
     let searchStatus = this.get('searchStatus');
     return {
       options: {
-        startkey: [searchStatus, null, null, minId  ],
+        startkey: [searchStatus, null, null, minId],
         endkey: [searchStatus, maxValue, maxValue, maxId]
       },
       mapReduce: 'lab_by_status'
