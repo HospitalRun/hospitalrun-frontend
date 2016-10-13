@@ -75,7 +75,7 @@ export default Ember.Component.extend({
   },
 
   /***
-   * Callback handler for getUserMedia.
+   * Callback handler for getUserMedia
    */
   _gotStream: function(stream) {
     if (this.isDestroyed) {
@@ -129,7 +129,7 @@ export default Ember.Component.extend({
   },
 
   /***
-   * Setup the dimensions for the video preview and picture elements.
+   * Setup the dimensions for the video preview and picture elements
    */
   _setupVideo: function() {
     let canvas = this.get('canvas');
