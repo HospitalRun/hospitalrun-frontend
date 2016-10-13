@@ -110,7 +110,7 @@ export default Ember.Component.extend({
         });
         if (typeof MediaStreamTrack === 'undefined' || MediaStreamTrack.getSources === 'undefined') {
           if (navigator.getUserMedia) {
-            navigator.getUserMedia({ audio: false,video: true }, this._gotStream.bind(this), this._errorCallback);
+            navigator.getUserMedia({ audio: false, video: true }, this._gotStream.bind(this), this._errorCallback);
             this._setupCanPlayListener(video);
           }
         } else {
@@ -206,7 +206,7 @@ export default Ember.Component.extend({
   },
 
   showCameraSelect: function() {
-    let photoSource = this.get('photoSource') ,
+    let photoSource = this.get('photoSource'),
       videoSources = this.get('videoSources');
     return (photoSource === takeAPicture && videoSources && videoSources.length > 1);
   }.property('photoSource', 'videoSources'),

@@ -595,7 +595,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
         patientBySex[sex].rows.forEach(addPatientBySexRows);
         this._addReportRow({ patientId: sex + ' Total: ' + patientBySex[sex].count }, true, reportColumns);
       } else {
-        this._addReportRow({ sex: sex,total: patientBySex[sex].count }, true, reportColumns);
+        this._addReportRow({ sex: sex, total: patientBySex[sex].count }, true, reportColumns);
       }
       sexTotal += patientBySex[sex].count;
     }
@@ -819,7 +819,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       }
     });
     types = types.sortBy('type');
-    types.push({ type: totalLabel,total: total });
+    types.push({ type: totalLabel, total: total });
     return types;
   },
 
