@@ -348,7 +348,6 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
 
   _contactListToString: function(patient) {
     let additionalContacts = patient.get('additionalContacts'),
-      contactArray = [],
       contactDesc,
       contactList = [],
       email = patient.get('email'),
@@ -356,7 +355,6 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     this._addContactToList(phone, email, 'Primary: ', contactList);
     if (!Ember.isEmpty(additionalContacts)) {
       additionalContacts.forEach(function(contact) {
-        contactArray = [];
         contactDesc = '';
         if (!Ember.isEmpty(contact.name) && !Ember.isEmpty(contact.relationship)) {
           if (!Ember.isEmpty(contact.name)) {

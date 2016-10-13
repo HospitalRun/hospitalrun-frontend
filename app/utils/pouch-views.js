@@ -210,7 +210,6 @@ let designDocs = [{
         } else {
           return startDiff;
         }
-        break;
       }
       case 'status': {
         let aStatus = defaultStatus(a.doc.data[sortBy]),
