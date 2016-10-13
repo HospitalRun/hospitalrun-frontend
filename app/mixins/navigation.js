@@ -292,7 +292,7 @@ export default Ember.Mixin.create({
 
   // Navigation items get mapped localizations
   localizedNavItems: Ember.computed('navItems.[]', function() {
-    const localizationPrefix = 'navigation.';
+    let localizationPrefix = 'navigation.';
     // Supports unlocalized keys for now, otherwise we would get:
     // "Missing translation: key.etc.path"
     let translationOrOriginal = (translation, original) => {

@@ -93,7 +93,7 @@ test('Update address options', function(assert) {
 });
 
 test('Update workflow options', function(assert) {
-  const selector = 'input[type=checkbox]';
+  let selector = 'input[type=checkbox]';
 
   runWithPouchDump('admin', function() {
     authenticateUser();

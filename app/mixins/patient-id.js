@@ -14,19 +14,19 @@ export default Ember.Mixin.create(PouchDbMixin, {
   * id will be automatically generated via Ember data.
   */
   generateFriendlyId() {
-    const config = this.get('config');
-    const database = this.get('database');
-    const maxValue = this.get('maxValue');
+    let config = this.get('config');
+    let database = this.get('database');
+    let maxValue = this.get('maxValue');
 
-    const findUnusedId = (sequence) => {
+    let findUnusedId = (sequence) => {
       let current, id;
       return config.getPatientPrefix()
         .then(function(prefix) {
           current = sequence.get('value');
           id = sequenceId(prefix, current);
-          const query = {
-            startkey: [ id, null ],
-            endkey: [ id, maxValue ]
+          let query = {
+            startkey: [id, null],
+            endkey: [id, maxValue]
           };
           return database.queryMainDB(query, 'patient_by_display_id');
         })

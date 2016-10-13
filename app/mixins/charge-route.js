@@ -10,7 +10,7 @@ export default Ember.Mixin.create({
 
   afterModel: function() {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      const database = this.get('database');
+      let database = this.get('database');
       let maxId = database.getPouchId({}, 'pricing'),
         minId = database.getPouchId(null, 'pricing'),
         pricingCategory = this.get('pricingCategory'),
