@@ -10,8 +10,8 @@ export default Ember.Mixin.create({
           if (!object.get('hasDirtyAttributes')) {
             return false;
           }
-          let status = object.get('status'),
-            result = object.get('result');
+          let status = object.get('status');
+          let result = object.get('result');
           if (status === 'Completed' && Ember.isEmpty(result)) {
             // force validation to fail
             return true;

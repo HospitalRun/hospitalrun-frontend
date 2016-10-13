@@ -14,9 +14,9 @@ export default AbstractModel.extend(NumberFormat, {
   total: DS.attr('number'),
 
   amountOwed: function() {
-    let price = this.get('price'),
-      quantity = this.get('quantity'),
-      total = 0;
+    let price = this.get('price');
+    let quantity = this.get('quantity');
+    let total = 0;
     if (this._validNumber(price) && this._validNumber(quantity)) {
       total = this._numberFormat((price * quantity), true);
     }

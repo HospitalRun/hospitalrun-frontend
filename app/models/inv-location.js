@@ -14,8 +14,8 @@ let InventoryLocation = AbstractModel.extend(LocationName, {
   aisleLocation: DS.attr('string'),
 
   locationNameWithQuantity: function() {
-    let quantity = this.get('quantity'),
-      locationName = this.get('locationName');
+    let quantity = this.get('quantity');
+    let locationName = this.get('locationName');
     return `${locationName} (${quantity} available)`;
   }.property('locationName', 'quantity'),
 
@@ -33,9 +33,9 @@ let InventoryLocation = AbstractModel.extend(LocationName, {
          */
         accept: true,
         if: function(object) {
-          let adjustmentQuantity = object.get('adjustmentQuantity'),
-            transactionType = object.get('transactionType'),
-            locationQuantity = object.get('quantity');
+          let adjustmentQuantity = object.get('adjustmentQuantity');
+          let transactionType = object.get('transactionType');
+          let locationQuantity = object.get('quantity');
           if (Ember.isEmpty(adjustmentQuantity) || isNaN(adjustmentQuantity)) {
             return true;
           }
@@ -58,8 +58,8 @@ let InventoryLocation = AbstractModel.extend(LocationName, {
       acceptance: {
         accept: true,
         if: function(object) {
-          let transferLocation = object.get('transferLocation'),
-            transferItem = object.get('transferItem');
+          let transferLocation = object.get('transferLocation');
+          let transferItem = object.get('transferItem');
           // If we don't have a transfer item, then a transfer is not occurring.
           if (!Ember.isEmpty(transferItem) && Ember.isEmpty(transferLocation)) {
             return true;

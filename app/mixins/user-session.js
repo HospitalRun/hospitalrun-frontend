@@ -488,8 +488,8 @@ export default Ember.Mixin.create({
    * of the display name even if the display name is set.
    */
   getUserName: function(returnUserName) {
-    let returnName,
-      sessionVars = this._getUserSessionVars();
+    let returnName;
+    let sessionVars = this._getUserSessionVars();
     if (!Ember.isEmpty(sessionVars)) {
       if (returnUserName) {
         returnName = sessionVars.name;

@@ -12,8 +12,8 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
     },
 
     update: function() {
-      let isNew = this.get('model.isNew'),
-        override = this.get('model');
+      let isNew = this.get('model.isNew');
+      let override = this.get('model');
       override.save().then(function() {
         if (isNew) {
           this.get('editController').send('addOverride', override);

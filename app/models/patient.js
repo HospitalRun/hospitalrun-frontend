@@ -60,8 +60,8 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   }.property('dateOfBirth'),
 
   displayAddress: function() {
-    let addressFields = this.getProperties('address', 'address2', 'address3', 'address4'),
-      displayAddress = '';
+    let addressFields = this.getProperties('address', 'address2', 'address3', 'address4');
+    let displayAddress = '';
     for (let prop in addressFields) {
       if (!Ember.isEmpty(addressFields[prop])) {
         if (!Ember.isEmpty(displayAddress)) {

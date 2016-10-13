@@ -15,8 +15,8 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
   pageTitle: null,
 
   _getFilterParams: function(params) {
-    let filterByList = [],
-      filterParams = this.get('filterParams');
+    let filterByList = [];
+    let filterParams = this.get('filterParams');
     if (!Ember.isEmpty(filterParams)) {
       filterParams.forEach(function(paramName) {
         if (!Ember.isEmpty(params[paramName])) {
@@ -52,10 +52,10 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
 
   model: function(params) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      let filterParams = this._getFilterParams(params),
-        modelName = this.get('modelName'),
-        itemsPerPage = this.get('itemsPerPage'),
-        queryParams = this._modelQueryParams(params);
+      let filterParams = this._getFilterParams(params);
+      let modelName = this.get('modelName');
+      let itemsPerPage = this.get('itemsPerPage');
+      let queryParams = this._modelQueryParams(params);
       if (!Ember.isEmpty(params.sortKey)) {
         queryParams.sortKey = params.sortKey;
         if (!Ember.isEmpty(params.sortDesc)) {

@@ -42,8 +42,8 @@ export default AbstractModuleRoute.extend(PatientId, {
 
   actions: {
     createNewVisit: function(patient, visits) {
-      let lastVisit = visits.get('lastObject'),
-        propertiesToSet = {};
+      let lastVisit = visits.get('lastObject');
+      let propertiesToSet = {};
 
       if (!Ember.isEmpty(lastVisit)) {
         propertiesToSet = lastVisit.getProperties('primaryDiagnosis', 'primaryBillingDiagnosis');

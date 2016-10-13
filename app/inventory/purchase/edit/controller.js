@@ -7,8 +7,8 @@ export default AbstractEditController.extend(UnitTypes, {
   cancelAction: 'closeModal',
 
   canEditQuantity: function() {
-    let originalQuantity = this.get('model.originalQuantity'),
-      currentQuantity = this.get('model.currentQuantity');
+    let originalQuantity = this.get('model.originalQuantity');
+    let currentQuantity = this.get('model.currentQuantity');
     if (currentQuantity < originalQuantity) {
       return false;
     }
@@ -50,8 +50,8 @@ export default AbstractEditController.extend(UnitTypes, {
   }.property('model.isNew'),
 
   beforeUpdate: function() {
-    let isNew = this.get('model.isNew'),
-      changedAttributes = this.get('model').changedAttributes();
+    let isNew = this.get('model.isNew');
+    let changedAttributes = this.get('model').changedAttributes();
     if (changedAttributes.originalQuantity) {
       this.set('model.currentQuantity', this.get('model.originalQuantity'));
       if (!isNew) {

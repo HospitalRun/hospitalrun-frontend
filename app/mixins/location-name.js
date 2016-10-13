@@ -23,8 +23,8 @@ export default Ember.Mixin.create({
   },
 
   locationName: function() {
-    let aisleLocation = this.get('aisleLocation'),
-      location = this.get('location');
+    let aisleLocation = this.get('aisleLocation');
+    let location = this.get('location');
     return this.getDisplayLocationName(location, aisleLocation);
   }.property('location', 'aisleLocation')
 });

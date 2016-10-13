@@ -43,9 +43,9 @@ export default Ember.Component.extend(PatientDiagnosis, {
     linkToPatient: function() {
       let shouldLink = this.get('shouldLinkToPatient');
       if (shouldLink) {
-        let patient = this.get('patient'),
-          returnTo = this.get('returnTo'),
-          returnToContext = this.get('returnToContext');
+        let patient = this.get('patient');
+        let returnTo = this.get('returnTo');
+        let returnToContext = this.get('returnToContext');
         patient.set('returnTo', returnTo);
         patient.set('returnToContext', returnToContext);
         this.sendAction('showPatientAction', this.get('patient'));

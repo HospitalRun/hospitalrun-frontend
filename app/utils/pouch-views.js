@@ -210,11 +210,10 @@ let designDocs = [{
         } else {
           return startDiff;
         }
-        break;
       }
       case 'status': {
-        let aStatus = defaultStatus(a.doc.data[sortBy]),
-          bStatus = defaultStatus(b.doc.data[sortBy]);
+        let aStatus = defaultStatus(a.doc.data[sortBy]);
+        let bStatus = defaultStatus(b.doc.data[sortBy]);
         return compareStrings(aStatus, bStatus);
       }
       default: {
@@ -222,16 +221,15 @@ let designDocs = [{
       }
     }
   }.toString(), true, function(row) {
-    let i,
-      filterBy = null,
-      includeRow = true;
+    let filterBy = null;
+    let includeRow = true;
     if (req.query && req.query.filterBy) {
       filterBy = JSON.parse(req.query.filterBy);
     }
     if (!filterBy) {
       return true;
     }
-    for (i = 0; i < filterBy.length; i++) {
+    for (let i = 0; i < filterBy.length; i++) {
       let currentValue = row.doc.data[filterBy[i].name];
       if (filterBy[i].name === 'status' && (!currentValue || currentValue === '')) {
         currentValue = 'Scheduled';
@@ -360,7 +358,7 @@ let designDocs = [{
     'emit(doc.data.status);'
   ),
   version: 3
-},{
+}, {
   name: 'patient_by_admission',
   function: generateView('patient',
     'if(doc.data.admitted === true) {' +

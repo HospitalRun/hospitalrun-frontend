@@ -11,9 +11,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   selectedImagingType: null,
 
   canComplete: function() {
-    let isNew = this.get('model.isNew'),
-      imagingTypeName = this.get('model.imagingTypeName'),
-      selectedImagingType = this.get('selectedImagingType');
+    let isNew = this.get('model.isNew');
+    let imagingTypeName = this.get('model.imagingTypeName');
+    let selectedImagingType = this.get('selectedImagingType');
     if (isNew && (Ember.isEmpty(imagingTypeName) || Ember.isArray(selectedImagingType) && selectedImagingType.length > 1)) {
       return false;
     } else {
@@ -37,8 +37,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
      */
     update: function() {
       if (this.get('model.isNew')) {
-        let newImaging = this.get('model'),
-          selectedImagingType = this.get('selectedImagingType');
+        let newImaging = this.get('model');
+        let selectedImagingType = this.get('selectedImagingType');
         if (Ember.isEmpty(this.get('model.status'))) {
           this.set('model.status', 'Requested');
         }
@@ -70,8 +70,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
   additionalButtons: function() {
     let i18n = this.get('i18n');
-    let canComplete = this.get('canComplete'),
-      isValid = this.get('model.isValid');
+    let canComplete = this.get('canComplete');
+    let isValid = this.get('model.isValid');
     if (isValid && canComplete) {
       return [{
         buttonAction: 'completeImaging',

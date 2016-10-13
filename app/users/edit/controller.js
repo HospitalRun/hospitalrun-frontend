@@ -10,8 +10,8 @@ export default AbstractEditController.extend(UserRoles, {
 
   actions: {
     update: function() {
-      let updateModel = this.get('model'),
-        users = this.get('users');
+      let updateModel = this.get('model');
+      let users = this.get('users');
 
       if (updateModel.get('isNew')) {
         let newData = updateModel.getProperties('password', 'email', 'roles', 'displayName');
@@ -26,10 +26,10 @@ export default AbstractEditController.extend(UserRoles, {
       }
 
       if (Ember.isEmpty(updateModel.get('userPrefix'))) {
-        let counter = 1,
-          prefix = 'p',
-          userPrefix = prefix + 0,
-          usedPrefix = users.findBy('userPrefix', prefix);
+        let counter = 1;
+        let prefix = 'p';
+        let userPrefix = prefix + 0;
+        let usedPrefix = users.findBy('userPrefix', prefix);
 
         while (!Ember.isEmpty(usedPrefix)) {
           prefix = userPrefix + counter++;

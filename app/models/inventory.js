@@ -43,12 +43,12 @@ export default AbstractModel.extend(LocationName, {
   }),
 
   displayLocations: computed('availableLocations', function() {
-    let locations = this.get('availableLocations'),
-      returnLocations = [];
+    let locations = this.get('availableLocations');
+    let returnLocations = [];
     locations.forEach((currentLocation) => {
-      let aisleLocationName = currentLocation.get('aisleLocation'),
-        locationName = currentLocation.get('location'),
-        displayLocationName = this.formatLocationName(locationName, aisleLocationName);
+      let aisleLocationName = currentLocation.get('aisleLocation');
+      let locationName = currentLocation.get('location');
+      let displayLocationName = this.formatLocationName(locationName, aisleLocationName);
       if (!Ember.isEmpty(displayLocationName)) {
         returnLocations.push(displayLocationName);
       }
@@ -57,8 +57,8 @@ export default AbstractModel.extend(LocationName, {
   }),
 
   condition: computed('rank', 'estimatedDaysOfStock', function() {
-    const estimatedDaysOfStock = this.get('estimatedDaysOfStock');
-    const multiplier = rankToMultiplier(this.get('rank'));
+    let estimatedDaysOfStock = this.get('estimatedDaysOfStock');
+    let multiplier = rankToMultiplier(this.get('rank'));
 
     return getCondition(estimatedDaysOfStock, multiplier);
   }),

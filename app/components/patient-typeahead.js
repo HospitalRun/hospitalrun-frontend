@@ -13,8 +13,8 @@ export default TypeAhead.extend(PatientName, {
   },
 
   contentChanged: function() {
-    let bloodhound = this.get('bloodhound'),
-      content = this.get('content');
+    let bloodhound = this.get('bloodhound');
+    let content = this.get('content');
     if (bloodhound) {
       bloodhound.clear();
       if (!Ember.isEmpty(content)) {
@@ -24,8 +24,8 @@ export default TypeAhead.extend(PatientName, {
   }.observes('content.[]'),
 
   mappedContent: function() {
-    let content = this.get('content'),
-      mapped = [];
+    let content = this.get('content');
+    let mapped = [];
     if (content) {
       mapped = content.map(this._mapPatient.bind(this));
     }

@@ -13,16 +13,16 @@ export default Ember.Component.extend({
   filtered: false,
 
   sorted: function() {
-    let sortBy = this.get('sortBy'),
-      sortKey = this.get('sortKey');
+    let sortBy = this.get('sortBy');
+    let sortKey = this.get('sortKey');
     return sortBy === sortKey;
   }.property('sortBy', 'sortKey'),
 
   actions: {
     sort() {
-      let sortBy = this.get('sortBy'),
-        sorted = this.get('sorted'),
-        sortDesc = false;
+      let sortBy = this.get('sortBy');
+      let sorted = this.get('sorted');
+      let sortDesc = false;
       if (sorted) {
         sortDesc = this.toggleProperty('sortDesc');
       }

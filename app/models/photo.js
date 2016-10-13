@@ -14,9 +14,9 @@ export default AbstractModel.extend({
   url: DS.attr('string'),
 
   downloadImageFromServer: function(imageRecord) {
-    let me = this,
-      url = imageRecord.get('url'),
-      xhr = new XMLHttpRequest();
+    let me = this;
+    let url = imageRecord.get('url');
+    let xhr = new XMLHttpRequest();
     if (!Ember.isEmpty(url)) {
       // Make sure directory exists or is created before downloading.
       this.getPatientDirectory(imageRecord.get('patientId'));

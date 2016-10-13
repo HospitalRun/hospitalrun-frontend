@@ -18,9 +18,9 @@ export default Ember.Component.extend(ChargeActions, {
   }.property(),
 
   pricingListByType: function() {
-    let pricingList = this.get('pricingList'),
-      pricingType = this.get('pricingType'),
-      rows = [];
+    let pricingList = this.get('pricingList');
+    let pricingType = this.get('pricingType');
+    let rows = [];
     if (!Ember.isEmpty(pricingList)) {
       pricingList = pricingList.filterBy('pricingType', pricingType);
       pricingList = pricingList.map(function(pricingItem) {
@@ -30,8 +30,8 @@ export default Ember.Component.extend(ChargeActions, {
         }
         return pricingItem;
       }.bind(this));
-      let offset = 0,
-        length = pricingList.length;
+      let offset = 0;
+      let length = pricingList.length;
       while (offset < length) {
         rows.push(pricingList.slice(offset, offset + 6));
         offset += 6;

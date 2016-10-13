@@ -51,8 +51,8 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
   }.property('status'),
 
   remainingBalance: function() {
-    let patientResponsibility = this.get('patientResponsibility'),
-      paidTotal = this.get('paidTotal');
+    let patientResponsibility = this.get('patientResponsibility');
+    let paidTotal = this.get('paidTotal');
     return this._numberFormat((patientResponsibility - paidTotal), true);
   }.property('patientResponsibility', 'paidTotal'),
 
@@ -63,8 +63,8 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
   total: Ember.computed.sum('lineTotals'),
 
   displayInvoiceNumber: function() {
-    let externalInvoiceNumber = this.get('externalInvoiceNumber'),
-      id = this.get('id');
+    let externalInvoiceNumber = this.get('externalInvoiceNumber');
+    let id = this.get('id');
     if (Ember.isEmpty(externalInvoiceNumber)) {
       return id;
     } else {
@@ -73,11 +73,11 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
   }.property('externalInvoiceNumber', 'id'),
 
   lineItemsByCategory: function() {
-    let lineItems = this.get('lineItems'),
-      byCategory = [];
+    let lineItems = this.get('lineItems');
+    let byCategory = [];
     lineItems.forEach(function(lineItem) {
-      let category = lineItem.get('category'),
-        categoryList = byCategory.findBy('category', category);
+      let category = lineItem.get('category');
+      let categoryList = byCategory.findBy('category', category);
       if (Ember.isEmpty(categoryList)) {
         categoryList = {
           category: category,
@@ -98,8 +98,8 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
   }.property('lineItems.@each.amountOwed'),
   patientIdChanged: function() {
     if (!Ember.isEmpty(this.get('patient'))) {
-      let patientDisplayName = this.get('patient.displayName'),
-        patientDisplayId = this.get('patient.displayPatientId');
+      let patientDisplayName = this.get('patient.displayName');
+      let patientDisplayId = this.get('patient.displayPatientId');
       this.set('patientInfo', `${patientDisplayName} - ${patientDisplayId}`);
     }
   }.observes('patient.displayName', 'patient.id', 'patient.displayPatientId'),

@@ -12,8 +12,8 @@ export default Ember.Controller.extend(ModalHelper, ProgressDialog, {
 
     actions: {
       loadFile: function() {
-        let fileSystem = this.get('fileSystem'),
-          fileToImport = this.get('importFile');
+        let fileSystem = this.get('fileSystem');
+        let fileToImport = this.get('importFile');
         if (!fileToImport || !fileToImport.type) {
           this.displayAlert(
             this.get('i18n').t('admin.loaddb.displayAlertTitle'),

@@ -5,18 +5,18 @@ export default AbstractIndexRoute.extend({
   pageTitle: 'Invoice Listing',
 
   _getStartKeyFromItem: function(item) {
-    let billDateAsTime = item.get('billDateAsTime'),
-      id = this._getPouchIdFromItem(item),
-      searchStatus = item.get('status');
+    let billDateAsTime = item.get('billDateAsTime');
+    let id = this._getPouchIdFromItem(item);
+    let searchStatus = item.get('status');
     return [searchStatus, billDateAsTime, id];
   },
 
   _modelQueryParams: function(params) {
-    let queryParams,
-      maxId = this._getMaxPouchId(),
-      maxValue = this.get('maxValue'),
-      minId = this._getMinPouchId(),
-      searchStatus = params.status;
+    let queryParams;
+    let maxId = this._getMaxPouchId();
+    let maxValue = this.get('maxValue');
+    let minId = this._getMinPouchId();
+    let searchStatus = params.status;
     if (Ember.isEmpty(searchStatus)) {
       searchStatus = 'Billed';
     }

@@ -6,18 +6,18 @@ export default AbstractIndexRoute.extend({
   searchStatus: 'Requested',
 
   _getStartKeyFromItem: function(item) {
-    let prescriptionDateAsTime = item.get('prescriptionDateAsTime'),
-      id = this._getPouchIdFromItem(item),
-      requestedDateAsTime = item.get('requestedDateAsTime'),
-      searchStatus = this.get('searchStatus');
+    let prescriptionDateAsTime = item.get('prescriptionDateAsTime');
+    let id = this._getPouchIdFromItem(item);
+    let requestedDateAsTime = item.get('requestedDateAsTime');
+    let searchStatus = this.get('searchStatus');
     return [searchStatus, requestedDateAsTime, prescriptionDateAsTime, id];
   },
 
   _modelQueryParams: function() {
-    let maxId = this._getMaxPouchId(),
-      maxValue = this.get('maxValue'),
-      minId = this._getMinPouchId(),
-      searchStatus = this.get('searchStatus');
+    let maxId = this._getMaxPouchId();
+    let maxValue = this.get('maxValue');
+    let minId = this._getMinPouchId();
+    let searchStatus = this.get('searchStatus');
     return {
       options: {
         startkey: [searchStatus, null, null, minId],
