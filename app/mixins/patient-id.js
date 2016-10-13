@@ -25,8 +25,8 @@ export default Ember.Mixin.create(PouchDbMixin, {
           current = sequence.get('value');
           id = sequenceId(prefix, current);
           const query = {
-            startkey: [ id, null ],
-            endkey: [ id, maxValue ]
+            startkey: [id, null],
+            endkey: [id, maxValue]
           };
           return database.queryMainDB(query, 'patient_by_display_id');
         })

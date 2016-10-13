@@ -10,7 +10,7 @@ export default Ember.Mixin.create({
           session.invalidate();
         }
       }
-      let errmsg = [  err.status,
+      let errmsg = [err.status,
         (err.name || err.error) + ':',
         (err.message || err.reason)
       ].join(' ');
