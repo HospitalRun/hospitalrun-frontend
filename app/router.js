@@ -20,6 +20,7 @@ Router.map(function() {
     });
     this.route('roles');
     this.route('query');
+    this.route('visit-forms');
     this.route('workflow');
   });
 

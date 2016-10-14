@@ -1,0 +1,31 @@
+{{#edit-panel editPanelProps=editPanelProps}}
+  <div class="panel panel-primary">
+    <div class="panel-body">
+
+    <table class="table">
+      <tr class="table-header">
+        <th>{{t 'admin.visitForms.labels.visitType'}}</th>
+        <th>{{t 'admin.visitForms.labels.form'}}</th>
+      </tr>
+      {{#each visitFormsForEditing as |visitForm|}}
+        <tr>
+          <td>{{visitForm.type}}</td>
+          <td>
+            <select onchange={{action 'selectForm' visitForm.type}} class="form-control role-select">
+              {{#each visitTemplates as |visitTemplate|}}
+                <option value="{{visitTemplate.id}}"
+                        selected={{eq visitForm.form visitTemplate.id}}>
+                  {{visitTemplate.value}}
+                </option>
+              {{/each}}
+            </select>
+          </td>
+        </tr>
+      {{/each}}
+      </table>
+      {{#em-form model=this submitButton=false }}
+
+      {{/em-form}}
+    </div>
+  </div>
+{{/edit-panel}}

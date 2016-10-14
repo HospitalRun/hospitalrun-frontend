@@ -245,6 +245,17 @@ export default {
         roleSaved: 'Role Saved'
       }
     },
+    visitForms: {
+      labels: {
+        followup: 'Followup',
+        form: 'Form',
+        initial: 'Initial',
+        visitType: 'Visit Type'
+      },
+      titles: {
+        visitForms: 'Visit Forms',
+      }
+    },
     workflow: {
       admissionDepositLabel: 'Admission deposit required',
       clinicPrepaymentLabel: 'Clinic prepayment required',
