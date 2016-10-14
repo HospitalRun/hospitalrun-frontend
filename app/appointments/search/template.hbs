@@ -24,12 +24,12 @@
   </div>
   <table class="table">
     <tr class="table-header">
-      {{#sortable-column sortBy='date' descending=descending sortKey=sortKey }}{{t 'labels.date'}}{{/sortable-column}}
+      {{#sortable-column sortBy='date' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.date'}}{{/sortable-column}}
       <th>{{t 'labels.name'}}</th>
-      {{#sortable-column sortBy='appointmentType' descending=descending sortKey=sortKey }}{{t 'labels.type'}}{{/sortable-column}}
-      {{#sortable-column sortBy='location' descending=descending sortKey=sortKey }}{{t 'labels.location'}}{{/sortable-column}}
-      {{#sortable-column sortBy='provider' descending=descending sortKey=sortKey }}{{t 'labels.with'}}{{/sortable-column}}
-      {{#sortable-column sortBy='status' descending=descending sortKey=sortKey }}{{t 'labels.status'}}{{/sortable-column}}
+      {{#sortable-column sortBy='appointmentType' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.type'}}{{/sortable-column}}
+      {{#sortable-column sortBy='location' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.location'}}{{/sortable-column}}
+      {{#sortable-column sortBy='provider' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.with'}}{{/sortable-column}}
+      {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.status'}}{{/sortable-column}}
       <th>{{t 'labels.actions'}}</th>
     </tr>
     {{#each model as |appointment|}}

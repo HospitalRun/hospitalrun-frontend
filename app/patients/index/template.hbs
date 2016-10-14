@@ -3,12 +3,12 @@
     <table class="table">
       <thead>
         <tr class="table-header">
-          {{#sortable-column sortBy='id' descending=descending sortKey=sortKey }}{{t 'labels.id'}}{{/sortable-column}}
-          {{#sortable-column sortBy='firstName' descending=descending sortKey=sortKey }}{{t 'patients.labels.firstName'}}{{/sortable-column}}
-          {{#sortable-column sortBy='lastName' descending=descending sortKey=sortKey }}{{t 'patients.labels.lastName'}}{{/sortable-column}}
-          {{#sortable-column sortBy='sex' descending=descending sortKey=sortKey }}{{t 'patients.labels.sex'}}{{/sortable-column}}
-          {{#sortable-column sortBy='dateOfBirth' descending=descending sortKey=sortKey }}{{t 'patients.labels.dob'}}{{/sortable-column}}
-          {{#sortable-column sortBy='status' descending=descending sortKey=sortKey }}{{t 'labels.status'}}{{/sortable-column}}
+          {{#sortable-column sortBy='id' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.id'}}{{/sortable-column}}
+          {{#sortable-column sortBy='firstName' sortDesc=sortDesc sortKey=sortKey }}{{t 'patients.labels.firstName'}}{{/sortable-column}}
+          {{#sortable-column sortBy='lastName' sortDesc=sortDesc sortKey=sortKey }}{{t 'patients.labels.lastName'}}{{/sortable-column}}
+          {{#sortable-column sortBy='sex' sortDesc=sortDesc sortKey=sortKey }}{{t 'patients.labels.sex'}}{{/sortable-column}}
+          {{#sortable-column sortBy='dateOfBirth' sortDesc=sortDesc sortKey=sortKey }}{{t 'patients.labels.dob'}}{{/sortable-column}}
+          {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.status'}}{{/sortable-column}}
           {{#if showActions}}
             <th>{{t 'labels.actions'}}</th>
           {{/if}}

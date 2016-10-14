@@ -10,8 +10,8 @@ export default Ember.Controller.extend(PaginationProps, ProgressDialog, UserSess
   previousStartKeys: [],
   progressMessage: 'Loading Records.  Please wait...',
   progressTitle: 'Loading',
-  queryParams: ['startKey', 'sortKey', 'descending'],
-  descending: false,
+  queryParams: ['startKey', 'sortKey', 'sortDesc'],
+  sortDesc: false,
   sortKey: null,
 
   canAdd: function() {
@@ -73,11 +73,11 @@ export default Ember.Controller.extend(PaginationProps, ProgressDialog, UserSess
       this.set('previousStartKeys', previousStartKeys);
       this.showProgressModal();
     },
-    sortByKey: function(sortKey, descending) {
+    sortByKey: function(sortKey, sortDesc) {
       this.setProperties({
         previousStartKey: null,
         previousStartKeys: [],
-        descending: descending,
+        sortDesc: sortDesc,
         sortKey: sortKey,
         startKey: null
       });
