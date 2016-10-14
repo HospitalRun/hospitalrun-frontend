@@ -5,7 +5,7 @@ import Ember from 'ember';
 export default AbstractEditController.extend(InventorySelection, {
   cancelAction: 'closeModal',
   newCharge: false,
-  requestingController:  Ember.inject.controller('procedures/edit'),
+  requestingController: Ember.inject.controller('procedures/edit'),
   medicationList: Ember.computed.alias('requestingController.medicationList'),
 
   updateCapability: 'add_charge',

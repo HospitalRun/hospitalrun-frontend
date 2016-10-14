@@ -11,7 +11,7 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
   ImagingPricingTypes, InventoryTypeList, LabPricingTypes, ModalHelper,
   UnitTypes, VisitTypes, {
     fileSystem: Ember.inject.service('filesystem'),
-    lookupTypes:  Ember.computed(function() {
+    lookupTypes: Ember.computed(function() {
       return [{
         name: this.get('i18n').t('admin.lookup.anesthesiaTypes'),
         value: 'anesthesia_types',
