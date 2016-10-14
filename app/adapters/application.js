@@ -20,6 +20,8 @@ export default Adapter.extend(PouchAdapterUtils, {
   _esDefaultSize: 25,
 
   _executeContainsSearch(store, type, query) {
+    const self = this;
+
     return new Ember.RSVP.Promise((resolve, reject) => {
       var typeName = this.getRecordTypeName(type);
       var searchUrl = `/search/hrdb/${typeName}/_search`;
@@ -59,10 +61,16 @@ export default Adapter.extend(PouchAdapterUtils, {
             reject('Search results are not valid');
           }
         };
+
+        if (Ember.isEmpty(query.size)) {
+          query.size = self.get('_esDefaultSize');
+        }
+
         Ember.$.ajax(searchUrl, {
           dataType: 'json',
           data: {
-            q: queryString
+            q: queryString,
+            size: self.get('_esDefaultSize')
           },
           success: successFn
         });
@@ -139,10 +147,6 @@ export default Adapter.extend(PouchAdapterUtils, {
         specialQuery = true;
         break;
       }
-    }
-
-    if (!query.options.size) {
-      query.options.size = this.get('_esDefaultSize');
     }
 
     if (!specialQuery) {
