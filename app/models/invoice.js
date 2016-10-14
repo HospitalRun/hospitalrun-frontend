@@ -21,11 +21,11 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
   paymentProfile: DS.belongsTo('price-profile', {
     async: false
   }),
-  /*payments track the number of payment events attached to an invoice.*/
+  // payments track the number of payment events attached to an invoice.
   payments: DS.hasMany('payment', {
     async: false
   }),
-  /*the individual line items of the invoice*/
+  // the individual line items of the invoice
   lineItems: DS.hasMany('billing-line-item', {
     async: false
   }),
