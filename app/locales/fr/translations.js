@@ -327,13 +327,13 @@ export default {
   },
   login: {
     messages: {
-      signIn:  'veuillez-vous connecter',
-      error:    'Nom d\'utilisateur ou mot de passe est incorrect.'
+      signIn: 'veuillez-vous connecter',
+      error: 'Nom d\'utilisateur ou mot de passe est incorrect.'
     },
     labels: {
       password: 'Mot de passe',
       username: 'Nom d\'utilisateur',
-      signIn:  'Connexion'
+      signIn: 'Connexion'
     }
   },
   inventory: {
@@ -571,7 +571,7 @@ export default {
     },
     alerts: {
       returnedTitle: 'Médicament retourné',
-      returnedMessage:  'Le médicament a été marqué comme retourné.',
+      returnedMessage: 'Le médicament a été marqué comme retourné.',
       savedTitle: 'Demande de médicament enregistrée',
       savedMessage: 'Le dossier de médicament a été enregistré.',
       fulfilledTitle: 'Demande de médicament traitée'
