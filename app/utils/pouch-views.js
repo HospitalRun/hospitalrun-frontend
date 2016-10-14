@@ -241,7 +241,7 @@ let designDocs = [{
     }
     return includeRow;
   }.toString()),
-  version: 5
+  version: 6
 }, {
   name: 'appointments_by_patient',
   function: generateView('appointment',
@@ -283,7 +283,7 @@ let designDocs = [{
       }
     }
   }.toString()),
-  version: 4
+  version: 5
 }, {
   name: 'inventory_by_type',
   function: generateView('inventory',
