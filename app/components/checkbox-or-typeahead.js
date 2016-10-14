@@ -5,12 +5,12 @@ export default SelectOrTypeahead.extend({
   model: null,
 
   _getLabelFromContent: function(object) {
-    var optionLabelPath = this.get('optionLabelPath');
+    let optionLabelPath = this.get('optionLabelPath');
     return Ember.get(object, optionLabelPath);
   },
 
   _getValueFromContent: function(object) {
-    var optionValuePath = this.get('optionValuePath');
+    let optionValuePath = this.get('optionValuePath');
     return Ember.get(object, optionValuePath);
   },
 
@@ -22,10 +22,10 @@ export default SelectOrTypeahead.extend({
   },
 
   _setup: function() {
-    var property = this.get('property');
+    let property = this.get('property');
     Ember.defineProperty(this, 'errors', Ember.computed('model.errors.' + property, function() {
-      var property = this.get('property'),
-        errors = this.get('model.errors.' + property);
+      let property = this.get('property');
+      let errors = this.get('model.errors.' + property);
       if (!Ember.isEmpty(errors)) {
         return errors[0];
       }
@@ -33,12 +33,12 @@ export default SelectOrTypeahead.extend({
   }.on('init'),
 
   checkboxRows: function() {
-    var checkboxRows = [],
-      checkboxesPerRow = this.get('checkboxesPerRow'),
-      content = this.get('content'),
-      allValues = content.copy();
+    let checkboxRows = [];
+    let checkboxesPerRow = this.get('checkboxesPerRow');
+    let content = this.get('content');
+    let allValues = content.copy();
     while (allValues.length > 0) {
-      var checkBoxRowValues = allValues.splice(0, checkboxesPerRow).map(this._mapCheckboxValues.bind(this));
+      let checkBoxRowValues = allValues.splice(0, checkboxesPerRow).map(this._mapCheckboxValues.bind(this));
       checkboxRows.push(checkBoxRowValues);
     }
     return checkboxRows;
@@ -46,9 +46,9 @@ export default SelectOrTypeahead.extend({
 
   actions: {
     checkboxChanged: function(value, checked) {
-      var property = this.get('property'),
-        propertyName = 'model.' + property,
-        selectedValues = this.get(propertyName);
+      let property = this.get('property');
+      let propertyName = 'model.' + property;
+      let selectedValues = this.get(propertyName);
       if (!Ember.isArray(selectedValues)) {
         selectedValues = [];
       }

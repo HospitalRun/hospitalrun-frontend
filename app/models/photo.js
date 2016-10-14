@@ -14,16 +14,16 @@ export default AbstractModel.extend({
   url: DS.attr('string'),
 
   downloadImageFromServer: function(imageRecord) {
-    var me = this,
-      url = imageRecord.get('url'),
-      xhr = new XMLHttpRequest();
+    let me = this;
+    let url = imageRecord.get('url');
+    let xhr = new XMLHttpRequest();
     if (!Ember.isEmpty(url)) {
       // Make sure directory exists or is created before downloading.
       this.getPatientDirectory(imageRecord.get('patientId'));
       xhr.open('GET', url, true);
       xhr.responseType = 'blob';
       xhr.onload = function() {
-        var file = new Blob([xhr.response]);
+        let file = new Blob([xhr.response]);
         me.addImageToFileStore(file, null, imageRecord);
       };
       xhr.send();

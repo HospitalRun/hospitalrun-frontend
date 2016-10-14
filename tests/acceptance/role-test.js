@@ -42,7 +42,7 @@ test('visiting /admin/roles', function(assert) {
     andThen(() => {
       authenticateUser({
         name: 'doctor@hospitalrun.io',
-        roles: ['Doctor', 'user'] ,
+        roles: ['Doctor', 'user'],
         role: 'Doctor',
         prefix: 'p1'
       });

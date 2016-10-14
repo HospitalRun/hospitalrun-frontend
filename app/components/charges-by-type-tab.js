@@ -8,7 +8,7 @@ export default Ember.Component.extend({
   tagName: 'li',
 
   active: function() {
-    var index = this.get('index');
+    let index = this.get('index');
     return (index === 0);
   }.property(),
 
@@ -17,7 +17,7 @@ export default Ember.Component.extend({
   }.property('pricingType'),
 
   tabHref: function() {
-    var tabId = this.get('tabId');
+    let tabId = this.get('tabId');
     return '#' + tabId;
   }.property('tabId')
 });

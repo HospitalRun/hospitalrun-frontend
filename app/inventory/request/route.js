@@ -28,7 +28,7 @@ export default AbstractEditRoute.extend({
    */
   setupController: function(controller, model) {
     this._super(controller, model);
-    var inventoryQuery = {
+    let inventoryQuery = {
       startkey: 'inventory_',
       endkey: 'inventory_\uffff',
       include_docs: true

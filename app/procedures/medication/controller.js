@@ -11,7 +11,7 @@ export default AbstractEditController.extend(InventorySelection, {
   updateCapability: 'add_charge',
 
   title: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return this.get('i18n').t('procedures.titles.addMedicationUsed');
     }
@@ -19,7 +19,7 @@ export default AbstractEditController.extend(InventorySelection, {
   }.property('model.isNew'),
 
   beforeUpdate: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       this.set('newCharge', true);
       let model = this.get('model');
