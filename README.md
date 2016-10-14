@@ -103,7 +103,7 @@ To create a fixture, run `pouchdb-dump http://localhost:5984/main -u hradmin -p 
 
 To use a fixture, use `runWithPouchDump(${name_of_fixture}, function(){..});` in your acceptance test. For example,
 
-```
+```js
 test('visiting /patients', function(assert) {
   runWithPouchDump('default', function() {
     //Actual test code here
