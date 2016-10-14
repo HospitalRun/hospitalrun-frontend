@@ -70,7 +70,7 @@ export default HtmlInput.extend({
     this.set('_picker', picker);
   },
 
-  didReceiveAttrs(/*attrs*/) {
+  didReceiveAttrs(/* attrs */) {
     this._super(...arguments);
     let dateProperty = this.get('mainComponent.property');
     let displayPropertyName = 'display_' + dateProperty;

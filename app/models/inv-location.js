@@ -28,7 +28,7 @@ let InventoryLocation = AbstractModel.extend(LocationName, {
         }
       },
       acceptance: {
-        /***
+        /**
          * Validate that the adjustment quantity is a number and that if a deduction there are enough items to deduct
          */
         accept: true,
