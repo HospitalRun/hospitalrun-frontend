@@ -90,6 +90,9 @@ function generateSortFunction(sortFunction, includeCompareDate, filterFunction) 
     generatedFunction += 'rows = rows.filter(' + filterFunction + ');';
   }
   generatedFunction += 'rows.sort(' + sortFunction + ');' +
+    'if (req.query.sortDesc) {' +
+    'rows = rows.reverse();' +
+    '}' +
     'if (req.query.sortStartKey) {' +
     'var startKey = JSON.parse(req.query.sortStartKey);' +
     'for (var i=0; i<rows.length; i++) {' +
@@ -98,9 +101,6 @@ function generateSortFunction(sortFunction, includeCompareDate, filterFunction) 
     'break;' +
     '}' +
     '}' +
-    '}' +
-    'if (req.query.sortDesc) {' +
-    'rows = rows.reverse();' +
     '}' +
     'if (req.query.sortLimit) {' +
     'rows = rows.slice(startingPosition, parseInt(req.query.sortLimit)+startingPosition);' +
@@ -241,7 +241,7 @@ let designDocs = [{
     }
     return includeRow;
   }.toString()),
-  version: 5
+  version: 6
 }, {
   name: 'appointments_by_patient',
   function: generateView('appointment',
@@ -283,7 +283,7 @@ let designDocs = [{
       }
     }
   }.toString()),
-  version: 4
+  version: 5
 }, {
   name: 'inventory_by_type',
   function: generateView('inventory',
@@ -351,7 +351,7 @@ let designDocs = [{
   name: 'patient_by_display_id',
   function: generateView('patient', patientListingKey),
   sort: patientListingSearch,
-  version: 6
+  version: 7
 }, {
   name: 'patient_by_status',
   function: generateView('patient',
@@ -366,7 +366,7 @@ let designDocs = [{
     '}'
   ),
   sort: patientListingSearch,
-  version: 3
+  version: 4
 }, {
   name: 'photo_by_patient',
   function: generateView('photo',

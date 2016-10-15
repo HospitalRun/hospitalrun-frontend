@@ -52,10 +52,10 @@ export default Ember.Controller.extend(EditPanelProps, {
 
           results.forEach(function(result) {
             let resultRow = [];
-            /*resultRow.push({
+            /* resultRow.push({
                 name: 'id',
                 value: result.get('id')
-            });*/
+            }); */
             attributes.forEach(function(attribute) {
               currentValue = result.get(attribute);
               if (!Ember.isEmpty(currentValue)) {
