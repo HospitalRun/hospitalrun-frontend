@@ -22,7 +22,7 @@ export default AbstractPagedController.extend(PatientVisits, {
 
     dischargePatient: function(patient) {
       this.getPatientVisits(patient).then(function(visits) {
-        var visitToDischarge = visits.findBy('status', 'Admitted');
+        let visitToDischarge = visits.findBy('status', 'Admitted');
         if (visitToDischarge) {
           visitToDischarge.set('status', 'Discharged');
           visitToDischarge.set('endDate', new Date());

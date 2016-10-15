@@ -2,12 +2,12 @@ import Ember from 'ember';
 import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.Component.extend(SelectValues, {
   classNames: 'detail-section-content',
-  fieldsByRow:  function() {
+  fieldsByRow: function() {
     let rows = [];
-    const form = this.get('form');
+    let form = this.get('form');
     if (!Ember.isEmpty(form)) {
-      const fields = form.fields;
-      const numberOfColumns = this.getWithDefault('form.columns', 1);
+      let fields = form.fields;
+      let numberOfColumns = this.getWithDefault('form.columns', 1);
       let currentRow = [];
 
       let colCount = 0;

@@ -5,7 +5,7 @@ export default TypeAhead.extend({
   displayKey: 'name',
   showQuantity: true,
   _mapInventoryItems: function(item) {
-    var returnObj = {};
+    let returnObj = {};
     if (this.get('showQuantity') && item.quantity) {
       returnObj.name = `${item.name} - ${item.friendlyId} (${item.quantity} available)`;
     } else {
@@ -16,15 +16,15 @@ export default TypeAhead.extend({
   },
 
   haveInventoryItems: function() {
-    var content = this.get('content');
+    let content = this.get('content');
     if (!Ember.isEmpty(content) && content.length > 0) {
       return 'have-inventory-items';
     }
   }.property('content'),
 
   mappedContent: function() {
-    var content = this.get('content'),
-      mapped = [];
+    let content = this.get('content');
+    let mapped = [];
     if (content) {
       mapped = content.map(this._mapInventoryItems.bind(this));
     }
@@ -32,8 +32,8 @@ export default TypeAhead.extend({
   }.property('content'),
 
   contentChanged: function() {
-    var bloodhound = this.get('bloodhound'),
-      content = this.get('content');
+    let bloodhound = this.get('bloodhound');
+    let content = this.get('content');
     if (bloodhound) {
       bloodhound.clear();
       bloodhound.add(content.map(this._mapInventoryItems.bind(this)));

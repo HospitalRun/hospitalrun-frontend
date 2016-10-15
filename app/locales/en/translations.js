@@ -414,13 +414,13 @@ export default {
   },
   login: {
     messages: {
-      signIn:  'please sign in',
-      error:    'Username or password is incorrect.'
+      signIn: 'please sign in',
+      error: 'Username or password is incorrect.'
     },
     labels: {
       password: 'Password',
       username: 'Username',
-      signIn:  'Sign in'
+      signIn: 'Sign in'
     }
   },
   loading: {
@@ -679,7 +679,7 @@ export default {
     },
     alerts: {
       returnedTitle: 'Medication Returned',
-      returnedMessage:  'The medication has been marked as returned.',
+      returnedMessage: 'The medication has been marked as returned.',
       savedTitle: 'Medication Request Saved',
       savedMessage: 'The medication record has been saved.',
       fulfilledTitle: 'Medication Request Fulfilled'

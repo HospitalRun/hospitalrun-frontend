@@ -34,7 +34,7 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
 
   actions: {
     showAddDeposit: function() {
-      var payment = this.store.createRecord('payment', {
+      let payment = this.store.createRecord('payment', {
         paymentType: 'Deposit',
         datePaid: new Date()
       });
@@ -42,7 +42,7 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
     },
 
     showAddPayment: function(invoice) {
-      var payment = this.store.createRecord('payment', {
+      let payment = this.store.createRecord('payment', {
         invoice: invoice,
         paymentType: 'Payment',
         datePaid: new Date()
@@ -58,7 +58,7 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
   },
 
   subActions: function() {
-    var actions = [{
+    let actions = [{
       text: 'Billed',
       linkTo: 'invoices.index',
       statusQuery: 'Billed'

@@ -13,7 +13,7 @@ export default TypeAhead.extend({
     this.bloodhound.get(query, function(suggestions) {
       cb(suggestions);
       // Set the headers content.
-      var $header = this.$('.query-results');
+      let $header = this.$('.query-results');
       $header.html('<strong><em>' + query + '</em></strong> returned <strong>' + suggestions.length + '</strong> results');
     }.bind(this));
   },
