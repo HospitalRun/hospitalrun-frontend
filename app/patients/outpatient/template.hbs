@@ -1,0 +1,42 @@
+<div class="panel">
+  <table class="table" >
+    <thead>
+      <tr class="table-header">
+        <th>{{t 'labels.startDate'}}</th>
+        <th>{{t 'labels.provider'}}</th>
+        <th>{{t 'patients.labels.patientId'}}</th>
+        <th>{{t 'patients.labels.patientName'}}</th>
+        <th>{{t 'patients.labels.patientSex'}}</th>
+        <th>{{t 'patients.labels.patientDoB'}}</th>
+        <th>{{t 'labels.type'}}</th>
+        <th>{{t 'labels.actions'}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{#each model.visits as |visit|}}
+      <tr {{action "editVisit" visit}}>
+        <td>{{date-format visit.startDate}}</td>
+        <td>{{visit.examiner}}</td>
+        <td>{{visit.patient.friendlyId}}</td>
+        <td>{{visit.patient.displayName}}</td>
+        <td>{{visit.patient.sex}}</td>
+        <td>{{date-format visit.patient.dateOfBirth}}</td>
+        <td>{{visit.visitType}}</td>
+        <td>
+        {{#if canAddVisit}}
+          <button type="button" class="btn btn-default neutral" {{action "editVisit" visit}}>{{t 'labels.edit'}}</button>
+        {{/if}}
+        {{#if visit.patient.admitted}}
+          {{#if canDischargePatient}}
+            <button class="btn btn-default info" {{action 'dischargePatient' visit.patient  bubbles=false }}><span class="glyphicon glyphicon-log-out"></span> {{t 'patients.labels.discharge'}}</button>
+          {{/if}}
+        {{/if}}
+        {{#if canDelete}}
+          <button class="btn btn-default warning" {{action 'deleteItem' patient  bubbles=false }}><span class="octicon octicon-x"></span> {{t 'labels.delete'}}</button>
+        {{/if}}
+        </td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+</div>

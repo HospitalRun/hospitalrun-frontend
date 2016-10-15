@@ -56,6 +56,7 @@ export default {
       reports: 'Reports',
       patientListing: 'Patient Listing',
       newPatient: 'New Patient',
+      outpatient: 'Outpatient',
       thisWeek: 'This Week',
       today: 'Today',
       search: 'Search',
@@ -891,7 +892,11 @@ export default {
       religion: 'Religion',
       parent: 'Parent/Guardian',
       contacts: 'Contacts',
-      sexNotEntered: 'Sex Not Entered'
+      sexNotEntered: 'Sex Not Entered',
+      patientSex: 'Patient Sex',
+      patientDoB: 'Patient DoB',
+      patientName: 'Patient Name',
+      patientId: 'Patient Id'
     },
     notes: {
       newNote: 'New Note for',

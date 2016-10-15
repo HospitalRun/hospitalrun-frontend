@@ -63,6 +63,12 @@ export default Ember.Mixin.create({
           capability: 'add_patient'
         },
         {
+          title: 'Outpatient',
+          iconClass: 'octicon-chevron-right',
+          route: 'patients.outpatient',
+          capability: 'patients'
+        },
+        {
           title: 'Reports',
           iconClass: 'octicon-chevron-right',
           route: 'patients.reports',
