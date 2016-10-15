@@ -20,8 +20,6 @@ export default Adapter.extend(PouchAdapterUtils, {
   _esDefaultSize: 25,
 
   _executeContainsSearch(store, type, query) {
-    const self = this;
-
     return new Ember.RSVP.Promise((resolve, reject) => {
       let typeName = this.getRecordTypeName(type);
       let searchUrl = `/search/hrdb/${typeName}/_search`;
@@ -63,7 +61,7 @@ export default Adapter.extend(PouchAdapterUtils, {
         };
 
         if (Ember.isEmpty(query.size)) {
-          query.size = self.get('_esDefaultSize');
+          query.size = this.get('_esDefaultSize');
         }
 
         Ember.$.ajax(searchUrl, {
