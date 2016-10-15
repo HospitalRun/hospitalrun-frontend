@@ -59,10 +59,16 @@ export default Adapter.extend(PouchAdapterUtils, {
             reject('Search results are not valid');
           }
         };
+
+        if (Ember.isEmpty(query.size)) {
+          query.size = this.get('_esDefaultSize');
+        }
+
         Ember.$.ajax(searchUrl, {
           dataType: 'json',
           data: {
-            q: queryString
+            q: queryString,
+            size: self.get('_esDefaultSize')
           },
           success: successFn
         });
@@ -139,10 +145,6 @@ export default Adapter.extend(PouchAdapterUtils, {
         specialQuery = true;
         break;
       }
-    }
-
-    if (!query.options.size) {
-      query.options.size = this.get('_esDefaultSize');
     }
 
     if (!specialQuery) {
