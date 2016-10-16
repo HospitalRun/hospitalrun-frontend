@@ -16,12 +16,12 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
 
   editPath: function() {
     let module = this.get('moduleName');
-    return module + '.edit';
+    return `${module}.edit`;
   }.property('moduleName'),
 
   deletePath: function() {
     let module = this.get('moduleName');
-    return module + '.delete';
+    return `${module}.delete`;
   }.property('moduleName'),
 
   newButtonAction: function() {
@@ -34,12 +34,12 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
 
   searchRoute: function() {
     let module = this.get('moduleName');
-    return '/' + module + '/search';
+    return `/${module}/search`;
   }.property('moduleName'),
 
   actions: {
     allItems: function() {
-      this.transitionTo(this.get('moduleName') + '.index');
+      this.transitionTo(`${this.get('moduleName')}.index`);
     },
     deleteItem: function(item) {
       let deletePath = this.get('deletePath');
@@ -101,7 +101,7 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
             return this.store.find.apply(this.store, modelMap.findArgs);
           }
         }.bind(this));
-        Ember.RSVP.allSettled(promises, 'All additional Models for ' + this.get('moduleName')).then(function(array) {
+        Ember.RSVP.allSettled(promises, `All additional Models for ${this.get('moduleName')}`).then(function(array) {
           array.forEach(function(item, index) {
             if (item.state === 'fulfilled') {
               this.set(this.additionalModels[index].name, item.value);
@@ -109,7 +109,7 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
           }.bind(this));
           resolve();
         }.bind(this), reject);
-      }.bind(this), 'Additional Models for' + this.get('moduleName'));
+      }.bind(this), `Additional Models for ${this.get('moduleName')}`);
     } else {
       return Ember.RSVP.resolve();
     }

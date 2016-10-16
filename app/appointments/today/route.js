@@ -12,7 +12,7 @@ export default AppointmentIndexRoute.extend({
     return {
       options: {
         startkey: [startOfDay, null, 'appointment_'],
-        endkey: [endOfDay, endOfDay, 'appointment_' + maxValue]
+        endkey: [endOfDay, endOfDay, `appointment_${maxValue}`]
       },
       mapReduce: 'appointments_by_date'
     };

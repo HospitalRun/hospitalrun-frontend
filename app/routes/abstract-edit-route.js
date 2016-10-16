@@ -26,7 +26,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   idParam: function() {
     let modelName = this.get('modelName');
-    return modelName + '_id';
+    return `${modelName}_id`;
   }.property('modelName'),
 
   /**

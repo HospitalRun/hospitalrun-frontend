@@ -18,6 +18,6 @@ export default Ember.Component.extend({
 
   tabHref: function() {
     let tabId = this.get('tabId');
-    return '#' + tabId;
+    return `#${tabId}`;
   }.property('tabId')
 });

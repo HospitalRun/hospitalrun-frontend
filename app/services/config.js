@@ -120,7 +120,7 @@ export default Ember.Service.extend({
   getConfigValue(id, defaultValue) {
     let configDB = this.get('configDB');
     return new Ember.RSVP.Promise(function(resolve) {
-      configDB.get('config_' + id).then(function(doc) {
+      configDB.get(`config_${id}`).then(function(doc) {
         run(null, resolve, doc.value);
       })
         .catch(function() {

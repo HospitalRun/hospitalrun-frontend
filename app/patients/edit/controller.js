@@ -183,7 +183,7 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
      * @param {boolean} coverImage flag indicating if image should be marked as the cover image (currently unused).
      */
     addPhoto: function(photoFile, caption, coverImage) {
-      let dirToSaveTo = this.get('model.id') + '/photos/';
+      let dirToSaveTo = `${this.get('model.id')}/photos/`;
       let fileSystem = this.get('filesystem');
       let photos = this.get('model.photos');
       let newPatientPhoto = this.get('store').createRecord('photo', {
@@ -492,7 +492,7 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
         }
       });
     }
-    this.send('openModal', 'patients.socialwork.' + route, model);
+    this.send('openModal', `patients.socialwork.${route}`, model);
   },
 
   _getVisitCollection: function(name) {
@@ -512,7 +512,7 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
   },
 
   _updateSocialRecord: function(recordToUpdate, name) {
-    let socialRecords = this.getWithDefault('model.' + name, []);
+    let socialRecords = this.getWithDefault(`model.${name}`, []);
     let isNew = recordToUpdate.get('isNew');
     let patient = this.get('model');
     let objectToUpdate = recordToUpdate.serialize();

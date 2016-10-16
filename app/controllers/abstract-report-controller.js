@@ -104,10 +104,10 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
         }
 
       });
-      csvRows.push('"' + rowToAdd.join('","') + '"');
+      csvRows.push(`"${rowToAdd.join('","')}"`);
     });
     let csvString = csvRows.join('\r\n');
-    let uriContent = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csvString);
+    let uriContent = `data:application/csv;charset=utf-8,${encodeURIComponent(csvString)}`;
     this.set('csvExport', uriContent);
   },
 

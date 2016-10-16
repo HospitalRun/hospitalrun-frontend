@@ -166,7 +166,7 @@ export default Ember.Mixin.create(PatientVisits, {
       let childPromises = [];
       let visit = this.get('model.visit');
       childPromises.addObjects(this.resolveVisitChildren());
-      Ember.RSVP.all(childPromises, 'Resolved visit children before removing ' + childName).then(function() {
+      Ember.RSVP.all(childPromises, `Resolved visit children before removing ${childName}`).then(function() {
         visit.get(childName).then(function(visitChildren) {
           visitChildren.removeObject(objectToRemove);
           visit.save().then(resolve, reject);

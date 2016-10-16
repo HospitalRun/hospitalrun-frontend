@@ -11,7 +11,7 @@ export default Ember.Mixin.create({
         }
       }
       let errmsg = [err.status,
-        (err.name || err.error) + ':',
+        `${(err.name || err.error)}:`,
         (err.message || err.reason)
       ].join(' ');
       Ember.run(null, reject, errmsg);
