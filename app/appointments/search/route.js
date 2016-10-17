@@ -28,7 +28,7 @@ export default AppointmentIndexRoute.extend(DateFormat, {
     let startOfDay = startDate.startOf('day').toDate().getTime();
     let searchOptions = {
       startkey: [startOfDay, null, 'appointment_'],
-      endkey: [maxValue, maxValue, 'appointment_' + maxValue]
+      endkey: [maxValue, maxValue, `appointment_${maxValue}`]
     };
     return {
       options: searchOptions,

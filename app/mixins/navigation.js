@@ -307,7 +307,7 @@ export default Ember.Mixin.create({
       nav.localizedTitle = translationOrOriginal(navTranslated, nav.title);
       // Map all of the sub navs, too
       nav.subnav = nav.subnav.map((sub) => {
-        let subItemKey = localizationPrefix + 'subnav.' + camelize(sub.title);
+        let subItemKey = `${localizationPrefix}subnav.${camelize(sub.title)}`;
         let subTranslated = this.get('i18n').t(subItemKey);
 
         sub.localizedTitle = translationOrOriginal(subTranslated, sub.title);

@@ -73,16 +73,16 @@ export default HtmlInput.extend({
   didReceiveAttrs(/* attrs */) {
     this._super(...arguments);
     let dateProperty = this.get('mainComponent.property');
-    let displayPropertyName = 'display_' + dateProperty;
+    let displayPropertyName = `display_${dateProperty}`;
     this.set('mainComponent.property', displayPropertyName);
-    this.currentDate = Ember.computed.alias('mainComponent.model.' + dateProperty);
-    this.selectedValue = Ember.computed.alias('mainComponent.model.' + displayPropertyName);
+    this.currentDate = Ember.computed.alias(`mainComponent.model.${dateProperty}`);
+    this.selectedValue = Ember.computed.alias(`mainComponent.model.${displayPropertyName}`);
     this.minDate = Ember.computed.alias('mainComponent.minDate');
     this.maxDate = Ember.computed.alias('mainComponent.maxDate');
     this.showTime = Ember.computed.alias('mainComponent.showTime');
     this.yearRange = Ember.computed.alias('mainComponent.yearRange');
-    this.addObserver('mainComponent.model.' + dateProperty, this, this.currentDateChangedValue);
-    Ember.Binding.from('mainComponent.model.errors.' + dateProperty).to('mainComponent.model.errors.' + displayPropertyName).connect(this);
+    this.addObserver(`mainComponent.model.${dateProperty}`, this, this.currentDateChangedValue);
+    Ember.Binding.from(`mainComponent.model.errors.${dateProperty}`).to(`mainComponent.model.errors.${displayPropertyName}`).connect(this);
   },
 
   willDestroyElement: function() {

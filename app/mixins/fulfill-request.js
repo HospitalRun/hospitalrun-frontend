@@ -96,7 +96,7 @@ export default Ember.Mixin.create({
         }
       });
       if (!foundQuantity) {
-        return 'Could not find any purchases that had the required quantity:' + quantityRequested;
+        return `Could not find any purchases that had the required quantity: ${quantityRequested}`;
       }
     }
     request.set('costPerUnit', (totalCost / quantityRequested).toFixed(2));

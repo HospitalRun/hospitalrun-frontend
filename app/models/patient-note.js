@@ -5,7 +5,7 @@ export default AbstractModel.extend({
   authoredBy: function() {
     if (!Ember.isEmpty(this.get('attribution'))) {
       let i18n = this.get('i18n');
-      return this.get('createdBy') + ' ' + i18n.t('patients.notes.onBehalfOfCopy') + ' ' + this.get('attribution');
+      return `${this.get('createdBy')} ${i18n.t('patients.notes.onBehalfOfCopy')} ${this.get('attribution')}`;
     } else {
       return this.get('createdBy');
     }

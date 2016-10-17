@@ -22,7 +22,7 @@ export default Ember.Component.extend(SelectValues, {
           currentRow = [];
           colCount = 0;
         }
-        field.classNames += ' col-sm-' + (colWidth * colSpan);
+        field.classNames += ` col-sm-${colWidth * colSpan}`;
         if (field.type === 'select') {
           field.mappedValues = field.values.map(this.selectValuesMap);
         }

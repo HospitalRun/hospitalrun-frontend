@@ -23,9 +23,9 @@ export default SelectOrTypeahead.extend({
 
   _setup: function() {
     let property = this.get('property');
-    Ember.defineProperty(this, 'errors', Ember.computed('model.errors.' + property, function() {
+    Ember.defineProperty(this, 'errors', Ember.computed(`model.errors.${property}`, function() {
       let property = this.get('property');
-      let errors = this.get('model.errors.' + property);
+      let errors = this.get(`model.errors.${property}`);
       if (!Ember.isEmpty(errors)) {
         return errors[0];
       }
@@ -47,7 +47,7 @@ export default SelectOrTypeahead.extend({
   actions: {
     checkboxChanged: function(value, checked) {
       let property = this.get('property');
-      let propertyName = 'model.' + property;
+      let propertyName = `model.${property}`;
       let selectedValues = this.get(propertyName);
       if (!Ember.isArray(selectedValues)) {
         selectedValues = [];

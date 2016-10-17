@@ -59,9 +59,9 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
       id: 'expense_account_list'
     }];
     listsToUpdate.push({
-      name: category + 'PricingTypes',
+      name: `${category}PricingTypes`,
       property: 'model.pricingType',
-      id: category + '_pricing_types'
+      id: `${category}_pricing_types`
     });
     return listsToUpdate;
   }.property('model.category'),
@@ -69,7 +69,7 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
   pricingTypes: function() {
     let category = this.get('model.category');
     if (!Ember.isEmpty(category)) {
-      let typesList = this.get(category.toLowerCase() + 'PricingTypes');
+      let typesList = this.get(`${category.toLowerCase()}PricingTypes`);
       if (Ember.isEmpty(typesList) || Ember.isEmpty(typesList.get('value'))) {
         if (category === 'Lab') {
           return Ember.Object.create({ value: this.defaultLabPricingTypes });

@@ -57,9 +57,9 @@ export default Ember.Component.extend({
     for (let i = 0; i !== sourceInfos.length; ++i) {
       let sourceInfo = sourceInfos[i];
       if (sourceInfo.kind === 'video') {
-        cameraLabel = 'Camera ' + (++cameraCount);
+        cameraLabel = `Camera '${++cameraCount}`;
         if (sourceInfo.label) {
-          cameraLabel += ' (' + sourceInfo.label + ')';
+          cameraLabel += ` (${sourceInfo.label})`;
         }
         videoSources.addObject({
           id: sourceInfo.id,
