@@ -827,7 +827,7 @@ export default {
       deletePatientRecord: 'Delete Patient Record'
     },
     messages: {
-      areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
+      areYouSureDelete: 'Are you sure you wish to delete this {{object}}?',
       deletePatient: 'Are you sure you wish to delete {{firstName}} {{lastName}}?',
       noPatientsFound: 'No patients found.',
       savedPatient: 'The patient record for {{displayName}} has been saved.',
@@ -968,7 +968,7 @@ export default {
       medicationUsed: 'Medication Used'
     },
     messages: {
-      deleteMedication: 'Are you sure you want to delete this medication?',
+      deleteMedication: 'Are you sure you wish to delete this medication?',
       delete: 'Are you sure you wish to delete this procedure?',
       saved: 'The procedure record has been saved.'
     },

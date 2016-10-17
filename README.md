@@ -48,7 +48,7 @@ To install the frontend please do the following:
 ## Start
 To start the frontend please do the following:
 
-- Start the server by running `npm start` in the repo folder.
+- Start the server by running `npm start` in the repo folder. In some cases, that will not work so try `ember serve`.
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
 ## Running with Docker
