@@ -68,7 +68,7 @@ export default Adapter.extend(PouchAdapterUtils, {
           dataType: 'json',
           data: {
             q: queryString,
-            size: self.get('_esDefaultSize')
+            size: this.get('_esDefaultSize')
           },
           success: successFn
         });
