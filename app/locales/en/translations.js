@@ -118,7 +118,7 @@ export default {
       displayAlertTitle: 'Select File To Load',
       displayAlertMessage: 'Please select file to load.',
       errorDisplayAlertTitle: 'Error Loading',
-      errorDisplayAlertMessage: `The database could not be imported. The error was: {{error}}`,
+      errorDisplayAlertMessage: 'The database could not be imported. The error was: {{error}}',
       editTitle: 'Load DB'
     },
     lookup: {
