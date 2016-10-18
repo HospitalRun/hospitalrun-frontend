@@ -1,14 +1,16 @@
-import AbstractPagedController from 'hospitalrun/controllers/abstract-paged-controller';
 import Ember from 'ember';
 import FilterList from 'hospitalrun/mixins/filter-list';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
+import UserSession from 'hospitalrun/mixins/user-session';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
-export default AbstractPagedController.extend(FilterList, PatientVisits, VisitTypes, {
+
+export default Ember.Controller.extend(FilterList, PatientVisits,  UserSession, VisitTypes, {
   addPermission: 'add_patient',
   deletePermission: 'delete_patient',
   filterValue: null,
   filterBy: null,
-  queryParams: null,
+  sortByDesc: null,
+  sortByKey: null,
   canAddVisit: function() {
     return this.currentUserCan('add_visit');
   }.property(),
@@ -31,14 +33,14 @@ export default AbstractPagedController.extend(FilterList, PatientVisits, VisitTy
     let visits = this.get('model');
     return this.filterList(visits , filterBy, filterValue);
   }),
-  sortedVists: Ember.computed('filteredVisits', 'sortBy', 'sortDesc', function() {
+  sortedVisits: Ember.computed('filteredVisits', 'sortByKey', 'sortByDesc', function() {
     let filteredList = this.get('filteredVisits');
-    let sortDesc = this.get('sortDesc');
-    let sortBy = this.get('sortBy');
+    let sortDesc = this.get('sortByDesc');
+    let sortBy = this.get('sortByKey');
     if (Ember.isEmpty(filteredList) || Ember.isEmpty(sortBy)) {
       return filteredList;
     }
-    filteredList = filteredList.sort(function(a, b) {
+    filteredList = filteredList.toArray().sort(function(a, b) {
       let compareA = a.get(sortBy);
       let compareB = b.get(sortBy);
       if (sortBy === 'orderType') {
@@ -51,7 +53,6 @@ export default AbstractPagedController.extend(FilterList, PatientVisits, VisitTy
         return Ember.compare(compareA, compareB);
       }
     });
-    this.set('sortKey', sortBy);
     return filteredList;
   }),
 
@@ -70,8 +71,8 @@ export default AbstractPagedController.extend(FilterList, PatientVisits, VisitTy
 
     sortByKey(sortKey, sortDesc) {
       this.setProperties({
-        sortDesc: sortDesc,
-        sortKey: sortKey
+        sortByDesc: sortDesc,
+        sortByKey: sortKey
       });
     },
 

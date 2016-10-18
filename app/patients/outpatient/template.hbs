@@ -2,11 +2,11 @@
   <table class="table">
     <thead>
       <tr class="table-header">
-        {{#sortable-column sortBy='id' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.id'}}{{/sortable-column}}
+        {{#sortable-column sortBy='patient.displayPatientId' sortDesc=sortByDesc sortKey=sortByKey }}{{t 'labels.id'}}{{/sortable-column}}
         {{#sortable-column
-          sortBy='firstName'
-          sortDesc=sortDesc
-          sortKey=sortKey
+          sortBy='patient.firstName'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
           filterBy='patient.firstName'
           filteredBy=filteredBy
           filterType='typeahead'
@@ -15,9 +15,9 @@
           {{t 'patients.labels.firstName'}}
         {{/sortable-column}}
         {{#sortable-column
-          sortBy='lastName'
-          sortDesc=sortDesc
-          sortKey=sortKey
+          sortBy='patient.lastName'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
           filterBy='patient.lastName'
           filteredBy=filteredBy
           filterType='typeahead'
@@ -26,32 +26,32 @@
           {{t 'patients.labels.lastName'}}
         {{/sortable-column}}
         {{#sortable-column
-          sortBy='sex'
-          sortDesc=sortDesc
-          sortKey=sortKey
+          sortBy='patient.sex'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
           filterBy='patient.sex'
           filteredBy=filteredBy
           filterValues=sexList
         }}
           {{t 'patients.labels.sex'}}
         {{/sortable-column}}
-        {{#sortable-column sortBy='dateOfBirth' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.age'}}{{/sortable-column}}
+        {{#sortable-column sortBy='patient.dateOfBirth' sortDesc=sortByDesc sortKey=sortByKey }}{{t 'labels.age'}}{{/sortable-column}}
         {{#sortable-column
           sortBy='visitType'
-          sortDesc=sortDesc
-          sortKey=sortKey
+          sortDesc=sortByDesc
+          sortKey=sortByKey
           filterBy='visitType'
           filteredBy=filteredBy
           filterValues=visitTypesValues
         }}{{t 'visits.labels.visitType'}}{{/sortable-column}}
-        {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.status'}}{{/sortable-column}}
+        {{#sortable-column sortBy='status' sortDesc=sortByDesc sortKey=sortByKey }}{{t 'labels.status'}}{{/sortable-column}}
         {{#if showActions}}
           <th>{{t 'labels.actions'}}</th>
         {{/if}}
       </tr>
     </thead>
     <tbody>
-      {{#each filteredVisits as |visit|}}
+      {{#each sortedVisits as |visit|}}
         <tr {{action 'editItem' visit}} class="clickable">
           <td class="col-xs-1">{{visit.patient.displayPatientId}}</td>
           <td class="col-xs-1">{{visit.patient.firstName}}</td>
