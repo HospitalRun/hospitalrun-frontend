@@ -78,6 +78,7 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
     let maxValue = this.get('maxValue');
     let patientId = model.get('id');
     let patientsController = this.controllerFor('patients');
+    let i18n = this.get('i18n');
 
     if (Ember.isEmpty(friendlyId) && !Ember.isEmpty(externalId)) {
       model.set('friendlyId', externalId);
@@ -118,11 +119,11 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
         newButtonText: null,
         additionalButtons: [{
           class: 'btn btn-primary',
-          buttonText: 'cancel',
+          buttonText: i18n.t('buttons.cancel'),
           buttonAction: controller.get('actions.cancel').bind(controller)
         }, {
           class: 'btn btn-primary',
-          buttonText: 'update',
+          buttonText: i18n.t('buttons.update'),
           buttonAction: controller.get('actions.update').bind(controller)
         }]
       });
