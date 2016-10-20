@@ -65,12 +65,6 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
     setSectionHeader: function(details) {
       let currentController = this.controllerFor(this.get('moduleName'));
       currentController.setProperties(details);
-    },
-
-    contextAction (action, arg) {
-      if ( action && typeof action === 'function' ) {
-        action(arg);
-      }
     }
   },
 

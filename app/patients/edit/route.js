@@ -119,11 +119,11 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
         additionalButtons: [{
           class: 'btn btn-primary',
           buttonText: 'cancel',
-          contextAction: controller.get('actions.cancel').bind(controller)
+          buttonAction: controller.get('actions.cancel').bind(controller)
         }, {
           class: 'btn btn-primary',
           buttonText: 'update',
-          contextAction: controller.get('actions.update').bind(controller)
+          buttonAction: controller.get('actions.update').bind(controller)
         }]
       });
     }
