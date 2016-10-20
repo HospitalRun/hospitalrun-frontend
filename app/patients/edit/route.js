@@ -50,6 +50,18 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
 
     visitDeleted: function(model) {
       this.controller.send('visitDeleted', model);
+    },
+
+    willTransition () {
+      let patientsController = this.controllerFor('patients');
+      if ( patientsController ) {
+        patientsController.setProperties({
+          additionalButtons: this.get('previousAdditionalButtons'),
+          newButtonAction: this.get('previousNewButtonAction'),
+          newButtonText: this.get('previousNewButtonText')
+        });
+      }
+      this._super(...arguments);
     }
   },
 
@@ -65,6 +77,8 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
     let externalId = model.get('externalPatientId');
     let maxValue = this.get('maxValue');
     let patientId = model.get('id');
+    let patientsController = this.controllerFor('patients');
+
     if (Ember.isEmpty(friendlyId) && !Ember.isEmpty(externalId)) {
       model.set('friendlyId', externalId);
     }
@@ -91,6 +105,28 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
       patientPhotos.addObjects(photos);
       model.set('photos', patientPhotos);
     });
+
+    if ( patientsController ) {
+      this.setProperties({
+        previousNewButtonAction: patientsController.get('newButtonAction'),
+        previousNewButtonText: patientsController.get('newButtonText'),
+        previousAdditionalButtons: patientsController.get('additionalButtons')
+      });
+      console.debug('update action:', controller.get('actions.update'));
+      patientsController.setProperties({
+        newButtonAction: null,
+        newButtonText: null,
+        additionalButtons: [{
+          class: 'btn btn-primary',
+          buttonText: 'cancel',
+          contextAction: controller.get('actions.cancel').bind(controller)
+        }, {
+          class: 'btn btn-primary',
+          buttonText: 'update',
+          contextAction: controller.get('actions.update').bind(controller)
+        }]
+      });
+    }
   }
 
 });

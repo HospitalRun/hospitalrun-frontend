@@ -9,7 +9,7 @@
         {{/if}}
         {{#if additionalButtons}}
           {{#each additionalButtons as |button|}}
-            <button class={{button.class}} {{action button.buttonAction}}>
+            <button class={{button.class}} {{action (if button.contextAction (route-action 'contextAction' button.contextAction button.actionArgs) button.buttonAction)}}>
               {{#if buttonIcon}}<span class={{button.buttonIcon}}></span>{{/if}}
               {{button.buttonText}}
             </button>
