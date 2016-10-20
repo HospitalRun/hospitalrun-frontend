@@ -66,7 +66,6 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
       let currentController = this.controllerFor(this.get('moduleName'));
       currentController.setProperties(details);
     }
-
   },
 
   /**
@@ -137,5 +136,4 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
     }
     this._super(controller, model);
   }
-
 });
