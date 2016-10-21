@@ -30,7 +30,7 @@
                 {{date-picker property="startDate" label=(t "patients.labels.admissionDate") showTime=true class="col-sm-3 required"}}
                 {{date-picker property="endDate" label=(t "patients.labels.dischargeDate") showTime=true class="col-sm-3"}}
               {{else}}
-                {{date-picker property="startDate" label=(t "labels.date") class="col-sm-3 required"}}
+                {{date-picker property="startDate" label=(t "visits.labels.checkInTime") showTime=true class="col-sm-3 required"}}
               {{/if}}
               {{select-or-typeahead className="col-sm-3" property="location"
                 label=(t "labels.location") list=locationList
