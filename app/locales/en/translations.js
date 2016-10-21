@@ -747,7 +747,8 @@ export default {
       newAppointment: 'New Appointment',
       addDiagnosis: 'Add Diagnosis',
       newVitals: 'New Vitals',
-      checkIn: 'Check In'
+      checkIn: 'Check In',
+      checkOut: 'Check Out'
     },
     labels: {
       diagnosis: 'Diagnosis',
@@ -764,7 +765,14 @@ export default {
       patientToCheckIn: 'Patient To Check In',
       chiefComplaint: 'Chief Complaint',
       illnessHistory: 'History of the Present Illness',
-      patientHistory: 'Patient Medical History'
+      patientHistory: 'Patient Medical History',
+      checkInTime: 'Check In',
+      appointment: 'Appointment',
+      haveAppointment: 'Y',
+      noAppointment: 'N',
+      ordersDone: 'Orders Done',
+      haveDoneOrders: 'Y',
+      ordersNotDone: 'N'
     },
     navigation: {
       charges: 'Charges',

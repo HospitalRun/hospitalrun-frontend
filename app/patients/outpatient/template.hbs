@@ -4,26 +4,15 @@
       <tr class="table-header">
         {{#sortable-column sortBy='patient.displayPatientId' sortDesc=sortByDesc sortKey=sortByKey }}{{t 'labels.id'}}{{/sortable-column}}
         {{#sortable-column
-          sortBy='patient.firstName'
+          sortBy='patient.shortDisplayName'
           sortDesc=sortByDesc
           sortKey=sortByKey
-          filterBy='patient.firstName'
+          filterBy='patient.shortDisplayName'
           filteredBy=filteredBy
           filterType='typeahead'
-          filterValues=firstNames
+          filterValues=patientNames
         }}
-          {{t 'patients.labels.firstName'}}
-        {{/sortable-column}}
-        {{#sortable-column
-          sortBy='patient.lastName'
-          sortDesc=sortByDesc
-          sortKey=sortByKey
-          filterBy='patient.lastName'
-          filteredBy=filteredBy
-          filterType='typeahead'
-          filterValues=lastNames
-        }}
-          {{t 'patients.labels.lastName'}}
+          {{t 'labels.name'}}
         {{/sortable-column}}
         {{#sortable-column
           sortBy='patient.sex'
@@ -44,29 +33,52 @@
           filteredBy=filteredBy
           filterValues=visitTypesValues
         }}{{t 'visits.labels.visitType'}}{{/sortable-column}}
-        {{#sortable-column sortBy='status' sortDesc=sortByDesc sortKey=sortByKey }}{{t 'labels.status'}}{{/sortable-column}}
-        {{#if showActions}}
-          <th>{{t 'labels.actions'}}</th>
-        {{/if}}
+        {{#sortable-column
+          sortBy='startDate'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+        }}{{t 'visits.labels.checkInTime'}}{{/sortable-column}}
+        {{#sortable-column
+          sortBy='hasAppointmentLabel'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+          filterBy='hasAppointmentLabel'
+          filteredBy=filteredBy
+          filterValues=hasAppointmentLabels
+        }}{{t 'visits.labels.appointment'}}{{/sortable-column}}
+        {{#sortable-column
+          sortBy='examiner'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+        }}{{t 'visits.labels.examiner'}}{{/sortable-column}}
+        {{#sortable-column
+          sortBy='hasDoneOrders'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+          filterBy='hasDoneOrders'
+          filteredBy=filteredBy
+          filterValues=doneOrdersValues
+        }}
+          {{t 'visits.labels.ordersDone'}}
+        {{/sortable-column}}
+        <th>{{t 'labels.actions'}}</th>
       </tr>
     </thead>
     <tbody>
       {{#each sortedVisits as |visit|}}
-        <tr {{action 'editItem' visit}} class="clickable">
+        <tr {{action 'editVisit' visit}} class="clickable">
           <td class="col-xs-1">{{visit.patient.displayPatientId}}</td>
-          <td class="col-xs-1">{{visit.patient.firstName}}</td>
-          <td class="col-xs-1">{{visit.patient.lastName}}</td>
+          <td class="col-xs-1">{{visit.patient.shortDisplayName}}</td>
           <td class="col-xs-1">{{visit.patient.sex}}</td>
           <td class="col-xs-1">{{visit.patient.shortAge}}</td>
           <td class="col-xs-1">{{visit.visitType}}</td>
-          <td class="col-xs-1">{{visit.status}}</td>
-          {{#if showActions}}
-            <td>
-              {{#if canAdd}}
-                <button class="btn btn-default neutral" {{action 'editVisit' visit  bubbles=false }}>{{t 'labels.edit'}}</button>
-              {{/if}}
-            </td>
-          {{/if}}
+          <td class="col-xs-1">{{date-format visit.startDate format="h:mm A"}}</td>
+          <td class="col-xs-1 text-center">{{visit.hasAppointmentLabel}}</td>
+          <td class="col-xs-1">{{visit.examiner}}</td>
+          <td class="col-xs-1 text-center">{{visit.hasDoneOrders}}</td>
+          <td>
+            <button class="btn btn-default neutral" {{action 'checkOut' visit  bubbles=false }}>{{t 'visits.buttons.checkOut'}}</button>
+          </td>
         </tr>
       {{/each}}
     </tbody>

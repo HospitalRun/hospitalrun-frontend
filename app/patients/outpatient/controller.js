@@ -4,6 +4,8 @@ import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
+const { computed } = Ember;
+
 export default Ember.Controller.extend(FilterList, PatientVisits,  UserSession, VisitTypes, {
   addPermission: 'add_patient',
   deletePermission: 'delete_patient',
@@ -11,29 +13,40 @@ export default Ember.Controller.extend(FilterList, PatientVisits,  UserSession, 
   filterBy: null,
   sortByDesc: null,
   sortByKey: null,
-  canAddVisit: function() {
+  canAddVisit: computed(function() {
     return this.currentUserCan('add_visit');
-  }.property(),
-
-  firstNames:  Ember.computed.map('model', function(visit) {
-    return visit.get('patient.firstName');
   }),
-  lastNames:  Ember.computed.map('model', function(visit) {
-    return visit.get('patient.lastName');
+  hasAppointmentLabels: computed(function() {
+    let i18n = this.get('i18n');
+    return [
+      i18n.t('visits.labels.haveAppointment'),
+      i18n.t('visits.labels.noAppointment'),
+    ];
+  }),
+  doneOrdersValues: computed(function() {
+    let i18n = this.get('i18n');
+    return [
+      i18n.t('visits.labels.ordersNotDone'),
+      i18n.t('visits.labels.haveDoneOrders')
+    ]
+  }),
+  patientNames:  computed.map('model', function(visit) {
+    return visit.get('patient.shortDisplayName');
   }),
   patientController: Ember.inject.controller('patients'),
-  sexList: Ember.computed.alias('patientController.sexList.value'),
-  visitTypesList: Ember.computed.alias('patientController.visitTypesList'),
-  visitTypesValues: Ember.computed.map('visitTypes', function(visitType) {
+  sexList: computed.alias('patientController.sexList.value'),
+  visitTypesList: computed.alias('patientController.visitTypesList'),
+  visitTypesValues: computed.map('visitTypes', function(visitType) {
     return visitType.value;
   }),
-  filteredVisits: Ember.computed('model', 'filterBy', 'filterValue', function() {
+
+  filteredVisits: computed('model', 'filterBy', 'filterValue', function() {
     let filterBy = this.get('filterBy');
     let filterValue = this.get('filterValue');
     let visits = this.get('model');
     return this.filterList(visits , filterBy, filterValue);
   }),
-  sortedVisits: Ember.computed('filteredVisits', 'sortByKey', 'sortByDesc', function() {
+  sortedVisits: computed('filteredVisits', 'sortByKey', 'sortByDesc', function() {
     let filteredList = this.get('filteredVisits');
     let sortDesc = this.get('sortByDesc');
     let sortBy = this.get('sortByKey');
@@ -76,7 +89,7 @@ export default Ember.Controller.extend(FilterList, PatientVisits,  UserSession, 
       });
     },
 
-    patientCheckIn: function() {
+    patientCheckIn() {
       this.transitionToRoute('visits.edit', 'checkin');
     }
 
