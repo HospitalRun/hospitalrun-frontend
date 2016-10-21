@@ -19,10 +19,14 @@ function dateAcceptance(object) {
   return false;
 }
 
+const { computed } = Ember;
+
 const PAYMENT_STATES = {
   CLEAR: 'clear',
   PENDING: 'pending'
 };
+const REQUESTED_STATUS = 'Requested';
+const STATUS_FIELD = 'status';
 
 function paymentStateAcceptance(object) {
   return !Object.keys(PAYMENT_STATES)
@@ -38,6 +42,7 @@ export default AbstractModel.extend({
   dischargeInfo: DS.attr('string'),
   endDate: DS.attr('date'), // if visit type is outpatient, startDate and endDate are equal
   examiner: DS.attr('string'),
+  hasAppointment: DS.attr('boolean', {default: false}),
   history: DS.attr('string'),
   historySince: DS.attr('string'), // History of the Present Illness
   imaging: DS.hasMany('imaging', { async: true }),
@@ -75,6 +80,27 @@ export default AbstractModel.extend({
     }
     return diagnosisList;
   }.property('additionalDiagnosis.[]', 'primaryDiagnosis'),
+
+  hasAppointmentLabel: computed('hasAppointment', function() {
+    let hasAppointment = this.get('hasAppointment');
+    let i18n = this.get('i18n');
+    if (hasAppointment === true) {
+      return i18n.t('visits.labels.haveAppointment');
+    } else {
+      return i18n.t('visits.labels.noAppointment');
+    }
+  }),
+
+  hasDoneOrders: computed('labs', 'imaging', function() {
+    let i18n = this.get('i18n');
+    let imaging = this.get('imaging');
+    let labs = this.get('labs');
+    if (imaging.isAny(STATUS_FIELD, REQUESTED_STATUS) || labs.isAny(STATUS_FIELD, REQUESTED_STATUS)) {
+      return i18n.t('visits.labels.ordersNotDone');
+    } else {
+      return i18n.t('visits.labels.haveDoneOrders');
+    }
+  }),
 
   visitDate: function() {
     let endDate = this.get('endDate');
