@@ -163,8 +163,8 @@
     border-bottom: 1px solid $navy_drkest;
     background: $navy_mid2;
     padding: 0 15px;
-    height: 55px;
-    line-height: 55px;
+    height: 48px;
+    line-height: 48px;
     color: $white;
     font-size: 18px;
 
@@ -172,8 +172,8 @@
       @include transition_all;
       float: left;
       margin-right: 12px;
-      line-height: 55px;
       width: 16px;
+      line-height: 48px;
     }
 
     &:hover,
