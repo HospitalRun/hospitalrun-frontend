@@ -17,7 +17,7 @@
   .mega-octicon {
     text-align: center;
     color: $sidebar_icon;
-    font-size: 24px;
+    font-size: 16px;
   }
 }
 
@@ -172,8 +172,8 @@
       @include transition_all;
       float: left;
       margin-right: 12px;
-      width: 24px;
       line-height: 55px;
+      width: 16px;
     }
 
     &:hover,
@@ -216,7 +216,7 @@
       float: left;
       margin-right: 6px;
       margin-left: 6px;
-      width: 24px;
+      width: 16px;
       line-height: 36px;
     }
   }
