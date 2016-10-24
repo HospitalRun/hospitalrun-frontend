@@ -14,10 +14,10 @@ export default Ember.Mixin.create({
       filteredBy.forEach((filterValue, filterBy) => {
         let orderValue = order.get(filterBy);
         if (!Ember.isEmpty(filterValue)) {
-          if (filterValue instanceof Ember.Handlebars.SafeString) {
+          if (Ember.String.isHTMLSafe(filterValue)) {
             filterValue = filterValue.toString();
           }
-          if (orderValue instanceof Ember.Handlebars.SafeString) {
+          if (Ember.String.isHTMLSafe(orderValue)) {
             orderValue = orderValue.toString();
           }
           if (orderValue !== filterValue) {
