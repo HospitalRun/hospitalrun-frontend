@@ -3,11 +3,11 @@ import Ember from 'ember';
 
 function triggerNativeEvent(element, eventName) {
   if (document.createEvent) {
-    var event = document.createEvent('Events');
+    let event = document.createEvent('Events');
     event.initEvent(eventName, true, false);
     element.dispatchEvent(event);
   } else {
-    element.fireEvent('on' + eventName);
+    element.fireEvent(`on${eventName}`);
   }
 }
 

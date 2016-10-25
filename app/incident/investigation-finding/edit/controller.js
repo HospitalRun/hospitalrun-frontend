@@ -29,9 +29,9 @@ export default AbstractEditController.extend(SelectValues, {
     var i18n = this.get('i18n');
     var isNew = this.get('model.isNew');
     if (isNew) {
-      return i18n.t('incident.titles.add_finding');
+      return i18n.t('incident.titles.addFinding');
     }
-    return i18n.t('incident.titles.edit_finding');
+    return i18n.t('incident.titles.editFinding');
   }.property('model.isNew'),
 
   beforeUpdate: function() {

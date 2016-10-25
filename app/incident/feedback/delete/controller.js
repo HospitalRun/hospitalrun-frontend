@@ -5,7 +5,7 @@ export default AbstractDeleteController.extend({
   afterDeleteAction: 'notifyFeedbackDelete',
   editController: Ember.inject.controller('incident/edit'),
 
-  title: t('incident.titles.delete_feedback'),
+  title: t('incident.titles.deleteFeedback'),
 
   actions: {
     notifyFeedbackDelete: function() {

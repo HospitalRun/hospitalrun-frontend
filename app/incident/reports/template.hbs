@@ -3,11 +3,11 @@
     <div class="panel-body">
       {{#em-form model=this submitButton=false }}
         <div class="row">
-          {{date-picker property="startDate" label=(t 'incident.labels.start_date') class="col-sm-4"}}
-          {{date-picker property="endDate" label=(t 'incident.labels.end_date') class="col-sm-4"}}
+          {{date-picker property="startDate" label=(t 'incident.labels.startDate') class="col-sm-4"}}
+          {{date-picker property="endDate" label=(t 'incident.labels.endDate') class="col-sm-4"}}
         </div>
         <div class="row">
-          <label class="control-label" for="report-type">{{t 'incident.labels.report_type'}}</label>
+          <label class="control-label" for="report-type">{{t 'incident.labels.reportType'}}</label>
           {{select-list
             action=(action (mut reportType))
             class='form-control'
@@ -21,7 +21,7 @@
       {{/em-form}}
     </div>
     <div class="panel-footer">
-      <button class="btn btn-default" {{action 'generateReport'}}>{{t 'incident.buttons.generate_rep'}}</button>
+      <button class="btn btn-default" {{action 'generateReport'}}>{{t 'incident.buttons.generateRep'}}</button>
     </div>
   {{/if}}
 </div>

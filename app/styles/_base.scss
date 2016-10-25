@@ -1,7 +1,7 @@
 body {
   background: $blue_lightest;
 
-  &.ember-application {
+  &.ember-application {/* stylelint-disable-line selector-no-qualifying-type */
     padding-left: 275px; // to accomodate for .sidebar-nav
   }
 }

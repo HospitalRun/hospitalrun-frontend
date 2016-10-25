@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Hospital Run</title>
+    <title>HospitalRun</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -11,8 +11,8 @@
 
     {{content-for "head"}}
 
-    <link rel="stylesheet" href="assets/vendor.css">
-    <link rel="stylesheet" href="assets/hospitalrun.css">
+    <link rel="stylesheet" href="{{rootURL}}assets/vendor.css">
+    <link rel="stylesheet" href="{{rootURL}}assets/hospitalrun.css">
 
     {{content-for "head-footer"}}
   </head>
@@ -43,8 +43,8 @@
     </script>
     {{content-for "body"}}
 
-    <script src="assets/vendor.js"></script>
-    <script src="assets/hospitalrun.js"></script>
+    <script src="{{rootURL}}assets/vendor.js"></script>
+    <script src="{{rootURL}}assets/hospitalrun.js"></script>
 
     {{content-for "body-footer"}}
   </body>

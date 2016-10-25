@@ -7,13 +7,13 @@
     {{/if}}
     <div class="row">
       {{#if isAdmissionAppointment}}
-        {{date-picker property="startDate" label=(t 'labels.start_date') showTime=showTime class="col-sm-4 required test-appointment-start"}}
-        {{date-picker property="endDate" label=(t 'labels.end_date') showTime=showTime class="col-sm-4 required test-appointment-end"}}
+        {{date-picker property="startDate" label=(t 'labels.startDate') showTime=showTime class="col-sm-4 required test-appointment-start"}}
+        {{date-picker property="endDate" label=(t 'labels.endDate') showTime=showTime class="col-sm-4 required test-appointment-end"}}
       {{else}}
         {{date-picker property="appointmentDate" label=(t 'labels.date') class="col-sm-4 required test-appointment-date"}}
         {{#unless isAllDay}}
           <div class="form-group col-sm-3 required">
-            <label class="control-label" for="startTime">{{t 'labels.start_time'}}</label>
+            <label class="control-label" for="startTime">{{t 'labels.startTime'}}</label>
             <div class="input-group">
               {{select-list
                 content=hourList
@@ -34,7 +34,7 @@
             </div>
           </div>
           <div class="form-group col-sm-3 required has-feedback {{if endTimeHasError 'has-error'}}">
-            <label class="control-label" for="endTime">{{t 'labels.end_time'}}</label>
+            <label class="control-label" for="endTime">{{t 'labels.endTime'}}</label>
             <div class="input-group">
               {{select-list
                   content=hourList
@@ -54,12 +54,12 @@
               }}
             </div>
             {{#if endTimeHasError}}
-              <p class="help-block">{{t 'appointments.messages.end_time_later_than_start'}}</p>
+              <p class="help-block">{{t 'appointments.messages.endTimeLaterThanStart'}}</p>
             {{/if}}
           </div>
         {{/unless}}
       {{/if}}
-      {{em-checkbox label=(t 'labels.all_day') property="allDay"  class="col-sm-2"}}
+      {{em-checkbox label=(t 'labels.allDay') property="allDay"  class="col-sm-2"}}
     </div>
     <div class="row">
       {{em-select class="col-sm-6 required test-appointment-type" label=(t 'labels.type')

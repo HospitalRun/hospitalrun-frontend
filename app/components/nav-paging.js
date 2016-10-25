@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import PagingActions from 'hospitalrun/mixins/paging-actions';
 export default Ember.Component.extend(PagingActions, {
-  classNames: ['btn-group', 'pull-right'],
+  classNames: ['paging-buttons'],
   paginationProps: null
 });

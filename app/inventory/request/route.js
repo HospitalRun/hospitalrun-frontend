@@ -2,9 +2,9 @@ import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 export default AbstractEditRoute.extend({
-  editTitle: t('inventory.titles.edit_request'),
+  editTitle: t('inventory.titles.editRequest'),
   modelName: 'inv-request',
-  newTitle: t('inventory.titles.add_request'),
+  newTitle: t('inventory.titles.addRequest'),
   database: Ember.inject.service(),
   getNewData: function() {
     return Ember.RSVP.resolve({
@@ -28,7 +28,7 @@ export default AbstractEditRoute.extend({
    */
   setupController: function(controller, model) {
     this._super(controller, model);
-    var inventoryQuery = {
+    let inventoryQuery = {
       startkey: 'inventory_',
       endkey: 'inventory_\uffff',
       include_docs: true

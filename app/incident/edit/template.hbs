@@ -2,7 +2,7 @@
 {{#em-form model=model submitButton=false }}
   <div class="panel panel-success">
     <div class="row">
-      <div class="col-xs-12 col-md-8"><p class="text-info">{{t 'incident.messages.incident_id' id=model.friendlyId}}</p></div>
+      <div class="col-xs-12 col-md-8"><p class="text-info">{{t 'incident.messages.incidentId' id=model.friendlyId}}</p></div>
       <div class="col-xs-6 col-md-4"><p class="text-success pull-right">{{t 'incident.messages.status' status=model.statusOfIncident}}</p></div>
     </div>
   </div>
@@ -11,11 +11,11 @@
     <li role="presentation"><a href="#reviewers" role="tab" data-toggle="pill">{{t 'incident.tabs.reviewers'}}</a></li>
     <li role="presentation"><a href="#feedback" role="tab" data-toggle="pill">{{t 'incident.tabs.feedback'}}</a></li>
     <li role="presentation"><a href="#investigate" role="tab" data-toggle="pill">{{t 'incident.tabs.investigations'}}</a></li>
-    <li role="presentation"><a href="#factors" role="tab" data-toggle="pill">{{t 'incident.tabs.root_cause'}}</a></li>
-    <li role="presentation"><a href="#harmscore" role="tab" data-toggle="pill">{{t 'incident.tabs.harm_score'}}</a></li>
-    <li role="presentation"><a href="#prerisk" role="tab" data-toggle="pill">{{t 'incident.tabs.pre_risk'}}</a></li>
+    <li role="presentation"><a href="#factors" role="tab" data-toggle="pill">{{t 'incident.tabs.rootCause'}}</a></li>
+    <li role="presentation"><a href="#harmscore" role="tab" data-toggle="pill">{{t 'incident.tabs.harmScore'}}</a></li>
+    <li role="presentation"><a href="#prerisk" role="tab" data-toggle="pill">{{t 'incident.tabs.preRisk'}}</a></li>
     <li role="presentation"><a href="#recommendation" role="tab" data-toggle="pill">{{t 'incident.tabs.recommendations'}}</a></li>
-    <li role="presentation"><a href="#postrisk" role="tab" data-toggle="pill">{{t 'incident.tabs.post_risk'}}</a></li>
+    <li role="presentation"><a href="#postrisk" role="tab" data-toggle="pill">{{t 'incident.tabs.postRisk'}}</a></li>
     <li role="presentation"><a href="#summary" role="tab" data-toggle="pill">{{t 'incident.tabs.summary'}}</a></li>
   </ul>
   <div class="tab-content">
@@ -28,29 +28,29 @@
           <div class="row">
             <div class="col-xs-12 col-sm-6">
               <div class="form-group has-success">
-                <label class="control-label">{{t 'incident.labels.reported_by'}}</label>
+                <label class="control-label">{{t 'incident.labels.reportedBy'}}</label>
                 <div class="form-control not-editable">
                   {{model.reportedBy}}
                 </div>
               </div>
             </div>
             <div class="col-xs-12 col-sm-6">
-              {{em-select label=(t 'incident.labels.incident_location') property="locationOfIncident" prompt=" " content=incidentLocations class="required"}}
+              {{em-select label=(t 'incident.labels.incidentLocation') property="locationOfIncident" prompt=" " content=incidentLocations class="required"}}
             </div>
           </div>
           <div class="row">
-            {{date-picker property="dateOfIncident" label=(t 'incident.labels.incident_date') class="col-xs-12 col-sm-6 required" format="l h:mm A" showTime=true}} {{em-input property="reportedTo" label=(t 'incident.labels.reported_to') class="col-xs-12 col-sm-6
+            {{date-picker property="dateOfIncident" label=(t 'incident.labels.incidentDate') class="col-xs-12 col-sm-6 required" format="l h:mm A" showTime=true}} {{em-input property="reportedTo" label=(t 'incident.labels.reportedTo') class="col-xs-12 col-sm-6
             required"}}
           </div>
           <div class="row">
             {{em-input property="witnessList" label=(t 'incident.labels.witness') class="col-xs-12 col-sm-12"}}
           </div>
-          {{em-text label=(t 'incident.labels.incident_desc') property="incidentDescription" class="required" rows=3}}
+          {{em-text label=(t 'incident.labels.incidentDesc') property="incidentDescription" class="required" rows=3}}
         </div>
       </div>
       <div class="panel detail-section">
         <div class="panel-heading">
-          <h3 class="panel-title">{{t 'incident.titles.incident_type'}}</h3>
+          <h3 class="panel-title">{{t 'incident.titles.incidentType'}}</h3>
         </div>
         <div class="panel-body detail-section-content">
           <div class="row">
@@ -69,19 +69,19 @@
       <div class="panel">
         <div class="panel-heading">
           <h3 class="panel-title">
-            {{t 'incident.titles.add_reviewers'}}
+            {{t 'incident.titles.addReviewers'}}
             {{#if canAddReviewer}}
-              <button class="btn btn-primary align-right" {{action "showAddReviewer" bubbles=false }}>{{t 'incident.buttons.new_reviewer'}}</button>
+              <button class="btn btn-primary align-right" {{action "showAddReviewer" bubbles=false }}>{{t 'incident.buttons.newReviewer'}}</button>
             {{/if}}
           </h3>
         </div>
         <div class="panel-body detail-section-content">
           <table class="table">
             <tr class="table-header">
-              <th>{{t 'incident.labels.reviewer_name'}}</th>
-              <th>{{t 'incident.labels.reviewer_email'}}</th>
-              <th>{{t 'incident.labels.added_by'}}</th>
-              <th>{{t 'incident.labels.added_on'}}</th>
+              <th>{{t 'incident.labels.reviewerName'}}</th>
+              <th>{{t 'incident.labels.reviewerEmail'}}</th>
+              <th>{{t 'incident.labels.addedBy'}}</th>
+              <th>{{t 'incident.labels.addedOn'}}</th>
               <th>{{t 'incident.labels.actions'}}</th>
             </tr>
             {{#each model.reviewers as |reviewer|}}
@@ -108,9 +108,9 @@
       <div class="panel">
         <div class="panel-heading">
           <h3 class="panel-title">
-            {{t 'incident.titles.feedback_list'}}
+            {{t 'incident.titles.feedbackList'}}
             {{#if canAddFeedback}}
-              <button class="btn btn-primary align-right" {{action "showAddFeedback" bubbles=false }}>{{t 'incident.buttons.new_feedback'}}</button>
+              <button class="btn btn-primary align-right" {{action "showAddFeedback" bubbles=false }}>{{t 'incident.buttons.newFeedback'}}</button>
             {{/if}}
           </h3>
         </div>
@@ -118,7 +118,7 @@
           <table class="table">
             <tr class="table-header">
               <th>{{t 'incident.labels.date'}}</th>
-              <th>{{t 'incident.labels.given_by'}}</th>
+              <th>{{t 'incident.labels.givenBy'}}</th>
               <th>{{t 'incident.labels.feedback'}}</th>
               <th>{{t 'incident.labels.actions'}}</th>
             </tr>
@@ -147,7 +147,7 @@
           <h3 class="panel-title">
             {{t 'incident.titles.findings'}}
             {{#if canAddInvestigationFinding}}
-              <button class="btn btn-primary align-right" {{action "showAddInvestigationFinding" bubbles=false }}>{{t 'incident.buttons.new_finding'}}</button>
+              <button class="btn btn-primary align-right" {{action "showAddInvestigationFinding" bubbles=false }}>{{t 'incident.buttons.newFinding'}}</button>
             {{/if}}
           </h3>
           <h5>{{t 'incident.titles.findings2'}}</h5>
@@ -155,11 +155,11 @@
         <div class="panel-body detail-section-content">
           <table class="table">
             <tr class="table-header">
-              <th>{{t 'incident.labels.date_recorded'}}</th>
-              <th>{{t 'incident.labels.type_of_person'}}</th>
+              <th>{{t 'incident.labels.dateRecorded'}}</th>
+              <th>{{t 'incident.labels.typeOfPerson'}}</th>
               <th>{{t 'incident.labels.id_type'}}</th>
               <th>{{t 'incident.labels.id_number'}}</th>
-              <th>{{t 'incident.labels.narrative_statement'}}</th>
+              <th>{{t 'incident.labels.narrativeStatement'}}</th>
               <th>{{t 'incident.labels.actions'}}</th>
             </tr>
             {{#each model.investigationFindings as |investigationFinding|}}
@@ -198,7 +198,7 @@
             <table class="table">
               <THEAD>
                 <tr class="table-header success">
-                  <th>{{t 'incident.labels.patient_factors'}}</th>
+                  <th>{{t 'incident.labels.patientFactors'}}</th>
                   <th>{{t 'incident.labels.components'}}</th>
                 </tr>
               </THEAD>
@@ -224,7 +224,7 @@
             <table class="table">
               <THEAD>
                 <tr class="table-header success">
-                  <th>{{t 'incident.labels.staff_factors'}}</th>
+                  <th>{{t 'incident.labels.staffFactors'}}</th>
                   <th>{{t 'incident.labels.components'}}</th>
                 </tr>
               </THEAD>
@@ -250,7 +250,7 @@
             <table class="table">
               <THEAD>
                 <tr class="table-header success">
-                  <th>{{t 'incident.labels.task_factors'}}</th>
+                  <th>{{t 'incident.labels.taskFactors'}}</th>
                   <th>{{t 'incident.labels.components'}}</th>
                 </tr>
               </THEAD>
@@ -276,7 +276,7 @@
             <table class="table">
               <THEAD>
                 <tr class="table-header success">
-                  <th>{{t 'incident.labels.communication_factors'}}</th>
+                  <th>{{t 'incident.labels.communicationFactors'}}</th>
                   <th>{{t 'incident.labels.components'}}</th>
                 </tr>
               </THEAD>
@@ -302,7 +302,7 @@
             <table class="table">
               <THEAD>
                 <tr class="table-header success">
-                  <th>{{t 'incident.labels.equipment_factors'}}</th>
+                  <th>{{t 'incident.labels.equipmentFactors'}}</th>
                   <th>{{t 'incident.labels.components'}}</th>
                 </tr>
               </THEAD>
@@ -328,7 +328,7 @@
             <table class="table">
               <THEAD>
                 <tr class="table-header success">
-                  <th>{{t 'incident.labels.work_factors'}}</th>
+                  <th>{{t 'incident.labels.workFactors'}}</th>
                   <th>{{t 'incident.labels.components'}}</th>
                 </tr>
               </THEAD>
@@ -354,7 +354,7 @@
             <table class="table">
               <THEAD>
                 <tr class="table-header success">
-                  <th>{{t 'incident.labels.organizational_factors'}}</th>
+                  <th>{{t 'incident.labels.organizationalFactors'}}</th>
                   <th>{{t 'incident.labels.components'}}</th>
                 </tr>
               </THEAD>
@@ -380,7 +380,7 @@
             <table class="table">
               <THEAD>
                 <tr class="table-header success">
-                  <th>{{t 'incident.labels.educational_factors'}}</th>
+                  <th>{{t 'incident.labels.educationalFactors'}}</th>
                   <th>{{t 'incident.labels.components'}}</th>
                 </tr>
               </THEAD>
@@ -406,7 +406,7 @@
             <table class="table">
               <THEAD>
                 <tr class="table-header success">
-                  <th>{{t 'incident.labels.team_factors'}}</th>
+                  <th>{{t 'incident.labels.teamFactors'}}</th>
                   <th>{{t 'incident.labels.components'}}</th>
                 </tr>
               </THEAD>
@@ -429,7 +429,7 @@
                 {{/each}}
               </TBODY>
             </table>
-            {{em-text label=(t 'incident.labels.root_cause_summary') property="rcaSummary" rows=3}}
+            {{em-text label=(t 'incident.labels.rootCauseSummary') property="rcaSummary" rows=3}}
           </div>
         {{/if}}
       </div>
@@ -437,16 +437,16 @@
     <div role="tabpanel" class="tab-pane" id="harmscore">
       <div class="panel">
         <div class="panel-heading">
-          <h3 class="panel-title">{{t 'incident.titles.harm_score'}}</h3>
+          <h3 class="panel-title">{{t 'incident.titles.harmScore'}}</h3>
         </div>
         {{#if canAddRisk}}
 
           <div class="panel-body detail-section-content">
-            <h5>{{t 'incident.labels.harm_prompt'}}</h5>
+            <h5>{{t 'incident.labels.harmPrompt'}}</h5>
             {{ext-radio content=harmScoreList value=model.harmScore showInline=false}}
           </div>
           <div class="panel-body detail-section-content">
-            <h5>{{t 'incident.labels.harm_duration'}}</h5>
+            <h5>{{t 'incident.labels.harmDuration'}}</h5>
             {{ext-radio content=harmDurationList value=model.harmDuration showInline=false}}
           </div>
         {{/if}}
@@ -455,7 +455,7 @@
     <div role="tabpanel" class="tab-pane" id="prerisk">
       <div class="panel">
         <div class="panel-heading">
-          <h3 class="panel-title">{{t 'incident.titles.pre_risk'}}</h3>
+          <h3 class="panel-title">{{t 'incident.titles.preRisk'}}</h3>
         </div>
         {{#if canAddRisk}}
           <div class="panel-body detail-section-content">
@@ -478,7 +478,7 @@
                 <div class="col-sm-4">
                   <table class="table">
                     <tr class="table-header">
-                      <th>{{t 'incident.labels.risk_score'}}</th>
+                      <th>{{t 'incident.labels.riskScore'}}</th>
                     </tr>
                     <tr>
                       <td><b>{{displayPreScore}} {{displayPreResults}}</b></td>
@@ -497,7 +497,7 @@
           <h3 class="panel-title">
             {{t 'incident.titles.recommendations'}}
             {{#if canAddRecommendation}}
-              <button class="btn btn-primary align-right" {{action "showAddRecommendation" bubbles=false }}>{{t 'incident.buttons.new_recommendation'}}</button>
+              <button class="btn btn-primary align-right" {{action "showAddRecommendation" bubbles=false }}>{{t 'incident.buttons.newRecommendation'}}</button>
             {{/if}}
           </h3>
         </div>
@@ -506,8 +506,8 @@
             <tr class="table-header">
               <th>{{t 'incident.labels.activity'}}</th>
               <th>{{t 'incident.labels.responsibility'}}</th>
-              <th>{{t 'incident.labels.start_date'}}</th>
-              <th>{{t 'incident.labels.target_date'}}</th>
+              <th>{{t 'incident.labels.startDate'}}</th>
+              <th>{{t 'incident.labels.targetDate'}}</th>
               <th>{{t 'incident.labels.status'}}</th>
               <th>{{t 'incident.labels.actions'}}</th>
             </tr>
@@ -530,8 +530,8 @@
             {{/each}}
           </table>
           {{#if canAddRecommendation}}
-            {{em-text label=(t 'incident.labels.actions_taken') property="actionsTaken" rows=3}}
-            {{em-text label=(t 'incident.labels.lessons_learned') property="lessonsLearned" rows=3}}
+            {{em-text label=(t 'incident.labels.actionsTaken') property="actionsTaken" rows=3}}
+            {{em-text label=(t 'incident.labels.lessonsLearned') property="lessonsLearned" rows=3}}
           {{/if}}
         </div>
       </div>
@@ -539,7 +539,7 @@
     <div role="tabpanel" class="tab-pane" id="postrisk">
       <div class="panel">
         <div class="panel-heading">
-          <h3 class="panel-title">{{t 'incident.titles.post_risk'}}</h3>
+          <h3 class="panel-title">{{t 'incident.titles.postRisk'}}</h3>
         </div>
         {{#if canAddRisk}}
           <div class="panel-body detail-section-content">
@@ -562,7 +562,7 @@
                 <div class="col-sm-4">
                   <table class="table">
                     <tr class="table-header">
-                      <th>{{t 'incident.labels.risk_score'}}</th>
+                      <th>{{t 'incident.labels.riskScore'}}</th>
                     </tr>
                     <tr>
                       <td><b>{{displayPostScore}} {{displayPostResults}}</b></td>
@@ -581,7 +581,7 @@
           <h3 class="panel-title">
             {{t 'incident.titles.summary'}}
             {{#if canAddSummary}}
-              <button class="btn btn-primary align-right" {{action "generateSummary" bubbles=false }}>{{t 'incident.buttons.generate_sum'}}</button>
+              <button class="btn btn-primary align-right" {{action "generateSummary" bubbles=false }}>{{t 'incident.buttons.generateSum'}}</button>
             {{/if}}
           </h3>
         </div>
@@ -607,20 +607,20 @@
               </THEAD>
               <TBODY>
                 <tr>
-                  <td>{{t 'incident.labels.incident_date_sum'}}</td>
+                  <td>{{t 'incident.labels.incidentDateSum'}}</td>
                   <td>{{date-format model.dateOfIncident}}</td>
                 </tr>
                 <tr>
-                  <td>{{t 'incident.labels.incident_location_sum'}}</td>
+                  <td>{{t 'incident.labels.incidentLocationSum'}}</td>
                   <td>{{model.locationOfIncident}}</td>
                 </tr>
                 <tr>
-                  <td>{{t 'incident.labels.incident_type'}}</td>
+                  <td>{{t 'incident.labels.incidentType'}}</td>
                   <td>{{model.categoryName}}</td>
                   <td>{{model.categoryItem}}</td>
                 </tr>
                 <tr>
-                  <td>{{t 'incident.labels.harm_score'}}</td>
+                  <td>{{t 'incident.labels.harmScore'}}</td>
                   <td>{{model.harmScore}}</td>
                 </tr>
               </TBODY>
@@ -628,13 +628,13 @@
             <table class="table">
               <THEAD>
                 <tr class="table-header success">
-                  <th colspan="2">{{t 'incident.labels.contributory_factors'}}</th>
+                  <th colspan="2">{{t 'incident.labels.contributoryFactors'}}</th>
                 </tr>
               </THEAD>
               <TBODY>
                 {{#if havePatientContributingFactors}}
                   <tr>
-                    <td>{{t 'incident.labels.patient_factors'}}</td>
+                    <td>{{t 'incident.labels.patientFactors'}}</td>
                     <td>
                       <table class="table table-striped">
                         <tbody>
@@ -652,7 +652,7 @@
                 {{/if}}
                 {{#if haveStaffContributingFactors}}
                   <tr>
-                    <td>{{t 'incident.labels.staff_factors'}}</td>
+                    <td>{{t 'incident.labels.staffFactors'}}</td>
                     <td>
                       <table class="table table-striped">
                         <tbody>
@@ -670,7 +670,7 @@
                 {{/if}}
                 {{#if haveTaskContributingFactors}}
                   <tr>
-                    <td>{{t 'incident.labels.task_factors'}}</td>
+                    <td>{{t 'incident.labels.taskFactors'}}</td>
                     <td>
                       <table class="table table-striped">
                         <tbody>
@@ -688,7 +688,7 @@
                 {{/if}}
                 {{#if haveCommunicationContributingFactors}}
                   <tr>
-                    <td>{{t 'incident.labels.communication_factors'}}</td>
+                    <td>{{t 'incident.labels.communicationFactors'}}</td>
                     <td>
                       <table class="table table-striped">
                         <tbody>
@@ -706,7 +706,7 @@
                 {{/if}}
                 {{#if haveEquipmentContributingFactors}}
                   <tr>
-                    <td>{{t 'incident.labels.equipment_factors'}}</td>
+                    <td>{{t 'incident.labels.equipmentFactors'}}</td>
                     <td>
                       <table class="table table-striped">
                         <tbody>
@@ -724,7 +724,7 @@
                 {{/if}}
                 {{#if haveWorkEnvironmentContributingFactors}}
                   <tr>
-                    <td>{{t 'incident.labels.work_factors'}}</td>
+                    <td>{{t 'incident.labels.workFactors'}}</td>
                     <td>
                       <table class="table table-striped">
                         <tbody>
@@ -742,7 +742,7 @@
                 {{/if}}
                 {{#if haveOrganizationalContributingFactors}}
                   <tr>
-                    <td>{{t 'incident.labels.organizational_factors'}}</td>
+                    <td>{{t 'incident.labels.organizationalFactors'}}</td>
                     <td>
                       <table class="table table-striped">
                         <tbody>
@@ -760,7 +760,7 @@
                 {{/if}}
                 {{#if haveEducationTrainingContributingFactors}}
                   <tr>
-                    <td>{{t 'incident.labels.educational_factors'}}</td>
+                    <td>{{t 'incident.labels.educationalFactors'}}</td>
                     <td>
                       <table class="table table-striped">
                         <tbody>
@@ -778,7 +778,7 @@
                 {{/if}}
                 {{#if haveTeamContributingFactors}}
                   <tr>
-                    <td>{{t 'incident.labels.team_factors'}}</td>
+                    <td>{{t 'incident.labels.teamFactors'}}</td>
                     <td>
                       <table class="table table-striped">
                         <tbody>
@@ -795,7 +795,7 @@
                   </tr>
                 {{/if}}
                 <tr>
-                  <td>{{t 'incident.labels.root_cause_summary'}}</td>
+                  <td>{{t 'incident.labels.rootCauseSummary'}}</td>
                   <td>{{model.rcaSummary}}</td>
                 </tr>
               </TBODY>
@@ -803,7 +803,7 @@
             <table class="table table-hover">
               <THEAD>
                 <tr class="table-header success">
-                  <th colspan="2">{{t 'incident.titles.pre_risk'}}</th>
+                  <th colspan="2">{{t 'incident.titles.preRisk'}}</th>
                 </tr>
               </THEAD>
               <TBODY>
@@ -816,7 +816,7 @@
                   <td>{{model.preOccurence}}</td>
                 </tr>
                 <tr>
-                  <td>{{t 'incident.messages.risk_score'}}</td>
+                  <td>{{t 'incident.messages.riskScore'}}</td>
                   <td>{{model.preRiskScore}}</td>
                 </tr>
               </TBODY>
@@ -829,8 +829,8 @@
                 <tr class="table-header">
                   <th>{{t 'incident.labels.activity'}}</th>
                   <th>{{t 'incident.labels.responsibility'}}</th>
-                  <th>{{t 'incident.labels.start_date'}}</th>
-                  <th>{{t 'incident.labels.target_date'}}</th>
+                  <th>{{t 'incident.labels.startDate'}}</th>
+                  <th>{{t 'incident.labels.targetDate'}}</th>
                   <th>{{t 'incident.labels.status'}}</th>
                 </tr>
               </THEAD>
@@ -845,11 +845,11 @@
                   </tr>
                 {{/each}}
                 <tr>
-                  <td>{{t 'incident.labels.actions_taken'}}</td>
+                  <td>{{t 'incident.labels.actionsTaken'}}</td>
                   <td>{{model.actionsTaken}}</td>
                 </tr>
                 <tr>
-                  <td>{{t 'incident.labels.lessons_learned'}}</td>
+                  <td>{{t 'incident.labels.lessonsLearned'}}</td>
                   <td>{{model.lessonsLearned}}</td>
                 </tr>
               </TBODY>
@@ -857,7 +857,7 @@
             <table class="table table-hover">
               <THEAD>
                 <tr class="table-header success">
-                  <th colspan="2">{{t 'incident.titles.post_risk'}}</th>
+                  <th colspan="2">{{t 'incident.titles.postRisk'}}</th>
                 </tr>
               </THEAD>
               <TBODY>
@@ -870,7 +870,7 @@
                   <td>{{model.postOccurence}}</td>
                 </tr>
                 <tr>
-                  <td>{{t 'incident.messages.risk_score'}}</td>
+                  <td>{{t 'incident.messages.riskScore'}}</td>
                   <td>{{model.postRiskScore}}</td>
                 </tr>
               </TBODY>

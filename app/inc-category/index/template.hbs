@@ -1,25 +1,27 @@
 {{#item-listing paginationProps=paginationProps }}
-    {{#if hasRecords}}
-        <table class="table">
-            <tr class="table-header">
-                <th>Incident Category Name</th>
-                     <th>Actions</th>
-            </tr>
-            {{#each model as |category|}}
-                    <tr {{action 'editItem' category}}>
-                        <td>{{category.incidentCategoryName}}</td>
-                        <td>
-                            <button class="btn btn-default neutral" {{action 'editItem' category  bubbles=false }}>Edit</button>
-                            <button class="btn btn-default warning" {{action 'showDeleteIncidentCategory' category  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
-                        </td>
-                    </tr>
-            {{/each}}
-        </table>
-    {{else}}
-        <div class="alert alert-info">
-            <em>No Incident Categories found.</em>
-            <em>Create a new Incident Category?</em>
-            <button class="btn btn-primary on-white" {{action 'newItem'}}>New Category</button>
-        </div>
-   {{/if}}
+  {{#if hasRecords}}
+    <table class="table">
+      <tr class="table-header">
+        <th>Incident Category Name</th>
+        <th>Actions</th>
+      </tr>
+      {{#each model as |category|}}
+        <tr {{action 'editItem' category}}>
+          <td>{{category.incidentCategoryName}}</td>
+          <td>
+              <button class="btn btn-default neutral" {{action 'editItem' category  bubbles=false }}>Edit</button>
+              {{#if canDeleteIncidentCategory}}
+                <button class="btn btn-default warning" {{action 'showDeleteIncidentCategory' category  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+              {{/if}}
+          </td>
+        </tr>
+      {{/each}}
+    </table>
+  {{else}}
+    <div class="alert alert-info">
+      <em>No Incident Categories found.</em>
+      <em>Create a new Incident Category?</em>
+      <button class="btn btn-primary on-white" {{action 'newItem'}}>New Category</button>
+    </div>
+ {{/if}}
 {{/item-listing}}

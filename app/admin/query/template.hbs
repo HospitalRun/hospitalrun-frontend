@@ -24,13 +24,13 @@
         <h3 class="panel-title">Query Results</h3>
       </div>
       <div class="panel-body">
-        {{#each resultRows}}
+        {{#each resultRows as |resultRow|}}
           <table class="table">
             <tr class="table-header">
               <th>Field</th>
               <th>Value</th>
             </tr>
-            {{#each this}}
+            {{#each resultRow as |result|}}
               <tr>
                 <th>{{name}}</th>
                 <td>{{value}}</td>

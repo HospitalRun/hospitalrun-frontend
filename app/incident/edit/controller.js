@@ -23,7 +23,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     displayPreScore: function() {
       var i18n = this.get('i18n');
       if (Ember.isBlank(this.get('model.preRiskScore'))) {
-        return i18n.t('incident.messages.fill_in');
+        return i18n.t('incident.messages.fillIn');
       } else {
         return (this.get('model.preRiskScore')) + ' -';
       }
@@ -35,7 +35,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     displayPostScore: function() {
       var i18n = this.get('i18n');
       if (Ember.isBlank(this.get('model.postRiskScore'))) {
-        return i18n.t('incident.messages.fill_in');
+        return i18n.t('incident.messages.fillIn');
       } else {
         return (this.get('model.postRiskScore')) + ' -';
       }
@@ -234,7 +234,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       if (this.get('model.statusOfIncident') === 'Opened') {
         this.set('model.statusOfIncident', 'Reported');
       }
-      this.displayAlert(i18n.t('incident.titles.incident_saved'), i18n.t('incident.messages.saved'));
+      this.displayAlert(i18n.t('incident.titles.incidentSaved'), i18n.t('incident.messages.saved'));
     },
 
     beforeUpdate: function() {

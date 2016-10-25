@@ -22,12 +22,12 @@ test('visiting / redirects user to login', function(assert) {
 
     stubRequest('post', '/db/_session', function(request) {
       assert.equal(request.requestBody, 'name=hradmin&password=test', 'credential are sent to the server');
-      request.ok({ 'ok': true,'name': 'hradmin','roles': ['System Administrator','admin','user'] });
+      request.ok({ 'ok': true, 'name': 'hradmin', 'roles': ['System Administrator', 'admin', 'user'] });
     });
 
     stubRequest('post', '/chkuser', function(request) {
       assert.equal(request.requestBody, 'name=hradmin', 'username is sent to /chkuser');
-      request.ok({ 'prefix': 'p1','role': 'System Administrator' });
+      request.ok({ 'prefix': 'p1', 'role': 'System Administrator' });
     });
 
     andThen(function() {

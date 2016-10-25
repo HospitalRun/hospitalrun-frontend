@@ -5,7 +5,7 @@ export default AbstractDeleteController.extend({
   afterDeleteAction: 'notifyRecommendationDelete',
   editController: Ember.inject.controller('incident/edit'),
 
-  title: t('incident.titles.delete_recommendation'),
+  title: t('incident.titles.deleteRecommendation'),
 
   actions: {
     notifyRecommendationDelete: function() {

@@ -2,7 +2,7 @@ import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-co
 import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 export default AbstractDeleteController.extend({
-  title: t('incident.titles.delete_item'),
+  title: t('incident.titles.deleteItem'),
 
   _deleteChildObject: function(incident, childObject, destroyPromises) {
     incident.get(childObject).then(function(childObject) {

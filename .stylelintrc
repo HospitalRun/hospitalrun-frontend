@@ -1,0 +1,59 @@
+{
+  "extends": "stylelint-config-concentric",
+  "plugins": [
+  "stylelint-declaration-use-variable",
+  "stylelint-scss"
+],
+  "rules":{
+    "sh-waqar/declaration-use-variable": "color",
+    "scss/at-import-no-partial-extension": true,
+    "scss/at-import-no-partial-leading-underscore": true,
+    "scss/at-extend-no-missing-placeholder": true,
+    "declaration-bang-space-after": "never",
+    "declaration-bang-space-before": "always",
+    "declaration-block-no-duplicate-properties": true,
+    "declaration-no-important": true,
+    "color-named": "never",
+    "color-no-invalid-hex": true,
+    "color-hex-length": "short",
+    "color-hex-case": "lower",
+    "block-no-empty": true,
+    "block-opening-brace-space-before": "always",
+    "block-opening-brace-newline-after": "always-multi-line",
+    "block-opening-brace-space-after": "always-single-line",
+    "no-missing-end-of-source-newline": true,
+    "no-duplicate-selectors": true,
+    "no-eol-whitespace": true,
+    "selector-max-compound-selectors": 4,
+    "selector-pseudo-element-colon-notation": "double",
+    "selector-list-comma-newline-after": "always-multi-line",
+    "selector-no-id": true,
+    "selector-no-qualifying-type": [ true, {
+        "ignore": [ "attribute" ]
+      } ],
+    "selector-class-pattern": "[_a-z0-9]+",
+    "declaration-block-semicolon-newline-after": "always-multi-line",
+    "declaration-colon-space-after": "always-single-line",
+    "declaration-colon-space-before": "never",
+    "declaration-block-trailing-semicolon": "always",
+    "function-comma-space-after": "never-single-line",
+    "function-parentheses-space-inside": "never",
+    "function-url-quotes": "always",
+    "number-leading-zero": "never",
+    "number-no-trailing-zeros": true,
+    "length-zero-no-unit": true,
+    "rule-nested-empty-line-before": ["always-multi-line", {
+      "ignore": ["after-comment"],
+      "except": ["first-nested"]
+      } ],
+    "indentation": [2, {
+      "ignore": ["value"]
+    } ],
+    "max-nesting-depth": 4,
+    "shorthand-property-no-redundant-values": true,
+    "string-quotes": "single",
+    "declaration-property-value-blacklist": {
+      "/^border/": ["none"]
+    }
+  }
+}

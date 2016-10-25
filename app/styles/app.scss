@@ -5,6 +5,7 @@
 @import 'base';
 @import 'layout';
 @import 'index';
+@import 'print';
 @import 'temp_misc';
 @import 'sign_in_screen';
 @import 'loading_notice';
@@ -16,6 +17,7 @@
 @import 'components/form_styles';
 @import 'components/tab_nav';
 @import 'components/tab_content';
+@import 'components/pagination';
 @import 'components/patient_summary';
 @import 'components/patient_history';
 @import 'components/imaging';

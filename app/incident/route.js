@@ -17,7 +17,7 @@ export default AbstractModuleRoute.extend(IncidentId, {
     findArgs: ['inc-category']
   }],
   moduleName: 'incident',
-  newButtonText: t('incident.buttons.new_incident'),
+  newButtonText: t('incident.buttons.newIncident'),
   sectionTitle: t('incident.titles.incidents')
 });
 

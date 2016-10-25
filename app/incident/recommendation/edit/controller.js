@@ -18,9 +18,9 @@ export default AbstractEditController.extend({
     var isNew = this.get('model.isNew');
     let i18n = this.get('i18n');
     if (isNew) {
-      return i18n.t('incident.titles.add_recommendation');
+      return i18n.t('incident.titles.addRecommendation');
     }
-    return i18n.t('incident.titles.edit_recommendation');
+    return i18n.t('incident.titles.editRecommendation');
   }.property('model.isNew'),
 
   updateCapability: 'add_recommendation',

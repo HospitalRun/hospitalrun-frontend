@@ -1,4 +1,5 @@
 /* jshint ignore:start */
+import createPouchViews from 'hospitalrun/utils/pouch-views';
 import Ember from 'ember';
 import PouchDB from 'pouchdb';
 import DatabaseService from 'hospitalrun/services/database';
@@ -32,18 +33,16 @@ function destroyDatabases(dbs) {
 
 function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
 
-  const db = new PouchDB('hospitalrun-test-database', {
+  let db = new PouchDB('hospitalrun-test-database', {
     adapter: 'memory'
   });
-  const configDB = new PouchDB('hospitalrun-test-config-database', {
+  let configDB = new PouchDB('hospitalrun-test-config-database', {
     adapter: 'memory'
   });
-  const dump = require(`hospitalrun/tests/fixtures/${dumpName}`).default;
-  const promise = db.load(dump, {
-    proxy: 'main'
-  });
+  let dump = require(`hospitalrun/tests/fixtures/${dumpName}`).default;
+  let promise = db.load(dump);
 
-  const InMemoryDatabaseService = DatabaseService.extend({
+  let InMemoryDatabaseService = DatabaseService.extend({
     createDB() {
       return promise.then(function() {
         return db;
@@ -51,12 +50,22 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
     }
   });
 
-  const InMemoryConfigService = ConfigService.extend({
+  let InMemoryConfigService = ConfigService.extend({
     createDB() {
-      return Ember.RSVP.resolve(configDB);
+      return configDB;
     },
     replicateConfigDB() {
-
+      return configDB.get('config_disable_offline_sync').then(function(doc) {
+        if (doc.value !== true) {
+          doc.value = true;
+          return configDB.put(doc);
+        }
+      }).catch(function() {
+        return configDB.put({
+          _id: 'config_disable_offline_sync',
+          value: true
+        });
+      });
     }
   });
 
@@ -65,13 +74,19 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
 
   return new Ember.RSVP.Promise(function(resolve) {
     promise.then(function() {
-      functionToRun();
-      andThen(function() {
-        cleanupDatabases({
-          config: configDB,
-          main: db
-        }).then(resolve);
+      createPouchViews(db, true, dumpName).then(function() {
+        functionToRun();
+        andThen(function() {
+          cleanupDatabases({
+            config: configDB,
+            main: db
+          }).then(resolve, function(err) {
+            console.log('error cleaning up dbs:', JSON.stringify(err, null, 2));
+          });
+        });
       });
+    }, function(err) {
+      console.log('error loading db', JSON.stringify(err, null, 2));
     });
   });
 }

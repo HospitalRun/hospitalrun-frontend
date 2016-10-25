@@ -5,7 +5,7 @@ export default AbstractDeleteController.extend({
   afterDeleteAction: 'notifyReviewerDelete',
   editController: Ember.inject.controller('incident/edit'),
 
-  title: t('incident.titles.delete_reviewer'),
+  title: t('incident.titles.deleteReviewer'),
 
   actions: {
     notifyReviewerDelete: function() {

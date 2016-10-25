@@ -10,12 +10,12 @@
         {{em-select class="col-xs-3 required test-visit-type" label=(t 'labels.visit')
           property="visit" content=patientVisitsForSelect
           optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
-          prompt=(t 'labs.labels.add_new_visit')
+          prompt=(t 'labs.labels.addNewVisit')
           selected=model.visit
         }}
       </div>
       {{checkbox-or-typeahead property="labTypeName"
-        label=(t 'labs.labels.lab_type') list=objectTypeList
+        label=(t 'labs.labels.labType') list=objectTypeList
         selection=selectedLabType
         optionLabelPath='name'
         typeAheadType='pricing'
@@ -30,11 +30,11 @@
           <p class="form-control-static">{{model.visit.visitDate}}</p>
         </div>
         <div class="form-group col-xs-6">
-          <label>{{t 'labs.labels.lab_type'}}</label>
+          <label>{{t 'labs.labels.labType'}}</label>
           <p class="form-control-static">{{model.labType.name}}</p>
         </div>
         <div class="form-group col-xs-9">
-          <label>{{t 'labels.requested_by'}}</label>
+          <label>{{t 'labels.requestedBy'}}</label>
           <p class="form-control-static">{{model.requestedBy}}</p>
         </div>
       </div>

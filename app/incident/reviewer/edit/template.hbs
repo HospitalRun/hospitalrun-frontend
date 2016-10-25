@@ -1,7 +1,7 @@
 {{#modal-dialog isUpdateDisabled=isUpdateDisabled title=title updateButtonAction=updateButtonAction updateButtonText=updateButtonText}}
   {{#em-form model=model submitButton=false }}
     <div class="row">
-      {{em-select label=(t 'incident.titles.add_reviewer') property="reviewerEmail" content=emailList class="col-sm-12"}}
+      {{em-select label=(t 'incident.titles.addReviewer') property="reviewerEmail" content=emailList class="col-sm-12"}}
     </div>
   {{/em-form}}
 {{/modal-dialog}}

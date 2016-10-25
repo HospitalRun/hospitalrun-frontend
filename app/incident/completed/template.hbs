@@ -2,12 +2,12 @@
   {{#if hasRecords}}
     <table class="table">
       <tr class="table-header">
-        <th>{{t 'incident.labels.incident_id'}}</th>
-        <th>{{t 'incident.labels.reported_by'}}</th>
-        <th>{{t 'incident.labels.incident_location'}}</th>
-        <th>{{t 'incident.labels.incident_date'}}</th>
-        <th>{{t 'incident.labels.incident_category'}}</th>
-        <th>{{t 'incident.labels.incident_item'}}</th>
+        <th>{{t 'incident.labels.incidentId'}}</th>
+        <th>{{t 'incident.labels.reportedBy'}}</th>
+        <th>{{t 'incident.labels.incidentLocation'}}</th>
+        <th>{{t 'incident.labels.incidentDate'}}</th>
+        <th>{{t 'incident.labels.incidentCategory'}}</th>
+        <th>{{t 'incident.labels.incidentItem'}}</th>
         {{#if showActions}}
           <th>{{t 'incident.labels.actions'}}</th>
         {{/if}}
@@ -32,7 +32,7 @@
     </table>
   {{else}}
     <div class="alert alert-info">
-      {{t 'incident.messages.no_closed_incidents'}} {{#if canAdd}}<a href='#' {{action 'newItem'}}>{{t 'incident.messages.create_new'}}</a>{{/if}}
+      {{t 'incident.messages.noClosedIncidents'}} {{#if canAdd}}<a href='#' {{action 'newItem'}}>{{t 'incident.messages.createNew'}}</a>{{/if}}
     </div>
   {{/if}}
 {{/item-listing}}

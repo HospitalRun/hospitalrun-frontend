@@ -25,7 +25,7 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
     findArgs: ['lookup', 'inventory_types']
   }, {
     name: 'inventoryUnitList',
-    findArgs: ['lookup','unit_types']
+    findArgs: ['lookup', 'unit_types']
   }, {
     name: 'warehouseList',
     findArgs: ['lookup', 'warehouse_list']
@@ -42,8 +42,8 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
 
   actions: {
     addPurchase: function(newPurchase) {
-      var currentItem = this.get('currentItem'),
-        purchases = currentItem.get('purchases');
+      let currentItem = this.get('currentItem');
+      let purchases = currentItem.get('purchases');
       purchases.addObject(newPurchase);
       this.newPurchaseAdded(currentItem, newPurchase).then(function() {
         currentItem.updateQuantity();
@@ -68,7 +68,7 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
     },
 
     showAddPurchase: function(inventoryItem) {
-      var newPurchase = this.get('store').createRecord('inv-purchase', {
+      let newPurchase = this.get('store').createRecord('inv-purchase', {
         dateReceived: new Date(),
         distributionUnit: inventoryItem.get('distributionUnit'),
         inventoryItem: inventoryItem.get('id')

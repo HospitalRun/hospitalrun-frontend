@@ -1,20 +1,20 @@
-var configDB;
-var configs = false;
-var localMainDB;
-var syncingRemote = false;
 
-new PouchDB('config', function(err, db) {
-  configDB = db;
-});
+let configs = false;
+let syncingRemote = false;
+let configDB = new PouchDB('config');
+let localMainDB = new PouchDB('localMainDB');
 
-new PouchDB('localMainDB', function(err, db) {
-  localMainDB = db;
+toolbox.router.get('/db/main/', function(request, values, options) {
+  logDebug('request for main info:', request.url);
+  return couchDBResponse(request, values, options, function() {
+    return localMainDB.info();
+  });
 });
 
 toolbox.router.get('/db/main/_all_docs', function(request, values, options) {
   logDebug('request for all docs:', request.url);
   return couchDBResponse(request, values, options, function(request) {
-    var options = getDBOptions(request.url);
+    let options = getDBOptions(request.url);
     logDebug('allDocs PouchDB:', options);
     return localMainDB.allDocs(options);
   });
@@ -22,8 +22,8 @@ toolbox.router.get('/db/main/_all_docs', function(request, values, options) {
 toolbox.router.get('/db/main/_design/:design_doc/_view/:view', function(request, values, options) {
   logDebug('request for view:', request.url);
   return couchDBResponse(request, values, options, function(request) {
-    var options = getDBOptions(request.url);
-    var mapReduce = values.design_doc + '/' + values.view;
+    let options = getDBOptions(request.url);
+    let mapReduce = `${values.design_doc}/${values.view}`;
     logDebug('queryPouchDB:', mapReduce, options);
     return localMainDB.query(mapReduce, options);
   });
@@ -31,7 +31,7 @@ toolbox.router.get('/db/main/_design/:design_doc/_view/:view', function(request,
 
 toolbox.router.post('/db/main/_bulk_docs', function(request, values, options) {
   logDebug('request for bulk docs:', request.url);
-  var pouchRequest = request.clone();
+  let pouchRequest = request.clone();
   return couchDBResponse(request, values, options, function() {
     logDebug('couch failed, trying pouch request:', request.url);
     return pouchRequest.json().then(function(jsonRequest) {
@@ -45,7 +45,7 @@ toolbox.router.post('/db/main/_bulk_docs', function(request, values, options) {
 
 function setupRemoteSync() {
   if (!syncingRemote && configs.config_disable_offline_sync !== true) {
-    var pouchOptions = {
+    let pouchOptions = {
       ajax: {
         headers: {},
         timeout: 30000
@@ -58,28 +58,27 @@ function setupRemoteSync() {
       pouchOptions.ajax.headers['x-oauth-token-secret'] = configs.config_token_secret;
       pouchOptions.ajax.headers['x-oauth-token'] = configs.config_oauth_token;
     }
-    var remoteURL = self.location.protocol + '//' + self.location.host + '/db/main';
-    new PouchDB(remoteURL, pouchOptions, function(err, db) {
-      syncingRemote = localMainDB.sync(db, {
-        live: true,
-        retry: true
-      }).on('change', function(info) {
-        logDebug('local sync change', info);
-      }).on('paused', function() {
-        logDebug('local sync paused');
-        // replication paused (e.g. user went offline)
-      }).on('active', function() {
-        logDebug('local sync active');
-        // replicate resumed (e.g. user went back online)
-      }).on('denied', function(info) {
-        logDebug('local sync denied:', info);
-        // a document failed to replicate, e.g. due to permissions
-      }).on('complete', function(info) {
-        logDebug('local sync complete:', info);
-        // handle complete
-      }).on('error', function(err) {
-        logDebug('local sync error:', err);
-      });
+    let remoteURL = `${self.location.protocol}//${self.location.host}/db/main`;
+    let remoteDB = new PouchDB(remoteURL, pouchOptions);
+    syncingRemote = localMainDB.sync(remoteDB, {
+      live: true,
+      retry: true
+    }).on('change', function(info) {
+      logDebug('local sync change', info);
+    }).on('paused', function() {
+      logDebug('local sync paused');
+      // replication paused (e.g. user went offline)
+    }).on('active', function() {
+      logDebug('local sync active');
+      // replicate resumed (e.g. user went back online)
+    }).on('denied', function(info) {
+      logDebug('local sync denied:', info);
+      // a document failed to replicate, e.g. due to permissions
+    }).on('complete', function(info) {
+      logDebug('local sync complete:', info);
+      // handle complete
+    }).on('error', function(err) {
+      logDebug('local sync error:', err);
     });
   }
 }
@@ -103,13 +102,15 @@ function setupConfigs() {
 }
 
 function couchDBResponse(request, values, options, pouchDBFn) {
-  setupConfigs().then(setupRemoteSync);
+  setupConfigs().then(setupRemoteSync).catch(function(err) {
+    logDebug('Error setting up remote sync', JSON.stringify(err, null, 2));
+  });
   logDebug('Looking for couchdb response for:', request.url);
   return new Promise(function(resolve, reject) {
-    var startTime = performance.now();
+    let startTime = performance.now();
     toolbox.networkOnly(request, values, options).then(function(response) {
       if (response) {
-        var elapsedTime = performance.now() - startTime;
+        let elapsedTime = performance.now() - startTime;
         resolve(response);
         logPerformance(elapsedTime, request.url);
       } else {
@@ -131,14 +132,12 @@ function convertPouchToResponse(pouchResponse) {
 }
 
 function getDBOptions(url) {
-  var returnParams = {};
+  let returnParams = {};
   if (url.indexOf('?') > 0) {
-    var urlParams = url.split('?'),
-    params = decodeURIComponent(urlParams[1]).split('&'),
-    paramParts,
-    i;
-    for (i = 0; i < params.length; i++) {
-      paramParts = params[i].split('=');
+    let urlParams = url.split('?');
+    let params = decodeURIComponent(urlParams[1]).split('&');
+    for (let i = 0; i < params.length; i++) {
+      let paramParts = params[i].split('=');
       returnParams[paramParts[0]] = JSON.parse(paramParts[1]);
     }
   }
@@ -147,8 +146,8 @@ function getDBOptions(url) {
 
 function logPerformance(elapsedTime, requestUrl) {
   if (configs.config_log_metrics && configs.current_user) {
-    var now = Date.now();
-    var timingId = 'timing_' + configs.current_user.toLowerCase() + '_' + now;
+    let now = Date.now();
+    let timingId = `timing_${configs.current_user.toLowerCase()}_${now}`;
     localMainDB.put({
       _id: timingId,
       elapsed: elapsedTime,

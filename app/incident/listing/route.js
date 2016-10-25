@@ -4,7 +4,7 @@ import { translationMacro as t } from 'ember-i18n';
 export default IncidentIndexRoute.extend(UserSession, {
   editReturn: 'incident.listing',
   modelName: 'inc-reviewer',
-  pageTitle: t('incident.titles.as_reviewer'),
+  pageTitle: t('incident.titles.asReviewer'),
 
   _modelQueryParams: function() {
     var maxId = this._getMaxPouchId(),

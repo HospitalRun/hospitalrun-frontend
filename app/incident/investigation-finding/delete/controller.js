@@ -5,7 +5,7 @@ export default AbstractDeleteController.extend({
   afterDeleteAction: 'notifyInvestigationFindingDelete',
   editController: Ember.inject.controller('incident/edit'),
 
-  title: t('incident.titles.delete_finding'),
+  title: t('incident.titles.deleteFinding'),
 
   actions: {
     notifyInvestigationFindingDelete: function() {
