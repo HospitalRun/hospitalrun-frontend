@@ -129,7 +129,7 @@ test('Update workflow options', function(assert) {
 
   function verifyAll(checked) {
     Array.prototype.slice.call(document.querySelectorAll(selector)).forEach((node) => {
-      assert.equal(node.checked, checked, 'Checkbox is ' + (checked ? 'checked' : 'unchecked'));
+      assert.equal(node.checked, checked, `Checkbox is ${(checked ? 'checked' : 'unchecked')}`);
     });
   }
 });

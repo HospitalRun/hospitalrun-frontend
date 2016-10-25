@@ -28,7 +28,7 @@ export default Ember.Mixin.create({
       progressBarValue = 0;
     }
     progressDialog.set('progressBarValue', progressBarValue);
-    let progressBarStyle = Ember.String.htmlSafe('width: ' + progressBarValue + '%');
+    let progressBarStyle = Ember.String.htmlSafe(`width: ${progressBarValue}%`);
     progressDialog.set('progressBarStyle', progressBarStyle);
   },
 

@@ -79,7 +79,7 @@ export default {
       displayAlertTitle: 'Seleccione un archivo para cargar',
       displayAlertMessage: 'Por favor seleccione un archivo para ser cargado.',
       errorDisplayAlertTitle: 'Error cargando',
-      errorDisplayAlertMessage: `La base de datos no fue cargada el error fue: {{error}}`,
+      errorDisplayAlertMessage: 'La base de datos no fue cargada el error fue: {{error}}',
       editTitle: 'Cargar bd'
     },
     lookup: {
@@ -325,13 +325,13 @@ export default {
   },
   login: {
     messages: {
-      signIn:  'por favor ingrese',
-      error:    'Nombre de usuario o clave incorrectos.'
+      signIn: 'por favor ingrese',
+      error: 'Nombre de usuario o clave incorrectos.'
     },
     labels: {
       password: 'Clave',
       username: 'Nombre de usuario',
-      signIn:  'Ingresar'
+      signIn: 'Ingresar'
     }
   },
   inventory: {
@@ -569,7 +569,7 @@ export default {
     },
     alerts: {
       returnedTitle: 'Medicacion devuelta',
-      returnedMessage:  'La medicacion ha sido marcada para devolver.',
+      returnedMessage: 'La medicacion ha sido marcada para devolver.',
       savedTitle: 'Pedido de medicacion guardado',
       savedMessage: 'La elemento de medicación ha sido guardado.',
       fulfilledTitle: 'Pedido de medicación cumplido'

@@ -17,6 +17,8 @@ export default Adapter.extend(PouchAdapterUtils, {
     'mapReduce'
   ],
 
+  _esDefaultSize: 25,
+
   _executeContainsSearch(store, type, query) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       let typeName = this.getRecordTypeName(type);
@@ -57,10 +59,16 @@ export default Adapter.extend(PouchAdapterUtils, {
             reject('Search results are not valid');
           }
         };
+
+        if (Ember.isEmpty(query.size)) {
+          query.size = this.get('_esDefaultSize');
+        }
+
         Ember.$.ajax(searchUrl, {
           dataType: 'json',
           data: {
-            q: queryString
+            q: queryString,
+            size: this.get('_esDefaultSize')
           },
           success: successFn
         });
@@ -138,6 +146,7 @@ export default Adapter.extend(PouchAdapterUtils, {
         break;
       }
     }
+
     if (!specialQuery) {
       if (query.options) {
         this._init(store, type);

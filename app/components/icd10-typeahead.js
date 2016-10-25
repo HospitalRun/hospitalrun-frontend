@@ -14,7 +14,7 @@ export default TypeAhead.extend({
       cb(suggestions);
       // Set the headers content.
       let $header = this.$('.query-results');
-      $header.html('<strong><em>' + query + '</em></strong> returned <strong>' + suggestions.length + '</strong> results');
+      $header.html(`<strong><em>${query}</em></strong> returned <strong>${suggestions.length}</strong> results`);
     }.bind(this));
   },
 

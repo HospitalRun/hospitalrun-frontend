@@ -6,9 +6,9 @@ export default Ember.Component.extend({
   tagName: 'td',
   pricingItem: null,
 
-  didReceiveAttrs(/*attrs*/) {
+  didReceiveAttrs(/* attrs */) {
     this._super(...arguments);
-    this.quantitySelected = Ember.computed.alias('model.' + this.get('pricingItem.id'));
+    this.quantitySelected = Ember.computed.alias(`model.${this.get('pricingItem.id')}`);
   },
 
   hasError: function() {

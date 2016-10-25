@@ -46,7 +46,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
     let minute;
     let minuteList = [];
     for (minute = 0; minute < 60; minute++) {
-      minuteList.push(String('00' + minute).slice(-2));
+      minuteList.push(String(`00${minute}`).slice(-2));
     }
     return minuteList;
   }.property(),

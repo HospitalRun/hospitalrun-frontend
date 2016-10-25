@@ -292,7 +292,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     sequence.incrementProperty('value', 1);
     sequenceValue = sequence.get('value');
     if (sequenceValue < 100000) {
-      invoiceId += String('00000' + sequenceValue).slice(-5);
+      invoiceId += String(`00000${sequenceValue}`).slice(-5);
     } else {
       invoiceId += sequenceValue;
     }

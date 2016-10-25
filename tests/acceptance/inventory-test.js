@@ -69,6 +69,22 @@ test('Adding a new inventory item', (assert) => {
   });
 });
 
+test('Visiting /inventory/barcode', (assert) => {
+  runWithPouchDump('inventory', function() {
+    authenticateUser();
+    visit('/inventory/listing');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory/listing');
+      click('a:contains(Barcode)');
+      andThen(() => {
+        assert.equal(currentURL(), '/inventory/barcode/igbmk5zf_is');
+        findWithAssert('.panel-body img[src^="data:image"]');
+      });
+    });
+  });
+});
+
 test('Deleting the last inventory item', (assert) => {
   runWithPouchDump('inventory', function() {
     authenticateUser();

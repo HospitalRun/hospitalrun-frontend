@@ -152,7 +152,7 @@ export default DS.RESTAdapter.extend(UserSession, {
         startkey: '"org.couchdb.user"'
       }
     };
-    let allURL = this.endpoint + '_all_docs';
+    let allURL = `${this.endpoint}_all_docs`;
     return this.ajax(allURL, 'GET', ajaxData);
   },
 

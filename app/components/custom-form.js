@@ -2,7 +2,7 @@ import Ember from 'ember';
 import SelectValues from 'hospitalrun/utils/select-values';
 export default Ember.Component.extend(SelectValues, {
   classNames: 'detail-section-content',
-  fieldsByRow:  function() {
+  fieldsByRow: function() {
     let rows = [];
     let form = this.get('form');
     if (!Ember.isEmpty(form)) {
@@ -22,7 +22,7 @@ export default Ember.Component.extend(SelectValues, {
           currentRow = [];
           colCount = 0;
         }
-        field.classNames += ' col-sm-' + (colWidth * colSpan);
+        field.classNames += ` col-sm-${colWidth * colSpan}`;
         if (field.type === 'select') {
           field.mappedValues = field.values.map(this.selectValuesMap);
         }

@@ -6,7 +6,7 @@ export default Ember.Service.extend({
   fileSystemSize: (1024 * 1024 * 1024 * 8), // 8GB max size for local filesystem;chrome only,
 
   _onError: function(e) {
-    console.log('Filer filesystem error: ' + e);
+    console.log(`Filer filesystem error: ${e}`);
   },
 
   _downloadFiles: function() {
@@ -77,7 +77,7 @@ export default Ember.Service.extend({
       if (newFileName.indexOf('.') === -1) {
         if (file.type) {
           let typeParts = file.type.split('/');
-          newFileName += '.' + typeParts.pop();
+          newFileName += `.${typeParts.pop()}`;
         } else {
           // Default to png extension
           newFileName += '.png';
@@ -95,7 +95,7 @@ export default Ember.Service.extend({
         if (Ember.isEmpty(fileName) && !Ember.isEmpty(file.type)) {
           let typeParts = file.type.split('/');
           if (typeParts.length > 1) {
-            newFileName += '.' + typeParts[1];
+            newFileName += `.${typeParts[1]}`;
           }
         }
         filer.mkdir(path, false, function() {

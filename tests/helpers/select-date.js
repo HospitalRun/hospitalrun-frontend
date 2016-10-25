@@ -7,7 +7,7 @@ function triggerNativeEvent(element, eventName) {
     event.initEvent(eventName, true, false);
     element.dispatchEvent(event);
   } else {
-    element.fireEvent('on' + eventName);
+    element.fireEvent(`on${eventName}`);
   }
 }
 

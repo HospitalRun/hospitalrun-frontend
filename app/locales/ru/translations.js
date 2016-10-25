@@ -40,13 +40,13 @@ export default {
   },
   login: {
     messages: {
-      signIn:  'войдите в систему',
-      error:    'Неверное имя пользователя или пароль.'
+      signIn: 'войдите в систему',
+      error: 'Неверное имя пользователя или пароль.'
     },
     labels: {
       password: 'Пароль',
       username: 'Имя пользователя',
-      signIn:  'Войти'
+      signIn: 'Войти'
     }
   },
   inventory: {

@@ -18,7 +18,7 @@ export default Ember.Mixin.create({
           resolve();
         }.bind(this), reject);
       }.bind(this), reject);
-    }.bind(this), '_createNewChargeRecord with pricingId:' + pricingId);
+    }.bind(this), `_createNewChargeRecord with pricingId:${pricingId}`);
   },
 
   actions: {
@@ -207,7 +207,7 @@ export default Ember.Mixin.create({
         this.set(priceObjectToSet, newPricing);
         resolve();
       }.bind(this), reject);
-    }.bind(this), 'saveNewPricing for: ' + pricingName);
+    }.bind(this), `saveNewPricing for: ${pricingName}`);
   },
 
   getSelectedPricing: function(selectedField) {
@@ -293,7 +293,7 @@ export default Ember.Mixin.create({
           }
         }
       }.bind(this));
-      Ember.RSVP.all(chargePromises, 'Charges updated for current record:' + this.get('model.id')).then(resolve, reject);
-    }.bind(this), 'updateCharges for current record:' + this.get('model.id'));
+      Ember.RSVP.all(chargePromises, `Charges updated for current record: ${this.get('model.id')}`).then(resolve, reject);
+    }.bind(this), `updateCharges for current record: ${this.get('model.id')}`);
   }
 });

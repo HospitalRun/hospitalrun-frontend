@@ -21,7 +21,7 @@ export default Ember.Component.extend({
   ],
   setupCamera: false,
 
-  /***
+  /**
    * Setup the specified camera
    */
   _cameraChange: function(selectedCamera) {
@@ -47,7 +47,7 @@ export default Ember.Component.extend({
     console.log('navigator.getUserMedia error: ', error);
   },
 
-  /***
+  /**
    * Callback for MediaStreamTrack.getSources
    */
   _gotSources: function(sourceInfos) {
@@ -57,9 +57,9 @@ export default Ember.Component.extend({
     for (let i = 0; i !== sourceInfos.length; ++i) {
       let sourceInfo = sourceInfos[i];
       if (sourceInfo.kind === 'video') {
-        cameraLabel = 'Camera ' + (++cameraCount);
+        cameraLabel = `Camera '${++cameraCount}`;
         if (sourceInfo.label) {
-          cameraLabel += ' (' + sourceInfo.label + ')';
+          cameraLabel += ` (${sourceInfo.label})`;
         }
         videoSources.addObject({
           id: sourceInfo.id,
@@ -74,7 +74,7 @@ export default Ember.Component.extend({
     }
   },
 
-  /***
+  /**
    * Callback handler for getUserMedia.
    */
   _gotStream: function(stream) {
@@ -128,7 +128,7 @@ export default Ember.Component.extend({
     video.addEventListener('canplay', this._setupVideo.bind(this), false);
   },
 
-  /***
+  /**
    * Setup the dimensions for the video preview and picture elements.
    */
   _setupVideo: function() {

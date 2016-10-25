@@ -9,6 +9,6 @@ export default Ember.Mixin.create({
     let max = 999;
     let part1 = new Date().getTime();
     let part2 = Math.floor(Math.random() * (max - min + 1)) + min;
-    return Ember.RSVP.resolve(part1.toString(36) + '_' + part2.toString(36));
+    return Ember.RSVP.resolve(`${part1.toString(36)}_${part2.toString(36)}`);
   }
 });
