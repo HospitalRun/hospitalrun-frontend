@@ -217,14 +217,39 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
         let newVisit = this.get('model');
         return newVisit.validate().then(() => {
           if (newVisit.get('isValid')) {
-            if (Ember.isEmpty(newVisit.get('patient'))) {
+            let patient = newVisit.get('patient');
+            if (Ember.isEmpty(patient)) {
               this.addNewPatient();
               reject({
                 ignore: true,
                 message: 'creating new patient first'
               });
             }
-            resolve();
+            if (this.get('model.checkIn')) {
+              let patientId = patient.get('id');
+              let maxValue = this.get('maxValue');
+              let beginningOfToday = moment().startOf('day').valueOf();
+              let endOfToday = moment().endOf('day').valueOf();
+              this.store.query('appointment', {
+                options: {
+                  startkey: [patientId, beginningOfToday, beginningOfToday, 'appointment_'],
+                  endkey: [patientId, endOfToday, endOfToday, maxValue]
+                },
+                mapReduce: 'appointments_by_patient'
+              }).then((appointments) => {
+                if (Ember.isEmpty(appointments)) {
+                  newVisit.set('hasAppointment', false);
+                  resolve();
+                } else {
+                  newVisit.set('hasAppointment', true);
+                  let appointmentToUpdate = appointments.get('firstObject');
+                  appointmentToUpdate.set('status', 'Attended');
+                  appointmentToUpdate.save().then(resolve, reject);
+                }
+              }, reject);
+            } else {
+              resolve();
+            }
           }
         });
       });
