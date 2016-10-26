@@ -2,12 +2,12 @@
   {{#em-form model=model submitButton=false}}
     <div class="row">
       {{date-picker property="dateRecorded" label=(t 'incident.labels.dateRecorded') class="col-sm-6" format="l h:mm A" showTime=false}}
-      {{em-input class="col-sm-6" property="identityNumber" label=(t 'incident.labels.id_number')}}
+      {{em-input class="col-sm-6" property="identityNumber" label=(t 'incident.labels.idNumber')}}
     </div>
     <div class="row">
       {{em-select label=(t 'incident.labels.typeOfPerson') prompt=" " property="typeOfPerson"
         content=typeOfPersonInvolved selected=model.typeOfPerson class="col-sm-6"}}
-      {{em-select label=(t 'incident.labels.id_type') prompt=" " property="identityDocumentType"
+      {{em-select label=(t 'incident.labels.idType') prompt=" " property="identityDocumentType"
         content=identityDocumentTypes selected=model.identityDocumentType class="col-sm-6"}}
     </div>
     <div class="row">
