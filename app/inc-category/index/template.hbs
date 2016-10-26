@@ -2,16 +2,16 @@
   {{#if hasRecords}}
     <table class="table">
       <tr class="table-header">
-        <th>Incident Category Name</th>
-        <th>Actions</th>
+        <th>{{t 'incident.titles.incidentCategoryName'}}</th>
+        <th>{{t 'incident.labels.actions'}}</th>
       </tr>
       {{#each model as |category|}}
         <tr {{action 'editItem' category}}>
           <td>{{category.incidentCategoryName}}</td>
           <td>
-              <button class="btn btn-default neutral" {{action 'editItem' category  bubbles=false }}>Edit</button>
+              <button class="btn btn-default neutral" {{action 'editItem' category  bubbles=false }}>{{t 'incident.buttons.edit'}}</button>
               {{#if canDeleteIncidentCategory}}
-                <button class="btn btn-default warning" {{action 'showDeleteIncidentCategory' category  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                <button class="btn btn-default warning" {{action 'showDeleteIncidentCategory' category  bubbles=false }}><span class="octicon octicon-x"></span>{{t 'incident.buttons.delete'}}</button>
               {{/if}}
           </td>
         </tr>
@@ -19,9 +19,9 @@
     </table>
   {{else}}
     <div class="alert alert-info">
-      <em>No Incident Categories found.</em>
-      <em>Create a new Incident Category?</em>
-      <button class="btn btn-primary on-white" {{action 'newItem'}}>New Category</button>
+      <em>{{t 'incident.messages.noIncidentCategoriesFound'}}</em>
+      <em>{{t 'incident.messages.createNewIncidentCategory'}}</em>
+      <button class="btn btn-primary on-white" {{action 'newItem'}}>{{t 'incident.buttons.newCategory'}}</button>
     </div>
  {{/if}}
 {{/item-listing}}
