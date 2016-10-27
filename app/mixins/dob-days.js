@@ -12,9 +12,9 @@ export default Ember.Mixin.create({
       }
       if (birthDate.getFullYear !== undefined) {
         years = today.getFullYear() - birthDate.getFullYear();
-        if (today.getMonth() < birthDate.getMonth() ||
-          (today.getMonth() === birthDate.getMonth() &&
-          today.getDate() < birthDate.getDate())) {
+        if (today.getMonth() < birthDate.getMonth()
+          || (today.getMonth() === birthDate.getMonth()
+          && today.getDate() < birthDate.getDate())) {
           years--;
         }
       }

@@ -48,67 +48,67 @@ function checkForUpdate(view, db, runningTest, testDumpFile) {
 }
 
 function generateSortFunction(sortFunction, includeCompareDate, filterFunction) {
-  let generatedFunction = 'function(head, req) {' +
-    'function keysEqual(keyA, keyB) {' +
-    'for (var i= 0; i < keyA.length; i++) {' +
-    'if (keyA[i] !== keyB[i]) {' +
-    'return false;' +
-    '}' +
-    '}' +
-    'return true;' +
-    '}';
+  let generatedFunction = 'function(head, req) {'
+    + 'function keysEqual(keyA, keyB) {'
+    + 'for (var i= 0; i < keyA.length; i++) {'
+    + 'if (keyA[i] !== keyB[i]) {'
+    + 'return false;'
+    + '}'
+    + '}'
+    + 'return true;'
+    + '}';
   if (includeCompareDate) {
-    generatedFunction += 'function getCompareDate(dateString) {' +
-      'if (!dateString || dateString === "") {' +
-      'return 0;' +
-      '}' +
-      'return new Date(dateString).getTime();' +
-      '}';
+    generatedFunction += 'function getCompareDate(dateString) {'
+      + 'if (!dateString || dateString === "") {'
+      + 'return 0;'
+      + '}'
+      + 'return new Date(dateString).getTime();'
+      + '}';
   }
-  generatedFunction += 'function compareStrings(aString, bString) {' +
-    'if (!aString) {' +
-    'aString = "";' +
-    '}' +
-    'if (!bString) {' +
-    'bString = "";' +
-    '}' +
-    'if (aString < bString) {' +
-    'return -1;' +
-    '} else if (aString > bString) {' +
-    'return 1;' +
-    '} else {' +
-    'return 0;' +
-    '}' +
-    '}' +
-    'var row,' +
-    'rows=[],' +
-    'startingPosition = 0;' +
-    'while(row = getRow()) {' +
-    'rows.push(row);' +
-    '}';
+  generatedFunction += 'function compareStrings(aString, bString) {'
+    + 'if (!aString) {'
+    + 'aString = "";'
+    + '}'
+    + 'if (!bString) {'
+    + 'bString = "";'
+    + '}'
+    + 'if (aString < bString) {'
+    + 'return -1;'
+    + '} else if (aString > bString) {'
+    + 'return 1;'
+    + '} else {'
+    + 'return 0;'
+    + '}'
+    + '}'
+    + 'var row,'
+    + 'rows=[],'
+    + 'startingPosition = 0;'
+    + 'while(row = getRow()) {'
+    + 'rows.push(row);'
+    + '}';
   if (filterFunction) {
     generatedFunction += `rows = rows.filter(${filterFunction});`;
   }
-  generatedFunction += `rows.sort(${sortFunction});` +
-    'if (req.query.sortDesc) {' +
-    'rows = rows.reverse();' +
-    '}' +
-    'if (req.query.sortStartKey) {' +
-    'var startKey = JSON.parse(req.query.sortStartKey);' +
-    'for (var i=0; i<rows.length; i++) {' +
-    'if (keysEqual(startKey, rows[i].key)) {' +
-    'startingPosition = i;' +
-    'break;' +
-    '}' +
-    '}' +
-    '}' +
-    'if (req.query.sortLimit) {' +
-    'rows = rows.slice(startingPosition, parseInt(req.query.sortLimit)+startingPosition);' +
-    '} else if (startingPosition > 0) {' +
-    'rows = rows.slice(startingPosition);' +
-    '}' +
-    'send(JSON.stringify({"rows" : rows}));' +
-    '}';
+  generatedFunction += `rows.sort(${sortFunction});`
+    + 'if (req.query.sortDesc) {'
+    + 'rows = rows.reverse();'
+    + '}'
+    + 'if (req.query.sortStartKey) {'
+    + 'var startKey = JSON.parse(req.query.sortStartKey);'
+    + 'for (var i=0; i<rows.length; i++) {'
+    + 'if (keysEqual(startKey, rows[i].key)) {'
+    + 'startingPosition = i;'
+    + 'break;'
+    + '}'
+    + '}'
+    + '}'
+    + 'if (req.query.sortLimit) {'
+    + 'rows = rows.slice(startingPosition, parseInt(req.query.sortLimit)+startingPosition);'
+    + '} else if (startingPosition > 0) {'
+    + 'rows = rows.slice(startingPosition);'
+    + '}'
+    + 'send(JSON.stringify({"rows" : rows}));'
+    + '}';
   return generatedFunction;
 }
 

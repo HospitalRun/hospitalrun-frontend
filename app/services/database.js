@@ -26,10 +26,10 @@ export default Ember.Service.extend(PouchAdapterUtils, {
           timeout: 30000
         };
         // If we don't have the proper credentials, throw error to force login.
-        if (Ember.isEmpty(configs.config_consumer_key) ||
-          Ember.isEmpty(configs.config_consumer_secret) ||
-          Ember.isEmpty(configs.config_oauth_token) ||
-          Ember.isEmpty(configs.config_token_secret)) {
+        if (Ember.isEmpty(configs.config_consumer_key)
+          || Ember.isEmpty(configs.config_consumer_secret)
+          || Ember.isEmpty(configs.config_oauth_token)
+          || Ember.isEmpty(configs.config_token_secret)) {
           throw Error('login required');
         } else {
           let headers = {
