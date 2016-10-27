@@ -358,7 +358,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   _adjustPurchase: function(purchases, purchaseId, quantity, increment) {
     let purchaseToAdjust = purchases.findBy('id', purchaseId);
     if (!Ember.isEmpty(purchaseToAdjust)) {
-      let calculatedQuantity = purchaseToAdjust.calculatedQuantity;
+      let { calculatedQuantity } = purchaseToAdjust;
       if (increment) {
         calculatedQuantity += quantity;
       } else {
@@ -405,7 +405,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   },
 
   _calculateCostPerUnit: function(purchase) {
-    let purchaseCost = purchase.purchaseCost;
+    let { purchaseCost } = purchase;
     let quantity = parseInt(purchase.originalQuantity);
     if (Ember.isEmpty(purchaseCost) || Ember.isEmpty(quantity)) {
       return 0;
@@ -572,7 +572,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       this._getInventoryItems(inventoryIds).then(function(inventoryMap) {
         let i18n = this.get('i18n');
         purchaseDocs.forEach(function(purchase) {
-          let currentQuantity = purchase.currentQuantity;
+          let { currentQuantity } = purchase;
           let expirationDate = new Date(purchase.expirationDate);
           let inventoryItem = inventoryMap[purchase.inventoryItem];
           if (inventoryItem && this._includeLocation(purchase.location)) {
@@ -782,10 +782,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             }
             if (!Ember.isEmpty(inventoryRequests)) {
               inventoryRequests.forEach(function(request) {
-                let adjustPurchases = request.adjustPurchases;
+                let { adjustPurchases } = request;
                 let increment = false;
                 let purchases = request.purchasesAffected;
-                let transactionType = request.transactionType;
+                let { transactionType } = request;
                 increment = (transactionType === 'Adjustment (Add)' || transactionType === 'Return');
                 if (adjustPurchases) {
                   if (!Ember.isEmpty(purchases) && !Ember.isEmpty(inventoryPurchases)) {
@@ -873,11 +873,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
 
           if (!Ember.isEmpty(inventoryRequests)) {
             inventoryRequests.forEach(function(request) {
-              let adjustPurchases = request.adjustPurchases;
+              let { adjustPurchases, transactionType } = request;
               let increment = false;
               let locations = request.locationsAffected;
               let purchases = request.purchasesAffected;
-              let transactionType = request.transactionType;
 
               increment = (transactionType === 'Adjustment (Add)' || transactionType === 'Return');
               if (adjustPurchases) {

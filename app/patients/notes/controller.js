@@ -33,8 +33,8 @@ export default AbstractEditController.extend(IsUpdateDisabled, UserSession, Pati
   },
   actions: {
     changeVisit: function() {
-      let selectEl = $('select[name="note-visits"]')[0];
-      let selectedIndex = selectEl.selectedIndex;
+      let selectEl = $('select[name="note-visits"]').get(0);
+      let { selectedIndex } = selectEl;
       let content = this.get('patientVisitsForSelect');
 
       // decrement index by 1 if we have a prompt
