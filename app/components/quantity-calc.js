@@ -47,8 +47,7 @@ export default Ember.Component.extend({
     let lastObject = quantityGroups.get('lastObject');
     let targetUnit = this.get('targetUnit');
     haveQuantities = quantityGroups.every(function(item) {
-      let quantity = item.quantity;
-      let unit = item.unit;
+      let { quantity, unit } = item;
       return (!Ember.isEmpty(quantity) && !Ember.isEmpty(unit) && !isNaN(quantity));
     });
     if (haveQuantities && lastObject.unit === targetUnit) {

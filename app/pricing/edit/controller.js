@@ -15,7 +15,7 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
       this.send('closeModal');
     },
     deleteOverride: function(model) {
-      let overrideToDelete = model.overrideToDelete;
+      let { overrideToDelete } = model;
       let pricingOverrides = this.get('model.pricingOverrides');
       pricingOverrides.removeObject(overrideToDelete);
       overrideToDelete.destroyRecord().then(function() {
