@@ -149,8 +149,8 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     showRemovePayment: function(payment) {
       let message = 'Are you sure you want to remove this payment from this invoice?';
       let model = Ember.Object.create({
-          itemToRemove: payment
-        });
+        itemToRemove: payment
+      });
       let title = 'Remove Payment';
       this.displayConfirm(title, message, 'removePayment', model);
     },

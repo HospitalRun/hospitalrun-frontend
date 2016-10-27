@@ -76,12 +76,12 @@ export default Ember.Mixin.create(PatientVisits, {
       let model = this.get('model');
       let patient = model.get('patient');
       let visit = this.get('store').createRecord('visit', {
-          startDate: new Date(),
-          endDate: new Date(),
-          outPatient: true,
-          patient: patient,
-          visitType: newVisitType
-        });
+        startDate: new Date(),
+        endDate: new Date(),
+        outPatient: true,
+        patient: patient,
+        visitType: newVisitType
+      });
       model.set('visit', visit);
       visit.save().then(function() {
         visit.reload().then(function(updatedVisit) {

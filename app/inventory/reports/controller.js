@@ -748,9 +748,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   _calculateBeginningBalance: function(reportTimes) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       let startingValueReportTimes = {
-          startTime: null,
-          endTime: reportTimes.startTime
-        };
+        startTime: null,
+        endTime: reportTimes.startTime
+      };
       let beginningBalance = 0;
       let i18n = this.get('i18n');
       /*
@@ -768,11 +768,11 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             let inventoryPurchases = item.purchaseObjects;
             let inventoryRequests = item.requestObjects;
             let row = {
-                inventoryItem: item,
-                quantity: 0,
-                unitCost: 0,
-                totalCost: 0
-              };
+              inventoryItem: item,
+              quantity: 0,
+              unitCost: 0,
+              totalCost: 0
+            };
             if (!Ember.isEmpty(inventoryPurchases)) {
               // Setup intial locations for an inventory item
               inventoryPurchases.forEach(function(purchase) {
@@ -845,14 +845,14 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           let inventoryPurchases = item.purchaseObjects;
           let inventoryRequests = item.requestObjects;
           let row = {
-              giftInKind: 'N',
-              inventoryItem: item,
-              quantity: 0,
-              unitCost: 0,
-              totalCost: 0,
-              locations: [],
-              vendors: []
-            };
+            giftInKind: 'N',
+            inventoryItem: item,
+            quantity: 0,
+            unitCost: 0,
+            totalCost: 0,
+            locations: [],
+            vendors: []
+          };
           if (!Ember.isEmpty(inventoryPurchases)) {
             // Setup intial locations for an inventory item
             inventoryPurchases.forEach(function(purchase) {
