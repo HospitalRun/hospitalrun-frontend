@@ -122,8 +122,8 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     showRemoveItem: function(item) {
       let message = this.get('i18n').t('inventory.messages.removeItemRequest');
       let model = Ember.Object.create({
-          itemToRemove: item
-        });
+        itemToRemove: item
+      });
       let title = this.get('i18n').t('inventory.titles.removeItem');
       this.displayConfirm(title, message, 'removeItem', model);
     },
@@ -145,13 +145,13 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
           if (isNew && !Ember.isEmpty(requestedItems)) {
             let baseModel = this.get('model');
             let propertiesToCopy = baseModel.getProperties([
-                'dateRequested',
-                'deliveryAisle',
-                'deliveryLocation',
-                'expenseAccount',
-                'requestedBy',
-                'status'
-              ]);
+              'dateRequested',
+              'deliveryAisle',
+              'deliveryLocation',
+              'expenseAccount',
+              'requestedBy',
+              'status'
+            ]);
             let inventoryPromises = [];
             let newModels = [];
             let savePromises = [];
