@@ -51,8 +51,8 @@ function setupRemoteSync() {
         timeout: 30000
       }
     };
-    if (configs.config_consumer_secret && configs.config_token_secret &&
-        configs.config_consumer_key && configs.config_oauth_token) {
+    if (configs.config_consumer_secret && configs.config_token_secret
+      && configs.config_consumer_key && configs.config_oauth_token) {
       pouchOptions.ajax.headers['x-oauth-consumer-secret'] = configs.config_consumer_secret;
       pouchOptions.ajax.headers['x-oauth-consumer-key'] = configs.config_consumer_key;
       pouchOptions.ajax.headers['x-oauth-token-secret'] = configs.config_token_secret;

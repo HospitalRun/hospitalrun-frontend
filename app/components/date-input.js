@@ -4,9 +4,9 @@ export default HtmlInput.extend({
   _picker: null,
 
   _shouldSetDate: function(currentDate, picker) {
-    return (picker && (Ember.isEmpty(currentDate) ||
-    Ember.isEmpty(picker.getDate()) ||
-    (currentDate.getTime && picker.getDate().getTime() !== currentDate.getTime())));
+    return (picker && (Ember.isEmpty(currentDate)
+      || Ember.isEmpty(picker.getDate())
+      || (currentDate.getTime && picker.getDate().getTime() !== currentDate.getTime())));
   },
 
   currentDateChangedValue: function() {
