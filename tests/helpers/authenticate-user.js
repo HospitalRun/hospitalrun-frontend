@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import {authenticateSession} from 'hospitalrun/tests/helpers/ember-simple-auth';
-import {invalidateSession} from 'hospitalrun/tests/helpers/ember-simple-auth';
+import { authenticateSession } from 'hospitalrun/tests/helpers/ember-simple-auth';
+import { invalidateSession } from 'hospitalrun/tests/helpers/ember-simple-auth';
 
 const {
   merge
