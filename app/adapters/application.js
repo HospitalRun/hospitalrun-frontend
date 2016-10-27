@@ -226,7 +226,7 @@ export default Adapter.extend(PouchAdapterUtils, {
               }
             });
           }
-        } catch (err) {
+        } catch(err) {
           this._pouchError(reject)(err);
         }
       }, 'findQuery in application-pouchdb-adapter');
