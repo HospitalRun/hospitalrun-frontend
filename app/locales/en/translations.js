@@ -113,6 +113,21 @@ export default {
       editTitle: 'Address Options',
       addressLabel: 'Address'
     },
+    customForms: {
+      buttons: {
+        addField: 'Add Field',
+        addForm: 'Add Form'
+      },
+      labels: {
+        columns: 'Columns',
+        customForm: 'Custom Form',
+        newForm: 'New Form',
+        formName: 'Form Name'
+      },
+      titles: {
+        fields: 'Fields'
+      }
+    },
     loaddb: {
       progressMessage: 'Please wait while your database is loaded.',
       progressTitle: 'Loading Database',
@@ -1009,6 +1024,25 @@ export default {
   components: {
     chargesByTypeTab: {
       charges: 'charges'
+    },
+    customFieldEdit: {
+      labels: {
+        checkbox: 'Checkbox',
+        classNames: 'Class Names',
+        includeOtherOption: 'Include Other Option',
+        label: 'Label',
+        otherOptionLabel: 'Other Option Label',
+        property: 'Property',
+        radio: 'Radio',
+        select: 'Dropdown',
+        text: 'Text',
+        textarea: 'Large Text'
+      },
+      titles: {
+        checkboxValues: 'Checkbox Values',
+        dropDownValues: 'Dropdown Values',
+        radioValues: 'Radio Values'
+      }
     },
     sortableColumn: {
       labels: {

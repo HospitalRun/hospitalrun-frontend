@@ -11,6 +11,7 @@ Router.map(function() {
     resetNamespace: true
   }, function() {
     this.route('address');
+    this.route('custom-forms');
     this.route('loaddb');
     this.route('lookup', { path: '/' });
     this.route('users', {

@@ -1,0 +1,89 @@
+<div class="row">
+  <div class="form-input-group col-xs-3">
+    <label for="fieldTypeSelect">{{t 'labels.type'}}</label>
+    <select onchange={{action 'selectType' value="target.value"}} class="form-control" id="fieldTypeSelect">
+      <option disabled selected={{is-not field.type}}></option>
+      {{#each fieldTypes as |fieldType|}}
+        <option value="{{fieldType.id}}" selected={{eq field.type fieldType.id}}>
+          {{fieldType.value}}
+        </option>
+      {{/each}}
+    </select>
+  </div>
+  <div class="form-input-group col-xs-3">
+    <label>{{t 'components.customFieldEdit.labels.label'}}</label>
+    {{input class="form-control" value=field.label}}
+  </div>
+  <div class="form-input-group col-xs-3">
+    <label>{{t 'components.customFieldEdit.labels.classNames'}}</label>
+    {{input class="form-control" value=field.classNames}}
+  </div>
+  {{#if (not-eq field.type 'checkbox')}}
+    <div class="form-input-group col-xs-3">
+      <label>{{t 'components.customFieldEdit.labels.property'}}</label>
+      {{input class="form-control" value=field.property}}
+    </div>
+  {{/if}}
+</div>
+{{#if showValues}}
+  <h4>
+    {{#if (eq field.type 'radio')}}
+      {{t 'components.customFieldEdit.titles.radioValues'}}
+    {{/if}}
+    {{#if (eq field.type 'select')}}
+      {{t 'components.customFieldEdit.titles.dropDownValues'}}
+    {{/if}}
+    {{#if (eq field.type 'checkbox')}}
+      {{t 'components.customFieldEdit.titles.checkboxValues'}}
+    {{/if}}
+    <button class="btn btn-primary align-right" {{action 'addValue'}}>
+      {{t "buttons.addValue"}}
+    </button>
+  </h4>
+  <table class="table">
+    <tr class="table-header">
+      {{#if (eq field.type 'checkbox')}}
+        <th>{{t 'components.customFieldEdit.labels.label'}}</th>
+        <th>{{t 'components.customFieldEdit.labels.property'}}</th>
+      {{else}}
+        <th>{{t 'labels.value'}}</th>
+      {{/if}}
+      <th>{{t 'labels.action'}}</th>
+    </tr>
+    {{#each fieldValues as |value|}}
+      <tr>
+        {{#if (eq field.type 'checkbox')}}
+          <td>
+            {{input value=value.label class="form-control"}}
+          </td>
+          <td>
+            {{input value=value.property class="form-control"}}
+          </td>
+        {{else}}
+          <td>
+            {{input value=value class="form-control"}}
+          </td>
+        {{/if}}
+        <td>
+          <button class="btn btn-default warning" {{action "deleteValue" value bubbles=false }}>
+            <span class="octicon octicon-x"></span>{{t "buttons.delete"}}
+          </button>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+{{/if}}
+{{#if (eq field.type 'radio')}}
+  <div class="checkbox">
+    <label>
+      {{input type="checkbox" checked=field.includeOtherOption}}
+      {{t 'components.customFieldEdit.labels.includeOtherOption'}}
+    </label>
+  </div>
+  {{#if field.includeOtherOption}}
+    <div class="form-group">
+      <label>{{t 'components.customFieldEdit.labels.otherOptionLabel'}}</label>
+      {{input class="form-control" value=field.otherOptionLabel}}
+    </div>
+  {{/if}}
+{{/if}}
