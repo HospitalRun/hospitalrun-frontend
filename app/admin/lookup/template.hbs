@@ -18,12 +18,22 @@
   <div class="panel-body">
     <table class="table">
       <tr class="table-header">
-        <th>{{t 'labels.value'}}</th>
+        {{#if isLookupTypeNameValue}}
+          <th>{{t 'labels.name'}}</th>
+          <th>{{t 'labels.value'}}</th>
+        {{else}}
+          <th>{{t 'labels.value'}}</th>
+        {{/if}}
         <th>{{t 'labels.actions'}}</th>
       </tr>
       {{#each lookupTypeValues as |lookupTypeValue|}}
         <tr>
-          <td class="lookup-type-value">{{lookupTypeValue}}</td>
+          {{#if isLookupTypeNameValue}}
+            <td class="lookup-type-name">{{lookupTypeValue.name}}</td>
+            <td class="lookup-type-value">{{lookupTypeValue.value}}</td>
+          {{else}}
+            <td class="lookup-type-value">{{lookupTypeValue}}</td>
+          {{/if}}
           <td>
             <button class="btn btn-default neutral" {{action 'editValue' lookupTypeValue bubbles=false }}>{{t 'labels.edit'}}</button>
             <button class="btn btn-default warning" {{action 'deleteValue' lookupTypeValue bubbles=false }}><span class="octicon octicon-x"></span>{{t 'labels.delete'}}</button>

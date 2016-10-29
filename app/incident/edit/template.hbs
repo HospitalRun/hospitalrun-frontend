@@ -1,0 +1,884 @@
+{{#edit-panel editPanelProps=editPanelProps}}
+{{#em-form model=model submitButton=false }}
+  <div class="panel panel-success">
+    <div class="row">
+      <div class="col-xs-12 col-md-8"><p class="text-info">{{t 'incident.messages.incidentId' id=model.friendlyId}}</p></div>
+      <div class="col-xs-6 col-md-4"><p class="text-success pull-right">{{t 'incident.messages.status' status=model.statusOfIncident}}</p></div>
+    </div>
+  </div>
+  <ul class="nav nav-pills tab-nav" role="tablist">
+    <li role="presentation" class="active"><a href="#creation" role="tab" data-toggle="pill">{{t 'incident.tabs.creation'}}</a></li>
+    <li role="presentation"><a href="#reviewers" role="tab" data-toggle="pill">{{t 'incident.tabs.reviewers'}}</a></li>
+    <li role="presentation"><a href="#feedback" role="tab" data-toggle="pill">{{t 'incident.tabs.feedback'}}</a></li>
+    <li role="presentation"><a href="#investigate" role="tab" data-toggle="pill">{{t 'incident.tabs.investigations'}}</a></li>
+    <li role="presentation"><a href="#factors" role="tab" data-toggle="pill">{{t 'incident.tabs.rootCause'}}</a></li>
+    <li role="presentation"><a href="#harmscore" role="tab" data-toggle="pill">{{t 'incident.tabs.harmScore'}}</a></li>
+    <li role="presentation"><a href="#prerisk" role="tab" data-toggle="pill">{{t 'incident.tabs.preRisk'}}</a></li>
+    <li role="presentation"><a href="#recommendation" role="tab" data-toggle="pill">{{t 'incident.tabs.recommendations'}}</a></li>
+    <li role="presentation"><a href="#postrisk" role="tab" data-toggle="pill">{{t 'incident.tabs.postRisk'}}</a></li>
+    <li role="presentation"><a href="#summary" role="tab" data-toggle="pill">{{t 'incident.tabs.summary'}}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="creation">
+      <div class="panel detail-section">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{t 'incident.titles.general'}}</h3>
+        </div>
+        <div class="panel-body detail-section-content">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <div class="form-group has-success">
+                <label class="control-label">{{t 'incident.labels.reportedBy'}}</label>
+                <div class="form-control not-editable">
+                  {{model.reportedBy}}
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              {{em-select label=(t 'incident.labels.incidentLocation') property="locationOfIncident" prompt=" " content=incidentLocations class="required"}}
+            </div>
+          </div>
+          <div class="row">
+            {{date-picker property="dateOfIncident" label=(t 'incident.labels.incidentDate') class="col-xs-12 col-sm-6 required" format="l h:mm A" showTime=true}} {{em-input property="reportedTo" label=(t 'incident.labels.reportedTo') class="col-xs-12 col-sm-6
+            required"}}
+          </div>
+          <div class="row">
+            {{em-input property="witnessList" label=(t 'incident.labels.witness') class="col-xs-12 col-sm-12"}}
+          </div>
+          {{em-text label=(t 'incident.labels.incidentDesc') property="incidentDescription" class="required" rows=3}}
+        </div>
+      </div>
+      <div class="panel detail-section">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{t 'incident.titles.incidentType'}}</h3>
+        </div>
+        <div class="panel-body detail-section-content">
+          <div class="row">
+            {{em-select class="col-xs-12 col-sm-6 required" label=(t 'incident.labels.category')
+              prompt=" " property="categoryName" content=categoryNameList}}
+            {{em-select class="col-xs-12 col-sm-6 required" label=(t 'incident.labels.choose')
+              prompt=" " property="categoryItem" content=itemList optionLabelPath="item" optionValuePath="item"}}
+          </div>
+          <div class="row">
+            {{em-input property="categoryOther" label=(t 'incident.labels.other') class="col-xs-12 col-sm-6"}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="reviewers">
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            {{t 'incident.titles.addReviewers'}}
+            {{#if canAddReviewer}}
+              <button class="btn btn-primary align-right" {{action "showAddReviewer" bubbles=false }}>{{t 'incident.buttons.newReviewer'}}</button>
+            {{/if}}
+          </h3>
+        </div>
+        <div class="panel-body detail-section-content">
+          <table class="table">
+            <tr class="table-header">
+              <th>{{t 'incident.labels.reviewerName'}}</th>
+              <th>{{t 'incident.labels.reviewerEmail'}}</th>
+              <th>{{t 'incident.labels.addedBy'}}</th>
+              <th>{{t 'incident.labels.addedOn'}}</th>
+              <th>{{t 'incident.labels.actions'}}</th>
+            </tr>
+            {{#each model.reviewers as |reviewer|}}
+              <tr>
+                <td>{{reviewer.reviewerName}}</td>
+                <td>{{reviewer.reviewerEmail}}</td>
+                <td>{{reviewer.addedBy}}</td>
+                <td>{{date-format reviewer.dateRecorded}}</td>
+                <td>
+                  {{#if canAddReviewer}}
+                    <button class="btn btn-default neutral" {{action "showEditReviewer" reviewer}}>{{t 'incident.buttons.edit'}}</button>
+                  {{/if}}
+                  {{#if canDeleteReviewer}}
+                    <button class="btn btn-default warning" {{action "showDeleteReviewer" reviewer bubbles=false }}><span class="octicon octicon-x"></span> {{t 'incident.buttons.delete'}}</button>
+                  {{/if}}
+                </td>
+              </tr>
+            {{/each}}
+          </table>
+        </div>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="feedback">
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            {{t 'incident.titles.feedbackList'}}
+            {{#if canAddFeedback}}
+              <button class="btn btn-primary align-right" {{action "showAddFeedback" bubbles=false }}>{{t 'incident.buttons.newFeedback'}}</button>
+            {{/if}}
+          </h3>
+        </div>
+        <div class="panel-body detail-section-content">
+          <table class="table">
+            <tr class="table-header">
+              <th>{{t 'incident.labels.date'}}</th>
+              <th>{{t 'incident.labels.givenBy'}}</th>
+              <th>{{t 'incident.labels.feedback'}}</th>
+              <th>{{t 'incident.labels.actions'}}</th>
+            </tr>
+            {{#each model.feedbacks as |feedback|}}
+              <tr>
+                <td>{{date-format feedback.dateRecorded}}</td>
+                <td>{{feedback.givenBy}}</td>
+                <td>{{feedback.description}}</td>
+                <td>
+                  {{#if canEditFeedback}}
+                    <button class="btn btn-default neutral" {{action "showEditFeedback" feedback}}>{{t 'incident.buttons.edit'}}</button>
+                  {{/if}}
+                  {{#if canDeleteFeedback}}
+                    <button class="btn btn-default warning" {{action "showDeleteFeedback" feedback bubbles=false }}><span class="octicon octicon-x"></span> {{t 'incident.buttons.delete'}}</button>
+                  {{/if}}
+                </td>
+              </tr>
+            {{/each}}
+          </table>
+        </div>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="investigate">
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            {{t 'incident.titles.findings'}}
+            {{#if canAddInvestigationFinding}}
+              <button class="btn btn-primary align-right" {{action "showAddInvestigationFinding" bubbles=false }}>{{t 'incident.buttons.newFinding'}}</button>
+            {{/if}}
+          </h3>
+          <h5>{{t 'incident.titles.findings2'}}</h5>
+        </div>
+        <div class="panel-body detail-section-content">
+          <table class="table">
+            <tr class="table-header">
+              <th>{{t 'incident.labels.dateRecorded'}}</th>
+              <th>{{t 'incident.labels.typeOfPerson'}}</th>
+              <th>{{t 'incident.labels.idType'}}</th>
+              <th>{{t 'incident.labels.idNumber'}}</th>
+              <th>{{t 'incident.labels.narrativeStatement'}}</th>
+              <th>{{t 'incident.labels.actions'}}</th>
+            </tr>
+            {{#each model.investigationFindings as |investigationFinding|}}
+              <tr>
+                <td>{{date-format investigationFinding.dateRecorded}}</td>
+                <td>{{investigationFinding.typeOfPerson}}</td>
+                <td>{{investigationFinding.identityDocumentType}}</td>
+                <td>{{investigationFinding.identityNumber}}</td>
+                <td>{{investigationFinding.narrativeStatement}}</td>
+                <td>
+                  {{#if canAddInvestigationFinding}}
+                    <button class="btn btn-default neutral" {{action "showEditInvestigationFinding" investigationFinding}}>{{t 'incident.buttons.edit'}}</button>
+                  {{/if}}
+                  {{#if canDeleteInvestigationFinding}}
+                    <button class="btn btn-default warning" {{action "showDeleteInvestigationFinding" investigationFinding bubbles=false }}><span class="octicon octicon-x"></span> {{t 'incident.buttons.delete'}}</button>
+                  {{/if}}
+                </td>
+              </tr>
+            {{/each}}
+          </table>
+        </div>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="factors">
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            {{t 'incident.titles.rca'}}
+          </h3>
+          {{#if canAddContributingFactor}}
+            <h5>{{t 'incident.titles.cfcf'}}</h5>
+          {{/if}}
+        </div>
+        {{#if canAddContributingFactor}}
+          <div class="panel-body detail-section-content">
+            <table class="table">
+              <THEAD>
+                <tr class="table-header success">
+                  <th>{{t 'incident.labels.patientFactors'}}</th>
+                  <th>{{t 'incident.labels.components'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                {{#each patientFactors as |patientFactor|}}
+                  <tr>
+                    <td>
+                      {{patientFactor.type}}
+                    </td>
+                    <td>
+                      <table class="table" style="margin-top:-5px;">
+                        <TBODY>
+                          {{#each patientFactor.components as |component|}}
+                            <tr><td>{{em-checkbox label=component.name property=component.id}}</td></tr>
+                          {{/each}}
+                        </TBODY>
+                      </table>
+                    </td>
+                  </tr>
+                {{/each}}
+              </TBODY>
+            </table>
+            <table class="table">
+              <THEAD>
+                <tr class="table-header success">
+                  <th>{{t 'incident.labels.staffFactors'}}</th>
+                  <th>{{t 'incident.labels.components'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                {{#each staffFactors as |staffFactor|}}
+                  <tr>
+                    <td>
+                      {{staffFactor.type}}
+                    </td>
+                    <td>
+                      <table class="table" style="margin-top:-5px;">
+                        <TBODY>
+                          {{#each staffFactor.components as |component|}}
+                            <tr><td>{{em-checkbox label=component.name property=component.id}}</td></tr>
+                          {{/each}}
+                        </TBODY>
+                      </table>
+                    </td>
+                  </tr>
+                {{/each}}
+              </TBODY>
+            </table>
+            <table class="table">
+              <THEAD>
+                <tr class="table-header success">
+                  <th>{{t 'incident.labels.taskFactors'}}</th>
+                  <th>{{t 'incident.labels.components'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                {{#each taskFactors as |taskFactor|}}
+                  <tr>
+                    <td>
+                      {{taskFactor.type}}
+                    </td>
+                    <td>
+                      <table class="table" style="margin-top:-5px;">
+                        <TBODY>
+                          {{#each taskFactor.components as |component|}}
+                            <tr><td>{{em-checkbox label=component.name property=component.id}}</td></tr>
+                          {{/each}}
+                        </TBODY>
+                      </table>
+                    </td>
+                  </tr>
+                {{/each}}
+              </TBODY>
+            </table>
+            <table class="table">
+              <THEAD>
+                <tr class="table-header success">
+                  <th>{{t 'incident.labels.communicationFactors'}}</th>
+                  <th>{{t 'incident.labels.components'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                {{#each communicationFactors as |communicationFactor|}}
+                  <tr>
+                    <td>
+                      {{communicationFactor.type}}
+                    </td>
+                    <td>
+                      <table class="table" style="margin-top:-5px;">
+                        <TBODY>
+                          {{#each communicationFactor.components as |component|}}
+                            <tr><td>{{em-checkbox label=component.name property=component.id}}</td></tr>
+                          {{/each}}
+                        </TBODY>
+                      </table>
+                    </td>
+                  </tr>
+                {{/each}}
+              </TBODY>
+            </table>
+            <table class="table">
+              <THEAD>
+                <tr class="table-header success">
+                  <th>{{t 'incident.labels.equipmentFactors'}}</th>
+                  <th>{{t 'incident.labels.components'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                {{#each equipmentFactors as |equipmentFactor|}}
+                  <tr>
+                    <td>
+                      {{equipmentFactor.type}}
+                    </td>
+                    <td>
+                      <table class="table" style="margin-top:-5px;">
+                        <TBODY>
+                          {{#each equipmentFactor.components as |component|}}
+                            <tr><td>{{em-checkbox label=component.name property=component.id}}</td></tr>
+                          {{/each}}
+                        </TBODY>
+                      </table>
+                    </td>
+                  </tr>
+                {{/each}}
+              </TBODY>
+            </table>
+            <table class="table">
+              <THEAD>
+                <tr class="table-header success">
+                  <th>{{t 'incident.labels.workFactors'}}</th>
+                  <th>{{t 'incident.labels.components'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                {{#each workEnvFactors as |workEnvFactor|}}
+                  <tr>
+                    <td>
+                      {{workEnvFactor.type}}
+                    </td>
+                    <td>
+                      <table class="table" style="margin-top:-5px;">
+                        <TBODY>
+                          {{#each workEnvFactor.components as |component|}}
+                            <tr><td>{{em-checkbox label=component.name property=component.id}}</td></tr>
+                          {{/each}}
+                        </TBODY>
+                      </table>
+                    </td>
+                  </tr>
+                {{/each}}
+              </TBODY>
+            </table>
+            <table class="table">
+              <THEAD>
+                <tr class="table-header success">
+                  <th>{{t 'incident.labels.organizationalFactors'}}</th>
+                  <th>{{t 'incident.labels.components'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                {{#each organisationalFactors as |organisationalFactor|}}
+                  <tr>
+                    <td>
+                      {{organisationalFactor.type}}
+                    </td>
+                    <td>
+                      <table class="table" style="margin-top:-5px;">
+                        <TBODY>
+                          {{#each organisationalFactor.components as |component|}}
+                            <tr><td>{{em-checkbox label=component.name property=component.id}}</td></tr>
+                          {{/each}}
+                        </TBODY>
+                      </table>
+                    </td>
+                  </tr>
+                {{/each}}
+              </TBODY>
+            </table>
+            <table class="table">
+              <THEAD>
+                <tr class="table-header success">
+                  <th>{{t 'incident.labels.educationalFactors'}}</th>
+                  <th>{{t 'incident.labels.components'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                {{#each educationAndTrainingFactors as |educationAndTrainingFactor|}}
+                  <tr>
+                    <td>
+                      {{educationAndTrainingFactor.type}}
+                    </td>
+                    <td>
+                      <table class="table" style="margin-top:-5px;">
+                        <TBODY>
+                          {{#each educationAndTrainingFactor.components as |component|}}
+                            <tr><td>{{em-checkbox label=component.name property=component.id}}</td></tr>
+                          {{/each}}
+                        </TBODY>
+                      </table>
+                    </td>
+                  </tr>
+                {{/each}}
+              </TBODY>
+            </table>
+            <table class="table">
+              <THEAD>
+                <tr class="table-header success">
+                  <th>{{t 'incident.labels.teamFactors'}}</th>
+                  <th>{{t 'incident.labels.components'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                {{#each teamFactors as |teamFactor|}}
+                  <tr>
+                    <td>
+                      {{teamFactor.type}}
+                    </td>
+                    <td>
+                      <table class="table" style="margin-top:-5px;">
+                        <TBODY>
+                          {{#each teamFactor.components as |component|}}
+                            <tr><td>{{em-checkbox label=component.name property=component.id}}</td></tr>
+                          {{/each}}
+                        </TBODY>
+                      </table>
+                    </td>
+                  </tr>
+                {{/each}}
+              </TBODY>
+            </table>
+            {{em-text label=(t 'incident.labels.rootCauseSummary') property="rcaSummary" rows=3}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="harmscore">
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{t 'incident.titles.harmScore'}}</h3>
+        </div>
+        {{#if canAddRisk}}
+
+          <div class="panel-body detail-section-content">
+            <h5>{{t 'incident.labels.harmPrompt'}}</h5>
+            {{ext-radio content=harmScoreList value=model.harmScore showInline=false}}
+          </div>
+          <div class="panel-body detail-section-content">
+            <h5>{{t 'incident.labels.harmDuration'}}</h5>
+            {{ext-radio content=harmDurationList value=model.harmDuration showInline=false}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="prerisk">
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{t 'incident.titles.preRisk'}}</h3>
+        </div>
+        {{#if canAddRisk}}
+          <div class="panel-body detail-section-content">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <table class="table">
+                    <tr class="table-header">
+                      <th>{{t 'incident.labels.severity'}}</th>
+                      <th>{{t 'incident.labels.occurrence'}}</th>
+                    </tr>
+                    <tr>
+                      <td>{{ext-radio content=severityTypes value=model.preSeverity radioLabelPath="content.label" radioValuePath="content.value"}}</td>
+                      <td>{{ext-radio content=occurrenceTypes value=model.preOccurence radioLabelPath="content.label" radioValuePath="content.value"}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <table class="table">
+                    <tr class="table-header">
+                      <th>{{t 'incident.labels.riskScore'}}</th>
+                    </tr>
+                    <tr>
+                      <td><b>{{displayPreScore}} {{displayPreResults}}</b></td>
+                    </tr>
+                  </table>
+                 </div>
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="recommendation">
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            {{t 'incident.titles.recommendations'}}
+            {{#if canAddRecommendation}}
+              <button class="btn btn-primary align-right" {{action "showAddRecommendation" bubbles=false }}>{{t 'incident.buttons.newRecommendation'}}</button>
+            {{/if}}
+          </h3>
+        </div>
+        <div class="panel-body detail-section-content">
+          <table class="table">
+            <tr class="table-header">
+              <th>{{t 'incident.labels.activity'}}</th>
+              <th>{{t 'incident.labels.responsibility'}}</th>
+              <th>{{t 'incident.labels.startDate'}}</th>
+              <th>{{t 'incident.labels.targetDate'}}</th>
+              <th>{{t 'incident.labels.status'}}</th>
+              <th>{{t 'incident.labels.actions'}}</th>
+            </tr>
+            {{#each model.recommendations as |recommendation|}}
+              <tr>
+                <td>{{recommendation.activity}}</td>
+                <td>{{recommendation.responsibility}}</td>
+                <td>{{date-format recommendation.startDate}}</td>
+                <td>{{date-format recommendation.targetDateOfCompletion}}</td>
+                <td>{{recommendation.status}}</td>
+                <td>
+                  {{#if canAddRecommendation}}
+                    <button class="btn btn-default neutral" {{action "showEditRecommendation" recommendation}}>{{t 'incident.buttons.edit'}}</button>
+                  {{/if}}
+                  {{#if canDeleteRecommendation}}
+                    <button class="btn btn-default warning" {{action "showDeleteRecommendation" recommendation bubbles=false }}><span class="octicon octicon-x"></span> {{t 'incident.buttons.delete'}}</button>
+                  {{/if}}
+                </td>
+              </tr>
+            {{/each}}
+          </table>
+          {{#if canAddRecommendation}}
+            {{em-text label=(t 'incident.labels.actionsTaken') property="actionsTaken" rows=3}}
+            {{em-text label=(t 'incident.labels.lessonsLearned') property="lessonsLearned" rows=3}}
+          {{/if}}
+        </div>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="postrisk">
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{t 'incident.titles.postRisk'}}</h3>
+        </div>
+        {{#if canAddRisk}}
+          <div class="panel-body detail-section-content">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <table class="table">
+                    <tr class="table-header">
+                      <th>{{t 'incident.labels.severity'}}</th>
+                      <th>{{t 'incident.labels.occurrence'}}</th>
+                    </tr>
+                    <tr>
+                      <td>{{ext-radio content=severityTypes value=model.postSeverity radioLabelPath="content.label" radioValuePath="content.value"}}</td>
+                      <td>{{ext-radio content=occurrenceTypes value=model.postOccurence radioLabelPath="content.label" radioValuePath="content.value"}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <table class="table">
+                    <tr class="table-header">
+                      <th>{{t 'incident.labels.riskScore'}}</th>
+                    </tr>
+                    <tr>
+                      <td><b>{{displayPostScore}} {{displayPostResults}}</b></td>
+                    </tr>
+                  </table>
+                 </div>
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="summary">
+      <div class="panel">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            {{t 'incident.titles.summary'}}
+            {{#if canAddSummary}}
+              <button class="btn btn-primary align-right" {{action "generateSummary" bubbles=false }}>{{t 'incident.buttons.generateSum'}}</button>
+            {{/if}}
+          </h3>
+        </div>
+        <div class="panel-body detail-section-content">
+          {{#if showSummary}}
+            <table class="table">
+              <THEAD>
+                <tr class="table-header success">
+                  <th>{{t 'incident.labels.description'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                <tr>
+                  <td>{{model.incidentDescription}}</td>
+                </tr>
+              </TBODY>
+            </table>
+            <table class="table table-hover">
+              <THEAD>
+                <tr class="table-header success">
+                  <th colspan="3">{{t 'incident.labels.details'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                <tr>
+                  <td>{{t 'incident.labels.incidentDateSum'}}</td>
+                  <td>{{date-format model.dateOfIncident}}</td>
+                </tr>
+                <tr>
+                  <td>{{t 'incident.labels.incidentLocationSum'}}</td>
+                  <td>{{model.locationOfIncident}}</td>
+                </tr>
+                <tr>
+                  <td>{{t 'incident.labels.incidentType'}}</td>
+                  <td>{{model.categoryName}}</td>
+                  <td>{{model.categoryItem}}</td>
+                </tr>
+                <tr>
+                  <td>{{t 'incident.labels.harmScore'}}</td>
+                  <td>{{model.harmScore}}</td>
+                </tr>
+              </TBODY>
+            </table>
+            <table class="table">
+              <THEAD>
+                <tr class="table-header success">
+                  <th colspan="2">{{t 'incident.labels.contributoryFactors'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                {{#if havePatientContributingFactors}}
+                  <tr>
+                    <td>{{t 'incident.labels.patientFactors'}}</td>
+                    <td>
+                      <table class="table table-striped">
+                        <tbody>
+                          {{#each model.patientContributingFactors as |patientContributingFactor|}}
+                            <tr>
+                              <td>{{patientContributingFactor.factorType}}</td>
+                              <td>{{patientContributingFactor.component}}</td>
+                              <td>{{patientContributingFactor.userValue}}</td>
+                            </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                {{/if}}
+                {{#if haveStaffContributingFactors}}
+                  <tr>
+                    <td>{{t 'incident.labels.staffFactors'}}</td>
+                    <td>
+                      <table class="table table-striped">
+                        <tbody>
+                          {{#each model.staffContributingFactors as |staffContributingFactor|}}
+                            <tr>
+                              <td>{{staffContributingFactor.factorType}}</td>
+                              <td>{{staffContributingFactor.component}}</td>
+                              <td>{{staffContributingFactor.userValue}}</td>
+                            </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                {{/if}}
+                {{#if haveTaskContributingFactors}}
+                  <tr>
+                    <td>{{t 'incident.labels.taskFactors'}}</td>
+                    <td>
+                      <table class="table table-striped">
+                        <tbody>
+                          {{#each model.taskContributingFactors as |taskContributingFactor|}}
+                            <tr>
+                              <td>{{taskContributingFactor.factorType}}</td>
+                              <td>{{taskContributingFactor.component}}</td>
+                              <td>{{taskContributingFactor.userValue}}</td>
+                            </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                {{/if}}
+                {{#if haveCommunicationContributingFactors}}
+                  <tr>
+                    <td>{{t 'incident.labels.communicationFactors'}}</td>
+                    <td>
+                      <table class="table table-striped">
+                        <tbody>
+                          {{#each model.communicationContributingFactors as |communicationContributingFactor|}}
+                            <tr>
+                              <td>{{communicationContributingFactor.factorType}}</td>
+                              <td>{{communicationContributingFactor.component}}</td>
+                              <td>{{communicationContributingFactor.userValue}}</td>
+                            </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                {{/if}}
+                {{#if haveEquipmentContributingFactors}}
+                  <tr>
+                    <td>{{t 'incident.labels.equipmentFactors'}}</td>
+                    <td>
+                      <table class="table table-striped">
+                        <tbody>
+                          {{#each model.equipmentContributingFactors as |equipmentContributingFactor|}}
+                            <tr>
+                              <td>{{equipmentContributingFactor.factorType}}</td>
+                              <td>{{equipmentContributingFactor.component}}</td>
+                              <td>{{equipmentContributingFactor.userValue}}</td>
+                            </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                {{/if}}
+                {{#if haveWorkEnvironmentContributingFactors}}
+                  <tr>
+                    <td>{{t 'incident.labels.workFactors'}}</td>
+                    <td>
+                      <table class="table table-striped">
+                        <tbody>
+                          {{#each model.wrkEnvironmentContributingFactors as |wrkEnvironmentContributingFactor|}}
+                            <tr>
+                              <td>{{wrkEnvironmentContributingFactor.factorType}}</td>
+                              <td>{{wrkEnvironmentContributingFactor.component}}</td>
+                              <td>{{wrkEnvironmentContributingFactor.userValue}}</td>
+                            </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                {{/if}}
+                {{#if haveOrganizationalContributingFactors}}
+                  <tr>
+                    <td>{{t 'incident.labels.organizationalFactors'}}</td>
+                    <td>
+                      <table class="table table-striped">
+                        <tbody>
+                          {{#each model.organizationalContributingFactors as |organizationalContributingFactor|}}
+                            <tr>
+                              <td>{{organizationalContributingFactor.factorType}}</td>
+                              <td>{{organizationalContributingFactor.component}}</td>
+                              <td>{{organizationalContributingFactor.userValue}}</td>
+                            </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                {{/if}}
+                {{#if haveEducationTrainingContributingFactors}}
+                  <tr>
+                    <td>{{t 'incident.labels.educationalFactors'}}</td>
+                    <td>
+                      <table class="table table-striped">
+                        <tbody>
+                          {{#each model.eduTrainingContributingFactors as |eduTrainingContributingFactor|}}
+                            <tr>
+                              <td>{{eduTrainingContributingFactor.factorType}}</td>
+                              <td>{{eduTrainingContributingFactor.component}}</td>
+                              <td>{{eduTrainingContributingFactor.userValue}}</td>
+                            </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                {{/if}}
+                {{#if haveTeamContributingFactors}}
+                  <tr>
+                    <td>{{t 'incident.labels.teamFactors'}}</td>
+                    <td>
+                      <table class="table table-striped">
+                        <tbody>
+                          {{#each model.teamContributingFactors as |teamContributingFactor|}}
+                            <tr>
+                              <td>{{teamContributingFactor.factorType}}</td>
+                              <td>{{teamContributingFactor.component}}</td>
+                              <td>{{teamContributingFactor.userValue}}</td>
+                            </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                {{/if}}
+                <tr>
+                  <td>{{t 'incident.labels.rootCauseSummary'}}</td>
+                  <td>{{model.rcaSummary}}</td>
+                </tr>
+              </TBODY>
+            </table>
+            <table class="table table-hover">
+              <THEAD>
+                <tr class="table-header success">
+                  <th colspan="2">{{t 'incident.titles.preRisk'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                <tr>
+                  <td>{{t 'incident.messages.severity'}}</td>
+                  <td>{{model.preSeverity}}</td>
+                </tr>
+                <tr>
+                  <td>{{t 'incident.messages.occurence'}}</td>
+                  <td>{{model.preOccurence}}</td>
+                </tr>
+                <tr>
+                  <td>{{t 'incident.messages.riskScore'}}</td>
+                  <td>{{model.preRiskScore}}</td>
+                </tr>
+              </TBODY>
+            </table>
+            <table class="table table-hover">
+              <THEAD>
+                <tr class="table-header success">
+                  <th colspan="5">{{t 'incident.labels.recommendations'}}</th>
+                </tr>
+                <tr class="table-header">
+                  <th>{{t 'incident.labels.activity'}}</th>
+                  <th>{{t 'incident.labels.responsibility'}}</th>
+                  <th>{{t 'incident.labels.startDate'}}</th>
+                  <th>{{t 'incident.labels.targetDate'}}</th>
+                  <th>{{t 'incident.labels.status'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                {{#each model.recommendations as |recommendation|}}
+                  <tr>
+                    <td>{{recommendation.activity}}</td>
+                    <td>{{recommendation.responsibility}}</td>
+                    <td>{{date-format recommendation.startDate}}</td>
+                    <td>{{date-format recommendation.targetDateOfCompletion}}</td>
+                    <td>{{recommendation.status}}</td>
+                  </tr>
+                {{/each}}
+                <tr>
+                  <td>{{t 'incident.labels.actionsTaken'}}</td>
+                  <td>{{model.actionsTaken}}</td>
+                </tr>
+                <tr>
+                  <td>{{t 'incident.labels.lessonsLearned'}}</td>
+                  <td>{{model.lessonsLearned}}</td>
+                </tr>
+              </TBODY>
+            </table>
+            <table class="table table-hover">
+              <THEAD>
+                <tr class="table-header success">
+                  <th colspan="2">{{t 'incident.titles.postRisk'}}</th>
+                </tr>
+              </THEAD>
+              <TBODY>
+                <tr>
+                  <td>{{t 'incident.messages.severity'}}</td>
+                  <td>{{model.postSeverity}}</td>
+                </tr>
+                <tr>
+                  <td>{{t 'incident.messages.occurence'}}</td>
+                  <td>{{model.postOccurence}}</td>
+                </tr>
+                <tr>
+                  <td>{{t 'incident.messages.riskScore'}}</td>
+                  <td>{{model.postRiskScore}}</td>
+                </tr>
+              </TBODY>
+            </table>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+{{/em-form}}
+{{/edit-panel}}
