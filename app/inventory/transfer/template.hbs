@@ -19,7 +19,7 @@
     {{select-or-typeahead class="required" property="transferLocation" label=(t 'inventory.labels.transferTo') list=warehouseList selection=model.transferLocation }}
     {{select-or-typeahead property="transferAisleLocation" label=(t 'inventory.labels.transferToAisle') list=aisleLocationList selection=model.transferAisleLocation }}
     <div class="row">
-      {{em-input property="adjustmentQuantity" label=(t 'labels.quantity') class="col-sm-3 required"}}
+      {{number-input property="adjustmentQuantity" label=(t 'labels.quantity') class="col-sm-3 required"}}
     </div>
     <div class="row">
       {{date-picker property="dateCompleted" label=(t 'inventory.labels.dateTransferred') class="col-sm-4 required"}}

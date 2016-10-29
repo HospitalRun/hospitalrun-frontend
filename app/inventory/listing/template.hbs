@@ -1,39 +1,39 @@
 {{#item-listing paginationProps=paginationProps }}
   {{#if hasRecords}}
     <table class="table">
-    <tr class="table-header">
-      {{#sortable-column sortBy='friendlyId' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.id'}}{{/sortable-column}}
-      {{#sortable-column sortBy='name' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.name'}}{{/sortable-column}}
-      {{#sortable-column sortBy='inventoryType' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.type'}}{{/sortable-column}}
-      {{#sortable-column sortBy='quantity' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.quantity'}}{{/sortable-column}}
-      <th>{{t 'inventory.labels.location'}}</th>
-      {{#sortable-column sortBy='crossReference' sortDesc=sortDesc sortKey=sortKey }}{{t 'inventory.labels.xref'}}{{/sortable-column}}
-      <th>{{t 'labels.actions'}}</th>
-    </tr>
-    {{#each model as |inventory|}}
-      {{#unless inventory.isNew}}
-        <tr {{action 'editItem' inventory}} class="clickable">
-          <td>{{inventory.friendlyId}}</td>
-          <td>{{inventory.name}}</td>
-          <td>{{inventory.inventoryType}}</td>
-          <td>{{inventory.quantity}} {{inventory.distributionUnit}}</td>
-          <td>{{inventory.displayLocations}}</td>
-          <td>{{inventory.crossReference}}</td>
-          <td>
-            {{#if canAddPurchase}}
-              <button class="btn btn-default" {{action 'showAddPurchase' inventory bubbles=false }}>{{t 'buttons.add'}}</button>
-            {{/if}}
-            {{#if canAddItem}}
-              <button class="btn btn-default neutral" {{action 'editItem' inventory bubbles=false }}>{{t 'labels.edit'}}</button>
-            {{/if}}
-            {{#if canDeleteItem}}
-              <button class="btn btn-default warning" {{action 'deleteItem' inventory bubbles=false }}><span class="octicon octicon-x"></span> {{t 'buttons.delete'}}</button>
-            {{/if}}
-            {{#link-to 'inventory.barcode' inventory class="btn btn-default neutral" bubbles=false }}{{t 'buttons.barcode'}}{{/link-to}}
-          </td>
-        </tr>
-      {{/unless}}
-    {{/each}}
+      <tr class="table-header">
+        {{#sortable-column sortBy='friendlyId' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.id'}}{{/sortable-column}}
+        {{#sortable-column sortBy='name' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.name'}}{{/sortable-column}}
+        {{#sortable-column sortBy='inventoryType' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.type'}}{{/sortable-column}}
+        {{#sortable-column sortBy='quantity' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.quantity'}}{{/sortable-column}}
+        <th>{{t 'inventory.labels.location'}}</th>
+        {{#sortable-column sortBy='crossReference' sortDesc=sortDesc sortKey=sortKey }}{{t 'inventory.labels.xref'}}{{/sortable-column}}
+        <th>{{t 'labels.actions'}}</th>
+      </tr>
+      {{#each model as |inventory|}}
+        {{#unless inventory.isNew}}
+          <tr {{action 'editItem' inventory}} class="clickable">
+            <td>{{inventory.friendlyId}}</td>
+            <td>{{inventory.name}}</td>
+            <td>{{inventory.inventoryType}}</td>
+            <td>{{inventory.quantity}} {{inventory.distributionUnit}}</td>
+            <td>{{inventory.displayLocations}}</td>
+            <td>{{inventory.crossReference}}</td>
+            <td>
+              {{#if canAddPurchase}}
+                <button class="btn btn-default" {{action 'showAddPurchase' inventory bubbles=false }}>{{t 'buttons.add'}}</button>
+              {{/if}}
+              {{#if canAddItem}}
+                <button class="btn btn-default neutral" {{action 'editItem' inventory bubbles=false }}>{{t 'labels.edit'}}</button>
+              {{/if}}
+              {{#if canDeleteItem}}
+                <button class="btn btn-default warning" {{action 'deleteItem' inventory bubbles=false }}><span class="octicon octicon-x"></span> {{t 'buttons.delete'}}</button>
+              {{/if}}
+              {{#link-to 'inventory.barcode' inventory class="btn btn-default neutral" bubbles=false }}{{t 'buttons.barcode'}}{{/link-to}}
+            </td>
+          </tr>
+        {{/unless}}
+      {{/each}}
     </table>
   {{else}}
     <div class="alert alert-info">

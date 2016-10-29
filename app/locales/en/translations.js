@@ -24,7 +24,18 @@ export default {
     otherThan: 'must be other than {{count}}',
     odd: 'must be odd',
     even: 'must be even',
-    invalidNumber: 'not a valid number'
+    invalidNumber: 'not a valid number',
+    result: 'Please enter a result before completing'
+  },
+  dates: {
+    long: '{{years}} year {{months}} months {{days}} days',
+    longPlural: '{{years}} years {{months}} months {{days}} days',
+    longOmitYears: '{{months}} months {{days}} days',
+    longOmitDays: '{{years}} year {{months}} months',
+    longOmitDaysPlural: '{{years}} years {{months}} months',
+    longOmitDaysYears: '{{months}} months',
+    shortOmitYears: '{{months}}m {{days}}d',
+    short: '{{years}}y {{months}}m {{days}}d'
   },
   navigation: {
     imaging: 'Imaging',
@@ -107,7 +118,7 @@ export default {
       displayAlertTitle: 'Select File To Load',
       displayAlertMessage: 'Please select file to load.',
       errorDisplayAlertTitle: 'Error Loading',
-      errorDisplayAlertMessage: `The database could not be imported. The error was: {{error}}`,
+      errorDisplayAlertMessage: 'The database could not be imported. The error was: {{error}}',
       editTitle: 'Load DB'
     },
     lookup: {
@@ -302,6 +313,7 @@ export default {
     importFile: 'Import File',
     fileLoadSuccessful: 'File To Load Successful',
     fileToLoad: 'File Load',
+    fileName: 'File Name',
     startTime: 'Start Time',
     startDate: 'Start Date',
     endTime: 'End Time',
@@ -402,13 +414,13 @@ export default {
   },
   login: {
     messages: {
-      signIn:  'please sign in',
-      error:    'Username or password is incorrect.'
+      signIn: 'please sign in',
+      error: 'Username or password is incorrect.'
     },
     labels: {
       password: 'Password',
       username: 'Username',
-      signIn:  'Sign in'
+      signIn: 'Sign in'
     }
   },
   loading: {
@@ -667,7 +679,7 @@ export default {
     },
     alerts: {
       returnedTitle: 'Medication Returned',
-      returnedMessage:  'The medication has been marked as returned.',
+      returnedMessage: 'The medication has been marked as returned.',
       savedTitle: 'Medication Request Saved',
       savedMessage: 'The medication record has been saved.',
       fulfilledTitle: 'Medication Request Fulfilled'
@@ -811,7 +823,8 @@ export default {
       patientStatus: 'Patient Status',
       totalPatientDays: 'Total Patient Days',
       totalPatientDaysDetailed: 'Total Patient Days (Detailed)',
-      visit: 'Visit'
+      visit: 'Visit',
+      deletePatientRecord: 'Delete Patient Record'
     },
     messages: {
       areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
@@ -819,7 +832,8 @@ export default {
       noPatientsFound: 'No patients found.',
       savedPatient: 'The patient record for {{displayName}} has been saved.',
       notFoundQuickAdd: 'The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.',
-      createNewPatient: 'Create a new patient record?'
+      createNewPatient: 'Create a new patient record?',
+      deletingPatient: 'Deleting patient and all associated records'
     },
     buttons: {
       addExpense: 'Add Expense',
@@ -876,7 +890,8 @@ export default {
       referredDate: 'Referred Date',
       religion: 'Religion',
       parent: 'Parent/Guardian',
-      contacts: 'Contacts'
+      contacts: 'Contacts',
+      sexNotEntered: 'Sex Not Entered'
     },
     notes: {
       newNote: 'New Note for',

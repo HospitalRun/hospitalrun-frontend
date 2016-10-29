@@ -12,6 +12,9 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   address2: DS.attr('string'),
   address3: DS.attr('string'),
   address4: DS.attr('string'),
+  allergies: DS.hasMany('allergy', {
+    async: true
+  }),
   bloodType: DS.attr('string'),
   clinic: DS.attr('string'),
   country: DS.attr('string'),
@@ -55,14 +58,14 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   status: DS.attr('string'),
 
   age: function() {
-    var dob = this.get('dateOfBirth');
+    let dob = this.get('dateOfBirth');
     return this.convertDOBToText(dob);
   }.property('dateOfBirth'),
 
   displayAddress: function() {
-    var addressFields = this.getProperties('address', 'address2', 'address3', 'address4'),
-      displayAddress = '';
-    for (var prop in addressFields) {
+    let addressFields = this.getProperties('address', 'address2', 'address3', 'address4');
+    let displayAddress = '';
+    for (let prop in addressFields) {
       if (!Ember.isEmpty(addressFields[prop])) {
         if (!Ember.isEmpty(displayAddress)) {
           displayAddress += ', ';

@@ -13,7 +13,7 @@ module('Acceptance | procedures', {
 });
 
 testWithVisit('Add procedure', function(assert) {
-  var procedureDesc = 'Release Left Elbow Bursa and Ligament, Percutaneous Approach';
+  let procedureDesc = 'Release Left Elbow Bursa and Ligament, Percutaneous Approach';
   assert.equal(find('#visit-procedures tr').length, 2, 'One procedure is listed for the visit');
   click('button:contains(New Procedure)');
   andThen(function() {
@@ -52,7 +52,6 @@ testWithVisit('Edit procedure', function(assert) {
     waitToAppear('.modal-dialog');
   });
   andThen(function() {
-    console.log('1');
     assert.equal(find('.modal-title').text(), 'Edit Charge Item', 'Edit Charge Item modal appears');
     typeAheadFillIn('.charge-item-name', 'Gauze padding');
     click('.modal-footer button:contains(Update)');
@@ -73,7 +72,6 @@ testWithVisit('Edit procedure', function(assert) {
     waitToDisappear('.modal-dialog');
   });
   andThen(function() {
-    console.log('5');
     assert.equal(find('.medication-charges tr').length, 3, 'Two medication charges exists');
     click('.medication-charges button:contains(Edit)');
     waitToAppear('.modal-dialog');

@@ -1,21 +1,21 @@
 <tr {{action 'editAppointment' appointment}}>
-    <td class="appointment-date">
-        {{appointment.formattedAppointmentDate}}
-    </td>
-    <td>{{appointment.patient.displayName}}</td>
-    <td>{{appointment.appointmentType}}</td>
-    <td>{{appointment.location}}</td>
-    <td>{{appointment.provider}}</td>
-    <td class="appointment-status">{{appointment.displayStatus}}</td>
-    <td>
-        {{#if canEdit}}
-            <button class="btn btn-default neutral" {{action 'editAppointment' appointment bubbles=false }}>{{t 'labels.edit'}}</button>
-        {{/if}}
-        {{#if canAddVisit}}
-            <button class="btn btn-default" {{action 'createVisit' appointment bubbles=false }}>{{t 'buttons.addVisit'}}</button>
-        {{/if}}
-        {{#if canDelete}}
-                  <button class="btn btn-default warning" {{action 'deleteItem' appointment  bubbles=false }}><span class="octicon octicon-x"></span> {{t 'buttons.delete'}}</button>
-                {{/if}}
-    </td>
+  <td class="appointment-date">
+    {{appointment.formattedAppointmentDate}}
+  </td>
+  <td>{{appointment.patient.displayName}}</td>
+  <td>{{appointment.appointmentType}}</td>
+  <td>{{appointment.location}}</td>
+  <td>{{appointment.provider}}</td>
+  <td class="appointment-status">{{appointment.displayStatus}}</td>
+  <td>
+    {{#if canEdit}}
+      <button class="btn btn-default neutral" {{action 'editAppointment' appointment bubbles=false }}>{{t 'labels.edit'}}</button>
+    {{/if}}
+    {{#if canAddVisit}}
+      <button class="btn btn-default" {{action 'createVisit' appointment bubbles=false }}>{{t 'buttons.addVisit'}}</button>
+    {{/if}}
+    {{#if canDelete}}
+      <button class="btn btn-default warning" {{action 'deleteItem' appointment  bubbles=false }}><span class="octicon octicon-x"></span> {{t 'buttons.delete'}}</button>
+    {{/if}}
+  </td>
 </tr>

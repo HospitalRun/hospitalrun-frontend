@@ -68,9 +68,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
   }.property('model.endDate', 'model.startDate', 'model.isValid'),
 
   isAdmissionVisit: function() {
-    var visitType = this.get('model.visitType'),
-      isAdmission = (visitType === 'Admission'),
-      visit = this.get('model');
+    let visitType = this.get('model.visitType');
+    let isAdmission = (visitType === 'Admission');
+    let visit = this.get('model');
     if (isAdmission) {
       visit.set('outPatient', false);
     } else {
@@ -81,9 +81,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
   }.property('model.visitType'),
 
   startDateChanged: function() {
-    var isAdmissionVisit = this.get('isAdmissionVisit'),
-      startDate = this.get('model.startDate'),
-      visit = this.get('model');
+    let isAdmissionVisit = this.get('isAdmissionVisit');
+    let startDate = this.get('model.startDate');
+    let visit = this.get('model');
     if (!isAdmissionVisit) {
       visit.set('endDate', startDate);
     }
@@ -101,7 +101,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
   pricingTypes: Ember.computed.alias('visitsController.wardPricingTypes'),
   physicianList: Ember.computed.alias('visitsController.physicianList'),
   locationList: Ember.computed.alias('visitsController.locationList'),
-  visitTypesList: Ember.computed.alias('visitsController.visitTypeList'),
+  visitTypesList: Ember.computed.alias('visitsController.visitTypesList'),
   lookupListsToUpdate: [{
     name: 'diagnosisList',
     property: 'model.primaryBillingDiagnosis',
@@ -148,9 +148,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
   }.property('model.additionalDiagnoses.[]'),
 
   afterUpdate: function() {
-    var patient = this.get('model.patient'),
-      patientAdmitted = patient.get('admitted'),
-      status = this.get('model.status');
+    let patient = this.get('model.patient');
+    let patientAdmitted = patient.get('admitted');
+    let status = this.get('model.status');
     if (status === 'Admitted' && !patientAdmitted) {
       patient.set('admitted', true);
       patient.save().then(this._finishAfterUpdate.bind(this));
@@ -186,7 +186,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
    * otherwise add the specified object to the list.
    */
   updateList: function(listName, listObject, removeObject) {
-    var model = this.get('model');
+    let model = this.get('model');
     model.get(listName).then(function(list) {
       if (removeObject) {
         list.removeObject(listObject);
@@ -200,8 +200,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
 
   actions: {
     addDiagnosis: function(newDiagnosis) {
-      var additionalDiagnoses = this.get('model.additionalDiagnoses'),
-        visit = this.get('model');
+      let additionalDiagnoses = this.get('model.additionalDiagnoses');
+      let visit = this.get('model');
       if (!Ember.isArray(additionalDiagnoses)) {
         additionalDiagnoses = [];
       }
@@ -212,8 +212,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
     },
 
     deleteDiagnosis: function(diagnosis) {
-      var additionalDiagnoses = this.get('model.additionalDiagnoses'),
-        visit = this.get('model');
+      let additionalDiagnoses = this.get('model.additionalDiagnoses');
+      let visit = this.get('model');
       additionalDiagnoses.removeObject(diagnosis);
       visit.set('additionalDiagnoses', additionalDiagnoses);
       this.send('update', true);
@@ -224,7 +224,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
     },
 
     cancel: function() {
-      var cancelledItem = this.get('model');
+      let cancelledItem = this.get('model');
       if (this.get('model.isNew')) {
         cancelledItem.deleteRecord();
       } else {
@@ -267,7 +267,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
     },
 
     showAddVitals: function() {
-      var newVitals = this.get('store').createRecord('vital', {
+      let newVitals = this.get('store').createRecord('vital', {
         dateRecorded: new Date()
       });
       this.send('openModal', 'visits.vitals.edit', newVitals);
@@ -302,7 +302,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
     },
 
     showAddDiagnosis: function() {
-      var newDiagnosis = this.get('store').createRecord('add-diagnosis');
+      let newDiagnosis = this.get('store').createRecord('add-diagnosis');
       this.send('openModal', 'visits.add-diagnosis', newDiagnosis);
     },
 
@@ -355,8 +355,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
     },
 
     deletePatientNote: function(model) {
-      var note = model.get('noteToDelete');
-      var patientNotes = this.get('model.patientNotes');
+      let note = model.get('noteToDelete');
+      let patientNotes = this.get('model.patientNotes');
       patientNotes.removeObject(note);
       this.send('update', true);
     }

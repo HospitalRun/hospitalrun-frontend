@@ -23,7 +23,7 @@ function addAllUsers(assert) {
           'password_scheme': 'pwdscheme',
           'iterations': 10,
           'name': 'hradmin',
-          'roles': ['System Administrator','admin','user'],
+          'roles': ['System Administrator', 'admin', 'user'],
           'type': 'user',
           'userPrefix': 'p',
           'derived_key': 'derivedkeyhere',
@@ -45,7 +45,7 @@ function addAllUsers(assert) {
           'displayName': 'Joe Bagadonuts',
           'email': 'joe@donuts.com',
           'name': 'joe@donuts.com',
-          'roles': ['Hospital Administrator','user'],
+          'roles': ['Hospital Administrator', 'user'],
           'userPrefix': 'p01',
           'type': 'user',
           'derived_key': 'derivedkeyhere',
@@ -90,7 +90,7 @@ test('create new user', function(assert) {
     addAllUsers(assert);
     visit('/admin/users');
     stubRequest('put', '/db/_users/org.couchdb.user:jane@donuts.com', function(request) {
-      var expectedBody = {
+      let expectedBody = {
         _id: 'org.couchdb.user:jane@donuts.com',
         deleted: false,
         displayName: 'Jane Bagadonuts',

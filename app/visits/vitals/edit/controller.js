@@ -11,7 +11,7 @@ export default AbstractEditController.extend({
   temperatureLabel: 'Temperature (\xb0C)',
 
   title: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add Vitals';
     }
