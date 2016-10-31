@@ -1,7 +1,7 @@
-HospitalRun frontend
+# HospitalRun frontend
 ========
 
-_Ember frontend for HospitalRun_
+>Ember frontend for HospitalRun
 
 [![Build Status](https://travis-ci.org/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.org/HospitalRun/hospitalrun-frontend)
 
@@ -122,9 +122,6 @@ To keep our styling scalable and consistent, we are using an [scss linter](https
 
 The easiest way to work with styles in the project and abide by our linting rules is to install the [linter-scss-lint](https://atom.io/packages/linter-scss-lint) package for Atom. The package will then show you in real time where your styles are breaking the linter and how to correct them.
 
-## Contributing
-
-Again, contributions are welcome via pull requests and issues.  Please see our [contributing guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md) for more details.
 
 **Seriously, please read the [Contribution Guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md).**
 
