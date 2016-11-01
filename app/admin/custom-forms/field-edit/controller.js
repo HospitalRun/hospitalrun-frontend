@@ -1,3 +1,4 @@
+import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
 
 const {
@@ -5,23 +6,34 @@ const {
   isEmpty
 } = Ember;
 
-export default Ember.Component.extend({
-  field: null,
+export default AbstractEditController.extend({
+  editController: Ember.inject.controller('admin/custom-forms'),
+  cancelAction: 'closeModal',
   i18n: Ember.inject.service(),
 
   actions: {
     addValue() {
-      let fieldValues = this.get('fieldValues');
+      let fieldValues = this.get('model.values');
+      if (isEmpty(fieldValues)) {
+        let model = this.get('model');
+        fieldValues = [];
+        model.set('values', fieldValues);
+      }
       fieldValues.addObject(Ember.Object.create());
     },
 
     deleteValue(valueToDelete) {
-      let fieldValues = this.get('fieldValues');
+      let fieldValues = this.get('model.values');
       fieldValues.removeObject(valueToDelete);
     },
 
     selectType(fieldType) {
-      this.get('field').set('type', fieldType);
+      this.get('model').set('type', fieldType);
+    },
+
+    update() {
+      this.get('editController').send('updateField', this.get('model'));
+      this.send('closeModal');
     }
   },
 
@@ -39,32 +51,15 @@ export default Ember.Component.extend({
     return fieldTypeValues.map((fieldTypeId) => {
       return {
         id: fieldTypeId,
-        value: i18n.t(`components.customFieldEdit.labels.${fieldTypeId}`)
+        value: i18n.t(`admin.customForms.labels.${fieldTypeId}`)
       };
     }).sort(function(a, b) {
       return Ember.compare(a.value.toString(), b.value.toString());
     });
   }),
 
-  fieldValues: computed('field.type', function() {
-    let field = this.get('field');
-    let fieldName;
-    let fieldValues;
-    let type = field.get('type');
-    if (type === 'checkbox') {
-      fieldName = 'checkboxes';
-    } else {
-      fieldName = 'values';
-    }
-    fieldValues = field.get(fieldName);
-    if (isEmpty(fieldValues)) {
-      fieldValues = field.set(fieldName, []);
-    }
-    return fieldValues;
-  }),
-
-  showValues: computed('field.type', function() {
-    let type = this.get('field.type');
+  showValues: computed('model.type', function() {
+    let type = this.get('model.type');
     return (type === 'checkbox' || type === 'radio' || type === 'select');
   })
 

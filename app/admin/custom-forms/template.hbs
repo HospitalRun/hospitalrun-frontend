@@ -46,21 +46,18 @@
             {{#each currentForm.fields as |field|}}
               <tr>
                 <td>{{field.label}}</td>
-                <td>{{field.type}}</td>
+                <td>{{t (concat 'admin.customForms.labels.' field.type)}}</td>
                 <td>
-                  <button class="btn btn-default warning" {{action "deleteValue" field bubbles=false }}>
+                  <button class="btn btn-default warning" {{action "deleteField" field bubbles=false }}>
                     <span class="octicon octicon-x"></span>{{t "buttons.delete"}}
                   </button>
-                  <button class="btn btn-default neutral" {{action 'editItem' field bubbles=false }}>
+                  <button class="btn btn-default neutral" {{action 'editField' field bubbles=false }}>
                     {{t 'buttons.edit'}}
                   </button>
                 </td>
               </tr>
             {{/each}}
           </table>
-          {{#each currentForm.fields as |field|}}
-            {{custom-field-edit field=field}}
-          {{/each}}
         {{/em-form}}
       </div>
     </div>

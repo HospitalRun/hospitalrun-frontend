@@ -119,13 +119,26 @@ export default {
         addForm: 'Add Form'
       },
       labels: {
+        checkbox: 'Checkbox',
+        classNames: 'Class Names',
         columns: 'Columns',
         customForm: 'Custom Form',
+        formName: 'Form Name',
+        includeOtherOption: 'Include Other Option',
+        label: 'Label',
         newForm: 'New Form',
-        formName: 'Form Name'
+        otherOptionLabel: 'Other Option Label',
+        property: 'Property',
+        radio: 'Radio',
+        select: 'Dropdown',
+        text: 'Text',
+        textarea: 'Large Text'
       },
       titles: {
-        fields: 'Fields'
+        fields: 'Fields',
+        checkboxValues: 'Checkbox Values',
+        dropDownValues: 'Dropdown Values',
+        radioValues: 'Radio Values'
       }
     },
     loaddb: {
@@ -1024,25 +1037,6 @@ export default {
   components: {
     chargesByTypeTab: {
       charges: 'charges'
-    },
-    customFieldEdit: {
-      labels: {
-        checkbox: 'Checkbox',
-        classNames: 'Class Names',
-        includeOtherOption: 'Include Other Option',
-        label: 'Label',
-        otherOptionLabel: 'Other Option Label',
-        property: 'Property',
-        radio: 'Radio',
-        select: 'Dropdown',
-        text: 'Text',
-        textarea: 'Large Text'
-      },
-      titles: {
-        checkboxValues: 'Checkbox Values',
-        dropDownValues: 'Dropdown Values',
-        radioValues: 'Radio Values'
-      }
     },
     sortableColumn: {
       labels: {

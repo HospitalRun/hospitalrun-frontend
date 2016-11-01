@@ -1,13 +1,12 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
-import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 
 const {
   computed,
   isEmpty
 } = Ember;
 
-export default AbstractEditController.extend(PouchDbMixin, {
+export default AbstractEditController.extend({
   currentForm: null,
   hideCancelButton: true,
   updateCapability: 'update_config',
@@ -19,25 +18,59 @@ export default AbstractEditController.extend(PouchDbMixin, {
 
   actions: {
     addForm() {
-      let currentForm = Ember.Object.create({
+      let currentForm = this.store.createRecord('custom-form', {
         columns: 1,
         fields: [
-          Ember.Object.create()
         ]
       });
-      this.set('currentForm', Ember.Object.create(currentForm.get('value')));
+      this.set('currentForm', currentForm);
       return currentForm;
     },
 
     addField() {
+      let newField = this.store.createRecord('custom-field');
+      this.send('openModal', 'admin.custom-forms.field-edit', newField);
+    },
+
+    deleteField(field) {
       let currentForm = this.get('currentForm');
-      currentForm.fields.addObject(Ember.Object.create());
+      currentForm.fields.removeObject(field);
+    },
+
+    editField(field) {
+      if (isEmpty(field)) {
+        field = this.store.createRecord('custom-field');
+      }
+      this.send('openModal', 'admin.custom-forms.field-edit', field);
     },
 
     selectForm(customFormId) {
       let model = this.get('model');
       let customForm = model.findBy('id', customFormId);
       this.set('currentForm', customForm);
+    },
+
+    updateField(field) {
+      let currentForm = this.get('currentForm');
+      if (field.get('isNew')) {
+        let store = this.get('store');
+        let changedAttributes = field.changedAttributes();
+        let fieldAttributes = {};
+        Object.keys(changedAttributes).forEach((attributeName) => {
+          let [, newValue] = changedAttributes[attributeName];
+          fieldAttributes[attributeName] = newValue;
+        });
+        let newField = store.push({
+          data: {
+            id:  uuid.v4(),
+            type: 'custom-field',
+            attributes: fieldAttributes
+          }
+        });
+        let formFields = currentForm.get('fields');
+        formFields.addObject(newField);
+      }
+      currentForm.save();
     }
   },
 
@@ -50,6 +83,11 @@ export default AbstractEditController.extend(PouchDbMixin, {
       return formName;
     }
   }),
+
+  fieldTypeLabel(fieldType) {
+    let i18n = this.get('i18n');
+    return i18n.t(`admin.customForms.labels.${fieldType}`);
+  },
 
   showUpdateButton: computed('currentForm', function() {
     return !isEmpty(this.get('currentForm'));
