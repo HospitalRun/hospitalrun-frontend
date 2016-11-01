@@ -12,24 +12,6 @@ module('Acceptance | patients', {
   }
 });
 
-test('visiting /patients route', function(assert) {
-  runWithPouchDump('default', function() {
-    authenticateUser();
-    visit('/patients');
-    andThen(function() {
-      assert.equal(currentURL(), '/patients');
-      let noPatientsFound = find('[data-test-selector="no-patients-found"]');
-      assert.equal(noPatientsFound.text().trim(), 'No patients found. Create a new patient record?', 'no records found');
-      let newPatientButton = find('button:contains(+ new patient)');
-      assert.equal(newPatientButton.length, 1, 'Add new patient button is visible');
-    });
-    click('button:contains(+ new patient)');
-    andThen(function() {
-      assert.equal(currentURL(), '/patients/edit/new');
-    });
-  });
-});
-
 test('View reports tab', function(assert) {
   runWithPouchDump('default', function() {
     authenticateUser();
@@ -51,6 +33,9 @@ testSimpleReportForm('Diagnostic Testing');
 testSimpleReportForm('Discharges Detail');
 testSimpleReportForm('Discharges Summary');
 testSimpleReportForm('Procedures Detail');
+
+testPatientList('/patients');
+testPatientList('/patients/admitted');
 
 test('View reports tab | Patient Status', function(assert) {
   runWithPouchDump('default', function() {
@@ -112,6 +97,27 @@ function testSimpleReportForm(reportName) {
         assert.equal(reportEndDate.length, 1, 'Report end date select is visible');
         let reportType = find('[data-test-selector="select-report-type"] select');
         assert.equal(reportType.find(':selected').text().trim(), reportName, `${reportName} option selected`);
+      });
+    });
+  });
+}
+
+function testPatientList(url) {
+  test(`List patients | app${url}`, function(assert) {
+    runWithPouchDump('default', function() {
+      authenticateUser();
+      visit(url);
+
+      andThen(function() {
+        assert.equal(currentURL(), url);
+        let noPatientsFound = find('[data-test-selector="no-patients-found"]');
+        assert.equal(noPatientsFound.text().trim(), 'No patients found. Create a new patient record?', 'No records found');
+        let newPatientButton = find('button:contains(+ new patient)');
+        assert.equal(newPatientButton.length, 1, 'Add new patient button is visible');
+      });
+      click('button:contains(+ new patient)');
+      andThen(function() {
+        assert.equal(currentURL(), '/patients/edit/new');
       });
     });
   });
