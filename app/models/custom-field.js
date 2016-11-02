@@ -5,6 +5,7 @@ import DS from 'ember-data';
 export default DS.Model.extend(EmberValidations, {
   checkboxes: DS.attr(),
   classNames: DS.attr('string'),
+  colSpan: DS.attr('number'),
   includeOtherOption:  DS.attr('boolean'),
   label: DS.attr('string'),
   otherOptionLabel: DS.attr('string'),
@@ -13,10 +14,13 @@ export default DS.Model.extend(EmberValidations, {
   type:  DS.attr('string'),
   values:  DS.attr('string'),
   validations: {
-    label: {
-      presence: true
+    colSpan: {
+      numericality: {
+        allowBlank: true,
+        onlyInteger: true
+      }
     },
-    property: {
+    label: {
       presence: true
     },
     type: {

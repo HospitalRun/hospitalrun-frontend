@@ -19,10 +19,7 @@
       {{em-input property="label" class="col-xs-6 required" label=(t 'admin.customForms.labels.label')}}
     </div>
     <div class="row">
-      {{em-input property="classNames" class="col-xs-6" label=(t 'admin.customForms.labels.classNames')}}
-      {{#if (not-eq model.type 'checkbox')}}
-        {{em-input property="property" class="col-xs-6 required" label=(t 'admin.customForms.labels.property')}}
-      {{/if}}
+      {{em-input property="colSpan" class="col-xs-2" label=(t 'admin.customForms.labels.colSpan')}}
     </div>
     {{#if showValues}}
       <h4>
@@ -43,7 +40,6 @@
         <tr class="table-header">
           {{#if (eq model.type 'checkbox')}}
             <th>{{t 'admin.customForms.labels.label'}}</th>
-            <th>{{t 'admin.customForms.labels.property'}}</th>
           {{else}}
             <th>{{t 'labels.value'}}</th>
           {{/if}}
@@ -54,11 +50,6 @@
             <td>
               {{input value=value.label class="form-control"}}
             </td>
-            {{#if (eq model.type 'checkbox')}}
-              <td>
-                {{input value=value.property class="form-control"}}
-              </td>
-            {{/if}}
             <td>
               <button class="btn btn-default warning" {{action "deleteValue" value bubbles=false }}>
                 <span class="octicon octicon-x"></span>{{t "buttons.delete"}}

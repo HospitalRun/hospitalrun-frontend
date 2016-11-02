@@ -2,7 +2,7 @@
   <div class="panel panel-primary">
     <div class="panel-body">
       <div class="row">
-        <div class="form-group">
+        <div class="form-input-group">
           <label for="customFormSelect">{{t 'admin.customForms.labels.customForm'}}</label>
           <select onchange={{action 'selectForm' value="target.value"}} class="form-control" id="customFormSelect">
             <option disabled selected={{is-not currentForm}}></option>
@@ -29,6 +29,9 @@
         {{#em-form model=this submitButton=false}}
           <div class="row">
             {{em-input property="currentForm.name" label=(t 'admin.customForms.labels.formName') class="form-input-group required col-xs-4"}}
+            {{em-select class="col-xs-3 form-input-group" label=(t 'admin.customForms.labels.formType')
+              property="currentForm.formType" content=formTypes
+            }}
             {{em-input property="currentForm.columns" label=(t 'admin.customForms.labels.columns') class="form-input-group required col-xs-2"}}
           </div>
           <h4>
@@ -39,11 +42,11 @@
           </h4>
           <table class="table">
             <tr class="table-header">
-              <th>Label</th>
-              <th>Type</th>
-              <th>Action</th>
+              <th>{{t 'admin.customForms.labels.label'}}</th>
+              <th>{{t 'labels.type'}}</th>
+              <th>{{t 'labels.action'}}</th>
             </tr>
-            {{#each currentForm.fields as |field|}}
+            {{#each currentForm.fields as |field index|}}
               <tr>
                 <td>{{field.label}}</td>
                 <td>{{t (concat 'admin.customForms.labels.' field.type)}}</td>
@@ -54,6 +57,18 @@
                   <button class="btn btn-default neutral" {{action 'editField' field bubbles=false }}>
                     {{t 'buttons.edit'}}
                   </button>
+                  {{#if (not-eq index 0)}}
+                    <button class="btn btn-default neutral" {{action 'moveFieldUp' field bubbles=false }}>
+                       <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                      {{t 'admin.customForms.buttons.moveUp'}}
+                    </button>
+                  {{/if}}
+                  {{#if (lt index lastFieldIndex)}}
+                    <button class="btn btn-default neutral" {{action 'moveFieldDown' field bubbles=false }}>
+                       <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                      {{t 'admin.customForms.buttons.moveDown'}}
+                    </button>
+                  {{/if}}
                 </td>
               </tr>
             {{/each}}
@@ -61,5 +76,20 @@
         {{/em-form}}
       </div>
     </div>
+    <button class="btn btn-default neutral" {{action 'togglePreview' bubbles=false }}>
+      {{t 'admin.customForms.buttons.preview'}}
+    </button>
+    {{#if preview}}
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{formName}}</h3>
+        </div>
+        <div class="panel-body">
+          {{#em-form model=previewModel submitButton=false}}
+            {{custom-form model=previewModel form=currentForm}}
+          {{/em-form}}
+        </div>
+      </div>
+    {{/if}}
   {{/if}}
 {{/edit-panel}}

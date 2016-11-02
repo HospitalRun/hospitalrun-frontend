@@ -116,25 +116,32 @@ export default {
     customForms: {
       buttons: {
         addField: 'Add Field',
-        addForm: 'Add Form'
+        addForm: 'Add Form',
+        moveDown: 'Move Down',
+        moveUp: 'Move Up',
+        preview: 'Preview'
       },
       labels: {
         checkbox: 'Checkbox',
-        classNames: 'Class Names',
         columns: 'Columns',
+        colSpan: 'Number of Columns To Span',
         customForm: 'Custom Form',
         formName: 'Form Name',
+        formType: 'Form Type',
         includeOtherOption: 'Include Other Option',
         label: 'Label',
         newForm: 'New Form',
         otherOptionLabel: 'Other Option Label',
+        patientFormType: 'Patient',
         property: 'Property',
         radio: 'Radio',
         select: 'Dropdown',
         text: 'Text',
-        textarea: 'Large Text'
+        textarea: 'Large Text',
+        visitFormType: 'Visit'
       },
       titles: {
+        customForms: 'Custom Forms',
         fields: 'Fields',
         checkboxValues: 'Checkbox Values',
         dropDownValues: 'Dropdown Values',
