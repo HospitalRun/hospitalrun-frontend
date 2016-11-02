@@ -8,20 +8,20 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   searchText: null,
 
   _findByContains: function(searchText) {
-    var searchKeys = this.get('searchKeys'),
-      searchModel = this.get('searchModel'),
-      queryParams = {
-        containsValue: {
-          value: searchText,
-          keys: searchKeys
-        }
-      };
+    let searchKeys = this.get('searchKeys');
+    let searchModel = this.get('searchModel');
+    let queryParams = {
+      containsValue: {
+        value: searchText,
+        keys: searchKeys
+      }
+    };
     return this.store.query(searchModel, queryParams);
   },
 
   model: function(params) {
     return new Ember.RSVP.Promise(function(resolve) {
-      var searchText = params.search_text;
+      let searchText = params.search_text;
       this.controllerFor('navigation').set('currentSearchText', searchText);
       this.set('searchText', searchText);
       this._findByContains(searchText).then(resolve, function(err) {
@@ -40,8 +40,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     }
     controller.set('searchText', this.get('searchText'));
     this.controllerFor('navigation').closeProgressModal();
-    var parentController = this.controllerFor(this.get('moduleName'));
-    var searchTitle = 'Search Results for <i>' + Ember.Handlebars.Utils.escapeExpression(this.get('searchText')) + '</i>';
+    let parentController = this.controllerFor(this.get('moduleName'));
+    let searchTitle = `Search Results for <i>${Ember.Handlebars.Utils.escapeExpression(this.get('searchText'))}</i>`;
     parentController.set('currentScreenTitle', searchTitle.htmlSafe());
   }
 

@@ -5,22 +5,22 @@
     {{/link-to}}
   </div>
   {{#if isShowing }}
-  <div class="category-sub-items">
+    <div class="category-sub-items">
       {{#each nav.subnav as |subnav|}}
         {{#if subnav.show}}
           <div {{action 'resetNav'}}>
-          {{#if subnav.subroute}}
-            {{#link-to subnav.route subnav.subroute class="category-sub-item nav-link"}}
-            <span class="octicon {{subnav.iconClass}}"></span>{{subnav.localizedTitle}}
-            {{/link-to}}
-          {{else}}
-            {{#link-to subnav.route class="category-sub-item nav-link"}}
-            <span class="octicon {{subnav.iconClass}}"></span>{{subnav.localizedTitle}}
-            {{/link-to}}
-          {{/if}}
+            {{#if subnav.subroute}}
+              {{#link-to subnav.route subnav.subroute class="category-sub-item nav-link"}}
+                <span class="octicon {{subnav.iconClass}}"></span>{{subnav.localizedTitle}}
+              {{/link-to}}
+            {{else}}
+              {{#link-to subnav.route class="category-sub-item nav-link"}}
+                <span class="octicon {{subnav.iconClass}}"></span>{{subnav.localizedTitle}}
+              {{/link-to}}
+            {{/if}}
           </div>
         {{/if}}
       {{/each}}
-  </div>
+    </div>
   {{/if}}
 {{/if}}

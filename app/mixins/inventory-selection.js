@@ -7,15 +7,15 @@ export default Ember.Mixin.create({
    * inventory item into an actual model object and set is as inventoryItem.
    */
   inventoryItemChanged: function() {
-    var selectedInventoryItem = this.get('selectedInventoryItem');
+    let selectedInventoryItem = this.get('selectedInventoryItem') || this.get('model.selectedInventoryItem');
     if (!Ember.isEmpty(selectedInventoryItem)) {
       this.store.find('inventory', selectedInventoryItem.id).then(function(inventoryItem) {
-        var model = this.get('model');
+        let model = this.get('model');
         model.set('inventoryItem', inventoryItem);
         Ember.run.once(this, function() {
           model.validate().catch(Ember.K);
         });
       }.bind(this));
     }
-  }.observes('selectedInventoryItem')
+  }.observes('selectedInventoryItem', 'model.selectedInventoryItem')
 });

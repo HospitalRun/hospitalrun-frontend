@@ -11,7 +11,7 @@ export default Ember.Route.extend(SetupUserRole, {
         google_auth: true,
         params: params
       });
-      var oauthConfigs = {
+      let oauthConfigs = {
         config_consumer_key: params.k,
         config_consumer_secret: params.s1,
         config_oauth_token: params.t,

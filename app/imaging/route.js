@@ -11,6 +11,6 @@ export default AbstractModuleRoute.extend({
   }],
   allowSearch: false,
   moduleName: 'imaging',
-  newButtonText: t('imaging.buttons.new_button'),
-  sectionTitle: t('imaging.section_title')
+  newButtonText: t('imaging.buttons.newButton'),
+  sectionTitle: t('imaging.sectionTitle')
 });

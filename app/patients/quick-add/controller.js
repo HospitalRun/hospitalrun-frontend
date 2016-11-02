@@ -16,7 +16,7 @@ export default AbstractEditController.extend({
   },
 
   afterUpdate: function(record) {
-    var requestingController = this.get('model.requestingController');
+    let requestingController = this.get('model.requestingController');
     requestingController.send('addedNewPatient', record);
   }
 });

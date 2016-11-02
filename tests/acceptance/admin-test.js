@@ -93,7 +93,7 @@ test('Update address options', function(assert) {
 });
 
 test('Update workflow options', function(assert) {
-  const selector = 'input[type=checkbox]';
+  let selector = 'input[type=checkbox]';
 
   runWithPouchDump('admin', function() {
     authenticateUser();
@@ -129,7 +129,7 @@ test('Update workflow options', function(assert) {
 
   function verifyAll(checked) {
     Array.prototype.slice.call(document.querySelectorAll(selector)).forEach((node) => {
-      assert.equal(node.checked, checked, 'Checkbox is ' + (checked ? 'checked' : 'unchecked'));
+      assert.equal(node.checked, checked, `Checkbox is ${(checked ? 'checked' : 'unchecked')}`);
     });
   }
 });

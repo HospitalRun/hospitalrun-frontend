@@ -42,8 +42,8 @@ export default AbstractModuleRoute.extend(PatientId, {
 
   actions: {
     createNewVisit: function(patient, visits) {
-      var lastVisit = visits.get('lastObject'),
-        propertiesToSet = {};
+      let lastVisit = visits.get('lastObject');
+      let propertiesToSet = {};
 
       if (!Ember.isEmpty(lastVisit)) {
         propertiesToSet = lastVisit.getProperties('primaryDiagnosis', 'primaryBillingDiagnosis');
@@ -55,6 +55,6 @@ export default AbstractModuleRoute.extend(PatientId, {
       }.bind(this));
     }
   },
-  newButtonText: t('patients.buttons.new_patient'),
+  newButtonText: t('patients.buttons.newPatient'),
   moduleName: 'patients'
 });

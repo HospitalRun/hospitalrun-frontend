@@ -4,7 +4,7 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'hospitalrun',
     environment: environment,
-    baseURL: '/',
+    rootURL: '/',
     locationType: 'hash', // Using hash location type because it is more friendly for offline.
     EmberENV: {
       FEATURES: {
@@ -30,7 +30,6 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.baseURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter
@@ -62,7 +61,6 @@ module.exports = function(environment) {
   if (environment === 'production') {
     ENV.serviceWorker.debug = false;
   }
-  
+
   return ENV;
 };
-

@@ -4,9 +4,9 @@ import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractEditRoute.extend(PatientListRoute, {
-  editTitle: t('appointments.edit_title'),
+  editTitle: t('appointments.editTitle'),
   modelName: 'appointment',
-  newTitle: t('appointments.new_title'),
+  newTitle: t('appointments.newTitle'),
 
   getNewData: function() {
     return Ember.RSVP.resolve({
