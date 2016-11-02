@@ -1,0 +1,36 @@
+.print-section {
+  display: none;
+}
+
+@media print {
+  * {
+    background-color: $white;
+    color: $black;
+    font-size: 14px;
+  }
+
+  .panel-default,
+  .panel-primary {
+    position: absolute;
+    left: 0;
+    margin: 0 5%;
+    width: 90%;
+  }
+
+  .print-section {
+    display: block;
+    text-align: center;
+  }
+
+  .panel-footer,
+  .btn,
+  .nav,
+  .view-current-title {
+    display: none;
+  }
+
+  .patient-history-heading {
+    border-bottom: 1px solid $black;
+  }
+
+}

@@ -3,6 +3,13 @@
     {{yield}}
   </div>
   <div class="panel-footer">
+    {{#unless editPanelProps.hideCancelButton}}
+      {{#if editPanelProps.cancelButtonText}}
+        <button class="btn btn-default warning" {{action 'cancel'}}>{{editPanelProps.cancelButtonText}}</button>
+      {{else}}
+        <button class="btn btn-default warning" {{action 'cancel'}}>{{t 'buttons.cancel'}}</button>
+      {{/if}}
+    {{/unless}}
     {{#if editPanelProps.showUpdateButton}}
       {{#if editPanelProps.disabledAction}}
         <button class="btn btn-primary on-white disabled-btn" {{action 'disabledAction'}}>{{editPanelProps.updateButtonText}}</button>
@@ -12,13 +19,6 @@
         </button>
       {{/if}}
     {{/if}}
-    {{#unless editPanelProps.hideCancelButton}}
-      {{#if editPanelProps.cancelButtonText}}
-        <button class="btn btn-default warning" {{action 'cancel'}}>{{editPanelProps.cancelButtonText}}</button>
-      {{else}}
-        <button class="btn btn-default warning" {{action 'cancel'}}>Cancel</button>
-      {{/if}}
-    {{/unless}}
     {{#each editPanelProps.additionalButtons as |button|}}
       <button class="{{button.class}}" {{action 'fireButtonAction' button.buttonAction}}>
         {{#if button.buttonIcon}}

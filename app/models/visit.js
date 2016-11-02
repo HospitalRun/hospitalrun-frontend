@@ -6,8 +6,8 @@ function dateAcceptance(object) {
   if (!object.get('hasDirtyAttributes')) {
     return false;
   }
-  var startDate = object.get('startDate'),
-    endDate = object.get('endDate');
+  let startDate = object.get('startDate');
+  let endDate = object.get('endDate');
   if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
     // Can't validate if empty
     return false;
@@ -17,6 +17,16 @@ function dateAcceptance(object) {
     }
   }
   return false;
+}
+
+const PAYMENT_STATES = {
+  CLEAR: 'clear',
+  PENDING: 'pending'
+};
+
+function paymentStateAcceptance(object) {
+  return !Object.keys(PAYMENT_STATES)
+      .some((state) => PAYMENT_STATES[state] === object.get('paymentState'));
 }
 
 export default AbstractModel.extend({
@@ -40,6 +50,7 @@ export default AbstractModel.extend({
   patient: DS.belongsTo('patient', {
     async: false
   }),
+  paymentState: DS.attr('string', { defaultValue: PAYMENT_STATES.PENDING }),
   primaryDiagnosis: DS.attr('string'), // AKA admitting diagnosis
   primaryBillingDiagnosis: DS.attr('string'), // AKA final diagnosis
   primaryBillingDiagnosisId: DS.attr('string'),
@@ -50,9 +61,9 @@ export default AbstractModel.extend({
   vitals: DS.hasMany('vital', { async: true }),
 
   diagnosisList: function() {
-    var additionalDiagnosis = this.get('additionalDiagnoses'),
-      diagnosisList = [],
-      primaryDiagnosis = this.get('primaryDiagnosis');
+    let additionalDiagnosis = this.get('additionalDiagnoses');
+    let diagnosisList = [];
+    let primaryDiagnosis = this.get('primaryDiagnosis');
     if (!Ember.isEmpty(primaryDiagnosis)) {
       diagnosisList.push(primaryDiagnosis);
     }
@@ -65,18 +76,18 @@ export default AbstractModel.extend({
   }.property('additionalDiagnosis.[]', 'primaryDiagnosis'),
 
   visitDate: function() {
-    var endDate = this.get('endDate'),
-      startDate = moment(this.get('startDate')),
-      visitDate = startDate.format('l');
+    let endDate = this.get('endDate');
+    let startDate = moment(this.get('startDate'));
+    let visitDate = startDate.format('l');
     if (!Ember.isEmpty(endDate) && !startDate.isSame(endDate, 'day')) {
-      visitDate += ' - ' + moment(endDate).format('l');
+      visitDate += ` - ${moment(endDate).format('l')}`;
     }
     return visitDate;
   }.property('startDate', 'endDate'),
 
   visitDescription: function() {
-    var visitDate = this.get('visitDate'),
-      visitType = this.get('visitType');
+    let visitDate = this.get('visitDate');
+    let visitType = this.get('visitType');
     return `${visitDate} (${visitType})`;
   }.property('visitDate', 'visitType'),
 
@@ -88,7 +99,13 @@ export default AbstractModel.extend({
         message: 'Please select an end date later than the start date'
       }
     },
-
+    paymentState: {
+      acceptance: {
+        accept: true,
+        if: paymentStateAcceptance
+      },
+      presence: true
+    },
     startDate: {
       acceptance: {
         accept: true,

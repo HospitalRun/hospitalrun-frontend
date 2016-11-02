@@ -16,9 +16,9 @@ export default AbstractEditController.extend(IsUpdateDisabled, UserSession, Pati
   }],
   title: function() {
     if (this.get('model.isNew')) {
-      return 'New Note for ' + this.get('model.patient.displayName');
+      return `${this.get('i18n').t('patients.notes.newNote')} ${this.get('model.patient.displayName')}`;
     } else {
-      return 'Updating Note from ' + (moment(this.get('model.date')).format('MM/DD/YYYY')) + ' for ' + this.get('model.patient.displayName');
+      return `${this.get('i18n').t('patients.notes.newNote')} ${moment(this.get('model.date')).format('MM/DD/YYYY')} for ${this.get('model.patient.displayName')}`;
     }
   }.property('model.patient.displayName'),
   updateCapability: 'add_note',
@@ -33,14 +33,14 @@ export default AbstractEditController.extend(IsUpdateDisabled, UserSession, Pati
   },
   actions: {
     changeVisit: function() {
-      const selectEl = $('select[name="note-visits"]')[0];
-      const selectedIndex = selectEl.selectedIndex;
-      const content = this.get('patientVisitsForSelect');
+      let selectEl = $('select[name="note-visits"]').get(0);
+      let { selectedIndex } = selectEl;
+      let content = this.get('patientVisitsForSelect');
 
       // decrement index by 1 if we have a prompt
-      const contentIndex = selectedIndex - 1;
+      let contentIndex = selectedIndex - 1;
 
-      const selection = content[contentIndex].selectObject;
+      let selection = content[contentIndex].selectObject;
 
       // set the local, shadowed selection to avoid leaking
       // changes to `selection` out via 2-way binding

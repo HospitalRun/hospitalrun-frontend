@@ -14,9 +14,9 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   expenseAccountList: Ember.computed.alias('inventoryController.expenseAccountList'),
 
   inventoryList: function() {
-    var inventoryItems = this.get('inventoryItems');
+    let inventoryItems = this.get('inventoryItems');
     if (!Ember.isEmpty(inventoryItems)) {
-      var mappedItems = inventoryItems.map(function(item) {
+      let mappedItems = inventoryItems.map(function(item) {
         return item.doc;
       });
       return mappedItems;
@@ -38,15 +38,15 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   }],
 
   canFulfill: function() {
-    var requestedItems = this.get('model.requestedItems');
+    let requestedItems = this.get('model.requestedItems');
     return Ember.isEmpty(requestedItems) && this.currentUserCan('fulfill_inventory');
   }.property('model.requestedItems.[]'),
 
   isFulfilling: function() {
-    var canFulfill = this.get('canFulfill'),
-      isRequested = this.get('isRequested'),
-      fulfillRequest = this.get('model.shouldFulfillRequest'),
-      isFulfilling = (canFulfill && (isRequested || fulfillRequest));
+    let canFulfill = this.get('canFulfill');
+    let isRequested = this.get('isRequested');
+    let fulfillRequest = this.get('model.shouldFulfillRequest');
+    let isFulfilling = (canFulfill && (isRequested || fulfillRequest));
     if (isFulfilling) {
       if (Ember.isEmpty(this.get('model.dateCompleted'))) {
         this.set('model.dateCompleted', new Date());
@@ -58,12 +58,12 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   }.property('isRequested', 'model.shouldFulfillRequest'),
 
   isRequested: function() {
-    var status = this.get('model.status');
+    let status = this.get('model.status');
     return (status === 'Requested');
   }.property('model.status'),
 
   quantityLabel: function() {
-    var selectedInventoryItem = this.get('selectedInventoryItem');
+    let selectedInventoryItem = this.get('selectedInventoryItem');
     if (Ember.isEmpty(selectedInventoryItem)) {
       return this.get('i18n').t('labels.quantity').toString();
     } else {
@@ -72,7 +72,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   }.property('selectedInventoryItem'),
 
   showRequestedItems: function() {
-    var requestedItems = this.get('model.requestedItems');
+    let requestedItems = this.get('model.requestedItems');
     return !Ember.isEmpty(requestedItems);
   }.property('model.requestedItems.[]'),
 
@@ -81,24 +81,21 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   updateButtonText: function() {
     if (this.get('isFulfilling')) {
       return this.get('i18n').t('buttons.fulfill');
-    } else if (this.get('model.isNew')) {
-      return this.get('i18n').t('buttons.add');
-    } else {
-      return this.get('i18n').t('buttons.update');
     }
+    return this._super();
   }.property('model.isNew', 'isFulfilling'),
 
   updateCapability: 'add_inventory_request',
 
   actions: {
     addInventoryItem: function() {
-      var model = this.get('model'),
-        inventoryItem = model.get('inventoryItem'),
-        requestedItems = model.get('requestedItems'),
-        quantity = model.get('quantity');
+      let model = this.get('model');
+      let inventoryItem = model.get('inventoryItem');
+      let requestedItems = model.get('requestedItems');
+      let quantity = model.get('quantity');
       model.validate().then(function() {
         if (model.get('isValid') && !Ember.isEmpty(inventoryItem) && !Ember.isEmpty(quantity)) {
-          var requestedItem = Ember.Object.create({
+          let requestedItem = Ember.Object.create({
             item: inventoryItem.get('content'),
             quantity: quantity
           });
@@ -116,18 +113,18 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     },
 
     removeItem: function(removeInfo) {
-      var requestedItems = this.get('model.requestedItems'),
-        item = removeInfo.itemToRemove;
+      let requestedItems = this.get('model.requestedItems');
+      let item = removeInfo.itemToRemove;
       requestedItems.removeObject(item);
       this.send('closeModal');
     },
 
     showRemoveItem: function(item) {
-      var message = this.get('i18n').t('inventory.messages.remove_item_request'),
-        model = Ember.Object.create({
-          itemToRemove: item
-        }),
-        title = this.get('i18n').t('inventory.titles.remove_item');
+      let message = this.get('i18n').t('inventory.messages.removeItemRequest');
+      let model = Ember.Object.create({
+        itemToRemove: item
+      });
+      let title = this.get('i18n').t('inventory.titles.removeItem');
       this.displayConfirm(title, message, 'removeItem', model);
     },
 
@@ -138,33 +135,33 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
      */
     update: function(skipAfterUpdate) {
       this.beforeUpdate().then(function() {
-        var updateViaFulfillRequest = this.get('updateViaFulfillRequest');
+        let updateViaFulfillRequest = this.get('updateViaFulfillRequest');
         if (updateViaFulfillRequest) {
           this.updateLookupLists();
           this.performFulfillRequest(this.get('model'), false, false, true).then(this.afterUpdate.bind(this));
         } else {
-          var isNew = this.get('model.isNew'),
-            requestedItems = this.get('model.requestedItems');
+          let isNew = this.get('model.isNew');
+          let requestedItems = this.get('model.requestedItems');
           if (isNew && !Ember.isEmpty(requestedItems)) {
-            var baseModel = this.get('model'),
-              propertiesToCopy = baseModel.getProperties([
-                'dateRequested',
-                'deliveryAisle',
-                'deliveryLocation',
-                'expenseAccount',
-                'requestedBy',
-                'status'
-              ]),
-              inventoryPromises = [],
-              newModels = [],
-              savePromises = [];
+            let baseModel = this.get('model');
+            let propertiesToCopy = baseModel.getProperties([
+              'dateRequested',
+              'deliveryAisle',
+              'deliveryLocation',
+              'expenseAccount',
+              'requestedBy',
+              'status'
+            ]);
+            let inventoryPromises = [];
+            let newModels = [];
+            let savePromises = [];
             if (!Ember.isEmpty(this.get('model.inventoryItem')) && !Ember.isEmpty(this.get('model.quantity'))) {
               savePromises.push(baseModel.save());
             }
             requestedItems.forEach(function(requestedItem) {
               propertiesToCopy.inventoryItem = requestedItem.get('item');
               propertiesToCopy.quantity = requestedItem.get('quantity');
-              var modelToSave = this.get('store').createRecord('inv-request', propertiesToCopy);
+              let modelToSave = this.get('store').createRecord('inv-request', propertiesToCopy);
               inventoryPromises.push(modelToSave.get('inventoryItem'));
               newModels.push(modelToSave);
             }.bind(this));
@@ -191,11 +188,11 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   },
 
   afterUpdate: function() {
-    var updateViaFulfillRequest = this.get('updateViaFulfillRequest');
+    let updateViaFulfillRequest = this.get('updateViaFulfillRequest');
     if (updateViaFulfillRequest) {
-      this.displayAlert(this.get('i18n').t('inventory.titles.request_fulfilled'), this.get('i18n').t('inventory.messages.request_fulfilled'), 'allRequests');
+      this.displayAlert(this.get('i18n').t('inventory.titles.requestFulfilled'), this.get('i18n').t('inventory.messages.requestFulfilled'), 'allRequests');
     } else {
-      this.displayAlert(this.get('i18n').t('inventory.titles.request_updated'), this.get('i18n').t('inventory.messages.request_updated'));
+      this.displayAlert(this.get('i18n').t('inventory.titles.requestUpdated'), this.get('i18n').t('inventory.messages.requestUpdated'));
     }
   },
 

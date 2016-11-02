@@ -4,10 +4,12 @@ import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
+import { translationMacro as t } from 'ember-i18n';
+
 export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, PatientNotes, {
-  editTitle: 'Edit Patient',
+  editTitle: t('patients.titles.edit'),
   modelName: 'patient',
-  newTitle: 'New Patient',
+  newTitle: t('patients.titles.new'),
   photos: null,
 
   actions: {
@@ -59,10 +61,10 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
 
   setupController: function(controller, model) {
     // Load appointments, photos and visits asynchronously.
-    var friendlyId = model.get('friendlyId'),
-      externalId = model.get('externalPatientId'),
-      maxValue = this.get('maxValue'),
-      patientId = model.get('id');
+    let friendlyId = model.get('friendlyId');
+    let externalId = model.get('externalPatientId');
+    let maxValue = this.get('maxValue');
+    let patientId = model.get('id');
     if (Ember.isEmpty(friendlyId) && !Ember.isEmpty(externalId)) {
       model.set('friendlyId', externalId);
     }
@@ -85,7 +87,7 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
       },
       mapReduce: 'photo_by_patient'
     }).then(function(photos) {
-      var patientPhotos = [];
+      let patientPhotos = [];
       patientPhotos.addObjects(photos);
       model.set('photos', patientPhotos);
     });

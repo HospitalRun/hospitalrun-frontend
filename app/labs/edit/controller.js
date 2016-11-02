@@ -10,9 +10,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   selectedLabType: null,
 
   canComplete: function() {
-    var isNew = this.get('model.isNew'),
-      labTypeName = this.get('model.labTypeName'),
-      selectedLabType = this.get('selectedLabType');
+    let isNew = this.get('model.isNew');
+    let labTypeName = this.get('model.labTypeName');
+    let selectedLabType = this.get('selectedLabType');
     if (isNew && (Ember.isEmpty(labTypeName) || (Ember.isArray(selectedLabType) && selectedLabType.length > 1))) {
       return false;
     } else {
@@ -36,8 +36,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
      */
     update: function() {
       if (this.get('model.isNew')) {
-        var newLab = this.get('model'),
-          selectedLabType = this.get('selectedLabType');
+        let newLab = this.get('model');
+        let selectedLabType = this.get('selectedLabType');
         if (Ember.isEmpty(this.get('model.status'))) {
           this.set('model.status', 'Requested');
         }
@@ -68,9 +68,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   },
 
   additionalButtons: function() {
-    var canComplete = this.get('canComplete'),
-        isValid = this.get('model.isValid'),
-        i18n = this.get('i18n');
+    let canComplete = this.get('canComplete');
+    let isValid = this.get('model.isValid');
+    let i18n = this.get('i18n');
     if (isValid && canComplete) {
       return [{
         buttonAction: 'completeLab',
@@ -89,16 +89,14 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   updateCapability: 'add_lab',
 
   afterUpdate: function(saveResponse, multipleRecords) {
-    var i18n = this.get('i18n'),
-        afterDialogAction,
-        alertMessage,
-        alertTitle;
+    let i18n = this.get('i18n');
+    let afterDialogAction, alertMessage, alertTitle;
     if (this.get('model.status') === 'Completed') {
-      alertTitle = i18n.t('labs.alerts.request_completed_title');
-      alertMessage = i18n.t('labs.alerts.request_completed_message');
+      alertTitle = i18n.t('labs.alerts.requestCompletedTitle');
+      alertMessage = i18n.t('labs.alerts.requestCompletedMessage');
     } else {
-      alertTitle = i18n.t('labs.alerts.request_saved_title');
-      alertMessage = i18n.t('labs.alerts.request_saved_message');
+      alertTitle = i18n.t('labs.alerts.requestSavedTitle');
+      alertMessage = i18n.t('labs.alerts.requestSavedMessage');
     }
     if (multipleRecords) {
       afterDialogAction = this.get('cancelAction');

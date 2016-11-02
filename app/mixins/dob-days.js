@@ -1,10 +1,10 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
   convertDOBToText: function(birthDate, shortFormat, omitDays) {
-    var today = new Date(),
-      years = 0,
-      months = 0,
-      days = 0;
+    let today = new Date();
+    let years = 0;
+    let months = 0;
+    let days = 0;
 
     if (birthDate) {
       if (birthDate.getFullYear === undefined) {
@@ -12,9 +12,9 @@ export default Ember.Mixin.create({
       }
       if (birthDate.getFullYear !== undefined) {
         years = today.getFullYear() - birthDate.getFullYear();
-        if (today.getMonth() < birthDate.getMonth() ||
-          (today.getMonth() === birthDate.getMonth() &&
-          today.getDate() < birthDate.getDate())) {
+        if (today.getMonth() < birthDate.getMonth()
+          || (today.getMonth() === birthDate.getMonth()
+          && today.getDate() < birthDate.getDate())) {
           years--;
         }
       }
@@ -43,28 +43,34 @@ export default Ember.Mixin.create({
       }
     }
 
-    var formatString = '';
+    let formatString = '';
+    let options = {
+      years: years,
+      days: days,
+      months: months
+    };
+    let i18n = this.get('i18n');
     if (shortFormat) {
       if (years > 0) {
-        formatString = `${years}y ${months}m ${days}d`;
+        formatString = i18n.t('dates.short', options);
       } else {
-        formatString = `${months}m ${days}d`;
+        formatString = i18n.t('dates.shortOmitYears', options);
       }
     } else if (omitDays) {
       if (years > 1) {
-        formatString = `${years} years ${months} months`;
+        formatString = i18n.t('dates.longOmitDaysPlural', options);
       } else if (years === 1) {
-        formatString = `${years} year ${months} months`;
+        formatString = i18n.t('dates.longOmitDays', options);
       } else {
-        formatString = `${months} months`;
+        formatString = i18n.t('dates.longOmitDaysYears', options);
       }
     } else {
       if (years > 1) {
-        formatString = `${years} years ${months} months ${days} days`;
+        formatString = i18n.t('dates.longPlural', options);
       } else if (years === 1) {
-        formatString = `${years} year ${months} months ${days} days`;
+        formatString = i18n.t('dates.long', options);
       } else {
-        formatString = `${months} months ${days} days`;
+        formatString = i18n.t('dates.longOmitYears', options);
       }
     }
     return formatString;

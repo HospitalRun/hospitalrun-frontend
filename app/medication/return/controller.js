@@ -34,9 +34,9 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   updateCapability: 'add_medication',
 
   medicationChanged: function() {
-    var medication = this.get('model.medication');
+    let medication = this.get('model.medication');
     if (!Ember.isEmpty(medication)) {
-      var inventoryItem = medication.get('inventoryItem');
+      let inventoryItem = medication.get('inventoryItem');
       this.set('model.inventoryItemTypeAhead', `${inventoryItem.get('name')} - ${inventoryItem.get('friendlyId')}`);
       this.set('model.inventoryItem', inventoryItem);
     } else {
@@ -48,21 +48,21 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   }.observes('model.medication'),
 
   patientVisitsChanged: function() {
-    var patientVisits = this.get('patientVisits');
+    let patientVisits = this.get('patientVisits');
     if (!Ember.isEmpty(patientVisits)) {
       this.set('model.visit', patientVisits.get('firstObject'));
     }
   }.observes('patientVisits'),
 
   showPatientMedicationList: function() {
-    var patientMedicationList = this.get('patientMedicationList');
+    let patientMedicationList = this.get('patientMedicationList');
     this.get('patientMedication'); // Request patient medication be updated
     return !Ember.isEmpty(patientMedicationList);
   }.property('patientMedicationList', 'model.patient', 'model.visit'),
 
   patientMedication: function() {
-    var setNewMedicationList = this.get('setNewMedicationList'),
-      visit = this.get('model.visit');
+    let setNewMedicationList = this.get('setNewMedicationList');
+    let visit = this.get('model.visit');
     if (setNewMedicationList) {
       this.set('setNewMedicationList', false);
     } else if (!Ember.isEmpty(visit)) {
@@ -77,9 +77,9 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   }.property('setNewMedicationList', 'model.patient', 'model.visit'),
 
   _finishUpdate: function() {
-    var aisle = this.get('model.deliveryAisle'),
-      location = this.get('model.deliveryLocation'),
-      inventoryItem = this.get('model.inventoryItem');
+    let aisle = this.get('model.deliveryAisle');
+    let location = this.get('model.deliveryLocation');
+    let inventoryItem = this.get('model.inventoryItem');
 
     // find location on inventoryItem
     this._findOrCreateLocation(inventoryItem, location, aisle).then(function(inventoryLocation) {
@@ -97,11 +97,11 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     doneFulfillRequest: function() {
       let i18n = this.get('i18n');
       this.updateLookupLists();
-      this.displayAlert(i18n.t('medication.alerts.returned_title'), i18n.t('medication.alerts.returned_message'), 'allItems');
+      this.displayAlert(i18n.t('medication.alerts.returnedTitle'), i18n.t('medication.alerts.returnedMessage'), 'allItems');
     },
     update: function() {
-      var medication = this.get('model.medication'),
-        quantity = this.get('model.quantity');
+      let medication = this.get('model.medication');
+      let quantity = this.get('model.quantity');
       if (!Ember.isEmpty(medication)) {
         medication.reload().then(function() {
           medication.decrementProperty('quantity', quantity);
@@ -116,5 +116,5 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     }
   },
 
-  updateButtonText: t('medication.return_medication')
+  updateButtonText: t('medication.returnMedication')
 });

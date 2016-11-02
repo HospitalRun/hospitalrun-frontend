@@ -2,7 +2,8 @@ import Ember from 'ember';
 import config from './config/environment';
 
 const Router = Ember.Router.extend({
-  location: config.locationType
+  location: config.locationType,
+  rootURL: config.rootURL
 });
 
 Router.map(function() {
@@ -19,6 +20,7 @@ Router.map(function() {
     });
     this.route('roles');
     this.route('query');
+    this.route('workflow');
   });
 
   this.route('appointments', {
@@ -45,7 +47,6 @@ Router.map(function() {
     resetNamespace: true
   }, function() {
     this.route('barcode', { path: '/barcode/:inventory_id' });
-    this.route('delivery', { path: '/delivery/:inv-request_id' });
     this.route('edit', { path: '/edit/:inventory_id' });
     this.route('batch', { path: '/batch/:inventory-batch_id' });
     this.route('listing');

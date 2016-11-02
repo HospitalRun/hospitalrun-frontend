@@ -6,6 +6,7 @@ import './run-with-pouch-dump';
 import './authenticate-user';
 import './select';
 import './select-date';
+import './typeahead-fillin';
 import './wait-to-appear';
 
 function createTranslationWrapper(original, context) {

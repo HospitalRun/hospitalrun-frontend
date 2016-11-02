@@ -5,21 +5,21 @@ import Ember from 'ember';
 export default AbstractEditController.extend(InventorySelection, {
   cancelAction: 'closeModal',
   newCharge: false,
-  requestingController:  Ember.inject.controller('procedures/edit'),
+  requestingController: Ember.inject.controller('procedures/edit'),
   medicationList: Ember.computed.alias('requestingController.medicationList'),
 
   updateCapability: 'add_charge',
 
   title: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
-      return 'Add Medication Used';
+      return this.get('i18n').t('procedures.titles.addMedicationUsed');
     }
-    return 'Edit Medication Used';
+    return this.get('i18n').t('procedures.titles.editMedicationUsed');
   }.property('model.isNew'),
 
   beforeUpdate: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       this.set('newCharge', true);
       let model = this.get('model');

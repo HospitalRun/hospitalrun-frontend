@@ -1,6 +1,8 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import Ember from 'ember';
 import PatientId from 'hospitalrun/mixins/patient-id';
+import { translationMacro as t } from 'ember-i18n';
+
 export default AbstractModuleRoute.extend(PatientId, {
   addCapability: 'add_patient',
   additionalModels: [{
@@ -40,8 +42,8 @@ export default AbstractModuleRoute.extend(PatientId, {
 
   actions: {
     createNewVisit: function(patient, visits) {
-      var lastVisit = visits.get('lastObject'),
-        propertiesToSet = {};
+      let lastVisit = visits.get('lastObject');
+      let propertiesToSet = {};
 
       if (!Ember.isEmpty(lastVisit)) {
         propertiesToSet = lastVisit.getProperties('primaryDiagnosis', 'primaryBillingDiagnosis');
@@ -53,6 +55,6 @@ export default AbstractModuleRoute.extend(PatientId, {
       }.bind(this));
     }
   },
-  newButtonText: '+ new patient',
+  newButtonText: t('patients.buttons.newPatient'),
   moduleName: 'patients'
 });

@@ -1,20 +1,19 @@
 <header class="sidebar-nav-header">
-    <a class="sidebar-nav-logo" href="#">
-      {{partial "components/logo-svg"}}
-    </a>
-    <a href="#" class="settings-trigger {{if isShowingSettings 'active'}}" {{action 'toggleSettings'}}>
-        <span class="mega-octicon octicon-gear"></span>
-    </a>
+  <a class="sidebar-nav-logo" href="#">
+    {{partial "components/logo-svg"}}
+  </a>
+  <a href="#" class="settings-trigger {{if isShowingSettings 'active'}}" {{action 'toggleSettings'}}>
+    <span class="mega-octicon octicon-gear"></span>
+  </a>
 
-    {{#if isShowingSettings }}
-        <nav class="settings-nav">
-        {{#if session.isAuthenticated}}
-            <a href="#" class="logout" {{ action 'invalidateSession' }}>{{t "navigation.actions.logout"}}</a>
-        {{else}}
-            {{#link-to 'login'}}{{t "navigation.actions.login"}}{{/link-to}}
-        {{/if}}
-          <a href="#" {{ action 'about' }}>{{t "navigation.about"}}</a>
-        </nav>
-    {{/if}}
-
+  {{#if isShowingSettings }}
+    <nav class="settings-nav">
+      {{#if session.isAuthenticated}}
+        <a href="#" class="logout" {{ action 'invalidateSession' }}>{{t "navigation.actions.logout"}}</a>
+      {{else}}
+        {{#link-to 'login'}}{{t "navigation.actions.login"}}{{/link-to}}
+      {{/if}}
+      <a href="#" {{ action 'about' }}>{{t "navigation.about"}}</a>
+    </nav>
+  {{/if}}
 </header>

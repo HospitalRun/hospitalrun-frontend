@@ -1,9 +1,11 @@
-import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
+import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import { translationMacro as t } from 'ember-i18n';
+
 export default AbstractEditController.extend({
   medicationController: Ember.inject.controller('medication'),
   sexList: Ember.computed.alias('medicationController.sexList'),
-  title: 'New Patient',
+  title: t('patients.titles.new'),
 
   updateCapability: 'add_patient',
 
@@ -14,7 +16,7 @@ export default AbstractEditController.extend({
   },
 
   afterUpdate: function(record) {
-    var requestingController = this.get('model.requestingController');
+    let requestingController = this.get('model.requestingController');
     requestingController.send('addedNewPatient', record);
   }
 });

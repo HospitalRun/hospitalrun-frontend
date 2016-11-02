@@ -11,7 +11,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   endDate: null,
   expenseCategories: Ember.computed(function() {
     let i18n = this.get('i18n');
-    return [i18n.t('inventory.labels.inventory_consumed'), i18n.t('inventory.labels.gift_usage'), i18n.t('inventory.labels.inventory_obsolence')];
+    return [i18n.t('inventory.labels.inventoryConsumed'), i18n.t('inventory.labels.giftUsage'), i18n.t('inventory.labels.inventoryObsolence')];
   }),
   expenseMap: null,
   filterLocation: null,
@@ -42,7 +42,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         property: 'inventoryItem.name'
       },
       transactionType: {
-        label: i18n.t('inventory.labels.adjustment_type'),
+        label: i18n.t('inventory.labels.adjustmentType'),
         include: false,
         property: 'transactionType'
       },
@@ -62,18 +62,18 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         property: 'inventoryItem.inventoryType'
       },
       xref: {
-        label: i18n.t('inventory.labels.cross_reference'),
+        label: i18n.t('inventory.labels.crossReference'),
         include: false,
         property: 'inventoryItem.crossReference'
       },
       reorder: {
-        label: i18n.t('inventory.labels.reorder_point'),
+        label: i18n.t('inventory.labels.reorderPoint'),
         include: false,
         property: 'inventoryItem.reorderPoint',
         format: '_numberFormat'
       },
       price: {
-        label: i18n.t('inventory.labels.sale_price_per_unit'),
+        label: i18n.t('inventory.labels.salePricePerUnit'),
         include: false,
         property: 'inventoryItem.price',
         format: '_numberFormat'
@@ -85,28 +85,28 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         format: '_numberFormat'
       },
       consumedPerDay: {
-        label: i18n.t('inventory.labels.consumption_rate'),
+        label: i18n.t('inventory.labels.consumptionRate'),
         include: false,
         property: 'consumedPerDay'
       },
       daysLeft: {
-        label: i18n.t('inventory.labels.days_left'),
+        label: i18n.t('inventory.labels.daysLeft'),
         include: false,
         property: 'daysLeft'
       },
       unit: {
-        label: i18n.t('inventory.labels.distribution_unit'),
+        label: i18n.t('inventory.labels.distributionUnit'),
         include: true,
         property: 'inventoryItem.distributionUnit'
       },
       unitcost: {
-        label: i18n.t('inventory.labels.unit_cost'),
+        label: i18n.t('inventory.labels.unitCost'),
         include: true,
         property: 'unitCost',
         format: '_numberFormat'
       },
       total: {
-        label: i18n.t('inventory.labels.total_cost'),
+        label: i18n.t('inventory.labels.totalCost'),
         include: true,
         property: 'totalCost',
         format: '_numberFormat'
@@ -138,43 +138,43 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   reportTypes: Ember.computed(function() {
     let i18n = this.get('i18n');
     return [{
-      name: i18n.t('inventory.reports.days_supply'),
+      name: i18n.t('inventory.reports.daysSupply'),
       value: 'daysLeft'
     }, {
       name: i18n.t('inventory.reports.adjustment'),
       value: 'detailedAdjustment'
     }, {
-      name: i18n.t('inventory.reports.purchase_detail'),
+      name: i18n.t('inventory.reports.purchaseDetail'),
       value: 'detailedPurchase'
     }, {
-      name: i18n.t('inventory.reports.stock_usage_detail'),
+      name: i18n.t('inventory.reports.stockUsageDetail'),
       value: 'detailedUsage'
     }, {
-      name: i18n.t('inventory.reports.stock_transfer_detail'),
+      name: i18n.t('inventory.reports.stockTransferDetail'),
       value: 'detailedTransfer'
     }, {
-      name: i18n.t('inventory.reports.expense_detail'),
+      name: i18n.t('inventory.reports.expenseDetail'),
       value: 'detailedExpense'
     }, {
       name: i18n.t('inventory.reports.expiration'),
       value: 'expiration'
     }, {
-      name: i18n.t('inventory.reports.inv_location'),
+      name: i18n.t('inventory.reports.invLocation'),
       value: 'byLocation'
     }, {
-      name: i18n.t('inventory.reports.inv_valuation'),
+      name: i18n.t('inventory.reports.invValuation'),
       value: 'valuation'
     }, {
-      name: i18n.t('inventory.reports.expense_sum'),
+      name: i18n.t('inventory.reports.expenseSum'),
       value: 'summaryExpense'
     }, {
-      name: i18n.t('inventory.reports.purchase_sum'),
+      name: i18n.t('inventory.reports.purchaseSum'),
       value: 'summaryPurchase'
     }, {
-      name: i18n.t('inventory.reports.stock_usage_sum'),
+      name: i18n.t('inventory.reports.stockUsageSum'),
       value: 'summaryUsage'
     }, {
-      name: i18n.t('inventory.reports.stock_transfer_sum'),
+      name: i18n.t('inventory.reports.stockTransferSum'),
       value: 'summaryTransfer'
     }, {
       name: i18n.t('inventory.reports.finance'),
@@ -183,12 +183,12 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   }),
 
   hideLocationFilter: function() {
-    var reportType = this.get('reportType');
+    let reportType = this.get('reportType');
     return (reportType === 'summaryFinance');
   }.property('reportType'),
 
   includeDate: function() {
-    var reportType = this.get('reportType');
+    let reportType = this.get('reportType');
     if (!Ember.isEmpty(reportType) && reportType.indexOf('detailed') === 0) {
       this.set('reportColumns.date.include', true);
       return true;
@@ -200,7 +200,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   }.property('reportType'),
 
   includeDaysLeft: function() {
-    var reportType = this.get('reportType');
+    let reportType = this.get('reportType');
     if (reportType === 'daysLeft') {
       this.set('reportColumns.consumedPerDay.include', true);
       this.set('reportColumns.daysLeft.include', true);
@@ -214,7 +214,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   }.property('reportType'),
 
   includeCostFields: function() {
-    var reportType = this.get('reportType');
+    let reportType = this.get('reportType');
     if (reportType === 'detailedTransfer' || reportType === 'summaryTransfer' || reportType === 'daysLeft') {
       this.set('reportColumns.total.include', false);
       this.set('reportColumns.unitcost.include', false);
@@ -227,7 +227,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   }.property('reportType'),
 
   includeExpenseAccount: function() {
-    var reportType = this.get('reportType');
+    let reportType = this.get('reportType');
     switch (reportType) {
       case 'detailedAdjustment':
       case 'detailedTransfer':
@@ -246,7 +246,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   }.property('reportType'),
 
   includeTransactionType: function() {
-    var reportType = this.get('reportType');
+    let reportType = this.get('reportType');
     if (reportType === 'detailedAdjustment') {
       this.set('reportColumns.transactionType.include', true);
       return true;
@@ -257,7 +257,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   }.property('reportType'),
 
   showEffectiveDate: function() {
-    var reportType = this.get('reportType');
+    let reportType = this.get('reportType');
     if (reportType === 'valuation' || reportType === 'byLocation') {
       this.set('startDate', null);
       if (Ember.isEmpty(this.get('endDate'))) {
@@ -273,7 +273,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   }.property('reportType'),
 
   useFieldPicker: function() {
-    var reportType = this.get('reportType');
+    let reportType = this.get('reportType');
     return (reportType !== 'expiration' && reportType !== 'summaryFinance');
   }.property('reportType'),
 
@@ -289,15 +289,15 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
 
   _addLocationColumn: function(locations) {
     if (!Ember.isEmpty(locations)) {
-      var returnLocations = [];
+      let returnLocations = [];
       locations.forEach(function(location) {
-        var formattedName;
+        let formattedName;
         if (location.name.indexOf('From:') === 0) {
           formattedName = location.name;
         } else {
           formattedName = this._getWarehouseLocationName(location.name);
         }
-        if (!returnLocations.contains(formattedName)) {
+        if (!returnLocations.includes(formattedName)) {
           returnLocations.push(formattedName);
         }
       }.bind(this));
@@ -307,10 +307,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
 
   _addReportRow: function(row, skipNumberFormatting, reportColumns, rowAction) {
     if (Ember.isEmpty(rowAction) && !Ember.isEmpty(row.inventoryItem) && !Ember.isEmpty(row.inventoryItem.id)) {
-      var inventoryId = this.get('database').getEmberId(row.inventoryItem.id);
       rowAction = {
         action: 'viewInventory',
-        model: inventoryId
+        model: row.inventoryItem.id
       };
     }
     this._super(row, skipNumberFormatting, reportColumns, rowAction);
@@ -334,7 +333,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
    * @param {boolean} increment boolean indicating if the adjustment is an increment; or false if decrement.
    */
   _adjustLocation: function(locations, locationName, quantity, increment) {
-    var locationToUpdate = locations.findBy('name', locationName);
+    let locationToUpdate = locations.findBy('name', locationName);
     if (Ember.isEmpty(locationToUpdate)) {
       locationToUpdate = {
         name: locationName,
@@ -357,9 +356,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
    * @param {boolean} increment boolean indicating if the adjustment is an increment; or false if decrement.
    */
   _adjustPurchase: function(purchases, purchaseId, quantity, increment) {
-    var purchaseToAdjust = purchases.findBy('id', purchaseId);
+    let purchaseToAdjust = purchases.findBy('id', purchaseId);
     if (!Ember.isEmpty(purchaseToAdjust)) {
-      var calculatedQuantity = purchaseToAdjust.calculatedQuantity;
+      let { calculatedQuantity } = purchaseToAdjust;
       if (increment) {
         calculatedQuantity += quantity;
       } else {
@@ -373,8 +372,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     // Calculate quantity and cost per unit for the row
     if (!Ember.isEmpty(inventoryPurchases)) {
       inventoryPurchases.forEach(function(purchase) {
-        var costPerUnit = this._calculateCostPerUnit(purchase),
-          quantity = purchase.calculatedQuantity;
+        let costPerUnit = this._calculateCostPerUnit(purchase);
+        let quantity = purchase.calculatedQuantity;
         row.quantity += purchase.calculatedQuantity;
         row.totalCost += (quantity * costPerUnit);
       }.bind(this));
@@ -391,8 +390,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     // Calculate quantity and cost per unit for the row
     if (!Ember.isEmpty(inventoryPurchases)) {
       inventoryPurchases.forEach(function(purchase) {
-        var costPerUnit = this._calculateCostPerUnit(purchase),
-          quantity = purchase.calculatedQuantity;
+        let costPerUnit = this._calculateCostPerUnit(purchase);
+        let quantity = purchase.calculatedQuantity;
         row.quantity -= purchase.calculatedQuantity;
         row.totalCost -= (quantity * costPerUnit);
       }.bind(this));
@@ -406,8 +405,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   },
 
   _calculateCostPerUnit: function(purchase) {
-    var purchaseCost = purchase.purchaseCost,
-      quantity = parseInt(purchase.originalQuantity);
+    let { purchaseCost } = purchase;
+    let quantity = parseInt(purchase.originalQuantity);
     if (Ember.isEmpty(purchaseCost) || Ember.isEmpty(quantity)) {
       return 0;
     }
@@ -418,14 +417,14 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     if (Ember.isEmpty(inventoryList)) {
       inventoryList = {};
     }
-    var database = this.get('database');
+    let database = this.get('database');
     return new Ember.RSVP.Promise(function(resolve, reject) {
       database.queryMainDB(queryParams, view).then(function(inventoryChildren) {
-        var inventoryKeys = Object.keys(inventoryList),
-          inventoryIds = [];
+        let inventoryKeys = Object.keys(inventoryList);
+        let inventoryIds = [];
         if (!Ember.isEmpty(inventoryChildren.rows)) {
           inventoryChildren.rows.forEach(function(child) {
-            if (child.doc.inventoryItem && !inventoryKeys.contains(child.doc.inventoryItem)) {
+            if (child.doc.inventoryItem && !inventoryKeys.includes(child.doc.inventoryItem)) {
               inventoryIds.push(database.getPouchId(child.doc.inventoryItem, 'inventory'));
               inventoryKeys.push(child.doc.inventoryItem);
             }
@@ -434,10 +433,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         this._getInventoryItems(inventoryIds, inventoryList).then(function(inventoryMap) {
           // Link inventory children to inventory items
           inventoryChildren.rows.forEach(function(child) {
-            var childItem = inventoryMap[child.doc.inventoryItem];
+            let childItem = inventoryMap[child.doc.inventoryItem];
             if (!Ember.isEmpty(childItem)) {
-              if (childName !== 'purchaseObjects' || childItem.purchases.contains(child.doc.id)) {
-                var itemChildren = childItem[childName];
+              if (childName !== 'purchaseObjects' || childItem.purchases.includes(child.doc.id)) {
+                let itemChildren = childItem[childName];
                 if (Ember.isEmpty(itemChildren)) {
                   itemChildren = [];
                 }
@@ -469,16 +468,15 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   },
 
   _finishExpenseReport: function(reportType) {
-    var expenseCategories = this.get('expenseCategories'),
-      expenseMap = this.get('expenseMap');
+    let expenseCategories = this.get('expenseCategories');
+    let expenseMap = this.get('expenseMap');
     let i18n = this.get('i18n');
     expenseCategories.forEach(function(category) {
-      var categoryTotal = 0,
-        expenseAccountName,
-        totalLabel;
+      let categoryTotal = 0;
+      let expenseAccountName, totalLabel;
       this._addReportRow({
         inventoryItem: {
-          name: i18n.t('inventory.reports.rows.expenses_for') + category
+          name: i18n.t('inventory.reports.rows.expensesFor') + category
         }
       });
       expenseMap[category].expenseAccounts.forEach(function(expenseAccount) {
@@ -488,17 +486,17 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           }.bind(this));
         }
         if (Ember.isEmpty(expenseAccount.name)) {
-          expenseAccountName = i18n.t('inventory.reports.rows.no_account');
+          expenseAccountName = i18n.t('inventory.reports.rows.noAccount');
         } else {
           expenseAccountName = expenseAccount.name;
         }
-        totalLabel = i18n.t('inventory.reports.rows.subtotal_for', { category: category, account: expenseAccountName });
+        totalLabel = i18n.t('inventory.reports.rows.subtotalFor', { category: category, account: expenseAccountName });
         this._addReportRow({
           totalCost: totalLabel + this._numberFormat(expenseAccount.total)
         }, true);
         categoryTotal += expenseAccount.total;
       }.bind(this));
-      totalLabel = i18n.t('inventory.reports.rows.total_for', { var: category });
+      totalLabel = i18n.t('inventory.reports.rows.totalFor', { var: category });
       this._addReportRow({
         totalCost: totalLabel + this._numberFormat(categoryTotal)
       }, true);
@@ -510,16 +508,16 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   },
 
   _finishLocationReport: function() {
-    var currentLocation = '',
-      locationCost = 0,
-      locationSummary = this.get('locationSummary'),
-      parentLocation = '',
-      parentCount = 0,
-      i18n = this.get('i18n');
+    let currentLocation = '';
+    let locationCost = 0;
+    let locationSummary = this.get('locationSummary');
+    let parentLocation = '';
+    let parentCount = 0;
+    let i18n = this.get('i18n');
     locationSummary = locationSummary.sortBy('name');
     locationSummary.forEach(function(location) {
       parentLocation = this._getWarehouseLocationName(location.name);
-      var label = i18n.t('inventory.reports.rows.total_for', { var: currentLocation });
+      let label = i18n.t('inventory.reports.rows.totalFor', { var: currentLocation });
       if (currentLocation !== parentLocation) {
         this._addTotalsRow(label, locationCost, parentCount);
         parentCount = 0;
@@ -527,7 +525,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         currentLocation = parentLocation;
       }
       if (this._includeLocation(parentLocation)) {
-        for (var id in location.items) {
+        for (let id in location.items) {
           if (location.items[id].quantity > 0) {
             this._addReportRow({
               giftInKind: location.items[id].giftInKind,
@@ -548,22 +546,22 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       }
     }.bind(this));
     if (parentCount > 0) {
-      this._addTotalsRow(i18n.t('inventory.reports.rows.total_for', { var: parentLocation }), locationCost, parentCount);
+      this._addTotalsRow(i18n.t('inventory.reports.rows.totalFor', { var: parentLocation }), locationCost, parentCount);
     }
   },
 
   _generateExpirationReport: function() {
-    var grandQuantity = 0,
-      database = this.get('database'),
-      reportRows = this.get('reportRows'),
-      reportTimes = this._getDateQueryParams();
+    let grandQuantity = 0;
+    let database = this.get('database');
+    let reportRows = this.get('reportRows');
+    let reportTimes = this._getDateQueryParams();
     database.queryMainDB({
       startkey: [reportTimes.startTime, 'invPurchase_'],
       endkey: [reportTimes.endTime, 'invPurchase_\uffff'],
       include_docs: true
     }, 'inventory_purchase_by_expiration_date').then(function(inventoryPurchases) {
-      var purchaseDocs = [],
-        inventoryIds = [];
+      let purchaseDocs = [];
+      let inventoryIds = [];
 
       inventoryPurchases.rows.forEach(function(purchase) {
         if (purchase.doc.currentQuantity > 0 && !Ember.isEmpty(purchase.doc.expirationDate)) {
@@ -574,9 +572,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       this._getInventoryItems(inventoryIds).then(function(inventoryMap) {
         let i18n = this.get('i18n');
         purchaseDocs.forEach(function(purchase) {
-          var currentQuantity = purchase.currentQuantity,
-            expirationDate = new Date(purchase.expirationDate),
-            inventoryItem = inventoryMap[purchase.inventoryItem];
+          let { currentQuantity } = purchase;
+          let expirationDate = new Date(purchase.expirationDate);
+          let inventoryItem = inventoryMap[purchase.inventoryItem];
           if (inventoryItem && this._includeLocation(purchase.location)) {
             reportRows.addObject([
               inventoryItem.friendlyId,
@@ -594,7 +592,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         ]);
         this.set('showReportResults', true);
         this.set('reportHeaders',
-          [i18n.t('labels.id'), i18n.t('labels.name'), i18n.t('inventory.labels.current_quantity'), i18n.t('inventory.labels.distribution_unit'), i18n.t('inventory.labels.expiration_date'), i18n.t('inventory.labels.location')]);
+          [i18n.t('labels.id'), i18n.t('labels.name'), i18n.t('inventory.labels.currentQuantity'), i18n.t('inventory.labels.distributionUnit'), i18n.t('inventory.labels.expirationDate'), i18n.t('inventory.labels.location')]);
         this._generateExport();
         this._setReportTitle();
         this.closeProgressModal();
@@ -604,19 +602,19 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   },
 
   _generateFinancialSummaryReport: function() {
-    var reportTimes = this._getDateQueryParams();
+    let reportTimes = this._getDateQueryParams();
     /*
     step 1: find the valuation as of start date,
     meaning that we need to exchange the end date to be the start date and then tabulate the value
     */
     this._calculateBeginningBalance(reportTimes).then(function(beginningBalance) {
       this._generateSummaries(reportTimes).then(function(inventoryAdjustment) {
-        var i = this._numberFormat(beginningBalance + inventoryAdjustment);
+        let i = this._numberFormat(beginningBalance + inventoryAdjustment);
         let i18n = this.get('i18n');
         if ((beginningBalance + inventoryAdjustment) < 0) {
-          this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balance_end'), '', '(' + i + ')']);
+          this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceEnd'), '', `(${i})`]);
         } else {
-          this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balance_end'), '', i]);
+          this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceEnd'), '', i]);
         }
         this.set('showReportResults', true);
         this.set('reportHeaders', [i18n.t('inventory.reports.rows.category'), i18n.t('labels.type'), i18n.t('inventory.labels.total')]);
@@ -624,25 +622,25 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         this._setReportTitle();
         this.closeProgressModal();
       }.bind(this), function(err) {
-        this._notifyReportError(this.get('i18n').t('inventory.reports.rows.err_in_fin_sum') + err);
+        this._notifyReportError(this.get('i18n').t('inventory.reports.rows.errInFinSum') + err);
       }.bind(this));
     }.bind(this));
   },
 
   _generateSummaries: function(reportTimes) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var adjustedValue = 0;
-      var i18n = this.get('i18n');
+      let adjustedValue = 0;
+      let i18n = this.get('i18n');
       /*
       cycle through each purchase and request from the beginning of time until startTime
       to determine the total value of inventory as of that date/time.
       */
       this._findInventoryItemsByRequest(reportTimes, {}).then(function(inventoryMap) {
         this._findInventoryItemsByPurchase(reportTimes, inventoryMap).then(function(inventoryMap) {
-          var purchaseSummary = {},
-            consumed = {},
-            gikConsumed = {},
-            adjustments = {};
+          let purchaseSummary = {};
+          let consumed = {};
+          let gikConsumed = {};
+          let adjustments = {};
           this.adjustmentTypes.forEach(function(adjustmentType) {
             adjustments[adjustmentType.type] = [];
           });
@@ -651,7 +649,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
               // If the inventory item has been deleted, ignore it.
               return;
             }
-            var item = inventoryMap[key];
+            let item = inventoryMap[key];
 
             if (!Ember.isEmpty(item.purchaseObjects)) {
               item.purchaseObjects.forEach(function(purchase) {
@@ -677,67 +675,67 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           }.bind(this));
           // write the purchase rows
           if (Object.keys(purchaseSummary).length > 0) {
-            var purchaseTotal = 0;
+            let purchaseTotal = 0;
             this.get('reportRows').addObject([i18n.t('inventory.labels.purchases'), '', '']);
             Object.keys(purchaseSummary).forEach(function(key) {
-              var i = this._getValidNumber(purchaseSummary[key]);
+              let i = this._getValidNumber(purchaseSummary[key]);
               purchaseTotal += i;
               this.get('reportRows').addObject(['', key, this._numberFormat(i)]);
             }.bind(this));
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.total_purchases'), '', this._numberFormat(purchaseTotal)]);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.totalPurchases'), '', this._numberFormat(purchaseTotal)]);
             adjustedValue += purchaseTotal;
           }
           // write the consumed rows
           if (Object.keys(consumed).length > 0 || Object.keys(gikConsumed).length > 0) {
             this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumed'), '', '']);
-            var overallValue = 0;
+            let overallValue = 0;
             if (Object.keys(consumed).length > 0) {
-              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumed_puchases'), '', '']);
-              var consumedTotal = 0;
+              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedPuchases'), '', '']);
+              let consumedTotal = 0;
               Object.keys(consumed).forEach(function(key) {
-                var i = this._getValidNumber(consumed[key]);
+                let i = this._getValidNumber(consumed[key]);
                 consumedTotal += i;
-                this.get('reportRows').addObject(['', key, '(' + this._numberFormat(i) + ')']);
+                this.get('reportRows').addObject(['', key, `(${this._numberFormat(i)})`]);
               }.bind(this));
               overallValue += consumedTotal;
-              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumed_purchases_total'), '', '(' + this._numberFormat(consumedTotal) + ')']);
+              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedPurchasesTotal'), '', `(${this._numberFormat(consumedTotal)})`]);
             }
             if (Object.keys(gikConsumed).length > 0) {
-              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumed_gik'), '', '']);
-              var gikTotal = 0;
+              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedGik'), '', '']);
+              let gikTotal = 0;
               Object.keys(gikConsumed).forEach(function(key) {
-                var i = this._getValidNumber(gikConsumed[key]);
+                let i = this._getValidNumber(gikConsumed[key]);
                 gikTotal += i;
-                this.get('reportRows').addObject(['', key, '(' + this._numberFormat(i) + ')']);
+                this.get('reportRows').addObject(['', key, `(${this._numberFormat(i)})`]);
               }.bind(this));
               overallValue += gikTotal;
-              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumed_gik_total'), '', '(' + this._numberFormat(gikTotal) + ')']);
+              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedGikTotal'), '', `(${this._numberFormat(gikTotal)})`]);
             }
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumed_total'), '', '(' + this._numberFormat(overallValue) + ')']);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedTotal'), '', `(${this._numberFormat(overallValue)})`]);
             adjustedValue -= overallValue;
           }
           // write the adjustment rows
-          var adjustmentTotal = 0;
+          let adjustmentTotal = 0;
           this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustments'), '', '']);
           Object.keys(adjustments).forEach(function(adjustmentT) {
             if (Object.keys(adjustments[adjustmentT]).length > 0) {
               this.get('reportRows').addObject([adjustmentT, '', '']);
               Object.keys(adjustments[adjustmentT]).forEach(function(key) {
-                var i = this._getValidNumber(adjustments[adjustmentT][key]);
+                let i = this._getValidNumber(adjustments[adjustmentT][key]);
                 if (adjustmentT === 'Adjustment (Add)' || adjustmentT === 'Return') {
                   adjustmentTotal += i;
                   this.get('reportRows').addObject(['', key, this._numberFormat(i)]);
                 } else {
                   adjustmentTotal -= i;
-                  this.get('reportRows').addObject(['', key, '(' + this._numberFormat(i) + ')']);
+                  this.get('reportRows').addObject(['', key, `(${this._numberFormat(i)})`]);
                 }
               }.bind(this));
             }
           }.bind(this));
           if (adjustmentTotal < 0) {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustments_total'), '', '(' + this._numberFormat(adjustmentTotal) + ')']);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustmentsTotal'), '', `(${this._numberFormat(adjustmentTotal)})`]);
           } else {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustments_total'), '', this._numberFormat(adjustmentTotal)]);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustmentsTotal'), '', this._numberFormat(adjustmentTotal)]);
           }
 
           adjustedValue += adjustmentTotal;
@@ -749,12 +747,12 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
 
   _calculateBeginningBalance: function(reportTimes) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var startingValueReportTimes = {
-          startTime: null,
-          endTime: reportTimes.startTime
-        },
-        beginningBalance = 0;
-      var i18n = this.get('i18n');
+      let startingValueReportTimes = {
+        startTime: null,
+        endTime: reportTimes.startTime
+      };
+      let beginningBalance = 0;
+      let i18n = this.get('i18n');
       /*
       cycle through each purchase and request from the beginning of time until startTime
       to determine the total value of inventory as of that date/time.
@@ -766,28 +764,28 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
               // If the inventory item has been deleted, ignore it.
               return;
             }
-            var item = inventoryMap[key],
-              inventoryPurchases = item.purchaseObjects,
-              inventoryRequests = item.requestObjects,
-              row = {
-                inventoryItem: item,
-                quantity: 0,
-                unitCost: 0,
-                totalCost: 0
-              };
+            let item = inventoryMap[key];
+            let inventoryPurchases = item.purchaseObjects;
+            let inventoryRequests = item.requestObjects;
+            let row = {
+              inventoryItem: item,
+              quantity: 0,
+              unitCost: 0,
+              totalCost: 0
+            };
             if (!Ember.isEmpty(inventoryPurchases)) {
               // Setup intial locations for an inventory item
               inventoryPurchases.forEach(function(purchase) {
-                var purchaseQuantity = purchase.originalQuantity;
+                let purchaseQuantity = purchase.originalQuantity;
                 purchase.calculatedQuantity = purchaseQuantity;
               });
             }
             if (!Ember.isEmpty(inventoryRequests)) {
               inventoryRequests.forEach(function(request) {
-                var adjustPurchases = request.adjustPurchases,
-                  increment = false,
-                  purchases = request.purchasesAffected,
-                  transactionType = request.transactionType;
+                let { adjustPurchases } = request;
+                let increment = false;
+                let purchases = request.purchasesAffected;
+                let { transactionType } = request;
                 increment = (transactionType === 'Adjustment (Add)' || transactionType === 'Return');
                 if (adjustPurchases) {
                   if (!Ember.isEmpty(purchases) && !Ember.isEmpty(inventoryPurchases)) {
@@ -805,9 +803,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             }
           }.bind(this));
           if (beginningBalance < 0) {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balance_begin'), '', '(' + this._numberFormat(beginningBalance) + ')']);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceBegin'), '', `(${this._numberFormat(beginningBalance)})`]);
           } else {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balance_begin'), '', this._numberFormat(beginningBalance)]);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceBegin'), '', this._numberFormat(beginningBalance)]);
           }
           resolve(beginningBalance);
         }.bind(this), reject);
@@ -819,14 +817,14 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
     this.set('grandCost', 0);
     this.set('grandQuantity', 0);
     this.set('locationSummary', []);
-    var dateDiff,
-      locationSummary = this.get('locationSummary'),
-      reportType = this.get('reportType'),
-      reportTimes = this._getDateQueryParams(),
-      i18n = this.get('i18n');
+    let dateDiff;
+    let locationSummary = this.get('locationSummary');
+    let reportType = this.get('reportType');
+    let reportTimes = this._getDateQueryParams();
+    let i18n = this.get('i18n');
     if (reportType === 'daysLeft') {
-      var endDate = this.get('endDate'),
-        startDate = this.get('startDate');
+      let endDate = this.get('endDate');
+      let startDate = this.get('startDate');
       if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
         this.closeProgressModal();
         return;
@@ -843,29 +841,29 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             // If the inventory item has been deleted, ignore it.
             return;
           }
-          var item = inventoryMap[key],
-            inventoryPurchases = item.purchaseObjects,
-            inventoryRequests = item.requestObjects,
-            row = {
-              giftInKind: 'N',
-              inventoryItem: item,
-              quantity: 0,
-              unitCost: 0,
-              totalCost: 0,
-              locations: [],
-              vendors: []
-            };
+          let item = inventoryMap[key];
+          let inventoryPurchases = item.purchaseObjects;
+          let inventoryRequests = item.requestObjects;
+          let row = {
+            giftInKind: 'N',
+            inventoryItem: item,
+            quantity: 0,
+            unitCost: 0,
+            totalCost: 0,
+            locations: [],
+            vendors: []
+          };
           if (!Ember.isEmpty(inventoryPurchases)) {
             // Setup intial locations for an inventory item
             inventoryPurchases.forEach(function(purchase) {
-              var locationName = this.getDisplayLocationName(purchase.location, purchase.aisleLocation),
-                purchaseQuantity = purchase.originalQuantity;
+              let locationName = this.getDisplayLocationName(purchase.location, purchase.aisleLocation);
+              let purchaseQuantity = purchase.originalQuantity;
               purchase.calculatedQuantity = purchaseQuantity;
               if (purchase.giftInKind === true) {
                 row.giftInKind = 'Y';
               }
               if (!Ember.isEmpty(purchase.vendor)) {
-                if (!row.vendors.contains(purchase.vendor)) {
+                if (!row.vendors.includes(purchase.vendor)) {
                   row.vendors.push(purchase.vendor);
                 }
               }
@@ -875,11 +873,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
 
           if (!Ember.isEmpty(inventoryRequests)) {
             inventoryRequests.forEach(function(request) {
-              var adjustPurchases = request.adjustPurchases,
-                increment = false,
-                locations = request.locationsAffected,
-                purchases = request.purchasesAffected,
-                transactionType = request.transactionType;
+              let { adjustPurchases, transactionType } = request;
+              let increment = false;
+              let locations = request.locationsAffected;
+              let purchases = request.purchasesAffected;
 
               increment = (transactionType === 'Adjustment (Add)' || transactionType === 'Return');
               if (adjustPurchases) {
@@ -891,7 +888,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 }
               } else if (transactionType === 'Transfer') {
                 // Increment the delivery location
-                var locationName = this.getDisplayLocationName(request.deliveryLocation, request.deliveryAisle);
+                let locationName = this.getDisplayLocationName(request.deliveryLocation, request.deliveryAisle);
                 this._adjustLocation(row.locations, locationName, request.quantity, true);
               }
               // Loop through locations to adjust location quantity
@@ -901,13 +898,13 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             }.bind(this));
           }
 
-          var summaryCost = 0,
-            summaryQuantity = 0;
+          let summaryCost = 0;
+          let summaryQuantity = 0;
 
           switch (reportType) {
             case 'byLocation': {
               row.locations.forEach(function(location) {
-                var locationToUpdate = locationSummary.findBy('name', this._getWarehouseLocationName((location.name)));
+                let locationToUpdate = locationSummary.findBy('name', this._getWarehouseLocationName((location.name)));
                 if (Ember.isEmpty(locationToUpdate)) {
                   locationToUpdate = Ember.copy(location);
                   locationToUpdate.items = {};
@@ -915,7 +912,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 } else {
                   locationToUpdate.quantity += this._getValidNumber(location.quantity);
                 }
-                var costData = this._calculateCosts(inventoryPurchases, {
+                let costData = this._calculateCosts(inventoryPurchases, {
                   quantity: 0,
                   totalCost: 0
                 });
@@ -931,7 +928,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             }
             case 'daysLeft': {
               if (!Ember.isEmpty(inventoryRequests) && this._hasIncludedLocation(row.locations)) {
-                var consumedQuantity = inventoryRequests.reduce(function(previousValue, request) {
+                let consumedQuantity = inventoryRequests.reduce(function(previousValue, request) {
                   if (request.transactionType === 'Fulfillment') {
                     return previousValue += this._getValidNumber(request.quantity);
                   } else {
@@ -946,7 +943,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                   if (consumedQuantity === 0) {
                     row.consumedPerDay = '0';
                   } else {
-                    row.consumedPerDay = '?' + consumedQuantity;
+                    row.consumedPerDay = `?${consumedQuantity}`;
                   }
                   row.daysLeft = '?';
                 }
@@ -962,10 +959,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
               if (!Ember.isEmpty(inventoryRequests)) {
                 inventoryRequests.forEach(function(request) {
                   if (this._includeTransaction(reportType, request.transactionType) && this._hasIncludedLocation(request.locationsAffected)) {
-                    var deliveryLocation = this.getDisplayLocationName(request.deliveryLocation, request.deliveryAisle),
-                      locations = [],
-                      num = this._getValidNumber(request.quantity),
-                      totalCost = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit));
+                    let deliveryLocation = this.getDisplayLocationName(request.deliveryLocation, request.deliveryAisle);
+                    let locations = [];
+                    let num = this._getValidNumber(request.quantity);
+                    let totalCost = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit));
                     locations = request.locationsAffected.map(function(location) {
                       if (reportType === 'detailedTransfer') {
                         return {
@@ -977,7 +974,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                         };
                       }
                     }.bind(this));
-                    var reportRow = {
+                    let reportRow = {
                       date: moment(new Date(request.dateCompleted)).format('l'),
                       expenseAccount: request.expenseAccount,
                       giftInKind: row.giftInKind,
@@ -1010,7 +1007,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
               if (!Ember.isEmpty(inventoryRequests) && this._hasIncludedLocation(row.locations)) {
                 row.quantity = inventoryRequests.reduce(function(previousValue, request) {
                   if (this._includeTransaction(reportType, request.transactionType)) {
-                    var totalCost = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit));
+                    let totalCost = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit));
                     summaryCost += totalCost;
                     return previousValue += this._getValidNumber(request.quantity);
                   } else {
@@ -1031,7 +1028,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
               if (!Ember.isEmpty(inventoryPurchases)) {
                 inventoryPurchases.forEach(function(purchase) {
                   if (this._includeLocation(purchase.location)) {
-                    var giftInKind = 'N';
+                    let giftInKind = 'N';
                     if (purchase.giftInKind === true) {
                       giftInKind = 'Y';
                     }
@@ -1061,7 +1058,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                 row.locations = [];
                 row.quantity = inventoryPurchases.reduce(function(previousValue, purchase) {
                   summaryCost += this._getValidNumber(purchase.purchaseCost);
-                  var locationName = this.getDisplayLocationName(purchase.location, purchase.aisleLocation);
+                  let locationName = this.getDisplayLocationName(purchase.location, purchase.aisleLocation);
                   if (!row.locations.findBy('name', locationName)) {
                     row.locations.push({
                       name: this.getDisplayLocationName(purchase.location, purchase.aisleLocation)
@@ -1107,18 +1104,18 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         }
         this._finishReport();
       }.bind(this), function(err) {
-        this._notifyReportError(i18n.t('inventory.reports.rows.err_in_find_pur') + err);
+        this._notifyReportError(i18n.t('inventory.reports.rows.errInFindPur') + err);
       }.bind(this));
     }.bind(this), function(err) {
-      this._notifyReportError(i18n.t('inventory.reports.rows.err_in_find_pur') + err);
+      this._notifyReportError(i18n.t('inventory.reports.rows.errInFindPur') + err);
     }.bind(this));
   },
 
   _getDateQueryParams: function() {
-    var endDate = this.get('endDate'),
-      endTime = this.get('maxValue'),
-      startDate = this.get('startDate'),
-      startTime;
+    let endDate = this.get('endDate');
+    let endTime = this.get('maxValue');
+    let startDate = this.get('startDate');
+    let startTime;
     if (!Ember.isEmpty(endDate)) {
       endTime = moment(endDate).endOf('day').toDate().getTime();
     }
@@ -1132,7 +1129,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   },
 
   _getInventoryItems: function(inventoryIds, inventoryMap) {
-    var database = this.get('database');
+    let database = this.get('database');
     return new Ember.RSVP.Promise(function(resolve, reject) {
       if (Ember.isEmpty(inventoryMap)) {
         inventoryMap = {};
@@ -1142,7 +1139,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         include_docs: true
       }).then(function(inventoryItems) {
         inventoryItems.rows.forEach(function(inventoryItem) {
-          if (inventoryItem.doc) {
+          if (inventoryItem.doc && inventoryItem.doc.archived !== true) {
             inventoryMap[inventoryItem.doc.id] = inventoryItem.doc;
           }
         });
@@ -1157,7 +1154,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
    * @return {string} the warehouse name.
    */
   _getWarehouseLocationName: function(locationName) {
-    var returnLocation = '';
+    let returnLocation = '';
     if (locationName.indexOf(':') > -1) {
       returnLocation = locationName.split(':')[0].trim();
     } else {
@@ -1172,9 +1169,9 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
    * @return {boolean} true if any of the locations match the filter; otherwise false.
    */
   _hasIncludedLocation: function(locations) {
-    var hasIncludedLocation = false;
+    let hasIncludedLocation = false;
     locations.forEach(function(location) {
-      var locationName = this._getWarehouseLocationName(location.name);
+      let locationName = this._getWarehouseLocationName(location.name);
       if (this._includeLocation(locationName)) {
         hasIncludedLocation = true;
       }
@@ -1188,7 +1185,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
    * @return {boolean} true if the location should be included.
    */
   _includeLocation: function(location) {
-    var filterLocation = this.get('filterLocation');
+    let filterLocation = this.get('filterLocation');
     return Ember.isEmpty(filterLocation) || location === filterLocation;
   },
 
@@ -1200,8 +1197,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
    * @return {boolean} true if the transaction should be included.
    */
   _includeTransaction: function(reportType, transactionType) {
-    var detailed = (reportType.indexOf('detailed') === 0),
-      includeForReportType;
+    let detailed = (reportType.indexOf('detailed') === 0);
+    let includeForReportType;
     if (reportType === 'detailedExpense' || reportType === 'summaryExpense') {
       return true;
     }
@@ -1234,12 +1231,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
   },
 
   _updateExpenseMap: function(request, reportRow) {
-    var categoryToUpdate,
-      expenseAccountToUpdate,
-      expenseMap = this.get('expenseMap'),
-      isGiftInKind = (reportRow.giftInKind === 'Y'),
-      increment = true,
-      transactionValue;
+    let categoryToUpdate;
+    let expenseMap = this.get('expenseMap');
+    let isGiftInKind = (reportRow.giftInKind === 'Y');
+    let increment = true;
 
     switch (request.transactionType) {
       case 'Fulfillment':
@@ -1267,7 +1262,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
       }
     }
     if (!Ember.isEmpty(categoryToUpdate)) {
-      expenseAccountToUpdate = categoryToUpdate.expenseAccounts.findBy('name', request.expenseAccount);
+      let expenseAccountToUpdate = categoryToUpdate.expenseAccounts.findBy('name', request.expenseAccount);
       if (Ember.isEmpty(expenseAccountToUpdate)) {
         expenseAccountToUpdate = {
           name: request.expenseAccount,
@@ -1277,7 +1272,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         categoryToUpdate.expenseAccounts.push(expenseAccountToUpdate);
       }
       expenseAccountToUpdate.reportRows.push(reportRow);
-      transactionValue = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit));
+      let transactionValue = (this._getValidNumber(request.quantity) * this._getValidNumber(request.costPerUnit));
       if (increment) {
         categoryToUpdate.total += transactionValue;
         expenseAccountToUpdate.total += transactionValue;
@@ -1292,10 +1287,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
 
   actions: {
     generateReport: function() {
-      var endDate = this.get('endDate'),
-        reportRows = this.get('reportRows'),
-        reportType = this.get('reportType'),
-        startDate = this.get('startDate');
+      let endDate = this.get('endDate');
+      let reportRows = this.get('reportRows');
+      let reportType = this.get('reportType');
+      let startDate = this.get('startDate');
       if (Ember.isEmpty(startDate) && Ember.isEmpty(endDate)) {
         return;
       }
@@ -1312,8 +1307,8 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         }
         case 'detailedExpense':
         case 'summaryExpense': {
-          var expenseCategories = this.get('expenseCategories'),
-            expenseMap = {};
+          let expenseCategories = this.get('expenseCategories');
+          let expenseMap = {};
           expenseCategories.forEach(function(category) {
             expenseMap[category] = {
               total: 0,

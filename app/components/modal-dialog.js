@@ -1,5 +1,6 @@
 import Ember from 'ember';
 export default Ember.Component.extend({
+  i18n: Ember.inject.service(),
   cancelAction: 'cancel',
   closeModalAction: 'closeModal',
   hideCancelButton: false,
@@ -13,7 +14,7 @@ export default Ember.Component.extend({
   cancelBtnText: function() {
     let cancelText = this.get('cancelButtonText');
     if (Ember.isEmpty(cancelText)) {
-      return 'Cancel';
+      return this.get('i18n').t('buttons.cancel');
     } else {
       return cancelText;
     }
@@ -28,7 +29,7 @@ export default Ember.Component.extend({
   },
 
   didInsertElement: function() {
-    var $modal = this.$('.modal').modal();
+    let $modal = this.$('.modal').modal();
 
     $modal.on('hidden.bs.modal', function() {
       this.sendAction('closeModalAction');
@@ -36,7 +37,7 @@ export default Ember.Component.extend({
   },
 
   willDestroyElement: function() {
-    var $modal = this.$('.modal');
+    let $modal = this.$('.modal');
     $modal.off('hidden.bs.modal');
     $modal.modal('hide');
     // jquery fixes

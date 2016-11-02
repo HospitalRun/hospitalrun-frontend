@@ -1,13 +1,14 @@
 import Ember from 'ember';
 export default Ember.Component.extend({
+  i18n: Ember.inject.service(),
   classNames: ['col-xs-2', 'form-group'],
   classNameBindings: ['hasError'],
   tagName: 'td',
   pricingItem: null,
 
-  didReceiveAttrs(/*attrs*/) {
+  didReceiveAttrs(/* attrs */) {
     this._super(...arguments);
-    this.quantitySelected = Ember.computed.alias('model.' + this.get('pricingItem.id'));
+    this.quantitySelected = Ember.computed.alias(`model.${this.get('pricingItem.id')}`);
   },
 
   hasError: function() {
@@ -17,7 +18,7 @@ export default Ember.Component.extend({
 
   quantityHelp: function() {
     if (this.get('hasError')) {
-      return 'not a valid number';
+      return this.get('i18n').t('errors.invalidNumber');
     }
   }.property('hasError')
 

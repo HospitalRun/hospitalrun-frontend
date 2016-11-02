@@ -5,6 +5,7 @@ import { Model } from 'ember-pouch';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default Model.extend(UserSession, EmberValidations, {
   session: Ember.inject.service(),
+  archived: DS.attr('boolean'),
   lastModified: DS.attr('date'),
   modifiedBy: DS.attr(),
   modifiedFields: DS.attr(),
@@ -15,11 +16,11 @@ export default Model.extend(UserSession, EmberValidations, {
   * attempt to save again.
   */
   save: function(options) {
-    var attribute,
-      changedAttributes = this.changedAttributes(),
-      modifiedDate = new Date(),
-      modifiedFields = this.get('modifiedFields'),
-      session = this.get('session');
+    let attribute;
+    let changedAttributes = this.changedAttributes();
+    let modifiedDate = new Date();
+    let modifiedFields = this.get('modifiedFields');
+    let session = this.get('session');
 
     if (!session || !session.get('isAuthenticated')) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -46,7 +47,7 @@ export default Model.extend(UserSession, EmberValidations, {
           // Conflict encountered, so rollback, reload and then save the record with the changed attributes.
           this.rollbackAttributes();
           return this.reload().then(function(record) {
-            for (var attribute in changedAttributes) {
+            for (let attribute in changedAttributes) {
               record.set(attribute, changedAttributes[attribute][1]);
             }
             if (Ember.isEmpty(options)) {
