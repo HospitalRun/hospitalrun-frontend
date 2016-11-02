@@ -129,7 +129,8 @@ Again, contributions are welcome via pull requests and issues.  Please see our [
 **Seriously, please read the [Contribution Guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md).**
 
 ## Start Coding
-To start coding and understand the frameworks, concepts and structure of the project, please read: [README.startcoding.md](README.startcoding.md).
+To start coding and understand the frameworks, concepts and structure of the project, please read: 
+[.github/CONTRIBUTING.md#startcoding](.github/CONTRIBUTING.md#startcoding).
 
 ## Further Reading / Useful Links
 
