@@ -13,7 +13,7 @@ module('Acceptance | procedures', {
 });
 
 testWithVisit('Add procedure', function(assert) {
-  var procedureDesc = 'Release Left Elbow Bursa and Ligament, Percutaneous Approach';
+  let procedureDesc = 'Release Left Elbow Bursa and Ligament, Percutaneous Approach';
   assert.equal(find('#visit-procedures tr').length, 2, 'One procedure is listed for the visit');
   click('button:contains(New Procedure)');
   andThen(function() {

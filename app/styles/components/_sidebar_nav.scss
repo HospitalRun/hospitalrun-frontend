@@ -17,7 +17,7 @@
   .mega-octicon {
     text-align: center;
     color: $sidebar_icon;
-    font-size: 24px;
+    font-size: 16px;
   }
 }
 
@@ -163,8 +163,8 @@
     border-bottom: 1px solid $navy_drkest;
     background: $navy_mid2;
     padding: 0 15px;
-    height: 55px;
-    line-height: 55px;
+    height: 48px;
+    line-height: 48px;
     color: $white;
     font-size: 18px;
 
@@ -172,8 +172,8 @@
       @include transition_all;
       float: left;
       margin-right: 12px;
-      width: 24px;
-      line-height: 55px;
+      width: 16px;
+      line-height: 48px;
     }
 
     &:hover,
@@ -187,7 +187,6 @@
   .category-sub-items {
     border-bottom: 1px solid $navy_drkest;
     background: #3a4d63;
-    padding: 5px 0;
   }
 
   .category-sub-item {
@@ -216,7 +215,7 @@
       float: left;
       margin-right: 6px;
       margin-left: 6px;
-      width: 24px;
+      width: 16px;
       line-height: 36px;
     }
   }

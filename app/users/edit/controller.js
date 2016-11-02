@@ -10,13 +10,13 @@ export default AbstractEditController.extend(UserRoles, {
 
   actions: {
     update: function() {
-      var updateModel = this.get('model'),
-        users = this.get('users');
+      let updateModel = this.get('model');
+      let users = this.get('users');
 
       if (updateModel.get('isNew')) {
-        var newData = updateModel.getProperties('password', 'email', 'roles', 'displayName');
+        let newData = updateModel.getProperties('password', 'email', 'roles', 'displayName');
         newData.name = newData.email;
-        newData.id = 'org.couchdb.user:' + newData.email;
+        newData.id = `org.couchdb.user:${newData.email}`;
         if (Ember.isEmpty(newData.password)) {
           newData.password = uuid.v4() + uuid.v4();
         }
@@ -26,10 +26,10 @@ export default AbstractEditController.extend(UserRoles, {
       }
 
       if (Ember.isEmpty(updateModel.get('userPrefix'))) {
-        var counter = 1,
-          prefix = 'p',
-          userPrefix = prefix + 0,
-          usedPrefix = users.findBy('userPrefix', prefix);
+        let counter = 1;
+        let prefix = 'p';
+        let userPrefix = prefix + 0;
+        let usedPrefix = users.findBy('userPrefix', prefix);
 
         while (!Ember.isEmpty(usedPrefix)) {
           prefix = userPrefix + counter++;

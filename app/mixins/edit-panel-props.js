@@ -2,7 +2,6 @@ import Ember from 'ember';
 export default Ember.Mixin.create({
 
   additionalButtons: null,
-  cancelAction: null,
   cancelButtonText: null,
   disabledAction: null,
   hideCancelButton: null,
@@ -14,7 +13,6 @@ export default Ember.Mixin.create({
   editPanelProps: function() {
     return this.getProperties([
       'additionalButtons',
-      'cancelAction',
       'cancelButtonText',
       'disabledAction',
       'hideCancelButton',
@@ -24,7 +22,6 @@ export default Ember.Mixin.create({
       'updateButtonText'
     ]);
   }.property('additionalButtons',
-             'cancelAction',
              'cancelButtonText',
              'disabledAction',
              'hideCancelButton',

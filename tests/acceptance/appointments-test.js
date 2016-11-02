@@ -137,7 +137,7 @@ test('Delete an appointment', function(assert) {
   });
 });
 
-function createAppointment(startDate=(new Date()), endDate=(moment().add(1, 'day').toDate()), status='Scheduled') {
+function createAppointment(startDate = (new Date()), endDate = (moment().add(1, 'day').toDate()), status = 'Scheduled') {
   visit('/appointments/edit/new');
   typeAheadFillIn('.test-patient-input', 'Lennex Zinyando - P00017');
   select('.test-appointment-type', 'Admission');

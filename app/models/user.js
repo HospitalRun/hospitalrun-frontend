@@ -2,7 +2,7 @@ import DS from 'ember-data';
 import EmailValidation from 'hospitalrun/utils/email-validation';
 import Ember from 'ember';
 import EmberValidations from 'ember-validations';
-var User = DS.Model.extend(EmberValidations, {
+let User = DS.Model.extend(EmberValidations, {
   derived_key: DS.attr('string'),
   deleted: DS.attr('boolean'),
   displayName: DS.attr('string'),
@@ -18,7 +18,7 @@ var User = DS.Model.extend(EmberValidations, {
   userPrefix: DS.attr('string'),
 
   displayRole: function() {
-    var roles = this.get('roles');
+    let roles = this.get('roles');
     if (!Ember.isEmpty(roles)) {
       return roles[0];
     }

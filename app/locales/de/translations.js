@@ -161,13 +161,13 @@ export default {
   },
   login: {
     messages: {
-      signIn:  'Bitte anmelden',
-      error:    'Benutzername oder Passwort falsch.'
+      signIn: 'Bitte anmelden',
+      error: 'Benutzername oder Passwort falsch.'
     },
     labels: {
       password: 'Passwort',
       username: 'Benutzername',
-      signIn:  'Anmelden'
+      signIn: 'Anmelden'
     }
   },
   inventory: {

@@ -6,7 +6,7 @@ import Ember from 'ember';
  */
 export default AbstractModel.extend({
   haveInvoiceItems: function() {
-    var invoiceItems = this.get('invoiceItems');
+    let invoiceItems = this.get('invoiceItems');
     return (Ember.isEmpty(invoiceItems));
   },
 

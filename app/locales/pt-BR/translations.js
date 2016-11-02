@@ -668,7 +668,7 @@ export default {
     },
     alerts: {
       returnedTitle: 'Medicação Retornada',
-      returnedMessage:  'A medicação foi marcada como retornada.',
+      returnedMessage: 'A medicação foi marcada como retornada.',
       savedTitle: 'Requisição de Medicação foi Salva',
       savedMessage: 'O registro de medicação foi salvo.',
       fulfilledTitle: 'Requisição de Medicação Preenchido'
