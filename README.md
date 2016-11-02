@@ -130,7 +130,7 @@ Again, contributions are welcome via pull requests and issues.  Please see our [
 
 ## Start Coding
 To start coding and understand the frameworks, concepts and structure of the project, please read: 
-[.github/CONTRIBUTING.md#start-coding](.github/CONTRIBUTING.md#start-coding).
+[Contribution Guide: Start Coding](.github/CONTRIBUTING.md#start-coding).
 
 ## Further Reading / Useful Links
 
