@@ -42,8 +42,8 @@ export default Ember.Mixin.create({
     let aisleToFind = this.get('aisleToFind');
     let itemLocation = inventoryLocation.get('location');
     let locationToFind = this.get('locationToFind');
-    if ((Ember.isEmpty(aisleLocation) && Ember.isEmpty(aisleToFind) || aisleLocation === aisleToFind) &&
-      (Ember.isEmpty(itemLocation) && Ember.isEmpty(locationToFind) || itemLocation === locationToFind)) {
+    if ((Ember.isEmpty(aisleLocation) && Ember.isEmpty(aisleToFind) || aisleLocation === aisleToFind)
+      && (Ember.isEmpty(itemLocation) && Ember.isEmpty(locationToFind) || itemLocation === locationToFind)) {
       return true;
     }
   },

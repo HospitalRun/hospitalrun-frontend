@@ -128,15 +128,15 @@ export default AbstractEditController.extend(AddNewPatient, InventorySelection, 
     if (isFulfilling) {
       let inventoryLocations = this.get('model.inventoryLocations');
       let inventoryRequest = this.get('store').createRecord('inv-request', {
-          expenseAccount: this.get('model.expenseAccount'),
-          dateCompleted: new Date(),
-          inventoryItem: this.get('model.inventoryItem'),
-          inventoryLocations: inventoryLocations,
-          quantity: this.get('model.quantity'),
-          transactionType: 'Fulfillment',
-          patient: this.get('model.patient'),
-          markAsConsumed: true
-        });
+        expenseAccount: this.get('model.expenseAccount'),
+        dateCompleted: new Date(),
+        inventoryItem: this.get('model.inventoryItem'),
+        inventoryLocations: inventoryLocations,
+        quantity: this.get('model.quantity'),
+        transactionType: 'Fulfillment',
+        patient: this.get('model.patient'),
+        markAsConsumed: true
+      });
       this.performFulfillRequest(inventoryRequest, false, false, true).then(function() {
         this.set('model.status', 'Fulfilled');
         resolve();

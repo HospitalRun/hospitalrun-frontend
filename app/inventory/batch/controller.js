@@ -153,12 +153,12 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
   _savePurchases: function() {
     let model = this.get('model');
     let purchaseDefaults = model.getProperties([
-        'dateReceived',
-        'vendor',
-        'invoiceNo',
-        'location',
-        'aisleLocation',
-        'giftInKind']);
+      'dateReceived',
+      'vendor',
+      'invoiceNo',
+      'location',
+      'aisleLocation',
+      'giftInKind']);
     let invoiceItems = model.get('invoiceItems');
     let inventoryPurchase;
     let savePromises = [];
@@ -223,8 +223,8 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     showRemoveItem: function(item) {
       let message = this.get('i18n').t('inventory.messages.removeItem');
       let model = Ember.Object.create({
-          itemToRemove: item
-        });
+        itemToRemove: item
+      });
       let title = this.get('i18n').t('inventory.titles.removeItem');
       this.displayConfirm(title, message, 'removeItem', model);
     },

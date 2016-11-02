@@ -34,8 +34,7 @@ export default InputComponent.extend({
   _resizeImage: function(img) {
     // Derived from https://github.com/josefrichter/resize/blob/master/public/preprocess.js
     let canvas = document.createElement('canvas');
-    let height = img.height;
-    let width = img.width;
+    let { height, width } = img;
     let maxHeight = 1024;
     let maxWidth = 1024;
 

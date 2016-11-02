@@ -31,7 +31,7 @@ export default Ember.Component.extend(ChargeActions, {
         return pricingItem;
       }.bind(this));
       let offset = 0;
-      let length = pricingList.length;
+      let { length } = pricingList;
       while (offset < length) {
         rows.push(pricingList.slice(offset, offset + 6));
         offset += 6;
