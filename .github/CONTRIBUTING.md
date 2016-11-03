@@ -36,11 +36,11 @@ This guide assumes a level of knowledge on how to use GitHub issues and pull req
 
 ## Start Coding
 
-Thissection is designed to help developers start coding in the project and understanding the basic concepts and components used.
+This section is designed to help developers start coding in the project and understanding the basic concepts and components used.
 
 ### Ember
 
-To understand the project you'll have to understand Ember, and it is advisable that you'll follow the tutorial: [Create your own app](https://guides.emberjs.com/v2.6.0/tutorial/ember-cli/) to get an understanding of how ember works and the basic folder structure.
+To understand the project you'll have to understand Ember, and it is advisable that you'll follow the tutorial: [Create your own app](https://guides.emberjs.com/v2.9.0/tutorial/ember-cli/) to get an understanding of how ember works and the basic folder structure.
 
 To read how Ember works in the following link: http://emberjs.com.
 
