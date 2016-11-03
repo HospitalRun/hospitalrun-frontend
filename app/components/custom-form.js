@@ -1,17 +1,23 @@
 import Ember from 'ember';
 import SelectValues from 'hospitalrun/utils/select-values';
+
+const {
+  computed,
+  isEmpty
+} = Ember;
+
 export default Ember.Component.extend(SelectValues, {
   classNames: 'detail-section-content',
-  fieldsByRow: function() {
+  fieldsByRow: computed('form', 'form.fields.[]', 'form.columns', function() {
     let rows = [];
     let form = this.get('form');
-    if (!Ember.isEmpty(form)) {
-      let fields = form.get('fields');
+    let fields = this.get('form.fields');
+    if (!isEmpty(form) && !isEmpty(fields)) {
       let numberOfColumns = this.getWithDefault('form.columns', 1);
       let currentRow = [];
 
       let colCount = 0;
-      let colWidth = (12 / numberOfColumns);
+      let colWidth = Math.floor(12 / numberOfColumns);
       fields.forEach((field) => {
         let classNames = field.get('classNames');
         if (!classNames) {
@@ -36,5 +42,5 @@ export default Ember.Component.extend(SelectValues, {
       }
     }
     return rows;
-  }.property('form')
+  })
 });
