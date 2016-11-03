@@ -128,6 +128,10 @@ Again, contributions are welcome via pull requests and issues.  Please see our [
 
 **Seriously, please read the [Contribution Guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md).**
 
+## Start Coding
+To start coding and understand the frameworks, concepts and structure of the project, please read: 
+[Contribution Guide: Start Coding](.github/CONTRIBUTING.md#start-coding).
+
 ## Further Reading / Useful Links
 
 * [ember.js](http://emberjs.com/)
