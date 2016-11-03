@@ -10,6 +10,9 @@ export default DS.Transform.extend({
   store: Ember.inject.service(),
 
   deserialize(serialized) {
+    if (isEmpty(serialized)) {
+      return serialized;
+    }
     return serialized.map((customField) => {
       let store = this.get('store');
       let record = store.push({
@@ -24,6 +27,9 @@ export default DS.Transform.extend({
   },
 
   serialize(deserialized) {
+    if (isEmpty(deserialized)) {
+      return deserialized;
+    }
     let serializedField = deserialized.map((customField) => {
       let serializedValue = customField.serialize();
       let deserializedValues = customField.get('values');
