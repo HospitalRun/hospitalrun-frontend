@@ -75,7 +75,8 @@ export default {
       missed: 'Missed',
       userRoles: 'User Roles',
       workflow: 'Workflow',
-      outpatient: 'Outpatient'
+      outpatient: 'Outpatient',
+      customForms: 'Custom Forms'
     },
     actions: {
       logout: 'Logout',
