@@ -1,7 +1,6 @@
+import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
-import EmberValidations from 'ember-validations';
-import { Model } from 'ember-pouch';
-export default Model.extend(EmberValidations, {
+export default AbstractModel.extend({
   columns: DS.attr('number'),
   fields: DS.attr('custom-fields'),
   formType: DS.attr('string'),

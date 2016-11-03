@@ -8,24 +8,26 @@
       {{/if}}
     </tr>
     {{#each model as |customForm|}}
-      <tr {{action 'editItem' customForm}} class="clickable">
-        <td>{{customForm.name}}</td>
-        <td>
-          {{t (concat 'admin.customForms.labels.' customForm.formType 'FormType')}}
-        </td>
-        {{#if showActions}}
+      {{#unless customForm.archived}}
+        <tr {{action 'editItem' customForm}} class="clickable">
+          <td>{{customForm.name}}</td>
           <td>
-            {{#if canEdit}}
-              <button class="btn btn-default neutral" {{action 'editItem' customForm bubbles=false }}>{{t 'labels.edit'}}</button>
-            {{/if}}
-            {{#if canDelete}}
-              <button class="btn btn-default warning" {{action 'deleteItem' customForm bubbles=false }}>
-                <span class="octicon octicon-x"></span> {{t 'buttons.delete'}}
-              </button>
-            {{/if}}
+            {{t (concat 'admin.customForms.labels.' customForm.formType 'FormType')}}
           </td>
-        {{/if}}
-      </tr>
+          {{#if showActions}}
+            <td>
+              {{#if canEdit}}
+                <button class="btn btn-default neutral" {{action 'editItem' customForm bubbles=false }}>{{t 'labels.edit'}}</button>
+              {{/if}}
+              {{#if canDelete}}
+                <button class="btn btn-default warning" {{action 'deleteItem' customForm bubbles=false }}>
+                  <span class="octicon octicon-x"></span> {{t 'buttons.delete'}}
+                </button>
+              {{/if}}
+            </td>
+          {{/if}}
+        </tr>
+      {{/unless}}
     {{/each}}
   </table>
 {{/item-listing}}
