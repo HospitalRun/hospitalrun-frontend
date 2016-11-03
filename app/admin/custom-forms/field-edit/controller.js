@@ -7,7 +7,7 @@ const {
 } = Ember;
 
 export default AbstractEditController.extend({
-  editController: Ember.inject.controller('admin/custom-forms'),
+  editController: Ember.inject.controller('admin/custom-forms/edit'),
   cancelAction: 'closeModal',
   i18n: Ember.inject.service(),
 

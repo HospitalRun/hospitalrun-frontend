@@ -116,10 +116,11 @@ export default {
     customForms: {
       buttons: {
         addField: 'Add Field',
-        addForm: 'Add Form',
         moveDown: 'Move Down',
         moveUp: 'Move Up',
-        preview: 'Preview'
+        newForm: '+ new form',
+        preview: 'Preview',
+
       },
       labels: {
         checkbox: 'Checkbox',
@@ -140,11 +141,19 @@ export default {
         textarea: 'Large Text',
         visitFormType: 'Visit'
       },
+      messages: {
+        deleteForm: 'Are you sure you want to delete this custom form?',
+        formSaved: 'The {{name}} form has been saved.'
+      },
       titles: {
         customForms: 'Custom Forms',
+        deleteForm: 'Delete Custom Form',
+        editCustomForm: 'Edit Custom Form',
         fields: 'Fields',
+        formSaved: 'Form Saved',
         checkboxValues: 'Checkbox Values',
         dropDownValues: 'Dropdown Values',
+        newCustomForm: 'New Custom Form',
         radioValues: 'Radio Values'
       }
     },

@@ -7,35 +7,23 @@ const {
 } = Ember;
 
 export default AbstractEditController.extend({
-  currentForm: null,
-  hideCancelButton: true,
   preview: false,
   previewModel: Ember.Object.create(),
   updateCapability: 'update_config',
 
 
   afterUpdate: function() {
-    this.displayAlert(this.get('i18n').t('admin.address.titles.optionsSaved'), this.get('i18n').t('admin.address.messages.addressSaved'));
+    this.displayAlert(this.get('i18n').t('admin.customForms.titles.formSaved'), this.get('i18n').t('admin.customForms.messages.formSaved', this.get('model')));
   },
 
   actions: {
-    addForm() {
-      let currentForm = this.store.createRecord('custom-form', {
-        columns: 1,
-        fields: [
-        ]
-      });
-      this.set('currentForm', currentForm);
-      return currentForm;
-    },
-
     addField() {
       let newField = this.store.createRecord('custom-field');
       this.send('openModal', 'admin.custom-forms.field-edit', newField);
     },
 
     deleteField(field) {
-      let fields = this.get('currentForm.fields');
+      let fields = this.get('fields');
       fields.removeObject(field);
     },
 
@@ -47,23 +35,17 @@ export default AbstractEditController.extend({
     },
 
     moveFieldDown(field) {
-      let fields = this.get('currentForm.fields');
+      let fields = this.get('fields');
       let currentFieldIdx = fields.indexOf(field);
       let nextField = fields.objectAt(currentFieldIdx+1);
       fields.replace(currentFieldIdx, 2, [nextField, field]);
     },
 
     moveFieldUp(field) {
-      let fields = this.get('currentForm.fields');
+      let fields = this.get('fields');
       let previousFieldIdx = (fields.indexOf(field) -1);
       let previousField = fields.objectAt(previousFieldIdx);
       fields.replace(previousFieldIdx, 2, [field, previousField]);
-    },
-
-    selectForm(customFormId) {
-      let model = this.get('model');
-      let customForm = model.findBy('id', customFormId);
-      this.set('currentForm', customForm);
     },
 
     togglePreview() {
@@ -71,17 +53,16 @@ export default AbstractEditController.extend({
     },
 
     updateField(field) {
-      let currentForm = this.get('currentForm');
       if (field.get('isNew')) {
         this._addNewField(field);
       }
-      currentForm.save();
+      this.get('model').save();
     }
   },
 
-  formName: computed('currentForm.name', function() {
+  formName: computed('model.name', function() {
     let i18n = this.get('i18n');
-    let formName = this.get('currentForm.name');
+    let formName = this.get('model.name');
     if (isEmpty(formName)) {
       return i18n.t('admin.customForms.labels.newForm')
     } else {
@@ -107,8 +88,8 @@ export default AbstractEditController.extend({
     });
   }),
 
-  lastFieldIndex: computed('currentForm.fields.length', function() {
-    return this.get('currentForm.fields.length') - 1;
+  lastFieldIndex: computed('model.fields.length', function() {
+    return this.get('model.fields.length') - 1;
   }),
 
   fieldTypeLabel(fieldType) {
@@ -116,13 +97,8 @@ export default AbstractEditController.extend({
     return i18n.t(`admin.customForms.labels.${fieldType}`);
   },
 
-  showUpdateButton: computed('currentForm', function() {
-    return !isEmpty(this.get('currentForm'));
-  }),
-
   _addNewField(field) {
     let changedAttributes = field.changedAttributes();
-    let currentForm = this.get('currentForm');
     let fieldAttributes = {};
     let store = this.get('store');
     this._generatePropertyNames(field);
@@ -138,7 +114,7 @@ export default AbstractEditController.extend({
         attributes: fieldAttributes
       }
     });
-    let formFields = currentForm.get('fields');
+    let formFields = this.get('model.fields');
     formFields.addObject(newField);
   },
 
@@ -166,7 +142,7 @@ export default AbstractEditController.extend({
   },
 
   _isPropertyUsed(propertyName) {
-    let fields = this.get('currentForm.fields');
+    let fields = this.get('model.fields');
     let existingProperty = fields.findBy('property', propertyName);
     if (!isEmpty(existingProperty)) {
       return true;
