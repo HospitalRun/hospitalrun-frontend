@@ -8,13 +8,17 @@ export default Model.extend(EmberValidations, {
   name: DS.attr('string'),
 
   validations: {
+    formType: {
+      presence: true
+    },
     name: {
       presence: true
     },
     columns: {
       numericality: {
         allowBlank: true,
-        onlyInteger: true
+        onlyInteger: true,
+        lessThanOrEqualTo: 12
       }
     }
   }
