@@ -91,9 +91,9 @@ export default Ember.Mixin.create({
 
   findChargeForPricingItem: function(pricingItem, charges) {
     let chargeForItem = charges.find(function(charge) {
-        let chargePricingItemId = charge.get('pricingItem.id');
-        return (pricingItem.id === chargePricingItemId);
-      });
+      let chargePricingItemId = charge.get('pricingItem.id');
+      return (pricingItem.id === chargePricingItemId);
+    });
     return chargeForItem;
   },
   /**
@@ -106,9 +106,9 @@ export default Ember.Mixin.create({
     let pricingTypeForObjectType = this.get('pricingTypeForObjectType');
     let userCanAddPricingTypes = this.get('userCanAddPricingTypes');
     let returnList = Ember.Object.create({
-        value: [],
-        userCanAdd: userCanAddPricingTypes
-      });
+      value: [],
+      userCanAdd: userCanAddPricingTypes
+    });
     if (!Ember.isEmpty(pricingList)) {
       returnList.set('value', pricingList.filterBy('pricingType', pricingTypeForObjectType));
     }

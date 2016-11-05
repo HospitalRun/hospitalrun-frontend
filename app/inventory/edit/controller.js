@@ -99,16 +99,16 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
       let inventoryItem = this.get('model');
       let transactionType = inventoryLocation.get('transactionType');
       let request = this.get('store').createRecord('inv-request', {
-          adjustPurchases: true,
-          dateCompleted: inventoryLocation.get('dateCompleted'),
-          expenseAccount: inventoryLocation.get('expenseAccount'),
-          inventoryItem: inventoryItem,
-          quantity: adjustmentQuantity,
-          transactionType: transactionType,
-          reason: inventoryLocation.get('reason'),
-          deliveryAisle: inventoryLocation.get('aisleLocation'),
-          deliveryLocation: inventoryLocation.get('location')
-        });
+        adjustPurchases: true,
+        dateCompleted: inventoryLocation.get('dateCompleted'),
+        expenseAccount: inventoryLocation.get('expenseAccount'),
+        inventoryItem: inventoryItem,
+        quantity: adjustmentQuantity,
+        transactionType: transactionType,
+        reason: inventoryLocation.get('reason'),
+        deliveryAisle: inventoryLocation.get('aisleLocation'),
+        deliveryLocation: inventoryLocation.get('location')
+      });
       request.set('inventoryLocations', [inventoryLocation]);
       let increment = false;
       if (transactionType === 'Adjustment (Add)' || transactionType === 'Return') {
@@ -147,14 +147,14 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     transferItems: function(inventoryLocation) {
       let inventoryItem = this.get('model');
       let request = this.get('store').createRecord('inv-request', {
-          adjustPurchases: false,
-          dateCompleted: inventoryLocation.get('dateCompleted'),
-          inventoryItem: inventoryItem,
-          quantity: inventoryLocation.get('adjustmentQuantity'),
-          deliveryAisle: inventoryLocation.get('transferAisleLocation'),
-          deliveryLocation: inventoryLocation.get('transferLocation'),
-          transactionType: 'Transfer'
-        });
+        adjustPurchases: false,
+        dateCompleted: inventoryLocation.get('dateCompleted'),
+        inventoryItem: inventoryItem,
+        quantity: inventoryLocation.get('adjustmentQuantity'),
+        deliveryAisle: inventoryLocation.get('transferAisleLocation'),
+        deliveryLocation: inventoryLocation.get('transferLocation'),
+        transactionType: 'Transfer'
+      });
       this.transferToLocation(inventoryItem, inventoryLocation).then(function() {
         inventoryLocation.setProperties({
           transferItem: null,
@@ -188,8 +188,8 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     let promises = [];
     let model = this.get('model');
     let newPurchase = model.getProperties('aisleLocation', 'dateReceived',
-        'purchaseCost', 'lotNumber', 'expirationDate', 'giftInKind',
-        'invoiceNo', 'location', 'originalQuantity', 'quantityGroups', 'vendor', 'vendorItemNo');
+      'purchaseCost', 'lotNumber', 'expirationDate', 'giftInKind',
+      'invoiceNo', 'location', 'originalQuantity', 'quantityGroups', 'vendor', 'vendorItemNo');
     let quantity = this.get('model.originalQuantity');
     if (!Ember.isEmpty(quantity)) {
       newPurchase.currentQuantity = quantity;

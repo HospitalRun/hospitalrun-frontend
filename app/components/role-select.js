@@ -20,8 +20,8 @@ export default Ember.Component.extend({
 
   actions: {
     change() {
-      let selectEl = this.$('select')[0];
-      let selectedIndex = selectEl.selectedIndex;
+      let selectEl = this.$('select').get(0);
+      let { selectedIndex } = selectEl;
       let content = this.get('content');
 
       // decrement index by 1 if we have a prompt

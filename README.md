@@ -128,6 +128,10 @@ Again, contributions are welcome via pull requests and issues.  Please see our [
 
 **Seriously, please read the [Contribution Guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md).**
 
+## Start Coding
+To start coding and understand the frameworks, concepts and structure of the project, please read: 
+[Contribution Guide: Start Coding](.github/CONTRIBUTING.md#start-coding).
+
 ## Further Reading / Useful Links
 
 * [ember.js](http://emberjs.com/)
@@ -146,12 +150,3 @@ If you are willing to try using `make`, ensure you have installed git, node and 
 
 ### Cloud 9 Development Environment
 [Documented in the project wiki](https://github.com/HospitalRun/hospitalrun-frontend/wiki/Optional:-Cloud9-Development-Environment)
-
-### Nitrous Quickstart
-Create a free development environment for this HospitalRun project in the cloud on [Nitrous.io](https://www.nitrous.io) by clicking the button below.
-
-<a href="https://www.nitrous.io/quickstart">
-  <img src="https://nitrous-image-icons.s3.amazonaws.com/quickstart.png" alt="Nitrous Quickstart" width=142 height=34>
-</a>
-
-In the IDE, start HospitalRun via `Run > Start HospitalRun` and access your site via `Preview > 4200`.

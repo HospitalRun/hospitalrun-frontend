@@ -25,10 +25,10 @@ export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes
     search: function() {
       let appointmentType = this.get('model.selectedAppointmentType');
       let fieldsToSet = {
-          startKey: [],
-          previousStartKey: null,
-          previousStartKeys: []
-        };
+        startKey: [],
+        previousStartKey: null,
+        previousStartKeys: []
+      };
       let provider = this.get('model.selectedProvider');
       let status = this.get('model.selectedStatus');
       let startDate = this.get('model.selectedStartingDate');

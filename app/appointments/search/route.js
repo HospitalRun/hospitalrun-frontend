@@ -18,7 +18,7 @@ export default AppointmentIndexRoute.extend(DateFormat, {
   },
 
   _modelQueryParams: function(params) {
-    let startDate = params.startDate;
+    let { startDate } = params;
     let maxValue = this.get('maxValue');
     if (Ember.isEmpty(startDate)) {
       startDate = moment();
@@ -43,7 +43,7 @@ export default AppointmentIndexRoute.extend(DateFormat, {
         selectedProvider: params.provider,
         selectedStatus: params.status
       });
-      let startDate = params.startDate;
+      let { startDate } = params;
       startDate = new Date();
       if (!Ember.isEmpty(params.startDate)) {
         startDate.setTime(params.startDate);

@@ -43,7 +43,7 @@ export default Ember.Service.extend({
     filer.init({ persistent: true, size: size }, function() {
       try {
         this.set('filer', filer);
-      } catch (ignored) {
+      } catch(ignored) {
         // Exception may happen during testing an can be ignored.
       }
     }.bind(this));
