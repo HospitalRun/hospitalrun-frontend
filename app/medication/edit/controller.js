@@ -10,6 +10,7 @@ import UserSession from 'hospitalrun/mixins/user-session';
 export default AbstractEditController.extend(InventorySelection, FulfillRequest, InventoryLocations, PatientId, PatientSubmodule, UserSession, {
   medicationController: Ember.inject.controller('medication'),
   newPatientId: null,
+  medicationInteractions: Ember.inject.service(),
 
   expenseAccountList: Ember.computed.alias('medicationController.expenseAccountList'),
 

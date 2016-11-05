@@ -12,6 +12,9 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   address2: DS.attr('string'),
   address3: DS.attr('string'),
   address4: DS.attr('string'),
+  allergies: DS.hasMany('allergy', {
+    async: true
+  }),
   bloodType: DS.attr('string'),
   clinic: DS.attr('string'),
   country: DS.attr('string'),

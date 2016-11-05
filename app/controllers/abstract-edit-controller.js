@@ -113,11 +113,11 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
           this.saveModel(skipAfterUpdate);
         }).catch((err) => {
           if (!err.ignore) {
-            this.displayAlert('Error!!!!', 'An error occurred while attempting to save: ' + JSON.stringify(err));
+            this.displayAlert('Error!!!!', `An error occurred while attempting to save: ${JSON.stringify(err)}`);
           }
         });
       } catch (ex) {
-        this.displayAlert('Error!!!!', 'An error occurred while attempting to save: ' + ex);
+        this.displayAlert('Error!!!!', `An error occurred while attempting to save: ${ex}`);
       }
     }
   },

@@ -58,5 +58,6 @@ export default Ember.Mixin.create({
   },
 
   medicationTitle: DS.attr('string'),
-  priceOfMedication: DS.attr('number')
+  priceOfMedication: DS.attr('number'),
+  rxNormIdentifier: DS.attr('string')
 });

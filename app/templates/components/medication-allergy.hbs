@@ -1,0 +1,58 @@
+
+
+<button type="button" class="btn btn-primary align-right" {{action "showAddAllergy" bubbles=false on="click"}}>
+  <span class="octicon octicon-plus"></span>Add Allergy
+</button>
+
+<div class="panel-body detail-section-content">
+
+</div>
+{{#if patient.allergies}}
+  <h4 class="clearfix">Patient Allergies</h4>
+  <table class="table">
+    <tr class="table-header">
+      <th>Name</th>
+      <th>Reaction</th>
+      <th class="text-right">List</th>
+      <th class="text-right">Actions</th>
+    </tr>
+    {{#each patient.allergies as |allergy|}}
+      <tr>
+        <td><strong>{{allergy.name}}</strong></td>
+        <td>{{allergy.reaction}}</td>
+        <td><button class="btn btn-default neutral pull-right"> Check Medications</button></td>
+        <td class="text-right">
+          <button type="button" class="btn btn-default neutral" {{action "showEditAllergy" allergy
+                                                                         bubbles=false}}>
+            {{t 'buttons.edit'}}
+          </button>
+          <button type="button" class="btn btn-default warning" {{action "deleteAllergy" allergy
+                                                                         bubbles=false }}>
+            <span class="octicon octicon-x"></span> {{t 'buttons.delete'}}
+          </button>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+{{/if}}
+
+
+
+{{#if displayModal}}
+  {{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+    {{#em-form model=this submitButton=false }}
+      {{em-input label=(t 'labels.name') property="name"}}
+      {{em-input label='Reaction Type' property="reaction"}}
+      {{em-input label='icd9' property="icd9CMCode"}}
+      {{em-input label='icd10' property="icd10Code"}}
+    {{/em-form}}
+  {{/modal-dialog}}
+{{/if}}
+
+{{yield}}

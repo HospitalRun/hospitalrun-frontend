@@ -41,7 +41,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     controller.set('searchText', this.get('searchText'));
     this.controllerFor('navigation').closeProgressModal();
     let parentController = this.controllerFor(this.get('moduleName'));
-    let searchTitle = 'Search Results for <i>' + Ember.Handlebars.Utils.escapeExpression(this.get('searchText')) + '</i>';
+    let searchTitle = `Search Results for <i>${Ember.Handlebars.Utils.escapeExpression(this.get('searchText'))}</i>`;
     parentController.set('currentScreenTitle', searchTitle.htmlSafe());
   }
 

@@ -16,7 +16,7 @@ export default AbstractEditController.extend(UserRoles, {
       if (updateModel.get('isNew')) {
         let newData = updateModel.getProperties('password', 'email', 'roles', 'displayName');
         newData.name = newData.email;
-        newData.id = 'org.couchdb.user:' + newData.email;
+        newData.id = `org.couchdb.user:${newData.email}`;
         if (Ember.isEmpty(newData.password)) {
           newData.password = uuid.v4() + uuid.v4();
         }

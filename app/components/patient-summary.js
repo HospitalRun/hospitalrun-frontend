@@ -9,35 +9,40 @@ export default Ember.Component.extend(PatientDiagnosis, {
   showPatientAction: 'showPatient',
   visits: null,
 
-  havePrimaryDiagnoses: function() {
+  havePrimaryDiagnoses: Ember.computed('primaryDiagnosis.length', function() {
     let primaryDiagnosesLength = this.get('primaryDiagnoses.length');
     return (primaryDiagnosesLength > 0);
-  }.property('primaryDiagnoses.length'),
+  }),
 
-  haveProcedures: function() {
+  haveProcedures: Ember.computed('patientProcedures.length', function() {
     let proceduresLength = this.get('patientProcedures.length');
     return (proceduresLength > 0);
-  }.property('patientProcedures.length'),
+  }),
 
-  haveSecondaryDiagnoses: function() {
+  haveSecondaryDiagnoses: Ember.computed('secondaryDiagnoses.length', function() {
     let secondaryDiagnosesLength = this.get('secondaryDiagnoses.length');
     return (secondaryDiagnosesLength > 0);
-  }.property('secondaryDiagnoses.length'),
+  }),
 
-  primaryDiagnoses: function() {
+  primaryDiagnoses: Ember.computed('visits.[]', function() {
     let visits = this.get('visits');
     return this.getPrimaryDiagnoses(visits);
-  }.property('visits.[]'),
+  }),
 
-  secondaryDiagnoses: function() {
+  secondaryDiagnoses: Ember.computed('visits.[]', function() {
     let visits = this.get('visits');
     return this.getSecondaryDiagnoses(visits);
-  }.property('visits.[]'),
+  }),
 
-  shouldLinkToPatient: function() {
+  shouldLinkToPatient: Ember.computed('disablePatientLink', function() {
     let disablePatientLink = this.get('disablePatientLink');
     return !disablePatientLink;
-  }.property('disablePatientLink'),
+  }),
+
+  hasAllergies: Ember.computed('patient.allergies', function() {
+    let allergies = this.get('patient.allergies');
+    return allergies.length;
+  }),
 
   actions: {
     linkToPatient: function() {

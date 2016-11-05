@@ -80,7 +80,7 @@ export default AbstractModel.extend({
     let startDate = moment(this.get('startDate'));
     let visitDate = startDate.format('l');
     if (!Ember.isEmpty(endDate) && !startDate.isSame(endDate, 'day')) {
-      visitDate += ' - ' + moment(endDate).format('l');
+      visitDate += ` - ${moment(endDate).format('l')}`;
     }
     return visitDate;
   }.property('startDate', 'endDate'),

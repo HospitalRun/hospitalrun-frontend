@@ -612,7 +612,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         let i = this._numberFormat(beginningBalance + inventoryAdjustment);
         let i18n = this.get('i18n');
         if ((beginningBalance + inventoryAdjustment) < 0) {
-          this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceEnd'), '', '(' + i + ')']);
+          this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceEnd'), '', `(${i})`]);
         } else {
           this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceEnd'), '', i]);
         }
@@ -695,10 +695,10 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
               Object.keys(consumed).forEach(function(key) {
                 let i = this._getValidNumber(consumed[key]);
                 consumedTotal += i;
-                this.get('reportRows').addObject(['', key, '(' + this._numberFormat(i) + ')']);
+                this.get('reportRows').addObject(['', key, `(${this._numberFormat(i)})`]);
               }.bind(this));
               overallValue += consumedTotal;
-              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedPurchasesTotal'), '', '(' + this._numberFormat(consumedTotal) + ')']);
+              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedPurchasesTotal'), '', `(${this._numberFormat(consumedTotal)})`]);
             }
             if (Object.keys(gikConsumed).length > 0) {
               this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedGik'), '', '']);
@@ -706,12 +706,12 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
               Object.keys(gikConsumed).forEach(function(key) {
                 let i = this._getValidNumber(gikConsumed[key]);
                 gikTotal += i;
-                this.get('reportRows').addObject(['', key, '(' + this._numberFormat(i) + ')']);
+                this.get('reportRows').addObject(['', key, `(${this._numberFormat(i)})`]);
               }.bind(this));
               overallValue += gikTotal;
-              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedGikTotal'), '', '(' + this._numberFormat(gikTotal) + ')']);
+              this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedGikTotal'), '', `(${this._numberFormat(gikTotal)})`]);
             }
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedTotal'), '', '(' + this._numberFormat(overallValue) + ')']);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.consumedTotal'), '', `(${this._numberFormat(overallValue)})`]);
             adjustedValue -= overallValue;
           }
           // write the adjustment rows
@@ -727,13 +727,13 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                   this.get('reportRows').addObject(['', key, this._numberFormat(i)]);
                 } else {
                   adjustmentTotal -= i;
-                  this.get('reportRows').addObject(['', key, '(' + this._numberFormat(i) + ')']);
+                  this.get('reportRows').addObject(['', key, `(${this._numberFormat(i)})`]);
                 }
               }.bind(this));
             }
           }.bind(this));
           if (adjustmentTotal < 0) {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustmentsTotal'), '', '(' + this._numberFormat(adjustmentTotal) + ')']);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustmentsTotal'), '', `(${this._numberFormat(adjustmentTotal)})`]);
           } else {
             this.get('reportRows').addObject([i18n.t('inventory.reports.rows.adjustmentsTotal'), '', this._numberFormat(adjustmentTotal)]);
           }
@@ -803,7 +803,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
             }
           }.bind(this));
           if (beginningBalance < 0) {
-            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceBegin'), '', '(' + this._numberFormat(beginningBalance) + ')']);
+            this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceBegin'), '', `(${this._numberFormat(beginningBalance)})`]);
           } else {
             this.get('reportRows').addObject([i18n.t('inventory.reports.rows.balanceBegin'), '', this._numberFormat(beginningBalance)]);
           }
@@ -944,7 +944,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
                   if (consumedQuantity === 0) {
                     row.consumedPerDay = '0';
                   } else {
-                    row.consumedPerDay = '?' + consumedQuantity;
+                    row.consumedPerDay = `?${consumedQuantity}`;
                   }
                   row.daysLeft = '?';
                 }

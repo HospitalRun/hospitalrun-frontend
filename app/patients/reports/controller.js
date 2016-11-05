@@ -517,7 +517,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     visitTypes.forEach(function(visitType) {
       if (visitType.type === 'total') {
         this._addReportRow({
-          visitDate: 'Total visits: ' + visitType.total
+          visitDate: `Total visits: ${visitType.total}`
         });
       } else {
         visitType.records.forEach(function(visit) {
@@ -591,13 +591,13 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     for (let sex in patientBySex) {
       if (detailedReport) {
         patientBySex[sex].rows.forEach(addPatientBySexRows);
-        this._addReportRow({ patientId: sex + ' Total: ' + patientBySex[sex].count }, true, reportColumns);
+        this._addReportRow({ patientId: `${sex} Total: ${patientBySex[sex].count}` }, true, reportColumns);
       } else {
         this._addReportRow({ sex: sex, total: patientBySex[sex].count }, true, reportColumns);
       }
       sexTotal += patientBySex[sex].count;
     }
-    this._addReportRow({ patientId: 'Grand Total: ' + (sexTotal) }, true, reportColumns);
+    this._addReportRow({ patientId: `Grand Total: ${sexTotal}` }, true, reportColumns);
     this._finishReport(reportColumns);
   },
 
@@ -608,7 +608,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       this._addRowsByType(diagnostics.labs, 'labType.name', 'Total for labs: ', reportColumns);
       this._finishReport(reportColumns);
     }.bind(this), function(err) {
-      this._notifyReportError('Error in _generateDiagnosticReport:' + err);
+      this._notifyReportError(`Error in _generateDiagnosticReport: ${err}`);
     }.bind(this));
   },
 
@@ -665,7 +665,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       return previousValue += daysDiff;
     }.bind(this), 0);
     if (detailed) {
-      this._addReportRow({ patientDays: 'Total: ' + this._numberFormat(patientDays) }, true, reportColumns);
+      this._addReportRow({ patientDays: `Total: ${this._numberFormat(patientDays)}` }, true, reportColumns);
 
     } else {
       this._addReportRow({ total: patientDays }, false, reportColumns);
@@ -698,7 +698,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
         this._finishReport(reportColumns);
       }
     }.bind(this), function(err) {
-      this._notifyReportError('Error in _generateProcedureReport:' + err);
+      this._notifyReportError(`Error in _generateProcedureReport: ${err}`);
     }.bind(this));
   },
 
@@ -712,10 +712,10 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
         }.bind(this));
         this._finishReport(reportColumns);
       }.bind(this)).catch(function(err) {
-        this._notifyReportError('Error in _generateStatusReport:' + err);
+        this._notifyReportError(`Error in _generateStatusReport: ${err}`);
       }.bind(this));
     }.bind(this)).catch(function(err) {
-      this._notifyReportError('Error in _generateStatusReport:' + err);
+      this._notifyReportError(`Error in _generateStatusReport: ${err}`);
     }.bind(this));
   },
 
@@ -779,7 +779,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     let itemList = [];
     if (!Ember.isEmpty(items)) {
       itemList = items.map(function(item) {
-        return Ember.get(item, descField) + '(' + this._dateFormat(Ember.get(item, dateField)) + ')';
+        return `${Ember.get(item, descField)} ( ${this._dateFormat(Ember.get(item, dateField))})`;
       }.bind(this));
     }
     return itemList.join(',\n');
@@ -891,7 +891,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
                 }
               }
             }.bind(this), function(err) {
-              this._notifyReportError('Error in _findVisitsByDate:' + err);
+              this._notifyReportError(`Error in _findVisitsByDate: ${err}`);
             }.bind(this));
             break;
           }

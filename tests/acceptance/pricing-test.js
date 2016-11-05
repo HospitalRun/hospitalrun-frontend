@@ -9,10 +9,10 @@ function verifyPricingLists(path, includesPrices, excludesPrices, assert) {
     andThen(function() {
       assert.equal(currentURL(), path);
       includesPrices.forEach(function(priceName) {
-        assert.equal(find('.price-name:contains(' + priceName + ')').length, 1, priceName + ' displays');
+        assert.equal(find(`.price-name:contains(${priceName})`).length, 1, `${priceName} displays`);
       });
       excludesPrices.forEach(function(priceName) {
-        assert.equal(find('.price-name:contains(' + priceName + ')').length, 0, priceName + ' is not present');
+        assert.equal(find(`.price-name:contains(${priceName})`).length, 0, `${priceName} is not present`);
       });
 
     });

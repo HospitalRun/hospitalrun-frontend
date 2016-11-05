@@ -79,7 +79,7 @@ export default {
       displayAlertTitle: 'Seleccione un archivo para cargar',
       displayAlertMessage: 'Por favor seleccione un archivo para ser cargado.',
       errorDisplayAlertTitle: 'Error cargando',
-      errorDisplayAlertMessage: `La base de datos no fue cargada el error fue: {{error}}`,
+      errorDisplayAlertMessage: 'La base de datos no fue cargada el error fue: {{error}}',
       editTitle: 'Cargar bd'
     },
     lookup: {

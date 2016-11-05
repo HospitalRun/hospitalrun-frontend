@@ -202,7 +202,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     sequence.incrementProperty('value', 1);
     sequenceValue = sequence.get('value');
     if (sequenceValue < 100000) {
-      friendlyId += String('00000' + sequenceValue).slice(-5);
+      friendlyId += String(`00000${sequenceValue}`).slice(-5);
     } else {
       friendlyId += sequenceValue;
     }
@@ -222,7 +222,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     sequenceFinder.then(function(prefixChars) {
       let store = this.get('store');
       let newSequence = store.push(store.normalize('sequence', {
-        id: 'inventory_' + inventoryType,
+        id: `inventory_${inventoryType}`,
         prefix: inventoryType.toLowerCase().substr(0, prefixChars),
         value: 0
       }));
@@ -287,7 +287,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         model.validate().then(function() {
           if (model.get('isValid')) {
             this.set('savingNewItem', true);
-            this.store.find('sequence', 'inventory_' + inventoryType).then(function(sequence) {
+            this.store.find('sequence', `inventory_${inventoryType}`).then(function(sequence) {
               this._completeBeforeUpdate(sequence, resolve, reject);
             }.bind(this), function() {
               this._findSequence(inventoryType, resolve, reject);

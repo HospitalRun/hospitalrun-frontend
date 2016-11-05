@@ -20,7 +20,6 @@
     <span class="ps-info-data">{{patient.age}} (<strong>{{date-format patient.dateOfBirth}}</strong>)</span>
   </div>
 
-
   {{#if havePrimaryDiagnoses}}
     <div class="ps-info-group long-form">
       <label class="ps-info-label wide">{{t 'patients.labels.primaryDiagnosis'}}</label>
@@ -58,5 +57,15 @@
       </div>
     </div>
   {{/if}}
+
+  {{#if hasAllergies}}
+    <div class="ps-info-group long-form">
+      <label class="ps-info-label wide">Allergies</label>
+      {{#each patient.allergies as |allergy|}}
+        {{allergy.name}}
+      {{/each}}
+    </div>
+  {{/if}}
+
 
 </div>
