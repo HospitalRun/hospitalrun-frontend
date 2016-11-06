@@ -10,14 +10,14 @@ export default {
         if (!object.get('hasDirtyAttributes')) {
           return false;
         }
-        var patientName = object.get('patient.displayName'),
-          patientTypeAhead = object.get('patientTypeAhead');
+        let patientName = object.get('patient.displayName');
+        let patientTypeAhead = object.get('patientTypeAhead');
         if (Ember.isEmpty(patientName) || Ember.isEmpty(patientTypeAhead)) {
           // force validation to fail
           return true;
         } else {
-          var typeAheadName = patientTypeAhead.substr(0, patientName.length);
-          if (patientName !== typeAheadName) {
+          let typeAheadName = patientTypeAhead.substr(0, patientName.length).toLowerCase();
+          if (patientName.toLowerCase().indexOf(typeAheadName) !== 0) {
             return true;
           }
         }

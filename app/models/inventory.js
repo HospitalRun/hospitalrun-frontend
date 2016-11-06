@@ -5,9 +5,9 @@ import computed from 'ember-computed';
 import LocationName from 'hospitalrun/mixins/location-name';
 import { rankToMultiplier, getCondition } from 'hospitalrun/utils/item-condition';
 
-var validateIfNewItem = {
+let validateIfNewItem = {
   if: function validateNewItem(object) {
-    var skipSavePurchase = object.get('skipSavePurchase');
+    let skipSavePurchase = object.get('skipSavePurchase');
     // Only validate on new items and only if we are saving a purchase.
     return (!skipSavePurchase && object.get('isNew'));
   }
@@ -36,19 +36,19 @@ export default AbstractModel.extend(LocationName, {
   estimatedDaysOfStock: 14,
 
   availableLocations: computed('locations.@each.quantity', function() {
-    var locations = this.get('locations').filter((location) => {
+    let locations = this.get('locations').filter((location) => {
       return location.get('quantity') > 0;
     });
     return locations;
   }),
 
   displayLocations: computed('availableLocations', function() {
-    var locations = this.get('availableLocations'),
-      returnLocations = [];
+    let locations = this.get('availableLocations');
+    let returnLocations = [];
     locations.forEach((currentLocation) => {
-      var aisleLocationName = currentLocation.get('aisleLocation'),
-        locationName = currentLocation.get('location'),
-        displayLocationName = this.formatLocationName(locationName, aisleLocationName);
+      let aisleLocationName = currentLocation.get('aisleLocation');
+      let locationName = currentLocation.get('location');
+      let displayLocationName = this.formatLocationName(locationName, aisleLocationName);
       if (!Ember.isEmpty(displayLocationName)) {
         returnLocations.push(displayLocationName);
       }
@@ -57,8 +57,8 @@ export default AbstractModel.extend(LocationName, {
   }),
 
   condition: computed('rank', 'estimatedDaysOfStock', function() {
-    const estimatedDaysOfStock = this.get('estimatedDaysOfStock');
-    const multiplier = rankToMultiplier(this.get('rank'));
+    let estimatedDaysOfStock = this.get('estimatedDaysOfStock');
+    let multiplier = rankToMultiplier(this.get('rank'));
 
     return getCondition(estimatedDaysOfStock, multiplier);
   }),
@@ -98,9 +98,9 @@ export default AbstractModel.extend(LocationName, {
   },
 
   updateQuantity: function() {
-    var purchases = this.get('purchases');
-    var newQuantity = purchases.reduce((previousItem, currentItem) => {
-      var currentQuantity = 0;
+    let purchases = this.get('purchases');
+    let newQuantity = purchases.reduce((previousItem, currentItem) => {
+      let currentQuantity = 0;
       if (!currentItem.get('expired')) {
         currentQuantity = currentItem.get('currentQuantity');
       }

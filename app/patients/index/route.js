@@ -6,8 +6,8 @@ export default AbstractIndexRoute.extend({
   pageTitle: t('patients.titles.patientListing'),
 
   _getStartKeyFromItem: function(item) {
-    var displayPatientId = item.get('displayPatientId');
-    var id = this._getPouchIdFromItem(item);
+    let displayPatientId = item.get('displayPatientId');
+    let id = this._getPouchIdFromItem(item);
     return [displayPatientId, id];
   },
 

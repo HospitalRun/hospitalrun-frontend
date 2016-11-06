@@ -17,7 +17,6 @@ export default Ember.Mixin.create({
         } else {
           return 'Post-op';
         }
-        break;
       case 'Clinic':
       case 'Followup':
         return 'General';
@@ -27,7 +26,7 @@ export default Ember.Mixin.create({
   },
 
   _setNoteType: function() {
-    var model = this.get('model');
+    let model = this.get('model');
     if (model.get('noteType') == null) {
       model.set('noteType', this._computeNoteType(model.get('visit')));
     }

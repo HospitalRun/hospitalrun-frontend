@@ -7,7 +7,7 @@ _Ember frontend for HospitalRun_
 
 [![CouchDB](https://img.shields.io/badge/couchdb-2.0-green.svg)](http://couchdb.apache.org/)
 
-To run the development environment for this frontend you will need to have [Git](https://git-scm.com/), [Node.js](https://nodejs.org), [Ember CLI](http://ember-cli.com/), [Bower](http://bower.io/) and [CouchDB](http://couchdb.apache.org/) installed.
+To run the development environment for this frontend you will need to have [Git](https://git-scm.com/), [Node.js](https://nodejs.org), [Ember CLI](http://ember-cli.com/), [Bower](http://bower.io/), and [CouchDB](http://couchdb.apache.org/) installed.
 
 ## Contributing
 
@@ -48,7 +48,7 @@ To install the frontend please do the following:
 ## Start
 To start the frontend please do the following:
 
-- Start the server by running `npm start` in the repo folder.
+- Start the server by running `npm start` in the repo folder.  If `npm start` doesn't work for you, try `ember serve` as an alternative.
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
 ## Running with Docker
@@ -103,7 +103,7 @@ To create a fixture, run `pouchdb-dump http://localhost:5984/main -u hradmin -p 
 
 To use a fixture, use `runWithPouchDump(${name_of_fixture}, function(){..});` in your acceptance test. For example,
 
-```
+```js
 test('visiting /patients', function(assert) {
   runWithPouchDump('default', function() {
     //Actual test code here
@@ -128,6 +128,10 @@ Again, contributions are welcome via pull requests and issues.  Please see our [
 
 **Seriously, please read the [Contribution Guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md).**
 
+## Start Coding
+To start coding and understand the frameworks, concepts and structure of the project, please read: 
+[Contribution Guide: Start Coding](.github/CONTRIBUTING.md#start-coding).
+
 ## Further Reading / Useful Links
 
 * [ember.js](http://emberjs.com/)
@@ -146,12 +150,3 @@ If you are willing to try using `make`, ensure you have installed git, node and 
 
 ### Cloud 9 Development Environment
 [Documented in the project wiki](https://github.com/HospitalRun/hospitalrun-frontend/wiki/Optional:-Cloud9-Development-Environment)
-
-### Nitrous Quickstart
-Create a free development environment for this HospitalRun project in the cloud on [Nitrous.io](https://www.nitrous.io) by clicking the button below.
-
-<a href="https://www.nitrous.io/quickstart">
-  <img src="https://nitrous-image-icons.s3.amazonaws.com/quickstart.png" alt="Nitrous Quickstart" width=142 height=34>
-</a>
-
-In the IDE, start HospitalRun via `Run > Start HospitalRun` and access your site via `Preview > 4200`.

@@ -9,7 +9,7 @@ export default AbstractModuleRoute.extend({
 
   additionalButtons: function() {
     let i18n = this.get('i18n');
-    var additionalButtons = [];
+    let additionalButtons = [];
     if (this.currentUserCan('fulfill_medication')) {
       additionalButtons.push({
         buttonIcon: 'octicon octicon-checklist',

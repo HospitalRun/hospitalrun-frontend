@@ -14,12 +14,12 @@ export default AbstractIndexRoute.extend(UserSession, {
   pageTitle: t('navigation.subnav.requests'),
 
   _getStartKeyFromItem: function(item) {
-    var itemId = this._getPouchIdFromItem(item);
+    let itemId = this._getPouchIdFromItem(item);
     return ['Requested', null, itemId];
   },
 
   _modelQueryParams: function() {
-    var maxValue = this.get('maxValue');
+    let maxValue = this.get('maxValue');
     return {
       options: {
         startkey: ['Requested', null, null],
