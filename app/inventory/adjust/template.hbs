@@ -21,7 +21,7 @@
         property="transactionType" content=adjustmentTypes
         optionValuePath="type" optionLabelPath="name"
       }}
-      {{em-input property="adjustmentQuantity" label=(t 'labels.quantity') class="col-sm-3 required"}}
+      {{number-input property="adjustmentQuantity" label=(t 'labels.quantity') class="col-sm-3 required"}}
     </div>
     {{em-text label=(t 'inventory.labels.reason') property="reason" rows=3}}
     <div class="row">

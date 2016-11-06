@@ -13,7 +13,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   physicianList: Ember.computed.map('patientsController.physicianList.value', SelectValues.selectValuesMap),
   locationList: Ember.computed.map('patientsController.locationList.value', SelectValues.selectValuesMap),
   statusList: Ember.computed.map('patientsController.statusList.value', SelectValues.selectValuesMap),
-  visitTypesList: Ember.computed.alias('patientsController.visitTypeList'),
+  visitTypesList: Ember.computed.alias('patientsController.visitTypesList'),
   reportType: 'detailedAdmissions',
   patientDetails: {},
 
@@ -545,7 +545,9 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   _generateAdmissionOrDischargeReport: function(visits, reportType) {
     var detailedReport = false,
       reportColumns,
-      patientBySex = {};
+      patientBySex = {},
+      sexNotEnteredLabel = this.get('i18n').t('patients.labels.sexNotEntered');
+
     if (reportType.indexOf('detailed') > -1) {
       detailedReport = true;
       reportColumns = this.get('admissionDetailReportColumns');
@@ -568,13 +570,17 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
           admissionDate: visit.get('startDate'),
           dischargeDate: visit.get('endDate')
         };
-        var sexGrouping = patientBySex[visit.get('patient.sex')];
+        var sex = visit.get('patient.sex');
+        if (!sex) {
+          sex = sexNotEnteredLabel;
+        }
+        var sexGrouping = patientBySex[sex];
         if (!sexGrouping) {
           sexGrouping = {
             count: 0,
             rows: []
           };
-          patientBySex[visit.get('patient.sex')] = sexGrouping;
+          patientBySex[sex] = sexGrouping;
         }
         sexGrouping.count++;
         sexGrouping.rows.push(reportRow);

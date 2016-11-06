@@ -466,10 +466,10 @@ export default Ember.Mixin.create({
         var capabilities = this.get('defaultCapabilities');
         var supportedRoles = capabilities[capability];
         if (!Ember.isEmpty(supportedRoles)) {
-          return supportedRoles.contains(sessionVars.role);
+          return supportedRoles.includes(sessionVars.role);
         }
       } else {
-        return userCaps.contains(capability);
+        return userCaps.includes(capability);
       }
     }
     return false;

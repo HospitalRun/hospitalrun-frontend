@@ -50,7 +50,7 @@
         {{date-picker property="prescriptionDate" label=(t 'labels.prescriptionDate') class="col-sm-4"}}
       </div>
       <div class="row">
-        {{em-input property="quantity" label=quantityLabel class=quantityClass }}
+        {{number-input property="quantity" label=quantityLabel class=quantityClass }}
         {{em-input property="refills" label=(t 'medication.labels.refills') class="col-xs-3"}}
       </div>
       {{#unless model.hideFulfillRequest}}

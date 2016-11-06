@@ -41,7 +41,11 @@ export default Ember.Service.extend({
     var size = this.get('fileSystemSize'),
       filer = new Filer();
     filer.init({ persistent: true, size: size }, function() {
-      this.set('filer', filer);
+      try {
+        this.set('filer', filer);
+      } catch (ignored) {
+        // Exception may happen during testing an can be ignored.
+      }
     }.bind(this));
   },
 

@@ -1,15 +1,8 @@
-var configDB;
+
 var configs = false;
-var localMainDB;
 var syncingRemote = false;
-
-new PouchDB('config', function(err, db) {
-  configDB = db;
-});
-
-new PouchDB('localMainDB', function(err, db) {
-  localMainDB = db;
-});
+var configDB = new PouchDB('config');
+var localMainDB = new PouchDB('localMainDB');
 
 toolbox.router.get('/db/main/_all_docs', function(request, values, options) {
   logDebug('request for all docs:', request.url);

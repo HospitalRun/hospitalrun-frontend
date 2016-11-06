@@ -1,4 +1,6 @@
 import Ember from 'ember';
+import { translationMacro as t } from 'ember-i18n';
+
 export default Ember.Mixin.create({
   validations: {
     result: {
@@ -16,7 +18,7 @@ export default Ember.Mixin.create({
           }
           return false;
         },
-        message: 'Please enter a result before completing'
+        message: t('errors.result')
       }
     }
   }
