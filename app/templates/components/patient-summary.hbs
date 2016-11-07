@@ -61,9 +61,13 @@
   {{#if hasAllergies}}
     <div class="ps-info-group long-form">
       <label class="ps-info-label wide">Allergies</label>
-      {{#each patient.allergies as |allergy|}}
-        {{allergy.name}}
-      {{/each}}
+      <ul class="list-inline">
+        {{#each patient.allergies as |allergy index|}}
+          {{#if (lt index 4)}}
+            <li>{{allergy.name}}</li>
+          {{/if}}
+        {{/each}}
+      </ul>
     </div>
   {{/if}}
 
