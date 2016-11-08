@@ -32,7 +32,7 @@ export default Ember.Service.extend({
     });
   },
 
-  findRelatedMedicationToAllergy(name) {
+  findPossibleAllergies(name) {
     return new Promise((resolve, reject) => {
       this._findRxcuiByString(name)
         .then(this._findRelatedRxcuiById)

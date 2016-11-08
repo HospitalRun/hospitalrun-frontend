@@ -1,12 +1,10 @@
+{{#if showOperations}}
+  <button type="button" class="btn btn-primary align-right" {{action "showAddAllergy" bubbles=false on="click"}}>
+    <span class="octicon octicon-plus"></span>Add Allergy
+  </button>
+{{/if}}
 
 
-<button type="button" class="btn btn-primary align-right" {{action "showAddAllergy" bubbles=false on="click"}}>
-  <span class="octicon octicon-plus"></span>Add Allergy
-</button>
-
-<div class="panel-body detail-section-content">
-
-</div>
 {{#if patient.allergies}}
   <h4 class="clearfix">Patient Allergies</h4>
   <table class="table">
@@ -14,23 +12,31 @@
       <th>Name</th>
       <th>Reaction</th>
       <th class="text-right">List</th>
-      <th class="text-right">Actions</th>
+      {{#if showOperations}}
+        <th class="text-right">Actions</th>
+      {{/if}}
     </tr>
     {{#each patient.allergies as |allergy|}}
       <tr>
         <td><strong>{{allergy.name}}</strong></td>
         <td>{{allergy.reaction}}</td>
-        <td><button class="btn btn-default neutral pull-right"> Check Medications</button></td>
-        <td class="text-right">
-          <button type="button" class="btn btn-default neutral" {{action "showEditAllergy" allergy
-                                                                         bubbles=false}}>
-            {{t 'buttons.edit'}}
-          </button>
-          <button type="button" class="btn btn-default warning" {{action "deleteAllergy" allergy
-                                                                         bubbles=false }}>
-            <span class="octicon octicon-x"></span> {{t 'buttons.delete'}}
+        <td>
+          <button class="btn btn-default neutral pull-right" {{action "checkAllergyInteraction" allergy bubbles=false}}>
+            Check Medications
           </button>
         </td>
+        {{#if showOperations}}
+          <td class="text-right">
+            <button type="button" class="btn btn-default neutral" {{action "showEditAllergy" allergy
+                                                                           bubbles=false}}>
+              {{t 'buttons.edit'}}
+            </button>
+            <button type="button" class="btn btn-default warning" {{action "deleteAllergy" allergy
+                                                                           bubbles=false }}>
+              <span class="octicon octicon-x"></span> {{t 'buttons.delete'}}
+            </button>
+          </td>
+        {{/if}}
       </tr>
     {{/each}}
   </table>

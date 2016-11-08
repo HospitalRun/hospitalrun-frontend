@@ -63,8 +63,12 @@
       <label class="ps-info-label wide">Allergies</label>
       <ul class="list-inline">
         {{#each patient.allergies as |allergy index|}}
-          {{#if (lt index 4)}}
+          {{#if (lte index 4)}}
             <li>{{allergy.name}}</li>
+          {{/if}}
+
+          {{#if (gte index 4)}}
+            <li>{{#link-to "patients.edit" patient}}View all{{/link-to}}</li>
           {{/if}}
         {{/each}}
       </ul>

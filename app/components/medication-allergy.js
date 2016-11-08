@@ -13,6 +13,7 @@ export default Ember.Component.extend({
   updateButtonText: 'add',
   updateButtonAction: 'addAllergy',
   showUpdateButton: true,
+  showOperations: false,
 
   init() {
     let path = getOwner(this).lookup('controller:application').currentPath;
@@ -54,6 +55,21 @@ export default Ember.Component.extend({
       model.save().then(() => {
         this.set('displayModal', false);
       });
+    },
+
+    /**
+     * Note: the allergy model is passed in here, so we can get all the data in the future
+     * @param allergyModel
+     */
+    checkAllergyInteraction(allergyModel) {
+      let allergyName = allergyModel.get('name');
+      this.get('medicationInteraction').findPossibleAllergies(allergyName)
+        .then(results => {
+        console.log(results);
+      })
+        .catch(err => {
+          console.log(err);
+        })
     }
   }
 
