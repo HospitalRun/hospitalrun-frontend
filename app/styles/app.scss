@@ -12,17 +12,16 @@
 @import 'loading_notice';
 
 // Components
-
-@import 'components/sidebar_nav';
-@import 'components/panel';
 @import 'components/form_styles';
-@import 'components/tab_nav';
-@import 'components/tab_content';
-@import 'components/pagination';
-@import 'components/patient_summary';
-@import 'components/patient_history';
 @import 'components/imaging';
 @import 'components/labs';
+@import 'components/pagination';
+@import 'components/panel';
+@import 'components/patient_history';
+@import 'components/patient_summary';
+@import 'components/sidebar_nav';
+@import 'components/tab_content';
+@import 'components/tab_nav';
 @import 'components/tables';
 @import 'components/typeahead';
 
