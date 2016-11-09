@@ -1,3 +1,4 @@
+// Base styles
 @import 'utilities';
 @import 'variables_mixins';
 @import 'bootstrap';
@@ -7,8 +8,6 @@
 @import 'layout';
 @import 'index';
 @import 'print';
-@import 'temp_misc';
-@import 'sign_in_screen';
 
 // Components
 @import 'components/form_styles';
@@ -24,6 +23,10 @@
 @import 'components/tab_nav';
 @import 'components/tables';
 @import 'components/typeahead';
+
+// Custom CSS for specific views
+@import 'sign_in_screen';
+@import 'temp_misc';
 
 // NOTE: do not place styles in this file
 // If you have styles to add, put them in
