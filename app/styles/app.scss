@@ -7,6 +7,20 @@
 @import 'layout';
 @import 'print';
 
+// Basscss 8.0.2 (http://basscss.com/)
+// added manually for customization value
+@import 'basscss/align';
+@import 'basscss/border';
+@import 'basscss/flexbox';
+@import 'basscss/grid/index';
+@import 'basscss/hide';
+@import 'basscss/layout';
+@import 'basscss/margin';
+@import 'basscss/padding';
+@import 'basscss/position';
+@import 'basscss/type-scale';
+@import 'basscss/typography';
+
 // Components
 @import 'components/buttons';
 @import 'components/form_styles';
