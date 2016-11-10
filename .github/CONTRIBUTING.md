@@ -136,3 +136,11 @@ The main reason for keeping two services of PouchDB on the client side is that k
 
 When there's a conflict in data, as long is the conflict occures between two different records or two different fields, the conflict resolution will be able to solve the conflict.
 If the conflict is between two versions of the same field, the later record value will apply.
+
+### Tests
+
+Travis CI is configured to run tests on GitHub, so when you open a pull requests the test suite will run automatically as a build which you can view in the merge box of the pull request. You can see the test output by clicking the `Details` link next to the build.
+
+To run the test suit locally, use `ember test` from the project root.
+
+New test should be added for any new features or views in the app. For more info about how to setup a new test, see the [Fixtures for Acceptance Tests](https://github.com/HospitalRun/hospitalrun-frontend#fixtures-for-acceptance-tests) section of the README.
