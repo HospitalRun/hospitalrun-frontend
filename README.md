@@ -118,7 +118,7 @@ test('visiting /patients', function(assert) {
 
 ### Running Tests Locally
 
-To run the test suit locally while developing, just run `ember test` from the project root.
+To run the test suite locally while developing, just run `ember test` from the project root.
 
 Tests will also run automatically via Travis CI when you push a branch to the repository or a pull request. You can view output by going to the Travis test status from the Pull Request merge box.
 
