@@ -141,6 +141,6 @@ If the conflict is between two versions of the same field, the later record valu
 
 Travis CI is configured to run tests on GitHub, so when you open a pull requests the test suite will run automatically as a build which you can view in the merge box of the pull request. You can see the test output by clicking the `Details` link next to the build.
 
-To run the test suit locally, use `ember test` from the project root.
+To run the test suite locally, use `ember test` from the project root.
 
 New test should be added for any new features or views in the app. For more info about how to setup a new test, see the [Fixtures for Acceptance Tests](https://github.com/HospitalRun/hospitalrun-frontend#fixtures-for-acceptance-tests) section of the README.
