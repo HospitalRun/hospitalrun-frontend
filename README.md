@@ -116,6 +116,12 @@ test('visiting /patients', function(assert) {
 });
 ```
 
+### Running Tests Locally
+
+To run the test suite locally while developing, just run `ember test` from the project root.
+
+Tests will also run automatically via Travis CI when you push a branch to the repository or a pull request. You can view output by going to the Travis test status from the Pull Request merge box.
+
 ### The SCSS linter
 
 To keep our styling scalable and consistent, we are using an [scss linter](https://www.npmjs.com/package/ember-cli-scss-lint) that will throw an error in the build if you do not conform to it's syntax rules. The syntax rules are defined in the [`.scss-lint.yml`](https://github.com/HospitalRun/hospitalrun-frontend/blob/master/.scss-lint.yml) file, and documentation for each linter is [available here](https://github.com/brigade/scss-lint/blob/master/lib/scss_lint/linter/README.md).
