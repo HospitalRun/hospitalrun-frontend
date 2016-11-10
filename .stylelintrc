@@ -1,10 +1,10 @@
 {
   "extends": "stylelint-config-concentric",
   "plugins": [
-    "stylelint-declaration-use-variable",
-    "stylelint-scss"
-  ],
-  "rules": {
+  "stylelint-declaration-use-variable",
+  "stylelint-scss"
+],
+  "rules":{
     "sh-waqar/declaration-use-variable": "color",
     "scss/at-import-no-partial-extension": true,
     "scss/at-import-no-partial-leading-underscore": true,
