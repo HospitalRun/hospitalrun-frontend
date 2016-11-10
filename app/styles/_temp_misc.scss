@@ -22,19 +22,6 @@
   cursor: default;
 }
 
-// mark input fields as required
-.required {
-  .control-label::after {
-    color: $red;
-    content: '*';
-  }
-}
-
-.input-group-addon {
-  border: 0;
-  background-color: $white;
-}
-
 //Loading icon from http://www.bootply.com/128062
 .glyphicon-refresh-animate {
   -webkit-animation: spin2 .7s infinite linear;
