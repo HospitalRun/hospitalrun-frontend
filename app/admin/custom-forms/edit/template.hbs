@@ -1,11 +1,11 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false}}
     <div class="row">
-      {{em-input property="name" label=(t 'admin.customForms.labels.formName') class="form-input-group required col-xs-4"}}
-      {{em-select class="col-xs-3 form-input-group required" label=(t 'admin.customForms.labels.formType')
+      {{em-input property="name" label=(t 'admin.customForms.labels.formName') class="form-input-group required col-xs-4 custom-form-name"}}
+      {{em-select class="col-xs-3 form-input-group required custom-form-type" label=(t 'admin.customForms.labels.formType')
         property="formType" content=formTypes prompt=" "
       }}
-      {{em-input property="columns" label=(t 'admin.customForms.labels.columns') class="form-input-group col-xs-2"}}
+      {{em-input property="columns" label=(t 'admin.customForms.labels.columns') class="form-input-group col-xs-2 custom-form-columns"}}
     </div>
     <h4>
       {{t 'admin.customForms.titles.fields'}}
@@ -22,7 +22,11 @@
       {{#each model.fields as |field index|}}
         <tr>
           <td>{{field.label}}</td>
-          <td>{{t (concat 'admin.customForms.labels.' field.type)}}</td>
+          <td>
+            {{#if field.type}}
+              {{t (concat 'admin.customForms.labels.' field.type)}}
+            {{/if}}
+          </td>
           <td>
             <button class="btn btn-default warning" {{action "deleteField" field bubbles=false }}>
               <span class="octicon octicon-x"></span>{{t "buttons.delete"}}
@@ -51,7 +55,7 @@
     {{t 'admin.customForms.buttons.preview'}}
   </button>
   {{#if preview}}
-    <div class="panel panel-primary">
+    <div class="panel panel-primary form-preview">
       <div class="panel-heading">
         <h3 class="panel-title">{{formName}}</h3>
       </div>

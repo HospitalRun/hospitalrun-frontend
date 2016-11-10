@@ -23,7 +23,7 @@ export default AbstractEditController.extend({
     },
 
     deleteField(field) {
-      let fields = this.get('fields');
+      let fields = this.get('model.fields');
       fields.removeObject(field);
     },
 
@@ -35,14 +35,14 @@ export default AbstractEditController.extend({
     },
 
     moveFieldDown(field) {
-      let fields = this.get('fields');
+      let fields = this.get('model.fields');
       let currentFieldIdx = fields.indexOf(field);
       let nextField = fields.objectAt(currentFieldIdx+1);
       fields.replace(currentFieldIdx, 2, [nextField, field]);
     },
 
     moveFieldUp(field) {
-      let fields = this.get('fields');
+      let fields = this.get('model.fields');
       let previousFieldIdx = (fields.indexOf(field) -1);
       let previousField = fields.objectAt(previousFieldIdx);
       fields.replace(previousFieldIdx, 2, [field, previousField]);

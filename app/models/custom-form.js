@@ -1,8 +1,13 @@
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
+
+function defaultFields() {
+  return [];
+}
+
 export default AbstractModel.extend({
   columns: DS.attr('number'),
-  fields: DS.attr('custom-fields'),
+  fields: DS.attr('custom-fields', { defaultValue: defaultFields }),
   formType: DS.attr('string'),
   name: DS.attr('string'),
 

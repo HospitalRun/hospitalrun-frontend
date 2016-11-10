@@ -7,7 +7,7 @@
     <div class="row">
       <div class="form-input-group col-xs-6">
         <label for="fieldTypeSelect">{{t 'labels.type'}}</label>
-        <select onchange={{action 'selectType' value="target.value"}} class="form-control" id="fieldTypeSelect">
+        <select onchange={{action 'selectType' value="target.value"}} class="form-control custom-field-select" id="fieldTypeSelect">
           <option disabled selected={{is-not model.type}}></option>
           {{#each fieldTypes as |fieldType|}}
             <option value="{{fieldType.id}}" selected={{eq model.type fieldType.id}}>
@@ -16,10 +16,10 @@
           {{/each}}
         </select>
       </div>
-      {{em-input property="label" class="col-xs-6 required" label=(t 'admin.customForms.labels.label')}}
+      {{em-input property="label" class="col-xs-6 required custom-field-label" label=(t 'admin.customForms.labels.label')}}
     </div>
     <div class="row">
-      {{em-input property="colSpan" class="col-xs-5" label=(t 'admin.customForms.labels.colSpan')}}
+      {{em-input property="colSpan" class="col-xs-5 custom-field-colspan" label=(t 'admin.customForms.labels.colSpan')}}
     </div>
     {{#if showValues}}
       <h4>
@@ -48,10 +48,10 @@
         {{#each model.values as |value|}}
           <tr>
             <td>
-              {{input value=value.label class="form-control"}}
+              {{input value=value.label class="form-control custom-field-value"}}
             </td>
             <td>
-              <button class="btn btn-default warning" {{action "deleteValue" value bubbles=false }}>
+              <button class="btn btn-default warning delete-field-value" {{action "deleteValue" value bubbles=false }}>
                 <span class="octicon octicon-x"></span>{{t "buttons.delete"}}
               </button>
             </td>
