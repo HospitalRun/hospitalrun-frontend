@@ -44,6 +44,7 @@
 
 .sidebar-nav-logo {
   @include transition_opacity;
+
   display: inline-block;
   padding: 0 15px;
   height: 55px;
@@ -129,6 +130,7 @@
 
   .btn {
     @include transition(opacity);
+
     position: absolute;
     top: 10px;
     right: 15px;
@@ -159,6 +161,7 @@
   // main section link
   .primary-section-link {
     @include transition_all;
+
     display: block;
     border-bottom: 1px solid $navy_drkest;
     background: $navy_mid2;
@@ -170,6 +173,7 @@
 
     .mega-octicon {
       @include transition_all;
+
       float: left;
       margin-right: 12px;
       width: 16px;
@@ -191,6 +195,7 @@
 
   .category-sub-item {
     @include transition_all;
+
     display: block;
     background: $navy_mid3;
     padding: 0 15px;
@@ -212,6 +217,7 @@
 
     .octicon {
       @include transition_all;
+
       float: left;
       margin-right: 6px;
       margin-left: 6px;
