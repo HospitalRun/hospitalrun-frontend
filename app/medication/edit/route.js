@@ -12,9 +12,9 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
   getNewData: function(params) {
     let idParam = this.get('idParam');
     let newData = {
-        selectPatient: true,
-        prescriptionDate: moment().startOf('day').toDate()
-      };
+      selectPatient: true,
+      prescriptionDate: moment().startOf('day').toDate()
+    };
     if (params[idParam] === 'dispense') {
       newData.shouldFulfillRequest = true;
       newData.hideFulfillRequest = true;

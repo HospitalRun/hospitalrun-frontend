@@ -6,7 +6,7 @@ export default Ember.Component.extend(SelectValues, {
     let rows = [];
     let form = this.get('form');
     if (!Ember.isEmpty(form)) {
-      let fields = form.fields;
+      let { fields } = form;
       let numberOfColumns = this.getWithDefault('form.columns', 1);
       let currentRow = [];
 

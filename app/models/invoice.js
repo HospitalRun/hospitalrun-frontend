@@ -115,8 +115,8 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
       return;
     }
     let paidTotal = payments.reduce(function(previousValue, payment) {
-        return previousValue += this._getValidNumber(payment.get('amount'));
-      }.bind(this), 0);
+      return previousValue += this._getValidNumber(payment.get('amount'));
+    }.bind(this), 0);
     this.set('paidTotal', this._numberFormat(paidTotal, true));
     let remainingBalance = this.get('remainingBalance');
     if (remainingBalance <= 0) {

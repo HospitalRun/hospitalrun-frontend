@@ -100,9 +100,9 @@ export default Ember.Component.extend({
       fileUpload.hide();
       camera.show();
       if (!setupCamera) {
-        let canvas = this.$('canvas')[0];
-        let photo = this.$('img')[0];
-        let video = this.$('video')[0];
+        let canvas = this.$('canvas').get(0);
+        let photo = this.$('img').get(0);
+        let video = this.$('video').get(0);
         this.setProperties({
           canvas: canvas,
           photo: photo,
@@ -163,7 +163,7 @@ export default Ember.Component.extend({
       if (typeof streamToStop.active === 'undefined') {
         streamToStop.stop();
       } else {
-        let track = streamToStop.getTracks()[0];
+        let [track] = streamToStop.getTracks();
         track.stop();
       }
     }
