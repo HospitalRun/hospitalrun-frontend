@@ -6,7 +6,7 @@
 ],
   "rules":{
     "sh-waqar/declaration-use-variable": "color",
-    "scss/at-import-no-partial-extension": true,
+    "scss/at-import-partial-extension-whitelist": [''],
     "scss/at-import-no-partial-leading-underscore": true,
     "scss/at-extend-no-missing-placeholder": true,
     "declaration-bang-space-after": "never",
