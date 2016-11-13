@@ -1,4 +1,10 @@
 import AppointmentIndexController from 'hospitalrun/appointments/index/controller';
 export default AppointmentIndexController.extend({
-  startKey: []
+  startKey: [],
+
+  calendarHeader: {
+    left: 'title',
+    center: 'agendaDay,agendaWeek,month',
+    right: 'today prev,next'
+  }
 });
