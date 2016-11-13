@@ -2,6 +2,9 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 import Ember from 'ember';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
+
+const { isEmpty } = Ember;
+
 export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRouteMixin, {
   database: Ember.inject.service(),
   filterParams: null,
@@ -14,12 +17,19 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
   nextStartKey: null,
   pageTitle: null,
 
-  _getFilterParams: function(params) {
+  queryParams: {
+    sortDesc: { refreshModel: true },
+    sortKey: { refreshModel: true },
+    startKey: { refreshModel: true }
+  },
+
+  _getFilterParams(params) {
+
     let filterByList = [];
     let filterParams = this.get('filterParams');
     if (!Ember.isEmpty(filterParams)) {
       filterParams.forEach(function(paramName) {
-        if (!Ember.isEmpty(params[paramName])) {
+        if (!isEmpty(params[paramName])) {
           filterByList.push({
             name: paramName,
             value: params[paramName]
@@ -30,28 +40,51 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
     return filterByList;
   },
 
-  _getMaxPouchId: function() {
+  _getMaxPouchId() {
     return this.get('database').getPouchId({}, this.get('modelName').camelize());
   },
 
-  _getMinPouchId: function() {
+  _getMinPouchId() {
     return this.get('database').getPouchId(null, this.get('modelName').camelize());
   },
 
-  _getPouchIdFromItem: function(item) {
+  _getPouchIdFromItem(item) {
     return this.get('database').getPouchId(item.get('id'), this.get('modelName').camelize());
   },
 
-  _getStartKeyFromItem: function(item) {
+  _getStartKeyFromItem(item) {
     return item.get('id');
   },
 
-  _modelQueryParams: function() {
+  _modelQueryParams() {
     return {};
   },
 
-  model: function(params) {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+  buildQueryParams(params) {
+    var filterParams = this._getFilterParams(params),
+      itemsPerPage = this.get('itemsPerPage'),
+      queryParams = this._modelQueryParams(params);
+    if (!isEmpty(params.sortKey)) {
+      queryParams.sortKey = params.sortKey;
+      if (!isEmpty(params.sortDesc)) {
+        queryParams.sortDesc = params.sortDesc;
+      }
+    }
+    if (!isEmpty(filterParams)) {
+      queryParams.filterBy = filterParams;
+    }
+    if (isEmpty(queryParams.options)) {
+      queryParams.options = {};
+    }
+    queryParams.options.limit = itemsPerPage + 1;
+    if (!isEmpty(params.startKey)) {
+      queryParams.options.startkey = params.startKey;
+    }
+    return queryParams;
+  },
+
+  model(params) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
       let filterParams = this._getFilterParams(params);
       let modelName = this.get('modelName');
       let itemsPerPage = this.get('itemsPerPage');
@@ -72,7 +105,7 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
       if (!Ember.isEmpty(params.startKey)) {
         queryParams.options.startkey = params.startKey;
       }
-      this.store.query(modelName, queryParams).then(function(model) {
+      this.store.query(modelName, queryParams).then((model) => {
         if (model.get('length') > 0) {
           this.set('firstKey', this._getStartKeyFromItem(model.get('firstObject')));
         }
@@ -83,17 +116,11 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
           this.set('nextStartKey');
         }
         resolve(model);
-      }.bind(this), reject);
-    }.bind(this));
+      }, reject);
+    });
   },
 
-  queryParams: {
-    sortDesc: { refreshModel: true },
-    sortKey: { refreshModel: true },
-    startKey: { refreshModel: true }
-  },
-
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     let props = this.getProperties('firstKey', 'nextStartKey');
     controller.setProperties(props);
     let sectionDetails = {
@@ -101,10 +128,10 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
     };
     if (this.get('hideNewButton')) {
       sectionDetails.newButtonAction = null;
-    } else if (!Ember.isEmpty(this.get('newButtonAction'))) {
+    } else if (!isEmpty(this.get('newButtonAction'))) {
       sectionDetails.newButtonAction = this.get('newButtonAction');
     }
-    if (!Ember.isEmpty(this.get('newButtonText'))) {
+    if (!isEmpty(this.get('newButtonText'))) {
       sectionDetails.newButtonText = this.get('newButtonText');
     }
     this.send('setSectionHeader', sectionDetails);

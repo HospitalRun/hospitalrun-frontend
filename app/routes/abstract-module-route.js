@@ -1,6 +1,8 @@
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import Ember from 'ember';
 import UserSession from 'hospitalrun/mixins/user-session';
+
+const { computed } = Ember;
 /**
  * Abstract route for top level modules (eg patients, inventory, users)
  */
@@ -14,41 +16,38 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
   sectionTitle: null,
   subActions: null,
 
-  editPath: function() {
-    let module = this.get('moduleName');
-    return `${module}.edit`;
-  }.property('moduleName'),
+  editPath: computed('moduleName', function() {
+    return `${this.get('moduleName')}.edit`;
+  }),
 
-  deletePath: function() {
-    let module = this.get('moduleName');
-    return `${module}.delete`;
-  }.property('moduleName'),
+  deletePath: computed('moduleName', function() {
+    return `${this.get('moduleName')}.delete`;
+  }),
 
-  newButtonAction: function() {
+  searchRoute: computed('moduleName', function() {
+    return `/${this.get('moduleName')}/search`;
+  }),
+
+  newButtonAction: computed(function() {
     if (this.currentUserCan(this.get('addCapability'))) {
       return 'newItem';
     } else {
       return null;
     }
-  }.property(),
-
-  searchRoute: function() {
-    let module = this.get('moduleName');
-    return `/${module}/search`;
-  }.property('moduleName'),
+  }),
 
   actions: {
-    allItems: function() {
-      this.transitionTo(`${this.get('moduleName')}.index`);
+    allItems() {
+      this.transitionTo(this.get('moduleName') + '.index');
     },
-    deleteItem: function(item) {
+    deleteItem(item) {
       let deletePath = this.get('deletePath');
       this.send('openModal', deletePath, item);
     },
-    editItem: function(item) {
+    editItem(item) {
       this.transitionTo(this.get('editPath'), item);
     },
-    newItem: function() {
+    newItem() {
       if (this.currentUserCan(this.get('addCapability'))) {
         this.transitionTo(this.get('editPath'), 'new');
       }
@@ -85,13 +84,13 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
   /**
    * Override this function to generate an id for a new record
    * @return a promise that will resolved to a generated id;default is null which means that an
-   * id will be automatically generated via Ember data.
+   * id will be automatically generated via Ember data.8
    */
-  generateId: function() {
+  generateId() {
     return Ember.RSVP.resolve(null);
   },
 
-  model: function() {
+  model() {
     if (!Ember.isEmpty(this.additionalModels)) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
         let promises = this.additionalModels.map(function(modelMap) {
@@ -100,16 +99,16 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
           } else {
             return this.store.find.apply(this.store, modelMap.findArgs);
           }
-        }.bind(this));
-        Ember.RSVP.allSettled(promises, `All additional Models for ${this.get('moduleName')}`).then(function(array) {
-          array.forEach(function(item, index) {
+        });
+        Ember.RSVP.allSettled(promises, `All additional Models for ${this.get('moduleName')}`).then((array) => {
+          array.forEach((item, index) => {
             if (item.state === 'fulfilled') {
               this.set(this.additionalModels[index].name, item.value);
             }
-          }.bind(this));
+          });
           resolve();
-        }.bind(this), reject);
-      }.bind(this), `Additional Models for ${this.get('moduleName')}`);
+        }, reject);
+      }, `Additional Models for ${this.get('moduleName')}`);
     } else {
       return Ember.RSVP.resolve();
     }
@@ -131,9 +130,9 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
     let propsToSet = this.getProperties('additionalButtons', 'currentScreenTitle', 'newButtonAction', 'newButtonText', 'sectionTitle', 'subActions');
     currentController.setProperties(propsToSet);
     if (!Ember.isEmpty(this.additionalModels)) {
-      this.additionalModels.forEach(function(item) {
+      this.additionalModels.forEach((item) => {
         controller.set(item.name, this.get(item.name));
-      }.bind(this));
+      });
     }
     this._super(controller, model);
   }
