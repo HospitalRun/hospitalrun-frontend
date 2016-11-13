@@ -16,6 +16,9 @@
     "pretender": "~0.10.0",
     "pouchdb": "^5.4.5",
     "relational-pouch": "^1.4.4",
-    "pouchdb-find": "^0.10.2"
+    "pouchdb-find": "^0.10.2",
+    "fullcalendar": "^3.0.0",
+    "fullcalendar-scheduler": "^1.4.0",
+    "jquery3.1.1":"jquery#3.1.1"
   }
 }
