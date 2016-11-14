@@ -22,7 +22,9 @@
 @import 'basscss/typography';
 
 // Components
+@import 'components/alert';
 @import 'components/buttons';
+@import 'components/dropdown';
 @import 'components/form_styles';
 @import 'components/imaging';
 @import 'components/labs';
@@ -31,6 +33,7 @@
 @import 'components/panel';
 @import 'components/patient_history';
 @import 'components/patient_summary';
+@import 'components/progress-bar';
 @import 'components/sidebar_nav';
 @import 'components/tab_content';
 @import 'components/tab_nav';
