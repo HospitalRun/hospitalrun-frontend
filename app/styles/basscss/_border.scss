@@ -1,0 +1,43 @@
+/* Basscss Border */
+
+.border {
+  border-style: solid;
+  border-width: var(--border-width);
+}
+
+.border-top {
+  border-top-style: solid;
+  border-top-width: var(--border-width);
+}
+
+.border-right {
+  border-right-style: solid;
+  border-right-width: var(--border-width);
+}
+
+.border-bottom {
+  border-bottom-style: solid;
+  border-bottom-width: var(--border-width);
+}
+
+.border-left {
+  border-left-style: solid;
+  border-left-width: var(--border-width);
+}
+
+.border-none { border: 0 }
+
+.rounded { border-radius: var(--border-radius) }
+.circle  { border-radius: 50% }
+
+.rounded-top    { border-radius: var(--border-radius) var(--border-radius) 0 0 }
+.rounded-right  { border-radius: 0 var(--border-radius) var(--border-radius) 0 }
+.rounded-bottom { border-radius: 0 0 var(--border-radius) var(--border-radius) }
+.rounded-left   { border-radius: var(--border-radius) 0 0 var(--border-radius) }
+
+.not-rounded { border-radius: 0 }
+
+:root {
+  --border-width: 1px;
+  --border-radius: 3px;
+}
