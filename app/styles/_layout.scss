@@ -18,7 +18,30 @@
   select { background: rgba($blue_light,.2); }
 }
 
-// ? unsure what below are for...
+.panel-default {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+
+  > {
+    .panel-heading {
+      border: 0;
+      border-radius: 0;
+      background-color: transparent;
+      padding: 0;
+      color: $navy;
+    }
+  }
+}
+
+.panel-heading {
+  border-radius: 3px;
+  background-color: $blue_light2;
+  padding: 10px 15px;
+  color: $navy;
+}
+
+// ? unsure what below are for...needs cleanup
 
 .detail-section-content {
   padding: 15px 0;
