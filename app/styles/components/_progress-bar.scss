@@ -1,0 +1,29 @@
+.progress {
+  background-image: linear-gradient(to bottom,#ebebeb 0%,#f5f5f5 100%);
+  background-repeat: repeat-x;
+}
+
+.progress-bar {
+  background-image: linear-gradient(to bottom,#428bca 0%,#3071a9 100%);
+  background-repeat: repeat-x;
+}
+
+.progress-bar-success {
+  background-image: linear-gradient(to bottom,#5cb85c 0%,#449d44 100%);
+  background-repeat: repeat-x;
+}
+
+.progress-bar-info {
+  background-image: linear-gradient(to bottom,#5bc0de 0%,#31b0d5 100%);
+  background-repeat: repeat-x;
+}
+
+.progress-bar-warning {
+  background-image: linear-gradient(to bottom,#f0ad4e 0%,#ec971f 100%);
+  background-repeat: repeat-x;
+}
+
+.progress-bar-danger {
+  background-image: linear-gradient(to bottom,#d9534f 0%,#c9302c 100%);
+  background-repeat: repeat-x;
+}
