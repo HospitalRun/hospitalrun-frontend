@@ -78,12 +78,3 @@
   background-image: linear-gradient(to bottom,#e8e8e8 0%,#f5f5f5 100%);
   background-repeat: repeat-x;
 }
-
-.radio input[type='radio'],
-.radio-inline input[type='radio'],
-.checkbox input[type='checkbox'],
-.checkbox-inline input[type='checkbox'] { margin-left: -18px; }
-
-.form-control {
-  border: 1px solid $blue_lightest2;
-}
