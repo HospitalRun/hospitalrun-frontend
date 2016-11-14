@@ -10,7 +10,7 @@
     {{#each model as |customForm|}}
       {{#unless customForm.archived}}
         <tr {{action 'editItem' customForm}} class="clickable">
-          <td>{{customForm.name}}</td>
+          <td class="custom-form-name">{{customForm.name}}</td>
           <td>
             {{t (concat 'admin.customForms.labels.' customForm.formType 'FormType')}}
           </td>
