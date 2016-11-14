@@ -1,0 +1,12 @@
+.table-header {
+  background-color: $navy_light;
+  color: $table-header-color;
+
+  .sortable-column {
+    cursor: pointer;
+
+    .inactive {
+      color: $inactive-sort-indicator;
+    }
+  }
+}
