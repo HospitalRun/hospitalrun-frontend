@@ -62,7 +62,7 @@
     "ember-data": "2.9.0",
     "ember-export-application-global": "^1.0.5",
     "ember-i18n": "4.3.2",
-    "ember-keyboard": "2.1.6",
+    "ember-keyboard": "2.1.7",
     "ember-load-initializers": "^0.5.1",
     "ember-pouch": "4.0.3",
     "ember-radio-buttons": "^4.0.1",
