@@ -27,6 +27,7 @@ module.exports = {
   },
 
   rules: {
-    'no-console': 0
+    'no-console': 0,
+    'object-curly-spacing': [ 2, 'always']
   }
 };
