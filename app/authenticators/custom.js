@@ -108,7 +108,7 @@ export default BaseAuthenticator.extend({
 
   invalidate: function() {
     if (this.useGoogleAuth) {
-      return new Ember.RSVP.resolve();
+      return Ember.RSVP.resolve();
     } else {
       return this._getPromise('DELETE');
     }
