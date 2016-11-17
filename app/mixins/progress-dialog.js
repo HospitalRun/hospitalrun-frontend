@@ -39,7 +39,7 @@ export default Ember.Mixin.create({
 
   showProgressModal() {
     let progressDialog = Ember.Object.create(this.get('progressDialogDefaults'));
-    progressDialog.progressBarStyle = new Ember.String.htmlSafe(progressDialog.progressBarStyle);
+    progressDialog.progressBarStyle = Ember.String.htmlSafe(progressDialog.progressBarStyle);
     progressDialog.set('title', this.get('progressTitle'));
     progressDialog.set('message', this.get('progressMessage'));
     this.set('progressDialog', progressDialog);

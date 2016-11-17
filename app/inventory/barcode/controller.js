@@ -5,6 +5,8 @@ export default Ember.Controller.extend({
   barcodeUri: function() {
     let id = this.get('model.id');
     let name = this.get('model.name');
+
+    /* eslint new-cap: ['error', { 'capIsNew': false }]  */
     return Ember.$(document).JsBarcode(id, {
       width: 1,
       height: 20,
