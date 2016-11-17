@@ -5,7 +5,7 @@ export default InputComponent.extend({
   selectedFile: null,
   type: 'file',
 
-  _fileChanged: function() {
+  _fileChanged() {
     let inputEl = this.get('fileInputEl');
     let resize = this.get('resizeFile');
 
@@ -31,7 +31,7 @@ export default InputComponent.extend({
    * Resize the image to no larger than 1024px so that file sizes
    * are not too large.
    */
-  _resizeImage: function(img) {
+  _resizeImage(img) {
     // Derived from https://github.com/josefrichter/resize/blob/master/public/preprocess.js
     let canvas = document.createElement('canvas');
     let { height, width } = img;
@@ -68,7 +68,7 @@ export default InputComponent.extend({
     return new Blob([new Uint8Array(array)], { type: 'image/png' });
   },
 
-  didInsertElement: function() {
+  didInsertElement() {
     let $input = this.$('input');
     this.set('fileInputEl', $input[0]);
     $input.on('change', this._fileChanged.bind(this));

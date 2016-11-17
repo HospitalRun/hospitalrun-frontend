@@ -21,7 +21,7 @@ export default AbstractModel.extend({
   shortDateFormat: 'l',
   timeFormat: 'h:mm A',
 
-  _getDateSpan: function(startDate, endDate, format) {
+  _getDateSpan(startDate, endDate, format) {
     let formattedStart = startDate.format(format);
     let formattedEnd = endDate.format(format);
     return `${formattedStart} - ${formattedEnd}`;
@@ -67,7 +67,7 @@ export default AbstractModel.extend({
   validations: {
     appointmentDate: {
       presence: {
-        if: function(object) {
+        if(object) {
           let appointmentType = object.get('appointmentType');
           return appointmentType !== 'Admission';
         }
@@ -91,7 +91,7 @@ export default AbstractModel.extend({
     endDate: {
       acceptance: {
         accept: true,
-        if: function(object) {
+        if(object) {
           if (!object.get('hasDirtyAttributes')) {
             return false;
           }

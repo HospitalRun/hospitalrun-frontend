@@ -33,7 +33,7 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
   }],
 
   actions: {
-    showAddDeposit: function() {
+    showAddDeposit() {
       let payment = this.store.createRecord('payment', {
         paymentType: 'Deposit',
         datePaid: new Date()
@@ -41,16 +41,16 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
       this.send('openModal', 'invoices.payment', payment);
     },
 
-    showAddPayment: function(invoice) {
+    showAddPayment(invoice) {
       let payment = this.store.createRecord('payment', {
-        invoice: invoice,
+        invoice,
         paymentType: 'Payment',
         datePaid: new Date()
       });
       this.send('openModal', 'invoices.payment', payment);
     },
 
-    showEditPayment: function(payment) {
+    showEditPayment(payment) {
       if (this.currentUserCan('add_payment')) {
         this.send('openModal', 'invoices.payment', payment);
       }

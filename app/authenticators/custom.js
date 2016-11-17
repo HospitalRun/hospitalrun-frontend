@@ -10,13 +10,13 @@ export default BaseAuthenticator.extend({
     @method absolutizeExpirationTime
     @private
   */
-  _absolutizeExpirationTime: function(expiresIn) {
+  _absolutizeExpirationTime(expiresIn) {
     if (!Ember.isEmpty(expiresIn)) {
       return new Date((new Date().getTime()) + (expiresIn - 5) * 1000).getTime();
     }
   },
 
-  _checkUser: function(user) {
+  _checkUser(user) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       this._makeRequest('POST', { name: user.name }, '/chkuser').then((response) => {
         if (response.error) {
@@ -33,7 +33,7 @@ export default BaseAuthenticator.extend({
     });
   },
 
-  _getPromise: function(type, data) {
+  _getPromise(type, data) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       this._makeRequest(type, data).then(function(response) {
         Ember.run(function() {
@@ -47,14 +47,14 @@ export default BaseAuthenticator.extend({
     }.bind(this));
   },
 
-  _makeRequest: function(type, data, url) {
+  _makeRequest(type, data, url) {
     if (!url) {
       url = this.serverEndpoint;
     }
     return Ember.$.ajax({
-      url: url,
-      type: type,
-      data: data,
+      url,
+      type,
+      data,
       dataType: 'json',
       contentType: 'application/x-www-form-urlencoded',
       xhrFields: {
@@ -69,7 +69,7 @@ export default BaseAuthenticator.extend({
    @param {Object} credentials The credentials to authenticate the session with
    @return {Ember.RSVP.Promise} A promise that resolves when an access token is successfully acquired from the server and rejects otherwise
    */
-  authenticate: function(credentials) {
+  authenticate(credentials) {
     if (credentials.google_auth) {
       this.useGoogleAuth = true;
       let sessionCredentials = {
@@ -106,7 +106,7 @@ export default BaseAuthenticator.extend({
     });
   },
 
-  invalidate: function() {
+  invalidate() {
     if (this.useGoogleAuth) {
       return new Ember.RSVP.resolve();
     } else {
@@ -114,7 +114,7 @@ export default BaseAuthenticator.extend({
     }
   },
 
-  restore: function(data) {
+  restore(data) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       let now = (new Date()).getTime();
       if (!Ember.isEmpty(data.expires_at) && data.expires_at < now) {

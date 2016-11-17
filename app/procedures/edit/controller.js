@@ -62,7 +62,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   updateCapability: 'add_procedure',
 
   actions: {
-    showAddMedication: function() {
+    showAddMedication() {
       let newCharge = this.get('store').createRecord('proc-charge', {
         dateCharged: new Date(),
         newMedicationCharge: true,
@@ -71,14 +71,14 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
       this.send('openModal', 'procedures.medication', newCharge);
     },
 
-    showEditMedication: function(charge) {
+    showEditMedication(charge) {
       let medicationList = this.get('medicationList');
       let selectedMedication = medicationList.findBy('id', charge.get('medication.id'));
       charge.set('itemName', selectedMedication.name);
       this.send('openModal', 'procedures.medication', charge);
     },
 
-    showDeleteMedication: function(charge) {
+    showDeleteMedication(charge) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteCharge',
         title: this.get('i18n').t('procedures.titles.deleteMedicationUsed'),
@@ -90,7 +90,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }
   },
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       this.updateCharges().then(function() {
         if (this.get('model.isNew')) {
@@ -102,7 +102,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }.bind(this));
   },
 
-  afterUpdate: function() {
+  afterUpdate() {
     let alertTitle = this.get('i18n').t('procedures.titles.saved');
     let alertMessage = this.get('i18n').t('procedures.messages.saved');
     this.saveVisitIfNeeded(alertTitle, alertMessage);

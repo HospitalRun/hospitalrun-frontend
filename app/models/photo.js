@@ -13,7 +13,7 @@ export default AbstractModel.extend({
   caption: DS.attr('string'),
   url: DS.attr('string'),
 
-  downloadImageFromServer: function(imageRecord) {
+  downloadImageFromServer(imageRecord) {
     let me = this;
     let url = imageRecord.get('url');
     let xhr = new XMLHttpRequest();

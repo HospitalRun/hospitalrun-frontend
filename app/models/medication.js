@@ -49,7 +49,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
     prescription: {
       acceptance: {
         accept: true,
-        if: function(object) {
+        if(object) {
           if (!object.get('hasDirtyAttributes') || object.get('isFulfilling')) {
             return false;
           }
@@ -69,7 +69,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
     inventoryItemTypeAhead: {
       acceptance: {
         accept: true,
-        if: function(object) {
+        if(object) {
           if (!object.get('hasDirtyAttributes') || !object.get('isNew')) {
             return false;
           }
@@ -93,7 +93,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
 
     patientTypeAhead: {
       presence: {
-        if: function(object) {
+        if(object) {
           return (object.get('selectPatient'));
         }
       }
@@ -108,14 +108,14 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
         }
       },
       presence: {
-        if: function(object) {
+        if(object) {
           let isFulfilling = object.get('isFulfilling');
           return isFulfilling;
         }
       },
       acceptance: {
         accept: true,
-        if: function(object) {
+        if(object) {
           let isFulfilling = object.get('isFulfilling');
           let requestQuantity = parseInt(object.get('quantity'));
           let quantityToCompare = null;

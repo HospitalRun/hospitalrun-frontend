@@ -14,7 +14,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     return this.currentUserCan('add_inventory_purchase');
   }.property(),
 
-  canAdjustLocation: function() {
+  canAdjustLocation() {
     return this.currentUserCan('adjust_inventory_location');
   },
 
@@ -94,7 +94,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
   updateCapability: 'add_inventory_item',
 
   actions: {
-    adjustItems: function(inventoryLocation) {
+    adjustItems(inventoryLocation) {
       let adjustmentQuantity = parseInt(inventoryLocation.get('adjustmentQuantity'));
       let inventoryItem = this.get('model');
       let transactionType = inventoryLocation.get('transactionType');
@@ -102,9 +102,9 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
         adjustPurchases: true,
         dateCompleted: inventoryLocation.get('dateCompleted'),
         expenseAccount: inventoryLocation.get('expenseAccount'),
-        inventoryItem: inventoryItem,
+        inventoryItem,
         quantity: adjustmentQuantity,
-        transactionType: transactionType,
+        transactionType,
         reason: inventoryLocation.get('reason'),
         deliveryAisle: inventoryLocation.get('aisleLocation'),
         deliveryLocation: inventoryLocation.get('location')
@@ -121,11 +121,11 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
       }.bind(this));
     },
 
-    editNewItem: function() {
+    editNewItem() {
       this.send('editItem', this.get('model.id'));
     },
 
-    showAdjustment: function(inventoryLocation) {
+    showAdjustment(inventoryLocation) {
       inventoryLocation.setProperties({
         dateCompleted: new Date(),
         adjustmentItem: this.get('model'),
@@ -137,19 +137,19 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
       this.send('openModal', 'inventory.adjust', inventoryLocation);
     },
 
-    showTransfer: function(inventoryLocation) {
+    showTransfer(inventoryLocation) {
       inventoryLocation.set('adjustmentQuantity');
       inventoryLocation.set('transferItem', this.get('model'));
       inventoryLocation.set('dateCompleted', new Date());
       this.send('openModal', 'inventory.transfer', inventoryLocation);
     },
 
-    transferItems: function(inventoryLocation) {
+    transferItems(inventoryLocation) {
       let inventoryItem = this.get('model');
       let request = this.get('store').createRecord('inv-request', {
         adjustPurchases: false,
         dateCompleted: inventoryLocation.get('dateCompleted'),
-        inventoryItem: inventoryItem,
+        inventoryItem,
         quantity: inventoryLocation.get('adjustmentQuantity'),
         deliveryAisle: inventoryLocation.get('transferAisleLocation'),
         deliveryLocation: inventoryLocation.get('transferLocation'),
@@ -173,7 +173,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
       }.bind(this));
     },
 
-    updatePurchase: function(purchase, updateQuantity) {
+    updatePurchase(purchase, updateQuantity) {
       if (updateQuantity) {
         this.get('model').updateQuantity();
         this.send('update', true);
@@ -182,7 +182,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     }
   },
 
-  _completeBeforeUpdate: function(sequence, resolve, reject) {
+  _completeBeforeUpdate(sequence, resolve, reject) {
     let sequenceValue = null;
     let friendlyId = sequence.get('prefix');
     let promises = [];
@@ -215,7 +215,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     });
   },
 
-  _findSequence: function(inventoryType, resolve, reject) {
+  _findSequence(inventoryType, resolve, reject) {
     let sequenceFinder = new Ember.RSVP.Promise(function(resolve) {
       this._checkNextSequence(resolve, inventoryType, 0);
     }.bind(this));
@@ -230,7 +230,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     }.bind(this));
   },
 
-  _findSequenceByPrefix: function(inventoryType, prefixChars) {
+  _findSequenceByPrefix(inventoryType, prefixChars) {
     let database = this.get('database');
     let sequenceQuery = {
       key: inventoryType.toLowerCase().substr(0, prefixChars)
@@ -238,7 +238,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     return database.queryMainDB(sequenceQuery, 'sequence_by_prefix');
   },
 
-  _checkNextSequence: function(resolve, inventoryType, prefixChars) {
+  _checkNextSequence(resolve, inventoryType, prefixChars) {
     prefixChars++;
     this._findSequenceByPrefix(inventoryType, prefixChars).then(function(records) {
       if (Ember.isEmpty(records.rows)) {
@@ -254,7 +254,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
   /**
    * Saves the specified request, then updates the inventory item and closes the modal.
    */
-  _saveRequest: function(request) {
+  _saveRequest(request) {
     request.set('status', 'Completed');
     request.set('completedBy', request.getUserName());
     request.save().then(function() {
@@ -264,7 +264,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     }.bind(this));
   },
 
-  getTransactions: function() {
+  getTransactions() {
     let inventoryId = this.get('model.id');
     this.set('transactions', null);
     this.store.query('inv-request', {
@@ -279,7 +279,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     }.bind(this));
   },
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     if (this.get('model.isNew')) {
       let model = this.get('model');
       let inventoryType = model.get('inventoryType');
@@ -305,7 +305,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     }
   },
 
-  afterUpdate: function() {
+  afterUpdate() {
     let afterUpdateAction = null;
     if (this.get('savingNewItem')) {
       afterUpdateAction = 'editNewItem';

@@ -37,7 +37,7 @@ export default Ember.Controller.extend({
   }.property('printers'),
 
   actions: {
-    print: function() {
+    print() {
       let barcodeUri = this.get('barcodeUri');
       let selectedPrinter = this.get('selectedPrinter');
       if (!selectedPrinter) {

@@ -10,7 +10,7 @@ export default Ember.Mixin.create({
     'Pharmacy'
   ],
 
-  _getVisitTypes: function(includeEmpty) {
+  _getVisitTypes(includeEmpty) {
     let defaultVisitTypes = this.get('defaultVisitTypes');
     let visitTypesList = this.get('visitTypesList');
     let visitList;

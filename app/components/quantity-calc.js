@@ -41,7 +41,7 @@ export default Ember.Component.extend({
     return quantityGroups;
   }.property('quantityGroups', 'targetUnit'),
 
-  calculateTotal: function() {
+  calculateTotal() {
     let quantityGroups = this.get('quantityGroups');
     let haveQuantities = false;
     let lastObject = quantityGroups.get('lastObject');
@@ -60,7 +60,7 @@ export default Ember.Component.extend({
     }
   },
 
-  updateCurrentUnit: function(selectedUnit, index) {
+  updateCurrentUnit(selectedUnit, index) {
     let targetUnit = this.get('targetUnit');
     let quantityGroups = this.get('quantityGroups');
     let groupLength = quantityGroups.length;

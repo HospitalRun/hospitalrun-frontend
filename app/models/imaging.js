@@ -37,7 +37,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, ResultValidati
   validations: {
     imagingTypeName: {
       presence: {
-        'if': function(object) {
+        'if'(object) {
           if (object.get('isNew')) {
             return true;
           }

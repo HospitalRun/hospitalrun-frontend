@@ -4,17 +4,17 @@ export default Ember.Controller.extend({
   isUpdateDisabled: false,
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.send('closeModal');
     },
 
-    confirm: function() {
+    confirm() {
       let confirmAction = this.getWithDefault('model.confirmAction', 'model.confirm');
       this.send(confirmAction, this.get('model'));
       this.send('closeModal');
     },
 
-    ok: function() {
+    ok() {
       let okAction = this.get('model.okAction');
       if (!Ember.isEmpty(okAction)) {
         this.send(okAction, this.get('model'));

@@ -8,7 +8,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   defaultSerializer: 'couchdb',
   oauthHeaders: Ember.computed.alias('database.oauthHeaders'),
 
-  ajaxError: function(jqXHR) {
+  ajaxError(jqXHR) {
     let error = this._super(jqXHR);
     if (jqXHR && jqXHR.status === 401) {
       let jsonErrors = Ember.$.parseJSON(jqXHR.responseText);
@@ -27,7 +27,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   @param {Object} options
   @return {Object} hash
   */
-  ajaxOptions: function(url, type, options) {
+  ajaxOptions(url, type, options) {
     options = options || {};
     options.xhrFields = { withCredentials: true };
     return this._super(url, type, options);
@@ -49,7 +49,7 @@ export default DS.RESTAdapter.extend(UserSession, {
    @param {DS.Model} record
    @returns {Promise} promise
   */
-  createRecord: function(store, type, record) {
+  createRecord(store, type, record) {
     return this.updateRecord(store, type, record);
   },
 
@@ -61,7 +61,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   @param {DS.Snapshot} record
   @returns {Promise} promise
   */
-  deleteRecord: function(store, type, snapshot) {
+  deleteRecord(store, type, snapshot) {
     return this.updateRecord(store, type, snapshot, true);
   },
 
@@ -80,7 +80,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   @param {String} id
   @returns {Promise} promise
   */
-  find: function(store, type, id) {
+  find(store, type, id) {
     let findUrl = this.endpoint + id;
     return this.ajax(findUrl, 'GET');
   },
@@ -111,7 +111,7 @@ export default DS.RESTAdapter.extend(UserSession, {
    @param {boolean} deleteUser true if we are deleting the user.
    @returns {Promise} promise
   */
-  updateRecord: function(store, type, record, deleteUser) {
+  updateRecord(store, type, record, deleteUser) {
     let data = {};
     let serializer = store.serializerFor(record.modelName);
     serializer.serializeIntoHash(data, type, record, { includeId: true });
@@ -127,7 +127,7 @@ export default DS.RESTAdapter.extend(UserSession, {
     data = this._cleanPasswordAttrs(data);
     let putURL = `${this.endpoint}${Ember.get(record, 'id')}`;
     return this.ajax(putURL, 'PUT', {
-      data: data
+      data
     });
   },
 
@@ -145,7 +145,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   @param {String} sinceToken //currently unused
   @returns {Promise} promise
   */
-  findAll: function() {
+  findAll() {
     let ajaxData = {
       data: {
         include_docs: true,
@@ -159,7 +159,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   /**
    Remove null/empty password fields from payload sent to server
    */
-  _cleanPasswordAttrs: function(data) {
+  _cleanPasswordAttrs(data) {
     let attrsToCheck = [
       'derived_key',
       'password',
@@ -176,7 +176,7 @@ export default DS.RESTAdapter.extend(UserSession, {
     return data;
   },
 
-  shouldReloadAll: function() {
+  shouldReloadAll() {
     return true;
   }
 

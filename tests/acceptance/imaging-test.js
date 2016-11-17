@@ -3,11 +3,11 @@ import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
 module('Acceptance | imaging', {
-  beforeEach: function() {
+  beforeEach() {
     this.application = startApp();
   },
 
-  afterEach: function() {
+  afterEach() {
     Ember.run(this.application, 'destroy');
   }
 });

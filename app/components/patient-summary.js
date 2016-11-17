@@ -40,7 +40,7 @@ export default Ember.Component.extend(PatientDiagnosis, {
   }.property('disablePatientLink'),
 
   actions: {
-    linkToPatient: function() {
+    linkToPatient() {
       let shouldLink = this.get('shouldLinkToPatient');
       if (shouldLink) {
         let patient = this.get('patient');
@@ -51,7 +51,7 @@ export default Ember.Component.extend(PatientDiagnosis, {
         this.sendAction('showPatientAction', this.get('patient'));
       }
     },
-    editProcedure: function(procedure) {
+    editProcedure(procedure) {
       procedure.set('returnToVisit', false);
       procedure.set('returnToPatient', true);
       procedure.set('patient', this.get('patient'));

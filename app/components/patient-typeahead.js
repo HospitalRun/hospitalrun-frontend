@@ -5,7 +5,7 @@ export default TypeAhead.extend(PatientName, {
   displayKey: 'name',
   setOnBlur: true,
 
-  _mapPatient: function(item) {
+  _mapPatient(item) {
     let returnObj = {};
     returnObj.name = `${this.getPatientDisplayName(item)} - ${this.getPatientDisplayId(item)}`;
     returnObj[this.get('selectionKey')] = item;

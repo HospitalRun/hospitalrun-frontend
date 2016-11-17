@@ -57,12 +57,12 @@ function addAllUsers(assert) {
 }
 
 module('Acceptance | users', {
-  beforeEach: function() {
+  beforeEach() {
     FakeServer.start();
     this.application = startApp();
   },
 
-  afterEach: function() {
+  afterEach() {
     FakeServer.stop();
     Ember.run(this.application, 'destroy');
   }

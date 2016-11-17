@@ -21,7 +21,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   }.property('selectedLabType.[]', 'model.labTypeName'),
 
   actions: {
-    completeLab: function() {
+    completeLab() {
       this.set('model.status', 'Completed');
       this.get('model').validate().then(function() {
         if (this.get('model.isValid')) {
@@ -34,7 +34,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     /**
      * Update the model and perform the before update and after update
      */
-    update: function() {
+    update() {
       if (this.get('model.isNew')) {
         let newLab = this.get('model');
         let selectedLabType = this.get('selectedLabType');
@@ -88,7 +88,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
   updateCapability: 'add_lab',
 
-  afterUpdate: function(saveResponse, multipleRecords) {
+  afterUpdate(saveResponse, multipleRecords) {
     let i18n = this.get('i18n');
     let afterDialogAction, alertMessage, alertTitle;
     if (this.get('model.status') === 'Completed') {

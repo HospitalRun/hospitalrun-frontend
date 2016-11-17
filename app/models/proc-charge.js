@@ -35,7 +35,7 @@ export default AbstractModel.extend(MedicationDetails, {
       presence: true,
       acceptance: {
         accept: true,
-        if: function(object) {
+        if(object) {
           let medicationCharge = object.get('medicationCharge');
           if (!medicationCharge || !object.get('hasDirtyAttributes')) {
             return false;

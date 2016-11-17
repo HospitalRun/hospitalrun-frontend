@@ -13,13 +13,13 @@ export default AbstractIndexRoute.extend(UserSession, {
   newButtonText: t('buttons.newItem'),
   pageTitle: t('inventory.labels.items'),
 
-  _modelQueryParams: function() {
+  _modelQueryParams() {
     return {
       mapReduce: 'inventory_by_name'
     };
   },
 
-  _getStartKeyFromItem: function(item) {
+  _getStartKeyFromItem(item) {
     let inventoryId = this._getPouchIdFromItem(item);
     return [item.get('name'), inventoryId];
   }

@@ -9,7 +9,7 @@ export default AbstractEditController.extend(UserRoles, {
   users: Ember.computed.alias('usersController.model'),
 
   actions: {
-    update: function() {
+    update() {
       let updateModel = this.get('model');
       let users = this.get('users');
 

@@ -13,14 +13,14 @@ export default Ember.Mixin.create({
   progressTimer: null,
   progressTitle: null,
 
-  scheduleProgress: function(f) {
+  scheduleProgress(f) {
     return Ember.run.later(this, function() {
       f.apply(this);
       this.set('progressTimer', this.scheduleProgress(f));
     }, this.get('progressInterval'));
   },
 
-  updateProgressBar: function() {
+  updateProgressBar() {
     let progressDialog = this.get('progressDialog');
     let progressBarValue = progressDialog.get('progressBarValue');
     progressBarValue += 10;
@@ -32,12 +32,12 @@ export default Ember.Mixin.create({
     progressDialog.set('progressBarStyle', progressBarStyle);
   },
 
-  closeProgressModal: function() {
+  closeProgressModal() {
     Ember.run.cancel(this.get('progressTimer'));
     this.send('closeModal');
   },
 
-  showProgressModal: function() {
+  showProgressModal() {
     let progressDialog = Ember.Object.create(this.get('progressDialogDefaults'));
     progressDialog.progressBarStyle = new Ember.String.htmlSafe(progressDialog.progressBarStyle);
     progressDialog.set('title', this.get('progressTitle'));
