@@ -115,7 +115,7 @@ export default Ember.Mixin.create(PatientVisits, {
 
     if (!Ember.isEmpty(patient) && this.get('findPatientVisits')) {
       visitPromise = this.getPatientVisits(patient);
-    } else if (Ember.isEmpty(patient) && this.get('findPatientVisits')) {
+    } else {
       visitPromise = Ember.RSVP.resolve([]);
     }
     return DS.PromiseArray.create({
