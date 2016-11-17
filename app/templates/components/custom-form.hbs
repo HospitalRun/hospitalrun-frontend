@@ -6,7 +6,7 @@
           <label>{{field.label}}</label>
           {{ext-radio
             content=field.mappedValues
-            value=(get model field.property)
+            value=(get model (concat propertyPrefix field.property))
             includeOtherOption=field.includeOtherOption
             otherOptionLabel=field.otherOptionLabel
           }}
@@ -16,19 +16,19 @@
         <div class="form-group {{field.displayClassNames}}">
           <label>{{field.label}}</label>
           {{#each field.values as |checkbox|}}
-            {{em-checkbox label=checkbox.label property=checkbox.property}}
+            {{em-checkbox label=checkbox.label property=(concat propertyPrefix checkbox.property)}}
           {{/each}}
         </div>
       {{/if}}
       {{#if (eq field.type 'textarea')}}
-        {{em-text label=field.label property=field.property class=field.displayClassNames}}
+        {{em-text label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
       {{/if}}
       {{#if (eq field.type 'text')}}
-        {{em-input label=field.label property=field.property class=field.displayClassNames}}
+        {{em-input label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
       {{/if}}
       {{#if (eq field.type 'select')}}
         {{em-select label=field.label
-          property=field.property
+          property=(concat propertyPrefix field.property)
           content=field.values
           class=field.displayClassNames
           prompt=field.prompt

@@ -1055,6 +1055,11 @@ export default {
     chargesByTypeTab: {
       charges: 'charges'
     },
+    customFormManager: {
+      buttons: {
+        addForm: 'Add Form'
+      },
+    },
     sortableColumn: {
       labels: {
         selectAll: '(Select All)'
@@ -1091,6 +1096,17 @@ export default {
     },
     priceList: {
       charges: '{{pricingType}} charges'
+    }
+  },
+  customForms: {
+    buttons: {
+      addForm: 'Add Form'
+    },
+    labels: {
+      formToAdd: 'Form To Add'
+    },
+    titles: {
+      addCustomForm: 'Add Custom Form'
     }
   }
 };
