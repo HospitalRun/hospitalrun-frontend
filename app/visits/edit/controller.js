@@ -113,6 +113,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
 
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
+  customForms: Ember.computed.alias('visitsController.customForms'),
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
   findPatientVisits: false,
   hideChargeHeader: true,
@@ -124,7 +125,6 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
   physicianList: Ember.computed.alias('visitsController.physicianList'),
   locationList: Ember.computed.alias('visitsController.locationList'),
   visitTypesList: Ember.computed.alias('visitsController.visitTypesList'),
-  visitTemplate: 'visits/initial',
   lookupListsToUpdate: [{
     name: 'diagnosisList',
     property: 'model.primaryBillingDiagnosis',

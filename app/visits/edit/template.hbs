@@ -52,7 +52,6 @@
                 selection=model.examiner
               }}
             </div>
-            {{partial visitTemplate}}
             <div class="row">
               {{select-or-typeahead className="col-sm-5" property="primaryDiagnosis"
                 label=diagnosisLabel list=diagnosisList
@@ -73,6 +72,7 @@
                 </div>
               {{/if}}
             </div>
+            {{custom-form-manager model=model customForms=customForms}}
           {{/em-form}}
         </div>
       </div>
