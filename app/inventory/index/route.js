@@ -13,12 +13,12 @@ export default AbstractIndexRoute.extend(UserSession, {
   newButtonText: t('buttons.newRequestPlus'),
   pageTitle: t('navigation.subnav.requests'),
 
-  _getStartKeyFromItem: function(item) {
+  _getStartKeyFromItem(item) {
     let itemId = this._getPouchIdFromItem(item);
     return ['Requested', null, itemId];
   },
 
-  _modelQueryParams: function() {
+  _modelQueryParams() {
     let maxValue = this.get('maxValue');
     return {
       options: {
@@ -30,7 +30,7 @@ export default AbstractIndexRoute.extend(UserSession, {
   },
 
   actions: {
-    fulfill: function(item) {
+    fulfill(item) {
       item.set('dateCompleted', new Date());
       this.transitionTo('inventory.request', item);
     }

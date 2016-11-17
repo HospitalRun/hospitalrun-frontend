@@ -6,7 +6,7 @@ export default Ember.Component.extend({
     this.locationChange = this.currentLocationChanged.bind(this);
   }.on('init'),
 
-  currentLocationChanged: function(newLocation) {
+  currentLocationChanged(newLocation) {
     this.get('locationPicker').set('selectedLocation', newLocation);
     Ember.run.once(this, function() {
       this.get('parentView').locationChange();

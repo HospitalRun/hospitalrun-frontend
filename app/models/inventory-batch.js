@@ -5,7 +5,7 @@ import Ember from 'ember';
  * Model to represent a request for inventory items.
  */
 export default AbstractModel.extend({
-  haveInvoiceItems: function() {
+  haveInvoiceItems() {
     let invoiceItems = this.get('invoiceItems');
     return (Ember.isEmpty(invoiceItems));
   },
@@ -16,7 +16,7 @@ export default AbstractModel.extend({
     },
     inventoryItemTypeAhead: {
       presence: {
-        if: function(object) {
+        if(object) {
           return object.haveInvoiceItems();
         }
       }
@@ -27,7 +27,7 @@ export default AbstractModel.extend({
         messages: {
           greaterThan: 'must be greater than 0'
         },
-        if: function(object) {
+        if(object) {
           return object.haveInvoiceItems();
         }
       }
@@ -38,7 +38,7 @@ export default AbstractModel.extend({
         messages: {
           greaterThan: 'must be greater than 0'
         },
-        if: function(object) {
+        if(object) {
           return object.haveInvoiceItems();
         }
       }

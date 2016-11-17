@@ -1,11 +1,11 @@
 import Ember from 'ember';
 export default Ember.TextField.extend(Ember.TargetActionSupport, {
-  change: function() {
+  change() {
     this.triggerAction({
       action: 'search'
     });
   },
-  didInsertElement: function() {
+  didInsertElement() {
     this.$().focus();
   }
 });

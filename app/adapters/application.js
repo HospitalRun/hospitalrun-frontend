@@ -121,7 +121,7 @@ export default Adapter.extend(PouchAdapterUtils, {
     return haveSpecialCharacters;
   },
 
-  _startChangesToStoreListener: function() {
+  _startChangesToStoreListener() {
     let db = this.get('db');
     if (db) {
       this.changes = db.changes({
@@ -134,7 +134,7 @@ export default Adapter.extend(PouchAdapterUtils, {
     }
   },
 
-  generateIdForRecord: function() {
+  generateIdForRecord() {
     return uuid.v4();
   },
 

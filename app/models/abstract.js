@@ -15,7 +15,7 @@ export default Model.extend(UserSession, EmberValidations, {
   * Also, if the save failed because of a conflict, reload the record and reapply the changed attributes and
   * attempt to save again.
   */
-  save: function(options) {
+  save(options) {
     let attribute;
     let changedAttributes = this.changedAttributes();
     let modifiedDate = new Date();

@@ -38,17 +38,17 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
   }.property('moduleName'),
 
   actions: {
-    allItems: function() {
+    allItems() {
       this.transitionTo(`${this.get('moduleName')}.index`);
     },
-    deleteItem: function(item) {
+    deleteItem(item) {
       let deletePath = this.get('deletePath');
       this.send('openModal', deletePath, item);
     },
-    editItem: function(item) {
+    editItem(item) {
       this.transitionTo(this.get('editPath'), item);
     },
-    newItem: function() {
+    newItem() {
       if (this.currentUserCan(this.get('addCapability'))) {
         this.transitionTo(this.get('editPath'), 'new');
       }
@@ -62,7 +62,7 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
      * - newButtonText - The text to display for the "new" button.
      * - newButtonAction - The action to fire for the "new" button.
      */
-    setSectionHeader: function(details) {
+    setSectionHeader(details) {
       let currentController = this.controllerFor(this.get('moduleName'));
       currentController.setProperties(details);
     }
@@ -72,7 +72,7 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
   /**
    * Make sure the user has permissions to the module; if not reroute to index.
    */
-  beforeModel: function(transition) {
+  beforeModel(transition) {
     let moduleName = this.get('moduleName');
     if (this.currentUserCan(moduleName)) {
       return this._super(transition);
@@ -87,11 +87,11 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
    * @return a promise that will resolved to a generated id;default is null which means that an
    * id will be automatically generated via Ember data.
    */
-  generateId: function() {
+  generateId() {
     return Ember.RSVP.resolve(null);
   },
 
-  model: function() {
+  model() {
     if (!Ember.isEmpty(this.additionalModels)) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
         let promises = this.additionalModels.map(function(modelMap) {
@@ -115,11 +115,11 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
     }
   },
 
-  renderTemplate: function() {
+  renderTemplate() {
     this.render('section');
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     let navigationController = this.controllerFor('navigation');
     if (this.get('allowSearch') === true) {
       navigationController.set('allowSearch', true);

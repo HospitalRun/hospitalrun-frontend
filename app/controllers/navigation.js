@@ -18,7 +18,7 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
   currentOpenNav: null,
 
   actions: {
-    about: function() {
+    about() {
       let version = this.get('version');
       this.get('ajax').request('/serverinfo').then((siteInfo) => {
         let message = `Version: ${version}`;
@@ -29,14 +29,14 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
       });
     },
 
-    invalidateSession: function() {
+    invalidateSession() {
       let session = this.get('session');
       if (session.get('isAuthenticated')) {
         session.invalidate();
       }
     },
 
-    search: function() {
+    search() {
       if (this.allowSearch && this.searchRoute) {
         let currentRouteName = this.get('currentRouteName');
         let currentSearchText = this.get('currentSearchText');
@@ -50,7 +50,7 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
       }
     },
 
-    navAction: function(nav) {
+    navAction(nav) {
       if (this.currentOpenNav && this.currentOpenNav.route !== nav.route) {
         this.currentOpenNav.closeSubnav();
       }
@@ -59,11 +59,11 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
       this.set('isShowingSettings', false);
     },
 
-    toggleSettings: function() {
+    toggleSettings() {
       this.toggleProperty('isShowingSettings');
     },
 
-    closeSettings: function() {
+    closeSettings() {
       this.set('isShowingSettings', false);
     }
 

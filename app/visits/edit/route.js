@@ -7,7 +7,7 @@ export default AbstractEditRoute.extend(ChargeRoute, {
   newTitle: 'New Visit',
   pricingCategory: 'Ward',
 
-  getNewData: function() {
+  getNewData() {
     return Ember.RSVP.resolve({
       visitType: 'Admission',
       startDate: new Date(),
@@ -16,10 +16,10 @@ export default AbstractEditRoute.extend(ChargeRoute, {
   },
 
   actions: {
-    updateNote: function() {
+    updateNote() {
       this.controller.send('update', true);
     },
-    deletePatientNote: function(model) {
+    deletePatientNote(model) {
       this.controller.send('deletePatientNote', model);
     }
   }

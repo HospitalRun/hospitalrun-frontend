@@ -3,16 +3,16 @@ import { translationMacro as t } from 'ember-i18n';
 export default AbstractIndexRoute.extend({
   hideNewButton: true,
   pageTitle: t('admin.lookup.pageTitle'),
-  model: function() {
+  model() {
     return this.store.findAll('lookup');
   },
 
-  afterModel: function(model) {
+  afterModel(model) {
     model.set('lookupType', 'anesthesia_types');
   },
 
   actions: {
-    refreshLookupLists: function() {
+    refreshLookupLists() {
       this.refresh();
     }
   }

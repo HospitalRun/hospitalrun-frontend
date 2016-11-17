@@ -72,7 +72,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
 
   updateCapability: 'add_inventory_item',
 
-  _addNewInventoryItem: function() {
+  _addNewInventoryItem() {
     this.generateId().then(function(inventoryId) {
       let inventoryItem = this.store.createRecord('inventory', {
         id: inventoryId,
@@ -84,7 +84,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     }.bind(this));
   },
 
-  _addInventoryItem: function() {
+  _addInventoryItem() {
     let model = this.get('model');
     let inventoryItemTypeAhead = this.get('model.inventoryItemTypeAhead');
     let purchaseCost = this.get('model.purchaseCost');
@@ -105,7 +105,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     }.bind(this));
   },
 
-  _addInvoiceItem: function() {
+  _addInvoiceItem() {
     let model = this.get('model');
     let invoiceItems = model.get('invoiceItems');
     let itemProperties = model.getProperties(this.get('purchaseAttributes'));
@@ -121,7 +121,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     model.set('vendorItemNo');
   },
 
-  _findInventoryItem: function(purchase) {
+  _findInventoryItem(purchase) {
     let invoiceItems = this.get('model.invoiceItems');
     let inventoryId = purchase.get('inventoryItem');
     if (!Ember.isEmpty(inventoryId)) {
@@ -134,7 +134,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     }
   },
 
-  _haveValidInventoryItem: function() {
+  _haveValidInventoryItem() {
     let inventoryItemTypeAhead = this.get('model.inventoryItemTypeAhead');
     let inventoryItem = this.get('model.inventoryItem');
     if (Ember.isEmpty(inventoryItemTypeAhead) || Ember.isEmpty(inventoryItem)) {
@@ -150,7 +150,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     }
   },
 
-  _savePurchases: function() {
+  _savePurchases() {
     let model = this.get('model');
     let purchaseDefaults = model.getProperties([
       'dateReceived',
@@ -200,11 +200,11 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
   },
 
   actions: {
-    addInventoryItem: function() {
+    addInventoryItem() {
       this._addInventoryItem();
     },
 
-    addedNewInventoryItem: function(inventoryItem) {
+    addedNewInventoryItem(inventoryItem) {
       this.set('model.inventoryItem', inventoryItem);
       this._addInvoiceItem();
       this.send('closeModal');
@@ -213,14 +213,14 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
       }
     },
 
-    removeItem: function(removeInfo) {
+    removeItem(removeInfo) {
       let invoiceItems = this.get('model.invoiceItems');
       let item = removeInfo.itemToRemove;
       invoiceItems.removeObject(item);
       this.send('closeModal');
     },
 
-    showRemoveItem: function(item) {
+    showRemoveItem(item) {
       let message = this.get('i18n').t('inventory.messages.removeItem');
       let model = Ember.Object.create({
         itemToRemove: item
@@ -232,7 +232,7 @@ export default AbstractEditController.extend(InventoryId, InventoryLocations, In
     /**
      * Update the model
      */
-    update: function() {
+    update() {
       this.set('doingUpdate', true);
       this._addInventoryItem().then(function(addingNewInventory) {
         if (!addingNewInventory) {

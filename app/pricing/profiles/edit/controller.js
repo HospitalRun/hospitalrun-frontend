@@ -1,12 +1,12 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 export default AbstractEditController.extend({
   actions: {
-    cancel: function() {
+    cancel() {
       this.send('closeModal');
     }
   },
 
-  afterUpdate: function(record) {
+  afterUpdate(record) {
     let message = `The pricing profile ${record.get('name')} has been saved.`;
     this.displayAlert('Pricing Profile Saved', message, 'refreshProfiles');
   },

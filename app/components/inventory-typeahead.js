@@ -4,7 +4,7 @@ export default TypeAhead.extend({
   classNameBindings: ['haveInventoryItems'],
   displayKey: 'name',
   showQuantity: true,
-  _mapInventoryItems: function(item) {
+  _mapInventoryItems(item) {
     let returnObj = {};
     if (this.get('showQuantity') && item.quantity) {
       returnObj.name = `${item.name} - ${item.friendlyId} (${item.quantity} available)`;
