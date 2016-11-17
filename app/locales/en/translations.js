@@ -409,6 +409,7 @@ export default {
     newRequestPlus: '+ new request',
     addVisit: 'Add Visit',
     search: 'Search',
+    filter: 'Filter',
     edit: 'Edit',
     addLineItem: 'Add Line Item'
   },

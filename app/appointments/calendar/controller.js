@@ -11,6 +11,9 @@ export default AppointmentIndexController.extend({
   actions: {
     navigateToAppointment(calendarEvent) {
       this.send("editAppointment", calendarEvent.appointment);
+    },
+
+    filter() {
     }
   }
 });
