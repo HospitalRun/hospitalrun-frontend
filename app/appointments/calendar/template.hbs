@@ -1,3 +1,7 @@
 <div>
-    {{full-calendar events=model header=calendarHeader}}
+    {{full-calendar
+        events=model 
+        header=calendarHeader 
+        eventClick=(action "navigateToAppointment")
+    }}
 </div>

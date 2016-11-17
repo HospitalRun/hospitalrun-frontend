@@ -6,5 +6,11 @@ export default AppointmentIndexController.extend({
     left: 'title',
     center: 'agendaDay,agendaWeek,month',
     right: 'today prev,next'
+  },
+
+  actions: {
+    navigateToAppointment(calendarEvent) {
+      this.send("editAppointment", calendarEvent.appointment);
+    }
   }
 });

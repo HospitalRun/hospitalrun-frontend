@@ -10,7 +10,8 @@ export default AppointmentIndexRoute.extend({
       return {
         title: appointment.get("patient").get("displayName") + "\n" + appointment.get("provider"),
         start: appointment.get("startDate"),
-        end: appointment.get("endDate")
+        end: appointment.get("endDate"),
+        appointment: appointment
       }
     }
 
