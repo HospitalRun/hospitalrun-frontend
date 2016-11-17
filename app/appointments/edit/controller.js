@@ -80,11 +80,11 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
 
   updateCapability: 'add_appointment',
 
-  afterUpdate: function() {
+  afterUpdate() {
     this.send(this.get('cancelAction'));
   },
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     this._updateAppointmentDates();
     return Ember.RSVP.Promise.resolve();
   },
@@ -130,14 +130,14 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
     this._updateDate('startMinute', 'startDate');
   }.observes('startMinute'),
 
-  _updateAllTimes: function() {
+  _updateAllTimes() {
     this.endHourChanged();
     this.endMinuteChanged();
     this.startMinuteChanged();
     this.startHourChanged();
   },
 
-  _updateAppointmentDates: function() {
+  _updateAppointmentDates() {
     let allDay = this.get('model.allDay');
     let isAdmissionAppointment = this.get('isAdmissionAppointment');
     let appointmentDate = this.get('model.appointmentDate');
@@ -150,7 +150,7 @@ export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodu
     }
   },
 
-  _updateDate: function(fieldName, dateFieldName) {
+  _updateDate(fieldName, dateFieldName) {
     let model = this.get('model');
     let fieldValue = this.get(fieldName);
     let dateToChange = model.get(dateFieldName);

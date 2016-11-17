@@ -33,7 +33,7 @@ export default Ember.Component.extend(SelectValues, {
         classNames += ` col-sm-${colWidth * colSpan}`;
         field.set('displayClassNames', classNames);
         if (field.get('type') === 'radio') {
-          field.set('mappedValues', field.get('values').map((value) => Ember.get(value,'label')));
+          field.set('mappedValues', field.get('values').map((value) => Ember.get(value, 'label')));
         }
         currentRow.push(field);
         colCount += colSpan;

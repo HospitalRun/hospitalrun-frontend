@@ -97,7 +97,7 @@ export default AbstractModel.extend(LocationName, {
     }
   },
 
-  updateQuantity: function() {
+  updateQuantity() {
     let purchases = this.get('purchases');
     let newQuantity = purchases.reduce((previousItem, currentItem) => {
       let currentQuantity = 0;

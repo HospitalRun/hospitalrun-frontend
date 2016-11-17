@@ -13,9 +13,9 @@ export default DS.Transform.extend({
       return serialized;
     }
     let customFormKeys = Object.keys(serialized);
-    let deserialized =Ember.Object.create();
+    let deserialized = Ember.Object.create();
     customFormKeys.forEach((customFormId) => {
-      deserialized.set(customFormId, Ember.Object.create(serialized[customFormId]))
+      deserialized.set(customFormId, Ember.Object.create(serialized[customFormId]));
     });
     return deserialized;
   },

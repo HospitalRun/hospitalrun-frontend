@@ -1,7 +1,7 @@
 import Ember from 'ember';
 export default Ember.Controller.extend({
   actions: {
-    returnToInvoice: function() {
+    returnToInvoice() {
       this.transitionTo('invoices.edit', this.get('model'));
     }
   }

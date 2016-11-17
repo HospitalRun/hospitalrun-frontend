@@ -4,17 +4,17 @@ export default SelectOrTypeahead.extend({
   checkboxesPerRow: 5,
   model: null,
 
-  _getLabelFromContent: function(object) {
+  _getLabelFromContent(object) {
     let optionLabelPath = this.get('optionLabelPath');
     return Ember.get(object, optionLabelPath);
   },
 
-  _getValueFromContent: function(object) {
+  _getValueFromContent(object) {
     let optionValuePath = this.get('optionValuePath');
     return Ember.get(object, optionValuePath);
   },
 
-  _mapCheckboxValues: function(value) {
+  _mapCheckboxValues(value) {
     return {
       label: this._getLabelFromContent(value),
       value: this._getValueFromContent(value)
@@ -45,7 +45,7 @@ export default SelectOrTypeahead.extend({
   }.property('content', 'checkboxesPerRow'),
 
   actions: {
-    checkboxChanged: function(value, checked) {
+    checkboxChanged(value, checked) {
       let property = this.get('property');
       let propertyName = `model.${property}`;
       let selectedValues = this.get(propertyName);

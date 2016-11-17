@@ -11,8 +11,7 @@ export default AbstractEditController.extend({
   previewModel: Ember.Object.create(),
   updateCapability: 'update_config',
 
-
-  afterUpdate: function() {
+  afterUpdate() {
     this.displayAlert(this.get('i18n').t('admin.customForms.titles.formSaved'), this.get('i18n').t('admin.customForms.messages.formSaved', this.get('model')));
   },
 
@@ -37,13 +36,13 @@ export default AbstractEditController.extend({
     moveFieldDown(field) {
       let fields = this.get('model.fields');
       let currentFieldIdx = fields.indexOf(field);
-      let nextField = fields.objectAt(currentFieldIdx+1);
+      let nextField = fields.objectAt(currentFieldIdx + 1);
       fields.replace(currentFieldIdx, 2, [nextField, field]);
     },
 
     moveFieldUp(field) {
       let fields = this.get('model.fields');
-      let previousFieldIdx = (fields.indexOf(field) -1);
+      let previousFieldIdx = (fields.indexOf(field) - 1);
       let previousField = fields.objectAt(previousFieldIdx);
       fields.replace(previousFieldIdx, 2, [field, previousField]);
     },
@@ -64,7 +63,7 @@ export default AbstractEditController.extend({
     let i18n = this.get('i18n');
     let formName = this.get('model.name');
     if (isEmpty(formName)) {
-      return i18n.t('admin.customForms.labels.newForm')
+      return i18n.t('admin.customForms.labels.newForm');
     } else {
       return formName;
     }
@@ -109,7 +108,7 @@ export default AbstractEditController.extend({
     fieldAttributes.property = field.get('property');
     let newField = store.push({
       data: {
-        id:  uuid.v4(),
+        id: uuid.v4(),
         type: 'custom-field',
         attributes: fieldAttributes
       }
@@ -124,7 +123,7 @@ export default AbstractEditController.extend({
     if (type === 'checkbox') {
       let values = field.get('values');
       values.forEach((value, index) => {
-        value.set('property',  `${propertyName}${(index+1)}`);
+        value.set('property',  `${propertyName}${(index + 1)}`);
       });
     } else {
       field.set('property', propertyName);

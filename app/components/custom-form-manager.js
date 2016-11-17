@@ -33,8 +33,8 @@ export default Ember.Component.extend(SelectValues, {
       return Object.keys(modelForms).map((formId) => {
         return {
           form: customForms.findBy('id', formId),
-          propertyPrefix: `customForms.${formId}.`,
-        }
+          propertyPrefix: `customForms.${formId}.`
+        };
       });
     }
   }),

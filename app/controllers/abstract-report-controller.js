@@ -30,7 +30,7 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
    * will be used.
    * @param reportAction {Object} action to fire on row when row is clicked.
    */
-  _addReportRow: function(row, skipFormatting, reportColumns, rowAction) {
+  _addReportRow(row, skipFormatting, reportColumns, rowAction) {
     let columnValue;
     let reportRows = this.get('reportRows');
     let reportRow = [];
@@ -57,7 +57,7 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
     }
     if (rowAction) {
       reportRows.addObject({
-        rowAction: rowAction,
+        rowAction,
         row: reportRow
       });
     } else {
@@ -71,7 +71,7 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
    * optional, if not set, the property reportColumns on the controller
    * will be used.
    */
-  _finishReport: function(reportColumns) {
+  _finishReport(reportColumns) {
     this.set('showReportResults', true);
     this.set('offset', 0);
     this._setReportHeaders(reportColumns);
@@ -80,7 +80,7 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
     this.closeProgressModal();
   },
 
-  _generateExport: function() {
+  _generateExport() {
     let csvRows = [];
     let reportHeaders = this.get('reportHeaders');
     let dataArray = [reportHeaders];
@@ -111,14 +111,14 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
     this.set('csvExport', uriContent);
   },
 
-  _notifyReportError: function(errorMessage) {
+  _notifyReportError(errorMessage) {
     let alertMessage = 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.';
     this.closeProgressModal();
     this.displayAlert('Error Generating Report', alertMessage);
     throw new Error(errorMessage);
   },
 
-  _setReportHeaders: function(reportColumns) {
+  _setReportHeaders(reportColumns) {
     let reportHeaders = [];
     if (Ember.isEmpty(reportColumns)) {
       reportColumns = this.get('reportColumns');
@@ -131,7 +131,7 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
     this.set('reportHeaders', reportHeaders);
   },
 
-  _setReportTitle: function() {
+  _setReportTitle() {
     let endDate = this.get('endDate');
     let formattedEndDate = '';
     let formattedStartDate = '';
@@ -152,21 +152,21 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
   },
 
   actions: {
-    firstPage: function() {
+    firstPage() {
       this.set('offset', 0);
     },
 
-    nextPage: function() {
+    nextPage() {
       let limit = this.get('limit');
       this.incrementProperty('offset', limit);
     },
 
-    previousPage: function() {
+    previousPage() {
       let limit = this.get('limit');
       this.decrementProperty('offset', limit);
     },
 
-    lastPage: function() {
+    lastPage() {
       let reportRowLength = this.get('reportRows.length');
       let limit = this.get('limit');
       let pages = parseInt(reportRowLength / limit);

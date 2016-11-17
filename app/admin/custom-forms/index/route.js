@@ -44,7 +44,7 @@ export default AbstractIndexRoute.extend(ModalHelper, UserSession, {
       this.transitionTo('admin.custom-forms.edit', item);
     },
 
-   newItem() {
+    newItem() {
       this.transitionTo('admin.custom-forms.edit', 'new');
     }
 

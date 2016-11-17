@@ -3,7 +3,7 @@ export default AbstractEditController.extend({
   hideCancelButton: true,
   updateCapability: 'update_config',
 
-  afterUpdate: function() {
+  afterUpdate() {
     this.displayAlert(this.get('i18n').t('admin.address.titles.optionsSaved'), this.get('i18n').t('admin.address.messages.addressSaved'));
   }
 });

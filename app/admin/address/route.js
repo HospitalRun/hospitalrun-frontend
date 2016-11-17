@@ -5,7 +5,7 @@ export default AbstractEditRoute.extend({
   hideNewButton: true,
   newTitle: t('admin.address.newTitle'),
   editTitle: t('admin.address.editTitle'),
-  model: function() {
+  model() {
     return new Ember.RSVP.Promise(function(resolve) {
       this.get('store').find('option', 'address_options').then(function(addressOptions) {
         resolve(addressOptions);

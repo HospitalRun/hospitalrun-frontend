@@ -6,20 +6,20 @@ export default AbstractEditRoute.extend({
   newTitle: 'New Invoice',
 
   actions: {
-    deleteCharge: function(model) {
+    deleteCharge(model) {
       this.controller.send('deleteCharge', model);
     },
 
-    deleteLineItem: function(model) {
+    deleteLineItem(model) {
       this.controller.send('deleteLineItem', model);
     },
 
-    removePayment: function(model) {
+    removePayment(model) {
       this.controller.send('removePayment', model);
     }
   },
 
-  afterModel: function(model) {
+  afterModel(model) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       let lineItems = model.get('lineItems');
       let promises = [];
@@ -38,14 +38,14 @@ export default AbstractEditRoute.extend({
     });
   },
 
-  getNewData: function() {
+  getNewData() {
     return Ember.RSVP.resolve({
       billDate: new Date(),
       status: 'Draft'
     });
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     model.set('originalPaymentProfileId', model.get('paymentProfile.id'));
     this._super(controller, model);
     let lineItems = model.get('lineItems');

@@ -46,13 +46,13 @@ export default AbstractModuleRoute.extend({
   }],
 
   actions: {
-    dispenseMedication: function() {
+    dispenseMedication() {
       if (this.currentUserCan('fulfill_medication')) {
         this.transitionTo('medication.edit', 'dispense');
       }
     },
 
-    returnMedication: function() {
+    returnMedication() {
       if (this.currentUserCan(this.get('addCapability'))) {
         this.transitionTo('medication.return', 'new');
       }

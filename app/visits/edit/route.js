@@ -9,7 +9,7 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
   newTitle: t('visits.titles.newVisit'),
   pricingCategory: 'Ward',
 
-  model: function(params) {
+  model(params) {
     let idParam = this.get('idParam');
     if (!Ember.isEmpty(idParam) && params[idParam] === 'checkin') {
       let newVisit = this.get('store').createRecord('visit', {
@@ -24,7 +24,7 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
     }
   },
 
-  getNewData: function() {
+  getNewData() {
     return Ember.RSVP.resolve({
       visitType: 'Admission',
       startDate: new Date(),
@@ -32,7 +32,7 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
     });
   },
 
-  getScreenTitle: function(model) {
+  getScreenTitle(model) {
     if (model.get('checkIn')) {
       return this.get('i18n').t('visits.titles.patientCheckIn');
     } else {
@@ -41,10 +41,10 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
   },
 
   actions: {
-    updateNote: function() {
+    updateNote() {
       this.controller.send('update', true);
     },
-    deletePatientNote: function(model) {
+    deletePatientNote(model) {
       this.controller.send('deletePatientNote', model);
     }
   }

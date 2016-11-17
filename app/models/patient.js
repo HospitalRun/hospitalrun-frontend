@@ -91,7 +91,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     return this.convertDOBToText(dob, true);
   }.property('dateOfBirth'),
 
-  shortDisplayName: computed('firstName', 'lastName', function () {
+  shortDisplayName: computed('firstName', 'lastName', function() {
     return this.getPatientDisplayName(this, true);
   }),
 

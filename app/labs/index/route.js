@@ -6,7 +6,7 @@ export default AbstractIndexRoute.extend({
   pageTitle: t('labs.requestsTitle'),
   searchStatus: 'Requested',
 
-  _getStartKeyFromItem: function(item) {
+  _getStartKeyFromItem(item) {
     let labDateAsTime = item.get('labDateAsTime');
     let id = this._getPouchIdFromItem(item);
     let requestedDateAsTime = item.get('requestedDateAsTime');
@@ -14,7 +14,7 @@ export default AbstractIndexRoute.extend({
     return [searchStatus, requestedDateAsTime, labDateAsTime, id];
   },
 
-  _modelQueryParams: function() {
+  _modelQueryParams() {
     let maxId = this._getMaxPouchId();
     let maxValue = this.get('maxValue');
     let minId = this._getMinPouchId();

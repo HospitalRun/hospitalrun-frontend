@@ -93,8 +93,8 @@ export default Ember.Mixin.create({
 
     if (this.get('setOnBlur')) {
       $input.on('keyup', () => {
-        let $hint = this.$('.tt-hint'),
-          hintValue = $hint.val();
+        let $hint = this.$('.tt-hint');
+        let hintValue = $hint.val();
         this.set('lastHint', hintValue);
         this.set('selectedItem', false);
       });
@@ -109,8 +109,8 @@ export default Ember.Mixin.create({
           this.set('selection', selection);
         }
         if (!this.get('selectedItem')) {
-          let lastHint = this.get('lastHint'),
-            exactMatch = false;
+          let lastHint = this.get('lastHint');
+          let exactMatch = false;
           if (Ember.isEmpty(lastHint)) {
             lastHint = targetValue;
             exactMatch = true;

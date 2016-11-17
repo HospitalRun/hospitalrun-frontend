@@ -21,7 +21,7 @@ export default Ember.Component.extend(UserSession, {
     this._setupSubNav();
   }.on('init'),
 
-  _setupSubNav: function() {
+  _setupSubNav() {
     let nav = this.get('nav');
     nav.subnav.forEach((item) => {
       item.show = this.currentUserCan(item.capability);
@@ -32,12 +32,12 @@ export default Ember.Component.extend(UserSession, {
   callCloseSettings: 'closeSettings',
 
   actions: {
-    toggleContent: function() {
+    toggleContent() {
       this.set('isShowing', !this.get('isShowing'));
       this.sendAction('callNavAction', this.nav);
     },
 
-    resetNav: function() {
+    resetNav() {
       this.sendAction('callCloseSettings');
     }
   }

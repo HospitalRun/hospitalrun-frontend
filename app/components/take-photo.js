@@ -24,7 +24,7 @@ export default Ember.Component.extend({
   /**
    * Setup the specified camera
    */
-  _cameraChange: function(selectedCamera) {
+  _cameraChange(selectedCamera) {
     this.set('selectedCamera', selectedCamera);
     let stream = this.get('stream');
     let video = this.get('video');
@@ -43,14 +43,14 @@ export default Ember.Component.extend({
     this._setupVideo();
   },
 
-  _errorCallback: function(error) {
+  _errorCallback(error) {
     console.log('navigator.getUserMedia error: ', error);
   },
 
   /**
    * Callback for MediaStreamTrack.getSources
    */
-  _gotSources: function(sourceInfos) {
+  _gotSources(sourceInfos) {
     let cameraCount = 0;
     let cameraLabel;
     let videoSources = [];
@@ -77,7 +77,7 @@ export default Ember.Component.extend({
   /**
    * Callback handler for getUserMedia.
    */
-  _gotStream: function(stream) {
+  _gotStream(stream) {
     if (this.isDestroyed) {
       this._stopStream(stream);
     } else {
@@ -88,7 +88,7 @@ export default Ember.Component.extend({
     }
   },
 
-  _photoSourceChanged: function(photoSource) {
+  _photoSourceChanged(photoSource) {
     let camera = this.$('.camera');
     let fileUpload = this.$('.fileupload');
     let setupCamera = this.get('setupCamera');
@@ -104,9 +104,9 @@ export default Ember.Component.extend({
         let photo = this.$('img').get(0);
         let video = this.$('video').get(0);
         this.setProperties({
-          canvas: canvas,
-          photo: photo,
-          video: video
+          canvas,
+          photo,
+          video
         });
         if (typeof MediaStreamTrack === 'undefined' || MediaStreamTrack.getSources === 'undefined') {
           if (navigator.getUserMedia) {
@@ -122,7 +122,7 @@ export default Ember.Component.extend({
     }
   },
 
-  _setupCanPlayListener: function(video) {
+  _setupCanPlayListener(video) {
     // Remove listener if it was already added before.
     video.removeEventListener('canplay', this._setupVideo.bind(this), false);
     video.addEventListener('canplay', this._setupVideo.bind(this), false);
@@ -131,7 +131,7 @@ export default Ember.Component.extend({
   /**
    * Setup the dimensions for the video preview and picture elements.
    */
-  _setupVideo: function() {
+  _setupVideo() {
     let canvas = this.get('canvas');
     let height = this.get('height');
     let video = this.get('video');
@@ -142,8 +142,8 @@ export default Ember.Component.extend({
     canvas.setAttribute('width', width);
     canvas.setAttribute('height', height);
     this.setProperties({
-      height: height,
-      width: width
+      height,
+      width
     });
   },
 
@@ -157,7 +157,7 @@ export default Ember.Component.extend({
     this.set('photoSource', photoSource);
   }.on('init'),
 
-  _stopStream: function(stream) {
+  _stopStream(stream) {
     let streamToStop = stream || this.get('stream');
     if (!Ember.isEmpty(streamToStop)) {
       if (typeof streamToStop.active === 'undefined') {
@@ -170,7 +170,7 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    takePhoto: function() {
+    takePhoto() {
       let canvas = this.get('canvas');
       let height = this.get('height');
       let video = this.get('video');
@@ -196,7 +196,7 @@ export default Ember.Component.extend({
     }
   }.property(),
 
-  didInsertElement: function() {
+  didInsertElement() {
     let camera = this.$('.camera');
     let fileUpload = this.$('.fileUpload');
     if (camera.length === 1) {
@@ -211,7 +211,7 @@ export default Ember.Component.extend({
     return (photoSource === takeAPicture && videoSources && videoSources.length > 1);
   }.property('photoSource', 'videoSources'),
 
-  willDestroyElement: function() {
+  willDestroyElement() {
     this._stopStream();
   }
 });

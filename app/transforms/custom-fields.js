@@ -17,7 +17,7 @@ export default DS.Transform.extend({
       let store = this.get('store');
       let record = store.push({
         data: {
-          id:  uuid.v4(),
+          id: uuid.v4(),
           type: 'custom-field',
           attributes: customField
         }

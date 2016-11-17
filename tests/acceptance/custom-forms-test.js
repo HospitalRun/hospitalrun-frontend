@@ -3,11 +3,11 @@ import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
 module('Acceptance | custom forms', {
-  beforeEach: function() {
+  beforeEach() {
     this.application = startApp();
   },
 
-  afterEach: function() {
+  afterEach() {
     Ember.run(this.application, 'destroy');
   }
 });
@@ -33,10 +33,10 @@ test('crud operations on custom-forms', function(assert) {
       });
       andThen(function() {
         assert.equal(find('.custom-field-value:contains(Delete Me)').length, 0, 'Field value successfully added');
-      })
+      });
       andThen(function() {
-         click('button.delete-field-value');
-      })
+        click('button.delete-field-value');
+      });
       andThen(function() {
         assert.equal(find('.custom-field-value:contains(Delete Me)').length, 0, 'Field value successfully deleted');
         values.forEach(function(value) {
@@ -72,7 +72,7 @@ test('crud operations on custom-forms', function(assert) {
       assert.equal(find('.form-preview input[id*=beverage]').length, 1, 'Found Beverage input');
       assert.equal(find('.form-preview label:contains(Special Instructions)').length, 1, 'Found Special Instructions Label');
       assert.equal(find('.form-preview textarea[id*=specialInstructions]').length, 1, 'Found special instructions textarea');
-      click('button:contains(Preview)'); //Hide preview to reset it back to being closed.
+      click('button:contains(Preview)'); // Hide preview to reset it back to being closed.
     });
   }
 
@@ -87,7 +87,7 @@ test('crud operations on custom-forms', function(assert) {
     andThen(function() {
       assert.equal(find('.view-current-title').text(), 'New Custom Form', 'New custom form edit page displays');
       assert.equal(currentURL(), '/admin/custom-forms/edit/new', 'Navigated to create new custom form');
-      fillIn('.custom-form-name input', 'Test Custom Form')
+      fillIn('.custom-form-name input', 'Test Custom Form');
       fillIn('.custom-form-columns input', '2');
       select('.custom-form-type', 'Visit');
       click('.panel-footer button:contains(Add)');
@@ -95,13 +95,13 @@ test('crud operations on custom-forms', function(assert) {
     });
     andThen(function() {
       assert.equal(find('.modal-title').text(), 'Form Saved', 'Form is saved');
-      addField('Checkbox','Pizza Toppings', toppings);
+      addField('Checkbox', 'Pizza Toppings', toppings);
     });
     andThen(function() {
-      addField('Dropdown','Pizza Crust', crusts);
+      addField('Dropdown', 'Pizza Crust', crusts);
     });
     andThen(function() {
-      addField('Radio','Dessert', desserts);
+      addField('Radio', 'Dessert', desserts);
     });
     andThen(function() {
       addField('Text', 'Beverage');

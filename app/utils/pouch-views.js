@@ -251,7 +251,7 @@ let designDocs = [{
 }, {
   name: 'custom_form_by_type',
   function: generateView('customForm',
-    `emit(doc.data.formType);`
+    'emit(doc.data.formType);'
   ),
   version: 1
 }, {

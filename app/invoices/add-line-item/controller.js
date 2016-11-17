@@ -13,11 +13,11 @@ export default Ember.Controller.extend(BillingCategories, IsUpdateDisabled, {
   showUpdateButton: true,
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.send('closeModal');
     },
 
-    add: function() {
+    add() {
       this.get('model').save().then(function(record) {
         this.get('editController').send('addLineItem', record);
       }.bind(this));

@@ -111,7 +111,7 @@ export default Ember.Component.extend(FilterList, UserSession, {
     });
   },
 
-  _setPermissions: function(item, editPerm, deletePerm) {
+  _setPermissions(item, editPerm, deletePerm) {
     if (item.get('canEdit')) {
       if (this.get(editPerm)) {
         item.set('canEdit', true);
@@ -123,38 +123,38 @@ export default Ember.Component.extend(FilterList, UserSession, {
   },
 
   actions: {
-    filter: function(filterBy, filterValue) {
+    filter(filterBy, filterValue) {
       let orderList = this.get('orderList');
       orderList = this.filterList(orderList, filterBy, filterValue);
       this.set('filteredList', orderList);
     },
 
-    newImaging: function() {
+    newImaging() {
       this.sendAction('newImagingAction');
     },
 
-    newLab: function() {
+    newLab() {
       this.sendAction('newLabAction');
     },
 
-    newMedication: function() {
+    newMedication() {
       this.sendAction('newMedicationAction');
     },
 
-    editOrder: function(order) {
+    editOrder(order) {
       let modelName = order.get('constructor.modelName').capitalize();
       this.sendAction(`edit${modelName}Action`, order);
     },
 
-    showDeleteOrder: function(order) {
+    showDeleteOrder(order) {
       let modelName = order.get('constructor.modelName').capitalize();
       this.sendAction(`showDelete${modelName}Action`, order);
     },
 
-    sortByKey: function(sortBy, sortDesc) {
+    sortByKey(sortBy, sortDesc) {
       this.setProperties({
-        sortBy: sortBy,
-        sortDesc: sortDesc
+        sortBy,
+        sortDesc
       });
     }
   }

@@ -34,11 +34,11 @@ export default AbstractEditController.extend(VisitTypes, {
       return {
         id: currentId,
         value: i18n.t(`admin.visitForms.labels.${currentId}`)
-      }
+      };
     });
   }),
 
-  afterUpdate: function() {
+  afterUpdate() {
     this.displayAlert(this.get('i18n').t('admin.address.titles.optionsSaved'), this.get('i18n').t('admin.address.messages.addressSaved'));
   },
 

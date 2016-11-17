@@ -23,5 +23,5 @@ export default Ember.Mixin.create({
     }).sort(function(a, b) {
       return Ember.compare(a.value.toString(), b.value.toString());
     });
-  }),
+  })
 });

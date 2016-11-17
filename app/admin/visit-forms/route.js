@@ -23,10 +23,7 @@ export default AbstractEditRoute.extend({
           model.set('visitForms', {});
         }
         resolve(model);
-      }, function(err) {
-        console.log('err is: ' + JSON.stringify(err, null, 2));
-        reject(err);
-      });
+      }, reject);
     });
   }
 });

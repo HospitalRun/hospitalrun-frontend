@@ -20,7 +20,7 @@ export default Ember.Controller.extend(FilterList, PatientVisits,  UserSession, 
     let i18n = this.get('i18n');
     return [
       i18n.t('visits.labels.haveAppointment'),
-      i18n.t('visits.labels.noAppointment'),
+      i18n.t('visits.labels.noAppointment')
     ];
   }),
   doneOrdersValues: computed(function() {
@@ -28,9 +28,9 @@ export default Ember.Controller.extend(FilterList, PatientVisits,  UserSession, 
     return [
       i18n.t('visits.labels.ordersNotDone'),
       i18n.t('visits.labels.haveDoneOrders')
-    ]
+    ];
   }),
-  patientNames:  computed.map('model', function(visit) {
+  patientNames: computed.map('model', function(visit) {
     return visit.get('patient.shortDisplayName');
   }),
   patientController: Ember.inject.controller('patients'),
@@ -44,7 +44,7 @@ export default Ember.Controller.extend(FilterList, PatientVisits,  UserSession, 
     let filterBy = this.get('filterBy');
     let filterValue = this.get('filterValue');
     let visits = this.get('model');
-    return this.filterList(visits , filterBy, filterValue);
+    return this.filterList(visits, filterBy, filterValue);
   }),
   sortedVisits: computed('filteredVisits', 'sortByKey', 'sortByDesc', function() {
     let filteredList = this.get('filteredVisits');
@@ -71,7 +71,7 @@ export default Ember.Controller.extend(FilterList, PatientVisits,  UserSession, 
 
   startKey: [],
   actions: {
-    editVisit: function(visit) {
+    editVisit(visit) {
       if (this.get('canAddVisit')) {
         this.transitionToRoute('visits.edit', visit);
       }

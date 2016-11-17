@@ -11,7 +11,7 @@ export default AbstractIndexRoute.extend(UserSession, {
   }.property(),
   newButtonText: t('user.plusNewUser'),
   pageTitle: t('user.usersPageTile'),
-  model: function() {
+  model() {
     return this.store.findAll('user');
   }
 });

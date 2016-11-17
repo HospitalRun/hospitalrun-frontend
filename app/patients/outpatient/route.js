@@ -7,12 +7,12 @@ export default AbstractIndexRoute.extend({
   newButtonText: t('patients.buttons.patientCheckIn'),
   pageTitle: t('patients.titles.todaysOutpatients'),
 
-  _getStartKeyFromItem: function(item) {
+  _getStartKeyFromItem(item) {
     let displayPatientId = item.get('displayPatientId');
-    return [displayPatientId, 'patient_' + item.get('id')];
+    return [displayPatientId, `patient_${item.get('id')}`];
   },
 
-  _modelQueryParams: function() {
+  _modelQueryParams() {
     let endOfDay = moment().endOf('day').valueOf();
     let startOfDay = moment().startOf('day').valueOf();
     return {
@@ -25,7 +25,7 @@ export default AbstractIndexRoute.extend({
   },
 
   actions: {
-    patientCheckIn: function() {
+    patientCheckIn() {
       this.controller.send('patientCheckIn');
     }
   }

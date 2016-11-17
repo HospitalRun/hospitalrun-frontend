@@ -19,11 +19,11 @@ export default Ember.Mixin.create(PatientId, {
       let patientTypeAhead = this.get('model.patientTypeAhead');
       let nameParts = patientTypeAhead.split(' ');
       let patientDetails = {
-          friendlyId: friendlyId,
-          patientFullName: patientTypeAhead,
-          requestingController: this
-        },
-        patient;
+        friendlyId,
+        patientFullName: patientTypeAhead,
+        requestingController: this
+      };
+      let patient;
       if (nameParts.length >= 3) {
         patientDetails.firstName = nameParts[0];
         patientDetails.middleName = nameParts[1];

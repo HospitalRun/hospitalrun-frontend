@@ -43,7 +43,7 @@ export default AbstractModel.extend({
   dischargeInfo: DS.attr('string'),
   endDate: DS.attr('date'), // if visit type is outpatient, startDate and endDate are equal
   examiner: DS.attr('string'),
-  hasAppointment: DS.attr('boolean', {default: false}),
+  hasAppointment: DS.attr('boolean', { defaultValue: false }),
   history: DS.attr('string'),
   historySince: DS.attr('string'), // History of the Present Illness
   imaging: DS.hasMany('imaging', { async: true }),
@@ -129,7 +129,7 @@ export default AbstractModel.extend({
     },
     patientTypeAhead: {
       presence: {
-        if: function(object) {
+        if(object) {
           return (object.get('checkIn'));
         }
       }

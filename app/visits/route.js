@@ -17,7 +17,7 @@ export default AbstractModuleRoute.extend({
     name: 'customForms',
     queryArgs: ['custom-form', {
       options: {
-        key: 'visit',
+        key: 'visit'
       },
       mapReduce: 'custom_form_by_type'
     }]

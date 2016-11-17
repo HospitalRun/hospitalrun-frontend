@@ -67,7 +67,7 @@ export default AbstractEditController.extend(AddNewPatient, InventorySelection, 
   medicationList: [],
   updateCapability: 'add_medication',
 
-  afterUpdate: function() {
+  afterUpdate() {
     let i18n = this.get('i18n');
     let alertTitle, alertMessage;
     let isFulfilled = this.get('isFulfilled');
@@ -82,7 +82,7 @@ export default AbstractEditController.extend(AddNewPatient, InventorySelection, 
     this.saveVisitIfNeeded(alertTitle, alertMessage);
   },
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     let isFulfilling = this.get('isFulfilling');
     let isNew = this.get('model.isNew');
     if (isNew || isFulfilling) {
@@ -124,14 +124,14 @@ export default AbstractEditController.extend(AddNewPatient, InventorySelection, 
     }
   },
 
-  finishBeforeUpdate: function(isFulfilling, resolve) {
+  finishBeforeUpdate(isFulfilling, resolve) {
     if (isFulfilling) {
       let inventoryLocations = this.get('model.inventoryLocations');
       let inventoryRequest = this.get('store').createRecord('inv-request', {
         expenseAccount: this.get('model.expenseAccount'),
         dateCompleted: new Date(),
         inventoryItem: this.get('model.inventoryItem'),
-        inventoryLocations: inventoryLocations,
+        inventoryLocations,
         quantity: this.get('model.quantity'),
         transactionType: 'Fulfillment',
         patient: this.get('model.patient'),
@@ -163,6 +163,7 @@ export default AbstractEditController.extend(AddNewPatient, InventorySelection, 
       return i18n.t('labels.fulfill');
     }
     return this._super();
+
   }.property('model.isNew', 'isFulfilling', 'model.hideFulfillRequest')
 
 });

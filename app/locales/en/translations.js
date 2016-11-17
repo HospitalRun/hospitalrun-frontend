@@ -120,7 +120,7 @@ export default {
         moveDown: 'Move Down',
         moveUp: 'Move Up',
         newForm: '+ new form',
-        preview: 'Preview',
+        preview: 'Preview'
 
       },
       labels: {
@@ -298,7 +298,7 @@ export default {
         visitType: 'Visit Type'
       },
       titles: {
-        visitForms: 'Visit Forms',
+        visitForms: 'Visit Forms'
       }
     },
     workflow: {
@@ -1058,7 +1058,7 @@ export default {
     customFormManager: {
       buttons: {
         addForm: 'Add Form'
-      },
+      }
     },
     sortableColumn: {
       labels: {
