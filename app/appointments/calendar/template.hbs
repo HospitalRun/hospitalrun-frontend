@@ -8,8 +8,6 @@
             {{em-select class="col-sm-3"
                 label=(t "labels.type")
             }}
-        </div>
-        <div class="row">
             {{em-select class="col-sm-3"
                 label=(t 'labels.with')
             }}
@@ -19,8 +17,11 @@
     <div class="panel-footer">
         <button class="btn btn-default" {{action 'filter'}}>{{t 'buttons.filter'}}</button>
     </div>
+    <div class="panel-body">
+        {{full-calendar events=model.events
+            header=calendarHeader
+            eventClick=(action "navigateToAppointment")
+            eventAfterAllRender=(action "handleSelectedDateChange")
+        }}
+    </div>
 </div>
-{{full-calendar events=model
-    header=calendarHeader
-    eventClick=(action "navigateToAppointment")
-}}
