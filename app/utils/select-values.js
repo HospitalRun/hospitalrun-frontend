@@ -1,7 +1,7 @@
 function selectValuesMap(value) {
   return {
     id: value,
-    value: value
+    value
   };
 }
 
@@ -12,20 +12,20 @@ export default {
    * @param {object} object the object to map
    * @returns {object} the mapped object
    */
-  selectObjectMap: function(selectValue) {
+  selectObjectMap(selectValue) {
     return Ember.Object.create({
       selectObject: selectValue
     });
   },
 
-  selectValuesMap: selectValuesMap,
+  selectValuesMap,
 
   /** Map an array of strings to objects with id and value set to the string values
    * so that the array can be used for em-select
    * @param {Array} array to map.
    * @param {boolean} includeEmpty if there should be an empty item added to the select list
    */
-  selectValues: function(array, includeEmpty) {
+  selectValues(array, includeEmpty) {
     if (Ember.isArray(array)) {
       let arrayToMap = new Array(array);
       if (includeEmpty) {

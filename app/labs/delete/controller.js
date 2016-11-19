@@ -6,7 +6,7 @@ export default AbstractDeleteController.extend(PatientSubmodule, {
   title: t('labs.deleteTitle'),
 
   actions: {
-    delete: function() {
+    delete() {
       this.deleteChildFromVisit('labs');
     }
   }

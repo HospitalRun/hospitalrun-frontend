@@ -1,6 +1,6 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
-  _addDiagnosisToList: function(diagnosis, diagnosesList, visit) {
+  _addDiagnosisToList(diagnosis, diagnosesList, visit) {
     if (!Ember.isEmpty(diagnosis)) {
       if (Ember.isEmpty(diagnosesList.findBy('description', diagnosis))) {
         diagnosesList.addObject({
@@ -11,7 +11,7 @@ export default Ember.Mixin.create({
     }
   },
 
-  getPrimaryDiagnoses: function(visits) {
+  getPrimaryDiagnoses(visits) {
     let diagnosesList = [];
     if (!Ember.isEmpty(visits)) {
       visits.forEach(function(visit) {
@@ -26,7 +26,7 @@ export default Ember.Mixin.create({
     return diagnosesList;
   },
 
-  getSecondaryDiagnoses: function(visits) {
+  getSecondaryDiagnoses(visits) {
     let diagnosesList = [];
     if (!Ember.isEmpty(visits)) {
       visits.forEach(function(visit) {

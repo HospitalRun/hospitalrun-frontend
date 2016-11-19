@@ -4,14 +4,14 @@ export default AbstractIndexRoute.extend({
   modelName: 'invoice',
   pageTitle: 'Invoice Listing',
 
-  _getStartKeyFromItem: function(item) {
+  _getStartKeyFromItem(item) {
     let billDateAsTime = item.get('billDateAsTime');
     let id = this._getPouchIdFromItem(item);
     let searchStatus = item.get('status');
     return [searchStatus, billDateAsTime, id];
   },
 
-  _modelQueryParams: function(params) {
+  _modelQueryParams(params) {
     let queryParams;
     let maxId = this._getMaxPouchId();
     let maxValue = this.get('maxValue');

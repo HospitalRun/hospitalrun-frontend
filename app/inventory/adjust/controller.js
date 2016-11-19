@@ -24,11 +24,11 @@ export default AbstractEditController.extend(AdjustmentTypes, {
   updateCapability: 'adjust_inventory_location',
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.send('closeModal');
     },
 
-    adjust: function() {
+    adjust() {
       this.send('adjustItems', this.get('model'), true);
     }
   }

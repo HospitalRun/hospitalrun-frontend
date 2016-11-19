@@ -7,3 +7,11 @@ body {
 }
 
 .clickable { cursor: pointer; }
+
+.modal-dialog { color: $navy; }
+
+.not-editable {
+  opacity: .5;
+  background-color: rgba($gray_light,.5);
+  cursor: default;
+}

@@ -8,11 +8,11 @@ export default Ember.Controller.extend({
   isUpdateDisabled: false,
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.send('closeModal');
     },
 
-    delete: function() {
+    delete() {
       let recordToDelete = this.get('model');
       recordToDelete.set('archived', true);
       recordToDelete.save().then(function() {

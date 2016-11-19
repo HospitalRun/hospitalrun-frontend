@@ -10,13 +10,13 @@ export default AbstractEditRoute.extend(ChargeRoute, {
   pricingCategory: 'Procedure',
   database: Ember.inject.service(),
 
-  getNewData: function() {
+  getNewData() {
     return Ember.RSVP.resolve({
       procedureDate: new Date()
     });
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     this._super(controller, model);
     let medicationQuery = {
       key: 'Medication',

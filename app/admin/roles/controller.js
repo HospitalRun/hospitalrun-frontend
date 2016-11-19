@@ -107,7 +107,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     let mappedCapabilities = [];
     section.capabilities.forEach((key) => {
       mappedCapabilities.push({
-        key: key,
+        key,
         name: this.get('i18n').t(`admin.roles.capability.${key}`)
       });
     });

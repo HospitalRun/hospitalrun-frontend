@@ -19,7 +19,7 @@ export default AbstractEditController.extend({
     return this.get('i18n').t('procedures.titles.editChargeItem');
   }.property('model.isNew'),
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     let isNew = this.get('model.isNew');
     if (isNew) {
       this.set('newCharge', true);
@@ -71,7 +71,7 @@ export default AbstractEditController.extend({
     });
   },
 
-  afterUpdate: function(record) {
+  afterUpdate(record) {
     if (this.get('newCharge')) {
       this.get('requestingController').send('addCharge', record);
     } else {

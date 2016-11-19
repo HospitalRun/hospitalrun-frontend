@@ -128,7 +128,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
 
   updateCapability: 'add_visit',
 
-  _addChildObject: function(route) {
+  _addChildObject(route) {
     this.transitionToRoute(route, 'new').then(function(newRoute) {
       newRoute.currentModel.setProperties({
         patient: this.get('model.patient'),
@@ -139,7 +139,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
     }.bind(this));
   },
 
-  _finishAfterUpdate: function() {
+  _finishAfterUpdate() {
     this.displayAlert('Visit Saved', 'The visit record has been saved.');
   },
 
@@ -147,7 +147,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
     return !Ember.isEmpty(this.get('model.additionalDiagnoses'));
   }.property('model.additionalDiagnoses.[]'),
 
-  afterUpdate: function() {
+  afterUpdate() {
     let patient = this.get('model.patient');
     let patientAdmitted = patient.get('admitted');
     let status = this.get('model.status');
@@ -168,7 +168,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
     }
   },
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     if (this.get('model.isNew')) {
       this.set('newVisit', true);
     }
@@ -185,7 +185,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
    * @param {boolean} removeObject If true remove the object from the list;
    * otherwise add the specified object to the list.
    */
-  updateList: function(listName, listObject, removeObject) {
+  updateList(listName, listObject, removeObject) {
     let model = this.get('model');
     model.get(listName).then(function(list) {
       if (removeObject) {
@@ -199,7 +199,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
   },
 
   actions: {
-    addDiagnosis: function(newDiagnosis) {
+    addDiagnosis(newDiagnosis) {
       let additionalDiagnoses = this.get('model.additionalDiagnoses');
       let visit = this.get('model');
       if (!Ember.isArray(additionalDiagnoses)) {
@@ -211,7 +211,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
       this.send('closeModal');
     },
 
-    deleteDiagnosis: function(diagnosis) {
+    deleteDiagnosis(diagnosis) {
       let additionalDiagnoses = this.get('model.additionalDiagnoses');
       let visit = this.get('model');
       additionalDiagnoses.removeObject(diagnosis);
@@ -219,11 +219,11 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
       this.send('update', true);
     },
 
-    addVitals: function(newVitals) {
+    addVitals(newVitals) {
       this.updateList('vitals', newVitals);
     },
 
-    cancel: function() {
+    cancel() {
       let cancelledItem = this.get('model');
       if (this.get('model.isNew')) {
         cancelledItem.deleteRecord();
@@ -233,15 +233,15 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
       this.send(this.get('cancelAction'));
     },
 
-    deleteProcedure: function(procedure) {
+    deleteProcedure(procedure) {
       this.updateList('procedures', procedure, true);
     },
 
-    deleteVitals: function(vitals) {
+    deleteVitals(vitals) {
       this.updateList('vitals', vitals, true);
     },
 
-    editImaging: function(imaging) {
+    editImaging(imaging) {
       if (imaging.get('canEdit')) {
         imaging.setProperties({
           'returnToVisit': true
@@ -250,7 +250,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
       this.transitionToRoute('imaging.edit', imaging);
     },
 
-    editLab: function(lab) {
+    editLab(lab) {
       if (lab.get('canEdit')) {
         lab.setProperties({
           'returnToVisit': true
@@ -259,21 +259,21 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
       }
     },
 
-    editMedication: function(medication) {
+    editMedication(medication) {
       if (medication.get('canEdit')) {
         medication.set('returnToVisit', true);
         this.transitionToRoute('medication.edit', medication);
       }
     },
 
-    showAddVitals: function() {
+    showAddVitals() {
       let newVitals = this.get('store').createRecord('vital', {
         dateRecorded: new Date()
       });
       this.send('openModal', 'visits.vitals.edit', newVitals);
     },
 
-    showAddPatientNote: function(model) {
+    showAddPatientNote(model) {
       if (Ember.isEmpty(model)) {
         model = this.get('store').createRecord('patient-note', {
           visit: this.get('model'),
@@ -285,52 +285,52 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
       this.send('openModal', 'patients.notes', model);
     },
 
-    newAppointment: function() {
+    newAppointment() {
       this._addChildObject('appointments.edit');
     },
 
-    newImaging: function() {
+    newImaging() {
       this._addChildObject('imaging.edit');
     },
 
-    newLab: function() {
+    newLab() {
       this._addChildObject('labs.edit');
     },
 
-    newMedication: function() {
+    newMedication() {
       this._addChildObject('medication.edit');
     },
 
-    showAddDiagnosis: function() {
+    showAddDiagnosis() {
       let newDiagnosis = this.get('store').createRecord('add-diagnosis');
       this.send('openModal', 'visits.add-diagnosis', newDiagnosis);
     },
 
-    showAddProcedure: function() {
+    showAddProcedure() {
       this._addChildObject('procedures.edit');
     },
 
-    showDeleteImaging: function(imaging) {
+    showDeleteImaging(imaging) {
       this.send('openModal', 'imaging.delete', imaging);
     },
 
-    showDeleteLab: function(lab) {
+    showDeleteLab(lab) {
       this.send('openModal', 'labs.delete', lab);
     },
 
-    showDeleteMedication: function(medication) {
+    showDeleteMedication(medication) {
       this.send('openModal', 'medication.delete', medication);
     },
 
-    showDeleteProcedure: function(procedure) {
+    showDeleteProcedure(procedure) {
       this.send('openModal', 'visits.procedures.delete', procedure);
     },
 
-    showDeleteVitals: function(vitals) {
+    showDeleteVitals(vitals) {
       this.send('openModal', 'visits.vitals.delete', vitals);
     },
 
-    showEditProcedure: function(procedure) {
+    showEditProcedure(procedure) {
       if (Ember.isEmpty(procedure.get('visit'))) {
         procedure.set('visit', this.get('model'));
       }
@@ -339,11 +339,11 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
       this.transitionToRoute('procedures.edit', procedure);
     },
 
-    showEditVitals: function(vitals) {
+    showEditVitals(vitals) {
       this.send('openModal', 'visits.vitals.edit', vitals);
     },
 
-    showDeletePatientNote: function(note) {
+    showDeletePatientNote(note) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deletePatientNote',
         title: 'Delete Note',
@@ -354,7 +354,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
       }));
     },
 
-    deletePatientNote: function(model) {
+    deletePatientNote(model) {
       let note = model.get('noteToDelete');
       let patientNotes = this.get('model.patientNotes');
       patientNotes.removeObject(note);

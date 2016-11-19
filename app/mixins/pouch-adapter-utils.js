@@ -1,7 +1,7 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
   session: Ember.inject.service(),
-  _pouchError: function(reject) {
+  _pouchError(reject) {
     return function(err) {
       if (err.status === 401) {
         // User is unauthorized; reload to force login.

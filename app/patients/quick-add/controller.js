@@ -10,12 +10,12 @@ export default AbstractEditController.extend({
   updateCapability: 'add_patient',
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.send('closeModal');
     }
   },
 
-  afterUpdate: function(record) {
+  afterUpdate(record) {
     let requestingController = this.get('model.requestingController');
     requestingController.send('addedNewPatient', record);
   }

@@ -6,14 +6,14 @@ export default AbstractEditRoute.extend(UserSession, {
   hideNewButton: true,
   editTitle: t('admin.loaddb.editTitle'),
 
-  beforeModel: function() {
+  beforeModel() {
     if (!this.currentUserCan('load_db')) {
       this.transitionTo('application');
     }
   },
 
   // No model needed for import.
-  model: function() {
+  model() {
     return Ember.RSVP.resolve(Ember.Object.create({}));
   }
 });

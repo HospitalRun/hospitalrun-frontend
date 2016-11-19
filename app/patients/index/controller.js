@@ -13,14 +13,14 @@ export default AbstractPagedController.extend(PatientVisits, {
 
   startKey: [],
   actions: {
-    admitPatient: function(patient) {
+    admitPatient(patient) {
       this.getPatientVisits(patient).then(function(visits) {
         this.send('createNewVisit', patient, visits);
       }.bind(this));
 
     },
 
-    dischargePatient: function(patient) {
+    dischargePatient(patient) {
       this.getPatientVisits(patient).then(function(visits) {
         let visitToDischarge = visits.findBy('status', 'Admitted');
         if (visitToDischarge) {

@@ -8,13 +8,13 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
   pricingController: Ember.inject.controller('pricing'),
 
   actions: {
-    addOverride: function(override) {
+    addOverride(override) {
       let pricingOverrides = this.get('model.pricingOverrides');
       pricingOverrides.addObject(override);
       this.send('update', true);
       this.send('closeModal');
     },
-    deleteOverride: function(model) {
+    deleteOverride(model) {
       let { overrideToDelete } = model;
       let pricingOverrides = this.get('model.pricingOverrides');
       pricingOverrides.removeObject(overrideToDelete);
@@ -23,16 +23,16 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
         this.send('closeModal');
       }.bind(this));
     },
-    editOverride: function(overrideToEdit) {
+    editOverride(overrideToEdit) {
       if (Ember.isEmpty(overrideToEdit)) {
         overrideToEdit = this.store.createRecord('override-price');
       }
       this.send('openModal', 'pricing.override', overrideToEdit);
     },
-    showDeleteOverride: function(overrideToDelete) {
+    showDeleteOverride(overrideToDelete) {
       let message = 'Are you sure you want to delete this override?';
       let model = Ember.Object.create({
-        overrideToDelete: overrideToDelete
+        overrideToDelete
       });
       let title = 'Delete Override';
       this.displayConfirm(title, message, 'deleteOverride', model);
@@ -83,7 +83,7 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
 
   updateCapability: 'add_pricing',
 
-  afterUpdate: function(record) {
+  afterUpdate(record) {
     let message = `The pricing record for ${record.get('name')} has been saved.`;
     this.displayAlert('Pricing Item Saved', message);
   }

@@ -3,7 +3,7 @@ export default Ember.Mixin.create({
   aisleToFind: null,
   locationToFind: null,
 
-  _addQuantityToLocation: function(inventoryItem, quantity, location, aisle) {
+  _addQuantityToLocation(inventoryItem, quantity, location, aisle) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       this._findOrCreateLocation(inventoryItem, location, aisle).then(function(foundLocation) {
         foundLocation.incrementProperty('quantity', quantity);
@@ -12,7 +12,7 @@ export default Ember.Mixin.create({
     }.bind(this));
   },
 
-  _findOrCreateLocation: function(inventoryItem, location, aisle) {
+  _findOrCreateLocation(inventoryItem, location, aisle) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       let foundLocation = false;
       let locations = inventoryItem.get('locations');
@@ -26,7 +26,7 @@ export default Ember.Mixin.create({
         let locationRecord = this.get('store').createRecord('inv-location', {
           id: uuid.v4(),
           aisleLocation: aisle,
-          location: location,
+          location,
           quantity: 0
         });
         locations.addObject(locationRecord);
@@ -37,7 +37,7 @@ export default Ember.Mixin.create({
     }.bind(this));
   },
 
-  findLocation: function(inventoryLocation) {
+  findLocation(inventoryLocation) {
     let aisleLocation = inventoryLocation.get('aisleLocation');
     let aisleToFind = this.get('aisleToFind');
     let itemLocation = inventoryLocation.get('location');
@@ -53,7 +53,7 @@ export default Ember.Mixin.create({
    * with the number of items available.
    * @returns {Promise} a promise that fulfills once location has been updated.
    */
-  newPurchaseAdded: function(inventoryItem, newPurchase) {
+  newPurchaseAdded(inventoryItem, newPurchase) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       let aisle = newPurchase.get('aisleLocation');
       let location = newPurchase.get('location');
@@ -68,7 +68,7 @@ export default Ember.Mixin.create({
    * @param {Object} inventoryItem the inventory item the location belongs to.
    * @return {Promise} promise for save or remove
    */
-  saveLocation: function(location, inventoryItem) {
+  saveLocation(location, inventoryItem) {
     if (location.get('quantity') === 0) {
       let locations = inventoryItem.get('locations');
       locations.removeObject(location);
@@ -85,7 +85,7 @@ export default Ember.Mixin.create({
    * attributes about where to transfer to.
    * @returns {Promise} a promise that fulfills once the transfer to location has been saved.
    */
-  transferToLocation: function(inventoryItem, transferLocation) {
+  transferToLocation(inventoryItem, transferLocation) {
     let aisle = transferLocation.get('transferAisleLocation');
     let location = transferLocation.get('transferLocation');
     let quantity = parseInt(transferLocation.get('adjustmentQuantity'));

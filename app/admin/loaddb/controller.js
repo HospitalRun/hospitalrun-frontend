@@ -11,7 +11,7 @@ export default Ember.Controller.extend(ModalHelper, ProgressDialog, {
   fileImportedName: null,
 
   actions: {
-    loadFile: function() {
+    loadFile() {
       let fileSystem = this.get('fileSystem');
       let fileToImport = this.get('importFile');
       if (!fileToImport || !fileToImport.type) {

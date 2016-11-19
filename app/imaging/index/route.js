@@ -5,14 +5,14 @@ export default AbstractIndexRoute.extend({
   pageTitle: t('imaging.pageTitle'),
   searchStatus: 'Requested',
 
-  _getStartKeyFromItem: function(item) {
+  _getStartKeyFromItem(item) {
     let imagingDateAsTime = item.get('imagingDateAsTime');
     let id = this._getPouchIdFromItem(item);
     let requestedDateAsTime = item.get('requestedDateAsTime');
     let searchStatus = this.get('searchStatus');
     return [searchStatus, requestedDateAsTime, imagingDateAsTime, id];
   },
-  _modelQueryParams: function() {
+  _modelQueryParams() {
     let maxId = this._getMaxPouchId();
     let maxValue = this.get('maxValue');
     let minId = this._getMinPouchId();

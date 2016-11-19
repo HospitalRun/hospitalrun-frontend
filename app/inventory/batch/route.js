@@ -5,7 +5,7 @@ export default InventoryRequestRoute.extend({
   editTitle: t('navigation.subnav.inventoryReceived'),
   modelName: 'inventory-batch',
   newTitle: t('navigation.subnav.inventoryReceived'),
-  getNewData: function() {
+  getNewData() {
     return Ember.RSVP.resolve({
       invoiceItems: [],
       dateReceived: new Date()
@@ -13,7 +13,7 @@ export default InventoryRequestRoute.extend({
   },
 
   actions: {
-    addedNewInventoryItem: function(model) {
+    addedNewInventoryItem(model) {
       this.controller.send('addedNewInventoryItem', model);
     }
   }

@@ -17,7 +17,7 @@ export default AppointmentIndexRoute.extend(DateFormat, {
     startKey: { refreshModel: true }
   },
 
-  _modelQueryParams: function(params) {
+  _modelQueryParams(params) {
     let { startDate } = params;
     let maxValue = this.get('maxValue');
     if (Ember.isEmpty(startDate)) {
@@ -36,7 +36,7 @@ export default AppointmentIndexRoute.extend(DateFormat, {
     };
   },
 
-  model: function(params) {
+  model(params) {
     return this._super(params).then(function(model) {
       model.setProperties({
         selectedAppointmentType: params.appointmentType,

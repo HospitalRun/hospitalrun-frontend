@@ -27,7 +27,7 @@ export default Ember.Controller.extend(UserSession, {
       let action = link.toLowerCase();
       if (this.currentUserCan(action)) {
         activeLinks.push({
-          action: action,
+          action,
           text: link
         });
       }

@@ -4,7 +4,7 @@ export default TypeAhead.extend({
   displayKey: 'name',
   setOnBlur: true,
 
-  _mapContentItems: function() {
+  _mapContentItems() {
     let content = this.get('content');
     if (content) {
       let mapped = content.filter(function(item) {

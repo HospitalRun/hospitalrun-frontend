@@ -1,0 +1,23 @@
+.dropdown-menu > {
+  li > a {
+    &:hover,
+    &:focus {
+      background-color: #e8e8e8;
+      background-image: linear-gradient(to bottom,#f5f5f5 0%,#e8e8e8 100%);
+      background-repeat: repeat-x;
+    }
+  }
+
+  .active > a {
+    background-color: #357ebd;
+    background-image: linear-gradient(to bottom,#428bca 0%,#357ebd 100%);
+    background-repeat: repeat-x;
+
+    &:hover,
+    &:focus {
+      background-color: #357ebd;
+      background-image: linear-gradient(to bottom,#428bca 0%,#357ebd 100%);
+      background-repeat: repeat-x;
+    }
+  }
+}

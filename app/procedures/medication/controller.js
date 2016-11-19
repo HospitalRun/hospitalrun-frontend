@@ -18,7 +18,7 @@ export default AbstractEditController.extend(InventorySelection, {
     return this.get('i18n').t('procedures.titles.editMedicationUsed');
   }.property('model.isNew'),
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     let isNew = this.get('model.isNew');
     if (isNew) {
       this.set('newCharge', true);
@@ -31,7 +31,7 @@ export default AbstractEditController.extend(InventorySelection, {
     return Ember.RSVP.Promise.resolve();
   },
 
-  afterUpdate: function(record) {
+  afterUpdate(record) {
     if (this.get('newCharge')) {
       this.get('requestingController').send('addCharge', record);
     } else {

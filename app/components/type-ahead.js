@@ -2,7 +2,7 @@ import Ember from 'ember';
 import DS from 'ember-data';
 import InputComponent from 'ember-rapid-forms/components/em-input';
 export default InputComponent.extend({
-  _mapContentItems: function() {
+  _mapContentItems() {
     let content = this.get('content');
     if (content) {
       let mapped = content.filter(function(item) {
@@ -53,7 +53,7 @@ export default InputComponent.extend({
   setOnBlur: true,
   templates: null,
 
-  _getSource: function() {
+  _getSource() {
     let typeAheadBloodhound = new Bloodhound({
       datumTokenizer: Bloodhound.tokenizers.obj.whitespace(this.get('displayKey')),
       queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -64,7 +64,7 @@ export default InputComponent.extend({
     return typeAheadBloodhound.ttAdapter();
   },
 
-  didInsertElement: function() {
+  didInsertElement() {
     let $input = this.$('input');
     this.set('inputElement', $input);
     let $typeahead = $input.typeahead({
@@ -136,7 +136,7 @@ export default InputComponent.extend({
     }
   },
 
-  willDestroyElement: function() {
+  willDestroyElement() {
     this.get('inputElement').typeahead('destroy');
   }
 

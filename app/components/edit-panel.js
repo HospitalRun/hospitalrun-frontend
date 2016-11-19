@@ -4,17 +4,17 @@ export default Ember.Component.extend({
   cancelAction: 'cancel',
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.sendAction('cancelAction');
     },
-    disabledAction: function() {
+    disabledAction() {
       this.sendAction('editPanelProps.disabledAction');
     },
-    fireButtonAction: function(buttonAction) {
+    fireButtonAction(buttonAction) {
       this.set(buttonAction, buttonAction);
       this.sendAction(buttonAction);
     },
-    updateButtonAction: function() {
+    updateButtonAction() {
       this.sendAction('editPanelProps.updateButtonAction');
     }
   }

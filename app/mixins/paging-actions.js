@@ -5,16 +5,16 @@ export default Ember.Mixin.create({
   nextPage: 'nextPage',
   previousPage: 'previousPage',
   actions: {
-    firstPage: function() {
+    firstPage() {
       this.sendAction('firstPage');
     },
-    lastPage: function() {
+    lastPage() {
       this.sendAction('lastPage');
     },
-    nextPage: function() {
+    nextPage() {
       this.sendAction('nextPage');
     },
-    previousPage: function() {
+    previousPage() {
       this.sendAction('previousPage');
     }
   }

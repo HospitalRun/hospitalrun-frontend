@@ -33,11 +33,11 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
   }.property('model.isNew'),
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.send('closeModal');
     },
 
-    update: function() {
+    update() {
       let model = this.get('model');
       this.get('editController').send('updateExpense', model);
     }

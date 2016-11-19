@@ -278,7 +278,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     return (reportType === 'visit');
   }.property('reportType'),
 
-  _addContactToList: function(phone, email, prefix, contactList) {
+  _addContactToList(phone, email, prefix, contactList) {
     let contactArray = [];
     if (!Ember.isEmpty(email) || !Ember.isEmpty(phone)) {
       if (!Ember.isEmpty(phone)) {
@@ -291,7 +291,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     }
   },
 
-  _addReportRow: function(row, skipFormatting, reportColumns, rowAction) {
+  _addReportRow(row, skipFormatting, reportColumns, rowAction) {
     if (Ember.isEmpty(rowAction) && !Ember.isEmpty(row.patient)) {
       let patientId = null;
       if (row.get) {
@@ -316,14 +316,14 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
    * @param totalLabel {String} the label for the grand total.
    * @param reportColumns
    */
-  _addRowsByType: function(records, typeField, totalLabel, reportColumns) {
+  _addRowsByType(records, typeField, totalLabel, reportColumns) {
     let types = this._totalByType(records, typeField, totalLabel);
     types.forEach(function(type) {
       this._addReportRow(type, true, reportColumns);
     }.bind(this));
   },
 
-  _addPatientProcedureRows: function(procedureTotals, reportColumns) {
+  _addPatientProcedureRows(procedureTotals, reportColumns) {
     procedureTotals.forEach(function(procedureTotal) {
       if (!Ember.isEmpty(procedureTotal.records)) {
         procedureTotal.records.forEach(function(patientProcedure, index) {
@@ -346,7 +346,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     }.bind(this));
   },
 
-  _contactListToString: function(patient) {
+  _contactListToString(patient) {
     let additionalContacts = patient.get('additionalContacts');
     let contactDesc;
     let contactList = [];
@@ -374,17 +374,17 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     return contactList.join(';\n');
   },
 
-  _dateTimeFormat: function(value) {
+  _dateTimeFormat(value) {
     return this._dateFormat(value, 'l h:mm A');
   },
 
-  _diagnosisListToString: function(diagnoses) {
+  _diagnosisListToString(diagnoses) {
     return this._listToString(diagnoses, 'description', 'date');
   },
   /**
      * Find diagnostics by the specified dates and the record's start and (optional) end dates.
      */
-  _findDiagnosticsByDate: function() {
+  _findDiagnosticsByDate() {
     let filterEndDate = this.get('endDate');
     let filterStartDate = this.get('startDate');
     let findParams = {
@@ -416,7 +416,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   /**
    * Find procedures by the specified dates and the record's start and (optional) end dates.
    */
-  _findPatientsByStatus: function() {
+  _findPatientsByStatus() {
     let status = this.get('status');
     let findParams = {
       options: {
@@ -432,7 +432,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   /**
    * Find procedures by the specified dates and the record's start and (optional) end dates.
    */
-  _findProceduresByDate: function() {
+  _findProceduresByDate() {
     let filterEndDate = this.get('endDate');
     let filterStartDate = this.get('startDate');
     let findParams = {
@@ -455,7 +455,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
    * Find visits by the specified dates and the record's start and (optional) end dates.
    * @param {String} reportType the type of report to find visits for.
    */
-  _findVisitsByDate: function() {
+  _findVisitsByDate() {
     let filterEndDate = this.get('endDate');
     let filterStartDate = this.get('startDate');
     let findParams = {
@@ -488,7 +488,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     }.bind(this));
   },
 
-  _filterByLike: function(records, field, likeCondition) {
+  _filterByLike(records, field, likeCondition) {
     return records.filter(function(record) {
       let fieldValue = record.get('field');
       if (Ember.isEmpty(fieldValue)) {
@@ -506,13 +506,13 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     });
   },
 
-  _filterInPatientVisit: function(visit) {
+  _filterInPatientVisit(visit) {
     let outPatient = visit.get('outPatient');
     let status = visit.get('status');
     return !outPatient && !Ember.isEmpty(status);
   },
 
-  _finishVisitReport: function(visits) {
+  _finishVisitReport(visits) {
     let visitTypes = this._totalByType(visits, 'visitType', 'total');
     visitTypes.forEach(function(visitType) {
       if (visitType.type === 'total') {
@@ -530,17 +530,17 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     }.bind(this));
     this._finishReport();
   },
-  _formatPrimaryDiagnosis: function(visits) {
+  _formatPrimaryDiagnosis(visits) {
     let primaryDiagnoses = this.getPrimaryDiagnoses(visits);
     return this._diagnosisListToString(primaryDiagnoses);
   },
 
-  _formatSecondaryDiagnosis: function(visits) {
+  _formatSecondaryDiagnosis(visits) {
     let secondaryDiagnoses = this.getSecondaryDiagnoses(visits);
     return this._diagnosisListToString(secondaryDiagnoses);
   },
 
-  _generateAdmissionOrDischargeReport: function(visits, reportType) {
+  _generateAdmissionOrDischargeReport(visits, reportType) {
     let detailedReport = false;
     let reportColumns;
     let patientBySex = {};
@@ -593,7 +593,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
         patientBySex[sex].rows.forEach(addPatientBySexRows);
         this._addReportRow({ patientId: `${sex} Total: ${patientBySex[sex].count}` }, true, reportColumns);
       } else {
-        this._addReportRow({ sex: sex, total: patientBySex[sex].count }, true, reportColumns);
+        this._addReportRow({ sex, total: patientBySex[sex].count }, true, reportColumns);
       }
       sexTotal += patientBySex[sex].count;
     }
@@ -601,7 +601,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     this._finishReport(reportColumns);
   },
 
-  _generateDiagnosticReport: function() {
+  _generateDiagnosticReport() {
     this._findDiagnosticsByDate().then(function(diagnostics) {
       let reportColumns = this.get('diagnosticReportColumns');
       this._addRowsByType(diagnostics.imaging, 'imagingType.name', 'Total for imaging: ', reportColumns);
@@ -612,7 +612,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     }.bind(this));
   },
 
-  _generatePatientDaysReport: function(visits, reportType) {
+  _generatePatientDaysReport(visits, reportType) {
     visits = visits.filter(this._filterInPatientVisit);
     let detailed = (reportType.indexOf('detailed') === 0);
     let reportEndDate = this.get('endDate');
@@ -673,7 +673,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     this._finishReport(reportColumns);
   },
 
-  _generateProcedureReport: function(reportType) {
+  _generateProcedureReport(reportType) {
     this._findProceduresByDate().then(function(procedures) {
       let reportColumns;
       procedures = procedures.filter(function(procedure) {
@@ -702,13 +702,13 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     }.bind(this));
   },
 
-  _generateStatusReport: function() {
+  _generateStatusReport() {
     this._findPatientsByStatus().then(function(patients) {
       let reportColumns = this.get('statusReportColumns');
       let sortedPatients = patients.sortBy('lastName', 'firstName');
       this._getPatientVisits(sortedPatients).then(function(resolvedPatients) {
         resolvedPatients.forEach(function(patient) {
-          this._addReportRow({ patient: patient }, false, reportColumns);
+          this._addReportRow({ patient }, false, reportColumns);
         }.bind(this));
         this._finishReport(reportColumns);
       }.bind(this)).catch(function(err) {
@@ -719,7 +719,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     }.bind(this));
   },
 
-  _generateVisitReport: function(visits) {
+  _generateVisitReport(visits) {
     let reportColumns = this.get('reportColumns');
     let visitFilters = this.getProperties(
       'examiner', 'visitDate', 'visitType', 'location', 'clinic',
@@ -755,7 +755,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     }
   },
 
-  _getPatientVisits: function(patients) {
+  _getPatientVisits(patients) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       let visitHash = {
       };
@@ -771,11 +771,11 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     }.bind(this));
   },
 
-  _haveLikeValue: function(valueToCompare, likeCondition) {
+  _haveLikeValue(valueToCompare, likeCondition) {
     return (valueToCompare.toLowerCase().indexOf(likeCondition.toLowerCase()) > -1);
   },
 
-  _listToString: function(items, descField, dateField) {
+  _listToString(items, descField, dateField) {
     let itemList = [];
     if (!Ember.isEmpty(items)) {
       itemList = items.map(function(item) {
@@ -792,7 +792,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
    * @param totalLabel {String} the label for the grand total.
    * @param reportColumns
    */
-  _totalByType: function(records, typeField, totalLabel) {
+  _totalByType(records, typeField, totalLabel) {
     let total = 0;
     let types = [];
     records.forEach(function(record) {
@@ -817,15 +817,15 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       }
     });
     types = types.sortBy('type');
-    types.push({ type: totalLabel, total: total });
+    types.push({ type: totalLabel, total });
     return types;
   },
 
-  _procedureListToString: function(procedures) {
+  _procedureListToString(procedures) {
     return this._listToString(procedures, 'description', 'procedureDate');
   },
 
-  _validateDates: function() {
+  _validateDates() {
     let alertMessage;
     let endDate = this.get('endDate');
     let isValid = true;
@@ -848,7 +848,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   },
 
   actions: {
-    generateReport: function() {
+    generateReport() {
       if (this._validateDates()) {
         let reportRows = this.get('reportRows');
         let reportType = this.get('reportType');
@@ -902,7 +902,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
         }
       }
     },
-    viewPatient: function(id) {
+    viewPatient(id) {
       this.store.find('patient', id).then(function(item) {
         item.set('returnTo', 'patients.reports');
         this.transitionToRoute('patients.edit', item);

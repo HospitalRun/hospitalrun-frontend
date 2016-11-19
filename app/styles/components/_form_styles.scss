@@ -10,3 +10,32 @@
 .checkbox-label-space {
   top: 25px;
 }
+
+// mark input fields as required
+.required {
+  .control-label::after {
+    color: $red;
+    content: '*';
+  }
+}
+
+.input-group-addon {
+  border: 0;
+  background-color: $white;
+}
+
+.radio input[type='radio'],
+.radio-inline input[type='radio'],
+.checkbox input[type='checkbox'],
+.checkbox-inline input[type='checkbox'] { margin-left: -18px; }
+
+.form-control {
+  border: 1px solid $blue_lightest2;
+}
+
+// I *think* this belongs here (extracting from
+// temp_styles), but not actually sure if we
+// even use this anymore
+.container {
+  label { font-weight: 300; }
+}

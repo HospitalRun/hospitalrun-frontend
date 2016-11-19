@@ -76,7 +76,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     return this.get('patientMedicationList');
   }.property('setNewMedicationList', 'model.patient', 'model.visit'),
 
-  _finishUpdate: function() {
+  _finishUpdate() {
     let aisle = this.get('model.deliveryAisle');
     let location = this.get('model.deliveryLocation');
     let inventoryItem = this.get('model.inventoryItem');
@@ -94,12 +94,12 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   },
 
   actions: {
-    doneFulfillRequest: function() {
+    doneFulfillRequest() {
       let i18n = this.get('i18n');
       this.updateLookupLists();
       this.displayAlert(i18n.t('medication.alerts.returnedTitle'), i18n.t('medication.alerts.returnedMessage'), 'allItems');
     },
-    update: function() {
+    update() {
       let medication = this.get('model.medication');
       let quantity = this.get('model.quantity');
       if (!Ember.isEmpty(medication)) {

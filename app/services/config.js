@@ -84,7 +84,7 @@ export default Ember.Service.extend({
       });
     });
   },
-  saveOauthConfigs: function(configs) {
+  saveOauthConfigs(configs) {
     let configDB = this.get('configDB');
     let configKeys = Object.keys(configs);
     let savePromises = [];
@@ -129,7 +129,7 @@ export default Ember.Service.extend({
     }, `get ${id} from config database`);
   },
 
-  _getOauthConfigs: function(configKeys) {
+  _getOauthConfigs(configKeys) {
     let configDB = this.get('configDB');
     let options = {
       include_docs: true,
@@ -138,7 +138,7 @@ export default Ember.Service.extend({
     return configDB.allDocs(options);
   },
 
-  setCurrentUser: function(userName) {
+  setCurrentUser(userName) {
     let config = this.get('configDB');
     let sessionData = this.get('sessionData');
     if (!userName && sessionData.authenticated) {
