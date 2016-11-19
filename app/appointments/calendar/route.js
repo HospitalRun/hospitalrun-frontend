@@ -12,7 +12,7 @@ export default AppointmentIndexRoute.extend({
     endDate: { refreshModel: true }
   },
 
-  _modelQueryParams: function(params) {
+  _modelQueryParams(params) {
     let { startDate, endDate } = params;
     let maxValue = this.get('maxValue');
 
@@ -38,11 +38,11 @@ export default AppointmentIndexRoute.extend({
   model() {
     function createCalendarEvent(appointment) {
       return {
-        title: appointment.get("patient").get("displayName") + "\n" + appointment.get("provider"),
-        start: appointment.get("startDate"),
-        end: appointment.get("endDate"),
-        appointment: appointment
-      }
+        title: `${appointment.get('patient').get('displayName')}\n${appointment.get('provider')}`,
+        start: appointment.get('startDate'),
+        end: appointment.get('endDate'),
+        referencedAppointment: appointment
+      };
     }
 
     function createCalendarEvents(appointments) {
@@ -51,10 +51,10 @@ export default AppointmentIndexRoute.extend({
 
     return this._super(...arguments)
       .then(createCalendarEvents)
-      .then(function (calendarEvents) {
+      .then(function(calendarEvents) {
         return {
           events: calendarEvents
-        }
+        };
       });
   }
 });

@@ -2,7 +2,7 @@ import AppointmentIndexController from 'hospitalrun/appointments/index/controlle
 export default AppointmentIndexController.extend({
   startKey: [],
 
-  queryParams: ["startDate", "endDate"],
+  queryParams: ['startDate', 'endDate'],
   startDate: null,
   endDate: null,
 
@@ -14,13 +14,13 @@ export default AppointmentIndexController.extend({
 
   actions: {
     navigateToAppointment(calendarEvent) {
-      this.send("editAppointment", calendarEvent.appointment);
+      this.send('editAppointment', calendarEvent.referencedAppointment);
     },
 
     handleSelectedDateChange(view) {
-      let newIntervalStart = moment(view.intervalStart.format()).startOf("day").toDate().getTime();
-      let newIntervalEnd = moment(view.intervalEnd.format()).endOf("day").toDate().getTime();
-      if (newIntervalStart !== this.get("startDate") || newIntervalEnd !== this.get("endDate")) {
+      let newIntervalStart = moment(view.intervalStart.format()).startOf('day').toDate().getTime();
+      let newIntervalEnd = moment(view.intervalEnd.format()).endOf('day').toDate().getTime();
+      if (newIntervalStart !== this.get('startDate') || newIntervalEnd !== this.get('endDate')) {
         this.setProperties({
           startDate: newIntervalStart,
           endDate: newIntervalEnd
