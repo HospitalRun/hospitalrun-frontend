@@ -2,7 +2,7 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 import Ember from 'ember';
 import UserSession from 'hospitalrun/mixins/user-session';
 export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
-  beforeModel: function() {
+  beforeModel() {
     if (!this.currentUserCan('query_db')) {
       this.transitionTo('application');
     }

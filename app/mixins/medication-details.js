@@ -2,7 +2,7 @@ import Ember from 'ember';
 import DS from 'ember-data';
 export default Ember.Mixin.create({
   // Denormalized medication details so that inventory records do not need to be retrieved
-  getMedicationName: function(inventoryAttribute) {
+  getMedicationName(inventoryAttribute) {
     let medicationTitle = this.get('medicationTitle');
     if (!Ember.isEmpty(medicationTitle)) {
       return medicationTitle;
@@ -18,7 +18,7 @@ export default Ember.Mixin.create({
     }
   },
 
-  getMedicationPrice: function(inventoryAttribute) {
+  getMedicationPrice(inventoryAttribute) {
     let priceOfMedication = this.get('priceOfMedication');
     if (!Ember.isEmpty(priceOfMedication)) {
       return priceOfMedication;
@@ -29,7 +29,7 @@ export default Ember.Mixin.create({
     }
   },
 
-  getMedicationDetails: function(inventoryAttribute) {
+  getMedicationDetails(inventoryAttribute) {
     return new Ember.RSVP.Promise((resolve) => {
       let medicationTitle = this.get('medicationTitle');
       let priceOfMedication = this.get('priceOfMedication');

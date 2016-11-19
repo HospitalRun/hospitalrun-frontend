@@ -8,34 +8,34 @@ export default AbstractEditRoute.extend(InventoryId, {
   newTitle: t('inventory.labels.newItem'),
 
   actions: {
-    adjustItems: function(inventoryLocation) {
+    adjustItems(inventoryLocation) {
       this.controller.send('adjustItems', inventoryLocation);
     },
 
-    doneFulfillRequest: function() {
+    doneFulfillRequest() {
       this.controller.getTransactions();
     },
 
-    editNewItem: function() {
+    editNewItem() {
       this.controller.send('editNewItem');
     },
 
-    transferItems: function(inventoryLocation) {
+    transferItems(inventoryLocation) {
       this.controller.send('transferItems', inventoryLocation);
     },
 
-    updatePurchase: function(purchase, updateQuantity) {
+    updatePurchase(purchase, updateQuantity) {
       this.controller.send('updatePurchase', purchase, updateQuantity);
     }
   },
 
-  getNewData: function() {
+  getNewData() {
     return Ember.RSVP.resolve({
       dateReceived: new Date()
     });
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     this._super(controller, model);
     controller.getTransactions();
   }

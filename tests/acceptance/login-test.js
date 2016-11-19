@@ -4,12 +4,12 @@ import startApp from 'hospitalrun/tests/helpers/start-app';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 
 module('Acceptance | login', {
-  beforeEach: function() {
+  beforeEach() {
     FakeServer.start();
     this.application = startApp();
   },
 
-  afterEach: function() {
+  afterEach() {
     FakeServer.stop();
     Ember.run(this.application, 'destroy');
   }

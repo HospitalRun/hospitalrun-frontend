@@ -20,11 +20,11 @@ function verifyPricingLists(path, includesPrices, excludesPrices, assert) {
 }
 
 module('Acceptance | pricing', {
-  beforeEach: function() {
+  beforeEach() {
     this.application = startApp();
   },
 
-  afterEach: function() {
+  afterEach() {
     Ember.run(this.application, 'destroy');
   }
 });

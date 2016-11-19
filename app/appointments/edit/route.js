@@ -8,7 +8,7 @@ export default AbstractEditRoute.extend(PatientListRoute, {
   modelName: 'appointment',
   newTitle: t('appointments.newTitle'),
 
-  getNewData: function() {
+  getNewData() {
     return Ember.RSVP.resolve({
       appointmentType: 'Admission',
       allDay: true,

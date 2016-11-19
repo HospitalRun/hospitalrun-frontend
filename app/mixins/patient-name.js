@@ -1,6 +1,6 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
-  getPatientDisplayId: function(patient) {
+  getPatientDisplayId(patient) {
     let externalPatientId = Ember.get(patient, 'externalPatientId');
     let friendlyId = Ember.get(patient, 'friendlyId');
     let id = Ember.get(patient, 'id');
@@ -13,7 +13,7 @@ export default Ember.Mixin.create({
     }
   },
 
-  getPatientDisplayName: function(patient) {
+  getPatientDisplayName(patient) {
     let firstName = Ember.get(patient, 'firstName');
     let lastName = Ember.get(patient, 'lastName');
     let middleName = Ember.get(patient, 'middleName');

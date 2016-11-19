@@ -14,7 +14,7 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
   nextStartKey: null,
   pageTitle: null,
 
-  _getFilterParams: function(params) {
+  _getFilterParams(params) {
     let filterByList = [];
     let filterParams = this.get('filterParams');
     if (!Ember.isEmpty(filterParams)) {
@@ -30,27 +30,27 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
     return filterByList;
   },
 
-  _getMaxPouchId: function() {
+  _getMaxPouchId() {
     return this.get('database').getPouchId({}, this.get('modelName').camelize());
   },
 
-  _getMinPouchId: function() {
+  _getMinPouchId() {
     return this.get('database').getPouchId(null, this.get('modelName').camelize());
   },
 
-  _getPouchIdFromItem: function(item) {
+  _getPouchIdFromItem(item) {
     return this.get('database').getPouchId(item.get('id'), this.get('modelName').camelize());
   },
 
-  _getStartKeyFromItem: function(item) {
+  _getStartKeyFromItem(item) {
     return item.get('id');
   },
 
-  _modelQueryParams: function() {
+  _modelQueryParams() {
     return {};
   },
 
-  model: function(params) {
+  model(params) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       let filterParams = this._getFilterParams(params);
       let modelName = this.get('modelName');
@@ -93,7 +93,7 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
     startKey: { refreshModel: true }
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     let props = this.getProperties('firstKey', 'nextStartKey');
     controller.setProperties(props);
     let sectionDetails = {

@@ -36,7 +36,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, ResultValidati
   validations: {
     labTypeName: {
       presence: {
-        'if': function(object) {
+        'if'(object) {
           if (object.get('isNew')) {
             return true;
           }

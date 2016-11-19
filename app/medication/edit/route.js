@@ -9,7 +9,7 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
   modelName: 'medication',
   newTitle: t('medication.titles.newMedicationRequest'),
   database: Ember.inject.service(),
-  getNewData: function(params) {
+  getNewData(params) {
     let idParam = this.get('idParam');
     let newData = {
       selectPatient: true,
@@ -23,7 +23,7 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
     return Ember.RSVP.resolve(newData);
   },
 
-  model: function(params) {
+  model(params) {
     let idParam = this.get('idParam');
     if (!Ember.isEmpty(idParam) && params[idParam] === 'new' || params[idParam] === 'dispense') {
       return this._createNewRecord(params);
@@ -32,7 +32,7 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
     }
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     this._super(controller, model);
     let inventoryQuery = {
       key: 'Medication',

@@ -4,7 +4,7 @@ export default AbstractEditRoute.extend({
   hideNewButton: true,
   editTitle: t('admin.workflow.editTitle'),
 
-  model: function() {
+  model() {
     let store = this.get('store');
     return store.find('option', 'workflow_options').catch(function() {
       // create a new workflow_option if none exists

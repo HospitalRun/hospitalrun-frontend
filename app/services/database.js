@@ -116,7 +116,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   getPouchId(emberId, type) {
     return this.get('mainDB').rel.makeDocID({
       id: emberId,
-      type: type
+      type
     });
   },
 
@@ -125,7 +125,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
    * @param {String} dbDump A couchdb dump string produced by pouchdb-dump-cli.
    * @returns {Promise} A promise that resolves once the dump has been loaded.
    */
-  loadDBFromDump: function(dbDump) {
+  loadDBFromDump(dbDump) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       let db = new PouchDB('dbdump', {
         adapter: 'memory'

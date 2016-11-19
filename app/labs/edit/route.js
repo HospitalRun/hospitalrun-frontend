@@ -11,12 +11,12 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
   pricingCategory: 'Lab',
 
   actions: {
-    returnToAllItems: function() {
+    returnToAllItems() {
       this.controller.send('returnToAllItems');
     }
   },
 
-  getNewData: function() {
+  getNewData() {
     return Ember.RSVP.resolve({
       selectPatient: true,
       requestDate: moment().startOf('day').toDate()

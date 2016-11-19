@@ -4,7 +4,7 @@ export default Ember.Mixin.create({
   pricingList: null,
   pricingTypeForObjectType: null,
   pricingTypes: null,
-  _createNewChargeRecord: function(quantityCharged, pricingId) {
+  _createNewChargeRecord(quantityCharged, pricingId) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       this.store.find('pricing', pricingId).then(function(item) {
         let newCharge = this.store.createRecord('proc-charge', {
@@ -22,14 +22,14 @@ export default Ember.Mixin.create({
   },
 
   actions: {
-    addCharge: function(charge) {
+    addCharge(charge) {
       let charges = this.get('model.charges');
       charges.addObject(charge);
       this.send('update', true);
       this.send('closeModal');
     },
 
-    deleteCharge: function(model) {
+    deleteCharge(model) {
       let chargeToDelete = model.get('chargeToDelete');
       let charges = this.get('model.charges');
       charges.removeObject(chargeToDelete);
@@ -38,7 +38,7 @@ export default Ember.Mixin.create({
       this.send('closeModal');
     },
 
-    showAddCharge: function() {
+    showAddCharge() {
       let newCharge = this.get('store').createRecord('proc-charge', {
         dateCharged: new Date(),
         quantity: 1,
@@ -47,13 +47,13 @@ export default Ember.Mixin.create({
       this.send('openModal', this.get('chargeRoute'), newCharge);
     },
 
-    showEditCharge: function(charge) {
+    showEditCharge(charge) {
       charge.set('itemName', charge.get('pricingItem.name'));
       charge.set('pricingCategory', this.get('chargePricingCategory'));
       this.send('openModal', this.get('chargeRoute'), charge);
     },
 
-    showDeleteCharge: function(charge) {
+    showDeleteCharge(charge) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteCharge',
         title: 'Delete Charge Item',
@@ -64,7 +64,7 @@ export default Ember.Mixin.create({
       }));
     },
 
-    setChargeQuantity: function(id, quantity) {
+    setChargeQuantity(id, quantity) {
       let model = this.get('model');
       model.set(id, quantity);
     }
@@ -89,7 +89,7 @@ export default Ember.Mixin.create({
 
   chargeRoute: null,
 
-  findChargeForPricingItem: function(pricingItem, charges) {
+  findChargeForPricingItem(pricingItem, charges) {
     let chargeForItem = charges.find(function(charge) {
       let chargePricingItemId = charge.get('pricingItem.id');
       return (pricingItem.id === chargePricingItemId);
@@ -145,7 +145,7 @@ export default Ember.Mixin.create({
    * @param {string} newVisitType if a new visit needs to be created, what type of visit
    * should be created.
    */
-  createMultipleRequests: function(pricingRecords, pricingField, visitChildName, newVisitType) {
+  createMultipleRequests(pricingRecords, pricingField, visitChildName, newVisitType) {
     let firstRecord = pricingRecords.get('firstObject');
     let modelToSave = this.get('model');
     modelToSave.set(pricingField, firstRecord);
@@ -156,7 +156,7 @@ export default Ember.Mixin.create({
     }.bind(this));
   },
 
-  _finishCreateMultipleRequests: function(pricingRecords, pricingField, visitChildName, newVisitType, visit) {
+  _finishCreateMultipleRequests(pricingRecords, pricingField, visitChildName, newVisitType, visit) {
     let attributesToSave = {};
     let baseModel = this.get('model');
     let modelToSave;
@@ -190,7 +190,7 @@ export default Ember.Mixin.create({
     }.bind(this));
   },
 
-  saveNewPricing: function(pricingName, pricingCategory, priceObjectToSet) {
+  saveNewPricing(pricingName, pricingCategory, priceObjectToSet) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       let newPricing;
       let pricingTypeForObjectType = this.get('pricingTypeForObjectType');
@@ -210,7 +210,7 @@ export default Ember.Mixin.create({
     }.bind(this), `saveNewPricing for: ${pricingName}`);
   },
 
-  getSelectedPricing: function(selectedField) {
+  getSelectedPricing(selectedField) {
     let selectedItem = this.get(selectedField);
     if (!Ember.isEmpty(selectedItem)) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -262,7 +262,7 @@ export default Ember.Mixin.create({
   /**
    * When using organizeByType charges need to be mapped over from the price lists
    */
-  updateCharges: function() {
+  updateCharges() {
     let charges = this.get('model.charges');
     let organizeByType = this.get('organizeByType');
     let pricingList = this.get('pricingList');

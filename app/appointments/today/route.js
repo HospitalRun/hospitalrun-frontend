@@ -5,7 +5,7 @@ export default AppointmentIndexRoute.extend({
   modelName: 'appointment',
   pageTitle: t('appointments.todayTitle'),
 
-  _modelQueryParams: function() {
+  _modelQueryParams() {
     let endOfDay = moment().endOf('day').toDate().getTime();
     let maxValue = this.get('maxValue');
     let startOfDay = moment().startOf('day').toDate().getTime();

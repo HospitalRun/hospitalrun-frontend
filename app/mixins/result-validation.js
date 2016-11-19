@@ -6,7 +6,7 @@ export default Ember.Mixin.create({
     result: {
       acceptance: {
         accept: true,
-        if: function(object) {
+        if(object) {
           if (!object.get('hasDirtyAttributes')) {
             return false;
           }
