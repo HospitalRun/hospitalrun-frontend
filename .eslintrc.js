@@ -25,8 +25,7 @@ module.exports = {
     'PouchDB': true,
     'Promise': true,
     'toolbox': true,
-    'Uint8Array': true,
-    'uuid': true
+    'Uint8Array': true
   },
 
   rules: {

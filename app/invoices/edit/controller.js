@@ -4,6 +4,7 @@ import NumberFormat from 'hospitalrun/mixins/number-format';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PublishStatuses from 'hospitalrun/mixins/publish-statuses';
 import SelectValues from 'hospitalrun/utils/select-values';
+import uuid from 'npm:uuid';
 
 export default AbstractEditController.extend(NumberFormat, PatientSubmodule, PublishStatuses, {
   invoiceController: Ember.inject.controller('invoices'),
