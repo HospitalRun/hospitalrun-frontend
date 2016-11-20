@@ -6,12 +6,22 @@ export default AppointmentIndexRoute.extend({
   modelName: 'appointment',
   pageTitle: t('appointments.calendarTitle'),
 
+  filterParams: ['appointmentType', 'provider', 'status', 'location'],
+
+  queryParams: {
+    appointmentType: { refreshModel: true },
+    provider: { refreshModel: true },
+    status: { refreshModel: true },
+    location: { refreshModel: true }
+  },
+
   dateIntervalStart: null,
   dateIntervalEnd: null,
 
   _modelQueryParams(params) {
     let dateIntervalStart = this.get('dateIntervalStart');
     let dateIntervalEnd = this.get('dateIntervalEnd');
+
     if (dateIntervalStart === null || dateIntervalEnd === null) {
       return this._super(params);
     }
@@ -33,7 +43,7 @@ export default AppointmentIndexRoute.extend({
     };
   },
 
-  model() {
+  model(params) {
     function createCalendarEvent(appointment) {
       return {
         title: `${appointment.get('patient').get('displayName')}\n${appointment.get('provider')}`,
@@ -47,11 +57,16 @@ export default AppointmentIndexRoute.extend({
       return appointments.map(createCalendarEvent);
     }
 
-    return this._super(...arguments)
+    return this._super(params)
       .then(createCalendarEvents)
       .then(function(calendarEvents) {
         return {
-          events: calendarEvents
+          events: calendarEvents,
+
+          selectedAppointmentType: params.appointmentType,
+          selectedProvider: params.provider,
+          selectedStatus: params.status,
+          selectedLocation: params.location
         };
       });
   },

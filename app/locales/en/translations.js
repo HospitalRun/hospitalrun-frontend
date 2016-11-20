@@ -410,6 +410,7 @@ export default {
     addVisit: 'Add Visit',
     search: 'Search',
     filter: 'Filter',
+    clear: 'Clear',
     edit: 'Edit',
     addLineItem: 'Add Line Item'
   },
