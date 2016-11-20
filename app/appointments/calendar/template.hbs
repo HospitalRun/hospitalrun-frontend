@@ -18,10 +18,9 @@
         <button class="btn btn-default" {{action 'filter'}}>{{t 'buttons.filter'}}</button>
     </div>
     <div class="panel-body">
-        {{full-calendar events=model.events
-            header=calendarHeader
-            eventClick=(action "navigateToAppointment")
-            eventAfterAllRender=(action "handleSelectedDateChange")
+        {{calendar-control events=model.events
+            onEventClick=(action "navigateToAppointment")
+            onVisibleDateIntervalChanged=(action "handleVisibleDateIntervalChanged")
         }}
     </div>
 </div>

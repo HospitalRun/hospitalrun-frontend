@@ -1,32 +1,30 @@
 import AppointmentIndexRoute from 'hospitalrun/appointments/index/route';
 import { translationMacro as t } from 'ember-i18n';
-import Ember from 'ember';
 
 export default AppointmentIndexRoute.extend({
   editReturn: 'appointments.calendar',
   modelName: 'appointment',
   pageTitle: t('appointments.calendarTitle'),
 
-  queryParams: {
-    startDate: { refreshModel: true },
-    endDate: { refreshModel: true }
-  },
+  dateIntervalStart: null,
+  dateIntervalEnd: null,
 
   _modelQueryParams(params) {
-    let { startDate, endDate } = params;
+    let dateIntervalStart = this.get('dateIntervalStart');
+    let dateIntervalEnd = this.get('dateIntervalEnd');
+    if (dateIntervalStart === null || dateIntervalEnd === null) {
+      return this._super(params);
+    }
+
     let maxValue = this.get('maxValue');
 
-    if (Ember.isEmpty(startDate)) {
-      startDate = moment().toDate().getTime();
-    }
-
-    if (Ember.isEmpty(endDate)) {
-      endDate = startDate;
-    }
+    // To cater for times like 0:00 - investigate.
+    let adjustedStart = moment(dateIntervalStart).subtract(1, 'days').startOf('day').toDate().getTime();
+    let adjustedEnd = moment(dateIntervalEnd).add(1, 'days').endOf('day').toDate().getTime();
 
     let searchOptions = {
-      startkey: [parseInt(startDate), null, 'appointment_'],
-      endkey: [parseInt(endDate), maxValue, `appointment_${maxValue}`]
+      startkey: [adjustedStart, null, 'appointment_'],
+      endkey: [adjustedEnd, maxValue, `appointment_${maxValue}`]
     };
 
     return {
@@ -56,5 +54,15 @@ export default AppointmentIndexRoute.extend({
           events: calendarEvents
         };
       });
+  },
+
+  actions: {
+    updateDateInterval(start, end) {
+      if (this.get('dateIntervalStart') !== start || this.get('dateIntervalEnd') !== end) {
+        this.set('dateIntervalStart', start);
+        this.set('dateIntervalEnd', end);
+        this.refresh();
+      }
+    }
   }
 });
