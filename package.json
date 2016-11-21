@@ -37,6 +37,7 @@
     "broccoli-manifest": "0.0.7",
     "broccoli-merge-trees": "^1.1.1",
     "broccoli-serviceworker": "0.1.4",
+    "broccoli-stylelint": "billybonks/broccoli-stylelint",
     "ember-ajax": "2.5.2",
     "ember-browserify": "^1.1.12",
     "ember-cli": "^2.8.0",
@@ -85,7 +86,7 @@
     "stylelint-config-concentric": "1.0.6",
     "stylelint-declaration-use-variable": "1.6.0",
     "stylelint-scss": "1.3.4",
-    "broccoli-stylelint": "billybonks/broccoli-stylelint"
+    "uuid": "^3.0.0"
   },
   "ember-addon": {
     "paths": [
