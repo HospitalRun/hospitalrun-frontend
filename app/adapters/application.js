@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { Adapter } from 'ember-pouch';
 import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
+import uuid from 'npm:uuid';
 
 const {
   run: {
