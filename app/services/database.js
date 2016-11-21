@@ -44,12 +44,15 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       }
       let url = `${document.location.protocol}//${document.location.host}/db/main`;
 
-      this._createRemoteDB(url, pouchOptions)
+      let localMainDB = this._createLocalDB('localMainDB', pouchOptions);
+      let remoteDB = this._createRemoteDB(url, pouchOptions);
+
+      remoteDB
       .catch((err) => {
         if ((err.status && err.status === 401) || configs.config_disable_offline_sync === true) {
           reject(err);
         } else {
-          return this._createLocalDB('localMainDB', pouchOptions);
+          return localMainDB;
         }
       }).then((db) => resolve(db))
       .catch((err) => reject(err));
@@ -162,6 +165,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   _createRemoteDB(remoteUrl, pouchOptions) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       let remoteDB = new PouchDB(remoteUrl, pouchOptions);
+      window.remoteDB = remoteDB;
       // remote db lazy created, check if db created correctly
       remoteDB.info().then(()=> {
         createPouchViews(remoteDB);
@@ -176,6 +180,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   _createLocalDB(localDBName, pouchOptions) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       let localDB = new PouchDB(localDBName, pouchOptions);
+      window.localMainDB = localDB;
       localDB.info().then(() => {
         createPouchViews(localDB);
         resolve(localDB);

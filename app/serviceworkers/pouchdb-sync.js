@@ -1,6 +1,5 @@
 
 let configs = false;
-let syncingRemote = false;
 let configDB = new PouchDB('config');
 let localMainDB = new PouchDB('localMainDB');
 
@@ -43,44 +42,40 @@ toolbox.router.post('/db/main/_bulk_docs', function(request, values, options) {
   });
 });
 
-function setupRemoteSync() {
-  if (!syncingRemote && configs.config_disable_offline_sync !== true) {
-    let pouchOptions = {
-      ajax: {
-        headers: {},
-        timeout: 30000
-      }
-    };
-    if (configs.config_consumer_secret && configs.config_token_secret
-      && configs.config_consumer_key && configs.config_oauth_token) {
-      pouchOptions.ajax.headers['x-oauth-consumer-secret'] = configs.config_consumer_secret;
-      pouchOptions.ajax.headers['x-oauth-consumer-key'] = configs.config_consumer_key;
-      pouchOptions.ajax.headers['x-oauth-token-secret'] = configs.config_token_secret;
-      pouchOptions.ajax.headers['x-oauth-token'] = configs.config_oauth_token;
+function syncDatabases() {
+  let pouchOptions = {
+    ajax: {
+      headers: {},
+      timeout: 30000
     }
-    let remoteURL = `${self.location.protocol}//${self.location.host}/db/main`;
-    let remoteDB = new PouchDB(remoteURL, pouchOptions);
-    syncingRemote = localMainDB.sync(remoteDB, {
-      live: true,
-      retry: true
-    }).on('change', function(info) {
-      logDebug('local sync change', info);
-    }).on('paused', function() {
-      logDebug('local sync paused');
-      // replication paused (e.g. user went offline)
-    }).on('active', function() {
-      logDebug('local sync active');
-      // replicate resumed (e.g. user went back online)
-    }).on('denied', function(info) {
-      logDebug('local sync denied:', info);
-      // a document failed to replicate, e.g. due to permissions
-    }).on('complete', function(info) {
-      logDebug('local sync complete:', info);
-      // handle complete
-    }).on('error', function(err) {
-      logDebug('local sync error:', err);
-    });
+  };
+  if (configs.config_consumer_secret && configs.config_token_secret
+    && configs.config_consumer_key && configs.config_oauth_token) {
+    pouchOptions.ajax.headers['x-oauth-consumer-secret'] = configs.config_consumer_secret;
+    pouchOptions.ajax.headers['x-oauth-consumer-key'] = configs.config_consumer_key;
+    pouchOptions.ajax.headers['x-oauth-token-secret'] = configs.config_token_secret;
+    pouchOptions.ajax.headers['x-oauth-token'] = configs.config_oauth_token;
   }
+  let remoteURL = `${self.location.protocol}//${self.location.host}/db/main`;
+  let remoteDB = new PouchDB(remoteURL, pouchOptions);
+  localMainDB.sync(remoteDB)
+  .on('change', function(info) {
+    logDebug('local sync change', info);
+  }).on('paused', function() {
+    logDebug('local sync paused');
+    // replication paused (e.g. user went offline)
+  }).on('active', function() {
+    logDebug('local sync active');
+    // replicate resumed (e.g. user went back online)
+  }).on('denied', function(info) {
+    logDebug('local sync denied:', info);
+    // a document failed to replicate, e.g. due to permissions
+  }).on('complete', function(info) {
+    logDebug('local sync complete:', info);
+    // handle complete
+  }).on('error', function(err) {
+    logDebug('local sync error:', err);
+  });
 }
 
 function setupConfigs() {
@@ -102,9 +97,6 @@ function setupConfigs() {
 }
 
 function couchDBResponse(request, values, options, pouchDBFn) {
-  setupConfigs().then(setupRemoteSync).catch(function(err) {
-    logDebug('Error setting up remote sync', JSON.stringify(err, null, 2));
-  });
   logDebug('Looking for couchdb response for:', request.url);
   return new Promise(function(resolve, reject) {
     let startTime = performance.now();
@@ -168,3 +160,10 @@ function runPouchFn(pouchDBFn, request, resolve, reject) {
     });
   }
 }
+
+self.addEventListener('sync', (event) => {
+  console.log('sw sync event: ', event);
+  if (event.tag === 'sync') {
+    event.waitUntil(setupConfigs().then(() => syncDatabases()));
+  }
+});
