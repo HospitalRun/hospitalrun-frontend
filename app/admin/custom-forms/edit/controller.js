@@ -1,5 +1,6 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
+import uuid from 'npm:uuid';
 
 const {
   computed,

@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import Ember from 'ember';
+import uuid from 'npm:uuid';
 
 const {
   get,
