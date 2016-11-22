@@ -21,13 +21,16 @@
     </div>
   {{/if}}
 
-  {{#if havePrimaryDiagnoses}}
+  {{#if showPrimaryDiagnoses}}
     <div class="ps-info-group long-form">
       <label class="ps-info-label wide">{{t 'patients.labels.primaryDiagnosis'}}</label>
+      {{#if canAddDiagnosis}}
+      <button class="btn btn-primary" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.addDiagnosis' }}</button>
+      {{/if}}
       <div class="ps-info-data-block">
-        {{#each primaryDiagnoses as |diagnosis|}}
-          {{#unless diagnosis.first}}, {{/unless}}
-          {{diagnosis.description}} (<strong>{{date-format diagnosis.date}}</strong>)
+        {{#each primaryDiagnoses as |diagnosis index|}}
+          {{#unless (eq index 0)}}, {{/unless}}
+          {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
         {{/each}}
       </div>
     </div>
@@ -37,9 +40,9 @@
     <div class="ps-info-group long-form">
       <label class="ps-info-label wide">{{t 'patients.labels.secondaryDiagnosis'}}</label>
       <div class="ps-info-data-block">
-        {{#each secondaryDiagnoses as |diagnosis|}}
-          {{#unless diagnosis.first}}, {{/unless}}
-          {{diagnosis.description}} (<strong>{{date-format diagnosis.date}}</strong>)
+        {{#each secondaryDiagnoses as |diagnosis index|}}
+          {{#unless (eq index 0)}}, {{/unless}}
+          {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
         {{/each}}
       </div>
     </div>

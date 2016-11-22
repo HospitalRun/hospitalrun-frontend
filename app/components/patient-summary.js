@@ -1,43 +1,69 @@
 import Ember from 'ember';
 import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
+
+const {
+  computed,
+  isEmpty
+} = Ember;
+
 export default Ember.Component.extend(PatientDiagnosis, {
   classNames: ['patient-summary'],
+  canAddDiagnosis: false,
   disablePatientLink: false,
+  diagnosisList: null,
   editProcedureAction: 'editProcedure',
+  hideInActiveDiagnoses: true,
   patient: null,
   patientProcedures: null,
+  showAddDiagnosisAction: 'showAddDiagnosis',
   showPatientAction: 'showPatient',
-  visits: null,
+  visit: null,
 
-  havePrimaryDiagnoses: function() {
+  diagnosisContainer: computed('patient', 'visit', function() {
+    // Pull diagnoses from visit if it is defined; otherwise pull from patient.
+    let diagnosisContainer = this.get('visit');
+    if (isEmpty(diagnosisContainer)) {
+      diagnosisContainer = this.get('patient');
+    }
+    return diagnosisContainer;
+  }),
+
+  havePrimaryDiagnoses: computed('primaryDiagnoses.length', function() {
     let primaryDiagnosesLength = this.get('primaryDiagnoses.length');
     return (primaryDiagnosesLength > 0);
-  }.property('primaryDiagnoses.length'),
+  }),
 
-  haveProcedures: function() {
+  haveProcedures: computed('patientProcedures.length', function() {
     let proceduresLength = this.get('patientProcedures.length');
     return (proceduresLength > 0);
-  }.property('patientProcedures.length'),
+  }),
 
-  haveSecondaryDiagnoses: function() {
+  haveSecondaryDiagnoses: computed('secondaryDiagnoses.length', function() {
     let secondaryDiagnosesLength = this.get('secondaryDiagnoses.length');
     return (secondaryDiagnosesLength > 0);
-  }.property('secondaryDiagnoses.length'),
+  }),
 
-  primaryDiagnoses: function() {
-    let visits = this.get('visits');
-    return this.getPrimaryDiagnoses(visits);
-  }.property('visits.[]'),
+  primaryDiagnoses: computed('patient.diagnoses.[]', 'visit.diagnoses.[]', 'diganosisContainer', function() {
+    let diagnosisContainer = this.get('diagnosisContainer');
+    let hideInActiveDiagnoses = this.get('hideInActiveDiagnoses');
+    return this.getDiagnoses(diagnosisContainer, hideInActiveDiagnoses, false);
 
-  secondaryDiagnoses: function() {
-    let visits = this.get('visits');
-    return this.getSecondaryDiagnoses(visits);
-  }.property('visits.[]'),
+  }),
 
-  shouldLinkToPatient: function() {
+  secondaryDiagnoses: computed('patient.diagnoses.[]', 'visit.diagnoses.[]', 'diganosisContainer', function() {
+    let diagnosisContainer = this.get('diagnosisContainer');
+    let hideInActiveDiagnoses = this.get('hideInActiveDiagnoses');
+    return this.getDiagnoses(diagnosisContainer, hideInActiveDiagnoses, true);
+  }),
+
+  shouldLinkToPatient: computed('disablePatientLink', function() {
     let disablePatientLink = this.get('disablePatientLink');
     return !disablePatientLink;
-  }.property('disablePatientLink'),
+  }),
+
+  showPrimaryDiagnoses: computed('canAddDiagnosis', 'havePrimaryDiagnoses', function() {
+    return this.get('canAddDiagnosis') || this.get('havePrimaryDiagnoses');
+  }),
 
   actions: {
     linkToPatient() {
@@ -56,6 +82,11 @@ export default Ember.Component.extend(PatientDiagnosis, {
       procedure.set('returnToPatient', true);
       procedure.set('patient', this.get('patient'));
       this.sendAction('editProcedureAction', procedure);
+    },
+
+    showAddDiagnosis() {
+      this.sendAction('showAddDiagnosisAction');
     }
+
   }
 });

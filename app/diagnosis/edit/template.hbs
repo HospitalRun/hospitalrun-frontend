@@ -1,0 +1,19 @@
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=model submitButton=false }}
+    {{select-or-typeahead property="diagnosis" label=(t 'diagnosis.labels.diagnosis') list=diagnosisList hint=false class="diagnosis-text required"}}
+    <div class="row">
+      {{date-picker property="date" label=(t "diagnosis.labels.date") class="col-sm-4 required"}}
+    </div>
+    <div class="row">
+      {{em-checkbox label=(t 'diagnosis.labels.secondaryDiagnosis') property="secondaryDiagnosis" class="col-sm-4"}}
+      {{#unless model.isNew}}
+        {{em-checkbox label=(t 'diagnosis.labels.activeDiagnosis') property="active" class="col-sm-4"}}
+      {{/unless}}
+    </div>
+  {{/em-form}}
+{{/modal-dialog}}

@@ -17,7 +17,15 @@
         <div class="panel-body">
           {{#em-form model=model submitButton=false }}
             {{#if model.patient}}
-              {{patient-summary patient=model.patient returnTo='labs.edit' returnToContext=model.id disablePatientLink=model.isNew }}
+              {{patient-summary
+                patient=model.patient
+                visit=model
+                returnTo='visits.edit'
+                returnToContext=model.id
+                disablePatientLink=model.isNew
+                canAddDiagnosis=canAddDiagnosis
+                diagnosisList=diagnosisList
+              }}
             {{/if}}
             {{#if model.checkIn}}
               <div class="row col-sm-12">
@@ -52,50 +60,13 @@
                 selection=model.examiner
               }}
             </div>
-            <div class="row">
-              {{select-or-typeahead className="col-sm-5" property="primaryDiagnosis"
-                label=diagnosisLabel list=diagnosisList
-                selection=model.primaryDiagnosis hint=false
-              }}
-              {{#if canAddBillingDiagnosis}}
+            {{#if canAddBillingDiagnosis}}
+              <div class="row">
                 {{select-or-typeahead className="col-sm-5" property="primaryBillingDiagnosis"
                   label=(t "visits.labels.finalDiagnosis")  list=diagnosisList
                   selection=model.primaryBillingDiagnosis hint=false
                 }}
-              {{/if}}
-              {{#if canAddDiagnosis}}
-                <div class="form-group col-sm-2">
-                  <label class="control-label">&nbsp;</label>
-                  <p class="form-control-static">
-                    <button class="btn btn-primary" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.addDiagnosis' }}</button>
-                  </p>
-                </div>
-              {{/if}}
-            </div>
-            {{#if haveAdditionalDiagnoses}}
-              <h4>
-                {{t "visits.titles.additionalDiagnoses"}}
-              </h4>
-              <table class="table">
-                <tr class="table-header">
-                  <th>{{t 'labels.date' }}</th>
-                  <th>{{t 'visits.labels.diagnosis' }}</th>
-                  <th>{{t 'labels.actions' }}</th>
-                </tr>
-                {{#each model.additionalDiagnoses as |diagnosis|}}
-                  <tr>
-                    <td>{{date-format diagnosis.date}}</td>
-                    <td  class="additional-diagnoses-text">{{diagnosis.description}}</td>
-                    <td>
-                      {{#if canDeleteDiagnosis}}
-                        <button class="btn btn-default warning delete-additional-diagnosis" {{action "deleteDiagnosis" diagnosis}}>
-                          <span class="octicon octicon-x"></span> {{t 'buttons.delete' }}
-                        </button>
-                      {{/if}}
-                    </td>
-                  </tr>
-                {{/each}}
-              </table>
+              </div>
             {{/if}}
             {{custom-form-manager model=model customForms=customForms}}
           {{/em-form}}

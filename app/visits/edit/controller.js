@@ -1,6 +1,7 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import AddNewPatient from 'hospitalrun/mixins/add-new-patient';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
+import DiagnosisActions from 'hospitalrun/mixins/diagnosis-actions';
 import Ember from 'ember';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
@@ -8,7 +9,7 @@ import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-export default AbstractEditController.extend(AddNewPatient, ChargeActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
+export default AbstractEditController.extend(AddNewPatient, ChargeActions, DiagnosisActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
   visitsController: Ember.inject.controller('visits'),
 
   canAddAppointment: function() {
@@ -16,7 +17,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
   }.property(),
 
   canAddBillingDiagnosis: function() {
-    return this.currentUserCan('add_billing_diagnosisgg');
+    return this.currentUserCan('add_billing_diagnosis');
   }.property(),
 
   canAddImaging: function() {
@@ -31,20 +32,12 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
     return this.currentUserCan('add_medication');
   }.property(),
 
-  canAddDiagnosis: function() {
-    return this.currentUserCan('add_diagnosis');
-  }.property(),
-
   canAddProcedure: function() {
     return this.currentUserCan('add_procedure');
   }.property(),
 
   canAddVitals: function() {
     return this.currentUserCan('add_vitals');
-  }.property(),
-
-  canDeleteDiagnosis: function() {
-    return this.currentUserCan('delete_diagnosis');
   }.property(),
 
   canDeleteImaging: function() {
@@ -103,14 +96,6 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
     }
   }.property('model.checkIn'),
 
-  diagnosisLabel: function() {
-    if (this.get('isAdmissionVisit')) {
-      return this.get('i18n').t('visits.labels.admittingDiagnosis');
-    } else {
-      return this.get('i18n').t('visits.labels.diagnosis');
-    }
-  }.property('isAdmissionVisit'),
-
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
   customForms: Ember.computed.alias('visitsController.customForms'),
@@ -126,14 +111,6 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
   locationList: Ember.computed.alias('visitsController.locationList'),
   visitTypesList: Ember.computed.alias('visitsController.visitTypesList'),
   lookupListsToUpdate: [{
-    name: 'diagnosisList',
-    property: 'model.primaryBillingDiagnosis',
-    id: 'diagnosis_list'
-  }, {
-    name: 'diagnosisList',
-    property: 'model.primaryDiagnosis',
-    id: 'diagnosis_list'
-  }, {
     name: 'physicianList',
     property: 'model.examiner',
     id: 'physician_list'
@@ -281,23 +258,25 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
 
   actions: {
     addDiagnosis(newDiagnosis) {
-      let additionalDiagnoses = this.get('model.additionalDiagnoses');
-      let visit = this.get('model');
-      if (!Ember.isArray(additionalDiagnoses)) {
-        additionalDiagnoses = [];
+      let diagnoses = this.get('model.diagnoses');
+      diagnoses.addObject(newDiagnosis);
+      let patientDiagnoses = this.get('model.patient.diagnoses');
+      let diagnosisExists = patientDiagnoses.any((diagnosis) => {
+        return diagnosis.get('active') === true
+            && diagnosis.get('diagnosis') === newDiagnosis.get('diagnosis')
+            && diagnosis.get('secondaryDiagnosis') === newDiagnosis.get('secondaryDiagnosis');
+      });
+      if (!diagnosisExists) {
+        patientDiagnoses.addObject(newDiagnosis);
+        let patient = this.get('model.patient');
+        patient.save().then(() => {
+          this.send('update', true);
+          this.send('closeModal');
+        });
+      } else {
+        this.send('update', true);
+        this.send('closeModal');
       }
-      additionalDiagnoses.addObject(newDiagnosis);
-      visit.set('additionalDiagnoses', additionalDiagnoses);
-      this.send('update', true);
-      this.send('closeModal');
-    },
-
-    deleteDiagnosis(diagnosis) {
-      let additionalDiagnoses = this.get('model.additionalDiagnoses');
-      let visit = this.get('model');
-      additionalDiagnoses.removeObject(diagnosis);
-      visit.set('additionalDiagnoses', additionalDiagnoses);
-      this.send('update', true);
     },
 
     addVitals(newVitals) {
@@ -380,11 +359,6 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Patie
 
     newMedication() {
       this._addChildObject('medication.edit');
-    },
-
-    showAddDiagnosis() {
-      let newDiagnosis = this.get('store').createRecord('add-diagnosis');
-      this.send('openModal', 'visits.add-diagnosis', newDiagnosis);
     },
 
     showAddProcedure() {

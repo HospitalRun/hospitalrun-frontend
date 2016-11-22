@@ -1,12 +1,13 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
+import DiagnosisActions from 'hospitalrun/mixins/diagnosis-actions';
 import Ember from 'ember';
 import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, PatientId, PatientNotes, {
+export default AbstractEditController.extend(BloodTypes, DiagnosisActions, ReturnTo, UserSession, PatientId, PatientNotes, {
   canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
   }.property(),
@@ -95,6 +96,7 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
   clinicList: Ember.computed.alias('patientController.clinicList'),
   countryList: Ember.computed.alias('patientController.countryList'),
   customSocialForm: Ember.computed.alias('patientController.customSocialForm.value'),
+  diagnosisList: Ember.computed.alias('patientController.diagnosisList'),
   isFileSystemEnabled: Ember.computed.alias('filesystem.isFileSystemEnabled'),
 
   pricingProfiles: Ember.computed.map('patientController.pricingProfiles', SelectValues.selectObjectMap),
@@ -173,6 +175,14 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
       this.send('update', true);
       this.send('closeModal');
     },
+
+    addDiagnosis(newDiagnosis) {
+      let diagnoses = this.get('model.diagnoses');
+      diagnoses.addObject(newDiagnosis);
+      this.send('update', true);
+      this.send('closeModal');
+    },
+
     returnToPatient() {
       this.transitionToRoute('patients.index');
     },

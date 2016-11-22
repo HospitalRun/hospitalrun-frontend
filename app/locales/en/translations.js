@@ -803,7 +803,6 @@ export default {
       visitInformation: 'Visit Information',
       examiner: 'Examiner',
       status: 'Visit Status',
-      admittingDiagnosis: 'Admitting Diagnosis',
       finalDiagnosis: 'Final/Billing Diagnosis',
       visitDate: 'Visit Date',
       visitType: 'Visit Type',
@@ -1107,6 +1106,18 @@ export default {
     },
     titles: {
       addCustomForm: 'Add Custom Form'
+    }
+  },
+  diagnosis: {
+    labels: {
+      activeDiagnosis: 'Active Diagnosis',
+      date: 'Date',
+      diagnosis: 'Diagnosis',
+      secondaryDiagnosis: 'Secondary Diagnosis'
+    },
+    titles: {
+      addDiagnosis: 'Add Diagnosis',
+      editDiagnosis: 'Edit Diagnosis'
     }
   }
 };
