@@ -9,6 +9,11 @@ export default Ember.Mixin.create({
     return this.currentUserCan('add_diagnosis');
   }),
 
+  editDiagnosis(diagnosis) {
+    diagnosis.set('editController', this);
+    this.send('openModal', 'diagnosis.edit', diagnosis);
+  },
+
   actions: {
     deleteDiagnosis(diagnosis) {
       let diagnoses = this.get('model.diagnoses');
@@ -16,12 +21,15 @@ export default Ember.Mixin.create({
       this.send('update', true);
     },
 
+    editDiagnosis(diagnosis) {
+      this.editDiagnosis(diagnosis);
+    },
+
     showAddDiagnosis() {
       let newDiagnosis = this.get('store').createRecord('diagnosis', {
-        date: new Date(),
-        editController: this
+        date: new Date()
       });
-      this.send('openModal', 'diagnosis.edit', newDiagnosis);
+      this.editDiagnosis(newDiagnosis);
     }
   }
 

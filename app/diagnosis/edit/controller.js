@@ -17,6 +17,19 @@ export default AbstractEditController.extend({
     id: 'diagnosis_list'
   }],
 
+  additionalButtons: computed('model.isNew', function() {
+    let i8n = this.get('i18n');
+    let isNew = this.get('model.isNew');
+    if (!isNew) {
+      return [{
+        class: 'btn btn-default warning',
+        buttonAction: 'deleteDiagnosis',
+        buttonIcon: 'octicon octicon-x',
+        buttonText: i8n.t('buttons.delete')
+      }];
+    }
+  }),
+
   canDeleteDiagnosis: computed(function() {
     return this.currentUserCan('delete_diagnosis');
   }),
@@ -49,6 +62,11 @@ export default AbstractEditController.extend({
   actions: {
     cancel() {
       this.send('closeModal');
+    },
+
+    deleteDiagnosis() {
+      let diagnosis = this.get('model');
+      this.get('editController').send('deleteDiagnosis', diagnosis);
     }
   }
 });

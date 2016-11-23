@@ -1,9 +1,11 @@
 {{#modal-dialog
+    additionalButtons=additionalButtons
     hideCancelButton=hideCancelButton
     isUpdateDisabled=isUpdateDisabled
     title=title
     updateButtonAction=updateButtonAction
-    updateButtonText=updateButtonText }}
+    updateButtonText=updateButtonText
+  }}
   {{#em-form model=model submitButton=false }}
     {{select-or-typeahead property="diagnosis" label=(t 'diagnosis.labels.diagnosis') list=diagnosisList hint=false class="diagnosis-text required"}}
     <div class="row">

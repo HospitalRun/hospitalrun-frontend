@@ -11,6 +11,7 @@ export default Ember.Component.extend(PatientDiagnosis, {
   canAddDiagnosis: false,
   disablePatientLink: false,
   diagnosisList: null,
+  editDiagnosisAction: 'editDiagnosis',
   editProcedureAction: 'editProcedure',
   hideInActiveDiagnoses: true,
   patient: null,
@@ -77,6 +78,11 @@ export default Ember.Component.extend(PatientDiagnosis, {
         this.sendAction('showPatientAction', this.get('patient'));
       }
     },
+
+    editDiagnosis(diagnosis) {
+      this.sendAction('editDiagnosisAction', diagnosis);
+    },
+
     editProcedure(procedure) {
       procedure.set('returnToVisit', false);
       procedure.set('returnToPatient', true);
