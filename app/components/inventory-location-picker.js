@@ -7,7 +7,7 @@ export default Ember.Component.extend({
   locationList: null,
   quantityRequested: null,
 
-  locationChange: function() {
+  locationChange() {
     let doingSetup = this.get('doingSetup');
     let locationList = this.get('locationList');
     let locationPickers = this.get('calculatedLocationPickers');
@@ -48,7 +48,7 @@ export default Ember.Component.extend({
     Ember.Binding.from('selectedLocations').to('componentSelectedLocations').connect(this);
   }.on('init'),
 
-  _setupLocationPickers: function(locationPickers, locationList, setInitialLocation) {
+  _setupLocationPickers(locationPickers, locationList, setInitialLocation) {
     locationPickers.reduce(function(previousValue, item) {
       let selectedLocation = item.get('selectedLocation');
       item.set('subLocationList', previousValue.map(SelectValues.selectObjectMap));

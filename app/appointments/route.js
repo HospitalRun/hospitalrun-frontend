@@ -13,7 +13,7 @@ export default AbstractModuleRoute.extend(UserSession, {
   sectionTitle: t('appointments.sectionTitle'),
 
   actions: {
-    createVisit: function(appointment) {
+    createVisit(appointment) {
       let visitProps = appointment.getProperties('startDate', 'endDate', 'location', 'patient');
       visitProps.visitType = appointment.get('appointmentType');
       visitProps.examiner = appointment.get('provider');

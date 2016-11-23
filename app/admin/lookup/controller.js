@@ -245,7 +245,7 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
       return (!Ember.isEmpty(lookupType) && lookupType.indexOf('pricing_types') > 0);
     }.property('model.lookupType'),
 
-    _canDeleteValue: function(value) {
+    _canDeleteValue(value) {
       let lookupType = this.get('model.lookupType');
       switch (lookupType) {
         case 'inventory_types': {
@@ -309,7 +309,7 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
       return true;
     },
 
-    _sortValues: function(a, b) {
+    _sortValues(a, b) {
       return Ember.compare(a.toLowerCase(), b.toLowerCase());
     },
 
@@ -323,12 +323,12 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
     }),
 
     actions: {
-      addValue: function() {
+      addValue() {
         this.send('openModal', 'admin.lookup.edit', Ember.Object.create({
           isNew: true
         }));
       },
-      deleteValue: function(value) {
+      deleteValue(value) {
         let lookupTypeList = this.get('lookupTypeList');
         let lookupTypeValues = lookupTypeList.get('value');
         if (this._canDeleteValue(value)) {
@@ -336,7 +336,7 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
           lookupTypeList.save();
         }
       },
-      editValue: function(value) {
+      editValue(value) {
         if (!Ember.isEmpty(value)) {
           this.send('openModal', 'admin.lookup.edit', Ember.Object.create({
             isNew: false,
@@ -345,7 +345,7 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
           }));
         }
       },
-      importList: function() {
+      importList() {
         let fileSystem = this.get('fileSystem');
         let fileToImport = this.get('importFile');
         let lookupTypeList = this.get('lookupTypeList');
@@ -377,7 +377,7 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
           }.bind(this));
         }
       },
-      updateList: function() {
+      updateList() {
         let lookupTypeList = this.get('lookupTypeList');
         lookupTypeList.set('userCanAdd', this.get('model.userCanAdd'));
         lookupTypeList.set('organizeByType', this.get('model.organizeByType'));
@@ -388,7 +388,7 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
           );
         }.bind(this));
       },
-      updateValue: function(valueObject) {
+      updateValue(valueObject) {
         let updateList = false;
         let lookupTypeList = this.get('lookupTypeList');
         let lookupTypeValues = this.get('lookupTypeValues');

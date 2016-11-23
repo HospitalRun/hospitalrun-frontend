@@ -1,6 +1,7 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
 import UserRoles from 'hospitalrun/mixins/user-roles';
+import uuid from 'npm:uuid';
 
 export default AbstractEditController.extend(UserRoles, {
   usersController: Ember.inject.controller('users/index'),
@@ -9,7 +10,7 @@ export default AbstractEditController.extend(UserRoles, {
   users: Ember.computed.alias('usersController.model'),
 
   actions: {
-    update: function() {
+    update() {
       let updateModel = this.get('model');
       let users = this.get('users');
 

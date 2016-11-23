@@ -22,7 +22,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   }.property('selectedImagingType.[]', 'model.imagingTypeName'),
 
   actions: {
-    completeImaging: function() {
+    completeImaging() {
       this.set('model.status', 'Completed');
       this.get('model').validate().then(function() {
         if (this.get('model.isValid')) {
@@ -35,7 +35,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     /**
      * Save the imaging request(s), creating multiples when user selects multiple imaging tests.
      */
-    update: function() {
+    update() {
       if (this.get('model.isNew')) {
         let newImaging = this.get('model');
         let selectedImagingType = this.get('selectedImagingType');
@@ -97,7 +97,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
   updateCapability: 'add_imaging',
 
-  afterUpdate: function(saveResponse, multipleRecords) {
+  afterUpdate(saveResponse, multipleRecords) {
     let i18n = this.get('i18n');
     this.updateLookupLists();
     let afterDialogAction,

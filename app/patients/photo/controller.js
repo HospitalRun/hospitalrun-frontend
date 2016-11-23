@@ -26,11 +26,11 @@ export default Ember.Controller.extend({
   editController: Ember.computed.alias('patientsEdit'),
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.send('closeModal');
     },
 
-    update: function() {
+    update() {
       let caption = this.get('model.caption');
       let isNew = this.get('model.isNew');
       let photoFile = this.get('model.photoFile');

@@ -71,7 +71,7 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
     inventoryItemTypeAhead: {
       acceptance: {
         accept: true,
-        if: function(object) {
+        if(object) {
           if (!object.get('hasDirtyAttributes')) {
             return false;
           }
@@ -105,14 +105,14 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
         messages: {
           greaterThan: 'must be greater than 0'
         },
-        if: function(object) {
+        if(object) {
           let requestedItems = object.get('requestedItems');
           return (Ember.isEmpty(requestedItems));
         }
       },
       acceptance: {
         accept: true,
-        if: function(object) {
+        if(object) {
           let isNew = object.get('isNew');
           let requestQuantity = parseInt(object.get('quantity'));
           let transactionType = object.get('transactionType');

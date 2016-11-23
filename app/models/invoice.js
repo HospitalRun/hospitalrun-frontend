@@ -30,7 +30,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     async: false
   }),
 
-  addPayment: function(payment) {
+  addPayment(payment) {
     let payments = this.get('payments');
     payments.addObject(payment);
     this.paymentAmountChanged();
@@ -80,7 +80,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
       let categoryList = byCategory.findBy('category', category);
       if (Ember.isEmpty(categoryList)) {
         categoryList = {
-          category: category,
+          category,
           items: []
         };
         byCategory.push(categoryList);

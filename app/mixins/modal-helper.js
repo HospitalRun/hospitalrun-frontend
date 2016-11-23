@@ -5,21 +5,21 @@ export default Ember.Mixin.create({
    * @param title string containing the title to display.
    * @param message string containing the message to display.
    */
-  displayAlert: function(title, message, okAction) {
+  displayAlert(title, message, okAction) {
     let i18n = this.get('i18n');
     let modalOptions = Ember.Object.extend({
       updateButtonText: i18n.t('buttons.ok')
     });
     this.send('openModal', 'dialog', modalOptions.create({
-      title: title,
-      message: message,
-      okAction: okAction,
+      title,
+      message,
+      okAction,
       hideCancelButton: true,
       updateButtonAction: 'ok'
     }));
   },
 
-  displayConfirm: function(title, message, confirmAction, model) {
+  displayConfirm(title, message, confirmAction, model) {
     if (Ember.isEmpty(model)) {
       model = Ember.Object.create();
     }

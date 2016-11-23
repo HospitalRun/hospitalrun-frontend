@@ -11,11 +11,11 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
   showUpdateButton: true,
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.send('closeModal');
     },
 
-    add: function() {
+    add() {
       let newContact = this.getProperties('name', 'phone', 'email', 'relationship');
       this.get('editController').send('addContact', newContact);
     }

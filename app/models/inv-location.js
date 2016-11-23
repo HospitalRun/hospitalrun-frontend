@@ -32,7 +32,7 @@ let InventoryLocation = AbstractModel.extend(LocationName, {
          * Validate that the adjustment quantity is a number and that if a deduction there are enough items to deduct
          */
         accept: true,
-        if: function(object) {
+        if(object) {
           let adjustmentQuantity = object.get('adjustmentQuantity');
           let transactionType = object.get('transactionType');
           let locationQuantity = object.get('quantity');
@@ -57,7 +57,7 @@ let InventoryLocation = AbstractModel.extend(LocationName, {
     transferLocation: {
       acceptance: {
         accept: true,
-        if: function(object) {
+        if(object) {
           let transferLocation = object.get('transferLocation');
           let transferItem = object.get('transferItem');
           // If we don't have a transfer item, then a transfer is not occurring.

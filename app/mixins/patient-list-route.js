@@ -5,7 +5,7 @@ export default Ember.Mixin.create({
   /**
    * Lazily load patient list so that it doesn't impact performance.
    */
-  _fetchPatientList: function(controller) {
+  _fetchPatientList(controller) {
     let patientQuery = {
       startkey: 'patient_',
       endkey: 'patient_\uffff',
@@ -23,17 +23,17 @@ export default Ember.Mixin.create({
   },
 
   actions: {
-    returnToPatient: function() {
+    returnToPatient() {
       this.controller.send('returnToPatient');
       this.controller.send('closeModal');
     },
 
-    returnToVisit: function() {
+    returnToVisit() {
       this.controller.send('returnToVisit');
     }
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     this._super(controller, model);
     this._fetchPatientList(controller);
   }
