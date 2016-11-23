@@ -1,64 +1,64 @@
-{{#if showOperations}}
-  <button type="button" class="btn btn-primary align-right" {{action "showAddAllergy" bubbles=false on="click"}}>
-    <span class="octicon octicon-plus"></span>Add Allergy
-  </button>
-{{/if}}
-
-
-{{#if patient.allergies}}
-  <h4 class="clearfix">Patient Allergies</h4>
-  <table class="table">
-    <tr class="table-header">
-      <th>Name</th>
-      <th>Reaction</th>
-      <th class="text-right">List</th>
-      {{#if showOperations}}
-        <th class="text-right">Actions</th>
-      {{/if}}
-    </tr>
-    {{#each patient.allergies as |allergy|}}
-      <tr>
-        <td><strong>{{allergy.name}}</strong></td>
-        <td>{{allergy.reaction}}</td>
-        <td>
-          <button class="btn btn-default neutral pull-right" {{action "checkAllergyInteraction" allergy bubbles=false}}>
-            Check Medications
-          </button>
-        </td>
-        {{#if showOperations}}
-          <td class="text-right">
-            <button type="button" class="btn btn-default neutral" {{action "showEditAllergy" allergy
-                                                                           bubbles=false}}>
-              {{t 'buttons.edit'}}
-            </button>
-            <button type="button" class="btn btn-default warning" {{action "deleteAllergy" allergy
-                                                                           bubbles=false }}>
-              <span class="octicon octicon-x"></span> {{t 'buttons.delete'}}
-            </button>
-          </td>
-        {{/if}}
-      </tr>
-    {{/each}}
-  </table>
-{{/if}}
+<label for="">Allergies</label>
+<ul class="list-inline">
+  {{#each patient.allergies as |allergy index|}}
+    {{#if (lte index 4)}}
+      <li>{{allergy.name}}</li>
+    {{/if}}
+    {{#if (eq index 4)}}
+      <li>...</li>
+    {{/if}}
+  {{/each}}
+  <li>
+    <button class="btn-link" {{action "showAllAllergies" bubbles=false}}>Manage</button>
+  </li>
+</ul>
 
 
 
 {{#if displayModal}}
   {{#modal-dialog
-    hideCancelButton=hideCancelButton
-    hideUpdateButton=hideUpdateButton
-    isUpdateDisabled=isUpdateDisabled
-    title=title
+    title="Allergies"
+    updateButtonText=buttonConfirmText
+    hideCancelButton=true
     updateButtonAction=updateButtonAction
-    updateButtonText=updateButtonText }}
-    {{#em-form model=this submitButton=false }}
-      {{em-input label=(t 'labels.name') property="name"}}
-      {{em-input label='Reaction Type' property="reaction"}}
-      {{em-input label='icd9' property="icd9CMCode"}}
-      {{em-input label='icd10' property="icd10Code"}}
-    {{/em-form}}
+  }}
+
+    <button type="button" class="btn btn-primary align-right" {{action "toggleAddAllergy" bubbles=false on="click"}}>
+      <span class="octicon octicon-plus"></span>Add Allergy
+    </button>
+
+    <table class="clearfix table table-responsive">
+      <tr class="table-header">
+        <td>Name</td>
+        <td>ICD9CM Code</td>
+        <td>ICD10 Code</td>
+        <td>Operations</td>
+      </tr>
+      {{#each patient.allergies as |allergy|}}
+        {{editable-row row=allergy headers=allergyProps operations=true}}
+      {{/each}}
+
+      {{#if addAllergyRow}}
+        <tr>
+            <td>
+              {{input lable="Name" class="form-control" value=name}}
+            </td>
+
+            <td>
+              {{input lable="ICD 9 Code" class="form-control" value=icd9CMCode}}
+            </td>
+
+            <td>
+              {{input lable="ICD 10 Code" class="form-control" value=icd10Code}}
+            </td>
+
+            <td>
+              <button class="btn btn-default" {{action "addAllergy"}}>Save</button>
+            </td>
+
+        </tr>
+      {{/if}}
+    </table>
+
   {{/modal-dialog}}
 {{/if}}
-
-{{yield}}

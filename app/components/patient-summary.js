@@ -39,9 +39,8 @@ export default Ember.Component.extend(PatientDiagnosis, {
     return !disablePatientLink;
   }),
 
-  hasAllergies: Ember.computed('patient.allergies', function() {
-    let allergies = this.get('patient.allergies');
-    return allergies.length;
+  hasAllergies: Ember.computed('patient.allergies.[]', function() {
+    return Ember.computed.notEmpty('patient.allergies');
   }),
 
   actions: {

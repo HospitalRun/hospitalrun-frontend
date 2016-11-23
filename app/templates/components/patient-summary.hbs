@@ -60,18 +60,7 @@
 
   {{#if hasAllergies}}
     <div class="ps-info-group long-form">
-      <label class="ps-info-label wide">Allergies</label>
-      <ul class="list-inline">
-        {{#each patient.allergies as |allergy index|}}
-          {{#if (lte index 4)}}
-            <li>{{allergy.name}}</li>
-          {{/if}}
-
-          {{#if (gte index 4)}}
-            <li>{{#link-to "patients.edit" patient}}View all{{/link-to}}</li>
-          {{/if}}
-        {{/each}}
-      </ul>
+      {{medication-allergy patient=patient}}
     </div>
   {{/if}}
 
