@@ -58,10 +58,12 @@ function watchRemoteDB() {
   });
 }
 
-foregroundSync().then(function() {
-  watchLocalDB();
-  watchRemoteDB();
-});
+if (localMainDB && remoteDB) {
+  foregroundSync().then(function() {
+    watchLocalDB();
+    watchRemoteDB();
+  });
+}
 
 export default Adapter.extend(PouchAdapterUtils, {
   database: Ember.inject.service(),
