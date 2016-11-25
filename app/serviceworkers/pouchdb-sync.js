@@ -58,7 +58,7 @@ function syncDatabases() {
   }
   let remoteURL = `${self.location.protocol}//${self.location.host}/db/main`;
   let remoteDB = new PouchDB(remoteURL, pouchOptions);
-  localMainDB.sync(remoteDB)
+  return localMainDB.sync(remoteDB)
   .on('change', function(info) {
     logDebug('local sync change', info);
   }).on('paused', function() {
