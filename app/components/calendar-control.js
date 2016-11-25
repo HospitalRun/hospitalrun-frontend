@@ -17,8 +17,8 @@ export default Ember.Component.extend({
       if (newIntervalStart !== this.get('visibleDateIntervalStart')
         || newIntervalEnd !== this.get('visibleDateIntervalEnd')) {
         this.setProperties({
-          visibleDateIntervalStart: 0,
-          visibleDateIntervalEnd: 0
+          visibleDateIntervalStart: newIntervalStart,
+          visibleDateIntervalEnd: newIntervalEnd
         });
         this.get('onVisibleDateIntervalChanged')(newIntervalStart, newIntervalEnd);
       }
