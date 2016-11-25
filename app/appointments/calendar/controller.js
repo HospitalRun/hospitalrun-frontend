@@ -45,8 +45,9 @@ export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes
       this.send('editAppointment', calendarEvent.referencedAppointment);
     },
 
-    handleVisibleDateIntervalChanged(start, end) {
-      this.send('updateDateInterval', start, end);
+    handleVisualConfigurationChanged(newConfiguration) {
+      let { dateIntervalStart, dateIntervalEnd } = newConfiguration;
+      this.send('updateDateInterval', dateIntervalStart, dateIntervalEnd);
     },
 
     filter() {
