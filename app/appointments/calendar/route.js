@@ -73,11 +73,9 @@ export default AppointmentIndexRoute.extend({
 
   actions: {
     updateDateInterval(start, end) {
-      if (this.get('dateIntervalStart') !== start || this.get('dateIntervalEnd') !== end) {
-        this.set('dateIntervalStart', start);
-        this.set('dateIntervalEnd', end);
-        this.refresh();
-      }
+      this.set('dateIntervalStart', start);
+      this.set('dateIntervalEnd', end);
+      this.refresh();
     }
   }
 });
