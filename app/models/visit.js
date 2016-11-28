@@ -59,7 +59,7 @@ export default AbstractModel.extend({
     async: false
   }),
   paymentState: DS.attr('string', { defaultValue: PAYMENT_STATES.PENDING }),
-  primaryDiagnosis: DS.attr('string'), // AKA admitting diagnosis
+  primaryDiagnosis: DS.attr('string'), // No longer used -- diagnoses are stored in diagnoses hasMany relationship
   primaryBillingDiagnosis: DS.attr('string'), // AKA final diagnosis
   primaryBillingDiagnosisId: DS.attr('string'),
   procedures: DS.hasMany('procedure', { async: true }),
@@ -68,20 +68,13 @@ export default AbstractModel.extend({
   visitType: DS.attr(),
   vitals: DS.hasMany('vital', { async: true }),
 
-  diagnosisList: function() {
-    let additionalDiagnosis = this.get('additionalDiagnoses');
-    let diagnosisList = [];
-    let primaryDiagnosis = this.get('primaryDiagnosis');
-    if (!Ember.isEmpty(primaryDiagnosis)) {
-      diagnosisList.push(primaryDiagnosis);
-    }
-    if (!Ember.isEmpty(additionalDiagnosis)) {
-      diagnosisList.addObjects(additionalDiagnosis.map(function(diagnosis) {
-        return diagnosis.description;
-      }));
-    }
+  diagnosisList: computed('diagnoses.[]', function() {
+    let diagnoses = this.get('diagnoses');
+    let diagnosisList = diagnoses.map((diagnosis) => {
+      return diagnosis.get('diagnosis');
+    });
     return diagnosisList;
-  }.property('additionalDiagnosis.[]', 'primaryDiagnosis'),
+  }),
 
   hasAppointmentLabel: computed('hasAppointment', function() {
     let hasAppointment = this.get('hasAppointment');
@@ -102,6 +95,14 @@ export default AbstractModel.extend({
     } else {
       return i18n.t('visits.labels.haveDoneOrders');
     }
+  }),
+
+  primaryDiagnoses: computed('diagnoses.[].secondaryDiagnosis', function() {
+    let diagnoses = this.get('diagnoses');
+    let diagnosisList = diagnoses.filterBy('secondaryDiagnosis', false).map((diagnosis) => {
+      return diagnosis.get('diagnosis');
+    });
+    return diagnosisList.join(', ');
   }),
 
   visitDate: function() {
