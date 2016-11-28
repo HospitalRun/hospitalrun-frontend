@@ -7,7 +7,22 @@
     updateButtonText=updateButtonText
   }}
   {{#em-form model=model submitButton=false }}
-    {{select-or-typeahead property="diagnosis" label=(t 'diagnosis.labels.diagnosis') list=diagnosisList hint=false class="diagnosis-text required"}}
+    {{#if model.isNew}}
+      {{select-or-typeahead
+          property="diagnosis"
+          label=(t 'diagnosis.labels.diagnosis')
+          list=diagnosisList
+          hint=false
+          class="diagnosis-text required"
+      }}
+    {{else}}
+      <div class="form-group">
+        <label class="control-label">{{t 'diagnosis.labels.diagnosis'}}</label>
+        <div>
+          <p class="form-control-static">{{model.diagnosis}}</p>
+        </div>
+      </div>
+    {{/if}}
     <div class="row">
       {{date-picker property="date" label=(t "diagnosis.labels.date") class="col-sm-4 required"}}
     </div>
