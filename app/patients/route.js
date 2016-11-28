@@ -3,6 +3,10 @@ import Ember from 'ember';
 import PatientId from 'hospitalrun/mixins/patient-id';
 import { translationMacro as t } from 'ember-i18n';
 
+const {
+  isEmpty
+} = Ember;
+
 export default AbstractModuleRoute.extend(PatientId, {
   addCapability: 'add_patient',
   additionalModels: [{
@@ -41,18 +45,24 @@ export default AbstractModuleRoute.extend(PatientId, {
   }],
 
   actions: {
-    createNewVisit(patient, visits) {
-      let lastVisit = visits.get('lastObject');
-      let propertiesToSet = {};
+    createNewVisit(patient) {
+      let diagnoses = patient.get('diagnoses');
+      let visitDiagnoses;
 
-      if (!Ember.isEmpty(lastVisit)) {
-        propertiesToSet = lastVisit.getProperties('primaryDiagnosis', 'primaryBillingDiagnosis');
+      if (!isEmpty(diagnoses)) {
+        visitDiagnoses = diagnoses.filterBy('active', true).map((diagnosis) => {
+          return this.store.createRecord('diagnosis',
+            diagnosis.getProperties('active', 'date', 'diagnosis', 'secondaryDiagnosis')
+          );
+        });
       }
-      propertiesToSet.patient = patient;
-
-      this.transitionTo('visits.edit', 'new').then(function(newRoute) {
-        newRoute.currentModel.setProperties(propertiesToSet);
-      }.bind(this));
+      this.transitionTo('visits.edit', 'new').then((newRoute) =>{
+        if (!isEmpty(visitDiagnoses)) {
+          let newVisitDiagnosis = newRoute.currentModel.get('diagnoses');
+          newVisitDiagnosis.addObjects(visitDiagnoses);
+        }
+        newRoute.currentModel.set('patient', patient);
+      });
     }
   },
   newButtonText: t('patients.buttons.newPatient'),

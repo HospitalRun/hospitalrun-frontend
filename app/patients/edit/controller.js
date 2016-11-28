@@ -347,8 +347,7 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
 
     newVisit() {
       let patient = this.get('model');
-      let visits = this.get('model.visits');
-      this.send('createNewVisit', patient, visits);
+      this.send('createNewVisit', patient);
     },
 
     showAddContact() {

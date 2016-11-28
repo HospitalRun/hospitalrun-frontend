@@ -9,6 +9,10 @@ import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
+const {
+  isEmpty
+} = Ember;
+
 export default AbstractEditController.extend(AddNewPatient, ChargeActions, DiagnosisActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
   visitsController: Ember.inject.controller('visits'),
 
@@ -162,8 +166,21 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     this.displayAlert('Visit Saved', 'The visit record has been saved.');
   },
 
+  _saveNewDiagnoses() {
+    let diagnoses = this.get('model.diagnoses');
+    diagnoses = diagnoses.filterBy('isNew', true);
+    if (!isEmpty(diagnoses)) {
+      let savePromises = diagnoses.map((diagnoses) => {
+        return diagnoses.save();
+      });
+      return Ember.RSVP.all(savePromises);
+    } else {
+      return Ember.RSVP.resolve();
+    }
+  },
+
   haveAdditionalDiagnoses: function() {
-    return !Ember.isEmpty(this.get('model.additionalDiagnoses'));
+    return !isEmpty(this.get('model.additionalDiagnoses'));
   }.property('model.additionalDiagnoses.[]'),
 
   afterUpdate() {
@@ -175,7 +192,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       patient.save().then(this._finishAfterUpdate.bind(this));
     } else if (status === 'Discharged' && patientAdmitted) {
       this.getPatientVisits(patient).then(function(visits) {
-        if (Ember.isEmpty(visits.findBy('status', 'Admitted'))) {
+        if (isEmpty(visits.findBy('status', 'Admitted'))) {
           patient.set('admitted', false);
           patient.save().then(this._finishAfterUpdate.bind(this));
         } else {
@@ -195,7 +212,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
         return newVisit.validate().then(() => {
           if (newVisit.get('isValid')) {
             let patient = newVisit.get('patient');
-            if (Ember.isEmpty(patient)) {
+            if (isEmpty(patient)) {
               this.addNewPatient();
               reject({
                 ignore: true,
@@ -214,18 +231,20 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
                 },
                 mapReduce: 'appointments_by_patient'
               }).then((appointments) => {
-                if (Ember.isEmpty(appointments)) {
+                if (isEmpty(appointments)) {
                   newVisit.set('hasAppointment', false);
-                  resolve();
+                  this._saveNewDiagnoses().then(resolve, reject);
                 } else {
                   newVisit.set('hasAppointment', true);
                   let appointmentToUpdate = appointments.get('firstObject');
                   appointmentToUpdate.set('status', 'Attended');
-                  appointmentToUpdate.save().then(resolve, reject);
+                  appointmentToUpdate.save().then(() => {
+                    this._saveNewDiagnoses().then(resolve, reject);
+                  }, reject);
                 }
               }, reject);
             } else {
-              resolve();
+              this._saveNewDiagnoses().then(resolve, reject);
             }
           }
         });
@@ -334,7 +353,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     },
 
     showAddPatientNote(model) {
-      if (Ember.isEmpty(model)) {
+      if (isEmpty(model)) {
         model = this.get('store').createRecord('patient-note', {
           visit: this.get('model'),
           createdBy: this.getUserName(),
@@ -386,7 +405,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     },
 
     showEditProcedure(procedure) {
-      if (Ember.isEmpty(procedure.get('visit'))) {
+      if (isEmpty(procedure.get('visit'))) {
         procedure.set('visit', this.get('model'));
       }
       procedure.set('returnToVisit', true);

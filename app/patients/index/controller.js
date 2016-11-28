@@ -14,10 +14,7 @@ export default AbstractPagedController.extend(PatientVisits, {
   startKey: [],
   actions: {
     admitPatient(patient) {
-      this.getPatientVisits(patient).then(function(visits) {
-        this.send('createNewVisit', patient, visits);
-      }.bind(this));
-
+      this.send('createNewVisit', patient);
     },
 
     dischargePatient(patient) {
