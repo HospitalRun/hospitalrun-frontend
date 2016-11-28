@@ -47,7 +47,7 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
         name: this.get('i18n').t('admin.lookup.diagnosisList'),
         value: 'diagnosis_list',
         models: {
-          visit: 'primaryDiagnosis'
+          diagnosis: 'diagnosis'
         }
       }, {
         name: this.get('i18n').t('admin.lookup.cptCodeList'),
