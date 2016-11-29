@@ -3,66 +3,73 @@ import {translationMacro as t} from 'ember-i18n';
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
+  i18n: Ember.inject.service(),
   patient: null,
   displayModal: false,
-  title: "add allergy",
-  updateButtonText: 'add',
-  updateButtonAction: 'closeAllergyModal',
-  showUpdateButton: true,
   allergyProps: ['name', 'icd9CMCode', 'icd10Code'],
-  buttonConfirmText: "Ok",
-  addAllergyRow: false,
+  currentAllergy: false,
+  showAllAllergies: false,
   init() {
     this._super(...arguments);
   },
 
+  buttonConfirmText: Ember.computed(function () {
+    return "Ok";
+  }),
+
+  additionalButtons: Ember.computed('currentAllergy', function () {
+    let currentAllergy = this.get('currentAllergy');
+    let i18n = this.get('i18n');
+    if (currentAllergy) {
+      return [{
+        class: 'btn btn-default warning',
+        buttonAction: 'deleteAllergy',
+        buttonIcon: 'octicon octicon-x',
+        buttonText: i18n.t('buttons.delete')
+      }];
+    }
+  }),
+  closeAllergyModal() {
+    this.set('currentAllergy', false);
+    this.set('displayModal', false);
+  },
+
   actions: {
-    showAllAllergies() {
+    toggleAllergyDisplay() {
+      this.toggleProperty('showAllAllergies');
+    },
+
+    closeModal() {
+      this.closeAllergyModal();
+    },
+
+    editAllergy(allergy) {
+      this.set('currentAllergy', allergy);
       this.set('displayModal', true);
     },
 
-    closeModal() {},
-
-    closeAllergyModal() {
-      this.set('displayModal', false);
+    createNewAllergy() {
+      this.set('displayModal', true);
     },
 
-    toggleAddAllergy() {
-      this.set('addAllergyRow', true)
-    },
-
-    addAllergy() {
+    updateAllergy() {
       let model = this.get('patient');
-      let allergy_record = this.get('store').createRecord('allergy', {
-        name: this.get('name'),
-        icd9CMCode: this.get('icd9CMCode'),
-        icd10Code: this.get('icd10Code')
-      });
-      model.get('allergies').pushObject(allergy_record);
-      allergy_record.save();
-      model.save().then(() => {
-        this.set('name', '');
-        this.set('icd9CMCode', '');
-        this.set('icd10Code', '');
-        this.set('addAllergyRow', false);
-      });
-
-    },
-
-    /**
-     * Note: the allergy model is passed in here, so we can get all the data in the future
-     * @param allergyModel
-     */
-    checkAllergyInteraction(allergyModel) {
-      let allergyName = allergyModel.get('name');
-      this.get('medicationInteraction').findPossibleAllergies(allergyName)
-        .then(results => {
-        console.log(results);
-      })
-        .catch(err => {
-          console.log(err);
+      let allergyModel = this.get('currentAllergy');
+      if (!allergyModel) {
+        console.log(this.get('name'));
+        allergyModel = this.get('store').createRecord('allergy', {
+          name: this.get('name')
+        });
+        model.get('allergies').pushObject(allergyModel);
+        model.save().then(() => {
+          this.set('name', '');
+          this.closeAllergyModal();
         })
-    }
+      } else {
+        allergyModel.save().then(() => {
+          this.closeAllergyModal();
+        });
+      }
+    },
   }
-
 });

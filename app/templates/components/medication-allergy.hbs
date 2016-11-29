@@ -1,16 +1,29 @@
 <label for="">Allergies</label>
+
+
 <ul class="list-inline">
+  <li>
+    <button class="btn muted" {{action "createNewAllergy" bubbles=false}}>Add New Allergy</button>
+  </li>
   {{#each patient.allergies as |allergy index|}}
-    {{#if (lte index 4)}}
-      <li>{{allergy.name}}</li>
-    {{/if}}
-    {{#if (eq index 4)}}
-      <li>...</li>
+    {{#if showAllAllergies}}
+      <li>
+        <button class="btn-link" {{action "editAllergy" allergy}}>{{allergy.name}}</button>
+      </li>
+    {{else}}
+      {{#if (lte index 4)}}
+        <li>
+          <button class="btn-link" {{action "editAllergy" allergy}}>{{allergy.name}}</button>
+        </li>
+      {{/if}}
     {{/if}}
   {{/each}}
   <li>
-    <button class="btn-link" {{action "showAllAllergies" bubbles=false}}>Manage</button>
+    {{#if (gt patient.allergies.length 4)}}
+      <button class="btn-link" {{action "toggleAllergyDisplay" bubbles=false}}>{{if showAllAllergies "Show Fewer" "Show All"}}</button>
+    {{/if}}
   </li>
+
 </ul>
 
 
@@ -19,46 +32,24 @@
   {{#modal-dialog
     title="Allergies"
     updateButtonText=buttonConfirmText
-    hideCancelButton=true
-    updateButtonAction=updateButtonAction
+    showCancelButton=false
+    updateButtonAction='updateAllergy'
+    additionalButtons=additionalButtons
   }}
 
-    <button type="button" class="btn btn-primary align-right" {{action "toggleAddAllergy" bubbles=false on="click"}}>
-      <span class="octicon octicon-plus"></span>Add Allergy
-    </button>
+    <div class="row">
+      <div class="col-xs-12 form-group">
+        <label for="">
+          Name
+        {{#if currentAllergy}}
+          {{input class="form-control" value=currentAllergy.name}}
+        {{else}}
+          {{input class="form-control" value=name}}
+        {{/if}}
+        </label>
+      </div>
 
-    <table class="clearfix table table-responsive">
-      <tr class="table-header">
-        <td>Name</td>
-        <td>ICD9CM Code</td>
-        <td>ICD10 Code</td>
-        <td>Operations</td>
-      </tr>
-      {{#each patient.allergies as |allergy|}}
-        {{editable-row row=allergy headers=allergyProps operations=true}}
-      {{/each}}
-
-      {{#if addAllergyRow}}
-        <tr>
-            <td>
-              {{input lable="Name" class="form-control" value=name}}
-            </td>
-
-            <td>
-              {{input lable="ICD 9 Code" class="form-control" value=icd9CMCode}}
-            </td>
-
-            <td>
-              {{input lable="ICD 10 Code" class="form-control" value=icd10Code}}
-            </td>
-
-            <td>
-              <button class="btn btn-default" {{action "addAllergy"}}>Save</button>
-            </td>
-
-        </tr>
-      {{/if}}
-    </table>
+    </div>
 
   {{/modal-dialog}}
 {{/if}}
