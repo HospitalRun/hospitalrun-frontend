@@ -23,9 +23,16 @@ export default Ember.Component.extend({
     cancelAction() {
       this.sendAction('cancelAction');
     },
+
+    fireButtonAction(buttonAction) {
+      this.set(buttonAction, buttonAction);
+      this.sendAction(buttonAction);
+    },
+
     updateAction() {
       this.sendAction('updateButtonAction');
     }
+
   },
 
   didInsertElement() {
