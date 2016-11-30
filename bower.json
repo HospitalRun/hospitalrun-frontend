@@ -14,7 +14,7 @@
     "pouchdb-load": "^1.4.0",
     "pretender": "~0.10.0",
     "pouchdb": "^5.4.5",
-    "relational-pouch": "^1.4.4",
+    "relational-pouch": "^1.4.5",
     "pouchdb-find": "^0.10.2"
   }
 }
