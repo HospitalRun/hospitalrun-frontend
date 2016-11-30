@@ -3,7 +3,7 @@
 
 <ul class="list-inline">
   <li>
-    <button class="btn muted" {{action "createNewAllergy" bubbles=false}}>Add New Allergy</button>
+    <button class="btn muted" {{action "createNewAllergy" bubbles=false}}>{{t 'buttons.addNewAllergy'}}</button>
   </li>
   {{#each patient.allergies as |allergy index|}}
     {{#if showAllAllergies}}
@@ -20,7 +20,7 @@
   {{/each}}
   <li>
     {{#if (gt patient.allergies.length 4)}}
-      <button class="btn-link" {{action "toggleAllergyDisplay" bubbles=false}}>{{if showAllAllergies "Show Fewer" "Show All"}}</button>
+      <button class="btn-link" {{action "toggleAllergyDisplay" bubbles=false}}>{{if showAllAllergies (t "buttons.showFewer") (t "buttons.showAll")}}</button>
     {{/if}}
   </li>
 
@@ -30,7 +30,7 @@
 
 {{#if displayModal}}
   {{#modal-dialog
-    title="Allergies"
+    title=modalTitle
     updateButtonText=buttonConfirmText
     showCancelButton=false
     updateButtonAction='updateAllergy'
@@ -39,14 +39,12 @@
 
     <div class="row">
       <div class="col-xs-12 form-group">
-        <label for="">
-          Name
+        <label>{{t "allergies.allergyName"}}</label>
         {{#if currentAllergy}}
           {{input class="form-control" value=currentAllergy.name}}
         {{else}}
           {{input class="form-control" value=name}}
         {{/if}}
-        </label>
       </div>
 
     </div>

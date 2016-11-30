@@ -410,7 +410,10 @@ export default {
     addVisit: 'Add Visit',
     search: 'Search',
     edit: 'Edit',
-    addLineItem: 'Add Line Item'
+    addLineItem: 'Add Line Item',
+    addNewAllergy: 'Add New Allergy',
+    showFewer: 'Show Fewer',
+    showAll: 'Show All'
   },
   login: {
     messages: {
@@ -1000,5 +1003,10 @@ export default {
     priceList: {
       charges: '{{pricingType}} charges'
     }
+  },
+  allergies: {
+    addAllergy: 'Add Allergy',
+    editAllergy: 'Edit Allergy',
+    allergyName: 'Name'
   }
 };

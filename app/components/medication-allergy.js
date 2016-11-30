@@ -1,23 +1,24 @@
 import Ember from 'ember';
-import {translationMacro as t} from 'ember-i18n';
+import { translationMacro as t } from 'ember-i18n';
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
-  i18n: Ember.inject.service(),
   patient: null,
   displayModal: false,
-  allergyProps: ['name', 'icd9CMCode', 'icd10Code'],
   currentAllergy: false,
   showAllAllergies: false,
-  init() {
-    this._super(...arguments);
-  },
+  buttonConfirmText: t('buttons.update'),
+  modalTitle: Ember.computed('currentAllergy', function() {
+    let allergy = this.get('currentAllergy');
 
-  buttonConfirmText: Ember.computed(function () {
-    return "Ok";
+    if (allergy) {
+      return t('allergies.editAllergy');
+    } else {
+      return t('allergies.addAllergy');
+    }
   }),
 
-  additionalButtons: Ember.computed('currentAllergy', function () {
+  additionalButtons: Ember.computed('currentAllergy', function() {
     let currentAllergy = this.get('currentAllergy');
     let i18n = this.get('i18n');
     if (currentAllergy) {
@@ -29,6 +30,7 @@ export default Ember.Component.extend({
       }];
     }
   }),
+
   closeAllergyModal() {
     this.set('currentAllergy', false);
     this.set('displayModal', false);
@@ -37,6 +39,10 @@ export default Ember.Component.extend({
   actions: {
     toggleAllergyDisplay() {
       this.toggleProperty('showAllAllergies');
+    },
+
+    cancel() {
+      this.closeAllergyModal();
     },
 
     closeModal() {
@@ -56,7 +62,6 @@ export default Ember.Component.extend({
       let model = this.get('patient');
       let allergyModel = this.get('currentAllergy');
       if (!allergyModel) {
-        console.log(this.get('name'));
         allergyModel = this.get('store').createRecord('allergy', {
           name: this.get('name')
         });
@@ -64,12 +69,18 @@ export default Ember.Component.extend({
         model.save().then(() => {
           this.set('name', '');
           this.closeAllergyModal();
-        })
+        });
       } else {
         allergyModel.save().then(() => {
           this.closeAllergyModal();
         });
       }
     },
+    deleteAllergy() {
+      let allergy = this.get('currentAllergy');
+      allergy.destroyRecord().then(() => {
+        this.closeAllergyModal();
+      });
+    }
   }
 });
