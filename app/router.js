@@ -12,7 +12,7 @@ Router.map(function() {
     this.route('loaddb');
     this.route('lookup', { path: '/' });
     this.route('users', {
-      resetNamespace: true 
+      resetNamespace: true
     }, function() {
       this.route('edit', { path: '/edit/:user_id' });
     });
