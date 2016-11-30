@@ -11,7 +11,9 @@ Router.map(function() {
     this.route('address');
     this.route('loaddb');
     this.route('lookup', { path: '/' });
-    this.route('users', function() {
+    this.route('users', {
+      resetNamespace: true 
+    }, function() {
       this.route('edit', { path: '/edit/:user_id' });
     });
     this.route('roles');
