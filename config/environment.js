@@ -55,7 +55,7 @@ module.exports = function(environment) {
     debug: true,
     excludePaths: ['manifest.appcache'],
     swIncludeFiles: [
-      'bower_components/pouchdb/dist/pouchdb.js'
+      'node_modules/ember-pouch/node_modules/pouchdb/dist/pouchdb.js'
     ]
   };
   if (environment === 'production') {
