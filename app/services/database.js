@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
 import List from 'npm:pouchdb-list';
+import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
 import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 
 export default Ember.Service.extend(PouchAdapterUtils, {
@@ -127,6 +128,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
    */
   loadDBFromDump(dbDump) {
     return new Ember.RSVP.Promise((resolve, reject) => {
+      PouchDB.plugin(PouchAdapterMemory);
       let db = new PouchDB('dbdump', {
         adapter: 'memory'
       });
