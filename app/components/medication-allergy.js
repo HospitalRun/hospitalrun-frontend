@@ -3,30 +3,21 @@ import { translationMacro as t } from 'ember-i18n';
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
+  i18n: Ember.inject.service(),
   patient: null,
   displayModal: false,
   currentAllergy: false,
   showAllAllergies: false,
   buttonConfirmText: t('buttons.update'),
-  modalTitle: Ember.computed('currentAllergy', function() {
-    let allergy = this.get('currentAllergy');
-
-    if (allergy) {
-      return t('allergies.editAllergy');
-    } else {
-      return t('allergies.addAllergy');
-    }
-  }),
-
+  modalTitle: t('allergies.modalTitle'),
   additionalButtons: Ember.computed('currentAllergy', function() {
     let currentAllergy = this.get('currentAllergy');
-    let i18n = this.get('i18n');
     if (currentAllergy) {
       return [{
         class: 'btn btn-default warning',
         buttonAction: 'deleteAllergy',
         buttonIcon: 'octicon octicon-x',
-        buttonText: i18n.t('buttons.delete')
+        buttonText: t('buttons.delete')
       }];
     }
   }),

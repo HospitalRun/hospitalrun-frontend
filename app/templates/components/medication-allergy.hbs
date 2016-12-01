@@ -1,28 +1,28 @@
-<label for="">Allergies</label>
+<label for="">{{t 'allergies.patientAllergy'}}</label>
 
 
-<ul class="list-inline">
+<ul class="list-inline allergy-list">
   <li>
-    <button class="btn muted" {{action "createNewAllergy" bubbles=false}}>{{t 'buttons.addNewAllergy'}}</button>
+    <button class="btn muted test-action" {{action "createNewAllergy"}}>{{t 'buttons.addNewAllergy'}}</button>
   </li>
   {{#each patient.allergies as |allergy index|}}
     {{#if showAllAllergies}}
       <li>
-        <button class="btn-link" {{action "editAllergy" allergy}}>{{allergy.name}}</button>
+        <button class="btn-link allergy-button" {{action "editAllergy" allergy}}>{{allergy.name}}</button>
       </li>
     {{else}}
       {{#if (lte index 4)}}
         <li>
-          <button class="btn-link" {{action "editAllergy" allergy}}>{{allergy.name}}</button>
+          <button class="btn-link allergy-button" {{action "editAllergy" allergy}}>{{allergy.name}}</button>
         </li>
       {{/if}}
     {{/if}}
   {{/each}}
-  <li>
     {{#if (gt patient.allergies.length 4)}}
-      <button class="btn-link" {{action "toggleAllergyDisplay" bubbles=false}}>{{if showAllAllergies (t "buttons.showFewer") (t "buttons.showAll")}}</button>
+      <li>
+        <button class="btn-link" {{action "toggleAllergyDisplay" bubbles=false}}>{{if showAllAllergies (t "buttons.showFewer") (t "buttons.showAll")}}</button>
+      </li>
     {{/if}}
-  </li>
 
 </ul>
 
@@ -32,7 +32,7 @@
   {{#modal-dialog
     title=modalTitle
     updateButtonText=buttonConfirmText
-    showCancelButton=false
+    hideCancelButton=true
     updateButtonAction='updateAllergy'
     additionalButtons=additionalButtons
   }}
