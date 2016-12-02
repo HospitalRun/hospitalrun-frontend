@@ -1,6 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { translationMacro as t } from 'ember-i18n';
 import Ember from 'ember';
 
 const Patient = Ember.Object.extend({ allergies: [] });

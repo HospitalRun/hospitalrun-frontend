@@ -12,12 +12,13 @@ export default Ember.Component.extend({
   modalTitle: t('allergies.modalTitle'),
   additionalButtons: Ember.computed('currentAllergy', function() {
     let currentAllergy = this.get('currentAllergy');
+    let btn = this.get('i18n').t('buttons.delete');
     if (currentAllergy) {
       return [{
         class: 'btn btn-default warning',
         buttonAction: 'deleteAllergy',
         buttonIcon: 'octicon octicon-x',
-        buttonText: t('buttons.delete')
+        buttonText: btn
       }];
     }
   }),
