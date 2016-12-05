@@ -4,6 +4,15 @@ export default InputComponent.extend({
   htmlComponent: 'date-input',
   minDate: null,
   maxDate: null,
+  originalPropery: null,
   showTime: false,
-  yearRange: 10
+  yearRange: 10,
+
+  didReceiveAttrs(attrs) {
+    let dateProperty = this.get('property');
+    let displayPropertyName = `display_${dateProperty}`;
+    this.set('property', displayPropertyName);
+    this.set('originalPropery', dateProperty);
+    this._super(attrs);
+  }
 });
