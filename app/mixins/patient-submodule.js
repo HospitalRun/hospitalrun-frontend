@@ -20,11 +20,24 @@ export default Ember.Mixin.create(PatientVisits, {
     },
     returnToPatient() {
       this._cancelUpdate();
-      this.transitionToRoute('patients.edit', this.get('returnPatientId'));
+      this.transitionToRoute('patients.edit', this.get('patientId'));
     },
     returnToVisit() {
       this._cancelUpdate();
-      this.transitionToRoute('visits.edit', this.get('returnVisitId'));
+      this.transitionToRoute('visits.edit', this.get('visitId'));
+    },
+
+    selectedPatientChanged(selectedPatient) {
+      if (!Ember.isEmpty(selectedPatient)) {
+        this.store.find('patient', selectedPatient.id).then(function(item) {
+          this.set('model.patient', item);
+          Ember.run.once(this, function() {
+            this.get('model').validate().catch(Ember.K);
+          });
+        }.bind(this));
+      } else {
+        this.set('model.patient', null);
+      }
     }
   },
 
@@ -123,29 +136,6 @@ export default Ember.Mixin.create(PatientVisits, {
     });
   }.property('model.patient.id', 'newVisitAdded'),
 
-  selectedPatientChanged: function() {
-    let selectedPatient = this.get('selectedPatient');
-    if (!Ember.isEmpty(selectedPatient)) {
-      this.store.find('patient', selectedPatient.id).then(function(item) {
-        this.set('model.patient', item);
-        Ember.run.once(this, function() {
-          this.get('model').validate().catch(Ember.K);
-        });
-      }.bind(this));
-    } else {
-      this.set('model.patient', null);
-    }
-  }.observes('selectedPatient'),
-
-  patientIdChanged: function() {
-    let patientId = this.get('patientId');
-    if (!Ember.isEmpty(patientId)) {
-      this.set('returnPatientId', patientId);
-    }
-  }.observes('patientId').on('init'),
-
-  returnPatientId: null,
-  returnVisitId: null,
   patientVisitsForSelect: function() {
     return DS.PromiseArray.create({
       promise: this.get('patientVisits').then(function(patientVisits) {
@@ -210,13 +200,6 @@ export default Ember.Mixin.create(PatientVisits, {
       this.displayAlert(alertTitle, alertMessage, alertAction);
     }
   },
-
-  visitIdChanged: function() {
-    let visitId = this.get('visitId');
-    if (!Ember.isEmpty(visitId)) {
-      this.set('returnVisitId', visitId);
-    }
-  }.observes('visitId').on('init'),
 
   visitId: Ember.computed.alias('model.visit.id'),
   visitsController: Ember.computed.alias('controllers.visits')
