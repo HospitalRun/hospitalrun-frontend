@@ -1,8 +1,19 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
+import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
+
+const { computed } = Ember;
 
 export default AbstractIndexRoute.extend({
   modelName: 'patient',
+  newButtonAction: computed(function() {
+    if (this.currentUserCan('add_patient')) {
+      return 'newItem';
+    } else {
+      return null;
+    }
+  }),
+  newButtonText: t('patients.buttons.newPatient'),
   pageTitle: t('patients.titles.patientListing'),
 
   _getStartKeyFromItem(item) {
