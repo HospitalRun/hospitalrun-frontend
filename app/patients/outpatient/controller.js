@@ -73,6 +73,7 @@ export default Ember.Controller.extend(FilterList, PatientVisits,  UserSession, 
   actions: {
     editVisit(visit) {
       if (this.get('canAddVisit')) {
+        visit.set('returnToOutPatient', true);
         this.transitionToRoute('visits.edit', visit);
       }
     },

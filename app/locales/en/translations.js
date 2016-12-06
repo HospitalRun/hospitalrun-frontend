@@ -780,12 +780,18 @@ export default {
   visits: {
     titles: {
       additionalDiagnoses: 'Additional Diagnoses',
+      checkedIn: 'Patient Checked In',
       editVisit: 'Edit Visit',
       newVisit: 'New Visit',
-      patientCheckIn: 'Patient Check In'
+      patientCheckIn: 'Patient Check In',
+      visitSaved: 'Visit Saved'
     },
     messages: {
-      delete: 'Are you sure you wish to delete this visit?'
+      delete: 'Are you sure you wish to delete this visit?',
+      patientCheckedIn: '{{patientName}} has been checked in.',
+      patientCreatedAndCheckedIn: '{{patientName}} has been created and checked in.',
+      visitAndPatientSaved: 'The visit and patient records have been saved.',
+      visitSaved: 'The visit record has been saved.'
     },
     buttons: {
       newProcedure: 'New Procedure',

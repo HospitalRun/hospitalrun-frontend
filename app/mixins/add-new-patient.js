@@ -1,11 +1,13 @@
 import Ember from 'ember';
 import PatientId from 'hospitalrun/mixins/patient-id';
 export default Ember.Mixin.create(PatientId, {
+  addedNewPatient: false,
   newPatientId: null,
 
   actions: {
     addedNewPatient(record) {
       this.send('closeModal');
+      this.set('addedNewPatient', true);
       this.set('model.patient', record);
       this.set('newPatientId');
       this.send('update');

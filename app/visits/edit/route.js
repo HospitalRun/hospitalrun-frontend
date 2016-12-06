@@ -16,7 +16,8 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
         outPatient: true,
         checkIn: true,
         startDate: new Date(),
-        endDate: new Date()
+        endDate: new Date(),
+        returnToOutPatient: true
       });
       return newVisit;
     } else {

@@ -92,13 +92,13 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   }.observes('isAdmissionVisit', 'model.startDate'),
 
   cancelAction: function() {
-    let checkIn = this.get('model.checkIn');
-    if (checkIn) {
+    let returnToOutPatient = this.get('model.returnToOutPatient');
+    if (returnToOutPatient) {
       return 'returnToOutPatient';
     } else {
       return 'returnToPatient';
     }
-  }.property('model.checkIn'),
+  }.property('model.returnToOutPatient'),
 
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
@@ -138,7 +138,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     } else {
       return this._super();
     }
-  }.property('model.checkIn', 'model.isNew'),
+  }.property('model.checkIn'),
 
   validVisitTypes: function() {
     let outPatient = this.get('model.outPatient');
@@ -163,7 +163,32 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   },
 
   _finishAfterUpdate() {
-    this.displayAlert('Visit Saved', 'The visit record has been saved.');
+    let addedNewPatient = this.get('addedNewPatient');
+    let checkIn = this.get('model.checkIn');
+    let i18n = this.get('i18n');
+    let updateMesage = i18n.t('visits.messages.visitSaved');
+    let updateTitle = i18n.t('visits.titles.visitSaved');
+    if (checkIn === true) {
+      let model = this.get('model');
+      model.set('checkIn');
+      this.send('setSectionHeader', {
+        currentScreenTitle: i18n.t('visits.titles.editVisit')
+      });
+    }
+
+    if (checkIn) {
+      updateTitle = i18n.t('visits.titles.checkedIn');
+      let patientDetails = {
+        patientName: this.get('model.patient.displayName')
+      };
+      if (addedNewPatient === true) {
+        this.set('addedNewPatient');
+        updateMesage = i18n.t('visits.messages.patientCreatedAndCheckedIn', patientDetails);
+      } else {
+        updateMesage = i18n.t('visits.messages.patientCheckedIn', patientDetails);
+      }
+    }
+    this.displayAlert(updateTitle, updateMesage);
   },
 
   _saveNewDiagnoses() {
@@ -214,7 +239,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
             let patient = newVisit.get('patient');
             if (isEmpty(patient)) {
               this.addNewPatient();
-              reject({
+              return reject({
                 ignore: true,
                 message: 'creating new patient first'
               });
