@@ -7,9 +7,7 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('admin', {
-    resetNamespace: true
-  }, function() {
+  this.route('admin', function() {
     this.route('address');
     this.route('custom-forms', function() {
       this.route('edit', { path: '/edit/:custom-form_id' });
@@ -27,9 +25,7 @@ Router.map(function() {
     this.route('workflow');
   });
 
-  this.route('appointments', {
-    resetNamespace: true
-  }, function() {
+  this.route('appointments', function() {
     this.route('edit', { path: '/edit/:appointment_id' });
     this.route('search');
     this.route('today');
@@ -40,16 +36,12 @@ Router.map(function() {
 
   this.route('index', { path: '/' });
 
-  this.route('imaging', {
-    resetNamespace: true
-  }, function() {
+  this.route('imaging', function() {
     this.route('completed');
     this.route('edit', { path: '/edit/:imaging_id' });
   });
 
-  this.route('inventory', {
-    resetNamespace: true
-  }, function() {
+  this.route('inventory', function() {
     this.route('barcode', { path: '/barcode/:inventory_id' });
     this.route('edit', { path: '/edit/:inventory_id' });
     this.route('batch', { path: '/batch/:inventory-batch_id' });
@@ -59,34 +51,26 @@ Router.map(function() {
     this.route('search', { path: '/search/:search_text' });
   });
 
-  this.route('invoices', {
-    resetNamespace: true
-  }, function() {
+  this.route('invoices', function() {
     this.route('edit', { path: '/edit/:invoice_id' });
     this.route('search', { path: '/search/:search_text' });
   });
 
-  this.route('labs', {
-    resetNamespace: true
-  }, function() {
+  this.route('labs', function() {
     this.route('completed');
     this.route('edit', { path: '/edit/:lab_id' });
   });
 
   this.route('login');
 
-  this.route('medication', {
-    resetNamespace: true
-  }, function() {
+  this.route('medication', function() {
     this.route('completed');
     this.route('edit', { path: '/edit/:medication_id' });
     this.route('return', { path: '/return/:inv-request_id' });
     this.route('search', { path: '/search/:search_text' });
   });
 
-  this.route('patients', {
-    resetNamespace: true
-  }, function() {
+  this.route('patients', function() {
     this.route('edit', { path: '/edit/:patient_id' });
     this.route('reports');
     this.route('admitted');
@@ -94,9 +78,7 @@ Router.map(function() {
     this.route('outpatient');
   });
 
-  this.route('pricing', {
-    resetNamespace: true
-  }, function() {
+  this.route('pricing', function() {
     this.route('imaging');
     this.route('lab');
     this.route('procedure');
@@ -106,15 +88,11 @@ Router.map(function() {
     this.route('profiles');
   });
 
-  this.route('print', {
-    resetNamespace: true
-  }, function() {
+  this.route('print', function() {
     this.route('invoice', { path: '/invoice/:invoice_id' });
   });
 
-  this.route('visits', {
-    resetNamespace: true
-  }, function() {
+  this.route('visits', function() {
     this.route('edit', { path: '/edit/:visit_id' });
     this.route('procedures', {
       resetNamespace: true

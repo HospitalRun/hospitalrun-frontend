@@ -35,7 +35,6 @@ export default AbstractEditController.extend(AddNewPatient, InventorySelection, 
 
   prescriptionClass: function() {
     let quantity = this.get('model.quantity');
-    this.get('model').validate().catch(Ember.K);
     if (Ember.isEmpty(quantity)) {
       return 'required';
     }

@@ -1,5 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import wait from 'ember-test-helpers/wait';
 import Ember from 'ember';
 
 moduleForComponent('number-input', 'Integration | Component | number input', {
@@ -39,6 +40,7 @@ test('the number input sanitizes the data', function(assert) {
   `);
 
   this.$('input').eq(0).val('dragons');
-  this.$('input').trigger('input');
-  this.$('input').trigger('change');
+  this.$('input').eq(0).trigger('input');
+  this.$('input').eq(0).blur();
+  return wait();
 });
