@@ -1,12 +1,13 @@
 import Ember from 'ember';
 import FilterList from 'hospitalrun/mixins/filter-list';
+import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 const { computed } = Ember;
 
-export default Ember.Controller.extend(FilterList, PatientVisits,  UserSession, VisitTypes, {
+export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits,  UserSession, VisitTypes, {
   addPermission: 'add_patient',
   deletePermission: 'delete_patient',
   filterValue: null,
@@ -40,12 +41,17 @@ export default Ember.Controller.extend(FilterList, PatientVisits,  UserSession, 
     return visitType.value;
   }),
 
-  filteredVisits: computed('model', 'filterBy', 'filterValue', function() {
+  checkedInVisits: computed.filter('model.@each.status', function(visit) {
+    return visit.get('status') !== 'checkedOut';
+  }),
+
+  filteredVisits: computed('checkedInVisits', 'filterBy', 'filterValue', function() {
     let filterBy = this.get('filterBy');
     let filterValue = this.get('filterValue');
-    let visits = this.get('model');
+    let visits = this.get('checkedInVisits');
     return this.filterList(visits, filterBy, filterValue);
   }),
+
   sortedVisits: computed('filteredVisits', 'sortByKey', 'sortByDesc', function() {
     let filteredList = this.get('filteredVisits');
     let sortDesc = this.get('sortByDesc');
@@ -71,6 +77,14 @@ export default Ember.Controller.extend(FilterList, PatientVisits,  UserSession, 
 
   startKey: [],
   actions: {
+    checkOut(visit) {
+      let i18n = this.get('i18n');
+      let patientDetails = { patientName: visit.get('patient.displayName') };
+      let confirmMessage =  i18n.t('visits.messages.checkOut', patientDetails);
+      this.displayConfirm(i18n.t('visits.titles.checkOut'), confirmMessage,
+          'finishCheckOut', visit);
+    },
+
     editVisit(visit) {
       if (this.get('canAddVisit')) {
         visit.set('returnToOutPatient', true);
@@ -81,6 +95,16 @@ export default Ember.Controller.extend(FilterList, PatientVisits,  UserSession, 
     filter(filterBy, filterValue) {
       this.set('filterBy', filterBy);
       this.set('filterValue', filterValue);
+    },
+
+    finishCheckOut(visit) {
+      visit.set('status', 'checkedOut');
+      visit.save().then(() => {
+        let i18n = this.get('i18n');
+        let patientDetails = { patientName: visit.get('patient.displayName') };
+        let message =  i18n.t('visits.messages.checkedOut', patientDetails);
+        this.displayAlert(i18n.t('visits.titles.checkedOut'), message);
+      });
     },
 
     sortByKey(sortKey, sortDesc) {

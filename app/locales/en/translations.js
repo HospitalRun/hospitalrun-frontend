@@ -781,6 +781,8 @@ export default {
     titles: {
       additionalDiagnoses: 'Additional Diagnoses',
       checkedIn: 'Patient Checked In',
+      checkOut: 'Patient Check Out',
+      checkedOut: 'Patient Checked Out',
       editVisit: 'Edit Visit',
       newVisit: 'New Visit',
       patientCheckIn: 'Patient Check In',
@@ -788,6 +790,8 @@ export default {
     },
     messages: {
       delete: 'Are you sure you wish to delete this visit?',
+      checkOut: 'Are you sure you wish to check out {{patientName}}?',
+      checkedOut: '{{patientName}} has been checked out.',
       patientCheckedIn: '{{patientName}} has been checked in.',
       patientCreatedAndCheckedIn: '{{patientName}} has been created and checked in.',
       visitAndPatientSaved: 'The visit and patient records have been saved.',

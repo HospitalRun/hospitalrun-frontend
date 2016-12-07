@@ -25,6 +25,10 @@ export default AbstractIndexRoute.extend({
   },
 
   actions: {
+    finishCheckOut(visit) {
+      this.controller.send('finishCheckOut', visit);
+    },
+
     patientCheckIn() {
       this.controller.send('patientCheckIn');
     }
