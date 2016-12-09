@@ -87,7 +87,7 @@ export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits,  
 
     editVisit(visit) {
       if (this.get('canAddVisit')) {
-        visit.set('returnToOutPatient', true);
+        visit.set('returnTo', 'patients.outpatient');
         this.transitionToRoute('visits.edit', visit);
       }
     },
@@ -115,7 +115,13 @@ export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits,  
     },
 
     patientCheckIn() {
-      this.transitionToRoute('visits.edit', 'checkin');
+      this.transitionToRoute('visits.edit', 'checkin').then(function(newRoute) {
+        let visitProps = {
+          outPatient: true,
+          returnTo: 'patients.outpatient'
+        };
+        newRoute.currentModel.setProperties(visitProps);
+      });
     }
 
   }
