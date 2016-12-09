@@ -446,7 +446,7 @@ export default Ember.Mixin.create({
       'Patient Administration',
       'System Administrator'
     ],
-    'user_roles': [
+    'define_user_roles': [
       'System Administrator'
     ]
   },
@@ -469,7 +469,7 @@ export default Ember.Mixin.create({
           return supportedRoles.includes(sessionVars.role);
         }
       } else {
-        return userCaps.includes(capability);
+        return userCaps.includes(capability.camelize()); // User defined capabilities are camelcased.
       }
     }
     return false;

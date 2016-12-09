@@ -278,7 +278,7 @@ export default Ember.Mixin.create({
           title: 'User Roles',
           iconClass: 'octicon-chevron-right',
           route: 'admin.roles',
-          capability: 'user_roles'
+          capability: 'define_user_roles'
         },
         {
           title: 'Workflow',

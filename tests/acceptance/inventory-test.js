@@ -69,6 +69,43 @@ test('Adding a new inventory item', (assert) => {
   });
 });
 
+test('Items with negative quantites should not be saved', (assert) => {
+  runWithPouchDump('default', function() {
+    authenticateUser();
+    visit('/inventory/edit/new');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory/edit/new');
+    });
+    fillIn('.test-inv-name input', 'Biogesic');
+    select('.test-inv-rank', 'B');
+    fillIn('textarea', 'Biogesic nga medisina');
+    select('.test-inv-type', 'Medication');
+    fillIn('.test-inv-cross input', '2600');
+    fillIn('.test-inv-reorder input', '100');
+    fillIn('.test-inv-price input', '5');
+    select('.test-inv-dist-unit', 'tablet');
+    fillIn('.test-inv-quantity input', '-1000');
+    fillIn('.test-inv-cost input', '4000');
+    select('.test-inv-unit', 'tablet');
+    typeAheadFillIn('.test-vendor', 'Alpha Pharmacy');
+    click('button:contains(Add)');
+    waitToAppear('.modal-dialog');
+
+    andThen(() => {
+      assert.equal(find('.modal-title').text(), 'Warning!!!!', 'Inventory Item with negative quantity should not be saved.');
+    });
+    click('button:contains(Ok)');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory/edit/new');
+      findWithAssert('button:contains(Add)');
+      findWithAssert('button:contains(Cancel)');
+      assert.equal(find('.test-inv-quantity .help-block').text(), 'not a valid number', 'Error message should be present for invalid quantities');
+    });
+  });
+});
+
 test('Visiting /inventory/barcode', (assert) => {
   runWithPouchDump('inventory', function() {
     authenticateUser();
