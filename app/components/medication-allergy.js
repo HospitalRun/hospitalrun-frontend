@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import {translationMacro as t} from 'ember-i18n';
+import { translationMacro as t } from 'ember-i18n';
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
@@ -8,7 +8,7 @@ export default Ember.Component.extend({
   displayModal: false,
   currentAllergy: false,
   buttonConfirmText: t('buttons.add'),
-  additionalButtons: Ember.computed('currentAllergy', function () {
+  additionalButtons: Ember.computed('currentAllergy', function() {
     let currentAllergy = this.get('currentAllergy');
     let btn = this.get('i18n').t('buttons.delete');
     if (currentAllergy) {
@@ -21,7 +21,7 @@ export default Ember.Component.extend({
     }
   }),
 
-  modalTitle: Ember.computed('currentAllergy', function () {
+  modalTitle: Ember.computed('currentAllergy', function() {
     let currentAllergy = this.get('currentAllergy');
     let i18n = this.get('i18n');
     if (currentAllergy) {
