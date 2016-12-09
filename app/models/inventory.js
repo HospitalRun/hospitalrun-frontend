@@ -74,7 +74,10 @@ export default AbstractModel.extend(LocationName, {
       presence: true
     },
     quantity: {
-      numericality: validateIfNewItem
+      numericality: {
+        validateIfNewItem,
+        greaterThanOrEqualTo: 0
+      }
     },
     price: {
       numericality: {
