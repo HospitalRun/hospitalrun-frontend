@@ -38,7 +38,8 @@ let InventoryPurchaseItem = AbstractModel.extend(LocationName, {
       numericality: true
     },
     originalQuantity: {
-      numericality: true
+      numericality: true,
+      greaterThanOrEqualTo: 0
     },
     vendor: {
       presence: true
