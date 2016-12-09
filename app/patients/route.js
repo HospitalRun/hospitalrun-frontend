@@ -1,11 +1,6 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
-import Ember from 'ember';
 import PatientId from 'hospitalrun/mixins/patient-id';
 import { translationMacro as t } from 'ember-i18n';
-
-const {
-  isEmpty
-} = Ember;
 
 export default AbstractModuleRoute.extend(PatientId, {
   addCapability: 'add_patient',
@@ -45,23 +40,15 @@ export default AbstractModuleRoute.extend(PatientId, {
   }],
 
   actions: {
-    createNewVisit(patient) {
-      let diagnoses = patient.get('diagnoses');
-      let visitDiagnoses;
-
-      if (!isEmpty(diagnoses)) {
-        visitDiagnoses = diagnoses.filterBy('active', true).map((diagnosis) => {
-          return this.store.createRecord('diagnosis',
-            diagnosis.getProperties('active', 'date', 'diagnosis', 'secondaryDiagnosis')
-          );
-        });
-      }
+    createNewVisit(patient, returnToPatient) {
       this.transitionTo('visits.edit', 'new').then((newRoute) =>{
-        if (!isEmpty(visitDiagnoses)) {
-          let newVisitDiagnosis = newRoute.currentModel.get('diagnoses');
-          newVisitDiagnosis.addObjects(visitDiagnoses);
+        if (returnToPatient) {
+          newRoute.currentModel.set('returnToPatient', patient.get('id'));
+        } else {
+          newRoute.currentModel.set('returnTo', 'patients');
         }
         newRoute.currentModel.set('patient', patient);
+        newRoute.controller.getPatientDiagnoses(patient);
       });
     }
   },

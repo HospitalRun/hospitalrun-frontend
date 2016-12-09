@@ -2,6 +2,9 @@ import DS from 'ember-data';
 import Ember from 'ember';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import SelectValues from 'hospitalrun/utils/select-values';
+
+const { isEmpty } = Ember;
+
 export default Ember.Mixin.create(PatientVisits, {
   findPatientVisits: true, // Override to false if visits shouldn't be set when patient is selected.
   needToUpdateVisit: false,
@@ -20,21 +23,22 @@ export default Ember.Mixin.create(PatientVisits, {
     },
     returnToPatient() {
       this._cancelUpdate();
-      this.transitionToRoute('patients.edit', this.get('patientId'));
+      this.transitionToRoute('patients.edit', this.get('model.returnToPatient'));
     },
     returnToVisit() {
       this._cancelUpdate();
-      this.transitionToRoute('visits.edit', this.get('visitId'));
+      this.transitionToRoute('visits.edit', this.get('model.returnToVisit'));
     },
 
     selectedPatientChanged(selectedPatient) {
       if (!Ember.isEmpty(selectedPatient)) {
-        this.store.find('patient', selectedPatient.id).then(function(item) {
+        this.store.find('patient', selectedPatient.id).then((item) =>{
           this.set('model.patient', item);
+          this.patientSelected(item);
           Ember.run.once(this, function() {
             this.get('model').validate().catch(Ember.K);
           });
-        }.bind(this));
+        });
       } else {
         this.set('model.patient', null);
       }
@@ -75,9 +79,9 @@ export default Ember.Mixin.create(PatientVisits, {
   cancelAction: function() {
     let returnToPatient = this.get('model.returnToPatient');
     let returnToVisit = this.get('model.returnToVisit');
-    if (returnToVisit) {
+    if (!isEmpty(returnToVisit)) {
       return 'returnToVisit';
-    } else if (returnToPatient) {
+    } else if (!isEmpty(returnToPatient)) {
       return 'returnToPatient';
     } else {
       return 'returnToAllItems';
@@ -121,6 +125,8 @@ export default Ember.Mixin.create(PatientVisits, {
   },
 
   patientId: Ember.computed.alias('model.patient.id'),
+
+  patientSelected(/* patient */) {},
 
   patientVisits: function() {
     let patient = this.get('model.patient');

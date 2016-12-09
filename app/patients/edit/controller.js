@@ -273,7 +273,7 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
 
     editAppointment(appointment) {
       if (this.get('canAddAppointment')) {
-        appointment.set('returnToPatient', true);
+        appointment.set('returnToPatient', this.get('model.id'));
         appointment.set('returnTo', null);
         this.transitionToRoute('appointments.edit', appointment);
       }
@@ -282,9 +282,7 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
     editImaging(imaging) {
       if (this.get('canAddImaging')) {
         if (imaging.get('canEdit')) {
-          imaging.setProperties({
-            'returnToPatient': true
-          });
+          imaging.set('returnToPatient', this.get('model.id'));
           this.transitionToRoute('imaging.edit', imaging);
         }
       }
@@ -293,9 +291,7 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
     editLab(lab) {
       if (this.get('canAddLab')) {
         if (lab.get('canEdit')) {
-          lab.setProperties({
-            'returnToPatient': true
-          });
+          lab.setProperties('returnToPatient', this.get('model.id'));
           this.transitionToRoute('labs.edit', lab);
         }
       }
@@ -304,7 +300,7 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
     editMedication(medication) {
       if (this.get('canAddMedication')) {
         if (medication.get('canEdit')) {
-          medication.set('returnToPatient', true);
+          medication.set('returnToPatient', this.get('model.id'));
           this.transitionToRoute('medication.edit', medication);
         }
       }
@@ -317,14 +313,15 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
     editProcedure(procedure) {
       if (this.get('canAddVisit')) {
         procedure.set('patient', this.get('model'));
-        procedure.set('returnToVisit', false);
-        procedure.set('returnToPatient', true);
+        procedure.set('returnToVisit');
+        procedure.set('returnToPatient', this.get('model.id'));
         this.transitionToRoute('procedures.edit', procedure);
       }
     },
 
     editVisit(visit) {
       if (this.get('canAddVisit')) {
+        visit.set('returnToPatient', this.get('model.id'));
         this.transitionToRoute('visits.edit', visit);
       }
     },
@@ -347,7 +344,7 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
 
     newVisit() {
       let patient = this.get('model');
-      this.send('createNewVisit', patient);
+      this.send('createNewVisit', patient, true);
     },
 
     showAddContact() {
@@ -480,7 +477,7 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
     this.transitionToRoute(route, 'new').then(function(newRoute) {
       newRoute.currentModel.setProperties({
         patient: this.get('model'),
-        returnToPatient: true,
+        returnToPatient: this.get('model.id'),
         selectPatient: false
       });
     }.bind(this));

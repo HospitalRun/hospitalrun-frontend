@@ -84,8 +84,8 @@ export default Ember.Component.extend(PatientDiagnosis, {
     },
 
     editProcedure(procedure) {
-      procedure.set('returnToVisit', false);
-      procedure.set('returnToPatient', true);
+      procedure.set('returnToVisit');
+      procedure.set('returnToPatient', this.get('patient.id'));
       procedure.set('patient', this.get('patient'));
       this.sendAction('editProcedureAction', procedure);
     },
