@@ -31,11 +31,11 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
   },
 
   _getMaxPouchId() {
-    return this.get('database').getPouchId({}, this.get('modelName').camelize());
+    return this.get('database').getMaxPouchId(this.get('modelName').camelize());
   },
 
   _getMinPouchId() {
-    return this.get('database').getPouchId(null, this.get('modelName').camelize());
+    return this.get('database').getMinPouchId(this.get('modelName').camelize());
   },
 
   _getPouchIdFromItem(item) {

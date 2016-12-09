@@ -11,8 +11,8 @@ export default Ember.Mixin.create({
   afterModel() {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       let database = this.get('database');
-      let maxId = database.getPouchId({}, 'pricing');
-      let minId = database.getPouchId(null, 'pricing');
+      let maxId = database.getMaxPouchId('pricing');
+      let minId = database.getMinPouchId('pricing');
       let pricingCategory = this.get('pricingCategory');
       let pricingQuery = {
         startkey: [pricingCategory, null, null, minId],
