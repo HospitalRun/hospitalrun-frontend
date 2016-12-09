@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { translationMacro as t } from 'ember-i18n';
+import {translationMacro as t} from 'ember-i18n';
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
@@ -7,10 +7,9 @@ export default Ember.Component.extend({
   patient: null,
   displayModal: false,
   currentAllergy: false,
-  showAllAllergies: false,
   buttonConfirmText: t('buttons.update'),
   modalTitle: t('allergies.modalTitle'),
-  additionalButtons: Ember.computed('currentAllergy', function() {
+  additionalButtons: Ember.computed('currentAllergy', function () {
     let currentAllergy = this.get('currentAllergy');
     let btn = this.get('i18n').t('buttons.delete');
     if (currentAllergy) {
@@ -23,15 +22,22 @@ export default Ember.Component.extend({
     }
   }),
 
+  modalTitle: Ember.computed('currentAllergy', function () {
+    let currentAllergy = this.get('currentAllergy');
+    let i18n = this.get('i18n');
+    if (currentAllergy) {
+      return i18n.t('allergies.editAllergy', { allergy: currentAllergy.name });
+    } else {
+      return i18n.t('allergies.newAllergy');
+    }
+  }),
+
   closeAllergyModal() {
     this.set('currentAllergy', false);
     this.set('displayModal', false);
   },
 
   actions: {
-    toggleAllergyDisplay() {
-      this.toggleProperty('showAllAllergies');
-    },
 
     cancel() {
       this.closeAllergyModal();
@@ -57,10 +63,12 @@ export default Ember.Component.extend({
         allergyModel = this.get('store').createRecord('allergy', {
           name: this.get('name')
         });
-        model.get('allergies').pushObject(allergyModel);
-        model.save().then(() => {
-          this.set('name', '');
-          this.closeAllergyModal();
+        allergyModel.save().then(() => {
+          model.get('allergies').pushObject(allergyModel);
+          model.save().then(() => {
+            this.set('name', '');
+            this.closeAllergyModal();
+          });
         });
       } else {
         allergyModel.save().then(() => {

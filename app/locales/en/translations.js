@@ -1005,10 +1005,10 @@ export default {
     }
   },
   allergies: {
-    patientAllergy: 'Patient Allergies',
     addAllergy: 'Add Allergy',
-    editAllergy: 'Edit Allergy',
     allergyName: 'Name',
-    modalTitle: 'Manage Allergy'
+    editAllergy: 'Edit {{allergy}}',
+    newAllergy: 'Add New Allergy',
+    patientAllergy: 'Patient Allergies'
   }
 };

@@ -1,4 +1,4 @@
-<label for="">{{t 'allergies.patientAllergy'}}</label>
+<label class="ps-info-label wide">{{t 'allergies.patientAllergy'}}</label>
 
 
 <ul class="list-inline allergy-list">
@@ -6,23 +6,11 @@
     <button class="btn muted test-action" {{action "createNewAllergy"}}>{{t 'buttons.addNewAllergy'}}</button>
   </li>
   {{#each patient.allergies as |allergy index|}}
-    {{#if showAllAllergies}}
       <li>
         <button class="btn-link allergy-button" {{action "editAllergy" allergy}}>{{allergy.name}}</button>
       </li>
-    {{else}}
-      {{#if (lte index 4)}}
-        <li>
-          <button class="btn-link allergy-button" {{action "editAllergy" allergy}}>{{allergy.name}}</button>
-        </li>
-      {{/if}}
-    {{/if}}
   {{/each}}
-    {{#if (gt patient.allergies.length 4)}}
-      <li>
-        <button class="btn-link" {{action "toggleAllergyDisplay" bubbles=false}}>{{if showAllAllergies (t "buttons.showFewer") (t "buttons.showAll")}}</button>
-      </li>
-    {{/if}}
+
 
 </ul>
 
