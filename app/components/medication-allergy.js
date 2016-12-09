@@ -7,8 +7,7 @@ export default Ember.Component.extend({
   patient: null,
   displayModal: false,
   currentAllergy: false,
-  buttonConfirmText: t('buttons.update'),
-  modalTitle: t('allergies.modalTitle'),
+  buttonConfirmText: t('buttons.add'),
   additionalButtons: Ember.computed('currentAllergy', function () {
     let currentAllergy = this.get('currentAllergy');
     let btn = this.get('i18n').t('buttons.delete');

@@ -1,4 +1,7 @@
 <label class="ps-info-label wide">{{t 'allergies.patientAllergy'}}</label>
+{{#if condition}}
+  <a class="clickable" {{action "createNewAllergy"}}><span class="octicon octicon-plus"></span>  {{t 'buttons.addNewAllergy'}}</a>
+{{/if}}
 
 <div class="ps-info-data-block">
   <ul class="list-inline allergy-list">
