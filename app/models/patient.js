@@ -21,7 +21,9 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   clinic: DS.attr('string'),
   country: DS.attr('string'),
   dateOfBirth: DS.attr('date'),
-  diagnoses: DS.hasMany('diagnosis'),
+  diagnoses: DS.hasMany('diagnosis', {
+    async: false
+  }),
   economicClassification: DS.attr('string'),
   email: DS.attr('string'),
   expenses: DS.attr(),
