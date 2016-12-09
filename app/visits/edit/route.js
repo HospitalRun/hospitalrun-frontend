@@ -13,11 +13,9 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
     let idParam = this.get('idParam');
     if (!Ember.isEmpty(idParam) && params[idParam] === 'checkin') {
       let newVisit = this.get('store').createRecord('visit', {
-        outPatient: true,
         checkIn: true,
         startDate: new Date(),
-        endDate: new Date(),
-        returnToOutPatient: true
+        endDate: new Date()
       });
       return newVisit;
     } else {

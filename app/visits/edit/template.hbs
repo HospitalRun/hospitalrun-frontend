@@ -27,7 +27,7 @@
                 diagnosisList=diagnosisList
               }}
             {{/if}}
-            {{#if model.checkIn}}
+            {{#if showPatientSelection}}
               <div class="row col-sm-12">
                 {{patient-typeahead property="patientTypeAhead" label=(t 'visits.labels.patientToCheckIn') content=patientList selection=selectedPatient class="required patient-name"}}
               </div>

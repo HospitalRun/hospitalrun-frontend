@@ -10,6 +10,7 @@ import UserSession from 'hospitalrun/mixins/user-session';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 const {
+  computed,
   isEmpty
 } = Ember;
 
@@ -73,11 +74,8 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     let visitType = this.get('model.visitType');
     let isAdmission = (visitType === 'Admission');
     let visit = this.get('model');
-    if (isAdmission) {
-      visit.set('outPatient', false);
-    } else {
+    if (!isAdmission) {
       visit.set('status');
-      visit.set('outPatient', true);
     }
     return isAdmission;
   }.property('model.visitType'),
@@ -92,13 +90,15 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   }.observes('isAdmissionVisit', 'model.startDate'),
 
   cancelAction: function() {
-    let returnToOutPatient = this.get('model.returnToOutPatient');
-    if (returnToOutPatient) {
-      return 'returnToOutPatient';
-    } else {
+    let returnTo = this.get('model.returnTo');
+    if (!isEmpty(returnTo)) {
+      return 'returnTo';
+    } else if (!isEmpty('model.returnToPatient')) {
       return 'returnToPatient';
+    } else {
+      return this._super();
     }
-  }.property('model.returnToOutPatient'),
+  }.property('model.returnTo'),
 
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
@@ -131,6 +131,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
   updateCapability: 'add_visit',
 
+  showPatientSelection: computed('model.checkIn', 'model.hidePatientSelection', function() {
+    return this.get('model.checkIn') && !this.get('model.hidePatientSelection');
+  }),
+
   updateButtonText: function() {
     let i18n = this.get('i18n');
     if (this.get('model.checkIn')) {
@@ -143,7 +147,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   validVisitTypes: function() {
     let outPatient = this.get('model.outPatient');
     let visitTypes = this.get('visitTypes');
-    if (outPatient) {
+    if (outPatient === true) {
       visitTypes = visitTypes.filter(function(visitType) {
         return (visitType.id !== 'Admission');
       });
@@ -157,7 +161,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
         patient: this.get('model.patient'),
         visit: this.get('model'),
         selectPatient: false,
-        returnToVisit: true
+        returnToVisit: this.get('model.id')
       });
     }.bind(this));
   },
@@ -279,6 +283,30 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     }
   },
 
+  getPatientDiagnoses(patient) {
+    let diagnoses = patient.get('diagnoses');
+    let visitDiagnoses;
+    if (!isEmpty(diagnoses)) {
+      visitDiagnoses = diagnoses.filterBy('active', true).map((diagnosis) => {
+        let description = diagnosis.get('diagnosis');
+        let newDiagnosisProperties = diagnosis.getProperties('active', 'date', 'diagnosis', 'secondaryDiagnosis');
+        newDiagnosisProperties.diagnosis = description;
+        return this.store.createRecord('diagnosis',
+          newDiagnosisProperties
+        );
+      });
+    }
+    let currentDiagnoses = this.get('model.diagnoses');
+    currentDiagnoses.clear();
+    if (!isEmpty(visitDiagnoses)) {
+      currentDiagnoses.addObjects(visitDiagnoses);
+    }
+  },
+
+  patientSelected(patient) {
+    this.getPatientDiagnoses(patient);
+  },
+
   /**
    * Adds or removes the specified object from the specified list.
    * @param {String} listName The name of the list to operate on.
@@ -347,25 +375,21 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
     editImaging(imaging) {
       if (imaging.get('canEdit')) {
-        imaging.setProperties({
-          'returnToVisit': true
-        });
+        imaging.setProperties('returnToVisit', this.get('model.id'));
       }
       this.transitionToRoute('imaging.edit', imaging);
     },
 
     editLab(lab) {
       if (lab.get('canEdit')) {
-        lab.setProperties({
-          'returnToVisit': true
-        });
+        lab.setProperties('returnToVisit', this.get('model.id'));
         this.transitionToRoute('labs.edit', lab);
       }
     },
 
     editMedication(medication) {
       if (medication.get('canEdit')) {
-        medication.set('returnToVisit', true);
+        medication.set('returnToVisit', this.get('model.id'));
         this.transitionToRoute('medication.edit', medication);
       }
     },
@@ -433,8 +457,8 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       if (isEmpty(procedure.get('visit'))) {
         procedure.set('visit', this.get('model'));
       }
-      procedure.set('returnToVisit', true);
-      procedure.set('returnToPatient', false);
+      procedure.set('returnToVisit', this.get('model.id'));
+      procedure.set('returnToPatient');
       this.transitionToRoute('procedures.edit', procedure);
     },
 
@@ -458,10 +482,6 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       let patientNotes = this.get('model.patientNotes');
       patientNotes.removeObject(note);
       this.send('update', true);
-    },
-
-    returnToOutPatient() {
-      this.transitionToRoute('patients.outpatient');
     }
   }
 });
