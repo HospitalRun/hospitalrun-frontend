@@ -225,7 +225,7 @@ export default {
         adjustInventoryLocation: 'Ajustar Localização de Inventário',
         deleteInventoryItem: 'Excluir Item de Inventário',
         fulfillInventory: 'Preencher Inventário',
-        userRoles: 'Perfis de Usuários'
+        defineUserRoles: 'Perfis de Usuários'
       },
       messages: {
         roleSaved: 'O perfil {{roleName}} foi salvo.'
