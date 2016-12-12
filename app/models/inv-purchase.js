@@ -2,6 +2,11 @@ import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
+
+function defaultQuantityGroups() {
+  return [];
+}
+
 /**
  * Model to represent a purchase within an inventory item.
  * File/model name is inv-purchase because using inventory-purchase will cause purchase
@@ -32,14 +37,15 @@ let InventoryPurchaseItem = AbstractModel.extend(LocationName, {
   vendorItemNo: DS.attr('string'),
   distributionUnit: DS.attr('string'),
   invoiceNo: DS.attr('string'),
-  quantityGroups: DS.attr(),
+  quantityGroups: DS.attr({ defaultValue: defaultQuantityGroups }),
   validations: {
     purchaseCost: {
       numericality: true
     },
     originalQuantity: {
-      numericality: true,
-      greaterThanOrEqualTo: 0
+      numericality: {
+        greaterThanOrEqualTo: 0
+      }
     },
     vendor: {
       presence: true
