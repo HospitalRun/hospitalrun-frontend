@@ -196,7 +196,7 @@ export default {
         deleteInventoryItem: 'Eliminar elemento del inventario',
         deleteInventoryPurchase: 'Eliminar compra del inventario',
         fulfillInventory: 'Cumplimiento de inventario',
-        userRoles: 'Roles de usuario'
+        defineUserRoles: 'Roles de usuario'
       },
       messages: {
         roleSaved: 'El {{roleName}} rol ha sido salvado.'

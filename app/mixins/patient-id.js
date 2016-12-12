@@ -1,9 +1,8 @@
 import Ember from 'ember';
-import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 
 const { inject, isEmpty } = Ember;
 
-export default Ember.Mixin.create(PouchDbMixin, {
+export default Ember.Mixin.create({
   idPrefix: null,
   database: inject.service(),
   config: inject.service(),
@@ -16,8 +15,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
   generateFriendlyId() {
     let config = this.get('config');
     let database = this.get('database');
-    let maxValue = this.get('maxValue');
-
+    let maxValue = database.getMaxPouchId('patient');
     let findUnusedId = (sequence) => {
       let current, id;
       return config.getPatientPrefix()

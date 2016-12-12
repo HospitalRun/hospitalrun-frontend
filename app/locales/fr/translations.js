@@ -197,7 +197,7 @@ export default {
         deleteInventoryItem: 'Supprimer un article d\'inventaire',
         deleteInventoryPurchase: 'Supprimer un achat d\'inventaire',
         fulfillInventory: 'Traiter l\'inventaire',
-        userRoles: 'Rôles d\'utilisateur'
+        defineUserRoles: 'Rôles d\'utilisateur'
       },
       messages: {
         roleSaved: 'Le rôle {{roleName}}  a été enregistré.'
