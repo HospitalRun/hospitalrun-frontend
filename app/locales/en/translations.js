@@ -465,6 +465,7 @@ export default {
       aisle: 'Aisle',
       aisleLocation: 'Aisle Location',
       allInventory: 'All Inventory',
+      availableQuantity: '{{quantity}} available',
       billTo: 'Bill To',
       consumePurchases: 'Consume Purchases',
       consumptionRate: 'Consumption Rate',
