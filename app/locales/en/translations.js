@@ -794,6 +794,7 @@ export default {
       socialWork: 'Social Work'
     },
     titles: {
+      addContact: 'Add Contact',
       admittedPatients: 'Admitted Patients',
       expenses: 'Expenses',
       additionalContacts: 'Additional Contacts',
