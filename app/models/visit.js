@@ -132,7 +132,7 @@ export default AbstractModel.extend({
     patientTypeAhead: {
       presence: {
         if(object) {
-          return (object.get('checkIn'));
+          return (object.get('checkIn') && !object.get('hidePatientSelection'));
         }
       }
     },
