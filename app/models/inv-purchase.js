@@ -2,6 +2,7 @@ import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
+import { round100 } from 'hospitalrun/utils/math';
 
 function defaultQuantityGroups() {
   return [];
@@ -23,7 +24,7 @@ let InventoryPurchaseItem = AbstractModel.extend(LocationName, {
     if (Ember.isEmpty(purchaseCost) || Ember.isEmpty(quantity) || purchaseCost === 0 || quantity === 0) {
       return 0;
     }
-    return Number((purchaseCost / quantity).toFixed(2));
+    return round100(purchaseCost / quantity);
   }.property('purchaseCost', 'originalQuantity'),
   originalQuantity: DS.attr('number'),
   currentQuantity: DS.attr('number'),

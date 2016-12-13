@@ -18,6 +18,15 @@ test('costPerUnit', function(assert) {
   assert.strictEqual(inventoryPurchaseItem.get('costPerUnit'), 2.5);
 });
 
+test('costPerUnit properly round', function(assert) {
+  let inventoryPurchaseItem = this.subject({
+    purchaseCost: 71.11,
+    originalQuantity: 2
+  });
+
+  assert.strictEqual(inventoryPurchaseItem.get('costPerUnit'), 35.56);
+});
+
 test('costPerUnit invalid input', function(assert) {
   let inventoryPurchaseItem = this.subject({
     purchaseCost: 0,
