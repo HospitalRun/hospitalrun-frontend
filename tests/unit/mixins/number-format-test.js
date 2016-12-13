@@ -57,13 +57,3 @@ test('_validNumber', function(assert) {
   assert.strictEqual(numberFormat._validNumber(-1), false, 'Should return false for negative');
   assert.strictEqual(numberFormat._validNumber('test'), false, 'Should return false for non numeric string');
 });
-
-test('_round100', function(assert) {
-  let numberFormat = Ember.Object.extend(NumberFormat).create();
-
-  assert.strictEqual(numberFormat._round100(1), 1, 'Should leave number untouched');
-  assert.strictEqual(numberFormat._round100(10.5), 10.5, 'Should leave 1 decimal untouched');
-  assert.strictEqual(numberFormat._round100(10.55), 10.55, 'Should leave 2 decimal untouched');
-  assert.strictEqual(numberFormat._round100(10.358), 10.36, 'Should round 10.358, 10.36');
-  assert.strictEqual(numberFormat._round100(35.555), 35.56, 'Should round 8.455 to 8.46');
-});
