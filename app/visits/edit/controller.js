@@ -17,13 +17,13 @@ const {
 export default AbstractEditController.extend(AddNewPatient, ChargeActions, DiagnosisActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
   visitsController: Ember.inject.controller('visits'),
 
-  canAddAppointment: function() {
+  canAddAppointment: computed('model.isNew', function() {
     return (!this.get('model.isNew') && this.currentUserCan('add_appointment'));
-  }.property(),
+  }),
 
-  canAddBillingDiagnosis: function() {
-    return this.currentUserCan('add_billing_diagnosis');
-  }.property(),
+  canAddBillingDiagnosis: computed('model.isNew', function() {
+    return (!this.get('model.isNew') && this.currentUserCan('add_billing_diagnosis'));
+  }),
 
   canAddImaging: function() {
     return this.currentUserCan('add_imaging');
@@ -195,6 +195,46 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     this.displayAlert(updateTitle, updateMesage);
   },
 
+  _findAssociatedAppointment(newVisit) {
+    let appointment = newVisit.get('appointment');
+    let beginningOfToday = moment().startOf('day').valueOf();
+    let database = this.get('database');
+    let endOfToday = moment().endOf('day').valueOf();
+    let maxId = database.getMaxPouchId('appointment');
+    let minId = database.getMinPouchId('appointment');
+    let patientId = newVisit.get('patient.id');
+    if (!isEmpty(appointment)) {
+      return Ember.RSVP.resolve(appointment);
+    } else {
+      return this.store.query('appointment', {
+        options: {
+          startkey: [patientId, beginningOfToday, beginningOfToday, minId],
+          endkey: [patientId, endOfToday, endOfToday, maxId]
+        },
+        mapReduce: 'appointments_by_patient'
+      }).then((appointments) => {
+        if (isEmpty(appointments)) {
+          return;
+        } else {
+          return appointments.get('firstObject');
+        }
+      });
+    }
+  },
+
+  _saveAssociatedAppointment(newVisit) {
+    return this._findAssociatedAppointment(newVisit).then((appointment) => {
+      if (isEmpty(appointment)) {
+        newVisit.set('hasAppointment', false);
+        return Ember.RSVP.resolve();
+      } else {
+        newVisit.set('hasAppointment', true);
+        appointment.set('status', 'Attended');
+        return appointment.save();
+      }
+    });
+  },
+
   _saveNewDiagnoses() {
     let diagnoses = this.get('model.diagnoses');
     diagnoses = diagnoses.filterBy('isNew', true);
@@ -249,29 +289,9 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
               });
             }
             if (this.get('model.checkIn')) {
-              let patientId = patient.get('id');
-              let maxValue = this.get('maxValue');
-              let beginningOfToday = moment().startOf('day').valueOf();
-              let endOfToday = moment().endOf('day').valueOf();
-              this.store.query('appointment', {
-                options: {
-                  startkey: [patientId, beginningOfToday, beginningOfToday, 'appointment_'],
-                  endkey: [patientId, endOfToday, endOfToday, maxValue]
-                },
-                mapReduce: 'appointments_by_patient'
-              }).then((appointments) => {
-                if (isEmpty(appointments)) {
-                  newVisit.set('hasAppointment', false);
-                  this._saveNewDiagnoses().then(resolve, reject);
-                } else {
-                  newVisit.set('hasAppointment', true);
-                  let appointmentToUpdate = appointments.get('firstObject');
-                  appointmentToUpdate.set('status', 'Attended');
-                  appointmentToUpdate.save().then(() => {
-                    this._saveNewDiagnoses().then(resolve, reject);
-                  }, reject);
-                }
-              }, reject);
+              this._saveAssociatedAppointment(newVisit).then(() => {
+                this._saveNewDiagnoses().then(resolve, reject);
+              });
             } else {
               this._saveNewDiagnoses().then(resolve, reject);
             }
