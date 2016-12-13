@@ -982,6 +982,12 @@ export default {
     chargesByTypeTab: {
       charges: 'charges'
     },
+    dateTimePicker: {
+      amHour: '{{hour}} AM',
+      midnight: 'Midnight',
+      noon: 'Noon',
+      pmHour: '{{hour}} PM'
+    },
     takePhoto: {
       how: 'How Do You Want To Add A Photo?',
       takePhoto: 'Take photo',
