@@ -876,7 +876,7 @@ export default {
       dateOfBirth: 'Date Of Birth',
       placeOfBirth: 'Place Of Birth',
       sources: 'Sources',
-      costs: 'Costs',
+      cost: 'Cost',
       civilStatus: 'Civil Status',
       relationship: 'Relationship To Patient',
       education: 'Education',
