@@ -12,11 +12,15 @@ let InventoryLocation = AbstractModel.extend(LocationName, {
   quantity: DS.attr('number'),
   location: DS.attr('string'),
   aisleLocation: DS.attr('string'),
+  i18n: Ember.inject.service(),
 
   locationNameWithQuantity: function() {
     let quantity = this.get('quantity');
     let locationName = this.get('locationName');
-    return `${locationName} (${quantity} available)`;
+    return `${locationName} (${this.get('i18n').t(
+      'inventory.labels.availableQuantity',
+      { quantity }
+    )})`;
   }.property('locationName', 'quantity'),
 
   validations: {

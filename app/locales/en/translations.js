@@ -522,6 +522,7 @@ export default {
       aisle: 'Aisle',
       aisleLocation: 'Aisle Location',
       allInventory: 'All Inventory',
+      availableQuantity: '{{quantity}} available',
       billTo: 'Bill To',
       consumePurchases: 'Consume Purchases',
       consumptionRate: 'Consumption Rate',
@@ -876,6 +877,7 @@ export default {
       socialWork: 'Social Work'
     },
     titles: {
+      addContact: 'Add Contact',
       admittedPatients: 'Admitted Patients',
       expenses: 'Expenses',
       additionalContacts: 'Additional Contacts',
@@ -1073,6 +1075,12 @@ export default {
       labels: {
         selectAll: '(Select All)'
       }
+    },
+    dateTimePicker: {
+      amHour: '{{hour}} AM',
+      midnight: 'Midnight',
+      noon: 'Noon',
+      pmHour: '{{hour}} PM'
     },
     takePhoto: {
       how: 'How Do You Want To Add A Photo?',

@@ -2,6 +2,7 @@ import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
+import NumberFormat from 'hospitalrun/mixins/number-format';
 
 function defaultQuantityGroups() {
   return [];
@@ -13,7 +14,7 @@ function defaultQuantityGroups() {
  * items to be shown as inventory items since the pouchdb adapter does a
  * retrieve for keys starting with 'inventory' to fetch inventory items.
  */
-let InventoryPurchaseItem = AbstractModel.extend(LocationName, {
+let InventoryPurchaseItem = AbstractModel.extend(LocationName, NumberFormat, {
   purchaseCost: DS.attr('number'),
   lotNumber: DS.attr('string'),
   dateReceived: DS.attr('date'),
@@ -23,7 +24,7 @@ let InventoryPurchaseItem = AbstractModel.extend(LocationName, {
     if (Ember.isEmpty(purchaseCost) || Ember.isEmpty(quantity) || purchaseCost === 0 || quantity === 0) {
       return 0;
     }
-    return Number((purchaseCost / quantity).toFixed(2));
+    return this._numberFormat(purchaseCost / quantity, true);
   }.property('purchaseCost', 'originalQuantity'),
   originalQuantity: DS.attr('number'),
   currentQuantity: DS.attr('number'),
