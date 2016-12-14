@@ -114,6 +114,20 @@ Ember, by default uses [JSON API](http://jsonapi.org) as a JSON convention. [Cou
 
 [Ember components](http://emberjs.com/api/classes/Ember.Component.html) are reusable controls that you can integrate inside other pages/components.
 
+### Linter
+
+A linter is a small program that checks code for stylistic or programming errors. Linters are available for most syntaxes, from Python to HTML.
+
+Programming is hard. We are bound to make mistakes. The big advantage of using linter is that your code can be linted as you type (before saving your changes) and any errors are highlighted immediately, which is considerably easier than saving the file, switching to a terminal, running a linter, reading through a list of errors, then switching back to your editor to locate the errors!
+
+In addition, linters can help to enforce coding standards, find unused variables, find formatting discrepancies etc.
+
+Linters for common Editors:
+
+1. [Atom](http://atomlinter.github.io/)
+2. [Sublime Text](http://www.sublimelinter.com)
+3. [Brackets](https://github.com/MiguelCastillo/Brackets-InteractiveLinter)
+
 ### Using Local Cache
 
 The database of **HospitalRun** uses [CouchDB](http://couchdb.apache.org/) to store all of its data online.
