@@ -46,11 +46,11 @@
               }}
             </div>
             <div class="row">
-              {{em-select class="col-sm-3 required" label=(t "visits.labels.visitType")
+              {{em-select class="col-sm-3 required form-input-group" label=(t "visits.labels.visitType")
                 property="visitType" content=validVisitTypes prompt=" "
               }}
               {{#if isAdmissionVisit}}
-                {{em-select class="col-sm-3" label=(t "visits.labels.status")
+                {{em-select class="col-sm-3 form-input-group" label=(t "visits.labels.status")
                   property="status" content=visitStatuses
                   prompt=" "
                 }}
@@ -60,6 +60,7 @@
                 selection=model.examiner
               }}
             </div>
+            {{em-text property="reasonForVisit" label=(t 'visits.labels.reasonForVisit') rows=3 }}
             {{#if canAddBillingDiagnosis}}
               <div class="row">
                 {{select-or-typeahead className="col-sm-5" property="primaryBillingDiagnosis"

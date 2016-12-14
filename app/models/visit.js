@@ -62,6 +62,7 @@ export default AbstractModel.extend({
   primaryBillingDiagnosis: DS.attr('string'), // AKA final diagnosis
   primaryBillingDiagnosisId: DS.attr('string'),
   procedures: DS.hasMany('procedure', { async: true }),
+  reasonForVisit: DS.attr('string'),
   startDate: DS.attr('date'),
   status: DS.attr('string'),
   visitType: DS.attr(),

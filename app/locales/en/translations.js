@@ -823,7 +823,8 @@ export default {
       noAppointment: 'N',
       ordersDone: 'Orders Done',
       haveDoneOrders: 'Y',
-      ordersNotDone: 'N'
+      ordersNotDone: 'N',
+      reasonForVisit: 'Reason For Visit'
     },
     navigation: {
       charges: 'Charges',
