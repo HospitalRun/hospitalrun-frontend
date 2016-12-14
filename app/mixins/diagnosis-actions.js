@@ -18,7 +18,11 @@ export default Ember.Mixin.create({
     deleteDiagnosis(diagnosis) {
       let diagnoses = this.get('model.diagnoses');
       diagnoses.removeObject(diagnosis);
-      this.send('update', true);
+      diagnosis.set('archived', true);
+      diagnosis.save().then(() => {
+        this.send('closeModal');
+        this.send('update', true);
+      });
     },
 
     editDiagnosis(diagnosis) {
