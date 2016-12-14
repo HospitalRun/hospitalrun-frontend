@@ -82,6 +82,10 @@ export default Ember.Component.extend({
   }),
 
   actions: {
+    dateChanged(/* newDate */) {
+      this._updateDates();
+    },
+
     endHourChanged(endHour) {
       this.set('endHour', endHour);
       this._updateDates();

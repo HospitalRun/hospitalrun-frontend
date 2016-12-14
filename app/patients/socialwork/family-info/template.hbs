@@ -7,20 +7,20 @@
     updateButtonText=updateButtonText }}
   {{#em-form model=model submitButton=false }}
     <div class="row">
-      {{em-input label=(t labels.name) property="name" class="required col-xs-6"}}
-      {{em-input label=(t labels.age) property="age" class="col-xs-3"}}
+      {{em-input label=(t 'labels.name') property="name" class="required col-xs-6"}}
+      {{em-input label=(t 'labels.age') property="age" class="col-xs-3"}}
     </div>
     <div class="row">
-      {{em-input label=(t labels.civil_status) property="civilStatus" class="col-xs-6"}}
-      {{em-input label=(t labels.relationship) property="relationship" class="col-xs-6"}}
+      {{em-input label=(t 'patients.labels.civilStatus') property="civilStatus" class="col-xs-6"}}
+      {{em-input label=(t 'patients.labels.relationship') property="relationship" class="col-xs-6"}}
     </div>
     <div class="row">
-      {{em-input label=(t labels.education) property="education" class="col-xs-6"}}
-      {{em-input label=(t labels.occupation)property="occupation" class="col-xs-6"}}
+      {{em-input label=(t 'patients.labels.education') property="education" class="col-xs-6"}}
+      {{em-input label=(t 'patients.labels.occupation')property="occupation" class="col-xs-6"}}
     </div>
     <div class="row">
-      {{number-input label=(t labels.income) property="income" class="col-xs-6"}}
-      {{em-input label=(t labels.insurance) property="insurance" class="col-xs-6"}}
+      {{number-input label=(t 'patients.labels.income') property="income" class="col-xs-6"}}
+      {{em-input label=(t 'patients.labels.insurance') property="insurance" class="col-xs-6"}}
     </div>
   {{/em-form}}
 {{/modal-dialog}}
