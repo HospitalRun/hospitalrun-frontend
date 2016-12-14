@@ -231,7 +231,6 @@ export default {
     edit: 'Modifier',
     imageOrders: 'Demandes d\'imagerie',
     labOrders: 'Demandes de labo',
-    patientHistory: 'Historique du patient',
     imagingType: 'Type d\'imagerie',
     result: 'Resultat',
     results: 'Resultats',

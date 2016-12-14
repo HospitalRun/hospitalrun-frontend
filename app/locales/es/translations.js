@@ -229,7 +229,6 @@ export default {
     edit: 'Editar',
     imageOrders: 'Ordenes de radiografias',
     labOrders: 'Ordenes de laboratorio',
-    patientHistory: 'Historia del paciente',
     imagingType: 'Tipo de radiografia',
     result: 'Resultado',
     results: 'Resultados',

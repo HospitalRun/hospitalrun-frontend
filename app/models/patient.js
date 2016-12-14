@@ -38,7 +38,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   firstName: DS.attr('string'),
   sex: DS.attr('string'),
   occupation: DS.attr('string'),
-  history: DS.attr('string'),
+  history: DS.attr('string'), // No longer used
   insurance: DS.attr('string'),
   lastName: DS.attr('string'),
   livingArrangement: DS.attr('string'),

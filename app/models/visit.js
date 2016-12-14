@@ -38,15 +38,14 @@ export default AbstractModel.extend({
   charges: DS.hasMany('proc-charge', {
     async: false
   }),
-  chiefComplaint: DS.attr('string'),
   customForms: DS.attr('custom-forms'),
   diagnoses: DS.hasMany('diagnosis'),
   dischargeInfo: DS.attr('string'),
   endDate: DS.attr('date'), // if visit type is outpatient, startDate and endDate are equal
   examiner: DS.attr('string'),
   hasAppointment: DS.attr('boolean', { defaultValue: false }),
-  history: DS.attr('string'),
-  historySince: DS.attr('string'), // History of the Present Illness
+  history: DS.attr('string'), // No longer used
+  historySince: DS.attr('string'), // History of the Present Illness -- no longer used
   imaging: DS.hasMany('imaging', { async: true }),
   labs: DS.hasMany('lab', { async: true }),
   location: DS.attr('string'),

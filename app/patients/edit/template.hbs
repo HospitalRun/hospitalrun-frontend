@@ -42,21 +42,6 @@
                       <span class="ph-visit-date">{{visit.visitDate}}</span>
                       <span class="ph-visit-type">{{visit.visitType}}</span>
                     </div>
-
-                    {{#if visit.history}}
-                      <div class="ph-note-item">
-                        <h5 class="ph-note-heading">{{t 'patients.headings.history'}}</h5>
-                        {{html-line-break visit.history}}
-                      </div>
-                    {{/if}}
-
-                    {{#if visit.historySince}}
-                      <div class="ph-note-item">
-                        <h5 class="ph-note-heading">{{t "patients.headings.historySince"}}</h5>
-                        {{html-line-break visit.historySince}}
-                      </div>
-                    {{/if}}
-
                     {{#if visit.procedures}}
                       <div class="ph-note-item">
                         <h5 class="ph-note-heading">{{t 'labels.procedures' }}</h5>

@@ -280,7 +280,6 @@ export default {
     edit: 'Editar',
     imageOrders: 'Pedido de Imagem',
     labOrders: 'Pedidos de Laboratório',
-    patientHistory: 'Histórico do Paciente',
     imagingType: 'Tipo de Imagem',
     result: 'Resultado',
     results: 'Resultados',
@@ -819,10 +818,6 @@ export default {
       newAppointment: 'Novo Compromisso',
       backToPatients: 'Voltar para Lista de Pacientes',
       newPatient: '+ novo paciente'
-    },
-    headings: {
-      history: 'Histórico',
-      historySince: 'Histórico Desde'
     },
     labels: {
       primaryDiagnosis: 'Diagnósticos Primários',

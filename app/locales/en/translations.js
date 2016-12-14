@@ -347,7 +347,6 @@ export default {
     edit: 'Edit',
     imageOrders: 'Image Orders',
     labOrders: 'Lab Orders',
-    patientHistory: 'Patient History',
     imagingType: 'Imaging Type',
     result: 'Result',
     results: 'Results',
@@ -818,9 +817,6 @@ export default {
       visitDate: 'Visit Date',
       visitType: 'Visit Type',
       patientToCheckIn: 'Patient To Check In',
-      chiefComplaint: 'Chief Complaint',
-      illnessHistory: 'History of the Present Illness',
-      patientHistory: 'Patient Medical History',
       checkInTime: 'Check In',
       appointment: 'Appointment',
       haveAppointment: 'Y',
@@ -933,10 +929,6 @@ export default {
       backToPatients: 'Back to Patient List',
       newPatient: '+ new patient',
       patientCheckIn: 'Patient Check In'
-    },
-    headings: {
-      history: 'History',
-      historySince: 'History Since'
     },
     labels: {
       primaryDiagnosis: 'Primary Diagnoses',
