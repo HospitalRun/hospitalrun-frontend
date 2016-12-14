@@ -30,7 +30,7 @@
       <div class="ps-info-data-block">
         {{#each primaryDiagnoses as |diagnosis index|}}
           {{#unless (eq index 0)}}, {{/unless}}
-          <a class="clickable" {{action "editDiagnosis" diagnosis bubbles=false}}>
+          <a class="clickable primary-diagnosis" {{action "editDiagnosis" diagnosis bubbles=false}}>
             {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
           </a>
         {{/each}}
@@ -44,7 +44,7 @@
       <div class="ps-info-data-block">
         {{#each secondaryDiagnoses as |diagnosis index|}}
           {{#unless (eq index 0)}}, {{/unless}}
-          <a class="clickable" {{action "editDiagnosis" diagnosis bubbles=false}}>
+          <a class="clickable secondary-diagnosis" {{action "editDiagnosis" diagnosis bubbles=false}}>
             {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
           </a>
         {{/each}}
