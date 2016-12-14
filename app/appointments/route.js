@@ -16,6 +16,9 @@ export default AbstractModuleRoute.extend(UserSession, {
     checkIn(appointment) {
       let patient = appointment.get('patient');
       let visitProps = appointment.getProperties('startDate', 'endDate', 'location', 'patient');
+      if (visitProps.visitType === 'Admission') {
+        visitProps.status = 'Admitted';
+      }
       visitProps.visitType = appointment.get('appointmentType');
       visitProps.examiner = appointment.get('provider');
       visitProps.appointment = appointment;
