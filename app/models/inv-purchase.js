@@ -24,7 +24,7 @@ let InventoryPurchaseItem = AbstractModel.extend(LocationName, NumberFormat, {
     if (Ember.isEmpty(purchaseCost) || Ember.isEmpty(quantity) || purchaseCost === 0 || quantity === 0) {
       return 0;
     }
-    return this._round100(purchaseCost / quantity);
+    return this._numberFormat(purchaseCost / quantity, true);
   }.property('purchaseCost', 'originalQuantity'),
   originalQuantity: DS.attr('number'),
   currentQuantity: DS.attr('number'),
