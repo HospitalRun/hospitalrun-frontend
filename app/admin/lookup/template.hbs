@@ -2,7 +2,7 @@
   <div class="panel-body">
     {{#em-form model=model submitButton=false }}
       <div class="row">
-        {{em-select class="col-xs-3 lookup-type" label=(t 'labels.lookupType')
+        {{em-select class="col-xs-3 lookup-type form-input-group" label=(t 'labels.lookupType')
           property="lookupType" content=lookupTypes
           optionValuePath="value" optionLabelPath="name"
           selected=model.lookupType
@@ -15,26 +15,36 @@
   <div class="panel-heading">
     <h3 class="panel-title">{{lookupTitle}}</h3>
   </div>
-  <div class="panel-body">
-    <table class="table">
-      <tr class="table-header">
-        <th>{{t 'labels.value'}}</th>
-        <th>{{t 'labels.actions'}}</th>
-      </tr>
-      {{#each lookupTypeValues as |lookupTypeValue|}}
-        <tr>
-          <td class="lookup-type-value">{{lookupTypeValue}}</td>
-          <td>
-            <button class="btn btn-default neutral" {{action 'editValue' lookupTypeValue bubbles=false }}>{{t 'labels.edit'}}</button>
-            <button class="btn btn-default warning" {{action 'deleteValue' lookupTypeValue bubbles=false }}><span class="octicon octicon-x"></span>{{t 'labels.delete'}}</button>
-          </td>
+  {{#if canEditValues}}
+    <div class="panel-body">
+      <table class="table">
+        <tr class="table-header">
+          <th>{{t 'labels.value'}}</th>
+          <th>{{t 'labels.actions'}}</th>
         </tr>
-      {{/each}}
-    </table>
-  </div>
+        {{#each lookupTypeValues as |lookupTypeValue|}}
+          <tr>
+            <td class="lookup-type-value">{{lookupTypeValue.value}}</td>
+            <td>
+              {{#if lookupTypeValue.canModify}}
+                <button class="btn btn-default neutral" {{action 'editValue' lookupTypeValue.value bubbles=false }}>
+                  {{t 'labels.edit'}}
+                </button>
+                <button class="btn btn-default warning" {{action 'confirmDeleteValue' lookupTypeValue.value bubbles=false }}>
+                  <span class="octicon octicon-x"></span>{{t 'labels.delete'}}
+                </button>
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    </div>
+  {{/if}}
   <div class="panel-footer">
-    <button class="btn btn-default neutral" {{action 'addValue'}}>{{t 'buttons.addValue'}}</button>
-    {{#em-form model=model submitButton=false }}
+    {{#if canEditValues}}
+      <button class="btn btn-default neutral" {{action 'addValue'}}>{{t 'buttons.addValue'}}</button>
+    {{/if}}
+    {{#em-form model=lookupTypeList submitButton=false }}
       <div class="row">
         <div class="col-sm-4">
           {{em-checkbox label=(t 'labels.userCanAddNewValue') property="userCanAdd"}}

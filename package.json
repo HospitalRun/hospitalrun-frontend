@@ -78,7 +78,7 @@
     "glob": "^7.1.0",
     "hospitalrun-dblisteners": "0.9.5",
     "hospitalrun-server-routes": "0.9.9",
-    "loader.js": "4.0.11",
+    "loader.js": "^4.0.11",
     "nano": "6.2.0",
     "pouchdb": "5.4.5",
     "pouchdb-adapter-memory": "^6.0.7",
