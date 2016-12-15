@@ -122,11 +122,10 @@ Programming is hard. We are bound to make mistakes. The big advantage of using l
 
 In addition, linters can help to enforce coding standards, find unused variables, find formatting discrepancies etc.
 
-Linters for common Editors:
+**HospitalRun** uses the following linters:
 
-1. [Atom](http://atomlinter.github.io/)
-2. [Sublime Text](http://www.sublimelinter.com)
-3. [Brackets](https://github.com/MiguelCastillo/Brackets-InteractiveLinter)
+1. [ESLint](http://eslint.org/) for ECMAScript/JavaScript. You can find the ESLint User guide [here](http://eslint.org/docs/user-guide/).
+2. [stylelint](http://stylelint.io/) for Stylesheets. You can find stylelint User guide [here](http://stylelint.io/user-guide/).
 
 ### Using Local Cache
 
