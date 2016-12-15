@@ -7,7 +7,7 @@ import Ember from 'ember';
 export default AbstractModel.extend({
   haveInvoiceItems() {
     let invoiceItems = this.get('invoiceItems');
-    return (Ember.isEmpty(invoiceItems));
+    return !Ember.isEmpty(invoiceItems);
   },
 
   validations: {

@@ -12,11 +12,11 @@ test('haveInvoiceItems', function(assert) {
     invoiceItems: ['test']
   });
 
-  assert.strictEqual(inventoryBatch.haveInvoiceItems(), false);
+  assert.strictEqual(inventoryBatch.haveInvoiceItems(), true);
 });
 
 test('haveInvoiceItems false', function(assert) {
   let inventoryBatch = this.subject();
 
-  assert.strictEqual(inventoryBatch.haveInvoiceItems(), true);
+  assert.strictEqual(inventoryBatch.haveInvoiceItems(), false);
 });
