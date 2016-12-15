@@ -104,7 +104,6 @@ test('getMedicationPrice attribute', function(assert) {
 
   let medicationDetails = this.subject({ inventoryItem });
 
-  let medicationPrice;
   /**
    * We run this twice because if this gets the value from
    * the attribute it does not actually return the value
