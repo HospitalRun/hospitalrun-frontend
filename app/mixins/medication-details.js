@@ -26,9 +26,9 @@ export default Ember.Mixin.create({
   },
 
   /**
-   * Does not return name on first call if medicationName is
+   * Does not return name on first call if priceOfMedication is
    * not set and price is obtained via inventoryAttribute
-   * Additional calls will return the price as medicationName
+   * Additional calls will return the price as priceOfMedication
    * will then be set
    */
   getMedicationPrice(inventoryAttribute) {
