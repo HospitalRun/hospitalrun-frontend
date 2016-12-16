@@ -32,8 +32,8 @@ module.exports = function(defaults) {
   app.import('vendor/octicons/octicons/octicons.css');
   app.import('bower_components/pouchdb-load/dist/pouchdb.load.js');
 
-  if (EmberApp.env() === 'test') {
-    app.import('bower_components/timekeeper/lib/timekeeper.js', { test: true });
+  if (EmberApp.env() !== 'production') {
+    app.import('bower_components/timekeeper/lib/timekeeper.js', { type: 'test' });
   }
 
   return app.toTree();
