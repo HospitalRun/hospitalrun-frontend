@@ -1,5 +1,8 @@
 import Ember from 'ember';
-import { translationMacro as t } from 'ember-i18n';
+
+const {
+  computed
+} = Ember;
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
@@ -7,8 +10,18 @@ export default Ember.Component.extend({
   patient: null,
   displayModal: false,
   currentAllergy: false,
-  buttonConfirmText: t('buttons.add'),
-  additionalButtons: Ember.computed('currentAllergy', function() {
+
+  buttonConfirmText: computed('currentAllergy', function() {
+    let i18n = this.get('i18n');
+    let currentAllergy = this.get('currentAllergy');
+    if (currentAllergy) {
+      return i18n.t('buttons.update');
+    } else {
+      return i18n.t('buttons.add');
+    }
+  }),
+
+  additionalButtons: computed('currentAllergy', function() {
     let currentAllergy = this.get('currentAllergy');
     let btn = this.get('i18n').t('buttons.delete');
     if (currentAllergy) {
