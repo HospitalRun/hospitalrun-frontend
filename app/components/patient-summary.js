@@ -66,6 +66,10 @@ export default Ember.Component.extend(PatientDiagnosis, {
     return this.get('canAddDiagnosis') || this.get('havePrimaryDiagnoses');
   }),
 
+  hasAllergies: Ember.computed('patient.allergies.[]', function() {
+    return Ember.computed.notEmpty('patient.allergies');
+  }),
+
   actions: {
     linkToPatient() {
       let shouldLink = this.get('shouldLinkToPatient');

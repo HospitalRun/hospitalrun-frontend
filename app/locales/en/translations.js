@@ -168,20 +168,6 @@ export default {
       editTitle: 'Load DB'
     },
     lookup: {
-      deleteValueInventoryTypeMedicationTitle: 'Cannot Delete Medication',
-      deleteValueInventoryTypeMedicationMessage: 'The Medication inventory type cannot be deleted because it is needed for the Medication module.',
-      deleteValueLabPricingTypeProcedureTitle: 'Cannot Delete Lab Pricing Type',
-      deleteValueLabPricingTypeProcedureMessage: 'The Lab Procedure pricing type cannot be deleted because it is needed for the Labs module.',
-      deleteValueImagingPricingTypeProcedureTitle: 'Cannot Delete Imaging Pricing Type',
-      deleteValueImagingPricingTypeProcedureMessage: 'The Imaging Procedure pricing type cannot be deleted because it is needed for the Imaging module.',
-      deleteValueVisitTypeAdmissionTitle: 'Cannot Delete Admission Visit Type',
-      deleteValueVisitTypeAdmissionMessage: 'The Admission Visit type cannot be deleted because it is needed for the Visits module.',
-      deleteValueVisitTypeImagingTitle: 'Cannot Delete Imaging Visit Type',
-      deleteValueVisitTypeImagingMessage: 'The Imaging Visit type cannot be deleted because it is needed for the Imaging module.',
-      deleteValueVisitTypeLabTitle: 'Cannot Delete Lab Visit Type',
-      deleteValueVisitTypeLabMessage: 'The Lab Visit type cannot be deleted because it is needed for the Lab module.',
-      deleteValueVisitTypePharmacyTitle: 'Cannot Delete Pharmacy Visit Type',
-      deleteValueVisitTypePharmacyMessage: 'The Lab Visit type cannot be deleted because it is needed for the Medication module.',
       alertImportListTitle: 'Select File To Import',
       alertImportListMessage: 'Please select file to import.',
       alertImportListSaveTitle: 'List Imported',
@@ -221,7 +207,13 @@ export default {
       vendorList: 'Vendor',
       visitLocationList: 'Visit Locations',
       visitTypes: 'Visit Types',
-      wardPricingTypes: 'Ward Pricing Types'
+      wardPricingTypes: 'Ward Pricing Types',
+      messages: {
+        deleteLookupValue: 'Are you sure you want to delete the {{value}} value?'
+      },
+      titles: {
+        deleteLookupValue: 'Delete Value'
+      }
     },
     roles: {
       capability: {
@@ -466,7 +458,10 @@ export default {
     addVisit: 'Add Visit',
     search: 'Search',
     edit: 'Edit',
-    addLineItem: 'Add Line Item'
+    addLineItem: 'Add Line Item',
+    addNewAllergy: 'Add New Allergy',
+    showFewer: 'Show Fewer',
+    showAll: 'Show All'
   },
   login: {
     messages: {
@@ -1130,5 +1125,12 @@ export default {
       addDiagnosis: 'Add Diagnosis',
       editDiagnosis: 'Edit Diagnosis'
     }
+  },
+  allergies: {
+    addAllergy: 'Add Allergy',
+    allergyName: 'Name',
+    editAllergy: 'Edit {{allergy}}',
+    newAllergy: 'Add New Allergy',
+    patientAllergy: 'Patient Allergies'
   }
 };
