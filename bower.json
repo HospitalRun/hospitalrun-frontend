@@ -13,5 +13,8 @@
     "typeahead.js": "~0.11.1",
     "pouchdb-load": "^1.4.0",
     "pretender": "~0.10.0"
+  },
+  "devDependencies": {
+    "timekeeper": "^1.0.0"
   }
 }
