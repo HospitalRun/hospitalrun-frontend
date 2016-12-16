@@ -90,12 +90,14 @@
                 {{/each}}
               </table>
             {{/if}}
+            {{medication-allergy patient=model.patient showOperations=true}}
             {{em-text label="Patient History" property="history" rows=3 }}
             {{em-text label="History since last seen" property="historySince" rows=3 }}
           {{/em-form}}
         </div>
       </div>
     </div>
+
     {{#unless model.isNew}}
       <div class="panel">
         <div class="panel-heading">

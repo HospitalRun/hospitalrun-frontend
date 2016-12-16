@@ -31,5 +31,10 @@ module.exports = function(defaults) {
   app.import('bower_components/pikaday/css/pikaday.css');
   app.import('vendor/octicons/octicons/octicons.css');
   app.import('bower_components/pouchdb-load/dist/pouchdb.load.js');
+
+  if (EmberApp.env() === 'test') {
+    app.import('bower_components/timekeeper/lib/timekeeper.js', { test: true });
+  }
+
   return app.toTree();
 };
