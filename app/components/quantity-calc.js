@@ -3,7 +3,7 @@ import Ember from 'ember';
 const { isEmpty } = Ember;
 
 export default Ember.Component.extend({
-  quantityGroups: null,
+  quantityGroups: [],
   calculated: null,
   currentUnit: null,
   targetUnit: null,
@@ -12,7 +12,6 @@ export default Ember.Component.extend({
   didReceiveAttrs(/* attrs */) {
     this._super(...arguments);
     let quantityGroups = this.get('quantityGroups');
-    console.log('quantityGroups:', JSON.stringify(quantityGroups, null, 2));
     if (isEmpty(quantityGroups)) {
       let calculated = this.get('calculated');
       let targetUnit = this.get('targetUnit');

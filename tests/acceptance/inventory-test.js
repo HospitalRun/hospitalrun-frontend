@@ -269,7 +269,8 @@ function testSimpleReportForm(reportName) {
       andThen(() => {
         let reportTitle = `${reportName} Report ${startDate.format('l')} - ${endDate.format('l')}`;
         assert.equal(find('.panel-title').text().trim(), reportTitle, `${reportName} Report generated`);
-        findWithAssert('a:contains(Export Report)');
+        let exportLink = findWithAssert('a:contains(Export Report)');
+        assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
       });
     });
   });
@@ -288,8 +289,10 @@ function testSingleDateReportForm(reportName) {
       waitToAppear('.panel-title');
 
       andThen(() => {
-        assert.equal(find('.panel-title').text().trim(), `${reportName} Report ${moment().format('l')}`, `${reportName} Report generated`);
-        findWithAssert('a:contains(Export Report)');
+        let reportTitle = `${reportName} Report ${moment().format('l')}`;
+        assert.equal(find('.panel-title').text().trim(), reportTitle, `${reportName} Report generated`);
+        let exportLink = findWithAssert('a:contains(Export Report)');
+        assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
       });
     });
   });

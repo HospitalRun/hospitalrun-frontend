@@ -846,7 +846,7 @@ export default {
       dateOfBirth: 'Data de Nascimento',
       placeOfBirth: 'Local de Nascimento',
       sources: 'Fontes',
-      costs: 'Custos',
+      cost: 'Custo',
       civilStatus: 'Estado Civil',
       relationship: 'Relação com Paciente',
       education: 'Educação',

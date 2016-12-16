@@ -38,7 +38,13 @@ export default HtmlInput.extend({
     let currentDate = this.get('currentDate');
     let picker = this.get('_picker');
     if (this._shouldSetDate(currentDate, picker)) {
-      this.set('currentDate', picker.getDate());
+      let newDate = picker.getDate();
+      let mainComponent = this.get('mainComponent');
+      let dateSetAction = mainComponent.get('dateSetAction');
+      this.set('currentDate', newDate);
+      if (!Ember.isEmpty(dateSetAction)) {
+        mainComponent.sendAction('dateSetAction', newDate);
+      }
     }
   },
 

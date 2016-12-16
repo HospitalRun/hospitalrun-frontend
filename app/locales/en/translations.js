@@ -468,6 +468,7 @@ export default {
       aisle: 'Aisle',
       aisleLocation: 'Aisle Location',
       allInventory: 'All Inventory',
+      availableQuantity: '{{quantity}} available',
       billTo: 'Bill To',
       consumePurchases: 'Consume Purchases',
       consumptionRate: 'Consumption Rate',
@@ -797,7 +798,7 @@ export default {
       socialWork: 'Social Work'
     },
     titles: {
-      add_contact: 'Add Contact',
+      addContact: 'Add Contact',
       admittedPatients: 'Admitted Patients',
       expenses: 'Expenses',
       additionalContacts: 'Additional Contacts',
@@ -878,7 +879,7 @@ export default {
       dateOfBirth: 'Date Of Birth',
       placeOfBirth: 'Place Of Birth',
       sources: 'Sources',
-      costs: 'Costs',
+      cost: 'Cost',
       civilStatus: 'Civil Status',
       relationship: 'Relationship To Patient',
       education: 'Education',
@@ -983,6 +984,12 @@ export default {
   components: {
     chargesByTypeTab: {
       charges: 'charges'
+    },
+    dateTimePicker: {
+      amHour: '{{hour}} AM',
+      midnight: 'Midnight',
+      noon: 'Noon',
+      pmHour: '{{hour}} PM'
     },
     takePhoto: {
       how: 'How Do You Want To Add A Photo?',

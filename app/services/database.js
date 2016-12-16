@@ -108,6 +108,24 @@ export default Ember.Service.extend(PouchAdapterUtils, {
     });
   },
 
+ /**
+  * Given an record type, return back the maximum pouchdb id.  Useful for endkeys.
+  * @param {String} type the record type.
+  * @returns {String} the max pouch id for the type.
+  */
+  getMaxPouchId(type) {
+    return this.getPouchId({}, type);
+  },
+
+  /**
+  * Given an record type, return back the minimum pouchdb id.  Useful for startkeys.
+  * @param {String} type the record type.
+  * @returns {String} the min pouch id for the type.
+  */
+  getMinPouchId(type) {
+    return this.getPouchId(null, type);
+  },
+
   /**
   * Given an Ember record id and type, return back the corresponding pouchDB id.
   * @param {String} emberId the ember record id.
