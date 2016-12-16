@@ -1,14 +1,10 @@
 <label class="ps-info-label wide">{{t 'allergies.patientAllergy'}}</label>
-{{#if condition}}
-  <a class="clickable" {{action "createNewAllergy"}}><span class="octicon octicon-plus"></span>  {{t 'buttons.addNewAllergy'}}</a>
-{{/if}}
+
+<a class="clickable" {{action "createNewAllergy"}}><span class="octicon octicon-plus"></span>  {{t 'buttons.addNewAllergy'}}</a>
 
 <div class="ps-info-data-block">
   <ul class="list-inline allergy-list">
-    <li>
-      <button class="btn muted test-action" {{action "createNewAllergy"}}>{{t 'buttons.addNewAllergy'}}</button>
-    </li>
-    {{#each patient.allergies as |allergy index|}}
+        {{#each patient.allergies as |allergy index|}}
         <li>
           <button class="btn-link allergy-button" {{action "editAllergy" allergy}}>{{allergy.name}}</button>
         </li>

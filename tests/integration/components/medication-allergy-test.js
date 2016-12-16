@@ -21,7 +21,7 @@ test('allergy component renders with appropriate data', function(assert) {
   this.set('patient', patient);
   this.render(hbs`{{medication-allergy patient=patient}}`);
   let allergyName = allergy.get('name');
-  assert.equal(this.$('.allergy-list li').length, 2, 'renders with appropriate list elements');
-  assert.equal(this.$('.allergy-list li').first().text().trim(), 'Add New Allergy', 'renders with add button');
-  assert.equal(this.$('.allergy-list li:nth-child(2)').text().trim(), allergyName, 'renders allergy button');
+  let allergies = patient.get('allergies');
+  assert.equal(this.$('.allergy-list li').length, allergies.length, 'renders allergy list with correct list of elements');
+  assert.equal(this.$('.allergy-list li').first().text().trim(), allergyName, 'renders allergy names on buttons');
 });

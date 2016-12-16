@@ -25,7 +25,7 @@ export default Ember.Component.extend({
     let currentAllergy = this.get('currentAllergy');
     let i18n = this.get('i18n');
     if (currentAllergy) {
-      return i18n.t('allergies.editAllergy', { allergy: currentAllergy.name });
+      return i18n.t('allergies.editAllergy', { allergy: currentAllergy.get('name') });
     } else {
       return i18n.t('allergies.newAllergy');
     }
