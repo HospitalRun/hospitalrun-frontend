@@ -37,6 +37,9 @@ export default AbstractModuleRoute.extend({
     name: 'procedurePricingTypes',
     findArgs: ['lookup', 'procedure_pricing_types']
   }, {
+    name: 'sexList',
+    findArgs: ['lookup', 'sex']
+  }, {
     name: 'visitTypesList',
     findArgs: ['lookup', 'visit_types']
   }, {

@@ -113,6 +113,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   pricingTypes: Ember.computed.alias('visitsController.wardPricingTypes'),
   physicianList: Ember.computed.alias('visitsController.physicianList'),
   locationList: Ember.computed.alias('visitsController.locationList'),
+  sexList: computed.alias('visitsController.sexList'),
   visitTypesList: Ember.computed.alias('visitsController.visitTypesList'),
   lookupListsToUpdate: [{
     name: 'physicianList',
