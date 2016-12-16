@@ -49,7 +49,7 @@ export default Ember.Mixin.create({
       if (Math.round(value) === value) {
         returnValue = Number(value).toString();
       } else {
-        returnValue = Number(value).toFixed(2);
+        returnValue = this._round100(value).toFixed(2);
       }
       if (returnAsNumber) {
         return Number(returnValue);
@@ -61,6 +61,11 @@ export default Ember.Mixin.create({
 
   _validNumber(number) {
     return (!Ember.isEmpty(number) && !isNaN(number) && number > 0);
+  },
+
+  _round100(number) {
+    let tempNumber = 100 * number;
+    return Math.round(tempNumber) / 100;
   }
 
 });

@@ -235,7 +235,7 @@ export default {
         adjustInventoryLocation: 'Adjust Inventory Location',
         deleteInventoryItem: 'Delete Inventory Item',
         fulfillInventory: 'Fulfill Inventory',
-        userRoles: 'User Roles'
+        defineUserRoles: 'Define User Roles'
       },
       messages: {
         roleSaved: 'The {{roleName}} role has been saved.'
@@ -410,7 +410,10 @@ export default {
     addVisit: 'Add Visit',
     search: 'Search',
     edit: 'Edit',
-    addLineItem: 'Add Line Item'
+    addLineItem: 'Add Line Item',
+    addNewAllergy: 'Add New Allergy',
+    showFewer: 'Show Fewer',
+    showAll: 'Show All'
   },
   login: {
     messages: {
@@ -465,6 +468,7 @@ export default {
       aisle: 'Aisle',
       aisleLocation: 'Aisle Location',
       allInventory: 'All Inventory',
+      availableQuantity: '{{quantity}} available',
       billTo: 'Bill To',
       consumePurchases: 'Consume Purchases',
       consumptionRate: 'Consumption Rate',
@@ -794,6 +798,7 @@ export default {
       socialWork: 'Social Work'
     },
     titles: {
+      addContact: 'Add Contact',
       admittedPatients: 'Admitted Patients',
       expenses: 'Expenses',
       additionalContacts: 'Additional Contacts',
@@ -874,7 +879,7 @@ export default {
       dateOfBirth: 'Date Of Birth',
       placeOfBirth: 'Place Of Birth',
       sources: 'Sources',
-      costs: 'Costs',
+      cost: 'Cost',
       civilStatus: 'Civil Status',
       relationship: 'Relationship To Patient',
       education: 'Education',
@@ -980,6 +985,12 @@ export default {
     chargesByTypeTab: {
       charges: 'charges'
     },
+    dateTimePicker: {
+      amHour: '{{hour}} AM',
+      midnight: 'Midnight',
+      noon: 'Noon',
+      pmHour: '{{hour}} PM'
+    },
     takePhoto: {
       how: 'How Do You Want To Add A Photo?',
       takePhoto: 'Take photo',
@@ -999,5 +1010,12 @@ export default {
     priceList: {
       charges: '{{pricingType}} charges'
     }
+  },
+  allergies: {
+    addAllergy: 'Add Allergy',
+    allergyName: 'Name',
+    editAllergy: 'Edit {{allergy}}',
+    newAllergy: 'Add New Allergy',
+    patientAllergy: 'Patient Allergies'
   }
 };

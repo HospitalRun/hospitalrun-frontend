@@ -225,7 +225,7 @@ export default {
         adjustInventoryLocation: 'Ajustar Localização de Inventário',
         deleteInventoryItem: 'Excluir Item de Inventário',
         fulfillInventory: 'Preencher Inventário',
-        userRoles: 'Perfis de Usuários'
+        defineUserRoles: 'Perfis de Usuários'
       },
       messages: {
         roleSaved: 'O perfil {{roleName}} foi salvo.'
@@ -846,7 +846,7 @@ export default {
       dateOfBirth: 'Data de Nascimento',
       placeOfBirth: 'Local de Nascimento',
       sources: 'Fontes',
-      costs: 'Custos',
+      cost: 'Custo',
       civilStatus: 'Estado Civil',
       relationship: 'Relação com Paciente',
       education: 'Educação',
