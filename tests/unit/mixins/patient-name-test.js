@@ -59,3 +59,50 @@ test('getPatientDisplayId id', function(assert) {
 
   assert.strictEqual(this.subject().getPatientDisplayId(patient), '9876');
 });
+
+test('getPatientDisplayName', function(assert) {
+  let patient;
+  Ember.run(() => {
+    patient = this.store().createRecord('patient', {
+      firstName: 'First',
+      lastName: 'Last',
+      middleName: 'Middle'
+    });
+  });
+
+  assert.strictEqual(this.subject().getPatientDisplayName(patient), 'First Middle Last');
+});
+
+test('getPatientDisplayName first', function(assert) {
+  let patient;
+  Ember.run(() => {
+    patient = this.store().createRecord('patient', {
+      firstName: 'First'
+    });
+  });
+
+  assert.strictEqual(this.subject().getPatientDisplayName(patient), 'First');
+});
+
+test('getPatientDisplayName first and last', function(assert) {
+  let patient;
+  Ember.run(() => {
+    patient = this.store().createRecord('patient', {
+      firstName: 'First',
+      lastName: 'Last'
+    });
+  });
+
+  assert.strictEqual(this.subject().getPatientDisplayName(patient), 'First Last');
+});
+
+test('getPatientDisplayName last', function(assert) {
+  let patient;
+  Ember.run(() => {
+    patient = this.store().createRecord('patient', {
+      lastName: 'Last'
+    });
+  });
+
+  assert.strictEqual(this.subject().getPatientDisplayName(patient), 'Last');
+});
