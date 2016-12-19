@@ -2,18 +2,25 @@ import Ember from 'ember';
 import FilterList from 'hospitalrun/mixins/filter-list';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
+import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-const { computed } = Ember;
+const {
+  computed,
+  isEmpty
+} = Ember;
 
-export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits,  UserSession, VisitTypes, {
+export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits, SelectValues, UserSession, VisitTypes, {
   addPermission: 'add_patient',
   deletePermission: 'delete_patient',
   filterValue: null,
   filterBy: null,
+  queryParams: ['visitDate', 'visitLocation'],
   sortByDesc: null,
   sortByKey: null,
+  visitLocation: null,
+  visitDate: null,
   canAddVisit: computed(function() {
     return this.currentUserCan('add_visit');
   }),
@@ -31,6 +38,7 @@ export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits,  
       i18n.t('visits.labels.haveDoneOrders')
     ];
   }),
+  locationList: Ember.computed.map('patientController.locationList.value', SelectValues.selectValuesMap),
   patientNames: computed.map('model', function(visit) {
     return visit.get('patient.shortDisplayName');
   }),
@@ -42,13 +50,20 @@ export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits,  
   }),
 
   checkedInVisits: computed.filter('model.@each.status', function(visit) {
-    return visit.get('status') !== 'checkedOut';
+    return visit.get('visitType') !== 'Admission' && visit.get('status') !== 'checkedOut';
   }),
 
-  filteredVisits: computed('checkedInVisits', 'filterBy', 'filterValue', function() {
+  filteredVisits: computed('checkedInVisits', 'filterBy', 'filterValue', 'visitLocation', function() {
     let filterBy = this.get('filterBy');
     let filterValue = this.get('filterValue');
+    let filteredBy = this.get('filteredBy');
+    let visitLocation = this.get('visitLocation');
     let visits = this.get('checkedInVisits');
+    if (isEmpty(visitLocation)) {
+      filteredBy.delete('location');
+    } else {
+      filteredBy.set('location', visitLocation);
+    }
     return this.filterList(visits, filterBy, filterValue);
   }),
 
@@ -105,6 +120,20 @@ export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits,  
         let message =  i18n.t('visits.messages.checkedOut', patientDetails);
         this.displayAlert(i18n.t('visits.titles.checkedOut'), message);
       });
+    },
+
+    search() {
+      let visitDate = this.get('model.selectedVisitDate');
+      let visitLocation = this.get('model.selectedLocation');
+      if (!isEmpty(visitDate)) {
+        this.set('visitDate', visitDate.getTime());
+      }
+      if (isEmpty(visitLocation)) {
+        this.set('visitLocation', null);
+      } else {
+        this.set('visitLocation', visitLocation);
+      }
+
     },
 
     sortByKey(sortKey, sortDesc) {

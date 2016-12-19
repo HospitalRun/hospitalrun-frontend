@@ -1,23 +1,33 @@
 import Ember from 'ember';
+
+const {
+  isEmpty,
+  String: {
+    isHTMLSafe
+  }
+} = Ember;
+
 export default Ember.Mixin.create({
   filteredBy: new Ember.Map(),
 
   filterList(list, filterBy, filterValue) {
-    if (Ember.isEmpty(filterBy)) {
+    let filteredBy = this.get('filteredBy');
+    if (isEmpty(filterBy) && isEmpty(filteredBy)) {
       return list;
     }
-    let filteredBy = this.get('filteredBy');
-    filteredBy.set(filterBy, filterValue);
+    if (!isEmpty(filterBy)) {
+      filteredBy.set(filterBy, filterValue);
+    }
     this.set('filteredBy', filteredBy);
     let filteredList = list.filter((order) => {
       let includeRecord = true;
       filteredBy.forEach((filterValue, filterBy) => {
         let orderValue = order.get(filterBy);
-        if (!Ember.isEmpty(filterValue)) {
-          if (Ember.String.isHTMLSafe(filterValue)) {
+        if (!isEmpty(filterValue)) {
+          if (isHTMLSafe(filterValue)) {
             filterValue = filterValue.toString();
           }
-          if (Ember.String.isHTMLSafe(orderValue)) {
+          if (isHTMLSafe(orderValue)) {
             orderValue = orderValue.toString();
           }
           if (orderValue !== filterValue) {

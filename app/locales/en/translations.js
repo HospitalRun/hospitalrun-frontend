@@ -901,7 +901,8 @@ export default {
       totalPatientDays: 'Total Patient Days',
       totalPatientDaysDetailed: 'Total Patient Days (Detailed)',
       visit: 'Visit',
-      deletePatientRecord: 'Delete Patient Record'
+      deletePatientRecord: 'Delete Patient Record',
+      outpatientsForDate: 'Outpatients for {{visitDate}}'
     },
     messages: {
       areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
