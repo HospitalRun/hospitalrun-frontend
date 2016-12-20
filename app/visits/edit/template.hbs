@@ -35,27 +35,37 @@
 
             <div class="row">
               {{#if isAdmissionVisit}}
-                {{date-picker property="startDate" label=(t "patients.labels.admissionDate") showTime=true class="col-sm-3 required"}}
-                {{date-picker property="endDate" label=(t "patients.labels.dischargeDate") showTime=true class="col-sm-3"}}
+                {{date-picker property="startDate" label=(t "patients.labels.admissionDate") showTime=true class="col-sm-4 required"}}
+                {{date-picker property="endDate" label=(t "patients.labels.dischargeDate") showTime=true class="col-sm-4"}}
               {{else}}
-                {{date-picker property="startDate" label=(t "visits.labels.checkInTime") showTime=true class="col-sm-3 required"}}
+                {{date-picker property="startDate" label=(t "visits.labels.checkInTime") showTime=true class="col-sm-4 required"}}
+                {{#if (eq model.status 'CheckedOut')}}
+                  {{date-picker property="endDate" label=(t "visits.labels.checkOutTime") showTime=true class="col-sm-4"}}
+                {{/if}}
               {{/if}}
-              {{select-or-typeahead className="col-sm-3" property="location"
+              {{select-or-typeahead className="col-sm-4" property="location"
                 label=(t "labels.location") list=locationList
                 selection=model.location
               }}
             </div>
             <div class="row">
-              {{em-select class="col-sm-3 required form-input-group" label=(t "visits.labels.visitType")
-                property="visitType" content=validVisitTypes prompt=" "
-              }}
-              {{#if isAdmissionVisit}}
-                {{em-select class="col-sm-3 form-input-group" label=(t "visits.labels.status")
-                  property="status" content=visitStatuses
-                  prompt=" "
+              {{#if model.isNew}}
+                {{em-select class="col-sm-4 required form-input-group" label=(t "visits.labels.visitType")
+                  property="visitType" content=validVisitTypes prompt=" "
                 }}
+              {{else}}
+                <div class="form-group col-sm-4">
+                  <label class="control-label">{{t "visits.labels.visitType"}}</label>
+                    <p class="form-control-static">{{model.visitType}}</p>
+                </div>
               {{/if}}
-              {{select-or-typeahead className="col-sm-3" property="examiner"
+              {{#if model.status}}
+                <div class="form-group col-sm-4">
+                  <label class="control-label">{{t "visits.labels.status"}}</label>
+                    <p class="form-control-static">{{t (concat 'visits.labels.status' model.status) }}</p>
+                </div>
+              {{/if}}
+              {{select-or-typeahead className="col-sm-4" property="examiner"
                 label=(t "visits.labels.examiner") list=physicianList
                 selection=model.examiner
               }}
