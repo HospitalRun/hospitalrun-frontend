@@ -459,7 +459,6 @@ export default {
     search: 'Search',
     edit: 'Edit',
     addLineItem: 'Add Line Item',
-    addNewAllergy: 'Add New Allergy',
     showFewer: 'Show Fewer',
     showAll: 'Show All'
   },
@@ -798,7 +797,8 @@ export default {
       addDiagnosis: 'Add Diagnosis',
       newVitals: 'New Vitals',
       checkIn: 'Check In',
-      checkOut: 'Check Out'
+      checkOut: 'Check Out',
+      discharge: 'Discharge'
     },
     labels: {
       diagnosis: 'Diagnosis',
@@ -819,7 +819,11 @@ export default {
       ordersDone: 'Orders Done',
       haveDoneOrders: 'Y',
       ordersNotDone: 'N',
-      reasonForVisit: 'Reason For Visit'
+      reasonForVisit: 'Reason For Visit',
+      statusAdmitted: 'Admitted',
+      statusDischarged: 'Discharged',
+      statusCheckedIn: 'Checked In',
+      statusCheckedOut: 'Checked Out'
     },
     navigation: {
       charges: 'Charges',
@@ -936,7 +940,6 @@ export default {
       admissionDate: 'Admission Date',
       patientDays: 'Patient Days',
       dischargeDate: 'Discharge Date',
-      discharge: 'Discharge',
       admit: 'Admit',
       relationships: 'Relationships',
       phone: 'Phone',
@@ -1128,10 +1131,16 @@ export default {
     }
   },
   allergies: {
-    addAllergy: 'Add Allergy',
-    allergyName: 'Name',
-    editAllergy: 'Edit {{allergy}}',
-    newAllergy: 'Add New Allergy',
-    patientAllergy: 'Patient Allergies'
+    buttons: {
+      addAllergy: 'Add Allergy'
+    },
+    titles: {
+      addAllergy: 'Add Allergy',
+      editAllergy: 'Edit Allergy'
+    },
+    labels: {
+      allergyName: 'Name',
+      patientAllergy: 'Patient Allergies'
+    }
   }
 };

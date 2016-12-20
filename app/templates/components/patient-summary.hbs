@@ -58,18 +58,16 @@
       <div class="ps-info-data-block">
         {{#each patientProcedures as |procedure|}}
           {{#unless procedure.first}}, {{/unless}}
-          <span {{action 'editProcedure' procedure}} class="clickable">
+          <a {{action 'editProcedure' procedure}} class="clickable">
             {{procedure.description}} (<strong>{{date-format procedure.procedureDate}}</strong>)
-          </span>
+          </a>
         {{/each}}
       </div>
     </div>
   {{/if}}
 
   {{#if hasAllergies}}
-    <div class="ps-info-group long-form">
-      {{medication-allergy patient=patient}}
-    </div>
+    {{medication-allergy patient=patient}}
   {{/if}}
 
 
