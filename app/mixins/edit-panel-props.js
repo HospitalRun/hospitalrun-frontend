@@ -5,9 +5,9 @@ export default Ember.Mixin.create({
   cancelButtonText: null,
   disabledAction: null,
   hideCancelButton: null,
-  isUpdateDisabled: null,
   showUpdateButton: null,
   updateButtonAction: null,
+  updateButtonIcon: null,
   updateButtonText: null,
 
   editPanelProps: function() {
@@ -16,17 +16,17 @@ export default Ember.Mixin.create({
       'cancelButtonText',
       'disabledAction',
       'hideCancelButton',
-      'isUpdateDisabled',
       'showUpdateButton',
       'updateButtonAction',
+      'updateButtonIcon',
       'updateButtonText'
     ]);
   }.property('additionalButtons',
              'cancelButtonText',
              'disabledAction',
              'hideCancelButton',
-             'isUpdateDisabled',
              'showUpdateButton',
              'updateButtonAction',
+             'updateButtonIcon',
              'updateButtonText')
 });
