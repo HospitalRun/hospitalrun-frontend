@@ -5,8 +5,8 @@ import DiagnosisActions from 'hospitalrun/mixins/diagnosis-actions';
 import Ember from 'ember';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
-import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
+import VisitStatus from 'hospitalrun/utils/visit-statuses';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 const {
@@ -16,6 +16,24 @@ const {
 
 export default AbstractEditController.extend(AddNewPatient, ChargeActions, DiagnosisActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
   visitsController: Ember.inject.controller('visits'),
+
+  additionalButtons: computed('model.status', function() {
+    let buttonProps = {
+      buttonIcon: 'glyphicon glyphicon-log-out',
+      class: 'btn btn-primary on-white'
+    };
+    let i18n = this.get('i18n');
+    let status = this.get('model.status');
+    if (status === VisitStatus.ADMITTED) {
+      buttonProps.buttonAction = 'discharge';
+      buttonProps.buttonText = i18n.t('visits.buttons.discharge');
+      return [buttonProps];
+    } else if (status === VisitStatus.CHECKED_IN) {
+      buttonProps.buttonAction = 'checkout';
+      buttonProps.buttonText = i18n.t('visits.buttons.checkOut');
+      return [buttonProps];
+    }
+  }),
 
   canAddAppointment: computed('model.isNew', function() {
     return (!this.get('model.isNew') && this.currentUserCan('add_appointment'));
@@ -73,32 +91,19 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   isAdmissionVisit: function() {
     let visitType = this.get('model.visitType');
     let isAdmission = (visitType === 'Admission');
-    let visit = this.get('model');
-    if (!isAdmission) {
-      visit.set('status');
-    }
     return isAdmission;
   }.property('model.visitType'),
-
-  startDateChanged: function() {
-    let isAdmissionVisit = this.get('isAdmissionVisit');
-    let startDate = this.get('model.startDate');
-    let visit = this.get('model');
-    if (!isAdmissionVisit) {
-      visit.set('endDate', startDate);
-    }
-  }.observes('isAdmissionVisit', 'model.startDate'),
 
   cancelAction: function() {
     let returnTo = this.get('model.returnTo');
     if (!isEmpty(returnTo)) {
       return 'returnTo';
-    } else if (!isEmpty('model.returnToPatient')) {
+    } else if (!isEmpty(this.get('model.returnToPatient'))) {
       return 'returnToPatient';
     } else {
       return this._super();
     }
-  }.property('model.returnTo'),
+  }.property('model.returnTo', 'model.returnToPatient'),
 
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
@@ -125,15 +130,16 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     id: 'visit_location_list'
   }],
 
-  visitStatuses: [
-    'Admitted',
-    'Discharged'
-  ].map(SelectValues.selectValuesMap),
-
   updateCapability: 'add_visit',
 
   showPatientSelection: computed('model.checkIn', 'model.hidePatientSelection', function() {
     return this.get('model.checkIn') && !this.get('model.hidePatientSelection');
+  }),
+
+  updateButtonIcon: computed('model.checkIn', function() {
+    if (this.get('model.checkIn')) {
+      return 'glyphicon glyphicon-log-in';
+    }
   }),
 
   updateButtonText: function() {
@@ -253,25 +259,8 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     return !isEmpty(this.get('model.additionalDiagnoses'));
   }.property('model.additionalDiagnoses.[]'),
 
-  afterUpdate() {
-    let patient = this.get('model.patient');
-    let patientAdmitted = patient.get('admitted');
-    let status = this.get('model.status');
-    if (status === 'Admitted' && !patientAdmitted) {
-      patient.set('admitted', true);
-      patient.save().then(this._finishAfterUpdate.bind(this));
-    } else if (status === 'Discharged' && patientAdmitted) {
-      this.getPatientVisits(patient).then(function(visits) {
-        if (isEmpty(visits.findBy('status', 'Admitted'))) {
-          patient.set('admitted', false);
-          patient.save().then(this._finishAfterUpdate.bind(this));
-        } else {
-          this._finishAfterUpdate();
-        }
-      }.bind(this));
-    } else {
-      this._finishAfterUpdate();
-    }
+  afterUpdate(visit) {
+    this.updatePatientVisitFlags(visit).then(this._finishAfterUpdate.bind(this));
   },
 
   beforeUpdate() {
@@ -289,6 +278,14 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
                 message: 'creating new patient first'
               });
             }
+            let visitType = newVisit.get('visitType');
+            let visitStatus;
+            if (visitType === 'Admission') {
+              visitStatus = VisitStatus.ADMITTED;
+            } else {
+              visitStatus = VisitStatus.CHECKED_IN;
+            }
+            newVisit.set('status', visitStatus);
             if (this.get('model.checkIn')) {
               this._saveAssociatedAppointment(newVisit).then(() => {
                 this._saveNewDiagnoses().then(resolve, reject);
@@ -302,6 +299,11 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     } else {
       return this.updateCharges();
     }
+  },
+
+  checkoutPatient(status) {
+    let visit = this.get('model');
+    this.checkoutVisit(visit, status);
   },
 
   getPatientDiagnoses(patient) {
@@ -386,12 +388,20 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       this.send(this.get('cancelAction'));
     },
 
+    checkout() {
+      this.checkoutPatient(VisitStatus.CHECKED_OUT);
+    },
+
     deleteProcedure(procedure) {
       this.updateList('procedures', procedure, true);
     },
 
     deleteVitals(vitals) {
       this.updateList('vitals', vitals, true);
+    },
+
+    discharge() {
+      this.checkoutPatient(VisitStatus.DISCHARGED);
     },
 
     editImaging(imaging) {
@@ -503,6 +513,15 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       let patientNotes = this.get('model.patientNotes');
       patientNotes.removeObject(note);
       this.send('update', true);
+    },
+
+    startDateChanged(startDate) {
+      let isAdmissionVisit = this.get('isAdmissionVisit');
+      let visit = this.get('model');
+      if (!isAdmissionVisit) {
+        visit.set('endDate', startDate);
+      }
     }
+
   }
 });

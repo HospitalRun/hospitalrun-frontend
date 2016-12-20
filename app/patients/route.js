@@ -40,14 +40,19 @@ export default AbstractModuleRoute.extend(PatientId, {
   }],
 
   actions: {
-    createNewVisit(patient, returnToPatient) {
-      this.transitionTo('visits.edit', 'new').then((newRoute) =>{
-        if (returnToPatient) {
+    createNewVisit(patient, requestedFromPatient) {
+      let typeOfNewVisit = 'checkin';
+      if (requestedFromPatient) {
+        typeOfNewVisit = 'new';
+      }
+      this.transitionTo('visits.edit', typeOfNewVisit).then((newRoute) =>{
+        if (requestedFromPatient) {
           newRoute.currentModel.set('returnToPatient', patient.get('id'));
         } else {
           newRoute.currentModel.set('returnTo', 'patients');
         }
         newRoute.currentModel.set('patient', patient);
+        newRoute.currentModel.set('hidePatientSelection', true);
         newRoute.controller.getPatientDiagnoses(patient);
       });
     }

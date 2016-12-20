@@ -7,6 +7,7 @@ import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
+import VisitStatus from 'hospitalrun/utils/visit-statuses';
 export default AbstractEditController.extend(BloodTypes, DiagnosisActions, ReturnTo, UserSession, PatientId, PatientNotes, {
   canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
@@ -461,11 +462,21 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
     visitDeleted(deletedVisit) {
       let visits = this.get('model.visits');
       let patient = this.get('model');
+      let patientCheckedIn = patient.get('checkedIn');
       let patientAdmitted = patient.get('admitted');
       visits.removeObject(deletedVisit);
-      if (patientAdmitted && Ember.isEmpty(visits.findBy('status', 'Admitted'))) {
-        patient.set('admitted', false);
-        patient.save().then(() => this.send('closeModal'));
+      if (patientAdmitted || patientCheckedIn) {
+        if (patientAdmitted && Ember.isEmpty(visits.findBy('status', VisitStatus.ADMITTED))) {
+          patient.set('admitted', false);
+        }
+        if (patientCheckedIn && Ember.isEmpty(visits.findBy('status', VisitStatus.CHECKED_IN))) {
+          patient.set('checkedIn', false);
+        }
+        if (patient.get('isDirty')) {
+          patient.save().then(() => this.send('closeModal'));
+        } else {
+          this.send('closeModal');
+        }
       } else {
         this.send('closeModal');
       }

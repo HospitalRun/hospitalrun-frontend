@@ -12,12 +12,11 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
   model(params) {
     let idParam = this.get('idParam');
     if (!Ember.isEmpty(idParam) && params[idParam] === 'checkin') {
-      let newVisit = this.get('store').createRecord('visit', {
-        checkIn: true,
-        startDate: new Date(),
-        endDate: new Date()
+      return this.getNewData().then((newData) => {
+        newData.checkIn = true;
+        let newVisit = this.get('store').createRecord('visit', newData);
+        return newVisit;
       });
-      return newVisit;
     } else {
       return this._super(params);
     }
@@ -25,9 +24,8 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
 
   getNewData() {
     return Ember.RSVP.resolve({
-      visitType: 'Admission',
       startDate: new Date(),
-      status: 'Admitted'
+      visitType: 'Admission'
     });
   },
 

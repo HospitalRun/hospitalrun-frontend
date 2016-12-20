@@ -20,6 +20,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   bloodType: DS.attr('string'),
   clinic: DS.attr('string'),
   country: DS.attr('string'),
+  checkedIn: DS.attr('boolean', { defaultValue: false }),
   dateOfBirth: DS.attr('date'),
   diagnoses: DS.hasMany('diagnosis', {
     async: false

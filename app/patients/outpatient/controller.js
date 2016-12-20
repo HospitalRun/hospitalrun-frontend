@@ -4,6 +4,7 @@ import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
+import VisitStatus from 'hospitalrun/utils/visit-statuses';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 const {
@@ -50,7 +51,7 @@ export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits, S
   }),
 
   checkedInVisits: computed.filter('model.@each.status', function(visit) {
-    return visit.get('visitType') !== 'Admission' && visit.get('status') !== 'checkedOut';
+    return visit.get('visitType') !== 'Admission' && visit.get('status') === VisitStatus.CHECKED_IN;
   }),
 
   filteredVisits: computed('checkedInVisits', 'filterBy', 'filterValue', 'visitLocation', function() {
@@ -113,13 +114,7 @@ export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits, S
     },
 
     finishCheckOut(visit) {
-      visit.set('status', 'checkedOut');
-      visit.save().then(() => {
-        let i18n = this.get('i18n');
-        let patientDetails = { patientName: visit.get('patient.displayName') };
-        let message =  i18n.t('visits.messages.checkedOut', patientDetails);
-        this.displayAlert(i18n.t('visits.titles.checkedOut'), message);
-      });
+      this.checkoutVisit(visit, VisitStatus.CHECKED_OUT);
     },
 
     search() {
