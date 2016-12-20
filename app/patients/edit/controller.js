@@ -466,13 +466,16 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
       let patientAdmitted = patient.get('admitted');
       visits.removeObject(deletedVisit);
       if (patientAdmitted || patientCheckedIn) {
+        let patientUpdate = false;
         if (patientAdmitted && Ember.isEmpty(visits.findBy('status', VisitStatus.ADMITTED))) {
           patient.set('admitted', false);
+          patientUpdate = true;
         }
         if (patientCheckedIn && Ember.isEmpty(visits.findBy('status', VisitStatus.CHECKED_IN))) {
           patient.set('checkedIn', false);
+          patientUpdate = true;
         }
-        if (patient.get('isDirty')) {
+        if (patientUpdate === true) {
           patient.save().then(() => this.send('closeModal'));
         } else {
           this.send('closeModal');
