@@ -368,10 +368,14 @@ export default {
     newPatientHasToBeCreated: 'A new patient needs to be created...Please wait..',
     noNotesAvailable: 'No additional clinical notes are available for this visit.',
     sorry: 'Sorry, something went wrong...',
-    forAuthorizedPersons: 'This report is for authorized persons only.'
+    forAuthorizedPersons: 'This report is for authorized persons only.',
+    requiredFieldsCorrectErrors: 'Please fill in required fields (marked with *) and correct the errors before saving.',
+    saveActionException: 'An error occurred while attempting to save: {{message}}'
   },
   alerts: {
-    pleaseWait: 'Please Wait'
+    pleaseWait: 'Please Wait',
+    warningExclamation: 'Warning!!!!',
+    errorExclamation: 'Error!!!!'
   },
   headings: {
     chargedItems: 'Charged Items'
