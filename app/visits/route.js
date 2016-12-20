@@ -48,6 +48,12 @@ export default AbstractModuleRoute.extend({
   }],
   moduleName: 'visits',
   newButtonAction: null, // No new button
-  sectionTitle: 'Visits'
+  sectionTitle: 'Visits',
+
+  actions: {
+    allItems() {
+      this.transitionTo('patients.index');
+    }
+  }
 
 });
