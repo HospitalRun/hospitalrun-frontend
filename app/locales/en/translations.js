@@ -604,7 +604,9 @@ export default {
       stockTransferDetail: 'Detailed Stock Transfer',
       stockTransferSum: 'Summary Stock Transfer',
       stockUsageDetail: 'Detailed Stock Usage',
-      stockUsageSum: 'Summary Stock Usage'
+      stockUsageSum: 'Summary Stock Usage',
+      titleSingleDate: '{{name}} Report {{date}}',
+      titleDateRange: '{{name}} Report {{startDate}} - {{endDate}}'
     },
     titles: {
       addPurchase: 'Add Purchase',

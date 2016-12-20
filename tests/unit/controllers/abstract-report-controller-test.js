@@ -49,6 +49,77 @@ sinonTest('_notifyReportError', function(assert) {
   assert.ok(closeProgressModal.calledOnce, 'Should close progress modal');
 });
 
+sinonTest('_setReportTitle', function(assert) {
+  let controller = this.subject({
+    endDate: new Date(1482269979422),
+    startDate: new Date(1472269979422),
+    reportTypes: [
+      Ember.Object.create({
+        value: 'one',
+        name: 'Number One'
+      }),
+      Ember.Object.create({
+        value: 'two',
+        name: 'Number Two'
+      })
+    ],
+    reportType: 'two'
+  });
+
+  this.stub(window, 'moment', (function() {
+    let count = 0;
+    return () => {
+      if (count < 1) {
+        count += 1;
+        return {
+          format() {
+            return 'April 1st, 1996';
+          }
+        };
+      }
+
+      return {
+        format() {
+          return 'January 3rd, 1995';
+        }
+      };
+    };
+  }()));
+
+  controller._setReportTitle();
+
+  assert.equal(controller.get('reportTitle'), 'Number Two Report January 3rd, 1995 - April 1st, 1996');
+});
+
+sinonTest('_setReportTitle single date', function(assert) {
+  let controller = this.subject({
+    endDate: new Date(1472269979422),
+    reportTypes: [
+      Ember.Object.create({
+        value: 'one',
+        name: 'Number One'
+      }),
+      Ember.Object.create({
+        value: 'two',
+        name: 'Number Two'
+      })
+    ],
+    reportType: 'one'
+  });
+
+  this.stub(window, 'moment', () => {
+    return {
+      format() {
+        return 'April 3rd, 2015';
+      }
+    };
+  });
+
+  controller._setReportTitle();
+
+  assert.equal(controller.get('reportTitle'), 'Number One Report April 3rd, 2015');
+});
+
 test('actions.firstPage', function(assert) {
   let controller = this.subject();
 

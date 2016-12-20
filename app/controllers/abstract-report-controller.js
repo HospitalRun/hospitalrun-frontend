@@ -144,10 +144,23 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
 
     let reportDesc = reportTypes.findBy('value', reportType);
     if (Ember.isEmpty(startDate)) {
-      this.set('reportTitle', `${reportDesc.name} Report ${formattedEndDate}`);
+      this.set('reportTitle', this.get('i18n').t(
+        'inventory.reports.titleSingleDate',
+        {
+          name: reportDesc.name,
+          date: formattedEndDate
+        }
+      ));
     } else {
       formattedStartDate = moment(startDate).format('l');
-      this.set('reportTitle', `${reportDesc.name} Report ${formattedStartDate} - ${formattedEndDate}`);
+      this.set('reportTitle', this.get('i18n').t(
+        'inventory.reports.titleDateRange',
+        {
+          name: reportDesc.name,
+          startDate: formattedStartDate,
+          endDate: formattedEndDate
+        }
+      ));
     }
   },
 
