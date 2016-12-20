@@ -1,7 +1,52 @@
 import { moduleFor, test } from 'ember-qunit';
+import sinonTest from 'ember-sinon-qunit/test-support/test';
+import Ember from 'ember';
+import tHelper from 'ember-i18n/helper';
+import localeConfig from 'ember-i18n/config/en';
 
 moduleFor('controller:abstract-report-controller', 'Unit | Controller | abstract-report-controller', {
-  unit: true
+  needs: [
+    'service:i18n',
+    'locale:en/translations',
+    'locale:en/config',
+    'util:i18n/missing-message',
+    'util:i18n/compile-template',
+    'config:environment'
+  ],
+  beforeEach() {
+    // set the locale and the config
+    this.container.lookup('service:i18n').set('locale', 'en');
+    this.registry.register('locale:en/config', localeConfig);
+
+    // manually inject the i18n service as initialzer does not run
+    // in unit test
+    Ember.getOwner(this).inject('controller', 'i18n', 'service:i18n');
+
+    // register t helper
+    this.registry.register('helper:t', tHelper);
+  }
+});
+
+sinonTest('_notifyReportError', function(assert) {
+  let controller = this.subject();
+  let closeProgressModal = this.stub(controller, 'closeProgressModal');
+  let displayAlert = this.stub(controller, 'displayAlert');
+
+  assert.throws(() => {
+    controller._notifyReportError('error message');
+  }, new Error('error message'), 'Should throw error');
+
+  assert.equal(
+    displayAlert.getCall(0).args[0],
+    'Error Generating Report',
+    'Should set alert title'
+  );
+  assert.equal(
+    displayAlert.getCall(0).args[1],
+    'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.',
+    'Should set alert message'
+  );
+  assert.ok(closeProgressModal.calledOnce, 'Should close progress modal');
 });
 
 test('actions.firstPage', function(assert) {

@@ -112,9 +112,9 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
   },
 
   _notifyReportError(errorMessage) {
-    let alertMessage = 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.';
+    let i18n = this.get('i18n');
     this.closeProgressModal();
-    this.displayAlert('Error Generating Report', alertMessage);
+    this.displayAlert(i18n.t('alerts.reportError'), i18n.t('messages.reportError'));
     throw new Error(errorMessage);
   },
 
