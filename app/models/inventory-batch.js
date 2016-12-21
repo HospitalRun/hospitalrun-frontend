@@ -7,7 +7,7 @@ import Ember from 'ember';
 export default AbstractModel.extend({
   haveInvoiceItems() {
     let invoiceItems = this.get('invoiceItems');
-    return (Ember.isEmpty(invoiceItems));
+    return !Ember.isEmpty(invoiceItems);
   },
 
   validations: {
@@ -16,7 +16,7 @@ export default AbstractModel.extend({
     },
     inventoryItemTypeAhead: {
       presence: {
-        if(object) {
+        unless(object) {
           return object.haveInvoiceItems();
         }
       }
@@ -27,7 +27,7 @@ export default AbstractModel.extend({
         messages: {
           greaterThan: 'must be greater than 0'
         },
-        if(object) {
+        unless(object) {
           return object.haveInvoiceItems();
         }
       }
@@ -38,7 +38,7 @@ export default AbstractModel.extend({
         messages: {
           greaterThan: 'must be greater than 0'
         },
-        if(object) {
+        unless(object) {
           return object.haveInvoiceItems();
         }
       }

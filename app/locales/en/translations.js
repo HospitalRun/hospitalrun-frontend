@@ -424,10 +424,16 @@ export default {
     newPatientHasToBeCreated: 'A new patient needs to be created...Please wait..',
     noNotesAvailable: 'No additional clinical notes are available for this visit.',
     sorry: 'Sorry, something went wrong...',
-    forAuthorizedPersons: 'This report is for authorized persons only.'
+    forAuthorizedPersons: 'This report is for authorized persons only.',
+    requiredFieldsCorrectErrors: 'Please fill in required fields (marked with *) and correct the errors before saving.',
+    saveActionException: 'An error occurred while attempting to save: {{message}}',
+    reportError: 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.'
   },
   alerts: {
-    pleaseWait: 'Please Wait'
+    pleaseWait: 'Please Wait',
+    warningExclamation: 'Warning!!!!',
+    errorExclamation: 'Error!!!!',
+    reportError: 'Error Generating Report'
   },
   headings: {
     chargedItems: 'Charged Items'
@@ -653,7 +659,9 @@ export default {
       stockTransferDetail: 'Detailed Stock Transfer',
       stockTransferSum: 'Summary Stock Transfer',
       stockUsageDetail: 'Detailed Stock Usage',
-      stockUsageSum: 'Summary Stock Usage'
+      stockUsageSum: 'Summary Stock Usage',
+      titleSingleDate: '{{name}} Report {{date}}',
+      titleDateRange: '{{name}} Report {{startDate}} - {{endDate}}'
     },
     titles: {
       addPurchase: 'Add Purchase',
