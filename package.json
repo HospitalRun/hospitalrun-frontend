@@ -71,6 +71,7 @@
     "ember-resolver": "^2.0.3",
     "ember-select-list": "0.9.5",
     "ember-simple-auth": "^1.1.0",
+    "ember-sinon-qunit": "^1.4.0",
     "ember-truth-helpers": "1.2.0",
     "ember-validations": "2.0.0-alpha.5",
     "eslint-plugin-ember-suave": "^1.0.0",
