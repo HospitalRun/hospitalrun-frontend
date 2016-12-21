@@ -7,11 +7,14 @@
           {{em-select class="col-sm-3 form-input-group" property="selectedLocation"
               label=(t "labels.location") content=locationList prompt=" "
           }}
+          <div class="form-group col-sm-3">
+            <label class="control-label"></label>
+            <div>
+              <button class="btn btn-default" {{action 'search'}}>{{t 'buttons.search'}}</button>
+            </div>
+          </div>
         </div>
       {{/em-form}}
-    </div>
-    <div class="panel-footer">
-      <button class="btn btn-default" {{action 'search'}}>{{t 'buttons.search'}}</button>
     </div>
   </div>
   <table class="table">
