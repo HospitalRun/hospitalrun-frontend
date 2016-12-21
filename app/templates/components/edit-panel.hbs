@@ -11,7 +11,7 @@
       {{/if}}
     {{/unless}}
     {{#if editPanelProps.showUpdateButton}}
-      <button class="btn btn-primary on-white (if editPanelProps.disabledAction 'disabled-btn') " {{action (if editPanelProps.disabledAction 'disabledAction' 'updateButtonAction')}}>
+      <button class="btn btn-primary on-white {{if editPanelProps.disabledAction 'disabled-btn'}}" {{action editPanelProps.actionForUpdateButton}}>
         {{#if editPanelProps.updateButtonIcon}}
           <span class="{{editPanelProps.updateButtonIcon}}"></span>
         {{/if}}

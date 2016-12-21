@@ -83,11 +83,6 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     return this.currentUserCan('delete_vitals');
   }.property(),
 
-  disabledAction: function() {
-    this.get('model').validate().catch(Ember.K);
-    this._super();
-  }.property('model.endDate', 'model.startDate', 'model.isValid'),
-
   isAdmissionVisit: function() {
     let visitType = this.get('model.visitType');
     let isAdmission = (visitType === 'Admission');

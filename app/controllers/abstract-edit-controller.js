@@ -17,7 +17,11 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
   }.property('model.hasDirtyAttributes'),
 
   disabledAction: function() {
-    let isValid = this.get('model.isValid');
+    let model = this.get('model');
+    if (model.validate) {
+      model.validate().catch(Ember.K);
+    }
+    let isValid = model.get('isValid');
     if (!isValid) {
       return 'showDisabledDialog';
     }
