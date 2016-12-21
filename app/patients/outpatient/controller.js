@@ -142,6 +142,7 @@ export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits, S
       this.transitionToRoute('visits.edit', 'checkin').then(function(newRoute) {
         let visitProps = {
           outPatient: true,
+          visitType: null,
           returnTo: 'patients.outpatient'
         };
         newRoute.currentModel.setProperties(visitProps);
