@@ -124,11 +124,11 @@ export default Ember.Mixin.create({
                   this.get('model').set(this.get('propertyName'), event.target.value);
                 }
               } else if (targetValue !== selection) {
-                this.set('selection');
+                this.itemSelected();
               }
             });
           } else if (Ember.isEmpty(targetValue)) {
-            this.set('selection');
+            this.itemSelected();
           }
         }
       });

@@ -102,6 +102,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
+  createNewPatient: false,
   customForms: Ember.computed.alias('visitsController.customForms'),
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
   findPatientVisits: false,
@@ -322,7 +323,12 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   },
 
   patientSelected(patient) {
-    this.getPatientDiagnoses(patient);
+    if (isEmpty(patient)) {
+      this.set('createNewPatient', true);
+    } else {
+      this.set('createNewPatient', false);
+      this.getPatientDiagnoses(patient);
+    }
   },
 
   /**
@@ -417,6 +423,16 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       if (medication.get('canEdit')) {
         medication.set('returnToVisit', this.get('model.id'));
         this.transitionToRoute('medication.edit', medication);
+      }
+    },
+
+    newPatientChanged(createNewPatient) {
+      this.set('createNewPatient', createNewPatient);
+      let model = this.get('model');
+      let patient = model.get('patient');
+      if (createNewPatient && !isEmpty(patient)) {
+        model.set('patientTypeAhead', patient.get('displayName'));
+        model.set('patient');
       }
     },
 

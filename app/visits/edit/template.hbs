@@ -28,8 +28,24 @@
               }}
             {{/if}}
             {{#if showPatientSelection}}
-              <div class="row col-sm-12">
-                {{patient-typeahead property="patientTypeAhead" label=(t 'visits.labels.patientToCheckIn') content=patientList selection=selectedPatient class="required patient-name"}}
+              <div class="row">
+                {{#if createNewPatient}}
+                  {{em-input property="patientTypeAhead" label=(t 'visits.labels.patientToCheckIn')class="required patient-name col-sm-9"}}
+                {{else}}
+                  {{patient-typeahead
+                    property="patientTypeAhead"
+                    label=(t 'visits.labels.patientToCheckIn')
+                    content=patientList
+                    selection=selectedPatient
+                    class="required patient-name col-sm-9"
+                  }}
+                {{/if}}
+                <div class="checkbox col-sm-3">
+                  <label>
+                    <input type="checkbox" checked={{createNewPatient}} onchange={{action "newPatientChanged" value="target.checked"}}>
+                    {{t 'visits.labels.createNewPatient'}}
+                  </label>
+                </div>
               </div>
             {{/if}}
 

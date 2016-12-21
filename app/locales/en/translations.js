@@ -826,7 +826,8 @@ export default {
       statusAdmitted: 'Admitted',
       statusDischarged: 'Discharged',
       statusCheckedIn: 'Checked In',
-      statusCheckedOut: 'Checked Out'
+      statusCheckedOut: 'Checked Out',
+      createNewPatient: 'Create New Patient'
     },
     navigation: {
       charges: 'Charges',

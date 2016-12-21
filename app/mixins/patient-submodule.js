@@ -41,6 +41,7 @@ export default Ember.Mixin.create(PatientVisits, {
         });
       } else {
         this.set('model.patient', null);
+        this.patientSelected();
       }
     }
   },
