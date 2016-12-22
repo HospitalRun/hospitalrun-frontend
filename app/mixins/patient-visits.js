@@ -12,5 +12,20 @@ export default Ember.Mixin.create(PouchDbMixin, {
       mapReduce: 'visit_by_patient',
       debug: true
     });
+  },
+
+  getNonDischargedVisitsByType: function(visitType) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      let maxValue = this.get('maxValue');
+
+      this.store.query('visit', {
+        options: {
+          startkey: [visitType, 'visit_'],
+          endkey: [visitType, maxValue]
+        },
+        mapReduce: 'nondischarged_visit_by_type'
+      }).then(resolve, reject);
+    }.bind(this));
   }
+
 });

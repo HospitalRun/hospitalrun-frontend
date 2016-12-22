@@ -413,6 +413,14 @@ let designDocs = [{
     emit([doc.data.patient, startDate, endDate, doc.data.visitType, doc._id]);`
   ),
   version: 4
+}, {
+  name: 'nondischarged_visit_by_type',
+  function: generateView('visit',
+    'if(doc.data.status !== "Discharged") {' +
+    ' emit([doc.data.visitType, doc._id]);' +
+    '}'
+  ),
+  version: 1
 }];
 
 export default function(db, runningTest, testDumpFile) {
