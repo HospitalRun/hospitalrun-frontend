@@ -27,10 +27,22 @@
               {{else}}
                 {{date-picker property="startDate" label=(t "labels.date") class="col-sm-3 required"}}
               {{/if}}
+              
+            </div>
+            <div class="row">
+              {{em-select class="col-sm-3" label="Location Type"
+                  property="visitLocationType" content=visitLocationTypes
+              }}
+              {{#if isLocationFacility}}
               {{select-or-typeahead className="col-sm-3" property="location"
                 label=(t "labels.location") list=locationList
                 selection=model.location
               }}
+              {{/if}}
+              {{#if isLocationOther}}
+              {{em-input property="otherVisitLocation" label="Other Location" class="col-sm-3"}}
+              {{/if}}
+              
             </div>
             <div class="row">
               {{em-select class="col-sm-3 required" label=(t "visits.labels.visitType")
@@ -47,6 +59,7 @@
                 selection=model.examiner
               }}
             </div>
+            
             <div class="row">
               {{select-or-typeahead className="col-sm-5" property="primaryDiagnosis"
                 label=(t "visits.labels.admittingDiagnosis") list=diagnosisList

@@ -125,6 +125,24 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, Pa
     'Admitted',
     'Discharged'
   ].map(SelectValues.selectValuesMap),
+  
+  visitLocationTypes: [
+    'Health Facility',
+    'Home Visit',
+    'Other'
+  ].map(SelectValues.selectValuesMap),
+  
+  isLocationFacility: function() {
+    var visitLocationType = this.get('model.visitLocationType'),
+	   isFacility = (visitLocationType === 'Health Facility');
+	   return isFacility;
+  }.property('model.visitLocationType'),
+  
+  isLocationOther: function() {
+    var visitLocationType = this.get('model.visitLocationType'),
+	   isOther = (visitLocationType === 'Other');
+	   return isOther;
+  }.property('model.visitLocationType'),
 
   updateCapability: 'add_visit',
 
