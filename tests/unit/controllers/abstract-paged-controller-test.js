@@ -123,10 +123,6 @@ sinonTest('actions.previousPage', function(assert) {
   assert.ok(showProgressModal.calledOnce, 'Should show progress modal');
 });
 
-/**
- * @todo verify that not clearing `nextStartKey` and `firstKey`
- * is the intended behavior
- */
 sinonTest('actions.sortByKey', function(assert) {
   let controller = this.subject({
     nextStartKey: 'next',
@@ -139,10 +135,8 @@ sinonTest('actions.sortByKey', function(assert) {
 
   controller.send('sortByKey', 'sort', 'desc');
 
-  // These two assertions preserve current implementation
-  assert.strictEqual(controller.get('nextStartKey'), 'next', 'Should not change nextStartKey');
-  assert.strictEqual(controller.get('firstKey'), 'first', 'Should not change firstKey');
-
+  assert.strictEqual(controller.get('nextStartKey'), null, 'Should clear nextStartKey');
+  assert.strictEqual(controller.get('firstKey'), null, 'Should clear firstKey');
   assert.strictEqual(controller.get('startKey'), null, 'Should clear startKey');
   assert.deepEqual(controller.get('previousStartKeys'), [], 'Should clear previousStartKeys');
   assert.strictEqual(controller.get('previousStartKey'), null, 'Should clear previousStartKey');
