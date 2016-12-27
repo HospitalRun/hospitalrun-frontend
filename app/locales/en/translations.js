@@ -273,7 +273,11 @@ export default {
         adjustInventoryLocation: 'Adjust Inventory Location',
         deleteInventoryItem: 'Delete Inventory Item',
         fulfillInventory: 'Fulfill Inventory',
-        defineUserRoles: 'Define User Roles'
+        defineUserRoles: 'Define User Roles',
+        addBillingDiagnosis: 'Add Billing Diagnosis',
+        addNote: 'Add Note',
+        addSocialwork: 'Add Social Work',
+        deleteNote: 'Delete Note'
       },
       messages: {
         roleSaved: 'The {{roleName}} role has been saved.'
