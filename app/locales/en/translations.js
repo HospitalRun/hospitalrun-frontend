@@ -361,7 +361,7 @@ export default {
     createNewRecord: 'Create a new record?',
     createNewUser: 'Create a new user?',
     noUsersFound: 'No users found.',
-    areYouSureDelete: 'Are you sure you wish to delete the user {{user}}?',
+    areYouSureDelete: 'Are you sure you wish to delete {{user}}?',
     userHasBeenSaved: 'The user has been saved.',
     userSaved: 'User Saved',
     onBehalfOf: 'on behalf of',
@@ -636,7 +636,7 @@ export default {
       addNewVisit: '--Add New Visit--'
     },
     messages: {
-      delete: 'Are you sure you wish to delete this imaging request?',
+      delete: 'Are you sure you wish to delete this?',
       noCompleted: 'No completed items found.'
     },
     titles: {
@@ -711,7 +711,7 @@ export default {
   },
   vitals: {
     messages: {
-      delete: 'Are you sure you wish to delete these vitals?'
+      delete: 'Are you sure you wish to delete?'
     },
     labels: {
       dateRecorded: 'Date Recorded',
@@ -729,7 +729,7 @@ export default {
       additionalDiagnoses: 'Additional Diagnoses'
     },
     messages: {
-      delete: 'Are you sure you wish to delete this visit?'
+      delete: 'Are you sure you wish to delete this?'
     },
     buttons: {
       newProcedure: 'New Procedure',
@@ -772,7 +772,7 @@ export default {
     messages: {
       noItemsFound: 'No labs found.',
       createNewRecord: 'Create a new record?',
-      confirmDeletion: 'Are you sure you wish to delete this lab request?',
+      confirmDeletion: 'Are you sure you wish to delete this?',
       noCompleted: 'No completed items found.'
     },
     buttons: {
@@ -973,8 +973,8 @@ export default {
       medicationUsed: 'Medication Used'
     },
     messages: {
-      deleteMedication: 'Are you sure you want to delete this medication?',
-      delete: 'Are you sure you wish to delete this procedure?',
+      deleteMedication: 'Are you sure you want to delete this?',
+      delete: 'Are you sure you wish to delete this?',
       saved: 'The procedure record has been saved.'
     },
     buttons: {
