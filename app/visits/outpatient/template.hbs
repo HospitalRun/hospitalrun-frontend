@@ -1,0 +1,74 @@
+{{#item-listing paginationProps=paginationProps }}
+  <div class="panel panel-info">
+    <div class="panel-body">
+      {{#em-form model=model submitButton=false }}
+        <div class="row">
+          {{date-picker property="selectedStartingDate" label="Show Outpatients On Or After"
+              class="col-sm-3"}}
+          {{em-select class="col-sm-3" property=""
+              label="Status" content=''
+          }}
+        </div>
+        <div calss="row">
+          {{em-select class="col-sm-3" label="Visit Payment State"
+              property="" content=''
+          }}
+          {{em-select class="col-sm-3" property="examiner"
+              label="Examiner" content=physicianList
+          }}
+        </div>
+      {{/em-form}}
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-default" {{action 'search'}}>{{t 'buttons.search'}}</button>
+    </div>
+  </div>
+  {{#if hasRecords}}
+    <table class="table">
+      <thead>
+        <tr class="table-header">
+          {{#sortable-column sortBy='startDate' sortDesc=sortDesc sortKey=sortKey }}Visit Start Date{{/sortable-column}}
+          {{#sortable-column sortBy='visit`' sortDesc=sortDesc sortKey=sortKey }}Examiner (Visit field){{/sortable-column}}
+          {{#sortable-column sortBy='id' sortDesc=sortDesc sortKey=sortKey }}Patient ID{{/sortable-column}}
+          {{#sortable-column sortBy='fullName' sortDesc=sortDesc sortKey=sortKey }}Patient Full Name{{/sortable-column}}
+          {{#sortable-column sortBy='sex' sortDesc=sortDesc sortKey=sortKey }}Patient Sex{{/sortable-column}}
+          {{#sortable-column sortBy='dateOfBirth' sortDesc=sortDesc sortKey=sortKey }}Patient DoB{{/sortable-column}}
+          {{#sortable-column sortBy='type' sortDesc=sortDesc sortKey=sortKey }}Visit Type{{/sortable-column}}
+          {{#if showActions}}
+            <th>{{t 'labels.actions'}}</th>
+          {{/if}}
+        </tr>
+      </thead>
+      <tbody>
+        {{#each outPatientVisits as |visit|}}
+          <tr {{action 'editItem' visit}} class="clickable">
+            <td>{{date-format visit.startDate}}</td>
+            <td>{{visit.examiner}}</td>
+            <td>{{visit.patient.displayPatientId}}</td>
+            <td>{{visit.patient.displayName}}</td>
+            <td>{{visit.patient.sex}}</td>
+            <td>{{date-format visit.patient.dateOfBirth}}</td>
+            <td>{{visit.visitType}}</td>
+            {{#if showActions}}
+              <td>
+                {{#if canEdit}}
+                  <button class="btn btn-default neutral" {{action 'editItem' visit  bubbles=false }}>{{t 'labels.edit'}}</button>
+                {{/if}}
+                {{#if canDischargePatient}}
+                  <button class="btn btn-default info" {{action 'dischargePatient' visit  bubbles=false }}><span class="glyphicon glyphicon-log-out"></span> Discharge</button>
+                {{/if}}
+                {{#if canDelete}}
+                  <button class="btn btn-default warning" {{action 'deleteItem' visit  bubbles=false }}><span class="octicon octicon-x"></span> Delete</button>
+                {{/if}}
+              </td>
+            {{/if}}
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{else}}
+    <div class="alert alert-info" data-test-selector="no-patients-found">
+      <p>No outpatients found.</p>
+    </div>
+  {{/if}}
+{{/item-listing}}
