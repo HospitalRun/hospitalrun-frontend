@@ -5,6 +5,8 @@ import Ember from 'ember';
 import DS from 'ember-data';
 import PatientName from 'hospitalrun/mixins/patient-name';
 
+const { computed } = Ember;
+
 export default AbstractModel.extend(DOBDays, PatientName, {
   admitted: DS.attr('boolean', { defaultValue: false }),
   additionalContacts: DS.attr(),
@@ -18,7 +20,11 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   bloodType: DS.attr('string'),
   clinic: DS.attr('string'),
   country: DS.attr('string'),
+  checkedIn: DS.attr('boolean', { defaultValue: false }),
   dateOfBirth: DS.attr('date'),
+  diagnoses: DS.hasMany('diagnosis', {
+    async: false
+  }),
   economicClassification: DS.attr('string'),
   email: DS.attr('string'),
   expenses: DS.attr(),
@@ -33,7 +39,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   firstName: DS.attr('string'),
   sex: DS.attr('string'),
   occupation: DS.attr('string'),
-  history: DS.attr('string'),
+  history: DS.attr('string'), // No longer used
   insurance: DS.attr('string'),
   lastName: DS.attr('string'),
   livingArrangement: DS.attr('string'),
@@ -83,6 +89,15 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   displayPatientId: function() {
     return this.getPatientDisplayId(this);
   }.property('id', 'externalPatientId', 'friendlyId'),
+
+  shortAge: function() {
+    let dob = this.get('dateOfBirth');
+    return this.convertDOBToText(dob, true);
+  }.property('dateOfBirth'),
+
+  shortDisplayName: computed('firstName', 'lastName', function() {
+    return this.getPatientDisplayName(this, true);
+  }),
 
   validations: {
     email: {

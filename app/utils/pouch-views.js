@@ -249,6 +249,12 @@ let designDocs = [{
   ),
   version: 4
 }, {
+  name: 'custom_form_by_type',
+  function: generateView('customForm',
+    'emit(doc.data.formType);'
+  ),
+  version: 1
+}, {
   name: 'imaging_by_status',
   function: generateView('imaging',
     `${generateDateForView('imagingDate')}

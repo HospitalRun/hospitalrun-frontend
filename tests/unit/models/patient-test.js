@@ -8,6 +8,7 @@ moduleForModel('patient', 'Unit | Model | patient', {
     'ember-validations@validator:local/format',
     'ember-validations@validator:local/presence',
     'model:allergy',
+    'model:diagnosis',
     'model:payment',
     'model:price-profile',
     'service:i18n',

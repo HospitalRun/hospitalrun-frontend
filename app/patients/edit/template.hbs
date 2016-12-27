@@ -1,7 +1,14 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false bubbles=false }}
     {{#unless isNewOrDeleted}}
-      {{patient-summary patient=model visits=model.visits patientProcedures=patientProcedures disablePatientLink=true store=store }}
+      {{patient-summary
+        patient=model
+        patientProcedures=patientProcedures
+        disablePatientLink=true
+        store=store
+        canAddDiagnosis=canAddDiagnosis
+        diagnosisList=diagnosisList
+      }}
       <ul class="nav nav-pills tab-nav" role="tablist">
         <li role="presentation" class="active"><a href="#history" role="tab" data-toggle="pill" data-test-selector="history-tab">{{t 'patients.navigation.history'}}</a></li>
         <li role="presentation"><a href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">{{t 'patients.navigation.general'}}</a></li>
@@ -35,21 +42,6 @@
                       <span class="ph-visit-date">{{visit.visitDate}}</span>
                       <span class="ph-visit-type">{{visit.visitType}}</span>
                     </div>
-
-                    {{#if visit.history}}
-                      <div class="ph-note-item">
-                        <h5 class="ph-note-heading">{{t 'patients.headings.history'}}</h5>
-                        {{html-line-break visit.history}}
-                      </div>
-                    {{/if}}
-
-                    {{#if visit.historySince}}
-                      <div class="ph-note-item">
-                        <h5 class="ph-note-heading">{{t "patients.headings.historySince"}}</h5>
-                        {{html-line-break visit.historySince}}
-                      </div>
-                    {{/if}}
-
                     {{#if visit.procedures}}
                       <div class="ph-note-item">
                         <h5 class="ph-note-heading">{{t 'labels.procedures' }}</h5>
@@ -338,7 +330,7 @@
                   <tr {{action "editVisit" visit}}>
                     <td>{{date-format visit.startDate}}</td>
                     <td>{{date-format visit.endDate}}</td>
-                    <td>{{visit.primaryDiagnosis}}</td>
+                    <td>{{visit.primaryDiagnoses}}</td>
                     <td>{{visit.examiner}}</td>
                     <td>{{visit.location}}</td>
                     <td>{{visit.visitType}}</td>

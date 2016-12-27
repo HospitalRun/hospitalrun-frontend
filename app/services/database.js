@@ -4,6 +4,10 @@ import List from 'npm:pouchdb-list';
 import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
 import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 
+const {
+  isEmpty
+} = Ember;
+
 export default Ember.Service.extend(PouchAdapterUtils, {
   config: Ember.inject.service(),
   mainDB: null, // Server DB
@@ -133,10 +137,13 @@ export default Ember.Service.extend(PouchAdapterUtils, {
   * @returns {String} the corresponding pouch id.
   */
   getPouchId(emberId, type) {
-    return this.get('mainDB').rel.makeDocID({
-      id: emberId,
+    let idInfo = {
       type
-    });
+    };
+    if (!isEmpty(emberId)) {
+      idInfo.id = emberId;
+    }
+    return this.get('mainDB').rel.makeDocID(idInfo);
   },
 
   /**

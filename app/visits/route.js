@@ -14,6 +14,14 @@ export default AbstractModuleRoute.extend({
     name: 'cptCodeList',
     findArgs: ['lookup', 'cpt_code_list']
   }, {
+    name: 'customForms',
+    queryArgs: ['custom-form', {
+      options: {
+        key: 'visit'
+      },
+      mapReduce: 'custom_form_by_type'
+    }]
+  }, {
     name: 'physicianList',
     findArgs: ['lookup', 'physician_list']
   }, {
@@ -29,6 +37,9 @@ export default AbstractModuleRoute.extend({
     name: 'procedurePricingTypes',
     findArgs: ['lookup', 'procedure_pricing_types']
   }, {
+    name: 'sexList',
+    findArgs: ['lookup', 'sex']
+  }, {
     name: 'visitTypesList',
     findArgs: ['lookup', 'visit_types']
   }, {
@@ -37,6 +48,12 @@ export default AbstractModuleRoute.extend({
   }],
   moduleName: 'visits',
   newButtonAction: null, // No new button
-  sectionTitle: 'Visits'
+  sectionTitle: 'Visits',
+
+  actions: {
+    allItems() {
+      this.transitionTo('patients.index');
+    }
+  }
 
 });

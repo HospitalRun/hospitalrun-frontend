@@ -19,10 +19,14 @@ function dateAcceptance(object) {
   return false;
 }
 
+const { computed } = Ember;
+
 const PAYMENT_STATES = {
   CLEAR: 'clear',
   PENDING: 'pending'
 };
+const REQUESTED_STATUS = 'Requested';
+const STATUS_FIELD = 'status';
 
 function paymentStateAcceptance(object) {
   return !Object.keys(PAYMENT_STATES)
@@ -34,11 +38,14 @@ export default AbstractModel.extend({
   charges: DS.hasMany('proc-charge', {
     async: false
   }),
+  customForms: DS.attr('custom-forms'),
+  diagnoses: DS.hasMany('diagnosis'),
   dischargeInfo: DS.attr('string'),
   endDate: DS.attr('date'), // if visit type is outpatient, startDate and endDate are equal
   examiner: DS.attr('string'),
-  history: DS.attr('string'),
-  historySince: DS.attr('string'), // History since last seen
+  hasAppointment: DS.attr('boolean', { defaultValue: false }),
+  history: DS.attr('string'), // No longer used
+  historySince: DS.attr('string'), // History of the Present Illness -- no longer used
   imaging: DS.hasMany('imaging', { async: true }),
   labs: DS.hasMany('lab', { async: true }),
   location: DS.attr('string'),
@@ -51,29 +58,52 @@ export default AbstractModel.extend({
     async: false
   }),
   paymentState: DS.attr('string', { defaultValue: PAYMENT_STATES.PENDING }),
-  primaryDiagnosis: DS.attr('string'), // AKA admitting diagnosis
+  primaryDiagnosis: DS.attr('string'), // No longer used -- diagnoses are stored in diagnoses hasMany relationship
   primaryBillingDiagnosis: DS.attr('string'), // AKA final diagnosis
   primaryBillingDiagnosisId: DS.attr('string'),
   procedures: DS.hasMany('procedure', { async: true }),
+  reasonForVisit: DS.attr('string'),
   startDate: DS.attr('date'),
   status: DS.attr('string'),
   visitType: DS.attr(),
   vitals: DS.hasMany('vital', { async: true }),
 
-  diagnosisList: function() {
-    let additionalDiagnosis = this.get('additionalDiagnoses');
-    let diagnosisList = [];
-    let primaryDiagnosis = this.get('primaryDiagnosis');
-    if (!Ember.isEmpty(primaryDiagnosis)) {
-      diagnosisList.push(primaryDiagnosis);
-    }
-    if (!Ember.isEmpty(additionalDiagnosis)) {
-      diagnosisList.addObjects(additionalDiagnosis.map(function(diagnosis) {
-        return diagnosis.description;
-      }));
-    }
+  diagnosisList: computed('diagnoses.[]', function() {
+    let diagnoses = this.get('diagnoses');
+    let diagnosisList = diagnoses.map((diagnosis) => {
+      return diagnosis.get('diagnosis');
+    });
     return diagnosisList;
-  }.property('additionalDiagnosis.[]', 'primaryDiagnosis'),
+  }),
+
+  hasAppointmentLabel: computed('hasAppointment', function() {
+    let hasAppointment = this.get('hasAppointment');
+    let i18n = this.get('i18n');
+    if (hasAppointment === true) {
+      return i18n.t('visits.labels.haveAppointment');
+    } else {
+      return i18n.t('visits.labels.noAppointment');
+    }
+  }),
+
+  hasDoneOrders: computed('labs', 'imaging', function() {
+    let i18n = this.get('i18n');
+    let imaging = this.get('imaging');
+    let labs = this.get('labs');
+    if (imaging.isAny(STATUS_FIELD, REQUESTED_STATUS) || labs.isAny(STATUS_FIELD, REQUESTED_STATUS)) {
+      return i18n.t('visits.labels.ordersNotDone');
+    } else {
+      return i18n.t('visits.labels.haveDoneOrders');
+    }
+  }),
+
+  primaryDiagnoses: computed('diagnoses.[].secondaryDiagnosis', function() {
+    let diagnoses = this.get('diagnoses');
+    let diagnosisList = diagnoses.filterBy('secondaryDiagnosis', false).map((diagnosis) => {
+      return diagnosis.get('diagnosis');
+    });
+    return diagnosisList.join(', ');
+  }),
 
   visitDate: function() {
     let endDate = this.get('endDate');
@@ -97,6 +127,13 @@ export default AbstractModel.extend({
         accept: true,
         if: dateAcceptance,
         message: 'Please select an end date later than the start date'
+      }
+    },
+    patientTypeAhead: {
+      presence: {
+        if(object) {
+          return (object.get('checkIn') && !object.get('hidePatientSelection'));
+        }
       }
     },
     paymentState: {

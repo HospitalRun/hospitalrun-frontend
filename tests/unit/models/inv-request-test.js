@@ -12,7 +12,8 @@ moduleForModel('inv-request', 'Unit | Model | inv-request', {
     'model:visit',
     'model:allergy',
     'model:payment',
-    'model:price-profile'
+    'model:price-profile',
+    'model:diagnosis'
   ]
 });
 

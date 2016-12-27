@@ -1,5 +1,4 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
-import Ember from 'ember';
 import PatientId from 'hospitalrun/mixins/patient-id';
 import { translationMacro as t } from 'ember-i18n';
 
@@ -41,18 +40,21 @@ export default AbstractModuleRoute.extend(PatientId, {
   }],
 
   actions: {
-    createNewVisit(patient, visits) {
-      let lastVisit = visits.get('lastObject');
-      let propertiesToSet = {};
-
-      if (!Ember.isEmpty(lastVisit)) {
-        propertiesToSet = lastVisit.getProperties('primaryDiagnosis', 'primaryBillingDiagnosis');
+    createNewVisit(patient, requestedFromPatient) {
+      let typeOfNewVisit = 'checkin';
+      if (requestedFromPatient) {
+        typeOfNewVisit = 'new';
       }
-      propertiesToSet.patient = patient;
-
-      this.transitionTo('visits.edit', 'new').then(function(newRoute) {
-        newRoute.currentModel.setProperties(propertiesToSet);
-      }.bind(this));
+      this.transitionTo('visits.edit', typeOfNewVisit).then((newRoute) =>{
+        if (requestedFromPatient) {
+          newRoute.currentModel.set('returnToPatient', patient.get('id'));
+        } else {
+          newRoute.currentModel.set('returnTo', 'patients');
+        }
+        newRoute.currentModel.set('patient', patient);
+        newRoute.currentModel.set('hidePatientSelection', true);
+        newRoute.controller.getPatientDiagnoses(patient);
+      });
     }
   },
   newButtonText: t('patients.buttons.newPatient'),

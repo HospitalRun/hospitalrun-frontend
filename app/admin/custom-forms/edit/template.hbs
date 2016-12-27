@@ -1,0 +1,69 @@
+{{#edit-panel editPanelProps=editPanelProps}}
+  {{#em-form model=model submitButton=false}}
+    <div class="row">
+      {{em-input property="name" label=(t 'admin.customForms.labels.formName') class="form-input-group required col-xs-4 custom-form-name"}}
+      {{em-select class="col-xs-3 form-input-group required custom-form-type" label=(t 'admin.customForms.labels.formType')
+        property="formType" content=formTypes prompt=" "
+      }}
+      {{em-input property="columns" label=(t 'admin.customForms.labels.columns') class="form-input-group col-xs-2 custom-form-columns"}}
+    </div>
+    <h4>
+      {{t 'admin.customForms.titles.fields'}}
+      <button class="btn btn-default align-right" {{action 'addField'}}>
+        {{t 'admin.customForms.buttons.addField'}}
+      </button>
+    </h4>
+    <table class="table">
+      <tr class="table-header">
+        <th>{{t 'admin.customForms.labels.label'}}</th>
+        <th>{{t 'labels.type'}}</th>
+        <th>{{t 'labels.action'}}</th>
+      </tr>
+      {{#each model.fields as |field index|}}
+        <tr>
+          <td>{{field.label}}</td>
+          <td>
+            {{#if field.type}}
+              {{t (concat 'admin.customForms.labels.' field.type)}}
+            {{/if}}
+          </td>
+          <td>
+            <button class="btn btn-default warning" {{action "deleteField" field bubbles=false }}>
+              <span class="octicon octicon-x"></span>{{t "buttons.delete"}}
+            </button>
+            <button class="btn btn-default neutral" {{action 'editField' field bubbles=false }}>
+              {{t 'buttons.edit'}}
+            </button>
+            {{#if (not-eq index 0)}}
+              <button class="btn btn-default neutral" {{action 'moveFieldUp' field bubbles=false }}>
+                 <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                {{t 'admin.customForms.buttons.moveUp'}}
+              </button>
+            {{/if}}
+            {{#if (lt index lastFieldIndex)}}
+              <button class="btn btn-default neutral" {{action 'moveFieldDown' field bubbles=false }}>
+                 <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                {{t 'admin.customForms.buttons.moveDown'}}
+              </button>
+            {{/if}}
+          </td>
+        </tr>
+      {{/each}}
+    </table>
+  {{/em-form}}
+  <button class="btn btn-default neutral" {{action 'togglePreview' bubbles=false }}>
+    {{t 'admin.customForms.buttons.preview'}}
+  </button>
+  {{#if preview}}
+    <div class="panel panel-primary form-preview">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{formName}}</h3>
+      </div>
+      <div class="panel-body">
+        {{#em-form model=previewModel submitButton=false}}
+          {{custom-form model=previewModel form=model}}
+        {{/em-form}}
+      </div>
+    </div>
+  {{/if}}
+{{/edit-panel}}

@@ -8,7 +8,8 @@ moduleFor('mixin:patient-name', 'Unit | Mixin | patient-name', {
     'model:patient',
     'model:allergy',
     'model:payment',
-    'model:price-profile'
+    'model:price-profile',
+    'model:diagnosis'
   ],
   subject(attrs) {
     let subject;

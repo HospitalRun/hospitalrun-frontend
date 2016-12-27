@@ -14,19 +14,25 @@
     <label class="ps-info-label">{{t 'labels.sex'}}</label>
     <span class="ps-info-data">{{patient.sex}}</span>
   </div>
+  {{#if patient.dateOfBirth}}
+    <div class="ps-info-group">
+      <label class="ps-info-label">{{t 'labels.age'}}</label>
+      <span class="ps-info-data">{{patient.age}} (<strong>{{date-format patient.dateOfBirth}}</strong>)</span>
+    </div>
+  {{/if}}
 
-  <div class="ps-info-group">
-    <label class="ps-info-label">{{t 'labels.age'}}</label>
-    <span class="ps-info-data">{{patient.age}} (<strong>{{date-format patient.dateOfBirth}}</strong>)</span>
-  </div>
-
-  {{#if havePrimaryDiagnoses}}
+  {{#if showPrimaryDiagnoses}}
     <div class="ps-info-group long-form">
       <label class="ps-info-label wide">{{t 'patients.labels.primaryDiagnosis'}}</label>
+      {{#if canAddDiagnosis}}
+        <a class="clickable" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.addDiagnosis' }}</a>
+      {{/if}}
       <div class="ps-info-data-block">
-        {{#each primaryDiagnoses as |diagnosis|}}
-          {{#unless diagnosis.first}}, {{/unless}}
-          {{diagnosis.description}} (<strong>{{date-format diagnosis.date}}</strong>)
+        {{#each primaryDiagnoses as |diagnosis index|}}
+          {{#unless (eq index 0)}}, {{/unless}}
+          <a class="clickable primary-diagnosis" {{action "editDiagnosis" diagnosis bubbles=false}}>
+            {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
+          </a>
         {{/each}}
       </div>
     </div>
@@ -36,9 +42,11 @@
     <div class="ps-info-group long-form">
       <label class="ps-info-label wide">{{t 'patients.labels.secondaryDiagnosis'}}</label>
       <div class="ps-info-data-block">
-        {{#each secondaryDiagnoses as |diagnosis|}}
-          {{#unless diagnosis.first}}, {{/unless}}
-          {{diagnosis.description}} (<strong>{{date-format diagnosis.date}}</strong>)
+        {{#each secondaryDiagnoses as |diagnosis index|}}
+          {{#unless (eq index 0)}}, {{/unless}}
+          <a class="clickable secondary-diagnosis" {{action "editDiagnosis" diagnosis bubbles=false}}>
+            {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
+          </a>
         {{/each}}
       </div>
     </div>
@@ -50,18 +58,16 @@
       <div class="ps-info-data-block">
         {{#each patientProcedures as |procedure|}}
           {{#unless procedure.first}}, {{/unless}}
-          <span {{action 'editProcedure' procedure}} class="clickable">
+          <a {{action 'editProcedure' procedure}} class="clickable">
             {{procedure.description}} (<strong>{{date-format procedure.procedureDate}}</strong>)
-          </span>
+          </a>
         {{/each}}
       </div>
     </div>
   {{/if}}
 
   {{#if hasAllergies}}
-    <div class="ps-info-group long-form">
-      {{medication-allergy patient=patient}}
-    </div>
+    {{medication-allergy patient=patient}}
   {{/if}}
 
 
