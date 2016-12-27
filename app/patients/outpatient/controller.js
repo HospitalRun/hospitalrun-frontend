@@ -39,7 +39,7 @@ export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits, S
       i18n.t('visits.labels.haveDoneOrders')
     ];
   }),
-  locationList: Ember.computed.map('patientController.locationList.value', SelectValues.selectValuesMap),
+  locationList: Ember.computed.map('patientController.locationList.value', SelectValues.selectValuesMap).volatile(),
   patientNames: computed.map('model', function(visit) {
     return visit.get('patient.shortDisplayName');
   }),

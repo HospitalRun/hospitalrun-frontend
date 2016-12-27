@@ -3,8 +3,8 @@
     <div class="panel-body">
       {{#em-form model=model submitButton=false }}
         <div class="row">
-          {{date-picker property="selectedVisitDate" label=(t "visits.labels.visitDate")class="col-sm-3"}}
-          {{em-select class="col-sm-3 form-input-group" property="selectedLocation"
+          {{date-picker property="selectedVisitDate" label=(t "visits.labels.visitDate") class="col-sm-3 outpatient-date"}}
+          {{em-select class="col-sm-3 form-input-group outpatient-location" property="selectedLocation"
               label=(t "labels.location") content=locationList prompt=" "
           }}
           <div class="form-group col-sm-3">
@@ -17,7 +17,7 @@
       {{/em-form}}
     </div>
   </div>
-  <table class="table">
+  <table class="table outpatient-list">
     <thead>
       <tr class="table-header">
         {{#sortable-column sortBy='patient.displayPatientId' sortDesc=sortByDesc sortKey=sortByKey }}{{t 'labels.id'}}{{/sortable-column}}

@@ -39,7 +39,7 @@ export default AbstractIndexRoute.extend(DateFormat, {
   _modelQueryParams(params) {
     let database = this.get('database');
     let maxId = database.getMaxPouchId('visit');
-    let minId = database.getMaxPouchId('visit');
+    let minId = database.getMinPouchId('visit');
     let { visitDate } = params;
     if (isEmpty(visitDate)) {
       visitDate = moment();
@@ -54,7 +54,6 @@ export default AbstractIndexRoute.extend(DateFormat, {
     }
     let endOfDay = visitDate.endOf('day').valueOf();
     let startOfDay = visitDate.startOf('day').valueOf();
-
     return {
       mapReduce: 'visit_by_date',
       options: {
