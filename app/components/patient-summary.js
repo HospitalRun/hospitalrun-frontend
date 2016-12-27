@@ -6,6 +6,14 @@ const {
   isEmpty
 } = Ember;
 
+const DIAGNOSIS_KEYS = [
+  'diganosisContainer',
+  'hideInActiveDiagnoses',
+  'patient.diagnoses.@each.active',
+  'patient.diagnoses.@each.secondaryDiagnosis',
+  'visit.diagnoses.@each.secondaryDiagnosis'
+];
+
 export default Ember.Component.extend(PatientDiagnosis, {
   classNames: ['patient-summary'],
   canAddDiagnosis: false,
@@ -44,14 +52,14 @@ export default Ember.Component.extend(PatientDiagnosis, {
     return (secondaryDiagnosesLength > 0);
   }),
 
-  primaryDiagnoses: computed('patient.diagnoses.[]', 'visit.diagnoses.[]', 'diganosisContainer', function() {
+  primaryDiagnoses: computed(...DIAGNOSIS_KEYS, function() {
     let diagnosisContainer = this.get('diagnosisContainer');
     let hideInActiveDiagnoses = this.get('hideInActiveDiagnoses');
     return this.getDiagnoses(diagnosisContainer, hideInActiveDiagnoses, false);
 
   }),
 
-  secondaryDiagnoses: computed('patient.diagnoses.[]', 'visit.diagnoses.[]', 'diganosisContainer', function() {
+  secondaryDiagnoses: computed(...DIAGNOSIS_KEYS, function() {
     let diagnosisContainer = this.get('diagnosisContainer');
     let hideInActiveDiagnoses = this.get('hideInActiveDiagnoses');
     return this.getDiagnoses(diagnosisContainer, hideInActiveDiagnoses, true);
