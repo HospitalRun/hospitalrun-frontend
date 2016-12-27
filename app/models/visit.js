@@ -25,6 +25,8 @@ const PAYMENT_STATES = {
   CLEAR: 'clear',
   PENDING: 'pending'
 };
+const COMPLETED_STATUS = 'Completed';
+const FULFILLED_STATUS = 'Fulfilled';
 const REQUESTED_STATUS = 'Requested';
 const STATUS_FIELD = 'status';
 
@@ -86,7 +88,22 @@ export default AbstractModel.extend({
     }
   }),
 
-  hasDoneOrders: computed('labs', 'imaging', function() {
+  hasCompletedImaging: computed('imaging.@each.status', function() {
+    let imaging = this.get('imaging');
+    return imaging.isAny(STATUS_FIELD, COMPLETED_STATUS);
+  }),
+
+  hasCompletedLabs: computed('labs.@each.status', function() {
+    let labs = this.get('labs');
+    return labs.isAny(STATUS_FIELD, COMPLETED_STATUS);
+  }),
+
+  hasCompletedMedication: computed('medication.@each.status', function() {
+    let medication = this.get('medication');
+    return medication.isAny(STATUS_FIELD, FULFILLED_STATUS);
+  }),
+
+  hasDoneOrders: computed('imaging.@each.status', 'labs.@each.status', function() {
     let i18n = this.get('i18n');
     let imaging = this.get('imaging');
     let labs = this.get('labs');

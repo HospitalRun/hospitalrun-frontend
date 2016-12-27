@@ -46,67 +46,46 @@
                       <div class="ph-note-item">
                         <h5 class="ph-note-heading">{{t 'labels.procedures' }}</h5>
                         {{#each visit.procedures as |procedure|}}
-                          <div {{action 'editProcedure' procedure }}>
+                          <div {{action 'editProcedure' procedure }} class="clickable">
                             <h5 class="ph-note-heading">
                               {{date-format procedure.procedureDate}}:
-                              {{#if procedure.cptCode}}
-                                [{{t 'labels.cptcode' }} - {{procedure.cptCode}}]
-                              {{/if}}
                               {{procedure.description}}
                             </h5>
-                            <h6>
-                              {{t 'labels.physician'}}: {{procedure.physician}}
-                              {{#if procedure.assistant}}
-                                , {{t 'labels.assisting'}}: {{procedure.assistant}}
-                              {{/if}}
-                              {{#if procedure.anesthesiologist}}
-                                , {{t 'labels.anesthesia'}}: {{procedure.anesthesiologist}}
-                              {{/if}}
-                            </h6>
-                            {{html-line-break procedure.notes}}
                           </div>
                         {{/each}}
                       </div>
                     {{/if}}
-                    {{#if visit.imaging}}
+                    {{#if visit.hasCompletedImaging}}
                       <div class="ph-note-item">
                         <h5 class="ph-note-heading">{{t 'labels.imageOrders' }}</h5>
                         {{#each visit.imaging as |imaging|}}
-                          <div {{action 'editImaging' imaging }}>
+                          {{#if (eq imaging.status 'Completed')}}
                             <h5 class="ph-note-heading">{{date-format imaging.imagingDate}}: {{imaging.imagingType.name}}</h5>
-                            <div>{{imaging.result}}</div>
-                            <div>{{html-line-break imaging.notes}}</div>
-                          </div>
+                          {{/if}}
                         {{/each}}
                       </div>
                     {{/if}}
-                    {{#if visit.labs}}
+                    {{#if visit.hasCompletedLabs}}
                       <div class="ph-note-item">
                         <h5 class="ph-note-heading">{{t 'labels.labOrders' }}</h5>
                         {{#each visit.labs as |lab|}}
-                          <div {{action 'editLab' lab }}>
+                          {{#if (eq lab.status 'Completed')}}
                             <h5 class="ph-note-heading">{{date-format lab.labDate}}: {{lab.labType.name}}</h5>
-                            <div>{{lab.result}}</div>
-                            <div>{{html-line-break lab.notes}}</div>
-                          </div>
+                          {{/if}}
                         {{/each}}
                       </div>
                     {{/if}}
-                    {{#if visit.patientNotes}}
+                    {{#if visit.hasCompletedMedication}}
                       <div class="ph-note-item">
-                        <h5 class="ph-note-heading">{{t 'labels.notes'}}</h5>
-                        {{#each visit.patientNotes as |note|}}
-                          <div {{action 'showAddPatientNote' note }}>
-                            <h5 class="ph-note-heading">{{note.authoredBy}}</h5>
-                            {{date-format note.date}}[{{note.noteType}}]: {{html-line-break note.content}}
-                          </div>
+                        <h5 class="ph-note-heading">{{t 'labels.medication' }}</h5>
+                        {{#each visit.medication as |medication|}}
+                          {{#if (eq medication.status 'Fulfilled')}}
+                            <h5 class="ph-note-heading">{{date-format medication.prescriptionDate}}: {{medication.medicationName}}</h5>
+                          {{/if}}
                         {{/each}}
                       </div>
-                    {{else}}
-                      <div class="ph-note-item">
-                        {{t 'messages.noNotesAvailable'}}
-                      </div>
                     {{/if}}
+
                   </div>
                 {{/each}}
               {{else}}
