@@ -8,7 +8,9 @@ import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitStatus from 'hospitalrun/utils/visit-statuses';
+
 export default AbstractEditController.extend(BloodTypes, DiagnosisActions, ReturnTo, UserSession, PatientId, PatientNotes, {
+
   canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
   }.property(),
@@ -96,10 +98,8 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
 
   clinicList: Ember.computed.alias('patientController.clinicList'),
   countryList: Ember.computed.alias('patientController.countryList'),
-  customSocialForm: Ember.computed.alias('patientController.customSocialForm.value'),
   diagnosisList: Ember.computed.alias('patientController.diagnosisList'),
   isFileSystemEnabled: Ember.computed.alias('filesystem.isFileSystemEnabled'),
-
   pricingProfiles: Ember.computed.map('patientController.pricingProfiles', SelectValues.selectObjectMap),
   sexList: Ember.computed.alias('patientController.sexList'),
   statusList: Ember.computed.alias('patientController.statusList'),

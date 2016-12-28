@@ -14,9 +14,6 @@ export default AbstractModuleRoute.extend(PatientId, {
     name: 'countryList',
     findArgs: ['lookup', 'country_list']
   }, {
-    name: 'customSocialForm',
-    findArgs: ['option', 'custom_form_social']
-  }, {
     name: 'diagnosisList',
     findArgs: ['lookup', 'diagnosis_list']
   }, {
@@ -31,6 +28,14 @@ export default AbstractModuleRoute.extend(PatientId, {
   }, {
     name: 'sexList',
     findArgs: ['lookup', 'sex']
+  }, {
+    name: 'socialCustomForms',
+    queryArgs: ['custom-form', {
+      options: {
+        key: 'socialwork'
+      },
+      mapReduce: 'custom_form_by_type'
+    }]
   }, {
     name: 'statusList',
     findArgs: ['lookup', 'patient_status_list']

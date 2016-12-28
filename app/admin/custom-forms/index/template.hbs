@@ -12,7 +12,9 @@
         <tr {{action 'editItem' customForm}} class="clickable">
           <td class="custom-form-name">{{customForm.name}}</td>
           <td>
-            {{t (concat 'admin.customForms.labels.' customForm.formType 'FormType')}}
+            {{#if customForm.formType}}
+              {{t (concat 'admin.customForms.labels.' customForm.formType 'FormType')}}
+            {{/if}}
           </td>
           {{#if showActions}}
             <td>

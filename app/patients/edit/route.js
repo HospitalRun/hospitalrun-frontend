@@ -7,6 +7,7 @@ import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, PatientNotes, {
+  customForms: Ember.inject.service(),
   editTitle: t('patients.titles.edit'),
   modelName: 'patient',
   newTitle: t('patients.titles.new'),
@@ -54,8 +55,15 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
   },
 
   getNewData() {
-    return this.generateFriendlyId().then(function(friendlyId) {
-      return { friendlyId };
+    let customForms = this.get('customForms');
+    let newPatientData = {
+      customForms: Ember.Object.create()
+    };
+    return customForms.setDefaultCustomForms(['patient', 'socialwork'], newPatientData).then(() => {
+      return this.generateFriendlyId().then(function(friendlyId) {
+        newPatientData.friendlyId = friendlyId;
+        return newPatientData;
+      });
     });
   },
 

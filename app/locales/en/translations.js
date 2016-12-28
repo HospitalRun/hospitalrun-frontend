@@ -124,6 +124,7 @@ export default {
 
       },
       labels: {
+        alwaysInclude: 'Always Include',
         checkbox: 'Checkbox',
         columns: 'Columns',
         colSpan: 'Number of Columns To Span',
@@ -138,6 +139,7 @@ export default {
         property: 'Property',
         radio: 'Radio',
         select: 'Dropdown',
+        socialworkFormType: 'Social Work',
         text: 'Text',
         textarea: 'Large Text',
         visitFormType: 'Visit'

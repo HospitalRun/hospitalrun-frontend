@@ -7,32 +7,48 @@ const {
 } = Ember;
 
 export default Ember.Component.extend(SelectValues, {
-  customForms: null,
+  customForms: Ember.inject.service(),
+  formType: null,
+  formsForType: null,
   model: null,
   openModalAction: 'openModal',
 
-  formsForSelect: computed('customForms', 'usedForms', function() {
+  didReceiveAttrs(/* attrs */) {
+    this._super(...arguments);
     let customForms = this.get('customForms');
+    let formType = this.get('formType');
+    customForms.getCustomForms([formType]).then((forms) => {
+      let isDestroyed = this.get('isDestroyed');
+      if (!isDestroyed) {
+        this.set('formsForType', forms);
+      }
+    });
+  },
+
+  formsForSelect: computed('formsForType', 'usedForms', function() {
+    let formsForType = this.get('formsForType');
     let usedForms = this.get('usedForms');
-    let formsForSelect = customForms.filter((customForm) => {
-      return (!usedForms.includes(customForm.get('id')));
-    });
-    formsForSelect = formsForSelect.map((customForm) => {
-      return {
-        id: customForm.get('id'),
-        value: customForm.get('name')
-      };
-    });
-    return formsForSelect;
+    if (!isEmpty(formsForType)) {
+      let formsForSelect = formsForType.filter((customForm) => {
+        return (!usedForms.includes(customForm.get('id')));
+      });
+      formsForSelect = formsForSelect.map((customForm) => {
+        return {
+          id: customForm.get('id'),
+          value: customForm.get('name')
+        };
+      });
+      return formsForSelect;
+    }
   }),
 
-  formsToDisplay: computed('model.customForms', function() {
-    let customForms = this.get('customForms');
+  formsToDisplay: computed('formsForType', 'model.customForms', function() {
+    let formsForType = this.get('formsForType');
     let modelForms = this.get('model.customForms');
-    if (!isEmpty(modelForms)) {
+    if (!isEmpty(modelForms) && !isEmpty(formsForType)) {
       return Object.keys(modelForms).map((formId) => {
         return {
-          form: customForms.findBy('id', formId),
+          form: formsForType.findBy('id', formId),
           propertyPrefix: `customForms.${formId}.`
         };
       });
@@ -50,7 +66,7 @@ export default Ember.Component.extend(SelectValues, {
 
   showAddButton: computed('formsForSelect', function() {
     let formsForSelect = this.get('formsForSelect');
-    return formsForSelect.length > 0;
+    return !isEmpty(formsForSelect);
   }),
 
   actions: {

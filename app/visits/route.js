@@ -14,14 +14,6 @@ export default AbstractModuleRoute.extend({
     name: 'cptCodeList',
     findArgs: ['lookup', 'cpt_code_list']
   }, {
-    name: 'customForms',
-    queryArgs: ['custom-form', {
-      options: {
-        key: 'visit'
-      },
-      mapReduce: 'custom_form_by_type'
-    }]
-  }, {
     name: 'physicianList',
     findArgs: ['lookup', 'physician_list']
   }, {

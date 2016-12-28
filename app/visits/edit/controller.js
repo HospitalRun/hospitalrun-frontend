@@ -16,7 +16,6 @@ const {
 
 export default AbstractEditController.extend(AddNewPatient, ChargeActions, DiagnosisActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
   visitsController: Ember.inject.controller('visits'),
-
   additionalButtons: computed('model.status', function() {
     let buttonProps = {
       buttonIcon: 'glyphicon glyphicon-log-out',
@@ -103,7 +102,6 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
   createNewPatient: false,
-  customForms: Ember.computed.alias('visitsController.customForms'),
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
   findPatientVisits: false,
   hideChargeHeader: true,

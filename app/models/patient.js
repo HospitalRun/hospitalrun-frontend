@@ -21,6 +21,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   clinic: DS.attr('string'),
   country: DS.attr('string'),
   checkedIn: DS.attr('boolean', { defaultValue: false }),
+  customForms: DS.attr('custom-forms'),
   dateOfBirth: DS.attr('date'),
   diagnoses: DS.hasMany('diagnosis', {
     async: false

@@ -206,6 +206,7 @@
             </table>
           {{/if}}
         </div>
+        {{custom-form-manager model=model formType="patient"}}
       </div>
       {{#unless isNewOrDeleted}}
         <div role="tabpanel" class="tab-pane" id="photos">
@@ -448,7 +449,7 @@
                     </tr>
                   {{/if}}
                 </table>
-                {{custom-form model=model form=customSocialForm}}
+                {{custom-form-manager model=model formType="socialwork"}}
               </div>
             </div>
           </div>

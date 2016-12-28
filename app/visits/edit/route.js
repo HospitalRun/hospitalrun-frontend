@@ -3,7 +3,9 @@ import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import ChargeRoute from 'hospitalrun/mixins/charge-route';
 import Ember from 'ember';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
+
 export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
+  customForms: Ember.inject.service(),
   editTitle: t('visits.titles.editVisit'),
   modelName: 'visit',
   newTitle: t('visits.titles.newVisit'),
@@ -23,9 +25,14 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
   },
 
   getNewData() {
-    return Ember.RSVP.resolve({
+    let newVisitData = {
       startDate: new Date(),
-      visitType: 'Admission'
+      visitType: 'Admission',
+      customForms: Ember.Object.create()
+    };
+    let customForms = this.get('customForms');
+    return customForms.setDefaultCustomForms(['visit'], newVisitData).then(() => {
+      return newVisitData;
     });
   },
 
