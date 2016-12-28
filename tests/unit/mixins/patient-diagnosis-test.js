@@ -2,6 +2,14 @@ import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
 import { moduleFor, test } from 'ember-qunit';
 import Ember from 'ember';
 
+const DIAGNOSIS_PROPERTIES = ['active', 'date', 'diagnosis', 'secondaryDiagnosis'];
+
+function diagnosesDump(diagnoses) {
+  return diagnoses.map((diagnosis) => {
+    return diagnosis.getProperties(DIAGNOSIS_PROPERTIES);
+  });
+}
+
 moduleFor('mixin:patient-diagnosis', 'Unit | Mixin | patient-diagnosis', {
   needs: [
     'model:visit',
@@ -12,77 +20,99 @@ moduleFor('mixin:patient-diagnosis', 'Unit | Mixin | patient-diagnosis', {
     'model:lab',
     'model:medication',
     'model:patient-note',
-    'model:procedure'
+    'model:procedure',
+    'model:diagnosis'
   ],
   store() {
     return this.container.lookup('service:store');
   },
-  getVisitsData() {
+  getVisitData() {
     return Ember.run(() => {
-      return [
-        {
-          startDate: new Date(1393822800000),
-          primaryDiagnosis: 'primary one',
-          primaryBillingDiagnosis: 'primary billing one',
-          additionalDiagnoses: [
-            { description: 'additional diag one a' },
-            { description: 'additional diag one b' }
-          ]
-        },
-        {
-          startDate: new Date(1372822800000),
-          primaryDiagnosis: 'primary two',
-          primaryBillingDiagnosis: 'primary billing two',
-          additionalDiagnoses: [
-            { description: 'additional diag two' }
-          ]
-        }
-      ].map((visit) => this.store().createRecord('visit', visit));
+      let visitDate = new Date(1393822800000);
+      return this.store().createRecord('visit', {
+        startDate: visitDate,
+        diagnoses: [{
+          diagnosis: 'primary one',
+          date: visitDate
+        }, {
+          active: false,
+          date: new Date(1372822800000),
+          diagnosis: 'primary two'
+        }, {
+          diagnosis: 'additional diag one a',
+          secondaryDiagnosis: true,
+          date: visitDate,
+          active: true
+        }, {
+          diagnosis: 'additional diag one b',
+          secondaryDiagnosis: true,
+          date: visitDate,
+          active: false
+        }].map((diagnosis) => this.store().createRecord('diagnosis', diagnosis))
+      });
     });
   }
 });
 
-test('getPrimaryDiagnoses', function(assert) {
+test('get active primary diagnoses', function(assert) {
   let patientDiagnosis = Ember.Object.extend(PatientDiagnosis).create();
-  let visits = this.getVisitsData();
-  let diagnosesList = patientDiagnosis.getPrimaryDiagnoses(visits);
-
-  assert.deepEqual(diagnosesList, [
-    {
-      date: new Date('Mon Mar 03 2014 00:00:00 GMT-0500 (EST)'),
-      description: 'primary one',
-      first: true
-    },
-    {
-      date: new Date('Mon Mar 03 2014 00:00:00 GMT-0500 (EST)'),
-      description: 'primary billing one'
-    },
-    {
-      date: new Date('Tue Jul 02 2013 23:40:00 GMT-0400 (EDT)'),
-      description: 'primary two'
-    },
-    {
-      date: new Date('Tue Jul 02 2013 23:40:00 GMT-0400 (EDT)'),
-      description: 'primary billing two'
-    }
-  ]);
+  let visit = this.getVisitData();
+  let diagnosesList = patientDiagnosis.getDiagnoses(visit, true, false);
+  assert.deepEqual(diagnosesDump(diagnosesList), [{
+    active: true,
+    date: new Date('Mon Mar 03 2014 00:00:00 GMT-0500 (EST)'),
+    diagnosis: 'primary one',
+    secondaryDiagnosis: false
+  }], 'Only active primary diagnoses are returned', assert);
 });
 
-test('getSecondaryDiagnosis', function(assert) {
+test('get all primary diagnoses', function(assert) {
   let patientDiagnosis = Ember.Object.extend(PatientDiagnosis).create();
-  let visits = this.getVisitsData();
-  let diagnosesList = patientDiagnosis.getSecondaryDiagnoses(visits);
+  let visit = this.getVisitData();
+  let diagnosesList = patientDiagnosis.getDiagnoses(visit, false, false);
+  assert.deepEqual(diagnosesDump(diagnosesList), [{
+    active: true,
+    date: new Date('Mon Mar 03 2014 00:00:00 GMT-0500 (EST)'),
+    diagnosis: 'primary one',
+    secondaryDiagnosis: false
+  }, {
+    active: false,
+    date: new Date('Tue Jul 02 2013 23:40:00 GMT-0400 (EDT)'),
+    diagnosis: 'primary two',
+    secondaryDiagnosis: false
+  }], 'All primary diagnoses are returned', assert);
+});
 
-  assert.deepEqual(diagnosesList, [
+test('get active secondary diagnoses', function(assert) {
+  let patientDiagnosis = Ember.Object.extend(PatientDiagnosis).create();
+  let visit = this.getVisitData();
+  let diagnosesList = patientDiagnosis.getDiagnoses(visit, true, true);
+  assert.deepEqual(diagnosesDump(diagnosesList), [
     {
-      description: 'additional diag one a',
-      first: true
-    },
-    {
-      description: 'additional diag one b'
-    },
-    {
-      description: 'additional diag two'
+      active: true,
+      date: new Date('Mon Mar 03 2014 00:00:00 GMT-0500 (EST)'),
+      diagnosis: 'additional diag one a',
+      secondaryDiagnosis: true
     }
-  ]);
+  ], 'Only active secondary diagnoses are returned');
+});
+
+test('get all secondary diagnoses', function(assert) {
+  let patientDiagnosis = Ember.Object.extend(PatientDiagnosis).create();
+  let visit = this.getVisitData();
+  let diagnosesList = patientDiagnosis.getDiagnoses(visit, false, true);
+  assert.deepEqual(diagnosesDump(diagnosesList), [
+    {
+      active: true,
+      date: new Date('Mon Mar 03 2014 00:00:00 GMT-0500 (EST)'),
+      diagnosis: 'additional diag one a',
+      secondaryDiagnosis: true
+    },
+    {
+      active: false,
+      date: new Date('Mon Mar 03 2014 00:00:00 GMT-0500 (EST)'),
+      diagnosis: 'additional diag one b',
+      secondaryDiagnosis: true
+    }
+  ], 'All secondary diagnoses are returned');
 });

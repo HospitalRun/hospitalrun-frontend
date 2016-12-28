@@ -56,6 +56,12 @@ export default Ember.Mixin.create({
           capability: 'patients'
         },
         {
+          title: 'Outpatient',
+          iconClass: 'octicon-chevron-right',
+          route: 'patients.outpatient',
+          capability: 'patients'
+        },
+        {
           title: 'New Patient',
           iconClass: 'octicon-plus',
           route: 'patients.edit',
@@ -244,15 +250,15 @@ export default Ember.Mixin.create({
       capability: 'admin',
       subnav: [
         {
-          title: 'Lookup Lists',
-          iconClass: 'octicon-chevron-right',
-          route: 'admin.lookup',
-          capability: 'update_config'
-        },
-        {
           title: 'Address Fields',
           iconClass: 'octicon-chevron-right',
           route: 'admin.address',
+          capability: 'update_config'
+        },
+        {
+          title: 'Custom Forms',
+          iconClass: 'octicon-chevron-right',
+          route: 'admin.custom-forms',
           capability: 'update_config'
         },
         {
@@ -260,6 +266,12 @@ export default Ember.Mixin.create({
           iconClass: 'octicon-plus',
           route: 'admin.loaddb',
           capability: 'load_db'
+        },
+        {
+          title: 'Lookup Lists',
+          iconClass: 'octicon-chevron-right',
+          route: 'admin.lookup',
+          capability: 'update_config'
         },
         {
           title: 'Users',

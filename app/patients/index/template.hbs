@@ -28,18 +28,23 @@
                 {{#if canAdd}}
                   <button class="btn btn-default neutral" {{action 'editItem' patient  bubbles=false }}>{{t 'labels.edit'}}</button>
                 {{/if}}
-                {{#unless patient.admitted}}
-                  {{#if canAdmitPatient}}
-                    <button class="btn btn-default success admit" {{action 'admitPatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-in"></span> {{t 'patients.labels.admit'}}</button>
-                  {{/if}}
-                {{/unless}}
                 {{#if patient.admitted}}
                   {{#if canDischargePatient}}
-                    <button class="btn btn-default info" {{action 'dischargePatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-out"></span> {{t 'patients.labels.discharge'}}</button>
+                    <button class="btn btn-default info" {{action 'dischargePatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-out"></span> {{t 'visits.buttons.discharge'}}</button>
+                  {{/if}}
+                {{else}}
+                  {{#if patient.checkedIn}}
+                    {{#if canDischargePatient}}
+                      <button class="btn btn-default info" {{action 'checkoutPatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-out"></span> {{t 'visits.buttons.checkOut'}}</button>
+                    {{/if}}
+                  {{else}}
+                    {{#if canAdmitPatient}}
+                      <button class="btn btn-default success admit" {{action 'checkInPatient' patient  bubbles=false }}><span class="glyphicon glyphicon-log-in"></span> {{t 'visits.buttons.checkIn'}}</button>
+                    {{/if}}
                   {{/if}}
                 {{/if}}
                 {{#if canDelete}}
-                  <button class="btn btn-default warning" {{action 'deleteItem' patient  bubbles=false }}><span class="octicon octicon-x"></span> {{t 'labels.delete'}}</button>
+                  <button class="btn btn-default warning" {{action 'deleteItem' patient  bubbles=false }}><span class="octicon octicon-x"></span> {{t 'buttons.delete'}}</button>
                 {{/if}}
               </td>
             {{/if}}

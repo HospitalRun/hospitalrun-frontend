@@ -13,7 +13,7 @@ export default Ember.Mixin.create({
     }
   },
 
-  getPatientDisplayName(patient) {
+  getPatientDisplayName(patient, shortName) {
     let firstName = Ember.get(patient, 'firstName');
     let lastName = Ember.get(patient, 'lastName');
     let middleName = Ember.get(patient, 'middleName');
@@ -21,7 +21,7 @@ export default Ember.Mixin.create({
     if (!Ember.isEmpty(firstName)) {
       nameArray.push(firstName);
     }
-    if (!Ember.isEmpty(middleName)) {
+    if (!Ember.isEmpty(middleName) && !shortName) {
       nameArray.push(middleName);
     }
     if (!Ember.isEmpty(lastName)) {

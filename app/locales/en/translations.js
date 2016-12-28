@@ -74,7 +74,9 @@ export default {
       admittedPatients: 'Admitted Patients',
       missed: 'Missed',
       userRoles: 'User Roles',
-      workflow: 'Workflow'
+      workflow: 'Workflow',
+      outpatient: 'Outpatient',
+      customForms: 'Custom Forms'
     },
     actions: {
       logout: 'Logout',
@@ -111,6 +113,52 @@ export default {
       newTitle: 'Address Options',
       editTitle: 'Address Options',
       addressLabel: 'Address'
+    },
+    customForms: {
+      buttons: {
+        addField: 'Add Field',
+        moveDown: 'Move Down',
+        moveUp: 'Move Up',
+        newForm: '+ new form',
+        preview: 'Preview'
+
+      },
+      labels: {
+        alwaysInclude: 'Always Include',
+        checkbox: 'Checkbox',
+        columns: 'Columns',
+        colSpan: 'Number of Columns To Span',
+        customForm: 'Custom Form',
+        formName: 'Form Name',
+        formType: 'Form Type',
+        includeOtherOption: 'Include Other Option',
+        label: 'Label',
+        newForm: 'New Form',
+        otherOptionLabel: 'Other Option Label',
+        patientFormType: 'Patient',
+        property: 'Property',
+        radio: 'Radio',
+        select: 'Dropdown',
+        socialworkFormType: 'Social Work',
+        text: 'Text',
+        textarea: 'Large Text',
+        visitFormType: 'Visit'
+      },
+      messages: {
+        deleteForm: 'Are you sure you want to delete this custom form?',
+        formSaved: 'The {{name}} form has been saved.'
+      },
+      titles: {
+        customForms: 'Custom Forms',
+        deleteForm: 'Delete Custom Form',
+        editCustomForm: 'Edit Custom Form',
+        fields: 'Fields',
+        formSaved: 'Form Saved',
+        checkboxValues: 'Checkbox Values',
+        dropDownValues: 'Dropdown Values',
+        newCustomForm: 'New Custom Form',
+        radioValues: 'Radio Values'
+      }
     },
     loaddb: {
       progressMessage: 'Please wait while your database is loaded.',
@@ -227,13 +275,28 @@ export default {
         adjustInventoryLocation: 'Adjust Inventory Location',
         deleteInventoryItem: 'Delete Inventory Item',
         fulfillInventory: 'Fulfill Inventory',
-        defineUserRoles: 'Define User Roles'
+        defineUserRoles: 'Define User Roles',
+        addBillingDiagnosis: 'Add Billing Diagnosis',
+        addNote: 'Add Note',
+        addSocialwork: 'Add Social Work',
+        deleteNote: 'Delete Note'
       },
       messages: {
         roleSaved: 'The {{roleName}} role has been saved.'
       },
       titles: {
         roleSaved: 'Role Saved'
+      }
+    },
+    visitForms: {
+      labels: {
+        followup: 'Followup',
+        form: 'Form',
+        initial: 'Initial',
+        visitType: 'Visit Type'
+      },
+      titles: {
+        visitForms: 'Visit Forms'
       }
     },
     workflow: {
@@ -282,7 +345,6 @@ export default {
     edit: 'Edit',
     imageOrders: 'Image Orders',
     labOrders: 'Lab Orders',
-    patientHistory: 'Patient History',
     imagingType: 'Imaging Type',
     result: 'Result',
     results: 'Results',
@@ -370,12 +432,14 @@ export default {
     sorry: 'Sorry, something went wrong...',
     forAuthorizedPersons: 'This report is for authorized persons only.',
     requiredFieldsCorrectErrors: 'Please fill in required fields (marked with *) and correct the errors before saving.',
-    saveActionException: 'An error occurred while attempting to save: {{message}}'
+    saveActionException: 'An error occurred while attempting to save: {{message}}',
+    reportError: 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.'
   },
   alerts: {
     pleaseWait: 'Please Wait',
     warningExclamation: 'Warning!!!!',
-    errorExclamation: 'Error!!!!'
+    errorExclamation: 'Error!!!!',
+    reportError: 'Error Generating Report'
   },
   headings: {
     chargedItems: 'Charged Items'
@@ -407,7 +471,6 @@ export default {
     search: 'Search',
     edit: 'Edit',
     addLineItem: 'Add Line Item',
-    addNewAllergy: 'Add New Allergy',
     showFewer: 'Show Fewer',
     showAll: 'Show All'
   },
@@ -602,7 +665,9 @@ export default {
       stockTransferDetail: 'Detailed Stock Transfer',
       stockTransferSum: 'Summary Stock Transfer',
       stockUsageDetail: 'Detailed Stock Usage',
-      stockUsageSum: 'Summary Stock Usage'
+      stockUsageSum: 'Summary Stock Usage',
+      titleSingleDate: '{{name}} Report {{date}}',
+      titleDateRange: '{{name}} Report {{startDate}} - {{endDate}}'
     },
     titles: {
       addPurchase: 'Add Purchase',
@@ -722,35 +787,67 @@ export default {
   },
   visits: {
     titles: {
-      additionalDiagnoses: 'Additional Diagnoses'
+      additionalDiagnoses: 'Additional Diagnoses',
+      checkedIn: 'Patient Checked In',
+      checkOut: 'Patient Check Out',
+      checkedOut: 'Patient Checked Out',
+      discharged: 'Patient Discharged',
+      editVisit: 'Edit Visit',
+      newVisit: 'New Visit',
+      patientCheckIn: 'Patient Check In',
+      visitSaved: 'Visit Saved'
     },
     messages: {
-      delete: 'Are you sure you wish to delete this visit?'
+      delete: 'Are you sure you wish to delete this visit?',
+      checkOut: 'Are you sure you wish to check out {{patientName}}?',
+      checkedOut: '{{patientName}} has been checked out.',
+      discharged: '{{patientName}} has been discharged.',
+      patientCheckedIn: '{{patientName}} has been checked in.',
+      patientCreatedAndCheckedIn: '{{patientName}} has been created and checked in.',
+      visitAndPatientSaved: 'The visit and patient records have been saved.',
+      visitSaved: 'The visit record has been saved.'
     },
     buttons: {
       newProcedure: 'New Procedure',
-      newLab: 'New Lab',
       newAppointment: 'New Appointment',
       addDiagnosis: 'Add Diagnosis',
-      newImaging: 'New Imaging',
-      newMedication: 'New Medication',
-      newVitals: 'New Vitals'
+      newVitals: 'New Vitals',
+      checkIn: 'Check In',
+      checkOut: 'Check Out',
+      discharge: 'Discharge'
     },
     labels: {
       diagnosis: 'Diagnosis',
       procedure: 'Procedure',
       procedureDate: 'Procedure Date',
       authoredBy: 'Authored By',
-      labs: 'Labs',
-      imaging: 'Imaging',
       visitInformation: 'Visit Information',
       examiner: 'Examiner',
-      medication: 'Medication',
       status: 'Visit Status',
-      admittingDiagnosis: 'Admitting Diagnosis',
       finalDiagnosis: 'Final/Billing Diagnosis',
       visitDate: 'Visit Date',
       visitType: 'Visit Type',
+      patientToCheckIn: 'Patient To Check In',
+      checkInTime: 'Check In',
+      checkOutTime: 'Check Out',
+      appointment: 'Appointment',
+      haveAppointment: 'Y',
+      noAppointment: 'N',
+      ordersDone: 'Orders Done',
+      haveDoneOrders: 'Y',
+      ordersNotDone: 'N',
+      reasonForVisit: 'Reason For Visit',
+      statusAdmitted: 'Admitted',
+      statusDischarged: 'Discharged',
+      statusCheckedIn: 'Checked In',
+      statusCheckedOut: 'Checked Out',
+      createNewPatient: 'Create New Patient'
+    },
+    navigation: {
+      charges: 'Charges',
+      notes: 'Notes',
+      orders: 'Orders',
+      procedures: 'Procedures',
       vitals: 'Vitals'
     }
   },
@@ -814,6 +911,7 @@ export default {
       deletePhoto: 'Delete Photo',
       deleteContact: 'Delete Contact',
       savedPatient: 'Patient Saved',
+      todaysOutpatients: 'Todays\' Outpatients',
       admissionsDetail: 'Admissions Detail',
       admissionsSummary: 'Admissions Summary',
       diagnosticTesting: 'Diagnostic Testing',
@@ -825,7 +923,8 @@ export default {
       totalPatientDays: 'Total Patient Days',
       totalPatientDaysDetailed: 'Total Patient Days (Detailed)',
       visit: 'Visit',
-      deletePatientRecord: 'Delete Patient Record'
+      deletePatientRecord: 'Delete Patient Record',
+      outpatientsForDate: 'Outpatients for {{visitDate}}'
     },
     messages: {
       areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
@@ -847,11 +946,8 @@ export default {
       newPhoto: 'New Photo',
       newAppointment: 'New Appointment',
       backToPatients: 'Back to Patient List',
-      newPatient: '+ new patient'
-    },
-    headings: {
-      history: 'History',
-      historySince: 'History Since'
+      newPatient: '+ new patient',
+      patientCheckIn: 'Patient Check In'
     },
     labels: {
       primaryDiagnosis: 'Primary Diagnoses',
@@ -862,7 +958,6 @@ export default {
       admissionDate: 'Admission Date',
       patientDays: 'Patient Days',
       dischargeDate: 'Discharge Date',
-      discharge: 'Discharge',
       admit: 'Admit',
       relationships: 'Relationships',
       phone: 'Phone',
@@ -981,6 +1076,16 @@ export default {
     chargesByTypeTab: {
       charges: 'charges'
     },
+    customFormManager: {
+      buttons: {
+        addForm: 'Add Form'
+      }
+    },
+    sortableColumn: {
+      labels: {
+        selectAll: '(Select All)'
+      }
+    },
     dateTimePicker: {
       amHour: '{{hour}} AM',
       midnight: 'Midnight',
@@ -1003,15 +1108,57 @@ export default {
     quantityCalc: {
       result: '{{targetUnit}} total: {{calculated}}'
     },
+    patientOrders: {
+      buttons: {
+        newImaging: 'New Imaging',
+        newLab: 'New Lab',
+        newMedication: 'New Medication'
+      },
+      labels: {
+        imagingOrderType: 'Imaging',
+        labOrderType: 'Lab',
+        medicationOrderType: 'Medication',
+        orderType: 'Order Type'
+      }
+    },
     priceList: {
       charges: '{{pricingType}} charges'
     }
   },
+  customForms: {
+    buttons: {
+      addForm: 'Add Form'
+    },
+    labels: {
+      formToAdd: 'Form To Add'
+    },
+    titles: {
+      addCustomForm: 'Add Custom Form'
+    }
+  },
+  diagnosis: {
+    labels: {
+      activeDiagnosis: 'Active Diagnosis',
+      date: 'Date',
+      diagnosis: 'Diagnosis',
+      secondaryDiagnosis: 'Secondary Diagnosis'
+    },
+    titles: {
+      addDiagnosis: 'Add Diagnosis',
+      editDiagnosis: 'Edit Diagnosis'
+    }
+  },
   allergies: {
-    addAllergy: 'Add Allergy',
-    allergyName: 'Name',
-    editAllergy: 'Edit {{allergy}}',
-    newAllergy: 'Add New Allergy',
-    patientAllergy: 'Patient Allergies'
+    buttons: {
+      addAllergy: 'Add Allergy'
+    },
+    titles: {
+      addAllergy: 'Add Allergy',
+      editAllergy: 'Edit Allergy'
+    },
+    labels: {
+      allergyName: 'Name',
+      patientAllergy: 'Patient Allergies'
+    }
   }
 };

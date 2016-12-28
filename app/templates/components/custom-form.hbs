@@ -2,38 +2,38 @@
   <div class="row form-group">
     {{#each row as |field|}}
       {{#if (eq field.type 'radio')}}
-        <div class="form-group {{field.classNames}}">
+        <div class="form-group {{field.displayClassNames}}">
           <label>{{field.label}}</label>
           {{ext-radio
-            content=field.values
-            value=(get model field.property)
+            content=field.mappedValues
+            value=(get model (concat propertyPrefix field.property))
             includeOtherOption=field.includeOtherOption
             otherOptionLabel=field.otherOptionLabel
-            radioLabelPath="content"
-            radioValuePath="content"
           }}
         </div>
       {{/if}}
       {{#if (eq field.type 'checkbox')}}
-        <div class="form-group {{field.classNames}}">
+        <div class="form-group {{field.displayClassNames}}">
           <label>{{field.label}}</label>
-          {{#each field.checkboxes as |checkbox|}}
-            {{em-checkbox label=checkbox.label property=checkbox.property}}
+          {{#each field.values as |checkbox|}}
+            {{em-checkbox label=checkbox.label property=(concat propertyPrefix checkbox.property)}}
           {{/each}}
         </div>
       {{/if}}
       {{#if (eq field.type 'textarea')}}
-        {{em-text label=field.label property=field.property class=field.classNames}}
+        {{em-text label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
       {{/if}}
       {{#if (eq field.type 'text')}}
-        {{em-input label=field.label property=field.property class=field.classNames}}
+        {{em-input label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
       {{/if}}
       {{#if (eq field.type 'select')}}
         {{em-select label=field.label
-          property=field.property
-          content=field.mappedValues
-          class=field.classNames
+          property=(concat propertyPrefix field.property)
+          content=field.values
+          class=field.displayClassNames
           prompt=field.prompt
+          optionValuePath="label"
+          optionLabelPath="label"
         }}
       {{/if}}
     {{/each}}

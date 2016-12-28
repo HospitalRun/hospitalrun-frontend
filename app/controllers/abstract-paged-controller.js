@@ -77,9 +77,11 @@ export default Ember.Controller.extend(PaginationProps, ProgressDialog, UserSess
       this.setProperties({
         previousStartKey: null,
         previousStartKeys: [],
+        nextStartKey: null,
         sortDesc,
         sortKey,
-        startKey: null
+        startKey: null,
+        firstKey: null
       });
       this.showProgressModal();
     }

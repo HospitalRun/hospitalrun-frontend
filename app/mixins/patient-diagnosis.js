@@ -1,46 +1,33 @@
 import Ember from 'ember';
+
+const {
+  isEmpty
+} = Ember;
+
 export default Ember.Mixin.create({
-  _addDiagnosisToList(diagnosis, diagnosesList, visit) {
+  _addDiagnosisToList(diagnosis, diagnosesList) {
     if (!Ember.isEmpty(diagnosis)) {
       if (Ember.isEmpty(diagnosesList.findBy('description', diagnosis))) {
-        diagnosesList.addObject({
-          date: visit.get('startDate'),
-          description: diagnosis
-        });
+        diagnosesList.addObject(diagnosis);
       }
     }
   },
 
-  getPrimaryDiagnoses(visits) {
+  getDiagnoses(diagnosisContainer, hideInActiveDiagnoses, secondaryDiagnoses) {
     let diagnosesList = [];
-    if (!Ember.isEmpty(visits)) {
-      visits.forEach(function(visit) {
-        this._addDiagnosisToList(visit.get('primaryDiagnosis'), diagnosesList, visit);
-        this._addDiagnosisToList(visit.get('primaryBillingDiagnosis'), diagnosesList, visit);
-      }.bind(this));
-    }
-    let firstDiagnosis = diagnosesList.get('firstObject');
-    if (!Ember.isEmpty(firstDiagnosis)) {
-      firstDiagnosis.first = true;
-    }
-    return diagnosesList;
-  },
-
-  getSecondaryDiagnoses(visits) {
-    let diagnosesList = [];
-    if (!Ember.isEmpty(visits)) {
-      visits.forEach(function(visit) {
-        if (!Ember.isEmpty(visit.get('additionalDiagnoses'))) {
-          diagnosesList.addObjects(visit.get('additionalDiagnoses'));
-        }
+    if (!isEmpty(diagnosisContainer)) {
+      let diagnoses = diagnosisContainer.get('diagnoses');
+      if (hideInActiveDiagnoses) {
+        diagnoses = diagnoses.filterBy('active', true);
+      }
+      if (!secondaryDiagnoses) {
+        secondaryDiagnoses = false;
+      }
+      diagnoses = diagnoses.filterBy('secondaryDiagnosis', secondaryDiagnoses);
+      diagnoses.forEach((diagnosis) => {
+        this._addDiagnosisToList(diagnosis, diagnosesList);
       });
+      return diagnosesList;
     }
-
-    let firstDiagnosis = diagnosesList.get('firstObject');
-    if (!Ember.isEmpty(firstDiagnosis)) {
-      firstDiagnosis.first = true;
-    }
-    return diagnosesList;
   }
-
 });

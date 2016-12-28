@@ -41,14 +41,16 @@ test('cancelButtonText hasDirtyAttributes', function(assert) {
 });
 
 test('disabledAction', function(assert) {
-  assert.equal(this.subject().get('disabledAction'), 'showDisabledDialog');
+  assert.equal(this.subject({
+    model: Ember.Object.create()
+  }).get('disabledAction'), 'showDisabledDialog');
 });
 
 test('disabledAction invalid', function(assert) {
   let controller = this.subject({
-    model: {
+    model: Ember.Object.create({
       isValid: true
-    }
+    })
   });
 
   assert.strictEqual(controller.get('disabledAction'), undefined);

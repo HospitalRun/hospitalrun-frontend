@@ -2,13 +2,13 @@
   {{#if hasRecords}}
     <table class="table">
       <tr class="table-header">
-        <th>{{t 'labels.dateRequested'}}</th>
-        <th>{{t 'labels.requestedBy'}}</th>
-        <th>{{t 'labels.patient'}}</th>
-        <th>{{t 'labels.imagingType'}}</th>
-        <th>{{t 'labels.notes'}}</th>
+        <th class="col-xs-2">{{t 'labels.dateRequested'}}</th>
+        <th class="col-xs-2">{{t 'labels.requestedBy'}}</th>
+        <th class="col-xs-2">{{t 'labels.patient'}}</th>
+        <th class="col-xs-2">{{t 'labels.imagingType'}}</th>
+        <th class="col-xs-2">{{t 'labels.notes'}}</th>
         {{#if showActions}}
-          <th>{{t 'labels.actions'}}</th>
+          <th class="col-xs-2">{{t 'labels.actions'}}</th>
         {{/if}}
       </tr>
       {{#each model as |imaging|}}

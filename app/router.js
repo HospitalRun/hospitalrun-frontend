@@ -9,6 +9,9 @@ const Router = Ember.Router.extend({
 Router.map(function() {
   this.route('admin', function() {
     this.route('address');
+    this.route('custom-forms', function() {
+      this.route('edit', { path: '/edit/:custom-form_id' });
+    });
     this.route('loaddb');
     this.route('lookup', { path: '/' });
     this.route('users', {
@@ -18,6 +21,7 @@ Router.map(function() {
     });
     this.route('roles');
     this.route('query');
+    this.route('visit-forms');
     this.route('workflow');
   });
 
@@ -71,6 +75,7 @@ Router.map(function() {
     this.route('reports');
     this.route('admitted');
     this.route('search', { path: '/search/:search_text' });
+    this.route('outpatient');
   });
 
   this.route('pricing', function() {

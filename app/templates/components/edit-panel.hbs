@@ -11,13 +11,12 @@
       {{/if}}
     {{/unless}}
     {{#if editPanelProps.showUpdateButton}}
-      {{#if editPanelProps.disabledAction}}
-        <button class="btn btn-primary on-white disabled-btn" {{action 'disabledAction'}}>{{editPanelProps.updateButtonText}}</button>
-      {{else}}
-        <button class="btn btn-primary on-white" {{action 'updateButtonAction'}} disabled={{editPanelProps.isUpdateDisabled}}>
+      <button class="btn btn-primary on-white {{if editPanelProps.disabledAction 'disabled-btn'}}" {{action editPanelProps.actionForUpdateButton}}>
+        {{#if editPanelProps.updateButtonIcon}}
+          <span class="{{editPanelProps.updateButtonIcon}}"></span>
+        {{/if}}
           {{editPanelProps.updateButtonText}}
-        </button>
-      {{/if}}
+      </button>
     {{/if}}
     {{#each editPanelProps.additionalButtons as |button|}}
       <button class="{{button.class}}" {{action 'fireButtonAction' button.buttonAction}}>

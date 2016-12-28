@@ -1,0 +1,10 @@
+{{#each formsToDisplay as |customForm|}}
+  <h4>{{customForm.form.name}}</h4>
+  {{custom-form model=model form=customForm.form propertyPrefix=customForm.propertyPrefix}}
+{{/each}}
+{{#if showAddButton}}
+  <button class="btn btn-primary" {{action 'addForm' bubbles=false }}>
+    <span class="octicon octicon-plus"></span>
+    {{t 'components.customFormManager.buttons.addForm'}}
+  </button>
+{{/if}}
