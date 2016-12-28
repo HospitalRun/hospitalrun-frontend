@@ -15,7 +15,6 @@ export default AbstractModel.extend({
   provider: DS.attr('string'),
   startDate: DS.attr('date'),
   status: DS.attr('string', { defaultValue: 'Scheduled' }),
-  
   // Associations
   patient: DS.belongsTo('patient', {
     async: false
@@ -97,7 +96,6 @@ export default AbstractModel.extend({
     startDate: {
       presence: true
     },
-    
     endDate: {
       acceptance: {
         accept: true,
