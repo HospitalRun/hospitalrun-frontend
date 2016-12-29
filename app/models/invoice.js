@@ -5,30 +5,25 @@ import Ember from 'ember';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import PatientValidation from 'hospitalrun/utils/patient-validation';
 
+const { computed, get, set } = Ember;
+
 export default AbstractModel.extend(DateFormat, NumberFormat, {
+  // Attributes
   externalInvoiceNumber: DS.attr('string'),
-  patient: DS.belongsTo('patient', {
-    async: false
-  }),
   patientInfo: DS.attr('string'), // Needed for searching
-  visit: DS.belongsTo('visit', {
-    async: false
-  }),
   status: DS.attr('string'),
   remarks: DS.attr('string'),
   billDate: DS.attr('date'),
   paidTotal: DS.attr('number'),
-  paymentProfile: DS.belongsTo('price-profile', {
-    async: false
-  }),
+
+  // Associations
+  patient: DS.belongsTo('patient', { async: false }),
+  visit: DS.belongsTo('visit', { async: false }),
+  paymentProfile: DS.belongsTo('price-profile', { async: false }),
   // payments track the number of payment events attached to an invoice.
-  payments: DS.hasMany('payment', {
-    async: false
-  }),
+  payments: DS.hasMany('payment', { async: false }),
   // the individual line items of the invoice
-  lineItems: DS.hasMany('billing-line-item', {
-    async: false
-  }),
+  lineItems: DS.hasMany('billing-line-item', { async: false }),
 
   addPayment(payment) {
     let payments = this.get('payments');
@@ -36,9 +31,9 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     this.paymentAmountChanged();
   },
 
-  billDateAsTime: function() {
-    return this.dateToTime(this.get('billDate'));
-  }.property('billDate'),
+  billDateAsTime: computed('billDate', function() {
+    return this.dateToTime(get(this, 'billDate'));
+  }),
 
   discountTotals: Ember.computed.mapBy('lineItemsByCategory', 'discount'),
   discount: Ember.computed.sum('discountTotals'),
@@ -46,15 +41,15 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
   nationalInsuranceTotals: Ember.computed.mapBy('lineItemsByCategory', 'nationalInsurance'),
   nationalInsurance: Ember.computed.sum('nationalInsuranceTotals'),
 
-  paidFlag: function() {
-    return (this.get('status') === 'Paid');
-  }.property('status'),
+  paidFlag: computed(function() {
+    return get(this, 'status') === 'Paid';
+  }),
 
-  remainingBalance: function() {
-    let patientResponsibility = this.get('patientResponsibility');
-    let paidTotal = this.get('paidTotal');
+  remainingBalance: computed('patientResponsibility', 'paidTotal', function() {
+    let patientResponsibility = get(this, 'patientResponsibility');
+    let paidTotal = get(this, 'paidTotal');
     return this._numberFormat((patientResponsibility - paidTotal), true);
-  }.property('patientResponsibility', 'paidTotal'),
+  }),
 
   privateInsuranceTotals: Ember.computed.mapBy('lineItemsByCategory', 'privateInsurance'),
   privateInsurance: Ember.computed.sum('privateInsuranceTotals'),
@@ -62,18 +57,14 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
   lineTotals: Ember.computed.mapBy('lineItems', 'total'),
   total: Ember.computed.sum('lineTotals'),
 
-  displayInvoiceNumber: function() {
-    let externalInvoiceNumber = this.get('externalInvoiceNumber');
-    let id = this.get('id');
-    if (Ember.isEmpty(externalInvoiceNumber)) {
-      return id;
-    } else {
-      return externalInvoiceNumber;
-    }
-  }.property('externalInvoiceNumber', 'id'),
+  displayInvoiceNumber: computed('externalInvoiceNumber', 'id', function() {
+    let externalInvoiceNumber = get(this, 'externalInvoiceNumber');
+    let id = get(this, 'id');
+    return Ember.isEmpty(externalInvoiceNumber) ? id : externalInvoiceNumber;
+  }),
 
-  lineItemsByCategory: function() {
-    let lineItems = this.get('lineItems');
+  lineItemsByCategory: computed('lineItems.@each.amountOwed', function() {
+    let lineItems = get(this, 'lineItems');
     let byCategory = [];
     lineItems.forEach(function(lineItem) {
       let category = lineItem.get('category');
@@ -95,12 +86,13 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
       categoryList.total = this._calculateTotal(categoryList.items, 'total');
     }.bind(this));
     return byCategory;
-  }.property('lineItems.@each.amountOwed'),
+  }),
+
   patientIdChanged: function() {
-    if (!Ember.isEmpty(this.get('patient'))) {
-      let patientDisplayName = this.get('patient.displayName');
-      let patientDisplayId = this.get('patient.displayPatientId');
-      this.set('patientInfo', `${patientDisplayName} - ${patientDisplayId}`);
+    if (!Ember.isEmpty(get(this, 'patient'))) {
+      let patientDisplayName = get(this, 'patient.displayName');
+      let patientDisplayId = get(this, 'patient.displayPatientId');
+      set(this, 'patientInfo', `${patientDisplayName} - ${patientDisplayId}`);
     }
   }.observes('patient.displayName', 'patient.id', 'patient.displayPatientId'),
 
@@ -117,8 +109,8 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     let paidTotal = payments.reduce(function(previousValue, payment) {
       return previousValue += this._getValidNumber(payment.get('amount'));
     }.bind(this), 0);
-    this.set('paidTotal', this._numberFormat(paidTotal, true));
-    let remainingBalance = this.get('remainingBalance');
+    set(this, 'paidTotal', this._numberFormat(paidTotal, true));
+    let remainingBalance = get(this, 'remainingBalance');
     if (remainingBalance <= 0) {
       this.set('status', 'Paid');
     }
