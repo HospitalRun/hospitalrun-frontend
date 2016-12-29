@@ -6,6 +6,7 @@ import UserSession from 'hospitalrun/mixins/user-session';
 
 const {
   get,
+  set,
   inject,
   isEmpty
 } = Ember;
@@ -24,7 +25,7 @@ export default Model.extend(UserSession, EmberValidations, {
     if (!isEmpty(loadedCustomForms)) {
       loadedCustomForms = JSON.parse(JSON.stringify(loadedCustomForms));
     }
-    this.set('loadedCustomForms', loadedCustomForms);
+    set(this, 'loadedCustomForms', loadedCustomForms);
   },
 
   changedAttributes() {
@@ -65,8 +66,8 @@ export default Model.extend(UserSession, EmberValidations, {
     let attribute;
     let changedAttributes = this.changedAttributes();
     let modifiedDate = new Date();
-    let modifiedFields = this.get('modifiedFields');
-    let session = this.get('session');
+    let modifiedFields = get(this, 'modifiedFields');
+    let session = get(this, 'session');
 
     if (!session || !session.get('isAuthenticated')) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -78,12 +79,12 @@ export default Model.extend(UserSession, EmberValidations, {
       if (isEmpty(modifiedFields)) {
         modifiedFields = {};
       }
-      this.set('lastModified', modifiedDate);
+      set(this, 'lastModified', modifiedDate);
       for (attribute in changedAttributes) {
         modifiedFields[attribute] = modifiedDate;
       }
-      this.set('modifiedFields', modifiedFields);
-      this.set('modifiedBy', this.getUserName());
+      set(this, 'modifiedFields', modifiedFields);
+      set(this, 'modifiedBy', this.getUserName());
     }
     return this._super(options).catch(function(error) {
       if (!isEmpty(options) && options.retry) {
