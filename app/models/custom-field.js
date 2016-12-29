@@ -1,8 +1,8 @@
-
 import EmberValidations from 'ember-validations';
 import DS from 'ember-data';
 
 export default DS.Model.extend(EmberValidations, {
+  // Attributes
   checkboxes: DS.attr(),
   classNames: DS.attr('string'),
   colSpan: DS.attr('number'),
@@ -13,6 +13,7 @@ export default DS.Model.extend(EmberValidations, {
   property: DS.attr('string'),
   type: DS.attr('string'),
   values: DS.attr('string'),
+  // Validations
   validations: {
     colSpan: {
       numericality: {
