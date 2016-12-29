@@ -6,12 +6,13 @@ function defaultFields() {
 }
 
 export default AbstractModel.extend({
+  // Attributes
   alwaysInclude: DS.attr('boolean'),
   columns: DS.attr('number', { defaultValue: 1 }),
   fields: DS.attr('custom-fields', { defaultValue: defaultFields }),
   formType: DS.attr('string'),
   name: DS.attr('string'),
-
+  // Validations
   validations: {
     formType: {
       presence: true

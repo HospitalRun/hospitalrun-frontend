@@ -7,5 +7,5 @@ export default AbstractModel.extend({
   icd9CMCode: DS.attr('string'),
   icd10Code: DS.attr('string'),
   // Associations
-  patient: DS.belongsTo('patient'),
+  patient: DS.belongsTo('patient')
 });
