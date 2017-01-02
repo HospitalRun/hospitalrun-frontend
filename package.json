@@ -87,7 +87,7 @@
     "pouchdb-list": "^1.1.0",
     "request": "2.79.0",
     "stylelint": "7.6.0",
-    "stylelint-config-concentric": "1.0.6",
+    "stylelint-config-concentric": "1.0.7",
     "stylelint-declaration-use-variable": "1.6.0",
     "stylelint-scss": "1.3.4",
     "uuid": "^3.0.0"
