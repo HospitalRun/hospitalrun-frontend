@@ -9,7 +9,9 @@ moduleFor('mixin:patient-name', 'Unit | Mixin | patient-name', {
     'model:allergy',
     'model:payment',
     'model:price-profile',
-    'model:diagnosis'
+    'model:diagnosis',
+    'ember-validations@validator:local/format',
+    'ember-validations@validator:local/presence'
   ],
   subject(attrs) {
     let subject;

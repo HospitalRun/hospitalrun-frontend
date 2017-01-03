@@ -6,7 +6,9 @@ import { testValidPropertyValues, testInvalidPropertyValues } from '../../helper
 moduleForModel('inv-request', 'Unit | Model | inv-request', {
   needs: [
     'ember-validations@validator:local/acceptance',
+    'ember-validations@validator:local/format',
     'ember-validations@validator:local/numericality',
+    'ember-validations@validator:local/presence',
     'model:inventory',
     'model:patient',
     'model:visit',

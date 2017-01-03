@@ -4,6 +4,7 @@ import { testValidPropertyValues, testInvalidPropertyValues } from '../../helper
 
 moduleForModel('appointment', 'Unit | Model | appointment', {
   needs: [
+    'ember-validations@validator:local/acceptance',
     'ember-validations@validator:local/presence',
     'model:patient',
     'model:visit'
