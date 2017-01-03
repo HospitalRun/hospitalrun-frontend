@@ -18,7 +18,7 @@ test('Check In/Check Out Existing outpatient', function(assert) {
     visit('/patients/outpatient');
     andThen(function() {
       assert.equal(currentURL(), '/patients/outpatient', 'Outpatient url is correct');
-      assert.equal(find('.view-current-title').text(), 'Todays\' Outpatients', 'Title is correct');
+      assert.equal(find('.view-current-title').text(), 'Today\'s Outpatients', 'Title is correct');
       click('button:contains(Patient Check In)');
     });
     andThen(function() {
@@ -69,7 +69,7 @@ test('Check In/Check Out new outpatient', function(assert) {
     visit('/patients/outpatient');
     andThen(function() {
       assert.equal(currentURL(), '/patients/outpatient', 'Outpatient url is correct');
-      assert.equal(find('.view-current-title').text(), 'Todays\' Outpatients', 'Title is correct');
+      assert.equal(find('.view-current-title').text(), 'Today\'s Outpatients', 'Title is correct');
       click('button:contains(Patient Check In)');
     });
     andThen(function() {
