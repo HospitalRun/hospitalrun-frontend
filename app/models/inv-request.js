@@ -3,10 +3,13 @@ import AdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
 import DS from 'ember-data';
 import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
+
+const { computed, get } = Ember;
 /**
  * Model to represent a request for inventory items.
  */
 let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
+  // Attributes
   adjustPurchases: DS.attr('boolean'),
   completedBy: DS.attr('string'),
   costPerUnit: DS.attr('number'),
@@ -15,12 +18,8 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
   deliveryAisle: DS.attr('string'),
   deliveryLocation: DS.attr('string'),
   expenseAccount: DS.attr('string'),
-  inventoryItem: DS.belongsTo('inventory', { async: true }),
   locationsAffected: DS.attr(),
   markAsConsumed: DS.attr('boolean', { defaultValue: true }),
-  patient: DS.belongsTo('patient', {
-    async: false
-  }),
   purchasesAffected: DS.attr(),
   quantity: DS.attr('number'),
   quantityAtCompletion: DS.attr('number'),
@@ -28,44 +27,41 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
   requestedBy: DS.attr('string'),
   status: DS.attr('string'),
   transactionType: DS.attr('string'),
-  visit: DS.belongsTo('visit', {
-    async: false
+  // Associations
+  inventoryItem: DS.belongsTo('inventory', { async: true }),
+  patient: DS.belongsTo('patient', { async: false }),
+  visit: DS.belongsTo('visit', { async: false }),
+
+  deliveryLocationName: computed('deliveryAisle', 'deliveryLocation', function() {
+    let aisle = get(this, 'deliveryAisle');
+    let location = get(this, 'deliveryLocation');
+    return this.formatLocationName(location, aisle);
   }),
 
-  deliveryLocationName: function() {
-    let aisle = this.get('deliveryAisle');
-    let location = this.get('deliveryLocation');
-    return this.formatLocationName(location, aisle);
-  }.property('deliveryAisle', 'deliveryLocation'),
+  deliveryDetails: computed('deliveryAisle', 'deliveryLocation', 'patient', function() {
+    let locationName = get(this, 'deliveryLocationName');
+    let patient = get(this, 'patient');
+    return Ember.isEmpty(patient) ? locationName : get(patient, 'displayName');
+  }),
 
-  deliveryDetails: function() {
-    let locationName = this.get('deliveryLocationName');
-    let patient = this.get('patient');
-    if (Ember.isEmpty(patient)) {
-      return locationName;
-    } else {
-      return patient.get('displayName');
-    }
-  }.property('deliveryAisle', 'deliveryLocation', 'patient'),
+  haveReason: computed('reason', function() {
+    return !Ember.isEmpty(get(this, 'reason'));
+  }),
 
-  haveReason: function() {
-    return !Ember.isEmpty(this.get('reason'));
-  }.property('reason'),
-
-  isAdjustment: function() {
-    let adjustmentTypes = this.get('adjustmentTypes');
-    let transactionType = this.get('transactionType');
+  isAdjustment: computed('transactionType', function() {
+    let adjustmentTypes = get(this, 'adjustmentTypes');
+    let transactionType = get(this, 'transactionType');
     let adjustmentType = adjustmentTypes.findBy('type', transactionType);
     return !Ember.isEmpty(adjustmentType);
-  }.property('transactionType'),
+  }),
 
-  isFulfillment: function() {
-    return this.get('transactionType') === 'Fulfillment';
-  }.property('transactionType'),
+  isFulfillment: computed('transactionType', function() {
+    return get(this, 'transactionType') === 'Fulfillment';
+  }),
 
-  isTransfer: function() {
-    return this.get('transactionType') === 'Transfer';
-  }.property('transactionType'),
+  isTransfer: computed('transactionType', function() {
+    return get(this, 'transactionType') === 'Transfer';
+  }),
 
   validations: {
     inventoryItemTypeAhead: {
@@ -75,10 +71,10 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
           if (!object.get('hasDirtyAttributes')) {
             return false;
           }
-          let itemName = object.get('inventoryItem.name');
-          let itemTypeAhead = object.get('inventoryItemTypeAhead');
-          let requestedItems = object.get('requestedItems');
-          let status = object.get('status');
+          let itemName = get(object, 'inventoryItem.name');
+          let itemTypeAhead = get(object, 'inventoryItemTypeAhead');
+          let requestedItems = get(object, 'requestedItems');
+          let status = get(object, 'status');
           if (status === 'Requested') {
             // Requested items don't show the type ahead and therefore don't need validation.
             return false;
@@ -113,17 +109,17 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
       acceptance: {
         accept: true,
         if(object) {
-          let isNew = object.get('isNew');
-          let requestQuantity = parseInt(object.get('quantity'));
-          let transactionType = object.get('transactionType');
+          let isNew = get(object, 'isNew');
+          let requestQuantity = parseInt(get(object, 'quantity'));
+          let transactionType = get(object, 'transactionType');
           let quantityToCompare = null;
           if (transactionType === 'Return') {
             // no validation needed for returns
             return false;
           } else if (isNew && transactionType === 'Request') {
-            quantityToCompare = object.get('inventoryItem.quantity');
+            quantityToCompare = get(object, 'inventoryItem.quantity');
           } else {
-            quantityToCompare = object.get('inventoryLocation.quantity');
+            quantityToCompare = get(object, 'inventoryLocation.quantity');
           }
           if (requestQuantity > quantityToCompare) {
             // force validation to fail

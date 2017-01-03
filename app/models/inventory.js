@@ -5,6 +5,8 @@ import computed from 'ember-computed';
 import LocationName from 'hospitalrun/mixins/location-name';
 import { rankToMultiplier, getCondition } from 'hospitalrun/utils/item-condition';
 
+const { get, set } = Ember;
+
 let validateIfNewItem = {
   if: function validateNewItem(object) {
     let skipSavePurchase = object.get('skipSavePurchase');
@@ -14,12 +16,7 @@ let validateIfNewItem = {
 };
 
 export default AbstractModel.extend(LocationName, {
-  purchases: DS.hasMany('inv-purchase', {
-    async: false
-  }),
-  locations: DS.hasMany('inv-location', {
-    async: false
-  }),
+  // Attributes
   description: DS.attr('string'),
   friendlyId: DS.attr('string'),
   keywords: DS.attr(),
@@ -31,19 +28,22 @@ export default AbstractModel.extend(LocationName, {
   reorderPoint: DS.attr('number'),
   distributionUnit: DS.attr('string'),
   rank: DS.attr('string'),
+  // Associations
+  purchases: DS.hasMany('inv-purchase', { async: false }),
+  locations: DS.hasMany('inv-location', { async: false }),
 
   // TODO: this value should be server calcuated property on model!
   estimatedDaysOfStock: 14,
 
   availableLocations: computed('locations.@each.quantity', function() {
-    let locations = this.get('locations').filter((location) => {
+    let locations = get(this, 'locations').filter((location) => {
       return location.get('quantity') > 0;
     });
     return locations;
   }),
 
   displayLocations: computed('availableLocations', function() {
-    let locations = this.get('availableLocations');
+    let locations = get(this, 'availableLocations');
     let returnLocations = [];
     locations.forEach((currentLocation) => {
       let aisleLocationName = currentLocation.get('aisleLocation');
@@ -57,8 +57,8 @@ export default AbstractModel.extend(LocationName, {
   }),
 
   condition: computed('rank', 'estimatedDaysOfStock', function() {
-    let estimatedDaysOfStock = this.get('estimatedDaysOfStock');
-    let multiplier = rankToMultiplier(this.get('rank'));
+    let estimatedDaysOfStock = get(this, 'estimatedDaysOfStock');
+    let multiplier = rankToMultiplier(get(this, 'rank'));
 
     return getCondition(estimatedDaysOfStock, multiplier);
   }),
@@ -101,7 +101,7 @@ export default AbstractModel.extend(LocationName, {
   },
 
   updateQuantity() {
-    let purchases = this.get('purchases');
+    let purchases = get(this, 'purchases');
     let newQuantity = purchases.reduce((previousItem, currentItem) => {
       let currentQuantity = 0;
       if (!currentItem.get('expired')) {
@@ -109,6 +109,6 @@ export default AbstractModel.extend(LocationName, {
       }
       return previousItem + currentQuantity;
     }, 0);
-    this.set('quantity', newQuantity);
+    set(this, 'quantity', newQuantity);
   }
 });

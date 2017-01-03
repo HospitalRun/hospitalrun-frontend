@@ -4,6 +4,8 @@ import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 
+const { computed, get } = Ember;
+
 function defaultQuantityGroups() {
   return [];
 }
@@ -15,30 +17,31 @@ function defaultQuantityGroups() {
  * retrieve for keys starting with 'inventory' to fetch inventory items.
  */
 let InventoryPurchaseItem = AbstractModel.extend(LocationName, NumberFormat, {
-  purchaseCost: DS.attr('number'),
-  lotNumber: DS.attr('string'),
+  // Attributes
+  aisleLocation: DS.attr('string'),
+  currentQuantity: DS.attr('number'),
   dateReceived: DS.attr('date'),
-  costPerUnit: function() {
-    let purchaseCost = this.get('purchaseCost');
-    let quantity = parseInt(this.get('originalQuantity'));
+  distributionUnit: DS.attr('string'),
+  expirationDate: DS.attr('date'),
+  expired: DS.attr('boolean'),
+  giftInKind: DS.attr('boolean'),
+  invoiceNo: DS.attr('string'),
+  location: DS.attr('string'),
+  lotNumber: DS.attr('string'),
+  originalQuantity: DS.attr('number'),
+  purchaseCost: DS.attr('number'),
+  quantityGroups: DS.attr({ defaultValue: defaultQuantityGroups }),
+  inventoryItem: DS.attr('string'), // Currently just storing id instead of DS.belongsTo('inventory', { async: true }),
+  vendor: DS.attr('string'),
+  vendorItemNo: DS.attr('string'),
+  costPerUnit: computed('purchaseCost', 'originalQuantity', function() {
+    let purchaseCost = get(this, 'purchaseCost');
+    let quantity = parseInt(get(this, 'originalQuantity'));
     if (Ember.isEmpty(purchaseCost) || Ember.isEmpty(quantity) || purchaseCost === 0 || quantity === 0) {
       return 0;
     }
     return this._numberFormat(purchaseCost / quantity, true);
-  }.property('purchaseCost', 'originalQuantity'),
-  originalQuantity: DS.attr('number'),
-  currentQuantity: DS.attr('number'),
-  expirationDate: DS.attr('date'),
-  expired: DS.attr('boolean'),
-  location: DS.attr('string'),
-  aisleLocation: DS.attr('string'),
-  giftInKind: DS.attr('boolean'),
-  inventoryItem: DS.attr('string'), // Currently just storing id instead of DS.belongsTo('inventory', { async: true }),
-  vendor: DS.attr('string'),
-  vendorItemNo: DS.attr('string'),
-  distributionUnit: DS.attr('string'),
-  invoiceNo: DS.attr('string'),
-  quantityGroups: DS.attr({ defaultValue: defaultQuantityGroups }),
+  }),
   validations: {
     purchaseCost: {
       numericality: true
