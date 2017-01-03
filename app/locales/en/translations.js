@@ -911,7 +911,7 @@ export default {
       deletePhoto: 'Delete Photo',
       deleteContact: 'Delete Contact',
       savedPatient: 'Patient Saved',
-      todaysOutpatients: 'Todays\' Outpatients',
+      todaysOutpatients: 'Today\'s Outpatients',
       admissionsDetail: 'Admissions Detail',
       admissionsSummary: 'Admissions Summary',
       diagnosticTesting: 'Diagnostic Testing',
