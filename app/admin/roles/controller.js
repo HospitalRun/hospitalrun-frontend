@@ -163,7 +163,6 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
           Object.keys(defaultCapabilities).forEach((capability) => {
             let capabilityRoles = defaultCapabilities[capability];
             if (capabilityRoles.includes(role)) {
-              console.log(`Role has capability: ${capability}`);
               this.set(capability.camelize(), true);
             } else {
               this.set(capability.camelize(), false);
