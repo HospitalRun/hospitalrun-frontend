@@ -13,9 +13,11 @@ export default AbstractModel.extend({
   endDate: DS.attr('date'),
   notes: DS.attr('string'),
   status: DS.attr('string', { defaultValue: 'Scheduled' }),
+
   // Associations
   patient: DS.belongsTo('patient', { async: false }),
   visits: DS.hasMany('visit'),
+
   // Formats
   longDateFormat: 'l h:mm A',
   shortDateFormat: 'l',
