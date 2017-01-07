@@ -3,20 +3,25 @@ import DS from 'ember-data';
 import Ember from 'ember';
 import PatientValidation from 'hospitalrun/utils/patient-validation';
 
+const { get, computed } = Ember;
+
 export default AbstractModel.extend({
+  // Attributes
   allDay: DS.attr(),
+  appointmentType: DS.attr('string'),
+  endDate: DS.attr('date'),
+  location: DS.attr('string'),
+  notes: DS.attr('string'),
+  provider: DS.attr('string'),
+  startDate: DS.attr('date'),
+  status: DS.attr('string', { defaultValue: 'Scheduled' }),
+  // Associations
   patient: DS.belongsTo('patient', {
     async: false
   }),
   visits: DS.hasMany('visit'),
-  provider: DS.attr('string'),
-  location: DS.attr('string'),
-  appointmentType: DS.attr('string'),
-  startDate: DS.attr('date'),
-  endDate: DS.attr('date'),
-  notes: DS.attr('string'),
-  status: DS.attr('string', { defaultValue: 'Scheduled' }),
 
+  // Formats
   longDateFormat: 'l h:mm A',
   shortDateFormat: 'l',
   timeFormat: 'h:mm A',
@@ -27,48 +32,48 @@ export default AbstractModel.extend({
     return `${formattedStart} - ${formattedEnd}`;
   },
 
-  appointmentDate: function() {
-    let startDate = this.get('startDate');
+  appointmentDate: computed('startDate', function() {
+    let startDate = get(this, 'startDate');
     return startDate;
-  }.property('startDate'),
+  }),
 
-  displayStatus: function() {
-    let status = this.get('status');
+  displayStatus: computed('status', function() {
+    let status = get(this, 'status');
     if (Ember.isEmpty(status)) {
       status = 'Scheduled';
     }
     return status;
-  }.property('status'),
+  }),
 
-  formattedAppointmentDate: function() {
-    let allDay = this.get('allDay');
-    let endDate = moment(this.get('endDate'));
+  formattedAppointmentDate: computed('startDate', 'endDate', function() {
+    let allDay = get(this, 'allDay');
+    let endDate = moment(get(this, 'endDate'));
     let dateFormat = '';
     let formattedDate = '';
-    let startDate = moment(this.get('startDate'));
+    let startDate = moment(get(this, 'startDate'));
 
     if (startDate.isSame(endDate, 'day')) {
-      formattedDate = startDate.format(this.get('shortDateFormat'));
+      formattedDate = startDate.format(get(this, 'shortDateFormat'));
       if (!allDay) {
         formattedDate += ' ';
-        formattedDate += this._getDateSpan(startDate, endDate, this.get('timeFormat'));
+        formattedDate += this._getDateSpan(startDate, endDate, get(this, 'timeFormat'));
       }
     } else {
       if (allDay) {
-        dateFormat = this.get('shortDateFormat');
+        dateFormat = get(this, 'shortDateFormat');
       } else {
-        dateFormat = this.get('longDateFormat');
+        dateFormat = get(this, 'longDateFormat');
       }
       formattedDate = this._getDateSpan(startDate, endDate, dateFormat);
     }
     return formattedDate;
-  }.property('startDate', 'endDate'),
+  }),
 
   validations: {
     appointmentDate: {
       presence: {
         if(object) {
-          let appointmentType = object.get('appointmentType');
+          let appointmentType = get(object, 'appointmentType');
           return appointmentType !== 'Admission';
         }
       }
@@ -79,12 +84,15 @@ export default AbstractModel.extend({
     patient: {
       presence: true
     },
+
     appointmentType: {
       presence: true
     },
+
     location: {
       presence: true
     },
+
     startDate: {
       presence: true
     },
@@ -92,12 +100,12 @@ export default AbstractModel.extend({
       acceptance: {
         accept: true,
         if(object) {
-          if (!object.get('hasDirtyAttributes')) {
+          if (!get(object, 'hasDirtyAttributes')) {
             return false;
           }
-          let allDay = object.get('allDay');
-          let startDate = object.get('startDate');
-          let endDate = object.get('endDate');
+          let allDay    = get(object, 'allDay');
+          let startDate = get(object, 'startDate');
+          let endDate   = get(object, 'endDate');
           if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
             // force validation to fail
             return true;
