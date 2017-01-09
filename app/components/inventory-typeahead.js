@@ -5,6 +5,7 @@ export default TypeAhead.extend({
   displayKey: 'name',
   showQuantity: true,
   i18n: Ember.inject.service(),
+  store: Ember.inject.service(),
 
   _mapInventoryItems(item) {
     let returnObj = {};
@@ -43,5 +44,19 @@ export default TypeAhead.extend({
       bloodhound.clear();
       bloodhound.add(content.map(this._mapInventoryItems.bind(this)));
     }
-  }.observes('content.[]')
+  }.observes('content.[]'),
+
+  itemSelected(selectedInventoryItem) {
+    this._super();
+    let store = this.get('store');
+    if (!Ember.isEmpty(selectedInventoryItem)) {
+      store.find('inventory', selectedInventoryItem.id).then((inventoryItem) => {
+        let model = this.get('model');
+        model.set('inventoryItem', inventoryItem);
+        Ember.run.once(this, function() {
+          model.validate().catch(Ember.K);
+        });
+      });
+    }
+  }
 });
