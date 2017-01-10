@@ -68,11 +68,14 @@ testWithVisit('Edit procedure', function(assert) {
   andThen(function() {
     assert.equal(find('.modal-title').text(), 'Add Medication Used', 'Add Medication Used modal appears');
     typeAheadFillIn('.medication-used', 'Cefazolin 500mg vial (Hazolin) - m00001 (999998 available)');
+    waitToDisappear('.disabled-btn:contains(Add)');
+  });
+  andThen(function() {
     click('.modal-footer button:contains(Add)');
     waitToDisappear('.modal-dialog');
   });
   andThen(function() {
-    assert.equal(find('.medication-charges tr').length, 3, 'Two medication charges exists');
+    assert.equal(find('.medication-charges td:contains(Cefazolin 500mg vial)').length, 2, 'Two medication charges exists');
     click('.medication-charges button:contains(Edit)');
     waitToAppear('.modal-dialog');
   });
@@ -101,8 +104,16 @@ testWithVisit('Edit procedure', function(assert) {
   andThen(function() {
     assert.equal(find('.modal-title').text(), 'Delete Medication Used', 'Delete Medication Used dialog displays');
     click('.modal-footer button:contains(Ok)');
+    waitToAppear('button:contains(Return)');
   });
   andThen(function() {
+    click('button:contains(Return)');
+  });
+  andThen(function() {
+    click('#visit-procedures button:contains(Edit)');
+  });
+  andThen(function() {
+    assert.equal(currentURL(), '/visits/procedures/edit/398B4F58-152F-1476-8ED1-329C4D85E25F', 'Returned back to procedure');
     assert.equal(find('td.charge-item-name').length, 0, 'Charge item is deleted');
     assert.equal(find('.medication-charges tr').length, 2, 'Medication used is deleted');
   });
