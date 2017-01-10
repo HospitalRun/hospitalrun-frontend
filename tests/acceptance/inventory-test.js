@@ -192,10 +192,11 @@ test('Fulfilling an inventory request', function(assert) {
       findWithAssert('button:contains(Fulfill)');
       findWithAssert('button:contains(Cancel)');
     });
-
-    click('button:contains(Fulfill)');
-    waitToAppear('.modal-dialog');
-
+    waitToAppear('.inventory-location option:contains(No Location)');
+    andThen(() => {
+      click('button:contains(Fulfill)');
+      waitToAppear('.modal-dialog');
+    });
     andThen(() => {
       let modalTitle = find('.modal-title');
       assert.equal(modalTitle.text(), 'Request Fulfilled', 'Inventory request has been fulfilled');
@@ -221,9 +222,11 @@ test('Receiving inventory', function(assert) {
     typeAheadFillIn('.test-inv-item', 'Biogesic - m00001');
     fillIn('.test-inv-quantity input', 500);
     fillIn('.test-inv-cost input', '2000');
-    click('button:contains(Save)');
-    waitToAppear('.modal-title');
-
+    waitToAppear('.inventory-distribution-unit');
+    andThen(() => {
+      click('button:contains(Save)');
+      waitToAppear('.modal-title');
+    });
     andThen(() => {
       let modalTitle = find('.modal-title');
       assert.equal(modalTitle.text(), 'Inventory Purchases Saved', 'Inventory has been received');
