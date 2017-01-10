@@ -4,11 +4,8 @@ import Ember from 'ember';
 import PatientValidation from 'hospitalrun/utils/patient-validation';
 
 export default AbstractModel.extend({
+  // Attributes
   allDay: DS.attr(),
-  patient: DS.belongsTo('patient', {
-    async: false
-  }),
-  visits: DS.hasMany('visit'),
   provider: DS.attr('string'),
   location: DS.attr('string'),
   appointmentType: DS.attr('string'),
@@ -17,6 +14,11 @@ export default AbstractModel.extend({
   notes: DS.attr('string'),
   status: DS.attr('string', { defaultValue: 'Scheduled' }),
 
+  // Associations
+  patient: DS.belongsTo('patient', { async: false }),
+  visits: DS.hasMany('visit'),
+
+  // Formats
   longDateFormat: 'l h:mm A',
   shortDateFormat: 'l',
   timeFormat: 'h:mm A',
