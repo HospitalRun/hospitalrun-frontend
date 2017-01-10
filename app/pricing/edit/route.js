@@ -6,13 +6,13 @@ export default AbstractEditRoute.extend({
   newTitle: 'New Pricing Item',
 
   actions: {
-    deleteOverride: function(overrideToDelete) {
+    deleteOverride(overrideToDelete) {
       this.controller.send('deleteOverride', overrideToDelete);
     }
   },
 
-  getNewData: function(params) {
-    var newCategory = params.pricing_id.substr(3);
+  getNewData(params) {
+    let newCategory = params.pricing_id.substr(3);
     if (Ember.isEmpty(newCategory)) {
       newCategory = 'Imaging';
     }
@@ -21,8 +21,8 @@ export default AbstractEditRoute.extend({
     });
   },
 
-  model: function(params) {
-    var idParam = this.get('idParam');
+  model(params) {
+    let idParam = this.get('idParam');
     if (!Ember.isEmpty(idParam) && params[idParam].indexOf('new') === 0) {
       return this._createNewRecord(params);
     } else {

@@ -1,16 +1,13 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import AddNewPatient from 'hospitalrun/mixins/add-new-patient';
 import Ember from 'ember';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
-import InventorySelection from 'hospitalrun/mixins/inventory-selection';
-import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from 'hospitalrun/mixins/user-session';
 
-export default AbstractEditController.extend(InventorySelection, FulfillRequest, InventoryLocations, PatientId, PatientSubmodule, UserSession, {
+export default AbstractEditController.extend(AddNewPatient, FulfillRequest, InventoryLocations, PatientSubmodule, UserSession, {
   medicationController: Ember.inject.controller('medication'),
-  newPatientId: null,
-
   expenseAccountList: Ember.computed.alias('medicationController.expenseAccountList'),
 
   canFulfill: function() {
@@ -18,15 +15,15 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
   }.property(),
 
   isFulfilled: function() {
-    var status = this.get('model.status');
+    let status = this.get('model.status');
     return (status === 'Fulfilled');
   }.property('model.status'),
 
   isFulfilling: function() {
-    var canFulfill = this.get('canFulfill'),
-      isRequested = this.get('model.isRequested'),
-      fulfillRequest = this.get('model.shouldFulfillRequest'),
-      isFulfilling = canFulfill && (isRequested || fulfillRequest);
+    let canFulfill = this.get('canFulfill');
+    let isRequested = this.get('model.isRequested');
+    let fulfillRequest = this.get('model.shouldFulfillRequest');
+    let isFulfilling = canFulfill && (isRequested || fulfillRequest);
     this.get('model').set('isFulfilling', isFulfilling);
     return isFulfilling;
   }.property('canFulfill', 'model.isRequested', 'model.shouldFulfillRequest'),
@@ -36,17 +33,16 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
   }.property('isFulfilled', 'model.isRequested'),
 
   prescriptionClass: function() {
-    var quantity = this.get('model.quantity');
-    this.get('model').validate().catch(Ember.K);
+    let quantity = this.get('model.quantity');
     if (Ember.isEmpty(quantity)) {
       return 'required';
     }
   }.property('model.quantity'),
 
   quantityClass: function() {
-    var prescription = this.get('model.prescription'),
-      returnClass = 'col-xs-3',
-      isFulfilling = this.get('isFulfilling');
+    let prescription = this.get('model.prescription');
+    let returnClass = 'col-xs-3';
+    let isFulfilling = this.get('isFulfilling');
     if (isFulfilling || Ember.isEmpty(prescription)) {
       returnClass += ' required';
     }
@@ -55,9 +51,9 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
 
   quantityLabel: function() {
     let i18n = this.get('i18n');
-    var returnLabel = i18n.t('medication.labels.quantityRequested'),
-      isFulfilled = this.get('isFulfilled'),
-      isFulfilling = this.get('isFulfilling');
+    let returnLabel = i18n.t('medication.labels.quantityRequested');
+    let isFulfilled = this.get('isFulfilled');
+    let isFulfilling = this.get('isFulfilling');
     if (isFulfilling) {
       returnLabel = i18n.t('medication.labels.quantityDispensed');
     } else if (isFulfilled) {
@@ -69,11 +65,10 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
   medicationList: [],
   updateCapability: 'add_medication',
 
-  afterUpdate: function() {
+  afterUpdate() {
     let i18n = this.get('i18n');
-    var alertTitle,
-      alertMessage,
-      isFulfilled = this.get('isFulfilled');
+    let alertTitle, alertMessage;
+    let isFulfilled = this.get('isFulfilled');
     if (isFulfilled) {
       alertTitle = i18n.t('medication.alerts.fulfilledTitle');
       alertMessage = 'The medication request has been fulfilled.';
@@ -85,58 +80,17 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     this.saveVisitIfNeeded(alertTitle, alertMessage);
   },
 
-  _addNewPatient: function() {
-    let i18n = this.get('i18n');
-    this.displayAlert(i18n.t('alerts.pleaseWait'), i18n.t('messages.newPatientHasToBeCreated'));
-    this._getNewPatientId().then(function(friendlyId) {
-      var patientTypeAhead = this.get('model.patientTypeAhead'),
-        nameParts = patientTypeAhead.split(' '),
-        patientDetails = {
-          friendlyId: friendlyId,
-          patientFullName: patientTypeAhead,
-          requestingController: this
-        },
-        patient;
-      if (nameParts.length >= 3) {
-        patientDetails.firstName = nameParts[0];
-        patientDetails.middleName = nameParts[1];
-        patientDetails.lastName = nameParts.splice(2, nameParts.length).join(' ');
-      } else if (nameParts.length === 2) {
-        patientDetails.firstName = nameParts[0];
-        patientDetails.lastName = nameParts[1];
-      } else {
-        patientDetails.firstName = patientTypeAhead;
-      }
-      patient = this.store.createRecord('patient', patientDetails);
-      this.send('openModal', 'patients.quick-add', patient);
-    }.bind(this));
-  },
-
-  _getNewPatientId: function() {
-    var newPatientId = this.get('newPatientId');
-    if (Ember.isEmpty(newPatientId)) {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
-        this.generateFriendlyId().then(function(friendlyId) {
-          this.set('newPatientId', friendlyId);
-          resolve(friendlyId);
-        }.bind(this), reject);
-      }.bind(this));
-    } else {
-      return Ember.RSVP.resolve(newPatientId);
-    }
-  },
-
-  beforeUpdate: function() {
-    var isFulfilling = this.get('isFulfilling'),
-      isNew = this.get('model.isNew');
+  beforeUpdate() {
+    let isFulfilling = this.get('isFulfilling');
+    let isNew = this.get('model.isNew');
     if (isNew || isFulfilling) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
-        var newMedication = this.get('model');
+        let newMedication = this.get('model');
         newMedication.validate().then(function() {
           if (newMedication.get('isValid')) {
             if (isNew) {
               if (Ember.isEmpty(newMedication.get('patient'))) {
-                this._addNewPatient();
+                this.addNewPatient();
                 reject({
                   ignore: true,
                   message: 'creating new patient first'
@@ -168,19 +122,19 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
     }
   },
 
-  finishBeforeUpdate: function(isFulfilling, resolve) {
+  finishBeforeUpdate(isFulfilling, resolve) {
     if (isFulfilling) {
-      var inventoryLocations = this.get('model.inventoryLocations'),
-        inventoryRequest = this.get('store').createRecord('inv-request', {
-          expenseAccount: this.get('model.expenseAccount'),
-          dateCompleted: new Date(),
-          inventoryItem: this.get('model.inventoryItem'),
-          inventoryLocations: inventoryLocations,
-          quantity: this.get('model.quantity'),
-          transactionType: 'Fulfillment',
-          patient: this.get('model.patient'),
-          markAsConsumed: true
-        });
+      let inventoryLocations = this.get('model.inventoryLocations');
+      let inventoryRequest = this.get('store').createRecord('inv-request', {
+        expenseAccount: this.get('model.expenseAccount'),
+        dateCompleted: new Date(),
+        inventoryItem: this.get('model.inventoryItem'),
+        inventoryLocations,
+        quantity: this.get('model.quantity'),
+        transactionType: 'Fulfillment',
+        patient: this.get('model.patient'),
+        markAsConsumed: true
+      });
       this.performFulfillRequest(inventoryRequest, false, false, true).then(function() {
         this.set('model.status', 'Fulfilled');
         resolve();
@@ -191,7 +145,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
   },
 
   showUpdateButton: function() {
-    var isFulfilled = this.get('isFulfilled');
+    let isFulfilled = this.get('isFulfilled');
     if (isFulfilled) {
       return false;
     } else {
@@ -207,15 +161,7 @@ export default AbstractEditController.extend(InventorySelection, FulfillRequest,
       return i18n.t('labels.fulfill');
     }
     return this._super();
-  }.property('model.isNew', 'isFulfilling', 'model.hideFulfillRequest'),
 
-  actions: {
-    addedNewPatient: function(record) {
-      this.send('closeModal');
-      this.set('model.patient', record);
-      this.set('newPatientId');
-      this.send('update');
-    }
-  }
+  }.property('model.isNew', 'isFulfilling', 'model.hideFulfillRequest')
 
 });

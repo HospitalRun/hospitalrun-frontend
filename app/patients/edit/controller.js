@@ -1,11 +1,16 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
+import DiagnosisActions from 'hospitalrun/mixins/diagnosis-actions';
 import Ember from 'ember';
+import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
-export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, PatientNotes, {
+import VisitStatus from 'hospitalrun/utils/visit-statuses';
+
+export default AbstractEditController.extend(BloodTypes, DiagnosisActions, ReturnTo, UserSession, PatientId, PatientNotes, {
+
   canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
   }.property(),
@@ -27,7 +32,7 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
   }.property(),
 
   canAddPhoto: function() {
-    var isFileSystemEnabled = this.get('isFileSystemEnabled');
+    let isFileSystemEnabled = this.get('isFileSystemEnabled');
     return (this.currentUserCan('add_photo') && isFileSystemEnabled);
   }.property(),
 
@@ -76,6 +81,7 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     'Private'
   ],
 
+  config: Ember.inject.service(),
   filesystem: Ember.inject.service(),
   database: Ember.inject.service(),
   patientController: Ember.inject.controller('patients'),
@@ -92,20 +98,19 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
 
   clinicList: Ember.computed.alias('patientController.clinicList'),
   countryList: Ember.computed.alias('patientController.countryList'),
-  customSocialForm: Ember.computed.alias('patientController.customSocialForm.value'),
+  diagnosisList: Ember.computed.alias('patientController.diagnosisList'),
   isFileSystemEnabled: Ember.computed.alias('filesystem.isFileSystemEnabled'),
-
   pricingProfiles: Ember.computed.map('patientController.pricingProfiles', SelectValues.selectObjectMap),
   sexList: Ember.computed.alias('patientController.sexList'),
   statusList: Ember.computed.alias('patientController.statusList'),
 
   haveAdditionalContacts: function() {
-    var additionalContacts = this.get('model.additionalContacts');
+    let additionalContacts = this.get('model.additionalContacts');
     return (!Ember.isEmpty(additionalContacts));
   }.property('model.additionalContacts'),
 
   haveAddressOptions: function() {
-    var addressOptions = this.get('addressOptions');
+    let addressOptions = this.get('addressOptions');
     return (!Ember.isEmpty(addressOptions));
   }.property('addressOptions'),
 
@@ -144,14 +149,14 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
   }.property('model.visits.[].procedures'),
 
   showExpenseTotal: function() {
-    var expenses = this.get('model.expenses');
+    let expenses = this.get('model.expenses');
     return (!Ember.isEmpty(expenses));
   }.property('model.expenses.[]'),
 
   totalExpenses: function() {
-    var expenses = this.get('model.expenses');
+    let expenses = this.get('model.expenses');
     if (!Ember.isEmpty(expenses)) {
-      var total = expenses.reduce(function(previousValue, expense) {
+      let total = expenses.reduce(function(previousValue, expense) {
         if (!Ember.isEmpty(expense.cost)) {
           return previousValue + parseInt(expense.cost);
         }
@@ -163,15 +168,23 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
   updateCapability: 'add_patient',
 
   actions: {
-    addContact: function(newContact) {
-      var additionalContacts = this.getWithDefault('model.additionalContacts', []),
-          model = this.get('model');
+    addContact(newContact) {
+      let additionalContacts = this.getWithDefault('model.additionalContacts', []);
+      let model = this.get('model');
       additionalContacts.addObject(newContact);
       model.set('additionalContacts', additionalContacts);
       this.send('update', true);
       this.send('closeModal');
     },
-    returnToPatient: function() {
+
+    addDiagnosis(newDiagnosis) {
+      let diagnoses = this.get('model.diagnoses');
+      diagnoses.addObject(newDiagnosis);
+      this.send('update', true);
+      this.send('closeModal');
+    },
+
+    returnToPatient() {
       this.transitionToRoute('patients.index');
     },
     /**
@@ -180,22 +193,22 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
      * @param {String} caption the caption to store with the photo.
      * @param {boolean} coverImage flag indicating if image should be marked as the cover image (currently unused).
      */
-    addPhoto: function(photoFile, caption, coverImage) {
-      var dirToSaveTo = this.get('model.id') + '/photos/',
-        fileSystem = this.get('filesystem'),
-        photos = this.get('model.photos'),
-        newPatientPhoto = this.get('store').createRecord('photo', {
-          patient: this.get('model'),
-          localFile: true,
-          caption: caption,
-          coverImage: coverImage
-        });
+    addPhoto(photoFile, caption, coverImage) {
+      let dirToSaveTo = `${this.get('model.id')}/photos/`;
+      let fileSystem = this.get('filesystem');
+      let photos = this.get('model.photos');
+      let newPatientPhoto = this.get('store').createRecord('photo', {
+        patient: this.get('model'),
+        localFile: true,
+        caption,
+        coverImage
+      });
       newPatientPhoto.save().then(function(savedPhotoRecord) {
-        var pouchDbId = this.get('database').getPouchId(savedPhotoRecord.get('id'), 'photo');
+        let pouchDbId = this.get('database').getPouchId(savedPhotoRecord.get('id'), 'photo');
         fileSystem.addFile(photoFile, dirToSaveTo, pouchDbId).then(function(fileEntry) {
           fileSystem.fileToDataURL(photoFile).then(function(photoDataUrl) {
             savedPhotoRecord = this.get('store').find('photo', savedPhotoRecord.get('id')).then(function(savedPhotoRecord) {
-              var dataUrlParts = photoDataUrl.split(',');
+              let dataUrlParts = photoDataUrl.split(',');
               savedPhotoRecord.setProperties({
                 fileName: fileEntry.fullPath,
                 url: fileEntry.toURL(),
@@ -216,140 +229,136 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
       }.bind(this));
     },
 
-    appointmentDeleted: function(deletedAppointment) {
-      var appointments = this.get('model.appointments');
+    appointmentDeleted(deletedAppointment) {
+      let appointments = this.get('model.appointments');
       appointments.removeObject(deletedAppointment);
       this.send('closeModal');
     },
 
-    deleteContact: function(model) {
-      var contact = model.get('contactToDelete');
-      var additionalContacts = this.get('model.additionalContacts');
+    deleteContact(model) {
+      let contact = model.get('contactToDelete');
+      let additionalContacts = this.get('model.additionalContacts');
       additionalContacts.removeObject(contact);
       this.send('update', true);
     },
 
-    deleteExpense: function(model) {
-      var expense = model.get('expenseToDelete'),
-        expenses = this.get('model.expenses');
+    deleteExpense(model) {
+      let expense = model.get('expenseToDelete');
+      let expenses = this.get('model.expenses');
       expenses.removeObject(expense);
       this.send('update', true);
     },
 
-    deleteFamily: function(model) {
-      var family = model.get('familyToDelete'),
-        familyInfo = this.get('model.familyInfo');
+    deleteFamily(model) {
+      let family = model.get('familyToDelete');
+      let familyInfo = this.get('model.familyInfo');
       familyInfo.removeObject(family);
       this.send('update', true);
     },
 
-    deletePhoto: function(model) {
-      var photo = model.get('photoToDelete'),
-        photoId = photo.get('id'),
-        photos = this.get('model.photos'),
-        filePath = photo.get('fileName');
+    deletePhoto(model) {
+      let photo = model.get('photoToDelete');
+      let photoId = photo.get('id');
+      let photos = this.get('model.photos');
+      let filePath = photo.get('fileName');
       photos.removeObject(photo);
       photo.destroyRecord().then(function() {
-        var fileSystem = this.get('filesystem'),
-          isFileSystemEnabled = this.get('isFileSystemEnabled');
+        let fileSystem = this.get('filesystem');
+        let isFileSystemEnabled = this.get('isFileSystemEnabled');
         if (isFileSystemEnabled) {
-          var pouchDbId = this.get('database').getPouchId(photoId, 'photo');
+          let pouchDbId = this.get('database').getPouchId(photoId, 'photo');
           fileSystem.deleteFile(filePath, pouchDbId);
         }
       }.bind(this));
     },
 
-    editAppointment: function(appointment) {
+    editAppointment(appointment) {
       if (this.get('canAddAppointment')) {
-        appointment.set('returnToPatient', true);
+        appointment.set('returnToPatient', this.get('model.id'));
         appointment.set('returnTo', null);
         this.transitionToRoute('appointments.edit', appointment);
       }
     },
 
-    editImaging: function(imaging) {
+    editImaging(imaging) {
       if (this.get('canAddImaging')) {
         if (imaging.get('canEdit')) {
-          imaging.setProperties({
-            'returnToPatient': true
-          });
+          imaging.set('returnToPatient', this.get('model.id'));
           this.transitionToRoute('imaging.edit', imaging);
         }
       }
     },
 
-    editLab: function(lab) {
+    editLab(lab) {
       if (this.get('canAddLab')) {
         if (lab.get('canEdit')) {
-          lab.setProperties({
-            'returnToPatient': true
-          });
+          lab.setProperties('returnToPatient', this.get('model.id'));
           this.transitionToRoute('labs.edit', lab);
         }
       }
     },
 
-    editMedication: function(medication) {
+    editMedication(medication) {
       if (this.get('canAddMedication')) {
         if (medication.get('canEdit')) {
-          medication.set('returnToPatient', true);
+          medication.set('returnToPatient', this.get('model.id'));
           this.transitionToRoute('medication.edit', medication);
         }
       }
     },
 
-    editPhoto: function(photo) {
+    editPhoto(photo) {
       this.send('openModal', 'patients.photo', photo);
     },
 
-    editProcedure: function(procedure) {
+    editProcedure(procedure) {
       if (this.get('canAddVisit')) {
         procedure.set('patient', this.get('model'));
-        procedure.set('returnToVisit', false);
-        procedure.set('returnToPatient', true);
+        procedure.set('returnToVisit');
+        procedure.set('returnToPatient', this.get('model.id'));
         this.transitionToRoute('procedures.edit', procedure);
       }
     },
 
-    editVisit: function(visit) {
+    editVisit(visit) {
       if (this.get('canAddVisit')) {
+        visit.set('returnToPatient', this.get('model.id'));
         this.transitionToRoute('visits.edit', visit);
       }
     },
 
-    newAppointment: function() {
+    newAppointment() {
       this._addChildObject('appointments.edit');
     },
 
-    newImaging: function() {
+    newImaging() {
       this._addChildObject('imaging.edit');
     },
 
-    newLab: function() {
+    newLab() {
       this._addChildObject('labs.edit');
     },
 
-    newMedication: function() {
+    newMedication() {
       this._addChildObject('medication.edit');
     },
 
-    newVisit: function() {
-      var patient = this.get('model'),
-        visits = this.get('model.visits');
-      this.send('createNewVisit', patient, visits);
+    newVisit() {
+      let patient = this.get('model');
+      this.send('createNewVisit', patient, true);
     },
 
-    showAddContact: function() {
+    showAddContact() {
       this.send('openModal', 'patients.add-contact', {});
     },
 
-    showAddPhoto: function() {
+    showAddPhoto() {
       this.send('openModal', 'patients.photo', {
         isNew: true
       });
     },
 
-    showAddPatientNote: function(model) {
+    showAddPatientNote(model) {
       if (this.get('canAddNote')) {
         if (Ember.isEmpty(model)) {
           model = this.get('store').createRecord('patient-note', {
@@ -361,12 +370,12 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
       }
     },
 
-    showDeleteAppointment: function(appointment) {
+    showDeleteAppointment(appointment) {
       appointment.set('deleteFromPatient', true);
       this.send('openModal', 'appointments.delete', appointment);
     },
 
-    showDeleteContact: function(contact) {
+    showDeleteContact(contact) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteContact',
         title: this.get('i18n').t('patients.titles.deleteContact'),
@@ -377,7 +386,7 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
       }));
     },
 
-    showDeleteExpense: function(expense) {
+    showDeleteExpense(expense) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteExpense',
         title: this.get('i18n').t('patients.titles.deleteExpense'),
@@ -388,7 +397,7 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
       }));
     },
 
-    showDeleteFamily: function(familyInfo) {
+    showDeleteFamily(familyInfo) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteFamily',
         title: this.get('i18n').t('patients.titles.deleteFamilyMember'),
@@ -400,19 +409,19 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
 
     },
 
-    showDeleteImaging: function(imaging) {
+    showDeleteImaging(imaging) {
       this.send('openModal', 'imaging.delete', imaging);
     },
 
-    showDeleteLab: function(lab) {
+    showDeleteLab(lab) {
       this.send('openModal', 'labs.delete', lab);
     },
 
-    showDeleteMedication: function(medication) {
+    showDeleteMedication(medication) {
       this.send('openModal', 'medication.delete', medication);
     },
 
-    showDeletePhoto: function(photo) {
+    showDeletePhoto(photo) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deletePhoto',
         title: this.get('i18n').t('patients.titles.deletePhoto'),
@@ -423,41 +432,54 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
       }));
     },
 
-    showDeleteVisit: function(visit) {
+    showDeleteVisit(visit) {
       visit.set('deleteFromPatient', true);
       this.send('openModal', 'visits.delete', visit);
     },
 
-    showEditExpense: function(expenseInfo) {
+    showEditExpense(expenseInfo) {
       this._showEditSocial(expenseInfo, 'social-expense', 'expense');
     },
 
-    showEditFamily: function(familyInfo) {
+    showEditFamily(familyInfo) {
       this._showEditSocial(familyInfo, 'family-info', 'family-info');
     },
 
-    updateExpense: function(model) {
+    updateExpense(model) {
       this._updateSocialRecord(model, 'expenses');
     },
 
-    updateFamilyInfo: function(model) {
+    updateFamilyInfo(model) {
       this._updateSocialRecord(model, 'familyInfo');
     },
 
-    updatePhoto: function(photo) {
+    updatePhoto(photo) {
       photo.save().then(function() {
         this.send('closeModal');
       }.bind(this));
     },
 
-    visitDeleted: function(deletedVisit) {
-      var visits = this.get('model.visits');
-      var patient = this.get('model');
-      var patientAdmitted = patient.get('admitted');
+    visitDeleted(deletedVisit) {
+      let visits = this.get('model.visits');
+      let patient = this.get('model');
+      let patientCheckedIn = patient.get('checkedIn');
+      let patientAdmitted = patient.get('admitted');
       visits.removeObject(deletedVisit);
-      if (patientAdmitted && Ember.isEmpty(visits.findBy('status', 'Admitted'))) {
-        patient.set('admitted', false);
-        patient.save().then(() => this.send('closeModal'));
+      if (patientAdmitted || patientCheckedIn) {
+        let patientUpdate = false;
+        if (patientAdmitted && Ember.isEmpty(visits.findBy('status', VisitStatus.ADMITTED))) {
+          patient.set('admitted', false);
+          patientUpdate = true;
+        }
+        if (patientCheckedIn && Ember.isEmpty(visits.findBy('status', VisitStatus.CHECKED_IN))) {
+          patient.set('checkedIn', false);
+          patientUpdate = true;
+        }
+        if (patientUpdate === true) {
+          patient.save().then(() => this.send('closeModal'));
+        } else {
+          this.send('closeModal');
+        }
       } else {
         this.send('closeModal');
       }
@@ -465,18 +487,18 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
 
   },
 
-  _addChildObject: function(route) {
+  _addChildObject(route) {
     this.transitionToRoute(route, 'new').then(function(newRoute) {
       newRoute.currentModel.setProperties({
         patient: this.get('model'),
-        returnToPatient: true,
+        returnToPatient: this.get('model.id'),
         selectPatient: false
       });
     }.bind(this));
   },
 
-  _showEditSocial: function(editAttributes, modelName, route) {
-    var model;
+  _showEditSocial(editAttributes, modelName, route) {
+    let model;
     if (Ember.isEmpty(editAttributes)) {
       model = this.get('store').createRecord(modelName, {
         newRecord: true
@@ -490,12 +512,12 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
         }
       });
     }
-    this.send('openModal', 'patients.socialwork.' + route, model);
+    this.send('openModal', `patients.socialwork.${route}`, model);
   },
 
-  _getVisitCollection: function(name) {
-    var returnList = [],
-      visits = this.get('model.visits');
+  _getVisitCollection(name) {
+    let returnList = [];
+    let visits = this.get('model.visits');
     if (!Ember.isEmpty(visits)) {
       visits.forEach(function(visit) {
         visit.get(name).then(function(items) {
@@ -509,16 +531,16 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     return returnList;
   },
 
-  _updateSocialRecord: function(recordToUpdate, name) {
-    var socialRecords = this.getWithDefault('model.' + name, []);
-    var isNew = recordToUpdate.get('isNew');
-    var patient = this.get('model');
-    var objectToUpdate = recordToUpdate.serialize();
+  _updateSocialRecord(recordToUpdate, name) {
+    let socialRecords = this.getWithDefault(`model.${name}`, []);
+    let isNew = recordToUpdate.get('isNew');
+    let patient = this.get('model');
+    let objectToUpdate = recordToUpdate.serialize();
     objectToUpdate.id = recordToUpdate.get('id');
     if (isNew) {
       socialRecords.addObject(Ember.Object.create(objectToUpdate));
     } else {
-      var updateRecord = socialRecords.findBy('id', objectToUpdate.id);
+      let updateRecord = socialRecords.findBy('id', objectToUpdate.id);
       Ember.setProperties(updateRecord, objectToUpdate);
     }
     patient.set(name, socialRecords);
@@ -526,14 +548,59 @@ export default AbstractEditController.extend(BloodTypes, ReturnTo, UserSession, 
     this.send('closeModal');
   },
 
-  afterUpdate: function(record) {
-    this.send('openModal', 'dialog', Ember.Object.create({
-      title: this.get('i18n').t('patients.titles.savedPatient'),
-      message: this.get('i18n').t('patients.messages.savedPatient', record),
-      updateButtonAction: 'returnToPatient',
-      updateButtonText: this.get('i18n').t('patients.buttons.backToPatients'),
-      cancelButtonText: this.get('i18n').t('buttons.close')
-    }));
+  _updateSequence(record) {
+    let config = this.get('config');
+    let friendlyId = record.get('friendlyId');
+    return config.getPatientPrefix().then((prefix) => {
+      let re = new RegExp(`^${prefix}\\d{5}$`);
+      if (!re.test(friendlyId)) {
+        return;
+      }
+      return this.store.find('sequence', 'patient').then((sequence) => {
+        let sequenceNumber = sequence.get('value');
+        let patientNumber = parseInt(friendlyId.slice(prefix.length));
+        if (patientNumber > sequenceNumber) {
+          sequence.set('value', patientNumber);
+          return sequence.save();
+        }
+      });
+    });
+  },
+
+  beforeUpdate() {
+    if (!this.get('model.isNew')) {
+      return Ember.RSVP.resolve();
+    }
+    let database = this.get('database');
+    let id = this.get('model.friendlyId');
+    let maxValue = this.get('maxValue');
+    let query = {
+      startkey: [id, null],
+      endkey: [id, maxValue]
+    };
+    return database.queryMainDB(query, 'patient_by_display_id')
+      .then((found) => {
+        if (Ember.isEmpty(found.rows)) {
+          return Ember.RSVP.resolve();
+        }
+        return this.generateFriendlyId()
+          .then((friendlyId) => {
+            this.model.set('friendlyId', friendlyId);
+            return Ember.RSVP.resolve();
+          });
+      });
+  },
+
+  afterUpdate(record) {
+    this._updateSequence(record).then(() => {
+      this.send('openModal', 'dialog', Ember.Object.create({
+        title: this.get('i18n').t('patients.titles.savedPatient'),
+        message: this.get('i18n').t('patients.messages.savedPatient', record),
+        updateButtonAction: 'returnToPatient',
+        updateButtonText: this.get('i18n').t('patients.buttons.backToPatients'),
+        cancelButtonText: this.get('i18n').t('buttons.close')
+      }));
+    });
   }
 
 });

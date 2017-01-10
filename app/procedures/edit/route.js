@@ -10,20 +10,20 @@ export default AbstractEditRoute.extend(ChargeRoute, {
   pricingCategory: 'Procedure',
   database: Ember.inject.service(),
 
-  getNewData: function() {
+  getNewData() {
     return Ember.RSVP.resolve({
       procedureDate: new Date()
     });
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     this._super(controller, model);
-    var medicationQuery = {
+    let medicationQuery = {
       key: 'Medication',
       include_docs: true
     };
     this.get('database').queryMainDB(medicationQuery, 'inventory_by_type').then(function(result) {
-      var medicationList = result.rows.map(function(medication) {
+      let medicationList = result.rows.map(function(medication) {
         return medication.doc;
       });
       controller.set('medicationList', medicationList);

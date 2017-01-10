@@ -23,11 +23,11 @@ export default AbstractEditController.extend({
   updateCapability: 'adjust_inventory_location',
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.send('closeModal');
     },
 
-    transfer: function() {
+    transfer() {
       this.updateLookupLists();
       this.send('transferItems', this.get('model'), true);
     }

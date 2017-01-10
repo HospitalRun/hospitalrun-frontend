@@ -9,10 +9,10 @@ function verifyPricingLists(path, includesPrices, excludesPrices, assert) {
     andThen(function() {
       assert.equal(currentURL(), path);
       includesPrices.forEach(function(priceName) {
-        assert.equal(find('.price-name:contains(' + priceName + ')').length, 1, priceName + ' displays');
+        assert.equal(find(`.price-name:contains(${priceName})`).length, 1, `${priceName} displays`);
       });
       excludesPrices.forEach(function(priceName) {
-        assert.equal(find('.price-name:contains(' + priceName + ')').length, 0, priceName + ' is not present');
+        assert.equal(find(`.price-name:contains(${priceName})`).length, 0, `${priceName} is not present`);
       });
 
     });
@@ -20,11 +20,11 @@ function verifyPricingLists(path, includesPrices, excludesPrices, assert) {
 }
 
 module('Acceptance | pricing', {
-  beforeEach: function() {
+  beforeEach() {
     this.application = startApp();
   },
 
-  afterEach: function() {
+  afterEach() {
     Ember.run(this.application, 'destroy');
   }
 });
@@ -98,7 +98,6 @@ test('create new price', function(assert) {
       fillIn('.price-amount input', 100);
       fillIn('.price-department input', 'Imaging');
       select('.price-category', 'Imaging');
-      fillIn('.price-type', 'Imaging Procedure');
       click('button:contains(Add):last');
       waitToAppear('.modal-dialog');
       andThen(() => {

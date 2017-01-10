@@ -1,28 +1,48 @@
+import DS from 'ember-data';
 import Ember from 'ember';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import SelectValues from 'hospitalrun/utils/select-values';
+
+const { isEmpty } = Ember;
+
 export default Ember.Mixin.create(PatientVisits, {
   findPatientVisits: true, // Override to false if visits shouldn't be set when patient is selected.
   needToUpdateVisit: false,
   patientList: null,
   selectedPatient: null,
+  newVisitAdded: null,
 
   actions: {
-    showPatient: function(patient) {
+    showPatient(patient) {
       this.transitionToRoute('patients.edit', patient);
     },
 
-    returnToAllItems: function() {
+    returnToAllItems() {
       this._cancelUpdate();
       this.send('allItems');
     },
-    returnToPatient: function() {
+    returnToPatient() {
       this._cancelUpdate();
-      this.transitionToRoute('patients.edit', this.get('returnPatientId'));
+      this.transitionToRoute('patients.edit', this.get('model.returnToPatient'));
     },
-    returnToVisit: function() {
+    returnToVisit() {
       this._cancelUpdate();
-      this.transitionToRoute('visits.edit', this.get('returnVisitId'));
+      this.transitionToRoute('visits.edit', this.get('model.returnToVisit'));
+    },
+
+    selectedPatientChanged(selectedPatient) {
+      if (!Ember.isEmpty(selectedPatient)) {
+        this.store.find('patient', selectedPatient.id).then((item) =>{
+          this.set('model.patient', item);
+          this.patientSelected(item);
+          Ember.run.once(this, function() {
+            this.get('model').validate().catch(Ember.K);
+          });
+        });
+      } else {
+        this.set('model.patient', null);
+        this.patientSelected();
+      }
     }
   },
 
@@ -36,9 +56,9 @@ export default Ember.Mixin.create(PatientVisits, {
    * @returns {Promise} promise that will resolve or reject depending on whether or
    * not the add and subsequent saves were successful.
    */
-  addChildToVisit: function(objectToAdd, childName, newVisitType) {
+  addChildToVisit(objectToAdd, childName, newVisitType) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var visit = this.get('model.visit');
+      let visit = this.get('model.visit');
       if (Ember.isEmpty(visit)) {
         visit = this.createNewVisit(newVisitType).then(function(savedVisit) {
           this._finishAddChildToVisit(objectToAdd, childName, savedVisit, resolve, reject);
@@ -49,7 +69,7 @@ export default Ember.Mixin.create(PatientVisits, {
     }.bind(this));
   },
 
-  _finishAddChildToVisit: function(objectToAdd, childName, visit, resolve, reject) {
+  _finishAddChildToVisit(objectToAdd, childName, visit, resolve, reject) {
     visit.get(childName).then(function(visitChildren) {
       visitChildren.addObject(objectToAdd);
       this.set('needToUpdateVisit', true);
@@ -58,36 +78,34 @@ export default Ember.Mixin.create(PatientVisits, {
   },
 
   cancelAction: function() {
-    var returnToPatient = this.get('model.returnToPatient'),
-      returnToVisit = this.get('model.returnToVisit');
-    if (returnToVisit) {
+    let returnToPatient = this.get('model.returnToPatient');
+    let returnToVisit = this.get('model.returnToVisit');
+    if (!isEmpty(returnToVisit)) {
       return 'returnToVisit';
-    } else if (returnToPatient) {
+    } else if (!isEmpty(returnToPatient)) {
       return 'returnToPatient';
     } else {
       return 'returnToAllItems';
     }
   }.property('model.returnToPatient', 'model.returnToVisit'),
 
-  createNewVisit: function(newVisitType) {
+  createNewVisit(newVisitType) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var model = this.get('model'),
-        patient = model.get('patient'),
-        visit = this.get('store').createRecord('visit', {
-          startDate: new Date(),
-          endDate: new Date(),
-          outPatient: true,
-          patient: patient,
-          visitType: newVisitType
-        });
+      let model = this.get('model');
+      let patient = model.get('patient');
+      let visit = this.get('store').createRecord('visit', {
+        startDate: new Date(),
+        endDate: new Date(),
+        outPatient: true,
+        patient,
+        visitType: newVisitType
+      });
       model.set('visit', visit);
       visit.save().then(function() {
         visit.reload().then(function(updatedVisit) {
-          this.getPatientVisits(patient).then(function(visits) {
-            this.set('patientVisits', visits);
-            model.set('visit', updatedVisit);
-            resolve(updatedVisit);
-          }.bind(this), reject);
+          this.set('newVisitAdded', updatedVisit);
+          model.set('visit', updatedVisit);
+          resolve(updatedVisit);
         }.bind(this), reject);
       }.bind(this), reject).catch(function(err) {
         console.log('Error creating new visit');
@@ -97,7 +115,7 @@ export default Ember.Mixin.create(PatientVisits, {
   },
 
   deleteChildFromVisit(childName) {
-    var recordToDelete = this.get('model');
+    let recordToDelete = this.get('model');
     recordToDelete.set('archived', true);
     this.removeChildFromVisit(recordToDelete, childName).then(() => {
       recordToDelete.save().then(() => {
@@ -109,47 +127,28 @@ export default Ember.Mixin.create(PatientVisits, {
 
   patientId: Ember.computed.alias('model.patient.id'),
 
-  patientChanged: function() {
-    var patient = this.get('model.patient');
+  patientSelected(/* patient */) {},
+
+  patientVisits: function() {
+    let patient = this.get('model.patient');
+    let visitPromise;
+
     if (!Ember.isEmpty(patient) && this.get('findPatientVisits')) {
-      this.getPatientVisits(patient).then(function(visits) {
-        if (Ember.isEmpty(this.get('model.patient'))) {
-          this.set('patientVisits', []);
-        } else {
-          this.set('patientVisits', visits);
-        }
-      }.bind(this));
-    } else if (Ember.isEmpty(patient) && this.get('findPatientVisits')) {
-      this.set('patientVisits', []);
-    }
-  }.observes('model.patient'),
-
-  selectedPatientChanged: function() {
-    var selectedPatient = this.get('selectedPatient');
-    if (!Ember.isEmpty(selectedPatient)) {
-      this.store.find('patient', selectedPatient.id).then(function(item) {
-        this.set('model.patient', item);
-        Ember.run.once(this, function() {
-          this.get('model').validate().catch(Ember.K);
-        });
-      }.bind(this));
+      visitPromise = this.getPatientVisits(patient);
     } else {
-      this.set('model.patient', null);
+      visitPromise = Ember.RSVP.resolve([]);
     }
-  }.observes('selectedPatient'),
+    return DS.PromiseArray.create({
+      promise: visitPromise
+    });
+  }.property('model.patient.id', 'newVisitAdded'),
 
-  patientIdChanged: function() {
-    var patientId = this.get('patientId');
-    if (!Ember.isEmpty(patientId)) {
-      this.set('returnPatientId', patientId);
-    }
-  }.observes('patientId').on('init'),
-
-  patientVisits: [],
-  returnPatientId: null,
-  returnVisitId: null,
   patientVisitsForSelect: function() {
-    return this.get('patientVisits').map(SelectValues.selectObjectMap);
+    return DS.PromiseArray.create({
+      promise: this.get('patientVisits').then(function(patientVisits) {
+        return patientVisits.map(SelectValues.selectObjectMap);
+      })
+    });
   }.property('patientVisits.[]'),
 
   /**
@@ -159,12 +158,12 @@ export default Ember.Mixin.create(PatientVisits, {
    * @returns {Promise} promise that will resolve or reject depending on whether or
    * not the remove and subsequent save were successful.
    */
-  removeChildFromVisit: function(objectToRemove, childName) {
+  removeChildFromVisit(objectToRemove, childName) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var childPromises = [],
-        visit = this.get('model.visit');
+      let childPromises = [];
+      let visit = this.get('model.visit');
       childPromises.addObjects(this.resolveVisitChildren());
-      Ember.RSVP.all(childPromises, 'Resolved visit children before removing ' + childName).then(function() {
+      Ember.RSVP.all(childPromises, `Resolved visit children before removing ${childName}`).then(function() {
         visit.get(childName).then(function(visitChildren) {
           visitChildren.removeObject(objectToRemove);
           visit.save().then(resolve, reject);
@@ -178,9 +177,9 @@ export default Ember.Mixin.create(PatientVisits, {
    * @returns {array} of promises which can be used to ensure
    * all relationships have resolved.
    */
-  resolveVisitChildren: function() {
-    var promises = [],
-      visit = this.get('model.visit');
+  resolveVisitChildren() {
+    let promises = [];
+    let visit = this.get('model.visit');
     if (!Ember.isEmpty(visit)) {
       // Make sure all the async relationships are resolved
       promises.push(visit.get('imaging'));
@@ -198,7 +197,7 @@ export default Ember.Mixin.create(PatientVisits, {
    * @param alertTitle String the title to use on the alert.
    * @param alertMessage String the message to display in the alert.
    */
-  saveVisitIfNeeded: function(alertTitle, alertMessage, alertAction) {
+  saveVisitIfNeeded(alertTitle, alertMessage, alertAction) {
     if (this.get('needToUpdateVisit')) {
       this.get('model.visit').save().then(function() {
         this.set('needToUpdateVisit', false);
@@ -208,13 +207,6 @@ export default Ember.Mixin.create(PatientVisits, {
       this.displayAlert(alertTitle, alertMessage, alertAction);
     }
   },
-
-  visitIdChanged: function() {
-    var visitId = this.get('visitId');
-    if (!Ember.isEmpty(visitId)) {
-      this.set('returnVisitId', visitId);
-    }
-  }.observes('visitId').on('init'),
 
   visitId: Ember.computed.alias('model.visit.id'),
   visitsController: Ember.computed.alias('controllers.visits')

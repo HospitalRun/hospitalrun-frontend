@@ -6,7 +6,7 @@ export default AbstractEditRoute.extend({
   modelName: 'user',
   newTitle: t('labels.newUser'),
 
-  getNewData: function() {
+  getNewData() {
     return Ember.RSVP.resolve({
       roles: ['Data Entry', 'user']
     });

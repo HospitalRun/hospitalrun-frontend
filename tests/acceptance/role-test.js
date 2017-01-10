@@ -3,11 +3,11 @@ import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
 module('Acceptance | roles', {
-  beforeEach: function() {
+  beforeEach() {
     this.application = startApp();
   },
 
-  afterEach: function() {
+  afterEach() {
     Ember.run(this.application, 'destroy');
   }
 });
@@ -42,7 +42,7 @@ test('visiting /admin/roles', function(assert) {
     andThen(() => {
       authenticateUser({
         name: 'doctor@hospitalrun.io',
-        roles: ['Doctor', 'user'] ,
+        roles: ['Doctor', 'user'],
         role: 'Doctor',
         prefix: 'p1'
       });

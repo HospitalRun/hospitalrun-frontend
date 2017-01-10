@@ -18,7 +18,7 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
   currentOpenNav: null,
 
   actions: {
-    about: function() {
+    about() {
       let version = this.get('version');
       this.get('ajax').request('/serverinfo').then((siteInfo) => {
         let message = `Version: ${version}`;
@@ -29,28 +29,28 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
       });
     },
 
-    invalidateSession: function() {
-      const session = this.get('session');
+    invalidateSession() {
+      let session = this.get('session');
       if (session.get('isAuthenticated')) {
         session.invalidate();
       }
     },
 
-    search: function() {
+    search() {
       if (this.allowSearch && this.searchRoute) {
-        var currentRouteName = this.get('currentRouteName'),
-          currentSearchText = this.get('currentSearchText'),
-          textToFind = this.get('searchText');
+        let currentRouteName = this.get('currentRouteName');
+        let currentSearchText = this.get('currentSearchText');
+        let textToFind = this.get('searchText');
         if (currentSearchText !== textToFind || currentRouteName.indexOf('.search') === -1) {
           this.set('searchText', '');
-          this.set('progressMessage', 'Searching for ' + textToFind + '.  Please wait...');
+          this.set('progressMessage', `Searching for ${textToFind}. Please wait...`);
           this.showProgressModal();
-          this.transitionToRoute(this.searchRoute + '/' + textToFind);
+          this.transitionToRoute(`${this.searchRoute}/${textToFind}`);
         }
       }
     },
 
-    navAction: function(nav) {
+    navAction(nav) {
       if (this.currentOpenNav && this.currentOpenNav.route !== nav.route) {
         this.currentOpenNav.closeSubnav();
       }
@@ -59,11 +59,11 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
       this.set('isShowingSettings', false);
     },
 
-    toggleSettings: function() {
+    toggleSettings() {
       this.toggleProperty('isShowingSettings');
     },
 
-    closeSettings: function() {
+    closeSettings() {
       this.set('isShowingSettings', false);
     }
 

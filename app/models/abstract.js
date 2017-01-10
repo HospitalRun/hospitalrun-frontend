@@ -3,24 +3,70 @@ import Ember from 'ember';
 import EmberValidations from 'ember-validations';
 import { Model } from 'ember-pouch';
 import UserSession from 'hospitalrun/mixins/user-session';
+
+const {
+  get,
+  inject,
+  isEmpty
+} = Ember;
+
 export default Model.extend(UserSession, EmberValidations, {
-  session: Ember.inject.service(),
+  session: inject.service(),
   archived: DS.attr('boolean'),
   lastModified: DS.attr('date'),
   modifiedBy: DS.attr(),
   modifiedFields: DS.attr(),
+
+  loadedCustomForms: null,
+
+  didLoad() {
+    let loadedCustomForms = this.get('customForms');
+    if (!isEmpty(loadedCustomForms)) {
+      loadedCustomForms = JSON.parse(JSON.stringify(loadedCustomForms));
+    }
+    this.set('loadedCustomForms', loadedCustomForms);
+  },
+
+  changedAttributes() {
+    let changedAttributes = this._super();
+    let currentCustomForms = this.get('customForms');
+    let loadedCustomForms = this.get('loadedCustomForms');
+    if (!isEmpty(currentCustomForms)) {
+      if (isEmpty(loadedCustomForms)) {
+        loadedCustomForms = {};
+      }
+      let newKeys = Object.keys(currentCustomForms);
+      newKeys.forEach((customFormId) =>  {
+        let oldCustomForm = loadedCustomForms[customFormId];
+        let customFormPrefix = `customForms.${customFormId}`;
+        if (isEmpty(oldCustomForm)) {
+          oldCustomForm = {};
+        }
+        let newForm = get(currentCustomForms, customFormId);
+        let newFormKeys = Object.keys(newForm);
+        newFormKeys.forEach((newFormProperty) => {
+          let oldValue = get(oldCustomForm, newFormProperty);
+          let newValue = get(newForm, newFormProperty);
+          if (oldValue != newValue) {
+            changedAttributes[`${customFormPrefix}.${newFormProperty}`] = [oldValue, newValue];
+          }
+        });
+      });
+    }
+    return changedAttributes;
+  },
 
   /**
   * Before saving the record, update the modifiedFields attribute to denote what fields were changed when.
   * Also, if the save failed because of a conflict, reload the record and reapply the changed attributes and
   * attempt to save again.
   */
-  save: function(options) {
-    var attribute,
-      changedAttributes = this.changedAttributes(),
-      modifiedDate = new Date(),
-      modifiedFields = this.get('modifiedFields'),
-      session = this.get('session');
+  save(options) {
+    let attribute;
+    let changedAttributes = this.changedAttributes();
+    let modifiedDate = new Date();
+    let modifiedFields = this.get('modifiedFields');
+    let session = this.get('session');
 
     if (!session || !session.get('isAuthenticated')) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -29,7 +75,7 @@ export default Model.extend(UserSession, EmberValidations, {
     }
 
     if (this.get('hasDirtyAttributes') && !this.get('isDeleted')) {
-      if (Ember.isEmpty(modifiedFields)) {
+      if (isEmpty(modifiedFields)) {
         modifiedFields = {};
       }
       this.set('lastModified', modifiedDate);
@@ -40,14 +86,14 @@ export default Model.extend(UserSession, EmberValidations, {
       this.set('modifiedBy', this.getUserName());
     }
     return this._super(options).catch(function(error) {
-      if (!Ember.isEmpty(options) && options.retry) {
+      if (!isEmpty(options) && options.retry) {
         throw error;
       } else {
         if (error.name && error.name.indexOf && error.name.indexOf('conflict') > -1) {
           // Conflict encountered, so rollback, reload and then save the record with the changed attributes.
           this.rollbackAttributes();
           return this.reload().then(function(record) {
-            for (var attribute in changedAttributes) {
+            for (let attribute in changedAttributes) {
               record.set(attribute, changedAttributes[attribute][1]);
             }
             if (Ember.isEmpty(options)) {

@@ -6,9 +6,9 @@ export default Ember.Mixin.create({
    * @param propertyName String the property name in the array values to total.
    * @param number that contains at most two decimal places.
    */
-  _calculateTotal: function(array, propertyName) {
-    var arrayItems,
-      total = 0;
+  _calculateTotal(array, propertyName) {
+    let arrayItems;
+    let total = 0;
     if (Ember.isArray(array)) {
       arrayItems = array;
     } else {
@@ -25,7 +25,7 @@ export default Ember.Mixin.create({
    * @param number the number to valdiate.
    * @returns number a valid number.
    */
-  _getValidNumber: function(number) {
+  _getValidNumber(number) {
     if (Ember.isEmpty(number) || isNaN(number)) {
       return 0;
     } else {
@@ -40,8 +40,8 @@ export default Ember.Mixin.create({
    * as a number instead of a string
    * @returns String|Number a formatted String or number containing the formatted number.
    */
-  _numberFormat: function(value, returnAsNumber) {
-    var returnValue;
+  _numberFormat(value, returnAsNumber) {
+    let returnValue;
     if (!Ember.isEmpty(value)) {
       if (isNaN(value)) {
         return;
@@ -49,7 +49,7 @@ export default Ember.Mixin.create({
       if (Math.round(value) === value) {
         returnValue = Number(value).toString();
       } else {
-        returnValue = Number(value).toFixed(2);
+        returnValue = this._round100(value).toFixed(2);
       }
       if (returnAsNumber) {
         return Number(returnValue);
@@ -59,8 +59,13 @@ export default Ember.Mixin.create({
     }
   },
 
-  _validNumber: function(number) {
+  _validNumber(number) {
     return (!Ember.isEmpty(number) && !isNaN(number) && number > 0);
+  },
+
+  _round100(number) {
+    let tempNumber = 100 * number;
+    return Math.round(tempNumber) / 100;
   }
 
 });

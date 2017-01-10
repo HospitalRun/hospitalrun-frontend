@@ -14,9 +14,9 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
   nextStartKey: null,
   pageTitle: null,
 
-  _getFilterParams: function(params) {
-    var filterByList = [],
-      filterParams = this.get('filterParams');
+  _getFilterParams(params) {
+    let filterByList = [];
+    let filterParams = this.get('filterParams');
     if (!Ember.isEmpty(filterParams)) {
       filterParams.forEach(function(paramName) {
         if (!Ember.isEmpty(params[paramName])) {
@@ -30,32 +30,32 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
     return filterByList;
   },
 
-  _getMaxPouchId: function() {
-    return this.get('database').getPouchId({}, this.get('modelName').camelize());
+  _getMaxPouchId() {
+    return this.get('database').getMaxPouchId(this.get('modelName').camelize());
   },
 
-  _getMinPouchId: function() {
-    return this.get('database').getPouchId(null, this.get('modelName').camelize());
+  _getMinPouchId() {
+    return this.get('database').getMinPouchId(this.get('modelName').camelize());
   },
 
-  _getPouchIdFromItem: function(item) {
+  _getPouchIdFromItem(item) {
     return this.get('database').getPouchId(item.get('id'), this.get('modelName').camelize());
   },
 
-  _getStartKeyFromItem: function(item) {
+  _getStartKeyFromItem(item) {
     return item.get('id');
   },
 
-  _modelQueryParams: function() {
+  _modelQueryParams() {
     return {};
   },
 
-  model: function(params) {
+  model(params) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var filterParams = this._getFilterParams(params),
-        modelName = this.get('modelName'),
-        itemsPerPage = this.get('itemsPerPage'),
-        queryParams = this._modelQueryParams(params);
+      let filterParams = this._getFilterParams(params);
+      let modelName = this.get('modelName');
+      let itemsPerPage = this.get('itemsPerPage');
+      let queryParams = this._modelQueryParams(params);
       if (!Ember.isEmpty(params.sortKey)) {
         queryParams.sortKey = params.sortKey;
         if (!Ember.isEmpty(params.sortDesc)) {
@@ -77,7 +77,7 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
           this.set('firstKey', this._getStartKeyFromItem(model.get('firstObject')));
         }
         if (model.get('length') > itemsPerPage) {
-          var lastItem = model.popObject();
+          let lastItem = model.popObject();
           this.set('nextStartKey', this._getStartKeyFromItem(lastItem));
         } else {
           this.set('nextStartKey');
@@ -93,10 +93,10 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
     startKey: { refreshModel: true }
   },
 
-  setupController: function(controller, model) {
-    var props = this.getProperties('firstKey', 'nextStartKey');
+  setupController(controller, model) {
+    let props = this.getProperties('firstKey', 'nextStartKey');
     controller.setProperties(props);
-    var sectionDetails = {
+    let sectionDetails = {
       currentScreenTitle: this.get('pageTitle')
     };
     if (this.get('hideNewButton')) {

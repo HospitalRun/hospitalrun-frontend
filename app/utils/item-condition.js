@@ -16,7 +16,7 @@ const rankMultiplierValues = [
 ];
 
 export function rankToMultiplier(rank = 'B') {
-  const rankModel = Ember.A(rankMultiplierValues).findBy('rank', rank);
+  let rankModel = Ember.A(rankMultiplierValues).findBy('rank', rank);
   return rankModel.value;
 }
 

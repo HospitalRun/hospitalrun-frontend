@@ -11,9 +11,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   selectedImagingType: null,
 
   canComplete: function() {
-    var isNew = this.get('model.isNew'),
-      imagingTypeName = this.get('model.imagingTypeName'),
-      selectedImagingType = this.get('selectedImagingType');
+    let isNew = this.get('model.isNew');
+    let imagingTypeName = this.get('model.imagingTypeName');
+    let selectedImagingType = this.get('selectedImagingType');
     if (isNew && (Ember.isEmpty(imagingTypeName) || Ember.isArray(selectedImagingType) && selectedImagingType.length > 1)) {
       return false;
     } else {
@@ -22,7 +22,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   }.property('selectedImagingType.[]', 'model.imagingTypeName'),
 
   actions: {
-    completeImaging: function() {
+    completeImaging() {
       this.set('model.status', 'Completed');
       this.get('model').validate().then(function() {
         if (this.get('model.isValid')) {
@@ -35,10 +35,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     /**
      * Save the imaging request(s), creating multiples when user selects multiple imaging tests.
      */
-    update: function() {
+    update() {
       if (this.get('model.isNew')) {
-        var newImaging = this.get('model'),
-          selectedImagingType = this.get('selectedImagingType');
+        let newImaging = this.get('model');
+        let selectedImagingType = this.get('selectedImagingType');
         if (Ember.isEmpty(this.get('model.status'))) {
           this.set('model.status', 'Requested');
         }
@@ -70,8 +70,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
   additionalButtons: function() {
     let i18n = this.get('i18n');
-    var canComplete = this.get('canComplete'),
-      isValid = this.get('model.isValid');
+    let canComplete = this.get('canComplete');
+    let isValid = this.get('model.isValid');
     if (isValid && canComplete) {
       return [{
         buttonAction: 'completeImaging',
@@ -97,10 +97,10 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
   updateCapability: 'add_imaging',
 
-  afterUpdate: function(saveResponse, multipleRecords) {
+  afterUpdate(saveResponse, multipleRecords) {
     let i18n = this.get('i18n');
     this.updateLookupLists();
-    var afterDialogAction,
+    let afterDialogAction,
       alertTitle,
       alertMessage;
     if (this.get('model.status') === 'Completed') {

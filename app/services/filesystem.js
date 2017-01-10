@@ -5,11 +5,11 @@ export default Ember.Service.extend({
   filer: null, // Injected via initializer
   fileSystemSize: (1024 * 1024 * 1024 * 8), // 8GB max size for local filesystem;chrome only,
 
-  _onError: function(e) {
-    console.log('Filer filesystem error: ' + e);
+  _onError(e) {
+    console.log(`Filer filesystem error: ${e}`);
   },
 
-  _downloadFiles: function() {
+  _downloadFiles() {
     this.store.find('photo').then(function(photos) {
       photos.forEach(function(photo) {
         this.downloadIfNeeded(photo);
@@ -21,29 +21,29 @@ export default Ember.Service.extend({
    * Downloads the file from the server and saves it to the local filesystem.
    * @param {Object} fileRecord Record to use to download the file.
    */
-  _downloadFileFromServer: function(fileRecord) {
-    var fileName = Ember.get(fileRecord, 'fileName'),
-      pouchDbId = Ember.get(fileRecord, 'id'),
-      url = Ember.get(fileRecord, 'url'),
-      xhr = new XMLHttpRequest();
+  _downloadFileFromServer(fileRecord) {
+    let fileName = Ember.get(fileRecord, 'fileName');
+    let pouchDbId = Ember.get(fileRecord, 'id');
+    let url = Ember.get(fileRecord, 'url');
+    let xhr = new XMLHttpRequest();
     if (!Ember.isEmpty(url)) {
       xhr.open('GET', url, true);
       xhr.responseType = 'blob';
       xhr.onload = function() {
-        var file = new Blob([xhr.response]);
+        let file = new Blob([xhr.response]);
         this.addFile(file, fileName, pouchDbId);
       }.bind(this);
       xhr.send();
     }
   },
 
-  setup: function() {
-    var size = this.get('fileSystemSize'),
-      filer = new Filer();
-    filer.init({ persistent: true, size: size }, function() {
+  setup() {
+    let size = this.get('fileSystemSize');
+    let filer = new Filer();
+    filer.init({ persistent: true, size }, function() {
       try {
         this.set('filer', filer);
-      } catch (ignored) {
+      } catch(ignored) {
         // Exception may happen during testing an can be ignored.
       }
     }.bind(this));
@@ -58,17 +58,17 @@ export default Ember.Service.extend({
    * prefixed by 'patient_'.
    * @returns {Promise} returns a Promise that resolves once the file is saved.
    */
-  addFile: function(file, path, pouchDbId) {
+  addFile(file, path, pouchDbId) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var currentDate = new Date(),
-        filer = this.get('filer'),
-        fileName = file.name || currentDate.getTime(),
-        newFileName = path + fileName,
-        config = this.get('config');
+      let currentDate = new Date();
+      let filer = this.get('filer');
+      let fileName = file.name || currentDate.getTime();
+      let newFileName = path + fileName;
+      let config = this.get('config');
       if (path.indexOf('.') > -1) {
         newFileName = path;
         // If a full file path was provided, figure out the path and file name.
-        var pathParts = path.split('/');
+        let pathParts = path.split('/');
         fileName = pathParts.pop();
         path = pathParts.join('/');
         path += '/';
@@ -76,8 +76,8 @@ export default Ember.Service.extend({
 
       if (newFileName.indexOf('.') === -1) {
         if (file.type) {
-          var typeParts = file.type.split('/');
-          newFileName += '.' + typeParts.pop();
+          let typeParts = file.type.split('/');
+          newFileName += `.${typeParts.pop()}`;
         } else {
           // Default to png extension
           newFileName += '.png';
@@ -93,9 +93,9 @@ export default Ember.Service.extend({
           reject('Local filesystem unavailable, please use Google Chrome browser');
         }
         if (Ember.isEmpty(fileName) && !Ember.isEmpty(file.type)) {
-          var typeParts = file.type.split('/');
+          let typeParts = file.type.split('/');
           if (typeParts.length > 1) {
-            newFileName += '.' + typeParts[1];
+            newFileName += `.${typeParts[1]}`;
           }
         }
         filer.mkdir(path, false, function() {
@@ -120,10 +120,10 @@ export default Ember.Service.extend({
    * prefixed by 'patient_'.
    * @returns {Promise} returns a Promise that resolves once the file is deleted.
    */
-  deleteFile: function(filePath, pouchDbId) {
+  deleteFile(filePath, pouchDbId) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var filer = this.get('filer'),
-        config = this.get('config');
+      let filer = this.get('filer');
+      let config = this.get('config');
       try {
         filer.rm(filePath, function() {
           config.removeFileLink(pouchDbId);
@@ -135,8 +135,8 @@ export default Ember.Service.extend({
     }.bind(this));
   },
 
-  downloadIfNeeded: function(fileRecord) {
-    var fileName = Ember.get(fileRecord, 'fileName');
+  downloadIfNeeded(fileRecord) {
+    let fileName = Ember.get(fileRecord, 'fileName');
     this.fileExists(fileName).then(function(exists) {
       if (!exists) {
         this._downloadFileFromServer(fileRecord);
@@ -150,9 +150,9 @@ export default Ember.Service.extend({
    * @returns {Promise} returns a Promise that resolves with a boolean indicating
    * if the file exists.
    */
-  fileExists: function(filePath) {
+  fileExists(filePath) {
     return new Ember.RSVP.Promise(function(resolve) {
-      var filer = this.get('filer');
+      let filer = this.get('filer');
       filer.fs.root.getFile(filePath, {}, function() {
         resolve(true);
       }, function() {
@@ -168,9 +168,9 @@ export default Ember.Service.extend({
    * @returns {Promise} returns a Promise that resolves with the data url
    * for the file.
    */
-  fileToDataURL: function(file) {
+  fileToDataURL(file) {
     return new Ember.RSVP.Promise(function(resolve) {
-      var reader = new FileReader();
+      let reader = new FileReader();
       reader.onloadend = function(e) {
         resolve(e.target.result);
       };
@@ -184,9 +184,9 @@ export default Ember.Service.extend({
    * @returns {Promise} returns a Promise that resolves with the data url
    * for the file.
    */
-  fileToString: function(file) {
+  fileToString(file) {
     return new Ember.RSVP.Promise(function(resolve) {
-      var reader = new FileReader();
+      let reader = new FileReader();
       reader.onloadend = function(e) {
         resolve(e.target.result);
       };
@@ -198,7 +198,7 @@ export default Ember.Service.extend({
    * Property to determine if file system API is available.
    */
   isFileSystemEnabled: function() {
-    var filer = this.get('filer');
+    let filer = this.get('filer');
     return !(Ember.isEmpty(filer));
   }.property('filer'),
 
@@ -208,9 +208,9 @@ export default Ember.Service.extend({
    * @returns {Promise} returns a Promise that resolves with the file system
    * url or null if the file doesn't exist.
    */
-  pathToFileSystemURL: function(path) {
+  pathToFileSystemURL(path) {
     return new Ember.RSVP.Promise(function(resolve) {
-      var filer = this.get('filer');
+      let filer = this.get('filer');
       filer.fs.root.getFile(path, {}, function(fileEntry) {
         resolve(fileEntry.toURL());
       }, function() {

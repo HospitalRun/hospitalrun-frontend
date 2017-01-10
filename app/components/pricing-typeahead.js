@@ -4,14 +4,14 @@ export default TypeAhead.extend({
   displayKey: 'name',
   setOnBlur: true,
 
-  _mapContentItems: function() {
-    var content = this.get('content');
+  _mapContentItems() {
+    let content = this.get('content');
     if (content) {
-      var mapped = content.filter(function(item) {
+      let mapped = content.filter(function(item) {
         return !Ember.isEmpty(item);
       });
       mapped = mapped.map(function(item) {
-        var returnObj = {};
+        let returnObj = {};
         returnObj.name = item.name;
         returnObj[this.get('selectionKey')] = item;
         return returnObj;

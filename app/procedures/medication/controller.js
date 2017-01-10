@@ -1,25 +1,24 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import Ember from 'ember';
 
-export default AbstractEditController.extend(InventorySelection, {
+export default AbstractEditController.extend({
   cancelAction: 'closeModal',
   newCharge: false,
-  requestingController:  Ember.inject.controller('procedures/edit'),
+  requestingController: Ember.inject.controller('procedures/edit'),
   medicationList: Ember.computed.alias('requestingController.medicationList'),
 
   updateCapability: 'add_charge',
 
   title: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return this.get('i18n').t('procedures.titles.addMedicationUsed');
     }
     return this.get('i18n').t('procedures.titles.editMedicationUsed');
   }.property('model.isNew'),
 
-  beforeUpdate: function() {
-    var isNew = this.get('model.isNew');
+  beforeUpdate() {
+    let isNew = this.get('model.isNew');
     if (isNew) {
       this.set('newCharge', true);
       let model = this.get('model');
@@ -31,7 +30,7 @@ export default AbstractEditController.extend(InventorySelection, {
     return Ember.RSVP.Promise.resolve();
   },
 
-  afterUpdate: function(record) {
+  afterUpdate(record) {
     if (this.get('newCharge')) {
       this.get('requestingController').send('addCharge', record);
     } else {

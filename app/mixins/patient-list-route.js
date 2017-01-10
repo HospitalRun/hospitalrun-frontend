@@ -5,16 +5,16 @@ export default Ember.Mixin.create({
   /**
    * Lazily load patient list so that it doesn't impact performance.
    */
-  _fetchPatientList: function(controller) {
-    var patientQuery = {
+  _fetchPatientList(controller) {
+    let patientQuery = {
       startkey: 'patient_',
       endkey: 'patient_\uffff',
       include_docs: true
     };
-    var database = this.get('database');
+    let database = this.get('database');
     database.queryMainDB(patientQuery).then(function(result) {
       if (result.rows) {
-        var list = result.rows.map(function(row) {
+        let list = result.rows.map(function(row) {
           return row.doc;
         });
         controller.set('patientList', list);
@@ -23,17 +23,17 @@ export default Ember.Mixin.create({
   },
 
   actions: {
-    returnToPatient: function() {
+    returnToPatient() {
       this.controller.send('returnToPatient');
       this.controller.send('closeModal');
     },
 
-    returnToVisit: function() {
+    returnToVisit() {
       this.controller.send('returnToVisit');
     }
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     this._super(controller, model);
     this._fetchPatientList(controller);
   }

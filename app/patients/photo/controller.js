@@ -3,7 +3,7 @@ export default Ember.Controller.extend({
   patientsEdit: Ember.inject.controller('patients/edit'),
 
   title: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return this.get('i18n').t('patients.titles.addPhoto');
     } else {
@@ -12,7 +12,7 @@ export default Ember.Controller.extend({
   }.property('model.isNew'),
 
   updateButtonText: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return this.get('i18n').t('buttons.add');
     } else {
@@ -26,14 +26,14 @@ export default Ember.Controller.extend({
   editController: Ember.computed.alias('patientsEdit'),
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.send('closeModal');
     },
 
-    update: function() {
-      var caption = this.get('model.caption'),
-        isNew = this.get('model.isNew'),
-        photoFile = this.get('model.photoFile');
+    update() {
+      let caption = this.get('model.caption');
+      let isNew = this.get('model.isNew');
+      let photoFile = this.get('model.photoFile');
       if (isNew) {
         this.get('editController').send('addPhoto', photoFile, caption);
       } else {

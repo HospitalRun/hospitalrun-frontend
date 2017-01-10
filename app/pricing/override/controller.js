@@ -6,14 +6,14 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
   pricingController: Ember.inject.controller('pricing'),
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.get('model').rollbackAttributes();
       this.send('closeModal');
     },
 
-    update: function() {
-      var isNew = this.get('model.isNew'),
-        override = this.get('model');
+    update() {
+      let isNew = this.get('model.isNew');
+      let override = this.get('model');
       override.save().then(function() {
         if (isNew) {
           this.get('editController').send('addOverride', override);
@@ -38,7 +38,7 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
 
   updateButtonAction: 'update',
   updateButtonText: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add';
     } else {

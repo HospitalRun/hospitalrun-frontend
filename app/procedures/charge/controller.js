@@ -12,30 +12,30 @@ export default AbstractEditController.extend({
   updateCapability: 'add_charge',
 
   title: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return this.get('i18n').t('procedures.titles.addChargeItem');
     }
     return this.get('i18n').t('procedures.titles.editChargeItem');
   }.property('model.isNew'),
 
-  beforeUpdate: function() {
-    var isNew = this.get('model.isNew');
+  beforeUpdate() {
+    let isNew = this.get('model.isNew');
     if (isNew) {
       this.set('newCharge', true);
     }
     return new Ember.RSVP.Promise((resolve, reject) => {
-      var model = this.get('model');
-      var pricingItem = model.get('pricingItem');
-      var selectedItem = this.get('selectedItem');
+      let model = this.get('model');
+      let pricingItem = model.get('pricingItem');
+      let selectedItem = this.get('selectedItem');
       if (!Ember.isEmpty(selectedItem) && (Ember.isEmpty(pricingItem) || selectedItem.id !== pricingItem.get('id'))) {
         this.store.find('pricing', selectedItem.id).then((item) => {
           model.set('pricingItem', item);
           resolve();
         });
       } else {
-        var newItem = false;
-        var saveItem = false;
+        let newItem = false;
+        let saveItem = false;
         if (Ember.isEmpty(pricingItem)) {
           pricingItem = this.store.createRecord('pricing', {
             name: model.get('itemName'),
@@ -51,7 +51,7 @@ export default AbstractEditController.extend({
         }
         if (saveItem) {
           pricingItem.save().then(() => {
-            var pricingList = this.get('pricingList');
+            let pricingList = this.get('pricingList');
             if (newItem) {
               pricingList.addObject({
                 id: pricingItem.get('id'),
@@ -59,7 +59,7 @@ export default AbstractEditController.extend({
               });
               model.set('pricingItem', pricingItem);
             } else {
-              var itemToUpdate = pricingList.findBy('id', pricingItem.get('id'));
+              let itemToUpdate = pricingList.findBy('id', pricingItem.get('id'));
               itemToUpdate.name = pricingItem.get('name');
             }
             resolve();
@@ -71,7 +71,7 @@ export default AbstractEditController.extend({
     });
   },
 
-  afterUpdate: function(record) {
+  afterUpdate(record) {
     if (this.get('newCharge')) {
       this.get('requestingController').send('addCharge', record);
     } else {

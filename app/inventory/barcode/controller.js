@@ -3,8 +3,10 @@ export default Ember.Controller.extend({
   selectedPrinter: null,
 
   barcodeUri: function() {
-    var id = this.get('model.id'),
-      name = this.get('model.name');
+    let id = this.get('model.id');
+    let name = this.get('model.name');
+
+    /* eslint new-cap: ['error', { 'capIsNew': false }]  */
     return Ember.$(document).JsBarcode(id, {
       width: 1,
       height: 20,
@@ -19,7 +21,7 @@ export default Ember.Controller.extend({
   }.property(),
 
   havePrinters: function() {
-    var printers = this.get('printers');
+    let printers = this.get('printers');
     if (printers.length > 0) {
       return true;
     } else {
@@ -28,7 +30,7 @@ export default Ember.Controller.extend({
   }.property('printers'),
 
   singlePrinter: function() {
-    var printers = this.get('printers');
+    let printers = this.get('printers');
     if (printers.length === 1) {
       return true;
     } else {
@@ -37,15 +39,15 @@ export default Ember.Controller.extend({
   }.property('printers'),
 
   actions: {
-    print: function() {
-      var barcodeUri = this.get('barcodeUri'),
-        selectedPrinter = this.get('selectedPrinter');
+    print() {
+      let barcodeUri = this.get('barcodeUri');
+      let selectedPrinter = this.get('selectedPrinter');
       if (!selectedPrinter) {
         selectedPrinter = this.get('printers')[0].name;
       }
       Ember.$.get('/dymo/BarcodeAsImage.label', function(labelXml) {
-        var barcodeAsImageLabel = dymo.label.framework.openLabelXml(labelXml);
-        var pngBase64 = barcodeUri.substr('data:image/png;base64,'.length);
+        let barcodeAsImageLabel = dymo.label.framework.openLabelXml(labelXml);
+        let pngBase64 = barcodeUri.substr('data:image/png;base64,'.length);
         barcodeAsImageLabel.setObjectText('Image', pngBase64);
         barcodeAsImageLabel.print(selectedPrinter);
       }, 'text');

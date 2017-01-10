@@ -7,7 +7,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
   currentRole: '',
   disabledAction: false,
   hideCancelButton: true,
-  updateCapability: 'user_roles',
+  updateCapability: 'define_user_roles',
   filteredRoles: Ember.computed.filter('userRoles', function(userRole) {
     return (userRole.name !== 'System Administrator');
   }),
@@ -18,7 +18,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
       'admin',
       'loadDb',
       'updateConfig',
-      'userRoles'
+      'defineUserRoles'
     ]
   }, {
     name: 'appointments',
@@ -30,6 +30,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     name: 'billing',
     capabilities: [
       'billing',
+      'addBillingDiagnosis',
       'addCharge',
       'addPricing',
       'addPricingProfile',
@@ -48,12 +49,15 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     capabilities: [
       'patients',
       'addDiagnosis',
+      'addNote',
       'addPhoto',
       'addPatient',
       'addProcedure',
+      'addSocialwork',
       'addVisit',
       'addVitals',
       'admitPatient',
+      'deleteNote',
       'deletePhoto',
       'deletePatient',
       'deleteAppointment',
@@ -103,59 +107,83 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     ]
   }],
 
+  missingCapablities: Ember.computed('availableCapabilities', 'defaultCapabilities', function() {
+    let availableCapabilities = this.get('availableCapabilities');
+    let capabilityBySection = Object.keys(availableCapabilities);
+    let defaultCapabilities = Object.keys(this.get('defaultCapabilities'));
+    let missing = [];
+    defaultCapabilities.forEach((capability) => {
+      let capabilityUsed = false;
+      capabilityBySection.forEach((sectionName) => {
+        let section = availableCapabilities[sectionName];
+        if (section.capabilities.includes(capability.camelize())) {
+          capabilityUsed = true;
+        }
+      });
+      if (!capabilityUsed) {
+        missing.push(`${capability} - ${capability.camelize()}`);
+      }
+    });
+    return missing;
+  }),
+
   capabilitySections: Ember.computed.map('availableCapabilities', function(section) {
-    var mappedCapabilities = [];
+    let mappedCapabilities = [];
     section.capabilities.forEach((key) => {
       mappedCapabilities.push({
-        key: key,
-        name: this.get('i18n').t('admin.roles.capability.' + key)
+        key,
+        name: this.get('i18n').t(`admin.roles.capability.${key}`)
       });
     });
     return {
-      name: this.get('i18n').t('admin.roles.capability.' + section.name),
+      name: this.get('i18n').t(`admin.roles.capability.${section.name}`),
       capabilities: mappedCapabilities
     };
   }),
 
   actions: {
     selectRole(role) {
-      var roleToUpdate = this.get('model').findBy('id', role.dasherize());
+      let roleToUpdate = this.get('model').findBy('id', role.dasherize());
       this.set('currentRole', role);
       this.set('roleToUpdate', roleToUpdate);
-      if (roleToUpdate) {
-        var capabilities = roleToUpdate.get('capabilities');
-        this.get('availableCapabilities').forEach((section) => {
-          section.capabilities.forEach((capability) => {
-            if (capabilities.contains(capability)) {
-              this.set(capability, true);
+      try {
+        if (roleToUpdate) {
+          let capabilities = roleToUpdate.get('capabilities');
+          this.get('availableCapabilities').forEach((section) => {
+            section.capabilities.forEach((capability) => {
+              if (capabilities.includes(capability)) {
+                this.set(capability, true);
+              } else {
+                this.set(capability, false);
+              }
+            });
+          });
+        } else {
+          let defaultCapabilities = this.get('defaultCapabilities');
+          Object.keys(defaultCapabilities).forEach((capability) => {
+            let capabilityRoles = defaultCapabilities[capability];
+            if (capabilityRoles.includes(role)) {
+              this.set(capability.camelize(), true);
             } else {
-              this.set(capability, false);
+              this.set(capability.camelize(), false);
             }
           });
-        });
-      } else {
-        var defaultCapabilities = this.get('defaultCapabilities');
-        Object.keys(defaultCapabilities).forEach((capability) => {
-          var capabilityRoles = defaultCapabilities[capability];
-          if (capabilityRoles.contains(role)) {
-            this.set(capability, true);
-          } else {
-            this.set(capability, false);
-          }
-        });
+        }
+      } catch(ex) {
+        console.log('ex setting role:', ex);
       }
     },
 
     update() {
-      var currentRole = this.get('currentRole');
-      var roleToUpdate = this.get('roleToUpdate');
+      let currentRole = this.get('currentRole');
+      let roleToUpdate = this.get('roleToUpdate');
       if (Ember.isEmpty(roleToUpdate)) {
         roleToUpdate = this.get('store').createRecord('user-role', {
           id: currentRole.dasherize(),
           name: currentRole
         });
       }
-      var capabilitiesToSave = [];
+      let capabilitiesToSave = [];
       this.get('availableCapabilities').forEach((section) => {
         section.capabilities.forEach((capability) => {
           if (this.get(capability) === true) {

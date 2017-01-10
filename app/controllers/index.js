@@ -12,22 +12,22 @@ export default Ember.Controller.extend(UserSession, {
   ],
 
   setupPermissions: function() {
-    var permissions = this.get('defaultCapabilities');
-    for (var capability in permissions) {
+    let permissions = this.get('defaultCapabilities');
+    for (let capability in permissions) {
       if (this.currentUserCan(capability)) {
-        this.set('userCan_' + capability, true);
+        this.set(`userCan_${capability}`, true);
       }
     }
   }.on('init'),
 
   activeLinks: function() {
-    var activeLinks = [],
-      indexLinks = this.get('indexLinks');
+    let activeLinks = [];
+    let indexLinks = this.get('indexLinks');
     indexLinks.forEach(function(link) {
-      var action = link.toLowerCase();
+      let action = link.toLowerCase();
       if (this.currentUserCan(action)) {
         activeLinks.push({
-          action: action,
+          action,
           text: link
         });
       }

@@ -4,17 +4,18 @@ import Ember from 'ember';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
+import uuid from 'npm:uuid';
 export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, PatientListRoute, {
   editTitle: t('medication.titles.editMedicationRequest'),
   modelName: 'medication',
   newTitle: t('medication.titles.newMedicationRequest'),
   database: Ember.inject.service(),
-  getNewData: function(params) {
-    var idParam = this.get('idParam'),
-      newData = {
-        selectPatient: true,
-        prescriptionDate: moment().startOf('day').toDate()
-      };
+  getNewData(params) {
+    let idParam = this.get('idParam');
+    let newData = {
+      selectPatient: true,
+      prescriptionDate: moment().startOf('day').toDate()
+    };
     if (params[idParam] === 'dispense') {
       newData.shouldFulfillRequest = true;
       newData.hideFulfillRequest = true;
@@ -23,8 +24,8 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
     return Ember.RSVP.resolve(newData);
   },
 
-  model: function(params) {
-    var idParam = this.get('idParam');
+  model(params) {
+    let idParam = this.get('idParam');
     if (!Ember.isEmpty(idParam) && params[idParam] === 'new' || params[idParam] === 'dispense') {
       return this._createNewRecord(params);
     } else {
@@ -32,18 +33,18 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
     }
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     this._super(controller, model);
-    var inventoryQuery = {
+    let inventoryQuery = {
       key: 'Medication',
       include_docs: true
     };
-    var inventoryItemId = model.get('inventoryItem.id'),
-      patient = model.get('patient');
+    let inventoryItemId = model.get('inventoryItem.id');
+    let patient = model.get('patient');
     if (Ember.isEmpty(inventoryItemId)) {
       this.get('database').queryMainDB(inventoryQuery, 'inventory_by_type')
         .then(function(result) {
-          var medicationList = result.rows.map(function(medication) {
+          let medicationList = result.rows.map(function(medication) {
             return medication.doc;
           });
           controller.set('medicationList', medicationList);

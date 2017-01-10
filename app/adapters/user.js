@@ -8,10 +8,10 @@ export default DS.RESTAdapter.extend(UserSession, {
   defaultSerializer: 'couchdb',
   oauthHeaders: Ember.computed.alias('database.oauthHeaders'),
 
-  ajaxError: function(jqXHR) {
-    var error = this._super(jqXHR);
+  ajaxError(jqXHR) {
+    let error = this._super(jqXHR);
     if (jqXHR && jqXHR.status === 401) {
-      var jsonErrors = Ember.$.parseJSON(jqXHR.responseText);
+      let jsonErrors = Ember.$.parseJSON(jqXHR.responseText);
       window.Hospitalrun.__container__.lookup('controller:application').transitionToRoute('login');
       return new DS.InvalidError(jsonErrors);
     } else {
@@ -27,7 +27,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   @param {Object} options
   @return {Object} hash
   */
-  ajaxOptions: function(url, type, options) {
+  ajaxOptions(url, type, options) {
     options = options || {};
     options.xhrFields = { withCredentials: true };
     return this._super(url, type, options);
@@ -49,7 +49,7 @@ export default DS.RESTAdapter.extend(UserSession, {
    @param {DS.Model} record
    @returns {Promise} promise
   */
-  createRecord: function(store, type, record) {
+  createRecord(store, type, record) {
     return this.updateRecord(store, type, record);
   },
 
@@ -61,7 +61,7 @@ export default DS.RESTAdapter.extend(UserSession, {
   @param {DS.Snapshot} record
   @returns {Promise} promise
   */
-  deleteRecord: function(store, type, snapshot) {
+  deleteRecord(store, type, snapshot) {
     return this.updateRecord(store, type, snapshot, true);
   },
 
@@ -80,13 +80,13 @@ export default DS.RESTAdapter.extend(UserSession, {
   @param {String} id
   @returns {Promise} promise
   */
-  find: function(store, type, id) {
-    var findUrl = this.endpoint + id;
+  find(store, type, id) {
+    let findUrl = this.endpoint + id;
     return this.ajax(findUrl, 'GET');
   },
 
   headers: function() {
-    var oauthHeaders = this.get('oauthHeaders');
+    let oauthHeaders = this.get('oauthHeaders');
     if (Ember.isEmpty(oauthHeaders)) {
       return {};
     } else {
@@ -111,9 +111,9 @@ export default DS.RESTAdapter.extend(UserSession, {
    @param {boolean} deleteUser true if we are deleting the user.
    @returns {Promise} promise
   */
-  updateRecord: function(store, type, record, deleteUser) {
-    var data = {};
-    var serializer = store.serializerFor(record.modelName);
+  updateRecord(store, type, record, deleteUser) {
+    let data = {};
+    let serializer = store.serializerFor(record.modelName);
     serializer.serializeIntoHash(data, type, record, { includeId: true });
     data.type = 'user';
     if (deleteUser) {
@@ -125,9 +125,9 @@ export default DS.RESTAdapter.extend(UserSession, {
       delete data._rev;
     }
     data = this._cleanPasswordAttrs(data);
-    var putURL = `${this.endpoint}${Ember.get(record, 'id')}`;
+    let putURL = `${this.endpoint}${Ember.get(record, 'id')}`;
     return this.ajax(putURL, 'PUT', {
-      data: data
+      data
     });
   },
 
@@ -145,22 +145,22 @@ export default DS.RESTAdapter.extend(UserSession, {
   @param {String} sinceToken //currently unused
   @returns {Promise} promise
   */
-  findAll: function() {
-    var ajaxData = {
+  findAll() {
+    let ajaxData = {
       data: {
         include_docs: true,
         startkey: '"org.couchdb.user"'
       }
     };
-    var allURL = this.endpoint + '_all_docs';
+    let allURL = `${this.endpoint}_all_docs`;
     return this.ajax(allURL, 'GET', ajaxData);
   },
 
   /**
    Remove null/empty password fields from payload sent to server
    */
-  _cleanPasswordAttrs: function(data) {
-    var attrsToCheck = [
+  _cleanPasswordAttrs(data) {
+    let attrsToCheck = [
       'derived_key',
       'password',
       'password_scheme',
@@ -176,7 +176,7 @@ export default DS.RESTAdapter.extend(UserSession, {
     return data;
   },
 
-  shouldReloadAll: function() {
+  shouldReloadAll() {
     return true;
   }
 

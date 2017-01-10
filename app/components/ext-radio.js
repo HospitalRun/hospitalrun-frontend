@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   showInline: false,
 
   haveLabel: function() {
-    var firstRadio = this.get('content.firstObject');
+    let firstRadio = this.get('content.firstObject');
     return !Ember.isEmpty(firstRadio.label);
   }.property('content'),
 

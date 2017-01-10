@@ -8,7 +8,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
 
   cancelButtonText: function() {
     let i18n = this.get('i18n');
-    var hasDirtyAttributes = this.get('model.hasDirtyAttributes');
+    let hasDirtyAttributes = this.get('model.hasDirtyAttributes');
     if (hasDirtyAttributes) {
       return i18n.t('buttons.cancel');
     } else {
@@ -17,7 +17,11 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
   }.property('model.hasDirtyAttributes'),
 
   disabledAction: function() {
-    var isValid = this.get('model.isValid');
+    let model = this.get('model');
+    if (model.validate) {
+      model.validate().catch(Ember.K);
+    }
+    let isValid = model.get('isValid');
     if (!isValid) {
       return 'showDisabledDialog';
     }
@@ -38,7 +42,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
   lookupListsToUpdate: null,
 
   showUpdateButton: function() {
-    var updateButtonCapability = this.get('updateCapability');
+    let updateButtonCapability = this.get('updateCapability');
     return this.currentUserCan(updateButtonCapability);
   }.property('updateCapability'),
 
@@ -60,37 +64,37 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    * @param listsToUpdate array the lookup lists that need to be saved.
    * @param listsName string name of the list to add the value to.
    */
-  _addValueToLookupList: function(lookupList, value, listsToUpdate, listName) {
-    var lookupListValues = lookupList.get('value');
+  _addValueToLookupList(lookupList, value, listsToUpdate, listName) {
+    let lookupListValues = lookupList.get('value');
     if (!Ember.isArray(lookupListValues)) {
       lookupListValues = [];
     }
-    if (!lookupListValues.contains(value)) {
+    if (!lookupListValues.includes(value)) {
       lookupListValues.push(value);
       lookupListValues.sort();
       lookupList.set('value', lookupListValues);
-      if (!listsToUpdate.contains(lookupList)) {
+      if (!listsToUpdate.includes(lookupList)) {
         listsToUpdate.push(lookupList);
       }
       this.set(listName, lookupList);
     }
   },
 
-  _cancelUpdate: function() {
-    var cancelledItem = this.get('model');
+  _cancelUpdate() {
+    let cancelledItem = this.get('model');
     cancelledItem.rollbackAttributes();
   },
 
   actions: {
-    cancel: function() {
+    cancel() {
       this._cancelUpdate();
       this.send(this.get('cancelAction'));
     },
 
-    returnTo: function() {
+    returnTo() {
       this._cancelUpdate();
-      var returnTo = this.get('model.returnTo'),
-        returnToContext = this.get('model.returnToContext');
+      let returnTo = this.get('model.returnTo');
+      let returnToContext = this.get('model.returnToContext');
       if (Ember.isEmpty(returnToContext)) {
         this.transitionToRoute(returnTo);
       } else {
@@ -98,8 +102,12 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
       }
     },
 
-    showDisabledDialog: function() {
-      this.displayAlert('Warning!!!!', 'Please fill in required fields (marked with *) and correct the errors before saving.');
+    showDisabledDialog() {
+      let i18n = this.get('i18n');
+      this.displayAlert(
+        i18n.t('alerts.warningExclamation'),
+        i18n.t('messages.requiredFieldsCorrectErrors')
+      );
     },
 
     /**
@@ -107,17 +115,25 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
      * @param skipAfterUpdate boolean (optional) indicating whether or not
      * to skip the afterUpdate call.
      */
-    update: function(skipAfterUpdate) {
+    update(skipAfterUpdate) {
       try {
         this.beforeUpdate().then(() => {
           this.saveModel(skipAfterUpdate);
         }).catch((err) => {
           if (!err.ignore) {
-            this.displayAlert('Error!!!!', 'An error occurred while attempting to save: ' + JSON.stringify(err));
+            let i18n = this.get('i18n');
+            this.displayAlert(
+              i18n.t('alerts.errorExclamation'),
+              i18n.t('messages.saveActionException', { message: JSON.stringify(err) })
+            );
           }
         });
-      } catch (ex) {
-        this.displayAlert('Error!!!!', 'An error occurred while attempting to save: ' + ex);
+      } catch(ex) {
+        let i18n = this.get('i18n');
+        this.displayAlert(
+          i18n.t('alerts.errorExclamation'),
+          i18n.t('messages.saveActionException', { message: JSON.stringify(ex) })
+        );
       }
     }
   },
@@ -126,13 +142,13 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    * Override this function to perform logic after record update
    * @param record the record that was just updated.
    */
-  afterUpdate: function() {},
+  afterUpdate() {},
 
   /**
    * Override this function to perform logic before record update.
    * @returns {Promise} Promise that resolves after before update is done.
    */
-  beforeUpdate: function() {
+  beforeUpdate() {
     return Ember.RSVP.Promise.resolve();
   },
 
@@ -141,7 +157,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    * @param skipAfterUpdate boolean (optional) indicating whether or not
    * to skip the afterUpdate call.
    */
-  saveModel: function(skipAfterUpdate) {
+  saveModel(skipAfterUpdate) {
     this.get('model').save().then(function(record) {
       this.updateLookupLists();
       if (!skipAfterUpdate) {
@@ -153,14 +169,14 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
   /**
    * Update any new values added to a lookup list
    */
-  updateLookupLists: function() {
-    var lookupLists = this.get('lookupListsToUpdate'),
-      listsToUpdate = Ember.A();
+  updateLookupLists() {
+    let lookupLists = this.get('lookupListsToUpdate');
+    let listsToUpdate = Ember.A();
     if (!Ember.isEmpty(lookupLists)) {
       lookupLists.forEach(function(list) {
-        var propertyValue = this.get(list.property),
-          lookupList = this.get(list.name),
-          store = this.get('store');
+        let propertyValue = this.get(list.property);
+        let lookupList = this.get(list.name);
+        let store = this.get('store');
         if (!Ember.isEmpty(propertyValue)) {
           if (!lookupList) {
             lookupList = store.push(store.normalize('lookup', {

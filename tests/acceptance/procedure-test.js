@@ -3,17 +3,17 @@ import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
 module('Acceptance | procedures', {
-  beforeEach: function() {
+  beforeEach() {
     this.application = startApp();
   },
 
-  afterEach: function() {
+  afterEach() {
     Ember.run(this.application, 'destroy');
   }
 });
 
 testWithVisit('Add procedure', function(assert) {
-  var procedureDesc = 'Release Left Elbow Bursa and Ligament, Percutaneous Approach';
+  let procedureDesc = 'Release Left Elbow Bursa and Ligament, Percutaneous Approach';
   assert.equal(find('#visit-procedures tr').length, 2, 'One procedure is listed for the visit');
   click('button:contains(New Procedure)');
   andThen(function() {
@@ -52,7 +52,6 @@ testWithVisit('Edit procedure', function(assert) {
     waitToAppear('.modal-dialog');
   });
   andThen(function() {
-    console.log('1');
     assert.equal(find('.modal-title').text(), 'Edit Charge Item', 'Edit Charge Item modal appears');
     typeAheadFillIn('.charge-item-name', 'Gauze padding');
     click('.modal-footer button:contains(Update)');
@@ -69,12 +68,14 @@ testWithVisit('Edit procedure', function(assert) {
   andThen(function() {
     assert.equal(find('.modal-title').text(), 'Add Medication Used', 'Add Medication Used modal appears');
     typeAheadFillIn('.medication-used', 'Cefazolin 500mg vial (Hazolin) - m00001 (999998 available)');
+    waitToDisappear('.disabled-btn:contains(Add)');
+  });
+  andThen(function() {
     click('.modal-footer button:contains(Add)');
     waitToDisappear('.modal-dialog');
   });
   andThen(function() {
-    console.log('5');
-    assert.equal(find('.medication-charges tr').length, 3, 'Two medication charges exists');
+    assert.equal(find('.medication-charges td:contains(Cefazolin 500mg vial)').length, 2, 'Two medication charges exists');
     click('.medication-charges button:contains(Edit)');
     waitToAppear('.modal-dialog');
   });
@@ -103,8 +104,16 @@ testWithVisit('Edit procedure', function(assert) {
   andThen(function() {
     assert.equal(find('.modal-title').text(), 'Delete Medication Used', 'Delete Medication Used dialog displays');
     click('.modal-footer button:contains(Ok)');
+    waitToAppear('button:contains(Return)');
   });
   andThen(function() {
+    click('button:contains(Return)');
+  });
+  andThen(function() {
+    click('#visit-procedures button:contains(Edit)');
+  });
+  andThen(function() {
+    assert.equal(currentURL(), '/visits/procedures/edit/398B4F58-152F-1476-8ED1-329C4D85E25F', 'Returned back to procedure');
     assert.equal(find('td.charge-item-name').length, 0, 'Charge item is deleted');
     assert.equal(find('.medication-charges tr').length, 2, 'Medication used is deleted');
   });

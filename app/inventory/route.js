@@ -25,7 +25,7 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
     findArgs: ['lookup', 'inventory_types']
   }, {
     name: 'inventoryUnitList',
-    findArgs: ['lookup','unit_types']
+    findArgs: ['lookup', 'unit_types']
   }, {
     name: 'warehouseList',
     findArgs: ['lookup', 'warehouse_list']
@@ -41,9 +41,9 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
   sectionTitle: 'Inventory',
 
   actions: {
-    addPurchase: function(newPurchase) {
-      var currentItem = this.get('currentItem'),
-        purchases = currentItem.get('purchases');
+    addPurchase(newPurchase) {
+      let currentItem = this.get('currentItem');
+      let purchases = currentItem.get('purchases');
       purchases.addObject(newPurchase);
       this.newPurchaseAdded(currentItem, newPurchase).then(function() {
         currentItem.updateQuantity();
@@ -53,22 +53,22 @@ export default AbstractModuleRoute.extend(FulfillRequest, InventoryId, Inventory
       }.bind(this));
     },
 
-    newInventoryBatch: function() {
+    newInventoryBatch() {
       if (this.currentUserCan(this.get('addCapability'))) {
         this.transitionTo('inventory.batch', 'new');
       }
     },
 
-    newRequest: function() {
+    newRequest() {
       this.transitionTo('inventory.request', 'new');
     },
 
-    allItems: function() {
+    allItems() {
       this.transitionTo('inventory.listing');
     },
 
-    showAddPurchase: function(inventoryItem) {
-      var newPurchase = this.get('store').createRecord('inv-purchase', {
+    showAddPurchase(inventoryItem) {
+      let newPurchase = this.get('store').createRecord('inv-purchase', {
         dateReceived: new Date(),
         distributionUnit: inventoryItem.get('distributionUnit'),
         inventoryItem: inventoryItem.get('id')

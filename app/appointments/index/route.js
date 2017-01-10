@@ -6,10 +6,10 @@ export default AbstractIndexRoute.extend({
   modelName: 'appointment',
   pageTitle: t('appointments.thisWeek'),
 
-  _getStartKeyFromItem: function(item) {
-    var endDate = item.get('endDate'),
-      id = this._getPouchIdFromItem(item),
-      startDate = item.get('startDate');
+  _getStartKeyFromItem(item) {
+    let endDate = item.get('endDate');
+    let id = this._getPouchIdFromItem(item);
+    let startDate = item.get('startDate');
     if (endDate && endDate !== '') {
       endDate = new Date(endDate);
       if (endDate.getTime) {
@@ -26,10 +26,10 @@ export default AbstractIndexRoute.extend({
     return [startDate, endDate, id];
   },
 
-  _modelQueryParams: function() {
-    var endOfWeek = moment().endOf('week').toDate().getTime(),
-      startOfWeek = moment().startOf('week').toDate().getTime(),
-      maxId = this._getMaxPouchId();
+  _modelQueryParams() {
+    let endOfWeek = moment().endOf('week').toDate().getTime();
+    let startOfWeek = moment().startOf('week').toDate().getTime();
+    let maxId = this._getMaxPouchId();
     return {
       options: {
         startkey: [startOfWeek, null, null],
@@ -40,7 +40,7 @@ export default AbstractIndexRoute.extend({
   },
 
   actions: {
-    editAppointment: function(appointment) {
+    editAppointment(appointment) {
       appointment.set('returnTo', this.get('editReturn'));
       this.send('editItem', appointment);
     }

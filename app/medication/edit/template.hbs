@@ -21,6 +21,13 @@
         </div>
       {{/if}}
     </div>
+    {{#if model.patient.allergies}}
+        <div class="row">
+          <div class="col-xs-12">
+            {{medication-allergy patient=model.patient}}
+          </div>
+        </div>
+    {{/if}}
     {{#if isFulfilledOrRequested}}
       <div class="form-group">
         <label class="control-label">{{t 'labels.medication'}}</label>
@@ -50,7 +57,7 @@
         {{date-picker property="prescriptionDate" label=(t 'labels.prescriptionDate') class="col-sm-4"}}
       </div>
       <div class="row">
-        {{em-input property="quantity" label=quantityLabel class=quantityClass }}
+        {{number-input property="quantity" label=quantityLabel class=quantityClass }}
         {{em-input property="refills" label=(t 'medication.labels.refills') class="col-xs-3"}}
       </div>
       {{#unless model.hideFulfillRequest}}
@@ -67,7 +74,7 @@
         {{select-or-typeahead property="expenseAccount" label=(t 'labels.billTo') list=expenseAccountList selection=model.expenseAccount }}
         {{inventory-location-picker label=(t 'labels.pullFrom') quantityRequested=model.quantity
           locationList= model.inventoryItem.availableLocations
-          selectedLocations=model.inventoryLocations
+          selectedLocations=model.inventoryLocations class="inventory-location"
         }}
       {{/if}}
     {{/if}}

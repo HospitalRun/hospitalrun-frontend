@@ -79,24 +79,10 @@ export default {
       displayAlertTitle: 'Seleccione un archivo para cargar',
       displayAlertMessage: 'Por favor seleccione un archivo para ser cargado.',
       errorDisplayAlertTitle: 'Error cargando',
-      errorDisplayAlertMessage: `La base de datos no fue cargada el error fue: {{error}}`,
+      errorDisplayAlertMessage: 'La base de datos no fue cargada el error fue: {{error}}',
       editTitle: 'Cargar bd'
     },
     lookup: {
-      deleteValueInventoryTypeMedicationTitle: 'No se puede eliminar el medicamento',
-      deleteValueInventoryTypeMedicationMessage: 'El tipo de inventario de medicamentos no se pueden eliminar porque se necesita para el módulo de medicación.',
-      deleteValueLabPricingTypeProcedureTitle: 'No se puede eliminar el tipo de precio',
-      deleteValueLabPricingTypeProcedureMessage: 'El tipo de precio Procedimiento Lab no se puede eliminar porque es necesaria para el módulo de laboratorios.',
-      deleteValueImagingPricingTypeProcedureTitle: 'No se puede eliminar el tipo de imagen',
-      deleteValueImagingPricingTypeProcedureMessage: 'No se puede eliminar porque es necesario para el modulo de radiografias',
-      deleteValueVisitTypeAdmissionTitle: 'No se puede eliminar admision tipo visita',
-      deleteValueVisitTypeAdmissionMessage: 'Tipo de visita es necesaria para el modulo de admisiones.',
-      deleteValueVisitTypeImagingTitle: 'No se puede eliminar el tipo radiografia',
-      deleteValueVisitTypeImagingMessage: 'No se puede eliminar por que es necesario para el modulo de radiografias.',
-      deleteValueVisitTypeLabTitle: 'No se puede eliminar el tipo laboratorio',
-      deleteValueVisitTypeLabMessage: 'Es necesario para el modulo de laboratorio.',
-      deleteValueVisitTypePharmacyTitle: 'No se puede eliminar el tipo farmacia',
-      deleteValueVisitTypePharmacyMessage: 'Es requerido por el modulo de recetas.',
       alertImportListTitle: 'Seleccione un archivo para importar',
       alertImportListMessage: 'Por favor seleccione un archivo para importar.',
       alertImportListSaveTitle: 'Lista importada',
@@ -196,7 +182,7 @@ export default {
         deleteInventoryItem: 'Eliminar elemento del inventario',
         deleteInventoryPurchase: 'Eliminar compra del inventario',
         fulfillInventory: 'Cumplimiento de inventario',
-        userRoles: 'Roles de usuario'
+        defineUserRoles: 'Roles de usuario'
       },
       messages: {
         roleSaved: 'El {{roleName}} rol ha sido salvado.'
@@ -229,7 +215,6 @@ export default {
     edit: 'Editar',
     imageOrders: 'Ordenes de radiografias',
     labOrders: 'Ordenes de laboratorio',
-    patientHistory: 'Historia del paciente',
     imagingType: 'Tipo de radiografia',
     result: 'Resultado',
     results: 'Resultados',
@@ -325,13 +310,13 @@ export default {
   },
   login: {
     messages: {
-      signIn:  'por favor ingrese',
-      error:    'Nombre de usuario o clave incorrectos.'
+      signIn: 'por favor ingrese',
+      error: 'Nombre de usuario o clave incorrectos.'
     },
     labels: {
       password: 'Clave',
       username: 'Nombre de usuario',
-      signIn:  'Ingresar'
+      signIn: 'Ingresar'
     }
   },
   inventory: {
@@ -569,7 +554,7 @@ export default {
     },
     alerts: {
       returnedTitle: 'Medicacion devuelta',
-      returnedMessage:  'La medicacion ha sido marcada para devolver.',
+      returnedMessage: 'La medicacion ha sido marcada para devolver.',
       savedTitle: 'Pedido de medicacion guardado',
       savedMessage: 'La elemento de medicación ha sido guardado.',
       fulfilledTitle: 'Pedido de medicación cumplido'

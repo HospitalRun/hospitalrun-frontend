@@ -4,11 +4,8 @@ import Ember from 'ember';
 import PatientValidation from 'hospitalrun/utils/patient-validation';
 
 export default AbstractModel.extend({
+  // Attributes
   allDay: DS.attr(),
-  patient: DS.belongsTo('patient', {
-    async: false
-  }),
-  visits: DS.hasMany('visit'),
   provider: DS.attr('string'),
   location: DS.attr('string'),
   appointmentType: DS.attr('string'),
@@ -17,23 +14,28 @@ export default AbstractModel.extend({
   notes: DS.attr('string'),
   status: DS.attr('string', { defaultValue: 'Scheduled' }),
 
+  // Associations
+  patient: DS.belongsTo('patient', { async: false }),
+  visits: DS.hasMany('visit'),
+
+  // Formats
   longDateFormat: 'l h:mm A',
   shortDateFormat: 'l',
   timeFormat: 'h:mm A',
 
-  _getDateSpan: function(startDate, endDate, format) {
-    var formattedStart = startDate.format(format),
-      formattedEnd = endDate.format(format);
+  _getDateSpan(startDate, endDate, format) {
+    let formattedStart = startDate.format(format);
+    let formattedEnd = endDate.format(format);
     return `${formattedStart} - ${formattedEnd}`;
   },
 
   appointmentDate: function() {
-    var startDate = this.get('startDate');
+    let startDate = this.get('startDate');
     return startDate;
   }.property('startDate'),
 
   displayStatus: function() {
-    var status = this.get('status');
+    let status = this.get('status');
     if (Ember.isEmpty(status)) {
       status = 'Scheduled';
     }
@@ -41,11 +43,11 @@ export default AbstractModel.extend({
   }.property('status'),
 
   formattedAppointmentDate: function() {
-    var allDay = this.get('allDay'),
-      endDate = moment(this.get('endDate')),
-      dateFormat = '',
-      formattedDate = '',
-      startDate = moment(this.get('startDate'));
+    let allDay = this.get('allDay');
+    let endDate = moment(this.get('endDate'));
+    let dateFormat = '';
+    let formattedDate = '';
+    let startDate = moment(this.get('startDate'));
 
     if (startDate.isSame(endDate, 'day')) {
       formattedDate = startDate.format(this.get('shortDateFormat'));
@@ -67,8 +69,8 @@ export default AbstractModel.extend({
   validations: {
     appointmentDate: {
       presence: {
-        if: function(object) {
-          var appointmentType = object.get('appointmentType');
+        if(object) {
+          let appointmentType = object.get('appointmentType');
           return appointmentType !== 'Admission';
         }
       }
@@ -91,13 +93,13 @@ export default AbstractModel.extend({
     endDate: {
       acceptance: {
         accept: true,
-        if: function(object) {
+        if(object) {
           if (!object.get('hasDirtyAttributes')) {
             return false;
           }
-          var allDay = object.get('allDay'),
-            startDate = object.get('startDate'),
-            endDate = object.get('endDate');
+          let allDay = object.get('allDay');
+          let startDate = object.get('startDate');
+          let endDate = object.get('endDate');
           if (Ember.isEmpty(endDate) || Ember.isEmpty(startDate)) {
             // force validation to fail
             return true;

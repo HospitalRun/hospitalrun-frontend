@@ -6,28 +6,28 @@ export default AbstractEditRoute.extend({
   newTitle: 'New Invoice',
 
   actions: {
-    deleteCharge: function(model) {
+    deleteCharge(model) {
       this.controller.send('deleteCharge', model);
     },
 
-    deleteLineItem: function(model) {
+    deleteLineItem(model) {
       this.controller.send('deleteLineItem', model);
     },
 
-    removePayment: function(model) {
+    removePayment(model) {
       this.controller.send('removePayment', model);
     }
   },
 
-  afterModel: function(model) {
+  afterModel(model) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var lineItems = model.get('lineItems'),
-        promises = [];
+      let lineItems = model.get('lineItems');
+      let promises = [];
       lineItems.forEach(function(lineItem) {
         promises.push(lineItem.reload());
       });
       Ember.RSVP.all(promises, 'Reload billing line items for invoice').then(function(results) {
-        var detailPromises = [];
+        let detailPromises = [];
         results.forEach(function(result) {
           result.get('details').forEach(function(detail) {
             detailPromises.push(detail.reload());
@@ -38,21 +38,21 @@ export default AbstractEditRoute.extend({
     });
   },
 
-  getNewData: function() {
+  getNewData() {
     return Ember.RSVP.resolve({
       billDate: new Date(),
       status: 'Draft'
     });
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     model.set('originalPaymentProfileId', model.get('paymentProfile.id'));
     this._super(controller, model);
-    var lineItems = model.get('lineItems'),
-      promises = [];
+    let lineItems = model.get('lineItems');
+    let promises = [];
     lineItems.forEach(function(lineItem) {
       lineItem.get('details').forEach(function(detail) {
-        var pricingItem = detail.get('pricingItem');
+        let pricingItem = detail.get('pricingItem');
         if (!Ember.isEmpty(pricingItem)) {
           promises.push(pricingItem.reload());
         }

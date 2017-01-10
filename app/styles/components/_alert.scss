@@ -1,0 +1,30 @@
+.alert {
+  border: 0;
+  border-radius: 3px;
+  padding: 12px;
+}
+
+.alert-success {
+  border-color: #b2dba1;
+  background-image: linear-gradient(to bottom,#dff0d8 0%,#c8e5bc 100%);
+  background-repeat: repeat-x;
+}
+
+.alert-info {
+  border: 0;
+  box-shadow: none;
+  background: $alert_yellow;
+  text-shadow: none;
+  color: $alert_yellow_drk;
+}
+
+.alert-warning {
+  border-color: #f5e79e;
+  background-image: linear-gradient(to bottom,#fcf8e3 0%,#f8efc0 100%);
+  background-repeat: repeat-x;
+}
+
+.alert-danger {
+  background-color: $red_light;
+  color: $red_dark;
+}

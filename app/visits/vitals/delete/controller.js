@@ -6,7 +6,7 @@ export default AbstractDeleteController.extend({
   title: 'Delete Vitals',
 
   actions: {
-    notifyVitalsDelete: function() {
+    notifyVitalsDelete() {
       this.send('closeModal');
       this.get('editController').send('deleteVitals', this.get('model'));
     }

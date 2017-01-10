@@ -3,11 +3,11 @@ import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
 module('Acceptance | admin', {
-  beforeEach: function() {
+  beforeEach() {
     this.application = startApp();
   },
 
-  afterEach: function() {
+  afterEach() {
     Ember.run(this.application, 'destroy');
   }
 });
@@ -66,9 +66,14 @@ test('delete lookup value', function(assert) {
       andThen(() => {
         assert.equal(find('td.lookup-type-value:contains(Epidural)').length, 1, 'Have lookup type to delete from list');
         click('button:contains(Delete)');
-        andThen(() => {
-          assert.equal(find('td.lookup-type-value:contains(Epidural)').length, 0, 'Deleted lookup type is removed from the list');
-        });
+        waitToAppear('.modal-dialog');
+      });
+      andThen(() => {
+        assert.equal(find('.modal-title').text(), 'Delete Value', 'Delete value modal is displayed');
+        click('.modal-footer button:contains(Ok)');
+      });
+      andThen(() => {
+        assert.equal(find('td.lookup-type-value:contains(Epidural)').length, 0, 'Deleted lookup type is removed from the list');
       });
     });
   });
@@ -93,7 +98,7 @@ test('Update address options', function(assert) {
 });
 
 test('Update workflow options', function(assert) {
-  const selector = 'input[type=checkbox]';
+  let selector = 'input[type=checkbox]';
 
   runWithPouchDump('admin', function() {
     authenticateUser();
@@ -129,7 +134,7 @@ test('Update workflow options', function(assert) {
 
   function verifyAll(checked) {
     Array.prototype.slice.call(document.querySelectorAll(selector)).forEach((node) => {
-      assert.equal(node.checked, checked, 'Checkbox is ' + (checked ? 'checked' : 'unchecked'));
+      assert.equal(node.checked, checked, `Checkbox is ${(checked ? 'checked' : 'unchecked')}`);
     });
   }
 });

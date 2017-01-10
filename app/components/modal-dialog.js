@@ -20,24 +20,31 @@ export default Ember.Component.extend({
     }
   }.property('cancelButtonText'),
   actions: {
-    cancelAction: function() {
+    cancelAction() {
       this.sendAction('cancelAction');
     },
-    updateAction: function() {
+
+    fireButtonAction(buttonAction) {
+      this.set(buttonAction, buttonAction);
+      this.sendAction(buttonAction);
+    },
+
+    updateAction() {
       this.sendAction('updateButtonAction');
     }
+
   },
 
-  didInsertElement: function() {
-    var $modal = this.$('.modal').modal();
+  didInsertElement() {
+    let $modal = this.$('.modal').modal();
 
     $modal.on('hidden.bs.modal', function() {
       this.sendAction('closeModalAction');
     }.bind(this));
   },
 
-  willDestroyElement: function() {
-    var $modal = this.$('.modal');
+  willDestroyElement() {
+    let $modal = this.$('.modal');
     $modal.off('hidden.bs.modal');
     $modal.modal('hide');
     // jquery fixes

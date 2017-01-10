@@ -52,7 +52,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   newProcedure: false,
 
   title: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return this.get('i18n').t('procedures.titles.add');
     }
@@ -62,8 +62,8 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   updateCapability: 'add_procedure',
 
   actions: {
-    showAddMedication: function() {
-      var newCharge = this.get('store').createRecord('proc-charge', {
+    showAddMedication() {
+      let newCharge = this.get('store').createRecord('proc-charge', {
         dateCharged: new Date(),
         newMedicationCharge: true,
         quantity: 1
@@ -71,14 +71,14 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
       this.send('openModal', 'procedures.medication', newCharge);
     },
 
-    showEditMedication: function(charge) {
-      var medicationList = this.get('medicationList');
-      var selectedMedication = medicationList.findBy('id', charge.get('medication.id'));
+    showEditMedication(charge) {
+      let medicationList = this.get('medicationList');
+      let selectedMedication = medicationList.findBy('id', charge.get('medication.id'));
       charge.set('itemName', selectedMedication.name);
       this.send('openModal', 'procedures.medication', charge);
     },
 
-    showDeleteMedication: function(charge) {
+    showDeleteMedication(charge) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteCharge',
         title: this.get('i18n').t('procedures.titles.deleteMedicationUsed'),
@@ -90,7 +90,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }
   },
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       this.updateCharges().then(function() {
         if (this.get('model.isNew')) {
@@ -102,9 +102,9 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     }.bind(this));
   },
 
-  afterUpdate: function() {
-    var alertTitle = this.get('i18n').t('procedures.titles.saved'),
-      alertMessage = this.get('i18n').t('procedures.messages.saved');
+  afterUpdate() {
+    let alertTitle = this.get('i18n').t('procedures.titles.saved');
+    let alertMessage = this.get('i18n').t('procedures.messages.saved');
     this.saveVisitIfNeeded(alertTitle, alertMessage);
   }
 });

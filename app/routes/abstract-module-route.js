@@ -15,13 +15,13 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
   subActions: null,
 
   editPath: function() {
-    var module = this.get('moduleName');
-    return module + '.edit';
+    let module = this.get('moduleName');
+    return `${module}.edit`;
   }.property('moduleName'),
 
   deletePath: function() {
-    var module = this.get('moduleName');
-    return module + '.delete';
+    let module = this.get('moduleName');
+    return `${module}.delete`;
   }.property('moduleName'),
 
   newButtonAction: function() {
@@ -33,22 +33,22 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
   }.property(),
 
   searchRoute: function() {
-    var module = this.get('moduleName');
-    return '/' + module + '/search';
+    let module = this.get('moduleName');
+    return `/${module}/search`;
   }.property('moduleName'),
 
   actions: {
-    allItems: function() {
-      this.transitionTo(this.get('moduleName') + '.index');
+    allItems() {
+      this.transitionTo(`${this.get('moduleName')}.index`);
     },
-    deleteItem: function(item) {
-      var deletePath = this.get('deletePath');
+    deleteItem(item) {
+      let deletePath = this.get('deletePath');
       this.send('openModal', deletePath, item);
     },
-    editItem: function(item) {
+    editItem(item) {
       this.transitionTo(this.get('editPath'), item);
     },
-    newItem: function() {
+    newItem() {
       if (this.currentUserCan(this.get('addCapability'))) {
         this.transitionTo(this.get('editPath'), 'new');
       }
@@ -62,8 +62,8 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
      * - newButtonText - The text to display for the "new" button.
      * - newButtonAction - The action to fire for the "new" button.
      */
-    setSectionHeader: function(details) {
-      var currentController = this.controllerFor(this.get('moduleName'));
+    setSectionHeader(details) {
+      let currentController = this.controllerFor(this.get('moduleName'));
       currentController.setProperties(details);
     }
 
@@ -72,8 +72,8 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
   /**
    * Make sure the user has permissions to the module; if not reroute to index.
    */
-  beforeModel: function(transition) {
-    var moduleName = this.get('moduleName');
+  beforeModel(transition) {
+    let moduleName = this.get('moduleName');
     if (this.currentUserCan(moduleName)) {
       return this._super(transition);
     } else {
@@ -87,21 +87,24 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
    * @return a promise that will resolved to a generated id;default is null which means that an
    * id will be automatically generated via Ember data.
    */
-  generateId: function() {
+  generateId() {
     return Ember.RSVP.resolve(null);
   },
 
-  model: function() {
+  model() {
     if (!Ember.isEmpty(this.additionalModels)) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
-        var promises = this.additionalModels.map(function(modelMap) {
-          if (modelMap.findArgs.length === 1) {
-            return this.store.findAll.apply(this.store, modelMap.findArgs);
+        let promises = this.additionalModels.map(function(modelMap) {
+
+          if (modelMap.queryArgs) {
+            return this.store.query(...modelMap.queryArgs);
+          } else if (modelMap.findArgs.length === 1) {
+            return this.store.findAll(...modelMap.findArgs);
           } else {
-            return this.store.find.apply(this.store, modelMap.findArgs);
+            return this.store.find(...modelMap.findArgs);
           }
         }.bind(this));
-        Ember.RSVP.allSettled(promises, 'All additional Models for ' + this.get('moduleName')).then(function(array) {
+        Ember.RSVP.allSettled(promises, `All additional Models for ${this.get('moduleName')}`).then(function(array) {
           array.forEach(function(item, index) {
             if (item.state === 'fulfilled') {
               this.set(this.additionalModels[index].name, item.value);
@@ -109,26 +112,26 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
           }.bind(this));
           resolve();
         }.bind(this), reject);
-      }.bind(this), 'Additional Models for' + this.get('moduleName'));
+      }.bind(this), `Additional Models for ${this.get('moduleName')}`);
     } else {
       return Ember.RSVP.resolve();
     }
   },
 
-  renderTemplate: function() {
+  renderTemplate() {
     this.render('section');
   },
 
-  setupController: function(controller, model) {
-    var navigationController = this.controllerFor('navigation');
+  setupController(controller, model) {
+    let navigationController = this.controllerFor('navigation');
     if (this.get('allowSearch') === true) {
       navigationController.set('allowSearch', true);
       navigationController.set('searchRoute', this.get('searchRoute'));
     } else {
       navigationController.set('allowSearch', false);
     }
-    var currentController = this.controllerFor(this.get('moduleName'));
-    var propsToSet = this.getProperties('additionalButtons', 'currentScreenTitle', 'newButtonAction', 'newButtonText', 'sectionTitle', 'subActions');
+    let currentController = this.controllerFor(this.get('moduleName'));
+    let propsToSet = this.getProperties('additionalButtons', 'currentScreenTitle', 'newButtonAction', 'newButtonText', 'sectionTitle', 'subActions');
     currentController.setProperties(propsToSet);
     if (!Ember.isEmpty(this.additionalModels)) {
       this.additionalModels.forEach(function(item) {

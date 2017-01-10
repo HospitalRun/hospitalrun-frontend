@@ -4,12 +4,12 @@ import startApp from 'hospitalrun/tests/helpers/start-app';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 
 module('Acceptance | login', {
-  beforeEach: function() {
+  beforeEach() {
     FakeServer.start();
     this.application = startApp();
   },
 
-  afterEach: function() {
+  afterEach() {
     FakeServer.stop();
     Ember.run(this.application, 'destroy');
   }
@@ -22,12 +22,12 @@ test('visiting / redirects user to login', function(assert) {
 
     stubRequest('post', '/db/_session', function(request) {
       assert.equal(request.requestBody, 'name=hradmin&password=test', 'credential are sent to the server');
-      request.ok({ 'ok': true,'name': 'hradmin','roles': ['System Administrator','admin','user'] });
+      request.ok({ 'ok': true, 'name': 'hradmin', 'roles': ['System Administrator', 'admin', 'user'] });
     });
 
     stubRequest('post', '/chkuser', function(request) {
       assert.equal(request.requestBody, 'name=hradmin', 'username is sent to /chkuser');
-      request.ok({ 'prefix': 'p1','role': 'System Administrator' });
+      request.ok({ 'prefix': 'p1', 'role': 'System Administrator' });
     });
 
     andThen(function() {
@@ -55,6 +55,7 @@ test('incorrect credentials shows an error message on the screen', function(asse
     fillIn('#identification', 'hradmin');
     fillIn('#password', 'tset');
     click('button:contains(Sign in)');
+    waitToAppear('.form-signin-alert');
 
     andThen(function() {
       assert.equal(find('.form-signin-alert').text(), errorMessage, 'Error reason is shown');

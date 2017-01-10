@@ -84,20 +84,6 @@ export default {
       editTitle: 'Importer une BD'
     },
     lookup: {
-      deleteValueInventoryTypeMedicationTitle: 'Impossible de supprimer le médicament',
-      deleteValueInventoryTypeMedicationMessage: 'Impossible de supprimer le type d\'inventaire de médicaments car il est requis par le module Médicament.',
-      deleteValueLabPricingTypeProcedureTitle: 'Impossible de supprimer le type de prix de Labo',
-      deleteValueLabPricingTypeProcedureMessage: 'Impossible de supprimer le type de prix de procédure de Labo car il est requis par le module Labos.',
-      deleteValueImagingPricingTypeProcedureTitle: 'Impossible de supprimer le type de prix d\'imagerie',
-      deleteValueImagingPricingTypeProcedureMessage: 'Impossible de supprimer le type de prix de procédure d\'imagerie car il est requis par le module Imagerie.',
-      deleteValueVisitTypeAdmissionTitle: 'Impossible de supprimer la visite de type Admission',
-      deleteValueVisitTypeAdmissionMessage: 'Impossible de supprimer la visite de type Admission car il est requis par le module Visites.',
-      deleteValueVisitTypeImagingTitle: 'Impossible de supprimer la visite de type Imagerie',
-      deleteValueVisitTypeImagingMessage: 'Impossible de supprimer la visite de type Imagerie car il est requis par le module Imagerie.',
-      deleteValueVisitTypeLabTitle: 'Impossible de supprimer la visite de type Labo',
-      deleteValueVisitTypeLabMessage: 'Impossible de supprimer la visite de type Labo car il est requis par le module Labo.',
-      deleteValueVisitTypePharmacyTitle: 'Impossible de supprimer la visite de type Pharmacie',
-      deleteValueVisitTypePharmacyMessage: 'Impossible de supprimer la visite de type Labo car il est requis par le module Médicament.',
       alertImportListTitle: 'Sélectionner le fichier à importer',
       alertImportListMessage: 'Veuillez sélectionner le fichier à importer.',
       alertImportListSaveTitle: 'Liste importée',
@@ -197,7 +183,7 @@ export default {
         deleteInventoryItem: 'Supprimer un article d\'inventaire',
         deleteInventoryPurchase: 'Supprimer un achat d\'inventaire',
         fulfillInventory: 'Traiter l\'inventaire',
-        userRoles: 'Rôles d\'utilisateur'
+        defineUserRoles: 'Rôles d\'utilisateur'
       },
       messages: {
         roleSaved: 'Le rôle {{roleName}}  a été enregistré.'
@@ -231,7 +217,6 @@ export default {
     edit: 'Modifier',
     imageOrders: 'Demandes d\'imagerie',
     labOrders: 'Demandes de labo',
-    patientHistory: 'Historique du patient',
     imagingType: 'Type d\'imagerie',
     result: 'Resultat',
     results: 'Resultats',
@@ -327,13 +312,13 @@ export default {
   },
   login: {
     messages: {
-      signIn:  'veuillez-vous connecter',
-      error:    'Nom d\'utilisateur ou mot de passe est incorrect.'
+      signIn: 'veuillez-vous connecter',
+      error: 'Nom d\'utilisateur ou mot de passe est incorrect.'
     },
     labels: {
       password: 'Mot de passe',
       username: 'Nom d\'utilisateur',
-      signIn:  'Connexion'
+      signIn: 'Connexion'
     }
   },
   inventory: {
@@ -533,7 +518,7 @@ export default {
       newTitle: 'Nouvelle demande d\'imagerie'
     },
     alerts: {
-      completedTitle: 'Demande d\'imagerie traitée' ,
+      completedTitle: 'Demande d\'imagerie traitée',
       completedMessage: 'La demande d\'imagerie a été traitée.',
       savedTitle: 'Demande d\'imagerie enregistrée',
       savedMessage: 'La demande d\'imagerie a été enregistrée.'
@@ -571,7 +556,7 @@ export default {
     },
     alerts: {
       returnedTitle: 'Médicament retourné',
-      returnedMessage:  'Le médicament a été marqué comme retourné.',
+      returnedMessage: 'Le médicament a été marqué comme retourné.',
       savedTitle: 'Demande de médicament enregistrée',
       savedMessage: 'Le dossier de médicament a été enregistré.',
       fulfilledTitle: 'Demande de médicament traitée'

@@ -30,6 +30,12 @@ export default Ember.Mixin.create({
       'Medical Records Officer',
       'System Administrator'
     ],
+    add_billing_diagnosis: [
+      'Data Entry',
+      'Hospital Administrator',
+      'Medical Records Officer',
+      'System Administrator'
+    ],
     add_diagnosis: [
       'Data Entry',
       'Doctor',
@@ -446,30 +452,30 @@ export default Ember.Mixin.create({
       'Patient Administration',
       'System Administrator'
     ],
-    'user_roles': [
+    'define_user_roles': [
       'System Administrator'
     ]
   },
 
-  _getUserSessionVars: function() {
-    var session = this.get('session');
+  _getUserSessionVars() {
+    let session = this.get('session');
     if (!Ember.isEmpty(session) && session.get('isAuthenticated')) {
       return session.get('data.authenticated');
     }
   },
 
-  currentUserCan: function(capability) {
-    var sessionVars = this._getUserSessionVars();
+  currentUserCan(capability) {
+    let sessionVars = this._getUserSessionVars();
     if (!Ember.isEmpty(sessionVars) && !Ember.isEmpty(sessionVars.role)) {
-      var userCaps = this.get('session').get('data.authenticated.userCaps');
+      let userCaps = this.get('session').get('data.authenticated.userCaps');
       if (Ember.isEmpty(userCaps)) {
-        var capabilities = this.get('defaultCapabilities');
-        var supportedRoles = capabilities[capability];
+        let capabilities = this.get('defaultCapabilities');
+        let supportedRoles = capabilities[capability];
         if (!Ember.isEmpty(supportedRoles)) {
-          return supportedRoles.contains(sessionVars.role);
+          return supportedRoles.includes(sessionVars.role);
         }
       } else {
-        return userCaps.contains(capability);
+        return userCaps.includes(capability.camelize()); // User defined capabilities are camelcased.
       }
     }
     return false;
@@ -481,9 +487,9 @@ export default Ember.Mixin.create({
    * @param {boolean} returnUserName if true, always return the username instead
    * of the display name even if the display name is set.
    */
-  getUserName: function(returnUserName) {
-    var returnName,
-      sessionVars = this._getUserSessionVars();
+  getUserName(returnUserName) {
+    let returnName;
+    let sessionVars = this._getUserSessionVars();
     if (!Ember.isEmpty(sessionVars)) {
       if (returnUserName) {
         returnName = sessionVars.name;

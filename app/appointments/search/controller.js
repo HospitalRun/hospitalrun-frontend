@@ -22,16 +22,16 @@ export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes
   visitTypesList: Ember.computed.alias('appointmentsController.visitTypesList'),
 
   actions: {
-    search: function() {
-      var appointmentType = this.get('model.selectedAppointmentType'),
-        fieldsToSet = {
-          startKey: [],
-          previousStartKey: null,
-          previousStartKeys: []
-        },
-        provider = this.get('model.selectedProvider'),
-        status = this.get('model.selectedStatus'),
-        startDate = this.get('model.selectedStartingDate');
+    search() {
+      let appointmentType = this.get('model.selectedAppointmentType');
+      let fieldsToSet = {
+        startKey: [],
+        previousStartKey: null,
+        previousStartKeys: []
+      };
+      let provider = this.get('model.selectedProvider');
+      let status = this.get('model.selectedStatus');
+      let startDate = this.get('model.selectedStartingDate');
 
       if (Ember.isEmpty(appointmentType)) {
         fieldsToSet.appointmentType = null;

@@ -9,37 +9,27 @@ export default Ember.Service.extend({
   sessionData: Ember.computed.alias('session.data'),
 
   setup() {
-    const replicateConfigDB = this.replicateConfigDB.bind(this);
-    const loadConfig = this.loadConfig.bind(this);
-    return this.createDB().then((db) => {
-      this.set('configDB', db);
-      this.setCurrentUser();
-      return db;
-    }).then(replicateConfigDB).then(loadConfig)
-    .catch((err)=>console.log(err));
+    let replicateConfigDB = this.replicateConfigDB.bind(this);
+    let loadConfig = this.loadConfig.bind(this);
+    let db = this.createDB();
+    this.set('configDB', db);
+    this.setCurrentUser();
+    return replicateConfigDB(db).then(loadConfig);
   },
 
   createDB() {
-    const promise = new Ember.RSVP.Promise(function(resolve, reject) {
-      new PouchDB('config', function(err, db) {
-        if (err) {
-          reject(err);
-        }
-        resolve(db);
-      });
-    }, 'instantiating config database instance');
-    return promise;
+    return new PouchDB('config');
   },
   replicateConfigDB(db) {
-    const promise = new Ember.RSVP.Promise((resolve) => {
-      const url = `${document.location.protocol}//${document.location.host}/db/config`;
+    let promise = new Ember.RSVP.Promise((resolve) => {
+      let url = `${document.location.protocol}//${document.location.host}/db/config`;
       db.replicate.from(url).then(resolve).catch(resolve);
     });
     return promise;
   },
   loadConfig() {
-    const config = this.get('configDB');
-    var options = {
+    let config = this.get('configDB');
+    let options = {
       include_docs: true,
       keys: [
         'config_consumer_key',
@@ -56,8 +46,8 @@ export default Ember.Service.extend({
           console.log('Could not get configDB configs:', err);
           reject(err);
         }
-        const configObj = {};
-        for (var i = 0; i < response.rows.length; i++) {
+        let configObj = {};
+        for (let i = 0; i < response.rows.length; i++) {
           if (!response.rows[i].error && response.rows[i].doc) {
             configObj[response.rows[i].id] = response.rows[i].doc.value;
           }
@@ -67,7 +57,7 @@ export default Ember.Service.extend({
     }, 'getting configuration from the database');
   },
   getFileLink(id) {
-    const config = this.get('configDB');
+    let config = this.get('configDB');
     return new Ember.RSVP.Promise(function(resolve, reject) {
       config.get(`file-link_${id}`, function(err, doc) {
         if (err) {
@@ -78,13 +68,13 @@ export default Ember.Service.extend({
     });
   },
   removeFileLink(id) {
-    const config = this.get('configDB');
+    let config = this.get('configDB');
     return this.getFileLink(id).then(function(fileLink) {
       config.remove(fileLink);
     });
   },
   saveFileLink(fileName, id) {
-    const config = this.get('configDB');
+    let config = this.get('configDB');
     return new Ember.RSVP.Promise(function(resolve, reject) {
       config.put({ fileName }, `file-link_${id}`, function(err, doc) {
         if (err) {
@@ -94,13 +84,13 @@ export default Ember.Service.extend({
       });
     });
   },
-  saveOauthConfigs: function(configs) {
-    const configDB = this.get('configDB');
-    var configKeys = Object.keys(configs);
-    var savePromises = [];
+  saveOauthConfigs(configs) {
+    let configDB = this.get('configDB');
+    let configKeys = Object.keys(configs);
+    let savePromises = [];
     return this._getOauthConfigs(configKeys).then(function(records) {
       configKeys.forEach(function(key) {
-        var configRecord = records.rows.findBy('key', key);
+        let configRecord = records.rows.findBy('key', key);
         if (!configRecord || !configRecord.doc) {
           configRecord = {
             _id: key,
@@ -128,9 +118,9 @@ export default Ember.Service.extend({
   },
 
   getConfigValue(id, defaultValue) {
-    const configDB = this.get('configDB');
+    let configDB = this.get('configDB');
     return new Ember.RSVP.Promise(function(resolve) {
-      configDB.get('config_' + id).then(function(doc) {
+      configDB.get(`config_${id}`).then(function(doc) {
         run(null, resolve, doc.value);
       })
         .catch(function() {
@@ -139,8 +129,8 @@ export default Ember.Service.extend({
     }, `get ${id} from config database`);
   },
 
-  _getOauthConfigs: function(configKeys) {
-    const configDB = this.get('configDB');
+  _getOauthConfigs(configKeys) {
+    let configDB = this.get('configDB');
     let options = {
       include_docs: true,
       keys: configKeys
@@ -148,9 +138,9 @@ export default Ember.Service.extend({
     return configDB.allDocs(options);
   },
 
-  setCurrentUser: function(userName) {
-    const config = this.get('configDB');
-    const sessionData = this.get('sessionData');
+  setCurrentUser(userName) {
+    let config = this.get('configDB');
+    let sessionData = this.get('sessionData');
     if (!userName && sessionData.authenticated) {
       userName = sessionData.authenticated.name;
     }

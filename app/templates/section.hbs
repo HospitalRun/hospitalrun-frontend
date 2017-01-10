@@ -1,45 +1,42 @@
 <div class="panel panel-default">
-
-    <div class="panel-heading clearfix">
-
-        <div class="view-top-bar">
-            <h1 class="view-current-title">{{currentScreenTitle}}</h1>
-            <h3 class="print-section">{{t 'messages.forAuthorizedPersons'}}</h3>
-            <div class="view-action-buttons">
-                {{#if newButtonAction}}
-                <button class="btn btn-primary" {{action newButtonAction}}>{{newButtonText}}</button>
-                {{/if}}
-                {{#if additionalButtons}}
-                    {{#each additionalButtons as |button|}}
-                        <button class={{button.class}} {{action button.buttonAction}}>
-                          {{#if buttonIcon}}<span class={{button.buttonIcon}}></span>{{/if}}
-                        {{button.buttonText}}</button>
-                    {{/each}}
-                {{/if}}
-            </div>
-        </div>
-
-        <div class="view-sub-bar">
-            <ul class="nav nav-pills view-sub-nav">
-                {{#each subActions as |subAction|}}
-                    {{#if subAction.statusQuery}}
-                        {{#active-link}}
-                          {{#link-to subAction.linkTo (query-params status=subAction.statusQuery) }}
-                            {{subAction.text}}
-                          {{/link-to}}
-                        {{/active-link}}
-                    {{else}}
-                        {{#active-link}}
-                          {{#link-to subAction.linkTo}}{{subAction.text}}{{/link-to}}
-                        {{/active-link}}
-                    {{/if}}
-                {{/each}}
-            </ul>
-
-        </div>
-
+  <div class="panel-heading clearfix">
+    <div class="view-top-bar">
+      <h1 class="view-current-title">{{currentScreenTitle}}</h1>
+      <h3 class="print-section">{{t 'messages.forAuthorizedPersons'}}</h3>
+      <div class="view-action-buttons">
+        {{#if newButtonAction}}
+          <button class="btn btn-primary" {{action newButtonAction}}>{{newButtonText}}</button>
+        {{/if}}
+        {{#if additionalButtons}}
+          {{#each additionalButtons as |button|}}
+            <button class={{button.class}} {{action button.buttonAction}}>
+              {{#if buttonIcon}}<span class={{button.buttonIcon}}></span>{{/if}}
+              {{button.buttonText}}
+            </button>
+          {{/each}}
+        {{/if}}
+      </div>
     </div>
-    <div class="panel-body">
-        {{outlet}}
+
+    <div class="view-sub-bar">
+      <ul class="nav nav-pills view-sub-nav">
+        {{#each subActions as |subAction|}}
+          {{#if subAction.statusQuery}}
+            {{#active-link}}
+              {{#link-to subAction.linkTo (query-params status=subAction.statusQuery) }}
+                {{subAction.text}}
+              {{/link-to}}
+            {{/active-link}}
+          {{else}}
+            {{#active-link}}
+              {{#link-to subAction.linkTo}}{{subAction.text}}{{/link-to}}
+            {{/active-link}}
+          {{/if}}
+        {{/each}}
+      </ul>
     </div>
+  </div>
+  <div class="panel-body">
+    {{outlet}}
+  </div>
 </div>

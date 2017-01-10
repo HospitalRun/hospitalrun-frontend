@@ -1,15 +1,15 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
 
-  canAddNote: function() {
+  canAddNote() {
     return this.currentUserCan('add_note') && (!Ember.isEmpty(this.get('visits')) || !Ember.isEmpty(this.get('model.visits')));
   },
 
-  canDeleteNote: function() {
+  canDeleteNote() {
     return this.currentUserCan('delete_note');
   },
 
-  _computeNoteType: function(visit) {
+  _computeNoteType(visit) {
     switch (visit.get('visitType')) {
       case 'Admission':
         if (Ember.isEmpty(visit.get('procedures'))) {
@@ -17,7 +17,6 @@ export default Ember.Mixin.create({
         } else {
           return 'Post-op';
         }
-        break;
       case 'Clinic':
       case 'Followup':
         return 'General';
@@ -26,8 +25,8 @@ export default Ember.Mixin.create({
     }
   },
 
-  _setNoteType: function() {
-    var model = this.get('model');
+  _setNoteType() {
+    let model = this.get('model');
     if (model.get('noteType') == null) {
       model.set('noteType', this._computeNoteType(model.get('visit')));
     }

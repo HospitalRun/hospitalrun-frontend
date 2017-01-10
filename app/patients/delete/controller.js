@@ -15,12 +15,12 @@ function deleteMany(manyArray) {
     // recursive call after resolving async model
     return manyArray.then(deleteMany);
   }
-  var recordsCount = manyArray.get('length');
+  let recordsCount = manyArray.get('length');
   if (!recordsCount) {
     // empty array: no records to delete
     return Ember.RSVP.resolve();
   }
-  var archivePromises = manyArray.map((recordToDelete) => {
+  let archivePromises = manyArray.map((recordToDelete) => {
     recordToDelete.set('archived', true);
     return recordToDelete.save().then(() => {
       return recordToDelete.unloadRecord();
@@ -37,16 +37,16 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
   // Override delete action on controller; we must delete
   // all related records before deleting patient record
   // otherwise errors will occur
-  deletePatient: function() {
-    var controller = this;
-    var patient = this.get('model');
-    var visits = this.getPatientVisits(patient);
-    var invoices = this.getPatientInvoices(patient);
-    var appointments = this.getPatientAppointments(patient);
-    var payments = patient.get('payments');
+  deletePatient() {
+    let controller = this;
+    let patient = this.get('model');
+    let visits = this.getPatientVisits(patient);
+    let invoices = this.getPatientInvoices(patient);
+    let appointments = this.getPatientAppointments(patient);
+    let payments = patient.get('payments');
     // resolve all async models first since they reference each other, then delete
     return Ember.RSVP.all([visits, invoices, appointments, payments]).then(function(records) {
-      var promises = [];
+      let promises = [];
       promises.push(controller.deleteVisits(records[0]));
       promises.push(controller.deleteInvoices(records[1]));
       promises.push(deleteMany(records[2]));   // appointments
@@ -58,22 +58,22 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
     });
   },
 
-  deleteVisits: function(visits) {
-    var promises = [];
+  deleteVisits(visits) {
+    let promises = [];
     visits.forEach(function(visit) {
-      var labs = visit.get('labs');
-      var procedures = visit.get('procedures');
-      var imaging = visit.get('imaging');
-      var procCharges = procedures.then(function(p) {
+      let labs = visit.get('labs');
+      let procedures = visit.get('procedures');
+      let imaging = visit.get('imaging');
+      let procCharges = procedures.then(function(p) {
         return p.get('charges');
       });
-      var labCharges = labs.then(function(l) {
+      let labCharges = labs.then(function(l) {
         return l.get('charges');
       });
-      var imagingCharges = imaging.then(function(i) {
+      let imagingCharges = imaging.then(function(i) {
         return i.get('charges');
       });
-      var visitCharges = visit.get('charges');
+      let visitCharges = visit.get('charges');
       promises.push(deleteMany(labs));
       promises.push(deleteMany(labCharges));
       promises.push(deleteMany(visit.get('patientNotes')));
@@ -90,7 +90,7 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
     });
   },
 
-  deleteInvoices: function(patientInvoices) {
+  deleteInvoices(patientInvoices) {
     return Ember.RSVP.resolve(patientInvoices).then(function(invoices) {
       let lineItems = Ember.A();
       invoices.forEach(function(i) {
@@ -108,8 +108,8 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
 
   actions: {
     // delete related records without modal dialogs
-    delete: function(patient) {
-      var controller = this;
+    delete(patient) {
+      let controller = this;
       this.send('closeModal');
       this.showProgressModal();
       this.deletePatient(patient).then(function() {

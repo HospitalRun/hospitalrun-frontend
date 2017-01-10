@@ -7,8 +7,8 @@ export default AbstractEditController.extend(UnitTypes, {
   cancelAction: 'closeModal',
 
   canEditQuantity: function() {
-    var originalQuantity = this.get('model.originalQuantity'),
-      currentQuantity = this.get('model.currentQuantity');
+    let originalQuantity = this.get('model.originalQuantity');
+    let currentQuantity = this.get('model.currentQuantity');
     if (currentQuantity < originalQuantity) {
       return false;
     }
@@ -42,16 +42,16 @@ export default AbstractEditController.extend(UnitTypes, {
 
   title: function() {
     let i18n = this.get('i18n');
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return i18n.t('inventory.titles.addPurchase');
     }
     return i18n.t('inventory.titles.editPurchase');
   }.property('model.isNew'),
 
-  beforeUpdate: function() {
-    var isNew = this.get('model.isNew'),
-      changedAttributes = this.get('model').changedAttributes();
+  beforeUpdate() {
+    let isNew = this.get('model.isNew');
+    let changedAttributes = this.get('model').changedAttributes();
     if (changedAttributes.originalQuantity) {
       this.set('model.currentQuantity', this.get('model.originalQuantity'));
       if (!isNew) {
@@ -64,7 +64,7 @@ export default AbstractEditController.extend(UnitTypes, {
     return Ember.RSVP.Promise.resolve();
   },
 
-  afterUpdate: function(record) {
+  afterUpdate(record) {
     if (this.get('newPurchase')) {
       this.send('addPurchase', record);
     } else {

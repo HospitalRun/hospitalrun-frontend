@@ -1,5 +1,5 @@
 import Ember from 'ember';
-var LoginController = Ember.Controller.extend({
+let LoginController = Ember.Controller.extend({
   session: Ember.inject.service(),
   errorMessage: null,
   identification: null,
@@ -9,8 +9,8 @@ var LoginController = Ember.Controller.extend({
     authenticate() {
       let { identification, password } = this.getProperties('identification', 'password');
       this.get('session').authenticate('authenticator:custom', {
-        identification: identification,
-        password: password
+        identification,
+        password
       }).catch((error) => {
         this.set('errorMessage', error.reason);
       });

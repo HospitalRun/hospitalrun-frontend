@@ -6,11 +6,11 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   modelName: null,
   newTitle: null,
 
-  _createNewRecord: function(params) {
+  _createNewRecord(params) {
     return new Ember.RSVP.Promise(function(resolve) {
       this.generateId().then(function(newId) {
         this.getNewData(params).then(function(data) {
-          var modelName = this.get('modelName');
+          let modelName = this.get('modelName');
           if (newId) {
             data.id = newId;
           }
@@ -25,8 +25,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   idParam: function() {
-    var modelName = this.get('modelName');
-    return modelName + '_id';
+    let modelName = this.get('modelName');
+    return `${modelName}_id`;
   }.property('modelName'),
 
   /**
@@ -34,7 +34,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
    * @return a promise that will resolved to a generated id;default is null which means that an
    * id will be automatically generated via Ember data.
    */
-  generateId: function() {
+  generateId() {
     return Ember.RSVP.resolve(null);
   },
 
@@ -42,12 +42,20 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
    * Override this function to define what data a new model should be instantiated with.
    * @return a promise that will resolve with the data for a new record; defaults to empty object.
    */
-  getNewData: function() {
+  getNewData() {
     return Ember.RSVP.resolve({});
   },
 
-  model: function(params) {
-    var idParam = this.get('idParam');
+  getScreenTitle(model) {
+    if (model.get('isNew')) {
+      return this.get('newTitle');
+    } else {
+      return this.get('editTitle');
+    }
+  },
+
+  model(params) {
+    let idParam = this.get('idParam');
     if (!Ember.isEmpty(idParam) && params[idParam] === 'new') {
       return this._createNewRecord(params);
     } else {
@@ -55,13 +63,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     }
   },
 
-  setupController: function(controller, model) {
-    var sectionDetails = {};
-    if (model.get('isNew')) {
-      sectionDetails.currentScreenTitle = this.get('newTitle');
-    } else {
-      sectionDetails.currentScreenTitle = this.get('editTitle');
-    }
+  setupController(controller, model) {
+    let sectionDetails = {};
+    sectionDetails.currentScreenTitle = this.getScreenTitle(model);
     if (this.get('hideNewButton')) {
       sectionDetails.newButtonAction = null;
     }

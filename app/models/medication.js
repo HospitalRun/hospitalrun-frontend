@@ -25,7 +25,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
   }),
 
   isRequested: function() {
-    var status = this.get('status');
+    let status = this.get('status');
     return (status === 'Requested');
   }.property('status'),
 
@@ -49,12 +49,12 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
     prescription: {
       acceptance: {
         accept: true,
-        if: function(object) {
+        if(object) {
           if (!object.get('hasDirtyAttributes') || object.get('isFulfilling')) {
             return false;
           }
-          var prescription = object.get('prescription'),
-            quantity = object.get('quantity');
+          let prescription = object.get('prescription');
+          let quantity = object.get('quantity');
           if (Ember.isEmpty(prescription) && Ember.isEmpty(quantity)) {
             // force validation to fail
             return true;
@@ -69,17 +69,17 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
     inventoryItemTypeAhead: {
       acceptance: {
         accept: true,
-        if: function(object) {
+        if(object) {
           if (!object.get('hasDirtyAttributes') || !object.get('isNew')) {
             return false;
           }
-          var itemName = object.get('inventoryItem.name'),
-            itemTypeAhead = object.get('inventoryItemTypeAhead');
+          let itemName = object.get('inventoryItem.name');
+          let itemTypeAhead = object.get('inventoryItemTypeAhead');
           if (Ember.isEmpty(itemName) || Ember.isEmpty(itemTypeAhead)) {
             // force validation to fail
             return true;
           } else {
-            var typeAheadName = itemTypeAhead.substr(0, itemName.length);
+            let typeAheadName = itemTypeAhead.substr(0, itemName.length);
             if (itemName !== typeAheadName) {
               return true;
             }
@@ -93,7 +93,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
 
     patientTypeAhead: {
       presence: {
-        if: function(object) {
+        if(object) {
           return (object.get('selectPatient'));
         }
       }
@@ -108,17 +108,17 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
         }
       },
       presence: {
-        if: function(object) {
-          var isFulfilling = object.get('isFulfilling');
+        if(object) {
+          let isFulfilling = object.get('isFulfilling');
           return isFulfilling;
         }
       },
       acceptance: {
         accept: true,
-        if: function(object) {
-          var isFulfilling = object.get('isFulfilling'),
-            requestQuantity = parseInt(object.get('quantity')),
-            quantityToCompare = null;
+        if(object) {
+          let isFulfilling = object.get('isFulfilling');
+          let requestQuantity = parseInt(object.get('quantity'));
+          let quantityToCompare = null;
           if (!isFulfilling) {
             // no validation needed when not fulfilling
             return false;
