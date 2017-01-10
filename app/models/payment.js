@@ -1,20 +1,25 @@
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
+import Ember from 'ember';
+
+const { computed, get } = Ember;
 
 export default AbstractModel.extend({
+  // Attributes
   amount: DS.attr('number'),
-  charityPatient: DS.attr('boolean'), // Is patient a charity case
-  expenseAccount: DS.attr('string'),
-  invoice: DS.belongsTo('invoice', {
-    async: false
-  }),
+  /* Is patient a charity case */
+  charityPatient: DS.attr('boolean'),
   datePaid: DS.attr('date'),
-  paymentType: DS.attr('string'),
+  expenseAccount: DS.attr('string'),
   notes: DS.attr('string'),
+  paymentType: DS.attr('string'),
 
-  canRemovePayment: function() {
-    return (this.get('paymentType') === 'Deposit');
-  }.property('paymentType'),
+  // Associations
+  invoice: DS.belongsTo('invoice', { async: false }),
+
+  canRemovePayment: computed('paymentType', function() {
+    return get(this, 'paymentType') === 'Deposit';
+  }),
 
   validations: {
     amount: {

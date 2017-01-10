@@ -33,7 +33,7 @@
           <div class="form-group col-sm-1">
             <label class="control-label">{{t 'inventory.labels.unit'}}</label>
             {{#if showDistributionUnit}}
-              <p class="form-control-static">{{model.inventoryItem.distributionUnit}}</p>
+              <p class="form-control-static inventory-distribution-unit">{{model.inventoryItem.distributionUnit}}</p>
             {{/if}}
           </div>
           {{number-input property="purchaseCost" label=(t 'inventory.labels.purchaseCost') class="col-sm-2 required test-inv-cost"}}
