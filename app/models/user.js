@@ -2,7 +2,11 @@ import DS from 'ember-data';
 import EmailValidation from 'hospitalrun/utils/email-validation';
 import Ember from 'ember';
 import EmberValidations from 'ember-validations';
+
+const { computed } = Ember;
+
 let User = DS.Model.extend(EmberValidations, {
+  // Attributes
   derived_key: DS.attr('string'),
   deleted: DS.attr('boolean'),
   displayName: DS.attr('string'),
@@ -17,18 +21,18 @@ let User = DS.Model.extend(EmberValidations, {
   salt: DS.attr('string'),
   userPrefix: DS.attr('string'),
 
-  displayRole: function() {
+  displayRole: computed('roles', function() {
     let roles = this.get('roles');
     if (!Ember.isEmpty(roles)) {
       return roles[0];
     }
-  }.property('roles'),
+  }),
 
   validations: {
     email: {
       format: {
         with: EmailValidation.emailRegex,
-        message: 'please enter a valid email address'
+        message: 'Please, enter a valid email address'
       }
     }
   }
