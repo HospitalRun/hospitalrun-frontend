@@ -1,10 +1,9 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import InventoryId from 'hospitalrun/mixins/inventory-id';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations';
-import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
-export default AbstractEditController.extend(InventoryId, InventoryLocations, InventorySelection, {
+export default AbstractEditController.extend(InventoryId, InventoryLocations, {
   doingUpdate: false,
   inventoryController: Ember.inject.controller('inventory'),
   inventoryItems: null,
