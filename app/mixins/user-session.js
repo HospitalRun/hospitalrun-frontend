@@ -6,6 +6,14 @@ export default Ember.Mixin.create({
       'User Administrator',
       'System Administrator'
     ],
+    add_allergy: [
+      'Data Entry',
+      'Doctor',
+      'Hospital Administrator',
+      'Medical Records Officer',
+      'Patient Administration',
+      'System Administrator'
+    ],
     appointments: [
       'Data Entry',
       'Finance',
@@ -50,6 +58,14 @@ export default Ember.Mixin.create({
       'Hospital Administrator',
       'Medical Records Officer',
       'Pharmacist',
+      'System Administrator'
+    ],
+    add_operative_plan: [
+      'Data Entry',
+      'Doctor',
+      'Hospital Administrator',
+      'Medical Records Officer',
+      'Patient Administration',
       'System Administrator'
     ],
     add_photo: [

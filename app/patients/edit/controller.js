@@ -9,6 +9,11 @@ import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitStatus from 'hospitalrun/utils/visit-statuses';
 
+const {
+  computed,
+  isEmpty
+} = Ember;
+
 export default AbstractEditController.extend(BloodTypes, DiagnosisActions, ReturnTo, UserSession, PatientId, PatientNotes, {
 
   canAddAppointment: function() {
@@ -304,6 +309,17 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
           medication.set('returnToPatient', this.get('model.id'));
           this.transitionToRoute('medication.edit', medication);
         }
+      }
+    },
+
+    editOperativePlan(operativePlan) {
+      let model = operativePlan;
+      if (isEmpty(model)) {
+        this._addChildObject('patients.operative-plan');
+      } else {
+        model.set('returnToVisit');
+        model.set('returnToPatient', this.get('model.id'));
+        this.transitionToRoute('patients.operative-plan', model);
       }
     },
 

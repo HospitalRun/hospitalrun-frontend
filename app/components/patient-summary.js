@@ -1,8 +1,10 @@
 import Ember from 'ember';
 import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
+import UserSession from 'hospitalrun/mixins/user-session';
 
 const {
   computed,
+  get,
   isEmpty
 } = Ember;
 
@@ -14,12 +16,15 @@ const DIAGNOSIS_KEYS = [
   'visit.diagnoses.@each.secondaryDiagnosis'
 ];
 
-export default Ember.Component.extend(PatientDiagnosis, {
+export default Ember.Component.extend(PatientDiagnosis, UserSession, {
+  allowAddAllergy: false,
+  allowAddDiagnosis: false,
+  allowAddOperativePlan: false,
   classNames: ['patient-summary'],
-  canAddDiagnosis: false,
   disablePatientLink: false,
   diagnosisList: null,
   editDiagnosisAction: 'editDiagnosis',
+  editOperativePlanAction: 'editOperativePlan',
   editProcedureAction: 'editProcedure',
   hideInActiveDiagnoses: true,
   patient: null,
@@ -27,6 +32,34 @@ export default Ember.Component.extend(PatientDiagnosis, {
   showAddDiagnosisAction: 'showAddDiagnosis',
   showPatientAction: 'showPatient',
   visit: null,
+
+  canAddAllergy: computed('allowAddAllergy', {
+    get() {
+      let allowAddAllergy = get(this, 'allowAddAllergy');
+      return allowAddAllergy && this.currentUserCan('add_allergy');
+    }
+  }),
+
+  canAddDiagnosis: computed('allowAddAllergy', {
+    get() {
+      let allowAddDiagnosis = get(this, 'allowAddDiagnosis');
+      return allowAddDiagnosis && this.currentUserCan('add_diagnosis');
+    }
+  }),
+
+  canAddOperativePlan: computed('allowAddOperativePlan', {
+    get() {
+      let allowAddOperativePlan = get(this, 'allowAddOperativePlan');
+      return allowAddOperativePlan && this.currentUserCan('add_operative_plan');
+    }
+  }),
+
+  currentOperativePlan: computed('patient.operativePlans.@each.status', {
+    get() {
+      let operativePlans = get(this, 'patient.operativePlans');
+      return operativePlans.findBy('isPlanned', true);
+    }
+  }),
 
   diagnosisContainer: computed('patient', 'visit', function() {
     // Pull diagnoses from visit if it is defined; otherwise pull from patient.
@@ -74,11 +107,15 @@ export default Ember.Component.extend(PatientDiagnosis, {
     return this.get('canAddDiagnosis') || this.get('havePrimaryDiagnoses');
   }),
 
-  hasAllergies: Ember.computed('patient.allergies.[]', function() {
-    return Ember.computed.notEmpty('patient.allergies');
-  }),
-
   actions: {
+    addOperativePlan() {
+      this.sendAction('editOperativePlanAction');
+    },
+
+    editOperativePlan(operativePlan) {
+      this.sendAction('editOperativePlanAction', operativePlan);
+    },
+
     linkToPatient() {
       let shouldLink = this.get('shouldLinkToPatient');
       if (shouldLink) {

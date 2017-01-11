@@ -30,9 +30,13 @@
       <div class="ps-info-data-block">
         {{#each primaryDiagnoses as |diagnosis index|}}
           {{#unless (eq index 0)}}, {{/unless}}
-          <a class="clickable primary-diagnosis" {{action "editDiagnosis" diagnosis bubbles=false}}>
+          {{#if canAddDiagnosis}}
+            <a class="clickable primary-diagnosis" {{action "editDiagnosis" diagnosis bubbles=false}}>
+              {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
+            </a>
+          {{else}}
             {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
-          </a>
+          {{/if}}
         {{/each}}
       </div>
     </div>
@@ -44,9 +48,13 @@
       <div class="ps-info-data-block">
         {{#each secondaryDiagnoses as |diagnosis index|}}
           {{#unless (eq index 0)}}, {{/unless}}
-          <a class="clickable secondary-diagnosis" {{action "editDiagnosis" diagnosis bubbles=false}}>
+          {{#if canAddDiagnosis}}
+            <a class="clickable secondary-diagnosis" {{action "editDiagnosis" diagnosis bubbles=false}}>
+              {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
+            </a>
+          {{else}}
             {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
-          </a>
+          {{/if}}
         {{/each}}
       </div>
     </div>
@@ -66,9 +74,25 @@
     </div>
   {{/if}}
 
-  {{#if hasAllergies}}
-    {{medication-allergy patient=patient}}
-  {{/if}}
+  {{medication-allergy patient=patient canAddAllergy=canAddAllergy}}
 
+  {{#if canAddOperativePlan}}
+    <div class="ps-info-group long-form">
+      <label class="ps-info-label wide">{{t 'patients.labels.operativePlan'}}</label>
+       {{#unless currentOperativePlan}}
+        <a class="clickable" {{action "addOperativePlan" bubbles=false }}>
+          <span class="octicon octicon-plus"></span>
+          {{t 'patients.buttons.addOperativePlan' }}
+        </a>
+      {{/unless}}
+      <div class="ps-info-data-block">
+        {{#if currentOperativePlan}}
+          <a class="clickable" {{action "editOperativePlan" currentOperativePlan bubbles=false }}>
+            {{t 'patients.buttons.editOperativePlan' }}
+          </a>
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
 
 </div>

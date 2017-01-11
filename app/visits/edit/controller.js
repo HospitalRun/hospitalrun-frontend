@@ -99,6 +99,9 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     }
   }.property('model.returnTo', 'model.returnToPatient'),
 
+  allowAddAllergy: computed.not('model.isNew'),
+  allowAddDiagnosis: computed.not('model.isNew'),
+  allowAddOperativePlan: computed.not('model.isNew'),
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
   createNewPatient: false,
@@ -421,6 +424,16 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       if (medication.get('canEdit')) {
         medication.set('returnToVisit', this.get('model.id'));
         this.transitionToRoute('medication.edit', medication);
+      }
+    },
+
+    editOperativePlan(operativePlan) {
+      let model = operativePlan;
+      if (isEmpty(model)) {
+        this._addChildObject('patients.operative-plan');
+      } else {
+        model.set('returnToVisit', this.get('model.id'));
+        this.transitionToRoute('patients.operative-plan', model);
       }
     },
 
