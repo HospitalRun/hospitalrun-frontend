@@ -9,13 +9,14 @@ moduleForModel('inv-request', 'Unit | Model | inv-request', {
     'ember-validations@validator:local/format',
     'ember-validations@validator:local/numericality',
     'ember-validations@validator:local/presence',
-    'model:inventory',
-    'model:patient',
-    'model:visit',
     'model:allergy',
+    'model:diagnosis',
+    'model:inventory',
+    'model:operative-plan',
+    'model:patient',
     'model:payment',
     'model:price-profile',
-    'model:diagnosis'
+    'model:visit'
   ]
 });
 

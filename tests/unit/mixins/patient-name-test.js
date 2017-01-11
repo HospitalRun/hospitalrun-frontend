@@ -10,6 +10,7 @@ moduleFor('mixin:patient-name', 'Unit | Mixin | patient-name', {
     'model:payment',
     'model:price-profile',
     'model:diagnosis',
+    'model:operative-plan',
     'ember-validations@validator:local/format',
     'ember-validations@validator:local/presence'
   ],

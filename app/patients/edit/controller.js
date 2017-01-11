@@ -9,10 +9,7 @@ import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitStatus from 'hospitalrun/utils/visit-statuses';
 
-const {
-  computed,
-  isEmpty
-} = Ember;
+const { isEmpty } = Ember;
 
 export default AbstractEditController.extend(BloodTypes, DiagnosisActions, ReturnTo, UserSession, PatientId, PatientNotes, {
 
