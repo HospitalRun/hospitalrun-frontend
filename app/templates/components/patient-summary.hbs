@@ -9,11 +9,12 @@
     <label class="ps-info-label">{{t 'labels.name'}}</label>
     <span class="ps-info-data">{{patient.displayName}}</span>
   </div>
-
-  <div class="ps-info-group">
-    <label class="ps-info-label">{{t 'labels.sex'}}</label>
-    <span class="ps-info-data">{{patient.sex}}</span>
-  </div>
+  {{#if patient.sex}}
+    <div class="ps-info-group">
+      <label class="ps-info-label">{{t 'labels.sex'}}</label>
+      <span class="ps-info-data">{{patient.sex}}</span>
+    </div>
+  {{/if}}
   {{#if patient.dateOfBirth}}
     <div class="ps-info-group">
       <label class="ps-info-label">{{t 'labels.age'}}</label>
