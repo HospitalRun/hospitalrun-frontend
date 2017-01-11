@@ -1,7 +1,9 @@
 import Ember from 'ember';
 
 const {
-  computed
+  computed,
+  get,
+  isEmpty
 } = Ember;
 
 export default Ember.Component.extend({
@@ -32,6 +34,14 @@ export default Ember.Component.extend({
         buttonIcon: 'octicon octicon-x',
         buttonText: btn
       }];
+    }
+  }),
+
+  showAllergies: computed('canAddAllergy', 'patient.allergies.[]', {
+    get() {
+      let canAddAllergy = get(this, 'canAddAllergy');
+      let patientAllergies = get(this, 'patient.allergies');
+      return canAddAllergy || !isEmpty(patientAllergies);
     }
   }),
 

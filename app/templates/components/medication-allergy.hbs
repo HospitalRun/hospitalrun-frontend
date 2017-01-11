@@ -1,19 +1,21 @@
-<label class="ps-info-label wide">{{t 'allergies.labels.patientAllergy'}}</label>
+{{#if showAllergies}}
+  <label class="ps-info-label wide">{{t 'allergies.labels.patientAllergy'}}</label>
 
-{{#if canAddAllergy}}
-<a class="clickable" {{action "createNewAllergy"}}><span class="octicon octicon-plus"></span>  {{t 'allergies.buttons.addAllergy'}}</a>
+  {{#if canAddAllergy}}
+  <a class="clickable" {{action "createNewAllergy"}}><span class="octicon octicon-plus"></span>  {{t 'allergies.buttons.addAllergy'}}</a>
+  {{/if}}
+
+  <div class="ps-info-data-block allergy-list">
+    {{#each patient.allergies as |allergy index|}}
+      {{#unless (eq index 0)}}, {{/unless}}
+      {{#if canAddAllergy}}
+        <a class="clickable allergy-button" {{action "editAllergy" allergy}}>{{allergy.name}}</a>
+      {{else}}
+        <span>{{allergy.name}}</span>
+      {{/if}}
+    {{/each}}
+  </div>
 {{/if}}
-
-<div class="ps-info-data-block allergy-list">
-  {{#each patient.allergies as |allergy index|}}
-    {{#unless (eq index 0)}}, {{/unless}}
-    {{#if canAddAllergy}}
-      <a class="clickable allergy-button" {{action "editAllergy" allergy}}>{{allergy.name}}</a>
-    {{else}}
-      {{allergy.name}}
-    {{/if}}
-  {{/each}}
-</div>
 
 {{#if displayModal}}
   {{#modal-dialog
