@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import uuid from 'npm:uuid';
 export default Ember.Mixin.create({
   aisleToFind: null,
   locationToFind: null,
