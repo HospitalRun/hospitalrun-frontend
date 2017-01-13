@@ -22,44 +22,12 @@
     </div>
   {{/if}}
 
-  {{#if showPrimaryDiagnoses}}
-    <div class="ps-info-group long-form">
-      <label class="ps-info-label wide">{{t 'patients.labels.primaryDiagnosis'}}</label>
-      {{#if canAddDiagnosis}}
-        <a class="clickable" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.addDiagnosis' }}</a>
-      {{/if}}
-      <div class="ps-info-data-block">
-        {{#each primaryDiagnoses as |diagnosis index|}}
-          {{#unless (eq index 0)}}, {{/unless}}
-          {{#if canAddDiagnosis}}
-            <a class="clickable primary-diagnosis" {{action "editDiagnosis" diagnosis bubbles=false}}>
-              {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
-            </a>
-          {{else}}
-            {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
-          {{/if}}
-        {{/each}}
-      </div>
-    </div>
-  {{/if}}
-
-  {{#if haveSecondaryDiagnoses}}
-    <div class="ps-info-group long-form">
-      <label class="ps-info-label wide">{{t 'patients.labels.secondaryDiagnosis'}}</label>
-      <div class="ps-info-data-block">
-        {{#each secondaryDiagnoses as |diagnosis index|}}
-          {{#unless (eq index 0)}}, {{/unless}}
-          {{#if canAddDiagnosis}}
-            <a class="clickable secondary-diagnosis" {{action "editDiagnosis" diagnosis bubbles=false}}>
-              {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
-            </a>
-          {{else}}
-            {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
-          {{/if}}
-        {{/each}}
-      </div>
-    </div>
-  {{/if}}
+  {{patient-diagnosis
+    allowAddDiagnosis=allowAddDiagnosis
+    diagnosisContainer=diagnosisContainer
+    diagnosisList=diagnosisList
+    hideInActiveDiagnoses=hideInActiveDiagnoses
+  }}
 
   {{#if haveProcedures}}
     <div class="ps-info-group long-form">
@@ -67,7 +35,7 @@
       <div class="ps-info-data-block">
         {{#each patientProcedures as |procedure index|}}
           {{#unless (eq index 0)}}, {{/unless}}
-          <a {{action 'editProcedure' procedure}} class="clickable">
+          <a {{action 'editProcedure' procedure}} class="clickable patient-procedure">
             {{procedure.description}} (<strong>{{date-format procedure.procedureDate}}</strong>)
           </a>
         {{/each}}

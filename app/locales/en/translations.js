@@ -134,6 +134,7 @@ export default {
         includeOtherOption: 'Include Other Option',
         label: 'Label',
         newForm: 'New Form',
+        operationReportFormType: 'Operation Report',
         operativePlanFormType: 'Operative Plan',
         otherOptionLabel: 'Other Option Label',
         patientFormType: 'Patient',
@@ -1211,11 +1212,13 @@ export default {
       caseComplexity: 'Case Complexity',
       complications: 'Complications',
       operationDescription: 'Operation Description',
+      preOpPrimaryDiagnosis: 'Pre-op Primary Diagnosis',
+      preOpSecondaryDiagnosis: 'Pre-op Secondary Diagnosis',
       surgeon: 'Surgeon',
       surgeryDate: 'Surgery Date'
     },
     messages: {
-      planSaved: 'The operation report has been saved.'
+      reportSaved: 'The operation report has been saved.'
     },
     titles: {
       editTitle: 'Edit Operation Report',

@@ -103,7 +103,7 @@ export default AbstractEditController.extend(OperativePlanStatuses, PatientSubmo
       let preOpDiagnosis = get(operationReport, 'preOpDiagnoses');
       newRoute.currentModel.setProperties(propertiesToCopy);
       preOpDiagnosis.addObjects(diagnoses);
-      set(preOpDiagnosis, 'returnToPatient', get(patient, 'id'));
+      set(newRoute.currentModel, 'returnToPatient', get(patient, 'id'));
       newRoute.controller.getPatientDiagnoses(patient);
     });
   },

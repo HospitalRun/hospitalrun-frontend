@@ -16,14 +16,14 @@
 </div>
 {{#if haveProcedures}}
   <h4>{{t 'components.operativeProcedures.titles.procedures'}}</h4>
-  <table class="table">
+  <table class="table procedure-listing">
     <tr class="table-header">
       <th>{{t 'components.operativeProcedures.labels.procedure'}}</th>
       <th>{{t 'labels.action'}}</th>
     </tr>
     {{#each model.procedures as |procedure|}}
       <tr>
-        <td>{{procedure.description}}</td>
+        <td class="procedure-description">{{procedure.description}}</td>
         <td>
           <button type="button" class="btn btn-default warning" {{action "deleteProcedure" procedure bubbles=false }}>
             <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
