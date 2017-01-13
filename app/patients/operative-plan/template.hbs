@@ -1,42 +1,8 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false }}
-    {{patient-summary patient=model.patient disablePatientLink=true }}
+    {{patient-summary patient=model.patient disablePatientLink=true diagnosisContainer=model}}
     {{em-text property="operationDescription" label=(t 'operativePlan.labels.operationDescription')}}
-    <div class="row">
-      {{select-or-typeahead
-        className=(concat (if (not-eq haveProcedures true) 'required ') 'procedure-description col-sm-10')
-        property="procedureDescription"
-        label=(t 'operativePlan.labels.procedure') list=procedureList
-        selection=procedureDescription hint=false
-      }}
-      <div class="col-sm-2">
-        <label class="control-label">&nbsp;</label>
-        <p class=" form-control-static">
-          <button class="btn btn-primary" {{action 'addProcedure'}}>
-            <span class="octicon octicon-plus"></span> {{t 'operativePlan.buttons.addProcedure'}}
-          </button>
-        </p>
-      </div>
-    </div>
-    {{#if haveProcedures}}
-      <h4>{{t 'operativePlan.titles.procedures'}}</h4>
-      <table class="table">
-        <tr class="table-header">
-          <th>{{t 'operativePlan.labels.procedure'}}</th>
-          <th>{{t 'labels.action'}}</th>
-        </tr>
-        {{#each model.procedures as |procedure|}}
-          <tr>
-            <td>{{procedure.description}}</td>
-            <td>
-              <button type="button" class="btn btn-default warning" {{action "deleteProcedure" procedure bubbles=false }}>
-                <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
-              </button>
-            </td>
-          </tr>
-        {{/each}}
-      </table>
-    {{/if}}
+    {{operative-procedures model=model procedureList=procedureList}}
     <div class="row">
       {{date-picker property="surgeryDate" label=(t 'operativePlan.labels.surgeryDate') class="form-input-group col-sm-4"}}
       {{select-or-typeahead className="col-sm-4" property="surgeon"

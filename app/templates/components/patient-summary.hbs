@@ -65,8 +65,8 @@
     <div class="ps-info-group long-form">
       <label class="ps-info-label wide">{{t 'labels.procedures'}}</label>
       <div class="ps-info-data-block">
-        {{#each patientProcedures as |procedure|}}
-          {{#unless procedure.first}}, {{/unless}}
+        {{#each patientProcedures as |procedure index|}}
+          {{#unless (eq index 0)}}, {{/unless}}
           <a {{action 'editProcedure' procedure}} class="clickable">
             {{procedure.description}} (<strong>{{date-format procedure.procedureDate}}</strong>)
           </a>

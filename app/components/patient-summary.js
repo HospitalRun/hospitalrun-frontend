@@ -5,15 +5,15 @@ import UserSession from 'hospitalrun/mixins/user-session';
 const {
   computed,
   get,
-  isEmpty
+  isEmpty,
+  set
 } = Ember;
 
 const DIAGNOSIS_KEYS = [
-  'diganosisContainer',
+  'diagnosisContainer',
   'hideInActiveDiagnoses',
-  'patient.diagnoses.@each.active',
-  'patient.diagnoses.@each.secondaryDiagnosis',
-  'visit.diagnoses.@each.secondaryDiagnosis'
+  'diagnosisContainer.diagnoses.@each.active',
+  'diagnosisContainer.diagnoses.@each.secondaryDiagnosis'
 ];
 
 export default Ember.Component.extend(PatientDiagnosis, UserSession, {
@@ -21,17 +21,18 @@ export default Ember.Component.extend(PatientDiagnosis, UserSession, {
   allowAddDiagnosis: false,
   allowAddOperativePlan: false,
   classNames: ['patient-summary'],
-  disablePatientLink: false,
+  diagnosisContainer: null,
   diagnosisList: null,
+  disablePatientLink: false,
   editDiagnosisAction: 'editDiagnosis',
   editOperativePlanAction: 'editOperativePlan',
+  editOperationReportAction: 'editOperationReport',
   editProcedureAction: 'editProcedure',
   hideInActiveDiagnoses: true,
   patient: null,
   patientProcedures: null,
   showAddDiagnosisAction: 'showAddDiagnosis',
   showPatientAction: 'showPatient',
-  visit: null,
 
   canAddAllergy: computed('allowAddAllergy', {
     get() {
@@ -59,15 +60,6 @@ export default Ember.Component.extend(PatientDiagnosis, UserSession, {
       let operativePlans = get(this, 'patient.operativePlans');
       return operativePlans.findBy('isPlanned', true);
     }
-  }),
-
-  diagnosisContainer: computed('patient', 'visit', function() {
-    // Pull diagnoses from visit if it is defined; otherwise pull from patient.
-    let diagnosisContainer = this.get('visit');
-    if (isEmpty(diagnosisContainer)) {
-      diagnosisContainer = this.get('patient');
-    }
-    return diagnosisContainer;
   }),
 
   havePrimaryDiagnoses: computed('primaryDiagnoses.length', function() {
@@ -107,6 +99,14 @@ export default Ember.Component.extend(PatientDiagnosis, UserSession, {
     return this.get('canAddDiagnosis') || this.get('havePrimaryDiagnoses');
   }),
 
+  didReceiveAttrs() {
+    this._super(...arguments);
+    let diagnosisContainer = get(this, 'diagnosisContainer');
+    if (isEmpty(diagnosisContainer)) {
+      set(this, 'diagnosisContainer', get(this, 'patient'));
+    }
+  },
+
   actions: {
     addOperativePlan() {
       this.sendAction('editOperativePlanAction');
@@ -133,10 +133,12 @@ export default Ember.Component.extend(PatientDiagnosis, UserSession, {
     },
 
     editProcedure(procedure) {
-      procedure.set('returnToVisit');
-      procedure.set('returnToPatient', this.get('patient.id'));
-      procedure.set('patient', this.get('patient'));
-      this.sendAction('editProcedureAction', procedure);
+      let report = get(procedure, 'report');
+      if (isEmpty(report)) {
+        this.sendAction('editProcedureAction', procedure);
+      } else {
+        this.sendAction('editOperationReportAction', report);
+      }
     },
 
     showAddDiagnosis() {

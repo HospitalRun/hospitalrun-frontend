@@ -282,7 +282,8 @@ export default {
         addSocialwork: 'Add Social Work',
         deleteNote: 'Delete Note',
         addOperativePlan: 'Add Operative Plan',
-        addAllergy: 'Add Allergy'
+        addAllergy: 'Add Allergy',
+        addOperationReport: 'Add Operation Report'
       },
       messages: {
         roleSaved: 'The {{roleName}} role has been saved.'
@@ -1129,6 +1130,17 @@ export default {
     },
     priceList: {
       charges: '{{pricingType}} charges'
+    },
+    operativeProcedures: {
+      buttons: {
+        addProcedure: 'Add Procedure'
+      },
+      labels: {
+        procedure: 'Procedure'
+      },
+      titles: {
+        procedures: 'Procedures'
+      }
     }
   },
   customForms: {
@@ -1169,7 +1181,6 @@ export default {
   },
   operativePlan: {
     buttons: {
-      addProcedure: 'Add Procedure',
       completePlan: 'Complete Plan'
     },
     labels: {
@@ -1180,7 +1191,6 @@ export default {
       droppedStatus: 'Dropped',
       operationDescription: 'Operation Description',
       plannedStatus: 'Planned',
-      procedure: 'Procedure',
       status: 'Status',
       surgeon: 'Surgeon',
       surgeryDate: 'Surgery Date'
@@ -1191,8 +1201,26 @@ export default {
     titles: {
       editTitle: 'Edit Operative Plan',
       newTitle: 'New Operative Plan',
-      planSaved: 'Plan Saved',
-      procedures: 'Procedures'
+      planSaved: 'Plan Saved'
+    }
+  },
+  operationReport: {
+    labels: {
+      additionalNotes: 'Additional Notes',
+      assistant: 'Assistant',
+      caseComplexity: 'Case Complexity',
+      complications: 'Complications',
+      operationDescription: 'Operation Description',
+      surgeon: 'Surgeon',
+      surgeryDate: 'Surgery Date'
+    },
+    messages: {
+      planSaved: 'The operation report has been saved.'
+    },
+    titles: {
+      editTitle: 'Edit Operation Report',
+      newTitle: 'New Operation Report',
+      reportSaved: 'Report Saved'
     }
   }
 };

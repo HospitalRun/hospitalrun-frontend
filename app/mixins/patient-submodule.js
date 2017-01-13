@@ -69,6 +69,28 @@ export default Ember.Mixin.create(PatientVisits, {
     }.bind(this));
   },
 
+  addDiagnosisToModelAndPatient(newDiagnosis) {
+    let diagnoses = this.get('model.diagnoses');
+    diagnoses.addObject(newDiagnosis);
+    let patientDiagnoses = this.get('model.patient.diagnoses');
+    let diagnosisExists = patientDiagnoses.any((diagnosis) => {
+      return diagnosis.get('active') === true
+          && diagnosis.get('diagnosis') === newDiagnosis.get('diagnosis')
+          && diagnosis.get('secondaryDiagnosis') === newDiagnosis.get('secondaryDiagnosis');
+    });
+    if (!diagnosisExists) {
+      patientDiagnoses.addObject(newDiagnosis);
+      let patient = this.get('model.patient');
+      patient.save().then(() => {
+        this.send('update', true);
+        this.send('closeModal');
+      });
+    } else {
+      this.send('update', true);
+      this.send('closeModal');
+    }
+  },
+
   _finishAddChildToVisit(objectToAdd, childName, visit, resolve, reject) {
     visit.get(childName).then(function(visitChildren) {
       visitChildren.addObject(objectToAdd);
@@ -123,6 +145,26 @@ export default Ember.Mixin.create(PatientVisits, {
         this.send('closeModal');
       });
     });
+  },
+
+  getPatientDiagnoses(patient) {
+    let diagnoses = patient.get('diagnoses');
+    let visitDiagnoses;
+    if (!isEmpty(diagnoses)) {
+      visitDiagnoses = diagnoses.filterBy('active', true).map((diagnosis) => {
+        let description = diagnosis.get('diagnosis');
+        let newDiagnosisProperties = diagnosis.getProperties('active', 'date', 'diagnosis', 'secondaryDiagnosis');
+        newDiagnosisProperties.diagnosis = description;
+        return this.store.createRecord('diagnosis',
+          newDiagnosisProperties
+        );
+      });
+    }
+    let currentDiagnoses = this.get('model.diagnoses');
+    currentDiagnoses.clear();
+    if (!isEmpty(visitDiagnoses)) {
+      currentDiagnoses.addObjects(visitDiagnoses);
+    }
   },
 
   patientId: Ember.computed.alias('model.patient.id'),
@@ -189,6 +231,19 @@ export default Ember.Mixin.create(PatientVisits, {
       promises.push(visit.get('vitals'));
     }
     return promises;
+  },
+
+  saveNewDiagnoses() {
+    let diagnoses = this.get('model.diagnoses');
+    diagnoses = diagnoses.filterBy('isNew', true);
+    if (!isEmpty(diagnoses)) {
+      let savePromises = diagnoses.map((diagnoses) => {
+        return diagnoses.save();
+      });
+      return Ember.RSVP.all(savePromises);
+    } else {
+      return Ember.RSVP.resolve();
+    }
   },
 
   /**

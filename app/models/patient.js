@@ -55,6 +55,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   // Associations
   allergies: DS.hasMany('allergy', { async: true }),
   diagnoses: DS.hasMany('diagnosis', { async: false }),
+  operationReports: DS.hasMany('operation-report', { async: true }),
   operativePlans: DS.hasMany('operative-plan', { async: true }),
   payments: DS.hasMany('payment', { async: true }),
   paymentProfile: DS.belongsTo('price-profile', { async: false }),

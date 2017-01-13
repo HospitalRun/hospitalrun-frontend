@@ -1,0 +1,28 @@
+{{#edit-panel editPanelProps=editPanelProps}}
+  {{#em-form model=model submitButton=false }}
+    {{patient-summary
+      allowAddDiagnosis=true
+      diagnosisContainer=model
+      diagnosisList=diagnosisList
+      disablePatientLink=true
+      patient=model.patient
+    }}
+    {{em-text property="operationDescription" label=(t 'operationReport.labels.operationDescription')}}
+    <div class="row">
+      {{date-picker property="surgeryDate" label=(t 'operationReport.labels.surgeryDate') class="form-input-group col-sm-4"}}
+      {{select-or-typeahead className="col-sm-3" property="surgeon"
+        label=(t "operationReport.labels.surgeon") list=physicianList
+        selection=model.surgeon
+      }}
+      {{select-or-typeahead className="col-sm-3" property="assistant"
+        label=(t "operationReport.labels.assistant") list=physicianList
+        selection=model.assistant
+      }}
+      {{em-input property="caseComplexity" label=(t 'operationReport.labels.caseComplexity') class="col-sm-2"}}
+    </div>
+    {{operative-procedures model=model procedureList=procedureList}}
+    {{em-text property="complications" label=(t 'operationReport.labels.complications')}}
+    {{em-text property="additionalNotes" label=(t 'operationReport.labels.additionalNotes')}}
+    {{custom-form-manager model=model formType="operationReport"}}
+  {{/em-form}}
+{{/edit-panel}}

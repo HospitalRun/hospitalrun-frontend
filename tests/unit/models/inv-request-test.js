@@ -12,6 +12,7 @@ moduleForModel('inv-request', 'Unit | Model | inv-request', {
     'model:allergy',
     'model:diagnosis',
     'model:inventory',
+    'model:operation-report',
     'model:operative-plan',
     'model:patient',
     'model:payment',

@@ -1,5 +1,6 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
+import { addProcedure } from 'hospitalrun/components/operative-procedures';
 import { COMPLETED_STATUS } from 'hospitalrun/mixins/operative-plan-statuses';
 import OperativePlanStatuses from 'hospitalrun/mixins/operative-plan-statuses';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
@@ -9,12 +10,32 @@ const {
   computed: { alias },
   get,
   inject,
-  isEmpty,
   RSVP,
   set
 } = Ember;
 
+// Properties to copy from plan to operative report
+const PLAN_KEYS_TO_COPY = [
+  'additionalNotes',
+  'caseComplexity',
+  'patient',
+  'procedures',
+  'operationDescription',
+  'surgeon',
+  'surgeryDate'
+];
+
 export default AbstractEditController.extend(OperativePlanStatuses, PatientSubmodule, {
+  completedPlan: false,
+  lookupListsToUpdate: [{
+    name: 'physicianList',
+    property: 'model.surgeon',
+    id: 'physician_list'
+  }, {
+    name: 'procedureList',
+    property: 'modelProcedures',
+    id: 'procedure_list'
+  }],
   newPlan: false,
   updateCapability: 'add_operative_plan',
 
@@ -37,6 +58,10 @@ export default AbstractEditController.extend(OperativePlanStatuses, PatientSubmo
     }
   }),
 
+  modelProcedures: computed.map('model.procedures', function(procedure) {
+    return get(procedure, 'description');
+  }),
+
   afterUpdate() {
     let newPlan = get(this, 'newPlan');
     if (newPlan) {
@@ -48,52 +73,58 @@ export default AbstractEditController.extend(OperativePlanStatuses, PatientSubmo
   },
 
   beforeUpdate() {
-    this._addProcedure();
-    set(this, 'newPlan', get(this, 'model.isNew'));
-    return RSVP.resolve();
+    let model = get(this, 'model');
+    let isNew = get(model, 'isNew');
+    let status = get(model, 'status');
+    addProcedure(model);
+    set(this, 'newPlan', isNew);
+    if (status === COMPLETED_STATUS) {
+      let changedAttributes = model.changedAttributes();
+      if (changedAttributes.status) {
+        set(this, 'completedPlan', true);
+      }
+    } else {
+      set(this, 'completedPlan', false);
+    }
+    if (isNew) {
+      return this.saveNewDiagnoses();
+    } else {
+      return RSVP.resolve();
+    }
   },
 
-  haveProcedures: computed('model.procedures.[]', {
-    get() {
-      return !isEmpty(get(this, 'model.procedures'));
-    }
-  }),
-
-  _addProcedure() {
-    let model = get(this, 'model');
-    let procedures = get(model, 'procedures');
-    let description = get(model, 'procedureDescription');
-    if (!isEmpty(description)) {
-      procedures.addObject({
-        description
-      });
-      set(model, 'procedureDescription', null);
-    }
+  _createOperationReport() {
+    this.transitionToRoute('patients.operation-report', 'new').then((newRoute) => {
+      let operativePlan = get(this, 'model');
+      let operationReport = newRoute.currentModel;
+      let propertiesToCopy = operativePlan.getProperties(...PLAN_KEYS_TO_COPY);
+      let diagnoses = get(operativePlan, 'diagnoses');
+      let patient = get(operativePlan, 'patient');
+      let preOpDiagnosis = get(operationReport, 'preOpDiagnoses');
+      newRoute.currentModel.setProperties(propertiesToCopy);
+      preOpDiagnosis.addObjects(diagnoses);
+      set(preOpDiagnosis, 'returnToPatient', get(patient, 'id'));
+      newRoute.controller.getPatientDiagnoses(patient);
+    });
   },
 
   _finishAfterUpdate() {
-    let i18n = get(this, 'i18n');
-    let updateMessage = i18n.t('operativePlan.messages.planSaved');
-    let updateTitle = i18n.t('operativePlan.titles.planSaved');
-    this.displayAlert(updateTitle, updateMessage);
+    let completedPlan = get(this, 'completedPlan');
+    if (completedPlan) {
+      this._createOperationReport();
+    } else {
+      let i18n = get(this, 'i18n');
+      let updateMessage = i18n.t('operativePlan.messages.planSaved');
+      let updateTitle = i18n.t('operativePlan.titles.planSaved');
+      this.displayAlert(updateTitle, updateMessage);
+    }
   },
 
   actions: {
-    addProcedure() {
-      this._addProcedure();
-    },
-
     completePlan() {
       let model = get(this, 'model');
       set(model, 'status', COMPLETED_STATUS);
       this.send('update');
-    },
-
-    deleteProcedure(procedureToDelete) {
-      let model = get(this, 'model');
-      let procedures = get(model, 'procedures');
-      procedures.removeObject(procedureToDelete);
-      model.validate();
     }
   }
 });

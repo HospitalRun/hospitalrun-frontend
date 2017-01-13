@@ -1,10 +1,8 @@
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import Ember from 'ember';
-import { PLANNED_STATUS } from 'hospitalrun/mixins/operative-plan-statuses';
 
 const {
-  computed,
   get,
   isEmpty
 } = Ember;
@@ -16,25 +14,18 @@ function defaultProcedures() {
 export default AbstractModel.extend({
   // Attributes
   additionalNotes: DS.attr('string'),
-  admissionInstructions: DS.attr('string'),
   caseComplexity: DS.attr('number'),
+  complications: DS.attr('string'),
   customForms: DS.attr('custom-forms'),
-  operationDescription: DS.attr('string'),
   procedures: DS.attr('operative-procedures', { defaultValue: defaultProcedures }),
-  status: DS.attr('string', { defaultValue: PLANNED_STATUS }),
+  operationDescription: DS.attr('string'),
   surgeon: DS.attr('string'),
   surgeryDate: DS.attr('date'),
 
   // Associations
-  diagnoses: DS.hasMany('diagnosis'),
+  preOpDiagnoses: DS.hasMany('diagnosis'),
+  diagnoses: DS.hasMany('diagnosis'), // Post op diagnosis
   patient: DS.belongsTo('patient', { async: false }),
-
-  isPlanned: computed('status', {
-    get() {
-      let status = get(this, 'status');
-      return status === PLANNED_STATUS;
-    }
-  }),
 
   validations: {
     caseComplexity: {
@@ -43,7 +34,6 @@ export default AbstractModel.extend({
         onlyInteger: true
       }
     },
-
     procedureDescription: {
       presence: {
         if(object) {
