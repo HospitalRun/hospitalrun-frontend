@@ -134,6 +134,8 @@ export default {
         includeOtherOption: 'Include Other Option',
         label: 'Label',
         newForm: 'New Form',
+        operationReportFormType: 'Operation Report',
+        operativePlanFormType: 'Operative Plan',
         otherOptionLabel: 'Other Option Label',
         patientFormType: 'Patient',
         property: 'Property',
@@ -279,7 +281,10 @@ export default {
         addBillingDiagnosis: 'Add Billing Diagnosis',
         addNote: 'Add Note',
         addSocialwork: 'Add Social Work',
-        deleteNote: 'Delete Note'
+        deleteNote: 'Delete Note',
+        addOperativePlan: 'Add Operative Plan',
+        addAllergy: 'Add Allergy',
+        addOperationReport: 'Add Operation Report'
       },
       messages: {
         roleSaved: 'The {{roleName}} role has been saved.'
@@ -940,6 +945,8 @@ export default {
     buttons: {
       addExpense: 'Add Expense',
       addContact: 'Add Contact',
+      addOperativePlan: 'Add Operative Plan',
+      editOperativePlan: 'Current Operative Plan',
       newLab: 'New Lab',
       newVisit: 'New Visit',
       newMedication: 'New Medication',
@@ -989,7 +996,8 @@ export default {
       religion: 'Religion',
       parent: 'Parent/Guardian',
       contacts: 'Contacts',
-      sexNotEntered: 'Sex Not Entered'
+      sexNotEntered: 'Sex Not Entered',
+      operativePlan: 'Operative Plan'
     },
     notes: {
       newNote: 'New Note for',
@@ -1130,6 +1138,17 @@ export default {
     },
     priceList: {
       charges: '{{pricingType}} charges'
+    },
+    operativeProcedures: {
+      buttons: {
+        addProcedure: 'Add Procedure'
+      },
+      labels: {
+        procedure: 'Procedure'
+      },
+      titles: {
+        procedures: 'Procedures'
+      }
     }
   },
   customForms: {
@@ -1166,6 +1185,52 @@ export default {
     labels: {
       allergyName: 'Name',
       patientAllergy: 'Patient Allergies'
+    }
+  },
+  operativePlan: {
+    buttons: {
+      completePlan: 'Complete Plan'
+    },
+    labels: {
+      additionalNotes: 'Additional Notes',
+      admissionInstructions: 'Instructions Upon Admission',
+      caseComplexity: 'Case Complexity',
+      completedStatus: 'Completed',
+      droppedStatus: 'Dropped',
+      operationDescription: 'Operation Description',
+      plannedStatus: 'Planned',
+      status: 'Status',
+      surgeon: 'Surgeon',
+      surgeryDate: 'Surgery Date'
+    },
+    messages: {
+      planSaved: 'The operative plan has been saved.'
+    },
+    titles: {
+      editTitle: 'Edit Operative Plan',
+      newTitle: 'New Operative Plan',
+      planSaved: 'Plan Saved'
+    }
+  },
+  operationReport: {
+    labels: {
+      additionalNotes: 'Additional Notes',
+      assistant: 'Assistant',
+      caseComplexity: 'Case Complexity',
+      complications: 'Complications',
+      operationDescription: 'Operation Description',
+      preOpPrimaryDiagnosis: 'Pre-op Primary Diagnosis',
+      preOpSecondaryDiagnosis: 'Pre-op Secondary Diagnosis',
+      surgeon: 'Surgeon',
+      surgeryDate: 'Surgery Date'
+    },
+    messages: {
+      reportSaved: 'The operation report has been saved.'
+    },
+    titles: {
+      editTitle: 'Edit Operation Report',
+      newTitle: 'New Operation Report',
+      reportSaved: 'Report Saved'
     }
   }
 };

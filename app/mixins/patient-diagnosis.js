@@ -13,10 +13,10 @@ export default Ember.Mixin.create({
     }
   },
 
-  getDiagnoses(diagnosisContainer, hideInActiveDiagnoses, secondaryDiagnoses) {
+  getDiagnoses(diagnosisContainer, hideInActiveDiagnoses, secondaryDiagnoses, diagnosisProperty = 'diagnoses') {
     let diagnosesList = [];
     if (!isEmpty(diagnosisContainer)) {
-      let diagnoses = diagnosisContainer.get('diagnoses');
+      let diagnoses = diagnosisContainer.get(diagnosisProperty);
       if (hideInActiveDiagnoses) {
         diagnoses = diagnoses.filterBy('active', true);
       }

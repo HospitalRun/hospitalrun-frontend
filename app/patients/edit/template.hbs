@@ -6,7 +6,9 @@
         patientProcedures=patientProcedures
         disablePatientLink=true
         store=store
-        canAddDiagnosis=canAddDiagnosis
+        allowAddAllergy=true
+        allowAddDiagnosis=true
+        allowAddOperativePlan=true
         diagnosisList=diagnosisList
       }}
       <ul class="nav nav-pills tab-nav" role="tablist">
@@ -181,9 +183,9 @@
             <table class="table">
               <tr class="table-header">
                 <th>{{t 'labels.name'}}</th>
-                <th>{{t 'labels.phone'}}</th>
+                <th>{{t 'patients.labels.phone'}}</th>
                 <th>{{t 'labels.email'}}</th>
-                <th>{{t 'labels.relationship'}}</th>
+                <th>{{t 'patients.labels.relationship'}}</th>
                 {{#if canDeleteContact}}
                   <th>{{t 'labels.action'}}</th>
                 {{/if}}

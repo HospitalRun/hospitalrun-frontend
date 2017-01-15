@@ -19,11 +19,13 @@
             {{#if model.patient}}
               {{patient-summary
                 patient=model.patient
-                visit=model
+                diagnosisContainer=model
                 returnTo='visits.edit'
                 returnToContext=model.id
                 disablePatientLink=model.isNew
-                canAddDiagnosis=canAddDiagnosis
+                allowAddAllergy=true
+                allowAddDiagnosis=true
+                allowAddOperativePlan=true
                 diagnosisList=diagnosisList
               }}
             {{/if}}

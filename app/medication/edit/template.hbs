@@ -21,13 +21,6 @@
         </div>
       {{/if}}
     </div>
-    {{#if model.patient.allergies}}
-        <div class="row">
-          <div class="col-xs-12">
-            {{medication-allergy patient=model.patient}}
-          </div>
-        </div>
-    {{/if}}
     {{#if isFulfilledOrRequested}}
       <div class="form-group">
         <label class="control-label">{{t 'labels.medication'}}</label>

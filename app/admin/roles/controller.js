@@ -48,8 +48,11 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     name: 'patients',
     capabilities: [
       'patients',
+      'addAllergy',
       'addDiagnosis',
       'addNote',
+      'addOperativePlan',
+      'addOperationReport',
       'addPhoto',
       'addPatient',
       'addProcedure',
