@@ -25,6 +25,6 @@ export default AbstractModel.extend({
       numericality: {
         allowBlank: true
       }
-    }    
+    }
   }
 });

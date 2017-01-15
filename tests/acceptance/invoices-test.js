@@ -66,7 +66,7 @@ test('print invoice', function(assert) {
   });
 });
 
-//test pricing profile
+// test pricing profile
 test('pricing profiles', function(assert) {
   runWithPouchDump('billing', function() {
     authenticateUser();
@@ -76,34 +76,34 @@ test('pricing profiles', function(assert) {
       click('button:contains(+ new item)');
       waitToAppear('h4:contains(New Pricing Profile)');
     });
-    //% discount
+    // % discount
     andThen(function() {
       fillIn('.pricing-profile-name input', '50% profile');
-      fillIn('.pricing-profile-percentage input', '50');      
+      fillIn('.pricing-profile-percentage input', '50');
       click('button:contains(Add)');
       waitToAppear('button:contains(Ok)');
       click('button:contains(Ok)');
     });
-    andThen(function(){
+    andThen(function() {
       click('button:contains(+ new item)');
       waitToAppear('h4:contains(New Pricing Profile)');
     });
-    //flat discount
+    // flat discount
     andThen(function() {
       fillIn('.pricing-profile-name input', '$100 discount');
-      fillIn('.pricing-profile-discount input', '100');      
+      fillIn('.pricing-profile-discount input', '100');
       click('button:contains(Add)');
       waitToAppear('button:contains(Ok)');
       click('button:contains(Ok)');
     });
-    andThen(function(){
+    andThen(function() {
       click('button:contains(+ new item)');
       waitToAppear('h4:contains(New Pricing Profile)');
     });
-    //flat fee
+    // flat fee
     andThen(function() {
       fillIn('.pricing-profile-name input', '$150 fee');
-      fillIn('.pricing-set-fee input', '150');      
+      fillIn('.pricing-set-fee input', '150');
       click('button:contains(Add)');
       waitToAppear('button:contains(Ok)');
       click('button:contains(Ok)');
