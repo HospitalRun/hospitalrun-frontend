@@ -11,7 +11,8 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 const {
   computed,
-  isEmpty
+  isEmpty,
+  set
 } = Ember;
 
 export default AbstractEditController.extend(AddNewPatient, ChargeActions, DiagnosisActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
@@ -104,7 +105,6 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   allowAddOperativePlan: computed.not('model.isNew'),
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
-  createNewPatient: false,
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
   findPatientVisits: false,
   hideChargeHeader: true,
@@ -295,9 +295,9 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
   patientSelected(patient) {
     if (isEmpty(patient)) {
-      this.set('createNewPatient', true);
+      set(this, 'model.createNewPatient', true);
     } else {
-      this.set('createNewPatient', false);
+      set(this, 'model.createNewPatient', false);
       this.getPatientDiagnoses(patient);
     }
   },
@@ -392,7 +392,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     },
 
     newPatientChanged(createNewPatient) {
-      this.set('createNewPatient', createNewPatient);
+      set(this, 'model.createNewPatient', createNewPatient);
       let model = this.get('model');
       let patient = model.get('patient');
       if (createNewPatient && !isEmpty(patient)) {
