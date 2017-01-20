@@ -329,7 +329,7 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
       let model = operativePlan;
       if (isEmpty(model)) {
         this._addChildObject('patients.operative-plan', (route) =>{
-          route.controller.getPatientDiagnoses(this.get('model'));
+          route.controller.getPatientDiagnoses(this.get('model'), route.currentModel);
         });
       } else {
         model.set('returnToVisit');

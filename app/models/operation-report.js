@@ -15,7 +15,6 @@ export default AbstractModel.extend({
   // Attributes
   additionalNotes: DS.attr('string'),
   caseComplexity: DS.attr('number'),
-  complications: DS.attr('string'),
   customForms: DS.attr('custom-forms'),
   procedures: DS.attr('operative-procedures', { defaultValue: defaultProcedures }),
   operationDescription: DS.attr('string'),
@@ -25,6 +24,7 @@ export default AbstractModel.extend({
   // Associations
   preOpDiagnoses: DS.hasMany('diagnosis'),
   diagnoses: DS.hasMany('diagnosis'), // Post op diagnosis
+  operativePlan: DS.belongsTo('operative-plan', { async: true }),
   patient: DS.belongsTo('patient', { async: false }),
 
   validations: {

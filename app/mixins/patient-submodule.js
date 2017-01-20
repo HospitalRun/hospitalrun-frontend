@@ -3,7 +3,7 @@ import Ember from 'ember';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import SelectValues from 'hospitalrun/utils/select-values';
 
-const { isEmpty } = Ember;
+const { get, isEmpty } = Ember;
 
 export default Ember.Mixin.create(PatientVisits, {
   findPatientVisits: true, // Override to false if visits shouldn't be set when patient is selected.
@@ -147,11 +147,11 @@ export default Ember.Mixin.create(PatientVisits, {
     });
   },
 
-  getPatientDiagnoses(patient) {
+  getPatientDiagnoses(patient, model) {
     let diagnoses = patient.get('diagnoses');
-    let visitDiagnoses;
+    let activeDiagnoses;
     if (!isEmpty(diagnoses)) {
-      visitDiagnoses = diagnoses.filterBy('active', true).map((diagnosis) => {
+      activeDiagnoses = diagnoses.filterBy('active', true).map((diagnosis) => {
         let description = diagnosis.get('diagnosis');
         let newDiagnosisProperties = diagnosis.getProperties('active', 'date', 'diagnosis', 'secondaryDiagnosis');
         newDiagnosisProperties.diagnosis = description;
@@ -160,10 +160,10 @@ export default Ember.Mixin.create(PatientVisits, {
         );
       });
     }
-    let currentDiagnoses = this.get('model.diagnoses');
+    let currentDiagnoses = get(model, 'diagnoses');
     currentDiagnoses.clear();
-    if (!isEmpty(visitDiagnoses)) {
-      currentDiagnoses.addObjects(visitDiagnoses);
+    if (!isEmpty(activeDiagnoses)) {
+      currentDiagnoses.addObjects(activeDiagnoses);
     }
   },
 

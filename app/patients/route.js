@@ -61,7 +61,7 @@ export default AbstractModuleRoute.extend(PatientId, {
         }
         newRoute.currentModel.set('patient', patient);
         newRoute.currentModel.set('hidePatientSelection', true);
-        newRoute.controller.getPatientDiagnoses(patient);
+        newRoute.controller.getPatientDiagnoses(patient, newRoute.currentModel);
       });
     }
   },

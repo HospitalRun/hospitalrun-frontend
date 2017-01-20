@@ -14,5 +14,11 @@ export default AbstractEditRoute.extend({
       customForms: Ember.Object.create()
     };
     return customForms.setDefaultCustomForms(['operativePlan'], newData);
+  },
+
+  actions: {
+    showOperationReport(report) {
+      this.transitionTo('patients.operation-report', report);
+    }
   }
 });

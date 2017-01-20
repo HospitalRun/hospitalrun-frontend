@@ -11,6 +11,7 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 const {
   computed,
+  get,
   isEmpty,
   set
 } = Ember;
@@ -298,7 +299,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       set(this, 'model.createNewPatient', true);
     } else {
       set(this, 'model.createNewPatient', false);
-      this.getPatientDiagnoses(patient);
+      this.getPatientDiagnoses(patient, get(this, 'model'));
     }
   },
 
@@ -383,7 +384,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       let model = operativePlan;
       if (isEmpty(model)) {
         this._addChildObject('patients.operative-plan', (route) =>{
-          route.controller.getPatientDiagnoses(this.get('model.patient'));
+          route.controller.getPatientDiagnoses(this.get('model.patient'), route.currentModel);
         });
       } else {
         model.set('returnToVisit', this.get('model.id'));

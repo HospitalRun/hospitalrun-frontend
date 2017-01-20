@@ -7,7 +7,7 @@
       disablePatientLink=true
       patient=model.patient
     }}
-    <div class="patient-summary clearfix">
+    <div class="patient-summary">
       {{patient-diagnosis
         diagnosisContainer=model
         diagnosisProperty="preOpDiagnoses"
@@ -31,7 +31,6 @@
       {{em-input property="caseComplexity" label=(t 'operationReport.labels.caseComplexity') class="col-sm-2 case-complexity"}}
     </div>
     {{operative-procedures model=model procedureList=procedureList}}
-    {{em-text property="complications" label=(t 'operationReport.labels.complications')}}
     {{em-text property="additionalNotes" label=(t 'operationReport.labels.additionalNotes')}}
     {{custom-form-manager model=model formType="operationReport"}}
   {{/em-form}}

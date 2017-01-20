@@ -1197,11 +1197,13 @@ export default {
       surgeryDate: 'Surgery Date'
     },
     messages: {
-      planSaved: 'The operative plan has been saved.'
+      planSaved: 'The operative plan has been saved.',
+      planCompleted: 'The operative plan has been completed.  You will now be directed to the operation report.'
     },
     titles: {
       editTitle: 'Edit Operative Plan',
       newTitle: 'New Operative Plan',
+      planCompleted: 'Plan Completed',
       planSaved: 'Plan Saved'
     }
   },
@@ -1210,7 +1212,6 @@ export default {
       additionalNotes: 'Additional Notes',
       assistant: 'Assistant',
       caseComplexity: 'Case Complexity',
-      complications: 'Complications',
       operationDescription: 'Operation Description',
       preOpPrimaryDiagnosis: 'Pre-op Primary Diagnosis',
       preOpSecondaryDiagnosis: 'Pre-op Secondary Diagnosis',

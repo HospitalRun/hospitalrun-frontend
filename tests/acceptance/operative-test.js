@@ -54,6 +54,7 @@ test('Plan and report creation', function(assert) {
     andThen(() =>{
       assert.equal(find('a.secondary-diagnosis:contains(Tennis Elbow)').length, 1, 'New secondary diagnosis appears');
       click('a:contains(Add Operative Plan)');
+      waitToAppear('span.secondary-diagnosis:contains(Tennis Elbow)');
     });
     andThen(() =>{
       assert.equal(currentURL(), '/patients/operative-plan/new', 'New operative plan URL is correct');
@@ -92,7 +93,7 @@ test('Plan and report creation', function(assert) {
     });
     andThen(() =>{
       assert.equal(find('.modal-title').text(), 'Plan Saved', 'Plan saved modal displays');
-      click('button:contains(Ok)');
+      click('.modal-footer button:contains(Ok)');
     });
     andThen(() =>{
       assert.equal(find(`.procedure-listing td.procedure-description:contains(${PROCEDURE_FIX_ARM})`).length, 1, 'Procedure from typeahead gets added to procedure list on save');
@@ -107,10 +108,14 @@ test('Plan and report creation', function(assert) {
       assert.equal(find('.view-current-title').text(), 'Edit Operative Plan', 'Edit operative plan title is correct');
       assert.equal(find('button:contains(Complete Plan)').length, 1, 'Complete Plan button appears');
       click('button:contains(Complete Plan)');
+      waitToAppear('.modal-dialog');
     });
     andThen(() =>{
-      assert.equal(currentURL(), '/patients/operation-report/new', 'Operation report url is correct');
-      assert.equal(find('.view-current-title').text(), 'New Operation Report', 'New Operation Report title is correct');
+      assert.equal(find('.modal-title').text(), 'Plan Completed', 'Plan completed modal displays');
+      click('.modal-footer button:contains(Ok)');
+    });
+    andThen(() =>{
+      assert.equal(find('.view-current-title').text(), 'Edit Operation Report', 'Edit Operation Report title is correct');
       assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts patient header displays');
       assert.equal(find('a.primary-diagnosis:contains(Broken Arm)').length, 1, 'Primary diagnosis appears as editable');
       assert.equal(find('a.secondary-diagnosis:contains(Tennis Elbow)').length, 1, 'Secondary diagnosis appears as  editable');
@@ -121,12 +126,12 @@ test('Plan and report creation', function(assert) {
       assert.equal(find(`.procedure-listing td.procedure-description:contains(${PROCEDURE_HIP})`).length, 1, `Procedure ${PROCEDURE_HIP} is copied from operative plan`);
       assert.equal(find(`.procedure-listing td.procedure-description:contains(${PROCEDURE_FIX_ARM})`).length, 1, `Procedure ${PROCEDURE_FIX_ARM} is copied from operative plan`);
       typeAheadFillIn('.operation-assistant', 'Dr Cindy');
-      click('.panel-footer button:contains(Add)');
+      click('.panel-footer button:contains(Update)');
       waitToAppear('.modal-dialog');
     });
     andThen(() =>{
       assert.equal(find('.modal-title').text(), 'Report Saved', 'Report Saved modal displays');
-      click('button:contains(Ok)');
+      click('.modal-footer button:contains(Ok)');
     });
     andThen(() =>{
       click('button:contains(Return)');

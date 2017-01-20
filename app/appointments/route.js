@@ -24,7 +24,7 @@ export default AbstractModuleRoute.extend(UserSession, {
       visitProps.returnTo = 'appointments';
       this.transitionTo('visits.edit', 'checkin').then(function(newRoute) {
         newRoute.currentModel.setProperties(visitProps);
-        newRoute.controller.getPatientDiagnoses(patient);
+        newRoute.controller.getPatientDiagnoses(patient, newRoute.currentModel);
       }.bind(this));
     }
   },
