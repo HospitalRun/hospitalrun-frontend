@@ -4,7 +4,13 @@ import moment from 'moment';
 const { isEmpty } = Ember;
 
 export default Ember.Component.extend({
+  calendarHeader: {
+    left: 'title',
+    center: 'agendaDay,agendaWeek,month',
+    right: 'today prev,next'
+  },
   defaultView: 'agendaWeek',
+  height: 500,
   visibleDateIntervalStart: null,
   visibleDateIntervalEnd: null,
 
@@ -12,12 +18,6 @@ export default Ember.Component.extend({
     dateIntervalStart: null,
     dateIntervalEnd: null,
     viewType: null
-  },
-
-  calendarHeader: {
-    left: 'title',
-    center: 'agendaDay,agendaWeek,month',
-    right: 'today prev,next'
   },
 
   actions: {
