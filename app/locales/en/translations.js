@@ -474,6 +474,8 @@ export default {
     newRequestPlus: '+ new request',
     addVisit: 'Add Visit',
     search: 'Search',
+    filter: 'Filter',
+    clear: 'Clear',
     edit: 'Edit',
     addLineItem: 'Add Line Item',
     showFewer: 'Show Fewer',
@@ -764,6 +766,7 @@ export default {
     missed: 'Missed Appointments',
     searchTitle: 'Search Appointments',
     todayTitle: 'Today\'s Appointments',
+    calendarTitle: 'Calendar',
     messages: {
       deleteAppointmentMessage: 'Are you sure you wish to delete this appointment?',
       endTimeLaterThanStart: 'Please select an end time later than the start time.'

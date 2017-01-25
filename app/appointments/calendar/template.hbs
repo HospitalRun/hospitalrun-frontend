@@ -1,0 +1,40 @@
+<div class="panel panel-info">
+    <div class="panel-body">
+        {{#em-form model=model submitButton=false}}
+        <div class="row">
+            {{em-select class="col-sm-3"
+                label=(t "labels.status")
+                property="selectedStatus"
+                content=appointmentStatusesWithEmpty
+            }}
+            {{em-select class="col-sm-3"
+                label=(t "labels.type")
+                property="selectedAppointmentType" 
+                content=visitTypesWithEmpty
+            }}
+        </div>
+        <div class="row">
+            {{em-select class="col-sm-3"
+                label=(t 'labels.with')
+                property="selectedProvider"
+                content=physicianList
+            }}
+            {{em-select class="col-sm-3"
+                label=(t 'labels.location')
+                property="selectedLocation"
+                content=locationList
+            }}
+        </div>
+        {{/em-form}}
+    </div>
+    <div class="panel-footer">
+        <button class="btn btn-default warning" {{action 'clearFilteringCriteria'}}>{{t 'buttons.clear'}}</button>
+        <button class="btn btn-default" {{action 'filter'}}>{{t 'buttons.filter'}}</button>
+    </div>
+    <div class="panel-body">
+        {{calendar-control events=model.events
+            onEventClick=(action "navigateToAppointment")
+            onVisualConfigurationChanged=(action "handleVisualConfigurationChanged")
+        }}
+    </div>
+</div>

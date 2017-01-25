@@ -107,6 +107,12 @@ export default Ember.Mixin.create({
           capability: 'appointments'
         },
         {
+          title: 'Calendar',
+          iconClass: 'octicon-calendar',
+          route: 'appointments.calendar',
+          capability: 'appointments'
+        },
+        {
           title: 'Add Appointment',
           iconClass: 'octicon-plus',
           route: 'appointments.edit',

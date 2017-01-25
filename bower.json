@@ -12,7 +12,9 @@
     "pikaday": "https://github.com/owenmead/Pikaday.git#~1.3.3",
     "typeahead.js": "~0.11.1",
     "pouchdb-load": "^1.4.0",
-    "pretender": "~0.10.0"
+    "pretender": "~0.10.0",
+    "fullcalendar": "^3.0.0",
+    "fullcalendar-scheduler": "^1.4.0"
   },
   "devDependencies": {
     "timekeeper": "^1.0.0"
