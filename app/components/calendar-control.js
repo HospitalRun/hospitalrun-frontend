@@ -1,7 +1,10 @@
 import Ember from 'ember';
 import moment from 'moment';
 
+const { isEmpty } = Ember;
+
 export default Ember.Component.extend({
+  defaultView: 'agendaWeek',
   visibleDateIntervalStart: null,
   visibleDateIntervalEnd: null,
 
@@ -33,7 +36,9 @@ export default Ember.Component.extend({
         viewType: view.name
       };
 
-      if (configurationsDiffer(currentConfiguration, newConfiguration)) {
+      if (isEmpty(currentConfiguration.dateIntervalStart) && isEmpty(currentConfiguration.dateIntervalEnd)) {
+        this.set('visualConfiguration', newConfiguration);
+      } else if (configurationsDiffer(currentConfiguration, newConfiguration)) {
         this.set('visualConfiguration', newConfiguration);
         this.get('onVisualConfigurationChanged')(newConfiguration);
       }
