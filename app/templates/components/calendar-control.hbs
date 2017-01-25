@@ -1,7 +1,11 @@
 {{full-calendar events=events
-    header=calendarHeader
-    eventClick=onEventClick
-    eventAfterAllRender=(action "handleRenderingComplete")
-    viewName=defaultView
-    height=height
+  dayClick=onDayClick
+  editable=userCanEdit
+  eventAfterAllRender=(action "handleRenderingComplete")
+  eventClick=onEventClick
+  eventDrop=onEventDrop
+  eventResize=onEventResize
+  header=calendarHeader
+  height=height
+  viewName=defaultView
 }}

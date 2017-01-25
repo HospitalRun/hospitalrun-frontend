@@ -9,8 +9,14 @@ export default Ember.Component.extend({
     center: 'agendaDay,agendaWeek,month',
     right: 'today prev,next'
   },
+
   defaultView: 'agendaWeek',
   height: 500,
+  onDayClick: null,
+  onEventClick: null,
+  onEventDrop: null,
+  onEventResize: null,
+  userCanEdit: false,
   visibleDateIntervalStart: null,
   visibleDateIntervalEnd: null,
 

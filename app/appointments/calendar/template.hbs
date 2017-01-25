@@ -31,8 +31,12 @@
     </div>
     <div class="panel-body">
         {{calendar-control events=model.events
-            onEventClick=(action "navigateToAppointment")
-            onVisualConfigurationChanged=(action "handleVisualConfigurationChanged")
+          onDayClick=(action "createNewAppointment")
+          onEventClick=(action "navigateToAppointment")
+          onEventDrop=(action "updateAppointment")
+          onEventResize=(action "updateAppointment")
+          onVisualConfigurationChanged=(action "handleVisualConfigurationChanged")
+          userCanEdit=canEdit
         }}
     </div>
 </div>

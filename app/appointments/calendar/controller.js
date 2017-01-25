@@ -4,6 +4,10 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 import SelectValues from 'hospitalrun/utils/select-values';
 import Ember from 'ember';
 
+const {
+  set
+} = Ember;
+
 export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes, {
   appointmentsController: Ember.inject.controller('appointments'),
   startKey: [],
@@ -41,6 +45,16 @@ export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes
   },
 
   actions: {
+    createNewAppointment(dateClicked) {
+      let newAppointment = this.store.createRecord('appointment', {
+        appointmentType: 'Admission',
+        allDay: false,
+        selectPatient: true,
+        startDate: dateClicked.local().toDate()
+      });
+      this.send('editAppointment', newAppointment);
+    },
+
     navigateToAppointment(calendarEvent) {
       this.send('editAppointment', calendarEvent.referencedAppointment);
     },
@@ -70,6 +84,15 @@ export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes
       this.set('model.selectedProvider', null);
       this.set('model.selectedLocation', null);
       this.send('filter');
+    },
+
+    updateAppointment(calendarEvent) {
+      let appointmentToUpdate = calendarEvent.referencedAppointment;
+      let newEnd = calendarEvent.end.local().toDate();
+      let newStart = calendarEvent.start.local().toDate();
+      set(appointmentToUpdate, 'startDate', newStart);
+      set(appointmentToUpdate, 'endDate', newEnd);
+      this.send('editAppointment', appointmentToUpdate);
     }
   }
 });
