@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
+import moment from 'moment';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
 const ADDITIONAL_NOTES = 'Additional Notes here';

@@ -1,4 +1,5 @@
 import AppointmentIndexRoute from 'hospitalrun/appointments/index/route';
+import moment from 'moment';
 import { translationMacro as t } from 'ember-i18n';
 
 export default AppointmentIndexRoute.extend({

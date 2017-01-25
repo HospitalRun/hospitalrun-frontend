@@ -76,7 +76,8 @@ export default {
       userRoles: 'User Roles',
       workflow: 'Workflow',
       outpatient: 'Outpatient',
-      customForms: 'Custom Forms'
+      customForms: 'Custom Forms',
+      calendar: 'Calendar'
     },
     actions: {
       logout: 'Logout',
