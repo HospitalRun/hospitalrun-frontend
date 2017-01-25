@@ -31,7 +31,8 @@ export default AbstractEditRoute.extend(InventoryId, {
 
   getNewData() {
     return Ember.RSVP.resolve({
-      dateReceived: new Date()
+      dateReceived: new Date(),
+      quantityGroups: []
     });
   },
 

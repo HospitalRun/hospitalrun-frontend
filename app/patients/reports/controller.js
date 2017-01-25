@@ -214,13 +214,13 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
       primaryDiagnosis: {
         label: i18n.t('patients.labels.primaryDiagnosis'),
         include: true,
-        property: 'patient.visits',
+        property: 'patient',
         format: '_formatPrimaryDiagnosis'
       },
       secondaryDiagnoses: {
         label: i18n.t('patients.labels.secondaryDiagnosis'),
         include: true,
-        property: 'patient.visits',
+        property: 'patient',
         format: '_formatSecondaryDiagnosis'
       }
     };
@@ -379,7 +379,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   },
 
   _diagnosisListToString(diagnoses) {
-    return this._listToString(diagnoses, 'description', 'date');
+    return this._listToString(diagnoses, 'diagnosis', 'date');
   },
   /**
      * Find diagnostics by the specified dates and the record's start and (optional) end dates.
@@ -530,13 +530,13 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
     }.bind(this));
     this._finishReport();
   },
-  _formatPrimaryDiagnosis(visits) {
-    let primaryDiagnoses = this.getPrimaryDiagnoses(visits);
+  _formatPrimaryDiagnosis(patient) {
+    let primaryDiagnoses = this.getDiagnoses(patient, true, false);
     return this._diagnosisListToString(primaryDiagnoses);
   },
 
-  _formatSecondaryDiagnosis(visits) {
-    let secondaryDiagnoses = this.getSecondaryDiagnoses(visits);
+  _formatSecondaryDiagnosis(patient) {
+    let secondaryDiagnoses = this.getDiagnoses(patient, true, true);
     return this._diagnosisListToString(secondaryDiagnoses);
   },
 

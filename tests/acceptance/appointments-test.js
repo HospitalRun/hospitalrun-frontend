@@ -57,14 +57,14 @@ test('Creating a new appointment', function(assert) {
     andThen(() => {
       assert.equal(currentURL(), '/appointments');
       assert.equal(find('tr').length, 2, 'New appointment has been added');
-      findWithAssert('button:contains(Add Visit)');
+      findWithAssert('button:contains(Check In)');
       findWithAssert('button:contains(Edit)');
       findWithAssert('button:contains(Delete)');
     });
   });
 });
 
-test('Adding a visit to an appointment', function(assert) {
+test('Checkin to a visit from appointment', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
     createAppointment();
@@ -73,19 +73,19 @@ test('Adding a visit to an appointment', function(assert) {
     andThen(function() {
       assert.equal(currentURL(), '/appointments');
       assert.equal(find('tr').length, 2, 'New appointment has been added');
-      findWithAssert('button:contains(Add Visit)');
+      findWithAssert('button:contains(Check In)');
       findWithAssert('button:contains(Edit)');
       findWithAssert('button:contains(Delete)');
     });
 
-    click('button:contains(Add Visit)');
+    click('button:contains(Check In)');
     andThen(() => {
-      assert.equal(currentURL(), '/visits/edit/new', 'Now in add visiting information route');
+      assert.equal(currentURL(), '/visits/edit/checkin', 'Now in add visiting information route');
     });
-    click('.panel-footer button:contains(Add)');
+    click('.panel-footer button:contains(Check In)');
     waitToAppear('.modal-dialog');
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Visit Saved', 'New visit has been saved');
+      assert.equal(find('.modal-title').text(), 'Patient Checked In', 'Patient has been checked in');
     });
     click('button:contains(Ok)');
     andThen(() => {
@@ -97,13 +97,11 @@ test('Adding a visit to an appointment', function(assert) {
       findWithAssert('button:contains(New Vitals)');
       findWithAssert('button:contains(Add Item)');
     });
-
     click('button:contains(Return)');
 
-    click('button:contains(Return)');
     andThen(() => {
-      assert.equal(currentURL(), '/patients');
-      findWithAssert('button:contains(Discharge)');
+      assert.equal(currentURL(), '/appointments');
+      assert.equal(find('button:contains(Check In)').length, 0, 'Check In button no longer appears');
       findWithAssert('button:contains(Edit)');
       findWithAssert('button:contains(Delete)');
     });
@@ -119,7 +117,7 @@ test('Delete an appointment', function(assert) {
     andThen(function() {
       assert.equal(currentURL(), '/appointments');
       assert.equal(find('.appointment-date').length, 1, 'One appointment is listed');
-      findWithAssert('button:contains(Add Visit)');
+      findWithAssert('button:contains(Check In)');
       findWithAssert('button:contains(Edit)');
       findWithAssert('button:contains(Delete)');
     });

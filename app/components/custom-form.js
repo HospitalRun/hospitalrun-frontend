@@ -1,30 +1,39 @@
 import Ember from 'ember';
 import SelectValues from 'hospitalrun/utils/select-values';
+
+const {
+  computed,
+  isEmpty
+} = Ember;
+
 export default Ember.Component.extend(SelectValues, {
   classNames: 'detail-section-content',
-  fieldsByRow: function() {
+  propertyPrefix: '',
+  fieldsByRow: computed('form', 'form.fields.[]', 'form.columns', function() {
     let rows = [];
     let form = this.get('form');
-    if (!Ember.isEmpty(form)) {
-      let { fields } = form;
+    let fields = this.get('form.fields');
+    if (!isEmpty(form) && !isEmpty(fields)) {
       let numberOfColumns = this.getWithDefault('form.columns', 1);
       let currentRow = [];
 
       let colCount = 0;
-      let colWidth = (12 / numberOfColumns);
+      let colWidth = Math.floor(12 / numberOfColumns);
       fields.forEach((field) => {
-        if (!field.classNames) {
-          field.classNames = '';
+        let classNames = field.get('classNames');
+        if (!classNames) {
+          classNames = '';
         }
-        let colSpan = field.colSpan || 1;
+        let colSpan = field.get('colSpan') || 1;
         if (colCount === numberOfColumns || (colCount + colSpan) > numberOfColumns) {
           rows.push(currentRow.slice());
           currentRow = [];
           colCount = 0;
         }
-        field.classNames += ` col-sm-${colWidth * colSpan}`;
-        if (field.type === 'select') {
-          field.mappedValues = field.values.map(this.selectValuesMap);
+        classNames += ` col-sm-${colWidth * colSpan}`;
+        field.set('displayClassNames', classNames);
+        if (field.get('type') === 'radio') {
+          field.set('mappedValues', field.get('values').map((value) => Ember.get(value, 'label')));
         }
         currentRow.push(field);
         colCount += colSpan;
@@ -34,5 +43,5 @@ export default Ember.Component.extend(SelectValues, {
       }
     }
     return rows;
-  }.property('form')
+  })
 });

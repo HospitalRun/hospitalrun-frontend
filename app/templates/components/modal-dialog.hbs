@@ -15,6 +15,14 @@
         {{#unless hideUpdateButton}}
           <button class="btn btn-primary on-white {{updateButtonClass}}" {{action "updateAction" }} disabled={{isUpdateDisabled}}>{{ updateButtonText }}</button>
         {{/unless}}
+        {{#each additionalButtons as |button|}}
+            <button class="{{button.class}}" {{action 'fireButtonAction' button.buttonAction}}>
+              {{#if button.buttonIcon}}
+                <span class="{{button.buttonIcon}}"></span>
+              {{/if}}
+              {{button.buttonText}}
+            </button>
+        {{/each}}
       </div>
     </div>
   </div>

@@ -1,0 +1,67 @@
+<div class="panel detail-section">
+  <div class="panel-body">
+    <table class="table">
+      <tr class="table-header">
+        {{#sortable-column sortBy='requestedDate' sortDesc=sortDesc sortKey=sortKey }}
+          {{t 'labels.dateRequested'}}
+        {{/sortable-column}}
+        {{#sortable-column sortBy='name' sortDesc=sortDesc sortKey=sortKey }}
+          {{t 'labels.name'}}
+        {{/sortable-column}}
+        {{#sortable-column sortBy='orderType' sortDesc=sortDesc sortKey=sortKey filterBy='orderType' filteredBy=filteredBy filterValues=orderTypeFilters}}
+          {{t 'components.patientOrders.labels.orderType'}}
+        {{/sortable-column}}
+        {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}
+          {{t 'labels.status'}}
+        {{/sortable-column}}
+        {{#sortable-column sortBy='dateProcessed' sortDesc=sortDesc sortKey=sortKey }}
+          {{t 'patients.labels.dateProcessed'}}
+        {{/sortable-column}}
+        <th>{{t 'labels.result'}}</th>
+        <th>{{t 'labels.notes'}}</th>
+        {{#sortable-column sortBy='requestedBy' sortDesc=sortDesc sortKey=sortKey }}
+          {{t 'labels.requestedBy'}}
+        {{/sortable-column}}
+        <th>{{t 'labels.actions'}}</th>
+      </tr>
+      {{#each sortedOrders as |order|}}
+        <tr {{action "editOrder" order}}>
+          <td>{{date-format order.requestedDate format="l h:mm A"}}</td>
+          <td>{{order.name}}</td>
+          <td>{{order.orderType}}</td>
+          <td>{{order.status}}</td>
+          <td>{{date-format order.dateProcessed format="l h:mm A"}}</td>
+          <td>{{order.result}}</td>
+          <td>{{order.notes}}</td>
+          <td>{{order.requestedBy}}</td>
+          <td>
+            {{#if order.canEdit}}
+              <button type="button" class="btn btn-default neutral" {{action "editOrder" order}}>
+                {{t 'labels.edit'}}
+              </button>
+            {{/if}}
+            {{#if order.canDelete}}
+              <button type="button" class="btn btn-default warning" {{action "showDeleteOrder" order bubbles=false }}><span class="octicon octicon-x"></span>{{t 'labels.delete'}}</button>
+            {{/if}}
+          </td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
+  <div class="panel-footer">
+    {{#if canAddImaging}}
+      <button class="btn btn-primary" {{action "newImaging" bubbles=false }}>
+        <span class="octicon octicon-plus"></span> {{t 'components.patientOrders.buttons.newImaging' }}
+      </button>
+    {{/if}}
+    {{#if canAddLab}}
+      <button class="btn btn-primary" {{action "newLab" bubbles=false }}>
+        <span class="octicon octicon-plus"></span> {{t 'components.patientOrders.buttons.newLab' }}
+      </button>
+
+    {{/if}}
+    {{#if canAddMedication}}
+      <button class="btn btn-primary" {{action "newMedication" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'components.patientOrders.buttons.newMedication' }}</button>
+    {{/if}}
+  </div>
+</div>

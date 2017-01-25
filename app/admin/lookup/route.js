@@ -12,6 +12,9 @@ export default AbstractIndexRoute.extend({
   },
 
   actions: {
+    deleteValue(value) {
+      this.controller.send('deleteValue', value);
+    },
     refreshLookupLists() {
       this.refresh();
     }
