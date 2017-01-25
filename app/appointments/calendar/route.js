@@ -1,6 +1,9 @@
 import AppointmentIndexRoute from 'hospitalrun/appointments/index/route';
+import Ember from 'ember';
 import moment from 'moment';
 import { translationMacro as t } from 'ember-i18n';
+
+const { isEmpty } = Ember;
 
 export default AppointmentIndexRoute.extend({
   editReturn: 'appointments.calendar',
@@ -46,8 +49,14 @@ export default AppointmentIndexRoute.extend({
 
   model(params) {
     function createCalendarEvent(appointment) {
+      let title = appointment.get('patient').get('displayName');
+      let provider = appointment.get('provider');
+      if (!isEmpty(provider)) {
+        title = `${title}\n${provider}`;
+      }
       return {
-        title: `${appointment.get('patient').get('displayName')}\n${appointment.get('provider')}`,
+        allDay: appointment.get('allDay'),
+        title,
         start: appointment.get('startDate'),
         end: appointment.get('endDate'),
         referencedAppointment: appointment
