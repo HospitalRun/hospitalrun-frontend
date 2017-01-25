@@ -767,7 +767,7 @@ export default {
     missed: 'Missed Appointments',
     searchTitle: 'Search Appointments',
     todayTitle: 'Today\'s Appointments',
-    calendarTitle: 'Calendar',
+    calendarTitle: 'Appointments Calendar',
     messages: {
       deleteAppointmentMessage: 'Are you sure you wish to delete this appointment?',
       endTimeLaterThanStart: 'Please select an end time later than the start time.'
