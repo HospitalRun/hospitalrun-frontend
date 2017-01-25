@@ -1,12 +1,16 @@
 import Ember from 'ember';
 import moment from 'moment';
 
-const { isEmpty } = Ember;
+const {
+  get,
+  isEmpty,
+  set
+} = Ember;
 
 export default Ember.Component.extend({
   calendarHeader: {
-    left: 'title',
     center: 'agendaDay,agendaWeek,month',
+    left: 'title',
     right: 'today prev,next'
   },
 
@@ -17,14 +21,15 @@ export default Ember.Component.extend({
   onEventDrop: null,
   onEventResize: null,
   userCanEdit: false,
-  visibleDateIntervalStart: null,
-  visibleDateIntervalEnd: null,
 
   visualConfiguration: {
-    dateIntervalStart: null,
     dateIntervalEnd: null,
+    dateIntervalStart: null,
     viewType: null
   },
+
+  visibleDateIntervalEnd: null,
+  visibleDateIntervalStart: null,
 
   actions: {
     handleRenderingComplete(view) {
@@ -34,7 +39,7 @@ export default Ember.Component.extend({
           || firstConfig.viewType !== secondConfig.viewType;
       }
 
-      let currentConfiguration = this.get('visualConfiguration');
+      let currentConfiguration = get(this, 'visualConfiguration');
 
       let newConfiguration = {
         dateIntervalStart: moment(view.intervalStart).startOf('day').toDate().getTime(),
@@ -43,10 +48,10 @@ export default Ember.Component.extend({
       };
 
       if (isEmpty(currentConfiguration.dateIntervalStart) && isEmpty(currentConfiguration.dateIntervalEnd)) {
-        this.set('visualConfiguration', newConfiguration);
+        set(this, 'visualConfiguration', newConfiguration);
       } else if (configurationsDiffer(currentConfiguration, newConfiguration)) {
-        this.set('visualConfiguration', newConfiguration);
-        this.get('onVisualConfigurationChanged')(newConfiguration);
+        set(this, 'visualConfiguration', newConfiguration);
+        get(this, 'onVisualConfigurationChanged')(newConfiguration);
       }
     }
   }

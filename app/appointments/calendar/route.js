@@ -3,14 +3,20 @@ import Ember from 'ember';
 import moment from 'moment';
 import { translationMacro as t } from 'ember-i18n';
 
-const { isEmpty } = Ember;
+const {
+  get,
+  isEmpty,
+  set
+} = Ember;
 
 export default AppointmentIndexRoute.extend({
+
+  dateIntervalEnd: null,
+  dateIntervalStart: null,
   editReturn: 'appointments.calendar',
+  filterParams: ['appointmentType', 'provider', 'status', 'location'],
   modelName: 'appointment',
   pageTitle: t('appointments.calendarTitle'),
-
-  filterParams: ['appointmentType', 'provider', 'status', 'location'],
 
   queryParams: {
     appointmentType: { refreshModel: true },
@@ -19,46 +25,18 @@ export default AppointmentIndexRoute.extend({
     location: { refreshModel: true }
   },
 
-  dateIntervalStart: null,
-  dateIntervalEnd: null,
-
-  _modelQueryParams(params) {
-    let dateIntervalStart = this.get('dateIntervalStart');
-    let dateIntervalEnd = this.get('dateIntervalEnd');
-
-    if (dateIntervalStart === null || dateIntervalEnd === null) {
-      return this._super(params);
-    }
-
-    let maxValue = this.get('maxValue');
-
-    // To cater for times like 0:00 - investigate.
-    let adjustedStart = moment(dateIntervalStart).subtract(1, 'days').startOf('day').toDate().getTime();
-    let adjustedEnd = moment(dateIntervalEnd).add(1, 'days').endOf('day').toDate().getTime();
-
-    let searchOptions = {
-      startkey: [adjustedStart, null, 'appointment_'],
-      endkey: [adjustedEnd, maxValue, `appointment_${maxValue}`]
-    };
-
-    return {
-      options: searchOptions,
-      mapReduce: 'appointments_by_date'
-    };
-  },
-
   model(params) {
     function createCalendarEvent(appointment) {
-      let title = appointment.get('patient').get('displayName');
-      let provider = appointment.get('provider');
+      let title = get(appointment, 'patient.displayName');
+      let provider = get(appointment, 'provider');
       if (!isEmpty(provider)) {
         title = `${title}\n${provider}`;
       }
       return {
-        allDay: appointment.get('allDay'),
+        allDay: get(appointment, 'allDay'),
         title,
-        start: appointment.get('startDate'),
-        end: appointment.get('endDate'),
+        start: get(appointment, 'startDate'),
+        end: get(appointment, 'endDate'),
         referencedAppointment: appointment
       };
     }
@@ -72,7 +50,6 @@ export default AppointmentIndexRoute.extend({
       .then(function(calendarEvents) {
         return {
           events: calendarEvents,
-
           selectedAppointmentType: params.appointmentType,
           selectedProvider: params.provider,
           selectedStatus: params.status,
@@ -81,10 +58,35 @@ export default AppointmentIndexRoute.extend({
       });
   },
 
+  _modelQueryParams(params) {
+    let dateIntervalStart = get(this, 'dateIntervalStart');
+    let dateIntervalEnd = get(this, 'dateIntervalEnd');
+
+    if (dateIntervalStart === null || dateIntervalEnd === null) {
+      return this._super(params);
+    }
+
+    let maxValue = get(this, 'maxValue');
+
+    // To cater for times like 0:00 - investigate.
+    let adjustedStart = moment(dateIntervalStart).subtract(1, 'days').startOf('day').toDate().getTime();
+    let adjustedEnd = moment(dateIntervalEnd).add(1, 'days').endOf('day').toDate().getTime();
+
+    let searchOptions = {
+      startkey: [adjustedStart, null, this._getMinPouchId()],
+      endkey: [adjustedEnd, maxValue, this._getMaxPouchId()]
+    };
+
+    return {
+      options: searchOptions,
+      mapReduce: 'appointments_by_date'
+    };
+  },
+
   actions: {
     updateDateInterval(start, end) {
-      this.set('dateIntervalStart', start);
-      this.set('dateIntervalEnd', end);
+      set(this, 'dateIntervalStart', start);
+      set(this, 'dateIntervalEnd', end);
       this.refresh();
     }
   }

@@ -5,46 +5,61 @@ import SelectValues from 'hospitalrun/utils/select-values';
 import Ember from 'ember';
 
 const {
+  computed,
+  computed: {
+    alias
+  },
+  get,
+  inject,
+  isEmpty,
   set
 } = Ember;
 
 export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes, {
-  appointmentsController: Ember.inject.controller('appointments'),
-  startKey: [],
-
-  queryParams: ['appointmentType', 'provider', 'status', 'location'],
   appointmentType: null,
-  provider: null,
-  status: null,
   location: null,
+  provider: null,
+  queryParams: ['appointmentType', 'provider', 'status', 'location'],
+  startKey: [],
+  status: null,
 
-  physicians: Ember.computed.alias('appointmentsController.physicianList.value'),
-  physicianList: function() {
-    return SelectValues.selectValues(this.get('physicians'), true);
-  }.property('physicians'),
+  appointmentsController: inject.controller('appointments'),
+  locations: alias('appointmentsController.locationList.value'),
+  physicians: alias('appointmentsController.physicianList.value'),
 
-  locations: Ember.computed.alias('appointmentsController.locationList.value'),
-  locationList: function() {
-    return SelectValues.selectValues(this.get('locations'), true);
-  }.property('locations'),
+  locationList: computed('locations', function() {
+    return SelectValues.selectValues(get(this, 'locations'), true);
+  }),
 
-  getSelectedFilteringCriteria() {
+  physicianList: computed('physicians', function() {
+    return SelectValues.selectValues(get(this, 'physicians'), true);
+  }),
+
+  _getSelectedFilteringCriteria() {
     let rawCriteria = {
-      status: this.get('model.selectedStatus'),
-      type: this.get('model.selectedAppointmentType'),
-      provider: this.get('model.selectedProvider'),
-      location: this.get('model.selectedLocation')
+      status: get(this, 'model.selectedStatus'),
+      type: get(this, 'model.selectedAppointmentType'),
+      provider: get(this, 'model.selectedProvider'),
+      location: get(this, 'model.selectedLocation')
     };
 
     return {
-      status: Ember.isEmpty(rawCriteria.status) ? null : rawCriteria.status,
-      type: Ember.isEmpty(rawCriteria.type) ? null : rawCriteria.type,
-      provider: Ember.isEmpty(rawCriteria.provider) ? null : rawCriteria.provider,
-      location: Ember.isEmpty(rawCriteria.location) ? null : rawCriteria.location
+      status: isEmpty(rawCriteria.status) ? null : rawCriteria.status,
+      type: isEmpty(rawCriteria.type) ? null : rawCriteria.type,
+      provider: isEmpty(rawCriteria.provider) ? null : rawCriteria.provider,
+      location: isEmpty(rawCriteria.location) ? null : rawCriteria.location
     };
   },
 
   actions: {
+    clearFilteringCriteria() {
+      set(this, 'model.selectedStatus', null);
+      set(this, 'model.selectedAppointmentType', null);
+      set(this, 'model.selectedProvider', null);
+      set(this, 'model.selectedLocation', null);
+      this.send('filter');
+    },
+
     createNewAppointment(dateClicked) {
       let newAppointment = this.store.createRecord('appointment', {
         appointmentType: 'Admission',
@@ -55,17 +70,8 @@ export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes
       this.send('editAppointment', newAppointment);
     },
 
-    navigateToAppointment(calendarEvent) {
-      this.send('editAppointment', calendarEvent.referencedAppointment);
-    },
-
-    handleVisualConfigurationChanged(newConfiguration) {
-      let { dateIntervalStart, dateIntervalEnd } = newConfiguration;
-      this.send('updateDateInterval', dateIntervalStart, dateIntervalEnd);
-    },
-
     filter() {
-      let criteria = this.getSelectedFilteringCriteria();
+      let criteria = this._getSelectedFilteringCriteria();
       this.setProperties({
         startKey: [],
         previousStartKey: null,
@@ -78,12 +84,13 @@ export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes
       });
     },
 
-    clearFilteringCriteria() {
-      this.set('model.selectedStatus', null);
-      this.set('model.selectedAppointmentType', null);
-      this.set('model.selectedProvider', null);
-      this.set('model.selectedLocation', null);
-      this.send('filter');
+    handleVisualConfigurationChanged(newConfiguration) {
+      let { dateIntervalStart, dateIntervalEnd } = newConfiguration;
+      this.send('updateDateInterval', dateIntervalStart, dateIntervalEnd);
+    },
+
+    navigateToAppointment(calendarEvent) {
+      this.send('editAppointment', calendarEvent.referencedAppointment);
     },
 
     updateAppointment(calendarEvent) {
