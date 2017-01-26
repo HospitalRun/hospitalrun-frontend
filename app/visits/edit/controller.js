@@ -64,6 +64,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     return this.currentUserCan('add_vitals');
   }.property(),
 
+  canAddReport: function() {
+    return this.currentUserCan('add_report');
+  }.property(),
+
   canDeleteImaging: function() {
     return this.currentUserCan('delete_imaging');
   }.property(),
@@ -82,6 +86,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
   canDeleteVitals: function() {
     return this.currentUserCan('delete_vitals');
+  }.property(),
+
+  canDeleteReport: function() {
+    return this.currentUserCan('delete_report');
   }.property(),
 
   isAdmissionVisit: function() {
@@ -419,6 +427,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
         });
       }
       this.send('openModal', 'patients.notes', model);
+    },
+
+    newReport() {
+      this._addChildObject('reports.edit');
     },
 
     newAppointment() {

@@ -129,6 +129,11 @@
             {{t 'visits.navigation.charges'}}
           </a>
         </li>
+        <li role="presentation">
+          <a href="#reports" role="tab" data-toggle="pill" data-test-selector="reports-tab">
+            {{t 'visits.navigation.reports'}}
+          </a>
+        </li>
       </ul>
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane" id="visit-notes">
@@ -256,6 +261,18 @@
           {{#em-form model=this submitButton=false }}
             {{partial 'item-charges'}}
           {{/em-form}}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="reports">
+          <div class="panel detail-section">
+            <div class="panel-heading">
+              {{#if canAddReport}}
+                <button class="btn btn-primary align-right" {{action "newReport"}}>{{t 'patients.buttons.newOPDReport'}}</button>
+              {{/if}}
+            </div>
+            <div class="panel-body">
+             Listing of reports
+            </div>
+          </div>
         </div>
       </div>
     {{/unless}}
