@@ -75,7 +75,6 @@ export default AbstractEditController.extend({
   }),
 
   formTypeValues: [
-    'operationReport',
     'operativePlan',
     'patient',
     'socialwork',
