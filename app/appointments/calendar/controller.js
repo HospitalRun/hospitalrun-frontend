@@ -1,5 +1,6 @@
 import AppointmentIndexController from 'hospitalrun/appointments/index/controller';
 import AppointmentStatuses from 'hospitalrun/mixins/appointment-statuses';
+import moment from 'moment';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 import SelectValues from 'hospitalrun/utils/select-values';
 import Ember from 'ember';
@@ -17,15 +18,24 @@ const {
 
 export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes, {
   appointmentType: null,
+  endDate: null,
   location: null,
   provider: null,
-  queryParams: ['appointmentType', 'provider', 'status', 'location'],
-  startKey: [],
+  queryParams: ['appointmentType', 'endDate', 'provider', 'status', 'startDate', 'location', 'viewType'],
+  startDate: null,
   status: null,
+  viewType: 'agendaWeek',
 
   appointmentsController: inject.controller('appointments'),
   locations: alias('appointmentsController.locationList.value'),
   physicians: alias('appointmentsController.physicianList.value'),
+
+  calendarDate: computed('startDate', function() {
+    let startDate = get(this, 'startDate');
+    if (!isEmpty(startDate)) {
+      return moment(parseInt(startDate));
+    }
+  }),
 
   locationList: computed('locations', function() {
     return SelectValues.selectValues(get(this, 'locations'), true);
@@ -73,10 +83,6 @@ export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes
     filter() {
       let criteria = this._getSelectedFilteringCriteria();
       this.setProperties({
-        startKey: [],
-        previousStartKey: null,
-        previousStartKeys: [],
-
         appointmentType: criteria.type,
         provider: criteria.provider,
         status: criteria.status,
@@ -85,8 +91,7 @@ export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes
     },
 
     handleVisualConfigurationChanged(newConfiguration) {
-      let { dateIntervalStart, dateIntervalEnd } = newConfiguration;
-      this.send('updateDateInterval', dateIntervalStart, dateIntervalEnd);
+      this.setProperties(newConfiguration);
     },
 
     navigateToAppointment(calendarEvent) {

@@ -1,12 +1,10 @@
 import AppointmentIndexRoute from 'hospitalrun/appointments/index/route';
 import Ember from 'ember';
-import moment from 'moment';
 import { translationMacro as t } from 'ember-i18n';
 
 const {
   get,
-  isEmpty,
-  set
+  isEmpty
 } = Ember;
 
 export default AppointmentIndexRoute.extend({
@@ -20,9 +18,12 @@ export default AppointmentIndexRoute.extend({
 
   queryParams: {
     appointmentType: { refreshModel: true },
+    endDate: { refreshModel: true },
     provider: { refreshModel: true },
     status: { refreshModel: true },
-    location: { refreshModel: true }
+    startDate: { refreshModel: true },
+    location: { refreshModel: true },
+    viewType: { refreshModel: false }
   },
 
   model(params) {
@@ -59,35 +60,20 @@ export default AppointmentIndexRoute.extend({
   },
 
   _modelQueryParams(params) {
-    let dateIntervalStart = get(this, 'dateIntervalStart');
-    let dateIntervalEnd = get(this, 'dateIntervalEnd');
+    let { endDate, startDate } = params;
 
-    if (dateIntervalStart === null || dateIntervalEnd === null) {
+    if (endDate === null || startDate === null) {
       return this._super(params);
     }
-
     let maxValue = get(this, 'maxValue');
-
-    // To cater for times like 0:00 - investigate.
-    let adjustedStart = moment(dateIntervalStart).subtract(1, 'days').startOf('day').toDate().getTime();
-    let adjustedEnd = moment(dateIntervalEnd).add(1, 'days').endOf('day').toDate().getTime();
-
     let searchOptions = {
-      startkey: [adjustedStart, null, this._getMinPouchId()],
-      endkey: [adjustedEnd, maxValue, this._getMaxPouchId()]
+      startkey: [parseInt(startDate), null, this._getMinPouchId()],
+      endkey: [parseInt(endDate), maxValue, this._getMaxPouchId()]
     };
 
     return {
       options: searchOptions,
       mapReduce: 'appointments_by_date'
     };
-  },
-
-  actions: {
-    updateDateInterval(start, end) {
-      set(this, 'dateIntervalStart', start);
-      set(this, 'dateIntervalEnd', end);
-      this.refresh();
-    }
   }
 });
