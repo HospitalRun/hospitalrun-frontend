@@ -853,7 +853,8 @@ export default {
       notes: 'Notes',
       orders: 'Orders',
       procedures: 'Procedures',
-      vitals: 'Vitals'
+      vitals: 'Vitals',
+      reports: 'Reports'
     }
   },
   labs: {
@@ -954,7 +955,8 @@ export default {
       newAppointment: 'New Appointment',
       backToPatients: 'Back to Patient List',
       newPatient: '+ new patient',
-      patientCheckIn: 'Patient Check In'
+      patientCheckIn: 'Patient Check In',
+      newOPDReport: 'New OPD Report'
     },
     labels: {
       primaryDiagnosis: 'Primary Diagnoses',
@@ -1078,6 +1080,18 @@ export default {
     },
     buttons: {
       addMedication: 'Add Medication'
+    }
+  },
+  reports: {
+    titles: {
+      edit: 'Edit Report',
+      saved: 'Report Saved',
+      new: 'New Report'
+    },
+    messages: {
+      deleteMedication: 'Are you sure you want to delete this medication?',
+      delete: 'Are you sure you wish to delete this report?',
+      saved: 'The report has been saved.'
     }
   },
   components: {
