@@ -1,5 +1,17 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false }}
-
+    {{#if model.patient}}
+      {{patient-summary
+        patient=model.patient
+        diagnosisContainer=model.visit
+        returnTo='visits.edit'
+        returnToContext=model.id
+        disablePatientLink=model.isNew
+        allowAddAllergy=true
+        allowAddDiagnosis=true
+        allowAddOperativePlan=true
+        diagnosisList=diagnosisList
+      }}
+    {{/if}}
   {{/em-form}}
 {{/edit-panel}}
