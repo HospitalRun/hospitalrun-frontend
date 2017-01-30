@@ -956,7 +956,8 @@ export default {
       backToPatients: 'Back to Patient List',
       newPatient: '+ new patient',
       patientCheckIn: 'Patient Check In',
-      newOPDReport: 'New OPD Report'
+      newOPDReport: 'New OPD Report',
+      newDischargeReport: 'New Discharge Report'
     },
     labels: {
       primaryDiagnosis: 'Primary Diagnoses',
@@ -1087,6 +1088,16 @@ export default {
       edit: 'Edit Report',
       saved: 'Report Saved',
       new: 'New Report'
+    },
+    opd: {
+      titles: {
+        new: 'New OPD Report'
+      }
+    },
+    discharge: {
+      titles: {
+        new: 'New Discharge Report'
+      }
     },
     messages: {
       deleteMedication: 'Are you sure you want to delete this medication?',

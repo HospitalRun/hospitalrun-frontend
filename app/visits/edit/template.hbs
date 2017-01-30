@@ -266,11 +266,17 @@
           <div class="panel detail-section">
             <div class="panel-heading">
               {{#if canAddReport}}
-                <button class="btn btn-primary align-right" {{action "newReport"}}>{{t 'patients.buttons.newOPDReport'}}</button>
+                  <button class="btn btn-primary align-right" {{action "newReport"}}>
+                    {{#if model.outPatient}}
+                    {{t 'patients.buttons.newOPDReport'}}
+                    {{else}}
+                    {{t 'patients.buttons.newDischargeReport'}}
+                    {{/if}}
+                  </button>
               {{/if}}
             </div>
             <div class="panel-body">
-             Listing of reports
+
             </div>
           </div>
         </div>
