@@ -1230,5 +1230,13 @@ export default {
       newTitle: 'New Operation Report',
       reportSaved: 'Report Saved'
     }
+  },
+  application: {
+    messages: {
+      sessionExpired: 'Your session has expired.  Please login to continue.'
+    },
+    titles: {
+      sessionExpired: 'Session Expired'
+    }
   }
 };

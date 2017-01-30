@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { Adapter } from 'ember-pouch';
+import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
 import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 import uuid from 'npm:uuid';
 
@@ -203,7 +204,7 @@ export default Adapter.extend(PouchAdapterUtils, {
               };
               db.list(`${mapReduce}/sort/${mapReduce}`, listParams, (err, response) => {
                 if (err) {
-                  this._pouchError(reject)(err);
+                  reject(this._handleErrorResponse(err));
                 } else {
                   let responseJSON = JSON.parse(response.body);
                   this._handleQueryResponse(responseJSON, store, type).then(resolve, reject);
@@ -212,7 +213,7 @@ export default Adapter.extend(PouchAdapterUtils, {
             } else {
               db.query(mapReduce, queryParams, (err, response) => {
                 if (err) {
-                  this._pouchError(reject)(err);
+                  reject(this._handleErrorResponse(err));
                 } else {
                   this._handleQueryResponse(response, store, type).then(resolve, reject);
                 }
@@ -221,16 +222,50 @@ export default Adapter.extend(PouchAdapterUtils, {
           } else {
             db.allDocs(queryParams, (err, response) => {
               if (err) {
-                this._pouchError(reject)(err);
+                reject(this._handleErrorResponse(err));
               } else {
                 this._handleQueryResponse(response, store, type).then(resolve, reject);
               }
             });
           }
         } catch(err) {
-          this._pouchError(reject)(err);
+          reject(this._handleErrorResponse(err));
         }
       }, 'findQuery in application-pouchdb-adapter');
     }
+  },
+
+  createRecord(store, type, record) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      this._super(store, type, record).then(resolve, (err) => {
+        reject(this._handleErrorResponse(err));
+      });
+    });
+  },
+
+  updateRecord(store, type, record) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      this._super(store, type, record).then(resolve, (err) => {
+        reject(this._handleErrorResponse(err));
+      });
+    });
+  },
+
+  deleteRecord(store, type, record) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      this._super(store, type, record).then(resolve, (err) => {
+        reject(this._handleErrorResponse(err));
+      });
+    });
+  },
+
+  _handleErrorResponse(err) {
+    if (err.status) {
+      let detailedMessage = JSON.stringify(err, null, 2);
+      return new UnauthorizedError(err, detailedMessage);
+    } else {
+      return err;
+    }
   }
+
 });
