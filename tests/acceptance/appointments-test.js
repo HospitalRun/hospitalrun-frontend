@@ -3,6 +3,9 @@ import { module, test } from 'qunit';
 import moment from 'moment';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
+const DATE_TIME_FORMAT = 'l h:mm A';
+const TIME_FORMAT = 'h:mm';
+
 module('Acceptance | appointments', {
   beforeEach() {
     this.application = startApp();
@@ -33,7 +36,7 @@ test('visiting /appointments/missed', function(assert) {
     let today = moment();
     let tomorrow = moment().add(1, 'days');
     let status = 'Missed';
-    createAppointment(today, tomorrow, status);
+    createAppointment(today, tomorrow, false, status);
     visit(url);
     andThen(function() {
       assert.equal(currentURL(), url);
@@ -136,20 +139,51 @@ test('Delete an appointment', function(assert) {
   });
 });
 
-function createAppointment(startDate = (new Date()), endDate = (moment().add(1, 'day').toDate()), status = 'Scheduled') {
+test('Appointment calendar', function(assert) {
+  runWithPouchDump('appointments', function() {
+    authenticateUser();
+    let later = moment().add(1, 'hours');
+    let today = moment();
+    let startTime = today.format(TIME_FORMAT);
+    let endTime = later.format(TIME_FORMAT);
+    let timeString = `${startTime} - ${endTime}`;
+    createAppointment(today, later, false);
+
+    andThen(function() {
+      visit('/appointments/calendar');
+    });
+
+    andThen(function() {
+      assert.equal(currentURL(), '/appointments/calendar');
+      assert.equal(find('.view-current-title').text(), 'Appointments Calendar', 'Appoinment Calendar displays');
+      assert.equal(find('.fc-content .fc-time').text(), timeString, 'Time appears in calendar');
+      assert.equal(find('.fc-title').text(), 'Lennex ZinyandoDr Test', 'Appoinment displays in calendar');
+      click('.fc-title');
+    });
+
+    andThen(() => {
+      assert.equal(find('.view-current-title').text(), 'Edit Appointment', 'Edit Appointment displays');
+      assert.equal(find('.test-appointment-start input').val(), today.format(DATE_TIME_FORMAT), 'Start date/time are correct');
+      assert.equal(find('.test-appointment-end input').val(), later.format(DATE_TIME_FORMAT), 'End date/time are correct');
+    });
+  });
+});
+
+function createAppointment(startDate = (new Date()), endDate = (moment().add(1, 'day').toDate()), allDay = true, status = 'Scheduled') {
   visit('/appointments/edit/new');
   typeAheadFillIn('.test-patient-input', 'Lennex Zinyando - P00017');
   select('.test-appointment-type', 'Admission');
   select('.test-appointment-status', status);
-  waitToAppear('.test-appointment-start input');
-  andThen(function() {
+  if (!allDay) {
+    click('.appointment-all-day input');
+    fillIn('.test-appointment-start input', startDate.format(DATE_TIME_FORMAT));
+    fillIn('.test-appointment-end input', endDate.format(DATE_TIME_FORMAT));
+  } else {
     selectDate('.test-appointment-start input', startDate);
-  });
-  andThen(function() {
     selectDate('.test-appointment-end input', endDate);
-  });
+  }
   typeAheadFillIn('.test-appointment-location', 'Harare');
-  fillIn('.test-appointment-with', 'Dr Test');
+  typeAheadFillIn('.test-appointment-with', 'Dr Test');
   click('button:contains(Add)');
   waitToAppear('.table-header');
 }
