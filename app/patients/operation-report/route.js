@@ -13,6 +13,6 @@ export default AbstractEditRoute.extend({
     let newData = {
       customForms: Ember.Object.create()
     };
-    return customForms.setDefaultCustomForms(['operationReport'], newData);
+    return customForms.setDefaultCustomForms(['operativePlan'], newData);
   }
 });

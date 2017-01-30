@@ -18,6 +18,7 @@ const {
 const PLAN_KEYS_TO_COPY = [
   'additionalNotes',
   'caseComplexity',
+  'customForms',
   'patient',
   'procedures',
   'operationDescription',
