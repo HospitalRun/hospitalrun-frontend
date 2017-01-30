@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
+import moment from 'moment';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import PaginationProps from 'hospitalrun/mixins/pagination-props';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';

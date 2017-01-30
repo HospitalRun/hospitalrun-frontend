@@ -1,6 +1,7 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import Ember from 'ember';
+import moment from 'moment';
 import { translationMacro as t } from 'ember-i18n';
 
 const {

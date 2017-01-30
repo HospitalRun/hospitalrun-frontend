@@ -76,7 +76,8 @@ export default {
       userRoles: 'User Roles',
       workflow: 'Workflow',
       outpatient: 'Outpatient',
-      customForms: 'Custom Forms'
+      customForms: 'Custom Forms',
+      calendar: 'Calendar'
     },
     actions: {
       logout: 'Logout',
@@ -473,6 +474,8 @@ export default {
     newRequestPlus: '+ new request',
     addVisit: 'Add Visit',
     search: 'Search',
+    filter: 'Filter',
+    clear: 'Clear',
     edit: 'Edit',
     addLineItem: 'Add Line Item',
     showFewer: 'Show Fewer',
@@ -763,6 +766,7 @@ export default {
     missed: 'Missed Appointments',
     searchTitle: 'Search Appointments',
     todayTitle: 'Today\'s Appointments',
+    calendarTitle: 'Appointments Calendar',
     messages: {
       deleteAppointmentMessage: 'Are you sure you wish to delete this appointment?',
       endTimeLaterThanStart: 'Please select an end time later than the start time.'
@@ -1224,6 +1228,14 @@ export default {
       editTitle: 'Edit Operation Report',
       newTitle: 'New Operation Report',
       reportSaved: 'Report Saved'
+    }
+  },
+  application: {
+    messages: {
+      sessionExpired: 'Your session has expired.  Please login to continue.'
+    },
+    titles: {
+      sessionExpired: 'Session Expired'
     }
   }
 };
