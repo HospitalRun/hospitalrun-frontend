@@ -104,7 +104,9 @@ export default AppointmentIndexController.extend(AppointmentStatuses, VisitTypes
       let newStart = calendarEvent.start.local().toDate();
       set(appointmentToUpdate, 'startDate', newStart);
       set(appointmentToUpdate, 'endDate', newEnd);
-      this.send('editAppointment', appointmentToUpdate);
+      appointmentToUpdate.save().catch((error) => {
+        this.send('error', error, 'appointments.calendar');
+      });
     }
   }
 });
