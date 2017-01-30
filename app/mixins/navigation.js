@@ -291,12 +291,6 @@ export default Ember.Mixin.create({
           iconClass: 'octicon-chevron-right',
           route: 'admin.roles',
           capability: 'define_user_roles'
-        },
-        {
-          title: 'Workflow',
-          iconClass: 'octicon-chevron-right',
-          route: 'admin.workflow',
-          capability: 'update_config'
         }
       ]
     }
