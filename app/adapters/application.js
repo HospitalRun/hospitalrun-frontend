@@ -10,6 +10,62 @@ const {
   }
 } = Ember;
 
+const { localMainDB, remoteDB } = window;
+
+function foregroundSync() {
+  console.log('foreground syncing');
+  return localMainDB.sync(remoteDB).on('error', function(err) {
+    console.log('foreground sync error:', err);
+  });
+}
+
+function backgroundSync() {
+  console.log('registering background sync');
+  return navigator.serviceWorker.ready
+    .then(function(reg) {
+      return reg.sync.register('sync');
+    })
+    .then(function() {
+      console.log('background sync registration succeeded');
+    })
+    .catch(function() {
+      console.log('background sync registration failed');
+    });
+}
+
+function watchLocalDB() {
+  console.log('watching local DB');
+  return localMainDB.changes({
+    since: 'now',
+    live: true
+  }).on('change', function(change) {
+    console.log('local change: ', change);
+    return backgroundSync();
+  }).on('error', function(err) {
+    console.error('local err: ', err);
+  });
+}
+
+function watchRemoteDB() {
+  console.log('watching remote DB');
+  return remoteDB.changes({
+    since: 'now',
+    live: true
+  }).on('change', function(change) {
+    console.log('remote change: ', change);
+    return backgroundSync();
+  }).on('error', function(err) {
+    console.error('remote err: ', err);
+  });
+}
+
+if (localMainDB && remoteDB) {
+  foregroundSync().then(function() {
+    watchLocalDB();
+    watchRemoteDB();
+  });
+}
+
 export default Adapter.extend(PouchAdapterUtils, {
   database: Ember.inject.service(),
   db: Ember.computed.reads('database.mainDB'),
