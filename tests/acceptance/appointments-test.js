@@ -36,7 +36,12 @@ test('visiting /appointments/missed', function(assert) {
     let today = moment();
     let tomorrow = moment().add(1, 'days');
     let status = 'Missed';
-    createAppointment(today, tomorrow, false, status);
+    createAppointment(assert, {
+      startDate: today,
+      endDate: tomorrow,
+      allDay: false,
+      status
+    });
     visit(url);
     andThen(function() {
       assert.equal(currentURL(), url);
@@ -56,7 +61,7 @@ test('Creating a new appointment', function(assert) {
       findWithAssert('button:contains(Add)');
     });
 
-    createAppointment();
+    createAppointment(assert);
 
     andThen(() => {
       assert.equal(currentURL(), '/appointments');
@@ -71,7 +76,7 @@ test('Creating a new appointment', function(assert) {
 test('Checkin to a visit from appointment', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
-    createAppointment();
+    createAppointment(assert);
     visit('/appointments');
 
     andThen(function() {
@@ -115,7 +120,7 @@ test('Checkin to a visit from appointment', function(assert) {
 test('Delete an appointment', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
-    createAppointment();
+    createAppointment(assert);
     visit('/appointments');
 
     andThen(function() {
@@ -124,15 +129,16 @@ test('Delete an appointment', function(assert) {
       findWithAssert('button:contains(Check In)');
       findWithAssert('button:contains(Edit)');
       findWithAssert('button:contains(Delete)');
+      click('button:contains(Delete)');
+      waitToAppear('.modal-dialog');
     });
-
-    click('button:contains(Delete)');
-    waitToAppear('.modal-dialog');
     andThen(() => {
       assert.equal(find('.modal-title').text().trim(), 'Delete Appointment', 'Delete Appointment confirmation modal has been displayed');
+      click('.modal-dialog button:contains(Delete)');
     });
-    click('.modal-dialog button:contains(Delete)');
-    waitToDisappear('.appointment-date');
+    andThen(() => {
+      waitToDisappear('.appointment-date');
+    });
     andThen(() => {
       assert.equal(find('.appointment-date').length, 0, 'No appointments are displayed');
     });
@@ -147,7 +153,12 @@ test('Appointment calendar', function(assert) {
     let startTime = today.format(TIME_FORMAT);
     let endTime = later.format(TIME_FORMAT);
     let timeString = `${startTime} - ${endTime}`;
-    createAppointment(today, later, false);
+    createAppointment(assert, {
+      startDate: today,
+      endDate: later,
+      allDay: false,
+      status: 'Scheduled'
+    });
 
     andThen(function() {
       visit('/appointments/calendar');
@@ -169,21 +180,93 @@ test('Appointment calendar', function(assert) {
   });
 });
 
-function createAppointment(startDate = (new Date()), endDate = (moment().add(1, 'day').toDate()), allDay = true, status = 'Scheduled') {
-  visit('/appointments/edit/new');
-  typeAheadFillIn('.test-patient-input', 'Lennex Zinyando - P00017');
-  select('.test-appointment-type', 'Admission');
-  select('.test-appointment-status', status);
-  if (!allDay) {
-    click('.appointment-all-day input');
-    fillIn('.test-appointment-start input', startDate.format(DATE_TIME_FORMAT));
-    fillIn('.test-appointment-end input', endDate.format(DATE_TIME_FORMAT));
+test('Theater scheduling', function(assert) {
+  runWithPouchDump('appointments', function() {
+    authenticateUser();
+    let later = moment().add(2, 'hours');
+    let today = moment().add(1, 'hours');
+    let startTime = today.format(TIME_FORMAT);
+    let endTime = later.format(TIME_FORMAT);
+    let timeString = `${startTime} - ${endTime}`;
+
+    createAppointment(assert, {
+      endDate: later,
+      startDate: today,
+      isSurgery: true
+    });
+
+    andThen(function() {
+      visit('/appointments/theater');
+    });
+
+    andThen(function() {
+      assert.equal(currentURL(), '/appointments/theater', 'Theater schedule url is correct.');
+      assert.equal(find('.view-current-title').text(), 'Theater Schedule', 'Theater Schedule displays');
+      assert.equal(find('.fc-content .fc-time').text(), timeString, 'Time appears in calendar');
+      assert.equal(find('.fc-title').text(), 'Lennex ZinyandoDr Test', 'Appoinment displays in calendar');
+      click('.fc-title');
+    });
+
+    andThen(() => {
+      assert.equal(find('.view-current-title').text(), 'Edit Surgical Appointment', 'Edit Surgical Appointment displays');
+      assert.equal(find('.test-appointment-date input').val(), today.format('l'), 'Date is correct');
+      assert.equal(find('.start-hour').val(), today.hour(), 'Start hour is correct');
+      assert.equal(find('.start-minute').val(), today.minute(), 'Start minute is correct');
+      assert.equal(find('.end-hour').val(), later.hour(), 'End hour is correct');
+      assert.equal(find('.end-minute').val(), later.minute(), 'End minute is correct');
+    });
+  });
+});
+
+function createAppointment(assert, appointment = { startDate: new Date(), endDate: moment().add(1, 'day').toDate(), allDay: true, status: 'Scheduled' }) {
+  if (appointment.isSurgery) {
+    visit('/appointments/edit/newsurgery');
   } else {
-    selectDate('.test-appointment-start input', startDate);
-    selectDate('.test-appointment-end input', endDate);
+    visit('/appointments/edit/new');
+  }
+  typeAheadFillIn('.test-patient-input', 'Lennex Zinyando - P00017');
+  if (appointment.isSurgery) {
+    selectDate('.test-appointment-date input', appointment.startDate);
+    let endHour = getHour(appointment.endDate);
+    let endMinute = appointment.endDate.format('mm');
+    let startHour = getHour(appointment.startDate);
+    let startMinute = appointment.startDate.format('mm');
+    select('.end-hour', endHour);
+    select('.end-minute', endMinute);
+    select('.start-hour', startHour);
+    select('.start-minute', startMinute);
+  } else {
+    select('.test-appointment-status', appointment.status);
+    if (!appointment.allDay) {
+      click('.appointment-all-day input');
+      fillIn('.test-appointment-start input', appointment.startDate.format(DATE_TIME_FORMAT));
+      fillIn('.test-appointment-end input', appointment.endDate.format(DATE_TIME_FORMAT));
+    } else {
+      selectDate('.test-appointment-start input', appointment.startDate);
+      selectDate('.test-appointment-end input', appointment.endDate);
+    }
   }
   typeAheadFillIn('.test-appointment-location', 'Harare');
   typeAheadFillIn('.test-appointment-with', 'Dr Test');
   click('button:contains(Add)');
-  waitToAppear('.table-header');
+  waitToAppear('.modal-dialog');
+  andThen(() => {
+    assert.equal(find('.modal-title').text(), 'Appointment Saved', 'Appointment has been saved');
+    click('.modal-footer button:contains(Ok)');
+  });
+  andThen(() => {
+    click('button:contains(Return)');
+  });
+}
+
+function getHour(date) {
+  let hour = date.format('h A');
+  if (hour.indexOf('12') === 0) {
+    if (hour === '12 AM') {
+      hour = 'Midnight';
+    } else {
+      hour = 'Noon';
+    }
+  }
+  return hour;
 }

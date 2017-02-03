@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import moment from 'moment';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
 const ADDITIONAL_NOTES = 'Additional Notes here';
@@ -22,7 +21,6 @@ module('Acceptance | Operative Plan and Operation Report', {
 
 test('Plan and report creation', function(assert) {
   runWithPouchDump('patient', function() {
-    let surgeryDate = new Date();
     authenticateUser();
     visit('/patients');
     andThen(() =>{
@@ -81,7 +79,6 @@ test('Plan and report creation', function(assert) {
     andThen(() =>{
       assert.equal(find('.procedure-listing td.procedure-description:contains(Delete Me)').length, 0, 'Procedure is properly deleted');
       typeAheadFillIn('.procedure-description', PROCEDURE_FIX_ARM); // Leave typeahead filled in with value to automatically add on save.
-      selectDate('.surgery-date input', surgeryDate);
       typeAheadFillIn('.plan-surgeon', OPERATION_SURGEON);
       assert.equal(find('.plan-status select').val(), 'planned', 'Plan status is set to planned');
       fillIn('.case-complexity input', CASE_COMPLEXITY);
@@ -121,7 +118,6 @@ test('Plan and report creation', function(assert) {
       assert.equal(find('a.primary-diagnosis:contains(Broken Arm)').length, 1, 'Primary diagnosis appears as editable');
       assert.equal(find('a.secondary-diagnosis:contains(Tennis Elbow)').length, 1, 'Secondary diagnosis appears as  editable');
       assert.equal(find('.operation-description textarea').val(), OPERATION_DESCRIPTION, 'Operation description is copied from operative plan');
-      assert.equal(find('.surgery-date input').val(), moment(surgeryDate).format('l'), 'Surgery date is copied from operative plan');
       assert.equal(find('.operation-surgeon .tt-input').val(), OPERATION_SURGEON, 'Surgeon is copied from operative plan');
       assert.equal(find('.case-complexity input').val(), CASE_COMPLEXITY, 'Case complexity is copied from operative plan');
       assert.equal(find(`.procedure-listing td.procedure-description:contains(${PROCEDURE_HIP})`).length, 1, `Procedure ${PROCEDURE_HIP} is copied from operative plan`);
