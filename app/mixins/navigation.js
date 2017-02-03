@@ -56,6 +56,12 @@ export default Ember.Mixin.create({
           capability: 'patients'
         },
         {
+          title: 'Outpatient',
+          iconClass: 'octicon-chevron-right',
+          route: 'patients.outpatient',
+          capability: 'patients'
+        },
+        {
           title: 'New Patient',
           iconClass: 'octicon-plus',
           route: 'patients.edit',
@@ -71,33 +77,39 @@ export default Ember.Mixin.create({
       ]
     },
     {
-      title: 'Appointments',
+      title: 'Scheduling',
       iconClass: 'octicon-calendar',
       route: 'appointments.index',
       capability: 'appointments',
       subnav: [
         {
-          title: 'This Week',
+          title: 'Appointments This Week',
           iconClass: 'octicon-chevron-right',
           route: 'appointments.index',
           capability: 'appointments'
         },
         {
-          title: 'Today',
+          title: 'Today\'s Appointments',
           iconClass: 'octicon-chevron-right',
           route: 'appointments.today',
           capability: 'appointments'
         },
         {
-          title: 'Missed',
+          title: 'Missed Appointments',
           iconClass: 'octicon-chevron-right',
           route: 'appointments.missed',
           capability: 'appointments'
         },
         {
-          title: 'Search',
+          title: 'Appointment Search',
           iconClass: 'octicon-search',
           route: 'appointments.search',
+          capability: 'appointments'
+        },
+        {
+          title: 'Appointments Calendar',
+          iconClass: 'octicon-calendar',
+          route: 'appointments.calendar',
           capability: 'appointments'
         },
         {
@@ -105,6 +117,19 @@ export default Ember.Mixin.create({
           iconClass: 'octicon-plus',
           route: 'appointments.edit',
           subroute: 'new',
+          capability: 'add_appointment'
+        },
+        {
+          title: 'Theater Schedule',
+          iconClass: 'octicon-calendar',
+          route: 'appointments.theater',
+          capability: 'appointments'
+        },
+        {
+          title: 'Schedule Surgery',
+          iconClass: 'octicon-plus',
+          route: 'appointments.edit',
+          subroute: 'newsurgery',
           capability: 'add_appointment'
         }
       ]
@@ -244,15 +269,15 @@ export default Ember.Mixin.create({
       capability: 'admin',
       subnav: [
         {
-          title: 'Lookup Lists',
-          iconClass: 'octicon-chevron-right',
-          route: 'admin.lookup',
-          capability: 'update_config'
-        },
-        {
           title: 'Address Fields',
           iconClass: 'octicon-chevron-right',
           route: 'admin.address',
+          capability: 'update_config'
+        },
+        {
+          title: 'Custom Forms',
+          iconClass: 'octicon-chevron-right',
+          route: 'admin.custom-forms',
           capability: 'update_config'
         },
         {
@@ -260,6 +285,12 @@ export default Ember.Mixin.create({
           iconClass: 'octicon-plus',
           route: 'admin.loaddb',
           capability: 'load_db'
+        },
+        {
+          title: 'Lookup Lists',
+          iconClass: 'octicon-chevron-right',
+          route: 'admin.lookup',
+          capability: 'update_config'
         },
         {
           title: 'Users',
@@ -279,12 +310,6 @@ export default Ember.Mixin.create({
           iconClass: 'octicon-chevron-right',
           route: 'admin.roles',
           capability: 'define_user_roles'
-        },
-        {
-          title: 'Workflow',
-          iconClass: 'octicon-chevron-right',
-          route: 'admin.workflow',
-          capability: 'update_config'
         }
       ]
     }

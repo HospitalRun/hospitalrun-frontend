@@ -3,6 +3,9 @@ import EditPanelProps from 'hospitalrun/mixins/edit-panel-props';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import UserSession from 'hospitalrun/mixins/user-session';
+
+const { get } = Ember;
+
 export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, UserSession, {
   cancelAction: 'allItems',
 
@@ -17,7 +20,11 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
   }.property('model.hasDirtyAttributes'),
 
   disabledAction: function() {
-    let isValid = this.get('model.isValid');
+    let model = this.get('model');
+    if (model.validate) {
+      model.validate().catch(Ember.K);
+    }
+    let isValid = model.get('isValid');
     if (!isValid) {
       return 'showDisabledDialog';
     }
@@ -99,7 +106,11 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
     },
 
     showDisabledDialog() {
-      this.displayAlert('Warning!!!!', 'Please fill in required fields (marked with *) and correct the errors before saving.');
+      let i18n = this.get('i18n');
+      this.displayAlert(
+        i18n.t('alerts.warningExclamation'),
+        i18n.t('messages.requiredFieldsCorrectErrors')
+      );
     },
 
     /**
@@ -113,11 +124,19 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
           this.saveModel(skipAfterUpdate);
         }).catch((err) => {
           if (!err.ignore) {
-            this.displayAlert('Error!!!!', `An error occurred while attempting to save: ${JSON.stringify(err)}`);
+            let i18n = this.get('i18n');
+            this.displayAlert(
+              i18n.t('alerts.errorExclamation'),
+              i18n.t('messages.saveActionException', { message: JSON.stringify(err) })
+            );
           }
         });
       } catch(ex) {
-        this.displayAlert('Error!!!!', `An error occurred while attempting to save: ${ex}`);
+        let i18n = this.get('i18n');
+        this.displayAlert(
+          i18n.t('alerts.errorExclamation'),
+          i18n.t('messages.saveActionException', { message: JSON.stringify(ex) })
+        );
       }
     }
   },
@@ -142,12 +161,14 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    * to skip the afterUpdate call.
    */
   saveModel(skipAfterUpdate) {
-    this.get('model').save().then(function(record) {
+    get(this, 'model').save().then((record) => {
       this.updateLookupLists();
       if (!skipAfterUpdate) {
         this.afterUpdate(record);
       }
-    }.bind(this));
+    }).catch((error) => {
+      this.send('error', error);
+    });
   },
 
   /**

@@ -1,7 +1,32 @@
-{{#if sorted}}
-  <span class="octicon {{if sortDesc 'octicon-triangle-down' 'octicon-triangle-up'}}"></span>
-{{else}}
-  <span class="octicon octicon-triangle-down inactive"></span>
+<span {{action 'sort'}}>
+  {{#if sorted}}
+    <span class="octicon {{if sortDesc 'octicon-triangle-down' 'octicon-triangle-up'}}"></span>
+  {{else}}
+    <span class="octicon octicon-triangle-down inactive"></span>
+  {{/if}}
+  {{yield}}
+</span>
+{{#if filterBy}}
+  <span class="dropdown">
+    <span class="glyphicon glyphicon-filter dropdown-toggle {{if filtered '' 'inactive neutral'}}" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" ></span>
+    <ul class="dropdown-menu">
+      {{#if (eq filterType 'typeahead')}}
+        <li>
+          {{typeahead-filter content=filterValues}}
+        </li>
+      {{/if}}
+      {{#if (eq 'list' filterType )}}
+        <li>
+          <a {{action 'filter' bubbles=false}}>
+            {{t 'components.sortableColumn.labels.selectAll' }}
+          </a>
+        </li>
+        {{#each filterValues as |filterValue|}}
+          <li>
+            <a {{action 'filter' filterValue bubbles=false}}>{{filterValue}}</a>
+          </li>
+        {{/each}}
+      {{/if}}
+    </ul>
+  </span>
 {{/if}}
-
-{{yield}}
