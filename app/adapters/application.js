@@ -1,16 +1,15 @@
 import Ember from 'ember';
 import { Adapter } from 'ember-pouch';
-import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
-import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
 import uuid from 'npm:uuid';
 
 const {
+  get,
   run: {
     bind
   }
 } = Ember;
 
-export default Adapter.extend(PouchAdapterUtils, {
+export default Adapter.extend({
   database: Ember.inject.service(),
   db: Ember.computed.reads('database.mainDB'),
 
@@ -193,6 +192,7 @@ export default Adapter.extend(PouchAdapterUtils, {
       } else if (query.containsValue) {
         return this._executeContainsSearch(store, type, query);
       }
+      let database = get(this, 'database');
       return new Ember.RSVP.Promise((resolve, reject) => {
         let db = this.get('db');
         try {
@@ -204,7 +204,7 @@ export default Adapter.extend(PouchAdapterUtils, {
               };
               db.list(`${mapReduce}/sort/${mapReduce}`, listParams, (err, response) => {
                 if (err) {
-                  reject(this._handleErrorResponse(err));
+                  reject(database.handleErrorResponse(err));
                 } else {
                   let responseJSON = JSON.parse(response.body);
                   this._handleQueryResponse(responseJSON, store, type).then(resolve, reject);
@@ -213,7 +213,7 @@ export default Adapter.extend(PouchAdapterUtils, {
             } else {
               db.query(mapReduce, queryParams, (err, response) => {
                 if (err) {
-                  reject(this._handleErrorResponse(err));
+                  reject(database.handleErrorResponse(err));
                 } else {
                   this._handleQueryResponse(response, store, type).then(resolve, reject);
                 }
@@ -222,50 +222,54 @@ export default Adapter.extend(PouchAdapterUtils, {
           } else {
             db.allDocs(queryParams, (err, response) => {
               if (err) {
-                reject(this._handleErrorResponse(err));
+                reject(database.handleErrorResponse(err));
               } else {
                 this._handleQueryResponse(response, store, type).then(resolve, reject);
               }
             });
           }
         } catch(err) {
-          reject(this._handleErrorResponse(err));
+          reject(database.handleErrorResponse(err));
         }
       }, 'findQuery in application-pouchdb-adapter');
     }
   },
 
   createRecord(store, type, record) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      this._super(store, type, record).then(resolve, (err) => {
-        reject(this._handleErrorResponse(err));
-      });
-    });
+    return this._checkForErrors(this._super(store, type, record));
+  },
+
+  findAll(store, type) {
+    return this._checkForErrors(this._super(store, type));
+  },
+
+  findMany(store, type, ids) {
+    return this._checkForErrors(this._super(store, type, ids));
+  },
+
+  findHasMany(store, record, link, rel) {
+    return this._checkForErrors(this._super(store, record, link, rel));
+  },
+
+  findRecord(store, type, id) {
+    return this._checkForErrors(this._super(store, type, id));
   },
 
   updateRecord(store, type, record) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      this._super(store, type, record).then(resolve, (err) => {
-        reject(this._handleErrorResponse(err));
-      });
-    });
+    return this._checkForErrors(this._super(store, type, record));
   },
 
   deleteRecord(store, type, record) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      this._super(store, type, record).then(resolve, (err) => {
-        reject(this._handleErrorResponse(err));
-      });
-    });
+    return this._checkForErrors(this._super(store, type, record));
   },
 
-  _handleErrorResponse(err) {
-    if (err.status) {
-      let detailedMessage = JSON.stringify(err, null, 2);
-      return new UnauthorizedError(err, detailedMessage);
-    } else {
-      return err;
-    }
+  _checkForErrors(callPromise) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      callPromise.then(resolve, (err) => {
+        let database = get(this, 'database');
+        reject(database.handleErrorResponse(err));
+      });
+    });
   }
 
 });
