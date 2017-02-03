@@ -112,20 +112,6 @@ export default {
       editTitle: 'Carregando BD'
     },
     lookup: {
-      deleteValueInventoryTypeMedicationTitle: 'Medicação Não Pode ser Excluída',
-      deleteValueInventoryTypeMedicationMessage: 'O tipo de inventário Medicação não pode ser excluído por que é necessário para o Módulo de Medicação.',
-      deleteValueLabPricingTypeProcedureTitle: 'Tipo de Preço Laboratório Não Pode Ser Excluído',
-      deleteValueLabPricingTypeProcedureMessage: 'O tipo de preço Procedimento Laboratorial não pode ser excluído por que é necessário para o Módulo de Laboratório.',
-      deleteValueImagingPricingTypeProcedureTitle: 'Tipo de Preço Imagem Não Pode Ser Excluído',
-      deleteValueImagingPricingTypeProcedureMessage: 'O tipo de preço Imagem não pode ser excluído por que é necessário para o Módulo de Imagem.',
-      deleteValueVisitTypeAdmissionTitle: 'Tipo de Visita Admissão Não Pode Ser Excluído',
-      deleteValueVisitTypeAdmissionMessage: 'O Tipo de Visita Admissão não pode ser excluído por que é necessário para o Módulo de Visitas.',
-      deleteValueVisitTypeImagingTitle: 'Tipo de Visita Imagem Não Pode Ser Excluído',
-      deleteValueVisitTypeImagingMessage: 'O Tipo de Visita Imagem não pode ser excluído por que é necessário para o Módulo de Imagem.',
-      deleteValueVisitTypeLabTitle: 'Tipo de Visita Laboratório Não Pode Ser Excluído',
-      deleteValueVisitTypeLabMessage: 'O Tipo de Visita Laboratório  não pode ser excluído por que é necessário para o Módulo de Laboratório',
-      deleteValueVisitTypePharmacyTitle: 'Tipo de Visita Farmácia Não Pode Ser Excluído',
-      deleteValueVisitTypePharmacyMessage: 'Tipo de Visita Farmácia não pode ser excluído por que é necessário para o Módulo de Medicação.',
       alertImportListTitle: 'Selecione o arquivo para importação',
       alertImportListMessage: 'Por favor Selecione o arquivo para importação.',
       alertImportListSaveTitle: 'Lista Importdada',
@@ -280,7 +266,6 @@ export default {
     edit: 'Editar',
     imageOrders: 'Pedido de Imagem',
     labOrders: 'Pedidos de Laboratório',
-    patientHistory: 'Histórico do Paciente',
     imagingType: 'Tipo de Imagem',
     result: 'Resultado',
     results: 'Resultados',
@@ -820,10 +805,6 @@ export default {
       backToPatients: 'Voltar para Lista de Pacientes',
       newPatient: '+ novo paciente'
     },
-    headings: {
-      history: 'Histórico',
-      historySince: 'Histórico Desde'
-    },
     labels: {
       primaryDiagnosis: 'Diagnósticos Primários',
       secondaryDiagnosis: 'Diagnósticos Secundários',
@@ -846,7 +827,7 @@ export default {
       dateOfBirth: 'Data de Nascimento',
       placeOfBirth: 'Local de Nascimento',
       sources: 'Fontes',
-      costs: 'Custos',
+      cost: 'Custo',
       civilStatus: 'Estado Civil',
       relationship: 'Relação com Paciente',
       education: 'Educação',

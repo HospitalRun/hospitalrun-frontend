@@ -1,5 +1,4 @@
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
-import Ember from 'ember';
 import PatientId from 'hospitalrun/mixins/patient-id';
 import { translationMacro as t } from 'ember-i18n';
 
@@ -15,9 +14,6 @@ export default AbstractModuleRoute.extend(PatientId, {
     name: 'countryList',
     findArgs: ['lookup', 'country_list']
   }, {
-    name: 'customSocialForm',
-    findArgs: ['option', 'custom_form_social']
-  }, {
     name: 'diagnosisList',
     findArgs: ['lookup', 'diagnosis_list']
   }, {
@@ -30,8 +26,19 @@ export default AbstractModuleRoute.extend(PatientId, {
     name: 'pricingProfiles',
     findArgs: ['price-profile']
   }, {
+    name: 'procedureList',
+    findArgs: ['lookup', 'procedure_list']
+  }, {
     name: 'sexList',
     findArgs: ['lookup', 'sex']
+  }, {
+    name: 'socialCustomForms',
+    queryArgs: ['custom-form', {
+      options: {
+        key: 'socialwork'
+      },
+      mapReduce: 'custom_form_by_type'
+    }]
   }, {
     name: 'statusList',
     findArgs: ['lookup', 'patient_status_list']
@@ -41,18 +48,21 @@ export default AbstractModuleRoute.extend(PatientId, {
   }],
 
   actions: {
-    createNewVisit(patient, visits) {
-      let lastVisit = visits.get('lastObject');
-      let propertiesToSet = {};
-
-      if (!Ember.isEmpty(lastVisit)) {
-        propertiesToSet = lastVisit.getProperties('primaryDiagnosis', 'primaryBillingDiagnosis');
+    createNewVisit(patient, requestedFromPatient) {
+      let typeOfNewVisit = 'checkin';
+      if (requestedFromPatient) {
+        typeOfNewVisit = 'new';
       }
-      propertiesToSet.patient = patient;
-
-      this.transitionTo('visits.edit', 'new').then(function(newRoute) {
-        newRoute.currentModel.setProperties(propertiesToSet);
-      }.bind(this));
+      this.transitionTo('visits.edit', typeOfNewVisit).then((newRoute) =>{
+        if (requestedFromPatient) {
+          newRoute.currentModel.set('returnToPatient', patient.get('id'));
+        } else {
+          newRoute.currentModel.set('returnTo', 'patients');
+        }
+        newRoute.currentModel.set('patient', patient);
+        newRoute.currentModel.set('hidePatientSelection', true);
+        newRoute.controller.getPatientDiagnoses(patient, newRoute.currentModel);
+      });
     }
   },
   newButtonText: t('patients.buttons.newPatient'),

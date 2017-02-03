@@ -5,12 +5,6 @@ export default AbstractModuleRoute.extend({
     name: 'expenseAccountList',
     findArgs: ['lookup', 'expense_account_list']
   }, {
-    name: 'imagingPricingTypes',
-    findArgs: ['lookup', 'imaging_pricing_types']
-  }, {
-    name: 'labPricingTypes',
-    findArgs: ['lookup', 'lab_pricing_types']
-  }, {
     name: 'procedurePricingTypes',
     findArgs: ['lookup', 'procedure_pricing_types']
   }, {

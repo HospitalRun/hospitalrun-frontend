@@ -2,13 +2,19 @@ import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
+import NumberFormat from 'hospitalrun/mixins/number-format';
+
+function defaultQuantityGroups() {
+  return [];
+}
+
 /**
  * Model to represent a purchase within an inventory item.
  * File/model name is inv-purchase because using inventory-purchase will cause purchase
  * items to be shown as inventory items since the pouchdb adapter does a
  * retrieve for keys starting with 'inventory' to fetch inventory items.
  */
-let InventoryPurchaseItem = AbstractModel.extend(LocationName, {
+let InventoryPurchaseItem = AbstractModel.extend(LocationName, NumberFormat, {
   purchaseCost: DS.attr('number'),
   lotNumber: DS.attr('string'),
   dateReceived: DS.attr('date'),
@@ -18,7 +24,7 @@ let InventoryPurchaseItem = AbstractModel.extend(LocationName, {
     if (Ember.isEmpty(purchaseCost) || Ember.isEmpty(quantity) || purchaseCost === 0 || quantity === 0) {
       return 0;
     }
-    return Number((purchaseCost / quantity).toFixed(2));
+    return this._numberFormat(purchaseCost / quantity, true);
   }.property('purchaseCost', 'originalQuantity'),
   originalQuantity: DS.attr('number'),
   currentQuantity: DS.attr('number'),
@@ -32,14 +38,15 @@ let InventoryPurchaseItem = AbstractModel.extend(LocationName, {
   vendorItemNo: DS.attr('string'),
   distributionUnit: DS.attr('string'),
   invoiceNo: DS.attr('string'),
-  quantityGroups: DS.attr(),
+  quantityGroups: DS.attr({ defaultValue: defaultQuantityGroups }),
   validations: {
     purchaseCost: {
       numericality: true
     },
     originalQuantity: {
-      numericality: true,
-      greaterThanOrEqualTo: 0
+      numericality: {
+        greaterThanOrEqualTo: 0
+      }
     },
     vendor: {
       presence: true
