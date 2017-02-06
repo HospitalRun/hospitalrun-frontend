@@ -7,6 +7,7 @@ moduleFor('mixin:appointment-statuses', 'Unit | Mixin | appointment-statuses');
 test('appointmentStatusList', function(assert) {
   let appointmentStatuses = Ember.Object.extend(AppointmentStatuses).create();
   assert.deepEqual(appointmentStatuses.get('appointmentStatusList'), [
+    'Attended',
     'Scheduled',
     'Canceled',
     'Missed'
@@ -16,6 +17,10 @@ test('appointmentStatusList', function(assert) {
 test('appointmentStatuses', function(assert) {
   let appointmentStatuses = Ember.Object.extend(AppointmentStatuses).create();
   assert.deepEqual(appointmentStatuses.get('appointmentStatuses'), [
+    {
+      id: 'Attended',
+      value: 'Attended'
+    },
     {
       id: 'Scheduled',
       value: 'Scheduled'
@@ -37,6 +42,10 @@ test('appointmentStatusesWithEmpty', function(assert) {
     {
       id: '',
       value: ''
+    },
+    {
+      id: 'Attended',
+      value: 'Attended'
     },
     {
       id: 'Scheduled',

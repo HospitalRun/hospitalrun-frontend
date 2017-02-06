@@ -8,7 +8,10 @@ moduleForModel('invoice', 'Unit | Model | invoice', {
     'model:price-profile',
     'model:payment',
     'model:billing-line-item',
-    'model:line-item-detail'
+    'model:line-item-detail',
+    'ember-validations@validator:local/acceptance',
+    'ember-validations@validator:local/numericality',
+    'ember-validations@validator:local/presence'
   ]
 });
 

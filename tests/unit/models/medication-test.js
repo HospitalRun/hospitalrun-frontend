@@ -2,6 +2,9 @@ import { moduleForModel, test } from 'ember-qunit';
 
 moduleForModel('medication', 'Unit | Model | medication', {
   needs: [
+    'ember-validations@validator:local/acceptance',
+    'ember-validations@validator:local/numericality',
+    'ember-validations@validator:local/presence',
     'model:inventory',
     'model:patient',
     'model:visit'

@@ -66,5 +66,9 @@ module.exports = function(environment) {
     ENV.serviceWorker.debug = false;
   }
 
+  ENV.emberFullCalendar =  {
+    schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source'
+  };
+
   return ENV;
 };

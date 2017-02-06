@@ -1,0 +1,104 @@
+{{#item-listing paginationProps=paginationProps }}
+  <div class="panel panel-info">
+    <div class="panel-body">
+      {{#em-form model=model submitButton=false }}
+        <div class="row">
+          {{date-picker property="selectedVisitDate" label=(t "visits.labels.visitDate") class="col-sm-3 outpatient-date"}}
+          {{em-select class="col-sm-3 form-input-group outpatient-location" property="selectedLocation"
+              label=(t "labels.location") content=locationList prompt=" "
+          }}
+          <div class="form-group col-sm-3">
+            <label class="control-label"></label>
+            <div>
+              <button class="btn btn-default" {{action 'search'}}>{{t 'buttons.search'}}</button>
+            </div>
+          </div>
+        </div>
+      {{/em-form}}
+    </div>
+  </div>
+  <table class="table outpatient-list">
+    <thead>
+      <tr class="table-header">
+        {{#sortable-column sortBy='patient.displayPatientId' sortDesc=sortByDesc sortKey=sortByKey }}{{t 'labels.id'}}{{/sortable-column}}
+        {{#sortable-column
+          sortBy='patient.shortDisplayName'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+          filterBy='patient.shortDisplayName'
+          filteredBy=filteredBy
+          filterType='typeahead'
+          filterValues=patientNames
+        }}
+          {{t 'labels.name'}}
+        {{/sortable-column}}
+        {{#sortable-column
+          sortBy='patient.sex'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+          filterBy='patient.sex'
+          filteredBy=filteredBy
+          filterValues=sexList
+        }}
+          {{t 'patients.labels.sex'}}
+        {{/sortable-column}}
+        {{#sortable-column sortBy='patient.dateOfBirth' sortDesc=sortByDesc sortKey=sortByKey }}{{t 'labels.age'}}{{/sortable-column}}
+        {{#sortable-column
+          sortBy='visitType'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+          filterBy='visitType'
+          filteredBy=filteredBy
+          filterValues=visitTypesValues
+        }}{{t 'visits.labels.visitType'}}{{/sortable-column}}
+        {{#sortable-column
+          sortBy='startDate'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+        }}{{t 'visits.labels.checkInTime'}}{{/sortable-column}}
+        {{#sortable-column
+          sortBy='hasAppointmentLabel'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+          filterBy='hasAppointmentLabel'
+          filteredBy=filteredBy
+          filterValues=hasAppointmentLabels
+        }}{{t 'visits.labels.appointment'}}{{/sortable-column}}
+        {{#sortable-column
+          sortBy='examiner'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+        }}{{t 'visits.labels.examiner'}}{{/sortable-column}}
+        {{#sortable-column
+          sortBy='hasDoneOrders'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+          filterBy='hasDoneOrders'
+          filteredBy=filteredBy
+          filterValues=doneOrdersValues
+        }}
+          {{t 'visits.labels.ordersDone'}}
+        {{/sortable-column}}
+        <th>{{t 'labels.actions'}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each sortedVisits as |visit|}}
+        <tr {{action 'editVisit' visit}} class="clickable">
+          <td class="col-xs-1">{{visit.patient.displayPatientId}}</td>
+          <td class="col-xs-1">{{visit.patient.shortDisplayName}}</td>
+          <td class="col-xs-1">{{visit.patient.sex}}</td>
+          <td class="col-xs-1">{{visit.patient.shortAge}}</td>
+          <td class="col-xs-1">{{visit.visitType}}</td>
+          <td class="col-xs-1">{{date-format visit.startDate format="h:mm A"}}</td>
+          <td class="col-xs-1 text-center">{{visit.hasAppointmentLabel}}</td>
+          <td class="col-xs-1">{{visit.examiner}}</td>
+          <td class="col-xs-1 text-center">{{visit.hasDoneOrders}}</td>
+          <td class="col-xs-1">
+            <button class="btn btn-default neutral" {{action 'checkOut' visit  bubbles=false }}>{{t 'visits.buttons.checkOut'}}</button>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{/item-listing}}

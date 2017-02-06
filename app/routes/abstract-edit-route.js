@@ -46,6 +46,14 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     return Ember.RSVP.resolve({});
   },
 
+  getScreenTitle(model) {
+    if (model.get('isNew')) {
+      return this.get('newTitle');
+    } else {
+      return this.get('editTitle');
+    }
+  },
+
   model(params) {
     let idParam = this.get('idParam');
     if (!Ember.isEmpty(idParam) && params[idParam] === 'new') {
@@ -57,11 +65,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   setupController(controller, model) {
     let sectionDetails = {};
-    if (model.get('isNew')) {
-      sectionDetails.currentScreenTitle = this.get('newTitle');
-    } else {
-      sectionDetails.currentScreenTitle = this.get('editTitle');
-    }
+    sectionDetails.currentScreenTitle = this.getScreenTitle(model);
     if (this.get('hideNewButton')) {
       sectionDetails.newButtonAction = null;
     }

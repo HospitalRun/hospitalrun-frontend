@@ -5,17 +5,20 @@ import localeConfig from 'ember-i18n/config/en';
 
 moduleForModel('patient', 'Unit | Model | patient', {
   needs: [
+    'config:environment',
     'ember-validations@validator:local/format',
     'ember-validations@validator:local/presence',
+    'locale:en/config',
+    'locale:en/translations',
     'model:allergy',
+    'model:diagnosis',
+    'model:operation-report',
+    'model:operative-plan',
     'model:payment',
     'model:price-profile',
     'service:i18n',
-    'locale:en/translations',
-    'locale:en/config',
-    'util:i18n/missing-message',
     'util:i18n/compile-template',
-    'config:environment'
+    'util:i18n/missing-message'
   ],
   beforeEach() {
     // set the locale and the config

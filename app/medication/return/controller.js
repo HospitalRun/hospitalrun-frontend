@@ -3,11 +3,10 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import Ember from 'ember';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
-import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import SelectValues from 'hospitalrun/utils/select-values';
 
-export default AbstractEditController.extend(FulfillRequest, InventoryLocations, InventorySelection, PatientSubmodule, {
+export default AbstractEditController.extend(FulfillRequest, InventoryLocations, PatientSubmodule, {
   medicationController: Ember.inject.controller('medication'),
   medicationList: [],
 
