@@ -41,7 +41,7 @@ export default {
     imaging: 'Imaging',
     inventory: 'Inventory',
     patients: 'Patients',
-    appointments: 'Appointments',
+    scheduling: 'Scheduling',
     medication: 'Medication',
     labs: 'Labs',
     billing: 'Billing',
@@ -56,9 +56,9 @@ export default {
       reports: 'Reports',
       patientListing: 'Patient Listing',
       newPatient: 'New Patient',
-      thisWeek: 'This Week',
-      today: 'Today',
-      search: 'Search',
+      appointmentsThisWeek: 'Appointment This Week',
+      "today'sAppointments": 'Today\'s Appointments',
+      appointmentSearch: 'Appointment Search',
       addAppointment: 'Add Appointment',
       dispense: 'Dispense',
       returnMedication: 'Return Medication',
@@ -72,12 +72,14 @@ export default {
       users: 'Users',
       newUser: 'New User',
       admittedPatients: 'Admitted Patients',
-      missed: 'Missed',
+      missedAppointments: 'Missed Appointments',
       userRoles: 'User Roles',
       workflow: 'Workflow',
       outpatient: 'Outpatient',
       customForms: 'Custom Forms',
-      calendar: 'Calendar'
+      appointmentsCalendar: 'Appointments Calendar',
+      theaterSchedule: 'Theater Schedule',
+      scheduleSurgery: 'Schedule Surgery'
     },
     actions: {
       logout: 'Logout',
@@ -768,14 +770,23 @@ export default {
     todayTitle: 'Today\'s Appointments',
     calendarTitle: 'Appointments Calendar',
     messages: {
+      appointmentSaved: 'The appointment for {{patient}} has been saved.',
       deleteAppointmentMessage: 'Are you sure you wish to delete this appointment?',
       endTimeLaterThanStart: 'Please select an end time later than the start time.'
     },
     buttons: {
-      newButton: '+ new appointment'
+      newButton: '+ new appointment',
+      scheduleSurgery: '+ schedule surgery'
     },
     labels: {
+      noLocation: 'No Location',
       selectedStartingDate: 'Show Appointments On Or After'
+    },
+    titles: {
+      appointmentSaved: 'Appointment Saved',
+      editSurgicalAppointment: 'Edit Surgical Appointment',
+      newSurgicalAppointment: 'New Surgical Appointment',
+      theaterSchedule: 'Theater Schedule'
     }
   },
   vitals: {
@@ -957,7 +968,8 @@ export default {
       newAppointment: 'New Appointment',
       backToPatients: 'Back to Patient List',
       newPatient: '+ new patient',
-      patientCheckIn: 'Patient Check In'
+      patientCheckIn: 'Patient Check In',
+      scheduleSurgery: 'Schedule Surgery'
     },
     labels: {
       primaryDiagnosis: 'Primary Diagnoses',
@@ -1145,6 +1157,17 @@ export default {
       titles: {
         procedures: 'Procedures'
       }
+    },
+    upcomingAppointments: {
+      labels: {
+        date: 'Date',
+        with: 'With',
+        location: 'Location',
+        type: 'Type'
+      },
+      titles: {
+        upcomingAppointments: 'Upcoming Appointments'
+      }
     }
   },
   customForms: {
@@ -1196,8 +1219,7 @@ export default {
       operationDescription: 'Operation Description',
       plannedStatus: 'Planned',
       status: 'Status',
-      surgeon: 'Surgeon',
-      surgeryDate: 'Surgery Date'
+      surgeon: 'Surgeon'
     },
     messages: {
       planSaved: 'The operative plan has been saved.',

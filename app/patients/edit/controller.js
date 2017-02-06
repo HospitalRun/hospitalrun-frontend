@@ -379,6 +379,16 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
       this._addChildObject('medication.edit');
     },
 
+    newSurgicalAppointment() {
+      this.transitionToRoute('appointments.edit', 'newsurgery').then((newRoute) => {
+        newRoute.currentModel.setProperties({
+          patient: this.get('model'),
+          returnToPatient: this.get('model.id'),
+          selectPatient: false
+        });
+      });
+    },
+
     newVisit() {
       let patient = this.get('model');
       this.send('createNewVisit', patient, true);

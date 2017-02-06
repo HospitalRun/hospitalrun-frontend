@@ -4,7 +4,6 @@
     {{em-text property="operationDescription" label=(t 'operativePlan.labels.operationDescription') class="operation-description"}}
     {{operative-procedures model=model procedureList=procedureList}}
     <div class="row">
-      {{date-picker property="surgeryDate" label=(t 'operativePlan.labels.surgeryDate') class="form-input-group col-sm-4 surgery-date"}}
       {{select-or-typeahead className="col-sm-4" property="surgeon"
         label=(t "operativePlan.labels.surgeon") list=physicianList
         selection=model.surgeon
@@ -21,6 +20,7 @@
     </div>
     {{em-text property="admissionInstructions" label=(t 'operativePlan.labels.admissionInstructions') class="admission-instructions"}}
     {{em-text property="additionalNotes" label=(t 'operativePlan.labels.additionalNotes') class="additional-notes"}}
+    {{upcoming-appointments patient=model.patient}}
     {{custom-form-manager model=model formType="operativePlan"}}
   {{/em-form}}
 {{/edit-panel}}

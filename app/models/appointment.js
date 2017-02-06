@@ -85,9 +85,6 @@ export default AbstractModel.extend({
     appointmentType: {
       presence: true
     },
-    location: {
-      presence: true
-    },
     startDate: {
       presence: true
     },

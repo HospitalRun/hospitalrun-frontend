@@ -1,6 +1,9 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 import UserSession from 'hospitalrun/mixins/user-session';
+
+const { get } = Ember;
+
 export default DS.RESTAdapter.extend(UserSession, {
   database: Ember.inject.service(),
   session: Ember.inject.service(),
@@ -82,7 +85,12 @@ export default DS.RESTAdapter.extend(UserSession, {
   */
   find(store, type, id) {
     let findUrl = this.endpoint + id;
-    return this.ajax(findUrl, 'GET');
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      this.ajax(findUrl, 'GET').then(resolve, (error) => {
+        let database = get(this, 'database');
+        reject(database.handleErrorResponse(error));
+      });
+    });
   },
 
   headers: function() {
@@ -126,8 +134,13 @@ export default DS.RESTAdapter.extend(UserSession, {
     }
     data = this._cleanPasswordAttrs(data);
     let putURL = `${this.endpoint}${Ember.get(record, 'id')}`;
-    return this.ajax(putURL, 'PUT', {
-      data
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      this.ajax(putURL, 'PUT', {
+        data
+      }).then(resolve, (error) => {
+        let database = get(this, 'database');
+        reject(database.handleErrorResponse(error));
+      });
     });
   },
 
@@ -153,7 +166,12 @@ export default DS.RESTAdapter.extend(UserSession, {
       }
     };
     let allURL = `${this.endpoint}_all_docs`;
-    return this.ajax(allURL, 'GET', ajaxData);
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      this.ajax(allURL, 'GET', ajaxData).then(resolve, (error) => {
+        let database = get(this, 'database');
+        reject(database.handleErrorResponse(error));
+      });
+    });
   },
 
   /**
