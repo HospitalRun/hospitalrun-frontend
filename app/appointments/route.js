@@ -13,12 +13,18 @@ export default AbstractModuleRoute.extend(UserSession, {
   sectionTitle: t('appointments.sectionTitle'),
 
   actions: {
-    createVisit(appointment) {
+    checkIn(appointment) {
+      let patient = appointment.get('patient');
       let visitProps = appointment.getProperties('startDate', 'endDate', 'location', 'patient');
       visitProps.visitType = appointment.get('appointmentType');
       visitProps.examiner = appointment.get('provider');
-      this.transitionTo('visits.edit', 'new').then(function(newRoute) {
+      visitProps.appointment = appointment;
+      visitProps.hidePatientSelection = true;
+      visitProps.patient = patient;
+      visitProps.returnTo = 'appointments';
+      this.transitionTo('visits.edit', 'checkin').then(function(newRoute) {
         newRoute.currentModel.setProperties(visitProps);
+        newRoute.controller.getPatientDiagnoses(patient, newRoute.currentModel);
       }.bind(this));
     }
   },
@@ -29,6 +35,9 @@ export default AbstractModuleRoute.extend(UserSession, {
   }, {
     name: 'locationList',
     findArgs: ['lookup', 'visit_location_list']
+  }, {
+    name: 'surgeryLocationList',
+    findArgs: ['lookup', 'procedure_locations']
   }, {
     name: 'visitTypesList',
     findArgs: ['lookup', 'visit_types']

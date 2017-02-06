@@ -1,10 +1,13 @@
 import Ember from 'ember';
 
 const {
-  computed
+  computed,
+  get,
+  isEmpty
 } = Ember;
 
 export default Ember.Component.extend({
+  classNames: 'ps-info-group long-form',
   store: Ember.inject.service(),
   i18n: Ember.inject.service(),
   patient: null,
@@ -34,13 +37,21 @@ export default Ember.Component.extend({
     }
   }),
 
+  showAllergies: computed('canAddAllergy', 'patient.allergies.[]', {
+    get() {
+      let canAddAllergy = get(this, 'canAddAllergy');
+      let patientAllergies = get(this, 'patient.allergies');
+      return canAddAllergy || !isEmpty(patientAllergies);
+    }
+  }),
+
   modalTitle: Ember.computed('currentAllergy', function() {
     let currentAllergy = this.get('currentAllergy');
     let i18n = this.get('i18n');
     if (currentAllergy) {
-      return i18n.t('allergies.editAllergy', { allergy: currentAllergy.get('name') });
+      return i18n.t('allergies.titles.editAllergy');
     } else {
-      return i18n.t('allergies.newAllergy');
+      return i18n.t('allergies.titles.addAllergy');
     }
   }),
 
@@ -90,8 +101,13 @@ export default Ember.Component.extend({
     },
     deleteAllergy() {
       let allergy = this.get('currentAllergy');
+      let patient = this.get('patient');
+      let patientAllergies = patient.get('allergies');
       allergy.destroyRecord().then(() => {
-        this.closeAllergyModal();
+        patientAllergies.removeObject(allergy);
+        patient.save().then(() => {
+          this.closeAllergyModal();
+        });
       });
     }
   }

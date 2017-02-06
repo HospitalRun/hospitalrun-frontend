@@ -1,5 +1,6 @@
 // Derived from https://raw.githubusercontent.com/edgycircle/ember-pikaday/master/addon/helpers/pikaday.js
 import Ember from 'ember';
+import moment from 'moment';
 
 function triggerNativeEvent(element, eventName) {
   if (document.createEvent) {

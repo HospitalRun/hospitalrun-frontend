@@ -6,13 +6,18 @@ import { testValidPropertyValues, testInvalidPropertyValues } from '../../helper
 moduleForModel('inv-request', 'Unit | Model | inv-request', {
   needs: [
     'ember-validations@validator:local/acceptance',
+    'ember-validations@validator:local/format',
     'ember-validations@validator:local/numericality',
-    'model:inventory',
-    'model:patient',
-    'model:visit',
+    'ember-validations@validator:local/presence',
     'model:allergy',
+    'model:diagnosis',
+    'model:inventory',
+    'model:operation-report',
+    'model:operative-plan',
+    'model:patient',
     'model:payment',
-    'model:price-profile'
+    'model:price-profile',
+    'model:visit'
   ]
 });
 

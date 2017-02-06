@@ -5,19 +5,21 @@ import Ember from 'ember';
 import DS from 'ember-data';
 import PatientName from 'hospitalrun/mixins/patient-name';
 
+const { computed, get } = Ember;
+
 export default AbstractModel.extend(DOBDays, PatientName, {
+  // Attributes
   admitted: DS.attr('boolean', { defaultValue: false }),
   additionalContacts: DS.attr(),
   address: DS.attr('string'),
   address2: DS.attr('string'),
   address3: DS.attr('string'),
   address4: DS.attr('string'),
-  allergies: DS.hasMany('allergy', {
-    async: true
-  }),
   bloodType: DS.attr('string'),
   clinic: DS.attr('string'),
   country: DS.attr('string'),
+  checkedIn: DS.attr('boolean', { defaultValue: false }),
+  customForms: DS.attr('custom-forms'),
   dateOfBirth: DS.attr('date'),
   economicClassification: DS.attr('string'),
   email: DS.attr('string'),
@@ -33,21 +35,15 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   firstName: DS.attr('string'),
   sex: DS.attr('string'),
   occupation: DS.attr('string'),
-  history: DS.attr('string'),
+  history: DS.attr('string'), // No longer used
   insurance: DS.attr('string'),
   lastName: DS.attr('string'),
   livingArrangement: DS.attr('string'),
   middleName: DS.attr('string'),
   notes: DS.attr('string'),
   otherIncome: DS.attr('string'),
-  payments: DS.hasMany('payment', {
-    async: true
-  }),
   patientType: DS.attr('string'),
   parent: DS.attr('string'),
-  paymentProfile: DS.belongsTo('price-profile', {
-    async: false
-  }),
   phone: DS.attr('string'),
   placeOfBirth: DS.attr('string'),
   referredDate: DS.attr('date'),
@@ -56,13 +52,20 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   socialActionTaken: DS.attr('string'),
   socialRecommendation: DS.attr('string'),
   status: DS.attr('string'),
+  // Associations
+  allergies: DS.hasMany('allergy', { async: true }),
+  diagnoses: DS.hasMany('diagnosis', { async: false }),
+  operationReports: DS.hasMany('operation-report', { async: true }),
+  operativePlans: DS.hasMany('operative-plan', { async: true }),
+  payments: DS.hasMany('payment', { async: true }),
+  paymentProfile: DS.belongsTo('price-profile', { async: false }),
 
-  age: function() {
-    let dob = this.get('dateOfBirth');
+  age: computed('dateOfBirth', function() {
+    let dob = get(this, 'dateOfBirth');
     return this.convertDOBToText(dob);
-  }.property('dateOfBirth'),
+  }),
 
-  displayAddress: function() {
+  displayAddress: computed('address', 'address2', 'address3', 'address4', function() {
     let addressFields = this.getProperties('address', 'address2', 'address3', 'address4');
     let displayAddress = '';
     for (let prop in addressFields) {
@@ -74,15 +77,24 @@ export default AbstractModel.extend(DOBDays, PatientName, {
       }
     }
     return displayAddress;
-  }.property('address', 'address2', 'address3', 'address4'),
+  }),
 
-  displayName: function() {
+  displayName: computed('firstName', 'lastName', 'middleName', function() {
     return this.getPatientDisplayName(this);
-  }.property('firstName', 'lastName', 'middleName'),
+  }),
 
-  displayPatientId: function() {
+  displayPatientId: computed('id', 'externalPatientId', 'friendlyId', function() {
     return this.getPatientDisplayId(this);
-  }.property('id', 'externalPatientId', 'friendlyId'),
+  }),
+
+  shortAge: computed('dateOfBirth', function() {
+    let dob = get(this, 'dateOfBirth');
+    return this.convertDOBToText(dob, true);
+  }),
+
+  shortDisplayName: computed('firstName', 'lastName', function() {
+    return this.getPatientDisplayName(this, true);
+  }),
 
   validations: {
     email: {
@@ -102,5 +114,4 @@ export default AbstractModel.extend(DOBDays, PatientName, {
       presence: true
     }
   }
-
 });
