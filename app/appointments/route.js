@@ -24,7 +24,7 @@ export default AbstractModuleRoute.extend(UserSession, {
       visitProps.returnTo = 'appointments';
       this.transitionTo('visits.edit', 'checkin').then(function(newRoute) {
         newRoute.currentModel.setProperties(visitProps);
-        newRoute.controller.getPatientDiagnoses(patient);
+        newRoute.controller.getPatientDiagnoses(patient, newRoute.currentModel);
       }.bind(this));
     }
   },
@@ -35,6 +35,9 @@ export default AbstractModuleRoute.extend(UserSession, {
   }, {
     name: 'locationList',
     findArgs: ['lookup', 'visit_location_list']
+  }, {
+    name: 'surgeryLocationList',
+    findArgs: ['lookup', 'procedure_locations']
   }, {
     name: 'visitTypesList',
     findArgs: ['lookup', 'visit_types']

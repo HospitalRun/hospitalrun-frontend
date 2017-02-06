@@ -26,6 +26,9 @@ export default AbstractModuleRoute.extend(PatientId, {
     name: 'pricingProfiles',
     findArgs: ['price-profile']
   }, {
+    name: 'procedureList',
+    findArgs: ['lookup', 'procedure_list']
+  }, {
     name: 'sexList',
     findArgs: ['lookup', 'sex']
   }, {
@@ -58,7 +61,7 @@ export default AbstractModuleRoute.extend(PatientId, {
         }
         newRoute.currentModel.set('patient', patient);
         newRoute.currentModel.set('hidePatientSelection', true);
-        newRoute.controller.getPatientDiagnoses(patient);
+        newRoute.controller.getPatientDiagnoses(patient, newRoute.currentModel);
       });
     }
   },

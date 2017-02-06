@@ -1,14 +1,6 @@
 import Ember from 'ember';
 
-const {
-  computed
-} = Ember;
-
 export default Ember.Mixin.create({
-  canAddDiagnosis: computed(function() {
-    return this.currentUserCan('add_diagnosis');
-  }),
-
   editDiagnosis(diagnosis) {
     diagnosis.set('editController', this);
     this.send('openModal', 'diagnosis.edit', diagnosis);

@@ -9,6 +9,11 @@ import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitStatus from 'hospitalrun/utils/visit-statuses';
 
+const {
+  get,
+  isEmpty
+} = Ember;
+
 export default AbstractEditController.extend(BloodTypes, DiagnosisActions, ReturnTo, UserSession, PatientId, PatientNotes, {
 
   canAddAppointment: function() {
@@ -145,8 +150,21 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
   }.property('model.visits.[].medication'),
 
   patientProcedures: function() {
-    return this._getVisitCollection('procedures');
-  }.property('model.visits.[].procedures'),
+    let patientProcedures = this._getVisitCollection('procedures');
+    let operationReports = get(this, 'model.operationReports');
+    operationReports.forEach((report) => {
+      let reportedProcedures = get(report, 'procedures');
+      let surgeryDate = get(report, 'surgeryDate');
+      reportedProcedures.forEach((procedure) => {
+        patientProcedures.addObject({
+          description: get(procedure, 'description'),
+          procedureDate: surgeryDate,
+          report
+        });
+      });
+    });
+    return patientProcedures;
+  }.property('model.visits.[].procedures', 'model.operationReports.[].procedures'),
 
   showExpenseTotal: function() {
     let expenses = this.get('model.expenses');
@@ -307,6 +325,24 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
       }
     },
 
+    editOperativePlan(operativePlan) {
+      let model = operativePlan;
+      if (isEmpty(model)) {
+        this._addChildObject('patients.operative-plan', (route) =>{
+          route.controller.getPatientDiagnoses(this.get('model'), route.currentModel);
+        });
+      } else {
+        model.set('returnToVisit');
+        model.set('returnToPatient', this.get('model.id'));
+        this.transitionToRoute('patients.operative-plan', model);
+      }
+    },
+
+    editOperationReport(operationReport) {
+      operationReport.set('returnToPatient', this.get('model.id'));
+      this.transitionToRoute('patients.operation-report', operationReport);
+    },
+
     editPhoto(photo) {
       this.send('openModal', 'patients.photo', photo);
     },
@@ -341,6 +377,16 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
 
     newMedication() {
       this._addChildObject('medication.edit');
+    },
+
+    newSurgicalAppointment() {
+      this.transitionToRoute('appointments.edit', 'newsurgery').then((newRoute) => {
+        newRoute.currentModel.setProperties({
+          patient: this.get('model'),
+          returnToPatient: this.get('model.id'),
+          selectPatient: false
+        });
+      });
     },
 
     newVisit() {
@@ -487,13 +533,16 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
 
   },
 
-  _addChildObject(route) {
+  _addChildObject(route, afterTransition) {
     this.transitionToRoute(route, 'new').then(function(newRoute) {
       newRoute.currentModel.setProperties({
         patient: this.get('model'),
         returnToPatient: this.get('model.id'),
         selectPatient: false
       });
+      if (afterTransition) {
+        afterTransition(newRoute);
+      }
     }.bind(this));
   },
 
@@ -522,9 +571,6 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
       visits.forEach(function(visit) {
         visit.get(name).then(function(items) {
           returnList.addObjects(items);
-          if (returnList.length > 0) {
-            returnList[0].set('first', true);
-          }
         });
       });
     }

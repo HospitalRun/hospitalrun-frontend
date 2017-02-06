@@ -1,6 +1,7 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
+import moment from 'moment';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import UserSession from 'hospitalrun/mixins/user-session';

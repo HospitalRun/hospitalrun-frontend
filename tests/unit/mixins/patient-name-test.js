@@ -5,11 +5,15 @@ import DS from 'ember-data';
 
 moduleFor('mixin:patient-name', 'Unit | Mixin | patient-name', {
   needs: [
-    'model:patient',
+    'ember-validations@validator:local/format',
+    'ember-validations@validator:local/presence',
     'model:allergy',
+    'model:diagnosis',
+    'model:operation-report',
+    'model:operative-plan',
+    'model:patient',
     'model:payment',
-    'model:price-profile',
-    'model:diagnosis'
+    'model:price-profile'
   ],
   subject(attrs) {
     let subject;
