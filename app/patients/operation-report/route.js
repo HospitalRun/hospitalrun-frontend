@@ -1,18 +1,8 @@
-import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import Ember from 'ember';
+import OperativePlanRoute from 'hospitalrun/patients/operative-plan/route';
 import { translationMacro as t } from 'ember-i18n';
 
-export default AbstractEditRoute.extend({
-  customForms: Ember.inject.service(),
+export default OperativePlanRoute.extend({
   editTitle: t('operationReport.titles.editTitle'),
   modelName: 'operation-report',
-  newTitle: t('operationReport.titles.newTitle'),
-
-  getNewData() {
-    let customForms = this.get('customForms');
-    let newData = {
-      customForms: Ember.Object.create()
-    };
-    return customForms.setDefaultCustomForms(['operativePlan'], newData);
-  }
+  newTitle: t('operationReport.titles.newTitle')
 });
