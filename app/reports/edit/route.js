@@ -1,8 +1,7 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import ChargeRoute from 'hospitalrun/mixins/charge-route';
 import Ember from 'ember';
 
-export default AbstractEditRoute.extend(ChargeRoute, {
+export default AbstractEditRoute.extend({
   modelName: 'report',
   database: Ember.inject.service(),
   getNewData() {
