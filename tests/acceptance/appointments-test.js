@@ -183,8 +183,12 @@ test('Appointment calendar', function(assert) {
 test('Theater scheduling', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
-    let later = moment().add(2, 'hours');
-    let today = moment().add(1, 'hours');
+    let later = moment();
+    later.hour(11);
+    later.minute(30);
+    let today = moment();
+    today.hour(10);
+    today.minute(30);
     let startTime = today.format(TIME_FORMAT);
     let endTime = later.format(TIME_FORMAT);
     let timeString = `${startTime} - ${endTime}`;
