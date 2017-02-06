@@ -30,6 +30,8 @@ Router.map(function() {
     this.route('search');
     this.route('today');
     this.route('missed');
+    this.route('calendar');
+    this.route('theater');
   });
 
   this.route('finishgauth', { path: '/finishgauth/:s1/:s2/:k/:t/:i/:p' });
@@ -76,6 +78,7 @@ Router.map(function() {
     this.route('admitted');
     this.route('search', { path: '/search/:search_text' });
     this.route('operative-plan', { path: '/operative-plan/:operative-plan_id' });
+    this.route('operation-report', { path: '/operation-report/:operation-report_id' });
     this.route('outpatient');
   });
 

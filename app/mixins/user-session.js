@@ -68,6 +68,14 @@ export default Ember.Mixin.create({
       'Patient Administration',
       'System Administrator'
     ],
+    add_operation_report: [
+      'Data Entry',
+      'Doctor',
+      'Hospital Administrator',
+      'Medical Records Officer',
+      'Patient Administration',
+      'System Administrator'
+    ],
     add_photo: [
       'Data Entry',
       'Hospital Administrator',

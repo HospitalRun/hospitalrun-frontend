@@ -41,7 +41,7 @@ export default {
     imaging: 'Imaging',
     inventory: 'Inventory',
     patients: 'Patients',
-    appointments: 'Appointments',
+    scheduling: 'Scheduling',
     medication: 'Medication',
     labs: 'Labs',
     billing: 'Billing',
@@ -56,9 +56,9 @@ export default {
       reports: 'Reports',
       patientListing: 'Patient Listing',
       newPatient: 'New Patient',
-      thisWeek: 'This Week',
-      today: 'Today',
-      search: 'Search',
+      appointmentsThisWeek: 'Appointment This Week',
+      "today'sAppointments": 'Today\'s Appointments',
+      appointmentSearch: 'Appointment Search',
       addAppointment: 'Add Appointment',
       dispense: 'Dispense',
       returnMedication: 'Return Medication',
@@ -72,11 +72,14 @@ export default {
       users: 'Users',
       newUser: 'New User',
       admittedPatients: 'Admitted Patients',
-      missed: 'Missed',
+      missedAppointments: 'Missed Appointments',
       userRoles: 'User Roles',
       workflow: 'Workflow',
       outpatient: 'Outpatient',
-      customForms: 'Custom Forms'
+      customForms: 'Custom Forms',
+      appointmentsCalendar: 'Appointments Calendar',
+      theaterSchedule: 'Theater Schedule',
+      scheduleSurgery: 'Schedule Surgery'
     },
     actions: {
       logout: 'Logout',
@@ -134,7 +137,7 @@ export default {
         includeOtherOption: 'Include Other Option',
         label: 'Label',
         newForm: 'New Form',
-        operativePlanFormType: 'Operative Plan',
+        operativePlanFormType: 'Operative Plan and Report',
         otherOptionLabel: 'Other Option Label',
         patientFormType: 'Patient',
         property: 'Property',
@@ -282,7 +285,8 @@ export default {
         addSocialwork: 'Add Social Work',
         deleteNote: 'Delete Note',
         addOperativePlan: 'Add Operative Plan',
-        addAllergy: 'Add Allergy'
+        addAllergy: 'Add Allergy',
+        addOperationReport: 'Add Operation Report'
       },
       messages: {
         roleSaved: 'The {{roleName}} role has been saved.'
@@ -472,6 +476,8 @@ export default {
     newRequestPlus: '+ new request',
     addVisit: 'Add Visit',
     search: 'Search',
+    filter: 'Filter',
+    clear: 'Clear',
     edit: 'Edit',
     addLineItem: 'Add Line Item',
     showFewer: 'Show Fewer',
@@ -762,15 +768,25 @@ export default {
     missed: 'Missed Appointments',
     searchTitle: 'Search Appointments',
     todayTitle: 'Today\'s Appointments',
+    calendarTitle: 'Appointments Calendar',
     messages: {
+      appointmentSaved: 'The appointment for {{patient}} has been saved.',
       deleteAppointmentMessage: 'Are you sure you wish to delete this appointment?',
       endTimeLaterThanStart: 'Please select an end time later than the start time.'
     },
     buttons: {
-      newButton: '+ new appointment'
+      newButton: '+ new appointment',
+      scheduleSurgery: '+ schedule surgery'
     },
     labels: {
+      noLocation: 'No Location',
       selectedStartingDate: 'Show Appointments On Or After'
+    },
+    titles: {
+      appointmentSaved: 'Appointment Saved',
+      editSurgicalAppointment: 'Edit Surgical Appointment',
+      newSurgicalAppointment: 'New Surgical Appointment',
+      theaterSchedule: 'Theater Schedule'
     }
   },
   vitals: {
@@ -952,7 +968,8 @@ export default {
       newAppointment: 'New Appointment',
       backToPatients: 'Back to Patient List',
       newPatient: '+ new patient',
-      patientCheckIn: 'Patient Check In'
+      patientCheckIn: 'Patient Check In',
+      scheduleSurgery: 'Schedule Surgery'
     },
     labels: {
       primaryDiagnosis: 'Primary Diagnoses',
@@ -1129,6 +1146,28 @@ export default {
     },
     priceList: {
       charges: '{{pricingType}} charges'
+    },
+    operativeProcedures: {
+      buttons: {
+        addProcedure: 'Add Procedure'
+      },
+      labels: {
+        procedure: 'Procedure'
+      },
+      titles: {
+        procedures: 'Procedures'
+      }
+    },
+    upcomingAppointments: {
+      labels: {
+        date: 'Date',
+        with: 'With',
+        location: 'Location',
+        type: 'Type'
+      },
+      titles: {
+        upcomingAppointments: 'Upcoming Appointments'
+      }
     }
   },
   customForms: {
@@ -1169,7 +1208,6 @@ export default {
   },
   operativePlan: {
     buttons: {
-      addProcedure: 'Add Procedure',
       completePlan: 'Complete Plan'
     },
     labels: {
@@ -1180,19 +1218,46 @@ export default {
       droppedStatus: 'Dropped',
       operationDescription: 'Operation Description',
       plannedStatus: 'Planned',
-      procedure: 'Procedure',
       status: 'Status',
-      surgeon: 'Surgeon',
-      surgeryDate: 'Surgery Date'
+      surgeon: 'Surgeon'
     },
     messages: {
-      planSaved: 'The operative plan has been saved.'
+      planSaved: 'The operative plan has been saved.',
+      planCompleted: 'The operative plan has been completed.  You will now be directed to the operation report.'
     },
     titles: {
       editTitle: 'Edit Operative Plan',
       newTitle: 'New Operative Plan',
-      planSaved: 'Plan Saved',
-      procedures: 'Procedures'
+      planCompleted: 'Plan Completed',
+      planSaved: 'Plan Saved'
+    }
+  },
+  operationReport: {
+    labels: {
+      additionalNotes: 'Additional Notes',
+      assistant: 'Assistant',
+      caseComplexity: 'Case Complexity',
+      operationDescription: 'Operation Description',
+      preOpPrimaryDiagnosis: 'Pre-op Primary Diagnosis',
+      preOpSecondaryDiagnosis: 'Pre-op Secondary Diagnosis',
+      surgeon: 'Surgeon',
+      surgeryDate: 'Surgery Date'
+    },
+    messages: {
+      reportSaved: 'The operation report has been saved.'
+    },
+    titles: {
+      editTitle: 'Edit Operation Report',
+      newTitle: 'New Operation Report',
+      reportSaved: 'Report Saved'
+    }
+  },
+  application: {
+    messages: {
+      sessionExpired: 'Your session has expired.  Please login to continue.'
+    },
+    titles: {
+      sessionExpired: 'Session Expired'
     }
   }
 };

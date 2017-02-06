@@ -12,7 +12,6 @@ module.exports = {
     '$': true,
     'authenticateUser': true,
     'invalidateSession': true,
-    'moment': true,
     'require': true,
     'runWithPouchDump': true,
     'select': true,

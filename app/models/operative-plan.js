@@ -17,15 +17,15 @@ export default AbstractModel.extend({
   // Attributes
   additionalNotes: DS.attr('string'),
   admissionInstructions: DS.attr('string'),
-  caseComplexity: DS.attr('string'),
+  caseComplexity: DS.attr('number'),
   customForms: DS.attr('custom-forms'),
   operationDescription: DS.attr('string'),
   procedures: DS.attr('operative-procedures', { defaultValue: defaultProcedures }),
   status: DS.attr('string', { defaultValue: PLANNED_STATUS }),
   surgeon: DS.attr('string'),
-  surgeryDate: DS.attr('date'),
 
   // Associations
+  diagnoses: DS.hasMany('diagnosis'),
   patient: DS.belongsTo('patient', { async: false }),
 
   isPlanned: computed('status', {
@@ -36,6 +36,13 @@ export default AbstractModel.extend({
   }),
 
   validations: {
+    caseComplexity: {
+      numericality: {
+        allowBlank: true,
+        onlyInteger: true
+      }
+    },
+
     procedureDescription: {
       presence: {
         if(object) {
