@@ -3,6 +3,7 @@ import AddNewPatient from 'hospitalrun/mixins/add-new-patient';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
 import DiagnosisActions from 'hospitalrun/mixins/diagnosis-actions';
 import Ember from 'ember';
+import moment from 'moment';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from 'hospitalrun/mixins/user-session';
@@ -11,7 +12,9 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 const {
   computed,
-  isEmpty
+  get,
+  isEmpty,
+  set
 } = Ember;
 
 export default AbstractEditController.extend(AddNewPatient, ChargeActions, DiagnosisActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
@@ -99,9 +102,11 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     }
   }.property('model.returnTo', 'model.returnToPatient'),
 
+  allowAddAllergy: computed.not('model.isNew'),
+  allowAddDiagnosis: computed.not('model.isNew'),
+  allowAddOperativePlan: computed.not('model.isNew'),
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
-  createNewPatient: false,
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
   findPatientVisits: false,
   hideChargeHeader: true,
@@ -156,7 +161,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     return visitTypes;
   }.property('visitTypes', 'model.outPatient'),
 
-  _addChildObject(route) {
+  _addChildObject(route, afterTransition) {
     this.transitionToRoute(route, 'new').then(function(newRoute) {
       newRoute.currentModel.setProperties({
         patient: this.get('model.patient'),
@@ -164,6 +169,9 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
         selectPatient: false,
         returnToVisit: this.get('model.id')
       });
+      if (afterTransition) {
+        afterTransition(newRoute);
+      }
     }.bind(this));
   },
 
@@ -236,19 +244,6 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     });
   },
 
-  _saveNewDiagnoses() {
-    let diagnoses = this.get('model.diagnoses');
-    diagnoses = diagnoses.filterBy('isNew', true);
-    if (!isEmpty(diagnoses)) {
-      let savePromises = diagnoses.map((diagnoses) => {
-        return diagnoses.save();
-      });
-      return Ember.RSVP.all(savePromises);
-    } else {
-      return Ember.RSVP.resolve();
-    }
-  },
-
   haveAdditionalDiagnoses: function() {
     return !isEmpty(this.get('model.additionalDiagnoses'));
   }.property('model.additionalDiagnoses.[]'),
@@ -282,10 +277,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
             newVisit.set('status', visitStatus);
             if (this.get('model.checkIn')) {
               this._saveAssociatedAppointment(newVisit).then(() => {
-                this._saveNewDiagnoses().then(resolve, reject);
+                this.saveNewDiagnoses().then(resolve, reject);
               });
             } else {
-              this._saveNewDiagnoses().then(resolve, reject);
+              this.saveNewDiagnoses().then(resolve, reject);
             }
           }
         });
@@ -300,32 +295,12 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     this.checkoutVisit(visit, status);
   },
 
-  getPatientDiagnoses(patient) {
-    let diagnoses = patient.get('diagnoses');
-    let visitDiagnoses;
-    if (!isEmpty(diagnoses)) {
-      visitDiagnoses = diagnoses.filterBy('active', true).map((diagnosis) => {
-        let description = diagnosis.get('diagnosis');
-        let newDiagnosisProperties = diagnosis.getProperties('active', 'date', 'diagnosis', 'secondaryDiagnosis');
-        newDiagnosisProperties.diagnosis = description;
-        return this.store.createRecord('diagnosis',
-          newDiagnosisProperties
-        );
-      });
-    }
-    let currentDiagnoses = this.get('model.diagnoses');
-    currentDiagnoses.clear();
-    if (!isEmpty(visitDiagnoses)) {
-      currentDiagnoses.addObjects(visitDiagnoses);
-    }
-  },
-
   patientSelected(patient) {
     if (isEmpty(patient)) {
-      this.set('createNewPatient', true);
+      set(this, 'model.createNewPatient', true);
     } else {
-      this.set('createNewPatient', false);
-      this.getPatientDiagnoses(patient);
+      set(this, 'model.createNewPatient', false);
+      this.getPatientDiagnoses(patient, get(this, 'model'));
     }
   },
 
@@ -352,25 +327,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
   actions: {
     addDiagnosis(newDiagnosis) {
-      let diagnoses = this.get('model.diagnoses');
-      diagnoses.addObject(newDiagnosis);
-      let patientDiagnoses = this.get('model.patient.diagnoses');
-      let diagnosisExists = patientDiagnoses.any((diagnosis) => {
-        return diagnosis.get('active') === true
-            && diagnosis.get('diagnosis') === newDiagnosis.get('diagnosis')
-            && diagnosis.get('secondaryDiagnosis') === newDiagnosis.get('secondaryDiagnosis');
-      });
-      if (!diagnosisExists) {
-        patientDiagnoses.addObject(newDiagnosis);
-        let patient = this.get('model.patient');
-        patient.save().then(() => {
-          this.send('update', true);
-          this.send('closeModal');
-        });
-      } else {
-        this.send('update', true);
-        this.send('closeModal');
-      }
+      this.addDiagnosisToModelAndPatient(newDiagnosis);
     },
 
     addVitals(newVitals) {
@@ -424,8 +381,20 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       }
     },
 
+    editOperativePlan(operativePlan) {
+      let model = operativePlan;
+      if (isEmpty(model)) {
+        this._addChildObject('patients.operative-plan', (route) =>{
+          route.controller.getPatientDiagnoses(this.get('model.patient'), route.currentModel);
+        });
+      } else {
+        model.set('returnToVisit', this.get('model.id'));
+        this.transitionToRoute('patients.operative-plan', model);
+      }
+    },
+
     newPatientChanged(createNewPatient) {
-      this.set('createNewPatient', createNewPatient);
+      set(this, 'model.createNewPatient', createNewPatient);
       let model = this.get('model');
       let patient = model.get('patient');
       if (createNewPatient && !isEmpty(patient)) {

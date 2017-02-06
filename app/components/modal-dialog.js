@@ -40,6 +40,7 @@ export default Ember.Component.extend({
 
     $modal.on('hidden.bs.modal', function() {
       this.sendAction('closeModalAction');
+      this.sendAction('cancelAction');
     }.bind(this));
   },
 

@@ -4,58 +4,86 @@ import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
+const {
+  computed,
+  computed: {
+    alias
+  },
+  get,
+  inject,
+  set
+} = Ember;
+
 export default AbstractEditController.extend(AppointmentStatuses, PatientSubmodule, VisitTypes, {
-  appointmentsController: Ember.inject.controller('appointments'),
   findPatientVisits: false,
+  updateCapability: 'add_appointment',
 
-  locationList: Ember.computed.alias('appointmentsController.locationList'),
+  appointmentsController: inject.controller('appointments'),
+  physicianList: alias('appointmentsController.physicianList'),
+  surgeryLocationList: alias('appointmentsController.surgeryLocationList'),
+  visitLocationList: alias('appointmentsController.locationList'),
+  visitTypesList: alias('appointmentsController.visitTypesList'),
 
-  lookupListsToUpdate: [{
-    name: 'physicianList',
-    property: 'model.provider',
-    id: 'physician_list'
-  }, {
-    name: 'locationList',
-    property: 'model.location',
-    id: 'visit_location_list'
-  }],
-
-  physicianList: Ember.computed.alias('appointmentsController.physicianList'),
-  showTime: function() {
-    let allDay = this.get('model.allDay');
-    let isAdmissionAppointment = this.get('isAdmissionAppointment');
-    return (!allDay && isAdmissionAppointment);
-  }.property('model.allDay', 'isAdmissionAppointment'),
-  visitTypesList: Ember.computed.alias('appointmentsController.visitTypesList'),
-
-  cancelAction: function() {
-    let returnTo = this.get('model.returnTo');
+  cancelAction: computed('model.returnTo', function() {
+    let returnTo = get(this, 'model.returnTo');
     if (Ember.isEmpty(returnTo)) {
       return this._super();
     } else {
       return 'returnTo';
     }
-  }.property('model.returnTo'),
+  }),
 
-  isAdmissionAppointment: function() {
-    let model = this.get('model');
-    let appointmentType = model.get('appointmentType');
+  isAdmissionAppointment: computed('model.appointmentType', function() {
+    let model = get(this, 'model');
+    let appointmentType = get(model, 'appointmentType');
     let isAdmissionAppointment = (appointmentType === 'Admission');
     return isAdmissionAppointment;
-  }.property('model.appointmentType'),
+  }),
 
-  updateCapability: 'add_appointment',
+  lookupListsToUpdate: computed('model.appointmentType', function() {
+    let appointmentType = get(this, 'model.appointmentType');
+    let lists =   [{
+      name: 'physicianList',
+      property: 'model.provider',
+      id: 'physician_list'
+    }];
+    if (appointmentType === 'Surgery') {
+      lists.push({
+        name: 'visitLocationList',
+        property: 'model.location',
+        id: 'visit_location_list'
+      });
+    } else {
+      lists.push({
+        name: 'surgeryLocationList',
+        property: 'model.location',
+        id: 'procedure_locations'
+      });
+    }
+  }),
 
-  afterUpdate() {
-    this.send(this.get('cancelAction'));
+  showTime: computed('model.allDay', 'isAdmissionAppointment', function() {
+    let allDay = get(this, 'model.allDay');
+    let isAdmissionAppointment = get(this, 'isAdmissionAppointment');
+    return (!allDay && isAdmissionAppointment);
+  }),
+
+  afterUpdate(model) {
+    let i18n = get(this, 'i18n');
+    let patientInfo = {
+      patient: get(model, 'patient.displayName')
+    };
+    let message = i18n.t('appointments.messages.appointmentSaved', patientInfo);
+    let title = i18n.t('appointments.titles.appointmentSaved');
+    this.displayAlert(title, message);
   },
 
   actions: {
     appointmentTypeChanged(appointmentType) {
-      let model = this.get('model');
-      model.set('appointmentType', appointmentType);
-      let isAdmissionAppointment = this.get('isAdmissionAppointment');
-      model.set('allDay', isAdmissionAppointment);
+      let model = get(this, 'model');
+      set(model, 'appointmentType', appointmentType);
+      let isAdmissionAppointment = get(this, 'isAdmissionAppointment');
+      set(model, 'allDay', isAdmissionAppointment);
     }
   }
 });

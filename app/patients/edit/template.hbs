@@ -6,7 +6,9 @@
         patientProcedures=patientProcedures
         disablePatientLink=true
         store=store
-        canAddDiagnosis=canAddDiagnosis
+        allowAddAllergy=true
+        allowAddDiagnosis=true
+        allowAddOperativePlan=true
         diagnosisList=diagnosisList
       }}
       <ul class="nav nav-pills tab-nav" role="tablist">
@@ -181,9 +183,9 @@
             <table class="table">
               <tr class="table-header">
                 <th>{{t 'labels.name'}}</th>
-                <th>{{t 'labels.phone'}}</th>
+                <th>{{t 'patients.labels.phone'}}</th>
                 <th>{{t 'labels.email'}}</th>
-                <th>{{t 'labels.relationship'}}</th>
+                <th>{{t 'patients.labels.relationship'}}</th>
                 {{#if canDeleteContact}}
                   <th>{{t 'labels.action'}}</th>
                 {{/if}}
@@ -248,9 +250,14 @@
           <div class="panel">
             {{#if canAddAppointment}}
               <div class="panel-heading">
-                <button type="button" class="btn btn-primary align-right" {{action "newAppointment" bubbles=false }}>
-                  <span class="octicon octicon-plus"></span>{{t 'patients.buttons.newAppointment'}}
-                </button>
+                <div class="right">
+                  <button type="button" class="btn btn-primary" {{action "newAppointment" bubbles=false }}>
+                    <span class="octicon octicon-plus"></span>{{t 'patients.buttons.newAppointment'}}
+                  </button>&nbsp;
+                  <button type="button" class="btn btn-primary" {{action "newSurgicalAppointment" bubbles=false }}>
+                    <span class="octicon octicon-plus"></span>{{t 'patients.buttons.scheduleSurgery'}}
+                  </button>
+                </div>
               </div>
             {{/if}}
             <div class="panel-body detail-section-content">

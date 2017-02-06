@@ -9,11 +9,12 @@
     <label class="ps-info-label">{{t 'labels.name'}}</label>
     <span class="ps-info-data">{{patient.displayName}}</span>
   </div>
-
-  <div class="ps-info-group">
-    <label class="ps-info-label">{{t 'labels.sex'}}</label>
-    <span class="ps-info-data">{{patient.sex}}</span>
-  </div>
+  {{#if patient.sex}}
+    <div class="ps-info-group">
+      <label class="ps-info-label">{{t 'labels.sex'}}</label>
+      <span class="ps-info-data">{{patient.sex}}</span>
+    </div>
+  {{/if}}
   {{#if patient.dateOfBirth}}
     <div class="ps-info-group">
       <label class="ps-info-label">{{t 'labels.age'}}</label>
@@ -21,44 +22,20 @@
     </div>
   {{/if}}
 
-  {{#if showPrimaryDiagnoses}}
-    <div class="ps-info-group long-form">
-      <label class="ps-info-label wide">{{t 'patients.labels.primaryDiagnosis'}}</label>
-      {{#if canAddDiagnosis}}
-        <a class="clickable" {{action "showAddDiagnosis" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.addDiagnosis' }}</a>
-      {{/if}}
-      <div class="ps-info-data-block">
-        {{#each primaryDiagnoses as |diagnosis index|}}
-          {{#unless (eq index 0)}}, {{/unless}}
-          <a class="clickable primary-diagnosis" {{action "editDiagnosis" diagnosis bubbles=false}}>
-            {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
-          </a>
-        {{/each}}
-      </div>
-    </div>
-  {{/if}}
-
-  {{#if haveSecondaryDiagnoses}}
-    <div class="ps-info-group long-form">
-      <label class="ps-info-label wide">{{t 'patients.labels.secondaryDiagnosis'}}</label>
-      <div class="ps-info-data-block">
-        {{#each secondaryDiagnoses as |diagnosis index|}}
-          {{#unless (eq index 0)}}, {{/unless}}
-          <a class="clickable secondary-diagnosis" {{action "editDiagnosis" diagnosis bubbles=false}}>
-            {{diagnosis.diagnosis}} (<strong>{{date-format diagnosis.date}}</strong>)
-          </a>
-        {{/each}}
-      </div>
-    </div>
-  {{/if}}
+  {{patient-diagnosis
+    allowAddDiagnosis=allowAddDiagnosis
+    diagnosisContainer=diagnosisContainer
+    diagnosisList=diagnosisList
+    hideInActiveDiagnoses=hideInActiveDiagnoses
+  }}
 
   {{#if haveProcedures}}
     <div class="ps-info-group long-form">
       <label class="ps-info-label wide">{{t 'labels.procedures'}}</label>
       <div class="ps-info-data-block">
-        {{#each patientProcedures as |procedure|}}
-          {{#unless procedure.first}}, {{/unless}}
-          <a {{action 'editProcedure' procedure}} class="clickable">
+        {{#each patientProcedures as |procedure index|}}
+          {{#unless (eq index 0)}}, {{/unless}}
+          <a {{action 'editProcedure' procedure}} class="clickable patient-procedure">
             {{procedure.description}} (<strong>{{date-format procedure.procedureDate}}</strong>)
           </a>
         {{/each}}
@@ -66,9 +43,25 @@
     </div>
   {{/if}}
 
-  {{#if hasAllergies}}
-    {{medication-allergy patient=patient}}
-  {{/if}}
+  {{medication-allergy patient=patient canAddAllergy=canAddAllergy}}
 
+  {{#if canAddOperativePlan}}
+    <div class="ps-info-group long-form">
+      <label class="ps-info-label wide">{{t 'patients.labels.operativePlan'}}</label>
+       {{#unless currentOperativePlan}}
+        <a class="clickable" {{action "addOperativePlan" bubbles=false }}>
+          <span class="octicon octicon-plus"></span>
+          {{t 'patients.buttons.addOperativePlan' }}
+        </a>
+      {{/unless}}
+      <div class="ps-info-data-block">
+        {{#if currentOperativePlan}}
+          <a class="clickable" {{action "editOperativePlan" currentOperativePlan bubbles=false }}>
+            {{t 'patients.buttons.editOperativePlan' }}
+          </a>
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
 
 </div>

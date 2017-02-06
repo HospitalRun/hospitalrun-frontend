@@ -19,17 +19,19 @@
             {{#if model.patient}}
               {{patient-summary
                 patient=model.patient
-                visit=model
+                diagnosisContainer=model
                 returnTo='visits.edit'
                 returnToContext=model.id
                 disablePatientLink=model.isNew
-                canAddDiagnosis=canAddDiagnosis
+                allowAddAllergy=true
+                allowAddDiagnosis=true
+                allowAddOperativePlan=true
                 diagnosisList=diagnosisList
               }}
             {{/if}}
             {{#if showPatientSelection}}
               <div class="row">
-                {{#if createNewPatient}}
+                {{#if model.createNewPatient}}
                   {{em-input property="patientTypeAhead" label=(t 'visits.labels.patientToCheckIn')class="required patient-name col-sm-9"}}
                 {{else}}
                   {{patient-typeahead
@@ -42,7 +44,7 @@
                 {{/if}}
                 <div class="checkbox col-sm-3 new-patient-checkbox">
                   <label>
-                    <input type="checkbox" checked={{createNewPatient}} onchange={{action "newPatientChanged" value="target.checked"}}>
+                    <input type="checkbox" checked={{model.createNewPatient}} onchange={{action "newPatientChanged" value="target.checked"}}>
                     {{t 'visits.labels.createNewPatient'}}
                   </label>
                 </div>

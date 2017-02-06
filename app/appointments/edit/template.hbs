@@ -12,35 +12,49 @@
       {{else}}
         {{date-time-picker datePickerClass="required test-appointment-date" label=(t 'labels.date') model=model}}
       {{/if}}
-      {{em-checkbox label=(t 'labels.allDay') property="allDay"  class="col-sm-2"}}
+      {{em-checkbox label=(t 'labels.allDay') property="allDay"  class="col-sm-2 appointment-all-day"}}
     </div>
-    <div class="row">
-      <div class="form-input-group col-sm-6 required test-appointment-type">
-        <label class="control-label" for="startTime">{{t 'labels.type'}}</label>
-        {{select-list
-          content=visitTypes
-          optionLabelPath='value'
-          optionValuePath='id'
-          value=model.appointmentType
-          class='form-control'
-          id='appointmentType'
-          action=(action 'appointmentTypeChanged')
+
+    {{#if (eq model.appointmentType 'Surgery')}}
+      <div class="row">
+        {{select-or-typeahead className="col-sm-6 test-appointment-with" property="provider"
+          label=(t 'labels.with') list=physicianList
+          selection=model.provider
+        }}
+        {{select-or-typeahead className="col-sm-6 test-appointment-location" property="location"
+          label=(t 'labels.location') list=surgeryLocationList
+          selection=model.location
         }}
       </div>
-      {{select-or-typeahead className="col-sm-6 test-appointment-with" property="provider"
-        label=(t 'labels.with') list=physicianList
-        selection=model.provider
-      }}
-    </div>
-    <div class="row">
-      {{select-or-typeahead className="col-sm-6 required test-appointment-location" property="location"
-        label=(t 'labels.location') list=locationList
-        selection=model.location
-      }}
-      {{em-select class="form-input-group col-sm-3 test-appointment-status" property="status"
-        label=(t 'labels.status') content=appointmentStatuses
-      }}
-    </div>
+    {{else}}
+      <div class="row">
+        <div class="form-input-group col-sm-6 required test-appointment-type">
+          <label class="control-label" for="startTime">{{t 'labels.type'}}</label>
+          {{select-list
+            content=visitTypes
+            optionLabelPath='value'
+            optionValuePath='id'
+            value=model.appointmentType
+            class='form-control'
+            id='appointmentType'
+            action=(action 'appointmentTypeChanged')
+          }}
+        </div>
+        {{select-or-typeahead className="col-sm-6 test-appointment-with" property="provider"
+          label=(t 'labels.with') list=physicianList
+          selection=model.provider
+        }}
+      </div>
+      <div class="row">
+        {{select-or-typeahead className="col-sm-6 test-appointment-location" property="location"
+          label=(t 'labels.location') list=visitLocationList
+          selection=model.location
+        }}
+        {{em-select class="form-input-group col-sm-3 test-appointment-status" property="status"
+          label=(t 'labels.status') content=appointmentStatuses
+        }}
+      </div>
+    {{/if}}
     {{em-text label=(t 'labels.notes') property="notes" rows=3 }}
   {{/em-form}}
 {{/edit-panel}}

@@ -27,7 +27,7 @@
       {{date-picker property="date" label=(t "diagnosis.labels.date") class="col-sm-4 required"}}
     </div>
     <div class="row">
-      {{em-checkbox label=(t 'diagnosis.labels.secondaryDiagnosis') property="secondaryDiagnosis" class="col-sm-4"}}
+      {{em-checkbox label=(t 'diagnosis.labels.secondaryDiagnosis') property="secondaryDiagnosis" class="col-sm-4 secondary-diagnosis"}}
       {{#unless model.isNew}}
         {{em-checkbox label=(t 'diagnosis.labels.activeDiagnosis') property="active" class="col-sm-4"}}
       {{/unless}}
