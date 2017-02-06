@@ -1,6 +1,7 @@
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import Ember from 'ember';
+import moment from 'moment';
 import PatientValidation from 'hospitalrun/utils/patient-validation';
 
 export default AbstractModel.extend({

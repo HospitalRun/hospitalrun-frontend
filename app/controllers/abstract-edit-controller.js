@@ -3,6 +3,9 @@ import EditPanelProps from 'hospitalrun/mixins/edit-panel-props';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import UserSession from 'hospitalrun/mixins/user-session';
+
+const { get } = Ember;
+
 export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, UserSession, {
   cancelAction: 'allItems',
 
@@ -158,12 +161,14 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    * to skip the afterUpdate call.
    */
   saveModel(skipAfterUpdate) {
-    this.get('model').save().then(function(record) {
+    get(this, 'model').save().then((record) => {
       this.updateLookupLists();
       if (!skipAfterUpdate) {
         this.afterUpdate(record);
       }
-    }.bind(this));
+    }).catch((error) => {
+      this.send('error', error);
+    });
   },
 
   /**

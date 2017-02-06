@@ -30,6 +30,7 @@ Router.map(function() {
     this.route('search');
     this.route('today');
     this.route('missed');
+    this.route('calendar');
   });
 
   this.route('finishgauth', { path: '/finishgauth/:s1/:s2/:k/:t/:i/:p' });

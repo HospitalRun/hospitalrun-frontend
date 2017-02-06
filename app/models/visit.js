@@ -1,6 +1,7 @@
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import Ember from 'ember';
+import moment from 'moment';
 
 function dateAcceptance(object) {
   if (!object.get('hasDirtyAttributes')) {
