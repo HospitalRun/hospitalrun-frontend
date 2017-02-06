@@ -1,10 +1,17 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
-import LabPricingTypes from 'hospitalrun/mixins/lab-pricing-types';
-import ImagingPricingTypes from 'hospitalrun/mixins/imaging-pricing-types';
 import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
-export default AbstractEditController.extend(LabPricingTypes, ImagingPricingTypes, ReturnTo, {
+
+const {
+  computed,
+  isEmpty
+} = Ember;
+
+const IMAGING_PRICING_TYPE = 'Imaging Procedure';
+const LAB_PRICING_TYPE = 'Lab Procedure';
+
+export default AbstractEditController.extend(ReturnTo, {
   pricingController: Ember.inject.controller('pricing'),
 
   actions: {
@@ -13,6 +20,23 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
       pricingOverrides.addObject(override);
       this.send('update', true);
       this.send('closeModal');
+    },
+    categoryChanged(category) {
+      let model = this.get('model');
+      let pricingType = model.get('pricingType');
+      model.set('category', category);
+      if (!isEmpty(category)) {
+        if (category === 'Imaging') {
+          model.set('pricingType', IMAGING_PRICING_TYPE);
+        } else if (category === 'Lab') {
+          model.set('pricingType', LAB_PRICING_TYPE);
+        } else {
+          let pricingTypeValues = this.get('pricingTypes.value');
+          if (isEmpty(pricingTypeValues) || !pricingTypeValues.includes(pricingType)) {
+            model.set('pricingType');
+          }
+        }
+      }
     },
     deleteOverride(model) {
       let { overrideToDelete } = model;
@@ -24,7 +48,7 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
       }.bind(this));
     },
     editOverride(overrideToEdit) {
-      if (Ember.isEmpty(overrideToEdit)) {
+      if (isEmpty(overrideToEdit)) {
         overrideToEdit = this.store.createRecord('override-price');
       }
       this.send('openModal', 'pricing.override', overrideToEdit);
@@ -45,41 +69,45 @@ export default AbstractEditController.extend(LabPricingTypes, ImagingPricingType
     'Procedure',
     'Ward'
   ].map(SelectValues.selectValuesMap),
-  expenseAccountList: Ember.computed.alias('pricingController.expenseAccountList'),
-  imagingPricingTypes: Ember.computed.alias('pricingController.imagingPricingTypes'),
-  labPricingTypes: Ember.computed.alias('pricingController.labPricingTypes'),
-  procedurePricingTypes: Ember.computed.alias('pricingController.procedurePricingTypes'),
-  wardPricingTypes: Ember.computed.alias('pricingController.wardPricingTypes'),
+  expenseAccountList: computed.alias('pricingController.expenseAccountList'),
+  procedurePricingTypes: computed.alias('pricingController.procedurePricingTypes'),
+  wardPricingTypes: computed.alias('pricingController.wardPricingTypes'),
 
-  lookupListsToUpdate: function() {
+  lookupListsToUpdate: computed('model.category', function() {
     let category = this.get('model.category').toLowerCase();
     let listsToUpdate = [{
       name: 'expenseAccountList',
       property: 'model.expenseAccount',
       id: 'expense_account_list'
     }];
-    listsToUpdate.push({
-      name: `${category}PricingTypes`,
-      property: 'model.pricingType',
-      id: `${category}_pricing_types`
-    });
+    let showPricingType = this.get('showPricingType');
+    if (showPricingType) {
+      listsToUpdate.push({
+        name: `${category}PricingTypes`,
+        property: 'model.pricingType',
+        id: `${category}_pricing_types`
+      });
+    }
     return listsToUpdate;
-  }.property('model.category'),
+  }),
 
-  pricingTypes: function() {
+  pricingTypes: computed('model.category', function() {
     let category = this.get('model.category');
-    if (!Ember.isEmpty(category)) {
+    if (!isEmpty(category)) {
       let typesList = this.get(`${category.toLowerCase()}PricingTypes`);
-      if (Ember.isEmpty(typesList) || Ember.isEmpty(typesList.get('value'))) {
-        if (category === 'Lab') {
-          return Ember.Object.create({ value: this.defaultLabPricingTypes });
-        } else if (category === 'Imaging') {
-          return Ember.Object.create({ value: this.defaultImagingPricingTypes });
-        }
-      }
       return typesList;
     }
-  }.property('model.category'),
+  }),
+
+  showPricingType: computed('model.category', function() {
+    let model = this.get('model');
+    let category = model.get('category');
+    if (category === 'Imaging' || category === 'Lab') {
+      return false;
+    } else {
+      return true;
+    }
+  }),
 
   updateCapability: 'add_pricing',
 

@@ -30,6 +30,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     name: 'billing',
     capabilities: [
       'billing',
+      'addBillingDiagnosis',
       'addCharge',
       'addPricing',
       'addPricingProfile',
@@ -47,13 +48,19 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     name: 'patients',
     capabilities: [
       'patients',
+      'addAllergy',
       'addDiagnosis',
+      'addNote',
+      'addOperativePlan',
+      'addOperationReport',
       'addPhoto',
       'addPatient',
       'addProcedure',
+      'addSocialwork',
       'addVisit',
       'addVitals',
       'admitPatient',
+      'deleteNote',
       'deletePhoto',
       'deletePatient',
       'deleteAppointment',
@@ -103,6 +110,26 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     ]
   }],
 
+  missingCapablities: Ember.computed('availableCapabilities', 'defaultCapabilities', function() {
+    let availableCapabilities = this.get('availableCapabilities');
+    let capabilityBySection = Object.keys(availableCapabilities);
+    let defaultCapabilities = Object.keys(this.get('defaultCapabilities'));
+    let missing = [];
+    defaultCapabilities.forEach((capability) => {
+      let capabilityUsed = false;
+      capabilityBySection.forEach((sectionName) => {
+        let section = availableCapabilities[sectionName];
+        if (section.capabilities.includes(capability.camelize())) {
+          capabilityUsed = true;
+        }
+      });
+      if (!capabilityUsed) {
+        missing.push(`${capability} - ${capability.camelize()}`);
+      }
+    });
+    return missing;
+  }),
+
   capabilitySections: Ember.computed.map('availableCapabilities', function(section) {
     let mappedCapabilities = [];
     section.capabilities.forEach((key) => {
@@ -139,9 +166,9 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
           Object.keys(defaultCapabilities).forEach((capability) => {
             let capabilityRoles = defaultCapabilities[capability];
             if (capabilityRoles.includes(role)) {
-              this.set(capability, true);
+              this.set(capability.camelize(), true);
             } else {
-              this.set(capability, false);
+              this.set(capability.camelize(), false);
             }
           });
         }

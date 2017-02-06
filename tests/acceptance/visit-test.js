@@ -30,7 +30,7 @@ test('Add visit', function(assert) {
       waitToAppear('#visit-info');
     });
     andThen(function() {
-      assert.equal(find('.patient-name').text(), 'Joe Bagadonuts', 'Joe Bagadonuts displays as patient for visit');
+      assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts displays as patient for visit');
       updateVisit(assert, 'Add');
     });
   });
@@ -54,16 +54,17 @@ test('Edit visit', function(assert) {
     });
     andThen(function() {
       assert.equal(currentURL(), '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'Visit url is correct');
-      click('button:contains(Add Diagnosis)');
+      click('a:contains(Add Diagnosis)');
       waitToAppear('.modal-dialog');
     });
     andThen(function() {
       assert.equal(find('.modal-title').text(), 'Add Diagnosis', 'Add Diagnosis dialog displays');
       fillIn('.diagnosis-text input', 'Broken Arm');
       click('.modal-footer button:contains(Add)');
+      waitToAppear('a.primary-diagnosis');
     });
     andThen(function() {
-      assert.equal(find('.additional-diagnoses-text').text(), 'Broken Arm', 'New additional diagnosis appears');
+      assert.equal(find('a.primary-diagnosis:contains(Broken Arm)').length, 1, 'New primary diagnosis appears');
       click('button:contains(New Medication)');
     });
     andThen(function() {
@@ -117,7 +118,12 @@ test('Edit visit', function(assert) {
     });
     updateVisit(assert, 'Update');
     andThen(function() {
-      click('.delete-additional-diagnosis');
+      click('a.primary-diagnosis:contains(Broken Arm)');
+      waitToAppear('.modal-dialog');
+    });
+    andThen(function() {
+      assert.equal(find('.modal-title').text(), 'Edit Diagnosis', 'Edit Diagnosis modal appears');
+      click('.modal-footer button:contains(Delete)');
     });
     andThen(function() {
       click('#visit-vitals tr:last button:contains(Delete)');
@@ -126,6 +132,7 @@ test('Edit visit', function(assert) {
     andThen(function() {
       assert.equal(find('.modal-title').text(), 'Delete Vitals', 'Delete Vitals dialog displays');
       click('.modal-footer button:contains(Delete)');
+      click('[data-test-selector=charges-tab]');
     });
     andThen(function() {
       click('.charge-items tr:last button:contains(Delete)');
@@ -136,7 +143,7 @@ test('Edit visit', function(assert) {
       click('.modal-footer button:contains(Ok)');
     });
     andThen(function() {
-      assert.equal(find('.additional-diagnoses-text').length, 0, 'New additional diagnosis is deleted');
+      assert.equal(find('a.primary-diagnosis:contains(Broken Arm)').length, 0, 'New primary diagnosis is deleted');
       assert.equal(find('#visit-vitals tr:last td:contains(34.56)').length, 0, 'Vital is deleted');
       assert.equal(find('td.charge-item-name').length, 0, 'Charge item is deleted');
     });

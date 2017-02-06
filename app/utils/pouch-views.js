@@ -148,6 +148,62 @@ function generateDateForView(date1) {
     }`;
 }
 
+let appointmentSearch = generateSortFunction(function(a, b) {
+  function defaultStatus(value) {
+    if (!value || value === '') {
+      return 'Scheduled';
+    } else {
+      return value;
+    }
+  }
+  let sortBy = '';
+  if (req.query && req.query.sortKey) {
+    sortBy = req.query.sortKey;
+  }
+  switch (sortBy) {
+    case 'appointmentType':
+    case 'location':
+    case 'provider':
+      return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
+    case 'date': {
+      let startDiff = getCompareDate(a.doc.data.startDate) - getCompareDate(b.doc.data.startDate);
+      if (startDiff === 0) {
+        return getCompareDate(a.doc.data.endDate) - getCompareDate(b.doc.data.endDate);
+      } else {
+        return startDiff;
+      }
+    }
+    case 'status': {
+      let aStatus = defaultStatus(a.doc.data[sortBy]);
+      let bStatus = defaultStatus(b.doc.data[sortBy]);
+      return compareStrings(aStatus, bStatus);
+    }
+    default: {
+      return 0; // Don't sort
+    }
+  }
+}.toString(), true, function(row) {
+  let filterBy = null;
+  let includeRow = true;
+  if (req.query && req.query.filterBy) {
+    filterBy = JSON.parse(req.query.filterBy);
+  }
+  if (!filterBy) {
+    return true;
+  }
+  for (let i = 0; i < filterBy.length; i++) {
+    let currentValue = row.doc.data[filterBy[i].name];
+    if (filterBy[i].name === 'status' && (!currentValue || currentValue === '')) {
+      currentValue = 'Scheduled';
+    }
+    if (currentValue !== filterBy[i].value) {
+      includeRow = false;
+      break;
+    }
+  }
+  return includeRow;
+}.toString());
+
 let patientListingKey = `if (doc.data.friendlyId) {
     emit([doc.data.friendlyId, doc._id]);
   } else if (doc.data.externalPatientId) {
@@ -182,64 +238,12 @@ let designDocs = [{
   function: generateView('appointment',
     `${generateDateForView('endDate')}
     ${generateDateForView('startDate')}
-    emit([startDate, endDate, doc._id]);`
+    if (doc.data.appointmentType !== 'Surgery') {
+      emit([startDate, endDate, doc._id]);
+    }`
   ),
-  sort: generateSortFunction(function(a, b) {
-    function defaultStatus(value) {
-      if (!value || value === '') {
-        return 'Scheduled';
-      } else {
-        return value;
-      }
-    }
-    let sortBy = '';
-    if (req.query && req.query.sortKey) {
-      sortBy = req.query.sortKey;
-    }
-    switch (sortBy) {
-      case 'appointmentType':
-      case 'location':
-      case 'provider':
-        return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
-      case 'date': {
-        let startDiff = getCompareDate(a.doc.data.startDate) - getCompareDate(b.doc.data.startDate);
-        if (startDiff === 0) {
-          return getCompareDate(a.doc.data.endDate) - getCompareDate(b.doc.data.endDate);
-        } else {
-          return startDiff;
-        }
-      }
-      case 'status': {
-        let aStatus = defaultStatus(a.doc.data[sortBy]);
-        let bStatus = defaultStatus(b.doc.data[sortBy]);
-        return compareStrings(aStatus, bStatus);
-      }
-      default: {
-        return 0; // Don't sort
-      }
-    }
-  }.toString(), true, function(row) {
-    let filterBy = null;
-    let includeRow = true;
-    if (req.query && req.query.filterBy) {
-      filterBy = JSON.parse(req.query.filterBy);
-    }
-    if (!filterBy) {
-      return true;
-    }
-    for (let i = 0; i < filterBy.length; i++) {
-      let currentValue = row.doc.data[filterBy[i].name];
-      if (filterBy[i].name === 'status' && (!currentValue || currentValue === '')) {
-        currentValue = 'Scheduled';
-      }
-      if (currentValue !== filterBy[i].value) {
-        includeRow = false;
-        break;
-      }
-    }
-    return includeRow;
-  }.toString()),
-  version: 6
+  sort: appointmentSearch,
+  version: 7
 }, {
   name: 'appointments_by_patient',
   function: generateView('appointment',
@@ -248,6 +252,12 @@ let designDocs = [{
     emit([doc.data.patient, startDate, endDate,doc._id]);`
   ),
   version: 4
+}, {
+  name: 'custom_form_by_type',
+  function: generateView('customForm',
+    'emit(doc.data.formType);'
+  ),
+  version: 1
 }, {
   name: 'imaging_by_status',
   function: generateView('imaging',
@@ -390,6 +400,17 @@ let designDocs = [{
     'emit(doc.data.prefix);'
   ),
   version: 4
+}, {
+  name: 'surgical_appointments_by_date',
+  function: generateView('appointment',
+    `${generateDateForView('endDate')}
+    ${generateDateForView('startDate')}
+    if (doc.data.appointmentType === 'Surgery') {
+      emit([startDate, endDate, doc._id]);
+    }`
+  ),
+  sort: appointmentSearch,
+  version: 1
 }, {
   name: 'visit_by_date',
   function: generateView('visit',
