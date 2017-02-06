@@ -5,7 +5,9 @@ moduleForModel('imaging', 'Unit | Model | imaging', {
     'model:proc-charge',
     'model:pricing',
     'model:patient',
-    'model:visit'
+    'model:visit',
+    'ember-validations@validator:local/acceptance',
+    'ember-validations@validator:local/presence'
   ]
 });
 

@@ -1,8 +1,9 @@
-import { moduleFor, test } from 'ember-qunit';
-import sinonTest from 'ember-sinon-qunit/test-support/test';
 import Ember from 'ember';
-import tHelper from 'ember-i18n/helper';
 import localeConfig from 'ember-i18n/config/en';
+import moment from 'moment';
+import sinonTest from 'ember-sinon-qunit/test-support/test';
+import tHelper from 'ember-i18n/helper';
+import { moduleFor, test } from 'ember-qunit';
 
 moduleFor('controller:abstract-report-controller', 'Unit | Controller | abstract-report-controller', {
   needs: [
@@ -50,9 +51,11 @@ sinonTest('_notifyReportError', function(assert) {
 });
 
 sinonTest('_setReportTitle', function(assert) {
+  let endDate = new Date(1482269979422);
+  let startDate = new Date(1472269979422);
   let controller = this.subject({
-    endDate: new Date(1482269979422),
-    startDate: new Date(1472269979422),
+    endDate,
+    startDate,
     reportTypes: [
       Ember.Object.create({
         value: 'one',
@@ -65,35 +68,15 @@ sinonTest('_setReportTitle', function(assert) {
     ],
     reportType: 'two'
   });
-
-  this.stub(window, 'moment', (function() {
-    let count = 0;
-    return () => {
-      if (count < 1) {
-        count += 1;
-        return {
-          format() {
-            return 'April 1st, 1996';
-          }
-        };
-      }
-
-      return {
-        format() {
-          return 'January 3rd, 1995';
-        }
-      };
-    };
-  }()));
-
   controller._setReportTitle();
 
-  assert.equal(controller.get('reportTitle'), 'Number Two Report January 3rd, 1995 - April 1st, 1996');
+  assert.equal(controller.get('reportTitle').toString(), `Number Two Report ${moment(startDate).format('l')} - ${moment(endDate).format('l')}`);
 });
 
 sinonTest('_setReportTitle single date', function(assert) {
+  let endDate = new Date(1472269979422);
   let controller = this.subject({
-    endDate: new Date(1472269979422),
+    endDate,
     reportTypes: [
       Ember.Object.create({
         value: 'one',
@@ -117,7 +100,7 @@ sinonTest('_setReportTitle single date', function(assert) {
 
   controller._setReportTitle();
 
-  assert.equal(controller.get('reportTitle'), 'Number One Report April 3rd, 2015');
+  assert.equal(controller.get('reportTitle').toString(), `Number One Report ${moment(endDate).format('l')}`);
 });
 
 test('actions.firstPage', function(assert) {

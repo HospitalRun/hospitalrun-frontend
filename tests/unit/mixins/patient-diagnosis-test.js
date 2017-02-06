@@ -21,7 +21,9 @@ moduleFor('mixin:patient-diagnosis', 'Unit | Mixin | patient-diagnosis', {
     'model:medication',
     'model:patient-note',
     'model:procedure',
-    'model:diagnosis'
+    'model:diagnosis',
+    'ember-validations@validator:local/acceptance',
+    'ember-validations@validator:local/presence'
   ],
   store() {
     return this.container.lookup('service:store');

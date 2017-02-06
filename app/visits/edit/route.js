@@ -31,9 +31,7 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
       customForms: Ember.Object.create()
     };
     let customForms = this.get('customForms');
-    return customForms.setDefaultCustomForms(['visit'], newVisitData).then(() => {
-      return newVisitData;
-    });
+    return customForms.setDefaultCustomForms(['visit'], newVisitData);
   },
 
   getScreenTitle(model) {

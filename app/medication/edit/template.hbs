@@ -21,13 +21,6 @@
         </div>
       {{/if}}
     </div>
-    {{#if model.patient.allergies}}
-        <div class="row">
-          <div class="col-xs-12">
-            {{medication-allergy patient=model.patient}}
-          </div>
-        </div>
-    {{/if}}
     {{#if isFulfilledOrRequested}}
       <div class="form-group">
         <label class="control-label">{{t 'labels.medication'}}</label>
@@ -74,7 +67,7 @@
         {{select-or-typeahead property="expenseAccount" label=(t 'labels.billTo') list=expenseAccountList selection=model.expenseAccount }}
         {{inventory-location-picker label=(t 'labels.pullFrom') quantityRequested=model.quantity
           locationList= model.inventoryItem.availableLocations
-          selectedLocations=model.inventoryLocations
+          selectedLocations=model.inventoryLocations class="inventory-location"
         }}
       {{/if}}
     {{/if}}

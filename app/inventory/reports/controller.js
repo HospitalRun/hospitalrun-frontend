@@ -3,6 +3,7 @@ import Ember from 'ember';
 import InventoryAdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
 import LocationName from 'hospitalrun/mixins/location-name';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
+import moment from 'moment';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import SelectValues from 'hospitalrun/utils/select-values';
 export default AbstractReportController.extend(LocationName, ModalHelper, NumberFormat, InventoryAdjustmentTypes, {

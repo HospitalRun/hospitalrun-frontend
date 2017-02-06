@@ -75,7 +75,7 @@
       </div>
       {{inventory-location-picker label=(t 'inventory.labels.pullFrom') quantityRequested=model.quantity
         locationList=model.inventoryItem.availableLocations
-        selectedLocations=model.inventoryLocations
+        selectedLocations=model.inventoryLocations class="inventory-location"
       }}
       <div class="form-group">
         <label class="control-label sr-only">{{t 'inventory.labels.consumePurchases'}}</label>
