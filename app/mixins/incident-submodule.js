@@ -2,7 +2,7 @@ import Ember from 'ember';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 export default Ember.Mixin.create(PouchDbMixin, {
   actions: {
-    returnToIncident: function() {
+    returnToIncident() {
       this.transitionToRoute('incident.edit', this.get('returnIncidentId'));
     }
   },
@@ -15,22 +15,17 @@ export default Ember.Mixin.create(PouchDbMixin, {
    * @returns {Promise} promise that will resolve or reject depending on whether or
    * not the add and subsequent saves were successful.
    */
-  addChildToIncident: function(objectToAdd, childName) {
+  addChildToIncident(objectToAdd, childName) {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      var childPromises = [],
-          promises = [],
-          incident = this.get('incident');
-      /*if (Ember.isEmpty(incident)) {
-          incident = this.get('store').createRecord('incident', {
-          });
-          this.set('incident', incident);
-      }*/
+      let childPromises = [];
+      let promises = [];
+      let incident = this.get('incident');
       childPromises.addObjects(this.resolveIncidentChildren());
-      Ember.RSVP.all(childPromises, 'Resolved Incident children before adding new ' + childName).then(function() {
+      Ember.RSVP.all(childPromises, `Resolved Incident children before adding new ${childName}`).then(function() {
         incident.get(childName).then(function(incidentChildren) {
           incidentChildren.addObject(objectToAdd);
           promises.push(incident.save());
-          Ember.RSVP.all(promises, 'All updates done for incident add child object to ' + childName).then(function() {
+          Ember.RSVP.all(promises, `All updates done for incident add child object to ${childName}`).then(function() {
             resolve();
           }.bind(this), reject);
         }.bind(this), reject);
@@ -39,7 +34,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
   },
 
   cancelAction: function() {
-    var returnToIncident = this.get('returnToIncident');
+    let returnToIncident = this.get('returnToIncident');
     if (returnToIncident) {
       return 'returnToIncident';
     } else {
@@ -54,9 +49,9 @@ export default Ember.Mixin.create(PouchDbMixin, {
    * @returns {array} of promises which can be used to ensure
    * all relationships have resolved.
    */
-  resolveIncidentChildren: function() {
-    var promises = [],
-        incident = this.get('incident');
+  resolveIncidentChildren() {
+    let promises = [];
+    let incident = this.get('incident');
     if (!Ember.isEmpty(incident)) {
       // Make sure all the async relationships are resolved
       promises.push(incident.get('feedbacks'));
@@ -72,7 +67,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
   }.observes('incident'),
 
   incidentIdChanged: function() {
-    var incidentId = this.get('incidentId');
+    let incidentId = this.get('incidentId');
     if (!Ember.isEmpty(incidentId)) {
       this.set('returnIncidentId', incidentId);
     }

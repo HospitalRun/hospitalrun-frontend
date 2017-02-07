@@ -1,10 +1,28 @@
 import Ember from 'ember';
+
+const { isEmpty } = Ember;
+
 export default Ember.Component.extend({
-  quantityGroups: null,
+  quantityGroups: [],
   calculated: null,
   currentUnit: null,
   targetUnit: null,
   unitList: null,
+
+  didReceiveAttrs(/* attrs */) {
+    this._super(...arguments);
+    let quantityGroups = this.get('quantityGroups');
+    if (isEmpty(quantityGroups)) {
+      let calculated = this.get('calculated');
+      let targetUnit = this.get('targetUnit');
+      quantityGroups.addObject({
+        index: 0,
+        unit: targetUnit,
+        firstQuantity: true,
+        quantity: calculated
+      });
+    }
+  },
 
   showTotal: function() {
     let calculated = this.get('calculated');
@@ -16,19 +34,9 @@ export default Ember.Component.extend({
   }.property('calculated'),
 
   currentQuantityGroups: function() {
-    let calculated = this.get('calculated');
     let firstQuantityObject;
     let quantityGroups = this.get('quantityGroups');
     let targetUnit = this.get('targetUnit');
-    if (Ember.isEmpty(quantityGroups)) {
-      quantityGroups = new Array({
-        index: 0,
-        unit: targetUnit,
-        firstQuantity: true,
-        quantity: calculated
-      });
-      this.set('quantityGroups', quantityGroups);
-    }
     firstQuantityObject = quantityGroups.get('firstObject');
     if (!Ember.isEmpty(firstQuantityObject)) {
       let selectedUnit = firstQuantityObject.unit;
@@ -41,14 +49,13 @@ export default Ember.Component.extend({
     return quantityGroups;
   }.property('quantityGroups', 'targetUnit'),
 
-  calculateTotal: function() {
+  calculateTotal() {
     let quantityGroups = this.get('quantityGroups');
     let haveQuantities = false;
     let lastObject = quantityGroups.get('lastObject');
     let targetUnit = this.get('targetUnit');
     haveQuantities = quantityGroups.every(function(item) {
-      let quantity = item.quantity;
-      let unit = item.unit;
+      let { quantity, unit } = item;
       return (!Ember.isEmpty(quantity) && !Ember.isEmpty(unit) && !isNaN(quantity));
     });
     if (haveQuantities && lastObject.unit === targetUnit) {
@@ -61,7 +68,7 @@ export default Ember.Component.extend({
     }
   },
 
-  updateCurrentUnit: function(selectedUnit, index) {
+  updateCurrentUnit(selectedUnit, index) {
     let targetUnit = this.get('targetUnit');
     let quantityGroups = this.get('quantityGroups');
     let groupLength = quantityGroups.length;

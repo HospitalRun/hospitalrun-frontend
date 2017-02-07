@@ -4,7 +4,7 @@ export default AbstractDeleteController.extend({
   title: t('labels.deleteUser'),
 
   actions: {
-    delete: function() {
+    delete() {
       let recordToDelete = this.get('model');
       this.get('model').destroyRecord().then(() => {
         this.send('closeModal', recordToDelete);

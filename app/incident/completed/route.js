@@ -6,20 +6,20 @@ export default IncidentIndexRoute.extend(UserSession, {
   modelName: 'incident',
   pageTitle: t('incident.titles.closed'),
 
-  _getStartKeyFromItem: function(item) {
-    var id = this._getPouchIdFromItem(item);
+  _getStartKeyFromItem(item) {
+    let id = this._getPouchIdFromItem(item);
     return [item.get('reportedBy'), id];
   },
 
-  _modelQueryParams: function() {
-    var maxId = this._getMaxPouchId(),
-        currentUser = this.getUserName(true),
-        queryParams = {
-          mapReduce: 'closed_incidents_by_user'
-        };
+  _modelQueryParams() {
+    let maxId = this._getMaxPouchId();
+    let currentUser = this.getUserName(true);
+    let queryParams = {
+      mapReduce: 'closed_incidents_by_user'
+    };
     if (!this.currentUserCan('edit_others_incident')) {
       queryParams.options = {
-        startkey:  [currentUser, null],
+        startkey: [currentUser, null],
         endkey: [currentUser, maxId]
       };
     }

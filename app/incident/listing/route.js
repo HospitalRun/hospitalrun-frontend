@@ -6,20 +6,20 @@ export default IncidentIndexRoute.extend(UserSession, {
   modelName: 'inc-reviewer',
   pageTitle: t('incident.titles.asReviewer'),
 
-  _modelQueryParams: function() {
-    var maxId = this._getMaxPouchId(),
-        currentUser = this.getUserName(true),
-        queryParams = {
-          mapReduce: 'incident_by_reviewers'
-        };
-    queryParams.options = {
-      startkey:  [currentUser,null],
-      endkey: [currentUser, maxId]
+  _modelQueryParams() {
+    let maxId = this._getMaxPouchId();
+    let currentUser = this.getUserName(true);
+    let queryParams = {
+      mapReduce: 'incident_by_reviewers',
+      options: {
+        startkey: [currentUser, null],
+        endkey: [currentUser, maxId]
+      }
     };
     return queryParams;
   },
 
-  model: function(params, transition) {
+  model(params, transition) {
     return this._super(params, transition).then((results) => {
       return results.map((result) => {
         return result.get('incident');

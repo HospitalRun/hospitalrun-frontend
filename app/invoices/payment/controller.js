@@ -11,7 +11,7 @@ export default AbstractEditController.extend(PatientSubmodule, {
   expenseAccountList: Ember.computed.alias('invoiceController.expenseAccountList'),
   patientList: Ember.computed.alias('invoiceController.patientList'),
 
-  _finishUpdate: function(message, title) {
+  _finishUpdate(message, title) {
     this.send('closeModal');
     this.displayAlert(title, message);
   },
@@ -41,7 +41,7 @@ export default AbstractEditController.extend(PatientSubmodule, {
     return (isNew && type === 'Deposit');
   }.property('model.isNew', 'model.paymentType'),
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     if (this.get('model.isNew')) {
       this.set('newPayment', true);
     } else {
@@ -52,7 +52,7 @@ export default AbstractEditController.extend(PatientSubmodule, {
     return Ember.RSVP.resolve();
   },
 
-  afterUpdate: function() {
+  afterUpdate() {
     this.get('model').save().then(function(record) {
       if (this.get('newPayment')) {
         let patient = this.get('currentPatient');

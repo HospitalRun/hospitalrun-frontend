@@ -2,6 +2,7 @@ import { translationMacro as t } from 'ember-i18n';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import ChargeRoute from 'hospitalrun/mixins/charge-route';
 import Ember from 'ember';
+import moment from 'moment';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
   editTitle: t('imaging.titles.editTitle'),
@@ -10,12 +11,12 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
   pricingCategory: 'Imaging',
 
   actions: {
-    returnToAllItems: function() {
+    returnToAllItems() {
       this.controller.send('returnToAllItems');
     }
   },
 
-  getNewData: function() {
+  getNewData() {
     return Ember.RSVP.resolve({
       selectPatient: true,
       requestDate: moment().startOf('day').toDate()

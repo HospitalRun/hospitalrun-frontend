@@ -49,7 +49,7 @@ export default AbstractEditController.extend(UnitTypes, {
     return i18n.t('inventory.titles.editPurchase');
   }.property('model.isNew'),
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     let isNew = this.get('model.isNew');
     let changedAttributes = this.get('model').changedAttributes();
     if (changedAttributes.originalQuantity) {
@@ -64,7 +64,7 @@ export default AbstractEditController.extend(UnitTypes, {
     return Ember.RSVP.Promise.resolve();
   },
 
-  afterUpdate: function(record) {
+  afterUpdate(record) {
     if (this.get('newPurchase')) {
       this.send('addPurchase', record);
     } else {

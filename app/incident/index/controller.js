@@ -6,7 +6,7 @@ export default AbstractPagedController.extend(UserSession, {
   startKey: [],
 
   actions: {
-    showDeleteIncident: function(incident) {
+    showDeleteIncident(incident) {
       this.send('openModal', 'incident.delete', incident);
     }
   }

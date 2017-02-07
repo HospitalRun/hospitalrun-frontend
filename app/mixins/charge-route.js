@@ -2,17 +2,17 @@ import Ember from 'ember';
 export default Ember.Mixin.create({
   database: Ember.inject.service(),
   actions: {
-    deleteCharge: function(model) {
+    deleteCharge(model) {
       this.controller.send('deleteCharge', model);
     }
   },
   pricingList: null,
 
-  afterModel: function() {
+  afterModel() {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       let database = this.get('database');
-      let maxId = database.getPouchId({}, 'pricing');
-      let minId = database.getPouchId(null, 'pricing');
+      let maxId = database.getMaxPouchId('pricing');
+      let minId = database.getMinPouchId('pricing');
       let pricingCategory = this.get('pricingCategory');
       let pricingQuery = {
         startkey: [pricingCategory, null, null, minId],
@@ -29,7 +29,7 @@ export default Ember.Mixin.create({
     }.bind(this));
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     this._super(controller, model);
     controller.set('pricingList', this.get('pricingList'));
   }

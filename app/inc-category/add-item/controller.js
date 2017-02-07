@@ -8,12 +8,12 @@ export default Ember.Controller.extend({
   showUpdateButton: true,
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.send('closeModal');
     },
 
-    add: function() {
-      var newItem = this.getProperties('item');
+    add() {
+      let newItem = this.getProperties('item');
       this.get('editController').send('addItem', newItem);
     }
   }

@@ -1,13 +1,14 @@
+var swEnvironment = {};
 importScripts('sw-toolbox.js');
 var CACHE_PREFIX = 'brocsw-v';
-var CACHE_VERSION = CACHE_PREFIX+'1477490860766';
+var CACHE_VERSION = CACHE_PREFIX+'1485811852010';
 toolbox.options.cache.name = CACHE_VERSION;
 var urlsToPrefetch = [
     '/',
-    "assets/hospitalrun-44d7ec8db723e965f3f9c1f9373bc08d.js",
-    "assets/hospitalrun-56f8b368caa298fe91b9564acb6c9714.css",
-    "assets/vendor-93656d8d895db5090db442b56114e353.js",
-    "assets/vendor-ed8acd5f4063b4b83b5df16f6da9e8b0.css",
+    "assets/hospitalrun-137198a3580184ebded7ff16e29b1655.css",
+    "assets/hospitalrun-a0f93ae53bb6904aaa07ee0fe78a368b.js",
+    "assets/vendor-96c441829d74101d275b50c4f0792b13.css",
+    "assets/vendor-f370935dbd0f1d19b579a264273c07bc.js",
     "crossdomain.xml",
     "dymo/BarcodeAsImage.label",
     "favicon-7440091f4e8bd83e23e4d5824c2c3da4.png",
@@ -13741,8 +13742,8 @@ function setupRemoteSync() {
         timeout: 30000
       }
     };
-    if (configs.config_consumer_secret && configs.config_token_secret &&
-        configs.config_consumer_key && configs.config_oauth_token) {
+    if (configs.config_consumer_secret && configs.config_token_secret
+      && configs.config_consumer_key && configs.config_oauth_token) {
       pouchOptions.ajax.headers['x-oauth-consumer-secret'] = configs.config_consumer_secret;
       pouchOptions.ajax.headers['x-oauth-consumer-key'] = configs.config_consumer_key;
       pouchOptions.ajax.headers['x-oauth-token-secret'] = configs.config_token_secret;
@@ -13873,7 +13874,9 @@ self.addEventListener('activate', function(event) {
           return (cacheName.indexOf('$$$inactive$$$') === -1 && cacheName.indexOf(CACHE_PREFIX) === 0 && cacheName !== CACHE_VERSION);
         }).map(function(cacheName) {
           logDebug('Deleting out of date cache:', cacheName);
-          return caches.delete(cacheName);
+          return caches.delete(cacheName).then(function() {
+            return _postDeleteCacheHook(cacheName);
+          });
         })
       );
     }).then(function() {
@@ -13881,6 +13884,16 @@ self.addEventListener('activate', function(event) {
     })
   );
 });
+
+function _postDeleteCacheHook(cacheName) {
+  if (typeof brocswPostDeleteCacheHook === 'function') {
+    return brocswPostDeleteCacheHook(cacheName);
+  }
+  else {
+    // Hook is not implemented in the app's serviceworker, that's fine.
+    return Promise.resolve();
+  }
+}
 
 function logDebug() {
   if (toolbox.options.debug) {

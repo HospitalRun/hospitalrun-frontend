@@ -4,7 +4,7 @@ export default AbstractIndexRoute.extend({
   pageTitle: 'Incident Report',
 
   // No model for reports; data gets retrieved when report is run.
-  model: function() {
+  model() {
     return Ember.RSVP.resolve(Ember.Object.create({}));
   }
 

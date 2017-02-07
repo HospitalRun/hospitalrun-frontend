@@ -19,7 +19,7 @@ export default AbstractEditController.extend({
   }),
 
   title: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     let i18n = this.get('i18n');
     if (isNew) {
       return i18n.t('incident.titles.addReviewer');
@@ -27,11 +27,11 @@ export default AbstractEditController.extend({
     return i18n.t('incident.titles.editReviewer');
   }.property('model.isNew'),
 
-  beforeUpdate: function() {
-    var email = this.get('model.reviewerEmail');
+  beforeUpdate() {
+    let email = this.get('model.reviewerEmail');
     if (!Ember.isEmpty(email)) {
-      var userList = this.get('userList'),
-          userObject = userList.findBy('email', email);
+      let userList = this.get('userList');
+      let userObject = userList.findBy('email', email);
       if (!Ember.isEmpty(userObject)) {
         this.set('model.reviewerName', userObject.get('displayName'));
       }
@@ -42,7 +42,7 @@ export default AbstractEditController.extend({
     return Ember.RSVP.Promise.resolve();
   },
 
-  afterUpdate: function(reviewer) {
+  afterUpdate(reviewer) {
     if (this.get('newReviewer')) {
       this.get('editController').send('addReviewer', reviewer);
     } else {

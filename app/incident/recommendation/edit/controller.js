@@ -10,12 +10,12 @@ export default AbstractEditController.extend({
   newRecommendation: false,
 
   recommendationStatusTypes: [
-     'In-progress',
-     'Completed'
+    'In-progress',
+    'Completed'
   ].map(SelectValues.selectValuesMap),
 
   title: function() {
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     let i18n = this.get('i18n');
     if (isNew) {
       return i18n.t('incident.titles.addRecommendation');
@@ -25,14 +25,14 @@ export default AbstractEditController.extend({
 
   updateCapability: 'add_recommendation',
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     if (this.get('model.isNew')) {
       this.set('newRecommendation', true);
     }
     return Ember.RSVP.Promise.resolve();
   },
 
-  afterUpdate: function(recommendation) {
+  afterUpdate(recommendation) {
     if (this.get('newRecommendation')) {
       this.get('editController').send('addRecommendation', recommendation);
     } else {

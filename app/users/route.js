@@ -2,7 +2,7 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 import Ember from 'ember';
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
   actions: {
-    allItems: function() {
+    allItems() {
       this.transitionTo('users.index');
     }
   }

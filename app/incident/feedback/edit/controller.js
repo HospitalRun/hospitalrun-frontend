@@ -7,7 +7,7 @@ export default AbstractEditController.extend({
 
   title: function() {
     let i18n = this.get('i18n');
-    var isNew = this.get('model.isNew');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return i18n.t('incident.titles.addFeedback');
     }
@@ -16,14 +16,14 @@ export default AbstractEditController.extend({
 
   updateCapability: 'add_feedback',
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     if (this.get('model.isNew')) {
       this.set('newFeedback', true);
     }
     return Ember.RSVP.Promise.resolve();
   },
 
-  afterUpdate: function(feedback) {
+  afterUpdate(feedback) {
     if (this.get('newFeedback')) {
       this.get('editController').send('addFeedback', feedback);
     } else {

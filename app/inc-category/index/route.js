@@ -9,11 +9,11 @@ export default AbstractIndexRoute.extend({
   newButtonText: '+ new category',
 
   actions: {
-    newItem: function() {
-        this.transitionTo('inc-category.edit', 'new');
-      },
+    newItem() {
+      this.transitionTo('inc-category.edit', 'new');
+    },
 
-    editItem: function(category) {
+    editItem(category) {
       this.transitionTo('inc-category.edit', category);
     }
   }

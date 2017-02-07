@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import moment from 'moment';
 export default Ember.Mixin.create({
-  _dateFormat: function(value, dateFormat) {
+  _dateFormat(value, dateFormat) {
     if (Ember.isEmpty(dateFormat)) {
       dateFormat = 'l';
     }
@@ -9,7 +10,7 @@ export default Ember.Mixin.create({
     }
   },
 
-  dateToTime: function(date) {
+  dateToTime(date) {
     if (!Ember.isEmpty(date) && date.getTime) {
       return date.getTime();
     }

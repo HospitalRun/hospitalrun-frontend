@@ -6,13 +6,13 @@ export default AbstractModuleRoute.extend(IncidentId, {
   additionalModels: [{
     name: 'userList',
     findArgs: ['user']
-  },{
+  }, {
     name: 'incidentLocationsList',
-    findArgs: ['lookup','incident_locations']
-  },{
+    findArgs: ['lookup', 'incident_locations']
+  }, {
     name: 'harmScoreList',
-    findArgs: ['lookup','harm_scores']
-  },{
+    findArgs: ['lookup', 'harm_scores']
+  }, {
     name: 'incidentCategoryList',
     findArgs: ['inc-category']
   }],

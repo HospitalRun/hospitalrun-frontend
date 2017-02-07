@@ -8,7 +8,7 @@ export default AbstractDeleteController.extend({
   title: t('incident.titles.deleteFeedback'),
 
   actions: {
-    notifyFeedbackDelete: function() {
+    notifyFeedbackDelete() {
       this.get('editController').send('deleteFeedback', this.get('model'));
       this.send('closeModal');
     }

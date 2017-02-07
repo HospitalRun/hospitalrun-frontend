@@ -2,6 +2,7 @@
 import createPouchViews from 'hospitalrun/utils/pouch-views';
 import Ember from 'ember';
 import PouchDB from 'pouchdb';
+import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
 import DatabaseService from 'hospitalrun/services/database';
 import ConfigService from 'hospitalrun/services/config';
 
@@ -32,7 +33,7 @@ function destroyDatabases(dbs) {
 }
 
 function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
-
+  PouchDB.plugin(PouchAdapterMemory);
   let db = new PouchDB('hospitalrun-test-database', {
     adapter: 'memory'
   });

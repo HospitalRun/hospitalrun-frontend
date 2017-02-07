@@ -8,7 +8,7 @@ export default AbstractDeleteController.extend({
   title: t('incident.titles.deleteReviewer'),
 
   actions: {
-    notifyReviewerDelete: function() {
+    notifyReviewerDelete() {
       this.get('editController').send('deleteReviewer', this.get('model'));
       this.send('closeModal');
     }

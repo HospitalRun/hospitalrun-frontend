@@ -8,7 +8,7 @@ export default AbstractDeleteController.extend({
   title: t('incident.titles.deleteRecommendation'),
 
   actions: {
-    notifyRecommendationDelete: function() {
+    notifyRecommendationDelete() {
       this.get('editController').send('deleteRecommendation', this.get('model'));
       this.send('closeModal');
     }

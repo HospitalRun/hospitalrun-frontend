@@ -1,12 +1,14 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
+import moment from 'moment';
 import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractIndexRoute.extend({
   editReturn: 'appointments.index',
   modelName: 'appointment',
+  newButtonText: t('appointments.buttons.newButton'),
   pageTitle: t('appointments.thisWeek'),
 
-  _getStartKeyFromItem: function(item) {
+  _getStartKeyFromItem(item) {
     let endDate = item.get('endDate');
     let id = this._getPouchIdFromItem(item);
     let startDate = item.get('startDate');
@@ -26,7 +28,7 @@ export default AbstractIndexRoute.extend({
     return [startDate, endDate, id];
   },
 
-  _modelQueryParams: function() {
+  _modelQueryParams() {
     let endOfWeek = moment().endOf('week').toDate().getTime();
     let startOfWeek = moment().startOf('week').toDate().getTime();
     let maxId = this._getMaxPouchId();
@@ -40,7 +42,7 @@ export default AbstractIndexRoute.extend({
   },
 
   actions: {
-    editAppointment: function(appointment) {
+    editAppointment(appointment) {
       appointment.set('returnTo', this.get('editReturn'));
       this.send('editItem', appointment);
     }

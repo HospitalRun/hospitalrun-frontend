@@ -4,18 +4,18 @@ import { translationMacro as t } from 'ember-i18n';
 export default AbstractDeleteController.extend({
   title: t('incident.titles.deleteItem'),
 
-  _deleteChildObject: function(incident, childObject, destroyPromises) {
+  _deleteChildObject(incident, childObject, destroyPromises) {
     incident.get(childObject).then(function(childObject) {
-        childObject.forEach(function(child) {
-          destroyPromises.push(child.destroyRecord());  // Add the destroy promise to the list
-        });
+      childObject.forEach(function(child) {
+        destroyPromises.push(child.destroyRecord());  // Add the destroy promise to the list
       });
+    });
   },
 
   actions: {
-    delete: function() {
-      var destroyPromises = [];
-      var incident = this.get('model');
+    delete() {
+      let destroyPromises = [];
+      let incident = this.get('model');
       this._deleteChildObject(incident, 'reviewers', destroyPromises);
       this._deleteChildObject(incident, 'feedbacks', destroyPromises);
       this._deleteChildObject(incident, 'investigationFindings', destroyPromises);

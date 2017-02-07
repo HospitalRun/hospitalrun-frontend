@@ -7,59 +7,67 @@ import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, PatientNotes, {
+  customForms: Ember.inject.service(),
   editTitle: t('patients.titles.edit'),
   modelName: 'patient',
   newTitle: t('patients.titles.new'),
   photos: null,
 
   actions: {
-    updateNote: function(note) {
+    updateNote(note) {
       note.get('visit').save().then(function() {
         // noop
       });
     },
-    appointmentDeleted: function(model) {
+    appointmentDeleted(model) {
       this.controller.send('appointmentDeleted', model);
     },
-    returnToPatient: function() {
+    returnToPatient() {
       this.controller.send('returnToPatient');
     },
-    deleteContact: function(model) {
+    deleteContact(model) {
       this.controller.send('deleteContact', model);
     },
 
-    deleteExpense: function(model) {
+    deleteExpense(model) {
       this.controller.send('deleteExpense', model);
     },
 
-    deleteFamily: function(model) {
+    deleteFamily(model) {
       this.controller.send('deleteFamily', model);
     },
 
-    deletePhoto: function(model) {
+    deletePhoto(model) {
       this.controller.send('deletePhoto', model);
     },
 
-    updateExpense: function(model) {
+    updateExpense(model) {
       this.controller.send('updateExpense', model);
     },
 
-    updateFamilyInfo: function(model) {
+    updateFamilyInfo(model) {
       this.controller.send('updateFamilyInfo', model);
     },
 
-    visitDeleted: function(model) {
+    visitDeleted(model) {
       this.controller.send('visitDeleted', model);
     }
   },
 
   getNewData() {
-    return this.generateFriendlyId().then(function(friendlyId) {
-      return { friendlyId };
+    let customForms = this.get('customForms');
+    let newPatientData = {
+      customForms: Ember.Object.create()
+    };
+    return customForms.setDefaultCustomForms(['patient', 'socialwork'], newPatientData).then(() => {
+      return this.generateFriendlyId().then(function(friendlyId) {
+        newPatientData.friendlyId = friendlyId;
+        return newPatientData;
+      });
     });
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     // Load appointments, photos and visits asynchronously.
     let friendlyId = model.get('friendlyId');
     let externalId = model.get('externalPatientId');

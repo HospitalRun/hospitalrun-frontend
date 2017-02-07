@@ -1,10 +1,9 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
-import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import Ember from 'ember';
 
-export default AbstractEditController.extend(FulfillRequest, InventoryLocations, InventorySelection, {
+export default AbstractEditController.extend(FulfillRequest, InventoryLocations, {
   inventoryController: Ember.inject.controller('inventory'),
   inventoryItems: null,
   cancelAction: 'allRequests',
@@ -88,7 +87,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   updateCapability: 'add_inventory_request',
 
   actions: {
-    addInventoryItem: function() {
+    addInventoryItem() {
       let model = this.get('model');
       let inventoryItem = model.get('inventoryItem');
       let requestedItems = model.get('requestedItems');
@@ -97,7 +96,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
         if (model.get('isValid') && !Ember.isEmpty(inventoryItem) && !Ember.isEmpty(quantity)) {
           let requestedItem = Ember.Object.create({
             item: inventoryItem.get('content'),
-            quantity: quantity
+            quantity
           });
           requestedItems.addObject(requestedItem);
           model.set('inventoryItem');
@@ -108,22 +107,22 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
       }.bind(this)).catch(Ember.K);
     },
 
-    allRequests: function() {
+    allRequests() {
       this.transitionToRoute('inventory.index');
     },
 
-    removeItem: function(removeInfo) {
+    removeItem(removeInfo) {
       let requestedItems = this.get('model.requestedItems');
       let item = removeInfo.itemToRemove;
       requestedItems.removeObject(item);
       this.send('closeModal');
     },
 
-    showRemoveItem: function(item) {
+    showRemoveItem(item) {
       let message = this.get('i18n').t('inventory.messages.removeItemRequest');
       let model = Ember.Object.create({
-          itemToRemove: item
-        });
+        itemToRemove: item
+      });
       let title = this.get('i18n').t('inventory.titles.removeItem');
       this.displayConfirm(title, message, 'removeItem', model);
     },
@@ -133,7 +132,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
      * @param skipAfterUpdate boolean (optional) indicating whether or not
      * to skip the afterUpdate call.
      */
-    update: function(skipAfterUpdate) {
+    update(skipAfterUpdate) {
       this.beforeUpdate().then(function() {
         let updateViaFulfillRequest = this.get('updateViaFulfillRequest');
         if (updateViaFulfillRequest) {
@@ -145,13 +144,13 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
           if (isNew && !Ember.isEmpty(requestedItems)) {
             let baseModel = this.get('model');
             let propertiesToCopy = baseModel.getProperties([
-                'dateRequested',
-                'deliveryAisle',
-                'deliveryLocation',
-                'expenseAccount',
-                'requestedBy',
-                'status'
-              ]);
+              'dateRequested',
+              'deliveryAisle',
+              'deliveryLocation',
+              'expenseAccount',
+              'requestedBy',
+              'status'
+            ]);
             let inventoryPromises = [];
             let newModels = [];
             let savePromises = [];
@@ -187,7 +186,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     }
   },
 
-  afterUpdate: function() {
+  afterUpdate() {
     let updateViaFulfillRequest = this.get('updateViaFulfillRequest');
     if (updateViaFulfillRequest) {
       this.displayAlert(this.get('i18n').t('inventory.titles.requestFulfilled'), this.get('i18n').t('inventory.messages.requestFulfilled'), 'allRequests');
@@ -196,7 +195,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     }
   },
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     if (this.get('isFulfilling')) {
       this.set('updateViaFulfillRequest', true);
     } else {

@@ -1,0 +1,26 @@
+{{#edit-panel editPanelProps=editPanelProps}}
+  {{#em-form model=model submitButton=false }}
+    {{patient-summary patient=model.patient disablePatientLink=true diagnosisContainer=model}}
+    {{em-text property="operationDescription" label=(t 'operativePlan.labels.operationDescription') class="operation-description"}}
+    {{operative-procedures model=model procedureList=procedureList}}
+    <div class="row">
+      {{select-or-typeahead className="col-sm-4" property="surgeon"
+        label=(t "operativePlan.labels.surgeon") list=physicianList
+        selection=model.surgeon
+        class="plan-surgeon"
+      }}
+      {{em-select
+        prompt=" "
+        label=(t 'operativePlan.labels.status')
+        property="status"
+        content=planStatuses
+        class="form-input-group col-sm-2 plan-status"
+      }}
+      {{em-input property="caseComplexity" label=(t 'operativePlan.labels.caseComplexity') class="col-sm-2 case-complexity"}}
+    </div>
+    {{em-text property="admissionInstructions" label=(t 'operativePlan.labels.admissionInstructions') class="admission-instructions"}}
+    {{em-text property="additionalNotes" label=(t 'operativePlan.labels.additionalNotes') class="additional-notes"}}
+    {{upcoming-appointments patient=model.patient}}
+    {{custom-form-manager model=model formType="operativePlan"}}
+  {{/em-form}}
+{{/edit-panel}}

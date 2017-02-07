@@ -3,10 +3,10 @@ import IncidentSearch from 'hospitalrun/utils/incident-search';
 export default AbstractSearchRoute.extend({
   moduleName: 'incident',
   searchKeys: [
-      'friendlyId',
-      'reportedBy',
-      'locationOfIncident',
-      'categoryName'
+    'friendlyId',
+    'reportedBy',
+    'locationOfIncident',
+    'categoryName'
   ],
   searchIndex: IncidentSearch,
   searchModel: 'incident'

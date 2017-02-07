@@ -4,7 +4,7 @@ export default AbstractEditRoute.extend({
   hideNewButton: true,
   newTitle: t('admin.userRoles'),
   editTitle: t('admin.userRoles'),
-  model: function() {
+  model() {
     return this.get('store').findAll('user-role');
   }
 });

@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import moment from 'moment';
 export default Ember.Mixin.create({
-  convertDOBToText: function(birthDate, shortFormat, omitDays) {
+  convertDOBToText(birthDate, shortFormat, omitDays) {
     let today = new Date();
     let years = 0;
     let months = 0;
@@ -12,9 +13,9 @@ export default Ember.Mixin.create({
       }
       if (birthDate.getFullYear !== undefined) {
         years = today.getFullYear() - birthDate.getFullYear();
-        if (today.getMonth() < birthDate.getMonth() ||
-          (today.getMonth() === birthDate.getMonth() &&
-          today.getDate() < birthDate.getDate())) {
+        if (today.getMonth() < birthDate.getMonth()
+          || (today.getMonth() === birthDate.getMonth()
+          && today.getDate() < birthDate.getDate())) {
           years--;
         }
       }
@@ -45,9 +46,9 @@ export default Ember.Mixin.create({
 
     let formatString = '';
     let options = {
-      years: years,
-      days: days,
-      months: months
+      years,
+      days,
+      months
     };
     let i18n = this.get('i18n');
     if (shortFormat) {

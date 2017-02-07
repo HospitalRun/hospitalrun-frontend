@@ -30,7 +30,7 @@ export default Ember.Component.extend({
     let quantity = this.get('quantity');
     let quantityClass = 'has-success';
     let targetUnit = this.get('targetUnit');
-    if (!Ember.isEmpty(targetUnit) && (Ember.isEmpty(quantity) || isNaN(quantity))) {
+    if (!Ember.isEmpty(targetUnit) && (Ember.isEmpty(quantity) || isNaN(quantity) || quantity < 0)) {
       this.set('quantityHelp', 'not a valid number');
       quantityClass = 'has-error';
     } else {

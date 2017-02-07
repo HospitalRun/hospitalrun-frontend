@@ -56,6 +56,12 @@ export default Ember.Mixin.create({
           capability: 'patients'
         },
         {
+          title: 'Outpatient',
+          iconClass: 'octicon-chevron-right',
+          route: 'patients.outpatient',
+          capability: 'patients'
+        },
+        {
           title: 'New Patient',
           iconClass: 'octicon-plus',
           route: 'patients.edit',
@@ -71,33 +77,39 @@ export default Ember.Mixin.create({
       ]
     },
     {
-      title: 'Appointments',
+      title: 'Scheduling',
       iconClass: 'octicon-calendar',
       route: 'appointments.index',
       capability: 'appointments',
       subnav: [
         {
-          title: 'This Week',
+          title: 'Appointments This Week',
           iconClass: 'octicon-chevron-right',
           route: 'appointments.index',
           capability: 'appointments'
         },
         {
-          title: 'Today',
+          title: 'Today\'s Appointments',
           iconClass: 'octicon-chevron-right',
           route: 'appointments.today',
           capability: 'appointments'
         },
         {
-          title: 'Missed',
+          title: 'Missed Appointments',
           iconClass: 'octicon-chevron-right',
           route: 'appointments.missed',
           capability: 'appointments'
         },
         {
-          title: 'Search',
+          title: 'Appointment Search',
           iconClass: 'octicon-search',
           route: 'appointments.search',
+          capability: 'appointments'
+        },
+        {
+          title: 'Appointments Calendar',
+          iconClass: 'octicon-calendar',
+          route: 'appointments.calendar',
           capability: 'appointments'
         },
         {
@@ -105,6 +117,19 @@ export default Ember.Mixin.create({
           iconClass: 'octicon-plus',
           route: 'appointments.edit',
           subroute: 'new',
+          capability: 'add_appointment'
+        },
+        {
+          title: 'Theater Schedule',
+          iconClass: 'octicon-calendar',
+          route: 'appointments.theater',
+          capability: 'appointments'
+        },
+        {
+          title: 'Schedule Surgery',
+          iconClass: 'octicon-plus',
+          route: 'appointments.edit',
+          subroute: 'newsurgery',
           capability: 'add_appointment'
         }
       ]
@@ -243,37 +268,37 @@ export default Ember.Mixin.create({
       route: 'incident',
       capability: 'incident',
       subnav: [
-          {
-            title: 'Current Incidents',
-            iconClass: 'octicon-chevron-right',
-            route: 'incident.index',
-            capability: 'add_incident'
-          },
-          {
-            title: 'My Incidents',
-            iconClass: 'octicon-chevron-right',
-            route: 'incident.listing',
-            capability: 'add_incident'
-          },
-          {
-            title: 'New Incident',
-            iconClass: 'octicon-plus',
-            route: 'incident.edit',
-            subroute: 'new',
-            capability: 'add_incident'
-          },
-          {
-            title: 'History',
-            iconClass: 'octicon-chevron-right',
-            route: 'incident.completed',
-            capability: 'add_incident'
-          },
-          {
-            title: 'Reports',
-            iconClass: 'octicon-chevron-right',
-            route: 'incident.reports',
-            capability: 'generate_incident_report'
-          }
+        {
+          title: 'Current Incidents',
+          iconClass: 'octicon-chevron-right',
+          route: 'incident.index',
+          capability: 'add_incident'
+        },
+        {
+          title: 'My Incidents',
+          iconClass: 'octicon-chevron-right',
+          route: 'incident.listing',
+          capability: 'add_incident'
+        },
+        {
+          title: 'New Incident',
+          iconClass: 'octicon-plus',
+          route: 'incident.edit',
+          subroute: 'new',
+          capability: 'add_incident'
+        },
+        {
+          title: 'History',
+          iconClass: 'octicon-chevron-right',
+          route: 'incident.completed',
+          capability: 'add_incident'
+        },
+        {
+          title: 'Reports',
+          iconClass: 'octicon-chevron-right',
+          route: 'incident.reports',
+          capability: 'generate_incident_report'
+        }
       ]
     },
     {
@@ -283,9 +308,9 @@ export default Ember.Mixin.create({
       capability: 'admin',
       subnav: [
         {
-          title: 'Lookup Lists',
+          title: 'Address Fields',
           iconClass: 'octicon-chevron-right',
-          route: 'admin.lookup',
+          route: 'admin.address',
           capability: 'update_config'
         },
         {
@@ -295,9 +320,9 @@ export default Ember.Mixin.create({
           capability: 'add_incident_category'
         },
         {
-          title: 'Address Fields',
+          title: 'Custom Forms',
           iconClass: 'octicon-chevron-right',
-          route: 'admin.address',
+          route: 'admin.custom-forms',
           capability: 'update_config'
         },
         {
@@ -305,6 +330,12 @@ export default Ember.Mixin.create({
           iconClass: 'octicon-plus',
           route: 'admin.loaddb',
           capability: 'load_db'
+        },
+        {
+          title: 'Lookup Lists',
+          iconClass: 'octicon-chevron-right',
+          route: 'admin.lookup',
+          capability: 'update_config'
         },
         {
           title: 'Users',
@@ -323,13 +354,7 @@ export default Ember.Mixin.create({
           title: 'User Roles',
           iconClass: 'octicon-chevron-right',
           route: 'admin.roles',
-          capability: 'user_roles'
-        },
-        {
-          title: 'Workflow',
-          iconClass: 'octicon-chevron-right',
-          route: 'admin.workflow',
-          capability: 'update_config'
+          capability: 'define_user_roles'
         }
       ]
     }
@@ -349,7 +374,7 @@ export default Ember.Mixin.create({
       let sectionKey = localizationPrefix + camelize(nav.title).toLowerCase();
       let navTranslated = this.get('i18n').t(sectionKey);
 
-      nav.localizedTitle = translationOrOriginal(navTranslated, nav.title);
+      Ember.set(nav, 'localizedTitle', translationOrOriginal(navTranslated, nav.title));
       // Map all of the sub navs, too
       nav.subnav = nav.subnav.map((sub) => {
         let subItemKey = `${localizationPrefix}subnav.${camelize(sub.title)}`;

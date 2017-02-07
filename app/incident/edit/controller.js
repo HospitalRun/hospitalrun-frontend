@@ -8,6 +8,9 @@ import IncidentContributingFactors from 'hospitalrun/mixins/incident-contributin
 import SelectValues from 'hospitalrun/utils/select-values';
 import HarmScoreOptions from 'hospitalrun/mixins/incident-harm-score';
 import IncidentRisk from 'hospitalrun/mixins/incident-risk';
+
+const { get } = Ember;
+
 export default AbstractEditController.extend(IncidentSubmodule, IncidentCategoryList, IncidentLocationsList,
   IncidentContributingFactors, SelectValues, UserSession, HarmScoreOptions, IncidentRisk, {
     database: Ember.inject.service(),
@@ -21,11 +24,11 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     }),
 
     displayPreScore: function() {
-      var i18n = this.get('i18n');
+      let i18n = this.get('i18n');
       if (Ember.isBlank(this.get('model.preRiskScore'))) {
         return i18n.t('incident.messages.fillIn');
       } else {
-        return (this.get('model.preRiskScore')) + ' -';
+        return `${this.get('model.preRiskScore')} -`;
       }
     }.property('model.preRiskScore'),
     displayPreResults: function() {
@@ -33,11 +36,11 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     }.property('model.preRiskResults'),
 
     displayPostScore: function() {
-      var i18n = this.get('i18n');
+      let i18n = this.get('i18n');
       if (Ember.isBlank(this.get('model.postRiskScore'))) {
         return i18n.t('incident.messages.fillIn');
       } else {
-        return (this.get('model.postRiskScore')) + ' -';
+        return `${this.get('model.postRiskScore')} -`;
       }
     }.property('model.postRiskScore'),
     displayPostResults: function() {
@@ -45,7 +48,7 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     }.property('model.postRiskResults'),
 
     canAddFeedback: function() {
-      var canAdd = true;
+      let canAdd = true;
       if (this.get('model.statusOfIncident') === 'Closed') {
         canAdd = false;
       }
@@ -140,9 +143,9 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       this._reEnableCheckboxOnLoading('teamFactors', 'teamContributingFactors');
     }.observes('model.teamContributingFactors.[]'),
 
-    _reEnableCheckboxOnLoading: function(factorsList, contributingFactorsList) {
-      var model = this.get('model');
-      var factors = this.get(factorsList);
+    _reEnableCheckboxOnLoading(factorsList, contributingFactorsList) {
+      let model = this.get('model');
+      let factors = this.get(factorsList);
       model.get(contributingFactorsList).then(function(contributingFactors) {
         factors.forEach(function(factor) {
           factor.components.forEach(function(component) {
@@ -158,8 +161,8 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
     incidentCategoryList: Ember.computed.alias('incidentController.incidentCategoryList'),
 
     incidentLocations: function() {
-      var defaultIncidentLocations = this.get('defaultIncidentLocations'),
-        incidentLocationsList = this.get('incidentLocationsList');
+      let defaultIncidentLocations = this.get('defaultIncidentLocations');
+      let incidentLocationsList = this.get('incidentLocationsList');
       if (Ember.isEmpty(incidentLocationsList)) {
         return SelectValues.selectValues(defaultIncidentLocations);
       } else {
@@ -171,16 +174,16 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
 
     updateCapability: 'add_incident',
 
-    _completeBeforeUpdate: function(sequence, resolve, reject) {
-      var sequenceValue = null,
-        friendlyId = sequence.get('prefix'),
-        model = this.get('model'),
-        promises = [];
+    _completeBeforeUpdate(sequence, resolve, reject) {
+      let sequenceValue = null;
+      let friendlyId = sequence.get('prefix');
+      let model = this.get('model');
+      let promises = [];
 
       sequence.incrementProperty('value', 1);
       sequenceValue = sequence.get('value');
       if (sequenceValue < 100000) {
-        friendlyId += String('00000' + sequenceValue).slice(-5);
+        friendlyId += String(`00000${sequenceValue}`).slice(-5);
       } else {
         friendlyId += sequenceValue;
       }
@@ -193,14 +196,14 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       });
     },
 
-    _findSequence: function(type, resolve, reject) {
-      var sequenceFinder = new Ember.RSVP.Promise(function(resolve) {
+    _findSequence(type, resolve, reject) {
+      let sequenceFinder = new Ember.RSVP.Promise(function(resolve) {
         this._checkNextSequence(resolve, type, 0);
       }.bind(this));
       sequenceFinder.then(function(prefixChars) {
-        var store = this.get('store');
-        var newSequence = store.push(store.normalize('sequence', {
-          id: 'incident_' + type,
+        let store = this.get('store');
+        let newSequence = store.push(store.normalize('sequence', {
+          id: `incident_${type}`,
           prefix: type.toLowerCase().substr(0, prefixChars),
           value: 0
         }));
@@ -208,15 +211,15 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       }.bind(this));
     },
 
-    _findSequenceByPrefix: function(type, prefixChars) {
-      var database = this.get('database');
-      var sequenceQuery = {
+    _findSequenceByPrefix(type, prefixChars) {
+      let database = this.get('database');
+      let sequenceQuery = {
         key: type.toLowerCase().substr(0, prefixChars)
       };
       return database.queryMainDB(sequenceQuery, 'sequence_by_prefix');
     },
 
-    _checkNextSequence: function(resolve, type, prefixChars) {
+    _checkNextSequence(resolve, type, prefixChars) {
       prefixChars++;
       this._findSequenceByPrefix(type, prefixChars).then(function(records) {
         if (Ember.isEmpty(records.rows)) {
@@ -229,20 +232,20 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       });
     },
 
-    afterUpdate: function() {
-      var i18n = this.get('i18n');
+    afterUpdate() {
+      let i18n = this.get('i18n');
       if (this.get('model.statusOfIncident') === 'Opened') {
         this.set('model.statusOfIncident', 'Reported');
       }
       this.displayAlert(i18n.t('incident.titles.incidentSaved'), i18n.t('incident.messages.saved'));
     },
 
-    beforeUpdate: function() {
+    beforeUpdate() {
       if (this.get('model.isNew')) {
         this.set('newIncident', true);
-        var type = 'incident';
+        let type = 'incident';
         return new Ember.RSVP.Promise(function(resolve, reject) {
-          this.store.find('sequence', 'incident_' + type).then(function(sequence) {
+          this.store.find('sequence', `incident_${type}`).then(function(sequence) {
             this._completeBeforeUpdate(sequence, resolve, reject);
           }.bind(this), function() {
             this._findSequence(type, resolve, reject);
@@ -251,50 +254,50 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       } else {
         // We need to return a promise because we need to ensure we have saved the inc-contributing-factor records first.
         return new Ember.RSVP.Promise(function(resolve, reject) {
-          var model = this.get('model'),
-            patientFactors = this.get('patientFactors'),
-            savePromises = [];
+          let model = this.get('model');
+          let patientFactors = this.get('patientFactors');
+          let savePromises = [];
 
           model.get('patientContributingFactors').then(function(patientContributingFactors) {
             savePromises = this._addContributingFactors(patientFactors, patientContributingFactors);
           }.bind(this));
 
-          var staffFactors = this.get('staffFactors');
+          let staffFactors = this.get('staffFactors');
           model.get('staffContributingFactors').then(function(staffContributingFactors) {
             savePromises = this._addContributingFactors(staffFactors, staffContributingFactors);
           }.bind(this));
 
-          var taskFactors = this.get('taskFactors');
+          let taskFactors = this.get('taskFactors');
           model.get('taskContributingFactors').then(function(taskContributingFactors) {
             savePromises = this._addContributingFactors(taskFactors, taskContributingFactors);
           }.bind(this));
 
-          var communicationFactors = this.get('communicationFactors');
+          let communicationFactors = this.get('communicationFactors');
           model.get('communicationContributingFactors').then(function(communicationContributingFactors) {
             savePromises = this._addContributingFactors(communicationFactors, communicationContributingFactors);
           }.bind(this));
 
-          var equipmentFactors = this.get('equipmentFactors');
+          let equipmentFactors = this.get('equipmentFactors');
           model.get('equipmentContributingFactors').then(function(equipmentContributingFactors) {
             savePromises = this._addContributingFactors(equipmentFactors, equipmentContributingFactors);
           }.bind(this));
 
-          var workEnvFactors = this.get('workEnvFactors');
+          let workEnvFactors = this.get('workEnvFactors');
           model.get('wrkEnvironmentContributingFactors').then(function(wrkEnvironmentContributingFactors) {
             savePromises = this._addContributingFactors(workEnvFactors, wrkEnvironmentContributingFactors);
           }.bind(this));
 
-          var organisationalFactors = this.get('organisationalFactors');
+          let organisationalFactors = this.get('organisationalFactors');
           model.get('organizationalContributingFactors').then(function(organizationalContributingFactors) {
             savePromises = this._addContributingFactors(organisationalFactors, organizationalContributingFactors);
           }.bind(this));
 
-          var educationAndTrainingFactors = this.get('educationAndTrainingFactors');
+          let educationAndTrainingFactors = this.get('educationAndTrainingFactors');
           model.get('eduTrainingContributingFactors').then(function(eduTrainingContributingFactors) {
             savePromises = this._addContributingFactors(educationAndTrainingFactors, eduTrainingContributingFactors);
           }.bind(this));
 
-          var teamFactors = this.get('teamFactors');
+          let teamFactors = this.get('teamFactors');
           model.get('teamContributingFactors').then(function(teamContributingFactors) {
             savePromises = this._addContributingFactors(teamFactors, teamContributingFactors);
           }.bind(this));
@@ -308,87 +311,87 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
       }
     },
 
-    _getCurrentUserName: function() {
-      var incident = this.get('model');
+    _getCurrentUserName() {
+      let incident = this.get('model');
       return incident.getUserName(true);
     },
 
     havePatientContributingFactors: function() {
-      var model = this.get('model'),
-        patientFactorsLength = model.get('patientContributingFactors.length');
+      let model = this.get('model');
+      let patientFactorsLength = model.get('patientContributingFactors.length');
       return (patientFactorsLength > 0);
     }.property('patientContributingFactors.length'),
 
     haveStaffContributingFactors: function() {
-      var model = this.get('model'),
-        staffFactorsLength = model.get('staffContributingFactors.length');
+      let model = this.get('model');
+      let staffFactorsLength = model.get('staffContributingFactors.length');
       return (staffFactorsLength > 0);
     }.property('staffContributingFactors.length'),
 
     haveTaskContributingFactors: function() {
-      var model = this.get('model'),
-        taskFactorsLength = model.get('taskContributingFactors.length');
+      let model = this.get('model');
+      let taskFactorsLength = model.get('taskContributingFactors.length');
       return (taskFactorsLength > 0);
     }.property('taskContributingFactors.length'),
 
     haveCommunicationContributingFactors: function() {
-      var model = this.get('model'),
-        communicationFactorsLength = model.get('communicationContributingFactors.length');
+      let model = this.get('model');
+      let communicationFactorsLength = model.get('communicationContributingFactors.length');
       return (communicationFactorsLength > 0);
     }.property('communicationContributingFactors.length'),
 
     haveEquipmentContributingFactors: function() {
-      var model = this.get('model'),
-        equipmentFactorsLength = model.get('equipmentContributingFactors.length');
+      let model = this.get('model');
+      let equipmentFactorsLength = model.get('equipmentContributingFactors.length');
       return (equipmentFactorsLength > 0);
     }.property('equipmentContributingFactors.length'),
 
     haveWorkEnvironmentContributingFactors: function() {
-      var model = this.get('model'),
-        wrkEnvironmentFactorsLength = model.get('wrkEnvironmentContributingFactors.length');
+      let model = this.get('model');
+      let wrkEnvironmentFactorsLength = model.get('wrkEnvironmentContributingFactors.length');
       return (wrkEnvironmentFactorsLength > 0);
     }.property('wrkEnvironmentContributingFactors.length'),
 
     haveOrganizationalContributingFactors: function() {
-      var model = this.get('model'),
-        organizationalFactorsLength = model.get('organizationalContributingFactors.length');
+      let model = this.get('model');
+      let organizationalFactorsLength = model.get('organizationalContributingFactors.length');
       return (organizationalFactorsLength > 0);
     }.property('organizationalContributingFactors.length'),
 
     haveEducationTrainingContributingFactors: function() {
-      var model = this.get('model'),
-        eduTrainingFactorsLength = model.get('eduTrainingContributingFactors.length');
+      let model = this.get('model');
+      let eduTrainingFactorsLength = model.get('eduTrainingContributingFactors.length');
       return (eduTrainingFactorsLength > 0);
     }.property('eduTrainingContributingFactors.length'),
 
     haveTeamContributingFactors: function() {
-      var model = this.get('model'),
-        teamFactorsLength = model.get('teamContributingFactors.length');
+      let model = this.get('model');
+      let teamFactorsLength = model.get('teamContributingFactors.length');
       return (teamFactorsLength > 0);
     }.property('teamContributingFactors.length'),
 
     itemList: function() {
-      var categoryNameSelected = this.get('model.categoryName');
+      let categoryNameSelected = this.get('model.categoryName');
       if (!Ember.isEmpty(categoryNameSelected)) {
-        var categoryList = this.get('incidentCategoryList');
-        var incidentCategory = categoryList.findBy('incidentCategoryName', categoryNameSelected);
+        let categoryList = this.get('incidentCategoryList');
+        let incidentCategory = categoryList.findBy('incidentCategoryName', categoryNameSelected);
         return incidentCategory.get('incidentCategoryItems');
       }
     }.property('model.categoryName'),
 
-    _findIndexOfProperty: function(arrayObj, property, value) {
-      for (var i = 0; i < arrayObj.length; i += 1) {
+    _findIndexOfProperty(arrayObj, property, value) {
+      for (let i = 0; i < arrayObj.length; i += 1) {
         if (arrayObj[i][property] === value) {
           return i;
         }
       }
     },
 
-    _addContributingFactors: function(factorsList, contributingFactors) {
-      var savePromises = [],
-        checkboxValue = null,
-        existingFactor = null,
-        model = this.get('model');
+    _addContributingFactors(factorsList, contributingFactors) {
+      let savePromises = [];
+      let checkboxValue = null;
+      let existingFactor = null;
+      let model = this.get('model');
       factorsList.forEach(function(factor) {
         factor.components.forEach(function(component) {
           checkboxValue = model.get(component.id);
@@ -424,8 +427,9 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
      * @param {boolean} removeObject If true remove the object from the list;
      * otherwise add the specified object to the list.
      */
-    updateList: function(listName, listObject, removeObject) {
-      this.get('model.' + listName).then(function(list) {
+    updateList(listName, listObject, removeObject) {
+      let model = get('model');
+      get(model, listName).then(function(list) {
         if (removeObject) {
           list.removeObject(listObject);
         } else {
@@ -438,8 +442,8 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
 
     actions: {
 
-      cancel: function() {
-        var cancelledItem = this.get('model');
+      cancel() {
+        let cancelledItem = this.get('model');
         if (this.get('isNew')) {
           cancelledItem.deleteRecord();
         } else {
@@ -450,40 +454,39 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
 
       // Feedback Functions
 
-      addFeedback: function(newFeedback) {
-
+      addFeedback(newFeedback) {
         this.updateList('feedbacks', newFeedback);
       },
 
-      showAddFeedback: function() {
-        var newFeedback = this.get('store').createRecord('inc-feedback', {
+      showAddFeedback() {
+        let newFeedback = this.get('store').createRecord('inc-feedback', {
           dateRecorded: new Date(),
           givenBy: this._getCurrentUserName()
         });
         this.send('openModal', 'incident.feedback.edit', newFeedback);
       },
 
-      deleteFeedback: function(feedback) {
+      deleteFeedback(feedback) {
         this.updateList('feedbacks', feedback, true);
       },
 
-      showDeleteFeedback: function(feedback) {
+      showDeleteFeedback(feedback) {
         this.send('openModal', 'incident.feedback.delete', feedback);
       },
 
-      showEditFeedback: function(feedback) {
+      showEditFeedback(feedback) {
         this.send('openModal', 'incident.feedback.edit', feedback);
       },
 
       // Reviewers functions
 
-      addReviewer: function(newReviewer) {
+      addReviewer(newReviewer) {
         this.set('model.statusOfIncident', 'Active');
         this.updateList('reviewers', newReviewer);
       },
 
-      showAddReviewer: function() {
-        var newReviewer = this.get('store').createRecord('inc-reviewer', {
+      showAddReviewer() {
+        let newReviewer = this.get('store').createRecord('inc-reviewer', {
           dateRecorded: new Date(),
           addedBy: this._getCurrentUserName(),
           incident: this.get('model')
@@ -491,70 +494,70 @@ export default AbstractEditController.extend(IncidentSubmodule, IncidentCategory
         this.send('openModal', 'incident.reviewer.edit', newReviewer);
       },
 
-      deleteReviewer: function(reviewer) {
+      deleteReviewer(reviewer) {
         this.updateList('reviewers', reviewer, true);
       },
 
-      showDeleteReviewer: function(reviewer) {
+      showDeleteReviewer(reviewer) {
         this.send('openModal', 'incident.reviewer.delete', reviewer);
       },
 
-      showEditReviewer: function(reviewer) {
+      showEditReviewer(reviewer) {
         this.send('openModal', 'incident.reviewer.edit', reviewer);
       },
 
       // Investigating Finding Functions
 
-      addInvestigationFinding: function(newInvestigationFinding) {
+      addInvestigationFinding(newInvestigationFinding) {
         this.updateList('investigationFindings', newInvestigationFinding);
       },
 
-      showAddInvestigationFinding: function() {
-        var newInvestigationFinding = this.get('store').createRecord('inc-investigation-finding', {
+      showAddInvestigationFinding() {
+        let newInvestigationFinding = this.get('store').createRecord('inc-investigation-finding', {
           dateRecorded: new Date()
         });
         this.send('openModal', 'incident.investigation-finding.edit', newInvestigationFinding);
       },
 
-      deleteInvestigationFinding: function(investigationFinding) {
+      deleteInvestigationFinding(investigationFinding) {
         this.updateList('investigationFindings', investigationFinding, true);
       },
 
-      showDeleteInvestigationFinding: function(investigationFinding) {
+      showDeleteInvestigationFinding(investigationFinding) {
         this.send('openModal', 'incident.investigation-finding.delete', investigationFinding);
       },
 
-      showEditInvestigationFinding: function(investigationFinding) {
+      showEditInvestigationFinding(investigationFinding) {
         this.send('openModal', 'incident.investigation-finding.edit', investigationFinding);
       },
 
       // Recommendation Functions
 
-      addRecommendation: function(newRecommendation) {
+      addRecommendation(newRecommendation) {
         this.set('model.statusOfIncident', 'Follow-up');
         this.updateList('recommendations', newRecommendation);
       },
 
-      showAddRecommendation: function() {
-        var newRecommendation = this.get('store').createRecord('inc-recommendation', {
+      showAddRecommendation() {
+        let newRecommendation = this.get('store').createRecord('inc-recommendation', {
           dateRecorded: new Date()
         });
         this.send('openModal', 'incident.recommendation.edit', newRecommendation);
       },
 
-      deleteRecommendation: function(recommendation) {
+      deleteRecommendation(recommendation) {
         this.updateList('recommendations', recommendation, true);
       },
 
-      showDeleteRecommendation: function(recommendation) {
+      showDeleteRecommendation(recommendation) {
         this.send('openModal', 'incident.recommendation.delete', recommendation);
       },
 
-      showEditRecommendation: function(recommendation) {
+      showEditRecommendation(recommendation) {
         this.send('openModal', 'incident.recommendation.edit', recommendation);
       },
 
-      generateSummary: function() {
+      generateSummary() {
         this.set('model.statusOfIncident', 'Closed');
         this.set('showSummary', true);
       }

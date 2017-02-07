@@ -20,14 +20,14 @@ export default AbstractEditController.extend({
 
   updateCapability: 'add_vitals',
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     if (this.get('model.isNew')) {
       this.set('newVitals', true);
     }
     return Ember.RSVP.Promise.resolve();
   },
 
-  afterUpdate: function(vitals) {
+  afterUpdate(vitals) {
     if (this.get('newVitals')) {
       this.get('editController').send('addVitals', vitals);
     } else {

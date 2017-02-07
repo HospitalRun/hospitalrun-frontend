@@ -6,7 +6,7 @@ export default AbstractIndexRoute.extend(UserSession, {
   modelName: 'pricing',
   pageTitle: 'All Pricing Items',
 
-  _getStartKeyFromItem: function(item) {
+  _getStartKeyFromItem(item) {
     let category = item.get('category');
     let id = this._getPouchIdFromItem(item);
     let name = item.get('name');
@@ -14,7 +14,7 @@ export default AbstractIndexRoute.extend(UserSession, {
     return [category, name, pricingType, id];
   },
 
-  _modelQueryParams: function() {
+  _modelQueryParams() {
     let category = this.get('category');
     let maxId = this._getMaxPouchId();
     let queryParams = {
@@ -30,7 +30,7 @@ export default AbstractIndexRoute.extend(UserSession, {
   },
 
   actions: {
-    newItem: function() {
+    newItem() {
       if (this.currentUserCan('add_pricing')) {
         let routeId = 'new';
         let routeParts = this.routeName.split('.');

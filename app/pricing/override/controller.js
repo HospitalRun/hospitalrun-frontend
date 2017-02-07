@@ -6,12 +6,12 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
   pricingController: Ember.inject.controller('pricing'),
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.get('model').rollbackAttributes();
       this.send('closeModal');
     },
 
-    update: function() {
+    update() {
       let isNew = this.get('model.isNew');
       let override = this.get('model');
       override.save().then(function() {

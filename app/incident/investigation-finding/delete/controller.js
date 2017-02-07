@@ -8,7 +8,7 @@ export default AbstractDeleteController.extend({
   title: t('incident.titles.deleteFinding'),
 
   actions: {
-    notifyInvestigationFindingDelete: function() {
+    notifyInvestigationFindingDelete() {
       this.get('editController').send('deleteInvestigationFinding', this.get('model'));
       this.send('closeModal');
     }

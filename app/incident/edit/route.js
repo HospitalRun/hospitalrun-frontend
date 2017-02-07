@@ -7,7 +7,7 @@ export default AbstractEditRoute.extend(UserSession, {
   editTitle: t('incident.titles.editIncident'),
   modelName: 'incident',
 
-  getNewData: function() {
+  getNewData() {
     return Ember.RSVP.resolve({
       reportedBy: this.getUserName(true)
     });

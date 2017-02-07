@@ -26,22 +26,22 @@ export default AbstractEditController.extend(SelectValues, {
   ].map(SelectValues.selectValuesMap),
 
   title: function() {
-    var i18n = this.get('i18n');
-    var isNew = this.get('model.isNew');
+    let i18n = this.get('i18n');
+    let isNew = this.get('model.isNew');
     if (isNew) {
       return i18n.t('incident.titles.addFinding');
     }
     return i18n.t('incident.titles.editFinding');
   }.property('model.isNew'),
 
-  beforeUpdate: function() {
+  beforeUpdate() {
     if (this.get('model.isNew')) {
       this.set('newInvestigationFinding', true);
     }
     return Ember.RSVP.Promise.resolve();
   },
 
-  afterUpdate: function(investigationFinding) {
+  afterUpdate(investigationFinding) {
     if (this.get('newInvestigationFinding')) {
       this.get('editController').send('addInvestigationFinding', investigationFinding);
     } else {

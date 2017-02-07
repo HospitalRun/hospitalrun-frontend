@@ -1,7 +1,8 @@
 import AbstractReportController from 'hospitalrun/controllers/abstract-report-controller';
 import Ember from 'ember';
-import UserSession from 'hospitalrun/mixins/user-session';
 import NumberFormat from 'hospitalrun/mixins/number-format';
+import UserSession from 'hospitalrun/mixins/user-session';
+import moment from 'moment';
 export default AbstractReportController.extend(UserSession, NumberFormat, {
 
   canGenerateReport: function() {
@@ -109,14 +110,14 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
   /**
    * Find Incidents by the specified dates and the incidents's date.
    */
-  _findIncidentsByDate: function() {
-    var filterEndDate = this.get('endDate'),
-        filterStartDate = this.get('startDate'),
-            findParams = {
-              options: {},
-              mapReduce: 'incident_by_date'
-            },
-            maxValue = this.get('maxValue');
+  _findIncidentsByDate() {
+    let filterEndDate = this.get('endDate');
+    let filterStartDate = this.get('startDate');
+    let findParams = {
+      options: {},
+      mapReduce: 'incident_by_date'
+    };
+    let maxValue = this.get('maxValue');
     return new Ember.RSVP.Promise(function(resolve, reject) {
       if (Ember.isEmpty(filterStartDate)) {
         reject();
@@ -131,8 +132,8 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
     }.bind(this));
   },
 
-  _generateByDepartmentOrByIncidentTypeReport: function(incidents, reportType) {
-    var reportColumns,reportProperty;
+  _generateByDepartmentOrByIncidentTypeReport(incidents, reportType) {
+    let reportColumns, reportProperty;
     if (reportType === 'department') {
       reportColumns = this.get('departmentReportColumns');
       reportProperty = 'locationOfIncident';
@@ -152,8 +153,8 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
    * @param totalLabel {String} the label for the grand total.
    * @param reportColumns
    */
-  _addRowsByType: function(records, typeField, totalLabel, reportColumns) {
-    var types = this._totalByType(records, typeField, totalLabel);
+  _addRowsByType(records, typeField, totalLabel, reportColumns) {
+    let types = this._totalByType(records, typeField, totalLabel);
     types.forEach(function(type) {
       this._addReportRow(type, true, reportColumns);
     }.bind(this));
@@ -166,17 +167,17 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
    * @param totalLabel {String} the label for the grand total.
    * @param reportColumns
    */
-  _totalByType: function(records, typeField, totalLabel) {
-    var total = 0,
-        types = [];
+  _totalByType(records, typeField, totalLabel) {
+    let total = 0;
+    let types = [];
     records.forEach(function(record) {
-      var type = record.get(typeField),
-          typeObject;
+      let type = record.get(typeField);
+      let typeObject;
       if (!Ember.isEmpty(type)) {
         typeObject = types.findBy('type', type);
         if (Ember.isEmpty(typeObject)) {
           typeObject = {
-            type: type,
+            type,
             total: 0,
             records: []
           };
@@ -188,27 +189,27 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
       }
     });
     types = types.sortBy('type');
-    types.push({ type: totalLabel,total: total });
+    types.push({ type: totalLabel, total });
     return types;
   },
 
-  _generateRiskReport: function(incidents) {
-    var reportColumns = this.get('riskScoresReportColumns'),
-    totalLabel = 'Total incidents: ' + this._numberFormat(incidents.get('length'));
+  _generateRiskReport(incidents) {
+    let reportColumns = this.get('riskScoresReportColumns');
+    let totalLabel = `Total incidents: ${this._numberFormat(incidents.get('length'))}`;
 
     incidents.forEach(function(incident) {
       this._addReportRow(incident, false, reportColumns);
     }.bind(this));
 
-    var reportRows = this.get('reportRows');
+    let reportRows = this.get('reportRows');
     reportRows.addObject([totalLabel]);
     this._finishReport(reportColumns);
   },
 
   actions: {
-    generateReport: function() {
-      var reportRows = this.get('reportRows'),
-          reportType = this.get('reportType');
+    generateReport() {
+      let reportRows = this.get('reportRows');
+      let reportType = this.get('reportType');
       reportRows.clear();
       this.showProgressModal();
       switch (reportType) {

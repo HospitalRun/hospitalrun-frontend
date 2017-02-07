@@ -7,11 +7,11 @@ export default AbstractIndexRoute.extend(ModalHelper, {
   pageTitle: 'Pricing Profiles',
 
   actions: {
-    editItem: function(item) {
+    editItem(item) {
       this.send('openModal', 'pricing.profiles.edit', item);
     },
 
-    deleteItem: function(item) {
+    deleteItem(item) {
       let message = 'Are you sure you want to delete this profile?';
       let model = Ember.Object.create({
         itemToDelete: item
@@ -20,19 +20,19 @@ export default AbstractIndexRoute.extend(ModalHelper, {
       this.displayConfirm(title, message, 'deletePricingProfile', model);
     },
 
-    deletePricingProfile: function(model) {
+    deletePricingProfile(model) {
       model.itemToDelete.set('archived', true);
       model.itemToDelete.save().then(()=> {
         model.itemToDelete.unloadRecord();
       });
     },
 
-    newItem: function() {
+    newItem() {
       let newItem = this.store.createRecord('price-profile');
       this.send('openModal', 'pricing.profiles.edit', newItem);
     },
 
-    refreshProfiles: function() {
+    refreshProfiles() {
       this.refresh();
     }
   }

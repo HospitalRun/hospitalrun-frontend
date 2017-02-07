@@ -4,27 +4,27 @@ export default AbstractEditController.extend({
   updateCapability: 'add_incident_category',
   actions: {
 
-    addItem: function(newItem) {
-      var categoryItems = this.getWithDefault('model.incidentCategoryItems', []),
-          model = this.get('model');
+    addItem(newItem) {
+      let categoryItems = this.getWithDefault('model.incidentCategoryItems', []);
+      let model = this.get('model');
       categoryItems.addObject(newItem);
       model.set('incidentCategoryItems', categoryItems);
       this.send('update', true);
       this.send('closeModal');
     },
 
-    deleteItem: function(model) {
-      var item = model.get('itemToDelete');
-      var categoryItems = this.get('model.incidentCategoryItems');
+    deleteItem(model) {
+      let item = model.get('itemToDelete');
+      let categoryItems = this.get('model.incidentCategoryItems');
       categoryItems.removeObject(item);
       this.send('update', true);
     },
 
-    showAddItem: function() {
+    showAddItem() {
       this.send('openModal', 'inc-category.add-item', {});
     },
 
-    showDeleteItem: function(item) {
+    showDeleteItem(item) {
       this.send('openModal', 'dialog', Ember.Object.create({
         confirmAction: 'deleteItem',
         title: 'Delete Item',
@@ -36,8 +36,8 @@ export default AbstractEditController.extend({
     }
   },
 
-  afterUpdate: function(record) {
-    var message = `The category record for ${record.get('incidentCategoryName')} has been saved.`;
+  afterUpdate(record) {
+    let message = `The category record for ${record.get('incidentCategoryName')} has been saved.`;
     this.displayAlert('Incident Category Saved', message);
   }
 });

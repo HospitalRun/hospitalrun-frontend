@@ -43,7 +43,7 @@ export default AbstractModel.extend({
     }
   }.property('preSeverity', 'preOccurence'),
   preRiskResults: function() {
-    var score = this.get('preRiskScore');
+    let score = this.get('preRiskScore');
     if (Ember.isBlank(score)) {
       return undefined;
     } else if (score <= 3) {
@@ -71,7 +71,7 @@ export default AbstractModel.extend({
     }
   }.property('postSeverity', 'postOccurence'),
   postRiskResults: function() {
-    var score = this.get('postRiskScore');
+    let score = this.get('postRiskScore');
     if (Ember.isBlank(score)) {
       return undefined;
     } else if (score <= 3) {
@@ -89,7 +89,7 @@ export default AbstractModel.extend({
   notificationSend: DS.attr('boolean', { defaultValue: false }),
   showSummary: DS.attr('boolean', { defaultValue: false }),
   statusOfIncident: DS.attr('string', {
-    defaultValue: function() {
+    defaultValue() {
       return 'Opened';
     }
   }),
