@@ -144,7 +144,8 @@ export default {
         socialworkFormType: 'Social Work',
         text: 'Text',
         textarea: 'Large Text',
-        visitFormType: 'Visit'
+        visitFormType: 'Visit',
+        opdReportFormType: 'Outpatient Report'
       },
       messages: {
         deleteForm: 'Are you sure you want to delete this custom form?',
