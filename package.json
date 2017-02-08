@@ -1,9 +1,10 @@
 {
-  "name": "hospitalruncli",
+  "name": "hospitalrun",
   "version": "0.9.17",
   "description": "Ember front end for HospitalRun",
   "homepage": "http://hospitalrun.io",
   "directories": {
+    "doc": "doc",
     "test": "tests"
   },
   "files": [
@@ -17,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:eHealthAfrica/hospitalrun-frontend.git"
+    "url": "git@github.com:HospitalRun/hospitalrun-frontend"
   },
   "engines": {
     "node": ">= 4"
@@ -25,8 +26,7 @@
   "author": "John Kleinschmidt",
   "contributors": [
     "Joel Worrall",
-    "Joel Glovier",
-    "eHealth Africa"
+    "Joel Glovier"
   ],
   "license": "GPL-3.0",
   "devDependencies": {
@@ -37,7 +37,7 @@
     "broccoli-manifest": "0.0.7",
     "broccoli-merge-trees": "^1.1.1",
     "broccoli-serviceworker": "0.1.4",
-    "broccoli-stylelint": "github:billybonks/broccoli-stylelint",
+    "broccoli-stylelint": "billybonks/broccoli-stylelint",
     "ember-ajax": "2.5.2",
     "ember-browserify": "^1.1.12",
     "ember-cli": "2.10.0",
@@ -69,7 +69,7 @@
     "ember-load-initializers": "^0.6.0",
     "ember-pouch": "4.2.1",
     "ember-radio-buttons": "^4.0.1",
-    "ember-rapid-forms": "github:gcorbel/ember-rapid-forms#26229804a2c430bbdf1ffb6bab8fb53af17bb3a4",
+    "ember-rapid-forms": "GCorbel/ember-rapid-forms#26229804a2c430bbdf1ffb6bab8fb53af17bb3a4",
     "ember-resolver": "^2.0.3",
     "ember-select-list": "0.9.5",
     "ember-simple-auth": "^1.1.0",
@@ -98,22 +98,5 @@
     "paths": [
       "lib/pouch-fixtures"
     ]
-  },
-  "bugs": {
-    "url": "https://github.com/HospitalRun/hospitalrun-frontend/issues"
-  },
-  "main": "index.js",
-  "dependencies": {
-    "ember": "^1.0.0-pre.2"
-  },
-  "keywords": [
-    "eHealth",
-    "Systems",
-    "Africa",
-    "HealthCare",
-    "Health",
-    "Hospital",
-    "Run",
-    "Hospital Run"
-  ]
+  }
 }
