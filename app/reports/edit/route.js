@@ -4,10 +4,15 @@ import Ember from 'ember';
 export default AbstractEditRoute.extend({
   modelName: 'report',
   database: Ember.inject.service(),
+  customForms: Ember.inject.service(),
+
   getNewData() {
-    return Ember.RSVP.resolve({
-      reportDate: new Date()
-    });
+    let newReportData = {
+      reportDate: new Date(),
+      customForms: Ember.Object.create()
+    };
+    let customForms = this.get('customForms');
+    return customForms.setDefaultCustomForms(['opdReport'], newReportData);
   },
 
   setupController(controller, model) {
