@@ -1010,7 +1010,9 @@ export default {
       parent: 'Parent/Guardian',
       contacts: 'Contacts',
       sexNotEntered: 'Sex Not Entered',
-      operativePlan: 'Operative Plan'
+      operativePlan: 'Operative Plan',
+      patientTypeCharity: 'Charity',
+      patientTypePrivate: 'Private'
     },
     notes: {
       newNote: 'New Note for',

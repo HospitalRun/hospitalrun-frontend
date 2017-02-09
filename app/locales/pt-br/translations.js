@@ -708,7 +708,8 @@ export default {
       addDiagnosis: 'Adicionar Diagnóstico',
       newImaging: 'Nova Imagem',
       newMedication: 'Nova Medicação',
-      newVitals: 'Novos Sinais Vitais'
+      newVitals: 'Novos Sinais Vitais',
+      checkIn: 'Entrada'
     },
     labels: {
       diagnosis: 'Diagnósticos',
@@ -842,7 +843,9 @@ export default {
       referredBy: 'Indicado Por',
       referredDate: 'Data de Indicação',
       religion: 'Religião',
-      parent: 'Responsável Legal'
+      parent: 'Responsável Legal',
+      patientTypeCharity: 'Caridade',
+      patientTypePrivate: 'Privado'
     },
     notes: {
       newNote: 'Nova Nota para',
