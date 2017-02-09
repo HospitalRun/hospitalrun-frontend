@@ -844,8 +844,8 @@ export default {
       referredDate: 'Data de Indicação',
       religion: 'Religião',
       parent: 'Responsável Legal',
-      patientTypeCharity : 'Caridade',
-      patientTypePrivate : 'Privado'
+      patientTypeCharity: 'Caridade',
+      patientTypePrivate: 'Privado'
     },
     notes: {
       newNote: 'Nova Nota para',

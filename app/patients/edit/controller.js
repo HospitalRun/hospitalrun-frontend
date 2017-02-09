@@ -82,15 +82,15 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
   }.property(),
 
   patientTypes: Ember.computed(function() {
-  let i18n = get(this, 'i18n');
-  let types = [
-    'Charity',
-    'Private'
-  ];
-  return types.map((type) => {
-    return i18n.t(`patients.labels.patientType${type}`);
-  });
-}),
+    let i18n = get(this, 'i18n');
+    let types = [
+      'Charity',
+      'Private'
+    ];
+    return types.map((type) => {
+      return i18n.t(`patients.labels.patientType${type}`);
+    });
+  }),
 
   config: Ember.inject.service(),
   filesystem: Ember.inject.service(),
