@@ -5,6 +5,7 @@ export default AbstractModel.extend({
   // Attributes
   description: DS.attr('string'),
   reportDate: DS.attr('date'),
+  customForms: DS.attr('custom-forms'),
 
   // Associations
   visit: DS.belongsTo('visit', { async: false }),
