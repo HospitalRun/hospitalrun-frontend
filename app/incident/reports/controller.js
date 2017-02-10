@@ -35,75 +35,12 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
       format: '_numberFormat'
     }
   },
-  riskScoresReportColumns: {
-    reportedDate: {
-      label: 'Reported Date',
-      include: true,
-      property: 'reportedDate',
-      format: '_dateFormat'
-    },
-    id: {
-      label: 'Id',
-      include: true,
-      property: 'friendlyId'
-    },
-    dateOfIncident: {
-      label: 'Date of Incident',
-      include: true,
-      property: 'dateOfIncident',
-      format: '_dateFormat'
-    },
-    department: {
-      label: 'Department',
-      include: true,
-      property: 'locationOfIncident'
-    },
-    HarmScore: {
-      label: 'Harm Score',
-      include: true,
-      property: 'harmScore'
-    },
-    preSeverity: {
-      label: 'Pre Incident Severity',
-      include: true,
-      property: 'preSeverity'
-    },
-    preOccurence: {
-      label: 'Pre Incident Occurence',
-      include: true,
-      property: 'preOccurence'
-    },
-    preRiskScore: {
-      label: 'Pre Incident RiskScore',
-      include: true,
-      property: 'preRiskScore'
-    },
-    postSeverity: {
-      label: 'Post Incident Severity',
-      include: true,
-      property: 'postSeverity'
-    },
-    postOccurence: {
-      label: 'Post Incident Occurence',
-      include: true,
-      property: 'postOccurence'
-    },
-    postRiskScore: {
-      label: 'Post Incident RiskScore',
-      include: true,
-      property: 'postRiskScore'
-    }
-
-  },
   reportTypes: [{
     name: 'Incidents by Department',
     value: 'department'
   }, {
     name: 'Incidents by Type of Incident',
     value: 'incidentType'
-  }, {
-    name: 'Incident Harm and Risk Scores',
-    value: 'riskScores'
   }],
 
   reportType: 'department',
@@ -136,7 +73,7 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
     let reportColumns, reportProperty;
     if (reportType === 'department') {
       reportColumns = this.get('departmentReportColumns');
-      reportProperty = 'locationOfIncident';
+      reportProperty = 'department';
 
     }    else {
       reportColumns = this.get('incidentTypeReportColumns');
@@ -193,19 +130,6 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
     return types;
   },
 
-  _generateRiskReport(incidents) {
-    let reportColumns = this.get('riskScoresReportColumns');
-    let totalLabel = `Total incidents: ${this._numberFormat(incidents.get('length'))}`;
-
-    incidents.forEach(function(incident) {
-      this._addReportRow(incident, false, reportColumns);
-    }.bind(this));
-
-    let reportRows = this.get('reportRows');
-    reportRows.addObject([totalLabel]);
-    this._finishReport(reportColumns);
-  },
-
   actions: {
     generateReport() {
       let reportRows = this.get('reportRows');
@@ -214,20 +138,9 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
       this.showProgressModal();
       switch (reportType) {
         case 'department':
-        case 'incidentType':
-        case 'riskScores': {
+        case 'incidentType': {
           this._findIncidentsByDate().then((incidents) => {
-            switch (reportType) {
-              case 'incidentType':
-              case 'department': {
-                this._generateByDepartmentOrByIncidentTypeReport(incidents, reportType);
-                break;
-              }
-              case 'riskScores': {
-                this._generateRiskReport(incidents);
-                break;
-              }
-            }
+            this._generateByDepartmentOrByIncidentTypeReport(incidents, reportType);
           }).catch((ex) => {
             console.log('Error:', ex);
             this.closeProgressModal();

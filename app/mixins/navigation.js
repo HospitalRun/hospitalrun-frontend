@@ -275,12 +275,6 @@ export default Ember.Mixin.create({
           capability: 'add_incident'
         },
         {
-          title: 'My Incidents',
-          iconClass: 'octicon-chevron-right',
-          route: 'incident.listing',
-          capability: 'add_incident'
-        },
-        {
           title: 'New Incident',
           iconClass: 'octicon-plus',
           route: 'incident.edit',

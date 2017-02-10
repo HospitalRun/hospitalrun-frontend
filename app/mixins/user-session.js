@@ -5,7 +5,6 @@ export default Ember.Mixin.create({
     admin: [
       'User Administrator',
       'System Administrator',
-      'Incident System Administrator',
       'Quality'
     ],
     add_allergy: [
@@ -177,8 +176,7 @@ export default Ember.Mixin.create({
     ],
     add_user: [
       'User Administrator',
-      'System Administrator',
-      'Incident System Administrator'
+      'System Administrator'
     ],
     add_visit: [
       'Data Entry',
@@ -338,8 +336,7 @@ export default Ember.Mixin.create({
     ],
     delete_user: [
       'User Administrator',
-      'System Administrator',
-      'Incident System Administrator'
+      'System Administrator'
     ],
     discharge_patient: [
       'Data Entry',
@@ -417,8 +414,7 @@ export default Ember.Mixin.create({
       'System Administrator'
     ],
     query_db: [
-      'System Administrator',
-      'Incident System Administrator'
+      'System Administrator'
     ],
     patients: [
       'Data Entry',
@@ -464,104 +460,33 @@ export default Ember.Mixin.create({
       'Hospital Staff',
       'User Administrator',
       'Quality',
-      'System Administrator',
-      'Incident System Administrator'
+      'System Administrator'
     ],
     add_incident: [
       'Hospital Staff',
       'User Administrator',
       'Quality',
-      'System Administrator',
-      'Incident System Administrator'
+      'System Administrator'
     ],
     delete_incident: [
       'Quality',
-      'System Administrator',
-      'Incident System Administrator'
+      'System Administrator'
     ],
     generate_incident_report: [
       'User Administrator',
       'Quality',
-      'System Administrator',
-      'Incident System Administrator'
+      'System Administrator'
     ],
     add_incident_category: [
       'User Administrator',
       'Quality',
-      'System Administrator',
-      'Incident System Administrator'
+      'System Administrator'
     ],
     delete_incident_category: [
       'Quality',
-      'System Administrator',
-      'Incident System Administrator'
+      'System Administrator'
     ],
-    add_feedback: [
-      'Quality',
-      'System Administrator',
-      'Incident System Administrator'
-    ],
-    delete_feedback: [
-      'Quality',
-      'System Administrator',
-      'Incident System Administrator'
-    ],
-    add_reviewer: [
-      'Quality',
-      'System Administrator',
-      'Incident System Administrator'
-    ],
-    delete_reviewer: [
-      'Quality',
-      'System Administrator',
-      'Incident System Administrator'
-    ],
-    add_investigation_finding: [
-      'Quality',
-      'System Administrator',
-      'Incident System Administrator'
-    ],
-    delete_investigation_finding: [
-      'Quality',
-      'System Administrator',
-      'Incident System Administrator'
-    ],
-    add_contributing_factor: [
-      'Quality',
-      'System Administrator',
-      'Incident System Administrator'
-    ],
-    delete_contributing_factor: [
-      'Quality',
-      'System Administrator',
-      'Incident System Administrator'
-    ],
-    add_recommendation: [
-      'Quality',
-      'System Administrator',
-      'Incident System Administrator'
-    ],
-    delete_recommendation: [
-      'Quality',
-      'System Administrator',
-      'Incident System Administrator'
-    ],
-    add_risk: [
-      'Quality',
-      'System Administrator',
-      'Incident System Administrator'
-    ],
-    delete_risk: [
-      'Quality',
-      'System Administrator',
-      'Incident System Administrator'
-    ],
-    add_summary: [
-      'Quality',
-      'System Administrator',
-      'Incident System Administrator'
-    ],
-    edit_others_incident: [
+    manage_incidents: [
       'Quality',
       'System Administrator'
     ],
@@ -571,9 +496,7 @@ export default Ember.Mixin.create({
     users: [
       'User Administrator',
       'System Administrator',
-      'Quality',
-      'Incident System Administrator'
-
+      'Quality'
     ],
     add_note: [
       'Doctor',

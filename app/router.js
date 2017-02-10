@@ -62,8 +62,6 @@ Router.map(function() {
     this.route('completed');
     this.route('edit', { path: '/edit/:incident_id' });
     this.route('reports');
-    this.route('search', { path: '/search/:search_text' });
-    this.route('listing');
   });
 
   this.route('invoices', function() {

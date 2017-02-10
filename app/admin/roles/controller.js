@@ -101,24 +101,11 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     name: 'incident',
     capabilities: [
       'incident',
-      'addContributingFactor',
-      'addFeedback',
       'addIncident',
       'addIncidentCategory',
-      'addInvestigationFinding',
-      'addRecommendation',
-      'addReviewer',
-      'addRisk',
-      'addSummary',
-      'deleteContributingFactor',
-      'deleteFeedback',
       'deleteIncident',
       'deleteIncidentCategory',
-      'deleteInvestigationFinding',
-      'deleteRecommendation',
-      'deleteReviewer',
-      'deleteRisk',
-      'editOthersIncident',
+      'manageIncidents',
       'generateIncidentReport'
     ]
   }, {
