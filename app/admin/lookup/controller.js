@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import BillingCategories from 'hospitalrun/mixins/billing-categories';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
-import IncidentLocationsList from 'hospitalrun/mixins/incident-locations-list';
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import UnitTypes from 'hospitalrun/mixins/unit-types';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
@@ -12,7 +11,7 @@ const {
 } = Ember;
 
 export default Ember.Controller.extend(BillingCategories, EKMixin,
-  IncidentLocationsList, InventoryTypeList, ModalHelper, UnitTypes, VisitTypes, {
+  InventoryTypeList, ModalHelper, UnitTypes, VisitTypes, {
     fileSystem: Ember.inject.service('filesystem'),
 
     canEditValues: computed('model.lookupType', function() {
@@ -96,11 +95,10 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
           ]
         }
       }, {
-        defaultValues: 'defaultIncidentLocations',
-        name: this.get('i18n').t('admin.lookup.incidentLocations'),
-        value: 'incident_locations',
+        name: this.get('i18n').t('admin.lookup.incidentDepartments'),
+        value: 'incident_departments',
         models: {
-          incident: 'locationOfIncident'
+          incident: 'department'
         }
       }, {
         defaultValues: 'defaultInventoryTypes',

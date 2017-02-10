@@ -17,7 +17,7 @@ export default IncidentIndexRoute.extend(UserSession, {
     let queryParams = {
       mapReduce: 'closed_incidents_by_user'
     };
-    if (!this.currentUserCan('edit_others_incident')) {
+    if (!this.currentUserCan('manage_incidents')) {
       queryParams.options = {
         startkey: [currentUser, null],
         endkey: [currentUser, maxId]

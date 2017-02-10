@@ -2,24 +2,71 @@
   {{#if hasRecords}}
     <table class="table">
       <tr class="table-header">
-        <th>{{t 'incident.labels.incidentId'}}</th>
-        <th>{{t 'incident.labels.reportedBy'}}</th>
-        <th>{{t 'incident.labels.incidentLocation'}}</th>
-        <th>{{t 'incident.labels.incidentDate'}}</th>
-        <th>{{t 'incident.labels.incidentCategory'}}</th>
-        <th>{{t 'incident.labels.incidentItem'}}</th>
+        {{#sortable-column
+          sortBy='dateOfIncident'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+          filterBy='dateForFilter'
+          filteredBy=filteredBy
+          filterType='date'
+        }}
+          {{t 'incident.labels.incidentDate'}}
+        {{/sortable-column}}
+        {{#sortable-column
+          sortBy='department'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+          filterBy='department'
+          filteredBy=filteredBy
+          filterType='list'
+          filterValues=departmentNames
+        }}
+          {{t 'incident.labels.department'}}
+        {{/sortable-column}}
+        {{#sortable-column
+          sortBy='categoryName'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+          filterBy='categoryName'
+          filteredBy=filteredBy
+          filterType='list'
+          filterValues=categoryNames
+        }}
+          {{t 'incident.labels.category'}}
+        {{/sortable-column}}
+        {{#sortable-column
+          sortBy='categoryItem'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+          filterBy='categoryItem'
+          filteredBy=filteredBy
+          filterType='list'
+          filterValues=categoryItems
+        }}
+          {{t 'incident.labels.categoryItem'}}
+        {{/sortable-column}}
+        {{#sortable-column
+          sortBy='localizedStatus'
+          sortDesc=sortByDesc
+          sortKey=sortByKey
+          filterBy='localizedStatus'
+          filteredBy=filteredBy
+          filterType='list'
+          filterValues=statusList
+        }}
+          {{t 'incident.labels.status'}}
+        {{/sortable-column}}
         {{#if showActions}}
             <th>{{t 'incident.labels.actions'}}</th>
         {{/if}}
       </tr>
-      {{#each model as |incident|}}
+      {{#each sortedIncidents as |incident|}}
         <tr {{action 'editItem' incident}}>
-          <td>{{incident.friendlyId}}</td>
-          <td>{{incident.reportedBy}}</td>
-          <td>{{incident.locationOfIncident}}</td>
           <td>{{date-format incident.dateOfIncident}}</td>
+          <td>{{incident.department}}</td>
           <td>{{incident.categoryName}}</td>
           <td>{{incident.categoryItem}}</td>
+          <td>{{incident.localizedStatus}}</td>
           {{#if showActions}}
             <td>
               {{#if canAdd}}

@@ -1,118 +1,77 @@
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import Ember from 'ember';
-export default AbstractModel.extend({
-  friendlyId: DS.attr('string'),
-  reportedBy: DS.attr('string'),
-  reportedTo: DS.attr('string'),
-  reportedDate: DS.attr('date'),
-  locationOfIncident: DS.attr('string'),
-  dateOfIncident: DS.attr('date'),
-  witnessList: DS.attr('string'),
-  incidentDescription: DS.attr('string'),
+import IncidentStatuses, { REPORTED } from 'hospitalrun/mixins/incident-statuses';
+import moment from 'moment';
+import { validator } from 'ember-validations';
 
-  categoryName: DS.attr('string'),
-  categoryItem: DS.attr('string'),
-  categoryOther: DS.attr('string'),
+const { attr, belongsTo, hasMany } = DS;
 
-  reviewers: DS.hasMany('inc-reviewer', { async: true }),
-  feedbacks: DS.hasMany('inc-feedback', { async: true }),
-  investigationFindings: DS.hasMany('inc-investigation-finding', { async: true }),
+const { computed, get, isEmpty } = Ember;
 
-  patientContributingFactors: DS.hasMany('inc-contributing-factor', { async: true }),
-  staffContributingFactors: DS.hasMany('inc-contributing-factor', { async: true }),
-  taskContributingFactors: DS.hasMany('inc-contributing-factor', { async: true }),
-  communicationContributingFactors: DS.hasMany('inc-contributing-factor', { async: true }),
-  equipmentContributingFactors: DS.hasMany('inc-contributing-factor', { async: true }),
-  wrkEnvironmentContributingFactors: DS.hasMany('inc-contributing-factor', { async: true }),
-  organizationalContributingFactors: DS.hasMany('inc-contributing-factor', { async: true }),
-  eduTrainingContributingFactors: DS.hasMany('inc-contributing-factor', { async: true }),
-  teamContributingFactors: DS.hasMany('inc-contributing-factor', { async: true }),
-  rcaSummary: DS.attr('string'),
+export default AbstractModel.extend(IncidentStatuses, {
+  categoryItem: attr('string'),
+  categoryName: attr('string'),
+  dateOfIncident: attr('date'),
+  department: attr('string'),
+  description: attr('string'),
+  friendlyId: attr('string'),
+  modifiedByDisplayName: DS.attr('string'),
+  notificationSend: attr('boolean', { defaultValue: false }),
+  reportedBy: attr('string'),
+  reportedByDisplayName: attr('string'),
+  reportedDate: attr('date'),
+  reportedTo: attr('string'),
+  sentinelEvent: attr('boolean'),
+  status: attr('string', { defaultValue: REPORTED }),
 
-  harmScore: DS.attr('string'),
-  harmDuration: DS.attr('string'),
+  notes: hasMany('incident-note', { async: true }),
+  patientImpacted: belongsTo('patient', { async: true }),
 
-  preSeverity: DS.attr('number'),
-  preOccurence: DS.attr('number'),
-  preRiskScore: function() {
-    if (Ember.isBlank(this.get('preSeverity')) || Ember.isBlank(this.get('preOccurence'))) {
-      return undefined;
-    } else {
-      return this.get('preSeverity') * this.get('preOccurence');
-    }
-  }.property('preSeverity', 'preOccurence'),
-  preRiskResults: function() {
-    let score = this.get('preRiskScore');
-    if (Ember.isBlank(score)) {
-      return undefined;
-    } else if (score <= 3) {
-      return 'Low Risk: manage with routine procedures';
-    } else if (score <= 8) {
-      return 'Moderate Risk: management responsibility must be specified';
-    } else if (score <= 12) {
-      return 'High Risk: senior management needed';
-    } else {
-      return 'Extreme Risk: immediate action required';
-    }
-  }.property('preRiskScore'),
+  dateForFilter: computed('dateOfIncident', function() {
+    let dateOfIncident = get(this, 'dateOfIncident');
+    return moment(dateOfIncident).startOf('day').toDate();
+  }),
 
-  recommendations: DS.hasMany('inc-recommendation',  { async: true }),
-  lessonsLearned: DS.attr('string'),
-  actionsTaken: DS.attr('string'),
-
-  postSeverity: DS.attr('number'),
-  postOccurence: DS.attr('number'),
-  postRiskScore: function() {
-    if (Ember.isBlank(this.get('postSeverity')) || Ember.isBlank(this.get('postOccurence'))) {
-      return undefined;
-    } else {
-      return this.get('postSeverity') * this.get('postOccurence');
-    }
-  }.property('postSeverity', 'postOccurence'),
-  postRiskResults: function() {
-    let score = this.get('postRiskScore');
-    if (Ember.isBlank(score)) {
-      return undefined;
-    } else if (score <= 3) {
-      return 'Low Risk: manage with routine procedures';
-    } else if (score <= 8) {
-      return 'Moderate Risk: management responsibility must be specified';
-    } else if (score <= 12) {
-      return 'High Risk: senior management needed';
-    } else {
-      return 'Extreme Risk: immediate action required';
-    }
-  }.property('postRiskScore'),
-
-  incidentOpen: DS.attr('boolean', { defaultValue: true }),
-  notificationSend: DS.attr('boolean', { defaultValue: false }),
-  showSummary: DS.attr('boolean', { defaultValue: false }),
-  statusOfIncident: DS.attr('string', {
-    defaultValue() {
-      return 'Opened';
-    }
+  localizedStatus: computed('status', function() {
+    let status = get(this, 'status');
+    return this.getLocalizedStatus(status);
   }),
 
   validations: {
-
-    locationOfIncident: {
+    categoryName: {
       presence: true
     },
     dateOfIncident: {
       presence: true
     },
-    reportedTo: {
+    department: {
       presence: true
     },
-    incidentDescription: {
+    description: {
       presence: true
     },
-    categoryName: {
-      presence: true
-    },
-    categoryItem: {
-      presence: true
+    patientTypeAhead: {
+      inline: validator(function() {
+        let patientTypeAhead = get(this, 'patientTypeAhead');
+        let isValid = true;
+        if (isEmpty(patientTypeAhead)) {
+          return;
+        }
+        let patientName = get(this, 'patient.displayName');
+        if (isEmpty(patientName)) {
+          isValid = false;
+        } else {
+          let typeAheadName = patientTypeAhead.substr(0, patientName.length).toLowerCase();
+          if (patientName.toLowerCase().indexOf(typeAheadName) !== 0) {
+            isValid = false;
+          }
+        }
+        if (!isValid) {
+          let i18n = get(this, 'i18n');
+          return i18n.t('incident.messages.selectExistingPatient').toString();
+        }
+      })
     }
   }
 });

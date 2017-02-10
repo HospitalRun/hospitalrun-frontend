@@ -3,6 +3,7 @@ import UserSession from 'hospitalrun/mixins/user-session';
 import { translationMacro as t } from 'ember-i18n';
 export default AbstractIndexRoute.extend(UserSession, {
   editReturn: 'incident.index',
+  itemsPerPage: null, // Fetch all incidents as one page
   modelName: 'incident',
   pageTitle: t('incident.titles.incidents'),
 
@@ -17,7 +18,7 @@ export default AbstractIndexRoute.extend(UserSession, {
     let queryParams = {
       mapReduce: 'open_incidents_by_user'
     };
-    if (!this.currentUserCan('edit_others_incident')) {
+    if (!this.currentUserCan('manage_incidents')) {
       queryParams.options = {
         startkey: [currentUser, null],
         endkey: [currentUser, maxId]
