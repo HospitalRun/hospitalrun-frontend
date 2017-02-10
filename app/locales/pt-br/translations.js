@@ -1,5 +1,4 @@
 export default {
-
   dashboard: {
     title: 'O que você gostaria de fazer?'
   },
@@ -25,12 +24,24 @@ export default {
     otherThan: 'deve ser diferente de {{count}}',
     odd: 'deve ser ímpar',
     even: 'deve ser até',
-    invalidNumber: 'número não é valido'
+    invalidNumber: 'número não é valido',
+    result: 'Informe um resultado antes de concluir'
+  },
+  dates: {
+    long: '{{years}} ano {{months}} meses {{days}} dias',
+    longPlural: '{{years}} anos {{months}} meses {{days}} dias',
+    longOmitYears: '{{months}} meses {{days}} dias',
+    longOmitDays: '{{years}} ano {{months}} meses',
+    longOmitDaysPlural: '{{years}} anos {{months}} meses',
+    longOmitDaysYears: '{{months}} meses',
+    shortOmitYears: '{{months}}m {{days}}d',
+    short: '{{years}}y {{months}}m {{days}}d'
   },
   navigation: {
     imaging: 'Imagem',
     inventory: 'Inventário',
     patients: 'Pacientes',
+    scheduling: 'Agenda',
     appointments: 'Compromisso',
     medication: 'Medicação',
     labs: 'Laboratórios',
@@ -46,6 +57,9 @@ export default {
       reports: 'Relatórios',
       patientListing: 'Lista de Pacientes',
       newPatient: 'Novo Paciente',
+      appointmentsThisWeek: 'Compromissos dessa Semana',
+      "today'sAppointments": 'Compromissos de Hoje',
+      appointmentSearch: 'Pesquisar compromissos',
       thisWeek: 'Essa Semana',
       today: 'Hoje',
       search: 'Pesquisa',
@@ -62,9 +76,15 @@ export default {
       users: 'Usuários',
       newUser: 'Novo Usuário',
       admittedPatients: 'Pacientes Admitidos',
+      missedAppointments: 'Compromissos Esquecidos',
       missed: 'Perdidos',
       userRoles: 'Perfis de Usuário',
-      workflow: 'Workflow'
+      workflow: 'Workflow',
+      outpatient: 'Ambulatório',
+      customForms: 'Formulários customisados',
+      appointmentsCalendar: 'Compromissos',
+      theaterSchedule: 'Agenda de Cirurgias',
+      scheduleSurgery: 'Agendar Cirurgia'
     },
     actions: {
       logout: 'Sair',
@@ -384,11 +404,13 @@ export default {
     addVisit: 'Adicionar Visita',
     search: 'Pesquisa',
     edit: 'Editar',
-    addLineItem: 'Adicionar Item de Linha'
+    addLineItem: 'Adicionar Item de Linha',
+    clear: 'Limpar',
+    filter: 'Filtrar'
   },
   login: {
     messages: {
-      signIn: 'inscreva-se',
+      signIn: 'Entrar',
       error: 'Nome de usuário ou senha está incorreta.'
     },
     labels: {
@@ -668,15 +690,24 @@ export default {
     missed: 'Compromissos Esquecidos',
     searchTitle: 'Pesquisar Compromissos',
     todayTitle: 'Compromissos de Hoje',
+    calendarTitle: 'Compromissos',
     messages: {
       deleteAppointmentMessage: 'Você tem certeza que deseja excluir esse compromisso?',
       endTimeLaterThanStart: 'Por favor, selecione um horário de término mais tarde do que a hora de início.'
     },
     buttons: {
-      newButton: '+ novo compromisso'
+      newButton: '+ novo compromisso',
+      scheduleSurgery: '+ nova cirurgia'
     },
     labels: {
+      noLocation: 'Sem Localização',
       selectedStartingDate: 'Mostrar Compromisso em ou após'
+    },
+    titles: {
+      appointmentSaved: 'Compromisso Salvo',
+      editSurgicalAppointment: 'Editar cirurgia',
+      newSurgicalAppointment: 'Nova cirurgia',
+      theaterSchedule: 'Cirurgias'
     }
   },
   vitals: {
@@ -934,6 +965,12 @@ export default {
     chargesByTypeTab: {
       charges: 'cobranças'
     },
+    dateTimePicker: {
+      amHour: '{{hour}} AM',
+      midnight: 'Meia-noite',
+      noon: 'Meio-dia',
+      pmHour: '{{hour}} PM'
+    },
     takePhoto: {
       how: 'Como você quer adicionar um Foto?',
       takePhoto: 'Tirar um Foto',
@@ -952,6 +989,96 @@ export default {
     },
     priceList: {
       charges: 'cobranças de {{pricingType}}'
+    }
+  },
+  customForms: {
+    buttons: {
+      addForm: 'Adicionar formulário'
+    },
+    labels: {
+      formToAdd: 'Formulário para adicionar'
+    },
+    titles: {
+      addCustomForm: 'Adicionar formulário customisado'
+    }
+  },
+  diagnosis: {
+    labels: {
+      activeDiagnosis: 'Diagnóstico ativo',
+      date: 'Data',
+      diagnosis: 'Diagnóstico',
+      secondaryDiagnosis: 'Diagnóstico secundário'
+    },
+    titles: {
+      addDiagnosis: 'Adicionar diagnóstico',
+      editDiagnosis: 'Editar diagnóstico'
+    }
+  },
+  allergies: {
+    buttons: {
+      addAllergy: 'Adicionar alergia'
+    },
+    titles: {
+      addAllergy: 'Adicionar alergia',
+      editAllergy: 'Editar alergia'
+    },
+    labels: {
+      allergyName: 'Nome',
+      patientAllergy: 'Alergias do paciente'
+    }
+  },
+  operativePlan: {
+    buttons: {
+      completePlan: 'Plano completo'
+    },
+    labels: {
+      additionalNotes: 'Notas adicionais',
+      admissionInstructions: 'Instruções após admissaão',
+      caseComplexity: 'Complexidade do caso',
+      completedStatus: 'Completo',
+      droppedStatus: 'Desistiu',
+      operationDescription: 'Descriçaão da operação',
+      plannedStatus: 'Planejado',
+      status: 'Estado',
+      surgeon: 'Cirurgião'
+    },
+    messages: {
+      planSaved: 'O plano de operação foi salvo.',
+      planCompleted: 'O plano de operação foi concluído. Agora você será direcionado para o relatório de operação.'
+    },
+    titles: {
+      editTitle: 'Editar plano de operação',
+      newTitle: 'Novo plano de operação',
+      planCompleted: 'Plano completo',
+      planSaved: 'Plano salvo'
+    }
+  },
+  operationReport: {
+    labels: {
+      additionalNotes: 'Notas adicionais',
+      assistant: 'Assistente',
+      caseComplexity: 'Complexidade do caso',
+      operationDescription: 'Descriçaão da operaçaão',
+      preOpPrimaryDiagnosis: 'Pre-op diagnóstico primário',
+      preOpSecondaryDiagnosis: 'Pre-op diagnóstico secundário',
+      surgeon: 'Cirurgião',
+      surgeryDate: 'Data da cirurgia'
+    },
+    messages: {
+      reportSaved: 'O relatório da operação foi salvo.'
+    },
+    titles: {
+      editTitle: 'Editar relatório de operação',
+      newTitle: 'Novo relatório da operação',
+      reportSaved: 'Relatório salvo'
+    }
+  },
+  application: {
+    messages: {
+      sessionExpired: 'Sua sessaão expirou. Faça login para continuar.'
+    },
+    titles: {
+      sessionExpired: 'Sessaão expirada'
     }
   }
 };
