@@ -4,7 +4,6 @@ const uploadAFile = 'Upload a File';
 import Ember from 'ember';
 // Derived from https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos and
 // https://github.com/samdutton/simpl/blob/master/getusermedia/sources/js/main.js
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 export default Ember.Component.extend({
   canvas: null,
   video: null,
@@ -56,7 +55,7 @@ export default Ember.Component.extend({
     let videoSources = [];
     for (let i = 0; i !== sourceInfos.length; ++i) {
       let sourceInfo = sourceInfos[i];
-      if (sourceInfo.kind === 'video') {
+      if (sourceInfo.kind === 'videoinput') {
         cameraLabel = `Camera '${++cameraCount}`;
         if (sourceInfo.label) {
           cameraLabel += ` (${sourceInfo.label})`;
@@ -108,14 +107,16 @@ export default Ember.Component.extend({
           photo,
           video
         });
-        if (typeof MediaStreamTrack === 'undefined' || MediaStreamTrack.getSources === 'undefined') {
-          if (navigator.getUserMedia) {
-            navigator.getUserMedia({ audio: false, video: true }, this._gotStream.bind(this), this._errorCallback);
+        if (navigator.mediaDevices) {
+          if (!navigator.mediaDevices.enumerateDevices) {
+            if (navigator.mediaDevices.getUserMedia) {
+              navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then(this._gotStream.bind(this));
+              this._setupCanPlayListener(video);
+            }
+          } else {
+            navigator.mediaDevices.enumerateDevices().then(this._gotSources.bind(this));
             this._setupCanPlayListener(video);
           }
-        } else {
-          MediaStreamTrack.getSources(this._gotSources.bind(this));
-          this._setupCanPlayListener(video);
         }
         this.set('setupCamera', true);
       }
