@@ -39,7 +39,7 @@
     "broccoli-serviceworker": "0.1.4",
     "ember-ajax": "2.5.4",
     "ember-browserify": "^1.1.12",
-    "ember-cli": "2.10.0",
+    "ember-cli": "2.11.1",
     "ember-cli-active-link-wrapper": "0.3.2",
     "ember-cli-app-version": "^2.0.0",
     "ember-cli-babel": "^5.1.7",
