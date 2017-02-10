@@ -2,6 +2,9 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 import Ember from 'ember';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
+
+const { isEmpty } = Ember;
+
 export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRouteMixin, {
   database: Ember.inject.service(),
   filterParams: null,
@@ -17,9 +20,9 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
   _getFilterParams(params) {
     let filterByList = [];
     let filterParams = this.get('filterParams');
-    if (!Ember.isEmpty(filterParams)) {
+    if (!isEmpty(filterParams)) {
       filterParams.forEach(function(paramName) {
-        if (!Ember.isEmpty(params[paramName])) {
+        if (!isEmpty(params[paramName])) {
           filterByList.push({
             name: paramName,
             value: params[paramName]
@@ -56,31 +59,35 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
       let modelName = this.get('modelName');
       let itemsPerPage = this.get('itemsPerPage');
       let queryParams = this._modelQueryParams(params);
-      if (!Ember.isEmpty(params.sortKey)) {
+      if (!isEmpty(params.sortKey)) {
         queryParams.sortKey = params.sortKey;
-        if (!Ember.isEmpty(params.sortDesc)) {
+        if (!isEmpty(params.sortDesc)) {
           queryParams.sortDesc = params.sortDesc;
         }
       }
-      if (!Ember.isEmpty(filterParams)) {
+      if (!isEmpty(filterParams)) {
         queryParams.filterBy = filterParams;
       }
-      if (Ember.isEmpty(queryParams.options)) {
+      if (isEmpty(queryParams.options)) {
         queryParams.options = {};
       }
-      queryParams.options.limit = itemsPerPage + 1;
-      if (!Ember.isEmpty(params.startKey)) {
+      if (!isEmpty(itemsPerPage)) {
+        queryParams.options.limit = itemsPerPage + 1;
+      }
+      if (!isEmpty(params.startKey)) {
         queryParams.options.startkey = params.startKey;
       }
       this.store.query(modelName, queryParams).then(function(model) {
-        if (model.get('length') > 0) {
-          this.set('firstKey', this._getStartKeyFromItem(model.get('firstObject')));
-        }
-        if (model.get('length') > itemsPerPage) {
-          let lastItem = model.popObject();
-          this.set('nextStartKey', this._getStartKeyFromItem(lastItem));
-        } else {
-          this.set('nextStartKey');
+        if (!isEmpty(itemsPerPage)) {
+          if (model.get('length') > 0) {
+            this.set('firstKey', this._getStartKeyFromItem(model.get('firstObject')));
+          }
+          if (model.get('length') > itemsPerPage) {
+            let lastItem = model.popObject();
+            this.set('nextStartKey', this._getStartKeyFromItem(lastItem));
+          } else {
+            this.set('nextStartKey');
+          }
         }
         resolve(model);
       }.bind(this), reject);
@@ -101,10 +108,10 @@ export default Ember.Route.extend(PouchDbMixin, ProgressDialog, AuthenticatedRou
     };
     if (this.get('hideNewButton')) {
       sectionDetails.newButtonAction = null;
-    } else if (!Ember.isEmpty(this.get('newButtonAction'))) {
+    } else if (!isEmpty(this.get('newButtonAction'))) {
       sectionDetails.newButtonAction = this.get('newButtonAction');
     }
-    if (!Ember.isEmpty(this.get('newButtonText'))) {
+    if (!isEmpty(this.get('newButtonText'))) {
       sectionDetails.newButtonText = this.get('newButtonText');
     }
     this.send('setSectionHeader', sectionDetails);
