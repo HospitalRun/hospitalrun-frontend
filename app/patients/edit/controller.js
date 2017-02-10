@@ -14,7 +14,7 @@ const {
   isEmpty
 } = Ember;
 
-export default AbstractEditController.extend(BloodTypes, DiagnosisActions, ReturnTo, UserSession, PatientId, PatientNotes, {
+export default AbstractEditController.extend(BloodTypes, DiagnosisActions, PatientId, ReturnTo, UserSession, PatientNotes, {
 
   canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
@@ -617,24 +617,9 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
     if (!this.get('model.isNew')) {
       return Ember.RSVP.resolve();
     }
-    let database = this.get('database');
-    let id = this.get('model.friendlyId');
-    let maxValue = this.get('maxValue');
-    let query = {
-      startkey: [id, null],
-      endkey: [id, maxValue]
-    };
-    return database.queryMainDB(query, 'patient_by_display_id')
-      .then((found) => {
-        if (Ember.isEmpty(found.rows)) {
-          return Ember.RSVP.resolve();
-        }
-        return this.generateFriendlyId()
-          .then((friendlyId) => {
-            this.model.set('friendlyId', friendlyId);
-            return Ember.RSVP.resolve();
-          });
-      });
+    return this.generateFriendlyId('patient').then((friendlyId) => {
+      this.model.set('friendlyId', friendlyId);
+    });
   },
 
   afterUpdate(record) {
