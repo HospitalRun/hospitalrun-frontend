@@ -3,29 +3,27 @@ import Ember from 'ember';
 export default AbstractEditController.extend({
   cancelAction: 'closeModal',
   editController: Ember.inject.controller('incident/edit'),
-  newFeedback: false,
+  newNote: false,
 
   title: function() {
     let i18n = this.get('i18n');
     let isNew = this.get('model.isNew');
     if (isNew) {
-      return i18n.t('incident.titles.addFeedback');
+      return i18n.t('incident.titles.addNote');
     }
-    return i18n.t('incident.titles.editFeedback');
+    return i18n.t('incident.titles.editNote');
   }.property('model.isNew'),
 
-  updateCapability: 'add_feedback',
+  updateCapability: 'manage_incidents',
 
   beforeUpdate() {
-    if (this.get('model.isNew')) {
-      this.set('newFeedback', true);
-    }
+    this.set('newNote', this.get('model.isNew'));
     return Ember.RSVP.Promise.resolve();
   },
 
-  afterUpdate(feedback) {
-    if (this.get('newFeedback')) {
-      this.get('editController').send('addFeedback', feedback);
+  afterUpdate(note) {
+    if (this.get('newNote')) {
+      this.get('editController').send('addNote', note);
     } else {
       this.send('closeModal');
     }

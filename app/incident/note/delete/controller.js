@@ -2,14 +2,14 @@ import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-co
 import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 export default AbstractDeleteController.extend({
-  afterDeleteAction: 'notifyFeedbackDelete',
+  afterDeleteAction: 'notifyNoteDelete',
   editController: Ember.inject.controller('incident/edit'),
 
-  title: t('incident.titles.deleteFeedback'),
+  title: t('incident.titles.deleteNote'),
 
   actions: {
-    notifyFeedbackDelete() {
-      this.get('editController').send('deleteFeedback', this.get('model'));
+    notifyNoteDelete() {
+      this.get('editController').send('deleteNote', this.get('model'));
       this.send('closeModal');
     }
   }
