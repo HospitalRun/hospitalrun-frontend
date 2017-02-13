@@ -3,7 +3,6 @@ import Ember from 'ember';
 
 export default AbstractEditRoute.extend({
   modelName: 'report',
-  database: Ember.inject.service(),
   customForms: Ember.inject.service(),
 
   getNewData() {

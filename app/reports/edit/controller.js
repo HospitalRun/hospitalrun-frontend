@@ -10,7 +10,6 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
 
   lookupListsToUpdate: [],
 
-  editController: Ember.inject.controller('visits/edit'),
   newReport: false,
 
   title: function() {
@@ -32,7 +31,6 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
 
   nextAppointment: Ember.computed('model.patient.id', 'model.visit.startDate', function () {
     let patientId = this.get('model.patient.id')
-    console.log('patientId', patientId)
     let visitDate = this.get('model.visit.startDate')
     let maxValue = this.get('maxValue');
     let promise =  this.store.query('appointment', {
@@ -58,18 +56,19 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
 
   updateCapability: 'add_report',
 
-  actions: {
-
-  },
-
   beforeUpdate() {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    debugger
+    return new Ember.RSVP.Promise(function(resolve) {
         if (this.get('model.isNew')) {
-          this.addChildToVisit(this.get('model'), 'reports').then(resolve, reject);
-        } else {
-          resolve();
+           var appointmentDate = this.get('nextAppointment').get('content')
+           this.get('model').set('nextAppointment', appointmentDate)
+          if (this.get('model.visit.outPatient')) {
+              this.get('model').set('reportType', 'OutPatient')
+          } else {
+              this.get('model').set('reportType', 'Discharge')
+          }
         }
-
+          resolve();
     }.bind(this));
   },
 

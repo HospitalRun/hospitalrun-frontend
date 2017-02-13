@@ -3,25 +3,21 @@ import DS from 'ember-data';
 
 export default AbstractModel.extend({
   // Attributes
-  description: DS.attr('string'),
   reportDate: DS.attr('date'),
   customForms: DS.attr('custom-forms'),
+  reportType : DS.attr('string'),
+  nextAppointment: DS.attr('date'),
 
   // Associations
   visit: DS.belongsTo('visit', { async: false }),
 
   validations: {
-    description: {
+    visit: {
       presence: true
     },
 
     reportDate: {
       presence: true
-    },
-    display_reportDate: {
-      presence: {
-        message: 'Please select a valid date'
-      }
     }
   }
 });
