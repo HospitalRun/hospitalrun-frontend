@@ -6,19 +6,16 @@ import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import DS from 'ember-data';
 
 export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis, PouchDbMixin, {
-  visitsController: Ember.inject.controller('visits'),
+  queryParams: ['preview'],
+  preview: null,
+
+  showPreview: Ember.computed('preview', function() {
+    return this.get('preview')
+  }),
 
   lookupListsToUpdate: [],
 
   newReport: false,
-
-  title: function() {
-    let isNew = this.get('model.isNew');
-    if (isNew) {
-      return this.get('i18n').t('reports.titles.add');
-    }
-    return this.get('i18n').t('reports.titles.edit');
-  }.property('model.isNew'),
 
   diagnosis: Ember.computed ('model.patient',function() {
     let container = this.get('model.patient');
@@ -54,10 +51,22 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
     return DS.PromiseObject.create({ promise: promise });
   }),
 
+  additionalButtons: Ember.computed('model.{isNew}', function() {
+    //let i18n = get(this, 'i18n');
+    let isNew = this.get('model.isNew');
+    if (!isNew) {
+      return [{
+        class: 'btn btn-primary on-white',
+        buttonAction: 'previewReport',
+        buttonIcon: 'octicon octicon-check',
+        buttonText: 'Preview and Print'
+      }];
+    }
+  }),
+
   updateCapability: 'add_report',
 
   beforeUpdate() {
-    debugger
     return new Ember.RSVP.Promise(function(resolve) {
         if (this.get('model.isNew')) {
            var appointmentDate = this.get('nextAppointment').get('content')
@@ -76,5 +85,11 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
     let alertTitle = this.get('i18n').t('reports.titles.saved');
     let alertMessage = this.get('i18n').t('reports.messages.saved');
     this.saveVisitIfNeeded(alertTitle, alertMessage);
+  },
+
+  actions: {
+    previewReport() {
+      this.transitionToRoute('reports.edit', this.get('model.id'), {queryParams: {preview: true}})
+    }
   }
 });
