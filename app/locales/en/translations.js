@@ -1109,7 +1109,9 @@ export default {
       contacts: 'Contacts',
       sexNotEntered: 'Sex Not Entered',
       operativePlan: 'Operative Plan',
-      caption: 'Caption'
+      caption: 'Caption',
+      patientTypeCharity: 'Charity',
+      patientTypePrivate: 'Private'
     },
     notes: {
       newNote: 'New Note for',
