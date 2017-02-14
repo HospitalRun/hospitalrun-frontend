@@ -6,17 +6,22 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
   {{#em-form model=model submitButton=false }}
-    {{em-input property="caption" label=(t 'patients.labels.caption')}}
+    {{em-input property="title" label=(t 'incident.labels.title')}}
     {{#if model.isNew}}
-      {{take-photo photoFile=model.photoFile isImage=model.isImage}}
+      {{take-photo
+        defaultPhotoSource='uploadAFile'
+        isImage=model.isImage
+        photoFile=model.photoFile
+        sourceLabel=(t 'incident.labels.howToAddAttachment')
+      }}
     {{else}}
       {{#if model.isImage}}
         <div class="thumbnail">
-          <img alt={{model.caption}} src={{model.url}} class="img-responsive" >
+          <img alt={{model.title}} src={{model.url}} class="img-responsive" >
         </div>
       {{else}}
         <a href={{model.url}} target="_blank" download="{{model.shortFileName}}" class="btn btn-default">
-          <span class="glyphicon glyphicon-download" aria-hidden="true"></span> {{t 'patients.buttons.download'}}
+          <span class="glyphicon glyphicon-download" aria-hidden="true"></span> {{t 'incident.buttons.download'}}
         </a>
       {{/if}}
     {{/if}}

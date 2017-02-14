@@ -17,5 +17,11 @@ export default AbstractEditRoute.extend(PatientListRoute, UserSession, {
       reportedBy: this.getUserName(true),
       reportedByDisplayName: this.getUserName(false)
     });
+  },
+
+  actions: {
+    deleteAttachment(model) {
+      this.controller.send('deleteAttachment', model);
+    }
   }
 });

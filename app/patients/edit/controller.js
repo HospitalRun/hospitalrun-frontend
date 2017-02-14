@@ -207,44 +207,11 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Patie
     },
     /**
      * Add the specified photo to the patient's record.
-     * @param {File} photoFile the photo file to add.
-     * @param {String} caption the caption to store with the photo.
-     * @param {boolean} coverImage flag indicating if image should be marked as the cover image (currently unused).
      */
-    addPhoto(photoFile, caption, coverImage) {
-      let dirToSaveTo = `${this.get('model.id')}/photos/`;
-      let fileSystem = this.get('filesystem');
+    addPhoto(savedPhotoRecord) {
       let photos = this.get('model.photos');
-      let newPatientPhoto = this.get('store').createRecord('photo', {
-        patient: this.get('model'),
-        localFile: true,
-        caption,
-        coverImage
-      });
-      newPatientPhoto.save().then(function(savedPhotoRecord) {
-        let pouchDbId = this.get('database').getPouchId(savedPhotoRecord.get('id'), 'photo');
-        fileSystem.addFile(photoFile, dirToSaveTo, pouchDbId).then(function(fileEntry) {
-          fileSystem.fileToDataURL(photoFile).then(function(photoDataUrl) {
-            savedPhotoRecord = this.get('store').find('photo', savedPhotoRecord.get('id')).then(function(savedPhotoRecord) {
-              let dataUrlParts = photoDataUrl.split(',');
-              savedPhotoRecord.setProperties({
-                fileName: fileEntry.fullPath,
-                url: fileEntry.toURL(),
-                _attachments: {
-                  file: {
-                    content_type: photoFile.type,
-                    data: dataUrlParts[1]
-                  }
-                }
-              });
-              savedPhotoRecord.save().then(function(savedPhotoRecord) {
-                photos.addObject(savedPhotoRecord);
-                this.send('closeModal');
-              }.bind(this));
-            }.bind(this));
-          }.bind(this));
-        }.bind(this));
-      }.bind(this));
+      photos.addObject(savedPhotoRecord);
+      this.send('closeModal');
     },
 
     appointmentDeleted(deletedAppointment) {
@@ -399,9 +366,11 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Patie
     },
 
     showAddPhoto() {
-      this.send('openModal', 'patients.photo', {
-        isNew: true
+      let newPatientPhoto = this.get('store').createRecord('photo', {
+        patient: this.get('model'),
+        saveToDir: `${this.get('model.id')}/photos/`
       });
+      this.send('openModal', 'patients.photo', newPatientPhoto);
     },
 
     showAddPatientNote(model) {
@@ -497,12 +466,6 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Patie
 
     updateFamilyInfo(model) {
       this._updateSocialRecord(model, 'familyInfo');
-    },
-
-    updatePhoto(photo) {
-      photo.save().then(function() {
-        this.send('closeModal');
-      }.bind(this));
     },
 
     visitDeleted(deletedVisit) {

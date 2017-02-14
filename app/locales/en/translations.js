@@ -739,15 +739,18 @@ export default {
       addItem: 'Add Item',
       cancel: 'Cancel',
       delete: 'Delete',
+      download: 'Download',
       edit: 'Edit',
       export: 'Export Report',
       generateRep: 'Generate Report',
+      newAttachment: '+ New Attachment',
       newCategory: 'New Category',
       newNote: '+ New Note',
       newIncident: '+ new incident'
     },
     labels: {
       actions: 'Actions',
+      addedBy: 'Added By',
       category: 'Category',
       categoryItem: 'Category Item',
       date: 'Date',
@@ -756,6 +759,7 @@ export default {
       description: 'Incident Description',
       endDate: 'End Date',
       givenBy: 'Given By',
+      howToAddAttachment: 'How Do You Want To Add An Attachment?',
       incidentDate: 'Date of Incident',
       incidentId: 'Incident ID',
       item: 'Item',
@@ -774,11 +778,13 @@ export default {
       statusClosed: 'Closed',
       statusFollowup: 'Follow-up',
       statusReported: 'Reported',
+      title: 'Title',
       updatedBy: 'Updated By'
     },
     messages: {
       createNew: 'Create a new incident?',
       createNewIncidentCategory: 'Create a new Incident Category?',
+      deleteAttachment: 'Are you sure you wish to delete this attachment?',
       deleteCategory: 'Are you sure you wish to delete {{name}}?',
       deleteIncident: 'Are you sure you wish to delete this incident?',
       deleteNote: 'Are you sure you wish to delete this note?',
@@ -791,10 +797,14 @@ export default {
     },
     titles: {
       addNote: 'Add Note',
+      addAttachment: 'Add Attachment',
+      attachments: 'Attachments',
       closed: 'Closed Incidents',
       current: 'Current',
+      deleteAttachment: 'Delete Attachment',
       deleteNote: 'Delete Note',
       deleteItem: 'Delete Item',
+      editAttachment: 'Edit Attachment',
       editIncident: 'Edit Incident',
       editNote: 'Edit Note',
       incidentSaved: 'Incident Saved',
@@ -1046,6 +1056,7 @@ export default {
       addContact: 'Add Contact',
       addOperativePlan: 'Add Operative Plan',
       editOperativePlan: 'Current Operative Plan',
+      download: 'Download',
       newLab: 'New Lab',
       newVisit: 'New Visit',
       newMedication: 'New Medication',
@@ -1097,7 +1108,8 @@ export default {
       parent: 'Parent/Guardian',
       contacts: 'Contacts',
       sexNotEntered: 'Sex Not Entered',
-      operativePlan: 'Operative Plan'
+      operativePlan: 'Operative Plan',
+      caption: 'Caption'
     },
     notes: {
       newNote: 'New Note for',
@@ -1196,6 +1208,11 @@ export default {
         selectAll: '(Select All)'
       }
     },
+    imageUpload: {
+      messages: {
+        selectValidImageFile: 'Please select a valid image file.'
+      }
+    },
     dateTimePicker: {
       amHour: '{{hour}} AM',
       midnight: 'Midnight',
@@ -1205,11 +1222,14 @@ export default {
     takePhoto: {
       how: 'How Do You Want To Add A Photo?',
       takePhoto: 'Take photo',
-      uploadPhoto: 'Upload Photo',
       uploadFile: 'Upload File',
       camera: 'Camera',
       photo: 'photo',
-      preview: 'preview'
+      preview: 'preview',
+      labels: {
+        takeAPicture: 'Take a Picture',
+        uploadAFile: 'Upload a File'
+      }
     },
     quantityConv: {
       unit: 'Unit',

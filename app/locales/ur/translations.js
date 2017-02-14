@@ -1118,7 +1118,6 @@ export default {
     takePhoto: {
       how: 'آپ ایک تصویر کو کس طرح شامل کرنا چاہتے ہیں؟',
       takePhoto: 'تصویر کھینچیں',
-      uploadPhoto: 'تصویر اپ لوڈ کریں',
       uploadFile: 'فائل اپ لوڈ کریں',
       camera: 'کیمرہ',
       photo: 'تصویر',

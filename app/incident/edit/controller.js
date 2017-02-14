@@ -27,6 +27,8 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
   sequenceView: 'incident_by_friendly_id',
   updateCapability: 'add_incident',
 
+  database: inject.service(),
+  filesystem: inject.service(),
   incidentController: inject.controller('incident'),
   incidentDepartmentList: alias('incidentController.incidentDepartmentList'),
   incidentCategoryList: alias('incidentController.incidentCategoryList'),
@@ -116,6 +118,20 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
       this._updateList('notes', newNote);
     },
 
+    addAttachment(newAttachment) {
+      this._updateList('incidentAttachments', newAttachment);
+    },
+
+    showAddAttachment() {
+      let newNote = get(this, 'store').createRecord('attachment', {
+        dateAdded: new Date(),
+        addedBy: this.getUserName(true),
+        addedByDisplayName: this.getUserName(false),
+        saveToDir: `${get(this, 'model.id')}/attachments/`
+      });
+      this.send('openModal', 'incident.attachment', newNote);
+    },
+
     showAddNote() {
       let newNote = get(this, 'store').createRecord('incident-note', {
         dateRecorded: new Date(),
@@ -125,12 +141,42 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
       this.send('openModal', 'incident.note.edit', newNote);
     },
 
+    deleteAttachment(model) {
+      let attachment = get(model, 'itemToDelete');
+      this._updateList('incidentAttachments', attachment, true);
+      attachment.destroyRecord().then(() => {
+        let attachmentId = get(attachment, 'id');
+        let database = get(this, 'database');
+        let filePath = get(attachment, 'fileName');
+        let fileSystem = get(this, 'filesystem');
+        let isFileSystemEnabled = get(fileSystem, 'isFileSystemEnabled');
+        if (isFileSystemEnabled) {
+          let pouchDbId = database.getPouchId(attachmentId, 'attachment');
+          fileSystem.deleteFile(filePath, pouchDbId);
+        }
+      });
+    },
+
     deleteNote(note) {
       this._updateList('notes', note, true);
     },
 
+    showDeleteAttachment(attachment) {
+      let i18n = this.get('i18n');
+      let message = i18n.t('incident.messages.deleteAttachment');
+      let model = Ember.Object.create({
+        itemToDelete: attachment
+      });
+      let title = i18n.t('incident.titles.deleteAttachment');
+      this.displayConfirm(title, message, 'deleteAttachment', model);
+    },
+
     showDeleteNote(note) {
       this.send('openModal', 'incident.note.delete', note);
+    },
+
+    showEditAttachment(attachment) {
+      this.send('openModal', 'incident.attachment', attachment);
     },
 
     showEditNote(note) {

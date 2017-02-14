@@ -80,6 +80,7 @@
     {{#if canManageIncident}}
       <ul class="nav nav-pills tab-nav" role="tablist">
         <li role="presentation" class="active"><a href="#notes" role="tab" data-toggle="pill">{{t 'incident.titles.notes'}}</a></li>
+        <li role="presentation"><a href="#attachments" role="tab" data-toggle="pill">{{t 'incident.titles.attachments'}}</a></li>
       </ul>
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="notes">
@@ -112,6 +113,40 @@
             </div>
           </div>
         </div>
+        <div role="tabpanel" class="tab-pane" id="attachments">
+          <div class="panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                <button class="btn btn-primary align-right" {{action "showAddAttachment" bubbles=false }}>{{t 'incident.buttons.newAttachment'}}</button>
+              </h3>
+            </div>
+            <div class="panel-body detail-section-content">
+              <table class="table">
+                <tr class="table-header">
+                  <th>{{t 'incident.labels.date'}}</th>
+                  <th>{{t 'incident.labels.addedBy'}}</th>
+                  <th>{{t 'incident.labels.title'}}</th>
+                  <th>{{t 'incident.labels.actions'}}</th>
+                </tr>
+                {{#each model.incidentAttachments as |attachment|}}
+                  <tr>
+                    <td>{{date-format attachment.dateAdded}}</td>
+                    <td>{{attachment.addedByDisplayName}}</td>
+                    <td>{{attachment.title}}</td>
+                    <td>
+                      <button class="btn btn-default neutral" {{action "showEditAttachment" attachment}}>{{t 'incident.buttons.edit'}}</button>
+                      <a href={{attachment.url}} target="_blank" download="{{attachment.shortFileName}}" class="btn btn-default">
+                        <span class="glyphicon glyphicon-download" aria-hidden="true"></span> {{t 'incident.buttons.download'}}
+                      </a>
+                      <button class="btn btn-default warning" {{action "showDeleteAttachment" attachment bubbles=false }}><span class="octicon octicon-x"></span> {{t 'incident.buttons.delete'}}</button>
+                    </td>
+                  </tr>
+                {{/each}}
+              </table>
+            </div>
+          </div>
+        </div>
+
       </div>
     {{/if}}
   {{/em-form}}

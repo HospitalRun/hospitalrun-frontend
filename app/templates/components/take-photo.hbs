@@ -1,11 +1,13 @@
 {{#if canCaptureVideo}}
   <div class="form-group">
-    <label class="control-label" for="photo-source">{{t 'components.takePhoto.how'}}</label>
+    <label class="control-label" for="photo-source">{{sourceChooserLabel}}</label>
     {{select-list
-      action=photoSourceChange
+      action=(action 'photoSourceChange')
       class='form-control'
       content=photoSources
       id='photo-source'
+      optionLabelPath="label"
+      optionValuePath="value"
       value=photoSource
     }}
   </div>
@@ -13,7 +15,7 @@
     <div class="form-group">
       <label class="control-label" for="camera">{{t 'components.takePhoto.camera'}}</label>
       {{select-list
-          action=cameraChange
+          action=(action 'cameraChange')
           class='form-control'
           content=videoSources
           id='camera'
@@ -42,7 +44,6 @@
     </div>
   </div>
 {{/if}}
-<div class="fileupload row">
-  <h2>{{t 'components.takePhoto.uploadPhoto'}}</h2>
-  {{image-upload label=(t 'components.takePhoto.uploadFile') property="fileName" selectedFile=photoFile }}
-</div>
+{{#if showFileUpload}}
+  {{image-upload label=(t 'components.takePhoto.uploadFile') property="fileName" selectedFile=photoFile isImage=isImage}}
+{{/if}}

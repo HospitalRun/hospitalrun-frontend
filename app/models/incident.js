@@ -25,6 +25,7 @@ export default AbstractModel.extend(IncidentStatuses, {
   sentinelEvent: attr('boolean'),
   status: attr('string', { defaultValue: REPORTED }),
 
+  incidentAttachments: hasMany('attachment', { async: true }),
   notes: hasMany('incident-note', { async: true }),
   patientImpacted: belongsTo('patient', { async: true }),
 
