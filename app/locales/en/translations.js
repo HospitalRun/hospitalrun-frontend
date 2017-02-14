@@ -868,6 +868,14 @@ export default {
       orders: 'Orders',
       procedures: 'Procedures',
       vitals: 'Vitals'
+    },
+    types: {
+      admission: 'Admission',
+      clinic: 'Clinic',
+      followup: 'Followup',
+      imaging: 'Imaging',
+      lab: 'Lab',
+      pharmacy: 'Pharmacy'
     }
   },
   labs: {

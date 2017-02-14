@@ -727,7 +727,8 @@ export default {
   },
   visits: {
     titles: {
-      additionalDiagnoses: 'Diagnósticos Adicionais'
+      additionalDiagnoses: 'Diagnósticos Adicionais',
+      newVisit: 'Nova Visita'
     },
     messages: {
       delete: 'Você tem certeza que deseja excluir essa visita?'
@@ -755,7 +756,30 @@ export default {
       admittingDiagnosis: 'Diagnósticos de Admisão',
       finalDiagnosis: 'Diagnósticos de Finais/Faturamento',
       visitType: 'Tipo de Visita',
-      vitals: 'Sinais Vitais'
+      vitals: 'Sinais Vitais',
+      patientToCheckIn: 'Paciente Para Entrada',
+      checkInTime: 'Entrada',
+      checkOutTime: 'Saída',
+      appointment: 'Compromisso',
+      haveAppointment: 'S',
+      noAppointment: 'N',
+      ordersDone: 'Pedidos concluídos',
+      haveDoneOrders: 'S',
+      ordersNotDone: 'N',
+      reasonForVisit: 'Razão da visita',
+      statusAdmitted: 'Admitido',
+      statusDischarged: 'Descarregado',
+      statusCheckedIn: 'Internado',
+      statusCheckedOut: 'Alta',
+      createNewPatient: 'Criar Novo Paciente'
+    },
+    types: {
+      admission: 'Admissão',
+      clinic: 'Clínica',
+      followup: 'Acompanhamento',
+      imaging: 'Imagem',
+      lab: 'Laboratório',
+      pharmacy: 'Farmácia'
     }
   },
   labs: {
@@ -835,7 +859,9 @@ export default {
       newPhoto: 'Nova Foto',
       newAppointment: 'Novo Compromisso',
       backToPatients: 'Voltar para Lista de Pacientes',
-      newPatient: '+ novo paciente'
+      newPatient: '+ novo paciente',
+      addOperativePlan: 'Adicionar Plano de Operação',
+      scheduleSurgery: 'Agendar Cirurgia'
     },
     labels: {
       primaryDiagnosis: 'Diagnósticos Primários',
@@ -875,6 +901,9 @@ export default {
       referredDate: 'Data de Indicação',
       religion: 'Religião',
       parent: 'Responsável Legal',
+      contacts: 'Contatos',
+      sexNotEntered: 'Sexo Não foi informado',
+      operativePlan: 'Plano de operação',
       patientTypeCharity: 'Caridade',
       patientTypePrivate: 'Privado'
     },
