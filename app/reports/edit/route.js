@@ -5,6 +5,12 @@ export default AbstractEditRoute.extend({
   modelName: 'report',
   customForms: Ember.inject.service(),
 
+  queryParams: {
+    preview: {
+      refreshModel: true
+    }
+  },
+
   getNewData() {
     let newReportData = {
       reportDate: new Date(),

@@ -1,112 +1,129 @@
-{{#if showPreview}}
-  <div>
-    Show Preview page here
-  </div>
-{{else}}
-  {{#edit-panel editPanelProps=editPanelProps}}
-    {{#em-form model=model submitButton=false }}
-      {{#if model.visit}}
-        {{patient-summary
-          patient=model.visit.patient
-          returnTo='visit.edit'
-          returnToContext=model.id
-          disablePatientLink=model.isNew
-        }}
-      {{/if}}
-      {{#if model.visit.patient.displayPatientId}}
-        <div class="ps-info-group patient-name">
-          <label class="ps-info-label">Patient Id</label>
-          <input class="form-control" value={{model.visit.patient.displayPatientId}}>
-        </div>
-      {{/if}}
-      {{#if model.visit.patient.dateOfBirth}}
-        <div class="ps-info-group">
-          <label class="ps-info-label">Date Of Visit</label>
-          <input class="form-control" value={{date-format model.visit.startDate format="DD/MM/YYYY hh:mm a"}}>
-        </div>
-      {{/if}}
 
-      {{#if diagnosis.primary.length}}
-        <div class="ps-info-group">
-          <label class="ps-info-label">Primary Diagnosis</label>
-          <ul>
-            {{#each diagnosis.primary as |item|}}
-              <li>{{item.diagnosis}}</li>
-            {{/each}}
-          </ul>
-        </div>
-      {{/if}}
+{{#if model.visit.outPatient}}
+  {{#if showPreview}}
+    <div>
+      Show Preview for Out Patients Report
+    </div>
+    {{else}}
+    {{#edit-panel editPanelProps=editPanelProps}}
+      {{#em-form model=model submitButton=false }}
+        {{#if model.visit}}
+          {{patient-summary
+            patient=model.visit.patient
+            returnTo='visit.edit'
+            returnToContext=model.id
+            disablePatientLink=model.isNew
+          }}
+        {{/if}}
+        {{#if model.visit.patient.displayPatientId}}
+          <div class="ps-info-group patient-name">
+            <label class="ps-info-label">Patient Id</label>
+            <input class="form-control" value={{model.visit.patient.displayPatientId}}>
+          </div>
+        {{/if}}
+        {{#if model.visit.patient.dateOfBirth}}
+          <div class="ps-info-group">
+            <label class="ps-info-label">Date Of Visit</label>
+            <input class="form-control" value={{date-format model.visit.startDate format="DD/MM/YYYY hh:mm a"}}>
+          </div>
+        {{/if}}
 
-      {{#if diagnosis.secondary.length}}
-        <div class="ps-info-group">
-          <label class="ps-info-label">Secondary Diagnosis</label>
-          <ul>
-            {{#each diagnosis.secondary as |item|}}
-              <li>{{item.diagnosis}}</li>
-            {{/each}}
-          </ul>
-        </div>
-      {{/if}}
-
-      {{#if model.visit.procedures.length}}
-        <div class="ps-info-group">
-          <label class="ps-info-label">Procedures</label>
-          <ul>
-            {{#each model.visit.procedures as |item|}}
-              <li>{{item.description}}</li>
-            {{/each}}
-          </ul>
-        </div>
-      {{/if}}
-
-      {{#if model.visit.labs.length}}
-        <div class="ps-info-group">
-          <label class="ps-info-label">Labs</label>
-          <ul>
-            {{#each model.visit.labs as |item|}}
-              <li>{{item.labType.name}}-{{item.result}} ({{item.status}})</li>
-            {{/each}}
-          </ul>
-        </div>
-      {{/if}}
-
-      {{#if model.visit.imaging.length}}
-        <div class="ps-info-group">
-          <label class="ps-info-label">Images</label>
-          <ul>
-            {{#each model.visit.imaging as |item|}}
-              <li>{{item.imagingType.name}}-{{item.result}} ({{item.status}})</li>
-            {{/each}}
-          </ul>
-        </div>
-      {{/if}}
-
-
-      {{#if nextAppointment}}
-        <div class="ps-info-group">
-          <label class="ps-info-label">Date Of Next Appointment</label>
-          <input class="form-control" value={{date-format nextAppointment format="DD/MM/YYYY hh:mm a"}}>
-        </div>
-      {{/if}}
-
-      {{#if model.visit.patient.operativePlans.length}}
-        <div class="ps-info-group">
-          <label class="ps-info-label">Operative Plans</label>
-          <ul>
-            {{#each model.visit.patient.operativePlans as |item|}}
-              {{#each item.procedures as |p|}}
-                <li>{{p.description}} ({{item.status}})</li>
+        {{#if diagnosis.primary.length}}
+          <div class="ps-info-group">
+            <label class="ps-info-label">Primary Diagnosis</label>
+            <ul>
+              {{#each diagnosis.primary as |item|}}
+                <li>{{item.diagnosis}}</li>
               {{/each}}
-            {{/each}}
-          </ul>
-        </div>
-      {{/if}}
+            </ul>
+          </div>
+        {{/if}}
 
-      {{custom-form-manager model=model formType="opdReport"}}
+        {{#if diagnosis.secondary.length}}
+          <div class="ps-info-group">
+            <label class="ps-info-label">Secondary Diagnosis</label>
+            <ul>
+              {{#each diagnosis.secondary as |item|}}
+                <li>{{item.diagnosis}}</li>
+              {{/each}}
+            </ul>
+          </div>
+        {{/if}}
 
-    {{/em-form}}
-  {{/edit-panel}}
+        {{#if model.visit.procedures.length}}
+          <div class="ps-info-group">
+            <label class="ps-info-label">Procedures</label>
+            <ul>
+              {{#each model.visit.procedures as |item|}}
+                <li>{{item.description}}</li>
+              {{/each}}
+            </ul>
+          </div>
+        {{/if}}
+
+        {{#if model.visit.labs.length}}
+          <div class="ps-info-group">
+            <label class="ps-info-label">Labs</label>
+            <ul>
+              {{#each model.visit.labs as |item|}}
+                <li>{{item.labType.name}}-{{item.result}} ({{item.status}})</li>
+              {{/each}}
+            </ul>
+          </div>
+        {{/if}}
+
+        {{#if model.visit.imaging.length}}
+          <div class="ps-info-group">
+            <label class="ps-info-label">Images</label>
+            <ul>
+              {{#each model.visit.imaging as |item|}}
+                <li>{{item.imagingType.name}}-{{item.result}} ({{item.status}})</li>
+              {{/each}}
+            </ul>
+          </div>
+        {{/if}}
+
+
+        {{#if nextAppointment}}
+          <div class="ps-info-group">
+            <label class="ps-info-label">Date Of Next Appointment</label>
+            <input class="form-control" value={{date-format nextAppointment format="DD/MM/YYYY hh:mm a"}}>
+          </div>
+        {{/if}}
+
+        {{#if model.visit.patient.operativePlans.length}}
+          <div class="ps-info-group">
+            <label class="ps-info-label">Operative Plans</label>
+            <ul>
+              {{#each model.visit.patient.operativePlans as |item|}}
+                {{#each item.procedures as |p|}}
+                  <li>{{p.description}} ({{item.status}})</li>
+                {{/each}}
+              {{/each}}
+            </ul>
+          </div>
+        {{/if}}
+
+        {{custom-form-manager model=model formType="opdReport"}}
+
+      {{/em-form}}
+    {{/edit-panel}}
+    {{/if}}
+
+ {{else}}
+
+  {{#if showPreview}}
+    <div>
+      Show Preview for Discharge report
+    </div>
+  {{else}}
+    <div>
+      Show Discharge Report Form
+    </div>
+  {{/if}}
+
 {{/if}}
+
 
 
 
