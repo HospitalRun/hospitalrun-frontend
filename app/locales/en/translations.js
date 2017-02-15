@@ -1089,18 +1089,19 @@ export default {
   },
   reports: {
     titles: {
-      edit: 'Edit Report',
-      saved: 'Report Saved',
-      new: 'New Report'
+      preview: 'Preview Report',
+      saved: 'The report has been saved'
     },
     opd: {
       titles: {
-        new: 'New OPD Report'
+        new: 'New OPD Report',
+        edit: 'Edit OPD Report'
       }
     },
     discharge: {
       titles: {
-        new: 'New Discharge Report'
+        new: 'New Discharge Report',
+        edit: 'Edit Discharge Report'
       }
     },
     messages: {
