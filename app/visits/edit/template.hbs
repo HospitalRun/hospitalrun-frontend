@@ -264,20 +264,44 @@
         </div>
         <div role="tabpanel" class="tab-pane" id="reports">
           <div class="panel detail-section">
-            <div class="panel-heading">
-              {{#if canAddReport}}
+            {{#if noReport}}
+
+              <div class="panel-heading">
+                {{#if canAddReport}}
                   <button class="btn btn-primary align-right" {{action "newReport"}}>
                     {{#if model.outPatient}}
-                    {{t 'patients.buttons.newOPDReport'}}
+                      {{t 'patients.buttons.newOPDReport'}}
                     {{else}}
-                    {{t 'patients.buttons.newDischargeReport'}}
+                      {{t 'patients.buttons.newDischargeReport'}}
                     {{/if}}
                   </button>
-              {{/if}}
-            </div>
-            <div class="panel-body">
+                {{/if}}
+              </div>
 
-            </div>
+            {{else}}
+
+              <div class="panel-body">
+                <table class="table">
+                  <tr class="table-header">
+                    <th>{{t 'labels.date'}}</th>
+                    <th>Created By</th>
+                    <th>Report type</th>
+                    <th>{{t 'labels.actions'}}</th>
+                  </tr>
+
+                  <tr>
+                    <td>{{date-format report.reportDate}}</td>
+                    <td>{{report.modifiedBy}}</td>
+                    <td>{{report.reportType}}</td>
+                    <td>
+                      <button class="btn btn-default neutral" {{action "editReport"}}>{{t 'labels.edit'}}</button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+            {{/if}}
+
           </div>
         </div>
       </div>

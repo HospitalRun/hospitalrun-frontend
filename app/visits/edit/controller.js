@@ -37,7 +37,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       return [buttonProps];
     }
   }),
-
+  noReport: false,
   canAddAppointment: computed('model.isNew', function() {
     return (!this.get('model.isNew') && this.currentUserCan('add_appointment'));
   }),
@@ -67,8 +67,8 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   }.property(),
 
   canAddReport: function() {
-    return this.currentUserCan('add_report');
-  }.property(),
+    return this.currentUserCan('add_report') && !this.get('hasReport');
+  }.property('hasReport'),
 
   canDeleteImaging: function() {
     return this.currentUserCan('delete_imaging');
@@ -438,6 +438,18 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
         let isOutPatient = that.get('model').get('outPatient');
         controller.set('currentScreenTitle', isOutPatient ? t('reports.opd.titles.new') : t('reports.discharge.titles.new'));
       });
+    },
+
+    editReport() {
+      let that = this;
+      this.transitionToRoute('reports.edit', this.get('report.id'))
+        .then(function(newRoute) {
+          let controller = newRoute.controllerFor('visits');
+          newRoute.currentModel.setProperties({ returnToVisit: that.get('model.id')
+          });
+          let isOutPatient = that.get('model').get('outPatient');
+          controller.set('currentScreenTitle', isOutPatient ? t('reports.opd.titles.edit') : t('reports.discharge.titles.edit'));
+        });
     },
 
     newAppointment() {
