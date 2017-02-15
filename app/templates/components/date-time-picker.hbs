@@ -1,10 +1,10 @@
 {{#em-form model=this submitButton=false}}
-  {{date-picker property="dateTimePickerDate" label=label class="col-sm-4 (datePickerClass)" dateSetAction="dateChanged"}}
+  {{date-picker property="dateTimePickerDate" label=label class=(concat 'col-sm-4 ' datePickerClass) dateSetAction="dateChanged"}}
   {{#unless isAllDay}}
     <div class="form-input-group col-sm-3 required">
       <label class="control-label" for="startTime">{{t 'labels.startTime'}}</label>
       <div class="input-group">
-        <select onchange={{action "startHourChanged" value="target.value"}} class="form-control">
+        <select onchange={{action "startHourChanged" value="target.value"}} class="form-control start-hour">
           {{#each hourList as |item|}}
             <option value="{{item.value}}"
                     selected={{is-equal item.value startHour}}>
@@ -13,7 +13,7 @@
           {{/each}}
         </select>
         <div class="input-group-addon">:</div>
-        <select onchange={{action "startMinuteChanged" value="target.value"}} class="form-control">
+        <select onchange={{action "startMinuteChanged" value="target.value"}} class="form-control start-minute">
           {{#each minuteList as |item|}}
             <option value="{{item.value}}"
                     selected={{is-equal item.value startMinute}}>
@@ -26,7 +26,7 @@
     <div class="form-input-group col-sm-3 required has-feedback {{if endTimeHasError 'has-error'}}">
       <label class="control-label" for="endTime">{{t 'labels.endTime'}}</label>
       <div class="input-group">
-        <select onchange={{action "endHourChanged" value="target.value"}} class="form-control">
+        <select onchange={{action "endHourChanged" value="target.value"}} class="form-control end-hour">
           {{#each hourList as |item|}}
             <option value="{{item.value}}"
                     selected={{is-equal item.value endHour}}>
@@ -35,7 +35,7 @@
           {{/each}}
         </select>
         <div class="input-group-addon">:</div>
-        <select onchange={{action "endMinuteChanged" value="target.value"}} class="form-control">
+        <select onchange={{action "endMinuteChanged" value="target.value"}} class="form-control end-minute">
           {{#each minuteList as |item|}}
             <option value="{{item.value}}"
                     selected={{is-equal item.value endMinute}}>

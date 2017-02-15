@@ -7,7 +7,7 @@ export default AbstractEditController.extend(UserRoles, {
   usersController: Ember.inject.controller('users/index'),
   updateCapability: 'add_user',
 
-  users: Ember.computed.alias('usersController.model'),
+  users: null,
 
   actions: {
     update() {
@@ -38,9 +38,9 @@ export default AbstractEditController.extend(UserRoles, {
         }
         updateModel.set('userPrefix', prefix);
       }
-      updateModel.save().then(function() {
+      updateModel.save().then(() => {
         this.displayAlert(this.get('i18n').t('messages.userSaved'), this.get('i18n').t('messages.userHasBeenSaved'));
-      }.bind(this));
+      }).catch((error) =>  this.send('error', error));
     }
   }
 });

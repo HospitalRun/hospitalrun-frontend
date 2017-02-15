@@ -1,0 +1,39 @@
+<div class="panel panel-info">
+    <div class="panel-body">
+        {{#em-form model=model submitButton=false}}
+          <div class="row">
+              {{em-select class="col-sm-3 form-input-group"
+                label=(t "labels.status")
+                property="selectedStatus"
+                content=appointmentStatusesWithEmpty
+              }}
+              {{em-select class="col-sm-3 form-input-group"
+                label=(t 'labels.with')
+                property="selectedProvider"
+                content=physicianList
+              }}
+              {{em-select class="col-sm-3 form-input-group"
+                label=(t 'labels.location')
+                property="selectedLocation"
+                content=locationList
+              }}
+          </div>
+        {{/em-form}}
+        <div class="panel-footer">
+          <button class="btn btn-default warning" {{action 'clearFilteringCriteria'}}>{{t 'buttons.clear'}}</button>
+          <button class="btn btn-default" {{action 'filter'}}>{{t 'buttons.filter'}}</button>
+        </div>
+        {{calendar-control events=model.events
+          defaultDate=calendarDate
+          defaultView=viewType
+          onDayClick=(action "createNewAppointment")
+          onEventClick=(action "navigateToAppointment")
+          onEventDrop=(action "updateAppointment")
+          onEventResize=(action "updateAppointment")
+          onVisualConfigurationChanged=(action "handleVisualConfigurationChanged")
+          resources=model.resources
+          userCanEdit=canEdit
+          views=dayGroupByResource
+        }}
+  </div>
+</div>

@@ -1,10 +1,14 @@
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 import Ember from 'ember';
+import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import SetupUserRole from 'hospitalrun/mixins/setup-user-role';
+import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
 
-const { inject, Route } = Ember;
+const { get, inject, isEmpty, Route, set } = Ember;
 
-let ApplicationRoute = Route.extend(ApplicationRouteMixin, SetupUserRole, {
+const TRANSITION_AFTER_LOGIN = 'transitionAfterLogin';
+
+let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUserRole, {
   database: inject.service(),
   config: inject.service(),
   session: inject.service(),
@@ -17,6 +21,34 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, SetupUserRole, {
         outlet: 'modal'
       });
     },
+
+    error(reason, transition) {
+      if (reason instanceof UnauthorizedError) {
+        let i18n = this.get('i18n');
+        let message = i18n.t('application.messages.sessionExpired');
+        let session = get(this, 'session');
+        let title = i18n.t('application.titles.sessionExpired');
+        if (!isEmpty(transition)) {
+          let sessionStore = session.get('store');
+          let sessionData = session.get('data');
+          let transitionName;
+          if (transition.targetName) {
+            transitionName = transition.targetName;
+          } else {
+            transitionName = transition;
+          }
+          set(sessionData, TRANSITION_AFTER_LOGIN, transitionName);
+          sessionStore.persist(sessionData).then(() =>{
+            this.displayAlert(title, message, 'unauthorizeSession');
+          });
+        } else {
+          this.displayAlert(title, message, 'unauthorizeSession');
+        }
+      } else {
+        this._super(reason);
+      }
+    },
+
     /**
      * Render a modal using the specifed path and optionally set a model.
      * @param modalPath the path to use for the controller and template.
@@ -24,9 +56,16 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, SetupUserRole, {
      */
     openModal(modalPath, model) {
       if (model) {
-        this.controllerFor(modalPath).set('model', model);
+        set(this.controllerFor(modalPath), 'model', model);
       }
       this.renderModal(modalPath);
+    },
+
+    unauthorizeSession() {
+      let session = get(this, 'session');
+      if (get(session, 'isAuthenticated')) {
+        session.invalidate();
+      }
     },
 
     /**
@@ -35,31 +74,31 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, SetupUserRole, {
      * @param model (optional) the model to set on the controller for the modal.
      */
     updateModal(modalPath, model) {
-      this.controllerFor(modalPath).set('model', model);
+      set(this.controllerFor(modalPath), 'model', model);
     }
   },
 
   model(params, transition) {
-    let session = this.get('session');
-    let isAuthenticated = session && session.get('isAuthenticated');
-    return this.get('config').setup().then(function(configs) {
+    let session = get(this, 'session');
+    let isAuthenticated = session && get(session, 'isAuthenticated');
+    return get(this, 'config').setup().then(function(configs) {
       if (transition.targetName !== 'finishgauth' && transition.targetName !== 'login') {
-        this.set('shouldSetupUserRole', true);
+        set(this, 'shouldSetupUserRole', true);
         if (isAuthenticated) {
-          return this.get('database').setup(configs)
+          return get(this, 'database').setup(configs)
             .catch(() => {
               // Error thrown indicates missing auth, so invalidate session.
               session.invalidate();
             });
         }
       } else if (transition.targetName === 'finishgauth') {
-        this.set('shouldSetupUserRole', false);
+        set(this, 'shouldSetupUserRole', false);
       }
     }.bind(this));
   },
 
   afterModel() {
-    this.controllerFor('navigation').set('allowSearch', false);
+    set(this.controllerFor('navigation'), 'allowSearch', false);
     $('#apploading').remove();
   },
 
@@ -71,11 +110,21 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, SetupUserRole, {
   },
 
   sessionAuthenticated() {
-    if (this.get('shouldSetupUserRole') === true) {
+    if (get(this, 'shouldSetupUserRole') === true) {
       this.setupUserRole();
     }
-    this._super();
+    let session = get(this, 'session');
+    let sessionData = session.get('data');
+    let transitionAfterLogin = get(sessionData, TRANSITION_AFTER_LOGIN);
+    if (!isEmpty(transitionAfterLogin)) {
+      let sessionStore = session.get('store');
+      set(sessionData, 'transitionAfterLogin', null);
+      sessionStore.persist(sessionData).then(() =>{
+        this.transitionTo(transitionAfterLogin);
+      });
+    } else {
+      this._super();
+    }
   }
-
 });
 export default ApplicationRoute;

@@ -22,8 +22,7 @@ const PLAN_KEYS_TO_COPY = [
   'patient',
   'procedures',
   'operationDescription',
-  'surgeon',
-  'surgeryDate'
+  'surgeon'
 ];
 
 export default AbstractEditController.extend(OperativePlanStatuses, PatientSubmodule, {
@@ -102,6 +101,7 @@ export default AbstractEditController.extend(OperativePlanStatuses, PatientSubmo
     let patient = get(operativePlan, 'patient');
     set(propertiesToCopy, 'operativePlan', operativePlan);
     set(propertiesToCopy, 'preOpDiagnosis', diagnoses);
+    set(propertiesToCopy, 'surgeryDate', new Date());
     set(propertiesToCopy, 'returnToPatient', get(patient, 'id'));
     let operationReport = store.createRecord('operation-report', propertiesToCopy);
     this.getPatientDiagnoses(patient, operationReport);

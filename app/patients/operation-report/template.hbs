@@ -7,7 +7,7 @@
       disablePatientLink=true
       patient=model.patient
     }}
-    <div class="patient-summary">
+    <div class="patient-summary clearfix">
       {{patient-diagnosis
         diagnosisContainer=model
         diagnosisProperty="preOpDiagnoses"
@@ -32,6 +32,7 @@
     </div>
     {{operative-procedures model=model procedureList=procedureList}}
     {{em-text property="additionalNotes" label=(t 'operationReport.labels.additionalNotes')}}
+    {{upcoming-appointments patient=model.patient}}
     {{custom-form-manager model=model formType="operativePlan"}}
   {{/em-form}}
 {{/edit-panel}}

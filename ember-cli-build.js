@@ -23,7 +23,6 @@ module.exports = function(defaults) {
   app.import('bower_components/JsBarcode/CODE128.js');
   app.import('bower_components/JsBarcode/JsBarcode.js');
   app.import('vendor/dymo/DYMO.Label.Framework.1.2.6.js');
-  app.import('bower_components/moment/moment.js');
   app.import('bower_components/typeahead.js/dist/typeahead.bundle.js');
   app.import('bower_components/pikaday/pikaday.js');
   app.import('bower_components/filer.js/src/filer.js');
