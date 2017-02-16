@@ -36,6 +36,7 @@ export default AbstractEditController.extend({
       let pouchDbId = get(this, 'database').getPouchId(get(model, 'id'), modelName);
       fileSystem.addFile(photoFile, saveToDir, pouchDbId).then((fileEntry) => {
         model.setProperties({
+          localFile: true,
           fileName: fileEntry.fullPath,
           url: fileEntry.toURL()
         });
@@ -58,11 +59,11 @@ export default AbstractEditController.extend({
     set(this, 'newModel', isNew);
     if (isNew) {
       model.setProperties({
-        file: Ember.Object.create({
+        files: [Ember.Object.create({
           content_type: photoFile.type,
           data: photoFile,
           name: 'file'
-        }),
+        })],
         isImage
       });
     }

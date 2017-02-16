@@ -11,10 +11,14 @@ export default AbstractModel.extend({
   /* Temporarily store file as attachment until it gets uploaded to the server */
   caption: attr('string'),
   coverImage: attr('boolean'),
-  file: attr('attachment'),
+  files: attr('attachments', {
+    defaultValue() {
+      return [];
+    }
+  }),
   fileName: attr('string'),
   isImage: DS.attr('boolean', { defaultValue: false }),
-  localFile: DS.attr('boolean', { defaultValue: true }),
+  localFile: DS.attr('boolean', { defaultValue: false }),
   url: attr('string'),
 
   // Associations
