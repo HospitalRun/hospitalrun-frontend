@@ -65,13 +65,13 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
       if (this.get('model.isNew')) {
 
         if (this.get('model.visit.outPatient')) {
-          this.get('model').set('reportType', 'OutPatient');
+          this.get('model').set('reportType', 'OPD Report');
           let appointmentDate = this.get('nextAppointment').get('content');
           this.get('model').set('nextAppointment', appointmentDate);
           this.get('model').set('diagnosis', this.get('diagnosis'));
         } else {
           // update discharge report properties
-          this.get('model').set('reportType', 'Discharge');
+          this.get('model').set('reportType', 'Discharge Report');
         }
       }
       resolve();
