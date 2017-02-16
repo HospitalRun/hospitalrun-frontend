@@ -127,7 +127,7 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
         dateAdded: new Date(),
         addedBy: this.getUserName(true),
         addedByDisplayName: this.getUserName(false),
-        saveToDir: `${get(this, 'model.id')}/attachments/`
+        saveToDir: `/incidents/${get(this, 'model.id')}/`
       });
       this.send('openModal', 'incident.attachment', newNote);
     },
