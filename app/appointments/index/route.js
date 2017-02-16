@@ -5,6 +5,7 @@ import { translationMacro as t } from 'ember-i18n';
 export default AbstractIndexRoute.extend({
   editReturn: 'appointments.index',
   modelName: 'appointment',
+  newButtonText: t('appointments.buttons.newButton'),
   pageTitle: t('appointments.thisWeek'),
 
   _getStartKeyFromItem(item) {

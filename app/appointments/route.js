@@ -36,6 +36,9 @@ export default AbstractModuleRoute.extend(UserSession, {
     name: 'locationList',
     findArgs: ['lookup', 'visit_location_list']
   }, {
+    name: 'surgeryLocationList',
+    findArgs: ['lookup', 'procedure_locations']
+  }, {
     name: 'visitTypesList',
     findArgs: ['lookup', 'visit_types']
   }]
