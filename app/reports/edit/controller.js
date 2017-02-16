@@ -90,7 +90,7 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
 
   actions: {
     printReport() {
-
+      window.print();
     }
   }
 
