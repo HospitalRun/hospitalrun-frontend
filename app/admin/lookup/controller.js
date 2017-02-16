@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import BillingCategories from 'hospitalrun/mixins/billing-categories';
+import csvParse from 'npm:csv-parse';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import UnitTypes from 'hospitalrun/mixins/unit-types';
@@ -7,7 +8,7 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 import { EKMixin, keyDown } from 'ember-keyboard';
 
 const {
-  computed
+  computed, get
 } = Ember;
 
 export default Ember.Controller.extend(BillingCategories, EKMixin,
@@ -291,6 +292,31 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
       return true;
     },
 
+    _importLookupList(file) {
+      let fileSystem = get(this, 'fileSystem');
+      let lookupTypeList = get(this, 'lookupTypeList');
+      let lookupValues = get(lookupTypeList, 'value');
+      fileSystem.fileToString(file).then((values) => {
+        csvParse(values, { trim: true }, (err, data) =>{
+          data.forEach((row) => {
+            let [newValue] = row;
+            if (!lookupValues.includes(newValue)) {
+              lookupValues.addObject(newValue);
+            }
+          });
+          lookupValues.sort();
+          let i18n = get(this, 'i18n');
+          let message = i18n.t('admin.lookup.alertImportListSaveMessage');
+          let title = i18n.t('admin.lookup.alertImportListSaveTitle');
+          lookupTypeList.save().then(() => {
+            this.displayAlert(title, message);
+            this.set('importFile');
+            this.set('model.importFileName');
+          });
+        });
+      });
+    },
+
     _sortValues(a, b) {
       return Ember.compare(a.toLowerCase(), b.toLowerCase());
     },
@@ -335,35 +361,14 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
         }
       },
       importList() {
-        let fileSystem = this.get('fileSystem');
         let fileToImport = this.get('importFile');
-        let lookupTypeList = this.get('lookupTypeList');
         if (!fileToImport || !fileToImport.type) {
           this.displayAlert(
             this.get('i18n').t('admin.lookup.alertImportListTitle'),
             this.get('i18n').t('admin.lookup.alertImportListMessage')
           );
         } else {
-          fileSystem.fileToDataURL(fileToImport).then(function(fileDataUrl) {
-            let dataUrlParts = fileDataUrl.split(',');
-            lookupTypeList.setProperties({
-              _attachments: {
-                file: {
-                  content_type: fileToImport.type,
-                  data: dataUrlParts[1]
-                }
-              },
-              importFile: true
-            });
-            lookupTypeList.save().then(function() {
-              this.displayAlert(
-                this.get('i18n').t('admin.lookup.alertImportListSaveTitle'),
-                this.get('i18n').t('admin.lookup.alertImportListSaveMessage'),
-                'refreshLookupLists');
-              this.set('importFile');
-              this.set('model.importFileName');
-            }.bind(this));
-          }.bind(this));
+          this._importLookupList(fileToImport);
         }
       },
       updateList() {
