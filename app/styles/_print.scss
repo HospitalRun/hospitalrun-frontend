@@ -1,4 +1,4 @@
-.print-section {
+.report-header {
   display: none;
 }
 
@@ -17,9 +17,11 @@
     width: 90%;
   }
 
-  .print-section {
+  .report-header {
     display: block;
     text-align: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #d2dae3;
   }
 
   .panel-footer,
@@ -32,4 +34,43 @@
   .patient-history-heading {
     border-bottom: 1px solid $black;
   }
+
+  .report-logo {
+    height: 80px;
+  }
+
+  .opd-report {
+    font-size: 0.8em;
+  }
+
+  .opd-report .patient-summary {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #d2dae3;
+  }
+
+  .opd-report input {
+    padding: 5px;
+    font-size: 0.8em;
+    border: none;
+  }
+
+  .opd-report .panel-primary {
+    position: absolute;
+    left: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .print-hide {
+    display: none;
+  }
+
+  .view-top-bar {
+    display: none;
+  }
+
+  .view-sub-bar {
+    display: none;
+  }
+
 }
