@@ -15,7 +15,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, Navigation, SetupUser
       if (role != null) {
         let userRole = this.findUserRole(role);
         if (userRole != null && userRole.defaultRoute != null) {
-          let navelement = this.findNavItemByRoute(userRole.defaultRoute);   
+          let navelement = this.findNavItemByRoute(userRole.defaultRoute);
           // console.log(`Navigating to ${navelement.route}`);
           // this.controllerFor('navigation').send('navAction', navelement);
           return this.transitionTo(navelement.route);
