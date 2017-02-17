@@ -81,6 +81,20 @@
       <ul class="nav nav-pills tab-nav" role="tablist">
         <li role="presentation" class="active"><a href="#notes" role="tab" data-toggle="pill">{{t 'incident.titles.notes'}}</a></li>
         <li role="presentation"><a href="#attachments" role="tab" data-toggle="pill">{{t 'incident.titles.attachments'}}</a></li>
+        {{#each customFormsToDisplay as |customForm index|}}
+          <li role="presentation">
+            <a href={{concat '#customForm' index}} role="tab" data-toggle="pill">
+              {{customForm.form.name}}
+            </a>
+          </li>
+        {{/each}}
+        {{#if showAddFormButton}}
+          <li role="presentation">
+            <a  role="tab" data-toggle="pill" {{action 'addCustomForm' bubbles=false }}>
+              {{t 'incident.buttons.addForm'}}
+            </a>
+          </li>
+        {{/if}}
       </ul>
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="notes">
@@ -146,7 +160,15 @@
             </div>
           </div>
         </div>
-
+        {{#each customFormsToDisplay as |customForm index|}}
+          <div role="tabpanel" class="tab-pane" id={{concat 'customForm' index}}>
+            <div class="panel">
+              <div class="panel-body detail-section-content">
+                {{custom-form model=model form=customForm.form propertyPrefix=customForm.propertyPrefix}}
+              </div>
+            </div>
+          </div>
+        {{/each}}
       </div>
     {{/if}}
   {{/em-form}}

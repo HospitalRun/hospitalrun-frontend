@@ -139,6 +139,7 @@ export default {
         formName: 'Form Name',
         formType: 'Form Type',
         includeOtherOption: 'Include Other Option',
+        incidentFormType: 'Incident',
         label: 'Label',
         newForm: 'New Form',
         operativePlanFormType: 'Operative Plan and Report',
@@ -737,6 +738,7 @@ export default {
     buttons: {
       add: 'Add',
       addItem: 'Add Item',
+      addForm: '+ Add Form',
       cancel: 'Cancel',
       delete: 'Delete',
       download: 'Download',
