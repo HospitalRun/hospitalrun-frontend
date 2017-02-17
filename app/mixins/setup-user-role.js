@@ -3,6 +3,7 @@ export default Ember.Mixin.create({
   setupUserRole() {
     let session = this.get('session');
     let userRole = session.get('data.authenticated.role');
+    session.set('data.authenticated.userRole', userRole);
     return this.get('store').find('user-role', userRole.dasherize()).then((userCaps) => {
       session.set('data.authenticated.userCaps', userCaps.get('capabilities'));
       let sessionStore = session.get('store');
