@@ -13,20 +13,20 @@
       {{/if}}
       {{#if model.visit.patient.displayPatientId}}
         <div class="ps-info-group patient-name print-hide">
-          <label class="ps-info-label">Patient Id</label>
+          <label class="ps-info-label">{{t 'reports.form.patientId' }}</label>
           <input class="form-control" value={{model.visit.patient.displayPatientId}}>
         </div>
       {{/if}}
-      {{#if model.visit.patient.dateOfBirth}}
+      {{#if model.visit.startDate}}
         <div class="ps-info-group">
-          <label class="ps-info-label">Date Of Visit</label>
+          <label class="ps-info-label">{{t 'reports.form.visitDate' }}</label>
           <input class="form-control" value={{date-format model.visit.startDate format="DD/MM/YYYY hh:mm a"}}>
         </div>
       {{/if}}
 
       {{#if diagnosis.primary.length}}
         <div class="ps-info-group">
-          <label class="ps-info-label">Primary Diagnosis</label>
+          <label class="ps-info-label">{{t 'reports.form.primaryDiagnosis' }}</label>
           <ul>
             {{#each diagnosis.primary as |item|}}
               <li>{{item.diagnosis}}</li>
@@ -37,7 +37,7 @@
 
       {{#if diagnosis.secondary.length}}
         <div class="ps-info-group">
-          <label class="ps-info-label">Secondary Diagnosis</label>
+          <label class="ps-info-label">{{t 'reports.form.secondaryDiagnosis' }}</label>
           <ul>
             {{#each diagnosis.secondary as |item|}}
               <li>{{item.diagnosis}}</li>
@@ -48,7 +48,7 @@
 
       {{#if model.visit.procedures.length}}
         <div class="ps-info-group">
-          <label class="ps-info-label">Procedures</label>
+          <label class="ps-info-label">{{t 'reports.form.procedures' }}</label>
           <ul>
             {{#each model.visit.procedures as |item|}}
               <li>{{item.description}}</li>
@@ -59,7 +59,7 @@
 
       {{#if model.visit.labs.length}}
         <div class="ps-info-group">
-          <label class="ps-info-label">Labs</label>
+          <label class="ps-info-label">{{t 'reports.form.labs' }}</label>
           <ul>
             {{#each model.visit.labs as |item|}}
               <li>{{item.labType.name}}-{{item.result}} ({{item.status}})</li>
@@ -70,7 +70,7 @@
 
       {{#if model.visit.imaging.length}}
         <div class="ps-info-group">
-          <label class="ps-info-label">Images</label>
+          <label class="ps-info-label">{{t 'reports.form.images' }}</label>
           <ul>
             {{#each model.visit.imaging as |item|}}
               <li>{{item.imagingType.name}}-{{item.result}} ({{item.status}})</li>
@@ -82,14 +82,14 @@
 
       {{#if nextAppointment}}
         <div class="ps-info-group">
-          <label class="ps-info-label">Date Of Next Appointment</label>
+          <label class="ps-info-label">{{t 'reports.form.nextAppointmentDate' }}</label>
           <input class="form-control" value={{date-format nextAppointment format="DD/MM/YYYY hh:mm a"}}>
         </div>
       {{/if}}
 
       {{#if model.visit.patient.operativePlans.length}}
         <div class="ps-info-group">
-          <label class="ps-info-label">Operative Plans</label>
+          <label class="ps-info-label">{{t 'reports.form.operativePlan' }}</label>
           <ul>
             {{#each model.visit.patient.operativePlans as |item|}}
               {{#each item.procedures as |p|}}
@@ -107,7 +107,5 @@
   </div>
 
 {{else}}
-  <div>
-    Show Discharge Report Form
-  </div>
+
 {{/if}}

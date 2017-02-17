@@ -861,7 +861,8 @@ export default {
       statusDischarged: 'Discharged',
       statusCheckedIn: 'Checked In',
       statusCheckedOut: 'Checked Out',
-      createNewPatient: 'Create New Patient'
+      createNewPatient: 'Create New Patient',
+      reportType: 'Report type'
     },
     navigation: {
       charges: 'Charges',
@@ -1105,6 +1106,17 @@ export default {
     titles: {
       preview: 'Preview Report',
       saved: 'The report has been saved'
+    },
+    form: {
+      patientId: 'Patient Id',
+      visitDate: 'Date of Visit',
+      primaryDiagnosis: 'Primary Diagnosis',
+      secondaryDiagnosis: 'Secondary Diagnosis',
+      procedures: 'Procedures',
+      labs: 'Labs',
+      images: 'Images',
+      nextAppointmentDate: 'Date Of Next Appointment',
+      operativePlan: 'Operative Plans'
     },
     opd: {
       titles: {

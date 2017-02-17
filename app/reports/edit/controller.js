@@ -11,7 +11,7 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
 
   newReport: false,
 
-  diagnosis: Ember.computed('model.patient', function () {
+  diagnosis: Ember.computed('model.patient', function() {
     let container = this.get('model.patient');
     let result = {
       primary: this.getDiagnoses(container, true, false),
@@ -20,7 +20,7 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
     return result;
   }),
 
-  nextAppointment: Ember.computed('model.patient.id', 'model.visit.startDate', function () {
+  nextAppointment: Ember.computed('model.patient.id', 'model.visit.startDate', function() {
     let patientId = this.get('model.patient.id');
     let visitDate = this.get('model.visit.startDate');
     let maxValue = this.get('maxValue');
@@ -30,8 +30,8 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
         endkey: [patientId, maxValue, maxValue, maxValue]
       },
       mapReduce: 'appointments_by_patient'
-    }).then(function (result) {
-      let futureAppointments = result.filter(function (data) {
+    }).then(function(result) {
+      let futureAppointments = result.filter(function(data) {
         let startDate = data.get('startDate');
         return startDate && moment(startDate).isAfter(moment(visitDate), 'day');
       }).sortBy('startDate');
@@ -42,10 +42,10 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
       let res = appointment.get('startDate');
       return res;
     });
-    return DS.PromiseObject.create({promise});
+    return DS.PromiseObject.create({ promise });
   }),
 
-  additionalButtons: Ember.computed('model.{isNew}', function () {
+  additionalButtons: Ember.computed('model.{isNew}', function() {
     // let i18n = get(this, 'i18n');
     let isNew = this.get('model.isNew');
     if (!isNew) {
@@ -61,7 +61,7 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
   updateCapability: 'add_report',
 
   beforeUpdate() {
-    return new Ember.RSVP.Promise(function (resolve) {
+    return new Ember.RSVP.Promise(function(resolve) {
       if (this.get('model.isNew')) {
 
         if (this.get('model.visit.outPatient')) {
@@ -93,6 +93,5 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
       window.print();
     }
   }
-
 
 });
