@@ -267,14 +267,19 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
                 message: 'creating new patient first'
               });
             }
+            let outPatient = false;
             let visitType = newVisit.get('visitType');
             let visitStatus;
             if (visitType === 'Admission') {
               visitStatus = VisitStatus.ADMITTED;
             } else {
+              outPatient = true;
               visitStatus = VisitStatus.CHECKED_IN;
             }
-            newVisit.set('status', visitStatus);
+            newVisit.setProperties({
+              outPatient,
+              status: visitStatus
+            });
             if (this.get('model.checkIn')) {
               this._saveAssociatedAppointment(newVisit).then(() => {
                 this.saveNewDiagnoses().then(resolve, reject);
