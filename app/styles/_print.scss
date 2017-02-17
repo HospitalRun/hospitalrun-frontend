@@ -19,9 +19,9 @@
 
   .report-header {
     display: block;
-    text-align: center;
-    padding: 10px 0;
     border-bottom: 1px solid #d2dae3;
+    padding: 10px 0;
+    text-align: center;
   }
 
   .panel-footer,
@@ -40,7 +40,7 @@
   }
 
   .opd-report {
-    font-size: 0.8em;
+    font-size: .8em;
   }
 
   .opd-report .patient-summary {
@@ -49,9 +49,9 @@
   }
 
   .opd-report input {
+    border: 0;
     padding: 5px;
-    font-size: 0.8em;
-    border: none;
+    font-size: .8em;
   }
 
   .opd-report .panel-primary {
@@ -72,5 +72,4 @@
   .view-sub-bar {
     display: none;
   }
-
 }
