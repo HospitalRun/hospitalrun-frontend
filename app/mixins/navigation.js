@@ -345,15 +345,11 @@ export default Ember.Mixin.create({
 
   findNavItemByRoute: function(route) {
     return this.navItems.find(function(el) {
-      console.log(`Looking for ${route}`);
-      console.dir(el);
       if (el.route == route) {
-        console.log(`Found ${el.title}`);
         return el;
       } else {
         for (var j = 0; j < el.subnav.length; j++) {
           if (el.subnav[j].route == route) {
-            console.log(`Found ${el.subnav[j].title}`);
             return el.subnav[j];
           }
         }

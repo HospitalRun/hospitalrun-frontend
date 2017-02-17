@@ -12,26 +12,19 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, Navigation, SetupUser
     let session = this.get('session');
     if (session != null) {
       let role = session.get('data.authenticated.userRole');
-      console.log(`Looking for default route for ${role}`);
       if (role != null) {
         let userRole = this.findUserRole(role);
-        console.log('role: ');
-        console.dir(userRole);
         if (userRole != null && userRole.defaultRoute != null) {
           let navelement = this.findNavItemByRoute(userRole.defaultRoute);   
-          console.log('nav: ');
-          console.dir(navelement);
-          // this.controllerFor('navigation').set('allowSearch', false);
-          // console.log(`Navigating to ${navelement.defaultRoute}`);
-          // return this.transitionTo(navelement.defaultRoute);
-          console.log(`Navigating to ${navelement.route}`);
-          this.controllerFor('navigation').send('navAction', navelement);
+          // console.log(`Navigating to ${navelement.route}`);
+          // this.controllerFor('navigation').send('navAction', navelement);
+          return this.transitionTo(navelement.route);
         }
       } else {
-        console.log(`No ${role} on index route.`);
+        // console.log(`No ${role} on index route.`);
       }
     } else {
-      console.log('No session on index route.');
+      // console.log('No session on index route.');
     }
     return this._super(...arguments);
   },
