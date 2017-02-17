@@ -1,5 +1,7 @@
 {{#if model.visit.outPatient}}
-  {{#edit-panel editPanelProps=editPanelProps}}
+  <div class="opd-report">
+    {{partial "report-header"}}
+    {{#edit-panel editPanelProps=editPanelProps}}
     {{#em-form model=model submitButton=false }}
       {{#if model.visit}}
         {{patient-summary
@@ -10,7 +12,7 @@
         }}
       {{/if}}
       {{#if model.visit.patient.displayPatientId}}
-        <div class="ps-info-group patient-name">
+        <div class="ps-info-group patient-name print-hide">
           <label class="ps-info-label">Patient Id</label>
           <input class="form-control" value={{model.visit.patient.displayPatientId}}>
         </div>
@@ -102,6 +104,7 @@
 
     {{/em-form}}
   {{/edit-panel}}
+  </div>
 
 {{else}}
   <div>
