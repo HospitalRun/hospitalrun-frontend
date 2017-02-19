@@ -37,7 +37,7 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
   // Override delete action on controller; we must delete
   // all related records before deleting patient record
   // otherwise errors will occur
-  deletePatient: function() {
+  deletePatient() {
     let controller = this;
     let patient = this.get('model');
     let visits = this.getPatientVisits(patient);
@@ -58,7 +58,7 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
     });
   },
 
-  deleteVisits: function(visits) {
+  deleteVisits(visits) {
     let promises = [];
     visits.forEach(function(visit) {
       let labs = visit.get('labs');
@@ -90,7 +90,7 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
     });
   },
 
-  deleteInvoices: function(patientInvoices) {
+  deleteInvoices(patientInvoices) {
     return Ember.RSVP.resolve(patientInvoices).then(function(invoices) {
       let lineItems = Ember.A();
       invoices.forEach(function(i) {
@@ -108,7 +108,7 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
 
   actions: {
     // delete related records without modal dialogs
-    delete: function(patient) {
+    delete(patient) {
       let controller = this;
       this.send('closeModal');
       this.showProgressModal();

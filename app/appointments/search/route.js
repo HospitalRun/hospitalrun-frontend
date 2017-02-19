@@ -1,6 +1,7 @@
 import AppointmentIndexRoute from 'hospitalrun/appointments/index/route';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import Ember from 'ember';
+import moment from 'moment';
 import { translationMacro as t } from 'ember-i18n';
 
 export default AppointmentIndexRoute.extend(DateFormat, {
@@ -17,7 +18,7 @@ export default AppointmentIndexRoute.extend(DateFormat, {
     startKey: { refreshModel: true }
   },
 
-  _modelQueryParams: function(params) {
+  _modelQueryParams(params) {
     let { startDate } = params;
     let maxValue = this.get('maxValue');
     if (Ember.isEmpty(startDate)) {
@@ -36,7 +37,7 @@ export default AppointmentIndexRoute.extend(DateFormat, {
     };
   },
 
-  model: function(params) {
+  model(params) {
     return this._super(params).then(function(model) {
       model.setProperties({
         selectedAppointmentType: params.appointmentType,

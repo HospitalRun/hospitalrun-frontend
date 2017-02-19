@@ -114,6 +114,19 @@ Ember, by default uses [JSON API](http://jsonapi.org) as a JSON convention. [Cou
 
 [Ember components](http://emberjs.com/api/classes/Ember.Component.html) are reusable controls that you can integrate inside other pages/components.
 
+### Linter
+
+A linter is a small program that checks code for stylistic or programming errors. Linters are available for most syntaxes, from Python to HTML.
+
+Programming is hard. We are bound to make mistakes. The big advantage of using linter is that your code can be linted as you type (before saving your changes) and any errors are highlighted immediately, which is considerably easier than saving the file, switching to a terminal, running a linter, reading through a list of errors, then switching back to your editor to locate the errors!
+
+In addition, linters can help to enforce coding standards, find unused variables, find formatting discrepancies etc.
+
+**HospitalRun** uses the following linters:
+
+1. [ESLint](http://eslint.org/) for ECMAScript/JavaScript. You can find the ESLint User guide [here](http://eslint.org/docs/user-guide/).
+2. [stylelint](http://stylelint.io/) for Stylesheets. You can find stylelint User guide [here](http://stylelint.io/user-guide/).
+
 ### Using Local Cache
 
 The database of **HospitalRun** uses [CouchDB](http://couchdb.apache.org/) to store all of its data online.
@@ -136,3 +149,11 @@ The main reason for keeping two services of PouchDB on the client side is that k
 
 When there's a conflict in data, as long is the conflict occures between two different records or two different fields, the conflict resolution will be able to solve the conflict.
 If the conflict is between two versions of the same field, the later record value will apply.
+
+### Tests
+
+Travis CI is configured to run tests on GitHub, so when you open a pull requests the test suite will run automatically as a build which you can view in the merge box of the pull request. You can see the test output by clicking the `Details` link next to the build.
+
+To run the test suite locally, use `ember test` from the project root.
+
+New test should be added for any new features or views in the app. For more info about how to setup a new test, see the [Fixtures for Acceptance Tests](https://github.com/HospitalRun/hospitalrun-frontend#fixtures-for-acceptance-tests) section of the README.

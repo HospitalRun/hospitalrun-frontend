@@ -4,7 +4,7 @@ export default AbstractDeleteController.extend(PatientSubmodule, {
   title: 'Delete Request',
 
   actions: {
-    delete: function() {
+    delete() {
       this.deleteChildFromVisit('imaging');
     }
   }

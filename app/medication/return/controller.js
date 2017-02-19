@@ -3,11 +3,10 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import Ember from 'ember';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
-import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import SelectValues from 'hospitalrun/utils/select-values';
 
-export default AbstractEditController.extend(FulfillRequest, InventoryLocations, InventorySelection, PatientSubmodule, {
+export default AbstractEditController.extend(FulfillRequest, InventoryLocations, PatientSubmodule, {
   medicationController: Ember.inject.controller('medication'),
   medicationList: [],
 
@@ -76,7 +75,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     return this.get('patientMedicationList');
   }.property('setNewMedicationList', 'model.patient', 'model.visit'),
 
-  _finishUpdate: function() {
+  _finishUpdate() {
     let aisle = this.get('model.deliveryAisle');
     let location = this.get('model.deliveryLocation');
     let inventoryItem = this.get('model.inventoryItem');
@@ -94,12 +93,12 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   },
 
   actions: {
-    doneFulfillRequest: function() {
+    doneFulfillRequest() {
       let i18n = this.get('i18n');
       this.updateLookupLists();
       this.displayAlert(i18n.t('medication.alerts.returnedTitle'), i18n.t('medication.alerts.returnedMessage'), 'allItems');
     },
-    update: function() {
+    update() {
       let medication = this.get('model.medication');
       let quantity = this.get('model.quantity');
       if (!Ember.isEmpty(medication)) {

@@ -27,7 +27,7 @@ export default Ember.Controller.extend(EditPanelProps, {
   objectTypes: Ember.computed.map('objectTypeList', SelectValues.selectValuesMap),
 
   actions: {
-    query: function() {
+    query() {
       let fieldName = this.get('fieldName');
       let objectType = this.get('objectType');
       let queryValue = this.get('queryValue');

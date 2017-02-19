@@ -3,11 +3,11 @@ import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
 module('Acceptance | patient notes', {
-  beforeEach: function() {
+  beforeEach() {
     this.application = startApp();
   },
 
-  afterEach: function() {
+  afterEach() {
     Ember.run(this.application, 'destroy');
   }
 });
@@ -46,18 +46,15 @@ test('patient notes crud testing', function(assert) {
       click('button:contains(Ok)');
     });
     andThen(() => {
-      findWithAssert('button:contains(New Note)');
-      findWithAssert('button:contains(New Procedure)');
-      findWithAssert('button:contains(New Medication)');
-      findWithAssert('button:contains(New Lab)');
-      findWithAssert('button:contains(New Imaging)');
-      findWithAssert('button:contains(New Vitals)');
-      findWithAssert('button:contains(Add Item)');
+      click('[data-test-selector=notes-tab]');
+    });
+    andThen(() => {
       assert.equal(find('button:contains(New Note)').length, 1, 'New Note button in visible');
       click('button:contains(New Note)');
+      waitToAppear('.modal-dialog');
     });
     andThen(function() {
-      assert.equal(find('label:contains(Note)').length, 1, 'Notes modal appeared.');
+      assert.equal(find('.modal-title').text(), 'New Note for John Doe', 'Notes modal appeared');
       fillIn('.test-note-content textarea', 'This is a note.');
       fillIn('.test-note-attribution input', 'Dr. Nick');
       click('.modal-footer button:contains(Add)');

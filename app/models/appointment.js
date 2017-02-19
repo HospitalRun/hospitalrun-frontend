@@ -1,14 +1,12 @@
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import Ember from 'ember';
+import moment from 'moment';
 import PatientValidation from 'hospitalrun/utils/patient-validation';
 
 export default AbstractModel.extend({
+  // Attributes
   allDay: DS.attr(),
-  patient: DS.belongsTo('patient', {
-    async: false
-  }),
-  visits: DS.hasMany('visit'),
   provider: DS.attr('string'),
   location: DS.attr('string'),
   appointmentType: DS.attr('string'),
@@ -17,11 +15,16 @@ export default AbstractModel.extend({
   notes: DS.attr('string'),
   status: DS.attr('string', { defaultValue: 'Scheduled' }),
 
+  // Associations
+  patient: DS.belongsTo('patient', { async: false }),
+  visits: DS.hasMany('visit'),
+
+  // Formats
   longDateFormat: 'l h:mm A',
   shortDateFormat: 'l',
   timeFormat: 'h:mm A',
 
-  _getDateSpan: function(startDate, endDate, format) {
+  _getDateSpan(startDate, endDate, format) {
     let formattedStart = startDate.format(format);
     let formattedEnd = endDate.format(format);
     return `${formattedStart} - ${formattedEnd}`;
@@ -67,7 +70,7 @@ export default AbstractModel.extend({
   validations: {
     appointmentDate: {
       presence: {
-        if: function(object) {
+        if(object) {
           let appointmentType = object.get('appointmentType');
           return appointmentType !== 'Admission';
         }
@@ -82,16 +85,13 @@ export default AbstractModel.extend({
     appointmentType: {
       presence: true
     },
-    location: {
-      presence: true
-    },
     startDate: {
       presence: true
     },
     endDate: {
       acceptance: {
         accept: true,
-        if: function(object) {
+        if(object) {
           if (!object.get('hasDirtyAttributes')) {
             return false;
           }

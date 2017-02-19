@@ -15,11 +15,11 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
   }.property('model.isNew'),
 
   actions: {
-    cancel: function() {
+    cancel() {
       this.send('closeModal');
     },
 
-    update: function() {
+    update() {
       if (!Ember.isEmpty(this.get('model.value'))) {
         this.get('editController').send('updateValue', this.get('model'));
         this.send('closeModal');

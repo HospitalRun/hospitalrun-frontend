@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
+import moment from 'moment';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import PaginationProps from 'hospitalrun/mixins/pagination-props';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
@@ -30,7 +31,7 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
    * will be used.
    * @param reportAction {Object} action to fire on row when row is clicked.
    */
-  _addReportRow: function(row, skipFormatting, reportColumns, rowAction) {
+  _addReportRow(row, skipFormatting, reportColumns, rowAction) {
     let columnValue;
     let reportRows = this.get('reportRows');
     let reportRow = [];
@@ -57,7 +58,7 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
     }
     if (rowAction) {
       reportRows.addObject({
-        rowAction: rowAction,
+        rowAction,
         row: reportRow
       });
     } else {
@@ -71,7 +72,7 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
    * optional, if not set, the property reportColumns on the controller
    * will be used.
    */
-  _finishReport: function(reportColumns) {
+  _finishReport(reportColumns) {
     this.set('showReportResults', true);
     this.set('offset', 0);
     this._setReportHeaders(reportColumns);
@@ -80,7 +81,7 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
     this.closeProgressModal();
   },
 
-  _generateExport: function() {
+  _generateExport() {
     let csvRows = [];
     let reportHeaders = this.get('reportHeaders');
     let dataArray = [reportHeaders];
@@ -111,14 +112,14 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
     this.set('csvExport', uriContent);
   },
 
-  _notifyReportError: function(errorMessage) {
-    let alertMessage = 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.';
+  _notifyReportError(errorMessage) {
+    let i18n = this.get('i18n');
     this.closeProgressModal();
-    this.displayAlert('Error Generating Report', alertMessage);
+    this.displayAlert(i18n.t('alerts.reportError'), i18n.t('messages.reportError'));
     throw new Error(errorMessage);
   },
 
-  _setReportHeaders: function(reportColumns) {
+  _setReportHeaders(reportColumns) {
     let reportHeaders = [];
     if (Ember.isEmpty(reportColumns)) {
       reportColumns = this.get('reportColumns');
@@ -131,7 +132,7 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
     this.set('reportHeaders', reportHeaders);
   },
 
-  _setReportTitle: function() {
+  _setReportTitle() {
     let endDate = this.get('endDate');
     let formattedEndDate = '';
     let formattedStartDate = '';
@@ -144,29 +145,42 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
 
     let reportDesc = reportTypes.findBy('value', reportType);
     if (Ember.isEmpty(startDate)) {
-      this.set('reportTitle', `${reportDesc.name} Report ${formattedEndDate}`);
+      this.set('reportTitle', this.get('i18n').t(
+        'inventory.reports.titleSingleDate',
+        {
+          name: reportDesc.name,
+          date: formattedEndDate
+        }
+      ));
     } else {
       formattedStartDate = moment(startDate).format('l');
-      this.set('reportTitle', `${reportDesc.name} Report ${formattedStartDate} - ${formattedEndDate}`);
+      this.set('reportTitle', this.get('i18n').t(
+        'inventory.reports.titleDateRange',
+        {
+          name: reportDesc.name,
+          startDate: formattedStartDate,
+          endDate: formattedEndDate
+        }
+      ));
     }
   },
 
   actions: {
-    firstPage: function() {
+    firstPage() {
       this.set('offset', 0);
     },
 
-    nextPage: function() {
+    nextPage() {
       let limit = this.get('limit');
       this.incrementProperty('offset', limit);
     },
 
-    previousPage: function() {
+    previousPage() {
       let limit = this.get('limit');
       this.decrementProperty('offset', limit);
     },
 
-    lastPage: function() {
+    lastPage() {
       let reportRowLength = this.get('reportRows.length');
       let limit = this.get('limit');
       let pages = parseInt(reportRowLength / limit);

@@ -1,6 +1,7 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
+import moment from 'moment';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import UserSession from 'hospitalrun/mixins/user-session';
@@ -22,17 +23,17 @@ export default AbstractEditController.extend(IsUpdateDisabled, UserSession, Pati
     }
   }.property('model.patient.displayName'),
   updateCapability: 'add_note',
-  beforeUpdate: function() {
+  beforeUpdate() {
     this.set('model.date', new Date());
     this.set('model.createdBy', this.getUserName());
     return Ember.RSVP.Promise.resolve();
   },
-  afterUpdate: function() {
+  afterUpdate() {
     this.send(this.get('updateAction'), this.get('model'));
     this.send(this.get('cancelAction'));
   },
   actions: {
-    changeVisit: function() {
+    changeVisit() {
       let selectEl = $('select[name="note-visits"]').get(0);
       let { selectedIndex } = selectEl;
       let content = this.get('patientVisitsForSelect');

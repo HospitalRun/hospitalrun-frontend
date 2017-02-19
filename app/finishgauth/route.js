@@ -5,11 +5,11 @@ export default Ember.Route.extend(SetupUserRole, {
   config: Ember.inject.service(),
   database: Ember.inject.service(),
   session: Ember.inject.service(),
-  model: function(params) {
+  model(params) {
     if (params.k && params.s1 && params.s2 && params.t) {
       this.get('session').authenticate('authenticator:custom', {
         google_auth: true,
-        params: params
+        params
       });
       let oauthConfigs = {
         config_consumer_key: params.k,

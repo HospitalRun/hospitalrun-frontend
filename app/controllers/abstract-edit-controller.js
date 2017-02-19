@@ -3,6 +3,9 @@ import EditPanelProps from 'hospitalrun/mixins/edit-panel-props';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import UserSession from 'hospitalrun/mixins/user-session';
+
+const { get } = Ember;
+
 export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, UserSession, {
   cancelAction: 'allItems',
 
@@ -17,7 +20,11 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
   }.property('model.hasDirtyAttributes'),
 
   disabledAction: function() {
-    let isValid = this.get('model.isValid');
+    let model = this.get('model');
+    if (model.validate) {
+      model.validate().catch(Ember.K);
+    }
+    let isValid = model.get('isValid');
     if (!isValid) {
       return 'showDisabledDialog';
     }
@@ -60,7 +67,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    * @param listsToUpdate array the lookup lists that need to be saved.
    * @param listsName string name of the list to add the value to.
    */
-  _addValueToLookupList: function(lookupList, value, listsToUpdate, listName) {
+  _addValueToLookupList(lookupList, value, listsToUpdate, listName) {
     let lookupListValues = lookupList.get('value');
     if (!Ember.isArray(lookupListValues)) {
       lookupListValues = [];
@@ -76,18 +83,18 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
     }
   },
 
-  _cancelUpdate: function() {
+  _cancelUpdate() {
     let cancelledItem = this.get('model');
     cancelledItem.rollbackAttributes();
   },
 
   actions: {
-    cancel: function() {
+    cancel() {
       this._cancelUpdate();
       this.send(this.get('cancelAction'));
     },
 
-    returnTo: function() {
+    returnTo() {
       this._cancelUpdate();
       let returnTo = this.get('model.returnTo');
       let returnToContext = this.get('model.returnToContext');
@@ -98,8 +105,12 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
       }
     },
 
-    showDisabledDialog: function() {
-      this.displayAlert('Warning!!!!', 'Please fill in required fields (marked with *) and correct the errors before saving.');
+    showDisabledDialog() {
+      let i18n = this.get('i18n');
+      this.displayAlert(
+        i18n.t('alerts.warningExclamation'),
+        i18n.t('messages.requiredFieldsCorrectErrors')
+      );
     },
 
     /**
@@ -107,17 +118,25 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
      * @param skipAfterUpdate boolean (optional) indicating whether or not
      * to skip the afterUpdate call.
      */
-    update: function(skipAfterUpdate) {
+    update(skipAfterUpdate) {
       try {
         this.beforeUpdate().then(() => {
           this.saveModel(skipAfterUpdate);
         }).catch((err) => {
           if (!err.ignore) {
-            this.displayAlert('Error!!!!', `An error occurred while attempting to save: ${JSON.stringify(err)}`);
+            let i18n = this.get('i18n');
+            this.displayAlert(
+              i18n.t('alerts.errorExclamation'),
+              i18n.t('messages.saveActionException', { message: JSON.stringify(err) })
+            );
           }
         });
       } catch(ex) {
-        this.displayAlert('Error!!!!', `An error occurred while attempting to save: ${ex}`);
+        let i18n = this.get('i18n');
+        this.displayAlert(
+          i18n.t('alerts.errorExclamation'),
+          i18n.t('messages.saveActionException', { message: JSON.stringify(ex) })
+        );
       }
     }
   },
@@ -126,13 +145,13 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    * Override this function to perform logic after record update
    * @param record the record that was just updated.
    */
-  afterUpdate: function() {},
+  afterUpdate() {},
 
   /**
    * Override this function to perform logic before record update.
    * @returns {Promise} Promise that resolves after before update is done.
    */
-  beforeUpdate: function() {
+  beforeUpdate() {
     return Ember.RSVP.Promise.resolve();
   },
 
@@ -141,19 +160,21 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    * @param skipAfterUpdate boolean (optional) indicating whether or not
    * to skip the afterUpdate call.
    */
-  saveModel: function(skipAfterUpdate) {
-    this.get('model').save().then(function(record) {
+  saveModel(skipAfterUpdate) {
+    get(this, 'model').save().then((record) => {
       this.updateLookupLists();
       if (!skipAfterUpdate) {
         this.afterUpdate(record);
       }
-    }.bind(this));
+    }).catch((error) => {
+      this.send('error', error);
+    });
   },
 
   /**
    * Update any new values added to a lookup list
    */
-  updateLookupLists: function() {
+  updateLookupLists() {
     let lookupLists = this.get('lookupListsToUpdate');
     let listsToUpdate = Ember.A();
     if (!Ember.isEmpty(lookupLists)) {
