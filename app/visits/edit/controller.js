@@ -9,7 +9,6 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitStatus from 'hospitalrun/utils/visit-statuses';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
-import { translationMacro as t } from 'ember-i18n';
 
 const {
   computed,
@@ -437,24 +436,11 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     },
 
     newReport() {
-      let that = this;
-      this._addChildObject('reports.edit', (newRoute) => {
-        let controller = newRoute.controllerFor('visits');
-        let isOutPatient = that.get('model').get('outPatient');
-        controller.set('currentScreenTitle', isOutPatient ? t('reports.opd.titles.new') : t('reports.discharge.titles.new'));
-      });
+      this._addChildObject('reports.edit');
     },
 
     editReport() {
-      let that = this;
-      this.transitionToRoute('reports.edit', this.get('report.id'))
-        .then(function(newRoute) {
-          let controller = newRoute.controllerFor('visits');
-          newRoute.currentModel.setProperties({ returnToVisit: that.get('model.id')
-          });
-          let isOutPatient = that.get('model').get('outPatient');
-          controller.set('currentScreenTitle', isOutPatient ? t('reports.opd.titles.edit') : t('reports.discharge.titles.edit'));
-        });
+      this.transitionToRoute('reports.edit', this.get('report.id'));
     },
 
     newAppointment() {
