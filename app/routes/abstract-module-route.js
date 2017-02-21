@@ -85,7 +85,7 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
   /**
    * Override this function to generate an id for a new record
    * @return a promise that will resolved to a generated id;default is null which means that an
-   * id will be automatically generated via Ember data.
+   * id will be automatically generated via Ember data.8
    */
   generateId() {
     return Ember.RSVP.resolve(null);
@@ -109,7 +109,7 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
             if (item.state === 'fulfilled') {
               this.set(this.additionalModels[index].name, item.value);
             }
-          }.bind(this));
+          });
           resolve();
         }.bind(this), reject);
       }.bind(this), `Additional Models for ${this.get('moduleName')}`);
@@ -134,9 +134,9 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
     let propsToSet = this.getProperties('additionalButtons', 'currentScreenTitle', 'newButtonAction', 'newButtonText', 'sectionTitle', 'subActions');
     currentController.setProperties(propsToSet);
     if (!Ember.isEmpty(this.additionalModels)) {
-      this.additionalModels.forEach(function(item) {
+      this.additionalModels.forEach((item) => {
         controller.set(item.name, this.get(item.name));
-      }.bind(this));
+      });
     }
     this._super(controller, model);
   }
