@@ -20,8 +20,8 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
     return result;
   }),
 
-  nextAppointment: Ember.computed('model.patient.id', 'model.visit.startDate', function() {
-    let patientId = this.get('model.patient.id');
+  nextAppointment: Ember.computed('model', function() {
+    let patientId = this.get('model.visit.patient.id');
     let visitDate = this.get('model.visit.startDate');
     let maxValue = this.get('maxValue');
     let promise = this.store.query('appointment', {
@@ -38,7 +38,7 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
       if (!futureAppointments.length) {
         return '';
       }
-      let [appointment] = [futureAppointments];
+      let [appointment] = futureAppointments;
       let res = appointment.get('startDate');
       return res;
     });

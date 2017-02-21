@@ -1108,7 +1108,6 @@ export default {
       saved: 'The report has been saved'
     },
     form: {
-      patientId: 'Patient Id',
       visitDate: 'Date of Visit',
       primaryDiagnosis: 'Primary Diagnosis',
       secondaryDiagnosis: 'Secondary Diagnosis',
@@ -1116,7 +1115,7 @@ export default {
       labs: 'Labs',
       images: 'Images',
       nextAppointmentDate: 'Date Of Next Appointment',
-      operativePlan: 'Operative Plans'
+      operativePlan: 'Planned Procedures'
     },
     opd: {
       titles: {
