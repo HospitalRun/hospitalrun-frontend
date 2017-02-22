@@ -37,6 +37,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     }
   }),
   noReport: false,
+  nextAppointment: null,
   canAddAppointment: computed('model.isNew', function() {
     return (!this.get('model.isNew') && this.currentUserCan('add_appointment'));
   }),
@@ -436,6 +437,14 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     },
 
     newReport() {
+      let next = this.get('nextAppointment.content');
+      if (!this.get('model.outPatient') && !next) {
+        let i18n = this.get('i18n');
+        let updateMesage = i18n.t('reports.messages.followup');
+        let updateTitle = i18n.t('reports.titles.followup');
+        this.displayAlert(updateTitle, updateMesage);
+        return false;
+      }
       this._addChildObject('reports.edit');
     },
 

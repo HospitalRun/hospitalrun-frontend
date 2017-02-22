@@ -21,7 +21,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
     });
   },
 
-  getPatientFutureAppointment (visit) {
+  getPatientFutureAppointment(visit) {
     let patientId = visit.get('patient.id');
     let visitDate = visit.get('startDate');
     let maxValue = this.get('maxValue');

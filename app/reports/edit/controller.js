@@ -3,7 +3,7 @@ import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
-import PatientVisit from 'hospitalrun/mixins/patient-visits'
+import PatientVisit from 'hospitalrun/mixins/patient-visits';
 
 export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis, PouchDbMixin, PatientVisit, {
   lookupListsToUpdate: [{
@@ -26,7 +26,7 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
   }),
 
   nextAppointment: Ember.computed('model', function() {
-     return this.getPatientFutureAppointment(this.get('model.visit'))
+    return this.getPatientFutureAppointment(this.get('model.visit'));
   }),
 
   additionalButtons: Ember.computed('model.{isNew}', function() {
