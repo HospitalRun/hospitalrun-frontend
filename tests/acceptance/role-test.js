@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
+import { PREDEFINED_USER_ROLES } from 'hospitalrun/mixins/user-roles';
 
 module('Acceptance | roles', {
   beforeEach() {
@@ -51,6 +52,29 @@ test('visiting /admin/roles', function(assert) {
     andThen(function() {
       assert.equal(currentURL(), '/appointments/edit/new', 'Doctor can now navigate to new appointments');
       assert.equal(find('.view-current-title').text(), 'New Appointment', 'New appointment screen displays');
+    });
+  });
+});
+
+PREDEFINED_USER_ROLES.forEach((role) => {
+  test(`Testing User Role homescreen for ${role.name}`, (assert) =>{
+    runWithPouchDump('default', () => {
+      authenticateUser({
+        roles: role.roles,
+        role: role.name,
+        authenticated: {
+          role: role.name
+        }
+      });
+      visit('/');
+      andThen(() => {
+        let defaultURL = role.defaultRoute.replace('.index', '');
+        if (defaultURL === 'users') {
+          defaultURL = 'admin/users'; // Special use case for users because it actually sits under admin.
+        }
+        assert.equal(currentURL(), `/${defaultURL}`, `Correct homepage displays for role ${role.name}`);
+        invalidateSession();
+      });
     });
   });
 });
