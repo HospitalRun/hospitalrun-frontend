@@ -1,6 +1,5 @@
-{{#if model.visit.outPatient}}
+{{partial "report-header"}}
   <div class="opd-report">
-    {{partial "report-header"}}
     {{#edit-panel editPanelProps=editPanelProps}}
     {{#em-form model=model submitButton=false }}
       {{#if model.visit}}
@@ -17,6 +16,37 @@
           <p class="ps-info-label">{{t 'reports.form.visitDate' }}</p>
           {{date-format model.visit.startDate format="DD/MM/YYYY hh:mm a"}}
         </div>
+      {{/if}}
+
+      {{#if model.visit.outPatient}}
+        {{else}}
+        <div class="ps-info-group">
+          <p class="ps-info-label">{{t 'reports.form.dischargeDate' }}</p>
+          {{date-format model.reportDate format="DD/MM/YYYY hh:mm a"}}
+        </div>
+      {{/if}}
+
+      {{#if model.visit.outPatient}}
+      {{else}}
+        <div class="row">
+          {{select-or-typeahead className="col-sm-4" property="surgeon"
+           label=(t "operativePlan.labels.surgeon") list=physicianList
+           selection=model.surgeon
+           class="plan-surgeon"
+          }}
+        </div>
+      {{/if}}
+
+      {{#if model.visit.outPatient}}
+      {{else}}
+        {{#if model.visit.notes}}
+          <div class="ps-info-group">
+            <label class="ps-info-label">{{t 'reports.form.notes' }}</label>
+            <ul>
+                <li>{{model.visit.notes}}</li>
+            </ul>
+          </div>
+        {{/if}}
       {{/if}}
 
       {{#if diagnosis.primary.length}}
@@ -46,7 +76,7 @@
           <label class="ps-info-label">{{t 'reports.form.procedures' }}</label>
           <ul>
             {{#each model.visit.procedures as |item|}}
-              <li>{{item.description}}</li>
+              <li>{{item.description}} {{#if item.procedureDate }} - {{date-format item.procedureDate format="DD/MM/YYYY"}} {{/if}}</li>
             {{/each}}
           </ul>
         </div>
@@ -95,12 +125,14 @@
         </div>
       {{/if}}
 
-      {{custom-form-manager model=model formType="opdReport"}}
+      {{#if model.visit.outPatient}}
+        {{custom-form-manager model=model formType="opdReport"}}
+      {{else}}
+
+      {{/if}}
+
+
 
     {{/em-form}}
   {{/edit-panel}}
   </div>
-
-{{else}}
-
-{{/if}}

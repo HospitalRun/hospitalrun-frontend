@@ -7,9 +7,15 @@ import DS from 'ember-data';
 import moment from 'moment';
 
 export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis, PouchDbMixin, {
-  lookupListsToUpdate: [],
+  lookupListsToUpdate: [{
+    name: 'physicianList',
+    property: 'model.surgeon',
+    id: 'physician_list'
+  }],
 
+  visitsController: Ember.inject.controller('visits'),
   newReport: false,
+  physicianList: Ember.computed.alias('visitsController.physicianList'),
 
   diagnosis: Ember.computed('model.patient', function() {
     let container = this.get('model.patient');
@@ -72,6 +78,9 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
         } else {
           // update discharge report properties
           this.get('model').set('reportType', 'Discharge Report');
+          // check that doctor exists
+          // check that next appointment exist
+          //
         }
       }
       resolve();
