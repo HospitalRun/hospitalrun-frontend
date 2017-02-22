@@ -7,7 +7,7 @@ export default AbstractModel.extend({
   customForms: DS.attr('custom-forms'),
   reportType: DS.attr('string'),
   nextAppointment: DS.attr('date'),
-  diagnosis: DS.attr(),
+  surgeon: DS.attr('string'),
 
   // Associations
   visit: DS.belongsTo('visit', { async: false }),
@@ -19,6 +19,15 @@ export default AbstractModel.extend({
 
     reportDate: {
       presence: true
+    },
+
+    surgeon: {
+      presence: {
+        'if'(object) {
+          return !object.get('visit.outPatient');
+        },
+        message: 'Please select a surgeon'
+      }
     }
   }
 });
