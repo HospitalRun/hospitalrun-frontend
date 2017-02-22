@@ -69,18 +69,12 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
   beforeUpdate() {
     return new Ember.RSVP.Promise(function(resolve) {
       if (this.get('model.isNew')) {
-
+        let appointmentDate = this.get('nextAppointment').get('content');
+        this.get('model').set('nextAppointment', appointmentDate);
         if (this.get('model.visit.outPatient')) {
           this.get('model').set('reportType', 'OPD Report');
-          let appointmentDate = this.get('nextAppointment').get('content');
-          this.get('model').set('nextAppointment', appointmentDate);
-          this.get('model').set('diagnosis', this.get('diagnosis'));
         } else {
-          // update discharge report properties
           this.get('model').set('reportType', 'Discharge Report');
-          // check that doctor exists
-          // check that next appointment exist
-          //
         }
       }
       resolve();
