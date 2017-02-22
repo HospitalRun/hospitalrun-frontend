@@ -1104,7 +1104,7 @@ export default {
   },
   reports: {
     titles: {
-      preview: 'Preview Report',
+      followup: 'Create Followup appointment',
       saved: 'The report has been saved'
     },
     form: {
@@ -1132,7 +1132,7 @@ export default {
       }
     },
     messages: {
-      deleteMedication: 'Are you sure you want to delete this medication?',
+      followup: 'Create new followup appointment for the discharge report',
       delete: 'Are you sure you wish to delete this report?',
       saved: 'The report has been saved.'
     }
