@@ -1109,6 +1109,8 @@ export default {
     },
     form: {
       visitDate: 'Date of Visit',
+      dischargeDate: 'Date of Discharge',
+      notes: 'Notes',
       primaryDiagnosis: 'Primary Diagnosis',
       secondaryDiagnosis: 'Secondary Diagnosis',
       procedures: 'Procedures',
