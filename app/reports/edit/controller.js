@@ -3,10 +3,9 @@ import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
-import DS from 'ember-data';
-import moment from 'moment';
+import PatientVisit from 'hospitalrun/mixins/patient-visits'
 
-export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis, PouchDbMixin, {
+export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis, PouchDbMixin, PatientVisit, {
   lookupListsToUpdate: [{
     name: 'physicianList',
     property: 'model.surgeon',
@@ -27,32 +26,10 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
   }),
 
   nextAppointment: Ember.computed('model', function() {
-    let patientId = this.get('model.visit.patient.id');
-    let visitDate = this.get('model.visit.startDate');
-    let maxValue = this.get('maxValue');
-    let promise = this.store.query('appointment', {
-      options: {
-        startkey: [patientId, null, null, 'appointment_'],
-        endkey: [patientId, maxValue, maxValue, maxValue]
-      },
-      mapReduce: 'appointments_by_patient'
-    }).then(function(result) {
-      let futureAppointments = result.filter(function(data) {
-        let startDate = data.get('startDate');
-        return startDate && moment(startDate).isAfter(moment(visitDate), 'day');
-      }).sortBy('startDate');
-      if (!futureAppointments.length) {
-        return '';
-      }
-      let [appointment] = futureAppointments;
-      let res = appointment.get('startDate');
-      return res;
-    });
-    return DS.PromiseObject.create({ promise });
+     return this.getPatientFutureAppointment(this.get('model.visit'))
   }),
 
   additionalButtons: Ember.computed('model.{isNew}', function() {
-    // let i18n = get(this, 'i18n');
     let isNew = this.get('model.isNew');
     if (!isNew) {
       return [{

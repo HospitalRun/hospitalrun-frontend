@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import VisitStatus from 'hospitalrun/utils/visit-statuses';
-
+import DS from 'ember-data';
+import moment from 'moment';
 const {
   isEmpty
 } = Ember;
@@ -18,6 +19,31 @@ export default Ember.Mixin.create(PouchDbMixin, {
       mapReduce: 'visit_by_patient',
       debug: true
     });
+  },
+
+  getPatientFutureAppointment (visit) {
+    let patientId = visit.get('patient.id');
+    let visitDate = visit.get('startDate');
+    let maxValue = this.get('maxValue');
+    let promise = this.store.query('appointment', {
+      options: {
+        startkey: [patientId, null, null, 'appointment_'],
+        endkey: [patientId, maxValue, maxValue, maxValue]
+      },
+      mapReduce: 'appointments_by_patient'
+    }).then(function(result) {
+      let futureAppointments = result.filter(function(data) {
+        let startDate = data.get('startDate');
+        return startDate && moment(startDate).isAfter(moment(visitDate), 'day');
+      }).sortBy('startDate');
+      if (!futureAppointments.length) {
+        return '';
+      }
+      let [appointment] = futureAppointments;
+      let res = appointment.get('startDate');
+      return res;
+    });
+    return DS.PromiseObject.create({ promise });
   },
 
   checkoutVisit(visit, status) {
