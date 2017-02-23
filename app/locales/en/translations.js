@@ -147,7 +147,8 @@ export default {
         text: 'Text',
         textarea: 'Large Text',
         visitFormType: 'Visit',
-        opdReportFormType: 'Outpatient Report'
+        opdReportFormType: 'Outpatient Report',
+        dischargeReportFormType: 'Discharge Report'
       },
       messages: {
         deleteForm: 'Are you sure you want to delete this custom form?',

@@ -34,16 +34,14 @@
         </div>
       {{/if}}
 
-      {{#if model.visit.outPatient}}
-        {{else}}
+      {{#unless model.visit.outPatient}}
         <div class="ps-info-group">
           <p class="ps-info-label">{{t 'reports.form.dischargeDate' }}</p>
           {{date-format model.reportDate format="DD/MM/YYYY hh:mm a"}}
         </div>
-      {{/if}}
+      {{/unless}}
 
-      {{#if model.visit.outPatient}}
-      {{else}}
+      {{#unless model.visit.outPatient}}
         <div class="row">
           {{select-or-typeahead className="col-sm-4" property="surgeon"
            label=(t "operativePlan.labels.surgeon") list=physicianList
@@ -51,10 +49,9 @@
            class="plan-surgeon"
           }}
         </div>
-      {{/if}}
+      {{/unless}}
 
-      {{#if model.visit.outPatient}}
-      {{else}}
+      {{#unless model.visit.outPatient}}
         {{#if model.visit.notes}}
           <div class="ps-info-group">
             <label class="ps-info-label">{{t 'reports.form.notes' }}</label>
@@ -63,7 +60,7 @@
             </ul>
           </div>
         {{/if}}
-      {{/if}}
+      {{/unless}}
 
       {{#if diagnosis.primary.length}}
         <div class="ps-info-group">
@@ -144,7 +141,7 @@
       {{#if model.visit.outPatient}}
         {{custom-form-manager model=model formType="opdReport"}}
       {{else}}
-
+        {{custom-form-manager model=model formType="dischargeReport"}}
       {{/if}}
 
 
