@@ -37,10 +37,15 @@ export default Ember.Service.extend({
         .then((res) => {
           if (res.rows) {
             let docsToCreate = res.rows.filter((row) => {
-              return row.error && row.error === 'not_found';
+              return (row.error && row.error === 'not_found') || (row.value && row.value.deleted);
             }).map((row) => {
               return docs.find((doc) => {
-                return doc._id === row.key;
+                if (doc._id === row.key) {
+                  if (row.value && row.value.deleted && row.value.rev !== doc._rev) {
+                    doc._rev = row.value.rev;
+                  }
+                  return true;
+                }
               });
             });
             if (docsToCreate.length) {
