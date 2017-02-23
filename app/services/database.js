@@ -3,6 +3,7 @@ import createPouchViews from 'hospitalrun/utils/pouch-views';
 import List from 'npm:pouchdb-list';
 import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
 import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
+import enviroment from './../config/environment';
 
 const {
   isEmpty
@@ -20,7 +21,40 @@ export default Ember.Service.extend({
       .then((db) => {
         this.set('mainDB', db);
         this.set('setMainDB', true);
+      })
+      .then(() => {
+        this.createSampleDocs([enviroment.hospitalInfoDoc]);
       });
+  },
+
+  createSampleDocs(docs) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      let mainDB = this.get('mainDB');
+      let ids = docs.map((doc) => {
+        return doc._id;
+      });
+      return mainDB.allDocs({ keys: ids })
+        .then((res) => {
+          if (res.rows) {
+            let docsToCreate = res.rows.filter((row) => {
+              return row.error && row.error === 'not_found';
+            }).map((row) => {
+              return docs.find((doc) => {
+                return doc._id === row.key;
+              });
+            });
+            if (docsToCreate.length) {
+              return mainDB.bulkDocs(docsToCreate);
+            }
+          }
+        })
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   },
 
   createDB(configs) {
