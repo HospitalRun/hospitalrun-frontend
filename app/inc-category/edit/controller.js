@@ -1,12 +1,22 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
+
+const { get } = Ember;
+
 export default AbstractEditController.extend({
   updateCapability: 'add_incident_category',
-  actions: {
 
+  afterUpdate(record) {
+    let i18n = get(this, 'i18n');
+    let message = i18n.t('incident.messages.incidentCategorySaved', { name: get(record, 'incidentCategoryName') });
+    let title = i18n.t('incident.titles.incidentCategorySaved');
+    this.displayAlert(title, message);
+  },
+
+  actions: {
     addItem(newItem) {
       let categoryItems = this.getWithDefault('model.incidentCategoryItems', []);
-      let model = this.get('model');
+      let model = get(this, 'model');
       categoryItems.addObject(newItem);
       model.set('incidentCategoryItems', categoryItems);
       this.send('update', true);
@@ -15,7 +25,7 @@ export default AbstractEditController.extend({
 
     deleteItem(model) {
       let item = model.get('itemToDelete');
-      let categoryItems = this.get('model.incidentCategoryItems');
+      let categoryItems = get(this, 'model.incidentCategoryItems');
       categoryItems.removeObject(item);
       this.send('update', true);
     },
@@ -25,19 +35,13 @@ export default AbstractEditController.extend({
     },
 
     showDeleteItem(item) {
-      this.send('openModal', 'dialog', Ember.Object.create({
-        confirmAction: 'deleteItem',
-        title: 'Delete Item',
-        message: 'Are you sure you want to delete this item?',
-        itemToDelete: item,
-        updateButtonAction: 'confirm',
-        updateButtonText: 'Ok'
+      let i18n = get(this, 'i18n');
+      let message = i18n.t('incident.messages.deleteItem');
+      let title = i18n.t('incident.titles.deleteItem');
+      this.displayConfirm(title, message, 'deleteItem', Ember.Object.create({
+        itemToDelete: item
       }));
     }
-  },
-
-  afterUpdate(record) {
-    let message = `The category record for ${record.get('incidentCategoryName')} has been saved.`;
-    this.displayAlert('Incident Category Saved', message);
   }
+
 });

@@ -1,20 +1,19 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
+import { translationMacro as t } from 'ember-i18n';
+
 export default AbstractIndexRoute.extend({
   modelName: 'inc-category',
-  pageTitle: 'Incident Categories',
-
-  newButtonAction: function() {
-    return 'newItem';
-  }.property(),
-  newButtonText: '+ new category',
+  newButtonAction: 'newItem',
+  newButtonText: t('incident.buttons.newCategory'),
+  pageTitle: t('incident.titles.incidentCategories'),
 
   actions: {
-    newItem() {
-      this.transitionTo('inc-category.edit', 'new');
-    },
-
     editItem(category) {
       this.transitionTo('inc-category.edit', category);
+    },
+
+    newItem() {
+      this.transitionTo('inc-category.edit', 'new');
     }
   }
 });

@@ -8,7 +8,6 @@ export default AbstractPagedController.extend({
   }),
 
   actions: {
-
     showDeleteIncidentCategory(category) {
       this.send('openModal', 'inc-category.delete', category);
     }

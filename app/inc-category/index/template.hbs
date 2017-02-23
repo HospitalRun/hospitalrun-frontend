@@ -6,15 +6,17 @@
         <th>{{t 'incident.labels.actions'}}</th>
       </tr>
       {{#each model as |category|}}
-        <tr {{action 'editItem' category}}>
-          <td>{{category.incidentCategoryName}}</td>
-          <td>
-              <button class="btn btn-default neutral" {{action 'editItem' category  bubbles=false }}>{{t 'incident.buttons.edit'}}</button>
-              {{#if canDeleteIncidentCategory}}
-                <button class="btn btn-default warning" {{action 'showDeleteIncidentCategory' category  bubbles=false }}><span class="octicon octicon-x"></span>{{t 'incident.buttons.delete'}}</button>
-              {{/if}}
-          </td>
-        </tr>
+        {{#unless category.archived}}
+          <tr {{action 'editItem' category}}>
+            <td>{{category.incidentCategoryName}}</td>
+            <td>
+                <button class="btn btn-default neutral" {{action 'editItem' category  bubbles=false }}>{{t 'incident.buttons.edit'}}</button>
+                {{#if canDeleteIncidentCategory}}
+                  <button class="btn btn-default warning" {{action 'showDeleteIncidentCategory' category  bubbles=false }}><span class="octicon octicon-x"></span>{{t 'incident.buttons.delete'}}</button>
+                {{/if}}
+            </td>
+          </tr>
+        {{/unless}}
       {{/each}}
     </table>
   {{else}}

@@ -1,8 +1,14 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import UserSession from 'hospitalrun/mixins/user-session';
-export default AbstractEditRoute.extend(UserSession, {
-  editTitle: 'Edit Incident Category',
-  modelName: 'inc-category',
-  newTitle: 'New Incident Category'
+import { translationMacro as t } from 'ember-i18n';
 
+export default AbstractEditRoute.extend({
+  editTitle: t('incident.titles.editIncidentCategory'),
+  modelName: 'inc-category',
+  newTitle: t('incident.titles.newIncidentCategory'),
+
+  actions: {
+    deleteItem(model) {
+      this.controller.send('deleteItem', model);
+    }
+  }
 });

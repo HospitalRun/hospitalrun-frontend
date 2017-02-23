@@ -1,20 +1,32 @@
 import Ember from 'ember';
-export default Ember.Controller.extend({
-  incidentCategoryEdit: Ember.inject.controller('inc-category/edit'),
-  editController: Ember.computed.alias('incidentCategoryEdit'),
-  title: 'Add Item',
-  updateButtonText: 'Add',
-  updateButtonAction: 'add',
+import { translationMacro as t } from 'ember-i18n';
+
+const {
+  Controller,
+  computed: {
+    alias
+  },
+  get,
+  inject
+} = Ember;
+
+export default Controller.extend({
   showUpdateButton: true,
+  title: t('incident.titles.addCategoryItem'),
+  updateButtonAction: 'add',
+  updateButtonText: 'Add',
+
+  incidentCategoryEdit: inject.controller('inc-category/edit'),
+  editController: alias('incidentCategoryEdit'),
 
   actions: {
-    cancel() {
-      this.send('closeModal');
-    },
-
     add() {
       let newItem = this.getProperties('item');
-      this.get('editController').send('addItem', newItem);
+      get(this, 'editController').send('addItem', newItem);
+    },
+
+    cancel() {
+      this.send('closeModal');
     }
   }
 });
