@@ -16,6 +16,7 @@ moduleForModel('visit', 'Unit | Model | visit', {
     'model:proc-charge',
     'model:vital',
     'model:visit',
+    'model:report',
     'service:validations'
   ]
 });
