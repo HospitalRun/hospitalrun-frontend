@@ -9,7 +9,6 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitStatus from 'hospitalrun/utils/visit-statuses';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
-import { translationMacro as t } from 'ember-i18n';
 
 const {
   computed,
@@ -38,6 +37,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     }
   }),
   noReport: false,
+  nextAppointment: null,
   canAddAppointment: computed('model.isNew', function() {
     return (!this.get('model.isNew') && this.currentUserCan('add_appointment'));
   }),
@@ -437,24 +437,19 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     },
 
     newReport() {
-      let that = this;
-      this._addChildObject('reports.edit', (newRoute) => {
-        let controller = newRoute.controllerFor('visits');
-        let isOutPatient = that.get('model').get('outPatient');
-        controller.set('currentScreenTitle', isOutPatient ? t('reports.opd.titles.new') : t('reports.discharge.titles.new'));
-      });
+      let next = this.get('nextAppointment.content');
+      if (!this.get('model.outPatient') && !next) {
+        let i18n = this.get('i18n');
+        let updateMesage = i18n.t('reports.messages.followup');
+        let updateTitle = i18n.t('reports.titles.followup');
+        this.displayAlert(updateTitle, updateMesage);
+        return false;
+      }
+      this._addChildObject('reports.edit');
     },
 
     editReport() {
-      let that = this;
-      this.transitionToRoute('reports.edit', this.get('report.id'))
-        .then(function(newRoute) {
-          let controller = newRoute.controllerFor('visits');
-          newRoute.currentModel.setProperties({ returnToVisit: that.get('model.id')
-          });
-          let isOutPatient = that.get('model').get('outPatient');
-          controller.set('currentScreenTitle', isOutPatient ? t('reports.opd.titles.edit') : t('reports.discharge.titles.edit'));
-        });
+      this.transitionToRoute('reports.edit', this.get('report.id'));
     },
 
     newAppointment() {

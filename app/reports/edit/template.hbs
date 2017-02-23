@@ -15,7 +15,6 @@
     <span>{{headerLine3}}</span><br>
   {{/if}}
 </div>
-{{#if model.visit.outPatient}}
   <div class="opd-report">
     {{#edit-panel editPanelProps=editPanelProps}}
     {{#em-form model=model submitButton=false }}
@@ -34,6 +33,34 @@
           {{date-format model.visit.startDate format="DD/MM/YYYY hh:mm a"}}
         </div>
       {{/if}}
+
+      {{#unless model.visit.outPatient}}
+        <div class="ps-info-group">
+          <p class="ps-info-label">{{t 'reports.form.dischargeDate' }}</p>
+          {{date-format model.reportDate format="DD/MM/YYYY hh:mm a"}}
+        </div>
+      {{/unless}}
+
+      {{#unless model.visit.outPatient}}
+        <div class="row">
+          {{select-or-typeahead className="col-sm-4" property="surgeon"
+           label=(t "operativePlan.labels.surgeon") list=physicianList
+           selection=model.surgeon
+           class="plan-surgeon"
+          }}
+        </div>
+      {{/unless}}
+
+      {{#unless model.visit.outPatient}}
+        {{#if model.visit.notes}}
+          <div class="ps-info-group">
+            <label class="ps-info-label">{{t 'reports.form.notes' }}</label>
+            <ul>
+                <li>{{model.visit.notes}}</li>
+            </ul>
+          </div>
+        {{/if}}
+      {{/unless}}
 
       {{#if diagnosis.primary.length}}
         <div class="ps-info-group">
@@ -62,7 +89,7 @@
           <label class="ps-info-label">{{t 'reports.form.procedures' }}</label>
           <ul>
             {{#each model.visit.procedures as |item|}}
-              <li>{{item.description}}</li>
+              <li>{{item.description}} {{#if item.procedureDate }} - {{date-format item.procedureDate format="DD/MM/YYYY"}} {{/if}}</li>
             {{/each}}
           </ul>
         </div>
@@ -111,12 +138,14 @@
         </div>
       {{/if}}
 
-      {{custom-form-manager model=model formType="opdReport"}}
+      {{#if model.visit.outPatient}}
+        {{custom-form-manager model=model formType="opdReport"}}
+      {{else}}
+        {{custom-form-manager model=model formType="dischargeReport"}}
+      {{/if}}
+
+
 
     {{/em-form}}
   {{/edit-panel}}
   </div>
-
-{{else}}
-
-{{/if}}

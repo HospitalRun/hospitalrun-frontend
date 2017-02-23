@@ -147,7 +147,8 @@ export default {
         text: 'Text',
         textarea: 'Large Text',
         visitFormType: 'Visit',
-        opdReportFormType: 'Outpatient Report'
+        opdReportFormType: 'Outpatient Report',
+        dischargeReportFormType: 'Discharge Report'
       },
       messages: {
         deleteForm: 'Are you sure you want to delete this custom form?',
@@ -1104,11 +1105,13 @@ export default {
   },
   reports: {
     titles: {
-      preview: 'Preview Report',
+      followup: 'Create Followup appointment',
       saved: 'The report has been saved'
     },
     form: {
       visitDate: 'Date of Visit',
+      dischargeDate: 'Date of Discharge',
+      notes: 'Notes',
       primaryDiagnosis: 'Primary Diagnosis',
       secondaryDiagnosis: 'Secondary Diagnosis',
       procedures: 'Procedures',
@@ -1130,7 +1133,7 @@ export default {
       }
     },
     messages: {
-      deleteMedication: 'Are you sure you want to delete this medication?',
+      followup: 'Create new followup appointment for the discharge report',
       delete: 'Are you sure you wish to delete this report?',
       saved: 'The report has been saved.'
     }
