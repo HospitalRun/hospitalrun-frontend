@@ -1,4 +1,21 @@
-{{partial "report-header"}}
+<div class="report-header">
+  {{#if logoURL}}
+    <img src={{logoURL}} class="report-logo">
+  {{/if}}
+  {{#if facilityName }}
+    <h3>{{facilityName}}</h3>
+  {{/if}}
+  {{#if headerLine1}}
+    <span>{{headerLine1}}</span><br>
+  {{/if}}
+  {{#if headerLine2}}
+    <span>{{headerLine2}}</span><br>
+  {{/if}}
+  {{#if headerLine3}}
+    <span>{{headerLine3}}</span><br>
+  {{/if}}
+</div>
+{{#if model.visit.outPatient}}
   <div class="opd-report">
     {{#edit-panel editPanelProps=editPanelProps}}
     {{#em-form model=model submitButton=false }}

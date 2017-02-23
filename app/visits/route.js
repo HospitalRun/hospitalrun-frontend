@@ -37,6 +37,9 @@ export default AbstractModuleRoute.extend({
   }, {
     name: 'wardPricingTypes',
     findArgs: ['lookup', 'ward_pricing_types']
+  }, {
+    name: 'printHeader',
+    findArgs: ['option', 'print_header']
   }],
   moduleName: 'visits',
   newButtonAction: null, // No new button

@@ -16,6 +16,14 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
   newReport: false,
   physicianList: Ember.computed.alias('visitsController.physicianList'),
 
+  visitController: Ember.inject.controller('visits'),
+
+  logoURL: Ember.computed.alias('visitController.printHeader.value.logoURL'),
+  facilityName: Ember.computed.alias('visitController.printHeader.value.facilityName'),
+  headerLine1: Ember.computed.alias('visitController.printHeader.value.headerLine1'),
+  headerLine2: Ember.computed.alias('visitController.printHeader.value.headerLine2'),
+  headerLine3: Ember.computed.alias('visitController.printHeader.value.headerLine3'),
+
   diagnosis: Ember.computed('model.patient', function() {
     let container = this.get('model.patient');
     let result = {
