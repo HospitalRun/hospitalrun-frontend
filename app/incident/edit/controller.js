@@ -1,4 +1,5 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import DS from 'ember-data';
 import Ember from 'ember';
 import FriendlyId from 'hospitalrun/mixins/friendly-id';
 import IncidentStatuses, { CLOSED } from 'hospitalrun/mixins/incident-statuses';
@@ -6,11 +7,12 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 
+const { PromiseArray, PromiseObject } = DS;
+
 const {
   computed,
   computed: {
-    alias,
-    map
+    alias
   },
   get,
   inject,
@@ -30,13 +32,12 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
   customForms: inject.service(),
   database: inject.service(),
   filesystem: inject.service(),
+  lookupLists: inject.service(),
 
   customFormsToAdd: alias('customForms.formsForSelect'),
   customFormsToDisplay: alias('customForms.formsToDisplay'),
   showAddFormButton: alias('customForms.showAddButton'),
   incidentController: inject.controller('incident'),
-  incidentDepartmentList: alias('incidentController.incidentDepartmentList'),
-  incidentCategoryList: alias('incidentController.incidentCategoryList'),
 
   canManageIncident: computed('model.{isNew,status}', function() {
     let canManageIncident = this.currentUserCan('manage_incidents');
@@ -54,12 +55,30 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
     return canManageIncident && !isNew;
   }),
 
-  categoryNameList: map('incidentCategoryList', function(value) {
-    return {
-      id: get(value, 'incidentCategoryName'),
-      value: get(value, 'incidentCategoryName')
-    };
+  categoryNameList: computed('incidentCategoryList.@each.archived', function() {
+    return PromiseArray.create({
+      promise: get(this, 'incidentCategoryList').then((categoryList) => {
+        return categoryList.map((value) => {
+          return {
+            id: get(value, 'incidentCategoryName'),
+            value: get(value, 'incidentCategoryName')
+          };
+        });
+      })
+    });
   }),
+
+  incidentCategoryList: computed(function() {
+    let lookupLists = get(this, 'lookupLists');
+    return lookupLists.getLookupList('incidentCategories');
+  }).volatile(),
+
+  incidentDepartmentList: computed('lookupListsLastUpdate', function() {
+    let lookupLists = get(this, 'lookupLists');
+    return PromiseObject.create({
+      promise: lookupLists.getLookupList('incident_departments')
+    });
+  }).volatile(),
 
   incidentStatuses: computed(function() {
     return get(this, 'statusList').map((status) => {
@@ -73,9 +92,12 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
   itemList: computed('model.categoryName', function() {
     let categoryNameSelected = get(this, 'model.categoryName');
     if (!Ember.isEmpty(categoryNameSelected)) {
-      let categoryList = get(this, 'incidentCategoryList');
-      let incidentCategory = categoryList.findBy('incidentCategoryName', categoryNameSelected);
-      return get(incidentCategory, 'incidentCategoryItems');
+      return PromiseArray.create({
+        promise: get(this, 'incidentCategoryList').then((categoryList) => {
+          let incidentCategory = categoryList.findBy('incidentCategoryName', categoryNameSelected);
+          return get(incidentCategory, 'incidentCategoryItems');
+        })
+      });
     }
   }),
 

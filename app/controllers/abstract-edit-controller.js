@@ -4,7 +4,7 @@ import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import UserSession from 'hospitalrun/mixins/user-session';
 
-const { get } = Ember;
+const { get, inject, RSVP, set } = Ember;
 
 export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHelper, UserSession, {
   cancelAction: 'allItems',
@@ -34,6 +34,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
     return this.get('model.isNew') || this.get('model.isDeleted');
   }.property('model.isNew', 'model.isDeleted'),
 
+  lookupLists: inject.service(),
   /**
    *  Lookup lists that should be updated when the model has a new value to add to the lookup list.
    *  lookupListsToUpdate: [{
@@ -42,6 +43,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    *      id: 'country_list' //Id of the lookup list to update
    *  }
    */
+  lookupListsLastUpdate: null,
   lookupListsToUpdate: null,
 
   showUpdateButton: function() {
@@ -175,33 +177,52 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    * Update any new values added to a lookup list
    */
   updateLookupLists() {
-    let lookupLists = this.get('lookupListsToUpdate');
+    let lookupListsToUpdate = this.get('lookupListsToUpdate');
     let listsToUpdate = Ember.A();
-    if (!Ember.isEmpty(lookupLists)) {
-      lookupLists.forEach(function(list) {
+    let lookupPromises = [];
+    if (!Ember.isEmpty(lookupListsToUpdate)) {
+      lookupListsToUpdate.forEach((list) => {
         let propertyValue = this.get(list.property);
         let lookupList = this.get(list.name);
-        let store = this.get('store');
-        if (!Ember.isEmpty(propertyValue)) {
-          if (!lookupList) {
-            lookupList = store.push(store.normalize('lookup', {
-              id: list.id,
-              value: [],
-              userCanAdd: true
-            }));
-          }
-          if (Ember.isArray(propertyValue)) {
-            propertyValue.forEach(function(value) {
-              this._addValueToLookupList(lookupList, value, listsToUpdate, list.name);
-            }.bind(this));
-          } else {
-            this._addValueToLookupList(lookupList, propertyValue, listsToUpdate, list.name);
-          }
+        let checkListFunction = function(lookupList) {
+          return this._checkListForUpdate(list, lookupList, listsToUpdate, propertyValue);
+        }.bind(this);
+
+        if (lookupList.then) {
+          lookupPromises.push(lookupList.then(checkListFunction));
+        } else {
+          lookupPromises.push(RSVP.resolve(lookupList).then(checkListFunction));
         }
-      }.bind(this));
-      listsToUpdate.forEach(function(list) {
-        list.save();
       });
+      RSVP.all(lookupPromises).then(() => {
+        let lookupLists = get(this, 'lookupLists');
+        listsToUpdate.forEach((list) =>{
+          list.save().then(() => {
+            set(this, 'lookupListsLastUpdate', new Date().getTime());
+            lookupLists.resetLookupList(get(list, 'id'));
+          });
+        });
+      });
+    }
+  },
+
+  _checkListForUpdate(listInfo, lookupList, listsToUpdate, propertyValue) {
+    let store = this.get('store');
+    if (!Ember.isEmpty(propertyValue)) {
+      if (!lookupList) {
+        lookupList = store.push(store.normalize('lookup', {
+          id: listInfo.id,
+          value: [],
+          userCanAdd: true
+        }));
+      }
+      if (Ember.isArray(propertyValue)) {
+        propertyValue.forEach(function(value) {
+          this._addValueToLookupList(lookupList, value, listsToUpdate, listInfo.name);
+        }.bind(this));
+      } else {
+        this._addValueToLookupList(lookupList, propertyValue, listsToUpdate, listInfo.name);
+      }
     }
   }
 

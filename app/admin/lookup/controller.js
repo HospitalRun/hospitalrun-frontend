@@ -8,12 +8,13 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 import { EKMixin, keyDown } from 'ember-keyboard';
 
 const {
-  computed, get
+  computed, get, inject
 } = Ember;
 
 export default Ember.Controller.extend(BillingCategories, EKMixin,
   InventoryTypeList, ModalHelper, UnitTypes, VisitTypes, {
-    fileSystem: Ember.inject.service('filesystem'),
+    fileSystem: inject.service('filesystem'),
+    lookupLists: inject.service(),
 
     canEditValues: computed('model.lookupType', function() {
       let lookupType = this.get('model.lookupType');
@@ -315,6 +316,8 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
           let message = i18n.t('admin.lookup.alertImportListSaveMessage');
           let title = i18n.t('admin.lookup.alertImportListSaveTitle');
           lookupTypeList.save().then(() => {
+            let lookupLists = get(this, 'lookupLists');
+            lookupLists.resetLookupList(get(lookupTypeList, 'id'));
             this.displayAlert(title, message);
             this.set('importFile');
             this.set('model.importFileName');
@@ -379,12 +382,14 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
       },
       updateList() {
         let lookupTypeList = this.get('lookupTypeList');
-        lookupTypeList.save().then(function() {
+        lookupTypeList.save().then(() => {
+          let lookupLists = get(this, 'lookupLists');
+          lookupLists.resetLookupList(get(lookupTypeList, 'id'));
           this.displayAlert(
             this.get('i18n').t('admin.lookup.alertImportListUpdateTitle'),
             this.get('i18n').t('admin.lookup.alertImportListUpdateMessage')
           );
-        }.bind(this));
+        });
       },
       updateValue(valueObject) {
         let updateList = false;
@@ -405,7 +410,7 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
           values.addObject(value);
           values = values.sort(this._sortValues);
           lookupTypeList.set('value', values);
-          lookupTypeList.save();
+          this.send('updateList');
         }
       }
     }
