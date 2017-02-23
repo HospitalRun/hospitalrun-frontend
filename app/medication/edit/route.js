@@ -1,12 +1,16 @@
 import { translationMacro as t } from 'ember-i18n';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
+import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import Ember from 'ember';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
 import moment from 'moment';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 import uuid from 'npm:uuid';
-export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, PatientListRoute, {
+
+const { isEmpty } = Ember;
+
+export default AbstractEditRoute.extend(AddToPatientRoute, FulfillRequest, InventoryLocations, PatientListRoute, {
   editTitle: t('medication.titles.editMedicationRequest'),
   modelName: 'medication',
   newTitle: t('medication.titles.newMedicationRequest'),
@@ -27,8 +31,13 @@ export default AbstractEditRoute.extend(FulfillRequest, InventoryLocations, Pati
 
   model(params) {
     let idParam = this.get('idParam');
+    let modelPromise = this._super(params);
     if (!Ember.isEmpty(idParam) && params[idParam] === 'new' || params[idParam] === 'dispense') {
-      return this._createNewRecord(params);
+      if (!isEmpty(params.forPatientId)) {
+        return this._setPatientOnModel(modelPromise, params.forPatientId);
+      } else {
+        return this._createNewRecord(params);
+      }
     } else {
       return this._super(params);
     }
