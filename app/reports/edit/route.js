@@ -12,7 +12,7 @@ export default AbstractEditRoute.extend({
       customForms: Ember.Object.create()
     };
     let customForms = this.get('customForms');
-    return customForms.setDefaultCustomForms(['opdReport'], newReportData);
+    return customForms.setDefaultCustomForms(['opdReport', 'dischargeReport'], newReportData);
   },
 
   afterModel(model) {
