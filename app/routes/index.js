@@ -1,30 +1,25 @@
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import Navigation from 'hospitalrun/mixins/navigation';
-import SetupUserRole from 'hospitalrun/mixins/setup-user-role';
 import UserRoles from 'hospitalrun/mixins/user-roles';
 import Ember from 'ember';
-const { inject } = Ember;
+const { inject, isEmpty } = Ember;
 
-export default Ember.Route.extend(AuthenticatedRouteMixin, Navigation, SetupUserRole, UserRoles, {
+export default Ember.Route.extend(AuthenticatedRouteMixin, Navigation, UserRoles, {
   session: inject.service(),
   beforeModel() {
-    // this.setupUserRole();
     let session = this.get('session');
-    if (session != null) {
-      let role = session.get('data.authenticated.userRole');
-      if (role != null) {
+    if (!isEmpty(session)) {
+      let role = session.get('data.authenticated.role');
+      if (!isEmpty(role)) {
         let userRole = this.findUserRole(role);
-        if (userRole != null && userRole.defaultRoute != null) {
+        if (!isEmpty(userRole) && !isEmpty(userRole.defaultRoute)) {
           let navelement = this.findNavItemByRoute(userRole.defaultRoute);
-          // console.log(`Navigating to ${navelement.route}`);
-          // this.controllerFor('navigation').send('navAction', navelement);
-          return this.transitionTo(navelement.route);
+          // validate that there really is a navigation element that matches that route.
+          if (!isEmpty(navelement)) {
+            return this.transitionTo(navelement.route);
+          }
         }
-      } else {
-        // console.log(`No ${role} on index route.`);
       }
-    } else {
-      // console.log('No session on index route.');
     }
     return this._super(...arguments);
   },
