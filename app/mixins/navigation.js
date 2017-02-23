@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 const { camelize } = Ember.String;
+const { isEqual } = Ember;
 
 export default Ember.Mixin.create({
   navItems: [
@@ -343,18 +344,18 @@ export default Ember.Mixin.create({
     });
   }),
 
-  findNavItemByRoute: function(route) {
-    return this.navItems.find(function(el) {
-      if (el.route == route) {
-        return el;
+  findNavItemByRoute(route) {
+    for (let i = 0; i < this.navItems.length; i++) {
+      if (isEqual(this.navItems[i].route, route)) {
+        return this.navItems[i];
       } else {
-        for (var j = 0; j < el.subnav.length; j++) {
-          if (el.subnav[j].route == route) {
-            return el.subnav[j];
+        for (let j = 0; j < this.navItems[i].subnav.length; j++) {
+          if (isEqual(this.navItems[i].subnav[j].route, route)) {
+            return this.navItems[i].subnav[j];
           }
         }
       }
-      return null;
-    });
+    }
+    return null;
   }
 });
