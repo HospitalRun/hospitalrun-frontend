@@ -68,7 +68,7 @@ test('Edit visit', function(assert) {
       click('button:contains(New Medication)');
     });
     andThen(function() {
-      assert.equal(currentURL(), '/medication/edit/new', 'New medication url is correct');
+      assert.equal(currentURL(), '/medication/edit/new?forVisitId=03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'New medication url is correct');
       assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'New medication prepopulates with patient');
       click('button:contains(Cancel)');
     });
@@ -76,7 +76,7 @@ test('Edit visit', function(assert) {
       click('button:contains(New Lab)');
     });
     andThen(function() {
-      assert.equal(currentURL(), '/labs/edit/new', 'New lab url is correct');
+      assert.equal(currentURL(), '/labs/edit/new?forVisitId=03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'New lab url is correct');
       assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'New lab prepopulates with patient');
       click('button:contains(Cancel)');
     });
@@ -84,7 +84,7 @@ test('Edit visit', function(assert) {
       click('button:contains(New Imaging)');
     });
     andThen(function() {
-      assert.equal(currentURL(), '/imaging/edit/new', 'New imaging url is correct');
+      assert.equal(currentURL(), '/imaging/edit/new?forVisitId=03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'New imaging url is correct');
       assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'New imaging prepopulates with patient');
       click('button:contains(Cancel)');
     });
