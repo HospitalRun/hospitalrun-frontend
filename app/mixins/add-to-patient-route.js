@@ -20,6 +20,8 @@ export default Mixin.create({
         return this._setPatientOnModel(modelPromise, params.forPatientId);
       } else if (!isEmpty(params.forVisitId)) {
         return this._setVisitOnModel(modelPromise, params.forVisitId);
+      } else {
+        return this._createNewRecord(params);
       }
     } else {
       return modelPromise;
@@ -51,6 +53,7 @@ export default Mixin.create({
         model.set('visit', visit);
         model.set('returnToVisit', visitId);
         model.set('selectPatient', false);
+        model.set('patient', visit.get('patient'));
         return model;
       });
     });
