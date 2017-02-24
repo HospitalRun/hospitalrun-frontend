@@ -59,6 +59,9 @@ export default AbstractEditRoute.extend(AddToPatientRoute, PatientListRoute, {
       if (!isEmpty(params.forPatientId)) {
         let modelPromise = this._super(params);
         return this._setPatientOnModel(modelPromise, params.forPatientId);
+      } else if (!isEmpty(params.forVisitId)) {
+        let modelPromise = this._super(params);
+        return this._setVisitOnModel(modelPromise, params.forforVisitId);
       } else {
         return this._createNewRecord(params);
       }
