@@ -170,16 +170,12 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     return visitTypes;
   }.property('visitTypes', 'model.outPatient'),
 
-  _addChildObject(route, queryParamType, afterTransition) {
-    let queryParams = {};
-    if (queryParamType) {
-      if (queryParamType == 'patient') {
-        queryParams.forPatientId = this.get('model.patient.id');
-      } else if (queryParamType == 'visit') {
-        queryParams.forVisitId = this.get('model.id');
+  _addChildObject(route, afterTransition) {
+    let options = {
+      queryParams: {
+        forVisitId: this.get('model.id')
       }
-    }
-    let options = { queryParams };
+    };
     this.transitionToRoute(route, 'new', options).then((newRoute) => {
       if (afterTransition) {
         afterTransition(newRoute);
@@ -401,7 +397,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     editOperativePlan(operativePlan) {
       let model = operativePlan;
       if (isEmpty(model)) {
-        this._addChildObject('patients.operative-plan', 'patient', (route) =>{
+        this._addChildObject('patients.operative-plan', (route) =>{
           route.controller.getPatientDiagnoses(this.get('model.patient'), route.currentModel);
         });
       } else {
@@ -448,7 +444,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
         this.displayAlert(updateTitle, updateMesage);
         return false;
       }
-      this._addChildObject('reports.edit', 'visit');
+      this._addChildObject('reports.edit');
     },
 
     editReport() {
@@ -456,23 +452,23 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     },
 
     newAppointment() {
-      this._addChildObject('appointments.edit', 'patient');
+      this._addChildObject('appointments.edit');
     },
 
     newImaging() {
-      this._addChildObject('imaging.edit', 'patient');
+      this._addChildObject('imaging.edit');
     },
 
     newLab() {
-      this._addChildObject('labs.edit', 'patient');
+      this._addChildObject('labs.edit');
     },
 
     newMedication() {
-      this._addChildObject('medication.edit', 'patient');
+      this._addChildObject('medication.edit');
     },
 
     showAddProcedure() {
-      this._addChildObject('procedures.edit', 'patient');
+      this._addChildObject('procedures.edit');
     },
 
     showDeleteImaging(imaging) {
