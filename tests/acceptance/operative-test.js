@@ -56,7 +56,7 @@ test('Plan and report creation', function(assert) {
       waitToAppear('span.secondary-diagnosis:contains(Tennis Elbow)');
     });
     andThen(() =>{
-      assert.equal(currentURL(), '/patients/operative-plan/new', 'New operative plan URL is correct');
+      assert.equal(currentURL(), '/patients/operative-plan/new?forPatientId=C87BFCB2-F772-7A7B-8FC7-AD00C018C32A', 'New operative plan URL is correct');
       assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts patient header displays');
       assert.equal(find('.view-current-title').text(), 'New Operative Plan', 'New operative plan title is correct');
       assert.equal(find('span.primary-diagnosis:contains(Broken Arm)').length, 1, 'Primary diagnosis appears as read only');

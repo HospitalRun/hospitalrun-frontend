@@ -81,10 +81,16 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
     return this.currentUserCan('delete_visit');
   }.property(),
 
-  patientTypes: [
-    'Charity',
-    'Private'
-  ],
+  patientTypes: Ember.computed(function() {
+    let i18n = get(this, 'i18n');
+    let types = [
+      'Charity',
+      'Private'
+    ];
+    return types.map((type) => {
+      return i18n.t(`patients.labels.patientType${type}`);
+    });
+  }),
 
   config: Ember.inject.service(),
   filesystem: Ember.inject.service(),
@@ -534,16 +540,16 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
   },
 
   _addChildObject(route, afterTransition) {
-    this.transitionToRoute(route, 'new').then(function(newRoute) {
-      newRoute.currentModel.setProperties({
-        patient: this.get('model'),
-        returnToPatient: this.get('model.id'),
-        selectPatient: false
-      });
+    let options = {
+      queryParams: {
+        forPatientId: this.get('model.id')
+      }
+    };
+    this.transitionToRoute(route, 'new', options).then((newRoute) => {
       if (afterTransition) {
         afterTransition(newRoute);
       }
-    }.bind(this));
+    });
   },
 
   _showEditSocial(editAttributes, modelName, route) {

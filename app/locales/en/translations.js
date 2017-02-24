@@ -1010,7 +1010,9 @@ export default {
       parent: 'Parent/Guardian',
       contacts: 'Contacts',
       sexNotEntered: 'Sex Not Entered',
-      operativePlan: 'Operative Plan'
+      operativePlan: 'Operative Plan',
+      patientTypeCharity: 'Charity',
+      patientTypePrivate: 'Private'
     },
     notes: {
       newNote: 'New Note for',
@@ -1258,6 +1260,31 @@ export default {
     },
     titles: {
       sessionExpired: 'Session Expired'
+    }
+  },
+  models: {
+    appointment: {
+      labels: {
+        status: 'First Name',
+        appointmentType: 'Type',
+        provider: 'With',
+        location: 'Location',
+        patient: 'Patient',
+        startDate: 'Start Date',
+        endDate: 'End Date',
+        allDay: 'All Day',
+        type: 'Type',
+        notes: 'Notes',
+        appointmentDate: 'Date'
+      }
+    },
+    patient: {
+      labels: {
+        name: 'Name'
+      },
+      names: {
+        singular: 'Patient'
+      }
     }
   }
 };
