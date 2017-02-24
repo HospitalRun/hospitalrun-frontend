@@ -1,8 +1,9 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
+import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 
-export default AbstractEditRoute.extend({
+export default AbstractEditRoute.extend(AddToPatientRoute, {
   modelName: 'report',
   customForms: Ember.inject.service(),
 
@@ -13,17 +14,6 @@ export default AbstractEditRoute.extend({
     };
     let customForms = this.get('customForms');
     return customForms.setDefaultCustomForms(['opdReport', 'dischargeReport'], newReportData);
-  },
-
-  afterModel(model) {
-    if (model.get('isNew')) {
-      let visit = this.modelFor('visits.edit');
-      if (!visit) {
-        return this.transitionTo('patients');
-      }
-      model.set('visit', visit);
-    }
-    model.setProperties({ returnToVisit: model.get('visit.id') });
   },
 
   getScreenTitle(model) {
