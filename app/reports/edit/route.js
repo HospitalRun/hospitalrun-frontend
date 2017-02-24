@@ -22,6 +22,12 @@ export default AbstractEditRoute.extend(AddToPatientRoute, {
     return t(`reports.${type}.titles.${state}`);
   },
 
+  afterModel(model) {
+    if (!model.get('visit')) {
+      return this.transitionTo('patients');
+    }
+  },
+
   setupController(controller, model) {
     this._super(controller, model);
   }
