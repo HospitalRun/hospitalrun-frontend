@@ -204,7 +204,7 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
     },
 
     showDeleteAttachment(attachment) {
-      let i18n = this.get('i18n');
+      let i18n = get(this, 'i18n');
       let message = i18n.t('incident.messages.deleteAttachment');
       let model = Ember.Object.create({
         itemToDelete: attachment

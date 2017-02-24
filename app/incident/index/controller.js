@@ -34,14 +34,14 @@ export default AbstractPagedController.extend(FilterList, UserSession, {
   }),
 
   filteredIncidents: computed('model.[]', 'filterBy', 'filterValue', function() {
-    let filterBy = this.get('filterBy');
-    let filterValue = this.get('filterValue');
+    let filterBy = get(this, 'filterBy');
+    let filterValue = get(this, 'filterValue');
     let incidents = get(this, 'model');
     return this.filterList(incidents, filterBy, filterValue);
   }),
 
   sortedIncidents: computed('filteredIncidents', 'sortByKey', 'sortByDesc', function() {
-    let filteredList = this.get('filteredIncidents');
+    let filteredList = get(this, 'filteredIncidents');
     return this.sortFilteredList(filteredList);
   }),
 

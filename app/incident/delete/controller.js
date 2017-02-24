@@ -1,6 +1,9 @@
 import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-controller';
 import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
+
+const { get, RSVP } = Ember;
+
 export default AbstractDeleteController.extend({
   title: t('incident.titles.deleteItem'),
 
@@ -15,11 +18,11 @@ export default AbstractDeleteController.extend({
   actions: {
     delete() {
       let destroyPromises = [];
-      let incident = this.get('model');
+      let incident = get(this, 'model');
       this._deleteChildObject(incident, 'notes', destroyPromises);
-      Ember.RSVP.all(destroyPromises).then(function() {
+      RSVP.all(destroyPromises).then(function() {
         // fires when all the destroys have been completed.
-        this.get('model').destroyRecord().then(function() { // delete incident
+        get(this, 'model').destroyRecord().then(function() { // delete incident
           this.send('closeModal');
         }.bind(this));
       }.bind(this));

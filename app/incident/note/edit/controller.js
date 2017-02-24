@@ -1,31 +1,35 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
+
+const { computed, get, inject, RSVP, set } = Ember;
+
 export default AbstractEditController.extend({
   cancelAction: 'closeModal',
-  editController: Ember.inject.controller('incident/edit'),
   newNote: false,
+  updateCapability: 'manage_incidents',
 
-  title: function() {
-    let i18n = this.get('i18n');
-    let isNew = this.get('model.isNew');
+  editController: inject.controller('incident/edit'),
+
+  title: computed('model.isNew', function() {
+    let i18n = get(this, 'i18n');
+    let isNew = get(this, 'model.isNew');
     if (isNew) {
       return i18n.t('incident.titles.addNote');
     }
     return i18n.t('incident.titles.editNote');
-  }.property('model.isNew'),
-
-  updateCapability: 'manage_incidents',
-
-  beforeUpdate() {
-    this.set('newNote', this.get('model.isNew'));
-    return Ember.RSVP.Promise.resolve();
-  },
+  }),
 
   afterUpdate(note) {
-    if (this.get('newNote')) {
-      this.get('editController').send('addNote', note);
+    if (get(this, 'newNote')) {
+      get(this, 'editController').send('addNote', note);
     } else {
       this.send('closeModal');
     }
+  },
+
+  beforeUpdate() {
+    set(this, 'newNote', get(this, 'model.isNew'));
+    return RSVP.resolve();
   }
+
 });

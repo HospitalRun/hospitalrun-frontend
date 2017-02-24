@@ -3,65 +3,78 @@ import Ember from 'ember';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import UserSession from 'hospitalrun/mixins/user-session';
 import moment from 'moment';
+
+const { get, computed, isEmpty, RSVP } = Ember;
+
 export default AbstractReportController.extend(UserSession, NumberFormat, {
-
-  canGenerateReport: function() {
-    return this.currentUserCan('generate_incident_report');
-  }.property(),
-
-  departmentReportColumns: {
-    department: {
-      label: 'Department',
-      include: true,
-      property: 'type' // property type because in _addReportRow function looks for column name with value as type
-    },
-    total: {
-      label: 'Total',
-      include: true,
-      property: 'total',
-      format: '_numberFormat'
-    }
-  },
-  incidentTypeReportColumns: {
-    incidentType: {
-      label: 'Incident Type',
-      include: true,
-      property: 'type'
-    },
-    total: {
-      label: 'Total',
-      include: true,
-      property: 'total',
-      format: '_numberFormat'
-    }
-  },
-  reportTypes: [{
-    name: 'Incidents by Department',
-    value: 'department'
-  }, {
-    name: 'Incidents by Type of Incident',
-    value: 'incidentType'
-  }],
-
   reportType: 'department',
+
+  canGenerateReport: computed(function() {
+    return this.currentUserCan('generate_incident_report');
+  }),
+
+  departmentReportColumns: computed(function() {
+    let i18n = get(this, 'i18n');
+    return {
+      department: {
+        label: i18n.t('incident.labels.department'),
+        include: true,
+        property: 'type' // property type because in _addReportRow function looks for column name with value as type
+      },
+      total: {
+        label: i18n.t('incident.labels.total'),
+        include: true,
+        property: 'total',
+        format: '_numberFormat'
+      }
+    };
+  }),
+  incidentCategoryReportColumns: computed(function() {
+    let i18n = get(this, 'i18n');
+    return {
+      incidentCategory: {
+        label: i18n.t('incident.labels.category'),
+        include: true,
+        property: 'type'
+      },
+      total: {
+        label: i18n.t('incident.labels.total'),
+        include: true,
+        property: 'total',
+        format: '_numberFormat'
+      }
+    };
+  }),
+
+  reportTypes: computed(function() {
+    let i18n = get(this, 'i18n');
+    return [{
+      name: i18n.t('incident.titles.incidentsByDepartment'),
+      value: 'department'
+    }, {
+      name: i18n.t('incident.titles.incidentsByCategory'),
+      value: 'incidentCategory'
+    }];
+  }),
+
   /**
    * Find Incidents by the specified dates and the incidents's date.
    */
   _findIncidentsByDate() {
-    let filterEndDate = this.get('endDate');
-    let filterStartDate = this.get('startDate');
+    let filterEndDate = get(this, 'endDate');
+    let filterStartDate = get(this, 'startDate');
     let findParams = {
       options: {},
       mapReduce: 'incident_by_date'
     };
-    let maxValue = this.get('maxValue');
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (Ember.isEmpty(filterStartDate)) {
+    let maxValue = get(this, 'maxValue');
+    return new RSVP.Promise(function(resolve, reject) {
+      if (isEmpty(filterStartDate)) {
         reject();
       }
       findParams.options.startkey =  [filterStartDate.getTime(), null];
 
-      if (!Ember.isEmpty(filterEndDate)) {
+      if (!isEmpty(filterEndDate)) {
         filterEndDate = moment(filterEndDate).endOf('day').toDate();
         findParams.options.endkey =  [filterEndDate.getTime(), maxValue];
       }
@@ -69,14 +82,14 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
     }.bind(this));
   },
 
-  _generateByDepartmentOrByIncidentTypeReport(incidents, reportType) {
+  _generateByDepartmentOrByIncidentCategoryReport(incidents, reportType) {
     let reportColumns, reportProperty;
     if (reportType === 'department') {
-      reportColumns = this.get('departmentReportColumns');
+      reportColumns = get(this, 'departmentReportColumns');
       reportProperty = 'department';
 
     }    else {
-      reportColumns = this.get('incidentTypeReportColumns');
+      reportColumns = get(this, 'incidentCategoryReportColumns');
       reportProperty = 'categoryName';
     }
     this._addRowsByType(incidents, reportProperty, 'Total incidents: ', reportColumns);
@@ -110,9 +123,9 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
     records.forEach(function(record) {
       let type = record.get(typeField);
       let typeObject;
-      if (!Ember.isEmpty(type)) {
+      if (!isEmpty(type)) {
         typeObject = types.findBy('type', type);
-        if (Ember.isEmpty(typeObject)) {
+        if (isEmpty(typeObject)) {
           typeObject = {
             type,
             total: 0,
@@ -132,15 +145,15 @@ export default AbstractReportController.extend(UserSession, NumberFormat, {
 
   actions: {
     generateReport() {
-      let reportRows = this.get('reportRows');
-      let reportType = this.get('reportType');
+      let reportRows = get(this, 'reportRows');
+      let reportType = get(this, 'reportType');
       reportRows.clear();
       this.showProgressModal();
       switch (reportType) {
         case 'department':
-        case 'incidentType': {
+        case 'incidentCategory': {
           this._findIncidentsByDate().then((incidents) => {
-            this._generateByDepartmentOrByIncidentTypeReport(incidents, reportType);
+            this._generateByDepartmentOrByIncidentCategoryReport(incidents, reportType);
           }).catch((ex) => {
             console.log('Error:', ex);
             this.closeProgressModal();
