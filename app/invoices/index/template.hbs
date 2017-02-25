@@ -2,12 +2,12 @@
   {{#if hasRecords}}
     <table class="table">
       <tr class="table-header">
-        <th>{{t 'labels.number'}}</th>
-        <th>{{t 'labels.billDate'}}</th>
-        <th>{{t 'labels.status'}}</th>
-        <th>{{t 'labels.patient'}}</th>
-        <th>{{t 'labels.total'}}</th>
-        <th>{{t 'labels.balanceDue'}}</th>
+        <th>{{t 'models.invoice.labels.displayInvoiceNumber'}}</th>
+        <th>{{t 'models.invoice.labels.billDate'}}</th>
+        <th>{{t 'models.invoice.labels.status'}}</th>
+        <th>{{t 'models.invoice.labels.patient'}}</th>
+        <th>{{t 'models.invoice.labels.total'}}</th>
+        <th>{{t 'models.invoice.labels.remainingBalance'}}</th>
         {{#if showActions}}
           <th>{{t 'labels.actions'}}</th>
         {{/if}}

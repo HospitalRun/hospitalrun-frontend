@@ -1026,12 +1026,9 @@ export default {
       addOverride: 'Add Override'
     },
     labels: {
-      externalInvoiceNumber: 'External Invoice #',
-      paymentProfile: 'Payment Profile',
       actualCharges: 'Actual Charges',
       insurance: 'National Insurance',
       hmoCom: 'HMO/COM',
-      paymentsDeposits: 'Payments/Deposits',
       pricingPanelOverrides: 'Pricing profile overrides',
       pricingProfile: 'Pricing Profile',
       discountAmount: 'Discount Amount',
@@ -1249,6 +1246,37 @@ export default {
     }
   },
   models: {
+    appointment: {
+      labels: {
+        status: 'First Name',
+        appointmentType: 'Type',
+        provider: 'With',
+        location: 'Location',
+        patient: 'Patient',
+        startDate: 'Start Date',
+        endDate: 'End Date',
+        allDay: 'All Day',
+        type: 'Type',
+        notes: 'Notes',
+        appointmentDate: 'Date'
+      }
+    },
+    billingLineItem: {
+      labels: {
+        category: 'Category',
+        description: 'Description',
+        discount: 'Discount',
+        name: 'Name'
+      }
+    },
+    diagnosis: {
+      labels: {
+        active: 'Active Diagnosis',
+        date: 'Date',
+        diagnosis: 'Diagnosis',
+        secondaryDiagnosis: 'Secondary Diagnosis'
+      }
+    },
     imaging: {
       labels: {
         requestedDate: 'Date Requested',
@@ -1266,27 +1294,23 @@ export default {
         visit: '--Add New Visit--'
       }
     },
-    appointment: {
+    invoice: {
       labels: {
-        status: 'First Name',
-        appointmentType: 'Type',
-        provider: 'With',
-        location: 'Location',
+        billDate: 'Bill Date',
+        category: 'Category',
+        displayInvoiceNumber: 'Invoice ID',
+        externalInvoiceNumber: 'External Invoice #',
+        lineItems: 'Line Items',
+        name: 'Name',
+        paidTotal: 'Payments/Deposits',
         patient: 'Patient',
-        startDate: 'Start Date',
-        endDate: 'End Date',
-        allDay: 'All Day',
-        type: 'Type',
-        notes: 'Notes',
-        appointmentDate: 'Date'
-      }
-    },
-    diagnosis: {
-      labels: {
-        active: 'Active Diagnosis',
-        date: 'Date',
-        diagnosis: 'Diagnosis',
-        secondaryDiagnosis: 'Secondary Diagnosis'
+        payments: 'Payments',
+        paymentProfile: 'Payment Profile',
+        remarks: 'Remarks',
+        remainingBalance: 'Balance Due',
+        status: 'Status',
+        total: 'Total',
+        visit: 'Visit'
       }
     },
     lab: {
@@ -1305,13 +1329,13 @@ export default {
         visit: '--Add New Visit--'
       }
     },
-    pricing: {
+    lineItemDetail: {
       labels: {
-        category: 'Category',
-        expenseAccount: 'Department',
+        expenseAccount: 'Expense To',
         name: 'Name',
         price: 'Price',
-        pricingType: 'Type'
+        quantity: 'Quantity',
+        total: 'Total'
       }
     },
     patient: {
@@ -1321,6 +1345,24 @@ export default {
       },
       names: {
         singular: 'Patient'
+      }
+    },
+    payment: {
+      labels: {
+        amount: 'Amount',
+        datePaid: 'Date',
+        expenseAccount: 'Credit To',
+        notes: 'Notes',
+        paymentType: 'Type'
+      }
+    },
+    pricing: {
+      labels: {
+        category: 'Category',
+        expenseAccount: 'Department',
+        name: 'Name',
+        price: 'Price',
+        pricingType: 'Type'
       }
     },
     user: {
