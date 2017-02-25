@@ -69,9 +69,6 @@ PREDEFINED_USER_ROLES.forEach((role) => {
       visit('/');
       andThen(() => {
         let defaultURL = role.defaultRoute.replace('.index', '');
-        if (defaultURL === 'users') {
-          defaultURL = 'admin/users'; // Special use case for users because it actually sits under admin.
-        }
         assert.equal(currentURL(), `/${defaultURL}`, `Correct homepage displays for role ${role.name}`);
         invalidateSession();
       });
