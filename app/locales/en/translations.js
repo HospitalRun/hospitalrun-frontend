@@ -1287,13 +1287,23 @@ export default {
         requestedBy: 'Requested By',
         requestedDate: 'Date Requested',
         result: 'Results',
-        visit: 'Visit'
+        visit: 'Visit',
+        pricingType: 'Type',
       }
     },
     patient: {
       labels: {
         name: 'Name'
       },
+      pricing:{
+        labels: {
+          category: 'Category',
+          expenseAccount: 'Department',
+          name: 'Name',
+          price: 'Price'
+
+        },
+      }
       names: {
         singular: 'Patient'
       }
