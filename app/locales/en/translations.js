@@ -1278,6 +1278,52 @@ export default {
         appointmentDate: 'Date'
       }
     },
+    billingLineItem: {
+      labels: {
+        category: 'Category',
+        description: 'Description',
+        discount: 'Discount',
+        name: 'Name',
+      }
+    },
+    invoice: {
+      labels: {
+        name: 'Name',
+        category: 'Category',
+        displayInvoiceNumber: 'Invoice ID',
+        billDate: 'Bill Date',
+        name: 'Name',
+        visit: 'Visit',
+        externalInvoiceNumber: 'External Invoice #',
+        paymentProfile: 'Payment Profile',
+        lineItems: 'Line Items',
+        total: 'Total',
+        paidTotal: 'Payments/Deposits',
+        remainingBalance: 'Balance Due',
+        remarks: 'Remarks',
+        payments: 'Payments',
+        status: 'Status',
+        patient: 'Patient'
+      }
+    },
+    lineItemDetail: {
+      labels: {
+        name: 'Name',
+        quantity: 'Quantity',
+        price: 'Price',
+        expenseAccount: 'Expense To',
+        total: 'Total'
+      }
+    },
+    payments: {
+      labels: {
+        datePaid: 'Date',
+        amount: 'Amount',
+        paymentType: 'Type',
+        notes: 'Notes',
+        expenseAccount: 'Credit To'
+      }
+    },
     patient: {
       labels: {
         name: 'Name'
