@@ -1184,12 +1184,6 @@ export default {
     }
   },
   diagnosis: {
-    labels: {
-      activeDiagnosis: 'Active Diagnosis',
-      date: 'Date',
-      diagnosis: 'Diagnosis',
-      secondaryDiagnosis: 'Secondary Diagnosis'
-    },
     titles: {
       addDiagnosis: 'Add Diagnosis',
       editDiagnosis: 'Edit Diagnosis'
@@ -1276,6 +1270,14 @@ export default {
         type: 'Type',
         notes: 'Notes',
         appointmentDate: 'Date'
+      }
+    },
+    diagnosis: {
+      labels: {
+        active: 'Active Diagnosis',
+        date: 'Date',
+        diagnosis: 'Diagnosis',
+        secondaryDiagnosis: 'Secondary Diagnosis'
       }
     },
     labs: {
