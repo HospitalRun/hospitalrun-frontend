@@ -1306,6 +1306,16 @@ export default {
       names: {
         singular: 'Patient'
       }
+    },
+    user: {
+      labels: {
+        displayName: 'Name',
+        displayRole: 'Role',
+        email: 'Email',
+        name: 'Username',
+        password: 'Password',
+        roles: 'Role'
+      }
     }
   }
 };
