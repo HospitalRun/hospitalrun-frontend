@@ -56,7 +56,7 @@ To run HospitalRun with Docker please do the following:
 - Goto [https://docs.docker.com/engine/installation](https://docs.docker.com/engine/installation) to download and install Docker.
 - Clone the repository with the command `git clone https://github.com/HospitalRun/hospitalrun-frontend.git`.
 - Change to the hospitalrun-frontend directory `cd hospitalrun-frontend`.
-- Build the HosptialRun image with `docker build -t hospitalrun-frontend .`
+- Build the HospitalRun image with `docker build -t hospitalrun-frontend .`
 - Execute `docker run -it --name couchdb -d couchdb` to create the couchdb container.
 - Execute `docker run -it --name hospitalrun-frontend -p 4200:4200 --link couchdb:couchdb -d hospitalrun-frontend` to create the HospitalRun container.
 
