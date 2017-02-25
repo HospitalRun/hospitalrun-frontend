@@ -877,10 +877,6 @@ export default {
     newTitle: 'New Lab Request',
     deleteTitle: 'Delete Request',
     completedTitle: 'Completed Labs',
-    labels: {
-      labType: 'Lab Type',
-      addNewVisit: '--Add New Visit--'
-    },
     messages: {
       noItemsFound: 'No labs found.',
       createNewRecord: 'Create a new record?',
@@ -1290,6 +1286,9 @@ export default {
         requestedDate: 'Date Requested',
         result: 'Results',
         visit: 'Visit'
+      },
+      placeholders: {
+        visit: '--Add New Visit--'
       }
     },
     pricing: {
