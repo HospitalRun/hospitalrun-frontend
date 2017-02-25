@@ -540,16 +540,16 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
   },
 
   _addChildObject(route, afterTransition) {
-    this.transitionToRoute(route, 'new').then(function(newRoute) {
-      newRoute.currentModel.setProperties({
-        patient: this.get('model'),
-        returnToPatient: this.get('model.id'),
-        selectPatient: false
-      });
+    let options = {
+      queryParams: {
+        forPatientId: this.get('model.id')
+      }
+    };
+    this.transitionToRoute(route, 'new', options).then((newRoute) => {
       if (afterTransition) {
         afterTransition(newRoute);
       }
-    }.bind(this));
+    });
   },
 
   _showEditSocial(editAttributes, modelName, route) {

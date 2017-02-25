@@ -1261,5 +1261,30 @@ export default {
     titles: {
       sessionExpired: 'Session Expired'
     }
+  },
+  models: {
+    appointment: {
+      labels: {
+        status: 'First Name',
+        appointmentType: 'Type',
+        provider: 'With',
+        location: 'Location',
+        patient: 'Patient',
+        startDate: 'Start Date',
+        endDate: 'End Date',
+        allDay: 'All Day',
+        type: 'Type',
+        notes: 'Notes',
+        appointmentDate: 'Date'
+      }
+    },
+    patient: {
+      labels: {
+        name: 'Name'
+      },
+      names: {
+        singular: 'Patient'
+      }
+    }
   }
 };
