@@ -1,6 +1,7 @@
 import AppointmentIndexRoute from 'hospitalrun/appointments/index/route';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import Ember from 'ember';
+import moment from 'moment';
 import { translationMacro as t } from 'ember-i18n';
 
 export default AppointmentIndexRoute.extend(DateFormat, {

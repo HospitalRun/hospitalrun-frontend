@@ -11,16 +11,16 @@ export default Ember.Controller.extend(UserSession, {
     'Users'
   ],
 
-  setupPermissions: function() {
+  setupPermissions: Ember.on('init', function() {
     let permissions = this.get('defaultCapabilities');
     for (let capability in permissions) {
       if (this.currentUserCan(capability)) {
         this.set(`userCan_${capability}`, true);
       }
     }
-  }.on('init'),
+  }),
 
-  activeLinks: function() {
+  activeLinks: Ember.computed('indexLinks', function() {
     let activeLinks = [];
     let indexLinks = this.get('indexLinks');
     indexLinks.forEach(function(link) {
@@ -33,6 +33,6 @@ export default Ember.Controller.extend(UserSession, {
       }
     }.bind(this));
     return activeLinks;
-  }.property('indexLinks')
+  })
 
 });

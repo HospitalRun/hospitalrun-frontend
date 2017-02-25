@@ -6,6 +6,14 @@ export default Ember.Mixin.create({
       'User Administrator',
       'System Administrator'
     ],
+    add_allergy: [
+      'Data Entry',
+      'Doctor',
+      'Hospital Administrator',
+      'Medical Records Officer',
+      'Patient Administration',
+      'System Administrator'
+    ],
     appointments: [
       'Data Entry',
       'Finance',
@@ -30,6 +38,12 @@ export default Ember.Mixin.create({
       'Medical Records Officer',
       'System Administrator'
     ],
+    add_billing_diagnosis: [
+      'Data Entry',
+      'Hospital Administrator',
+      'Medical Records Officer',
+      'System Administrator'
+    ],
     add_diagnosis: [
       'Data Entry',
       'Doctor',
@@ -44,6 +58,22 @@ export default Ember.Mixin.create({
       'Hospital Administrator',
       'Medical Records Officer',
       'Pharmacist',
+      'System Administrator'
+    ],
+    add_operative_plan: [
+      'Data Entry',
+      'Doctor',
+      'Hospital Administrator',
+      'Medical Records Officer',
+      'Patient Administration',
+      'System Administrator'
+    ],
+    add_operation_report: [
+      'Data Entry',
+      'Doctor',
+      'Hospital Administrator',
+      'Medical Records Officer',
+      'Patient Administration',
       'System Administrator'
     ],
     add_photo: [
@@ -446,7 +476,7 @@ export default Ember.Mixin.create({
       'Patient Administration',
       'System Administrator'
     ],
-    'user_roles': [
+    'define_user_roles': [
       'System Administrator'
     ]
   },
@@ -469,7 +499,7 @@ export default Ember.Mixin.create({
           return supportedRoles.includes(sessionVars.role);
         }
       } else {
-        return userCaps.includes(capability);
+        return userCaps.includes(capability.camelize()); // User defined capabilities are camelcased.
       }
     }
     return false;

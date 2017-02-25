@@ -4,16 +4,17 @@ import Ember from 'ember';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 
 export default AbstractModel.extend(NumberFormat, {
+  // Attributes
   amountOwed: DS.attr('number'),
   category: DS.attr('string'),
   description: DS.attr('string'),
-  details: DS.hasMany('line-item-detail', {
-    async: false
-  }), /* The individual objects that make up this line item. */
   discount: DS.attr('number'),
   name: DS.attr('string'),
   nationalInsurance: DS.attr('number'),
   privateInsurance: DS.attr('number'),
+  // Associations
+  /* The individual objects that make up this line item. */
+  details: DS.hasMany('line-item-detail', { async: false }),
 
   amountOwedChanged: function() {
     Ember.run.debounce(this, function() {

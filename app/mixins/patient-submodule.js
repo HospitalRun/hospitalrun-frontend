@@ -2,6 +2,9 @@ import DS from 'ember-data';
 import Ember from 'ember';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import SelectValues from 'hospitalrun/utils/select-values';
+
+const { get, isEmpty } = Ember;
+
 export default Ember.Mixin.create(PatientVisits, {
   findPatientVisits: true, // Override to false if visits shouldn't be set when patient is selected.
   needToUpdateVisit: false,
@@ -20,11 +23,26 @@ export default Ember.Mixin.create(PatientVisits, {
     },
     returnToPatient() {
       this._cancelUpdate();
-      this.transitionToRoute('patients.edit', this.get('returnPatientId'));
+      this.transitionToRoute('patients.edit', this.get('model.returnToPatient'));
     },
     returnToVisit() {
       this._cancelUpdate();
-      this.transitionToRoute('visits.edit', this.get('returnVisitId'));
+      this.transitionToRoute('visits.edit', this.get('model.returnToVisit'));
+    },
+
+    selectedPatientChanged(selectedPatient) {
+      if (!Ember.isEmpty(selectedPatient)) {
+        this.store.find('patient', selectedPatient.id).then((item) =>{
+          this.set('model.patient', item);
+          this.patientSelected(item);
+          Ember.run.once(this, function() {
+            this.get('model').validate().catch(Ember.K);
+          });
+        });
+      } else {
+        this.set('model.patient', null);
+        this.patientSelected();
+      }
     }
   },
 
@@ -51,6 +69,28 @@ export default Ember.Mixin.create(PatientVisits, {
     }.bind(this));
   },
 
+  addDiagnosisToModelAndPatient(newDiagnosis) {
+    let diagnoses = this.get('model.diagnoses');
+    diagnoses.addObject(newDiagnosis);
+    let patientDiagnoses = this.get('model.patient.diagnoses');
+    let diagnosisExists = patientDiagnoses.any((diagnosis) => {
+      return diagnosis.get('active') === true
+          && diagnosis.get('diagnosis') === newDiagnosis.get('diagnosis')
+          && diagnosis.get('secondaryDiagnosis') === newDiagnosis.get('secondaryDiagnosis');
+    });
+    if (!diagnosisExists) {
+      patientDiagnoses.addObject(newDiagnosis);
+      let patient = this.get('model.patient');
+      patient.save().then(() => {
+        this.send('update', true);
+        this.send('closeModal');
+      });
+    } else {
+      this.send('update', true);
+      this.send('closeModal');
+    }
+  },
+
   _finishAddChildToVisit(objectToAdd, childName, visit, resolve, reject) {
     visit.get(childName).then(function(visitChildren) {
       visitChildren.addObject(objectToAdd);
@@ -62,9 +102,9 @@ export default Ember.Mixin.create(PatientVisits, {
   cancelAction: function() {
     let returnToPatient = this.get('model.returnToPatient');
     let returnToVisit = this.get('model.returnToVisit');
-    if (returnToVisit) {
+    if (!isEmpty(returnToVisit)) {
       return 'returnToVisit';
-    } else if (returnToPatient) {
+    } else if (!isEmpty(returnToPatient)) {
       return 'returnToPatient';
     } else {
       return 'returnToAllItems';
@@ -107,7 +147,29 @@ export default Ember.Mixin.create(PatientVisits, {
     });
   },
 
+  getPatientDiagnoses(patient, model) {
+    let diagnoses = patient.get('diagnoses');
+    let activeDiagnoses;
+    if (!isEmpty(diagnoses)) {
+      activeDiagnoses = diagnoses.filterBy('active', true).map((diagnosis) => {
+        let description = diagnosis.get('diagnosis');
+        let newDiagnosisProperties = diagnosis.getProperties('active', 'date', 'diagnosis', 'secondaryDiagnosis');
+        newDiagnosisProperties.diagnosis = description;
+        return this.store.createRecord('diagnosis',
+          newDiagnosisProperties
+        );
+      });
+    }
+    let currentDiagnoses = get(model, 'diagnoses');
+    currentDiagnoses.clear();
+    if (!isEmpty(activeDiagnoses)) {
+      currentDiagnoses.addObjects(activeDiagnoses);
+    }
+  },
+
   patientId: Ember.computed.alias('model.patient.id'),
+
+  patientSelected(/* patient */) {},
 
   patientVisits: function() {
     let patient = this.get('model.patient');
@@ -115,7 +177,7 @@ export default Ember.Mixin.create(PatientVisits, {
 
     if (!Ember.isEmpty(patient) && this.get('findPatientVisits')) {
       visitPromise = this.getPatientVisits(patient);
-    } else if (Ember.isEmpty(patient) && this.get('findPatientVisits')) {
+    } else {
       visitPromise = Ember.RSVP.resolve([]);
     }
     return DS.PromiseArray.create({
@@ -123,29 +185,6 @@ export default Ember.Mixin.create(PatientVisits, {
     });
   }.property('model.patient.id', 'newVisitAdded'),
 
-  selectedPatientChanged: function() {
-    let selectedPatient = this.get('selectedPatient');
-    if (!Ember.isEmpty(selectedPatient)) {
-      this.store.find('patient', selectedPatient.id).then(function(item) {
-        this.set('model.patient', item);
-        Ember.run.once(this, function() {
-          this.get('model').validate().catch(Ember.K);
-        });
-      }.bind(this));
-    } else {
-      this.set('model.patient', null);
-    }
-  }.observes('selectedPatient'),
-
-  patientIdChanged: function() {
-    let patientId = this.get('patientId');
-    if (!Ember.isEmpty(patientId)) {
-      this.set('returnPatientId', patientId);
-    }
-  }.observes('patientId').on('init'),
-
-  returnPatientId: null,
-  returnVisitId: null,
   patientVisitsForSelect: function() {
     return DS.PromiseArray.create({
       promise: this.get('patientVisits').then(function(patientVisits) {
@@ -194,6 +233,19 @@ export default Ember.Mixin.create(PatientVisits, {
     return promises;
   },
 
+  saveNewDiagnoses() {
+    let diagnoses = this.get('model.diagnoses');
+    diagnoses = diagnoses.filterBy('isNew', true);
+    if (!isEmpty(diagnoses)) {
+      let savePromises = diagnoses.map((diagnoses) => {
+        return diagnoses.save();
+      });
+      return Ember.RSVP.all(savePromises);
+    } else {
+      return Ember.RSVP.resolve();
+    }
+  },
+
   /**
    * If visit needs to saved, save it and then display an alert message; otherwise
    * just display the alert message.
@@ -210,13 +262,6 @@ export default Ember.Mixin.create(PatientVisits, {
       this.displayAlert(alertTitle, alertMessage, alertAction);
     }
   },
-
-  visitIdChanged: function() {
-    let visitId = this.get('visitId');
-    if (!Ember.isEmpty(visitId)) {
-      this.set('returnVisitId', visitId);
-    }
-  }.observes('visitId').on('init'),
 
   visitId: Ember.computed.alias('model.visit.id'),
   visitsController: Ember.computed.alias('controllers.visits')

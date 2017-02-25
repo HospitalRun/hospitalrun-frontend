@@ -38,7 +38,13 @@ export default HtmlInput.extend({
     let currentDate = this.get('currentDate');
     let picker = this.get('_picker');
     if (this._shouldSetDate(currentDate, picker)) {
-      this.set('currentDate', picker.getDate());
+      let newDate = picker.getDate();
+      let mainComponent = this.get('mainComponent');
+      let dateSetAction = mainComponent.get('dateSetAction');
+      this.set('currentDate', newDate);
+      if (!Ember.isEmpty(dateSetAction)) {
+        mainComponent.sendAction('dateSetAction', newDate);
+      }
     }
   },
 
@@ -72,11 +78,9 @@ export default HtmlInput.extend({
 
   didReceiveAttrs(/* attrs */) {
     this._super(...arguments);
-    let dateProperty = this.get('mainComponent.property');
+    let dateProperty = this.get('mainComponent.originalPropery');
     let displayPropertyName = `display_${dateProperty}`;
-    this.set('mainComponent.property', displayPropertyName);
     this.currentDate = Ember.computed.alias(`mainComponent.model.${dateProperty}`);
-    this.selectedValue = Ember.computed.alias(`mainComponent.model.${displayPropertyName}`);
     this.minDate = Ember.computed.alias('mainComponent.minDate');
     this.maxDate = Ember.computed.alias('mainComponent.maxDate');
     this.showTime = Ember.computed.alias('mainComponent.showTime');

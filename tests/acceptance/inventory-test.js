@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
+import moment from 'moment';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
 module('Acceptance | inventory', {
@@ -65,6 +66,43 @@ test('Adding a new inventory item', (assert) => {
     andThen(() => {
       assert.equal(currentURL(), '/inventory/listing');
       assert.equal(find('tr').length, 2, 'One item is listed');
+    });
+  });
+});
+
+test('Items with negative quantites should not be saved', (assert) => {
+  runWithPouchDump('default', function() {
+    authenticateUser();
+    visit('/inventory/edit/new');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory/edit/new');
+    });
+    fillIn('.test-inv-name input', 'Biogesic');
+    select('.test-inv-rank', 'B');
+    fillIn('textarea', 'Biogesic nga medisina');
+    select('.test-inv-type', 'Medication');
+    fillIn('.test-inv-cross input', '2600');
+    fillIn('.test-inv-reorder input', '100');
+    fillIn('.test-inv-price input', '5');
+    select('.test-inv-dist-unit', 'tablet');
+    fillIn('.test-inv-quantity input', '-1000');
+    fillIn('.test-inv-cost input', '4000');
+    select('.test-inv-unit', 'tablet');
+    typeAheadFillIn('.test-vendor', 'Alpha Pharmacy');
+    click('button:contains(Add)');
+    waitToAppear('.modal-dialog');
+
+    andThen(() => {
+      assert.equal(find('.modal-title').text(), 'Warning!!!!', 'Inventory Item with negative quantity should not be saved.');
+    });
+    click('button:contains(Ok)');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory/edit/new');
+      findWithAssert('button:contains(Add)');
+      findWithAssert('button:contains(Cancel)');
+      assert.equal(find('.test-inv-quantity .help-block').text(), 'not a valid number', 'Error message should be present for invalid quantities');
     });
   });
 });
@@ -155,10 +193,11 @@ test('Fulfilling an inventory request', function(assert) {
       findWithAssert('button:contains(Fulfill)');
       findWithAssert('button:contains(Cancel)');
     });
-
-    click('button:contains(Fulfill)');
-    waitToAppear('.modal-dialog');
-
+    waitToAppear('.inventory-location option:contains(No Location)');
+    andThen(() => {
+      click('button:contains(Fulfill)');
+      waitToAppear('.modal-dialog');
+    });
     andThen(() => {
       let modalTitle = find('.modal-title');
       assert.equal(modalTitle.text(), 'Request Fulfilled', 'Inventory request has been fulfilled');
@@ -184,9 +223,11 @@ test('Receiving inventory', function(assert) {
     typeAheadFillIn('.test-inv-item', 'Biogesic - m00001');
     fillIn('.test-inv-quantity input', 500);
     fillIn('.test-inv-cost input', '2000');
-    click('button:contains(Save)');
-    waitToAppear('.modal-title');
-
+    waitToAppear('.inventory-distribution-unit');
+    andThen(() => {
+      click('button:contains(Save)');
+      waitToAppear('.modal-title');
+    });
     andThen(() => {
       let modalTitle = find('.modal-title');
       assert.equal(modalTitle.text(), 'Inventory Purchases Saved', 'Inventory has been received');
@@ -232,7 +273,8 @@ function testSimpleReportForm(reportName) {
       andThen(() => {
         let reportTitle = `${reportName} Report ${startDate.format('l')} - ${endDate.format('l')}`;
         assert.equal(find('.panel-title').text().trim(), reportTitle, `${reportName} Report generated`);
-        findWithAssert('a:contains(Export Report)');
+        let exportLink = findWithAssert('a:contains(Export Report)');
+        assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
       });
     });
   });
@@ -251,8 +293,10 @@ function testSingleDateReportForm(reportName) {
       waitToAppear('.panel-title');
 
       andThen(() => {
-        assert.equal(find('.panel-title').text().trim(), `${reportName} Report ${moment().format('l')}`, `${reportName} Report generated`);
-        findWithAssert('a:contains(Export Report)');
+        let reportTitle = `${reportName} Report ${moment().format('l')}`;
+        assert.equal(find('.panel-title').text().trim(), reportTitle, `${reportName} Report generated`);
+        let exportLink = findWithAssert('a:contains(Export Report)');
+        assert.equal($(exportLink).attr('download'), `${reportTitle}.csv`);
       });
     });
   });

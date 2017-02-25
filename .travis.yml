@@ -10,8 +10,9 @@ branches:
 sudo: false
 
 cache:
-  directories:
-    - node_modules
+  directories
+    - $HOME/.npm
+    - $HOME/.cache # includes bowers cache
 
 before_install:
   - npm config set spin false

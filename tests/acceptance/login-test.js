@@ -55,6 +55,7 @@ test('incorrect credentials shows an error message on the screen', function(asse
     fillIn('#identification', 'hradmin');
     fillIn('#password', 'tset');
     click('button:contains(Sign in)');
+    waitToAppear('.form-signin-alert');
 
     andThen(function() {
       assert.equal(find('.form-signin-alert').text(), errorMessage, 'Error reason is shown');

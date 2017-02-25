@@ -23,9 +23,16 @@ export default Ember.Component.extend({
     cancelAction() {
       this.sendAction('cancelAction');
     },
+
+    fireButtonAction(buttonAction) {
+      this.set(buttonAction, buttonAction);
+      this.sendAction(buttonAction);
+    },
+
     updateAction() {
       this.sendAction('updateButtonAction');
     }
+
   },
 
   didInsertElement() {
@@ -33,6 +40,7 @@ export default Ember.Component.extend({
 
     $modal.on('hidden.bs.modal', function() {
       this.sendAction('closeModalAction');
+      this.sendAction('cancelAction');
     }.bind(this));
   },
 
