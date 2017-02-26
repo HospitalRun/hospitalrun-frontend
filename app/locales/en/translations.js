@@ -701,10 +701,6 @@ export default {
     buttons: {
       newButton: '+ new imaging'
     },
-    labels: {
-      radiologist: 'Radiologist',
-      addNewVisit: '--Add New Visit--'
-    },
     messages: {
       delete: 'Are you sure you wish to delete this imaging request?',
       noCompleted: 'No completed items found.'
@@ -1257,6 +1253,23 @@ export default {
     }
   },
   models: {
+    imaging: {
+      labels: {
+        requestedDate: 'Date Requested',
+        imagingDate: 'Date Completed',
+        requestedBy: 'Requested By',
+        radiologist: 'Radiologists',
+        patient: 'Patient',
+        imagingType: 'Imaging Type',
+        result: 'Result',
+        notes: 'Notes',
+        visit: 'Visit',
+        status: 'Status'
+      },
+      placeholders: {
+        visit: '--Add New Visit--'
+      }
+    },
     appointment: {
       labels: {
         status: 'First Name',
@@ -1303,7 +1316,8 @@ export default {
     },
     patient: {
       labels: {
-        name: 'Name'
+        name: 'Name',
+        displayName: 'Name'
       },
       names: {
         singular: 'Patient'
