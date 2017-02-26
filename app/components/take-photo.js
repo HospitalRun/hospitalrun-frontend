@@ -108,7 +108,8 @@ export default Ember.Component.extend({
           photo,
           video
         });
-        if (typeof MediaStreamTrack === 'undefined' || MediaStreamTrack.getSources === 'undefined') {
+        if (typeof MediaStreamTrack === 'undefined' ||
+          typeof MediaStreamTrack.getSources === 'undefined') {
           if (navigator.getUserMedia) {
             navigator.getUserMedia({ audio: false, video: true }, this._gotStream.bind(this), this._errorCallback);
             this._setupCanPlayListener(video);
