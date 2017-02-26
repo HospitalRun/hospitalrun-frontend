@@ -2,13 +2,13 @@
   {{#if model}}
     <table class="table">
       <tr class="table-header">
-        <th>{{t 'models.labs.labels.requestedDate'}}</th>
-        <th>{{t 'models.labs.labels.labDate'}}</th>
-        <th>{{t 'models.labs.labels.patient'}}</th>
-        <th>{{t 'models.labs.labels.requestedBy'}}</th>
-        <th>{{t 'models.labs.labels.labType'}}</th>
-        <th>{{t 'models.labs.labels.result'}}</th>
-        <th>{{t 'models.labs.labels.notes'}}</th>
+        <th>{{t 'models.lab.labels.requestedDate'}}</th>
+        <th>{{t 'models.lab.labels.labDate'}}</th>
+        <th>{{t 'models.lab.labels.patient'}}</th>
+        <th>{{t 'models.lab.labels.requestedBy'}}</th>
+        <th>{{t 'models.lab.labels.labType'}}</th>
+        <th>{{t 'models.lab.labels.result'}}</th>
+        <th>{{t 'models.lab.labels.notes'}}</th>
       </tr>
       {{#each model as |lab|}}
         {{labs/completed/labs-completed-list-item lab=lab}}

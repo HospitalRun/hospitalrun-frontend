@@ -873,10 +873,6 @@ export default {
     newTitle: 'New Lab Request',
     deleteTitle: 'Delete Request',
     completedTitle: 'Completed Labs',
-    labels: {
-      labType: 'Lab Type',
-      addNewVisit: '--Add New Visit--'
-    },
     messages: {
       noItemsFound: 'No labs found.',
       createNewRecord: 'Create a new record?',
@@ -1293,7 +1289,7 @@ export default {
         secondaryDiagnosis: 'Secondary Diagnosis'
       }
     },
-    labs: {
+    lab: {
       labels: {
         labDate: 'Date Completed',
         notes: 'Notes',
@@ -1302,7 +1298,11 @@ export default {
         requestedBy: 'Requested By',
         requestedDate: 'Date Requested',
         result: 'Results',
-        visit: 'Visit'
+        visit: 'Visit',
+        status: 'Status'
+      },
+      placeholders: {
+        visit: '--Add New Visit--'
       }
     },
     pricing: {
