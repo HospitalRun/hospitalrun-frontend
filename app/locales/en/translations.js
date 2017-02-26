@@ -1276,7 +1276,7 @@ export default {
         secondaryDiagnosis: 'Secondary Diagnosis'
       }
     },
-    labs: {
+    lab: {
       labels: {
         labDate: 'Date Completed',
         notes: 'Notes',
