@@ -1285,7 +1285,8 @@ export default {
         requestedBy: 'Requested By',
         requestedDate: 'Date Requested',
         result: 'Results',
-        visit: 'Visit'
+        visit: 'Visit',
+        status: 'Status'
       },
       placeholders: {
         visit: '--Add New Visit--'
