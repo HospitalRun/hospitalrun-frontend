@@ -29,7 +29,7 @@
 
       {{#if model.visit.startDate}}
         <div class="ps-info-group">
-          <p class="ps-info-label">{{t 'reports.form.visitDate' }}</p>
+          <label class="ps-info-label">{{t 'reports.form.visitDate' }}</label>
           {{date-format model.visit.startDate format="DD/MM/YYYY hh:mm a"}}
         </div>
       {{/if}}
@@ -89,7 +89,7 @@
           <label class="ps-info-label">{{t 'reports.form.procedures' }}</label>
           <ul>
             {{#each model.visit.procedures as |item|}}
-              <li>{{item.description}} {{#if item.procedureDate }} - {{date-format item.procedureDate format="DD/MM/YYYY"}} {{/if}}</li>
+              <li>{{item.description}}</li>
             {{/each}}
           </ul>
         </div>
@@ -117,23 +117,49 @@
         </div>
       {{/if}}
 
+      {{#if model.visit.medication.length}}
+        <div class="ps-info-group">
+          <label class="ps-info-label">{{t 'reports.form.medications' }}</label>
+          <ul>
+            {{#each model.visit.medication as |medication|}}
+              <li>{{medication.medicationName}} - {{medication.prescription}} ({{medication.status}})</li>
+            {{/each}}
+          </ul>
+        </div>
+      {{/if}}
 
       {{#if nextAppointment}}
         <div class="ps-info-group">
-          <p class="ps-info-label">{{t 'reports.form.nextAppointmentDate' }}</p>
+          <label class="ps-info-label">{{t 'reports.form.nextAppointmentDate' }}:</label>
          {{date-format nextAppointment format="DD/MM/YYYY hh:mm a"}}
         </div>
       {{/if}}
 
       {{#if model.visit.patient.operativePlans.length}}
         <div class="ps-info-group">
-          <label class="ps-info-label">{{t 'reports.form.operativePlan' }}</label>
+          <label class="ps-info-label">{{t 'reports.form.operativePlan.title' }}</label>
           <ul>
-            {{#each model.visit.patient.operativePlans as |item|}}
-              {{#each item.procedures as |p|}}
-                <li>{{p.description}} ({{item.status}})</li>
+              {{#each model.visit.patient.operativePlans as |operativePlan|}}
+                <li>
+                  <p><b>{{t 'reports.form.operativePlan.description' }}:</b><br>
+                  {{operativePlan.operationDescription}}</p>
+                </li>
+
+                <li>
+                  <p><b>{{t 'reports.form.operativePlan.procedures' }}:</b></p>
+                  <ul>
+                    {{#each operativePlan.procedures as |procedure|}}
+                      <li>{{procedure.description}}</li>
+                    {{/each}}
+                  </ul>
+                </li>
+
+                <li>
+                  <p><b>{{t 'reports.form.operativePlan.instructions' }}:</b><br>
+                    {{operativePlan.admissionInstructions}}
+                  </p>
+                </li>
               {{/each}}
-            {{/each}}
           </ul>
         </div>
       {{/if}}

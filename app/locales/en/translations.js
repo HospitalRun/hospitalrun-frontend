@@ -1117,8 +1117,14 @@ export default {
       procedures: 'Procedures',
       labs: 'Labs',
       images: 'Images',
+      medications: 'Medications',
       nextAppointmentDate: 'Date Of Next Appointment',
-      operativePlan: 'Planned Procedures'
+      operativePlan: {
+        title: 'Operative Plans',
+        description: 'Operation Description',
+        procedures: 'Planned Procedures',
+        instructions: 'Instructions upon Admission'
+      }
     },
     opd: {
       titles: {
