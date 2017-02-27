@@ -8,10 +8,20 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
   disabledAction: false,
   hideCancelButton: true,
   updateCapability: 'define_user_roles',
-  filteredRoles: Ember.computed.filter('userRoles', function(userRole) {
+  namedRoles: Ember.computed.map('userRoles', function(userRole) {
+    let id = userRole.name.dasherize();
+    let userRoleModel = this.get('model').findBy('id', id);
+    if (!userRole.id) {
+      userRole.id = id;
+    }
+    if (userRoleModel) {
+      userRole.name = userRoleModel.get('name');
+    }
+    return userRole;
+  }),
+  filteredRoles: Ember.computed.filter('namedRoles', function(userRole) {
     return (userRole.name !== 'System Administrator');
   }),
-
   availableCapabilities: [{
     name: 'admin',
     capabilities: [
@@ -109,7 +119,6 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
       'fulfillInventory'
     ]
   }],
-
   missingCapablities: Ember.computed('availableCapabilities', 'defaultCapabilities', function() {
     let availableCapabilities = this.get('availableCapabilities');
     let capabilityBySection = Object.keys(availableCapabilities);
@@ -146,8 +155,10 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
 
   actions: {
     selectRole(role) {
-      let roleToUpdate = this.get('model').findBy('id', role.dasherize());
-      this.set('currentRole', role);
+      let selectedRoleName = $('option:selected', role).text().trim();
+      let roleToUpdate = this.get('model').findBy('id', role.value);
+      this.set('roleId', role.value);
+      this.set('currentRole', selectedRoleName);
       this.set('roleToUpdate', roleToUpdate);
       try {
         if (roleToUpdate) {
@@ -165,7 +176,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
           let defaultCapabilities = this.get('defaultCapabilities');
           Object.keys(defaultCapabilities).forEach((capability) => {
             let capabilityRoles = defaultCapabilities[capability];
-            if (capabilityRoles.includes(role)) {
+            if (capabilityRoles.includes(selectedRoleName)) {
               this.set(capability.camelize(), true);
             } else {
               this.set(capability.camelize(), false);
@@ -180,9 +191,10 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     update() {
       let currentRole = this.get('currentRole');
       let roleToUpdate = this.get('roleToUpdate');
+      let roleId = this.get('roleId');
       if (Ember.isEmpty(roleToUpdate)) {
         roleToUpdate = this.get('store').createRecord('user-role', {
-          id: currentRole.dasherize(),
+          id: roleId,
           name: currentRole
         });
       }
@@ -194,10 +206,14 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
           }
         });
       });
+      roleToUpdate.set('name', currentRole);
       roleToUpdate.set('capabilities', capabilitiesToSave);
       roleToUpdate.save().then(() => {
         this.displayAlert(this.get('i18n').t('admin.roles.titles.roleSaved'),
           this.get('i18n').t('admin.roles.messages.roleSaved', { roleName: currentRole }));
+        let thisRole = this.userRoles.findBy('id', roleId);
+        Ember.set(thisRole, 'name', currentRole);
+        this.notifyPropertyChange('userRoles');
       });
     }
   }
