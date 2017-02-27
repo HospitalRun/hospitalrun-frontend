@@ -38,6 +38,10 @@
     "broccoli-merge-trees": "^1.1.1",
     "broccoli-serviceworker": "0.1.4",
     "csv-parse": "^1.2.0",
+    "devtron": "^1.4.0",
+    "electron": "^1.4.15",
+    "electron-packager": "^8.5.2",
+    "electron-rebuild": "^1.5.7",
     "ember-ajax": "2.5.4",
     "ember-browserify": "^1.1.12",
     "ember-cli": "2.10.0",
@@ -62,9 +66,11 @@
     "ember-cli-test-loader": "^1.1.0",
     "ember-cli-uglify": "^1.2.0",
     "ember-data": "^2.10.0",
+    "ember-electron": "1.12.7",
     "ember-export-application-global": "^1.0.5",
     "ember-fullcalendar": "1.3.0",
     "ember-i18n": "4.4.0",
+    "ember-inspector": "^2.0.4",
     "ember-keyboard": "2.1.9",
     "ember-load-initializers": "^0.6.0",
     "ember-pouch": "4.2.1",
@@ -98,5 +104,57 @@
     "paths": [
       "lib/pouch-fixtures"
     ]
+  },
+  "main": "electron.js",
+  "ember-electron": {
+    "WHAT IS THIS?": "Please see the README.md",
+    "copy-files": [
+      "electron.js",
+      "package.json"
+    ],
+    "name": null,
+    "platform": null,
+    "arch": null,
+    "version": null,
+    "app-bundle-id": null,
+    "app-category-type": null,
+    "app-copyright": null,
+    "app-version": null,
+    "asar": null,
+    "asar-unpack": null,
+    "asar-unpack-dir": null,
+    "build-version": null,
+    "cache": null,
+    "extend-info": null,
+    "extra-resource": null,
+    "helper-bundle-id": null,
+    "icon": null,
+    "ignore": null,
+    "out": null,
+    "osx-sign": {
+      "identity": null,
+      "entitlements": null,
+      "entitlements-inherit": null
+    },
+    "protocol": [],
+    "protocol-names": [],
+    "win-opts": {
+      "loading-gif": null,
+      "icon-url": null,
+      "remote-releases": null,
+      "certificate-file": null,
+      "certificate-password": null,
+      "sign-with-params": null
+    },
+    "overwrite": null,
+    "prune": null,
+    "strict-ssl": null,
+    "win32metadata": {
+      "CompanyName": null,
+      "FileDescription": null,
+      "OriginalFilename": null,
+      "ProductName": null,
+      "InternalName": null
+    }
   }
 }

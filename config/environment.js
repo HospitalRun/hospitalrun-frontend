@@ -4,7 +4,7 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'hospitalrun',
     environment: environment,
-    rootURL: '/',
+    rootURL: process.env.EMBER_CLI_ELECTRON ? null : '/',
     locationType: 'hash', // Using hash location type because it is more friendly for offline.
     EmberENV: {
       FEATURES: {
@@ -54,16 +54,23 @@ module.exports = function(environment) {
     showCreateDate: true
   };
 
-  ENV.serviceWorker = {
-    enabled: true,
-    debug: true,
-    excludePaths: ['manifest.appcache'],
-    swIncludeFiles: [
-      'node_modules/pouchdb/dist/pouchdb.js'
-    ]
-  };
-  if (environment === 'production') {
-    ENV.serviceWorker.debug = false;
+  if (process.env.EMBER_CLI_ELECTRON) {
+    ENV.serviceWorker = {
+      enabled: false,
+      includeRegistration: false
+    }
+  } else {
+    ENV.serviceWorker = {
+      enabled: true,
+      debug: true,
+      excludePaths: ['manifest.appcache'],
+      swIncludeFiles: [
+        'node_modules/pouchdb/dist/pouchdb.js'
+      ]
+    };
+    if (environment === 'production') {
+      ENV.serviceWorker.debug = false;
+    }
   }
 
   ENV.emberFullCalendar =  {
