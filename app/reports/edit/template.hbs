@@ -24,6 +24,8 @@
           returnTo='visit.edit'
           returnToContext=model.id
           disablePatientLink=model.isNew
+          diagnosisContainer=model.visit
+          diagnosisList=diagnosisList
         }}
       {{/if}}
 
@@ -61,28 +63,6 @@
           </div>
         {{/if}}
       {{/unless}}
-
-      {{#if diagnosis.primary.length}}
-        <div class="ps-info-group">
-          <label class="ps-info-label">{{t 'reports.form.primaryDiagnosis' }}</label>
-          <ul>
-            {{#each diagnosis.primary as |item|}}
-              <li>{{item.diagnosis}}</li>
-            {{/each}}
-          </ul>
-        </div>
-      {{/if}}
-
-      {{#if diagnosis.secondary.length}}
-        <div class="ps-info-group">
-          <label class="ps-info-label">{{t 'reports.form.secondaryDiagnosis' }}</label>
-          <ul>
-            {{#each diagnosis.secondary as |item|}}
-              <li>{{item.diagnosis}}</li>
-            {{/each}}
-          </ul>
-        </div>
-      {{/if}}
 
       {{#if model.visit.procedures.length}}
         <div class="ps-info-group">

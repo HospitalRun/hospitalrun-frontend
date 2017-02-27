@@ -12,26 +12,19 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
     id: 'physician_list'
   }],
 
-  visitsController: Ember.inject.controller('visits'),
   newReport: false,
+
+  visitsController: Ember.inject.controller('visits'),
+
   physicianList: Ember.computed.alias('visitsController.physicianList'),
 
-  visitController: Ember.inject.controller('visits'),
+  logoURL: Ember.computed.alias('visitsController.printHeader.value.logoURL'),
+  facilityName: Ember.computed.alias('visitsController.printHeader.value.facilityName'),
+  headerLine1: Ember.computed.alias('visitsController.printHeader.value.headerLine1'),
+  headerLine2: Ember.computed.alias('visitsController.printHeader.value.headerLine2'),
+  headerLine3: Ember.computed.alias('visitsController.printHeader.value.headerLine3'),
 
-  logoURL: Ember.computed.alias('visitController.printHeader.value.logoURL'),
-  facilityName: Ember.computed.alias('visitController.printHeader.value.facilityName'),
-  headerLine1: Ember.computed.alias('visitController.printHeader.value.headerLine1'),
-  headerLine2: Ember.computed.alias('visitController.printHeader.value.headerLine2'),
-  headerLine3: Ember.computed.alias('visitController.printHeader.value.headerLine3'),
-
-  diagnosis: Ember.computed('model.patient', function() {
-    let container = this.get('model.patient');
-    let result = {
-      primary: this.getDiagnoses(container, true, false),
-      secondary: this.getDiagnoses(container, true, true)
-    };
-    return result;
-  }),
+  diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
 
   nextAppointment: Ember.computed('model', function() {
     return this.getPatientFutureAppointment(this.get('model.visit'));
