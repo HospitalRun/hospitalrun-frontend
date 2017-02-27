@@ -171,17 +171,16 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   }.property('visitTypes', 'model.outPatient'),
 
   _addChildObject(route, afterTransition) {
-    this.transitionToRoute(route, 'new').then(function(newRoute) {
-      newRoute.currentModel.setProperties({
-        patient: this.get('model.patient'),
-        visit: this.get('model'),
-        selectPatient: false,
-        returnToVisit: this.get('model.id')
-      });
+    let options = {
+      queryParams: {
+        forVisitId: this.get('model.id')
+      }
+    };
+    this.transitionToRoute(route, 'new', options).then((newRoute) => {
       if (afterTransition) {
         afterTransition(newRoute);
       }
-    }.bind(this));
+    });
   },
 
   _finishAfterUpdate() {
