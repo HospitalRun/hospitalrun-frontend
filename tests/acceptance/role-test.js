@@ -67,8 +67,12 @@ PREDEFINED_USER_ROLES.forEach((role) => {
         }
       });
       visit('/');
+      waitToAppear('.view-current-title');
       andThen(() => {
         let defaultURL = role.defaultRoute.replace('.index', '');
+        if (defaultURL === 'users') {
+          defaultURL = 'admin/users';
+        }
         assert.equal(currentURL(), `/${defaultURL}`, `Correct homepage displays for role ${role.name}`);
         invalidateSession();
       });
