@@ -17,5 +17,26 @@ export default Ember.Mixin.create({
     { name: 'Social Worker', roles: ['Social Worker', 'user'] },
     { name: 'System Administrator', roles: ['System Administrator', 'admin', 'user'] },
     { name: 'User Administrator', roles: ['User Administrator', 'admin', 'user'] }
-  ]
+  ],
+  loadRoles() {
+    let storeRoles = this.get('store').findAll('user-role');
+    storeRoles.then(() => {
+      delete this.namedRoles;
+      this.set('namedRoles', Ember.computed.map('userRoles', function(userRole) {
+        let id = userRole.id !== undefined ? userRole.id : userRole.name.dasherize();
+        let userRoleModel = storeRoles.findBy('id', id);
+        if (!userRole.id) {
+          userRole.id = id;
+        }
+        if (userRoleModel) {
+          Ember.set(userRole, 'name', userRoleModel.get('name'));
+        }
+        return userRole;
+      }));
+    });
+    return storeRoles;
+  },
+  init() {
+    this.loadRoles();
+  }
 });

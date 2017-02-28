@@ -13,5 +13,10 @@ export default AbstractIndexRoute.extend(UserSession, {
   pageTitle: t('user.usersPageTile'),
   model() {
     return this.store.findAll('user');
+  },
+  actions: {
+    didTransition() {
+      this.controller.loadRoles();
+    }
   }
 });

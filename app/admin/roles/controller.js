@@ -8,17 +8,6 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
   disabledAction: false,
   hideCancelButton: true,
   updateCapability: 'define_user_roles',
-  namedRoles: Ember.computed.map('userRoles', function(userRole) {
-    let id = userRole.name.dasherize();
-    let userRoleModel = this.get('model').findBy('id', id);
-    if (!userRole.id) {
-      userRole.id = id;
-    }
-    if (userRoleModel) {
-      userRole.name = userRoleModel.get('name');
-    }
-    return userRole;
-  }),
   filteredRoles: Ember.computed.filter('namedRoles', function(userRole) {
     return (userRole.name !== 'System Administrator');
   }),
@@ -213,7 +202,6 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
           this.get('i18n').t('admin.roles.messages.roleSaved', { roleName: currentRole }));
         let thisRole = this.userRoles.findBy('id', roleId);
         Ember.set(thisRole, 'name', currentRole);
-        this.notifyPropertyChange('userRoles');
       });
     }
   }
