@@ -31,6 +31,10 @@ export default AbstractEditRoute.extend(AddToPatientRoute, PatientVisits, {
   },
 
   afterModel(model) {
+    if (!model.get('isNew')) {
+      let patient = model.get('visit.patient');
+      model.set('patient', patient);
+    }
     if (!model.get('visit')) {
       return this.transitionTo('patients');
     }
