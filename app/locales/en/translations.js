@@ -1118,7 +1118,8 @@ export default {
       labs: 'Labs',
       images: 'Images',
       medications: 'Medications',
-      nextAppointmentDate: 'Date Of Next Appointment',
+      nextAppointment: 'Next Appointment',
+      nextAppointments: 'Next Appointments',
       operativePlan: {
         title: 'Operative Plans',
         description: 'Operation Description',
