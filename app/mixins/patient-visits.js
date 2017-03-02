@@ -48,7 +48,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
       }
 
     });
-    return (outPatient) ? DS.PromiseArray.create({ promise}) : DS.PromiseObject.create({ promise });
+    return (outPatient) ? DS.PromiseArray.create({ promise }) : DS.PromiseObject.create({ promise });
   },
 
   checkoutVisit(visit, status) {
