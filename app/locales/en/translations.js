@@ -1121,7 +1121,7 @@ export default {
       nextAppointment: 'Next Appointment',
       nextAppointments: 'Next Appointments',
       operativePlan: {
-        title: 'Operative Plans',
+        title: 'Operative Plan',
         description: 'Operation Description',
         procedures: 'Planned Procedures',
         instructions: 'Instructions upon Admission'

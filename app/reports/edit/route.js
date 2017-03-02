@@ -30,6 +30,11 @@ export default AbstractEditRoute.extend(AddToPatientRoute, PatientVisits, {
     return null;
   },
 
+  getCurrentOperativePlan(patient) {
+    let operativePlans = patient.get('operativePlans');
+    return operativePlans.findBy('isPlanned', true);
+  },
+
   afterModel(model) {
     if (!model.get('isNew')) {
       let patient = model.get('visit.patient');
@@ -43,9 +48,12 @@ export default AbstractEditRoute.extend(AddToPatientRoute, PatientVisits, {
   setupController(controller, model) {
     this._super(controller, model);
     let visit = model.get('visit');
+    let patient = model.get('patient');
     let isOutPatient = visit.get('outPatient');
+    controller.set('visit', visit);
     controller.set('isOutPatient', isOutPatient);
     controller.set('diagnosisContainer', this.getDiagnosisContainer(visit));
+    controller.set('currentOperativePlan', this.getCurrentOperativePlan(patient));
     if (isOutPatient) {
       controller.set('nextAppointments', this.getPatientFutureAppointment(model.get('visit'), true));
     } else {
