@@ -108,17 +108,20 @@
         </div>
       {{/if}}
 
-    {{log nextAppointment}}
      {{#if model.visit.outPatient}}
        {{#if nextAppointments.length}}
          <div class="ps-info-group">
-           <label class="ps-info-label">{{t 'reports.form.nextAppointments' }}:</label>
-           {{#each nextAppointments as |appointment|}}
-             {{date-format appointment.startDate format="DD/MM/YYYY hh:mm a"}}
-           {{#if appointment.appointmentType}}
-             ({{appointment.appointmentType}})
-           {{/if}},
-           {{/each}}
+           <label class="ps-info-label">{{t 'reports.form.nextAppointments' }}</label>
+           <ul>
+             {{#each nextAppointments as |appointment|}}
+               <li>
+                 {{date-format appointment.startDate format="DD/MM/YYYY hh:mm a"}}
+                 {{#if appointment.appointmentType}}
+                   (<b>{{appointment.appointmentType}}</b>)
+                 {{/if}}
+               </li>
+             {{/each}}
+           </ul>
          </div>
        {{/if}}
 
