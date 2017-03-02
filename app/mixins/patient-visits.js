@@ -21,7 +21,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
     });
   },
 
-  getPatientFutureAppointment(visit) {
+  getPatientFutureAppointment(visit, outPatient) {
     let patientId = visit.get('patient.id');
     let visitDate = visit.get('startDate');
     let maxValue = this.get('maxValue');
@@ -39,11 +39,16 @@ export default Ember.Mixin.create(PouchDbMixin, {
       if (!futureAppointments.length) {
         return '';
       }
-      let [appointment] = futureAppointments;
-      let res = appointment.get('startDate');
-      return res;
+      if (!outPatient) {
+        let [appointment] = futureAppointments;
+        return appointment;
+      } else {
+        let res = futureAppointments.slice(0, 3);
+        return res;
+      }
+
     });
-    return DS.PromiseObject.create({ promise });
+    return (outPatient) ? DS.PromiseArray.create({ promise }) : DS.PromiseObject.create({ promise });
   },
 
   checkoutVisit(visit, status) {
