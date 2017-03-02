@@ -44,10 +44,6 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, PatientVi
     }
   },
 
-  report: function() {
-
-  }.property('model'),
-
   setupController(controller, model) {
     let promise = this.store.query('report', {
       options: {
