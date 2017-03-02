@@ -2,8 +2,9 @@ import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
+import PatientVisits from 'hospitalrun/mixins/patient-visits';
 
-export default AbstractEditRoute.extend(AddToPatientRoute, {
+export default AbstractEditRoute.extend(AddToPatientRoute, PatientVisits, {
   modelName: 'report',
   customForms: Ember.inject.service(),
 
@@ -30,5 +31,12 @@ export default AbstractEditRoute.extend(AddToPatientRoute, {
 
   setupController(controller, model) {
     this._super(controller, model);
+    let isOutPatient = model.get('visit.outPatient');
+    controller.set('isOutPatient', isOutPatient);
+    if (isOutPatient) {
+      controller.set('nextAppointments', this.getPatientFutureAppointment(model.get('visit'), true));
+    } else {
+      controller.set('nextAppointment', this.getPatientFutureAppointment(model.get('visit')));
+    }
   }
 });
