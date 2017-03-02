@@ -1105,13 +1105,18 @@ export default {
   },
   reports: {
     titles: {
-      followup: 'Create Followup appointment',
+      followup: 'Create Followup Appointment',
       saved: 'The report has been saved'
     },
     form: {
       visitDate: 'Date of Visit',
-      dischargeDate: 'Date of Discharge',
-      notes: 'Notes',
+      admissionDate: 'Admission Date',
+      dischargeDate: 'Discharge Date',
+      notes: {
+        title: 'Notes',
+        date: 'Date',
+        author: 'Author'
+      },
       primaryDiagnosis: 'Primary Diagnosis',
       secondaryDiagnosis: 'Secondary Diagnosis',
       procedures: 'Procedures',
@@ -1141,7 +1146,7 @@ export default {
       }
     },
     messages: {
-      followup: 'Create new followup appointment for the discharge report',
+      followup: 'There is no follow up appointment for this patient.',
       delete: 'Are you sure you wish to delete this report?',
       saved: 'The report has been saved.'
     }
