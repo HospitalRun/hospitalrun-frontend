@@ -1125,7 +1125,8 @@ export default {
         description: 'Operation Description',
         procedures: 'Planned Procedures',
         instructions: 'Instructions upon Admission'
-      }
+      },
+      completedBy: 'Completed By'
     },
     opd: {
       titles: {
