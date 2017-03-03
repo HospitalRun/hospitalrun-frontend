@@ -3,9 +3,8 @@ import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
-import PatientVisit from 'hospitalrun/mixins/patient-visits';
 
-export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis, PouchDbMixin, PatientVisit, {
+export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis, PouchDbMixin, {
   lookupListsToUpdate: [{
     name: 'physicianList',
     property: 'model.surgeon',
@@ -25,14 +24,6 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
   headerLine3: Ember.computed.alias('visitsController.printHeader.value.headerLine3'),
 
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
-
-  nextAppointment: Ember.computed('model', function() {
-    return this.getPatientFutureAppointment(this.get('model.visit'));
-  }),
-
-  nextAppointments: Ember.computed('model', function() {
-    return this.getPatientFutureAppointment(this.get('model.visit'), true);
-  }),
 
   additionalButtons: Ember.computed('model.{isNew}', function() {
     let isNew = this.get('model.isNew');

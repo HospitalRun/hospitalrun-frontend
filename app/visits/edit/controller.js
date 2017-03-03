@@ -447,8 +447,9 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       this._addChildObject('reports.edit');
     },
 
-    editReport() {
-      this.transitionToRoute('reports.edit', this.get('report.id'));
+    editReport(report) {
+      report.set('returnToVisit', this.get('model.id'));
+      this.transitionToRoute('reports.edit', report);
     },
 
     newAppointment() {

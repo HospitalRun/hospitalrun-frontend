@@ -39,22 +39,18 @@
     height: 60px;
   }
 
-  .opd-report {
-    font-size: .8em;
-  }
-
-  .opd-report .patient-summary {
+  .report .patient-summary {
     margin-bottom: 20px;
     border-bottom: 1px solid #d2dae3;
   }
 
-  .opd-report input {
+  .report input {
     border: 0;
     padding: 5px;
     font-size: .8em;
   }
 
-  .opd-report .panel-primary {
+  .report .panel-primary {
     position: absolute;
     left: 0;
     margin: 0;

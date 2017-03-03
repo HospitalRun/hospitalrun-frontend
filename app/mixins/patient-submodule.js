@@ -185,6 +185,17 @@ export default Ember.Mixin.create(PatientVisits, {
     });
   }.property('model.patient.id', 'newVisitAdded'),
 
+  patientProcedures: Ember.computed('patientVisits.[]', function() {
+    let patient = this.get('model.patient');
+    return DS.PromiseArray.create({
+      promise: this.get('patientVisits').then((patientVisits) => {
+        return patient.get('operationReports').then((operationReports) => {
+          return this._getPatientProcedures(operationReports, patientVisits);
+        });
+      })
+    });
+  }),
+
   patientVisitsForSelect: function() {
     return DS.PromiseArray.create({
       promise: this.get('patientVisits').then(function(patientVisits) {
