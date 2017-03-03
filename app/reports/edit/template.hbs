@@ -147,6 +147,18 @@
           }}
         </div>
 
+        {{#if patientProcedures}}
+          <label class="ps-info-label">{{t 'reports.form.allProcedures'}}</label>
+          <ul>
+            {{#each patientProcedures as |procedure|}}
+              <li>{{procedure.description}} -
+                {{#if procedure.procedureDate }}
+                  {{date-format procedure.procedureDate format="DD/MM/YYYY"}}
+                {{/if}}</li>
+            {{/each}}
+          </ul>
+        {{/if}}
+
         {{#if visit.patientNotes}}
           <label class="ps-info-label">{{t 'reports.form.notes.title' }}</label>
           <ul>

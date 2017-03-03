@@ -1,7 +1,7 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import Ember from 'ember';
-import {translationMacro as t} from 'ember-i18n';
+import { translationMacro as t } from 'ember-i18n';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 
 export default AbstractEditRoute.extend(AddToPatientRoute, PatientVisits, {

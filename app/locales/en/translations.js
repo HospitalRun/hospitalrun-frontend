@@ -1120,6 +1120,7 @@ export default {
       primaryDiagnosis: 'Primary Diagnosis',
       secondaryDiagnosis: 'Secondary Diagnosis',
       procedures: 'Procedures',
+      allProcedures: 'All Procedures Performed',
       labs: 'Labs',
       images: 'Images',
       medications: 'Medications',
