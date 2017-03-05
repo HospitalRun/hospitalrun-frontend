@@ -1,17 +1,17 @@
 .btn {
   &.on-white {
     background-color: #08987f;
-    color: #fff;
+    color: $white;
   }
 
   &.warning {
     background-color: #ff6d6f;
-    color: #fff;
+    color: $white;
 
     &:hover,
     &:focus {
-      background-color: rgba(255,109,111,0.75);
-      color: rgba(113,18,20,0.9);
+      background-color: $red_lighter;
+      color: $brown;
     }
   }
 
@@ -64,8 +64,8 @@
   &.disabled:active,
   &[disabled]:active {
     opacity: .7;
-    background-color:#dbebff;
-    color: #000810;
+    background-color: #dbebff;
+    color: $black;
   }
 }
 
