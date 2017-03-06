@@ -106,6 +106,8 @@ test('add payment', function(assert) {
     waitToAppear('.modal-title:contains(Payment Added)');
     andThen(() => {
       assert.equal(find('.modal-title').text(), 'Payment Added', 'Payment was saved successfully');
+      click('.modal-footer button:contains(Ok)');
+      waitToDisappear('.modal-dialog');
     });
   });
 });

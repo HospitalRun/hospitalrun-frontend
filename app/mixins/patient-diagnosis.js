@@ -17,6 +17,7 @@ export default Ember.Mixin.create({
     let diagnosesList = [];
     if (!isEmpty(diagnosisContainer)) {
       let diagnoses = diagnosisContainer.get(diagnosisProperty);
+      diagnoses = diagnoses.filterBy('archived', false);
       if (hideInActiveDiagnoses) {
         diagnoses = diagnoses.filterBy('active', true);
       }

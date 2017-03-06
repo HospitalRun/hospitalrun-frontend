@@ -111,19 +111,30 @@ test('Edit visit', function(assert) {
     andThen(function() {
       typeAheadFillIn('.charge-item-name', 'Gauze pad');
       click('.modal-footer button:contains(Add)');
+    });
+    andThen(function() {
+      waitToDisappear('.modal-dialog');
       waitToAppear('td.charge-item-name');
     });
     andThen(function() {
       assert.equal(find('td.charge-item-name').text(), 'Gauze pad', 'New charge item appears');
     });
-    updateVisit(assert, 'Update');
+    andThen(function() {
+      updateVisit(assert, 'Update');
+    });
     andThen(function() {
       click('a.primary-diagnosis:contains(Broken Arm)');
       waitToAppear('.modal-dialog');
     });
     andThen(function() {
       assert.equal(find('.modal-title').text(), 'Edit Diagnosis', 'Edit Diagnosis modal appears');
+      assert.equal(find('.modal-footer button:contains(Delete)').length, 1, 'Delete button appears');
+    });
+    andThen(function() {
       click('.modal-footer button:contains(Delete)');
+    });
+    andThen(function() {
+      waitToDisappear('.modal-dialog');
     });
     andThen(function() {
       click('#visit-vitals tr:last button:contains(Delete)');
@@ -141,6 +152,9 @@ test('Edit visit', function(assert) {
     andThen(function() {
       assert.equal(find('.modal-title').text(), 'Delete Charge Item', 'Delete Charge Item dialog displays');
       click('.modal-footer button:contains(Ok)');
+    });
+    andThen(function() {
+      waitToDisappear('.modal-dialog');
     });
     andThen(function() {
       assert.equal(find('a.primary-diagnosis:contains(Broken Arm)').length, 0, 'New primary diagnosis is deleted');
@@ -171,6 +185,9 @@ test('Delete visit', function(assert) {
     andThen(function() {
       assert.equal(find('.modal-title').text(), 'Delete Visit', 'Delete Visit confirmation displays');
       click('.modal-footer button:contains(Delete)');
+    });
+    andThen(function() {
+      waitToDisappear('.modal-dialog');
       waitToDisappear('#visits td:contains(Fall from in-line roller-skates, initial encounter)');
     });
     andThen(function() {
