@@ -54,7 +54,7 @@ export default AbstractEditController.extend(PatientSubmodule, {
 
   afterUpdate() {
     this.get('model').save().then(function(record) {
-      if (this.get('newPayment')) {
+      if (this.get('newPayment') === true) {
         let patient = this.get('currentPatient');
         patient.get('payments').then(function(payments) {
           payments.addObject(record);
