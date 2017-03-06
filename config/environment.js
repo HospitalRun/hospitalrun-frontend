@@ -1,8 +1,8 @@
-/* jshint node: true */
 /* eslint-env node */
+/* eslint no-var: 0 */
 
 module.exports = function(environment) {
-  let ENV = {
+  var ENV = {
     modulePrefix: 'hospitalrun',
     environment,
     rootURL: '/',
