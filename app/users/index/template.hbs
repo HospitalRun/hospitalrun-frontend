@@ -10,7 +10,7 @@
           <th>{{t 'labels.actions'}}</th>
         {{/if}}
       </tr>
-      {{#each model as |user|}}
+      {{#each users as |user|}}
         {{#unless user.deleted}}
           <tr {{action 'editItem' user}} class="clickable">
             <td class="user-name">{{user.name}}</td>

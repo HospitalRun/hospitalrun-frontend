@@ -201,7 +201,9 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
         this.displayAlert(this.get('i18n').t('admin.roles.titles.roleSaved'),
           this.get('i18n').t('admin.roles.messages.roleSaved', { roleName: currentRole }));
         let thisRole = this.userRoles.findBy('id', roleId);
-        Ember.set(thisRole, 'name', currentRole);
+        if (typeof thisRole !== 'undefined') {
+          Ember.set(thisRole, 'name', currentRole);
+        }
       });
     }
   }

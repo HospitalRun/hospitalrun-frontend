@@ -7,9 +7,9 @@ export default AbstractPagedController.extend(UserSession, UserRoles, {
   addPermission: 'add_user',
   deletePermission: 'delete_user',
   sortProperties: ['displayName'],
-  namedRolesChanged: Ember.observer('namedRoles', function() {
-    let namedRoles = this.get('namedRoles');
-    this.get('model').forEach((user) => {
+  users: Ember.computed.map('model', function(user) {
+    this.loadRoles().then(function(named) {
+      let namedRoles = named.get('content');
       let roleId = user.get('roleId');
       if (roleId === undefined) {
         roleId = user.get('displayRole').dasherize();
@@ -19,7 +19,8 @@ export default AbstractPagedController.extend(UserSession, UserRoles, {
       if (namedRole === undefined) {
         return;
       }
-      user.set('displayRole', namedRole.name);
+      user.set('displayRole', namedRole.getRecord().get('name'));
     });
+    return user;
   })
 });
