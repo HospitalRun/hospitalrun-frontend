@@ -36,6 +36,9 @@ test('Plan and report creation', function(assert) {
       assert.equal(find('.modal-title').text(), 'Add Diagnosis', 'Add Diagnosis dialog displays');
       fillIn('.diagnosis-text input', 'Broken Arm');
       click('.modal-footer button:contains(Add)');
+    });
+    andThen(() => {
+      waitToDisappear('.modal-dialog');
       waitToAppear('a.primary-diagnosis');
     });
     andThen(() =>{
@@ -48,7 +51,10 @@ test('Plan and report creation', function(assert) {
       fillIn('.diagnosis-text input', 'Tennis Elbow');
       click('.secondary-diagnosis input');
       click('.modal-footer button:contains(Add)');
-      waitToAppear('a.secondary-diagnosis');
+    });
+    andThen(() => {
+      waitToDisappear('.modal-dialog');
+      waitToAppear('a.secondary-diagnosis:contains(Tennis Elbow)');
     });
     andThen(() =>{
       assert.equal(find('a.secondary-diagnosis:contains(Tennis Elbow)').length, 1, 'New secondary diagnosis appears');

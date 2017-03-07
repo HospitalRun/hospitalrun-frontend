@@ -60,6 +60,15 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
   }.property('model.isNew'),
   updateCapability: null,
 
+  /* Silently update and then fire the specified action. */
+  silentUpdate(action, whereFrom) {
+    this.beforeUpdate().then(() => {
+      return this.saveModel(true);
+    }).then(() => {
+      this.send(action, whereFrom);
+    });
+  },
+
   /**
    * Add the specified value to the lookup list if it doesn't already exist in the list.
    * @param lookupList array the lookup list to add to.
@@ -161,7 +170,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
    * to skip the afterUpdate call.
    */
   saveModel(skipAfterUpdate) {
-    get(this, 'model').save().then((record) => {
+    return get(this, 'model').save().then((record) => {
       this.updateLookupLists();
       if (!skipAfterUpdate) {
         this.afterUpdate(record);

@@ -44,22 +44,29 @@ testWithVisit('Edit procedure', function(assert) {
     assert.equal(find('.modal-title').text(), 'Add Charge Item', 'Add Charge Item modal appears');
     typeAheadFillIn('.charge-item-name', 'Gauze pad');
     click('.modal-footer button:contains(Add)');
-    waitToAppear('td.charge-item-name');
   });
   andThen(function() {
-    assert.equal(find('td.charge-item-name').text(), 'Gauze pad', 'New charge item appears');
-    click('.charge-items button:contains(Edit)');
+    waitToDisappear('.modal-dialog');
+    waitToAppear('td.charge-item-name:contains(Gauze pad)');
+  });
+  andThen(function() {
+    assert.equal(find('td.charge-item-name:contains(Gauze pad)').length, 1, 'New charge item appears');
+    click('.charge-items tr:last button:contains(Edit)');
     waitToAppear('.modal-dialog');
   });
   andThen(function() {
     assert.equal(find('.modal-title').text(), 'Edit Charge Item', 'Edit Charge Item modal appears');
     typeAheadFillIn('.charge-item-name', 'Gauze padding');
+  });
+  andThen(function() {
     click('.modal-footer button:contains(Update)');
+  });
+  andThen(function() {
     waitToAppear('td.charge-item-name:contains(Gauze padding)');
     waitToDisappear('.modal-dialog');
   });
   andThen(function() {
-    assert.equal(find('td.charge-item-name').text(), 'Gauze padding', 'Updated charge item appears');
+    assert.equal(find('td.charge-item-name:contains(Gauze padding)').length, 1, 'Updated charge item appears');
     assert.equal(find('.medication-charges tr').length, 2, 'One medication charge exists');
     assert.equal(find('.medication-charges button:contains(Add Medication)').length, 1, 'Add medication button exists');
     click('button:contains(Add Medication)');
@@ -72,18 +79,26 @@ testWithVisit('Edit procedure', function(assert) {
   });
   andThen(function() {
     click('.modal-footer button:contains(Add)');
+  });
+  andThen(function() {
     waitToDisappear('.modal-dialog');
   });
   andThen(function() {
+    updateProcedure(assert, 'Update');
+  });
+  andThen(function() {
     assert.equal(find('.medication-charges td:contains(Cefazolin 500mg vial)').length, 2, 'Two medication charges exists');
-    click('.medication-charges button:contains(Edit)');
+    click('.medication-charges button:contains(Edit):first');
     waitToAppear('.modal-dialog');
   });
   andThen(function() {
     assert.equal(find('.modal-title').text(), 'Edit Medication Used', 'Edit Medication Used modal appears here');
     fillIn('.medication-quantity input', 2);
     click('.modal-footer button:contains(Update)');
+  });
+  andThen(function() {
     waitToDisappear('.modal-dialog');
+    waitToAppear('.medication-charge-quantity:contains(2)');
   });
   andThen(function() {
     assert.equal(find('.medication-charge-quantity:first').text(), '2', 'Updated medication quantity appears');
@@ -98,12 +113,24 @@ testWithVisit('Edit procedure', function(assert) {
     click('.modal-footer button:contains(Ok)');
   });
   andThen(function() {
-    click('.medication-charges button:contains(Delete)');
+    waitToDisappear('.modal-dialog');
+    waitToDisappear('.charge-items tr:last button:contains(Delete)');
+  });
+  andThen(function() {
+    click('.medication-charges tr:last button:contains(Delete)');
     waitToAppear('.modal-dialog');
   });
   andThen(function() {
     assert.equal(find('.modal-title').text(), 'Delete Medication Used', 'Delete Medication Used dialog displays');
     click('.modal-footer button:contains(Ok)');
+  });
+  andThen(function() {
+    waitToDisappear('.modal-dialog');
+  });
+  andThen(function() {
+    updateProcedure(assert, 'Update');
+  });
+  andThen(function() {
     waitToAppear('button:contains(Return)');
   });
   andThen(function() {

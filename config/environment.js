@@ -1,9 +1,10 @@
-/* jshint node: true */
+/* eslint-env node */
+/* eslint no-var: 0 */
 
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'hospitalrun',
-    environment: environment,
+    environment,
     rootURL: '/',
     locationType: 'hash', // Using hash location type because it is more friendly for offline.
     EmberENV: {
@@ -64,6 +65,9 @@ module.exports = function(environment) {
   };
   if (environment === 'production') {
     ENV.serviceWorker.debug = false;
+  }
+  if (environment === 'test') {
+    ENV.serviceWorker.includeRegistration = false;
   }
 
   ENV.emberFullCalendar =  {
