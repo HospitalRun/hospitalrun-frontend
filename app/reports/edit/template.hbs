@@ -14,6 +14,11 @@
   {{#if headerLine3}}
     <span>{{headerLine3}}</span><br>
   {{/if}}
+  {{#if isOutPatient}}
+    <h3>{{t 'reports.titles.opdTitle' }}</h3>
+  {{else}}
+    <h3>{{t 'reports.titles.dischargeReport' }}</h3>
+  {{/if}}
 </div>
 <div class="report">
   {{#edit-panel editPanelProps=editPanelProps}}
@@ -184,13 +189,14 @@
 
         {{custom-form-manager model=model formType="dischargeReport"}}
 
-        <div class="ps-info-group">
-          <label class="ps-info-label">{{t 'reports.form.completedBy' }}:</label>
-          {{model.modifiedBy}}
-        </div>
+        {{#if model.modifiedBy}}
+          <div class="ps-info-group">
+            <label class="ps-info-label">{{t 'reports.form.completedBy' }}:</label>
+            {{model.modifiedBy}}
+          </div>
+        {{/if}}
 
       {{/if}}
-
     {{/em-form}}
   {{/edit-panel}}
 </div>

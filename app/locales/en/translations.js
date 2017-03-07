@@ -1105,8 +1105,9 @@ export default {
   },
   reports: {
     titles: {
-      followup: 'Create Followup Appointment',
-      saved: 'The report has been saved'
+      saved: 'Report saved',
+      opdTitle: 'OPD Report',
+      dischargeReport: 'Discharge Report'
     },
     form: {
       visitDate: 'Date of Visit',
@@ -1147,7 +1148,6 @@ export default {
       }
     },
     messages: {
-      followup: 'There is no follow up appointment for this patient.',
       delete: 'Are you sure you wish to delete this report?',
       saved: 'The report has been saved.'
     }
