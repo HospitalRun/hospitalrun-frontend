@@ -50,6 +50,14 @@
     font-size: .8em;
   }
 
+  .report select {
+    outline: 0;
+    border: 0;
+    text-overflow: '';
+    -moz-appearance: none;
+    -webkit-appearance: none;
+  }
+
   .report .panel-primary {
     position: absolute;
     left: 0;

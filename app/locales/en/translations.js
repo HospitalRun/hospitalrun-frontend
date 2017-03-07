@@ -1105,7 +1105,9 @@ export default {
   },
   reports: {
     titles: {
-      saved: 'The report has been saved'
+      saved: 'Report saved',
+      opdTitle: 'OPD Report',
+      dischargeReport: 'Discharge Report'
     },
     form: {
       visitDate: 'Date of Visit',

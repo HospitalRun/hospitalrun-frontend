@@ -459,7 +459,6 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       this._addChildObject('reports.edit');
     },
 
-
     showAddProcedure() {
       this._addChildObject('procedures.edit');
     },
