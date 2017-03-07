@@ -1,18 +1,30 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import moment from 'moment';
+import sinon from 'sinon';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
 const DATE_TIME_FORMAT = 'l h:mm A';
 const TIME_FORMAT = 'h:mm';
 
+const setIntervalNative = setInterval;
+const clearIntervalNative = clearInterval;
+let clock, interval;
+
 module('Acceptance | appointments', {
   beforeEach() {
+    clock = sinon.useFakeTimers(new Date(2017, 0, 1, 23, 40, 0).getTime());
+    interval = setIntervalNative(function() {
+      clock.tick(10);
+    }, 10);
+
     this.application = startApp();
   },
 
   afterEach() {
     Ember.run(this.application, 'destroy');
+    clock.restore();
+    clearIntervalNative(interval);
   }
 });
 
