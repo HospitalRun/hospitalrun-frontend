@@ -227,6 +227,7 @@ export default Ember.Mixin.create(PatientVisits, {
       promises.push(visit.get('medication'));
       promises.push(visit.get('procedures'));
       promises.push(visit.get('vitals'));
+      promises.push(visit.get('reports'));
     }
     return promises;
   },

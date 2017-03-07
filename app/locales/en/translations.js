@@ -146,7 +146,8 @@ export default {
         socialworkFormType: 'Social Work',
         text: 'Text',
         textarea: 'Large Text',
-        visitFormType: 'Visit'
+        visitFormType: 'Visit',
+        opdReportFormType: 'Outpatient Report'
       },
       messages: {
         deleteForm: 'Are you sure you want to delete this custom form?',
@@ -860,14 +861,16 @@ export default {
       statusDischarged: 'Discharged',
       statusCheckedIn: 'Checked In',
       statusCheckedOut: 'Checked Out',
-      createNewPatient: 'Create New Patient'
+      createNewPatient: 'Create New Patient',
+      reportType: 'Report type'
     },
     navigation: {
       charges: 'Charges',
       notes: 'Notes',
       orders: 'Orders',
       procedures: 'Procedures',
-      vitals: 'Vitals'
+      vitals: 'Vitals',
+      reports: 'Reports'
     }
   },
   labs: {
@@ -969,6 +972,8 @@ export default {
       backToPatients: 'Back to Patient List',
       newPatient: '+ new patient',
       patientCheckIn: 'Patient Check In',
+      newOPDReport: 'New OPD Report',
+      newDischargeReport: 'New Discharge Report',
       scheduleSurgery: 'Schedule Surgery'
     },
     labels: {
@@ -1095,6 +1100,40 @@ export default {
     },
     buttons: {
       addMedication: 'Add Medication'
+    }
+  },
+  reports: {
+    titles: {
+      preview: 'Preview Report',
+      saved: 'The report has been saved'
+    },
+    form: {
+      patientId: 'Patient Id',
+      visitDate: 'Date of Visit',
+      primaryDiagnosis: 'Primary Diagnosis',
+      secondaryDiagnosis: 'Secondary Diagnosis',
+      procedures: 'Procedures',
+      labs: 'Labs',
+      images: 'Images',
+      nextAppointmentDate: 'Date Of Next Appointment',
+      operativePlan: 'Operative Plans'
+    },
+    opd: {
+      titles: {
+        new: 'New OPD Report',
+        edit: 'Edit OPD Report'
+      }
+    },
+    discharge: {
+      titles: {
+        new: 'New Discharge Report',
+        edit: 'Edit Discharge Report'
+      }
+    },
+    messages: {
+      deleteMedication: 'Are you sure you want to delete this medication?',
+      delete: 'Are you sure you wish to delete this report?',
+      saved: 'The report has been saved.'
     }
   },
   components: {
