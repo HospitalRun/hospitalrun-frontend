@@ -20,9 +20,12 @@ export default Ember.Controller.extend({
     },
 
     confirm() {
+      let closeModalOnConfirm = this.getWithDefault('model.closeModalOnConfirm', true);
       let confirmAction = this.getWithDefault('model.confirmAction', 'model.confirm');
       this.send(confirmAction, get(this, 'model'));
-      this.send('closeModal');
+      if (closeModalOnConfirm) {
+        this.send('closeModal');
+      }
     },
 
     ok() {
