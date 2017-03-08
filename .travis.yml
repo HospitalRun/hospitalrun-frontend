@@ -24,5 +24,18 @@ deploy:
     tags: true
     repo: eHealthAfrica/hospitalrun-frontend
     branch: master
+  on:
+    tags: true
+    repo: eHealthAfrica/hospitalrun-frontend
+    branch: develop
+  on:
+    tags: true
+    repo: eHealthAfrica/hospitalrun-frontend
+    branch: stage
+  on:
+    tags: true
+    repo: eHealthAfrica/hospitalrun-frontend
+    branch: eHA/Polyclinic
+
 after_deploy:
   - script/server_build.sh
