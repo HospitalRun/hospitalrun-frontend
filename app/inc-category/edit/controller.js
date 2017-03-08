@@ -31,7 +31,7 @@ export default AbstractEditController.extend({
     },
 
     showAddItem() {
-      this.send('openModal', 'inc-category.add-item', {});
+      this.send('openModal', 'inc-category.add-item', Ember.Object.create());
     },
 
     showDeleteItem(item) {

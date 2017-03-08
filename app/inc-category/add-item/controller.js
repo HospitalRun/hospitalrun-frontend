@@ -21,7 +21,7 @@ export default Controller.extend({
 
   actions: {
     add() {
-      let newItem = this.getProperties('item');
+      let newItem = get(this, 'model');
       get(this, 'editController').send('addItem', newItem);
     },
 
