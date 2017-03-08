@@ -12,7 +12,7 @@ const {
 
 export default Model.extend(UserSession, EmberValidations, {
   session: inject.service(),
-  archived: DS.attr('boolean'),
+  archived: DS.attr('boolean', { defaultValue: false }),
   lastModified: DS.attr('date'),
   modifiedBy: DS.attr(),
   modifiedFields: DS.attr(),
