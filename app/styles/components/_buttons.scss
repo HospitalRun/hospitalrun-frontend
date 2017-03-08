@@ -1,6 +1,6 @@
 .btn {
   &.on-white {
-    background-color: #08987f;
+    background-color: #00c4a2;
     color: $white;
   }
 
@@ -50,7 +50,7 @@
 
   // needs converted to variable
   &:hover,
-  &:focus { background-color: #00c4a2; }
+  &:focus { background-color: #08987f; }
 
   // needs converted to variable
   &:active,
