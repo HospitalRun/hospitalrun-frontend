@@ -9,6 +9,7 @@ const Router = Ember.Router.extend({
 Router.map(function() {
   this.route('admin', function() {
     this.route('address');
+    this.route('print-header');
     this.route('custom-forms', function() {
       this.route('edit', { path: '/edit/:custom-form_id' });
     });

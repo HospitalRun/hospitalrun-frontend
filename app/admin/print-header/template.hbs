@@ -1,0 +1,16 @@
+{{#edit-panel editPanelProps=editPanelProps}}
+  <div class="panel panel-primary">
+    <div class="panel-body">
+      {{#em-form model=model submitButton=false }}
+        {{em-input label=(t 'admin.address.address1Label') property="value.address1Label"}}
+        {{em-checkbox label=(t 'admin.address.include1Label') property="value.address1Include"}}
+        {{em-input label=(t 'admin.address.address2Label') property="value.address2Label"}}
+        {{em-checkbox label=(t 'admin.address.include2Label') property="value.address2Include"}}
+        {{em-input label=(t 'admin.address.address3Label') property="value.address3Label"}}
+        {{em-checkbox label=(t 'admin.address.include3Label') property="value.address3Include"}}
+        {{em-input label=(t 'admin.address.address4Label') property="value.address4Label"}}
+        {{em-checkbox label=(t 'admin.address.include4Label') property="value.address4Include"}}
+      {{/em-form}}
+    </div>
+  </div>
+{{/edit-panel}}
