@@ -16,11 +16,25 @@
   }
 
   &.neutral {
-    background-color: $gray_light;
-    color: $gray;
+    background-color: $navy_dark;
+    color: $white;
 
     &:hover,
-    &:focus { opacity: .8; }
+    &:focus {
+      background-color: $navy_darker;
+      color: $white;
+    }
+  }
+
+  &.btn-extra {
+    background-color: $blue_dark;
+    color: $white;
+
+    &:hover,
+    &:focus {
+      background-color: $blue_darker;
+      color: $white;
+    }
   }
 
   &.admit {
