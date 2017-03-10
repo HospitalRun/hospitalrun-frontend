@@ -1,6 +1,6 @@
 # Contributing to the Ember front end for HospitalRun
 
-Contributions are welcome via pull requests and issues. Before submitting a pull request, please make sure all tests pass by running ```ember test```. Running this command will also run the project's linters, for more information see the section on [linters](#linter) below.
+Contributions are welcome via pull requests and issues. Before submitting a pull request, please make sure all tests pass by running ```ember test```. This project uses the style guides from Dockyard for [Ember](https://github.com/dockyard/styleguides/blob/master/engineering/ember.md) and [JavaScript](https://github.com/dockyard/styleguides/blob/master/engineering/javascript.md). These style guides are enforced via ESLint, which is one of the linters described in the section on [linters](#linter) below.
 
 ## Slack / Communication
 
@@ -124,7 +124,7 @@ In addition, linters can help to enforce coding standards, find unused variables
 
 **HospitalRun** uses the following linters:
 
-1. [ESLint](http://eslint.org/) for ECMAScript/JavaScript. You can find the ESLint User guide [here](http://eslint.org/docs/user-guide/). It's important to note that this project adheres to Dockyard's [Ember.js Style Guide](https://github.com/DockYard/styleguides/blob/master/engineering/ember.md). Also ESLint is setup to use eslint-plugin-ember-suave, you can find more information about that [here](https://github.com/DockYard/eslint-plugin-ember-suave).
+1. [ESLint](http://eslint.org/) for ECMAScript/JavaScript. You can find the ESLint User guide [here](http://eslint.org/docs/user-guide/). ESLint is setup to use eslint-plugin-ember-suave, you can find more information about that [here](https://github.com/DockYard/eslint-plugin-ember-suave).
 2. [stylelint](http://stylelint.io/) for Stylesheets. You can find the stylelint User guide [here](http://stylelint.io/user-guide/).
 3. [ember-template-lint](https://github.com/rwjblue/ember-template-lint) for Ember templates.
 
