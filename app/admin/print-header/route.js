@@ -9,7 +9,7 @@ export default AbstractEditRoute.extend({
   editTitle: t('admin.address.editTitle'),
   model() {
     return new Ember.RSVP.Promise((resolve, reject) => {
-      this.get('store').find('option', 'address_options').then((addressOptions) => {
+      this.get('store').find('option', 'print_header').then((addressOptions) => {
         resolve(addressOptions);
       }, (err) => {
         if (err instanceof UnauthorizedError) {
@@ -17,10 +17,10 @@ export default AbstractEditRoute.extend({
         } else {
           let store = this.get('store');
           let newConfig = store.push(store.normalize('option', {
-            id: 'address_options',
+            id: 'print_header',
             value: {
-              address1Label: this.get('i18n').t('admin.address.addressLabel'),
-              address1Include: true
+              facilityName: this.get('i18n').t('admin.printHeader.facilityName'),
+              headerLine1: this.get('i18n').t('admin.printHeader.headerLine1')
             }
           }));
           resolve(newConfig);
