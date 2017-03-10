@@ -12,28 +12,27 @@ module('Acceptance | visits', {
   }
 });
 
-test('Add visit', function(assert) {
+test('Add admission visit', function(assert) {
   runWithPouchDump('patient', function() {
     authenticateUser();
-    visit('/patients');
-    andThen(function() {
-      assert.equal(currentURL(), '/patients', 'Patient url is correct');
-      click('button:contains(Edit)');
-    });
-    andThen(function() {
-      assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts patient record displays');
-      click('[data-test-selector=visits-tab]');
-      waitToAppear('#visits button:contains(Edit)'); // Make sure visits have been retrieved.
-    });
-    andThen(function() {
-      click('#visits button:contains(New Visit)');
-      waitToAppear('#visit-info');
-    });
-    andThen(function() {
-      assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts displays as patient for visit');
-      updateVisit(assert, 'Add');
-    });
+    addVisit(assert);
+    newReport(assert, 'Discharge');
+    dischargeReport(assert);
+    saveReport(assert, 'Discharge');
+    editReport(assert, 'Discharge');
   });
+});
+
+test('Add OPD visit', function(assert) {
+  runWithPouchDump('patient', function() {
+    authenticateUser();
+    addVisit(assert, 'Clinic');
+    newReport(assert, 'OPD');
+    opdReport(assert);
+    saveReport(assert, 'OPD');
+    editReport(assert, 'OPD');
+  });
+
 });
 
 test('Edit visit', function(assert) {
@@ -179,8 +178,12 @@ test('Delete visit', function(assert) {
   });
 });
 
-function updateVisit(assert, buttonText) {
+function updateVisit(assert, buttonText, visitType) {
   andThen(function() {
+    if (visitType) {
+      select('select[id*="visitType"]', visitType);
+      waitToDisappear('label[for*="display_endDate"]');
+    }
     click(`.panel-footer button:contains(${buttonText})`);
     waitToAppear('.modal-dialog');
   });
@@ -189,3 +192,99 @@ function updateVisit(assert, buttonText) {
     click('button:contains(Ok)');
   });
 }
+
+function addVisit(assert, type) {
+  visit('/patients');
+  andThen(function() {
+    assert.equal(currentURL(), '/patients', 'Patient url is correct');
+    click('button:contains(Edit)');
+  });
+  andThen(function() {
+    assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts patient record displays');
+    click('[data-test-selector=visits-tab]');
+    waitToAppear('#visits button:contains(Edit)');
+  });
+  andThen(function() {
+    click('#visits button:contains(New Visit)');
+    waitToAppear('#visit-info');
+  });
+  andThen(function() {
+    assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts displays as patient for visit');
+    updateVisit(assert, 'Add', type ? type : '');
+  });
+
+}
+
+function newReport(assert, type) {
+  andThen(function() {
+    click('[data-test-selector=reports-tab]');
+    waitToAppear('[data-test-selector=report-btn]');
+    assert.equal(find('[data-test-selector=report-btn]').text().trim(), `New ${type} Report`, 'Discharge report can be created for this type of visit');
+    click('[data-test-selector=report-btn]');
+  });
+  andThen(function() {
+    assert.ok(currentURL().indexOf('visits/reports/edit/new') > -1, 'Report url is correct');
+    assert.equal(find('.view-current-title').text(), `New ${type} Report`, `${type} report title displayed correctly`);
+    assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Patient record displays');
+  });
+}
+
+function saveReport(assert, type) {
+  andThen(function() {
+    click('.panel-footer button:contains(Add)');
+    waitToAppear('.modal-dialog');
+  });
+  andThen(function() {
+    assert.equal(find('.modal-title').text(), 'Report saved', `${type} report saved successfully`);
+    click('button:contains(Ok)');
+    waitToDisappear('.modal-dialog');
+  });
+  andThen(function() {
+    assert.equal(find('.view-current-title').text(), `Edit ${type} Report`, 'Report title updated correctly');
+    assert.ok(find('.panel-footer button:contains(Print)').is(':visible'), 'Print button is now visible');
+    click('button:contains(Return)');
+  });
+  andThen(function() {
+    assert.ok(currentURL().indexOf('visits/edit/') > -1, 'Visit url is correct');
+  });
+}
+
+function dischargeReport(assert) {
+  andThen(function() {
+    assert.equal(find('[data-test-selector=visit-date-lbl]').text().trim(), 'Admission Date:', 'Visit date label displays as admission');
+    assert.equal(find('[data-test-selector=discharge-date-lbl]').text().trim(), 'Discharge Date:', 'Discharge date label displays');
+  });
+  andThen(function() {
+    click('.panel-footer button:contains(Add)');
+    waitToAppear('.modal-dialog');
+  });
+  andThen(function() {
+    assert.equal(find('.modal-title').text(), 'Warning!!!!', 'Cant save discharge report without entering doctors name');
+    click('button:contains(Ok)');
+    waitToDisappear('.modal-dialog');
+  });
+  andThen(function() {
+    typeAheadFillIn('.plan-surgeon', 'Dr Test');
+  });
+}
+
+function opdReport(assert) {
+  andThen(function() {
+    assert.equal(find('[data-test-selector=visit-date-lbl]').text().trim(), 'Date of Visit:', 'Visit date label displays as opd');
+  });
+}
+
+function editReport(assert, type) {
+  andThen(function() {
+    click('[data-test-selector=reports-tab]');
+    waitToAppear('[data-test-selector=edit-report-btn]');
+    click('[data-test-selector=edit-report-btn]');
+  });
+  andThen(function() {
+    assert.ok(currentURL().indexOf('visits/reports/edit') > -1, 'Edit report url is correct');
+    assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Patient record displays');
+    assert.equal(find('.view-current-title').text(), `Edit ${type} Report`, 'Edit report title displayed correctly');
+    assert.ok(find('.panel-footer button:contains(Print)').is(':visible'), 'Print button is on edit visible');
+  });
+}
+
