@@ -33,7 +33,7 @@
       {{/if}}
 
       <div class="ps-info-group">
-        <label class="ps-info-label">
+        <label class="ps-info-label" data-test-selector="visit-date-lbl">
           {{#if isOutPatient}}
             {{t 'reports.form.visitDate' }}:
           {{else}}
@@ -140,7 +140,7 @@
       {{else}}
 
         <div class="ps-info-group">
-          <label class="ps-info-label">{{t 'reports.form.dischargeDate' }}: </label>
+          <label class="ps-info-label" data-test-selector="discharge-date-lbl">{{t 'reports.form.dischargeDate' }}: </label>
           {{date-format model.reportDate format="DD/MM/YYYY"}}
         </div>
 
