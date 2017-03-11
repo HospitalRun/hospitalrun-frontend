@@ -79,7 +79,8 @@ export default {
       customForms: 'Custom Forms',
       appointmentsCalendar: 'Appointments Calendar',
       theaterSchedule: 'Theater Schedule',
-      scheduleSurgery: 'Schedule Surgery'
+      scheduleSurgery: 'Schedule Surgery',
+      printHeader: 'Print Header'
     },
     actions: {
       logout: 'Logout',
