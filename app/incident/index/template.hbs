@@ -1,6 +1,6 @@
 {{#item-listing paginationProps=paginationProps }}
   {{#if hasRecords}}
-    <table class="table">
+    <table class="table incident-listing">
       <tr class="table-header">
         {{#sortable-column
           sortBy='dateOfIncident'
@@ -61,12 +61,12 @@
         {{/if}}
       </tr>
       {{#each sortedIncidents as |incident|}}
-        <tr {{action 'editItem' incident}}>
-          <td>{{date-format incident.dateOfIncident}}</td>
-          <td>{{incident.department}}</td>
-          <td>{{incident.categoryName}}</td>
-          <td>{{incident.categoryItem}}</td>
-          <td>{{incident.localizedStatus}}</td>
+        <tr class="incident-row" {{action 'editItem' incident}}>
+          <td class="incident-date">{{date-format incident.dateOfIncident}}</td>
+          <td class="incident-department">{{incident.department}}</td>
+          <td class="incident-category">{{incident.categoryName}}</td>
+          <td class="incident-category-item">{{incident.categoryItem}}</td>
+          <td class="incident-status">{{incident.localizedStatus}}</td>
           {{#if showActions}}
             <td>
               {{#if canAdd}}

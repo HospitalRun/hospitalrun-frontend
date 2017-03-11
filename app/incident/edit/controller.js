@@ -194,7 +194,7 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
         let isFileSystemEnabled = get(fileSystem, 'isFileSystemEnabled');
         if (isFileSystemEnabled) {
           let pouchDbId = database.getPouchId(attachmentId, 'attachment');
-          fileSystem.deleteFile(filePath, pouchDbId);
+          fileSystem.deleteFile(filePath, pouchDbId).catch((/* ignored */) => {});
         }
       });
     },

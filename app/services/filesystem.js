@@ -125,10 +125,18 @@ export default Ember.Service.extend({
       let filer = this.get('filer');
       let config = this.get('config');
       try {
-        filer.rm(filePath, function() {
-          config.removeFileLink(pouchDbId);
-          resolve();
-        }, reject);
+        filer.ls(filePath, () => {
+          filer.rm(filePath, () => {
+            config.removeFileLink(pouchDbId);
+            resolve();
+          }, reject);
+        }, (err) => {
+          if (err.name === 'NotFoundError') {
+            resolve();
+          } else {
+            reject(err);
+          }
+        });
       } catch(ex) {
         reject(ex);
       }

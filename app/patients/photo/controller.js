@@ -2,19 +2,28 @@ import AbstractEditController from 'hospitalrun/controllers/abstract-edit-contro
 import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 
-const { computed, get, inject, RSVP, set } = Ember;
+const { computed, get, inject, isEmpty, RSVP, set } = Ember;
 
 export default AbstractEditController.extend({
   addAction: 'addPhoto',
   editTitle: t('patients.titles.editPhoto'),
+  fileRequiredMessage: t('patients.messages.photoFileRequired'),
   modelName: 'photo',
   newTitle: t('patients.titles.addPhoto'),
   newModel: false,
+  showFileRequired: false,
   showUpdateButton: true,
 
   database: inject.service(),
   editController: inject.controller('patients/edit'),
   filesystem: inject.service(),
+
+  photoFileNotSet: computed('model.photoFile', function() {
+    let model = get(this, 'model');
+    let isNew = get(model, 'isNew');
+    let photoFile = get(model, 'photoFile');
+    return (isNew && isEmpty(photoFile));
+  }),
 
   title: computed('model.isNew', function() {
     let isNew = get(this, 'model.isNew');
@@ -22,6 +31,23 @@ export default AbstractEditController.extend({
       return get(this, 'newTitle');
     } else {
       return get(this, 'editTitle');
+    }
+  }),
+
+  updateButtonAction: computed('photoFileNotSet', function() {
+    let photoFileNotSet = get(this, 'photoFileNotSet');
+    if (photoFileNotSet) {
+      return 'showFileRequired';
+    } else {
+      set(this, 'showFileRequired', false);
+      return 'update';
+    }
+  }),
+
+  updateButtonClass: computed('photoFileNotSet', function() {
+    let photoFileNotSet = get(this, 'photoFileNotSet');
+    if (photoFileNotSet) {
+      return 'disabled-btn';
     }
   }),
 
@@ -73,6 +99,10 @@ export default AbstractEditController.extend({
   actions: {
     cancel() {
       this.send('closeModal');
+    },
+
+    showFileRequired() {
+      set(this, 'showFileRequired', true);
     }
   }
 });

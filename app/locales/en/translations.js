@@ -785,6 +785,7 @@ export default {
       updatedBy: 'Updated By'
     },
     messages: {
+      attachmentFileRequired: 'Please upload a file or take a picture or before saving this attachment.',
       createNew: 'Create a new incident?',
       createNewIncidentCategory: 'Create a new Incident Category?',
       deleteAttachment: 'Are you sure you wish to delete this attachment?',
@@ -808,6 +809,7 @@ export default {
       closed: 'Closed Incidents',
       current: 'Current',
       deleteAttachment: 'Delete Attachment',
+      deleteIncident: 'Delete Incident',
       deleteIncidentCategory: 'Delete Incident Category',
       deleteItem: 'Delete Item',
       deleteNote: 'Delete Note',
@@ -1062,7 +1064,8 @@ export default {
       savedPatient: 'The patient record for {{displayName}} has been saved.',
       notFoundQuickAdd: 'The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.',
       createNewPatient: 'Create a new patient record?',
-      deletingPatient: 'Deleting patient and all associated records'
+      deletingPatient: 'Deleting patient and all associated records',
+      photoFileRequired: 'Please take a picture or upload a file before saving this photo.'
     },
     buttons: {
       addExpense: 'Add Expense',

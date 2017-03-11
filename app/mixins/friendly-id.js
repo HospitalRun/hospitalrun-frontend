@@ -73,7 +73,7 @@ export default Ember.Mixin.create({
       startkey: [id, null],
       endkey: [id, maxValue]
     };
-    return database.queryMainDB(query, sequenceView).then(function(found) {
+    return database.queryMainDB(query, sequenceView).then((found) => {
       if (!isEmpty(found.rows)) {
         sequence.incrementProperty('value');
         return this._findUnusedId(sequence, prefix, modelName);

@@ -99,6 +99,20 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
     cancelledItem.rollbackAttributes();
   },
 
+  _handleError(err) {
+    if (!err.ignore) {
+      let i18n = get(this, 'i18n');
+      let errorDetails = err;
+      if (!errorDetails.message) {
+        errorDetails.message =  err.toString();
+      }
+      this.displayAlert(
+        i18n.t('alerts.errorExclamation'),
+        i18n.t('messages.saveActionException', errorDetails)
+      );
+    }
+  },
+
   actions: {
     cancel() {
       this._cancelUpdate();
@@ -134,20 +148,10 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
         this.beforeUpdate().then(() => {
           this.saveModel(skipAfterUpdate);
         }).catch((err) => {
-          if (!err.ignore) {
-            let i18n = get(this, 'i18n');
-            this.displayAlert(
-              i18n.t('alerts.errorExclamation'),
-              i18n.t('messages.saveActionException', { message: JSON.stringify(err) })
-            );
-          }
+          this._handleError(err);
         });
       } catch(ex) {
-        let i18n = get(this, 'i18n');
-        this.displayAlert(
-          i18n.t('alerts.errorExclamation'),
-          i18n.t('messages.saveActionException', { message: JSON.stringify(ex) })
-        );
+        this._handleError(ex);
       }
     }
   },
@@ -197,7 +201,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
         if (!isEmpty(propertyValue)) {
           if (!isEmpty(lookupListToUpdate) && lookupListToUpdate.then) {
             lookupPromises.push(lookupListToUpdate.then((lookupList) => {
-              return this._checkListFunction(list, lookupList, listsToUpdate, propertyValue);
+              return this._checkListForUpdate(list, lookupList, listsToUpdate, propertyValue);
             }));
           } else {
             this._checkListForUpdate(list, lookupListToUpdate, listsToUpdate, propertyValue);

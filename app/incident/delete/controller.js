@@ -5,7 +5,7 @@ import { translationMacro as t } from 'ember-i18n';
 const { get, RSVP } = Ember;
 
 export default AbstractDeleteController.extend({
-  title: t('incident.titles.deleteItem'),
+  title: t('incident.titles.deleteIncident'),
 
   _deleteChildObject(incident, childObject, destroyPromises) {
     incident.get(childObject).then(function(childObject) {

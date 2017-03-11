@@ -4,6 +4,7 @@
     isUpdateDisabled=isUpdateDisabled
     title=title
     updateButtonAction=updateButtonAction
+    updateButtonClass=updateButtonClass
     updateButtonText=updateButtonText }}
   {{#em-form model=model submitButton=false }}
     {{em-input property="caption" label=(t 'patients.labels.caption')}}
@@ -19,6 +20,9 @@
           <span class="glyphicon glyphicon-download" aria-hidden="true"></span> {{t 'patients.buttons.download'}}
         </a>
       {{/if}}
+    {{/if}}
+    {{#if showFileRequired}}
+      <div class="alert alert-warning" role="alert">{{fileRequiredMessage}}</div>
     {{/if}}
   {{/em-form}}
 {{/modal-dialog}}

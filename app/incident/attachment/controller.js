@@ -6,9 +6,10 @@ const { inject } = Ember;
 
 export default PatientPhotoController.extend({
   addAction: 'addAttachment',
-  editTitle: t('incident.titles.addAttachment'),
+  editTitle: t('incident.titles.editAttachment'),
   modelName: 'attachment',
-  newTitle: t('incident.titles.editAttachment'),
+  newTitle: t('incident.titles.addAttachment'),
+  fileRequiredMessage: t('incident.messages.attachmentFileRequired'),
 
   editController: inject.controller('incident/edit')
 

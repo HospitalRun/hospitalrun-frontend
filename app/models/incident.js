@@ -7,11 +7,12 @@ import { validator } from 'ember-validations';
 
 const { attr, belongsTo, hasMany } = DS;
 
-const { computed, get, isEmpty } = Ember;
+const { computed, get, isEmpty, set } = Ember;
 
 export default AbstractModel.extend(IncidentStatuses, {
   categoryItem: attr('string'),
   categoryName: attr('string'),
+  customForms: DS.attr('custom-forms'),
   dateOfIncident: attr('date'),
   department: attr('string'),
   description: attr('string'),
@@ -27,7 +28,7 @@ export default AbstractModel.extend(IncidentStatuses, {
 
   incidentAttachments: hasMany('attachment', { async: true }),
   notes: hasMany('incident-note', { async: true }),
-  patientImpacted: belongsTo('patient', { async: true }),
+  patient: belongsTo('patient', { async: false }),
 
   dateForFilter: computed('dateOfIncident', function() {
     let dateOfIncident = get(this, 'dateOfIncident');
@@ -37,6 +38,22 @@ export default AbstractModel.extend(IncidentStatuses, {
   localizedStatus: computed('status', function() {
     let status = get(this, 'status');
     return this.getLocalizedStatus(status);
+  }),
+
+  patientTypeAhead: computed('patient', {
+    get() {
+      let patient = get(this, 'patient');
+      if (!isEmpty(patient)) {
+        return `${get(patient, 'displayName')} - ${get(patient, 'displayPatientId')}`;
+      } else {
+        return get(this, 'typeAheadPatientName');
+      }
+    },
+    set(key, value) {
+      set(this, 'typeAheadPatientName', value);
+      return value;
+    }
+
   }),
 
   validations: {
