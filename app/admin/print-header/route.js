@@ -5,8 +5,8 @@ import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
 
 export default AbstractEditRoute.extend({
   hideNewButton: true,
-  newTitle: t('admin.address.newTitle'),
-  editTitle: t('admin.address.editTitle'),
+  newTitle: t('admin.header.newTitle'),
+  editTitle: t('admin.header.editTitle'),
   model() {
     return new Ember.RSVP.Promise((resolve, reject) => {
       this.get('store').find('option', 'print_header').then((addressOptions) => {
@@ -19,8 +19,8 @@ export default AbstractEditRoute.extend({
           let newConfig = store.push(store.normalize('option', {
             id: 'print_header',
             value: {
-              facilityName: this.get('i18n').t('admin.printHeader.facilityName'),
-              headerLine1: this.get('i18n').t('admin.printHeader.headerLine1')
+              facilityName: this.get('i18n').t('admin.header.facilityName'),
+              headerLine1: this.get('i18n').t('admin.header.headerLine1')
             }
           }));
           resolve(newConfig);
