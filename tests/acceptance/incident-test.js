@@ -67,7 +67,7 @@ test('Incident category management', function(assert) {
   });
 });
 
-test('Incident creation', function(assert) {
+test('Incident creation and editing', function(assert) {
   runWithPouchDump('incident', function() {
     let now = moment();
     authenticateUser();
@@ -174,18 +174,7 @@ test('Incident creation', function(assert) {
       assert.equal(find(`.incident-row td.incident-category:contains(${INCIDENT_CATEGORY})`).length, 1, 'Incident category appears in listing');
       assert.equal(find(`.incident-row td.incident-category-item:contains(${INCIDENT_CATEGORY_ITEM})`).length, 1, 'Incident category item appears in listing');
       assert.equal(find('.incident-row td.incident-status:last').text(), 'Reported', 'Incident status of reported appears in listing');
-    });
-  });
-});
-
-test('Incident editing', function(assert) {
-  runWithPouchDump('incident', function() {
-    authenticateUser();
-    visit('/incident');
-    andThen(() => {
-      assert.equal(currentURL(), '/incident', 'Incident listing url is correct');
-      click('.incident-row button:contains(Edit)');
-      waitToAppear('.incident-department .tt-input');
+      visit('/incident/edit/56c64d71-ba30-4271-b899-f6f6b031f589');
     });
     andThen(() => {
       assert.equal(currentURL(), '/incident/edit/56c64d71-ba30-4271-b899-f6f6b031f589', 'Incident edit url is correct');
@@ -276,8 +265,8 @@ test('Incident deletion', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Incident Deleted', ' Incident deleted modal appears');
-      click('.modal-footer button:contains(Ok)');
+      assert.equal(find('.modal-title').text(), 'Delete Incident', ' Delete Incident modal appears');
+      click('.modal-footer button:contains(Delete)');
       waitToDisappear('.modal-dialog');
     });
     andThen(() => {
