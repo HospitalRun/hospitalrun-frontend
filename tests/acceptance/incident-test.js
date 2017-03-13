@@ -177,9 +177,10 @@ test('Incident creation and editing', function(assert) {
       visit('/incident/edit/56c64d71-ba30-4271-b899-f6f6b031f589');
     });
     andThen(() => {
+      let incidentDate = moment(1489004400000);
       assert.equal(currentURL(), '/incident/edit/56c64d71-ba30-4271-b899-f6f6b031f589', 'Incident edit url is correct');
       assert.equal(find('.sentinel-event input:checked').length, 1, 'Sentinel Event checkbox is checked');
-      assert.equal(find('.incident-date input').val(), '3/8/2017 3:20 PM', 'Date of incident displays');
+      assert.equal(find('.incident-date input').val(), incidentDate.format(DATE_TIME_FORMAT), 'Date of incident displays');
       assert.equal(find('.incident-department .tt-input').val(), 'Reception', 'Incident department displays');
       assert.equal(find('.reported-to input').val(), 'Jane Bagadonuts', 'Reported to displays.');
       assert.equal(find('.incident-category option:selected').text().trim(), 'Accident or Injury', 'Category displays');

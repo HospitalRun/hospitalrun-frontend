@@ -119,7 +119,6 @@ test('actions.update exception message', function(assert) {
     throw new Error('Test');
   };
   controller.displayAlert = function stub(title, message) {
-    console.log('title for display alert is:', title);
     alertTitle = title.toString();
     alertMessage = message.toString();
   };
