@@ -9,8 +9,8 @@ export default AbstractEditRoute.extend({
   editTitle: t('admin.header.editTitle'),
   model() {
     return new Ember.RSVP.Promise((resolve, reject) => {
-      this.get('store').find('option', 'print_header').then((addressOptions) => {
-        resolve(addressOptions);
+      this.get('store').find('option', 'print_header').then((headerOptions) => {
+        resolve(headerOptions);
       }, (err) => {
         if (err instanceof UnauthorizedError) {
           reject(err);
