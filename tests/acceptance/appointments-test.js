@@ -12,19 +12,23 @@ const clearIntervalNative = clearInterval;
 let clock, interval;
 
 module('Acceptance | appointments', {
-  beforeEach() {
-    clock = sinon.useFakeTimers(new Date(2017, 0, 1, 23, 40, 0).getTime());
-    interval = setIntervalNative(function() {
-      clock.tick(10);
-    }, 10);
+  beforeEach(assert) {
+    if (assert.test.testName === 'Appointment calendar at 23:40') {
+      clock = sinon.useFakeTimers(new Date(2017, 0, 1, 23, 40, 0).getTime());
+      interval = setIntervalNative(function() {
+        clock.tick(10);
+      }, 10);
+    }
 
     this.application = startApp();
   },
 
-  afterEach() {
+  afterEach(assert) {
     Ember.run(this.application, 'destroy');
-    clock.restore();
-    clearIntervalNative(interval);
+    if (assert.test.testName === 'Appointment calendar at 23:40') {
+      clock.restore();
+      clearIntervalNative(interval);
+    }
   }
 });
 
@@ -158,6 +162,41 @@ test('Delete an appointment', function(assert) {
 });
 
 test('Appointment calendar', function(assert) {
+  runWithPouchDump('appointments', function() {
+    authenticateUser();
+    let later = moment().add(1, 'hours');
+    let today = moment();
+    let startTime = today.format(TIME_FORMAT);
+    let endTime = later.format(TIME_FORMAT);
+    let timeString = `${startTime} - ${endTime}`;
+    createAppointment(assert, {
+      startDate: today,
+      endDate: later,
+      allDay: false,
+      status: 'Scheduled'
+    });
+
+    andThen(function() {
+      visit('/appointments/calendar');
+    });
+
+    andThen(function() {
+      assert.equal(currentURL(), '/appointments/calendar');
+      assert.equal(find('.view-current-title').text(), 'Appointments Calendar', 'Appoinment Calendar displays');
+      assert.equal(find('.fc-content .fc-time').text(), timeString, 'Time appears in calendar');
+      assert.equal(find('.fc-title').text(), 'Lennex ZinyandoDr Test', 'Appoinment displays in calendar');
+      click('.fc-title');
+    });
+
+    andThen(() => {
+      assert.equal(find('.view-current-title').text(), 'Edit Appointment', 'Edit Appointment displays');
+      assert.equal(find('.test-appointment-start input').val(), today.format(DATE_TIME_FORMAT), 'Start date/time are correct');
+      assert.equal(find('.test-appointment-end input').val(), later.format(DATE_TIME_FORMAT), 'End date/time are correct');
+    });
+  });
+});
+
+test('Appointment calendar at 23:40', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
     let later = moment().add(1, 'hours');
