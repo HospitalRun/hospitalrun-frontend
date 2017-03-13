@@ -79,7 +79,8 @@ export default {
       customForms: 'Custom Forms',
       appointmentsCalendar: 'Appointments Calendar',
       theaterSchedule: 'Theater Schedule',
-      scheduleSurgery: 'Schedule Surgery'
+      scheduleSurgery: 'Schedule Surgery',
+      printHeader: 'Print Header'
     },
     actions: {
       logout: 'Logout',
@@ -116,6 +117,27 @@ export default {
       newTitle: 'Address Options',
       editTitle: 'Address Options',
       addressLabel: 'Address'
+    },
+    header: {
+      facilityName: 'Facility Name',
+      headerLine1: 'Header Line 1',
+      headerLine2: 'Header Line 2',
+      headerLine3: 'Header Line 3',
+      logoURL: 'Logo URL',
+      includeFacilityName: 'Include Facility Name',
+      includeHeaderLine1: 'Include Header Line 1',
+      includeHeaderLine2: 'Include Header Line 2',
+      includeHeaderLine3: 'Include Header Line 3',
+      includeLogoURL: 'Include Logo URL',
+      titles: {
+        optionsSaved: 'Options Saved'
+      },
+      messages: {
+        headerSaved: 'The header options have been saved'
+      },
+      newTitle: 'Header Options',
+      editTitle: 'Header Options',
+      headerLabel: 'Header'
     },
     customForms: {
       buttons: {

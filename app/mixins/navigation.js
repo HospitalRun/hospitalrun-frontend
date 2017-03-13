@@ -275,6 +275,12 @@ export default Ember.Mixin.create({
           capability: 'update_config'
         },
         {
+          title: 'Print Header',
+          iconClass: 'octicon-chevron-right',
+          route: 'admin.print-header',
+          capability: 'update_config'
+        },
+        {
           title: 'Custom Forms',
           iconClass: 'octicon-chevron-right',
           route: 'admin.custom-forms',
