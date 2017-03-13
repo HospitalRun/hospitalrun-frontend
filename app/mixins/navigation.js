@@ -308,16 +308,16 @@ export default Ember.Mixin.create({
           capability: 'update_config'
         },
         {
-          title: 'Incident Categories',
-          iconClass: 'octicon-chevron-right',
-          route: 'inc-category',
-          capability: 'add_incident_category'
-        },
-        {
           title: 'Custom Forms',
           iconClass: 'octicon-chevron-right',
           route: 'admin.custom-forms',
           capability: 'update_config'
+        },
+        {
+          title: 'Incident Categories',
+          iconClass: 'octicon-chevron-right',
+          route: 'inc-category',
+          capability: 'add_incident_category'
         },
         {
           title: 'Load DB',
@@ -329,6 +329,12 @@ export default Ember.Mixin.create({
           title: 'Lookup Lists',
           iconClass: 'octicon-chevron-right',
           route: 'admin.lookup',
+          capability: 'update_config'
+        },
+        {
+          title: 'Print Header',
+          iconClass: 'octicon-chevron-right',
+          route: 'admin.print-header',
           capability: 'update_config'
         },
         {
