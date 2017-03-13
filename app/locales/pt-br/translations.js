@@ -974,7 +974,6 @@ export default {
     takePhoto: {
       how: 'Como você quer adicionar um Foto?',
       takePhoto: 'Tirar um Foto',
-      uploadPhoto: 'Upload de Foto',
       uploadFile: 'Upload de Arquivo',
       camera: 'Câmera',
       photo: 'foto',

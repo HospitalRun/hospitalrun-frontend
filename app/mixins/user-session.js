@@ -4,7 +4,8 @@ export default Ember.Mixin.create({
   defaultCapabilities: {
     admin: [
       'User Administrator',
-      'System Administrator'
+      'System Administrator',
+      'Quality'
     ],
     add_allergy: [
       'Data Entry',
@@ -455,12 +456,47 @@ export default Ember.Mixin.create({
       'Social Worker',
       'System Administrator'
     ],
+    incident: [
+      'Hospital Staff',
+      'User Administrator',
+      'Quality',
+      'System Administrator'
+    ],
+    add_incident: [
+      'Hospital Staff',
+      'User Administrator',
+      'Quality',
+      'System Administrator'
+    ],
+    delete_incident: [
+      'Quality',
+      'System Administrator'
+    ],
+    generate_incident_report: [
+      'User Administrator',
+      'Quality',
+      'System Administrator'
+    ],
+    add_incident_category: [
+      'User Administrator',
+      'Quality',
+      'System Administrator'
+    ],
+    delete_incident_category: [
+      'Quality',
+      'System Administrator'
+    ],
+    manage_incidents: [
+      'Quality',
+      'System Administrator'
+    ],
     update_config: [
       'System Administrator'
     ],
     users: [
       'User Administrator',
-      'System Administrator'
+      'System Administrator',
+      'Quality'
     ],
     add_note: [
       'Doctor',

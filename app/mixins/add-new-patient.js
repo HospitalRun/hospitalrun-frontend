@@ -52,7 +52,7 @@ export default Ember.Mixin.create(PatientId, {
     let newPatientId = this.get('newPatientId');
     if (Ember.isEmpty(newPatientId)) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
-        this.generateFriendlyId().then(function(friendlyId) {
+        this.generateFriendlyId('patient').then(function(friendlyId) {
           this.set('newPatientId', friendlyId);
           resolve(friendlyId);
         }.bind(this), reject);
