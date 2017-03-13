@@ -58,6 +58,8 @@ test('Plan and report creation', function(assert) {
     });
     andThen(() => {
       waitToDisappear('.modal-dialog');
+    });
+    andThen(() => {
       waitToAppear('a.secondary-diagnosis:contains(Tennis Elbow)');
     });
     andThen(() => {
