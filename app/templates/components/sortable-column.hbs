@@ -27,6 +27,11 @@
           </li>
         {{/each}}
       {{/if}}
+      {{#if (eq filterType 'date')}}
+        <li>
+          {{date-filter}}
+        </li>
+      {{/if}}
     </ul>
   </span>
 {{/if}}

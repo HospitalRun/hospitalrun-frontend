@@ -1,16 +1,67 @@
 import Ember from 'ember';
 
 const {
+  Service,
+  computed,
+  get,
+  inject,
   isEmpty,
   set
 } = Ember;
 
-export default Ember.Service.extend({
-  store: Ember.inject.service(),
+export default Service.extend({
+  currentModel: null,
   customForms: {},
+  formsForType: null,
+  store: inject.service(),
+
+  formsForSelect: computed('formsForType', 'usedForms', function() {
+    let formsForType = get(this, 'formsForType');
+    let usedForms = get(this, 'usedForms');
+    if (!isEmpty(formsForType)) {
+      let formsForSelect = formsForType.filter((customForm) => {
+        return (!usedForms.includes(get(customForm, 'id')));
+      });
+      formsForSelect = formsForSelect.map((customForm) => {
+        return {
+          id: get(customForm, 'id'),
+          value: get(customForm, 'name')
+        };
+      });
+      return formsForSelect;
+    }
+  }),
+
+  formsToDisplay: computed('formsForType', 'currentModel.customForms', function() {
+    let formsForType = get(this, 'formsForType');
+    let modelForms = get(this, 'currentModel.customForms');
+    if (!isEmpty(modelForms) && !isEmpty(formsForType)) {
+      return Object.keys(modelForms).map((formId) => {
+        return {
+          form: formsForType.findBy('id', formId),
+          propertyPrefix: `customForms.${formId}.`
+        };
+      });
+    }
+  }),
+
+  showAddButton: computed('formsForSelect', function() {
+    let formsForSelect = get(this, 'formsForSelect');
+    return !isEmpty(formsForSelect);
+  }),
+
+  usedForms: computed('currentModel.customForms', function() {
+    let modelForms = get(this, 'currentModel.customForms');
+    if (isEmpty(modelForms)) {
+      return [];
+    } else {
+      return Object.keys(modelForms);
+    }
+  }),
+
   getCustomForms(formTypes) {
-    let customForms = this.get('customForms');
-    let store = this.get('store');
+    let customForms = get(this, 'customForms');
+    let store = get(this, 'store');
     let formTypesToQuery = formTypes.filter(function(formType) {
       if (isEmpty(customForms[formType])) {
         return true;
@@ -33,17 +84,8 @@ export default Ember.Service.extend({
     }
   },
 
-  _getCustomFormsFromCache(formTypes) {
-    let customForms = this.get('customForms');
-    let returnForms = [];
-    formTypes.forEach((formType) => {
-      returnForms.addObjects(customForms[formType]);
-    });
-    return returnForms;
-  },
-
   resetCustomFormByType(formType) {
-    let customForms = this.get('customForms');
+    let customForms = get(this, 'customForms');
     delete customForms[formType];
   },
 
@@ -51,13 +93,29 @@ export default Ember.Service.extend({
     return this.getCustomForms(customFormNames).then((customForms) => {
       if (!isEmpty(customForms)) {
         customForms.forEach((customForm) => {
-          if (customForm.get('alwaysInclude')) {
-            set(model, `customForms.${customForm.get('id')}`, Ember.Object.create());
+          if (get(customForm, 'alwaysInclude')) {
+            set(model, `customForms.${get(customForm, 'id')}`, Ember.Object.create());
           }
         });
       }
       return model;
     });
+  },
+
+  setupForms(formType, model) {
+    this.getCustomForms([formType]).then((forms) => {
+      set(this, 'currentModel', model);
+      set(this, 'formsForType', forms);
+    });
+  },
+
+  _getCustomFormsFromCache(formTypes) {
+    let customForms = get(this, 'customForms');
+    let returnForms = [];
+    formTypes.forEach((formType) => {
+      returnForms.addObjects(customForms[formType]);
+    });
+    return returnForms;
   }
 
 });

@@ -1,8 +1,7 @@
 import Ember from 'ember';
 import HtmlInput from 'ember-rapid-forms/components/html-input';
-export default HtmlInput.extend({
-  _picker: null,
-
+import PikadayComponent from 'hospitalrun/mixins/pikaday-component';
+export default HtmlInput.extend(PikadayComponent, {
   _shouldSetDate(currentDate, picker) {
     return (picker && (Ember.isEmpty(currentDate)
       || Ember.isEmpty(picker.getDate())
@@ -48,34 +47,6 @@ export default HtmlInput.extend({
     }
   },
 
-  didInsertElement() {
-    let currentDate = this.get('currentDate');
-    let $input = this.$('input');
-    let picker = null;
-    let props = this.getProperties('format', 'yearRange', 'showTime');
-
-    props.onSelect = this.dateSet.bind(this);
-
-    if (!Ember.isEmpty(this.get('minDate'))) {
-      props.minDate = this.get('minDate');
-      if (props.minDate === 'now') {
-        props.minDate = new Date();
-      }
-    }
-    if (!Ember.isEmpty(this.get('maxDate'))) {
-      props.maxDate = this.get('maxDate');
-      if (props.maxDate === 'now') {
-        props.maxDate = new Date();
-      }
-    }
-    props.field = $input[0];
-    picker = new Pikaday(props);
-    Ember.run.next(this, function() {
-      picker.setDate(currentDate);
-    });
-    this.set('_picker', picker);
-  },
-
   didReceiveAttrs(/* attrs */) {
     this._super(...arguments);
     let dateProperty = this.get('mainComponent.originalPropery');
@@ -87,14 +58,6 @@ export default HtmlInput.extend({
     this.yearRange = Ember.computed.alias('mainComponent.yearRange');
     this.addObserver(`mainComponent.model.${dateProperty}`, this, this.currentDateChangedValue);
     Ember.Binding.from(`mainComponent.model.errors.${dateProperty}`).to(`mainComponent.model.errors.${displayPropertyName}`).connect(this);
-  },
-
-  willDestroyElement() {
-    let picker = this.get('_picker');
-    if (picker) {
-      picker.destroy();
-    }
-    this.set('_picker', null);
   }
 
 });

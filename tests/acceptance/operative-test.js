@@ -20,7 +20,7 @@ module('Acceptance | Operative Plan and Operation Report', {
 });
 
 test('Plan and report creation', function(assert) {
-  runWithPouchDump('patient', function() {
+  runWithPouchDump('operative', function() {
     authenticateUser();
     visit('/patients');
     andThen(() => {
@@ -28,45 +28,14 @@ test('Plan and report creation', function(assert) {
       click('button:contains(Edit)');
     });
     andThen(() => {
-      assert.equal(currentURL(), '/patients/edit/C87BFCB2-F772-7A7B-8FC7-AD00C018C32A', 'Patient edit URL is correct');
-      click('a:contains(Add Diagnosis)');
-      waitToAppear('.modal-dialog');
-    });
-    andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Add Diagnosis', 'Add Diagnosis dialog displays');
-      fillIn('.diagnosis-text input', 'Broken Arm');
-    });
-    andThen(() => {
-      click('.modal-footer button:contains(Add)');
-    });
-    andThen(() => {
-      waitToDisappear('.modal-dialog');
-      waitToAppear('a.primary-diagnosis');
-    });
-    andThen(() => {
-      assert.equal(find('a.primary-diagnosis:contains(Broken Arm)').length, 1, 'New primary diagnosis appears');
-      click('a:contains(Add Diagnosis)');
-      waitToAppear('.modal-dialog');
-    });
-    andThen(() => {
-      assert.equal(find('.modal-title').text(), 'Add Diagnosis', 'Add Diagnosis dialog displays');
-      fillIn('.diagnosis-text input', 'Tennis Elbow');
-      click('.secondary-diagnosis input');
-    });
-    andThen(() => {
-      click('.modal-footer button:contains(Add)');
-    });
-    andThen(() => {
-      waitToDisappear('.modal-dialog');
-      waitToAppear('a.secondary-diagnosis:contains(Tennis Elbow)');
-    });
-    andThen(() => {
-      assert.equal(find('a.secondary-diagnosis:contains(Tennis Elbow)').length, 1, 'New secondary diagnosis appears');
+      assert.equal(currentURL(), '/patients/edit/cd572865-dcc0-441e-a2ad-be400dc256da', 'Patient edit URL is correct');
+      assert.equal(find('a.primary-diagnosis:contains(Broken Arm)').length, 1, 'Primary diagnosis appears');
+      assert.equal(find('a.secondary-diagnosis:contains(Tennis Elbow)').length, 1, 'Secondary diagnosis appears');
       click('a:contains(Add Operative Plan)');
       waitToAppear('span.secondary-diagnosis:contains(Tennis Elbow)');
     });
     andThen(() => {
-      assert.equal(currentURL(), '/patients/operative-plan/new?forPatientId=C87BFCB2-F772-7A7B-8FC7-AD00C018C32A', 'New operative plan URL is correct');
+      assert.equal(currentURL(), '/patients/operative-plan/new?forPatientId=cd572865-dcc0-441e-a2ad-be400dc256da', 'New operative plan URL is correct');
       assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts patient header displays');
       assert.equal(find('.view-current-title').text(), 'New Operative Plan', 'New operative plan title is correct');
       assert.equal(find('span.primary-diagnosis:contains(Broken Arm)').length, 1, 'Primary diagnosis appears as read only');
@@ -112,7 +81,7 @@ test('Plan and report creation', function(assert) {
       click('button:contains(Return)');
     });
     andThen(() => {
-      assert.equal(currentURL(), '/patients/edit/C87BFCB2-F772-7A7B-8FC7-AD00C018C32A', 'Return goes back to patient screen');
+      assert.equal(currentURL(), '/patients/edit/cd572865-dcc0-441e-a2ad-be400dc256da', 'Return goes back to patient screen');
       assert.equal(find('a:contains(Current Operative Plan)').length, 1, 'Link to newly created plan appears');
       click('a:contains(Current Operative Plan)');
     });
@@ -150,7 +119,7 @@ test('Plan and report creation', function(assert) {
       click('button:contains(Return)');
     });
     andThen(() => {
-      assert.equal(currentURL(), '/patients/edit/C87BFCB2-F772-7A7B-8FC7-AD00C018C32A', 'Patient edit URL is correct');
+      assert.equal(currentURL(), '/patients/edit/cd572865-dcc0-441e-a2ad-be400dc256da', 'Patient edit URL is correct');
       assert.equal(find('a.patient-procedure:contains(fix broken arm)').length, 1, 'Procedure/operative report shows on patient header');
       click('a.patient-procedure:contains(fix broken arm)');
     });
