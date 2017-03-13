@@ -11,6 +11,7 @@ const {
 
 export default AbstractIndexRoute.extend(DateFormat, {
   database: Ember.inject.service(),
+  itemsPerPage: null, // Fetch all outpatient visits as one page
   modelName: 'visit',
   newButtonAction: 'patientCheckIn',
   newButtonText: t('patients.buttons.patientCheckIn'),

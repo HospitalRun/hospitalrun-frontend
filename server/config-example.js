@@ -1,3 +1,4 @@
+/* eslint-disable */
 var config = {
   couchDbServer: 'localhost',
   couchDbPort: '5984',
@@ -10,7 +11,9 @@ var config = {
   serverPort: '4200',
   server: 'localhost',
   useGoogleAuth: false,
-  useSSL: false
+  useSSL: false,
+  imagesdir: '/tmp/patientimages',
+  attachmentsDir: 'tmp/attachments',
 };
 
 config.couchCredentials = function() {

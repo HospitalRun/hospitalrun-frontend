@@ -267,6 +267,12 @@ let designDocs = [{
   ),
   version: 4
 }, {
+  name: 'inventory_by_friendly_id',
+  function: generateView('inventory',
+    'emit([doc.data.friendlyId, doc._id]);'
+  ),
+  version: 1
+}, {
   name: 'inventory_by_name',
   function: generateView('inventory',
     'emit([doc.data.name, doc._id]);'
@@ -292,6 +298,43 @@ let designDocs = [{
     }
   }.toString()),
   version: 5
+}, {
+  name: 'incident_by_friendly_id',
+  function: generateView('incident',
+    'emit([doc.data.friendlyId, doc._id]);'
+  ),
+  version: 1
+}, {
+  name: 'incident_by_date',
+  function: generateView('incident',
+    `${generateDateForView('dateOfIncident')}
+    emit([dateOfIncident, doc._id]);`
+  ),
+  version: 1
+}, {
+  name: 'open_incidents_by_user',
+  function: generateView('incident',
+    `if (doc.data.status !== "Closed") {
+      emit([doc.data.reportedBy, doc._id]);
+    }`
+  ),
+  sort: generateSortFunction(function(a, b) {
+    let sortBy = '';
+    if (req.query && req.query.sortKey) {
+      sortBy = req.query.sortKey;
+      return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
+    }
+    return 0; // Don't sort
+  }.toString()),
+  version: 1
+}, {
+  name: 'closed_incidents_by_user',
+  function: generateView('incident',
+    `if (doc.data.status === "Closed") {
+      emit([doc.data.reportedBy, doc._id]);
+    }`
+  ),
+  version: 1
 }, {
   name: 'inventory_by_type',
   function: generateView('inventory',
