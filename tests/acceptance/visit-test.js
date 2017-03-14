@@ -1,6 +1,31 @@
 import Ember from 'ember';
+import moment from 'moment';
 import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
+
+const { isEmpty } = Ember;
+
+const visitData = {
+  outPatient: {
+    PRIMARY_DIAGNOSIS: 'ACL deficient knee, right',
+    SECONDARY_DIAGNOSIS: 'ACL deficient knee, left',
+    OPERATION_DESCRIPTION: 'Describe Operation here',
+    PROCEDURE_SPLINT: 'application of long arm post splint',
+    ADMISSION_INSTRUCTIONS: 'Admission Instructions here',
+    OPD_PROCEDURE_DESCRIPTION: 'Bilateral knee Release',
+    OPD_PROCEDURE_PHYSICIAN: 'Sarah Kearney',
+    LAB_TYPE: 'Cholesterol',
+    IMAGING_TYPE: 'Cervical Spine AP-L',
+    MEDICATION_INPUT: 'Cefazolin 500mg vial (Hazolin) - m00001 (999998 available)',
+    MEDICATION_PRESCRIPTION: '4 doses before meals',
+    MEDICATION_QUANTITY: '4',
+    APPOINTMENT_START_DATE: moment().add(7, 'days').format('l h:mm A'),
+    APPOINTMENT_END_DATE: moment().add(8, 'days').format('l h:mm A')
+  },
+  admission: {
+    // admission visit data goes here
+  }
+};
 
 module('Acceptance | visits', {
   beforeEach() {
@@ -16,6 +41,7 @@ test('Add admission visit', function(assert) {
   runWithPouchDump('patient', function() {
     authenticateUser();
     addVisit(assert);
+    addDischargeData(assert);
     newReport(assert, 'Discharge');
     dischargeReport(assert);
     saveReport(assert, 'Discharge');
@@ -27,12 +53,12 @@ test('Add OPD visit', function(assert) {
   runWithPouchDump('patient', function() {
     authenticateUser();
     addVisit(assert, 'Clinic');
+    addOutpatientData(assert);
     newReport(assert, 'OPD');
-    opdReport(assert);
+    checkOutpatientData(assert);
     saveReport(assert, 'OPD');
     editReport(assert, 'OPD');
   });
-
 });
 
 test('Edit visit', function(assert) {
@@ -178,21 +204,6 @@ test('Delete visit', function(assert) {
   });
 });
 
-function updateVisit(assert, buttonText, visitType) {
-  andThen(function() {
-    if (visitType) {
-      select('select[id*="visitType"]', visitType);
-      waitToDisappear('label[for*="display_endDate"]');
-    }
-    click(`.panel-footer button:contains(${buttonText})`);
-    waitToAppear('.modal-dialog');
-  });
-  andThen(function() {
-    assert.equal(find('.modal-title').text(), 'Visit Saved', 'Visit Saved dialog displays');
-    click('button:contains(Ok)');
-  });
-}
-
 function addVisit(assert, type) {
   visit('/patients');
   andThen(function() {
@@ -210,9 +221,100 @@ function addVisit(assert, type) {
   });
   andThen(function() {
     assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts displays as patient for visit');
-    updateVisit(assert, 'Add', type ? type : '');
+    updateVisit(assert, 'Add', type);
   });
 
+}
+
+function addOutpatientData(assert) {
+  andThen(() =>{
+    click('a:contains(Add Diagnosis)');
+    waitToAppear('.modal-dialog');
+  });
+  andThen(() => {
+    assert.equal(find('.modal-title').text(), 'Add Diagnosis', 'Add Diagnosis dialog displays');
+    fillIn('.diagnosis-text input', visitData.outPatient.PRIMARY_DIAGNOSIS);
+    click('.modal-footer button:contains(Add)');
+    waitToAppear('a.primary-diagnosis');
+  });
+  andThen(() => {
+    click('a:contains(Add Diagnosis)');
+    waitToAppear('.modal-dialog');
+  });
+  andThen(() => {
+    assert.equal(find('.modal-title').text(), 'Add Diagnosis', 'Add Diagnosis dialog displays');
+    fillIn('.diagnosis-text input', visitData.outPatient.SECONDARY_DIAGNOSIS);
+    click('.secondary-diagnosis input');
+    click('.modal-footer button:contains(Add)');
+    waitToAppear('a.secondary-diagnosis');
+  });
+  andThen(() => {
+    click('a:contains(Add Operative Plan)');
+  });
+  andThen(() => {
+    assert.ok(currentURL().indexOf('/patients/operative-plan/new?forVisitId') > -1, 'New operative plan URL is visited');
+    assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts patient header displays');
+    assert.equal(find('.view-current-title').text(), 'New Operative Plan', 'New operative plan title is correct');
+    fillIn('.operation-description textarea', visitData.outPatient.OPERATION_DESCRIPTION);
+    typeAheadFillIn('.procedure-description', visitData.outPatient.PROCEDURE_SPLINT);
+    click('button:contains(Add Procedure)');
+    waitToAppear('.procedure-listing td.procedure-description');
+    fillIn('.admission-instructions textarea', visitData.outPatient.ADMISSION_INSTRUCTIONS);
+  });
+  updateVisitData(assert, 'Plan Saved');
+  andThen(() => {
+    click('[data-test-selector=procedures-tab]');
+    waitToAppear('[data-test-selector=new-procedure-btn]');
+    assert.equal(find('[data-test-selector=new-procedure-btn]').text().trim(), 'New Procedure', 'New Procedure button displayed');
+    click('[data-test-selector=new-procedure-btn]');
+  });
+  andThen(() => {
+    assert.ok(currentURL().indexOf('visits/procedures/edit/new?forVisitId') > -1, 'New Procedures URL is visited');
+    typeAheadFillIn('.procedure-description', visitData.outPatient.OPD_PROCEDURE_DESCRIPTION);
+    typeAheadFillIn('.procedure-physician', visitData.outPatient.OPD_PROCEDURE_PHYSICIAN);
+  });
+  updateVisitData(assert, 'Procedure Saved');
+  andThen(() => {
+    click('button:contains(New Lab)');
+  });
+  andThen(() => {
+    assert.ok(currentURL().indexOf('/labs/edit/new?forVisitId') > -1, 'New Lab URL is visited');
+    typeAheadFillIn('.test-lab-type', visitData.outPatient.LAB_TYPE);
+  });
+  updateVisitData(assert, 'Lab Request Saved');
+  andThen(() => {
+    click('button:contains(New Imaging)');
+  });
+  andThen(() => {
+    assert.ok(currentURL().indexOf('/imaging/edit/new?forVisitId') > -1, 'New Imaging URL is visited');
+    typeAheadFillIn('.imaging-type-input', visitData.outPatient.IMAGING_TYPE);
+  });
+  updateVisitData(assert, 'Imaging Request Saved');
+  andThen(() => {
+    click('button:contains(New Medication)');
+  });
+  andThen(() => {
+    assert.ok(currentURL().indexOf('/medication/edit/new?forVisitId') > -1, 'New Medication URL is visited');
+    typeAheadFillIn('.test-medication-input', visitData.outPatient.MEDICATION_INPUT);
+    fillIn('.test-medication-prescription textarea', visitData.outPatient.MEDICATION_PRESCRIPTION);
+    fillIn('.test-quantity-input input', visitData.outPatient.MEDICATION_QUANTITY);
+  });
+  updateVisitData(assert, 'Medication Request Saved');
+  andThen(() => {
+    click('button:contains(New Appointment)');
+  });
+  andThen(() => {
+    assert.ok(currentURL().indexOf('/appointments/edit/new?forVisitId') > -1, 'New Appointment URL is visited');
+    click('.appointment-all-day input');
+    fillIn('.test-appointment-start input', visitData.outPatient.APPOINTMENT_START_DATE);
+    fillIn('.test-appointment-end input', visitData.outPatient.APPOINTMENT_END_DATE);
+  });
+  updateVisitData(assert, 'Appointment Saved');
+}
+
+function addDischargeData(assert) {
+  // add discharge report data elements here
+  assert.equal(1, 1);
 }
 
 function newReport(assert, type) {
@@ -226,6 +328,54 @@ function newReport(assert, type) {
     assert.ok(currentURL().indexOf('visits/reports/edit/new') > -1, 'Report url is correct');
     assert.equal(find('.view-current-title').text(), `New ${type} Report`, `${type} report title displayed correctly`);
     assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Patient record displays');
+  });
+}
+
+function checkOutpatientData(assert) {
+  andThen(() => {
+    assert.equal(find('.patient-id .ps-info-data').text(), 'P00001', 'Patient ID is displayed');
+    assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Patient First Name & Last Name is displayed');
+    assert.equal(find('.test-visit-date .test-visit-date-label').text().trim(), 'Date of Visit:', 'Visit date label displayed');
+    assert.ok(!isEmpty(find('.test-visit-date .test-visit-date-data').text()), 'Visit date is displayed');
+    findWithAssert(`.primary-diagnosis:contains(${visitData.outPatient.PRIMARY_DIAGNOSIS})`);
+    findWithAssert(`.secondary-diagnosis:contains(${visitData.outPatient.SECONDARY_DIAGNOSIS})`);
+    findWithAssert('.test-opd-procedure .test-opd-procedure-label:contains(Procedures)');
+    assert.ok(find('.test-opd-procedure .test-opd-procedure-data').text().indexOf(visitData.outPatient.OPD_PROCEDURE_DESCRIPTION) > -1, 'OPD Procedure is displayed');
+    findWithAssert('.test-labs .test-labs-label:contains(Labs)');
+    assert.ok(find('.test-labs .test-labs-data').text().indexOf(visitData.outPatient.LAB_TYPE) > -1, 'Lab request is displayed');
+    findWithAssert('.test-images .test-images-label:contains(Images)');
+    assert.ok(find('.test-images .test-images-data').text().indexOf(visitData.outPatient.IMAGING_TYPE) > -1, 'Image request is displayed');
+    findWithAssert('.test-medication .test-medication-label:contains(Medications)');
+    let medicationName = visitData.outPatient.MEDICATION_INPUT.slice(0, 30); // Medication name earlier filled-in contains other info not displayed in test, so only actual medication name is extracted
+    assert.ok(find('.test-medication .test-medication-data').text().indexOf(medicationName) > -1, 'Medication request is displayed');
+    // findWithAssert('.test-appointment .test-appointment-label:contains(Next Appointments)');
+    // assert.ok(find('.test-appointment .test-appointment-data').text().indexOf(visitData.outPatient.APPOINTMENT_START_DATE) > -1, 'Next Appointment is displayed' + visitData.outPatient.APPOINTMENT_START_DATE);
+    findWithAssert('.test-operative-plan .test-operative-plan-label:contains(Operative Plan)');
+    findWithAssert('.test-operative-plan .test-operative-plan-description-label:contains(Operation Description:)');
+    assert.equal(find('.test-operative-plan .test-operative-plan-description-data').text(), visitData.outPatient.OPERATION_DESCRIPTION);
+    findWithAssert('.test-operative-plan .test-operative-plan-procedures-label:contains(Planned Procedures:)');
+    assert.equal(find('.test-operative-plan .test-operative-plan-procedures-description').text(), visitData.outPatient.PROCEDURE_SPLINT);
+    findWithAssert('.test-operative-plan .test-operative-plan-instructions-label:contains(Instructions upon Admission:)');
+    assert.equal(find('.test-operative-plan .test-operative-plan-instructions-data').text(), visitData.outPatient.ADMISSION_INSTRUCTIONS, 'Admission Instruction is displayed');
+  });
+}
+
+function dischargeReport(assert) {
+  andThen(function() {
+    assert.equal(find('.test-visit-date .test-visit-date-label').text().trim(), 'Admission Date:', 'Visit date label displays as admission');
+    assert.equal(find('.test-visit-date .test-visit-discharge-date-label').text().trim(), 'Discharge Date:', 'Discharge date label displays');
+  });
+  andThen(function() {
+    click('.panel-footer button:contains(Add)');
+    waitToAppear('.modal-dialog');
+  });
+  andThen(function() {
+    assert.equal(find('.modal-title').text(), 'Warning!!!!', 'Cant save discharge report without entering doctors name');
+    click('button:contains(Ok)');
+    waitToDisappear('.modal-dialog');
+  });
+  andThen(function() {
+    typeAheadFillIn('.plan-surgeon', 'Dr Test');
   });
 }
 
@@ -249,31 +399,6 @@ function saveReport(assert, type) {
   });
 }
 
-function dischargeReport(assert) {
-  andThen(function() {
-    assert.equal(find('[data-test-selector=visit-date-lbl]').text().trim(), 'Admission Date:', 'Visit date label displays as admission');
-    assert.equal(find('[data-test-selector=discharge-date-lbl]').text().trim(), 'Discharge Date:', 'Discharge date label displays');
-  });
-  andThen(function() {
-    click('.panel-footer button:contains(Add)');
-    waitToAppear('.modal-dialog');
-  });
-  andThen(function() {
-    assert.equal(find('.modal-title').text(), 'Warning!!!!', 'Cant save discharge report without entering doctors name');
-    click('button:contains(Ok)');
-    waitToDisappear('.modal-dialog');
-  });
-  andThen(function() {
-    typeAheadFillIn('.plan-surgeon', 'Dr Test');
-  });
-}
-
-function opdReport(assert) {
-  andThen(function() {
-    assert.equal(find('[data-test-selector=visit-date-lbl]').text().trim(), 'Date of Visit:', 'Visit date label displays as opd');
-  });
-}
-
 function editReport(assert, type) {
   andThen(function() {
     click('[data-test-selector=reports-tab]');
@@ -288,3 +413,34 @@ function editReport(assert, type) {
   });
 }
 
+function updateVisitData(assert, modalTitle) {
+  andThen(() => {
+    click('.panel-footer button:contains(Add)');
+    waitToAppear('.modal-dialog');
+  });
+  andThen(() => {
+    assert.equal(find('.modal-title').text(), modalTitle, `${modalTitle} modal displays`);
+    click('.modal-footer button:contains(Ok)');
+  });
+  andThen(() => {
+    click('button:contains(Return)');
+  });
+  andThen(() => {
+    assert.ok(currentURL().indexOf('visits/edit/') > -1, 'Returns back to visit URL');
+  });
+}
+
+function updateVisit(assert, buttonText, visitType) {
+  andThen(function() {
+    if (visitType) {
+      select('select[id*="visitType"]', visitType);
+      waitToDisappear('label[for*="display_endDate"]');
+    }
+    click(`.panel-footer button:contains(${buttonText})`);
+    waitToAppear('.modal-dialog');
+  });
+  andThen(function() {
+    assert.equal(find('.modal-title').text(), 'Visit Saved', 'Visit Saved dialog displays');
+    click('button:contains(Ok)');
+  });
+}

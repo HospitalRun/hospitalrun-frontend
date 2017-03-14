@@ -32,69 +32,69 @@
         }}
       {{/if}}
 
-      <div class="ps-info-group">
-        <label class="ps-info-label" data-test-selector="visit-date-lbl">
+      <div class="ps-info-group test-visit-date">
+        <label class="ps-info-label test-visit-date-label">
           {{#if isOutPatient}}
             {{t 'reports.form.visitDate' }}:
           {{else}}
             {{t 'reports.form.admissionDate' }}:
           {{/if}}
         </label>
-        {{date-format visit.startDate format="DD/MM/YYYY"}}
+        <span class="test-visit-date-data">{{date-format visit.startDate format="DD/MM/YYYY"}}</span>
       </div>
 
       {{#if isOutPatient}}
 
         {{#if visit.procedures}}
-          <div class="ps-info-group">
-            <label class="ps-info-label">{{t 'reports.form.procedures' }}</label>
+          <div class="ps-info-group test-opd-procedure">
+            <label class="ps-info-label test-opd-procedure-label">{{t 'reports.form.procedures' }}</label>
             <ul>
               {{#each visit.procedures as |item|}}
-                <li>{{item.description}}</li>
+                <li class="test-opd-procedure-data">{{item.description}}</li>
               {{/each}}
             </ul>
           </div>
         {{/if}}
 
         {{#if visit.labs}}
-          <div class="ps-info-group">
-            <label class="ps-info-label">{{t 'reports.form.labs' }}</label>
+          <div class="ps-info-group test-labs">
+            <label class="ps-info-label test-labs-label">{{t 'reports.form.labs' }}</label>
             <ul>
               {{#each visit.labs as |item|}}
-                <li>{{item.labType.name}}-{{item.result}} ({{item.status}})</li>
+                <li class="test-labs-data">{{item.labType.name}}-{{item.result}} ({{item.status}})</li>
               {{/each}}
             </ul>
           </div>
         {{/if}}
 
         {{#if visit.imaging}}
-          <div class="ps-info-group">
-            <label class="ps-info-label">{{t 'reports.form.images' }}</label>
+          <div class="ps-info-group test-images">
+            <label class="ps-info-label test-images-label">{{t 'reports.form.images' }}</label>
             <ul>
               {{#each visit.imaging as |item|}}
-                <li>{{item.imagingType.name}}-{{item.result}} ({{item.status}})</li>
+                <li class="test-images-data">{{item.imagingType.name}}-{{item.result}} ({{item.status}})</li>
               {{/each}}
             </ul>
           </div>
         {{/if}}
 
         {{#if visit.medication}}
-          <div class="ps-info-group">
-            <label class="ps-info-label">{{t 'reports.form.medications' }}</label>
+          <div class="ps-info-group test-medication">
+            <label class="ps-info-label test-medication-label">{{t 'reports.form.medications' }}</label>
             <ul>
               {{#each visit.medication as |medication|}}
-                <li>{{medication.medicationName}} - {{medication.prescription}} ({{medication.status}})</li>
+                <li class="test-medication-data">{{medication.medicationName}} - {{medication.prescription}} ({{medication.status}})</li>
               {{/each}}
             </ul>
           </div>
         {{/if}}
 
         {{#if nextAppointments}}
-          <div class="ps-info-group">
-            <label class="ps-info-label">{{t 'reports.form.nextAppointments' }}</label>
+          <div class="ps-info-group test-appointment">
+            <label class="ps-info-label test-appointment-label">{{t 'reports.form.nextAppointments' }}</label>
             <ul>
               {{#each nextAppointments as |appointment|}}
-                <li>
+                <li class="test-appointment-data">
                   {{date-format appointment.startDate format="DD/MM/YYYY hh:mm a"}}
                   {{#if appointment.appointmentType}}
                     (<b>{{appointment.appointmentType}}</b>)
@@ -106,29 +106,29 @@
         {{/if}}
 
         {{#if currentOperativePlan}}
-          <div class="ps-info-group">
-            <label class="ps-info-label">{{t 'reports.form.operativePlan.title' }}</label>
+          <div class="ps-info-group test-operative-plan">
+            <label class="ps-info-label test-operative-plan-label">{{t 'reports.form.operativePlan.title' }}</label>
             <ul>
               {{#if currentOperativePlan.operationDescription}}
                 <li>
-                  <p><b>{{t 'reports.form.operativePlan.description' }}:</b><br>
-                    {{currentOperativePlan.operationDescription}}</p>
+                  <p><b class="test-operative-plan-description-label">{{t 'reports.form.operativePlan.description' }}:</b><br>
+                    <span class="test-operative-plan-description-data">{{currentOperativePlan.operationDescription}}</span></p>
                 </li>
               {{/if}}
 
               <li>
-                <p><b>{{t 'reports.form.operativePlan.procedures' }}:</b></p>
+                <p><b class="test-operative-plan-procedures-label">{{t 'reports.form.operativePlan.procedures' }}:</b></p>
                 <ul>
                   {{#each currentOperativePlan.procedures as |procedure|}}
-                    <li>{{procedure.description}}</li>
+                    <li class="test-operative-plan-procedures-description">{{procedure.description}}</li>
                   {{/each}}
                 </ul>
               </li>
 
               {{#if currentOperativePlan.admissionInstructions}}
                 <li>
-                  <p><b>{{t 'reports.form.operativePlan.instructions' }}:</b><br>
-                    {{currentOperativePlan.admissionInstructions}}</p>
+                  <p><b class="test-operative-plan-instructions-label">{{t 'reports.form.operativePlan.instructions' }}:</b><br>
+                    <span class="test-operative-plan-instructions-data">{{currentOperativePlan.admissionInstructions}}</span></p>
                 </li>
               {{/if}}
             </ul>
@@ -139,9 +139,9 @@
 
       {{else}}
 
-        <div class="ps-info-group">
-          <label class="ps-info-label" data-test-selector="discharge-date-lbl">{{t 'reports.form.dischargeDate' }}: </label>
-          {{date-format model.reportDate format="DD/MM/YYYY"}}
+        <div class="ps-info-group test-visit-date">
+          <label class="ps-info-label test-visit-discharge-date-label">{{t 'reports.form.dischargeDate' }}: </label>
+          <span class="test-visit-discharge-date-data">{{date-format model.reportDate format="DD/MM/YYYY"}}</span>
         </div>
 
         <div class="row">
