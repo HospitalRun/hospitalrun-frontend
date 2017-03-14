@@ -36,7 +36,9 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       return [buttonProps];
     }
   }),
+
   noReport: false,
+
   canAddAppointment: computed('model.isNew', function() {
     return (!this.get('model.isNew') && this.currentUserCan('add_appointment'));
   }),
@@ -65,9 +67,9 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     return this.currentUserCan('add_vitals');
   }.property(),
 
-  canAddReport: function() {
+  canAddReport: computed('hasReport', function() {
     return this.currentUserCan('add_report') && !this.get('hasReport');
-  }.property('hasReport'),
+  }),
 
   canDeleteImaging: function() {
     return this.currentUserCan('delete_imaging');
@@ -406,7 +408,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     },
 
     editReport(report) {
-      report.set('returnToVisit', this.get('model.id'));
+      set(report, 'returnToVisit', get(this, 'model.id'));
       this.transitionToRoute('reports.edit', report);
     },
 

@@ -23,7 +23,7 @@ const visitData = {
     APPOINTMENT_END_DATE: moment().add(8, 'days').format('l h:mm A')
   },
   admission: {
-    // admission visit data goes here
+    NOTE_CONTENT: 'Patient notes are entered here'
   }
 };
 
@@ -41,9 +41,9 @@ test('Add admission visit', function(assert) {
   runWithPouchDump('patient', function() {
     authenticateUser();
     addVisit(assert);
-    addDischargeData(assert);
+    addAdmissionData(assert);
     newReport(assert, 'Discharge');
-    dischargeReport(assert);
+    checkDischargeReport(assert);
     saveReport(assert, 'Discharge');
     editReport(assert, 'Discharge');
   });
@@ -55,7 +55,7 @@ test('Add OPD visit', function(assert) {
     addVisit(assert, 'Clinic');
     addOutpatientData(assert);
     newReport(assert, 'OPD');
-    checkOutpatientData(assert);
+    checkOPDReport(assert);
     saveReport(assert, 'OPD');
     editReport(assert, 'OPD');
   });
@@ -333,9 +333,23 @@ function addOutpatientData(assert) {
   updateVisitData(assert, 'Appointment Saved');
 }
 
-function addDischargeData(assert) {
-  // add discharge report data elements here
-  assert.equal(1, 1);
+function addAdmissionData(assert) {
+  andThen(function() {
+    click('[data-test-selector=notes-tab]');
+    waitToAppear('[data-test-selector=new-note-btn]');
+    click('[data-test-selector=new-note-btn]');
+  });
+  andThen(() => {
+    assert.equal(find('.modal-title').text(), 'New Note for Joe Bagadonuts', 'New Note dialog displays');
+    fillIn('.test-note-content textarea', visitData.admission.NOTE_CONTENT);
+    click('.modal-footer button:contains(Add)');
+  });
+  andThen(function() {
+    waitToDisappear('.modal-dialog');
+  });
+  andThen(() => {
+    assert.ok(currentURL().indexOf('visits/edit/') > -1, 'Returns back to visit URL');
+  });
 }
 
 function newReport(assert, type) {
@@ -352,7 +366,7 @@ function newReport(assert, type) {
   });
 }
 
-function checkOutpatientData(assert) {
+function checkOPDReport(assert) {
   andThen(() => {
     assert.equal(find('.patient-id .ps-info-data').text(), 'P00001', 'Patient ID is displayed');
     assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Patient First Name & Last Name is displayed');
@@ -367,10 +381,8 @@ function checkOutpatientData(assert) {
     findWithAssert('.test-images .test-images-label:contains(Images)');
     assert.ok(find('.test-images .test-images-data').text().indexOf(visitData.outPatient.IMAGING_TYPE) > -1, 'Image request is displayed');
     findWithAssert('.test-medication .test-medication-label:contains(Medications)');
-    let medicationName = visitData.outPatient.MEDICATION_INPUT.slice(0, 30); // Medication name earlier filled-in contains other info not displayed in test, so only actual medication name is extracted
+    let medicationName = visitData.outPatient.MEDICATION_INPUT.slice(0, 30); // Medication name earlier filled-in contains other info not displayed in the report, so only actual medication name is extracted
     assert.ok(find('.test-medication .test-medication-data').text().indexOf(medicationName) > -1, 'Medication request is displayed');
-    // findWithAssert('.test-appointment .test-appointment-label:contains(Next Appointments)');
-    // assert.ok(find('.test-appointment .test-appointment-data').text().indexOf(visitData.outPatient.APPOINTMENT_START_DATE) > -1, 'Next Appointment is displayed' + visitData.outPatient.APPOINTMENT_START_DATE);
     findWithAssert('.test-operative-plan .test-operative-plan-label:contains(Operative Plan)');
     findWithAssert('.test-operative-plan .test-operative-plan-description-label:contains(Operation Description:)');
     assert.equal(find('.test-operative-plan .test-operative-plan-description-data').text(), visitData.outPatient.OPERATION_DESCRIPTION);
@@ -381,10 +393,12 @@ function checkOutpatientData(assert) {
   });
 }
 
-function dischargeReport(assert) {
+function checkDischargeReport(assert) {
   andThen(function() {
     assert.equal(find('.test-visit-date .test-visit-date-label').text().trim(), 'Admission Date:', 'Visit date label displays as admission');
     assert.equal(find('.test-visit-date .test-visit-discharge-date-label').text().trim(), 'Discharge Date:', 'Discharge date label displays');
+    findWithAssert('.test-notes .test-notes-label:contains(Notes)');
+    assert.ok(find('.test-notes .test-notes-data').text().indexOf(visitData.admission.NOTE_CONTENT) > -1, 'Notes are displayed');
   });
   andThen(function() {
     click('.panel-footer button:contains(Add)');

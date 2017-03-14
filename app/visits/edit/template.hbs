@@ -167,7 +167,7 @@
             </div>
             <div class="panel-footer">
               {{#if canAddNote}}
-                <button class="btn btn-primary align-right" {{action "showAddPatientNote" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'buttons.newNote' }}</button>
+                <button class="btn btn-primary align-right" data-test-selector="new-note-btn" {{action "showAddPatientNote" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'buttons.newNote' }}</button>
               {{/if}}
             </div>
           </div>
