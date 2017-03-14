@@ -82,12 +82,10 @@ export default Ember.Mixin.create(PatientVisits, {
       patientDiagnoses.addObject(newDiagnosis);
       let patient = this.get('model.patient');
       patient.save().then(() => {
-        this.send('update', true);
-        this.send('closeModal');
+        this.silentUpdate('closeModal');
       });
     } else {
-      this.send('update', true);
-      this.send('closeModal');
+      this.silentUpdate('closeModal');
     }
   },
 

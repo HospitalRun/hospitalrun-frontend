@@ -1,41 +1,28 @@
+---
 language: node_js
 node_js:
 - '4'
+
+branches:
+  only:
+    - "master"
+
 sudo: false
-cache: directories - $HOME/.npm - $HOME/.cache
+
+cache:
+  directories:
+    - $HOME/.npm
+    - $HOME/.cache # includes bowers cache
+
 before_install:
-- npm config set spin false
-- npm install -g bower
-- npm install -g ember
-- bower --version
-- npm install phantomjs-prebuilt
-- node_modules/phantomjs-prebuilt/bin/phantomjs --version
+  - npm config set spin false
+  - npm install -g bower phantomjs-prebuilt
+  - bower --version
+  - phantomjs --version
+
 install:
 - npm install
 - bower install
-script:
-- npm test
-deploy:
-  provider: npm
-  email: devops@ehealthafrica.org
-  api_key:
-    secure: G13Wfjt+5lzPmc/4M4669Q+htK389oglI/JDTYDDH1v0ZaWOtvAc2Zvu2BvMGy9IMJ5f66ICJLxcWIg0gP2SMxvkQgUYaGFkVCRbaAwxfhcbSLJ2H/AGaanV1qRFeLQQRmNXg/yK0tW+biOsLXKvDXqazaueh/hP64uJmzAr3L1Y26q6QjL2iMEczEUi9Z02Gl5u5rCWsdM8c0oZ872FR8QWkSR4fb6vaKIyItfcUCN0nbJ4RhIncCCJLja7NHbeaxGh9rXVaO6F6oTiuuuJj863ATSBO670dmWGbscZQWxIRJPko3IAn6dQD4Q9FaJZR1pyS2+pkGSuGbjdYjMfj0vh73Hf6wmCwve/i9cA8du0qDEKqMetdsMIAS4XKoR2jQyWCivGOhOHizjoH7xezyj9K469IEugTFoyENoASW3ADYL3YGFpKn0Xs2i0MuSS8MGmSLw6QfEDzLvmxJeGnNQFXKtXyOOJlmyoTcIcviMr26jOmWINBWzNFp6B1wqcWpPy2TJyoQFL8Fnd4uadc5i4mxv9hPKLbbpV72+EuWiPqNX+rvgMxuFfMogIVB6R7GIMrk+MVmLlr9O4jYcsNcEW5Pw5rcxw/OCSw/mReMNFyRWhscpgpWcYwOzQHXMFKusSzITJLNjtwL40JH4i90U2jDwEZTUXT8E/IJVuYmY=
-  on:
-    tags: true
-    repo: eHealthAfrica/hospitalrun-frontend
-    branch: master
-  on:
-    tags: true
-    repo: eHealthAfrica/hospitalrun-frontend
-    branch: develop
-  on:
-    tags: true
-    repo: eHealthAfrica/hospitalrun-frontend
-    branch: stage
-  on:
-    tags: true
-    repo: eHealthAfrica/hospitalrun-frontend
-    branch: eHA/Polyclinic
 
-after_deploy:
-  - script/server_build.sh
+script:
+  - travis_retry npm test

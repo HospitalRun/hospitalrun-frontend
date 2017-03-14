@@ -3,22 +3,22 @@
         {{#em-form model=model submitButton=false}}
           <div class="row">
               {{em-select class="col-sm-3 form-input-group"
-                label=(t "labels.status")
+                label=(t "models.appointment.labels.status")
                 property="selectedStatus"
                 content=appointmentStatusesWithEmpty
               }}
               {{em-select class="col-sm-3 form-input-group"
-                label=(t "labels.type")
+                label=(t "models.appointment.labels.type")
                 property="selectedAppointmentType"
                 content=visitTypesWithEmpty
               }}
               {{em-select class="col-sm-3 form-input-group"
-                label=(t 'labels.with')
+                label=(t 'models.appointment.labels.provider')
                 property="selectedProvider"
                 content=physicianList
               }}
               {{em-select class="col-sm-3 form-input-group"
-                label=(t 'labels.location')
+                label=(t 'models.appointment.labels.location')
                 property="selectedLocation"
                 content=locationList
               }}

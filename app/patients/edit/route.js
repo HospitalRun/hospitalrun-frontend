@@ -1,12 +1,11 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import Ember from 'ember';
-import PatientId from 'hospitalrun/mixins/patient-id';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import { translationMacro as t } from 'ember-i18n';
 
-export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, PatientNotes, {
+export default AbstractEditRoute.extend(PatientVisits, PouchDbMixin, PatientNotes, {
   customForms: Ember.inject.service(),
   editTitle: t('patients.titles.edit'),
   modelName: 'patient',
@@ -59,12 +58,7 @@ export default AbstractEditRoute.extend(PatientId, PatientVisits, PouchDbMixin, 
     let newPatientData = {
       customForms: Ember.Object.create()
     };
-    return customForms.setDefaultCustomForms(['patient', 'socialwork'], newPatientData).then(() => {
-      return this.generateFriendlyId().then(function(friendlyId) {
-        newPatientData.friendlyId = friendlyId;
-        return newPatientData;
-      });
-    });
+    return customForms.setDefaultCustomForms(['patient', 'socialwork'], newPatientData);
   },
 
   setupController(controller, model) {

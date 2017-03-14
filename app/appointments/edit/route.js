@@ -1,5 +1,5 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import AddToPatient from 'hospitalrun/mixins/add-to-patient-route';
+import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import Ember from 'ember';
 import moment from 'moment';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
@@ -13,7 +13,8 @@ const {
   }
 } = Ember;
 
-export default AbstractEditRoute.extend(AddToPatient, PatientListRoute, {
+export default AbstractEditRoute.extend(AddToPatientRoute, PatientListRoute, {
+
   editTitle: t('appointments.editTitle'),
   modelName: 'appointment',
   newButtonText: t('appointments.buttons.newButton'),
