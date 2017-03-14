@@ -201,7 +201,7 @@
             </div>
             <div class="panel-footer">
               {{#if canAddProcedure}}
-                <button class="btn btn-primary align-right" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.newProcedure' }}</button>
+                <button class="btn btn-primary align-right" data-test-selector="new-procedure-btn" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.newProcedure' }}</button>
               {{/if}}
             </div>
           </div>
@@ -268,7 +268,7 @@
 
               <div class="panel-heading">
                 {{#if canAddReport}}
-                  <button class="btn btn-primary align-right" {{action "newReport"}}>
+                  <button class="btn btn-primary align-right" data-test-selector="report-btn" {{action "newReport"}}>
                     {{#if model.outPatient}}
                       {{t 'patients.buttons.newOPDReport'}}
                     {{else}}
@@ -294,7 +294,7 @@
                     <td>{{report.modifiedBy}}</td>
                     <td>{{report.reportType}}</td>
                     <td>
-                      <button class="btn btn-default neutral" {{action "editReport" report}}>{{t 'labels.edit'}}</button>
+                      <button class="btn btn-default neutral" data-test-selector="edit-report-btn" {{action "editReport" report}}>{{t 'labels.edit'}}</button>
                     </td>
                   </tr>
                 </table>
