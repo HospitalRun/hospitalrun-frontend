@@ -116,15 +116,15 @@ test('actions.update exception message', function(assert) {
   let controller = this.subject();
 
   controller.beforeUpdate = function() {
-    throw 'Test';
+    throw new Error('Test');
   };
   controller.displayAlert = function stub(title, message) {
-    alertTitle = title;
-    alertMessage = message;
+    alertTitle = title.toString();
+    alertMessage = message.toString();
   };
 
   controller.send('update');
 
   assert.equal(alertTitle, 'Error!!!!');
-  assert.equal(alertMessage, 'An error occurred while attempting to save: &quot;Test&quot;');
+  assert.equal(alertMessage, 'An error occurred while attempting to save: Test');
 });

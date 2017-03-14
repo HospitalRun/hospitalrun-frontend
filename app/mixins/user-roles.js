@@ -24,7 +24,7 @@ export default Ember.Mixin.create({
 
   findUserRole(name) {
     return this.userRoles.find(function(element) {
-      if element.name == name) {
+      if (element.name == name) {
         return element;
       }
     });
