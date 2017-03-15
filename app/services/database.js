@@ -11,42 +11,53 @@ const {
 export default Ember.Service.extend({
   config: Ember.inject.service(),
   mainDB: null, // Server DB
+  usersDB: null, // local users database for standAlone mode
   oauthHeaders: null,
   setMainDB: false,
 
   setup(configs) {
     PouchDB.plugin(List);
-    return this.createDB(configs)
-      .then((db) => {
-        this.set('mainDB', db);
-        this.set('setMainDB', true);
-      });
+    let pouchOptions = this._getOptions(configs);
+    return this.createDB(configs, pouchOptions).then((db) => {
+      this.set('mainDB', db);
+      this.set('setMainDB', true);
+      if (this.get('config.standAlone')) {
+        let usersDB = new PouchDB('_users', pouchOptions);
+        return usersDB.info().then(() => {
+          this.set('usersDB', usersDB);
+        });
+      }
+    });
   },
 
-  createDB(configs) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      let pouchOptions = {};
-      if (configs && configs.config_use_google_auth) {
-        pouchOptions.ajax = {
-          timeout: 30000
+  _getOptions(configs) {
+    let pouchOptions = {};
+    if (configs && configs.config_use_google_auth) {
+      pouchOptions.ajax = {
+        timeout: 30000
+      };
+      // If we don't have the proper credentials, throw error to force login.
+      if (Ember.isEmpty(configs.config_consumer_key)
+        || Ember.isEmpty(configs.config_consumer_secret)
+        || Ember.isEmpty(configs.config_oauth_token)
+        || Ember.isEmpty(configs.config_token_secret)) {
+        throw Error('login required');
+      } else {
+        let headers = {
+          'x-oauth-consumer-secret': configs.config_consumer_secret,
+          'x-oauth-consumer-key': configs.config_consumer_key,
+          'x-oauth-token-secret': configs.config_token_secret,
+          'x-oauth-token': configs.config_oauth_token
         };
-        // If we don't have the proper credentials, throw error to force login.
-        if (Ember.isEmpty(configs.config_consumer_key)
-          || Ember.isEmpty(configs.config_consumer_secret)
-          || Ember.isEmpty(configs.config_oauth_token)
-          || Ember.isEmpty(configs.config_token_secret)) {
-          throw Error('login required');
-        } else {
-          let headers = {
-            'x-oauth-consumer-secret': configs.config_consumer_secret,
-            'x-oauth-consumer-key': configs.config_consumer_key,
-            'x-oauth-token-secret': configs.config_token_secret,
-            'x-oauth-token': configs.config_oauth_token
-          };
-          this.set('oauthHeaders', headers);
-          pouchOptions.ajax.headers = headers;
-        }
+        this.set('oauthHeaders', headers);
+        pouchOptions.ajax.headers = headers;
       }
+    }
+    return pouchOptions;
+  },
+
+  createDB(configs, pouchOptions) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
       let url = `${document.location.protocol}//${document.location.host}/db/main`;
 
       this._createRemoteDB(url, pouchOptions)
