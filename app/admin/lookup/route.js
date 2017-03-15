@@ -4,7 +4,7 @@ export default AbstractIndexRoute.extend({
   hideNewButton: true,
   pageTitle: t('admin.lookup.pageTitle'),
   model() {
-    return this.store.findAll('lookup');
+    return this.store.findAll('lookup').catch((error) => this.send('error', error));
   },
 
   afterModel(model) {
@@ -14,9 +14,6 @@ export default AbstractIndexRoute.extend({
   actions: {
     deleteValue(value) {
       this.controller.send('deleteValue', value);
-    },
-    refreshLookupLists() {
-      this.refresh();
     }
   }
 });

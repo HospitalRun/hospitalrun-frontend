@@ -23,7 +23,6 @@ export default AbstractModel.extend({
   procedures: DS.attr('operative-procedures', { defaultValue: defaultProcedures }),
   status: DS.attr('string', { defaultValue: PLANNED_STATUS }),
   surgeon: DS.attr('string'),
-  surgeryDate: DS.attr('date'),
 
   // Associations
   diagnoses: DS.hasMany('diagnosis'),

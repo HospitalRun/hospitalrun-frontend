@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import BillingCategories from 'hospitalrun/mixins/billing-categories';
+import csvParse from 'npm:csv-parse';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import UnitTypes from 'hospitalrun/mixins/unit-types';
@@ -7,12 +8,13 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 import { EKMixin, keyDown } from 'ember-keyboard';
 
 const {
-  computed
+  computed, get, inject
 } = Ember;
 
 export default Ember.Controller.extend(BillingCategories, EKMixin,
   InventoryTypeList, ModalHelper, UnitTypes, VisitTypes, {
-    fileSystem: Ember.inject.service('filesystem'),
+    fileSystem: inject.service('filesystem'),
+    lookupLists: inject.service(),
 
     canEditValues: computed('model.lookupType', function() {
       let lookupType = this.get('model.lookupType');
@@ -93,6 +95,12 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
             'deliveryLocation',
             'locationsAffected' // Special use case that we need to handle
           ]
+        }
+      }, {
+        name: this.get('i18n').t('admin.lookup.incidentDepartments'),
+        value: 'incident_departments',
+        models: {
+          incident: 'department'
         }
       }, {
         defaultValues: 'defaultInventoryTypes',
@@ -291,6 +299,33 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
       return true;
     },
 
+    _importLookupList(file) {
+      let fileSystem = get(this, 'fileSystem');
+      let lookupTypeList = get(this, 'lookupTypeList');
+      let lookupValues = get(lookupTypeList, 'value');
+      fileSystem.fileToString(file).then((values) => {
+        csvParse(values, { trim: true }, (err, data) =>{
+          data.forEach((row) => {
+            let [newValue] = row;
+            if (!lookupValues.includes(newValue)) {
+              lookupValues.addObject(newValue);
+            }
+          });
+          lookupValues.sort();
+          let i18n = get(this, 'i18n');
+          let message = i18n.t('admin.lookup.alertImportListSaveMessage');
+          let title = i18n.t('admin.lookup.alertImportListSaveTitle');
+          lookupTypeList.save().then(() => {
+            let lookupLists = get(this, 'lookupLists');
+            lookupLists.resetLookupList(get(lookupTypeList, 'id'));
+            this.displayAlert(title, message);
+            this.set('importFile');
+            this.set('model.importFileName');
+          });
+        });
+      });
+    },
+
     _sortValues(a, b) {
       return Ember.compare(a.toLowerCase(), b.toLowerCase());
     },
@@ -335,45 +370,26 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
         }
       },
       importList() {
-        let fileSystem = this.get('fileSystem');
         let fileToImport = this.get('importFile');
-        let lookupTypeList = this.get('lookupTypeList');
         if (!fileToImport || !fileToImport.type) {
           this.displayAlert(
             this.get('i18n').t('admin.lookup.alertImportListTitle'),
             this.get('i18n').t('admin.lookup.alertImportListMessage')
           );
         } else {
-          fileSystem.fileToDataURL(fileToImport).then(function(fileDataUrl) {
-            let dataUrlParts = fileDataUrl.split(',');
-            lookupTypeList.setProperties({
-              _attachments: {
-                file: {
-                  content_type: fileToImport.type,
-                  data: dataUrlParts[1]
-                }
-              },
-              importFile: true
-            });
-            lookupTypeList.save().then(function() {
-              this.displayAlert(
-                this.get('i18n').t('admin.lookup.alertImportListSaveTitle'),
-                this.get('i18n').t('admin.lookup.alertImportListSaveMessage'),
-                'refreshLookupLists');
-              this.set('importFile');
-              this.set('model.importFileName');
-            }.bind(this));
-          }.bind(this));
+          this._importLookupList(fileToImport);
         }
       },
       updateList() {
         let lookupTypeList = this.get('lookupTypeList');
-        lookupTypeList.save().then(function() {
+        lookupTypeList.save().then(() => {
+          let lookupLists = get(this, 'lookupLists');
+          lookupLists.resetLookupList(get(lookupTypeList, 'id'));
           this.displayAlert(
             this.get('i18n').t('admin.lookup.alertImportListUpdateTitle'),
             this.get('i18n').t('admin.lookup.alertImportListUpdateMessage')
           );
-        }.bind(this));
+        });
       },
       updateValue(valueObject) {
         let updateList = false;
@@ -394,7 +410,7 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
           values.addObject(value);
           values = values.sort(this._sortValues);
           lookupTypeList.set('value', values);
-          lookupTypeList.save();
+          this.send('updateList');
         }
       }
     }

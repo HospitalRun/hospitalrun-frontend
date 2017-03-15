@@ -129,6 +129,11 @@
             {{t 'visits.navigation.charges'}}
           </a>
         </li>
+        <li role="presentation">
+          <a href="#reports" role="tab" data-toggle="pill" data-test-selector="reports-tab">
+            {{t 'visits.navigation.reports'}}
+          </a>
+        </li>
       </ul>
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane" id="visit-notes">
@@ -162,7 +167,7 @@
             </div>
             <div class="panel-footer">
               {{#if canAddNote}}
-                <button class="btn btn-primary align-right" {{action "showAddPatientNote" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'buttons.newNote' }}</button>
+                <button class="btn btn-primary align-right" data-test-selector="new-note-btn" {{action "showAddPatientNote" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'buttons.newNote' }}</button>
               {{/if}}
             </div>
           </div>
@@ -196,7 +201,7 @@
             </div>
             <div class="panel-footer">
               {{#if canAddProcedure}}
-                <button class="btn btn-primary align-right" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.newProcedure' }}</button>
+                <button class="btn btn-primary align-right" data-test-selector="new-procedure-btn" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.newProcedure' }}</button>
               {{/if}}
             </div>
           </div>
@@ -256,6 +261,48 @@
           {{#em-form model=this submitButton=false }}
             {{partial 'item-charges'}}
           {{/em-form}}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="reports">
+          <div class="panel detail-section">
+            {{#if noReport}}
+
+              <div class="panel-heading">
+                {{#if canAddReport}}
+                  <button class="btn btn-primary align-right" data-test-selector="report-btn" {{action "newReport"}}>
+                    {{#if model.outPatient}}
+                      {{t 'patients.buttons.newOPDReport'}}
+                    {{else}}
+                      {{t 'patients.buttons.newDischargeReport'}}
+                    {{/if}}
+                  </button>
+                {{/if}}
+              </div>
+
+            {{else}}
+
+              <div class="panel-body">
+                <table class="table">
+                  <tr class="table-header">
+                    <th>{{t 'labels.date'}}</th>
+                    <th>{{t 'visits.labels.authoredBy'}}</th>
+                    <th>{{t 'visits.labels.reportType'}}</th>
+                    <th>{{t 'labels.actions'}}</th>
+                  </tr>
+
+                  <tr>
+                    <td>{{date-format report.reportDate}}</td>
+                    <td>{{report.modifiedBy}}</td>
+                    <td>{{report.reportType}}</td>
+                    <td>
+                      <button class="btn btn-default neutral" data-test-selector="edit-report-btn" {{action "editReport" report}}>{{t 'labels.edit'}}</button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+            {{/if}}
+
+          </div>
         </div>
       </div>
     {{/unless}}

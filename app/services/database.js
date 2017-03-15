@@ -2,13 +2,15 @@ import Ember from 'ember';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
 import List from 'npm:pouchdb-list';
 import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
-import PouchAdapterUtils from 'hospitalrun/mixins/pouch-adapter-utils';
+import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
+import enviroment from './../config/environment';
 
 const {
+  get,
   isEmpty
 } = Ember;
 
-export default Ember.Service.extend(PouchAdapterUtils, {
+export default Ember.Service.extend({
   config: Ember.inject.service(),
   mainDB: null, // Server DB
   oauthHeaders: null,
@@ -20,7 +22,45 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       .then((db) => {
         this.set('mainDB', db);
         this.set('setMainDB', true);
+      })
+      .then(() => {
+        this.createOptionHeader([enviroment.hospitalInfoDoc]);
       });
+  },
+
+  createOptionHeader(docs) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      let mainDB = get(this, 'mainDB');
+      let ids = docs.map((doc) => {
+        return doc._id;
+      });
+      return mainDB.allDocs({ keys: ids })
+        .then((res) => {
+          if (res.rows) {
+            let docsToCreate = res.rows.filter((row) => {
+              return (row.error && row.error === 'not_found') || (row.value && row.value.deleted);
+            }).map((row) => {
+              return docs.find((doc) => {
+                if (doc._id === row.key) {
+                  if (row.value && row.value.deleted && row.value.rev !== doc._rev) {
+                    doc._rev = row.value.rev;
+                  }
+                  return true;
+                }
+              });
+            });
+            if (docsToCreate.length) {
+              return mainDB.bulkDocs(docsToCreate);
+            }
+          }
+        })
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   },
 
   createDB(configs) {
@@ -68,7 +108,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       if (mapReduce) {
         mainDB.query(mapReduce, queryParams, (err, response) => {
           if (err) {
-            this._pouchError(reject)(err);
+            reject(this.handleErrorResponse(err));
           } else {
             response.rows = this._mapPouchData(response.rows);
             resolve(response);
@@ -77,7 +117,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       } else {
         mainDB.allDocs(queryParams, (err, response) => {
           if (err) {
-            this._pouchError(reject)(err);
+            reject(this.handleErrorResponse(err));
           } else {
             response.rows = this._mapPouchData(response.rows);
             resolve(response);
@@ -104,7 +144,7 @@ export default Ember.Service.extend(PouchAdapterUtils, {
       let mainDB = this.get('mainDB');
       mainDB.get(docId, (err, doc) => {
         if (err) {
-          this._pouchError(reject)(err);
+          reject(this.handleErrorResponse(err));
         } else {
           resolve(doc);
         }
@@ -166,6 +206,25 @@ export default Ember.Service.extend(PouchAdapterUtils, {
         });
       }, reject);
     });
+  },
+
+  getDBInfo() {
+    let mainDB = this.get('mainDB');
+    return mainDB.info();
+  },
+
+  handleErrorResponse(err) {
+    if (!err.status) {
+      if (err.errors && err.errors.length > 0) {
+        err.status = parseInt(err.errors[0].status);
+      }
+    }
+    if (err.status === 401 || err.status === 403) {
+      let detailedMessage = JSON.stringify(err, null, 2);
+      return new UnauthorizedError(err, detailedMessage);
+    } else {
+      return err;
+    }
   },
 
   _mapPouchData(rows) {
