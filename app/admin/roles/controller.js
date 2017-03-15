@@ -144,8 +144,10 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
 
   actions: {
     selectRole(role) {
-      let selectedRoleName = $('option:selected', role).text().trim();
       let roleToUpdate = this.get('model').findBy('id', role.value);
+      let namedRoles = this.get('namedRoles');
+      let selectedRole = namedRoles.findBy('id', role.value);
+      let selectedRoleName = Ember.get(selectedRole, 'name');
       this.set('roleId', role.value);
       this.set('currentRole', selectedRoleName);
       this.set('roleToUpdate', roleToUpdate);
