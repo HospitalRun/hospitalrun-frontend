@@ -7,7 +7,7 @@ export default Ember.Mixin.create({
     {
       title: 'Inventory',
       iconClass: 'octicon-package',
-      route: 'inventory',
+      route: 'inventory.index',
       capability: 'inventory',
       subnav: [
         {
@@ -40,13 +40,13 @@ export default Ember.Mixin.create({
     {
       title: 'Patients',
       iconClass: 'octicon-organization',
-      route: 'patients',
+      route: 'patients.index',
       capability: 'patients',
       subnav: [
         {
           title: 'Patient Listing',
           iconClass: 'octicon-chevron-right',
-          route: 'patients',
+          route: 'patients.index',
           capability: 'patients'
         },
         {
