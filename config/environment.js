@@ -4,13 +4,8 @@
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'hospitalrun',
-<<<<<<< HEAD
     environment: environment,
     rootURL: process.env.EMBER_CLI_ELECTRON ? null : '/',
-=======
-    environment,
-    rootURL: '/',
->>>>>>> master
     locationType: 'hash', // Using hash location type because it is more friendly for offline.
     EmberENV: {
       FEATURES: {
