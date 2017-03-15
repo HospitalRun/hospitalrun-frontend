@@ -1,9 +1,11 @@
 import Ember from 'ember';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import VisitStatus from 'hospitalrun/utils/visit-statuses';
-
+import DS from 'ember-data';
+import moment from 'moment';
 const {
-  isEmpty
+  isEmpty,
+  get
 } = Ember;
 
 export default Ember.Mixin.create(PouchDbMixin, {
@@ -18,6 +20,63 @@ export default Ember.Mixin.create(PouchDbMixin, {
       mapReduce: 'visit_by_patient',
       debug: true
     });
+  },
+
+  getPatientFutureAppointment(visit, outPatient) {
+    let patientId = get(visit, 'patient.id');
+    let visitDate = get(visit, 'startDate');
+    let maxValue = get(this, 'maxValue');
+    let promise = this.store.query('appointment', {
+      options: {
+        startkey: [patientId, null, null, 'appointment_'],
+        endkey: [patientId, maxValue, maxValue, maxValue]
+      },
+      mapReduce: 'appointments_by_patient'
+    }).then(function(result) {
+      let futureAppointments = result.filter(function(data) {
+        let startDate = get(data, 'startDate');
+        return startDate && moment(startDate).isAfter(moment(visitDate), 'day');
+      }).sortBy('startDate');
+      if (!futureAppointments.length) {
+        return null;
+      }
+      if (!outPatient) {
+        let [appointment] = futureAppointments;
+        return appointment;
+      } else {
+        return futureAppointments.slice(0, 3);
+      }
+
+    });
+    return (outPatient) ? DS.PromiseArray.create({ promise }) : DS.PromiseObject.create({ promise });
+  },
+
+  _getVisitCollection(visits, name) {
+    let returnList = [];
+    if (!Ember.isEmpty(visits)) {
+      visits.forEach(function(visit) {
+        get(visit, name).then(function(items) {
+          returnList.addObjects(items);
+        });
+      });
+    }
+    return returnList;
+  },
+
+  _getPatientProcedures(operationReports, visits) {
+    let patientProcedures = this._getVisitCollection(visits, 'procedures');
+    operationReports.forEach((report) => {
+      let reportedProcedures = get(report, 'procedures');
+      let surgeryDate = get(report, 'surgeryDate');
+      reportedProcedures.forEach((procedure) => {
+        patientProcedures.addObject({
+          description: get(procedure, 'description'),
+          procedureDate: surgeryDate,
+          report
+        });
+      });
+    });
+    return patientProcedures;
   },
 
   checkoutVisit(visit, status) {

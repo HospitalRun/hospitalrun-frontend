@@ -74,5 +74,18 @@ module.exports = function(environment) {
     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source'
   };
 
+  ENV.hospitalInfoDoc = {
+    "_id": "option_2_print_header",
+    "_rev": "1-4457555eacb405267c6d3b7a53d8521d",
+    "data": {
+      "value": {
+        "facilityName": "Beit CURE International Hospital",
+        "headerLine1": "PO Box 31236",
+        "headerLine2": "Blantyre 3",
+        "headerLine3": "+265 (0) 1 871 900 / +265 (0) 1 875 015 /+265 (0) 1 873 694 / +265 (0) 999 505 212",
+        "logoURL": "https://curehospital.mw/wp-content/uploads/4/2012/11/CURE-Malawi-Logo_rgb_280_89.jpg"
+      }
+    }
+  };
   return ENV;
 };

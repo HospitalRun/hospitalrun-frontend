@@ -477,6 +477,12 @@ let designDocs = [{
     emit([doc.data.patient, startDate, endDate, doc.data.visitType, doc._id]);`
   ),
   version: 4
+}, {
+  name: 'report_by_visit',
+  function: generateView('report',
+    'emit(doc.data.visit);'
+  ),
+  version: 1
 }];
 
 export default function(db, runningTest, testDumpFile) {

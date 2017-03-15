@@ -70,6 +70,7 @@ export default AbstractModel.extend({
   status: DS.attr('string'),
   visitType: DS.attr(),
   vitals: DS.hasMany('vital', { async: true }),
+  reports: DS.hasMany('report', { async: true }),
 
   diagnosisList: computed('diagnoses.[]', function() {
     let diagnoses = this.get('diagnoses');
