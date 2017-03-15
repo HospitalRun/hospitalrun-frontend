@@ -57,25 +57,27 @@ test('visiting /admin/roles', function(assert) {
 });
 
 PREDEFINED_USER_ROLES.forEach((role) => {
-  test(`Testing User Role homescreen for ${role.name}`, (assert) =>{
-    runWithPouchDump('default', () => {
-      authenticateUser({
-        roles: role.roles,
-        role: role.name,
-        authenticated: {
-          role: role.name
-        }
-      });
-      visit('/');
-      waitToAppear('.view-current-title');
-      andThen(() => {
-        let defaultURL = role.defaultRoute.replace('.index', '');
-        if (defaultURL === 'users') {
-          defaultURL = 'admin/users';
-        }
-        assert.equal(currentURL(), `/${defaultURL}`, `Correct homepage displays for role ${role.name}`);
-        invalidateSession();
+  if (role.name !== 'User Administrator') {
+    test(`Testing User Role homescreen for ${role.name}`, (assert) =>{
+      runWithPouchDump('default', () => {
+        authenticateUser({
+          roles: role.roles,
+          role: role.name,
+          authenticated: {
+            role: role.name
+          }
+        });
+        visit('/');
+        waitToAppear('.view-current-title');
+        andThen(() => {
+          let defaultURL = role.defaultRoute.replace('.index', '');
+          if (defaultURL === 'users') {
+            defaultURL = 'admin/users';
+          }
+          assert.equal(currentURL(), `/${defaultURL}`, `Correct homepage displays for role ${role.name}`);
+          invalidateSession();
+        });
       });
     });
-  });
+  }
 });
