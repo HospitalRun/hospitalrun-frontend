@@ -5,6 +5,7 @@ import UserSession from 'hospitalrun/mixins/user-session';
 const { get } = Ember;
 
 export default DS.RESTAdapter.extend(UserSession, {
+  config: Ember.inject.service(),
   database: Ember.inject.service(),
   session: Ember.inject.service(),
   endpoint: '/db/_users/',
@@ -84,11 +85,33 @@ export default DS.RESTAdapter.extend(UserSession, {
   @returns {Promise} promise
   */
   find(store, type, id) {
-    let findUrl = this.endpoint + id;
+    if (this.get('config.standAlone') ===  true) {
+      let userKey = 'org.couchdb.user:' + id;
+      return this._offlineFind(userKey);
+    } else {
+      let findUrl = this.endpoint + id;
+      return new Ember.RSVP.Promise((resolve, reject) => {
+        this.ajax(findUrl, 'GET').then(resolve, (error) => {
+          let database = get(this, 'database');
+          reject(database.handleErrorResponse(error));
+        });
+      });
+    }
+  },
+
+  /**
+  Called by find in we're in standAlone mode.
+
+  @method private
+  @param {String} id - document id we are retrieving
+  @returns {Promise} promise
+  */
+  _offlineFind(id) {
+    let usersDB = get(this, 'database.usersDB');
     return new Ember.RSVP.Promise((resolve, reject) => {
-      this.ajax(findUrl, 'GET').then(resolve, (error) => {
+      usersDB.get(id).then(resolve).catch((err) => {
         let database = get(this, 'database');
-        reject(database.handleErrorResponse(error));
+        reject(database.handleErrorResponse(err));
       });
     });
   },
@@ -133,13 +156,34 @@ export default DS.RESTAdapter.extend(UserSession, {
       delete data._rev;
     }
     data = this._cleanPasswordAttrs(data);
-    let putURL = `${this.endpoint}${Ember.get(record, 'id')}`;
+    if (this.get('config.standAlone') ===  true) {
+      return this._offlineUpdateRecord(data);
+    } else {
+      let putURL = `${this.endpoint}${Ember.get(record, 'id')}`;
+      return new Ember.RSVP.Promise((resolve, reject) => {
+        this.ajax(putURL, 'PUT', {
+          data
+        }).then(resolve, (error) => {
+          let database = get(this, 'database');
+          reject(database.handleErrorResponse(error));
+        });
+      });
+    }
+  },
+
+  /**
+  Called by updateRecord in we're in standAlone mode.
+
+  @method private
+  @param {POJO} data - the data we're going to store in Pouch
+  @returns {Promise} promise
+  */
+  _offlineUpdateRecord(data) {
+    let usersDB = get(this, 'database.usersDB');
     return new Ember.RSVP.Promise((resolve, reject) => {
-      this.ajax(putURL, 'PUT', {
-        data
-      }).then(resolve, (error) => {
+      usersDB.put(data).then(resolve).catch((err) => {
         let database = get(this, 'database');
-        reject(database.handleErrorResponse(error));
+        reject(database.handleErrorResponse(err));
       });
     });
   },
@@ -165,13 +209,29 @@ export default DS.RESTAdapter.extend(UserSession, {
         startkey: '"org.couchdb.user"'
       }
     };
-    let allURL = `${this.endpoint}_all_docs`;
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      this.ajax(allURL, 'GET', ajaxData).then(resolve, (error) => {
-        let database = get(this, 'database');
-        reject(database.handleErrorResponse(error));
+    if (this.get('config.standAlone') ===  true) {
+      return this._offlineFindAll(ajaxData);
+    } else {
+      let allURL = `${this.endpoint}_all_docs`;
+      return new Ember.RSVP.Promise((resolve, reject) => {
+        this.ajax(allURL, 'GET', ajaxData).then(resolve, (error) => {
+          let database = get(this, 'database');
+          reject(database.handleErrorResponse(error));
+        });
       });
-    });
+    }
+  },
+
+  /**
+  Called by updateRecord in we're in standAlone mode.
+
+  @method private
+  @param {POJO} data - the data we're going to search for in Pouch
+  @returns {Promise} promise
+  */
+  _offlineFindAll(data) {
+    let usersDB = get(this, 'database.usersDB');
+    return usersDB.allDocs(data);
   },
 
   /**
