@@ -16,9 +16,6 @@ const visitData = {
     OPD_PROCEDURE_PHYSICIAN: 'Sarah Kearney',
     LAB_TYPE: 'Cholesterol',
     IMAGING_TYPE: 'Cervical Spine AP-L',
-    MEDICATION_INPUT: 'Cefazolin 500mg vial (Hazolin) - m00001 (999998 available)',
-    MEDICATION_PRESCRIPTION: '4 doses before meals',
-    MEDICATION_QUANTITY: '4',
     APPOINTMENT_START_DATE: moment().add(7, 'days').format('l h:mm A'),
     APPOINTMENT_END_DATE: moment().add(8, 'days').format('l h:mm A')
   },
@@ -312,16 +309,6 @@ function addOutpatientData(assert) {
   });
   updateVisitData(assert, 'Imaging Request Saved');
   andThen(() => {
-    click('button:contains(New Medication)');
-  });
-  andThen(() => {
-    assert.ok(currentURL().indexOf('/medication/edit/new?forVisitId') > -1, 'New Medication URL is visited');
-    typeAheadFillIn('.test-medication-input', visitData.outPatient.MEDICATION_INPUT);
-    fillIn('.test-medication-prescription textarea', visitData.outPatient.MEDICATION_PRESCRIPTION);
-    fillIn('.test-quantity-input input', visitData.outPatient.MEDICATION_QUANTITY);
-  });
-  updateVisitData(assert, 'Medication Request Saved');
-  andThen(() => {
     click('button:contains(New Appointment)');
   });
   andThen(() => {
@@ -380,9 +367,6 @@ function checkOPDReport(assert) {
     assert.ok(find('.test-labs .test-labs-data').text().indexOf(visitData.outPatient.LAB_TYPE) > -1, 'Lab request is displayed');
     findWithAssert('.test-images .test-images-label:contains(Images)');
     assert.ok(find('.test-images .test-images-data').text().indexOf(visitData.outPatient.IMAGING_TYPE) > -1, 'Image request is displayed');
-    findWithAssert('.test-medication .test-medication-label:contains(Medications)');
-    let medicationName = visitData.outPatient.MEDICATION_INPUT.slice(0, 30); // Medication name earlier filled-in contains other info not displayed in the report, so only actual medication name is extracted
-    assert.ok(find('.test-medication .test-medication-data').text().indexOf(medicationName) > -1, 'Medication request is displayed');
     findWithAssert('.test-operative-plan .test-operative-plan-label:contains(Operative Plan)');
     findWithAssert('.test-operative-plan .test-operative-plan-description-label:contains(Operation Description:)');
     assert.equal(find('.test-operative-plan .test-operative-plan-description-data').text(), visitData.outPatient.OPERATION_DESCRIPTION);

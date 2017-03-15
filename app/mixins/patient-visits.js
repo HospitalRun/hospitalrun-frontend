@@ -41,7 +41,8 @@ export default Ember.Mixin.create(PouchDbMixin, {
         return null;
       }
       if (!outPatient) {
-        return futureAppointments;
+        let [appointment] = futureAppointments;
+        return appointment;
       } else {
         return futureAppointments.slice(0, 3);
       }
