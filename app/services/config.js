@@ -7,6 +7,7 @@ export default Ember.Service.extend({
   database: inject.service(),
   session: inject.service(),
   sessionData: Ember.computed.alias('session.data'),
+  standAlone: false,
 
   setup() {
     let replicateConfigDB = this.replicateConfigDB.bind(this);
@@ -14,7 +15,14 @@ export default Ember.Service.extend({
     let db = this.createDB();
     this.set('configDB', db);
     this.setCurrentUser();
-    return replicateConfigDB(db).then(loadConfig);
+    if (window.electron) {
+      this.set('standAlone', true);
+    }
+    if (this.get('standAlone') === false) {
+      return replicateConfigDB(db).then(loadConfig);
+    } else {
+      return loadConfig();
+    }
   },
 
   createDB() {
