@@ -12,8 +12,7 @@ export default Ember.Mixin.create({
       diagnoses.removeObject(diagnosis);
       diagnosis.set('archived', true);
       diagnosis.save().then(() => {
-        this.send('closeModal');
-        this.send('update', true);
+        this.silentUpdate('closeModal');
       });
     },
 

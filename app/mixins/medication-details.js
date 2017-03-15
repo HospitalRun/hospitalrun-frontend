@@ -1,5 +1,8 @@
 import Ember from 'ember';
 import DS from 'ember-data';
+
+const { isEmpty } = Ember;
+
 export default Ember.Mixin.create({
   // Denormalized medication details so that inventory records do not need to be retrieved
 
@@ -17,7 +20,11 @@ export default Ember.Mixin.create({
       let inventoryObject = this.get(inventoryAttribute);
       if (inventoryObject.then) {
         inventoryObject.then((inventoryItem) => {
-          this.set('medicationTitle', inventoryItem.get('name'));
+          if (!isEmpty(inventoryItem)) {
+            this.set('medicationTitle', inventoryItem.get('name'));
+          }
+        }).catch((err) => {
+          console.log('error getting inventory item for medication name:', err);
         });
       } else {
         this.set('medicationTitle', inventoryObject.get('name'));
