@@ -141,14 +141,14 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     }
   }),
 
-  updateButtonText: function() {
+  updateButtonText: computed('model.{checkIn,isNew}', function() {
     let i18n = this.get('i18n');
     if (this.get('model.checkIn')) {
       return i18n.t('visits.buttons.checkIn');
     } else {
       return this._super();
     }
-  }.property('model.checkIn'),
+  }),
 
   validVisitTypes: function() {
     let outPatient = this.get('model.outPatient');

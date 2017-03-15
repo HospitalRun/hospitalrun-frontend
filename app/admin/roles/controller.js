@@ -97,6 +97,17 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
       'deleteImaging'
     ]
   }, {
+    name: 'incident',
+    capabilities: [
+      'incident',
+      'addIncident',
+      'addIncidentCategory',
+      'deleteIncident',
+      'deleteIncidentCategory',
+      'manageIncidents',
+      'generateIncidentReport'
+    ]
+  }, {
     name: 'inventory',
     capabilities: [
       'inventory',

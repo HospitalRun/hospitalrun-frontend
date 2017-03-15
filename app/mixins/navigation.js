@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 const { camelize } = Ember.String;
+const { isEqual } = Ember;
 
 export default Ember.Mixin.create({
   navItems: [
@@ -263,6 +264,39 @@ export default Ember.Mixin.create({
       ]
     },
     {
+      title: 'Incident',
+      iconClass: 'octicon-package',
+      route: 'incident',
+      capability: 'incident',
+      subnav: [
+        {
+          title: 'Current Incidents',
+          iconClass: 'octicon-chevron-right',
+          route: 'incident.index',
+          capability: 'add_incident'
+        },
+        {
+          title: 'New Incident',
+          iconClass: 'octicon-plus',
+          route: 'incident.edit',
+          subroute: 'new',
+          capability: 'add_incident'
+        },
+        {
+          title: 'History',
+          iconClass: 'octicon-chevron-right',
+          route: 'incident.completed',
+          capability: 'add_incident'
+        },
+        {
+          title: 'Reports',
+          iconClass: 'octicon-chevron-right',
+          route: 'incident.reports',
+          capability: 'generate_incident_report'
+        }
+      ]
+    },
+    {
       title: 'Administration',
       iconClass: 'octicon-person',
       route: 'admin.lookup',
@@ -281,6 +315,12 @@ export default Ember.Mixin.create({
           capability: 'update_config'
         },
         {
+          title: 'Incident Categories',
+          iconClass: 'octicon-chevron-right',
+          route: 'inc-category',
+          capability: 'add_incident_category'
+        },
+        {
           title: 'Load DB',
           iconClass: 'octicon-plus',
           route: 'admin.loaddb',
@@ -290,6 +330,12 @@ export default Ember.Mixin.create({
           title: 'Lookup Lists',
           iconClass: 'octicon-chevron-right',
           route: 'admin.lookup',
+          capability: 'update_config'
+        },
+        {
+          title: 'Print Header',
+          iconClass: 'octicon-chevron-right',
+          route: 'admin.print-header',
           capability: 'update_config'
         },
         {
@@ -341,5 +387,20 @@ export default Ember.Mixin.create({
 
       return nav;
     });
-  })
+  }),
+
+  findNavItemByRoute(route) {
+    for (let i = 0; i < this.navItems.length; i++) {
+      if (isEqual(this.navItems[i].route, route)) {
+        return this.navItems[i];
+      } else {
+        for (let j = 0; j < this.navItems[i].subnav.length; j++) {
+          if (isEqual(this.navItems[i].subnav[j].route, route)) {
+            return this.navItems[i].subnav[j];
+          }
+        }
+      }
+    }
+    return null;
+  }
 });

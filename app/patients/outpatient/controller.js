@@ -15,11 +15,7 @@ const {
 export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits, SelectValues, UserSession, VisitTypes, {
   addPermission: 'add_patient',
   deletePermission: 'delete_patient',
-  filterValue: null,
-  filterBy: null,
   queryParams: ['visitDate', 'visitLocation'],
-  sortByDesc: null,
-  sortByKey: null,
   visitLocation: null,
   visitDate: null,
   canAddVisit: computed(function() {
@@ -70,25 +66,7 @@ export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits, S
 
   sortedVisits: computed('filteredVisits', 'sortByKey', 'sortByDesc', function() {
     let filteredList = this.get('filteredVisits');
-    let sortDesc = this.get('sortByDesc');
-    let sortBy = this.get('sortByKey');
-    if (Ember.isEmpty(filteredList) || Ember.isEmpty(sortBy)) {
-      return filteredList;
-    }
-    filteredList = filteredList.toArray().sort(function(a, b) {
-      let compareA = a.get(sortBy);
-      let compareB = b.get(sortBy);
-      if (sortBy === 'orderType') {
-        compareA = compareA.toString();
-        compareB = compareB.toString();
-      }
-      if (sortDesc) {
-        return Ember.compare(compareB, compareA);
-      } else {
-        return Ember.compare(compareA, compareB);
-      }
-    });
-    return filteredList;
+    return this.sortFilteredList(filteredList);
   }),
 
   startKey: [],
@@ -108,11 +86,6 @@ export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits, S
       }
     },
 
-    filter(filterBy, filterValue) {
-      this.set('filterBy', filterBy);
-      this.set('filterValue', filterValue);
-    },
-
     finishCheckOut(visit) {
       this.checkoutVisit(visit, VisitStatus.CHECKED_OUT);
     },
@@ -129,13 +102,6 @@ export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits, S
         this.set('visitLocation', visitLocation);
       }
 
-    },
-
-    sortByKey(sortKey, sortDesc) {
-      this.setProperties({
-        sortByDesc: sortDesc,
-        sortByKey: sortKey
-      });
     },
 
     patientCheckIn() {
