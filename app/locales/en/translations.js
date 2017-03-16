@@ -1465,6 +1465,22 @@ export default {
       names: {
         singular: 'Patient'
       }
+    },
+    localizedStrings: {
+      appointment: 'appointment',
+      medication: 'medication',
+      form: 'form',
+      imagingRequest: 'imaging request',
+      item: 'item',
+      incident: 'incident',
+      attachment: 'attachment',
+      note: 'note',
+      labRequest: 'lab request',
+      medicationRequest: 'medication request',
+      procedure: 'procedure',
+      user: 'user',
+      visit: 'visit',
+      vitals: 'vitals'
     }
   }
 };
