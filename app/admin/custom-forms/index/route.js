@@ -25,7 +25,7 @@ export default AbstractIndexRoute.extend(ModalHelper, UserSession, {
   actions: {
     deleteItem(item) {
       let i18n = this.get('i18n');
-      let message = i18n.t('admin.customForms.messages.deleteForm');
+      let message = i18n.t('messages.delete_singular', { name: 'form' });
       let model = Ember.Object.create({
         itemToDelete: item
       });
