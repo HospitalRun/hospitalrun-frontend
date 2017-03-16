@@ -6,6 +6,7 @@ import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
 import enviroment from './../config/environment';
 
 const {
+  get,
   isEmpty
 } = Ember;
 
@@ -23,13 +24,13 @@ export default Ember.Service.extend({
         this.set('setMainDB', true);
       })
       .then(() => {
-        this.createSampleDocs([enviroment.hospitalInfoDoc]);
+        this.createOptionHeader([enviroment.hospitalInfoDoc]);
       });
   },
 
-  createSampleDocs(docs) {
+  createOptionHeader(docs) {
     return new Ember.RSVP.Promise((resolve, reject) => {
-      let mainDB = this.get('mainDB');
+      let mainDB = get(this, 'mainDB');
       let ids = docs.map((doc) => {
         return doc._id;
       });

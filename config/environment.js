@@ -1,9 +1,10 @@
-/* jshint node: true */
+/* eslint-env node */
+/* eslint no-var: 0 */
 
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'hospitalrun',
-    environment: environment,
+    environment,
     rootURL: '/',
     locationType: 'hash', // Using hash location type because it is more friendly for offline.
     EmberENV: {
@@ -27,7 +28,7 @@ module.exports = function(environment) {
     'connect-src': "'self'",
     'default-src': "'self'",
     'frame-src': "'self'",
-    'img-src': "'self' filesystem: data:",
+    'img-src': "'self' filesystem: data: blob:",
     'script-src': "'self' 'unsafe-inline' 'unsafe-eval'",
     'style-src': "'self' 'unsafe-inline'"
   };
@@ -65,6 +66,9 @@ module.exports = function(environment) {
   if (environment === 'production') {
     ENV.serviceWorker.debug = false;
   }
+  if (environment === 'test') {
+    ENV.serviceWorker.includeRegistration = false;
+  }
 
   ENV.emberFullCalendar =  {
     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source'
@@ -82,6 +86,6 @@ module.exports = function(environment) {
         "logoURL": "https://curehospital.mw/wp-content/uploads/4/2012/11/CURE-Malawi-Logo_rgb_280_89.jpg"
       }
     }
-  }
+  };
   return ENV;
 };

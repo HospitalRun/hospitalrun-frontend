@@ -1,0 +1,55 @@
+<div class="panel panel-primary">
+  {{#if canGenerateReport}}
+    <div class="panel-body">
+      {{#em-form model=this submitButton=false }}
+        <div class="row">
+          {{date-picker property="startDate" label=(t 'incident.labels.startDate') class="col-sm-4"}}
+          {{date-picker property="endDate" label=(t 'incident.labels.endDate') class="col-sm-4"}}
+        </div>
+        <div class="row" data-test-selector="select-report-type">
+          <div class="form-group col-xs-6">
+            <label class="control-label" for="report-type">{{t 'incident.labels.reportType'}}</label>
+            {{select-list
+              action=(action (mut reportType))
+              class='form-control'
+              content=reportTypes
+              id='report-type'
+              optionValuePath='value'
+              optionLabelPath='name'
+              value=reportType
+            }}
+          </div>
+        </div>
+      {{/em-form}}
+    </div>
+    <div class="panel-footer">
+      <button class="btn btn-default" {{action 'generateReport'}}>{{t 'incident.buttons.generateRep'}}</button>
+    </div>
+  {{/if}}
+</div>
+{{#if showReportResults}}
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{reportTitle}}</h3>
+    </div>
+    <div class="panel-body">
+      <table class="table">
+        <tr class="table-header">
+          {{#each reportHeaders as |header|}}
+            <th>{{header}}</th>
+          {{/each}}
+        </tr>
+        {{#each reportRows as |row|}}
+          <tr>
+            {{#each row as |subrow|}}
+              <td>{{subrow}}</td>
+            {{/each}}
+          </tr>
+        {{/each}}
+      </table>
+    </div>
+    <div class="panel-footer">
+      <a href={{csvExport}} target="_blank" download="{{reportTitle}}.csv" class="btn btn-default">{{t 'incident.buttons.export'}}</a>
+    </div>
+  </div>
+{{/if}}

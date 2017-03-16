@@ -6,6 +6,12 @@ import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 import PatientVisit from 'hospitalrun/mixins/patient-visits';
 import DS from 'ember-data';
 
+const {
+  get,
+  set,
+  isEmpty
+} = Ember;
+
 export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, PatientVisit, {
   customForms: Ember.inject.service(),
   editTitle: t('visits.titles.editVisit'),
@@ -14,11 +20,11 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, PatientVi
   pricingCategory: 'Ward',
 
   model(params) {
-    let idParam = this.get('idParam');
-    if (!Ember.isEmpty(idParam) && params[idParam] === 'checkin') {
+    let idParam = get(this, 'idParam');
+    if (!isEmpty(idParam) && params[idParam] === 'checkin') {
       return this.getNewData().then((newData) => {
         newData.checkIn = true;
-        let newVisit = this.get('store').createRecord('visit', newData);
+        let newVisit = get(this, 'store').createRecord('visit', newData);
         return newVisit;
       });
     } else {
@@ -47,14 +53,14 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, PatientVi
   setupController(controller, model) {
     let promise = this.store.query('report', {
       options: {
-        key: model.get('id')
+        key: get(model, 'id')
       },
       mapReduce: 'report_by_visit'
     }).then((reports) => {
-      controller.set('noReport', Ember.isEmpty(reports));
-      return Ember.isEmpty(reports) ? '' : reports.get('firstObject');
+      set(controller, 'noReport', isEmpty(reports));
+      return isEmpty(reports) ? '' : get(reports, 'firstObject');
     });
-    controller.set('report', DS.PromiseObject.create({ promise }));
+    set(controller, 'report', DS.PromiseObject.create({ promise }));
     this._super(controller, model);
   },
 

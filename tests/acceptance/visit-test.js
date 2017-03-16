@@ -16,14 +16,11 @@ const visitData = {
     OPD_PROCEDURE_PHYSICIAN: 'Sarah Kearney',
     LAB_TYPE: 'Cholesterol',
     IMAGING_TYPE: 'Cervical Spine AP-L',
-    MEDICATION_INPUT: 'Cefazolin 500mg vial (Hazolin) - m00001 (999998 available)',
-    MEDICATION_PRESCRIPTION: '4 doses before meals',
-    MEDICATION_QUANTITY: '4',
     APPOINTMENT_START_DATE: moment().add(7, 'days').format('l h:mm A'),
     APPOINTMENT_END_DATE: moment().add(8, 'days').format('l h:mm A')
   },
   admission: {
-    // admission visit data goes here
+    NOTE_CONTENT: 'Patient notes are entered here'
   }
 };
 
@@ -41,9 +38,9 @@ test('Add admission visit', function(assert) {
   runWithPouchDump('patient', function() {
     authenticateUser();
     addVisit(assert);
-    addDischargeData(assert);
+    addAdmissionData(assert);
     newReport(assert, 'Discharge');
-    dischargeReport(assert);
+    checkDischargeReport(assert);
     saveReport(assert, 'Discharge');
     editReport(assert, 'Discharge');
   });
@@ -55,7 +52,7 @@ test('Add OPD visit', function(assert) {
     addVisit(assert, 'Clinic');
     addOutpatientData(assert);
     newReport(assert, 'OPD');
-    checkOutpatientData(assert);
+    checkOPDReport(assert);
     saveReport(assert, 'OPD');
     editReport(assert, 'OPD');
   });
@@ -136,19 +133,30 @@ test('Edit visit', function(assert) {
     andThen(function() {
       typeAheadFillIn('.charge-item-name', 'Gauze pad');
       click('.modal-footer button:contains(Add)');
+    });
+    andThen(function() {
+      waitToDisappear('.modal-dialog');
       waitToAppear('td.charge-item-name');
     });
     andThen(function() {
       assert.equal(find('td.charge-item-name').text(), 'Gauze pad', 'New charge item appears');
     });
-    updateVisit(assert, 'Update');
+    andThen(function() {
+      updateVisit(assert, 'Update');
+    });
     andThen(function() {
       click('a.primary-diagnosis:contains(Broken Arm)');
       waitToAppear('.modal-dialog');
     });
     andThen(function() {
       assert.equal(find('.modal-title').text(), 'Edit Diagnosis', 'Edit Diagnosis modal appears');
+      assert.equal(find('.modal-footer button:contains(Delete)').length, 1, 'Delete button appears');
+    });
+    andThen(function() {
       click('.modal-footer button:contains(Delete)');
+    });
+    andThen(function() {
+      waitToDisappear('.modal-dialog');
     });
     andThen(function() {
       click('#visit-vitals tr:last button:contains(Delete)');
@@ -166,6 +174,9 @@ test('Edit visit', function(assert) {
     andThen(function() {
       assert.equal(find('.modal-title').text(), 'Delete Charge Item', 'Delete Charge Item dialog displays');
       click('.modal-footer button:contains(Ok)');
+    });
+    andThen(function() {
+      waitToDisappear('.modal-dialog');
     });
     andThen(function() {
       assert.equal(find('a.primary-diagnosis:contains(Broken Arm)').length, 0, 'New primary diagnosis is deleted');
@@ -196,6 +207,9 @@ test('Delete visit', function(assert) {
     andThen(function() {
       assert.equal(find('.modal-title').text(), 'Delete Visit', 'Delete Visit confirmation displays');
       click('.modal-footer button:contains(Delete)');
+    });
+    andThen(function() {
+      waitToDisappear('.modal-dialog');
       waitToDisappear('#visits td:contains(Fall from in-line roller-skates, initial encounter)');
     });
     andThen(function() {
@@ -235,7 +249,9 @@ function addOutpatientData(assert) {
     assert.equal(find('.modal-title').text(), 'Add Diagnosis', 'Add Diagnosis dialog displays');
     fillIn('.diagnosis-text input', visitData.outPatient.PRIMARY_DIAGNOSIS);
     click('.modal-footer button:contains(Add)');
-    waitToAppear('a.primary-diagnosis');
+  });
+  andThen(function() {
+    waitToDisappear('.modal-dialog');
   });
   andThen(() => {
     click('a:contains(Add Diagnosis)');
@@ -246,7 +262,9 @@ function addOutpatientData(assert) {
     fillIn('.diagnosis-text input', visitData.outPatient.SECONDARY_DIAGNOSIS);
     click('.secondary-diagnosis input');
     click('.modal-footer button:contains(Add)');
-    waitToAppear('a.secondary-diagnosis');
+  });
+  andThen(function() {
+    waitToDisappear('.modal-dialog');
   });
   andThen(() => {
     click('a:contains(Add Operative Plan)');
@@ -291,16 +309,6 @@ function addOutpatientData(assert) {
   });
   updateVisitData(assert, 'Imaging Request Saved');
   andThen(() => {
-    click('button:contains(New Medication)');
-  });
-  andThen(() => {
-    assert.ok(currentURL().indexOf('/medication/edit/new?forVisitId') > -1, 'New Medication URL is visited');
-    typeAheadFillIn('.test-medication-input', visitData.outPatient.MEDICATION_INPUT);
-    fillIn('.test-medication-prescription textarea', visitData.outPatient.MEDICATION_PRESCRIPTION);
-    fillIn('.test-quantity-input input', visitData.outPatient.MEDICATION_QUANTITY);
-  });
-  updateVisitData(assert, 'Medication Request Saved');
-  andThen(() => {
     click('button:contains(New Appointment)');
   });
   andThen(() => {
@@ -312,9 +320,23 @@ function addOutpatientData(assert) {
   updateVisitData(assert, 'Appointment Saved');
 }
 
-function addDischargeData(assert) {
-  // add discharge report data elements here
-  assert.equal(1, 1);
+function addAdmissionData(assert) {
+  andThen(function() {
+    click('[data-test-selector=notes-tab]');
+    waitToAppear('[data-test-selector=new-note-btn]');
+    click('[data-test-selector=new-note-btn]');
+  });
+  andThen(() => {
+    assert.equal(find('.modal-title').text(), 'New Note for Joe Bagadonuts', 'New Note dialog displays');
+    fillIn('.test-note-content textarea', visitData.admission.NOTE_CONTENT);
+    click('.modal-footer button:contains(Add)');
+  });
+  andThen(function() {
+    waitToDisappear('.modal-dialog');
+  });
+  andThen(() => {
+    assert.ok(currentURL().indexOf('visits/edit/') > -1, 'Returns back to visit URL');
+  });
 }
 
 function newReport(assert, type) {
@@ -331,7 +353,7 @@ function newReport(assert, type) {
   });
 }
 
-function checkOutpatientData(assert) {
+function checkOPDReport(assert) {
   andThen(() => {
     assert.equal(find('.patient-id .ps-info-data').text(), 'P00001', 'Patient ID is displayed');
     assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Patient First Name & Last Name is displayed');
@@ -345,11 +367,6 @@ function checkOutpatientData(assert) {
     assert.ok(find('.test-labs .test-labs-data').text().indexOf(visitData.outPatient.LAB_TYPE) > -1, 'Lab request is displayed');
     findWithAssert('.test-images .test-images-label:contains(Images)');
     assert.ok(find('.test-images .test-images-data').text().indexOf(visitData.outPatient.IMAGING_TYPE) > -1, 'Image request is displayed');
-    findWithAssert('.test-medication .test-medication-label:contains(Medications)');
-    let medicationName = visitData.outPatient.MEDICATION_INPUT.slice(0, 30); // Medication name earlier filled-in contains other info not displayed in test, so only actual medication name is extracted
-    assert.ok(find('.test-medication .test-medication-data').text().indexOf(medicationName) > -1, 'Medication request is displayed');
-    // findWithAssert('.test-appointment .test-appointment-label:contains(Next Appointments)');
-    // assert.ok(find('.test-appointment .test-appointment-data').text().indexOf(visitData.outPatient.APPOINTMENT_START_DATE) > -1, 'Next Appointment is displayed' + visitData.outPatient.APPOINTMENT_START_DATE);
     findWithAssert('.test-operative-plan .test-operative-plan-label:contains(Operative Plan)');
     findWithAssert('.test-operative-plan .test-operative-plan-description-label:contains(Operation Description:)');
     assert.equal(find('.test-operative-plan .test-operative-plan-description-data').text(), visitData.outPatient.OPERATION_DESCRIPTION);
@@ -360,10 +377,12 @@ function checkOutpatientData(assert) {
   });
 }
 
-function dischargeReport(assert) {
+function checkDischargeReport(assert) {
   andThen(function() {
     assert.equal(find('.test-visit-date .test-visit-date-label').text().trim(), 'Admission Date:', 'Visit date label displays as admission');
     assert.equal(find('.test-visit-date .test-visit-discharge-date-label').text().trim(), 'Discharge Date:', 'Discharge date label displays');
+    findWithAssert('.test-notes .test-notes-label:contains(Notes)');
+    assert.ok(find('.test-notes .test-notes-data').text().indexOf(visitData.admission.NOTE_CONTENT) > -1, 'Notes are displayed');
   });
   andThen(function() {
     click('.panel-footer button:contains(Add)');
@@ -421,6 +440,9 @@ function updateVisitData(assert, modalTitle) {
   andThen(() => {
     assert.equal(find('.modal-title').text(), modalTitle, `${modalTitle} modal displays`);
     click('.modal-footer button:contains(Ok)');
+  });
+  andThen(function() {
+    waitToDisappear('.modal-dialog');
   });
   andThen(() => {
     click('button:contains(Return)');

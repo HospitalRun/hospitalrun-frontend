@@ -82,12 +82,10 @@ export default Ember.Mixin.create(PatientVisits, {
       patientDiagnoses.addObject(newDiagnosis);
       let patient = this.get('model.patient');
       patient.save().then(() => {
-        this.send('update', true);
-        this.send('closeModal');
+        this.silentUpdate('closeModal');
       });
     } else {
-      this.send('update', true);
-      this.send('closeModal');
+      this.silentUpdate('closeModal');
     }
   },
 
@@ -186,10 +184,10 @@ export default Ember.Mixin.create(PatientVisits, {
   }.property('model.patient.id', 'newVisitAdded'),
 
   patientProcedures: Ember.computed('patientVisits.[]', function() {
-    let patient = this.get('model.patient');
+    let patient = get(this, 'model.patient');
     return DS.PromiseArray.create({
-      promise: this.get('patientVisits').then((patientVisits) => {
-        return patient.get('operationReports').then((operationReports) => {
+      promise: get(this, 'patientVisits').then((patientVisits) => {
+        return get(patient, 'operationReports').then((operationReports) => {
           return this._getPatientProcedures(operationReports, patientVisits);
         });
       })

@@ -1,10 +1,10 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import AddToPatient from 'hospitalrun/mixins/add-to-patient-route';
+import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import ChargeRoute from 'hospitalrun/mixins/charge-route';
 import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 
-export default AbstractEditRoute.extend(AddToPatient, ChargeRoute, {
+export default AbstractEditRoute.extend(AddToPatientRoute, ChargeRoute, {
   editTitle: t('procedures.titles.edit'),
   modelName: 'procedure',
   newTitle: t('procedures.titles.new'),

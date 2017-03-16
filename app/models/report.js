@@ -6,7 +6,6 @@ export default AbstractModel.extend({
   reportDate: DS.attr('date'),
   customForms: DS.attr('custom-forms'),
   reportType: DS.attr('string'),
-  nextAppointment: DS.attr('date'),
   surgeon: DS.attr('string'),
 
   // Associations
