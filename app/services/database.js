@@ -2,6 +2,7 @@ import Ember from 'ember';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
 import List from 'npm:pouchdb-list';
 import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
+import PouchDBUsers from 'npm:pouchdb-users';
 import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
 
 const {
@@ -17,13 +18,14 @@ export default Ember.Service.extend({
 
   setup(configs) {
     PouchDB.plugin(List);
+    PouchDB.plugin(PouchDBUsers);
     let pouchOptions = this._getOptions(configs);
     return this.createDB(configs, pouchOptions).then((db) => {
       this.set('mainDB', db);
       this.set('setMainDB', true);
       if (this.get('config.standAlone')) {
-        let usersDB = new PouchDB('_users', pouchOptions);
-        return usersDB.info().then(() => {
+        let usersDB = new PouchDB('_users');
+        return usersDB.installUsersBehavior().then(() => {
           this.set('usersDB', usersDB);
         });
       }
