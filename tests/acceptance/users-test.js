@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
+import { PREDEFINED_USER_ROLES } from 'hospitalrun/mixins/user-roles';
 
 function addAllUsers(assert) {
   stubRequest('get', '/db/_users/_all_docs', function(request) {
@@ -70,12 +71,18 @@ module('Acceptance | users', {
 
 test('visiting /admin/users', function(assert) {
   runWithPouchDump('default', function() {
-    authenticateUser();
+    let role = PREDEFINED_USER_ROLES.findBy('name', 'User Administrator');
+    authenticateUser({
+      roles: role.roles,
+      role: role.name,
+      authenticated: {
+        role: role.name
+      }
+    });
     addAllUsers(assert);
-
-    visit('/admin/users');
+    visit('/'); // Default home page for User Administrator is admin/users
     andThen(function() {
-      assert.equal(currentURL(), '/admin/users');
+      assert.equal(currentURL(), '/admin/users', 'User Administrator initial page displays');
       assert.equal(find('td.user-display-name:first').text(), 'HospitalRun Administrator');
       assert.equal(find('td.user-name:first').text(), 'hradmin');
       assert.equal(find('td.user-email:first').text(), 'hradmin@hospitalrun.io');
@@ -119,6 +126,7 @@ test('create new user', function(assert) {
       waitToAppear('.modal-dialog');
       andThen(() => {
         assert.equal(find('.modal-title').text(), 'User Saved', 'User was saved successfully');
+        assert.equal(find('.view-current-title').text(), 'Edit User', 'Page title changed to Edit User');
       });
       click('button:contains(Ok)');
     });

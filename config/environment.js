@@ -28,7 +28,7 @@ module.exports = function(environment) {
     'connect-src': "'self'",
     'default-src': "'self'",
     'frame-src': "'self'",
-    'img-src': "'self' filesystem: data:",
+    'img-src': "'self' filesystem: data: blob:",
     'script-src': "'self' 'unsafe-inline' 'unsafe-eval'",
     'style-src': "'self' 'unsafe-inline'"
   };

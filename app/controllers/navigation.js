@@ -54,7 +54,7 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
       if (this.currentOpenNav && this.currentOpenNav.route !== nav.route) {
         this.currentOpenNav.closeSubnav();
       }
-      this.currentOpenNav = nav;
+      this.set('currentOpenNav', nav);
       this.transitionToRoute(nav.route);
       this.set('isShowingSettings', false);
     },

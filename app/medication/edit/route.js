@@ -35,6 +35,8 @@ export default AbstractEditRoute.extend(AddToPatientRoute, FulfillRequest, Inven
     if (!Ember.isEmpty(idParam) && params[idParam] === 'new' || params[idParam] === 'dispense') {
       if (!isEmpty(params.forPatientId)) {
         return this._setPatientOnModel(modelPromise, params.forPatientId);
+      } else if (!isEmpty(params.forVisitId)) {
+        return this._setVisitOnModel(modelPromise, params.forVisitId);
       } else {
         return this._createNewRecord(params);
       }

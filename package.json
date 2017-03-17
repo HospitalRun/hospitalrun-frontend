@@ -1,6 +1,6 @@
 {
   "name": "hospitalrun",
-  "version": "0.9.17",
+  "version": "0.9.18",
   "description": "Ember front end for HospitalRun",
   "homepage": "http://hospitalrun.io",
   "directories": {
@@ -65,6 +65,7 @@
     "ember-cli-template-lint": "0.4.12",
     "ember-cli-test-loader": "^1.1.0",
     "ember-cli-uglify": "^1.2.0",
+    "ember-concurrency": "0.7.19",
     "ember-data": "^2.10.0",
     "ember-electron": "1.12.7",
     "ember-export-application-global": "^1.0.5",
@@ -85,8 +86,8 @@
     "eslint-plugin-ember-suave": "^1.0.0",
     "express": "^4.8.5",
     "glob": "^7.1.0",
-    "hospitalrun-dblisteners": "0.9.5",
-    "hospitalrun-server-routes": "0.9.9",
+    "hospitalrun-dblisteners": "0.9.6",
+    "hospitalrun-server-routes": "0.9.10",
     "loader.js": "^4.0.11",
     "nano": "6.2.0",
     "pouchdb": "5.4.5",

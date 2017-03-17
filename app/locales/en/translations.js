@@ -46,6 +46,7 @@ export default {
     labs: 'Labs',
     billing: 'Billing',
     administration: 'Administration',
+    incident: 'Incident',
     subnav: {
       actions: 'Actions',
       requests: 'Requests',
@@ -79,7 +80,12 @@ export default {
       customForms: 'Custom Forms',
       appointmentsCalendar: 'Appointments Calendar',
       theaterSchedule: 'Theater Schedule',
-      scheduleSurgery: 'Schedule Surgery'
+      scheduleSurgery: 'Schedule Surgery',
+      printHeader: 'Print Header',
+      currentIncidents: 'Current Incidents',
+      newIncident: 'New Incident',
+      history: 'History',
+      incidentCategories: 'Incident Categories'
     },
     actions: {
       logout: 'Logout',
@@ -112,10 +118,30 @@ export default {
       messages: {
         addressSaved: 'The address options have been saved'
       },
-
       newTitle: 'Address Options',
       editTitle: 'Address Options',
       addressLabel: 'Address'
+    },
+    header: {
+      facilityName: 'Facility Name',
+      headerLine1: 'Header Line 1',
+      headerLine2: 'Header Line 2',
+      headerLine3: 'Header Line 3',
+      logoURL: 'Logo URL',
+      includeFacilityName: 'Include Facility Name',
+      includeHeaderLine1: 'Include Header Line 1',
+      includeHeaderLine2: 'Include Header Line 2',
+      includeHeaderLine3: 'Include Header Line 3',
+      includeLogoURL: 'Include Logo URL',
+      titles: {
+        optionsSaved: 'Options Saved'
+      },
+      messages: {
+        headerSaved: 'The header options have been saved'
+      },
+      newTitle: 'Header Options',
+      editTitle: 'Header Options',
+      headerLabel: 'Header'
     },
     customForms: {
       buttons: {
@@ -135,6 +161,7 @@ export default {
         formName: 'Form Name',
         formType: 'Form Type',
         includeOtherOption: 'Include Other Option',
+        incidentFormType: 'Incident',
         label: 'Label',
         newForm: 'New Form',
         operativePlanFormType: 'Operative Plan and Report',
@@ -146,7 +173,9 @@ export default {
         socialworkFormType: 'Social Work',
         text: 'Text',
         textarea: 'Large Text',
-        visitFormType: 'Visit'
+        visitFormType: 'Visit',
+        opdReportFormType: 'Outpatient Report',
+        dischargeReportFormType: 'Discharge Report'
       },
       messages: {
         deleteForm: 'Are you sure you want to delete this custom form?',
@@ -200,6 +229,7 @@ export default {
       expenseAccountList: 'Expense Accounts',
       aisleLocationList: 'Inventory Aisle Locations',
       warehouseList: 'Inventory Locations',
+      incidentDepartments: 'Incident Departments',
       inventoryTypes: 'Inventory Types',
       imagingPricingTypes: 'Imaging Pricing Types',
       labPricingTypes: 'Lab Pricing Types',
@@ -286,7 +316,14 @@ export default {
         deleteNote: 'Delete Note',
         addOperativePlan: 'Add Operative Plan',
         addAllergy: 'Add Allergy',
-        addOperationReport: 'Add Operation Report'
+        addOperationReport: 'Add Operation Report',
+        incident: 'Incident',
+        addIncident: 'Add Incident',
+        addIncidentCategory: 'Add Incident Category',
+        deleteIncident: 'Delete Incident',
+        deleteIncidentCategory: 'Delete Incident Category',
+        generateIncidentReport: 'Generate Incident Report',
+        manageIncidents: 'Manage Incidents'
       },
       messages: {
         roleSaved: 'The {{roleName}} role has been saved.'
@@ -721,6 +758,105 @@ export default {
       savedMessage: 'The imaging request has been saved.'
     }
   },
+  incident: {
+    buttons: {
+      add: 'Add',
+      addForm: '+ Add Form',
+      addItem: 'Add Item',
+      cancel: 'Cancel',
+      delete: 'Delete',
+      download: 'Download',
+      edit: 'Edit',
+      export: 'Export Report',
+      generateRep: 'Generate Report',
+      newAttachment: '+ New Attachment',
+      newCategory: '+ new category',
+      newIncident: '+ new incident',
+      newNote: '+ New Note'
+    },
+    labels: {
+      actions: 'Actions',
+      addedBy: 'Added By',
+      category: 'Category',
+      categoryItem: 'Category Item',
+      date: 'Date',
+      dateRecorded: 'Date Recorded',
+      department: 'Department',
+      description: 'Incident Description',
+      endDate: 'End Date',
+      givenBy: 'Given By',
+      howToAddAttachment: 'How Do You Want To Add An Attachment?',
+      incidentDate: 'Date of Incident',
+      incidentId: 'Incident ID',
+      item: 'Item',
+      lastUpdated: 'Last Updated',
+      note: 'Note',
+      patientId: 'Patient Id',
+      patientImpacted: 'Patient Impacted',
+      reportType: 'Report Type',
+      reportedBy: 'Reported By',
+      reportedDate: 'Reported Date',
+      reportedTo: 'Incident Reported to (Full Name)',
+      sentinelEvent: 'Sentinel Event',
+      startDate: 'Start Date',
+      status: 'Status',
+      statusActive: 'Active',
+      statusClosed: 'Closed',
+      statusFollowup: 'Follow-up',
+      statusReported: 'Reported',
+      title: 'Title',
+      total: 'Total',
+      updatedBy: 'Updated By'
+    },
+    messages: {
+      attachmentFileRequired: 'Please upload a file or take a picture or before saving this attachment.',
+      createNew: 'Create a new incident?',
+      createNewIncidentCategory: 'Create a new Incident Category?',
+      deleteAttachment: 'Are you sure you wish to delete this attachment?',
+      deleteCategory: 'Are you sure you wish to delete {{name}}?',
+      deleteIncident: 'Are you sure you wish to delete this incident?',
+      deleteItem: 'Are you sure you want to delete this item?',
+      deleteNote: 'Are you sure you wish to delete this note?',
+      fillIn: 'Fill in the above options to calculate score',
+      incidentCategorySaved: 'The {{name}} category has been saved.',
+      noClosedIncidents: 'No closed incidents found.',
+      noIncidentCategoriesFound: 'No Incident Categories found.',
+      noIncidents: 'No incidents found.',
+      saved: 'The incident report has been saved.',
+      selectExistingPatient: 'Please select an existing patient or leave this field blank.'
+    },
+    titles: {
+      addAttachment: 'Add Attachment',
+      addCategoryItem: 'Add Category Item',
+      addNote: 'Add Note',
+      attachments: 'Attachments',
+      closed: 'Closed Incidents',
+      current: 'Current',
+      deleteAttachment: 'Delete Attachment',
+      deleteIncident: 'Delete Incident',
+      deleteIncidentCategory: 'Delete Incident Category',
+      deleteItem: 'Delete Item',
+      deleteNote: 'Delete Note',
+      editAttachment: 'Edit Attachment',
+      editIncident: 'Edit Incident',
+      editIncidentCategory: 'Edit Incident Category',
+      editNote: 'Edit Note',
+      general: 'General Information',
+      history: 'History',
+      incidentCategories: 'Incident Categories',
+      incidentCategoryItem: 'Incident Category Item',
+      incidentCategoryName: 'Incident Category Name',
+      incidentCategorySaved: 'Incident Category Saved',
+      incidentSaved: 'Incident Saved',
+      incidents: 'Incidents',
+      incidentsByCategory: 'Incidents By Category',
+      incidentsByDepartment: 'Incidents By Department',
+      newIncident: 'New Incident',
+      newIncidentCategory: 'New Incident Category',
+      notes: 'Notes',
+      reports: 'Reports'
+    }
+  },
   medication: {
     pageTitle: 'Medication Requests',
     sectionTitle: 'Medication',
@@ -860,14 +996,16 @@ export default {
       statusDischarged: 'Discharged',
       statusCheckedIn: 'Checked In',
       statusCheckedOut: 'Checked Out',
-      createNewPatient: 'Create New Patient'
+      createNewPatient: 'Create New Patient',
+      reportType: 'Report type'
     },
     navigation: {
       charges: 'Charges',
       notes: 'Notes',
       orders: 'Orders',
       procedures: 'Procedures',
-      vitals: 'Vitals'
+      vitals: 'Vitals',
+      reports: 'Reports'
     }
   },
   labs: {
@@ -952,13 +1090,15 @@ export default {
       savedPatient: 'The patient record for {{displayName}} has been saved.',
       notFoundQuickAdd: 'The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.',
       createNewPatient: 'Create a new patient record?',
-      deletingPatient: 'Deleting patient and all associated records'
+      deletingPatient: 'Deleting patient and all associated records',
+      photoFileRequired: 'Please take a picture or upload a file before saving this photo.'
     },
     buttons: {
       addExpense: 'Add Expense',
       addContact: 'Add Contact',
       addOperativePlan: 'Add Operative Plan',
       editOperativePlan: 'Current Operative Plan',
+      download: 'Download',
       newLab: 'New Lab',
       newVisit: 'New Visit',
       newMedication: 'New Medication',
@@ -969,6 +1109,8 @@ export default {
       backToPatients: 'Back to Patient List',
       newPatient: '+ new patient',
       patientCheckIn: 'Patient Check In',
+      newOPDReport: 'New OPD Report',
+      newDischargeReport: 'New Discharge Report',
       scheduleSurgery: 'Schedule Surgery'
     },
     labels: {
@@ -1011,6 +1153,7 @@ export default {
       contacts: 'Contacts',
       sexNotEntered: 'Sex Not Entered',
       operativePlan: 'Operative Plan',
+      caption: 'Caption',
       patientTypeCharity: 'Charity',
       patientTypePrivate: 'Private'
     },
@@ -1097,6 +1240,55 @@ export default {
       addMedication: 'Add Medication'
     }
   },
+  reports: {
+    titles: {
+      saved: 'Report saved',
+      opdTitle: 'OPD Report',
+      dischargeReport: 'Discharge Report'
+    },
+    form: {
+      visitDate: 'Date of Visit',
+      admissionDate: 'Admission Date',
+      dischargeDate: 'Discharge Date',
+      notes: {
+        title: 'Notes',
+        date: 'Date',
+        author: 'Author'
+      },
+      primaryDiagnosis: 'Primary Diagnosis',
+      secondaryDiagnosis: 'Secondary Diagnosis',
+      procedures: 'Procedures',
+      allProcedures: 'All Procedures Performed',
+      labs: 'Labs',
+      images: 'Images',
+      medications: 'Medications',
+      nextAppointment: 'Next Appointment',
+      nextAppointments: 'Next Appointments',
+      operativePlan: {
+        title: 'Operative Plan',
+        description: 'Operation Description',
+        procedures: 'Planned Procedures',
+        instructions: 'Instructions upon Admission'
+      },
+      completedBy: 'Completed By'
+    },
+    opd: {
+      titles: {
+        new: 'New OPD Report',
+        edit: 'Edit OPD Report'
+      }
+    },
+    discharge: {
+      titles: {
+        new: 'New Discharge Report',
+        edit: 'Edit Discharge Report'
+      }
+    },
+    messages: {
+      delete: 'Are you sure you wish to delete this report?',
+      saved: 'The report has been saved.'
+    }
+  },
   components: {
     chargesByTypeTab: {
       charges: 'charges'
@@ -1111,6 +1303,11 @@ export default {
         selectAll: '(Select All)'
       }
     },
+    imageUpload: {
+      messages: {
+        selectValidImageFile: 'Please select a valid image file.'
+      }
+    },
     dateTimePicker: {
       amHour: '{{hour}} AM',
       midnight: 'Midnight',
@@ -1120,11 +1317,14 @@ export default {
     takePhoto: {
       how: 'How Do You Want To Add A Photo?',
       takePhoto: 'Take photo',
-      uploadPhoto: 'Upload Photo',
       uploadFile: 'Upload File',
       camera: 'Camera',
       photo: 'photo',
-      preview: 'preview'
+      preview: 'preview',
+      labels: {
+        takeAPicture: 'Take a Picture',
+        uploadAFile: 'Upload a File'
+      }
     },
     quantityConv: {
       unit: 'Unit',

@@ -25,6 +25,7 @@ export default Ember.Mixin.create({
   },
 
   displayConfirm(title, message, confirmAction, model) {
+    let i18n = this.get('i18n');
     if (Ember.isEmpty(model)) {
       model = Ember.Object.create();
     }
@@ -32,7 +33,7 @@ export default Ember.Mixin.create({
     model.set('title', title);
     model.set('message', message);
     model.set('updateButtonAction', 'confirm');
-    model.set('updateButtonText', 'Ok');
+    model.set('updateButtonText', i18n.t('buttons.ok'));
     this.send('openModal', 'dialog', model);
   }
 });

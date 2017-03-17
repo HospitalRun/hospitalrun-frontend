@@ -84,7 +84,7 @@ export default Ember.Service.extend({
   saveFileLink(fileName, id) {
     let config = this.get('configDB');
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      config.put({ fileName }, `file-link_${id}`, function(err, doc) {
+      config.put({ fileName, _id: `file-link_${id}` }, function(err, doc) {
         if (err) {
           reject(err);
         }

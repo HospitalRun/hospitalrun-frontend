@@ -8,13 +8,14 @@ import ReturnTo from 'hospitalrun/mixins/return-to';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
 import VisitStatus from 'hospitalrun/utils/visit-statuses';
+import PatientVisits from 'hospitalrun/mixins/patient-visits';
 
 const {
   get,
   isEmpty
 } = Ember;
 
-export default AbstractEditController.extend(BloodTypes, DiagnosisActions, ReturnTo, UserSession, PatientId, PatientNotes, {
+export default AbstractEditController.extend(BloodTypes, DiagnosisActions, ReturnTo, UserSession, PatientId, PatientNotes, PatientVisits, {
 
   canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
@@ -144,32 +145,21 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
   }],
 
   patientImaging: function() {
-    return this._getVisitCollection('imaging');
+    return this.getVisitCollection('imaging');
   }.property('model.visits.[].imaging'),
 
   patientLabs: function() {
-    return this._getVisitCollection('labs');
+    return this.getVisitCollection('labs');
   }.property('model.visits.[].labs'),
 
   patientMedications: function() {
-    return this._getVisitCollection('medication');
+    return this.getVisitCollection('medication');
   }.property('model.visits.[].medication'),
 
   patientProcedures: function() {
-    let patientProcedures = this._getVisitCollection('procedures');
+    let visits = this.get('model.visits');
     let operationReports = get(this, 'model.operationReports');
-    operationReports.forEach((report) => {
-      let reportedProcedures = get(report, 'procedures');
-      let surgeryDate = get(report, 'surgeryDate');
-      reportedProcedures.forEach((procedure) => {
-        patientProcedures.addObject({
-          description: get(procedure, 'description'),
-          procedureDate: surgeryDate,
-          report
-        });
-      });
-    });
-    return patientProcedures;
+    return this._getPatientProcedures(operationReports, visits);
   }.property('model.visits.[].procedures', 'model.operationReports.[].procedures'),
 
   showExpenseTotal: function() {
@@ -213,44 +203,11 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
     },
     /**
      * Add the specified photo to the patient's record.
-     * @param {File} photoFile the photo file to add.
-     * @param {String} caption the caption to store with the photo.
-     * @param {boolean} coverImage flag indicating if image should be marked as the cover image (currently unused).
      */
-    addPhoto(photoFile, caption, coverImage) {
-      let dirToSaveTo = `${this.get('model.id')}/photos/`;
-      let fileSystem = this.get('filesystem');
+    addPhoto(savedPhotoRecord) {
       let photos = this.get('model.photos');
-      let newPatientPhoto = this.get('store').createRecord('photo', {
-        patient: this.get('model'),
-        localFile: true,
-        caption,
-        coverImage
-      });
-      newPatientPhoto.save().then(function(savedPhotoRecord) {
-        let pouchDbId = this.get('database').getPouchId(savedPhotoRecord.get('id'), 'photo');
-        fileSystem.addFile(photoFile, dirToSaveTo, pouchDbId).then(function(fileEntry) {
-          fileSystem.fileToDataURL(photoFile).then(function(photoDataUrl) {
-            savedPhotoRecord = this.get('store').find('photo', savedPhotoRecord.get('id')).then(function(savedPhotoRecord) {
-              let dataUrlParts = photoDataUrl.split(',');
-              savedPhotoRecord.setProperties({
-                fileName: fileEntry.fullPath,
-                url: fileEntry.toURL(),
-                _attachments: {
-                  file: {
-                    content_type: photoFile.type,
-                    data: dataUrlParts[1]
-                  }
-                }
-              });
-              savedPhotoRecord.save().then(function(savedPhotoRecord) {
-                photos.addObject(savedPhotoRecord);
-                this.send('closeModal');
-              }.bind(this));
-            }.bind(this));
-          }.bind(this));
-        }.bind(this));
-      }.bind(this));
+      photos.addObject(savedPhotoRecord);
+      this.send('closeModal');
     },
 
     appointmentDeleted(deletedAppointment) {
@@ -405,9 +362,11 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
     },
 
     showAddPhoto() {
-      this.send('openModal', 'patients.photo', {
-        isNew: true
+      let newPatientPhoto = this.get('store').createRecord('photo', {
+        patient: this.get('model'),
+        saveToDir: `${this.get('model.id')}/photos/`
       });
+      this.send('openModal', 'patients.photo', newPatientPhoto);
     },
 
     showAddPatientNote(model) {
@@ -505,12 +464,6 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
       this._updateSocialRecord(model, 'familyInfo');
     },
 
-    updatePhoto(photo) {
-      photo.save().then(function() {
-        this.send('closeModal');
-      }.bind(this));
-    },
-
     visitDeleted(deletedVisit) {
       let visits = this.get('model.visits');
       let patient = this.get('model');
@@ -570,17 +523,9 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
     this.send('openModal', `patients.socialwork.${route}`, model);
   },
 
-  _getVisitCollection(name) {
-    let returnList = [];
+  getVisitCollection(name) {
     let visits = this.get('model.visits');
-    if (!Ember.isEmpty(visits)) {
-      visits.forEach(function(visit) {
-        visit.get(name).then(function(items) {
-          returnList.addObjects(items);
-        });
-      });
-    }
-    return returnList;
+    return this._getVisitCollection(visits, name);
   },
 
   _updateSocialRecord(recordToUpdate, name) {
@@ -623,24 +568,9 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
     if (!this.get('model.isNew')) {
       return Ember.RSVP.resolve();
     }
-    let database = this.get('database');
-    let id = this.get('model.friendlyId');
-    let maxValue = this.get('maxValue');
-    let query = {
-      startkey: [id, null],
-      endkey: [id, maxValue]
-    };
-    return database.queryMainDB(query, 'patient_by_display_id')
-      .then((found) => {
-        if (Ember.isEmpty(found.rows)) {
-          return Ember.RSVP.resolve();
-        }
-        return this.generateFriendlyId()
-          .then((friendlyId) => {
-            this.model.set('friendlyId', friendlyId);
-            return Ember.RSVP.resolve();
-          });
-      });
+    return this.generateFriendlyId('patient').then((friendlyId) => {
+      this.model.set('friendlyId', friendlyId);
+    });
   },
 
   afterUpdate(record) {

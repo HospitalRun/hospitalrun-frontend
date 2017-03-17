@@ -16,6 +16,7 @@
     "fullcalendar-scheduler": "^1.4.0"
   },
   "devDependencies": {
-    "timekeeper": "^1.0.0"
+    "timekeeper": "^1.0.0",
+    "webrtc-adapter": "^3.1.3"
   }
 }
