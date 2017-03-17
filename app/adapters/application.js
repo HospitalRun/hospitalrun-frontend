@@ -1,6 +1,7 @@
+import CheckForErrors from 'hospitalrun/mixins/check-for-errors';
 import Ember from 'ember';
-import { Adapter } from 'ember-pouch';
 import uuid from 'npm:uuid';
+import { Adapter } from 'ember-pouch';
 
 const {
   get,
@@ -9,7 +10,7 @@ const {
   }
 } = Ember;
 
-export default Adapter.extend({
+export default Adapter.extend(CheckForErrors, {
   database: Ember.inject.service(),
   db: Ember.computed.reads('database.mainDB'),
 
@@ -261,15 +262,6 @@ export default Adapter.extend({
 
   deleteRecord(store, type, record) {
     return this._checkForErrors(this._super(store, type, record));
-  },
-
-  _checkForErrors(callPromise) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      callPromise.then(resolve, (err) => {
-        let database = get(this, 'database');
-        reject(database.handleErrorResponse(err));
-      });
-    });
   }
 
 });
