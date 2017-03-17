@@ -1456,6 +1456,91 @@ export default {
         type: 'Type',
         notes: 'Notes',
         appointmentDate: 'Date'
+      },
+      names: {
+        singular: 'appointment',
+        plural: 'appointments'
+      }
+    },
+    attachment: {
+      names: {
+        singular: 'attachment',
+        plural: 'attachments'
+      }
+    },
+    form: {
+      names: {
+        singular: 'form',
+        plural: 'forms'
+      }
+    },
+    incident: {
+      names: {
+        singular: 'incident',
+        plural: 'incidents'
+      }
+    },
+    item: {
+      names: {
+        singular: 'item',
+        plural: 'items'
+      }
+    },
+    imaging: {
+      request: {
+        singular: 'imaging request',
+        plural: 'imaging requests'
+      },
+      names: 'imaging'
+    },
+    medication: {
+      request: {
+        singular: 'medication request',
+        plural: 'medication requests'
+      },
+      names: {
+        singular: 'medication',
+        plural: 'medications'
+      }
+    },
+    note: {
+      names: {
+        singular: 'note',
+        plural: 'notes'
+      }
+    },
+    lab: {
+      request: {
+        singular: 'lab request',
+        plural: 'lab requests'
+      },
+      names: {
+        singular: 'lab',
+        plural: 'labs'
+      }
+    },
+    procedure: {
+      names: {
+        singular: 'procedure',
+        plural: 'procedures'
+      }
+    },
+    user: {
+      names: {
+        singular: 'user',
+        plural: 'users'
+      }
+    },
+    visit: {
+      names: {
+        singular: 'visit',
+        plural: 'visits'
+      }
+    },
+    vital: {
+      names: {
+        singular: 'vital',
+        plural: 'vitals'
       }
     },
     patient: {
@@ -1465,22 +1550,6 @@ export default {
       names: {
         singular: 'Patient'
       }
-    },
-    localizedStrings: {
-      appointment: 'appointment',
-      medication: 'medication',
-      form: 'form',
-      imagingRequest: 'imaging request',
-      item: 'item',
-      incident: 'incident',
-      attachment: 'attachment',
-      note: 'note',
-      labRequest: 'lab request',
-      medicationRequest: 'medication request',
-      procedure: 'procedure',
-      user: 'user',
-      visit: 'visit',
-      vitals: 'vitals'
     }
   }
 };
