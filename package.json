@@ -37,6 +37,7 @@
     "broccoli-manifest": "0.0.7",
     "broccoli-merge-trees": "^1.1.1",
     "broccoli-serviceworker": "0.1.4",
+    "crypto": "0.0.3",
     "csv-parse": "^1.2.0",
     "devtron": "^1.4.0",
     "electron": "^1.4.15",

@@ -15,7 +15,7 @@ export default Ember.Service.extend({
     let db = this.createDB();
     this.set('configDB', db);
     this.setCurrentUser();
-    if (window.electron) {
+    if (window.ELECTRON) {
       this.set('standAlone', true);
     }
     if (this.get('standAlone') === false) {
