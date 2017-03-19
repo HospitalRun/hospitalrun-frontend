@@ -48,7 +48,9 @@ export default AbstractEditController.extend(UserRoles, {
         let sectionDetails = {};
         sectionDetails.currentScreenTitle = editTitle;
         this.send('setSectionHeader', sectionDetails);
-      }).catch((error) =>  this.send('error', error));
+      }).catch((error) =>  {
+        this._handleError(error);
+      });
     }
   }
 });
