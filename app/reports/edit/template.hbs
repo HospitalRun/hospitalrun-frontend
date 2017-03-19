@@ -45,6 +45,27 @@
 
       {{#if isOutPatient}}
 
+        {{#if visit.visitType }}
+          <div class="ps-info-group test-visit-type">
+            <p><b class="test-visit-type-label">{{t 'reports.form.visitType' }}:</b>
+              <span class="test-visit-type-data">{{visit.visitType}}</span></p>
+          </div>
+        {{/if}}
+
+        {{#if visit.examiner }}
+          <div class="ps-info-group test-examiner">
+            <p><b class="test-examiner-label">{{t 'reports.form.examiner' }}:</b>
+              <span class="test-examiner-data">{{visit.examiner}}</span></p>
+          </div>
+        {{/if}}
+
+        {{#if visit.location }}
+          <div class="ps-info-group test-location">
+            <p><b class="test-location-label">{{t 'reports.form.location' }}:</b>
+              <span class="test-location-data">{{visit.location}}</span></p>
+          </div>
+        {{/if}}
+
         {{#if visit.procedures}}
           <div class="ps-info-group test-opd-procedure">
             <label class="ps-info-label test-opd-procedure-label">{{t 'reports.form.procedures' }}</label>
@@ -131,6 +152,21 @@
                     <span class="test-operative-plan-instructions-data">{{currentOperativePlan.admissionInstructions}}</span></p>
                 </li>
               {{/if}}
+            </ul>
+          </div>
+        {{/if}}
+
+        {{#if visit.patientNotes}}
+          <div class="ps-info-group test-notes">
+            <label class="ps-info-label test-notes-label">{{t 'reports.form.notes.title' }}</label>
+            <ul>
+              {{#each visit.patientNotes as |note|}}
+                <li class="test-notes-data">
+                  <b>{{t 'reports.form.notes.date' }}:</b> {{date-format note.date}}<br>
+                  <b>{{t 'reports.form.notes.author' }}:</b> {{note.authoredBy}}<br>
+                  <b>{{note.noteType}}: {{note.content}}</b>
+                </li>
+              {{/each}}
             </ul>
           </div>
         {{/if}}

@@ -1255,6 +1255,9 @@ export default {
         date: 'Date',
         author: 'Author'
       },
+      visitType: 'Visit Type',
+      examiner: 'Visit Examiner',
+      location: 'Visit Location',
       primaryDiagnosis: 'Primary Diagnosis',
       secondaryDiagnosis: 'Secondary Diagnosis',
       procedures: 'Procedures',

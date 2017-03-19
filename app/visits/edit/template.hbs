@@ -83,7 +83,7 @@
                     <p class="form-control-static">{{t (concat 'visits.labels.status' model.status) }}</p>
                 </div>
               {{/if}}
-              {{select-or-typeahead className="col-sm-4" property="examiner"
+              {{select-or-typeahead className="col-sm-4 visit-examiner" property="examiner"
                 label=(t "visits.labels.examiner") list=physicianList
                 selection=model.examiner
               }}
