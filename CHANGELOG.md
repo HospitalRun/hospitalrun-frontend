@@ -1,7 +1,81 @@
 # Change Log
 
-## [0.9.17](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.17)(2016-12-28)
+## [0.9.18](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.18)
 
+[Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.17...0.9.18)
+
+**Implemented enhancements:**
+
+- Incident Management for 1.0 [\#933](https://github.com/HospitalRun/hospitalrun-frontend/issues/933)
+- Add Discharge Report [\#791](https://github.com/HospitalRun/hospitalrun-frontend/issues/791)
+- Add theatre scheduling [\#761](https://github.com/HospitalRun/hospitalrun-frontend/issues/761)
+- Clinic Visit Report/Admissions Form [\#759](https://github.com/HospitalRun/hospitalrun-frontend/issues/759)
+- Social Work section changes [\#90](https://github.com/HospitalRun/hospitalrun-frontend/issues/90)
+- Insurance number [\#58](https://github.com/HospitalRun/hospitalrun-frontend/issues/58)
+- Add patient copay field [\#51](https://github.com/HospitalRun/hospitalrun-frontend/issues/51)
+
+**Fixed bugs:**
+
+- When app has timed out, some Menu picks not re-directing to the login screen  [\#930](https://github.com/HospitalRun/hospitalrun-frontend/issues/930)
+- Create New Patient checkbox on Patient Check In stays checked on subsequent checkins [\#923](https://github.com/HospitalRun/hospitalrun-frontend/issues/923)
+- Async error on Imaging list [\#365](https://github.com/HospitalRun/hospitalrun-frontend/issues/365)
+
+**Closed issues:**
+
+- cannot open take photo / photo upload dialog [\#966](https://github.com/HospitalRun/hospitalrun-frontend/issues/966)
+- Not able to run the application on development machine [\#965](https://github.com/HospitalRun/hospitalrun-frontend/issues/965)
+- A proper Sketch file for designer contributors to contribute to the marketing website [\#957](https://github.com/HospitalRun/hospitalrun-frontend/issues/957)
+- Add Value Button missing from Lab Pricing Types List screen [\#928](https://github.com/HospitalRun/hospitalrun-frontend/issues/928)
+- Remove Workflow for v1.0 [\#925](https://github.com/HospitalRun/hospitalrun-frontend/issues/925)
+- Upload Import to "Lookup List" not working. [\#921](https://github.com/HospitalRun/hospitalrun-frontend/issues/921)
+- Add new user page is not intuitive after pressing add [\#833](https://github.com/HospitalRun/hospitalrun-frontend/issues/833)
+- Editing appointments seems to display old data/wrong button labels at times [\#815](https://github.com/HospitalRun/hospitalrun-frontend/issues/815)
+- Add Operation Report [\#792](https://github.com/HospitalRun/hospitalrun-frontend/issues/792)
+- Customizable Print Header [\#790](https://github.com/HospitalRun/hospitalrun-frontend/issues/790)
+- Not Moving Beyond Login Screen [\#765](https://github.com/HospitalRun/hospitalrun-frontend/issues/765)
+- Add calendar view to appointments [\#760](https://github.com/HospitalRun/hospitalrun-frontend/issues/760)
+- Operative plan for patients [\#758](https://github.com/HospitalRun/hospitalrun-frontend/issues/758)
+- Data issues with deletions [\#383](https://github.com/HospitalRun/hospitalrun-frontend/issues/383)
+- Can ember data handle failing more gracefully when underlying data is deleted? [\#382](https://github.com/HospitalRun/hospitalrun-frontend/issues/382)
+- Button not visible properly [\#313](https://github.com/HospitalRun/hospitalrun-frontend/issues/313)
+
+**Merged pull requests:**
+
+- Visit Reports [\#991](https://github.com/HospitalRun/hospitalrun-frontend/pull/991) ([adeolabadmus](https://github.com/adeolabadmus))
+- Incident reporting [\#987](https://github.com/HospitalRun/hospitalrun-frontend/pull/987) ([jkleinsc](https://github.com/jkleinsc))
+- Customizable print header [\#985](https://github.com/HospitalRun/hospitalrun-frontend/pull/985) ([baoqchau](https://github.com/baoqchau))
+- Updating documentation about linters. [\#981](https://github.com/HospitalRun/hospitalrun-frontend/pull/981) ([sweeneydavidj](https://github.com/sweeneydavidj))
+- Solved issue \#313 - Button not visible properly [\#971](https://github.com/HospitalRun/hospitalrun-frontend/pull/971) ([Anisha1234](https://github.com/Anisha1234))
+- Fix typo on README.md \#\# Running with Docker section [\#963](https://github.com/HospitalRun/hospitalrun-frontend/pull/963) ([biasao](https://github.com/biasao))
+- Refactor appointment translations [\#951](https://github.com/HospitalRun/hospitalrun-frontend/pull/951) ([billybonks](https://github.com/billybonks))
+- Update translations.js [\#950](https://github.com/HospitalRun/hospitalrun-frontend/pull/950) ([JonanOribe](https://github.com/JonanOribe))
+- User role homescreen [\#945](https://github.com/HospitalRun/hospitalrun-frontend/pull/945) ([tangollama](https://github.com/tangollama))
+- Adding a code of conduct to the project [\#939](https://github.com/HospitalRun/hospitalrun-frontend/pull/939) ([tangollama](https://github.com/tangollama))
+- Add some missing pt-br translations [\#938](https://github.com/HospitalRun/hospitalrun-frontend/pull/938) ([rodolfoghi](https://github.com/rodolfoghi))
+- Refactor patientTypes to use i18n [\#936](https://github.com/HospitalRun/hospitalrun-frontend/pull/936) ([rodolfoghi](https://github.com/rodolfoghi))
+- Add Urdu Locale \(ur\). [\#932](https://github.com/HospitalRun/hospitalrun-frontend/pull/932) ([emadehsan](https://github.com/emadehsan))
+- Update ember-fullcalendar to the latest version 🚀 [\#929](https://github.com/HospitalRun/hospitalrun-frontend/pull/929) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- Update ember-cli-content-security-policy to the latest version 🚀 [\#927](https://github.com/HospitalRun/hospitalrun-frontend/pull/927) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- Add calendar view to appointments [\#926](https://github.com/HospitalRun/hospitalrun-frontend/pull/926) ([jkleinsc](https://github.com/jkleinsc))
+- Updates code to current practices [\#924](https://github.com/HospitalRun/hospitalrun-frontend/pull/924) ([locks](https://github.com/locks))
+- Modified proc-charge model [\#918](https://github.com/HospitalRun/hospitalrun-frontend/pull/918) ([hsorellana](https://github.com/hsorellana))
+- Modified line-item-detail model [\#917](https://github.com/HospitalRun/hospitalrun-frontend/pull/917) ([hsorellana](https://github.com/hsorellana))
+- Lab model modification [\#916](https://github.com/HospitalRun/hospitalrun-frontend/pull/916) ([hsorellana](https://github.com/hsorellana))
+- Modified invoice model [\#914](https://github.com/HospitalRun/hospitalrun-frontend/pull/914) ([hsorellana](https://github.com/hsorellana))
+- Minor models changes [\#912](https://github.com/HospitalRun/hospitalrun-frontend/pull/912) ([hsorellana](https://github.com/hsorellana))
+- Modified patient model, using ember style guides [\#911](https://github.com/HospitalRun/hospitalrun-frontend/pull/911) ([hsorellana](https://github.com/hsorellana))
+- Update stylelint-config-concentric to the latest version 🚀 [\#910](https://github.com/HospitalRun/hospitalrun-frontend/pull/910) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- Update ember-cli-eslint to the latest version 🚀 [\#909](https://github.com/HospitalRun/hospitalrun-frontend/pull/909) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- Update ember-truth-helpers to the latest version 🚀 [\#908](https://github.com/HospitalRun/hospitalrun-frontend/pull/908) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- Update ember-cli-sass to the latest version 🚀 [\#902](https://github.com/HospitalRun/hospitalrun-frontend/pull/902) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- Update ember-i18n to the latest version 🚀 [\#894](https://github.com/HospitalRun/hospitalrun-frontend/pull/894) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- Update ember-cli-fake-server to the latest version 🚀 [\#890](https://github.com/HospitalRun/hospitalrun-frontend/pull/890) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- Update ember-ajax to the latest version 🚀 [\#859](https://github.com/HospitalRun/hospitalrun-frontend/pull/859) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- Update stylelint-scss to the latest version 🚀 [\#856](https://github.com/HospitalRun/hospitalrun-frontend/pull/856) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- Update ember-cli-stylelint to the latest version 🚀 [\#853](https://github.com/HospitalRun/hospitalrun-frontend/pull/853) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- Added a calendar that displays appointments \(WIP\) [\#823](https://github.com/HospitalRun/hospitalrun-frontend/pull/823) ([BogdanAlexandru](https://github.com/BogdanAlexandru))
+
+## [0.9.17](https://github.com/HospitalRun/hospitalrun-frontend/tree/0.9.17) (2016-12-28)
 [Full Changelog](https://github.com/HospitalRun/hospitalrun-frontend/compare/0.9.16...0.9.17)
 
 **Implemented enhancements:**
@@ -9,6 +83,9 @@
 - Appointment by default shouldn't be 'all day'  [\#831](https://github.com/HospitalRun/hospitalrun-frontend/issues/831)
 - Modify the patient object to capture configurable fields [\#470](https://github.com/HospitalRun/hospitalrun-frontend/issues/470)
 - Create a new screen for Followup and Clinic Visits [\#463](https://github.com/HospitalRun/hospitalrun-frontend/issues/463)
+- Add an option to create a new Visit on the creation of a new Patient [\#460](https://github.com/HospitalRun/hospitalrun-frontend/issues/460)
+- Add internationalization support [\#141](https://github.com/HospitalRun/hospitalrun-frontend/issues/141)
+- Create new number component [\#116](https://github.com/HospitalRun/hospitalrun-frontend/issues/116)
 
 **Fixed bugs:**
 
@@ -19,6 +96,7 @@
 - '+ new item' allows negative numbers. [\#824](https://github.com/HospitalRun/hospitalrun-frontend/issues/824)
 - Show user even when add new user is cancel [\#719](https://github.com/HospitalRun/hospitalrun-frontend/issues/719)
 - Patients without identified sex show up as null or undefined on patient reports [\#661](https://github.com/HospitalRun/hospitalrun-frontend/issues/661)
+- Patient ID can be made the same [\#572](https://github.com/HospitalRun/hospitalrun-frontend/issues/572)
 - Patient ID sequence should not go backwards \(greater to lesser\) [\#485](https://github.com/HospitalRun/hospitalrun-frontend/issues/485)
 - Billed Invoices - Buttons disappear from the invoice [\#467](https://github.com/HospitalRun/hospitalrun-frontend/issues/467)
 - When using Elastic Search, only the first 10 patients are returned [\#453](https://github.com/HospitalRun/hospitalrun-frontend/issues/453)
@@ -128,6 +206,7 @@
 - Update docs with info about how to run the tests [\#795](https://github.com/HospitalRun/hospitalrun-frontend/pull/795) ([jglovier](https://github.com/jglovier))
 - CSS refactoring [\#793](https://github.com/HospitalRun/hospitalrun-frontend/pull/793) ([jglovier](https://github.com/jglovier))
 - Improvements done to CONTRIBUTING.md [\#787](https://github.com/HospitalRun/hospitalrun-frontend/pull/787) ([BogdanAlexandru](https://github.com/BogdanAlexandru))
+- First step at allergy work [\#786](https://github.com/HospitalRun/hospitalrun-frontend/pull/786) ([donaldwasserman](https://github.com/donaldwasserman))
 - Update dependencies to enable Greenkeeper 🌴 [\#784](https://github.com/HospitalRun/hospitalrun-frontend/pull/784) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
 - 👻😱 Node.js 0.10 is unmaintained 😱👻 [\#782](https://github.com/HospitalRun/hospitalrun-frontend/pull/782) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
 - Update broccoli-serviceworker to version 0.1.4 🚀 [\#777](https://github.com/HospitalRun/hospitalrun-frontend/pull/777) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
