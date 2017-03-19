@@ -339,6 +339,12 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     }.bind(this));
   },
 
+  _setPrint() {
+    setTimeout(() => {
+      this.contentWindow.print();
+    }, 2000);
+  },
+
   actions: {
     addDiagnosis(newDiagnosis) {
       this.addDiagnosisToModelAndPatient(newDiagnosis);
@@ -407,7 +413,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       }
     },
 
-    editReport(report) {
+    viewReport(report) {
       set(report, 'returnToVisit', get(this, 'model.id'));
       this.transitionToRoute('reports.edit', report);
     },
@@ -514,6 +520,22 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       let patientNotes = this.get('model.patientNotes');
       patientNotes.removeObject(note);
       this.send('update', true);
+    },
+
+    printReport(report) {
+      let reportFrame = document.createElement('iframe');
+      reportFrame.onload = this._setPrint;
+      reportFrame.id = 'visit-report';
+      reportFrame.style.display = 'none';
+      let router = this.get('target');
+      let reportURL = router.generate('reports.edit', report);
+      reportFrame.src = reportURL;
+      let iframe = document.getElementById('visit-report');
+      if (iframe) {
+        document.body.replaceChild(reportFrame, iframe);
+      } else {
+        document.body.appendChild(reportFrame);
+      }
     },
 
     startDateChanged(startDate) {

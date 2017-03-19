@@ -387,6 +387,8 @@ export default {
     action: 'Action',
     notes: 'Notes',
     edit: 'Edit',
+    view: 'View',
+    print: 'Print',
     imageOrders: 'Image Orders',
     labOrders: 'Lab Orders',
     imagingType: 'Imaging Type',
@@ -1243,8 +1245,14 @@ export default {
   reports: {
     titles: {
       saved: 'Report saved',
-      opdTitle: 'OPD Report',
-      dischargeReport: 'Discharge Report'
+      opd: {
+        new: 'New OPD Report',
+        view: 'OPD Report'
+      },
+      discharge: {
+        new: 'New Discharge Report',
+        view: 'Discharge Report'
+      }
     },
     form: {
       visitDate: 'Date of Visit',
@@ -1271,18 +1279,6 @@ export default {
         instructions: 'Instructions upon Admission'
       },
       completedBy: 'Completed By'
-    },
-    opd: {
-      titles: {
-        new: 'New OPD Report',
-        edit: 'Edit OPD Report'
-      }
-    },
-    discharge: {
-      titles: {
-        new: 'New Discharge Report',
-        edit: 'Edit Discharge Report'
-      }
     },
     messages: {
       delete: 'Are you sure you wish to delete this report?',

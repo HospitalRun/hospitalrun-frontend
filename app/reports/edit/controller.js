@@ -32,12 +32,13 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
 
   additionalButtons: Ember.computed('model.{isNew}', function() {
     let isNew = get(this, 'model.isNew');
+    let i18n = get(this, 'i18n');
     if (!isNew) {
       return [{
         class: 'btn btn-primary on-white',
         buttonAction: 'printReport',
         buttonIcon: 'octicon octicon-check',
-        buttonText: 'Print'
+        buttonText: i18n.t('labels.print')
       }];
     }
   }),
@@ -62,8 +63,8 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
     let alertTitle = get(this, 'i18n').t('reports.titles.saved');
     let alertMessage = get(this, 'i18n').t('reports.messages.saved');
     this.saveVisitIfNeeded(alertTitle, alertMessage);
-    let opdTitle = get(this, 'i18n').t('reports.opd.titles.edit');
-    let dischargeTitle = get(this, 'i18n').t('reports.discharge.titles.edit');
+    let opdTitle = get(this, 'i18n').t('reports.titles.opd.view');
+    let dischargeTitle = get(this, 'i18n').t('reports.titles.discharge.view');
     let editTitle = get(this, 'model.visit.outPatient') ? opdTitle : dischargeTitle;
     let sectionDetails = {};
     sectionDetails.currentScreenTitle = editTitle;

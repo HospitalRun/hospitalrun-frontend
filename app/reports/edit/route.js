@@ -23,9 +23,9 @@ export default AbstractEditRoute.extend(AddToPatientRoute, PatientVisits, {
   },
 
   getScreenTitle(model) {
-    let state = get(model, 'isNew') ? 'new' : 'edit';
+    let state = get(model, 'isNew') ? 'new' : 'view';
     let type = get(model, 'visit.outPatient') ? 'opd' : 'discharge';
-    return t(`reports.${type}.titles.${state}`);
+    return t(`reports.titles.${type}.${state}`);
   },
 
   getDiagnosisContainer(visit) {
