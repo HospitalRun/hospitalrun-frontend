@@ -8,6 +8,15 @@ export default Ember.Service.extend({
   session: inject.service(),
   sessionData: Ember.computed.alias('session.data'),
   standAlone: false,
+  userSetupFlag: true,
+
+  needsSetup() {
+    return this.get('userSetupFlag');
+  },
+
+  markSetupComplete() {
+    this.set('userSetupFlag', false);
+  },
 
   setup() {
     let replicateConfigDB = this.replicateConfigDB.bind(this);

@@ -5,6 +5,7 @@ import Ember from 'ember';
 const { inject, isEmpty } = Ember;
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, Navigation, UserRoles, {
+  config: inject.service(),
   session: inject.service(),
   beforeModel() {
     let session = this.get('session');
@@ -24,7 +25,17 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, Navigation, UserRoles
     return this._super(...arguments);
   },
 
+  model() {
+    return this.get('config');
+  },
+
   afterModel() {
     this.controllerFor('navigation').set('allowSearch', false);
+  },
+
+  actions: {
+    createNewUser() {
+      return this.transitionTo('users.edit', 'new');
+    }
   }
 });

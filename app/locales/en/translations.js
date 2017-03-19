@@ -1,6 +1,7 @@
 export default {
   dashboard: {
-    title: 'What would you like to do?'
+    title: 'Welcome to HospitalRun!',
+    setup: 'You need to setup a User.'
   },
   errors: {
     inclusion: 'is not included in the list',

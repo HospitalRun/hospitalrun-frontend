@@ -1,7 +1,14 @@
 <section class="view index">
 
   <div class="view-top-bar">
-    <h1 class="view-current-title">{{t "dashboard.title"}}</h1>
+    <h1 class="view-current-title">{{t "dashboard.title" }}</h1>
   </div>
-
+  {{#if model.userSetupFlag}}
+    <div class="panel-body">
+      <p>{{t "dashboard.setup"}}</p>
+      <button type="button" class="btn btn-primary align-left" {{action "newUser" }}>
+        <span class="octicon octicon-plus"></span> {{t 'buttons.newUser'}}
+      </button>
+    </div>
+  {{/if}}
 </section>
