@@ -42,7 +42,7 @@ export default AbstractModel.extend({
     async: false
   }),
   customForms: DS.attr('custom-forms'),
-  diagnoses: DS.hasMany('diagnosis'),
+  diagnoses: DS.hasMany('diagnosis', { async: false }),
   dischargeInfo: DS.attr('string'),
   endDate: DS.attr('date'), // if visit type is outpatient, startDate and endDate are equal
   examiner: DS.attr('string'),

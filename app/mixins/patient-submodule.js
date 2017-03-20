@@ -79,10 +79,13 @@ export default Ember.Mixin.create(PatientVisits, {
           && diagnosis.get('secondaryDiagnosis') === newDiagnosis.get('secondaryDiagnosis');
     });
     if (!diagnosisExists) {
-      patientDiagnoses.addObject(newDiagnosis);
-      let patient = this.get('model.patient');
-      patient.save().then(() => {
-        this.silentUpdate('closeModal');
+      let newPatientDiagnosis = this._copyDiagnosis(newDiagnosis);
+      newPatientDiagnosis.save().then(() => {
+        patientDiagnoses.addObject(newPatientDiagnosis);
+        let patient = this.get('model.patient');
+        patient.save().then(() => {
+          this.silentUpdate('closeModal');
+        });
       });
     } else {
       this.silentUpdate('closeModal');
@@ -150,12 +153,7 @@ export default Ember.Mixin.create(PatientVisits, {
     let activeDiagnoses;
     if (!isEmpty(diagnoses)) {
       activeDiagnoses = diagnoses.filterBy('active', true).map((diagnosis) => {
-        let description = diagnosis.get('diagnosis');
-        let newDiagnosisProperties = diagnosis.getProperties('active', 'date', 'diagnosis', 'secondaryDiagnosis');
-        newDiagnosisProperties.diagnosis = description;
-        return this.store.createRecord('diagnosis',
-          newDiagnosisProperties
-        );
+        return this._copyDiagnosis(diagnosis);
       });
     }
     let currentDiagnoses = get(model, 'diagnoses');
@@ -274,5 +272,16 @@ export default Ember.Mixin.create(PatientVisits, {
   },
 
   visitId: Ember.computed.alias('model.visit.id'),
-  visitsController: Ember.computed.alias('controllers.visits')
+  visitsController: Ember.computed.alias('controllers.visits'),
+
+  _copyDiagnosis(diagnosisToCopy) {
+    let attributesToCopy = [
+      'date',
+      'diagnosis',
+      'secondaryDiagnosis'
+    ];
+    return this.store.createRecord('diagnosis',
+      diagnosisToCopy.getProperties(attributesToCopy)
+    );
+  }
 });
