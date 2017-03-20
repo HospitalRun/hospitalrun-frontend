@@ -23,44 +23,6 @@ export default Ember.Service.extend({
         this.set('mainDB', db);
         this.set('setMainDB', true);
       })
-      .then(() => {
-        this.createOptionHeader([enviroment.hospitalInfoDoc]);
-      });
-  },
-
-  createOptionHeader(docs) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      let mainDB = get(this, 'mainDB');
-      let ids = docs.map((doc) => {
-        return doc._id;
-      });
-      return mainDB.allDocs({ keys: ids })
-        .then((res) => {
-          if (res.rows) {
-            let docsToCreate = res.rows.filter((row) => {
-              return (row.error && row.error === 'not_found') || (row.value && row.value.deleted);
-            }).map((row) => {
-              return docs.find((doc) => {
-                if (doc._id === row.key) {
-                  if (row.value && row.value.deleted && row.value.rev !== doc._rev) {
-                    doc._rev = row.value.rev;
-                  }
-                  return true;
-                }
-              });
-            });
-            if (docsToCreate.length) {
-              return mainDB.bulkDocs(docsToCreate);
-            }
-          }
-        })
-        .then((res) => {
-          resolve(res);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
   },
 
   createDB(configs) {
