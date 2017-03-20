@@ -165,16 +165,18 @@
         {{/if}}
 
         {{#if visit.patientNotes}}
-          <label class="ps-info-label">{{t 'reports.form.notes.title' }}</label>
-          <ul>
-            {{#each visit.patientNotes as |note|}}
-              <li>
-                <b>{{t 'reports.form.notes.date' }}:</b> {{date-format note.date}}<br>
-                <b>{{t 'reports.form.notes.author' }}:</b> {{note.authoredBy}}<br>
-                <b>{{note.noteType}}: {{note.content}}</b>
-              </li>
-            {{/each}}
-          </ul>
+          <div class="ps-info-group test-notes">
+            <label class="ps-info-label test-notes-label">{{t 'reports.form.notes.title' }}</label>
+            <ul>
+              {{#each visit.patientNotes as |note|}}
+                <li class="test-notes-data">
+                  <b>{{t 'reports.form.notes.date' }}:</b> {{date-format note.date}}<br>
+                  <b>{{t 'reports.form.notes.author' }}:</b> {{note.authoredBy}}<br>
+                  <b>{{note.noteType}}: {{note.content}}</b>
+                </li>
+              {{/each}}
+            </ul>
+          </div>
         {{/if}}
 
         {{#if nextAppointment}}

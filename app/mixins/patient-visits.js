@@ -23,9 +23,9 @@ export default Ember.Mixin.create(PouchDbMixin, {
   },
 
   getPatientFutureAppointment(visit, outPatient) {
-    let patientId = visit.get('patient.id');
-    let visitDate = visit.get('startDate');
-    let maxValue = this.get('maxValue');
+    let patientId = get(visit, 'patient.id');
+    let visitDate = get(visit, 'startDate');
+    let maxValue = get(this, 'maxValue');
     let promise = this.store.query('appointment', {
       options: {
         startkey: [patientId, null, null, 'appointment_'],
@@ -34,18 +34,17 @@ export default Ember.Mixin.create(PouchDbMixin, {
       mapReduce: 'appointments_by_patient'
     }).then(function(result) {
       let futureAppointments = result.filter(function(data) {
-        let startDate = data.get('startDate');
+        let startDate = get(data, 'startDate');
         return startDate && moment(startDate).isAfter(moment(visitDate), 'day');
       }).sortBy('startDate');
       if (!futureAppointments.length) {
-        return '';
+        return null;
       }
       if (!outPatient) {
         let [appointment] = futureAppointments;
         return appointment;
       } else {
-        let res = futureAppointments.slice(0, 3);
-        return res;
+        return futureAppointments.slice(0, 3);
       }
 
     });
@@ -56,7 +55,7 @@ export default Ember.Mixin.create(PouchDbMixin, {
     let returnList = [];
     if (!Ember.isEmpty(visits)) {
       visits.forEach(function(visit) {
-        visit.get(name).then(function(items) {
+        get(visit, name).then(function(items) {
           returnList.addObjects(items);
         });
       });

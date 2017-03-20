@@ -4,6 +4,11 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 
+const {
+  get,
+  set
+} = Ember;
+
 export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis, PouchDbMixin, {
   lookupListsToUpdate: [{
     name: 'physicianList',
@@ -26,7 +31,7 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
 
   additionalButtons: Ember.computed('model.{isNew}', function() {
-    let isNew = this.get('model.isNew');
+    let isNew = get(this, 'model.isNew');
     if (!isNew) {
       return [{
         class: 'btn btn-primary on-white',
@@ -40,23 +45,26 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
   updateCapability: 'add_report',
 
   beforeUpdate() {
-    return new Ember.RSVP.Promise(function(resolve) {
-      if (this.get('model.isNew')) {
-        if (this.get('model.visit.outPatient')) {
-          this.get('model').set('reportType', 'OPD Report');
+    return new Ember.RSVP.Promise((resolve) => {
+      let model = get(this, 'model');
+      if (get(model, 'isNew')) {
+        if (get(this, 'model.visit.outPatient')) {
+          set(model, 'reportType', 'OPD Report');
         } else {
-          this.get('model').set('reportType', 'Discharge Report');
+          set(model, 'reportType', 'Discharge Report');
         }
       }
       resolve();
-    }.bind(this));
+    });
   },
 
   afterUpdate() {
-    let alertTitle = this.get('i18n').t('reports.titles.saved');
-    let alertMessage = this.get('i18n').t('reports.messages.saved');
+    let alertTitle = get(this, 'i18n').t('reports.titles.saved');
+    let alertMessage = get(this, 'i18n').t('reports.messages.saved');
     this.saveVisitIfNeeded(alertTitle, alertMessage);
-    let editTitle = this.get('model.visit.outPatient') ? this.get('i18n').t('reports.opd.titles.edit') : this.get('i18n').t('reports.discharge.titles.edit');
+    let opdTitle = get(this, 'i18n').t('reports.opd.titles.edit');
+    let dischargeTitle = get(this, 'i18n').t('reports.discharge.titles.edit');
+    let editTitle = get(this, 'model.visit.outPatient') ? opdTitle : dischargeTitle;
     let sectionDetails = {};
     sectionDetails.currentScreenTitle = editTitle;
     this.send('setSectionHeader', sectionDetails);

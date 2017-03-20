@@ -4,6 +4,11 @@ import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
 
+const {
+  get,
+  set
+} = Ember;
+
 export default AbstractEditRoute.extend(AddToPatientRoute, PatientVisits, {
   modelName: 'report',
   customForms: Ember.inject.service(),
@@ -13,51 +18,51 @@ export default AbstractEditRoute.extend(AddToPatientRoute, PatientVisits, {
       reportDate: new Date(),
       customForms: Ember.Object.create()
     };
-    let customForms = this.get('customForms');
+    let customForms = get(this, 'customForms');
     return customForms.setDefaultCustomForms(['opdReport', 'dischargeReport'], newReportData);
   },
 
   getScreenTitle(model) {
-    let state = model.get('isNew') ? 'new' : 'edit';
-    let type = model.get('visit.outPatient') ? 'opd' : 'discharge';
+    let state = get(model, 'isNew') ? 'new' : 'edit';
+    let type = get(model, 'visit.outPatient') ? 'opd' : 'discharge';
     return t(`reports.${type}.titles.${state}`);
   },
 
   getDiagnosisContainer(visit) {
-    if (visit.get('outPatient')) {
+    if (get(visit, 'outPatient')) {
       return visit;
     }
     return null;
   },
 
   getCurrentOperativePlan(patient) {
-    let operativePlans = patient.get('operativePlans');
+    let operativePlans = get(patient, 'operativePlans');
     return operativePlans.findBy('isPlanned', true);
   },
 
   afterModel(model) {
-    if (!model.get('isNew')) {
-      let patient = model.get('visit.patient');
-      model.set('patient', patient);
+    if (!get(model, 'isNew')) {
+      let patient = get(model, 'visit.patient');
+      set(model, 'patient', patient);
     }
-    if (!model.get('visit')) {
+    if (!get(model, 'visit')) {
       return this.transitionTo('patients');
     }
   },
 
   setupController(controller, model) {
     this._super(controller, model);
-    let visit = model.get('visit');
-    let patient = model.get('patient');
-    let isOutPatient = visit.get('outPatient');
-    controller.set('visit', visit);
-    controller.set('isOutPatient', isOutPatient);
-    controller.set('diagnosisContainer', this.getDiagnosisContainer(visit));
-    controller.set('currentOperativePlan', this.getCurrentOperativePlan(patient));
+    let visit = get(model, 'visit');
+    let patient = get(model, 'patient');
+    let isOutPatient = get(visit, 'outPatient');
+    set(controller, 'visit', visit);
+    set(controller, 'isOutPatient', isOutPatient);
+    set(controller, 'diagnosisContainer', this.getDiagnosisContainer(visit));
+    set(controller, 'currentOperativePlan', this.getCurrentOperativePlan(patient));
     if (isOutPatient) {
-      controller.set('nextAppointments', this.getPatientFutureAppointment(model.get('visit'), true));
+      set(controller, 'nextAppointments', this.getPatientFutureAppointment(visit, true));
     } else {
-      controller.set('nextAppointment', this.getPatientFutureAppointment(model.get('visit')));
+      set(controller, 'nextAppointment', this.getPatientFutureAppointment(visit));
     }
   }
 });
