@@ -25,7 +25,9 @@ export default Ember.Mixin.create({
             value: 1,
             prefix
           }));
-          return this._findUnusedId(sequence, prefix, modelName);
+          return sequence.save().then((sequence) => {
+            return this._findUnusedId(sequence, prefix, modelName);
+          });
         });
     });
   },
