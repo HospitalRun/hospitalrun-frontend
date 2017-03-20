@@ -1000,10 +1000,6 @@ export default {
     newTitle: 'New Lab Request',
     deleteTitle: 'Delete Request',
     completedTitle: 'Completed Labs',
-    labels: {
-      labType: 'Lab Type',
-      addNewVisit: '--Add New Visit--'
-    },
     messages: {
       noItemsFound: 'No labs found.',
       createNewRecord: 'Create a new record?',
@@ -1541,6 +1537,30 @@ export default {
       names: {
         singular: 'vital',
         plural: 'vitals'
+      }
+    },
+    labs: {
+      labels: {
+        labDate: 'Date Completed',
+        notes: 'Notes',
+        patient: 'Patient',
+        labType: 'Lab Type',
+        requestedBy: 'Requested By',
+        requestedDate: 'Date Requested',
+        result: 'Results',
+        visit: 'Visit'
+      },
+      placeholders: {
+        visit: '--Add New Visit--'
+      }
+    },
+    pricing: {
+      labels: {
+        category: 'Category',
+        expenseAccount: 'Department',
+        name: 'Name',
+        price: 'Price',
+        pricingType: 'Type'
       }
     },
     patient: {
