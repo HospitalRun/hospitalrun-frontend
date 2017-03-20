@@ -436,7 +436,7 @@ function saveReport(assert, type) {
     waitToDisappear('.modal-dialog');
   });
   andThen(function() {
-    assert.equal(find('.view-current-title').text(), `Edit ${type} Report`, 'Report title updated correctly');
+    assert.equal(find('.view-current-title').text(), `${type} Report`, 'Report title updated correctly');
     assert.ok(find('.panel-footer button:contains(Print)').is(':visible'), 'Print button is now visible');
     click('button:contains(Return)');
   });
@@ -454,7 +454,7 @@ function editReport(assert, type) {
   andThen(function() {
     assert.ok(currentURL().indexOf('visits/reports/edit') > -1, 'Edit report url is correct');
     assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Patient record displays');
-    assert.equal(find('.view-current-title').text(), `Edit ${type} Report`, 'Edit report title displayed correctly');
+    assert.equal(find('.view-current-title').text(), `${type} Report`, 'Edit report title displayed correctly');
     assert.ok(find('.panel-footer button:contains(Print)').is(':visible'), 'Print button is on edit visible');
   });
 }

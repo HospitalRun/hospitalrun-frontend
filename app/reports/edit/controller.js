@@ -62,8 +62,8 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
     let alertTitle = get(this, 'i18n').t('reports.titles.saved');
     let alertMessage = get(this, 'i18n').t('reports.messages.saved');
     this.saveVisitIfNeeded(alertTitle, alertMessage);
-    let opdTitle = get(this, 'i18n').t('reports.opd.titles.edit');
-    let dischargeTitle = get(this, 'i18n').t('reports.discharge.titles.edit');
+    let opdTitle = get(this, 'i18n').t('reports.titles.opdReport');
+    let dischargeTitle = get(this, 'i18n').t('reports.titles.dischargeReport');
     let editTitle = get(this, 'model.visit.outPatient') ? opdTitle : dischargeTitle;
     let sectionDetails = {};
     sectionDetails.currentScreenTitle = editTitle;
