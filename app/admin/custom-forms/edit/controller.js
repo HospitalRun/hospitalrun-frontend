@@ -79,7 +79,9 @@ export default AbstractEditController.extend({
     'operativePlan',
     'patient',
     'socialwork',
-    'visit'
+    'visit',
+    'opdReport',
+    'dischargeReport'
   ],
 
   formTypes: computed(function() {

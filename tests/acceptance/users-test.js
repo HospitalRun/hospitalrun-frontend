@@ -126,6 +126,7 @@ test('create new user', function(assert) {
       waitToAppear('.modal-dialog');
       andThen(() => {
         assert.equal(find('.modal-title').text(), 'User Saved', 'User was saved successfully');
+        assert.equal(find('.view-current-title').text(), 'Edit User', 'Page title changed to Edit User');
       });
       click('button:contains(Ok)');
     });

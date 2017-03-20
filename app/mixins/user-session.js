@@ -198,6 +198,15 @@ export default Ember.Mixin.create({
       'Nurse Manager',
       'System Administrator'
     ],
+    add_report: [
+      'Data Entry',
+      'Doctor',
+      'Hospital Administrator',
+      'Medical Records Officer',
+      'Nurse',
+      'Nurse Manager',
+      'System Administrator'
+    ],
     admit_patient: [
       'Data Entry',
       'Doctor',
@@ -317,6 +326,14 @@ export default Ember.Mixin.create({
       'System Administrator'
     ],
     delete_vitals: [
+      'Doctor',
+      'Hospital Administrator',
+      'Medical Records Officer',
+      'Nurse',
+      'Nurse Manager',
+      'System Administrator'
+    ],
+    delete_report: [
       'Doctor',
       'Hospital Administrator',
       'Medical Records Officer',

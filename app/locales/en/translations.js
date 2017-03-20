@@ -173,7 +173,9 @@ export default {
         socialworkFormType: 'Social Work',
         text: 'Text',
         textarea: 'Large Text',
-        visitFormType: 'Visit'
+        visitFormType: 'Visit',
+        opdReportFormType: 'Outpatient Report',
+        dischargeReportFormType: 'Discharge Report'
       },
       messages: {
         deleteForm: 'Are you sure you want to delete this custom form?',
@@ -994,14 +996,16 @@ export default {
       statusDischarged: 'Discharged',
       statusCheckedIn: 'Checked In',
       statusCheckedOut: 'Checked Out',
-      createNewPatient: 'Create New Patient'
+      createNewPatient: 'Create New Patient',
+      reportType: 'Report type'
     },
     navigation: {
       charges: 'Charges',
       notes: 'Notes',
       orders: 'Orders',
       procedures: 'Procedures',
-      vitals: 'Vitals'
+      vitals: 'Vitals',
+      reports: 'Reports'
     }
   },
   labs: {
@@ -1105,6 +1109,8 @@ export default {
       backToPatients: 'Back to Patient List',
       newPatient: '+ new patient',
       patientCheckIn: 'Patient Check In',
+      newOPDReport: 'New OPD Report',
+      newDischargeReport: 'New Discharge Report',
       scheduleSurgery: 'Schedule Surgery'
     },
     labels: {
@@ -1232,6 +1238,55 @@ export default {
     },
     buttons: {
       addMedication: 'Add Medication'
+    }
+  },
+  reports: {
+    titles: {
+      saved: 'Report saved',
+      opdTitle: 'OPD Report',
+      dischargeReport: 'Discharge Report'
+    },
+    form: {
+      visitDate: 'Date of Visit',
+      admissionDate: 'Admission Date',
+      dischargeDate: 'Discharge Date',
+      notes: {
+        title: 'Notes',
+        date: 'Date',
+        author: 'Author'
+      },
+      primaryDiagnosis: 'Primary Diagnosis',
+      secondaryDiagnosis: 'Secondary Diagnosis',
+      procedures: 'Procedures',
+      allProcedures: 'All Procedures Performed',
+      labs: 'Labs',
+      images: 'Images',
+      medications: 'Medications',
+      nextAppointment: 'Next Appointment',
+      nextAppointments: 'Next Appointments',
+      operativePlan: {
+        title: 'Operative Plan',
+        description: 'Operation Description',
+        procedures: 'Planned Procedures',
+        instructions: 'Instructions upon Admission'
+      },
+      completedBy: 'Completed By'
+    },
+    opd: {
+      titles: {
+        new: 'New OPD Report',
+        edit: 'Edit OPD Report'
+      }
+    },
+    discharge: {
+      titles: {
+        new: 'New Discharge Report',
+        edit: 'Edit Discharge Report'
+      }
+    },
+    messages: {
+      delete: 'Are you sure you wish to delete this report?',
+      saved: 'The report has been saved.'
     }
   },
   components: {
