@@ -1543,10 +1543,32 @@ export default {
         plural: 'vitals'
       }
     },
+    labs: {
+      labels:{
+        labDate: 'Date Completed',
+        notes: 'Notes',
+        patient: 'Patient',
+        labType: 'Lab Type',
+        requestedBy: 'Requested By',
+        requestedDate: 'Date Requested',
+        result: 'Results',
+        visit: 'Visit',
+        pricingType: 'Type',
+      }
+    },
     patient: {
       labels: {
         name: 'Name'
       },
+      pricing:{
+        labels: {
+          category: 'Category',
+          expenseAccount: 'Department',
+          name: 'Name',
+          price: 'Price'
+
+        },
+      }
       names: {
         singular: 'Patient'
       }
