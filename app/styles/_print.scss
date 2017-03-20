@@ -1,4 +1,4 @@
-.print-section {
+.report-header {
   display: none;
 }
 
@@ -17,8 +17,10 @@
     width: 90%;
   }
 
-  .print-section {
+  .report-header {
     display: block;
+    border-bottom: 1px solid #d2dae3;
+    padding: 10px 0;
     text-align: center;
   }
 
@@ -31,5 +33,47 @@
 
   .patient-history-heading {
     border-bottom: 1px solid $black;
+  }
+
+  .report-logo {
+    height: 60px;
+  }
+
+  .report .patient-summary {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #d2dae3;
+  }
+
+  .report input {
+    border: 0;
+    padding: 5px;
+    font-size: .8em;
+  }
+
+  .report select {
+    outline: 0;
+    border: 0;
+    text-overflow: '';
+    -moz-appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .report .panel-primary {
+    position: absolute;
+    left: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .print-hide {
+    display: none;
+  }
+
+  .view-top-bar {
+    display: none;
+  }
+
+  .view-sub-bar {
+    display: none;
   }
 }

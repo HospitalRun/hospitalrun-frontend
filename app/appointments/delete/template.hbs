@@ -5,6 +5,7 @@
     updateButtonText=updateButtonText }}
   <div class="alert alert-danger">
     <span class="glyphicon glyphicon-warning-sign"></span>
-    {{t 'appointments.messages.deleteAppointmentMessage'}}
+
+    {{t 'messages.delete_singular' name= (t 'models.appointment.names.singular') }}
   </div>
 {{/modal-dialog}}
