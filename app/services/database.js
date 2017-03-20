@@ -3,10 +3,8 @@ import createPouchViews from 'hospitalrun/utils/pouch-views';
 import List from 'npm:pouchdb-list';
 import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
 import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
-import enviroment from './../config/environment';
 
 const {
-  get,
   isEmpty
 } = Ember;
 
@@ -22,7 +20,7 @@ export default Ember.Service.extend({
       .then((db) => {
         this.set('mainDB', db);
         this.set('setMainDB', true);
-      })
+      });
   },
 
   createDB(configs) {
