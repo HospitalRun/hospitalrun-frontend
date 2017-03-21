@@ -166,7 +166,7 @@ test('delete user', function(assert) {
       click('button:contains(Delete):last');
       waitToAppear('.modal-dialog');
       andThen(() => {
-        assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete the user joe@donuts.com?', 'User is displayed for deletion');
+        assert.equal(find('.alert').text().trim(), 'Are you sure you wish to delete ?', 'User is displayed for deletion');
       });
       click('button:contains(Delete):last');
       andThen(() => {

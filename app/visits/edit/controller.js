@@ -415,7 +415,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
     viewReport(report) {
       set(report, 'returnToVisit', get(this, 'model.id'));
-      this.transitionToRoute('reports.edit', report);
+      this.transitionToRoute('visits.reports.edit', report);
     },
 
     newPatientChanged(createNewPatient) {
@@ -464,7 +464,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     },
 
     newReport() {
-      this._addChildObject('reports.edit');
+      this._addChildObject('visits.reports.edit');
     },
 
     showAddProcedure() {

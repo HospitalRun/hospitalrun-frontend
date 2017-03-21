@@ -36,7 +36,8 @@ export default AbstractEditController.extend({
 
     showDeleteItem(item) {
       let i18n = get(this, 'i18n');
-      let message = i18n.t('incident.messages.deleteItem');
+      let modelName = i18n.t('models.item.names.singular');
+      let message = i18n.t('messages.delete_singular', { name: modelName });
       let title = i18n.t('incident.titles.deleteItem');
       this.displayConfirm(title, message, 'deleteItem', Ember.Object.create({
         itemToDelete: item

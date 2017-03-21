@@ -115,10 +115,7 @@ Router.map(function() {
     }, function() {
       this.route('edit', { path: '/edit/:procedure_id' });
     });
-
-    this.route('reports', {
-      resetNamespace: true
-    }, function() {
+    this.route('reports', function() {
       this.route('edit', { path: '/edit/:report_id' });
     });
 

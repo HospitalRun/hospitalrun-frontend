@@ -178,7 +178,6 @@ export default {
         dischargeReportFormType: 'Discharge Report'
       },
       messages: {
-        deleteForm: 'Are you sure you want to delete this custom form?',
         formSaved: 'The {{name}} form has been saved.'
       },
       titles: {
@@ -244,9 +243,6 @@ export default {
       visitLocationList: 'Visit Locations',
       visitTypes: 'Visit Types',
       wardPricingTypes: 'Ward Pricing Types',
-      messages: {
-        deleteLookupValue: 'Are you sure you want to delete the {{value}} value?'
-      },
       titles: {
         deleteLookupValue: 'Delete Value'
       }
@@ -469,7 +465,6 @@ export default {
     createNewRecord: 'Create a new record?',
     createNewUser: 'Create a new user?',
     noUsersFound: 'No users found.',
-    areYouSureDelete: 'Are you sure you wish to delete the user {{user}}?',
     userHasBeenSaved: 'The user has been saved.',
     userSaved: 'User Saved',
     onBehalfOf: 'on behalf of',
@@ -479,7 +474,10 @@ export default {
     forAuthorizedPersons: 'This report is for authorized persons only.',
     requiredFieldsCorrectErrors: 'Please fill in required fields (marked with *) and correct the errors before saving.',
     saveActionException: 'An error occurred while attempting to save: {{message}}',
-    reportError: 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.'
+    reportError: 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.',
+    delete: 'Are you sure you wish to delete {{name}}?',
+    delete_singular: 'Are you sure you wish to delete this {{name}}?',
+    delete_plural: 'Are you sure you wish to delete these {{name}}?'
   },
   alerts: {
     pleaseWait: 'Please Wait',
@@ -657,7 +655,6 @@ export default {
     messages: {
       adjust: 'Please adjust the quantities on the appropriate location(s) to account for the difference of {{difference}}.',
       createRequest: 'Create a new request?',
-      delete: 'Are you sure you wish to delete {{name}}?',
       itemNotFound: 'The inventory item <strong>{{item}}</strong> could not be found.<br>If you would like to create a new inventory item, fill in the information below.<br>Otherwise, press the Cancel button to return.',
       loading: 'Loading transactions ...',
       purchaseSaved: 'The inventory purchases have been successfully saved.',
@@ -745,7 +742,6 @@ export default {
       addNewVisit: '--Add New Visit--'
     },
     messages: {
-      delete: 'Are you sure you wish to delete this imaging request?',
       noCompleted: 'No completed items found.'
     },
     titles: {
@@ -814,11 +810,6 @@ export default {
       attachmentFileRequired: 'Please upload a file or take a picture or before saving this attachment.',
       createNew: 'Create a new incident?',
       createNewIncidentCategory: 'Create a new Incident Category?',
-      deleteAttachment: 'Are you sure you wish to delete this attachment?',
-      deleteCategory: 'Are you sure you wish to delete {{name}}?',
-      deleteIncident: 'Are you sure you wish to delete this incident?',
-      deleteItem: 'Are you sure you want to delete this item?',
-      deleteNote: 'Are you sure you wish to delete this note?',
       fillIn: 'Fill in the above options to calculate score',
       incidentCategorySaved: 'The {{name}} category has been saved.',
       noClosedIncidents: 'No closed incidents found.',
@@ -874,8 +865,7 @@ export default {
       newMedicationRequest: 'New Medication Request'
     },
     messages: {
-      createNew: 'Create a new medication request?',
-      confirmDeletion: 'Are you sure you wish to delete this medication request?'
+      createNew: 'Create a new medication request?'
     },
     labels: {
       refills: 'Refills',
@@ -909,7 +899,6 @@ export default {
     calendarTitle: 'Appointments Calendar',
     messages: {
       appointmentSaved: 'The appointment for {{patient}} has been saved.',
-      deleteAppointmentMessage: 'Are you sure you wish to delete this appointment?',
       endTimeLaterThanStart: 'Please select an end time later than the start time.'
     },
     buttons: {
@@ -928,9 +917,6 @@ export default {
     }
   },
   vitals: {
-    messages: {
-      delete: 'Are you sure you wish to delete these vitals?'
-    },
     labels: {
       dateRecorded: 'Date Recorded',
       temperature: 'Temperature',
@@ -955,7 +941,6 @@ export default {
       visitSaved: 'Visit Saved'
     },
     messages: {
-      delete: 'Are you sure you wish to delete this visit?',
       checkOut: 'Are you sure you wish to check out {{patientName}}?',
       checkedOut: '{{patientName}} has been checked out.',
       discharged: '{{patientName}} has been discharged.',
@@ -971,7 +956,9 @@ export default {
       newVitals: 'New Vitals',
       checkIn: 'Check In',
       checkOut: 'Check Out',
-      discharge: 'Discharge'
+      discharge: 'Discharge',
+      newOPDReport: 'New OPD Report',
+      newDischargeReport: 'New Discharge Report'
     },
     labels: {
       diagnosis: 'Diagnosis',
@@ -1024,7 +1011,6 @@ export default {
     messages: {
       noItemsFound: 'No labs found.',
       createNewRecord: 'Create a new record?',
-      confirmDeletion: 'Are you sure you wish to delete this lab request?',
       noCompleted: 'No completed items found.'
     },
     buttons: {
@@ -1087,7 +1073,6 @@ export default {
     },
     messages: {
       areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
-      deletePatient: 'Are you sure you wish to delete {{firstName}} {{lastName}}?',
       noPatientsFound: 'No patients found.',
       savedPatient: 'The patient record for {{displayName}} has been saved.',
       notFoundQuickAdd: 'The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.',
@@ -1111,8 +1096,6 @@ export default {
       backToPatients: 'Back to Patient List',
       newPatient: '+ new patient',
       patientCheckIn: 'Patient Check In',
-      newOPDReport: 'New OPD Report',
-      newDischargeReport: 'New Discharge Report',
       scheduleSurgery: 'Schedule Surgery'
     },
     labels: {
@@ -1170,7 +1153,6 @@ export default {
   billing: {
     alerts: {
       noInvoiceFound: 'No invoices found',
-      deleteItem: 'Are you sure you wish to delete {{item}}?',
       noPricingItems: 'No pricing items found.',
       noPricingProfiles: 'No pricing profiles found.'
     },
@@ -1234,8 +1216,6 @@ export default {
       medicationUsed: 'Medication Used'
     },
     messages: {
-      deleteMedication: 'Are you sure you want to delete this medication?',
-      delete: 'Are you sure you wish to delete this procedure?',
       saved: 'The procedure record has been saved.'
     },
     buttons: {
@@ -1245,16 +1225,12 @@ export default {
   reports: {
     titles: {
       saved: 'Report saved',
-      opd: {
-        new: 'New OPD Report',
-        view: 'OPD Report'
-      },
-      discharge: {
-        new: 'New Discharge Report',
-        view: 'Discharge Report'
-      }
+      opdReport: 'OPD Report',
+      newOPDReport: 'New OPD Report',
+      dischargeReport: 'Discharge Report',
+      newDischargeReport: 'New Discharge Report'
     },
-    form: {
+    labels: {
       visitDate: 'Date of Visit',
       admissionDate: 'Admission Date',
       dischargeDate: 'Discharge Date',
@@ -1263,6 +1239,9 @@ export default {
         date: 'Date',
         author: 'Author'
       },
+      visitType: 'Visit Type',
+      examiner: 'Visit Examiner',
+      location: 'Visit Location',
       primaryDiagnosis: 'Primary Diagnosis',
       secondaryDiagnosis: 'Secondary Diagnosis',
       procedures: 'Procedures',
@@ -1472,6 +1451,91 @@ export default {
         type: 'Type',
         notes: 'Notes',
         appointmentDate: 'Date'
+      },
+      names: {
+        singular: 'appointment',
+        plural: 'appointments'
+      }
+    },
+    attachment: {
+      names: {
+        singular: 'attachment',
+        plural: 'attachments'
+      }
+    },
+    form: {
+      names: {
+        singular: 'form',
+        plural: 'forms'
+      }
+    },
+    incident: {
+      names: {
+        singular: 'incident',
+        plural: 'incidents'
+      }
+    },
+    item: {
+      names: {
+        singular: 'item',
+        plural: 'items'
+      }
+    },
+    imaging: {
+      request: {
+        singular: 'imaging request',
+        plural: 'imaging requests'
+      },
+      names: 'imaging'
+    },
+    medication: {
+      request: {
+        singular: 'medication request',
+        plural: 'medication requests'
+      },
+      names: {
+        singular: 'medication',
+        plural: 'medications'
+      }
+    },
+    note: {
+      names: {
+        singular: 'note',
+        plural: 'notes'
+      }
+    },
+    lab: {
+      request: {
+        singular: 'lab request',
+        plural: 'lab requests'
+      },
+      names: {
+        singular: 'lab',
+        plural: 'labs'
+      }
+    },
+    procedure: {
+      names: {
+        singular: 'procedure',
+        plural: 'procedures'
+      }
+    },
+    user: {
+      names: {
+        singular: 'user',
+        plural: 'users'
+      }
+    },
+    visit: {
+      names: {
+        singular: 'visit',
+        plural: 'visits'
+      }
+    },
+    vital: {
+      names: {
+        singular: 'vital',
+        plural: 'vitals'
       }
     },
     patient: {
