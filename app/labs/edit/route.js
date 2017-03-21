@@ -19,18 +19,13 @@ export default AbstractEditRoute.extend(AddToPatientRoute, ChargeRoute, PatientL
     }
   },
 
-  getCustomFormData() {
-    let customForms = this.get('customForms');
-    let newData = {
+  getNewData() {
+    let newLabData = {
+      selectPatient: true,
+      requestDate: moment().startOf('day').toDate(),
       customForms: Ember.Object.create()
     };
-    return customForms.setDefaultCustomForms(['lab'], newData);
-  },
-
-  getNewData() {
-    return Ember.RSVP.resolve({
-      selectPatient: true,
-      requestDate: moment().startOf('day').toDate()
-    });
+    let customForms = this.get('customForms');
+    return customForms.setDefaultCustomForms(['lab'], newLabData);
   }
 });

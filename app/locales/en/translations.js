@@ -176,7 +176,7 @@ export default {
         visitFormType: 'Visit',
         opdReportFormType: 'Outpatient Report',
         dischargeReportFormType: 'Discharge Report',
-        labFormType: 'Lab Form Type'
+        labFormType: 'Lab'
       },
       messages: {
         formSaved: 'The {{name}} form has been saved.'
