@@ -103,6 +103,9 @@
     "stylelint-scss": "1.4.1",
     "uuid": "^3.0.0"
   },
+  "dependencies": {
+    "ember-electron": "1.12.7"
+  },
   "ember-addon": {
     "paths": [
       "lib/pouch-fixtures"
@@ -115,7 +118,7 @@
       "electron.js",
       "package.json"
     ],
-    "name": null,
+    "name": "HospitalRun",
     "platform": null,
     "arch": null,
     "version": null,
@@ -131,7 +134,7 @@
     "extend-info": null,
     "extra-resource": null,
     "helper-bundle-id": null,
-    "icon": null,
+    "icon": "public/assets/icon.icns",
     "ignore": null,
     "out": null,
     "osx-sign": {
@@ -153,10 +156,10 @@
     "prune": null,
     "strict-ssl": null,
     "win32metadata": {
-      "CompanyName": null,
+      "CompanyName": "HospitalRun",
       "FileDescription": null,
       "OriginalFilename": null,
-      "ProductName": null,
+      "ProductName": "HospitalRun",
       "InternalName": null
     }
   }
