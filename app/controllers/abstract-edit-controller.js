@@ -22,7 +22,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
   disabledAction: function() {
     let model = get(this, 'model');
     if (model.validate) {
-      model.validate().catch(Ember.K);
+      model.validate().catch((/* ignored */) => {});
     }
     let isValid = model.get('isValid');
     if (!isValid) {
