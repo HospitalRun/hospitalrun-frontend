@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
+import moment from 'moment';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import PaginationProps from 'hospitalrun/mixins/pagination-props';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
@@ -112,9 +113,9 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
   },
 
   _notifyReportError(errorMessage) {
-    let alertMessage = 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.';
+    let i18n = this.get('i18n');
     this.closeProgressModal();
-    this.displayAlert('Error Generating Report', alertMessage);
+    this.displayAlert(i18n.t('alerts.reportError'), i18n.t('messages.reportError'));
     throw new Error(errorMessage);
   },
 
@@ -144,10 +145,23 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
 
     let reportDesc = reportTypes.findBy('value', reportType);
     if (Ember.isEmpty(startDate)) {
-      this.set('reportTitle', `${reportDesc.name} Report ${formattedEndDate}`);
+      this.set('reportTitle', this.get('i18n').t(
+        'inventory.reports.titleSingleDate',
+        {
+          name: reportDesc.name,
+          date: formattedEndDate
+        }
+      ));
     } else {
       formattedStartDate = moment(startDate).format('l');
-      this.set('reportTitle', `${reportDesc.name} Report ${formattedStartDate} - ${formattedEndDate}`);
+      this.set('reportTitle', this.get('i18n').t(
+        'inventory.reports.titleDateRange',
+        {
+          name: reportDesc.name,
+          startDate: formattedStartDate,
+          endDate: formattedEndDate
+        }
+      ));
     }
   },
 

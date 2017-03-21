@@ -14,7 +14,7 @@
       </tr>
       {{#each model as |medicationRequest|}}
         <tr {{action 'editItem' medicationRequest}} class="clickable">
-          <td>{{date-format medicationRequest.prescriptionDate}}</td>
+          <td>{{date-format medicationRequest.prescriptionDate format="l h:mm A"}}</td>
           <td>{{medicationRequest.patient.displayName}}</td>
           <td>{{medicationRequest.requestedBy}}</td>
           <td>{{medicationRequest.medicationName}}</td>

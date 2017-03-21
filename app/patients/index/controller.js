@@ -1,5 +1,6 @@
 import AbstractPagedController from 'hospitalrun/controllers/abstract-paged-controller';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
+import VisitStatus from 'hospitalrun/utils/visit-statuses';
 export default AbstractPagedController.extend(PatientVisits, {
   addPermission: 'add_patient',
   deletePermission: 'delete_patient',
@@ -13,22 +14,26 @@ export default AbstractPagedController.extend(PatientVisits, {
 
   startKey: [],
   actions: {
-    admitPatient(patient) {
-      this.getPatientVisits(patient).then(function(visits) {
-        this.send('createNewVisit', patient, visits);
-      }.bind(this));
+    checkInPatient(patient) {
+      this.send('createNewVisit', patient);
+    },
 
+    checkoutPatient(patient) {
+      this.editPatientVisitWithStatus(patient, VisitStatus.CHECKED_IN);
     },
 
     dischargePatient(patient) {
-      this.getPatientVisits(patient).then(function(visits) {
-        let visitToDischarge = visits.findBy('status', 'Admitted');
-        if (visitToDischarge) {
-          visitToDischarge.set('status', 'Discharged');
-          visitToDischarge.set('endDate', new Date());
-          this.transitionToRoute('visits.edit', visitToDischarge);
-        }
-      }.bind(this));
+      this.editPatientVisitWithStatus(patient, VisitStatus.ADMITTED);
     }
+  },
+
+  editPatientVisitWithStatus(patient, status) {
+    this.getPatientVisits(patient).then((visits) => {
+      let visitToEdit = visits.findBy('status', status);
+      if (visitToEdit) {
+        visitToEdit.set('endDate', new Date());
+        this.transitionToRoute('visits.edit', visitToEdit);
+      }
+    });
   }
 });

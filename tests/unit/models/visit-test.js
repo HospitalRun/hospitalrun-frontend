@@ -6,6 +6,7 @@ moduleForModel('visit', 'Unit | Model | visit', {
   needs: [
     'ember-validations@validator:local/acceptance',
     'ember-validations@validator:local/presence',
+    'model:diagnosis',
     'model:procedure',
     'model:imaging',
     'model:lab',
@@ -15,6 +16,7 @@ moduleForModel('visit', 'Unit | Model | visit', {
     'model:proc-charge',
     'model:vital',
     'model:visit',
+    'model:report',
     'service:validations'
   ]
 });

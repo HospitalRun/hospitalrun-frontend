@@ -29,14 +29,26 @@ export default AbstractModuleRoute.extend({
     name: 'procedurePricingTypes',
     findArgs: ['lookup', 'procedure_pricing_types']
   }, {
+    name: 'sexList',
+    findArgs: ['lookup', 'sex']
+  }, {
     name: 'visitTypesList',
     findArgs: ['lookup', 'visit_types']
   }, {
     name: 'wardPricingTypes',
     findArgs: ['lookup', 'ward_pricing_types']
+  }, {
+    name: 'printHeader',
+    findArgs: ['option', 'print_header']
   }],
   moduleName: 'visits',
   newButtonAction: null, // No new button
-  sectionTitle: 'Visits'
+  sectionTitle: 'Visits',
+
+  actions: {
+    allItems() {
+      this.transitionTo('patients.index');
+    }
+  }
 
 });

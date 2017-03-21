@@ -5,49 +5,50 @@ import computed from 'ember-computed';
 import LocationName from 'hospitalrun/mixins/location-name';
 import { rankToMultiplier, getCondition } from 'hospitalrun/utils/item-condition';
 
+const { get, set } = Ember;
+
 let validateIfNewItem = {
   if: function validateNewItem(object) {
-    let skipSavePurchase = object.get('skipSavePurchase');
+    let skipSavePurchase = get(object, 'skipSavePurchase');
     // Only validate on new items and only if we are saving a purchase.
-    return (!skipSavePurchase && object.get('isNew'));
+    return (!skipSavePurchase && get(object, 'isNew'));
   }
 };
 
 export default AbstractModel.extend(LocationName, {
-  purchases: DS.hasMany('inv-purchase', {
-    async: false
-  }),
-  locations: DS.hasMany('inv-location', {
-    async: false
-  }),
+  // Attributes
+  crossReference: DS.attr('string'),
   description: DS.attr('string'),
+  distributionUnit: DS.attr('string'),
   friendlyId: DS.attr('string'),
+  inventoryType: DS.attr('string'),
   keywords: DS.attr(),
   name: DS.attr('string'),
-  quantity: DS.attr('number'),
-  crossReference: DS.attr('string'),
-  inventoryType: DS.attr('string'),
   price: DS.attr('number'),
-  reorderPoint: DS.attr('number'),
-  distributionUnit: DS.attr('string'),
+  quantity: DS.attr('number'),
   rank: DS.attr('string'),
+  reorderPoint: DS.attr('number'),
+
+  // Associations
+  locations: DS.hasMany('inv-location', { async: false }),
+  purchases: DS.hasMany('inv-purchase', { async: false }),
 
   // TODO: this value should be server calcuated property on model!
   estimatedDaysOfStock: 14,
 
   availableLocations: computed('locations.@each.quantity', function() {
-    let locations = this.get('locations').filter((location) => {
-      return location.get('quantity') > 0;
+    let locations = get(this, 'locations').filter((location) => {
+      return get(location, 'quantity') > 0;
     });
     return locations;
   }),
 
   displayLocations: computed('availableLocations', function() {
-    let locations = this.get('availableLocations');
+    let locations = get(this, 'availableLocations');
     let returnLocations = [];
     locations.forEach((currentLocation) => {
-      let aisleLocationName = currentLocation.get('aisleLocation');
-      let locationName = currentLocation.get('location');
+      let aisleLocationName = get(currentLocation, 'aisleLocation');
+      let locationName = get(currentLocation, 'location');
       let displayLocationName = this.formatLocationName(locationName, aisleLocationName);
       if (!Ember.isEmpty(displayLocationName)) {
         returnLocations.push(displayLocationName);
@@ -57,8 +58,8 @@ export default AbstractModel.extend(LocationName, {
   }),
 
   condition: computed('rank', 'estimatedDaysOfStock', function() {
-    let estimatedDaysOfStock = this.get('estimatedDaysOfStock');
-    let multiplier = rankToMultiplier(this.get('rank'));
+    let estimatedDaysOfStock = get(this, 'estimatedDaysOfStock');
+    let multiplier = rankToMultiplier(get(this, 'rank'));
 
     return getCondition(estimatedDaysOfStock, multiplier);
   }),
@@ -101,7 +102,7 @@ export default AbstractModel.extend(LocationName, {
   },
 
   updateQuantity() {
-    let purchases = this.get('purchases');
+    let purchases = get(this, 'purchases');
     let newQuantity = purchases.reduce((previousItem, currentItem) => {
       let currentQuantity = 0;
       if (!currentItem.get('expired')) {
@@ -109,6 +110,6 @@ export default AbstractModel.extend(LocationName, {
       }
       return previousItem + currentQuantity;
     }, 0);
-    this.set('quantity', newQuantity);
+    set(this, 'quantity', newQuantity);
   }
 });

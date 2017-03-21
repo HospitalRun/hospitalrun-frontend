@@ -9,7 +9,16 @@ const Router = Ember.Router.extend({
 Router.map(function() {
   this.route('admin', function() {
     this.route('address');
+    this.route('print-header');
+    this.route('custom-forms', function() {
+      this.route('edit', { path: '/edit/:custom-form_id' });
+    });
     this.route('loaddb');
+    this.route('inc-category', {
+      resetNamespace: true
+    }, function() {
+      this.route('edit', { path: '/edit/:inc-category_id' });
+    });
     this.route('lookup', { path: '/' });
     this.route('users', {
       resetNamespace: true
@@ -18,6 +27,7 @@ Router.map(function() {
     });
     this.route('roles');
     this.route('query');
+    this.route('visit-forms');
     this.route('workflow');
   });
 
@@ -26,6 +36,8 @@ Router.map(function() {
     this.route('search');
     this.route('today');
     this.route('missed');
+    this.route('calendar');
+    this.route('theater');
   });
 
   this.route('finishgauth', { path: '/finishgauth/:s1/:s2/:k/:t/:i/:p' });
@@ -45,6 +57,12 @@ Router.map(function() {
     this.route('reports');
     this.route('request', { path: '/request/:inv-request_id' });
     this.route('search', { path: '/search/:search_text' });
+  });
+
+  this.route('incident', function() {
+    this.route('completed');
+    this.route('edit', { path: '/edit/:incident_id' });
+    this.route('reports');
   });
 
   this.route('invoices', function() {
@@ -71,6 +89,9 @@ Router.map(function() {
     this.route('reports');
     this.route('admitted');
     this.route('search', { path: '/search/:search_text' });
+    this.route('operative-plan', { path: '/operative-plan/:operative-plan_id' });
+    this.route('operation-report', { path: '/operation-report/:operation-report_id' });
+    this.route('outpatient');
   });
 
   this.route('pricing', function() {
@@ -94,6 +115,10 @@ Router.map(function() {
     }, function() {
       this.route('edit', { path: '/edit/:procedure_id' });
     });
+    this.route('reports', function() {
+      this.route('edit', { path: '/edit/:report_id' });
+    });
+
   });
 });
 

@@ -46,11 +46,18 @@ test('View reports tab', function(assert) {
   });
 });
 
-testSimpleReportForm('Admissions Summary');
-testSimpleReportForm('Diagnostic Testing');
-testSimpleReportForm('Discharges Detail');
-testSimpleReportForm('Discharges Summary');
-testSimpleReportForm('Procedures Detail');
+let reportNames = [
+  'Admissions Summary',
+  'Diagnostic Testing',
+  'Discharges Detail',
+  'Discharges Summary',
+  'Procedures Detail'
+];
+
+reportNames.forEach((reportName) => {
+  testSimpleReportForm(reportName);
+  testExportReportName(reportName);
+});
 
 test('View reports tab | Patient Status', function(assert) {
   runWithPouchDump('default', function() {
@@ -65,6 +72,35 @@ test('View reports tab | Patient Status', function(assert) {
       let reportType = find('[data-test-selector="select-report-type"] select');
       assert.equal(reportType.length, 1, 'Report type select is visible');
       assert.equal(reportType.find(':selected').text().trim(), 'Patient Status', 'Default value selected"');
+    });
+  });
+});
+
+test('Testing admitted patient', function(assert) {
+  runWithPouchDump('patient', function() {
+    authenticateUser();
+    visit('/patients/admitted');
+    andThen(function() {
+      assert.equal(currentURL(), '/patients/admitted');
+      assert.equal(find('.clickable').length, 1, 'One patient is listed');
+    });
+
+    click('button:contains(Discharge)');
+    waitToAppear('.view-current-title:contains(Edit Visit)');
+    andThen(function() {
+      assert.equal(currentURL(), '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'should return visits/edit instead');
+    });
+    click('.panel-footer button:contains(Discharge)');
+    waitToAppear('.modal-dialog');
+    andThen(() => {
+      assert.equal(find('.modal-title').text(), 'Patient Discharged', 'Patient has been discharged');
+    });
+
+    click('button:contains(Ok)');
+    visit('/patients/admitted');
+    waitToAppear('.view-current-title:contains(Admitted Patients)');
+    andThen(() => {
+      assert.equal(find('.clickable').length, 0, 'No patient is listed');
     });
   });
 });
@@ -112,6 +148,31 @@ function testSimpleReportForm(reportName) {
         assert.equal(reportEndDate.length, 1, 'Report end date select is visible');
         let reportType = find('[data-test-selector="select-report-type"] select');
         assert.equal(reportType.find(':selected').text().trim(), reportName, `${reportName} option selected`);
+      });
+    });
+  });
+}
+
+function testExportReportName(reportName) {
+  test(`View reports tab | Export reports name for ${reportName} shows report name, start and end dates`, (assert) => {
+    runWithPouchDump('default', () => {
+      authenticateUser();
+      visit('/patients/reports');
+      select('[data-test-selector="select-report-type"] select', reportName);
+
+      andThen(() => {
+        assert.equal(currentURL(), '/patients/reports');
+      });
+
+      fillIn('[data-test-selector="select-report-start-date"] input', '12/11/2016');
+      fillIn('[data-test-selector="select-report-end-date"] input', '12/31/2016');
+
+      click('button:contains(Generate Report)');
+      waitToAppear('.panel-title');
+
+      andThen(() => {
+        let exportReportButton = findWithAssert('a:contains(Export Report)');
+        assert.equal($(exportReportButton).attr('download'), `${reportName} Report 12/11/2016 - 12/31/2016.csv`);
       });
     });
   });

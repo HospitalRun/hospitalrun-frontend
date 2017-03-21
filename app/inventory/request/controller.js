@@ -1,10 +1,9 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
-import InventorySelection from 'hospitalrun/mixins/inventory-selection';
 import Ember from 'ember';
 
-export default AbstractEditController.extend(FulfillRequest, InventoryLocations, InventorySelection, {
+export default AbstractEditController.extend(FulfillRequest, InventoryLocations, {
   inventoryController: Ember.inject.controller('inventory'),
   inventoryItems: null,
   cancelAction: 'allRequests',

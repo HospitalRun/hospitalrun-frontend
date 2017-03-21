@@ -82,20 +82,14 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
     }
   },
 
-  /**
-   * Override this function to generate an id for a new record
-   * @return a promise that will resolved to a generated id;default is null which means that an
-   * id will be automatically generated via Ember data.
-   */
-  generateId() {
-    return Ember.RSVP.resolve(null);
-  },
-
   model() {
     if (!Ember.isEmpty(this.additionalModels)) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
         let promises = this.additionalModels.map(function(modelMap) {
-          if (modelMap.findArgs.length === 1) {
+
+          if (modelMap.queryArgs) {
+            return this.store.query(...modelMap.queryArgs);
+          } else if (modelMap.findArgs.length === 1) {
             return this.store.findAll(...modelMap.findArgs);
           } else {
             return this.store.find(...modelMap.findArgs);

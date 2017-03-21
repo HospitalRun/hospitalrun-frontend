@@ -41,11 +41,15 @@ test('creating a new medication request', function(assert) {
     andThen(() => {
       typeAheadFillIn('.test-medication-input', 'Biogesic - m00001 (950 available)');
     });
-    fillIn('textarea', '30 Biogesic Pills');
-    fillIn('.test-quantity-input input', '30');
-    click('button:contains(Add)');
-
-    waitToAppear('.modal-dialog');
+    andThen(() => {
+      fillIn('textarea', '30 Biogesic Pills');
+      fillIn('.test-quantity-input input', '30');
+    });
+    waitToDisappear('.disabled-btn:contains(Add)');
+    andThen(() =>{
+      click('button:contains(Add)');
+      waitToAppear('.modal-dialog');
+    });
     andThen(() => {
       assert.equal(find('.modal-title').text().trim(), 'Medication Request Saved', 'New medication request has been saved');
     });
@@ -68,10 +72,11 @@ test('fulfilling a medication request', function(assert) {
     andThen(function() {
       assert.equal(find('.patient-summary').length, 1, 'Patient summary is displayed');
     });
-
-    click('button:contains(Fulfill)');
-    waitToAppear('.modal-dialog');
-
+    waitToAppear('.inventory-location option:contains(No Location)');
+    andThen(() => {
+      click('button:contains(Fulfill)');
+      waitToAppear('.modal-dialog');
+    });
     andThen(() => {
       assert.equal(find('.modal-title').text().trim(), 'Medication Request Fulfilled', 'Medication Request has been Fulfilled');
     });
@@ -83,6 +88,35 @@ test('fulfilling a medication request', function(assert) {
       assert.equal(currentURL(), '/medication');
       findWithAssert('p:contains(No items found. )');
       findWithAssert('a:contains(Create a new medication request?)');
+    });
+  });
+});
+
+test('complete a medication request', function(assert) {
+  runWithPouchDump('medication', function() {
+    authenticateUser();
+    visit('/medication/completed');
+    assert.equal(find('.clickable').length, 0, 'Should have 0 completed request');
+    visit('/medication');
+    click('button:contains(Fulfill)');
+
+    andThen(function() {
+      assert.equal(find('.patient-summary').length, 1, 'Patient summary is displayed');
+    });
+    waitToAppear('.inventory-location option:contains(No Location)');
+    andThen(() => {
+      click('button:contains(Fulfill)');
+      waitToAppear('.modal-dialog');
+    });
+    andThen(() => {
+      assert.equal(find('.modal-title').text().trim(), 'Medication Request Fulfilled', 'Medication Request has been Fulfilled');
+    });
+
+    click('button:contains(Ok)');
+    visit('/medication/completed');
+    andThen(() => {
+      assert.equal(currentURL(), '/medication/completed');
+      assert.equal(find('.clickable').length, 1, 'Should have 1 completed request');
     });
   });
 });
@@ -99,10 +133,14 @@ test('returning medication', function(assert) {
     andThen(() => {
       typeAheadFillIn('.test-medication-input', 'Biogesic - m00001');
     });
-    fillIn('.test-medication-quantity input', 30);
-    click('button:contains(Return Medication)');
-    waitToAppear('.modal-dialog');
-
+    andThen(() => {
+      fillIn('.test-medication-quantity input', 30);
+      waitToDisappear('.disabled-btn:contains(Return Medication)');
+    });
+    andThen(() => {
+      click('button:contains(Return Medication)');
+      waitToAppear('.modal-dialog');
+    });
     andThen(() => {
       assert.equal(find('.modal-title').text(), 'Medication Returned', 'Medication has been return successfully');
     });

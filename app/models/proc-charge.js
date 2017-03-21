@@ -3,32 +3,33 @@ import DS from 'ember-data';
 import Ember from 'ember';
 import MedicationDetails from 'hospitalrun/mixins/medication-details';
 
+const { computed, get } = Ember;
+
 /**
  * Procedure charges
  */
 export default AbstractModel.extend(MedicationDetails, {
-  medication: DS.belongsTo('inventory', {
-    async: false
-  }),
-  pricingItem: DS.belongsTo('pricing', {
-    async: false
-  }),
+  // Attributes
   quantity: DS.attr('number'),
   dateCharged: DS.attr('date'),
 
-  medicationCharge: function() {
-    let medication = this.get('medication');
-    let newMedicationCharge = this.get('newMedicationCharge');
-    return (!Ember.isEmpty(medication) || !Ember.isEmpty(newMedicationCharge));
-  }.property('medication', 'newMedicationCharge'),
+  // Associations
+  medication: DS.belongsTo('inventory', { async: false }),
+  pricingItem: DS.belongsTo('pricing', { async: false }),
 
-  medicationName: function() {
+  medicationCharge: computed('medication', 'newMedicationCharge', function() {
+    let medication = get(this, 'medication');
+    let newMedicationCharge = get(this, 'newMedicationCharge');
+    return !Ember.isEmpty(medication) || !Ember.isEmpty(newMedicationCharge);
+  }),
+
+  medicationName: computed('medication', function() {
     return this.get('medication.name');
-  }.property('medication'),
+  }),
 
-  medicationPrice: function() {
+  medicationPrice: computed('medication', function() {
     return this.get('medication.price');
-  }.property('medication'),
+  }),
 
   validations: {
     itemName: {
@@ -36,12 +37,12 @@ export default AbstractModel.extend(MedicationDetails, {
       acceptance: {
         accept: true,
         if(object) {
-          let medicationCharge = object.get('medicationCharge');
-          if (!medicationCharge || !object.get('hasDirtyAttributes')) {
+          let medicationCharge = get(object, 'medicationCharge');
+          if (!medicationCharge || !get(object, 'hasDirtyAttributes')) {
             return false;
           }
-          let itemName = object.get('inventoryItem.name');
-          let itemTypeAhead = object.get('itemName');
+          let itemName = get(object, 'inventoryItem.name');
+          let itemTypeAhead = get(object, 'itemName');
           if (Ember.isEmpty(itemName) || Ember.isEmpty(itemTypeAhead)) {
             // force validation to fail
             return true;

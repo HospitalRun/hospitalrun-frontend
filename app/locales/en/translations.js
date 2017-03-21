@@ -41,11 +41,12 @@ export default {
     imaging: 'Imaging',
     inventory: 'Inventory',
     patients: 'Patients',
-    appointments: 'Appointments',
+    scheduling: 'Scheduling',
     medication: 'Medication',
     labs: 'Labs',
     billing: 'Billing',
     administration: 'Administration',
+    incident: 'Incident',
     subnav: {
       actions: 'Actions',
       requests: 'Requests',
@@ -56,9 +57,9 @@ export default {
       reports: 'Reports',
       patientListing: 'Patient Listing',
       newPatient: 'New Patient',
-      thisWeek: 'This Week',
-      today: 'Today',
-      search: 'Search',
+      appointmentsThisWeek: 'Appointment This Week',
+      "today'sAppointments": 'Today\'s Appointments',
+      appointmentSearch: 'Appointment Search',
       addAppointment: 'Add Appointment',
       dispense: 'Dispense',
       returnMedication: 'Return Medication',
@@ -72,9 +73,19 @@ export default {
       users: 'Users',
       newUser: 'New User',
       admittedPatients: 'Admitted Patients',
-      missed: 'Missed',
+      missedAppointments: 'Missed Appointments',
       userRoles: 'User Roles',
-      workflow: 'Workflow'
+      workflow: 'Workflow',
+      outpatient: 'Outpatient',
+      customForms: 'Custom Forms',
+      appointmentsCalendar: 'Appointments Calendar',
+      theaterSchedule: 'Theater Schedule',
+      scheduleSurgery: 'Schedule Surgery',
+      printHeader: 'Print Header',
+      currentIncidents: 'Current Incidents',
+      newIncident: 'New Incident',
+      history: 'History',
+      incidentCategories: 'Incident Categories'
     },
     actions: {
       logout: 'Logout',
@@ -107,10 +118,79 @@ export default {
       messages: {
         addressSaved: 'The address options have been saved'
       },
-
       newTitle: 'Address Options',
       editTitle: 'Address Options',
       addressLabel: 'Address'
+    },
+    header: {
+      facilityName: 'Facility Name',
+      headerLine1: 'Header Line 1',
+      headerLine2: 'Header Line 2',
+      headerLine3: 'Header Line 3',
+      logoURL: 'Logo URL',
+      includeFacilityName: 'Include Facility Name',
+      includeHeaderLine1: 'Include Header Line 1',
+      includeHeaderLine2: 'Include Header Line 2',
+      includeHeaderLine3: 'Include Header Line 3',
+      includeLogoURL: 'Include Logo URL',
+      titles: {
+        optionsSaved: 'Options Saved'
+      },
+      messages: {
+        headerSaved: 'The header options have been saved'
+      },
+      newTitle: 'Header Options',
+      editTitle: 'Header Options',
+      headerLabel: 'Header'
+    },
+    customForms: {
+      buttons: {
+        addField: 'Add Field',
+        moveDown: 'Move Down',
+        moveUp: 'Move Up',
+        newForm: '+ new form',
+        preview: 'Preview'
+
+      },
+      labels: {
+        alwaysInclude: 'Always Include',
+        checkbox: 'Checkbox',
+        columns: 'Columns',
+        colSpan: 'Number of Columns To Span',
+        customForm: 'Custom Form',
+        formName: 'Form Name',
+        formType: 'Form Type',
+        includeOtherOption: 'Include Other Option',
+        incidentFormType: 'Incident',
+        label: 'Label',
+        newForm: 'New Form',
+        operativePlanFormType: 'Operative Plan and Report',
+        otherOptionLabel: 'Other Option Label',
+        patientFormType: 'Patient',
+        property: 'Property',
+        radio: 'Radio',
+        select: 'Dropdown',
+        socialworkFormType: 'Social Work',
+        text: 'Text',
+        textarea: 'Large Text',
+        visitFormType: 'Visit',
+        opdReportFormType: 'Outpatient Report',
+        dischargeReportFormType: 'Discharge Report'
+      },
+      messages: {
+        formSaved: 'The {{name}} form has been saved.'
+      },
+      titles: {
+        customForms: 'Custom Forms',
+        deleteForm: 'Delete Custom Form',
+        editCustomForm: 'Edit Custom Form',
+        fields: 'Fields',
+        formSaved: 'Form Saved',
+        checkboxValues: 'Checkbox Values',
+        dropDownValues: 'Dropdown Values',
+        newCustomForm: 'New Custom Form',
+        radioValues: 'Radio Values'
+      }
     },
     loaddb: {
       progressMessage: 'Please wait while your database is loaded.',
@@ -122,20 +202,6 @@ export default {
       editTitle: 'Load DB'
     },
     lookup: {
-      deleteValueInventoryTypeMedicationTitle: 'Cannot Delete Medication',
-      deleteValueInventoryTypeMedicationMessage: 'The Medication inventory type cannot be deleted because it is needed for the Medication module.',
-      deleteValueLabPricingTypeProcedureTitle: 'Cannot Delete Lab Pricing Type',
-      deleteValueLabPricingTypeProcedureMessage: 'The Lab Procedure pricing type cannot be deleted because it is needed for the Labs module.',
-      deleteValueImagingPricingTypeProcedureTitle: 'Cannot Delete Imaging Pricing Type',
-      deleteValueImagingPricingTypeProcedureMessage: 'The Imaging Procedure pricing type cannot be deleted because it is needed for the Imaging module.',
-      deleteValueVisitTypeAdmissionTitle: 'Cannot Delete Admission Visit Type',
-      deleteValueVisitTypeAdmissionMessage: 'The Admission Visit type cannot be deleted because it is needed for the Visits module.',
-      deleteValueVisitTypeImagingTitle: 'Cannot Delete Imaging Visit Type',
-      deleteValueVisitTypeImagingMessage: 'The Imaging Visit type cannot be deleted because it is needed for the Imaging module.',
-      deleteValueVisitTypeLabTitle: 'Cannot Delete Lab Visit Type',
-      deleteValueVisitTypeLabMessage: 'The Lab Visit type cannot be deleted because it is needed for the Lab module.',
-      deleteValueVisitTypePharmacyTitle: 'Cannot Delete Pharmacy Visit Type',
-      deleteValueVisitTypePharmacyMessage: 'The Lab Visit type cannot be deleted because it is needed for the Medication module.',
       alertImportListTitle: 'Select File To Import',
       alertImportListMessage: 'Please select file to import.',
       alertImportListSaveTitle: 'List Imported',
@@ -162,6 +228,7 @@ export default {
       expenseAccountList: 'Expense Accounts',
       aisleLocationList: 'Inventory Aisle Locations',
       warehouseList: 'Inventory Locations',
+      incidentDepartments: 'Incident Departments',
       inventoryTypes: 'Inventory Types',
       imagingPricingTypes: 'Imaging Pricing Types',
       labPricingTypes: 'Lab Pricing Types',
@@ -175,7 +242,10 @@ export default {
       vendorList: 'Vendor',
       visitLocationList: 'Visit Locations',
       visitTypes: 'Visit Types',
-      wardPricingTypes: 'Ward Pricing Types'
+      wardPricingTypes: 'Ward Pricing Types',
+      titles: {
+        deleteLookupValue: 'Delete Value'
+      }
     },
     roles: {
       capability: {
@@ -235,13 +305,38 @@ export default {
         adjustInventoryLocation: 'Adjust Inventory Location',
         deleteInventoryItem: 'Delete Inventory Item',
         fulfillInventory: 'Fulfill Inventory',
-        defineUserRoles: 'Define User Roles'
+        defineUserRoles: 'Define User Roles',
+        addBillingDiagnosis: 'Add Billing Diagnosis',
+        addNote: 'Add Note',
+        addSocialwork: 'Add Social Work',
+        deleteNote: 'Delete Note',
+        addOperativePlan: 'Add Operative Plan',
+        addAllergy: 'Add Allergy',
+        addOperationReport: 'Add Operation Report',
+        incident: 'Incident',
+        addIncident: 'Add Incident',
+        addIncidentCategory: 'Add Incident Category',
+        deleteIncident: 'Delete Incident',
+        deleteIncidentCategory: 'Delete Incident Category',
+        generateIncidentReport: 'Generate Incident Report',
+        manageIncidents: 'Manage Incidents'
       },
       messages: {
         roleSaved: 'The {{roleName}} role has been saved.'
       },
       titles: {
         roleSaved: 'Role Saved'
+      }
+    },
+    visitForms: {
+      labels: {
+        followup: 'Followup',
+        form: 'Form',
+        initial: 'Initial',
+        visitType: 'Visit Type'
+      },
+      titles: {
+        visitForms: 'Visit Forms'
       }
     },
     workflow: {
@@ -290,7 +385,6 @@ export default {
     edit: 'Edit',
     imageOrders: 'Image Orders',
     labOrders: 'Lab Orders',
-    patientHistory: 'Patient History',
     imagingType: 'Imaging Type',
     result: 'Result',
     results: 'Results',
@@ -369,17 +463,25 @@ export default {
     createNewRecord: 'Create a new record?',
     createNewUser: 'Create a new user?',
     noUsersFound: 'No users found.',
-    areYouSureDelete: 'Are you sure you wish to delete the user {{user}}?',
     userHasBeenSaved: 'The user has been saved.',
     userSaved: 'User Saved',
     onBehalfOf: 'on behalf of',
     newPatientHasToBeCreated: 'A new patient needs to be created...Please wait..',
     noNotesAvailable: 'No additional clinical notes are available for this visit.',
     sorry: 'Sorry, something went wrong...',
-    forAuthorizedPersons: 'This report is for authorized persons only.'
+    forAuthorizedPersons: 'This report is for authorized persons only.',
+    requiredFieldsCorrectErrors: 'Please fill in required fields (marked with *) and correct the errors before saving.',
+    saveActionException: 'An error occurred while attempting to save: {{message}}',
+    reportError: 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.',
+    delete: 'Are you sure you wish to delete {{name}}?',
+    delete_singular: 'Are you sure you wish to delete this {{name}}?',
+    delete_plural: 'Are you sure you wish to delete these {{name}}?'
   },
   alerts: {
-    pleaseWait: 'Please Wait'
+    pleaseWait: 'Please Wait',
+    warningExclamation: 'Warning!!!!',
+    errorExclamation: 'Error!!!!',
+    reportError: 'Error Generating Report'
   },
   headings: {
     chargedItems: 'Charged Items'
@@ -409,8 +511,12 @@ export default {
     newRequestPlus: '+ new request',
     addVisit: 'Add Visit',
     search: 'Search',
+    filter: 'Filter',
+    clear: 'Clear',
     edit: 'Edit',
-    addLineItem: 'Add Line Item'
+    addLineItem: 'Add Line Item',
+    showFewer: 'Show Fewer',
+    showAll: 'Show All'
   },
   login: {
     messages: {
@@ -465,6 +571,7 @@ export default {
       aisle: 'Aisle',
       aisleLocation: 'Aisle Location',
       allInventory: 'All Inventory',
+      availableQuantity: '{{quantity}} available',
       billTo: 'Bill To',
       consumePurchases: 'Consume Purchases',
       consumptionRate: 'Consumption Rate',
@@ -546,7 +653,6 @@ export default {
     messages: {
       adjust: 'Please adjust the quantities on the appropriate location(s) to account for the difference of {{difference}}.',
       createRequest: 'Create a new request?',
-      delete: 'Are you sure you wish to delete {{name}}?',
       itemNotFound: 'The inventory item <strong>{{item}}</strong> could not be found.<br>If you would like to create a new inventory item, fill in the information below.<br>Otherwise, press the Cancel button to return.',
       loading: 'Loading transactions ...',
       purchaseSaved: 'The inventory purchases have been successfully saved.',
@@ -602,7 +708,9 @@ export default {
       stockTransferDetail: 'Detailed Stock Transfer',
       stockTransferSum: 'Summary Stock Transfer',
       stockUsageDetail: 'Detailed Stock Usage',
-      stockUsageSum: 'Summary Stock Usage'
+      stockUsageSum: 'Summary Stock Usage',
+      titleSingleDate: '{{name}} Report {{date}}',
+      titleDateRange: '{{name}} Report {{startDate}} - {{endDate}}'
     },
     titles: {
       addPurchase: 'Add Purchase',
@@ -632,7 +740,6 @@ export default {
       addNewVisit: '--Add New Visit--'
     },
     messages: {
-      delete: 'Are you sure you wish to delete this imaging request?',
       noCompleted: 'No completed items found.'
     },
     titles: {
@@ -645,6 +752,100 @@ export default {
       completedMessage: 'The imaging request has been completed.',
       savedTitle: 'Imaging Request Saved',
       savedMessage: 'The imaging request has been saved.'
+    }
+  },
+  incident: {
+    buttons: {
+      add: 'Add',
+      addForm: '+ Add Form',
+      addItem: 'Add Item',
+      cancel: 'Cancel',
+      delete: 'Delete',
+      download: 'Download',
+      edit: 'Edit',
+      export: 'Export Report',
+      generateRep: 'Generate Report',
+      newAttachment: '+ New Attachment',
+      newCategory: '+ new category',
+      newIncident: '+ new incident',
+      newNote: '+ New Note'
+    },
+    labels: {
+      actions: 'Actions',
+      addedBy: 'Added By',
+      category: 'Category',
+      categoryItem: 'Category Item',
+      date: 'Date',
+      dateRecorded: 'Date Recorded',
+      department: 'Department',
+      description: 'Incident Description',
+      endDate: 'End Date',
+      givenBy: 'Given By',
+      howToAddAttachment: 'How Do You Want To Add An Attachment?',
+      incidentDate: 'Date of Incident',
+      incidentId: 'Incident ID',
+      item: 'Item',
+      lastUpdated: 'Last Updated',
+      note: 'Note',
+      patientId: 'Patient Id',
+      patientImpacted: 'Patient Impacted',
+      reportType: 'Report Type',
+      reportedBy: 'Reported By',
+      reportedDate: 'Reported Date',
+      reportedTo: 'Incident Reported to (Full Name)',
+      sentinelEvent: 'Sentinel Event',
+      startDate: 'Start Date',
+      status: 'Status',
+      statusActive: 'Active',
+      statusClosed: 'Closed',
+      statusFollowup: 'Follow-up',
+      statusReported: 'Reported',
+      title: 'Title',
+      total: 'Total',
+      updatedBy: 'Updated By'
+    },
+    messages: {
+      attachmentFileRequired: 'Please upload a file or take a picture or before saving this attachment.',
+      createNew: 'Create a new incident?',
+      createNewIncidentCategory: 'Create a new Incident Category?',
+      fillIn: 'Fill in the above options to calculate score',
+      incidentCategorySaved: 'The {{name}} category has been saved.',
+      noClosedIncidents: 'No closed incidents found.',
+      noIncidentCategoriesFound: 'No Incident Categories found.',
+      noIncidents: 'No incidents found.',
+      saved: 'The incident report has been saved.',
+      selectExistingPatient: 'Please select an existing patient or leave this field blank.'
+    },
+    titles: {
+      addAttachment: 'Add Attachment',
+      addCategoryItem: 'Add Category Item',
+      addNote: 'Add Note',
+      attachments: 'Attachments',
+      closed: 'Closed Incidents',
+      current: 'Current',
+      deleteAttachment: 'Delete Attachment',
+      deleteIncident: 'Delete Incident',
+      deleteIncidentCategory: 'Delete Incident Category',
+      deleteItem: 'Delete Item',
+      deleteNote: 'Delete Note',
+      editAttachment: 'Edit Attachment',
+      editIncident: 'Edit Incident',
+      editIncidentCategory: 'Edit Incident Category',
+      editNote: 'Edit Note',
+      general: 'General Information',
+      history: 'History',
+      incidentCategories: 'Incident Categories',
+      incidentCategoryItem: 'Incident Category Item',
+      incidentCategoryName: 'Incident Category Name',
+      incidentCategorySaved: 'Incident Category Saved',
+      incidentSaved: 'Incident Saved',
+      incidents: 'Incidents',
+      incidentsByCategory: 'Incidents By Category',
+      incidentsByDepartment: 'Incidents By Department',
+      newIncident: 'New Incident',
+      newIncidentCategory: 'New Incident Category',
+      notes: 'Notes',
+      reports: 'Reports'
     }
   },
   medication: {
@@ -662,8 +863,7 @@ export default {
       newMedicationRequest: 'New Medication Request'
     },
     messages: {
-      createNew: 'Create a new medication request?',
-      confirmDeletion: 'Are you sure you wish to delete this medication request?'
+      createNew: 'Create a new medication request?'
     },
     labels: {
       refills: 'Refills',
@@ -694,21 +894,27 @@ export default {
     missed: 'Missed Appointments',
     searchTitle: 'Search Appointments',
     todayTitle: 'Today\'s Appointments',
+    calendarTitle: 'Appointments Calendar',
     messages: {
-      deleteAppointmentMessage: 'Are you sure you wish to delete this appointment?',
+      appointmentSaved: 'The appointment for {{patient}} has been saved.',
       endTimeLaterThanStart: 'Please select an end time later than the start time.'
     },
     buttons: {
-      newButton: '+ new appointment'
+      newButton: '+ new appointment',
+      scheduleSurgery: '+ schedule surgery'
     },
     labels: {
+      noLocation: 'No Location',
       selectedStartingDate: 'Show Appointments On Or After'
+    },
+    titles: {
+      appointmentSaved: 'Appointment Saved',
+      editSurgicalAppointment: 'Edit Surgical Appointment',
+      newSurgicalAppointment: 'New Surgical Appointment',
+      theaterSchedule: 'Theater Schedule'
     }
   },
   vitals: {
-    messages: {
-      delete: 'Are you sure you wish to delete these vitals?'
-    },
     labels: {
       dateRecorded: 'Date Recorded',
       temperature: 'Temperature',
@@ -722,36 +928,69 @@ export default {
   },
   visits: {
     titles: {
-      additionalDiagnoses: 'Additional Diagnoses'
+      additionalDiagnoses: 'Additional Diagnoses',
+      checkedIn: 'Patient Checked In',
+      checkOut: 'Patient Check Out',
+      checkedOut: 'Patient Checked Out',
+      discharged: 'Patient Discharged',
+      editVisit: 'Edit Visit',
+      newVisit: 'New Visit',
+      patientCheckIn: 'Patient Check In',
+      visitSaved: 'Visit Saved'
     },
     messages: {
-      delete: 'Are you sure you wish to delete this visit?'
+      checkOut: 'Are you sure you wish to check out {{patientName}}?',
+      checkedOut: '{{patientName}} has been checked out.',
+      discharged: '{{patientName}} has been discharged.',
+      patientCheckedIn: '{{patientName}} has been checked in.',
+      patientCreatedAndCheckedIn: '{{patientName}} has been created and checked in.',
+      visitAndPatientSaved: 'The visit and patient records have been saved.',
+      visitSaved: 'The visit record has been saved.'
     },
     buttons: {
       newProcedure: 'New Procedure',
-      newLab: 'New Lab',
       newAppointment: 'New Appointment',
       addDiagnosis: 'Add Diagnosis',
-      newImaging: 'New Imaging',
-      newMedication: 'New Medication',
-      newVitals: 'New Vitals'
+      newVitals: 'New Vitals',
+      checkIn: 'Check In',
+      checkOut: 'Check Out',
+      discharge: 'Discharge'
     },
     labels: {
       diagnosis: 'Diagnosis',
       procedure: 'Procedure',
       procedureDate: 'Procedure Date',
       authoredBy: 'Authored By',
-      labs: 'Labs',
-      imaging: 'Imaging',
       visitInformation: 'Visit Information',
       examiner: 'Examiner',
-      medication: 'Medication',
       status: 'Visit Status',
-      admittingDiagnosis: 'Admitting Diagnosis',
       finalDiagnosis: 'Final/Billing Diagnosis',
       visitDate: 'Visit Date',
       visitType: 'Visit Type',
-      vitals: 'Vitals'
+      patientToCheckIn: 'Patient To Check In',
+      checkInTime: 'Check In',
+      checkOutTime: 'Check Out',
+      appointment: 'Appointment',
+      haveAppointment: 'Y',
+      noAppointment: 'N',
+      ordersDone: 'Orders Done',
+      haveDoneOrders: 'Y',
+      ordersNotDone: 'N',
+      reasonForVisit: 'Reason For Visit',
+      statusAdmitted: 'Admitted',
+      statusDischarged: 'Discharged',
+      statusCheckedIn: 'Checked In',
+      statusCheckedOut: 'Checked Out',
+      createNewPatient: 'Create New Patient',
+      reportType: 'Report type'
+    },
+    navigation: {
+      charges: 'Charges',
+      notes: 'Notes',
+      orders: 'Orders',
+      procedures: 'Procedures',
+      vitals: 'Vitals',
+      reports: 'Reports'
     }
   },
   labs: {
@@ -768,7 +1007,6 @@ export default {
     messages: {
       noItemsFound: 'No labs found.',
       createNewRecord: 'Create a new record?',
-      confirmDeletion: 'Are you sure you wish to delete this lab request?',
       noCompleted: 'No completed items found.'
     },
     buttons: {
@@ -794,6 +1032,7 @@ export default {
       socialWork: 'Social Work'
     },
     titles: {
+      addContact: 'Add Contact',
       admittedPatients: 'Admitted Patients',
       expenses: 'Expenses',
       additionalContacts: 'Additional Contacts',
@@ -813,6 +1052,7 @@ export default {
       deletePhoto: 'Delete Photo',
       deleteContact: 'Delete Contact',
       savedPatient: 'Patient Saved',
+      todaysOutpatients: 'Today\'s Outpatients',
       admissionsDetail: 'Admissions Detail',
       admissionsSummary: 'Admissions Summary',
       diagnosticTesting: 'Diagnostic Testing',
@@ -824,20 +1064,24 @@ export default {
       totalPatientDays: 'Total Patient Days',
       totalPatientDaysDetailed: 'Total Patient Days (Detailed)',
       visit: 'Visit',
-      deletePatientRecord: 'Delete Patient Record'
+      deletePatientRecord: 'Delete Patient Record',
+      outpatientsForDate: 'Outpatients for {{visitDate}}'
     },
     messages: {
       areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
-      deletePatient: 'Are you sure you wish to delete {{firstName}} {{lastName}}?',
       noPatientsFound: 'No patients found.',
       savedPatient: 'The patient record for {{displayName}} has been saved.',
       notFoundQuickAdd: 'The patient <strong>{{patientFullName}}</strong> could not be found.  If you would like to create a new patient, fill in the information below.  Otherwise press the Cancel button to return.',
       createNewPatient: 'Create a new patient record?',
-      deletingPatient: 'Deleting patient and all associated records'
+      deletingPatient: 'Deleting patient and all associated records',
+      photoFileRequired: 'Please take a picture or upload a file before saving this photo.'
     },
     buttons: {
       addExpense: 'Add Expense',
       addContact: 'Add Contact',
+      addOperativePlan: 'Add Operative Plan',
+      editOperativePlan: 'Current Operative Plan',
+      download: 'Download',
       newLab: 'New Lab',
       newVisit: 'New Visit',
       newMedication: 'New Medication',
@@ -846,11 +1090,11 @@ export default {
       newPhoto: 'New Photo',
       newAppointment: 'New Appointment',
       backToPatients: 'Back to Patient List',
-      newPatient: '+ new patient'
-    },
-    headings: {
-      history: 'History',
-      historySince: 'History Since'
+      newPatient: '+ new patient',
+      patientCheckIn: 'Patient Check In',
+      newOPDReport: 'New OPD Report',
+      newDischargeReport: 'New Discharge Report',
+      scheduleSurgery: 'Schedule Surgery'
     },
     labels: {
       primaryDiagnosis: 'Primary Diagnoses',
@@ -861,7 +1105,6 @@ export default {
       admissionDate: 'Admission Date',
       patientDays: 'Patient Days',
       dischargeDate: 'Discharge Date',
-      discharge: 'Discharge',
       admit: 'Admit',
       relationships: 'Relationships',
       phone: 'Phone',
@@ -874,7 +1117,7 @@ export default {
       dateOfBirth: 'Date Of Birth',
       placeOfBirth: 'Place Of Birth',
       sources: 'Sources',
-      costs: 'Costs',
+      cost: 'Cost',
       civilStatus: 'Civil Status',
       relationship: 'Relationship To Patient',
       education: 'Education',
@@ -891,7 +1134,11 @@ export default {
       religion: 'Religion',
       parent: 'Parent/Guardian',
       contacts: 'Contacts',
-      sexNotEntered: 'Sex Not Entered'
+      sexNotEntered: 'Sex Not Entered',
+      operativePlan: 'Operative Plan',
+      caption: 'Caption',
+      patientTypeCharity: 'Charity',
+      patientTypePrivate: 'Private'
     },
     notes: {
       newNote: 'New Note for',
@@ -904,7 +1151,6 @@ export default {
   billing: {
     alerts: {
       noInvoiceFound: 'No invoices found',
-      deleteItem: 'Are you sure you wish to delete {{item}}?',
       noPricingItems: 'No pricing items found.',
       noPricingProfiles: 'No pricing profiles found.'
     },
@@ -968,26 +1214,97 @@ export default {
       medicationUsed: 'Medication Used'
     },
     messages: {
-      deleteMedication: 'Are you sure you want to delete this medication?',
-      delete: 'Are you sure you wish to delete this procedure?',
       saved: 'The procedure record has been saved.'
     },
     buttons: {
       addMedication: 'Add Medication'
     }
   },
+  reports: {
+    titles: {
+      saved: 'Report saved',
+      opdTitle: 'OPD Report',
+      dischargeReport: 'Discharge Report'
+    },
+    form: {
+      visitDate: 'Date of Visit',
+      admissionDate: 'Admission Date',
+      dischargeDate: 'Discharge Date',
+      notes: {
+        title: 'Notes',
+        date: 'Date',
+        author: 'Author'
+      },
+      primaryDiagnosis: 'Primary Diagnosis',
+      secondaryDiagnosis: 'Secondary Diagnosis',
+      procedures: 'Procedures',
+      allProcedures: 'All Procedures Performed',
+      labs: 'Labs',
+      images: 'Images',
+      medications: 'Medications',
+      nextAppointment: 'Next Appointment',
+      nextAppointments: 'Next Appointments',
+      operativePlan: {
+        title: 'Operative Plan',
+        description: 'Operation Description',
+        procedures: 'Planned Procedures',
+        instructions: 'Instructions upon Admission'
+      },
+      completedBy: 'Completed By'
+    },
+    opd: {
+      titles: {
+        new: 'New OPD Report',
+        edit: 'Edit OPD Report'
+      }
+    },
+    discharge: {
+      titles: {
+        new: 'New Discharge Report',
+        edit: 'Edit Discharge Report'
+      }
+    },
+    messages: {
+      delete: 'Are you sure you wish to delete this report?',
+      saved: 'The report has been saved.'
+    }
+  },
   components: {
     chargesByTypeTab: {
       charges: 'charges'
     },
+    customFormManager: {
+      buttons: {
+        addForm: 'Add Form'
+      }
+    },
+    sortableColumn: {
+      labels: {
+        selectAll: '(Select All)'
+      }
+    },
+    imageUpload: {
+      messages: {
+        selectValidImageFile: 'Please select a valid image file.'
+      }
+    },
+    dateTimePicker: {
+      amHour: '{{hour}} AM',
+      midnight: 'Midnight',
+      noon: 'Noon',
+      pmHour: '{{hour}} PM'
+    },
     takePhoto: {
       how: 'How Do You Want To Add A Photo?',
       takePhoto: 'Take photo',
-      uploadPhoto: 'Upload Photo',
       uploadFile: 'Upload File',
       camera: 'Camera',
       photo: 'photo',
-      preview: 'preview'
+      preview: 'preview',
+      labels: {
+        takeAPicture: 'Take a Picture',
+        uploadAFile: 'Upload a File'
+      }
     },
     quantityConv: {
       unit: 'Unit',
@@ -996,8 +1313,243 @@ export default {
     quantityCalc: {
       result: '{{targetUnit}} total: {{calculated}}'
     },
+    patientOrders: {
+      buttons: {
+        newImaging: 'New Imaging',
+        newLab: 'New Lab',
+        newMedication: 'New Medication'
+      },
+      labels: {
+        imagingOrderType: 'Imaging',
+        labOrderType: 'Lab',
+        medicationOrderType: 'Medication',
+        orderType: 'Order Type'
+      }
+    },
     priceList: {
       charges: '{{pricingType}} charges'
+    },
+    operativeProcedures: {
+      buttons: {
+        addProcedure: 'Add Procedure'
+      },
+      labels: {
+        procedure: 'Procedure'
+      },
+      titles: {
+        procedures: 'Procedures'
+      }
+    },
+    upcomingAppointments: {
+      labels: {
+        date: 'Date',
+        with: 'With',
+        location: 'Location',
+        type: 'Type'
+      },
+      titles: {
+        upcomingAppointments: 'Upcoming Appointments'
+      }
+    }
+  },
+  customForms: {
+    buttons: {
+      addForm: 'Add Form'
+    },
+    labels: {
+      formToAdd: 'Form To Add'
+    },
+    titles: {
+      addCustomForm: 'Add Custom Form'
+    }
+  },
+  diagnosis: {
+    labels: {
+      activeDiagnosis: 'Active Diagnosis',
+      date: 'Date',
+      diagnosis: 'Diagnosis',
+      secondaryDiagnosis: 'Secondary Diagnosis'
+    },
+    titles: {
+      addDiagnosis: 'Add Diagnosis',
+      editDiagnosis: 'Edit Diagnosis'
+    }
+  },
+  allergies: {
+    buttons: {
+      addAllergy: 'Add Allergy'
+    },
+    titles: {
+      addAllergy: 'Add Allergy',
+      editAllergy: 'Edit Allergy'
+    },
+    labels: {
+      allergyName: 'Name',
+      patientAllergy: 'Patient Allergies'
+    }
+  },
+  operativePlan: {
+    buttons: {
+      completePlan: 'Complete Plan'
+    },
+    labels: {
+      additionalNotes: 'Additional Notes',
+      admissionInstructions: 'Instructions Upon Admission',
+      caseComplexity: 'Case Complexity',
+      completedStatus: 'Completed',
+      droppedStatus: 'Dropped',
+      operationDescription: 'Operation Description',
+      plannedStatus: 'Planned',
+      status: 'Status',
+      surgeon: 'Surgeon'
+    },
+    messages: {
+      planSaved: 'The operative plan has been saved.',
+      planCompleted: 'The operative plan has been completed.  You will now be directed to the operation report.'
+    },
+    titles: {
+      editTitle: 'Edit Operative Plan',
+      newTitle: 'New Operative Plan',
+      planCompleted: 'Plan Completed',
+      planSaved: 'Plan Saved'
+    }
+  },
+  operationReport: {
+    labels: {
+      additionalNotes: 'Additional Notes',
+      assistant: 'Assistant',
+      caseComplexity: 'Case Complexity',
+      operationDescription: 'Operation Description',
+      preOpPrimaryDiagnosis: 'Pre-op Primary Diagnosis',
+      preOpSecondaryDiagnosis: 'Pre-op Secondary Diagnosis',
+      surgeon: 'Surgeon',
+      surgeryDate: 'Surgery Date'
+    },
+    messages: {
+      reportSaved: 'The operation report has been saved.'
+    },
+    titles: {
+      editTitle: 'Edit Operation Report',
+      newTitle: 'New Operation Report',
+      reportSaved: 'Report Saved'
+    }
+  },
+  application: {
+    messages: {
+      sessionExpired: 'Your session has expired.  Please login to continue.'
+    },
+    titles: {
+      sessionExpired: 'Session Expired'
+    }
+  },
+  models: {
+    appointment: {
+      labels: {
+        status: 'First Name',
+        appointmentType: 'Type',
+        provider: 'With',
+        location: 'Location',
+        patient: 'Patient',
+        startDate: 'Start Date',
+        endDate: 'End Date',
+        allDay: 'All Day',
+        type: 'Type',
+        notes: 'Notes',
+        appointmentDate: 'Date'
+      },
+      names: {
+        singular: 'appointment',
+        plural: 'appointments'
+      }
+    },
+    attachment: {
+      names: {
+        singular: 'attachment',
+        plural: 'attachments'
+      }
+    },
+    form: {
+      names: {
+        singular: 'form',
+        plural: 'forms'
+      }
+    },
+    incident: {
+      names: {
+        singular: 'incident',
+        plural: 'incidents'
+      }
+    },
+    item: {
+      names: {
+        singular: 'item',
+        plural: 'items'
+      }
+    },
+    imaging: {
+      request: {
+        singular: 'imaging request',
+        plural: 'imaging requests'
+      },
+      names: 'imaging'
+    },
+    medication: {
+      request: {
+        singular: 'medication request',
+        plural: 'medication requests'
+      },
+      names: {
+        singular: 'medication',
+        plural: 'medications'
+      }
+    },
+    note: {
+      names: {
+        singular: 'note',
+        plural: 'notes'
+      }
+    },
+    lab: {
+      request: {
+        singular: 'lab request',
+        plural: 'lab requests'
+      },
+      names: {
+        singular: 'lab',
+        plural: 'labs'
+      }
+    },
+    procedure: {
+      names: {
+        singular: 'procedure',
+        plural: 'procedures'
+      }
+    },
+    user: {
+      names: {
+        singular: 'user',
+        plural: 'users'
+      }
+    },
+    visit: {
+      names: {
+        singular: 'visit',
+        plural: 'visits'
+      }
+    },
+    vital: {
+      names: {
+        singular: 'vital',
+        plural: 'vitals'
+      }
+    },
+    patient: {
+      labels: {
+        name: 'Name'
+      },
+      names: {
+        singular: 'Patient'
+      }
     }
   }
 };

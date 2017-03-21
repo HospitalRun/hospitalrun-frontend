@@ -66,9 +66,14 @@ test('delete lookup value', function(assert) {
       andThen(() => {
         assert.equal(find('td.lookup-type-value:contains(Epidural)').length, 1, 'Have lookup type to delete from list');
         click('button:contains(Delete)');
-        andThen(() => {
-          assert.equal(find('td.lookup-type-value:contains(Epidural)').length, 0, 'Deleted lookup type is removed from the list');
-        });
+        waitToAppear('.modal-dialog');
+      });
+      andThen(() => {
+        assert.equal(find('.modal-title').text(), 'Delete Value', 'Delete value modal is displayed');
+        click('.modal-footer button:contains(Ok)');
+      });
+      andThen(() => {
+        assert.equal(find('td.lookup-type-value:contains(Epidural)').length, 0, 'Deleted lookup type is removed from the list');
       });
     });
   });
@@ -86,6 +91,24 @@ test('Update address options', function(assert) {
         waitToAppear('.modal-dialog');
         andThen(() => {
           assert.equal(find('.modal-title').text(), 'Options Saved', 'Address Options Saved');
+        });
+      });
+    });
+  });
+});
+
+test('Update header options', function(assert) {
+  runWithPouchDump('admin', function() {
+    authenticateUser();
+    visit('/admin/print-header');
+    andThen(function() {
+      assert.equal(currentURL(), '/admin/print-header');
+      fillIn('input', 'Print Header Label');
+      click('button:contains(Update)');
+      andThen(() => {
+        waitToAppear('.modal-dialog');
+        andThen(() => {
+          assert.equal(find('.modal-title').text(), 'Options Saved', 'Header Options Saved');
         });
       });
     });
