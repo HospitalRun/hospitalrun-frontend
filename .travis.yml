@@ -15,7 +15,7 @@ addons:
     sources:
     - google-chrome
     packages:
-    - google-chrome-stable
+    - google-chrome-beta
 
 cache:
   directories:
@@ -27,6 +27,7 @@ before_install:
   - npm install -g bower phantomjs-prebuilt
   - bower --version
   - phantomjs --version
+  - google-chrome --version
 
 install:
   - npm install
