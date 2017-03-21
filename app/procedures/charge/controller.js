@@ -20,10 +20,7 @@ export default AbstractEditController.extend({
   }.property('model.isNew'),
 
   beforeUpdate() {
-    let isNew = this.get('model.isNew');
-    if (isNew) {
-      this.set('newCharge', true);
-    }
+    this.set('newCharge', this.get('model.isNew'));
     return new Ember.RSVP.Promise((resolve, reject) => {
       let model = this.get('model');
       let pricingItem = model.get('pricingItem');
@@ -72,7 +69,7 @@ export default AbstractEditController.extend({
   },
 
   afterUpdate(record) {
-    if (this.get('newCharge')) {
+    if (this.get('newCharge') === true) {
       this.get('requestingController').send('addCharge', record);
     } else {
       this.send('closeModal');

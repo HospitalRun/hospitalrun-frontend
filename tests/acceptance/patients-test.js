@@ -76,6 +76,35 @@ test('View reports tab | Patient Status', function(assert) {
   });
 });
 
+test('Testing admitted patient', function(assert) {
+  runWithPouchDump('patient', function() {
+    authenticateUser();
+    visit('/patients/admitted');
+    andThen(function() {
+      assert.equal(currentURL(), '/patients/admitted');
+      assert.equal(find('.clickable').length, 1, 'One patient is listed');
+    });
+
+    click('button:contains(Discharge)');
+    waitToAppear('.view-current-title:contains(Edit Visit)');
+    andThen(function() {
+      assert.equal(currentURL(), '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'should return visits/edit instead');
+    });
+    click('.panel-footer button:contains(Discharge)');
+    waitToAppear('.modal-dialog');
+    andThen(() => {
+      assert.equal(find('.modal-title').text(), 'Patient Discharged', 'Patient has been discharged');
+    });
+
+    click('button:contains(Ok)');
+    visit('/patients/admitted');
+    waitToAppear('.view-current-title:contains(Admitted Patients)');
+    andThen(() => {
+      assert.equal(find('.clickable').length, 0, 'No patient is listed');
+    });
+  });
+});
+
 test('Adding a new patient record', function(assert) {
   runWithPouchDump('default', function() {
     authenticateUser();

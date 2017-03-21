@@ -32,7 +32,6 @@ test('visiting /appointments/missed', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
     let url = '/appointments';
-    // create an apointmet scheduled in the past
     let today = moment();
     let tomorrow = moment().add(1, 'days');
     let status = 'Missed';
@@ -148,8 +147,8 @@ test('Delete an appointment', function(assert) {
 test('Appointment calendar', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
-    let later = moment().add(1, 'hours');
-    let today = moment();
+    let today = moment().startOf('day');
+    let later =  moment(today).add(1, 'hours');
     let startTime = today.format(TIME_FORMAT);
     let endTime = later.format(TIME_FORMAT);
     let timeString = `${startTime} - ${endTime}`;

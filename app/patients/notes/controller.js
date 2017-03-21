@@ -24,6 +24,7 @@ export default AbstractEditController.extend(IsUpdateDisabled, UserSession, Pati
   }.property('model.patient.displayName'),
   updateCapability: 'add_note',
   beforeUpdate() {
+    this._setNoteType();
     this.set('model.date', new Date());
     this.set('model.createdBy', this.getUserName());
     return Ember.RSVP.Promise.resolve();
@@ -31,22 +32,5 @@ export default AbstractEditController.extend(IsUpdateDisabled, UserSession, Pati
   afterUpdate() {
     this.send(this.get('updateAction'), this.get('model'));
     this.send(this.get('cancelAction'));
-  },
-  actions: {
-    changeVisit() {
-      let selectEl = $('select[name="note-visits"]').get(0);
-      let { selectedIndex } = selectEl;
-      let content = this.get('patientVisitsForSelect');
-
-      // decrement index by 1 if we have a prompt
-      let contentIndex = selectedIndex - 1;
-
-      let selection = content[contentIndex].selectObject;
-
-      // set the local, shadowed selection to avoid leaking
-      // changes to `selection` out via 2-way binding
-      this.get('model').set('visit', selection);
-      this._setNoteType();
-    }
   }
 });
