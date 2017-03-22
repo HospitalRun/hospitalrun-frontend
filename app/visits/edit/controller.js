@@ -339,12 +339,6 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     }.bind(this));
   },
 
-  _setPrint() {
-    setTimeout(() => {
-      this.contentWindow.print();
-    }, 2000);
-  },
-
   actions: {
     addDiagnosis(newDiagnosis) {
       this.addDiagnosisToModelAndPatient(newDiagnosis);
@@ -411,11 +405,6 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
         model.set('returnToVisit', this.get('model.id'));
         this.transitionToRoute('patients.operative-plan', model);
       }
-    },
-
-    viewReport(report) {
-      set(report, 'returnToVisit', get(this, 'model.id'));
-      this.transitionToRoute('visits.reports.edit', report);
     },
 
     newPatientChanged(createNewPatient) {
@@ -522,28 +511,22 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       this.send('update', true);
     },
 
-    printReport(report) {
-      let reportFrame = document.createElement('iframe');
-      reportFrame.onload = this._setPrint;
-      reportFrame.id = 'visit-report';
-      reportFrame.style.display = 'none';
-      let router = this.get('target');
-      let reportURL = router.generate('reports.edit', report);
-      reportFrame.src = reportURL;
-      let iframe = document.getElementById('visit-report');
-      if (iframe) {
-        document.body.replaceChild(reportFrame, iframe);
-      } else {
-        document.body.appendChild(reportFrame);
-      }
-    },
-
     startDateChanged(startDate) {
       let isAdmissionVisit = this.get('isAdmissionVisit');
       let visit = this.get('model');
       if (!isAdmissionVisit) {
         visit.set('endDate', startDate);
       }
+    },
+
+    printReport(report) {
+      set(report, 'returnToVisit', get(this, 'model.id'));
+      this.transitionToRoute('visits.reports.edit', report, { queryParams: { print: 1 } });
+    },
+
+    viewReport(report) {
+      set(report, 'returnToVisit', get(this, 'model.id'));
+      this.transitionToRoute('visits.reports.edit', report);
     }
 
   }
