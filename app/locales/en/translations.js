@@ -175,7 +175,8 @@ export default {
         textarea: 'Large Text',
         visitFormType: 'Visit',
         opdReportFormType: 'Outpatient Report',
-        dischargeReportFormType: 'Discharge Report'
+        dischargeReportFormType: 'Discharge Report',
+        labFormType: 'Lab'
       },
       messages: {
         formSaved: 'The {{name}} form has been saved.'
