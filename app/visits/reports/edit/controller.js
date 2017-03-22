@@ -23,8 +23,6 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
     id: 'physician_list'
   }],
 
-  newReport: false,
-
   visitsController: Ember.inject.controller('visits'),
 
   physicianList: alias('visitsController.physicianList'),
