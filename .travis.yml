@@ -23,8 +23,6 @@ cache:
     - $HOME/.cache # includes bowers cache
 
 before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
   - npm config set spin false
   - npm install -g bower phantomjs-prebuilt
   - bower --version
