@@ -954,7 +954,9 @@ export default {
       newVitals: 'New Vitals',
       checkIn: 'Check In',
       checkOut: 'Check Out',
-      discharge: 'Discharge'
+      discharge: 'Discharge',
+      newOPDReport: 'New OPD Report',
+      newDischargeReport: 'New Discharge Report'
     },
     labels: {
       diagnosis: 'Diagnosis',
@@ -1092,8 +1094,6 @@ export default {
       backToPatients: 'Back to Patient List',
       newPatient: '+ new patient',
       patientCheckIn: 'Patient Check In',
-      newOPDReport: 'New OPD Report',
-      newDischargeReport: 'New Discharge Report',
       scheduleSurgery: 'Schedule Surgery'
     },
     labels: {
@@ -1223,10 +1223,12 @@ export default {
   reports: {
     titles: {
       saved: 'Report saved',
-      opdTitle: 'OPD Report',
-      dischargeReport: 'Discharge Report'
+      opdReport: 'OPD Report',
+      newOPDReport: 'New OPD Report',
+      dischargeReport: 'Discharge Report',
+      newDischargeReport: 'New Discharge Report'
     },
-    form: {
+    labels: {
       visitDate: 'Date of Visit',
       admissionDate: 'Admission Date',
       dischargeDate: 'Discharge Date',
@@ -1235,6 +1237,9 @@ export default {
         date: 'Date',
         author: 'Author'
       },
+      visitType: 'Visit Type',
+      examiner: 'Visit Examiner',
+      location: 'Visit Location',
       primaryDiagnosis: 'Primary Diagnosis',
       secondaryDiagnosis: 'Secondary Diagnosis',
       procedures: 'Procedures',
@@ -1251,18 +1256,6 @@ export default {
         instructions: 'Instructions upon Admission'
       },
       completedBy: 'Completed By'
-    },
-    opd: {
-      titles: {
-        new: 'New OPD Report',
-        edit: 'Edit OPD Report'
-      }
-    },
-    discharge: {
-      titles: {
-        new: 'New Discharge Report',
-        edit: 'Edit Discharge Report'
-      }
     },
     messages: {
       delete: 'Are you sure you wish to delete this report?',
