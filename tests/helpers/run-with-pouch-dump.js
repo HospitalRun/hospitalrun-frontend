@@ -33,7 +33,6 @@ function destroyDatabases(dbs) {
 }
 
 function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
-  PouchDB.debug.enable('*');
   PouchDB.plugin(PouchAdapterMemory);
   let db = new PouchDB('hospitalrun-test-database', {
     adapter: 'memory'
@@ -84,7 +83,6 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
             config: configDB,
             main: db
           }).then(function() {
-            PouchDB.debug.disable();
             configDB = null;
             db = null;
             resolve();
