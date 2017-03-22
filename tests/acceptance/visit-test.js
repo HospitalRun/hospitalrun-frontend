@@ -38,11 +38,21 @@ test('Add admission visit', function(assert) {
   runWithPouchDump('patient', function() {
     authenticateUser();
     addVisit(assert);
-    addAdmissionData(assert);
-    newReport(assert, 'Discharge');
-    checkDischargeReport(assert);
-    saveReport(assert, 'Discharge');
-    editReport(assert, 'Discharge');
+    andThen(() => {
+      addAdmissionData(assert);
+    });
+    andThen(() => {
+      newReport(assert, 'Discharge');
+    });
+    andThen(() => {
+      checkDischargeReport(assert);
+    });
+    andThen(() => {
+      saveReport(assert, 'Discharge');
+    });
+    andThen(() => {
+      editReport(assert, 'Discharge');
+    });
   });
 });
 
@@ -50,11 +60,21 @@ test('Add OPD visit', function(assert) {
   runWithPouchDump('patient', function() {
     authenticateUser();
     addVisit(assert, 'Clinic');
-    addOutpatientData(assert);
-    newReport(assert, 'OPD');
-    checkOPDReport(assert);
-    saveReport(assert, 'OPD');
-    editReport(assert, 'OPD');
+    andThen(() => {
+      addOutpatientData(assert);
+    });
+    andThen(() => {
+      newReport(assert, 'OPD');
+    });
+    andThen(() => {
+      checkOPDReport(assert);
+    });
+    andThen(() => {
+      saveReport(assert, 'OPD');
+    });
+    andThen(() => {
+      editReport(assert, 'OPD');
+    });
   });
 });
 
@@ -261,10 +281,13 @@ function addOutpatientData(assert) {
     assert.equal(find('.modal-title').text(), 'Add Diagnosis', 'Add Diagnosis dialog displays');
     fillIn('.diagnosis-text input', visitData.outPatient.SECONDARY_DIAGNOSIS);
     click('.secondary-diagnosis input');
+  });
+  andThen(() => {
     click('.modal-footer button:contains(Add)');
   });
   andThen(function() {
     waitToDisappear('.modal-dialog');
+    waitToAppear(`a.secondary-diagnosis:contains(${visitData.outPatient.SECONDARY_DIAGNOSIS})`);
   });
   andThen(() => {
     click('a:contains(Add Operative Plan)');

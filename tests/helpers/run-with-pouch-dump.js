@@ -82,7 +82,11 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
           cleanupDatabases({
             config: configDB,
             main: db
-          }).then(resolve, function(err) {
+          }).then(function() {
+            configDB = null;
+            db = null;
+            resolve();
+          }, function(err) {
             console.log('error cleaning up dbs:', JSON.stringify(err, null, 2));
           });
         });
