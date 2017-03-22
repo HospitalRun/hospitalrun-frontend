@@ -181,13 +181,12 @@
             <span class="test-visit-discharge-date-data">{{date-format model.reportDate format="DD/MM/YYYY"}}</span>
           </div>
 
-          <div class="row">
-            {{select-or-typeahead className="col-sm-4" property="surgeon"
-                                  label=(t "operativePlan.labels.surgeon") list=physicianList
-                                  selection=model.surgeon
-                                  class="plan-surgeon"
-            }}
-          </div>
+          {{#if visit.examiner }}
+            <div class="ps-info-group test-examiner">
+              <p><b class="test-examiner-label">{{t 'reports.labels.doctorOrSurgeon' }}:</b>
+                <span class="test-examiner-data">{{visit.examiner}}</span></p>
+            </div>
+          {{/if}}
 
           {{#if patientProcedures}}
             <label class="ps-info-label">{{t 'reports.labels.allProcedures'}}</label>

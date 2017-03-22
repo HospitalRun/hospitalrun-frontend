@@ -1241,6 +1241,7 @@ export default {
       },
       visitType: 'Visit Type',
       examiner: 'Visit Examiner',
+      doctorOrSurgeon: 'Doctor/Surgeon',
       location: 'Visit Location',
       primaryDiagnosis: 'Primary Diagnosis',
       secondaryDiagnosis: 'Secondary Diagnosis',
