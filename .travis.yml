@@ -24,15 +24,16 @@ cache:
 
 before_install:
   - npm config set spin false
-  - npm install -g bower phantomjs-prebuilt
+  - npm install -g bower phantomjs-prebuilt testem
   - bower --version
   - phantomjs --version
   - google-chrome --version
+  - testem launchers
+
 
 install:
   - npm install
   - bower install
-  - testem launchers
 
 script:
   - travis_retry npm test
