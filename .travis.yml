@@ -15,7 +15,7 @@ addons:
     sources:
     - google-chrome
     packages:
-    - google-chrome-beta
+    - google-chrome-stable
 
 cache:
   directories:
@@ -23,12 +23,13 @@ cache:
     - $HOME/.cache # includes bowers cache
 
 before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
   - npm config set spin false
-  - npm install -g bower phantomjs-prebuilt testem
+  - npm install -g bower phantomjs-prebuilt
   - bower --version
   - phantomjs --version
   - google-chrome --version
-  - testem launchers
 
 
 install:
