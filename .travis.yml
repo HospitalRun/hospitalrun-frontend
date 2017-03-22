@@ -32,6 +32,7 @@ before_install:
 install:
   - npm install
   - bower install
+  - testem launchers
 
 script:
   - travis_retry npm test
