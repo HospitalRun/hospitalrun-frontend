@@ -23,19 +23,15 @@ function createTranslationWrapper(original, context) {
 }
 
 export default function startApp(attrs) {
-  let application;
+  let attributes = Ember.merge({}, config.APP);
+  attributes = Ember.merge(attributes, attrs); // use defaults, but you can override;
 
-  // use defaults, but you can override
-  let attributes = Ember.assign({}, config.APP, attrs);
-
-  Ember.run(() => {
-    application = Application.create(attributes);
+  return Ember.run(() => {
+    let application = Application.create(attributes);
     application.setupForTesting();
     application.injectTestHelpers();
+    let translationService = application.__container__.lookup('service:i18n');
+    application.__container__.lookup('service:i18n').t = createTranslationWrapper(translationService.t, translationService);
+    return application;
   });
-
-  let translationService = application.__container__.lookup('service:i18n');
-  application.__container__.lookup('service:i18n').t = createTranslationWrapper(translationService.t, translationService);
-
-  return application;
 }

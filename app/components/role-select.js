@@ -1,11 +1,14 @@
 import Ember from 'ember';
+
+const { isEmpty } = Ember;
+
 export default Ember.Component.extend({
   // possible passed-in values with their defaults:
   content: null,
   prompt: null,
   optionValuePath: 'roles',
   optionLabelPath: 'name',
-  action: Ember.K, // action to fire on change
+  action: null,
 
   // shadow the passed-in `selection` to avoid
   // leaking changes to it via a 2-way binding
@@ -35,7 +38,9 @@ export default Ember.Component.extend({
       this.set('_selection', selection);
 
       let changeCallback = this.get('action');
-      changeCallback(selection);
+      if (!isEmpty(changeCallback)) {
+        changeCallback(selection);
+      }
     }
   }
 });
