@@ -1,0 +1,8 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+     - "4200:4200"
+  couchdb:
+    image: "couchdb:1.6"

@@ -6,7 +6,7 @@ const {
 } = Ember;
 
 export default Ember.Component.extend({
-  print: null,
+  print: true,
   delay: null,
 
   didInsertElement() {

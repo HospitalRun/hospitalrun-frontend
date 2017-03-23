@@ -17,8 +17,6 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
   queryParams: ['print'],
   print: null,
 
-  newReport: false,
-
   visitsController: Ember.inject.controller('visits'),
 
   physicianList: alias('visitsController.physicianList'),
@@ -45,12 +43,6 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
   }),
 
   updateCapability: 'add_report',
-
-  showUpdateButton: computed('updateCapability', 'model.isNew', function() {
-    let showUpdate = this._super();
-    let isNew = get(this, 'model.isNew');
-    return showUpdate && isNew;
-  }),
 
   beforeUpdate() {
     return new Ember.RSVP.Promise((resolve) => {

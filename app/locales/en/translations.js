@@ -175,7 +175,8 @@ export default {
         textarea: 'Large Text',
         visitFormType: 'Visit',
         opdReportFormType: 'Outpatient Report',
-        dischargeReportFormType: 'Discharge Report'
+        dischargeReportFormType: 'Discharge Report',
+        labFormType: 'Lab'
       },
       messages: {
         formSaved: 'The {{name}} form has been saved.'
@@ -1240,8 +1241,8 @@ export default {
         author: 'Author'
       },
       visitType: 'Visit Type',
-      examiner: 'Visit Examiner',
-      doctorOrSurgeon: 'Doctor/Surgeon',
+      visitExaminer: 'Visit Examiner',
+      examiner: 'Examiner',
       location: 'Visit Location',
       primaryDiagnosis: 'Primary Diagnosis',
       secondaryDiagnosis: 'Secondary Diagnosis',

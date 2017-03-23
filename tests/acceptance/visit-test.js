@@ -408,8 +408,8 @@ function checkOPDReport(assert) {
 
 function checkDischargeReport(assert) {
   andThen(function() {
-    findWithAssert('.test-examiner .test-examiner-label:contains(Doctor/Surgeon)');
-    assert.equal(find('.test-examiner .test-examiner-data').text(), visitData.admission.EXAMINER, 'Doctor/Surgeon is displayed');
+    findWithAssert('.test-examiner .test-examiner-label:contains(Examiner)');
+    assert.equal(find('.test-examiner .test-examiner-data').text(), visitData.admission.EXAMINER, 'Examiner is displayed');
     assert.equal(find('.test-visit-date .test-visit-date-label').text().trim(), 'Admission Date:', 'Visit date label displays as admission');
     assert.equal(find('.test-visit-date .test-visit-discharge-date-label').text().trim(), 'Discharge Date:', 'Discharge date label displays');
     findWithAssert('.test-notes .test-notes-label:contains(Notes)');

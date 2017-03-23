@@ -521,12 +521,12 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
     printReport(report) {
       set(report, 'returnToVisit', get(this, 'model.id'));
-      this.transitionToRoute('visits.reports.edit', report, { queryParams: { print: 1 } });
+      this.transitionToRoute('visits.reports.edit', report, { queryParams: { print: true } });
     },
 
     viewReport(report) {
       set(report, 'returnToVisit', get(this, 'model.id'));
-      this.transitionToRoute('visits.reports.edit', report);
+      this.transitionToRoute('visits.reports.edit', report, { queryParams: { print: null } });
     }
 
   }
