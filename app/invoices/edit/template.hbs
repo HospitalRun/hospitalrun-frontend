@@ -6,14 +6,14 @@
     <div class="row">
       {{#unless model.isNew}}
         <div class="form-group col-xs-2">
-          <label>{{t 'labels.invoiceId'}}</label>
+          <label>{{t 'models.invoice.labels.displayInvoiceNumber'}}</label>
           <p class="form-control-static">{{model.id}}</p>
         </div>
       {{/unless}}
-      {{date-picker property="billDate" label=(t 'labels.billDate') class="col-xs-2"}}
+      {{date-picker property="billDate" label=(t 'models.invoice.labels.billDate') class="col-xs-2"}}
       {{#if model.isNew}}
-        {{patient-typeahead property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="col-xs-4 required invoice-patient"}}
-        {{em-select class="col-xs-4 required invoice-visit" label=(t 'labels.visit')
+        {{patient-typeahead property="patientTypeAhead" label=(t 'models.patient.names.singular') content=patientList selection=selectedPatient class="col-xs-4 required invoice-patient"}}
+        {{em-select class="col-xs-4 required invoice-visit" label=(t 'models.invoice.labels.visit')
             property="visit" content=patientVisitsForSelect
             optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
             selected=model.visit
@@ -21,14 +21,14 @@
         }}
       {{else}}
         <div class="form-group col-xs-3">
-          <label>{{t 'labels.visit'}}</label>
+          <label>{{t 'models.invoice.labels.visit'}}</label>
           <p class="form-control-static">{{model.visit.visitDescription}}</p>
         </div>
       {{/if}}
     </div>
     <div class="row">
-      {{em-input property="externalInvoiceNumber" label=(t 'billing.labels.externalInvoiceNumber') class="col-xs-3 external-invoice-no"}}
-      {{em-select label=(t 'billing.labels.paymentProfile')
+      {{em-input property="externalInvoiceNumber" label=(t 'models.invoice.labels.externalInvoiceNumber') class="col-xs-3 external-invoice-no"}}
+      {{em-select label=(t 'models.invoice.labels.paymentProfile')
         property="paymentProfile"
         content=pricingProfiles
         optionValuePath="selectObject"
@@ -43,7 +43,7 @@
     <div class="panel detail-section">
       <div class="panel-heading">
         <h3 class="panel-title">
-          {{t 'labels.lineItems'}}
+          {{t 'models.invoice.labels.lineItems'}}
           {{#if canAddCharge}}
             <button class="btn btn-primary align-right" {{action "showAddLineItem" bubbles=false }}><span class="octicon octicon-plus"></span>{{t 'buttons.addLineItem'}}</button>
           {{/if}}
@@ -52,9 +52,9 @@
       <div class="panel-body detail-section-content">
         <table class="table">
           <tr class="table-header">
-            <th class="col-xs-5">{{t 'labels.description'}}</th>
+            <th class="col-xs-5">{{t 'models.billingLineItem.labels.description'}}</th>
             <th class="col-xs-1 text-right">{{t 'billing.labels.actualCharges'}}</th>
-            <th class="col-xs-1 text-right">{{t 'labels.discount'}}</th>
+            <th class="col-xs-1 text-right">{{t 'models.billingLineItem.labels.discount'}}</th>
             <th class="col-xs-1 text-right">{{t 'billing.labels.insurance'}}</th>
             <th class="col-xs-1 text-right">{{t 'billing.labels.hmoCom'}}</th>
             <th class="col-xs-1 text-right">{{t 'labels.excess'}}</th>
@@ -106,11 +106,11 @@
               </tr>
               {{#if item.showDetails}}
                 <tr>
-                  <th colspan="2" class="col-xs-6">{{t 'labels.name'}}</th>
-                  <th class="col-xs-1">{{t 'labels.quantity'}}</th>
-                  <th class="col-xs-1">{{t 'labels.price'}}</th>
-                  <th class="col-xs-1">{{t 'labels.expense_to'}}</th>
-                  <th class="col-xs-1 text-right">{{t 'labels.total'}}</th>
+                  <th colspan="2" class="col-xs-6">{{t 'models.lineItemDetail.labels.name'}}</th>
+                  <th class="col-xs-1">{{t 'models.lineItemDetail.labels.quantity'}}</th>
+                  <th class="col-xs-1">{{t 'models.lineItemDetail.labels.price'}}</th>
+                  <th class="col-xs-1">{{t 'models.lineItemDetail.labels.expenseAccount'}}</th>
+                  <th class="col-xs-1 text-right">{{t 'models.lineItemDetail.labels.total'}}</th>
                   <th class="col-xs-2">
                     {{#if canAddCharge}}
                       <button class="btn btn-primary" {{action "addItemCharge" item}}>
@@ -172,7 +172,7 @@
           {{/each}}
           <tr>
             <td>
-              <strong>{{t 'labels.total'}}</strong>
+              <strong>{{t 'models.invoice.labels.total'}}</strong>
             </td>
             <td class="text-right">{{number-format model.total}}</td>
             <td class="text-right">{{number-format model.discount}}</td>
@@ -183,7 +183,7 @@
           </tr>
           <tr>
             <td>
-              <strong>{{t 'billing.labels.paymentsDeposits'}}</strong>
+              <strong>{{t 'models.invoice.labels.paidTotal'}}</strong>
             </td>
             <td colspan="4"></td>
             <td class="text-right">-{{number-format model.paidTotal}}</td>
@@ -204,7 +204,7 @@
   <div class="panel detail-section">
     <div class="panel-heading">
       <h3 class="panel-title">
-        {{t 'labels.remarks'}}
+        {{t 'models.invoice.labels.remarks'}}
       </h3>
     </div>
     <div class="panel-body detail-section-content">
@@ -214,7 +214,7 @@
   <div class="panel detail-section">
     <div class="panel-heading">
       <h3 class="panel-title">
-        {{t 'labels.payments'}}
+        {{t 'models.invoice.labels.payments'}}
         {{#if canAddPayment}}
           <button class="btn btn-primary align-right" {{action "showAddPayment" model bubbles=false }}><span class="octicon octicon-plus"></span>{{t 'admin.roles.capability.addPayment'}}</button>
         {{/if}}
@@ -223,10 +223,10 @@
     <div class="panel-body detail-section-content">
       <table class="table">
         <tr class="table-header">
-          <th>{{t 'labels.date'}}</th>
-          <th>{{t 'labels.amount'}}</th>
-          <th>{{t 'labels.type'}}</th>
-          <th>{{t 'labels.notes'}}</th>
+          <th>{{t 'models.payment.labels.datePaid'}}</th>
+          <th>{{t 'models.payment.labels.amount'}}</th>
+          <th>{{t 'models.payment.labels.paymentType'}}</th>
+          <th>{{t 'models.payment.labels.notes'}}</th>
           <th>{{t 'labels.action'}}</th>
         </tr>
         {{#each model.payments as |payment|}}
