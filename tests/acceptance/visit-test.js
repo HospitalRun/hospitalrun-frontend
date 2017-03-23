@@ -384,7 +384,7 @@ function checkOPDReport(assert) {
     assert.ok(!isEmpty(find('.test-visit-date .test-visit-date-data').text()), 'Visit date is displayed');
     findWithAssert('.test-visit-type .test-visit-type-label:contains(Visit Type)');
     assert.equal(find('.test-visit-type .test-visit-type-data').text(), 'Clinic', 'Visit Type is displayed');
-    findWithAssert('.test-examiner .test-examiner-label:contains(Visit Examiner)');
+    findWithAssert('.test-examiner .test-examiner-label:contains(Examiner)');
     assert.equal(find('.test-examiner .test-examiner-data').text(), visitData.outPatient.EXAMINER, 'Visit Examiner is displayed');
     findWithAssert('.test-location .test-location-label:contains(Visit Location)');
     assert.equal(find('.test-location .test-location-data').text(), visitData.outPatient.LOCATION, 'Visit Location is displayed');
