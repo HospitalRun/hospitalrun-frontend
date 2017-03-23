@@ -384,6 +384,8 @@ export default {
     action: 'Action',
     notes: 'Notes',
     edit: 'Edit',
+    view: 'View',
+    print: 'Print',
     imageOrders: 'Image Orders',
     labOrders: 'Lab Orders',
     imagingType: 'Imaging Type',

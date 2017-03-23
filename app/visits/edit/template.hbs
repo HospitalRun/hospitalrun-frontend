@@ -294,7 +294,8 @@
                     <td>{{report.modifiedBy}}</td>
                     <td>{{report.reportType}}</td>
                     <td>
-                      <button class="btn btn-default neutral" data-test-selector="edit-report-btn" {{action "editReport" report}}>{{t 'labels.edit'}}</button>
+                      <button class="btn btn-default neutral" data-test-selector="view-report-btn" {{action "viewReport" report}}>{{t 'labels.view'}}</button>
+                      <button class="btn btn-default neutral" data-test-selector="print-report-btn" {{action "printReport" report}}>{{t 'labels.print'}}</button>
                     </td>
                   </tr>
                 </table>

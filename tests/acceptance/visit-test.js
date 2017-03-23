@@ -45,7 +45,7 @@ test('Add admission visit', function(assert) {
     newReport(assert, 'Discharge');
     checkDischargeReport(assert);
     saveReport(assert, 'Discharge');
-    editReport(assert, 'Discharge');
+    viewReport(assert, 'Discharge');
   });
 });
 
@@ -57,7 +57,7 @@ test('Add OPD visit', function(assert) {
     newReport(assert, 'OPD');
     checkOPDReport(assert);
     saveReport(assert, 'OPD');
-    editReport(assert, 'OPD');
+    viewReport(assert, 'OPD');
   });
 });
 
@@ -445,17 +445,17 @@ function saveReport(assert, type) {
   });
 }
 
-function editReport(assert, type) {
+function viewReport(assert, type) {
   andThen(function() {
     click('[data-test-selector=reports-tab]');
-    waitToAppear('[data-test-selector=edit-report-btn]');
-    click('[data-test-selector=edit-report-btn]');
+    waitToAppear('[data-test-selector=view-report-btn]');
+    click('[data-test-selector=view-report-btn]');
   });
   andThen(function() {
     assert.ok(currentURL().indexOf('visits/reports/edit') > -1, 'Edit report url is correct');
     assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Patient record displays');
-    assert.equal(find('.view-current-title').text(), `${type} Report`, 'Edit report title displayed correctly');
-    assert.ok(find('.panel-footer button:contains(Print)').is(':visible'), 'Print button is on edit visible');
+    assert.equal(find('.view-current-title').text(), `${type} Report`, 'Report title displayed correctly');
+    assert.ok(find('.panel-footer button:contains(Print)').is(':visible'), 'Print button is visible');
   });
 }
 

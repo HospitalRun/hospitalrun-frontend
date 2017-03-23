@@ -6,38 +6,44 @@ import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 
 const {
   get,
-  set
+  set,
+  computed,
+  computed: {
+    alias
+  }
 } = Ember;
 
 export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis, PouchDbMixin, {
+  queryParams: ['print'],
+  print: null,
+
   lookupListsToUpdate: [{
     name: 'physicianList',
     property: 'model.surgeon',
     id: 'physician_list'
   }],
 
-  newReport: false,
-
   visitsController: Ember.inject.controller('visits'),
 
-  physicianList: Ember.computed.alias('visitsController.physicianList'),
+  physicianList: alias('visitsController.physicianList'),
 
-  logoURL: Ember.computed.alias('visitsController.printHeader.value.logoURL'),
-  facilityName: Ember.computed.alias('visitsController.printHeader.value.facilityName'),
-  headerLine1: Ember.computed.alias('visitsController.printHeader.value.headerLine1'),
-  headerLine2: Ember.computed.alias('visitsController.printHeader.value.headerLine2'),
-  headerLine3: Ember.computed.alias('visitsController.printHeader.value.headerLine3'),
+  logoURL: alias('visitsController.printHeader.value.logoURL'),
+  facilityName: alias('visitsController.printHeader.value.facilityName'),
+  headerLine1: alias('visitsController.printHeader.value.headerLine1'),
+  headerLine2: alias('visitsController.printHeader.value.headerLine2'),
+  headerLine3: alias('visitsController.printHeader.value.headerLine3'),
 
-  diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
+  diagnosisList: alias('visitsController.diagnosisList'),
 
-  additionalButtons: Ember.computed('model.{isNew}', function() {
+  additionalButtons: computed('model.isNew', function() {
     let isNew = get(this, 'model.isNew');
+    let i18n = get(this, 'i18n');
     if (!isNew) {
       return [{
         class: 'btn btn-primary on-white',
         buttonAction: 'printReport',
         buttonIcon: 'octicon octicon-check',
-        buttonText: 'Print'
+        buttonText: i18n.t('labels.print')
       }];
     }
   }),
