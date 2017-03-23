@@ -50,12 +50,6 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
 
   updateCapability: 'add_report',
 
-  showUpdateButton: computed('updateCapability', 'model.isNew', function() {
-    let showUpdate = this._super();
-    let isNew = get(this, 'model.isNew');
-    return showUpdate && isNew;
-  }),
-
   beforeUpdate() {
     return new Ember.RSVP.Promise((resolve) => {
       let model = get(this, 'model');
