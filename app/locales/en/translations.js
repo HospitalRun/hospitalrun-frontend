@@ -1537,6 +1537,14 @@ export default {
         plural: 'vitals'
       }
     },
+    diagnosis: {
+      labels: {
+        diagnosis: 'Diagnosis',
+        date: 'Date',
+        secondaryDiagnosis: 'Secondary Diagnosis',
+        active: 'Active Diagnosis',
+      },
+    }
     patient: {
       labels: {
         name: 'Name'
@@ -1544,6 +1552,6 @@ export default {
       names: {
         singular: 'Patient'
       }
-    }
+    },
   }
 };
