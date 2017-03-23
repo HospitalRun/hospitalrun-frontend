@@ -1241,7 +1241,7 @@ export default {
         author: 'Author'
       },
       visitType: 'Visit Type',
-      examiner: 'Visit Examiner',
+      examiner: 'Examiner',
       location: 'Visit Location',
       primaryDiagnosis: 'Primary Diagnosis',
       secondaryDiagnosis: 'Secondary Diagnosis',

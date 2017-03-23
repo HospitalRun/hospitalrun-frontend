@@ -41,7 +41,7 @@
               {{t 'reports.labels.admissionDate' }}:
             {{/if}}
           </label>
-          <span class="test-visit-date-data">{{date-format visit.startDate format="DD/MM/YYYY"}}</span>
+          <span class="test-visit-date-data">{{date-format visit.startDate}}</span>
         </div>
 
         {{#if isOutPatient}}
@@ -117,7 +117,7 @@
               <ul>
                 {{#each nextAppointments as |appointment|}}
                   <li class="test-appointment-data">
-                    {{date-format appointment.startDate format="DD/MM/YYYY hh:mm a"}}
+                    {{date-format appointment.startDate}}
                     {{#if appointment.appointmentType}}
                       (<b>{{appointment.appointmentType}}</b>)
                     {{/if}}
@@ -178,16 +178,15 @@
 
           <div class="ps-info-group test-visit-date">
             <label class="ps-info-label test-visit-discharge-date-label">{{t 'reports.labels.dischargeDate' }}: </label>
-            <span class="test-visit-discharge-date-data">{{date-format model.reportDate format="DD/MM/YYYY"}}</span>
+            <span class="test-visit-discharge-date-data">{{date-format model.reportDate}}</span>
           </div>
 
-          <div class="row">
-            {{select-or-typeahead className="col-sm-4" property="surgeon"
-                                  label=(t "operativePlan.labels.surgeon") list=physicianList
-                                  selection=model.surgeon
-                                  class="plan-surgeon"
-            }}
-          </div>
+          {{#if visit.examiner }}
+            <div class="ps-info-group test-examiner">
+              <p><b class="test-examiner-label">{{t 'reports.labels.examiner' }}:</b>
+                <span class="test-examiner-data">{{visit.examiner}}</span></p>
+            </div>
+          {{/if}}
 
           {{#if patientProcedures}}
             <label class="ps-info-label">{{t 'reports.labels.allProcedures'}}</label>
@@ -195,7 +194,7 @@
               {{#each patientProcedures as |procedure|}}
                 <li>{{procedure.description}} -
                   {{#if procedure.procedureDate }}
-                    {{date-format procedure.procedureDate format="DD/MM/YYYY"}}
+                    {{date-format procedure.procedureDate}}
                   {{/if}}</li>
               {{/each}}
             </ul>
@@ -219,7 +218,7 @@
           {{#if nextAppointment}}
             <div class="ps-info-group">
               <label class="ps-info-label">{{t 'reports.labels.nextAppointment' }}:</label>
-              {{date-format nextAppointment.startDate format="DD/MM/YYYY hh:mm a"}}
+              {{date-format nextAppointment.startDate}}
               {{#if nextAppointment.location}}
                 ({{nextAppointment.location}})
               {{/if}}

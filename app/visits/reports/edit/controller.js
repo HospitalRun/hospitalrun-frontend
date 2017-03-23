@@ -17,12 +17,6 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
   queryParams: ['print'],
   print: null,
 
-  lookupListsToUpdate: [{
-    name: 'physicianList',
-    property: 'model.surgeon',
-    id: 'physician_list'
-  }],
-
   visitsController: Ember.inject.controller('visits'),
 
   physicianList: alias('visitsController.physicianList'),

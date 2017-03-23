@@ -23,6 +23,7 @@ const visitData = {
     NOTE_CONTENT: 'OPD notes are entered here'
   },
   admission: {
+    EXAMINER: 'Drederick Willie',
     NOTE_CONTENT: 'Patient notes are entered here'
   }
 };
@@ -342,6 +343,7 @@ function addOutpatientData(assert) {
 }
 
 function addAdmissionData(assert) {
+  typeAheadFillIn('.visit-examiner', visitData.admission.EXAMINER);
   andThen(function() {
     click('[data-test-selector=notes-tab]');
     waitToAppear('[data-test-selector=new-note-btn]');
@@ -382,7 +384,7 @@ function checkOPDReport(assert) {
     assert.ok(!isEmpty(find('.test-visit-date .test-visit-date-data').text()), 'Visit date is displayed');
     findWithAssert('.test-visit-type .test-visit-type-label:contains(Visit Type)');
     assert.equal(find('.test-visit-type .test-visit-type-data').text(), 'Clinic', 'Visit Type is displayed');
-    findWithAssert('.test-examiner .test-examiner-label:contains(Visit Examiner)');
+    findWithAssert('.test-examiner .test-examiner-label:contains(Examiner)');
     assert.equal(find('.test-examiner .test-examiner-data').text(), visitData.outPatient.EXAMINER, 'Visit Examiner is displayed');
     findWithAssert('.test-location .test-location-label:contains(Visit Location)');
     assert.equal(find('.test-location .test-location-data').text(), visitData.outPatient.LOCATION, 'Visit Location is displayed');
@@ -406,22 +408,12 @@ function checkOPDReport(assert) {
 
 function checkDischargeReport(assert) {
   andThen(function() {
+    findWithAssert('.test-examiner .test-examiner-label:contains(Examiner)');
+    assert.equal(find('.test-examiner .test-examiner-data').text(), visitData.admission.EXAMINER, 'Examiner is displayed');
     assert.equal(find('.test-visit-date .test-visit-date-label').text().trim(), 'Admission Date:', 'Visit date label displays as admission');
     assert.equal(find('.test-visit-date .test-visit-discharge-date-label').text().trim(), 'Discharge Date:', 'Discharge date label displays');
     findWithAssert('.test-notes .test-notes-label:contains(Notes)');
     assert.ok(find('.test-notes .test-notes-data').text().indexOf(visitData.admission.NOTE_CONTENT) > -1, 'Notes are displayed');
-  });
-  andThen(function() {
-    click('.panel-footer button:contains(Add)');
-    waitToAppear('.modal-dialog');
-  });
-  andThen(function() {
-    assert.equal(find('.modal-title').text(), 'Warning!!!!', 'Cant save discharge report without entering doctors name');
-    click('button:contains(Ok)');
-    waitToDisappear('.modal-dialog');
-  });
-  andThen(function() {
-    typeAheadFillIn('.plan-surgeon', 'Dr Test');
   });
 }
 
