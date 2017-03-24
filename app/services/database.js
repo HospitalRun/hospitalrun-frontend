@@ -1,3 +1,4 @@
+/* global buildPouchFindIndexes */
 import Ember from 'ember';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
 import List from 'npm:pouchdb-list';
@@ -30,7 +31,10 @@ export default Service.extend({
   createDB(configs, pouchOptions) {
     let standAlone = get(this, 'standAlone');
     if (standAlone) {
-      return this._createLocalDB('localMainDB', pouchOptions);
+      return this._createLocalDB('localMainDB', pouchOptions).then((localDb) => {
+        buildPouchFindIndexes(localDb);
+        return localDb;
+      });
     }
     return new RSVP.Promise((resolve, reject) => {
       let url = `${document.location.protocol}//${document.location.host}/db/main`;
