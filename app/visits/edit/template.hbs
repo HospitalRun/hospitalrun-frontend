@@ -83,7 +83,7 @@
                     <p class="form-control-static">{{t (concat 'visits.labels.status' model.status) }}</p>
                 </div>
               {{/if}}
-              {{select-or-typeahead className="col-sm-4" property="examiner"
+              {{select-or-typeahead className="col-sm-4 visit-examiner" property="examiner"
                 label=(t "visits.labels.examiner") list=physicianList
                 selection=model.examiner
               }}
@@ -270,9 +270,9 @@
                 {{#if canAddReport}}
                   <button class="btn btn-primary align-right" data-test-selector="report-btn" {{action "newReport"}}>
                     {{#if model.outPatient}}
-                      {{t 'patients.buttons.newOPDReport'}}
+                      {{t 'visits.buttons.newOPDReport'}}
                     {{else}}
-                      {{t 'patients.buttons.newDischargeReport'}}
+                      {{t 'visits.buttons.newDischargeReport'}}
                     {{/if}}
                   </button>
                 {{/if}}
@@ -294,7 +294,8 @@
                     <td>{{report.modifiedBy}}</td>
                     <td>{{report.reportType}}</td>
                     <td>
-                      <button class="btn btn-default neutral" data-test-selector="edit-report-btn" {{action "editReport" report}}>{{t 'labels.edit'}}</button>
+                      <button class="btn btn-default neutral" data-test-selector="view-report-btn" {{action "viewReport" report}}>{{t 'labels.view'}}</button>
+                      <button class="btn btn-default neutral" data-test-selector="print-report-btn" {{action "printReport" report}}>{{t 'labels.print'}}</button>
                     </td>
                   </tr>
                 </table>

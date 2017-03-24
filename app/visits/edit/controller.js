@@ -407,11 +407,6 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       }
     },
 
-    editReport(report) {
-      set(report, 'returnToVisit', get(this, 'model.id'));
-      this.transitionToRoute('reports.edit', report);
-    },
-
     newPatientChanged(createNewPatient) {
       set(this, 'model.createNewPatient', createNewPatient);
       let model = this.get('model');
@@ -458,7 +453,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     },
 
     newReport() {
-      this._addChildObject('reports.edit');
+      this._addChildObject('visits.reports.edit');
     },
 
     showAddProcedure() {
@@ -522,6 +517,16 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       if (!isAdmissionVisit) {
         visit.set('endDate', startDate);
       }
+    },
+
+    printReport(report) {
+      set(report, 'returnToVisit', get(this, 'model.id'));
+      this.transitionToRoute('visits.reports.edit', report, { queryParams: { print: true } });
+    },
+
+    viewReport(report) {
+      set(report, 'returnToVisit', get(this, 'model.id'));
+      this.transitionToRoute('visits.reports.edit', report, { queryParams: { print: null } });
     }
 
   }

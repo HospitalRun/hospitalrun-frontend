@@ -7,6 +7,8 @@ const { isEmpty } = Ember;
 
 const visitData = {
   outPatient: {
+    LOCATION: 'Springfield Hospital',
+    EXAMINER: 'Sarah Kearney',
     PRIMARY_DIAGNOSIS: 'ACL deficient knee, right',
     SECONDARY_DIAGNOSIS: 'ACL deficient knee, left',
     OPERATION_DESCRIPTION: 'Describe Operation here',
@@ -17,9 +19,11 @@ const visitData = {
     LAB_TYPE: 'Cholesterol',
     IMAGING_TYPE: 'Cervical Spine AP-L',
     APPOINTMENT_START_DATE: moment().add(7, 'days').format('l h:mm A'),
-    APPOINTMENT_END_DATE: moment().add(8, 'days').format('l h:mm A')
+    APPOINTMENT_END_DATE: moment().add(8, 'days').format('l h:mm A'),
+    NOTE_CONTENT: 'OPD notes are entered here'
   },
   admission: {
+    EXAMINER: 'Drederick Willie',
     NOTE_CONTENT: 'Patient notes are entered here'
   }
 };
@@ -42,7 +46,7 @@ test('Add admission visit', function(assert) {
     newReport(assert, 'Discharge');
     checkDischargeReport(assert);
     saveReport(assert, 'Discharge');
-    editReport(assert, 'Discharge');
+    viewReport(assert, 'Discharge');
   });
 });
 
@@ -54,7 +58,7 @@ test('Add OPD visit', function(assert) {
     newReport(assert, 'OPD');
     checkOPDReport(assert);
     saveReport(assert, 'OPD');
-    editReport(assert, 'OPD');
+    viewReport(assert, 'OPD');
   });
 });
 
@@ -241,7 +245,9 @@ function addVisit(assert, type) {
 }
 
 function addOutpatientData(assert) {
-  andThen(() =>{
+  typeAheadFillIn('.visit-location', visitData.outPatient.LOCATION);
+  typeAheadFillIn('.visit-examiner', visitData.outPatient.EXAMINER);
+  andThen(() => {
     click('a:contains(Add Diagnosis)');
     waitToAppear('.modal-dialog');
   });
@@ -318,9 +324,26 @@ function addOutpatientData(assert) {
     fillIn('.test-appointment-end input', visitData.outPatient.APPOINTMENT_END_DATE);
   });
   updateVisitData(assert, 'Appointment Saved');
+  andThen(function() {
+    click('[data-test-selector=notes-tab]');
+    waitToAppear('[data-test-selector=new-note-btn]');
+    click('[data-test-selector=new-note-btn]');
+  });
+  andThen(() => {
+    assert.equal(find('.modal-title').text(), 'New Note for Joe Bagadonuts', 'New Note dialog displays');
+    fillIn('.test-note-content textarea', visitData.outPatient.NOTE_CONTENT);
+    click('.modal-footer button:contains(Add)');
+  });
+  andThen(function() {
+    waitToDisappear('.modal-dialog');
+  });
+  andThen(() => {
+    assert.ok(currentURL().indexOf('visits/edit/') > -1, 'Returns back to visit URL');
+  });
 }
 
 function addAdmissionData(assert) {
+  typeAheadFillIn('.visit-examiner', visitData.admission.EXAMINER);
   andThen(function() {
     click('[data-test-selector=notes-tab]');
     waitToAppear('[data-test-selector=new-note-btn]');
@@ -359,6 +382,12 @@ function checkOPDReport(assert) {
     assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Patient First Name & Last Name is displayed');
     assert.equal(find('.test-visit-date .test-visit-date-label').text().trim(), 'Date of Visit:', 'Visit date label displayed');
     assert.ok(!isEmpty(find('.test-visit-date .test-visit-date-data').text()), 'Visit date is displayed');
+    findWithAssert('.test-visit-type .test-visit-type-label:contains(Visit Type)');
+    assert.equal(find('.test-visit-type .test-visit-type-data').text(), 'Clinic', 'Visit Type is displayed');
+    findWithAssert('.test-examiner .test-examiner-label:contains(Examiner)');
+    assert.equal(find('.test-examiner .test-examiner-data').text(), visitData.outPatient.EXAMINER, 'Visit Examiner is displayed');
+    findWithAssert('.test-location .test-location-label:contains(Visit Location)');
+    assert.equal(find('.test-location .test-location-data').text(), visitData.outPatient.LOCATION, 'Visit Location is displayed');
     findWithAssert(`.primary-diagnosis:contains(${visitData.outPatient.PRIMARY_DIAGNOSIS})`);
     findWithAssert(`.secondary-diagnosis:contains(${visitData.outPatient.SECONDARY_DIAGNOSIS})`);
     findWithAssert('.test-opd-procedure .test-opd-procedure-label:contains(Procedures)');
@@ -379,22 +408,12 @@ function checkOPDReport(assert) {
 
 function checkDischargeReport(assert) {
   andThen(function() {
+    findWithAssert('.test-examiner .test-examiner-label:contains(Examiner)');
+    assert.equal(find('.test-examiner .test-examiner-data').text(), visitData.admission.EXAMINER, 'Examiner is displayed');
     assert.equal(find('.test-visit-date .test-visit-date-label').text().trim(), 'Admission Date:', 'Visit date label displays as admission');
     assert.equal(find('.test-visit-date .test-visit-discharge-date-label').text().trim(), 'Discharge Date:', 'Discharge date label displays');
     findWithAssert('.test-notes .test-notes-label:contains(Notes)');
     assert.ok(find('.test-notes .test-notes-data').text().indexOf(visitData.admission.NOTE_CONTENT) > -1, 'Notes are displayed');
-  });
-  andThen(function() {
-    click('.panel-footer button:contains(Add)');
-    waitToAppear('.modal-dialog');
-  });
-  andThen(function() {
-    assert.equal(find('.modal-title').text(), 'Warning!!!!', 'Cant save discharge report without entering doctors name');
-    click('button:contains(Ok)');
-    waitToDisappear('.modal-dialog');
-  });
-  andThen(function() {
-    typeAheadFillIn('.plan-surgeon', 'Dr Test');
   });
 }
 
@@ -409,7 +428,7 @@ function saveReport(assert, type) {
     waitToDisappear('.modal-dialog');
   });
   andThen(function() {
-    assert.equal(find('.view-current-title').text(), `Edit ${type} Report`, 'Report title updated correctly');
+    assert.equal(find('.view-current-title').text(), `${type} Report`, 'Report title updated correctly');
     assert.ok(find('.panel-footer button:contains(Print)').is(':visible'), 'Print button is now visible');
     click('button:contains(Return)');
   });
@@ -418,17 +437,17 @@ function saveReport(assert, type) {
   });
 }
 
-function editReport(assert, type) {
+function viewReport(assert, type) {
   andThen(function() {
     click('[data-test-selector=reports-tab]');
-    waitToAppear('[data-test-selector=edit-report-btn]');
-    click('[data-test-selector=edit-report-btn]');
+    waitToAppear('[data-test-selector=view-report-btn]');
+    click('[data-test-selector=view-report-btn]');
   });
   andThen(function() {
     assert.ok(currentURL().indexOf('visits/reports/edit') > -1, 'Edit report url is correct');
     assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Patient record displays');
-    assert.equal(find('.view-current-title').text(), `Edit ${type} Report`, 'Edit report title displayed correctly');
-    assert.ok(find('.panel-footer button:contains(Print)').is(':visible'), 'Print button is on edit visible');
+    assert.equal(find('.view-current-title').text(), `${type} Report`, 'Report title displayed correctly');
+    assert.ok(find('.panel-footer button:contains(Print)').is(':visible'), 'Print button is visible');
   });
 }
 

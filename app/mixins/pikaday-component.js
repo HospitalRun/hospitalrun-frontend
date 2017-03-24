@@ -27,6 +27,11 @@ export default Ember.Mixin.create({
   didInsertElement() {
     let currentDate = get(this, 'currentDate');
     let $input = this.$('input');
+    $input.on('input', () => {
+      if (isEmpty($input.val())) {
+        set(this, 'currentDate', null);
+      }
+    });
     let picker = null;
     let props = this.getProperties('format', 'yearRange', 'showTime');
 
