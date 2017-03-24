@@ -370,6 +370,7 @@ export default {
     prescriber: 'Prescriber',
     quantity: 'Quantity',
     requestedOn: 'Requested On',
+    takenBy: 'Taken By',
     date: 'Date',
     dateOfBirth: 'Date of Birth',
     dateOfBirthShort: 'DoB',
