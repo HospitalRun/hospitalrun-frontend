@@ -67,7 +67,7 @@
     "ember-fullcalendar": "1.3.0",
     "ember-i18n": "4.4.0",
     "ember-keyboard": "2.1.9",
-    "ember-load-initializers": "^0.6.0",
+    "ember-load-initializers": "^1.0.0",
     "ember-pouch": "4.2.1",
     "ember-radio-buttons": "^4.0.1",
     "ember-rapid-forms": "1.0.0-beta10",
