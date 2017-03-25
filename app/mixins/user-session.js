@@ -22,7 +22,8 @@ export default Ember.Mixin.create({
       'Medical Records Officer',
       'Patient Administration',
       'Social Worker',
-      'System Administrator'
+      'System Administrator',
+      'Cashier'
     ],
     add_appointment: [
       'Data Entry',
@@ -31,7 +32,8 @@ export default Ember.Mixin.create({
       'Medical Records Officer',
       'Patient Administration',
       'Social Worker',
-      'System Administrator'
+      'System Administrator',
+      'Cashier'
     ],
     add_charge: [
       'Data Entry',
@@ -156,7 +158,8 @@ export default Ember.Mixin.create({
     add_payment: [
       'Hospital Administrator',
       'Medical Records Officer',
-      'System Administrator'
+      'System Administrator',
+      'Cashier'
     ],
     add_procedure: [
       'Data Entry',
@@ -228,6 +231,11 @@ export default Ember.Mixin.create({
       'Hospital Administrator',
       'Finance',
       'Finance Manager',
+      'System Administrator',
+      'Cashier'
+    ],
+    cashier: [
+      'Cashier',
       'System Administrator'
     ],
     complete_imaging: [
@@ -396,7 +404,8 @@ export default Ember.Mixin.create({
       'Hospital Administrator',
       'Finance',
       'Finance Manager',
-      'System Administrator'
+      'System Administrator',
+      'Cashier'
     ],
     labs: [
       'Data Entry',
@@ -428,7 +437,8 @@ export default Ember.Mixin.create({
     ],
     override_invoice: [
       'Hospital Administrator',
-      'System Administrator'
+      'System Administrator',
+      'Cashier'
     ],
     query_db: [
       'System Administrator'
