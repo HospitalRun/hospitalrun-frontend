@@ -48,6 +48,7 @@ To install the frontend please do the following:
 ## Start
 To start the frontend please do the following:
 
+- Make sure you already ran `npm install` then `bower install` to get all dependencies.
 - Start the server by running `npm start` in the repo folder.  If `npm start` doesn't work for you, try `ember serve` as an alternative.
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
