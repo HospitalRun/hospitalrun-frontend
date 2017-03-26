@@ -57,7 +57,7 @@ export default {
       reports: 'Reports',
       patientListing: 'Patient Listing',
       newPatient: 'New Patient',
-      appointmentsThisWeek: 'Appointment This Week',
+      appointmentsThisWeek: 'Appointments This Week',
       "today'sAppointments": 'Today\'s Appointments',
       appointmentSearch: 'Appointment Search',
       addAppointment: 'Add Appointment',
@@ -1441,7 +1441,7 @@ export default {
   models: {
     appointment: {
       labels: {
-        status: 'First Name',
+        status: 'Status',
         appointmentType: 'Type',
         provider: 'With',
         location: 'Location',
