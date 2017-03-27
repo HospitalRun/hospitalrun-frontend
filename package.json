@@ -152,7 +152,7 @@
       "certificate-password": null,
       "sign-with-params": null
     },
-    "overwrite": null,
+    "overwrite": true,
     "prune": null,
     "strict-ssl": null,
     "win32metadata": {
