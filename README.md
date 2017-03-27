@@ -7,6 +7,8 @@ _Ember frontend for HospitalRun_
 
 To run the development environment for this frontend you will need to have [Git](https://git-scm.com/), [Node.js](https://nodejs.org), [Ember CLI](http://ember-cli.com/), [Bower](http://bower.io/), and [CouchDB](http://couchdb.apache.org/) installed.
 
+## Table of contents
+
 - [Contributing](#contributing)
 - [Installation](#installation)
 - [Running the application](#running-the-application)
