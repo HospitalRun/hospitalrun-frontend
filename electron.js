@@ -2,6 +2,9 @@
 /* eslint-env node */
 'use strict';
 
+const updater = require('electron-simple-updater');
+updater.init('http://hospitalrun.io/releases/updates.js');
+
 const electron = require('electron');
 const path  = require('path');
 const { app, BrowserWindow } = electron;
@@ -28,8 +31,8 @@ app.on('window-all-closed', function onWindowAllClosed() {
 
 app.on('ready', function onReady() {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600
+    width: 1000,
+    height: 750
   });
 
   delete mainWindow.module;
