@@ -11,7 +11,7 @@ To run the development environment for this frontend you will need to have [Git]
 
 - [Contributing](#contributing)
 - [Installation](#installation)
-- [Running the appplication](#running-the-application)
+- [Running the application](#running-the-application)
 - [Running with Docker](#running-with-docker)
 - [Accessing HospitalRun with Docker Toolbox](#accessing-hospitalRun-with-docker-toolbox)
 - [Accessing HospitalRun with Docker](#accessing-hospitalRun-with-docker)
@@ -61,7 +61,7 @@ To install the frontend please do the following:
      2. Or start the application from your applications folder.
 
 
-## Running the appplication
+## Running the application
 To start the frontend please do the following:
 
 - Start the server by running `npm start` in the repo folder.  If `npm start` doesn't work for you, try `ember serve` as an alternative.
