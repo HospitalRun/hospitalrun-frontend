@@ -9,11 +9,25 @@ _Ember frontend for HospitalRun_
 
 To run the development environment for this frontend you will need to have [Git](https://git-scm.com/), [Node.js](https://nodejs.org), [Ember CLI](http://ember-cli.com/), [Bower](http://bower.io/), and [CouchDB](http://couchdb.apache.org/) installed.
 
+- [Contributing](#contributing)
+- [Installation](#installation)
+- [Running the appplication](#running-the-application)
+- [Running with Docker](#running-with-docker)
+- [Accessing HospitalRun with Docker Toolbox](#accessing-hospitalRun-with-docker-toolbox)
+- [Accessing HospitalRun with Docker](#accessing-hospitalRun-with-docker)
+- [Troubleshooting your local environment](#troubleshooting-your-local-environment)
+- [Loading sample data](#loading-sample-data)
+- [Testing](#testing)
+- [Contributing](#contributing-1)
+- [Start coding](#start-coding)
+- [Further Reading / Useful Links](#further-reading--useful-links)
+- [Experimental](#experimental)
+
 ## Contributing
 
 Contributions are welcome via pull requests and issues.  Please see our [contributing guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md) for more details, including a link to join our project Slack.
 
-## Install
+## Installation
 To install the frontend please do the following:
 
 1. Make sure you have installed [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
@@ -47,7 +61,7 @@ To install the frontend please do the following:
      2. Or start the application from your applications folder.
 
 
-## Start
+## Running the appplication
 To start the frontend please do the following:
 
 - Start the server by running `npm start` in the repo folder.  If `npm start` doesn't work for you, try `ember serve` as an alternative.
