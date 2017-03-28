@@ -647,7 +647,7 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
     this._updateSequence(record).then(() => {
       $('.message').show();
       $('.message').text(this.get('i18n').t('patients.messages.savedPatient', record));
-      $(".message").delay(3000).fadeOut(100);
+      $('.message').delay(3000).fadeOut(100);
     });
   }
 
