@@ -1,0 +1,42 @@
+{{#list.cell class=(concat "list__cell_main " expandedClass) style=labelStyle on-click=(action toggleExpand model)}}
+  <div class="list__cell-partial list__cell-partial_size_medium">
+    <span title="{{label}}" class="js-promise-label">
+      <span class="list__cell-arrow"></span> {{label}}
+    </span>
+  </div>
+  <div class="list__cell-helper">
+    {{#if model.hasStack}}
+      <div class="send-trace-to-console js-trace-promise-btn" {{action tracePromise model}} title="Trace promise in console">
+        Trace
+      </div>
+    {{/if}}
+  </div>
+{{/list.cell}}
+{{#list.cell}}
+  <div class="pill pill_text_clear js-promise-state" style={{style}}>{{state}}</div>
+{{/list.cell}}
+{{#list.cell class="js-promise-value"}}
+  {{#if hasValue}}
+    <div class="list__cell-partial list__cell-partial_size_medium"  title="{{settledValue.inspect}}">
+      {{#if isValueInspectable}}
+        <span class="list__link js-promise-object-value" {{action inspectObject settledValue.objectId}}>{{settledValue.inspect}}</span>
+      {{else}}
+        {{settledValue.inspect}}
+      {{/if}}
+    </div>
+    <div class="list__cell-helper">
+      {{#if isError}}
+        <div class="send-trace-to-console js-send-to-console-btn" {{action sendValueToConsole model}} title="Send stack trace to the console">
+          Stack trace
+        </div>
+      {{else}}
+        {{send-to-console action=sendValueToConsole param=model}}
+      {{/if}}
+    </div>
+  {{else}}
+  --
+  {{/if}}
+{{/list.cell}}
+{{#list.cell class="list__cell list__cell_value_numeric js-promise-time"}}
+  {{ms-to-time timeToSettle}}
+{{/list.cell}}

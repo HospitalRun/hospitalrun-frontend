@@ -3,6 +3,7 @@ import AddNewPatient from 'hospitalrun/mixins/add-new-patient';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
 import DiagnosisActions from 'hospitalrun/mixins/diagnosis-actions';
 import Ember from 'ember';
+import moment from 'moment';
 import PatientNotes from 'hospitalrun/mixins/patient-notes';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from 'hospitalrun/mixins/user-session';
@@ -11,7 +12,9 @@ import VisitTypes from 'hospitalrun/mixins/visit-types';
 
 const {
   computed,
-  isEmpty
+  get,
+  isEmpty,
+  set
 } = Ember;
 
 export default AbstractEditController.extend(AddNewPatient, ChargeActions, DiagnosisActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
@@ -33,6 +36,8 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       return [buttonProps];
     }
   }),
+
+  noReport: false,
 
   canAddAppointment: computed('model.isNew', function() {
     return (!this.get('model.isNew') && this.currentUserCan('add_appointment'));
@@ -62,6 +67,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     return this.currentUserCan('add_vitals');
   }.property(),
 
+  canAddReport: computed('hasReport', function() {
+    return this.currentUserCan('add_report') && !this.get('hasReport');
+  }),
+
   canDeleteImaging: function() {
     return this.currentUserCan('delete_imaging');
   }.property(),
@@ -80,6 +89,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
   canDeleteVitals: function() {
     return this.currentUserCan('delete_vitals');
+  }.property(),
+
+  canDeleteReport: function() {
+    return this.currentUserCan('delete_report');
   }.property(),
 
   isAdmissionVisit: function() {
@@ -104,7 +117,6 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   allowAddOperativePlan: computed.not('model.isNew'),
   chargePricingCategory: 'Ward',
   chargeRoute: 'visits.charge',
-  createNewPatient: false,
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
   findPatientVisits: false,
   hideChargeHeader: true,
@@ -139,14 +151,14 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     }
   }),
 
-  updateButtonText: function() {
+  updateButtonText: computed('model.{checkIn,isNew}', function() {
     let i18n = this.get('i18n');
     if (this.get('model.checkIn')) {
       return i18n.t('visits.buttons.checkIn');
     } else {
       return this._super();
     }
-  }.property('model.checkIn'),
+  }),
 
   validVisitTypes: function() {
     let outPatient = this.get('model.outPatient');
@@ -160,17 +172,16 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   }.property('visitTypes', 'model.outPatient'),
 
   _addChildObject(route, afterTransition) {
-    this.transitionToRoute(route, 'new').then(function(newRoute) {
-      newRoute.currentModel.setProperties({
-        patient: this.get('model.patient'),
-        visit: this.get('model'),
-        selectPatient: false,
-        returnToVisit: this.get('model.id')
-      });
+    let options = {
+      queryParams: {
+        forVisitId: this.get('model.id')
+      }
+    };
+    this.transitionToRoute(route, 'new', options).then((newRoute) => {
       if (afterTransition) {
         afterTransition(newRoute);
       }
-    }.bind(this));
+    });
   },
 
   _finishAfterUpdate() {
@@ -265,14 +276,19 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
                 message: 'creating new patient first'
               });
             }
+            let outPatient = false;
             let visitType = newVisit.get('visitType');
             let visitStatus;
             if (visitType === 'Admission') {
               visitStatus = VisitStatus.ADMITTED;
             } else {
+              outPatient = true;
               visitStatus = VisitStatus.CHECKED_IN;
             }
-            newVisit.set('status', visitStatus);
+            newVisit.setProperties({
+              outPatient,
+              status: visitStatus
+            });
             if (this.get('model.checkIn')) {
               this._saveAssociatedAppointment(newVisit).then(() => {
                 this.saveNewDiagnoses().then(resolve, reject);
@@ -295,10 +311,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
   patientSelected(patient) {
     if (isEmpty(patient)) {
-      this.set('createNewPatient', true);
+      set(this, 'model.createNewPatient', true);
     } else {
-      this.set('createNewPatient', false);
-      this.getPatientDiagnoses(patient);
+      set(this, 'model.createNewPatient', false);
+      this.getPatientDiagnoses(patient, get(this, 'model'));
     }
   },
 
@@ -383,7 +399,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       let model = operativePlan;
       if (isEmpty(model)) {
         this._addChildObject('patients.operative-plan', (route) =>{
-          route.controller.getPatientDiagnoses(this.get('model.patient'));
+          route.controller.getPatientDiagnoses(this.get('model.patient'), route.currentModel);
         });
       } else {
         model.set('returnToVisit', this.get('model.id'));
@@ -392,7 +408,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     },
 
     newPatientChanged(createNewPatient) {
-      this.set('createNewPatient', createNewPatient);
+      set(this, 'model.createNewPatient', createNewPatient);
       let model = this.get('model');
       let patient = model.get('patient');
       if (createNewPatient && !isEmpty(patient)) {
@@ -434,6 +450,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
     newMedication() {
       this._addChildObject('medication.edit');
+    },
+
+    newReport() {
+      this._addChildObject('visits.reports.edit');
     },
 
     showAddProcedure() {
@@ -497,6 +517,16 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       if (!isAdmissionVisit) {
         visit.set('endDate', startDate);
       }
+    },
+
+    printReport(report) {
+      set(report, 'returnToVisit', get(this, 'model.id'));
+      this.transitionToRoute('visits.reports.edit', report, { queryParams: { print: true } });
+    },
+
+    viewReport(report) {
+      set(report, 'returnToVisit', get(this, 'model.id'));
+      this.transitionToRoute('visits.reports.edit', report, { queryParams: { print: null } });
     }
 
   }

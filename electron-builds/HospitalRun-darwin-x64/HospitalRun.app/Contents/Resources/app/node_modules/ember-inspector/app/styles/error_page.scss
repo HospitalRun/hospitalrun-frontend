@@ -1,0 +1,90 @@
+/**
+  ERROR-PAGE
+  ===========
+  An error with possible reaons
+  and solutions.
+  For example when application
+  is not detected.
+*/
+
+.data-error-page-container {
+  position: relative;
+  min-height: 100%;
+  padding: 10px;
+}
+
+.error-page {
+  padding: 10px;
+  background: #ededed;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  color: #505050;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.error-page__content {
+  position: relative;
+  width: 530px;
+  padding: 25px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: solid 1px #d1d1d1;
+  border-radius: 5px;
+  margin: auto;
+}
+
+.error-page__content a {
+  color: #f23818;
+  text-decoration: none;
+}
+
+.error-page__header {
+  font-weight: bold;
+  font-size: 19px;
+  padding-top: 15px;
+  padding-bottom: 30px;
+  margin-bottom: 10px;
+  border-bottom: solid 1px #d1d1d1;
+  position: relative;
+}
+
+.error-page__header:after {
+  content: ' ';
+  width: 128px;
+  height: 89px;
+  background: url("images/fishy_tomster.png") left center no-repeat;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+}
+
+.error-page__title {
+  width: 345px;
+}
+
+.error-page__reasons {
+  font-size: 13px;
+}
+
+.error-page__reasons-title {
+  font-weight: bold;
+}
+
+.error-page__reasons ul {
+  list-style-type: disc;
+}
+
+.error-page__list {
+  padding-left: 16px;
+  padding-bottom: 5px;
+  border-bottom: solid 1px #d1d1d1;;
+}
+
+.error-page__list li {
+  padding: 2px 0;
+}

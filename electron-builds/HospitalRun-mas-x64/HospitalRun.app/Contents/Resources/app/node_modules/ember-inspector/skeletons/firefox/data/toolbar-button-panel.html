@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <style>
+      img { position: absolute; top: 4px; right: 4px; }
+      dl {
+       font-size: 0.8em;
+       padding-left: 1em; padding-top: 1em;
+       border-top: 1px solid;
+      }
+      dt { font-weight: bold; }
+      dd { font-style: italic; }
+      button { display: block; margin: auto; }
+    </style>
+  </head>
+  <body>
+    <img src="./images/icon48.png">
+    <h5>
+      Ember Inspector <u id="inspectorVersion">VERSION</u>
+    </h5>
+    <dl>
+    </dl>
+    <button>Open Ember Inspector</button>
+    <script>
+      document.querySelector("button").
+        addEventListener("click", () => {
+        addon.port.emit("openEmberInspector");
+      }, false);
+
+      addon.port.on("emberVersion", refresh);
+
+      function refresh(message) {
+        var iV = document.querySelector("#inspectorVersion");
+        iV.textContent = message.inspectorVersion;
+        var dl = document.querySelector("dl");
+        dl.innerHTML = "";
+        message.versions.forEach(function (lib) {
+          var dt = document.createElement("dt");
+          dt.innerHTML = lib.name;
+          var dd = document.createElement("dd");
+          dd.innerHTML = lib.version;
+          dl.appendChild(dt);
+          dl.appendChild(dd);
+        });
+
+        addon.port.emit("panelResize", document.body.clientWidth,
+                        document.body.clientHeight);
+      }
+    </script>
+  </body>
+</html>

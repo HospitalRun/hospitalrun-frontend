@@ -14,8 +14,5 @@ moduleForModel('appointment', 'Unit | Model | appointment', {
 testValidPropertyValues('appointmentType', ['test']);
 testInvalidPropertyValues('appointmentType', [undefined]);
 
-testValidPropertyValues('location', ['test']);
-testInvalidPropertyValues('location', [undefined]);
-
 testValidPropertyValues('startDate', ['test']);
 testInvalidPropertyValues('startDate', [undefined]);

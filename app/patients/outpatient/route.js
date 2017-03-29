@@ -1,6 +1,7 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import Ember from 'ember';
+import moment from 'moment';
 import { translationMacro as t } from 'ember-i18n';
 
 const {
@@ -10,6 +11,7 @@ const {
 
 export default AbstractIndexRoute.extend(DateFormat, {
   database: Ember.inject.service(),
+  itemsPerPage: null, // Fetch all outpatient visits as one page
   modelName: 'visit',
   newButtonAction: 'patientCheckIn',
   newButtonText: t('patients.buttons.patientCheckIn'),

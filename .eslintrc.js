@@ -20,7 +20,6 @@ module.exports = {
     'dymo': true,
     'Filer': true,
     'logDebug': true,
-    'moment': true,
     'Pikaday': true,
     'PouchDB': true,
     'Promise': true,

@@ -1,0 +1,22 @@
+{
+  "name": "qunit-notifications",
+  "main": "index.js",
+  "homepage": "https://github.com/dockyard/qunit-notifications",
+  "authors": [
+    "Brian Cardarella <bcardarella@gmail.com>"
+  ],
+  "description": "Web Notification support for QUnit in-brower test suites",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "qunit": "~1.17.0",
+    "sinon": "http://sinonjs.org/releases/sinon-1.12.2.js",
+    "rsvp": "~3.0.16"
+  }
+}

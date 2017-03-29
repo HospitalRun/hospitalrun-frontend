@@ -1,0 +1,16 @@
+.external-link {
+  display: inline-block;
+  position: relative;
+
+  &::after {
+    content: '';
+    width: 9px;
+    height: 9px;
+    position: absolute;
+    right: -12px;
+    bottom: 10px;
+    background-image: url('images/external_link.svg');
+    background-size: 100%;
+  }
+}
+

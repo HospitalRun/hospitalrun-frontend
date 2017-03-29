@@ -75,6 +75,7 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
 
   return new Ember.RSVP.Promise(function(resolve) {
     promise.then(function() {
+      db.setMaxListeners(35);
       createPouchViews(db, true, dumpName).then(function() {
         functionToRun();
         andThen(function() {

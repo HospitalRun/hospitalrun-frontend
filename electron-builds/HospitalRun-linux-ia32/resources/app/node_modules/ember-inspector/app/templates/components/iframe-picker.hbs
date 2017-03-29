@@ -1,0 +1,8 @@
+<div class="dropdown">
+  <select class="dropdown__select" onchange={{action "selectIframe" value="target.value"}}>
+    {{#each model as |iframe|}}
+      <option value={{iframe.val}}>{{iframe.name}}</option>
+    {{/each}}
+  </select>
+  <div class="dropdown__arrow"></div>
+</div>

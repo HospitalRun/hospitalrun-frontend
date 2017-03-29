@@ -31,8 +31,8 @@
       {{em-input property="caseComplexity" label=(t 'operationReport.labels.caseComplexity') class="col-sm-2 case-complexity"}}
     </div>
     {{operative-procedures model=model procedureList=procedureList}}
-    {{em-text property="complications" label=(t 'operationReport.labels.complications')}}
     {{em-text property="additionalNotes" label=(t 'operationReport.labels.additionalNotes')}}
-    {{custom-form-manager model=model formType="operationReport"}}
+    {{upcoming-appointments patient=model.patient}}
+    {{custom-form-manager model=model formType="operativePlan"}}
   {{/em-form}}
 {{/edit-panel}}

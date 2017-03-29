@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContinuousLabel Version="8.0" Units="twips">
+	<PaperOrientation>Landscape</PaperOrientation>
+	<Id>Tape12mm</Id>
+	<PaperName>12mm</PaperName>
+	<LengthMode>Auto</LengthMode>
+	<LabelLength>3859.2</LabelLength>
+	<RootCell>
+		<Length>2659.2</Length>
+		<LengthMode>Auto</LengthMode>
+		<BorderWidth>0</BorderWidth>
+		<BorderStyle>Solid</BorderStyle>
+		<BorderColor Alpha="255" Red="0" Green="0" Blue="0" />
+		<SubcellsOrientation>Horizontal</SubcellsOrientation>
+		<Subcells>
+			<Cell>
+				<ImageObject>
+					<Name>Image</Name>
+					<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+					<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
+					<LinkedObjectName></LinkedObjectName>
+					<Rotation>Rotation0</Rotation>
+					<IsMirrored>False</IsMirrored>
+					<IsVariable>False</IsVariable>
+					<ImageLocation/>
+					<ScaleMode>Fill</ScaleMode>
+					<BorderWidth>0</BorderWidth>
+					<BorderColor Alpha="255" Red="0" Green="0" Blue="0" />
+					<HorizontalAlignment>Left</HorizontalAlignment>
+					<VerticalAlignment>Top</VerticalAlignment>
+				</ImageObject>
+				<ObjectMargin Left="0" Top="0" Right="0" Bottom="0" />
+				<Length>2836.8</Length>
+				<LengthMode>Fixed</LengthMode>
+				<BorderWidth>0</BorderWidth>
+				<BorderStyle>Solid</BorderStyle>
+				<BorderColor Alpha="255" Red="0" Green="0" Blue="0" />
+			</Cell>
+		</Subcells>
+	</RootCell>
+</ContinuousLabel>

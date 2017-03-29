@@ -1,0 +1,11 @@
+language: node_js
+sudo: false
+os:
+  - linux
+node_js:
+  - "0.10"
+  - "0.12"
+before_install:
+  - "npm config set spin false"
+  - "npm install -g npm@^2"
+script: npm test

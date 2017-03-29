@@ -104,9 +104,6 @@ export default AbstractModel.extend(DOBDays, PatientName, {
         message: 'please enter a valid email address'
       }
     },
-    friendlyId: {
-      presence: true
-    },
     firstName: {
       presence: true
     },

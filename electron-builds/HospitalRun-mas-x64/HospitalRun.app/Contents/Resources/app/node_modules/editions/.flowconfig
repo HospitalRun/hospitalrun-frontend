@@ -1,0 +1,14 @@
+# 2016 October 24
+# https://github.com/bevry/base
+[ignore]
+.*/docs/.*
+.*/es2015/.*
+
+[options]
+module.ignore_non_literal_requires=true
+unsafe.enable_getters_and_setters=true
+esproposal.class_static_fields=enable
+esproposal.class_instance_fields=enable
+
+[version]
+>=0.23 <1

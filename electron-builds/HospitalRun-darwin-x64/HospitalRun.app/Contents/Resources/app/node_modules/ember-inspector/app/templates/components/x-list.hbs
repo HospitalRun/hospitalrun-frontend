@@ -1,0 +1,36 @@
+{{#if schema.columns.length}}
+  <div class="list__header">
+    <div class="list__table-container">
+      <table>
+        <colgroup>
+          {{#each columns key="id" as |column|}}
+            <col style={{build-style width=(concat column.width 'px')}}>
+          {{/each}}
+        </colgroup>
+        <tbody>
+          <tr class="list__row">
+            {{#each columns key="id" as |column|}}
+              {{#x-list-cell tagName="th" class="js-header-column"}}{{column.name}}{{/x-list-cell}}
+            {{/each}}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+{{/if}}
+
+{{#x-list-content headerHeight=headerHeight columns=columns as |content|}}
+  {{yield
+    (hash
+      cell=(component "x-list-cell" tagName="td")
+      vertical-collection=(component "vertical-collection" defaultHeight=30 tagName="tbody" itemClassNames=(concat "list__row js-" name "-item " itemClass) containerSelector=".js-list-content")
+      rowEvents=content.rowEvents
+    )
+  }}
+{{/x-list-content}}
+
+{{#each columns key="id" as |column|}}
+  {{#unless (eq column columns.lastObject)}}
+    {{drag-handle side="left" left=column.left position=(one-way column.width) minWidth=minWidth maxWidth=column.maxWidth on-drag=(action "didResize" column.id) faded=true}}
+  {{/unless}}
+{{/each}}

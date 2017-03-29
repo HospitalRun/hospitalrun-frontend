@@ -1,0 +1,31 @@
+{{sidebar-toggle action="toggleInspector" side="right"
+isExpanded=true class="toolbar__icon-button sidebar-toggle--far-left"}}
+{{#if model.length}}
+  <div class="split__panel__hd">
+    <div class="toolbar">
+      <button {{action "popStack"}} class="toolbar__icon-button {{if isNested 'enabled' 'disabled'}} js-object-inspector-back">
+        <svg width="9px" height="9px" viewBox="0 0 9 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <polygon class="svg-fill" fill="#000000" transform="translate(4.500000, 4.500000) rotate(-90.000000) translate(-4.500000, -4.500000) " points="4.5 0 9 9 0 9 "></polygon>
+          </g>
+        </svg>
+      </button>
+
+      <div class="divider"></div>
+
+      <code class="toolbar__title js-object-name">{{model.firstObject.name}}</code>
+
+      <button class="send-to-console js-send-object-to-console-btn" {{action "sendObjectToConsole" model.firstObject}}>
+        <img src="assets/images/send.png" title="Send object to console">
+      </button>
+    </div>
+
+    {{#if trail}}
+      <code class="object-trail js-object-trail">{{trail}}</code>
+    {{/if}}
+  </div>
+{{/if}}
+
+<div class="split__panel__bd">
+  {{mixin-details model=mixinDetails}}
+</div>

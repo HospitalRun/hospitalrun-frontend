@@ -1,0 +1,11 @@
+/**
+ * Overwrites styles for the library [contextMenu](https://github.com/s-yadav/contextMenu.js)
+ */
+.iw-cm-menu {
+  color: inherit;
+}
+
+.iw-cm-menu li {
+  padding-left: 5px;
+  font-size: 14px;
+}

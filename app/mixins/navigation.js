@@ -1,13 +1,14 @@
 import Ember from 'ember';
 
 const { camelize } = Ember.String;
+const { isEqual } = Ember;
 
 export default Ember.Mixin.create({
   navItems: [
     {
       title: 'Inventory',
       iconClass: 'octicon-package',
-      route: 'inventory',
+      route: 'inventory.index',
       capability: 'inventory',
       subnav: [
         {
@@ -40,13 +41,13 @@ export default Ember.Mixin.create({
     {
       title: 'Patients',
       iconClass: 'octicon-organization',
-      route: 'patients',
+      route: 'patients.index',
       capability: 'patients',
       subnav: [
         {
           title: 'Patient Listing',
           iconClass: 'octicon-chevron-right',
-          route: 'patients',
+          route: 'patients.index',
           capability: 'patients'
         },
         {
@@ -77,33 +78,39 @@ export default Ember.Mixin.create({
       ]
     },
     {
-      title: 'Appointments',
+      title: 'Scheduling',
       iconClass: 'octicon-calendar',
       route: 'appointments.index',
       capability: 'appointments',
       subnav: [
         {
-          title: 'This Week',
+          title: 'Appointments This Week',
           iconClass: 'octicon-chevron-right',
           route: 'appointments.index',
           capability: 'appointments'
         },
         {
-          title: 'Today',
+          title: 'Today\'s Appointments',
           iconClass: 'octicon-chevron-right',
           route: 'appointments.today',
           capability: 'appointments'
         },
         {
-          title: 'Missed',
+          title: 'Missed Appointments',
           iconClass: 'octicon-chevron-right',
           route: 'appointments.missed',
           capability: 'appointments'
         },
         {
-          title: 'Search',
+          title: 'Appointment Search',
           iconClass: 'octicon-search',
           route: 'appointments.search',
+          capability: 'appointments'
+        },
+        {
+          title: 'Appointments Calendar',
+          iconClass: 'octicon-calendar',
+          route: 'appointments.calendar',
           capability: 'appointments'
         },
         {
@@ -111,6 +118,19 @@ export default Ember.Mixin.create({
           iconClass: 'octicon-plus',
           route: 'appointments.edit',
           subroute: 'new',
+          capability: 'add_appointment'
+        },
+        {
+          title: 'Theater Schedule',
+          iconClass: 'octicon-calendar',
+          route: 'appointments.theater',
+          capability: 'appointments'
+        },
+        {
+          title: 'Schedule Surgery',
+          iconClass: 'octicon-plus',
+          route: 'appointments.edit',
+          subroute: 'newsurgery',
           capability: 'add_appointment'
         }
       ]
@@ -244,6 +264,39 @@ export default Ember.Mixin.create({
       ]
     },
     {
+      title: 'Incident',
+      iconClass: 'octicon-package',
+      route: 'incident',
+      capability: 'incident',
+      subnav: [
+        {
+          title: 'Current Incidents',
+          iconClass: 'octicon-chevron-right',
+          route: 'incident.index',
+          capability: 'add_incident'
+        },
+        {
+          title: 'New Incident',
+          iconClass: 'octicon-plus',
+          route: 'incident.edit',
+          subroute: 'new',
+          capability: 'add_incident'
+        },
+        {
+          title: 'History',
+          iconClass: 'octicon-chevron-right',
+          route: 'incident.completed',
+          capability: 'add_incident'
+        },
+        {
+          title: 'Reports',
+          iconClass: 'octicon-chevron-right',
+          route: 'incident.reports',
+          capability: 'generate_incident_report'
+        }
+      ]
+    },
+    {
       title: 'Administration',
       iconClass: 'octicon-person',
       route: 'admin.lookup',
@@ -262,6 +315,12 @@ export default Ember.Mixin.create({
           capability: 'update_config'
         },
         {
+          title: 'Incident Categories',
+          iconClass: 'octicon-chevron-right',
+          route: 'inc-category',
+          capability: 'add_incident_category'
+        },
+        {
           title: 'Load DB',
           iconClass: 'octicon-plus',
           route: 'admin.loaddb',
@@ -271,6 +330,12 @@ export default Ember.Mixin.create({
           title: 'Lookup Lists',
           iconClass: 'octicon-chevron-right',
           route: 'admin.lookup',
+          capability: 'update_config'
+        },
+        {
+          title: 'Print Header',
+          iconClass: 'octicon-chevron-right',
+          route: 'admin.print-header',
           capability: 'update_config'
         },
         {
@@ -291,12 +356,6 @@ export default Ember.Mixin.create({
           iconClass: 'octicon-chevron-right',
           route: 'admin.roles',
           capability: 'define_user_roles'
-        },
-        {
-          title: 'Workflow',
-          iconClass: 'octicon-chevron-right',
-          route: 'admin.workflow',
-          capability: 'update_config'
         }
       ]
     }
@@ -328,5 +387,20 @@ export default Ember.Mixin.create({
 
       return nav;
     });
-  })
+  }),
+
+  findNavItemByRoute(route) {
+    for (let i = 0; i < this.navItems.length; i++) {
+      if (isEqual(this.navItems[i].route, route)) {
+        return this.navItems[i];
+      } else {
+        for (let j = 0; j < this.navItems[i].subnav.length; j++) {
+          if (isEqual(this.navItems[i].subnav[j].route, route)) {
+            return this.navItems[i].subnav[j];
+          }
+        }
+      }
+    }
+    return null;
+  }
 });

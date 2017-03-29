@@ -18,11 +18,11 @@ const {
 const PLAN_KEYS_TO_COPY = [
   'additionalNotes',
   'caseComplexity',
+  'customForms',
   'patient',
   'procedures',
   'operationDescription',
-  'surgeon',
-  'surgeryDate'
+  'surgeon'
 ];
 
 export default AbstractEditController.extend(OperativePlanStatuses, PatientSubmodule, {
@@ -66,7 +66,12 @@ export default AbstractEditController.extend(OperativePlanStatuses, PatientSubmo
     let newPlan = get(this, 'newPlan');
     if (newPlan) {
       let patient = get(this, 'model.patient');
-      patient.save().then(this._finishAfterUpdate.bind(this));
+      patient.save().then(this._finishAfterUpdate.bind(this)).then(()=> {
+        let editTitle = get(this, 'i18n').t('operativePlan.titles.editTitle');
+        let sectionDetails = {};
+        sectionDetails.currentScreenTitle = editTitle;
+        this.send('setSectionHeader', sectionDetails);
+      });
     } else {
       this._finishAfterUpdate();
     }
@@ -94,17 +99,24 @@ export default AbstractEditController.extend(OperativePlanStatuses, PatientSubmo
   },
 
   _createOperationReport() {
-    this.transitionToRoute('patients.operation-report', 'new').then((newRoute) => {
-      let operativePlan = get(this, 'model');
-      let operationReport = newRoute.currentModel;
-      let propertiesToCopy = operativePlan.getProperties(...PLAN_KEYS_TO_COPY);
-      let diagnoses = get(operativePlan, 'diagnoses');
-      let patient = get(operativePlan, 'patient');
-      let preOpDiagnosis = get(operationReport, 'preOpDiagnoses');
-      newRoute.currentModel.setProperties(propertiesToCopy);
-      preOpDiagnosis.addObjects(diagnoses);
-      set(newRoute.currentModel, 'returnToPatient', get(patient, 'id'));
-      newRoute.controller.getPatientDiagnoses(patient);
+    let store = get(this, 'store');
+    let operativePlan = get(this, 'model');
+    let propertiesToCopy = operativePlan.getProperties(...PLAN_KEYS_TO_COPY);
+    let diagnoses = get(operativePlan, 'diagnoses');
+    let patient = get(operativePlan, 'patient');
+    set(propertiesToCopy, 'operativePlan', operativePlan);
+    set(propertiesToCopy, 'preOpDiagnosis', diagnoses);
+    set(propertiesToCopy, 'surgeryDate', new Date());
+    set(propertiesToCopy, 'returnToPatient', get(patient, 'id'));
+    let operationReport = store.createRecord('operation-report', propertiesToCopy);
+    this.getPatientDiagnoses(patient, operationReport);
+    operationReport.save().then((newReport) => {
+      patient.save().then(()=> {
+        let i18n = get(this, 'i18n');
+        let updateMessage = i18n.t('operativePlan.messages.planCompleted');
+        let updateTitle = i18n.t('operativePlan.titles.planCompleted');
+        this.displayAlert(updateTitle, updateMessage, 'showOperationReport', newReport, 'ok');
+      });
     });
   },
 

@@ -1,0 +1,48 @@
+{
+    "name": "contextMenu",
+    "description": "contextMenu.js is a plugin to create windows like context menu with keyboard interaction, different type of inputs ,trigger events and much more.",
+    "main": "contextMenu.js",
+    "author": {
+        "name": "Sudhanshu Yadav",
+        "email": "sudhanshuyadav2@gmail.com"
+    },
+    "version": "1.4.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/s-yadav/contextMenu.js"
+    },
+    "ignore": [
+        "contextMenu.js.jquery.json"
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/s-yadav/contextMenu.js/blob/master/MIT-LICENSE.txt"
+        },
+        {
+            "type": "GPLv2 or Later",
+            "url": "http://opensource.org/licenses/GPL-2.0"
+        }
+    ],
+    "bugs": {
+        "url": "https://github.com/s-yadav/contextMenu.js/issues"
+    },
+    "dependencies": {
+        "jquery": ">=1.6"
+    },
+    "keywords": [
+        "context-menu",
+        "contextmenu",
+        "right-click-menu",
+        "context",
+        "submenu",
+        "jquery",
+        "popup",
+        "menu",
+        "tooltip"
+    ],
+    "readmeFilename": "README.md",
+    "homepage": "http://ignitersworld.com/lab/contextMenu.html",
+    "demo": "http://ignitersworld.com/lab/contextMenu.html#demo",
+    "docs": "http://ignitersworld.com/lab/contextMenu.html#documentation"
+}

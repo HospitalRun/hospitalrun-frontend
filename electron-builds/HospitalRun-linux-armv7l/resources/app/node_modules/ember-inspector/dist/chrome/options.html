@@ -1,0 +1,62 @@
+<html>
+<head>
+  <title>Settings | Ember Inspector</title>
+  <link rel="stylesheet" href="chrome-bootstrap.css">
+
+  <style>
+    .navigation img {
+      margin-left: 20px;
+      margin-top: 20px;
+      width: 100px;
+    }
+    .tomster-toggle {
+      line-height: 19px;
+    }
+    .tomster-toggle img {
+      margin-bottom: -5px;
+    }
+  </style>
+</head>
+
+<body class="chrome-bootstrap">
+
+  <div class="frame">
+    <div class="navigation">
+      <img src="/panes-2-7-0/assets/images/tomster.png" width="100" height="95">
+      <ul class="menu">
+        <li class="selected">
+          <a href="#">Settings</a>
+        </li>
+      </ul>
+      <ul class="menu">
+        <li class="">
+          <a href="https://github.com/emberjs/ember-inspector">Fork me on GitHub</a>
+        </li>
+      </ul>
+
+    </div>
+
+    <div class="main-view view">
+      <div class="Settings">
+        <header>
+          <h1>Settings</h1>
+        </header>
+
+        <div class="content">
+          <br />
+          <form action="submit">
+            <label class="tomster-toggle">
+              <input type="checkbox" data-settings="tomster">
+              Display the Tomster
+              <img src="/panes-2-7-0/assets/images/icon19.png" width="19" height="19">
+              when a site runs Ember.js
+            </label>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script src="options.js"></script>
+</html>
