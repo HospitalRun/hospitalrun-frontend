@@ -575,13 +575,9 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
 
   afterUpdate(record) {
     this._updateSequence(record).then(() => {
-      this.send('openModal', 'dialog', Ember.Object.create({
-        title: this.get('i18n').t('patients.titles.savedPatient'),
-        message: this.get('i18n').t('patients.messages.savedPatient', record),
-        updateButtonAction: 'returnToPatient',
-        updateButtonText: this.get('i18n').t('patients.buttons.backToPatients'),
-        cancelButtonText: this.get('i18n').t('buttons.close')
-      }));
+      $('.message').show();
+      $('.message').text(this.get('i18n').t('patients.messages.savedPatient', record));
+      $('.message').delay(3000).fadeOut(100);
     });
   }
 
