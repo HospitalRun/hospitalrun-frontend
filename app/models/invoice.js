@@ -45,8 +45,8 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     return get(this, 'status') === 'Paid';
   }),
 
-  remainingBalance: computed('patientResponsibility', 'paidTotal', function() {
-    let patientResponsibility = get(this, 'patientResponsibility');
+  remainingBalance: computed('finalPatientResponsibility', 'paidTotal', function() {
+    let patientResponsibility = get(this, 'finalPatientResponsibility');
     let paidTotal = get(this, 'paidTotal');
     return this._numberFormat((patientResponsibility - paidTotal), true);
   }),
