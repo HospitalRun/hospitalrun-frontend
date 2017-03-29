@@ -1,6 +1,0 @@
-'use strict'
-
-const spawn = require('child_process').spawn
-const argv = require('optimist').argv
-
-spawn(argv['electron-path'], [argv['tests-path']])

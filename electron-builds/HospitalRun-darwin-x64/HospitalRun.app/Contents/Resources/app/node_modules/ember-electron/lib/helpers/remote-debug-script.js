@@ -1,7 +1,0 @@
-module.exports = function getRemoteDebugSocketScript (port, host) {
-  return `<script src="http://${host}:${port}/socket.io/socket.io.js" type="text/javascript"></script>
-<script type="text/javascript">
-    window.EMBER_INSPECTOR_CONFIG = window.EMBER_INSPECTOR_CONFIG || {}
-    window.EMBER_INSPECTOR_CONFIG.remoteDebugSocket = io('http://${host}:${port}')
-</script>`
-}
