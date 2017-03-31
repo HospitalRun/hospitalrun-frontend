@@ -567,6 +567,13 @@ export default {
     }
   },
   inventory: {
+    adjustmentTypes: {
+      add: 'Add',
+      remove: 'Remove',
+      returnToVendor: 'Return To Vendor',
+      return: 'Return',
+      writeOff: 'Write Off'
+    },
     edit: {
       cost: 'Cost Per Unit:',
       delivered: 'Delievered To:',
