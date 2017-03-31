@@ -135,7 +135,7 @@ export default RESTAdapter.extend(CheckForErrors, UserSession, {
       }
     };
     if (get(this, 'standAlone') ===  true) {
-      return this._offlineFindAll(ajaxData);
+      return this._offlineFindAll(ajaxData.data);
     } else {
       let url = this.buildURL(type.modelName, null, snapshotRecordArray, 'findAll');
       return this._checkForErrors(this.ajax(url, 'GET', ajaxData));
