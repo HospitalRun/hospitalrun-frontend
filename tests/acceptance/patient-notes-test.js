@@ -21,11 +21,10 @@ test('patient notes crud testing', function(assert) {
       fillIn('.test-first-name input', 'John');
       fillIn('.test-last-name input', 'Doe');
       click('.panel-footer button:contains(Add)');
-      waitToAppear('.modal-dialog');
+      waitToAppear('.message:contains(The patient record for John Doe has been saved)');
     });
     andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Patient Saved', 'Patient record has been saved');
-      click('button:contains(Close)');
+      assert.equal(find('.message').text(), 'The patient record for John Doe has been saved.');
       waitToAppear('.patient-summary');
     });
     andThen(function() {
