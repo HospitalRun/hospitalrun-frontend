@@ -13,6 +13,7 @@ export default Ember.Component.extend({
   patient: null,
   displayModal: false,
   currentAllergy: false,
+  parentProps: null,
 
   buttonConfirmText: computed('currentAllergy', function() {
     let i18n = this.get('i18n');
@@ -55,9 +56,17 @@ export default Ember.Component.extend({
     }
   }),
 
+  setStayOnPage(val) {
+    let props = this.get('parentProps');
+    if (props) {
+      props.stayOnPage = val;
+    }
+  },
+
   closeAllergyModal() {
     this.set('currentAllergy', false);
     this.set('displayModal', false);
+    this.setStayOnPage(false);
   },
 
   actions: {
@@ -73,10 +82,12 @@ export default Ember.Component.extend({
     editAllergy(allergy) {
       this.set('currentAllergy', allergy);
       this.set('displayModal', true);
+      this.setStayOnPage(true);
     },
 
     createNewAllergy() {
       this.set('displayModal', true);
+      this.setStayOnPage(true);
     },
 
     updateAllergy() {

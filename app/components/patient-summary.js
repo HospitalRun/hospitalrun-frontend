@@ -23,6 +23,7 @@ export default Ember.Component.extend(UserSession, {
   hideInActiveDiagnoses: true,
   patient: null,
   patientProcedures: null,
+  props: {},
   showAddDiagnosisAction: 'showAddDiagnosis',
   showPatientAction: 'showPatient',
 
@@ -76,7 +77,8 @@ export default Ember.Component.extend(UserSession, {
 
     linkToPatient() {
       let shouldLink = this.get('shouldLinkToPatient');
-      if (shouldLink) {
+      let stayOnPage = this.get('props.stayOnPage');
+      if (shouldLink && !stayOnPage) {
         let patient = this.get('patient');
         let returnTo = this.get('returnTo');
         let returnToContext = this.get('returnToContext');

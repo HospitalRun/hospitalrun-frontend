@@ -91,6 +91,17 @@ test('Edit visit', function(assert) {
     });
     andThen(function() {
       assert.equal(find('a.primary-diagnosis:contains(Broken Arm)').length, 1, 'New primary diagnosis appears');
+      click('a:contains(Add Allergy)');
+      waitToAppear('.modal-dialog');
+    });
+    andThen(function() {
+      assert.equal(find('.modal-title').text(), 'Add Allergy', 'Add Allergy dialog displays');
+      fillIn('input.allergy-text', 'Quinine');
+      click('.modal-footer button:contains(Add)');
+      waitToAppear('a.primary-diagnosis');
+    });
+    andThen(function() {
+      assert.equal(find('a.allergy-button:contains(Quinine)').length, 1, 'New allergy appears');
       click('button:contains(New Medication)');
     });
     andThen(function() {

@@ -29,9 +29,9 @@
       <div class="col-xs-12 form-group">
         <label>{{t "allergies.labels.allergyName"}}</label>
         {{#if currentAllergy}}
-          {{input class="form-control" value=currentAllergy.name}}
+          {{input class="form-control allergy-text" value=currentAllergy.name}}
         {{else}}
-          {{input class="form-control" value=name}}
+          {{input class="form-control allergy-text" value=name}}
         {{/if}}
       </div>
     </div>
