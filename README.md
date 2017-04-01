@@ -36,7 +36,8 @@ To install the frontend please do the following:
 3. Install [ember-cli latest](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@latest`.
    Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install ember-cli.
 4. Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
-5. Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and run `script/bootstrap`.
+5. Fork the master repository from `https://github.com/HospitalRun/hospitalrun-frontend` and clone the forked repository.
+6. Go to the cloned folder and run `script/bootstrap`.
   - **Note:** *Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install PhantomJS2; also, Windows users must run with [Cygwin](http://cygwin.org/)).*
   - **Note:** *If you just want to use the project, cloning is the best option. However, if you wish to contribute to the project, you will need to fork the project first, and then clone your `hospitalrun-frontend` fork and make your contributions via a branch on your fork.*
 6. Install and configure [CouchDB](http://couchdb.apache.org/)
@@ -75,13 +76,16 @@ To run HospitalRun with Docker please do the following:
 - Build the HospitalRun image with `docker build -t hospitalrun-frontend .`
 - Execute `docker run -it --name couchdb -d couchdb` to create the couchdb container.
 - Execute `docker run -it --name hospitalrun-frontend -p 4200:4200 --link couchdb:couchdb -d hospitalrun-frontend` to create the HospitalRun container.
+or instead,
+- Go to [https://docs.docker.com/compose/install](https://docs.docker.com/compose/install/) to install Docker-compose
+- Execute 'docker-compose up' to reduce the steps to build and run the application.
 
 ### Accessing HospitalRun with Docker Toolbox
 If you are running with Docker Toolbox you will have to run the following commands to get the IP of the docker machine where hospitalrun-frontend is running with the following:
 - Run the following command to get the ip of the docker machine that the image was created on `docker-machine ip default`.
 - Go to `http://<docker-machine ip>:4200` in a browser and login with username `hradmin` and password `test`.
 
-### Accessing HospitalRun with Docker
+### Accessing HospitalRun with Docker or Docker-compose
 If you are not running with docker toolbox please do the following:
 - Go to `http://localhost:4200` in a browser and login with username `hradmin` and password `test`.
 
@@ -145,7 +149,7 @@ Again, contributions are welcome via pull requests and issues.  Please see our [
 **Seriously, please read the [Contribution Guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md).**
 
 ## Start Coding
-To start coding and understand the frameworks, concepts and structure of the project, please read: 
+To start coding and understand the frameworks, concepts and structure of the project, please read:
 [Contribution Guide: Start Coding](.github/CONTRIBUTING.md#start-coding).
 
 ## Further Reading / Useful Links
