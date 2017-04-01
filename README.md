@@ -40,7 +40,7 @@ To install the frontend please do the following:
 6. Go to the cloned folder and run `script/bootstrap`.
   - **Note:** *Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install PhantomJS2; also, Windows users must run with [Cygwin](http://cygwin.org/)).*
   - **Note:** *If you just want to use the project, cloning is the best option. However, if you wish to contribute to the project, you will need to fork the project first, and then clone your `hospitalrun-frontend` fork and make your contributions via a branch on your fork.*
-6. Install and configure [CouchDB](http://couchdb.apache.org/)
+7. Install and configure [CouchDB](http://couchdb.apache.org/)
     1. Download and install CouchDB from http://couchdb.apache.org/#download
     2. Start CouchDB
         1. If you downloaded the installed app, navigate to CouchDB and double-click on the application.
@@ -54,8 +54,8 @@ To install the frontend please do the following:
         2. If you are running CouchDB 2.x
             1. If you have just installed CouchDB and have no admin user, please run `./script/initcouch2.sh` in the folder you cloned the HospitalRun repo.  A user `hradmin` will be created with password: `test`.
             2. If you already have a CouchDB admin user, please run `./script/initcouch2.sh USER PASS` in the folder you cloned the HospitalRun repo.  `USER` and `PASS` are the CouchDB admin user credentials.
-7. Copy the `server/config-example.js` to `server/config.js` in the folder you cloned the HospitalRun repo.  If you already had a CouchDB admin user that you passed into the couch script (`./script/initcouch.sh USER PASS`), then you will need to modify the `couchAdminUser` and `couchAdminPassword` values in `server/config.js` to reflect those credentials. (*Note: If on Mac, you need to make sure CouchDB can be run. See [How to open an app from a unidentified developer and exempt it from Gatekeeper](https://support.apple.com/en-us/HT202491).*)
-8. Verify that CouchDB is running by visiting: http://127.0.0.1:5984/_utils/#login
+8. Copy the `server/config-example.js` to `server/config.js` in the folder you cloned the HospitalRun repo.  If you already had a CouchDB admin user that you passed into the couch script (`./script/initcouch.sh USER PASS`), then you will need to modify the `couchAdminUser` and `couchAdminPassword` values in `server/config.js` to reflect those credentials. (*Note: If on Mac, you need to make sure CouchDB can be run. See [How to open an app from a unidentified developer and exempt it from Gatekeeper](https://support.apple.com/en-us/HT202491).*)
+9. Verify that CouchDB is running by visiting: http://127.0.0.1:5984/_utils/#login
    and logging in with the with the credentials you just created from steps 6 and 7.
    1. If you the page returns an error or 404:
      1. Run `make serve`, it will start couchdb, install npm dependencies and start the server.
