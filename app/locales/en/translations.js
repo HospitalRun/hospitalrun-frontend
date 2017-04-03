@@ -582,6 +582,7 @@ export default {
     labels: {
       action: 'Action',
       add: 'Add',
+      addAdjustmentType: 'Add',
       adjust: 'Adjust',
       adjustmentDate: 'Adjustment Date',
       adjustmentFor: 'Adjustment For',
@@ -648,8 +649,11 @@ export default {
       rank: 'Rank',
       reason: 'Reason',
       remove: 'Remove',
+      removeAdjustmentType: 'Remove',
       reorderPoint: 'Reorder Point',
       requestedItems: 'Requested Items',
+      returnAdjustmentType: 'Return',
+      returnToVendorAdjustmentType: 'Return To Vendor',
       salePricePerUnit: 'Sale Price per Unit',
       save: 'Save',
       serialNumber: 'Serial/Lot Number',
@@ -666,6 +670,7 @@ export default {
       unitCost: 'Unit Cost',
       vendor: 'Vendor',
       vendorItemNumber: 'Vendor Item Number',
+      writeOffAdjustmentType: 'Write Off',
       xref: 'XRef'
     },
     messages: {
