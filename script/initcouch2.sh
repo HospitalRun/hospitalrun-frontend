@@ -18,6 +18,7 @@ curl -X PUT $SECUREHOST/_users/_security -d '{ "admins": { "names": [], "roles":
 echo "Setting up HospitalRun config DB"
 curl -X PUT $SECUREHOST/config
 curl -X PUT $SECUREHOST/config/_security -d '{ "admins": { "names": [], "roles": ["admin"]}, "members": { "names": [], "roles": []}}'
+curl -X PUT $SECUREHOST/config/_design/auth -d "{ \"validate_doc_update\": \"function(newDoc, oldDoc, userCtx) {if(userCtx.roles.indexOf('_admin')!== -1) {return;} else {throw({forbidden: 'This DB is read-only'});}}\"}"
 echo "Setting up HospitalRun main DB"
 curl -X PUT $SECUREHOST/main
 curl -X PUT $SECUREHOST/main/_security -d '{ "admins": { "names": [], "roles": ["admin"]}, "members": { "names": [], "roles": ["user"]}}'
