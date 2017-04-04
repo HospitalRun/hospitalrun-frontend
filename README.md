@@ -36,10 +36,7 @@ To install the frontend please do the following:
 3. Install [ember-cli latest](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@latest`.
    Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install ember-cli.
 4. Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
-5. Fork the master repository from `https://github.com/HospitalRun/hospitalrun-frontend` and clone the forked repository.
-6. Go to the cloned folder and run `script/bootstrap`.
-  - **Note:** *Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install PhantomJS2; also, Windows users must run with [Cygwin](http://cygwin.org/)).*
-  - **Note:** *If you just want to use the project, cloning is the best option. However, if you wish to contribute to the project, you will need to fork the project first, and then clone your `hospitalrun-frontend` fork and make your contributions via a branch on your fork.*
+5. Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and run `script/bootstrap`.
 6. Install and configure [CouchDB](http://couchdb.apache.org/)
     1. Download and install CouchDB from http://couchdb.apache.org/#download
     2. Start CouchDB
@@ -69,6 +66,8 @@ To start the frontend please do the following:
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
 ## Running with Docker
+
+###Running With Docker Engine
 To run HospitalRun with Docker please do the following:
 - Goto [https://docs.docker.com/engine/installation](https://docs.docker.com/engine/installation) to download and install Docker.
 - Clone the repository with the command `git clone https://github.com/HospitalRun/hospitalrun-frontend.git`.
@@ -76,7 +75,9 @@ To run HospitalRun with Docker please do the following:
 - Build the HospitalRun image with `docker build -t hospitalrun-frontend .`
 - Execute `docker run -it --name couchdb -d couchdb` to create the couchdb container.
 - Execute `docker run -it --name hospitalrun-frontend -p 4200:4200 --link couchdb:couchdb -d hospitalrun-frontend` to create the HospitalRun container.
-or instead,
+
+###Running with Docker Compose
+To run HospitalRun with Docker-compose please do the following:
 - Go to [https://docs.docker.com/compose/install](https://docs.docker.com/compose/install/) to install Docker-compose
 - Execute 'docker-compose up' to reduce the steps to build and run the application.
 
