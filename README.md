@@ -69,7 +69,7 @@ To start the frontend please do the following:
 
 ## Running with Docker
 
-###Running With Docker Engine
+### Running With Docker Engine
 To run HospitalRun with Docker please do the following:
 - Goto [https://docs.docker.com/engine/installation](https://docs.docker.com/engine/installation) to download and install Docker.
 - Clone the repository with the command `git clone https://github.com/HospitalRun/hospitalrun-frontend.git`.
@@ -78,7 +78,7 @@ To run HospitalRun with Docker please do the following:
 - Execute `docker run -it --name couchdb -d couchdb` to create the couchdb container.
 - Execute `docker run -it --name hospitalrun-frontend -p 4200:4200 --link couchdb:couchdb -d hospitalrun-frontend` to create the HospitalRun container.
 
-###Running with Docker Compose
+### Running with Docker Compose
 To run HospitalRun with Docker-compose please do the following:
 - Go to [https://docs.docker.com/compose/install](https://docs.docker.com/compose/install/) to install Docker-compose
 - Execute 'docker-compose up' to reduce the steps to build and run the application.
