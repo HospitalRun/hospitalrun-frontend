@@ -3,17 +3,31 @@ HospitalRun frontend
 
 _Ember frontend for HospitalRun_
 
-[![Build Status](https://travis-ci.org/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.org/HospitalRun/hospitalrun-frontend)
-
-[![CouchDB](https://img.shields.io/badge/couchdb-2.0-green.svg)](http://couchdb.apache.org/)
+[![Build Status](https://travis-ci.org/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.org/HospitalRun/hospitalrun-frontend) [![CouchDB](https://img.shields.io/badge/couchdb-2.0-green.svg)](http://couchdb.apache.org/)
 
 To run the development environment for this frontend you will need to have [Git](https://git-scm.com/), [Node.js](https://nodejs.org), [Ember CLI](http://ember-cli.com/), [Bower](http://bower.io/), and [CouchDB](http://couchdb.apache.org/) installed.
+
+## Table of contents
+
+- [Contributing](#contributing)
+- [Installation](#installation)
+- [Running the application](#running-the-application)
+- [Running with Docker](#running-with-docker)
+- [Accessing HospitalRun with Docker Toolbox](#accessing-hospitalRun-with-docker-toolbox)
+- [Accessing HospitalRun with Docker](#accessing-hospitalRun-with-docker)
+- [Troubleshooting your local environment](#troubleshooting-your-local-environment)
+- [Loading sample data](#loading-sample-data)
+- [Testing](#testing)
+- [Contributing](#contributing-1)
+- [Start coding](#start-coding)
+- [Further Reading / Useful Links](#further-reading--useful-links)
+- [Experimental](#experimental)
 
 ## Contributing
 
 Contributions are welcome via pull requests and issues.  Please see our [contributing guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md) for more details, including a link to join our project Slack.
 
-## Install
+## Installation
 To install the frontend please do the following:
 
 1. Make sure you have installed [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
@@ -22,7 +36,9 @@ To install the frontend please do the following:
 3. Install [ember-cli latest](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@latest`.
    Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install ember-cli.
 4. Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
-5. Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and run `script/bootstrap`. (*Note: Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install PhantomJS2; also, Windows users must run with [Cygwin](http://cygwin.org/)*).
+5. Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and run `script/bootstrap`.
+  - **Note:** *Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install PhantomJS2; also, Windows users must run with [Cygwin](http://cygwin.org/)).*
+  - **Note:** *If you just want to use the project, cloning is the best option. However, if you wish to contribute to the project, you will need to fork the project first, and then clone your `hospitalrun-frontend` fork and make your contributions via a branch on your fork.*
 6. Install and configure [CouchDB](http://couchdb.apache.org/)
     1. Download and install CouchDB from http://couchdb.apache.org/#download
     2. Start CouchDB
@@ -45,13 +61,15 @@ To install the frontend please do the following:
      2. Or start the application from your applications folder.
 
 
-## Start
+## Running the application
 To start the frontend please do the following:
 
 - Start the server by running `npm start` in the repo folder.  If `npm start` doesn't work for you, try `ember serve` as an alternative.
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
 ## Running with Docker
+
+### Running With Docker Engine
 To run HospitalRun with Docker please do the following:
 - Goto [https://docs.docker.com/engine/installation](https://docs.docker.com/engine/installation) to download and install Docker.
 - Clone the repository with the command `git clone https://github.com/HospitalRun/hospitalrun-frontend.git`.
@@ -60,12 +78,17 @@ To run HospitalRun with Docker please do the following:
 - Execute `docker run -it --name couchdb -d couchdb` to create the couchdb container.
 - Execute `docker run -it --name hospitalrun-frontend -p 4200:4200 --link couchdb:couchdb -d hospitalrun-frontend` to create the HospitalRun container.
 
+### Running with Docker Compose
+To run HospitalRun with Docker-compose please do the following:
+- Go to [https://docs.docker.com/compose/install](https://docs.docker.com/compose/install/) to install Docker-compose
+- Execute 'docker-compose up' to reduce the steps to build and run the application.
+
 ### Accessing HospitalRun with Docker Toolbox
 If you are running with Docker Toolbox you will have to run the following commands to get the IP of the docker machine where hospitalrun-frontend is running with the following:
 - Run the following command to get the ip of the docker machine that the image was created on `docker-machine ip default`.
 - Go to `http://<docker-machine ip>:4200` in a browser and login with username `hradmin` and password `test`.
 
-### Accessing HospitalRun with Docker
+### Accessing HospitalRun with Docker or Docker-compose
 If you are not running with docker toolbox please do the following:
 - Go to `http://localhost:4200` in a browser and login with username `hradmin` and password `test`.
 
@@ -129,7 +152,7 @@ Again, contributions are welcome via pull requests and issues.  Please see our [
 **Seriously, please read the [Contribution Guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md).**
 
 ## Start Coding
-To start coding and understand the frameworks, concepts and structure of the project, please read: 
+To start coding and understand the frameworks, concepts and structure of the project, please read:
 [Contribution Guide: Start Coding](.github/CONTRIBUTING.md#start-coding).
 
 ## Further Reading / Useful Links

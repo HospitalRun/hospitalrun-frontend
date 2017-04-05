@@ -16,9 +16,9 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
 
   actions: {
     closeModal() {
-      this.disconnectOutlet({
-        parentView: 'application',
-        outlet: 'modal'
+      this.render('empty', {
+        outlet: 'modal',
+        into: 'application'
       });
     },
 
