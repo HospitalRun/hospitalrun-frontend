@@ -68,6 +68,8 @@ To start the frontend please do the following:
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
 ## Running with Docker
+
+### Running With Docker Engine
 To run HospitalRun with Docker please do the following:
 - Goto [https://docs.docker.com/engine/installation](https://docs.docker.com/engine/installation) to download and install Docker.
 - Clone the repository with the command `git clone https://github.com/HospitalRun/hospitalrun-frontend.git`.
@@ -76,12 +78,17 @@ To run HospitalRun with Docker please do the following:
 - Execute `docker run -it --name couchdb -d couchdb` to create the couchdb container.
 - Execute `docker run -it --name hospitalrun-frontend -p 4200:4200 --link couchdb:couchdb -d hospitalrun-frontend` to create the HospitalRun container.
 
+### Running with Docker Compose
+To run HospitalRun with Docker-compose please do the following:
+- Go to [https://docs.docker.com/compose/install](https://docs.docker.com/compose/install/) to install Docker-compose
+- Execute 'docker-compose up' to reduce the steps to build and run the application.
+
 ### Accessing HospitalRun with Docker Toolbox
 If you are running with Docker Toolbox you will have to run the following commands to get the IP of the docker machine where hospitalrun-frontend is running with the following:
 - Run the following command to get the ip of the docker machine that the image was created on `docker-machine ip default`.
 - Go to `http://<docker-machine ip>:4200` in a browser and login with username `hradmin` and password `test`.
 
-### Accessing HospitalRun with Docker
+### Accessing HospitalRun with Docker or Docker-compose
 If you are not running with docker toolbox please do the following:
 - Go to `http://localhost:4200` in a browser and login with username `hradmin` and password `test`.
 
@@ -145,7 +152,7 @@ Again, contributions are welcome via pull requests and issues.  Please see our [
 **Seriously, please read the [Contribution Guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md).**
 
 ## Start Coding
-To start coding and understand the frameworks, concepts and structure of the project, please read: 
+To start coding and understand the frameworks, concepts and structure of the project, please read:
 [Contribution Guide: Start Coding](.github/CONTRIBUTING.md#start-coding).
 
 ## Further Reading / Useful Links
