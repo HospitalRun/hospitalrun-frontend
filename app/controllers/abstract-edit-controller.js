@@ -2,6 +2,7 @@ import Ember from 'ember';
 import EditPanelProps from 'hospitalrun/mixins/edit-panel-props';
 import IsUpdateDisabled from 'hospitalrun/mixins/is-update-disabled';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
+import { task } from 'ember-concurrency';
 import UserSession from 'hospitalrun/mixins/user-session';
 
 const { get, inject, isEmpty, RSVP, set } = Ember;
@@ -64,12 +65,27 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
 
   /* Silently update and then fire the specified action. */
   silentUpdate(action, whereFrom) {
-    this.beforeUpdate().then(() => {
-      return this.saveModel(true);
-    }).then(() => {
+    return this.get('updateTask').perform(true).then(() => {
       this.send(action, whereFrom);
     });
   },
+
+  /**
+   * Task to update the model and perform the before update and after update
+   * @param skipAfterUpdate boolean (optional) indicating whether or not
+   * to skip the afterUpdate call.
+   */
+  updateTask: task(function* (skipAfterUpdate) {
+    try {
+      yield this.beforeUpdate().then(() => {
+        return this.saveModel(skipAfterUpdate);
+      }).catch((err) => {
+        return this._handleError(err);
+      });
+    } catch(ex) {
+      this._handleError(ex);
+    }
+  }).enqueue(),
 
   /**
    * Add the specified value to the lookup list if it doesn't already exist in the list.
@@ -144,15 +160,7 @@ export default Ember.Controller.extend(EditPanelProps, IsUpdateDisabled, ModalHe
      * to skip the afterUpdate call.
      */
     update(skipAfterUpdate) {
-      try {
-        this.beforeUpdate().then(() => {
-          this.saveModel(skipAfterUpdate);
-        }).catch((err) => {
-          this._handleError(err);
-        });
-      } catch(ex) {
-        this._handleError(ex);
-      }
+      return this.get('updateTask').perform(skipAfterUpdate);
     }
   },
 

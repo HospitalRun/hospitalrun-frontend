@@ -14,7 +14,8 @@
   "scripts": {
     "build": "./script/build",
     "start": "./script/server",
-    "test": "./script/test"
+    "test": "./script/test",
+    "translation-sync": "babel-node script/translation/sync.js  --presets es2015,stage-2; eslint --fix app/locales"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,8 @@
   ],
   "license": "GPL-3.0",
   "devDependencies": {
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-2": "^6.18.0",
     "body-parser": "^1.14.2",
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-export-text": "0.0.2",
@@ -101,6 +104,7 @@
     "stylelint-config-concentric": "1.0.7",
     "stylelint-declaration-use-variable": "1.6.0",
     "stylelint-scss": "1.4.1",
+    "tosource-polyfill": "^0.3.1",
     "uuid": "^3.0.0"
   },
   "dependencies": {
