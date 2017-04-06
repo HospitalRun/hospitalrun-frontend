@@ -133,6 +133,11 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
         label: i18n.t('inventory.labels.vendor'),
         include: false,
         property: 'vendors'
+      },
+      rank: {
+        label: i18n.t('inventory.labels.rank'),
+        include: true,
+        property: 'rank'
       }
     };
   }),
