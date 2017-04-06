@@ -77,6 +77,7 @@ test('Plan and report creation', function(assert) {
       click('.modal-footer button:contains(Ok)');
     });
     andThen(() => {
+      assert.equal(find('.view-current-title').text(), 'Edit Operative Plan', 'Edit operative plan title is correct');
       assert.equal(find(`.procedure-listing td.procedure-description:contains(${PROCEDURE_FIX_ARM})`).length, 1, 'Procedure from typeahead gets added to procedure list on save');
       click('button:contains(Return)');
     });

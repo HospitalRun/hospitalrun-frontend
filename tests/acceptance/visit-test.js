@@ -80,6 +80,17 @@ test('Edit visit', function(assert) {
     });
     andThen(function() {
       assert.equal(currentURL(), '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'Visit url is correct');
+      click('a:contains(Add Allergy)');
+      waitToAppear('.modal-dialog');
+    });
+    andThen(function() {
+      assert.equal(find('.modal-title').text(), 'Add Allergy', 'Add Allergy dialog displays');
+      fillIn('.test-allergy input', 'Oatmeal');
+      click('.modal-footer button:contains(Add)');
+      waitToDisappear('.modal-dialog');
+    });
+    andThen(function() {
+      assert.equal(find('a.allergy-button:contains(Oatmeal)').length, 1, 'New allergy appears');
       click('a:contains(Add Diagnosis)');
       waitToAppear('.modal-dialog');
     });
