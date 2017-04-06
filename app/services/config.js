@@ -8,16 +8,20 @@ export default Ember.Service.extend({
   session: inject.service(),
   sessionData: Ember.computed.alias('session.data'),
   standAlone: false,
-  userSetupFlag: true,
-
-  needsSetup() {
-    return this.get('userSetupFlag');
+  needsUserSetup() {
+    return this.getConfigValue('user_setup_flag', true);
   },
-
-  markSetupComplete() {
-    this.set('userSetupFlag', false);
+  markUserSetupComplete() {
+    let config = this.get('configDB');
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      config.put({ _id: 'config_user_setup_flag', value: false }, function(err, doc) {
+        if (err) {
+          reject(err);
+        }
+        resolve(doc);
+      });
+    });
   },
-
   setup() {
     let replicateConfigDB = this.replicateConfigDB.bind(this);
     let loadConfig = this.loadConfig.bind(this);
@@ -33,7 +37,6 @@ export default Ember.Service.extend({
       return loadConfig();
     }
   },
-
   createDB() {
     return new PouchDB('config');
   },
