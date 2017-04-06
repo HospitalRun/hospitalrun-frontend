@@ -1,6 +1,8 @@
 import Ember from 'ember';
-import { Adapter } from 'ember-pouch';
 import uuid from 'npm:uuid';
+import withTestWaiter from 'ember-concurrency-test-waiter/with-test-waiter';
+import { Adapter } from 'ember-pouch';
+import { task } from 'ember-concurrency';
 
 const {
   get,
@@ -47,7 +49,7 @@ export default Adapter.extend({
           if (results && results.hits && results.hits.hits) {
             let resultDocs = Ember.A(results.hits.hits).map((hit) => {
               let mappedResult = hit._source;
-              mappedResult.id = mappedResult._id;
+              mappedResult.id = hit._id;
               return mappedResult;
             });
             let response = {
@@ -263,13 +265,17 @@ export default Adapter.extend({
     return this._checkForErrors(this._super(store, type, record));
   },
 
-  _checkForErrors(callPromise) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
+  checkForErrorsTask: withTestWaiter(task(function* (callPromise) {
+    return yield new Ember.RSVP.Promise((resolve, reject) => {
       callPromise.then(resolve, (err) => {
         let database = get(this, 'database');
         reject(database.handleErrorResponse(err));
       });
     });
+  })),
+
+  _checkForErrors(callPromise) {
+    return get(this, 'checkForErrorsTask').perform(callPromise);
   }
 
 });

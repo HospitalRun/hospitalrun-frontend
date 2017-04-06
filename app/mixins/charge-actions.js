@@ -25,17 +25,20 @@ export default Ember.Mixin.create({
     addCharge(charge) {
       let charges = this.get('model.charges');
       charges.addObject(charge);
-      this.send('update', true);
-      this.send('closeModal');
+      let from = `addCharge_${charge.get('id')}`;
+      if (charge.get('medicationCharge')) {
+        from = `addMedication_${charge.get('id')}`;
+      }
+      this.silentUpdate('closeModal', from);
     },
 
     deleteCharge(model) {
       let chargeToDelete = model.get('chargeToDelete');
       let charges = this.get('model.charges');
       charges.removeObject(chargeToDelete);
-      chargeToDelete.destroyRecord();
-      this.send('update', true);
-      this.send('closeModal');
+      chargeToDelete.destroyRecord().then(() => {
+        this.silentUpdate('closeModal', 'deleteCharge');
+      });
     },
 
     showAddCharge() {
@@ -55,6 +58,7 @@ export default Ember.Mixin.create({
 
     showDeleteCharge(charge) {
       this.send('openModal', 'dialog', Ember.Object.create({
+        closeModalOnConfirm: false,
         confirmAction: 'deleteCharge',
         title: 'Delete Charge Item',
         message: 'Are you sure you want to delete this charged item?',
@@ -263,16 +267,15 @@ export default Ember.Mixin.create({
    * When using organizeByType charges need to be mapped over from the price lists
    */
   updateCharges() {
-    let charges = this.get('model.charges');
     let organizeByType = this.get('organizeByType');
-    let pricingList = this.get('pricingList');
-
     if (!organizeByType) {
       return Ember.RSVP.resolve();
     }
     return new Ember.RSVP.Promise(function(resolve, reject) {
+      let charges = this.get('model.charges');
       let chargePromises = [];
       let model = this.get('model');
+      let pricingList = this.get('pricingList');
       pricingList.forEach(function(pricingItem) {
         let currentCharge = this.findChargeForPricingItem(pricingItem, model.get('charges'));
         let quantityCharged = model.get(pricingItem.id);

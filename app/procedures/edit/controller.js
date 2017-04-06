@@ -80,9 +80,11 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
 
     showDeleteMedication(charge) {
       this.send('openModal', 'dialog', Ember.Object.create({
+        closeModalOnConfirm: false,
         confirmAction: 'deleteCharge',
         title: this.get('i18n').t('procedures.titles.deleteMedicationUsed'),
-        message: this.get('i18n').t('procedures.messages.deleteMedication'),
+        name: this.get('i18n').t('models.medication.names.singular'),
+        message: this.get('i18n').t('messages.delete_singular', { name: this.name }),
         chargeToDelete: charge,
         updateButtonAction: 'confirm',
         updateButtonText: this.get('i18n').t('buttons.ok')

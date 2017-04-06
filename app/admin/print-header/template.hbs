@@ -1,0 +1,13 @@
+{{#edit-panel editPanelProps=editPanelProps}}
+  <div class="panel panel-primary">
+    <div class="panel-body">
+      {{#em-form model=model submitButton=false }}
+        {{em-input label=(t 'admin.header.facilityName') property="value.facilityName"}}
+        {{em-input label=(t 'admin.header.headerLine1') property="value.headerLine1"}}
+        {{em-input label=(t 'admin.header.headerLine2') property="value.headerLine2"}}
+        {{em-input label=(t 'admin.header.headerLine3') property="value.headerLine3"}}
+        {{em-input label=(t 'admin.header.logoURL') property="value.logoURL"}}
+      {{/em-form}}
+    </div>
+  </div>
+{{/edit-panel}}
