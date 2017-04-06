@@ -71,6 +71,7 @@ module.exports = function(environment) {
   }
 
   ENV.emberFullCalendar =  {
+    includeScheduler: true,
     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source'
   };
 
