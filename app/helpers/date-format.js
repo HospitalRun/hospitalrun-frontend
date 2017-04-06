@@ -7,6 +7,9 @@ export default Ember.Helper.helper(function(params, hash) {
     if (hash && hash.format) {
       dateFormat = hash.format;
     }
+    if (date && typeof date.get == 'function') {
+      date = date.get('content');
+    }
     return moment(date).format(dateFormat);
   }
 });

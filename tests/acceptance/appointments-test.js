@@ -32,7 +32,6 @@ test('visiting /appointments/missed', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
     let url = '/appointments';
-    // create an apointmet scheduled in the past
     let today = moment();
     let tomorrow = moment().add(1, 'days');
     let status = 'Missed';
@@ -46,6 +45,28 @@ test('visiting /appointments/missed', function(assert) {
     andThen(function() {
       assert.equal(currentURL(), url);
       findWithAssert(`.appointment-status:contains(${status})`);
+    });
+  });
+});
+
+test('test appointment for today', function(assert) {
+  runWithPouchDump('appointments', function() {
+    authenticateUser();
+    visit('/appointments/today');
+    assert.equal(find('.appointment-date').length, 0, 'should have 0 appointment today');
+    visit('/appointments/edit/new');
+    andThen(function() {
+      assert.equal(currentURL(), '/appointments/edit/new');
+      findWithAssert('button:contains(Cancel)');
+      findWithAssert('button:contains(Add)');
+    });
+
+    createAppointment(assert);
+
+    visit('/appointments/today');
+    andThen(() => {
+      assert.equal(currentURL(), '/appointments/today');
+      assert.equal(find('.appointment-status').text(), 'Scheduled', 'should have 1 appointment today');
     });
   });
 });
@@ -148,8 +169,8 @@ test('Delete an appointment', function(assert) {
 test('Appointment calendar', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
-    let later = moment().add(1, 'hours');
-    let today = moment();
+    let today = moment().startOf('day');
+    let later =  moment(today).add(1, 'hours');
     let startTime = today.format(TIME_FORMAT);
     let endTime = later.format(TIME_FORMAT);
     let timeString = `${startTime} - ${endTime}`;

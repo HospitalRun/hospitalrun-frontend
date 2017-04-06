@@ -1,4 +1,5 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
+import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import Ember from 'ember';
 import moment from 'moment';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
@@ -6,12 +7,14 @@ import { translationMacro as t } from 'ember-i18n';
 
 const {
   get,
+  isEmpty,
   RSVP: {
     resolve
   }
 } = Ember;
 
-export default AbstractEditRoute.extend(PatientListRoute, {
+export default AbstractEditRoute.extend(AddToPatientRoute, PatientListRoute, {
+
   editTitle: t('appointments.editTitle'),
   modelName: 'appointment',
   newButtonText: t('appointments.buttons.newButton'),
@@ -26,7 +29,7 @@ export default AbstractEditRoute.extend(PatientListRoute, {
       selectPatient: true,
       startDate: new Date()
     };
-    if (!Ember.isEmpty(idParam) && params[idParam] === 'newsurgery') {
+    if (!isEmpty(idParam) && params[idParam] === 'newsurgery') {
       newData.appointmentType = 'Surgery';
       newData.allDay = false;
       newData.endDate = moment().add('1', 'hours').toDate();
@@ -53,10 +56,19 @@ export default AbstractEditRoute.extend(PatientListRoute, {
   model(params) {
     let idParam = this.get('idParam');
     let modelId = params[idParam];
-    if (!Ember.isEmpty(idParam) && (modelId.indexOf('new') === 0)) {
-      return this._createNewRecord(params);
+    if (!isEmpty(idParam) && (modelId.indexOf('new') === 0)) {
+      if (!isEmpty(params.forPatientId)) {
+        let modelPromise = this._super(params);
+        return this._setPatientOnModel(modelPromise, params.forPatientId);
+      } else if (!isEmpty(params.forVisitId)) {
+        let modelPromise = this._super(params);
+        return this._setVisitOnModel(modelPromise, params.forVisitId);
+      } else {
+        return this._createNewRecord(params);
+      }
     } else {
       return this._super(params);
     }
   }
+
 });

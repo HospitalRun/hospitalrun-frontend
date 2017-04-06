@@ -1,0 +1,176 @@
+{{#edit-panel editPanelProps=editPanelProps}}
+  {{#em-form model=model submitButton=false }}
+    <div class="row">
+      {{#unless model.isNew}}
+        <div class="form-group col-sm-2">
+          <label class="control-label">{{t 'incident.labels.incidentId'}}</label>
+          <p class="form-control-static">{{model.friendlyId}}</p>
+        </div>
+        <div class="form-group col-sm-2">
+          <label class="control-label">{{t 'incident.labels.reportedDate'}}</label>
+          <p class="form-control-static">{{date-format model.reportedDate format="l h:mm A"}}</p>
+        </div>
+        <div class="form-group col-sm-2">
+          <label class="control-label">{{t 'incident.labels.reportedBy'}}</label>
+          <p class="form-control-static">{{model.reportedByDisplayName}}</p>
+        </div>
+        <div class="form-group col-sm-2">
+          <label class="control-label">{{t 'incident.labels.lastUpdated'}}</label>
+          <p class="form-control-static">{{date-format model.lastModified format="l h:mm A"}}</p>
+        </div>
+        <div class="form-group col-sm-2">
+          <label class="control-label">{{t 'incident.labels.updatedBy'}}</label>
+          <p class="form-control-static">{{model.modifiedByDisplayName}}</p>
+        </div>
+      {{/unless}}
+    </div>
+    <div class="row">
+
+      {{em-checkbox label=(t 'incident.labels.sentinelEvent') property="sentinelEvent" class="col-sm-3 sentinel-event"}}
+      {{date-picker property="dateOfIncident" label=(t 'incident.labels.incidentDate') class="col-sm-3 required incident-date" showTime=true}}
+      {{select-or-typeahead className="col-sm-3 required incident-department" property="department"
+        label=(t 'incident.labels.department') list=incidentDepartmentList
+        selection=model.location
+      }}
+      {{em-input property="reportedTo" label=(t 'incident.labels.reportedTo') class="col-sm-3 reported-to"}}
+    </div>
+    <div class="row">
+      {{em-select
+        class="col-sm-4 form-input-group required incident-category"
+        label=(t 'incident.labels.category')
+        prompt=" "
+        property="categoryName"
+        content=categoryNameList
+      }}
+      {{em-select
+        class="col-sm-4 form-input-group incident-category-item"
+        label=(t 'incident.labels.categoryItem')
+        prompt=" "
+        property="categoryItem"
+        content=itemList
+        optionLabelPath="item" optionValuePath="item"
+      }}
+      {{#if canUpdateStatus}}
+        {{em-select label=(t 'incident.labels.status') property="status" content=incidentStatuses class="required form-input-group col-sm-3"}}
+      {{else}}
+        <div class="form-group col-sm-3">
+          <label class="control-label">{{t 'incident.labels.status'}}</label>
+          <p class="form-control-static">{{model.status}}</p>
+        </div>
+      {{/if}}
+    </div>
+    <div class="row">
+      {{patient-typeahead
+        property="patientTypeAhead"
+        label=(t 'incident.labels.patientImpacted')
+        content=patientList
+        class="patient-name col-sm-9"
+        selection=selectedPatient
+      }}
+      {{#if model.patient}}
+        <div class="form-group col-sm-3">
+          <label class="control-label">{{t 'incident.labels.patientId'}}</label>
+          <p class="form-control-static patient-id">{{model.patient.friendlyId}}</p>
+        </div>
+      {{/if}}
+    </div>
+    <div class="row">
+      {{em-text label=(t 'incident.labels.description') property="description" class="required col-sm-12 incident-description" rows=3}}
+    </div>
+
+    {{#if canManageIncident}}
+      <ul class="nav nav-pills tab-nav" role="tablist">
+        <li role="presentation" class="active"><a href="#notes" role="tab" data-toggle="pill">{{t 'incident.titles.notes'}}</a></li>
+        <li role="presentation"><a href="#attachments" role="tab" data-toggle="pill">{{t 'incident.titles.attachments'}}</a></li>
+        {{#each customFormsToDisplay as |customForm index|}}
+          <li role="presentation">
+            <a href={{concat '#customForm' index}} role="tab" data-toggle="pill">
+              {{customForm.form.name}}
+            </a>
+          </li>
+        {{/each}}
+        {{#if showAddFormButton}}
+          <li role="presentation">
+            <a  role="tab" data-toggle="pill" {{action 'addCustomForm' bubbles=false }}>
+              {{t 'incident.buttons.addForm'}}
+            </a>
+          </li>
+        {{/if}}
+      </ul>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="notes">
+          <div class="panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                <button class="btn btn-primary align-right" {{action "showAddNote" bubbles=false }}>{{t 'incident.buttons.newNote'}}</button>
+              </h3>
+            </div>
+            <div class="panel-body detail-section-content">
+              <table class="table">
+                <tr class="table-header">
+                  <th>{{t 'incident.labels.date'}}</th>
+                  <th>{{t 'incident.labels.givenBy'}}</th>
+                  <th>{{t 'incident.labels.note'}}</th>
+                  <th>{{t 'incident.labels.actions'}}</th>
+                </tr>
+                {{#each model.notes as |note|}}
+                  <tr>
+                    <td>{{date-format note.dateRecorded}}</td>
+                    <td>{{note.givenByDisplayName}}</td>
+                    <td class="note-description">{{note.description}}</td>
+                    <td>
+                      <button class="btn btn-default neutral" {{action "showEditNote" note}}>{{t 'incident.buttons.edit'}}</button>
+                      <button class="btn btn-default warning" {{action "showDeleteNote" note bubbles=false }}><span class="octicon octicon-x"></span> {{t 'incident.buttons.delete'}}</button>
+                    </td>
+                  </tr>
+                {{/each}}
+              </table>
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="attachments">
+          <div class="panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                <button class="btn btn-primary align-right" {{action "showAddAttachment" bubbles=false }}>{{t 'incident.buttons.newAttachment'}}</button>
+              </h3>
+            </div>
+            <div class="panel-body detail-section-content">
+              <table class="table">
+                <tr class="table-header">
+                  <th>{{t 'incident.labels.date'}}</th>
+                  <th>{{t 'incident.labels.addedBy'}}</th>
+                  <th>{{t 'incident.labels.title'}}</th>
+                  <th>{{t 'incident.labels.actions'}}</th>
+                </tr>
+                {{#each model.incidentAttachments as |attachment|}}
+                  <tr>
+                    <td>{{date-format attachment.dateAdded}}</td>
+                    <td>{{attachment.addedByDisplayName}}</td>
+                    <td>{{attachment.title}}</td>
+                    <td>
+                      <button class="btn btn-default neutral" {{action "showEditAttachment" attachment}}>{{t 'incident.buttons.edit'}}</button>
+                      <a href={{attachment.url}} target="_blank" download="{{attachment.shortFileName}}" class="btn btn-default">
+                        <span class="glyphicon glyphicon-download" aria-hidden="true"></span> {{t 'incident.buttons.download'}}
+                      </a>
+                      <button class="btn btn-default warning" {{action "showDeleteAttachment" attachment bubbles=false }}><span class="octicon octicon-x"></span> {{t 'incident.buttons.delete'}}</button>
+                    </td>
+                  </tr>
+                {{/each}}
+              </table>
+            </div>
+          </div>
+        </div>
+        {{#each customFormsToDisplay as |customForm index|}}
+          <div role="tabpanel" class="tab-pane" id={{concat 'customForm' index}}>
+            <div class="panel">
+              <div class="panel-body detail-section-content">
+                {{custom-form model=model form=customForm.form propertyPrefix=customForm.propertyPrefix}}
+              </div>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    {{/if}}
+  {{/em-form}}
+{{/edit-panel}}

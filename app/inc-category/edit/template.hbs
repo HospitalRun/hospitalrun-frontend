@@ -1,0 +1,45 @@
+{{#edit-panel editPanelProps=editPanelProps}}
+  {{#em-form model=model submitButton=false }}
+    <div class="form-group has-success">
+      <div class="panel detail-section">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            {{t 'incident.titles.incidentCategoryName'}}
+          </h3>
+        </div>
+        <div class="panel-body detail-section-content">
+          <div class="row">
+            {{em-input property="incidentCategoryName" class="incident-category-name col-sm-12"}}
+          </div>
+        </div>
+      </div>
+      <div class="panel detail-section">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            {{t 'incident.titles.incidentCategoryItem'}}
+          </h3>
+        </div>
+        <div class="panel-body detail-section-content">
+          <table class="table">
+            <tr class="table-header">
+              <th>{{t 'incident.labels.item'}}</th>
+              <th>{{t 'labels.actions'}}</th>
+            </tr>
+            {{#each model.incidentCategoryItems as |incidentCategoryItem|}}
+              <tr>
+                <td class="incident-category-item">{{incidentCategoryItem.item}}</td>
+                <td>
+                  <button class="btn btn-default warning" {{action 'showDeleteItem' incidentCategoryItem bubbles=false }}>
+                    <span class="octicon octicon-x"></span>{{t 'incident.buttons.delete'}}</button>
+                </td>
+              </tr>
+            {{/each}}
+          </table>
+        </div>
+        <div class="panel-footer">
+          <button class="btn btn-default neutral" {{action 'showAddItem'}}>{{t 'incident.buttons.addItem'}}</button>
+        </div>
+      </div>
+    </div>
+  {{/em-form}}
+{{/edit-panel}}
