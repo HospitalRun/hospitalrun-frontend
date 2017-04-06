@@ -97,6 +97,24 @@ test('Update address options', function(assert) {
   });
 });
 
+test('Update header options', function(assert) {
+  runWithPouchDump('admin', function() {
+    authenticateUser();
+    visit('/admin/print-header');
+    andThen(function() {
+      assert.equal(currentURL(), '/admin/print-header');
+      fillIn('input', 'Print Header Label');
+      click('button:contains(Update)');
+      andThen(() => {
+        waitToAppear('.modal-dialog');
+        andThen(() => {
+          assert.equal(find('.modal-title').text(), 'Options Saved', 'Header Options Saved');
+        });
+      });
+    });
+  });
+});
+
 test('Update workflow options', function(assert) {
   let selector = 'input[type=checkbox]';
 

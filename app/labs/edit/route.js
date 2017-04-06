@@ -11,6 +11,7 @@ export default AbstractEditRoute.extend(AddToPatientRoute, ChargeRoute, PatientL
   modelName: 'lab',
   newTitle: t('labs.newTitle'),
   pricingCategory: 'Lab',
+  customForms: Ember.inject.service(),
 
   actions: {
     returnToAllItems() {
@@ -19,9 +20,12 @@ export default AbstractEditRoute.extend(AddToPatientRoute, ChargeRoute, PatientL
   },
 
   getNewData() {
-    return Ember.RSVP.resolve({
+    let newLabData = {
       selectPatient: true,
-      requestDate: moment().startOf('day').toDate()
-    });
+      requestDate: moment().startOf('day').toDate(),
+      customForms: Ember.Object.create()
+    };
+    let customForms = this.get('customForms');
+    return customForms.setDefaultCustomForms(['lab'], newLabData);
   }
 });

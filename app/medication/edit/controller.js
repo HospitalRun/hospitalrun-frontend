@@ -35,7 +35,7 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
   prescriptionClass: function() {
     let quantity = this.get('model.quantity');
     if (Ember.isEmpty(quantity)) {
-      return 'required';
+      return 'required test-medication-prescription';
     }
   }.property('model.quantity'),
 

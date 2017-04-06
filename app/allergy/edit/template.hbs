@@ -1,0 +1,16 @@
+{{#modal-dialog
+  title=title
+  updateButtonText=updateButtonText
+  hideCancelButton=true
+  isUpdateDisabled=isUpdateDisabled
+  updateButtonAction=updateButtonAction
+  additionalButtons=additionalButtons
+}}
+
+  {{#em-form model=model submitButton=false }}
+    <div class="row">
+      {{em-input class="col-xs-12 form-group required test-allergy" label=(t 'allergies.labels.allergyName') property="name"}}
+    </div>
+  {{/em-form}}
+
+{{/modal-dialog}}
