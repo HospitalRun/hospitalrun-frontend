@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { inject, run } = Ember;
+const { inject, run, get, set } = Ember;
 
 export default Ember.Service.extend({
   configDB: null,
@@ -10,16 +10,20 @@ export default Ember.Service.extend({
   standAlone: false,
   needsUserSetup: true,
   markUserSetupComplete() {
-    this.set('needsUserSetup', false);
-    let config = this.get('configDB');
-    return new Ember.RSVP.Promise(function(resolve, reject) {
-      config.put({ _id: 'config_user_setup_flag', value: false }, function(err, doc) {
-        if (err) {
-          reject(err);
-        }
-        resolve(doc);
-      });
-    });
+    if (get(this, 'needsUserSetup') === true) {
+      set(this, 'needsUserSetup', false);
+      let config = this.get('configDB');
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        config.put({ _id: 'config_user_setup_flag', value: false }, function(err, doc) {
+          if (err) {
+            reject(err);
+          }
+          resolve(doc);
+        });
+      });      
+    } else {
+      return Promise.resolve(true);
+    }
   },
   setup() {
     let replicateConfigDB = this.replicateConfigDB.bind(this);
@@ -34,20 +38,14 @@ export default Ember.Service.extend({
       return replicateConfigDB(db).then(loadConfig);
     } else {
       return loadConfig().then(function(configObj) {
-        if (configObj.config_user_setup_flag === false) {
-          get(this, 'database').usersDB.allDocs().then((results) => {
-            if (results.total_rows > 1) {
-              this.set('needsUserSetup', false);
-            }
-            return new Ember.RSVP.Promise(function(resolve) {
-              resolve(configObj);
-            });
-          });
-        } else {
+        get(this, 'database').usersDB.allDocs().then((results) => {
+          if (results.total_rows <= 1) {
+            set(this, 'needsUserSetup', true);
+          }
           return new Ember.RSVP.Promise(function(resolve) {
             resolve(configObj);
           });
-        }
+        });
       });
     }
   },

@@ -44,13 +44,12 @@ export default AbstractEditController.extend(UserRoles, {
         updateModel.set('userPrefix', prefix);
       }
       updateModel.save().then(() => {
-        this.get('config').markUserSetupComplete().then(() => {
-          this.displayAlert(get(this, 'i18n').t('messages.userSaved'), get(this, 'i18n').t('messages.userHasBeenSaved'));
-          let editTitle = get(this, 'i18n').t('labels.editUser');
-          let sectionDetails = {};
-          sectionDetails.currentScreenTitle = editTitle;
-          this.send('setSectionHeader', sectionDetails);
-        });
+        this.displayAlert(get(this, 'i18n').t('messages.userSaved'), get(this, 'i18n').t('messages.userHasBeenSaved'));
+        let editTitle = get(this, 'i18n').t('labels.editUser');
+        let sectionDetails = {};
+        sectionDetails.currentScreenTitle = editTitle;
+        this.send('setSectionHeader', sectionDetails);
+        get(this, 'config').markUserSetupComplete();
       }).catch((error) =>  {
         this._handleError(error);
       });
