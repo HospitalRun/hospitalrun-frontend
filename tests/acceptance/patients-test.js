@@ -116,12 +116,11 @@ test('Adding a new patient record', function(assert) {
     fillIn('.test-first-name input', 'John');
     fillIn('.test-last-name input', 'Doe');
     click('.panel-footer button:contains(Add)');
-    waitToAppear('.modal-dialog');
+    waitToAppear('.message:contains(The patient record for John Doe has been saved)');
     andThen(function() {
-      assert.equal(find('.modal-title').text(), 'Patient Saved', 'Patient record has been saved');
-      assert.equal(find('.modal-body').text().trim(), 'The patient record for John Doe has been saved.', 'Record has been saved');
+      assert.equal(find('.message').text().trim(), 'The patient record for John Doe has been saved.');
     });
-    click('button:contains(Close)');
+
     waitToAppear('.patient-summary');
 
     andThen(function() {

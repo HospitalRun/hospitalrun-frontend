@@ -57,7 +57,7 @@ export default Adapter.extend(CheckForErrors, {
           if (results && results.hits && results.hits.hits) {
             let resultDocs = Ember.A(results.hits.hits).map((hit) => {
               let mappedResult = hit._source;
-              mappedResult.id = mappedResult._id;
+              mappedResult.id = hit._id;
               return mappedResult;
             });
             let response = {
