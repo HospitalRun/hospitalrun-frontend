@@ -22,7 +22,7 @@
     "url": "git@github.com:HospitalRun/hospitalrun-frontend"
   },
   "engines": {
-    "node": ">= 4"
+    "node": ">= 6"
   },
   "author": "John Kleinschmidt",
   "contributors": [
