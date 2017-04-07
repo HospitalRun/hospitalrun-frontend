@@ -8,7 +8,7 @@ export default Ember.Service.extend({
   session: inject.service(),
   sessionData: Ember.computed.alias('session.data'),
   standAlone: false,
-  needsUserSetup: true,
+  needsUserSetup: false,
   markUserSetupComplete() {
     if (get(this, 'needsUserSetup') === true) {
       set(this, 'needsUserSetup', false);
@@ -20,7 +20,7 @@ export default Ember.Service.extend({
           }
           resolve(doc);
         });
-      });      
+      });
     } else {
       return Promise.resolve(true);
     }
@@ -37,16 +37,7 @@ export default Ember.Service.extend({
     if (this.get('standAlone') === false) {
       return replicateConfigDB(db).then(loadConfig);
     } else {
-      return loadConfig().then(function(configObj) {
-        get(this, 'database').usersDB.allDocs().then((results) => {
-          if (results.total_rows <= 1) {
-            set(this, 'needsUserSetup', true);
-          }
-          return new Ember.RSVP.Promise(function(resolve) {
-            resolve(configObj);
-          });
-        });
-      });
+      return loadConfig();
     }
   },
   createDB() {
