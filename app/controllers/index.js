@@ -2,20 +2,15 @@ import Ember from 'ember';
 import UserSession from 'hospitalrun/mixins/user-session';
 
 const {
-  computed,
   computed: {
     alias
   },
-  get,
   inject
 } = Ember;
 export default Ember.Controller.extend(UserSession, {
-  config: Ember.inject.service(),
+  config: inject.service(),
   standAlone: alias('config.standAlone'),
-
-  needsUserSetup: computed(function() {
-    return get(this, 'config').needsUserSetup();
-  }).volatile(),
+  needsUserSetup: alias('config.needsUserSetup'),
   actions: {
     newUser() {
       this.send('createNewUser');
