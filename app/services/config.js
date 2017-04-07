@@ -8,10 +8,9 @@ export default Ember.Service.extend({
   session: inject.service(),
   sessionData: Ember.computed.alias('session.data'),
   standAlone: false,
-  needsUserSetup() {
-    return this.getConfigValue('user_setup_flag', true);
-  },
+  needsUserSetup: true,
   markUserSetupComplete() {
+    this.set('needsUserSetup', false);
     let config = this.get('configDB');
     return new Ember.RSVP.Promise(function(resolve, reject) {
       config.put({ _id: 'config_user_setup_flag', value: false }, function(err, doc) {
@@ -34,7 +33,22 @@ export default Ember.Service.extend({
     if (this.get('standAlone') === false) {
       return replicateConfigDB(db).then(loadConfig);
     } else {
-      return loadConfig();
+      return loadConfig().then(function(configObj) {
+        if (configObj.config_user_setup_flag === false) {
+          get(this, 'database').usersDB.allDocs().then((results) => {
+            if (results.total_rows > 1) {
+              this.set('needsUserSetup', false);
+            }
+            return new Ember.RSVP.Promise(function(resolve) {
+              resolve(configObj);
+            });
+          });
+        } else {
+          return new Ember.RSVP.Promise(function(resolve) {
+            resolve(configObj);
+          });
+        }
+      });
     }
   },
   createDB() {
