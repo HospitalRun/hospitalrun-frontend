@@ -12,19 +12,21 @@ const debug = /--debug/.test(process.argv[2]);
 
 let mainWindow = null;
 
-function initialize () {
-  var shouldQuit = makeSingleInstance();
-  if (shouldQuit) return app.quit();
+function initialize() {
+  let shouldQuit = makeSingleInstance();
+  if (shouldQuit) {
+    return app.quit();
+  }
 
-  function createWindow () {
-    var windowOptions = {
+  function createWindow() {
+    let windowOptions = {
       width: 1080,
       minWidth: 680,
       height: 840
-    }
+    };
 
     if (process.platform === 'linux') {
-      windowOptions.icon = path.join(__dirname, '/assets/app-icon/png/512.png')
+      windowOptions.icon = path.join(__dirname, '/assets/app-icon/png/512.png');
     }
 
     mainWindow = new BrowserWindow(windowOptions);
@@ -37,7 +39,7 @@ function initialize () {
       require('devtron').install();
     }
 
-    mainWindow.on('closed', function () {
+    mainWindow.on('closed', function() {
       mainWindow = null;
     });
 
@@ -84,18 +86,18 @@ function initialize () {
     });
   }
 
-  app.on('ready', function () {
+  app.on('ready', function() {
     createWindow();
     autoUpdater.initialize();
   });
 
-  app.on('window-all-closed', function () {
+  app.on('window-all-closed', function() {
     if (process.platform !== 'darwin') {
       app.quit();
     }
   });
 
-  app.on('activate', function () {
+  app.on('activate', function() {
     if (mainWindow === null) {
       createWindow();
     }
@@ -109,12 +111,16 @@ function initialize () {
 //
 // Returns true if the current version of the app should quit instead of
 // launching.
-function makeSingleInstance () {
-  if (process.mas) return false;
+function makeSingleInstance() {
+  if (process.mas) {
+    return false;
+  }
 
-  return app.makeSingleInstance(function () {
+  return app.makeSingleInstance(function() {
     if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore();
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      }
       mainWindow.focus();
     }
   });
@@ -123,15 +129,15 @@ function makeSingleInstance () {
 // Handle Squirrel on Windows startup events
 switch (process.argv[1]) {
   case '--squirrel-install':
-    autoUpdater.createShortcut(function () { app.quit() });
-    break
+    autoUpdater.createShortcut(function() { app.quit(); });
+    break;
   case '--squirrel-uninstall':
-    autoUpdater.removeShortcut(function () { app.quit() });
-    break
+    autoUpdater.removeShortcut(function() { app.quit(); });
+    break;
   case '--squirrel-obsolete':
   case '--squirrel-updated':
     app.quit();
-    break
+    break;
   default:
     initialize();
 }
