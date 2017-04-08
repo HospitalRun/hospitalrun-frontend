@@ -120,6 +120,7 @@
     "WHAT IS THIS?": "Please see the README.md",
     "copy-files": [
       "electron.js",
+      "auto-updater.js",
       "package.json"
     ],
     "name": "HospitalRun",

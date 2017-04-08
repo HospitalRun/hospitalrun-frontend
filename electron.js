@@ -7,7 +7,7 @@ const path  = require('path');
 const { app, BrowserWindow } = electron;
 const dirname = __dirname || path.resolve(path.dirname());
 const emberAppLocation  = `file://${dirname}/dist/index.html`;
-const autoUpdater = require('./auto-updater.js');
+const autoUpdater = require('./auto-updater');
 const debug = /--debug/.test(process.argv[2]);
 
 let mainWindow = null;
