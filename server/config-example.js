@@ -4,7 +4,7 @@ var config = {
   couchDbPort: '5984',
   couchDbUseSsl: false,
   couchDbChangesSince: 'now',
-  couchAdminUser: 'couchadmin',
+  couchAdminUser: 'hradmin',
   couchAdminPassword: 'test',
   googleClientId: 'FOR GOOGLE SSO; GOOGLE CLIENT ID GOES HERE',
   googleClientSecret: 'FOR GOOGLE SSO; GOOGLE CLIENT SECRET GOES HERE',
