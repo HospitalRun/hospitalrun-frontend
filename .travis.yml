@@ -1,13 +1,21 @@
 ---
 language: node_js
 node_js:
-  - "4"
+  - "6"
 
 branches:
   only:
     - "master"
 
-sudo: false
+dist: trusty
+sudo: required
+
+addons:
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
 
 cache:
   directories:
@@ -15,10 +23,14 @@ cache:
     - $HOME/.cache # includes bowers cache
 
 before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
   - npm config set spin false
   - npm install -g bower phantomjs-prebuilt
   - bower --version
   - phantomjs --version
+  - google-chrome --version
+
 
 install:
   - npm install

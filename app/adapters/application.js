@@ -1,7 +1,9 @@
 import CheckForErrors from 'hospitalrun/mixins/check-for-errors';
 import Ember from 'ember';
 import uuid from 'npm:uuid';
+import withTestWaiter from 'ember-concurrency-test-waiter/with-test-waiter';
 import { Adapter } from 'ember-pouch';
+import { task } from 'ember-concurrency';
 
 const {
   computed: {
@@ -294,6 +296,19 @@ export default Adapter.extend(CheckForErrors, {
 
   deleteRecord(store, type, record) {
     return this._checkForErrors(this._super(store, type, record));
+  },
+
+  checkForErrorsTask: withTestWaiter(task(function* (callPromise) {
+    return yield new Ember.RSVP.Promise((resolve, reject) => {
+      callPromise.then(resolve, (err) => {
+        let database = get(this, 'database');
+        reject(database.handleErrorResponse(err));
+      });
+    });
+  })),
+
+  _checkForErrors(callPromise) {
+    return get(this, 'checkForErrorsTask').perform(callPromise);
   }
 
 });
