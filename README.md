@@ -36,6 +36,10 @@ To install the frontend please do the following:
    Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install ember-cli.
 4. Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
 5. Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and run `script/bootstrap`.
+  - **Note:** *If you are using Windows with `cygwin` please run the script in the following way to remove trailing `\r` characters:*
+  ``` bash
+  bash -o igncr script/bootstrap
+  ```
   - **Note:** *Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install PhantomJS2; also, Windows users must run with [Cygwin](http://cygwin.org/)).*
   - **Note:** *If you just want to use the project, cloning is the best option. However, if you wish to contribute to the project, you will need to fork the project first, and then clone your `hospitalrun-frontend` fork and make your contributions via a branch on your fork.*
 6. Install and configure [CouchDB](http://couchdb.apache.org/)
