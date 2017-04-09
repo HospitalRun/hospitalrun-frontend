@@ -153,7 +153,8 @@ export default Ember.Mixin.create({
       'Data Entry',
       'Hospital Administrator',
       'Medical Records Officer',
-      'System Administrator'
+      'System Administrator',
+      'Cashier'
     ],
     add_payment: [
       'Hospital Administrator',
@@ -412,6 +413,12 @@ export default Ember.Mixin.create({
       'Doctor',
       'Hospital Administrator',
       'Lab Technician',
+      'Medical Records Officer',
+      'System Administrator'
+    ],
+    list_paid_invoices: [
+      'Data Entry',
+      'Hospital Administrator',
       'Medical Records Officer',
       'System Administrator'
     ],
