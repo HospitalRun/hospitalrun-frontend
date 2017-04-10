@@ -72,7 +72,6 @@ export default {
       users: 'صارفین',
       newUser: 'نیا صارف',
       admittedPatients: 'جمع شدہ مریض',
-      missedAppointments: 'ضائع شدہ',
       userRoles: 'صارف کے کردار',
       workflow: 'ورک فلو',
       outpatient: 'آؤٹ پیشنٹ',

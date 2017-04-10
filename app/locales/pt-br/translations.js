@@ -76,7 +76,6 @@ export default {
       users: 'Usuários',
       newUser: 'Novo Usuário',
       admittedPatients: 'Pacientes Admitidos',
-      missedAppointments: 'Compromissos Esquecidos',
       missed: 'Perdidos',
       userRoles: 'Perfis de Usuário',
       workflow: 'Workflow',
