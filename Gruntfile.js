@@ -1,4 +1,9 @@
 /* global module */
+/*
+note: to execute the windows installers on MacOS, you must have both wine and mono installed
+brew install mono
+brew install wine
+*/
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -14,20 +19,20 @@ module.exports = function(grunt) {
         ]
       },
       target: {
-        dest: 'electron-builds/HospitalRun-darwin-x64/HospitalRun.dmg'
+        dest: 'installers/HospitalRun-darwin-x64/HospitalRun.dmg'
       }
     },
     'create-windows-installer': {
       x64: {
         appDirectory: 'electron-builds/HospitalRun-win32-x64',
-        outputDirectory: 'electron-builds/HospitalRun-win32-x64',
-        authors: 'HospitalRun',
+        outputDirectory: 'installers/HospitalRun-win32-x64',
+        authors: 'HospitalRun Open Source Community',
         exe: 'HospitalRun.exe'
       },
       ia32: {
         appDirectory: 'electron-builds/HospitalRun-win32-ia32',
-        outputDirectory: 'electron-builds/HospitalRun-win32-ia32',
-        authors: 'HospitalRun',
+        outputDirectory: 'installers/HospitalRun-win32-ia32',
+        authors: 'HospitalRun Open Source Community',
         exe: 'HospitalRun.exe'
       }
     }
