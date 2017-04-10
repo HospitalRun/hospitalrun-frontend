@@ -39,5 +39,5 @@ module.exports = function(grunt) {
   });
   grunt.loadNpmTasks('grunt-appdmg');
   grunt.loadNpmTasks('grunt-electron-installer');
-  grunt.registerTask('default', ['appdmg', 'create-windows-installer']);
+  grunt.registerTask('default', ['appdmg']);
 };
