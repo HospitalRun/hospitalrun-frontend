@@ -1,5 +1,5 @@
 {
-  "name": "hospitalrun",
+  "name": "HospitalRun",
   "version": "0.9.18",
   "description": "Ember front end for HospitalRun",
   "homepage": "http://hospitalrun.io",
@@ -90,6 +90,8 @@
     "eslint-plugin-ember-suave": "^1.0.0",
     "express": "^4.8.5",
     "glob": "^7.1.0",
+    "grunt-appdmg": "^1.0.0",
+    "grunt-electron-installer": "^2.1.0",
     "hospitalrun-dblisteners": "0.9.6",
     "hospitalrun-server-routes": "0.9.11",
     "loader.js": "^4.0.11",
