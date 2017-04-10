@@ -1,14 +1,13 @@
 /* global exports, process, require */
 /* env: "node" */
-const electron = require('electron');
 const ChildProcess = require('child_process');
 const path = require('path');
-const { app, Menu, autoUpdater } = electron;
+const { app, Menu, autoUpdater } = require('electron');
 
 let state = 'checking';
 
 exports.initialize = function() {
-  if (process.mas) { return; }
+  if (process.mas || process.env.EMBER_ENV === 'test') { return; }
 
   autoUpdater.on('checking-for-update', function() {
     state = 'checking';
@@ -42,7 +41,7 @@ exports.initialize = function() {
     if (process.env.PROCESSOR_ARCHITECTURE === 'AMD64') {
       platform = 'win32x64';
     }
-  } else if (process.platform != 'darwin') {
+  } else if (process.platform !== 'darwin') {
     platform = process.platform;
   }
   autoUpdater.setFeedURL(`https://releases.hospitalrun.io/updates?version=${app.getVersion()}&platform=${platform}`);
