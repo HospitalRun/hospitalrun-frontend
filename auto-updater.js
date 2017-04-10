@@ -36,7 +36,16 @@ exports.initialize = function() {
   });
 
   // autoUpdater.setFeedURL(`https://release.hospitalrun.io/updates?version=${app.getVersion()}`);
-  autoUpdater.setFeedURL(`https://releases.hospitalrun.io:5006/updates?version=${app.getVersion()}`);
+  let platform = 'macos';
+  if (process.platform === 'win32') {
+    platform = 'win32';
+    if (process.env.PROCESSOR_ARCHITECTURE === 'AMD64') {
+      platform = 'win32x64';
+    }
+  } else if (process.platform != 'darwin') {
+    platform = process.platform;
+  }
+  autoUpdater.setFeedURL(`https://releases.hospitalrun.io/updates?version=${app.getVersion()}&platform=${platform}`);
   autoUpdater.checkForUpdates();
 };
 
