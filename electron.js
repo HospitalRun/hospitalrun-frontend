@@ -2,13 +2,8 @@
 /* eslint-env node */
 'use strict';
 
-const electron = require('electron');
-const path  = require('path');
-const { app, BrowserWindow } = electron;
-const dirname = __dirname || path.resolve(path.dirname());
-const emberAppLocation  = `file://${dirname}/dist/index.html`;
+const { app, BrowserWindow }  = require('electron');
 const autoUpdater = require('./auto-updater');
-const debug = /--debug/.test(process.argv[2]);
 
 let mainWindow = null;
 
@@ -22,38 +17,22 @@ function initialize() {
     let windowOptions = {
       width: 1080,
       minWidth: 680,
-      height: 840
+      height: 840,
+      backgroundThrottling: false
     };
 
-    if (process.platform === 'linux') {
-      windowOptions.icon = path.join(__dirname, '/assets/app-icon/png/512.png');
-    }
-
     mainWindow = new BrowserWindow(windowOptions);
-    mainWindow.loadURL(emberAppLocation);
 
-    // Launch fullscreen with DevTools open, usage: npm run debug
-    if (debug) {
-      mainWindow.webContents.openDevTools();
-      mainWindow.maximize();
-      require('devtron').install();
+    delete mainWindow.module;
+
+    if (process.env.EMBER_ENV === 'test') {
+      mainWindow.loadURL(`file://${__dirname}/index.html`);
+    } else {
+      mainWindow.loadURL(`file://${__dirname}/dist/index.html`);
     }
 
     mainWindow.on('closed', function() {
       mainWindow = null;
-    });
-
-    // here
-
-    // If a loading operation goes wrong, we'll send Electron back to
-    // Ember App entry point
-    mainWindow.webContents.on('did-fail-load', () => {
-      mainWindow.loadURL(emberAppLocation);
-    });
-
-    mainWindow.webContents.on('crashed', () => {
-      console.log('Your Ember app (or other code) in the main window has crashed.');
-      console.log('This is a serious issue that needs to be handled and/or debugged.');
     });
 
     mainWindow.on('unresponsive', () => {
