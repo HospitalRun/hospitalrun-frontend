@@ -29,12 +29,8 @@ module.exports = {
 
   rules: {
     'camelcase': 0,
-    "brace-style": [ "warn", "1tbs", { "allowSingleLine": true } ],
     'ember-suave/no-direct-property-access': 0,
     'ember-suave/require-access-in-comments': 0,
-    'max-statements-per-line': ["error", { "max": 3 }],
-    'no-console': 0,
-    'no-var': "warn",
-    'no-undef': "warn"
+    'no-console': 0
   }
 };
