@@ -1080,7 +1080,6 @@ export default {
       items: 'Items',
       loadDB: 'Load DB',
       lookupLists: 'Lookup Lists',
-      missedAppointments: 'Missed Appointments',
       newIncident: 'New Incident',
       newInvoice: 'New Invoice',
       newPatient: 'New Patient',

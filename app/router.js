@@ -35,7 +35,6 @@ Router.map(function() {
     this.route('edit', { path: '/edit/:appointment_id' });
     this.route('search');
     this.route('today');
-    this.route('missed');
     this.route('calendar');
     this.route('theater');
   });

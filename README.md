@@ -36,6 +36,10 @@ To install the frontend please do the following:
    Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install ember-cli.
 4. Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
 5. Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and run `script/bootstrap`.
+  - **Note:** *If you are using Windows with `cygwin` please run the script in the following way to remove trailing `\r` characters:*
+  ``` bash
+  bash -o igncr script/bootstrap
+  ```
   - **Note:** *Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install PhantomJS2; also, Windows users must run with [Cygwin](http://cygwin.org/)).*
   - **Note:** *If you just want to use the project, cloning is the best option. However, if you wish to contribute to the project, you will need to fork the project first, and then clone your `hospitalrun-frontend` fork and make your contributions via a branch on your fork.*
 6. Install and configure [CouchDB](http://couchdb.apache.org/)
@@ -56,9 +60,9 @@ To install the frontend please do the following:
 7. Copy the `server/config-example.js` to `server/config.js` in the folder you cloned the HospitalRun repo.  If you already had a CouchDB admin user that you passed into the couch script (`./script/initcouch.sh USER PASS`), then you will need to modify the `couchAdminUser` and `couchAdminPassword` values in `server/config.js` to reflect those credentials. (*Note: If on Mac, you need to make sure CouchDB can be run. See [How to open an app from a unidentified developer and exempt it from Gatekeeper](https://support.apple.com/en-us/HT202491).*)
 8. Verify that CouchDB is running by visiting: http://127.0.0.1:5984/_utils/#login
    and logging in with the with the credentials you just created from steps 6 and 7.
-   1. If you the page returns an error or 404:
-     1. Run `make serve`, it will start couchdb, install npm dependencies and start the server.
-     2. Or start the application from your applications folder.
+   - If the page returns an error or 404:
+     - Run `make serve`, it will start couchdb, install npm dependencies and start the server.
+     - Or start the application from your applications folder.
 
 
 ## Running the application
