@@ -96,12 +96,6 @@ export default Ember.Mixin.create({
           capability: 'appointments'
         },
         {
-          title: 'Missed Appointments',
-          iconClass: 'octicon-chevron-right',
-          route: 'appointments.missed',
-          capability: 'appointments'
-        },
-        {
           title: 'Appointment Search',
           iconClass: 'octicon-search',
           route: 'appointments.search',
