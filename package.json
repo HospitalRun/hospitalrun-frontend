@@ -31,7 +31,10 @@
   ],
   "license": "GPL-3.0",
   "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-preset-env": "^1.3.3",
     "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.18.0",
     "body-parser": "^1.14.2",
     "broccoli-asset-rev": "^2.4.5",
@@ -41,9 +44,9 @@
     "broccoli-serviceworker": "0.1.4",
     "crypto": "0.0.3",
     "csv-parse": "^1.2.0",
-    "devtron": "^1.4.0",
-    "electron": "^1.4.15",
-    "electron-packager": "^8.5.2",
+    "devtron": "1.4.0",
+    "electron-prebuilt-compile": "1.6.2",
+    "electron-protocol-serve": "1.3.0",
     "electron-rebuild": "^1.5.7",
     "ember-ajax": "2.5.4",
     "ember-browserify": "^1.1.12",
@@ -71,7 +74,7 @@
     "ember-concurrency": "0.8.1",
     "ember-concurrency-test-waiter": "0.2.0",
     "ember-data": "^2.10.0",
-    "ember-electron": "1.12.7",
+    "ember-electron": "2.0.1",
     "ember-export-application-global": "^1.0.5",
     "ember-fullcalendar": "1.7.0",
     "ember-i18n": "4.4.0",
@@ -90,8 +93,6 @@
     "eslint-plugin-ember-suave": "^1.0.0",
     "express": "^4.8.5",
     "glob": "^7.1.0",
-    "grunt-appdmg": "^1.0.0",
-    "grunt-electron-installer": "^2.1.0",
     "hospitalrun-dblisteners": "0.9.6",
     "hospitalrun-server-routes": "0.9.11",
     "loader.js": "^4.0.11",
@@ -108,64 +109,16 @@
     "uuid": "^3.0.0"
   },
   "dependencies": {
-    "ember-electron": "1.12.7"
+    "electron-compile": "^6.3.0",
+    "electron-localshortcut": "^1.1.1",
+    "ember-electron": "^2.0.1"
   },
   "ember-addon": {
     "paths": [
       "lib/pouch-fixtures"
     ]
   },
-  "main": "electron.js",
-  "ember-electron": {
-    "WHAT IS THIS?": "Please see the README.md",
-    "copy-files": [
-      "electron.js",
-      "auto-updater.js",
-      "package.json"
-    ],
-    "name": "HospitalRun",
-    "platform": null,
-    "arch": null,
-    "version": null,
-    "app-bundle-id": null,
-    "app-category-type": null,
-    "app-copyright": null,
-    "app-version": null,
-    "asar": null,
-    "asar-unpack": null,
-    "asar-unpack-dir": null,
-    "build-version": null,
-    "cache": null,
-    "extend-info": null,
-    "extra-resource": null,
-    "helper-bundle-id": null,
-    "icon": "public/assets/icon.icns",
-    "ignore": null,
-    "out": null,
-    "osx-sign": {
-      "identity": null,
-      "entitlements": null,
-      "entitlements-inherit": null
-    },
-    "protocol": [],
-    "protocol-names": [],
-    "win-opts": {
-      "loading-gif": null,
-      "icon-url": null,
-      "remote-releases": null,
-      "certificate-file": null,
-      "certificate-password": null,
-      "sign-with-params": null
-    },
-    "overwrite": true,
-    "prune": null,
-    "strict-ssl": null,
-    "win32metadata": {
-      "CompanyName": "HospitalRun",
-      "FileDescription": null,
-      "OriginalFilename": null,
-      "ProductName": "HospitalRun",
-      "InternalName": null
-    }
+  "config": {
+    "forge": "./ember-electron/electron-forge-config.js"
   }
 }

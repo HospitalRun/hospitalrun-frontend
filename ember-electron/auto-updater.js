@@ -7,7 +7,9 @@ const { app, Menu, autoUpdater } = require('electron');
 let state = 'checking';
 
 exports.initialize = function() {
-  if (process.mas || process.env.EMBER_ENV === 'test') { return; }
+  if (process.mas || process.env.EMBER_ENV === 'test') {
+    return;
+  }
 
   autoUpdater.on('checking-for-update', function() {
     state = 'checking';
@@ -49,10 +51,14 @@ exports.initialize = function() {
 };
 
 exports.updateMenu = function() {
-  if (process.mas) { return; }
+  if (process.mas) {
+    return;
+  }
 
   let menu = Menu.getApplicationMenu();
-  if (!menu) { return; }
+  if (!menu) {
+    return;
+  }
 
   menu.items.forEach(function(item) {
     if (item.submenu) {
@@ -97,14 +103,20 @@ function spawnUpdate(args, callback) {
   try {
     spawned = ChildProcess.spawn(updateExe, args);
   } catch(error) {
-    if (error && error.stdout == null) { error.stdout = stdout; }
-    process.nextTick(function() { callback(error); });
+    if (error && error.stdout == null) {
+      error.stdout = stdout;
+    }
+    process.nextTick(function() {
+      callback(error);
+    });
     return;
   }
 
   let error = null;
 
-  spawned.stdout.on('data', function(data) { stdout += data; });
+  spawned.stdout.on('data', function(data) {
+    stdout += data;
+  });
 
   spawned.on('error', function(processError) {
     if (!error) {
@@ -116,8 +128,12 @@ function spawnUpdate(args, callback) {
     if (!error && code !== 0) {
       error = new Error(`Command failed: ${code} ${signal}`);
     }
-    if (error && error.code == null) { error.code = code; }
-    if (error && error.stdout == null) { error.stdout = stdout; }
+    if (error && error.code == null) {
+      error.code = code;
+    }
+    if (error && error.stdout == null) {
+      error.stdout = stdout;
+    }
     callback(error);
   });
 }
