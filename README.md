@@ -74,8 +74,8 @@ To start the frontend please do the following:
 ## Running with Docker
 
 ### Running With Docker Engine
-To run HospitalRun with Docker please do the following:
-- Goto [https://docs.docker.com/engine/installation](https://docs.docker.com/engine/installation) to download and install Docker.
+To run HospitalRun with [Docker](https://www.docker.com/) please do the following:
+- Go to [https://docs.docker.com/engine/installation](https://docs.docker.com/engine/installation) to download and install Docker.
 - Clone the repository with the command `git clone https://github.com/HospitalRun/hospitalrun-frontend.git`.
 - Change to the hospitalrun-frontend directory `cd hospitalrun-frontend`.
 - Build the HospitalRun image with `docker build -t hospitalrun-frontend .`
@@ -93,7 +93,7 @@ If you are running with Docker Toolbox you will have to run the following comman
 - Go to `http://<docker-machine ip>:4200` in a browser and login with username `hradmin` and password `test`.
 
 ### Accessing HospitalRun with Docker or Docker-compose
-If you are not running with docker toolbox please do the following:
+If you are not running with Docker toolbox, please do the following:
 - Go to `http://localhost:4200` in a browser and login with username `hradmin` and password `test`.
 
 ### Troubleshooting your local environment
@@ -124,7 +124,7 @@ Next, click on ***Load File***.  When the database load is complete a message wi
 
 ### Fixtures for Acceptance Tests
 
-Fixtures are PouchDB dumps that are generated with [pouchdb-dump-cli](https://github.com/nolanlawson/pouchdb-dump-cli).
+Fixtures are [PouchDB](https://pouchdb.com/) dumps that are generated with [pouchdb-dump-cli](https://github.com/nolanlawson/pouchdb-dump-cli).
 
 To create a fixture, run `pouchdb-dump http://localhost:5984/main -u hradmin -p test | cat > tests/fixtures/${name_of_fixture}.txt`.
 
@@ -170,7 +170,7 @@ To start coding and understand the frameworks, concepts and structure of the pro
 ## Experimental
 
 ### Make
-If you are willing to try using `make`, ensure you have installed git, node and couchdb (steps 1, 2 and 7 above), you may skip the rest.  This requires couchdb in the path to work correctly.
+If you are willing to try using `make`, ensure you have installed git, node and Couchdb (steps 1, 2 and 7 above), you may skip the rest.  This requires Couchdb in the path to work correctly.
 * Run `make serve`, it will start couchdb, install npm dependencies and start the server.
 * Run `make all` to run all tests and build the app.
 * Look into `Makefile` to figure other targets available.
