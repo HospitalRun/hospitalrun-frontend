@@ -65,6 +65,7 @@ Router.map(function() {
   });
 
   this.route('invoices', function() {
+    this.route('cashier');
     this.route('edit', { path: '/edit/:invoice_id' });
     this.route('search', { path: '/search/:search_text' });
   });

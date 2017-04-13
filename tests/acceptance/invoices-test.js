@@ -133,3 +133,29 @@ test('add deposit', function(assert) {
     });
   });
 });
+
+test('cashier role', function(assert) {
+  runWithPouchDump('billing', function() {
+    authenticateUser({
+      name: 'cashier@hospitalrun.io',
+      roles: ['Cashier', 'user'],
+      role: 'Cashier',
+      prefix: 'p1'
+    });
+    visit('/invoices');
+    andThen(function() {
+      assert.equal(currentURL(), '/invoices');
+      assert.equal(find('.primary-section-link').length, 2, 'Should have 2 navigations');
+      assert.equal(find('.primary-section-link:contains(Scheduling)').length, 1, 'should see Scheduling navigation');
+      assert.equal(find('.primary-section-link:contains(Billing)').length, 1,  'should see Billing navigation');
+
+      assert.equal(find('li:contains(Billed)').length, 1, 'should see Billed selection');
+      assert.equal(find('li:contains(Drafts)').length, 1, 'should see Drafts selection');
+      assert.equal(find('li:contains(All Invoices)').length, 1, 'should see All Invoices selection');
+    });
+    click('a:contains(Billing)');
+    andThen(function() {
+      assert.equal(find('.category-sub-item').length, 3, 'Should have 3 sub navigations');
+    });
+  });
+});
