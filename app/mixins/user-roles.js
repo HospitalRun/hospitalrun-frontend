@@ -16,7 +16,8 @@ export const PREDEFINED_USER_ROLES = [
   { name: 'Pharmacist', roles: ['Pharmacist', 'user'], defaultRoute: 'medication.index' },
   { name: 'Social Worker', roles: ['Social Worker', 'user'], defaultRoute: 'patients.index' },
   { name: 'System Administrator', roles: ['System Administrator', 'admin', 'user'] },
-  { name: 'User Administrator', roles: ['User Administrator', 'admin', 'user'], defaultRoute: 'users' }
+  { name: 'User Administrator', roles: ['User Administrator', 'admin', 'user'], defaultRoute: 'users' },
+  { name: 'Cashier', roles: ['Cashier', 'user'], defaultRoute: 'invoices.index' }
 ];
 
 export default Ember.Mixin.create({
