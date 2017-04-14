@@ -208,6 +208,17 @@ export default {
       messages: { roleSaved: 'The {{roleName}} role has been saved.' },
       titles: { roleSaved: 'Role Saved' }
     },
+    text_replacements: {
+      create_new: 'Create a new text replacement',
+      existing_repl: 'Existing replacements',
+      repl_desc: 'When entering text, these shortcuts allow you to replace a short sequence of characters with a longer phrase.',
+      page_title: 'Text Replacements',
+      to_replace: 'Text to replace',
+      replace_with: 'Replace with',
+      perform_expand: "Press Enter to replace #{{from}} with '{{to}}'",
+      possible_expansions: 'Possible replacements: {{possible}}',
+      no_matches: "No replacements match '{{term}}'"
+    },
     userRoles: 'User Roles',
     users: 'Users',
     visitForms: {
@@ -793,6 +804,7 @@ export default {
     fileLoadSuccessful: 'File To Load Successful',
     fileName: 'File Name',
     fileToLoad: 'File Load',
+    from: 'From',
     fulfill: 'Fulfill',
     fulfillRequest: 'Fulfill Request',
     fulfillRequestNow: 'Fulfill Request Now',
@@ -841,6 +853,7 @@ export default {
     startTime: 'Start Time',
     status: 'Status',
     takenBy: 'Taken By',
+    to: 'To',
     total: 'Total',
     type: 'Type',
     userCanAddNewValue: 'User Can Add New Values',
@@ -1098,6 +1111,7 @@ export default {
       "today'sAppointments": "Today's Appointments",
       userRoles: 'User Roles',
       users: 'Users',
+      text_replacements: 'Text Replacements',
       workflow: 'Workflow'
     }
   },
