@@ -11,7 +11,8 @@ export default Ember.Component.extend({
     try {
       let feedbackDiv = document.createElement('div');
       feedbackDiv.style.position = 'absolute';
-      let textarea = this.$()[0].getElementsByTagName('textarea')[0];
+      // let textarea = this.$()[0].getElementsByTagName('textarea')[0];
+      let [textarea] = this.$('textarea');
       this.set('textarea', textarea);
       let textPos = textarea.getBoundingClientRect();
       let fbStyle = feedbackDiv.style;
