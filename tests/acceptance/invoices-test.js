@@ -61,7 +61,7 @@ test('print invoice', function(assert) {
       click('button:contains(Print)');
     });
     andThen(function() {
-      assert.equal(find('.print-invoice').length, 1, 'Invoice is displayed for printing');
+      assert.equal(find('.invoices-review').length, 1, 'Invoice is displayed for printing');
     });
   });
 });
