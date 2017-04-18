@@ -12,7 +12,7 @@ let mainWindow = null;
 const [, , indexUrl] = process.argv;
 const {
   pathname: indexPath,
-  search: indexQuery,
+  search: indexQuery
 } = url.parse(indexUrl);
 const emberAppLocation = `serve://dist${indexQuery}`;
 
@@ -23,7 +23,7 @@ protocolServe({
   cwd: resolve(dirname(indexPath), '..'),
   app,
   protocol,
-  indexPath,
+  indexPath
 });
 
 app.on('window-all-closed', function onWindowAllClosed() {
@@ -36,7 +36,7 @@ app.on('ready', function onReady() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    backgroundThrottling: false,
+    backgroundThrottling: false
   });
 
   delete mainWindow.module;
