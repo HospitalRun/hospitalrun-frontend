@@ -209,10 +209,10 @@ export default {
       titles: { roleSaved: 'Role Saved' }
     },
     text_replacements: {
-      create_new: 'Create a new text replacement',
-      existing_repl: 'Existing replacements',
+      create_new: 'Create a new shortcode',
+      existing_repl: 'Existing Shortcodes',
       repl_desc: 'When entering text, these shortcuts allow you to replace a short sequence of characters with a longer phrase.',
-      page_title: 'Text Replacements',
+      page_title: 'Shortcodes',
       to_replace: 'Text to replace',
       replace_with: 'Replace with',
       perform_expand: "Press Enter to replace #{{from}} with '{{to}}'",
@@ -1107,11 +1107,12 @@ export default {
       requests: 'Requests',
       returnMedication: 'Return Medication',
       scheduleSurgery: 'Schedule Surgery',
+      textReplacements: 'Shortcodes',
       theaterSchedule: 'Theater Schedule',
       "today'sAppointments": "Today's Appointments",
       userRoles: 'User Roles',
       users: 'Users',
-      text_replacements: 'Text Replacements',
+      text_replacements: 'Shortcodes',
       workflow: 'Workflow'
     }
   },
