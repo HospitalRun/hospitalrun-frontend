@@ -123,15 +123,15 @@ export default Ember.Component.extend({
 
       if (possibleSwaps.length === 1) {
         let swapTo = possibleSwaps[0].to;
-        result = i18n.t('admin.text_replacements.perform_expand', { from: activeSite.term, to: swapTo });
+        result = i18n.t('admin.textReplacements.performExpand', { from: activeSite.term, to: swapTo });
       } else if (possibleSwaps.length > 1) {
         let possible = possibleSwaps
           .map((swap) => {
             return swap.from;
           }).join(', ');
-        result = i18n.t('admin.text_replacements.possible_expansions', { possible });
+        result = i18n.t('admin.textReplacements.possibleExpansions', { possible });
       } else {
-        result = i18n.t('admin.text_replacements.no_matches', { term: activeSite.term });
+        result = i18n.t('admin.textReplacements.noMatches', { term: activeSite.term });
       }
     }
 

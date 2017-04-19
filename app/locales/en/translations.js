@@ -208,16 +208,16 @@ export default {
       messages: { roleSaved: 'The {{roleName}} role has been saved.' },
       titles: { roleSaved: 'Role Saved' }
     },
-    text_replacements: {
-      create_new: 'Create a new shortcode',
-      existing_repl: 'Existing Shortcodes',
-      repl_desc: 'When entering text, these shortcuts allow you to replace a short sequence of characters with a longer phrase.',
-      page_title: 'Shortcodes',
-      to_replace: 'Text to replace',
-      replace_with: 'Replace with',
-      perform_expand: "Press Enter to replace #{{from}} with '{{to}}'",
-      possible_expansions: 'Possible replacements: {{possible}}',
-      no_matches: "No replacements match '{{term}}'"
+    textReplacements: {
+      createNew: 'Create a new shortcode',
+      existingRepl: 'Existing Shortcodes',
+      replDesc: 'When entering text, these shortcuts allow you to replace a short sequence of characters with a longer phrase.',
+      pageTitle: 'Shortcodes',
+      toReplace: 'Text to replace',
+      replaceWith: 'Replace with',
+      performExpand: "Press Enter to replace #{{from}} with '{{to}}'",
+      possibleExpansions: 'Possible replacements: {{possible}}',
+      noMatches: "No replacements match '{{term}}'"
     },
     userRoles: 'User Roles',
     users: 'Users',
@@ -1112,7 +1112,6 @@ export default {
       "today'sAppointments": "Today's Appointments",
       userRoles: 'User Roles',
       users: 'Users',
-      text_replacements: 'Shortcodes',
       workflow: 'Workflow'
     }
   },
