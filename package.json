@@ -111,7 +111,7 @@
   "dependencies": {
     "electron-compile": "^6.3.0",
     "electron-localshortcut": "^1.1.1",
-    "ember-electron": "^2.0.1"
+    "ember-electron": "^2.1.0"
   },
   "ember-addon": {
     "paths": [
