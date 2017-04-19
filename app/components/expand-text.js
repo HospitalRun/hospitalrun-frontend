@@ -1,51 +1,56 @@
 import Ember from 'ember';
 import textExpansion from '../utils/text-expansion';
 
-export default Ember.Component.extend({
-  i18n: Ember.inject.service(),
-  store: Ember.inject.service(),
+const {
+  Component,
+  String: {
+    htmlSafe
+  },
+  computed,
+  inject
+} = Ember;
+
+export default Component.extend({
+  i18n: inject.service(),
+  store: inject.service(),
 
   userText: '',
 
   didInsertElement() {
-    try {
-      let feedbackDiv = document.createElement('div');
-      feedbackDiv.style.position = 'absolute';
-      // let textarea = this.$()[0].getElementsByTagName('textarea')[0];
-      let [textarea] = this.$('textarea');
-      this.set('textarea', textarea);
-      let textPos = textarea.getBoundingClientRect();
-      let fbStyle = feedbackDiv.style;
-      fbStyle.top = `${textPos.bottom}px`;
-      fbStyle.left = `${textPos.left}px`;
-      fbStyle.width = `${textarea.offsetWidth}px`;
-      fbStyle.backgroundColor = 'lightyellow';
-      fbStyle.borderStyle = 'solid';
-      fbStyle.borderWidth = '1px';
-      fbStyle.borderRadius = '3px';
-      fbStyle.paddingLeft = '5px';
-      fbStyle.visibility = 'hidden';
 
-      this.set('feedbackDiv', feedbackDiv);
-      this.get('feedbackText');
-      this.get('activeExpansionSite');
+    let feedbackDiv = document.createElement('div');
+    feedbackDiv.style.position = 'absolute';
+    let [textarea] = this.$('textarea');
+    this.set('textarea', textarea);
+    let textPos = textarea.getBoundingClientRect();
+    let fbStyle = feedbackDiv.style;
+    fbStyle.top = `${textPos.bottom}px`;
+    fbStyle.left = `${textPos.left}px`;
+    fbStyle.width = `${textarea.offsetWidth}px`;
+    // THIS CODE NEEDS TO BE CHANGED -- INLINE STYLES ARE EVIL!
+    fbStyle.backgroundColor = 'lightyellow';
+    fbStyle.borderStyle = 'solid';
+    fbStyle.borderWidth = '1px';
+    fbStyle.borderRadius = '3px';
+    fbStyle.paddingLeft = '5px';
+    fbStyle.visibility = 'hidden';
 
-      this.get('store')
-        .findAll('text-expansion')
-        .then((expansions) => {
-          return expansions.reduce((prev, curr) => {
-            // console.log(`curr ${JSON.stringify(prev)}`);
-            prev[curr.get('from')] = curr.get('to');
-            return prev;
-          }, {});
-        })
-        .then((expansions) => {
-          this.set('expansions', expansions);
-        });
+    this.set('feedbackDiv', feedbackDiv);
+    this.get('feedbackText');
+    this.get('activeExpansionSite');
 
-    } catch(e) {
-      // console.log(`didInsert {e}`);
-    }
+    this.get('store')
+      .findAll('text-expansion')
+      .then((expansions) => {
+        return expansions.reduce((prev, curr) => {
+          prev[curr.get('from')] = curr.get('to');
+          return prev;
+        }, {});
+      })
+      .then((expansions) => {
+        this.set('expansions', expansions);
+      });
+
   },
 
   keyUp(k) {
@@ -75,7 +80,7 @@ export default Ember.Component.extend({
   },
 
   // Find an expandable word that has the cursor within it
-  activeExpansionSite: Ember.computed('userText', 'cursorLocation', function() {
+  activeExpansionSite: computed('userText', 'cursorLocation', function() {
 
     let userText = this.get('userText');
     let textarea = this.get('textarea');
@@ -94,7 +99,7 @@ export default Ember.Component.extend({
   }),
 
   // If an expansion site is active, which possible swaps could occur there?
-  possibleSwaps: Ember.computed('activeExpansionSite', 'expansions', function() {
+  possibleSwaps: computed('activeExpansionSite', 'expansions', function() {
     let activeSite = this.get('activeExpansionSite');
 
     if (activeSite) {
@@ -113,7 +118,7 @@ export default Ember.Component.extend({
     }
   }),
 
-  expansionText: Ember.computed('possibleSwaps', 'activeExpansionSite', 'userText', function() {
+  expansionText: computed('possibleSwaps', 'activeExpansionSite', 'userText', function() {
     let result = '';
 
     let i18n = this.get('i18n');
@@ -138,7 +143,7 @@ export default Ember.Component.extend({
     return result;
   }),
 
-  expansionDivStyle: Ember.computed('expansionText', function() {
+  expansionDivStyle: computed('expansionText', function() {
     let expansionText = this.get('expansionText');
     let visiblility = expansionText ? 'visible' : 'hidden';
     let textArea = this.get('textarea');
@@ -149,6 +154,6 @@ export default Ember.Component.extend({
       let textPos = textArea.getBoundingClientRect();
       styleString += ` top: ${textPos.bottom}px; left: ${textPos.left}px; width: ${textArea.offsetWidth}px;`;
     }
-    return new Ember.Handlebars.SafeString(styleString);
+    return htmlSafe(styleString);
   })
 });
