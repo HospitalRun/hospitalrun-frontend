@@ -315,6 +315,10 @@ export default {
       paymentsDeposits: 'Payments/Deposits',
       pricingPanelOverrides: 'Pricing profile overrides',
       pricingProfile: 'Pricing Profile'
+    },
+    messages: {
+      flatFeeMsg: 'There is a flat fee for patient financial responsibility of {{currency}}{{setFee}}.',
+      flatDiscountMsg: 'There is a flat discount amount applied to the patient financial responsibility of {{currency}}{{discountAmount}}.'
     }
   },
   buttons: {
@@ -779,6 +783,7 @@ export default {
     country: 'Country',
     cptcode: 'CPT Code',
     creditTo: 'Credit To',
+    currencySymbol: '$',
     date: 'Date',
     dateCompleted: 'Date Completed',
     dateOfBirth: 'Date of Birth',

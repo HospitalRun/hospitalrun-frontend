@@ -180,7 +180,7 @@
             <td class="text-right">{{number-format model.privateInsurance}}</td>
             <td class="text-right">{{number-format model.finalPatientResponsibility}}</td>
             <td></td>
-          </tr>          
+          </tr>
           <tr>
             <td>
               <strong>{{t 'billing.labels.paymentsDeposits'}}</strong>
@@ -200,15 +200,15 @@
           {{#if model.paymentProfile}}
             {{#if model.paymentProfile.setFee}}
               <tr>
-                <td colspan="6">{{t 'billing.messages.flatFeeMsg' currency='$' setFee=model.paymentProfile.setFee}}</td>
+                <td colspan="6">{{t 'billing.messages.flatFeeMsg' currency=(t 'labels.currencySymbol') setFee=model.paymentProfile.setFee}}</td>
               </tr>
             {{/if}}
             {{#if model.paymentProfile.discountAmount}}
               <tr>
-                <td colspan="6">{{t 'billing.messages.flatDiscountMsg' currency='$' discountAmount=model.paymentProfile.discountAmount}}</td>
+                <td colspan="6">{{t 'billing.messages.flatDiscountMsg' currency=(t 'labels.currencySymbol') discountAmount=model.paymentProfile.discountAmount}}</td>
               </tr>
             {{/if}}
-          {{/if}}          
+          {{/if}}
         </table>
       </div>
     </div>
