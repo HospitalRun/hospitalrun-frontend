@@ -38,7 +38,9 @@ script:
   - npm run $COMMAND
 
 env:
-  - CXX=g++-4.8
   matrix:
   - COMMAND=test
-  - COMMAND=electron-test
+  - CXX=g++-4.8 COMMAND=electron-test
+
+
+
