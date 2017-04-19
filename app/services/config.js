@@ -1,6 +1,12 @@
 import Ember from 'ember';
 
-const { inject, run, get, set } = Ember;
+const {
+  RSVP,
+  get,
+  inject,
+  run,
+  set
+} = Ember;
 
 export default Ember.Service.extend({
   configDB: null,
@@ -13,7 +19,7 @@ export default Ember.Service.extend({
     if (get(this, 'needsUserSetup') === true) {
       set(this, 'needsUserSetup', false);
       let config = this.get('configDB');
-      return new Ember.RSVP.Promise(function(resolve, reject) {
+      return new RSVP.Promise(function(resolve, reject) {
         config.put({ _id: 'config_user_setup_flag', value: false }, function(err, doc) {
           if (err) {
             reject(err);
@@ -22,7 +28,7 @@ export default Ember.Service.extend({
         });
       });
     } else {
-      return Promise.resolve(true);
+      return RSVP.resolve(true);
     }
   },
   setup() {
@@ -44,7 +50,7 @@ export default Ember.Service.extend({
     return new PouchDB('config');
   },
   replicateConfigDB(db) {
-    let promise = new Ember.RSVP.Promise((resolve) => {
+    let promise = new RSVP.Promise((resolve) => {
       let url = `${document.location.protocol}//${document.location.host}/db/config`;
       db.replicate.from(url).then(resolve).catch(resolve);
     });
