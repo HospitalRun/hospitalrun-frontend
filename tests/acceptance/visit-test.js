@@ -42,11 +42,21 @@ test('Add admission visit', function(assert) {
   runWithPouchDump('patient', function() {
     authenticateUser();
     addVisit(assert);
-    addAdmissionData(assert);
-    newReport(assert, 'Discharge');
-    checkDischargeReport(assert);
-    saveReport(assert, 'Discharge');
-    viewReport(assert, 'Discharge');
+    andThen(() => {
+      addAdmissionData(assert);
+    });
+    andThen(() => {
+      newReport(assert, 'Discharge');
+    });
+    andThen(() => {
+      checkDischargeReport(assert);
+    });
+    andThen(() => {
+      saveReport(assert, 'Discharge');
+    });
+    andThen(() => {
+      viewReport(assert, 'Discharge');
+    });
   });
 });
 
@@ -54,11 +64,21 @@ test('Add OPD visit', function(assert) {
   runWithPouchDump('patient', function() {
     authenticateUser();
     addVisit(assert, 'Clinic');
-    addOutpatientData(assert);
-    newReport(assert, 'OPD');
-    checkOPDReport(assert);
-    saveReport(assert, 'OPD');
-    viewReport(assert, 'OPD');
+    andThen(() => {
+      addOutpatientData(assert);
+    });
+    andThen(() => {
+      newReport(assert, 'OPD');
+    });
+    andThen(() => {
+      checkOPDReport(assert);
+    });
+    andThen(() => {
+      saveReport(assert, 'OPD');
+    });
+    andThen(() => {
+      viewReport(assert, 'OPD');
+    });
   });
 });
 
@@ -80,6 +100,17 @@ test('Edit visit', function(assert) {
     });
     andThen(function() {
       assert.equal(currentURL(), '/visits/edit/03C7BF8B-04E0-DD9E-9469-96A5604F5340', 'Visit url is correct');
+      click('a:contains(Add Allergy)');
+      waitToAppear('.modal-dialog');
+    });
+    andThen(function() {
+      assert.equal(find('.modal-title').text(), 'Add Allergy', 'Add Allergy dialog displays');
+      fillIn('.test-allergy input', 'Oatmeal');
+      click('.modal-footer button:contains(Add)');
+      waitToDisappear('.modal-dialog');
+    });
+    andThen(function() {
+      assert.equal(find('a.allergy-button:contains(Oatmeal)').length, 1, 'New allergy appears');
       click('a:contains(Add Diagnosis)');
       waitToAppear('.modal-dialog');
     });
@@ -267,10 +298,13 @@ function addOutpatientData(assert) {
     assert.equal(find('.modal-title').text(), 'Add Diagnosis', 'Add Diagnosis dialog displays');
     fillIn('.diagnosis-text input', visitData.outPatient.SECONDARY_DIAGNOSIS);
     click('.secondary-diagnosis input');
+  });
+  andThen(() => {
     click('.modal-footer button:contains(Add)');
   });
   andThen(function() {
     waitToDisappear('.modal-dialog');
+    waitToAppear(`a.secondary-diagnosis:contains(${visitData.outPatient.SECONDARY_DIAGNOSIS})`);
   });
   andThen(() => {
     click('a:contains(Add Operative Plan)');

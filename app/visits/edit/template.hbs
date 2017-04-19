@@ -88,7 +88,7 @@
                 selection=model.examiner
               }}
             </div>
-            {{em-text property="reasonForVisit" label=(t 'visits.labels.reasonForVisit') rows=3 }}
+            {{expand-text property="reasonForVisit" label=(t 'visits.labels.reasonForVisit') rows=3 }}
             {{#if canAddBillingDiagnosis}}
               <div class="row">
                 {{select-or-typeahead className="col-sm-5" property="primaryBillingDiagnosis"

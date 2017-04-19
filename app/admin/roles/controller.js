@@ -42,7 +42,9 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
       'editInvoice',
       'invoices',
       'overrideInvoice',
-      'pricing'
+      'pricing',
+      'cashier',
+      'listPaidInvoices'
     ]
   }, {
     name: 'patients',
