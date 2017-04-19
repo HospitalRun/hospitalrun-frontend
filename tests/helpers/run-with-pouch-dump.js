@@ -3,15 +3,20 @@ import createPouchViews from 'hospitalrun/utils/pouch-views';
 import Ember from 'ember';
 import PouchDB from 'pouchdb';
 import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
+import PouchDBUsers from 'npm:pouchdb-users';
 import DatabaseService from 'hospitalrun/services/database';
 import ConfigService from 'hospitalrun/services/config';
 
-function cleanupDatabases(dbs) {
+const {
+  set
+} = Ember;
+
+function cleanupDatabases(maindb, dbs) {
   return wait().then(function() {
     return new Ember.RSVP.Promise(function(resolve, reject) {
-      if (dbs.main.changesListener) {
-        dbs.main.changesListener.cancel();
-        dbs.main.changesListener.on('complete', function() {
+      if (maindb.changesListener) {
+        maindb.changesListener.cancel();
+        maindb.changesListener.on('complete', function() {
           destroyDatabases(dbs).then(resolve, reject);
         });
       } else {
@@ -23,23 +28,29 @@ function cleanupDatabases(dbs) {
 
 function destroyDatabases(dbs) {
   let destroyQueue = [];
-  destroyQueue.push(dbs.config.info().then(function() {
-    return dbs.config.destroy();
-  }));
-  destroyQueue.push(dbs.main.info().then(function() {
-    return dbs.main.destroy();
-  }));
+  dbs.forEach((db) => {
+    destroyQueue.push(db.info().then(function() {
+      return db.destroy();
+    }));
+  });
   return Ember.RSVP.all(destroyQueue);
 }
 
 function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
   PouchDB.plugin(PouchAdapterMemory);
+  PouchDB.plugin(PouchDBUsers);
   let db = new PouchDB('hospitalrun-test-database', {
     adapter: 'memory'
   });
   let configDB = new PouchDB('hospitalrun-test-config-database', {
     adapter: 'memory'
   });
+  let usersDB;
+  if (window.ELECTRON) {
+    usersDB = new PouchDB('_users', {
+      adapter: 'memory'
+    });
+  }
   let dump = require(`hospitalrun/tests/fixtures/${dumpName}`).default;
   let promise = db.load(dump);
 
@@ -47,6 +58,23 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
     createDB() {
       return promise.then(function() {
         return db;
+      });
+    },
+    _createUsersDB() {
+      return usersDB.installUsersBehavior().then(() => {
+        set(this, 'usersDB', usersDB);
+        return usersDB.put({
+          _id: 'org.couchdb.user:hradmin',
+          displayName: 'HospitalRun Administrator',
+          email: 'hradmin@hospitalrun.io',
+          type: 'user',
+          name: 'hradmin',
+          password: 'test',
+          roles: ['System Administrator', 'admin', 'user'],
+          userPrefix: 'p1'
+        });
+      }).catch((err) => {
+        console.log('Error creating users db!!!', err);
       });
     }
   });
@@ -79,15 +107,22 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
       createPouchViews(db, true, dumpName).then(function() {
         functionToRun();
         andThen(function() {
-          cleanupDatabases({
-            config: configDB,
-            main: db
-          }).then(function() {
+          let databasesToClean = [
+            configDB,
+            db
+          ];
+          if (window.ELECTRON) {
+            databasesToClean.push(usersDB);
+          }
+          cleanupDatabases(db, databasesToClean).then(function() {
             configDB = null;
             db = null;
+            if (window.ELECTRON) {
+              usersDB = null;
+            }
             resolve();
           }, function(err) {
-            console.log('error cleaning up dbs:', JSON.stringify(err, null, 2));
+            console.log('error cleaning up dbs:', err);
           });
         });
       });
