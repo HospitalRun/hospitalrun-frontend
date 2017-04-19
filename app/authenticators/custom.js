@@ -169,7 +169,7 @@ export default BaseAuthenticator.extend({
           user.role = this._getPrimaryRole(user);
           resolve(user);
         });
-      });
+      }, reject);
     });
   },
 
