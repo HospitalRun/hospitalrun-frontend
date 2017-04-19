@@ -208,6 +208,17 @@ export default {
       messages: { roleSaved: 'The {{roleName}} role has been saved.' },
       titles: { roleSaved: 'Role Saved' }
     },
+    textReplacements: {
+      createNew: 'Create a new shortcode',
+      existingRepl: 'Existing Shortcodes',
+      replDesc: 'When entering text, these shortcuts allow you to replace a short sequence of characters with a longer phrase.',
+      pageTitle: 'Shortcodes',
+      toReplace: 'Text to replace',
+      replaceWith: 'Replace with',
+      performExpand: "Press Enter to replace #{{from}} with '{{to}}'",
+      possibleExpansions: 'Possible replacements: {{possible}}',
+      noMatches: "No replacements match '{{term}}'"
+    },
     userRoles: 'User Roles',
     users: 'Users',
     visitForms: {
@@ -793,6 +804,7 @@ export default {
     fileLoadSuccessful: 'File To Load Successful',
     fileName: 'File Name',
     fileToLoad: 'File Load',
+    from: 'From',
     fulfill: 'Fulfill',
     fulfillRequest: 'Fulfill Request',
     fulfillRequestNow: 'Fulfill Request Now',
@@ -841,6 +853,7 @@ export default {
     startTime: 'Start Time',
     status: 'Status',
     takenBy: 'Taken By',
+    to: 'To',
     total: 'Total',
     type: 'Type',
     userCanAddNewValue: 'User Can Add New Values',
@@ -1094,6 +1107,7 @@ export default {
       requests: 'Requests',
       returnMedication: 'Return Medication',
       scheduleSurgery: 'Schedule Surgery',
+      textReplacements: 'Shortcodes',
       theaterSchedule: 'Theater Schedule',
       "today'sAppointments": "Today's Appointments",
       userRoles: 'User Roles',

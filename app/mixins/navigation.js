@@ -337,6 +337,12 @@ export default Ember.Mixin.create({
           capability: 'update_config'
         },
         {
+          title: 'Text Replacements',
+          iconClass: 'octicon-plus',
+          route: 'admin.textreplace',
+          capability: 'update_config'
+        },
+        {
           title: 'Print Header',
           iconClass: 'octicon-chevron-right',
           route: 'admin.print-header',
