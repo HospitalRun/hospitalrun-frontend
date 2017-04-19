@@ -13,9 +13,9 @@ sudo: required
 addons:
   apt:
     sources:
-    - google-chrome
+    - ubuntu-toolchain-r-test
     packages:
-    - google-chrome-stable
+    - g++-4.8
 
 cache:
   directories:
@@ -23,18 +23,22 @@ cache:
     - $HOME/.cache # includes bowers cache
 
 before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
   - npm config set spin false
   - npm install -g bower phantomjs-prebuilt
   - bower --version
   - phantomjs --version
-  - google-chrome --version
-
 
 install:
   - npm install
   - bower install
+  - export DISPLAY=':99.0'
+  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
 script:
-  - travis_retry npm test
+  - npm run $COMMAND
+
+env:
+  - CXX=g++-4.8
+  matrix:
+  - COMMAND=test
+  - COMMAND=electron-test

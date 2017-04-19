@@ -15,6 +15,7 @@
     "build": "./script/build",
     "start": "./script/server",
     "test": "./script/test",
+    "electron-test": "ember electron:test",
     "translation-sync": "babel-node script/translation/sync.js  --presets es2015,stage-2; eslint --fix app/locales"
   },
   "repository": {
