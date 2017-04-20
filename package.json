@@ -88,7 +88,7 @@
     "loader.js": "^4.0.11",
     "nano": "6.2.0",
     "pouchdb": "6.1.2",
-    "pouchdb-adapter-memory": "6.1.2",
+    "pouchdb-adapter-memory": "6.2.0",
     "pouchdb-list": "^1.1.0",
     "stylelint": "~7.7.1",
     "stylelint-config-concentric": "1.0.7",
