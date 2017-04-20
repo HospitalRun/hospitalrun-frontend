@@ -29,7 +29,7 @@
               {{#if canDeleteItem}}
                 <button class="btn btn-default warning" {{action 'deleteItem' inventory bubbles=false }}><span class="octicon octicon-x"></span> {{t 'buttons.delete'}}</button>
               {{/if}}
-              {{#link-to 'inventory.barcode' inventory class="btn btn-extra" bubbles=false }}{{t 'buttons.barcode'}}{{/link-to}}
+              {{#link-to 'inventory.barcode' inventory class="btn btn-default neutral" bubbles=false }}{{t 'buttons.barcode'}}{{/link-to}}
             </td>
           </tr>
         {{/unless}}

@@ -16,29 +16,21 @@
   }
 
   &.neutral {
-    background-color: $navy_dark;
-    color: $white;
+    background-color: $gray_light;
+    color: $gray;
 
     &:hover,
     &:focus {
-      background-color: $navy_darker;
-      color: $white;
-    }
-  }
-
-  &.btn-extra {
-    background-color: $blue_dark;
-    color: $white;
-
-    &:hover,
-    &:focus {
-      background-color: $blue_darker;
-      color: $white;
+      opacity: .8;
     }
   }
 
   &.admit {
-    width: 103px;
+    width: 110px;
+  }
+
+  &.info {
+    width: 110px;
   }
 
   .octicon {
