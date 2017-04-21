@@ -1,27 +1,56 @@
 import Ember from 'ember';
 
-const { inject, run } = Ember;
+const {
+  RSVP,
+  get,
+  inject,
+  run,
+  set
+} = Ember;
 
 export default Ember.Service.extend({
   configDB: null,
   database: inject.service(),
   session: inject.service(),
   sessionData: Ember.computed.alias('session.data'),
-
+  standAlone: false,
+  needsUserSetup: false,
+  markUserSetupComplete() {
+    if (get(this, 'needsUserSetup') === true) {
+      set(this, 'needsUserSetup', false);
+      let config = this.get('configDB');
+      return new RSVP.Promise(function(resolve, reject) {
+        config.put({ _id: 'config_user_setup_flag', value: false }, function(err, doc) {
+          if (err) {
+            reject(err);
+          }
+          resolve(doc);
+        });
+      });
+    } else {
+      return RSVP.resolve(true);
+    }
+  },
   setup() {
     let replicateConfigDB = this.replicateConfigDB.bind(this);
     let loadConfig = this.loadConfig.bind(this);
     let db = this.createDB();
     this.set('configDB', db);
     this.setCurrentUser();
-    return replicateConfigDB(db).then(loadConfig);
+    if (window.ELECTRON) {
+      this.set('standAlone', true);
+    }
+    if (this.get('standAlone') === false) {
+      return replicateConfigDB(db).then(loadConfig);
+    } else {
+      return loadConfig();
+    }
   },
-
   createDB() {
     return new PouchDB('config');
   },
   replicateConfigDB(db) {
-    let promise = new Ember.RSVP.Promise((resolve) => {
+    let promise = new RSVP.Promise((resolve) => {
       let url = `${document.location.protocol}//${document.location.host}/db/config`;
       db.replicate.from(url).then(resolve).catch(resolve);
     });
