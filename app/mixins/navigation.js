@@ -258,12 +258,6 @@ export default Ember.Mixin.create({
           iconClass: 'octicon-chevron-right',
           route: 'pricing.profiles',
           capability: 'pricing'
-        },
-        {
-          title: 'Cashier',
-          iconClass: 'octicon-chevron-right',
-          route: 'invoices.cashier',
-          capability: 'invoices'
         }
       ]
     },

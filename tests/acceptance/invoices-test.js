@@ -155,7 +155,7 @@ test('cashier role', function(assert) {
     });
     click('a:contains(Billing)');
     andThen(function() {
-      assert.equal(find('.category-sub-item').length, 3, 'Should have 3 sub navigations');
+      assert.equal(find('.category-sub-item').length, 2, 'Should have 2 sub navigations');
     });
   });
 });
