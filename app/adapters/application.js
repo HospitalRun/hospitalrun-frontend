@@ -1,3 +1,4 @@
+import CheckForErrors from 'hospitalrun/mixins/check-for-errors';
 import Ember from 'ember';
 import uuid from 'npm:uuid';
 import withTestWaiter from 'ember-concurrency-test-waiter/with-test-waiter';
@@ -5,15 +6,20 @@ import { Adapter } from 'ember-pouch';
 import { task } from 'ember-concurrency';
 
 const {
+  computed: {
+    reads
+  },
   get,
   run: {
     bind
   }
 } = Ember;
 
-export default Adapter.extend({
+export default Adapter.extend(CheckForErrors, {
+  config: Ember.inject.service(),
   database: Ember.inject.service(),
-  db: Ember.computed.reads('database.mainDB'),
+  db: reads('database.mainDB'),
+  standAlone: reads('config.standAlone'),
 
   _specialQueries: [
     'containsValue',
@@ -23,6 +29,10 @@ export default Adapter.extend({
   _esDefaultSize: 25,
 
   _executeContainsSearch(store, type, query) {
+    let standAlone = get(this, 'standAlone');
+    if (standAlone) {
+      return this._executePouchDBFind(store, type, query);
+    }
     return new Ember.RSVP.Promise((resolve, reject) => {
       let typeName = this.getRecordTypeName(type);
       let searchUrl = `/search/hrdb/${typeName}/_search`;
@@ -78,6 +88,29 @@ export default Adapter.extend({
       } else {
         reject('invalid query');
       }
+    });
+  },
+
+  _executePouchDBFind(store, type, query) {
+    this._init(store, type);
+    let db = this.get('db');
+    let recordTypeName = this.getRecordTypeName(type);
+    let queryParams = {
+      selector: {
+        $or: []
+      }
+    };
+    if (query.containsValue && query.containsValue.value) {
+      let regexp = new RegExp(query.containsValue.value, 'i');
+      query.containsValue.keys.forEach((key) => {
+        let subQuery = {};
+        subQuery[`data.${key.name}`] = { $regex: regexp };
+        queryParams.selector.$or.push(subQuery);
+      });
+    }
+
+    return db.find(queryParams).then((pouchRes) => {
+      return db.rel.parseRelDocs(recordTypeName, pouchRes.docs);
     });
   },
 

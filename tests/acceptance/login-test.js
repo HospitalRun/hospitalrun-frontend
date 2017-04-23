@@ -35,7 +35,9 @@ test('login with correct credentials but space around username', function(assert
 });
 
 test('incorrect credentials shows an error message on the screen', function(assert) {
-  assert.expect(2);
+  if (!window.ELECTRON) {
+    assert.expect(2);
+  }
   runWithPouchDump('default', function() {
     visit('/');
 
@@ -59,7 +61,9 @@ test('incorrect credentials shows an error message on the screen', function(asse
 });
 
 function login(assert, spaceAroundUsername) {
-  assert.expect(3);
+  if (!window.ELECTRON) {
+    assert.expect(3);
+  }
   runWithPouchDump('default', function() {
     visit('/login');
 

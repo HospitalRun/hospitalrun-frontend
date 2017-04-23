@@ -4,5 +4,4 @@ export default AbstractPagedController.extend(UserSession, {
   addPermission: 'add_user',
   deletePermission: 'delete_user',
   sortProperties: ['displayName']
-
 });

@@ -3,7 +3,7 @@
     {{em-input label=(t 'labels.name') property="name" class="required price-name"}}
     <div class="row">
       {{number-input label=(t 'labels.price') property="price" class="required col-xs-2 price-amount"}}
-      {{select-or-typeahead property="expenseAccount" label=(t 'labels.department') list=expenseAccountList selection=model.expenseAccount className="col-xs-4 price-department"}}
+      {{select-or-typeahead property="expenseAccount" label=(t 'labels.expenseTo') list=expenseAccountList selection=model.expenseAccount className="col-xs-4 price-department"}}
     </div>
     <div class="row">
       <div class="required col-xs-4 price-category form-input-group">
