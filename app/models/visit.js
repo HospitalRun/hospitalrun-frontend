@@ -40,10 +40,7 @@ export default AbstractModel.extend({
   // Attributes
   additionalDiagnoses: DS.attr(),
   customForms: DS.attr('custom-forms'),
-<<<<<<< HEAD
   diagnoses: DS.hasMany('diagnosis', { async: false }),
-=======
->>>>>>> 524fe3bb17c0a675a861136500013148e059b7e4
   dischargeInfo: DS.attr('string'),
   endDate: DS.attr('date'), // if visit type is outpatient, startDate and endDate are equal
   examiner: DS.attr('string'),
@@ -85,7 +82,7 @@ export default AbstractModel.extend({
   hasAppointmentLabel: computed('hasAppointment', function() {
     let hasAppointment = get(this, 'hasAppointment');
     let i18n = get(this, 'i18n');
-    if (hasAppointment) {
+    if (hasAppointment === true) {
       return i18n.t('visits.labels.haveAppointment');
     } else {
       return i18n.t('visits.labels.noAppointment');
