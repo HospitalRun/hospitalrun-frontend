@@ -111,13 +111,21 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
           let isFulfilling = get(object, 'isFulfilling');
           let requestQuantity = parseInt(get(object, 'quantity'));
           let quantityToCompare = null;
+          
           if (!isFulfilling) {
             // no validation needed when not fulfilling
             return false;
           } else {
             quantityToCompare = object.get('inventoryItem.quantity');
           }
-          return requestQuantity > quantityToCompare;
+
+          if (requestQuantity > quantityToCompare) {
+            // force validation to fail
+            return true;
+          } else {
+            // There is enough quantity on hand
+            return false;
+          }
         },
         message: 'The quantity must be less than or equal to the number of available medication.'
       }
