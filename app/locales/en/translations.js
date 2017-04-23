@@ -314,7 +314,8 @@ export default {
       paymentProfile: 'Payment Profile',
       paymentsDeposits: 'Payments/Deposits',
       pricingPanelOverrides: 'Pricing profile overrides',
-      pricingProfile: 'Pricing Profile'
+      pricingProfile: 'Pricing Profile',
+      setFee: 'Set Fee'
     },
     messages: {
       flatFeeMsg: 'There is a flat fee for patient financial responsibility of {{currency}}{{setFee}}.',
