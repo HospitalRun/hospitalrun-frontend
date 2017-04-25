@@ -48,14 +48,14 @@
       <div class="row">
         <div class="col-sm-4">
           {{em-checkbox label=(t 'labels.userCanAddNewValue') property="userCanAdd"}}
-          <button class="btn btn-default" {{action 'updateList'}}>{{t 'buttons.update'}}</button>
+          <button class="btn btn-primary" {{action 'updateList'}}>{{t 'buttons.update'}}</button>
         </div>
         {{#if showOrganizeByType}}
           {{em-checkbox label="Organize Pricing By Type" property="organizeByType" class="col-sm-4"}}
         {{/if}}
         <div class="col-sm-4">
           {{file-upload label=(t 'labels.importFile') property="importFileName" selectedFile=importFile }}
-          <button class="btn btn-default" {{action 'importList'}}>{{t 'buttons.import'}}</button>
+          <button class="btn btn-primary" {{action 'importList'}}>{{t 'buttons.import'}}</button>
         </div>
       </div>
     {{/em-form}}
