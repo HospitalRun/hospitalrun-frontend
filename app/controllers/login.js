@@ -11,8 +11,8 @@ let LoginController = Ember.Controller.extend({
       this.get('session').authenticate('authenticator:custom', {
         identification,
         password
-      }).catch((error) => {
-        this.set('errorMessage', error.reason);
+      }).catch(() => {
+        this.set('errorMessage', true);
       });
     }
   }

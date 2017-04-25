@@ -16,9 +16,9 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
 
   actions: {
     closeModal() {
-      this.disconnectOutlet({
-        parentView: 'application',
-        outlet: 'modal'
+      this.render('empty', {
+        outlet: 'modal',
+        into: 'application'
       });
     },
 
@@ -81,10 +81,12 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
   model(params, transition) {
     let session = get(this, 'session');
     let isAuthenticated = session && get(session, 'isAuthenticated');
-    return get(this, 'config').setup().then(function(configs) {
+    let config = get(this, 'config');
+    return config.setup().then(function(configs) {
       if (transition.targetName !== 'finishgauth' && transition.targetName !== 'login') {
+        let standAlone = config.get('standAlone');
         set(this, 'shouldSetupUserRole', true);
-        if (isAuthenticated) {
+        if (isAuthenticated || standAlone) {
           return get(this, 'database').setup(configs)
             .catch(() => {
               // Error thrown indicates missing auth, so invalidate session.

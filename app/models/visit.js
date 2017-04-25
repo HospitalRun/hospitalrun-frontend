@@ -42,7 +42,7 @@ export default AbstractModel.extend({
     async: false
   }),
   customForms: DS.attr('custom-forms'),
-  diagnoses: DS.hasMany('diagnosis'),
+  diagnoses: DS.hasMany('diagnosis', { async: false }),
   dischargeInfo: DS.attr('string'),
   endDate: DS.attr('date'), // if visit type is outpatient, startDate and endDate are equal
   examiner: DS.attr('string'),
@@ -70,6 +70,7 @@ export default AbstractModel.extend({
   status: DS.attr('string'),
   visitType: DS.attr(),
   vitals: DS.hasMany('vital', { async: true }),
+  reports: DS.hasMany('report', { async: true }),
 
   diagnosisList: computed('diagnoses.[]', function() {
     let diagnoses = this.get('diagnoses');

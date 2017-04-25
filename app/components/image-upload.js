@@ -1,6 +1,11 @@
+import Ember from 'ember';
 import InputComponent from 'ember-rapid-forms/components/em-input';
+
+const { isEmpty } = Ember;
+
 export default InputComponent.extend({
   fileInputEl: null,
+  isImage: true,
   resizeFile: true,
   selectedFile: null,
   type: 'file',
@@ -9,20 +14,26 @@ export default InputComponent.extend({
     let inputEl = this.get('fileInputEl');
     let resize = this.get('resizeFile');
 
-    if (resize) {
+    if (!isEmpty(inputEl.files[0]) && resize) {
       // Derived from https://github.com/josefrichter/resize/blob/master/public/preprocess.js
-      window.URL = window.URL || window.webkitURL;
       let blobURL = window.URL.createObjectURL(inputEl.files[0]); // and get it's URL
       // helper Image object
       let image = new Image();
       image.src = blobURL;
-      image.onload = function() {
+      image.addEventListener('load', function() {
         window.URL.revokeObjectURL(blobURL);
         // have to wait till it's loaded
         this.set('selectedFile', this._resizeImage(image)); // send it to canvas
-
-      }.bind(this);
+        this.set('isImage', true);
+      }.bind(this));
+      image.addEventListener('error', function() {
+        // if image load fails, file probably isn't an image, so don't resize
+        window.URL.revokeObjectURL(blobURL);
+        this.set('selectedFile', inputEl.files[0]);
+        this.set('isImage', false);
+      }.bind(this));
     } else {
+      this.set('isImage', false);
       this.set('selectedFile', inputEl.files[0]);
     }
   },
