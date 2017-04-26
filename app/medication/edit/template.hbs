@@ -45,7 +45,7 @@
         {{static-text label=(t 'medication.labels.refills') class="col-xs-3" value=model.refills }}
       </div>
     {{else}}
-      {{em-text property="prescription" label=(t 'labels.prescription')rows="3" class=prescriptionClass }}
+      {{expand-text property="prescription" label=(t 'labels.prescription')rows="3" class=prescriptionClass }}
       <div class="row">
         {{date-picker property="prescriptionDate" label=(t 'labels.prescriptionDate') class="col-sm-4"}}
       </div>

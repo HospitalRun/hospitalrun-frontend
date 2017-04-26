@@ -20,6 +20,7 @@ Router.map(function() {
       this.route('edit', { path: '/edit/:inc-category_id' });
     });
     this.route('lookup', { path: '/' });
+    this.route('textreplace');
     this.route('users', {
       resetNamespace: true
     }, function() {

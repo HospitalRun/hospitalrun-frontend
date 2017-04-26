@@ -66,6 +66,57 @@ test('print invoice', function(assert) {
   });
 });
 
+// test pricing profile
+test('pricing profiles', function(assert) {
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit('/pricing/profiles');
+    andThen(function() {
+      assert.equal(find('.btn-primary:contains(+ new item)').length, 1, 'We can add a new pricing profile');
+      click('button:contains(+ new item)');
+      waitToAppear('h4:contains(New Pricing Profile)');
+    });
+    // % discount
+    andThen(function() {
+      fillIn('.pricing-profile-name input', '50% profile');
+      fillIn('.pricing-profile-percentage input', '50');
+      click('button:contains(Add)');
+      waitToAppear('button:contains(Ok)');
+      click('button:contains(Ok)');
+    });
+    andThen(function() {
+      click('button:contains(+ new item)');
+      waitToAppear('h4:contains(New Pricing Profile)');
+    });
+    // flat discount
+    andThen(function() {
+      fillIn('.pricing-profile-name input', '$100 discount');
+      fillIn('.pricing-profile-discount input', '100');
+      click('button:contains(Add)');
+      waitToAppear('button:contains(Ok)');
+      click('button:contains(Ok)');
+    });
+    andThen(function() {
+      click('button:contains(+ new item)');
+      waitToAppear('h4:contains(New Pricing Profile)');
+    });
+    // flat fee
+    andThen(function() {
+      fillIn('.pricing-profile-name input', '$150 fee');
+      fillIn('.pricing-set-fee input', '150');
+      click('button:contains(Add)');
+      waitToAppear('button:contains(Ok)');
+      click('button:contains(Ok)');
+    });
+    visit('/invoices');
+    andThen(function() {
+      assert.equal(currentURL(), '/invoices');
+      assert.equal(find('.invoice-number:contains(inv00001)').length, 1, 'Invoice is available for modifying');
+      click('button:contains(Edit)');
+    });
+  });
+});
+
 test('delete invoice', function(assert) {
   runWithPouchDump('billing', function() {
     authenticateUser();

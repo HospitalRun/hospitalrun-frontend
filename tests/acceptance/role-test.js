@@ -57,7 +57,7 @@ test('visiting /admin/roles', function(assert) {
 });
 
 PREDEFINED_USER_ROLES.forEach((role) => {
-  if (role.name !== 'User Administrator') {
+  if (role.defaultRoute && role.name !== 'User Administrator') {
     test(`Testing User Role homescreen for ${role.name}`, (assert) =>{
       runWithPouchDump('default', () => {
         authenticateUser({

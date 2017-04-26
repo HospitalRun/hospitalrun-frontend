@@ -24,7 +24,7 @@
             {{#unless invoice.paidFlag}}
               {{#if showActions}}
                 {{#if canAddPayment}}
-                  <button class="btn btn-default neutral" {{action 'showAddPayment' invoice bubbles=false }}>
+                  <button class="btn btn-primary btn-extra" {{action 'showAddPayment' invoice bubbles=false }}>
                     <span class="octicon octicon-plus"></span> {{t 'admin.roles.capability.addPayment'}}
                   </button>
                 {{/if}}
