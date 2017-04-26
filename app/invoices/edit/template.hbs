@@ -178,7 +178,7 @@
             <td class="text-right">{{number-format model.discount}}</td>
             <td class="text-right">{{number-format model.nationalInsurance}}</td>
             <td class="text-right">{{number-format model.privateInsurance}}</td>
-            <td class="text-right">{{number-format model.patientResponsibility}}</td>
+            <td class="text-right">{{number-format model.finalPatientResponsibility}}</td>
             <td></td>
           </tr>
           <tr>
@@ -197,6 +197,18 @@
             <td class="text-right">{{number-format model.remainingBalance}}</td>
             <td></td>
           </tr>
+          {{#if model.paymentProfile}}
+            {{#if model.paymentProfile.setFee}}
+              <tr>
+                <td colspan="6">{{t 'billing.messages.flatFeeMsg' currency=(t 'labels.currencySymbol') setFee=model.paymentProfile.setFee}}</td>
+              </tr>
+            {{/if}}
+            {{#if model.paymentProfile.discountAmount}}
+              <tr>
+                <td colspan="6">{{t 'billing.messages.flatDiscountMsg' currency=(t 'labels.currencySymbol') discountAmount=model.paymentProfile.discountAmount}}</td>
+              </tr>
+            {{/if}}
+          {{/if}}
         </table>
       </div>
     </div>
