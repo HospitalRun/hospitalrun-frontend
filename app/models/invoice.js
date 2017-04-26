@@ -98,7 +98,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
 
   patientResponsibilityTotals: Ember.computed.mapBy('lineItems', 'amountOwed'),
   patientResponsibility: Ember.computed.sum('patientResponsibilityTotals'),
-  finalPatientResponsibility: function() {
+  finalPatientResponsibility: computed('patientResponsibility', 'paymentProfile', function() {
     let setFee = this._getValidNumber(this.get('paymentProfile.setFee'));
     let discountAmount = this._getValidNumber(this.get('paymentProfile.discountAmount'));
     let patientResponsibility = this._getValidNumber(this.get('patientResponsibility'));
@@ -117,7 +117,7 @@ export default AbstractModel.extend(DateFormat, NumberFormat, {
     } else {
       return patientResponsibility;
     }
-  }.property('patientResponsibility', 'paymentProfile'),
+  }),
 
   paymentAmountChanged: function() {
     let payments = get(this, 'payments').filter(function(payment) {

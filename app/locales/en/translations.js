@@ -1294,6 +1294,13 @@ export default {
       visit: 'Visit'
     }
   },
+  pricing: {
+    labels: {
+      discountAmount: 'Discount Amount',
+      discountPercentage: 'Discount Percentage',
+      setFee: 'Set Fee'
+    }
+  },
   print: { invoice: {
     labels: {
       billedBy: 'Billed by:',
