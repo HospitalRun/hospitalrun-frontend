@@ -314,7 +314,12 @@ export default {
       paymentProfile: 'Payment Profile',
       paymentsDeposits: 'Payments/Deposits',
       pricingPanelOverrides: 'Pricing profile overrides',
-      pricingProfile: 'Pricing Profile'
+      pricingProfile: 'Pricing Profile',
+      setFee: 'Set Fee'
+    },
+    messages: {
+      flatFeeMsg: 'There is a flat fee for patient financial responsibility of {{currency}}{{setFee}}.',
+      flatDiscountMsg: 'There is a flat discount amount applied to the patient financial responsibility of {{currency}}{{discountAmount}}.'
     }
   },
   buttons: {
@@ -783,6 +788,7 @@ export default {
     country: 'Country',
     cptcode: 'CPT Code',
     creditTo: 'Credit To',
+    currencySymbol: '$',
     date: 'Date',
     dateCompleted: 'Date Completed',
     dateOfBirth: 'Date of Birth',
@@ -1288,6 +1294,13 @@ export default {
       visit: 'Visit'
     }
   },
+  pricing: {
+    labels: {
+      discountAmount: 'Discount Amount',
+      discountPercentage: 'Discount Percentage',
+      setFee: 'Set Fee'
+    }
+  },
   print: { invoice: {
     labels: {
       billedBy: 'Billed by:',
@@ -1442,14 +1455,16 @@ export default {
       visitSaved: 'Visit Saved'
     }
   },
-  vitals: { labels: {
-    dateRecorded: 'Date Recorded',
-    dbp: 'DBP',
-    heartRate: 'Heart Rate',
-    height: 'Height',
-    respiratoryRate: 'Respiratory Rate',
-    sbp: 'SBP',
-    temperature: 'Temperature',
-    weight: 'Weight'
-  } }
+  vitals: {
+    labels: {
+      dateRecorded: 'Date Recorded',
+      dbp: 'DBP',
+      heartRate: 'Heart Rate',
+      height: 'Height',
+      respiratoryRate: 'Respiratory Rate',
+      sbp: 'SBP',
+      temperature: 'Temperature',
+      weight: 'Weight'
+    }
+  }
 };

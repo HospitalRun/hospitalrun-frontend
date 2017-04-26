@@ -163,7 +163,7 @@ New test should be added for any new features or views in the app. For more info
 If you know a language other than English and would like to help translate this app, please follow the following steps:
 
 ### Install necessary node modules
-```npm install -g babel-cli eslint-cli```
+```npm install -g babel-cli eslint-cli babel-preset-es2015```
 
 ### Run script to populate missing translation terms
 ```npm run translation-sync```
