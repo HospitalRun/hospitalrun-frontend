@@ -30,8 +30,8 @@ module.exports = {
     title: 'HospitalRun',
     window: {
       size: {
-        width: 600,
-        height: 600
+        width: 400,
+        height: 400
       }
     }
   },
