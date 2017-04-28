@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   make_targets: {
-    win32: ['squirrel'],
+    win32: ['squirrel', 'zip'],
     darwin: ['dmg', 'zip']
   },
   electronPackagerConfig: {
@@ -23,7 +23,6 @@ module.exports = {
   electronInstallerDMG: {
     background: 'assets/icons/bg-img-patients.png',
     debug: true,
-    name: 'HospitalRun.dmg',
     icon: 'assets/icons/favicon.icns',
     iconsize: 100,
     overwrite: true,
