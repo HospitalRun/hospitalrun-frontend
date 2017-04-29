@@ -20,11 +20,17 @@
     color: $gray;
 
     &:hover,
-    &:focus { opacity: .8; }
+    &:focus {
+      opacity: .8;
+    }
   }
 
   &.admit {
-    width: 103px;
+    width: 110px;
+  }
+
+  &.info {
+    width: 110px;
   }
 
   .octicon {

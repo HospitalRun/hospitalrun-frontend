@@ -133,6 +133,29 @@ test('Adding a new patient record', function(assert) {
   });
 });
 
+test('Delete a patient record', function(assert) {
+  runWithPouchDump('patient', function() {
+    authenticateUser();
+    visit('/patients');
+    andThen(() =>{
+      assert.equal(currentURL(), '/patients', 'Patient listing url is correct');
+      assert.equal(find('tr.clickable td:contains(Joe)').length, 1, 'One patient exists to delete.');
+      click('tr.clickable button:contains(Delete)');
+      waitToAppear('.modal-dialog');
+    });
+    andThen(() =>{
+      assert.equal(find('.modal-title').text(), 'Delete Patient', 'Delete Patient ');
+      assert.equal(find('.modal-body').text().trim(), 'Are you sure you wish to delete Joe Bagadonuts?', 'Patient information appears in modal');
+      click('.modal-footer button:contains(Delete)');
+      waitToDisappear('.modal-dialog');
+      waitToDisappear('tr.clickable td:contains(Joe)');
+    });
+    andThen(function() {
+      assert.equal(find('tr.clickable td:contains(Joe)').length, 0, 'Patient has been successfully deleted.');
+    });
+  });
+});
+
 function testSimpleReportForm(reportName) {
   test(`View reports tab | ${reportName} shows start and end dates`, function(assert) {
     runWithPouchDump('default', function() {

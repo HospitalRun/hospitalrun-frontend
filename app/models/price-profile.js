@@ -5,6 +5,7 @@ export default AbstractModel.extend({
   name: DS.attr('string'),
   discountAmount: DS.attr('number'),
   discountPercentage: DS.attr('number'),
+  setFee: DS.attr('number'),
 
   validations: {
     name: {
@@ -16,6 +17,11 @@ export default AbstractModel.extend({
       }
     },
     discountPercentage: {
+      numericality: {
+        allowBlank: true
+      }
+    },
+    setFee: {
       numericality: {
         allowBlank: true
       }
