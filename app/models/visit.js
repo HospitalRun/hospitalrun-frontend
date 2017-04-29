@@ -38,7 +38,6 @@ function paymentStateAcceptance(object) {
 
 export default AbstractModel.extend({
   // Attributes
-  additionalDiagnoses: DS.attr(),
   customForms: DS.attr('custom-forms'),
   diagnoses: DS.hasMany('diagnosis', { async: false }),
   dischargeInfo: DS.attr('string'),
