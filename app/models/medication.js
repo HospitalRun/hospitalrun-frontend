@@ -111,7 +111,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
           let isFulfilling = get(object, 'isFulfilling');
           let requestQuantity = parseInt(get(object, 'quantity'));
           let quantityToCompare = null;
-          
+
           if (!isFulfilling) {
             // no validation needed when not fulfilling
             return false;
