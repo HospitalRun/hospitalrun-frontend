@@ -1,8 +1,8 @@
-/* global buildPouchFindIndexes */
 import Ember from 'ember';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
 import List from 'npm:pouchdb-list';
 import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
+import PouchFindIndexes from 'hospitalrun/mixins/pouch-find-indexes';
 import PouchDBUsers from 'npm:pouchdb-users';
 import PouchDBWorker from 'npm:worker-pouch/client';
 import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
@@ -19,7 +19,7 @@ const {
   set
 } = Ember;
 
-export default Service.extend({
+export default Service.extend(PouchFindIndexes, {
   mainDB: null, // Server DB
   oauthHeaders: null,
   requireLogin: true,
@@ -200,6 +200,8 @@ export default Service.extend({
           }).catch((err) => {
             console.log('Error setting up subscription', err);
           });
+        } else {
+          return this._requestSync();
         }
       });
     }
@@ -227,7 +229,7 @@ export default Service.extend({
   _createLocalDB(pouchOptions) {
     let localDB = new PouchDB('localMainDB', pouchOptions);
     createPouchViews(localDB);
-    buildPouchFindIndexes(localDB);
+    this.buildPouchFindIndexes(localDB);
     return localDB;
   },
 
