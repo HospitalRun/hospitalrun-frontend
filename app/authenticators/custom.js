@@ -115,12 +115,15 @@ export default BaseAuthenticator.extend({
         response.name = data.name;
         response.expires_at = this._absolutizeExpirationTime(600);
         this._checkUser(response).then((user) => {
-          this.get('config').setCurrentUser(user.name);
+          let config = get(this, 'config');
           let database = this.get('database');
-          database.setup({}).then(() => {
-            resolve(user);
-          }, reject);
-        }, reject);
+          config.setCurrentUser(user.name);
+          config.loadConfig().then((configs) => {
+            database.setup(configs).then(() => {
+              resolve(user);
+            });
+          });
+        }).catch(reject);
       }, function(xhr) {
         reject(xhr.responseJSON || xhr.responseText);
       });
