@@ -84,5 +84,8 @@ function login(assert, spaceAroundUsername) {
     fillIn('#identification', !spaceAroundUsername ? 'hradmin' : ' hradmin');
     fillIn('#password', 'test');
     click('button:contains(Sign in)');
+    andThen(() => {
+      waitToAppear('.sidebar-nav-logo');
+    });
   });
 }
