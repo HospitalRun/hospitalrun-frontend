@@ -15,11 +15,13 @@ export default Ember.Controller.extend(UserSession, {
   needsUserSetup: alias('config.needsUserSetup'),
   // on init, look up the list of users and determine if there's a need for a needsUserSetup msg
   init() {
-    get(this, 'database.usersDB').allDocs().then((results) => {
-      if (results.total_rows <= 1) {
-        set(this, 'config.needsUserSetup', true);
-      }
-    });
+    if (get(this, 'standAlone')) {
+      get(this, 'database.usersDB').allDocs().then((results) => {
+        if (results.total_rows <= 1) {
+          set(this, 'config.needsUserSetup', true);
+        }
+      });
+    }
   },
   actions: {
     newUser() {
