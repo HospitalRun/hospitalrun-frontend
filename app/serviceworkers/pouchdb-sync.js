@@ -123,6 +123,15 @@ function dbMethod(clientId, methodName, messageId, args, event) {
     return db[methodName](...args);
   }).then(function(res) {
     sendSuccess(clientId, messageId, res, event);
+    switch (methodName) {
+      case 'put':
+      case 'bulkDocs':
+      case 'post':
+      case 'remove':
+      case 'removeAttachment':
+      case 'putAttachment':
+        remoteSync();
+    }
   }).catch(function(err) {
     if (dbAdapter === 'http') {
       // If the failure was on http, retry with local db.
