@@ -6,6 +6,7 @@ import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
 import PouchDBUsers from 'npm:pouchdb-users';
 import DatabaseService from 'hospitalrun/services/database';
 import ConfigService from 'hospitalrun/services/config';
+import PouchDBWorker from 'npm:worker-pouch/client';
 
 const {
   set
@@ -39,6 +40,7 @@ function destroyDatabases(dbs) {
 function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
   PouchDB.plugin(PouchAdapterMemory);
   PouchDB.plugin(PouchDBUsers);
+
   let db = new PouchDB('hospitalrun-test-database', {
     adapter: 'memory'
   });
@@ -56,9 +58,25 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
 
   let InMemoryDatabaseService = DatabaseService.extend({
     createDB() {
-      return promise.then(function() {
-        return db;
-      });
+      if (navigator.serviceWorker) {
+        // Use pouch-worker to run the DB in the service worker
+        return navigator.serviceWorker.ready.then(() => {
+          if (navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage) {
+            PouchDB.adapter('worker', PouchDBWorker);
+            db = new PouchDB('hospitalrun-test-database', {
+              adapter: 'worker',
+              worker: () => navigator.serviceWorker
+            });
+            return  db.load(dump).then(() => {
+              return db;
+            });
+          } else {
+            return promise.then(() => db);
+          }
+        });
+      } else {
+        return promise.then(() => db);
+      }
     },
     _createUsersDB() {
       return usersDB.installUsersBehavior().then(() => {

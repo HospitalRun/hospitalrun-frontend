@@ -59,14 +59,14 @@ module.exports = function(environment) {
     ENV.serviceWorker = {
       enabled: false,
       includeRegistration: false
-    }
+    };
   } else {
     ENV.serviceWorker = {
       enabled: true,
       debug: true,
       excludePaths: ['manifest.appcache'],
       swIncludeFiles: [
-        'node_modules/pouchdb/dist/pouchdb.js'
+        'vendor/pouchdb-for-sw.js'
       ]
     };
     if (environment === 'production') {
@@ -74,7 +74,7 @@ module.exports = function(environment) {
     }
   }
   if (environment === 'test') {
-    ENV.serviceWorker.includeRegistration = false;
+    ENV.serviceWorker.enabled = true;
   }
 
   ENV.emberFullCalendar =  {
