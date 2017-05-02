@@ -1,6 +1,13 @@
 // panel styles
 .panel-heading {
 
+   position:fixed;
+   width:100%;
+   z-index:9999;
+}
+.panel-heading {
+
+  
   .view-sub-bar { padding: 0 15px; }
 
   .view-sub-nav { margin: 0; }
@@ -58,4 +65,15 @@
 .panel-footer {
   background-color: $white;
   text-align: right;
+  position:relative;
+  float:left;
+  margin-top:-65px;
+  margin-left:200px;
+  z-index:99999;
+}
+
+
+.panel-primary{
+  margin-top:50px;
+  
 }
