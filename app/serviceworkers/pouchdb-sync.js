@@ -38,11 +38,9 @@ function createError(err) {
 }
 
 function safeEval(str) {
-  logDebug('safeEvaling', str);
   let target = {};
   /* jshint evil: true */
   eval(`target.target = (${str});`);
-  logDebug('returning', target.target);
   return target.target;
 }
 
@@ -119,7 +117,6 @@ function dbMethod(clientId, methodName, messageId, args, event) {
       return sendError(clientId, messageId, { error: 'db not found' }, event);
     }
     dbAdapter = db.adapter;
-    logDebug(`Returning ${methodName} execution:`, db[methodName]);
     return db[methodName](...args);
   }).then(function(res) {
     sendSuccess(clientId, messageId, res, event);
@@ -186,7 +183,6 @@ function getAttachment(clientId, messageId, args, event) {
 function destroy(clientId, messageId, args, event) {
   if (clientId === 'hospitalrun-test-database') {
     getCurrentDB(clientId).then((db) => {
-      logDebug(`Destroying ${clientId} database`);
       if (!db) {
         return sendError(clientId, messageId, { error: 'db not found' }, event);
       }
@@ -232,7 +228,6 @@ function cancelChanges(messageId) {
 }
 
 function onReceiveMessage(clientId, type, messageId, args, event) {
-  logDebug('onReceiveMessage', type, clientId, messageId, args, event);
   switch (type) {
     case 'createDatabase':
       return createDatabase(clientId, messageId, args, event);
@@ -304,9 +299,16 @@ self.addEventListener('message', function(event) {
   }
   let clientId = event.data.id;
   if (event.data.type === 'close') {
-    logDebug('closing worker', clientId);
+    // logDebug('closing worker', clientId);
   } else {
     handleMessage(event.data, clientId, event);
+  }
+});
+
+self.addEventListener('sync', function(event) {
+  if (event.tag === 'remoteSync') {
+    logDebug('Remote sync requested while user was offline');
+    event.waitUntil(remoteSync());
   }
 });
 
@@ -336,21 +338,20 @@ function remoteSync(remoteSequence) {
     logDebug(`Synching local db to remoteSequence: ${remoteSequence}`);
     syncingRemote = true;
     return getRemoteDB().then((remoteDB) => {
-      return localMainDB.sync(remoteDB, {
-        retry: true
-      }).then((info) => {
-        syncingRemote = false;
-        logDebug('local sync complete:', info);
-        // handle complete
-        if (info.pull.last_seq < lastServerSeq) {
-          return remoteSync(lastServerSeq);
-        } else {
-          return true;
-        }
-      });
-    }).catch('error', (err) => {
+      return localMainDB.sync(remoteDB);
+    }).then((info) => {
+      syncingRemote = false;
+      logDebug('local sync complete:', info);
+      // handle complete
+      if (info.pull.last_seq < lastServerSeq) {
+        return remoteSync(lastServerSeq);
+      } else {
+        return true;
+      }
+    }).catch((err) => {
       syncingRemote = false;
       logDebug('local sync error:', err);
+      self.registration.sync.register('remoteSync');
       return false;
     });
   } else {
