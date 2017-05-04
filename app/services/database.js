@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
 import List from 'npm:pouchdb-list';
+import OAuthHeaders from 'hospitalrun/mixins/oauth-headers';
 import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
 import PouchFindIndexes from 'hospitalrun/mixins/pouch-find-indexes';
 import PouchDBUsers from 'npm:pouchdb-users';
@@ -19,7 +20,7 @@ const {
   set
 } = Ember;
 
-export default Service.extend(PouchFindIndexes, {
+export default Service.extend(OAuthHeaders, PouchFindIndexes, {
   mainDB: null, // Server DB
   oauthHeaders: null,
   requireLogin: true,
@@ -167,17 +168,20 @@ export default Service.extend(PouchFindIndexes, {
     }, 'queryMainDB');
   },
 
-  setup(configs) {
+  setup() {
     PouchDB.plugin(List);
-    return this.createDB(configs).then((db) => {
-      set(this, 'mainDB', db);
-      set(this, 'setMainDB', true);
-      if (get(this, 'standAlone')) {
-        PouchDB.plugin(PouchDBUsers);
-        return this._createUsersDB();
-      } else {
-        this.setupSubscription(configs);
-      }
+    let config = get(this, 'config');
+    return config.loadConfig().then((configs) => {
+      return this.createDB(configs).then((db) => {
+        set(this, 'mainDB', db);
+        set(this, 'setMainDB', true);
+        if (get(this, 'standAlone')) {
+          PouchDB.plugin(PouchDBUsers);
+          return this._createUsersDB();
+        } else {
+          this.setupSubscription(configs);
+        }
+      });
     });
   },
 
@@ -259,6 +263,7 @@ export default Service.extend(PouchFindIndexes, {
     let remoteDB = new PouchDB(remoteUrl, pouchOptions);
     return remoteDB.info().then(()=> {
       createPouchViews(remoteDB);
+      return remoteDB;
     }).catch((err) => {
       console.log('error with remote db:', JSON.stringify(err, null, 2));
       throw err;
@@ -404,7 +409,7 @@ export default Service.extend(PouchFindIndexes, {
 
   _getOptions(configs) {
     let pouchOptions = {};
-    if (configs && configs.config_use_google_auth) {
+    if (configs) {
       pouchOptions.ajax = {
         timeout: 30000
       };
@@ -415,12 +420,7 @@ export default Service.extend(PouchFindIndexes, {
         || isEmpty(configs.config_token_secret)) {
         throw Error('login required');
       } else {
-        let headers = {
-          'x-oauth-consumer-secret': configs.config_consumer_secret,
-          'x-oauth-consumer-key': configs.config_consumer_key,
-          'x-oauth-token-secret': configs.config_token_secret,
-          'x-oauth-token': configs.config_oauth_token
-        };
+        let headers = this.getOAuthHeaders(configs);
         set(this, 'oauthHeaders', headers);
         pouchOptions.ajax.headers = headers;
       }
