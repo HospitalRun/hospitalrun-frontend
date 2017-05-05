@@ -82,7 +82,7 @@
     "ember-inspector": "^2.0.4",
     "ember-keyboard": "2.1.9",
     "ember-load-initializers": "^0.6.0",
-    "ember-pouch": "4.2.4",
+    "ember-pouch": "4.2.5",
     "ember-radio-buttons": "^4.0.1",
     "ember-rapid-forms": "1.0.0-beta10",
     "ember-resolver": "^2.0.3",
