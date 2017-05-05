@@ -307,8 +307,13 @@ self.addEventListener('message', function(event) {
 
 self.addEventListener('sync', function(event) {
   if (event.tag === 'remoteSync') {
-    logDebug('Remote sync requested while user was offline');
-    event.waitUntil(remoteSync());
+    event.waitUntil(remoteSync(null, true).catch((err) =>{
+      if (event.lastChance) {
+        logDebug('Sync failed for the last time, so give up for now.', err);
+      } else {
+        logDebug('Sync failed, will try again later', err);
+      }
+    }));
   }
 });
 
@@ -332,27 +337,43 @@ function getRemoteDB() {
   });
 }
 
-function remoteSync(remoteSequence) {
+function remoteSync(remoteSequence, retryingSync) {
   lastServerSeq = remoteSequence;
   if (!syncingRemote && configs.config_disable_offline_sync !== true) {
-    logDebug(`Synching local db to remoteSequence: ${remoteSequence}`);
+    logDebug(`Synching local db to remoteSequence: ${remoteSequence} at: ${new Date()}`);
     syncingRemote = true;
     return getRemoteDB().then((remoteDB) => {
       return localMainDB.sync(remoteDB);
     }).then((info) => {
       syncingRemote = false;
-      logDebug('local sync complete:', info);
+      logDebug('local sync complete:', info, configs);
+
+      // Update push subscription with latest sync info
+      fetch('/update-subscription/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          subscriptionId: configs.config_push_subscription,
+          remoteSeq: info.pull.last_seq
+        })
+      });
       // handle complete
       if (info.pull.last_seq < lastServerSeq) {
         return remoteSync(lastServerSeq);
       } else {
+
         return true;
       }
     }).catch((err) => {
       syncingRemote = false;
-      logDebug('local sync error:', err);
-      self.registration.sync.register('remoteSync');
-      return false;
+      logDebug(`local sync error, register remote sync: ${new Date()}`, err);
+      if (retryingSync) {
+        throw err;
+      } else {
+        self.registration.sync.register('remoteSync');
+      }
     });
   } else {
     if (syncingRemote) {
