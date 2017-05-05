@@ -194,15 +194,11 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
           return localDB.id().then((dbId) => {
             let dbInfo = {
               id: dbId,
-              remote_seq: 0
+              remoteSeq: 0
             };
             return this._getPermissionAndSubscribe(dbInfo);
           }).then(() => {
             return this._requestSync();
-          }).then((result) => {
-            console.log('Sync result:', result);
-          }).catch((err) => {
-            console.log('Error setting up subscription', err);
           });
         } else {
           return this._requestSync();
@@ -212,7 +208,6 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
   },
 
   _askPermission() {
-    console.log('In askPermission');
     return new RSVP.Promise((resolve, reject) => {
       let permissionResult = Notification.requestPermission((result) => {
         resolve(result);
@@ -285,16 +280,11 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
       navigator.serviceWorker.ready.then((registration) => {
         return this._getNotificationPermissionState().then((permission) => {
           if (permission !== 'granted') {
-            console.log('We do not have permission, so go ahead and ask for it');
-            return this._askPermission().then((result) => {
-              console.log('Result of ask permission was:', result);
+            return this._askPermission().then(() => {
               return this._subscribeUserToPush(registration, dbInfo).then(resolve, reject);
             });
           } else {
-            console.log('We have permission, so go subscribe user to push');
-            return this._subscribeUserToPush(registration, dbInfo).then(resolve, reject).catch((error) => {
-              console.log('Subscribe error', error);
-            });
+            return this._subscribeUserToPush(registration, dbInfo).then(resolve, reject);
           }
         });
       });
@@ -356,10 +346,8 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
         .then((pushSubscription) => {
           let subInfo = JSON.stringify(pushSubscription);
           subInfo = JSON.parse(subInfo);
-          console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
           return this._sendSubscriptionToServer(subInfo, dbInfo);
         }).then((savedSubscription) => {
-          console.log('Savedsubscription: ', JSON.stringify(savedSubscription));
           let configDB = config.getConfigDB();
           return configDB.put({
             _id: 'config_push_subscription',
