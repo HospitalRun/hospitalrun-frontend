@@ -922,6 +922,7 @@ export default {
     },
     messages: {
       error: 'Username or password is incorrect.',
+      offlineError: 'Cannot login while offline.  Please establish a network connection and retry login.',
       signIn: 'please sign in'
     }
   },
@@ -1081,6 +1082,9 @@ export default {
     inventory: 'Inventory',
     labs: 'Labs',
     medication: 'Medication',
+    messages: {
+      logoutFailed: 'Could not logout at this time.  Logout is not available while offline.'
+    },
     patients: 'Patients',
     scheduling: 'Scheduling',
     subnav: {
@@ -1123,6 +1127,9 @@ export default {
       userRoles: 'User Roles',
       users: 'Users',
       workflow: 'Workflow'
+    },
+    titles: {
+      logoutFailed: 'Logout Failed'
     }
   },
   operationReport: {

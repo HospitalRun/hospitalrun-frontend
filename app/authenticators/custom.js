@@ -49,7 +49,7 @@ export default BaseAuthenticator.extend(MapOauthParams, OAuthHeaders, {
     });
   },
 
-  _makeRequest(data, url, headers) {
+  _makeRequest(data, url, headers, method) {
     if (!url) {
       url = this.serverEndpoint;
     }
@@ -63,6 +63,9 @@ export default BaseAuthenticator.extend(MapOauthParams, OAuthHeaders, {
         withCredentials: true
       }
     };
+    if (method) {
+      params.type = method;
+    }
     if (headers) {
       params.headers = headers;
     }
@@ -103,6 +106,9 @@ export default BaseAuthenticator.extend(MapOauthParams, OAuthHeaders, {
     }
     let data = { name: username, password: credentials.password };
     return this._makeRequest(data).then((user) => {
+      if (user.error) {
+        throw new Error(user.errorResult || 'Unauthorized user');
+      }
       let userInfo = {
         displayName: user.displayName,
         prefix: user.prefix,
@@ -113,13 +119,19 @@ export default BaseAuthenticator.extend(MapOauthParams, OAuthHeaders, {
       return this._saveOAuthConfigs(user).then((oauthConfigs) => {
         return this._finishAuth(userInfo, oauthConfigs);
       });
-    }, function(xhr) {
-      throw new Error(xhr.responseJSON || xhr.responseText);
     });
   },
 
-  invalidate() {
-    return RSVP.resolve();
+  invalidate(data) {
+    let standAlone = get(this, 'standAlone');
+    if (this.useGoogleAuth || standAlone) {
+      return RSVP.resolve();
+    } else {
+      // Ping the remote db to make sure we still have connectivity before logging off.
+      let headers = this.getOAuthHeaders(data.oauthConfigs);
+      let remoteDBUrl = get(this, 'database').getRemoteDBUrl();
+      return this._makeRequest({}, remoteDBUrl, headers, 'GET');
+    }
   },
 
   restore(data) {

@@ -107,6 +107,10 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
     return get(this, 'mainDB').rel.makeDocID(idInfo);
   },
 
+  getRemoteDBUrl() {
+    return `${document.location.protocol}//${document.location.host}/db/main`;
+  },
+
   handleErrorResponse(err) {
     if (!err.status) {
       if (err.errors && err.errors.length > 0) {
@@ -233,6 +237,7 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
   },
 
   _createMainDB(configs) {
+    this._setOAuthHeaders(configs);
     if (!configs.config_disable_offline_sync && navigator.serviceWorker) {
       // Use pouch-worker to run the DB in the service worker
       return navigator.serviceWorker.ready.then(() => {
@@ -253,7 +258,7 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
   },
 
   _createRemoteDB(configs) {
-    let remoteUrl = `${document.location.protocol}//${document.location.host}/db/main`;
+    let remoteUrl = this.getRemoteDBUrl();
     let pouchOptions = this._getOptions(configs);
     let remoteDB = new PouchDB(remoteUrl, pouchOptions);
     return remoteDB.info().then(()=> {
@@ -408,8 +413,7 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
         || isEmpty(configs.config_token_secret)) {
         throw Error('login required');
       } else {
-        let headers = this.getOAuthHeaders(configs);
-        set(this, 'oauthHeaders', headers);
+        let headers = get(this, 'oauthHeaders');
         pouchOptions.ajax.headers = headers;
       }
     }
@@ -432,6 +436,11 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
       });
     }
     return mappedRows;
+  },
+
+  _setOAuthHeaders(configs) {
+    let headers = this.getOAuthHeaders(configs);
+    set(this, 'oauthHeaders', headers);
   }
 
 });
