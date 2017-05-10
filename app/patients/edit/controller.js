@@ -592,4 +592,3 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
     });
   }
 
-});
