@@ -73,7 +73,7 @@ module.exports = function(environment) {
       ENV.serviceWorker.debug = false;
     }
   }
-  if (environment === 'test') {
+  if (environment === 'test' && !process.env.EMBER_CLI_ELECTRON) {
     ENV.serviceWorker.enabled = true;
   }
 
