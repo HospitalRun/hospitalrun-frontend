@@ -30,7 +30,8 @@
     {{content-for "body-footer"}}
     {{content-for "test-body-footer"}}
     <script>
-      if ('serviceWorker' in navigator) {
+      if (!window.ELECTRON && 'serviceWorker' in navigator) {
+        alert('SERVICE WORKERS RULE THE WORLD!!!!!')
         navigator.serviceWorker.register('/service-worker.js', {scope: '/'})
           .catch(function(error) {
             console.error('Error registering service worker:'+error);
@@ -38,8 +39,6 @@
           navigator.serviceWorker.addEventListener('controllerchange', function() {
             window.location.reload();
           });
-      } else {
-        console.log('service worker not supported');
       }
     </script>
   </body>
