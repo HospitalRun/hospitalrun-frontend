@@ -16,7 +16,7 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     - g++-4.8
-    - google-chrome-stable
+    - google-chrome-beta
 
 cache:
   directories:
@@ -26,11 +26,12 @@ cache:
 before_install:
   - npm config set spin false
   - npm install -g bower
+  - npm install -g yarn
   - bower --version
   - google-chrome --version
 
 install:
-  - npm install
+  - yarn
   - bower install
   - export DISPLAY=':99.0'
   - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
