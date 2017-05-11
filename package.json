@@ -74,8 +74,8 @@
     "ember-cli-uglify": "^1.2.0",
     "ember-concurrency": "0.8.1",
     "ember-concurrency-test-waiter": "0.2.0",
-    "ember-data": "^2.10.0",
-    "ember-electron": "^2.1.0",
+    "ember-data": "2.10.0",
+    "ember-electron": "2.1.0",
     "ember-export-application-global": "^1.0.5",
     "ember-fullcalendar": "1.7.0",
     "ember-i18n": "4.4.0",
@@ -111,8 +111,7 @@
   },
   "dependencies": {
     "electron-compile": "^6.3.0",
-    "electron-localshortcut": "^1.1.1",
-    "ember-electron": "^2.1.0"
+    "electron-localshortcut": "^1.1.1"
   },
   "ember-addon": {
     "paths": [
