@@ -102,6 +102,7 @@
     "pouchdb-adapter-memory": "6.1.2",
     "pouchdb-list": "^1.1.0",
     "pouchdb-users": "^1.0.3",
+    "pbkdf2": "3.0.9",
     "stylelint": "~7.7.1",
     "stylelint-config-concentric": "1.0.7",
     "stylelint-declaration-use-variable": "1.6.0",
