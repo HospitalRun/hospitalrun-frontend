@@ -9,6 +9,7 @@ import ConfigService from 'hospitalrun/services/config';
 import PouchDBWorker from 'npm:worker-pouch/client';
 
 const {
+  get,
   set
 } = Ember;
 
@@ -57,8 +58,16 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
   let promise = db.load(dump);
 
   let InMemoryDatabaseService = DatabaseService.extend({
-    createDB() {
-      if (navigator.serviceWorker) {
+
+    createDB(configs) {
+      let standAlone = get(this, 'standAlone');
+      if (standAlone || !configs.config_external_search) {
+        set(this, 'usePouchFind', true);
+      }
+      if (standAlone) {
+        return promise.then(() => db);
+      }
+      if (!window.ELECTRON && navigator.serviceWorker) {
         // Use pouch-worker to run the DB in the service worker
         return navigator.serviceWorker.ready.then(() => {
           if (navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage) {

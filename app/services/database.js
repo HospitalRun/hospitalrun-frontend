@@ -179,10 +179,7 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
       return this.createDB(configs).then((db) => {
         set(this, 'mainDB', db);
         set(this, 'setMainDB', true);
-        if (get(this, 'standAlone')) {
-          PouchDB.plugin(PouchDBUsers);
-          return this._createUsersDB();
-        } else {
+        if (!get(this, 'standAlone')) {
           this.setupSubscription(configs);
         }
       });
@@ -377,7 +374,8 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
     }, 'Request offline sync');
   },
 
-  _createUsersDB() {
+  createUsersDB() {
+    PouchDB.plugin(PouchDBUsers);
     let usersDB = new PouchDB('_users');
     return usersDB.installUsersBehavior().then(() => {
       set(this, 'usersDB', usersDB);

@@ -9,6 +9,7 @@ const {
     alias
   },
   get,
+  isEmpty,
   RSVP
 } = Ember;
 
@@ -143,6 +144,27 @@ export default BaseAuthenticator.extend(MapOauthParams, OAuthHeaders, {
 
   _authenticateStandAlone(credentials) {
     let usersDB = get(this, 'usersDB');
+    if (isEmpty(usersDB)) {
+      let database = get(this, 'database');
+      return database.createUsersDB().then((createdDB) => {
+        return this._finishStandAloneAuth.bind(credentials, createdDB);
+      });
+    } else {
+      return this._finishStandAloneAuth(credentials, usersDB);
+    }
+  },
+
+  // Based on https://github.com/hoodiehq/hoodie-account-server-api/blob/master/lib/utils/validate-password.js
+  _checkPassword(password, salt, iterations, derivedKey, callback) {
+    crypto.pbkdf2(password, salt, iterations, 20, 'sha1', function(error, derivedKeyCheck) {
+      if (error) {
+        return callback(error);
+      }
+      callback(null, derivedKeyCheck.toString('hex') === derivedKey);
+    });
+  },
+
+  _finishStandAloneAuth(credentials, usersDB) {
     return new RSVP.Promise((resolve, reject) => {
       usersDB.get(`org.couchdb.user:${credentials.identification}`).then((user) => {
         let { salt, iterations, derived_key } = user;
@@ -158,16 +180,6 @@ export default BaseAuthenticator.extend(MapOauthParams, OAuthHeaders, {
           resolve(user);
         });
       }, reject);
-    });
-  },
-
-  // Based on https://github.com/hoodiehq/hoodie-account-server-api/blob/master/lib/utils/validate-password.js
-  _checkPassword(password, salt, iterations, derivedKey, callback) {
-    crypto.pbkdf2(password, salt, iterations, 20, 'sha1', function(error, derivedKeyCheck) {
-      if (error) {
-        return callback(error);
-      }
-      callback(null, derivedKeyCheck.toString('hex') === derivedKey);
     });
   },
 
