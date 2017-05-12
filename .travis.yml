@@ -34,6 +34,7 @@ install:
   - yarn
   - bower install
   - export DISPLAY=':99.0'
+    export CHROME_BIN=google-chrome-beta
   - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
 script:
