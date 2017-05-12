@@ -28,7 +28,7 @@ before_install:
   - npm install -g bower
   - npm install -g yarn
   - bower --version
-  - google-chrome --version
+  - google-chrome-beta --version
 
 install:
   - yarn
