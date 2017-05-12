@@ -31,7 +31,6 @@
     {{content-for "test-body-footer"}}
     <script>
       if (!window.ELECTRON && 'serviceWorker' in navigator) {
-        alert('SERVICE WORKERS RULE THE WORLD!!!!!')
         navigator.serviceWorker.register('/service-worker.js', {scope: '/'})
           .catch(function(error) {
             console.error('Error registering service worker:'+error);
