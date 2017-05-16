@@ -1,21 +1,21 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false }}
     {{#if model.selectPatient}}
-      {{patient-typeahead property="patientTypeAhead" label=(t 'labels.patient')content=patientList selection=selectedPatient class="required patient-input"}}
+      {{patient-typeahead property="patientTypeAhead" label=(t 'models.imaging.labels.patient')content=patientList selection=selectedPatient class="required patient-input"}}
     {{else}}
       {{patient-summary patient=model.patient returnTo='imaging.edit' returnToContext=model.id disablePatientLink=model.isNew }}
     {{/if}}
     {{#if model.isNew}}
       <div class="row">
-        {{em-select class="col-xs-3 required" label=(t 'labels.visit')
+        {{em-select class="col-xs-3 required" label=(t 'models.imaging.labels.visit')
           property="visit" content=patientVisitsForSelect
           optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
-          prompt=(t 'imaging.labels.addNewVisit')
+          prompt=(t 'models.imaging.placeholders.visit')
           selected=model.visit
         }}
       </div>
       {{checkbox-or-typeahead property="imagingTypeName"
-        label=(t 'labels.imagingType') list=objectTypeList
+        label=(t 'models.imaging.labels.imagingType') list=objectTypeList
         selection=selectedImagingType
         optionLabelPath='name'
         typeAheadType='pricing'
@@ -27,29 +27,29 @@
     {{else}}
       <div class="row">
         <div class="form-group col-xs-3">
-          <label>{{t 'labels.visit'}}</label>
+          <label>{{t 'models.imaging.labels.visit'}}</label>
           <p class="form-control-static">{{model.visit.visitDate}}</p>
         </div>
         <div class="form-group col-xs-9">
-          <label>{{t 'labels.imagingType'}}</label>
+          <label>{{t 'models.imaging.labels.imagingType'}}</label>
           <p class="form-control-static">{{model.imagingType.name}}</p>
         </div>
       </div>
       <div class="row">
         <div class="form-group col-xs-12">
-          <label>{{t 'labels.requestedBy'}}</label>
+          <label>{{t 'models.imaging.labels.requestedBy'}}</label>
           <p class="form-control-static">{{model.requestedBy}}</p>
         </div>
       </div>
     {{/if}}
     {{#if canComplete}}
       {{select-or-typeahead property="radiologist"
-        label=(t 'imaging.labels.radiologist') list=radiologistList
+        label=(t 'models.imaging.labels.radiologist') list=radiologistList
         prompt=" "
         class="radiologist-input"
       }}
-      {{em-input property="result" label=(t 'labels.result') class="result-input"}}
+      {{em-input property="result" label=(t 'models.imaging.labels.result') class="result-input"}}
     {{/if}}
-    {{em-text property="notes" label=(t 'labels.notes') rows=3 }}
+    {{em-text property="notes" label=(t 'models.imaging.labels.notes') rows=3 }}
   {{/em-form}}
 {{/edit-panel}}

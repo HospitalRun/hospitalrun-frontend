@@ -701,10 +701,6 @@ export default {
     buttons: {
       newButton: '+ new imaging'
     },
-    labels: {
-      radiologist: 'Radiologist',
-      addNewVisit: '--Add New Visit--'
-    },
     messages: {
       delete: 'Are you sure you wish to delete this imaging request?',
       noCompleted: 'No completed items found.'
@@ -877,10 +873,6 @@ export default {
     newTitle: 'New Lab Request',
     deleteTitle: 'Delete Request',
     completedTitle: 'Completed Labs',
-    labels: {
-      labType: 'Lab Type',
-      addNewVisit: '--Add New Visit--'
-    },
     messages: {
       noItemsFound: 'No labs found.',
       createNewRecord: 'Create a new record?',
@@ -1034,12 +1026,9 @@ export default {
       addOverride: 'Add Override'
     },
     labels: {
-      externalInvoiceNumber: 'External Invoice #',
-      paymentProfile: 'Payment Profile',
       actualCharges: 'Actual Charges',
       insurance: 'National Insurance',
       hmoCom: 'HMO/COM',
-      paymentsDeposits: 'Payments/Deposits',
       pricingPanelOverrides: 'Pricing profile overrides',
       pricingProfile: 'Pricing Profile',
       discountAmount: 'Discount Amount',
@@ -1184,12 +1173,6 @@ export default {
     }
   },
   diagnosis: {
-    labels: {
-      activeDiagnosis: 'Active Diagnosis',
-      date: 'Date',
-      diagnosis: 'Diagnosis',
-      secondaryDiagnosis: 'Secondary Diagnosis'
-    },
     titles: {
       addDiagnosis: 'Add Diagnosis',
       editDiagnosis: 'Edit Diagnosis'
@@ -1278,12 +1261,118 @@ export default {
         appointmentDate: 'Date'
       }
     },
+    billingLineItem: {
+      labels: {
+        category: 'Category',
+        description: 'Description',
+        discount: 'Discount',
+        name: 'Name'
+      }
+    },
+    diagnosis: {
+      labels: {
+        active: 'Active Diagnosis',
+        date: 'Date',
+        diagnosis: 'Diagnosis',
+        secondaryDiagnosis: 'Secondary Diagnosis'
+      }
+    },
+    imaging: {
+      labels: {
+        requestedDate: 'Date Requested',
+        imagingDate: 'Date Completed',
+        requestedBy: 'Requested By',
+        radiologist: 'Radiologists',
+        patient: 'Patient',
+        imagingType: 'Imaging Type',
+        result: 'Result',
+        notes: 'Notes',
+        visit: 'Visit',
+        status: 'Status'
+      },
+      placeholders: {
+        visit: '--Add New Visit--'
+      }
+    },
+    invoice: {
+      labels: {
+        billDate: 'Bill Date',
+        category: 'Category',
+        displayInvoiceNumber: 'Invoice ID',
+        externalInvoiceNumber: 'External Invoice #',
+        lineItems: 'Line Items',
+        name: 'Name',
+        paidTotal: 'Payments/Deposits',
+        patient: 'Patient',
+        payments: 'Payments',
+        paymentProfile: 'Payment Profile',
+        remarks: 'Remarks',
+        remainingBalance: 'Balance Due',
+        status: 'Status',
+        total: 'Total',
+        visit: 'Visit'
+      }
+    },
+    lab: {
+      labels: {
+        labDate: 'Date Completed',
+        notes: 'Notes',
+        patient: 'Patient',
+        labType: 'Lab Type',
+        requestedBy: 'Requested By',
+        requestedDate: 'Date Requested',
+        result: 'Results',
+        visit: 'Visit',
+        status: 'Status'
+      },
+      placeholders: {
+        visit: '--Add New Visit--'
+      }
+    },
+    lineItemDetail: {
+      labels: {
+        expenseAccount: 'Expense To',
+        name: 'Name',
+        price: 'Price',
+        quantity: 'Quantity',
+        total: 'Total'
+      }
+    },
     patient: {
       labels: {
-        name: 'Name'
+        name: 'Name',
+        displayName: 'Name'
       },
       names: {
         singular: 'Patient'
+      }
+    },
+    payment: {
+      labels: {
+        amount: 'Amount',
+        datePaid: 'Date',
+        expenseAccount: 'Credit To',
+        notes: 'Notes',
+        paymentType: 'Type'
+      }
+    },
+    pricing: {
+      labels: {
+        category: 'Category',
+        expenseAccount: 'Department',
+        name: 'Name',
+        price: 'Price',
+        pricingType: 'Type'
+      }
+    },
+    user: {
+      labels: {
+        displayName: 'Name',
+        displayRole: 'Role',
+        email: 'Email',
+        name: 'Username',
+        password: 'Password',
+        roles: 'Role'
       }
     }
   }
