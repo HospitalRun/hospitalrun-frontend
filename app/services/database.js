@@ -179,7 +179,9 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
       return this.createDB(configs).then((db) => {
         set(this, 'mainDB', db);
         set(this, 'setMainDB', true);
-        if (!get(this, 'standAlone')) {
+        if (get(this, 'standAlone')) {
+          return this.createUsersDB();
+        } else {
           this.setupSubscription(configs);
         }
       });

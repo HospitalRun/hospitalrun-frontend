@@ -9,7 +9,6 @@ const {
     alias
   },
   get,
-  isEmpty,
   RSVP
 } = Ember;
 
@@ -101,10 +100,7 @@ export default BaseAuthenticator.extend(MapOauthParams, OAuthHeaders, {
       });
     }
 
-    let username = credentials.identification;
-    if (typeof username === 'string' && username) {
-      username = username.trim();
-    }
+    let username = this._getUserName(credentials);
     let data = { name: username, password: credentials.password };
     return this._makeRequest(data).then((user) => {
       if (user.error) {
@@ -144,29 +140,9 @@ export default BaseAuthenticator.extend(MapOauthParams, OAuthHeaders, {
 
   _authenticateStandAlone(credentials) {
     let usersDB = get(this, 'usersDB');
-    if (isEmpty(usersDB)) {
-      let database = get(this, 'database');
-      return database.createUsersDB().then((createdDB) => {
-        return this._finishStandAloneAuth.bind(credentials, createdDB);
-      });
-    } else {
-      return this._finishStandAloneAuth(credentials, usersDB);
-    }
-  },
-
-  // Based on https://github.com/hoodiehq/hoodie-account-server-api/blob/master/lib/utils/validate-password.js
-  _checkPassword(password, salt, iterations, derivedKey, callback) {
-    crypto.pbkdf2(password, salt, iterations, 20, 'sha1', function(error, derivedKeyCheck) {
-      if (error) {
-        return callback(error);
-      }
-      callback(null, derivedKeyCheck.toString('hex') === derivedKey);
-    });
-  },
-
-  _finishStandAloneAuth(credentials, usersDB) {
     return new RSVP.Promise((resolve, reject) => {
-      usersDB.get(`org.couchdb.user:${credentials.identification}`).then((user) => {
+      let username = this._getUserName(credentials);
+      usersDB.get(`org.couchdb.user:${username}`).then((user) => {
         let { salt, iterations, derived_key } = user;
         let { password } = credentials;
         this._checkPassword(password, salt, iterations, derived_key, (error, isCorrectPassword) => {
@@ -177,9 +153,19 @@ export default BaseAuthenticator.extend(MapOauthParams, OAuthHeaders, {
             reject(new Error('UNAUTHORIZED'));
           }
           user.role = this._getPrimaryRole(user);
-          resolve(user);
+          this._finishAuth(user, {}).then(resolve, reject);
         });
       }, reject);
+    });
+  },
+
+  // Based on https://github.com/hoodiehq/hoodie-account-server-api/blob/master/lib/utils/validate-password.js
+  _checkPassword(password, salt, iterations, derivedKey, callback) {
+    crypto.pbkdf2(password, salt, iterations, 20, 'sha1', function(error, derivedKeyCheck) {
+      if (error) {
+        return callback(error);
+      }
+      callback(null, derivedKeyCheck.toString('hex') === derivedKey);
     });
   },
 
@@ -193,6 +179,14 @@ export default BaseAuthenticator.extend(MapOauthParams, OAuthHeaders, {
       });
     }
     return primaryRole;
+  },
+
+  _getUserName(credentials) {
+    let username = credentials.identification;
+    if (typeof username === 'string' && username) {
+      username = username.trim();
+    }
+    return username;
   }
 
 });

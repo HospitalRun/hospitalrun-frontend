@@ -87,7 +87,7 @@ function runWithPouchDumpAsyncHelper(app, dumpName, functionToRun) {
         return promise.then(() => db);
       }
     },
-    _createUsersDB() {
+    createUsersDB() {
       return usersDB.installUsersBehavior().then(() => {
         set(this, 'usersDB', usersDB);
         return usersDB.put({
