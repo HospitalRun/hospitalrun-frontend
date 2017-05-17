@@ -16,7 +16,6 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     - g++-4.8
-    - google-chrome-stable
 cache:
   directories:
     - $HOME/.npm
@@ -24,10 +23,9 @@ cache:
 
 before_install:
   - npm config set spin false
-  - npm install -g bower
-  - npm install -g yarn
+  - npm install -g bower phantomjs-prebuilt
   - bower --version
-  - google-chrome --version
+  - phantomjs --version
 
 install:
   - yarn
