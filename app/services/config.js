@@ -64,6 +64,7 @@ export default Ember.Service.extend({
         'config_consumer_key',
         'config_consumer_secret',
         'config_disable_offline_sync',
+        'config_external_search',
         'config_oauth_token',
         'config_token_secret',
         'config_use_google_auth'
