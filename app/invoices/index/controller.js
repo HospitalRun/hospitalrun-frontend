@@ -12,7 +12,6 @@ export default AbstractPagedController.extend({
   queryParams: ['startKey', 'status'],
   actions: {
     printInvoice(invoice) {
-      console.log(invoice);
       this.transitionToRoute('print.invoice', invoice);
     },
     reviewInvoice(invoice) {
