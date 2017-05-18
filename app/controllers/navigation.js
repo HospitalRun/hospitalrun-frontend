@@ -32,7 +32,12 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
     invalidateSession() {
       let session = this.get('session');
       if (session.get('isAuthenticated')) {
-        session.invalidate();
+        session.invalidate().catch(() => {
+          let i18n = this.get('i18n');
+          let message = i18n.t('navigation.messages.logoutFailed');
+          let title = i18n.t('navigation.titles.logoutFailed');
+          this.displayAlert(title, message);
+        });
       }
     },
 

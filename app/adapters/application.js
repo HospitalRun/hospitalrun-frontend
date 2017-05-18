@@ -16,10 +16,10 @@ const {
 } = Ember;
 
 export default Adapter.extend(CheckForErrors, {
-  config: Ember.inject.service(),
+  ajax: Ember.inject.service(),
   database: Ember.inject.service(),
   db: reads('database.mainDB'),
-  standAlone: reads('config.standAlone'),
+  usePouchFind: reads('database.usePouchFind'),
 
   _specialQueries: [
     'containsValue',
@@ -29,66 +29,65 @@ export default Adapter.extend(CheckForErrors, {
   _esDefaultSize: 25,
 
   _executeContainsSearch(store, type, query) {
-    let standAlone = get(this, 'standAlone');
-    if (standAlone) {
+    let usePouchFind = get(this, 'usePouchFind');
+    if (usePouchFind) {
       return this._executePouchDBFind(store, type, query);
     }
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      let typeName = this.getRecordTypeName(type);
-      let searchUrl = `/search/hrdb/${typeName}/_search`;
-      if (query.containsValue && query.containsValue.value) {
-        let queryString = '';
-        query.containsValue.keys.forEach((key) => {
-          if (!Ember.isEmpty(queryString)) {
-            queryString = `${queryString} OR `;
-          }
-          let queryValue = query.containsValue.value;
-          switch (key.type) {
-            case 'contains': {
-              queryValue = `*${queryValue}*`;
-              break;
-            }
-            case 'fuzzy': {
-              queryValue = `${queryValue}~`;
-              break;
-            }
-          }
-          queryString = `${queryString}data.${key.name}:${queryValue}`;
-        });
-        let successFn = (results) => {
-          if (results && results.hits && results.hits.hits) {
-            let resultDocs = Ember.A(results.hits.hits).map((hit) => {
-              let mappedResult = hit._source;
-              mappedResult.id = hit._id;
-              return mappedResult;
-            });
-            let response = {
-              rows: resultDocs
-            };
-            this._handleQueryResponse(response, store, type).then(resolve, reject);
-          } else if (results.rows) {
-            this._handleQueryResponse(results, store, type).then(resolve, reject);
-          } else {
-            reject('Search results are not valid');
-          }
-        };
-
-        if (Ember.isEmpty(query.size)) {
-          query.size = this.get('_esDefaultSize');
+    let typeName = this.getRecordTypeName(type);
+    let searchUrl = `/search/hrdb/${typeName}/_search`;
+    if (query.containsValue && query.containsValue.value) {
+      let queryString = '';
+      query.containsValue.keys.forEach((key) => {
+        if (!Ember.isEmpty(queryString)) {
+          queryString = `${queryString} OR `;
         }
-
-        Ember.$.ajax(searchUrl, {
-          dataType: 'json',
-          data: {
-            q: queryString,
-            size: this.get('_esDefaultSize')
-          },
-          success: successFn
-        });
-      } else {
-        reject('invalid query');
+        let queryValue = query.containsValue.value;
+        switch (key.type) {
+          case 'contains': {
+            queryValue = `*${queryValue}*`;
+            break;
+          }
+          case 'fuzzy': {
+            queryValue = `${queryValue}~`;
+            break;
+          }
+        }
+        queryString = `${queryString}data.${key.name}:${queryValue}`;
+      });
+      let ajax = get(this, 'ajax');
+      if (Ember.isEmpty(query.size)) {
+        query.size = this.get('_esDefaultSize');
       }
-    });
+
+      return ajax.request(searchUrl, {
+        dataType: 'json',
+        data: {
+          q: queryString,
+          size: this.get('_esDefaultSize')
+        }
+      }).then((results) => {
+        if (results && results.hits && results.hits.hits) {
+          let resultDocs = Ember.A(results.hits.hits).map((hit) => {
+            let mappedResult = hit._source;
+            mappedResult.id = hit._id;
+            return mappedResult;
+          });
+          let response = {
+            rows: resultDocs
+          };
+          return this._handleQueryResponse(response, store, type);
+        } else if (results.rows) {
+          return this._handleQueryResponse(results, store, type);
+        } else {
+          throw new Error('Search results are not valid');
+        }
+      }).catch(() => {
+        // Try pouch db find if ajax fails
+        return this._executePouchDBFind(store, type, query);
+      });
+    } else {
+      throw new Error('invalid query');
+    }
   },
 
   _executePouchDBFind(store, type, query) {
