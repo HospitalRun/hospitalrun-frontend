@@ -95,7 +95,7 @@
     "hospitalrun-dblisteners": "1.0.0-beta",
     "hospitalrun-server-routes": "1.0.0-beta",
     "loader.js": "^4.0.11",
-    "nano": "6.2.0",
+    "nano": "6.3.0",
     "pouchdb": "6.2.0",
     "pouchdb-adapter-memory": "6.2.0",
     "pouchdb-list": "^1.1.0",
