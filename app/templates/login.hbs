@@ -9,6 +9,9 @@
       {{#if errorMessage}}
         <div class="alert alert-danger form-signin-alert" role="alert">{{t 'login.messages.error'}}</div>
       {{/if}}
+      {{#if offlineError}}
+        <div class="alert alert-danger form-signin-alert" role="alert">{{t 'login.messages.offlineError'}}</div>
+      {{/if}}
       <div class="form-group">
         {{input id='identification' value=identification placeholder=(t 'login.labels.username') class='form-control'}}
       </div>
