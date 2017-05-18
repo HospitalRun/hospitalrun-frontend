@@ -10,7 +10,6 @@ export default AbstractIndexRoute.extend({
     return store.findAll('text-expansion').then((result) => {
       return result.filter((model) => {
         let isNew = model.get('isNew');
-        console.log(`${model.get('from')} ${isNew}`);
         return !isNew;
       });
     });
