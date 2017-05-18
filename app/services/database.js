@@ -1,9 +1,11 @@
-/* global buildPouchFindIndexes */
 import Ember from 'ember';
 import createPouchViews from 'hospitalrun/utils/pouch-views';
 import List from 'npm:pouchdb-list';
+import OAuthHeaders from 'hospitalrun/mixins/oauth-headers';
 import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
+import PouchFindIndexes from 'hospitalrun/mixins/pouch-find-indexes';
 import PouchDBUsers from 'npm:pouchdb-users';
+import PouchDBWorker from 'npm:worker-pouch/client';
 import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
 
 const {
@@ -18,38 +20,27 @@ const {
   set
 } = Ember;
 
-export default Service.extend({
+export default Service.extend(OAuthHeaders, PouchFindIndexes, {
   mainDB: null, // Server DB
   oauthHeaders: null,
-  setMainDB: false,
   requireLogin: true,
+  setMainDB: false,
+  usePouchFind: false,
   usersDB: null, // local users database for standAlone mode
 
   config: inject.service(),
   standAlone: alias('config.standAlone'),
 
-  createDB(configs, pouchOptions) {
+  createDB(configs) {
     let standAlone = get(this, 'standAlone');
-    if (standAlone) {
-      return this._createLocalDB('localMainDB', pouchOptions).then((localDb) => {
-        buildPouchFindIndexes(localDb);
-        return localDb;
-      });
+    if (standAlone || !configs.config_external_search) {
+      set(this, 'usePouchFind', true);
     }
-    return new RSVP.Promise((resolve, reject) => {
-      let url = `${document.location.protocol}//${document.location.host}/db/main`;
-
-      this._createRemoteDB(url, pouchOptions)
-      .catch((err) => {
-        if ((err.status && err.status === 401) || configs.config_disable_offline_sync === true) {
-          reject(err);
-        } else {
-          return this._createLocalDB('localMainDB', pouchOptions);
-        }
-      }).then((db) => resolve(db))
-      .catch((err) => reject(err));
-
-    }, 'initialize application db');
+    if (standAlone) {
+      let localDb = this._createLocalDB();
+      return RSVP.resolve(localDb);
+    }
+    return this._createMainDB(configs);
   },
 
   getDBInfo() {
@@ -67,7 +58,7 @@ export default Service.extend({
           resolve(doc);
         }
       });
-    });
+    }, `getDocFromMainDB ${docId}`);
   },
 
   /**
@@ -116,6 +107,10 @@ export default Service.extend({
     return get(this, 'mainDB').rel.makeDocID(idInfo);
   },
 
+  getRemoteDBUrl() {
+    return `${document.location.protocol}//${document.location.host}/db/main`;
+  },
+
   handleErrorResponse(err) {
     if (!err.status) {
       if (err.errors && err.errors.length > 0) {
@@ -149,7 +144,7 @@ export default Service.extend({
           reject(err);
         });
       }, reject);
-    });
+    }, 'loadDBFromDump');
   },
 
   queryMainDB(queryParams, mapReduce) {
@@ -174,47 +169,215 @@ export default Service.extend({
           }
         });
       }
-    });
+    }, 'queryMainDB');
   },
 
-  setup(configs) {
+  setup() {
     PouchDB.plugin(List);
-    PouchDB.plugin(PouchDBUsers);
-    let pouchOptions = this._getOptions(configs);
-    return this.createDB(configs, pouchOptions).then((db) => {
-      set(this, 'mainDB', db);
-      set(this, 'setMainDB', true);
-      if (get(this, 'standAlone')) {
-        return this._createUsersDB();
-      }
-    });
-  },
-
-  _createRemoteDB(remoteUrl, pouchOptions) {
-    return new RSVP.Promise(function(resolve, reject) {
-      let remoteDB = new PouchDB(remoteUrl, pouchOptions);
-      // remote db lazy created, check if db created correctly
-      remoteDB.info().then(()=> {
-        createPouchViews(remoteDB);
-        resolve(remoteDB);
-      }).catch((err) => {
-        console.log('error with remote db:', JSON.stringify(err, null, 2));
-        reject(err);
+    let config = get(this, 'config');
+    return config.loadConfig().then((configs) => {
+      return this.createDB(configs).then((db) => {
+        set(this, 'mainDB', db);
+        set(this, 'setMainDB', true);
+        if (get(this, 'standAlone')) {
+          return this.createUsersDB();
+        } else {
+          this.setupSubscription(configs);
+        }
       });
     });
   },
 
-  _createLocalDB(localDBName, pouchOptions) {
-    return new RSVP.Promise(function(resolve, reject) {
-      let localDB = new PouchDB(localDBName, pouchOptions);
-      localDB.info().then(() => {
-        createPouchViews(localDB);
-        resolve(localDB);
-      }).catch((err) => reject(err));
+  setupSubscription(configs) {
+    if (!configs.config_disable_offline_sync && navigator.serviceWorker) {
+      let config = get(this, 'config');
+      let localDB = this._createLocalDB();
+      return config.getConfigValue('push_subscription').then((pushSub) => {
+        if (isEmpty(pushSub)) {
+          return localDB.id().then((dbId) => {
+            let dbInfo = {
+              id: dbId,
+              remoteSeq: 0
+            };
+            return this._getPermissionAndSubscribe(dbInfo);
+          }).then(() => {
+            return this._requestSync();
+          });
+        } else {
+          return this._requestSync();
+        }
+      });
+    }
+  },
+
+  _askPermission() {
+    return new RSVP.Promise((resolve, reject) => {
+      let permissionResult = Notification.requestPermission((result) => {
+        resolve(result);
+      });
+
+      if (permissionResult) {
+        permissionResult.then(resolve, reject);
+      }
+    })
+    .then((permissionResult) => {
+      if (permissionResult !== 'granted') {
+        throw new Error('We weren\'t granted permission.');
+      }
+      return permissionResult;
+    }, 'Ask for notification permisson');
+  },
+
+  _createLocalDB(pouchOptions) {
+    let localDB = new PouchDB('localMainDB', pouchOptions);
+    createPouchViews(localDB);
+    this.buildPouchFindIndexes(localDB);
+    return localDB;
+  },
+
+  _createMainDB(configs) {
+    this._setOAuthHeaders(configs);
+    if (!configs.config_disable_offline_sync && navigator.serviceWorker) {
+      // Use pouch-worker to run the DB in the service worker
+      return navigator.serviceWorker.ready.then(() => {
+        if (navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage) {
+          PouchDB.adapter('worker', PouchDBWorker);
+          let localDB = this._createLocalDB({
+            adapter: 'worker',
+            worker: () => navigator.serviceWorker
+          });
+          return localDB;
+        } else {
+          return this._createRemoteDB(configs);
+        }
+      });
+    } else {
+      return this._createRemoteDB(configs);
+    }
+  },
+
+  _createRemoteDB(configs) {
+    let remoteUrl = this.getRemoteDBUrl();
+    let pouchOptions = this._getOptions(configs);
+    let remoteDB = new PouchDB(remoteUrl, pouchOptions);
+    return remoteDB.info().then(()=> {
+      createPouchViews(remoteDB);
+      return remoteDB;
+    }).catch((err) => {
+      console.log('error with remote db:', JSON.stringify(err, null, 2));
+      throw err;
     });
   },
 
-  _createUsersDB() {
+  _getNotificationPermissionState() {
+    if (navigator.permissions) {
+      return navigator.permissions.query({ name: 'notifications' })
+      .then((result) => {
+        return result.state;
+      });
+    }
+    return RSVP.resolve(Notification.permission);
+  },
+
+  _getPermissionAndSubscribe(dbInfo) {
+    return new RSVP.Promise((resolve, reject) => {
+      navigator.serviceWorker.ready.then((registration) => {
+        return this._getNotificationPermissionState().then((permission) => {
+          if (permission !== 'granted') {
+            return this._askPermission().then(() => {
+              return this._subscribeUserToPush(registration, dbInfo).then(resolve, reject);
+            });
+          } else {
+            return this._subscribeUserToPush(registration, dbInfo).then(resolve, reject);
+          }
+        });
+      });
+    }, 'Get notification permission and subscribe to push');
+  },
+
+  _urlBase64ToUint8Array(base64String) {
+    let padding = '='.repeat((4 - base64String.length % 4) % 4);
+    let base64 = (base64String + padding)
+      .replace(/\-/g, '+')
+      .replace(/_/g, '/');
+
+    let rawData = window.atob(base64);
+    let outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  },
+
+  _sendSubscriptionToServer(subscription, dbInfo) {
+    return new RSVP.Promise((resolve, reject) => {
+      return fetch('/save-subscription/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          dbInfo,
+          subscription
+        })
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error('Bad status code from server.');
+        }
+        return response.json();
+      }).then((responseData) => {
+        if (responseData.ok !== true) {
+          throw new Error('There was a bad response from server.', JSON.stringify(responseData, null, 2));
+        }
+        resolve(responseData);
+      }).catch(reject);
+    }, 'Send push subscription to server');
+  },
+
+  _subscribeUserToPush(registration, dbInfo) {
+    let config = get(this, 'config');
+    return config.getConfigValue('push_public_key').then((serverKey) => {
+      if (!serverKey) {
+        return;
+      }
+      let subscribeOptions = {
+        userVisibleOnly: true,
+        applicationServerKey: this._urlBase64ToUint8Array(serverKey)
+      };
+      return new RSVP.Promise((resolve, reject) => {
+        return registration.pushManager.subscribe(subscribeOptions)
+        .then((pushSubscription) => {
+          let subInfo = JSON.stringify(pushSubscription);
+          subInfo = JSON.parse(subInfo);
+          return this._sendSubscriptionToServer(subInfo, dbInfo);
+        }).then((savedSubscription) => {
+          let configDB = config.getConfigDB();
+          return configDB.put({
+            _id: 'config_push_subscription',
+            value: savedSubscription.id
+          }).then(resolve, reject);
+        }).catch(reject);
+      });
+    }, 'Subscribe user to push service.');
+  },
+
+  _requestSync() {
+    return new RSVP.Promise((resolve, reject) => {
+      let messageChannel = new MessageChannel();
+      messageChannel.port1.onmessage = function(event) {
+        if (event.data.error) {
+          reject(event.data.error);
+        } else {
+          resolve(event.data);
+        }
+      };
+      navigator.serviceWorker.controller.postMessage('remotesync', [messageChannel.port2]);
+    }, 'Request offline sync');
+  },
+
+  createUsersDB() {
+    PouchDB.plugin(PouchDBUsers);
     let usersDB = new PouchDB('_users');
     return usersDB.installUsersBehavior().then(() => {
       set(this, 'usersDB', usersDB);
@@ -239,7 +402,7 @@ export default Service.extend({
 
   _getOptions(configs) {
     let pouchOptions = {};
-    if (configs && configs.config_use_google_auth) {
+    if (configs) {
       pouchOptions.ajax = {
         timeout: 30000
       };
@@ -250,13 +413,7 @@ export default Service.extend({
         || isEmpty(configs.config_token_secret)) {
         throw Error('login required');
       } else {
-        let headers = {
-          'x-oauth-consumer-secret': configs.config_consumer_secret,
-          'x-oauth-consumer-key': configs.config_consumer_key,
-          'x-oauth-token-secret': configs.config_token_secret,
-          'x-oauth-token': configs.config_oauth_token
-        };
-        set(this, 'oauthHeaders', headers);
+        let headers = get(this, 'oauthHeaders');
         pouchOptions.ajax.headers = headers;
       }
     }
@@ -279,6 +436,11 @@ export default Service.extend({
       });
     }
     return mappedRows;
+  },
+
+  _setOAuthHeaders(configs) {
+    let headers = this.getOAuthHeaders(configs);
+    set(this, 'oauthHeaders', headers);
   }
 
 });
