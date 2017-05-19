@@ -82,21 +82,25 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
     let session = get(this, 'session');
     let isAuthenticated = session && get(session, 'isAuthenticated');
     let config = get(this, 'config');
-    return config.setup().then(function(configs) {
+    let database = get(this, 'database');
+
+    return config.setup().then(() => {
+      let standAlone = config.get('standAlone');
       if (transition.targetName !== 'finishgauth' && transition.targetName !== 'login') {
-        let standAlone = config.get('standAlone');
         set(this, 'shouldSetupUserRole', true);
         if (isAuthenticated || standAlone) {
-          return get(this, 'database').setup(configs)
+          return database.setup()
             .catch(() => {
               // Error thrown indicates missing auth, so invalidate session.
               session.invalidate();
             });
         }
+      } else if (transition.targetName === 'login' && standAlone) {
+        return database.createUsersDB();
       } else if (transition.targetName === 'finishgauth') {
         set(this, 'shouldSetupUserRole', false);
       }
-    }.bind(this));
+    });
   },
 
   afterModel() {
