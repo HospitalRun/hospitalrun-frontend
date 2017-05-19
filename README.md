@@ -1,7 +1,7 @@
-HospitalRun frontend
+# HospitalRun frontend
 ========
 
-_Ember frontend for HospitalRun_
+>Ember frontend for HospitalRun
 
 [![Build Status](https://travis-ci.org/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.org/HospitalRun/hospitalrun-frontend) [![CouchDB](https://img.shields.io/badge/couchdb-1.x-green.svg)](http://couchdb.apache.org/)
 
@@ -149,9 +149,6 @@ To run the test suite locally while developing, just run `ember test` from the p
 
 Tests will also run automatically via Travis CI when you push a branch to the repository or a pull request. You can view output by going to the Travis test status from the Pull Request merge box.
 
-## Contributing
-
-Again, contributions are welcome via pull requests and issues.  Please see our [contributing guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md) for more details.
 
 **Seriously, please read the [Contribution Guide](https://github.com/hospitalrun/hospitalrun-frontend/blob/master/.github/CONTRIBUTING.md).**
 
