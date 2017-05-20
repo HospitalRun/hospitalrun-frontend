@@ -1,0 +1,26 @@
+#!/bin/sh
+
+sudo mkdir -p /var/run/couchdb
+sudo chown couchdb:couchdb /var/run/couchdb
+
+nvm install 6
+nvm use 6
+nvm alias default 6
+
+npm install -g npm               #optional
+npm cache clean -f               #optional
+npm install -g n                 #optional
+sudo n stable                    #optional
+npm install -g ember-cli@latest
+npm install -g bower
+npm install
+bower install
+npm install -g phantomjs-prebuilt
+
+sudo su couchdb -c /usr/bin/couchdb &
+sleep 5
+
+./script/initcouch.sh
+cp ./server/config-example.js ./server/config.js
+
+./script/test
