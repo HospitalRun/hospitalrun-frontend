@@ -1,4 +1,7 @@
 #!/bin/sh
+# Usage: source ./script/setupcloud9
+# Sets up the development environment on a cloud9 workspace and runs the tests to verify.
+
 
 sudo mkdir -p /var/run/couchdb
 sudo chown couchdb:couchdb /var/run/couchdb
@@ -7,10 +10,10 @@ nvm install 6
 nvm use 6
 nvm alias default 6
 
-npm install -g npm               #optional
-npm cache clean -f               #optional
-npm install -g n                 #optional
-sudo n stable                    #optional
+npm install -g npm
+npm cache clean -f
+npm install -g n
+sudo n stable
 npm install -g ember-cli@latest
 npm install -g bower
 npm install
