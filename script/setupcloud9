@@ -3,12 +3,23 @@
 # Sets up the development environment on a cloud9 workspace and runs the tests to verify.
 
 
-sudo mkdir -p /var/run/couchdb
-sudo chown couchdb:couchdb /var/run/couchdb
+if nvm > /dev/null 2>&1; then
+    echo "setting proper node version"
+    
+else
+    echo "Cannot find nvm. This probably means you are running this script in its own shell. Try again with source ./script/setupcloud9"
+    return 1
+fi
+
 
 nvm install 6
 nvm use 6
 nvm alias default 6
+
+
+sudo mkdir -p /var/run/couchdb
+sudo chown couchdb:couchdb /var/run/couchdb
+
 
 npm install -g npm
 npm cache clean -f
