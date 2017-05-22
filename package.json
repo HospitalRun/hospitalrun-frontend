@@ -45,7 +45,6 @@
     "csv-parse": "^1.2.0",
     "devtron": "1.4.0",
     "electron-prebuilt-compile": "1.6.2",
-    "electron-protocol-serve": "1.3.0",
     "electron-rebuild": "^1.5.7",
     "ember-ajax": "^3.0.0",
     "ember-browserify": "^1.1.12",
@@ -110,7 +109,8 @@
   },
   "dependencies": {
     "electron-compile": "^6.3.0",
-    "electron-localshortcut": "^1.1.1"
+    "electron-localshortcut": "^1.1.1",
+    "electron-protocol-serve": "1.3.0"    
   },
   "ember-addon": {
     "paths": [
