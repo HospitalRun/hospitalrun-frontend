@@ -40,7 +40,7 @@ module.exports = {
     icon: 'assets/icons/favicon',
     name: 'HospitalRun',
     noMSI: true,
-    setupIcon: path.join(__dirname, '../../../assets/icons/favicon.ico'),
+    setupIcon: path.join(__dirname, '../assets/icons/favicon.ico'),
     setupExe: 'HospitalRun.exe',
     title: 'HospitalRun'/* ,
      certificateFile: '',
