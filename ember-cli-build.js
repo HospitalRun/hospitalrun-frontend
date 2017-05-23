@@ -7,6 +7,11 @@ module.exports = function(defaults) {
     babel: {
       optional: ['es6.spec.symbols'],
       includePolyfill: true
+    },
+    minifyJS: {
+      options: {
+        exclude: ['**/service-worker.js']
+      }
     }
   });
 
