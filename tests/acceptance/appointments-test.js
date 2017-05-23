@@ -49,6 +49,28 @@ test('visiting /appointments/missed', function(assert) {
   });
 });
 
+test('test appointment for today', function(assert) {
+  runWithPouchDump('appointments', function() {
+    authenticateUser();
+    visit('/appointments/today');
+    assert.equal(find('.appointment-date').length, 0, 'should have 0 appointment today');
+    visit('/appointments/edit/new');
+    andThen(function() {
+      assert.equal(currentURL(), '/appointments/edit/new');
+      findWithAssert('button:contains(Cancel)');
+      findWithAssert('button:contains(Add)');
+    });
+
+    createAppointment(assert);
+
+    visit('/appointments/today');
+    andThen(() => {
+      assert.equal(currentURL(), '/appointments/today');
+      assert.equal(find('.appointment-status').text(), 'Scheduled', 'should have 1 appointment today');
+    });
+  });
+});
+
 test('Creating a new appointment', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();

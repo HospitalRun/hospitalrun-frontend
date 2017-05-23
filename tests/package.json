@@ -1,0 +1,4 @@
+{
+  "name": "ember-electron-test",
+  "main": "electron.js"
+}

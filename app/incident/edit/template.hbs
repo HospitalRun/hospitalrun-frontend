@@ -75,7 +75,7 @@
       {{/if}}
     </div>
     <div class="row">
-      {{em-text label=(t 'incident.labels.description') property="description" class="required col-sm-12 incident-description" rows=3}}
+      {{expand-text label=(t 'incident.labels.description') property="description" class="required col-sm-12 incident-description" rows=3}}
     </div>
 
     {{#if canManageIncident}}

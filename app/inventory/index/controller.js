@@ -1,5 +1,9 @@
+import Ember from 'ember';
 import AbstractPagedController from 'hospitalrun/controllers/abstract-paged-controller';
 import UserSession from 'hospitalrun/mixins/user-session';
+
+const { computed } = Ember;
+
 export default AbstractPagedController.extend(UserSession, {
   startKey: [],
   canAdd: function() {
@@ -8,5 +12,9 @@ export default AbstractPagedController.extend(UserSession, {
 
   canFulfill: function() {
     return this.currentUserCan('fulfill_inventory');
-  }.property()
+  }.property(),
+
+  currentUserName: computed('', function() {
+    return this.getUserName();
+  })
 });

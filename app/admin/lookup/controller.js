@@ -348,7 +348,7 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
       confirmDeleteValue(value) {
         let i18n = this.get('i18n');
         let title = i18n.t('admin.lookup.titles.deleteLookupValue');
-        let message = i18n.t('admin.lookup.messages.deleteLookupValue', { value });
+        let message = i18n.t('messages.delete', { name: value });
         this.displayConfirm(title, message, 'deleteValue', Ember.Object.create({
           valueToDelete: value
         }));
