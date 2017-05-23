@@ -30,11 +30,11 @@ Contributions are welcome via pull requests and issues.  Please see our [contrib
 ## Installation
 To install the frontend please do the following:
 
-1. Make sure you have installed [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-2. Make sure you have installed [Node.js](https://nodejs.org/en/download/). Versions 6.0.0 and higher should work
+1. Make sure you have installed [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+2. Make sure you have installed [Node.js](https://nodejs.org/en/download/). Versions 6.0.0 and higher should work.
 3. Install [ember-cli latest](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@latest`.
    Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install ember-cli.
-4. Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`
+4. Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`.
 5. Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and run `script/bootstrap`.
   - **Note:** *If you are using Windows with `cygwin` please run the script in the following way to remove trailing `\r` characters:*
   ``` bash
@@ -42,20 +42,20 @@ To install the frontend please do the following:
   ```
   - **Note:** *Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install PhantomJS2; also, Windows users must run with [Cygwin](http://cygwin.org/)).*
   - **Note:** *If you just want to use the project, cloning is the best option. However, if you wish to contribute to the project, you will need to fork the project first, and then clone your `hospitalrun-frontend` fork and make your contributions via a branch on your fork.*
-6. Install and configure [CouchDB](http://couchdb.apache.org/)
-    1. Download and install CouchDB from http://couchdb.apache.org/#download
-    2. Start CouchDB
+6. Install and configure [CouchDB](http://couchdb.apache.org/):
+    1. Download and install CouchDB from http://couchdb.apache.org/#download.
+    2. Start CouchDB:
         1. If you downloaded the installed app, navigate to CouchDB and double-click on the application.
-        2. If you installed CouchDB via Homebrew or some other command line tool, launch the tool from the command line
+        2. If you installed CouchDB via Homebrew or some other command line tool, launch the tool from the command line.
         3. If you're stuck with the installation, check out the instructions published here: http://docs.couchdb.org/en/1.6.1/install/index.html
-    3. Verify that CouchDB is running by successfully navigating to 127.0.0.1:5984/_utils. If that fails, check the installation guide for CouchDB http://docs.couchdb.org/en/1.6.1/install/index.html
+    3. Verify that CouchDB is running by successfully navigating to 127.0.0.1:5984/_utils.  If that fails, check the installation guide for CouchDB: http://docs.couchdb.org/en/1.6.1/install/index.html.
     4. Create admin user:
-        1. If you are running CouchDB 1.x
-            1. If you have just installed CouchDB and have no admin user, please run `./script/initcouch.sh` in the folder you cloned the HospitalRun repo.  A user `hradmin` will be created with password: `test`.
+        1. If you are running CouchDB 1.x:
+            1. If you have just installed CouchDB and have no admin user, please run `./script/initcouch.sh` in the folder you cloned the HospitalRun repo.  A user `hradmin` will be created with password `test`.
             2. If you already have a CouchDB admin user, please run `./script/initcouch.sh USER PASS` in the folder you cloned the HospitalRun repo.  `USER` and `PASS` are the CouchDB admin user credentials.
-        2. If you are running CouchDB 2.x (experimental)
+        2. If you are running CouchDB 2.x (experimental):
             1. HospitalRun currently does not fully support CouchDB 2.x, but you are welcome to try using it.  Most functionality should work but currently creating and/or editing users does not work in CouchDB 2.x.  See https://github.com/HospitalRun/hospitalrun-frontend/issues/953 for more details.
-            2. If you have just installed CouchDB and have no admin user, please run `./script/initcouch2.sh` in the folder you cloned the HospitalRun repo.  A user `hradmin` will be created with password: `test`.
+            2. If you have just installed CouchDB and have no admin user, please run `./script/initcouch2.sh` in the folder you cloned the HospitalRun repo.  A user `hradmin` will be created with password `test`.
             3. If you already have a CouchDB admin user, please run `./script/initcouch2.sh USER PASS` in the folder you cloned the HospitalRun repo.  `USER` and `PASS` are the CouchDB admin user credentials.
 7. Copy the `server/config-example.js` to `server/config.js` in the folder you cloned the HospitalRun repo.  If you already had a CouchDB admin user that you passed into the couch script (`./script/initcouch.sh USER PASS`), then you will need to modify the `couchAdminUser` and `couchAdminPassword` values in `server/config.js` to reflect those credentials. (*Note: If on Mac, you need to make sure CouchDB can be run. See [How to open an app from a unidentified developer and exempt it from Gatekeeper](https://support.apple.com/en-us/HT202491).*)
 8. Verify that CouchDB is running by visiting: http://127.0.0.1:5984/_utils/#login
@@ -78,13 +78,13 @@ To run HospitalRun with [Docker](https://www.docker.com/) please do the followin
 - Go to [https://docs.docker.com/engine/installation](https://docs.docker.com/engine/installation) to download and install Docker.
 - Clone the repository with the command `git clone https://github.com/HospitalRun/hospitalrun-frontend.git`.
 - Change to the hospitalrun-frontend directory `cd hospitalrun-frontend`.
-- Build the HospitalRun image with `docker build -t hospitalrun-frontend .`
+- Build the HospitalRun image with `docker build -t hospitalrun-frontend .`.
 - Execute `docker run -it --name couchdb -d couchdb` to create the couchdb container.
 - Execute `docker run -it --name hospitalrun-frontend -p 4200:4200 --link couchdb:couchdb -d hospitalrun-frontend` to create the HospitalRun container.
 
 ### Running with Docker Compose
 To run HospitalRun with Docker-compose please do the following:
-- Go to [https://docs.docker.com/compose/install](https://docs.docker.com/compose/install/) to install Docker-compose
+- Go to [https://docs.docker.com/compose/install](https://docs.docker.com/compose/install/) to install Docker-compose.
 - Execute 'docker-compose up' to reduce the steps to build and run the application.
 
 ### Accessing HospitalRun with Docker Toolbox
@@ -128,7 +128,7 @@ Fixtures are [PouchDB](https://pouchdb.com/) dumps that are generated with [pouc
 
 To create a fixture, run `pouchdb-dump http://localhost:5984/main -u hradmin -p test | cat > tests/fixtures/${name_of_fixture}.txt`.
 
-To use a fixture, use `runWithPouchDump(${name_of_fixture}, function(){..});` in your acceptance test. For example,
+To use a fixture, use `runWithPouchDump(${name_of_fixture}, function(){..});` in your acceptance test. For example:
 
 ```js
 test('visiting /patients', function(assert) {
