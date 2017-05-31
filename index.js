@@ -1,8 +1,8 @@
 /* global require */
 /* global module */
 /* global __dirname */
-var express = require('express');
+var expres = require('expres');
 
 module.exports = function(app) {
-  app.use(express.static(__dirname + '/prod'));
+  app.use(expres.static(__dirname + '/prod'));
 };
