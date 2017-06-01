@@ -1,4 +1,5 @@
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
+import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import Ember from 'ember';
 import moment from 'moment';
 import { translationMacro as t } from 'ember-i18n';
@@ -8,7 +9,7 @@ const {
   inject
 } = Ember;
 
-export default AbstractEditRoute.extend({
+export default AbstractEditRoute.extend(AddToPatientRoute, {
   editTitle: t('operativePlan.titles.editTitle'),
   modelName: 'operative-plan',
   newTitle: t('operativePlan.titles.newTitle'),

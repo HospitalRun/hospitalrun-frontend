@@ -51,6 +51,7 @@ test('Check In/Check Out Existing outpatient', function(assert) {
     andThen(function() {
       assert.equal(find('.modal-title').text(), 'Patient Check Out', 'Patient checkout confirmation displays');
       click('button:contains(Ok)');
+      waitToAppear('.modal-title:contains(Patient Checked Out)');
     });
     andThen(function() {
       assert.equal(find('.modal-title').text(), 'Patient Checked Out', 'Patient has been checked out confirmation');

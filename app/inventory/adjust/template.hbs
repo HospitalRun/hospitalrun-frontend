@@ -23,7 +23,7 @@
       }}
       {{number-input property="adjustmentQuantity" label=(t 'labels.quantity') class="col-sm-3 required"}}
     </div>
-    {{em-text label=(t 'inventory.labels.reason') property="reason" rows=3}}
+    {{expand-text label=(t 'inventory.labels.reason') property="reason" rows=3}}
     <div class="row">
       {{date-picker property="dateCompleted" label=(t 'inventory.labels.adjustmentDate') class="col-sm-4 required"}}
       {{select-or-typeahead property="expenseAccount" label=(t 'inventory.labels.expense') list=expenseAccountList selection=model.expenseAccount  class="col-sm-8"}}

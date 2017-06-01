@@ -1,35 +1,35 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false }}
     {{#if model.selectPatient}}
-      {{patient-typeahead property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="required test-patient-input"}}
+      {{patient-typeahead property="patientTypeAhead" label=(t 'models.patient.names.singular') content=patientList selection=selectedPatient class="required test-patient-input"}}
     {{else}}
       {{patient-summary patient=model.patient returnTo='appointments.edit' returnToContext=model.id disablePatientLink=model.isNew }}
     {{/if}}
     <div class="row">
       {{#if isAdmissionAppointment}}
-        {{date-picker property="startDate" label=(t 'labels.startDate') showTime=showTime class="col-sm-4 required test-appointment-start"}}
-        {{date-picker property="endDate" label=(t 'labels.endDate') showTime=showTime class="col-sm-4 required test-appointment-end"}}
+        {{date-picker property="startDate" label=(t 'models.appointment.labels.startDate') showTime=showTime class="col-sm-4 required test-appointment-start"}}
+        {{date-picker property="endDate" label=(t 'models.appointment.labels.endDate') showTime=showTime class="col-sm-4 required test-appointment-end"}}
       {{else}}
         {{date-time-picker datePickerClass="required test-appointment-date" label=(t 'labels.date') model=model}}
       {{/if}}
-      {{em-checkbox label=(t 'labels.allDay') property="allDay"  class="col-sm-2 appointment-all-day"}}
+      {{em-checkbox label=(t 'models.appointment.labels.allDay') property="allDay"  class="col-sm-2 appointment-all-day"}}
     </div>
 
     {{#if (eq model.appointmentType 'Surgery')}}
       <div class="row">
         {{select-or-typeahead className="col-sm-6 test-appointment-with" property="provider"
-          label=(t 'labels.with') list=physicianList
+          label=(t 'models.appointment.labels.provider') list=physicianList
           selection=model.provider
         }}
         {{select-or-typeahead className="col-sm-6 test-appointment-location" property="location"
-          label=(t 'labels.location') list=surgeryLocationList
+          label=(t 'models.appointment.labels.location') list=surgeryLocationList
           selection=model.location
         }}
       </div>
     {{else}}
       <div class="row">
         <div class="form-input-group col-sm-6 required test-appointment-type">
-          <label class="control-label" for="startTime">{{t 'labels.type'}}</label>
+          <label class="control-label" for="startTime">{{t 'models.appointment.labels.type'}}</label>
           {{select-list
             content=visitTypes
             optionLabelPath='value'
@@ -41,20 +41,20 @@
           }}
         </div>
         {{select-or-typeahead className="col-sm-6 test-appointment-with" property="provider"
-          label=(t 'labels.with') list=physicianList
+          label=(t 'models.appointment.labels.provider') list=physicianList
           selection=model.provider
         }}
       </div>
       <div class="row">
         {{select-or-typeahead className="col-sm-6 test-appointment-location" property="location"
-          label=(t 'labels.location') list=visitLocationList
+          label=(t 'models.appointment.labels.location') list=visitLocationList
           selection=model.location
         }}
         {{em-select class="form-input-group col-sm-3 test-appointment-status" property="status"
-          label=(t 'labels.status') content=appointmentStatuses
+          label=(t 'models.appointment.labels.status') content=appointmentStatuses
         }}
       </div>
     {{/if}}
-    {{em-text label=(t 'labels.notes') property="notes" rows=3 }}
+    {{expand-text label=(t 'models.appointment.labels.notes') property="notes" rows=3 }}
   {{/em-form}}
 {{/edit-panel}}

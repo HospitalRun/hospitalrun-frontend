@@ -1,29 +1,45 @@
 ---
 language: node_js
 node_js:
-  - "4"
+  - "6"
 
 branches:
   only:
     - "master"
 
-sudo: false
+dist: trusty
+sudo: required
 
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
 cache:
-  directories
+  directories:
     - $HOME/.npm
     - $HOME/.cache # includes bowers cache
 
 before_install:
   - npm config set spin false
-  - npm install -g bower
+  - npm install -g bower phantomjs-prebuilt
   - bower --version
-  - npm install phantomjs-prebuilt
-  - node_modules/phantomjs-prebuilt/bin/phantomjs --version
+  - phantomjs --version
 
 install:
   - npm install
   - bower install
+  - export DISPLAY=':99.0'
+  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
 script:
-  - npm test
+  - npm run $COMMAND
+
+env:
+  matrix:
+  - COMMAND=test
+  - CXX=g++-4.8 COMMAND=electron-test
+
+
+

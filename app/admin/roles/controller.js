@@ -42,7 +42,9 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
       'editInvoice',
       'invoices',
       'overrideInvoice',
-      'pricing'
+      'pricing',
+      'cashier',
+      'listPaidInvoices'
     ]
   }, {
     name: 'patients',
@@ -96,6 +98,17 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
       'addImaging',
       'completeImaging',
       'deleteImaging'
+    ]
+  }, {
+    name: 'incident',
+    capabilities: [
+      'incident',
+      'addIncident',
+      'addIncidentCategory',
+      'deleteIncident',
+      'deleteIncidentCategory',
+      'manageIncidents',
+      'generateIncidentReport'
     ]
   }, {
     name: 'inventory',

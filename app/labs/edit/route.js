@@ -1,15 +1,17 @@
-import Ember from 'ember';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
+import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import ChargeRoute from 'hospitalrun/mixins/charge-route';
+import Ember from 'ember';
 import moment from 'moment';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 import { translationMacro as t } from 'ember-i18n';
 
-export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
+export default AbstractEditRoute.extend(AddToPatientRoute, ChargeRoute, PatientListRoute, {
   editTitle: t('labs.editTitle'),
   modelName: 'lab',
   newTitle: t('labs.newTitle'),
   pricingCategory: 'Lab',
+  customForms: Ember.inject.service(),
 
   actions: {
     returnToAllItems() {
@@ -18,9 +20,12 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, {
   },
 
   getNewData() {
-    return Ember.RSVP.resolve({
+    let newLabData = {
       selectPatient: true,
-      requestDate: moment().startOf('day').toDate()
-    });
+      requestDate: moment().startOf('day').toDate(),
+      customForms: Ember.Object.create()
+    };
+    let customForms = this.get('customForms');
+    return customForms.setDefaultCustomForms(['lab'], newLabData);
   }
 });

@@ -66,7 +66,12 @@ export default AbstractEditController.extend(OperativePlanStatuses, PatientSubmo
     let newPlan = get(this, 'newPlan');
     if (newPlan) {
       let patient = get(this, 'model.patient');
-      patient.save().then(this._finishAfterUpdate.bind(this));
+      patient.save().then(this._finishAfterUpdate.bind(this)).then(()=> {
+        let editTitle = get(this, 'i18n').t('operativePlan.titles.editTitle');
+        let sectionDetails = {};
+        sectionDetails.currentScreenTitle = editTitle;
+        this.send('setSectionHeader', sectionDetails);
+      });
     } else {
       this._finishAfterUpdate();
     }
