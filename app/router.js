@@ -9,11 +9,18 @@ const Router = Ember.Router.extend({
 Router.map(function() {
   this.route('admin', function() {
     this.route('address');
+    this.route('print-header');
     this.route('custom-forms', function() {
       this.route('edit', { path: '/edit/:custom-form_id' });
     });
     this.route('loaddb');
+    this.route('inc-category', {
+      resetNamespace: true
+    }, function() {
+      this.route('edit', { path: '/edit/:inc-category_id' });
+    });
     this.route('lookup', { path: '/' });
+    this.route('textreplace');
     this.route('users', {
       resetNamespace: true
     }, function() {
@@ -29,7 +36,6 @@ Router.map(function() {
     this.route('edit', { path: '/edit/:appointment_id' });
     this.route('search');
     this.route('today');
-    this.route('missed');
     this.route('calendar');
     this.route('theater');
   });
@@ -53,7 +59,14 @@ Router.map(function() {
     this.route('search', { path: '/search/:search_text' });
   });
 
+  this.route('incident', function() {
+    this.route('completed');
+    this.route('edit', { path: '/edit/:incident_id' });
+    this.route('reports');
+  });
+
   this.route('invoices', function() {
+    this.route('cashier');
     this.route('edit', { path: '/edit/:invoice_id' });
     this.route('search', { path: '/search/:search_text' });
   });
@@ -103,6 +116,10 @@ Router.map(function() {
     }, function() {
       this.route('edit', { path: '/edit/:procedure_id' });
     });
+    this.route('reports', function() {
+      this.route('edit', { path: '/edit/:report_id' });
+    });
+
   });
 });
 

@@ -1,50 +1,106 @@
-const takeAPicture = 'Take a Picture';
-const uploadAFile = 'Upload a File';
-
 import Ember from 'ember';
+
+const TAKE_PICTURE = 'takeAPicture';
+const UPLOAD_FILE = 'uploadAFile';
+const FILE_SOURCES = [TAKE_PICTURE, UPLOAD_FILE];
+
+const { computed, get, inject, isEmpty, set } = Ember;
+
 // Derived from https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos and
 // https://github.com/samdutton/simpl/blob/master/getusermedia/sources/js/main.js
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 export default Ember.Component.extend({
+  defaultPhotoSource: null,
   canvas: null,
-  video: null,
+  height: 0,
+  isImage: false,
   photo: null,
   photoFile: null,
-  width: 200,
-  height: 0,
-  selectedCamera: null,
-  videoSources: null,
   photoSource: null,
-  photoSources: [
-    takeAPicture,
-    uploadAFile
-  ],
+  selectedCamera: null,
   setupCamera: false,
+  sourceLabel: null,
+  video: null,
+  videoSources: null,
+  width: 200,
+
+  i18n: inject.service(),
+
+  canCaptureVideo: computed(function() {
+    return navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
+  }),
+
+  photoSources: computed(function() {
+    let i18n = get(this, 'i18n');
+    return FILE_SOURCES.map((source) => {
+      return {
+        label: i18n.t(`components.takePhoto.labels.${source}`),
+        value: source
+      };
+    });
+  }),
+
+  sourceChooserLabel: computed('sourceLabel', function() {
+    let i18n = get(this, 'i18n');
+    let sourceLabel = get(this, 'sourceLabel');
+    if (isEmpty(sourceLabel)) {
+      return i18n.t('components.takePhoto.how');
+    } else {
+      return sourceLabel;
+    }
+  }),
+
+  showFileUpload: computed('photoSource', function() {
+    let photoSource = get(this, 'photoSource');
+    return photoSource === UPLOAD_FILE;
+  }),
+
+  showCameraSelect: computed('videoSources', function() {
+    let showFileUpload = get(this, 'showFileUpload');
+    let videoSources = get(this, 'videoSources');
+    return (!showFileUpload && (videoSources && videoSources.length > 1));
+  }),
+
+  didInsertElement() {
+    let canCaptureVideo = get(this, 'canCaptureVideo');
+    let photoSource = get(this, 'defaultPhotoSource');
+    if (isEmpty(photoSource)) {
+      if (canCaptureVideo) {
+        photoSource = TAKE_PICTURE;
+      } else {
+        photoSource = UPLOAD_FILE;
+      }
+    }
+    this._photoSourceChanged(photoSource);
+  },
+
+  willDestroyElement() {
+    this._stopStream();
+  },
 
   /**
    * Setup the specified camera
    */
   _cameraChange(selectedCamera) {
-    this.set('selectedCamera', selectedCamera);
-    let stream = this.get('stream');
-    let video = this.get('video');
+    set(this, 'selectedCamera', selectedCamera);
+    let stream = get(this, 'stream');
+    let video = get(this, 'video');
     if (!Ember.isEmpty(stream)) {
       video.src = null;
       this._stopStream();
     }
-    let videoSource = this.get('selectedCamera');
+    let videoSource = get(this, 'selectedCamera');
     let constraints = {
       audio: false,
       video: {
-        optional: [{ sourceId: videoSource }]
+        deviceId: videoSource
       }
     };
-    navigator.getUserMedia(constraints, this._gotStream.bind(this), this._errorCallback);
+    navigator.mediaDevices.getUserMedia(constraints).then(this._gotStream.bind(this)).catch(this._errorCallback);
     this._setupVideo();
   },
 
   _errorCallback(error) {
-    console.log('navigator.getUserMedia error: ', error);
+    console.log('navigator.mediaDevices.getUserMedia error: ', error);
   },
 
   /**
@@ -56,21 +112,21 @@ export default Ember.Component.extend({
     let videoSources = [];
     for (let i = 0; i !== sourceInfos.length; ++i) {
       let sourceInfo = sourceInfos[i];
-      if (sourceInfo.kind === 'video') {
+      if (sourceInfo.kind === 'videoinput') {
         cameraLabel = `Camera '${++cameraCount}`;
         if (sourceInfo.label) {
           cameraLabel += ` (${sourceInfo.label})`;
         }
         videoSources.addObject({
-          id: sourceInfo.id,
+          deviceId: sourceInfo.deviceId,
           label: cameraLabel
         });
       }
     }
-    this.set('videoSources', videoSources);
+    set(this, 'videoSources', videoSources);
     if (videoSources.length > 0) {
-      this.set('selectedCamera', videoSources[0].id);
-      this.cameraChange(videoSources[0].id);
+      set(this, 'selectedCamera', videoSources[0].deviceId);
+      this._cameraChange(videoSources[0].deviceId);
     }
   },
 
@@ -81,23 +137,20 @@ export default Ember.Component.extend({
     if (this.isDestroyed) {
       this._stopStream(stream);
     } else {
-      let video = this.get('video');
-      this.set('stream', stream); // make stream available to object
-      video.src = window.URL.createObjectURL(stream);
+      let video = get(this, 'video');
+      set(this, 'stream', stream); // make stream available to object
+      video.srcObject = stream;
       video.play();
     }
   },
 
   _photoSourceChanged(photoSource) {
     let camera = this.$('.camera');
-    let fileUpload = this.$('.fileupload');
-    let setupCamera = this.get('setupCamera');
-    this.set('photoSource', photoSource);
-    if (photoSource === uploadAFile) {
-      fileUpload.show();
+    let setupCamera = get(this, 'setupCamera');
+    set(this, 'photoSource', photoSource);
+    if (photoSource === UPLOAD_FILE) {
       camera.hide();
     } else {
-      fileUpload.hide();
       camera.show();
       if (!setupCamera) {
         let canvas = this.$('canvas').get(0);
@@ -108,16 +161,19 @@ export default Ember.Component.extend({
           photo,
           video
         });
-        if (typeof MediaStreamTrack === 'undefined' || MediaStreamTrack.getSources === 'undefined') {
-          if (navigator.getUserMedia) {
-            navigator.getUserMedia({ audio: false, video: true }, this._gotStream.bind(this), this._errorCallback);
+        if (navigator.mediaDevices) {
+          if (!navigator.mediaDevices.enumerateDevices) {
+            if (navigator.mediaDevices.getUserMedia) {
+              let constraints = { audio: false, video: true };
+              navigator.mediaDevices.getUserMedia(constraints).then(this._gotStream.bind(this)).catch(this._errorCallback);
+              this._setupCanPlayListener(video);
+            }
+          } else {
+            navigator.mediaDevices.enumerateDevices().then(this._gotSources.bind(this)).catch(this._errorCallback);
             this._setupCanPlayListener(video);
           }
-        } else {
-          MediaStreamTrack.getSources(this._gotSources.bind(this));
-          this._setupCanPlayListener(video);
         }
-        this.set('setupCamera', true);
+        set(this, 'setupCamera', true);
       }
     }
   },
@@ -132,10 +188,10 @@ export default Ember.Component.extend({
    * Setup the dimensions for the video preview and picture elements.
    */
   _setupVideo() {
-    let canvas = this.get('canvas');
-    let height = this.get('height');
-    let video = this.get('video');
-    let width = this.get('width');
+    let canvas = get(this, 'canvas');
+    let height = get(this, 'height');
+    let video = get(this, 'video');
+    let width = get(this, 'width');
     height = video.videoHeight / (video.videoWidth / width);
     video.setAttribute('width', width);
     video.setAttribute('height', height);
@@ -147,18 +203,8 @@ export default Ember.Component.extend({
     });
   },
 
-  _setup: function() {
-    this.cameraChange = this._cameraChange.bind(this);
-    this.photoSourceChange = this._photoSourceChanged.bind(this);
-    let photoSource = takeAPicture;
-    if (!this.get('canCaptureVideo')) {
-      photoSource = uploadAFile;
-    }
-    this.set('photoSource', photoSource);
-  }.on('init'),
-
   _stopStream(stream) {
-    let streamToStop = stream || this.get('stream');
+    let streamToStop = stream || get(this, 'stream');
     if (!Ember.isEmpty(streamToStop)) {
       if (typeof streamToStop.active === 'undefined') {
         streamToStop.stop();
@@ -170,11 +216,19 @@ export default Ember.Component.extend({
   },
 
   actions: {
+    cameraChange(selectedCamera) {
+      this._cameraChange(selectedCamera);
+    },
+
+    photoSourceChange(photoSource) {
+      this._photoSourceChanged(photoSource);
+    },
+
     takePhoto() {
-      let canvas = this.get('canvas');
-      let height = this.get('height');
-      let video = this.get('video');
-      let width = this.get('width');
+      let canvas = get(this, 'canvas');
+      let height = get(this, 'height');
+      let video = get(this, 'video');
+      let width = get(this, 'width');
       canvas.width = width;
       canvas.height = height;
       canvas.getContext('2d').drawImage(video, 0, 0, width, height);
@@ -184,34 +238,9 @@ export default Ember.Component.extend({
       for (let i = 0; i < binary.length; i++) {
         array.push(binary.charCodeAt(i));
       }
-      this.set('photoFile', new Blob([new Uint8Array(array)], { type: 'image/png' }));
+      set(this, 'photoFile', new Blob([new Uint8Array(array)], { type: 'image/png' }));
+      set(this, 'isImage', true);
     }
-  },
-
-  canCaptureVideo: function() {
-    if (navigator.getUserMedia) {
-      return true;
-    } else {
-      return false;
-    }
-  }.property(),
-
-  didInsertElement() {
-    let camera = this.$('.camera');
-    let fileUpload = this.$('.fileUpload');
-    if (camera.length === 1) {
-      fileUpload.hide();
-    }
-    this.photoSourceChange(this.get('photoSource'));
-  },
-
-  showCameraSelect: function() {
-    let photoSource = this.get('photoSource');
-    let videoSources = this.get('videoSources');
-    return (photoSource === takeAPicture && videoSources && videoSources.length > 1);
-  }.property('photoSource', 'videoSources'),
-
-  willDestroyElement() {
-    this._stopStream();
   }
+
 });

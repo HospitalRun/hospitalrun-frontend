@@ -75,11 +75,13 @@ export default AbstractModuleRoute.extend(ModalHelper, PatientListRoute, {
         statusQuery: 'All'
       });
     }
-    actions.push({
-      text: 'Paid',
-      linkTo: 'invoices.index',
-      statusQuery: 'Paid'
-    });
+    if (this.currentUserCan('list_paid_invoices')) {
+      actions.push({
+        text: 'Paid',
+        linkTo: 'invoices.index',
+        statusQuery: 'Paid'
+      });
+    }
     return actions;
   }.property()
 

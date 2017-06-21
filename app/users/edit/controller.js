@@ -3,7 +3,12 @@ import Ember from 'ember';
 import UserRoles from 'hospitalrun/mixins/user-roles';
 import uuid from 'npm:uuid';
 
+const {
+  get
+} = Ember;
+
 export default AbstractEditController.extend(UserRoles, {
+  config: Ember.inject.service(),
   usersController: Ember.inject.controller('users/index'),
   updateCapability: 'add_user',
 
@@ -39,8 +44,15 @@ export default AbstractEditController.extend(UserRoles, {
         updateModel.set('userPrefix', prefix);
       }
       updateModel.save().then(() => {
-        this.displayAlert(this.get('i18n').t('messages.userSaved'), this.get('i18n').t('messages.userHasBeenSaved'));
-      }).catch((error) =>  this.send('error', error));
+        this.displayAlert(get(this, 'i18n').t('messages.userSaved'), get(this, 'i18n').t('messages.userHasBeenSaved'));
+        let editTitle = get(this, 'i18n').t('labels.editUser');
+        let sectionDetails = {};
+        sectionDetails.currentScreenTitle = editTitle;
+        this.send('setSectionHeader', sectionDetails);
+        get(this, 'config').markUserSetupComplete();
+      }).catch((error) =>  {
+        this._handleError(error);
+      });
     }
   }
 });

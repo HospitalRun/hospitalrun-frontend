@@ -16,38 +16,34 @@ module('Acceptance | login', {
 });
 
 test('visiting / redirects user to login', function(assert) {
-  assert.expect(3);
+  assert.expect(1);
   runWithPouchDump('default', function() {
     visit('/');
-
-    stubRequest('post', '/db/_session', function(request) {
-      assert.equal(request.requestBody, 'name=hradmin&password=test', 'credential are sent to the server');
-      request.ok({ 'ok': true, 'name': 'hradmin', 'roles': ['System Administrator', 'admin', 'user'] });
-    });
-
-    stubRequest('post', '/chkuser', function(request) {
-      assert.equal(request.requestBody, 'name=hradmin', 'username is sent to /chkuser');
-      request.ok({ 'prefix': 'p1', 'role': 'System Administrator' });
-    });
 
     andThen(function() {
       assert.equal(currentURL(), '/login');
     });
 
-    fillIn('#identification', 'hradmin');
-    fillIn('#password', 'test');
-    click('button:contains(Sign in)');
   });
 });
 
+test('login with correct credentials', function(assert) {
+  login(assert);
+});
+test('login with correct credentials but space around username', function(assert) {
+  login(assert, true);
+});
+
 test('incorrect credentials shows an error message on the screen', function(assert) {
-  assert.expect(2);
+  if (!window.ELECTRON) {
+    assert.expect(2);
+  }
   runWithPouchDump('default', function() {
     visit('/');
 
     let errorMessage = 'Username or password is incorrect.';
 
-    stubRequest('post', '/db/_session', function(request) {
+    stubRequest('post', '/auth/login', function(request) {
       assert.equal(request.requestBody, 'name=hradmin&password=tset', 'credential are sent to the server');
       request.error({ 'error': 'unauthorized', 'reason': errorMessage });
     });
@@ -63,3 +59,28 @@ test('incorrect credentials shows an error message on the screen', function(asse
 
   });
 });
+
+function login(assert, spaceAroundUsername) {
+  if (!window.ELECTRON) {
+    assert.expect(2);
+  }
+  runWithPouchDump('default', function() {
+    visit('/login');
+
+    stubRequest('post', '/auth/login', function(request) {
+      assert.equal(request.requestBody, 'name=hradmin&password=test', !spaceAroundUsername ? 'credential are sent to the server' : 'username trimmed and credential are sent to the server');
+      request.ok({ 'ok': true, 'name': 'hradmin', 'roles': ['System Administrator', 'admin', 'user'] });
+    });
+
+    andThen(function() {
+      assert.equal(currentURL(), '/login');
+    });
+
+    fillIn('#identification', !spaceAroundUsername ? 'hradmin' : ' hradmin');
+    fillIn('#password', 'test');
+    click('button:contains(Sign in)');
+    andThen(() => {
+      waitToAppear('.sidebar-nav-logo');
+    });
+  });
+}
