@@ -1,21 +1,14 @@
 import Ember from 'ember';
 import SelectValues from 'hospitalrun/utils/select-values';
-
 export default Ember.Mixin.create({
-  defaultVisitTypes: Ember.computed(function() {
-    let i18n = this.get('i18n');
-    let types = [
-      'admission',
-      'clinic',
-      'followup',
-      'imaging',
-      'lab',
-      'pharmacy'
-    ];
-    return types.map((type) => {
-      return i18n.t(`visits.types.${type}`);
-    });
-  }),
+  defaultVisitTypes: [
+    'Admission',
+    'Clinic',
+    'Followup',
+    'Imaging',
+    'Lab',
+    'Pharmacy'
+  ],
 
   _getVisitTypes(includeEmpty) {
     let defaultVisitTypes = this.get('defaultVisitTypes');

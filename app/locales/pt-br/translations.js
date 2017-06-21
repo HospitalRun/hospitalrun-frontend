@@ -1010,23 +1010,6 @@ export default {
         singular: ''
       }
     },
-<<<<<<< HEAD
-    labels: {
-      dateRecorded: 'Data de Gravação',
-      temperature: 'Temperatura',
-      weight: 'Peso',
-      height: 'Altura',
-      sbp: 'PAS',
-      dbp: 'PAD',
-      heartRate: 'Frequência Cardíaca',
-      respiratoryRate: 'Frequência Respiratória'
-    }
-  },
-  visits: {
-    titles: {
-      additionalDiagnoses: 'Diagnósticos Adicionais',
-      newVisit: 'Nova Visita'
-=======
     medication: {
       names: {
         plural: '',
@@ -1036,7 +1019,6 @@ export default {
         plural: '',
         singular: ''
       }
->>>>>>> upstream/master
     },
     note: { names: {
       plural: '',
@@ -1069,45 +1051,6 @@ export default {
       login: 'Entrar',
       logout: 'Sair'
     },
-<<<<<<< HEAD
-    labels: {
-      diagnosis: 'Diagnósticos',
-      procedure: 'Procedimentos',
-      authoredBy: 'Autorizado Por',
-      labs: 'Laboratório',
-      imaging: 'Imagem',
-      visitInformation: 'Imformação de Visita',
-      examiner: 'Examinador',
-      medication: 'Medicação',
-      status: 'Situação de Visita',
-      admittingDiagnosis: 'Diagnósticos de Admisão',
-      finalDiagnosis: 'Diagnósticos de Finais/Faturamento',
-      visitType: 'Tipo de Visita',
-      vitals: 'Sinais Vitais',
-      patientToCheckIn: 'Paciente Para Entrada',
-      checkInTime: 'Entrada',
-      checkOutTime: 'Saída',
-      appointment: 'Compromisso',
-      haveAppointment: 'S',
-      noAppointment: 'N',
-      ordersDone: 'Pedidos concluídos',
-      haveDoneOrders: 'S',
-      ordersNotDone: 'N',
-      reasonForVisit: 'Razão da visita',
-      statusAdmitted: 'Admitido',
-      statusDischarged: 'Descarregado',
-      statusCheckedIn: 'Internado',
-      statusCheckedOut: 'Alta',
-      createNewPatient: 'Criar Novo Paciente'
-    },
-    types: {
-      admission: 'Admissão',
-      clinic: 'Clínica',
-      followup: 'Acompanhamento',
-      imaging: 'Imagem',
-      lab: 'Laboratório',
-      pharmacy: 'Farmácia'
-=======
     administration: 'Administração',
     billing: 'Faturamento',
     imaging: 'Imagem',
@@ -1156,7 +1099,6 @@ export default {
       userRoles: 'Perfis de Usuário',
       users: 'Usuários',
       workflow: 'Workflow'
->>>>>>> upstream/master
     }
   },
   operationReport: {
@@ -1216,17 +1158,9 @@ export default {
       newMedication: 'Nova Medicação',
       newPatient: '+ novo paciente',
       newPhoto: 'Nova Foto',
-<<<<<<< HEAD
-      newAppointment: 'Novo Compromisso',
-      backToPatients: 'Voltar para Lista de Pacientes',
-      newPatient: '+ novo paciente',
-      addOperativePlan: 'Adicionar Plano de Operação',
-      scheduleSurgery: 'Agendar Cirurgia'
-=======
       newVisit: 'Nova Visita',
       patientCheckIn: '',
       scheduleSurgery: ''
->>>>>>> upstream/master
     },
     labels: {
       admissionDate: 'Data de Admissão',
@@ -1265,14 +1199,6 @@ export default {
       relationship: 'Relação com Paciente',
       relationships: 'Relação',
       religion: 'Religião',
-<<<<<<< HEAD
-      parent: 'Responsável Legal',
-      contacts: 'Contatos',
-      sexNotEntered: 'Sexo Não foi informado',
-      operativePlan: 'Plano de operação',
-      patientTypeCharity: 'Caridade',
-      patientTypePrivate: 'Privado'
-=======
       secondaryDiagnosis: 'Diagnósticos Secundários',
       sex: 'Sexo',
       sexNotEntered: '',
@@ -1299,7 +1225,6 @@ export default {
       photos: 'Fotos',
       socialWork: 'Assitência Social',
       visits: 'Visitas'
->>>>>>> upstream/master
     },
     notes: {
       newNote: 'Nova Nota para',
