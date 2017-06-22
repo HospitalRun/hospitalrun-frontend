@@ -1073,7 +1073,8 @@ export default {
     about: 'About HospitalRun',
     actions: {
       login: 'Login',
-      logout: 'Logout'
+      logout: 'Logout',
+      selectLanguage: 'Select Language'
     },
     administration: 'Administration',
     billing: 'Billing',
