@@ -19,7 +19,7 @@ export default Ember.Component.extend({
     let configDB = this.get('config.configDB');
     configDB.get('current_user').then((user) => {
       configDB.put({
-        lang: language,
+        i18n: language,
         _id: user._id,
         _rev: user._rev,
         value: user.value

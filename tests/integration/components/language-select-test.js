@@ -12,14 +12,5 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{language-select}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#language-select}}
-      template block text
-    {{/language-select}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$().text().trim().includes('Select Language'), true);
 });
