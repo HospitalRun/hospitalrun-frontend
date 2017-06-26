@@ -40,7 +40,7 @@ This section is designed to help developers start coding in the project and unde
 
 ### Ember
 
-To understand the project you'll have to understand [Ember](http://emberjs.com), and it is advisable that you'll follow the tutorial: [Create your own app](https://guides.emberjs.com/v2.9.0/tutorial/ember-cli/) to get an understanding of how Ember works and the basic folder structure. You can find more Ember guides [here](https://guides.emberjs.com/v2.9.0/).
+To understand the project you'll have to understand [Ember](http://emberjs.com), and it is advisable that you'll follow the tutorial: [Create your own app](https://guides.emberjs.com/v2.10.0/tutorial/ember-cli/) to get an understanding of how Ember works and the basic folder structure. You can find more Ember guides [here](https://guides.emberjs.com/v2.10.0/).
 
 ### ES6
 
