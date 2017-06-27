@@ -897,6 +897,11 @@ export default {
     requestsTitle: 'Demandes de labo',
     sectionTitle: 'Labos'
   },
+  languages: {
+    english: 'Anglais',
+    french: 'Français',
+    spanish: 'Espanol'
+  },
   loading: {
     messages: {
       '0': "La vitesse maximal du vol de papillon est de 20 kilomètres par heure. Certaines mites peuvent voler jusqu'à 40 kilomètres par heure !",

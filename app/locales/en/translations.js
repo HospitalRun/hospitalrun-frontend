@@ -897,6 +897,11 @@ export default {
     requestsTitle: 'Lab Requests',
     sectionTitle: 'Labs'
   },
+  languages: {
+    english: 'English',
+    french: 'French',
+    spanish: 'Spanish'
+  },
   loading: {
     messages: {
       '0': 'The top butterfly flight speed is 12 miles per hour. Some moths can fly 25 miles per hour!',
