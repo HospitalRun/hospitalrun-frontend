@@ -6,7 +6,7 @@ const { computed } = Ember;
 
 export default AppointmenCalendarRoute.extend({
   editReturn: 'appointments.theater',
-  newButtonText: computed('i18n', () => {
+  newButtonText: computed('i18n.locale', () => {
     return t('appointments.buttons.scheduleSurgery');
   }),
   pageTitle: computed('i18n', () => {

@@ -8,7 +8,7 @@ const { computed } = Ember;
 export default AppointmentIndexRoute.extend({
   editReturn: 'appointments.today',
   modelName: 'appointment',
-  pageTitle: computed('i18n', () => {
+  pageTitle: computed('i18n.locale', () => {
     return t('appointments.todayTitle');
   }),
 

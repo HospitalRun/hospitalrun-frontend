@@ -5,7 +5,7 @@ const { computed } = Ember;
 
 export default AbstractIndexRoute.extend({
   hideNewButton: true,
-  pageTitle: computed('i18n', () => {
+  pageTitle: computed('i18n.locale', () => {
     return t('admin.lookup.pageTitle');
   }),
   model() {

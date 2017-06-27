@@ -4,7 +4,7 @@ import Ember from 'ember';
 const { computed } = Ember;
 
 export default AbstractIndexRoute.extend({
-  pageTitle: computed('i18n', () => {
+  pageTitle: computed('i18n.locale', () => {
     return t('admin.textReplacements.pageTitle');
   }),
   hideNewButton: true,
