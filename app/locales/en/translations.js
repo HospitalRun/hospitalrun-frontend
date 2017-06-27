@@ -898,9 +898,9 @@ export default {
     sectionTitle: 'Labs'
   },
   languages: {
-    english: 'English',
-    french: 'French',
-    spanish: 'Spanish'
+    en: 'English',
+    fr: 'French',
+    es: 'Spanish'
   },
   loading: {
     messages: {

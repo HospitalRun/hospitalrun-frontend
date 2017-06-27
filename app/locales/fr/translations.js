@@ -898,9 +898,9 @@ export default {
     sectionTitle: 'Labos'
   },
   languages: {
-    english: 'Anglais',
-    french: 'Français',
-    spanish: 'Espanol'
+    en: 'Anglais',
+    fr: 'Français',
+    es: 'Espanol'
   },
   loading: {
     messages: {
