@@ -6,7 +6,7 @@ const { computed } = Ember;
 
 export default AbstractIndexRoute.extend({
   modelName: 'imaging',
-  pageTitle: computed('i18n', () => {
+  pageTitle: computed('i18n.locale', () => {
     return t('imaging.pageTitle');
   }),
   searchStatus: 'Requested',
