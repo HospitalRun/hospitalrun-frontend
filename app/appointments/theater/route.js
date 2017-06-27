@@ -9,7 +9,7 @@ export default AppointmenCalendarRoute.extend({
   newButtonText: computed('i18n.locale', () => {
     return t('appointments.buttons.scheduleSurgery');
   }),
-  pageTitle: computed('i18n', () => {
+  pageTitle: computed('i18n.locale', () => {
     return t('appointments.titles.theaterSchedule');
   }),
 

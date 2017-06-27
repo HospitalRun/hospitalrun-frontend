@@ -3,22 +3,17 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   config: Ember.inject.service(),
   i18n: Ember.inject.service(),
-  // languageOptions: Ember.computed('i18n.locale', function() {
-  //   debugger;
-  //   return [
-  //     {id: 'en', name: 'languages.english'},
-  //     {id: 'fr', name: 'languages.french'}
-  //   ];
-  // }),
+
   languageOptions: function() {
-        let i18n = this.get('i18n');
-        return i18n.get('locales').map((item) => {
-            return {
-                id: item,
-                name: i18n.t(`languages.${item}`)
-            };
-        });
-    }.property('currentLanguage'),
+    let i18n = this.get('i18n');
+    return i18n.get('locales').map((item) => {
+      return {
+        id: item,
+        name: i18n.t(`languages.${item}`)
+      };
+    });
+  }.property('currentLanguage'),
+
   onFinish: null,
 
   _setUserLanguageChoice(language) {

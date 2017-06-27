@@ -1,4 +1,3 @@
-import { translationMacro as t } from 'ember-i18n';
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryId from 'hospitalrun/mixins/inventory-id';
