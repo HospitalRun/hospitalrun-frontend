@@ -2,7 +2,9 @@
   className="test-select-lang"
   prompt=(t 'navigation.actions.selectLanguage')
   content=languageOptions
-  value=selectedLanguage
-  action=(action 'selectLanguage' selectedLanguage)
+  value=(t 'languages.english')
+  optionLabelPath='name'
+  optionValuePath='id'
+  action=(action 'selectLanguage')
 }}
 

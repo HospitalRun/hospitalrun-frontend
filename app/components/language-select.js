@@ -1,18 +1,17 @@
 import Ember from 'ember';
+// import { translationMacro as t } from 'ember-i18n';
 
 export default Ember.Component.extend({
   config: Ember.inject.service(),
   i18n: Ember.inject.service(),
-  languageOptions: Ember.computed(function() {
-    return Object.keys(this.get('languageMap'));
+  languageOptions: Ember.computed('i18n.locale', function() {
+    // debugger;
+    return [
+      {id: 'en', name: 'languages.english'},
+      {id: 'fr', name: 'languages.french'}
+    ];
   }),
   onFinish: null,
-  languageMap: Ember.computed(() => {
-    return {
-      'English': 'en',
-      'French': 'fr'
-    };
-  }),
   selectedLanguage: null,
 
   _setUserLanguageChoice(language) {
@@ -28,10 +27,10 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    selectLanguage(_, selection) {
-      this.set('selectedLanguage', this.get('languageMap')[selection]);
-      this._setUserLanguageChoice(this.get('selectedLanguage'));
-      this.set('i18n.locale', this.get('selectedLanguage'));
+    selectLanguage(selection) {
+      this.set('selectedLanguage', selection);
+      this._setUserLanguageChoice(selection);
+      this.set('i18n.locale', selection);
       this.get('onFinish')();
     }
   }
