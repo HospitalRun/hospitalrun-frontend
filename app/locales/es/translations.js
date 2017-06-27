@@ -877,7 +877,13 @@ export default {
   languages: {
     en: 'Inglés',
     fr: 'Francés',
-    es: 'Español'
+    es: 'Español',
+    de: '',
+    ru: '',
+    'es-co': '',
+    'pt-br': '',
+    tr: '',
+    ur: ''
   },
   loading: {
     messages: {
