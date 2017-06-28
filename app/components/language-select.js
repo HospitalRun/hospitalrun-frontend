@@ -19,12 +19,8 @@ export default Ember.Component.extend({
   _setUserLanguage(language) {
     let configDB = this.get('config.configDB');
     configDB.get('current_user').then((user) => {
-      configDB.put({
-        i18n: language,
-        _id: user._id,
-        _rev: user._rev,
-        value: user.value
-      });
+      user.i18n = language;
+      configDB.put(user);
     });
   },
 
