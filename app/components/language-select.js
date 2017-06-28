@@ -16,7 +16,7 @@ export default Ember.Component.extend({
 
   onFinish: null,
 
-  _setUserLanguageChoice(language) {
+  _setUserLanguage(language) {
     let configDB = this.get('config.configDB');
     configDB.get('current_user').then((user) => {
       configDB.put({
@@ -30,7 +30,7 @@ export default Ember.Component.extend({
 
   actions: {
     selectLanguage(selection) {
-      this._setUserLanguageChoice(selection);
+      this._setUserLanguage(selection);
       this.set('i18n.locale', selection);
       this.get('onFinish')();
     }
