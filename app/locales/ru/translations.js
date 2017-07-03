@@ -874,6 +874,17 @@ export default {
     requestsTitle: '',
     sectionTitle: ''
   },
+  languages: {
+    en: '',
+    fr: '',
+    es: '',
+    de: '',
+    ru: '',
+    'es-co': '',
+    'pt-br': '',
+    tr: '',
+    ur: ''
+  },
   loading: {
     messages: {
       '0': '',

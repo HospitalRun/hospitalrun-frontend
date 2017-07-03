@@ -874,6 +874,17 @@ export default {
     requestsTitle: 'Requisições de Laboratório',
     sectionTitle: 'Laboratório'
   },
+  languages: {
+    en: '',
+    fr: '',
+    es: '',
+    de: '',
+    ru: '',
+    'es-co': '',
+    'pt-br': '',
+    tr: '',
+    ur: ''
+  },
   loading: {
     messages: {
       '0': 'A velocidade de vôo borboleta superior é de 12 milhas por hora. Alguns meses pode voar 25 milhas por hora!',
