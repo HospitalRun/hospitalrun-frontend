@@ -897,6 +897,17 @@ export default {
     requestsTitle: 'Demandes de labo',
     sectionTitle: 'Labos'
   },
+  languages: {
+    en: 'Anglais',
+    fr: 'Français',
+    es: 'Espanol',
+    de: '',
+    ru: '',
+    'es-co': '',
+    'pt-br': '',
+    tr: '',
+    ur: ''
+  },
   loading: {
     messages: {
       '0': "La vitesse maximal du vol de papillon est de 20 kilomètres par heure. Certaines mites peuvent voler jusqu'à 40 kilomètres par heure !",
@@ -1073,7 +1084,8 @@ export default {
     about: 'À propos de HospitalRun',
     actions: {
       login: 'Connexion',
-      logout: 'Deconnexion'
+      logout: 'Deconnexion',
+      selectLanguage: 'Choisir la langue'
     },
     administration: 'Administration',
     billing: 'Facturation',

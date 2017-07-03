@@ -897,6 +897,17 @@ export default {
     requestsTitle: 'Lab Requests',
     sectionTitle: 'Labs'
   },
+  languages: {
+    en: 'English',
+    fr: 'French',
+    es: 'Spanish',
+    de: 'German',
+    ru: 'Russian',
+    'es-co': 'Spanish (Colombian)',
+    'pt-br': 'Portuguese (Brazilian)',
+    tr: 'Turkish',
+    ur: 'Urdu'
+  },
   loading: {
     messages: {
       '0': 'The top butterfly flight speed is 12 miles per hour. Some moths can fly 25 miles per hour!',
@@ -1073,7 +1084,8 @@ export default {
     about: 'About HospitalRun',
     actions: {
       login: 'Login',
-      logout: 'Logout'
+      logout: 'Logout',
+      selectLanguage: 'Select Language'
     },
     administration: 'Administration',
     billing: 'Billing',

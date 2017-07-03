@@ -4,7 +4,11 @@ Contributions are welcome via pull requests and issues. Before submitting a pull
 
 ## Slack / Communication
 
-Project communication occurs primarily and intentionally via our project [Slack](https://hospitalrun.slack.com/). Those interested in / considering contribution are encouraged to [join](https://hospitalrun-slackin.herokuapp.com/).
+Project communication occurs primarily and intentionally via our project [Slack](https://hospitalrun.slack.com/). Those interested in / considering contribution are encouraged to [join](https://hospitalrun-slackin.herokuapp.com/). Project maintainers, contributors, and other community members in the Slack channel are usually available to answer questions, so feel free to ask about anything you need help with in the General channel. 
+
+However, before you ask in Slack "what can I contribute to", be sure to keep reading this document for the answer to your question. :-)
+
+Also, please avoid use of the `@here` command in Slack, as you will be sending a notification to nearly 600 people. Just post your question and someone will respond soon.
 
 ## Help Wanted
 
