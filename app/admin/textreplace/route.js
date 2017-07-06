@@ -1,8 +1,12 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import { translationMacro as t } from 'ember-i18n';
+import Ember from 'ember';
+const { computed } = Ember;
 
 export default AbstractIndexRoute.extend({
-  pageTitle: t('admin.textReplacements.pageTitle'),
+  pageTitle: computed('i18n.locale', () => {
+    return t('admin.textReplacements.pageTitle');
+  }),
   hideNewButton: true,
 
   model() {
