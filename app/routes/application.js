@@ -106,20 +106,6 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
   afterModel() {
     set(this.controllerFor('navigation'), 'allowSearch', false);
     $('#apploading').remove();
-    this._initializeUserLanguage();
-  },
-
-  _initializeUserLanguage() {
-    let username;
-    this.get('config.configDB').get('current_user').then((user) => {
-      username = user.value;
-    });
-    this.get('config.configDB').get('preferences').then(db => {
-      let language = db.options[username + '_i18n'] || 'en';
-      this.set('i18n.locale', language);
-    }).catch(err => {
-      console.log("ERROR INITIALIZING USER LANGUAGE PREFERENCE:", err);
-    });
   },
 
   renderModal(template) {
