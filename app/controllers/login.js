@@ -4,7 +4,6 @@ import { isAbortError, isTimeoutError } from 'ember-ajax/errors';
 let LoginController = Ember.Controller.extend({
   session: Ember.inject.service(),
   config: Ember.inject.service(),
-  i18n: Ember.inject.service(),
 
   errorMessage: null,
   identification: null,
@@ -14,7 +13,7 @@ let LoginController = Ember.Controller.extend({
     let configDB = this.get('config.configDB');
     let username;
     configDB.get('current_user').then((user) => {
-      username = user.value.name;
+      username = (typeof user.name === 'string') ? user.name : user.value.name;
       let db_key = `${username}_i18n`;
       configDB.get('preferences').then((doc) => {
         let language = doc.options[db_key] || 'en';
