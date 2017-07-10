@@ -16,6 +16,7 @@ let LoginController = Ember.Controller.extend({
       username = (typeof user.name === 'string') ? user.name : user.value.name;
       let db_key = `${username}_i18n`;
       configDB.get('preferences').then((doc) => {
+        // TODO: change this from hard-coded 'en' to something like 'ENV.i18n.defaultLocale'
         let language = doc.options[db_key] || 'en';
         this.set('i18n.locale', language);
       }).catch(err => {
@@ -24,6 +25,7 @@ let LoginController = Ember.Controller.extend({
           options: {
           }
         };
+        // TODO: change this from hard-coded 'en' to something like 'ENV.i18n.defaultLocale'
         doc.options[db_key] = 'en';
         configDB.put(doc);
       })
