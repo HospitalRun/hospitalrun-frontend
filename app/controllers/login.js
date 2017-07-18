@@ -3,34 +3,10 @@ import { isAbortError, isTimeoutError } from 'ember-ajax/errors';
 
 let LoginController = Ember.Controller.extend({
   session: Ember.inject.service(),
-  config: Ember.inject.service(),
-
+  languagePreference: Ember.inject.service(),
   errorMessage: null,
   identification: null,
   password: null,
-
-  _initUserI18nPreference: function() {
-    let configDB = this.get('config.configDB');
-    let username;
-    configDB.get('current_user').then((user) => {
-      username = (typeof user.name === 'string') ? user.name : user.value.name;
-      let db_key = `${username}_i18n`;
-      configDB.get('preferences').then((doc) => {
-        // TODO: change this from hard-coded 'en' to something like 'ENV.i18n.defaultLocale'
-        let language = doc.options[db_key] || 'en';
-        this.set('i18n.locale', language);
-      }).catch(err => {
-        let doc = {
-          _id: 'preferences',
-          options: {
-          }
-        };
-        // TODO: change this from hard-coded 'en' to something like 'ENV.i18n.defaultLocale'
-        doc.options[db_key] = 'en';
-        configDB.put(doc);
-      })
-    });
-  },
 
   actions: {
     authenticate() {
@@ -38,7 +14,7 @@ let LoginController = Ember.Controller.extend({
       this.get('session').authenticate('authenticator:custom', {
         identification,
         password
-      }).then(this._initUserI18nPreference.bind(this)).catch((err) => {
+      }).catch((err) => {
         if (isAbortError(err) || isTimeoutError(err)) {
           this.set('errorMessage', false);
           this.set('offlineError', true);

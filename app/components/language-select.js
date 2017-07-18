@@ -15,40 +15,33 @@ export default Ember.Component.extend({
 
   onFinish: null,
 
-  _setUserLanguage(language) {
+  _storeUserI18n(language) {
     let configDB = this.get('config.configDB');
     configDB.get('current_user').then((user) => {
       let username = (typeof user.value === 'string') ? user.value : user.value.name;
       configDB.get('preferences').then((db) => {
-        this._updateUserI18NPreference.bind(this, db, username, language)();
-      }).catch(() => {
+        db[username].i18n = language;
+        configDB.put(db);
+      }).catch((err) => {
         this._initUserI18nPreference.bind(this, username, language)();
       });
     });
   },
 
-  _updateUserI18NPreference(db, username, language) {
-    let configDB = this.get('config.configDB');
-    db.options = db.options || {};
-    let db_key = `${username}_i18n`;
-    db.options[db_key] = language;
-    configDB.put(db);
-  },
-
   _initUserI18nPreference(username, i18n) {
     let configDB = this.get('config.configDB');
     let doc = {
-      _id: 'preferences',
-      options: {
-      }
+      _id: 'preferences'
+    };
+    doc[username] = {
+      i18n: "en"
     }
-    doc.options[username + "_i18n"] = i18n;
     configDB.put(doc);
   },
 
   actions: {
     selectLanguage(selection) {
-      this._setUserLanguage(selection);
+      this._storeUserI18n(selection);
       this.set('i18n.locale', selection);
       this.get('onFinish')();
     }

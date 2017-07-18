@@ -12,6 +12,7 @@ export default Ember.Service.extend({
   configDB: null,
   database: inject.service(),
   session: inject.service(),
+  i18n: inject.service(),
   sessionData: Ember.computed.alias('session.data'),
   standAlone: false,
   needsUserSetup: false,
@@ -177,7 +178,20 @@ export default Ember.Service.extend({
     config.get('current_user').then((doc) => {
       doc.value = userName;
       config.put(doc);
-    }).catch(() => {
+      return userName;
+    }).then((user) => {
+      let configDB = this.get('configDB');
+      let preferences = configDB.get('preferences');
+      let promises = {
+        user: user,
+        preferences: preferences
+      };
+      return RSVP.hash(promises);
+    }).then(promises => {
+      let preferences = promises.preferences;
+      let userName = promises.user.name || "default";
+      this.set('i18n.locale', preferences[userName].i18n);
+    }).catch(err => {
       config.put({
         _id: 'current_user',
         value: userName
