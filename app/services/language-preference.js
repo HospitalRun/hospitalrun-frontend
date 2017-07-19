@@ -5,9 +5,8 @@ export default Ember.Service.extend({
   i18n: Ember.inject.service(),
   config: Ember.inject.service(),
 
-
   getUsername(user) {
-    let username = "default";
+    let username = 'default';
     if (typeof user.name === 'string') {
       username = user.name;
     } else if (typeof user.value === 'string') {
@@ -18,16 +17,19 @@ export default Ember.Service.extend({
     return username;
   },
 
-  initUserI18nPreference: function() {
+  initUserI18nPreference() {
     let configDB = this.get('config.configDB');
     let username;
     configDB.get('current_user').then((user) => {
       username = this.getUsername(user);
-      return configDB.get('preferences').then((doc) => {
-        // TODO: change this from hard-coded 'en' to something like 'ENV.i18n.defaultLocale'
-        let language = doc[username].i18n || 'en';
-        this.set('i18n.locale', language);
-      });
+      let preferences = configDB.get('preferences');
+      let promises = { username, preferences };
+      return Ember.RSVP.hash(promises);
+    }).then((promises) => {
+      // TODO: change this from hard-coded 'en' to something like 'ENV.i18n.defaultLocale'
+      let { preferences, username } = promises;
+      let language = preferences[username].i18n || 'en';
+      this.set('i18n.locale', language);
     });
   }
 });

@@ -182,16 +182,14 @@ export default Ember.Service.extend({
     }).then((user) => {
       let configDB = this.get('configDB');
       let preferences = configDB.get('preferences');
-      let promises = {
-        user: user,
-        preferences: preferences
-      };
+      let promises = { user, preferences };
       return RSVP.hash(promises);
-    }).then(promises => {
-      let preferences = promises.preferences;
-      let userName = promises.user.name || "default";
+    }).then((promises) => {
+      let { preferences } = promises;
+      let userName = promises.user.name || 'default';
       this.set('i18n.locale', preferences[userName].i18n);
-    }).catch(err => {
+    }).catch((err) => {
+      console.log(err);
       config.put({
         _id: 'current_user',
         value: userName

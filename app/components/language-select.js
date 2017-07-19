@@ -23,6 +23,7 @@ export default Ember.Component.extend({
         db[username].i18n = language;
         configDB.put(db);
       }).catch((err) => {
+        console.log(err);
         this._initUserI18nPreference.bind(this, username, language)();
       });
     });
@@ -34,8 +35,8 @@ export default Ember.Component.extend({
       _id: 'preferences'
     };
     doc[username] = {
-      i18n: "en"
-    }
+      i18n: i18n || 'en'
+    };
     configDB.put(doc);
   },
 
