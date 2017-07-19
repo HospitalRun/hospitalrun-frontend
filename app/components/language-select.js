@@ -24,12 +24,12 @@ export default Ember.Component.extend({
         configDB.put(db);
       }).catch((err) => {
         console.log(err);
-        this._initUserI18nPreference.bind(this, username, language)();
+        this._initPreferencesDB.bind(this, username, language)();
       });
     });
   },
 
-  _initUserI18nPreference(username, i18n) {
+  _initPreferencesDB(username, i18n) {
     let configDB = this.get('config.configDB');
     let doc = {
       _id: 'preferences'

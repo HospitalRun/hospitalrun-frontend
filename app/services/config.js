@@ -175,25 +175,20 @@ export default Ember.Service.extend({
     if (!userName && sessionData.authenticated) {
       userName = sessionData.authenticated.name;
     }
-    config.get('current_user').then((doc) => {
+    config.get('current_user').then((doc) => {  // Set username in current_user DB
       doc.value = userName;
       config.put(doc);
-      return userName;
-    }).then((user) => {
+    }).then(() => {  // Fetch preferences DB
       let configDB = this.get('configDB');
-      let preferences = configDB.get('preferences');
-      let promises = { user, preferences };
-      return RSVP.hash(promises);
-    }).then((promises) => {
-      let { preferences } = promises;
-      let userName = promises.user.name || 'default';
-      this.set('i18n.locale', preferences[userName].i18n);
+      return configDB.get('preferences');
+    }).then((doc) => {  //  Set current user's i18n preference
+      let name = (typeof userName === 'object') ? userName.name : userName;
+      let i18nPreference = (doc[name]) ? doc[name].i18n : doc.default.i18n;
+      this.set('i18n.locale', i18nPreference);
+      return Ember.RSVP.Promise.resolve();
     }).catch((err) => {
       console.log(err);
-      config.put({
-        _id: 'current_user',
-        value: userName
-      });
+      config.put({ _id: 'current_user', value: userName });
     });
   }
 

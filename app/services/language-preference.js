@@ -19,9 +19,8 @@ export default Ember.Service.extend({
 
   initUserI18nPreference() {
     let configDB = this.get('config.configDB');
-    let username;
     configDB.get('current_user').then((user) => {
-      username = this.getUsername(user);
+      let username = this.getUsername(user);
       let preferences = configDB.get('preferences');
       let promises = { username, preferences };
       return Ember.RSVP.hash(promises);
