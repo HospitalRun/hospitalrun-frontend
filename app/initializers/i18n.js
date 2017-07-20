@@ -8,5 +8,6 @@ export default {
     app.inject('controller', 'i18n', 'service:i18n');
     app.inject('mixin', 'i18n', 'service:i18n');
     app.inject('model', 'i18n', 'service:i18n');
+    app.inject('component', 'i18n', 'service:i18n');
   }
 };

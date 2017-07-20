@@ -3,6 +3,7 @@ import { isAbortError, isTimeoutError } from 'ember-ajax/errors';
 
 let LoginController = Ember.Controller.extend({
   session: Ember.inject.service(),
+  languagePreference: Ember.inject.service(),
   errorMessage: null,
   identification: null,
   password: null,
