@@ -106,6 +106,10 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
   afterModel() {
     set(this.controllerFor('navigation'), 'allowSearch', false);
     $('#apploading').remove();
+    this.get('config.configDB').get('current_user').then((user) => {
+      let language = user.i18n || 'en';
+      this.set('i18n.locale', language);
+    });
   },
 
   renderModal(template) {

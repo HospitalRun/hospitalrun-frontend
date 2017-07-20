@@ -258,12 +258,6 @@ export default Ember.Mixin.create({
           iconClass: 'octicon-chevron-right',
           route: 'pricing.profiles',
           capability: 'pricing'
-        },
-        {
-          title: 'Cashier',
-          iconClass: 'octicon-chevron-right',
-          route: 'invoices.cashier',
-          capability: 'invoices'
         }
       ]
     },
@@ -372,7 +366,7 @@ export default Ember.Mixin.create({
   ],
 
   // Navigation items get mapped localizations
-  localizedNavItems: Ember.computed('navItems.[]', function() {
+  localizedNavItems: Ember.computed('navItems.[]', 'i18n.locale', function() {
     let localizationPrefix = 'navigation.';
     // Supports unlocalized keys for now, otherwise we would get:
     // "Missing translation: key.etc.path"

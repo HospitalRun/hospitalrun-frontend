@@ -874,6 +874,17 @@ export default {
     requestsTitle: 'لیب درخواستیں',
     sectionTitle: 'لیبز'
   },
+  languages: {
+    en: '',
+    fr: '',
+    es: '',
+    de: '',
+    ru: '',
+    'es-co': '',
+    'pt-br': '',
+    tr: '',
+    ur: ''
+  },
   loading: {
     messages: {
       '0': 'سب سے تیز تیتلی پرواز کی رفتار فی گھنٹہ 12 میل ہے. کچھ کیڑے 25 میل فی گھنٹہ کی رفتار سے پرواز کر سکتے ہیں',
