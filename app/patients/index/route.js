@@ -15,7 +15,9 @@ export default AbstractIndexRoute.extend(UserSession, {
     }
   }),
   newButtonText: t('patients.buttons.newPatient'),
-  pageTitle: t('patients.titles.patientListing'),
+  pageTitle: Ember.computed('i18n.locale', () => {
+    return t('patients.titles.patientListing');
+  }),
 
   _getStartKeyFromItem(item) {
     let displayPatientId = item.get('displayPatientId');
