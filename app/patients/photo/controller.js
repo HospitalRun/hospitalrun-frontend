@@ -15,7 +15,6 @@ export default AbstractEditController.extend({
   showUpdateButton: true,
 
   database: inject.service(),
-  editController: null,
   filesystem: inject.service(),
 
   photoFileNotSet: computed('model.photoFile', function() {
