@@ -875,15 +875,15 @@ export default {
     sectionTitle: ''
   },
   languages: {
-    en: '',
-    fr: '',
-    es: '',
-    de: '',
-    ru: '',
-    'es-co': '',
-    'pt-br': '',
-    tr: '',
-    ur: ''
+    en: 'Ingilizce',
+    fr: 'Fransızca',
+    es: 'İspanyol',
+    de: 'Almanca',
+    ru: 'Rusça',
+    'es-co': 'İspanyolca (Kolombiyalı)',
+    'pt-br': 'Portekizce (Brezilya)',
+    tr: 'Türk',
+    ur: 'Urduca'
   },
   loading: {
     messages: {
@@ -1060,7 +1060,8 @@ export default {
     about: '',
     actions: {
       login: '',
-      logout: ''
+      logout: '',
+      selectLanguage: 'Dil Seçin'
     },
     administration: '',
     billing: '',
