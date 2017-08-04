@@ -4,6 +4,7 @@ import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 import UserSession from 'hospitalrun/mixins/user-session';
 import Navigation from 'hospitalrun/mixins/navigation';
+
 export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, ProgressDialog, UserSession, Navigation, {
   ajax: Ember.inject.service(),
   application: Ember.inject.controller(),
@@ -16,6 +17,7 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
   session: Ember.inject.service(),
   syncStatus: '',
   currentOpenNav: null,
+  selectedLanguage: null,
 
   actions: {
     about() {

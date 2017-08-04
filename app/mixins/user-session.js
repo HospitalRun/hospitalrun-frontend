@@ -479,6 +479,14 @@ export default Ember.Mixin.create({
       'Medical Records Officer',
       'System Administrator'
     ],
+    print_invoice: [
+      'Cashier',
+      'System Adminstrator'
+    ],
+    review_invoice: [
+      'Cashier',
+      'System Administrator'
+    ],
     visits: [
       'Data Entry',
       'Doctor',
@@ -556,6 +564,14 @@ export default Ember.Mixin.create({
     if (!Ember.isEmpty(session) && session.get('isAuthenticated')) {
       return session.get('data.authenticated');
     }
+  },
+
+  currentUserRole() {
+    let sessionVars = this._getUserSessionVars();
+    if (!Ember.isEmpty(sessionVars) && !Ember.isEmpty(sessionVars.role)) {
+      return sessionVars.role;
+    }
+    return null;
   },
 
   currentUserCan(capability) {

@@ -874,6 +874,17 @@ export default {
     requestsTitle: '',
     sectionTitle: ''
   },
+  languages: {
+    en: 'Englisch',
+    fr: 'Französisch',
+    es: 'Spanisch',
+    de: 'Deutsche',
+    ru: 'Russisch',
+    'es-co': 'Spanisch (Kolumbianisch)',
+    'pt-br': 'Portugiesisch (Brasilianer)',
+    tr: 'Türkisch',
+    ur: 'Urdu'
+  },
   loading: {
     messages: {
       '0': '',
@@ -1049,7 +1060,8 @@ export default {
     about: 'Über HospitalRun',
     actions: {
       login: 'Anmelden',
-      logout: 'Abmelden'
+      logout: 'Abmelden',
+      selectLanguage: 'Sprache auswählen'
     },
     administration: 'Administration',
     billing: 'Abrechnung',
