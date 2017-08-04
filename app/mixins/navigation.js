@@ -1,13 +1,18 @@
 import Ember from 'ember';
 
 const { camelize } = Ember.String;
+const {
+  get,
+  isEqual,
+  set
+} = Ember;
 
 export default Ember.Mixin.create({
   navItems: [
     {
       title: 'Inventory',
       iconClass: 'octicon-package',
-      route: 'inventory',
+      route: 'inventory.index',
       capability: 'inventory',
       subnav: [
         {
@@ -40,13 +45,13 @@ export default Ember.Mixin.create({
     {
       title: 'Patients',
       iconClass: 'octicon-organization',
-      route: 'patients',
+      route: 'patients.index',
       capability: 'patients',
       subnav: [
         {
           title: 'Patient Listing',
           iconClass: 'octicon-chevron-right',
-          route: 'patients',
+          route: 'patients.index',
           capability: 'patients'
         },
         {
@@ -92,12 +97,6 @@ export default Ember.Mixin.create({
           title: 'Today\'s Appointments',
           iconClass: 'octicon-chevron-right',
           route: 'appointments.today',
-          capability: 'appointments'
-        },
-        {
-          title: 'Missed Appointments',
-          iconClass: 'octicon-chevron-right',
-          route: 'appointments.missed',
           capability: 'appointments'
         },
         {
@@ -252,13 +251,46 @@ export default Ember.Mixin.create({
           title: 'Prices',
           iconClass: 'octicon-chevron-right',
           route: 'pricing.index',
-          capability: 'invoices'
+          capability: 'pricing'
         },
         {
           title: 'Price Profiles',
           iconClass: 'octicon-chevron-right',
           route: 'pricing.profiles',
-          capability: 'invoices'
+          capability: 'pricing'
+        }
+      ]
+    },
+    {
+      title: 'Incident',
+      iconClass: 'octicon-package',
+      route: 'incident',
+      capability: 'incident',
+      subnav: [
+        {
+          title: 'Current Incidents',
+          iconClass: 'octicon-chevron-right',
+          route: 'incident.index',
+          capability: 'add_incident'
+        },
+        {
+          title: 'New Incident',
+          iconClass: 'octicon-plus',
+          route: 'incident.edit',
+          subroute: 'new',
+          capability: 'add_incident'
+        },
+        {
+          title: 'History',
+          iconClass: 'octicon-chevron-right',
+          route: 'incident.completed',
+          capability: 'add_incident'
+        },
+        {
+          title: 'Reports',
+          iconClass: 'octicon-chevron-right',
+          route: 'incident.reports',
+          capability: 'generate_incident_report'
         }
       ]
     },
@@ -281,6 +313,12 @@ export default Ember.Mixin.create({
           capability: 'update_config'
         },
         {
+          title: 'Incident Categories',
+          iconClass: 'octicon-chevron-right',
+          route: 'inc-category',
+          capability: 'add_incident_category'
+        },
+        {
           title: 'Load DB',
           iconClass: 'octicon-plus',
           route: 'admin.loaddb',
@@ -290,6 +328,18 @@ export default Ember.Mixin.create({
           title: 'Lookup Lists',
           iconClass: 'octicon-chevron-right',
           route: 'admin.lookup',
+          capability: 'update_config'
+        },
+        {
+          title: 'Text Replacements',
+          iconClass: 'octicon-plus',
+          route: 'admin.textreplace',
+          capability: 'update_config'
+        },
+        {
+          title: 'Print Header',
+          iconClass: 'octicon-chevron-right',
+          route: 'admin.print-header',
           capability: 'update_config'
         },
         {
@@ -316,7 +366,7 @@ export default Ember.Mixin.create({
   ],
 
   // Navigation items get mapped localizations
-  localizedNavItems: Ember.computed('navItems.[]', function() {
+  localizedNavItems: Ember.computed('navItems.[]', 'i18n.locale', function() {
     let localizationPrefix = 'navigation.';
     // Supports unlocalized keys for now, otherwise we would get:
     // "Missing translation: key.etc.path"
@@ -325,21 +375,37 @@ export default Ember.Mixin.create({
       // i18n will return a SafeString object, not a string
       return typeof translation === 'string' ? original : translation;
     };
-    return this.get('navItems').map((nav) => {
+    let i18n = get(this, 'i18n');
+    let navItems = get(this, 'navItems');
+    return navItems.map((nav) => {
       let sectionKey = localizationPrefix + camelize(nav.title).toLowerCase();
-      let navTranslated = this.get('i18n').t(sectionKey);
+      let navTranslated = i18n.t(sectionKey);
 
-      Ember.set(nav, 'localizedTitle', translationOrOriginal(navTranslated, nav.title));
+      set(nav, 'localizedTitle', translationOrOriginal(navTranslated, nav.title));
       // Map all of the sub navs, too
-      nav.subnav = nav.subnav.map((sub) => {
+      set(nav, 'subnav', nav.subnav.map((sub) => {
         let subItemKey = `${localizationPrefix}subnav.${camelize(sub.title)}`;
-        let subTranslated = this.get('i18n').t(subItemKey);
-
-        sub.localizedTitle = translationOrOriginal(subTranslated, sub.title);
+        let subTranslated = i18n.t(subItemKey);
+        set(sub, 'localizedTitle', translationOrOriginal(subTranslated, sub.title));
         return sub;
-      });
+      }));
 
       return nav;
     });
-  })
+  }),
+
+  findNavItemByRoute(route) {
+    for (let i = 0; i < this.navItems.length; i++) {
+      if (isEqual(this.navItems[i].route, route)) {
+        return this.navItems[i];
+      } else {
+        for (let j = 0; j < this.navItems[i].subnav.length; j++) {
+          if (isEqual(this.navItems[i].subnav[j].route, route)) {
+            return this.navItems[i].subnav[j];
+          }
+        }
+      }
+    }
+    return null;
+  }
 });

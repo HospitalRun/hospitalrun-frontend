@@ -32,7 +32,7 @@ export default Ember.Component.extend({
         return contentList;
       }
     }
-  }.property('list'),
+  }.property('list.value.[]'),
 
   usePricingTypeAhead: function() {
     return (this.get('typeAheadType') === 'pricing');
@@ -45,5 +45,5 @@ export default Ember.Component.extend({
     } else {
       return true;
     }
-  }.property('list')
+  }.property('list.userCanAdd')
 });

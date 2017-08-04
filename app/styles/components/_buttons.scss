@@ -1,17 +1,17 @@
 .btn {
   &.on-white {
-    background-color: $blue_light;
-    color: $navy;
+    background-color: #00c4a2;
+    color: $white;
   }
 
   &.warning {
-    background-color: $red_light;
-    color: $red;
+    background-color: #ff6d6f;
+    color: $white;
 
     &:hover,
     &:focus {
-      background-color: $red;
-      color: $white;
+      background-color: $red_lighter;
+      color: $brown;
     }
   }
 
@@ -20,11 +20,17 @@
     color: $gray;
 
     &:hover,
-    &:focus { opacity: .8; }
+    &:focus {
+      opacity: .8;
+    }
   }
 
   &.admit {
-    width: 103px;
+    width: 110px;
+  }
+
+  &.info {
+    width: 110px;
   }
 
   .octicon {
@@ -50,7 +56,7 @@
 
   // needs converted to variable
   &:hover,
-  &:focus { background-color: #00c4a2; }
+  &:focus { background-color: #08987f; }
 
   // needs converted to variable
   &:active,
@@ -64,8 +70,8 @@
   &.disabled:active,
   &[disabled]:active {
     opacity: .7;
-    background-color: $green;
-    color: $white;
+    background-color: #dbebff;
+    color: $black;
   }
 }
 

@@ -6,9 +6,7 @@
         <th>{{t 'labels.quantity'}}</th>
         <th>{{t 'labels.requestedOn'}}</th>
         <th>{{t 'labels.requestedBy'}}</th>
-        {{#if canFulfill}}
-          <th>{{t 'labels.actions'}}</th>
-        {{/if}}
+        <th>{{t 'labels.actions'}}</th>
       </tr>
       {{#each model as |request|}}
         <tr>
@@ -16,11 +14,14 @@
           <td>{{request.quantity}}</td>
           <td>{{date-format request.dateRequested}}</td>
           <td>{{request.requestedBy}}</td>
-          {{#if canFulfill}}
-            <td>
+          <td>
+            {{#if canFulfill}}
               <button class="btn btn-primary" {{action 'fulfill' request}}>{{t 'labels.fulfill'}}</button>
-            </td>
-          {{/if}}
+            {{/if}}
+            {{#if (or canFulfill (and canAdd (eq request.requestedBy currentUserName)))}}
+              <button class="btn btn-default warning" {{action 'deleteItem' request bubbles=false }}><span class="octicon octicon-x"></span> {{t 'buttons.delete'}}</button> 
+            {{/if}}
+          </td>
         </tr>
       {{/each}}
     </table>

@@ -1,5 +1,6 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import AddNewPatient from 'hospitalrun/mixins/add-new-patient';
+import AllergyActions from 'hospitalrun/mixins/allergy-actions';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
 import DiagnosisActions from 'hospitalrun/mixins/diagnosis-actions';
 import Ember from 'ember';
@@ -17,7 +18,7 @@ const {
   set
 } = Ember;
 
-export default AbstractEditController.extend(AddNewPatient, ChargeActions, DiagnosisActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
+export default AbstractEditController.extend(AddNewPatient, AllergyActions, ChargeActions, DiagnosisActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
   visitsController: Ember.inject.controller('visits'),
   additionalButtons: computed('model.status', function() {
     let buttonProps = {
@@ -36,6 +37,8 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       return [buttonProps];
     }
   }),
+
+  noReport: false,
 
   canAddAppointment: computed('model.isNew', function() {
     return (!this.get('model.isNew') && this.currentUserCan('add_appointment'));
@@ -65,6 +68,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     return this.currentUserCan('add_vitals');
   }.property(),
 
+  canAddReport: computed('hasReport', function() {
+    return this.currentUserCan('add_report') && !this.get('hasReport');
+  }),
+
   canDeleteImaging: function() {
     return this.currentUserCan('delete_imaging');
   }.property(),
@@ -83,6 +90,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
   canDeleteVitals: function() {
     return this.currentUserCan('delete_vitals');
+  }.property(),
+
+  canDeleteReport: function() {
+    return this.currentUserCan('delete_report');
   }.property(),
 
   isAdmissionVisit: function() {
@@ -141,14 +152,14 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     }
   }),
 
-  updateButtonText: function() {
+  updateButtonText: computed('model.{checkIn,isNew}', function() {
     let i18n = this.get('i18n');
     if (this.get('model.checkIn')) {
       return i18n.t('visits.buttons.checkIn');
     } else {
       return this._super();
     }
-  }.property('model.checkIn'),
+  }),
 
   validVisitTypes: function() {
     let outPatient = this.get('model.outPatient');
@@ -162,17 +173,16 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   }.property('visitTypes', 'model.outPatient'),
 
   _addChildObject(route, afterTransition) {
-    this.transitionToRoute(route, 'new').then(function(newRoute) {
-      newRoute.currentModel.setProperties({
-        patient: this.get('model.patient'),
-        visit: this.get('model'),
-        selectPatient: false,
-        returnToVisit: this.get('model.id')
-      });
+    let options = {
+      queryParams: {
+        forVisitId: this.get('model.id')
+      }
+    };
+    this.transitionToRoute(route, 'new', options).then((newRoute) => {
       if (afterTransition) {
         afterTransition(newRoute);
       }
-    }.bind(this));
+    });
   },
 
   _finishAfterUpdate() {
@@ -331,6 +341,11 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   },
 
   actions: {
+    addAllergy(newAllergy) {
+      let patient = get(this, 'model.patient');
+      this.savePatientAllergy(patient, newAllergy);
+    },
+
     addDiagnosis(newDiagnosis) {
       this.addDiagnosisToModelAndPatient(newDiagnosis);
     },
@@ -351,6 +366,11 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
     checkout() {
       this.checkoutPatient(VisitStatus.CHECKED_OUT);
+    },
+
+    deleteAllergy(allergy) {
+      let patient = get(this, 'model.patient');
+      this.deletePatientAllergy(patient, allergy);
     },
 
     deleteProcedure(procedure) {
@@ -443,6 +463,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       this._addChildObject('medication.edit');
     },
 
+    newReport() {
+      this._addChildObject('visits.reports.edit');
+    },
+
     showAddProcedure() {
       this._addChildObject('procedures.edit');
     },
@@ -504,6 +528,16 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       if (!isAdmissionVisit) {
         visit.set('endDate', startDate);
       }
+    },
+
+    printReport(report) {
+      set(report, 'returnToVisit', get(this, 'model.id'));
+      this.transitionToRoute('visits.reports.edit', report, { queryParams: { print: true } });
+    },
+
+    viewReport(report) {
+      set(report, 'returnToVisit', get(this, 'model.id'));
+      this.transitionToRoute('visits.reports.edit', report, { queryParams: { print: null } });
     }
 
   }
