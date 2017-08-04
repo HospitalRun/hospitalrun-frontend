@@ -875,15 +875,15 @@ export default {
     sectionTitle: 'Laboratório'
   },
   languages: {
-    en: '',
-    fr: '',
-    es: '',
-    de: '',
-    ru: '',
-    'es-co': '',
-    'pt-br': '',
-    tr: '',
-    ur: ''
+    en: 'Inglês',
+    fr: 'Francês',
+    es: 'Espanhol',
+    de: 'Alemão',
+    ru: 'Russo',
+    'es-co': 'Espanhol (Colombiano)',
+    'pt-br': 'Portugues (Brasileiro)',
+    tr: 'Turco',
+    ur: 'Urdu'
   },
   loading: {
     messages: {
@@ -1060,7 +1060,8 @@ export default {
     about: 'Sobre HospitalRun',
     actions: {
       login: 'Entrar',
-      logout: 'Sair'
+      logout: 'Sair',
+      selectLanguage: 'Selecione o idioma'
     },
     administration: 'Administração',
     billing: 'Faturamento',
