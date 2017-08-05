@@ -39,7 +39,6 @@ function paymentStateAcceptance(object) {
 export default AbstractModel.extend({
   // Attributes
   customForms: DS.attr('custom-forms'),
-  diagnoses: DS.hasMany('diagnosis', { async: false }),
   dischargeInfo: DS.attr('string'),
   endDate: DS.attr('date'), // if visit type is outpatient, startDate and endDate are equal
   examiner: DS.attr('string'),
@@ -60,7 +59,7 @@ export default AbstractModel.extend({
 
   // Associations
   charges: DS.hasMany('proc-charge', { async: false }),
-  diagnoses: DS.hasMany('diagnosis'),
+  diagnoses: DS.hasMany('diagnosis', { async: false }),
   imaging: DS.hasMany('imaging', { async: true }),
   labs: DS.hasMany('lab', { async: true }),
   medication: DS.hasMany('medication', { async: true }),
