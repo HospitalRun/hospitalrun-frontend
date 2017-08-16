@@ -875,15 +875,15 @@ export default {
     sectionTitle: ''
   },
   languages: {
-    en: '',
-    fr: '',
-    es: '',
-    de: '',
-    ru: '',
-    'es-co': '',
-    'pt-br': '',
-    tr: '',
-    ur: ''
+    en: 'английский',
+    fr: 'Французский',
+    es: 'испанский',
+    de: 'Немецкий',
+    ru: 'русский',
+    'es-co': 'Испанский (колумбийский)',
+    'pt-br': 'Португальский (бразильский)',
+    tr: 'турецкий',
+    ur: 'урду'
   },
   loading: {
     messages: {
@@ -1060,7 +1060,8 @@ export default {
     about: '',
     actions: {
       login: '',
-      logout: ''
+      logout: '',
+      selectLanguage: 'Выберите язык'
     },
     administration: '',
     billing: '',

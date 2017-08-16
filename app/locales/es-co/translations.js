@@ -875,15 +875,15 @@ export default {
     sectionTitle: 'Laboratorios'
   },
   languages: {
-    en: '',
-    fr: '',
-    es: '',
-    de: '',
-    ru: '',
-    'es-co': '',
-    'pt-br': '',
-    tr: '',
-    ur: ''
+    en: 'Inglés',
+    fr: 'Francés',
+    es: 'Español',
+    de: 'Alemán',
+    ru: 'Ruso',
+    'es-co': 'Español (Colombiano)',
+    'pt-br': 'Portugués (Brasileño)',
+    tr: 'Turco',
+    ur: 'Urdu'
   },
   loading: {
     messages: {
