@@ -80,5 +80,41 @@
         </table>
       </div>
     </div>
+    <div class="panel-body detail-section-content">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          {{t 'patients.navigation.photos'}}
+          {{#if canAddPhoto}}
+            <button type="button" class="btn btn-primary align-right" {{action "showAddPhoto" bubbles=false }}>
+              <span class="octicon octicon-plus"></span>{{t 'patients.buttons.newPhoto'}}
+            </button>
+          {{/if}}
+        </h3>
+      </div>
+      <div class="panel-body detail-section-content">
+        <div class="row">
+          {{#each model.photos as |photo|}}
+            <div class="col-sm-4 col-md-3">
+              <div {{action "editPhoto" photo}} class="thumbnail">
+                {{photo-display photo=photo }}
+                <div class="caption">
+                  {{photo.caption}}
+                  <p>
+                    {{#if canAddPhoto}}
+                      <button type="button" class="btn btn-default neutral" {{action "editPhoto" photo}}>{{t 'labels.edit'}}</button>
+                    {{/if}}
+                    {{#if canDeletePhoto}}
+                      <button type="button" class="btn btn-default warning" {{action "showDeletePhoto" photo bubbles=false }}>
+                        <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
+                      </button>
+                    {{/if}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
   {{/em-form}}
 {{/edit-panel}}
