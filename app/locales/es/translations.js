@@ -878,12 +878,12 @@ export default {
     en: 'Inglés',
     fr: 'Francés',
     es: 'Español',
-    de: '',
-    ru: '',
-    'es-co': '',
-    'pt-br': '',
-    tr: '',
-    ur: ''
+    de: 'Alemán',
+    ru: 'Ruso',
+    'es-co': 'Español (Colombiano)',
+    'pt-br': 'Portugués (Brasileño)',
+    tr: 'Turco',
+    ur: 'Urdu'
   },
   loading: {
     messages: {
@@ -1060,7 +1060,8 @@ export default {
     about: 'Información de HospitalRun',
     actions: {
       login: 'Ingresar',
-      logout: 'Salir'
+      logout: 'Salir',
+      selectLanguage: 'Seleccione el idioma'
     },
     administration: 'Administracion',
     billing: 'Facturas',

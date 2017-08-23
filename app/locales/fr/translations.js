@@ -900,13 +900,13 @@ export default {
   languages: {
     en: 'Anglais',
     fr: 'Français',
-    es: 'Espanol',
-    de: '',
-    ru: '',
-    'es-co': '',
-    'pt-br': '',
-    tr: '',
-    ur: ''
+    es: 'Espagnol',
+    de: 'Allemand',
+    ru: 'Russe',
+    'es-co': 'Espagnol (Colombien)',
+    'pt-br': 'Portugais (Brésilien)',
+    tr: 'Turc',
+    ur: 'Ourdou'
   },
   loading: {
     messages: {
