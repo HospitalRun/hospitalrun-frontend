@@ -21,7 +21,7 @@
           <td>{{medicationRequest.quantity}}</td>
           <td>{{medicationRequest.status}}</td>
           {{#if showActions}}
-            <td>
+            <td class="actions">
               <button class="btn btn-primary" {{action 'editItem' medicationRequest bubbles=false }}>{{t 'labels.fulfill'}}</button>
             </td>
           {{/if}}
