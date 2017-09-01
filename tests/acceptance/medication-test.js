@@ -92,6 +92,35 @@ test('fulfilling a medication request', function(assert) {
   });
 });
 
+test('complete a medication request', function(assert) {
+  runWithPouchDump('medication', function() {
+    authenticateUser();
+    visit('/medication/completed');
+    assert.equal(find('.clickable').length, 0, 'Should have 0 completed request');
+    visit('/medication');
+    click('button:contains(Fulfill)');
+
+    andThen(function() {
+      assert.equal(find('.patient-summary').length, 1, 'Patient summary is displayed');
+    });
+    waitToAppear('.inventory-location option:contains(No Location)');
+    andThen(() => {
+      click('button:contains(Fulfill)');
+      waitToAppear('.modal-dialog');
+    });
+    andThen(() => {
+      assert.equal(find('.modal-title').text().trim(), 'Medication Request Fulfilled', 'Medication Request has been Fulfilled');
+    });
+
+    click('button:contains(Ok)');
+    visit('/medication/completed');
+    andThen(() => {
+      assert.equal(currentURL(), '/medication/completed');
+      assert.equal(find('.clickable').length, 1, 'Should have 1 completed request');
+    });
+  });
+});
+
 test('returning medication', function(assert) {
   runWithPouchDump('medication', function() {
     authenticateUser();

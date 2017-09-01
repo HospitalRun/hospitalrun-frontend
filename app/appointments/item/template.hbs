@@ -13,7 +13,7 @@
     {{/if}}
     {{#if canAddVisit}}
       {{#if (eq appointment.displayStatus 'Scheduled')}}
-        <button class="btn btn-default" {{action 'checkIn' appointment bubbles=false }}>
+        <button class="btn btn-primary" {{action 'checkIn' appointment bubbles=false }}>
           <span class="glyphicon glyphicon-log-in"></span>
           {{t 'visits.buttons.checkIn'}}
         </button>

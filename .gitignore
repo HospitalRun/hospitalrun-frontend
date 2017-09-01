@@ -4,6 +4,7 @@
 # compiled output
 /dist
 /tmp
+/electron-out
 
 # dependencies
 /node_modules

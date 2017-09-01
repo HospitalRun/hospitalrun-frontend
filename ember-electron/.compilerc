@@ -1,0 +1,5 @@
+{
+  "application/javascript": {
+    "passthrough": true
+  }
+}

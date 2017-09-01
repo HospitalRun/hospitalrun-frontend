@@ -83,12 +83,12 @@
                     <p class="form-control-static">{{t (concat 'visits.labels.status' model.status) }}</p>
                 </div>
               {{/if}}
-              {{select-or-typeahead className="col-sm-4" property="examiner"
+              {{select-or-typeahead className="col-sm-4 visit-examiner" property="examiner"
                 label=(t "visits.labels.examiner") list=physicianList
                 selection=model.examiner
               }}
             </div>
-            {{em-text property="reasonForVisit" label=(t 'visits.labels.reasonForVisit') rows=3 }}
+            {{expand-text property="reasonForVisit" label=(t 'visits.labels.reasonForVisit') rows=3 }}
             {{#if canAddBillingDiagnosis}}
               <div class="row">
                 {{select-or-typeahead className="col-sm-5" property="primaryBillingDiagnosis"
@@ -120,6 +120,11 @@
           </a>
         </li>
         <li role="presentation">
+          <a href="#visit-photos" role="tab" data-toggle="pill" data-test-selector="photos-tab">
+            {{t 'patients.navigation.photos'}}
+          </a>
+        </li>
+        <li role="presentation">
           <a href="#visit-procedures" role="tab" data-toggle="pill" data-test-selector="procedures-tab">
             {{t 'visits.navigation.procedures'}}
           </a>
@@ -127,6 +132,11 @@
         <li role="presentation">
           <a href="#charges" role="tab" data-toggle="pill" data-test-selector="charges-tab">
             {{t 'visits.navigation.charges'}}
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#reports" role="tab" data-toggle="pill" data-test-selector="reports-tab">
+            {{t 'visits.navigation.reports'}}
           </a>
         </li>
       </ul>
@@ -162,8 +172,43 @@
             </div>
             <div class="panel-footer">
               {{#if canAddNote}}
-                <button class="btn btn-primary align-right" {{action "showAddPatientNote" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'buttons.newNote' }}</button>
+                <button class="btn btn-primary align-right" data-test-selector="new-note-btn" {{action "showAddPatientNote" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'buttons.newNote' }}</button>
               {{/if}}
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="visit-photos">
+          <div class="panel">
+            {{#if canAddPhoto}}
+              <div class="panel-heading">
+                <button type="button" class="btn btn-primary align-right" {{action "showAddPhoto" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span>{{t 'patients.buttons.newPhoto'}}
+                </button>
+              </div>
+            {{/if}}
+            <div class="panel-body detail-section-content">
+              <div class="row">
+                {{#each model.photos as |photo|}}
+                  <div class="col-sm-4 col-md-3">
+                    <div {{action "editPhoto" photo}} class="thumbnail">
+                      {{photo-display photo=photo }}
+                      <div class="caption">
+                        {{photo.caption}}
+                        <p>
+                          {{#if canAddPhoto}}
+                            <button type="button" class="btn btn-default neutral" {{action "editPhoto" photo}}>{{t 'labels.edit'}}</button>
+                          {{/if}}
+                          {{#if canDeletePhoto}}
+                            <button type="button" class="btn btn-default warning" {{action "showDeletePhoto" photo bubbles=false }}>
+                              <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
+                            </button>
+                          {{/if}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                {{/each}}
+              </div>
             </div>
           </div>
         </div>
@@ -196,7 +241,7 @@
             </div>
             <div class="panel-footer">
               {{#if canAddProcedure}}
-                <button class="btn btn-primary align-right" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.newProcedure' }}</button>
+                <button class="btn btn-primary align-right" data-test-selector="new-procedure-btn" {{action "showAddProcedure" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'visits.buttons.newProcedure' }}</button>
               {{/if}}
             </div>
           </div>
@@ -209,6 +254,7 @@
             <div class="panel-body">
               <table class="table">
                 <tr class="table-header">
+                  <th>{{t "labels.takenBy"}}</th>
                   <th>{{t "labels.date"}}</th>
                   <th>{{t "vitals.labels.temperature"}}</th>
                   <th>{{t "vitals.labels.weight"}}</th>
@@ -221,6 +267,7 @@
                 </tr>
                 {{#each model.vitals as |vital|}}
                   <tr>
+                    <td>{{vital.modifiedBy}}</td>
                     <td>{{date-format vital.dateRecorded format="l h:mm A"}}</td>
                     <td>{{vital.temperature}}</td>
                     <td>{{vital.weight}}</td>
@@ -256,6 +303,49 @@
           {{#em-form model=this submitButton=false }}
             {{partial 'item-charges'}}
           {{/em-form}}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="reports">
+          <div class="panel detail-section">
+            {{#if noReport}}
+
+              <div class="panel-heading">
+                {{#if canAddReport}}
+                  <button class="btn btn-primary align-right" data-test-selector="report-btn" {{action "newReport"}}>
+                    {{#if model.outPatient}}
+                      {{t 'visits.buttons.newOPDReport'}}
+                    {{else}}
+                      {{t 'visits.buttons.newDischargeReport'}}
+                    {{/if}}
+                  </button>
+                {{/if}}
+              </div>
+
+            {{else}}
+
+              <div class="panel-body">
+                <table class="table">
+                  <tr class="table-header">
+                    <th>{{t 'labels.date'}}</th>
+                    <th>{{t 'visits.labels.authoredBy'}}</th>
+                    <th>{{t 'visits.labels.reportType'}}</th>
+                    <th>{{t 'labels.actions'}}</th>
+                  </tr>
+
+                  <tr>
+                    <td>{{date-format report.reportDate}}</td>
+                    <td>{{report.modifiedBy}}</td>
+                    <td>{{report.reportType}}</td>
+                    <td>
+                      <button class="btn btn-default neutral" data-test-selector="view-report-btn" {{action "viewReport" report}}>{{t 'labels.view'}}</button>
+                      <button class="btn btn-default neutral" data-test-selector="print-report-btn" {{action "printReport" report}}>{{t 'labels.print'}}</button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+            {{/if}}
+
+          </div>
         </div>
       </div>
     {{/unless}}

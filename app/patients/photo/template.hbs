@@ -4,17 +4,25 @@
     isUpdateDisabled=isUpdateDisabled
     title=title
     updateButtonAction=updateButtonAction
+    updateButtonClass=updateButtonClass
     updateButtonText=updateButtonText }}
   {{#em-form model=model submitButton=false }}
+    {{em-input property="caption" label=(t 'patients.labels.caption')}}
     {{#if model.isNew}}
-      {{take-photo photoFile=model.photoFile }}
+      {{take-photo photoFile=model.photoFile isImage=model.isImage}}
     {{else}}
-      <div class="thumbnail">
-        <img alt={{model.caption}} src={{model.url}} class="img-responsive" >
-      </div>
+      {{#if model.isImage}}
+        <div class="thumbnail">
+          <img alt={{model.caption}} src={{model.url}} class="img-responsive" >
+        </div>
+      {{else}}
+        <a href={{model.url}} target="_blank" download="{{model.shortFileName}}" class="btn btn-default">
+          <span class="glyphicon glyphicon-download" aria-hidden="true"></span> {{t 'patients.buttons.download'}}
+        </a>
+      {{/if}}
     {{/if}}
-    <div class="row">
-      {{em-input property="caption" label="Caption"}}
-    </div>
+    {{#if showFileRequired}}
+      <div class="alert alert-warning" role="alert">{{fileRequiredMessage}}</div>
+    {{/if}}
   {{/em-form}}
 {{/modal-dialog}}

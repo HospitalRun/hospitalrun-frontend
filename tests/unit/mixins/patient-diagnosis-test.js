@@ -22,6 +22,7 @@ moduleFor('mixin:patient-diagnosis', 'Unit | Mixin | patient-diagnosis', {
     'model:patient-note',
     'model:procedure',
     'model:diagnosis',
+    'model:report',
     'ember-validations@validator:local/acceptance',
     'ember-validations@validator:local/presence'
   ],

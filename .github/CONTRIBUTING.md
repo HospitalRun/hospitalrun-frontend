@@ -1,10 +1,14 @@
 # Contributing to the Ember front end for HospitalRun
 
-Contributions are welcome via pull requests and issues.  This project uses the style guides from Dockyard for [Ember](https://github.com/dockyard/styleguides/blob/master/engineering/ember.md) and [JavaScript](https://github.com/dockyard/styleguides/blob/master/engineering/javascript.md).  These style guides are enforced via [Ember Suave](https://github.com/dockyard/ember-suave).  Before submitting a pull request, please make sure all tests pass by running ```ember test```.
+Contributions are welcome via pull requests and issues. Before submitting a pull request, please make sure all tests pass by running ```ember test```. This project uses the style guides from Dockyard for [Ember](https://github.com/dockyard/styleguides/blob/master/engineering/ember.md) and [JavaScript](https://github.com/dockyard/styleguides/blob/master/engineering/javascript.md). These style guides are enforced via ESLint, which is one of the linters described in the section on [linters](#linter) below.
 
 ## Slack / Communication
 
-Project communication occurs primarily and intentionally via our project [Slack](https://hospitalrun.slack.com/). Those interested in / considering contribution are encouraged to [join](https://hospitalrun-slackin.herokuapp.com/).
+Project communication occurs primarily and intentionally via our project [Slack](https://hospitalrun.slack.com/). Those interested in / considering contribution are encouraged to [join](https://hospitalrun-slackin.herokuapp.com/). Project maintainers, contributors, and other community members in the Slack channel are usually available to answer questions, so feel free to ask about anything you need help with in the General channel. 
+
+However, before you ask in Slack "what can I contribute to", be sure to keep reading this document for the answer to your question. :-)
+
+Also, please avoid use of the `@here` command in Slack, as you will be sending a notification to nearly 600 people. Just post your question and someone will respond soon.
 
 ## Help Wanted
 
@@ -40,7 +44,7 @@ This section is designed to help developers start coding in the project and unde
 
 ### Ember
 
-To understand the project you'll have to understand [Ember](http://emberjs.com), and it is advisable that you'll follow the tutorial: [Create your own app](https://guides.emberjs.com/v2.9.0/tutorial/ember-cli/) to get an understanding of how Ember works and the basic folder structure. You can find more Ember guides [here](https://guides.emberjs.com/v2.9.0/).
+To understand the project you'll have to understand [Ember](http://emberjs.com), and it is advisable that you'll follow the tutorial: [Create your own app](https://guides.emberjs.com/v2.10.0/tutorial/ember-cli/) to get an understanding of how Ember works and the basic folder structure. You can find more Ember guides [here](https://guides.emberjs.com/v2.10.0/).
 
 ### ES6
 
@@ -118,14 +122,15 @@ Ember, by default uses [JSON API](http://jsonapi.org) as a JSON convention. [Cou
 
 A linter is a small program that checks code for stylistic or programming errors. Linters are available for most syntaxes, from Python to HTML.
 
-Programming is hard. We are bound to make mistakes. The big advantage of using linter is that your code can be linted as you type (before saving your changes) and any errors are highlighted immediately, which is considerably easier than saving the file, switching to a terminal, running a linter, reading through a list of errors, then switching back to your editor to locate the errors!
+Programming is hard. We are bound to make mistakes. The big advantage of using a linter is that your code can be linted as you type (before saving your changes) and any errors are highlighted immediately, which is considerably easier than saving the file, switching to a terminal, running a linter, reading through a list of errors, then switching back to your editor to locate the errors!
 
 In addition, linters can help to enforce coding standards, find unused variables, find formatting discrepancies etc.
 
 **HospitalRun** uses the following linters:
 
-1. [ESLint](http://eslint.org/) for ECMAScript/JavaScript. You can find the ESLint User guide [here](http://eslint.org/docs/user-guide/).
-2. [stylelint](http://stylelint.io/) for Stylesheets. You can find stylelint User guide [here](http://stylelint.io/user-guide/).
+1. [ESLint](http://eslint.org/) for ECMAScript/JavaScript. You can find the ESLint User guide [here](http://eslint.org/docs/user-guide/). ESLint is setup to use eslint-plugin-ember-suave, you can find more information about that [here](https://github.com/DockYard/eslint-plugin-ember-suave).
+2. [stylelint](http://stylelint.io/) for Stylesheets. You can find the stylelint User guide [here](http://stylelint.io/user-guide/).
+3. [ember-template-lint](https://github.com/rwjblue/ember-template-lint) for Ember templates.
 
 ### Using Local Cache
 
@@ -157,3 +162,25 @@ Travis CI is configured to run tests on GitHub, so when you open a pull requests
 To run the test suite locally, use `ember test` from the project root.
 
 New test should be added for any new features or views in the app. For more info about how to setup a new test, see the [Fixtures for Acceptance Tests](https://github.com/HospitalRun/hospitalrun-frontend#fixtures-for-acceptance-tests) section of the README.
+
+## Guidelines to edit translations
+If you know a language other than English and would like to help translate this app, please follow the following steps:
+
+### Install necessary node modules
+```npm install -g babel-cli eslint-cli babel-preset-es2015```
+
+### Run script to populate missing translation terms
+```npm run translation-sync```
+
+After this step, you may see some file changes due to mismatches in translations of different languages. This script will take the English translation as the standard and populate the missing translations in other languages with empty string.
+
+### Edit the translation file of your language
+The translation files are in app/locales/<language>/translations.json
+
+Open the translation file of your language then search for the string ```''```. Afterwards you fill in the quotation with the translated terms and save the file.
+
+### Submit the pull request
+Follow GitHub's guide to submit a pull request to the project. If you have trouble with this please post in Issues or contact a developer.
+
+
+

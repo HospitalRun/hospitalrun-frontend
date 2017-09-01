@@ -23,10 +23,10 @@
       {{else}}
         <div class="row">
           <div data-test-selector="select-report-start-date">
-            {{date-picker property="startDate" label="Start Date" class="col-sm-4"}}
+            {{date-picker property="startDate" label="Start Date" class="col-sm-4" maxDate="now"}}
           </div>
           <div data-test-selector="select-report-end-date">
-            {{date-picker property="endDate" label="End Date" class="col-sm-4"}}
+            {{date-picker property="endDate" label="End Date" class="col-sm-4" maxDate="now"}}
           </div>
         </div>
       {{/if}}
@@ -88,7 +88,7 @@
     {{/em-form}}
   </div>
   <div class="panel-footer">
-    <button class="btn btn-default" {{action 'generateReport'}}>{{t 'inventory.reports.generate'}}</button>
+    <button class="btn btn-primary" {{action 'generateReport'}}>{{t 'inventory.reports.generate'}}</button>
   </div>
 </div>
 {{#if showReportResults}}
