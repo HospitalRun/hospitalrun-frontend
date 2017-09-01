@@ -874,6 +874,17 @@ export default {
     requestsTitle: 'Pedido de laboratorio',
     sectionTitle: 'Laboratorios'
   },
+  languages: {
+    en: 'Inglés',
+    fr: 'Francés',
+    es: 'Español',
+    de: 'Alemán',
+    ru: 'Ruso',
+    'es-co': 'Español (Colombiano)',
+    'pt-br': 'Portugués (Brasileño)',
+    tr: 'Turco',
+    ur: 'Urdu'
+  },
   loading: {
     messages: {
       '0': '',

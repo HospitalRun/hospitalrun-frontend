@@ -377,6 +377,7 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
         patient: this.get('model'),
         saveToDir: `${this.get('model.id')}/photos/`
       });
+      newPatientPhoto.set('editController', this);
       this.send('openModal', 'patients.photo', newPatientPhoto);
     },
 

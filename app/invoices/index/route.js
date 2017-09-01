@@ -20,6 +20,7 @@ export default AbstractIndexRoute.extend({
     if (Ember.isEmpty(searchStatus)) {
       searchStatus = 'Billed';
     }
+
     this.set('pageTitle', `${searchStatus} Invoices`);
     queryParams = {
       options: {

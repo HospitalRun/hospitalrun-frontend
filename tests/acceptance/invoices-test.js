@@ -61,7 +61,7 @@ test('print invoice', function(assert) {
       click('button:contains(Print)');
     });
     andThen(function() {
-      assert.equal(find('.print-invoice').length, 1, 'Invoice is displayed for printing');
+      assert.equal(find('.invoices-review').length, 1, 'Invoice is displayed for printing');
     });
   });
 });
@@ -206,7 +206,7 @@ test('cashier role', function(assert) {
     });
     click('a:contains(Billing)');
     andThen(function() {
-      assert.equal(find('.category-sub-item').length, 3, 'Should have 3 sub navigations');
+      assert.equal(find('.category-sub-item').length, 2, 'Should have 2 sub navigations');
     });
   });
 });
