@@ -15,7 +15,6 @@ export default AbstractEditController.extend({
   showUpdateButton: true,
 
   database: inject.service(),
-  editController: inject.controller('patients/edit'),
   filesystem: inject.service(),
 
   photoFileNotSet: computed('model.photoFile', function() {
@@ -53,7 +52,7 @@ export default AbstractEditController.extend({
 
   afterUpdate(model) {
     let isNew = get(this, 'newModel');
-    let editController = get(this, 'editController');
+    let editController = get(model, 'editController');
     if (isNew) {
       let photoFile = get(model, 'photoFile');
       let saveToDir = get(model, 'saveToDir');
