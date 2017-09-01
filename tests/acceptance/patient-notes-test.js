@@ -20,6 +20,8 @@ test('patient notes crud testing', function(assert) {
       assert.equal(currentURL(), '/patients/edit/new');
       fillIn('.test-first-name input', 'John');
       fillIn('.test-last-name input', 'Doe');
+    });
+    andThen(function() {
       click('.panel-footer button:contains(Add)');
       waitToAppear('.message:contains(The patient record for John Doe has been saved)');
     });
@@ -56,9 +58,10 @@ test('patient notes crud testing', function(assert) {
       assert.equal(find('.modal-title').text(), 'New Note for John Doe', 'Notes modal appeared');
       fillIn('.test-note-content textarea', 'This is a note.');
       fillIn('.test-note-attribution input', 'Dr. Nick');
-      click('.modal-footer button:contains(Add)');
     });
     andThen(function() {
+      click('.modal-footer button:contains(Add)');
+      waitToDisappear('.modal-dialog');
       waitToAppear('#visit-notes table tr td:contains(This is a note.)');
     });
     andThen(function() {
@@ -68,7 +71,10 @@ test('patient notes crud testing', function(assert) {
     });
     andThen(function() {
       fillIn('.test-note-content textarea', 'This is an updated note.');
+    });
+    andThen(function() {
       click('.modal-footer button:contains(Update)');
+      waitToDisappear('.modal-dialog');
       waitToAppear('#visit-notes table tr td:contains(This is an updated note.)');
     });
     andThen(function() {
@@ -77,7 +83,9 @@ test('patient notes crud testing', function(assert) {
       waitToAppear('.modal-dialog');
     });
     andThen(function() {
+      assert.equal(find('.modal-title').text(), 'Delete Note', 'Delete Note modal appeared');
       click('.modal-footer button:contains(Ok)');
+      waitToDisappear('.modal-dialog');
     });
     andThen(function() {
       assert.equal(find('#visit-notes table tr td:contains(This is an updated note.)').length, 0, 'Successfully deleted note.');

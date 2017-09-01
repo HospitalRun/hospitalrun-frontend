@@ -4,8 +4,9 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
   {{#em-form model=model submitButton=false }}
-    {{em-input property="name" label="Name" class="required pricing-profile-name"}}
-    {{number-input property="discountPercentage" label="Discount Percentage" class="pricing-profile-percentage"}}
-    {{number-input property="discountAmount" label="Discount Amount" class="pricing-profile-discount"}}
+    {{em-input property="name" label=(t 'labels.name') class="required pricing-profile-name"}}
+    {{number-input property="discountPercentage" label=(t 'pricing.labels.discountPercentage') class="pricing-profile-percentage"}}
+    {{number-input property="discountAmount" label=(t 'pricing.labels.discountAmount') class="pricing-profile-discount"}}
+    {{em-input property="setFee" label=(t 'pricing.labels.setFee') class="pricing-set-fee"}}
   {{/em-form}}
 {{/modal-dialog}}

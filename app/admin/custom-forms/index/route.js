@@ -16,7 +16,9 @@ export default AbstractIndexRoute.extend(ModalHelper, UserSession, {
   }),
   newButtonText: t('admin.customForms.buttons.newForm'),
 
-  pageTitle: t('admin.customForms.titles.customForms'),
+  pageTitle: computed('i18n.locale', () => {
+    return t('admin.customForms.titles.customForms');
+  }),
   model() {
     let store = this.get('store');
     return store.findAll('custom-form');

@@ -21,7 +21,7 @@
         </div>
       {{/if}}
       {{#if (eq field.type 'textarea')}}
-        {{em-text label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
+        {{expand-text label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
       {{/if}}
       {{#if (eq field.type 'text')}}
         {{em-input label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}

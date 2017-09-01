@@ -8,6 +8,7 @@ const {
 } = Ember;
 
 export default AbstractEditController.extend(UserRoles, {
+  config: Ember.inject.service(),
   usersController: Ember.inject.controller('users/index'),
   updateCapability: 'add_user',
 
@@ -48,6 +49,7 @@ export default AbstractEditController.extend(UserRoles, {
         let sectionDetails = {};
         sectionDetails.currentScreenTitle = editTitle;
         this.send('setSectionHeader', sectionDetails);
+        get(this, 'config').markUserSetupComplete();
       }).catch((error) =>  {
         this._handleError(error);
       });

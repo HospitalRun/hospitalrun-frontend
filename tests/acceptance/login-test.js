@@ -35,13 +35,15 @@ test('login with correct credentials but space around username', function(assert
 });
 
 test('incorrect credentials shows an error message on the screen', function(assert) {
-  assert.expect(2);
+  if (!window.ELECTRON) {
+    assert.expect(2);
+  }
   runWithPouchDump('default', function() {
     visit('/');
 
     let errorMessage = 'Username or password is incorrect.';
 
-    stubRequest('post', '/db/_session', function(request) {
+    stubRequest('post', '/auth/login', function(request) {
       assert.equal(request.requestBody, 'name=hradmin&password=tset', 'credential are sent to the server');
       request.error({ 'error': 'unauthorized', 'reason': errorMessage });
     });
@@ -59,18 +61,15 @@ test('incorrect credentials shows an error message on the screen', function(asse
 });
 
 function login(assert, spaceAroundUsername) {
-  assert.expect(3);
+  if (!window.ELECTRON) {
+    assert.expect(2);
+  }
   runWithPouchDump('default', function() {
     visit('/login');
 
-    stubRequest('post', '/db/_session', function(request) {
+    stubRequest('post', '/auth/login', function(request) {
       assert.equal(request.requestBody, 'name=hradmin&password=test', !spaceAroundUsername ? 'credential are sent to the server' : 'username trimmed and credential are sent to the server');
       request.ok({ 'ok': true, 'name': 'hradmin', 'roles': ['System Administrator', 'admin', 'user'] });
-    });
-
-    stubRequest('post', '/chkuser', function(request) {
-      assert.equal(request.requestBody, 'name=hradmin', !spaceAroundUsername ? 'username is sent to /chkuser' : 'trimmed username is sent to /chkuser');
-      request.ok({ 'prefix': 'p1', 'role': 'System Administrator' });
     });
 
     andThen(function() {
@@ -80,5 +79,8 @@ function login(assert, spaceAroundUsername) {
     fillIn('#identification', !spaceAroundUsername ? 'hradmin' : ' hradmin');
     fillIn('#password', 'test');
     click('button:contains(Sign in)');
+    andThen(() => {
+      waitToAppear('.sidebar-nav-logo');
+    });
   });
 }

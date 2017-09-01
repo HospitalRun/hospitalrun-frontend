@@ -5,9 +5,19 @@ import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   visitsController: Ember.inject.controller('visits'),
+  filesystem: Ember.inject.service(),
 
   chargePricingCategory: 'Procedure',
   chargeRoute: 'procedures.charge',
+
+  canAddPhoto: function() {
+    let isFileSystemEnabled = this.get('isFileSystemEnabled');
+    return (this.currentUserCan('add_photo') && isFileSystemEnabled);
+  }.property(),
+
+  canDeletePhoto: function() {
+    return this.currentUserCan('delete_photo');
+  }.property(),
 
   anesthesiaTypes: Ember.computed.alias('visitsController.anesthesiaTypes'),
   anesthesiologistList: Ember.computed.alias('visitsController.anesthesiologistList'),
@@ -50,6 +60,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   pricingList: null, // This gets filled in by the route
   pricingTypes: Ember.computed.alias('visitsController.procedurePricingTypes'),
   newProcedure: false,
+  isFileSystemEnabled: Ember.computed.alias('filesystem.isFileSystemEnabled'),
 
   title: function() {
     let isNew = this.get('model.isNew');
@@ -62,6 +73,42 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   updateCapability: 'add_procedure',
 
   actions: {
+    addPhoto(savedPhotoRecord) {
+      let photos = this.get('model.photos');
+      photos.addObject(savedPhotoRecord);
+      this.send('closeModal');
+    },
+
+    deletePhoto(model) {
+      let photo = model.get('photoToDelete');
+      let photoId = photo.get('id');
+      let photos = this.get('model.photos');
+      let filePath = photo.get('fileName');
+      photos.removeObject(photo);
+      photo.destroyRecord().then(function() {
+        let fileSystem = this.get('filesystem');
+        let isFileSystemEnabled = this.get('isFileSystemEnabled');
+        if (isFileSystemEnabled) {
+          let pouchDbId = this.get('database').getPouchId(photoId, 'photo');
+          fileSystem.deleteFile(filePath, pouchDbId);
+        }
+      }.bind(this));
+    },
+
+    editPhoto(photo) {
+      this.send('openModal', 'patients.photo', photo);
+    },
+
+    showAddPhoto() {
+      let newPatientPhoto = this.get('store').createRecord('photo', {
+        patient: this.get('model.visit.patient'),
+        procedure: this.get('model'),
+        saveToDir: `${this.get('model.visit.patient.id')}/photos/`
+      });
+      newPatientPhoto.set('editController', this);
+      this.send('openModal', 'patients.photo', newPatientPhoto);
+    },
+
     showAddMedication() {
       let newCharge = this.get('store').createRecord('proc-charge', {
         dateCharged: new Date(),
@@ -86,6 +133,17 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
         name: this.get('i18n').t('models.medication.names.singular'),
         message: this.get('i18n').t('messages.delete_singular', { name: this.name }),
         chargeToDelete: charge,
+        updateButtonAction: 'confirm',
+        updateButtonText: this.get('i18n').t('buttons.ok')
+      }));
+    },
+
+    showDeletePhoto(photo) {
+      this.send('openModal', 'dialog', Ember.Object.create({
+        confirmAction: 'deletePhoto',
+        title: this.get('i18n').t('patients.titles.deletePhoto'),
+        message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'photo' }),
+        photoToDelete: photo,
         updateButtonAction: 'confirm',
         updateButtonText: this.get('i18n').t('buttons.ok')
       }));
