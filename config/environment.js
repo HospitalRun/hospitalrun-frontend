@@ -1,10 +1,11 @@
-/* jshint node: true */
+/* eslint-env node */
+/* eslint no-var: 0 */
 
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'hospitalrun',
     environment: environment,
-    rootURL: '/',
+    rootURL: process.env.EMBER_CLI_ELECTRON ? null : '/',
     locationType: 'hash', // Using hash location type because it is more friendly for offline.
     EmberENV: {
       FEATURES: {
@@ -27,7 +28,7 @@ module.exports = function(environment) {
     'connect-src': "'self'",
     'default-src': "'self'",
     'frame-src': "'self'",
-    'img-src': "'self' filesystem: data:",
+    'img-src': "'self' filesystem: data: blob:",
     'script-src': "'self' 'unsafe-inline' 'unsafe-eval'",
     'style-src': "'self' 'unsafe-inline'"
   };
@@ -54,19 +55,30 @@ module.exports = function(environment) {
     showCreateDate: true
   };
 
-  ENV.serviceWorker = {
-    enabled: true,
-    debug: true,
-    excludePaths: ['manifest.appcache'],
-    swIncludeFiles: [
-      'node_modules/pouchdb/dist/pouchdb.js'
-    ]
-  };
-  if (environment === 'production') {
-    ENV.serviceWorker.debug = false;
+  if (process.env.EMBER_CLI_ELECTRON) {
+    ENV.serviceWorker = {
+      enabled: false,
+      includeRegistration: false
+    };
+  } else {
+    ENV.serviceWorker = {
+      enabled: true,
+      debug: true,
+      excludePaths: ['manifest.appcache'],
+      swIncludeFiles: [
+        'vendor/pouchdb-for-sw.js'
+      ]
+    };
+    if (environment === 'production') {
+      ENV.serviceWorker.debug = false;
+    }
+  }
+  if (environment === 'test' && !process.env.EMBER_CLI_ELECTRON) {
+    ENV.serviceWorker.enabled = true;
   }
 
   ENV.emberFullCalendar =  {
+    includeScheduler: true,
     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source'
   };
 

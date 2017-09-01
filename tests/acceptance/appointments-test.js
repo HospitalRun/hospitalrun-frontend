@@ -32,7 +32,6 @@ test('visiting /appointments/missed', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
     let url = '/appointments';
-    // create an apointmet scheduled in the past
     let today = moment();
     let tomorrow = moment().add(1, 'days');
     let status = 'Missed';
@@ -46,6 +45,28 @@ test('visiting /appointments/missed', function(assert) {
     andThen(function() {
       assert.equal(currentURL(), url);
       findWithAssert(`.appointment-status:contains(${status})`);
+    });
+  });
+});
+
+test('test appointment for today', function(assert) {
+  runWithPouchDump('appointments', function() {
+    authenticateUser();
+    visit('/appointments/today');
+    assert.equal(find('.appointment-date').length, 0, 'should have 0 appointment today');
+    visit('/appointments/edit/new');
+    andThen(function() {
+      assert.equal(currentURL(), '/appointments/edit/new');
+      findWithAssert('button:contains(Cancel)');
+      findWithAssert('button:contains(Add)');
+    });
+
+    createAppointment(assert);
+
+    visit('/appointments/today');
+    andThen(() => {
+      assert.equal(currentURL(), '/appointments/today');
+      assert.equal(find('.appointment-status').text(), 'Scheduled', 'should have 1 appointment today');
     });
   });
 });
@@ -148,8 +169,8 @@ test('Delete an appointment', function(assert) {
 test('Appointment calendar', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
-    let later = moment().add(1, 'hours');
-    let today = moment();
+    let today = moment().startOf('day');
+    let later =  moment(today).add(1, 'hours');
     let startTime = today.format(TIME_FORMAT);
     let endTime = later.format(TIME_FORMAT);
     let timeString = `${startTime} - ${endTime}`;
@@ -177,6 +198,51 @@ test('Appointment calendar', function(assert) {
       assert.equal(find('.test-appointment-start input').val(), today.format(DATE_TIME_FORMAT), 'Start date/time are correct');
       assert.equal(find('.test-appointment-end input').val(), later.format(DATE_TIME_FORMAT), 'End date/time are correct');
     });
+  });
+});
+
+test('visiting /appointments/search', function(assert) {
+  runWithPouchDump('appointments', function() {
+    authenticateUser();
+
+    createAppointment(assert);
+    createAppointment(assert, {
+      startDate: moment().startOf('day').add(1, 'years'),
+      startTime: moment().startOf('day').add(1, 'years').format(TIME_FORMAT),
+      endDate: moment().endOf('day').add(1, 'years').add(2, 'days'),
+      endTime: moment().endOf('day').add(1, 'years').add(2, 'days').format(TIME_FORMAT)
+    });
+
+    andThen(function() {
+      visit('/appointments/search');
+    });
+
+    andThen(function() {
+      findWithAssert(':contains(Search Appointments)');
+      findWithAssert(':contains(Show Appointments On Or After)');
+      findWithAssert(':contains(Status)');
+      findWithAssert(':contains(Type)');
+      findWithAssert(':contains(With)');
+    });
+
+    andThen(function() {
+      // debugger;
+      let desiredDate = moment().endOf('day').add(363, 'days').format('l');
+      let datePicker = '.test-selected-start-date input';
+      selectDate(datePicker, desiredDate);
+      click('button:contains(Search)');
+    });
+
+    andThen(function() {
+      let date = moment().endOf('day').add(1, 'years').add(2, 'days').format('l');
+      findWithAssert(`.appointment-status:contains(${status})`);
+      let element = `tr:contains(${date})`;
+      findWithAssert(element);
+      date = moment().startOf('day').add(1, 'years');
+      element = find(`tr:contains(${date})`);
+      assert.equal(element.length, 0);
+    });
+
   });
 });
 

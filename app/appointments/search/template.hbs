@@ -1,33 +1,34 @@
+
 {{#item-listing paginationProps=paginationProps }}
   <div class="panel panel-info">
     <div class="panel-body">
       {{#em-form model=model submitButton=false }}
         <div class="row">
-          {{date-picker property="selectedStartingDate" label=(t "appointments.labels.selectedStartingDate")class="col-sm-3"}}
-          {{em-select class="col-sm-3 form-input-group" property="selectedStatus"
-              label=(t "labels.status") content=appointmentStatusesWithEmpty
+          {{date-picker property="selectedStartingDate" label=(t "appointments.labels.selectedStartingDate")class="col-sm-3 test-selected-start-date"}}
+          {{em-select class="col-sm-3 form-input-group test-selected-status" property="selectedStatus"
+              label=(t "models.appointment.labels.status") content=appointmentStatusesWithEmpty
           }}
-          {{em-select class="col-sm-3 form-input-group" label=(t "labels.type")
+          {{em-select class="col-sm-3 form-input-group test-selected-appointment-type" label=(t "models.appointment.labels.type")
               property="selectedAppointmentType" content=visitTypesWithEmpty
           }}
-          {{em-select class="col-sm-3 form-input-group" property="selectedProvider"
-              label=(t 'labels.with') content=physicianList
+          {{em-select class="col-sm-3 form-input-group test-selected-provider" property="selectedProvider"
+              label=(t 'models.appointment.labels.provider') content=physicianList
           }}
         </div>
       {{/em-form}}
     </div>
     <div class="panel-footer">
-      <button class="btn btn-default" {{action 'search'}}>{{t 'buttons.search'}}</button>
+      <button class="btn btn-primary" {{action 'search'}}>{{t 'buttons.search'}}</button>
     </div>
   </div>
   <table class="table">
     <tr class="table-header">
-      {{#sortable-column sortBy='date' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.date'}}{{/sortable-column}}
-      <th>{{t 'labels.name'}}</th>
-      {{#sortable-column sortBy='appointmentType' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.type'}}{{/sortable-column}}
-      {{#sortable-column sortBy='location' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.location'}}{{/sortable-column}}
-      {{#sortable-column sortBy='provider' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.with'}}{{/sortable-column}}
-      {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}{{t 'labels.status'}}{{/sortable-column}}
+      {{#sortable-column sortBy='date' sortDesc=sortDesc sortKey=sortKey }}{{t 'models.appointment.labels.appointmentDate'}}{{/sortable-column}}
+      <th>{{t 'models.patient.labels.name'}}</th>
+      {{#sortable-column sortBy='appointmentType' sortDesc=sortDesc sortKey=sortKey }}{{t 'models.appointment.labels.type'}}{{/sortable-column}}
+      {{#sortable-column sortBy='location' sortDesc=sortDesc sortKey=sortKey }}{{t 'models.appointment.labels.location'}}{{/sortable-column}}
+      {{#sortable-column sortBy='provider' sortDesc=sortDesc sortKey=sortKey }}{{t 'models.appointment.labels.provider'}}{{/sortable-column}}
+      {{#sortable-column sortBy='status' sortDesc=sortDesc sortKey=sortKey }}{{t 'models.appointment.labels.status'}}{{/sortable-column}}
       <th>{{t 'labels.actions'}}</th>
     </tr>
     {{#each model as |appointment|}}

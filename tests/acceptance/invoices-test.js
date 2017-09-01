@@ -61,7 +61,58 @@ test('print invoice', function(assert) {
       click('button:contains(Print)');
     });
     andThen(function() {
-      assert.equal(find('.print-invoice').length, 1, 'Invoice is displayed for printing');
+      assert.equal(find('.invoices-review').length, 1, 'Invoice is displayed for printing');
+    });
+  });
+});
+
+// test pricing profile
+test('pricing profiles', function(assert) {
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit('/pricing/profiles');
+    andThen(function() {
+      assert.equal(find('.btn-primary:contains(+ new item)').length, 1, 'We can add a new pricing profile');
+      click('button:contains(+ new item)');
+      waitToAppear('h4:contains(New Pricing Profile)');
+    });
+    // % discount
+    andThen(function() {
+      fillIn('.pricing-profile-name input', '50% profile');
+      fillIn('.pricing-profile-percentage input', '50');
+      click('button:contains(Add)');
+      waitToAppear('button:contains(Ok)');
+      click('button:contains(Ok)');
+    });
+    andThen(function() {
+      click('button:contains(+ new item)');
+      waitToAppear('h4:contains(New Pricing Profile)');
+    });
+    // flat discount
+    andThen(function() {
+      fillIn('.pricing-profile-name input', '$100 discount');
+      fillIn('.pricing-profile-discount input', '100');
+      click('button:contains(Add)');
+      waitToAppear('button:contains(Ok)');
+      click('button:contains(Ok)');
+    });
+    andThen(function() {
+      click('button:contains(+ new item)');
+      waitToAppear('h4:contains(New Pricing Profile)');
+    });
+    // flat fee
+    andThen(function() {
+      fillIn('.pricing-profile-name input', '$150 fee');
+      fillIn('.pricing-set-fee input', '150');
+      click('button:contains(Add)');
+      waitToAppear('button:contains(Ok)');
+      click('button:contains(Ok)');
+    });
+    visit('/invoices');
+    andThen(function() {
+      assert.equal(currentURL(), '/invoices');
+      assert.equal(find('.invoice-number:contains(inv00001)').length, 1, 'Invoice is available for modifying');
+      click('button:contains(Edit)');
     });
   });
 });
@@ -106,6 +157,8 @@ test('add payment', function(assert) {
     waitToAppear('.modal-title:contains(Payment Added)');
     andThen(() => {
       assert.equal(find('.modal-title').text(), 'Payment Added', 'Payment was saved successfully');
+      click('.modal-footer button:contains(Ok)');
+      waitToDisappear('.modal-dialog');
     });
   });
 });
@@ -128,6 +181,32 @@ test('add deposit', function(assert) {
     waitToAppear('.modal-title:contains(Deposit Added)');
     andThen(() => {
       assert.equal(find('.modal-title').text(), 'Deposit Added', 'Deposit was saved successfully');
+    });
+  });
+});
+
+test('cashier role', function(assert) {
+  runWithPouchDump('billing', function() {
+    authenticateUser({
+      name: 'cashier@hospitalrun.io',
+      roles: ['Cashier', 'user'],
+      role: 'Cashier',
+      prefix: 'p1'
+    });
+    visit('/invoices');
+    andThen(function() {
+      assert.equal(currentURL(), '/invoices');
+      assert.equal(find('.primary-section-link').length, 2, 'Should have 2 navigations');
+      assert.equal(find('.primary-section-link:contains(Scheduling)').length, 1, 'should see Scheduling navigation');
+      assert.equal(find('.primary-section-link:contains(Billing)').length, 1,  'should see Billing navigation');
+
+      assert.equal(find('li:contains(Billed)').length, 1, 'should see Billed selection');
+      assert.equal(find('li:contains(Drafts)').length, 1, 'should see Drafts selection');
+      assert.equal(find('li:contains(All Invoices)').length, 1, 'should see All Invoices selection');
+    });
+    click('a:contains(Billing)');
+    andThen(function() {
+      assert.equal(find('.category-sub-item').length, 2, 'Should have 2 sub navigations');
     });
   });
 });

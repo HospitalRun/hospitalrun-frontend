@@ -1,14 +1,18 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
+import FriendlyId from 'hospitalrun/mixins/friendly-id';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations';
 import InventoryTypeList from 'hospitalrun/mixins/inventory-type-list';
 import ReturnTo from 'hospitalrun/mixins/return-to';
 import UnitTypes from 'hospitalrun/mixins/unit-types';
 import UserSession from 'hospitalrun/mixins/user-session';
 
-export default AbstractEditController.extend(InventoryLocations, InventoryTypeList, ReturnTo, UnitTypes, UserSession, {
+const { computed, get } = Ember;
+
+export default AbstractEditController.extend(FriendlyId, InventoryLocations, InventoryTypeList, ReturnTo, UnitTypes, UserSession, {
   inventory: Ember.inject.controller(),
   savingNewItem: false,
+  sequenceView: 'inventory_by_friendly_id',
 
   canAddPurchase: function() {
     return this.currentUserCan('add_inventory_purchase');
@@ -83,6 +87,11 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
       this.set('model.quantity', quantity);
     }
   }.observes('model.isNew', 'model.originalQuantity'),
+
+  sequenceName: computed('model.inventoryType', function() {
+    let inventoryType = get(this, 'model.inventoryType');
+    return `inventory_${inventoryType}`;
+  }),
 
   showTransactions: function() {
     let transactions = this.get('transactions');
@@ -182,9 +191,7 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
     }
   },
 
-  _completeBeforeUpdate(sequence, resolve, reject) {
-    let sequenceValue = null;
-    let friendlyId = sequence.get('prefix');
+  _completeBeforeUpdate(friendlyId) {
     let promises = [];
     let model = this.get('model');
     let newPurchase = model.getProperties('aisleLocation', 'dateReceived',
@@ -199,56 +206,8 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
       this.get('model.purchases').addObject(purchase);
       promises.push(this.newPurchaseAdded(this.get('model'), purchase));
     }
-    sequence.incrementProperty('value', 1);
-    sequenceValue = sequence.get('value');
-    if (sequenceValue < 100000) {
-      friendlyId += String(`00000${sequenceValue}`).slice(-5);
-    } else {
-      friendlyId += sequenceValue;
-    }
     model.set('friendlyId', friendlyId);
-    promises.push(sequence.save());
-    Ember.RSVP.all(promises, 'All before update done for inventory item').then(function() {
-      resolve();
-    }, function(error) {
-      reject(error);
-    });
-  },
-
-  _findSequence(inventoryType, resolve, reject) {
-    let sequenceFinder = new Ember.RSVP.Promise(function(resolve) {
-      this._checkNextSequence(resolve, inventoryType, 0);
-    }.bind(this));
-    sequenceFinder.then(function(prefixChars) {
-      let store = this.get('store');
-      let newSequence = store.push(store.normalize('sequence', {
-        id: `inventory_${inventoryType}`,
-        prefix: inventoryType.toLowerCase().substr(0, prefixChars),
-        value: 0
-      }));
-      this._completeBeforeUpdate(newSequence, resolve, reject);
-    }.bind(this));
-  },
-
-  _findSequenceByPrefix(inventoryType, prefixChars) {
-    let database = this.get('database');
-    let sequenceQuery = {
-      key: inventoryType.toLowerCase().substr(0, prefixChars)
-    };
-    return database.queryMainDB(sequenceQuery, 'sequence_by_prefix');
-  },
-
-  _checkNextSequence(resolve, inventoryType, prefixChars) {
-    prefixChars++;
-    this._findSequenceByPrefix(inventoryType, prefixChars).then(function(records) {
-      if (Ember.isEmpty(records.rows)) {
-        resolve(prefixChars);
-      } else {
-        this._checkNextSequence(resolve, inventoryType, prefixChars);
-      }
-    }.bind(this), function() {
-      resolve(prefixChars);
-    });
+    return Ember.RSVP.all(promises, 'All before update done for inventory item');
   },
 
   /**
@@ -282,24 +241,18 @@ export default AbstractEditController.extend(InventoryLocations, InventoryTypeLi
   beforeUpdate() {
     if (this.get('model.isNew')) {
       let model = this.get('model');
-      let inventoryType = model.get('inventoryType');
-      return new Ember.RSVP.Promise(function(resolve, reject) {
-        model.validate().then(function() {
-          if (model.get('isValid')) {
-            this.set('savingNewItem', true);
-            this.store.find('sequence', `inventory_${inventoryType}`).then(function(sequence) {
-              this._completeBeforeUpdate(sequence, resolve, reject);
-            }.bind(this), function() {
-              this._findSequence(inventoryType, resolve, reject);
-            }.bind(this));
-          } else {
-            this.send('showDisabledDialog');
-            reject('invalid model');
-          }
-        }.bind(this)).catch(function() {
-          this.send('showDisabledDialog');
-        }.bind(this));
-      }.bind(this));
+      return model.validate().then(() => {
+        if (model.get('isValid')) {
+          this.set('savingNewItem', true);
+          return this.generateFriendlyId('inventory').then((friendlyId) => {
+            return this._completeBeforeUpdate(friendlyId);
+          });
+        } else {
+          throw Error('invalid model');
+        }
+      }).catch(() => {
+        this.send('showDisabledDialog');
+      });
     } else {
       return Ember.RSVP.Promise.resolve();
     }

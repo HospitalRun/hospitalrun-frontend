@@ -4,7 +4,8 @@ export default Ember.Mixin.create({
   defaultCapabilities: {
     admin: [
       'User Administrator',
-      'System Administrator'
+      'System Administrator',
+      'Quality'
     ],
     add_allergy: [
       'Data Entry',
@@ -21,7 +22,8 @@ export default Ember.Mixin.create({
       'Medical Records Officer',
       'Patient Administration',
       'Social Worker',
-      'System Administrator'
+      'System Administrator',
+      'Cashier'
     ],
     add_appointment: [
       'Data Entry',
@@ -30,7 +32,8 @@ export default Ember.Mixin.create({
       'Medical Records Officer',
       'Patient Administration',
       'Social Worker',
-      'System Administrator'
+      'System Administrator',
+      'Cashier'
     ],
     add_charge: [
       'Data Entry',
@@ -150,12 +153,14 @@ export default Ember.Mixin.create({
       'Data Entry',
       'Hospital Administrator',
       'Medical Records Officer',
-      'System Administrator'
+      'System Administrator',
+      'Cashier'
     ],
     add_payment: [
       'Hospital Administrator',
       'Medical Records Officer',
-      'System Administrator'
+      'System Administrator',
+      'Cashier'
     ],
     add_procedure: [
       'Data Entry',
@@ -197,6 +202,15 @@ export default Ember.Mixin.create({
       'Nurse Manager',
       'System Administrator'
     ],
+    add_report: [
+      'Data Entry',
+      'Doctor',
+      'Hospital Administrator',
+      'Medical Records Officer',
+      'Nurse',
+      'Nurse Manager',
+      'System Administrator'
+    ],
     admit_patient: [
       'Data Entry',
       'Doctor',
@@ -218,6 +232,11 @@ export default Ember.Mixin.create({
       'Hospital Administrator',
       'Finance',
       'Finance Manager',
+      'System Administrator',
+      'Cashier'
+    ],
+    cashier: [
+      'Cashier',
       'System Administrator'
     ],
     complete_imaging: [
@@ -323,6 +342,14 @@ export default Ember.Mixin.create({
       'Nurse Manager',
       'System Administrator'
     ],
+    delete_report: [
+      'Doctor',
+      'Hospital Administrator',
+      'Medical Records Officer',
+      'Nurse',
+      'Nurse Manager',
+      'System Administrator'
+    ],
     delete_visit: [
       'Doctor',
       'Hospital Administrator',
@@ -378,13 +405,20 @@ export default Ember.Mixin.create({
       'Hospital Administrator',
       'Finance',
       'Finance Manager',
-      'System Administrator'
+      'System Administrator',
+      'Cashier'
     ],
     labs: [
       'Data Entry',
       'Doctor',
       'Hospital Administrator',
       'Lab Technician',
+      'Medical Records Officer',
+      'System Administrator'
+    ],
+    list_paid_invoices: [
+      'Data Entry',
+      'Hospital Administrator',
       'Medical Records Officer',
       'System Administrator'
     ],
@@ -410,7 +444,8 @@ export default Ember.Mixin.create({
     ],
     override_invoice: [
       'Hospital Administrator',
-      'System Administrator'
+      'System Administrator',
+      'Cashier'
     ],
     query_db: [
       'System Administrator'
@@ -444,6 +479,14 @@ export default Ember.Mixin.create({
       'Medical Records Officer',
       'System Administrator'
     ],
+    print_invoice: [
+      'Cashier',
+      'System Adminstrator'
+    ],
+    review_invoice: [
+      'Cashier',
+      'System Administrator'
+    ],
     visits: [
       'Data Entry',
       'Doctor',
@@ -455,12 +498,47 @@ export default Ember.Mixin.create({
       'Social Worker',
       'System Administrator'
     ],
+    incident: [
+      'Hospital Staff',
+      'User Administrator',
+      'Quality',
+      'System Administrator'
+    ],
+    add_incident: [
+      'Hospital Staff',
+      'User Administrator',
+      'Quality',
+      'System Administrator'
+    ],
+    delete_incident: [
+      'Quality',
+      'System Administrator'
+    ],
+    generate_incident_report: [
+      'User Administrator',
+      'Quality',
+      'System Administrator'
+    ],
+    add_incident_category: [
+      'User Administrator',
+      'Quality',
+      'System Administrator'
+    ],
+    delete_incident_category: [
+      'Quality',
+      'System Administrator'
+    ],
+    manage_incidents: [
+      'Quality',
+      'System Administrator'
+    ],
     update_config: [
       'System Administrator'
     ],
     users: [
       'User Administrator',
-      'System Administrator'
+      'System Administrator',
+      'Quality'
     ],
     add_note: [
       'Doctor',
@@ -486,6 +564,14 @@ export default Ember.Mixin.create({
     if (!Ember.isEmpty(session) && session.get('isAuthenticated')) {
       return session.get('data.authenticated');
     }
+  },
+
+  currentUserRole() {
+    let sessionVars = this._getUserSessionVars();
+    if (!Ember.isEmpty(sessionVars) && !Ember.isEmpty(sessionVars.role)) {
+      return sessionVars.role;
+    }
+    return null;
   },
 
   currentUserCan(capability) {

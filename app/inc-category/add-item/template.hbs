@@ -1,0 +1,11 @@
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonText=updateButtonText }}
+  {{#em-form model=model submitButton=false }}
+    {{em-input label=(t 'incident.labels.item') property="item" class="incident-category-item"}}
+  {{/em-form}}
+{{/modal-dialog}}

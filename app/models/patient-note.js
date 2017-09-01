@@ -38,9 +38,6 @@ export default AbstractModel.extend({
     visit: {
       presence: true
     },
-    noteType: {
-      presence: true
-    },
     content: {
       presence: true
     }

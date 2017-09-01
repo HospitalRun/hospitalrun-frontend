@@ -1,63 +1,15 @@
 import Ember from 'ember';
+import FriendlyId from 'hospitalrun/mixins/friendly-id';
 
-const { inject, isEmpty } = Ember;
+const { get, inject } = Ember;
 
-export default Ember.Mixin.create({
-  idPrefix: null,
-  database: inject.service(),
+export default Ember.Mixin.create(FriendlyId, {
   config: inject.service(),
+  sequenceName: 'patient',
+  sequenceView: 'patient_by_display_id',
 
-  /**
-  * Override this function to generate an id for a new record
-  * @return a generated id;default is null which means that an
-  * id will be automatically generated via Ember data.
-  */
-  generateFriendlyId() {
-    let config = this.get('config');
-    let database = this.get('database');
-    let maxValue = database.getMaxPouchId('patient');
-    let findUnusedId = (sequence) => {
-      let current, id;
-      return config.getPatientPrefix()
-        .then(function(prefix) {
-          current = sequence.get('value');
-          id = sequenceId(prefix, current);
-          let query = {
-            startkey: [id, null],
-            endkey: [id, maxValue]
-          };
-          return database.queryMainDB(query, 'patient_by_display_id');
-        })
-        .then(function(found) {
-          if (!isEmpty(found.rows)) {
-            sequence.incrementProperty('value');
-            return findUnusedId(sequence);
-          }
-          if (sequence.get('hasDirtyAttributes')) {
-            return sequence.save().then(function() {
-              return id;
-            });
-          }
-          return id;
-        });
-    };
-
-    return this.store.find('sequence', 'patient')
-      .then(findUnusedId)
-      .catch(() => {
-        let store = this.get('store');
-        let sequence = store.push(store.normalize('sequence', {
-          id: 'patient',
-          value: 1
-        }));
-        return findUnusedId(sequence);
-      });
+  sequencePrefix() {
+    let config = get(this, 'config');
+    return config.getPatientPrefix();
   }
 });
-
-export function sequenceId(prefix, sequence) {
-  if (sequence < 100000) {
-    sequence = `00000${sequence}`.slice(-5);
-  }
-  return `${prefix}${sequence}`;
-}
