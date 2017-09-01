@@ -65,7 +65,7 @@
     "ember-cli-release": "^0.2.9",
     "ember-cli-sass": "^7.0.0",
     "ember-cli-sri": "^2.1.0",
-    "ember-cli-stylelint": "0.9.1",
+    "ember-cli-stylelint": "0.10.0",
     "ember-cli-template-lint": "0.4.12",
     "ember-cli-test-loader": "^2.0.0",
     "ember-cli-uglify": "^1.2.0",
