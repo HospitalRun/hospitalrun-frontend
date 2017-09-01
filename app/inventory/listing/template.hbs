@@ -21,7 +21,7 @@
             <td>{{inventory.crossReference}}</td>
             <td>
               {{#if canAddPurchase}}
-                <button class="btn btn-default" {{action 'showAddPurchase' inventory bubbles=false }}>{{t 'buttons.add'}}</button>
+                <button class="btn btn-primary" {{action 'showAddPurchase' inventory bubbles=false }}>{{t 'buttons.add'}}</button>
               {{/if}}
               {{#if canAddItem}}
                 <button class="btn btn-default neutral" {{action 'editItem' inventory bubbles=false }}>{{t 'labels.edit'}}</button>

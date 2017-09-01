@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="manifest.appcache">
+<html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,18 +29,6 @@
             <p class="loading-text">Loading</p>
         </div>
     </div>
-    <script>
-      if (!'serviceWorker' in navigator) {
-        window.addEventListener('load',function(e){
-          window.applicationCache.addEventListener('updateready', function(e){
-            if(window.applicationCache.status==window.applicationCache.UPDATEREADY) {
-              window.applicationCache.swapCache();
-              window.location.reload();
-            }
-          },false);
-        },false);
-      }
-    </script>
     {{content-for "body"}}
 
     <script src="{{rootURL}}assets/vendor.js"></script>

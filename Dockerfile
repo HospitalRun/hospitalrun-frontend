@@ -9,8 +9,10 @@ RUN apt-get update && apt-get install nodejs -y
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY . /usr/src/app
-RUN npm install -g npm && npm install -g ember-cli@latest && npm install -g bower
+
+RUN npm install -g ember-cli@latest && npm install -g bower
 RUN npm install
+
 RUN bower install --allow-root
 COPY ./server/config-example.js ./server/config.js
 

@@ -201,6 +201,51 @@ test('Appointment calendar', function(assert) {
   });
 });
 
+test('visiting /appointments/search', function(assert) {
+  runWithPouchDump('appointments', function() {
+    authenticateUser();
+
+    createAppointment(assert);
+    createAppointment(assert, {
+      startDate: moment().startOf('day').add(1, 'years'),
+      startTime: moment().startOf('day').add(1, 'years').format(TIME_FORMAT),
+      endDate: moment().endOf('day').add(1, 'years').add(2, 'days'),
+      endTime: moment().endOf('day').add(1, 'years').add(2, 'days').format(TIME_FORMAT)
+    });
+
+    andThen(function() {
+      visit('/appointments/search');
+    });
+
+    andThen(function() {
+      findWithAssert(':contains(Search Appointments)');
+      findWithAssert(':contains(Show Appointments On Or After)');
+      findWithAssert(':contains(Status)');
+      findWithAssert(':contains(Type)');
+      findWithAssert(':contains(With)');
+    });
+
+    andThen(function() {
+      // debugger;
+      let desiredDate = moment().endOf('day').add(363, 'days').format('l');
+      let datePicker = '.test-selected-start-date input';
+      selectDate(datePicker, desiredDate);
+      click('button:contains(Search)');
+    });
+
+    andThen(function() {
+      let date = moment().endOf('day').add(1, 'years').add(2, 'days').format('l');
+      findWithAssert(`.appointment-status:contains(${status})`);
+      let element = `tr:contains(${date})`;
+      findWithAssert(element);
+      date = moment().startOf('day').add(1, 'years');
+      element = find(`tr:contains(${date})`);
+      assert.equal(element.length, 0);
+    });
+
+  });
+});
+
 test('Theater scheduling', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();

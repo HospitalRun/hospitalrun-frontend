@@ -4,7 +4,15 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
-    // Add options here
+    babel: {
+      optional: ['es6.spec.symbols'],
+      includePolyfill: true
+    },
+    minifyJS: {
+      options: {
+        exclude: ['**/service-worker.js']
+      }
+    }
   });
 
   // Use `app.import` to add additional libraries to the generated

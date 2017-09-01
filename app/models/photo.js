@@ -23,6 +23,8 @@ export default AbstractModel.extend({
 
   // Associations
   patient: belongsTo('patient', { async: false }),
+  visit: belongsTo('visit', { async: false }),
+  procedure: belongsTo('procedure', { async: false }),
 
   shortFileName: computed('fileName', function() {
     let fileName = get(this, 'fileName');
