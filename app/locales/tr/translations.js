@@ -874,6 +874,17 @@ export default {
     requestsTitle: '',
     sectionTitle: ''
   },
+  languages: {
+    en: 'Ingilizce',
+    fr: 'Fransızca',
+    es: 'İspanyol',
+    de: 'Almanca',
+    ru: 'Rusça',
+    'es-co': 'İspanyolca (Kolombiyalı)',
+    'pt-br': 'Portekizce (Brezilya)',
+    tr: 'Türk',
+    ur: 'Urduca'
+  },
   loading: {
     messages: {
       '0': '',
@@ -1049,7 +1060,8 @@ export default {
     about: '',
     actions: {
       login: '',
-      logout: ''
+      logout: '',
+      selectLanguage: 'Dil Seçin'
     },
     administration: '',
     billing: '',

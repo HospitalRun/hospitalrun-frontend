@@ -14,7 +14,7 @@ else
 fi
 
 echo "Setting up security on _users db"
-curl -X PUT $SECUREHOST/_users/_security -d '{ "admins": { "names": [], "roles": ["admin"]}, "members": { "names": [], "roles": [admin]}}'
+curl -X PUT $SECUREHOST/_users/_security -d '{ "admins": { "names": [], "roles": ["admin"]}, "members": { "names": [], "roles": ["admin"]}}'
 echo "Setting up HospitalRun config DB"
 curl -X PUT $SECUREHOST/config
 curl -X PUT $SECUREHOST/config/_security -d '{ "admins": { "names": [], "roles": ["admin"]}, "members": { "names": [], "roles": []}}'

@@ -18,6 +18,7 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, PatientVi
   modelName: 'visit',
   newTitle: t('visits.titles.newVisit'),
   pricingCategory: 'Ward',
+  photos: null,
 
   model(params) {
     let idParam = get(this, 'idParam');
@@ -62,6 +63,16 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, PatientVi
     });
     set(controller, 'report', DS.PromiseObject.create({ promise }));
     this._super(controller, model);
+    this.store.query('photo', {
+      options: {
+        key: get(model, 'id')
+      },
+      mapReduce: 'photo_by_visit'
+    }).then(function(photos) {
+      let visitPhotos = [];
+      visitPhotos.addObjects(photos);
+      model.set('photos', visitPhotos);
+    });
   },
 
   actions: {
@@ -70,6 +81,9 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, PatientVi
     },
     deletePatientNote(model) {
       this.controller.send('deletePatientNote', model);
+    },
+    deletePhoto(model) {
+      this.controller.send('deletePhoto', model);
     }
   }
 });

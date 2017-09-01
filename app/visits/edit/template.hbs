@@ -120,6 +120,11 @@
           </a>
         </li>
         <li role="presentation">
+          <a href="#visit-photos" role="tab" data-toggle="pill" data-test-selector="photos-tab">
+            {{t 'patients.navigation.photos'}}
+          </a>
+        </li>
+        <li role="presentation">
           <a href="#visit-procedures" role="tab" data-toggle="pill" data-test-selector="procedures-tab">
             {{t 'visits.navigation.procedures'}}
           </a>
@@ -169,6 +174,41 @@
               {{#if canAddNote}}
                 <button class="btn btn-primary align-right" data-test-selector="new-note-btn" {{action "showAddPatientNote" bubbles=false }}><span class="octicon octicon-plus"></span> {{t 'buttons.newNote' }}</button>
               {{/if}}
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="visit-photos">
+          <div class="panel">
+            {{#if canAddPhoto}}
+              <div class="panel-heading">
+                <button type="button" class="btn btn-primary align-right" {{action "showAddPhoto" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span>{{t 'patients.buttons.newPhoto'}}
+                </button>
+              </div>
+            {{/if}}
+            <div class="panel-body detail-section-content">
+              <div class="row">
+                {{#each model.photos as |photo|}}
+                  <div class="col-sm-4 col-md-3">
+                    <div {{action "editPhoto" photo}} class="thumbnail">
+                      {{photo-display photo=photo }}
+                      <div class="caption">
+                        {{photo.caption}}
+                        <p>
+                          {{#if canAddPhoto}}
+                            <button type="button" class="btn btn-default neutral" {{action "editPhoto" photo}}>{{t 'labels.edit'}}</button>
+                          {{/if}}
+                          {{#if canDeletePhoto}}
+                            <button type="button" class="btn btn-default warning" {{action "showDeletePhoto" photo bubbles=false }}>
+                              <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
+                            </button>
+                          {{/if}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                {{/each}}
+              </div>
             </div>
           </div>
         </div>
