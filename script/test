@@ -2,3 +2,4 @@
 set -eu
 
 ember test
+)
