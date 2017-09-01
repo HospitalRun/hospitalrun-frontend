@@ -875,15 +875,15 @@ export default {
     sectionTitle: 'لیبز'
   },
   languages: {
-    en: '',
-    fr: '',
-    es: '',
-    de: '',
-    ru: '',
-    'es-co': '',
-    'pt-br': '',
-    tr: '',
-    ur: ''
+    en: 'انگریزی',
+    fr: 'فرانسیسی',
+    es: 'ہسپانوی',
+    de: 'جرمن',
+    ru: 'روسی',
+    'es-co': 'ہسپانوی (کولمبیا)',
+    'pt-br': 'پرتگالی (برازیل)',
+    tr: 'ترکی',
+    ur: 'اردو'
   },
   loading: {
     messages: {
@@ -1060,7 +1060,8 @@ export default {
     about: 'HospitalRun  کے بارے',
     actions: {
       login: 'لاگ ان',
-      logout: 'لاگ آوٹ'
+      logout: 'لاگ آوٹ',
+      selectLanguage: 'زبان منتخب کریں'
     },
     administration: 'انتظامیہ',
     billing: 'بلنگ',

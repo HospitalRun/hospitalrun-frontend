@@ -660,16 +660,16 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
           patientName: visit.get('patient.displayName'),
           admissionDate: visit.get('startDate'),
           dischargeDate: visit.get('endDate'),
-          patientDays: daysDiff
+          patientDays: this._numberFormat(daysDiff, true)
         }, false, reportColumns);
       }
       return previousValue += daysDiff;
     }.bind(this), 0);
     if (detailed) {
-      this._addReportRow({ patientDays: `Total: ${this._numberFormat(patientDays)}` }, true, reportColumns);
+      this._addReportRow({ patientDays: `Total: ${this._numberFormat(patientDays, true)}` }, true, reportColumns);
 
     } else {
-      this._addReportRow({ total: patientDays }, false, reportColumns);
+      this._addReportRow({ total: this._numberFormat(patientDays, true) }, false, reportColumns);
     }
     this._finishReport(reportColumns);
   },
