@@ -60,7 +60,7 @@
     "ember-cli-htmlbars": "^2.0.0",
     "ember-cli-htmlbars-inline-precompile": "^0.3.3",
     "ember-cli-inject-live-reload": "^1.4.1",
-    "ember-cli-moment-shim": "3.0.1",
+    "ember-cli-moment-shim": "3.0.2",
     "ember-cli-qunit": "^3.0.1",
     "ember-cli-release": "^0.2.9",
     "ember-cli-sass": "^7.0.0",
