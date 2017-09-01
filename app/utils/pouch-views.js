@@ -425,6 +425,18 @@ let designDocs = [{
   ),
   version: 4
 }, {
+  name: 'photo_by_procedure',
+  function: generateView('photo',
+    'emit(doc.data.procedure);'
+  ),
+  version: 1
+}, {
+  name: 'photo_by_visit',
+  function: generateView('photo',
+    'emit(doc.data.visit);'
+  ),
+  version: 1
+}, {
   name: 'procedure_by_date',
   function: generateView('procedure',
     `${generateDateForView('procedureDate')}
