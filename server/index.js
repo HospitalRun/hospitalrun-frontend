@@ -1,6 +1,6 @@
-var config =  require('./config.js');
-var dbListeners = require('hospitalrun-dblisteners');
-var serverRoutes = require('hospitalrun-server-routes');
+var config =    include('./config.js');
+var dbListeners = include('hospitalrun-dblisteners');
+var serverRoutes = include('hospitalrun-server-routes');
 
 module.exports = function(app) {
   config.emberCLI = true;
