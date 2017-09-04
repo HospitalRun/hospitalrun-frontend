@@ -41,7 +41,6 @@
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-export-text": "0.0.2",
     "broccoli-serviceworker": "0.1.6",
-    "crypto": "1.0.0",
     "csv-parse": "^1.2.0",
     "devtron": "1.4.0",
     "electron-prebuilt-compile": "1.6.2",
