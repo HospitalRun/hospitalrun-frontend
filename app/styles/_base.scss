@@ -6,9 +6,13 @@ body {
   }
 }
 
-.clickable { cursor: pointer; }
+.clickable { 
+  cursor: pointer; 
+}
 
-.modal-dialog { color: $navy; }
+.modal-dialog {
+  color: $navy; 
+}
 
 .not-editable {
   opacity: .5;
