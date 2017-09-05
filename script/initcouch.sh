@@ -9,7 +9,7 @@ if [ -z "${1}" ] || [ -z "${2}" ]; then
     SECUREHOST="http://couchadmin:test@$URL:$PORT"
 else
     SECUREHOST="http://$1:$2@$URL:$PORT"
-fi
+if
 
 echo "Setting up security on _users db"
 curl -X PUT $SECUREHOST/_users/_security -d '{ "admins": { "names": [], "roles": ["admin"]}, "members": { "names": [], "roles": ["admin"]}}'
