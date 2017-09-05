@@ -12,9 +12,10 @@ if [ -f "package.json" ]; then
   echo "==> Installing packages…"
   npm install
   npm install -g phantomjs-prebuilt
-fi
 
-if [ -f "bower.json" ]; then
+
+else if [ -f "bower.json" ]; then
   echo "==> Installing bower components…"
   bower install
+
 fi
