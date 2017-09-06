@@ -2,9 +2,7 @@ import Ember from 'ember';
 import { authenticateSession } from 'hospitalrun/tests/helpers/ember-simple-auth';
 import { invalidateSession } from 'hospitalrun/tests/helpers/ember-simple-auth';
 
-const {
-  merge
-} = Ember;
+var { merge } = Ember ;
 
 Ember.Test.registerHelper('authenticateUser', function(app, attrs = {}) {
   let expiresAt = new Date().getTime() + 600000;
