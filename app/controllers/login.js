@@ -17,7 +17,8 @@ let LoginController = Ember.Controller.extend({
         if (isAbortError(err) || isTimeoutError(err)) {
           this.set('errorMessage', false);
           this.set('offlineError', true);
-        } else {
+        } 
+        else if {
           this.set('errorMessage', true);
           this.set('offlineError', false);
         }
