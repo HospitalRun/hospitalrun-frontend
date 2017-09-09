@@ -26,7 +26,7 @@ export default {
       },
       labels: {
         alwaysInclude: 'Incluir Siempre',
-        checkbox: 'Casilla Verificacion',
+        checkbox: 'Caja',
         colSpan: 'Numero de Columnas para Lapso',
         columns: 'Columnas',
         customForm: 'Formulario Personalizado',
@@ -51,30 +51,30 @@ export default {
         textarea: 'Texto Grande',
         visitFormType: 'Visitar'
       },
-      messages: { formSaved: '' },
+      messages: { formSaved: 'Las {{Nombre}} de ha estado salvado' },
       titles: {
-        checkboxValues: '',
-        customForms: '',
-        deleteForm: '',
-        dropDownValues: '',
-        editCustomForm: '',
-        fields: '',
-        formSaved: '',
-        newCustomForm: '',
-        radioValues: ''
+        checkboxValues: 'Caja Valores',
+        customForms: 'Formulario Personalizado',
+        deleteForm: 'Borrar Formulario Personalizado',
+        dropDownValues: 'Desplegable Valores',
+        editCustomForm: 'Editar Formulario Personalizado',
+        fields: 'Campos',
+        formSaved: 'De Salvado',
+        newCustomForm: 'Nuevo Formulario Personalizado',
+        radioValues: 'Radiofonia Valores'
       }
     },
     header: {
-      editTitle: '',
-      facilityName: '',
-      headerLabel: '',
-      headerLine1: '',
-      headerLine2: '',
-      headerLine3: '',
-      logoURL: '',
-      messages: { headerSaved: '' },
-      newTitle: '',
-      titles: { optionsSaved: '' }
+      editTitle: 'Encabezamiento Opcion',
+      facilityName: 'Facilidad Nombre',
+      headerLabel: 'Encabezamiento',
+      headerLine1: 'Encabezamiento linea 1',
+      headerLine2: 'Encabezamiento linea 2',
+      headerLine3: 'Encabezamiento linea 3',
+      logoURL: 'Logotipo URL',
+      messages: { headerSaved: 'Las encabezamiento opciones ha estado salvado' },
+      newTitle: 'Encabezamiento Opcion',
+      titles: { optionsSaved: 'Opciones salvadas' }
     },
     loadDb: 'Cargar Base de datos',
     loaddb: {
