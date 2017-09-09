@@ -1,8 +1,7 @@
 import AbstractIndexRoute from 'hospitalrun/routes/abstract-index-route';
 import Ember from 'ember';
 export default AbstractIndexRoute.extend({
-  modelName: 'invoice',
-  pageTitle: 'Invoice Listing',
+  modelName: 'invoice', pageTitle: 'Invoice Listing',
 
   _getStartKeyFromItem(item) {
     let billDateAsTime = item.get('billDateAsTime');
