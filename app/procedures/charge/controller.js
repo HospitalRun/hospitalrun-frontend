@@ -55,7 +55,7 @@ export default AbstractEditController.extend({
                 name: pricingItem.get('name')
               });
               model.set('pricingItem', pricingItem);
-            } else {
+            } else if {
               let itemToUpdate = pricingList.findBy('id', pricingItem.get('id'));
               itemToUpdate.name = pricingItem.get('name');
             }
