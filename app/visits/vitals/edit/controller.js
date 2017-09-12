@@ -14,8 +14,9 @@ export default AbstractEditController.extend({
     let isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add Vitals';
-    }
-    return 'Edit Vitals';
+  } else {
+     return 'Edit Vitals';
+  }
   }.property('model.isNew'),
 
   updateCapability: 'add_vitals',
