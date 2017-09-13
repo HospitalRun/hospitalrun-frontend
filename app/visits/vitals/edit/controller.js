@@ -24,8 +24,6 @@ export default AbstractEditController.extend({
   beforeUpdate() {
     if (this.get('model.isNew')) {
       this.set('newVitals', true);
-    } else {
-      this.send('closeModal');
     }
     return Ember.RSVP.Promise.resolve();
   },
