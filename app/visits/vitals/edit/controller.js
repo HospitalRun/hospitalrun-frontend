@@ -14,8 +14,8 @@ export default AbstractEditController.extend({
     let isNew = this.get('model.isNew');
     if (isNew) {
       return 'Add Vitals';
-  } else {
-     return 'Edit Vitals';
+    }
+      return 'Edit Vitals';
   }
   }.property('model.isNew'),
 
@@ -24,6 +24,8 @@ export default AbstractEditController.extend({
   beforeUpdate() {
     if (this.get('model.isNew')) {
       this.set('newVitals', true);
+    } else {
+      this.send('closeModal');
     }
     return Ember.RSVP.Promise.resolve();
   },
