@@ -227,7 +227,7 @@ test('Searching invoices', function(assert) {
     fillIn('[role="search"] div input', 'joe');
     click('.glyphicon-search');
 
-    andThen(() => {'[role="search"] button'
+    andThen(() => {
       assert.equal(currentURL(), '/invoices/search/joe', 'Searched for all lower case joe');
       assert.equal(find('.invoice-number').length, 1, 'There is one search item');
     });
