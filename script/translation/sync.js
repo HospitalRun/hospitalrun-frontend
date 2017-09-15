@@ -10,7 +10,7 @@ let allTranslations = getDirectories(translationsDir).sort();
 console.log(`Detected the following languages: ${allTranslations.join(', ')}`);
 
 if (!allTranslations.includes(rootTranslationName))
-  throw `Can't find root language ${rootTranslationName} in ${allTranslations.join(', ')}`;
+  throw `Can not find root language ${rootTranslationName} in ${allTranslations.join(', ')}`;
 
 console.log(`Selecting ${rootTranslationName} as root language`);
 
