@@ -10,6 +10,10 @@ However, before you ask in Slack "what can I contribute to", be sure to keep rea
 
 Also, please avoid use of the `@everyone` and `@channel` commands in Slack, as you will be sending a notification to nearly 600 people. Just post your question and someone will respond soon.
 
+While `@here` is discouraged as it notifies everyone who is active on Slack, if you have an announcement that the channel needs to hear urgently, use can be justified.
+
+Generally, just posting your question will allow you to recieve a timely answer.
+
 ## Help Wanted
 
 If you're looking for a way to contribute, the [Help Wanted](https://github.com/HospitalRun/hospitalrun-frontend/labels/Help%20Wanted) tag is the right place to start. Those issues are intended to be bugs / features / enhancements / technologies that have been vetted and we know we want to include in the project.
