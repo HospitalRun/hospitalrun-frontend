@@ -8,7 +8,11 @@ Project communication occurs primarily and intentionally via our project [Slack]
 
 However, before you ask in Slack "what can I contribute to", be sure to keep reading this document for the answer to your question. :-)
 
-Also, please avoid use of the `@here` command in Slack, as you will be sending a notification to nearly 600 people. Just post your question and someone will respond soon.
+Also, please avoid use of the `@everyone` and `@channel` commands in Slack, as you will be sending a notification to nearly 600 people. Just post your question and someone will respond soon.
+
+While `@here` is discouraged as it notifies everyone who is active on Slack, if you have an announcement that the channel needs to hear urgently, use can be justified.
+
+Generally, just posting your question will allow you to recieve a timely answer.
 
 ## Help Wanted
 
