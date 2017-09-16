@@ -5,11 +5,11 @@ import { translationMacro as t } from 'ember-i18n';
 const { computed, get, inject, isEmpty, RSVP, set } = Ember;
 
 export default AbstractEditController.extend({
-  addAction: 'addPhoto',
+  addAction: 'addPicture',
   editTitle: t('patients.titles.editPhoto'),
   fileRequiredMessage: t('patients.messages.photoFileRequired'),
   modelName: 'photo',
-  newTitle: t('patients.titles.addPhoto'),
+  newTitle: t('patients.titles.addPicture'),
   newModel: false,
   showFileRequired: false,
   showUpdateButton: true,
