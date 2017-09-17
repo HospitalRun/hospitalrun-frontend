@@ -4,9 +4,7 @@ const {
   computed: {
     alias
   },
-  inject,
-  get,
-  set
+  inject,get,set
 } = Ember;
 export default Ember.Controller.extend(UserSession, {
   config: inject.service(),
