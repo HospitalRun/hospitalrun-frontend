@@ -30,7 +30,7 @@ config.couchCredentials = function() {
   if (config.couchAdminUser && config.couchAdminPassword) {
     return config.couchAdminUser + ':' + config.couchAdminPassword + '@';
   } else {
-    return '';
+    return null;
   }
 };
 
