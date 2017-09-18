@@ -210,3 +210,33 @@ test('cashier role', function(assert) {
     });
   });
 });
+
+test('Searching invoices', function(assert) {
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit('/invoices');
+
+    fillIn('[role="search"] div input', 'Joe');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/invoices/search/Joe', 'Searched for Joe');
+      assert.equal(find('.invoice-number').length, 1, 'There is one search item');
+    });
+
+    fillIn('[role="search"] div input', 'joe');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/invoices/search/joe', 'Searched for all lower case joe');
+      assert.equal(find('.invoice-number').length, 1, 'There is one search item');
+    });
+    fillIn('[role="search"] div input', 'ItemNotFound');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/invoices/search/ItemNotFound', 'Searched for ItemNotFound');
+      assert.equal(find('.invoice-number').length, 0, 'There is no search result');
+    });
+  });
+});
