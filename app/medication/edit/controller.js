@@ -9,7 +9,11 @@ import UserSession from 'hospitalrun/mixins/user-session';
 export default AbstractEditController.extend(AddNewPatient, FulfillRequest, InventoryLocations, PatientSubmodule, UserSession, {
   medicationController: Ember.inject.controller('medication'),
   expenseAccountList: Ember.computed.alias('medicationController.expenseAccountList'),
-
+  
+  var isFulfilled;
+  var isFulFilling;
+  var i18n;
+  
   canFulfill: function() {
     return this.currentUserCan('fulfill_medication');
   }.property(),
@@ -23,7 +27,7 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
     let canFulfill = this.get('canFulfill');
     let isRequested = this.get('model.isRequested');
     let fulfillRequest = this.get('model.shouldFulfillRequest');
-    let isFulfilling = canFulfill && (isRequested || fulfillRequest);
+    isFulfilling = canFulfill && (isRequested || fulfillRequest);
     this.get('model').set('isFulfilling', isFulfilling);
     return isFulfilling;
   }.property('canFulfill', 'model.isRequested', 'model.shouldFulfillRequest'),
@@ -42,7 +46,7 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
   quantityClass: function() {
     let prescription = this.get('model.prescription');
     let returnClass = 'col-xs-3';
-    let isFulfilling = this.get('isFulfilling');
+    isFulfilling = this.get('isFulfilling');
     if (isFulfilling || Ember.isEmpty(prescription)) {
       returnClass += ' required';
     }
@@ -50,10 +54,10 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
   }.property('isFulfilling', 'model.prescription'),
 
   quantityLabel: function() {
-    let i18n = this.get('i18n');
+    i18n = this.get('i18n');
     let returnLabel = i18n.t('medication.labels.quantityRequested');
-    let isFulfilled = this.get('isFulfilled');
-    let isFulfilling = this.get('isFulfilling');
+    isFulfilled = this.get('isFulfilled');
+    isFulfilling = this.get('isFulfilling');
     if (isFulfilling) {
       returnLabel = i18n.t('medication.labels.quantityDispensed');
     } else if (isFulfilled) {
@@ -66,9 +70,9 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
   updateCapability: 'add_medication',
 
   afterUpdate() {
-    let i18n = this.get('i18n');
+    i18n = this.get('i18n');
     let alertTitle, alertMessage;
-    let isFulfilled = this.get('isFulfilled');
+    isFulfilled = this.get('isFulfilled');
     if (isFulfilled) {
       alertTitle = i18n.t('medication.alerts.fulfilledTitle');
       alertMessage = 'The medication request has been fulfilled.';
@@ -81,7 +85,7 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
   },
 
   beforeUpdate() {
-    let isFulfilling = this.get('isFulfilling');
+    isFulfilling = this.get('isFulfilling');
     let isNew = this.get('model.isNew');
     if (isNew || isFulfilling) {
       return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -145,7 +149,7 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
   },
 
   showUpdateButton: function() {
-    let isFulfilled = this.get('isFulfilled');
+    isFulfilled = this.get('isFulfilled');
     if (isFulfilled) {
       return false;
     } else {
@@ -154,7 +158,7 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
   }.property('updateCapability', 'isFulfilled'),
 
   updateButtonText: function() {
-    let i18n = this.get('i18n');
+    i18n = this.get('i18n');
     if (this.get('model.hideFulfillRequest')) {
       return i18n.t('buttons.dispense');
     } else if (this.get('isFulfilling')) {
