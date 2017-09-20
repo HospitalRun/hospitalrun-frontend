@@ -179,7 +179,7 @@ If you know a language other than English and would like to help translate this 
 After this step, you may see some file changes due to mismatches in translations of different languages. This script will take the English translation as the standard and populate the missing translations in other languages with empty string.
 
 ### Edit the translation file of your language
-The translation files are in app/locales/<language>/translations.json
+The translation files are in `app/locales/<language>/translations.json`
 
 Open the translation file of your language then search for the string ```''```. Afterwards you fill in the quotation with the translated terms and save the file.
 
