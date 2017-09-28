@@ -5,10 +5,12 @@ export default AbstractModuleRoute.extend({
   moduleName: 'admin',
   sectionTitle: 'Admin',
 
+  //edit information user
   editPath: function() {
     return 'users.edit';
   }.property(),
 
+  // delete data user
   deletePath: function() {
     return 'users.delete';
   }.property()
