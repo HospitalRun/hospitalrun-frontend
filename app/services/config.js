@@ -12,6 +12,7 @@ export default Ember.Service.extend({
   configDB: null,
   database: inject.service(),
   session: inject.service(),
+  languagePreference: inject.service(),
   sessionData: Ember.computed.alias('session.data'),
   standAlone: false,
   needsUserSetup: false,
@@ -177,6 +178,7 @@ export default Ember.Service.extend({
     config.get('current_user').then((doc) => {
       doc.value = userName;
       config.put(doc);
+      this.get('languagePreference').setSessionI18nPreference();
     }).catch(() => {
       config.put({
         _id: 'current_user',

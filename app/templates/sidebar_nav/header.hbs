@@ -10,7 +10,7 @@
     <nav class="settings-nav">
       {{#if session.isAuthenticated}}
         <a href="#" class="logout" {{ action 'invalidateSession' }}>{{t "navigation.actions.logout"}}</a>
-      {{language-select onFinish=(action 'toggleSettings')}}
+      {{language-dropdown onFinish=(action 'toggleSettings')}}
       {{else}}
         {{#link-to 'login'}}{{t "navigation.actions.login"}}{{/link-to}}
       {{/if}}

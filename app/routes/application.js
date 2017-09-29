@@ -12,6 +12,7 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
   database: inject.service(),
   config: inject.service(),
   session: inject.service(),
+  languagePreference: inject.service(),
   shouldSetupUserRole: true,
 
   actions: {
@@ -106,10 +107,7 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
   afterModel() {
     set(this.controllerFor('navigation'), 'allowSearch', false);
     $('#apploading').remove();
-    this.get('config.configDB').get('current_user').then((user) => {
-      let language = user.i18n || 'en';
-      this.set('i18n.locale', language);
-    });
+    this.get('languagePreference').setSessionI18nPreference();
   },
 
   renderModal(template) {
