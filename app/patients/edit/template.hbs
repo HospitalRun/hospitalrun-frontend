@@ -251,10 +251,10 @@
             {{#if canAddAppointment}}
               <div class="panel-heading">
                 <div class="right">
-                  <button type="button" class="btn btn-primary" {{action "newAppointment" bubbles=false }}>
+                  <button type="button" class="btn btn-primary" data-test-selector="appointments-btn" {{action "newAppointment" bubbles=false }}>
                     <span class="octicon octicon-plus"></span>{{t 'patients.buttons.newAppointment'}}
                   </button>&nbsp;
-                  <button type="button" class="btn btn-primary" {{action "newSurgicalAppointment" bubbles=false }}>
+                  <button type="button" class="btn btn-primary" data-test-selector="scheduleSurgery-btn" {{action "newSurgicalAppointment" bubbles=false }}>
                     <span class="octicon octicon-plus"></span>{{t 'patients.buttons.scheduleSurgery'}}
                   </button>
                 </div>
