@@ -109,8 +109,8 @@
   },
   "dependencies": {
     "electron-compile": "^6.3.0",
-    "electron-localshortcut": "^1.1.1",
-    "electron-protocol-serve": "1.3.0"
+    "electron-localshortcut": "^2.0.0",
+    "electron-protocol-serve": "1.3.0"    
   },
   "ember-addon": {
     "paths": [
