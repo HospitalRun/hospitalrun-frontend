@@ -21,7 +21,7 @@ export function rankToMultiplier(rank = 'B') {
 }
 
 export function getCondition(estimatedDaysOfStock, multiplier = 1) {
-  estimatedDaysOfStock *= multiplier;
+  estimatedDaysOfStock = estimatedDaysOfStock*multiplier;
 
   if (estimatedDaysOfStock >= 14) {
     return 'good';
