@@ -1,10 +1,10 @@
 export default {
   admin: {
     address: {
-      address1Label: 'Texto direccion 1',
-      address2Label: 'Texto direccion 2',
-      address3Label: 'Texto direccion 3',
-      address4Label: 'Texto direccion 4',
+      address1Label: 'Texto dirección 1',
+      address2Label: 'Texto dirección 2',
+      address3Label: 'Texto dirección 3',
+      address4Label: 'Texto dirección 4',
       addressLabel: 'Direcciones',
       editTitle: 'Opciones de dirección',
       include1Label: 'Incluir 1',
