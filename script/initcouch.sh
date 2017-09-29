@@ -26,3 +26,5 @@ curl -X PUT $SECUREHOST/_config/http/authentication_handlers -d '"{couch_httpd_o
 curl -X PUT $SECUREHOST/_config/couch_httpd_oauth/use_users_db -d '"true"'
 echo "Add hradmin user for use in HospitalRun"
 curl -X PUT $SECUREHOST/_users/org.couchdb.user:hradmin -d '{"name": "hradmin", "password": "test", "roles": ["System Administrator","admin","user"], "type": "user", "userPrefix": "p1"}'
+echo "Add otherhradmin user for use in HospitalRun"
+curl -X PUT $SECUREHOST/_users/org.couchdb.user:otherhradmin -d '{"name": "otherhradmin", "password": "test", "roles": ["System Administrator","admin","user"], "type": "user", "userPrefix": "p2"}'
