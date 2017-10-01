@@ -32,6 +32,9 @@
         {{#if (eq model.type 'checkbox')}}
           {{t 'admin.customForms.titles.checkboxValues'}}
         {{/if}}
+        {{#if (eq model.type 'header')}}
+          {{t 'admin.customForms.titles.headerValues'}}
+        {{/if}}
         <button class="btn btn-primary align-right" {{action 'addValue'}}>
           {{t "buttons.addValue"}}
         </button>
