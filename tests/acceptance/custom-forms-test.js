@@ -16,7 +16,7 @@ test('crud operations on custom-forms', function(assert) {
   let crusts =  ['Thin', 'Deep Dish', 'Flatbread'];
   let desserts = ['Ice Cream', 'Cookies', 'Cake'];
   let toppings =  ['Cheese', 'Pepperoni', 'Mushrooms'];
-  let header = '______________________________';
+  let header = ['______________________________'];
 
   function addField(fieldType, label, values) {
     click('button:contains(Add Field)');
@@ -58,7 +58,7 @@ test('crud operations on custom-forms', function(assert) {
     waitToAppear('.form-preview');
     andThen(function() {
       assert.equal(find('.form-preview label:contains(Create a Pizza)').length, 1, 'Found Create a Pizza Label');
-      assert.equal(find(`.form-preview label:contains(${header}):has(label)`).length, 1, `Found ${header} Label`);
+      assert.equal(find(`.form-preview label:contains(${header})`).length, 1, `Found ${header} Label`);
       assert.equal(find('.form-preview label:contains(Pizza Toppings)').length, 1, 'Found Pizza Toppings Label');
       toppings.forEach((topping) => {
         assert.equal(find(`.form-preview label:contains(${topping}):has(input[type=checkbox])`).length, 1, `Found ${topping} checkbox`);
