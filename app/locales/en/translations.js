@@ -34,6 +34,7 @@ export default {
         expenseTo: 'Expense To',
         formName: 'Form Name',
         formType: 'Form Type',
+        header: 'Header',
         incidentFormType: 'Incident',
         includeOtherOption: 'Include Other Option',
         labFormType: 'Lab',
@@ -60,6 +61,7 @@ export default {
         editCustomForm: 'Edit Custom Form',
         fields: 'Fields',
         formSaved: 'Form Saved',
+        headerValues: 'Header Line Value',
         newCustomForm: 'New Custom Form',
         radioValues: 'Radio Values'
       }
