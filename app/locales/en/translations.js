@@ -34,6 +34,7 @@ export default {
         expenseTo: 'Expense To',
         formName: 'Form Name',
         formType: 'Form Type',
+        header: 'Header',
         incidentFormType: 'Incident',
         includeOtherOption: 'Include Other Option',
         labFormType: 'Lab',
@@ -60,6 +61,7 @@ export default {
         editCustomForm: 'Edit Custom Form',
         fields: 'Fields',
         formSaved: 'Form Saved',
+        headerValues: 'Header Line Value',
         newCustomForm: 'New Custom Form',
         radioValues: 'Radio Values'
       }
@@ -782,6 +784,7 @@ export default {
     address: 'Address',
     age: 'Age',
     allDay: 'All Day',
+    allItems: 'All items',
     amount: 'Amount',
     anesthesia: 'Anesthesia',
     assisting: 'Assisting',
@@ -838,6 +841,7 @@ export default {
     medication: 'Medication',
     name: 'Name',
     newUser: 'New User',
+    newItem: '+ new item',
     note: 'Note',
     notes: 'Notes',
     number: 'Number',
