@@ -283,6 +283,34 @@ test('Receiving inventory', function(assert) {
   });
 });
 
+test('Searching inventory', function(assert) {
+  runWithPouchDump('inventory', function() {
+    authenticateUser();
+    visit('/inventory');
+
+    fillIn('[role="search"] div input', 'Biogesic');
+    click('.glyphicon-search');
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory/search/Biogesic', 'Searched for Biogesic');
+      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+    });
+
+    fillIn('[role="search"] div input', 'biogesic');
+    click('.glyphicon-search');
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory/search/biogesic', 'Searched with all lower case ');
+      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+    });
+
+    fillIn('[role="search"] div input', 'ItemNotFound');
+    click('.glyphicon-search');
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory/search/ItemNotFound', 'Searched for ItemNotFound');
+      assert.equal(find('button:contains(Delete)').length, 0, 'There is no search result');
+    });
+  });
+});
+
 testSimpleReportForm('Detailed Adjustment');
 testSimpleReportForm('Detailed Purchase');
 testSimpleReportForm('Detailed Stock Usage');
