@@ -17,6 +17,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, ResultValidati
   requestedDate: DS.attr('date'),
   result: DS.attr('string'),
   status: DS.attr('string'),
+  completedBy: DS.attr('string'),
 
   // Associations
   charges: DS.hasMany('proc-charge', { async: false }),

@@ -88,7 +88,7 @@
     content: ' ';
   }
 
-  > a {
+  > a, div {
     display: block;
     border-top: 1px solid $blue_lightest2;
     padding: 6px 10px;
@@ -97,6 +97,10 @@
     font-weight: 400;
 
     &:first-of-type { border-top: 0; }
+  }
+
+  .logout {
+    float: left;
   }
 }
 

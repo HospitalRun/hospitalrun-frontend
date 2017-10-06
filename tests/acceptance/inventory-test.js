@@ -210,6 +210,49 @@ test('Fulfilling an inventory request', function(assert) {
   });
 });
 
+test('Deleting an inventory request', function(assert) {
+  runWithPouchDump('inventory', function() {
+    authenticateUser();
+    visit('/inventory');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory', 'Navigated to /inventory');
+      assert.equal(find('button:contains(Delete)').length, 1, 'There is one request');
+    });
+
+    click('button:contains(Delete)');
+    waitToAppear('.modal-dialog');
+
+    andThen(() => {
+      assert.equal(find('.modal-title').text(), 'Delete Item', 'Deleting confirmation');
+    });
+
+    click('.modal-content button:contains(Delete)');
+    waitToAppear('.panel-body .alert-info');
+
+    andThen(function() {
+      assert.equal(currentURL(), '/inventory', 'Navigated to /inventory');
+      assert.equal(find('button:contains(Delete)').length, 0, 'Request was deleted');
+    });
+  });
+});
+
+test('User with add_inventory_request and without fulfill_inventory rights should not be able to delete others\' requests', function(assert) {
+  runWithPouchDump('inventory', function() {
+    authenticateUser({
+      name: 'nurse.mgr',
+      roles: ['Nurse Manager', 'user'],
+      role: 'Nurse Manager'
+    });
+    visit('/inventory');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory', 'Navigated to /inventory');
+      assert.equal(find('button:contains(Delete)').length, 0, 'User doesn\'t see Delete button');
+    });
+  });
+});
+
 test('Receiving inventory', function(assert) {
   runWithPouchDump('inventory', function() {
     authenticateUser();
@@ -236,6 +279,34 @@ test('Receiving inventory', function(assert) {
 
     andThen(() => {
       assert.equal(currentURL(), '/inventory/listing');
+    });
+  });
+});
+
+test('Searching inventory', function(assert) {
+  runWithPouchDump('inventory', function() {
+    authenticateUser();
+    visit('/inventory');
+
+    fillIn('[role="search"] div input', 'Biogesic');
+    click('.glyphicon-search');
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory/search/Biogesic', 'Searched for Biogesic');
+      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+    });
+
+    fillIn('[role="search"] div input', 'biogesic');
+    click('.glyphicon-search');
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory/search/biogesic', 'Searched with all lower case ');
+      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+    });
+
+    fillIn('[role="search"] div input', 'ItemNotFound');
+    click('.glyphicon-search');
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory/search/ItemNotFound', 'Searched for ItemNotFound');
+      assert.equal(find('button:contains(Delete)').length, 0, 'There is no search result');
     });
   });
 });

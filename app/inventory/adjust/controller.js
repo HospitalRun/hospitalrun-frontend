@@ -16,7 +16,9 @@ export default AbstractEditController.extend(AdjustmentTypes, {
   }.observes('transactionType'),
 
   updateButtonText: function() {
-    return this.get('model.transactionType');
+    let transactionType = this.get('model.transactionType');
+    let adjustmentType = this.get('adjustmentTypes').findBy('type', transactionType);
+    return adjustmentType.name;
   }.property('model.transactionType'),
 
   updateButtonAction: 'adjust',

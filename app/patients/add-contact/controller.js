@@ -18,6 +18,7 @@ export default Ember.Controller.extend(IsUpdateDisabled, {
     add() {
       let newContact = this.getProperties('name', 'phone', 'email', 'relationship');
       this.get('editController').send('addContact', newContact);
+      this.setProperties({ name: '', phone: '', email: '', relationship: '' });
     }
   }
 });

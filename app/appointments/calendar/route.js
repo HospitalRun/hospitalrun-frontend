@@ -4,7 +4,8 @@ import { translationMacro as t } from 'ember-i18n';
 
 const {
   get,
-  isEmpty
+  isEmpty,
+  computed
 } = Ember;
 
 export default AppointmentIndexRoute.extend({
@@ -13,7 +14,9 @@ export default AppointmentIndexRoute.extend({
   editReturn: 'appointments.calendar',
   filterParams: ['appointmentType', 'provider', 'status', 'location'],
   modelName: 'appointment',
-  pageTitle: t('appointments.calendarTitle'),
+  pageTitle: computed('i18n.locale', () => {
+    return t('appointments.calendarTitle');
+  }),
 
   queryParams: {
     appointmentType: { refreshModel: true },
