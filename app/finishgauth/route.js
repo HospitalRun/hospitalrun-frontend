@@ -1,7 +1,8 @@
 import Ember from 'ember';
+import MapOauthParams from 'hospitalrun/mixins/map-oauth-params';
 import SetupUserRole from 'hospitalrun/mixins/setup-user-role';
 
-export default Ember.Route.extend(SetupUserRole, {
+export default Ember.Route.extend(MapOauthParams, SetupUserRole, {
   config: Ember.inject.service(),
   database: Ember.inject.service(),
   session: Ember.inject.service(),
@@ -11,19 +12,6 @@ export default Ember.Route.extend(SetupUserRole, {
         google_auth: true,
         params
       });
-      let oauthConfigs = {
-        config_consumer_key: params.k,
-        config_consumer_secret: params.s1,
-        config_oauth_token: params.t,
-        config_token_secret: params.s2
-      };
-      return this.get('config').saveOauthConfigs(oauthConfigs)
-        .then(function() {
-          oauthConfigs.config_use_google_auth = true;
-          return this.get('database').setup(oauthConfigs).then(() => {
-            return this.setupUserRole();
-          });
-        }.bind(this));
     }
   }
 });

@@ -4,7 +4,15 @@ Contributions are welcome via pull requests and issues. Before submitting a pull
 
 ## Slack / Communication
 
-Project communication occurs primarily and intentionally via our project [Slack](https://hospitalrun.slack.com/). Those interested in / considering contribution are encouraged to [join](https://hospitalrun-slackin.herokuapp.com/).
+Project communication occurs primarily and intentionally via our project [Slack](https://hospitalrun.slack.com/). Those interested in / considering contribution are encouraged to [join](https://hospitalrun-slackin.herokuapp.com/). Project maintainers, contributors, and other community members in the Slack channel are usually available to answer questions, so feel free to ask about anything you need help with in the General channel. 
+
+However, before you ask in Slack "what can I contribute to", be sure to keep reading this document for the answer to your question. :-)
+
+Also, please avoid use of the `@everyone` and `@channel` commands in Slack, as you will be sending a notification to nearly 600 people. Just post your question and someone will respond soon.
+
+While `@here` is discouraged as it notifies everyone who is active on Slack, if you have an announcement that the channel needs to hear urgently, use can be justified.
+
+Generally, just posting your question will allow you to recieve a timely answer.
 
 ## Help Wanted
 
@@ -40,7 +48,7 @@ This section is designed to help developers start coding in the project and unde
 
 ### Ember
 
-To understand the project you'll have to understand [Ember](http://emberjs.com), and it is advisable that you'll follow the tutorial: [Create your own app](https://guides.emberjs.com/v2.9.0/tutorial/ember-cli/) to get an understanding of how Ember works and the basic folder structure. You can find more Ember guides [here](https://guides.emberjs.com/v2.9.0/).
+To understand the project you'll have to understand [Ember](http://emberjs.com), and it is advisable that you'll follow the tutorial: [Create your own app](https://guides.emberjs.com/v2.10.0/tutorial/ember-cli/) to get an understanding of how Ember works and the basic folder structure. You can find more Ember guides [here](https://guides.emberjs.com/v2.10.0/).
 
 ### ES6
 
@@ -158,3 +166,25 @@ Travis CI is configured to run tests on GitHub, so when you open a pull requests
 To run the test suite locally, use `ember test` from the project root.
 
 New test should be added for any new features or views in the app. For more info about how to setup a new test, see the [Fixtures for Acceptance Tests](https://github.com/HospitalRun/hospitalrun-frontend#fixtures-for-acceptance-tests) section of the README.
+
+## Guidelines to edit translations
+If you know a language other than English and would like to help translate this app, please follow the following steps:
+
+### Install necessary node modules
+```npm install -g babel-cli eslint-cli babel-preset-es2015```
+
+### Run script to populate missing translation terms
+```npm run translation-sync```
+
+After this step, you may see some file changes due to mismatches in translations of different languages. This script will take the English translation as the standard and populate the missing translations in other languages with empty string.
+
+### Edit the translation file of your language
+The translation files are in `app/locales/<language>/translations.json`
+
+Open the translation file of your language then search for the string ```''```. Afterwards you fill in the quotation with the translated terms and save the file.
+
+### Submit the pull request
+Follow GitHub's guide to submit a pull request to the project. If you have trouble with this please post in Issues or contact a developer.
+
+
+

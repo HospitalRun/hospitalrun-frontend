@@ -20,6 +20,7 @@ Router.map(function() {
       this.route('edit', { path: '/edit/:inc-category_id' });
     });
     this.route('lookup', { path: '/' });
+    this.route('textreplace');
     this.route('users', {
       resetNamespace: true
     }, function() {
@@ -35,7 +36,6 @@ Router.map(function() {
     this.route('edit', { path: '/edit/:appointment_id' });
     this.route('search');
     this.route('today');
-    this.route('missed');
     this.route('calendar');
     this.route('theater');
   });
@@ -66,6 +66,7 @@ Router.map(function() {
   });
 
   this.route('invoices', function() {
+    this.route('review', { path: '/review/:invoice_id' });
     this.route('edit', { path: '/edit/:invoice_id' });
     this.route('search', { path: '/search/:search_text' });
   });
@@ -115,10 +116,7 @@ Router.map(function() {
     }, function() {
       this.route('edit', { path: '/edit/:procedure_id' });
     });
-
-    this.route('reports', {
-      resetNamespace: true
-    }, function() {
+    this.route('reports', function() {
       this.route('edit', { path: '/edit/:report_id' });
     });
 

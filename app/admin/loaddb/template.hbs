@@ -2,7 +2,7 @@
   <div class="panel-body">
     {{#em-form model=model submitButton=false }}
       {{file-upload label=(t 'labels.fileToLoad') property="importFileName" selectedFile=importFile }}
-      <button class="btn btn-default" {{action 'loadFile'}}>{{t 'buttons.loadFile'}}</button>
+      <button class="btn btn-primary" {{action 'loadFile'}}>{{t 'buttons.loadFile'}}</button>
     {{/em-form}}
     {{#if syncResults}}
       <h4>{{t 'labels.fileLoadSuccessful'}}</h4>

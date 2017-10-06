@@ -5,14 +5,11 @@ import DateFormat from 'hospitalrun/mixins/date-format';
 import Ember from 'ember';
 import MedicationDetails from 'hospitalrun/mixins/medication-details';
 
+const { computed, get } = Ember;
+
 export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDetails, {
-  inventoryItem: DS.belongsTo('inventory', {
-    async: true
-  }),
+  // Attributes
   notes: DS.attr('string'),
-  patient: DS.belongsTo('patient', {
-    async: false
-  }),
   prescription: DS.attr('string'),
   prescriptionDate: DS.attr('date'),
   quantity: DS.attr('number'),
@@ -20,47 +17,43 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
   requestedDate: DS.attr('date'),
   requestedBy: DS.attr('string'),
   status: DS.attr('string'),
-  visit: DS.belongsTo('visit', {
-    async: false
+
+  // Associations
+  inventoryItem: DS.belongsTo('inventory', { async: true }),
+  patient: DS.belongsTo('patient', { async: false }),
+  visit: DS.belongsTo('visit', { async: false }),
+
+  isRequested: computed('status', function() {
+    return get(this, 'status') === 'Requested';
   }),
 
-  isRequested: function() {
-    let status = this.get('status');
-    return (status === 'Requested');
-  }.property('status'),
-
-  medicationName: function() {
+  medicationName: computed('medicationTitle', 'inventoryItem', function() {
     return this.getMedicationName('inventoryItem');
-  }.property('medicationTitle', 'inventoryItem'),
+  }),
 
-  medicationPrice: function() {
+  medicationPrice: computed('priceOfMedication', 'inventoryItem', function() {
     return this.getMedicationPrice('inventoryItem');
-  }.property('priceOfMedication', 'inventoryItem'),
+  }),
 
-  prescriptionDateAsTime: function() {
-    return this.dateToTime(this.get('prescriptionDate'));
-  }.property('prescriptionDate'),
+  prescriptionDateAsTime: computed('prescriptionDate', function() {
+    return this.dateToTime(get(this, 'prescriptionDate'));
+  }),
 
-  requestedDateAsTime: function() {
-    return this.dateToTime(this.get('requestedDate'));
-  }.property('requestedDate'),
+  requestedDateAsTime: computed('requestedDate', function() {
+    return this.dateToTime(get(this, 'requestedDate'));
+  }),
 
   validations: {
     prescription: {
       acceptance: {
         accept: true,
         if(object) {
-          if (!object.get('hasDirtyAttributes') || object.get('isFulfilling')) {
+          if (!get(object, 'hasDirtyAttributes') || get(object, 'isFulfilling')) {
             return false;
           }
-          let prescription = object.get('prescription');
-          let quantity = object.get('quantity');
-          if (Ember.isEmpty(prescription) && Ember.isEmpty(quantity)) {
-            // force validation to fail
-            return true;
-          } else {
-            return false;
-          }
+          let prescription = get(object, 'prescription');
+          let quantity = get(object, 'quantity');
+          return Ember.isEmpty(prescription) && Ember.isEmpty(quantity);
         },
         message: 'Please enter a prescription or a quantity'
       }
@@ -70,11 +63,11 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
       acceptance: {
         accept: true,
         if(object) {
-          if (!object.get('hasDirtyAttributes') || !object.get('isNew')) {
+          if (!get(object, 'hasDirtyAttributes') || !get(object, 'isNew')) {
             return false;
           }
-          let itemName = object.get('inventoryItem.name');
-          let itemTypeAhead = object.get('inventoryItemTypeAhead');
+          let itemName = get(object, 'inventoryItem.name');
+          let itemTypeAhead = get(object, 'inventoryItemTypeAhead');
           if (Ember.isEmpty(itemName) || Ember.isEmpty(itemTypeAhead)) {
             // force validation to fail
             return true;
@@ -94,7 +87,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
     patientTypeAhead: {
       presence: {
         if(object) {
-          return (object.get('selectPatient'));
+          return get(object, 'selectPatient');
         }
       }
     },
@@ -109,27 +102,28 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, MedicationDeta
       },
       presence: {
         if(object) {
-          let isFulfilling = object.get('isFulfilling');
-          return isFulfilling;
+          return get(object, 'isFulfilling');
         }
       },
       acceptance: {
         accept: true,
         if(object) {
-          let isFulfilling = object.get('isFulfilling');
-          let requestQuantity = parseInt(object.get('quantity'));
+          let isFulfilling = get(object, 'isFulfilling');
+          let requestQuantity = parseInt(get(object, 'quantity'));
           let quantityToCompare = null;
+
           if (!isFulfilling) {
             // no validation needed when not fulfilling
             return false;
           } else {
             quantityToCompare = object.get('inventoryItem.quantity');
           }
+
           if (requestQuantity > quantityToCompare) {
             // force validation to fail
             return true;
           } else {
-            // There is enough quantity on hand.
+            // There is enough quantity on hand
             return false;
           }
         },

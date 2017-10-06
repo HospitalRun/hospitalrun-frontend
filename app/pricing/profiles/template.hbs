@@ -5,6 +5,7 @@
         <th>{{t 'labels.name'}}</th>
         <th>{{t 'billing.labels.discountAmount'}}</th>
         <th>{{t 'billing.labels.discountPercentage'}}</th>
+        <th>{{t 'billing.labels.setFee'}}</th>
         {{#if showActions}}
           <th>{{t 'labels.actions'}}</th>
         {{/if}}
@@ -14,6 +15,7 @@
           <td class="pricing-profile-name">{{profile.name}}</td>
           <td>{{profile.discountAmount}}</td>
           <td>{{profile.discountPercentage}}</td>
+          <td>{{profile.setFee}}</td>
           {{#if showActions}}
             <td>
               {{#if canEdit}}

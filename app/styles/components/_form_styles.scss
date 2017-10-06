@@ -39,3 +39,13 @@
 .container {
   label { font-weight: 300; }
 }
+
+.text-expansion-container {
+  position: absolute;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 3px;
+  background-color: #ffffe0;
+  padding-right: 5px;
+  padding-left: 5px;
+}

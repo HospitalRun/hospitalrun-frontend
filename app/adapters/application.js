@@ -1,17 +1,25 @@
+import CheckForErrors from 'hospitalrun/mixins/check-for-errors';
 import Ember from 'ember';
-import { Adapter } from 'ember-pouch';
 import uuid from 'npm:uuid';
+import withTestWaiter from 'ember-concurrency-test-waiter/with-test-waiter';
+import { Adapter } from 'ember-pouch';
+import { task } from 'ember-concurrency';
 
 const {
+  computed: {
+    reads
+  },
   get,
   run: {
     bind
   }
 } = Ember;
 
-export default Adapter.extend({
+export default Adapter.extend(CheckForErrors, {
+  ajax: Ember.inject.service(),
   database: Ember.inject.service(),
-  db: Ember.computed.reads('database.mainDB'),
+  db: reads('database.mainDB'),
+  usePouchFind: reads('database.usePouchFind'),
 
   _specialQueries: [
     'containsValue',
@@ -21,61 +29,87 @@ export default Adapter.extend({
   _esDefaultSize: 25,
 
   _executeContainsSearch(store, type, query) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      let typeName = this.getRecordTypeName(type);
-      let searchUrl = `/search/hrdb/${typeName}/_search`;
-      if (query.containsValue && query.containsValue.value) {
-        let queryString = '';
-        query.containsValue.keys.forEach((key) => {
-          if (!Ember.isEmpty(queryString)) {
-            queryString = `${queryString} OR `;
-          }
-          let queryValue = query.containsValue.value;
-          switch (key.type) {
-            case 'contains': {
-              queryValue = `*${queryValue}*`;
-              break;
-            }
-            case 'fuzzy': {
-              queryValue = `${queryValue}~`;
-              break;
-            }
-          }
-          queryString = `${queryString}data.${key.name}:${queryValue}`;
-        });
-        let successFn = (results) => {
-          if (results && results.hits && results.hits.hits) {
-            let resultDocs = Ember.A(results.hits.hits).map((hit) => {
-              let mappedResult = hit._source;
-              mappedResult.id = mappedResult._id;
-              return mappedResult;
-            });
-            let response = {
-              rows: resultDocs
-            };
-            this._handleQueryResponse(response, store, type).then(resolve, reject);
-          } else if (results.rows) {
-            this._handleQueryResponse(results, store, type).then(resolve, reject);
-          } else {
-            reject('Search results are not valid');
-          }
-        };
-
-        if (Ember.isEmpty(query.size)) {
-          query.size = this.get('_esDefaultSize');
+    let usePouchFind = get(this, 'usePouchFind');
+    if (usePouchFind) {
+      return this._executePouchDBFind(store, type, query);
+    }
+    let typeName = this.getRecordTypeName(type);
+    let searchUrl = `/search/hrdb/${typeName}/_search`;
+    if (query.containsValue && query.containsValue.value) {
+      let queryString = '';
+      query.containsValue.keys.forEach((key) => {
+        if (!Ember.isEmpty(queryString)) {
+          queryString = `${queryString} OR `;
         }
-
-        Ember.$.ajax(searchUrl, {
-          dataType: 'json',
-          data: {
-            q: queryString,
-            size: this.get('_esDefaultSize')
-          },
-          success: successFn
-        });
-      } else {
-        reject('invalid query');
+        let queryValue = query.containsValue.value;
+        switch (key.type) {
+          case 'contains': {
+            queryValue = `*${queryValue}*`;
+            break;
+          }
+          case 'fuzzy': {
+            queryValue = `${queryValue}~`;
+            break;
+          }
+        }
+        queryString = `${queryString}data.${key.name}:${queryValue}`;
+      });
+      let ajax = get(this, 'ajax');
+      if (Ember.isEmpty(query.size)) {
+        query.size = this.get('_esDefaultSize');
       }
+
+      return ajax.request(searchUrl, {
+        dataType: 'json',
+        data: {
+          q: queryString,
+          size: this.get('_esDefaultSize')
+        }
+      }).then((results) => {
+        if (results && results.hits && results.hits.hits) {
+          let resultDocs = Ember.A(results.hits.hits).map((hit) => {
+            let mappedResult = hit._source;
+            mappedResult.id = hit._id;
+            return mappedResult;
+          });
+          let response = {
+            rows: resultDocs
+          };
+          return this._handleQueryResponse(response, store, type);
+        } else if (results.rows) {
+          return this._handleQueryResponse(results, store, type);
+        } else {
+          throw new Error('Search results are not valid');
+        }
+      }).catch(() => {
+        // Try pouch db find if ajax fails
+        return this._executePouchDBFind(store, type, query);
+      });
+    } else {
+      throw new Error('invalid query');
+    }
+  },
+
+  _executePouchDBFind(store, type, query) {
+    this._init(store, type);
+    let db = this.get('db');
+    let recordTypeName = this.getRecordTypeName(type);
+    let queryParams = {
+      selector: {
+        $or: []
+      }
+    };
+    if (query.containsValue && query.containsValue.value) {
+      let regexp = new RegExp(query.containsValue.value, 'i');
+      query.containsValue.keys.forEach((key) => {
+        let subQuery = {};
+        subQuery[`data.${key.name}`] = { $regex: regexp };
+        queryParams.selector.$or.push(subQuery);
+      });
+    }
+
+    return db.find(queryParams).then((pouchRes) => {
+      return db.rel.parseRelDocs(recordTypeName, pouchRes.docs);
     });
   },
 
@@ -263,13 +297,17 @@ export default Adapter.extend({
     return this._checkForErrors(this._super(store, type, record));
   },
 
-  _checkForErrors(callPromise) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
+  checkForErrorsTask: withTestWaiter(task(function* (callPromise) {
+    return yield new Ember.RSVP.Promise((resolve, reject) => {
       callPromise.then(resolve, (err) => {
         let database = get(this, 'database');
         reject(database.handleErrorResponse(err));
       });
     });
+  })),
+
+  _checkForErrors(callPromise) {
+    return get(this, 'checkForErrorsTask').perform(callPromise);
   }
 
 });

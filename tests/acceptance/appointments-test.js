@@ -4,6 +4,7 @@ import moment from 'moment';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
 const DATE_TIME_FORMAT = 'l h:mm A';
+const DATE_FORMAT = 'l';
 const TIME_FORMAT = 'h:mm';
 
 module('Acceptance | appointments', {
@@ -49,6 +50,28 @@ test('visiting /appointments/missed', function(assert) {
   });
 });
 
+test('test appointment for today', function(assert) {
+  runWithPouchDump('appointments', function() {
+    authenticateUser();
+    visit('/appointments/today');
+    assert.equal(find('.appointment-date').length, 0, 'should have 0 appointment today');
+    visit('/appointments/edit/new');
+    andThen(function() {
+      assert.equal(currentURL(), '/appointments/edit/new');
+      findWithAssert('button:contains(Cancel)');
+      findWithAssert('button:contains(Add)');
+    });
+
+    createAppointment(assert);
+
+    visit('/appointments/today');
+    andThen(() => {
+      assert.equal(currentURL(), '/appointments/today');
+      assert.equal(find('.appointment-status').text(), 'Scheduled', 'should have 1 appointment today');
+    });
+  });
+});
+
 test('Creating a new appointment', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
@@ -72,6 +95,82 @@ test('Creating a new appointment', function(assert) {
   });
 });
 
+test('Creating a new appointment from patient screen', function(assert) {
+  runWithPouchDump('appointments', function() {
+    let today = moment().startOf('day');
+    let tomorrow =  moment(today).add(24, 'hours');
+    authenticateUser();
+    visit('/patients');
+    andThen(function() {
+      findWithAssert('button:contains(Edit)');
+    });
+    click('button:contains(Edit)');
+    andThen(function() {
+      assert.equal(find('button[data-test-selector="appointments-btn"]').length, 1, 'Tab Appointments shown AFTER clicking edit');
+    });
+
+    click('button[data-test-selector="appointments-btn"]');
+
+    andThen(function() {
+      assert.equal(currentURL().substr(0, 19), '/appointments/edit/', 'Creating appointment');
+    });
+
+    click('.appointment-all-day input');
+    fillIn('.test-appointment-start input', today.format(DATE_FORMAT));
+    fillIn('.test-appointment-end input', tomorrow.format(DATE_FORMAT));
+    typeAheadFillIn('.test-appointment-location', 'Harare');
+    typeAheadFillIn('.test-appointment-with', 'Dr Test');
+    click('button:contains(Add)');
+
+    waitToAppear('.modal-dialog');
+    andThen(() => {
+      assert.equal(find('.modal-title').text(), 'Appointment Saved', 'Appointment has been saved');
+      click('.modal-footer button:contains(Ok)');
+    });
+
+    click('button:contains(Return)');
+    andThen(() => {
+      assert.equal(currentURL().substr(0, 15), '/patients/edit/', 'Back on patient edit screen');
+    });
+  });
+});
+
+test('Change appointment type', function(assert) {
+  runWithPouchDump('appointments', function() {
+    let today = moment().startOf('day');
+    authenticateUser();
+    visit('/appointments/edit/new');
+
+    andThen(function() {
+      assert.equal(currentURL(), '/appointments/edit/new');
+      findWithAssert('button:contains(Cancel)');
+      findWithAssert('button:contains(Add)');
+    });
+
+    createAppointment(assert);
+
+    andThen(() => {
+      assert.equal(currentURL(), '/appointments');
+      assert.equal(find('tr').length, 2, 'New appointment has been added');
+      findWithAssert('button:contains(Edit)');
+    });
+
+    click('button:contains(Edit)');
+
+    andThen(() => {
+      assert.equal(currentURL().substring(0, 19), '/appointments/edit/');
+      assert.equal(find('.appointment-all-day input').val(), 'on', 'All day appointment is on');
+    });
+
+    select('.test-appointment-type', 'Clinic');
+
+    andThen(() => {
+      assert.equal(find('.test-appointment-date input').val(), today.format(DATE_FORMAT), 'Single date field found');
+      assert.equal(find('.appointment-all-day').val(), '', 'All day appointment was turned off');
+    });
+  });
+});
+
 test('Checkin to a visit from appointment', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
@@ -87,6 +186,7 @@ test('Checkin to a visit from appointment', function(assert) {
     });
 
     click('button:contains(Check In)');
+
     andThen(() => {
       assert.equal(currentURL(), '/visits/edit/checkin', 'Now in add visiting information route');
     });
@@ -176,6 +276,51 @@ test('Appointment calendar', function(assert) {
       assert.equal(find('.test-appointment-start input').val(), today.format(DATE_TIME_FORMAT), 'Start date/time are correct');
       assert.equal(find('.test-appointment-end input').val(), later.format(DATE_TIME_FORMAT), 'End date/time are correct');
     });
+  });
+});
+
+test('visiting /appointments/search', function(assert) {
+  runWithPouchDump('appointments', function() {
+    authenticateUser();
+
+    createAppointment(assert);
+    createAppointment(assert, {
+      startDate: moment().startOf('day').add(1, 'years'),
+      startTime: moment().startOf('day').add(1, 'years').format(TIME_FORMAT),
+      endDate: moment().endOf('day').add(1, 'years').add(2, 'days'),
+      endTime: moment().endOf('day').add(1, 'years').add(2, 'days').format(TIME_FORMAT)
+    });
+
+    andThen(function() {
+      visit('/appointments/search');
+    });
+
+    andThen(function() {
+      findWithAssert(':contains(Search Appointments)');
+      findWithAssert(':contains(Show Appointments On Or After)');
+      findWithAssert(':contains(Status)');
+      findWithAssert(':contains(Type)');
+      findWithAssert(':contains(With)');
+    });
+
+    andThen(function() {
+      // debugger;
+      let desiredDate = moment().endOf('day').add(363, 'days').format('l');
+      let datePicker = '.test-selected-start-date input';
+      selectDate(datePicker, desiredDate);
+      click('button:contains(Search)');
+    });
+
+    andThen(function() {
+      let date = moment().endOf('day').add(1, 'years').add(2, 'days').format('l');
+      findWithAssert(`.appointment-status:contains(${status})`);
+      let element = `tr:contains(${date})`;
+      findWithAssert(element);
+      date = moment().startOf('day').add(1, 'years');
+      element = find(`tr:contains(${date})`);
+      assert.equal(element.length, 0);
+    });
+
   });
 });
 

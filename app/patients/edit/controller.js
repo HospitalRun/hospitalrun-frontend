@@ -1,4 +1,5 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
+import AllergyActions from 'hospitalrun/mixins/allergy-actions';
 import BloodTypes from 'hospitalrun/mixins/blood-types';
 import DiagnosisActions from 'hospitalrun/mixins/diagnosis-actions';
 import Ember from 'ember';
@@ -15,7 +16,7 @@ const {
   isEmpty
 } = Ember;
 
-export default AbstractEditController.extend(BloodTypes, DiagnosisActions, ReturnTo, UserSession, PatientId, PatientNotes, PatientVisits, {
+export default AbstractEditController.extend(AllergyActions, BloodTypes, DiagnosisActions, ReturnTo, UserSession, PatientId, PatientNotes, PatientVisits, {
 
   canAddAppointment: function() {
     return this.currentUserCan('add_appointment');
@@ -182,6 +183,11 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
   updateCapability: 'add_patient',
 
   actions: {
+    addAllergy(newAllergy) {
+      let patient = get(this, 'model');
+      this.savePatientAllergy(patient, newAllergy);
+    },
+
     addContact(newContact) {
       let additionalContacts = this.getWithDefault('model.additionalContacts', []);
       let model = this.get('model');
@@ -214,6 +220,11 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
       let appointments = this.get('model.appointments');
       appointments.removeObject(deletedAppointment);
       this.send('closeModal');
+    },
+
+    deleteAllergy(allergy) {
+      let patient = get(this, 'model');
+      this.deletePatientAllergy(patient, allergy);
     },
 
     deleteContact(model) {
@@ -366,6 +377,7 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
         patient: this.get('model'),
         saveToDir: `${this.get('model.id')}/photos/`
       });
+      newPatientPhoto.set('editController', this);
       this.send('openModal', 'patients.photo', newPatientPhoto);
     },
 
@@ -575,13 +587,9 @@ export default AbstractEditController.extend(BloodTypes, DiagnosisActions, Retur
 
   afterUpdate(record) {
     this._updateSequence(record).then(() => {
-      this.send('openModal', 'dialog', Ember.Object.create({
-        title: this.get('i18n').t('patients.titles.savedPatient'),
-        message: this.get('i18n').t('patients.messages.savedPatient', record),
-        updateButtonAction: 'returnToPatient',
-        updateButtonText: this.get('i18n').t('patients.buttons.backToPatients'),
-        cancelButtonText: this.get('i18n').t('buttons.close')
-      }));
+      $('.message').show();
+      $('.message').text(this.get('i18n').t('patients.messages.savedPatient', record));
+      $('.message').delay(3000).fadeOut(100);
     });
   }
 
