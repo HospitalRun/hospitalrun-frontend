@@ -45,7 +45,7 @@ module.exports = function(environment) {
   }
 
   ENV.i18n = {
-    defaultLocale: 'en'
+    defaultLocale: 'es'
   };
 
   ENV.manifest = {

@@ -1,10 +1,10 @@
 export default {
   admin: {
     address: {
-      address1Label: 'Texto direccion 1',
-      address2Label: 'Texto direccion 2',
-      address3Label: 'Texto direccion 3',
-      address4Label: 'Texto direccion 4',
+      address1Label: 'Texto dirección 1',
+      address2Label: 'Texto dirección 2',
+      address3Label: 'Texto dirección 3',
+      address4Label: 'Texto dirección 4',
       addressLabel: 'Direcciones',
       editTitle: 'Opciones de dirección',
       include1Label: 'Incluir 1',
@@ -18,14 +18,14 @@ export default {
     addressOptions: 'Opciones de direcciones',
     customForms: {
       buttons: {
-        addField: '',
-        moveDown: '',
-        moveUp: '',
-        newForm: '',
-        preview: ''
+        addField: 'Añadir campo',
+        moveDown: 'Bajar',
+        moveUp: 'Subir',
+        newForm: 'Nuevo formulario',
+        preview: 'Vista previa'
       },
       labels: {
-        alwaysInclude: '',
+        alwaysInclude: 'Siempre incluye',
         checkbox: '',
         colSpan: '',
         columns: '',
@@ -80,10 +80,10 @@ export default {
       displayAlertMessage: 'Por favor seleccione un archivo para ser cargado.',
       displayAlertTitle: 'Seleccione un archivo para cargar',
       editTitle: 'Cargar bd',
-      errorDisplayAlertMessage: 'La base de datos no fue cargada el error fue: {{error}}',
-      errorDisplayAlertTitle: 'Error cargando',
+      errorDisplayAlertMessage: 'La base de datos no fue cargada. El error fue: {{error}}',
+      errorDisplayAlertTitle: 'Error en la carga',
       progressMessage: 'Por favor espere mientras la base de datos es cargada.',
-      progressTitle: 'Cargando ase de datos'
+      progressTitle: 'Cargando base de datos'
     },
     lookup: {
       aisleLocationList: 'Ubicacion de inventario de pasillo',
