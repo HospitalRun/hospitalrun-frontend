@@ -11,7 +11,7 @@ export default {
       include2Label: 'Incluir 2',
       include3Label: 'Incluir 3',
       include4Label: 'Incluir 4',
-      messages: { addressSaved: 'las opciones de dirección han sido guardadas' },
+      messages: { addressSaved: 'Las opciones de dirección han sido guardadas' },
       newTitle: 'Opciones de dirección',
       titles: { optionsSaved: 'Opciones guardadas' }
     },
@@ -97,7 +97,7 @@ export default {
       anesthesiologists: 'Anestesiologo',
       billingCategories: 'Categorias de facturación',
       clinicList: 'Ubicación de las clinicas',
-      countryList: 'Paises',
+      countryList: 'Países',
       cptCodeList: 'Codigos CPT',
       diagnosisList: 'Diagnosticos',
       edit: { template: {
@@ -265,7 +265,7 @@ export default {
     },
     messages: {
       appointmentSaved: '',
-      endTimeLaterThanStart: 'Seleccione una hora de finalizacion despues de la de inicio.'
+      endTimeLaterThanStart: 'Seleccione una hora de finalizacion después de la de inicio.'
     },
     missed: 'Citas perdidas',
     newTitle: 'Nueva cita',
