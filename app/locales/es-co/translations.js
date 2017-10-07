@@ -1,10 +1,10 @@
 export default {
   admin: {
     address: {
-      address1Label: 'Texto direccion 1',
-      address2Label: 'Texto direccion 2',
-      address3Label: 'Texto direccion 3',
-      address4Label: 'Texto direccion 4',
+      address1Label: 'Texto dirección 1',
+      address2Label: 'Texto dirección 2',
+      address3Label: 'Texto dirección 3',
+      address4Label: 'Texto dirección 4',
       addressLabel: 'Direcciones',
       editTitle: 'Opciones de dirección',
       include1Label: 'Incluir 1',
@@ -916,15 +916,15 @@ export default {
   medication: {
     alerts: {
       fulfilledTitle: 'Pedido de medicación cumplido',
-      returnedMessage: 'La medicacion ha sido marcada para devolver.',
-      returnedTitle: 'Medicacion devuelta',
+      returnedMessage: 'La medicación ha sido marcada para devolver.',
+      returnedTitle: 'medicación devuelta',
       savedMessage: 'La elemento de medicación ha sido guardado.',
-      savedTitle: 'Pedido de medicacion guardado'
+      savedTitle: 'Pedido de medicación guardado'
     },
     buttons: {
       dispenseMedication: 'dispensar medicación',
       newButton: '+ nuevo pedido',
-      returnMedication: 'debolver medicacion'
+      returnMedication: 'debolver medicación'
     },
     labels: {
       adjustmentDate: 'Fecha de ajuste',
@@ -938,14 +938,14 @@ export default {
       returnLocation: 'Retornar a ubicación',
       returnReason: 'Razon por la que se devuelve/Nota'
     },
-    messages: { createNew: 'Crear un nuevo pedido de medicacion?' },
+    messages: { createNew: 'Crear un nuevo pedido de medicación?' },
     pageTitle: 'Pedido de medicación',
     returnMedication: 'Retorno de medicación',
     sectionTitle: 'Medication',
     titles: {
-      completedMedication: 'Medicacion completada',
-      editMedicationRequest: 'Editar pedido de medicacion',
-      newMedicationRequest: 'Nuevo pedido de medicacion'
+      completedMedication: 'medicación completada',
+      editMedicationRequest: 'Editar pedido de medicación',
+      newMedicationRequest: 'Nuevo pedido de medicación'
     }
   },
   messages: {
