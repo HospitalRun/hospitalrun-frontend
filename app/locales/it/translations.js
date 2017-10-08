@@ -105,8 +105,8 @@ export default {
         addTitle: 'Aggiungere valore',
         editTitle: 'Modifica valore',
         labelTitle: 'Valore',
-        updateButtonTextInserisci: 'Inserisci',
-        updateButtonTextAggiornare: 'Aggiornare'
+        updateButtonTextAdd: 'Inserisci',
+        updateButtonTextUpdate: 'Aggiornare'
       } },
       expenseAccountList: 'Conti di spesa',
       imagingPricingTypes: 'Tipi di prezzi di imaging',
@@ -253,7 +253,7 @@ export default {
   allergies: {
     buttons: { addAllergy: 'Aggiungi allergia' },
     labels: {
-      allergyNome: 'Nome',
+      allergyName: 'Nome',
       patientAllergy: 'Allergie pazienti'
     },
     titles: {
@@ -398,8 +398,8 @@ export default {
         takeAPicture: 'Fai una foto',
         uploadAFile: 'Carica in File'
       },
-      Foto: 'Foto',
-      Anteprima: 'Anteprima',
+      photo: 'Foto',
+      preview: 'Anteprima',
       takePhoto: 'Fare foto',
       uploadFile: 'Caricare un file'
     },
@@ -537,10 +537,10 @@ export default {
       sentinelEvent: 'Evento Sentinel',
       startDate: "Data d'inizio",
       status: 'Stato',
-      statusAttivo: 'Attivo',
-      statusChiuso: 'Chiuso',
+      statusActive: 'Attivo',
+      statusClosed: 'Chiuso',
       statusFollowup: 'Seguito',
-      statusSegnalato: 'Segnalato',
+      statusReported: 'Segnalato',
       title: 'Titolo',
       total: 'Totale',
       updatedBy: 'Aggiornato da'
@@ -843,7 +843,7 @@ export default {
     note: 'Nota',
     notes: 'Gli appunti',
     number: 'Numero',
-    Sopra: 'Sopra',
+    on: 'Sopra',
     password: "Parola d'ordine",
     patient: 'Paziente',
     payments: 'Pagamenti',
@@ -1003,8 +1003,8 @@ export default {
     appointment: {
       labels: {
         allDay: 'Tutto il giorno',
-        appointmentData: 'Data',
-        appointmentTipo: 'Tipo',
+        appointmentDate: 'Data',
+        appointmentType: 'Tipo',
         endDate: 'Data di fine',
         location: 'Luogo',
         notes: 'Gli appunti',
@@ -1239,8 +1239,8 @@ export default {
       parent: 'Genitore / tutore',
       patientDays: 'Giorni di paziente',
       patientType: 'Tipo di paziente',
-      patientTypeCarità: 'Carità',
-      patientTypePrivato: 'Privato',
+      patientTypeCharity: 'Carità',
+      patientTypePrivate: 'Privato',
       phone: 'Telefono',
       placeOfBirth: 'Luogo di nascita',
       primaryDiagnosis: 'Diagnosi primaria',
@@ -1444,10 +1444,10 @@ export default {
       reasonForVisit: 'Ragione per visitare',
       reportType: 'Tipo di report',
       status: 'Visita dello stato',
-      statusAmmesso: 'Ammesso',
+      statusAdmitted: 'Ammesso',
       statusCheckedIn: 'Controllato',
       statusCheckedOut: 'Controllato',
-      statusLicenziato: 'Licenziato',
+      statusDischarged: 'Licenziato',
       visitDate: 'Data visita',
       visitInformation: 'Visita le informazioni',
       visitType: 'Tipo di visita'
