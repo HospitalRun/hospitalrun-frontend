@@ -292,7 +292,7 @@ export default {
       newSurgicalAppointment: 'Nuova nomina chirurgica',
       theaterSchedule: 'Pianificazione del teatro'
     },
-    todayTitle: "Appuntamenti di oggi"
+    todayTitle: 'Appuntamenti di oggi'
   },
   billing: {
     alerts: {
@@ -447,9 +447,9 @@ export default {
   },
   errors: {
     accepted: 'Deve essere accettato',
-    blank: "Non può essere vuoto",
-    confirmation: "Non corrisponde {{attribute}}",
-    empty: "Non può essere vuoto",
+    blank: 'Non può essere vuoto',
+    confirmation: 'Non corrisponde {{attribute}}',
+    empty: 'Non può essere vuoto',
     equalTo: 'Deve essere uguale a {{count}}',
     even: 'Deve essere uguale',
     exclusion: 'È riservato',
@@ -1142,7 +1142,7 @@ export default {
       scheduleSurgery: 'Pianifica la chirurgia',
       textReplacements: 'Shortcodes',
       theaterSchedule: 'Pianificazione del teatro',
-      "today'sAppointments": "Appuntamenti di oggi",
+      "today'sAppointments": 'Appuntamenti di oggi',
       userRoles: 'Ruoli utente',
       users: 'Utenti',
       workflow: 'Flusso di lavoro'
@@ -1314,7 +1314,7 @@ export default {
       proceduresSummary: 'Riepilogo delle procedure',
       savedPatient: 'Paziente salvato',
       socialWork: 'Spese',
-      todaysOutpatients: "Gli ambulatori odierni",
+      todaysOutpatients: 'Gli ambulatori odierni',
       totalPatientDays: 'Totale giorni del paziente',
       totalPatientDaysDetailed: 'Totale giorni del paziente (dettagliato)',
       visit: 'Visita'
@@ -1345,7 +1345,7 @@ export default {
     titles: {
       billingStatement: 'ESTRATTO CONTO',
       patientMember: 'Paziente-Stati',
-      patients: "DEL PAZIENTE",
+      patients: 'DEL PAZIENTE',
       relContact: 'Relazione / Contatto no.'
     }
   } },
