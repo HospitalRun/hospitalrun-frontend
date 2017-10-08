@@ -26,5 +26,11 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, Navigation, UserRoles
 
   afterModel() {
     this.controllerFor('navigation').set('allowSearch', false);
+  },
+
+  actions: {
+    createNewUser() {
+      return this.transitionTo('users.edit', 'new');
+    }
   }
 });

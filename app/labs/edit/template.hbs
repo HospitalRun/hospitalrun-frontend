@@ -42,7 +42,7 @@
     {{#if canComplete}}
       {{em-input property="result" label=(t 'labels.result') class="test-result-input"}}
     {{/if}}
-    {{em-text property="notes" label=(t 'labels.notes') rows=3 }}
+    {{expand-text property="notes" label=(t 'labels.notes') rows=3 }}
     {{custom-form-manager model=model formType="lab"}}
   {{/em-form}}
 {{/edit-panel}}

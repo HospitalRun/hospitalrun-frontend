@@ -1,5 +1,6 @@
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import AddNewPatient from 'hospitalrun/mixins/add-new-patient';
+import AllergyActions from 'hospitalrun/mixins/allergy-actions';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
 import DiagnosisActions from 'hospitalrun/mixins/diagnosis-actions';
 import Ember from 'ember';
@@ -17,8 +18,9 @@ const {
   set
 } = Ember;
 
-export default AbstractEditController.extend(AddNewPatient, ChargeActions, DiagnosisActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
+export default AbstractEditController.extend(AddNewPatient, AllergyActions, ChargeActions, DiagnosisActions, PatientSubmodule, PatientNotes, UserSession, VisitTypes, {
   visitsController: Ember.inject.controller('visits'),
+  filesystem: Ember.inject.service(),
   additionalButtons: computed('model.status', function() {
     let buttonProps = {
       buttonIcon: 'glyphicon glyphicon-log-out',
@@ -59,6 +61,11 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
     return this.currentUserCan('add_medication');
   }.property(),
 
+  canAddPhoto: function() {
+    let isFileSystemEnabled = this.get('isFileSystemEnabled');
+    return (this.currentUserCan('add_photo') && isFileSystemEnabled);
+  }.property(),
+
   canAddProcedure: function() {
     return this.currentUserCan('add_procedure');
   }.property(),
@@ -81,6 +88,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
   canDeleteMedication: function() {
     return this.currentUserCan('delete_medication');
+  }.property(),
+
+  canDeletePhoto: function() {
+    return this.currentUserCan('delete_photo');
   }.property(),
 
   canDeleteProcedure: function() {
@@ -120,6 +131,7 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   diagnosisList: Ember.computed.alias('visitsController.diagnosisList'),
   findPatientVisits: false,
   hideChargeHeader: true,
+  isFileSystemEnabled: Ember.computed.alias('filesystem.isFileSystemEnabled'),
   patientImaging: Ember.computed.alias('model.imaging'),
   patientLabs: Ember.computed.alias('model.labs'),
   patientMedications: Ember.computed.alias('model.medication'),
@@ -340,8 +352,19 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
   },
 
   actions: {
+    addAllergy(newAllergy) {
+      let patient = get(this, 'model.patient');
+      this.savePatientAllergy(patient, newAllergy);
+    },
+
     addDiagnosis(newDiagnosis) {
       this.addDiagnosisToModelAndPatient(newDiagnosis);
+    },
+
+    addPhoto(savedPhotoRecord) {
+      let photos = this.get('model.photos');
+      photos.addObject(savedPhotoRecord);
+      this.send('closeModal');
     },
 
     addVitals(newVitals) {
@@ -362,8 +385,29 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       this.checkoutPatient(VisitStatus.CHECKED_OUT);
     },
 
+    deleteAllergy(allergy) {
+      let patient = get(this, 'model.patient');
+      this.deletePatientAllergy(patient, allergy);
+    },
+
     deleteProcedure(procedure) {
       this.updateList('procedures', procedure, true);
+    },
+
+    deletePhoto(model) {
+      let photo = model.get('photoToDelete');
+      let photoId = photo.get('id');
+      let photos = this.get('model.photos');
+      let filePath = photo.get('fileName');
+      photos.removeObject(photo);
+      photo.destroyRecord().then(function() {
+        let fileSystem = this.get('filesystem');
+        let isFileSystemEnabled = this.get('isFileSystemEnabled');
+        if (isFileSystemEnabled) {
+          let pouchDbId = this.get('database').getPouchId(photoId, 'photo');
+          fileSystem.deleteFile(filePath, pouchDbId);
+        }
+      }.bind(this));
     },
 
     deleteVitals(vitals) {
@@ -407,6 +451,10 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
       }
     },
 
+    editPhoto(photo) {
+      this.send('openModal', 'patients.photo', photo);
+    },
+
     newPatientChanged(createNewPatient) {
       set(this, 'model.createNewPatient', createNewPatient);
       let model = this.get('model');
@@ -434,6 +482,16 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
         });
       }
       this.send('openModal', 'patients.notes', model);
+    },
+
+    showAddPhoto() {
+      let newPatientPhoto = this.get('store').createRecord('photo', {
+        patient: this.get('model.patient'),
+        visit: this.get('model'),
+        saveToDir: `${this.get('model.patient.id')}/photos/`
+      });
+      newPatientPhoto.set('editController', this);
+      this.send('openModal', 'patients.photo', newPatientPhoto);
     },
 
     newAppointment() {
@@ -474,6 +532,17 @@ export default AbstractEditController.extend(AddNewPatient, ChargeActions, Diagn
 
     showDeleteProcedure(procedure) {
       this.send('openModal', 'visits.procedures.delete', procedure);
+    },
+
+    showDeletePhoto(photo) {
+      this.send('openModal', 'dialog', Ember.Object.create({
+        confirmAction: 'deletePhoto',
+        title: this.get('i18n').t('patients.titles.deletePhoto'),
+        message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'photo' }),
+        photoToDelete: photo,
+        updateButtonAction: 'confirm',
+        updateButtonText: this.get('i18n').t('buttons.ok')
+      }));
     },
 
     showDeleteVitals(vitals) {

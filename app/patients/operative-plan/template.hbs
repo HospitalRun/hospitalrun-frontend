@@ -1,7 +1,7 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false }}
     {{patient-summary patient=model.patient disablePatientLink=true diagnosisContainer=model}}
-    {{em-text property="operationDescription" label=(t 'operativePlan.labels.operationDescription') class="operation-description"}}
+    {{expand-text property="operationDescription" label=(t 'operativePlan.labels.operationDescription') class="operation-description"}}
     {{operative-procedures model=model procedureList=procedureList}}
     <div class="row">
       {{select-or-typeahead className="col-sm-4" property="surgeon"
@@ -18,8 +18,8 @@
       }}
       {{em-input property="caseComplexity" label=(t 'operativePlan.labels.caseComplexity') class="col-sm-2 case-complexity"}}
     </div>
-    {{em-text property="admissionInstructions" label=(t 'operativePlan.labels.admissionInstructions') class="admission-instructions"}}
-    {{em-text property="additionalNotes" label=(t 'operativePlan.labels.additionalNotes') class="additional-notes"}}
+    {{expand-text property="admissionInstructions" label=(t 'operativePlan.labels.admissionInstructions') class="admission-instructions"}}
+    {{expand-text property="additionalNotes" label=(t 'operativePlan.labels.additionalNotes') class="additional-notes"}}
     {{upcoming-appointments patient=model.patient}}
     {{custom-form-manager model=model formType="operativePlan"}}
   {{/em-form}}

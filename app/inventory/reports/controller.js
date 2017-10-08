@@ -642,7 +642,7 @@ export default AbstractReportController.extend(LocationName, ModalHelper, Number
           let consumed = {};
           let gikConsumed = {};
           let adjustments = {};
-          this.adjustmentTypes.forEach(function(adjustmentType) {
+          this.get('adjustmentTypes').forEach(function(adjustmentType) {
             adjustments[adjustmentType.type] = [];
           });
           Object.keys(inventoryMap).forEach(function(key) {

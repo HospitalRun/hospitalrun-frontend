@@ -16,9 +16,9 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
 
   actions: {
     closeModal() {
-      this.disconnectOutlet({
-        parentView: 'application',
-        outlet: 'modal'
+      this.render('empty', {
+        outlet: 'modal',
+        into: 'application'
       });
     },
 
@@ -81,25 +81,35 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
   model(params, transition) {
     let session = get(this, 'session');
     let isAuthenticated = session && get(session, 'isAuthenticated');
-    return get(this, 'config').setup().then(function(configs) {
+    let config = get(this, 'config');
+    let database = get(this, 'database');
+
+    return config.setup().then(() => {
+      let standAlone = config.get('standAlone');
       if (transition.targetName !== 'finishgauth' && transition.targetName !== 'login') {
         set(this, 'shouldSetupUserRole', true);
-        if (isAuthenticated) {
-          return get(this, 'database').setup(configs)
+        if (isAuthenticated || standAlone) {
+          return database.setup()
             .catch(() => {
               // Error thrown indicates missing auth, so invalidate session.
               session.invalidate();
             });
         }
+      } else if (transition.targetName === 'login' && standAlone) {
+        return database.createUsersDB();
       } else if (transition.targetName === 'finishgauth') {
         set(this, 'shouldSetupUserRole', false);
       }
-    }.bind(this));
+    });
   },
 
   afterModel() {
     set(this.controllerFor('navigation'), 'allowSearch', false);
     $('#apploading').remove();
+    this.get('config.configDB').get('current_user').then((user) => {
+      let language = user.i18n || 'en';
+      this.set('i18n.locale', language);
+    });
   },
 
   renderModal(template) {

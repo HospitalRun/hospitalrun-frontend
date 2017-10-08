@@ -21,7 +21,7 @@
         </div>
       {{/if}}
       {{#if (eq field.type 'textarea')}}
-        {{em-text label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
+        {{expand-text label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
       {{/if}}
       {{#if (eq field.type 'text')}}
         {{em-input label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
@@ -35,6 +35,15 @@
           optionValuePath="label"
           optionLabelPath="label"
         }}
+      {{/if}}
+      {{#if (eq field.type 'header')}}
+        <div class="form-group {{field.displayClassNames}}">
+          <label>{{field.label}}</label>
+          {{#each field.values as |split|}}
+            <br>
+            <label>{{split.label}}</label>
+          {{/each}}
+        </div>
       {{/if}}
     {{/each}}
   </div>

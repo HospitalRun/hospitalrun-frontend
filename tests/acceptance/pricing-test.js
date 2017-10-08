@@ -192,3 +192,58 @@ test('delete pricing profile', function(assert) {
     });
   });
 });
+
+test('Searching pricing', function(assert) {
+  runWithPouchDump('billing', function() {
+    authenticateUser();
+    visit('/pricing');
+
+    fillIn('[role="search"] div input', 'Xray Hand');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/pricing/search/Xray%20Hand', 'Searched for Name: Xray Hand');
+      assert.equal(find('button:contains(Delete)').length, 3, 'There are 3 search items');
+    });
+
+    fillIn('[role="search"] div input', 'Blood');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/pricing/search/Blood', 'Searched for Name: Blood');
+      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+    });
+
+    fillIn('[role="search"] div input', 'Leg');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/pricing/search/Leg', 'Searched for Name: Leg');
+      assert.equal(find('button:contains(Delete)').length, 2, 'There are 2 search items');
+    });
+
+    fillIn('[role="search"] div input', 'Gauze');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/pricing/search/Gauze', 'Searched for Name: Gauze');
+      assert.equal(find('button:contains(Delete)').length, 2, 'There are 2 search items');
+    });
+
+    fillIn('[role="search"] div input', 'xray');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/pricing/search/xray', 'Searched for all lower case xray');
+      assert.equal(find('button:contains(Delete)').length, 3, 'There is one search item');
+    });
+
+    fillIn('[role="search"] div input', 'ItemNotFound');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/pricing/search/ItemNotFound', 'Searched for ItemNotFound');
+      assert.equal(find('.clickable').length, 0, 'There is no search result');
+    });
+  });
+});

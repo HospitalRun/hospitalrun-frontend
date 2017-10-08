@@ -88,7 +88,7 @@
                 selection=model.examiner
               }}
             </div>
-            {{em-text property="reasonForVisit" label=(t 'visits.labels.reasonForVisit') rows=3 }}
+            {{expand-text property="reasonForVisit" label=(t 'visits.labels.reasonForVisit') rows=3 }}
             {{#if canAddBillingDiagnosis}}
               <div class="row">
                 {{select-or-typeahead className="col-sm-5" property="primaryBillingDiagnosis"
@@ -117,6 +117,11 @@
         <li role="presentation">
           <a href="#visit-notes" role="tab" data-toggle="pill" data-test-selector="notes-tab">
             {{t 'visits.navigation.notes'}}
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#visit-photos" role="tab" data-toggle="pill" data-test-selector="photos-tab">
+            {{t 'patients.navigation.photos'}}
           </a>
         </li>
         <li role="presentation">
@@ -172,6 +177,41 @@
             </div>
           </div>
         </div>
+        <div role="tabpanel" class="tab-pane" id="visit-photos">
+          <div class="panel">
+            {{#if canAddPhoto}}
+              <div class="panel-heading">
+                <button type="button" class="btn btn-primary align-right" {{action "showAddPhoto" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span>{{t 'patients.buttons.newPhoto'}}
+                </button>
+              </div>
+            {{/if}}
+            <div class="panel-body detail-section-content">
+              <div class="row">
+                {{#each model.photos as |photo|}}
+                  <div class="col-sm-4 col-md-3">
+                    <div {{action "editPhoto" photo}} class="thumbnail">
+                      {{photo-display photo=photo }}
+                      <div class="caption">
+                        {{photo.caption}}
+                        <p>
+                          {{#if canAddPhoto}}
+                            <button type="button" class="btn btn-default neutral" {{action "editPhoto" photo}}>{{t 'labels.edit'}}</button>
+                          {{/if}}
+                          {{#if canDeletePhoto}}
+                            <button type="button" class="btn btn-default warning" {{action "showDeletePhoto" photo bubbles=false }}>
+                              <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
+                            </button>
+                          {{/if}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+        </div>
         <div role="tabpanel" class="tab-pane" id="visit-procedures">
           <div class="panel detail-section">
             <div class="panel-body">
@@ -214,6 +254,7 @@
             <div class="panel-body">
               <table class="table">
                 <tr class="table-header">
+                  <th>{{t "labels.takenBy"}}</th>
                   <th>{{t "labels.date"}}</th>
                   <th>{{t "vitals.labels.temperature"}}</th>
                   <th>{{t "vitals.labels.weight"}}</th>
@@ -226,6 +267,7 @@
                 </tr>
                 {{#each model.vitals as |vital|}}
                   <tr>
+                    <td>{{vital.modifiedBy}}</td>
                     <td>{{date-format vital.dateRecorded format="l h:mm A"}}</td>
                     <td>{{vital.temperature}}</td>
                     <td>{{vital.weight}}</td>

@@ -14,12 +14,15 @@ export default AbstractEditController.extend({
   actions: {
     addValue() {
       let fieldValues = this.get('model.values');
+      let fieldType = this.get('model.type');
       if (isEmpty(fieldValues)) {
         let model = this.get('model');
         fieldValues = [];
         model.set('values', fieldValues);
       }
-      fieldValues.addObject(Ember.Object.create());
+      if (fieldType === 'header' && fieldValues.length < 1 || fieldType != 'header') {
+        fieldValues.addObject(Ember.Object.create());
+      }
     },
 
     deleteValue(valueToDelete) {
@@ -38,6 +41,7 @@ export default AbstractEditController.extend({
   },
 
   fieldTypeValues: [
+    'header',
     'checkbox',
     'radio',
     'select',
@@ -60,7 +64,7 @@ export default AbstractEditController.extend({
 
   showValues: computed('model.type', function() {
     let type = this.get('model.type');
-    return (type === 'checkbox' || type === 'radio' || type === 'select');
+    return (type === 'checkbox' || type === 'radio' || type === 'select' || type === 'header');
   })
 
 });

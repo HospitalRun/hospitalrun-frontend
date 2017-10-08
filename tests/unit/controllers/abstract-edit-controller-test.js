@@ -121,10 +121,11 @@ test('actions.update exception message', function(assert) {
   controller.displayAlert = function stub(title, message) {
     alertTitle = title.toString();
     alertMessage = message.toString();
+    assert.equal(alertTitle, 'Error!!!!');
+    assert.equal(alertMessage, 'An error occurred while attempting to save: Test');
   };
 
-  controller.send('update');
-
-  assert.equal(alertTitle, 'Error!!!!');
-  assert.equal(alertMessage, 'An error occurred while attempting to save: Test');
+  Ember.run(() => {
+    controller.send('update');
+  });
 });
