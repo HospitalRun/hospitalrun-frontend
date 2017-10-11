@@ -48,7 +48,7 @@
     "electron-rebuild": "^1.5.7",
     "ember-ajax": "^3.0.0",
     "ember-browserify": "^1.1.12",
-    "ember-cli": "2.10.0",
+    "ember-cli": "2.16.2",
     "ember-cli-active-link-wrapper": "0.3.2",
     "ember-cli-app-version": "^3.0.0",
     "ember-cli-babel": "^5.1.7",
