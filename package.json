@@ -77,6 +77,7 @@
     "ember-i18n": "4.4.0",
     "ember-keyboard": "2.1.10",
     "ember-inspector": "^2.0.4",
+    "ember-keyboard": "2.2.0",
     "ember-load-initializers": "^0.6.0",
     "ember-pouch": "4.2.4",
     "ember-radio-buttons": "^4.0.1",
