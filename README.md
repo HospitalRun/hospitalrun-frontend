@@ -37,6 +37,7 @@ To install the frontend please do the following:
    Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install ember-cli.
 4. Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`.
 5. Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and run `script/bootstrap`.
+  - **Note:** *If installing packages globally via `npm` requires root access on your machine (see `ember-cli` installation), running `script/bootstrap` will also require root access. The contained `bower install` step will fail when running as root. A fix for this is to edit `script/bootstrap` and add the `--allow-root` option to the command: `bower install --allow-root`.*
   - **Note:** *If you are using Windows with `cygwin` please run the script in the following way to remove trailing `\r` characters:*
   ``` bash
   bash -o igncr script/bootstrap
