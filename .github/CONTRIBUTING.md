@@ -8,7 +8,11 @@ Project communication occurs primarily and intentionally via our project [Slack]
 
 However, before you ask in Slack "what can I contribute to", be sure to keep reading this document for the answer to your question. :-)
 
-Also, please avoid use of the `@here` command in Slack, as you will be sending a notification to nearly 600 people. Just post your question and someone will respond soon.
+Also, please avoid use of the `@everyone` and `@channel` commands in Slack, as you will be sending a notification to nearly 600 people. Just post your question and someone will respond soon.
+
+While `@here` is discouraged as it notifies everyone who is active on Slack, if you have an announcement that the channel needs to hear urgently, use can be justified.
+
+Generally, just posting your question will allow you to recieve a timely answer.
 
 ## Help Wanted
 
@@ -175,7 +179,7 @@ If you know a language other than English and would like to help translate this 
 After this step, you may see some file changes due to mismatches in translations of different languages. This script will take the English translation as the standard and populate the missing translations in other languages with empty string.
 
 ### Edit the translation file of your language
-The translation files are in app/locales/<language>/translations.json
+The translation files are in `app/locales/<language>/translations.json`
 
 Open the translation file of your language then search for the string ```''```. Afterwards you fill in the quotation with the translated terms and save the file.
 
