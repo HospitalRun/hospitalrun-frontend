@@ -6,62 +6,65 @@ export default {
       address2Label: 'Adresse 2 Kennzeichen',
       address3Label: 'Adresse 3 Kennzeichen',
       address4Label: 'Adresse 4 Kennzeichen',
-      addressLabel: '',
-      editTitle: '',
+      addressLabel: 'Adresse',
+      editTitle: 'Adressoptionen',
       include1Label: 'Einbezug 1 Kennzeichen',
       include2Label: 'Einbezug 2 Kennzeichen',
       include3Label: 'Einbezug 3 Kennzeichen',
       include4Label: 'Einbezug 4 Kennzeichen',
       messages: { addressSaved: 'Die Adressoptionen wurden gespeichert' },
-      newTitle: '',
+      newTitle: 'Adressoptionen',
       titles: { optionsSaved: 'Optionen gespeichert' }
     },
     addressOptions: 'Adressoptionen',
     customForms: {
       buttons: {
-        addField: '',
-        moveDown: '',
-        moveUp: '',
-        newForm: '',
-        preview: ''
+        addField: 'Feld hinzufügen',
+        moveDown: 'Nach unten verschieben',
+        moveUp: 'Nach oben verschieben',
+        newForm: '+ neues Formular',
+        preview: 'Vorschau'
       },
       labels: {
-        alwaysInclude: '',
-        checkbox: '',
+        alwaysInclude: 'Immer einbeziehen',
+        checkbox: 'Checkbox',
         colSpan: '',
-        columns: '',
-        customForm: '',
-        dischargeReportFormType: '',
-        formName: '',
-        formType: '',
-        incidentFormType: '',
-        includeOtherOption: '',
-        labFormType: '',
-        label: '',
-        newForm: '',
-        opdReportFormType: '',
-        operativePlanFormType: '',
-        otherOptionLabel: '',
-        patientFormType: '',
-        property: '',
-        radio: '',
-        select: '',
-        socialworkFormType: '',
-        text: '',
-        textarea: '',
-        visitFormType: ''
+        columns: 'Spalten',
+        customForm: 'Benutzerdefiniertes Formular',
+        dischargeReportFormType: 'Entlassungsbericht',
+        expenseTo: 'Kosten an',
+        formName: 'Formularname',
+        formType: 'Formulartyp',
+        header: 'Kopf',
+        incidentFormType: 'Vorfall',
+        includeOtherOption: 'Andere Optionen einbeziehen',
+        labFormType: 'Labor',
+        label: 'Beschriftung',
+        newForm: 'Neues Formular',
+        opdReportFormType: 'Ambulanter Bericht',
+        operativePlanFormType: 'Operativer Plan und Bericht',
+        otherOptionLabel: 'Andere Option Beschriftung',
+        patientFormType: 'Patient',
+        property: 'Eigenschaft',
+        radio: 'Option',
+        select: 'Auswahl',
+        socialworkFormType: 'Sozialarbeit',
+        text: 'Text',
+        textarea: 'Langer Text',
+        visitFormType: 'Besuch'
       },
-      messages: { formSaved: '' },
+      messages: { formSaved: 'Das {{name}} Formular wurde gespeichert.' },
       titles: {
-        checkboxValues: '',
-        customForms: '',
-        deleteForm: '',
-        dropDownValues: '',
-        editCustomForm: '',
-        fields: '',
-        formSaved: '',
-        newCustomForm: '',
-        radioValues: ''
+        checkboxValues: 'Checkboxwerte',
+        customForms: 'Benutzerdefinierte Formulare',
+        deleteForm: 'Benutzerdefiniertes Formular löschen',
+        dropDownValues: 'Auswahlboxwerte',
+        editCustomForm: 'Benutzerdefiniertes Formular bearbeiten',
+        fields: 'Felder',
+        formSaved: 'Formular gespeichert',
+        headerValues: 'Kopfzeilenwerte',
+        newCustomForm: 'Neues benutzerdefiniertes Formular',
+        radioValues: 'Optionsfeldwerte'
       }
     },
     header: {
@@ -74,26 +77,26 @@ export default {
       logoURL: '',
       messages: { headerSaved: '' },
       newTitle: '',
-      titles: { optionsSaved: '' }
+      titles: { optionsSaved: 'Optionen gespeichert' }
     },
     loadDb: 'Datenbank laden',
     loaddb: {
-      displayAlertMessage: '',
-      displayAlertTitle: '',
-      editTitle: '',
-      errorDisplayAlertMessage: '',
-      errorDisplayAlertTitle: '',
-      progressMessage: '',
-      progressTitle: ''
+      displayAlertMessage: 'Bitte wählen Sie eine Datei zum Laden aus.',
+      displayAlertTitle: 'Datei zum Laden auswählen',
+      editTitle: 'Datenbank laden',
+      errorDisplayAlertMessage: 'Die Datenbank konnte nicht importiert werden. Der Fehler war: {{error}}',
+      errorDisplayAlertTitle: 'Fehler beim Laden',
+      progressMessage: 'Bitte warten Sie, bis die Datenbank geladen ist.',
+      progressTitle: 'Datenbank laden'
     },
     lookup: {
       aisleLocationList: 'Gänge-Verzeichnis',
-      alertImportListMessage: '',
-      alertImportListSaveMessage: '',
-      alertImportListSaveTitle: '',
-      alertImportListTitle: '',
-      alertImportListUpdateMessage: '',
-      alertImportListUpdateTitle: '',
+      alertImportListMessage: 'Bitte wählen Sie eine Datei zum Importieren.',
+      alertImportListSaveMessage: 'Die Nachschlageliste wurde importiert.',
+      alertImportListSaveTitle: 'Liste importiert',
+      alertImportListTitle: 'Datei zum Import auswählen',
+      alertImportListUpdateMessage: 'Die Nachschlageliste wurde gespeichert.',
+      alertImportListUpdateTitle: 'Liste gespeichert',
       anesthesiaTypes: 'Anästhesiearten',
       anesthesiologists: 'Anästhesiologe',
       billingCategories: 'Abrechnungskategorien',
@@ -102,25 +105,25 @@ export default {
       cptCodeList: 'CPT Codes',
       diagnosisList: 'Diagnosen',
       edit: { template: {
-        addTitle: '',
-        editTitle: '',
-        labelTitle: '',
-        updateButtonTextAdd: '',
-        updateButtonTextUpdate: ''
+        addTitle: 'Wert hinzufügen',
+        editTitle: 'Wert bearbeiten',
+        labelTitle: 'Wert',
+        updateButtonTextAdd: 'Hinzufügen',
+        updateButtonTextUpdate: 'Aktualisieren'
       } },
       expenseAccountList: 'Ausgabekonten',
       imagingPricingTypes: 'Bildgebungs-Preiskategorien',
-      incidentDepartments: '',
+      incidentDepartments: 'Vorfallsabteilungen',
       inventoryTypes: 'Inventartypen',
       labPricingTypes: 'Labor-Preiskategorien',
-      pageTitle: '',
+      pageTitle: 'Nachschlageliste',
       patientStatusList: 'Patientenstatus',
       physicianList: 'Ärzte',
       procedureList: 'Abläufe',
       procedureLocations: 'Ablaufs-Orte',
       procedurePricingTypes: 'Ablaufs-Preiskategorien',
       radiologists: 'Radiologen',
-      titles: { deleteLookupValue: '' },
+      titles: { deleteLookupValue: 'Wert löschen' },
       unitTypes: 'Einheiten',
       vendorList: 'Anbieter',
       visitLocationList: 'Einsatzorte',
@@ -131,11 +134,11 @@ export default {
     lookupLists: 'Nachschlagelisten',
     roles: {
       capability: {
-        addAllergy: '',
-        addAppointment: '',
+        addAllergy: 'Allergie hinzufügen',
+        addAppointment: 'Termin hinzufügen',
         addBillingDiagnosis: '',
         addCharge: '',
-        addDiagnosis: '',
+        addDiagnosis: 'Diagnose hinzufügen',
         addImaging: '',
         addIncident: '',
         addIncidentCategory: '',
@@ -145,28 +148,29 @@ export default {
         addInvoice: '',
         addLab: '',
         addMedication: '',
-        addNote: '',
+        addNote: 'Notiz hinzufügen',
         addOperationReport: '',
         addOperativePlan: '',
-        addPatient: '',
-        addPayment: '',
-        addPhoto: '',
+        addPatient: 'Patient hinzufügen',
+        addPayment: 'Bezahlung hinzufügen',
+        addPhoto: 'Foto hinzufügen',
         addPricing: '',
         addPricingProfile: '',
         addProcedure: '',
         addSocialwork: '',
-        addVisit: '',
+        addVisit: 'Besuch hinzufügen',
         addVitals: '',
         adjustInventoryLocation: '',
-        admin: '',
+        admin: 'Administration',
         admitPatient: '',
         appointments: '',
         billing: '',
+        cashier: '',
         completeImaging: '',
         completeLab: '',
-        defineUserRoles: '',
+        defineUserRoles: 'Nutzerrollen definieren',
         deleteAppointment: '',
-        deleteDiagnosis: '',
+        deleteDiagnosis: 'Diagnose löschen',
         deleteImaging: '',
         deleteIncident: '',
         deleteIncidentCategory: '',
@@ -174,14 +178,14 @@ export default {
         deleteInvoice: '',
         deleteLab: '',
         deleteMedication: '',
-        deleteNote: '',
-        deletePatient: '',
-        deletePhoto: '',
+        deleteNote: 'Notiz löschen',
+        deletePatient: 'Patient löschen',
+        deletePhoto: 'Foto löschen',
         deletePricing: '',
         deletePricingProfile: '',
         deleteProcedure: '',
         deleteSocialwork: '',
-        deleteVisit: '',
+        deleteVisit: 'Besuch löschen',
         deleteVitals: '',
         dischargePatient: '',
         editInvoice: '',
@@ -193,20 +197,32 @@ export default {
         inventory: '',
         invoices: '',
         labs: '',
-        loadDb: '',
+        listPaidInvoices: "",
+        loadDb: 'Datenbank laden',
         manageIncidents: '',
         medication: '',
         overrideInvoice: '',
         patientReports: '',
-        patients: '',
+        patients: 'Patienten',
         pricing: '',
         updateConfig: '',
         visits: ''
       },
-      messages: { roleSaved: '' },
-      titles: { roleSaved: '' }
+      messages: { roleSaved: 'Die {{roleName}} Rolle wurde gespeichert.' },
+      titles: { roleSaved: 'Rolle gespeichert' }
     },
-    userRoles: '',
+    textReplacements: {
+      createNew: '',
+      existingRepl: '',
+      replDesc: '',
+      pageTitle: '',
+      toReplace: '',
+      replaceWith: '',
+      performExpand: "",
+      possibleExpansions: '',
+      noMatches: ""
+    },
+    userRoles: 'Nutzerrollen',
     users: 'Benutzer',
     visitForms: {
       labels: {
@@ -232,25 +248,25 @@ export default {
     }
   },
   alerts: {
-    errorExclamation: '',
-    pleaseWait: '',
+    errorExclamation: 'Fehler!!!!',
+    pleaseWait: 'Bitte warten',
     reportError: '',
-    warningExclamation: ''
+    warningExclamation: 'Warnung!!!!'
   },
   allergies: {
-    buttons: { addAllergy: '' },
+    buttons: { addAllergy: 'Allergie hinzufügen' },
     labels: {
-      allergyName: '',
+      allergyName: 'Name',
       patientAllergy: ''
     },
     titles: {
-      addAllergy: '',
-      editAllergy: ''
+      addAllergy: 'Allergie hinzufügen',
+      editAllergy: 'Allergie bearbeiten'
     }
   },
   application: {
-    messages: { sessionExpired: '' },
-    titles: { sessionExpired: '' }
+    messages: { sessionExpired: 'Ihre Session ist abgelaufen. Bitte loggen Sie sich erneut ein.' },
+    titles: { sessionExpired: 'Session abgelaufen' }
   },
   appointments: {
     buttons: {
@@ -301,51 +317,58 @@ export default {
       paymentProfile: '',
       paymentsDeposits: '',
       pricingPanelOverrides: '',
-      pricingProfile: ''
+      pricingProfile: '',
+      setFee: ''
+    },
+    messages: {
+      flatFeeMsg: '',
+      flatDiscountMsg: ''
     }
   },
   buttons: {
     add: 'Hinzufügen',
-    addItem: '',
+    addItem: 'Element hinzufügen',
     addLineItem: '',
     addValue: 'Wert hinzufügen',
-    addVisit: '',
-    allRequests: '',
-    barcode: '',
+    addVisit: 'Besuch hinzufügen',
+    allRequests: 'Alle Anfragen',
+    barcode: 'Barcode',
     cancel: 'Abbrechen',
     clear: '',
-    close: '',
+    close: 'Schließen',
     complete: 'Abschließen',
     'delete': 'Entfernen',
     dispense: '',
-    edit: '',
-    filter: '',
+    edit: 'Bearbeiten',
+    filter: 'Filtern',
     fulfill: '',
     'import': 'Importieren',
     loadFile: 'Datei laden',
-    newItem: '',
-    newNote: '',
+    newItem: '+ neues Element',
+    newNote: 'Neue Notiz',
     newRequest: '',
     newRequestPlus: '',
     newUser: 'Neuer Benutzer',
     ok: 'Okay',
-    remove: '',
+    print: 'Drucken',
+    remove: 'Entfernen',
     returnButton: 'Zurück',
-    search: '',
-    showAll: '',
-    showFewer: '',
+    review: '',
+    search: 'Suchen',
+    showAll: 'Alle Anzeigen',
+    showFewer: 'Weniger Anzeigen',
     update: 'Aktualisieren'
   },
   components: {
     chargesByTypeTab: { charges: '' },
     customFormManager: { buttons: { addForm: '' } },
     dateTimePicker: {
-      amHour: '',
-      midnight: '',
+      amHour: '{{hour}} AM',
+      midnight: 'Mitternacht',
       noon: '',
-      pmHour: ''
+      pmHour: '{{hour}} PM'
     },
-    imageUpload: { messages: { selectValidImageFile: '' } },
+    imageUpload: { messages: { selectValidImageFile: 'Bitte wählen Sie eine Bilddatei aus.' } },
     operativeProcedures: {
       buttons: { addProcedure: '' },
       labels: { procedure: '' },
@@ -368,26 +391,26 @@ export default {
     quantityCalc: { result: '' },
     quantityConv: {
       conversion: '',
-      unit: ''
+      unit: 'Einheit'
     },
-    sortableColumn: { labels: { selectAll: '' } },
+    sortableColumn: { labels: { selectAll: '(Alle Auswählen)' } },
     takePhoto: {
-      camera: '',
-      how: '',
+      camera: 'Kamera',
+      how: 'Wie wollen Sie das Foto hinzufügen?',
       labels: {
-        takeAPicture: '',
-        uploadAFile: ''
+        takeAPicture: 'Foto machen',
+        uploadAFile: 'Foto hochladen'
       },
-      photo: '',
-      preview: '',
-      takePhoto: '',
-      uploadFile: ''
+      photo: 'Foto',
+      preview: 'Vorschau',
+      takePhoto: 'Foto machen',
+      uploadFile: 'Datei hochladen'
     },
     upcomingAppointments: {
       labels: {
-        date: '',
-        location: '',
-        type: '',
+        date: 'Datum',
+        location: 'Ort',
+        type: 'Typ',
         'with': ''
       },
       titles: { upcomingAppointments: '' }
@@ -399,55 +422,56 @@ export default {
     titles: { addCustomForm: '' }
   },
   dashboard: {
-    setup: '',
-    title: 'Was möchten Sie tun?'
+    needs_user_setup: 'Wir empfehlen Ihnen einen Nutzeraccount einzurichten.',
+    standalone_welcome: '<h4>Vielen Dank, dass Sie HospitalRun heruntergeladen haben</h4><p>HospitalRun läuft im Standalone Modus. Dieser Modus erlaubt es Ihnen mehrere Nutzer auf einer einzelnen Desktop/Laptop Instanz von HospitalRun anzulegen. Dies ist ideal, um:</p><ul><li>HospitalRun zu evaluieren</li><li>die Platform in einer Klinik oder Einrichtung zu nutzen, in der eine einzelne Instanz ausreichend ist.</li></ul><p>Sollten Sie überlegen HospitalRun auf einem Server einzurichten, wir <a href="https://github.com/HospitalRun/hospitalrun-frontend/issues/1048" target="_blank">arbeiten an Features</a>, die Ihnen den Umstieg ermöglichen.</p>',
+    title: 'Willkommen bei HospitalRun!'
   },
   dates: {
-    'long': '',
-    longOmitDays: '',
-    longOmitDaysPlural: '',
-    longOmitDaysYears: '',
-    longOmitYears: '',
-    longPlural: '',
-    'short': '',
-    shortOmitYears: ''
+    'long': '{{years}} Jahr {{months}} Monate {{days}} Tage',
+    longOmitDays: '{{years}} Jahr {{months}} Monate',
+    longOmitDaysPlural: '{{years}} Jahre {{months}} Monate',
+    longOmitDaysYears: '{{months}} Monate',
+    longOmitYears: '{{months}} Monate {{days}} Tage',
+    longPlural: '{{years}} Jahre {{months}} Monate {{days}} Tage',
+    'short': '{{years}}a {{months}}m {{days}}d',
+    shortOmitYears: '{{months}}m {{days}}d'
   },
   diagnosis: {
     labels: {
       activeDiagnosis: '',
-      date: '',
-      diagnosis: '',
+      date: 'Datum',
+      diagnosis: 'Diagnose',
       secondaryDiagnosis: ''
     },
     titles: {
-      addDiagnosis: '',
-      editDiagnosis: ''
+      addDiagnosis: 'Diagnose hinzufügen',
+      editDiagnosis: 'Diagnose bearbeiten'
     }
   },
   errors: {
-    accepted: '',
-    blank: '',
-    confirmation: '',
-    empty: '',
-    equalTo: '',
-    even: '',
-    exclusion: '',
-    greaterThan: '',
-    greaterThanOrEqualTo: '',
-    inclusion: '',
-    invalid: '',
-    invalidNumber: '',
-    lessThan: '',
-    lessThanOrEqualTo: '',
-    notANumber: '',
-    notAnInteger: '',
-    odd: '',
-    otherThan: '',
-    present: '',
-    result: '',
-    tooLong: '',
-    tooShort: '',
-    wrongLength: ''
+    accepted: 'muss akzeptiert werden',
+    blank: 'darf nicht leer sein',
+    confirmation: 'stimmt nicht mit {{attribute}} überein',
+    empty: 'darf nicht leer sein',
+    equalTo: 'muss gleich {{count}} sein',
+    even: 'muss gerade sein',
+    exclusion: 'ist reserviert',
+    greaterThan: 'muss größer als {{count}} sein',
+    greaterThanOrEqualTo: 'muss größer oder gleich {{count}} sein',
+    inclusion: 'ist nicht in der Liste enthalten',
+    invalid: 'ist ungültig',
+    invalidNumber: 'keine gültige Nummer',
+    lessThan: 'muss weniger als {{count}} sein',
+    lessThanOrEqualTo: 'muss weniger oder gleich {{count}} sein',
+    notANumber: 'ist keine Nummer',
+    notAnInteger: 'muss eine Zahl sein',
+    odd: 'muss ungerade sein',
+    otherThan: 'muss anders als {{count}} sein',
+    present: 'muss leer sein',
+    result: 'Bitte geben Sie ein Ergebnis ein',
+    tooLong: 'ist zu lang (Maximum ist {{count}} Zeichen)',
+    tooShort: 'ist zu kurz (Minimum ist {{count}} Zeichen)',
+    wrongLength: 'hat eine falsche Länge (Länge muss {{count}} Zeichen sein)'
   },
   headings: { chargedItems: '' },
   imaging: {
@@ -755,31 +779,33 @@ export default {
     action: 'Aktion',
     actions: 'Aktionen',
     addNewOutpatientVisit: '',
-    address: '',
+    address: 'Adresse',
     age: 'Alter',
-    allDay: '',
-    amount: '',
-    anesthesia: '',
+    allDay: 'Ganzer Tag',
+    allItems: 'Alle Elemente',
+    amount: 'Anzahl',
+    anesthesia: 'Anästhesie',
     assisting: '',
     balanceDue: '',
     billDate: '',
     billTo: '',
-    category: '',
+    category: 'Kategorie',
     completed: 'Erledigt',
-    country: '',
-    cptcode: '',
+    country: 'Land',
+    cptcode: 'CPT Code',
     creditTo: '',
-    date: '',
+    currencySymbol: '€',
+    date: 'Datum',
     dateCompleted: 'Abschlussdatum',
-    dateOfBirth: '',
-    dateOfBirthShort: '',
+    dateOfBirth: 'Geburtsdatum',
+    dateOfBirthShort: 'Geb.',
     datePaid: '',
     dateRequested: 'Anfragedatum',
     'delete': 'Entfernen',
-    deleteRequest: '',
+    deleteRequest: 'Löschanfrage',
     deleteUser: 'Benutzer löschen',
     department: '',
-    description: '',
+    description: 'Beschreibung',
     discount: '',
     displayName: 'Angezeigter Name',
     docRead: 'Dokument gelesen',
@@ -787,13 +813,14 @@ export default {
     edit: 'Bearbeiten',
     editUser: 'Benutzer bearbeiten',
     email: 'E-Mail',
-    endDate: '',
+    endDate: 'Enddatum',
     endTime: 'Endzeit',
     excess: '',
     expenseTo: '',
     fileLoadSuccessful: 'Datei erfolgreich geladen',
-    fileName: '',
+    fileName: 'Dateiname',
     fileToLoad: 'Datei laden',
+    from: 'Von',
     fulfill: 'Ausführen',
     fulfillRequest: '',
     fulfillRequestNow: '',
@@ -806,15 +833,16 @@ export default {
     invoiceId: '',
     labOrders: '',
     lineItems: '',
-    loading: '',
+    loading: 'Lade',
     location: '',
     lookupType: 'Nachschlagebereich',
     medication: '',
     name: 'Name',
     newUser: 'Neuer Benutzer',
-    note: '',
+    newItem: '+ neues Element',
+    note: 'Notiz',
     notes: 'Notizen',
-    number: '',
+    number: 'Nummer',
     on: '',
     password: 'Passwort',
     patient: 'Patient',
@@ -823,8 +851,8 @@ export default {
     prescriber: '',
     prescription: '',
     prescriptionDate: '',
-    price: '',
-    print: '',
+    price: 'Preis',
+    print: 'Druck',
     procedures: '',
     provider: '',
     pullFrom: '',
@@ -836,20 +864,21 @@ export default {
     result: 'Ergebnis',
     results: 'Ergebnisse',
     role: 'Rolle',
-    search: '',
+    search: 'Suche',
     sex: 'Geschlecht',
-    startDate: '',
+    startDate: 'Startdatum',
     startTime: 'Startzeit',
-    status: '',
+    status: 'Status',
     takenBy: '',
+    to: 'An',
     total: '',
-    type: '',
+    type: 'Typ',
     userCanAddNewValue: 'Benutzer kann neue Werte hinzufügen',
-    username: 'Username',
+    username: 'Nuzername',
     value: 'Wert',
-    view: '',
+    view: 'Ansicht',
     visit: 'Besuch',
-    'with': ''
+    'with': 'Mit'
   },
   labs: {
     alerts: {
@@ -875,6 +904,17 @@ export default {
     requestsTitle: '',
     sectionTitle: ''
   },
+  languages: {
+    en: 'Englisch',
+    fr: 'Französisch',
+    es: 'Spanisch',
+    de: 'Deutsch',
+    ru: 'Russisch',
+    'es-co': 'Spanisch (Kolumbianisch)',
+    'pt-br': 'Portugiesisch (Brasilianer)',
+    tr: 'Türkisch',
+    ur: 'Urdu'
+  },
   loading: {
     messages: {
       '0': '',
@@ -890,7 +930,7 @@ export default {
       '10': '',
       '11': ''
     },
-    progressBar: { progress: '' }
+    progressBar: { progress: '{{progressBarValue}}% vollständig' }
   },
   login: {
     labels: {
@@ -900,6 +940,7 @@ export default {
     },
     messages: {
       error: 'Benutzername oder Passwort falsch.',
+      offlineError: 'Einloggen ist offline nicht möglich. Bitte stellen Sie eine Netzwerkverbindung her und versuchen Sie es erneut.',
       signIn: 'Bitte anmelden'
     }
   },
@@ -941,12 +982,12 @@ export default {
   messages: {
     createNewRecord: 'Neuen Eintrag erstellen?',
     createNewUser: 'Neuen Benutzer hinzufügen?',
-    'delete': '',
+    'delete': 'Sind Sie sicher, dass Sie {{name}} löschen möchten?',
     delete_plural: '',
     delete_singular: '',
     forAuthorizedPersons: 'Dieser Bericht ist nur für autorisierte Personen.',
-    newPatientHasToBeCreated: '',
-    noHistoryAvailable: '',
+    newPatientHasToBeCreated: 'Ein neuer Patient muss erstellt werden... Bitte warten..',
+    noHistoryAvailable: 'Kein Verlauf verfügbar.',
     noItemsFound: 'Keine Einträge gefunden.',
     noNotesAvailable: '',
     noUsersFound: 'Keine Benutzer gefunden.',
@@ -962,16 +1003,16 @@ export default {
     appointment: {
       labels: {
         allDay: '',
-        appointmentDate: '',
-        appointmentType: '',
+        appointmentDate: 'Tag',
+        appointmentType: 'Typ',
         endDate: '',
-        location: '',
-        notes: '',
-        patient: '',
+        location: 'Ort',
+        notes: 'Notizen',
+        patient: 'Patient',
         provider: '',
         startDate: '',
-        status: '',
-        type: ''
+        status: 'Status',
+        type: 'Typ'
       },
       names: {
         plural: '',
@@ -979,8 +1020,8 @@ export default {
       }
     },
     attachment: { names: {
-      plural: '',
-      singular: ''
+      plural: 'Anhänge',
+      singular: 'Anhang'
     } },
     form: { names: {
       plural: '',
@@ -1022,24 +1063,24 @@ export default {
       }
     },
     note: { names: {
-      plural: '',
-      singular: ''
+      plural: 'Notizen',
+      singular: 'Notiz'
     } },
     patient: {
-      labels: { name: '' },
-      names: { singular: '' }
+      labels: { name: 'Name' },
+      names: { singular: 'Patient' }
     },
     procedure: { names: {
       plural: '',
       singular: ''
     } },
     user: { names: {
-      plural: '',
-      singular: ''
+      plural: 'Nutzer',
+      singular: 'Nutzer'
     } },
     visit: { names: {
-      plural: '',
-      singular: ''
+      plural: 'Besuche',
+      singular: 'Besuch'
     } },
     vital: { names: {
       plural: '',
@@ -1060,16 +1101,20 @@ export default {
     inventory: 'Inventar',
     labs: 'Labore',
     medication: 'Medikation',
+    messages: {
+      logoutFailed: 'Sie konnten nicht ausgeloggt werden. Ausloggen ist offline nicht möglich.'
+    },
     patients: 'Patienten',
     scheduling: '',
     subnav: {
-      actions: '',
+      actions: 'Aktionen',
       addAppointment: 'Termin eintragen',
       addressFields: 'Adressfelder',
       admittedPatients: '',
       appointmentSearch: '',
       appointmentsCalendar: '',
       appointmentsThisWeek: '',
+      cashier: '',
       completed: 'Erledigt',
       currentIncidents: '',
       customForms: '',
@@ -1079,9 +1124,8 @@ export default {
       inventoryReceived: 'Eingeganges Inventar',
       invoices: 'Rechnungen',
       items: 'Einheiten',
-      loadDB: '',
+      loadDB: 'Datenbank laden',
       lookupLists: 'Nachschlagelisten',
-      missedAppointments: '',
       newIncident: '',
       newInvoice: 'Neue Rechnung',
       newPatient: 'Neuer Patient',
@@ -1096,43 +1140,47 @@ export default {
       requests: 'Anfragen',
       returnMedication: 'Medikamente zurückgeben',
       scheduleSurgery: '',
+      textReplacements: '',
       theaterSchedule: '',
       "today'sAppointments": '',
-      userRoles: '',
+      userRoles: 'Nutzerrollen',
       users: 'Benutzer',
       workflow: ''
+    },
+    titles: {
+      logoutFailed: 'Ausloggen gescheitert'
     }
   },
   operationReport: {
     labels: {
-      additionalNotes: '',
-      assistant: '',
+      additionalNotes: 'Zusätzliche Notiz',
+      assistant: 'Assistent',
       caseComplexity: '',
       operationDescription: '',
       preOpPrimaryDiagnosis: '',
       preOpSecondaryDiagnosis: '',
-      surgeon: '',
+      surgeon: 'Chirurg',
       surgeryDate: ''
     },
-    messages: { reportSaved: '' },
+    messages: { reportSaved: 'Der Operationsbericht wurde gespeichert.' },
     titles: {
-      editTitle: '',
-      newTitle: '',
-      reportSaved: ''
+      editTitle: 'Operationsbericht bearbeiten',
+      newTitle: 'Neuer Operationsbericht',
+      reportSaved: 'Bericht gespeichert'
     }
   },
   operativePlan: {
     buttons: { completePlan: '' },
     labels: {
-      additionalNotes: '',
+      additionalNotes: 'Zusätzliche Notizen',
       admissionInstructions: '',
       caseComplexity: '',
-      completedStatus: '',
+      completedStatus: 'Vollständig',
       droppedStatus: '',
       operationDescription: '',
-      plannedStatus: '',
-      status: '',
-      surgeon: ''
+      plannedStatus: 'Geplant',
+      status: 'Status',
+      surgeon: 'Chirurg'
     },
     messages: {
       planCompleted: '',
@@ -1142,24 +1190,24 @@ export default {
       editTitle: '',
       newTitle: '',
       planCompleted: '',
-      planSaved: ''
+      planSaved: 'Plan gespeichert'
     }
   },
   patients: {
     buttons: {
       addContact: '',
       addExpense: '',
-      addFamilyMember: '',
+      addFamilyMember: 'Familienmitglied hinzufügen',
       addOperativePlan: '',
       backToPatients: '',
-      download: '',
+      download: 'Herunterladen',
       editOperativePlan: '',
       newAppointment: '',
       newImaging: '',
       newLab: '',
       newMedication: '',
       newPatient: '',
-      newPhoto: '',
+      newPhoto: 'Neues Foto',
       newVisit: '',
       patientCheckIn: '',
       scheduleSurgery: ''
@@ -1167,24 +1215,24 @@ export default {
     labels: {
       admissionDate: '',
       admit: '',
-      bloodType: '',
+      bloodType: 'Blutgruppe',
       caption: '',
-      civilStatus: '',
+      civilStatus: 'Zivilstand',
       clinic: '',
-      contacts: '',
+      contacts: 'Kontakte',
       cost: '',
-      dateOfBirth: '',
+      dateOfBirth: 'Geburtsdatum',
       dateProcessed: '',
       dischargeDate: '',
       dob: '',
-      education: '',
-      email: '',
+      education: 'Bildung',
+      email: 'E-Mail',
       externalPatientId: '',
-      firstName: '',
-      income: '',
-      insurance: '',
-      lastName: '',
-      middleName: '',
+      firstName: 'Vorname',
+      income: 'Einkommen',
+      insurance: 'Versicherung',
+      lastName: 'Nachname',
+      middleName: 'zweiter Vorname',
       monthlyCost: '',
       occupation: '',
       operativePlan: '',
@@ -1193,23 +1241,23 @@ export default {
       patientType: '',
       patientTypeCharity: '',
       patientTypePrivate: '',
-      phone: '',
-      placeOfBirth: '',
+      phone: 'Telefon',
+      placeOfBirth: 'Geburtsort',
       primaryDiagnosis: '',
       referredBy: '',
       referredDate: '',
       relationship: '',
       relationships: '',
-      religion: '',
+      religion: 'Religion',
       secondaryDiagnosis: '',
-      sex: '',
+      sex: 'Geschlecht',
       sexNotEntered: '',
       sources: '',
-      status: '',
+      status: 'Patientenstatus',
       totalMontlyExpense: ''
     },
     messages: {
-      areYouSureDelete: '',
+      areYouSureDelete: 'Sind Sie sicher, dass Sie {{object}} löschen möchten?',
       createNewPatient: '',
       deletingPatient: '',
       noPatientsFound: '',
@@ -1219,12 +1267,12 @@ export default {
     },
     navigation: {
       appointments: '',
-      general: '',
+      general: 'Allgemein',
       history: '',
       imaging: '',
       labs: '',
       medication: '',
-      photos: '',
+      photos: 'Fotos',
       socialWork: '',
       visits: ''
     },
@@ -1272,6 +1320,13 @@ export default {
       visit: ''
     }
   },
+  pricing: {
+    labels: {
+      discountAmount: '',
+      discountPercentage: '',
+      setFee: ''
+    }
+  },
   print: { invoice: {
     labels: {
       billedBy: '',
@@ -1284,7 +1339,7 @@ export default {
       patientId: '',
       patientName: '',
       remarks: '',
-      spacer: ''
+      spacer: '__________________________________________'
     },
     messages: { whereConducted: '' },
     titles: {
@@ -1325,8 +1380,8 @@ export default {
       nextAppointment: '',
       nextAppointments: '',
       notes: {
-        author: '',
-        date: '',
+        author: 'Verfasser',
+        date: 'Datum',
         title: ''
       },
       operativePlan: {
@@ -1426,14 +1481,16 @@ export default {
       visitSaved: ''
     }
   },
-  vitals: { labels: {
-    dateRecorded: '',
-    dbp: '',
-    heartRate: '',
-    height: '',
-    respiratoryRate: '',
-    sbp: '',
-    temperature: '',
-    weight: ''
-  } }
+  vitals: {
+    labels: {
+      dateRecorded: '',
+      dbp: '',
+      heartRate: '',
+      height: 'Größe',
+      respiratoryRate: '',
+      sbp: '',
+      temperature: 'Temperatur',
+      weight: 'Gewicht'
+    }
+  }
 };
