@@ -509,10 +509,10 @@ export default {
       edit: 'Edit',
       'export': 'Export Report',
       generateRep: 'Generate Report',
-      newAttachment: '+ New Attachment',
+      newAttachment: '+ new Attachment',
       newCategory: '+ new category',
       newIncident: '+ new incident',
-      newNote: '+ New Note'
+      newNote: '+ new Note'
     },
     labels: {
       actions: 'Actions',
