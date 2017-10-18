@@ -75,7 +75,7 @@ export default {
       newTitle: '',
       titles: { optionsSaved: '' }
     },
-    loadDb: 'Cargar Base de datos',
+    loadDb: 'Cargar base de datos',
     loaddb: {
       displayAlertMessage: 'Por favor seleccione un archivo para ser cargado.',
       displayAlertTitle: 'Seleccione un archivo para cargar',
@@ -83,7 +83,7 @@ export default {
       errorDisplayAlertMessage: 'La base de datos no fue cargada el error fue: {{error}}',
       errorDisplayAlertTitle: 'Error cargando',
       progressMessage: 'Por favor espere mientras la base de datos es cargada.',
-      progressTitle: 'Cargando ase de datos'
+      progressTitle: 'Cargando base de datos'
     },
     lookup: {
       aisleLocationList: 'Ubicacion de inventario de pasillo',
@@ -101,7 +101,7 @@ export default {
       cptCodeList: 'Codigos CPT',
       diagnosisList: 'Diagnosticos',
       edit: { template: {
-        addTitle: 'Adicionar valor',
+        addTitle: 'Agregar valor',
         editTitle: 'Editar valor',
         labelTitle: 'Valor',
         updateButtonTextAdd: 'Adicionar',
@@ -122,40 +122,40 @@ export default {
       titles: { deleteLookupValue: '' },
       unitTypes: 'Tipos de unidad',
       vendorList: 'Proveedor',
-      visitLocationList: 'Lugares de visista',
+      visitLocationList: 'Lugares de visita',
       visitTypes: 'Tipos de visita',
-      wardPricingTypes: 'Tipos de las tarifas',
+      wardPricingTypes: 'Tipos de tarifas',
       warehouseList: 'Ubicacciones de inventarios'
     },
     lookupLists: 'Lista de busqueda',
     roles: {
       capability: {
         addAllergy: '',
-        addAppointment: 'Adicionar cita',
+        addAppointment: 'Agregar cita',
         addBillingDiagnosis: '',
-        addCharge: 'Adicionar cargo (valor)',
-        addDiagnosis: 'Adicionar diagnostico',
-        addImaging: 'Adicionar radiografia',
+        addCharge: 'Agregar cargo (valor)',
+        addDiagnosis: 'Agregar diagnostico',
+        addImaging: 'Agregar radiografia',
         addIncident: '',
         addIncidentCategory: '',
-        addInventoryItem: 'Adicionar elemento al inventario',
-        addInventoryPurchase: 'Adicionar compra',
+        addInventoryItem: 'Agregar elemento al inventario',
+        addInventoryPurchase: 'Agregar compra',
         addInventoryRequest: 'Pedido de inventario',
-        addInvoice: 'Adicionar factura',
-        addLab: 'Adicionar laboratorio',
-        addMedication: 'Adicionar medicación',
+        addInvoice: 'Agregar factura',
+        addLab: 'Agregar laboratorio',
+        addMedication: 'Agregar medicación',
         addNote: '',
         addOperationReport: '',
         addOperativePlan: '',
-        addPatient: 'Adicionar paciente',
-        addPayment: 'Adicionar pago',
-        addPhoto: 'Adicionar foto',
-        addPricing: 'Adicionar precio',
+        addPatient: 'Agregar paciente',
+        addPayment: 'Agregar pago',
+        addPhoto: 'Agregar foto',
+        addPricing: 'Agregar precio',
         addPricingProfile: 'Adicionar perfil de precios',
         addProcedure: '',
         addSocialwork: '',
-        addVisit: 'Adicionar visita',
-        addVitals: 'Adicionar partes vitales',
+        addVisit: 'Agregar visita',
+        addVitals: 'Agregar partes vitales',
         adjustInventoryLocation: 'Ajustar lugar elemento en el inventario',
         admin: 'Administracion',
         admitPatient: 'Admitir paciente',
@@ -202,8 +202,8 @@ export default {
         updateConfig: 'Actualizar configuracion',
         visits: 'Visitas'
       },
-      messages: { roleSaved: 'El {{roleName}} rol ha sido salvado.' },
-      titles: { roleSaved: 'Role salvado' }
+      messages: { roleSaved: 'El {{roleName}} rol ha sido guardado.' },
+      titles: { roleSaved: 'Role guardado' }
     },
     userRoles: 'Roles',
     users: 'Usuarios',
@@ -304,11 +304,11 @@ export default {
     }
   },
   buttons: {
-    add: 'Adicionar',
+    add: 'Agregar',
     addItem: '',
     addLineItem: '',
-    addValue: 'Adicionar valor',
-    addVisit: 'Adicionar visita',
+    addValue: 'Agregar valor',
+    addVisit: 'Agregar visita',
     allRequests: 'Todas las solicitudes',
     barcode: 'Codigo de barras',
     cancel: 'Cancelar',
@@ -328,7 +328,7 @@ export default {
     newRequestPlus: '+ nuevo pedido',
     newUser: 'Nuevo usuario',
     ok: 'Ok',
-    remove: 'Remover',
+    remove: 'Retirar',
     returnButton: 'Regresar',
     search: 'Buscar',
     showAll: '',
@@ -399,7 +399,7 @@ export default {
   },
   dashboard: {
     setup: '',
-    title: 'Que deseas hacer?'
+    title: 'Que desea hacer?'
   },
   dates: {
     'long': '',
@@ -454,7 +454,7 @@ export default {
       completedMessage: 'El pedido de radiografia ha sido completado.',
       completedTitle: 'Pedido de radiografia completado',
       savedMessage: 'El pedido de radiografia ha sido guardado.',
-      savedTitle: 'Pedido de radiografia salvado'
+      savedTitle: 'Pedido de radiografia guardado'
     },
     buttons: { newButton: '+ new radiografia' },
     labels: {
@@ -579,9 +579,9 @@ export default {
     },
     labels: {
       action: 'Acción',
-      add: 'Adicionar',
+      add: 'Agregar',
       addAdjustmentType: '',
-      adjust: 'Adjustar',
+      adjust: 'Ajustar',
       adjustmentDate: 'Fecha de ajuste',
       adjustmentFor: 'Ajustado para',
       adjustmentType: 'Tipo de ajuste',
@@ -716,7 +716,7 @@ export default {
         errInFinSum: 'Error en _generateFinancialSummaryReport: ',
         errInFindPur: 'Error en _findInventoryItemsByPurchase: ',
         errInFindReq: 'Error en _findInventoryItemsByRequest: ',
-        expensesFor: 'Gatos para: ',
+        expensesFor: 'Gastos para: ',
         noAccount: '(No Cuenta)',
         subtotal: 'Subtotal: ',
         subtotalFor: 'Subtotal para {{category}} - {{account}}: ',
@@ -734,7 +734,7 @@ export default {
       titleSingleDate: ''
     },
     titles: {
-      addPurchase: 'Adicionar compra',
+      addPurchase: 'Agregar compra',
       addRequest: 'Nuevo pedido',
       adjustment: 'Ajuste',
       editPurchase: 'Editar compra',
@@ -743,7 +743,7 @@ export default {
       inventoryReport: 'Reporte de inventario',
       purchaseSaved: 'Compras de inventario guardadas',
       quickAddTitle: 'Nuevo elemento de inventario',
-      removeItem: 'Remover elemento',
+      removeItem: 'Retirar elemento',
       requestFulfilled: 'Pedido cumplido',
       requestUpdated: 'Pedido actualizado',
       transfer: 'Trasladar elementos',
@@ -941,7 +941,7 @@ export default {
     messages: { createNew: 'Crear un nuevo pedido de medicacion?' },
     pageTitle: 'Pedido de medicación',
     returnMedication: 'Retorno de medicación',
-    sectionTitle: 'Medication',
+    sectionTitle: 'Medicación',
     titles: {
       completedMedication: 'Medicacion completada',
       editMedicationRequest: 'Editar pedido de medicacion',
