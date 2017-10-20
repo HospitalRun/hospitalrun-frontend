@@ -1,28 +1,28 @@
 export default {
   admin: {
     address: {
-      address1Label: 'Address 1 Label',
-      address2Label: 'Address 2 Label',
-      address3Label: 'Address 3 Label',
-      address4Label: 'Address 4 Label',
-      addressLabel: 'Address',
-      editTitle: 'Address Options',
-      include1Label: 'Include 1 Label',
-      include2Label: 'Include 2 Label',
-      include3Label: 'Include 3 Label',
-      include4Label: 'Include 4 Label',
-      messages: { addressSaved: 'The address options have been saved' },
-      newTitle: 'Address Options',
-      titles: { optionsSaved: 'Options Saved' }
+      address1Label: 'पता 1 लेबल',
+      address2Label: 'पता 2 लेबल',
+      address3Label: 'पता 3 लेबल',
+      address4Label: 'पता 4 लेबल',
+      addressLabel: 'पता',
+      editTitle: 'पता विकल्प',
+      include1Label: '1 लाबे शामिल करेंl',
+      include2Label: '2 लेबल शामिल करें',
+      include3Label: '3 लेबल शामिल करें',
+      include4Label: '4 लेबल शामिल करें',
+      messages: { addressSaved: 'पता विकल्प बचाए गए हैं' },
+      newTitle: 'पता विकल्प',
+      titles: { optionsSaved: 'विकल्प सेव किये गए' }
     },
-    addressOptions: 'Address Options',
+    addressOptions: 'पता विकल्प',
     customForms: {
       buttons: {
-        addField: 'Add Field',
-        moveDown: 'Move Down',
-        moveUp: 'Move Up',
-        newForm: '+ new form',
-        preview: 'Preview'
+        addField: 'क्षेत्र जोड़ें',
+        moveDown: 'नीचे की ओर',
+        moveUp: 'बढ़ाना',
+        newForm: '+ नए रूप मे',
+        preview: 'पूर्वावलोकन'
       },
       labels: {
         alwaysInclude: 'Always Include',
@@ -34,7 +34,6 @@ export default {
         expenseTo: 'Expense To',
         formName: 'Form Name',
         formType: 'Form Type',
-        header: 'Header',
         incidentFormType: 'Incident',
         includeOtherOption: 'Include Other Option',
         labFormType: 'Lab',
@@ -61,7 +60,6 @@ export default {
         editCustomForm: 'Edit Custom Form',
         fields: 'Fields',
         formSaved: 'Form Saved',
-        headerValues: 'Header Line Value',
         newCustomForm: 'New Custom Form',
         radioValues: 'Radio Values'
       }
@@ -898,25 +896,25 @@ export default {
       labType: 'Lab Type'
     },
     messages: {
-      createNewRecord: 'Create a new record?',
-      noCompleted: 'No completed items found.',
-      noItemsFound: 'No labs found.'
+      createNewRecord: 'एक नया रिकॉर्ड बनाएं?',
+      noCompleted: 'कोई पूर्ण आइटम नहीं मिला',
+      noItemsFound: 'कोई प्रयोगशाला नहीं मिली.'
     },
     newTitle: 'New Lab Request',
     requestsTitle: 'Lab Requests',
     sectionTitle: 'Labs'
   },
   languages: {
-    en: 'English',
-    fr: 'French',
-    es: 'Spanish',
-    de: 'German',
-    ru: 'Russian',
-    'es-co': 'Spanish (Colombian)',
-    'pt-br': 'Portuguese (Brazilian)',
-    tr: 'Turkish',
-    ur: 'Urdu',
-    hndi: 'Hindi'
+    en: 'अंग्रेज़ी',
+    fr: 'फ्रेंच',
+    es: 'स्पेनिश',
+    de: 'जर्मन',
+    ru: 'रूसी',
+    'es-co': 'स्पेनिश (कोलम्बियाई)',
+    'pt-br': 'पुर्तगाली (ब्राजील)',
+    tr: 'तुर्की',
+    ur: 'उर्दू',
+    hndi: 'हिंदी'
   },
   loading: {
     messages: {
