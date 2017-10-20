@@ -1,3 +1,4 @@
+
 export default {
   admin: {
     address: {
@@ -883,7 +884,8 @@ export default {
     'es-co': 'Испанский (колумбийский)',
     'pt-br': 'Португальский (бразильский)',
     tr: 'турецкий',
-    ur: 'урду'
+    ur: 'урду',
+    hindi: 'хинди'
   },
   loading: {
     messages: {
