@@ -914,7 +914,7 @@ export default {
     'pt-br': 'पुर्तगाली (ब्राजील)',
     tr: 'तुर्की',
     ur: 'उर्दू',
-    hndi: 'हिंदी'
+    hindi: 'हिंदी'
   },
   loading: {
     messages: {

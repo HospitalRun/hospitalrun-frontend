@@ -884,7 +884,7 @@ export default {
     'pt-br': 'Portekizce (Brezilya)',
     tr: 'Türk',
     ur: 'Urduca',
-    hindi: 'Hindi'
+    hindi: 'Hintçe'
   },
   loading: {
     messages: {
