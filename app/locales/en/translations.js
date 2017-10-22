@@ -916,7 +916,7 @@ export default {
     'pt-br': 'Portuguese (Brazilian)',
     tr: 'Turkish',
     ur: 'Urdu',
-    hindi: 'Hindi'
+    hi: 'Hindi'
   },
   loading: {
     messages: {

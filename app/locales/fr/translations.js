@@ -907,7 +907,7 @@ export default {
     'pt-br': 'Portugais (Brésilien)',
     tr: 'Turc',
     ur: 'Ourdou',
-    hindi: 'Hindi'
+    hi: 'Hindi'
   },
   loading: {
     messages: {

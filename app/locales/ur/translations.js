@@ -884,7 +884,7 @@ export default {
     'pt-br': 'پرتگالی (برازیل)',
     tr: 'ترکی',
     ur: 'اردو',
-    hindi: 'ہندی'
+    hi: 'ہندی'
   },
   loading: {
     messages: {
