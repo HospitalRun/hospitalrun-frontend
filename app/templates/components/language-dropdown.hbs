@@ -1,9 +1,10 @@
 {{select-list
-  className="test-select-lang"
+  class="language-dropdown"
   prompt=(t 'navigation.actions.selectLanguage')
   content=languageOptions
   optionLabelPath='name'
   optionValuePath='id'
+  value=selectedLanguage
   action=(action 'selectLanguage')
 }}
 
