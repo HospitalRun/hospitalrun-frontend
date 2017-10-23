@@ -545,7 +545,7 @@ export default {
       createNew: 'Créer un nouvel incident ?',
       createNewIncidentCategory: "Créer une nouvelle catégorie d'incident ?",
       fillIn: 'Remplissez les options ci-dessus pour calculer le score',
-      incidentCategorySaved: 'La catégorie {{name}} a été sauvegardée',
+      incidentCategorySaved: 'La catégorie {{name}} a été sauvegardé',
       noClosedIncidents: 'Aucun incident fermé trouvé',
       noIncidentCategoriesFound: "Aucune catégorie d'incident trouvée",
       noIncidents: 'Aucun incident trouvé',
@@ -573,7 +573,7 @@ export default {
       incidentCategories: "Catégories d'incident",
       incidentCategoryItem: "Membre de la catégorie d'incident",
       incidentCategoryName: "Nom de la catégorie d'incident",
-      incidentCategorySaved: "Catégorie d'incident sauvegardée",
+      incidentCategorySaved: "Catégorie d'incident sauvegardé",
       incidentSaved: 'Incident sauvegardé',
       incidents: 'Incidents',
       incidentsByCategory: 'Incidents par catégorie',
@@ -906,8 +906,7 @@ export default {
     'es-co': 'Espagnol (Colombien)',
     'pt-br': 'Portugais (Brésilien)',
     tr: 'Turc',
-    ur: 'Ourdou',
-    hndi: 'Hindi'
+    ur: 'Ourdou'
   },
   loading: {
     messages: {

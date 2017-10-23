@@ -248,8 +248,8 @@ export default {
     }
   },
   application: {
-    messages: { sessionExpired: 'Sua sessaão expirou. Faça login para continuar.' },
-    titles: { sessionExpired: 'Sessaão expirada' }
+    messages: { sessionExpired: 'Sua sessão expirou. Faça login para continuar.' },
+    titles: { sessionExpired: 'Sessão expirada' }
   },
   appointments: {
     buttons: {
@@ -883,8 +883,7 @@ export default {
     'es-co': 'Espanhol (Colombiano)',
     'pt-br': 'Portugues (Brasileiro)',
     tr: 'Turco',
-    ur: 'Urdu',
-    hndi: 'Hindi'
+    ur: 'Urdu'
   },
   loading: {
     messages: {

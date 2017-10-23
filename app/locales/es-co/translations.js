@@ -883,8 +883,7 @@ export default {
     'es-co': 'Español (Colombiano)',
     'pt-br': 'Portugués (Brasileño)',
     tr: 'Turco',
-    ur: 'Urdu',
-    hndi: 'Hindi'
+    ur: 'Urdu'
   },
   loading: {
     messages: {
