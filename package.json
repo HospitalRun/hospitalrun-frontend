@@ -43,7 +43,7 @@
     "broccoli-serviceworker": "0.1.6",
     "csv-parse": "^1.2.0",
     "devtron": "1.4.0",
-    "electron-prebuilt-compile": "1.6.2",
+    "electron-prebuilt-compile": "1.7.9",
     "electron-rebuild": "^1.5.7",
     "ember-ajax": "^3.0.0",
     "ember-browserify": "^1.1.12",
