@@ -885,7 +885,7 @@ export default {
     'pt-br': 'Португальский (бразильский)',
     tr: 'турецкий',
     ur: 'урду',
-    hindi: 'хинди'
+    hi: 'хинди'
   },
   loading: {
     messages: {
