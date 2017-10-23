@@ -1,4 +1,5 @@
 export default {
+  languageName: 'Français',
   admin: {
     address: {
       address1Label: "Label de l'adresse 1",
@@ -896,18 +897,6 @@ export default {
     newTitle: 'Nouvelle demande de labo',
     requestsTitle: 'Demandes de labo',
     sectionTitle: 'Labos'
-  },
-  languages: {
-    en: 'Anglais',
-    fr: 'Français',
-    es: 'Espagnol',
-    de: 'Allemand',
-    ru: 'Russe',
-    'es-co': 'Espagnol (Colombien)',
-    'pt-br': 'Portugais (Brésilien)',
-    tr: 'Turc',
-    ur: 'Ourdou',
-    hi: 'Hindi'
   },
   loading: {
     messages: {

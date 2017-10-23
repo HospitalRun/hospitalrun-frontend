@@ -6,12 +6,18 @@ export default Ember.Component.extend({
 
   languageOptions: function() {
     let i18n = this.get('i18n');
-    return i18n.get('locales').map((item) => {
+    // Hacking around the fact that i18n
+    // has no support for t(key, locale).
+    let currentLocale = i18n.get('locale');
+    let options = i18n.get('locales').map((item) => {
+      i18n.set('locale', item);
       return {
         id: item,
-        name: i18n.t(`languages.${item}`)
+        name: i18n.t('languageName')
       };
     });
+    i18n.set('locale', currentLocale);
+    return options;
   }.property('currentLanguage'),
 
   onFinish: null,

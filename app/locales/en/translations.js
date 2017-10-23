@@ -1,4 +1,5 @@
 export default {
+  languageName: 'English',
   admin: {
     address: {
       address1Label: 'Address 1 Label',
@@ -905,18 +906,6 @@ export default {
     newTitle: 'New Lab Request',
     requestsTitle: 'Lab Requests',
     sectionTitle: 'Labs'
-  },
-  languages: {
-    en: 'English',
-    fr: 'French',
-    es: 'Spanish',
-    de: 'German',
-    ru: 'Russian',
-    'es-co': 'Spanish (Colombian)',
-    'pt-br': 'Portuguese (Brazilian)',
-    tr: 'Turkish',
-    ur: 'Urdu',
-    hi: 'Hindi'
   },
   loading: {
     messages: {
