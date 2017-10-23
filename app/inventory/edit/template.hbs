@@ -68,7 +68,7 @@
           {{/if}}
         </tr>
         {{#each model.locations as |location|}}
-          {{#if location.quantity}}
+          {{#unless location.archived}}
             <tr>
               <td>{{location.location}}</td>
               <td>{{location.aisleLocation}}</td>
@@ -77,10 +77,14 @@
                 <td>
                   <button class="btn btn-primary neutral" {{action "showAdjustment" location}}>{{t 'inventory.labels.adjust'}}</button>
                   <button class="btn btn-primary btn-extra" {{action "showTransfer" location}}>{{t 'inventory.labels.transfer'}}</button>
+                  {{#unless location.quantity}}
+                  <button class="btn btn-default warning" {{action 'deleteItem' location
+                    bubbles=false }}><span class="octicon octicon-x"></span> {{t 'buttons.delete'}}</button>
+                  {{/unless}}
                 </td>
               {{/if}}
             </tr>
-          {{/if}}
+         {{/unless}}
         {{/each}}
       </table>
       {{#if showTransactions}}
