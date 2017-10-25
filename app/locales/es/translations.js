@@ -876,14 +876,8 @@ export default {
   },
   languages: {
     en: 'Inglés',
-    fr: 'Francés',
-    es: 'Español',
-    de: 'Alemán',
-    ru: 'Ruso',
-    'es-co': 'Español (Colombiano)',
-    'pt-br': 'Portugués (Brasileño)',
-    tr: 'Turco',
-    ur: 'Urdu'
+    eus: 'Euskera',
+    es: 'Español'
   },
   loading: {
     messages: {
@@ -1257,7 +1251,7 @@ export default {
       deleteExpense: '',
       deleteFamilyMember: 'Borrar Miembro de la familia',
       deletePatientRecord: '',
-      deletePhoto: 'Borrar Fotos',
+      deletePhoto: 'Borrar FotoS',
       diagnosticTesting: '',
       dischargesDetail: '',
       dischargesSummary: '',

@@ -153,6 +153,7 @@ export default {
         addPatient: 'Add Patient',
         addPayment: 'Add Payment',
         addPhoto: 'Add Photo',
+        addDocument: 'Add Document',
         addPricing: 'Add Pricing',
         addPricingProfile: 'Add Pricing Profile',
         addProcedure: 'Add Procedure',
@@ -180,6 +181,7 @@ export default {
         deleteNote: 'Delete Note',
         deletePatient: 'Delete Patient',
         deletePhoto: 'Delete Photo',
+        deleteDocument: 'Delete Document',
         deletePricing: 'Delete Pricing',
         deletePricingProfile: 'Delete Pricing Profile',
         deleteProcedure: 'Delete Procedure',
@@ -413,6 +415,14 @@ export default {
         'with': 'With'
       },
       titles: { upcomingAppointments: 'Upcoming Appointments' }
+    }
+  },
+  mixins: {
+    schools: {
+      Axular: 'Azular',
+      Larrabutxu: 'Larra',
+      Zamudio: 'Zamu',
+      NeureClinic: 'Neure'
     }
   },
   customForms: {
@@ -908,14 +918,8 @@ export default {
   },
   languages: {
     en: 'English',
-    fr: 'French',
-    es: 'Spanish',
-    de: 'German',
-    ru: 'Russian',
-    'es-co': 'Spanish (Colombian)',
-    'pt-br': 'Portuguese (Brazilian)',
-    tr: 'Turkish',
-    ur: 'Urdu'
+    eus: 'Euskera',
+    es: 'Spanish'
   },
   loading: {
     messages: {
@@ -1210,6 +1214,7 @@ export default {
       newMedication: 'New Medication',
       newPatient: '+ new patient',
       newPhoto: 'New Photo',
+      newDocument: 'New Document',
       newVisit: 'New Visit',
       patientCheckIn: 'Patient Check In',
       scheduleSurgery: 'Schedule Surgery'
@@ -1217,10 +1222,10 @@ export default {
     labels: {
       admissionDate: 'Admission Date',
       admit: 'Admit',
-      bloodType: 'Blood Type',
+      school: 'School',
       caption: 'Caption',
       civilStatus: 'Civil Status',
-      clinic: 'Clinic Site',
+      l2: 'L2',
       contacts: 'Contacts',
       cost: 'Cost',
       dateOfBirth: 'Date Of Birth',
@@ -1236,7 +1241,7 @@ export default {
       lastName: 'Last Name',
       middleName: 'Middle Name',
       monthlyCost: 'Monthly Cost',
-      occupation: 'Occupation',
+      l1: 'L1',
       operativePlan: 'Operative Plan',
       parent: 'Parent/Guardian',
       patientDays: 'Patient Days',
@@ -1246,16 +1251,16 @@ export default {
       phone: 'Phone',
       placeOfBirth: 'Place Of Birth',
       primaryDiagnosis: 'Primary Diagnoses',
-      referredBy: 'Referred By',
+      gradeGroup: 'Grade Group',
       referredDate: 'Referred Date',
       relationship: 'Relationship To Patient',
       relationships: 'Relationships',
-      religion: 'Religion',
+      grade: 'Grade',
       secondaryDiagnosis: 'Secondary Diagnoses',
-      sex: 'Sex',
+      gender: 'Gender',
       sexNotEntered: 'Sex Not Entered',
       sources: 'Sources',
-      status: 'Patient Status',
+      handedness: 'Handedness',
       totalMontlyExpense: 'Total Monthly Expenses'
     },
     messages: {
@@ -1275,6 +1280,7 @@ export default {
       labs: 'Labs',
       medication: 'Medication',
       photos: 'Photos',
+      documents: 'Documents',
       socialWork: 'Social Work',
       visits: 'Visits'
     },
@@ -1288,6 +1294,7 @@ export default {
     titles: {
       addContact: 'Add Contact',
       addPhoto: 'Add Photo',
+      addDocument: 'Add Document',
       additionalContacts: 'Additional Contacts',
       admissionsDetail: 'Admissions Detail',
       admissionsSummary: 'Admissions Summary',
@@ -1298,11 +1305,13 @@ export default {
       deleteFamilyMember: 'Delete Family Member',
       deletePatientRecord: 'Delete Patient Record',
       deletePhoto: 'Delete Photo',
+      deleteDocument: 'Delete Document',
       diagnosticTesting: 'Diagnostic Testing',
       dischargesDetail: 'Discharges Detail',
       dischargesSummary: 'Discharges Summary',
       edit: 'Edit Patient',
       editPhoto: 'Edit Photo',
+      editDocument: 'Edit Document',
       expenses: 'Expenses',
       familyInfo: 'Family Info',
       familyInformation: 'Family Information',

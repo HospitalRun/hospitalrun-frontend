@@ -1,10 +1,10 @@
 export default {
   admin: {
     address: {
-      address1Label: 'Texto direccion 1',
-      address2Label: 'Texto direccion 2',
-      address3Label: 'Texto direccion 3',
-      address4Label: 'Texto direccion 4',
+      address1Label: 'Texto dirección 1',
+      address2Label: 'Texto dirección 2',
+      address3Label: 'Texto dirección 3',
+      address4Label: 'Texto dirección 4',
       addressLabel: 'Direcciones',
       editTitle: 'Opciones de dirección',
       include1Label: 'Incluir 1',
@@ -111,7 +111,7 @@ export default {
       imagingPricingTypes: 'Tipos de precios de radiografias',
       incidentDepartments: '',
       inventoryTypes: 'Tipos de inventarios',
-      labPricingTypes: 'Precios de laboratorio',
+      labPricingTypes: 'Laborategiko prezioak',
       pageTitle: 'Listas de busqueda',
       patientStatusList: 'Lista de estado de pacientes',
       physicianList: 'Medicos',
@@ -191,7 +191,7 @@ export default {
         incident: '',
         inventory: 'Inventario',
         invoices: 'Facturas',
-        labs: 'Laboratorios',
+        labs: 'Laborategiak',
         loadDb: 'Cargar base de datos',
         manageIncidents: '',
         medication: 'Medicación',
@@ -200,7 +200,7 @@ export default {
         patients: 'Pacientes',
         pricing: 'Precio',
         updateConfig: 'Actualizar configuracion',
-        visits: 'Visitas'
+        visits: 'Bisitak'
       },
       messages: { roleSaved: 'El {{roleName}} rol ha sido salvado.' },
       titles: { roleSaved: 'Role salvado' }
@@ -602,7 +602,7 @@ export default {
       dateEnd: 'Fecha final',
       dateReceived: 'Fecha recibido',
       dateStart: 'Fecha inicial',
-      dateTransferred: 'Fecha transferencia',
+      dateTransferred: '',
       daysLeft: 'Dias restantes',
       deleteItem: 'Eliminar elemento',
       deliveryAisle: 'Enviado a pasillo',
@@ -870,20 +870,14 @@ export default {
       noCompleted: 'No elementos completados encontrados.',
       noItemsFound: 'No boratorios encontrados.'
     },
-    newTitle: 'Nuevo pedido de laboratorio',
+    newTitle: 'Laborategiko eskaera berria',
     requestsTitle: 'Pedido de laboratorio',
-    sectionTitle: 'Laboratorios'
+    sectionTitle: 'Laboratoriak'
   },
   languages: {
-    en: 'Inglés',
-    fr: 'Francés',
-    es: 'Español',
-    de: 'Alemán',
-    ru: 'Ruso',
-    'es-co': 'Español (Colombiano)',
-    'pt-br': 'Portugués (Brasileño)',
-    tr: 'Turco',
-    ur: 'Urdu'
+    en: 'Ingelesa',
+    eus: 'Euskara',
+    es: 'Gaztelania'
   },
   loading: {
     messages: {
@@ -1059,15 +1053,16 @@ export default {
   navigation: {
     about: 'Información de HospitalRun',
     actions: {
-      login: 'Ingresar',
-      logout: 'Salir'
+      login: 'Sartu',
+      logout: 'Atera',
+      selectLanguage: 'Seleccione el idioma'
     },
-    administration: 'Administracion',
+    administration: 'Administrazioa',
     billing: 'Facturas',
     imaging: 'Radiografia',
     incident: '',
     inventory: 'Inventario',
-    labs: 'Laboratorio',
+    labs: 'Laborategia',
     medication: 'Recetas medicas',
     patients: 'Pacientes',
     scheduling: '',
