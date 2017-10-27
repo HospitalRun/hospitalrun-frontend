@@ -46,9 +46,9 @@
 
     > div {
       display: inline-block;
+      margin-left: 3px;
       -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
       animation: stretchdelay 1.2s infinite ease-in-out;
-      margin-left: 3px;
       border-radius: 50px;
       background-color: $green;
       width: 6px;
