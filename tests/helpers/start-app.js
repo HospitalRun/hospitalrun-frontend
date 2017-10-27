@@ -35,8 +35,8 @@ export default function startApp(attrs) {
     application.injectTestHelpers();
   });
 
-  let translationService = application.__container__.lookup('service:i18n');
-  application.__container__.lookup('service:i18n').t = createTranslationWrapper(translationService.t, translationService);
+  let translationService = application.lookup('service:i18n');
+  application.lookup('service:i18n').t = createTranslationWrapper(translationService.t, translationService);
 
   return application;
 }
