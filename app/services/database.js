@@ -73,7 +73,7 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
     }
   },
 
- /**
+  /**
   * Given an record type, return back the maximum pouchdb id.  Useful for endkeys.
   * @param {String} type the record type.
   * @returns {String} the max pouch id for the type.
@@ -220,12 +220,12 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
         permissionResult.then(resolve, reject);
       }
     })
-    .then((permissionResult) => {
-      if (permissionResult !== 'granted') {
-        throw new Error('We weren\'t granted permission.');
-      }
-      return permissionResult;
-    }, 'Ask for notification permisson');
+      .then((permissionResult) => {
+        if (permissionResult !== 'granted') {
+          throw new Error('We weren\'t granted permission.');
+        }
+        return permissionResult;
+      }, 'Ask for notification permisson');
   },
 
   _createLocalDB(pouchOptions) {
@@ -272,9 +272,9 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
   _getNotificationPermissionState() {
     if (navigator.permissions) {
       return navigator.permissions.query({ name: 'notifications' })
-      .then((result) => {
-        return result.state;
-      });
+        .then((result) => {
+          return result.state;
+        });
     }
     return RSVP.resolve(Notification.permission);
   },
@@ -298,7 +298,7 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
   _urlBase64ToUint8Array(base64String) {
     let padding = '='.repeat((4 - base64String.length % 4) % 4);
     let base64 = (base64String + padding)
-      .replace(/\-/g, '+')
+      .replace(/-/g, '+')
       .replace(/_/g, '/');
 
     let rawData = window.atob(base64);
@@ -347,17 +347,17 @@ export default Service.extend(OAuthHeaders, PouchFindIndexes, {
       };
       return new RSVP.Promise((resolve, reject) => {
         return registration.pushManager.subscribe(subscribeOptions)
-        .then((pushSubscription) => {
-          let subInfo = JSON.stringify(pushSubscription);
-          subInfo = JSON.parse(subInfo);
-          return this._sendSubscriptionToServer(subInfo, dbInfo);
-        }).then((savedSubscription) => {
-          let configDB = config.getConfigDB();
-          return configDB.put({
-            _id: 'config_push_subscription',
-            value: savedSubscription.id
-          }).then(resolve, reject);
-        }).catch(reject);
+          .then((pushSubscription) => {
+            let subInfo = JSON.stringify(pushSubscription);
+            subInfo = JSON.parse(subInfo);
+            return this._sendSubscriptionToServer(subInfo, dbInfo);
+          }).then((savedSubscription) => {
+            let configDB = config.getConfigDB();
+            return configDB.put({
+              _id: 'config_push_subscription',
+              value: savedSubscription.id
+            }).then(resolve, reject);
+          }).catch(reject);
       });
     }, 'Subscribe user to push service.');
   },

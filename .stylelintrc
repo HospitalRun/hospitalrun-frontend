@@ -42,7 +42,7 @@
     "number-leading-zero": "never",
     "number-no-trailing-zeros": true,
     "length-zero-no-unit": true,
-    "rule-nested-empty-line-before": ["always-multi-line", {
+    "rule-empty-line-before": ["always-multi-line", {
       "ignore": ["after-comment"],
       "except": ["first-nested"]
       } ],

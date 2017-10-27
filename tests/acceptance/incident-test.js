@@ -50,19 +50,19 @@ test('Incident category management', function(assert) {
     });
     andThen(() => {
       assert.equal(find('.incident-category-item:contains(Surgical Site Infection)').length,
-                 0, 'Deleted incident category item disappears');
+        0, 'Deleted incident category item disappears');
       click('.panel-footer button:contains(Update)');
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
       assert.equal(find('.modal-title').text(), 'Incident Category Saved',
-                   'Incident Category saved modal appears');
+        'Incident Category saved modal appears');
       click('button:contains(Return)');
     });
     andThen(() => {
       assert.equal(currentURL(), '/admin/inc-category', 'Incident Categories url is correct');
       assert.equal(find('td.incident-catergory-name:contains(Infection Control)').length,
-                   1, 'New incident category displays in listing');
+        1, 'New incident category displays in listing');
     });
   });
 });
@@ -281,7 +281,7 @@ function addItem(assert, itemName) {
   waitToAppear('.modal-dialog');
   andThen(() => {
     assert.equal(find('.modal-title').text(), 'Add Category Item',
-                 'Add Category Item modal appears');
+      'Add Category Item modal appears');
     fillIn('.incident-category-item input', itemName);
   });
   andThen(() => {
@@ -290,6 +290,6 @@ function addItem(assert, itemName) {
   });
   andThen(() => {
     assert.equal(find(`.incident-category-item:contains(${itemName})`).length,
-                 1, 'New incident category item appears');
+      1, 'New incident category item appears');
   });
 }

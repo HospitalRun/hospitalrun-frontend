@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { merge } from '@ember/polyfills';
+import { run } from '@ember/runloop';
 import Application from '../../app';
 import config from '../../config/environment';
 
@@ -25,17 +26,17 @@ function createTranslationWrapper(original, context) {
 export default function startApp(attrs) {
   let application;
 
-  // use defaults, but you can override
-  let attributes = Ember.assign({}, config.APP, attrs);
+  let attributes = merge({}, config.APP);
+  attributes = merge(attributes, attrs); // use defaults, but you can override;
 
-  Ember.run(() => {
+  run(() => {
     application = Application.create(attributes);
     application.setupForTesting();
     application.injectTestHelpers();
   });
 
-  let translationService = application.__container__.lookup('service:i18n');
-  application.__container__.lookup('service:i18n').t = createTranslationWrapper(translationService.t, translationService);
+  let translationService = application.lookup('service:i18n');
+  application.lookup('service:i18n').t = createTranslationWrapper(translationService.t, translationService);
 
   return application;
 }

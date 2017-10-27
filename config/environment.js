@@ -1,10 +1,10 @@
 /* eslint-env node */
-/* eslint no-var: 0 */
+'use strict';
 
 module.exports = function(environment) {
-  var ENV = {
+  let ENV = {
     modulePrefix: 'hospitalrun',
-    environment: environment,
+    environment,
     rootURL: process.env.EMBER_CLI_ELECTRON ? null : '/',
     locationType: 'hash', // Using hash location type because it is more friendly for offline.
     EmberENV: {

@@ -11,23 +11,23 @@
 
     {{content-for "head"}}
 
-    <link rel="stylesheet" href="{{rootURL}}assets/vendor.css">
-    <link rel="stylesheet" href="{{rootURL}}assets/hospitalrun.css">
+    <link integrity="" rel="stylesheet" href="{{rootURL}}assets/vendor.css">
+    <link integrity="" rel="stylesheet" href="{{rootURL}}assets/hospitalrun.css">
 
     {{content-for "head-footer"}}
   </head>
   <body>
     <div class="loading-notice apploading" id="apploading" role="alert">
-        <div class="wrapper">
-            <div class="spinner">
-                <div class="rect1"></div>
-                <div class="rect2"></div>
-                <div class="rect3"></div>
-                <div class="rect4"></div>
-                <div class="rect5"></div>
-            </div>
-            <p class="loading-text">Loading</p>
+      <div class="wrapper">
+        <div class="spinner">
+          <div class="rect1"></div>
+          <div class="rect2"></div>
+          <div class="rect3"></div>
+          <div class="rect4"></div>
+          <div class="rect5"></div>
         </div>
+        <p class="loading-text">Loading</p>
+      </div>
     </div>
     {{content-for "body"}}
 
