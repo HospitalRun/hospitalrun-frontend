@@ -1088,6 +1088,7 @@ export default {
       history: '',
       incidentCategories: '',
       inventoryReceived: 'Eingeganges Inventar',
+      inventoryReceivedPlus: '+ Eingeganges Inventar',
       invoices: 'Rechnungen',
       items: 'Einheiten',
       loadDB: '',
