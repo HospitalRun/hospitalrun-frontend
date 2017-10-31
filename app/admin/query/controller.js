@@ -19,6 +19,7 @@ export default Ember.Controller.extend(EditPanelProps, {
     'medication',
     'patient',
     'photo',
+    'document',
     'procedure',
     'visit',
     'vital'

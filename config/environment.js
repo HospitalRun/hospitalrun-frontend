@@ -30,6 +30,7 @@ module.exports = function(environment) {
     'frame-src': "'self'",
     'img-src': "'self' filesystem: data: blob:",
     'script-src': "'self' 'unsafe-inline' 'unsafe-eval'",
+    'object-src': "'self' 'unsafe-inline' 'unsafe-eval' 'unsafe'",
     'style-src': "'self' 'unsafe-inline'"
   };
 

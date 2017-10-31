@@ -11,6 +11,7 @@ export default AbstractEditRoute.extend(PatientVisits, PouchDbMixin, PatientNote
   modelName: 'patient',
   newTitle: t('patients.titles.new'),
   photos: null,
+  documents: null,
 
   actions: {
     updateNote(note) {
@@ -38,6 +39,10 @@ export default AbstractEditRoute.extend(PatientVisits, PouchDbMixin, PatientNote
 
     deletePhoto(model) {
       this.controller.send('deletePhoto', model);
+    },
+
+    deleteDocument(model) {
+      this.controller.send('deleteDocument', model);
     },
 
     updateExpense(model) {
@@ -92,6 +97,16 @@ export default AbstractEditRoute.extend(PatientVisits, PouchDbMixin, PatientNote
       let patientPhotos = [];
       patientPhotos.addObjects(photos);
       model.set('photos', patientPhotos);
+    });
+    this.store.query('document', {
+      options: {
+        key: patientId
+      },
+      mapReduce: 'document_by_patient'
+    }).then(function(documents) {
+      let patientDocuments = [];
+      patientDocuments.addObjects(documents);
+      model.set('documents', patientDocuments);
     });
   }
 

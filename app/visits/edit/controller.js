@@ -66,6 +66,11 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
     return (this.currentUserCan('add_photo') && isFileSystemEnabled);
   }.property(),
 
+  canAddDocument: function() {
+    let isFileSystemEnabled = this.get('isFileSystemEnabled');
+    return (this.currentUserCan('add_document') && isFileSystemEnabled);
+  }.property(),
+
   canAddProcedure: function() {
     return this.currentUserCan('add_procedure');
   }.property(),
@@ -92,6 +97,10 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
 
   canDeletePhoto: function() {
     return this.currentUserCan('delete_photo');
+  }.property(),
+
+  canDeleteDocument: function() {
+    return this.currentUserCan('delete_document');
   }.property(),
 
   canDeleteProcedure: function() {
@@ -367,6 +376,12 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
       this.send('closeModal');
     },
 
+    addDocument(savedDocumentRecord) {
+      let documents = this.get('model.documents');
+      documents.addObject(savedDocumentRecord);
+      this.send('closeModal');
+    },
+
     addVitals(newVitals) {
       this.updateList('vitals', newVitals);
     },
@@ -405,6 +420,22 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
         let isFileSystemEnabled = this.get('isFileSystemEnabled');
         if (isFileSystemEnabled) {
           let pouchDbId = this.get('database').getPouchId(photoId, 'photo');
+          fileSystem.deleteFile(filePath, pouchDbId);
+        }
+      }.bind(this));
+    },
+
+    deleteDocument(model) {
+      let document = model.get('documentToDelete');
+      let documentId = document.get('id');
+      let documents = this.get('model.documents');
+      let filePath = document.get('fileName');
+      documents.removeObject(document);
+      document.destroyRecord().then(function() {
+        let fileSystem = this.get('filesystem');
+        let isFileSystemEnabled = this.get('isFileSystemEnabled');
+        if (isFileSystemEnabled) {
+          let pouchDbId = this.get('database').getPouchId(documentId, 'document');
           fileSystem.deleteFile(filePath, pouchDbId);
         }
       }.bind(this));
@@ -455,6 +486,10 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
       this.send('openModal', 'patients.photo', photo);
     },
 
+    editDocument(document) {
+      this.send('openModal', 'patients.document', document);
+    },
+
     newPatientChanged(createNewPatient) {
       set(this, 'model.createNewPatient', createNewPatient);
       let model = this.get('model');
@@ -492,6 +527,16 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
       });
       newPatientPhoto.set('editController', this);
       this.send('openModal', 'patients.photo', newPatientPhoto);
+    },
+
+    showAddDocument() {
+      let newPatientDocument = this.get('store').createRecord('document', {
+        patient: this.get('model.patient'),
+        visit: this.get('model'),
+        saveToDir: `${this.get('model.patient.id')}/documents/`
+      });
+      newPatientDocument.set('editController', this);
+      this.send('openModal', 'patients.document', newPatientDocument);
     },
 
     newAppointment() {
@@ -540,6 +585,17 @@ export default AbstractEditController.extend(AddNewPatient, AllergyActions, Char
         title: this.get('i18n').t('patients.titles.deletePhoto'),
         message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'photo' }),
         photoToDelete: photo,
+        updateButtonAction: 'confirm',
+        updateButtonText: this.get('i18n').t('buttons.ok')
+      }));
+    },
+
+    showDeleteDocument(document) {
+      this.send('openModal', 'dialog', Ember.Object.create({
+        confirmAction: 'deleteDocument',
+        title: this.get('i18n').t('patients.titles.deleteDocument'),
+        message: this.get('i18n').t('patients.titles.deleteDocument', { object: 'document' }),
+        documentToDelete: document,
         updateButtonAction: 'confirm',
         updateButtonText: this.get('i18n').t('buttons.ok')
       }));

@@ -125,6 +125,13 @@
           </a>
         </li>
         <li role="presentation">
+
+          <a href="#visit-documents" role="tab" data-toggle="pill" data-test-selector="documents-tab">
+            {{t 'patients.navigation.documents'}}
+          </a>
+        </li>
+        <li role="presentation">
+
           <a href="#visit-procedures" role="tab" data-toggle="pill" data-test-selector="procedures-tab">
             {{t 'visits.navigation.procedures'}}
           </a>
@@ -212,6 +219,42 @@
             </div>
           </div>
         </div>
+
+        <div role="tabpanel" class="tab-pane" id="visit-documents">
+          <div class="panel">
+            {{#if canAddDocument}}
+              <div class="panel-heading">
+                <button type="button" class="btn btn-primary align-right" {{action "showAddDocument" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span>{{t 'patients.buttons.newDocument'}}
+                </button>
+              </div>
+            {{/if}}
+            <div class="panel-body detail-section-content">
+              <div class="row">
+                {{#each model.documents as |document|}}
+                  <div class="col-sm-4 col-md-3">
+                    <div {{action "editDocument" document}} class="thumbnail">
+                      <div class="caption">
+                        {{document.caption}}
+                        <p>
+                          {{#if canAddDocument}}
+                            <button type="button" class="btn btn-default neutral" {{action "editDocument" document}}>{{t 'labels.edit'}}</button>
+                          {{/if}}
+                          {{#if canDeleteDocument}}
+                            <button type="button" class="btn btn-default warning" {{action "showDeleteDocument" document bubbles=false }}>
+                              <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
+                            </button>
+                          {{/if}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div role="tabpanel" class="tab-pane" id="visit-procedures">
           <div class="panel detail-section">
             <div class="panel-body">
