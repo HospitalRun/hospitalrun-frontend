@@ -630,7 +630,7 @@ export default {
       location: 'Ubicación',
       locations: 'Ubicaciones',
       markAsConsumed: 'Marcar como consumido',
-      name: 'Nombre',
+      name: 'Izena',
       newItem: 'Nuevo elemento',
       originalQuantity: 'Cantidad original',
       print: 'Imprimir',
@@ -780,7 +780,7 @@ export default {
     department: '',
     description: 'Descripción',
     discount: '',
-    displayName: 'Nombre para mostrar',
+    displayName: 'Izena para mostrar',
     docRead: 'Leer documento',
     docWritten: 'Documento escrito',
     edit: 'Editar',
@@ -809,7 +809,7 @@ export default {
     location: 'Ubicacion',
     lookupType: 'Tipo de busqueda',
     medication: 'Medicación',
-    name: 'Nombre',
+    name: 'Izena',
     newUser: 'Nuevo usuario',
     note: '',
     notes: 'Notas',
@@ -844,7 +844,7 @@ export default {
     total: '',
     type: 'Tipo',
     userCanAddNewValue: 'Los usuarios pueden agregar nuevos valores',
-    username: 'Nombre de usuario',
+    username: 'Izena de usuario',
     value: 'Valor',
     view: '',
     visit: 'Visita',
@@ -900,10 +900,10 @@ export default {
     labels: {
       password: 'Clave',
       signIn: 'Ingresar',
-      username: 'Nombre de usuario'
+      username: 'Izena de usuario'
     },
     messages: {
-      error: 'Nombre de usuario o clave incorrectos.',
+      error: 'Izena de usuario o clave incorrectos.',
       signIn: 'por favor ingrese'
     }
   },
@@ -954,7 +954,7 @@ export default {
     noItemsFound: 'Elementos no encontrados.',
     noNotesAvailable: 'No hay notas clínicas adicionales están disponibles para esta visita.',
     noUsersFound: 'Ningun usuario encontrado.',
-    onBehalfOf: 'a nombre de',
+    onBehalfOf: 'a Izena de',
     reportError: '',
     requiredFieldsCorrectErrors: '',
     saveActionException: '',
@@ -1234,8 +1234,8 @@ export default {
     },
     notes: {
       newNote: '',
-      onBehalfOfCopy: 'a nombre de',
-      onBehalfOfLabel: 'A nombre de',
+      onBehalfOfCopy: 'a Izena de',
+      onBehalfOfLabel: 'A Izena de',
       pleaseSelectAVisit: 'Por favor seleccione una visista',
       updateNote: ''
     },
