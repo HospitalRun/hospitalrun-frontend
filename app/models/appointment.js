@@ -4,6 +4,8 @@ import Ember from 'ember';
 import moment from 'moment';
 import PatientValidation from 'hospitalrun/utils/patient-validation';
 
+const { computed } = Ember;
+
 export default AbstractModel.extend({
   // Attributes
   allDay: DS.attr(),
@@ -35,7 +37,7 @@ export default AbstractModel.extend({
     return startDate;
   }),
 
-  displayStatus: computed('status',function() {
+  displayStatus: computed('status', function() {
     let status = this.get('status');
     if (Ember.isEmpty(status)) {
       status = 'Scheduled';
@@ -43,7 +45,7 @@ export default AbstractModel.extend({
     return status;
   }),
 
-  formattedAppointmentDate: function() {
+  formattedAppointmentDate: computed('startDate', 'endDate', function() {
     let allDay = this.get('allDay');
     let endDate = moment(this.get('endDate'));
     let dateFormat = '';
@@ -65,7 +67,7 @@ export default AbstractModel.extend({
       formattedDate = this._getDateSpan(startDate, endDate, dateFormat);
     }
     return formattedDate;
-  }.property('startDate', 'endDate'),
+  }),
 
   validations: {
     appointmentDate: {
