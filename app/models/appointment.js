@@ -30,18 +30,18 @@ export default AbstractModel.extend({
     return `${formattedStart} - ${formattedEnd}`;
   },
 
-  appointmentDate: function() {
+  appointmentDate: computed('startDate', function() {
     let startDate = this.get('startDate');
     return startDate;
-  }.property('startDate'),
+  }),
 
-  displayStatus: function() {
+  displayStatus: computed('status',function() {
     let status = this.get('status');
     if (Ember.isEmpty(status)) {
       status = 'Scheduled';
     }
     return status;
-  }.property('status'),
+  }),
 
   formattedAppointmentDate: function() {
     let allDay = this.get('allDay');
