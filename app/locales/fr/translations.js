@@ -906,7 +906,8 @@ export default {
     'es-co': 'Espagnol (Colombien)',
     'pt-br': 'Portugais (Brésilien)',
     tr: 'Turc',
-    ur: 'Ourdou'
+    ur: 'Ourdou',
+    hi: 'Hindi'
   },
   loading: {
     messages: {

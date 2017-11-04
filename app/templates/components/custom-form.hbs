@@ -36,6 +36,15 @@
           optionLabelPath="label"
         }}
       {{/if}}
+      {{#if (eq field.type 'header')}}
+        <div class="form-group {{field.displayClassNames}}">
+          <label>{{field.label}}</label>
+          {{#each field.values as |split|}}
+            <br>
+            <label>{{split.label}}</label>
+          {{/each}}
+        </div>
+      {{/if}}
     {{/each}}
   </div>
 {{/each}}
