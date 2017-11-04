@@ -1,5 +1,5 @@
-
 export default {
+  languageName: 'русский',
   admin: {
     address: {
       address1Label: '',
@@ -874,18 +874,6 @@ export default {
     newTitle: '',
     requestsTitle: '',
     sectionTitle: ''
-  },
-  languages: {
-    en: 'английский',
-    fr: 'Французский',
-    es: 'испанский',
-    de: 'Немецкий',
-    ru: 'русский',
-    'es-co': 'Испанский (колумбийский)',
-    'pt-br': 'Португальский (бразильский)',
-    tr: 'турецкий',
-    ur: 'урду',
-    hi: 'хинди'
   },
   loading: {
     messages: {

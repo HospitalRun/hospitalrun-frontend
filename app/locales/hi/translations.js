@@ -1,4 +1,5 @@
 export default {
+  languageName: 'हिंदी',
   admin: {
     address: {
       address1Label: 'पता 1 लेबल',
@@ -903,18 +904,6 @@ export default {
     newTitle: 'New Lab Request',
     requestsTitle: 'Lab Requests',
     sectionTitle: 'Labs'
-  },
-  languages: {
-    en: 'अंग्रेज़ी',
-    fr: 'फ्रेंच',
-    es: 'स्पेनिश',
-    de: 'जर्मन',
-    ru: 'रूसी',
-    'es-co': 'स्पेनिश (कोलम्बियाई)',
-    'pt-br': 'पुर्तगाली (ब्राजील)',
-    tr: 'तुर्की',
-    ur: 'उर्दू',
-    hi: 'हिंदी'
   },
   loading: {
     messages: {
