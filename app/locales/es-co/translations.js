@@ -1,4 +1,5 @@
 export default {
+  languageName: 'Español (Colombiano)',
   admin: {
     address: {
       address1Label: 'Texto direccion 1',
@@ -873,17 +874,6 @@ export default {
     newTitle: 'Nuevo pedido de laboratorio',
     requestsTitle: 'Pedido de laboratorio',
     sectionTitle: 'Laboratorios'
-  },
-  languages: {
-    en: 'Inglés',
-    fr: 'Francés',
-    es: 'Español',
-    de: 'Alemán',
-    ru: 'Ruso',
-    'es-co': 'Español (Colombiano)',
-    'pt-br': 'Portugués (Brasileño)',
-    tr: 'Turco',
-    ur: 'Urdu'
   },
   loading: {
     messages: {
