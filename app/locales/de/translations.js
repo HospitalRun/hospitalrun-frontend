@@ -28,7 +28,7 @@ export default {
       labels: {
         alwaysInclude: 'Immer einbeziehen',
         checkbox: 'Checkbox',
-        colSpan: '',
+        colSpan: 'Spaltenanzahl zum Fusionieren',
         columns: 'Spalten',
         customForm: 'Benutzerdefiniertes Formular',
         dischargeReportFormType: 'Entlassungsbericht',
@@ -167,7 +167,7 @@ export default {
         billing: 'Abrechnung',
         cashier: 'Kassierer',
         completeImaging: 'Bildgebung abschließen',
-        completeLab: '',
+        completeLab: 'Labor abschließen',
         defineUserRoles: 'Nutzerrollen definieren',
         deleteAppointment: 'Termin löschen',
         deleteDiagnosis: 'Diagnose löschen',
@@ -186,11 +186,11 @@ export default {
         deleteProcedure: 'Behandlung löschen',
         deleteSocialwork: 'Sozialarbeit löschen',
         deleteVisit: 'Visite löschen',
-        deleteVitals: '',
+        deleteVitals: 'Vitalwert löschen',
         dischargePatient: 'Patient entlassen',
         editInvoice: 'Rechnung bearbeiten',
-        fulfillInventory: '',
-        fulfillMedication: '',
+        fulfillInventory: 'Bestand füllen',
+        fulfillMedication: 'Medikamente füllen',
         generateIncidentReport: 'Vorfallbericht erzeugen',
         imaging: 'Bildgebung',
         incident: 'Vorfall',
@@ -616,7 +616,7 @@ export default {
       allItems: 'Gesamte Artikel',
       availableQuantity: '{{quantity}} verfügbar',
       billTo: 'Rechnung an',
-      consumePurchases: '',
+      consumePurchases: 'Verbrauchseinkauf',
       consumptionRate: 'Verbrauchsrate',
       cost: 'Kosten',
       costPerUnit: 'Kosten pro Einheit',
@@ -661,7 +661,7 @@ export default {
       print: 'Drucken',
       printBarcode: 'Barcode drucken',
       printer: 'Drucker',
-      pullFrom: '',
+      pullFrom: 'Gezogen von',
       purchaseCost: 'Kaufkosten',
       purchaseInfo: 'Informationen zum Kauf',
       purchases: 'Käufe',
@@ -1083,8 +1083,8 @@ export default {
       singular: 'Visite'
     } },
     vital: { names: {
-      plural: '',
-      singular: ''
+      plural: 'Vitalwerte',
+      singular: 'Vitalwert'
     } }
   },
   navigation: {
@@ -1422,7 +1422,7 @@ export default {
       newDischargeReport: 'Neuer Entlassungsbericht',
       newOPDReport: 'Neuer OPD-Bericht',
       newProcedure: 'Neue Behandlung',
-      newVitals: ''
+      newVitals: 'Neuer Vitalwert'
     },
     labels: {
       appointment: 'Termin',
@@ -1440,7 +1440,7 @@ export default {
       ordersNotDone: 'N',
       patientToCheckIn: 'Patient zum Einchecken',
       procedure: 'Behandlung',
-      procedureDate: '',
+      procedureDate: 'Behandlungsdatum',
       reasonForVisit: 'Grund für die Visite',
       reportType: 'Berichtsart',
       status: 'Status der Visite',
@@ -1467,7 +1467,7 @@ export default {
       orders: 'Aufträge',
       procedures: 'Behandlungen',
       reports: 'Berichte',
-      vitals: ''
+      vitals: 'Vitalwerte'
     },
     titles: {
       additionalDiagnoses: 'Zusätzliche Diagnose',
