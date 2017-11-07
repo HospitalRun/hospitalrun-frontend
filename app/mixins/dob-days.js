@@ -37,7 +37,7 @@ export default Ember.Mixin.create({
       }
 
       if (birthDate.getDate) {
-        days = today.getDate() - birthDate.getDate();
+        days = today.getUTCDate() - birthDate.getUTCDate();
         if (days < 0) {
           days += 30;
         }
