@@ -19,10 +19,10 @@ export default {
     addressOptions: 'Opciones de direcciones',
     customForms: {
       buttons: {
-        addField: 'Agregar campo',
+        addField: 'añadir campo',
         moveDown: 'Mover hacia abajo',
         moveUp: 'Mover hacia arriba',
-        newForm: 'Nueva forma',
+        newForm: '+ nuevo formulario',
         preview: 'Vista previa'
       },
       labels: {
@@ -102,10 +102,10 @@ export default {
       cptCodeList: 'Códigos CPT',
       diagnosisList: 'Diagnósticos',
       edit: { template: {
-        addTitle: 'Agregar valor',
+        addTitle: 'Añadir valor',
         editTitle: 'Editar valor',
         labelTitle: 'Valor',
-        updateButtonTextAdd: 'Agregar',
+        updateButtonTextAdd: 'Añadir',
         updateButtonTextUpdate: 'Actualizar'
       } },
       expenseAccountList: 'Cuentas de gastos',
@@ -131,32 +131,32 @@ export default {
     lookupLists: 'Lista de búsqueda',
     roles: {
       capability: {
-        addAllergy: 'Agregar alergia',
-        addAppointment: 'Agregar cita',
-        addBillingDiagnosis: 'Agregar diagnóstico de facturación',
-        addCharge: 'Agregar cargo (valor)',
-        addDiagnosis: 'Agregar diagnostico',
-        addImaging: 'Agregar radiografía',
-        addIncident: 'Agregar incidente',
-        addIncidentCategory: 'Agregar categoría de incidente',
-        addInventoryItem: 'Agregar elemento al inventario',
-        addInventoryPurchase: 'Agregar compra',
+        addAllergy: 'Añadir alergia',
+        addAppointment: 'Añadir cita',
+        addBillingDiagnosis: '',
+        addCharge: 'Añadir cargo (valor)',
+        addDiagnosis: 'Añadir diagnostico',
+        addImaging: 'Añadir radiografia',
+        addIncident: 'Añadir incidente',
+        addIncidentCategory: 'Añadir incidente categoria',
+        addInventoryItem: 'Añadir elemento al inventario',
+        addInventoryPurchase: 'Añadir compra',
         addInventoryRequest: 'Pedido de inventario',
-        addInvoice: 'Agregar factura',
-        addLab: 'Agregar laboratorio',
-        addMedication: 'Agregar medicación',
-        addNote: 'Agregar nota',
-        addOperationReport: 'Agregar reporte de operación',
-        addOperativePlan: 'Agregar plan operativo',
-        addPatient: 'Agregar paciente',
-        addPayment: 'Agregar pago',
-        addPhoto: 'Agregar foto',
-        addPricing: 'Agregar precio',
-        addPricingProfile: 'Agregar perfil de precios',
-        addProcedure: 'Agregar procedimiento',
-        addSocialwork: 'Agregar red social',
-        addVisit: 'Agregar visita',
-        addVitals: 'Agregar partes vitales',
+        addInvoice: 'Añadir factura',
+        addLab: 'Añadir laboratorio',
+        addMedication: 'Añadir medicación',
+        addNote: 'Añadir nota',
+        addOperationReport: '',
+        addOperativePlan: '',
+        addPatient: 'Añadir paciente',
+        addPayment: 'Añadir pago',
+        addPhoto: 'Añadir foto',
+        addPricing: 'Añadir precio',
+        addPricingProfile: 'Añadir perfil de precios',
+        addProcedure: '',
+        addSocialwork: '',
+        addVisit: 'Añadir visita',
+        addVitals: 'Añadir partes vitales',
         adjustInventoryLocation: 'Ajustar lugar elemento en el inventario',
         admin: 'Administración',
         admitPatient: 'Admitir paciente',
@@ -238,14 +238,14 @@ export default {
     warningExclamation: 'Advertencia!'
   },
   allergies: {
-    buttons: { addAllergy: 'Agregar alergia' },
+    buttons: { addAllergy: 'Añadir alergia' },
     labels: {
       allergyName: 'Nombre de alergia',
       patientAllergy: 'Alergias del paciente'
     },
     titles: {
-      addAllergy: 'Agregar alergia',
-      editAllergy: 'Editar alergia'
+      addAllergy: 'Añadir alergia',
+      editAllergy: 'Editar Alergia'
     }
   },
   application: {
@@ -318,16 +318,16 @@ export default {
     complete: 'Completado',
     'delete': 'Eliminar',
     dispense: 'Repartir',
-    edit: 'Editar',
-    filter: 'Filtrar',
+    edit: '',
+    filter: '',
     fulfill: 'Cumplimiento',
     'import': 'Importar',
     loadFile: 'Cargar archivo',
     newItem: '+ nuevo elemento',
-    newNote: 'Nueva nota',
-    newRequest: 'Nueva solicitud',
+    newNote: '+ Nueva nota',
+    newRequest: '+ Nueva solicitud',
     newRequestPlus: '+ nuevo pedido',
-    newUser: 'Nuevo usuario',
+    newUser: '+ Nuevo usuario',
     ok: 'Ok',
     remove: 'Quitar',
     returnButton: 'Regresar',
@@ -338,7 +338,7 @@ export default {
   },
   components: {
     chargesByTypeTab: { charges: 'Cargos' },
-    customFormManager: { buttons: { addForm: 'Agregar formulario' } },
+    customFormManager: { buttons: { addForm: 'Añadir Formulario' } },
     dateTimePicker: {
       amHour: '{{hour}} AM',
       midnight: 'Media noche',
@@ -459,7 +459,7 @@ export default {
     },
     buttons: { newButton: '+ Nueva radiografía' },
     labels: {
-      addNewVisit: '--Agregar nueva visita--',
+      addNewVisit: '--Añadir nueva visita--',
       radiologist: 'Radiólogo'
     },
     messages: { noCompleted: 'No de elementos encontrados.' },
@@ -735,7 +735,7 @@ export default {
       titleSingleDate: '{{name}} Reporte {{date}}'
     },
     titles: {
-      addPurchase: 'Agregar compra',
+      addPurchase: 'Añadir compra',
       addRequest: 'Nuevo pedido',
       adjustment: 'Ajuste',
       editPurchase: 'Editar compra',
@@ -863,7 +863,7 @@ export default {
     deleteTitle: 'Eliminar pedido',
     editTitle: 'Editar pedido de laboratorio',
     labels: {
-      addNewVisit: '--Agregar nueva visita--',
+      addNewVisit: '--Añadir nueva visita--',
       labType: 'Tipo de laboratorio'
     },
     messages: {
@@ -894,12 +894,12 @@ export default {
   },
   login: {
     labels: {
-      password: 'Clave',
+      password: 'Contraseña',
       signIn: 'Ingresar',
       username: 'Nombre de usuario'
     },
     messages: {
-      error: 'Nombre de usuario o clave incorrectos.',
+      error: 'Nombre de usuario o contraseña incorrectos.',
       signIn: 'por favor ingrese'
     }
   },
