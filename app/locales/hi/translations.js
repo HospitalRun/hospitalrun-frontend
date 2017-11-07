@@ -1,29 +1,29 @@
 export default {
-  languageName: 'English',
+  languageName: 'हिंदी',
   admin: {
     address: {
-      address1Label: 'Address 1 Label',
-      address2Label: 'Address 2 Label',
-      address3Label: 'Address 3 Label',
-      address4Label: 'Address 4 Label',
-      addressLabel: 'Address',
-      editTitle: 'Address Options',
-      include1Label: 'Include 1 Label',
-      include2Label: 'Include 2 Label',
-      include3Label: 'Include 3 Label',
-      include4Label: 'Include 4 Label',
-      messages: { addressSaved: 'The address options have been saved' },
-      newTitle: 'Address Options',
-      titles: { optionsSaved: 'Options Saved' }
+      address1Label: 'पता 1 लेबल',
+      address2Label: 'पता 2 लेबल',
+      address3Label: 'पता 3 लेबल',
+      address4Label: 'पता 4 लेबल',
+      addressLabel: 'पता',
+      editTitle: 'पता विकल्प',
+      include1Label: '1 लाबे शामिल करेंl',
+      include2Label: '2 लेबल शामिल करें',
+      include3Label: '3 लेबल शामिल करें',
+      include4Label: '4 लेबल शामिल करें',
+      messages: { addressSaved: 'पता विकल्प बचाए गए हैं' },
+      newTitle: 'पता विकल्प',
+      titles: { optionsSaved: 'विकल्प सेव किये गए' }
     },
-    addressOptions: 'Address Options',
+    addressOptions: 'पता विकल्प',
     customForms: {
       buttons: {
-        addField: 'Add Field',
-        moveDown: 'Move Down',
-        moveUp: 'Move Up',
-        newForm: '+ new form',
-        preview: 'Preview'
+        addField: 'क्षेत्र जोड़ें',
+        moveDown: 'नीचे की ओर',
+        moveUp: 'बढ़ाना',
+        newForm: '+ नए रूप मे',
+        preview: 'पूर्वावलोकन'
       },
       labels: {
         alwaysInclude: 'Always Include',
@@ -35,7 +35,6 @@ export default {
         expenseTo: 'Expense To',
         formName: 'Form Name',
         formType: 'Form Type',
-        header: 'Header',
         incidentFormType: 'Incident',
         includeOtherOption: 'Include Other Option',
         labFormType: 'Lab',
@@ -62,7 +61,6 @@ export default {
         editCustomForm: 'Edit Custom Form',
         fields: 'Fields',
         formSaved: 'Form Saved',
-        headerValues: 'Header Line Value',
         newCustomForm: 'New Custom Form',
         radioValues: 'Radio Values'
       }
@@ -154,7 +152,6 @@ export default {
         addPatient: 'Add Patient',
         addPayment: 'Add Payment',
         addPhoto: 'Add Photo',
-        addDocument: 'Add Document',
         addPricing: 'Add Pricing',
         addPricingProfile: 'Add Pricing Profile',
         addProcedure: 'Add Procedure',
@@ -182,7 +179,6 @@ export default {
         deleteNote: 'Delete Note',
         deletePatient: 'Delete Patient',
         deletePhoto: 'Delete Photo',
-        deleteDocument: 'Delete Document',
         deletePricing: 'Delete Pricing',
         deletePricingProfile: 'Delete Pricing Profile',
         deleteProcedure: 'Delete Procedure',
@@ -342,7 +338,6 @@ export default {
     'delete': 'Delete',
     dispense: 'Dispense',
     edit: 'Edit',
-    see: 'See',
     filter: 'Filter',
     fulfill: 'Fulfill',
     'import': 'Import',
@@ -417,14 +412,6 @@ export default {
         'with': 'With'
       },
       titles: { upcomingAppointments: 'Upcoming Appointments' }
-    }
-  },
-  mixins: {
-    schools: {
-      Axular: 'Azular',
-      Larrabutxu: 'Larra',
-      Zamudio: 'Zamu',
-      NeureClinic: 'Neure'
     }
   },
   customForms: {
@@ -910,9 +897,9 @@ export default {
       labType: 'Lab Type'
     },
     messages: {
-      createNewRecord: 'Create a new record?',
-      noCompleted: 'No completed items found.',
-      noItemsFound: 'No labs found.'
+      createNewRecord: 'एक नया रिकॉर्ड बनाएं?',
+      noCompleted: 'कोई पूर्ण आइटम नहीं मिला',
+      noItemsFound: 'कोई प्रयोगशाला नहीं मिली.'
     },
     newTitle: 'New Lab Request',
     requestsTitle: 'Lab Requests',
@@ -1211,7 +1198,6 @@ export default {
       newMedication: 'New Medication',
       newPatient: '+ new patient',
       newPhoto: 'New Photo',
-      newDocument: 'New Document',
       newVisit: 'New Visit',
       patientCheckIn: 'Patient Check In',
       scheduleSurgery: 'Schedule Surgery'
@@ -1219,10 +1205,10 @@ export default {
     labels: {
       admissionDate: 'Admission Date',
       admit: 'Admit',
-      school: 'School',
+      bloodType: 'Blood Type',
       caption: 'Caption',
       civilStatus: 'Civil Status',
-      l2: 'L2',
+      clinic: 'Clinic Site',
       contacts: 'Contacts',
       cost: 'Cost',
       dateOfBirth: 'Date Of Birth',
@@ -1238,7 +1224,7 @@ export default {
       lastName: 'Last Name',
       middleName: 'Middle Name',
       monthlyCost: 'Monthly Cost',
-      l1: 'L1',
+      occupation: 'Occupation',
       operativePlan: 'Operative Plan',
       parent: 'Parent/Guardian',
       patientDays: 'Patient Days',
@@ -1248,16 +1234,16 @@ export default {
       phone: 'Phone',
       placeOfBirth: 'Place Of Birth',
       primaryDiagnosis: 'Primary Diagnoses',
-      gradeGroup: 'Grade Group',
+      referredBy: 'Referred By',
       referredDate: 'Referred Date',
       relationship: 'Relationship To Patient',
       relationships: 'Relationships',
-      grade: 'Grade',
+      religion: 'Religion',
       secondaryDiagnosis: 'Secondary Diagnoses',
-      gender: 'Gender',
+      sex: 'Sex',
       sexNotEntered: 'Sex Not Entered',
       sources: 'Sources',
-      handedness: 'Handedness',
+      status: 'Patient Status',
       totalMontlyExpense: 'Total Monthly Expenses'
     },
     messages: {
@@ -1277,7 +1263,6 @@ export default {
       labs: 'Labs',
       medication: 'Medication',
       photos: 'Photos',
-      documents: 'Documents',
       socialWork: 'Social Work',
       visits: 'Visits'
     },
@@ -1291,7 +1276,6 @@ export default {
     titles: {
       addContact: 'Add Contact',
       addPhoto: 'Add Photo',
-      addDocument: 'Add Document',
       additionalContacts: 'Additional Contacts',
       admissionsDetail: 'Admissions Detail',
       admissionsSummary: 'Admissions Summary',
@@ -1302,14 +1286,11 @@ export default {
       deleteFamilyMember: 'Delete Family Member',
       deletePatientRecord: 'Delete Patient Record',
       deletePhoto: 'Delete Photo',
-      deleteDocument: 'Delete Document',
       diagnosticTesting: 'Diagnostic Testing',
       dischargesDetail: 'Discharges Detail',
       dischargesSummary: 'Discharges Summary',
       edit: 'Edit Patient',
       editPhoto: 'Edit Photo',
-      editDocument: 'Edit Document',
-      seeDocument: 'See Document',
       expenses: 'Expenses',
       familyInfo: 'Family Info',
       familyInformation: 'Family Information',
