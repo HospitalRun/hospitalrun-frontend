@@ -151,3 +151,50 @@ test('returning medication', function(assert) {
     });
   });
 });
+
+test('Searching medications', function(assert) {
+  runWithPouchDump('medication', function() {
+    authenticateUser();
+    visit('/medication');
+
+    fillIn('[role="search"] div input', 'Biogesic');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/medication/search/Biogesic', 'Searched for Medication Title: Biogesic');
+      assert.equal(find('.clickable').length, 1, 'There is one search item');
+    });
+
+    fillIn('[role="search"] div input', 'gesic');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/medication/search/gesic', 'Searched for all lower case gesic');
+      assert.equal(find('.clickable').length, 1, 'There is one search item');
+    });
+
+    fillIn('[role="search"] div input', 'hradmin');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/medication/search/hradmin', 'Searched for Prescriber: hradmin');
+      assert.notEqual(find('.clickable').length, 0, 'There are one or more search item');
+    });
+
+    fillIn('[role="search"] div input', '60 Biogesic Pills');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/medication/search/60%20Biogesic%20Pills', 'Searched for Prescription: 60 Biogesic Pills');
+      assert.equal(find('.clickable').length, 1, 'There is one search item');
+    });
+
+    fillIn('[role="search"] div input', 'ItemNotFound');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/medication/search/ItemNotFound', 'Searched for ItemNotFound');
+      assert.equal(find('.clickable').length, 0, 'There is no search result');
+    });
+  });
+});

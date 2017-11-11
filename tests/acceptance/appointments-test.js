@@ -4,6 +4,7 @@ import moment from 'moment';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 
 const DATE_TIME_FORMAT = 'l h:mm A';
+const DATE_FORMAT = 'l';
 const TIME_FORMAT = 'h:mm';
 
 module('Acceptance | appointments', {
@@ -94,6 +95,82 @@ test('Creating a new appointment', function(assert) {
   });
 });
 
+test('Creating a new appointment from patient screen', function(assert) {
+  runWithPouchDump('appointments', function() {
+    let today = moment().startOf('day');
+    let tomorrow =  moment(today).add(24, 'hours');
+    authenticateUser();
+    visit('/patients');
+    andThen(function() {
+      findWithAssert('button:contains(Edit)');
+    });
+    click('button:contains(Edit)');
+    andThen(function() {
+      assert.equal(find('button[data-test-selector="appointments-btn"]').length, 1, 'Tab Appointments shown AFTER clicking edit');
+    });
+
+    click('button[data-test-selector="appointments-btn"]');
+
+    andThen(function() {
+      assert.equal(currentURL().substr(0, 19), '/appointments/edit/', 'Creating appointment');
+    });
+
+    click('.appointment-all-day input');
+    fillIn('.test-appointment-start input', today.format(DATE_FORMAT));
+    fillIn('.test-appointment-end input', tomorrow.format(DATE_FORMAT));
+    typeAheadFillIn('.test-appointment-location', 'Harare');
+    typeAheadFillIn('.test-appointment-with', 'Dr Test');
+    click('button:contains(Add)');
+
+    waitToAppear('.modal-dialog');
+    andThen(() => {
+      assert.equal(find('.modal-title').text(), 'Appointment Saved', 'Appointment has been saved');
+      click('.modal-footer button:contains(Ok)');
+    });
+
+    click('button:contains(Return)');
+    andThen(() => {
+      assert.equal(currentURL().substr(0, 15), '/patients/edit/', 'Back on patient edit screen');
+    });
+  });
+});
+
+test('Change appointment type', function(assert) {
+  runWithPouchDump('appointments', function() {
+    let today = moment().startOf('day');
+    authenticateUser();
+    visit('/appointments/edit/new');
+
+    andThen(function() {
+      assert.equal(currentURL(), '/appointments/edit/new');
+      findWithAssert('button:contains(Cancel)');
+      findWithAssert('button:contains(Add)');
+    });
+
+    createAppointment(assert);
+
+    andThen(() => {
+      assert.equal(currentURL(), '/appointments');
+      assert.equal(find('tr').length, 2, 'New appointment has been added');
+      findWithAssert('button:contains(Edit)');
+    });
+
+    click('button:contains(Edit)');
+
+    andThen(() => {
+      assert.equal(currentURL().substring(0, 19), '/appointments/edit/');
+      assert.equal(find('.appointment-all-day input').val(), 'on', 'All day appointment is on');
+    });
+
+    select('.test-appointment-type', 'Clinic');
+
+    andThen(() => {
+      assert.equal(find('.test-appointment-date input').val(), today.format(DATE_FORMAT), 'Single date field found');
+      assert.equal(find('.appointment-all-day').val(), '', 'All day appointment was turned off');
+    });
+  });
+});
+
 test('Checkin to a visit from appointment', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
@@ -109,6 +186,7 @@ test('Checkin to a visit from appointment', function(assert) {
     });
 
     click('button:contains(Check In)');
+
     andThen(() => {
       assert.equal(currentURL(), '/visits/edit/checkin', 'Now in add visiting information route');
     });

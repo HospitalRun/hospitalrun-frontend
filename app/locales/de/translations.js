@@ -1,4 +1,5 @@
 export default {
+  languageName: 'Deutsche',
   admin: {
     address: {
       address1Label: 'Adresse 1 Kennzeichen',
@@ -873,17 +874,6 @@ export default {
     newTitle: '',
     requestsTitle: '',
     sectionTitle: ''
-  },
-  languages: {
-    en: 'Englisch',
-    fr: 'Französisch',
-    es: 'Spanisch',
-    de: 'Deutsche',
-    ru: 'Russisch',
-    'es-co': 'Spanisch (Kolumbianisch)',
-    'pt-br': 'Portugiesisch (Brasilianer)',
-    tr: 'Türkisch',
-    ur: 'Urdu'
   },
   loading: {
     messages: {

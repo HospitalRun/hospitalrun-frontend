@@ -3,6 +3,9 @@ import AdjustmentTypes from 'hospitalrun/mixins/inventory-adjustment-types';
 import DS from 'ember-data';
 import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
+
+const { computed } = Ember;
+
 /**
  * Model to represent a request for inventory items.
  */
@@ -32,13 +35,13 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
     async: false
   }),
 
-  deliveryLocationName: function() {
+  deliveryLocationName: computed('deliveryAisle', 'deliveryLocation', function() {
     let aisle = this.get('deliveryAisle');
     let location = this.get('deliveryLocation');
     return this.formatLocationName(location, aisle);
-  }.property('deliveryAisle', 'deliveryLocation'),
+  }),
 
-  deliveryDetails: function() {
+  deliveryDetails: computed('deliveryAisle', 'deliveryLocation', 'patient', function() {
     let locationName = this.get('deliveryLocationName');
     let patient = this.get('patient');
     if (Ember.isEmpty(patient)) {
@@ -46,26 +49,26 @@ let InventoryRequest = AbstractModel.extend(AdjustmentTypes, LocationName, {
     } else {
       return patient.get('displayName');
     }
-  }.property('deliveryAisle', 'deliveryLocation', 'patient'),
+  }),
 
-  haveReason: function() {
+  haveReason: computed('reason', function() {
     return !Ember.isEmpty(this.get('reason'));
-  }.property('reason'),
+  }),
 
-  isAdjustment: function() {
+  isAdjustment: computed('transactionType', function() {
     let adjustmentTypes = this.get('adjustmentTypes');
     let transactionType = this.get('transactionType');
     let adjustmentType = adjustmentTypes.findBy('type', transactionType);
     return !Ember.isEmpty(adjustmentType);
-  }.property('transactionType'),
+  }),
 
-  isFulfillment: function() {
+  isFulfillment: computed('transactionType', function() {
     return this.get('transactionType') === 'Fulfillment';
-  }.property('transactionType'),
+  }),
 
-  isTransfer: function() {
+  isTransfer: computed('transactionType', function() {
     return this.get('transactionType') === 'Transfer';
-  }.property('transactionType'),
+  }),
 
   validations: {
     inventoryItemTypeAhead: {

@@ -1,4 +1,5 @@
 export default {
+  languageName: 'اردو',
   admin: {
     address: {
       address1Label: 'ایڈریس 1 لیبل',
@@ -873,17 +874,6 @@ export default {
     newTitle: 'نئے لیب کی گذارش',
     requestsTitle: 'لیب درخواستیں',
     sectionTitle: 'لیبز'
-  },
-  languages: {
-    en: 'انگریزی',
-    fr: 'فرانسیسی',
-    es: 'ہسپانوی',
-    de: 'جرمن',
-    ru: 'روسی',
-    'es-co': 'ہسپانوی (کولمبیا)',
-    'pt-br': 'پرتگالی (برازیل)',
-    tr: 'ترکی',
-    ur: 'اردو'
   },
   loading: {
     messages: {
