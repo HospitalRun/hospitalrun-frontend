@@ -247,13 +247,13 @@ test('Delete an appointment', function(assert) {
 test('Appointment calendar', function(assert) {
   runWithPouchDump('appointments', function() {
     authenticateUser();
-    let today = moment().startOf('day');
-    let later =  moment(today).add(1, 'hours');
-    let startTime = today.format(TIME_FORMAT);
+    let tomorrow = moment().add(1, 'day').startOf('day');
+    let later =  moment(tomorrow).add(1, 'hours');
+    let startTime = tomorrow.format(TIME_FORMAT);
     let endTime = later.format(TIME_FORMAT);
     let timeString = `${startTime} - ${endTime}`;
     createAppointment(assert, {
-      startDate: today,
+      startDate: tomorrow,
       endDate: later,
       allDay: false,
       status: 'Scheduled'
@@ -273,7 +273,7 @@ test('Appointment calendar', function(assert) {
 
     andThen(() => {
       assert.equal(find('.view-current-title').text(), 'Edit Appointment', 'Edit Appointment displays');
-      assert.equal(find('.test-appointment-start input').val(), today.format(DATE_TIME_FORMAT), 'Start date/time are correct');
+      assert.equal(find('.test-appointment-start input').val(), tomorrow.format(DATE_TIME_FORMAT), 'Start date/time are correct');
       assert.equal(find('.test-appointment-end input').val(), later.format(DATE_TIME_FORMAT), 'End date/time are correct');
     });
   });
