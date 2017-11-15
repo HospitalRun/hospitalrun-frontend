@@ -595,7 +595,7 @@ export default {
   inventory: {
     edit: {
       cost: 'Cost Per Unit:',
-      delivered: 'Delievered To:',
+      delivered: 'Delivered To:',
       location: 'Location Adjusted:',
       prescription: 'Prescription For:',
       pulled: 'Pulled From:',
