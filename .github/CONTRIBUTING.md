@@ -6,7 +6,7 @@ En este proyecto utilizamos las guías de estilo provenientes de Dockyard para [
 ​
 ## Contacto a través del Canal Slack
 ​
-Project communication occurs primarily and intentionally via our project [Slack](https://hospitalrun.slack.com/). Those interested in / considering contribution are encouraged to [join](https://hospitalrun-slackin.herokuapp.com/). Project maintainers, contributors, and other community members in the Slack channel are usually available to answer questions, so feel free to ask about anything you need help with in the General channel. 
+En este proyecto nos comunicamos fundamentalmente a través de nuestro [Canal de Slack para HospitalRun](https://hospitalrun.slack.com/). Quien desee colaborar es invitad a [unirse a nuestra comunidad Slack](https://hospitalrun-slackin.herokuapp.com/). Quienes mantienen el proyecto, quienes contribuyen y oros miembros se encuentran todos en nuestro canal Slack, lugar donde es posible encontrar respuestas. Por favor realice sus consultas y solicite ayuda en el canal general de nuestro Slack. 
 ​
 However, before you ask in Slack "what can I contribute to", be sure to keep reading this document for the answer to your question. :-)
 ​
