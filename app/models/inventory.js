@@ -1,11 +1,10 @@
+import { isEmpty } from '@ember/utils';
+import { set, get } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
-import Ember from 'ember';
 import computed from 'ember-computed';
 import LocationName from 'hospitalrun/mixins/location-name';
 import { rankToMultiplier, getCondition } from 'hospitalrun/utils/item-condition';
-
-const { get, set } = Ember;
 
 let validateIfNewItem = {
   if: function validateNewItem(object) {
@@ -50,7 +49,7 @@ export default AbstractModel.extend(LocationName, {
       let aisleLocationName = get(currentLocation, 'aisleLocation');
       let locationName = get(currentLocation, 'location');
       let displayLocationName = this.formatLocationName(locationName, aisleLocationName);
-      if (!Ember.isEmpty(displayLocationName)) {
+      if (!isEmpty(displayLocationName)) {
         returnLocations.push(displayLocationName);
       }
     });

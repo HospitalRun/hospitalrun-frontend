@@ -5,7 +5,7 @@
 
 if nvm > /dev/null 2>&1; then
     echo "setting proper node version"
-    
+
 else
     echo "Cannot find nvm. This probably means you are running this script in its own shell. Try again with source ./script/setupcloud9"
     return 1
@@ -20,16 +20,11 @@ nvm alias default 6
 sudo mkdir -p /var/run/couchdb
 sudo chown couchdb:couchdb /var/run/couchdb
 
-
-npm install -g npm
+npm install -g yarn npm n
 npm cache clean -f
-npm install -g n
 sudo n stable
-npm install -g ember-cli@latest
-npm install -g bower
-npm install
-bower install
-npm install -g phantomjs-prebuilt
+npm install -g ember-cli@latest phantomjs-prebuilt
+yarn install
 
 sudo su couchdb -c /usr/bin/couchdb &
 sleep 5

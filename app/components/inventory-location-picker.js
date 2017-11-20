@@ -1,6 +1,9 @@
+import EmberObject from '@ember/object';
+import { isEmpty } from '@ember/utils';
+import Component from '@ember/component';
 import Ember from 'ember';
 import SelectValues from 'hospitalrun/utils/select-values';
-export default Ember.Component.extend({
+export default Component.extend({
   calculatedLocationPickers: null,
   doingSetup: false,
   label: null,
@@ -18,7 +21,7 @@ export default Ember.Component.extend({
       locationPickers.reduce(function(previousValue, item, index) {
         let selectedLocation = item.get('selectedLocation');
         let returnValue;
-        if (Ember.isEmpty(selectedLocation)) {
+        if (isEmpty(selectedLocation)) {
           returnValue = previousValue;
         } else {
           returnValue = (previousValue + selectedLocation.get('quantity'));
@@ -34,7 +37,7 @@ export default Ember.Component.extend({
           this.set('calculatedLocationPickers', locationPickers);
         }
       } else {
-        locationPickers.addObject(Ember.Object.create());
+        locationPickers.addObject(EmberObject.create());
       }
       this._setupLocationPickers(locationPickers, locationList);
     }
@@ -61,7 +64,7 @@ export default Ember.Component.extend({
       });
     }, locationList);
     let firstPicker = locationPickers.get('firstObject');
-    if (!Ember.isEmpty(firstPicker)) {
+    if (!isEmpty(firstPicker)) {
       firstPicker.set('label', this.get('label'));
     }
     this.set('calculatedLocationPickers', locationPickers);
@@ -71,14 +74,14 @@ export default Ember.Component.extend({
     let locationList = this.get('locationList');
     let locationPickers = [];
     let quantityRequested = this.get('quantityRequested');
-    if (Ember.isEmpty(locationList) || Ember.isEmpty(quantityRequested)) {
+    if (isEmpty(locationList) || isEmpty(quantityRequested)) {
       // We need both a locationList and a quantityRequested
       return;
     }
     this.set('doingSetup', true);
     locationList.reduce(function(previousValue, location) {
       if (previousValue < quantityRequested) {
-        locationPickers.addObject(Ember.Object.create());
+        locationPickers.addObject(EmberObject.create());
       }
       return (previousValue + location.get('quantity'));
     }, 0);

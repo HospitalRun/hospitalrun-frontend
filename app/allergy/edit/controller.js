@@ -1,18 +1,11 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import { Promise as EmberPromise } from 'rsvp';
+import { alias } from '@ember/object/computed';
+import { set, get, computed } from '@ember/object';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 
-const {
-  computed,
-  computed: {
-    alias
-  },
-  get,
-  inject,
-  set
-} = Ember;
-
 export default AbstractEditController.extend({
-  i18n: inject.service(),
+  i18n: service(),
   editController: alias('model.editController'),
   newAllergy: false,
 
@@ -30,7 +23,7 @@ export default AbstractEditController.extend({
     }
   }),
 
-  title: Ember.computed('model', function() {
+  title: computed('model', function() {
     let model = get(this, 'model');
     let i18n = get(this, 'i18n');
     let isNew = get(model, 'isNew');
@@ -44,7 +37,7 @@ export default AbstractEditController.extend({
   beforeUpdate() {
     let allergy = get(this, 'model');
     set(this, 'newAllergy', get(allergy, 'isNew'));
-    return Ember.RSVP.Promise.resolve();
+    return EmberPromise.resolve();
   },
 
   afterUpdate(allergy) {

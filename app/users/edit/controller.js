@@ -1,15 +1,14 @@
+import { isEmpty } from '@ember/utils';
+import { inject as controller } from '@ember/controller';
+import { inject as service } from '@ember/service';
+import { get } from '@ember/object';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
 import UserRoles from 'hospitalrun/mixins/user-roles';
 import uuid from 'npm:uuid';
 
-const {
-  get
-} = Ember;
-
 export default AbstractEditController.extend(UserRoles, {
-  config: Ember.inject.service(),
-  usersController: Ember.inject.controller('users/index'),
+  config: service(),
+  usersController: controller('users/index'),
   updateCapability: 'add_user',
 
   users: null,
@@ -23,7 +22,7 @@ export default AbstractEditController.extend(UserRoles, {
         let newData = updateModel.getProperties('password', 'email', 'roles', 'displayName');
         newData.name = newData.email;
         newData.id = `org.couchdb.user:${newData.email}`;
-        if (Ember.isEmpty(newData.password)) {
+        if (isEmpty(newData.password)) {
           newData.password = uuid.v4() + uuid.v4();
         }
         updateModel.deleteRecord();
@@ -31,13 +30,13 @@ export default AbstractEditController.extend(UserRoles, {
         this.set('model', updateModel);
       }
 
-      if (Ember.isEmpty(updateModel.get('userPrefix'))) {
+      if (isEmpty(updateModel.get('userPrefix'))) {
         let counter = 1;
         let prefix = 'p';
         let userPrefix = prefix + 0;
         let usedPrefix = users.findBy('userPrefix', prefix);
 
-        while (!Ember.isEmpty(usedPrefix)) {
+        while (!isEmpty(usedPrefix)) {
           prefix = userPrefix + counter++;
           usedPrefix = users.findBy('userPrefix', prefix);
         }

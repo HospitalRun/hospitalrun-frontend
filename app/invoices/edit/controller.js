@@ -1,5 +1,14 @@
+import { merge } from '@ember/polyfills';
+import EmberObject, { set } from '@ember/object';
+import {
+  all,
+  allSettled,
+  Promise as EmberPromise
+} from 'rsvp';
+import { isEmpty } from '@ember/utils';
+import { alias, map } from '@ember/object/computed';
+import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
 import moment from 'moment';
 import NumberFormat from 'hospitalrun/mixins/number-format';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
@@ -8,11 +17,11 @@ import SelectValues from 'hospitalrun/utils/select-values';
 import uuid from 'npm:uuid';
 
 export default AbstractEditController.extend(NumberFormat, PatientSubmodule, PublishStatuses, {
-  invoiceController: Ember.inject.controller('invoices'),
-  expenseAccountList: Ember.computed.alias('invoiceController.expenseAccountList.value'),
-  patientList: Ember.computed.alias('invoiceController.patientList'),
+  invoiceController: controller('invoices'),
+  expenseAccountList: alias('invoiceController.expenseAccountList.value'),
+  patientList: alias('invoiceController.patientList'),
   pharmacyCharges: [],
-  pricingProfiles: Ember.computed.map('invoiceController.pricingProfiles', SelectValues.selectObjectMap),
+  pricingProfiles: map('invoiceController.pricingProfiles', SelectValues.selectObjectMap),
   supplyCharges: [],
   updateCapability: 'add_invoice',
   wardCharges: [],
@@ -49,7 +58,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
 
   pharmacyExpenseAccount: function() {
     let expenseAccountList = this.get('expenseAccountList');
-    if (!Ember.isEmpty(expenseAccountList)) {
+    if (!isEmpty(expenseAccountList)) {
       let account = expenseAccountList.find(function(value) {
         if (value.toLowerCase().indexOf('pharmacy') > -1) {
           return true;
@@ -90,13 +99,13 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       currentInvoice.get('patient.payments').then(function(patientPayments) {
         patientPayments.forEach(function(payment) {
           let invoice = payment.get('invoice');
-          if (Ember.isEmpty(invoice)) {
+          if (isEmpty(invoice)) {
             payment.set('invoice', currentInvoice);
             paymentsToSave.push(payment.save());
             invoicePayments.addObject(payment);
           }
         }.bind(this));
-        Ember.RSVP.all(paymentsToSave).then(function() {
+        all(paymentsToSave).then(function() {
           this.set('model.status', 'Billed');
           this.send('update');
         }.bind(this));
@@ -124,7 +133,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     },
 
     showDeleteItem(itemToDelete, deleteFrom) {
-      this.showDeleteModal(itemToDelete, Ember.Object.create({
+      this.showDeleteModal(itemToDelete, EmberObject.create({
         confirmAction: 'deleteCharge',
         deleteFrom,
         title: 'Delete Charge'
@@ -132,14 +141,14 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     },
 
     showDeleteLineItem(item) {
-      this.showDeleteModal(item, Ember.Object.create({
+      this.showDeleteModal(item, EmberObject.create({
         confirmAction: 'deleteLineItem',
         title: 'Delete Line Item'
       }));
     },
 
     showDeleteModal(item, options) {
-      options = Ember.merge(options, Ember.Object.create({
+      options = merge(options, EmberObject.create({
         message: `Are you sure you want to delete ${item.get('name')}?`,
         itemToDelete: item,
         updateButtonAction: 'confirm',
@@ -150,7 +159,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
 
     showRemovePayment(payment) {
       let message = 'Are you sure you want to remove this payment from this invoice?';
-      let model = Ember.Object.create({
+      let model = EmberObject.create({
         itemToRemove: payment
       });
       let title = 'Remove Payment';
@@ -165,7 +174,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   changePaymentProfile: function() {
     let patient = this.get('model.patient');
     let paymentProfile = this.get('model.paymentProfile');
-    if (!Ember.isEmpty(patient) && Ember.isEmpty(paymentProfile)) {
+    if (!isEmpty(patient) && isEmpty(paymentProfile)) {
       this.set('model.paymentProfile', patient.get('paymentProfile'));
     }
   }.observes('model.patient'),
@@ -181,10 +190,10 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         let lineDiscount = 0;
         details.forEach(function(detail) {
           let pricingOverrides = detail.get('pricingItem.pricingOverrides');
-          if (!Ember.isEmpty(pricingOverrides)) {
+          if (!isEmpty(pricingOverrides)) {
             let pricingOverride = pricingOverrides.findBy('profile.id', profileId);
-            if (!Ember.isEmpty(pricingOverride)) {
-              Ember.set(detail, 'price', pricingOverride.get('price'));
+            if (!isEmpty(pricingOverride)) {
+              set(detail, 'price', pricingOverride.get('price'));
             }
           }
         }.bind(this));
@@ -201,25 +210,25 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   visitChanged: function() {
     let visit = this.get('model.visit');
     let lineItems = this.get('model.lineItems');
-    if (!Ember.isEmpty(visit) && Ember.isEmpty(lineItems)) {
+    if (!isEmpty(visit) && isEmpty(lineItems)) {
       this.set('model.originalPaymentProfileId');
       let promises = this.resolveVisitChildren();
-      Ember.RSVP.allSettled(promises, 'Resolved visit children before generating invoice').then(function(results) {
+      allSettled(promises, 'Resolved visit children before generating invoice').then(function(results) {
         let chargePromises = this._resolveVisitDescendents(results, 'charges');
-        if (!Ember.isEmpty(chargePromises)) {
+        if (!isEmpty(chargePromises)) {
           let promiseLabel = 'Reloaded charges before generating invoice';
-          Ember.RSVP.allSettled(chargePromises, promiseLabel).then(function(chargeResults) {
+          allSettled(chargePromises, promiseLabel).then(function(chargeResults) {
             let pricingPromises = [];
             chargeResults.forEach(function(result) {
-              if (!Ember.isEmpty(result.value)) {
+              if (!isEmpty(result.value)) {
                 let pricingItem = result.value.get('pricingItem');
-                if (!Ember.isEmpty(pricingItem)) {
+                if (!isEmpty(pricingItem)) {
                   pricingPromises.push(pricingItem.reload());
                 }
               }
             });
             promiseLabel = 'Reloaded pricing items before generating invoice';
-            Ember.RSVP.allSettled(pricingPromises, promiseLabel).then(function() {
+            allSettled(pricingPromises, promiseLabel).then(function() {
               this._generateLineItems(visit, results);
               this.paymentProfileChanged();
             }.bind(this));
@@ -317,7 +326,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       supplyCharges: [],
       wardCharges: []
     });
-    if (!Ember.isEmpty(endDate) && !Ember.isEmpty(startDate)) {
+    if (!isEmpty(endDate) && !isEmpty(startDate)) {
       endDate = moment(endDate);
       startDate = moment(startDate);
       let stayDays = endDate.diff(startDate, 'days');
@@ -356,8 +365,8 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     }.bind(this));
 
     labs.forEach(function(lab) {
-      if (!Ember.isEmpty(lab.get('labType'))) {
-        this._addSupplyCharge(Ember.Object.create({
+      if (!isEmpty(lab.get('labType'))) {
+        this._addSupplyCharge(EmberObject.create({
           pricingItem: lab.get('labType'),
           quantity: 1
         }), 'Lab');
@@ -368,8 +377,8 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
     }.bind(this));
 
     imaging.forEach(function(imaging) {
-      if (!Ember.isEmpty(imaging.get('imagingType'))) {
-        this._addSupplyCharge(Ember.Object.create({
+      if (!isEmpty(imaging.get('imagingType'))) {
+        this._addSupplyCharge(EmberObject.create({
           pricingItem: imaging.get('imagingType'),
           quantity: 1
         }), 'Imaging');
@@ -379,7 +388,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
       }.bind(this));
     }.bind(this));
 
-    Ember.RSVP.all(pharmacyChargePromises).then(() =>  {
+    all(pharmacyChargePromises).then(() =>  {
       lineItem = this.store.createRecord('billing-line-item', {
         id: uuid.v4(),
         name: 'Pharmacy',
@@ -425,10 +434,10 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   _resolveVisitDescendents(results, childNameToResolve) {
     let promises = [];
     results.forEach(function(result) {
-      if (!Ember.isEmpty(result.value)) {
+      if (!isEmpty(result.value)) {
         result.value.forEach(function(record) {
           let children = record.get(childNameToResolve);
-          if (!Ember.isEmpty(children)) {
+          if (!isEmpty(children)) {
             children.forEach(function(child) {
               // Make sure children are fully resolved
               promises.push(child.reload());
@@ -441,7 +450,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
   },
 
   beforeUpdate() {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       let lineItems = this.get('model.lineItems');
       let savePromises = [];
       lineItems.forEach(function(lineItem) {
@@ -450,7 +459,7 @@ export default AbstractEditController.extend(NumberFormat, PatientSubmodule, Pub
         }.bind(this));
         savePromises.push(lineItem.save());
       }.bind(this));
-      Ember.RSVP.all(savePromises, 'Saved invoice children before saving invoice').then(function() {
+      all(savePromises, 'Saved invoice children before saving invoice').then(function() {
         if (this.get('model.isNew')) {
           this.store.find('sequence', 'invoice').then(function(sequence) {
             this._completeBeforeUpdate(sequence, resolve, reject);

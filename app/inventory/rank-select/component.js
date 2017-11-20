@@ -1,7 +1,8 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import Component from '@ember/component';
 import SelectValues from 'hospitalrun/utils/select-values';
 import computed from 'ember-computed';
-export default Ember.Component.extend({
+export default Component.extend({
   rankOptions: [],
   prompt: ' ',
   class: 'col-sm-2 test-inv-rank',
@@ -14,6 +15,6 @@ export default Ember.Component.extend({
     this._super(...arguments);
 
     // set available options
-    this.set('rankOptions', Ember.A(['A', 'B', 'C']));
+    this.set('rankOptions', A(['A', 'B', 'C']));
   }
 });

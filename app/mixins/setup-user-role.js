@@ -1,5 +1,6 @@
+import Mixin from '@ember/object/mixin';
 import Ember from 'ember';
-export default Ember.Mixin.create({
+export default Mixin.create({
   setupUserRole() {
     let session = this.get('session');
     let userRole = session.get('data.authenticated.role');

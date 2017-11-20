@@ -1,12 +1,13 @@
-import Ember from 'ember';
-export default Ember.Component.extend({
+import { isEmpty } from '@ember/utils';
+import Component from '@ember/component';
+export default Component.extend({
   includeOtherOption: false,
   otherOptionLabel: null,
   showInline: false,
 
   haveLabel: function() {
     let firstRadio = this.get('content.firstObject');
-    return !Ember.isEmpty(firstRadio.label);
+    return !isEmpty(firstRadio.label);
   }.property('content'),
 
   radioClass: function() {

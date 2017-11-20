@@ -1,5 +1,5 @@
+import { isEmpty } from '@ember/utils';
 import AbstractModel from 'hospitalrun/models/abstract';
-import Ember from 'ember';
 
 /**
  * Model to represent a request for inventory items.
@@ -7,7 +7,7 @@ import Ember from 'ember';
 export default AbstractModel.extend({
   haveInvoiceItems() {
     let invoiceItems = this.get('invoiceItems');
-    return !Ember.isEmpty(invoiceItems);
+    return !isEmpty(invoiceItems);
   },
 
   validations: {

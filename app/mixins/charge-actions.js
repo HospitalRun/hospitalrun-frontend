@@ -1,11 +1,20 @@
-import Ember from 'ember';
-export default Ember.Mixin.create({
+import { isArray } from '@ember/array';
+import { alias } from '@ember/object/computed';
+import { isEmpty } from '@ember/utils';
+import EmberObject from '@ember/object';
+import {
+  Promise as EmberPromise,
+  all,
+  resolve
+} from 'rsvp';
+import Mixin from '@ember/object/mixin';
+export default Mixin.create({
   chargePricingCategory: null,
   pricingList: null,
   pricingTypeForObjectType: null,
   pricingTypes: null,
   _createNewChargeRecord(quantityCharged, pricingId) {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       this.store.find('pricing', pricingId).then(function(item) {
         let newCharge = this.store.createRecord('proc-charge', {
           dateCharged: new Date(),
@@ -57,7 +66,7 @@ export default Ember.Mixin.create({
     },
 
     showDeleteCharge(charge) {
-      this.send('openModal', 'dialog', Ember.Object.create({
+      this.send('openModal', 'dialog', EmberObject.create({
         closeModalOnConfirm: false,
         confirmAction: 'deleteCharge',
         title: 'Delete Charge Item',
@@ -109,27 +118,27 @@ export default Ember.Mixin.create({
     let pricingList = this.get('pricingList');
     let pricingTypeForObjectType = this.get('pricingTypeForObjectType');
     let userCanAddPricingTypes = this.get('userCanAddPricingTypes');
-    let returnList = Ember.Object.create({
+    let returnList = EmberObject.create({
       value: [],
       userCanAdd: userCanAddPricingTypes
     });
-    if (!Ember.isEmpty(pricingList)) {
+    if (!isEmpty(pricingList)) {
       returnList.set('value', pricingList.filterBy('pricingType', pricingTypeForObjectType));
     }
     return returnList;
   }.property('pricingList', 'pricingTypeForObjectType', 'pricingTypeValues'),
 
-  organizeByType: Ember.computed.alias('pricingTypes.organizeByType'),
+  organizeByType: alias('pricingTypes.organizeByType'),
 
   pricingTypeList: function() {
     let pricingList = this.get('pricingList');
     let pricingTypeValues = this.get('pricingTypeValues');
     let pricingTypeForObjectType = this.get('pricingTypeForObjectType');
-    if (!Ember.isEmpty(pricingTypeValues)) {
+    if (!isEmpty(pricingTypeValues)) {
       pricingTypeValues = pricingTypeValues.filter(function(pricingType) {
         let havePricing = false;
-        if (!Ember.isEmpty(pricingList)) {
-          havePricing = !Ember.isEmpty(pricingList.findBy('pricingType', pricingType));
+        if (!isEmpty(pricingList)) {
+          havePricing = !isEmpty(pricingList.findBy('pricingType', pricingType));
         }
         return havePricing && pricingType !== pricingTypeForObjectType;
       });
@@ -138,7 +147,7 @@ export default Ember.Mixin.create({
     }
   }.property('pricingTypeValues', 'pricingTypeForObjectType', 'pricingList'),
 
-  pricingTypeValues: Ember.computed.alias('pricingTypes.value'),
+  pricingTypeValues: alias('pricingTypes.value'),
 
   /**
    * Create multiple new request records from the pricing records passed in.  This function
@@ -183,19 +192,19 @@ export default Ember.Mixin.create({
       }
     }.bind(this));
 
-    Ember.RSVP.all(savePromises).then(function() {
+    all(savePromises).then(function() {
       let addPromises = [];
       modelsToAdd.forEach(function(modelToSave) {
         addPromises.push(this.addChildToVisit(modelToSave, visitChildName, newVisitType));
       }.bind(this));
-      Ember.RSVP.all(addPromises).then(function(addResults) {
+      all(addPromises).then(function(addResults) {
         this.afterUpdate(addResults, true);
       }.bind(this));
     }.bind(this));
   },
 
   saveNewPricing(pricingName, pricingCategory, priceObjectToSet) {
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       let newPricing;
       let pricingTypeForObjectType = this.get('pricingTypeForObjectType');
       newPricing = this.store.createRecord('pricing', {
@@ -216,16 +225,16 @@ export default Ember.Mixin.create({
 
   getSelectedPricing(selectedField) {
     let selectedItem = this.get(selectedField);
-    if (!Ember.isEmpty(selectedItem)) {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
-        if (Ember.isArray(selectedItem)) {
+    if (!isEmpty(selectedItem)) {
+      return new EmberPromise(function(resolve, reject) {
+        if (isArray(selectedItem)) {
           this.store.findByIds('pricing', selectedItem).then(resolve, reject);
         } else {
           this.store.find('pricing', selectedItem.id).then(resolve, reject);
         }
       }.bind(this));
     } else {
-      return Ember.RSVP.resolve();
+      return resolve();
     }
   },
 
@@ -251,12 +260,12 @@ export default Ember.Mixin.create({
 
   showPricingTypeTabs: function() {
     let pricingTypeList = this.get('pricingTypeList');
-    return (!Ember.isEmpty(pricingTypeList) && pricingTypeList.get('length') > 1);
+    return !isEmpty(pricingTypeList) && pricingTypeList.get('length') > 1;
   }.property('pricingTypeList'),
 
   userCanAddPricingTypes: function() {
     let pricingTypes = this.get('pricingTypes');
-    if (Ember.isEmpty(pricingTypes)) {
+    if (isEmpty(pricingTypes)) {
       return true;
     } else {
       return pricingTypes.get('userCanAdd');
@@ -269,9 +278,9 @@ export default Ember.Mixin.create({
   updateCharges() {
     let organizeByType = this.get('organizeByType');
     if (!organizeByType) {
-      return Ember.RSVP.resolve();
+      return resolve();
     }
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       let charges = this.get('model.charges');
       let chargePromises = [];
       let model = this.get('model');
@@ -279,7 +288,7 @@ export default Ember.Mixin.create({
       pricingList.forEach(function(pricingItem) {
         let currentCharge = this.findChargeForPricingItem(pricingItem, model.get('charges'));
         let quantityCharged = model.get(pricingItem.id);
-        if (Ember.isEmpty(quantityCharged)) {
+        if (isEmpty(quantityCharged)) {
           if (currentCharge) {
             // Remove existing charge because quantity is blank
             charges.removeObject(currentCharge);
@@ -296,7 +305,7 @@ export default Ember.Mixin.create({
           }
         }
       }.bind(this));
-      Ember.RSVP.all(chargePromises, `Charges updated for current record: ${this.get('model.id')}`).then(resolve, reject);
+      all(chargePromises, `Charges updated for current record: ${this.get('model.id')}`).then(resolve, reject);
     }.bind(this), `updateCharges for current record: ${this.get('model.id')}`);
   }
 });

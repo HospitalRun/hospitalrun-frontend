@@ -17,7 +17,7 @@ var config = {
   disableOfflineSync: false, //Set to true to disable offline usage
   /* The following settings are used to enable offline usage of HospitalRun
      You will need to install web-push to generate the keys:
-     1. npm install web-push -g 
+     1. yarn install web-push -g 
      2. web-push generate-vapid-keys
      3. You will need to set pushContactInfo to a valid email address
   pushPublicKey: false,

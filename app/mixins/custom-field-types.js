@@ -1,8 +1,8 @@
-import Ember from 'ember';
+import { compare } from '@ember/utils';
+import Mixin from '@ember/object/mixin';
+import { computed } from '@ember/object';
 
-const { computed } = Ember;
-
-export default Ember.Mixin.create({
+export default Mixin.create({
 
   fieldTypeValues: [
     'checkbox',
@@ -21,7 +21,7 @@ export default Ember.Mixin.create({
         value: i18n.t(`admin.customForms.labels.${fieldTypeId}`)
       };
     }).sort(function(a, b) {
-      return Ember.compare(a.value.toString(), b.value.toString());
+      return compare(a.value.toString(), b.value.toString());
     });
   })
 });

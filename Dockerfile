@@ -1,21 +1,25 @@
-FROM ubuntu:14.04
+FROM node:6-alpine
 
-# install couchdb
-RUN apt-get update && apt-get install curl sudo git wget -y
+# install script dependencies
+RUN apk update && apk add sudo curl git wget bash binutils tar python build-base
+RUN rm -rf /var/cache/apk/*
 
-# install hospital run
-RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-RUN apt-get update && apt-get install nodejs -y
+# setup folders
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
+
+# install yarn dependencies
+COPY ./package.json /usr/src/app
+COPY ./yarn.lock /usr/src/app
+RUN /bin/bash && touch ~/.bashrc && curl -o- -L https://yarnpkg.com/install.sh | bash
+RUN npm install -g ember-cli@latest
+RUN yarn install
+
+# install source code
 COPY . /usr/src/app
-
-RUN npm install -g ember-cli@latest && npm install -g bower
-RUN npm install
-
-RUN bower install --allow-root
 COPY ./server/config-example.js ./server/config.js
 
+# define settings
 RUN sed -i -e 's/URL="localhost"/URL="couchdb"/g' ./script/initcouch.sh
 RUN sed -i -e "s/couchDbServer: 'localhost'/couchDbServer: 'couchdb'/g" ./server/config.js
 RUN sed -i -e "s/localhost:5984/couchdb:5984/g" ./script/server

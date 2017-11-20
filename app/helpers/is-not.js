@@ -1,4 +1,4 @@
-import Ember from 'ember';
-export default Ember.Helper.helper(function([value]) {
+import { helper } from '@ember/component/helper';
+export default helper(function([value]) {
   return !value;
 });

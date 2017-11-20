@@ -1,6 +1,9 @@
 import { moduleForModel } from 'ember-qunit';
 
-import { testValidPropertyValues, testInvalidPropertyValues } from '../../helpers/validate-properties';
+import {
+  testValidPropertyValues,
+  testInvalidPropertyValues
+} from '../../helpers/validate-properties';
 
 moduleForModel('billing-line-item', 'Unit | Model | billing-line-item', {
   needs: [

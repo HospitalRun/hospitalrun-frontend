@@ -1,12 +1,9 @@
-import Ember from 'ember';
+import { registerHelper } from '@ember/test';
+import { merge } from '@ember/polyfills';
 import { authenticateSession } from 'hospitalrun/tests/helpers/ember-simple-auth';
 import { invalidateSession } from 'hospitalrun/tests/helpers/ember-simple-auth';
 
-const {
-  merge
-} = Ember;
-
-Ember.Test.registerHelper('authenticateUser', function(app, attrs = {}) {
+registerHelper('authenticateUser', function(app, attrs = {}) {
   let expiresAt = new Date().getTime() + 600000;
   authenticateSession(app, merge({
     name: 'hradmin',
@@ -17,6 +14,6 @@ Ember.Test.registerHelper('authenticateUser', function(app, attrs = {}) {
   }, attrs));
 });
 
-Ember.Test.registerHelper('invalidateSession', function(app) {
+registerHelper('invalidateSession', function(app) {
   invalidateSession(app);
 });

@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
 import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 import { PREDEFINED_USER_ROLES } from 'hospitalrun/mixins/user-roles';
@@ -9,7 +9,7 @@ module('Acceptance | roles', {
   },
 
   afterEach() {
-    Ember.run(this.application, 'destroy');
+    run(this.application, 'destroy');
   }
 });
 

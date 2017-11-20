@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { resolve, all } from 'rsvp';
 /* global req */
 /* global compareStrings */
 /* global getCompareDate */
@@ -39,7 +39,7 @@ function checkForUpdate(view, db, runningTest, testDumpFile) {
         // Indexes need to be built when running tests
         return buildIndex(view.name, db);
       } else {
-        return Ember.RSVP.resolve();
+        return resolve();
       }
     }
   }, function() {
@@ -502,5 +502,5 @@ export default function(db, runningTest, testDumpFile) {
   designDocs.forEach(function(item) {
     viewUpdates.push(checkForUpdate(item, db, runningTest, testDumpFile));
   });
-  return Ember.RSVP.all(viewUpdates);
+  return all(viewUpdates);
 }

@@ -1,12 +1,12 @@
+import { run } from '@ember/runloop';
 import { moduleFor, test } from 'ember-qunit';
 import sinonTest from 'ember-sinon-qunit/test-support/test';
-import Ember from 'ember';
 import DS from 'ember-data';
 
 moduleFor('controller:abstract-paged-controller', 'Unit | Controller | abstract-paged-controller', {
   unit: true,
   testModel(attrs) {
-    return Ember.run(() => {
+    return run(() => {
       this.register('model:test', DS.Model);
       return this.store().createRecord('test', attrs);
     });

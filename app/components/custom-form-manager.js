@@ -1,17 +1,11 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+import { alias } from '@ember/object/computed';
+import EmberObject, { get } from '@ember/object';
 import SelectValues from 'hospitalrun/utils/select-values';
 
-const {
-  Component,
-  computed: {
-    alias
-  },
-  get,
-  inject
-} = Ember;
-
 export default Component.extend(SelectValues, {
-  customForms: inject.service(),
+  customForms: service(),
   formType: null,
   formsForType: null,
   model: null,
@@ -33,7 +27,7 @@ export default Component.extend(SelectValues, {
     addForm() {
       let model = get(this, 'model');
       let formsForSelect = get(this, 'formsForSelect');
-      this.sendAction('openModalAction', 'custom-form-add', Ember.Object.create({
+      this.sendAction('openModalAction', 'custom-form-add', EmberObject.create({
         modelToAddTo: model,
         customForms: formsForSelect
       }));

@@ -1,13 +1,10 @@
-import Ember from 'ember';
+import Mixin from '@ember/object/mixin';
+import { isEmpty } from '@ember/utils';
 
-const {
-  isEmpty
-} = Ember;
-
-export default Ember.Mixin.create({
+export default Mixin.create({
   _addDiagnosisToList(diagnosis, diagnosesList) {
-    if (!Ember.isEmpty(diagnosis)) {
-      if (Ember.isEmpty(diagnosesList.findBy('description', diagnosis))) {
+    if (!isEmpty(diagnosis)) {
+      if (isEmpty(diagnosesList.findBy('description', diagnosis))) {
         diagnosesList.addObject(diagnosis);
       }
     }

@@ -1,7 +1,8 @@
-import Ember from 'ember';
+import { isArray } from '@ember/array';
+import { helper } from '@ember/component/helper';
 
-export default Ember.Helper.helper(function([lhs, rhs]) {
-  if (!Ember.isArray(lhs) || !Ember.isArray(rhs) || lhs.get('length') !== rhs.get('length')) {
+export default helper(function([lhs, rhs]) {
+  if (!isArray(lhs) || !isArray(rhs) || lhs.get('length') !== rhs.get('length')) {
     return false;
   }
   return lhs.every(function(item) {

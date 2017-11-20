@@ -1,5 +1,7 @@
+import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
+import { filter, map } from '@ember/object/computed';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
 import UserRoles from 'hospitalrun/mixins/user-roles';
 import UserSession from 'hospitalrun/mixins/user-session';
 
@@ -8,7 +10,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
   disabledAction: false,
   hideCancelButton: true,
   updateCapability: 'define_user_roles',
-  filteredRoles: Ember.computed.filter('userRoles', function(userRole) {
+  filteredRoles: filter('userRoles', function(userRole) {
     return (userRole.name !== 'System Administrator');
   }),
 
@@ -123,7 +125,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     ]
   }],
 
-  missingCapablities: Ember.computed('availableCapabilities', 'defaultCapabilities', function() {
+  missingCapablities: computed('availableCapabilities', 'defaultCapabilities', function() {
     let availableCapabilities = this.get('availableCapabilities');
     let capabilityBySection = Object.keys(availableCapabilities);
     let defaultCapabilities = Object.keys(this.get('defaultCapabilities'));
@@ -143,7 +145,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     return missing;
   }),
 
-  capabilitySections: Ember.computed.map('availableCapabilities', function(section) {
+  capabilitySections: map('availableCapabilities', function(section) {
     let mappedCapabilities = [];
     section.capabilities.forEach((key) => {
       mappedCapabilities.push({
@@ -193,7 +195,7 @@ export default AbstractEditController.extend(UserRoles, UserSession, {
     update() {
       let currentRole = this.get('currentRole');
       let roleToUpdate = this.get('roleToUpdate');
-      if (Ember.isEmpty(roleToUpdate)) {
+      if (isEmpty(roleToUpdate)) {
         roleToUpdate = this.get('store').createRecord('user-role', {
           id: currentRole.dasherize(),
           name: currentRole

@@ -1,6 +1,6 @@
+import { isEmpty } from '@ember/utils';
 import { translationMacro as t } from 'ember-i18n';
 import AbstractModuleRoute from 'hospitalrun/routes/abstract-module-route';
-import Ember from 'ember';
 export default AbstractModuleRoute.extend({
   addCapability: 'add_medication',
   moduleName: 'medication',
@@ -26,7 +26,7 @@ export default AbstractModuleRoute.extend({
         class: 'btn btn-primary'
       });
     }
-    if (!Ember.isEmpty(additionalButtons)) {
+    if (!isEmpty(additionalButtons)) {
       return additionalButtons;
     }
   }.property(),

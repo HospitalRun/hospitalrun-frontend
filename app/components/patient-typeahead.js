@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
 import PatientName from 'hospitalrun/mixins/patient-name';
 import TypeAhead from 'hospitalrun/components/type-ahead';
 export default TypeAhead.extend(PatientName, {
@@ -18,7 +18,7 @@ export default TypeAhead.extend(PatientName, {
     let content = this.get('content');
     if (bloodhound) {
       bloodhound.clear();
-      if (!Ember.isEmpty(content)) {
+      if (!isEmpty(content)) {
         bloodhound.add(content.map(this._mapPatient.bind(this)));
       }
     }

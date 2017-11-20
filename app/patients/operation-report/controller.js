@@ -1,10 +1,6 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
+import { get } from '@ember/object';
 import OperativePlanController from 'hospitalrun/patients/operative-plan/controller';
-
-const {
-  computed: { alias },
-  get
-} = Ember;
 
 export default OperativePlanController.extend({
   additionalButtons: null,

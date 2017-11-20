@@ -1,12 +1,10 @@
+import { get, computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import CanEditRequested from 'hospitalrun/mixins/can-edit-requested';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import DS from 'ember-data';
-import Ember from 'ember';
 import PatientValidation from 'hospitalrun/utils/patient-validation';
 import ResultValidation from 'hospitalrun/mixins/result-validation';
-
-const { computed, get } = Ember;
 
 export default AbstractModel.extend(CanEditRequested, DateFormat, ResultValidation, {
   // Attributes

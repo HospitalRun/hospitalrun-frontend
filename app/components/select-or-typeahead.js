@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
+import Component from '@ember/component';
 import SelectValues from 'hospitalrun/utils/select-values';
-export default Ember.Component.extend({
+export default Component.extend({
   name: 'select-or-typeahead',
   className: null,
   hint: true,
@@ -20,9 +21,9 @@ export default Ember.Component.extend({
     let optionValuePath = this.get('optionValuePath');
     let userCanAdd = this.get('userCanAdd');
 
-    if (!Ember.isEmpty(list) && list.get) {
+    if (!isEmpty(list) && list.get) {
       let contentList = list.get('value');
-      if (Ember.isEmpty(contentList)) {
+      if (isEmpty(contentList)) {
         return [];
       }
 
@@ -40,7 +41,7 @@ export default Ember.Component.extend({
 
   userCanAdd: function() {
     let list = this.get('list');
-    if (!Ember.isEmpty(list) && list.get) {
+    if (!isEmpty(list) && list.get) {
       return list.get('userCanAdd');
     } else {
       return true;

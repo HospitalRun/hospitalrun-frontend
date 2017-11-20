@@ -1,9 +1,9 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import { translationMacro as t } from 'ember-i18n';
 
 export default AbstractEditController.extend({
-  sexList: Ember.computed.alias('model.requestingController.sexList'),
+  sexList: alias('model.requestingController.sexList'),
   title: t('patients.titles.new'),
 
   updateCapability: 'add_patient',

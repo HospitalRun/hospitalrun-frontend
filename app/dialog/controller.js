@@ -1,8 +1,8 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { get, computed } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 
-const { computed, get, isEmpty } = Ember;
-
-export default Ember.Controller.extend({
+export default Controller.extend({
   showUpdateButton: true,
   isUpdateDisabled: false,
 

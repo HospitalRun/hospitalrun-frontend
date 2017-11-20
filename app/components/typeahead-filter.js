@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 import TypeAhead from 'hospitalrun/mixins/typeahead';
-export default Ember.Component.extend(TypeAhead, {
+export default Component.extend(TypeAhead, {
   classNames: ['input-group'],
   selectedAction: 'filter',
   setOnBlur: false,

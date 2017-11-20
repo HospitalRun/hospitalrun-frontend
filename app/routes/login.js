@@ -1,18 +1,12 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import { alias } from '@ember/object/computed';
+import { get } from '@ember/object';
+import Route from '@ember/routing/route';
 import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
 
-const {
-  computed: {
-    alias
-  },
-  get,
-  inject,
-  Route
-} = Ember;
-
 export default Route.extend(UnauthenticatedRouteMixin, {
-  config: inject.service(),
-  database: inject.service(),
+  config: service(),
+  database: service(),
 
   requireLogin: alias('database.requireLogin'),
   standAlone: alias('config.standAlone'),

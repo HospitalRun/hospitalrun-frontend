@@ -1,14 +1,9 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { isEmpty } from '@ember/utils';
+import { set, get, computed } from '@ember/object';
 import UserSession from 'hospitalrun/mixins/user-session';
 
-const {
-  computed,
-  get,
-  isEmpty,
-  set
-} = Ember;
-
-export default Ember.Component.extend(UserSession, {
+export default Component.extend(UserSession, {
   allowAddAllergy: false,
   allowAddDiagnosis: false,
   allowAddOperativePlan: false,

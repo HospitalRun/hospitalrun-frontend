@@ -1,9 +1,8 @@
+import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
 import DS from 'ember-data';
 import EmailValidation from 'hospitalrun/utils/email-validation';
-import Ember from 'ember';
 import EmberValidations from 'ember-validations';
-
-const { computed } = Ember;
 
 let User = DS.Model.extend(EmberValidations, {
   // Attributes
@@ -23,7 +22,7 @@ let User = DS.Model.extend(EmberValidations, {
 
   displayRole: computed('roles', function() {
     let roles = this.get('roles');
-    if (!Ember.isEmpty(roles)) {
+    if (!isEmpty(roles)) {
       return roles[0];
     }
   }),

@@ -1,5 +1,6 @@
-import Ember from 'ember';
-export default Ember.Component.extend({
+import { once } from '@ember/runloop';
+import Component from '@ember/component';
+export default Component.extend({
   locationPicker: null,
 
   _setup: function() {
@@ -8,7 +9,7 @@ export default Ember.Component.extend({
 
   currentLocationChanged(newLocation) {
     this.get('locationPicker').set('selectedLocation', newLocation);
-    Ember.run.once(this, function() {
+    once(this, function() {
       this.get('parentView').locationChange();
     });
   }

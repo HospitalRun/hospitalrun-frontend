@@ -1,8 +1,9 @@
-import Ember from 'ember';
+import { next } from '@ember/runloop';
+import Mixin from '@ember/object/mixin';
+import { isEmpty } from '@ember/utils';
+import { set, get } from '@ember/object';
 
-const { get, isEmpty, set } = Ember;
-
-export default Ember.Mixin.create({
+export default Mixin.create({
   _picker: null,
   currentDate: null,
   dateSetAction: null, // Specify an action to fire when a date is selected
@@ -51,7 +52,7 @@ export default Ember.Mixin.create({
     }
     props.field = $input[0];
     picker = new Pikaday(props);
-    Ember.run.next(this, function() {
+    next(this, function() {
       picker.setDate(currentDate);
     });
     set(this, '_picker', picker);

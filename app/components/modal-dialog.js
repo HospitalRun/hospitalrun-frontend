@@ -1,6 +1,8 @@
-import Ember from 'ember';
-export default Ember.Component.extend({
-  i18n: Ember.inject.service(),
+import { isEmpty } from '@ember/utils';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+export default Component.extend({
+  i18n: service(),
   cancelAction: 'cancel',
   closeModalAction: 'closeModal',
   hideCancelButton: false,
@@ -13,7 +15,7 @@ export default Ember.Component.extend({
   cancelButtonText: '',
   cancelBtnText: function() {
     let cancelText = this.get('cancelButtonText');
-    if (Ember.isEmpty(cancelText)) {
+    if (isEmpty(cancelText)) {
       return this.get('i18n').t('buttons.cancel');
     } else {
       return cancelText;

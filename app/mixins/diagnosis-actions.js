@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import Mixin from '@ember/object/mixin';
 
-export default Ember.Mixin.create({
+export default Mixin.create({
   editDiagnosis(diagnosis) {
     diagnosis.set('editController', this);
     this.send('openModal', 'diagnosis.edit', diagnosis);

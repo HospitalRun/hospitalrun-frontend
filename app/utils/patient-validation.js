@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
 export default {
   patientTypeAhead: {
     acceptance: {
@@ -12,7 +12,7 @@ export default {
         }
         let patientName = object.get('patient.displayName');
         let patientTypeAhead = object.get('patientTypeAhead');
-        if (Ember.isEmpty(patientName) || Ember.isEmpty(patientTypeAhead)) {
+        if (isEmpty(patientName) || isEmpty(patientTypeAhead)) {
           // force validation to fail
           return true;
         } else {
