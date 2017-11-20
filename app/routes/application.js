@@ -1,17 +1,18 @@
+import { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
+import Route from '@ember/routing/route';
+import { set, get } from '@ember/object';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
-import Ember from 'ember';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import SetupUserRole from 'hospitalrun/mixins/setup-user-role';
 import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
 
-const { get, inject, isEmpty, Route, set } = Ember;
-
 const TRANSITION_AFTER_LOGIN = 'transitionAfterLogin';
 
 let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUserRole, {
-  database: inject.service(),
-  config: inject.service(),
-  session: inject.service(),
+  database: service(),
+  config: service(),
+  session: service(),
   shouldSetupUserRole: true,
 
   actions: {

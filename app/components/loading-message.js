@@ -1,6 +1,8 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
+import { later, cancel } from '@ember/runloop';
+import Component from '@ember/component';
 import { translationMacro as t } from 'ember-i18n';
-export default Ember.Component.extend({
+export default Component.extend({
   tagName: 'span',
   showLoadingMessages: false,
   loadingMessages: [
@@ -22,7 +24,7 @@ export default Ember.Component.extend({
     let loadingMessages = this.get('loadingMessages');
     let idx = Math.floor(Math.random() * loadingMessages.length);
     this.set('message', loadingMessages[idx]);
-    this.set('timer', Ember.run.later(this, this._setRandomMessage, 1000));
+    this.set('timer', later(this, this._setRandomMessage, 1000));
   },
 
   didInsertElement() {
@@ -31,8 +33,8 @@ export default Ember.Component.extend({
 
   willDestroyElement() {
     let timer = this.get('timer');
-    if (!Ember.isEmpty(timer)) {
-      Ember.run.cancel(timer);
+    if (!isEmpty(timer)) {
+      cancel(timer);
     }
   }
 });

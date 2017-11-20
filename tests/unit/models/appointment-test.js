@@ -1,6 +1,9 @@
 import { moduleForModel } from 'ember-qunit';
 
-import { testValidPropertyValues, testInvalidPropertyValues } from '../../helpers/validate-properties';
+import {
+  testValidPropertyValues,
+  testInvalidPropertyValues
+} from '../../helpers/validate-properties';
 
 moduleForModel('appointment', 'Unit | Model | appointment', {
   needs: [

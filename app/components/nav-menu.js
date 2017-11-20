@@ -1,13 +1,8 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { set, get, computed } from '@ember/object';
 import UserSession from 'hospitalrun/mixins/user-session';
 
-const {
-  computed,
-  get,
-  set
-} = Ember;
-
-export default Ember.Component.extend(UserSession, {
+export default Component.extend(UserSession, {
   callCloseSettings: 'closeSettings',
   callNavAction: 'navAction',
   classNames: ['primary-nav-item'],

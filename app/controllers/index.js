@@ -1,16 +1,11 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
+import { alias } from '@ember/object/computed';
+import { set, get } from '@ember/object';
 import UserSession from 'hospitalrun/mixins/user-session';
-const {
-  computed: {
-    alias
-  },
-  inject,
-  get,
-  set
-} = Ember;
-export default Ember.Controller.extend(UserSession, {
-  config: inject.service(),
-  database: inject.service(),
+export default Controller.extend(UserSession, {
+  config: service(),
+  database: service(),
   standAlone: alias('config.standAlone'),
   needsUserSetup: alias('config.needsUserSetup'),
   // on init, look up the list of users and determine if there's a need for a needsUserSetup msg

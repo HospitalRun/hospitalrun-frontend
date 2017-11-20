@@ -1,9 +1,8 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import { isEmpty } from '@ember/utils';
 import moment from 'moment';
 import { module, test } from 'qunit';
 import startApp from 'hospitalrun/tests/helpers/start-app';
-
-const { isEmpty } = Ember;
 
 const visitData = {
   outPatient: {
@@ -34,7 +33,7 @@ module('Acceptance | visits', {
   },
 
   afterEach() {
-    Ember.run(this.application, 'destroy');
+    run(this.application, 'destroy');
   }
 });
 

@@ -1,3 +1,5 @@
+import { isArray } from '@ember/array';
+import EmberObject from '@ember/object';
 function selectValuesMap(value) {
   return {
     id: value,
@@ -5,7 +7,6 @@ function selectValuesMap(value) {
   };
 }
 
-import Ember from 'ember';
 export default {
   /**
    * Map an objects into a format so that selects can use object as value for select
@@ -13,7 +14,7 @@ export default {
    * @returns {object} the mapped object
    */
   selectObjectMap(selectValue) {
-    return Ember.Object.create({
+    return EmberObject.create({
       selectObject: selectValue
     });
   },
@@ -26,7 +27,7 @@ export default {
    * @param {boolean} includeEmpty if there should be an empty item added to the select list
    */
   selectValues(array, includeEmpty) {
-    if (Ember.isArray(array)) {
+    if (isArray(array)) {
       let arrayToMap = new Array(array);
       if (includeEmpty) {
         arrayToMap = [''];

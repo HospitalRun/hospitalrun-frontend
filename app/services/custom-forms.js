@@ -1,19 +1,13 @@
-import Ember from 'ember';
-
-const {
-  Service,
-  computed,
-  get,
-  inject,
-  isEmpty,
-  set
-} = Ember;
+import { resolve } from 'rsvp';
+import Service, { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
+import EmberObject, { set, get, computed } from '@ember/object';
 
 export default Service.extend({
   currentModel: null,
   customForms: {},
   formsForType: null,
-  store: inject.service(),
+  store: service(),
 
   formsForSelect: computed('formsForType', 'usedForms', function() {
     let formsForType = get(this, 'formsForType');
@@ -68,7 +62,7 @@ export default Service.extend({
       }
     });
     if (isEmpty(formTypesToQuery)) {
-      return Ember.RSVP.resolve(this._getCustomFormsFromCache(formTypes));
+      return resolve(this._getCustomFormsFromCache(formTypes));
     } else {
       return store.query('custom-form', {
         options: {
@@ -94,7 +88,7 @@ export default Service.extend({
       if (!isEmpty(customForms)) {
         customForms.forEach((customForm) => {
           if (get(customForm, 'alwaysInclude')) {
-            set(model, `customForms.${get(customForm, 'id')}`, Ember.Object.create());
+            set(model, `customForms.${get(customForm, 'id')}`, EmberObject.create());
           }
         });
       }

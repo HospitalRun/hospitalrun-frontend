@@ -1,11 +1,6 @@
-import Ember from 'ember';
-
-const {
-  computed,
-  isEmpty,
-  get,
-  set
-} = Ember;
+import Component from '@ember/component';
+import { isEmpty } from '@ember/utils';
+import { set, get, computed } from '@ember/object';
 
 export function addProcedure(model) {
   let procedures = get(model, 'procedures');
@@ -18,7 +13,7 @@ export function addProcedure(model) {
   }
 }
 
-export default Ember.Component.extend({
+export default Component.extend({
   model: null,
   procedureList: null,
   haveProcedures: computed('model.procedures.[]', {

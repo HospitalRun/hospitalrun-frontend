@@ -1,23 +1,17 @@
+import { Promise as EmberPromise } from 'rsvp';
+import { inject as controller } from '@ember/controller';
+import { computed, set, get } from '@ember/object';
+import { alias } from '@ember/object/computed';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import PatientDiagnosis from 'hospitalrun/mixins/patient-diagnosis';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
-
-const {
-  get,
-  set,
-  computed,
-  computed: {
-    alias
-  }
-} = Ember;
 
 export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis, PouchDbMixin, {
   queryParams: ['print'],
   print: null,
 
-  visitsController: Ember.inject.controller('visits'),
+  visitsController: controller('visits'),
 
   physicianList: alias('visitsController.physicianList'),
 
@@ -45,7 +39,7 @@ export default AbstractEditController.extend(PatientSubmodule, PatientDiagnosis,
   updateCapability: 'add_report',
 
   beforeUpdate() {
-    return new Ember.RSVP.Promise((resolve) => {
+    return new EmberPromise((resolve) => {
       let model = get(this, 'model');
       if (get(model, 'isNew')) {
         if (get(this, 'model.visit.outPatient')) {

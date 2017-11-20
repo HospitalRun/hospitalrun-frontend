@@ -1,13 +1,14 @@
+import { resolve } from 'rsvp';
+import { inject as service } from '@ember/service';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
-import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 export default AbstractEditRoute.extend({
   editTitle: t('inventory.titles.editRequest'),
   modelName: 'inv-request',
   newTitle: t('inventory.titles.addRequest'),
-  database: Ember.inject.service(),
+  database: service(),
   getNewData() {
-    return Ember.RSVP.resolve({
+    return resolve({
       transactionType: 'Request',
       requestedItems: []
     });

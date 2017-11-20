@@ -1,7 +1,5 @@
+import EmberObject, { get } from '@ember/object';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
-
-const { get } = Ember;
 
 export default AbstractEditController.extend({
   updateCapability: 'add_incident_category',
@@ -31,7 +29,7 @@ export default AbstractEditController.extend({
     },
 
     showAddItem() {
-      this.send('openModal', 'inc-category.add-item', Ember.Object.create());
+      this.send('openModal', 'inc-category.add-item', EmberObject.create());
     },
 
     showDeleteItem(item) {
@@ -39,7 +37,7 @@ export default AbstractEditController.extend({
       let modelName = i18n.t('models.item.names.singular');
       let message = i18n.t('messages.delete_singular', { name: modelName });
       let title = i18n.t('incident.titles.deleteItem');
-      this.displayConfirm(title, message, 'deleteItem', Ember.Object.create({
+      this.displayConfirm(title, message, 'deleteItem', EmberObject.create({
         itemToDelete: item
       }));
     }

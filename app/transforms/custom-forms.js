@@ -1,21 +1,19 @@
+import EmberObject from '@ember/object';
+import { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
 import DS from 'ember-data';
-import Ember from 'ember';
-
-const {
-  isEmpty
-} = Ember;
 
 export default DS.Transform.extend({
-  store: Ember.inject.service(),
+  store: service(),
 
   deserialize(serialized) {
     if (isEmpty(serialized)) {
       return serialized;
     }
     let customFormKeys = Object.keys(serialized);
-    let deserialized = Ember.Object.create();
+    let deserialized = EmberObject.create();
     customFormKeys.forEach((customFormId) => {
-      deserialized.set(customFormId, Ember.Object.create(serialized[customFormId]));
+      deserialized.set(customFormId, EmberObject.create(serialized[customFormId]));
     });
     return deserialized;
   },

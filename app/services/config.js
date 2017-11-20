@@ -1,18 +1,14 @@
-import Ember from 'ember';
+import { alias } from '@ember/object/computed';
+import Service, { inject as service } from '@ember/service';
+import RSVP, { Promise as EmberPromise, all } from 'rsvp';
+import { run } from '@ember/runloop';
+import { set, get } from '@ember/object';
 
-const {
-  RSVP,
-  get,
-  inject,
-  run,
-  set
-} = Ember;
-
-export default Ember.Service.extend({
+export default Service.extend({
   configDB: null,
-  database: inject.service(),
-  session: inject.service(),
-  sessionData: Ember.computed.alias('session.data'),
+  database: service(),
+  session: service(),
+  sessionData: alias('session.data'),
   standAlone: false,
   needsUserSetup: false,
   markUserSetupComplete() {
@@ -70,7 +66,7 @@ export default Ember.Service.extend({
         'config_use_google_auth'
       ]
     };
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       config.allDocs(options, function(err, response) {
         if (err) {
           console.log('Could not get configDB configs:', err);
@@ -88,7 +84,7 @@ export default Ember.Service.extend({
   },
   getFileLink(id) {
     let config = this.get('configDB');
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       config.get(`file-link_${id}`, function(err, doc) {
         if (err) {
           reject(err);
@@ -105,7 +101,7 @@ export default Ember.Service.extend({
   },
   saveFileLink(fileName, id) {
     let config = this.get('configDB');
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new EmberPromise(function(resolve, reject) {
       config.put({ fileName, _id: `file-link_${id}` }, function(err, doc) {
         if (err) {
           reject(err);
@@ -132,7 +128,7 @@ export default Ember.Service.extend({
         }
         savePromises.push(configDB.put(configRecord));
       });
-      return Ember.RSVP.all(savePromises);
+      return all(savePromises);
     });
   },
   useGoogleAuth() {
@@ -149,7 +145,7 @@ export default Ember.Service.extend({
 
   getConfigValue(id, defaultValue) {
     let configDB = this.get('configDB');
-    return new Ember.RSVP.Promise(function(resolve) {
+    return new EmberPromise(function(resolve) {
       configDB.get(`config_${id}`).then(function(doc) {
         run(null, resolve, doc.value);
       })

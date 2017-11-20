@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import RSVP from 'rsvp';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 import PouchDB from 'pouchdb';
 import PouchAdapterMemory from 'npm:pouchdb-adapter-memory';
@@ -46,10 +47,6 @@ const MOCK_USER_DATA = [{
   }
 }];
 
-const {
-  RSVP
-} = Ember;
-
 function addAllUsers(assert) {
   if (window.ELECTRON) {
     return _addOfflineUsers();
@@ -89,7 +86,7 @@ module('Acceptance | users', {
 
   afterEach() {
     FakeServer.stop();
-    Ember.run(this.application, 'destroy');
+    run(this.application, 'destroy');
   }
 });
 

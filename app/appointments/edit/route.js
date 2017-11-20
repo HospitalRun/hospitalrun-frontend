@@ -1,17 +1,11 @@
+import { get } from '@ember/object';
+import { isEmpty } from '@ember/utils';
+import { resolve } from 'rsvp';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
-import Ember from 'ember';
 import moment from 'moment';
 import PatientListRoute from 'hospitalrun/mixins/patient-list-route';
 import { translationMacro as t } from 'ember-i18n';
-
-const {
-  get,
-  isEmpty,
-  RSVP: {
-    resolve
-  }
-} = Ember;
 
 export default AbstractEditRoute.extend(AddToPatientRoute, PatientListRoute, {
 

@@ -1,13 +1,12 @@
+import { alias } from '@ember/object/computed';
+import { computed } from '@ember/object';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
-
-const { computed } = Ember;
 
 export default AbstractEditController.extend(VisitTypes, {
   hideCancelButton: true,
   updateCapability: 'update_config',
-  visitTypesList: computed.alias('model.visitTypesList'),
+  visitTypesList: alias('model.visitTypesList'),
 
   visitFormsForEditing: computed('model.visitForms', 'visitTypes', function() {
     let visitForms = this.get('model.visitForms');

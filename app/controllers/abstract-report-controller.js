@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import { get } from '@ember/object';
+import { isEmpty } from '@ember/utils';
+import Controller from '@ember/controller';
 import DateFormat from 'hospitalrun/mixins/date-format';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import moment from 'moment';
@@ -6,7 +8,7 @@ import NumberFormat from 'hospitalrun/mixins/number-format';
 import PaginationProps from 'hospitalrun/mixins/pagination-props';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
-export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, PaginationProps, PouchDbMixin, ProgressDialog, {
+export default Controller.extend(DateFormat, ModalHelper, NumberFormat, PaginationProps, PouchDbMixin, ProgressDialog, {
   defaultErrorMessage: 'An error was encountered while generating the requested report.  Please let your system administrator know that you have encountered an error.',
   offset: 0,
   limit: 25,
@@ -35,13 +37,13 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
     let columnValue;
     let reportRows = this.get('reportRows');
     let reportRow = [];
-    if (Ember.isEmpty(reportColumns)) {
+    if (isEmpty(reportColumns)) {
       reportColumns = this.get('reportColumns');
     }
     for (let column in reportColumns) {
       if (reportColumns[column].include) {
-        columnValue = Ember.get(row, reportColumns[column].property);
-        if (Ember.isEmpty(columnValue)) {
+        columnValue = get(row, reportColumns[column].property);
+        if (isEmpty(columnValue)) {
           reportRow.push('');
         } else if (reportColumns[column].format === '_numberFormat') {
           if (skipFormatting) {
@@ -121,7 +123,7 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
 
   _setReportHeaders(reportColumns) {
     let reportHeaders = [];
-    if (Ember.isEmpty(reportColumns)) {
+    if (isEmpty(reportColumns)) {
       reportColumns = this.get('reportColumns');
     }
     for (let column in reportColumns) {
@@ -139,12 +141,12 @@ export default Ember.Controller.extend(DateFormat, ModalHelper, NumberFormat, Pa
     let reportType = this.get('reportType');
     let reportTypes = this.get('reportTypes');
     let startDate = this.get('startDate');
-    if (!Ember.isEmpty(endDate)) {
+    if (!isEmpty(endDate)) {
       formattedEndDate = moment(endDate).format('l');
     }
 
     let reportDesc = reportTypes.findBy('value', reportType);
-    if (Ember.isEmpty(startDate)) {
+    if (isEmpty(startDate)) {
       this.set('reportTitle', this.get('i18n').t(
         'inventory.reports.titleSingleDate',
         {

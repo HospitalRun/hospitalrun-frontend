@@ -1,23 +1,21 @@
+import { resolve } from 'rsvp';
+import { inject as service } from '@ember/service';
+import { get } from '@ember/object';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
 import ChargeRoute from 'hospitalrun/mixins/charge-route';
-import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
-
-const {
-  get
-} = Ember;
 
 export default AbstractEditRoute.extend(AddToPatientRoute, ChargeRoute, {
   editTitle: t('procedures.titles.edit'),
   modelName: 'procedure',
   newTitle: t('procedures.titles.new'),
   pricingCategory: 'Procedure',
-  database: Ember.inject.service(),
+  database: service(),
   photos: null,
 
   getNewData() {
-    return Ember.RSVP.resolve({
+    return resolve({
       procedureDate: new Date()
     });
   },

@@ -1,8 +1,9 @@
-import Ember from 'ember';
-export default Ember.Mixin.create({
+import { isEmpty } from '@ember/utils';
+import Mixin from '@ember/object/mixin';
+export default Mixin.create({
 
   canAddNote() {
-    return this.currentUserCan('add_note') && (!Ember.isEmpty(this.get('visits')) || !Ember.isEmpty(this.get('model.visits')));
+    return this.currentUserCan('add_note') && (!isEmpty(this.get('visits')) || !isEmpty(this.get('model.visits')));
   },
 
   canDeleteNote() {
@@ -12,7 +13,7 @@ export default Ember.Mixin.create({
   _computeNoteType(visit) {
     switch (visit.get('visitType')) {
       case 'Admission':
-        if (Ember.isEmpty(visit.get('procedures'))) {
+        if (isEmpty(visit.get('procedures'))) {
           return 'Pre-op';
         } else {
           return 'Post-op';

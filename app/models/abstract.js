@@ -1,17 +1,15 @@
+import { inject as service } from '@ember/service';
+import { run } from '@ember/runloop';
+import { Promise as EmberPromise } from 'rsvp';
+import { get } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import DS from 'ember-data';
-import Ember from 'ember';
 import EmberValidations from 'ember-validations';
 import { Model } from 'ember-pouch';
 import UserSession from 'hospitalrun/mixins/user-session';
 
-const {
-  get,
-  inject,
-  isEmpty
-} = Ember;
-
 export default Model.extend(UserSession, EmberValidations, {
-  session: inject.service(),
+  session: service(),
   archived: DS.attr('boolean', { defaultValue: false }),
   lastModified: DS.attr('date'),
   modifiedBy: DS.attr(),
@@ -69,8 +67,8 @@ export default Model.extend(UserSession, EmberValidations, {
     let session = this.get('session');
 
     if (!session || !session.get('isAuthenticated')) {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
-        Ember.run(null, reject, 'ERROR you must be logged in to save');
+      return new EmberPromise(function(resolve, reject) {
+        run(null, reject, 'ERROR you must be logged in to save');
       });
     }
 
@@ -96,7 +94,7 @@ export default Model.extend(UserSession, EmberValidations, {
             for (let attribute in changedAttributes) {
               record.set(attribute, changedAttributes[attribute][1]);
             }
-            if (Ember.isEmpty(options)) {
+            if (isEmpty(options)) {
               options = {};
             }
             options.retry = true;

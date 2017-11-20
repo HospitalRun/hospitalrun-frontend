@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import Mixin from '@ember/object/mixin';
 import moment from 'moment';
-export default Ember.Mixin.create({
+export default Mixin.create({
   convertDOBToText(birthDate, shortFormat, omitDays) {
     let today = new Date();
     let years = 0;

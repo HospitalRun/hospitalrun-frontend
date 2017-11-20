@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
 import TypeAhead from 'hospitalrun/components/type-ahead';
 export default TypeAhead.extend({
   displayKey: 'name',
@@ -8,7 +8,7 @@ export default TypeAhead.extend({
     let content = this.get('content');
     if (content) {
       let mapped = content.filter(function(item) {
-        return !Ember.isEmpty(item);
+        return !isEmpty(item);
       });
       mapped = mapped.map(function(item) {
         let returnObj = {};

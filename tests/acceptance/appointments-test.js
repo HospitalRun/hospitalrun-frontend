@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
 import { module, test } from 'qunit';
 import moment from 'moment';
 import startApp from 'hospitalrun/tests/helpers/start-app';
@@ -13,7 +13,7 @@ module('Acceptance | appointments', {
   },
 
   afterEach() {
-    Ember.run(this.application, 'destroy');
+    run(this.application, 'destroy');
   }
 });
 

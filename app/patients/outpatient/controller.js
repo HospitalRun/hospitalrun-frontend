@@ -1,4 +1,7 @@
-import Ember from 'ember';
+import { map, alias, filter } from '@ember/object/computed';
+import Controller, { inject as controller } from '@ember/controller';
+import { computed } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import FilterList from 'hospitalrun/mixins/filter-list';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import PatientVisits from 'hospitalrun/mixins/patient-visits';
@@ -7,12 +10,7 @@ import UserSession from 'hospitalrun/mixins/user-session';
 import VisitStatus from 'hospitalrun/utils/visit-statuses';
 import VisitTypes from 'hospitalrun/mixins/visit-types';
 
-const {
-  computed,
-  isEmpty
-} = Ember;
-
-export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits, SelectValues, UserSession, VisitTypes, {
+export default Controller.extend(FilterList, ModalHelper, PatientVisits, SelectValues, UserSession, VisitTypes, {
   addPermission: 'add_patient',
   deletePermission: 'delete_patient',
   queryParams: ['visitDate', 'visitLocation'],
@@ -35,18 +33,18 @@ export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits, S
       i18n.t('visits.labels.haveDoneOrders')
     ];
   }),
-  locationList: Ember.computed.map('patientController.locationList.value', SelectValues.selectValuesMap).volatile(),
-  patientNames: computed.map('model', function(visit) {
+  locationList: map('patientController.locationList.value', SelectValues.selectValuesMap).volatile(),
+  patientNames: map('model', function(visit) {
     return visit.get('patient.shortDisplayName');
   }),
-  patientController: Ember.inject.controller('patients'),
-  sexList: computed.alias('patientController.sexList.value'),
-  visitTypesList: computed.alias('patientController.visitTypesList'),
-  visitTypesValues: computed.map('visitTypes', function(visitType) {
+  patientController: controller('patients'),
+  sexList: alias('patientController.sexList.value'),
+  visitTypesList: alias('patientController.visitTypesList'),
+  visitTypesValues: map('visitTypes', function(visitType) {
     return visitType.value;
   }),
 
-  checkedInVisits: computed.filter('model.@each.status', function(visit) {
+  checkedInVisits: filter('model.@each.status', function(visit) {
     return visit.get('visitType') !== 'Admission' && visit.get('status') === VisitStatus.CHECKED_IN;
   }),
 

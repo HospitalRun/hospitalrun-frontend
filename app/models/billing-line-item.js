@@ -1,9 +1,9 @@
+import { mapBy, sum } from '@ember/object/computed';
+import { debounce } from '@ember/runloop';
+import { computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
-import Ember from 'ember';
 import NumberFormat from 'hospitalrun/mixins/number-format';
-
-const { computed } = Ember;
 
 export default AbstractModel.extend(NumberFormat, {
   // Attributes
@@ -19,7 +19,7 @@ export default AbstractModel.extend(NumberFormat, {
   details: DS.hasMany('line-item-detail', { async: false }),
 
   amountOwedChanged: computed('discount', 'nationalInsurance', 'privateInsurance', 'total', function() {
-    Ember.run.debounce(this, function() {
+    debounce(this, function() {
       let discount = this._getValidNumber(this.get('discount'));
       let nationalInsurance = this._getValidNumber(this.get('nationalInsurance'));
       let privateInsurance = this._getValidNumber(this.get('privateInsurance'));
@@ -34,8 +34,8 @@ export default AbstractModel.extend(NumberFormat, {
     }, 500);
   }),
 
-  detailTotals: Ember.computed.mapBy('details', 'amountOwed'),
-  total: Ember.computed.sum('detailTotals'),
+  detailTotals: mapBy('details', 'amountOwed'),
+  total: sum('detailTotals'),
 
   validations: {
     category: {

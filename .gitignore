@@ -34,3 +34,5 @@ newrelic.js
 
 /async-disk-cache
 c9-couch.js
+
+.yarn-error.log

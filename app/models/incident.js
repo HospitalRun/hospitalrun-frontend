@@ -1,13 +1,12 @@
+import { isEmpty } from '@ember/utils';
+import { set, get, computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
-import Ember from 'ember';
 import IncidentStatuses, { REPORTED } from 'hospitalrun/mixins/incident-statuses';
 import moment from 'moment';
 import { validator } from 'ember-validations';
 
 const { attr, belongsTo, hasMany } = DS;
-
-const { computed, get, isEmpty, set } = Ember;
 
 export default AbstractModel.extend(IncidentStatuses, {
   categoryItem: attr('string'),

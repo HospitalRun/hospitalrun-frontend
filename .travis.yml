@@ -28,14 +28,14 @@ before_install:
   - phantomjs --version
 
 install:
-  - yarn
+  - yarn install
   - export DISPLAY=':99.0'
   - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
 script:
-  - yarn run $COMMAND
+  - npm run $NPM_COMMAND
 
 env:
   matrix:
-  - COMMAND=test
-  - CXX=g++-4.8 COMMAND=electron-test
+  - NPM_COMMAND=test
+  - CXX=g++-4.8 NPM_COMMAND=electron-test

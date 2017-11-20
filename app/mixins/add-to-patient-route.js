@@ -1,6 +1,6 @@
-import Ember from 'ember';
-
-const { get, isEmpty, Mixin } = Ember;
+import { get } from '@ember/object';
+import { isEmpty } from '@ember/utils';
+import Mixin from '@ember/object/mixin';
 
 export default Mixin.create({
   queryParams: {

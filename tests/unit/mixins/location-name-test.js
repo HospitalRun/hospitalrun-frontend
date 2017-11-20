@@ -1,12 +1,12 @@
+import { run } from '@ember/runloop';
 import LocationName from 'hospitalrun/mixins/location-name';
 import { moduleFor, test } from 'ember-qunit';
-import Ember from 'ember';
 import DS from 'ember-data';
 
 moduleFor('mixin:location-name', 'Unit | Mixin | location-name', {
   subject(attrs) {
     let subject;
-    Ember.run(() => {
+    run(() => {
       let Test = DS.Model.extend(LocationName);
       this.register('model:test', Test);
       subject = this.store().createRecord('test', attrs);

@@ -1,4 +1,9 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import { Promise as EmberPromise } from 'rsvp';
+import $ from 'jquery';
+import { isEmpty } from '@ember/utils';
+import { alias } from '@ember/object/computed';
+import { get, computed } from '@ember/object';
 import CheckForErrors from 'hospitalrun/mixins/check-for-errors';
 import DS from 'ember-data';
 import UserSession from 'hospitalrun/mixins/user-session';
@@ -9,21 +14,12 @@ const {
   RESTAdapter
 } = DS;
 
-const {
-  computed,
-  computed: {
-    alias
-  },
-  get,
-  inject
-} = Ember;
-
 export default RESTAdapter.extend(CheckForErrors, UserSession, {
   defaultSerializer: 'couchdb',
 
-  config: inject.service(),
-  database: inject.service(),
-  session: inject.service(),
+  config: service(),
+  database: service(),
+  session: service(),
 
   oauthHeaders: alias('database.oauthHeaders'),
   standAlone: alias('config.standAlone'),
@@ -31,7 +27,7 @@ export default RESTAdapter.extend(CheckForErrors, UserSession, {
 
   headers: computed('oauthHeaders', function() {
     let oauthHeaders = get(this, 'oauthHeaders');
-    if (Ember.isEmpty(oauthHeaders)) {
+    if (isEmpty(oauthHeaders)) {
       return {};
     } else {
       return oauthHeaders;
@@ -41,7 +37,7 @@ export default RESTAdapter.extend(CheckForErrors, UserSession, {
   ajaxError(jqXHR) {
     let error = this._super(jqXHR);
     if (jqXHR && jqXHR.status === 401) {
-      let jsonErrors = Ember.$.parseJSON(jqXHR.responseText);
+      let jsonErrors = $.parseJSON(jqXHR.responseText);
       window.Hospitalrun.__container__.lookup('controller:application').transitionToRoute('login');
       return new DS.InvalidError(jsonErrors);
     } else {
@@ -173,7 +169,7 @@ export default RESTAdapter.extend(CheckForErrors, UserSession, {
       delete data.oauth;
       data.roles = ['deleted'];
     }
-    if (Ember.isEmpty(data._rev)) {
+    if (isEmpty(data._rev)) {
       delete data._rev;
     }
     data = this._cleanPasswordAttrs(data);
@@ -241,7 +237,7 @@ export default RESTAdapter.extend(CheckForErrors, UserSession, {
       'iterations'
     ];
     attrsToCheck.forEach(function(attr) {
-      if (Ember.isEmpty(data[attr])) {
+      if (isEmpty(data[attr])) {
         delete data[attr];
       }
     });
@@ -256,7 +252,7 @@ export default RESTAdapter.extend(CheckForErrors, UserSession, {
   */
   _offlineFind(id) {
     let usersDB = get(this, 'database.usersDB');
-    return new Ember.RSVP.Promise((resolve, reject) => {
+    return new EmberPromise((resolve, reject) => {
       usersDB.get(id).then(resolve).catch((err) => {
         let database = get(this, 'database');
         reject(database.handleErrorResponse(err));

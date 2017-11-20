@@ -1,11 +1,10 @@
+import { isEmpty } from '@ember/utils';
+import { get, computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DOBDays from 'hospitalrun/mixins/dob-days';
 import EmailValidation from 'hospitalrun/utils/email-validation';
-import Ember from 'ember';
 import DS from 'ember-data';
 import PatientName from 'hospitalrun/mixins/patient-name';
-
-const { computed, get } = Ember;
 
 export default AbstractModel.extend(DOBDays, PatientName, {
   // Attributes
@@ -69,8 +68,8 @@ export default AbstractModel.extend(DOBDays, PatientName, {
     let addressFields = this.getProperties('address', 'address2', 'address3', 'address4');
     let displayAddress = '';
     for (let prop in addressFields) {
-      if (!Ember.isEmpty(addressFields[prop])) {
-        if (!Ember.isEmpty(displayAddress)) {
+      if (!isEmpty(addressFields[prop])) {
+        if (!isEmpty(displayAddress)) {
           displayAddress += ', ';
         }
         displayAddress += addressFields[prop];

@@ -1,9 +1,8 @@
+import { isEmpty } from '@ember/utils';
+import { get, computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
-import Ember from 'ember';
 import MedicationDetails from 'hospitalrun/mixins/medication-details';
-
-const { computed, get } = Ember;
 
 /**
  * Procedure charges
@@ -20,7 +19,7 @@ export default AbstractModel.extend(MedicationDetails, {
   medicationCharge: computed('medication', 'newMedicationCharge', function() {
     let medication = get(this, 'medication');
     let newMedicationCharge = get(this, 'newMedicationCharge');
-    return !Ember.isEmpty(medication) || !Ember.isEmpty(newMedicationCharge);
+    return !isEmpty(medication) || !isEmpty(newMedicationCharge);
   }),
 
   medicationName: computed('medication', function() {
@@ -43,7 +42,7 @@ export default AbstractModel.extend(MedicationDetails, {
           }
           let itemName = get(object, 'inventoryItem.name');
           let itemTypeAhead = get(object, 'itemName');
-          if (Ember.isEmpty(itemName) || Ember.isEmpty(itemTypeAhead)) {
+          if (isEmpty(itemName) || isEmpty(itemTypeAhead)) {
             // force validation to fail
             return true;
           } else {

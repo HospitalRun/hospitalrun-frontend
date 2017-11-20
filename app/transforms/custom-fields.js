@@ -1,14 +1,11 @@
+import { inject as service } from '@ember/service';
+import { get } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import DS from 'ember-data';
-import Ember from 'ember';
 import uuid from 'npm:uuid';
 
-const {
-  get,
-  isEmpty
-} = Ember;
-
 export default DS.Transform.extend({
-  store: Ember.inject.service(),
+  store: service(),
 
   deserialize(serialized) {
     if (isEmpty(serialized)) {

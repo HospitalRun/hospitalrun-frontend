@@ -1,10 +1,8 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import { task } from 'ember-concurrency';
 import { translationMacro as t } from 'ember-i18n';
 import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
-
-const { computed } = Ember;
 
 export default AbstractEditRoute.extend({
   hideNewButton: true,

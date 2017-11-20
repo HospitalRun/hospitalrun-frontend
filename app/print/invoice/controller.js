@@ -1,5 +1,5 @@
-import Ember from 'ember';
-export default Ember.Controller.extend({
+import Controller from '@ember/controller';
+export default Controller.extend({
   actions: {
     returnToInvoice() {
       this.transitionTo('invoices.edit', this.get('model'));

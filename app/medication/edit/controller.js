@@ -1,14 +1,17 @@
+import { Promise as EmberPromise, resolve } from 'rsvp';
+import { isEmpty } from '@ember/utils';
+import { alias } from '@ember/object/computed';
+import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import AddNewPatient from 'hospitalrun/mixins/add-new-patient';
-import Ember from 'ember';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import UserSession from 'hospitalrun/mixins/user-session';
 
 export default AbstractEditController.extend(AddNewPatient, FulfillRequest, InventoryLocations, PatientSubmodule, UserSession, {
-  medicationController: Ember.inject.controller('medication'),
-  expenseAccountList: Ember.computed.alias('medicationController.expenseAccountList'),
+  medicationController: controller('medication'),
+  expenseAccountList: alias('medicationController.expenseAccountList'),
 
   canFulfill: function() {
     return this.currentUserCan('fulfill_medication');
@@ -34,7 +37,7 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
 
   prescriptionClass: function() {
     let quantity = this.get('model.quantity');
-    if (Ember.isEmpty(quantity)) {
+    if (isEmpty(quantity)) {
       return 'required test-medication-prescription';
     }
   }.property('model.quantity'),
@@ -43,7 +46,7 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
     let prescription = this.get('model.prescription');
     let returnClass = 'col-xs-3';
     let isFulfilling = this.get('isFulfilling');
-    if (isFulfilling || Ember.isEmpty(prescription)) {
+    if (isFulfilling || isEmpty(prescription)) {
       returnClass += ' required';
     }
     return `${returnClass} test-quantity-input`;
@@ -84,12 +87,12 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
     let isFulfilling = this.get('isFulfilling');
     let isNew = this.get('model.isNew');
     if (isNew || isFulfilling) {
-      return new Ember.RSVP.Promise(function(resolve, reject) {
+      return new EmberPromise(function(resolve, reject) {
         let newMedication = this.get('model');
         newMedication.validate().then(function() {
           if (newMedication.get('isValid')) {
             if (isNew) {
-              if (Ember.isEmpty(newMedication.get('patient'))) {
+              if (isEmpty(newMedication.get('patient'))) {
                 this.addNewPatient();
                 reject({
                   ignore: true,
@@ -118,7 +121,7 @@ export default AbstractEditController.extend(AddNewPatient, FulfillRequest, Inve
         }.bind(this));
       }.bind(this));
     } else {
-      return Ember.RSVP.resolve();
+      return resolve();
     }
   },
 

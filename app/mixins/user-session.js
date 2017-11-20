@@ -1,6 +1,8 @@
-import Ember from 'ember';
-export default Ember.Mixin.create({
-  session: Ember.inject.service(),
+import { isEmpty } from '@ember/utils';
+import { inject as service } from '@ember/service';
+import Mixin from '@ember/object/mixin';
+export default Mixin.create({
+  session: service(),
   defaultCapabilities: {
     admin: [
       'User Administrator',
@@ -561,14 +563,14 @@ export default Ember.Mixin.create({
 
   _getUserSessionVars() {
     let session = this.get('session');
-    if (!Ember.isEmpty(session) && session.get('isAuthenticated')) {
+    if (!isEmpty(session) && session.get('isAuthenticated')) {
       return session.get('data.authenticated');
     }
   },
 
   currentUserRole() {
     let sessionVars = this._getUserSessionVars();
-    if (!Ember.isEmpty(sessionVars) && !Ember.isEmpty(sessionVars.role)) {
+    if (!isEmpty(sessionVars) && !isEmpty(sessionVars.role)) {
       return sessionVars.role;
     }
     return null;
@@ -576,12 +578,12 @@ export default Ember.Mixin.create({
 
   currentUserCan(capability) {
     let sessionVars = this._getUserSessionVars();
-    if (!Ember.isEmpty(sessionVars) && !Ember.isEmpty(sessionVars.role)) {
+    if (!isEmpty(sessionVars) && !isEmpty(sessionVars.role)) {
       let userCaps = this.get('session').get('data.authenticated.userCaps');
-      if (Ember.isEmpty(userCaps)) {
+      if (isEmpty(userCaps)) {
         let capabilities = this.get('defaultCapabilities');
         let supportedRoles = capabilities[capability];
-        if (!Ember.isEmpty(supportedRoles)) {
+        if (!isEmpty(supportedRoles)) {
           return supportedRoles.includes(sessionVars.role);
         }
       } else {
@@ -600,12 +602,12 @@ export default Ember.Mixin.create({
   getUserName(returnUserName) {
     let returnName;
     let sessionVars = this._getUserSessionVars();
-    if (!Ember.isEmpty(sessionVars)) {
+    if (!isEmpty(sessionVars)) {
       if (returnUserName) {
         returnName = sessionVars.name;
-      } else if (!Ember.isEmpty(sessionVars.displayName)) {
+      } else if (!isEmpty(sessionVars.displayName)) {
         returnName = sessionVars.displayName;
-      } else if (!Ember.isEmpty(sessionVars.name)) {
+      } else if (!isEmpty(sessionVars.name)) {
         returnName = sessionVars.name;
       }
     }

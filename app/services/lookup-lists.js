@@ -1,16 +1,11 @@
-import Ember from 'ember';
-
-const {
-  Service,
-  get,
-  inject,
-  isEmpty,
-  RSVP
-} = Ember;
+import Service, { inject as service } from '@ember/service';
+import { get } from '@ember/object';
+import { isEmpty } from '@ember/utils';
+import RSVP, { resolve } from 'rsvp';
 
 export default Service.extend({
   lookupLists: {},
-  store: inject.service(),
+  store: service(),
 
   /*
    * Get a lookup list by name
@@ -39,7 +34,7 @@ export default Service.extend({
       }
     });
     if (isEmpty(listsToQuery)) {
-      return Ember.RSVP.resolve(this._getLookupListsFromCache(listNames));
+      return resolve(this._getLookupListsFromCache(listNames));
     } else {
       let queryHash = {};
       if (listsToQuery.includes('incidentCategories')) {

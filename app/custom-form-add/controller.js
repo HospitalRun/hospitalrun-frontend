@@ -1,10 +1,6 @@
+import EmberObject, { computed } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
-
-const {
-  computed,
-  isEmpty
-} = Ember;
 
 export default AbstractEditController.extend({
   updateAction: 'addForm',
@@ -15,10 +11,10 @@ export default AbstractEditController.extend({
       let modelCustomForms = modelToAddTo.get('customForms');
       let selectedForm = this.get('model.selectedForm');
       if (isEmpty(modelCustomForms)) {
-        modelCustomForms = Ember.Object.create();
+        modelCustomForms = EmberObject.create();
         modelToAddTo.set('customForms', modelCustomForms);
       }
-      modelCustomForms.set(selectedForm, Ember.Object.create());
+      modelCustomForms.set(selectedForm, EmberObject.create());
       modelToAddTo.notifyPropertyChange('customForms');
       this.send('closeModal');
     }

@@ -1,6 +1,6 @@
+import { run } from '@ember/runloop';
 import PatientName from 'hospitalrun/mixins/patient-name';
 import { moduleFor, test } from 'ember-qunit';
-import Ember from 'ember';
 import DS from 'ember-data';
 
 moduleFor('mixin:patient-name', 'Unit | Mixin | patient-name', {
@@ -17,7 +17,7 @@ moduleFor('mixin:patient-name', 'Unit | Mixin | patient-name', {
   ],
   subject(attrs) {
     let subject;
-    Ember.run(() => {
+    run(() => {
       let Test = DS.Model.extend(PatientName);
       this.register('model:test', Test);
       subject = this.store().createRecord('test', attrs);
@@ -32,7 +32,7 @@ moduleFor('mixin:patient-name', 'Unit | Mixin | patient-name', {
 
 test('getPatientDisplayId friendlyId', function(assert) {
   let patient;
-  Ember.run(() => {
+  run(() => {
     patient = this.store().createRecord('patient', {
       friendlyId: 'test',
       id: '123'
@@ -44,7 +44,7 @@ test('getPatientDisplayId friendlyId', function(assert) {
 
 test('getPatientDisplayId externalPatientId', function(assert) {
   let patient;
-  Ember.run(() => {
+  run(() => {
     patient = this.store().createRecord('patient', {
       externalPatientId: '1234',
       id: '4321'
@@ -56,7 +56,7 @@ test('getPatientDisplayId externalPatientId', function(assert) {
 
 test('getPatientDisplayId id', function(assert) {
   let patient;
-  Ember.run(() => {
+  run(() => {
     patient = this.store().createRecord('patient', {
       id: '9876'
     });
@@ -67,7 +67,7 @@ test('getPatientDisplayId id', function(assert) {
 
 test('getPatientDisplayName', function(assert) {
   let patient;
-  Ember.run(() => {
+  run(() => {
     patient = this.store().createRecord('patient', {
       firstName: 'First',
       lastName: 'Last',
@@ -80,7 +80,7 @@ test('getPatientDisplayName', function(assert) {
 
 test('getPatientDisplayName first', function(assert) {
   let patient;
-  Ember.run(() => {
+  run(() => {
     patient = this.store().createRecord('patient', {
       firstName: 'First'
     });
@@ -91,7 +91,7 @@ test('getPatientDisplayName first', function(assert) {
 
 test('getPatientDisplayName first and last', function(assert) {
   let patient;
-  Ember.run(() => {
+  run(() => {
     patient = this.store().createRecord('patient', {
       firstName: 'First',
       lastName: 'Last'
@@ -103,7 +103,7 @@ test('getPatientDisplayName first and last', function(assert) {
 
 test('getPatientDisplayName last', function(assert) {
   let patient;
-  Ember.run(() => {
+  run(() => {
     patient = this.store().createRecord('patient', {
       lastName: 'Last'
     });

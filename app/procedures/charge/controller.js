@@ -1,13 +1,17 @@
+import { isEmpty } from '@ember/utils';
+import { Promise as EmberPromise } from 'rsvp';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
 
 export default AbstractEditController.extend({
   cancelAction: 'closeModal',
   newCharge: false,
   newPricingItem: false,
-  requestingController: Ember.inject.controller('procedures/edit'),
-  database: Ember.inject.service(),
-  pricingList: Ember.computed.alias('requestingController.pricingList'),
+  requestingController: controller('procedures/edit'),
+  database: service(),
+  pricingList: alias('requestingController.pricingList'),
   selectedItem: null,
   updateCapability: 'add_charge',
 
@@ -21,11 +25,11 @@ export default AbstractEditController.extend({
 
   beforeUpdate() {
     this.set('newCharge', this.get('model.isNew'));
-    return new Ember.RSVP.Promise((resolve, reject) => {
+    return new EmberPromise((resolve, reject) => {
       let model = this.get('model');
       let pricingItem = model.get('pricingItem');
       let selectedItem = this.get('selectedItem');
-      if (!Ember.isEmpty(selectedItem) && (Ember.isEmpty(pricingItem) || selectedItem.id !== pricingItem.get('id'))) {
+      if (!isEmpty(selectedItem) && (isEmpty(pricingItem) || selectedItem.id !== pricingItem.get('id'))) {
         this.store.find('pricing', selectedItem.id).then((item) => {
           model.set('pricingItem', item);
           resolve();
@@ -33,7 +37,7 @@ export default AbstractEditController.extend({
       } else {
         let newItem = false;
         let saveItem = false;
-        if (Ember.isEmpty(pricingItem)) {
+        if (isEmpty(pricingItem)) {
           pricingItem = this.store.createRecord('pricing', {
             name: model.get('itemName'),
             category: model.get('pricingCategory')

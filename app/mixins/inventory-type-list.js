@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
+import Mixin from '@ember/object/mixin';
 import SelectValues from 'hospitalrun/utils/select-values';
-export default Ember.Mixin.create({
+export default Mixin.create({
   defaultInventoryTypes: [
     'Medication',
     'Supply'
@@ -10,7 +11,7 @@ export default Ember.Mixin.create({
     let defaultInventoryTypes = this.get('defaultInventoryTypes');
     let inventoryTypeList = this.get('inventoryTypeList');
     let typeList;
-    if (Ember.isEmpty(inventoryTypeList)) {
+    if (isEmpty(inventoryTypeList)) {
       typeList = defaultInventoryTypes;
     } else {
       typeList = inventoryTypeList;

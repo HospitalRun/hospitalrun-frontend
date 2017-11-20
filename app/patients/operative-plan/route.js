@@ -1,26 +1,22 @@
+import { inject as service } from '@ember/service';
+import EmberObject, { get } from '@ember/object';
 import AbstractEditRoute from 'hospitalrun/routes/abstract-edit-route';
 import AddToPatientRoute from 'hospitalrun/mixins/add-to-patient-route';
-import Ember from 'ember';
 import moment from 'moment';
 import { translationMacro as t } from 'ember-i18n';
-
-const {
-  get,
-  inject
-} = Ember;
 
 export default AbstractEditRoute.extend(AddToPatientRoute, {
   editTitle: t('operativePlan.titles.editTitle'),
   modelName: 'operative-plan',
   newTitle: t('operativePlan.titles.newTitle'),
 
-  customForms: inject.service(),
-  database: inject.service(),
+  customForms: service(),
+  database: service(),
 
   getNewData() {
     let customForms = get(this, 'customForms');
     let newData = {
-      customForms: Ember.Object.create()
+      customForms: EmberObject.create()
     };
     return customForms.setDefaultCustomForms(['operativePlan'], newData);
   },

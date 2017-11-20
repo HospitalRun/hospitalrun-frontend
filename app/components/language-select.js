@@ -1,8 +1,9 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
-  config: Ember.inject.service(),
-  i18n: Ember.inject.service(),
+export default Component.extend({
+  config: service(),
+  i18n: service(),
 
   languageOptions: function() {
     let i18n = this.get('i18n');

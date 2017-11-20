@@ -1,10 +1,10 @@
+import { isEmpty } from '@ember/utils';
 import AbstractDeleteController from 'hospitalrun/controllers/abstract-delete-controller';
 import PatientVisitsMixin from 'hospitalrun/mixins/patient-visits';
 import PatientAppointmentsMixin from 'hospitalrun/mixins/patient-appointments';
 import PatientInvoicesMixin from 'hospitalrun/mixins/patient-invoices';
 import PouchDbMixin from 'hospitalrun/mixins/pouchdb';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
-import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
 import { task, taskGroup, all } from 'ember-concurrency';
 
@@ -23,7 +23,7 @@ export default AbstractDeleteController.extend(PatientVisitsMixin, PatientInvoic
       return;
     }
     let resolvedArray = yield manyArray;
-    if (Ember.isEmpty(resolvedArray)) {
+    if (isEmpty(resolvedArray)) {
       // empty array: no records to delete
       return;
     }

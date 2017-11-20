@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Mixin from '@ember/object/mixin';
 
 export const PREDEFINED_USER_ROLES = [
   { name: 'Data Entry', roles: ['Data Entry', 'user'], defaultRoute: 'patients.index' },
@@ -20,7 +20,7 @@ export const PREDEFINED_USER_ROLES = [
   { name: 'Cashier', roles: ['Cashier', 'user'], defaultRoute: 'invoices.index' }
 ];
 
-export default Ember.Mixin.create({
+export default Mixin.create({
   userRoles: PREDEFINED_USER_ROLES,
 
   findUserRole(name) {

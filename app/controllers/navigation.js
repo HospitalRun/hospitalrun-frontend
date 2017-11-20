@@ -1,20 +1,23 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
 import HospitalRunVersion from 'hospitalrun/mixins/hospitalrun-version';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 import UserSession from 'hospitalrun/mixins/user-session';
 import Navigation from 'hospitalrun/mixins/navigation';
 
-export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, ProgressDialog, UserSession, Navigation, {
-  ajax: Ember.inject.service(),
-  application: Ember.inject.controller(),
+export default Controller.extend(HospitalRunVersion, ModalHelper, ProgressDialog, UserSession, Navigation, {
+  ajax: service(),
+  application: controller(),
   allowSearch: false,
-  config: Ember.inject.service(),
+  config: service(),
   currentSearchText: null,
-  currentRouteName: Ember.computed.alias('application.currentRouteName'),
+  currentRouteName: alias('application.currentRouteName'),
   progressTitle: 'Searching',
   searchRoute: null,
-  session: Ember.inject.service(),
+  session: service(),
   syncStatus: '',
   currentOpenNav: null,
   selectedLanguage: null,
@@ -24,7 +27,7 @@ export default Ember.Controller.extend(HospitalRunVersion, ModalHelper, Progress
       let version = this.get('version');
       this.get('ajax').request('/serverinfo').then((siteInfo) => {
         let message = `Version: ${version}`;
-        if (!Ember.isEmpty(siteInfo)) {
+        if (!isEmpty(siteInfo)) {
           message += ` Site Info: ${siteInfo}`;
         }
         this.displayAlert(this.get('i18n').t('navigation.about'), message);

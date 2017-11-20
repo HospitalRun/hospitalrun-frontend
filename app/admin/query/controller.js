@@ -1,7 +1,9 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
+import { map } from '@ember/object/computed';
+import Controller from '@ember/controller';
 import EditPanelProps from 'hospitalrun/mixins/edit-panel-props';
 import SelectValues from 'hospitalrun/utils/select-values';
-export default Ember.Controller.extend(EditPanelProps, {
+export default Controller.extend(EditPanelProps, {
   hideCancelButton: true,
   showUpdateButton: true,
   updateButtonAction: 'query',
@@ -24,7 +26,7 @@ export default Ember.Controller.extend(EditPanelProps, {
     'vital'
   ],
 
-  objectTypes: Ember.computed.map('objectTypeList', SelectValues.selectValuesMap),
+  objectTypes: map('objectTypeList', SelectValues.selectValuesMap),
 
   actions: {
     query() {
@@ -38,7 +40,7 @@ export default Ember.Controller.extend(EditPanelProps, {
         }
       };
       this.store.query(objectType, query).then(function(results) {
-        if (Ember.isEmpty(results)) {
+        if (isEmpty(results)) {
           this.set('errorMessage', 'Query returned no results.');
           this.set('haveError', true);
           this.set('showQueryResults', false);
@@ -58,7 +60,7 @@ export default Ember.Controller.extend(EditPanelProps, {
             }); */
             attributes.forEach(function(attribute) {
               currentValue = result.get(attribute);
-              if (!Ember.isEmpty(currentValue)) {
+              if (!isEmpty(currentValue)) {
                 resultRow.push({
                   name: attribute,
                   value: currentValue

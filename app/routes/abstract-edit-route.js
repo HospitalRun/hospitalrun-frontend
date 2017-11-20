@@ -1,16 +1,17 @@
+import { isEmpty } from '@ember/utils';
+import { Promise as EmberPromise, resolve } from 'rsvp';
+import Route from '@ember/routing/route';
+import { get } from '@ember/object';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import Ember from 'ember';
 
-const { get } = Ember;
-
-export default Ember.Route.extend(AuthenticatedRouteMixin, {
+export default Route.extend(AuthenticatedRouteMixin, {
   editTitle: null,
   hideNewButton: false,
   modelName: null,
   newTitle: null,
 
   _createNewRecord(params) {
-    return new Ember.RSVP.Promise(function(resolve) {
+    return new EmberPromise(function(resolve) {
       this.generateId().then(function(newId) {
         this.getNewData(params).then(function(data) {
           let modelName = get(this, 'modelName');
@@ -38,7 +39,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
    * id will be automatically generated via Ember data.
    */
   generateId() {
-    return Ember.RSVP.resolve(null);
+    return resolve(null);
   },
 
   /**
@@ -46,7 +47,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
    * @return a promise that will resolve with the data for a new record; defaults to empty object.
    */
   getNewData() {
-    return Ember.RSVP.resolve({});
+    return resolve({});
   },
 
   getScreenTitle(model) {
@@ -59,7 +60,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   model(params) {
     let idParam = get(this, 'idParam');
-    if (!Ember.isEmpty(idParam) && params[idParam] === 'new') {
+    if (!isEmpty(idParam) && params[idParam] === 'new') {
       return this._createNewRecord(params);
     } else {
       return this._super(params);
