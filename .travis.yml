@@ -17,23 +17,23 @@ addons:
     packages:
     - g++-4.8
 cache:
+  yarn: true
   directories:
     - $HOME/.npm
     - $HOME/.cache
 
 before_install:
-  - npm config set spin false
-  - npm install -g yarn phantomjs-prebuilt
+  - npm install -g phantomjs-prebuilt
   - yarn --version
   - phantomjs --version
 
 install:
-  - yarn install
+  - yarn
   - export DISPLAY=':99.0'
   - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
 script:
-  - npm run $COMMAND
+  - yarn run $COMMAND
 
 env:
   matrix:
