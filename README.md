@@ -35,7 +35,7 @@ To install the frontend please do the following:
 2. Make sure you have installed [Node.js](https://nodejs.org/en/download/). Versions 6.0.0 and higher should work. We recommend that you use the most-recent "Active LTS" version of Node.js.
 3. Install [ember-cli latest](https://www.npmjs.org/package/ember-cli): `npm install -g ember-cli@latest`.
    Depending on your [npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) you might need root access to install ember-cli.
-4. Install [bower](https://www.npmjs.org/package/bower): `npm install -g bower`.
+4. Install [yarn](https://yarnpkg.com/en/docs/install): `curl -o- -L https://yarnpkg.com/install.sh | bash`.
 5. Clone this repo with `git clone https://github.com/HospitalRun/hospitalrun-frontend`, go to the cloned folder and run `script/bootstrap`.
   - **Note:** *Windows users must use [Cygwin](http://cygwin.org/). If that is your case, please run the script in the following way to remove trailing `\r` characters:*
   ``` bash
@@ -69,7 +69,7 @@ To install the frontend please do the following:
 ## Running the application
 To start the frontend please do the following:
 
-- Start the server by running `npm start` in the repo folder.  If `npm start` doesn't work for you, try `ember serve` as an alternative.
+- Start the server by running `yarn start` in the repo folder.  If `yarn start` doesn't work for you, try `ember serve` as an alternative.
 - Go to [http://localhost:4200/](http://localhost:4200/) in a browser and login with username `hradmin` and password `test`.
 
 ## Running with Docker
@@ -184,5 +184,3 @@ If you are willing to try using `make`, ensure you have installed Git, Node.js a
 **Q: What is the difference between hospitalrun-frontend and hospitalrun-server?**
 
 Frontend is the primary repository and is used for development purposes. Server is the node backend, if you are looking to run HospitalRun in a clinical setting, you should use server.
-
-

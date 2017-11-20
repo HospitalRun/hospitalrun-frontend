@@ -19,17 +19,16 @@ addons:
 cache:
   directories:
     - $HOME/.npm
-    - $HOME/.cache # includes bowers cache
+    - $HOME/.cache
 
 before_install:
   - npm config set spin false
-  - npm install -g bower phantomjs-prebuilt
-  - bower --version
+  - npm install -g yarn phantomjs-prebuilt
+  - yarn --version
   - phantomjs --version
 
 install:
-  - npm install
-  - bower install
+  - yarn install
   - export DISPLAY=':99.0'
   - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
@@ -40,6 +39,3 @@ env:
   matrix:
   - COMMAND=test
   - CXX=g++-4.8 COMMAND=electron-test
-
-
-
