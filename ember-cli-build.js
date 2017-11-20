@@ -28,8 +28,8 @@ module.exports = function(defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
   app.import('bower_components/bootstrap/dist/js/bootstrap.js');
-  app.import('node_modules/jsnarcode/dist/barcodes/JsBarcode.code128.min.js');
-  app.import('node_modules/jsnarcode/dist/JsBarcode.all.js');
+  app.import('node_modules/jsbarcode/dist/barcodes/JsBarcode.code128.min.js');
+  app.import('node_modules/jsbarcode/dist/JsBarcode.all.js');
   app.import('vendor/dymo/DYMO.Label.Framework.1.2.6.js');
   app.import('bower_components/typeahead.js/dist/typeahead.bundle.js');
   app.import('bower_components/pikaday/pikaday.js');
