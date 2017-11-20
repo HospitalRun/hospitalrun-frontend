@@ -89,11 +89,11 @@ export default {
         optionsSaved: 'Οι Επιλογές Αποθηκεύτηκαν'
       }
     },
-    loadDb: 'Μεταφόρτωση Βάσης Δεδομένων',
+    loadDb: 'Μεταφόρτωση Βάσης',
     loaddb: {
       displayAlertMessage: 'Παρακαλώ επιλέξτε αρχείο για μεταφόρτωση.',
       displayAlertTitle: 'Επιλέξτε Αρχείο για Μεταφόρτωση',
-      editTitle: 'Μεταφόρτωση Βάσης Δεδομένων',
+      editTitle: 'Μεταφόρτωση Βάσης',
       errorDisplayAlertMessage: 'Δεν ήταν δυνατό να εισαχθεί η βάση δεδομένων. Το σφάλμα ήταν: {{error}}',
       errorDisplayAlertTitle: 'Σφάλμα Μεταφόρτωσης',
       progressMessage: 'Παρακαλώ περιμένετε ενώ εκτελείται η μεταφόρτωση της βάσης δεδομένων.',
@@ -120,7 +120,7 @@ export default {
           editTitle: 'Επεξεργασία τιμής',
           labelTitle: 'Τιμή',
           updateButtonTextAdd: 'Πρόσθεση',
-          updateButtonTextUpdate: 'Αναβάθμιση'
+          updateButtonTextUpdate: 'Ενημέρωση'
         }
       },
       expenseAccountList: 'Λογαριασμοί Εξόδων',
@@ -178,7 +178,7 @@ export default {
         admin: 'Διαχείριση',
         admitPatient: 'Εισαγωγή Ασθενούς',
         appointments: 'Ραντεβού',
-        billing: 'Χρέωση',
+        billing: 'Χρεώσεις',
         cashier: 'Ταμίας',
         completeImaging: 'Πλήρης Απεικόνιση',
         completeLab: 'Πλήρες Εργαστήριο',
@@ -212,7 +212,7 @@ export default {
         invoices: 'Τιμολόγια',
         labs: 'Εργαστήρια',
         listPaidInvoices: 'Λίστα Πληρωμένων Τιμολογίων',
-        loadDb: 'Μεταφόρτωση Βάσης Δεδομένων',
+        loadDb: 'Μεταφόρτωση Βάσης',
         manageIncidents: 'Διαχείριση Περιστατικών',
         medication: 'Φαρμακευτική Αγωγή',
         overrideInvoice: 'Παράκαμψη Τιμολoγίου',
@@ -300,8 +300,8 @@ export default {
   },
   appointments: {
     buttons: {
-      newButton: '+ Νέο ραντεβού',
-      scheduleSurgery: '+ Προγραμματίστε χειρουργική επέμβαση'
+      newButton: '+ Νέο Ραντεβού',
+      scheduleSurgery: '+ Προγραμ. Εγχείρισης'
     },
     calendarTitle: 'Ημερολόγιο Ραντεβού',
     currentScreenTitle: 'Λίστα Ραντεβού',
@@ -318,14 +318,14 @@ export default {
     newTitle: 'Νέο Ραντεβού',
     searchTitle: 'Αναζήτηση Ραντεβού',
     sectionTitle: 'Ραντεβού',
-    thisWeek: 'Ραντεβού Αυτή την Εβδομάδα',
+    thisWeek: 'Ραντεβού Εβδομάδας',
     titles: {
       appointmentSaved: 'Το ραντεβού αποθηκεύτηκε',
       editSurgicalAppointment: 'Επεξεργασία Χειρουργικού Ραντεβού',
       newSurgicalAppointment: 'Νέο Χειρουργικό Ραντεβού',
       theaterSchedule: 'Πρόγραμμα Χειρουργικής Αίθουσας'
     },
-    todayTitle: "Σημερινά Ραντεβού"
+    todayTitle: 'Σημερινά Ραντεβού'
   },
   billing: {
     alerts: {
@@ -374,10 +374,10 @@ export default {
     fulfill: 'Ολοκλήρωση',
     'import': 'Εισαγωγή',
     loadFile: 'Μεταφόρτωση Αρχείου',
-    newItem: '+ νέο στοιχείο',
+    newItem: '+ Νέο Στοιχείο',
     newNote: 'Νέα Σημείωση',
     newRequest: 'Νέο Αιτήμα',
-    newRequestPlus: '+ νέο αιτήμα',
+    newRequestPlus: '+ Νέο Αίτημα',
     newUser: 'Νέος Χρήστης',
     ok: 'OK',
     print: 'Εκτύπωση',
@@ -387,7 +387,7 @@ export default {
     search: 'Αναζήτηση',
     showAll: 'Προβολή Όλων',
     showFewer: 'Εμφάνιση Λιγότερων',
-    update: 'Αναβάθμιση'
+    update: 'Ενημέρωση'
   },
   components: {
     chargesByTypeTab: {
@@ -512,9 +512,9 @@ export default {
   },
   errors: {
     accepted: 'πρέπει να γίνει αποδεκτό',
-    blank: "δεν μπορεί να είναι κενό",
-    confirmation: "δεν ταιριάζει με {{attribute}}",
-    empty: "δεν μπορεί να είναι κενό",
+    blank: 'δεν μπορεί να είναι κενό',
+    confirmation: 'δεν ταιριάζει με {{attribute}}',
+    empty: 'δεν μπορεί να είναι κενό',
     equalTo: 'πρέπει να είναι ίσο με {{count}}',
     even: 'πρέπει να είναι ίσα',
     exclusion: 'είναι κλεισμένο',
@@ -546,7 +546,7 @@ export default {
       savedTitle: 'Το Αίτημα Απεικόνισης Αποθηκεύτηκε'
     },
     buttons: {
-      newButton: '+ νέα απεικόνιση'
+      newButton: '+ Νέα Απεικόνιση'
     },
     labels: {
       addNewVisit: '--Προσθήκη Νέας Επίσκεψης--',
@@ -561,7 +561,7 @@ export default {
     pageTitle: 'Αιτήματα Απεικόνισης',
     sectionTitle: 'Απεικόνιση',
     titles: {
-      completedImaging: 'Ολοκληρωμένη Απεικόνιση',
+      completedImaging: 'Ολοκληρωμένες Απεικονίσεις',
       editTitle: 'Επεξεργασία Αιτήματος Απεικόνισης',
       newTitle: 'Νέο Αίτημα Απεικόνισης'
     }
@@ -578,8 +578,8 @@ export default {
       'export': 'Εξαγωγή Αναφοράς',
       generateRep: 'Δημιουργία Αναφοράς',
       newAttachment: '+ Νέο Συνημμένο',
-      newCategory: '+ νέα κατηγορία',
-      newIncident: '+ νέο περιστατικό',
+      newCategory: '+ Νέα Κατηγορία',
+      newIncident: '+ Νέο Περιστατικό',
       newNote: '+ Νέα Σημείωση'
     },
     labels: {
@@ -770,12 +770,12 @@ export default {
     messages: {
       adjust: 'Παρακαλώ προσαρμόστε τις ποσότητες στην(ις) κατάλληλη(ες) θέση(εις) για να υπολογιστεί η διαφορά των {{difference}}.',
       createRequest: 'Δημιουργία νέου αιτήματος;',
-      itemNotFound: 'Το είδος αποθεματικού <strong> {{item}} </ strong> δεν βρέθηκε.<br>Αν θέλετε να δημιουργήσετε ένα νέο είδος αποθεματικού, συμπληρώστε τις παρακάτω πληροφορίες. <br> Διαφορετικά, πατήστε το κουμπί Άκύρωση για να επιστρέψετε.',
+      itemNotFound: 'Το είδος αποθεματικού <strong> {{item}} </strong> δεν βρέθηκε.<br>Αν θέλετε να δημιουργήσετε ένα νέο είδος αποθεματικού, συμπληρώστε τις παρακάτω πληροφορίες. <br> Διαφορετικά, πατήστε το κουμπί Άκύρωση για να επιστρέψετε.',
       loading: 'Φόρτωση Συναλλαγών ...',
       noItems: 'Δεν βρέθηκαν αντικείμενα.',
       noRequests: 'Δεν βρέθηκαν αιτήματα.',
       purchaseSaved: 'Οι αγορές αποθεμάτικού σώθηκαν επιτυχώς.',
-      quantity: 'Η συνολική ποσότητα <strong>({{quantity}})</ strong> δεν ταιριάζει με τη συνολική ποσότητα στις θέσεις <strong>({{locationQuantity}}) </ strong>.',
+      quantity: 'Η συνολική ποσότητα <strong>({{quantity}})</strong> δεν ταιριάζει με τη συνολική ποσότητα στις θέσεις <strong>({{locationQuantity}}) </strong>.',
       removeItem: 'Είστε βέβαιοι ότι θέλετε να καταργήσετε αυτό το στοιχείο από αυτό το τιμολόγιο;',
       removeItemRequest: 'Είστε βέβαιοι ότι θέλετε να καταργήσετε αυτό το στοιχείο από αυτό το αίτημα;',
       requestFulfilled: 'To αίτημα αποθεματικού έχει ολοκληρωθεί.',
@@ -873,7 +873,7 @@ export default {
     datePaid: 'Ημερομηνία Πληρωμής',
     dateRequested: 'Αιτηθείσα Ημερομηνία',
     'delete': 'Διαγραφή',
-    deleteRequest: 'Διαγραφή Αίτησης',
+    deleteRequest: 'Διαγραφή Αιτήματος',
     deleteUser: 'Διαγραφή Χρήστη',
     department: 'Τμήμα',
     description: 'Περιγραφή',
@@ -910,7 +910,7 @@ export default {
     medication: 'Φαρμακευτική Αγωγή',
     name: 'Ονομα',
     newUser: 'Νέος χρήστης',
-    newItem: '+ νέο στοιχείο',
+    newItem: '+ Νέο Στοιχείο',
     note: 'Σημείωση',
     notes: 'Σημειώσεις',
     number: 'Αριθμός',
@@ -931,7 +931,7 @@ export default {
     remarks: 'Παρατηρήσεις',
     requestedBy: 'Αιτήθηκε από',
     requestedOn: 'Αιτήθηκε στη/στις',
-    requests: 'Αιτήσεις',
+    requests: 'Αιτήματα',
     result: 'Αποτέλεσμα',
     results: 'Αποτελέσματα',
     role: 'Ρόλος',
@@ -959,7 +959,7 @@ export default {
       requestSavedTitle: 'Το Αίτημα Εργαστηρίου Αποθηκεύτηκε'
     },
     buttons: {
-      newButton: '+ νέο εργαστήριο'
+      newButton: '+ Νέο Εργαστήριο'
     },
     completedTitle: 'Ολοκληρώμένα Εργαστήρια',
     deleteTitle: 'Διαγραφή Αιτήματος',
@@ -1017,9 +1017,9 @@ export default {
       savedTitle: 'Το Αίτημα Φαρμακευτικής Αγωγής Αποθηκεύτηκε'
     },
     buttons: {
-      dispenseMedication: 'διανομή φαρμακευτικής αγωγής',
-      newButton: '+ νέο αίτημα',
-      returnMedication: 'επιστροφή φαρμακευτικής αγωγής'
+      dispenseMedication: 'Διανομή Φαρμακευτικής Αγωγής',
+      newButton: '+ Νέο Αίτημα',
+      returnMedication: 'Επιστροφή Φαρμακευτικής Αγωγής'
     },
     labels: {
       adjustmentDate: 'Ημερομηνία Προσαρμογής',
@@ -1036,7 +1036,7 @@ export default {
     messages: {
       createNew: 'Δημιουργία νέου αιτήματος φαρμακευτικής αγωγής;'
     },
-    pageTitle: 'Αιτήσεις Φαρμακευτικής Αγωγής',
+    pageTitle: 'Αιτήματα Φαρμακευτικής Αγωγής',
     returnMedication: 'Επιστροφή Φαρμάκων',
     sectionTitle: 'Φαρμακευτική Αγωγή',
     titles: {
@@ -1186,19 +1186,19 @@ export default {
     billing: 'Χρέωση',
     imaging: 'Απεικόνιση',
     incident: 'Περιστατικό',
-    inventory: 'Απόθεμα',
+    inventory: 'Αποθεματικό',
     labs: 'Εργαστήρια',
     medication: 'Φαρμακευτική Αγωγή',
     messages: {
       logoutFailed: 'Δεν ήταν δυνατή η αποσύνδεση αυτή τη στιγμή. Η αποσύνδεση δεν είναι διαθέσιμη ενώ είστε εκτός σύνδεσης.'
     },
     patients: 'Ασθενείς',
-    scheduling: 'Προγραμματισμός',
+    scheduling: 'Πρόγραμμα',
     subnav: {
       actions: 'Ενέργειες',
       addAppointment: 'Προσθήκη Ραντεβού',
       addressFields: 'Πεδία Διεύθυνσης',
-      admittedPatients: 'Εισαγμένοι Ασθενείς',
+      admittedPatients: 'Εισηγμένοι Ασθενείς',
       appointmentSearch: 'Αναζήτηση Ραντεβού',
       appointmentsCalendar: 'Ημερολόγιο Ραντεβού',
       appointmentsThisWeek: 'Ραντεβού Εβδομάδας',
@@ -1209,15 +1209,15 @@ export default {
       dispense: 'Κατανομή',
       history: 'Ιστορικό',
       incidentCategories: 'Κατηγορίες Περιστατικών',
-      inventoryReceived: 'Παραληφθεν Απόθεμα',
+      inventoryReceived: 'Παραληφθέν Απόθεμα',
       invoices: 'Τιμολόγια',
       items: 'Είδη',
-      loadDB: 'Μεταφόρτωση Βάσης Δεδομένων',
+      loadDB: 'Μεταφόρτωση Βάσης',
       lookupLists: 'Λίστες Aναζήτησης',
       newIncident: 'Nέο Περιστατικό',
       newInvoice: 'Νέο Τιμολόγιο',
       newPatient: 'Νέος Ασθενής',
-      newRequest: 'Νέα Αίτηση',
+      newRequest: 'Νέο Αίτημα',
       newUser: 'Νέος Χρήστης',
       outpatient: 'Ασθενής Εξωτερικών Ιατρείων',
       patientListing: 'Καταχώριση Ασθενούς',
@@ -1225,12 +1225,12 @@ export default {
       prices: 'Τιμές',
       printHeader: 'Εκτύπωση Επικεφαλίδας',
       reports: 'Αναφορές',
-      requests: 'Αιτήσεις',
-      returnMedication: 'Επιστροφή Φαρμακευτικής Αγωγής',
-      scheduleSurgery: 'Προγραμματισμός Χειρουργείου',
+      requests: 'Αιτήματα',
+      returnMedication: 'Επιστροφή Φαρμακ. Αγωγής',
+      scheduleSurgery: 'Προγρ. Χειρουργείου',
       textReplacements: 'Shortcodes',
-      theaterSchedule: 'Πρόγραμμα Χειρουργικής Αίθουσας',
-      "today'sAppointments": "Σημερινά Ραντεβού",
+      theaterSchedule: 'Πρόγρ. Χειρ. Αίθουσας',
+      "today'sAppointments": 'Σημερινά Ραντεβού',
       userRoles: 'Ρόλοι Χρηστών',
       users: 'Xρήστες',
       workflow: 'Ροή Εργασίας'
@@ -1298,7 +1298,7 @@ export default {
       newImaging: 'Νέα Απεικόνιση',
       newLab: 'Νέο Εργαστήριο',
       newMedication: 'Νέα Φαρμακευτική Αγωγή',
-      newPatient: '+ νέος ασθενής',
+      newPatient: '+ Νέος Ασθενής',
       newPhoto: 'Νέα Φωτογραφία',
       newVisit: 'Νέα Επίσκεψη',
       patientCheckIn: 'Check In Ασθενών',
@@ -1335,13 +1335,13 @@ export default {
       patientTypePrivate: 'Ιδιωτικό',
       phone: 'Τηλέφωνο',
       placeOfBirth: 'Τόπος Γέννησης',
-      primaryDiagnosis: 'Πρωταρχική Διάγνωση',
+      primaryDiagnosis: 'Κύριες Διαγνώσεις',
       referredBy: 'Αναφορά Με',
       referredDate: 'Ημερομηνία Αναφοράς',
       relationship: 'Σχέση με Ασθενή',
-      relationships: 'Σχέσεις',
+      relationships: 'Σχέση',
       religion: 'Θρησκεία',
-      secondaryDiagnosis: 'Δευτερεύουσα Διάγνωση',
+      secondaryDiagnosis: 'Επιπρόσθετες Διαγνώσεις',
       sex: 'Φύλο',
       sexNotEntered: 'Το Φύλο δεν εχει Εισαχθεί',
       sources: 'Πηγές',
@@ -1353,7 +1353,7 @@ export default {
       createNewPatient: 'Δημιουργία νέου αρχείου ασθενούς;',
       deletingPatient: 'Διαγραφή του ασθενούς και όλα τα συσχετιζόμενα αρχεία',
       noPatientsFound: 'Δεν βρέθηκαν ασθενείς.',
-      notFoundQuickAdd: 'Ο ασθενής <strong>{{patientFullName}}</ strong> δε βρέθηκε. Αν θέλετε να δημιουργήσετε ένα νέο ασθενή, συμπληρώστε τις παρακάτω πληροφορίες. Διαφορετικά πατήστε Ακύρωση για να επιστρέψετε.',
+      notFoundQuickAdd: 'Ο ασθενής <strong>{{patientFullName}}</strong> δε βρέθηκε. Αν θέλετε να δημιουργήσετε ένα νέο ασθενή, συμπληρώστε τις παρακάτω πληροφορίες. Διαφορετικά πατήστε Ακύρωση για να επιστρέψετε.',
       photoFileRequired: 'Παρακαλώ τραβήξτε μια φωτογραφία ή ανεβάστε ένα αρχείο πριν από την αποθήκευση της φωτογραφίας.',
       savedPatient: 'Η εγγραφή ασθενούς του/της {{displayName}} έχει αποθηκευτεί.'
     },
@@ -1406,7 +1406,7 @@ export default {
       proceduresSummary: 'Περίληψη Διαδικασιών',
       savedPatient: 'Ο Ασθενής Αποθηκεύτηκε',
       socialWork: 'Δαπάνη',
-      todaysOutpatients: "Σήμερινοι Εξονοσοκομειακοί Ασθενείς",
+      todaysOutpatients: 'Σήμερινοι Εξονοσοκομειακοί Ασθενείς',
       totalPatientDays: 'Σύνολικές Ημέρες Ασθενούς',
       totalPatientDaysDetailed: 'Σύνολικές Ημέρες Ασθενούς (Λεπτομερώς)',
       visit: 'Επίσκεψη'
@@ -1440,7 +1440,7 @@ export default {
       titles: {
         billingStatement: 'ΔΗΛΩΣΗ ΧΡΕΩΣΗΣ',
         patientMember: 'Ασθενής-Μέλος',
-        patients: "ΑΣΘΕΝΟΥΣ",
+        patients: 'ΑΣΘΕΝΟΥΣ',
         relContact: 'Σχέση/Αρ. Επικοινωνίας'
       }
     }
@@ -1492,9 +1492,9 @@ export default {
         procedures: 'Προγραμματισμένες Διαδικασίες',
         title: 'Πρόγραμμα Χειρουργείου'
       },
-      primaryDiagnosis: 'Πρωταρχική Διάγνωση',
+      primaryDiagnosis: 'Κύριες Διαγνώσεις',
       procedures: 'Διαδικασίες',
-      secondaryDiagnosis: 'Δευτερεύουσα Διάγνωση',
+      secondaryDiagnosis: 'Επιπρόσθετες Διαγνώσεις',
       visitDate: 'Ημερομηνία Επίσκεψης',
       visitType: 'Τύπος Επίσκεψης'
     },
@@ -1511,7 +1511,7 @@ export default {
     }
   },
   user: {
-    plusNewUser: '+ νέος χρήστης',
+    plusNewUser: '+ Νέος Χρήστης',
     usersPageTile: 'Καταχώριση Χρήστη'
   },
   visits: {
@@ -1557,7 +1557,7 @@ export default {
     messages: {
       checkOut: 'Είστε σίγουροι ότι θέλετε να κάνετε check out στον/στην {{patientName}};',
       checkedOut: 'Έχει γίνει check out για τον/την {{patientName}}.',
-      discharged: 'Ο/Η {{patientName}} έχει αποχωρήσει.',
+      discharged: 'Ο/Η {{patientName}} αποχώρησε.',
       patientCheckedIn: 'Έχει γίνει check in για τον/την {{patientName}}.',
       patientCreatedAndCheckedIn: 'O/H {{patientName}} έχει δημιουργηθεί ώς εγγραφή και έχει γίνει check in.',
       visitAndPatientSaved: 'Οι εγγραφές της επίσκεψη και του ασθενούς έχουν αποθηκευτεί.',
