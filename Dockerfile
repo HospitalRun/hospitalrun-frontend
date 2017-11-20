@@ -1,7 +1,7 @@
 FROM node:6-alpine
 
 # install script dependencies
-RUN apk update && apk add sudo curl git wget bash binutils tar python make
+RUN apk update && apk add sudo curl git wget bash binutils tar python build-base
 RUN rm -rf /var/cache/apk/*
 
 # setup folders
