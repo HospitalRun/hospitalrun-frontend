@@ -206,7 +206,7 @@ export default {
         fulfillInventory: 'Κάληψη Αποθεματικού',
         fulfillMedication: 'Κάληψη Φαρμακευτικής Αγωγής',
         generateIncidentReport: 'Δημιουργία Αναφοράς Περιστατικού',
-        imaging: 'Απεικόνιση',
+        imaging: 'Απεικονίσεις',
         incident: 'Περιστατικό',
         inventory: 'Αποθεματικό',
         invoices: 'Τιμολόγια',
@@ -368,7 +368,7 @@ export default {
     close: 'Κλείσιμο',
     complete: 'Ολοκλήρωση',
     'delete': 'Διαγραφή',
-    dispense: 'Κατανομή',
+    dispense: 'Διανομή',
     edit: 'Επεξεργασία',
     filter: 'Φίλτρο',
     fulfill: 'Ολοκλήρωση',
@@ -427,7 +427,7 @@ export default {
         newMedication: 'Νέα Φαρμακευτική Αγωγή'
       },
       labels: {
-        imagingOrderType: 'Απεικόνιση',
+        imagingOrderType: 'Απεικονίσεις',
         labOrderType: 'Εργαστήριο',
         medicationOrderType: 'Φαρμακευτική Αγωγή',
         orderType: 'Τύπος Παραγγελίας'
@@ -540,7 +540,7 @@ export default {
   },
   imaging: {
     alerts: {
-      completedMessage: 'Το αίτημα απεικόνισης έχει ολοκληρωθεί.',
+      completedMessage: 'Το αίτημα απεικόνισης ολοκληρώθηκε.',
       completedTitle: 'Το Αίτημα Απεικόνισης Ολοκληρώθηκε',
       savedMessage: 'Το αίτημα απεικόνισης έχει αποθηκευτεί.',
       savedTitle: 'Το Αίτημα Απεικόνισης Αποθηκεύτηκε'
@@ -559,7 +559,7 @@ export default {
       noCompleted: 'Δεν βρέθηκαν ολοκληρωμένα στοιχεία.'
     },
     pageTitle: 'Αιτήματα Απεικόνισης',
-    sectionTitle: 'Απεικόνιση',
+    sectionTitle: 'Απεικονίσεις',
     titles: {
       completedImaging: 'Ολοκληρωμένες Απεικονίσεις',
       editTitle: 'Επεξεργασία Αιτήματος Απεικόνισης',
@@ -710,15 +710,15 @@ export default {
       expirationDate: 'Ημερομηνία Λήξης',
       fulfillRequest: 'Ολοκλήρωση Αιτήματος',
       fulfillRequestNow: 'Ολοκλήρωση Αιτήματος Τώρα',
-      gift: 'Δώρεα σε Είδος',
+      gift: 'Δωρεά Είδους',
       giftInKindNo: 'Ο',
       giftInKindYes: 'Ν',
-      giftUsage: 'Χρήση Δώρεας σε Είδος',
+      giftUsage: 'Χρήση Δωρεάς Είδους',
       inventoryConsumed: 'Το Αποθεματικό Καταναλώθηκε',
       inventoryItem: 'Είδους Αποθεματικού',
       inventoryObsolence: 'Αχρήστευση Αποθεματικού',
       invoiceItems: 'Αντικείμενα Τιμολογίου',
-      invoiceLineItem: 'Αντικείμενα Γραμμής Τιμολογίου',
+      invoiceLineItem: 'Στοιχεία Γραμμής Τιμολογίου',
       invoiceNumber: 'Αριθμός Τιμολογίου',
       item: 'Αντικείμενο',
       itemNumber: 'Αριθμός Αντικειμένου',
@@ -765,7 +765,7 @@ export default {
       vendor: 'Προμηθευτής',
       vendorItemNumber: 'Αριθμός Είδους Προμηθευτή',
       writeOffAdjustmentType: 'Διαγραφή',
-      xref: 'Εξωτερική Σύσταση'
+      xref: 'Εξωνοσοκομειακή Σύσταση'
     },
     messages: {
       adjust: 'Παρακαλώ προσαρμόστε τις ποσότητες στην(ις) κατάλληλη(ες) θέση(εις) για να υπολογιστεί η διαφορά των {{difference}}.',
@@ -778,7 +778,7 @@ export default {
       quantity: 'Η συνολική ποσότητα <strong>({{quantity}})</strong> δεν ταιριάζει με τη συνολική ποσότητα στις θέσεις <strong>({{locationQuantity}}) </strong>.',
       removeItem: 'Είστε βέβαιοι ότι θέλετε να καταργήσετε αυτό το στοιχείο από αυτό το τιμολόγιο;',
       removeItemRequest: 'Είστε βέβαιοι ότι θέλετε να καταργήσετε αυτό το στοιχείο από αυτό το αίτημα;',
-      requestFulfilled: 'To αίτημα αποθεματικού έχει ολοκληρωθεί.',
+      requestFulfilled: 'To αίτημα αποθεματικού ολοκληρώθηκε.',
       requestUpdated: 'To αίτημα αποθεματικού έχει ενημερωθεί.',
       warning: 'Παρακαλούμε συμπληρώστε τα υποχρεωτικά πεδία (που σημειώνονται με *) και διορθώστε τα σφάλματα πριν από την προσθήκη.'
     },
@@ -861,7 +861,7 @@ export default {
     billDate: 'Ημερομηνία Χρέωσης',
     billTo: 'Χρέωση Σε',
     category: 'Κατηγορία',
-    completed: 'Ολοκληρώθηκε',
+    completed: 'Ολοκληρωμένα',
     country: 'Χώρα',
     cptcode: 'Κωδικός CPT',
     creditTo: 'Πίστωση Σε',
@@ -904,7 +904,7 @@ export default {
     invoiceId: 'ID Τιμολογίου',
     labOrders: 'Παραγγελίες Εργαστήριου',
     lineItems: 'Στοιχεία Γραμμής',
-    loading: 'Φόρτωση',
+    loading: 'Φορτωση',
     location: 'Τοποθεσία',
     lookupType: 'Τύπος Αναζήτησης',
     medication: 'Φαρμακευτική Αγωγή',
@@ -921,7 +921,7 @@ export default {
     physician: 'Γιατρός',
     prescriber: 'Συνταγογράφος',
     prescription: 'Συνταγή',
-    prescriptionDate: 'Ημερομηνία Συνταγή',
+    prescriptionDate: 'Ημερομηνία Συνταγής',
     price: 'Τιμή',
     print: 'Εκτύπωση',
     procedures: 'Διαδικασίες',
@@ -953,7 +953,7 @@ export default {
   },
   labs: {
     alerts: {
-      requestCompletedMessage: 'Το αίτημα εργαστηρίου έχει ολοκληρωθεί.',
+      requestCompletedMessage: 'Το αίτημα εργαστηρίου ολοκληρώθηκε.',
       requestCompletedTitle: 'Το Αίτημα Εργαστηρίου Ολοκληρώθηκε',
       requestSavedMessage: 'Το αίτημα εργαστηρίου έχει αποθηκευτεί.',
       requestSavedTitle: 'Το Αίτημα Εργαστηρίου Αποθηκεύτηκε'
@@ -1005,7 +1005,7 @@ export default {
     messages: {
       error: 'Το όνομα χρήστη ή κωδικός πρόσβασης είναι εσφαλμένα.',
       offlineError: 'Δεν είναι δυνατή η σύνδεση ενώ βρίσκεστε εκτός δικτύου. Παρακαλώ εγγραφείτε σε κάποιο δίκτυο και δοκιμάστε ξανά να συνδεθείτε.',
-      signIn: 'Παρακαλώ, συνδεθείτε'
+      signIn: 'παρακαλω, συνδεθειτε'
     }
   },
   medication: {
@@ -1098,7 +1098,7 @@ export default {
       }
     },
     imaging: {
-      names: 'απεικόνιση',
+      names: 'απεικονίσεις',
       request: {
         plural: 'αιτήματα απεικόνισης',
         singular: 'αίτημα απεικόνισης'
@@ -1183,8 +1183,8 @@ export default {
       selectLanguage: 'Επιλογή Γλώσσας'
     },
     administration: 'Διαχείριση',
-    billing: 'Χρέωση',
-    imaging: 'Απεικόνιση',
+    billing: 'Χρεώσεις',
+    imaging: 'Απεικονίσεις',
     incident: 'Περιστατικό',
     inventory: 'Αποθεματικό',
     labs: 'Εργαστήρια',
@@ -1203,10 +1203,10 @@ export default {
       appointmentsCalendar: 'Ημερολόγιο Ραντεβού',
       appointmentsThisWeek: 'Ραντεβού Εβδομάδας',
       cashier: 'Ταμίας',
-      completed: 'Ολοκληρώθηκε',
+      completed: 'Ολοκληρωμένα',
       currentIncidents: 'Τρέχοντα Περιστατικά',
       customForms: 'Προσαρμοσμένες Φόρμες',
-      dispense: 'Κατανομή',
+      dispense: 'Διανομή',
       history: 'Ιστορικό',
       incidentCategories: 'Κατηγορίες Περιστατικών',
       inventoryReceived: 'Παραληφθέν Απόθεμα',
@@ -1219,7 +1219,7 @@ export default {
       newPatient: 'Νέος Ασθενής',
       newRequest: 'Νέο Αίτημα',
       newUser: 'Νέος Χρήστης',
-      outpatient: 'Ασθενής Εξωτερικών Ιατρείων',
+      outpatient: 'Εξωνοσοκομειακοί Ασθενείς',
       patientListing: 'Καταχώριση Ασθενούς',
       priceProfiles: 'Προφίλ Τιμών',
       prices: 'Τιμές',
@@ -1275,7 +1275,7 @@ export default {
       surgeon: 'Χειρουργός'
     },
     messages: {
-      planCompleted: 'Το πρόγραμμα του χειρουργείου έχει ολοκληρωθεί. Θα ανακατευθυνθείτε στην αναφορά του χειρουργείου.',
+      planCompleted: 'Το πρόγραμμα του χειρουργείου ολοκληρώθηκε. Θα ανακατευθυνθείτε στην αναφορά του χειρουργείου.',
       planSaved: 'Το πρόγραμμα του χειρουργείου έχει αποθηκευτεί.'
     },
     titles: {
@@ -1319,7 +1319,7 @@ export default {
       dob: 'Ημ. Γενν.',
       education: 'Εκπαίδευση',
       email: 'Email',
-      externalPatientId: 'ID Εξωτερικού Ασθενή',
+      externalPatientId: 'ID Εξωνοσοκομειακού Ασθενή',
       firstName: 'Ονομα',
       income: 'Εισόδημα',
       insurance: 'Ασφάλιση',
@@ -1361,7 +1361,7 @@ export default {
       appointments: 'Ραντεβού',
       general: 'Γενικά',
       history: 'Ιστορικό',
-      imaging: 'Απεικόνιση',
+      imaging: 'Απεικονίσεις',
       labs: 'Εργαστήρια',
       medication: 'Φαρμακευτική Αγωγή',
       photos: 'Φωτογραφίες',
@@ -1397,7 +1397,7 @@ export default {
       familyInfo: 'Πληροφορίες Οικογένειας',
       familyInformation: 'Πληροφορίες Οικογένειας',
       'new': 'Νέος Ασθενής',
-      outpatientsForDate: 'Ασθενείς Εξωτερικών Ιατρείων για {{visitDate}}',
+      outpatientsForDate: 'Εξωνοσοκομειακοί Ασθενείς για {{visitDate}}',
       patient: 'Αναφορά Ασθενούς',
       patientListing: 'Καταχώριση Ασθενούς',
       patientReport: 'Αναφορά Ασθενούς',
@@ -1538,7 +1538,7 @@ export default {
       haveAppointment: 'Ν',
       haveDoneOrders: 'Ν',
       noAppointment: 'Ο',
-      ordersDone: 'Οι Παραγγελίες Ολοκληρώθηκαν',
+      ordersDone: 'Ολοκληρωμένες Παραγγελίες',
       ordersNotDone: 'Ο',
       patientToCheckIn: 'Ασθενής Για Check In',
       procedure: 'Διαδικασία',
