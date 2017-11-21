@@ -1114,6 +1114,7 @@ export default {
       history: 'History',
       incidentCategories: 'Incident Categories',
       inventoryReceived: 'Inventory Received',
+      inventoryReceivedPlus: '+ Inventory Received',
       invoices: 'Invoices',
       items: 'Items',
       loadDB: 'Load DB',
