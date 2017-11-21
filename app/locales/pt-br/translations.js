@@ -1,4 +1,5 @@
 export default {
+  languageName: 'Portugues (Brasileiro)',
   admin: {
     address: {
       address1Label: 'Rótulo Endereço 1',
@@ -873,18 +874,6 @@ export default {
     newTitle: 'Nova Requisição de Laboratório',
     requestsTitle: 'Requisições de Laboratório',
     sectionTitle: 'Laboratório'
-  },
-  languages: {
-    en: 'Inglês',
-    fr: 'Francês',
-    es: 'Espanhol',
-    de: 'Alemão',
-    ru: 'Russo',
-    'es-co': 'Espanhol (Colombiano)',
-    'pt-br': 'Portugues (Brasileiro)',
-    tr: 'Turco',
-    ur: 'Urdu',
-    hi: 'Hindi'
   },
   loading: {
     messages: {
