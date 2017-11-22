@@ -86,7 +86,7 @@ To run HospitalRun with [Docker](https://www.docker.com/) please do the followin
 ### Running with Docker Compose
 To run HospitalRun with Docker-compose please do the following:
 - Go to [https://docs.docker.com/compose/install](https://docs.docker.com/compose/install/) to install Docker-compose.
-- Execute 'docker-compose up' to reduce the steps to build and run the application.
+- Execute `docker-compose up` to reduce the steps to build and run the application.
 
 ### Accessing HospitalRun with Docker Toolbox
 If you are running with Docker Toolbox you will have to run the following commands to get the IP of the docker machine where hospitalrun-frontend is running with the following:
