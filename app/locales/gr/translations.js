@@ -1210,6 +1210,7 @@ export default {
       history: 'Ιστορικό',
       incidentCategories: 'Κατηγορίες Περιστατικών',
       inventoryReceived: 'Παραληφθέν Απόθεμα',
+      inventoryReceivedPlus: '+ Παραληφθέν Απόθεμα',
       invoices: 'Τιμολόγια',
       items: 'Είδη',
       loadDB: 'Μεταφόρτωση Βάσης',
