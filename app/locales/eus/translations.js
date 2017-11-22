@@ -1,4 +1,5 @@
 export default {
+  languageName: 'Euskera',
   admin: {
     address: {
       address1Label: 'Texto dirección 1',
