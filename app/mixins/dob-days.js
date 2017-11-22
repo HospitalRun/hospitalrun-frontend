@@ -9,8 +9,12 @@ export default Ember.Mixin.create({
 
     if (birthDate) {
       if (birthDate.getFullYear === undefined) {
-        birthDate = moment(birthDate, 'l').toDate();
+        birthDate = moment(birthDate, 'LLL').toDate();
       }
+
+      birthDate.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+
       if (birthDate.getFullYear !== undefined) {
         years = today.getFullYear() - birthDate.getFullYear();
         if (today.getMonth() < birthDate.getMonth()
@@ -37,7 +41,7 @@ export default Ember.Mixin.create({
       }
 
       if (birthDate.getDate) {
-        days = today.getUTCDate() - birthDate.getUTCDate();
+        days = today.getDate() - birthDate.getDate();
         if (days < 0) {
           days += 30;
         }
