@@ -15,6 +15,11 @@ export default Ember.Service.extend({
         this.downloadIfNeeded(photo);
       }.bind(this));
     }.bind(this));
+    this.store.find('document').then(function(documents) {
+      documents.forEach(function(document) {
+        this.downloadIfNeeded(document);
+      }.bind(this));
+    }.bind(this));
   },
 
   /**

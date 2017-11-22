@@ -1,0 +1,20 @@
+{{#modal-dialog
+    hideCancelButton=hideCancelButton
+    hideUpdateButton=hideUpdateButton
+    isUpdateDisabled=isUpdateDisabled
+    title=title
+    updateButtonAction=updateButtonAction
+    updateButtonClass=updateButtonClass
+    updateButtonText=updateButtonText }}
+  {{#em-form model=model submitButton=false }}
+      {{em-input property="caption" label=(t 'patients.labels.caption')}}
+  {{#if model.isNew}}
+          {{upload-document documentFile=model.documentFile isImage=model.isImage}}
+  {{else}}
+        {{document-display document=model}}  
+        <a href={{model.url}} target="_blank" download="{{model.shortFileName}}" class="btn btn-default">
+          <span class="glyphicon glyphicon-download" aria-hidden="true"></span> {{t 'patients.buttons.download'}}
+        </a>
+    {{/if}}
+  {{/em-form}}
+{{/modal-dialog}}

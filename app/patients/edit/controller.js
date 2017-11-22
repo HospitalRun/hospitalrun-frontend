@@ -43,6 +43,11 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
     return (this.currentUserCan('add_photo') && isFileSystemEnabled);
   }.property(),
 
+  canAddDocument: function() {
+    let isFileSystemEnabled = this.get('isFileSystemEnabled');
+    return (this.currentUserCan('add_document') && isFileSystemEnabled);
+  }.property(),
+
   canAddSocialWork: function() {
     return this.currentUserCan('add_socialwork');
   }.property(),
@@ -73,6 +78,10 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
 
   canDeletePhoto: function() {
     return this.currentUserCan('delete_photo');
+  }.property(),
+
+  canDeleteDocument: function() {
+    return this.currentUserCan('delete_document');
   }.property(),
 
   canDeleteSocialWork: function() {
@@ -216,6 +225,12 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
       this.send('closeModal');
     },
 
+    addDocument(savedDocumentRecord) {
+      let documents = this.get('model.documents');
+      documents.addObject(savedDocumentRecord);
+      this.send('closeModal');
+    },
+
     appointmentDeleted(deletedAppointment) {
       let appointments = this.get('model.appointments');
       appointments.removeObject(deletedAppointment);
@@ -259,6 +274,22 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
         let isFileSystemEnabled = this.get('isFileSystemEnabled');
         if (isFileSystemEnabled) {
           let pouchDbId = this.get('database').getPouchId(photoId, 'photo');
+          fileSystem.deleteFile(filePath, pouchDbId);
+        }
+      }.bind(this));
+    },
+
+    deleteDocument(model) {
+      let document = model.get('documentToDelete');
+      let documentId = document.get('id');
+      let documents = this.get('model.documents');
+      let filePath = document.get('fileName');
+      documents.removeObject(document);
+      document.destroyRecord().then(function() {
+        let fileSystem = this.get('filesystem');
+        let isFileSystemEnabled = this.get('isFileSystemEnabled');
+        if (isFileSystemEnabled) {
+          let pouchDbId = this.get('database').getPouchId(documentId, 'document');
           fileSystem.deleteFile(filePath, pouchDbId);
         }
       }.bind(this));
@@ -321,6 +352,14 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
       this.send('openModal', 'patients.photo', photo);
     },
 
+    editDocument(document) {
+      this.send('openModal', 'patients.document', document, document.fileSystem);
+    },
+
+    seeDocument(document) {
+      this.send('openModal', 'patients.document', document);
+    },
+
     editProcedure(procedure) {
       if (this.get('canAddVisit')) {
         procedure.set('patient', this.get('model'));
@@ -379,6 +418,15 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
       });
       newPatientPhoto.set('editController', this);
       this.send('openModal', 'patients.photo', newPatientPhoto);
+    },
+
+    showAddDocument() {
+      let newPatientDocument = this.get('store').createRecord('document', {
+        patient: this.get('model'),
+        saveToDir: `${this.get('model.id')}/documents/`
+      });
+      newPatientDocument.set('editController', this);
+      this.send('openModal', 'patients.document', newPatientDocument);
     },
 
     showAddPatientNote(model) {
@@ -450,6 +498,17 @@ export default AbstractEditController.extend(AllergyActions, BloodTypes, Diagnos
         title: this.get('i18n').t('patients.titles.deletePhoto'),
         message: this.get('i18n').t('patients.titles.deletePhoto', { object: 'photo' }),
         photoToDelete: photo,
+        updateButtonAction: 'confirm',
+        updateButtonText: this.get('i18n').t('buttons.ok')
+      }));
+    },
+
+    showDeleteDocument(document) {
+      this.send('openModal', 'dialog', Ember.Object.create({
+        confirmAction: 'deleteDocument',
+        title: this.get('i18n').t('patients.titles.deleteDocument'),
+        message: this.get('i18n').t('patients.titles.deleteDocument', { object: 'document' }),
+        documentToDelete: document,
         updateButtonAction: 'confirm',
         updateButtonText: this.get('i18n').t('buttons.ok')
       }));

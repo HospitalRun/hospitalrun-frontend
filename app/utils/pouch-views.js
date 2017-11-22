@@ -437,6 +437,24 @@ let designDocs = [{
   ),
   version: 1
 }, {
+  name: 'document_by_patient',
+  function: generateView('document',
+    'emit(doc.data.patient);'
+  ),
+  version: 4
+}, {
+  name: 'document_by_procedure',
+  function: generateView('document',
+    'emit(doc.data.procedure);'
+  ),
+  version: 1
+}, {
+  name: 'document_by_visit',
+  function: generateView('document',
+    'emit(doc.data.visit);'
+  ),
+  version: 1
+}, {
   name: 'procedure_by_date',
   function: generateView('procedure',
     `${generateDateForView('procedureDate')}
