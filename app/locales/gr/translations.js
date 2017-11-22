@@ -13,7 +13,7 @@ export default {
       include3Label: 'Συμπεριλάβετε 3 ετικέτες',
       include4Label: 'Συμπεριλάβετε 4 ετικέτες',
       messages: {
-        addressSaved: 'Οι επιλογές διεύθυνσης έχουν αποθηκευθεί'
+        addressSaved: 'Οι επιλογές διεύθυνσης αποθηκεύτηκαν'
       },
       newTitle: 'Επιλογές Διεύθυνσης',
       titles: {
@@ -58,7 +58,7 @@ export default {
         visitFormType: 'Επίσκεψη'
       },
       messages: {
-        formSaved: 'Η φόρμα {{name}} έχει αποθηκευτεί.'
+        formSaved: 'Η φόρμα {{name}} αποθηκεύτηκε.'
       },
       titles: {
         checkboxValues: 'Τιμές Πλαισίου Ελέγχου',
@@ -102,10 +102,10 @@ export default {
     lookup: {
       aisleLocationList: 'Τοποθεσίες Διαδρόμων Αποθεματικού',
       alertImportListMessage: 'Επιλέξτε αρχείο για εισαγωγή.',
-      alertImportListSaveMessage: 'Η λίστα αναζήτησης έχει εισαχθεί.',
+      alertImportListSaveMessage: 'Η λίστα αναζήτησης εισήχθει.',
       alertImportListSaveTitle: 'Η Λίστα Εισάχθηκε',
       alertImportListTitle: 'Επιλέξτε Αρχείο Για Εισαγωγή',
-      alertImportListUpdateMessage: 'Η λίστα αναζήτησης έχει αποθηκευτεί.',
+      alertImportListUpdateMessage: 'Η λίστα αναζήτησης αποθηκεύτηκε.',
       alertImportListUpdateTitle: 'Η Λίστα Αποθηκεύτηκε',
       anesthesiaTypes: 'Τύποι Αναισθησίας',
       anesthesiologists: 'Αναισθησιολόγοι',
@@ -223,7 +223,7 @@ export default {
         visits: 'Επισκέψεις'
       },
       messages: {
-        roleSaved: 'Ο ρόλος {{rolename}} έχει αποθηκευτεί.'
+        roleSaved: 'Ο ρόλος {{rolename}} αποθηκεύτηκε.'
       },
       titles: {
         roleSaved: 'Ο Ρόλος Αποθηκεύτηκε'
@@ -257,9 +257,9 @@ export default {
       admissionDepositLabel: 'Απαιτείται κατάθεση εισαγωγής',
       clinicPrepaymentLabel: 'Απαιτείται προπληρωμή κλινικής',
       editTitle: 'Επιλογές Ροής Εργασίας',
-      followupPrepaymentLabel: 'Απαιτείται συνέχιση προπληρωμής',
+      followupPrepaymentLabel: 'Απαιτείται προπληρωμή',
       messages: {
-        optionsSaved: 'Οι επιλογές ροής εργασίας έχουν αποθηκευτεί'
+        optionsSaved: 'Οι επιλογές ροής εργασίας αποθηκεύτηκαν'
       },
       newTitle: 'Επιλογές Ροής Εργασίας',
       outpatientImagingLabel: 'Απαιτείται Προπληρωμή Απεικόνισης Εξωτερικών Ιατρείων',
@@ -292,7 +292,7 @@ export default {
   },
   application: {
     messages: {
-      sessionExpired: 'Η συνεδρία σας έχει λήξει. Παρακαλώ συνδεθείτε για να συνεχίσετε.'
+      sessionExpired: 'Η συνεδρία σας έληξε. Παρακαλώ συνδεθείτε για να συνεχίσετε.'
     },
     titles: {
       sessionExpired: 'Η Συνεδρία Έληξε'
@@ -311,7 +311,7 @@ export default {
       selectedStartingDate: 'Εμφάνιση Ραντεβού την ή μετά την'
     },
     messages: {
-      appointmentSaved: 'Το ραντεβού για {{patient}} έχει αποθηκευτεί.',
+      appointmentSaved: 'Το ραντεβού για τον/την {{patient}} αποθηκεύτηκε.',
       endTimeLaterThanStart: 'Επιλέξτε μια ώρα λήξης αργότερα από την ώρα έναρξης.'
     },
     missed: 'Χαμένα Ραντεβού',
@@ -542,7 +542,7 @@ export default {
     alerts: {
       completedMessage: 'Το αίτημα απεικόνισης ολοκληρώθηκε.',
       completedTitle: 'Το Αίτημα Απεικόνισης Ολοκληρώθηκε',
-      savedMessage: 'Το αίτημα απεικόνισης έχει αποθηκευτεί.',
+      savedMessage: 'Το αίτημα απεικόνισης αποθηκεύτηκε.',
       savedTitle: 'Το Αίτημα Απεικόνισης Αποθηκεύτηκε'
     },
     buttons: {
@@ -621,11 +621,11 @@ export default {
       createNew: 'Δημιουργία νέου περιστατικού;',
       createNewIncidentCategory: 'Δημιουργία νέας Κατηγορίας Περιστατικών;',
       fillIn: 'Συμπληρώστε τις παραπάνω επιλογές για τον υπολογισμό της βαθμολογίας',
-      incidentCategorySaved: 'Η κατηγορία {{name}} έχει αποθηκευτεί.',
+      incidentCategorySaved: 'Η κατηγορία {{name}} αποθηκεύτηκε.',
       noClosedIncidents: 'Δεν βρέθηκαν κλεισμένα περιστατικά.',
       noIncidentCategoriesFound: 'Δεν Βρέθηκαν Κατηγορίες Περιστατικών.',
       noIncidents: 'Δεν βρέθηκαν περιστατικά.',
-      saved: 'Η έκθεση του περιστατικού έχει αποθηκευτεί.',
+      saved: 'Η έκθεση του περιστατικού αποθηκεύτηκε.',
       selectExistingPatient: 'Επιλέξτε έναν υπάρχων ασθενή ή αφήστε αυτό το πεδίο κενό.'
     },
     titles: {
@@ -779,7 +779,7 @@ export default {
       removeItem: 'Είστε βέβαιοι ότι θέλετε να καταργήσετε αυτό το στοιχείο από αυτό το τιμολόγιο;',
       removeItemRequest: 'Είστε βέβαιοι ότι θέλετε να καταργήσετε αυτό το στοιχείο από αυτό το αίτημα;',
       requestFulfilled: 'To αίτημα αποθεματικού ολοκληρώθηκε.',
-      requestUpdated: 'To αίτημα αποθεματικού έχει ενημερωθεί.',
+      requestUpdated: 'To αίτημα αποθεματικού ενημερώθηκε.',
       warning: 'Παρακαλούμε συμπληρώστε τα υποχρεωτικά πεδία (που σημειώνονται με *) και διορθώστε τα σφάλματα πριν από την προσθήκη.'
     },
     reports: {
@@ -955,7 +955,7 @@ export default {
     alerts: {
       requestCompletedMessage: 'Το αίτημα εργαστηρίου ολοκληρώθηκε.',
       requestCompletedTitle: 'Το Αίτημα Εργαστηρίου Ολοκληρώθηκε',
-      requestSavedMessage: 'Το αίτημα εργαστηρίου έχει αποθηκευτεί.',
+      requestSavedMessage: 'Το αίτημα εργαστηρίου αποθηκεύτηκε.',
       requestSavedTitle: 'Το Αίτημα Εργαστηρίου Αποθηκεύτηκε'
     },
     buttons: {
@@ -1011,9 +1011,9 @@ export default {
   medication: {
     alerts: {
       fulfilledTitle: 'Το Αίτημα Φαρμακευτικής Αγωγής Ολοκληρώθηκε',
-      returnedMessage: 'Η φαρμακευτική αγωγή έχει επισημανθεί ως επιστραφείσα.',
+      returnedMessage: 'Η φαρμακευτική αγωγή επισημάνθηκε ως επιστρεφόμενη.',
       returnedTitle: 'Η Φαρμακευτική Αγωγή Επιστράφηκε',
-      savedMessage: 'Η εγγραφή για τη φαρμακευτική αγωγή έχει αποθηκευτεί.',
+      savedMessage: 'Η φαρμακευτική αγωγή αποθηκεύτηκε.',
       savedTitle: 'Το Αίτημα Φαρμακευτικής Αγωγής Αποθηκεύτηκε'
     },
     buttons: {
@@ -1062,7 +1062,7 @@ export default {
     requiredFieldsCorrectErrors: 'Παρακαλούμε συμπληρώστε τα υποχρεωτικά πεδία (που σημειώνονται με *) και να διορθώστε τα σφάλματα πριν από την αποθήκευση.',
     saveActionException: 'Παρουσιάστηκε σφάλμα κατά την προσπάθεια αποθήκευσης: {{message}}',
     sorry: 'Συγνώμη, κάτι πήγε στραβά...',
-    userHasBeenSaved: 'Ο χρήστης έχει αποθηκευτεί.',
+    userHasBeenSaved: 'Ο χρήστης αποθηκεύτηκε.',
     userSaved: 'Ο Χρήστης Αποθηκεύτηκε'
   },
   models: {
@@ -1251,7 +1251,7 @@ export default {
       surgeryDate: 'Χειρουργική Ημερομηνία'
     },
     messages: {
-      reportSaved: 'Η αναφορά του χειρουργείου έχει αποθηκευτεί.'
+      reportSaved: 'Η αναφορά του χειρουργείου αποθηκεύτηκε.'
     },
     titles: {
       editTitle: 'Επεξεργασία Αναφοράς Χειρουργείου',
@@ -1276,7 +1276,7 @@ export default {
     },
     messages: {
       planCompleted: 'Το πρόγραμμα του χειρουργείου ολοκληρώθηκε. Θα ανακατευθυνθείτε στην αναφορά του χειρουργείου.',
-      planSaved: 'Το πρόγραμμα του χειρουργείου έχει αποθηκευτεί.'
+      planSaved: 'Το πρόγραμμα του χειρουργείου αποθηκεύτηκε.'
     },
     titles: {
       editTitle: 'Επεξεργασία Προγράμματος Χειρουργείου',
@@ -1355,7 +1355,7 @@ export default {
       noPatientsFound: 'Δεν βρέθηκαν ασθενείς.',
       notFoundQuickAdd: 'Ο ασθενής <strong>{{patientFullName}}</strong> δε βρέθηκε. Αν θέλετε να δημιουργήσετε ένα νέο ασθενή, συμπληρώστε τις παρακάτω πληροφορίες. Διαφορετικά πατήστε Ακύρωση για να επιστρέψετε.',
       photoFileRequired: 'Παρακαλώ τραβήξτε μια φωτογραφία ή ανεβάστε ένα αρχείο πριν από την αποθήκευση της φωτογραφίας.',
-      savedPatient: 'Η εγγραφή ασθενούς του/της {{displayName}} έχει αποθηκευτεί.'
+      savedPatient: 'Ο/η ασθενής {{displayName}} αποθηκεύτηκε.'
     },
     navigation: {
       appointments: 'Ραντεβού',
@@ -1386,7 +1386,7 @@ export default {
       deleteContact: 'Διαγραφή Επαφής',
       deleteExpense: 'Διαγραφή Εξόδων',
       deleteFamilyMember: 'Διαγραφή Μέλους Οικογένειας',
-      deletePatientRecord: 'Διαγραφή Εγγραφής Ασθενούς',
+      deletePatientRecord: 'Διαγραφή Ασθενούς',
       deletePhoto: 'Διαγραφή Φωτογραφίας',
       diagnosticTesting: 'Διαγνωστικές Δοκιμές',
       dischargesDetail: 'Λεπτομέρειες Αποχωρήσεων',
@@ -1453,7 +1453,7 @@ export default {
       medicationUsed: 'Χορηγούμενη Φαρμακευτική Αγωγή'
     },
     messages: {
-      saved: 'Η εγγραφή της διαδικασίας έχει αποθηκευτεί.'
+      saved: 'Η διαδικασία αποθηκεύτηκε.'
     },
     titles: {
       addChargeItem: 'Προσθήκη Στοιχείου Χρέωσης',
@@ -1500,14 +1500,14 @@ export default {
     },
     messages: {
       'delete': 'Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή την αναφορά;',
-      saved: 'Η αναφορά έχει αποθηκευτεί.'
+      saved: 'Η αναφορά αποθηκεύτηκε.'
     },
     titles: {
       dischargeReport: 'Εξιτήριο',
       newDischargeReport: 'Νέο Εξιτήριο',
       newOPDReport: 'Νέα Αναφορά Εξωτερικών Ιατρείων',
       opdReport: 'Αναφορά Εξωτερικών Ιατρείων',
-      saved: 'Η Αναφορά έχει αποθηκευτεί'
+      saved: 'Η Αναφορά αποθηκεύτηκε'
     }
   },
   user: {
@@ -1559,9 +1559,9 @@ export default {
       checkedOut: 'Έχει γίνει check out για τον/την {{patientName}}.',
       discharged: 'Ο/Η {{patientName}} αποχώρησε.',
       patientCheckedIn: 'Έχει γίνει check in για τον/την {{patientName}}.',
-      patientCreatedAndCheckedIn: 'O/H {{patientName}} έχει δημιουργηθεί ώς εγγραφή και έχει γίνει check in.',
-      visitAndPatientSaved: 'Οι εγγραφές της επίσκεψη και του ασθενούς έχουν αποθηκευτεί.',
-      visitSaved: 'Η εγγραφή της επίσκεψης έχει αποθηκευτεί.'
+      patientCreatedAndCheckedIn: 'Δημιουργήθηκε ο/η ασθενής {{patientName}} και έγινε check in.',
+      visitAndPatientSaved: 'Η επίσκεψη και ο ασθενής αποθηκεύτηκαν.',
+      visitSaved: 'Η επίσκεψη αποθηκεύτηκε.'
     },
     navigation: {
       charges: 'Χρεώσεις',
