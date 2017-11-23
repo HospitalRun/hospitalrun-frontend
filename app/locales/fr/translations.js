@@ -1103,6 +1103,7 @@ export default {
       history: 'Historique',
       incidentCategories: "Catégories d'icindent",
       inventoryReceived: 'Inventaire reçu',
+      inventoryReceivedPlus: '+ Inventaire reçu',
       invoices: 'Factures',
       items: 'Articles',
       loadDB: 'Charger BDD',
