@@ -4,6 +4,7 @@ import Ember from 'ember';
 import DS from 'ember-data';
 import tHelper from 'ember-i18n/helper';
 import localeConfig from 'ember-i18n/config/en';
+import moment from 'moment';
 
 moduleFor('mixin:dob-days', 'Unit | Mixin | dob-days', {
   needs: [
@@ -47,26 +48,32 @@ moduleFor('mixin:dob-days', 'Unit | Mixin | dob-days', {
   }
 });
 
-test('convertDOBToText', function(assert) {
+test('convertDOBToText date object', function(assert) {
   let dobDays = this.subject();
 
-  assert.strictEqual(dobDays.convertDOBToText(new Date(789109200000)).toString(), '21 years 11 months 12 days');
+  assert.strictEqual(dobDays.convertDOBToText(moment('January 3rd, 1995', 'LLL').toDate()).toString(), '21 years 11 months 12 days');
+});
+
+test('convertDOBToText date object with time component', function(assert) {
+  let dobDays = this.subject();
+
+  assert.strictEqual(dobDays.convertDOBToText(moment('January 3rd, 1995 6:00 AM', 'LLL').toDate()).toString(), '21 years 11 months 12 days');
 });
 
 test('convertDOBToText date string', function(assert) {
   let dobDays = this.subject();
 
-  assert.strictEqual(dobDays.convertDOBToText('January 3rd, 1995').toString(), '21 years 8 months 26 days');
+  assert.strictEqual(dobDays.convertDOBToText('January 3rd, 1995').toString(), '21 years 11 months 12 days');
 });
 
 test('convertDOBToText date string short format', function(assert) {
   let dobDays = this.subject();
 
-  assert.strictEqual(dobDays.convertDOBToText('January 3rd, 1995', true).toString(), '21y 8m 26d');
+  assert.strictEqual(dobDays.convertDOBToText('January 3rd, 1995', true).toString(), '21y 11m 12d');
 });
 
 test('convertDOBToText date string omit days', function(assert) {
   let dobDays = this.subject();
 
-  assert.strictEqual(dobDays.convertDOBToText('January 3rd, 1995', false, true).toString(), '21 years 8 months');
+  assert.strictEqual(dobDays.convertDOBToText('January 3rd, 1995', false, true).toString(), '21 years 11 months');
 });
