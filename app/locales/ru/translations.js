@@ -27,7 +27,7 @@ export default {
       },
       labels: {
         alwaysInclude: 'Всегда включать',
-        checkbox: 'Чекбокс',
+        checkbox: 'Флажок',
         colSpan: 'Количество колонок в диапазоне',
         columns: 'Колонки',
         customForm: 'Своя форма',
