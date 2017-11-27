@@ -41,7 +41,7 @@ export default {
         labFormType: 'Лаборатория',
         label: 'Метка',
         newForm: 'Новая форма',
-        opdReportFormType: 'Амбулоторный отчёт',
+        opdReportFormType: 'Амбулаторный отчёт',
         operativePlanFormType: 'Оперативный план и отчёт',
         otherOptionLabel: 'Other option Label',
         patientFormType: 'Пациент',
