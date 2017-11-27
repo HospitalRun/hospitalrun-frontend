@@ -33,14 +33,14 @@
           {{t 'labels.name'}}
         {{/sortable-column}}
         {{#sortable-column
-          sortBy='patient.sex'
+          sortBy='patient.gender'
           sortDesc=sortByDesc
           sortKey=sortByKey
-          filterBy='patient.sex'
+          filterBy='patient.gender'
           filteredBy=filteredBy
           filterValues=sexList
         }}
-          {{t 'patients.labels.sex'}}
+          {{t 'patients.labels.gender'}}
         {{/sortable-column}}
         {{#sortable-column sortBy='patient.dateOfBirth' sortDesc=sortByDesc sortKey=sortByKey }}{{t 'labels.age'}}{{/sortable-column}}
         {{#sortable-column
@@ -87,7 +87,7 @@
         <tr {{action 'editVisit' visit}} class="clickable">
           <td class="col-xs-1">{{visit.patient.displayPatientId}}</td>
           <td class="col-xs-1">{{visit.patient.shortDisplayName}}</td>
-          <td class="col-xs-1">{{visit.patient.sex}}</td>
+          <td class="col-xs-1">{{visit.patient.gender}}</td>
           <td class="col-xs-1">{{visit.patient.shortAge}}</td>
           <td class="col-xs-1">{{visit.visitType}}</td>
           <td class="col-xs-1">{{date-format visit.startDate format="h:mm A"}}</td>

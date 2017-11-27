@@ -93,7 +93,7 @@ export default AbstractEditController.extend(AllergyActions, Schools, Handedness
   canDeleteVisit: function() {
     return this.currentUserCan('delete_visit');
   }.property(),
-
+/*
   patientTypes: Ember.computed(function() {
     let i18n = get(this, 'i18n');
     let types = [
@@ -104,7 +104,7 @@ export default AbstractEditController.extend(AllergyActions, Schools, Handedness
       return i18n.t(`patients.labels.patientType${type}`);
     });
   }),
-
+*/
   config: Ember.inject.service(),
   filesystem: Ember.inject.service(),
   database: Ember.inject.service(),

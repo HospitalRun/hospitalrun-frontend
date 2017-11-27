@@ -21,10 +21,10 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
   admissionReportColumns: Ember.computed(function() {
     let i18n = this.get('i18n');
     return {
-      sex: {
-        label: i18n.t('labels.sex'),
+      gender: {
+        label: i18n.t('labels.gender'),
         include: true,
-        property: 'sex'
+        property: 'gender'
       },
       total: {
         label: i18n.t('labels.total'),
@@ -142,10 +142,10 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
         include: true,
         property: 'patient.displayPatientId'
       },
-      sex: {
-        label: i18n.t('patients.labels.sex'),
+      gender: {
+        label: i18n.t('patients.labels.gender'),
         include: true,
-        property: 'patient.sex'
+        property: 'patient.gender'
       },
       dateOfBirth: {
         label: i18n.t('patients.labels.dateOfBirth'),
@@ -569,7 +569,7 @@ export default AbstractReportController.extend(PatientDiagnosis, PatientVisits, 
           admissionDate: visit.get('startDate'),
           dischargeDate: visit.get('endDate')
         };
-        let sex = visit.get('patient.sex');
+        let sex = visit.get('patient.gender');
         if (!sex) {
           sex = sexNotEnteredLabel;
         }
