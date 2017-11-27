@@ -879,7 +879,7 @@ export default {
     results: 'Results',
     role: 'Role',
     search: 'Search',
-    sex: 'Sex',
+    gender: 'Genero',
     startDate: 'Start Date',
     startTime: 'Start Time',
     status: 'Status',

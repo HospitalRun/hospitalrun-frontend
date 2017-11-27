@@ -219,7 +219,7 @@ let patientListingSearch = generateSortFunction(function(a, b) {
   }
   switch (sortBy) {
     case 'firstName':
-    case 'sex':
+    case 'gender':
     case 'lastName':
     case 'status': {
       return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);

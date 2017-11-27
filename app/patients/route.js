@@ -30,7 +30,7 @@ export default AbstractModuleRoute.extend(PatientId, {
     findArgs: ['lookup', 'procedure_list']
   }, {
     name: 'sexList',
-    findArgs: ['lookup', 'sex']
+    findArgs: ['lookup', 'gender']
   }, {
     name: 'socialCustomForms',
     queryArgs: ['custom-form', {

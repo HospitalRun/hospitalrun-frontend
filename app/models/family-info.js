@@ -11,7 +11,7 @@ export default Model.extend(EmberValidations, {
   income: DS.attr('string'),
   insurance: DS.attr('string'),
   name: DS.attr('string'),
-  occupation: DS.attr('string'),
+  //occupation: DS.attr('string'),
   relationship: DS.attr('string'),
   validations: {
     age: {
