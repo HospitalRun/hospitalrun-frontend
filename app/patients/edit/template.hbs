@@ -15,6 +15,7 @@
         <li role="presentation" class="active"><a href="#history" role="tab" data-toggle="pill" data-test-selector="history-tab">{{t 'patients.navigation.history'}}</a></li>
         <li role="presentation"><a href="#general" role="tab" data-toggle="pill" data-test-selector="general-tab">{{t 'patients.navigation.general'}}</a></li>
         <li role="presentation"><a href="#photos" role="tab" data-toggle="pill" data-test-selector="photos-tab">{{t 'patients.navigation.photos'}}</a></li>
+        <li role="presentation"><a href="#documents" role="tab" data-toggle="pill" data-test-selector="documents-tab">{{t 'patients.navigation.documents'}}</a></li>
         <li role="presentation"><a href="#appointments" role="tab" data-toggle="pill" data-test-selector="appointments-tab">{{t 'patients.navigation.appointments'}}</a></li>
         <li role="presentation"><a href="#visits" role="tab" data-toggle="pill" data-test-selector="visits-tab">{{t 'patients.navigation.visits'}}</a></li>
         <li role="presentation"><a href="#medication" role="tab" data-toggle="pill" data-test-selector="medication-tab">{{t 'patients.navigation.medication'}}</a></li>
@@ -105,36 +106,40 @@
                 {{em-input property="firstName" label=(t 'patients.labels.firstName') class="form-input-group required test-first-name"}}
                 {{em-input property="middleName" label=(t 'patients.labels.middleName') class="form-input-group test-middle-name"}}
                 {{em-input property="lastName" label=(t 'patients.labels.lastName') class="form-input-group required test-last-name"}}
-                {{select-or-typeahead property="sex" label=(t 'patients.labels.sex')  class="form-input-group" list=sexList selection=model.sex}}
-                {{date-picker property="dateOfBirth" label=(t 'patients.labels.dateOfBirth')  class="form-input-group " maxDate="now"}}
+                {{select-or-typeahead property="gender" label=(t 'patients.labels.gender')  class="form-input-group required" list=sexList selection=model.gender}}
+                {{date-picker property="dateOfBirth" label=(t 'patients.labels.dateOfBirth')  class="form-input-group required" maxDate="now"}}
                 <div class="form-input-group">
                   <label class="control-label">{{t 'labels.age'}}</label>
                   <p class="form-control-static">{{model.age}}</p>
                 </div>
                 {{em-input property="placeOfBirth" label=(t 'patients.labels.placeOfBirth') class="form-input-group"}}
-                {{em-input property="occupation" label=(t 'patients.labels.occupation')  class="form-input-group"}}
-                <div class="form-input-group">
+                {{em-input property="l1" label=(t 'patients.labels.l1')  class="form-input-group"}}
+                <!--
+                  <div class="form-input-group">
                   <label>{{t 'patients.labels.patientType'}}</label>
                   <div>
                     {{ext-radio content=patientTypes value=model.patientType showInline=true }}
                   </div>
                 </div>
+                -->
               </div>
               <div class="col-xs-12 col-sm-6">
-                {{select-or-typeahead property="status" label=(t 'patients.labels.status') list=statusList selection=model.status class="form-input-group" }}
+                {{em-select prompt=" " property="handedness" label=(t 'patients.labels.handedness') content=Handedness class="form-input-group required" }}
                 {{em-input property="externalPatientId" label=(t 'patients.labels.externalPatientId') class="form-input-group"}}
                 {{em-select
                   prompt=" "
-                  label=(t 'patients.labels.bloodType')
-                  property="bloodType"
-                  content=bloodTypes
-                  class="form-input-group"
+                  label=(t 'patients.labels.school')
+                  property="school"
+                  content=Schools
+                  class="form-input-group required"
                 }}
-                {{select-or-typeahead property="clinic" label=(t 'patients.labels.clinic') list=clinicList selection=model.clinic class="form-input-group"}}
-                {{em-input property="referredBy" label=(t 'patients.labels.referredBy') class="form-input-group"}}
+                {{select-or-typeahead property="l2" label=(t 'patients.labels.l2') list=clinicList selection=model.clinic class="form-input-group"}}
+                {{em-select prompt=" " property="grade" label=(t 'patients.labels.grade') content=Grades class="form-input-group required"}}
+                {{em-input property="gradeGroup" label=(t 'patients.labels.gradeGroup') class="form-input-group"}}
+                <!--
                 {{date-picker property="referredDate" label=(t 'patients.labels.referredDate') class="form-input-group"}}
-                {{em-input property="religion" label=(t 'patients.labels.religion') class="form-input-group"}}
                 {{em-input property="parent" label=(t 'patients.labels.parent') class="form-input-group"}}
+                -->
                 {{em-select label=(t 'billing.labels.paymentProfile')
                   property="paymentProfile"
                   content=pricingProfiles
@@ -241,6 +246,42 @@
                       </div>
                     </div>
                   </div>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="documents">
+          <div class="panel">
+            {{#if canAddDocument}}
+              <div class="panel-heading">
+                <button type="button" class="btn btn-primary align-right" {{action "showAddDocument" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span>{{t 'patients.buttons.newDocument'}}
+                </button>
+              </div>
+            {{/if}}
+            <div class="panel-body detail-section-content">
+              <div class="row">
+                {{#each model.documents as |document|}}
+                  {{#if (not document.isImage)}}
+                  <div class="col-sm-4 col-md-3">
+                    <div {{action "editDocument" document}} class="thumbnail">
+                      <div class="caption">
+                        {{document.caption}}
+                        <p>
+                          {{#if canAddDocument}}
+                            <button type="button" class="btn btn-default neutral" {{action "editDocument" document}}>{{t 'labels.edit'}}</button>
+                          {{/if}}
+                          {{#if canDeleteDocument}}
+                            <button type="button" class="btn btn-default warning" {{action "showDeleteDocument" document bubbles=false }}>
+                              <span class="octicon octicon-x"></span>{{t 'buttons.delete'}}
+                            </button>
+                          {{/if}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  {{/if}}
                 {{/each}}
               </div>
             </div>
@@ -394,7 +435,7 @@
                     <th>{{t 'patients.labels.civilStatus'}}</th>
                     <th>{{t 'patients.labels.relationship'}}</th>
                     <th>{{t 'patients.labels.education'}}</th>
-                    <th>{{t 'patients.labels.occupation'}}</th>
+                    <!--<th>{{t 'patients.labels.occupation'}}</th>-->
                     <th>{{t 'patients.labels.income'}}</th>
                     <th>{{t 'patients.labels.insurance'}}</th>
                     <th>{{t 'labels.action'}}</th>
@@ -406,7 +447,7 @@
                       <td>{{info.civilStatus}}</td>
                       <td>{{info.relationship}}</td>
                       <td>{{info.education}}</td>
-                      <td>{{info.occupation}}</td>
+                      <!--<td>{{info.occupation}}</td>-->
                       <td>{{info.income}}</td>
                       <td>{{info.insurance}}</td>
                       <td>

@@ -219,7 +219,7 @@ let patientListingSearch = generateSortFunction(function(a, b) {
   }
   switch (sortBy) {
     case 'firstName':
-    case 'sex':
+    case 'gender':
     case 'lastName':
     case 'status': {
       return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);
@@ -433,6 +433,24 @@ let designDocs = [{
 }, {
   name: 'photo_by_visit',
   function: generateView('photo',
+    'emit(doc.data.visit);'
+  ),
+  version: 1
+}, {
+  name: 'document_by_patient',
+  function: generateView('document',
+    'emit(doc.data.patient);'
+  ),
+  version: 4
+}, {
+  name: 'document_by_procedure',
+  function: generateView('document',
+    'emit(doc.data.procedure);'
+  ),
+  version: 1
+}, {
+  name: 'document_by_visit',
+  function: generateView('document',
     'emit(doc.data.visit);'
   ),
   version: 1

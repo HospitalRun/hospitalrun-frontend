@@ -15,6 +15,7 @@ export default AbstractEditRoute.extend(AddToPatientRoute, ChargeRoute, {
   pricingCategory: 'Procedure',
   database: Ember.inject.service(),
   photos: null,
+  documents: null,
 
   getNewData() {
     return Ember.RSVP.resolve({
@@ -44,11 +45,26 @@ export default AbstractEditRoute.extend(AddToPatientRoute, ChargeRoute, {
       procedurePhotos.addObjects(photos);
       model.set('photos', procedurePhotos);
     });
+
+    this.store.query('document', {
+      options: {
+        key: get(model, 'id')
+      },
+      mapReduce: 'document_by_procedure'
+    }).then(function(documents) {
+      let procedureDocuments = [];
+      procedureDocuments.addObjects(documents);
+      model.set('documents', procedureDocuments);
+    });
   },
 
   actions: {
     deletePhoto(model) {
       this.controller.send('deletePhoto', model);
+    },
+
+    deleteDocument(model) {
+      this.controller.send('deleteDocument', model);
     }
   }
 });
