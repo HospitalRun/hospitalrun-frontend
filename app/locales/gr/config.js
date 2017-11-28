@@ -8,7 +8,7 @@ export default {
   pluralForm: {
     function(count) {
       if (count === 0) {
-        return 'κανένα';
+        return 'μηδέν';
       }
       if (count === 1) {
         return 'ένα';
@@ -17,12 +17,12 @@ export default {
         return 'δύο';
       }
       if (count < 5) {
-        return 'λίγα';
+        return 'τόσα λίγα';
       }
       if (count >= 5) {
-        return 'πολλά';
+        return 'τόσα πολλά';
       }
-      return 'άλλα';
+      return 'άλλο';
     }
   }
 };
