@@ -1077,6 +1077,7 @@ export default {
       history: '',
       incidentCategories: '',
       inventoryReceived: 'انوینٹری موصول',
+      inventoryReceivedPlus: '+ انوینٹری موصو',
       invoices: 'رسیدیں',
       items: 'اشیاء',
       loadDB: 'DB لوڈ کریں',

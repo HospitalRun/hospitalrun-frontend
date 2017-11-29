@@ -21,7 +21,7 @@ test('visiting /inventory', function(assert) {
     andThen(function() {
       assert.equal(currentURL(), '/inventory');
       findWithAssert('button:contains(new request)');
-      findWithAssert('button:contains(inventory received)');
+      findWithAssert('button:contains(+ Inventory Received)');
       findWithAssert('p:contains(No requests found. )');
       findWithAssert('a:contains(Create a new request?)');
     });
