@@ -4,9 +4,12 @@ services:
     build: .
     ports:
      - "4200:4200"
+     - "7020:7020"
     depends_on:
       couchdb:
         condition: "service_healthy"
+    volumes:
+      - ./app:/usr/src/app/app
   couchdb:
     image: "couchdb:1.7.1"
     ports:
