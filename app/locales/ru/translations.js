@@ -1,4 +1,5 @@
 export default {
+  languageName: 'русский',
   admin: {
     address: {
       address1Label: '',
@@ -874,17 +875,6 @@ export default {
     requestsTitle: '',
     sectionTitle: ''
   },
-  languages: {
-    en: 'английский',
-    fr: 'Французский',
-    es: 'испанский',
-    de: 'Немецкий',
-    ru: 'русский',
-    'es-co': 'Испанский (колумбийский)',
-    'pt-br': 'Португальский (бразильский)',
-    tr: 'турецкий',
-    ur: 'урду'
-  },
   loading: {
     messages: {
       '0': '',
@@ -1087,6 +1077,7 @@ export default {
       history: '',
       incidentCategories: '',
       inventoryReceived: '',
+      inventoryReceivedPlus: '',
       invoices: '',
       items: '',
       loadDB: '',

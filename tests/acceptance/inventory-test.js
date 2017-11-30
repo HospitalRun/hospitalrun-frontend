@@ -21,7 +21,7 @@ test('visiting /inventory', function(assert) {
     andThen(function() {
       assert.equal(currentURL(), '/inventory');
       findWithAssert('button:contains(new request)');
-      findWithAssert('button:contains(inventory received)');
+      findWithAssert('button:contains(+ Inventory Received)');
       findWithAssert('p:contains(No requests found. )');
       findWithAssert('a:contains(Create a new request?)');
     });
@@ -279,6 +279,34 @@ test('Receiving inventory', function(assert) {
 
     andThen(() => {
       assert.equal(currentURL(), '/inventory/listing');
+    });
+  });
+});
+
+test('Searching inventory', function(assert) {
+  runWithPouchDump('inventory', function() {
+    authenticateUser();
+    visit('/inventory');
+
+    fillIn('[role="search"] div input', 'Biogesic');
+    click('.glyphicon-search');
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory/search/Biogesic', 'Searched for Biogesic');
+      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+    });
+
+    fillIn('[role="search"] div input', 'biogesic');
+    click('.glyphicon-search');
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory/search/biogesic', 'Searched with all lower case ');
+      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+    });
+
+    fillIn('[role="search"] div input', 'ItemNotFound');
+    click('.glyphicon-search');
+    andThen(() => {
+      assert.equal(currentURL(), '/inventory/search/ItemNotFound', 'Searched for ItemNotFound');
+      assert.equal(find('button:contains(Delete)').length, 0, 'There is no search result');
     });
   });
 });
