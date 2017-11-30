@@ -76,7 +76,7 @@ export default Ember.Controller.extend(FilterList, ModalHelper, PatientVisits, S
       let patientDetails = { patientName: visit.get('patient.displayName') };
       let confirmMessage =  i18n.t('visits.messages.checkOut', patientDetails);
       this.displayConfirm(i18n.t('visits.titles.checkOut'), confirmMessage,
-          'finishCheckOut', visit);
+        'finishCheckOut', visit);
     },
 
     editVisit(visit) {
