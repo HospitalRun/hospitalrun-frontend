@@ -84,7 +84,6 @@ test('Testing admitted patient', function(assert) {
       assert.equal(currentURL(), '/patients/admitted');
       assert.equal(find('.clickable').length, 1, 'One patient is listed');
     });
-
     click('button:contains(Discharge)');
     waitToAppear('.view-current-title:contains(Edit Visit)');
     andThen(function() {
@@ -152,6 +151,36 @@ test('Delete a patient record', function(assert) {
     });
     andThen(function() {
       assert.equal(find('tr.clickable td:contains(Joe)').length, 0, 'Patient has been successfully deleted.');
+    });
+  });
+});
+
+test('Searching patients', function(assert) {
+  runWithPouchDump('patient', function() {
+    authenticateUser();
+    visit('/patients');
+
+    fillIn('[role="search"] div input', 'Joe');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/patients/search/Joe', 'Searched for Joe');
+      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+    });
+
+    fillIn('[role="search"] div input', 'joe');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/patients/search/joe', 'Searched for all lower case joe');
+      assert.equal(find('button:contains(Delete)').length, 1, 'There is one search item');
+    });
+    fillIn('[role="search"] div input', 'ItemNotFound');
+    click('.glyphicon-search');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/patients/search/ItemNotFound', 'Searched for ItemNotFound');
+      assert.equal(find('button:contains(Delete)').length, 0, 'There is no search result');
     });
   });
 });
