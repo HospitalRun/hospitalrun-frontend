@@ -1,6 +1,6 @@
 import Ember from 'ember';
 export default Ember.Component.extend({
-  // From http://emberjs.jsbin.com/rwjblue/58/edit?html,css,js,output
+  // From https://emberjs.jsbin.com/rwjblue/58/edit?html,css,js,output
   attributeBindings: ['type', 'value'],
   tagName: 'input',
   type: 'checkbox',
