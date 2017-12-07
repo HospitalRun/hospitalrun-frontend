@@ -7,25 +7,65 @@
     <th>{{t 'patients.labels.call'}}</th>
     <th>{{t 'patients.labels.video'}}</th>
   </tr>
-  {{!-- {{#each patientImaging as |imaging|}}
-    <tr {{action "editImaging" imaging}}>
-      <td>{{date-format imaging.requestedDate}}</td>
-      <td>{{imaging.imagingType.name}}</td>
-      <td>{{imaging.status}}</td>
-      <td>{{date-format imaging.imagingDate}}</td>
-      <td>{{imaging.result}}</td>
-      <td>{{imaging.notes}}</td>
-      <td>{{imaging.requestedBy}}</td>
-      <td>
-        {{#if imaging.canEdit}}
-          {{#if canAddImaging}}
-            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>{{t 'labels.edit'}}</button>
+  <tr {{action "editImaging" imaging}}>
+      <td>Doctor Strange</td>
+      <td>Dark Magic</td>
+      <td>Conected Now</td>
+     <td>
+        {{#if canAddImaging}}
+            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>Send message</button>
           {{/if}}
-          {{#if canDeleteImaging}}
-            <button type="button" class="btn btn-default warning" {{action "showDeleteImaging" imaging  bubbles=false }}><span class="octicon octicon-x"></span> {{t 'labels.delete'}}</button>
+      </td>
+       <td>
+        {{#if canAddImaging}}
+            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>Call now</button>
           {{/if}}
-        {{/if}}
+      </td>
+       <td>
+        {{#if canAddImaging}}
+            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>VideoCall</button>
+          {{/if}}
       </td>
     </tr>
-  {{/each}} --}}
+  <tr {{action "editImaging" imaging}}>
+      <td>Banner Professor</td>
+      <td>Gamma Ray</td>
+      <td>Conected Now</td>
+      <td>
+        {{#if canAddImaging}}
+            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>Send message</button>
+          {{/if}}
+      </td>
+       <td>
+        {{#if canAddImaging}}
+            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>Call now</button>
+          {{/if}}
+      </td>
+       <td>
+        {{#if canAddImaging}}
+            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>VideoCall</button>
+          {{/if}}
+      </td>
+    </tr>
+    <tr {{action "editImaging" imaging}}>
+      <td>House Gregory</td>
+      <td>Diagnostics</td>
+      <td>Conected Now</td>
+      <td>
+        {{#if canAddImaging}}
+            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>Send message</button>
+          {{/if}}
+      </td>
+       <td>
+        {{#if canAddImaging}}
+            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>Call now</button>
+          {{/if}}
+      </td>
+       <td>
+        {{#if canAddImaging}}
+            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>VideoCall</button>
+          {{/if}}
+      </td>
+    </tr>
+    
 </table>

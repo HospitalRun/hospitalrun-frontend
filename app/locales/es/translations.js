@@ -860,7 +860,7 @@ export default {
       message: 'mensaje',
       call: 'llamada',
       video: 'video llamada'
-   }
+    }
   },
   labs: {
     alerts: {
