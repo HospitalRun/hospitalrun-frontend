@@ -20,6 +20,7 @@
         <li role="presentation"><a href="#medication" role="tab" data-toggle="pill" data-test-selector="medication-tab">{{t 'patients.navigation.medication'}}</a></li>
         <li role="presentation"><a href="#imaging" role="tab" data-toggle="pill" data-test-selector="imaging-tab">{{t 'patients.navigation.imaging'}}</a></li>
         <li role="presentation"><a href="#labs" role="tab" data-toggle="pill" data-test-selector="labs-tab">{{t 'patients.navigation.labs'}}</a></li>
+        <li role="presentation"><a href="#communication" role="tab" data-toggle="pill" data-test-selector="communication-tab">{{t 'patients.navigation.communication'}}</a></li>
         {{#if canAddSocialWork}}
           <li role="presentation"><a href="#social" role="tab" data-toggle="pill" data-test-selector="social-tab">{{t 'patients.navigation.socialWork'}}</a></li>
         {{/if}}
@@ -374,6 +375,20 @@
             {{/if}}
             <div class="panel-body detail-section-content">
               {{partial 'patients/labs'}}
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="communication">
+          <div class="panel">
+            {{#if canAddLab}}
+              <div class="panel-heading">
+                {{!-- <button type="button" class="btn btn-primary align-right" {{action "newComm" bubbles=false }}>
+                  <span class="octicon octicon-plus"></span> {{t 'patients.buttons.newLab'}}
+                </button> --}}
+              </div>
+            {{/if}}
+            <div class="panel-body detail-section-content">
+              {{partial 'patients/communication'}}
             </div>
           </div>
         </div>

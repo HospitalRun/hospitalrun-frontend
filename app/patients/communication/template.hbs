@@ -1,0 +1,31 @@
+<table class="table">
+  <tr class="table-header">
+    <th>{{t 'patients.labels.professional'}}</th>
+    <th>{{t 'patients.labels.profession'}}</th>
+    <th>{{t 'patients.labels.status'}}</th>
+    <th>{{t 'patients.labels.message'}}</th>
+    <th>{{t 'patients.labels.call'}}</th>
+    <th>{{t 'patients.labels.video'}}</th>
+  </tr>
+  {{!-- {{#each patientImaging as |imaging|}}
+    <tr {{action "editImaging" imaging}}>
+      <td>{{date-format imaging.requestedDate}}</td>
+      <td>{{imaging.imagingType.name}}</td>
+      <td>{{imaging.status}}</td>
+      <td>{{date-format imaging.imagingDate}}</td>
+      <td>{{imaging.result}}</td>
+      <td>{{imaging.notes}}</td>
+      <td>{{imaging.requestedBy}}</td>
+      <td>
+        {{#if imaging.canEdit}}
+          {{#if canAddImaging}}
+            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>{{t 'labels.edit'}}</button>
+          {{/if}}
+          {{#if canDeleteImaging}}
+            <button type="button" class="btn btn-default warning" {{action "showDeleteImaging" imaging  bubbles=false }}><span class="octicon octicon-x"></span> {{t 'labels.delete'}}</button>
+          {{/if}}
+        {{/if}}
+      </td>
+    </tr>
+  {{/each}} --}}
+</table>

@@ -49,6 +49,7 @@ export default {
         text: 'Texto',
         textarea: 'Área de texto',
         visitFormType: 'Visita'
+
       },
       messages: { formSaved: 'El formulario {{name}} ha sido guardado.' },
       titles: {
@@ -459,7 +460,9 @@ export default {
     buttons: { newButton: '+ Nueva radiografía' },
     labels: {
       addNewVisit: '--Agregar nueva visita--',
-      radiologist: 'Radiólogo'
+      radiologist: 'Radiólogo',
+      resultNotes: 'Resultados',
+      requestedNotes: 'Notas requeridas'
     },
     messages: { noCompleted: 'No de elementos encontrados.' },
     pageTitle: 'Pedido de radiografía',
@@ -850,6 +853,15 @@ export default {
     visit: 'Visita',
     'with': 'con'
   },
+  communication: {
+    labels: {
+      profession: 'profesion',
+      status: 'estado',
+      message: 'mensaje',
+      call: 'llamada',
+      video: 'video llamada'
+   }
+  },
   labs: {
     alerts: {
       requestCompletedMessage: 'El pedido de laboratorio ha sido completado.',
@@ -1217,7 +1229,12 @@ export default {
       sexNotEntered: 'Sexo no capturado',
       sources: 'Fuentes',
       status: 'Estatus',
-      totalMontlyExpense: 'Total de gastos mensuales'
+      totalMontlyExpense: 'Total de gastos mensuales',
+      profession: 'Profesion',
+      professional: 'Profesional',
+      message: 'Mensaje',
+      call: 'Llamada',
+      video: 'Videollamada'
     },
     messages: {
       areYouSureDelete: 'Esta seguro que desea eliminar este {{object}}?',
@@ -1237,6 +1254,7 @@ export default {
       medication: 'Medicación',
       photos: 'Fotos',
       socialWork: 'Red social',
+      communication: 'Comunicaciones',
       visits: 'Visitas'
     },
     notes: {
