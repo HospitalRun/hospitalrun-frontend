@@ -855,11 +855,17 @@ export default {
   },
   communication: {
     labels: {
-      profession: 'profesion',
-      status: 'estado',
-      message: 'mensaje',
-      call: 'llamada',
-      video: 'video llamada'
+      professional: 'Profesional',
+      profession: 'Profesion',
+      status: 'Estado',
+      message: 'Mensaje',
+      call: 'Llamada',
+      videoCall: 'Video llamada'
+    },
+    buttons:{
+      sendMessage: 'Mensaje',
+      callNow: 'Llamada',
+      videoCall: 'Video llamada'
     }
   },
   labs: {
@@ -1288,8 +1294,8 @@ export default {
       'new': 'Nuevo paciente',
       outpatientsForDate: 'Pacientes externos para {{visitDate}}',
       patient: 'Reporte de paciente',
-      patientListing: 'Listado de paciente',
-      patientReport: 'Reporte de paciente',
+      patientListing: 'Listado de pacientes',
+      patientReport: 'Reporte de pacientes',
       patientStatus: 'Estatus del paciente',
       proceduresDetail: 'Detalle de procedimientos',
       proceduresSummary: 'Resumen de procedimientos',

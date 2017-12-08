@@ -13,17 +13,17 @@
       <td>Conected Now</td>
      <td>
         {{#if canAddImaging}}
-            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>Send message</button>
+            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>{{t 'communication.buttons.sendMessage'}}</button>
           {{/if}}
       </td>
        <td>
         {{#if canAddImaging}}
-            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>Call now</button>
+            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>{{t 'communication.buttons.callNow'}}</button>
           {{/if}}
       </td>
        <td>
         {{#if canAddImaging}}
-            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>VideoCall</button>
+            <button type="button" class="btn btn-default neutral" {{action "editImaging" imaging}}>{{t 'communication.buttons.videoCall'}}</button>
           {{/if}}
       </td>
     </tr>

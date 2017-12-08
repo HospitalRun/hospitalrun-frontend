@@ -906,6 +906,24 @@ export default {
     requestsTitle: 'Lab Requests',
     sectionTitle: 'Labs'
   },
+  communication: {
+    labels: {
+      professional: 'Professional',
+      profession: 'Profession',
+      status: 'Status',
+      message: 'Message',
+      callNow: 'Call now',
+      videoCall: 'Video Call'
+    },
+    buttons:{
+      sendMessage: 'Message',
+      callNow: 'Call now',
+      videoCall: 'Video Call'
+    }
+  },
+
+
+
   languages: {
     en: 'English',
     fr: 'French',
