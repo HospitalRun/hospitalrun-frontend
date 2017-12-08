@@ -109,7 +109,7 @@ export default {
         updateButtonTextUpdate: 'Actualizar'
       } },
       expenseAccountList: 'Cuentas de gastos',
-      imagingPricingTypes: 'Tipos de precios de radiografías',
+      imagingPricingTypes: 'Tipos de precios de imágenes',
       incidentDepartments: 'Departamentos de incidencias',
       inventoryTypes: 'Tipos de inventarios',
       labPricingTypes: 'Precios de laboratorio',
@@ -136,7 +136,7 @@ export default {
         addBillingDiagnosis: 'Agregar diagnóstico de facturación',
         addCharge: 'Agregar cargo (valor)',
         addDiagnosis: 'Agregar diagnostico',
-        addImaging: 'Agregar radiografía',
+        addImaging: 'Agregar imágen',
         addIncident: 'Agregar incidente',
         addIncidentCategory: 'Agregar categoría de incidente',
         addInventoryItem: 'Agregar elemento al inventario',
@@ -162,12 +162,12 @@ export default {
         admitPatient: 'Admitir paciente',
         appointments: 'Citas',
         billing: 'Facturación',
-        completeImaging: 'Completar radiografía',
+        completeImaging: 'Completar imágen',
         completeLab: 'Completar laboratorio',
         defineUserRoles: 'Roles de usuario',
         deleteAppointment: 'Eliminar cita',
         deleteDiagnosis: 'Eliminar diagnostico',
-        deleteImaging: 'Eliminar radiografía',
+        deleteImaging: 'Eliminar imágen',
         deleteIncident: 'Eliminar incidente',
         deleteIncidentCategory: 'Eliminar categoría de incidente',
         deleteInventoryItem: 'Eliminar elemento del inventario',
@@ -188,7 +188,7 @@ export default {
         fulfillInventory: 'Cumplimiento de inventario',
         fulfillMedication: 'Cumplir la medicación',
         generateIncidentReport: 'Generar reporte de incidencia',
-        imaging: 'Radiografía',
+        imaging: 'Imágen',
         incident: 'Incidente',
         inventory: 'Inventario',
         invoices: 'Facturas',
@@ -224,7 +224,7 @@ export default {
       followupPrepaymentLabel: 'Pre pago de seguimiento es requerido',
       messages: { optionsSaved: 'Las opciones de flujo de trabajo han sido guardadas' },
       newTitle: 'Opciones de Flujo de Trabajo',
-      outpatientImagingLabel: 'Pago de radiografía de paciente externo es requerido',
+      outpatientImagingLabel: 'Pago de imágen de paciente externo es requerido',
       outpatientLabLabel: 'Pago de laboratorio para paciente externo es requerido',
       outpatientMedicationLabel: 'Pre pago de medicación de paciente externo es requerido',
       titles: { optionsSaved: 'Opciones guardadas' },
@@ -353,12 +353,12 @@ export default {
     },
     patientOrders: {
       buttons: {
-        newImaging: 'Nueva radiografía',
+        newImaging: 'Nueva imágen',
         newLab: 'Nuevo laboratorio',
         newMedication: 'Nueva medicación'
       },
       labels: {
-        imagingOrderType: 'Tipo de radiografía',
+        imagingOrderType: 'Tipo de imágen',
         labOrderType: 'Tipo de orden de laboratorio',
         medicationOrderType: 'Tipo de medicación',
         orderType: 'Tipo de orden'
@@ -452,25 +452,28 @@ export default {
   headings: { chargedItems: 'Elementos cargados' },
   imaging: {
     alerts: {
-      completedMessage: 'El pedido de radiografía ha sido completado.',
-      completedTitle: 'Pedido de radiografía completado',
-      savedMessage: 'El pedido de radiografía ha sido guardado.',
-      savedTitle: 'Pedido de radiografía salvado'
+      completedMessage: 'El pedido de imágen ha sido completado.',
+      completedTitle: 'Pedido de imágen completado',
+      savedMessage: 'El pedido de imágen ha sido guardado.',
+      savedTitle: 'Pedido de imágen salvado'
     },
-    buttons: { newButton: '+ Nueva radiografía' },
+    buttons: { newButton: '+ Nueva imágen' },
     labels: {
       addNewVisit: '--Agregar nueva visita--',
       radiologist: 'Radiólogo',
       resultNotes: 'Resultados',
-      requestedNotes: 'Notas requeridas'
+      requestedNotes: 'Notas requeridas',
+      completedBy: 'Completado por'
     },
-    messages: { noCompleted: 'No de elementos encontrados.' },
-    pageTitle: 'Pedido de radiografía',
-    sectionTitle: 'Radiografías',
+    messages: {
+      noCompleted: 'Nº de elementos completos.',
+    },
+    pageTitle: 'Pedido de imágen',
+    sectionTitle: 'Imágenes',
     titles: {
-      completedImaging: 'Radiografía completada',
-      editTitle: 'Pedido de edición de radiografía',
-      newTitle: 'Nuevo pedido de radiografía'
+      completedImaging: 'Imágen completada',
+      editTitle: 'Pedido de edición de imágen',
+      newTitle: 'Nuevo pedido de imágen'
     }
   },
   incident: {
@@ -802,8 +805,8 @@ export default {
     fulfilled: 'Cumplido',
     grandTotal: 'Gran Total',
     id: 'Id',
-    imageOrders: 'Ordenes de radiografías',
-    imagingType: 'Tipo de radiografía',
+    imageOrders: 'Ordenes de imágenes',
+    imagingType: 'Tipo de imágen',
     importFile: 'Importar archivo',
     invoiceId: 'Id de factura',
     labOrders: 'Ordenes de laboratorio',
@@ -862,7 +865,7 @@ export default {
       call: 'Llamada',
       videoCall: 'Video llamada'
     },
-    buttons:{
+    buttons: {
       sendMessage: 'Mensaje',
       callNow: 'Llamada',
       videoCall: 'Video llamada'
@@ -929,7 +932,8 @@ export default {
     },
     messages: {
       error: 'Nombre de usuario o clave incorrectos.',
-      signIn: 'por favor ingrese'
+      signIn: 'Por favor ingrese',
+      offlineError: 'El servidor no está en linea.'
     }
   },
   medication: {
@@ -1016,10 +1020,10 @@ export default {
       singular: 'Formulario'
     } },
     imaging: {
-      names: 'Radiografía',
+      names: 'Imágen',
       request: {
-        plural: 'Peticiones de radiografía',
-        singular: 'Petición de radiografía'
+        plural: 'Peticiones de imágenes',
+        singular: 'Petición de imágen'
       }
     },
     incident: { names: {
@@ -1082,9 +1086,15 @@ export default {
       logout: 'Salir',
       selectLanguage: 'Seleccione el idioma'
     },
+    messages: {
+      logoutFailed: 'Se produjo un error al finalizar la sesión'
+    },
+    titles: {
+      logoutFailed: 'Error al salir'
+    },
     administration: 'Administración',
     billing: 'Facturas',
-    imaging: 'Radiografía',
+    imaging: 'Imágen',
     incident: 'Incidente',
     inventory: 'Inventario',
     labs: 'Laboratorio',
@@ -1143,7 +1153,9 @@ export default {
       surgeon: 'Cirujano',
       surgeryDate: 'Fecha de cirugía'
     },
-    messages: { reportSaved: 'Reporte guardado' },
+    messages: {
+      reportSaved: 'Reporte guardado'
+    },
     titles: {
       editTitle: 'Edición de reporte de operación',
       newTitle: 'Nuevo reporte de operación',
@@ -1184,7 +1196,7 @@ export default {
       download: 'Descargar',
       editOperativePlan: 'Editar plan operativo',
       newAppointment: 'Nueva cita',
-      newImaging: 'Nueva radiografía',
+      newImaging: 'Nueva imágen',
       newLab: 'Nuevo laboratorio',
       newMedication: 'Nueva medicación',
       newPatient: 'Nuevo paciente',
@@ -1234,13 +1246,13 @@ export default {
       sex: 'Sexo',
       sexNotEntered: 'Sexo no capturado',
       sources: 'Fuentes',
-      status: 'Estatus',
+      status: 'Estado',
       totalMontlyExpense: 'Total de gastos mensuales',
       profession: 'Profesion',
       professional: 'Profesional',
       message: 'Mensaje',
-      call: 'Llamada',
-      video: 'Videollamada'
+      callNow: 'Llamada',
+      videoCall: 'Videollamada'
     },
     messages: {
       areYouSureDelete: 'Esta seguro que desea eliminar este {{object}}?',
@@ -1252,10 +1264,10 @@ export default {
       savedPatient: 'El registro para el paciente: {{displayName}} ha sido exitoso'
     },
     navigation: {
-      appointments: 'Equipo',
+      appointments: 'Citas',
       general: 'General',
       history: 'Historial',
-      imaging: 'Radiografia',
+      imaging: 'Imágenes',
       labs: 'Laboratorios',
       medication: 'Medicación',
       photos: 'Fotos',
