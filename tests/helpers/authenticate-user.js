@@ -8,14 +8,12 @@ const {
 
 Ember.Test.registerHelper('authenticateUser', function(app, attrs = {}) {
   let expiresAt = new Date().getTime() + 600000;
-  // let name = attrs.name || 'hradmin';
-  // let prefix = attrs.prefix || 'p1';
   authenticateSession(app, merge({
-    name: attrs.name || 'hradmin',
+    name: 'hradmin',
     roles: ['System Administrator', 'admin', 'user'],
     expires_at: expiresAt,
     role: 'System Administrator',
-    prefix: attrs.prefix || 'p1'
+    prefix: 'p1'
   }, attrs));
 });
 
