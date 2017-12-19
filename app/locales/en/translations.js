@@ -1272,7 +1272,7 @@ export default {
       sexNotEntered: 'Sex Not Entered',
       sources: 'Sources',
       totalMontlyExpense: 'Total Monthly Expenses',
-      profession:'Profession',
+      profession: 'Profession',
       professional: 'Professional',
       status: 'Status',
       message: 'Message',
@@ -1298,7 +1298,7 @@ export default {
       photos: 'Photos',
       socialWork: 'Social Work',
       visits: 'Visits',
-      communication:'Communication'
+      communication: 'Communication'
     },
     notes: {
       newNote: 'New Note for',
