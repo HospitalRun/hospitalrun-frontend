@@ -33,7 +33,7 @@ const STATUS_FIELD = 'status';
 
 function paymentStateAcceptance(object) {
   return !Object.keys(PAYMENT_STATES)
-      .some((state) => PAYMENT_STATES[state] === object.get('paymentState'));
+    .some((state) => PAYMENT_STATES[state] === object.get('paymentState'));
 }
 
 export default AbstractModel.extend({

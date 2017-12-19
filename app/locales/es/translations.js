@@ -1,4 +1,5 @@
 export default {
+  languageName: 'Español',
   admin: {
     address: {
       address1Label: 'Texto dirección 1',
@@ -895,18 +896,6 @@ export default {
     requestsTitle: 'Pedido de laboratorio',
     sectionTitle: 'Laboratorios'
   },
-  languages: {
-    en: 'Inglés',
-    fr: 'Francés',
-    es: 'Español',
-    de: 'Alemán',
-    ru: 'Ruso',
-    'es-co': 'Español (Colombiano)',
-    'pt-br': 'Portugués (Brasileño)',
-    tr: 'Turco',
-    ur: 'Urdu',
-    hi: 'Hindi'
-  },
   loading: {
     messages: {
       '0': 'La velocidad máxima de vuelo de la mariposa es de 12 millas por hora. ¡Algunas polillas pueden volar 25 millas por hora!',
@@ -1116,6 +1105,7 @@ export default {
       history: 'Historial',
       incidentCategories: 'Categorias de Incidente',
       inventoryReceived: 'Inventario recibido',
+      inventoryReceivedPlus: '+ Inventario recibido',
       invoices: 'Facturas',
       items: 'Items',
       loadDB: 'Cargar Base de datos',
