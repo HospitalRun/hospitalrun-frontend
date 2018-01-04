@@ -1310,10 +1310,7 @@ export default {
       edit: 'Edit Patient',
       editPhoto: 'Edit Photo',
       editDocument: 'Edit Document',
-<<<<<<< HEAD
       seeDocument: 'See Document',
-=======
->>>>>>> addDocuments
       expenses: 'Expenses',
       familyInfo: 'Family Info',
       familyInformation: 'Family Information',

@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> addDocuments
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import Ember from 'ember';
 import { translationMacro as t } from 'ember-i18n';
@@ -109,8 +105,4 @@ export default AbstractEditController.extend({
       set(this, 'showFileRequired', true);
     }
   }
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> addDocuments

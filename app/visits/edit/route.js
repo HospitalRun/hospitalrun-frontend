@@ -96,17 +96,9 @@ export default AbstractEditRoute.extend(ChargeRoute, PatientListRoute, PatientVi
     },
     deletePhoto(model) {
       this.controller.send('deletePhoto', model);
-<<<<<<< HEAD
-
     },
     deleteDocument(model) {
       this.controller.send('deleteDocument', model);
-
-=======
-    },
-    deleteDocument(model) {
-      this.controller.send('deleteDocument', model);
->>>>>>> addDocuments
     }
   }
 });

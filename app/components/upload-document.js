@@ -230,8 +230,4 @@ export default Ember.Component.extend({
     }
   }
 
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> addDocuments
