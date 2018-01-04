@@ -44,4 +44,8 @@ export default AbstractModel.extend({
     }
     return fileName;
   })
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> addDocuments
