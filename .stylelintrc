@@ -1,12 +1,12 @@
 {
   "extends": "stylelint-config-concentric",
   "plugins": [
-  "stylelint-declaration-use-variable",
-  "stylelint-scss"
-],
+    "stylelint-declaration-use-variable",
+    "stylelint-scss"
+  ],
   "rules":{
     "sh-waqar/declaration-use-variable": "color",
-    "scss/at-import-partial-extension-whitelist": [''],
+    "scss/at-import-partial-extension-whitelist": [""],
     "scss/at-import-no-partial-leading-underscore": true,
     "scss/at-extend-no-missing-placeholder": true,
     "declaration-bang-space-after": "never",
@@ -42,7 +42,7 @@
     "number-leading-zero": "never",
     "number-no-trailing-zeros": true,
     "length-zero-no-unit": true,
-    "rule-nested-empty-line-before": ["always-multi-line", {
+    "rule-empty-line-before": ["always-multi-line", {
       "ignore": ["after-comment"],
       "except": ["first-nested"]
       } ],
@@ -55,5 +55,8 @@
     "declaration-property-value-blacklist": {
       "/^border/": ["none"]
     }
-  }
+  },
+  "ignoreFiles": [
+    "./app/styles/basscss/**/*.scss"
+  ]
 }
