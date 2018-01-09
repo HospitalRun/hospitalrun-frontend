@@ -163,10 +163,10 @@ export default Ember.Controller.extend(BillingCategories, EKMixin,
           imaging: 'radiologist'
         }
       }, {
-        name: this.get('i18n').t('labels.sex'),
-        value: 'sex',
+        name: this.get('i18n').t('labels.gender'),
+        value: 'gender',
         model: {
-          patient: 'sex'
+          patient: 'gender'
         }
       }, {
         defaultValues: 'defaultUnitList',

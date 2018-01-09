@@ -47,8 +47,8 @@ export default AbstractEditController.extend(PatientSubmodule, {
     } else {
       this.set('newPayment', false);
     }
-    let patient = this.get('currentPatient');
-    this.set('model.charityPatient', patient.get('patientType') === 'Charity');
+//    let patient = this.get('currentPatient');
+//    this.set('model.charityPatient', patient.get('patientType') === 'Charity');
     return Ember.RSVP.resolve();
   },
 

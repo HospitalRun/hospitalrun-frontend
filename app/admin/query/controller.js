@@ -6,7 +6,6 @@ export default Ember.Controller.extend(EditPanelProps, {
   showUpdateButton: true,
   updateButtonAction: 'query',
   updateButtonText: 'Query', // admin function not requiring i8ln
-
   objectTypeList: [
     'appointment',
     'imaging',
@@ -19,6 +18,7 @@ export default Ember.Controller.extend(EditPanelProps, {
     'medication',
     'patient',
     'photo',
+    'document',
     'procedure',
     'visit',
     'vital'

@@ -15,8 +15,7 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   address2: DS.attr('string'),
   address3: DS.attr('string'),
   address4: DS.attr('string'),
-  bloodType: DS.attr('string'),
-  clinic: DS.attr('string'),
+
   country: DS.attr('string'),
   checkedIn: DS.attr('boolean', { defaultValue: false }),
   customForms: DS.attr('custom-forms'),
@@ -33,10 +32,13 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   friendlyId: DS.attr('string'),
   familyInfo: DS.attr(),
   firstName: DS.attr('string'),
-  sex: DS.attr('string'),
-  occupation: DS.attr('string'),
+  gender: DS.attr('string'),
+  grade: DS.attr('string'),
+  gradeGroup: DS.attr('string'),
   history: DS.attr('string'), // No longer used
   insurance: DS.attr('string'),
+  l1: DS.attr('string'),
+  l2: DS.attr('string'),
   lastName: DS.attr('string'),
   livingArrangement: DS.attr('string'),
   middleName: DS.attr('string'),
@@ -47,11 +49,10 @@ export default AbstractModel.extend(DOBDays, PatientName, {
   phone: DS.attr('string'),
   placeOfBirth: DS.attr('string'),
   referredDate: DS.attr('date'),
-  referredBy: DS.attr('string'),
-  religion: DS.attr('string'),
+  school: DS.attr('string'),
   socialActionTaken: DS.attr('string'),
   socialRecommendation: DS.attr('string'),
-  status: DS.attr('string'),
+  handedness: DS.attr('string'),
   // Associations
   allergies: DS.hasMany('allergy', { async: true }),
   diagnoses: DS.hasMany('diagnosis', { async: false }),
@@ -108,6 +109,18 @@ export default AbstractModel.extend(DOBDays, PatientName, {
       presence: true
     },
     lastName: {
+      presence: true
+    },
+    handedness: {
+      presence: true
+    },
+    school: {
+      presence: true
+    },
+    grade: {
+      presence: true
+    },
+    gender: {
       presence: true
     }
   }
