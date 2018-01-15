@@ -10,6 +10,7 @@ const { computed, get } = Ember;
 
 export default AbstractModel.extend(CanEditRequested, DateFormat, ResultValidation, {
   // Attributes
+  customForms: DS.attr('custom-forms'),
   labDate: DS.attr('date'),
   notes: DS.attr('string'),
   requestedBy: DS.attr('string'),

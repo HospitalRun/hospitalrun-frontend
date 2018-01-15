@@ -33,6 +33,6 @@
     {{operative-procedures model=model procedureList=procedureList}}
     {{expand-text property="additionalNotes" label=(t 'operationReport.labels.additionalNotes') form=form}}
     {{upcoming-appointments patient=model.patient}}
-    {{custom-form-manager model=model formType="operativePlan"}}
+    {{custom-form-manager model=model formType="operativePlan" rapidForm=form}}
   {{/em-form}}
 {{/edit-panel}}
