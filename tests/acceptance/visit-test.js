@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import moment from 'moment';
-import { module, test } from 'qunit';
-import startApp from 'hospitalrun/tests/helpers/start-app';
+import { test } from 'qunit';
+import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 
 const { isEmpty } = Ember;
 
@@ -28,15 +28,7 @@ const visitData = {
   }
 };
 
-module('Acceptance | visits', {
-  beforeEach() {
-    this.application = startApp();
-  },
-
-  afterEach() {
-    Ember.run(this.application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance | visits');
 
 test('Add admission visit', function(assert) {
   runWithPouchDump('patient', function() {

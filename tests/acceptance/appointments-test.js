@@ -1,21 +1,12 @@
-import Ember from 'ember';
-import { module, test } from 'qunit';
+import { test } from 'qunit';
 import moment from 'moment';
-import startApp from 'hospitalrun/tests/helpers/start-app';
+import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 
 const DATE_TIME_FORMAT = 'l h:mm A';
 const DATE_FORMAT = 'l';
 const TIME_FORMAT = 'h:mm';
 
-module('Acceptance | appointments', {
-  beforeEach() {
-    this.application = startApp();
-  },
-
-  afterEach() {
-    Ember.run(this.application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance | appointments');
 
 test('visiting /appointments', function(assert) {
   runWithPouchDump('default', function() {

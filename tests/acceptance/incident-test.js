@@ -1,7 +1,6 @@
-import Ember from 'ember';
-import { module, test } from 'qunit';
 import moment from 'moment';
-import startApp from 'hospitalrun/tests/helpers/start-app';
+import { test } from 'qunit';
+import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 
 const DATE_FORMAT = 'l';
 const DATE_TIME_FORMAT = 'l h:mm A';
@@ -13,15 +12,7 @@ const INCIDENT_NOTES = 'Additional Notes here';
 const EDIT_INCIDENT_NOTE = 'The wet floor sign had fallen down and was no longer visible.';
 const REPORTED_TO = 'Jack Bridges';
 
-module('Acceptance | Incidents', {
-  beforeEach() {
-    this.application = startApp();
-  },
-
-  afterEach() {
-    Ember.run(this.application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance | Incidents');
 
 test('Incident category management', function(assert) {
   runWithPouchDump('incident', function() {
