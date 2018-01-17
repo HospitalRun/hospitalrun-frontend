@@ -75,7 +75,7 @@ test('loadUserLanguagePreference should return default language if there are no 
 });
 
 test('loadUserLanguagePreference sinon test should return default language if there are no preferences', function(assert) {
-  configDb.get.withArgs('preferences').rejects('no preferences');
+  configDb.get.withArgs('preferences').returns(Ember.RSVP.reject('no preferences'));
 
   currentUser.returns({ name: 'testuser.ts' });
 
@@ -119,7 +119,7 @@ test("saveUserLanguagePreference should update preferences when user doesn't exi
 
 test("saveUserLanguagePreference should create preferences when they doesn't exist", function(assert) {
   currentUser.returns({ name: 'no-such-user@test.ts' });
-  configDb.get.withArgs('preferences').rejects('no preferences');
+  configDb.get.withArgs('preferences').returns(Ember.RSVP.reject('no preferences'));
 
   let expectedPreferences = {
     _id: 'preferences',
