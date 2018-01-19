@@ -9,8 +9,12 @@ moduleForAcceptance('Acceptance | language dropdown');
 
 test('setting a language preference persists after logout', (assert) => {
   runWithPouchDump('default', () => {
-    authenticateUser();
-    visit('/');
+    addOfflineUsersForElectron();
+
+    andThen(() => {
+      authenticateUser();
+      visit('/');
+    });
 
     andThen(() => {
       assert.equal(find('.view-current-title').text(), english.dashboard.title, 'Title is NOT in English after first log in');
@@ -44,8 +48,12 @@ test('setting a language preference persists after logout', (assert) => {
 
 test('different users can have different language preferences on the same browser', (assert) => {
   runWithPouchDump('default', () => {
-    authenticateUser();
-    visit('/');
+    addOfflineUsersForElectron();
+
+    andThen(() => {
+      authenticateUser();
+      visit('/');
+    });
 
     andThen(() => {
       assert.equal(find('.view-current-title').text(), english.dashboard.title, 'Title is NOT in English after first log in');
