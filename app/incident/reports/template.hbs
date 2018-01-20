@@ -1,10 +1,10 @@
 <div class="panel panel-primary">
   {{#if canGenerateReport}}
     <div class="panel-body">
-      {{#em-form model=this submitButton=false }}
+      {{#em-form model=this submitButton=false as |form|}}
         <div class="row">
-          {{date-picker property="startDate" label=(t 'incident.labels.startDate') class="col-sm-4"}}
-          {{date-picker property="endDate" label=(t 'incident.labels.endDate') class="col-sm-4"}}
+          {{date-picker model=model originalPropery="startDate" property="display_startDate"  label=(t 'incident.labels.startDate') class="col-sm-4"}}
+          {{date-picker model=model originalPropery="endDate" property="display_endDate"  label=(t 'incident.labels.endDate') class="col-sm-4"}}
         </div>
         <div class="row" data-test-selector="select-report-type">
           <div class="form-group col-xs-6">

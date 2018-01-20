@@ -11,8 +11,8 @@ test('the number-input renders', function(assert) {
   assert.expect(2);
 
   this.render(hbs`
-    {{#em-form model=model}}
-      {{number-input property='petType' label='Pet Type' class='test-number-input'}}
+    {{#em-form model=model as |form|}}
+      {{number-input model=model property='petType' label='Pet Type' class='test-number-input'}}
     {{/em-form}}
   `);
 
@@ -30,8 +30,8 @@ test('the number input sanitizes the data', function(assert) {
   });
 
   this.render(hbs`
-    {{#em-form model=model}}
-      {{number-input
+    {{#em-form model=model as |form|}}
+      {{number-input model=model
         property='petType'
         sanitizeFunction=sanitizeFunction
         label='Pet Type'

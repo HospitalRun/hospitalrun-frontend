@@ -1,27 +1,27 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=model submitButton=false }}
+  {{#em-form model=model submitButton=false as |form|}}
     {{#if model.selectPatient}}
-      {{patient-typeahead property="patientTypeAhead" label=(t 'models.patient.names.singular') content=patientList selection=selectedPatient class="required test-patient-input"}}
+      {{patient-typeahead model=model property="patientTypeAhead" label=(t 'models.patient.names.singular') content=patientList selection=selectedPatient class="required test-patient-input"}}
     {{else}}
       {{patient-summary patient=model.patient returnTo='appointments.edit' returnToContext=model.id disablePatientLink=model.isNew }}
     {{/if}}
     <div class="row">
       {{#if isAdmissionAppointment}}
-        {{date-picker property="startDate" label=(t 'models.appointment.labels.startDate') showTime=showTime class="col-sm-4 required test-appointment-start"}}
-        {{date-picker property="endDate" label=(t 'models.appointment.labels.endDate') showTime=showTime class="col-sm-4 required test-appointment-end"}}
+        {{date-picker model=model originalPropery="startDate" property="display_startDate" label=(t 'models.appointment.labels.startDate') showTime=showTime class="col-sm-4 required test-appointment-start"}}
+        {{date-picker model=model originalPropery="endDate" property="display_endDate" label=(t 'models.appointment.labels.endDate') showTime=showTime class="col-sm-4 required test-appointment-end"}}
       {{else}}
         {{date-time-picker datePickerClass="required test-appointment-date" label=(t 'labels.date') model=model}}
       {{/if}}
-      {{em-checkbox label=(t 'models.appointment.labels.allDay') property="allDay"  class="col-sm-2 appointment-all-day"}}
+      {{form.checkbox label=(t 'models.appointment.labels.allDay') property="allDay"  class="col-sm-2 appointment-all-day"}}
     </div>
 
     {{#if (eq model.appointmentType 'Surgery')}}
       <div class="row">
-        {{select-or-typeahead className="col-sm-6 test-appointment-with" property="provider"
+        {{select-or-typeahead className="col-sm-6 test-appointment-with" form=form model=model property="provider"
           label=(t 'models.appointment.labels.provider') list=physicianList
           selection=model.provider
         }}
-        {{select-or-typeahead className="col-sm-6 test-appointment-location" property="location"
+        {{select-or-typeahead className="col-sm-6 test-appointment-location" form=form model=model property="location"
           label=(t 'models.appointment.labels.location') list=surgeryLocationList
           selection=model.location
         }}
@@ -40,21 +40,21 @@
             action=(action 'appointmentTypeChanged')
           }}
         </div>
-        {{select-or-typeahead className="col-sm-6 test-appointment-with" property="provider"
+        {{select-or-typeahead className="col-sm-6 test-appointment-with" form=form model=model property="provider"
           label=(t 'models.appointment.labels.provider') list=physicianList
           selection=model.provider
         }}
       </div>
       <div class="row">
-        {{select-or-typeahead className="col-sm-6 test-appointment-location" property="location"
+        {{select-or-typeahead className="col-sm-6 test-appointment-location" form=form model=model property="location"
           label=(t 'models.appointment.labels.location') list=visitLocationList
           selection=model.location
         }}
-        {{em-select class="form-input-group col-sm-3 test-appointment-status" property="status"
+        {{form.select class="form-input-group col-sm-3 test-appointment-status" property="status"
           label=(t 'models.appointment.labels.status') content=appointmentStatuses
         }}
       </div>
     {{/if}}
-    {{expand-text label=(t 'models.appointment.labels.notes') property="notes" rows=3 }}
+    {{expand-text label=(t 'models.appointment.labels.notes') property="notes" rows=3 form=form}}
   {{/em-form}}
 {{/edit-panel}}

@@ -1,17 +1,17 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=model submitButton=false }}
+  {{#em-form model=model submitButton=false as |form|}}
     <div class="row">
-      {{date-picker property="dateReceived" label=(t 'inventory.labels.dateReceived') class="col-sm-4 required"}}
-      {{select-or-typeahead property="vendor" label=(t 'inventory.labels.vendor') list=vendorList selection=model.vendor className="col-sm-4 required test-vendor"}}
-      {{em-input property="invoiceNo" label=(t 'inventory.labels.invoiceNumber') class="col-sm-4 test-invoice-number"}}
+      {{date-picker model=model originalPropery="dateReceived" property="display_dateReceived"  label=(t 'inventory.labels.dateReceived') class="col-sm-4 required"}}
+      {{select-or-typeahead form=form model=model property="vendor" label=(t 'inventory.labels.vendor') list=vendorList selection=model.vendor className="col-sm-4 required test-vendor"}}
+      {{form.input property="invoiceNo" label=(t 'inventory.labels.invoiceNumber') class="col-sm-4 test-invoice-number"}}
     </div>
     <div class="form-group row">
-      {{select-or-typeahead property="location" label=(t 'inventory.labels.location') list=warehouseList selection=model.location className="col-sm-5"}}
-      {{select-or-typeahead property="aisleLocation" label=(t 'inventory.labels.aisleLocation') list=aisleLocationList selection=model.aisleLocation className="col-sm-5"}}
+      {{select-or-typeahead form=form model=model property="location" label=(t 'inventory.labels.location') list=warehouseList selection=model.location className="col-sm-5"}}
+      {{select-or-typeahead form=form model=model property="aisleLocation" label=(t 'inventory.labels.aisleLocation') list=aisleLocationList selection=model.aisleLocation className="col-sm-5"}}
       <div class="col-sm-2 checkbox-label-space">
         <div class="form-check">
           <label class="control-label sr-only">{{t 'inventory.labels.gift'}}</label>
-          {{em-checkbox label=(t 'inventory.labels.gift') property="giftInKind"}}
+          {{form.checkbox label=(t 'inventory.labels.gift') property="giftInKind"}}
         </div>
       </div>
     </div>
@@ -21,7 +21,7 @@
       </div>
       <div class="panel-body">
         <div class="row">
-          {{inventory-typeahead
+          {{inventory-typeahead model=model
             class="col-sm-7 required test-inv-item"
             property="inventoryItemTypeAhead"
             label=(t 'inventory.labels.inventoryItem')
@@ -29,19 +29,19 @@
             selection=selectedInventoryItem
             showQuantity=false
           }}
-          {{number-input property="quantity" label=(t 'labels.quantity') class="col-sm-2 required test-inv-quantity"}}
+          {{number-input model=model property="quantity" label=(t 'labels.quantity') class="col-sm-2 required test-inv-quantity"}}
           <div class="form-group col-sm-1">
             <label class="control-label">{{t 'inventory.labels.unit'}}</label>
             {{#if showDistributionUnit}}
               <p class="form-control-static inventory-distribution-unit">{{model.inventoryItem.distributionUnit}}</p>
             {{/if}}
           </div>
-          {{number-input property="purchaseCost" label=(t 'inventory.labels.purchaseCost') class="col-sm-2 required test-inv-cost"}}
+          {{number-input model=model property="purchaseCost" label=(t 'inventory.labels.purchaseCost') class="col-sm-2 required test-inv-cost"}}
         </div>
         <div class="row">
-          {{em-input property="vendorItemNo" label=(t 'inventory.labels.vendorItemNumber') class="col-sm-4"}}
-          {{em-input property="lotNumber" label=(t 'inventory.labels.serialNumber') class="col-sm-4"}}
-          {{date-picker property="expirationDate" label=(t 'inventory.labels.expirationDate') minDate="now" class="col-sm-2"}}
+          {{form.input property="vendorItemNo" label=(t 'inventory.labels.vendorItemNumber') class="col-sm-4"}}
+          {{form.input property="lotNumber" label=(t 'inventory.labels.serialNumber') class="col-sm-4"}}
+          {{date-picker model=model originalPropery="expirationDate" property="display_expirationDate"  label=(t 'inventory.labels.expirationDate') minDate="now" class="col-sm-2"}}
           <div class="form-group col-sm-2">
             <label class="control-label">&nbsp;</label>
             <p class="form-control-static">
@@ -94,7 +94,7 @@
               </div>
             </td>
             <td class="col-sm-2">
-              {{date-picker property="expirationDate" minDate="now" model=invoiceItem }}
+              {{date-picker model=model originalPropery="expirationDate" property="display_expirationDate"  minDate="now" model=invoiceItem }}
             </td>
             <td class="col-sm-1">
               <button class="btn btn-default warning" {{action "showRemoveItem" invoiceItem bubbles=false }}>

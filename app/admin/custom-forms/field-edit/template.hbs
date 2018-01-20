@@ -3,7 +3,7 @@
     title=(t (if model.isNew 'admin.lookup.edit.template.addTitle' 'admin.lookup.edit.template.editTitle'))
     updateButtonAction=updateButtonAction
     updateButtonText= updateButtonText}}
-  {{#em-form model=model submitButton=false}}
+  {{#em-form model=model submitButton=false as |form|}}
     <div class="row">
       <div class="form-input-group col-xs-6">
         <label for="fieldTypeSelect">{{t 'labels.type'}}</label>
@@ -16,10 +16,10 @@
           {{/each}}
         </select>
       </div>
-      {{em-input property="label" class="col-xs-6 required custom-field-label" label=(t 'admin.customForms.labels.label')}}
+      {{form.input property="label" class="col-xs-6 required custom-field-label" label=(t 'admin.customForms.labels.label')}}
     </div>
     <div class="row">
-      {{em-input property="colSpan" class="col-xs-5 custom-field-colspan" label=(t 'admin.customForms.labels.colSpan')}}
+      {{form.input property="colSpan" class="col-xs-5 custom-field-colspan" label=(t 'admin.customForms.labels.colSpan')}}
     </div>
     {{#if showValues}}
       <h4>

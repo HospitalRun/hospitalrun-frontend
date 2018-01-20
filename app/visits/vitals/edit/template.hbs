@@ -4,24 +4,24 @@
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  {{#em-form model=model submitButton=false }}
+  {{#em-form model=model submitButton=false as |form|}}
     <div class="row">
-      {{date-picker property="dateRecorded" label=(t "vitals.labels.dateRecorded") class="col-sm-6" format="l h:mm A" showTime=true }}
+      {{date-picker model=model originalPropery="dateRecorded" property="display_dateRecorded"  label=(t "vitals.labels.dateRecorded") class="col-sm-6" format="l h:mm A" showTime=true }}
     </div>
     <div class="row">
-      {{number-input class="col-sm-3 required temperature-text" property="temperature" label=temperatureLabel }}
+      {{number-input model=model class="col-sm-3 required temperature-text" property="temperature" label=temperatureLabel }}
     </div>
     <div class="row">
-      {{em-input class="col-sm-3 weight-text" property="weight" label=(t "vitals.labels.weight")}}
-      {{em-input class="col-sm-3 height-text" property="height" label=(t "vitals.labels.height")}}
+      {{form.input class="col-sm-3 weight-text" property="weight" label=(t "vitals.labels.weight")}}
+      {{form.input class="col-sm-3 height-text" property="height" label=(t "vitals.labels.height")}}
     </div>
     <div class="row">
-      {{em-input class="col-sm-3 required sbp-text" property="sbp" label=(t "vitals.labels.sbp")}}
-      {{em-input class="col-sm-3 required dbp-text" property="dbp" label=(t "vitals.labels.dbp")}}
+      {{form.input class="col-sm-3 required sbp-text" property="sbp" label=(t "vitals.labels.sbp")}}
+      {{form.input class="col-sm-3 required dbp-text" property="dbp" label=(t "vitals.labels.dbp")}}
     </div>
     <div class="row">
-      {{number-input class="col-sm-3 required heart-rate-text" property="heartRate" label=(t "vitals.labels.heartRate")}}
-      {{number-input class="col-sm-3 required respiratory-rate-text" property="respiratoryRate" label=(t "vitals.labels.respiratoryRate")}}
+      {{number-input model=model class="col-sm-3 required heart-rate-text" property="heartRate" label=(t "vitals.labels.heartRate")}}
+      {{number-input model=model class="col-sm-3 required respiratory-rate-text" property="respiratoryRate" label=(t "vitals.labels.respiratoryRate")}}
     </div>
   {{/em-form}}
 {{/modal-dialog}}

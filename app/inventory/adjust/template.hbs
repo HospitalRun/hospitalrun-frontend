@@ -3,7 +3,7 @@
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  {{#em-form model=model submitButton=false }}
+  {{#em-form model=model submitButton=false as |form|}}
     <div class="form-group">
       <label class="control-label">{{t 'inventory.labels.item'}}</label>
       <p class="form-control-static">{{model.adjustmentItem.name}}</p>
@@ -17,16 +17,16 @@
       <p class="form-control-static">{{model.quantity}}</p>
     </div>
     <div class="row">
-      {{em-select class="col-sm-4" label=(t 'inventory.labels.adjustmentType')
+      {{form.select class="col-sm-4" label=(t 'inventory.labels.adjustmentType')
         property="transactionType" content=adjustmentTypes
         optionValuePath="type" optionLabelPath="name"
       }}
-      {{number-input property="adjustmentQuantity" label=(t 'labels.quantity') class="col-sm-3 required"}}
+      {{number-input model=model property="adjustmentQuantity" label=(t 'labels.quantity') class="col-sm-3 required"}}
     </div>
-    {{expand-text label=(t 'inventory.labels.reason') property="reason" rows=3}}
+    {{expand-text label=(t 'inventory.labels.reason') property="reason" rows=3 form=form}}
     <div class="row">
-      {{date-picker property="dateCompleted" label=(t 'inventory.labels.adjustmentDate') class="col-sm-4 required"}}
-      {{select-or-typeahead property="expenseAccount" label=(t 'inventory.labels.expense') list=expenseAccountList selection=model.expenseAccount  class="col-sm-8"}}
+      {{date-picker model=model originalPropery="dateCompleted" property="display_dateCompleted"  label=(t 'inventory.labels.adjustmentDate') class="col-sm-4 required"}}
+      {{select-or-typeahead form=form model=model property="expenseAccount" label=(t 'inventory.labels.expense') list=expenseAccountList selection=model.expenseAccount  class="col-sm-8"}}
     </div>
   {{/em-form}}
 {{/modal-dialog}}

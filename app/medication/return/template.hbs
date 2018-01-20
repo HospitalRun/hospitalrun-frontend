@@ -1,31 +1,31 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=model submitButton=false }}
+  {{#em-form model=model submitButton=false as |form|}}
     {{#if showPatientMedicationList}}
-      {{em-select class="required" label=(t 'labels.medication')
+      {{form.select class="required" label=(t 'labels.medication')
         property="medication" content=patientMedication
         optionValuePath="selectObject" optionLabelPath="selectObject.inventoryItem.name"
         selected=model.medication
       }}
     {{else}}
-      {{inventory-typeahead property="inventoryItemTypeAhead" label=(t 'labels.medication') content=medicationList selection=selectedInventoryItem class="required test-medication-input" showQuantity=false }}
+      {{inventory-typeahead model=model property="inventoryItemTypeAhead" label=(t 'labels.medication') content=medicationList selection=selectedInventoryItem class="required test-medication-input" showQuantity=false }}
     {{/if}}
     <div class="row">
-      {{patient-typeahead property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="col-xs-6"}}
-      {{em-select class="col-xs-6" label=(t 'labels.visit')
+      {{patient-typeahead model=model property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="col-xs-6"}}
+      {{form.select class="col-xs-6" label=(t 'labels.visit')
         property="visit" content=patientVisitsForSelect
         optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
         selected=model.visit
       }}
     </div>
     <div class="row">
-      {{number-input property="quantity" label=(t 'medication.labels.quantityToReturn') class="col-xs-3 required test-medication-quantity"}}
-      {{select-or-typeahead property="deliveryLocation" label=(t 'medication.labels.returnLocation') list=warehouseList selection=model.location className="col-xs-4"}}
-      {{select-or-typeahead property="deliveryAisle" label=(t 'medication.labels.returnAisle') list=aisleLocationList selection=model.aisleLocation className="col-xs-4"}}
+      {{number-input model=model property="quantity" label=(t 'medication.labels.quantityToReturn') class="col-xs-3 required test-medication-quantity"}}
+      {{select-or-typeahead form=form model=model property="deliveryLocation" label=(t 'medication.labels.returnLocation') list=warehouseList selection=model.location className="col-xs-4"}}
+      {{select-or-typeahead form=form model=model property="deliveryAisle" label=(t 'medication.labels.returnAisle') list=aisleLocationList selection=model.aisleLocation className="col-xs-4"}}
     </div>
-    {{expand-text property="reason" label=(t 'medication.labels.returnReason') rows="3"}}
+    {{expand-text property="reason" label=(t 'medication.labels.returnReason') rows="3" form=form}}
     <div class="row">
-      {{date-picker property="dateCompleted" label=(t 'medication.labels.adjustmentDate') class="col-sm-4"}}
-      {{select-or-typeahead property="expenseAccount" label=(t 'medication.labels.creditToAccount') list=expenseAccountList selection=model.expenseAccount  className="col-sm-8"}}
+      {{date-picker model=model originalPropery="dateCompleted" property="display_dateCompleted"  label=(t 'medication.labels.adjustmentDate') class="col-sm-4"}}
+      {{select-or-typeahead form=form model=model property="expenseAccount" label=(t 'medication.labels.creditToAccount') list=expenseAccountList selection=model.expenseAccount  className="col-sm-8"}}
     </div>
   {{/em-form}}
 {{/edit-panel}}

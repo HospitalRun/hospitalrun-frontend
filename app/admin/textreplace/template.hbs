@@ -24,9 +24,9 @@
 <div class="panel">
   <div class="panel-body">
     <h3>{{t 'admin.textReplacements.createNew'}}</h3>
-    {{#em-form model=newExpansion action="addExpansion" formLayout="horizontal" showErrorsOnFocusIn="true" submitButton=false}}
-        {{em-input property="from" label=(t 'labels.from') placeholder=(t 'admin.textReplacements.toReplace')}}
-        {{em-input property="to" label=(t 'labels.to') placeholder=(t 'admin.textReplacements.replaceWith')}}
+    {{#em-form model=newExpansion action="addExpansion" formLayout="horizontal" showErrorsOnFocusIn="true" submitButton=false as |form|}}
+        {{form.input property="from" label=(t 'labels.from') placeholder=(t 'admin.textReplacements.toReplace')}}
+        {{form.input property="to" label=(t 'labels.to') placeholder=(t 'admin.textReplacements.replaceWith')}}
     {{/em-form}}
   </div>
   <div class="panel-footer">
