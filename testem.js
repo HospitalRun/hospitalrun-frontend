@@ -18,5 +18,6 @@ module.exports = {
         '--window-size=1440,900'
       ]
     }
-  }
+  },
+  "parallel": -1
 };
