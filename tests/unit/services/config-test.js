@@ -1,12 +1,18 @@
 import { moduleFor, test } from 'ember-qunit';
 
 moduleFor('service:config', 'Unit | Service | config', {
-  // Specify the other units that are required for this test.
-  // needs: ['service:foo']
+  needs: [
+    'service:session'
+  ]
 });
 
-// Replace this with your real tests.
-test('it exists', function(assert) {
+test('getCurrentUser returns user from the session', function(assert) {
   let service = this.subject();
-  assert.ok(service);
+
+  let user = { name: 'name' };
+  service.get('session').set('data', {
+    authenticated: user
+  });
+
+  assert.equal(service.getCurrentUser(), user);
 });

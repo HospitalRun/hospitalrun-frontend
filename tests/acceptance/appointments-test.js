@@ -295,7 +295,6 @@ test('visiting /appointments/search', function(assert) {
     });
 
     andThen(function() {
-      // debugger;
       let desiredDate = moment().endOf('day').add(363, 'days').format('l');
       let datePicker = '.test-selected-start-date input';
       selectDate(datePicker, desiredDate);
