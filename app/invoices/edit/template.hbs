@@ -10,7 +10,7 @@
           <p class="form-control-static">{{model.id}}</p>
         </div>
       {{/unless}}
-      {{date-picker model=model originalProperty="billDate" property="display_billDate"  label=(t 'labels.billDate') class="col-xs-2"}}
+      {{date-picker model=model property="billDate"  label=(t 'labels.billDate') class="col-xs-2"}}
       {{#if model.isNew}}
         {{patient-typeahead model=model property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="col-xs-4 required invoice-patient"}}
         {{form.select class="col-xs-4 required invoice-visit" label=(t 'labels.visit')

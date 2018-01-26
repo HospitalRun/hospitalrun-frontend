@@ -24,7 +24,7 @@
       </div>
     {{/if}}
     <div class="row">
-      {{date-picker model=model originalProperty="date" property="display_date"  label=(t "diagnosis.labels.date") class="col-sm-4 required"}}
+      {{date-picker model=model property="date"  label=(t "diagnosis.labels.date") class="col-sm-4 required"}}
     </div>
     <div class="row">
       {{form.checkbox label=(t 'diagnosis.labels.secondaryDiagnosis') property="secondaryDiagnosis" class="col-sm-4 secondary-diagnosis"}}

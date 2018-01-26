@@ -3,7 +3,7 @@
     <div class="panel-body">
       {{#em-form model=model submitButton=false as |form|}}
         <div class="row">
-          {{date-picker model=model originalProperty="selectedVisitDate" property="display_selectedVisitDate"  label=(t "visits.labels.visitDate") class="col-sm-3 outpatient-date"}}
+          {{date-picker model=model property="selectedVisitDate"  label=(t "visits.labels.visitDate") class="col-sm-3 outpatient-date"}}
           {{form.select class="col-sm-3 form-input-group outpatient-location" property="selectedLocation"
               label=(t "labels.location") content=locationList prompt=" "
           }}

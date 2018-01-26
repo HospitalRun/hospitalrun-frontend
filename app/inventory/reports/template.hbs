@@ -23,10 +23,10 @@
       </div>
       <div class="row">
         {{#if showEffectiveDate}}
-          {{date-picker model=this originalProperty="endDate" property="display_endDate"  label=(t 'inventory.labels.dateEffective') class="col-sm-4"}}
+          {{date-picker model=this property="endDate"  label=(t 'inventory.labels.dateEffective') class="col-sm-4"}}
         {{else}}
-          {{date-picker model=this originalProperty="startDate" property="display_startDate"  label=(t 'inventory.labels.dateStart') class="col-sm-4 test-start-date"}}
-          {{date-picker model=this originalProperty="endDate" property="display_endDate"  label=(t 'inventory.labels.dateEnd') class="col-sm-4 test-end-date"}}
+          {{date-picker model=this property="startDate"  label=(t 'inventory.labels.dateStart') class="col-sm-4 test-start-date"}}
+          {{date-picker model=this property="endDate"  label=(t 'inventory.labels.dateEnd') class="col-sm-4 test-end-date"}}
         {{/if}}
       </div>
       {{#if useFieldPicker}}
