@@ -53,12 +53,12 @@
 
             <div class="row">
               {{#if isAdmissionVisit}}
-                {{date-picker model=model property="startDate"  label=(t "patients.labels.admissionDate") showTime=true class="col-sm-4 required"}}
-                {{date-picker model=model property="endDate"  label=(t "patients.labels.dischargeDate") showTime=true class="col-sm-4"}}
+                {{date-picker model=model property="startDate" label=(t "patients.labels.admissionDate") showTime=true class="col-sm-4 required"}}
+                {{date-picker model=model property="endDate" label=(t "patients.labels.dischargeDate") showTime=true class="col-sm-4"}}
               {{else}}
-                {{date-picker model=model property="startDate"  label=(t "visits.labels.checkInTime") showTime=true class="col-sm-4 required checkin-date"}}
+                {{date-picker model=model property="startDate" label=(t "visits.labels.checkInTime") showTime=true class="col-sm-4 required checkin-date"}}
                 {{#if (eq model.status 'CheckedOut')}}
-                  {{date-picker model=model property="endDate"  label=(t "visits.labels.checkOutTime") showTime=true class="col-sm-4 checkout-date"}}
+                  {{date-picker model=model property="endDate" label=(t "visits.labels.checkOutTime") showTime=true class="col-sm-4 checkout-date"}}
                 {{/if}}
               {{/if}}
               {{select-or-typeahead form=form model=model className="col-sm-4 visit-location" property="location"

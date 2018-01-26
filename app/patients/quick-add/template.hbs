@@ -18,7 +18,7 @@
     </div>
     <div class="row">
       {{select-or-typeahead form=form model=model property="sex" label="Sex" list=sexList selection=model.sex class="col-sm-6 form-input-group"}}
-      {{date-picker model=model property="dateOfBirth"  label="Date of Birth" maxDate="now" class="col-sm-6"}}
+      {{date-picker model=model property="dateOfBirth" label="Date of Birth" maxDate="now" class="col-sm-6"}}
     </div>
     <div class="row">
       {{form.input property="phone" label=(t 'patients.labels.phone')class="col-xs-12 col-sm-6"}}

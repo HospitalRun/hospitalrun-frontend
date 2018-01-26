@@ -24,7 +24,7 @@
     </div>
     {{expand-text property="reason" label=(t 'medication.labels.returnReason') rows="3" form=form}}
     <div class="row">
-      {{date-picker model=model property="dateCompleted"  label=(t 'medication.labels.adjustmentDate') class="col-sm-4"}}
+      {{date-picker model=model property="dateCompleted" label=(t 'medication.labels.adjustmentDate') class="col-sm-4"}}
       {{select-or-typeahead form=form model=model property="expenseAccount" label=(t 'medication.labels.creditToAccount') list=expenseAccountList selection=model.expenseAccount  className="col-sm-8"}}
     </div>
   {{/em-form}}

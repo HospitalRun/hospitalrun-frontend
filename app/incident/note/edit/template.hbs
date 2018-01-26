@@ -1,7 +1,7 @@
 {{#modal-dialog isUpdateDisabled=isUpdateDisabled title=title updateButtonAction=updateButtonAction updateButtonText=updateButtonText}}
   {{#em-form model=model submitButton=false as |form|}}
     <div class="row">
-      {{date-picker model=model property="dateRecorded"  label=(t 'incident.labels.dateRecorded') class="col-sm-6" format="l h:mm A" showTime=true }}
+      {{date-picker model=model property="dateRecorded" label=(t 'incident.labels.dateRecorded') class="col-sm-6" format="l h:mm A" showTime=true }}
     </div>
     <div class="row">
       {{expand-text property="description" label=(t 'incident.labels.note') class="col-sm-12 note-description" form=form}}

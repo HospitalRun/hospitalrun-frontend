@@ -106,7 +106,7 @@
                 {{form.input property="middleName" label=(t 'patients.labels.middleName') class="form-input-group test-middle-name"}}
                 {{form.input property="lastName" label=(t 'patients.labels.lastName') class="form-input-group required test-last-name"}}
                 {{select-or-typeahead form=form model=model property="sex" label=(t 'patients.labels.sex')  class="form-input-group" list=sexList selection=model.sex}}
-                {{date-picker model=model property="dateOfBirth"  label=(t 'patients.labels.dateOfBirth')  class="form-input-group " maxDate="now"}}
+                {{date-picker model=model property="dateOfBirth" label=(t 'patients.labels.dateOfBirth')  class="form-input-group " maxDate="now"}}
                 <div class="form-input-group">
                   <label class="control-label">{{t 'labels.age'}}</label>
                   <p class="form-control-static">{{model.age}}</p>
@@ -132,7 +132,7 @@
                 }}
                 {{select-or-typeahead form=form model=model property="clinic" label=(t 'patients.labels.clinic') list=clinicList selection=model.clinic class="form-input-group"}}
                 {{form.input property="referredBy" label=(t 'patients.labels.referredBy') class="form-input-group"}}
-                {{date-picker model=model property="referredDate"  label=(t 'patients.labels.referredDate') class="form-input-group"}}
+                {{date-picker model=model property="referredDate" label=(t 'patients.labels.referredDate') class="form-input-group"}}
                 {{form.input property="religion" label=(t 'patients.labels.religion') class="form-input-group"}}
                 {{form.input property="parent" label=(t 'patients.labels.parent') class="form-input-group"}}
                 {{form.select label=(t 'billing.labels.paymentProfile')

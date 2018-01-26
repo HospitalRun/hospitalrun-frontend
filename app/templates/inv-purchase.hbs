@@ -15,7 +15,7 @@
   {{form.input property="lotNumber" label=(t 'inventory.labels.serialNumber') class="col-sm-4"}}
 </div>
 <div class="row">
-  {{date-picker model=model property="expirationDate"  label=(t 'inventory.labels.expirationDate') minDate="now" class="col-sm-4"}}
+  {{date-picker model=model property="expirationDate" label=(t 'inventory.labels.expirationDate') minDate="now" class="col-sm-4"}}
 </div>
 <div class="row">
   {{select-or-typeahead form=form model=model property="vendor" label=(t 'inventory.labels.vendor') list=vendorList selection=model.vendor className="col-sm-6 required test-vendor"}}
