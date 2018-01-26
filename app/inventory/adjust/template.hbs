@@ -25,7 +25,7 @@
     </div>
     {{expand-text label=(t 'inventory.labels.reason') property="reason" rows=3 form=form}}
     <div class="row">
-      {{date-picker model=model originalPropery="dateCompleted" property="display_dateCompleted"  label=(t 'inventory.labels.adjustmentDate') class="col-sm-4 required"}}
+      {{date-picker model=model originalProperty="dateCompleted" property="display_dateCompleted"  label=(t 'inventory.labels.adjustmentDate') class="col-sm-4 required"}}
       {{select-or-typeahead form=form model=model property="expenseAccount" label=(t 'inventory.labels.expense') list=expenseAccountList selection=model.expenseAccount  class="col-sm-8"}}
     </div>
   {{/em-form}}

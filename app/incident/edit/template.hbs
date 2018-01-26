@@ -27,7 +27,7 @@
     <div class="row">
 
       {{form.checkbox label=(t 'incident.labels.sentinelEvent') property="sentinelEvent" class="col-sm-3 sentinel-event"}}
-      {{date-picker model=model originalPropery="dateOfIncident" property="display_dateOfIncident"  label=(t 'incident.labels.incidentDate') class="col-sm-3 required incident-date" showTime=true}}
+      {{date-picker model=model originalProperty="dateOfIncident" property="display_dateOfIncident"  label=(t 'incident.labels.incidentDate') class="col-sm-3 required incident-date" showTime=true}}
       {{select-or-typeahead form=form model=model className="col-sm-3 required incident-department" property="department"
         label=(t 'incident.labels.department') list=incidentDepartmentList
         selection=model.location

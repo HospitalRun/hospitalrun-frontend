@@ -47,7 +47,7 @@
     {{else}}
       {{expand-text property="prescription" label=(t 'labels.prescription')rows="3" class=prescriptionClass form=form}}
       <div class="row">
-        {{date-picker model=model originalPropery="prescriptionDate" property="display_prescriptionDate"  label=(t 'labels.prescriptionDate') class="col-sm-4"}}
+        {{date-picker model=model originalProperty="prescriptionDate" property="display_prescriptionDate"  label=(t 'labels.prescriptionDate') class="col-sm-4"}}
       </div>
       <div class="row">
         {{number-input model=model property="quantity" label=quantityLabel class=quantityClass }}

@@ -5,7 +5,7 @@ export default DateInput.extend({
   dateSetAction: null, // Specify an action to fire when a date is selected
   minDate: null,
   maxDate: null,
-  originalPropery: null,
+  originalProperty: null,
   showTime: false,
   yearRange: 10
 });

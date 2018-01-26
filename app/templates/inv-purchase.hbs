@@ -1,5 +1,5 @@
 <div class="row">
-  {{date-picker model=model originalPropery="dateReceived" property="display_dateReceived" label=(t 'inventory.labels.dateReceived') class="col-sm-4"}}
+  {{date-picker model=model originalProperty="dateReceived" property="display_dateReceived" label=(t 'inventory.labels.dateReceived') class="col-sm-4"}}
   {{form.input property="invoiceNo" label=(t 'inventory.labels.invoiceNumber') class="col-sm-4"}}
 </div>
 {{#if canEditQuantity }}
@@ -15,7 +15,7 @@
   {{form.input property="lotNumber" label=(t 'inventory.labels.serialNumber') class="col-sm-4"}}
 </div>
 <div class="row">
-  {{date-picker model=model originalPropery="expirationDate" property="display_expirationDate"  label=(t 'inventory.labels.expirationDate') minDate="now" class="col-sm-4"}}
+  {{date-picker model=model originalProperty="expirationDate" property="display_expirationDate"  label=(t 'inventory.labels.expirationDate') minDate="now" class="col-sm-4"}}
 </div>
 <div class="row">
   {{select-or-typeahead form=form model=model property="vendor" label=(t 'inventory.labels.vendor') list=vendorList selection=model.vendor className="col-sm-6 required test-vendor"}}

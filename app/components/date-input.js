@@ -49,7 +49,7 @@ export default EmInput.extend(PikadayComponent, {
 
   didReceiveAttrs(/* attrs */) {
     this._super(...arguments);
-    let dateProperty = this.get('originalPropery');
+    let dateProperty = this.get('originalProperty');
     let displayPropertyName = `display_${dateProperty}`;
     this.currentDate = Ember.computed.alias(`model.${dateProperty}`);
     this.addObserver(`model.${dateProperty}`, this, this.currentDateChangedValue);

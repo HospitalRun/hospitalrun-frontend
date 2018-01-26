@@ -8,7 +8,7 @@
     {{pricing-typeahead model=model property="itemName" label=(t 'inventory.labels.item') content=pricingList selection=selectedItem class="required charge-item-name"}}
     <div class="row">
       {{number-input model=model label=(t 'labels.quantity') property="quantity" class="col-xs-3 required"}}
-      {{date-picker model=model originalPropery="dateCharged" property="display_dateCharged"  label="Date Charged" class="col-xs-4 required"}}
+      {{date-picker model=model originalProperty="dateCharged" property="display_dateCharged"  label="Date Charged" class="col-xs-4 required"}}
     </div>
   {{/em-form}}
 {{/modal-dialog}}

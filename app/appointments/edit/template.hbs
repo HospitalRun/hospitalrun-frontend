@@ -7,8 +7,8 @@
     {{/if}}
     <div class="row">
       {{#if isAdmissionAppointment}}
-        {{date-picker model=model originalPropery="startDate" property="display_startDate" label=(t 'models.appointment.labels.startDate') showTime=showTime class="col-sm-4 required test-appointment-start"}}
-        {{date-picker model=model originalPropery="endDate" property="display_endDate" label=(t 'models.appointment.labels.endDate') showTime=showTime class="col-sm-4 required test-appointment-end"}}
+        {{date-picker model=model originalProperty="startDate" property="display_startDate" label=(t 'models.appointment.labels.startDate') showTime=showTime class="col-sm-4 required test-appointment-start"}}
+        {{date-picker model=model originalProperty="endDate" property="display_endDate" label=(t 'models.appointment.labels.endDate') showTime=showTime class="col-sm-4 required test-appointment-end"}}
       {{else}}
         {{date-time-picker datePickerClass="required test-appointment-date" label=(t 'labels.date') model=model}}
       {{/if}}
