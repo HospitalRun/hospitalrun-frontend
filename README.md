@@ -41,7 +41,7 @@ To install the frontend please do the following:
   ``` bash
   bash -o igncr script/bootstrap
   ```
-  - **Note:** *If installing packages globally via `npm` requires root access on your machine (see `ember-cli` installation), running `script/bootstrap` will also require root access to install PhantomJS2. The contained `bower install` step will fail when running as root. A fix for this is to edit `script/bootstrap` and add the `--allow-root` option to the command: `bower install --allow-root`.*
+  - **Note:** *If installing packages globally via `npm` requires root access on your machine (see `ember-cli` installation), the contained `bower install` step will fail when running as root. A fix for this is to edit `script/bootstrap` and add the `--allow-root` option to the command: `bower install --allow-root`.*
   - **Note:** *If you just want to use the project, cloning is the best option. However, if you wish to contribute to the project, you will need to fork the project first, and then clone your `hospitalrun-frontend` fork and make your contributions via a branch on your fork.*
 6. Install and configure [CouchDB](http://couchdb.apache.org/):
     1. Download and install CouchDB from http://couchdb.apache.org/#download.
