@@ -1,5 +1,5 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=model submitButton=false }}
+  {{#em-form model=model submitButton=false as |form|}}
     {{partial 'inventory-basic'}}
     {{#if model.isNew}}
       <h3>{{t 'inventory.labels.purchaseInfo'}}</h3>
