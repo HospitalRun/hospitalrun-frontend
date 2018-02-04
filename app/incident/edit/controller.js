@@ -66,7 +66,7 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
         });
       })
     });
-  }),
+  }).volatile(),
 
   incidentCategoryList: computed(function() {
     let lookupLists = get(this, 'lookupLists');
