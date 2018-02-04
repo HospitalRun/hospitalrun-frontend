@@ -101,7 +101,7 @@
     "nano": "6.3.0",
     "pouchdb": "6.3.4",
     "pouchdb-adapter-memory": "6.3.4",
-    "pouchdb-list": "^1.1.0",
+    "pouchdb-list": "^4.0.0",
     "pouchdb-users": "^1.0.3",
     "stylelint": "~8.3.0",
     "stylelint-config-concentric": "^2.0.0",
