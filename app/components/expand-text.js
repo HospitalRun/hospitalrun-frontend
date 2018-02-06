@@ -18,24 +18,8 @@ export default Component.extend({
 
   didInsertElement() {
 
-    let feedbackDiv = document.createElement('div');
-    feedbackDiv.style.position = 'absolute';
     let [textarea] = this.$('textarea');
     this.set('textarea', textarea);
-    let textPos = textarea.getBoundingClientRect();
-    let fbStyle = feedbackDiv.style;
-    fbStyle.top = `${textPos.bottom}px`;
-    fbStyle.left = `${textPos.left}px`;
-    fbStyle.width = `${textarea.offsetWidth}px`;
-    // THIS CODE NEEDS TO BE CHANGED -- INLINE STYLES ARE EVIL!
-    fbStyle.backgroundColor = 'lightyellow';
-    fbStyle.borderStyle = 'solid';
-    fbStyle.borderWidth = '1px';
-    fbStyle.borderRadius = '3px';
-    fbStyle.paddingLeft = '5px';
-    fbStyle.visibility = 'hidden';
-
-    this.set('feedbackDiv', feedbackDiv);
     this.get('feedbackText');
     this.get('activeExpansionSite');
 

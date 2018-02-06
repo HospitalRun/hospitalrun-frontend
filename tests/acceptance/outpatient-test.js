@@ -1,17 +1,8 @@
-import Ember from 'ember';
-import { module, test } from 'qunit';
+import { test } from 'qunit';
 import moment from 'moment';
-import startApp from 'hospitalrun/tests/helpers/start-app';
+import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 
-module('Acceptance | outpatient', {
-  beforeEach() {
-    this.application = startApp();
-  },
-
-  afterEach() {
-    Ember.run(this.application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance | outpatient');
 
 test('Check In/Check Out Existing outpatient', function(assert) {
   runWithPouchDump('patient', function() {

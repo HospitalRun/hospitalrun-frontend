@@ -1,6 +1,6 @@
 <div class="panel panel-primary">
   <div class="panel-body">
-    {{#em-form model=this submitButton=false }}
+    {{#em-form model=this submitButton=false as |form|}}
       <div class="row">
         <div class="form-group col-xs-6">
           <label class="control-label" for="report-type">{{t 'inventory.reports.reportType'}}</label>
@@ -15,7 +15,7 @@
           }}
         </div>
         {{#unless hideLocationFilter}}
-          {{em-select class="col-xs-6" label=(t 'inventory.labels.location')
+          {{form.select class="col-xs-6" label=(t 'inventory.labels.location')
             property="filterLocation" content=warehouseList
             prompt=" "
           }}
@@ -23,10 +23,10 @@
       </div>
       <div class="row">
         {{#if showEffectiveDate}}
-          {{date-picker property="endDate" label=(t 'inventory.labels.dateEffective') class="col-sm-4"}}
+          {{date-picker model=this property="endDate" label=(t 'inventory.labels.dateEffective') class="col-sm-4"}}
         {{else}}
-          {{date-picker property="startDate" label=(t 'inventory.labels.dateStart') class="col-sm-4 test-start-date"}}
-          {{date-picker property="endDate" label=(t 'inventory.labels.dateEnd') class="col-sm-4 test-end-date"}}
+          {{date-picker model=this property="startDate" label=(t 'inventory.labels.dateStart') class="col-sm-4 test-start-date"}}
+          {{date-picker model=this property="endDate" label=(t 'inventory.labels.dateEnd') class="col-sm-4 test-end-date"}}
         {{/if}}
       </div>
       {{#if useFieldPicker}}
@@ -34,44 +34,44 @@
         <div class="row">
           <div class="col-xs-1"></div>
           {{#if includeDate}}
-            {{em-checkbox label=reportColumns.date.label property="reportColumns.date.include" class="col-xs-2"}}
+            {{form.checkbox label=reportColumns.date.label property="reportColumns.date.include" class="col-xs-2"}}
           {{/if}}
-          {{em-checkbox label=reportColumns.id.label property="reportColumns.id.include" class="col-xs-2"}}
-          {{em-checkbox label=reportColumns.name.label property="reportColumns.name.include" class="col-xs-2"}}
-          {{em-checkbox label=reportColumns.description.label property="reportColumns.description.include" class="col-xs-2"}}
-          {{em-checkbox label=reportColumns.type.label property="reportColumns.type.include" class="col-xs-2"}}
+          {{form.checkbox label=reportColumns.id.label property="reportColumns.id.include" class="col-xs-2"}}
+          {{form.checkbox label=reportColumns.name.label property="reportColumns.name.include" class="col-xs-2"}}
+          {{form.checkbox label=reportColumns.description.label property="reportColumns.description.include" class="col-xs-2"}}
+          {{form.checkbox label=reportColumns.type.label property="reportColumns.type.include" class="col-xs-2"}}
         </div>
         <div class="row">
           <div class="col-xs-1"></div>
-          {{em-checkbox label=reportColumns.quantity.label property="reportColumns.quantity.include" class="col-xs-2"}}
-          {{em-checkbox label=reportColumns.unit.label property="reportColumns.unit.include" class="col-xs-2"}}
+          {{form.checkbox label=reportColumns.quantity.label property="reportColumns.quantity.include" class="col-xs-2"}}
+          {{form.checkbox label=reportColumns.unit.label property="reportColumns.unit.include" class="col-xs-2"}}
           {{#if includeCostFields}}
-            {{em-checkbox label=reportColumns.total.label property="reportColumns.total.include" class="col-xs-2"}}
-            {{em-checkbox label=reportColumns.unitcost.label property="reportColumns.unitcost.include" class="col-xs-2"}}
+            {{form.checkbox label=reportColumns.total.label property="reportColumns.total.include" class="col-xs-2"}}
+            {{form.checkbox label=reportColumns.unitcost.label property="reportColumns.unitcost.include" class="col-xs-2"}}
           {{/if}}
           {{#if includeDaysLeft}}
-            {{em-checkbox label=reportColumns.consumedPerDay.label property="reportColumns.consumedPerDay.include" class="col-xs-2"}}
-            {{em-checkbox label=reportColumns.daysLeft.label property="reportColumns.daysLeft.include" class="col-xs-2"}}
+            {{form.checkbox label=reportColumns.consumedPerDay.label property="reportColumns.consumedPerDay.include" class="col-xs-2"}}
+            {{form.checkbox label=reportColumns.daysLeft.label property="reportColumns.daysLeft.include" class="col-xs-2"}}
           {{/if}}
-          {{em-checkbox label=reportColumns.price.label property="reportColumns.price.include" class="col-xs-2"}}
+          {{form.checkbox label=reportColumns.price.label property="reportColumns.price.include" class="col-xs-2"}}
         </div>
         <div class="row">
           <div class="col-xs-1"></div>
-          {{em-checkbox label=reportColumns.reorder.label property="reportColumns.reorder.include" class="col-xs-2"}}
-          {{em-checkbox label=reportColumns.gift.label property="reportColumns.gift.include" class="col-xs-2"}}
-          {{em-checkbox label=reportColumns.locations.label property="reportColumns.locations.include" class="col-xs-2"}}
-          {{em-checkbox label=reportColumns.aisle.label property="reportColumns.aisle.include" class="col-xs-2"}}
-          {{em-checkbox label=reportColumns.xref.label property="reportColumns.xref.include" class="col-xs-2"}}
+          {{form.checkbox label=reportColumns.reorder.label property="reportColumns.reorder.include" class="col-xs-2"}}
+          {{form.checkbox label=reportColumns.gift.label property="reportColumns.gift.include" class="col-xs-2"}}
+          {{form.checkbox label=reportColumns.locations.label property="reportColumns.locations.include" class="col-xs-2"}}
+          {{form.checkbox label=reportColumns.aisle.label property="reportColumns.aisle.include" class="col-xs-2"}}
+          {{form.checkbox label=reportColumns.xref.label property="reportColumns.xref.include" class="col-xs-2"}}
 
         </div>
         <div class="row">
           <div class="col-xs-1"></div>
-          {{em-checkbox label=reportColumns.vendor.label property="reportColumns.vendor.include" class="col-xs-2"}}
+          {{form.checkbox label=reportColumns.vendor.label property="reportColumns.vendor.include" class="col-xs-2"}}
           {{#if includeExpenseAccount}}
-            {{em-checkbox label=reportColumns.expenseAccount.label property="reportColumns.expenseAccount.include" class="col-xs-2"}}
+            {{form.checkbox label=reportColumns.expenseAccount.label property="reportColumns.expenseAccount.include" class="col-xs-2"}}
           {{/if}}
           {{#if includeTransactionType}}
-            {{em-checkbox label=reportColumns.transactionType.label property="reportColumns.transactionType.include" class="col-xs-2"}}
+            {{form.checkbox label=reportColumns.transactionType.label property="reportColumns.transactionType.include" class="col-xs-2"}}
           {{/if}}
         </div>
       {{/if}}

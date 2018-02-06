@@ -1,5 +1,5 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=model submitButton=false }}
+  {{#em-form model=model submitButton=false as |form|}}
     <div class="form-group has-success">
       <div class="panel detail-section">
         <div class="panel-heading">
@@ -9,7 +9,7 @@
         </div>
         <div class="panel-body detail-section-content">
           <div class="row">
-            {{em-input property="incidentCategoryName" class="incident-category-name col-sm-12"}}
+            {{form.input property="incidentCategoryName" class="incident-category-name col-sm-12"}}
           </div>
         </div>
       </div>

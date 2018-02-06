@@ -1,17 +1,8 @@
-import Ember from 'ember';
-import { module, test } from 'qunit';
 import moment from 'moment';
-import startApp from 'hospitalrun/tests/helpers/start-app';
+import { test } from 'qunit';
+import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 
-module('Acceptance | inventory', {
-  beforeEach() {
-    this.application = startApp();
-  },
-
-  afterEach() {
-    Ember.run(this.application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance | inventory');
 
 test('visiting /inventory', function(assert) {
   runWithPouchDump('default', function() {
@@ -21,7 +12,7 @@ test('visiting /inventory', function(assert) {
     andThen(function() {
       assert.equal(currentURL(), '/inventory');
       findWithAssert('button:contains(new request)');
-      findWithAssert('button:contains(inventory received)');
+      findWithAssert('button:contains(+ Inventory Received)');
       findWithAssert('p:contains(No requests found. )');
       findWithAssert('a:contains(Create a new request?)');
     });

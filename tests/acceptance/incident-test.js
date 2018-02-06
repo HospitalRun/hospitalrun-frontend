@@ -1,7 +1,6 @@
-import Ember from 'ember';
-import { module, test } from 'qunit';
 import moment from 'moment';
-import startApp from 'hospitalrun/tests/helpers/start-app';
+import { test } from 'qunit';
+import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 
 const DATE_FORMAT = 'l';
 const DATE_TIME_FORMAT = 'l h:mm A';
@@ -13,15 +12,7 @@ const INCIDENT_NOTES = 'Additional Notes here';
 const EDIT_INCIDENT_NOTE = 'The wet floor sign had fallen down and was no longer visible.';
 const REPORTED_TO = 'Jack Bridges';
 
-module('Acceptance | Incidents', {
-  beforeEach() {
-    this.application = startApp();
-  },
-
-  afterEach() {
-    Ember.run(this.application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance | Incidents');
 
 test('Incident category management', function(assert) {
   runWithPouchDump('incident', function() {
@@ -50,19 +41,19 @@ test('Incident category management', function(assert) {
     });
     andThen(() => {
       assert.equal(find('.incident-category-item:contains(Surgical Site Infection)').length,
-                 0, 'Deleted incident category item disappears');
+        0, 'Deleted incident category item disappears');
       click('.panel-footer button:contains(Update)');
       waitToAppear('.modal-dialog');
     });
     andThen(() => {
       assert.equal(find('.modal-title').text(), 'Incident Category Saved',
-                   'Incident Category saved modal appears');
+        'Incident Category saved modal appears');
       click('button:contains(Return)');
     });
     andThen(() => {
       assert.equal(currentURL(), '/admin/inc-category', 'Incident Categories url is correct');
       assert.equal(find('td.incident-catergory-name:contains(Infection Control)').length,
-                   1, 'New incident category displays in listing');
+        1, 'New incident category displays in listing');
     });
   });
 });
@@ -81,8 +72,8 @@ test('Incident creation and editing', function(assert) {
       click('.sentinel-event input');
       fillIn('.incident-date input', now.format(DATE_TIME_FORMAT));
       typeAheadFillIn('.incident-department', DEPARTMENT);
-      fillIn('.reported-to', REPORTED_TO);
-      select('.incident-category', INCIDENT_CATEGORY);
+      fillIn('.reported-to input', REPORTED_TO);
+      fillIn('.incident-category select', INCIDENT_CATEGORY);
       waitToAppear(`.incident-category-item option:contains(${INCIDENT_CATEGORY_ITEM})`);
     });
     andThen(() => {
@@ -281,7 +272,7 @@ function addItem(assert, itemName) {
   waitToAppear('.modal-dialog');
   andThen(() => {
     assert.equal(find('.modal-title').text(), 'Add Category Item',
-                 'Add Category Item modal appears');
+      'Add Category Item modal appears');
     fillIn('.incident-category-item input', itemName);
   });
   andThen(() => {
@@ -290,6 +281,6 @@ function addItem(assert, itemName) {
   });
   andThen(() => {
     assert.equal(find(`.incident-category-item:contains(${itemName})`).length,
-                 1, 'New incident category item appears');
+      1, 'New incident category item appears');
   });
 }
