@@ -1,4 +1,5 @@
 export default {
+  languageName: 'Français',
   admin: {
     address: {
       address1Label: "Label de l'adresse 1",
@@ -897,17 +898,6 @@ export default {
     requestsTitle: 'Demandes de labo',
     sectionTitle: 'Labos'
   },
-  languages: {
-    en: 'Anglais',
-    fr: 'Français',
-    es: 'Espagnol',
-    de: 'Allemand',
-    ru: 'Russe',
-    'es-co': 'Espagnol (Colombien)',
-    'pt-br': 'Portugais (Brésilien)',
-    tr: 'Turc',
-    ur: 'Ourdou'
-  },
   loading: {
     messages: {
       '0': "La vitesse maximal du vol de papillon est de 20 kilomètres par heure. Certaines mites peuvent voler jusqu'à 40 kilomètres par heure !",
@@ -1113,6 +1103,7 @@ export default {
       history: 'Historique',
       incidentCategories: "Catégories d'icindent",
       inventoryReceived: 'Inventaire reçu',
+      inventoryReceivedPlus: '+ Inventaire reçu',
       invoices: 'Factures',
       items: 'Articles',
       loadDB: 'Charger BDD',

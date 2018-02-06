@@ -1,7 +1,7 @@
 import {
   test, moduleForComponent
 }
-from 'ember-qunit';
+  from 'ember-qunit';
 
 moduleForComponent('nav-menu', 'NavMenuComponent', {
   unit: true

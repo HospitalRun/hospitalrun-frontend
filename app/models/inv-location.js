@@ -2,6 +2,9 @@ import AbstractModel from 'hospitalrun/models/abstract';
 import DS from 'ember-data';
 import Ember from 'ember';
 import LocationName from 'hospitalrun/mixins/location-name';
+
+const { computed } = Ember;
+
 /**
  * Model to represent the location(s) of inventory items.
  * File/model name is inv-location because using inv-location will cause location
@@ -14,14 +17,14 @@ let InventoryLocation = AbstractModel.extend(LocationName, {
   aisleLocation: DS.attr('string'),
   i18n: Ember.inject.service(),
 
-  locationNameWithQuantity: function() {
+  locationNameWithQuantity: computed('locationName', 'quantity', function() {
     let quantity = this.get('quantity');
     let locationName = this.get('locationName');
     return `${locationName} (${this.get('i18n').t(
       'inventory.labels.availableQuantity',
       { quantity }
     )})`;
-  }.property('locationName', 'quantity'),
+  }),
 
   validations: {
     adjustmentQuantity: {

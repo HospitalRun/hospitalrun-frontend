@@ -5,15 +5,15 @@
   title=title
   updateButtonAction=updateButtonAction
   updateButtonText=updateButtonText }}
-  {{#em-form model=model submitButton=false }}
-    {{expand-text label=(t 'labels.note') property="content" rows=3 class="test-note-content required form-input-group"}}
-    {{em-select class="required" label=(t 'labels.visit')
+  {{#em-form model=model submitButton=false as |form|}}
+    {{expand-text label=(t 'labels.note') property="content" rows=3 class="test-note-content required form-input-group" form=form}}
+    {{form.select class="required" label=(t 'labels.visit')
       property="visit" content=patientVisitsForSelect
       optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
       prompt=(t 'patients.notes.pleaseSelectAVisit')
       selected=model.visit
     }}
-    {{select-or-typeahead
+    {{select-or-typeahead form=form model=model
       property="attribution"
       label=(t 'patients.notes.onBehalfOfLabel' )
       list=physicianList

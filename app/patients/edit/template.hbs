@@ -1,5 +1,5 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=model submitButton=false bubbles=false }}
+  {{#em-form model=model submitButton=false bubbles=false as |form|}}
     {{#unless isNewOrDeleted}}
       {{patient-summary
         patient=model
@@ -102,17 +102,17 @@
           <div class="panel-body detail-section-content">
             <div class="row">
               <div class="col-xs-12 col-sm-6">
-                {{em-input property="firstName" label=(t 'patients.labels.firstName') class="form-input-group required test-first-name"}}
-                {{em-input property="middleName" label=(t 'patients.labels.middleName') class="form-input-group test-middle-name"}}
-                {{em-input property="lastName" label=(t 'patients.labels.lastName') class="form-input-group required test-last-name"}}
-                {{select-or-typeahead property="sex" label=(t 'patients.labels.sex')  class="form-input-group" list=sexList selection=model.sex}}
-                {{date-picker property="dateOfBirth" label=(t 'patients.labels.dateOfBirth')  class="form-input-group " maxDate="now"}}
+                {{form.input property="firstName" label=(t 'patients.labels.firstName') class="form-input-group required test-first-name"}}
+                {{form.input property="middleName" label=(t 'patients.labels.middleName') class="form-input-group test-middle-name"}}
+                {{form.input property="lastName" label=(t 'patients.labels.lastName') class="form-input-group required test-last-name"}}
+                {{select-or-typeahead form=form model=model property="sex" label=(t 'patients.labels.sex')  class="form-input-group" list=sexList selection=model.sex}}
+                {{date-picker model=model property="dateOfBirth" label=(t 'patients.labels.dateOfBirth')  class="form-input-group " maxDate="now"}}
                 <div class="form-input-group">
                   <label class="control-label">{{t 'labels.age'}}</label>
                   <p class="form-control-static">{{model.age}}</p>
                 </div>
-                {{em-input property="placeOfBirth" label=(t 'patients.labels.placeOfBirth') class="form-input-group"}}
-                {{em-input property="occupation" label=(t 'patients.labels.occupation')  class="form-input-group"}}
+                {{form.input property="placeOfBirth" label=(t 'patients.labels.placeOfBirth') class="form-input-group"}}
+                {{form.input property="occupation" label=(t 'patients.labels.occupation')  class="form-input-group"}}
                 <div class="form-input-group">
                   <label>{{t 'patients.labels.patientType'}}</label>
                   <div>
@@ -121,21 +121,21 @@
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
-                {{select-or-typeahead property="status" label=(t 'patients.labels.status') list=statusList selection=model.status class="form-input-group" }}
-                {{em-input property="externalPatientId" label=(t 'patients.labels.externalPatientId') class="form-input-group"}}
-                {{em-select
+                {{select-or-typeahead form=form model=model property="status" label=(t 'patients.labels.status') list=statusList selection=model.status class="form-input-group" }}
+                {{form.input property="externalPatientId" label=(t 'patients.labels.externalPatientId') class="form-input-group"}}
+                {{form.select
                   prompt=" "
                   label=(t 'patients.labels.bloodType')
                   property="bloodType"
                   content=bloodTypes
                   class="form-input-group"
                 }}
-                {{select-or-typeahead property="clinic" label=(t 'patients.labels.clinic') list=clinicList selection=model.clinic class="form-input-group"}}
-                {{em-input property="referredBy" label=(t 'patients.labels.referredBy') class="form-input-group"}}
-                {{date-picker property="referredDate" label=(t 'patients.labels.referredDate') class="form-input-group"}}
-                {{em-input property="religion" label=(t 'patients.labels.religion') class="form-input-group"}}
-                {{em-input property="parent" label=(t 'patients.labels.parent') class="form-input-group"}}
-                {{em-select label=(t 'billing.labels.paymentProfile')
+                {{select-or-typeahead form=form model=model property="clinic" label=(t 'patients.labels.clinic') list=clinicList selection=model.clinic class="form-input-group"}}
+                {{form.input property="referredBy" label=(t 'patients.labels.referredBy') class="form-input-group"}}
+                {{date-picker model=model property="referredDate" label=(t 'patients.labels.referredDate') class="form-input-group"}}
+                {{form.input property="religion" label=(t 'patients.labels.religion') class="form-input-group"}}
+                {{form.input property="parent" label=(t 'patients.labels.parent') class="form-input-group"}}
+                {{form.select label=(t 'billing.labels.paymentProfile')
                   property="paymentProfile"
                   content=pricingProfiles
                   optionValuePath="selectObject"
@@ -157,25 +157,25 @@
           {{/if}}
           <div class="panel-body detail-section-content">
             <div class="row">
-              {{em-input property="phone" label=(t 'patients.labels.phone')class="col-xs-12 col-sm-6"}}
-              {{em-input property="email" type="email" label=(t 'labels.email') class="col-xs-12 col-sm-6"}}
+              {{form.input property="phone" label=(t 'patients.labels.phone')class="col-xs-12 col-sm-6"}}
+              {{form.input property="email" type="email" label=(t 'labels.email') class="col-xs-12 col-sm-6"}}
               {{#if haveAddressOptions}}
                 {{#if address1Include}}
-                  {{em-text label=address1Label property="address" rows=3 class="col-xs-12 col-sm-6"}}
+                  {{form.text label=address1Label property="address" rows=3 class="col-xs-12 col-sm-6"}}
                 {{/if}}
                 {{#if address2Include}}
-                  {{em-input label=address2Label property="address2" class="col-xs-12 col-sm-6" }}
+                  {{form.input label=address2Label property="address2" class="col-xs-12 col-sm-6" }}
                 {{/if}}
                 {{#if address3Include}}
-                  {{em-input label=address3Label property="address3" class="col-xs-12 col-sm-6" }}
+                  {{form.input label=address3Label property="address3" class="col-xs-12 col-sm-6" }}
                 {{/if}}
                 {{#if address4Include}}
-                  {{em-input label=address4Label property="address4" class="col-xs-12 col-sm-6" }}
+                  {{form.input label=address4Label property="address4" class="col-xs-12 col-sm-6" }}
                 {{/if}}
               {{else}}
-                {{em-text label=(t 'labels.address') property="address" rows=3  class="col-xs-12 col-sm-6"}}
+                {{form.text label=(t 'labels.address') property="address" rows=3  class="col-xs-12 col-sm-6"}}
               {{/if}}
-              {{select-or-typeahead property="country" label=(t 'labels.country') list=countryList selection=model.country className="col-xs-12 col-sm-6" }}
+              {{select-or-typeahead form=form model=model property="country" label=(t 'labels.country') list=countryList selection=model.country className="col-xs-12 col-sm-6" }}
             </div>
           </div>
           {{#if haveAdditionalContacts}}

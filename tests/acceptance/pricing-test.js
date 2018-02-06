@@ -1,6 +1,5 @@
-import Ember from 'ember';
-import { module, test } from 'qunit';
-import startApp from 'hospitalrun/tests/helpers/start-app';
+import { test } from 'qunit';
+import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 
 function verifyPricingLists(path, includesPrices, excludesPrices, assert) {
   runWithPouchDump('billing', function() {
@@ -19,15 +18,7 @@ function verifyPricingLists(path, includesPrices, excludesPrices, assert) {
   });
 }
 
-module('Acceptance | pricing', {
-  beforeEach() {
-    this.application = startApp();
-  },
-
-  afterEach() {
-    Ember.run(this.application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance | pricing');
 
 test('visiting /pricing', function(assert) {
   let includesPrices = [

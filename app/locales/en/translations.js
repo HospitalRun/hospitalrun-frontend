@@ -1,4 +1,5 @@
 export default {
+  languageName: 'English',
   admin: {
     address: {
       address1Label: 'Address 1 Label',
@@ -594,7 +595,7 @@ export default {
   inventory: {
     edit: {
       cost: 'Cost Per Unit:',
-      delivered: 'Delievered To:',
+      delivered: 'Delivered To:',
       location: 'Location Adjusted:',
       prescription: 'Prescription For:',
       pulled: 'Pulled From:',
@@ -906,17 +907,6 @@ export default {
     requestsTitle: 'Lab Requests',
     sectionTitle: 'Labs'
   },
-  languages: {
-    en: 'English',
-    fr: 'French',
-    es: 'Spanish',
-    de: 'German',
-    ru: 'Russian',
-    'es-co': 'Spanish (Colombian)',
-    'pt-br': 'Portuguese (Brazilian)',
-    tr: 'Turkish',
-    ur: 'Urdu'
-  },
   loading: {
     messages: {
       '0': 'The top butterfly flight speed is 12 miles per hour. Some moths can fly 25 miles per hour!',
@@ -1124,6 +1114,7 @@ export default {
       history: 'History',
       incidentCategories: 'Incident Categories',
       inventoryReceived: 'Inventory Received',
+      inventoryReceivedPlus: '+ Inventory Received',
       invoices: 'Invoices',
       items: 'Items',
       loadDB: 'Load DB',

@@ -3,9 +3,9 @@
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  {{#em-form model=model submitButton=false }}
-    {{em-input property="name" label=(t 'labels.name') class="required"}}
-    {{select-or-typeahead property="category" className="required"
+  {{#em-form model=model submitButton=false as |form|}}
+    {{form.input property="name" label=(t 'labels.name') class="required"}}
+    {{select-or-typeahead form=form model=model property="category" className="required"
       label=(t 'labels.category') list=billingCategories
       selection=model.category
     }}
