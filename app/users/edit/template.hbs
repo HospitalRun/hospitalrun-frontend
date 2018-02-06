@@ -13,7 +13,7 @@
     {{form.input property="password" type="password" label=(t 'labels.password')  class="user-password"}}
     <div class="form-group has-success">
       <label class="control-label">{{t 'labels.role'}}</label>
-      {{role-select selection=model.roles content=userRoles action=(action (mut model.roles)) class="user-role"}}
+      {{role-select selection=model.roles content=namedRoles action=(action (mut model.roles)) class="user-role"}}
     </div>
   {{/em-form}}
 {{/edit-panel}}
