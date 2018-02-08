@@ -30,7 +30,7 @@ export default {
         checkbox: 'checkbox',
         colSpan: 'Número de columnas a extender',
         columns: 'Columnas',
-        customForm: 'Forma personalizada',
+        customForm: 'Formulario personalizado',
         dischargeReportFormType: 'Descartar reporte',
         formName: 'Nombre de la forma',
         formType: 'Tipo de forma',
@@ -55,7 +55,7 @@ export default {
       titles: {
         checkboxValues: 'Valores de checkbox',
         customForms: 'Formularios personalizados',
-        deleteForm: 'Eliminas formulario personalizado',
+        deleteForm: 'Eliminar formulario personalizado',
         dropDownValues: 'Valores de lista desplegable',
         editCustomForm: 'Editar formulario personalizado',
         fields: 'Campos',
@@ -400,7 +400,7 @@ export default {
   },
   dashboard: {
     setup: 'Preparación',
-    title: 'Que deseas hacer?'
+    title: 'Bienvenido a HospitalRun!'
   },
   dates: {
     'long': '{{years}} año {{months}} meses {{days}} días',
