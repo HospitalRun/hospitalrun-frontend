@@ -1,5 +1,5 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=model submitButton=false}}
+  {{#em-form model=model submitButton=false as |form|}}
     {{#unless model.isNew}}
       <div class="form-group has-success">
         <label class="control-label">{{t 'labels.username'}}</label>
@@ -8,9 +8,9 @@
         </div>
       </div>
     {{/unless}}
-    {{em-input property="displayName" label=(t 'labels.displayName')  class="user-display-name"}}
-    {{em-input property="email" type="email" label=(t 'labels.email')  class="user-email"}}
-    {{em-input property="password" type="password" label=(t 'labels.password')  class="user-password"}}
+    {{form.input property="displayName" label=(t 'labels.displayName')  class="user-display-name"}}
+    {{form.input property="email" type="email" label=(t 'labels.email')  class="user-email"}}
+    {{form.input property="password" type="password" label=(t 'labels.password')  class="user-password"}}
     <div class="form-group has-success">
       <label class="control-label">{{t 'labels.role'}}</label>
       {{role-select selection=model.roles content=userRoles action=(action (mut model.roles)) class="user-role"}}

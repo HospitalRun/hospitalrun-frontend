@@ -1,45 +1,45 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=model submitButton=false }}
-    {{select-or-typeahead className="required procedure-description" property="description"
+  {{#em-form model=model submitButton=false as |form|}}
+    {{select-or-typeahead form=form model=model className="required procedure-description" property="description"
       label="Procedure" list=procedureList
       selection=model.description hint=false
     }}
     <div class="row">
-      {{select-or-typeahead className="col-xs-6" property="cptCode"
+      {{select-or-typeahead form=form model=model className="col-xs-6" property="cptCode"
         label="CPT Code" list=cptCodeList
         selection=model.cptCode
       }}
     </div>
     <div class="row">
-      {{select-or-typeahead className="col-sm-3" property="location"
+      {{select-or-typeahead form=form model=model className="col-sm-3" property="location"
         label="Procedure Location" list=procedureLocations
         selection=model.location
       }}
-      {{date-picker property="procedureDate" label="Procedure Date" class="col-sm-3 required"}}
-      {{em-input property="timeStarted" label="Time Started" class="col-sm-3"}}
-      {{em-input property="timeEnded" label="Time Ended" class="col-sm-3"}}
+      {{date-picker model=model property="procedureDate" label="Procedure Date" class="col-sm-3 required"}}
+      {{form.input property="timeStarted" label="Time Started" class="col-sm-3"}}
+      {{form.input property="timeEnded" label="Time Ended" class="col-sm-3"}}
     </div>
     <div class="row">
-      {{select-or-typeahead className="col-sm-4 required procedure-physician" property="physician"
+      {{select-or-typeahead form=form model=model className="col-sm-4 required procedure-physician" property="physician"
         label="Physician" list=physicianList
         selection=model.physician
       }}
-      {{select-or-typeahead className="col-sm-4" property="assistant"
+      {{select-or-typeahead form=form model=model className="col-sm-4" property="assistant"
         label="Assistant" list=physicianList
         selection=model.assistant prompt=" "
       }}
-      {{select-or-typeahead className="col-sm-4" property="anesthesiologist"
+      {{select-or-typeahead form=form model=model className="col-sm-4" property="anesthesiologist"
         label="Anesthesiologist" list=anesthesiologistList
         selection=model.anesthesiologist
       }}
     </div>
     <div class="row">
-      {{select-or-typeahead className="col-sm-4" property="anesthesiaType"
+      {{select-or-typeahead form=form model=model className="col-sm-4" property="anesthesiaType"
         label="Anesthesia Type" list=anesthesiaTypes
         selection=model.anesthesiaTypes
       }}
     </div>
-    {{expand-text label="Notes" property="notes" rows=3 class="procedure-notes"}}
+    {{expand-text label="Notes" property="notes" rows=3 class="procedure-notes" form=form}}
     {{partial 'item-charges'}}
     <div class="panel detail-section medication-charges">
       <div class="panel-heading">
