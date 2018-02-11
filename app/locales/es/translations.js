@@ -1,4 +1,5 @@
 export default {
+  languageName: 'Español',
   admin: {
     address: {
       address1Label: 'Texto dirección 1',
@@ -31,10 +32,8 @@ export default {
         columns: 'Columnas',
         customForm: 'Forma personalizada',
         dischargeReportFormType: 'Descartar reporte',
-        expenseTo: 'A cargo de',
         formName: 'Nombre de la forma',
         formType: 'Tipo de forma',
-        header: 'Encabezamiento',
         incidentFormType: 'Incidente',
         includeOtherOption: 'Incluir otra opción',
         labFormType: 'Tipo de formulario de laboratorio',
@@ -61,7 +60,6 @@ export default {
         editCustomForm: 'Editar formulario personalizado',
         fields: 'Campos',
         formSaved: 'Formulario guardado',
-        headerValues: '',
         newCustomForm: 'Nuevo formulario personalizado',
         radioValues: 'Valores de radio botones'
       }
@@ -164,7 +162,6 @@ export default {
         admitPatient: 'Admitir paciente',
         appointments: 'Citas',
         billing: 'Facturación',
-        cashier: 'Cajero',
         completeImaging: 'Completar radiografía',
         completeLab: 'Completar laboratorio',
         defineUserRoles: 'Roles de usuario',
@@ -196,7 +193,6 @@ export default {
         inventory: 'Inventario',
         invoices: 'Facturas',
         labs: 'Laboratorios',
-        listPaidInvoices: 'Lista de facturas luiquidadas',
         loadDb: 'Cargar base de datos',
         manageIncidents: 'Administrar credenciales',
         medication: 'Medicación',
@@ -209,17 +205,6 @@ export default {
       },
       messages: { roleSaved: 'El {{roleName}} rol ha sido guardado.' },
       titles: { roleSaved: 'Rol guardado' }
-    },
-    textReplacements: {
-      createNew: 'Crear nuevo shortcode',
-      existingRepl: 'Shortcodes existantes',
-      noMatches: "No se encontró reemplazo para '{{term}}'",
-      pageTitle: 'Shortcodes',
-      performExpand: "Presione Entrar para reemplazar #{{from}} con '{{to}}'",
-      possibleExpansions: 'Posibles reemplazos: {{possible}}',
-      replDesc: 'Durante la introducción de un texto, estos atajos permiten remplazar une secuencia de carácteres en una frase más larga.',
-      replaceWith: 'Reemplazar con',
-      toReplace: 'Texto para reemplazar'
     },
     userRoles: 'Roles de usuario',
     users: 'Usuarios',
@@ -316,12 +301,7 @@ export default {
       paymentProfile: 'Perfil de pago',
       paymentsDeposits: 'Pagos / Depósitos',
       pricingPanelOverrides: 'Sustitución de perfiles de pago',
-      pricingProfile: 'Perfil de Pago',
-      setFee: 'Definir los costes'
-    },
-    messages: {
-      flatDiscountMsg: 'Existe un descuento fijo aplicado a la responsabilidad financiera de {{currency}}{{discountAmount}}.',
-      flatFeeMsg: 'Hay una tarifa de base que corresponde a la responsablilidad financiera del patiente de {{setFee}}{{currency}}.'
+      pricingProfile: 'Perfil de Pago'
     }
   },
   buttons: {
@@ -349,10 +329,8 @@ export default {
     newRequestPlus: '+ nuevo pedido',
     newUser: 'Nuevo usuario',
     ok: 'Ok',
-    print: 'Imprimir',
     remove: 'Quitar',
     returnButton: 'Regresar',
-    review: 'Revisar',
     search: 'Buscar',
     showAll: 'Mostrar todo',
     showFewer: 'Mostrar menos',
@@ -421,8 +399,7 @@ export default {
     titles: { addCustomForm: 'Agregar formulario personalizado' }
   },
   dashboard: {
-    needs_user_setup: 'Recomandamos agregar una cuenta de usario',
-    standalone_welcome: '',
+    setup: 'Preparación',
     title: 'Que deseas hacer?'
   },
   dates: {
@@ -483,10 +460,7 @@ export default {
     buttons: { newButton: '+ Nueva radiografía' },
     labels: {
       addNewVisit: '--Agregar nueva visita--',
-      completedBy: 'Completado por',
-      radiologist: 'Radiólogo',
-      requestedNotes: 'Notas requeridas',
-      resultNotes: 'Notas de resultado'
+      radiologist: 'Radiólogo'
     },
     messages: { noCompleted: 'No de elementos encontrados.' },
     pageTitle: 'Pedido de radiografía',
@@ -784,7 +758,6 @@ export default {
     address: 'Dirección',
     age: 'Edad',
     allDay: 'Todo el día',
-    allItems: 'Todos los elementos',
     amount: 'Monto',
     anesthesia: 'Anestesia',
     assisting: 'Asistencia',
@@ -796,7 +769,6 @@ export default {
     country: 'Pais',
     cptcode: 'Codigo CPT',
     creditTo: 'Crédito a',
-    currencySymbol: '',
     date: 'Fecha',
     dateCompleted: 'Fecha completada',
     dateOfBirth: 'Fecha de nacimiento',
@@ -822,7 +794,6 @@ export default {
     fileLoadSuccessful: 'Archivo cargado exitosamente',
     fileName: 'Nombre del archivo',
     fileToLoad: 'Archivo cargado',
-    from: 'De',
     fulfill: 'Cumplimiento',
     fulfillRequest: 'Pedido de cumplimiento',
     fulfillRequestNow: 'Pedido de cumplimiento ahora',
@@ -840,7 +811,6 @@ export default {
     lookupType: 'Tipo de búsqueda',
     medication: 'Medicación',
     name: 'Nombre',
-    newItem: 'Nuevo item',
     newUser: 'Nuevo usuario',
     note: 'Nota',
     notes: 'Notas',
@@ -872,7 +842,6 @@ export default {
     startTime: 'Hora de inicio',
     status: 'Estado',
     takenBy: 'Tomado por',
-    to: 'A',
     total: 'Total',
     type: 'Tipo',
     userCanAddNewValue: 'El usuario puede agregar nuevos valores',
@@ -906,7 +875,6 @@ export default {
     requestsTitle: 'Pedido de laboratorio',
     sectionTitle: 'Laboratorios'
   },
-  languageName: 'Español',
   loading: {
     messages: {
       '0': 'La velocidad máxima de vuelo de la mariposa es de 12 millas por hora. ¡Algunas polillas pueden volar 25 millas por hora!',
@@ -932,7 +900,6 @@ export default {
     },
     messages: {
       error: 'Nombre de usuario o clave incorrectos.',
-      offlineError: 'No se puede iniciar sesión sin conexión. Establezca una conexión de red y vuelva a intentar el inicio de sesión.',
       signIn: 'por favor ingrese'
     }
   },
@@ -1093,7 +1060,6 @@ export default {
     inventory: 'Inventario',
     labs: 'Laboratorio',
     medication: 'Recetas medicas',
-    messages: { logoutFailed: 'No se pudo desconectar en este momento. El cierre de sesión no está disponible sin conexión.' },
     patients: 'Pacientes',
     scheduling: 'Programación',
     subnav: {
@@ -1104,7 +1070,6 @@ export default {
       appointmentSearch: 'Busqueda de citas',
       appointmentsCalendar: 'Calendario de citas',
       appointmentsThisWeek: 'Citas esta semana',
-      cashier: 'Cajero',
       completed: 'Completado',
       currentIncidents: 'Incidentes actuales',
       customForms: 'Formularios personalizados',
@@ -1117,6 +1082,7 @@ export default {
       items: 'Items',
       loadDB: 'Cargar Base de datos',
       lookupLists: 'Lista de busquedas',
+      missedAppointments: 'Citas perdidas',
       newIncident: 'Nuevo incidente',
       newInvoice: 'Nueva factura',
       newPatient: 'Nuevo paciente',
@@ -1131,14 +1097,12 @@ export default {
       requests: 'Pedidos',
       returnMedication: 'Devolver medicamento',
       scheduleSurgery: 'Programar cirugía',
-      textReplacements: 'Código corto',
       theaterSchedule: 'Horario de cirugía',
       "today'sAppointments": 'Citas de hoy',
       userRoles: 'Roles de usuario',
       users: 'Usuarios',
       workflow: 'Flujo de trabajo'
-    },
-    titles: { logoutFailed: 'La desconexión ha fracasado' }
+    }
   },
   operationReport: {
     labels: {
@@ -1309,11 +1273,6 @@ export default {
       visit: 'Visitar'
     }
   },
-  pricing: { labels: {
-    discountAmount: 'Cantidad del descuento',
-    discountPercentage: 'Porcentage del descuento',
-    setFee: 'Establecer la tarifa'
-  } },
   print: { invoice: {
     labels: {
       billedBy: 'Facturado por',
