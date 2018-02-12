@@ -3,7 +3,7 @@
     title=(t (if model.isNew 'admin.lookup.edit.template.addTitle' 'admin.lookup.edit.template.editTitle'))
     updateButtonAction=updateButtonAction
     updateButtonText= updateButtonText}}
-  {{#em-form model=model submitButton=false action="update" }}
-    {{em-input label=(t 'admin.lookup.edit.template.labelTitle') property="value" class="lookup-type-value"}}
+  {{#em-form model=model submitButton=false action="update" as |form|}}
+    {{form.input label=(t 'admin.lookup.edit.template.labelTitle') property="value" class="lookup-type-value"}}
   {{/em-form}}
 {{/modal-dialog}}

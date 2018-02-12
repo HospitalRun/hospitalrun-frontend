@@ -5,9 +5,9 @@ const {
     alias
   },
   inject,
-  get,
-  set
+  get
 } = Ember;
+
 export default Ember.Controller.extend(UserSession, {
   config: inject.service(),
   database: inject.service(),
@@ -18,7 +18,7 @@ export default Ember.Controller.extend(UserSession, {
     if (get(this, 'standAlone')) {
       get(this, 'database.usersDB').allDocs().then((results) => {
         if (results.total_rows <= 1) {
-          set(this, 'config.needsUserSetup', true);
+          Ember.run(() => this.set('config.needsUserSetup', true));
         }
       });
     }

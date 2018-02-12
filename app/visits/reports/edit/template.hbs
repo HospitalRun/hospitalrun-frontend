@@ -23,7 +23,7 @@
   </div>
   <div class="report">
     {{#edit-panel editPanelProps=editPanelProps}}
-      {{#em-form model=model submitButton=false }}
+      {{#em-form model=model submitButton=false as |form|}}
         {{#if model.patient}}
           {{patient-summary
             patient=model.patient

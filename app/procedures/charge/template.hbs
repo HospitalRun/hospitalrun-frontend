@@ -4,11 +4,11 @@
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  {{#em-form model=model submitButton=false }}
-    {{pricing-typeahead property="itemName" label=(t 'inventory.labels.item') content=pricingList selection=selectedItem class="required charge-item-name"}}
+  {{#em-form model=model submitButton=false as |form|}}
+    {{pricing-typeahead model=model property="itemName" label=(t 'inventory.labels.item') content=pricingList selection=selectedItem class="required charge-item-name"}}
     <div class="row">
-      {{number-input label=(t 'labels.quantity') property="quantity" class="col-xs-3 required"}}
-      {{date-picker property="dateCharged" label="Date Charged" class="col-xs-4 required"}}
+      {{number-input model=model label=(t 'labels.quantity') property="quantity" class="col-xs-3 required"}}
+      {{date-picker model=model property="dateCharged" label="Date Charged" class="col-xs-4 required"}}
     </div>
   {{/em-form}}
 {{/modal-dialog}}

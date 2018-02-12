@@ -40,9 +40,7 @@ export default BaseAuthenticator.extend(MapOauthParams, OAuthHeaders, {
   },
 
   _finishAuth(user, oauthConfigs) {
-    let config = this.get('config');
     let database = this.get('database');
-    config.setCurrentUser(user);
     return database.setup().then(() => {
       user.oauthConfigs = oauthConfigs;
       return user;
