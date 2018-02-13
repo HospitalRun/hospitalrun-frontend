@@ -16,18 +16,18 @@
         <div class="form-group {{field.displayClassNames}}">
           <label>{{field.label}}</label>
           {{#each field.values as |checkbox|}}
-            {{em-checkbox label=checkbox.label property=(concat propertyPrefix checkbox.property)}}
+            {{rapidForm.checkbox label=checkbox.label property=(concat propertyPrefix checkbox.property)}}
           {{/each}}
         </div>
       {{/if}}
       {{#if (eq field.type 'textarea')}}
-        {{expand-text label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
+        {{expand-text label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames form=rapidForm}}
       {{/if}}
       {{#if (eq field.type 'text')}}
-        {{em-input label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
+        {{rapidForm.input label=field.label property=(concat propertyPrefix field.property) class=field.displayClassNames}}
       {{/if}}
       {{#if (eq field.type 'select')}}
-        {{em-select label=field.label
+        {{rapidForm.select label=field.label
           property=(concat propertyPrefix field.property)
           content=field.values
           class=field.displayClassNames

@@ -8,10 +8,12 @@ moduleForComponent('inventory/rank-select', 'Integration | Component | inventory
 test('it renders correctly', function(assert) {
   this.set('value', null);
 
-  this.render(hbs`{{inventory/rank-select
+  this.render(hbs`{{#em-form model=model submitButton=false as |form|}}
+  {{inventory/rank-select form=form
     property='value'
     prompt='n/a'
-  }}`);
+  }}
+  {{/em-form}}`);
 
   // options
   let $options = this.$('option');

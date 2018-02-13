@@ -12,6 +12,7 @@ export default Ember.Service.extend({
   configDB: null,
   database: inject.service(),
   session: inject.service(),
+  languagePreference: inject.service(),
   sessionData: Ember.computed.alias('session.data'),
   standAlone: false,
   needsUserSetup: false,
@@ -36,7 +37,7 @@ export default Ember.Service.extend({
     let loadConfig = this.loadConfig.bind(this);
     let db = this.createDB();
     this.set('configDB', db);
-    this.setCurrentUser();
+
     if (window.ELECTRON) {
       this.set('standAlone', true);
     }
@@ -168,21 +169,8 @@ export default Ember.Service.extend({
     return configDB.allDocs(options);
   },
 
-  setCurrentUser(userName) {
-    let config = this.get('configDB');
+  getCurrentUser() {
     let sessionData = this.get('sessionData');
-    if (!userName && sessionData.authenticated) {
-      userName = sessionData.authenticated.name;
-    }
-    config.get('current_user').then((doc) => {
-      doc.value = userName;
-      config.put(doc);
-    }).catch(() => {
-      config.put({
-        _id: 'current_user',
-        value: userName
-      });
-    });
+    return sessionData.authenticated;
   }
-
 });
