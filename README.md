@@ -41,7 +41,7 @@ To install the frontend please do the following:
   ``` bash
   bash -o igncr script/bootstrap
   ```
-  - **Note:** *If installing packages globally via `npm` requires root access on your machine (see `ember-cli` installation), running `script/bootstrap` will also require root access to install PhantomJS2. The contained `bower install` step will fail when running as root. A fix for this is to edit `script/bootstrap` and add the `--allow-root` option to the command: `bower install --allow-root`.*
+  - **Note:** *If installing packages globally via `npm` requires root access on your machine (see `ember-cli` installation), the contained `bower install` step will fail when running as root. A fix for this is to edit `script/bootstrap` and add the `--allow-root` option to the command: `bower install --allow-root`.*
   - **Note:** *If you just want to use the project, cloning is the best option. However, if you wish to contribute to the project, you will need to fork the project first, and then clone your `hospitalrun-frontend` fork and make your contributions via a branch on your fork.*
 6. Install and configure [CouchDB](http://couchdb.apache.org/):
     1. Download and install CouchDB from http://couchdb.apache.org/#download.
@@ -80,7 +80,7 @@ To run HospitalRun with [Docker](https://www.docker.com/) please do the followin
 - Clone the repository with the command `git clone https://github.com/HospitalRun/hospitalrun-frontend.git`.
 - Change to the hospitalrun-frontend directory `cd hospitalrun-frontend`.
 - Build the HospitalRun image with `docker build -t hospitalrun-frontend .`.
-- Execute `docker run -it --name couchdb -d couchdb` to create the couchdb container.
+- Execute `docker run -it --name couchdb -d couchdb:1.7.1` to create the couchdb container.
 - Execute `docker run -it --name hospitalrun-frontend -p 4200:4200 --link couchdb:couchdb -d hospitalrun-frontend` to create the HospitalRun container.
 
 ### Running with Docker Compose
