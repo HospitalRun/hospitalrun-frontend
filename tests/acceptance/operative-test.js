@@ -1,6 +1,5 @@
-import Ember from 'ember';
-import { module, test } from 'qunit';
-import startApp from 'hospitalrun/tests/helpers/start-app';
+import { test } from 'qunit';
+import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 
 const ADDITIONAL_NOTES = 'Additional Notes here';
 const CASE_COMPLEXITY = 7;
@@ -9,15 +8,7 @@ const OPERATION_SURGEON = 'Dr Nick';
 const PROCEDURE_FIX_ARM = 'fix broken arm';
 const PROCEDURE_HIP = 'hip adductor release';
 
-module('Acceptance | Operative Plan and Operation Report', {
-  beforeEach() {
-    this.application = startApp();
-  },
-
-  afterEach() {
-    Ember.run(this.application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance | Operative Plan and Operation Report');
 
 test('Plan and report creation', function(assert) {
   runWithPouchDump('operative', function() {

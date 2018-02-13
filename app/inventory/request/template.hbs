@@ -1,5 +1,5 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=model submitButton=false }}
+  {{#em-form model=model submitButton=false as |form|}}
     {{#if isRequested}}
       <div class="form-group">
         <label class="control-label">{{t 'inventory.labels.item'}}</label>
@@ -15,7 +15,7 @@
       </div>
     {{else}}
       <div class="row">
-        {{inventory-typeahead
+        {{inventory-typeahead model=model
           class="col-sm-8 test-inv-item"
           property="inventoryItemTypeAhead"
           label=(t 'inventory.labels.inventoryItem')
@@ -23,7 +23,7 @@
           selection=selectedInventoryItem
         }}
 
-        {{number-input property="quantity" label=quantityLabel class="col-sm-3 test-inv-quantity"}}
+        {{number-input model=model property="quantity" label=quantityLabel class="col-sm-3 test-inv-quantity"}}
         <div class="form-group col-sm-1">
           <label class="control-label"></label>
           <h4 class="form-control-static">
@@ -63,15 +63,15 @@
         <div class="form-group">
           <label class="control-label sr-only">{{t 'inventory.labels.fulfillRequest'}}</label>
         </div>
-        {{em-checkbox label=(t 'inventory.labels.fulfillRequest') property="shouldFulfillRequest"}}
+        {{form.checkbox label=(t 'inventory.labels.fulfillRequest') property="shouldFulfillRequest"}}
       {{/if}}
     {{/if}}
-    {{select-or-typeahead property="deliveryLocation" label=(t 'inventory.labels.deliveryLocation') list=warehouseList selection=model.deliveryLocation class="test-delivery-location"}}
-    {{select-or-typeahead property="deliveryAisle" label=(t 'inventory.labels.deliveryAisle') list=aisleLocationList selection=model.deliveryAisle class="test-delivery-aisle"}}
-    {{select-or-typeahead property="expenseAccount" label=(t 'inventory.labels.billTo') list=expenseAccountList selection=model.expenseAccount class="test-bill-to"}}
+    {{select-or-typeahead form=form model=model property="deliveryLocation" label=(t 'inventory.labels.deliveryLocation') list=warehouseList selection=model.deliveryLocation class="test-delivery-location"}}
+    {{select-or-typeahead form=form model=model property="deliveryAisle" label=(t 'inventory.labels.deliveryAisle') list=aisleLocationList selection=model.deliveryAisle class="test-delivery-aisle"}}
+    {{select-or-typeahead form=form model=model property="expenseAccount" label=(t 'inventory.labels.billTo') list=expenseAccountList selection=model.expenseAccount class="test-bill-to"}}
     {{#if isFulfilling}}
       <div class="row">
-        {{date-picker property="dateCompleted" label=(t 'labels.dateCompleted') class="col-sm-4"}}
+        {{date-picker model=model property="dateCompleted" label=(t 'labels.dateCompleted') class="col-sm-4"}}
       </div>
       {{inventory-location-picker label=(t 'inventory.labels.pullFrom') quantityRequested=model.quantity
         locationList=model.inventoryItem.availableLocations
@@ -80,7 +80,7 @@
       <div class="form-group">
         <label class="control-label sr-only">{{t 'inventory.labels.consumePurchases'}}</label>
       </div>
-      {{em-checkbox label=(t 'inventory.labels.markAsConsumed') property="markAsConsumed"}}
+      {{form.checkbox label=(t 'inventory.labels.markAsConsumed') property="markAsConsumed"}}
     {{/if}}
   {{/em-form}}
 {{/edit-panel}}

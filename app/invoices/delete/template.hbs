@@ -3,7 +3,7 @@
   title=title
   updateButtonAction=updateButtonAction
   updateButtonText=updateButtonText }}
-  {{#em-form model=model submitButton=false }}{{/em-form}}
+  {{#em-form model=model submitButton=false as |form|}}{{/em-form}}
   <div class="alert alert-danger">
     <span class="glyphicon glyphicon-warning-sign"></span>
     {{t 'messages.delete' name=model.displayInvoiceNumber}}
