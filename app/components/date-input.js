@@ -1,7 +1,8 @@
 import Ember from 'ember';
-import HtmlInput from 'ember-rapid-forms/components/html-input';
+import EmInput from 'ember-rapid-forms/components/em-input';
 import PikadayComponent from 'hospitalrun/mixins/pikaday-component';
-export default HtmlInput.extend(PikadayComponent, {
+
+export default EmInput.extend(PikadayComponent, {
   _shouldSetDate(currentDate, picker) {
     return (picker && (Ember.isEmpty(currentDate)
       || Ember.isEmpty(picker.getDate())
@@ -23,7 +24,7 @@ export default HtmlInput.extend(PikadayComponent, {
     } else {
       return 'l';
     }
-  }.property('mainComponent.showTime'),
+  }.property('showTime'),
 
   showTimeChanged: function() {
     let picker = this.get('_picker');
@@ -31,33 +32,27 @@ export default HtmlInput.extend(PikadayComponent, {
       picker.destroy();
       this.didInsertElement();
     }
-  }.observes('mainComponent.showTime'),
+  }.observes('showTime'),
 
   dateSet() {
     let currentDate = this.get('currentDate');
     let picker = this.get('_picker');
     if (this._shouldSetDate(currentDate, picker)) {
       let newDate = picker.getDate();
-      let mainComponent = this.get('mainComponent');
-      let dateSetAction = mainComponent.get('dateSetAction');
+      let dateSetAction = this.get('dateSetAction');
       this.set('currentDate', newDate);
       if (!Ember.isEmpty(dateSetAction)) {
-        mainComponent.sendAction('dateSetAction', newDate);
+        this.sendAction('dateSetAction', newDate);
       }
     }
   },
 
   didReceiveAttrs(/* attrs */) {
     this._super(...arguments);
-    let dateProperty = this.get('mainComponent.originalPropery');
+    let dateProperty = this.get('originalProperty');
     let displayPropertyName = `display_${dateProperty}`;
-    this.currentDate = Ember.computed.alias(`mainComponent.model.${dateProperty}`);
-    this.minDate = Ember.computed.alias('mainComponent.minDate');
-    this.maxDate = Ember.computed.alias('mainComponent.maxDate');
-    this.showTime = Ember.computed.alias('mainComponent.showTime');
-    this.yearRange = Ember.computed.alias('mainComponent.yearRange');
-    this.addObserver(`mainComponent.model.${dateProperty}`, this, this.currentDateChangedValue);
-    Ember.Binding.from(`mainComponent.model.errors.${dateProperty}`).to(`mainComponent.model.errors.${displayPropertyName}`).connect(this);
+    this.currentDate = Ember.computed.alias(`model.${dateProperty}`);
+    this.addObserver(`model.${dateProperty}`, this, this.currentDateChangedValue);
+    Ember.Binding.from(`model.errors.${dateProperty}`).to(`model.errors.${displayPropertyName}`).connect(this);
   }
-
 });

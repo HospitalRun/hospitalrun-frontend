@@ -1,16 +1,7 @@
-import Ember from 'ember';
-import { module, test } from 'qunit';
-import startApp from 'hospitalrun/tests/helpers/start-app';
+import { test } from 'qunit';
+import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance';
 
-module('Acceptance | labs', {
-  beforeEach() {
-    this.application = startApp();
-  },
-
-  afterEach() {
-    Ember.run(this.application, 'destroy');
-  }
-});
+moduleForAcceptance('Acceptance | labs');
 
 test('visiting /labs', function(assert) {
   runWithPouchDump('default', function() {

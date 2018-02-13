@@ -3,6 +3,7 @@ import Ember from 'ember';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import SetupUserRole from 'hospitalrun/mixins/setup-user-role';
 import UnauthorizedError from 'hospitalrun/utils/unauthorized-error';
+import { DEFAULT_LANGUAGE } from 'hospitalrun/services/language-preference';
 
 const { get, inject, isEmpty, Route, set } = Ember;
 
@@ -12,6 +13,7 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
   database: inject.service(),
   config: inject.service(),
   session: inject.service(),
+  languagePreference: inject.service(),
   shouldSetupUserRole: true,
 
   actions: {
@@ -106,10 +108,9 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
   afterModel() {
     set(this.controllerFor('navigation'), 'allowSearch', false);
     $('#apploading').remove();
-    this.get('config.configDB').get('current_user').then((user) => {
-      let language = user.i18n || 'en';
-      this.set('i18n.locale', language);
-    });
+
+    // this enables page reloading support
+    this.get('languagePreference').loadUserLanguagePreference();
   },
 
   renderModal(template) {
@@ -135,6 +136,12 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
     } else {
       this._super();
     }
+
+    this.get('languagePreference').loadUserLanguagePreference();
+  },
+  sessionInvalidated() {
+    this._super();
+    this.get('languagePreference').setApplicationLanguage(DEFAULT_LANGUAGE);
   }
 });
 export default ApplicationRoute;
