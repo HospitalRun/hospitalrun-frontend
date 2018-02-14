@@ -85,7 +85,7 @@
     "ember-radio-buttons": "^4.0.1",
     "ember-rapid-forms": "^1.2.4",
     "ember-resolver": "^4.0.0",
-    "ember-source": "2.11.0",
+    "ember-source": "2.18.1",
     "ember-select-list": "0.9.5",
     "ember-simple-auth": "^1.1.0",
     "ember-sinon-qunit": "^1.4.0",
