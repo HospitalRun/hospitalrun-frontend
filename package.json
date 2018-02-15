@@ -68,7 +68,7 @@
     "ember-cli-sass": "^7.0.0",
     "ember-cli-shims": "^1.0.2",
     "ember-cli-sri": "^2.1.0",
-    "ember-cli-stylelint": "1.1.0",
+    "ember-cli-stylelint": "1.2.0",
     "ember-cli-template-lint": "0.4.12",
     "ember-cli-test-loader": "^2.0.0",
     "ember-concurrency": "0.8.11",
