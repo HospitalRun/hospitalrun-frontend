@@ -8,6 +8,9 @@ moduleFor('controller:abstract-paged-controller', 'Unit | Controller | abstract-
     'service:session'
   ],
   unit: true,
+  needs: [
+    'service:metrics'
+  ],
   testModel(attrs) {
     return run(() => {
       this.register('model:test', DS.Model);
