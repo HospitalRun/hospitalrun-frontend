@@ -6,6 +6,23 @@ module.exports = function(environment) {
     environment,
     rootURL: process.env.EMBER_CLI_ELECTRON ? null : '/',
     locationType: 'hash', // Using hash location type because it is more friendly for offline.
+    metricsAdapters: [
+      {
+        name: 'GoogleAnalytics',
+        environments: ['development', 'production'],
+        config: {
+          id: 'UA-114278773-1',
+          // Use `analytics_debug.js` in development
+          debug: environment === 'development',
+          // Use verbose tracing of GA events
+          trace: environment === 'development',
+          // Ensure development env hits aren't sent to GA
+          sendHitTask: environment !== 'development',
+          // Specify Google Analytics plugins
+          require: []
+        }
+      }
+    ],
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -24,11 +41,11 @@ module.exports = function(environment) {
   };
 
   ENV.contentSecurityPolicy = {
-    'connect-src': "'self'",
+    'connect-src': "'self' www.google-analytics.com",
     'default-src': "'self'",
     'frame-src': "'self'",
     'img-src': "'self' filesystem: data: blob:",
-    'script-src': "'self' 'unsafe-inline' 'unsafe-eval'",
+    'script-src': "'self' 'unsafe-inline' 'unsafe-eval' www.google-analytics.com",
     'style-src': "'self' 'unsafe-inline'"
   };
 
