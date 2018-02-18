@@ -8,9 +8,6 @@ const process = require('process');
 const child = require('child_process');
 
 let couchurl = process.env.COUCHDB_URL ? process.env.COUCHDB_URL : 'http://localhost:5984';
-let couchdb_alive = false;
-
-let nTries = 0;
 
 if (typeof couchurl === undefined || couchurl === null) {
   couchurl = 'http://localhost:5984';
