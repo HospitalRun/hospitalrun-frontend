@@ -3,11 +3,11 @@
 'use strict';
 
 const child = require('child_process');
+const proc = require('process');
 
-console.log('Running ember build.');
-child.exec('ember build', (error, stdout, stderr) => {
-  if (error) {
-    console.error(`Execution error: ${error}`);
-    return;
-  }
+let buildProc = child.spawnSync('ember', ['build'], {
+  shell: true,
+  stdio: ['inherit', 'inherit', 'inherit']
 });
+
+proc.exit(buildProc.status);

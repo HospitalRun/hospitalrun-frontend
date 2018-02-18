@@ -3,7 +3,6 @@
 'use strict';
 
 const http = require('http');
-const path = require('path');
 const process = require('process');
 const child = require('child_process');
 
@@ -34,11 +33,9 @@ testCouchServer(couchurl)
   .then(
     () => {
       console.log('Starting ember server');
-      child.exec('ember serve', (error, stdout, stderr) => {
-        if (error) {
-          console.error(`Execution error: ${error}`);
-          return;
-        }
+      child.spawn('ember', ['serve'], {
+        shell: true,
+        stdio: ['inherit', 'inherit', 'inherit']
       });
     }
   )

@@ -3,11 +3,11 @@
 'use strict';
 
 const child = require('child_process');
+const process = require('process');
 
-child.exec('ember test', (error, stdout, stderr) => {
-  if (error) {
-    console.error(`Ember test execution got error: ${error}`);
-    return;
-  }
+let testProc = child.spawnSync('ember', ['test'], {
+  shell: true,
+  stdio: ['inherit', 'inherit', 'inherit']
 });
 
+process.exit(testProc.status);
