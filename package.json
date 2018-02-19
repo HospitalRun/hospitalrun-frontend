@@ -12,9 +12,9 @@
     "prod"
   ],
   "scripts": {
-    "build": "node script/build.js ",
+    "build": "ember build",
     "start": "node script/server.js",
-    "test": "node script/test.js",
+    "test": "ember test",
     "electron-test": "ember electron:test",
     "translation-sync": "babel-node script/translation/sync.js --presets es2015 && eslint --fix app/locales",
     "stylelint": "stylelint 'app/styles/**/*.scss'"
@@ -50,7 +50,7 @@
     "electron-rebuild": "^1.5.7",
     "ember-ajax": "^3.0.0",
     "ember-browserify": "^1.1.12",
-    "ember-cli": "^2.18.0",
+    "ember-cli": "2.17.1",
     "ember-cli-active-link-wrapper": "0.3.2",
     "ember-cli-app-version": "^3.0.0",
     "ember-cli-babel": "^6.10.0",
@@ -112,7 +112,6 @@
     "worker-pouch": "git+https://github.com/jkleinsc/worker-pouch.git"
   },
   "dependencies": {
-    "broccoli-funnel": "^2.0.1",
     "electron-compile": "^6.4.2",
     "electron-localshortcut": "^3.0.4",
     "electron-protocol-serve": "1.3.0",
