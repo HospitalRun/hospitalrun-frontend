@@ -1,4 +1,4 @@
-<tr {{action 'editAppointment' appointment}}>
+<tr {{action 'editAppointment' appointment}} class="{{if canEdit "clickable"}}">
   <td class="appointment-date">
     {{appointment.formattedAppointmentDate}}
   </td>
