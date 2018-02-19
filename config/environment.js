@@ -11,7 +11,7 @@ module.exports = function(environment) {
         name: 'GoogleAnalytics',
         environments: ['development', 'production'],
         config: {
-          id: 'UA-114278773-1',
+          id: 'UA-TODO-HOSPITAL-RUN',
           // Use `analytics_debug.js` in development
           debug: environment === 'development',
           // Use verbose tracing of GA events
@@ -44,7 +44,7 @@ module.exports = function(environment) {
     'connect-src': "'self' www.google-analytics.com",
     'default-src': "'self'",
     'frame-src': "'self'",
-    'img-src': "'self' filesystem: data: blob:",
+    'img-src': "'self' filesystem: data: blob: www.google-analytics.com",
     'script-src': "'self' 'unsafe-inline' 'unsafe-eval' www.google-analytics.com",
     'style-src': "'self' 'unsafe-inline'"
   };
@@ -91,7 +91,8 @@ module.exports = function(environment) {
       debug: true,
       excludePaths: ['manifest.appcache'],
       swIncludeFiles: [
-        'vendor/pouchdb-for-sw.js'
+        'vendor/pouchdb-for-sw.js',
+        require.resolve('sw-offline-google-analytics')
       ]
     };
     if (environment === 'production') {

@@ -111,7 +111,8 @@
     "electron-compile": "^6.4.2",
     "electron-localshortcut": "^3.0.4",
     "electron-protocol-serve": "^1.3.0",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "sw-offline-google-analytics": "0.0.25"
   },
   "ember-addon": {
     "paths": [
