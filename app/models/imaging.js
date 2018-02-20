@@ -41,7 +41,7 @@ export default AbstractModel.extend(CanEditRequested, DateFormat, ResultValidati
             return true;
           }
         },
-        message: 'Please select an imaging type'
+        message: 'Please, select an imaging type'
       }
     },
     patientTypeAhead: PatientValidation.patientTypeAhead,

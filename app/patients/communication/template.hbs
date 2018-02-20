@@ -1,0 +1,24 @@
+<table class="table">
+    <tr class="table-header">
+        <th>{{t 'patients.labels.professional'}}</th>
+        <th>{{t 'patients.labels.profession'}}</th>
+        <th>{{t 'patients.labels.status'}}</th>
+        <th>{{t 'patients.labels.message'}}</th>
+        <th>{{t 'patients.labels.callNow'}}</th>
+        <th>{{t 'patients.labels.videoCall'}}</th>
+    </tr>
+    <tr {{action "professionalInvolved" imaging}}>
+        <td>"Doctor Strange"</td>
+        <td>Dark Magic</td>
+        <td>Conected Now</td>
+        <td>
+            <button type="button" class="btn btn-default neutral" {{action "communicate" communicate}}>{{t 'communication.buttons.sendMessage'}}</button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-default neutral" {{action "professionalInvolved" communication}}>{{t 'communication.buttons.callNow'}}</button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-default neutral" {{action "professionalInvolved" communication}}>{{t 'communication.buttons.videoCall'}}</button>
+        </td>
+    </tr>
+</table>

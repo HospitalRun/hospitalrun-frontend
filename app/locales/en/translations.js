@@ -907,6 +907,7 @@ export default {
     requestsTitle: 'Lab Requests',
     sectionTitle: 'Labs'
   },
+master
   loading: {
     messages: {
       '0': 'The top butterfly flight speed is 12 miles per hour. Some moths can fly 25 miles per hour!',
@@ -1246,8 +1247,13 @@ export default {
       sex: 'Sex',
       sexNotEntered: 'Sex Not Entered',
       sources: 'Sources',
-      status: 'Patient Status',
-      totalMontlyExpense: 'Total Monthly Expenses'
+      totalMontlyExpense: 'Total Monthly Expenses',
+      profession:'Profession',
+      professional: 'Professional',
+      status: 'Status',
+      message: 'Message',
+      callNow: 'Call Now',
+      videoCall: 'Video Call'
     },
     messages: {
       areYouSureDelete: 'Are you sure you want to delete this {{object}}?',
@@ -1267,7 +1273,8 @@ export default {
       medication: 'Medication',
       photos: 'Photos',
       socialWork: 'Social Work',
-      visits: 'Visits'
+      visits: 'Visits',
+      communication:'Communication'
     },
     notes: {
       newNote: 'New Note for',

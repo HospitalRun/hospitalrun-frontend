@@ -121,6 +121,12 @@ Router.map(function() {
     });
 
   });
+
+  this.route('app', function() {
+    this.route('patients', function() {
+      this.route('communication');
+    });
+  });
 });
 
 export default Router;
