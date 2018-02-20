@@ -15,9 +15,9 @@
       </div>
       <div id="visit-info" class="panel-collapse collapse in">
         <div class="panel-body">
-          {{#em-form model=model submitButton=false }}
+          {{#em-form model=model submitButton=false as |form|}}
             {{#if model.patient}}
-              {{patient-summary
+              {{patient-summary class= "clickable"
                 patient=model.patient
                 diagnosisContainer=model
                 returnTo='visits.edit'
@@ -32,9 +32,9 @@
             {{#if showPatientSelection}}
               <div class="row">
                 {{#if model.createNewPatient}}
-                  {{em-input property="patientTypeAhead" label=(t 'visits.labels.patientToCheckIn')class="required patient-name col-sm-9"}}
+                  {{form.input property="patientTypeAhead" label=(t 'visits.labels.patientToCheckIn')class="required patient-name col-sm-9"}}
                 {{else}}
-                  {{patient-typeahead
+                  {{patient-typeahead model=model
                     property="patientTypeAhead"
                     label=(t 'visits.labels.patientToCheckIn')
                     content=patientList
@@ -53,22 +53,22 @@
 
             <div class="row">
               {{#if isAdmissionVisit}}
-                {{date-picker property="startDate" label=(t "patients.labels.admissionDate") showTime=true class="col-sm-4 required"}}
-                {{date-picker property="endDate" label=(t "patients.labels.dischargeDate") showTime=true class="col-sm-4"}}
+                {{date-picker model=model property="startDate" label=(t "patients.labels.admissionDate") showTime=true class="col-sm-4 required"}}
+                {{date-picker model=model property="endDate" label=(t "patients.labels.dischargeDate") showTime=true class="col-sm-4"}}
               {{else}}
-                {{date-picker property="startDate" label=(t "visits.labels.checkInTime") showTime=true class="col-sm-4 required checkin-date"}}
+                {{date-picker model=model property="startDate" label=(t "visits.labels.checkInTime") showTime=true class="col-sm-4 required checkin-date"}}
                 {{#if (eq model.status 'CheckedOut')}}
-                  {{date-picker property="endDate" label=(t "visits.labels.checkOutTime") showTime=true class="col-sm-4 checkout-date"}}
+                  {{date-picker model=model property="endDate" label=(t "visits.labels.checkOutTime") showTime=true class="col-sm-4 checkout-date"}}
                 {{/if}}
               {{/if}}
-              {{select-or-typeahead className="col-sm-4 visit-location" property="location"
+              {{select-or-typeahead form=form model=model className="col-sm-4 visit-location" property="location"
                 label=(t "labels.location") list=locationList
                 selection=model.location
               }}
             </div>
             <div class="row">
               {{#if model.isNew}}
-                {{em-select class="col-sm-4 required form-input-group visit-type" label=(t "visits.labels.visitType")
+                {{form.select class="col-sm-4 required form-input-group visit-type" label=(t "visits.labels.visitType")
                   property="visitType" content=validVisitTypes prompt=" "
                 }}
               {{else}}
@@ -83,15 +83,15 @@
                     <p class="form-control-static">{{t (concat 'visits.labels.status' model.status) }}</p>
                 </div>
               {{/if}}
-              {{select-or-typeahead className="col-sm-4 visit-examiner" property="examiner"
+              {{select-or-typeahead form=form model=model className="col-sm-4 visit-examiner" property="examiner"
                 label=(t "visits.labels.examiner") list=physicianList
                 selection=model.examiner
               }}
             </div>
-            {{expand-text property="reasonForVisit" label=(t 'visits.labels.reasonForVisit') rows=3 }}
+            {{expand-text property="reasonForVisit" label=(t 'visits.labels.reasonForVisit') rows=3 form=form}}
             {{#if canAddBillingDiagnosis}}
               <div class="row">
-                {{select-or-typeahead className="col-sm-5" property="primaryBillingDiagnosis"
+                {{select-or-typeahead form=form model=model className="col-sm-5" property="primaryBillingDiagnosis"
                   label=(t "visits.labels.finalDiagnosis")  list=diagnosisList
                   selection=model.primaryBillingDiagnosis hint=false
                 }}
@@ -300,7 +300,7 @@
           </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="charges">
-          {{#em-form model=this submitButton=false }}
+          {{#em-form model=this submitButton=false as |form|}}
             {{partial 'item-charges'}}
           {{/em-form}}
         </div>
