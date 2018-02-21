@@ -103,7 +103,7 @@
     "pouchdb-adapter-memory": "6.3.4",
     "pouchdb-list": "^4.0.0",
     "pouchdb-users": "^1.0.3",
-    "stylelint": "~8.4.0",
+    "stylelint": "~9.1.0",
     "stylelint-config-concentric": "^2.0.0",
     "stylelint-declaration-use-variable": "1.6.0",
     "stylelint-scss": "2.3.0",
