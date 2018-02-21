@@ -106,7 +106,7 @@
     "stylelint": "~8.4.0",
     "stylelint-config-concentric": "^2.0.0",
     "stylelint-declaration-use-variable": "1.6.0",
-    "stylelint-scss": "2.3.0",
+    "stylelint-scss": "2.4.0",
     "tosource-polyfill": "^0.3.1",
     "uuid": "^3.0.0",
     "worker-pouch": "git+https://github.com/jkleinsc/worker-pouch.git"
