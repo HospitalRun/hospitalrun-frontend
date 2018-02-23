@@ -17,7 +17,7 @@
         <div class="panel-body">
           {{#em-form model=model submitButton=false as |form|}}
             {{#if model.patient}}
-              {{patient-summary
+              {{patient-summary class= "clickable"
                 patient=model.patient
                 diagnosisContainer=model
                 returnTo='visits.edit'
