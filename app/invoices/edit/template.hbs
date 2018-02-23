@@ -1,7 +1,7 @@
 {{#edit-panel editPanelProps=editPanelProps}}
   {{#em-form model=model submitButton=false as |form|}}
     {{#unless model.isNew}}
-      {{patient-summary patient=model.patient returnTo='invoices.edit' returnToContext=model.id disablePatientLink=model.isNew }}
+      {{patient-summary patient=model.patient returnTo='invoices.edit' returnToContext=model.id disablePatientLink=model.isNew class="clickable"}}
     {{/unless}}
     <div class="row">
       {{#unless model.isNew}}
