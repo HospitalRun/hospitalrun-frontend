@@ -12,9 +12,9 @@
     "prod"
   ],
   "scripts": {
-    "build": "./script/build",
-    "start": "./script/server",
-    "test": "./script/test",
+    "build": "ember build",
+    "start": "node script/server.js",
+    "test": "ember test",
     "electron-test": "ember electron:test",
     "translation-sync": "babel-node script/translation/sync.js --presets es2015 && eslint --fix app/locales",
     "stylelint": "stylelint 'app/styles/**/*.scss'"
