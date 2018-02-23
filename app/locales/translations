@@ -1,5 +1,5 @@
 export default {
-  languageName: 'Thailand',
+  languageName: 'Thai',
   admin: {
     address: {
       address1Label: 'ที่อยู่ Label 1',
@@ -19,9 +19,9 @@ export default {
     addressOptions: 'ตัวเลือกที่อยู่',
     customForms: {
       buttons: {
-        addField: 'ใส่ Field',
-        moveDown: 'ย้ายขิ้น',
-        moveUp: 'ย้ายลง',
+        addField: 'ใส่ข้อมูล',
+        moveDown: 'เลื่อนขิ้น',
+        moveUp: 'เลื่อนลง',
         newForm: '+ ฟอร์มใหม่',
         preview: 'แสดงตัวอย่าง'
       },
@@ -51,7 +51,7 @@ export default {
         socialworkFormType: 'งานสังคมสงเคราะห์',
         text: 'ข้อความ',
         textarea: 'รายละเอียด',
-        visitFormType: 'Visit'
+        visitFormType: 'การเข้าเยี่ยม'
       },
       messages: { formSaved: '{{name}} form บันทึกแล้ว.' },
       titles: {
