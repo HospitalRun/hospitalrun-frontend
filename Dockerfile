@@ -34,7 +34,7 @@ COPY ./server/config-example.js ./server/config.js
 # define settings
 RUN sed -i -e 's/URL="localhost"/URL="couchdb"/g' ./script/initcouch.sh
 RUN sed -i -e "s/couchDbServer: 'localhost'/couchDbServer: 'couchdb'/g" ./server/config.js
-RUN sed -i -e "s/localhost:5984/couchdb:5984/g" ./script/server
+RUN sed -i -e "s/localhost:5984/couchdb:5984/g" ./script/server.js
 
 EXPOSE 4200
 
