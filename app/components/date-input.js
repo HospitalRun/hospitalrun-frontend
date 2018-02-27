@@ -53,6 +53,6 @@ export default EmInput.extend(PikadayComponent, {
     let displayPropertyName = `display_${dateProperty}`;
     this.currentDate = Ember.computed.alias(`model.${dateProperty}`);
     this.addObserver(`model.${dateProperty}`, this, this.currentDateChangedValue);
-    Ember.Binding.from(`model.errors.${dateProperty}`).to(`model.errors.${displayPropertyName}`).connect(this);
+    Ember.defineProperty(this, `model.errors.${displayPropertyName}`, Ember.computed.alias(`model.errors.${dateProperty}`));
   }
 });

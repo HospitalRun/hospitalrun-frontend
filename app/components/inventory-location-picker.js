@@ -45,7 +45,7 @@ export default Ember.Component.extend({
   },
 
   _setup: function() {
-    Ember.Binding.from('selectedLocations').to('componentSelectedLocations').connect(this);
+    Ember.defineProperty(this, 'componentSelectedLocations', Ember.computed.alias('selectedLocations'));
   }.on('init'),
 
   _setupLocationPickers(locationPickers, locationList, setInitialLocation) {
@@ -83,7 +83,7 @@ export default Ember.Component.extend({
       return (previousValue + location.get('quantity'));
     }, 0);
     this._setupLocationPickers(locationPickers, locationList, true);
-    this.locationChange();
+    Ember.run.scheduleOnce('afterRender', this, this.locationChange);
     this.set('doingSetup', false);
     return this.get('calculatedLocationPickers');
   }.property('calculatedLocationPickers', 'locationList', 'quantityRequested')
