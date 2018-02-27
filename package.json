@@ -98,7 +98,7 @@
     "hospitalrun-server-routes": "1.0.0-beta",
     "loader.js": "^4.2.3",
     "minimatch": "^3.0.2",
-    "nano": "6.3.0",
+    "nano": "6.4.3",
     "pouchdb": "6.3.4",
     "pouchdb-adapter-memory": "6.3.4",
     "pouchdb-list": "^4.0.0",
