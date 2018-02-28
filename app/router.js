@@ -4,6 +4,9 @@ import { get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { scheduleOnce } from '@ember/runloop';
 
+const REGEX_UUID_URL_PART = /\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/g;
+const REGEX_SEARCH_URL_PART = /(\/search)\/.+/;
+
 const Router = EmberRouter.extend({
   metrics: service(),
 
@@ -17,7 +20,7 @@ const Router = EmberRouter.extend({
 
   _trackPage() {
     scheduleOnce('afterRender', this, () => {
-      let page = this.get('url');
+      let page = this.get('url').replace(REGEX_UUID_URL_PART, '').replace(REGEX_SEARCH_URL_PART, '$1');
       let title = this.getWithDefault('currentRouteName', 'unknown');
 
       get(this, 'metrics').trackPage({ page, title });
