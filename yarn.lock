@@ -14859,9 +14859,9 @@ wordwrap@~0.0.2:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"
 
-"worker-pouch@git+https://github.com/jkleinsc/worker-pouch.git":
-  version "2.0.0"
-  resolved "git+https://github.com/jkleinsc/worker-pouch.git#25c2d522e815f9ea8f75b0027ba1c7699616911d"
+worker-pouch@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/worker-pouch/-/worker-pouch-2.1.0.tgz#c9c0a25b125e99087412d6abb4012405d70b34ad"
   dependencies:
     argsarray "0.0.1"
     blob-util "^1.1.1"

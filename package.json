@@ -109,7 +109,7 @@
     "stylelint-scss": "2.3.0",
     "tosource-polyfill": "^0.3.1",
     "uuid": "^3.0.0",
-    "worker-pouch": "git+https://github.com/jkleinsc/worker-pouch.git"
+    "worker-pouch": "2.1.0"
   },
   "dependencies": {
     "electron-compile": "^6.4.2",
