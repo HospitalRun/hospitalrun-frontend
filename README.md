@@ -1,6 +1,8 @@
 HospitalRun frontend
 ========
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/stukalin/hospitalrun-frontend.svg)](https://greenkeeper.io/)
+
 _Ember frontend for [HospitalRun](http://hospitalrun.io/): free software for developing world hospitals_
 
 [![Build Status](https://travis-ci.org/HospitalRun/hospitalrun-frontend.svg?branch=master)](https://travis-ci.org/HospitalRun/hospitalrun-frontend) [![CouchDB](https://img.shields.io/badge/couchdb-1.x-green.svg)](http://couchdb.apache.org/)
