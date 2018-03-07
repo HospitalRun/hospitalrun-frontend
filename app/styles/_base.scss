@@ -5,13 +5,11 @@ body {
     padding-left: 275px; // to accomodate for .sidebar-nav
   }
 
-  &.rtl {
-    &.ember-application {/* stylelint-disable-line selector-no-qualifying-type */
-      padding-left: 0px;
-      padding-right: 275px;
-      direction: rtl;
-      text-align: right;
-    }
+  &.rtl.ember-application {/* stylelint-disable-line selector-no-qualifying-type */
+    padding-right: 275px;
+    padding-left: 0;
+    direction: rtl;
+    text-align: right;
   }
 }
 
