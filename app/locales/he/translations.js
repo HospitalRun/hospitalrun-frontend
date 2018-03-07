@@ -1577,4 +1577,4 @@ export default {
       weight: 'משקל'
     }
   }
-}
+};
