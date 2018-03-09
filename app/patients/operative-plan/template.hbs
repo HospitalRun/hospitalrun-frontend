@@ -21,6 +21,6 @@
     {{expand-text property="admissionInstructions" label=(t 'operativePlan.labels.admissionInstructions') class="admission-instructions" form=form}}
     {{expand-text property="additionalNotes" label=(t 'operativePlan.labels.additionalNotes') class="additional-notes" form=form}}
     {{upcoming-appointments patient=model.patient}}
-    {{custom-form-manager model=model formType="operativePlan"}}
+    {{custom-form-manager model=model formType="operativePlan" rapidForm=form}}
   {{/em-form}}
 {{/edit-panel}}
