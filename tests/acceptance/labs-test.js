@@ -81,3 +81,173 @@ test('Marking a lab request as completed', function(assert) {
     });
   });
 });
+
+test('Lab with always included custom form', function(assert) {
+  runWithPouchDump('labs', function() {
+    authenticateUser();
+
+    createCustomFormForType('Lab', true);
+
+    visit('/labs');
+    click('button:contains(new lab)');
+
+    checkCustomFormIsDisplayed(assert, 'Test Custom Form for Lab included');
+
+    andThen(() => {
+      typeAheadFillIn('.test-patient-name', 'Lennex Zinyando - P00017');
+      typeAheadFillIn('.test-lab-type', 'Chest Scan');
+      fillIn('.test-result-input input', 'Chest is clear');
+      fillIn('.js-lab-notes textarea', 'Dr test ordered another scan');
+      fillCustomForm('Test Custom Form for Lab included');
+      click('.panel-footer button:contains(Add)');
+      waitToAppear('.modal-dialog');
+    });
+
+    click('.modal-footer button:contains(Ok)');
+    click('.panel-footer button:contains(Return)');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/labs');
+      assert.equal(find('tr').length, 3, 'Two lab requests are displayed');
+    });
+
+    click('tr:last');
+
+    andThen(() => {
+      assert.equal(find('.test-result-input input').val(), 'Chest is clear', 'There is result');
+      assert.equal(find('.js-lab-notes textarea').val(), 'Dr test ordered another scan', 'There is note');
+    });
+
+    checkCustomFormIsFilled(assert, 'Test Custom Form for Lab included');
+
+    click('button:contains(Complete)');
+    waitToAppear('.modal-dialog');
+    click('.modal-footer button:contains(Ok)');
+    click('.panel-footer button:contains(Return)');
+    visit('/labs/completed');
+
+    andThen(() => {
+      assert.equal(find('tr').length, 2, 'One completed request is displayed');
+    });
+
+    click('tr:last');
+
+    checkCustomFormIsFilledAndReadonly(assert, 'Test Custom Form for Lab included');
+  });
+});
+
+test('Lab with additional form', function(assert) {
+  runWithPouchDump('labs', function() {
+    authenticateUser();
+
+    createCustomFormForType('Lab');
+
+    visit('/labs');
+    click('button:contains(new lab)');
+
+    attachCustomForm('Test Custom Form for Lab NOT included');
+    checkCustomFormIsDisplayed(assert, 'Test Custom Form for Lab NOT included');
+
+    andThen(() => {
+      typeAheadFillIn('.test-patient-name', 'Lennex Zinyando - P00017');
+      typeAheadFillIn('.test-lab-type', 'Chest Scan');
+      fillIn('.test-result-input input', 'Chest is clear');
+      fillIn('.js-lab-notes textarea', 'Dr test ordered another scan');
+      fillCustomForm('Test Custom Form for Lab NOT included');
+      click('.panel-footer button:contains(Add)');
+      waitToAppear('.modal-dialog');
+    });
+
+    click('.modal-footer button:contains(Ok)');
+    click('.panel-footer button:contains(Return)');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/labs');
+      assert.equal(find('tr').length, 3, 'Two lab requests are displayed');
+    });
+
+    click('tr:last');
+
+    andThen(() => {
+      assert.equal(find('.test-result-input input').val(), 'Chest is clear', 'There is result');
+      assert.equal(find('.js-lab-notes textarea').val(), 'Dr test ordered another scan', 'There is note');
+    });
+
+    checkCustomFormIsFilled(assert, 'Test Custom Form for Lab NOT included');
+
+    click('button:contains(Complete)');
+    waitToAppear('.modal-dialog');
+    click('.modal-footer button:contains(Ok)');
+    click('.panel-footer button:contains(Return)');
+    visit('/labs/completed');
+
+    andThen(() => {
+      assert.equal(find('tr').length, 2, 'One completed request is displayed');
+    });
+
+    click('tr:last');
+
+    checkCustomFormIsFilledAndReadonly(assert, 'Test Custom Form for Lab NOT included');
+  });
+});
+
+test('Lab with always included custom form and additional form', function(assert) {
+  runWithPouchDump('labs', function() {
+    authenticateUser();
+
+    createCustomFormForType('Lab', true);
+    createCustomFormForType('Lab', false);
+
+    visit('/labs');
+    click('button:contains(new lab)');
+
+    checkCustomFormIsDisplayed(assert, 'Test Custom Form for Lab included');
+
+    attachCustomForm('Test Custom Form for Lab NOT included');
+    checkCustomFormIsDisplayed(assert, 'Test Custom Form for Lab NOT included');
+
+    andThen(() => {
+      typeAheadFillIn('.test-patient-name', 'Lennex Zinyando - P00017');
+      typeAheadFillIn('.test-lab-type', 'Chest Scan');
+      fillIn('.test-result-input input', 'Chest is clear');
+      fillIn('.js-lab-notes textarea', 'Dr test ordered another scan');
+      fillCustomForm('Test Custom Form for Lab included');
+      fillCustomForm('Test Custom Form for Lab NOT included');
+      click('.panel-footer button:contains(Add)');
+      waitToAppear('.modal-dialog');
+    });
+
+    click('.modal-footer button:contains(Ok)');
+    click('.panel-footer button:contains(Return)');
+
+    andThen(() => {
+      assert.equal(currentURL(), '/labs');
+      assert.equal(find('tr').length, 3, 'Two lab requests are displayed');
+    });
+
+    click('tr:last');
+
+    andThen(() => {
+      assert.equal(find('.test-result-input input').val(), 'Chest is clear', 'There is result');
+      assert.equal(find('.js-lab-notes textarea').val(), 'Dr test ordered another scan', 'There is note');
+    });
+
+    checkCustomFormIsFilled(assert, 'Test Custom Form for Lab included');
+    checkCustomFormIsFilled(assert, 'Test Custom Form for Lab NOT included');
+
+    click('button:contains(Complete)');
+    waitToAppear('.modal-dialog');
+    click('.modal-footer button:contains(Ok)');
+    click('.panel-footer button:contains(Return)');
+    visit('/labs/completed');
+
+    andThen(() => {
+      assert.equal(find('tr').length, 2, 'One completed request is displayed');
+    });
+
+    click('tr:last');
+
+    checkCustomFormIsFilledAndReadonly(assert, 'Test Custom Form for Lab included');
+    checkCustomFormIsFilledAndReadonly(assert, 'Test Custom Form for Lab NOT included');
+  });
+});

@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import config from '../config/environment';
+import { walkConfigs, setRTL } from '../utils/locale-utils';
 
 export const DEFAULT_LANGUAGE = config.i18n.defaultLocale || 'en';
 
@@ -17,6 +18,11 @@ export default Ember.Service.extend({
   },
 
   setApplicationLanguage(selectedLanguage) {
+
+    // Whenever the languague changes, apply RTL settings to application
+    let currentConfig = walkConfigs(selectedLanguage, Ember.getOwner(this)) || {};
+    setRTL(currentConfig.rtl);
+
     return Ember.run(() => this.set('i18n.locale', selectedLanguage));
   },
 
