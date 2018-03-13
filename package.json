@@ -77,7 +77,7 @@
     "ember-electron": "^2.7.2",
     "ember-export-application-global": "^2.0.0",
     "ember-fullcalendar": "1.8.0",
-    "ember-i18n": "^5.0.0",
+    "ember-i18n": "~5.0.0",
     "ember-inspector": "^2.0.4",
     "ember-keyboard": "3.0.0",
     "ember-load-initializers": "^1.0.0",
