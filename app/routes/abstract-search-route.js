@@ -22,7 +22,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   model(params) {
     return new Ember.RSVP.Promise(function(resolve) {
       let searchText = params.search_text;
-      this.controllerFor('navigation').set('currentSearchText', searchText);
+      this.controllerFor('application').set('currentSearchText', searchText);
       this.set('searchText', searchText);
       this._findByContains(searchText).then(resolve, function(err) {
         resolve(new DS.AdapterPopulatedRecordArray());
@@ -39,7 +39,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       controller.set('hasRecords', false);
     }
     controller.set('searchText', this.get('searchText'));
-    this.controllerFor('navigation').closeProgressModal();
+    this.controllerFor('application').closeProgressModal();
     let parentController = this.controllerFor(this.get('moduleName'));
     let searchTitle = `Search Results for <i>${Ember.Handlebars.Utils.escapeExpression(this.get('searchText'))}</i>`;
     parentController.set('currentScreenTitle', searchTitle.htmlSafe());

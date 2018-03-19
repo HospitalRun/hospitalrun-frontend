@@ -106,7 +106,7 @@ let ApplicationRoute = Route.extend(ApplicationRouteMixin, ModalHelper, SetupUse
   },
 
   afterModel() {
-    set(this.controllerFor('navigation'), 'allowSearch', false);
+    set(this.controllerFor('application'), 'allowSearch', false);
     $('#apploading').remove();
 
     // this enables page reloading support
