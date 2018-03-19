@@ -1,5 +1,11 @@
 {{#if session.isAuthenticated}}
-  {{render "navigation"}}
+  {{!--{{render 'navigation'}}--}}
+  {{sidebar-nav
+      allowSearch=(readonly allowSearch)
+      currentSearchText=(readonly currentSearchText)
+      isShowingSettings=(readonly isShowingSettings)
+      currentRouteName=(readonly currentRouteName)
+  }}
 {{/if}}
 {{outlet}}
 {{outlet "modal"}}
