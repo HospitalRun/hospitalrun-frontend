@@ -11,7 +11,7 @@ export default Ember.Controller.extend({
     fileSystem.setup();
   }.on('init'),
 
-  actions:{
+  actions: {
     closeSettings() {
       this.set('isShowingSettings', false);
     }
