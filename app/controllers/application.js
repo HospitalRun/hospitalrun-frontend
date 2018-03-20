@@ -9,11 +9,5 @@ export default Ember.Controller.extend({
   _setup: function() {
     let fileSystem = this.get('filesystem');
     fileSystem.setup();
-  }.on('init'),
-
-  actions: {
-    closeSettings() {
-      this.set('isShowingSettings', false);
-    }
-  }
+  }.on('init')
 });

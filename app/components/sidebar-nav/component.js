@@ -17,7 +17,6 @@ export default Ember.Component.extend(HospitalRunVersion, ModalHelper, ProgressD
   syncStatus: '',
   currentOpenNav: null,
   selectedLanguage: null,
-  router: Ember.inject.service('-routing'),
 
   actions: {
     about() {
@@ -52,7 +51,8 @@ export default Ember.Component.extend(HospitalRunVersion, ModalHelper, ProgressD
           this.set('searchText', '');
           this.set('progressMessage', `Searching for ${textToFind}. Please wait...`);
           this.showProgressModal();
-          this.transitionToRoute(`${this.searchRoute}/${textToFind}`);
+          // @todo replace with the router service as of https://www.emberjs.com/blog/2017/09/01/ember-2-15-released.html#toc_public-router-service-phase-1
+          Ember.getOwner(this).lookup('router:main').transitionTo(`${this.searchRoute}/${textToFind}`);
         }
       }
     },
@@ -62,7 +62,9 @@ export default Ember.Component.extend(HospitalRunVersion, ModalHelper, ProgressD
         this.currentOpenNav.closeSubnav();
       }
       this.set('currentOpenNav', nav);
-      this.get('router').transitionTo(nav.route);
+
+      // @todo replace with the router service as of https://www.emberjs.com/blog/2017/09/01/ember-2-15-released.html#toc_public-router-service-phase-1
+      Ember.getOwner(this).lookup('router:main').transitionTo(nav.route);
       this.set('isShowingSettings', false);
     },
 

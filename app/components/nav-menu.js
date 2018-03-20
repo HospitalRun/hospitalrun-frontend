@@ -9,6 +9,7 @@ const {
 
 export default Ember.Component.extend(UserSession, {
   callCloseSettings: 'closeSettings',
+  callNavAction: 'navAction',
   classNames: ['primary-nav-item'],
   isShowing: false,
   nav: null,
@@ -41,7 +42,7 @@ export default Ember.Component.extend(UserSession, {
 
     toggleContent() {
       this.toggleProperty('isShowing');
-      this.sendAction('navAction', this.nav);
+      this.sendAction('callNavAction', this.nav);
     }
   }
 });
