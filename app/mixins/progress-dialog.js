@@ -44,11 +44,6 @@ export default Ember.Mixin.create({
     progressDialog.set('message', this.get('progressMessage'));
     this.set('progressDialog', progressDialog);
     this.set('progressTimer', this.scheduleProgress(this.get('updateProgressBar')));
-
-    if (!this.get('isComponent')) {
-      this.send('openModal', 'dialog', progressDialog);
-    } else {
-      this.sendAction('openModal', 'dialog', progressDialog);
-    }
+    this.send('openModal', 'dialog', progressDialog);
   }
 });

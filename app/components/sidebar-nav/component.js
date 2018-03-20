@@ -1,18 +1,15 @@
 import Ember from 'ember';
 import HospitalRunVersion from 'hospitalrun/mixins/hospitalrun-version';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
-import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
 import UserSession from 'hospitalrun/mixins/user-session';
 import Navigation from 'hospitalrun/mixins/navigation';
 
-export default Ember.Component.extend(HospitalRunVersion, ModalHelper, ProgressDialog, UserSession, Navigation, {
+export default Ember.Component.extend(HospitalRunVersion, ModalHelper, UserSession, Navigation, {
   ajax: Ember.inject.service(),
   allowSearch: false,
   config: Ember.inject.service(),
   i18n: Ember.inject.service(),
-  currentSearchText: null,
   progressTitle: 'Searching',
-  searchRoute: null,
   session: Ember.inject.service(),
   syncStatus: '',
   currentOpenNav: null,
@@ -43,18 +40,7 @@ export default Ember.Component.extend(HospitalRunVersion, ModalHelper, ProgressD
     },
 
     search() {
-      if (this.allowSearch && this.searchRoute) {
-        let currentRouteName = this.get('currentRouteName');
-        let currentSearchText = this.get('currentSearchText');
-        let textToFind = this.get('searchText');
-        if (currentSearchText !== textToFind || currentRouteName.indexOf('.search') === -1) {
-          this.set('searchText', '');
-          this.set('progressMessage', `Searching for ${textToFind}. Please wait...`);
-          this.showProgressModal();
-          // @todo replace with the router service as of https://www.emberjs.com/blog/2017/09/01/ember-2-15-released.html#toc_public-router-service-phase-1
-          Ember.getOwner(this).lookup('router:main').transitionTo(`${this.searchRoute}/${textToFind}`);
-        }
-      }
+      this.sendAction('search', this.get('searchText'));
     },
 
     navAction(nav) {
@@ -75,7 +61,6 @@ export default Ember.Component.extend(HospitalRunVersion, ModalHelper, ProgressD
     closeSettings() {
       this.set('isShowingSettings', false);
     }
-
   }
 });
 

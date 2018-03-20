@@ -1,5 +1,7 @@
 import Ember from 'ember';
-export default Ember.Controller.extend({
+import ProgressDialog from 'hospitalrun/mixins/progress-dialog';
+
+export default Ember.Controller.extend(ProgressDialog, {
   filesystem: Ember.inject.service(),
   session: Ember.inject.service(),
 
@@ -9,5 +11,20 @@ export default Ember.Controller.extend({
   _setup: function() {
     let fileSystem = this.get('filesystem');
     fileSystem.setup();
-  }.on('init')
+  }.on('init'),
+
+  actions: {
+    search(textToFind) {
+      if (this.allowSearch && this.searchRoute) {
+        let currentRouteName = this.get('currentRouteName');
+        let currentSearchText = this.get('currentSearchText');
+        if (currentSearchText !== textToFind || currentRouteName.indexOf('.search') === -1) {
+          this.set('searchText', '');
+          this.set('progressMessage', `Searching for ${textToFind}. Please wait...`);
+          this.showProgressModal();
+          this.transitionToRoute(`${this.searchRoute}/${textToFind}`);
+        }
+      }
+    }
+  }
 });
