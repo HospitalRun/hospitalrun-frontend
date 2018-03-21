@@ -114,7 +114,7 @@ export default Ember.Route.extend(UserSession, AuthenticatedRouteMixin, {
   },
 
   setupController(controller, model) {
-    let navigationController = this.controllerFor('navigation');
+    let navigationController = this.controllerFor('application');
     if (this.get('allowSearch') === true) {
       navigationController.set('allowSearch', true);
       navigationController.set('searchRoute', this.get('searchRoute'));

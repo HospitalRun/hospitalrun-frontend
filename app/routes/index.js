@@ -25,7 +25,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, Navigation, UserRoles
   },
 
   afterModel() {
-    this.controllerFor('navigation').set('allowSearch', false);
+    this.controllerFor('application').set('allowSearch', false);
   },
 
   actions: {
