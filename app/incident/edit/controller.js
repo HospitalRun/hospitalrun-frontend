@@ -6,6 +6,7 @@ import IncidentStatuses, { CLOSED } from 'hospitalrun/mixins/incident-statuses';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import SelectValues from 'hospitalrun/utils/select-values';
 import UserSession from 'hospitalrun/mixins/user-session';
+import CustomFormManager from 'hospitalrun/mixins/custom-form-manager';
 
 const { PromiseArray, PromiseObject } = DS;
 
@@ -19,7 +20,7 @@ const {
   set
 } = Ember;
 
-export default AbstractEditController.extend(IncidentStatuses, FriendlyId, PatientSubmodule, SelectValues, UserSession, {
+export default AbstractEditController.extend(IncidentStatuses, FriendlyId, PatientSubmodule, SelectValues, UserSession, CustomFormManager, {
   lookupListsToUpdate: [{
     name: 'incidentDepartmentList',
     property: 'model.department',
@@ -29,14 +30,13 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
   sequenceView: 'incident_by_friendly_id',
   updateCapability: 'add_incident',
 
-  customForms: inject.service(),
   database: inject.service(),
   filesystem: inject.service(),
   lookupLists: inject.service(),
 
-  customFormsToAdd: alias('customForms.formsForSelect'),
-  customFormsToDisplay: alias('customForms.formsToDisplay'),
-  showAddFormButton: alias('customForms.showAddButton'),
+  customFormsToAdd: alias('formsForSelect'),
+  customFormsToDisplay: alias('formsToDisplay'),
+  showAddFormButton: alias('showAddButton'),
   incidentController: inject.controller('incident'),
 
   canManageIncident: computed('model.{isNew,status}', function() {
@@ -120,9 +120,8 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
   },
 
   setupCustomForms() {
-    let customForms = get(this, 'customForms');
-    let model = get(this, 'model');
-    customForms.setupForms('incident', model);
+    this.set('formType', 'incident');
+    this.initFormsForType();
   },
 
   /**
@@ -156,11 +155,9 @@ export default AbstractEditController.extend(IncidentStatuses, FriendlyId, Patie
     },
 
     addCustomForm() {
-      let model = get(this, 'model');
-      let customFormsToAdd = get(this, 'customFormsToAdd');
       this.send('openModal', 'custom-form-add', Ember.Object.create({
-        modelToAddTo: model,
-        customForms: customFormsToAdd
+        modelToAddTo: this.get('model'),
+        customForms: this.get('customFormsToAdd')
       }));
     },
 

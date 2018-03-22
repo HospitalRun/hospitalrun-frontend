@@ -7,7 +7,7 @@ const {
 } = Ember;
 
 export default Ember.Component.extend(SelectValues, {
-  classNames: 'detail-section-content',
+  classNames: ['detail-section-content', 'js-custom-form'],
   propertyPrefix: '',
   fieldsByRow: computed('form', 'form.fields.[]', 'form.columns', function() {
     let rows = [];

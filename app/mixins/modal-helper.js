@@ -13,7 +13,8 @@ export default Ember.Mixin.create({
     let modalOptions = Ember.Object.extend({
       updateButtonText: i18n.t('buttons.ok')
     });
-    this.send('openModal', 'dialog', modalOptions.create({
+
+    let modalOptionsCreated = modalOptions.create({
       cancelAction,
       hideCancelButton: true,
       message,
@@ -21,7 +22,13 @@ export default Ember.Mixin.create({
       okContext,
       title,
       updateButtonAction: 'ok'
-    }));
+    });
+
+    if (!this.get('isComponent')) {
+      this.send('openModal', 'dialog', modalOptionsCreated);
+    } else {
+      this.sendAction('openModal', 'dialog', modalOptionsCreated);
+    }
   },
 
   displayConfirm(title, message, confirmAction, model) {
