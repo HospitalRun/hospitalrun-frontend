@@ -10,7 +10,7 @@
     <th>{{t 'labels.actions'}}</th>
   </tr>
   {{#each patientLabs as |lab|}}
-    <tr {{action "editLab" lab}}>
+    <tr {{action "editLab" lab}} class= "{{if lab.canEdit (if canAddLab "clickable")}}">
       <td>{{date-format lab.requestedDate}}</td>
       <td>{{lab.labType.name}}</td>
       <td>{{lab.status}}</td>

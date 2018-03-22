@@ -32,9 +32,10 @@ export default Component.extend({
         }, {});
       })
       .then((expansions) => {
-        this.set('expansions', expansions);
+        if (!(this.get('isDestroyed') || this.get('isDestroying'))) {
+          this.set('expansions', expansions);
+        }
       });
-
   },
 
   keyUp(k) {

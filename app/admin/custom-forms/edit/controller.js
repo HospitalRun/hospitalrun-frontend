@@ -8,15 +8,11 @@ const {
 } = Ember;
 
 export default AbstractEditController.extend({
-  customForms: Ember.inject.service(),
   preview: false,
   previewModel: Ember.Object.create(),
   updateCapability: 'update_config',
 
   afterUpdate() {
-    let customForms = this.get('customForms');
-    let model = this.get('model');
-    customForms.resetCustomFormByType(model.get('formType'));
     this.displayAlert(this.get('i18n').t('admin.customForms.titles.formSaved'), this.get('i18n').t('admin.customForms.messages.formSaved', this.get('model')));
   },
 
@@ -166,5 +162,4 @@ export default AbstractEditController.extend({
       });
     }
   }
-
 });
