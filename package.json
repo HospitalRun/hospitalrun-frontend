@@ -42,7 +42,7 @@
     "broccoli-asset-rev": "^2.4.5",
     "broccoli-export-text": "0.0.2",
     "broccoli-serviceworker": "0.1.6",
-    "csv-parse": "^1.2.0",
+    "csv-parse": "^2.0.0",
     "devtron": "^1.4.0",
     "electron-forge": "^5.1.1",
     "electron-prebuilt-compile": "1.8.4",
