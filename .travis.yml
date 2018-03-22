@@ -29,12 +29,12 @@ install:
   - bower install
   - export DISPLAY=':99.0'
 
-#before_script: greenkeeper-lockfile-update
+before_script: greenkeeper-lockfile-update
 
 script:
   - npm run $COMMAND
 
-#after_script: greenkeeper-lockfile-upload
+after_script: greenkeeper-lockfile-upload
 
 env:
   matrix:
