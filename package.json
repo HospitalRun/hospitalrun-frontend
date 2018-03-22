@@ -46,7 +46,6 @@
     "devtron": "^1.4.0",
     "electron-forge": "^5.1.1",
     "electron-prebuilt-compile": "1.8.2-beta.3",
-    "electron-protocol-serve": "^1.3.0",
     "electron-rebuild": "^1.5.7",
     "ember-ajax": "^3.0.0",
     "ember-browserify": "^1.1.12",
@@ -114,7 +113,7 @@
   "dependencies": {
     "electron-compile": "^6.4.2",
     "electron-localshortcut": "^3.0.4",
-    "electron-protocol-serve": "1.3.0",
+    "electron-protocol-serve": "^1.3.0",
     "electron-squirrel-startup": "^1.0.0"
   },
   "ember-addon": {
