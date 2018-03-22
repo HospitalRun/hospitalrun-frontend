@@ -90,7 +90,7 @@ sinonTest('_setReportTitle single date', function(assert) {
     reportType: 'one'
   });
 
-  this.stub(window, 'moment', () => {
+  this.stub(window, 'moment').callsFake(() => {
     return {
       format() {
         return 'April 3rd, 2015';
