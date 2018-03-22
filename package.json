@@ -45,7 +45,7 @@
     "csv-parse": "^1.2.0",
     "devtron": "^1.4.0",
     "electron-forge": "^5.1.1",
-    "electron-prebuilt-compile": "1.8.2-beta.3",
+    "electron-prebuilt-compile": "1.8.4",
     "electron-rebuild": "^1.5.7",
     "ember-ajax": "^3.0.0",
     "ember-browserify": "^1.1.12",
