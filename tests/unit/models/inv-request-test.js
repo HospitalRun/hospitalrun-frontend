@@ -21,6 +21,7 @@ moduleForModel('inv-request', 'Unit | Model | inv-request', {
     'model:price-profile',
     'model:visit',
     'service:i18n',
+    'service:session',
     'locale:en/translations',
     'locale:en/config',
     'util:i18n/missing-message',

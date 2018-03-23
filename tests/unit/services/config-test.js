@@ -2,7 +2,9 @@ import { moduleFor, test } from 'ember-qunit';
 
 moduleFor('service:config', 'Unit | Service | config', {
   needs: [
-    'service:session'
+    'service:session',
+    'service:languagePreference',
+    'service:database'
   ]
 });
 

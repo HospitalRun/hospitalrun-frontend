@@ -8,7 +8,8 @@ moduleForModel('inventory', 'Unit | Model | inventory', {
     'ember-validations@validator:local/presence',
     'model:inv-location',
     'model:inv-purchase',
-    'service:validations'
+    'service:validations',
+    'service:session'
   ]
 });
 

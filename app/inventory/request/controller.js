@@ -104,7 +104,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
           model.set('quantity');
           this.set('selectedInventoryItem');
         }
-      }.bind(this)).catch(Ember.K);
+      }.bind(this)).catch(function() {});
     },
 
     allRequests() {

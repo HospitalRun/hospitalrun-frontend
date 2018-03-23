@@ -24,7 +24,8 @@ moduleFor('mixin:patient-diagnosis', 'Unit | Mixin | patient-diagnosis', {
     'model:diagnosis',
     'model:report',
     'ember-validations@validator:local/acceptance',
-    'ember-validations@validator:local/presence'
+    'ember-validations@validator:local/presence',
+    'service:session'
   ],
   store() {
     return this.container.lookup('service:store');

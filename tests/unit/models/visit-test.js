@@ -17,7 +17,8 @@ moduleForModel('visit', 'Unit | Model | visit', {
     'model:vital',
     'model:visit',
     'model:report',
-    'service:validations'
+    'service:validations',
+    'service:session'
   ]
 });
 

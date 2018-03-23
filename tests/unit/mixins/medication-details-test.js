@@ -9,7 +9,8 @@ moduleFor('mixin:medication-details', 'Unit | Mixin | medication-details', {
     'ember-validations@validator:local/presence',
     'model:inventory',
     'model:inv-purchase',
-    'model:inv-location'
+    'model:inv-location',
+    'service:session'
   ],
   subject(attrs) {
     let subject;

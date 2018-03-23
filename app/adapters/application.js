@@ -4,6 +4,7 @@ import uuid from 'npm:uuid';
 import withTestWaiter from 'ember-concurrency-test-waiter/with-test-waiter';
 import { Adapter } from 'ember-pouch';
 import { task } from 'ember-concurrency';
+import { pluralize } from 'ember-inflector';
 
 const {
   computed: {
@@ -121,7 +122,7 @@ export default Adapter.extend(CheckForErrors, {
           return database.getEmberId(row.id);
         });
         this.findRecord(store, type, ids).then((findResponse) => {
-          let primaryRecordName = type.modelName.camelize().pluralize();
+          let primaryRecordName = pluralize(type.modelName.camelize());
           let sortedValues = [];
           // Sort response in order of ids
           ids.forEach((id) => {
@@ -164,7 +165,7 @@ export default Adapter.extend(CheckForErrors, {
         live: true,
         returnDocs: false
       }).on('change', bind(this, 'onChange')
-      ).on('error', Ember.K); // Change sometimes throws weird 500 errors that we can ignore
+      ).on('error', function() {}); // Change sometimes throws weird 500 errors that we can ignore
       db.changesListener = this.changes;
     }
   },

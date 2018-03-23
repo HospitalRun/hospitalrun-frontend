@@ -30,7 +30,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
           this.set('model.imagingDate', new Date());
           this.send('update');
         }
-      }.bind(this)).catch(Ember.K);
+      }.bind(this)).catch(function() {});
     },
 
     /**

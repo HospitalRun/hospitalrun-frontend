@@ -130,7 +130,7 @@ export default Ember.Component.extend({
         }
       });
       let model = this.get('model');
-      model.validate().catch(Ember.K);
+      model.validate().catch(function() {});
     });
   }
 

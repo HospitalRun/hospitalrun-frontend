@@ -36,7 +36,7 @@ export default Ember.Mixin.create(PatientVisits, {
           this.set('model.patient', item);
           this.patientSelected(item);
           Ember.run.once(this, function() {
-            this.get('model').validate().catch(Ember.K);
+            this.get('model').validate().catch(function() {});
           });
         });
       } else {

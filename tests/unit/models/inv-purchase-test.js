@@ -5,7 +5,8 @@ import { testValidPropertyValues, testInvalidPropertyValues } from '../../helper
 moduleForModel('inv-purchase', 'Unit | Model | inv-purchase', {
   needs: [
     'ember-validations@validator:local/numericality',
-    'ember-validations@validator:local/presence'
+    'ember-validations@validator:local/presence',
+    'service:session'
   ]
 });
 

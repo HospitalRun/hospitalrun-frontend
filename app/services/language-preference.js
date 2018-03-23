@@ -21,7 +21,9 @@ export default Ember.Service.extend({
 
     // Whenever the languague changes, apply RTL settings to application
     let currentConfig = walkConfigs(selectedLanguage, Ember.getOwner(this)) || {};
-    setRTL(currentConfig.rtl);
+    if (currentConfig.class) {
+      setRTL(currentConfig.class.rtl);
+    }
 
     return Ember.run(() => this.set('i18n.locale', selectedLanguage));
   },

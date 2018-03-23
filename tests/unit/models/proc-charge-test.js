@@ -9,7 +9,8 @@ moduleForModel('proc-charge', 'Unit | Model | proc-charge', {
     'model:inventory',
     'model:inv-purchase',
     'model:inv-location',
-    'model:pricing'
+    'model:pricing',
+    'service:session'
   ]
 });
 

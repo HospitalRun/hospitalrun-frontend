@@ -13,7 +13,8 @@ moduleFor('mixin:patient-name', 'Unit | Mixin | patient-name', {
     'model:operative-plan',
     'model:patient',
     'model:payment',
-    'model:price-profile'
+    'model:price-profile',
+    'service:session'
   ],
   subject(attrs) {
     let subject;

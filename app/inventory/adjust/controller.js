@@ -11,7 +11,7 @@ export default AbstractEditController.extend(AdjustmentTypes, {
 
   transactionTypeChanged: function() {
     Ember.run.once(this, function() {
-      this.get('model').validate().catch(Ember.K);
+      this.get('model').validate().catch(function() {});
     });
   }.observes('transactionType'),
 

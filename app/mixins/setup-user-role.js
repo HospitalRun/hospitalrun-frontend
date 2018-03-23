@@ -9,6 +9,6 @@ export default Ember.Mixin.create({
       let sessionData = session.get('data');
       sessionStore.persist(sessionData);
       return true;
-    }).catch(Ember.K);
+    }).catch(function() {});
   }
 });

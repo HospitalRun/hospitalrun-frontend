@@ -54,7 +54,7 @@ export default TypeAhead.extend({
         let model = this.get('model');
         model.set('inventoryItem', inventoryItem);
         Ember.run.once(this, function() {
-          model.validate().catch(Ember.K);
+          model.validate().catch(function() {});
         });
       });
     }

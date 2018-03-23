@@ -17,6 +17,7 @@ moduleForModel('patient', 'Unit | Model | patient', {
     'model:payment',
     'model:price-profile',
     'service:i18n',
+    'service:session',
     'util:i18n/compile-template',
     'util:i18n/missing-message'
   ],

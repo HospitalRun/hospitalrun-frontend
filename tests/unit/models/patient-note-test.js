@@ -7,6 +7,7 @@ moduleForModel('patient-note', 'Unit | Model | patient-note', {
   needs: [
     'ember-validations@validator:local/presence',
     'service:i18n',
+    'service:session',
     'locale:en/translations',
     'locale:en/config',
     'util:i18n/missing-message',

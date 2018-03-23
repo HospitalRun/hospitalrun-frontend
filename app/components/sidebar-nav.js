@@ -10,6 +10,7 @@ export default Ember.Component.extend(HospitalRunVersion, ModalHelper, UserSessi
   config: Ember.inject.service(),
   i18n: Ember.inject.service(),
   progressTitle: 'Searching',
+  router: Ember.inject.service(),
   session: Ember.inject.service(),
   syncStatus: '',
   currentOpenNav: null,
@@ -49,8 +50,7 @@ export default Ember.Component.extend(HospitalRunVersion, ModalHelper, UserSessi
       }
       this.set('currentOpenNav', nav);
 
-      // @todo replace with the router service as of https://www.emberjs.com/blog/2017/09/01/ember-2-15-released.html#toc_public-router-service-phase-1
-      Ember.getOwner(this).lookup('router:main').transitionTo(nav.route);
+      this.get('router').transitionTo(nav.route);
       this.set('isShowingSettings', false);
     },
 

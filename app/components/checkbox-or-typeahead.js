@@ -59,7 +59,7 @@ export default SelectOrTypeahead.extend({
       }
       this.set(propertyName, selectedValues);
       this.set('selection', selectedValues);
-      this.get('model').validate().catch(Ember.K);
+      this.get('model').validate().catch(function() {});
     }
   }
 

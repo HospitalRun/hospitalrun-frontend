@@ -7,7 +7,8 @@ moduleForModel('appointment', 'Unit | Model | appointment', {
     'ember-validations@validator:local/acceptance',
     'ember-validations@validator:local/presence',
     'model:patient',
-    'model:visit'
+    'model:visit',
+    'service:session'
   ]
 });
 

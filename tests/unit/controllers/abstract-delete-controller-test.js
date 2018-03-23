@@ -56,7 +56,7 @@ test('actions.delete', function(assert) {
   Ember.run(() => controller.send('delete'));
 
   assert.equal(send.getCall(0).args[0], 'delete');
-  assert.ok(save.calledOnce, 'Should save model');
+  assert.ok(save.calledTwice, 'Should save model');
   assert.strictEqual(controller.get('model.archived'), true, 'Should archive model');
   assert.ok(unloadRecord.calledOnce, 'Should unload record of model');
   assert.equal(send.getCall(1).args[0], 'closeModal', 'Should close modal');

@@ -11,7 +11,8 @@ moduleForModel('invoice', 'Unit | Model | invoice', {
     'model:line-item-detail',
     'ember-validations@validator:local/acceptance',
     'ember-validations@validator:local/numericality',
-    'ember-validations@validator:local/presence'
+    'ember-validations@validator:local/presence',
+    'service:session'
   ]
 });
 

@@ -42,7 +42,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
       this.set('model.inventoryItem');
     }
     Ember.run.later(function() {
-      this.get('model').validate().catch(Ember.K);
+      this.get('model').validate().catch(function() {});
     }.bind(this));
   }.observes('model.medication'),
 
