@@ -9,7 +9,7 @@ export default Ember.Mixin.create({
   format: 'l',
   maxDate: null,
   minDate: null,
-  originalPropery: null,
+  originalProperty: null,
   showTime: false,
   yearRange: 10,
 

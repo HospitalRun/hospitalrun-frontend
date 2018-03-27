@@ -76,10 +76,10 @@ export default AppointmentIndexRoute.extend({
         });
       }
     });
-    return {
+    return Ember.Object.create({
       events,
       resources
-    };
+    });
   },
 
   _modelQueryParams(params) {

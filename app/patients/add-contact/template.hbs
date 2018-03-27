@@ -5,10 +5,10 @@
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  {{#em-form model=this submitButton=false }}
-    {{em-input label=(t 'labels.name') property="name"}}
-    {{em-input label=(t 'patients.labels.phone') property="phone"}}
-    {{em-input label=(t 'patients.labels.email') property="email"}}
-    {{em-input label=(t 'patients.labels.relationships') property="relationship"}}
+  {{#em-form model=this submitButton=false as |form|}}
+    {{form.input label=(t 'labels.name') property="name"}}
+    {{form.input label=(t 'patients.labels.phone') property="phone"}}
+    {{form.input label=(t 'patients.labels.email') property="email"}}
+    {{form.input label=(t 'patients.labels.relationships') property="relationship"}}
   {{/em-form}}
 {{/modal-dialog}}

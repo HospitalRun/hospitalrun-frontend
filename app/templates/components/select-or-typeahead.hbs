@@ -1,7 +1,7 @@
 {{#if userCanAdd}}
   {{partial 'components/render-typeahead'}}
 {{else}}
-  {{em-select class=(concat 'form-input-group ' className) label=label
+  {{form.select class=(concat 'form-input-group ' className) label=label
     property=property content=content
     optionValuePath=optionValuePath
     optionLabelPath=optionLabelPath

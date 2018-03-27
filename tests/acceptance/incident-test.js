@@ -72,8 +72,8 @@ test('Incident creation and editing', function(assert) {
       click('.sentinel-event input');
       fillIn('.incident-date input', now.format(DATE_TIME_FORMAT));
       typeAheadFillIn('.incident-department', DEPARTMENT);
-      fillIn('.reported-to', REPORTED_TO);
-      select('.incident-category', INCIDENT_CATEGORY);
+      fillIn('.reported-to input', REPORTED_TO);
+      fillIn('.incident-category select', INCIDENT_CATEGORY);
       waitToAppear(`.incident-category-item option:contains(${INCIDENT_CATEGORY_ITEM})`);
     });
     andThen(() => {

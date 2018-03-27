@@ -12,10 +12,6 @@ export default AbstractIndexRoute.extend({
     return this.store.findAll('lookup').catch((error) => this.send('error', error));
   },
 
-  afterModel(model) {
-    model.set('lookupType', 'anesthesia_types');
-  },
-
   actions: {
     deleteValue(value) {
       this.controller.send('deleteValue', value);

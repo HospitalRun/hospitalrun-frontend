@@ -1,7 +1,7 @@
 {{#edit-panel editPanelProps=editPanelProps}}
-  {{#em-form model=model submitButton=false }}
+  {{#em-form model=model submitButton=false as |form|}}
     {{#unless model.isNew}}
-      {{patient-summary patient=model.patient returnTo='invoices.edit' returnToContext=model.id disablePatientLink=model.isNew }}
+      {{patient-summary patient=model.patient returnTo='invoices.edit' returnToContext=model.id disablePatientLink=model.isNew class="clickable"}}
     {{/unless}}
     <div class="row">
       {{#unless model.isNew}}
@@ -10,10 +10,10 @@
           <p class="form-control-static">{{model.id}}</p>
         </div>
       {{/unless}}
-      {{date-picker property="billDate" label=(t 'labels.billDate') class="col-xs-2"}}
+      {{date-picker model=model property="billDate" label=(t 'labels.billDate') class="col-xs-2"}}
       {{#if model.isNew}}
-        {{patient-typeahead property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="col-xs-4 required invoice-patient"}}
-        {{em-select class="col-xs-4 required invoice-visit" label=(t 'labels.visit')
+        {{patient-typeahead model=model property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="col-xs-4 required invoice-patient"}}
+        {{form.select class="col-xs-4 required invoice-visit" label=(t 'labels.visit')
             property="visit" content=patientVisitsForSelect
             optionValuePath="selectObject" optionLabelPath="selectObject.visitDescription"
             selected=model.visit
@@ -27,8 +27,8 @@
       {{/if}}
     </div>
     <div class="row">
-      {{em-input property="externalInvoiceNumber" label=(t 'billing.labels.externalInvoiceNumber') class="col-xs-3 external-invoice-no"}}
-      {{em-select label=(t 'billing.labels.paymentProfile')
+      {{form.input property="externalInvoiceNumber" label=(t 'billing.labels.externalInvoiceNumber') class="col-xs-3 external-invoice-no"}}
+      {{form.select label=(t 'billing.labels.paymentProfile')
         property="paymentProfile"
         content=pricingProfiles
         optionValuePath="selectObject"

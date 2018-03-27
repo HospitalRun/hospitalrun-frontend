@@ -5,26 +5,36 @@ import moduleForAcceptance from 'hospitalrun/tests/helpers/module-for-acceptance
 
 const { isEmpty } = Ember;
 
-const visitData = {
-  outPatient: {
-    LOCATION: 'Springfield Hospital',
-    EXAMINER: 'Sarah Kearney',
-    PRIMARY_DIAGNOSIS: 'ACL deficient knee, right',
-    SECONDARY_DIAGNOSIS: 'ACL deficient knee, left',
-    OPERATION_DESCRIPTION: 'Describe Operation here',
-    PROCEDURE_SPLINT: 'application of long arm post splint',
-    ADMISSION_INSTRUCTIONS: 'Admission Instructions here',
-    OPD_PROCEDURE_DESCRIPTION: 'Bilateral knee Release',
-    OPD_PROCEDURE_PHYSICIAN: 'Sarah Kearney',
-    LAB_TYPE: 'Cholesterol',
-    IMAGING_TYPE: 'Cervical Spine AP-L',
-    APPOINTMENT_START_DATE: moment().add(7, 'days').format('l h:mm A'),
-    APPOINTMENT_END_DATE: moment().add(8, 'days').format('l h:mm A'),
-    NOTE_CONTENT: 'OPD notes are entered here'
+const LOCATION = 'Springfield Hospital';
+const EXAMINER = 'Sarah Kearney';
+const PRIMARY_DIAGNOSIS = 'ACL deficient knee, right';
+const SECONDARY_DIAGNOSIS = 'ACL deficient knee, left';
+const OPERATION_DESCRIPTION = 'Describe Operation here';
+const PROCEDURE_SPLINT = 'application of long arm post splint';
+const ADMISSION_INSTRUCTIONS = 'Admission Instructions here';
+const OPD_PROCEDURE_DESCRIPTION = 'Bilateral knee Release';
+const OPD_PROCEDURE_PHYSICIAN = 'Sarah Kearney';
+const LAB_TYPE = 'Cholesterol';
+const IMAGING_TYPE = 'Cervical Spine AP-L';
+const APPOINTMENT_START_DATE = moment().add(7, 'days').format('l h =mm A');
+const APPOINTMENT_END_DATE = moment().add(8, 'days').format('l h =mm A');
+const NOTE_CONTENT = 'OPD notes are entered here';
+const PATIENT = 'Joe Bagadonuts';
+const PATIENT_ID = 'P00001';
+
+const opdReportTestCases = {
+  'Add OPD visit': {},
+  'OPD report with always included custom form': {
+    customForms: [{ type: 'Lab', alwaysIncluded: true, name: 'Test Custom Form for Lab included' }]
   },
-  admission: {
-    EXAMINER: 'Drederick Willie',
-    NOTE_CONTENT: 'Patient notes are entered here'
+  'OPD report with a custom form': {
+    customForms: [{ type: 'Lab', alwaysIncluded: false, name: 'Test Custom Form for Lab NOT included' }]
+  },
+  'OPD report with always included and regular custom forms': {
+    customForms: [
+      { type: 'Lab', alwaysIncluded: true, name: 'Test Custom Form for Lab included' },
+      { type: 'Lab', alwaysIncluded: false, name: 'Test Custom Form for Lab NOT included' }
+    ]
   }
 };
 
@@ -52,27 +62,34 @@ test('Add admission visit', function(assert) {
   });
 });
 
-test('Add OPD visit', function(assert) {
-  runWithPouchDump('patient', function() {
-    authenticateUser();
-    addVisit(assert, 'Clinic');
-    andThen(() => {
-      addOutpatientData(assert);
-    });
-    andThen(() => {
-      newReport(assert, 'OPD');
-    });
-    andThen(() => {
-      checkOPDReport(assert);
-    });
-    andThen(() => {
-      saveReport(assert, 'OPD');
-    });
-    andThen(() => {
-      viewReport(assert, 'OPD');
+for (let testCase in opdReportTestCases) {
+  test(testCase, function(assert) {
+    runWithPouchDump('patient', function() {
+      authenticateUser();
+
+      (opdReportTestCases[testCase].customForms || []).forEach((f) => {
+        createCustomFormForType(f.type, f.alwaysIncluded);
+      });
+
+      addVisit(assert, 'Clinic');
+      andThen(() => {
+        addOutpatientData(assert, opdReportTestCases[testCase]);
+      });
+      andThen(() => {
+        newReport(assert, 'OPD');
+      });
+      andThen(() => {
+        checkOPDReport(assert);
+      });
+      andThen(() => {
+        saveReport(assert, 'OPD');
+      });
+      andThen(() => {
+        viewReport(assert, 'OPD', opdReportTestCases[testCase]);
+      });
     });
   });
-});
+}
 
 test('Edit visit', function(assert) {
   runWithPouchDump('patient', function() {
@@ -252,7 +269,7 @@ function addVisit(assert, type) {
     click('button:contains(Edit)');
   });
   andThen(function() {
-    assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts patient record displays');
+    assert.equal(find('.patient-name .ps-info-data').text(), PATIENT, `${PATIENT} patient record displays`);
     click('[data-test-selector=visits-tab]');
     waitToAppear('#visits button:contains(Edit)');
   });
@@ -261,22 +278,21 @@ function addVisit(assert, type) {
     waitToAppear('#visit-info');
   });
   andThen(function() {
-    assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts displays as patient for visit');
+    assert.equal(find('.patient-name .ps-info-data').text(), PATIENT, `${PATIENT} displays as patient for visit`);
     updateVisit(assert, 'Add', type);
   });
-
 }
 
-function addOutpatientData(assert) {
-  typeAheadFillIn('.visit-location', visitData.outPatient.LOCATION);
-  typeAheadFillIn('.visit-examiner', visitData.outPatient.EXAMINER);
+function addOutpatientData(assert, testCase) {
+  typeAheadFillIn('.visit-location', LOCATION);
+  typeAheadFillIn('.visit-examiner', EXAMINER);
   andThen(() => {
     click('a:contains(Add Diagnosis)');
     waitToAppear('.modal-dialog');
   });
   andThen(() => {
     assert.equal(find('.modal-title').text(), 'Add Diagnosis', 'Add Diagnosis dialog displays');
-    fillIn('.diagnosis-text input', visitData.outPatient.PRIMARY_DIAGNOSIS);
+    fillIn('.diagnosis-text input', PRIMARY_DIAGNOSIS);
     click('.modal-footer button:contains(Add)');
   });
   andThen(function() {
@@ -288,7 +304,7 @@ function addOutpatientData(assert) {
   });
   andThen(() => {
     assert.equal(find('.modal-title').text(), 'Add Diagnosis', 'Add Diagnosis dialog displays');
-    fillIn('.diagnosis-text input', visitData.outPatient.SECONDARY_DIAGNOSIS);
+    fillIn('.diagnosis-text input', SECONDARY_DIAGNOSIS);
     click('.secondary-diagnosis input');
   });
   andThen(() => {
@@ -296,20 +312,20 @@ function addOutpatientData(assert) {
   });
   andThen(function() {
     waitToDisappear('.modal-dialog');
-    waitToAppear(`a.secondary-diagnosis:contains(${visitData.outPatient.SECONDARY_DIAGNOSIS})`);
+    waitToAppear(`a.secondary-diagnosis:contains(${SECONDARY_DIAGNOSIS})`);
   });
   andThen(() => {
     click('a:contains(Add Operative Plan)');
   });
   andThen(() => {
     assert.ok(currentURL().indexOf('/patients/operative-plan/new?forVisitId') > -1, 'New operative plan URL is visited');
-    assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Joe Bagadonuts patient header displays');
+    assert.equal(find('.patient-name .ps-info-data').text(), PATIENT, `${PATIENT} patient header displays`);
     assert.equal(find('.view-current-title').text(), 'New Operative Plan', 'New operative plan title is correct');
-    fillIn('.operation-description textarea', visitData.outPatient.OPERATION_DESCRIPTION);
-    typeAheadFillIn('.procedure-description', visitData.outPatient.PROCEDURE_SPLINT);
+    fillIn('.operation-description textarea', OPERATION_DESCRIPTION);
+    typeAheadFillIn('.procedure-description', PROCEDURE_SPLINT);
     click('button:contains(Add Procedure)');
     waitToAppear('.procedure-listing td.procedure-description');
-    fillIn('.admission-instructions textarea', visitData.outPatient.ADMISSION_INSTRUCTIONS);
+    fillIn('.admission-instructions textarea', ADMISSION_INSTRUCTIONS);
   });
   updateVisitData(assert, 'Plan Saved');
   andThen(() => {
@@ -320,8 +336,8 @@ function addOutpatientData(assert) {
   });
   andThen(() => {
     assert.ok(currentURL().indexOf('visits/procedures/edit/new?forVisitId') > -1, 'New Procedures URL is visited');
-    typeAheadFillIn('.procedure-description', visitData.outPatient.OPD_PROCEDURE_DESCRIPTION);
-    typeAheadFillIn('.procedure-physician', visitData.outPatient.OPD_PROCEDURE_PHYSICIAN);
+    typeAheadFillIn('.procedure-description', OPD_PROCEDURE_DESCRIPTION);
+    typeAheadFillIn('.procedure-physician', OPD_PROCEDURE_PHYSICIAN);
   });
   updateVisitData(assert, 'Procedure Saved');
   andThen(() => {
@@ -329,7 +345,13 @@ function addOutpatientData(assert) {
   });
   andThen(() => {
     assert.ok(currentURL().indexOf('/labs/edit/new?forVisitId') > -1, 'New Lab URL is visited');
-    typeAheadFillIn('.test-lab-type', visitData.outPatient.LAB_TYPE);
+    typeAheadFillIn('.test-lab-type', LAB_TYPE);
+    (testCase.customForms || []).forEach((f) => {
+      if (!f.alwaysIncluded) {
+        attachCustomForm(f.name);
+      }
+      fillCustomForm(f.name);
+    });
   });
   updateVisitData(assert, 'Lab Request Saved');
   andThen(() => {
@@ -337,7 +359,7 @@ function addOutpatientData(assert) {
   });
   andThen(() => {
     assert.ok(currentURL().indexOf('/imaging/edit/new?forVisitId') > -1, 'New Imaging URL is visited');
-    typeAheadFillIn('.imaging-type-input', visitData.outPatient.IMAGING_TYPE);
+    typeAheadFillIn('.imaging-type-input', IMAGING_TYPE);
   });
   updateVisitData(assert, 'Imaging Request Saved');
   andThen(() => {
@@ -346,8 +368,8 @@ function addOutpatientData(assert) {
   andThen(() => {
     assert.ok(currentURL().indexOf('/appointments/edit/new?forVisitId') > -1, 'New Appointment URL is visited');
     click('.appointment-all-day input');
-    fillIn('.test-appointment-start input', visitData.outPatient.APPOINTMENT_START_DATE);
-    fillIn('.test-appointment-end input', visitData.outPatient.APPOINTMENT_END_DATE);
+    fillIn('.test-appointment-start input', APPOINTMENT_START_DATE);
+    fillIn('.test-appointment-end input', APPOINTMENT_END_DATE);
   });
   updateVisitData(assert, 'Appointment Saved');
   andThen(function() {
@@ -356,8 +378,8 @@ function addOutpatientData(assert) {
     click('[data-test-selector=new-note-btn]');
   });
   andThen(() => {
-    assert.equal(find('.modal-title').text(), 'New Note for Joe Bagadonuts', 'New Note dialog displays');
-    fillIn('.test-note-content textarea', visitData.outPatient.NOTE_CONTENT);
+    assert.equal(find('.modal-title').text(), `New Note for ${PATIENT}`, 'New Note dialog displays');
+    fillIn('.test-note-content textarea', NOTE_CONTENT);
     click('.modal-footer button:contains(Add)');
   });
   andThen(function() {
@@ -369,7 +391,7 @@ function addOutpatientData(assert) {
 }
 
 function addAdmissionData(assert) {
-  typeAheadFillIn('.visit-examiner', visitData.admission.EXAMINER);
+  typeAheadFillIn('.visit-examiner', EXAMINER);
   andThen(function() {
     click('[data-test-selector=notes-tab]');
     waitToAppear('[data-test-selector=new-note-btn]');
@@ -377,7 +399,7 @@ function addAdmissionData(assert) {
   });
   andThen(() => {
     assert.equal(find('.modal-title').text(), 'New Note for Joe Bagadonuts', 'New Note dialog displays');
-    fillIn('.test-note-content textarea', visitData.admission.NOTE_CONTENT);
+    fillIn('.test-note-content textarea', NOTE_CONTENT);
     click('.modal-footer button:contains(Add)');
   });
   andThen(function() {
@@ -398,48 +420,48 @@ function newReport(assert, type) {
   andThen(function() {
     assert.ok(currentURL().indexOf('visits/reports/edit/new') > -1, 'Report url is correct');
     assert.equal(find('.view-current-title').text(), `New ${type} Report`, `${type} report title displayed correctly`);
-    assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Patient record displays');
+    assert.equal(find('.patient-name .ps-info-data').text(), PATIENT, 'Patient record displays');
   });
 }
 
 function checkOPDReport(assert) {
   andThen(() => {
-    assert.equal(find('.patient-id .ps-info-data').text(), 'P00001', 'Patient ID is displayed');
-    assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Patient First Name & Last Name is displayed');
+    assert.equal(find('.patient-id .ps-info-data').text(), PATIENT_ID, 'Patient ID is displayed');
+    assert.equal(find('.patient-name .ps-info-data').text(), PATIENT, 'Patient First Name & Last Name is displayed');
     assert.equal(find('.test-visit-date .test-visit-date-label').text().trim(), 'Date of Visit:', 'Visit date label displayed');
     assert.ok(!isEmpty(find('.test-visit-date .test-visit-date-data').text()), 'Visit date is displayed');
     findWithAssert('.test-visit-type .test-visit-type-label:contains(Visit Type)');
     assert.equal(find('.test-visit-type .test-visit-type-data').text(), 'Clinic', 'Visit Type is displayed');
     findWithAssert('.test-examiner .test-examiner-label:contains(Examiner)');
-    assert.equal(find('.test-examiner .test-examiner-data').text(), visitData.outPatient.EXAMINER, 'Visit Examiner is displayed');
+    assert.equal(find('.test-examiner .test-examiner-data').text(), EXAMINER, 'Visit Examiner is displayed');
     findWithAssert('.test-location .test-location-label:contains(Visit Location)');
-    assert.equal(find('.test-location .test-location-data').text(), visitData.outPatient.LOCATION, 'Visit Location is displayed');
-    findWithAssert(`.primary-diagnosis:contains(${visitData.outPatient.PRIMARY_DIAGNOSIS})`);
-    findWithAssert(`.secondary-diagnosis:contains(${visitData.outPatient.SECONDARY_DIAGNOSIS})`);
+    assert.equal(find('.test-location .test-location-data').text(), LOCATION, 'Visit Location is displayed');
+    findWithAssert(`.primary-diagnosis:contains(${PRIMARY_DIAGNOSIS})`);
+    findWithAssert(`.secondary-diagnosis:contains(${SECONDARY_DIAGNOSIS})`);
     findWithAssert('.test-opd-procedure .test-opd-procedure-label:contains(Procedures)');
-    assert.ok(find('.test-opd-procedure .test-opd-procedure-data').text().indexOf(visitData.outPatient.OPD_PROCEDURE_DESCRIPTION) > -1, 'OPD Procedure is displayed');
+    assert.ok(find('.test-opd-procedure .test-opd-procedure-data').text().indexOf(OPD_PROCEDURE_DESCRIPTION) > -1, 'OPD Procedure is displayed');
     findWithAssert('.test-labs .test-labs-label:contains(Labs)');
-    assert.ok(find('.test-labs .test-labs-data').text().indexOf(visitData.outPatient.LAB_TYPE) > -1, 'Lab request is displayed');
+    assert.ok(find('.test-labs .test-labs-data').text().indexOf(LAB_TYPE) > -1, 'Lab request is displayed');
     findWithAssert('.test-images .test-images-label:contains(Images)');
-    assert.ok(find('.test-images .test-images-data').text().indexOf(visitData.outPatient.IMAGING_TYPE) > -1, 'Image request is displayed');
+    assert.ok(find('.test-images .test-images-data').text().indexOf(IMAGING_TYPE) > -1, 'Image request is displayed');
     findWithAssert('.test-operative-plan .test-operative-plan-label:contains(Operative Plan)');
     findWithAssert('.test-operative-plan .test-operative-plan-description-label:contains(Operation Description:)');
-    assert.equal(find('.test-operative-plan .test-operative-plan-description-data').text(), visitData.outPatient.OPERATION_DESCRIPTION);
+    assert.equal(find('.test-operative-plan .test-operative-plan-description-data').text(), OPERATION_DESCRIPTION);
     findWithAssert('.test-operative-plan .test-operative-plan-procedures-label:contains(Planned Procedures:)');
-    assert.equal(find('.test-operative-plan .test-operative-plan-procedures-description').text(), visitData.outPatient.PROCEDURE_SPLINT);
+    assert.equal(find('.test-operative-plan .test-operative-plan-procedures-description').text(), PROCEDURE_SPLINT);
     findWithAssert('.test-operative-plan .test-operative-plan-instructions-label:contains(Instructions upon Admission:)');
-    assert.equal(find('.test-operative-plan .test-operative-plan-instructions-data').text(), visitData.outPatient.ADMISSION_INSTRUCTIONS, 'Admission Instruction is displayed');
+    assert.equal(find('.test-operative-plan .test-operative-plan-instructions-data').text(), ADMISSION_INSTRUCTIONS, 'Admission Instruction is displayed');
   });
 }
 
 function checkDischargeReport(assert) {
   andThen(function() {
     findWithAssert('.test-examiner .test-examiner-label:contains(Examiner)');
-    assert.equal(find('.test-examiner .test-examiner-data').text(), visitData.admission.EXAMINER, 'Examiner is displayed');
+    assert.equal(find('.test-examiner .test-examiner-data').text(), EXAMINER, 'Examiner is displayed');
     assert.equal(find('.test-visit-date .test-visit-date-label').text().trim(), 'Admission Date:', 'Visit date label displays as admission');
     assert.equal(find('.test-visit-date .test-visit-discharge-date-label').text().trim(), 'Discharge Date:', 'Discharge date label displays');
     findWithAssert('.test-notes .test-notes-label:contains(Notes)');
-    assert.ok(find('.test-notes .test-notes-data').text().indexOf(visitData.admission.NOTE_CONTENT) > -1, 'Notes are displayed');
+    assert.ok(find('.test-notes .test-notes-data').text().indexOf(NOTE_CONTENT) > -1, 'Notes are displayed');
   });
 }
 
@@ -463,7 +485,7 @@ function saveReport(assert, type) {
   });
 }
 
-function viewReport(assert, type) {
+function viewReport(assert, type, testCase) {
   andThen(function() {
     click('[data-test-selector=reports-tab]');
     waitToAppear('[data-test-selector=view-report-btn]');
@@ -471,9 +493,13 @@ function viewReport(assert, type) {
   });
   andThen(function() {
     assert.ok(currentURL().indexOf('visits/reports/edit') > -1, 'Edit report url is correct');
-    assert.equal(find('.patient-name .ps-info-data').text(), 'Joe Bagadonuts', 'Patient record displays');
+    assert.equal(find('.patient-name .ps-info-data').text(), PATIENT, 'Patient record displays');
     assert.equal(find('.view-current-title').text(), `${type} Report`, 'Report title displayed correctly');
     assert.ok(find('.panel-footer button:contains(Print)').is(':visible'), 'Print button is visible');
+
+    (testCase && testCase.customForms || []).forEach((f) => {
+      checkCustomFormIsFilledAndReadonly(assert, f.name);
+    });
   });
 }
 

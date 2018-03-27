@@ -5,7 +5,7 @@
     title=title
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText }}
-  {{#em-form model=model submitButton=false }}
-    {{em-input label=(t 'incident.labels.item') property="item" class="incident-category-item"}}
+  {{#em-form model=model submitButton=false as |form|}}
+    {{form.input label=(t 'incident.labels.item') property="item" class="incident-category-item"}}
   {{/em-form}}
 {{/modal-dialog}}

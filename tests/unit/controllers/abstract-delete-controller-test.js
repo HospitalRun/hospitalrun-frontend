@@ -30,7 +30,8 @@ moduleFor('controller:abstract-delete-controller', 'Unit | Controller | abstract
 
 test('actions.cancel', function(assert) {
   let controller = this.subject();
-  let send = this.stub(controller, 'send', this.sendStub(controller));
+  let sendStubFn = this.sendStub(controller);
+  let send = this.stub(controller, 'send').callsFake(sendStubFn);
 
   controller.send('cancel');
 
@@ -45,8 +46,9 @@ test('actions.delete', function(assert) {
       unloadRecord: () => {}
     })
   });
-  let send = this.stub(controller, 'send', this.sendStub(controller));
-  let save = this.stub(controller.get('model'), 'save', () => {
+  let sendStubFn = this.sendStub(controller);
+  let send = this.stub(controller, 'send').callsFake(sendStubFn);
+  let save = this.stub(controller.get('model'), 'save').callsFake(() => {
     return new Ember.RSVP.Promise((resolve) => resolve());
   });
   let unloadRecord = this.stub(controller.get('model'), 'unloadRecord');

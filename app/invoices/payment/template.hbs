@@ -4,10 +4,10 @@
     updateButtonAction=updateButtonAction
     updateButtonText=updateButtonText
     updateButtonClass='update-payment-btn'}}
-  {{#em-form model=model submitButton=false }}
+  {{#em-form model=model submitButton=false as |form|}}
     {{#if model.isNew}}
       {{#if selectPatient}}
-        {{patient-typeahead property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="required payment-patient"}}
+        {{patient-typeahead model=model property="patientTypeAhead" label=(t 'labels.patient') content=patientList selection=selectedPatient class="required payment-patient"}}
       {{else}}
         <div class="form-group">
           <label>{{t 'labels.patient'}}</label>
@@ -15,9 +15,9 @@
         </div>
       {{/if}}
     {{/if}}
-    {{number-input property="amount" label=(t 'labels.amount') class="required payment-amount"}}
-    {{date-picker property="datePaid" label=(t 'labels.datePaid') maxDate="now" class="required"}}
-    {{select-or-typeahead property="expenseAccount" label=(t 'labels.creditTo') list=expenseAccountList selection=model.expenseAccount }}
-    {{expand-text property="notes" label=(t 'labels.notes')}}
+    {{number-input model=model property="amount" label=(t 'labels.amount') class="required payment-amount"}}
+    {{date-picker model=model property="datePaid" label=(t 'labels.datePaid') maxDate="now" class="required"}}
+    {{select-or-typeahead form=form model=model property="expenseAccount" label=(t 'labels.creditTo') list=expenseAccountList selection=model.expenseAccount }}
+    {{expand-text property="notes" label=(t 'labels.notes') form=form}}
   {{/em-form}}
 {{/modal-dialog}}

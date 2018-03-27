@@ -1,5 +1,5 @@
-{{#em-form model=this submitButton=false}}
-  {{date-picker property="dateTimePickerDate" label=label class=(concat 'col-sm-4 ' datePickerClass) dateSetAction="dateChanged"}}
+{{#em-form model=this submitButton=false as |form|}}
+  {{date-picker model=this property="dateTimePickerDate" label=label class=(concat 'col-sm-4 ' datePickerClass) dateSetAction="dateChanged"}}
   {{#unless isAllDay}}
     <div class="form-input-group col-sm-3 required">
       <label class="control-label" for="startTime">{{t 'labels.startTime'}}</label>
