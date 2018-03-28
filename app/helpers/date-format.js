@@ -1,7 +1,8 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
+import { helper } from '@ember/component/helper';
 import moment from 'moment';
-export default Ember.Helper.helper(function(params, hash) {
-  if (!Ember.isEmpty(params[0])) {
+export default helper(function(params, hash) {
+  if (!isEmpty(params[0])) {
     let dateFormat = 'l';
     let [date] = params;
     if (hash && hash.format) {

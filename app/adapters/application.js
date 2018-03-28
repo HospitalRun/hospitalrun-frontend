@@ -1,24 +1,21 @@
+import { copy } from '@ember/object/internals';
+import { Promise as EmberPromise } from 'rsvp';
+import { A, isArray } from '@ember/array';
+import { isEmpty } from '@ember/utils';
+import { inject as service } from '@ember/service';
+import { reads } from '@ember/object/computed';
+import { get } from '@ember/object';
+import { bind } from '@ember/runloop';
 import CheckForErrors from 'hospitalrun/mixins/check-for-errors';
-import Ember from 'ember';
 import uuid from 'npm:uuid';
 import withTestWaiter from 'ember-concurrency-test-waiter/with-test-waiter';
 import { Adapter } from 'ember-pouch';
 import { task } from 'ember-concurrency';
 import { pluralize } from 'ember-inflector';
 
-const {
-  computed: {
-    reads
-  },
-  get,
-  run: {
-    bind
-  }
-} = Ember;
-
 export default Adapter.extend(CheckForErrors, {
-  ajax: Ember.inject.service(),
-  database: Ember.inject.service(),
+  ajax: service(),
+  database: service(),
   db: reads('database.mainDB'),
   usePouchFind: reads('database.usePouchFind'),
 
@@ -39,7 +36,7 @@ export default Adapter.extend(CheckForErrors, {
     if (query.containsValue && query.containsValue.value) {
       let queryString = '';
       query.containsValue.keys.forEach((key) => {
-        if (!Ember.isEmpty(queryString)) {
+        if (!isEmpty(queryString)) {
           queryString = `${queryString} OR `;
         }
         let queryValue = query.containsValue.value;
@@ -56,7 +53,7 @@ export default Adapter.extend(CheckForErrors, {
         queryString = `${queryString}data.${key.name}:${queryValue}`;
       });
       let ajax = get(this, 'ajax');
-      if (Ember.isEmpty(query.size)) {
+      if (isEmpty(query.size)) {
         query.size = this.get('_esDefaultSize');
       }
 
@@ -68,7 +65,7 @@ export default Adapter.extend(CheckForErrors, {
         }
       }).then((results) => {
         if (results && results.hits && results.hits.hits) {
-          let resultDocs = Ember.A(results.hits.hits).map((hit) => {
+          let resultDocs = A(results.hits.hits).map((hit) => {
             let mappedResult = hit._source;
             mappedResult.id = hit._id;
             return mappedResult;
@@ -116,7 +113,7 @@ export default Adapter.extend(CheckForErrors, {
 
   _handleQueryResponse(response, store, type) {
     let database = this.get('database');
-    return new Ember.RSVP.Promise((resolve, reject) => {
+    return new EmberPromise((resolve, reject) => {
       if (response.rows.length > 0) {
         let ids = response.rows.map((row) => {
           return database.getEmberId(row.id);
@@ -147,7 +144,7 @@ export default Adapter.extend(CheckForErrors, {
   _doesStartKeyContainSpecialCharacters(startkey) {
     let haveSpecialCharacters = false;
     let maxValue = this.get('maxValue');
-    if (!Ember.isEmpty(startkey) && Ember.isArray(startkey)) {
+    if (!isEmpty(startkey) && isArray(startkey)) {
       startkey.forEach((keyvalue) => {
         if (keyvalue === null || keyvalue === maxValue) {
           haveSpecialCharacters = true;
@@ -177,7 +174,7 @@ export default Adapter.extend(CheckForErrors, {
   query(store, type, query, options) {
     let specialQuery = false;
     for (let i = 0; i < this._specialQueries.length; i++) {
-      if (Ember.get(query, this._specialQueries[i])) {
+      if (get(query, this._specialQueries[i])) {
         specialQuery = true;
         break;
       }
@@ -195,7 +192,7 @@ export default Adapter.extend(CheckForErrors, {
       let mapReduce = null;
       let queryParams = {};
       if (query.options) {
-        queryParams = Ember.copy(query.options);
+        queryParams = copy(query.options);
         if (query.sortKey || query.filterBy) {
           if (query.sortDesc) {
             queryParams.sortDesc = query.sortDesc;
@@ -228,7 +225,7 @@ export default Adapter.extend(CheckForErrors, {
         return this._executeContainsSearch(store, type, query);
       }
       let database = get(this, 'database');
-      return new Ember.RSVP.Promise((resolve, reject) => {
+      return new EmberPromise((resolve, reject) => {
         let db = this.get('db');
         try {
           if (mapReduce) {
@@ -299,7 +296,7 @@ export default Adapter.extend(CheckForErrors, {
   },
 
   checkForErrorsTask: withTestWaiter(task(function* (callPromise) {
-    return yield new Ember.RSVP.Promise((resolve, reject) => {
+    return yield new EmberPromise((resolve, reject) => {
       callPromise.then(resolve, (err) => {
         let database = get(this, 'database');
         reject(database.handleErrorResponse(err));

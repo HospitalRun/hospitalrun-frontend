@@ -1,20 +1,20 @@
-import Ember from 'ember';
+import { once } from '@ember/runloop';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import moment from 'moment';
 
-const {
-  computed,
-  isEmpty
-} = Ember;
-
-export default Ember.Component.extend({
-  i18n: Ember.inject.service(),
+export default Component.extend({
+  i18n: service(),
   dateTimePickerDate: null,
   datePickerClass: '',
-  endDate: Ember.computed.alias('model.endDate'),
+  endDate: alias('model.endDate'),
   endHour: null,
   endMinute: null,
   label: '',
-  startDate: Ember.computed.alias('model.startDate'),
+  startDate: alias('model.startDate'),
   startHour: null,
   startMinute: null,
 
@@ -114,7 +114,7 @@ export default Ember.Component.extend({
   }),
 
   _updateDates() {
-    Ember.run.once(this, () =>{
+    once(this, () =>{
       let datePrefixes = ['start', 'end'];
       datePrefixes.forEach((datePrefix) => {
         let dateProperty = `${datePrefix}Date`;
@@ -122,7 +122,7 @@ export default Ember.Component.extend({
         let dateSelected = this.get('dateTimePickerDate');
         let hour = this.get(`${datePrefix}Hour`);
         let minute = this.get(`${datePrefix}Minute`);
-        if (!Ember.isEmpty(dateSelected)) {
+        if (!isEmpty(dateSelected)) {
           dateToChange = moment(dateSelected);
           dateToChange.hour(hour);
           dateToChange.minute(minute);

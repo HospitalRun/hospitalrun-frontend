@@ -1,13 +1,16 @@
+import { alias } from '@ember/object/computed';
+import { isArray } from '@ember/array';
+import { isEmpty } from '@ember/utils';
+import { inject as controller } from '@ember/controller';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
 import ChargeActions from 'hospitalrun/mixins/charge-actions';
-import Ember from 'ember';
 import { computed } from '@ember/object';
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 
 export const LAB_STATUS_COMPLETED = 'Completed';
 
 export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
-  labsController: Ember.inject.controller('labs'),
+  labsController: controller('labs'),
   chargePricingCategory: 'Lab',
   chargeRoute: 'labs.charge',
   selectedLabType: null,
@@ -18,7 +21,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
     let selectedLabType = this.get('selectedLabType');
     let isAlreadyCompleted = this.get('isCompleted');
 
-    if (isNew && (Ember.isEmpty(labTypeName) || (Ember.isArray(selectedLabType) && selectedLabType.length > 1))) {
+    if (isNew && (isEmpty(labTypeName) || (isArray(selectedLabType) && selectedLabType.length > 1))) {
       return false;
     }
 
@@ -43,12 +46,12 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
       if (this.get('model.isNew')) {
         let newLab = this.get('model');
         let selectedLabType = this.get('selectedLabType');
-        if (Ember.isEmpty(this.get('model.status'))) {
+        if (isEmpty(this.get('model.status'))) {
           this.set('model.status', 'Requested');
         }
         this.set('model.requestedBy', newLab.getUserName());
         this.set('model.requestedDate', new Date());
-        if (Ember.isEmpty(selectedLabType)) {
+        if (isEmpty(selectedLabType)) {
           this.saveNewPricing(this.get('model.labTypeName'), 'Lab', 'model.labType').then(function() {
             this.addChildToVisit(newLab, 'labs', 'Lab').then(function() {
               this.saveModel();
@@ -56,7 +59,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
           }.bind(this));
         } else {
           this.getSelectedPricing('selectedLabType').then(function(pricingRecords) {
-            if (Ember.isArray(pricingRecords)) {
+            if (isArray(pricingRecords)) {
               this.createMultipleRequests(pricingRecords, 'labType', 'labs', 'Lab');
             } else {
               this.set('model.labType', pricingRecords);
@@ -87,7 +90,7 @@ export default AbstractEditController.extend(ChargeActions, PatientSubmodule, {
   }.property('canComplete', 'model.isValid'),
 
   pricingTypeForObjectType: 'Lab Procedure',
-  pricingTypes: Ember.computed.alias('labsController.labPricingTypes'),
+  pricingTypes: alias('labsController.labPricingTypes'),
 
   pricingList: null, // This gets filled in by the route
 

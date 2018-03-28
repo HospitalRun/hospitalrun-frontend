@@ -1,13 +1,16 @@
+import { later } from '@ember/runloop';
+import { isEmpty } from '@ember/utils';
+import { alias } from '@ember/object/computed';
+import { inject as controller } from '@ember/controller';
 import { translationMacro as t } from 'ember-i18n';
 import AbstractEditController from 'hospitalrun/controllers/abstract-edit-controller';
-import Ember from 'ember';
 import FulfillRequest from 'hospitalrun/mixins/fulfill-request';
 import InventoryLocations from 'hospitalrun/mixins/inventory-locations'; // inventory-locations mixin is needed for fulfill-request mixin!
 import PatientSubmodule from 'hospitalrun/mixins/patient-submodule';
 import SelectValues from 'hospitalrun/utils/select-values';
 
 export default AbstractEditController.extend(FulfillRequest, InventoryLocations, PatientSubmodule, {
-  medicationController: Ember.inject.controller('medication'),
+  medicationController: controller('medication'),
   medicationList: [],
 
   lookupListsToUpdate: [{
@@ -27,28 +30,28 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   patientMedicationList: [],
   setNewMedicationList: false,
 
-  aisleLocationList: Ember.computed.alias('medicationController.aisleLocationList'),
-  expenseAccountList: Ember.computed.alias('medicationController.expenseAccountList'),
-  warehouseList: Ember.computed.alias('medicationController.warehouseList'),
+  aisleLocationList: alias('medicationController.aisleLocationList'),
+  expenseAccountList: alias('medicationController.expenseAccountList'),
+  warehouseList: alias('medicationController.warehouseList'),
   updateCapability: 'add_medication',
 
   medicationChanged: function() {
     let medication = this.get('model.medication');
-    if (!Ember.isEmpty(medication)) {
+    if (!isEmpty(medication)) {
       let inventoryItem = medication.get('inventoryItem');
       this.set('model.inventoryItemTypeAhead', `${inventoryItem.get('name')} - ${inventoryItem.get('friendlyId')}`);
       this.set('model.inventoryItem', inventoryItem);
     } else {
       this.set('model.inventoryItem');
     }
-    Ember.run.later(function() {
+    later(function() {
       this.get('model').validate().catch(function() {});
     }.bind(this));
   }.observes('model.medication'),
 
   patientVisitsChanged: function() {
     let patientVisits = this.get('patientVisits');
-    if (!Ember.isEmpty(patientVisits)) {
+    if (!isEmpty(patientVisits)) {
       this.set('model.visit', patientVisits.get('firstObject'));
     }
   }.observes('patientVisits'),
@@ -56,7 +59,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
   showPatientMedicationList: function() {
     let patientMedicationList = this.get('patientMedicationList');
     this.get('patientMedication'); // Request patient medication be updated
-    return !Ember.isEmpty(patientMedicationList);
+    return !isEmpty(patientMedicationList);
   }.property('patientMedicationList', 'model.patient', 'model.visit'),
 
   patientMedication: function() {
@@ -64,7 +67,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     let visit = this.get('model.visit');
     if (setNewMedicationList) {
       this.set('setNewMedicationList', false);
-    } else if (!Ember.isEmpty(visit)) {
+    } else if (!isEmpty(visit)) {
       visit.get('medication').then(function(medication) {
         medication = medication.filterBy('status', 'Fulfilled');
         this.set('model.medication', medication.get('firstObject'));
@@ -101,7 +104,7 @@ export default AbstractEditController.extend(FulfillRequest, InventoryLocations,
     update() {
       let medication = this.get('model.medication');
       let quantity = this.get('model.quantity');
-      if (!Ember.isEmpty(medication)) {
+      if (!isEmpty(medication)) {
         medication.reload().then(function() {
           medication.decrementProperty('quantity', quantity);
           if (medication.get('quantity') < 0) {

@@ -1,5 +1,5 @@
+import { run } from '@ember/runloop';
 import { moduleForModel, test } from 'ember-qunit';
-import Ember from 'ember';
 
 moduleForModel('invoice', 'Unit | Model | invoice', {
   needs: [
@@ -32,7 +32,7 @@ const lineItemsData = [
 
 test('addPayment', function(assert) {
   let payments;
-  Ember.run(() => {
+  run(() => {
     payments = [12.5, 10].map((amount) => {
       let model = this.store().createRecord('payment', { amount });
       model.set('currentState.parentState.isNew', false);
@@ -41,10 +41,10 @@ test('addPayment', function(assert) {
   });
   let invoice = this.subject();
 
-  Ember.run(() => invoice.addPayment(payments[0]));
+  run(() => invoice.addPayment(payments[0]));
   assert.strictEqual(invoice.get('paidTotal'), 12.5, 'Should add first payment');
 
-  Ember.run(() => invoice.addPayment(payments[1]));
+  run(() => invoice.addPayment(payments[1]));
   assert.strictEqual(invoice.get('paidTotal'), 22.5, 'Should add second payment');
 });
 
@@ -70,7 +70,7 @@ test('paidFlag false', function(assert) {
 
 test('discount', function(assert) {
   let lineItems, invoice;
-  Ember.run(() => {
+  run(() => {
     lineItems = lineItemsData.map((item) => this.store().createRecord('billing-line-item', item));
     invoice = this.subject({ lineItems });
   });
@@ -80,7 +80,7 @@ test('discount', function(assert) {
 
 test('nationalInsurance', function(assert) {
   let lineItems, invoice;
-  Ember.run(() => {
+  run(() => {
     lineItems = lineItemsData.map((item) => this.store().createRecord('billing-line-item', item));
     invoice = this.subject({ lineItems });
   });
@@ -90,7 +90,7 @@ test('nationalInsurance', function(assert) {
 
 test('privateInsurance', function(assert) {
   let lineItems, invoice;
-  Ember.run(() => {
+  run(() => {
     lineItems = lineItemsData.map((item) => this.store().createRecord('billing-line-item', item));
     invoice = this.subject({ lineItems });
   });

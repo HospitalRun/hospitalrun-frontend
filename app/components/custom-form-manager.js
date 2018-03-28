@@ -1,8 +1,9 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import Component from '@ember/component';
 import SelectValues from 'hospitalrun/utils/select-values';
 import CustomFormManager from 'hospitalrun/mixins/custom-form-manager';
 
-export default Ember.Component.extend(SelectValues, CustomFormManager, {
+export default Component.extend(SelectValues, CustomFormManager, {
   model: null,
 
   didReceiveAttrs() {
@@ -14,7 +15,7 @@ export default Ember.Component.extend(SelectValues, CustomFormManager, {
     addForm() {
       let model = this.get('model');
       let formsForSelect = this.get('formsForSelect');
-      this.sendAction('openModalAction', 'custom-form-add', Ember.Object.create({
+      this.sendAction('openModalAction', 'custom-form-add', EmberObject.create({
         modelToAddTo: model,
         customForms: formsForSelect
       }));

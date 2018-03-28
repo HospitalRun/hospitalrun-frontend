@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import RSVP from 'rsvp';
 import FakeServer, { stubRequest } from 'ember-cli-fake-server';
 import startApp from 'hospitalrun/tests/helpers/start-app';
 import { PREDEFINED_USER_ROLES } from 'hospitalrun/mixins/user-roles';
@@ -44,10 +45,6 @@ const MOCK_USER_DATA = [{
   }
 }];
 
-const {
-  RSVP
-} = Ember;
-
 function addAllUsers(assert) {
   if (window.ELECTRON) {
     return addOfflineUsersForElectron();
@@ -75,7 +72,7 @@ module('Acceptance | users', {
 
   afterEach() {
     FakeServer.stop();
-    Ember.run(this.application, 'destroy');
+    run(this.application, 'destroy');
   }
 });
 

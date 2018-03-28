@@ -1,8 +1,7 @@
+import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
 import AbstractModel from 'hospitalrun/models/abstract';
-import Ember from 'ember';
 import DS from 'ember-data';
-
-const { computed } = Ember;
 
 export default AbstractModel.extend({
   // Attributes
@@ -23,7 +22,7 @@ export default AbstractModel.extend({
   visit: DS.belongsTo('visit', { async: false }),
 
   authoredBy: computed('attribution', 'createdBy', function() {
-    if (!Ember.isEmpty(this.get('attribution'))) {
+    if (!isEmpty(this.get('attribution'))) {
       let i18n = this.get('i18n');
       return `${this.get('createdBy')} ${i18n.t('patients.notes.onBehalfOfCopy')} ${this.get('attribution')}`;
     } else {

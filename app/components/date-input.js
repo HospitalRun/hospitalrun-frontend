@@ -1,18 +1,20 @@
-import Ember from 'ember';
+import { defineProperty } from '@ember/object';
+import { alias } from '@ember/object/computed';
+import { isEmpty } from '@ember/utils';
 import EmInput from 'ember-rapid-forms/components/em-input';
 import PikadayComponent from 'hospitalrun/mixins/pikaday-component';
 
 export default EmInput.extend(PikadayComponent, {
   _shouldSetDate(currentDate, picker) {
-    return (picker && (Ember.isEmpty(currentDate)
-      || Ember.isEmpty(picker.getDate())
-      || (currentDate.getTime && picker.getDate().getTime() !== currentDate.getTime())));
+    return picker && (isEmpty(currentDate)
+      || isEmpty(picker.getDate())
+      || (currentDate.getTime && picker.getDate().getTime() !== currentDate.getTime()));
   },
 
   currentDateChangedValue() {
     let currentDate = this.get('currentDate');
     let picker = this.get('_picker');
-    if (!Ember.isEmpty(currentDate) && this._shouldSetDate(currentDate, picker)) {
+    if (!isEmpty(currentDate) && this._shouldSetDate(currentDate, picker)) {
       picker.setDate(currentDate);
     }
   },
@@ -41,7 +43,7 @@ export default EmInput.extend(PikadayComponent, {
       let newDate = picker.getDate();
       let dateSetAction = this.get('dateSetAction');
       this.set('currentDate', newDate);
-      if (!Ember.isEmpty(dateSetAction)) {
+      if (!isEmpty(dateSetAction)) {
         this.sendAction('dateSetAction', newDate);
       }
     }
@@ -51,8 +53,8 @@ export default EmInput.extend(PikadayComponent, {
     this._super(...arguments);
     let dateProperty = this.get('originalProperty');
     let displayPropertyName = `display_${dateProperty}`;
-    this.currentDate = Ember.computed.alias(`model.${dateProperty}`);
+    this.currentDate = alias(`model.${dateProperty}`);
     this.addObserver(`model.${dateProperty}`, this, this.currentDateChangedValue);
-    Ember.defineProperty(this, `model.errors.${displayPropertyName}`, Ember.computed.alias(`model.errors.${dateProperty}`));
+    defineProperty(this, `model.errors.${displayPropertyName}`, alias(`model.errors.${dateProperty}`));
   }
 });

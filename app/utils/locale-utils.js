@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import $ from 'jquery';
 
 /**
  * Utilities for working with ember-i18n locales
@@ -37,9 +37,9 @@ function parentLocale(id) {
  */
 function setRTL(active) {
   if (active) {
-    Ember.$('body').addClass('rtl');
+    $('body').addClass('rtl');
   } else {
-    Ember.$('body').removeClass('rtl');
+    $('body').removeClass('rtl');
   }
 }
 

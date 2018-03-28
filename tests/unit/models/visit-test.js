@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
 import { moduleForModel, test } from 'ember-qunit';
 
 moduleForModel('visit', 'Unit | Model | visit', {
@@ -25,7 +25,7 @@ moduleForModel('visit', 'Unit | Model | visit', {
 test('paymentState', function(assert) {
   let model = this.subject();
 
-  Ember.run(() => {
+  run(() => {
     model.setProperties({
       paymentState: 'bad value'
     });
@@ -33,7 +33,7 @@ test('paymentState', function(assert) {
   assert.equal(model.get('paymentState'), 'bad value');
   assert.ok(model.errors.paymentState.length, 'there should errors');
 
-  Ember.run(() => {
+  run(() => {
     model.setProperties({
       paymentState: 'clear'
     });

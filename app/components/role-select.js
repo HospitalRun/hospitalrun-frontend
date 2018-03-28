@@ -1,5 +1,6 @@
-import Ember from 'ember';
-export default Ember.Component.extend({
+import { reads } from '@ember/object/computed';
+import Component from '@ember/component';
+export default Component.extend({
   // possible passed-in values with their defaults:
   content: null,
   prompt: null,
@@ -9,7 +10,7 @@ export default Ember.Component.extend({
 
   // shadow the passed-in `selection` to avoid
   // leaking changes to it via a 2-way binding
-  _selection: Ember.computed.reads('selection'),
+  _selection: reads('selection'),
 
   init() {
     this._super(...arguments);

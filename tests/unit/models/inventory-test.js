@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
 import { moduleForModel, test } from 'ember-qunit';
 
 moduleForModel('inventory', 'Unit | Model | inventory', {
@@ -18,7 +18,7 @@ test('condition', function(assert) {
   // let store = this.store();
   assert.ok(!!model, 'Model exists');
 
-  Ember.run(() => {
+  run(() => {
     model.setProperties({
       estimatedDaysOfStock: 28,
       rank: 'A'
@@ -26,22 +26,22 @@ test('condition', function(assert) {
   });
   assert.equal(model.get('condition'), 'good', 'Condition Should be good with given values');
 
-  Ember.run(() => {
+  run(() => {
     model.set('estimatedDaysOfStock', 15);
   });
   assert.equal(model.get('condition'), 'average', 'Condition Should be average with new quantity');
 
-  Ember.run(() => {
+  run(() => {
     model.set('rank', 'B');
   });
   assert.equal(model.get('condition'), 'good', 'Condition should be good again with new rank');
 
-  Ember.run(() => {
+  run(() => {
     model.set('estimatedDaysOfStock', 6);
   });
   assert.equal(model.get('condition'), 'bad', 'Condition should be bad with new quantity');
 
-  Ember.run(() => {
+  run(() => {
     model.set('rank', 'C');
   });
   assert.equal(model.get('condition'), 'average', 'Condition should be average again');

@@ -1,17 +1,19 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import HospitalRunVersion from 'hospitalrun/mixins/hospitalrun-version';
 import ModalHelper from 'hospitalrun/mixins/modal-helper';
 import UserSession from 'hospitalrun/mixins/user-session';
 import Navigation from 'hospitalrun/mixins/navigation';
 
-export default Ember.Component.extend(HospitalRunVersion, ModalHelper, UserSession, Navigation, {
-  ajax: Ember.inject.service(),
+export default Component.extend(HospitalRunVersion, ModalHelper, UserSession, Navigation, {
+  ajax: service(),
   allowSearch: false,
-  config: Ember.inject.service(),
-  i18n: Ember.inject.service(),
+  config: service(),
+  i18n: service(),
   progressTitle: 'Searching',
-  router: Ember.inject.service(),
-  session: Ember.inject.service(),
+  router: service(),
+  session: service(),
   syncStatus: '',
   currentOpenNav: null,
   selectedLanguage: null,
@@ -21,7 +23,7 @@ export default Ember.Component.extend(HospitalRunVersion, ModalHelper, UserSessi
       let version = this.get('version');
       this.get('ajax').request('/serverinfo').then((siteInfo) => {
         let message = `Version: ${version}`;
-        if (!Ember.isEmpty(siteInfo)) {
+        if (!isEmpty(siteInfo)) {
           message += ` Site Info: ${siteInfo}`;
         }
         this.displayAlert(this.get('i18n').t('navigation.about'), message);
