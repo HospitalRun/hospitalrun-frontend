@@ -10,7 +10,12 @@ test('visiting /admin/roles', function(assert) {
     visit('/admin/roles');
     andThen(function() {
       assert.equal(currentURL(), '/admin/roles');
-      select('.role-select', 'Doctor');
+    });
+    andThen(() => {
+      $('.role-select')
+        .find('option:contains("Doctor")')
+        .prop('selected', true)
+        .change();
     });
     andThen(() => {
       assert.equal(find('.checkbox-appointments input:checked').length, 0, 'Appointments checkbox is not checked');

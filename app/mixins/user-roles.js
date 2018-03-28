@@ -22,8 +22,29 @@ export const PREDEFINED_USER_ROLES = [
 
 export default Ember.Mixin.create({
   userRoles: PREDEFINED_USER_ROLES,
-
   findUserRole(name) {
     return this.userRoles.findBy('name', name);
+  },
+  loadRoles() {
+    let storeRoles = this.get('store').findAll('user-role');
+    storeRoles.then(() => {
+      delete this.namedRoles;
+      this.set('namedRoles', Ember.computed.map('userRoles', function(userRole) {
+        let id = userRole.id !== undefined ? userRole.id : userRole.name.dasherize();
+        let userRoleModel = storeRoles.findBy('id', id);
+        if (!userRole.id) {
+          userRole.id = id;
+        }
+        if (userRoleModel) {
+          Ember.set(userRole, 'name', userRoleModel.get('name'));
+        }
+        return userRole;
+      }));
+    });
+    return storeRoles;
+  },
+  init() {
+    this.loadRoles();
   }
 });
+

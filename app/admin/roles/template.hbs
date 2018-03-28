@@ -4,17 +4,18 @@
       {{#em-form model=this submitButton=false as |form|}}
         <div class="form-group has-success">
           <label class="control-label">{{t 'labels.role'}}</label>
-          <select onchange={{action "selectRole" value="target.value"}} class="form-control role-select">
+          <select onchange={{action "selectRole" value="target"}} class="form-control role-select">
             <option disabled selected={{is-not selectedRole}}>
             </option>
             {{#each filteredRoles as |userRole|}}
-              <option value="{{userRole.name}}"
+              <option value="{{userRole.id}}"
                       selected={{eq selectedRole userRole.name}}>
                 {{userRole.name}}
               </option>
             {{/each}}
           </select>
         </div>
+        {{em-input property="currentRole" label=(t 'labels.name') class="form-input-group required test-role-name"}}
         {{#each capabilitySections as |capabilitySection|}}
           <div class="detail-section">
             <div class="panel-heading">
