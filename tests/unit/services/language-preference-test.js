@@ -120,7 +120,7 @@ test("saveUserLanguagePreference should update preferences when user doesn't exi
 
 test("saveUserLanguagePreference should create preferences when they doesn't exist", function(assert) {
   currentUser.returns({ name: 'no-such-user@test.ts' });
-  configDb.get.withArgs('preferences').returns(reject('no preferences'));
+  configDb.get.withArgs('preferences').rejects('no preferences');
 
   let expectedPreferences = {
     _id: 'preferences',
