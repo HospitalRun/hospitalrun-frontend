@@ -8,7 +8,7 @@ export default Mixin.create({
     {
       title: 'Inventory',
       iconClass: 'octicon-package',
-      route: 'inventory.index',
+      route: 'inventory',
       capability: 'inventory',
       subnav: [
         {
@@ -41,7 +41,7 @@ export default Mixin.create({
     {
       title: 'Patients',
       iconClass: 'octicon-organization',
-      route: 'patients.index',
+      route: 'patients',
       capability: 'patients',
       subnav: [
         {
@@ -80,7 +80,7 @@ export default Mixin.create({
     {
       title: 'Scheduling',
       iconClass: 'octicon-calendar',
-      route: 'appointments.index',
+      route: 'appointments',
       capability: 'appointments',
       subnav: [
         {
@@ -132,7 +132,7 @@ export default Mixin.create({
     {
       title: 'Imaging',
       iconClass: 'octicon-device-camera',
-      route: 'imaging.index',
+      route: 'imaging',
       capability: 'imaging',
       subnav: [
         {
@@ -159,7 +159,7 @@ export default Mixin.create({
     {
       title: 'Medication',
       iconClass: 'octicon-file-text',
-      route: 'medication.index',
+      route: 'medication',
       capability: 'medication',
       subnav: [
         {
@@ -200,7 +200,7 @@ export default Mixin.create({
     {
       title: 'Labs',
       iconClass: 'octicon-microscope',
-      route: 'labs.index',
+      route: 'labs',
       capability: 'labs',
       subnav: [
         {
@@ -227,7 +227,7 @@ export default Mixin.create({
     {
       title: 'Billing',
       iconClass: 'octicon-credit-card',
-      route: 'invoices.index',
+      route: 'invoices',
       capability: 'invoices',
       subnav: [
         {
@@ -293,7 +293,7 @@ export default Mixin.create({
     {
       title: 'Administration',
       iconClass: 'octicon-person',
-      route: 'admin.lookup',
+      route: 'admin',
       capability: 'admin',
       subnav: [
         {

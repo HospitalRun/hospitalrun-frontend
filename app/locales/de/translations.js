@@ -1,5 +1,5 @@
 export default {
-  languageName: 'Deutsche',
+  languageName: 'Deutsch',
   admin: {
     address: {
       address1Label: 'Adresse 1 Kennzeichen',

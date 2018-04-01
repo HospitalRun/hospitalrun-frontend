@@ -27,7 +27,7 @@ test('it renders', function(assert) {
 
   assert.ok(this.$('.language-select').length);
   assert.equal(this.$('option[value=""]', '.language-select').text().trim(), 'Select Language');
-  assert.equal(this.$('option[value="de"]', '.language-select').text().trim(), 'Deutsche');
+  assert.equal(this.$('option[value="de"]', '.language-select').text().trim(), 'Deutsch');
   assert.ok(this.$('option', '.language-select').length > 2, 'There are not so many languages');
 });
 
